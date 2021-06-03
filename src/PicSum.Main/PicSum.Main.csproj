@@ -1,0 +1,366 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{0689D5BA-499C-45E8-87D3-04A4CD261CCC}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>PicSum.Main</RootNamespace>
+    <AssemblyName>picsum</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <StartupObject>PicSum.Main.Program</StartupObject>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="PicSum.UIComponent.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\PicSum.UIComponent.Common\bin\Release\PicSum.UIComponent.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Runtime.Remoting" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Conf\BrowserConfig.cs" />
+    <Compile Include="UIComponent\BrowserForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Mng\BrowserManager.cs" />
+    <Compile Include="Mng\ComponentManager.cs" />
+    <Compile Include="UIComponent\BrowserContentsOpenEventArgs.cs" />
+    <Compile Include="UIComponent\BrowserMainPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UIComponent\BrowserMainPanel.Designer.cs">
+      <DependentUpon>BrowserMainPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UIComponent\DummyForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UIComponent\BrowserMainPanel.resx">
+      <DependentUpon>BrowserMainPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="app.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PicSum.Core.Base\PicSum.Core.Base.csproj">
+      <Project>{128C4631-F38E-4670-BC8F-E9E60910CE70}</Project>
+      <Name>PicSum.Core.Base</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PicSum.Core.Data.FileAccessor\PicSum.Core.Data.FileAccessor.csproj">
+      <Project>{8608A055-6F71-4142-BDF6-98B442763A14}</Project>
+      <Name>PicSum.Core.Data.FileAccessor</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PicSum.Core.Task.AsyncTask\PicSum.Core.Task.AsyncTask.csproj">
+      <Project>{E46B47C7-C4E7-44E5-963B-B603E31424E0}</Project>
+      <Name>PicSum.Core.Task.AsyncTask</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PicSum.Core.Task.Base\PicSum.Core.Task.Base.csproj">
+      <Project>{106CC18E-82F9-4FE8-A7D5-29E1ED3BAA72}</Project>
+      <Name>PicSum.Core.Task.Base</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PicSum.Core.Task.SyncTask\PicSum.Core.Task.SyncTask.csproj">
+      <Project>{AD2472A8-9878-4969-9D82-B69255743CBA}</Project>
+      <Name>PicSum.Core.Task.SyncTask</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SWF.Common\SWF.Common.csproj">
+      <Project>{1D5E61C2-A0F5-4A69-AF24-EDD274B78359}</Project>
+      <Name>SWF.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SWF.UIComponent.Common\SWF.UIComponent.Common.csproj">
+      <Project>{73FC3AB9-059A-4B08-BA74-D0E91A1205E4}</Project>
+      <Name>SWF.UIComponent.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SWF.UIComponent.FreeForm\SWF.UIComponent.FreeForm.csproj">
+      <Project>{A208ECF3-D614-468E-8034-FE81AD8BD0A1}</Project>
+      <Name>SWF.UIComponent.FreeForm</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SWF.UIComponent.TabOperation\SWF.UIComponent.TabOperation.csproj">
+      <Project>{B9ECCCA2-735B-472A-B503-EE2E933B547B}</Project>
+      <Name>SWF.UIComponent.TabOperation</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PicSum.Task\PicSum.Task.csproj">
+      <Project>{BCB012C4-D8A7-4F01-B158-2BB6AF00E6B5}</Project>
+      <Name>PicSum.Task</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PicSum.UIComponent.AddressBar\PicSum.UIComponent.AddressBar.csproj">
+      <Project>{290188E5-55A5-40C7-A311-4E3474C23789}</Project>
+      <Name>PicSum.UIComponent.AddressBar</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PicSum.UIComponent.Contents\PicSum.UIComponent.Contents.csproj">
+      <Project>{8FB6F625-792E-4A72-AB48-5C2F558C74F3}</Project>
+      <Name>PicSum.UIComponent.Contents</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PicSum.UIComponent.InfoPanel\PicSum.UIComponent.InfoPanel.csproj">
+      <Project>{AD290551-E7B2-41E0-801D-E8118155AE86}</Project>
+      <Name>PicSum.UIComponent.InfoPanel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PicSum.UIComponent.SearchTool\PicSum.UIComponent.SearchTool.csproj">
+      <Project>{59912BB6-7F9C-4C10-B67E-D616CE5DA771}</Project>
+      <Name>PicSum.UIComponent.SearchTool</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows インストーラ 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\FileInfoIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ActiveRatingIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\TagIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\FileHistoryIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\KeepIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\MiddleArrowRight.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\MiddleArrowLeft.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="icon.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SQLite.Interop.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="sql\CreationFile.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="sql\CreationFileViewHistory.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="sql\CreationFolderState.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="sql\CreationFolderViewHistory.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="sql\CreationRating.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="sql\CreationTag.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="sql\CreationThumbnail.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="sql\DeletionFileByFile.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="sql\DeletionFileViewHistoryByFile.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="sql\DeletionFolderStateByFile.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="sql\DeletionFolderViewHistoryByFile.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="sql\DeletionRatingByFile.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="sql\DeletionTagByFile.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="sql\DeletionTagByFileAndTag.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="sql\DeletionTagByTag.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="sql\DeletionThumbnailByFile.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="sql\ReadAllTag.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="sql\ReadFavoriteFolder.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="sql\ReadFileByRating.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="sql\ReadFileByTag.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="sql\ReadFileByViewDate.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="sql\ReadFileInfo.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="sql\ReadFileTag.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="sql\ReadFileViewHistory.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="sql\ReadFolderByViewDate.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="sql\ReadFolderStateByFolder.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="sql\ReadFolderViewHistory.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="sql\ReadThumbnailByFile.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="sql\UpdateFolderState.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="sql\UpdateRating.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="sql\UpdateTag.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="sql\UpdateThumbnail.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+</Project>
