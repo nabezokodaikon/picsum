@@ -7,3 +7,7 @@ Image viewer
 1. Visual Studioを終了します。
 1. `build.bat`を実行します。
 1. `bin\picsum.exe`を実行します。
+
+## スクリーンショット
+![サムネイル画面](./screenshot/screenshot-001.png)
+![画像表示画面](./screenshot/screenshot-002.png)
