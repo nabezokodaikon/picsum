@@ -62,6 +62,7 @@
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Data" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
@@ -70,6 +71,7 @@
     <Compile Include="Dto\FileInfoDto.cs" />
     <Compile Include="Dto\FileTagDto.cs" />
     <Compile Include="Dto\FolderStateDto.cs" />
+    <Compile Include="Dto\FolderViewHistoryDto.cs" />
     <Compile Include="Dto\SingleValueDto.cs" />
     <Compile Include="Dto\ThumbnailDto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
