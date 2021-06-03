@@ -78,7 +78,7 @@
   <ItemGroup>
     <Reference Include="PicSum.UIComponent.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\PicSum.UIComponent.Common\bin\Release\PicSum.UIComponent.Common.dll</HintPath>
+      <HintPath>..\PicSum.UIComponent.Common\obj\Debug\PicSum.UIComponent.Common.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
