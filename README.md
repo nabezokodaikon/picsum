@@ -1,5 +1,6 @@
 # PicSum
-Image viewer
+10年以上昔に作った画像ビューアです。
+当時のChromeのタブや、Windows7のアドレスバーを意識して作りました。
 
 ## ビルド方法
 1. Visual Studioで`src/PicSum.sln`を開きます。

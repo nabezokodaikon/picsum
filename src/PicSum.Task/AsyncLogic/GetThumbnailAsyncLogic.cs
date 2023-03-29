@@ -298,7 +298,7 @@ namespace PicSum.Task.AsyncLogic
 
         private string getFirstImageFilePath(string folderPath)
         {
-            return FileUtil.GetFiles(folderPath).FirstOrDefault(file => ImageUtil.ImageFileExtensionList.Contains(FileUtil.GetExtension(file)) &&
+            return FileUtil.GetFiles(folderPath).OrderBy(file => file).FirstOrDefault(file => ImageUtil.ImageFileExtensionList.Contains(FileUtil.GetExtension(file)) &&
                                                                         FileUtil.CanAccess(file));
         }
 

@@ -6,7 +6,7 @@ namespace PicSum.Data.DatabaseAccessor.Sql
     /// <summary>
     /// フォルダの表示履歴を取得します。
     /// </summary>
-    public class ReadFolderViewHistorySql : SqlBase<SingleValueDto<string>>
+    public class ReadFolderViewHistorySql : SqlBase<FolderViewHistoryDto>
     {
         public ReadFolderViewHistorySql(int limit)
             : base()

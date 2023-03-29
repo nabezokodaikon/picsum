@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
-using PicSum.Core.Data.DatabaseAccessor;
+﻿using PicSum.Core.Data.DatabaseAccessor;
 using PicSum.Core.Data.FileAccessor;
 using PicSum.Core.Task.AsyncTask;
 using PicSum.Data.DatabaseAccessor.Connection;
 using PicSum.Data.DatabaseAccessor.Dto;
 using PicSum.Data.DatabaseAccessor.Sql;
-using SWF.Common;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace PicSum.Task.AsyncLogic
 {
@@ -18,16 +18,21 @@ namespace PicSum.Task.AsyncLogic
 
         public IList<string> Execute()
         {
-            ReadFolderViewHistorySql sql = new ReadFolderViewHistorySql(100);
-            IList<SingleValueDto<string>> dtoList = DatabaseManager<FileInfoConnection>.ReadList<SingleValueDto<string>>(sql);
+            var sql = new ReadFolderViewHistorySql(100);
+            var dtoList = DatabaseManager<FileInfoConnection>.ReadList<FolderViewHistoryDto>(sql);
 
-            List<string> folderPathList = new List<string>();
-            foreach (SingleValueDto<string> dto in dtoList)
+            var folderPathList = new List<string>();
+            foreach (var dto in dtoList
+                .Select(value => new { FolderPath = value.FolderPath, ViewDate = value.ViewDate })
+                .OrderByDescending(value => value.ViewDate))
             {
                 CheckCancel();
-                if (FileUtil.CanAccess(dto.Value))
+                if (FileUtil.CanAccess(dto.FolderPath))
                 {
-                    folderPathList.Add(dto.Value);
+                    if (!folderPathList.Contains(dto.FolderPath))
+                    {
+                        folderPathList.Add(dto.FolderPath);
+                    }                     
                 }
             }
 

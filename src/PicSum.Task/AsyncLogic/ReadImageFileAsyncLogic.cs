@@ -36,9 +36,9 @@ namespace PicSum.Task.AsyncLogic
                 Bitmap destImg = new Bitmap(w, h);
                 using (Graphics g = Graphics.FromImage(destImg))
                 {
-                    g.InterpolationMode = InterpolationMode.Low;
-                    g.SmoothingMode = SmoothingMode.HighSpeed;
-                    g.CompositingQuality = CompositingQuality.HighSpeed;
+                    g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                    g.SmoothingMode = SmoothingMode.HighQuality;
+                    g.CompositingQuality = CompositingQuality.HighQuality;
                     g.DrawImage(srcImg, new Rectangle(0, 0, w, h), new Rectangle(0, 0, srcImg.Width, srcImg.Height), GraphicsUnit.Pixel);
                 }
 

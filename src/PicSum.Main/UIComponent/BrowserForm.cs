@@ -138,7 +138,8 @@ namespace PicSum.Main.UIComponent
                 startupProcess.Callback += new AsyncTaskCallbackEventHandler<DefaultEntity>(startupProcess_Callback);
 
                 var dbDir = Path.Combine(Directory.GetParent(Application.ExecutablePath).FullName, "db");
-                if (!Directory.Exists(dbDir)) {
+                if (!Directory.Exists(dbDir)) 
+                {
                     Directory.CreateDirectory(dbDir);
                 }
 
@@ -347,5 +348,18 @@ namespace PicSum.Main.UIComponent
         }
 
         #endregion
+
+        private void InitializeComponent()
+        {
+            this.SuspendLayout();
+            // 
+            // BrowserForm
+            // 
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
+            this.ClientSize = new System.Drawing.Size(166, 47);
+            this.Name = "BrowserForm";
+            this.ResumeLayout(false);
+
+        }
     }
 }
