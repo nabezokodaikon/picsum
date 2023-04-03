@@ -233,6 +233,7 @@ namespace PicSum.UIComponent.InfoPanel
 
             tagFlowList.ItemHeight = 24;
             _allTagFont = new Font(this.Font.FontFamily, this.Font.Size, FontStyle.Bold, this.Font.Unit, this.Font.GdiCharSet);
+            this.CreateHandle();
         }
 
         private void clearInfo()
