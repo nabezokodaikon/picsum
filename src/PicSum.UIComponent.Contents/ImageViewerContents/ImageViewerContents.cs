@@ -484,6 +484,7 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
 
         private void setTitle(string selectedFilePath)
         {
+            this.FolderPath = selectedFilePath;
             this.Title = FileUtil.GetFileName(selectedFilePath);
             OnSelectedFileChanged(new SelectedFileChangeEventArgs(selectedFilePath));
         }

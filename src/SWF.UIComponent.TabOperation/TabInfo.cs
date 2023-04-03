@@ -77,7 +77,7 @@ namespace SWF.UIComponent.TabOperation
             }
         }
 
-        internal ContentsPanel Contents
+        public ContentsPanel Contents
         {
             get
             {

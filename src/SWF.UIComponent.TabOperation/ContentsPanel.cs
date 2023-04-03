@@ -23,12 +23,30 @@ namespace SWF.UIComponent.TabOperation
 
         #region インスタンス変数
 
+        private string _folderPath = string.Empty;
         private string _title = string.Empty;
         private Image _icon = null;
 
         #endregion
 
         #region パブリックプロパティ
+
+        public string FolderPath 
+        {
+            get
+            {
+                return _folderPath;
+            }
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException("value");
+                }
+
+                _folderPath = value;
+            }
+        }
 
         public string Title
         {

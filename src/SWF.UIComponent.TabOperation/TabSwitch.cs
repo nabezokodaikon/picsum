@@ -834,6 +834,8 @@ namespace SWF.UIComponent.TabOperation
                 {
                     _activeTab.Contents.Focus();
                 }
+
+                OnActiveTabChanged(new EventArgs());
             }
             else if (_activeTab != null)
             {
