@@ -560,6 +560,11 @@ namespace PicSum.Main.UIComponent
         private void tabSwitch_ActiveTabChanged(object sender, EventArgs e)
         {
             setContentsHistoryButtonEnabled();
+
+            if (tabSwitch.ActiveTab != null)
+            {
+                addressBar.SetAddress(tabSwitch.ActiveTab.Contents.FolderPath);
+            }            
         }
 
         private void tabSwitch_TabCloseButtonClick(object sender, SWF.UIComponent.TabOperation.TabEventArgs e)
