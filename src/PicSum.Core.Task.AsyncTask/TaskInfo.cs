@@ -163,7 +163,8 @@ namespace PicSum.Core.Task.AsyncTask
         {
             get
             {
-                return _exception != null;
+                var ex = Interlocked.CompareExchange<Exception>(ref _exception, null, null);
+                return ex != null;
             }
         }
 
@@ -190,7 +191,7 @@ namespace PicSum.Core.Task.AsyncTask
         {
             get
             {
-                return _exception;
+                return Interlocked.CompareExchange<Exception>(ref _exception, null, null);
             }
         }
 
@@ -345,12 +346,10 @@ namespace PicSum.Core.Task.AsyncTask
                 throw new ArgumentNullException("ex");
             }
 
-            if (_exception != null)
+            if (Interlocked.CompareExchange<Exception>(ref _exception, ex, null) != null)
             {
                 throw new Exception("既に例外がセットされています。");
             }
-
-            _exception = ex;
 
             onTaskStateChanged(new TaskStateChangedEventArgs(this));
         }
