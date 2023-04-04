@@ -53,8 +53,8 @@ namespace PicSum.Core.Base.Log
                 using (StreamWriter sw = new StreamWriter(_outputFilePath, true))
                 {
                     StringBuilder text = new StringBuilder();
-                    text.AppendLine("################################################################");
-                    text.AppendLine(DateTime.Now.ToString());
+                    text.AppendLine("################################");
+                    text.AppendFormat("{0:yyyy/MM/dd HH:mm:ss.fff} [{1}]\n", DateTime.Now, Thread.CurrentThread.ManagedThreadId);
                     text.AppendLine(logBody);
                     sw.Write(text.ToString());
                 }
