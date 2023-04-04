@@ -37,7 +37,7 @@ namespace PicSum.Core.Task.AsyncTask
 
         private readonly int _taskId;
         private readonly DateTime _startDateTime;
-        private Nullable<DateTime> _endDateTime = null;
+        private long _endDateTimeTicks = 0;
         private readonly Type _processType = null;
         private readonly object _sender = null;
         private readonly IEntity _parameter;
@@ -86,18 +86,17 @@ namespace PicSum.Core.Task.AsyncTask
         /// <summary>
         /// タスク終了日時
         /// </summary>
-        public string EndDateTime
+        public DateTime EndDateTime
         {
             get
             {
-                if (_endDateTime.HasValue)
-                {
-                    return _endDateTime.ToString();
-                }
-                else
-                {
-                    return string.Empty;
-                }
+                var ticks = Interlocked.Read(ref _endDateTimeTicks);
+                return new DateTime(ticks);
+            }
+            set
+            {
+                var ticks = value.Ticks;
+                Interlocked.Exchange(ref _endDateTimeTicks, ticks);
             }
         }
 
@@ -330,7 +329,7 @@ namespace PicSum.Core.Task.AsyncTask
             }
 
             IsEnd = true;
-            _endDateTime = DateTime.Now;
+            EndDateTime = DateTime.Now;
 
             onTaskStateChanged(new TaskStateChangedEventArgs(this));
         }
@@ -368,7 +367,7 @@ namespace PicSum.Core.Task.AsyncTask
 
             log.AppendFormat("開始日時：{0:HH:mm:ss.fff}\n", StartDateTime);
 
-            log.AppendFormat("終了日時：{0}\n", EndDateTime);
+            log.AppendFormat("終了日時：{0:HH:mm:ss.fff}\n", EndDateTime);
 
             log.AppendFormat("プロセス：{0}\n", ProcessType.ToString());
 
