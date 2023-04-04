@@ -43,7 +43,7 @@ namespace PicSum.Core.Task.AsyncTask
         private readonly IEntity _parameter;
         private long _isExecuting = 0;
         private long _isCancel = 0;
-        private bool _isEnd = false;
+        private long _isEnd = 0;
         private Exception _exception = null;
 
         #endregion
@@ -149,7 +149,11 @@ namespace PicSum.Core.Task.AsyncTask
         {
             get
             {
-                return _isEnd;
+                return Interlocked.Read(ref _isEnd) == 1;
+            }
+            private set
+            {
+                Interlocked.Exchange(ref _isEnd, Convert.ToInt64(value));
             }
         }
 
@@ -257,7 +261,7 @@ namespace PicSum.Core.Task.AsyncTask
         /// </summary>
         public void BeginCancel()
         {
-            if (_isEnd)
+            if (IsEnd)
             {
                 return;
             }
@@ -275,7 +279,7 @@ namespace PicSum.Core.Task.AsyncTask
         /// </summary>
         internal void StartExecute()
         {
-            if (_isEnd)
+            if (IsEnd)
             {
                 throw new Exception(string.Format("タスク[{0}]は終了しています。", _taskId));
             }
@@ -300,7 +304,7 @@ namespace PicSum.Core.Task.AsyncTask
         /// </summary>
         internal void CancelExecute()
         {
-            if (_isEnd)
+            if (IsEnd)
             {
                 throw new Exception(string.Format("タスク[{0}]は終了しています。", _taskId));
             }
@@ -320,12 +324,12 @@ namespace PicSum.Core.Task.AsyncTask
         /// </summary>
         internal void EndExecute()
         {
-            if (_isEnd)
+            if (IsEnd)
             {
                 throw new Exception(string.Format("タスク[{0}]は終了しています。", _taskId));
             }
 
-            _isEnd = true;
+            IsEnd = true;
             _endDateTime = DateTime.Now;
 
             onTaskStateChanged(new TaskStateChangedEventArgs(this));
