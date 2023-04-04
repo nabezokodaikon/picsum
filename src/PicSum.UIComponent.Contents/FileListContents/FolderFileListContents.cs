@@ -173,7 +173,6 @@ namespace PicSum.UIComponent.Contents.FileListContents
 
         private void initializeComponent()
         {
-            this.FolderPath = _parameter.FolderPath;
             this.Title = FileUtil.GetFileName(_parameter.FolderPath);
 
             if (string.IsNullOrEmpty(_parameter.FolderPath))
