@@ -563,8 +563,10 @@ namespace PicSum.Main.UIComponent
 
             if (tabSwitch.ActiveTab != null)
             {
-                addressBar.SetAddress(tabSwitch.ActiveTab.GetContents<BrowserContents>().SelectedFilePath);
-            }            
+                var selectedFilePath = tabSwitch.ActiveTab.GetContents<BrowserContents>().SelectedFilePath;
+                addressBar.SetAddress(selectedFilePath);
+                infoPanel.SetFileInfo(selectedFilePath);
+            }
         }
 
         private void tabSwitch_TabCloseButtonClick(object sender, SWF.UIComponent.TabOperation.TabEventArgs e)

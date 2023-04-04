@@ -193,6 +193,11 @@ namespace PicSum.UIComponent.InfoPanel
 
         #region パブリックメソッド
 
+        public void SetFileInfo(string filePath)
+        {
+            SetFileInfo(new List<string>() { filePath });
+        }
+
         public void SetFileInfo(IList<string> filePathList)
         {
             if (filePathList == null)
