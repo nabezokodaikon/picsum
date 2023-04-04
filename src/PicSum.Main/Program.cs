@@ -1,11 +1,16 @@
-﻿using System;
+﻿using PicSum.Core.Base.Log;
+using PicSum.Core.Data.DatabaseAccessor;
+using PicSum.Core.Data.FileAccessor;
+using PicSum.Main.Mng;
+using PicSum.Main.UIComponent;
+using PicSum.Task.AsyncFacade;
+using PicSum.Task.AsyncLogic;
+using System;
 using System.Runtime.Remoting;
 using System.Runtime.Remoting.Channels;
 using System.Runtime.Remoting.Channels.Ipc;
 using System.Threading;
 using System.Windows.Forms;
-using PicSum.Main.Mng;
-using PicSum.Main.UIComponent;
 
 namespace PicSum.Main
 {
@@ -30,10 +35,18 @@ namespace PicSum.Main
                     Application.SetCompatibleTextRenderingDefault(false);
 
                     using (ComponentManager component = new ComponentManager())
-                    {                       
+                    {
                         _dummyForm = new DummyForm();
                         Application.Run(_dummyForm);
                     }
+
+                    FileIconCash.DisposeStaticResouces();
+                    OperatingKeepListAsyncLogic.DisposeStaticResouces();
+                    GetThumbnailAsyncLogic.DisposeStaticResouces();
+                    GetFileViewHistoryAsyncLogic.DisposeStaticResouces();
+                    ExportFileAsyncFacade.DisposeStaticResouces();
+                    SqlManager.DisposeStaticResouces();
+                    LogWriter.DisposeStaticResouces();
                 }
                 else
                 {
