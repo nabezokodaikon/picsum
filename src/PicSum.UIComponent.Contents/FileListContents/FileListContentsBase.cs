@@ -47,6 +47,14 @@ namespace PicSum.UIComponent.Contents.FileListContents
 
         #region パブリックプロパティ
 
+        public override string SelectedFilePath
+        {
+            get
+            {
+                return _selectedFilePath;
+            }
+        }
+
         #endregion
 
         #region 継承プロパティ
@@ -64,14 +72,6 @@ namespace PicSum.UIComponent.Contents.FileListContents
             get
             {
                 return _sortInfo.ActiveSortType;
-            }
-        }
-
-        protected string SelectedFilePath
-        {
-            get
-            {
-                return _selectedFilePath;
             }
         }
 

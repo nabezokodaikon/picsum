@@ -11,7 +11,7 @@ namespace PicSum.UIComponent.Contents
     /// <summary>
     /// コンテンツ基底クラス
     /// </summary>
-    public class BrowserContents : ContentsPanel
+    public abstract class BrowserContents : ContentsPanel
     {
         #region 定数・列挙
 
@@ -32,6 +32,10 @@ namespace PicSum.UIComponent.Contents
 
         #region パブリックプロパティ
 
+        public abstract string SelectedFilePath
+        {
+            get;
+        }
 
         #endregion
 

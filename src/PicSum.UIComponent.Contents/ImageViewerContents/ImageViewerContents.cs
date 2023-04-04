@@ -50,6 +50,14 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
 
         #region パブリックプロパティ
 
+        public override string SelectedFilePath
+        {
+            get
+            {
+                return _parameter.SelectedFilePath;
+            }
+        }
+
         #endregion
 
         #region 継承プロパティ
