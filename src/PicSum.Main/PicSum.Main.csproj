@@ -142,6 +142,10 @@
       <Project>{128C4631-F38E-4670-BC8F-E9E60910CE70}</Project>
       <Name>PicSum.Core.Base</Name>
     </ProjectReference>
+    <ProjectReference Include="..\PicSum.Core.Data.DatabaseAccessor\PicSum.Core.Data.DatabaseAccessor.csproj">
+      <Project>{4EE2E470-303F-4495-A7D1-0D7462202D24}</Project>
+      <Name>PicSum.Core.Data.DatabaseAccessor</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PicSum.Core.Data.FileAccessor\PicSum.Core.Data.FileAccessor.csproj">
       <Project>{8608A055-6F71-4142-BDF6-98B442763A14}</Project>
       <Name>PicSum.Core.Data.FileAccessor</Name>
