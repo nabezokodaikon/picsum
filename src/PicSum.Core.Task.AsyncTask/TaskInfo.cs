@@ -355,32 +355,32 @@ namespace PicSum.Core.Task.AsyncTask
         public string GetLogText()
         {
             StringBuilder log = new StringBuilder();
-            
+
             log.AppendFormat("タスクID：{0}\n", TaskId);
-            
+
             log.AppendFormat("開始日時：{0}\n", StartDateTime);
-            
+
             log.AppendFormat("終了日時：{0}\n", EndDateTime);
-            
+
             log.AppendFormat("プロセス：{0}\n", ProcessType.ToString());
-            
+
             if (_parameter != null)
             {
                 log.AppendFormat("パラメータ：{0}\n", Parameter.ToString());
             }
-            
+
             log.AppendFormat("呼出元：{0}\n", Sender.ToString());
 
             log.AppendFormat("実行中フラグ：{0}\n", IsExecuting);
-            
+
             log.AppendFormat("終了フラグ：{0}\n", IsEnd);
-            
+
             log.AppendFormat("キャンセルフラグ：{0}\n", IsCancel);
 
             if (IsError)
             {
                 log.AppendFormat("Exception：{0}\n", Exception.GetType().ToString());
-                
+
                 if (!string.IsNullOrEmpty(Exception.Message))
                 {
                     log.AppendFormat("Message：{0}\n", Exception.Message);
