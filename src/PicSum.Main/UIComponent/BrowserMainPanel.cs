@@ -532,6 +532,7 @@ namespace PicSum.Main.UIComponent
 
         #region コンテンツイベント
 
+        // TODO: tabSwitch_ActiveTabChanged の直後に呼び出される場合がある。
         private void contents_SelectedFileChanged(object sender, SelectedFileChangeEventArgs e)
         {
             if (e.FilePathList.Count > 0)
@@ -541,6 +542,8 @@ namespace PicSum.Main.UIComponent
 
             infoPanel.SetFileInfo(e.FilePathList);
             tabSwitch.InvalidateHeader();
+            
+            Console.WriteLine("[{0:HH:mm:ss.fff}] contents_SelectedFileChanged", DateTime.Now);
         }
 
         private void contents_OpenContents(object sender, BrowserContentsEventArgs e)
@@ -566,6 +569,8 @@ namespace PicSum.Main.UIComponent
                 var selectedFilePath = tabSwitch.ActiveTab.GetContents<BrowserContents>().SelectedFilePath;
                 addressBar.SetAddress(selectedFilePath);
                 infoPanel.SetFileInfo(selectedFilePath);
+
+                Console.WriteLine("[{0:HH:mm:ss.fff}] tabSwitch_ActiveTabChanged", DateTime.Now);
             }
         }
 
