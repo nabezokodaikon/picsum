@@ -42,7 +42,7 @@ namespace PicSum.Core.Task.AsyncTask
         private readonly object _sender = null;
         private readonly IEntity _parameter;
         private bool _isExecuting = false;
-        private bool _isCancel = false;
+        private long _isCancel = 0;
         private bool _isEnd = false;
         private Exception _exception = null;
 
@@ -130,7 +130,11 @@ namespace PicSum.Core.Task.AsyncTask
         {
             get
             {
-                return _isCancel;
+                return Interlocked.Read(ref _isCancel) == 1;
+            }
+            private set
+            {
+                Interlocked.Exchange(ref _isCancel, Convert.ToInt64(value));
             }
         }
 
@@ -254,7 +258,7 @@ namespace PicSum.Core.Task.AsyncTask
                 return;
             }
 
-            if (_isCancel)
+            if (IsCancel)
             {
                 return;
             }
@@ -277,7 +281,7 @@ namespace PicSum.Core.Task.AsyncTask
                 throw new Exception(string.Format("タスク[{0}]は既に実行中です。", _taskId));
             }
 
-            if (_isCancel)
+            if (IsCancel)
             {
                 throw new Exception(string.Format("タスク[{0}]はキャンセルされています。", _taskId));
             }
@@ -297,12 +301,12 @@ namespace PicSum.Core.Task.AsyncTask
                 throw new Exception(string.Format("タスク[{0}]は終了しています。", _taskId));
             }
 
-            if (_isCancel)
+            if (IsCancel)
             {
                 throw new Exception(string.Format("タスク[{0}]はキャンセルされています。", _taskId));
             }
 
-            _isCancel = true;
+            IsCancel = true;
 
             onTaskStateChanged(new TaskStateChangedEventArgs(this));
         }
