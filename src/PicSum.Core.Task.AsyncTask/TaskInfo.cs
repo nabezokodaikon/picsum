@@ -75,11 +75,11 @@ namespace PicSum.Core.Task.AsyncTask
         /// <summary>
         /// タスク開始日時
         /// </summary>
-        public string StartDateTime
+        public DateTime StartDateTime
         {
             get
             {
-                return _startDateTime.ToString();
+                return _startDateTime;
             }
         }
 
@@ -366,7 +366,7 @@ namespace PicSum.Core.Task.AsyncTask
 
             log.AppendFormat("タスクID：{0}\n", TaskId);
 
-            log.AppendFormat("開始日時：{0}\n", StartDateTime);
+            log.AppendFormat("開始日時：{0:HH:mm:ss.fff}\n", StartDateTime);
 
             log.AppendFormat("終了日時：{0}\n", EndDateTime);
 
