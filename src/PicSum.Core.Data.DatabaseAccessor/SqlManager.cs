@@ -33,6 +33,14 @@ namespace PicSum.Core.Data.DatabaseAccessor
         }
 
         /// <summary>
+        /// 静的リソースを解放します。
+        /// </summary>
+        public static void DisposeStaticResouces()
+        {
+            _lock.Dispose();
+        }
+
+        /// <summary>
         /// SQL文字列を取得します。
         /// </summary>
         /// <param name="sqlFileName">データアクセサ名称</param>

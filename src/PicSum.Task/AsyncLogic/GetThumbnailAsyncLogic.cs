@@ -17,13 +17,21 @@ namespace PicSum.Task.AsyncLogic
     /// <summary>
     /// サムネイルを読込みます。
     /// </summary>
-    internal class GetThumbnailAsyncLogic : AsyncLogicBase
+    public class GetThumbnailAsyncLogic : AsyncLogicBase
     {
         private const int CashCapacity = 1000;
         private static List<ThumbnailBufferEntity> _cashList = new List<ThumbnailBufferEntity>(CashCapacity);
         private static Dictionary<string, ThumbnailBufferEntity> _cashDic = new Dictionary<string, ThumbnailBufferEntity>(CashCapacity);
-        private static ReaderWriterLockSlim _cashLock = new ReaderWriterLockSlim();
+        private static readonly ReaderWriterLockSlim _cashLock = new ReaderWriterLockSlim();
         private readonly IList<string> _imageFileExtensionList = ImageUtil.ImageFileExtensionList;
+
+        /// <summary>
+        /// 静的リソースを解放します。
+        /// </summary>
+        public static void DisposeStaticResouces()
+        {
+            _cashLock.Dispose();
+        }
 
         public GetThumbnailAsyncLogic(AsyncFacadeBase facade) : base(facade) { }
 

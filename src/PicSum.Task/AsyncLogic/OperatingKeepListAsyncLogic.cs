@@ -8,10 +8,18 @@ namespace PicSum.Task.AsyncLogic
     /// <summary>
     /// キープリスト操作非同期ロジック
     /// </summary>
-    internal class OperatingKeepListAsyncLogic : AsyncLogicBase
+    public class OperatingKeepListAsyncLogic : AsyncLogicBase
     {
         private static readonly List<string> _keepList = new List<string>();
         private static ReaderWriterLockSlim _lock = new ReaderWriterLockSlim();
+
+        /// <summary>
+        /// 静的リソースを解放します。
+        /// </summary>
+        public static void DisposeStaticResouces()
+        {
+            _lock.Dispose();
+        }
 
         public OperatingKeepListAsyncLogic(AsyncFacadeBase facade) : base(facade) { }
 

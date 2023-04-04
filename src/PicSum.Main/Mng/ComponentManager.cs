@@ -80,9 +80,6 @@ namespace PicSum.Main.Mng
             Settings.Default.ImageViewerContentsImageSizeMode = ImageViewerContentsConfig.ImageSizeMode;
 
             Settings.Default.Save();
-
-            // ファイルアイコンのキャッシュを破棄します。
-            FileIconCash.Dispose();
         }
     }
 }

@@ -11,8 +11,8 @@ namespace PicSum.Core.Data.FileAccessor
     /// </summary>
     public static class FileIconCash
     {
-        private static ReaderWriterLockSlim _smallIconCashLock = null;
-        private static ReaderWriterLockSlim _largeIconCashLock = null;
+        private static readonly ReaderWriterLockSlim _smallIconCashLock = new ReaderWriterLockSlim();
+        private static readonly ReaderWriterLockSlim _largeIconCashLock = new ReaderWriterLockSlim();
         private static Dictionary<string, Image> _smallIconCash = null;
         private static Dictionary<string, Image> _largeIconCash = null;
         private static Image _smallMyComputerIcon = null;
@@ -152,8 +152,6 @@ namespace PicSum.Core.Data.FileAccessor
 
         public static void Init()
         {
-            _smallIconCashLock = new ReaderWriterLockSlim();
-            _largeIconCashLock = new ReaderWriterLockSlim();
             _smallIconCash = new Dictionary<string, Image>();
             _largeIconCash = new Dictionary<string, Image>();
             _smallMyComputerIcon = FileUtil.GetSmallSystemIcon(WinApi.WinApiMembers.ShellSpecialFolder.CSIDL_DRIVES);
@@ -162,7 +160,10 @@ namespace PicSum.Core.Data.FileAccessor
             _largeFolderIcon = FileUtil.GetLargeIconByFilePath(FileUtil.GetParentFolderPath(Assembly.GetExecutingAssembly().Location));
         }
 
-        public static void Dispose()
+        /// <summary>
+        /// 静的リソースを解放します。
+        /// </summary>
+        public static void DisposeStaticResouces()
         {
             _smallIconCashLock.Dispose();
             _largeIconCashLock.Dispose();

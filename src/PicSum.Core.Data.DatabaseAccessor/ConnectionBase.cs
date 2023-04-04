@@ -18,8 +18,8 @@ namespace PicSum.Core.Data.DatabaseAccessor
     {
         #region インスタンス変数
 
-        private ReaderWriterLockSlim _transactionLock = new ReaderWriterLockSlim();
-        private ReaderWriterLockSlim _executeSqlLock = new ReaderWriterLockSlim();
+        private readonly ReaderWriterLockSlim _transactionLock = new ReaderWriterLockSlim();
+        private readonly ReaderWriterLockSlim _executeSqlLock = new ReaderWriterLockSlim();
         private SQLiteConnection _connection = null;
         private SQLiteTransaction _transaction = null;
 
@@ -80,8 +80,11 @@ namespace PicSum.Core.Data.DatabaseAccessor
         /// </summary>
         public void Dispose()
         {
+            _transaction = null;
             _connection.Close();
             _connection = null;
+            _transactionLock.Dispose();
+            _executeSqlLock.Dispose();
         }
 
         /// <summary>

@@ -31,6 +31,14 @@ namespace PicSum.Core.Base.Log
         }
 
         /// <summary>
+        /// 静的リソースを解放します。
+        /// </summary>
+        public static void DisposeStaticResouces()
+        {
+            _lock.Dispose();
+        }
+
+        /// <summary>
         /// ログを書き込みます。
         /// </summary>
         /// <param name="logBody"></param>

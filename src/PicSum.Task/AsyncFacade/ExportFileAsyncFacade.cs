@@ -12,7 +12,15 @@ namespace PicSum.Task.AsyncFacade
     public class ExportFileAsyncFacade
         : OneWayFacadeBase<ExportFileParameterEntity>
     {
-        private static ReaderWriterLockSlim _lock = new ReaderWriterLockSlim();
+        private static readonly ReaderWriterLockSlim _lock = new ReaderWriterLockSlim();
+
+        /// <summary>
+        /// 静的リソースを解放します。
+        /// </summary>
+        public static void DisposeStaticResouces()
+        {
+            _lock.Dispose();
+        }
 
         public override void Execute(ExportFileParameterEntity param)
         {

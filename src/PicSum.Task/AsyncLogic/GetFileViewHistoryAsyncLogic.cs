@@ -14,10 +14,18 @@ namespace PicSum.Task.AsyncLogic
     /// <summary>
     /// ファイル表示履歴を取得します。
     /// </summary>
-    internal class GetFileViewHistoryAsyncLogic : AsyncLogicBase
+    public class GetFileViewHistoryAsyncLogic : AsyncLogicBase
     {
         private readonly static List<DateTime> ViewDateList = new List<DateTime>();
         private readonly static ReaderWriterLockSlim ViewDateListLock = new ReaderWriterLockSlim();
+
+        /// <summary>
+        /// 静的リソースを解放します。
+        /// </summary>
+        public static void DisposeStaticResouces()
+        {
+            ViewDateListLock.Dispose();
+        }
 
         private List<DateTime> viewDateList
         {
