@@ -563,7 +563,6 @@ namespace PicSum.Main.UIComponent
 
             if (tabSwitch.ActiveTab != null)
             {
-                addressBar.SetAddress(tabSwitch.ActiveTab.Contents.FolderPath);
             }            
         }
 
