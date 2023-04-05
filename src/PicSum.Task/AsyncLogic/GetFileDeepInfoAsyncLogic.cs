@@ -77,7 +77,7 @@ namespace PicSum.Task.AsyncLogic
                 if (info.IsImageFile)
                 {
                     info.Thumbnail = new ThumbnailImageEntity();
-                    using (Image srcImg = ImageUtil.ReadImageFile(filePath))
+                    using (var srcImg = ImageUtil.ReadImageFile(filePath))
                     {
                         Image thumb = ThumbnailUtil.CreateThumbnail(srcImg, thumbSize.Width, thumbSize.Height);
                         info.Thumbnail.FilePath = info.FilePath;

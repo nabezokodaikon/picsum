@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Threading;
 using PicSum.Core.Data.DatabaseAccessor;
@@ -59,7 +60,7 @@ namespace PicSum.Task.AsyncLogic
                 {
                     if (cash.ThumbnailWidth > thumbWidth || cash.ThumbnailHeight > thumbHeight)
                     {
-                        using (Image cashThumb = ImageUtil.ToImage(cash.ThumbnailBuffer))
+                        using (var cashThumb = ImageUtil.ToImage(cash.ThumbnailBuffer))
                         {
                             using (Image newThumb = ThumbnailUtil.CreateThumbnail(cashThumb, thumbWidth, thumbHeight))
                             {
@@ -403,7 +404,6 @@ namespace PicSum.Task.AsyncLogic
                     thumb.SourceWidth = srcImg.Width;
                     thumb.SourceHeight = srcImg.Height;
                     thumb.FileUpdatedate = folderUpdateDate;
-
                     return thumb;
                 }
             }
