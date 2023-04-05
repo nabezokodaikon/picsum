@@ -319,11 +319,7 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
             }
             else
             {
-                using (Image img = ImageUtil.ReadImageFile(filePath))
-                {
-                    _imageSizeDictionary.Add(filePath, img.Size);
-                    return img.Size;
-                }
+                return ImageUtil.GetImageSize(filePath);
             }
         }
 

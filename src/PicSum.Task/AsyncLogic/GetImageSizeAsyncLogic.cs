@@ -20,10 +20,7 @@ namespace PicSum.Task.AsyncLogic
                 throw new ArgumentNullException("filePath");
             }
 
-            using (Image img = ImageUtil.ReadImageFile(filePath))
-            {
-                return img.Size;
-            }
+            return ImageUtil.GetImageSize(filePath);
         }
     }
 }
