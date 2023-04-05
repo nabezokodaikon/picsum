@@ -561,7 +561,7 @@ namespace PicSum.Main.UIComponent
             infoPanel.SetFileInfo(e.FilePathList);
             tabSwitch.InvalidateHeader();
             
-            Console.WriteLine("[{0:HH:mm:ss.fff}] contents_SelectedFileChanged", DateTime.Now);
+            //Console.WriteLine("[{0:HH:mm:ss.fff}] contents_SelectedFileChanged", DateTime.Now);
         }
 
         private void contents_OpenContents(object sender, BrowserContentsEventArgs e)
@@ -588,7 +588,7 @@ namespace PicSum.Main.UIComponent
                 addressBar.SetAddress(selectedFilePath);
                 infoPanel.SetFileInfo(selectedFilePath);
 
-                Console.WriteLine("[{0:HH:mm:ss.fff}] tabSwitch_ActiveTabChanged", DateTime.Now);
+                //Console.WriteLine("[{0:HH:mm:ss.fff}] tabSwitch_ActiveTabChanged", DateTime.Now);
             }
         }
 

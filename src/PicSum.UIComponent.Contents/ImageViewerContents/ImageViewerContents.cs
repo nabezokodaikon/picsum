@@ -15,6 +15,7 @@ using SWF.Common;
 using SWF.UIComponent.ImagePanel;
 using PicSum.UIComponent.Contents.ContentsToolBar;
 using System.Security.Permissions;
+using System.Diagnostics;
 
 namespace PicSum.UIComponent.Contents.ImageViewerContents
 {
@@ -39,6 +40,7 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
         private string _rightImageFilePath = string.Empty;
         private ImageDisplayMode _displayMode = ImageDisplayMode.LeftFacing;
         private ImageSizeMode _sizeMode = ImageSizeMode.FitOnlyBigImage;
+        private readonly Stopwatch _readImageFileStopwatch = new Stopwatch();
 
         private TwoWayProcess<ReadImageFileAsyncFacade, ReadImageFileParameterEntity, ReadImageFileResultEntity> _readImageFileProcess = null;
         private TwoWayProcess<GetImageSizeAsyncFacade, ListEntity<string>, ImageSizeEntity> _getImageSizeProcess = null;
@@ -443,6 +445,11 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
             param.ThumbnailSize = leftImagePanel.ThumbnailSize;
 
             readImageFileProcess.Cancel();
+
+            //_readImageFileStopwatch.Reset();
+            //_readImageFileStopwatch.Start();
+            //Console.WriteLine("[{0}] {1}", _readImageFileStopwatch.ElapsedMilliseconds, param.FilePathList[param.CurrentIndex]);
+
             readImageFileProcess.Execute(this, param);
         }
 
@@ -654,6 +661,9 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
             //addHistoryProcess.Execute(this, param);
 
             this.Focus();
+
+            //_readImageFileStopwatch.Stop();
+            //Console.WriteLine("[{0}] {1}", _readImageFileStopwatch.ElapsedMilliseconds, e.Image1.FilePath);
         }
 
         private void readImageFileProcess_SuccessEnd(object sender, EventArgs e)
