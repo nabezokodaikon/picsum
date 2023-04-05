@@ -126,10 +126,10 @@ namespace PicSum.Main.Mng
 
         private void browser_KeyDown(object sender, KeyEventArgs e)
         {
-            switch (e.KeyCode) 
+            switch (e.KeyCode)
             {
                 case Keys.W:
-                    if (e.Control) 
+                    if (e.Control)
                     {
                         var browser = (BrowserForm)sender;
                         browser.RemoveTabOrWindow();
