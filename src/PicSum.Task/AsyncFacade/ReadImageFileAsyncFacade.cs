@@ -29,12 +29,12 @@ namespace PicSum.Task.AsyncFacade
 
             try
             {
-                using (Image srcImg1 = ImageUtil.ReadImageFile(currentFilePath))
+                using (Bitmap srcBmp1 = ImageUtil.ReadImageFile(currentFilePath))
                 {
                     CheckCancel();
 
                     if (param.ImageDisplayMode != ImageDisplayMode.Single &&
-                        srcImg1.Width < srcImg1.Height)
+                        srcBmp1.Width < srcBmp1.Height)
                     {
                         int nextIndex = param.CurrentIndex + 1;
                         if (nextIndex > param.FilePathList.Count - 1)
@@ -43,34 +43,37 @@ namespace PicSum.Task.AsyncFacade
                         }
 
                         string nextFilePath = param.FilePathList[nextIndex];
-
-                        using (Image srcImg2 = ImageUtil.ReadImageFile(nextFilePath))
+                        
                         {
                             CheckCancel();
 
-                            if (srcImg2.Width < srcImg2.Height)
+                            var srcBmp2Size = ImageUtil.GetImageSize(nextFilePath);
+                            if (srcBmp2Size.Width < srcBmp2Size.Height)
                             {
-                                Size drawSize = new Size((int)(param.DrawSize.Width / 2f), param.DrawSize.Height);
+                                using (var srcBmp2 = ImageUtil.ReadImageFile(nextFilePath))
+                                {
+                                    Size drawSize = new Size((int)(param.DrawSize.Width / 2f), param.DrawSize.Height);
 
-                                result.Image1 = new ImageFileEntity();
-                                result.Image1.FilePath = currentFilePath;
-                                result.Image1.Image = logic.CreateImage(currentFilePath, srcImg1, param.ImageSizeMode, drawSize);
-                                CheckCancel();
-                                result.Image1.Thumbnail = logic.CreateThumbnail(result.Image1.Image, param.ThumbnailSize, param.ImageSizeMode);
-                                CheckCancel();
+                                    result.Image1 = new ImageFileEntity();
+                                    result.Image1.FilePath = currentFilePath;
+                                    result.Image1.Image = logic.CreateImage(currentFilePath, srcBmp1, param.ImageSizeMode, drawSize);
+                                    CheckCancel();
+                                    result.Image1.Thumbnail = logic.CreateThumbnail(result.Image1.Image, param.ThumbnailSize, param.ImageSizeMode);
+                                    CheckCancel();
 
-                                result.Image2 = new ImageFileEntity();
-                                result.Image2.FilePath = nextFilePath;
-                                result.Image2.Image = logic.CreateImage(nextFilePath, srcImg2, param.ImageSizeMode, drawSize);
-                                CheckCancel();
-                                result.Image2.Thumbnail = logic.CreateThumbnail(result.Image2.Image, param.ThumbnailSize, param.ImageSizeMode);
-                                CheckCancel();
+                                    result.Image2 = new ImageFileEntity();
+                                    result.Image2.FilePath = nextFilePath;
+                                    result.Image2.Image = logic.CreateImage(nextFilePath, srcBmp2, param.ImageSizeMode, drawSize);
+                                    CheckCancel();
+                                    result.Image2.Thumbnail = logic.CreateThumbnail(result.Image2.Image, param.ThumbnailSize, param.ImageSizeMode);
+                                    CheckCancel();
+                                }
                             }
                             else
                             {
                                 result.Image1 = new ImageFileEntity();
                                 result.Image1.FilePath = currentFilePath;
-                                result.Image1.Image = logic.CreateImage(currentFilePath, srcImg1, param.ImageSizeMode, param.DrawSize);
+                                result.Image1.Image = logic.CreateImage(currentFilePath, srcBmp1, param.ImageSizeMode, param.DrawSize);
                                 CheckCancel();
                                 result.Image1.Thumbnail = logic.CreateThumbnail(result.Image1.Image, param.ThumbnailSize, param.ImageSizeMode);
                                 CheckCancel();
@@ -81,7 +84,7 @@ namespace PicSum.Task.AsyncFacade
                     {
                         result.Image1 = new ImageFileEntity();
                         result.Image1.FilePath = currentFilePath;
-                        result.Image1.Image = logic.CreateImage(currentFilePath, srcImg1, param.ImageSizeMode, param.DrawSize);
+                        result.Image1.Image = logic.CreateImage(currentFilePath, srcBmp1, param.ImageSizeMode, param.DrawSize);
                         CheckCancel();
                         result.Image1.Thumbnail = logic.CreateThumbnail(result.Image1.Image, param.ThumbnailSize, param.ImageSizeMode);
                         CheckCancel();
