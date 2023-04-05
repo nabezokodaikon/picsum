@@ -67,72 +67,69 @@ namespace SWF.Common
                 throw new ArgumentNullException("bf");
             }
 
-            using (var mes = new MemoryStream(bf))
-            using (var img = Image.FromStream(mes, false, false)) 
-            {
-                return new Bitmap(img);
-            }
+            var mes = new MemoryStream(bf);
+            return Image.FromStream(mes, false, false);
         }
 
-        /// <summary>
-        /// イメージオブジェクトをバイナリに変換します。
-        /// </summary>
-        /// <param name="bmp">ビットマップオブジェクト</param>
-        /// <returns></returns>
-        public static byte[] ToBinary(Bitmap bmp)
-        {
-            if (bmp == null)
-            {
-                throw new ArgumentNullException("bmp");
-            }
+        ///// <summary>
+        ///// ビットマップオブジェクトをバイナリに変換します。
+        ///// </summary>
+        ///// <param name="bmp">ビットマップオブジェクト</param>
+        ///// <returns></returns>
+        //public static byte[] ToBinary(Bitmap bmp)
+        //{
+        //    if (bmp == null)
+        //    {
+        //        throw new ArgumentNullException("bmp");
+        //    }
 
-            BitmapData bd = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadWrite, bmp.PixelFormat);
-            IntPtr bitmapPtr = bd.Scan0;
-            byte[] bf = new byte[bmp.Width * bmp.Height * 3];
-            Marshal.Copy(bitmapPtr, bf, 0, bmp.Width * bmp.Height * 3);
-            bmp.UnlockBits(bd);
+        //    BitmapData bd = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadWrite, bmp.PixelFormat);
+        //    IntPtr bitmapPtr = bd.Scan0;
+        //    byte[] bf = new byte[bmp.Width * bmp.Height * 3];
+        //    Marshal.Copy(bitmapPtr, bf, 0, bmp.Width * bmp.Height * 3);
+        //    bmp.UnlockBits(bd);
 
-            return bf;
-        }
+        //    return bf;
+        //}
 
-        /// <summary>
-        /// バッファから、ビットマップオブジェクトを作成します。
-        /// </summary>
-        /// <param name="bf"></param>
-        /// <param name="w"></param>
-        /// <param name="h"></param>
-        /// <param name="pf"></param>
-        /// <returns></returns>
-        public static Bitmap ToBitmap(byte[] bf, int w, int h, PixelFormat pf)
-        {
-            if (bf == null)
-            {
-                throw new ArgumentNullException("bf");
-            }
+        ///// <summary>
+        ///// バッファから、ビットマップオブジェクトを作成します。
+        ///// </summary>
+        ///// <param name="bf"></param>
+        ///// <param name="w"></param>
+        ///// <param name="h"></param>
+        ///// <param name="pf"></param>
+        ///// <returns></returns>
+        //public static Bitmap ToBitmap(byte[] bf, int w, int h, PixelFormat pf)
+        //{
+        //    if (bf == null)
+        //    {
+        //        throw new ArgumentNullException("bf");
+        //    }
 
-            Bitmap bmp = new Bitmap(w, h, pf);
-            BitmapData bd = bmp.LockBits(new Rectangle(0, 0, w, h), ImageLockMode.WriteOnly, pf);
-            Marshal.Copy(bf, 0, bd.Scan0, bf.Length);
-            bmp.UnlockBits(bd);
-            return bmp;
-        }
+        //    Bitmap bmp = new Bitmap(w, h, pf);
+        //    BitmapData bd = bmp.LockBits(new Rectangle(0, 0, w, h), ImageLockMode.WriteOnly, pf);
+        //    Marshal.Copy(bf, 0, bd.Scan0, bf.Length);
+        //    bmp.UnlockBits(bd);
+        //    return bmp;
+        //}
 
-        /// <summary>
-        /// ビットマップのクローンを作成します。
-        /// </summary>
-        /// <param name="bmp">クローンするビットマップ。</param>
-        /// <returns>クローンしたビットマップ。</returns>
-        /// <exception cref="ArgumentNullException"></exception>
-        public static Bitmap CreateCloneBitmap(Bitmap bmp)
-        {
-            if (bmp == null)
-            {
-                throw new ArgumentNullException(nameof(bmp));
-            }
+        ///// <summary>
+        ///// ビットマップのクローンを作成します。
+        ///// </summary>
+        ///// <param name="bmp">クローンするビットマップ。</param>
+        ///// <returns>クローンしたビットマップ。</returns>
+        ///// <exception cref="ArgumentNullException"></exception>
+        //public static Bitmap CreateCloneBitmap(Bitmap bmp)
+        //{
+        //    if (bmp == null)
+        //    {
+        //        throw new ArgumentNullException(nameof(bmp));
+        //    }
 
-            var bf = ToBinary(bmp);
-            return ToBitmap(bf, bmp.Width, bmp.Height, bmp.PixelFormat);
-        }
+        //    var bf = ToBinary(bmp);
+        //    return ToBitmap(bf, bmp.Width, bmp.Height, bmp.PixelFormat);
+        //}
 
         /// <summary>
         /// 画像ファイルのサイズを取得します。
@@ -147,52 +144,53 @@ namespace SWF.Common
                 throw new ArgumentNullException(nameof(filePath));
             }
 
-            var folder = _shell.NameSpace(Path.GetDirectoryName(filePath));
-            var item = folder.ParseName(Path.GetFileName(filePath));
+            //var folder = _shell.NameSpace(Path.GetDirectoryName(filePath));
+            //var item = folder.ParseName(Path.GetFileName(filePath));
 
-            var v = folder.GetDetailsOf(item, 31).Split(('x'));
+            //var v = folder.GetDetailsOf(item, 31).Split(('x'));
 
-            var wText = v[0];
-            var hText = v[1];
-            var w = int.Parse(wText.Substring(1).Trim());
-            var h = int.Parse(hText.Substring(0, hText.Length - 1).Trim());
+            //var wText = v[0];
+            //var hText = v[1];
+            //var w = int.Parse(wText.Substring(1).Trim());
+            //var h = int.Parse(hText.Substring(0, hText.Length - 1).Trim());
 
-            return new Size(w, h);
+            //return new Size(w, h);
+
+            using (var img = ReadImageFile(filePath)) 
+            {
+                return img.Size;
+            }
         }
 
         /// <summary>
-        /// 画像ファイルを高速に読込みます。
+        /// 画像ファイルを読込みます。
         /// </summary>
         /// <param name="filePath"></param>
         /// <returns></returns>
-        public static Bitmap ReadImageFile(string filePath)
+        public static Image ReadImageFile(string filePath)
         {
             if (filePath == null)
             {
-                throw new ArgumentNullException("filePath");
+                throw new ArgumentNullException(nameof(filePath));
             }
 
-            IntPtr imgPtr = IntPtr.Zero;
-            int result = WinApiMembers.GdipLoadImageFromFile(filePath, ref imgPtr);
-            if (result != 0)
-            {
-                throw new ImageException(filePath);
-            }
+            //IntPtr imgPtr = IntPtr.Zero;
+            //int result = WinApiMembers.GdipLoadImageFromFile(filePath, ref imgPtr);
+            //if (result != 0)
+            //{
+            //    throw new Exception();
+            //}
 
-            object obj = typeof(Bitmap).InvokeMember("FromGDIplus",
-                                                     BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.InvokeMethod,
-                                                     null,
-                                                     null,
-                                                     new object[] { imgPtr });
+            //object obj = typeof(Bitmap).InvokeMember("FromGDIplus",
+            //                                         BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.InvokeMethod,
+            //                                         null,
+            //                                         null,
+            //                                         new object[] { imgPtr });
 
-            if (obj != null)
-            {
-                return (Bitmap)obj;
-            }
-            else
-            {
-                throw new ImageException(filePath);
-            }
+            //return (Bitmap)obj;
+
+            var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
+            return Bitmap.FromStream(fs, false, false);
         }
 
         /// <summary>
