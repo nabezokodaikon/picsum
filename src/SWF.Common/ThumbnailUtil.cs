@@ -14,15 +14,15 @@ namespace SWF.Common
         /// <summary>
         /// サムネイルを作成します。
         /// </summary>
-        /// <param name="srcImg">作成元の画像</param>
+        /// <param name="srcBmp">作成元の画像</param>
         /// <param name="thumbWidth">作成するサムネイルの幅</param>
         /// <param name="thumbHeight">作成するサムネイルの高さ</param>
         /// <returns>サムネイル</returns>
-        public static Image CreateThumbnail(Image srcImg, int thumbWidth, int thumbHeight)
+        public static Image CreateThumbnail(Image srcBmp, int thumbWidth, int thumbHeight)
         {
-            if (srcImg == null)
+            if (srcBmp == null)
             {
-                throw new ArgumentNullException("srcImg");
+                throw new ArgumentNullException("srcBmp");
             }
 
             int offset = (SHADOW_OFFSET + FRAME_OFFSET) * 2;
@@ -31,16 +31,16 @@ namespace SWF.Common
             int th = thumbHeight - offset;
 
             int w, h;
-            if (Math.Max(srcImg.Width, srcImg.Height) <= Math.Min(tw, th))
+            if (Math.Max(srcBmp.Width, srcBmp.Height) <= Math.Min(tw, th))
             {
-                w = srcImg.Width;
-                h = srcImg.Height;
+                w = srcBmp.Width;
+                h = srcBmp.Height;
             }
             else
             {
-                double scale = Math.Min(tw / (double)srcImg.Width, th / (double)srcImg.Height);
-                w = (int)(srcImg.Width * scale);
-                h = (int)(srcImg.Height * scale);
+                double scale = Math.Min(tw / (double)srcBmp.Width, th / (double)srcBmp.Height);
+                w = (int)(srcBmp.Width * scale);
+                h = (int)(srcBmp.Height * scale);
             }
 
             Image thumb = new Bitmap(w, h);
@@ -48,7 +48,7 @@ namespace SWF.Common
             {
                 g.InterpolationMode = InterpolationMode.Low;
                 g.SmoothingMode = SmoothingMode.HighSpeed;
-                using (Image temp = srcImg.GetThumbnailImage(w, h, () => false, IntPtr.Zero))
+                using (Image temp = srcBmp.GetThumbnailImage(w, h, () => false, IntPtr.Zero))
                 {
                     g.DrawImage(temp, 0, 0, w, h);
                 }
