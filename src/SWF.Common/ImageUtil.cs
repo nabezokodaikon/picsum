@@ -16,6 +16,7 @@ namespace SWF.Common
         private static readonly EncoderParameter _encorderParameter = new EncoderParameter(Encoder.Quality, 50L);
         private static readonly ImageCodecInfo _jpegCodecInfo = ImageCodecInfo.GetImageEncoders().Single(info => info.FormatID == ImageFormat.Jpeg.Guid);
         private static readonly ImageConverter _imageConverter = new ImageConverter();
+        private static readonly dynamic _shell = Activator.CreateInstance(Type.GetTypeFromProgID("Shell.Application"));
 
         /// <summary>
         /// 画像ファイルの拡張子リスト
@@ -148,6 +149,31 @@ namespace SWF.Common
         //    bmp.UnlockBits(bd);
         //    return bmp;
         //}
+        /// <summary>
+        /// 画像ファイルのサイズを取得します。
+        /// </summary>
+        /// <param name="filePath">取得するファイルのパス。</param>
+        /// <returns>取得した画像サイズ。</returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        public static Size GetImageSize(string filePath)
+        {
+            if (filePath == null)
+            {
+                throw new ArgumentNullException(nameof(filePath));
+            }
+
+            var folder = _shell.NameSpace(Path.GetDirectoryName(filePath));
+            var item = folder.ParseName(Path.GetFileName(filePath));
+
+            var v = folder.GetDetailsOf(item, 31).Split(('x'));
+
+            var wText = v[0];
+            var hText = v[1];
+            var w = int.Parse(wText.Substring(1).Trim());
+            var h = int.Parse(hText.Substring(0, hText.Length - 2).Trim());
+
+            return new Size(w, h);
+        }
 
         /// <summary>
         /// 画像ファイルを高速に読込みます。
