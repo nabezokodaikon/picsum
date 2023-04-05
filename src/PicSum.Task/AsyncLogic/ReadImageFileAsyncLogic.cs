@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using PicSum.Core.Base.Conf;
@@ -32,15 +33,22 @@ namespace PicSum.Task.AsyncLogic
                 double scale = Math.Min(drawSize.Width / (double)srcImg.Width, drawSize.Height / (double)srcImg.Height);
                 int w = (int)(srcImg.Width * scale);
                 int h = (int)(srcImg.Height * scale);
+                Bitmap destImg = new Bitmap(w, h, srcImg.PixelFormat);
 
-                Bitmap destImg = new Bitmap(w, h);
+                Console.WriteLine("Graphics");
+                var sw = Stopwatch.StartNew();
                 using (Graphics g = Graphics.FromImage(destImg))
                 {
+                    //g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                    //g.SmoothingMode = SmoothingMode.HighQuality;
+                    //g.CompositingQuality = CompositingQuality.HighQuality;
                     g.InterpolationMode = InterpolationMode.HighQualityBicubic;
-                    g.SmoothingMode = SmoothingMode.HighQuality;
-                    g.CompositingQuality = CompositingQuality.HighQuality;
+                    g.SmoothingMode = SmoothingMode.AntiAlias;
+                    //g.CompositingQuality = CompositingQuality.;
                     g.DrawImage(srcImg, new Rectangle(0, 0, w, h), new Rectangle(0, 0, srcImg.Width, srcImg.Height), GraphicsUnit.Pixel);
                 }
+                sw.Stop();
+                Console.WriteLine("[{0}] Graphics", sw.ElapsedMilliseconds);
 
                 return destImg;
             }
