@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Drawing;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using PicSum.Core.Task.AsyncTask;
 using PicSum.Main.Conf;
@@ -171,6 +172,13 @@ namespace PicSum.Main.UIComponent
             }
 
             base.OnHandleCreated(e);
+        }
+
+        protected override void OnShown(EventArgs e)
+        {
+            this.Activate();
+
+            base.OnShown(e);
         }
 
         protected override void OnClosing(CancelEventArgs e)
