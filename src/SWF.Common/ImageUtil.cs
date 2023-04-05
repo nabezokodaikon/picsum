@@ -7,6 +7,7 @@ using System.Linq;
 using System.Reflection;
 using WinApi;
 using System.Drawing.Drawing2D;
+using Shell32;
 
 namespace SWF.Common
 {
