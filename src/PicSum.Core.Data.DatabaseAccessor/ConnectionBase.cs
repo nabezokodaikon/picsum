@@ -80,9 +80,7 @@ namespace PicSum.Core.Data.DatabaseAccessor
         /// </summary>
         public void Dispose()
         {
-            _transaction = null;
             _connection.Close();
-            _connection = null;
             _transactionLock.Dispose();
             _executeSqlLock.Dispose();
         }
