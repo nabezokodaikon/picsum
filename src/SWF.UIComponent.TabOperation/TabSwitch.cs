@@ -495,6 +495,19 @@ namespace SWF.UIComponent.TabOperation
         }
 
         /// <summary>
+        /// アクティブなタブを削除します。
+        /// </summary>
+        public void RemoveActiveTab()
+        {
+            if (_activeTab == null)
+            {
+                return;
+            }
+
+            RemoveTab(_activeTab);
+        }
+
+        /// <summary>
         /// アクティブタブをセットします。
         /// </summary>
         /// <param name="index"></param>

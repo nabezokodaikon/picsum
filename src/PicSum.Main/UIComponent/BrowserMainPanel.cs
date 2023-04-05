@@ -39,6 +39,14 @@ namespace PicSum.Main.UIComponent
 
         #region パブリックプロパティ
 
+        public int TabCount
+        {
+            get 
+            {
+                return tabSwitch.TabCount;
+            }
+        }
+
         #endregion
 
         #region 継承プロパティ
@@ -121,6 +129,11 @@ namespace PicSum.Main.UIComponent
             }
 
             addContentsEventHandler(tabSwitch.AddTab<BrowserContents>(param));
+        }
+
+        public void RemoveActiveTab() 
+        {
+            tabSwitch.RemoveActiveTab();
         }
 
         public void OpenContentsByCommandLineArgs(string[] args)

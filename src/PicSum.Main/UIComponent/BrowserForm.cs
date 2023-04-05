@@ -111,6 +111,19 @@ namespace PicSum.Main.UIComponent
             browserMainPanel.AddTab(param);
         }
 
+        public void RemoveTabOrWindow()
+        {
+            if (browserMainPanel.TabCount > 1)
+            {
+                browserMainPanel.RemoveActiveTab();
+            }
+            else 
+            {
+                this.Close();
+            }
+            
+        }
+
         public void OpenContentsByCommandLineArgs(string[] args)
         {
             if (args == null)
@@ -228,6 +241,7 @@ namespace PicSum.Main.UIComponent
             this.StartPosition = FormStartPosition.Manual;
             this.MinimumSize = new Size(320, 240);
             this.TopOffset = 41;
+            this.KeyPreview = true;
 
             setProperty();
 

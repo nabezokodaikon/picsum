@@ -117,11 +117,26 @@ namespace PicSum.Main.Mng
             browser.TabDropouted += new EventHandler<TabDropoutedEventArgs>(browser_TabDropouted);
             browser.OtherWindowContentsOpen += new EventHandler<BrowserContentsOpenEventArgs>(browser_OtherWindowContentsOpen);
             browser.NewWindowContentsOpen += new EventHandler<BrowserContentsOpenEventArgs>(browser_NewWindowContentsOpen);
+            browser.KeyDown += browser_KeyDown;
         }
 
         #endregion
 
         #region ブラウザイベント
+
+        private void browser_KeyDown(object sender, KeyEventArgs e)
+        {
+            switch (e.KeyCode) 
+            {
+                case Keys.W:
+                    if (e.Control) 
+                    {
+                        var browser = (BrowserForm)sender;
+                        browser.RemoveTabOrWindow();
+                    }
+                    break;
+            }
+        }
 
         private void browser_FormClosing(object sender, System.Windows.Forms.FormClosingEventArgs e)
         {
