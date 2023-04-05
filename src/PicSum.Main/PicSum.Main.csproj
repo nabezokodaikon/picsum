@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>PicSum.Main</RootNamespace>
     <AssemblyName>picsum</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <StartupObject>PicSum.Main.Program</StartupObject>
     <IsWebBootstrapper>false</IsWebBootstrapper>
