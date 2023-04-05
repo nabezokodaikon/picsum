@@ -133,6 +133,7 @@ namespace PicSum.Main.Mng
                     {
                         var browser = (BrowserForm)sender;
                         browser.RemoveTabOrWindow();
+                        browser.Focus();
                     }
                     break;
             }
