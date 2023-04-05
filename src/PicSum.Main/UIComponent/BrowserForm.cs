@@ -111,6 +111,11 @@ namespace PicSum.Main.UIComponent
             browserMainPanel.AddTab(param);
         }
 
+        public void AddFavoriteFolderListTab() 
+        {
+            browserMainPanel.AddFavoriteFolderListTab();
+        }
+
         public void RemoveTabOrWindow()
         {
             if (browserMainPanel.TabCount > 1)

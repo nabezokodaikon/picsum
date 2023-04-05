@@ -131,6 +131,11 @@ namespace PicSum.Main.UIComponent
             addContentsEventHandler(tabSwitch.AddTab<BrowserContents>(param));
         }
 
+        public void AddFavoriteFolderListTab() 
+        {
+            openContents(new FavoriteFolderListContentsParameter(), ContentsOpenType.AddTab);
+        }
+
         public void RemoveActiveTab() 
         {
             tabSwitch.RemoveActiveTab();

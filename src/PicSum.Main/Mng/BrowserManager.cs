@@ -136,6 +136,14 @@ namespace PicSum.Main.Mng
                         browser.Focus();
                     }
                     break;
+                case Keys.T:
+                    if (e.Control)
+                    {
+                        var browser = (BrowserForm)sender;
+                        browser.AddFavoriteFolderListTab();
+                        browser.Focus();
+                    }
+                    break;
             }
         }
 
