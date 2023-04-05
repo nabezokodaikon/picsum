@@ -8,6 +8,7 @@ using System.Reflection;
 using WinApi;
 using System.Drawing.Drawing2D;
 using Shell32;
+using System.Runtime.InteropServices;
 
 namespace SWF.Common
 {
@@ -27,27 +28,6 @@ namespace SWF.Common
             get
             {
                 return _imageFileExtensionList;
-            }
-        }
-
-        /// <summary>
-        /// 画像ファイルを読込みます。
-        /// </summary>
-        /// <param name="filePath">ファイルパス</param>
-        /// <returns>画像ファイルのバッファ</returns>
-        public static byte[] ReadImageFileBuffer(string filePath)
-        {
-            if (filePath == null)
-            {
-                throw new ArgumentNullException("filePath");
-            }
-
-            using (FileStream fs = File.OpenRead(filePath))
-            {
-                byte[] bf = new byte[fs.Length];
-                fs.Position = 0;
-                fs.Read(bf, 0, bf.Length);
-                return bf;
             }
         }
 
@@ -76,21 +56,6 @@ namespace SWF.Common
         }
 
         /// <summary>
-        /// イメージオブジェクトをバイナリに変換します。
-        /// </summary>
-        /// <param name="img">イメージオブジェクト</param>
-        /// <returns></returns>
-        public static byte[] ToBinary(Image img)
-        {
-            if (img == null)
-            {
-                throw new ArgumentNullException("img");
-            }
-
-            return (byte[])_imageConverter.ConvertTo(img, typeof(byte[]));
-        }
-
-        /// <summary>
         /// バイト配列からイメージオブジェクトを取得します。
         /// </summary>
         /// <param name="bf">バイト配列</param>
@@ -102,54 +67,73 @@ namespace SWF.Common
                 throw new ArgumentNullException("bf");
             }
 
-            MemoryStream mes = new MemoryStream(bf);
-            Image img = Image.FromStream(mes, false, false);
-
-            return img;
+            using (var mes = new MemoryStream(bf))
+            using (var img = Image.FromStream(mes, false, false)) 
+            {
+                return new Bitmap(img);
+            }
         }
 
-        ///// <summary>
-        ///// イメージオブジェクトをバイナリに変換します。
-        ///// </summary>
-        ///// <param name="bmp">ビットマップオブジェクト</param>
-        ///// <returns></returns>
-        //public static byte[] ToBinary(Bitmap bmp)
-        //{
-        //    if (bmp == null)
-        //    {
-        //        throw new ArgumentNullException("bmp");
-        //    }
+        /// <summary>
+        /// イメージオブジェクトをバイナリに変換します。
+        /// </summary>
+        /// <param name="bmp">ビットマップオブジェクト</param>
+        /// <returns></returns>
+        public static byte[] ToBinary(Bitmap bmp)
+        {
+            if (bmp == null)
+            {
+                throw new ArgumentNullException("bmp");
+            }
 
-        //    BitmapData dt = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadWrite, bmp.PixelFormat);
-        //    IntPtr bitmapPtr = dt.Scan0;
-        //    byte[] bf = new byte[bmp.Width * bmp.Height * 3];
-        //    Marshal.Copy(bitmapPtr, bf, 0, bmp.Width * bmp.Height * 3);
-        //    bmp.UnlockBits(dt);
+            BitmapData bd = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadWrite, bmp.PixelFormat);
+            IntPtr bitmapPtr = bd.Scan0;
+            byte[] bf = new byte[bmp.Width * bmp.Height * 3];
+            Marshal.Copy(bitmapPtr, bf, 0, bmp.Width * bmp.Height * 3);
+            bmp.UnlockBits(bd);
 
-        //    return bf;
-        //}
+            return bf;
+        }
 
-        ///// <summary>
-        ///// バッファから、ビットマップオブジェクトを作成します。
-        ///// </summary>
-        ///// <param name="bf"></param>
-        ///// <param name="w"></param>
-        ///// <param name="h"></param>
-        ///// <param name="pf"></param>
-        ///// <returns></returns>
-        //public static Bitmap ToImage(byte[] bf, int w, int h, PixelFormat pf)
-        //{
-        //    if (bf == null)
-        //    {
-        //        throw new ArgumentNullException("bf");
-        //    }
+        /// <summary>
+        /// バッファから、ビットマップオブジェクトを作成します。
+        /// </summary>
+        /// <param name="bf"></param>
+        /// <param name="w"></param>
+        /// <param name="h"></param>
+        /// <param name="pf"></param>
+        /// <returns></returns>
+        public static Bitmap ToBitmap(byte[] bf, int w, int h, PixelFormat pf)
+        {
+            if (bf == null)
+            {
+                throw new ArgumentNullException("bf");
+            }
 
-        //    Bitmap bmp = new Bitmap(w, h, pf);
-        //    BitmapData bd = bmp.LockBits(new Rectangle(0, 0, w, h), ImageLockMode.WriteOnly, pf);
-        //    Marshal.Copy(bf, 0, bd.Scan0, bf.Length);
-        //    bmp.UnlockBits(bd);
-        //    return bmp;
-        //}
+            Bitmap bmp = new Bitmap(w, h, pf);
+            BitmapData bd = bmp.LockBits(new Rectangle(0, 0, w, h), ImageLockMode.WriteOnly, pf);
+            Marshal.Copy(bf, 0, bd.Scan0, bf.Length);
+            bmp.UnlockBits(bd);
+            return bmp;
+        }
+
+        /// <summary>
+        /// ビットマップのクローンを作成します。
+        /// </summary>
+        /// <param name="bmp">クローンするビットマップ。</param>
+        /// <returns>クローンしたビットマップ。</returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        public static Bitmap CreateCloneBitmap(Bitmap bmp)
+        {
+            if (bmp == null)
+            {
+                throw new ArgumentNullException(nameof(bmp));
+            }
+
+            var bf = ToBinary(bmp);
+            return ToBitmap(bf, bmp.Width, bmp.Height, bmp.PixelFormat);
+        }
+
         /// <summary>
         /// 画像ファイルのサイズを取得します。
         /// </summary>
@@ -171,7 +155,7 @@ namespace SWF.Common
             var wText = v[0];
             var hText = v[1];
             var w = int.Parse(wText.Substring(1).Trim());
-            var h = int.Parse(hText.Substring(0, hText.Length - 2).Trim());
+            var h = int.Parse(hText.Substring(0, hText.Length - 1).Trim());
 
             return new Size(w, h);
         }
@@ -181,7 +165,7 @@ namespace SWF.Common
         /// </summary>
         /// <param name="filePath"></param>
         /// <returns></returns>
-        public static Image ReadImageFile(string filePath)
+        public static Bitmap ReadImageFile(string filePath)
         {
             if (filePath == null)
             {
@@ -203,7 +187,7 @@ namespace SWF.Common
 
             if (obj != null)
             {
-                return (Image)obj;
+                return (Bitmap)obj;
             }
             else
             {
@@ -324,9 +308,9 @@ namespace SWF.Common
                         {
                             for (int x = 0; x < w; ++x)
                             {
-                                if (p[3] == transparent.A && 
-                                    p[2] == transparent.R && 
-                                    p[1] == transparent.G && 
+                                if (p[3] == transparent.A &&
+                                    p[2] == transparent.R &&
+                                    p[1] == transparent.G &&
                                     p[0] == transparent.B)
                                 {
                                     path.AddRectangle(new Rectangle(x, y, 1, 1));
