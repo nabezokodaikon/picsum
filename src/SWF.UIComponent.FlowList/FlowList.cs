@@ -216,6 +216,10 @@ namespace SWF.UIComponent.FlowList
                             spaceKeyDown();
                             this.Invalidate();
                             break;
+                        case Keys.ProcessKey:
+                            spaceKeyDown();
+                            this.Invalidate();
+                            break;
                         case Keys.PageUp:
                             pageUpKeyDown();
                             this.Invalidate();
