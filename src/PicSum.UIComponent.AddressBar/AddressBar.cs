@@ -43,18 +43,6 @@ namespace PicSum.UIComponent.AddressBar
 
         #region パブリックプロパティ
 
-        public Font TextFont
-        {
-            get
-            {
-                return _palette.TextFont;
-            }
-            set
-            {
-                _palette.TextFont = value;
-            }
-        }
-
         public Color TextColor
         {
             get
