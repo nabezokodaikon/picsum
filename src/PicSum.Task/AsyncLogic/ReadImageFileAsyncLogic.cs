@@ -16,7 +16,7 @@ namespace PicSum.Task.AsyncLogic
     {
         public ReadImageFileAsyncLogic(AsyncFacadeBase facade) : base(facade) { }
 
-        public Image CreateImage(string filePath, Image srcImg, ImageSizeMode sizeMode, Size drawSize)
+        public Image CreateImage(string filePath, Bitmap srcImg, ImageSizeMode sizeMode, Size drawSize)
         {
             if (srcImg == null)
             {
@@ -35,8 +35,13 @@ namespace PicSum.Task.AsyncLogic
             }
             else
             {
-                double scale = Math.Min(drawSize.Width / (double)srcImg.Width, drawSize.Height / (double)srcImg.Height);
-                var destImg = ImageUtil.ResizeImage(filePath, srcImg, scale);
+                var scale = Math.Min(drawSize.Width / (double)srcImg.Width, drawSize.Height / (double)srcImg.Height);
+                var destImg = ImageUtil.ResizeImage(srcImg, scale);
+                if (destImg == null)
+                {
+                    throw new ImageException(filePath);
+                }
+
                 return destImg;
             }
         }
@@ -56,18 +61,18 @@ namespace PicSum.Task.AsyncLogic
             Console.WriteLine("CreateThumbnail");
             var sw = Stopwatch.StartNew();
 
-            double scale = Math.Min(thumbSize / (double)srcImg.Width, thumbSize / (double)srcImg.Height);
-            int w = (int)(srcImg.Width * scale);
-            int h = (int)(srcImg.Height * scale);
+            var scale = Math.Min(thumbSize / (double)srcImg.Width, thumbSize / (double)srcImg.Height);
+            var w = (int)(srcImg.Width * scale);
+            var h = (int)(srcImg.Height * scale);
 
-            Bitmap destImg = new Bitmap(w, h);
-            using (Graphics g = Graphics.FromImage(destImg))
+            var destImg = new Bitmap(w, h);
+            using (var g = Graphics.FromImage(destImg))
             {
                 g.InterpolationMode = InterpolationMode.Low;
                 g.SmoothingMode = SmoothingMode.HighSpeed;
                 if (sizeMode == ImageSizeMode.Original)
                 {
-                    using (Image thumb = srcImg.GetThumbnailImage(w, h, () => false, IntPtr.Zero))
+                    using (var thumb = srcImg.GetThumbnailImage(w, h, () => false, IntPtr.Zero))
                     {
                         g.DrawImage(thumb, 0, 0, w, h);
                     }

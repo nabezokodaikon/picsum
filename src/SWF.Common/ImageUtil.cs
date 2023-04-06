@@ -1,4 +1,5 @@
 ﻿using OpenCvSharp;
+using OpenCvSharp.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -17,6 +18,7 @@ namespace SWF.Common
         private static readonly EncoderParameter _encorderParameter = new EncoderParameter(Encoder.Quality, 50L);
         private static readonly ImageCodecInfo _jpegCodecInfo = ImageCodecInfo.GetImageEncoders().Single(info => info.FormatID == ImageFormat.Jpeg.Guid);
         private static readonly ImageConverter _imageConverter = new ImageConverter();
+        private static readonly dynamic Shell = Activator.CreateInstance(Type.GetTypeFromProgID("Shell.Application"));
 
         /// <summary>
         /// 画像ファイルの拡張子リスト
@@ -108,22 +110,17 @@ namespace SWF.Common
             return stream;
         }
 
-        public static Image ResizeImage(string filePath, Image srcImg, double scale)
+        public static Image ResizeImage(Bitmap srcImg, double scale)
         {
-            if (filePath == null)
-            {
-                throw new ArgumentNullException(nameof(filePath));
-            }
+            Console.WriteLine("ResizeImage");
+            var sw = Stopwatch.StartNew();
 
             if (srcImg == null)
             {
                 throw new ArgumentNullException(nameof(srcImg));
             }
 
-            Console.WriteLine("ResizeImage");
-            var sw = Stopwatch.StartNew();
-
-            using (var src = new Mat(filePath))
+            using (var src = BitmapConverter.ToMat(srcImg))
             {
                 if (src.Width < 1 || src.Height < 1)
                 {
@@ -133,14 +130,12 @@ namespace SWF.Common
                 using (var resize = new Mat())
                 {
                     Cv2.Resize(src, resize, new OpenCvSharp.Size(), scale, scale, InterpolationFlags.Area);
+                    var destImg = BitmapConverter.ToBitmap(resize);
 
-                    using (var ms = resize.ToMemoryStream())
-                    {
-                        var destImg = Bitmap.FromStream(ms);
-                        sw.Stop();
-                        Console.WriteLine("[{0}] ResizeImage", sw.ElapsedMilliseconds);
-                        return destImg;
-                    }
+                    sw.Stop();
+                    Console.WriteLine("[{0}] ResizeImage", sw.ElapsedMilliseconds);
+
+                    return destImg;
                 }
             }
         }
@@ -153,15 +148,28 @@ namespace SWF.Common
         /// <exception cref="ArgumentNullException"></exception>
         public static System.Drawing.Size GetImageSize(string filePath)
         {
+            Console.WriteLine("GetImageSize");
+            var sw = Stopwatch.StartNew();
+
             if (filePath == null)
             {
                 throw new ArgumentNullException(nameof(filePath));
             }
 
-            using (var img = ReadImageFile(filePath))
-            {
-                return img.Size;
-            }
+            var folder = Shell.NameSpace(Path.GetDirectoryName(filePath));
+            var item = folder.ParseName(Path.GetFileName(filePath));
+
+            var v = folder.GetDetailsOf(item, 31).Split(('x'));
+
+            var wText = v[0];
+            var hText = v[1];
+            var w = int.Parse(wText.Substring(1).Trim());
+            var h = int.Parse(hText.Substring(0, hText.Length - 1).Trim());
+
+            sw.Stop();
+            Console.WriteLine("[{0}] GetImageSize", sw.ElapsedMilliseconds);
+
+            return new System.Drawing.Size(w, h);
         }
 
         /// <summary>
@@ -169,15 +177,25 @@ namespace SWF.Common
         /// </summary>
         /// <param name="filePath"></param>
         /// <returns></returns>
-        public static Image ReadImageFile(string filePath)
+        public static Bitmap ReadImageFile(string filePath)
         {
+            Console.WriteLine("ReadImageFile");
+            var sw = Stopwatch.StartNew();
+
             if (filePath == null)
             {
                 throw new ArgumentNullException(nameof(filePath));
             }
 
-            var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
-            return Bitmap.FromStream(fs, false, false);
+            using (var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+            {
+                var destImg = new Bitmap(fs);
+
+                sw.Stop();
+                Console.WriteLine("[{0}] ReadImageFile", sw.ElapsedMilliseconds);
+
+                return destImg;
+            }
         }
 
         /// <summary>

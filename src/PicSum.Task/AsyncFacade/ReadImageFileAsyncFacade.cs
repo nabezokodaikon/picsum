@@ -20,17 +20,16 @@ namespace PicSum.Task.AsyncFacade
         {
             Console.WriteLine("----------------");
             Console.WriteLine("ReadImageFileAsyncFacade");
-            var sw = Stopwatch.StartNew();            
+            var sw = Stopwatch.StartNew();
 
             if (param == null)
             {
                 throw new ArgumentNullException("param");
             }
 
-            ReadImageFileResultEntity result = new ReadImageFileResultEntity();
-            ReadImageFileAsyncLogic logic = new ReadImageFileAsyncLogic(this);
-
-            string currentFilePath = param.FilePathList[param.CurrentIndex];
+            var result = new ReadImageFileResultEntity();
+            var logic = new ReadImageFileAsyncLogic(this);
+            var currentFilePath = param.FilePathList[param.CurrentIndex];
 
             try
             {
@@ -41,13 +40,13 @@ namespace PicSum.Task.AsyncFacade
                     if (param.ImageDisplayMode != ImageDisplayMode.Single &&
                         srcImg1.Width < srcImg1.Height)
                     {
-                        int nextIndex = param.CurrentIndex + 1;
+                        var nextIndex = param.CurrentIndex + 1;
                         if (nextIndex > param.FilePathList.Count - 1)
                         {
                             nextIndex = 0;
                         }
 
-                        string nextFilePath = param.FilePathList[nextIndex];
+                        var nextFilePath = param.FilePathList[nextIndex];
                         
                         {
                             CheckCancel();
@@ -57,14 +56,16 @@ namespace PicSum.Task.AsyncFacade
                             {
                                 using (var srcImg2 = ImageUtil.ReadImageFile(nextFilePath))
                                 {
-                                    Size drawSize = new Size((int)(param.DrawSize.Width / 2f), param.DrawSize.Height);
+                                    var drawSize = new Size((int)(param.DrawSize.Width / 2f), param.DrawSize.Height);
 
                                     result.Image1 = new ImageFileEntity();
                                     result.Image1.FilePath = currentFilePath;
+
                                     result.Image1.Image = logic.CreateImage(currentFilePath, srcImg1, param.ImageSizeMode, drawSize);
                                     CheckCancel();
                                     result.Image1.Thumbnail = logic.CreateThumbnail(result.Image1.Image, param.ThumbnailSize, param.ImageSizeMode);
                                     CheckCancel();
+
 
                                     result.Image2 = new ImageFileEntity();
                                     result.Image2.FilePath = nextFilePath;
