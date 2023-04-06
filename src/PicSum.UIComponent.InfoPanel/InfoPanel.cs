@@ -237,7 +237,6 @@ namespace PicSum.UIComponent.InfoPanel
             }
 
             tagFlowList.ItemHeight = 24;
-            _allTagFont = new Font(this.Font.FontFamily, this.Font.Size, FontStyle.Bold, this.Font.Unit, this.Font.GdiCharSet);
             this.CreateHandle();
         }
 
@@ -264,11 +263,21 @@ namespace PicSum.UIComponent.InfoPanel
             tagContextMenuStrip.Close();
         }
 
+        private Font getAllTagFont()
+        {
+            if (_allTagFont == null)
+            {
+                _allTagFont = new Font(this.Font.FontFamily, this.Font.Size, FontStyle.Bold, this.Font.Unit, this.Font.GdiCharSet);
+            }
+
+            return _allTagFont;
+        }
+
         private Font getTagFont(FileTagInfoEntity tagInfo)
         {
             if (tagInfo.IsAll)
             {
-                return _allTagFont;
+                return getAllTagFont();
             }
             else
             {
