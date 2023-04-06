@@ -54,8 +54,9 @@
             // 
             // thumbnailPictureBox
             // 
-            this.thumbnailPictureBox.Dock = System.Windows.Forms.DockStyle.Top;
-            this.thumbnailPictureBox.Location = new System.Drawing.Point(0, 0);
+            this.thumbnailPictureBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.thumbnailPictureBox.Location = new System.Drawing.Point(0, 29);
             this.thumbnailPictureBox.MinimumSize = new System.Drawing.Size(128, 128);
             this.thumbnailPictureBox.Name = "thumbnailPictureBox";
             this.thumbnailPictureBox.Size = new System.Drawing.Size(512, 128);
@@ -75,9 +76,9 @@
             this.panel1.Controls.Add(this.fileNameLabel);
             this.panel1.Controls.Add(this.label5);
             this.panel1.Controls.Add(this.label4);
-            this.panel1.Location = new System.Drawing.Point(3, 134);
+            this.panel1.Location = new System.Drawing.Point(3, 160);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(506, 126);
+            this.panel1.Size = new System.Drawing.Size(506, 100);
             this.panel1.TabIndex = 17;
             // 
             // fileCreateDateLabel
@@ -216,7 +217,7 @@
             this.tagFlowList.Name = "tagFlowList";
             this.tagFlowList.RectangleSelectionColor = System.Drawing.Color.Empty;
             this.tagFlowList.SelectedItemColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(48)))), ((int)(((byte)(96)))), ((int)(((byte)(144)))));
-            this.tagFlowList.Size = new System.Drawing.Size(512, 172);
+            this.tagFlowList.Size = new System.Drawing.Size(512, 280);
             this.tagFlowList.TabIndex = 16;
             this.tagFlowList.Text = "flowList1";
             this.tagFlowList.DrawItem += new System.EventHandler<SWF.UIComponent.FlowList.DrawItemEventArgs>(this.tagFlowList_DrawItem);
@@ -268,7 +269,7 @@
             this.Controls.Add(this.tagFlowList);
             this.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.Name = "InfoPanel";
-            this.Size = new System.Drawing.Size(512, 508);
+            this.Size = new System.Drawing.Size(512, 616);
             ((System.ComponentModel.ISupportInitialize)(this.thumbnailPictureBox)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
