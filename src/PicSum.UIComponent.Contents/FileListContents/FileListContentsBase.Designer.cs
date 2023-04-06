@@ -59,7 +59,6 @@
             this.flowList.BackColor = System.Drawing.Color.White;
             this.flowList.ContextMenuStrip = this.fileContextMenu;
             this.flowList.FocusItemColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(48)))), ((int)(((byte)(96)))), ((int)(((byte)(144)))));
-            this.flowList.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.flowList.IsMultiSelect = true;
             this.flowList.ItemSpace = 4;
             this.flowList.ItemTextAlignment = System.Drawing.StringAlignment.Center;
@@ -262,7 +261,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.Controls.Add(this.flowList);
             this.Controls.Add(this.toolBar);
-            this.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.Name = "FileListContentsBase";
             this.Size = new System.Drawing.Size(630, 393);
             this.viewContextMenuStrip.ResumeLayout(false);

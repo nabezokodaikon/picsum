@@ -267,7 +267,6 @@
             this.Controls.Add(this.thumbnailPictureBox);
             this.Controls.Add(this.ratingBar);
             this.Controls.Add(this.tagFlowList);
-            this.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.Name = "InfoPanel";
             this.Size = new System.Drawing.Size(512, 616);
             ((System.ComponentModel.ISupportInitialize)(this.thumbnailPictureBox)).EndInit();

@@ -86,7 +86,6 @@
             // infoPanel
             // 
             this.infoPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.infoPanel.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.infoPanel.Location = new System.Drawing.Point(0, 0);
             this.infoPanel.Name = "infoPanel";
             this.infoPanel.Size = new System.Drawing.Size(96, 100);
@@ -97,7 +96,6 @@
             this.tabSwitch.AllowDrop = true;
             this.tabSwitch.BackColor = System.Drawing.Color.Black;
             this.tabSwitch.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabSwitch.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.tabSwitch.Location = new System.Drawing.Point(0, 0);
             this.tabSwitch.Name = "tabSwitch";
             this.tabSwitch.Size = new System.Drawing.Size(746, 466);
@@ -148,7 +146,6 @@
             // searchTagToolButton
             // 
             this.searchTagToolButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.searchTagToolButton.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.searchTagToolButton.Image = global::PicSum.Main.Properties.Resources.TagIcon;
             this.searchTagToolButton.Location = new System.Drawing.Point(610, 2);
             this.searchTagToolButton.Margin = new System.Windows.Forms.Padding(3, 3, 0, 3);
@@ -228,7 +225,6 @@
             this.addressBar.TabIndex = 0;
             this.addressBar.TextAlignment = System.Drawing.StringAlignment.Center;
             this.addressBar.TextColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.addressBar.TextFont = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.addressBar.TextLineAlignment = System.Drawing.StringAlignment.Center;
             this.addressBar.TextTrimming = System.Drawing.StringTrimming.EllipsisCharacter;
             this.addressBar.SelectedFolder += new System.EventHandler<PicSum.UIComponent.AddressBar.SelectedFolderEventArgs>(this.addressBar_SelectedFolder);
