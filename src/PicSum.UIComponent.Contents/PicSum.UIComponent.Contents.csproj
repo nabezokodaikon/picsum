@@ -75,7 +75,6 @@
     <Compile Include="Conf\FileListContentsConfig.cs" />
     <Compile Include="Conf\ImageViewerContentsConfig.cs" />
     <Compile Include="ContentsParameter\FavoriteFolderListContentsParameter.cs" />
-    <Compile Include="ContentsParameter\FileHistoryFileListContentsParameter.cs" />
     <Compile Include="ContentsParameter\KeepFileListContentsParameter.cs" />
     <Compile Include="ContentsParameter\FolderFileListContentsParameter.cs" />
     <Compile Include="ContentsParameter\ImageViewerContentsParameter.cs" />
@@ -91,9 +90,6 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="FileListContents\FileEntity.cs" />
-    <Compile Include="FileListContents\FileHistoryFileListContents.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
     <Compile Include="FileListContents\KeepFileListContents.cs">
       <SubType>UserControl</SubType>
     </Compile>

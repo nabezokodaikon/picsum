@@ -67,9 +67,6 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="SearchFileHistoryToolButton.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="SearchRatingToolButton.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -89,7 +86,6 @@
     <Compile Include="SearchToolButtonBase.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="SelectedFileHistoryEventArgs.cs" />
     <Compile Include="SelectedItemEventArgs.cs" />
     <Compile Include="SelectedRatingEventArgs.cs" />
     <Compile Include="SelectedTagEventArgs.cs" />

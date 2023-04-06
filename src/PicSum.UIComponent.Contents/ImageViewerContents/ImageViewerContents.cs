@@ -43,7 +43,6 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
 
         private TwoWayProcess<ReadImageFileAsyncFacade, ReadImageFileParameterEntity, ReadImageFileResultEntity> _readImageFileProcess = null;
         private TwoWayProcess<GetImageSizeAsyncFacade, ListEntity<string>, ImageSizeEntity> _getImageSizeProcess = null;
-        private OneWayProcess<AddFileViewHistoryAsyncFacade, ListEntity<string>> _addHistoryProcess = null;
         private OneWayProcess<AddKeepAsyncFacade, ListEntity<string>> _addKeepProcess = null;
         private OneWayProcess<ExportFileAsyncFacade, ExportFileParameterEntity> _exportFileProcess = null;
 
@@ -118,19 +117,6 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
                 }
 
                 return _getImageSizeProcess;
-            }
-        }
-
-        private OneWayProcess<AddFileViewHistoryAsyncFacade, ListEntity<string>> addHistoryProcess
-        {
-            get
-            {
-                if (_addHistoryProcess == null)
-                {
-                    _addHistoryProcess = TaskManager.CreateOneWayProcess<AddFileViewHistoryAsyncFacade, ListEntity<string>>(ProcessContainer);
-                }
-
-                return _addHistoryProcess;
             }
         }
 

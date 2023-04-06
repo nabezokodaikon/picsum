@@ -73,16 +73,6 @@ namespace PicSum.Main.Properties {
         /// <summary>
         ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
         /// </summary>
-        internal static System.Drawing.Bitmap FileHistoryIcon {
-            get {
-                object obj = ResourceManager.GetObject("FileHistoryIcon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
-        /// </summary>
         internal static System.Drawing.Bitmap FileInfoIcon {
             get {
                 object obj = ResourceManager.GetObject("FileInfoIcon", resourceCulture);

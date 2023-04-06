@@ -99,14 +99,10 @@ namespace PicSum.Task.AsyncLogic
             if (dto != null)
             {
                 info.Rating = dto.Rating;
-                info.ViewCount = dto.ViewCount;
-                info.ViewDate = dto.LastViewDate;
             }
             else
             {
                 info.Rating = 0;
-                info.ViewCount = 0;
-                info.ViewDate = null;
             }
 
             CheckCancel();

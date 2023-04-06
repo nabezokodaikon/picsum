@@ -77,14 +77,12 @@
     <Compile Include="AsyncFacade\GetImageSizeAsyncFacade.cs" />
     <Compile Include="AsyncFacade\GetKeepAsyncFacade.cs" />
     <Compile Include="AsyncFacade\ExportFileAsyncFacade.cs" />
-    <Compile Include="AsyncFacade\GetNextFileViewHistoryAsyncFacade.cs" />
     <Compile Include="AsyncFacade\GetNextFolderAsyncFacade.cs" />
     <Compile Include="AsyncFacade\GetNextTagAsyncFacade.cs" />
     <Compile Include="AsyncFacade\RemoveKeepAsyncFacade.cs" />
     <Compile Include="AsyncFacade\SearchFavoriteFolderAsyncFacade.cs" />
     <Compile Include="AsyncFacade\SearchFileByRatingAsyncFacade.cs" />
     <Compile Include="AsyncFacade\SearchFileByTagAsyncFacade.cs" />
-    <Compile Include="AsyncFacade\SearchFileByViewDateAsyncFacade.cs" />
     <Compile Include="AsyncFacade\SearchImageFileByFolderAsyncFacade.cs" />
     <Compile Include="AsyncFacade\UpdateFileRatingAsyncFacade.cs" />
     <Compile Include="AsyncLogic\AddFileRatingAsyncLogic.cs" />
@@ -100,7 +98,6 @@
     <Compile Include="AsyncLogic\SearchFavoriteFolderAsyncLogic.cs" />
     <Compile Include="AsyncLogic\SearchFileByRatingAsyncLogic.cs" />
     <Compile Include="AsyncLogic\SearchFileByTagAsyncLogic.cs" />
-    <Compile Include="AsyncLogic\SearchFileByViewDateAsyncLogic.cs" />
     <Compile Include="AsyncLogic\UpdateFileRatingAsyncLogic.cs" />
     <Compile Include="AsyncLogic\UpdateFileTagAsyncLogic.cs" />
     <Compile Include="Entity\AddressInfo.cs" />
@@ -121,7 +118,6 @@
     <Compile Include="Entity\ThumbnailImageEntity.cs" />
     <Compile Include="Entity\UpdateFileRatingParameterEntity.cs" />
     <Compile Include="SyncFacade\ClosingSyncFacade.cs" />
-    <Compile Include="AsyncFacade\GetFileViewHistoryAsyncFacade.cs" />
     <Compile Include="AsyncFacade\GetFolderViewHistoryAsyncFacade.cs" />
     <Compile Include="AsyncFacade\GetSubFoldersAsyncFacade.cs" />
     <Compile Include="AsyncFacade\GetTagListAsyncFacade.cs" />
@@ -135,7 +131,6 @@
     <Compile Include="AsyncLogic\DeleteThumbnailAsyncLogic.cs" />
     <Compile Include="AsyncLogic\GetDrivesAsyncLogic.cs" />
     <Compile Include="AsyncLogic\GetFilesInFolderAsyncLogic.cs" />
-    <Compile Include="AsyncLogic\GetFileViewHistoryAsyncLogic.cs" />
     <Compile Include="AsyncLogic\GetFolderStateAsyncLogic.cs" />
     <Compile Include="AsyncLogic\GetFolderViewHistoryAsyncLogic.cs" />
     <Compile Include="AsyncLogic\GetFileShallowInfoAsyncLogic.cs" />
@@ -153,9 +148,7 @@
     <Compile Include="Entity\SingleValueEntity.cs" />
     <Compile Include="Entity\ListEntity.cs" />
     <Compile Include="Entity\ImageFileEntity.cs" />
-    <Compile Include="AsyncFacade\AddFileViewHistoryAsyncFacade.cs" />
     <Compile Include="AsyncFacade\ReadImageFileAsyncFacade.cs" />
-    <Compile Include="AsyncLogic\AddFileViewHistoryAsyncLogic.cs" />
     <Compile Include="AsyncLogic\ReadImageFileAsyncLogic.cs" />
     <Compile Include="AsyncLogic\AddFileMasterAsyncLogic.cs" />
     <Compile Include="Entity\StartupPrameterEntity.cs" />

@@ -8,12 +8,6 @@ SELECT mf.file_path
        LEFT JOIN ( SELECT file_id
                          ,COUNT(1) AS cnt
                          ,MAX(view_date) AS view_date
-                     FROM t_file_view_history
-                    GROUP BY file_id
-                    UNION
-                    SELECT file_id
-                          ,COUNT(1)
-                          ,MAX(view_date)
                      FROM t_folder_view_history
                     GROUP BY file_id
                  ) tfvh

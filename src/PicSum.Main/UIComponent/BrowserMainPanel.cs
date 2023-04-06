@@ -753,11 +753,6 @@ namespace PicSum.Main.UIComponent
             openContents(new RatingFileListContentsParameter(e.Value), e.OpenType);
         }
 
-        private void searchFileHistoryToolButton_SelectedFileHistory(object sender, PicSum.UIComponent.SearchTool.SelectedFileHistoryEventArgs e)
-        {
-            openContents(new FileHistoryFileListContentsParameter(e.Value), e.OpenType);
-        }
-
         private void keepToolButton_MouseClick(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)

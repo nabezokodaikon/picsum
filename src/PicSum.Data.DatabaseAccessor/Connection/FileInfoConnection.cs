@@ -54,19 +54,6 @@ CREATE TABLE 't_rating' (
      )
 );
 
-/* ファイル表示履歴T */
-CREATE TABLE 't_file_view_history' (
-     'file_id'         INTEGER  NOT NULL
-    ,'file_history_id' INTEGER  NOT NULL
-    ,'view_date'       DATETIME NOT NULL
-    ,'create_date'     DATETIME
-    ,'update_date'     DATETIME
-    ,PRIMARY KEY (
-         'file_id'
-        ,'file_history_id'
-     )
-);
-
 /* フォルダ表示履歴T */
 CREATE TABLE 't_folder_view_history' (
      'file_id'         INTEGER  NOT NULL
@@ -165,26 +152,6 @@ CREATE TRIGGER t_rating_update_trigger
     BEGIN UPDATE t_rating
              SET update_date = DATETIME('NOW', 'LOCALTIME')
            WHERE file_id = NEW.file_id;
-   END;
-
-/* ファイル表示履歴T INSERT */
-CREATE TRIGGER t_file_view_history_insert_trigger
-    AFTER INSERT
-       ON t_file_view_history
-    BEGIN UPDATE t_file_view_history
-             SET create_date     = DATETIME('NOW', 'LOCALTIME')
-           WHERE file_id         = NEW.file_id
-             AND file_history_id = NEW.file_history_id;
-   END;
-
-/* ファイル表示履歴T UPDATE */
-CREATE TRIGGER t_file_view_history_update_trigger
-    AFTER UPDATE
-       ON t_file_view_history
-    BEGIN UPDATE t_file_view_history
-             SET update_date     = DATETIME('NOW', 'LOCALTIME')
-           WHERE file_id         = NEW.file_id
-             AND file_history_id = NEW.file_history_id;
    END;
 
 /* フォルダ表示履歴T INSERT */

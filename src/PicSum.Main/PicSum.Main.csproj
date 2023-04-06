@@ -241,9 +241,6 @@
     <None Include="Resources\TagIcon.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\FileHistoryIcon.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\KeepIcon.png" />
   </ItemGroup>
   <ItemGroup>
@@ -262,9 +259,6 @@
     <Content Include="sql\CreationFile.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="sql\CreationFileViewHistory.sql">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="sql\CreationFolderState.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -281,9 +275,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="sql\DeletionFileByFile.sql">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="sql\DeletionFileViewHistoryByFile.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="sql\DeletionFolderStateByFile.sql">
@@ -319,16 +310,10 @@
     <Content Include="sql\ReadFileByTag.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="sql\ReadFileByViewDate.sql">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="sql\ReadFileInfo.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="sql\ReadFileTag.sql">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="sql\ReadFileViewHistory.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="sql\ReadFolderByViewDate.sql">

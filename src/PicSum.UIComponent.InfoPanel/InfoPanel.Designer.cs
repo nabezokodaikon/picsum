@@ -31,15 +31,11 @@
             this.components = new System.ComponentModel.Container();
             this.thumbnailPictureBox = new System.Windows.Forms.PictureBox();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.fileViewCountLabel = new System.Windows.Forms.Label();
-            this.fileViewDateLabel = new System.Windows.Forms.Label();
             this.fileCreateDateLabel = new System.Windows.Forms.Label();
             this.fileUpdatedateLabel = new System.Windows.Forms.Label();
             this.fileSizeLabel = new System.Windows.Forms.Label();
             this.fileTypeLabel = new System.Windows.Forms.Label();
             this.fileNameLabel = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
@@ -70,17 +66,13 @@
             // 
             // panel1
             // 
-            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel1.Controls.Add(this.fileViewCountLabel);
-            this.panel1.Controls.Add(this.fileViewDateLabel);
+            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.panel1.Controls.Add(this.fileCreateDateLabel);
             this.panel1.Controls.Add(this.fileUpdatedateLabel);
             this.panel1.Controls.Add(this.fileSizeLabel);
             this.panel1.Controls.Add(this.fileTypeLabel);
             this.panel1.Controls.Add(this.fileNameLabel);
-            this.panel1.Controls.Add(this.label7);
-            this.panel1.Controls.Add(this.label6);
             this.panel1.Controls.Add(this.label5);
             this.panel1.Controls.Add(this.label4);
             this.panel1.Location = new System.Drawing.Point(3, 134);
@@ -88,32 +80,10 @@
             this.panel1.Size = new System.Drawing.Size(506, 126);
             this.panel1.TabIndex = 17;
             // 
-            // fileViewCountLabel
-            // 
-            this.fileViewCountLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.fileViewCountLabel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.fileViewCountLabel.Location = new System.Drawing.Point(68, 108);
-            this.fileViewCountLabel.Margin = new System.Windows.Forms.Padding(0);
-            this.fileViewCountLabel.Name = "fileViewCountLabel";
-            this.fileViewCountLabel.Size = new System.Drawing.Size(438, 18);
-            this.fileViewCountLabel.TabIndex = 28;
-            // 
-            // fileViewDateLabel
-            // 
-            this.fileViewDateLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.fileViewDateLabel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.fileViewDateLabel.Location = new System.Drawing.Point(68, 90);
-            this.fileViewDateLabel.Margin = new System.Windows.Forms.Padding(0);
-            this.fileViewDateLabel.Name = "fileViewDateLabel";
-            this.fileViewDateLabel.Size = new System.Drawing.Size(438, 18);
-            this.fileViewDateLabel.TabIndex = 27;
-            // 
             // fileCreateDateLabel
             // 
-            this.fileCreateDateLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.fileCreateDateLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.fileCreateDateLabel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.fileCreateDateLabel.Location = new System.Drawing.Point(68, 72);
             this.fileCreateDateLabel.Margin = new System.Windows.Forms.Padding(0);
@@ -123,8 +93,8 @@
             // 
             // fileUpdatedateLabel
             // 
-            this.fileUpdatedateLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.fileUpdatedateLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.fileUpdatedateLabel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.fileUpdatedateLabel.Location = new System.Drawing.Point(68, 54);
             this.fileUpdatedateLabel.Margin = new System.Windows.Forms.Padding(0);
@@ -134,8 +104,8 @@
             // 
             // fileSizeLabel
             // 
-            this.fileSizeLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.fileSizeLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.fileSizeLabel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.fileSizeLabel.Location = new System.Drawing.Point(0, 36);
             this.fileSizeLabel.Margin = new System.Windows.Forms.Padding(0);
@@ -145,8 +115,8 @@
             // 
             // fileTypeLabel
             // 
-            this.fileTypeLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.fileTypeLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.fileTypeLabel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.fileTypeLabel.Location = new System.Drawing.Point(0, 18);
             this.fileTypeLabel.Margin = new System.Windows.Forms.Padding(0);
@@ -156,34 +126,14 @@
             // 
             // fileNameLabel
             // 
-            this.fileNameLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.fileNameLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.fileNameLabel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.fileNameLabel.Location = new System.Drawing.Point(0, 0);
             this.fileNameLabel.Margin = new System.Windows.Forms.Padding(0);
             this.fileNameLabel.Name = "fileNameLabel";
             this.fileNameLabel.Size = new System.Drawing.Size(506, 18);
             this.fileNameLabel.TabIndex = 22;
-            // 
-            // label7
-            // 
-            this.label7.Location = new System.Drawing.Point(0, 90);
-            this.label7.Margin = new System.Windows.Forms.Padding(0);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(68, 18);
-            this.label7.TabIndex = 21;
-            this.label7.Text = "表示日：";
-            this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // label6
-            // 
-            this.label6.Location = new System.Drawing.Point(0, 108);
-            this.label6.Margin = new System.Windows.Forms.Padding(0);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(68, 18);
-            this.label6.TabIndex = 20;
-            this.label6.Text = "表示回数：";
-            this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // label5
             // 
@@ -207,8 +157,8 @@
             // 
             // panel2
             // 
-            this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.panel2.Controls.Add(this.addTagButton);
             this.panel2.Controls.Add(this.tagComboBox);
             this.panel2.Location = new System.Drawing.Point(3, 302);
@@ -218,8 +168,8 @@
             // 
             // addTagButton
             // 
-            this.addTagButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.addTagButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.addTagButton.Image = global::PicSum.UIComponent.InfoPanel.Properties.Resources.TagIcon;
             this.addTagButton.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.addTagButton.Location = new System.Drawing.Point(466, 0);
@@ -235,22 +185,22 @@
             // 
             // tagComboBox
             // 
-            this.tagComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.tagComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tagComboBox.FormattingEnabled = true;
             this.tagComboBox.Location = new System.Drawing.Point(0, 1);
             this.tagComboBox.Name = "tagComboBox";
-            this.tagComboBox.Size = new System.Drawing.Size(463, 26);
+            this.tagComboBox.Size = new System.Drawing.Size(463, 31);
             this.tagComboBox.TabIndex = 0;
-            this.tagComboBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tagComboBox_KeyPress);
             this.tagComboBox.DropDown += new System.EventHandler(this.tagComboBox_DropDown);
+            this.tagComboBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tagComboBox_KeyPress);
             // 
             // tagFlowList
             // 
-            this.tagFlowList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.tagFlowList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tagFlowList.ContextMenuStrip = this.tagContextMenuStrip;
             this.tagFlowList.FocusItemColor = System.Drawing.Color.Empty;
             this.tagFlowList.IsLileList = true;
@@ -273,31 +223,32 @@
             // 
             // tagContextMenuStrip
             // 
+            this.tagContextMenuStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.tagContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tagDeleteMenuItem,
             this.tagToAllEntryMenuItem});
             this.tagContextMenuStrip.Name = "tagContextMenuStrip";
-            this.tagContextMenuStrip.Size = new System.Drawing.Size(173, 48);
+            this.tagContextMenuStrip.Size = new System.Drawing.Size(181, 52);
             this.tagContextMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.tagContextMenuStrip_Opening);
             // 
             // tagDeleteMenuItem
             // 
             this.tagDeleteMenuItem.Name = "tagDeleteMenuItem";
-            this.tagDeleteMenuItem.Size = new System.Drawing.Size(172, 22);
+            this.tagDeleteMenuItem.Size = new System.Drawing.Size(180, 24);
             this.tagDeleteMenuItem.Text = "タグを削除";
             this.tagDeleteMenuItem.Click += new System.EventHandler(this.tagDeleteMenuItem_Click);
             // 
             // tagToAllEntryMenuItem
             // 
             this.tagToAllEntryMenuItem.Name = "tagToAllEntryMenuItem";
-            this.tagToAllEntryMenuItem.Size = new System.Drawing.Size(172, 22);
+            this.tagToAllEntryMenuItem.Size = new System.Drawing.Size(180, 24);
             this.tagToAllEntryMenuItem.Text = "タグを全てに適用";
             this.tagToAllEntryMenuItem.Click += new System.EventHandler(this.tagToAllEntryMenuItem_Click);
             // 
             // ratingBar
             // 
-            this.ratingBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.ratingBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.ratingBar.BackColor = System.Drawing.Color.Transparent;
             this.ratingBar.Location = new System.Drawing.Point(0, 269);
             this.ratingBar.Margin = new System.Windows.Forms.Padding(3, 9, 3, 9);
@@ -332,15 +283,11 @@
         private SWF.UIComponent.Common.RatingBar ratingBar;
         private SWF.UIComponent.FlowList.FlowList tagFlowList;
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Label fileViewCountLabel;
-        private System.Windows.Forms.Label fileViewDateLabel;
         private System.Windows.Forms.Label fileCreateDateLabel;
         private System.Windows.Forms.Label fileUpdatedateLabel;
         private System.Windows.Forms.Label fileSizeLabel;
         private System.Windows.Forms.Label fileTypeLabel;
         private System.Windows.Forms.Label fileNameLabel;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Panel panel2;

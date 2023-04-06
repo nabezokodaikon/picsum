@@ -20,8 +20,6 @@ namespace PicSum.Task.Entity
         public Nullable<Size> ImageSize { get; set; }
         public Image FileIcon { get; set; }
         public int Rating { get; set; }
-        public int ViewCount { get; set; }
-        public Nullable<DateTime> ViewDate { get; set; }
         public ThumbnailImageEntity Thumbnail { get; set; }
     }
 }

@@ -43,7 +43,6 @@ namespace PicSum.Main
                     FileIconCash.DisposeStaticResouces();
                     OperatingKeepListAsyncLogic.DisposeStaticResouces();
                     GetThumbnailAsyncLogic.DisposeStaticResouces();
-                    GetFileViewHistoryAsyncLogic.DisposeStaticResouces();
                     ExportFileAsyncFacade.DisposeStaticResouces();
                     SqlManager.DisposeStaticResouces();
                     LogWriter.DisposeStaticResouces();

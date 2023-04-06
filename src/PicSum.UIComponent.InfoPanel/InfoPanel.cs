@@ -256,8 +256,6 @@ namespace PicSum.UIComponent.InfoPanel
             fileSizeLabel.Text = string.Empty;
             fileUpdatedateLabel.Text = string.Empty;
             fileCreateDateLabel.Text = string.Empty;
-            fileViewDateLabel.Text = string.Empty;
-            fileViewCountLabel.Text = string.Empty;
             ratingBar.SetValue(0);
             thumbnailPictureBox.Invalidate();
             tagFlowList.ItemCount = 0;
@@ -423,13 +421,6 @@ namespace PicSum.UIComponent.InfoPanel
                 {
                     fileCreateDateLabel.Text = fileInfo.CreateDate.Value.ToString("yyyy/MM/dd");
                 }
-
-                if (fileInfo.ViewDate.HasValue)
-                {
-                    fileViewDateLabel.Text = fileInfo.ViewDate.Value.ToString("yyyy/MM/dd");
-                }
-
-                fileViewCountLabel.Text = string.Format("{0}回", fileInfo.ViewCount.ToString());
 
                 ratingBar.SetValue(fileInfo.Rating);
             }
