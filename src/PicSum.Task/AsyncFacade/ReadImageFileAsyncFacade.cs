@@ -18,10 +18,6 @@ namespace PicSum.Task.AsyncFacade
     {
         public override void Execute(ReadImageFileParameterEntity param)
         {
-            Console.WriteLine("----------------");
-            Console.WriteLine("ReadImageFileAsyncFacade");
-            var sw = Stopwatch.StartNew();
-
             if (param == null)
             {
                 throw new ArgumentNullException("param");
@@ -103,11 +99,6 @@ namespace PicSum.Task.AsyncFacade
             {
                 exeptionHandler(result);
                 result.ReadImageFileException = ex;
-            }
-            finally 
-            {
-                sw.Stop();
-                Console.WriteLine("[{0}] ReadImageFileAsyncFacade", sw.ElapsedMilliseconds);
             }
 
             OnCallback(result);

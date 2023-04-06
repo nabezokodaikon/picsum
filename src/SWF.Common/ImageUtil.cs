@@ -112,9 +112,6 @@ namespace SWF.Common
 
         public static Image ResizeImage(Bitmap srcImg, double scale)
         {
-            Console.WriteLine("ResizeImage");
-            var sw = Stopwatch.StartNew();
-
             if (srcImg == null)
             {
                 throw new ArgumentNullException(nameof(srcImg));
@@ -131,10 +128,6 @@ namespace SWF.Common
                 {
                     Cv2.Resize(src, resize, new OpenCvSharp.Size(), scale, scale, InterpolationFlags.Area);
                     var destImg = BitmapConverter.ToBitmap(resize);
-
-                    sw.Stop();
-                    Console.WriteLine("[{0}] ResizeImage", sw.ElapsedMilliseconds);
-
                     return destImg;
                 }
             }
@@ -148,9 +141,6 @@ namespace SWF.Common
         /// <exception cref="ArgumentNullException"></exception>
         public static System.Drawing.Size GetImageSize(string filePath)
         {
-            Console.WriteLine("GetImageSize");
-            var sw = Stopwatch.StartNew();
-
             if (filePath == null)
             {
                 throw new ArgumentNullException(nameof(filePath));
@@ -166,9 +156,6 @@ namespace SWF.Common
             var w = int.Parse(wText.Substring(1).Trim());
             var h = int.Parse(hText.Substring(0, hText.Length - 1).Trim());
 
-            sw.Stop();
-            Console.WriteLine("[{0}] GetImageSize", sw.ElapsedMilliseconds);
-
             return new System.Drawing.Size(w, h);
         }
 
@@ -179,9 +166,6 @@ namespace SWF.Common
         /// <returns></returns>
         public static Bitmap ReadImageFile(string filePath)
         {
-            Console.WriteLine("ReadImageFile");
-            var sw = Stopwatch.StartNew();
-
             if (filePath == null)
             {
                 throw new ArgumentNullException(nameof(filePath));
@@ -190,10 +174,6 @@ namespace SWF.Common
             using (var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
             {
                 var destImg = new Bitmap(fs);
-
-                sw.Stop();
-                Console.WriteLine("[{0}] ReadImageFile", sw.ElapsedMilliseconds);
-
                 return destImg;
             }
         }

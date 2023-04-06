@@ -26,11 +26,7 @@ namespace PicSum.Task.AsyncLogic
             if (sizeMode == ImageSizeMode.Original ||
                 sizeMode == ImageSizeMode.FitOnlyBigImage && srcImg.Width <= drawSize.Width && srcImg.Height <= drawSize.Height)
             {
-                Console.WriteLine("Clone");
-                var sw = Stopwatch.StartNew();
                 var destImg = (Image)srcImg.Clone();
-                sw.Stop();
-                Console.WriteLine("[{0}] Clone", sw.ElapsedMilliseconds);
                 return destImg;
             }
             else
@@ -58,9 +54,6 @@ namespace PicSum.Task.AsyncLogic
                 throw new ArgumentOutOfRangeException("thumbSize");
             }
 
-            Console.WriteLine("CreateThumbnail");
-            var sw = Stopwatch.StartNew();
-
             var scale = Math.Min(thumbSize / (double)srcImg.Width, thumbSize / (double)srcImg.Height);
             var w = (int)(srcImg.Width * scale);
             var h = (int)(srcImg.Height * scale);
@@ -82,9 +75,6 @@ namespace PicSum.Task.AsyncLogic
                     g.FillRectangle(Brushes.Yellow, new Rectangle(0, 0, w, h));
                 }
             }
-
-            sw.Stop();
-            Console.WriteLine("[{0}] CreateThumbnail", sw.ElapsedMilliseconds);
 
             return destImg;
         }
