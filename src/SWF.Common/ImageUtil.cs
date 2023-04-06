@@ -1,13 +1,12 @@
-﻿using System;
+﻿using OpenCvSharp;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
-using System.Reflection;
-using WinApi;
-using System.Drawing.Drawing2D;
-using Shell32;
 using System.Runtime.InteropServices;
 
 namespace SWF.Common
@@ -18,7 +17,6 @@ namespace SWF.Common
         private static readonly EncoderParameter _encorderParameter = new EncoderParameter(Encoder.Quality, 50L);
         private static readonly ImageCodecInfo _jpegCodecInfo = ImageCodecInfo.GetImageEncoders().Single(info => info.FormatID == ImageFormat.Jpeg.Guid);
         private static readonly ImageConverter _imageConverter = new ImageConverter();
-        private static readonly dynamic _shell = Activator.CreateInstance(Type.GetTypeFromProgID("Shell.Application"));
 
         /// <summary>
         /// 画像ファイルの拡張子リスト
@@ -40,15 +38,15 @@ namespace SWF.Common
         {
             if (img == null)
             {
-                throw new ArgumentNullException("img");
+                throw new ArgumentNullException(nameof(img));
             }
 
-            using (MemoryStream mes = new MemoryStream())
+            using (var mes = new MemoryStream())
             {
-                EncoderParameters eps = new EncoderParameters(1);
+                var eps = new EncoderParameters(1);
                 eps.Param[0] = _encorderParameter;
                 img.Save(mes, _jpegCodecInfo, eps);
-                byte[] buffer = new byte[mes.Length];
+                var buffer = new byte[mes.Length];
                 mes.Position = 0;
                 mes.Read(buffer, 0, buffer.Length);
                 return buffer;
@@ -64,72 +62,88 @@ namespace SWF.Common
         {
             if (bf == null)
             {
-                throw new ArgumentNullException("bf");
+                throw new ArgumentNullException(nameof(bf));
             }
 
             var mes = new MemoryStream(bf);
-            return Image.FromStream(mes, false, false);
+            var img = Image.FromStream(mes, false, false);
+            return img;
         }
 
-        ///// <summary>
-        ///// ビットマップオブジェクトをバイナリに変換します。
-        ///// </summary>
-        ///// <param name="bmp">ビットマップオブジェクト</param>
-        ///// <returns></returns>
-        //public static byte[] ToBinary(Bitmap bmp)
-        //{
-        //    if (bmp == null)
-        //    {
-        //        throw new ArgumentNullException("bmp");
-        //    }
+        /// <summary>
+        /// ビットマップオブジェクトをバイナリに変換します。
+        /// </summary>
+        /// <param name="img">画像オブジェクト。</param>
+        /// <returns></returns>
+        public static byte[] ToBinary(Image img)
+        {
+            if (img == null)
+            {
+                throw new ArgumentNullException(nameof(img));
+            }
 
-        //    BitmapData bd = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadWrite, bmp.PixelFormat);
-        //    IntPtr bitmapPtr = bd.Scan0;
-        //    byte[] bf = new byte[bmp.Width * bmp.Height * 3];
-        //    Marshal.Copy(bitmapPtr, bf, 0, bmp.Width * bmp.Height * 3);
-        //    bmp.UnlockBits(bd);
+            using (var bmp = new Bitmap(img))
+            {
+                var bd = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadWrite, bmp.PixelFormat);
+                var bitmapPtr = bd.Scan0;
+                var len = bmp.Width * bmp.Height * 3;
+                var bf = new byte[len];
+                Marshal.Copy(bitmapPtr, bf, 0, len);
+                bmp.UnlockBits(bd);
 
-        //    return bf;
-        //}
+                return bf;
+            }
+        }
 
-        ///// <summary>
-        ///// バッファから、ビットマップオブジェクトを作成します。
-        ///// </summary>
-        ///// <param name="bf"></param>
-        ///// <param name="w"></param>
-        ///// <param name="h"></param>
-        ///// <param name="pf"></param>
-        ///// <returns></returns>
-        //public static Bitmap ToBitmap(byte[] bf, int w, int h, PixelFormat pf)
-        //{
-        //    if (bf == null)
-        //    {
-        //        throw new ArgumentNullException("bf");
-        //    }
+        public static Stream ToStream(Image img, ImageFormat format)
+        {
+            if (img == null)
+            {
+                throw new ArgumentNullException(nameof(img));
+            }
 
-        //    Bitmap bmp = new Bitmap(w, h, pf);
-        //    BitmapData bd = bmp.LockBits(new Rectangle(0, 0, w, h), ImageLockMode.WriteOnly, pf);
-        //    Marshal.Copy(bf, 0, bd.Scan0, bf.Length);
-        //    bmp.UnlockBits(bd);
-        //    return bmp;
-        //}
+            var stream = new MemoryStream();
+            img.Save(stream, format);
+            stream.Position = 0;
+            return stream;
+        }
 
-        ///// <summary>
-        ///// ビットマップのクローンを作成します。
-        ///// </summary>
-        ///// <param name="bmp">クローンするビットマップ。</param>
-        ///// <returns>クローンしたビットマップ。</returns>
-        ///// <exception cref="ArgumentNullException"></exception>
-        //public static Bitmap CreateCloneBitmap(Bitmap bmp)
-        //{
-        //    if (bmp == null)
-        //    {
-        //        throw new ArgumentNullException(nameof(bmp));
-        //    }
+        public static Image ResizeImage(string filePath, Image srcImg, double scale)
+        {
+            if (filePath == null)
+            {
+                throw new ArgumentNullException(nameof(filePath));
+            }
 
-        //    var bf = ToBinary(bmp);
-        //    return ToBitmap(bf, bmp.Width, bmp.Height, bmp.PixelFormat);
-        //}
+            if (srcImg == null)
+            {
+                throw new ArgumentNullException(nameof(srcImg));
+            }
+
+            Console.WriteLine("ResizeImage");
+            var sw = Stopwatch.StartNew();
+
+            using (var src = new Mat(filePath))
+            {
+                if (src.Width < 1 || src.Height < 1)
+                {
+                    return null;
+                }
+
+                using (var resize = new Mat())
+                {
+                    Cv2.Resize(src, resize, new OpenCvSharp.Size(), scale, scale, InterpolationFlags.Area);
+
+                    using (var ms = resize.ToMemoryStream())
+                    {
+                        var destImg = Bitmap.FromStream(ms);
+                        sw.Stop();
+                        Console.WriteLine("[{0}] ResizeImage", sw.ElapsedMilliseconds);
+                        return destImg;
+                    }
+                }
+            }
+        }
 
         /// <summary>
         /// 画像ファイルのサイズを取得します。
@@ -137,26 +151,14 @@ namespace SWF.Common
         /// <param name="filePath">取得するファイルのパス。</param>
         /// <returns>取得した画像サイズ。</returns>
         /// <exception cref="ArgumentNullException"></exception>
-        public static Size GetImageSize(string filePath)
+        public static System.Drawing.Size GetImageSize(string filePath)
         {
             if (filePath == null)
             {
                 throw new ArgumentNullException(nameof(filePath));
             }
 
-            //var folder = _shell.NameSpace(Path.GetDirectoryName(filePath));
-            //var item = folder.ParseName(Path.GetFileName(filePath));
-
-            //var v = folder.GetDetailsOf(item, 31).Split(('x'));
-
-            //var wText = v[0];
-            //var hText = v[1];
-            //var w = int.Parse(wText.Substring(1).Trim());
-            //var h = int.Parse(hText.Substring(0, hText.Length - 1).Trim());
-
-            //return new Size(w, h);
-
-            using (var img = ReadImageFile(filePath)) 
+            using (var img = ReadImageFile(filePath))
             {
                 return img.Size;
             }
@@ -173,21 +175,6 @@ namespace SWF.Common
             {
                 throw new ArgumentNullException(nameof(filePath));
             }
-
-            //IntPtr imgPtr = IntPtr.Zero;
-            //int result = WinApiMembers.GdipLoadImageFromFile(filePath, ref imgPtr);
-            //if (result != 0)
-            //{
-            //    throw new Exception();
-            //}
-
-            //object obj = typeof(Bitmap).InvokeMember("FromGDIplus",
-            //                                         BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.InvokeMethod,
-            //                                         null,
-            //                                         null,
-            //                                         new object[] { imgPtr });
-
-            //return (Bitmap)obj;
 
             var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
             return Bitmap.FromStream(fs, false, false);
@@ -215,16 +202,16 @@ namespace SWF.Common
         {
             if (bmp == null)
             {
-                throw new ArgumentNullException("bmp");
+                throw new ArgumentNullException(nameof(bmp));
             }
 
             if (bmp.PixelFormat != PixelFormat.Format32bppArgb)
             {
-                throw new ArgumentException(string.Format("ピクセルフォーマットが{0}ではありません。", PixelFormat.Format32bppArgb));
+                throw new ArgumentException(string.Format("ピクセルフォーマットが{0}ではありません。", System.Drawing.Imaging.PixelFormat.Format32bppArgb));
             }
 
-            int w = bmp.Width;
-            int h = bmp.Height;
+            var w = bmp.Width;
+            var h = bmp.Height;
 
             if (x < 0 || x > w - 1)
             {
@@ -236,9 +223,7 @@ namespace SWF.Common
                 throw new ArgumentOutOfRangeException("y");
             }
 
-            BitmapData bd = bmp.LockBits(new Rectangle(0, 0, w, h),
-                                         ImageLockMode.ReadOnly,
-                                         PixelFormat.Format32bppArgb);
+            var bd = bmp.LockBits(new Rectangle(0, 0, w, h), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
 
             try
             {
@@ -246,10 +231,10 @@ namespace SWF.Common
                 {
                     byte* p = (byte*)(void*)bd.Scan0;
                     p += (y * w + x) * 4;
-                    int a = p[3];
-                    int r = p[2];
-                    int g = p[1];
-                    int b = p[0];
+                    var a = p[3];
+                    var r = p[2];
+                    var g = p[1];
+                    var b = p[0];
                     return Color.FromArgb(a, r, g, b);
                 }
             }
@@ -266,6 +251,11 @@ namespace SWF.Common
         /// <returns></returns>
         public static Region GetRegion(Bitmap bmp)
         {
+            if (bmp == null)
+            {
+                throw new ArgumentNullException(nameof(bmp));
+            }
+
             return GetRegion(bmp, Color.Transparent);
         }
 
@@ -279,22 +269,22 @@ namespace SWF.Common
         {
             if (bmp == null)
             {
-                throw new ArgumentNullException("bmp");
+                throw new ArgumentNullException(nameof(bmp));
             }
 
             if (bmp.PixelFormat != PixelFormat.Format32bppArgb)
             {
-                throw new ArgumentException(string.Format("ピクセルフォーマットが{0}ではありません。", PixelFormat.Format32bppArgb));
+                throw new ArgumentException(string.Format("ピクセルフォーマットが{0}ではありません。", System.Drawing.Imaging.PixelFormat.Format32bppArgb));
             }
 
-            int w = bmp.Width;
-            int h = bmp.Height;
+            var w = bmp.Width;
+            var h = bmp.Height;
 
-            using (GraphicsPath path = new GraphicsPath())
+            using (var path = new GraphicsPath())
             {
-                Rectangle rect = new Rectangle(0, 0, bmp.Width, bmp.Height);
+                var rect = new Rectangle(0, 0, bmp.Width, bmp.Height);
                 path.AddRectangle(rect);
-                BitmapData bd = bmp.LockBits(rect, ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
+                var bd = bmp.LockBits(rect, ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
 
                 try
                 {
@@ -302,9 +292,9 @@ namespace SWF.Common
                     {
                         byte* p = (byte*)(void*)bd.Scan0;
 
-                        for (int y = 0; y < h; ++y)
+                        for (var y = 0; y < h; ++y)
                         {
-                            for (int x = 0; x < w; ++x)
+                            for (var x = 0; x < w; ++x)
                             {
                                 if (p[3] == transparent.A &&
                                     p[2] == transparent.R &&
@@ -335,11 +325,11 @@ namespace SWF.Common
         /// <returns></returns>
         private static IList<string> getImageFileExtensionList()
         {
-            List<string> exList = new List<string>();
-            ImageCodecInfo[] encs = ImageCodecInfo.GetImageEncoders();
-            foreach (ImageCodecInfo enc in encs)
+            var exList = new List<string>();
+            var encs = ImageCodecInfo.GetImageEncoders();
+            foreach (var enc in encs)
             {
-                string[] exs = enc.FilenameExtension.Replace("*", string.Empty).Split(';');
+                var exs = enc.FilenameExtension.Replace("*", string.Empty).Split(';');
                 exList.AddRange(exs);
             }
 

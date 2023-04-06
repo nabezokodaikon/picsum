@@ -126,6 +126,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="Resources\ActiveRatingIcon.png" />
   </ItemGroup>
   <ItemGroup>

@@ -26,30 +26,17 @@ namespace PicSum.Task.AsyncLogic
             if (sizeMode == ImageSizeMode.Original ||
                 sizeMode == ImageSizeMode.FitOnlyBigImage && srcImg.Width <= drawSize.Width && srcImg.Height <= drawSize.Height)
             {
-                return (Image)srcImg.Clone();
+                Console.WriteLine("Clone");
+                var sw = Stopwatch.StartNew();
+                var destImg = (Image)srcImg.Clone();
+                sw.Stop();
+                Console.WriteLine("[{0}] Clone", sw.ElapsedMilliseconds);
+                return destImg;
             }
             else
             {
                 double scale = Math.Min(drawSize.Width / (double)srcImg.Width, drawSize.Height / (double)srcImg.Height);
-                int w = (int)(srcImg.Width * scale);
-                int h = (int)(srcImg.Height * scale);
-                Bitmap destImg = new Bitmap(w, h, srcImg.PixelFormat);
-
-                Console.WriteLine("Graphics");
-                var sw = Stopwatch.StartNew();
-                using (Graphics g = Graphics.FromImage(destImg))
-                {
-                    //g.InterpolationMode = InterpolationMode.HighQualityBicubic;
-                    //g.SmoothingMode = SmoothingMode.HighQuality;
-                    //g.CompositingQuality = CompositingQuality.HighQuality;
-                    g.InterpolationMode = InterpolationMode.HighQualityBicubic;
-                    g.SmoothingMode = SmoothingMode.AntiAlias;
-                    //g.CompositingQuality = CompositingQuality.;
-                    g.DrawImage(srcImg, new Rectangle(0, 0, w, h), new Rectangle(0, 0, srcImg.Width, srcImg.Height), GraphicsUnit.Pixel);
-                }
-                sw.Stop();
-                Console.WriteLine("[{0}] Graphics", sw.ElapsedMilliseconds);
-
+                var destImg = ImageUtil.ResizeImage(filePath, srcImg, scale);
                 return destImg;
             }
         }
@@ -65,6 +52,9 @@ namespace PicSum.Task.AsyncLogic
             {
                 throw new ArgumentOutOfRangeException("thumbSize");
             }
+
+            Console.WriteLine("CreateThumbnail");
+            var sw = Stopwatch.StartNew();
 
             double scale = Math.Min(thumbSize / (double)srcImg.Width, thumbSize / (double)srcImg.Height);
             int w = (int)(srcImg.Width * scale);
@@ -87,6 +77,9 @@ namespace PicSum.Task.AsyncLogic
                     g.FillRectangle(Brushes.Yellow, new Rectangle(0, 0, w, h));
                 }
             }
+
+            sw.Stop();
+            Console.WriteLine("[{0}] CreateThumbnail", sw.ElapsedMilliseconds);
 
             return destImg;
         }
