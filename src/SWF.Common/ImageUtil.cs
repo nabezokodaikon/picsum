@@ -1,6 +1,7 @@
 ﻿using OpenCvSharp;
 using OpenCvSharp.Extensions;
 using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
@@ -73,43 +74,12 @@ namespace SWF.Common
         }
 
         /// <summary>
-        /// ビットマップオブジェクトをバイナリに変換します。
+        /// 画像をリサイズします。
         /// </summary>
-        /// <param name="img">画像オブジェクト。</param>
+        /// <param name="srcImg"></param>
+        /// <param name="scale"></param>
         /// <returns></returns>
-        public static byte[] ToBinary(Image img)
-        {
-            if (img == null)
-            {
-                throw new ArgumentNullException(nameof(img));
-            }
-
-            using (var bmp = new Bitmap(img))
-            {
-                var bd = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadWrite, bmp.PixelFormat);
-                var bitmapPtr = bd.Scan0;
-                var len = bmp.Width * bmp.Height * 3;
-                var bf = new byte[len];
-                Marshal.Copy(bitmapPtr, bf, 0, len);
-                bmp.UnlockBits(bd);
-
-                return bf;
-            }
-        }
-
-        public static Stream ToStream(Image img, ImageFormat format)
-        {
-            if (img == null)
-            {
-                throw new ArgumentNullException(nameof(img));
-            }
-
-            var stream = new MemoryStream();
-            img.Save(stream, format);
-            stream.Position = 0;
-            return stream;
-        }
-
+        /// <exception cref="ArgumentNullException"></exception>
         public static Image ResizeImage(Bitmap srcImg, double scale)
         {
             if (srcImg == null)
@@ -118,18 +88,11 @@ namespace SWF.Common
             }
 
             using (var src = BitmapConverter.ToMat(srcImg))
+            using (var resize = new Mat())
             {
-                if (src.Width < 1 || src.Height < 1)
-                {
-                    return null;
-                }
-
-                using (var resize = new Mat())
-                {
-                    Cv2.Resize(src, resize, new OpenCvSharp.Size(), scale, scale, InterpolationFlags.Area);
-                    var destImg = BitmapConverter.ToBitmap(resize);
-                    return destImg;
-                }
+                Cv2.Resize(src, resize, new OpenCvSharp.Size(), scale, scale, InterpolationFlags.Area);
+                var destImg = BitmapConverter.ToBitmap(resize);
+                return destImg;
             }
         }
 
@@ -155,6 +118,11 @@ namespace SWF.Common
             var hText = v[1];
             var w = int.Parse(wText.Substring(1).Trim());
             var h = int.Parse(hText.Substring(0, hText.Length - 1).Trim());
+
+            if (w < 1 || h < 1)
+            {
+                throw new ImageException(filePath);
+            }
 
             return new System.Drawing.Size(w, h);
         }
