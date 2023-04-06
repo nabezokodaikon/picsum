@@ -147,6 +147,7 @@
             // searchTagToolButton
             // 
             this.searchTagToolButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.searchTagToolButton.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.searchTagToolButton.Image = global::PicSum.Main.Properties.Resources.TagIcon;
             this.searchTagToolButton.Location = new System.Drawing.Point(610, 2);
             this.searchTagToolButton.Margin = new System.Windows.Forms.Padding(3, 3, 0, 3);
