@@ -158,6 +158,7 @@
             // 
             // viewToolStripDropDownButton
             // 
+            this.viewToolStripDropDownButton.AutoToolTip = false;
             this.viewToolStripDropDownButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.viewToolStripDropDownButton.DropDown = this.viewContextMenuStrip;
             this.viewToolStripDropDownButton.Image = ((System.Drawing.Image)(resources.GetObject("viewToolStripDropDownButton.Image")));
@@ -173,8 +174,8 @@
             this.viewToolStripDropDownButton,
             this.sortFileNameToolStripButton,
             this.sortFilePathToolStripButton,
-            this.sortFileUpdateDateToolStripButton,
             this.sortFileCreateDateToolStripButton,
+            this.sortFileUpdateDateToolStripButton,
             this.thumbnailSizeToolStripSlider,
             this.movePreviewToolStripButton,
             this.moveNextToolStripButton});
@@ -187,6 +188,7 @@
             // sortFileNameToolStripButton
             // 
             this.sortFileNameToolStripButton.AutoSize = false;
+            this.sortFileNameToolStripButton.AutoToolTip = false;
             this.sortFileNameToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.sortFileNameToolStripButton.Margin = new System.Windows.Forms.Padding(3, 1, 0, 2);
             this.sortFileNameToolStripButton.Name = "sortFileNameToolStripButton";
@@ -197,29 +199,32 @@
             // sortFilePathToolStripButton
             // 
             this.sortFilePathToolStripButton.AutoSize = false;
+            this.sortFilePathToolStripButton.AutoToolTip = false;
             this.sortFilePathToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.sortFilePathToolStripButton.Name = "sortFilePathToolStripButton";
             this.sortFilePathToolStripButton.Size = new System.Drawing.Size(80, 24);
             this.sortFilePathToolStripButton.Text = "パス";
             this.sortFilePathToolStripButton.Click += new System.EventHandler(this.sortFilePathToolStripButton_Click);
             // 
-            // sortFileUpdateDateToolStripButton
-            // 
-            this.sortFileUpdateDateToolStripButton.AutoSize = false;
-            this.sortFileUpdateDateToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.sortFileUpdateDateToolStripButton.Name = "sortFileUpdateDateToolStripButton";
-            this.sortFileUpdateDateToolStripButton.Size = new System.Drawing.Size(80, 24);
-            this.sortFileUpdateDateToolStripButton.Text = "更新日時";
-            this.sortFileUpdateDateToolStripButton.Click += new System.EventHandler(this.sortFileUpdateDateToolStripButton_Click);
-            // 
             // sortFileCreateDateToolStripButton
             // 
             this.sortFileCreateDateToolStripButton.AutoSize = false;
+            this.sortFileCreateDateToolStripButton.AutoToolTip = false;
             this.sortFileCreateDateToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.sortFileCreateDateToolStripButton.Name = "sortFileCreateDateToolStripButton";
             this.sortFileCreateDateToolStripButton.Size = new System.Drawing.Size(80, 24);
             this.sortFileCreateDateToolStripButton.Text = "作成日時";
             this.sortFileCreateDateToolStripButton.Click += new System.EventHandler(this.sortFileCreateDateToolStripButton_Click);
+            // 
+            // sortFileUpdateDateToolStripButton
+            // 
+            this.sortFileUpdateDateToolStripButton.AutoSize = false;
+            this.sortFileUpdateDateToolStripButton.AutoToolTip = false;
+            this.sortFileUpdateDateToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.sortFileUpdateDateToolStripButton.Name = "sortFileUpdateDateToolStripButton";
+            this.sortFileUpdateDateToolStripButton.Size = new System.Drawing.Size(80, 24);
+            this.sortFileUpdateDateToolStripButton.Text = "更新日時";
+            this.sortFileUpdateDateToolStripButton.Click += new System.EventHandler(this.sortFileUpdateDateToolStripButton_Click);
             // 
             // thumbnailSizeToolStripSlider
             // 

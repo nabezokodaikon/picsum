@@ -160,6 +160,7 @@
             // 
             // viewToolStripSplitButton
             // 
+            this.viewToolStripSplitButton.AutoToolTip = false;
             this.viewToolStripSplitButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.viewToolStripSplitButton.DropDown = this.viewContextMenuStrip;
             this.viewToolStripSplitButton.ForeColor = System.Drawing.SystemColors.ControlText;
@@ -204,11 +205,13 @@
             // 
             // sizeToolStripSplitButton
             // 
+            this.sizeToolStripSplitButton.AutoToolTip = false;
             this.sizeToolStripSplitButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.sizeToolStripSplitButton.DropDown = this.sizeContextMenuStrip;
             this.sizeToolStripSplitButton.ForeColor = System.Drawing.SystemColors.ControlText;
             this.sizeToolStripSplitButton.Image = ((System.Drawing.Image)(resources.GetObject("sizeToolStripSplitButton.Image")));
             this.sizeToolStripSplitButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.sizeToolStripSplitButton.Margin = new System.Windows.Forms.Padding(6, 1, 0, 2);
             this.sizeToolStripSplitButton.Name = "sizeToolStripSplitButton";
             this.sizeToolStripSplitButton.Size = new System.Drawing.Size(60, 24);
             this.sizeToolStripSplitButton.Text = "サイズ";
@@ -230,11 +233,12 @@
             // 
             // previewIndexToolStripButton
             // 
+            this.previewIndexToolStripButton.AutoToolTip = false;
             this.previewIndexToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.previewIndexToolStripButton.ForeColor = System.Drawing.SystemColors.ControlText;
             this.previewIndexToolStripButton.Image = global::PicSum.UIComponent.Contents.Properties.Resources.MiddleArrowLeft;
             this.previewIndexToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.previewIndexToolStripButton.Margin = new System.Windows.Forms.Padding(3, 1, 0, 2);
+            this.previewIndexToolStripButton.Margin = new System.Windows.Forms.Padding(6, 1, 0, 2);
             this.previewIndexToolStripButton.Name = "previewIndexToolStripButton";
             this.previewIndexToolStripButton.Size = new System.Drawing.Size(23, 24);
             this.previewIndexToolStripButton.Text = "toolStripButton1";
@@ -242,10 +246,12 @@
             // 
             // nextIndexToolStripButton
             // 
+            this.nextIndexToolStripButton.AutoToolTip = false;
             this.nextIndexToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.nextIndexToolStripButton.ForeColor = System.Drawing.SystemColors.ControlText;
             this.nextIndexToolStripButton.Image = global::PicSum.UIComponent.Contents.Properties.Resources.MiddleArrowRight;
             this.nextIndexToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.nextIndexToolStripButton.Margin = new System.Windows.Forms.Padding(2, 1, 0, 2);
             this.nextIndexToolStripButton.Name = "nextIndexToolStripButton";
             this.nextIndexToolStripButton.Size = new System.Drawing.Size(23, 24);
             this.nextIndexToolStripButton.Text = "toolStripButton2";
@@ -256,6 +262,7 @@
             this.indexToolStripSlider.BackColor = System.Drawing.Color.Transparent;
             this.indexToolStripSlider.MaximumValue = 100;
             this.indexToolStripSlider.MinimumValue = 0;
+            this.indexToolStripSlider.Margin = new System.Windows.Forms.Padding(16, 1, 0, 2);
             this.indexToolStripSlider.Name = "indexToolStripSlider";
             this.indexToolStripSlider.Size = new System.Drawing.Size(96, 24);
             this.indexToolStripSlider.Text = "toolStripSlider1";
