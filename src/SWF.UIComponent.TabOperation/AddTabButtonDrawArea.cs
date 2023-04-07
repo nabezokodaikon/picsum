@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Drawing;
+using System.Security.AccessControl;
+using System.Windows.Forms;
 using SWF.UIComponent.TabOperation.Properties;
 
 namespace SWF.UIComponent.TabOperation
@@ -8,6 +10,7 @@ namespace SWF.UIComponent.TabOperation
     {
         #region 定数・列挙
 
+        private const int CONTENTS_SIZE = 24;
         #endregion
 
         #region クラスメンバ
@@ -16,14 +19,18 @@ namespace SWF.UIComponent.TabOperation
 
         private static Rectangle GetDefaultRectangle()
         {
-            Bitmap buttonImg = Resources.InactiveAddTabButton;
             int tabHeight = Resources.ActiveTab.Height;
             int x = 0;
-            int y = (int)((tabHeight - buttonImg.Height) / 2d);
-            int w = buttonImg.Width;
-            int h = buttonImg.Height;
+            int y = (int)((tabHeight - CONTENTS_SIZE) / 2d);
+            int w = CONTENTS_SIZE;
+            int h = CONTENTS_SIZE;
             return new Rectangle(x, y, w, h);
         }
+
+        private static readonly SolidBrush mousePointBrush = new SolidBrush(Color.FromArgb(128, 255, 255, 255));
+        private static readonly SolidBrush normalBrush = new SolidBrush(Color.FromArgb(64, 0, 0, 0));
+        private static readonly Pen mousePointPen = new Pen(Color.Black, 2f);
+        private static readonly Pen normalPen = new Pen(Color.White, 2f);
 
         #endregion
 
@@ -33,8 +40,6 @@ namespace SWF.UIComponent.TabOperation
 
         #region インスタンス変数
 
-        private readonly Bitmap _inactiveImage = Resources.InactiveAddTabButton;
-        private readonly Bitmap _mousePointImage = Resources.MousePointAddTabButton;
         private readonly int _width = DefaultRectangle.Width;
         private readonly int _height = DefaultRectangle.Height;
         private Point _drawPoint = new Point(DefaultRectangle.X, DefaultRectangle.Y);
@@ -162,7 +167,7 @@ namespace SWF.UIComponent.TabOperation
                 throw new ArgumentNullException("g");
             }
 
-            draw(g, _inactiveImage);
+            draw(g, false);
         }
 
         public void DrawMousePointImage(Graphics g)
@@ -172,12 +177,31 @@ namespace SWF.UIComponent.TabOperation
                 throw new ArgumentNullException("g");
             }
 
-            draw(g, _mousePointImage);
+            draw(g, true);
         }
 
-        private void draw(Graphics g, Bitmap img)
+        private void draw(Graphics g, bool isMousePoint)
         {
-            g.DrawImage(img, _drawPoint.X, _drawPoint.Y, _width, _height);
+            const float OFFSET = 6f;
+            var rect = new Rectangle(_drawPoint.X, _drawPoint.Y, _width, _height);
+            var bgRect = new RectangleF(rect.Left + OFFSET / 2f, rect.Top + OFFSET / 2f, rect.Width - OFFSET, rect.Height - OFFSET);
+            var vp1 = new PointF(rect.Left + OFFSET + rect.Width / 4f, rect.Top + OFFSET);
+            var vp2 = new PointF(rect.Left + OFFSET + rect.Width / 4f, rect.Bottom - OFFSET);
+            var hp1 = new PointF(rect.Left + OFFSET, rect.Top + OFFSET + rect.Height / 4f);
+            var hp2 = new PointF(rect.Right - OFFSET, rect.Top + OFFSET + rect.Height / 4f);
+
+            if (isMousePoint)
+            {
+                g.FillEllipse(mousePointBrush, bgRect);
+                g.DrawLine(mousePointPen, vp1, vp2);
+                g.DrawLine(mousePointPen, hp1, hp2);
+            }
+            else
+            {
+                g.FillEllipse(normalBrush, bgRect);
+                g.DrawLine(normalPen, vp1, vp2);
+                g.DrawLine(normalPen, hp1, hp2);
+            }
         }
 
         #endregion
