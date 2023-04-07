@@ -35,7 +35,6 @@ namespace SWF.UIComponent.TabOperation
 
         private readonly Bitmap _inactiveImage = Resources.InactiveAddTabButton;
         private readonly Bitmap _mousePointImage = Resources.MousePointAddTabButton;
-        private readonly Bitmap _mouseDownImage = Resources.MouseDownAddTabButton;
         private readonly int _width = DefaultRectangle.Width;
         private readonly int _height = DefaultRectangle.Height;
         private Point _drawPoint = new Point(DefaultRectangle.X, DefaultRectangle.Y);
@@ -174,16 +173,6 @@ namespace SWF.UIComponent.TabOperation
             }
 
             draw(g, _mousePointImage);
-        }
-
-        public void DrawMouseDownImage(Graphics g)
-        {
-            if (g == null)
-            {
-                throw new ArgumentNullException("g");
-            }
-
-            draw(g, _mouseDownImage);
         }
 
         private void draw(Graphics g, Bitmap img)

@@ -133,9 +133,6 @@
     <None Include="Resources\InactiveAddTabButton.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\MouseDownAddTabButton.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\DragTab.png" />
   </ItemGroup>
   <ItemGroup>

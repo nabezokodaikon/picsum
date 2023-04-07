@@ -1404,14 +1404,7 @@ namespace SWF.UIComponent.TabOperation
             Point p = this.PointToClient(Cursor.Position);
             if (_addTabButtonDrawArea.Contents(p))
             {
-                if ((Control.MouseButtons & MouseButtons.Left) == MouseButtons.Left)
-                {
-                    return _addTabButtonDrawArea.DrawMouseDownImage;
-                }
-                else
-                {
-                    return _addTabButtonDrawArea.DrawMousePointImage;
-                }
+                return _addTabButtonDrawArea.DrawMousePointImage;
             }
             else
             {
