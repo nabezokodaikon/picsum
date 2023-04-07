@@ -44,14 +44,14 @@ namespace PicSum.Task.AsyncFacade
                         }
 
                         var nextFilePath = param.FilePathList[nextIndex];
-
-                        CheckCancel();
-
                         var srcImg2Size = ImageUtil.GetImageSize(nextFilePath);
                         if (srcImg2Size.Width < srcImg2Size.Height)
                         {
+                            CheckCancel();
                             using (var srcImg2 = ImageUtil.ReadImageFile(nextFilePath))
                             {
+                                CheckCancel();
+
                                 var drawSize = new Size((int)(param.DrawSize.Width / 2f), param.DrawSize.Height);
 
                                 result.Image1 = new ImageFileEntity();
@@ -66,6 +66,7 @@ namespace PicSum.Task.AsyncFacade
 
                                 result.Image2 = new ImageFileEntity();
                                 result.Image2.FilePath = nextFilePath;
+                            
                                 CheckCancel();
                                 result.Image2.Image = logic.CreateImage(nextFilePath, srcImg2, param.ImageSizeMode, drawSize);
                                 CheckCancel();
@@ -77,6 +78,7 @@ namespace PicSum.Task.AsyncFacade
                         {
                             result.Image1 = new ImageFileEntity();
                             result.Image1.FilePath = currentFilePath;
+                            
                             CheckCancel();
                             result.Image1.Image = logic.CreateImage(currentFilePath, srcImg1, param.ImageSizeMode, param.DrawSize);
                             CheckCancel();
