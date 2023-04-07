@@ -423,12 +423,13 @@ namespace PicSum.UIComponent.InfoPanel
 
                 if (fileInfo.UpdateDate.HasValue)
                 {
-                    fileUpdatedateLabel.Text = fileInfo.UpdateDate.Value.ToString("yyyy/MM/dd");
+                    fileUpdatedateLabel.Text = string.Format("更新日時 {0:yyyy/MM/dd}", fileInfo.UpdateDate.Value);
                 }
 
                 if (fileInfo.CreateDate.HasValue)
                 {
-                    fileCreateDateLabel.Text = fileInfo.CreateDate.Value.ToString("yyyy/MM/dd");
+                    fileCreateDateLabel.Text = string.Format("作成日時 {0:yyyy/MM/dd}", fileInfo.CreateDate.Value);
+
                 }
 
                 ratingBar.SetValue(fileInfo.Rating);

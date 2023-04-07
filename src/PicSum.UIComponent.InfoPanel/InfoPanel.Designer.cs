@@ -36,8 +36,6 @@
             this.fileSizeLabel = new System.Windows.Forms.Label();
             this.fileTypeLabel = new System.Windows.Forms.Label();
             this.fileNameLabel = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
             this.addTagButton = new SWF.UIComponent.Common.ToolButton();
             this.tagComboBox = new System.Windows.Forms.ComboBox();
@@ -75,8 +73,6 @@
             this.panel1.Controls.Add(this.fileSizeLabel);
             this.panel1.Controls.Add(this.fileTypeLabel);
             this.panel1.Controls.Add(this.fileNameLabel);
-            this.panel1.Controls.Add(this.label5);
-            this.panel1.Controls.Add(this.label4);
             this.panel1.Location = new System.Drawing.Point(0, 262);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(512, 148);
@@ -87,24 +83,24 @@
             this.fileCreateDateLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.fileCreateDateLabel.BackColor = System.Drawing.Color.Transparent;
-            this.fileCreateDateLabel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.fileCreateDateLabel.Location = new System.Drawing.Point(73, 100);
+            this.fileCreateDateLabel.Location = new System.Drawing.Point(4, 100);
             this.fileCreateDateLabel.Margin = new System.Windows.Forms.Padding(4);
             this.fileCreateDateLabel.Name = "fileCreateDateLabel";
-            this.fileCreateDateLabel.Size = new System.Drawing.Size(435, 18);
+            this.fileCreateDateLabel.Size = new System.Drawing.Size(504, 18);
             this.fileCreateDateLabel.TabIndex = 26;
+            this.fileCreateDateLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // fileUpdatedateLabel
             // 
             this.fileUpdatedateLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.fileUpdatedateLabel.BackColor = System.Drawing.Color.Transparent;
-            this.fileUpdatedateLabel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.fileUpdatedateLabel.Location = new System.Drawing.Point(73, 126);
+            this.fileUpdatedateLabel.Location = new System.Drawing.Point(4, 126);
             this.fileUpdatedateLabel.Margin = new System.Windows.Forms.Padding(4);
             this.fileUpdatedateLabel.Name = "fileUpdatedateLabel";
-            this.fileUpdatedateLabel.Size = new System.Drawing.Size(435, 18);
+            this.fileUpdatedateLabel.Size = new System.Drawing.Size(504, 18);
             this.fileUpdatedateLabel.TabIndex = 25;
+            this.fileUpdatedateLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // fileSizeLabel
             // 
@@ -141,28 +137,6 @@
             this.fileNameLabel.Name = "fileNameLabel";
             this.fileNameLabel.Size = new System.Drawing.Size(504, 36);
             this.fileNameLabel.TabIndex = 22;
-            // 
-            // label5
-            // 
-            this.label5.BackColor = System.Drawing.Color.Transparent;
-            this.label5.Location = new System.Drawing.Point(4, 126);
-            this.label5.Margin = new System.Windows.Forms.Padding(0);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(65, 18);
-            this.label5.TabIndex = 19;
-            this.label5.Text = "更新日時：";
-            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // label4
-            // 
-            this.label4.BackColor = System.Drawing.Color.Transparent;
-            this.label4.Location = new System.Drawing.Point(4, 100);
-            this.label4.Margin = new System.Windows.Forms.Padding(0);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(65, 18);
-            this.label4.TabIndex = 18;
-            this.label4.Text = "作成日時：";
-            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // panel2
             // 
@@ -297,8 +271,6 @@
         private System.Windows.Forms.Label fileSizeLabel;
         private System.Windows.Forms.Label fileTypeLabel;
         private System.Windows.Forms.Label fileNameLabel;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Panel panel2;
         private SWF.UIComponent.Common.ToolButton addTagButton;
         private System.Windows.Forms.ComboBox tagComboBox;
