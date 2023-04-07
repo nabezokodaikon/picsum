@@ -31,6 +31,11 @@ namespace SWF.UIComponent.TabOperation
                                                                                CONTENTS_SIZE,
                                                                                CONTENTS_SIZE);
 
+        private readonly static SolidBrush tabCloseActiveButtonBrush = new SolidBrush(Color.FromArgb(64, 0, 0, 0));
+        private readonly static SolidBrush tabCloseInactiveButtonBrush = new SolidBrush(Color.FromArgb(64, 0, 0, 0));
+        private readonly static Pen tabCloseButtonSlashPen = new Pen(Color.Black, 2f);
+
+
         private static IList<Point> GetLeftTransparentPoints(Bitmap bmp)
         {
             if (bmp.PixelFormat != PixelFormat.Format32bppArgb)
@@ -404,28 +409,33 @@ namespace SWF.UIComponent.TabOperation
         {
             const int OFFSET = 8;
             var rect = GetCloseButtonRectangle();
+            var bgRect = new RectangleF(rect.Left + OFFSET / 2f, rect.Top + OFFSET / 2f, rect.Width - OFFSET, rect.Height - OFFSET);
+            var slashP1 = new Point(rect.Left + OFFSET, rect.Top + OFFSET);
+            var backSlashP1 = new Point(rect.Right - OFFSET, rect.Bottom - OFFSET);
+            var slashP2 = new Point(rect.Right - OFFSET, rect.Top + OFFSET);
+            var backSlashP2 = new Point(rect.Left + OFFSET, rect.Bottom - OFFSET);
 
             if (isMousePoint)
             {
-                if (isActiveTab) 
+                if (isActiveTab)
                 {
-                    g.FillEllipse(Brushes.LightGray, rect.Left + OFFSET / 2f, rect.Top + OFFSET / 2f, rect.Width - OFFSET, rect.Height - OFFSET);
+                    g.FillEllipse(tabCloseActiveButtonBrush, bgRect);
                 }
                 else
                 {
-                    g.FillEllipse(Brushes.LightGray, rect.Left + OFFSET / 2f, rect.Top + OFFSET / 2f, rect.Width - OFFSET, rect.Height - OFFSET);
+                    g.FillEllipse(tabCloseInactiveButtonBrush, bgRect);
                 }
             }
 
             if (isActiveTab)
             {
-                g.DrawLine(Pens.Black, rect.Left + OFFSET, rect.Top + OFFSET, rect.Right - OFFSET, rect.Bottom - OFFSET);
-                g.DrawLine(Pens.Black, rect.Right - OFFSET, rect.Top + OFFSET, rect.Left + OFFSET, rect.Bottom - OFFSET);
+                g.DrawLine(tabCloseButtonSlashPen, slashP1, backSlashP1);
+                g.DrawLine(tabCloseButtonSlashPen, slashP2, backSlashP2);
             }
             else
             {
-                g.DrawLine(Pens.Black, rect.Left + OFFSET, rect.Top + OFFSET, rect.Right - OFFSET, rect.Bottom - OFFSET);
-                g.DrawLine(Pens.Black, rect.Right - OFFSET, rect.Top + OFFSET, rect.Left + OFFSET, rect.Bottom - OFFSET);
+                g.DrawLine(tabCloseButtonSlashPen, slashP1, backSlashP1);
+                g.DrawLine(tabCloseButtonSlashPen, slashP2, backSlashP2);
             }
         }
 
