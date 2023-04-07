@@ -417,7 +417,7 @@ namespace PicSum.UIComponent.InfoPanel
                     fileSizeLabel.Text = FileUtil.ToSizeString(fileInfo.FileSize.Value);
                     if (fileInfo.ImageSize.HasValue)
                     {
-                        fileSizeLabel.Text += string.Format(" ({0}×{1})", fileInfo.ImageSize.Value.Width, fileInfo.ImageSize.Value.Height);
+                        fileSizeLabel.Text += string.Format(" ({0} x {1})", fileInfo.ImageSize.Value.Width, fileInfo.ImageSize.Value.Height);
                     }
                 }
 
