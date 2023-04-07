@@ -29,6 +29,7 @@ namespace PicSum.Task.AsyncFacade
 
             try
             {
+                CheckCancel();
                 using (var srcImg1 = ImageUtil.ReadImageFile(currentFilePath))
                 {
                     CheckCancel();
@@ -57,6 +58,7 @@ namespace PicSum.Task.AsyncFacade
                                     result.Image1 = new ImageFileEntity();
                                     result.Image1.FilePath = currentFilePath;
 
+                                    CheckCancel();
                                     result.Image1.Image = logic.CreateImage(currentFilePath, srcImg1, param.ImageSizeMode, drawSize);
                                     CheckCancel();
                                     result.Image1.Thumbnail = logic.CreateThumbnail(result.Image1.Image, param.ThumbnailSize, param.ImageSizeMode);
@@ -65,6 +67,7 @@ namespace PicSum.Task.AsyncFacade
 
                                     result.Image2 = new ImageFileEntity();
                                     result.Image2.FilePath = nextFilePath;
+                                    CheckCancel();
                                     result.Image2.Image = logic.CreateImage(nextFilePath, srcImg2, param.ImageSizeMode, drawSize);
                                     CheckCancel();
                                     result.Image2.Thumbnail = logic.CreateThumbnail(result.Image2.Image, param.ThumbnailSize, param.ImageSizeMode);
@@ -75,6 +78,7 @@ namespace PicSum.Task.AsyncFacade
                             {
                                 result.Image1 = new ImageFileEntity();
                                 result.Image1.FilePath = currentFilePath;
+                                CheckCancel();
                                 result.Image1.Image = logic.CreateImage(currentFilePath, srcImg1, param.ImageSizeMode, param.DrawSize);
                                 CheckCancel();
                                 result.Image1.Thumbnail = logic.CreateThumbnail(result.Image1.Image, param.ThumbnailSize, param.ImageSizeMode);
@@ -86,6 +90,7 @@ namespace PicSum.Task.AsyncFacade
                     {
                         result.Image1 = new ImageFileEntity();
                         result.Image1.FilePath = currentFilePath;
+                        CheckCancel();
                         result.Image1.Image = logic.CreateImage(currentFilePath, srcImg1, param.ImageSizeMode, param.DrawSize);
                         CheckCancel();
                         result.Image1.Thumbnail = logic.CreateThumbnail(result.Image1.Image, param.ThumbnailSize, param.ImageSizeMode);
