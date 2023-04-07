@@ -73,7 +73,6 @@ namespace PicSum.Main.Mng
             Settings.Default.FileListContentsIsShowFolder = FileListContentsConfig.IsShowFolder;
             Settings.Default.FileListContentsIsShowImageFile = FileListContentsConfig.IsShowImageFile;
             Settings.Default.FileListContentsIsShowOthereFile = FileListContentsConfig.IsShowOtherFile;
-            Settings.Default.FileListContentsFavoriteFolderCount = FileListContentsConfig.FavoriteFolderCount;
 
             // ビューアコンテンツの設定をセットします。
             Settings.Default.ImageViewerContentsImageDisplayMode = ImageViewerContentsConfig.ImageDisplayMode;

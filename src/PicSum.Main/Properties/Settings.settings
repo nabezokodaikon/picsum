@@ -38,8 +38,8 @@
     <Setting Name="ExportFolderPath" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="FileListContentsFavoriteFolderCount" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">10</Value>
+    <Setting Name="FileListContentsFavoriteFolderCount" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">21</Value>
     </Setting>
   </Settings>
 </SettingsFile>

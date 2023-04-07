@@ -1,10 +1,13 @@
-﻿using System.Collections.Generic;
-using PicSum.Core.Data.DatabaseAccessor;
+﻿using PicSum.Core.Data.DatabaseAccessor;
 using PicSum.Core.Data.FileAccessor;
 using PicSum.Core.Task.AsyncTask;
 using PicSum.Data.DatabaseAccessor.Connection;
 using PicSum.Data.DatabaseAccessor.Dto;
 using PicSum.Data.DatabaseAccessor.Sql;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 
 namespace PicSum.Task.AsyncLogic
 {
@@ -14,20 +17,21 @@ namespace PicSum.Task.AsyncLogic
 
         public IList<string> Execute()
         {
-            ReadFavoriteFolderSql sql = new ReadFavoriteFolderSql();
-            IList<SingleValueDto<string>> dtoList = DatabaseManager<FileInfoConnection>.ReadList<SingleValueDto<string>>(sql);
+            var sql = new ReadFavoriteFolderSql();
+            var dtoList = DatabaseManager<FileInfoConnection>.ReadList<SingleValueDto<string>>(sql);
 
-            List<string> list = new List<string>();
-            foreach (SingleValueDto<string> dto in dtoList)
-            {
-                CheckCancel();
-                if (FileUtil.CanAccess(dto.Value))
-                {
-                    list.Add(dto.Value);
-                }
-            }
+            Console.WriteLine("SearchFavoriteFolderAsyncLogic");
+            var sw = Stopwatch.StartNew();
 
-            return list;
+            var dirList = dtoList
+                .Where(dto => !string.IsNullOrEmpty(dto.Value) && FileUtil.CanAccess(dto.Value) && FileUtil.HasFile(dto.Value))
+                .Select(dto => dto.Value)
+                .ToList();
+
+            sw.Stop();
+            Console.WriteLine("[{0}] SearchFavoriteFolderAsyncLogic", sw.ElapsedMilliseconds);
+
+            return dirList;
         }
     }
 }

@@ -93,7 +93,23 @@ namespace PicSum.Core.Data.FileAccessor
                 throw new ArgumentNullException("filePath");
             }
 
-            return (File.Exists(filePath));
+            return File.Exists(filePath);
+        }
+
+        /// <summary>
+        /// 指定したディレクトリ内に、ファイルが存在するか確認します。
+        /// </summary>
+        /// <param name="directoryPath"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        public static bool HasFile(string directoryPath)
+        {
+            if (directoryPath == null)
+            {
+                throw new ArgumentNullException(nameof(directoryPath));
+            }
+
+            return Directory.EnumerateFiles(directoryPath).Any();
         }
 
         /// <summary>
