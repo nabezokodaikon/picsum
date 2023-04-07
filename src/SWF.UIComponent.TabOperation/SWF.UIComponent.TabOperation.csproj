@@ -115,7 +115,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="Resources\ActiveTabCloseButton.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SWF.Common\SWF.Common.csproj">
@@ -126,15 +125,6 @@
       <Project>{186F7A43-6415-4F0A-AE75-5B3235D2B0F6}</Project>
       <Name>WinApi</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\MousePointTabCloseButton.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\MouseDownTabCloseButton.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\InactiveTabCloseButton.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\MousePointAddTabButton.png" />

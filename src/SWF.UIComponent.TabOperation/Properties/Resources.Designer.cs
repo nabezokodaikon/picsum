@@ -133,29 +133,9 @@ namespace SWF.UIComponent.TabOperation.Properties {
         /// <summary>
         ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
         /// </summary>
-        internal static System.Drawing.Bitmap InactiveTabCloseButton {
-            get {
-                object obj = ResourceManager.GetObject("InactiveTabCloseButton", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
-        /// </summary>
         internal static System.Drawing.Bitmap MouseDownAddTabButton {
             get {
                 object obj = ResourceManager.GetObject("MouseDownAddTabButton", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
-        /// </summary>
-        internal static System.Drawing.Bitmap MouseDownTabCloseButton {
-            get {
-                object obj = ResourceManager.GetObject("MouseDownTabCloseButton", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -176,16 +156,6 @@ namespace SWF.UIComponent.TabOperation.Properties {
         internal static System.Drawing.Bitmap MousePointTab {
             get {
                 object obj = ResourceManager.GetObject("MousePointTab", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
-        /// </summary>
-        internal static System.Drawing.Bitmap MousePointTabCloseButton {
-            get {
-                object obj = ResourceManager.GetObject("MousePointTabCloseButton", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

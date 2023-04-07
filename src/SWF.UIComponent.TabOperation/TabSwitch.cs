@@ -599,7 +599,7 @@ namespace SWF.UIComponent.TabOperation
 
         protected override void OnPaint(PaintEventArgs e)
         {
-            e.Graphics.SmoothingMode = SmoothingMode.None;
+            e.Graphics.SmoothingMode = SmoothingMode.HighQuality;
             e.Graphics.InterpolationMode = InterpolationMode.Low;
 
             foreach (TabInfo tab in _tabList.FindAll((t) => !t.Equals(_activeTab)))
@@ -1376,18 +1376,26 @@ namespace SWF.UIComponent.TabOperation
 
             if (rect.Contains(p))
             {
-                if ((Control.MouseButtons & MouseButtons.Left) == MouseButtons.Left)
+                if (tab.Equals(_activeTab))
                 {
-                    return tab.DrawArea.DrawMouseDownTabCloseButton;
+                    return tab.DrawArea.DrawActiveMousePointTabCloseButton;
                 }
                 else
                 {
-                    return tab.DrawArea.DrawMousePointTabCloseButton;
+                    return tab.DrawArea.DrawInactiveMousePointTabCloseButton;
                 }
+                
             }
             else
             {
-                return tab.DrawArea.DrawInactiveTabCloseButton;
+                if (tab.Equals(_activeTab))
+                {
+                    return tab.DrawArea.DrawActiveTabCloseButton;
+                }
+                else
+                {
+                    return tab.DrawArea.DrawInactiveTabCloseButton;
+                }                
             }
         }
 

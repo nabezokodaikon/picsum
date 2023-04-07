@@ -114,9 +114,6 @@ namespace SWF.UIComponent.TabOperation
         private readonly Bitmap _activeTabImage = Resources.ActiveTab;
         private readonly Bitmap _inactiveTabImage = Resources.InactiveTab;
         private readonly Bitmap _mousePointTabImage = Resources.MousePointTab;
-        private readonly Bitmap _inactiveTabCloseButton = Resources.InactiveTabCloseButton;
-        private readonly Bitmap _mousePointTabCloseButton = Resources.MousePointTabCloseButton;
-        private readonly Bitmap _mouseDownTabCloseButton = Resources.MouseDownTabCloseButton;
         private readonly Rectangle _iconRectangle = IconRectangle;
         private readonly Rectangle _closeButtonRectangle = CloseButtonRectangle;
         private Point _drawPoint = new Point(0, 0);
@@ -275,6 +272,26 @@ namespace SWF.UIComponent.TabOperation
             drawTab(_mousePointTabImage, g);
         }
 
+        public void DrawActiveMousePointTabCloseButton(Graphics g)
+        {
+            if (g == null)
+            {
+                throw new ArgumentNullException("g");
+            }
+
+            drawTabCloseButton(g, true, true);
+        }
+
+        public void DrawInactiveMousePointTabCloseButton(Graphics g)
+        {
+            if (g == null)
+            {
+                throw new ArgumentNullException("g");
+            }
+
+            drawTabCloseButton(g, true, false);
+        }
+
         public void DrawInactiveTabCloseButton(Graphics g)
         {
             if (g == null)
@@ -282,27 +299,17 @@ namespace SWF.UIComponent.TabOperation
                 throw new ArgumentNullException("g");
             }
 
-            drawTabCloseButton(_inactiveTabCloseButton, g);
+            drawTabCloseButton(g, false, false);
         }
 
-        public void DrawMousePointTabCloseButton(Graphics g)
+        public void DrawActiveTabCloseButton(Graphics g)
         {
             if (g == null)
             {
                 throw new ArgumentNullException("g");
             }
 
-            drawTabCloseButton(_mousePointTabCloseButton, g);
-        }
-
-        public void DrawMouseDownTabCloseButton(Graphics g)
-        {
-            if (g == null)
-            {
-                throw new ArgumentNullException("g");
-            }
-
-            drawTabCloseButton(_mouseDownTabCloseButton, g);
+            drawTabCloseButton(g, false, true);
         }
 
         public bool Contents(int x, int y)
@@ -393,9 +400,33 @@ namespace SWF.UIComponent.TabOperation
             g.DrawImage(bmp, getDestCenterRectangle(), getSourceCenterRectangle(), GraphicsUnit.Pixel);
         }
 
-        private void drawTabCloseButton(Bitmap bmp, Graphics g)
+        private void drawTabCloseButton(Graphics g, bool isMousePoint, bool isActiveTab)
         {
-            g.DrawImage(bmp, GetCloseButtonRectangle());
+            const int OFFSET = 8;
+            var rect = GetCloseButtonRectangle();
+
+            if (isMousePoint)
+            {
+                if (isActiveTab) 
+                {
+                    g.FillEllipse(Brushes.LightGray, rect.Left + OFFSET / 2f, rect.Top + OFFSET / 2f, rect.Width - OFFSET, rect.Height - OFFSET);
+                }
+                else
+                {
+                    g.FillEllipse(Brushes.LightGray, rect.Left + OFFSET / 2f, rect.Top + OFFSET / 2f, rect.Width - OFFSET, rect.Height - OFFSET);
+                }
+            }
+
+            if (isActiveTab)
+            {
+                g.DrawLine(Pens.Black, rect.Left + OFFSET, rect.Top + OFFSET, rect.Right - OFFSET, rect.Bottom - OFFSET);
+                g.DrawLine(Pens.Black, rect.Right - OFFSET, rect.Top + OFFSET, rect.Left + OFFSET, rect.Bottom - OFFSET);
+            }
+            else
+            {
+                g.DrawLine(Pens.Black, rect.Left + OFFSET, rect.Top + OFFSET, rect.Right - OFFSET, rect.Bottom - OFFSET);
+                g.DrawLine(Pens.Black, rect.Right - OFFSET, rect.Top + OFFSET, rect.Left + OFFSET, rect.Bottom - OFFSET);
+            }
         }
 
         private Rectangle getDestCenterRectangle()
