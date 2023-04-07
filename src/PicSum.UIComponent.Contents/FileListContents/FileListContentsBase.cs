@@ -253,11 +253,6 @@ namespace PicSum.UIComponent.Contents.FileListContents
 
         #region コンストラクタ
 
-        public FileListContentsBase()
-        {
-            InitializeComponent();
-        }
-
         public FileListContentsBase(IContentsParameter param)
         {
             if (param == null)
