@@ -54,7 +54,7 @@
             // 
             // thumbnailPictureBox
             // 
-            this.thumbnailPictureBox.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.thumbnailPictureBox.BackColor = System.Drawing.Color.Transparent;
             this.thumbnailPictureBox.Dock = System.Windows.Forms.DockStyle.Top;
             this.thumbnailPictureBox.Location = new System.Drawing.Point(0, 0);
             this.thumbnailPictureBox.MinimumSize = new System.Drawing.Size(128, 128);
@@ -69,7 +69,7 @@
             // 
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel1.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.panel1.BackColor = System.Drawing.Color.Transparent;
             this.panel1.Controls.Add(this.fileCreateDateLabel);
             this.panel1.Controls.Add(this.fileUpdatedateLabel);
             this.panel1.Controls.Add(this.fileSizeLabel);
@@ -86,7 +86,7 @@
             // 
             this.fileCreateDateLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.fileCreateDateLabel.BackColor = System.Drawing.SystemColors.Control;
+            this.fileCreateDateLabel.BackColor = System.Drawing.Color.Transparent;
             this.fileCreateDateLabel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.fileCreateDateLabel.Location = new System.Drawing.Point(73, 100);
             this.fileCreateDateLabel.Margin = new System.Windows.Forms.Padding(4);
@@ -98,7 +98,7 @@
             // 
             this.fileUpdatedateLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.fileUpdatedateLabel.BackColor = System.Drawing.SystemColors.Control;
+            this.fileUpdatedateLabel.BackColor = System.Drawing.Color.Transparent;
             this.fileUpdatedateLabel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.fileUpdatedateLabel.Location = new System.Drawing.Point(73, 126);
             this.fileUpdatedateLabel.Margin = new System.Windows.Forms.Padding(4);
@@ -110,7 +110,7 @@
             // 
             this.fileSizeLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.fileSizeLabel.BackColor = System.Drawing.SystemColors.Control;
+            this.fileSizeLabel.BackColor = System.Drawing.Color.Transparent;
             this.fileSizeLabel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.fileSizeLabel.Location = new System.Drawing.Point(4, 74);
             this.fileSizeLabel.Margin = new System.Windows.Forms.Padding(4);
@@ -122,7 +122,7 @@
             // 
             this.fileTypeLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.fileTypeLabel.BackColor = System.Drawing.SystemColors.Control;
+            this.fileTypeLabel.BackColor = System.Drawing.Color.Transparent;
             this.fileTypeLabel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.fileTypeLabel.Location = new System.Drawing.Point(4, 48);
             this.fileTypeLabel.Margin = new System.Windows.Forms.Padding(4);
@@ -134,7 +134,7 @@
             // 
             this.fileNameLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.fileNameLabel.BackColor = System.Drawing.SystemColors.Control;
+            this.fileNameLabel.BackColor = System.Drawing.Color.Transparent;
             this.fileNameLabel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.fileNameLabel.Location = new System.Drawing.Point(4, 4);
             this.fileNameLabel.Margin = new System.Windows.Forms.Padding(4);
@@ -144,7 +144,7 @@
             // 
             // label5
             // 
-            this.label5.BackColor = System.Drawing.SystemColors.Control;
+            this.label5.BackColor = System.Drawing.Color.Transparent;
             this.label5.Location = new System.Drawing.Point(4, 126);
             this.label5.Margin = new System.Windows.Forms.Padding(0);
             this.label5.Name = "label5";
@@ -155,7 +155,7 @@
             // 
             // label4
             // 
-            this.label4.BackColor = System.Drawing.SystemColors.Control;
+            this.label4.BackColor = System.Drawing.Color.Transparent;
             this.label4.Location = new System.Drawing.Point(4, 100);
             this.label4.Margin = new System.Windows.Forms.Padding(0);
             this.label4.Name = "label4";
@@ -168,7 +168,7 @@
             // 
             this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel2.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.panel2.BackColor = System.Drawing.Color.Transparent;
             this.panel2.Controls.Add(this.addTagButton);
             this.panel2.Controls.Add(this.tagComboBox);
             this.panel2.Location = new System.Drawing.Point(0, 458);
@@ -210,7 +210,7 @@
             this.tagFlowList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tagFlowList.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.tagFlowList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(241)))), ((int)(((byte)(244)))), ((int)(((byte)(250)))));
             this.tagFlowList.ContextMenuStrip = this.tagContextMenuStrip;
             this.tagFlowList.FocusItemColor = System.Drawing.Color.Empty;
             this.tagFlowList.IsLileList = true;
