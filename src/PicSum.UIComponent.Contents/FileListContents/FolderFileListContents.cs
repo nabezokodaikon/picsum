@@ -243,7 +243,10 @@ namespace PicSum.UIComponent.Contents.FileListContents
                 if (e.FolderState != null)
                 {
                     base.SetFile(e.FileInfoList, e.FolderState.SelectedFilePath, e.FolderState.SortTypeID, e.FolderState.IsAscending);
-                    base.OnSelectedFileChanged(new SelectedFileChangeEventArgs(e.FolderState.FolderPath));
+                    if (e.FileInfoList.Count < 1) 
+                    {
+                        base.OnSelectedFileChanged(new SelectedFileChangeEventArgs(e.FolderState.FolderPath));
+                    }
                 }
                 else
                 {
