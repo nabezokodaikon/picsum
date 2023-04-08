@@ -79,7 +79,6 @@
             this.flowList.DrawItemChanged += new System.EventHandler<SWF.UIComponent.FlowList.DrawItemChangedEventArgs>(this.flowList_DrawItemChanged);
             this.flowList.DragStart += new System.EventHandler(this.flowList_DragStart);
             this.flowList.SelectedItemChanged += new System.EventHandler(this.flowList_SelectedItemChange);
-            this.flowList.BackgroundMouseClick += new System.EventHandler<System.Windows.Forms.MouseEventArgs>(this.flowList_BackgroundMouseClick);
             this.flowList.ItemExecute += new System.EventHandler(this.flowList_ItemExecute);
             this.flowList.MouseDown += new System.Windows.Forms.MouseEventHandler(this.flowList_MouseDown);
             this.flowList.ItemMouseClick += new System.EventHandler<System.Windows.Forms.MouseEventArgs>(this.flowList_ItemMouseClick);
