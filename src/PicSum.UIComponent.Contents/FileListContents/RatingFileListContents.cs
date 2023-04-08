@@ -99,6 +99,11 @@ namespace PicSum.UIComponent.Contents.FileListContents
             // 処理無し。
         }
 
+        protected override void OnRemoveFile(System.Collections.Generic.IList<string> filePathList)
+        {
+
+        }
+
         protected override void OnMovePreviewButtonClick(EventArgs e)
         {
             int ratingValue = 0;
