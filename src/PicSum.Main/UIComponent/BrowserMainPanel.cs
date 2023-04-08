@@ -10,6 +10,7 @@ using PicSum.Task.AsyncFacade;
 using PicSum.Task.Entity;
 using PicSum.UIComponent.Contents;
 using PicSum.UIComponent.Contents.ContentsParameter;
+using PicSum.UIComponent.InfoPanel;
 using SWF.Common;
 using SWF.UIComponent.TabOperation;
 
@@ -41,7 +42,7 @@ namespace PicSum.Main.UIComponent
 
         public int TabCount
         {
-            get 
+            get
             {
                 return tabSwitch.TabCount;
             }
@@ -131,12 +132,12 @@ namespace PicSum.Main.UIComponent
             addContentsEventHandler(tabSwitch.AddTab<BrowserContents>(param));
         }
 
-        public void AddFavoriteFolderListTab() 
+        public void AddFavoriteFolderListTab()
         {
             openContents(new FavoriteFolderListContentsParameter(), ContentsOpenType.AddTab);
         }
 
-        public void RemoveActiveTab() 
+        public void RemoveActiveTab()
         {
             tabSwitch.RemoveActiveTab();
         }
@@ -560,7 +561,7 @@ namespace PicSum.Main.UIComponent
 
             infoPanel.SetFileInfo(e.FilePathList);
             tabSwitch.InvalidateHeader();
-            
+
             //Console.WriteLine("[{0:HH:mm:ss.fff}] contents_SelectedFileChanged", DateTime.Now);
         }
 
@@ -698,6 +699,15 @@ namespace PicSum.Main.UIComponent
         private void showInfoToolButton_MouseClick(object sender, MouseEventArgs e)
         {
             isShowFileInfo = !isShowFileInfo;
+        }
+
+        #endregion
+
+        #region 情報パネルイベント
+
+        private void infoPanel_SelectedTag(object sender, SelectedTagEventArgs e)
+        {
+            this.openContents(new TagFileListContentsParameter(e.Tag), e.OpenType);
         }
 
         #endregion

@@ -196,7 +196,7 @@
             this.tagFlowList.ItemTextTrimming = System.Drawing.StringTrimming.EllipsisCharacter;
             this.tagFlowList.Location = new System.Drawing.Point(0, 503);
             this.tagFlowList.Margin = new System.Windows.Forms.Padding(0, 3, 0, 0);
-            this.tagFlowList.MousePointItemColor = System.Drawing.Color.Empty;
+            this.tagFlowList.MousePointItemColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(48)))), ((int)(((byte)(96)))), ((int)(((byte)(144)))));
             this.tagFlowList.Name = "tagFlowList";
             this.tagFlowList.RectangleSelectionColor = System.Drawing.Color.Empty;
             this.tagFlowList.SelectedItemColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(48)))), ((int)(((byte)(96)))), ((int)(((byte)(144)))));
@@ -204,6 +204,8 @@
             this.tagFlowList.TabIndex = 16;
             this.tagFlowList.Text = "flowList1";
             this.tagFlowList.DrawItem += new System.EventHandler<SWF.UIComponent.FlowList.DrawItemEventArgs>(this.tagFlowList_DrawItem);
+            this.tagFlowList.MouseClick += new System.Windows.Forms.MouseEventHandler(this.tagFlowList_MouseClick);
+            this.tagFlowList.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.tagFlowList_MouseDoubleClick);
             // 
             // tagContextMenuStrip
             // 

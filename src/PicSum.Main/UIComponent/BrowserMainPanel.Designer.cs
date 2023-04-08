@@ -91,6 +91,7 @@
             this.infoPanel.Name = "infoPanel";
             this.infoPanel.Size = new System.Drawing.Size(96, 100);
             this.infoPanel.TabIndex = 0;
+            this.infoPanel.SelectedTag += new System.EventHandler<PicSum.UIComponent.InfoPanel.SelectedTagEventArgs>(this.infoPanel_SelectedTag);
             // 
             // tabSwitch
             // 

@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Windows.Forms;
+using PicSum.Core.Base.Conf;
 using PicSum.Core.Data.FileAccessor;
 using PicSum.Core.Task.AsyncTask;
 using PicSum.Task.AsyncFacade;
@@ -20,6 +22,8 @@ namespace PicSum.UIComponent.InfoPanel
         #endregion
 
         #region イベント・デリゲート
+
+        public event EventHandler<SelectedTagEventArgs> SelectedTag;
 
         #endregion
 
@@ -224,6 +228,14 @@ namespace PicSum.UIComponent.InfoPanel
         #endregion
 
         #region 継承メソッド
+
+        protected virtual void OnSelectedTag(SelectedTagEventArgs e)
+        {
+            if (SelectedTag != null)
+            {
+                SelectedTag(this, e);
+            }
+        }
 
         #endregion
 
@@ -497,6 +509,10 @@ namespace PicSum.UIComponent.InfoPanel
             {
                 e.Graphics.FillRectangle(tagFlowList.SelectedItemBrush, e.ItemRectangle);
             }
+            else if (e.IsMousePoint)
+            {
+                e.Graphics.FillRectangle(tagFlowList.MousePointItemBrush, e.ItemRectangle);
+            }
 
             FileTagInfoEntity item = tagList[e.ItemIndex];
 
@@ -639,6 +655,37 @@ namespace PicSum.UIComponent.InfoPanel
             }
 
             addTag(_contextMenuOperationTag);
+        }
+
+        private void tagFlowList_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            var p = tagFlowList.PointToClient(Cursor.Position);
+            int index = tagFlowList.IndexFromPoint(p.X, p.Y);
+            if (index < 0)
+            {
+                return;
+            }
+
+            var tagInfo = tagList[index];
+            OnSelectedTag(new SelectedTagEventArgs(ContentsOpenType.OverlapTab, tagInfo.Tag));
+        }
+
+        private void tagFlowList_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button != MouseButtons.Middle)
+            {
+                return;
+            }
+
+            var p = tagFlowList.PointToClient(Cursor.Position);
+            int index = tagFlowList.IndexFromPoint(p.X, p.Y);
+            if (index < 0)
+            {
+                return;
+            }
+
+            var tagInfo = tagList[index];
+            OnSelectedTag(new SelectedTagEventArgs(ContentsOpenType.AddTab, tagInfo.Tag));
         }
 
         #endregion
