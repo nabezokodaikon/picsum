@@ -213,7 +213,8 @@ namespace PicSum.UIComponent.InfoPanel
             {
                 GetFileDeepInfoParameterEntity param = new GetFileDeepInfoParameterEntity();
                 param.FilePathList = filePathList;
-                int size = Math.Min(thumbnailPictureBox.Width, thumbnailPictureBox.Height);
+                const int OFFSET = 16;
+                int size = Math.Min(thumbnailPictureBox.Width - OFFSET, thumbnailPictureBox.Height - OFFSET);
                 param.ThumbnailSize = new Size(size, size);
 
                 getFileInfoProcess.Cancel();
