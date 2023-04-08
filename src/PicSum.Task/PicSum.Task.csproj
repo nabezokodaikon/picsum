@@ -70,7 +70,6 @@
     <Compile Include="AsyncFacade\AddFolderViewHistoryAsyncFacade.cs" />
     <Compile Include="AsyncFacade\AddFileTagAsyncFacade.cs" />
     <Compile Include="AsyncFacade\AddKeepAsyncFacade.cs" />
-    <Compile Include="AsyncFacade\DeleteFileRatingAsyncFacade.cs" />
     <Compile Include="AsyncFacade\DeleteFileTagAsyncFacade.cs" />
     <Compile Include="AsyncFacade\GetAddressInfoAsyncFacade.cs" />
     <Compile Include="AsyncFacade\GetFileDeepInfoAsyncFacade.cs" />
@@ -88,7 +87,6 @@
     <Compile Include="AsyncLogic\AddFileRatingAsyncLogic.cs" />
     <Compile Include="AsyncLogic\AddFolderViewHistoryAsyncLogic.cs" />
     <Compile Include="AsyncLogic\AddFileTagAsyncLogic.cs" />
-    <Compile Include="AsyncLogic\DeleteFileRatingAsyncLogic.cs" />
     <Compile Include="AsyncLogic\DeleteFileTagAsyncLogic.cs" />
     <Compile Include="AsyncLogic\GetFileDeepInfoAsyncLogic.cs" />
     <Compile Include="AsyncLogic\GetFileTagInfoAsyncLogic.cs" />

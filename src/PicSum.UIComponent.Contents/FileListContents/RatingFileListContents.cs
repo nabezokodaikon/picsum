@@ -19,7 +19,6 @@ namespace PicSum.UIComponent.Contents.FileListContents
 
         private RatingFileListContentsParameter _parameter = null;
         private TwoWayProcess<SearchFileByRatingAsyncFacade, SingleValueEntity<int>, ListEntity<FileShallowInfoEntity>> _searchFileProcess = null;
-        private OneWayProcess<DeleteFileRatingAsyncFacade, ListEntity<string>> _deleteFileRatingProcess = null;
 
         #endregion
 
@@ -36,19 +35,6 @@ namespace PicSum.UIComponent.Contents.FileListContents
                 }
 
                 return _searchFileProcess;
-            }
-        }
-
-        private OneWayProcess<DeleteFileRatingAsyncFacade, ListEntity<string>> deleteFileRatingProcess
-        {
-            get
-            {
-                if (_deleteFileRatingProcess == null)
-                {
-                    _deleteFileRatingProcess = TaskManager.CreateOneWayProcess<DeleteFileRatingAsyncFacade, ListEntity<string>>(ProcessContainer);
-                }
-
-                return _deleteFileRatingProcess;
             }
         }
 
@@ -113,14 +99,6 @@ namespace PicSum.UIComponent.Contents.FileListContents
             // 処理無し。
         }
 
-        protected override void OnRemoveFile(System.Collections.Generic.IList<string> filePathList)
-        {
-            ListEntity<string> param = new ListEntity<string>(filePathList);
-            deleteFileRatingProcess.Execute(this, param);
-
-            RemoveFile(filePathList);
-        }
-
         protected override void OnMovePreviewButtonClick(EventArgs e)
         {
             int ratingValue = 0;
@@ -162,7 +140,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
             this.Title = string.Empty;
             this.Icon = Resources.ActiveRatingIcon;
             this.IsAddKeepMenuItemVisible = true;
-            this.IsRemoveFromListMenuItemVisible = true;
+            this.IsRemoveFromListMenuItemVisible = false;
             this.IsMoveControlVisible = true;
         }
 
