@@ -70,9 +70,6 @@
     </Compile>
     <Compile Include="DrawItemBase.cs" />
     <Compile Include="DropDownDrawItemBase.cs" />
-    <Compile Include="FolderContextMenu.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="FolderDrawItem.cs" />
     <Compile Include="FolderEntity.cs" />
     <Compile Include="FolderHistoryDrawItem.cs" />

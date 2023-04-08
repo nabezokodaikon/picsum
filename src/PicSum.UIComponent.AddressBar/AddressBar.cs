@@ -186,14 +186,6 @@ namespace PicSum.UIComponent.AddressBar
             }
         }
 
-        private FolderContextMenu contextMenu
-        {
-            get
-            {
-                 return (FolderContextMenu)this.ContextMenuStrip;
-            }
-        }
-
         private FolderDrawItem mousePointFolderItem
         {
             get
@@ -389,14 +381,6 @@ namespace PicSum.UIComponent.AddressBar
                           ControlStyles.UserPaint |
                           ControlStyles.AllPaintingInWmPaint |
                           ControlStyles.ResizeRedraw, true);
-
-            this.ContextMenuStrip = new FolderContextMenu();
-
-            contextMenu.Opening += new CancelEventHandler(contextMenu_Opening);
-            contextMenu.ActiveTabOpen += new EventHandler(contextMenu_ActiveTabOpen);
-            contextMenu.NewTabOpen += new EventHandler(contextMenu_NewTabOpen);
-            contextMenu.OtherWindowOpen += new EventHandler(contextMenu_OtherWindowOpen);
-            contextMenu.NewWindowOpen += new EventHandler(contextMenu_NewWindowOpen);
 
             _overflowItem.DropDownOpened += new EventHandler(drawItem_DropDownOpened);
             _overflowItem.DropDownClosed += new EventHandler(drawItem_DropDownClosed);
@@ -696,34 +680,6 @@ namespace PicSum.UIComponent.AddressBar
         private void drawItem_SelectedFolder(object sender, SelectedFolderEventArgs e)
         {
             OnSelectedFolder(e);
-        }
-
-        private void contextMenu_Opening(object sender, CancelEventArgs e)
-        {
-            if (mousePointFolderItem == null)
-            {
-                e.Cancel = true;
-            }
-        }
-
-        private void contextMenu_ActiveTabOpen(object sender, EventArgs e)
-        {
-            OnSelectedFolder(new SelectedFolderEventArgs(ContentsOpenType.OverlapTab, mousePointFolderItem.Folder.FolderPath));
-        }
-
-        private void contextMenu_NewTabOpen(object sender, EventArgs e)
-        {
-            OnSelectedFolder(new SelectedFolderEventArgs(ContentsOpenType.AddTab, mousePointFolderItem.Folder.FolderPath));
-        }
-
-        private void contextMenu_OtherWindowOpen(object sender, EventArgs e)
-        {
-            OnSelectedFolder(new SelectedFolderEventArgs(ContentsOpenType.OtherWindow, mousePointFolderItem.Folder.FolderPath));
-        }
-
-        private void contextMenu_NewWindowOpen(object sender, EventArgs e)
-        {
-            OnSelectedFolder(new SelectedFolderEventArgs(ContentsOpenType.NewWindow, mousePointFolderItem.Folder.FolderPath));
         }
 
         #endregion

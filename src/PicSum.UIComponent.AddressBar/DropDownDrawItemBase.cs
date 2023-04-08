@@ -43,21 +43,6 @@ namespace PicSum.UIComponent.AddressBar
             }
         }
 
-        private FolderContextMenu contextMenu
-        {
-            get
-            {
-                if (_dropDownList == null ||
-                    _dropDownList.ContextMenuStrip == null ||
-                    _dropDownList.ContextMenuStrip.GetType() != typeof(FolderContextMenu))
-                {
-                    throw new NullReferenceException("ドロップダウンリストにコンテキストメニューがセットされていません。");
-                }
-
-                return (FolderContextMenu)_dropDownList.ContextMenuStrip;
-            }
-        }
-
         public override void Draw(System.Drawing.Graphics g)
         {
             throw new NotImplementedException();
@@ -79,7 +64,6 @@ namespace PicSum.UIComponent.AddressBar
         {
             if (_dropDownList != null)
             {
-                _dropDownList.ContextMenuStrip.Close();
                 _dropDownList.Close();
                 _dropDownList.Dispose();
             }
@@ -100,21 +84,12 @@ namespace PicSum.UIComponent.AddressBar
             _dropDownList.ItemTextAlignment = StringAlignment.Near;
             _dropDownList.ItemTextLineAlignment = StringAlignment.Center;
             _dropDownList.ItemTextFormatFlags = StringFormatFlags.NoWrap;
-            _dropDownList.ContextMenuStrip = new FolderContextMenu();
-
+            
             _dropDownList.Opened += new EventHandler(dropDownList_Opened);
-            _dropDownList.Closing += new ToolStripDropDownClosingEventHandler(dropDownList_Closing);
             _dropDownList.Closed += new ToolStripDropDownClosedEventHandler(dropDownList_Closed);
             _dropDownList.Drawitem += new EventHandler<SWF.UIComponent.FlowList.DrawItemEventArgs>(dropDownList_Drawitem);
             _dropDownList.ItemMouseClick += new EventHandler<MouseEventArgs>(dropDownList_ItemMouseClick);
             _dropDownList.ItemExecute += new EventHandler(dropDownList_ItemExecute);
-
-            contextMenu.Opening += new CancelEventHandler(contextMenu_Opening);
-            contextMenu.Closing += new ToolStripDropDownClosingEventHandler(contextMenu_Closing);
-            contextMenu.ActiveTabOpen += new EventHandler(contextMenu_ActiveTabOpen);
-            contextMenu.NewTabOpen += new EventHandler(contextMenu_NewTabOpen);
-            contextMenu.OtherWindowOpen += new EventHandler(contextMenu_OtherWindowOpen);
-            contextMenu.NewWindowOpen += new EventHandler(contextMenu_NewWindowOpen);
         }
 
         private FolderEntity getDropDownItemFromScreenPoint()
@@ -131,14 +106,6 @@ namespace PicSum.UIComponent.AddressBar
         private void dropDownList_Opened(object sender, EventArgs e)
         {
             OnDropDownOpened(e);
-        }
-
-        private void dropDownList_Closing(object sender, ToolStripDropDownClosingEventArgs e)
-        {
-            if (contextMenu.IsOpen)
-            {
-                e.Cancel = true;
-            }
         }
 
         private void dropDownList_Closed(object sender, ToolStripDropDownClosedEventArgs e)
