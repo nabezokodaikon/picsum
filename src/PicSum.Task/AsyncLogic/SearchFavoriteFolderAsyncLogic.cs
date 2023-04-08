@@ -20,16 +20,10 @@ namespace PicSum.Task.AsyncLogic
             var sql = new ReadFavoriteFolderSql();
             var dtoList = DatabaseManager<FileInfoConnection>.ReadList<SingleValueDto<string>>(sql);
 
-            Console.WriteLine("SearchFavoriteFolderAsyncLogic");
-            var sw = Stopwatch.StartNew();
-
             var dirList = dtoList
                 .Where(dto => !string.IsNullOrEmpty(dto.Value) && FileUtil.CanAccess(dto.Value) && FileUtil.HasFile(dto.Value))
                 .Select(dto => dto.Value)
                 .ToList();
-
-            sw.Stop();
-            Console.WriteLine("[{0}] SearchFavoriteFolderAsyncLogic", sw.ElapsedMilliseconds);
 
             return dirList;
         }
