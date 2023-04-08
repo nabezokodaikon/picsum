@@ -5,14 +5,11 @@ namespace PicSum.UIComponent.Contents
 {
     public class SelectedFileChangeEventArgs : EventArgs
     {
-        private IList<string> _filePathList = null;
+        public IList<string> FilePathList { get; private set; }
 
-        public IList<string> FilePathList
+        public SelectedFileChangeEventArgs() 
         {
-            get
-            {
-                return _filePathList;
-            }
+            this.FilePathList = new List<string>();
         }
 
         public SelectedFileChangeEventArgs(string filePath)
@@ -22,7 +19,7 @@ namespace PicSum.UIComponent.Contents
                 throw new ArgumentNullException("filePath");
             }
 
-            _filePathList = new List<string>(new string[] { filePath });
+            this.FilePathList = new List<string>(new string[] { filePath });
         }
 
         public SelectedFileChangeEventArgs(IList<string> filePathList)
@@ -32,7 +29,7 @@ namespace PicSum.UIComponent.Contents
                 throw new ArgumentNullException("filePathList");
             }
 
-            _filePathList = filePathList;
+            this.FilePathList = filePathList;
         }
     }
 }
