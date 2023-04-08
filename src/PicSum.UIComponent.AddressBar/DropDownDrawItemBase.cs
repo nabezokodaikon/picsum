@@ -186,12 +186,6 @@ namespace PicSum.UIComponent.AddressBar
             OnSelectedFolder(new SelectedFolderEventArgs(ContentsOpenType.AddTab, _mousePointItem.FolderPath));
         }
 
-        private void contextMenu_OtherWindowOpen(object sender, EventArgs e)
-        {
-            DropDownList.Close();
-            OnSelectedFolder(new SelectedFolderEventArgs(ContentsOpenType.OtherWindow, _mousePointItem.FolderPath));
-        }
-
         private void contextMenu_NewWindowOpen(object sender, EventArgs e)
         {
             DropDownList.Close();

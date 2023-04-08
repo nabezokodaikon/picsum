@@ -53,8 +53,7 @@ namespace PicSum.Core.Base.Conf
         OverlapTab = 1,
         AddTab = 2,
         InsertTab = 3,
-        OtherWindow = 4,
-        NewWindow = 5
+        NewWindow = 4
     }
 
     /// <summary>

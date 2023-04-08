@@ -25,7 +25,6 @@ namespace PicSum.Main.UIComponent
         #region イベント
 
         public event EventHandler<TabDropoutedEventArgs> TabDropouted;
-        public event EventHandler<BrowserContentsOpenEventArgs> OtherWindowContentsOpen;
         public event EventHandler<BrowserContentsOpenEventArgs> NewWindowContentsOpen;
         public event EventHandler Close;
         public event EventHandler BackgroundMouseDoubleLeftClick;
@@ -194,14 +193,6 @@ namespace PicSum.Main.UIComponent
             }
         }
 
-        protected virtual void OnOtherWindowContentsOpen(BrowserContentsOpenEventArgs e)
-        {
-            if (OtherWindowContentsOpen != null)
-            {
-                OtherWindowContentsOpen(this, e);
-            }
-        }
-
         protected virtual void OnNewWindowContentsOpen(BrowserContentsOpenEventArgs e)
         {
             if (NewWindowContentsOpen != null)
@@ -278,10 +269,6 @@ namespace PicSum.Main.UIComponent
             else if (openType == ContentsOpenType.AddTab)
             {
                 addContentsEventHandler(tabSwitch.AddTab<BrowserContents>(param));
-            }
-            else if (openType == ContentsOpenType.OtherWindow)
-            {
-                OnOtherWindowContentsOpen(new BrowserContentsOpenEventArgs(param));
             }
             else if (openType == ContentsOpenType.NewWindow)
             {

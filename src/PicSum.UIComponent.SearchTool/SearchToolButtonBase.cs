@@ -180,7 +180,6 @@ namespace PicSum.UIComponent.SearchTool
             contextMenu.Closing += new ToolStripDropDownClosingEventHandler(contextMenu_Closing);
             contextMenu.ActiveTabOpen += new EventHandler(contextMenu_ActiveTabOpen);
             contextMenu.NewTabOpen += new EventHandler(contextMenu_NewTabOpen);
-            contextMenu.OtherWindowOpen += new EventHandler(contextMenu_OtherWindowOpen);
             contextMenu.NewWindowOpen += new EventHandler(contextMenu_NewWindowOpen);
         }
 
@@ -277,13 +276,6 @@ namespace PicSum.UIComponent.SearchTool
             DropDownList.Close();
             _selectedValue = _mousePointItem.Value;
             OnSelectedItem(new SelectedItemEventArgs<TValue>(ContentsOpenType.AddTab, _mousePointItem.Value));
-        }
-
-        private void contextMenu_OtherWindowOpen(object sender, EventArgs e)
-        {
-            DropDownList.Close();
-            _selectedValue = _mousePointItem.Value;
-            OnSelectedItem(new SelectedItemEventArgs<TValue>(ContentsOpenType.OtherWindow, _mousePointItem.Value));
         }
 
         private void contextMenu_NewWindowOpen(object sender, EventArgs e)

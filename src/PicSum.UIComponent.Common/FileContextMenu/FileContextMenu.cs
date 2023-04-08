@@ -21,13 +21,11 @@ namespace PicSum.UIComponent.Common.FileContextMenu
 
         public event EventHandler<ExecuteFileEventArgs> FileActiveTabOpen;
         public event EventHandler<ExecuteFileEventArgs> FileNewTabOpen;
-        public event EventHandler<ExecuteFileEventArgs> FileOtherWindowOpen;
         public event EventHandler<ExecuteFileEventArgs> FileNewWindowOpen;
         public event EventHandler<ExecuteFileEventArgs> FileOpen;
         public event EventHandler<ExecuteFileEventArgs> SaveFolderOpen;
         public event EventHandler<ExecuteFileEventArgs> FolderActiveTabOpen;
         public event EventHandler<ExecuteFileEventArgs> FolderNewTabOpen;
-        public event EventHandler<ExecuteFileEventArgs> FolderOtherWindowOpen;
         public event EventHandler<ExecuteFileEventArgs> FolderNewWindowOpen;
         public event EventHandler<ExecuteFileEventArgs> ExplorerOpen;
 
@@ -49,7 +47,6 @@ namespace PicSum.UIComponent.Common.FileContextMenu
         // 画像ファイルメニュー項目
         private ToolStripMenuItem _fileActiveTabOpenMenuItem = new ToolStripMenuItem("開く");
         private ToolStripMenuItem _fileNewTabOpenMenuItem = new ToolStripMenuItem("新しいタブで開く");
-        private ToolStripMenuItem _fileOtherWindowOpenMenuItem = new ToolStripMenuItem("別のウィンドウで開く");
         private ToolStripMenuItem _fileNewWindowOpenMenuItem = new ToolStripMenuItem("新しいウィンドウで開く");
 
         // ファイルメニュー項目
@@ -59,7 +56,6 @@ namespace PicSum.UIComponent.Common.FileContextMenu
         // フォルダメニュー項目
         private ToolStripMenuItem _folderActiveTabOpenMenuItem = new ToolStripMenuItem("開く");
         private ToolStripMenuItem _folderNewTabOpenMenuItem = new ToolStripMenuItem("新しいタブで開く");
-        private ToolStripMenuItem _folderOtherWindowOpenMenuItem = new ToolStripMenuItem("別のウィンドウで開く");
         private ToolStripMenuItem _folderNewWindowOpenMenuItem = new ToolStripMenuItem("新しいウィンドウで開く");
         private ToolStripMenuItem _explorerOpenMenuItem = new ToolStripMenuItem("エクスプローラで開く");
 
@@ -205,14 +201,6 @@ namespace PicSum.UIComponent.Common.FileContextMenu
             }
         }
 
-        protected virtual void OnFileOtherWindowOpen(ExecuteFileEventArgs e)
-        {
-            if (FileOtherWindowOpen != null)
-            {
-                FileOtherWindowOpen(this, e);
-            }
-        }
-
         protected virtual void OnFileNewWindowOpen(ExecuteFileEventArgs e)
         {
             if (FileNewWindowOpen != null)
@@ -250,14 +238,6 @@ namespace PicSum.UIComponent.Common.FileContextMenu
             if (FolderNewTabOpen != null)
             {
                 FolderNewTabOpen(this, e);
-            }
-        }
-
-        protected virtual void OnFolderOtherWindowOpen(ExecuteFileEventArgs e)
-        {
-            if (FolderOtherWindowOpen != null)
-            {
-                FolderOtherWindowOpen(this, e);
             }
         }
 
@@ -325,13 +305,11 @@ namespace PicSum.UIComponent.Common.FileContextMenu
         {
             this.Items.AddRange(new ToolStripItem[] { _fileActiveTabOpenMenuItem, 
                                                       _fileNewTabOpenMenuItem, 
-                                                      _fileOtherWindowOpenMenuItem, 
                                                       _fileNewWindowOpenMenuItem, 
                                                       _fileOpen,
                                                       _saveFolderOpen,
                                                       _folderActiveTabOpenMenuItem, 
                                                       _folderNewTabOpenMenuItem, 
-                                                      _folderOtherWindowOpenMenuItem, 
                                                       _folderNewWindowOpenMenuItem, 
                                                       _explorerOpenMenuItem,
                                                       _pathCopyMenuItem,
@@ -342,13 +320,11 @@ namespace PicSum.UIComponent.Common.FileContextMenu
 
             _fileActiveTabOpenMenuItem.Click += new EventHandler(_fileActiveTabOpenMenuItem_Click);
             _fileNewTabOpenMenuItem.Click += new EventHandler(_fileNewTabOpenMenuItem_Click);
-            _fileOtherWindowOpenMenuItem.Click += new EventHandler(_fileOtherWindowOpenMenuItem_Click);
             _fileNewWindowOpenMenuItem.Click += new EventHandler(_fileNewWindowOpenMenuItem_Click);
             _fileOpen.Click += new EventHandler(_fileOpen_Click);
             _saveFolderOpen.Click += new EventHandler(_saveFolderOpen_Click);
             _folderActiveTabOpenMenuItem.Click += new EventHandler(_folderActiveTabOpenMenuItem_Click);
             _folderNewTabOpenMenuItem.Click += new EventHandler(_folderNewTabOpenMenuItem_Click);
-            _folderOtherWindowOpenMenuItem.Click += new EventHandler(_folderOtherWindowOpenMenuItem_Click);
             _folderNewWindowOpenMenuItem.Click += new EventHandler(_folderNewWindowOpenMenuItem_Click);
             _explorerOpenMenuItem.Click += new EventHandler(_explorerOpenMenuItem_Click);
             _pathCopyMenuItem.Click += new EventHandler(_pathCopyMenuItem_Click);
@@ -370,7 +346,6 @@ namespace PicSum.UIComponent.Common.FileContextMenu
             }
 
             _fileNewTabOpenMenuItem.Visible = isVisible;
-            _fileOtherWindowOpenMenuItem.Visible = isVisible;
             _fileNewWindowOpenMenuItem.Visible = isVisible;
             _exportMenuItem.Visible = isVisible;
         }
@@ -393,7 +368,6 @@ namespace PicSum.UIComponent.Common.FileContextMenu
             }
 
             _folderNewTabOpenMenuItem.Visible = isVisible;
-            _folderOtherWindowOpenMenuItem.Visible = isVisible;
             _folderNewWindowOpenMenuItem.Visible = isVisible;
             _explorerOpenMenuItem.Visible = isVisible;
         }
@@ -410,11 +384,6 @@ namespace PicSum.UIComponent.Common.FileContextMenu
         private void _fileNewTabOpenMenuItem_Click(object sender, EventArgs e)
         {
             OnFileNewTabOpen(new ExecuteFileEventArgs(_filePathList.First()));
-        }
-
-        private void _fileOtherWindowOpenMenuItem_Click(object sender, EventArgs e)
-        {
-            OnFileOtherWindowOpen(new ExecuteFileEventArgs(_filePathList.First()));
         }
 
         private void _fileNewWindowOpenMenuItem_Click(object sender, EventArgs e)
@@ -440,11 +409,6 @@ namespace PicSum.UIComponent.Common.FileContextMenu
         private void _folderNewTabOpenMenuItem_Click(object sender, EventArgs e)
         {
             OnFolderNewTabOpen(new ExecuteFileEventArgs(_filePathList.First()));
-        }
-
-        private void _folderOtherWindowOpenMenuItem_Click(object sender, EventArgs e)
-        {
-            OnFolderOtherWindowOpen(new ExecuteFileEventArgs(_filePathList.First()));
         }
 
         private void _folderNewWindowOpenMenuItem_Click(object sender, EventArgs e)

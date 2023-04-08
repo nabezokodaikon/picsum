@@ -115,7 +115,6 @@ namespace PicSum.Main.Mng
             browser.FormClosing += new System.Windows.Forms.FormClosingEventHandler(browser_FormClosing);
             browser.Activated += new EventHandler(browser_Activated);
             browser.TabDropouted += new EventHandler<TabDropoutedEventArgs>(browser_TabDropouted);
-            browser.OtherWindowContentsOpen += new EventHandler<BrowserContentsOpenEventArgs>(browser_OtherWindowContentsOpen);
             browser.NewWindowContentsOpen += new EventHandler<BrowserContentsOpenEventArgs>(browser_NewWindowContentsOpen);
             browser.KeyDown += browser_KeyDown;
         }
@@ -172,23 +171,6 @@ namespace PicSum.Main.Mng
             _browserList.Add(browser);
             browser.Show();
             browser.AddTab(e.Tab);
-        }
-
-        private void browser_OtherWindowContentsOpen(object sender, BrowserContentsOpenEventArgs e)
-        {
-            if (_browserList.Count > 1)
-            {
-                BrowserForm browser = _browserList[1];
-                browser.AddTab(e.ContentsParameter);
-                browser.Activate();
-            }
-            else
-            {
-                BrowserForm browser = createBrowser();
-                _browserList.Add(browser);
-                browser.Show();
-                browser.AddTab(e.ContentsParameter);
-            }
         }
 
         private void browser_NewWindowContentsOpen(object sender, BrowserContentsOpenEventArgs e)

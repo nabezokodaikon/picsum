@@ -1120,12 +1120,6 @@ namespace PicSum.UIComponent.Contents.FileListContents
             OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.AddTab, param));
         }
 
-        private void fileContextMenu_FileOtherWindowOpen(object sender, PicSum.UIComponent.Common.FileContextMenu.ExecuteFileEventArgs e)
-        {
-            ImageViewerContentsParameter param = new ImageViewerContentsParameter(getImageFiles(), e.FilePath);
-            OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.OtherWindow, param));
-        }
-
         private void fileContextMenu_FileNewWindowOpen(object sender, PicSum.UIComponent.Common.FileContextMenu.ExecuteFileEventArgs e)
         {
             ImageViewerContentsParameter param = new ImageViewerContentsParameter(getImageFiles(), e.FilePath);
@@ -1152,12 +1146,6 @@ namespace PicSum.UIComponent.Contents.FileListContents
         {
             FolderFileListContentsParameter param = new FolderFileListContentsParameter(e.FilePath);
             OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.AddTab, param));
-        }
-
-        private void fileContextMenu_FolderOtherWindowOpen(object sender, PicSum.UIComponent.Common.FileContextMenu.ExecuteFileEventArgs e)
-        {
-            FolderFileListContentsParameter param = new FolderFileListContentsParameter(e.FilePath);
-            OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.OtherWindow, param));
         }
 
         private void fileContextMenu_FolderNewWindowOpen(object sender, PicSum.UIComponent.Common.FileContextMenu.ExecuteFileEventArgs e)

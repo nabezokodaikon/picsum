@@ -42,7 +42,6 @@ namespace PicSum.Main.UIComponent
         #region イベント
 
         public event EventHandler<TabDropoutedEventArgs> TabDropouted;
-        public event EventHandler<BrowserContentsOpenEventArgs> OtherWindowContentsOpen;
         public event EventHandler<BrowserContentsOpenEventArgs> NewWindowContentsOpen;
 
         #endregion
@@ -224,14 +223,6 @@ namespace PicSum.Main.UIComponent
             }
         }
 
-        protected virtual void OnOtherWindowContentsOpen(BrowserContentsOpenEventArgs e)
-        {
-            if (OtherWindowContentsOpen != null)
-            {
-                OtherWindowContentsOpen(this, e);
-            }
-        }
-
         protected virtual void OnNewWindowContentsOpen(BrowserContentsOpenEventArgs e)
         {
             if (NewWindowContentsOpen != null)
@@ -282,7 +273,6 @@ namespace PicSum.Main.UIComponent
             browserMainPanel.Close += new EventHandler(browserMainPanel_Close);
             browserMainPanel.BackgroundMouseDoubleLeftClick += new EventHandler(browserMainPanel_BackgroundMouseDoubleLeftClick);
             browserMainPanel.NewWindowContentsOpen += new EventHandler<BrowserContentsOpenEventArgs>(browserMainPanel_NewWindowContentsOpen);
-            browserMainPanel.OtherWindowContentsOpen += new EventHandler<BrowserContentsOpenEventArgs>(browserMainPanel_OtherWindowContentsOpen);
             browserMainPanel.TabDropouted += new EventHandler<TabDropoutedEventArgs>(browserMainPanel_TabDropouted);
 
             this.SuspendLayout();
@@ -362,11 +352,6 @@ namespace PicSum.Main.UIComponent
         private void browserMainPanel_NewWindowContentsOpen(object sender, BrowserContentsOpenEventArgs e)
         {
             OnNewWindowContentsOpen(e);
-        }
-
-        private void browserMainPanel_OtherWindowContentsOpen(object sender, BrowserContentsOpenEventArgs e)
-        {
-            OnOtherWindowContentsOpen(e);
         }
 
         private void browserMainPanel_TabDropouted(object sender, TabDropoutedEventArgs e)

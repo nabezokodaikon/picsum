@@ -913,12 +913,6 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
             OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.AddTab, param));
         }
 
-        private void fileContextMenu_FileOtherWindowOpen(object sender, PicSum.UIComponent.Common.FileContextMenu.ExecuteFileEventArgs e)
-        {
-            ImageViewerContentsParameter param = new ImageViewerContentsParameter(_parameter.FilePathList, e.FilePath);
-            OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.OtherWindow, param));
-        }
-
         private void fileContextMenu_FileNewWindowOpen(object sender, PicSum.UIComponent.Common.FileContextMenu.ExecuteFileEventArgs e)
         {
             ImageViewerContentsParameter param = new ImageViewerContentsParameter(_parameter.FilePathList, e.FilePath);

@@ -9,7 +9,6 @@ namespace PicSum.UIComponent.SearchTool
 
         public event EventHandler ActiveTabOpen;
         public event EventHandler NewTabOpen;
-        public event EventHandler OtherWindowOpen;
         public event EventHandler NewWindowOpen;
 
         #endregion
@@ -19,7 +18,6 @@ namespace PicSum.UIComponent.SearchTool
         private bool _isOpen = false;
         private ToolStripMenuItem _activeTabOpenMenuItem = new ToolStripMenuItem("開く");
         private ToolStripMenuItem _newTabOpenMenuItem = new ToolStripMenuItem("新しいタブで開く");
-        private ToolStripMenuItem _otherWindowOpenMenuItem = new ToolStripMenuItem("別のウィンドウで開く");
         private ToolStripMenuItem _newWindowOpenMenuItem = new ToolStripMenuItem("新しいウィンドウで開く");
 
         #endregion
@@ -53,12 +51,10 @@ namespace PicSum.UIComponent.SearchTool
 
             this.Items.AddRange(new ToolStripItem[] { _activeTabOpenMenuItem, 
                                                       _newTabOpenMenuItem, 
-                                                      _otherWindowOpenMenuItem, 
                                                       _newWindowOpenMenuItem });
 
             _activeTabOpenMenuItem.MouseUp += new MouseEventHandler(_activeTabOpenMenuItem_MouseUp);
             _newTabOpenMenuItem.MouseUp += new MouseEventHandler(_newTabOpenMenuItem_MouseUp);
-            _otherWindowOpenMenuItem.MouseUp += new MouseEventHandler(_otherWindowOpenMenuItem_MouseUp);
             _newWindowOpenMenuItem.MouseUp += new MouseEventHandler(_newWindowOpenMenuItem_MouseUp);
         }
 
@@ -75,14 +71,6 @@ namespace PicSum.UIComponent.SearchTool
             if (e.Button == MouseButtons.Left)
             {
                 OnNewTabOpen(new EventArgs());
-            }
-        }
-
-        private void _otherWindowOpenMenuItem_MouseUp(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Left)
-            {
-                OnOtherWindowOpen(new EventArgs());
             }
         }
 
@@ -111,14 +99,6 @@ namespace PicSum.UIComponent.SearchTool
             if (NewTabOpen != null)
             {
                 NewTabOpen(this, e);
-            }
-        }
-
-        protected virtual void OnOtherWindowOpen(EventArgs e)
-        {
-            if (OtherWindowOpen != null)
-            {
-                OtherWindowOpen(this, e);
             }
         }
 
@@ -154,7 +134,6 @@ namespace PicSum.UIComponent.SearchTool
             {
                 _activeTabOpenMenuItem.Dispose();
                 _newTabOpenMenuItem.Dispose();
-                _otherWindowOpenMenuItem.Dispose();
                 _newWindowOpenMenuItem.Dispose();
             }
 
