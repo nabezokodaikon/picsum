@@ -125,7 +125,7 @@
             this.toolPanel.Controls.Add(this.nextContentsHistoryButton);
             this.toolPanel.Controls.Add(this.showInfoToolButton);
             this.toolPanel.Controls.Add(this.addressBar);
-            this.toolPanel.Location = new System.Drawing.Point(0, 30);
+            this.toolPanel.Location = new System.Drawing.Point(0, 29);
             this.toolPanel.Margin = new System.Windows.Forms.Padding(0);
             this.toolPanel.MaximumSize = new System.Drawing.Size(0, 34);
             this.toolPanel.MinimumSize = new System.Drawing.Size(0, 34);
