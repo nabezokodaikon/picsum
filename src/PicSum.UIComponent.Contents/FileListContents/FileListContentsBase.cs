@@ -994,6 +994,11 @@ namespace PicSum.UIComponent.Contents.FileListContents
             }
         }
 
+        protected virtual void flowLilst_BackgroundMouseClick(object sender, MouseEventArgs e)
+        {
+            this.OnBackgroundMouseClick(e);
+        }
+
         private void flowList_ItemExecute(object sender, EventArgs e)
         {
             string filePath = _filterFilePathList[flowList.GetSelectedIndexs()[0]];

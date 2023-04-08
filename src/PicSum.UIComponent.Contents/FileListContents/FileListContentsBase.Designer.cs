@@ -83,6 +83,7 @@
             this.flowList.MouseDown += new System.Windows.Forms.MouseEventHandler(this.flowList_MouseDown);
             this.flowList.ItemMouseClick += new System.EventHandler<System.Windows.Forms.MouseEventArgs>(this.flowList_ItemMouseClick);
             this.flowList.ItemMouseDoubleClick += new System.EventHandler<System.Windows.Forms.MouseEventArgs>(this.flowList_ItemMouseDoubleClick);
+            this.flowList.BackgroundMouseClick += new System.EventHandler<System.Windows.Forms.MouseEventArgs>(this.flowLilst_BackgroundMouseClick);
             // 
             // fileContextMenu
             // 

@@ -121,6 +121,11 @@ namespace PicSum.UIComponent.Contents.FileListContents
         private void searchFileProcess_Callback(object sender, ListEntity<FileShallowInfoEntity> e)
         {
             base.SetFile(e, _parameter.SelectedFilePath);
+
+            if (string.IsNullOrEmpty(_parameter.SelectedFilePath))
+            {
+                base.OnSelectedFileChanged(new SelectedFileChangeEventArgs());
+            }
         }
 
         #endregion
