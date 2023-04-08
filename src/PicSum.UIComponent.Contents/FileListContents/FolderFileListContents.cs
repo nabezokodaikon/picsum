@@ -124,7 +124,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
 
         protected override void OnBackgroundMouseClick(MouseEventArgs e)
         {
-            OnSelectedFileChanged(new SelectedFileChangeEventArgs(_parameter.FolderPath));
+            base.OnSelectedFileChanged(new SelectedFileChangeEventArgs(_parameter.FolderPath));
         }
 
         protected override void FileContextMenu_Opening(object sender, CancelEventArgs e)
