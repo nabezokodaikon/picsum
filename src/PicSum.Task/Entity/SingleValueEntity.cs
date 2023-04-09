@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using PicSum.Core.Task.Base;
+﻿using PicSum.Core.Task.Base;
 
 namespace PicSum.Task.Entity
 {
@@ -11,6 +7,7 @@ namespace PicSum.Task.Entity
     /// </summary>
     public class SingleValueEntity<T> : IEntity
     {
+        // TODO: コンストラクタで値を設定できるようにする。
         public T Value { get; set; }
     }
 }
