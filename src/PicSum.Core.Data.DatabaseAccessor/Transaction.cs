@@ -18,12 +18,7 @@ namespace PicSum.Core.Data.DatabaseAccessor
         /// </summary>
         public Transaction(ConnectionBase connection)
         {
-            if (connection == null)
-            {
-                throw new ArgumentNullException("conntenction");
-            }
-
-            _conntenction = connection;
+            _conntenction = connection ?? throw new ArgumentNullException(nameof(connection));
         }
 
         /// <summary>

@@ -15,32 +15,32 @@ namespace PicSum.Core.Data.DatabaseAccessor
 
         public static IDbDataParameter CreateParameter(string paramName, string value)
         {
-            return CreateParameter(paramName, value, getDbType(value));
+            return CreateParameter(paramName, value, DbType.String);
         }
 
         public static IDbDataParameter CreateParameter(string paramName, string value, int size)
         {
-            return CreateParameter(paramName, value, size, getDbType(value));
+            return CreateParameter(paramName, value, size, DbType.String);
         }
 
         public static IDbDataParameter CreateParameter(string paramName, int value)
         {
-            return CreateParameter(paramName, value, getDbType(value));
+            return CreateParameter(paramName, value, DbType.Int32);
         }
 
         public static IDbDataParameter CreateParameter(string paramName, bool value)
         {
-            return CreateParameter(paramName, value, getDbType(value));
+            return CreateParameter(paramName, value, DbType.Boolean);
         }
 
         public static IDbDataParameter CreateParameter(string paramName, DateTime value)
         {
-            return CreateParameter(paramName, value, getDbType(value));
+            return CreateParameter(paramName, value, DbType.DateTime);
         }
 
         public static IDbDataParameter CreateParameter(string paramName, byte[] value)
         {
-            return CreateParameter(paramName, value, getDbType(value));
+            return CreateParameter(paramName, value, DbType.Binary);
         }
 
         public static IDbDataParameter CreateParameter(string paramName, DBNull value)
@@ -56,7 +56,7 @@ namespace PicSum.Core.Data.DatabaseAccessor
             {
                 string param = string.Format(ApplicationConst.NumberingSqlParameterFormat, paramName, i.ToString());
                 string value = valueList[i];
-                list.Add(CreateParameter(param, value, getDbType(value)));
+                list.Add(CreateParameter(param, value, DbType.String));
             }
 
             return list;
@@ -70,7 +70,7 @@ namespace PicSum.Core.Data.DatabaseAccessor
             {
                 string param = string.Format(ApplicationConst.NumberingSqlParameterFormat, paramName, i.ToString());
                 string value = valueList[i];
-                list.Add(CreateParameter(param, value, size, getDbType(value)));
+                list.Add(CreateParameter(param, value, size, DbType.String));
             }
 
             return list;
@@ -84,7 +84,7 @@ namespace PicSum.Core.Data.DatabaseAccessor
             {
                 string param = string.Format(ApplicationConst.NumberingSqlParameterFormat, paramName, i.ToString());
                 int value = valueList[i];
-                list.Add(CreateParameter(param, value, getDbType(value)));
+                list.Add(CreateParameter(param, value, DbType.Int32));
             }
 
             return list;
@@ -98,7 +98,7 @@ namespace PicSum.Core.Data.DatabaseAccessor
             {
                 string param = string.Format(ApplicationConst.NumberingSqlParameterFormat, paramName, i.ToString());
                 bool value = valueList[i];
-                list.Add(CreateParameter(param, value, getDbType(value)));
+                list.Add(CreateParameter(param, value, DbType.Boolean));
             }
 
             return list;
@@ -112,7 +112,7 @@ namespace PicSum.Core.Data.DatabaseAccessor
             {
                 string param = string.Format(ApplicationConst.NumberingSqlParameterFormat, paramName, i.ToString());
                 DateTime value = valueList[i];
-                list.Add(CreateParameter(param, value, getDbType(value)));
+                list.Add(CreateParameter(param, value, DbType.DateTime));
             }
 
             return list;
@@ -126,7 +126,7 @@ namespace PicSum.Core.Data.DatabaseAccessor
             {
                 string param = string.Format(ApplicationConst.NumberingSqlParameterFormat, paramName, i.ToString());
                 byte[] value = valueList[i];
-                list.Add(CreateParameter(param, value, getDbType(value)));
+                list.Add(CreateParameter(param, value, DbType.Binary));
             }
 
             return list;
@@ -134,54 +134,27 @@ namespace PicSum.Core.Data.DatabaseAccessor
 
         private static SQLiteParameter CreateParameter(string paramName, object value, DbType dbType)
         {
-            SQLiteParameter param = new SQLiteParameter();
-
-            param.ParameterName = paramName;
-            param.Value = value;
-            param.DbType = dbType;
+            var param = new SQLiteParameter
+            {
+                ParameterName = paramName,
+                Value = value,
+                DbType = dbType
+            };
 
             return param;
         }
 
         private static SQLiteParameter CreateParameter(string paramName, object value, int size, DbType dbType)
         {
-            SQLiteParameter param = new SQLiteParameter();
-
-            param.ParameterName = paramName;
-            param.Value = value;
-            param.Size = size;
-            param.DbType = dbType;
+            var param = new SQLiteParameter
+            {
+                ParameterName = paramName,
+                Value = value,
+                Size = size,
+                DbType = dbType
+            };
 
             return param;
-        }
-
-        #endregion
-
-        #region DbType取得
-
-        private static DbType getDbType(string value)
-        {
-            return DbType.String;
-        }
-
-        private static DbType getDbType(int value)
-        {
-            return DbType.Int32;
-        }
-
-        private static DbType getDbType(bool value)
-        {
-            return DbType.Boolean;
-        }
-
-        private static DbType getDbType(DateTime value)
-        {
-            return DbType.DateTime;
-        }
-
-        private static DbType getDbType(byte[] value)
-        {
-            return DbType.Binary;
         }
 
         #endregion
