@@ -168,7 +168,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
 
         private void getNextTagProcess_Callback(object sender, SingleValueEntity<string> e)
         {
-            TagFileListContentsParameter param = new TagFileListContentsParameter(e.Value);
+            TagFileListContentsParameter param = new TagFileListContentsParameter(e.Value, this._parameter.AfterLoadAction);
             OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.OverlapTab, param));
         }
 

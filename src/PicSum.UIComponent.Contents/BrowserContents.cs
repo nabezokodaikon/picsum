@@ -58,13 +58,16 @@ namespace PicSum.UIComponent.Contents
 
         #region プライベートプロパティ
 
+        protected IContentsParameter Parameter { get; private set; }
+
         #endregion
 
         #region コンストラクタ
 
-        public BrowserContents()
+        public BrowserContents(IContentsParameter parameter)
         {
             initializeComponent();
+            this.Parameter = parameter ?? throw new ArgumentNullException(nameof(parameter));
         }
 
         #endregion

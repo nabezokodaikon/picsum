@@ -1,4 +1,6 @@
 ﻿
+using System;
+
 namespace SWF.UIComponent.TabOperation
 {
     /// <summary>
@@ -7,5 +9,6 @@ namespace SWF.UIComponent.TabOperation
     public interface IContentsParameter
     {
         ContentsPanel CreateContents();
+        Action<bool> AfterLoadAction { get; }
     }
 }

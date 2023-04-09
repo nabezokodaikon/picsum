@@ -28,9 +28,12 @@ namespace PicSum.UIComponent.Contents.ContentsParameter
             }
         }
 
-        public KeepFileListContentsParameter()
+        public Action<bool> AfterLoadAction { get; private set; }
+
+        public KeepFileListContentsParameter(Action<bool> afterLoadAction)
         {
             _selectedFilePath = string.Empty;
+            this.AfterLoadAction = afterLoadAction ?? throw new ArgumentNullException(nameof(afterLoadAction));
         }
 
         public ContentsPanel CreateContents()

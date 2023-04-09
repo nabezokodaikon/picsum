@@ -34,6 +34,7 @@ namespace PicSum.Main.UIComponent
         #region インスタンス変数
 
         private TwoWayProcess<SearchImageFileByFolderAsyncFacade, SearchImageFileParameterEntity, SearchImageFileResultEntity> _searchImageFileProcess = null;
+        private readonly Action<bool> reloadButtonEnableAction = null;
 
         #endregion
 
@@ -92,6 +93,11 @@ namespace PicSum.Main.UIComponent
             if (!this.DesignMode)
             {
                 initializeComponent();
+
+                this.reloadButtonEnableAction = (isImage) =>
+                {
+                    this.reloadToolButton.Enabled = !isImage;
+                };
             }
         }
 
@@ -133,7 +139,7 @@ namespace PicSum.Main.UIComponent
 
         public void AddFavoriteFolderListTab()
         {
-            openContents(new FavoriteFolderListContentsParameter(), ContentsOpenType.AddTab);
+            openContents(new FavoriteFolderListContentsParameter(this.reloadButtonEnableAction), ContentsOpenType.AddTab);
         }
 
         public void RemoveActiveTab()
@@ -298,7 +304,7 @@ namespace PicSum.Main.UIComponent
                 if (FileUtil.IsFolder(filePath))
                 {
                     // フォルダコンテンツを追加します。
-                    openContents(new FolderFileListContentsParameter(filePath), ContentsOpenType.AddTab);
+                    openContents(new FolderFileListContentsParameter(filePath, this.reloadButtonEnableAction), ContentsOpenType.AddTab);
                 }
                 else if (FileUtil.IsFile(filePath))
                 {
@@ -321,7 +327,7 @@ namespace PicSum.Main.UIComponent
                     if (FileUtil.IsFolder(filePath))
                     {
                         // フォルダコンテンツを追加します。
-                        openContents(new FolderFileListContentsParameter(filePath), ContentsOpenType.AddTab);
+                        openContents(new FolderFileListContentsParameter(filePath, this.reloadButtonEnableAction), ContentsOpenType.AddTab);
                     }
                     else if (FileUtil.IsFile(filePath))
                     {
@@ -336,7 +342,7 @@ namespace PicSum.Main.UIComponent
                 if (imgFiles.Count > 0)
                 {
                     // 引数に画像ファイルが存在する場合、ビューアコンテンツを追加します。
-                    openContents(new ImageViewerContentsParameter(imgFiles, imgFiles[0]), ContentsOpenType.AddTab);
+                    openContents(new ImageViewerContentsParameter(imgFiles, imgFiles[0], this.reloadButtonEnableAction), ContentsOpenType.AddTab);
                 }
             }
         }
@@ -348,14 +354,14 @@ namespace PicSum.Main.UIComponent
                 dragData.FilePathList.Count > 0)
             {
                 // ビューアコンテンツを上書きします。
-                openContents(new ImageViewerContentsParameter(dragData.FilePathList, dragData.CurrentFilePath), ContentsOpenType.OverlapTab);
+                openContents(new ImageViewerContentsParameter(dragData.FilePathList, dragData.CurrentFilePath, this.reloadButtonEnableAction), ContentsOpenType.OverlapTab);
             }
             else if (!string.IsNullOrEmpty(dragData.CurrentFilePath))
             {
                 if (FileUtil.IsFolder(dragData.CurrentFilePath))
                 {
                     // フォルダコンテンツを上書きします。
-                    openContents(new FolderFileListContentsParameter(dragData.CurrentFilePath), ContentsOpenType.OverlapTab);
+                    openContents(new FolderFileListContentsParameter(dragData.CurrentFilePath, this.reloadButtonEnableAction), ContentsOpenType.OverlapTab);
                 }
                 else if (FileUtil.IsFile(dragData.CurrentFilePath) &&
                          ImageUtil.ImageFileExtensionList.Contains(FileUtil.GetExtension(dragData.CurrentFilePath)))
@@ -378,7 +384,7 @@ namespace PicSum.Main.UIComponent
                     if (FileUtil.IsFolder(filePath))
                     {
                         // フォルダコンテンツを挿入します。
-                        insertContents(new FolderFileListContentsParameter(filePath), insertIndex);
+                        insertContents(new FolderFileListContentsParameter(filePath, this.reloadButtonEnableAction), insertIndex);
                         insertIndex++;
                     }
                     else if (FileUtil.IsFile(filePath) &&
@@ -391,7 +397,7 @@ namespace PicSum.Main.UIComponent
                 if (imgFiles.Count > 0)
                 {
                     // 引数に画像ファイルが存在する場合、ビューアコンテンツを挿入します。
-                    insertContents(new ImageViewerContentsParameter(imgFiles, imgFiles[0]), insertIndex);
+                    insertContents(new ImageViewerContentsParameter(imgFiles, imgFiles[0], this.reloadButtonEnableAction), insertIndex);
                 }
             }
         }
@@ -403,14 +409,14 @@ namespace PicSum.Main.UIComponent
                 dragData.FilePathList.Count > 0)
             {
                 // ビューアコンテンツを挿入します。
-                insertContents(new ImageViewerContentsParameter(dragData.FilePathList, dragData.CurrentFilePath), tabIndex);
+                insertContents(new ImageViewerContentsParameter(dragData.FilePathList, dragData.CurrentFilePath, this.reloadButtonEnableAction), tabIndex);
             }
             else if (!string.IsNullOrEmpty(dragData.CurrentFilePath))
             {
                 if (FileUtil.IsFolder(dragData.CurrentFilePath))
                 {
                     // フォルダコンテンツを挿入します。
-                    insertContents(new FolderFileListContentsParameter(dragData.CurrentFilePath), tabIndex);
+                    insertContents(new FolderFileListContentsParameter(dragData.CurrentFilePath, this.reloadButtonEnableAction), tabIndex);
                 }
                 else if (FileUtil.IsFile(dragData.CurrentFilePath) &&
                          ImageUtil.ImageFileExtensionList.Contains(FileUtil.GetExtension(dragData.CurrentFilePath)))
@@ -433,7 +439,7 @@ namespace PicSum.Main.UIComponent
                     if (FileUtil.IsFolder(filePath))
                     {
                         // フォルダコンテンツを挿入します。
-                        insertContents(new FolderFileListContentsParameter(filePath), insertIndex);
+                        insertContents(new FolderFileListContentsParameter(filePath, this.reloadButtonEnableAction), insertIndex);
                         insertIndex++;
                     }
                     else if (FileUtil.IsFile(filePath))
@@ -449,7 +455,7 @@ namespace PicSum.Main.UIComponent
                 if (imgFiles.Count > 0)
                 {
                     // 引数に画像ファイルが存在する場合、ビューアコンテンツを挿入します。
-                    insertContents(new ImageViewerContentsParameter(imgFiles, imgFiles[0]), insertIndex);
+                    insertContents(new ImageViewerContentsParameter(imgFiles, imgFiles[0], this.reloadButtonEnableAction), insertIndex);
                 }
             }
         }
@@ -522,15 +528,15 @@ namespace PicSum.Main.UIComponent
                     tabSwitch.SetActiveTab(e.TabIndex);
                 }
 
-                openContents(new ImageViewerContentsParameter(e.FilePathList, e.SelectedFilePath), ContentsOpenType.OverlapTab);
+                openContents(new ImageViewerContentsParameter(e.FilePathList, e.SelectedFilePath, this.reloadButtonEnableAction), ContentsOpenType.OverlapTab);
             }
             else if (e.FileOpenType == ContentsOpenType.AddTab)
             {
-                openContents(new ImageViewerContentsParameter(e.FilePathList, e.SelectedFilePath), ContentsOpenType.AddTab);
+                openContents(new ImageViewerContentsParameter(e.FilePathList, e.SelectedFilePath, this.reloadButtonEnableAction), ContentsOpenType.AddTab);
             }
             else if (e.FileOpenType == ContentsOpenType.InsertTab)
             {
-                insertContents(new ImageViewerContentsParameter(e.FilePathList, e.SelectedFilePath), e.TabIndex);
+                insertContents(new ImageViewerContentsParameter(e.FilePathList, e.SelectedFilePath, this.reloadButtonEnableAction), e.TabIndex);
             }
         }
 
@@ -563,7 +569,7 @@ namespace PicSum.Main.UIComponent
 
         private void tabSwitch_AddTabButtonMouseClick(object sender, MouseEventArgs e)
         {
-            openContents(new FavoriteFolderListContentsParameter(), ContentsOpenType.AddTab);
+            openContents(new FavoriteFolderListContentsParameter(this.reloadButtonEnableAction), ContentsOpenType.AddTab);
         }
 
         private void tabSwitch_ActiveTabChanged(object sender, EventArgs e)
@@ -676,7 +682,7 @@ namespace PicSum.Main.UIComponent
 
         private void addressBar_SelectedFolder(object sender, PicSum.UIComponent.AddressBar.SelectedFolderEventArgs e)
         {
-            openContents(new FolderFileListContentsParameter(e.FolderPath, e.SubFolderPath), e.OpenType);
+            openContents(new FolderFileListContentsParameter(e.FolderPath, e.SubFolderPath, this.reloadButtonEnableAction), e.OpenType);
         }
 
         #endregion
@@ -694,7 +700,7 @@ namespace PicSum.Main.UIComponent
 
         private void infoPanel_SelectedTag(object sender, SelectedTagEventArgs e)
         {
-            this.openContents(new TagFileListContentsParameter(e.Tag), e.OpenType);
+            this.openContents(new TagFileListContentsParameter(e.Tag, this.reloadButtonEnableAction), e.OpenType);
         }
 
         #endregion
@@ -744,11 +750,11 @@ namespace PicSum.Main.UIComponent
         {
             if (e.Button == MouseButtons.Left)
             {
-                openContents(new FavoriteFolderListContentsParameter(), ContentsOpenType.OverlapTab);
+                openContents(new FavoriteFolderListContentsParameter(this.reloadButtonEnableAction), ContentsOpenType.OverlapTab);
             }
             else if (e.Button == MouseButtons.Middle)
             {
-                openContents(new FavoriteFolderListContentsParameter(), ContentsOpenType.AddTab);
+                openContents(new FavoriteFolderListContentsParameter(this.reloadButtonEnableAction), ContentsOpenType.AddTab);
             }
         }
 
@@ -774,23 +780,23 @@ namespace PicSum.Main.UIComponent
 
         private void searchTagToolButton_SelectedTag(object sender, PicSum.UIComponent.SearchTool.SelectedTagEventArgs e)
         {
-            openContents(new TagFileListContentsParameter(e.Value), e.OpenType);
+            openContents(new TagFileListContentsParameter(e.Value, this.reloadButtonEnableAction), e.OpenType);
         }
 
         private void searchRatingToolButton_SelectedRating(object sender, PicSum.UIComponent.SearchTool.SelectedRatingEventArgs e)
         {
-            openContents(new RatingFileListContentsParameter(e.Value), e.OpenType);
+            openContents(new RatingFileListContentsParameter(e.Value, this.reloadButtonEnableAction), e.OpenType);
         }
 
         private void keepToolButton_MouseClick(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
             {
-                openContents(new KeepFileListContentsParameter(), ContentsOpenType.OverlapTab);
+                openContents(new KeepFileListContentsParameter(this.reloadButtonEnableAction), ContentsOpenType.OverlapTab);
             }
             else if (e.Button == MouseButtons.Middle)
             {
-                openContents(new KeepFileListContentsParameter(), ContentsOpenType.AddTab);
+                openContents(new KeepFileListContentsParameter(this.reloadButtonEnableAction), ContentsOpenType.AddTab);
             }
         }
 

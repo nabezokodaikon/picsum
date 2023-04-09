@@ -37,7 +37,9 @@ namespace PicSum.UIComponent.Contents.ContentsParameter
             }
         }
 
-        public TagFileListContentsParameter(string tag)
+        public Action<bool> AfterLoadAction { get; private set; }
+
+        public TagFileListContentsParameter(string tag, Action<bool> afterLoadAction)
         {
             if (tag == null)
             {
@@ -46,6 +48,7 @@ namespace PicSum.UIComponent.Contents.ContentsParameter
 
             _tag = tag;
             _selectedFilePath = string.Empty;
+            this.AfterLoadAction = afterLoadAction ?? throw new ArgumentNullException(nameof(afterLoadAction));
         }
 
         public ContentsPanel CreateContents()

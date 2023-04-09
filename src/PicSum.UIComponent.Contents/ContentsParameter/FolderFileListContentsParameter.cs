@@ -28,7 +28,9 @@ namespace PicSum.UIComponent.Contents.ContentsParameter
             }
         }
 
-        public FolderFileListContentsParameter(string folderPath, string selectedFilePath)
+        public Action<bool> AfterLoadAction { get; private set; }
+
+        public FolderFileListContentsParameter(string folderPath, string selectedFilePath, Action<bool> afterLoadAction)
         {
             if (folderPath == null)
             {
@@ -42,9 +44,10 @@ namespace PicSum.UIComponent.Contents.ContentsParameter
 
             _folderPath = folderPath;
             _selectedFilePath = selectedFilePath;
+            this.AfterLoadAction = afterLoadAction ?? throw new ArgumentNullException(nameof(afterLoadAction));
         }
 
-        public FolderFileListContentsParameter(string folderPath)
+        public FolderFileListContentsParameter(string folderPath, Action<bool> afterLoadAction)
         {
             if (folderPath == null)
             {
@@ -53,6 +56,7 @@ namespace PicSum.UIComponent.Contents.ContentsParameter
 
             _folderPath = folderPath;
             _selectedFilePath = string.Empty;
+            this.AfterLoadAction = afterLoadAction ?? throw new ArgumentNullException(nameof(afterLoadAction));
         }
 
         public ContentsPanel CreateContents()

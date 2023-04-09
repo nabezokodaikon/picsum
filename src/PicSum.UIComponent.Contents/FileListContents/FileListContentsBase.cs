@@ -32,8 +32,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
         #endregion
 
         #region インスタンス変数
-
-        private IContentsParameter _parameter = null;
+        
         private Dictionary<string, FileEntity> _masterFileDictionary = null;
         private List<string> _filterFilePathList = null;
         private string _selectedFilePath = string.Empty;
@@ -254,14 +253,8 @@ namespace PicSum.UIComponent.Contents.FileListContents
         #region コンストラクタ
 
         public FileListContentsBase(IContentsParameter param)
+            : base(param)
         {
-            if (param == null)
-            {
-                throw new ArgumentNullException("param");
-            }
-
-            _parameter = param;
-
             InitializeComponent();
             initializeComponent();
         }
@@ -273,6 +266,12 @@ namespace PicSum.UIComponent.Contents.FileListContents
         #endregion
 
         #region 継承メソッド
+
+        protected override void OnLoad(EventArgs e)
+        {
+            this.Parameter.AfterLoadAction(false);
+            base.OnLoad(e);
+        }
 
         protected override void OnInvalidated(InvalidateEventArgs e)
         {
@@ -959,12 +958,12 @@ namespace PicSum.UIComponent.Contents.FileListContents
             FileEntity file = _masterFileDictionary[filePath];
             if (file.IsImageFile)
             {
-                ImageViewerContentsParameter param = new ImageViewerContentsParameter(getImageFiles(), file.FilePath);
+                ImageViewerContentsParameter param = new ImageViewerContentsParameter(getImageFiles(), file.FilePath, this.Parameter.AfterLoadAction);
                 OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.AddTab, param));
             }
             else if (!file.IsFile)
             {
-                FolderFileListContentsParameter param = new FolderFileListContentsParameter(file.FilePath);
+                FolderFileListContentsParameter param = new FolderFileListContentsParameter(file.FilePath, this.Parameter.AfterLoadAction);
                 OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.AddTab, param));
             }
         }
@@ -980,12 +979,12 @@ namespace PicSum.UIComponent.Contents.FileListContents
             FileEntity file = _masterFileDictionary[filePath];
             if (file.IsImageFile)
             {
-                ImageViewerContentsParameter param = new ImageViewerContentsParameter(getImageFiles(), file.FilePath);
+                ImageViewerContentsParameter param = new ImageViewerContentsParameter(getImageFiles(), file.FilePath, this.Parameter.AfterLoadAction);
                 OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.OverlapTab, param));
             }
             else if (!file.IsFile)
             {
-                FolderFileListContentsParameter param = new FolderFileListContentsParameter(file.FilePath);
+                FolderFileListContentsParameter param = new FolderFileListContentsParameter(file.FilePath, this.Parameter.AfterLoadAction);
                 OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.OverlapTab, param));
             }
             else
@@ -1005,12 +1004,12 @@ namespace PicSum.UIComponent.Contents.FileListContents
             FileEntity file = _masterFileDictionary[filePath];
             if (file.IsImageFile)
             {
-                ImageViewerContentsParameter param = new ImageViewerContentsParameter(getImageFiles(), file.FilePath);
+                ImageViewerContentsParameter param = new ImageViewerContentsParameter(getImageFiles(), file.FilePath, this.Parameter.AfterLoadAction);
                 OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.OverlapTab, param));
             }
             else if (!file.IsFile)
             {
-                FolderFileListContentsParameter param = new FolderFileListContentsParameter(file.FilePath);
+                FolderFileListContentsParameter param = new FolderFileListContentsParameter(file.FilePath, this.Parameter.AfterLoadAction);
                 OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.OverlapTab, param));
             }
             else
@@ -1109,19 +1108,19 @@ namespace PicSum.UIComponent.Contents.FileListContents
 
         private void fileContextMenu_FileActiveTabOpen(object sender, PicSum.UIComponent.Common.FileContextMenu.ExecuteFileEventArgs e)
         {
-            ImageViewerContentsParameter param = new ImageViewerContentsParameter(getImageFiles(), e.FilePath);
+            ImageViewerContentsParameter param = new ImageViewerContentsParameter(getImageFiles(), e.FilePath, this.Parameter.AfterLoadAction);
             OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.OverlapTab, param));
         }
 
         private void fileContextMenu_FileNewTabOpen(object sender, PicSum.UIComponent.Common.FileContextMenu.ExecuteFileEventArgs e)
         {
-            ImageViewerContentsParameter param = new ImageViewerContentsParameter(getImageFiles(), e.FilePath);
+            ImageViewerContentsParameter param = new ImageViewerContentsParameter(getImageFiles(), e.FilePath, this.Parameter.AfterLoadAction);
             OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.AddTab, param));
         }
 
         private void fileContextMenu_FileNewWindowOpen(object sender, PicSum.UIComponent.Common.FileContextMenu.ExecuteFileEventArgs e)
         {
-            ImageViewerContentsParameter param = new ImageViewerContentsParameter(getImageFiles(), e.FilePath);
+            ImageViewerContentsParameter param = new ImageViewerContentsParameter(getImageFiles(), e.FilePath, this.Parameter.AfterLoadAction);
             OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.NewWindow, param));
         }
 
@@ -1137,19 +1136,19 @@ namespace PicSum.UIComponent.Contents.FileListContents
 
         private void fileContextMenu_FolderActiveTabOpen(object sender, PicSum.UIComponent.Common.FileContextMenu.ExecuteFileEventArgs e)
         {
-            FolderFileListContentsParameter param = new FolderFileListContentsParameter(e.FilePath);
+            FolderFileListContentsParameter param = new FolderFileListContentsParameter(e.FilePath, this.Parameter.AfterLoadAction);
             OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.OverlapTab, param));
         }
 
         private void fileContextMenu_FolderNewTabOpen(object sender, PicSum.UIComponent.Common.FileContextMenu.ExecuteFileEventArgs e)
         {
-            FolderFileListContentsParameter param = new FolderFileListContentsParameter(e.FilePath);
+            FolderFileListContentsParameter param = new FolderFileListContentsParameter(e.FilePath, this.Parameter.AfterLoadAction);
             OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.AddTab, param));
         }
 
         private void fileContextMenu_FolderNewWindowOpen(object sender, PicSum.UIComponent.Common.FileContextMenu.ExecuteFileEventArgs e)
         {
-            FolderFileListContentsParameter param = new FolderFileListContentsParameter(e.FilePath);
+            FolderFileListContentsParameter param = new FolderFileListContentsParameter(e.FilePath, this.Parameter.AfterLoadAction);
             OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.NewWindow, param));
         }
 

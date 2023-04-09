@@ -37,7 +37,9 @@ namespace PicSum.UIComponent.Contents.ContentsParameter
             }
         }
 
-        public RatingFileListContentsParameter(int ragingValue)
+        public Action<bool> AfterLoadAction { get; private set; }
+
+        public RatingFileListContentsParameter(int ragingValue, Action<bool> afterLoadAction)
         {
             if (ragingValue < 1)
             {
@@ -46,6 +48,7 @@ namespace PicSum.UIComponent.Contents.ContentsParameter
 
             _ragingValue = ragingValue;
             _selectedFilePath = string.Empty;
+            this.AfterLoadAction = afterLoadAction ?? throw new ArgumentNullException(nameof(afterLoadAction));
         }
 
         public ContentsPanel CreateContents()
