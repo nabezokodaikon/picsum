@@ -99,6 +99,8 @@ namespace PicSum.UIComponent.Contents.FileListContents
             removeKeepProcess.Execute(this, param);
 
             RemoveFile(filePathList);
+
+            this.OnSelectedFileChanged(new SelectedFileChangeEventArgs());
         }
 
         #endregion

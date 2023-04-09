@@ -102,6 +102,8 @@ namespace PicSum.UIComponent.Contents.FileListContents
             var param = new ListEntity<string>(directoryList);
             this.DeleteFolderViewHistoryProcess.Execute(this, param);
             this.RemoveFile(directoryList);
+
+            this.OnSelectedFileChanged(new SelectedFileChangeEventArgs());
         }
 
         #endregion
