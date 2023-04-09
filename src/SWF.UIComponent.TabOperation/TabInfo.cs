@@ -77,6 +77,14 @@ namespace SWF.UIComponent.TabOperation
             }
         }
 
+        public bool HasContents
+        {
+            get
+            {
+                return this._contents != null;
+            }
+        }
+
         public ContentsPanel Contents
         {
             get
@@ -215,6 +223,21 @@ namespace SWF.UIComponent.TabOperation
             }
 
             _contentsParameterListIndex++;
+            _contents = _contentsParameterList[_contentsParameterListIndex].CreateContents();
+        }
+
+        internal void CloneCurrentContents()
+        {
+            if (_contents != null)
+            {
+                throw new Exception("現在のコンテンツが残っています。ClearContentsメソッドでコンテンツをクリアして下さい。");
+            }
+
+            if (_contentsParameterList.Count < 1)
+            {
+                throw new Exception("コンテンツパラメータが存在しません。");
+            }
+
             _contents = _contentsParameterList[_contentsParameterListIndex].CreateContents();
         }
 

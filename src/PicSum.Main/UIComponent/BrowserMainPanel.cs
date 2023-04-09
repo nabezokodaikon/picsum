@@ -752,6 +752,26 @@ namespace PicSum.Main.UIComponent
             }
         }
 
+        private void reloadToolButton_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button != MouseButtons.Left)
+            {
+                return;
+            }
+
+            if (this.tabSwitch.ActiveTab == null)
+            {
+                return;
+            }
+
+            if (!this.tabSwitch.ActiveTab.HasContents)
+            {
+                return;
+            }
+
+            this.addContentsEventHandler(this.tabSwitch.CloneCurrentContents<BrowserContents>());
+        }
+
         private void searchTagToolButton_SelectedTag(object sender, PicSum.UIComponent.SearchTool.SelectedTagEventArgs e)
         {
             openContents(new TagFileListContentsParameter(e.Value), e.OpenType);
