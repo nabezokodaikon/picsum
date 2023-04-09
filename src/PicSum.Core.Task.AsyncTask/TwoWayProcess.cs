@@ -44,7 +44,7 @@ namespace PicSum.Core.Task.AsyncTask
         {
             TFacade facade = new TFacade();
             facade.Callback += new AsyncTaskCallbackEventHandler<TCallbackEventArgs>
-                ((object sender, TCallbackEventArgs e) => SendMessageThread(onCallback, new object[] { sender, e }));
+                ((object sender, TCallbackEventArgs e) => SendMessageThread(OnCallback, new object[] { sender, e }));
             facade.SetTask(task);
 
             try
@@ -66,7 +66,7 @@ namespace PicSum.Core.Task.AsyncTask
         }
 
         // コールバックイベントを発生させます。
-        private void onCallback(object obj)
+        private void OnCallback(object obj)
         {
             object[] args = (object[])obj;
             TaskInfo task = (TaskInfo)args[0];
@@ -74,9 +74,8 @@ namespace PicSum.Core.Task.AsyncTask
 
             if (Callback != null)
             {
-                if (task.Sender is Control)
+                if (task.Sender is Control ctl)
                 {
-                    Control ctl = (Control)task.Sender;
                     if (ctl.IsHandleCreated)
                     {
                         Callback(this, e);
@@ -137,7 +136,7 @@ namespace PicSum.Core.Task.AsyncTask
         {
             TFacade facade = new TFacade();
             facade.Callback += new AsyncTaskCallbackEventHandler<TCallbackEventArgs>
-                ((object sender, TCallbackEventArgs e) => SendMessageThread(onCallback, new object[] { sender, e }));
+                ((object sender, TCallbackEventArgs e) => SendMessageThread(OnCallback, new object[] { sender, e }));
             facade.SetTask(task);
 
             try
@@ -159,7 +158,7 @@ namespace PicSum.Core.Task.AsyncTask
         }
 
         // コールバックイベントを発生させます。
-        private void onCallback(object obj)
+        private void OnCallback(object obj)
         {
             object[] args = (object[])obj;
             TaskInfo task = (TaskInfo)args[0];
@@ -167,9 +166,8 @@ namespace PicSum.Core.Task.AsyncTask
 
             if (Callback != null)
             {
-                if (task.Sender is Control)
+                if (task.Sender is Control ctl)
                 {
-                    Control ctl = (Control)task.Sender;
                     if (ctl.IsHandleCreated)
                     {
                         Callback(this, e);

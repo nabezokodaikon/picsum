@@ -20,14 +20,14 @@ namespace PicSum.Core.Data.DatabaseAccessor
 
         private readonly ReaderWriterLockSlim _transactionLock = new ReaderWriterLockSlim();
         private readonly ReaderWriterLockSlim _executeSqlLock = new ReaderWriterLockSlim();
-        private SQLiteConnection _connection = null;
+        private readonly SQLiteConnection _connection = null;
         private SQLiteTransaction _transaction = null;
 
         #endregion
 
         #region プライベートプロパティ
 
-        private SQLiteConnection connection
+        private SQLiteConnection Connection
         {
             get
             {
@@ -101,7 +101,7 @@ namespace PicSum.Core.Data.DatabaseAccessor
                     throw new Exception("トランザクションが実行中です。");
                 }
 
-                _transaction = connection.BeginTransaction();
+                _transaction = Connection.BeginTransaction();
                 return new Transaction(this);
             }
             catch (Exception)
@@ -175,7 +175,7 @@ namespace PicSum.Core.Data.DatabaseAccessor
 
             try
             {
-                using (var cmd = connection.CreateCommand())
+                using (var cmd = Connection.CreateCommand())
                 {
                     cmd.CommandText = sql.GetExecuteSql();
 
@@ -184,7 +184,7 @@ namespace PicSum.Core.Data.DatabaseAccessor
                         cmd.Parameters.AddRange(sql.ParameterList.ToArray());
                     }
 
-                    int result = executeNonQuery(sql.GetType().Name, cmd);
+                    int result = ExecuteNonQuery(sql.GetType().Name, cmd);
                     if (result > 0)
                     {
                         // 更新されたレコードが存在するため、Trueを返します。
@@ -220,7 +220,7 @@ namespace PicSum.Core.Data.DatabaseAccessor
 
             try
             {
-                using (var cmd = connection.CreateCommand())
+                using (var cmd = Connection.CreateCommand())
                 {
                     cmd.CommandText = sql.GetExecuteSql();
 
@@ -229,7 +229,7 @@ namespace PicSum.Core.Data.DatabaseAccessor
                         cmd.Parameters.AddRange(sql.ParameterList.ToArray());
                     }
 
-                    using (var reader = executeReader(sql.GetType().Name, cmd, CommandBehavior.Default))
+                    using (var reader = ExecuteReader(sql.GetType().Name, cmd, CommandBehavior.Default))
                     {
                         if (reader.HasRows)
                         {
@@ -274,7 +274,7 @@ namespace PicSum.Core.Data.DatabaseAccessor
 
             try
             {
-                using (SQLiteCommand cmd = connection.CreateCommand())
+                using (SQLiteCommand cmd = Connection.CreateCommand())
                 {
                     cmd.CommandText = sql.GetExecuteSql();
 
@@ -283,7 +283,7 @@ namespace PicSum.Core.Data.DatabaseAccessor
                         cmd.Parameters.AddRange(sql.ParameterList.ToArray());
                     }
 
-                    using (SQLiteDataReader reader = executeReader(sql.GetType().Name, cmd, CommandBehavior.SingleRow))
+                    using (SQLiteDataReader reader = ExecuteReader(sql.GetType().Name, cmd, CommandBehavior.SingleRow))
                     {
                         if (reader.HasRows)
                         {
@@ -294,7 +294,7 @@ namespace PicSum.Core.Data.DatabaseAccessor
                         }
                         else
                         {
-                            return default(TDto);
+                            return default;
                         }
                     }
                 }
@@ -322,7 +322,7 @@ namespace PicSum.Core.Data.DatabaseAccessor
 
             try
             {
-                using (var cmd = connection.CreateCommand())
+                using (var cmd = Connection.CreateCommand())
                 {
                     cmd.CommandText = sql.GetExecuteSql();
 
@@ -331,14 +331,14 @@ namespace PicSum.Core.Data.DatabaseAccessor
                         cmd.Parameters.AddRange(sql.ParameterList.ToArray());
                     }
 
-                    object result = executeScalar(sql.GetType().Name, cmd);
+                    object result = ExecuteScalar(sql.GetType().Name, cmd);
                     if (result != null && result != DBNull.Value)
                     {
                         return (T)result;
                     }
                     else
                     {
-                        return default(T);
+                        return default;
                     }
                 }
             }
@@ -352,7 +352,7 @@ namespace PicSum.Core.Data.DatabaseAccessor
 
         #region プライベートメソッド
 
-        private int executeNonQuery(string sqlTitle, SQLiteCommand cmd)
+        private int ExecuteNonQuery(string sqlTitle, SQLiteCommand cmd)
         {
             Stopwatch sw = Stopwatch.StartNew();
 
@@ -363,11 +363,11 @@ namespace PicSum.Core.Data.DatabaseAccessor
             finally
             {
                 sw.Stop();
-                LogWriter.WriteLog(getLogText(sqlTitle, sw.ElapsedMilliseconds, cmd));
+                LogWriter.WriteLog(GetLogText(sqlTitle, sw.ElapsedMilliseconds, cmd));
             }
         }
 
-        private SQLiteDataReader executeReader(string sqlTitle, SQLiteCommand cmd, CommandBehavior cb)
+        private SQLiteDataReader ExecuteReader(string sqlTitle, SQLiteCommand cmd, CommandBehavior cb)
         {
             Stopwatch sw = Stopwatch.StartNew();
 
@@ -378,11 +378,11 @@ namespace PicSum.Core.Data.DatabaseAccessor
             finally
             {
                 sw.Stop();
-                LogWriter.WriteLog(getLogText(sqlTitle, sw.ElapsedMilliseconds, cmd));
+                LogWriter.WriteLog(GetLogText(sqlTitle, sw.ElapsedMilliseconds, cmd));
             }
         }
 
-        private object executeScalar(string sqlTitle, SQLiteCommand cmd)
+        private object ExecuteScalar(string sqlTitle, SQLiteCommand cmd)
         {
             Stopwatch sw = Stopwatch.StartNew();
 
@@ -393,11 +393,11 @@ namespace PicSum.Core.Data.DatabaseAccessor
             finally
             {
                 sw.Stop();
-                LogWriter.WriteLog(getLogText(sqlTitle, sw.ElapsedMilliseconds, cmd));
+                LogWriter.WriteLog(GetLogText(sqlTitle, sw.ElapsedMilliseconds, cmd));
             }
         }
 
-        public string getLogText(string sqlTitle, long time, IDbCommand cmd)
+        public string GetLogText(string sqlTitle, long time, IDbCommand cmd)
         {
             StringBuilder log = new StringBuilder();
 

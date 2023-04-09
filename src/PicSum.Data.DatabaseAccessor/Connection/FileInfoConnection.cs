@@ -7,7 +7,7 @@ namespace PicSum.Data.DatabaseAccessor.Connection
     /// </summary>
     public class FileInfoConnection : ConnectionBase
     {
-        private static string tableCreateSql =
+        private static readonly string tableCreateSql =
         @"
 /* ファイルIDM */
 CREATE TABLE 'm_file_id' (
