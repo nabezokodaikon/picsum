@@ -740,6 +740,18 @@ namespace PicSum.Main.UIComponent
 
         #region ツールボタンイベント
 
+        private void homeToolButton_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                openContents(new FavoriteFolderListContentsParameter(), ContentsOpenType.OverlapTab);
+            }
+            else if (e.Button == MouseButtons.Middle)
+            {
+                openContents(new FavoriteFolderListContentsParameter(), ContentsOpenType.AddTab);
+            }
+        }
+
         private void searchTagToolButton_SelectedTag(object sender, PicSum.UIComponent.SearchTool.SelectedTagEventArgs e)
         {
             openContents(new TagFileListContentsParameter(e.Value), e.OpenType);
