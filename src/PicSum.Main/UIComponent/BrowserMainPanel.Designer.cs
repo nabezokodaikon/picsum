@@ -140,7 +140,7 @@
             // homeToolButton
             // 
             this.homeToolButton.Image = global::PicSum.Main.Properties.Resources.HomeIcon;
-            this.homeToolButton.Location = new System.Drawing.Point(84, 3);
+            this.homeToolButton.Location = new System.Drawing.Point(122, 3);
             this.homeToolButton.Name = "homeToolButton";
             this.homeToolButton.RegionType = SWF.UIComponent.Common.ToolButton.ToolButtonRegionType.Default;
             this.homeToolButton.Size = new System.Drawing.Size(32, 28);
@@ -250,7 +250,7 @@
             // reloadToolButton
             // 
             this.reloadToolButton.Image = global::PicSum.Main.Properties.Resources.ReloadIcon;
-            this.reloadToolButton.Location = new System.Drawing.Point(122, 3);
+            this.reloadToolButton.Location = new System.Drawing.Point(84, 3);
             this.reloadToolButton.Name = "reloadToolButton";
             this.reloadToolButton.RegionType = SWF.UIComponent.Common.ToolButton.ToolButtonRegionType.Default;
             this.reloadToolButton.Size = new System.Drawing.Size(32, 28);
