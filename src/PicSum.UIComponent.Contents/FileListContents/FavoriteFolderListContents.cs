@@ -112,7 +112,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
 
         private void initializeComponent()
         {
-            this.Title = "よく開くフォルダ";
+            this.Title = "ホーム";
             this.Icon = Resources.HomeIcon;
             this.IsAddKeepMenuItemVisible = true;
             this.IsRemoveFromListMenuItemVisible = true;
