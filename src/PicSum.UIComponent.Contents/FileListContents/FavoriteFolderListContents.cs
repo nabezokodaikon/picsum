@@ -7,6 +7,7 @@ using PicSum.UIComponent.Contents.ContentsParameter;
 using PicSum.UIComponent.Contents.Properties;
 using SWF.Common;
 using PicSum.UIComponent.Contents.Conf;
+using System.Collections.Generic;
 
 namespace PicSum.UIComponent.Contents.FileListContents
 {
@@ -16,6 +17,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
 
         private FavoriteFolderListContentsParameter _parameter = null;
         private TwoWayProcess<SearchFavoriteFolderAsyncFacade, SearchFavoriteFolderParameterEntity, ListEntity<FileShallowInfoEntity>> _searchFavoriteFolderProcess = null;
+        private OneWayProcess<DeleteFolderViewHistoryAsyncFacade, ListEntity<string>> removeItemProcess = null;
 
         #endregion
 
@@ -32,6 +34,21 @@ namespace PicSum.UIComponent.Contents.FileListContents
                 }
 
                 return _searchFavoriteFolderProcess;
+            }
+        }
+
+        private OneWayProcess<DeleteFolderViewHistoryAsyncFacade, ListEntity<string>> DeleteFolderViewHistoryProcess
+        {
+            get
+            {
+                if (this.removeItemProcess == null)
+                {
+                    this.removeItemProcess
+                        = TaskManager.CreateOneWayProcess<DeleteFolderViewHistoryAsyncFacade, ListEntity<string>>(this.ProcessContainer);
+
+                }
+
+                return this.removeItemProcess;
             }
         }
 
@@ -80,9 +97,11 @@ namespace PicSum.UIComponent.Contents.FileListContents
             // 処理無し。
         }
 
-        protected override void OnRemoveFile(System.Collections.Generic.IList<string> filePathList)
+        protected override void OnRemoveFile(IList<string> directoryList)
         {
-            // 処理無し。
+            var param = new ListEntity<string>(directoryList);
+            this.DeleteFolderViewHistoryProcess.Execute(this, param);
+            this.RemoveFile(directoryList);
         }
 
         #endregion
@@ -94,7 +113,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
             this.Title = "よく開くフォルダ";
             this.Icon = Resources.ActiveRatingIcon;
             this.IsAddKeepMenuItemVisible = true;
-            this.IsRemoveFromListMenuItemVisible = false;
+            this.IsRemoveFromListMenuItemVisible = true;
             this.IsMoveControlVisible = false;
         }
 
