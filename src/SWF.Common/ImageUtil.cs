@@ -15,6 +15,8 @@ namespace SWF.Common
 {
     public static class ImageUtil
     {
+        public static readonly System.Drawing.Size EMPTY_SIZE = new System.Drawing.Size(-1, -1);
+
         private static readonly IList<string> _imageFileExtensionList = getImageFileExtensionList();
         private static readonly EncoderParameter _encorderParameter = new EncoderParameter(Encoder.Quality, 50L);
         private static readonly ImageCodecInfo _jpegCodecInfo = ImageCodecInfo.GetImageEncoders().Single(info => info.FormatID == ImageFormat.Jpeg.Guid);
@@ -111,17 +113,36 @@ namespace SWF.Common
 
             var folder = Shell.NameSpace(Path.GetDirectoryName(filePath));
             var item = folder.ParseName(Path.GetFileName(filePath));
+            string deteils = folder.GetDetailsOf(item, 31);
+            if (string.IsNullOrWhiteSpace(deteils))
+            {
+                return ImageUtil.EMPTY_SIZE;
+            }
 
-            var v = folder.GetDetailsOf(item, 31).Split(('x'));
+            var v = deteils.Split(('x'));
+            if (v.Length != 2)
+            {
+                return ImageUtil.EMPTY_SIZE;
+            }
 
             var wText = v[0];
             var hText = v[1];
-            var w = int.Parse(wText.Substring(1).Trim());
-            var h = int.Parse(hText.Substring(0, hText.Length - 1).Trim());
+
+            int w;
+            if (!int.TryParse(wText.Substring(1).Trim(), out w))
+            {
+                return ImageUtil.EMPTY_SIZE;
+            }
+
+            int h;
+            if (!int.TryParse(hText.Substring(0, hText.Length - 1).Trim(), out h))
+            {
+                return ImageUtil.EMPTY_SIZE;
+            }
 
             if (w < 1 || h < 1)
             {
-                throw new ImageException(filePath);
+                return ImageUtil.EMPTY_SIZE;
             }
 
             return new System.Drawing.Size(w, h);
