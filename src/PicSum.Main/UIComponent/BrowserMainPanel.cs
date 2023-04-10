@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows.Forms;
 using PicSum.Core.Base.Conf;
 using PicSum.Core.Data.FileAccessor;
@@ -351,7 +352,7 @@ namespace PicSum.Main.UIComponent
                 dragData.FilePathList.Count > 0)
             {
                 // ビューアコンテンツを上書きします。
-                openContents(new ImageViewerContentsParameter(dragData.FilePathList, dragData.CurrentFilePath, this.reloadButtonEnableAction), ContentsOpenType.OverlapTab);
+                this.openContents(new ImageViewerContentsParameter(dragData.FilePathList, dragData.CurrentFilePath, dragData.ContentsTitle, dragData.ContentsIcon, this.reloadButtonEnableAction), ContentsOpenType.OverlapTab);
             }
             else if (!string.IsNullOrEmpty(dragData.CurrentFilePath))
             {
@@ -406,7 +407,7 @@ namespace PicSum.Main.UIComponent
                 dragData.FilePathList.Count > 0)
             {
                 // ビューアコンテンツを挿入します。
-                insertContents(new ImageViewerContentsParameter(dragData.FilePathList, dragData.CurrentFilePath, this.reloadButtonEnableAction), tabIndex);
+                insertContents(new ImageViewerContentsParameter(dragData.FilePathList, dragData.CurrentFilePath, dragData.ContentsTitle, dragData.ContentsIcon, this.reloadButtonEnableAction), tabIndex);
             }
             else if (!string.IsNullOrEmpty(dragData.CurrentFilePath))
             {
@@ -473,35 +474,35 @@ namespace PicSum.Main.UIComponent
             else if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {
                 string[] filePaths = (string[])e.Data.GetData(DataFormats.FileDrop, false);
-                if (filePaths.Length == 1)
+                if (filePaths.Length < 1) 
                 {
-                    DragEntity dragData = new DragEntity();
-                    dragData.CurrentFilePath = filePaths[0];
-                    dragData.FilePathList = null;
-                    dragData.SourceControl = null;
-                    if (e.IsOverlap)
-                    {
-                        overlapContents(dragData, e.TabIndex);
-                    }
-                    else
-                    {
-                        insertContents(dragData, e.TabIndex);
-                    }
+                    return;
                 }
-                else if (filePaths.Length > 0)
+                
+                var filePath = filePaths.First();
+                DragEntity dragData = new DragEntity();
+                dragData.CurrentFilePath = filePath;
+                dragData.FilePathList = null;
+                dragData.SourceControl = null;
+
+                if (FileUtil.IsFile(filePath))
                 {
-                    DragEntity dragData = new DragEntity();
-                    dragData.CurrentFilePath = string.Empty;
-                    dragData.FilePathList = new List<string>(filePaths);
-                    dragData.SourceControl = null;
-                    if (e.IsOverlap)
-                    {
-                        overlapContents(dragData, e.TabIndex);
-                    }
-                    else
-                    {
-                        insertContents(dragData, e.TabIndex);
-                    }
+                    dragData.ContentsTitle = FileUtil.GetFileName(FileUtil.GetParentFolderPath(filePath));
+                }
+                else
+                {
+                    dragData.ContentsTitle = FileUtil.GetFileName(filePath);
+                }
+
+                dragData.ContentsIcon = FileIconCash.SmallFolderIcon;
+
+                if (e.IsOverlap)
+                {
+                    overlapContents(dragData, e.TabIndex);
+                }
+                else
+                {
+                    insertContents(dragData, e.TabIndex);
                 }
             }
         }
@@ -518,6 +519,7 @@ namespace PicSum.Main.UIComponent
                 return;
             }
 
+            var dirName = FileUtil.GetFileName(e.DirectoryPath);
             if (e.FileOpenType == ContentsOpenType.OverlapTab)
             {
                 if (e.TabIndex > -1 && tabSwitch.TabCount > e.TabIndex)
@@ -525,15 +527,15 @@ namespace PicSum.Main.UIComponent
                     tabSwitch.SetActiveTab(e.TabIndex);
                 }
 
-                openContents(new ImageViewerContentsParameter(e.FilePathList, e.SelectedFilePath, this.reloadButtonEnableAction), ContentsOpenType.OverlapTab);
+                openContents(new ImageViewerContentsParameter(e.FilePathList, e.SelectedFilePath, dirName, FileIconCash.SmallFolderIcon, this.reloadButtonEnableAction), ContentsOpenType.OverlapTab);
             }
             else if (e.FileOpenType == ContentsOpenType.AddTab)
             {
-                openContents(new ImageViewerContentsParameter(e.FilePathList, e.SelectedFilePath, this.reloadButtonEnableAction), ContentsOpenType.AddTab);
+                openContents(new ImageViewerContentsParameter(e.FilePathList, e.SelectedFilePath, dirName, FileIconCash.SmallFolderIcon, this.reloadButtonEnableAction), ContentsOpenType.AddTab);
             }
             else if (e.FileOpenType == ContentsOpenType.InsertTab)
             {
-                insertContents(new ImageViewerContentsParameter(e.FilePathList, e.SelectedFilePath, this.reloadButtonEnableAction), e.TabIndex);
+                insertContents(new ImageViewerContentsParameter(e.FilePathList, e.SelectedFilePath, dirName, FileIconCash.SmallFolderIcon, this.reloadButtonEnableAction), e.TabIndex);
             }
         }
 

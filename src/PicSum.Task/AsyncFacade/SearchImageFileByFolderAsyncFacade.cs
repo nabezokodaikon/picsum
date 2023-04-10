@@ -27,29 +27,27 @@ namespace PicSum.Task.AsyncFacade
                 throw new ArgumentException("空文字は無効です。", "param");
             }
 
-            string folderPath;
+            SearchImageFileResultEntity result = new SearchImageFileResultEntity();
+            result.FileOpenType = param.FileOpenType;
+            result.TabIndex = param.TabIndex;
             if (FileUtil.IsFolder(param.FilePath))
             {
-                folderPath = param.FilePath;
+                result.DirectoryPath = param.FilePath;
             }
             else if (FileUtil.IsFile(param.FilePath))
             {
-                folderPath = FileUtil.GetParentFolderPath(param.FilePath);
+                result.DirectoryPath = FileUtil.GetParentFolderPath(param.FilePath);
             }
             else
             {
                 throw new ArgumentException("ファイルまたはフォルダのパスではありません。", "param");
             }
 
-            SearchImageFileResultEntity result = new SearchImageFileResultEntity();
-            result.FileOpenType = param.FileOpenType;
-            result.TabIndex = param.TabIndex;
-
             IList<string> filePathList = null;
             try
             {
                 GetFilesAndSubFoldersAsyncLogic getFilesLogic = new GetFilesAndSubFoldersAsyncLogic(this);
-                filePathList = getFilesLogic.Execute(folderPath);
+                filePathList = getFilesLogic.Execute(result.DirectoryPath);
                 result.DirectoryNotFoundException = null;
             }
             catch (DirectoryNotFoundException ex)

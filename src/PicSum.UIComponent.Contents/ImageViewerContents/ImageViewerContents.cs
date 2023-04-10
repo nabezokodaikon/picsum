@@ -433,6 +433,8 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
             dragData.CurrentFilePath = currentFilePath;
             dragData.FilePathList = _parameter.FilePathList;
             dragData.SourceControl = this;
+            dragData.ContentsTitle = this._parameter.ContentsTitle;
+            dragData.ContentsIcon = this._parameter.ContentsIcon;
             this.DoDragDrop(dragData, DragDropEffects.All);
         }
 

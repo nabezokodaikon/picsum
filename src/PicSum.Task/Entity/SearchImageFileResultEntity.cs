@@ -7,6 +7,7 @@ namespace PicSum.Task.Entity
 {
     public class SearchImageFileResultEntity : IEntity
     {
+        public string DirectoryPath { get; set; }
         public IList<string> FilePathList { get; set; }
         public string SelectedFilePath { get; set; }
         public DirectoryNotFoundException DirectoryNotFoundException { get; set; }

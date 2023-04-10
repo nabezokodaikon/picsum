@@ -1056,6 +1056,8 @@ namespace PicSum.UIComponent.Contents.FileListContents
                         dragData.CurrentFilePath = currentFilePath;
                         dragData.FilePathList = filePathList;
                         dragData.SourceControl = this;
+                        dragData.ContentsTitle = this.Title;
+                        dragData.ContentsIcon = this.Icon;
                         this.DoDragDrop(dragData, DragDropEffects.All);
                     }
                 }
@@ -1066,6 +1068,8 @@ namespace PicSum.UIComponent.Contents.FileListContents
                     dragData.CurrentFilePath = currentFilePath;
                     dragData.FilePathList = null;
                     dragData.SourceControl = this;
+                    dragData.ContentsTitle = this.Title;
+                    dragData.ContentsIcon = this.Icon;
                     this.DoDragDrop(dragData, DragDropEffects.All);
                 }
             }
@@ -1084,6 +1088,8 @@ namespace PicSum.UIComponent.Contents.FileListContents
                     dragData.CurrentFilePath = string.Empty;
                     dragData.FilePathList = filePathList;
                     dragData.SourceControl = this;
+                    dragData.ContentsTitle = this.Title;
+                    dragData.ContentsIcon = this.Icon;
                     this.DoDragDrop(dragData, DragDropEffects.All);
                 }
             }
