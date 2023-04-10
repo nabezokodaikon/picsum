@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using PicSum.Core.Data.DatabaseAccessor;
 using PicSum.Core.Data.FileAccessor;
@@ -41,6 +42,11 @@ namespace PicSum.Task.AsyncLogic
             }
             else
             {
+                if (!FileUtil.CanAccess(filePath)) 
+                {
+                    throw new FileNotFoundException(string.Format("ファイル '{0}' が見つかりませんでした。", filePath));
+                }
+
                 info.UpdateDate = FileUtil.GetUpdateDate(filePath);
                 info.CreateDate = FileUtil.GetCreateDate(filePath);
 

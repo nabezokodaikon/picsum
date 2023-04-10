@@ -46,6 +46,10 @@ namespace PicSum.Task.AsyncFacade
 
                 CheckCancel();
             }
+            catch (ArgumentException)
+            {
+                return;
+            }
             catch (FileNotFoundException)
             {
                 return;
