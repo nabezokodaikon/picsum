@@ -1032,66 +1032,47 @@ namespace PicSum.UIComponent.Contents.FileListContents
         private void flowList_DragStart(object sender, EventArgs e)
         {
             IList<int> selectedIndexList = flowList.GetSelectedIndexs();
-            if (selectedIndexList.Count == 1)
+            if (selectedIndexList.Count < 1)
             {
-                // 選択項目が1件の場合。
-                string currentFilePath = _filterFilePathList[selectedIndexList.First()];
-                FileEntity currentFileInfo = _masterFileDictionary[currentFilePath];
-                if (currentFileInfo.IsFile && currentFileInfo.IsImageFile)
-                {
-                    // 選択項目が画像ファイルの場合。
-                    List<string> filePathList = new List<string>();
-                    foreach (string filePath in _filterFilePathList)
-                    {
-                        FileEntity fileInfo = _masterFileDictionary[filePath];
-                        if (fileInfo.IsFile && fileInfo.IsImageFile)
-                        {
-                            filePathList.Add(filePath);
-                        }
-                    }
-
-                    if (filePathList.Count > 0)
-                    {
-                        DragEntity dragData = new DragEntity();
-                        dragData.CurrentFilePath = currentFilePath;
-                        dragData.FilePathList = filePathList;
-                        dragData.SourceControl = this;
-                        dragData.ContentsTitle = this.Title;
-                        dragData.ContentsIcon = this.Icon;
-                        this.DoDragDrop(dragData, DragDropEffects.All);
-                    }
-                }
-                else if (!currentFileInfo.IsFile)
-                {
-                    // 選択項目がフォルダの場合。
-                    DragEntity dragData = new DragEntity();
-                    dragData.CurrentFilePath = currentFilePath;
-                    dragData.FilePathList = null;
-                    dragData.SourceControl = this;
-                    dragData.ContentsTitle = this.Title;
-                    dragData.ContentsIcon = this.Icon;
-                    this.DoDragDrop(dragData, DragDropEffects.All);
-                }
+                return;
             }
-            else if (selectedIndexList.Count > 1)
+
+            string currentFilePath = _filterFilePathList[selectedIndexList.First()];
+            FileEntity currentFileInfo = _masterFileDictionary[currentFilePath];
+            if (currentFileInfo.IsFile && currentFileInfo.IsImageFile)
             {
-                // 選択項目が複数件の場合。
+                // 選択項目が画像ファイルの場合。
                 List<string> filePathList = new List<string>();
-                foreach (int index in flowList.GetSelectedIndexs())
+                foreach (string filePath in _filterFilePathList)
                 {
-                    filePathList.Add(_filterFilePathList[index]);
+                    FileEntity fileInfo = _masterFileDictionary[filePath];
+                    if (fileInfo.IsFile && fileInfo.IsImageFile)
+                    {
+                        filePathList.Add(filePath);
+                    }
                 }
 
                 if (filePathList.Count > 0)
                 {
                     DragEntity dragData = new DragEntity();
-                    dragData.CurrentFilePath = string.Empty;
+                    dragData.CurrentFilePath = currentFilePath;
                     dragData.FilePathList = filePathList;
                     dragData.SourceControl = this;
                     dragData.ContentsTitle = this.Title;
                     dragData.ContentsIcon = this.Icon;
                     this.DoDragDrop(dragData, DragDropEffects.All);
                 }
+            }
+            else if (!currentFileInfo.IsFile)
+            {
+                // 選択項目がフォルダの場合。
+                DragEntity dragData = new DragEntity();
+                dragData.CurrentFilePath = currentFilePath;
+                dragData.FilePathList = null;
+                dragData.SourceControl = this;
+                dragData.ContentsTitle = this.Title;
+                dragData.ContentsIcon = this.Icon;
+                this.DoDragDrop(dragData, DragDropEffects.All);
             }
         }
 
