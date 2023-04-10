@@ -263,7 +263,7 @@
             this.indexToolStripSlider.MinimumValue = 0;
             this.indexToolStripSlider.Margin = new System.Windows.Forms.Padding(16, 1, 0, 2);
             this.indexToolStripSlider.Name = "indexToolStripSlider";
-            this.indexToolStripSlider.Size = new System.Drawing.Size(96, 24);
+            this.indexToolStripSlider.Size = new System.Drawing.Size(256, 24);
             this.indexToolStripSlider.Text = "toolStripSlider1";
             this.indexToolStripSlider.Value = 0;
             this.indexToolStripSlider.ValueChanging += new System.EventHandler(this.indexToolStripSlider_ValueChanging);
