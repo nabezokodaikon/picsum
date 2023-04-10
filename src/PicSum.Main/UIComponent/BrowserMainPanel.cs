@@ -474,28 +474,13 @@ namespace PicSum.Main.UIComponent
             else if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {
                 string[] filePaths = (string[])e.Data.GetData(DataFormats.FileDrop, false);
-                if (filePaths.Length < 1) 
+                if (filePaths.Length < 1)
                 {
                     return;
                 }
-                
+
                 var filePath = filePaths.First();
-                DragEntity dragData = new DragEntity();
-                dragData.CurrentFilePath = filePath;
-                dragData.FilePathList = null;
-                dragData.SourceControl = null;
-
-                if (FileUtil.IsFile(filePath))
-                {
-                    dragData.ContentsTitle = FileUtil.GetFileName(FileUtil.GetParentFolderPath(filePath));
-                }
-                else
-                {
-                    dragData.ContentsTitle = FileUtil.GetFileName(filePath);
-                }
-
-                dragData.ContentsIcon = FileIconCash.SmallFolderIcon;
-
+                var dragData = new DragEntity(filePath, FileUtil.IsFile(filePath) ? FileUtil.GetFileName(FileUtil.GetParentFolderPath(filePath)) : FileUtil.GetFileName(filePath), FileIconCash.SmallFolderIcon);
                 if (e.IsOverlap)
                 {
                     overlapContents(dragData, e.TabIndex);
