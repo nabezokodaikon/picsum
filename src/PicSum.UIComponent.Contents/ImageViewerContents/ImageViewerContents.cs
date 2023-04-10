@@ -35,14 +35,12 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
         #region インスタンス変数
 
         private readonly ImageViewerContentsParameter _parameter = null;
-        private readonly Dictionary<string, Size> _imageSizeDictionary = new Dictionary<string, Size>();
         private string _leftImageFilePath = string.Empty;
         private string _rightImageFilePath = string.Empty;
         private ImageDisplayMode _displayMode = ImageDisplayMode.LeftFacing;
         private ImageSizeMode _sizeMode = ImageSizeMode.FitOnlyBigImage;
 
         private TwoWayProcess<ReadImageFileAsyncFacade, ReadImageFileParameterEntity, ReadImageFileResultEntity> _readImageFileProcess = null;
-        private TwoWayProcess<GetImageSizeAsyncFacade, ListEntity<string>, ImageSizeEntity> _getImageSizeProcess = null;
         private OneWayProcess<AddKeepAsyncFacade, ListEntity<string>> _addKeepProcess = null;
         private OneWayProcess<ExportFileAsyncFacade, ExportFileParameterEntity> _exportFileProcess = null;
 
@@ -103,20 +101,6 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
                 }
 
                 return _readImageFileProcess;
-            }
-        }
-
-        private TwoWayProcess<GetImageSizeAsyncFacade, ListEntity<string>, ImageSizeEntity> getImageSizeProcess
-        {
-            get
-            {
-                if (_getImageSizeProcess == null)
-                {
-                    _getImageSizeProcess = TaskManager.CreateTwoWayProcess<GetImageSizeAsyncFacade, ListEntity<string>, ImageSizeEntity>(ProcessContainer);
-                    _getImageSizeProcess.Callback += new AsyncTaskCallbackEventHandler<ImageSizeEntity>(getImageSizeProcess_Callback);
-                }
-
-                return _getImageSizeProcess;
             }
         }
 
@@ -296,14 +280,8 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
 
         private Size getImageSize(string filePath)
         {
-            if (_imageSizeDictionary.ContainsKey(filePath))
-            {
-                return _imageSizeDictionary[filePath];
-            }
-            else
-            {
-                return ImageUtil.GetImageSize(filePath);
-            }
+            var size = ImageUtil.GetImageSize(filePath);
+            return size;
         }
 
         private int getNextIndex()
@@ -427,46 +405,6 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
 
             readImageFileProcess.Cancel();
             readImageFileProcess.Execute(this, param);
-        }
-
-        private void readImageSize()
-        {
-            if (_parameter.FilePathList.Count < 4)
-            {
-                return;
-            }
-
-            Func<int, int> getIndexMethod = (i =>
-            {
-                if (i < 0)
-                {
-                    return i + _parameter.FilePathList.Count;
-                }
-                else if (i > _parameter.FilePathList.Count - 1)
-                {
-                    return i - _parameter.FilePathList.Count;
-                }
-                else
-                {
-                    return i;
-                }
-            });
-
-            ListEntity<string> param = new ListEntity<string>();
-            int startIndex = filePathListIndex - 2;
-            int endIndex = filePathListIndex + 1;
-            for (int i = startIndex; i <= endIndex; i++)
-            {
-                int index = getIndexMethod(i);
-                string filePath = _parameter.FilePathList[index];
-                if (!param.Contains(filePath))
-                {
-                    param.Add(filePath);
-                }
-            }
-
-            getImageSizeProcess.Cancel();
-            getImageSizeProcess.Execute(this, param);
         }
 
         private void setTitle(string selectedFilePath)
@@ -649,14 +587,6 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
             this.Cursor = Cursors.Default;
         }
 
-        private void getImageSizeProcess_Callback(object sender, ImageSizeEntity e)
-        {
-            if (!_imageSizeDictionary.ContainsKey(e.FilePath))
-            {
-                _imageSizeDictionary.Add(e.FilePath, e.ImageSize);
-            }
-        }
-
         #endregion
 
         #region ツールバーイベント
@@ -817,7 +747,6 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
         private void indexToolStripSlider_ValueChanged(object sender, EventArgs e)
         {
             filePathToolTip.Hide(this);
-            readImageSize();
             readImage();
         }
 
