@@ -172,10 +172,6 @@ namespace PicSum.Main.UIComponent
 
         protected override void OnLoad(EventArgs e)
         {
-            //// 情報パネルのハンドル作成のため、表示を切り替えて戻します。
-            //isShowFileInfo = !isShowFileInfo;
-            //isShowFileInfo = !isShowFileInfo;
-
             IList<string> cmdLineList = new List<string>(Environment.GetCommandLineArgs());
             cmdLineList.RemoveAt(0);
 
