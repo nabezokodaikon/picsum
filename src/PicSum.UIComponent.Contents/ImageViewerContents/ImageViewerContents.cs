@@ -574,16 +574,6 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
             leftImagePanel.Invalidate();
             rightImagePanel.Invalidate();
 
-            // TODO: 2012/05/04 重いので行わないことにした。
-            //ListEntity<string> param = new ListEntity<string>();
-            //param.Add(e.Image1.FilePath);
-            //if (e.Image2 != null)
-            //{
-            //    param.Add(e.Image2.FilePath);
-            //}
-
-            //addHistoryProcess.Execute(this, param);
-
             this.Focus();
         }
 
