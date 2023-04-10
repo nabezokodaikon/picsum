@@ -347,116 +347,54 @@ namespace PicSum.Main.UIComponent
 
         private void overlapContents(DragEntity dragData, int tabIndex)
         {
-            if (!string.IsNullOrEmpty(dragData.CurrentFilePath) &&
-                dragData.FilePathList != null &&
+            if (dragData.FilePathList != null &&
                 dragData.FilePathList.Count > 0)
             {
                 // ビューアコンテンツを上書きします。
                 this.openContents(new ImageViewerContentsParameter(dragData.FilePathList, dragData.CurrentFilePath, dragData.ContentsTitle, dragData.ContentsIcon, this.reloadButtonEnableAction), ContentsOpenType.OverlapTab);
             }
-            else if (!string.IsNullOrEmpty(dragData.CurrentFilePath))
+            else if (FileUtil.IsFolder(dragData.CurrentFilePath))
             {
-                if (FileUtil.IsFolder(dragData.CurrentFilePath))
-                {
-                    // フォルダコンテンツを上書きします。
-                    openContents(new FolderFileListContentsParameter(dragData.CurrentFilePath, this.reloadButtonEnableAction), ContentsOpenType.OverlapTab);
-                }
-                else if (FileUtil.IsFile(dragData.CurrentFilePath) &&
-                         ImageUtil.ImageFileExtensionList.Contains(FileUtil.GetExtension(dragData.CurrentFilePath)))
-                {
-                    // ビューアコンテンツを上書きします。
-                    SearchImageFileParameterEntity param = new SearchImageFileParameterEntity();
-                    param.FilePath = dragData.CurrentFilePath;
-                    param.FileOpenType = ContentsOpenType.OverlapTab;
-                    param.TabIndex = tabIndex;
-                    searchImageFileProcess.Execute(this, param);
-                }
+                // フォルダコンテンツを上書きします。
+                openContents(new FolderFileListContentsParameter(dragData.CurrentFilePath, this.reloadButtonEnableAction), ContentsOpenType.OverlapTab);
             }
-            else if (dragData.FilePathList != null &&
-                     dragData.FilePathList.Count > 0)
+            else if (FileUtil.IsFile(dragData.CurrentFilePath)
+                && ImageUtil.ImageFileExtensionList.Contains(FileUtil.GetExtension(dragData.CurrentFilePath)))
             {
-                int insertIndex = tabIndex + 1;
-                List<string> imgFiles = new List<string>();
-                foreach (string filePath in dragData.FilePathList)
-                {
-                    if (FileUtil.IsFolder(filePath))
-                    {
-                        // フォルダコンテンツを挿入します。
-                        insertContents(new FolderFileListContentsParameter(filePath, this.reloadButtonEnableAction), insertIndex);
-                        insertIndex++;
-                    }
-                    else if (FileUtil.IsFile(filePath) &&
-                             ImageUtil.ImageFileExtensionList.Contains(FileUtil.GetExtension(filePath)))
-                    {
-                        imgFiles.Add(filePath);
-                    }
-                }
-
-                if (imgFiles.Count > 0)
-                {
-                    // 引数に画像ファイルが存在する場合、ビューアコンテンツを挿入します。
-                    insertContents(new ImageViewerContentsParameter(imgFiles, imgFiles[0], this.reloadButtonEnableAction), insertIndex);
-                }
+                // ビューアコンテンツを上書きします。
+                SearchImageFileParameterEntity param = new SearchImageFileParameterEntity();
+                param.FilePath = dragData.CurrentFilePath;
+                param.FileOpenType = ContentsOpenType.OverlapTab;
+                param.TabIndex = tabIndex;
+                searchImageFileProcess.Execute(this, param);
             }
         }
 
         private void insertContents(DragEntity dragData, int tabIndex)
         {
-            if (!string.IsNullOrEmpty(dragData.CurrentFilePath) &&
-                dragData.FilePathList != null &&
-                dragData.FilePathList.Count > 0)
+            if (dragData.FilePathList != null
+                && dragData.FilePathList.Count > 0)
             {
                 // ビューアコンテンツを挿入します。
                 insertContents(new ImageViewerContentsParameter(dragData.FilePathList, dragData.CurrentFilePath, dragData.ContentsTitle, dragData.ContentsIcon, this.reloadButtonEnableAction), tabIndex);
             }
-            else if (!string.IsNullOrEmpty(dragData.CurrentFilePath))
+            else if (FileUtil.IsFolder(dragData.CurrentFilePath))
             {
-                if (FileUtil.IsFolder(dragData.CurrentFilePath))
-                {
-                    // フォルダコンテンツを挿入します。
-                    insertContents(new FolderFileListContentsParameter(dragData.CurrentFilePath, this.reloadButtonEnableAction), tabIndex);
-                }
-                else if (FileUtil.IsFile(dragData.CurrentFilePath) &&
-                         ImageUtil.ImageFileExtensionList.Contains(FileUtil.GetExtension(dragData.CurrentFilePath)))
-                {
-                    // ビューアコンテンツを挿入します。
-                    SearchImageFileParameterEntity param = new SearchImageFileParameterEntity();
-                    param.FilePath = dragData.CurrentFilePath;
-                    param.FileOpenType = ContentsOpenType.InsertTab;
-                    param.TabIndex = tabIndex;
-                    searchImageFileProcess.Execute(this, param);
-                }
+                // フォルダコンテンツを挿入します。
+                insertContents(new FolderFileListContentsParameter(dragData.CurrentFilePath, this.reloadButtonEnableAction), tabIndex);
             }
-            else if (dragData.FilePathList != null &&
-                     dragData.FilePathList.Count > 0)
+            else if (FileUtil.IsFile(dragData.CurrentFilePath)
+                && ImageUtil.ImageFileExtensionList.Contains(FileUtil.GetExtension(dragData.CurrentFilePath)))
             {
-                int insertIndex = tabIndex;
-                List<string> imgFiles = new List<string>();
-                foreach (string filePath in dragData.FilePathList)
-                {
-                    if (FileUtil.IsFolder(filePath))
-                    {
-                        // フォルダコンテンツを挿入します。
-                        insertContents(new FolderFileListContentsParameter(filePath, this.reloadButtonEnableAction), insertIndex);
-                        insertIndex++;
-                    }
-                    else if (FileUtil.IsFile(filePath))
-                    {
-                        string ex = FileUtil.GetExtension(filePath);
-                        if (ImageUtil.ImageFileExtensionList.Contains(ex))
-                        {
-                            imgFiles.Add(filePath);
-                        }
-                    }
-                }
-
-                if (imgFiles.Count > 0)
-                {
-                    // 引数に画像ファイルが存在する場合、ビューアコンテンツを挿入します。
-                    insertContents(new ImageViewerContentsParameter(imgFiles, imgFiles[0], this.reloadButtonEnableAction), insertIndex);
-                }
+                // ビューアコンテンツを挿入します。
+                SearchImageFileParameterEntity param = new SearchImageFileParameterEntity();
+                param.FilePath = dragData.CurrentFilePath;
+                param.FileOpenType = ContentsOpenType.InsertTab;
+                param.TabIndex = tabIndex;
+                searchImageFileProcess.Execute(this, param);
             }
         }
+
 
         private void dragDrop(TabAreaDragEventArgs e)
         {
