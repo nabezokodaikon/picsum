@@ -209,8 +209,16 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
 
         protected override void OnDrawTabContents(SWF.UIComponent.TabOperation.DrawTabEventArgs e)
         {
-            e.Graphics.DrawImage(this.Icon, e.IconRectangle);
-            DrawTextUtil.DrawText(e.Graphics, this.Title, e.Font, e.TextRectangle, e.TitleColor, e.TitleFormatFlags, e.TextStyle);
+            if (!string.IsNullOrEmpty(this._parameter.ContentsTitle) && this._parameter.ContentsIcon != null)
+            {
+                e.Graphics.DrawImage(this._parameter.ContentsIcon, e.IconRectangle);
+                DrawTextUtil.DrawText(e.Graphics, this._parameter.ContentsTitle, e.Font, e.TextRectangle, e.TitleColor, e.TitleFormatFlags, e.TextStyle);
+            }
+            else
+            {
+                e.Graphics.DrawImage(this.Icon, e.IconRectangle);
+                DrawTextUtil.DrawText(e.Graphics, this.Title, e.Font, e.TextRectangle, e.TitleColor, e.TitleFormatFlags, e.TextStyle);
+            }
         }
 
         #endregion
@@ -834,13 +842,13 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
 
         private void fileContextMenu_FileNewTabOpen(object sender, PicSum.UIComponent.Common.FileContextMenu.ExecuteFileEventArgs e)
         {
-            ImageViewerContentsParameter param = new ImageViewerContentsParameter(_parameter.FilePathList, e.FilePath, this._parameter.AfterLoadAction);
+            ImageViewerContentsParameter param = new ImageViewerContentsParameter(_parameter.FilePathList, e.FilePath, this.Title, this.Icon, this._parameter.AfterLoadAction);
             OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.AddTab, param));
         }
 
         private void fileContextMenu_FileNewWindowOpen(object sender, PicSum.UIComponent.Common.FileContextMenu.ExecuteFileEventArgs e)
         {
-            ImageViewerContentsParameter param = new ImageViewerContentsParameter(_parameter.FilePathList, e.FilePath, this._parameter.AfterLoadAction);
+            ImageViewerContentsParameter param = new ImageViewerContentsParameter(_parameter.FilePathList, e.FilePath, this.Title, this.Icon, this._parameter.AfterLoadAction);
             OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.NewWindow, param));
         }
 

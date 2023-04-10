@@ -32,7 +32,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
         #endregion
 
         #region インスタンス変数
-        
+
         private Dictionary<string, FileEntity> _masterFileDictionary = null;
         private List<string> _filterFilePathList = null;
         private string _selectedFilePath = string.Empty;
@@ -958,7 +958,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
             FileEntity file = _masterFileDictionary[filePath];
             if (file.IsImageFile)
             {
-                ImageViewerContentsParameter param = new ImageViewerContentsParameter(getImageFiles(), file.FilePath, this.Parameter.AfterLoadAction);
+                ImageViewerContentsParameter param = new ImageViewerContentsParameter(getImageFiles(), file.FilePath, this.Title, this.Icon, this.Parameter.AfterLoadAction);
                 OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.AddTab, param));
             }
             else if (!file.IsFile)
@@ -979,7 +979,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
             FileEntity file = _masterFileDictionary[filePath];
             if (file.IsImageFile)
             {
-                ImageViewerContentsParameter param = new ImageViewerContentsParameter(getImageFiles(), file.FilePath, this.Parameter.AfterLoadAction);
+                ImageViewerContentsParameter param = new ImageViewerContentsParameter(getImageFiles(), file.FilePath, this.Title, this.Icon, this.Parameter.AfterLoadAction);
                 OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.OverlapTab, param));
             }
             else if (!file.IsFile)
@@ -1004,7 +1004,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
             FileEntity file = _masterFileDictionary[filePath];
             if (file.IsImageFile)
             {
-                ImageViewerContentsParameter param = new ImageViewerContentsParameter(getImageFiles(), file.FilePath, this.Parameter.AfterLoadAction);
+                ImageViewerContentsParameter param = new ImageViewerContentsParameter(getImageFiles(), file.FilePath, this.Title, this.Icon, this.Parameter.AfterLoadAction);
                 OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.OverlapTab, param));
             }
             else if (!file.IsFile)
@@ -1108,19 +1108,19 @@ namespace PicSum.UIComponent.Contents.FileListContents
 
         private void fileContextMenu_FileActiveTabOpen(object sender, PicSum.UIComponent.Common.FileContextMenu.ExecuteFileEventArgs e)
         {
-            ImageViewerContentsParameter param = new ImageViewerContentsParameter(getImageFiles(), e.FilePath, this.Parameter.AfterLoadAction);
+            ImageViewerContentsParameter param = new ImageViewerContentsParameter(getImageFiles(), e.FilePath, this.Title, this.Icon, this.Parameter.AfterLoadAction);
             OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.OverlapTab, param));
         }
 
         private void fileContextMenu_FileNewTabOpen(object sender, PicSum.UIComponent.Common.FileContextMenu.ExecuteFileEventArgs e)
         {
-            ImageViewerContentsParameter param = new ImageViewerContentsParameter(getImageFiles(), e.FilePath, this.Parameter.AfterLoadAction);
+            ImageViewerContentsParameter param = new ImageViewerContentsParameter(getImageFiles(), e.FilePath, this.Title, this.Icon, this.Parameter.AfterLoadAction);
             OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.AddTab, param));
         }
 
         private void fileContextMenu_FileNewWindowOpen(object sender, PicSum.UIComponent.Common.FileContextMenu.ExecuteFileEventArgs e)
         {
-            ImageViewerContentsParameter param = new ImageViewerContentsParameter(getImageFiles(), e.FilePath, this.Parameter.AfterLoadAction);
+            ImageViewerContentsParameter param = new ImageViewerContentsParameter(getImageFiles(), e.FilePath, this.Title, this.Icon, this.Parameter.AfterLoadAction);
             OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.NewWindow, param));
         }
 
