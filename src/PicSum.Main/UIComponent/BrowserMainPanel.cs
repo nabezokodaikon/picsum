@@ -341,7 +341,7 @@ namespace PicSum.Main.UIComponent
 
                 if (imgFiles.Count > 0)
                 {
-                    // TODO: コマンドライン引数、ドラッグアンドドロップされた場合を考える。
+                    // TODO: コマンドライン引数、関連付けされた場合を考える。
                     // 引数に画像ファイルが存在する場合、ビューアコンテンツを追加します。
                     //openContents(new ImageViewerContentsParameter(imgFiles, imgFiles[0], this.reloadButtonEnableAction), ContentsOpenType.AddTab);
                 }
