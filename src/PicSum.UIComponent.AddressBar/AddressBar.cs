@@ -659,6 +659,12 @@ namespace PicSum.UIComponent.AddressBar
 
         private void getAddressInfoProcess_Callback(object sender, AddressInfo e)
         {
+            if (e.GetAddressInfoException != null)
+            {
+                MessageBox.Show(e.GetAddressInfoException.Message, "PicSum", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
             clearAddressItems();
 
             _folderPath = e.FolderPath;

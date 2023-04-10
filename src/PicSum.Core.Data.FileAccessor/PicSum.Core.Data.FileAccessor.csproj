@@ -64,6 +64,7 @@
     <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FileException.cs" />
     <Compile Include="FileIconCash.cs" />
     <Compile Include="FileUtil.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -9,5 +9,8 @@ namespace SWF.Common
     {
         public ImageException(string filePath)
             : base(string.Format("{0}の読込に失敗しました。", filePath)) { }
+
+        public ImageException(Exception ex)
+            : base(ex.Message, ex) { }
     }
 }
