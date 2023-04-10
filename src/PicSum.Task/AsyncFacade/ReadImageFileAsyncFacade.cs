@@ -1,12 +1,11 @@
-﻿using System;
-using System.Diagnostics;
-using System.Drawing;
-using PicSum.Core.Base.Conf;
-using PicSum.Core.Data.FileAccessor;
+﻿using PicSum.Core.Base.Conf;
 using PicSum.Core.Task.AsyncTask;
 using PicSum.Task.AsyncLogic;
 using PicSum.Task.Entity;
 using SWF.Common;
+using System;
+using System.Drawing;
+using System.IO;
 
 namespace PicSum.Task.AsyncFacade
 {
