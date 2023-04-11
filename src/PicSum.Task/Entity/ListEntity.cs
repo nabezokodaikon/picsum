@@ -6,6 +6,8 @@ using PicSum.Core.Task.Base;
 
 namespace PicSum.Task.Entity
 {
+    // TODO: コンストラクタで値を設定できるようにする。
+
     /// <summary>
     /// リストエンティティ
     /// </summary>
