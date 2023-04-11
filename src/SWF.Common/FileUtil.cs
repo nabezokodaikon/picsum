@@ -535,6 +535,61 @@ namespace SWF.Common
         }
 
         /// <summary>
+        /// ファイルパスを指定してEXTRALARGEアイコンを取得します。
+        /// </summary>
+        /// <param name="filePath">ファイルパス</param>
+        /// <returns></returns>
+        public static Image GetExtraLargeIconByFilePath(string filePath)
+        {
+            var shinfo = new WinApiMembers.SHFILEINFO();
+            var hSuccess = WinApiMembers.SHGetFileInfo(
+                filePath,
+                0,
+                ref shinfo,
+                (int)Marshal.SizeOf(typeof(WinApiMembers.SHFILEINFO)),
+                (int)WinApiMembers.ShellFileInfoFlags.SHGFI_SYSICONINDEX);
+            if (hSuccess.Equals(IntPtr.Zero))
+            {
+                return null;
+            }
+
+            int result;
+
+            var pimgList = IntPtr.Zero;
+            result = WinApiMembers.SHGetImageList(
+                WinApiMembers.SHIL.SHIL_EXTRALARGE, 
+                WinApiMembers.IID_IImageList, 
+                out pimgList);
+            if (result != WinApiMembers.S_OK)
+            {
+                return null;
+            }
+
+            try 
+            {
+                var hicon = WinApiMembers.ImageList_GetIcon(pimgList, shinfo.iIcon, 0);
+                if (hicon.Equals(IntPtr.Zero))
+                {
+                    return null;
+                }
+
+                try
+                {
+                    var icon = Icon.FromHandle(hicon).ToBitmap();
+                    return icon;
+                }
+                finally
+                {
+                    WinApiMembers.DestroyIcon(hicon);
+                }
+            }
+            finally 
+            {
+                WinApiMembers.ImageList_Destroy(pimgList);
+            }
+        }
+
+        /// <summary>
         /// 拡張子を指定して小アイコンを取得します。
         /// </summary>
         /// <param name="filePath">ファイルパス</param>
