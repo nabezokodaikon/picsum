@@ -347,8 +347,7 @@ namespace PicSum.Main.UIComponent
 
         private void overlapContents(DragEntity dragData, int tabIndex)
         {
-            if (dragData.FilePathList != null &&
-                dragData.FilePathList.Count > 0)
+            if (dragData.FilePathList.Count > 0)
             {
                 // ビューアコンテンツを上書きします。
                 this.openContents(new ImageViewerContentsParameter(dragData.FilePathList, dragData.CurrentFilePath, dragData.ContentsTitle, dragData.ContentsIcon, this.reloadButtonEnableAction), ContentsOpenType.OverlapTab);
@@ -372,8 +371,7 @@ namespace PicSum.Main.UIComponent
 
         private void insertContents(DragEntity dragData, int tabIndex)
         {
-            if (dragData.FilePathList != null
-                && dragData.FilePathList.Count > 0)
+            if (dragData.FilePathList.Count > 0)
             {
                 // ビューアコンテンツを挿入します。
                 insertContents(new ImageViewerContentsParameter(dragData.FilePathList, dragData.CurrentFilePath, dragData.ContentsTitle, dragData.ContentsIcon, this.reloadButtonEnableAction), tabIndex);

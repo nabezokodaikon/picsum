@@ -26,7 +26,7 @@ namespace PicSum.Task.Entity
         public DragEntity(string currentFilePath, Control sourceControl, string contentsTitle, Image contentsIcon)
         {
             this.CurrentFilePath = currentFilePath ?? throw new ArgumentNullException(nameof(currentFilePath));
-            this.FilePathList = null;
+            this.FilePathList = new List<string>();
             this.SourceControl = sourceControl ?? throw new ArgumentNullException(nameof(sourceControl));
             this.ContentsTitle = contentsTitle ?? throw new ArgumentNullException(nameof(contentsTitle));
             this.ContentsIcon = contentsIcon ?? throw new ArgumentNullException(nameof(currentFilePath));
@@ -35,7 +35,7 @@ namespace PicSum.Task.Entity
         public DragEntity(string currentFilePath, string contentsTitle, Image contentsIcon)
         {
             this.CurrentFilePath = currentFilePath ?? throw new ArgumentNullException(nameof(currentFilePath));
-            this.FilePathList = null;
+            this.FilePathList = new List<string>();
             this.SourceControl = null;
             this.ContentsTitle = contentsTitle ?? throw new ArgumentNullException(nameof(contentsTitle));
             this.ContentsIcon = contentsIcon ?? throw new ArgumentNullException(nameof(currentFilePath));
