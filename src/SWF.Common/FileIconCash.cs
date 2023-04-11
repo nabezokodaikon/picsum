@@ -72,7 +72,7 @@ namespace SWF.Common
                 throw new ArgumentNullException("filePath");
             }
 
-            return FileUtil.GetLargeIconByFilePath(filePath);
+            return FileUtil.GetExtraLargeIconByFilePath(filePath);
         }
 
         public static Image GetSmallFileIcon(string filePath)
@@ -160,7 +160,7 @@ namespace SWF.Common
             _smallMyComputerIcon = FileUtil.GetSmallSystemIcon(WinApi.WinApiMembers.ShellSpecialFolder.CSIDL_DRIVES);
             _largeMyComputerIcon = FileUtil.GetLargeSystemIcon(WinApi.WinApiMembers.ShellSpecialFolder.CSIDL_DRIVES);
             _smallFolderIcon = FileUtil.GetSmallIconByFilePath(FileUtil.GetParentFolderPath(Assembly.GetExecutingAssembly().Location));
-            _largeFolderIcon = FileUtil.GetLargeIconByFilePath(FileUtil.GetParentFolderPath(Assembly.GetExecutingAssembly().Location));
+            _largeFolderIcon = FileUtil.GetExtraLargeIconByFilePath(FileUtil.GetParentFolderPath(Assembly.GetExecutingAssembly().Location));
         }
 
         /// <summary>
