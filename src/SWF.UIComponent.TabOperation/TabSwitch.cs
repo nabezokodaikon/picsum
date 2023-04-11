@@ -456,36 +456,6 @@ namespace SWF.UIComponent.TabOperation
         }
 
         /// <summary>
-        /// 現在のコンテンツのクローンを取得します。
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <returns></returns>
-        public T CloneCurrentContents<T>()
-            where T : ContentsPanel
-        {
-            if (this._activeTab == null)
-            {
-                throw new NullReferenceException("アクティブなタブが存在しません。");
-            }
-
-            if (!this._activeTab.HasContents)
-            {
-                throw new Exception("コンテンツが存在しません。");
-            }
-
-            this._activeTab.ClearContents();
-            this._activeTab.CloneCurrentContents();
-
-            var container = this.getContainer();
-            container.ClearContents();
-            container.SetContents(_activeTab.Contents);
-
-            this.Invalidate();
-
-            return (T)this._activeTab.Contents;
-        }
-
-        /// <summary>
         /// タブを削除します。
         /// </summary>
         /// <param name="tab"></param>
