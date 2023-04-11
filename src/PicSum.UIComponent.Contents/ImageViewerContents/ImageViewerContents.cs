@@ -427,7 +427,13 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
 
         private void doDragDrop(string currentFilePath)
         {
-            var dragData = new DragEntity(currentFilePath, _parameter.FilePathList, this._parameter.ContentsTitle, _parameter.ContentsIcon);
+            var dragData = new DragEntity(
+                this.Parameter.ContentsSources,
+                this.Parameter.SourcesKey,
+                currentFilePath,
+                _parameter.FilePathList,
+                this._parameter.ContentsTitle,
+                _parameter.ContentsIcon);
             this.DoDragDrop(dragData, DragDropEffects.All);
         }
 
@@ -846,13 +852,25 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
 
         private void fileContextMenu_FileNewTabOpen(object sender, PicSum.UIComponent.Common.FileContextMenu.ExecuteFileEventArgs e)
         {
-            ImageViewerContentsParameter param = new ImageViewerContentsParameter(_parameter.FilePathList, e.FilePath, this.Title, this.Icon);
+            var param = new ImageViewerContentsParameter(
+                this.Parameter.ContentsSources,
+                this.Parameter.SourcesKey,
+                _parameter.FilePathList,
+                e.FilePath,
+                this.Title,
+                this.Icon);
             OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.AddTab, param));
         }
 
         private void fileContextMenu_FileNewWindowOpen(object sender, PicSum.UIComponent.Common.FileContextMenu.ExecuteFileEventArgs e)
         {
-            ImageViewerContentsParameter param = new ImageViewerContentsParameter(_parameter.FilePathList, e.FilePath, this.Title, this.Icon);
+            var param = new ImageViewerContentsParameter(
+                this.Parameter.ContentsSources,
+                this.Parameter.SourcesKey,
+                _parameter.FilePathList,
+                e.FilePath,
+                this.Title,
+                this.Icon);
             OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.NewWindow, param));
         }
 

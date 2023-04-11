@@ -9,8 +9,15 @@ namespace PicSum.UIComponent.Contents.ContentsParameter
     /// </summary>
     public class FolderFileListContentsParameter : IContentsParameter
     {
+        public const string CONTENTS_SOURCES = "Directory";
+
         private string _folderPath;
         private string _selectedFilePath;
+
+        public string ContentsSources { get; private set; }
+        public string SourcesKey { get; private set; }
+        public string Key { get; private set; }
+
 
         public string FolderPath
         {
@@ -40,6 +47,9 @@ namespace PicSum.UIComponent.Contents.ContentsParameter
                 throw new ArgumentNullException("selectedFilePath");
             }
 
+            this.ContentsSources = CONTENTS_SOURCES;
+            this.SourcesKey = folderPath;
+            this.Key = string.Format("{0}ListContents:{1}", this.ContentsSources, this.SourcesKey);
             _folderPath = folderPath;
             _selectedFilePath = selectedFilePath;
         }
@@ -51,6 +61,9 @@ namespace PicSum.UIComponent.Contents.ContentsParameter
                 throw new ArgumentNullException("folderPath");
             }
 
+            this.ContentsSources = CONTENTS_SOURCES;
+            this.SourcesKey = folderPath;
+            this.Key = string.Format("{0}ListContents:{1}", this.ContentsSources, this.SourcesKey);
             _folderPath = folderPath;
             _selectedFilePath = string.Empty;
         }

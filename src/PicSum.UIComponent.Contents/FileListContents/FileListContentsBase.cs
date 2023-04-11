@@ -956,7 +956,13 @@ namespace PicSum.UIComponent.Contents.FileListContents
             FileEntity file = _masterFileDictionary[filePath];
             if (file.IsImageFile)
             {
-                ImageViewerContentsParameter param = new ImageViewerContentsParameter(getImageFiles(), file.FilePath, this.Title, this.Icon);
+                var param = new ImageViewerContentsParameter(
+                    this.Parameter.ContentsSources,
+                    this.Parameter.SourcesKey,
+                    getImageFiles(),
+                    file.FilePath,
+                    this.Title,
+                    this.Icon);
                 OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.AddTab, param));
             }
             else if (!file.IsFile)
@@ -977,7 +983,13 @@ namespace PicSum.UIComponent.Contents.FileListContents
             FileEntity file = _masterFileDictionary[filePath];
             if (file.IsImageFile)
             {
-                ImageViewerContentsParameter param = new ImageViewerContentsParameter(getImageFiles(), file.FilePath, this.Title, this.Icon);
+                var param = new ImageViewerContentsParameter(
+                    this.Parameter.ContentsSources,
+                    this.Parameter.SourcesKey,
+                    getImageFiles(),
+                    file.FilePath,
+                    this.Title,
+                    this.Icon);
                 OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.OverlapTab, param));
             }
             else if (!file.IsFile)
@@ -1002,7 +1014,13 @@ namespace PicSum.UIComponent.Contents.FileListContents
             FileEntity file = _masterFileDictionary[filePath];
             if (file.IsImageFile)
             {
-                ImageViewerContentsParameter param = new ImageViewerContentsParameter(getImageFiles(), file.FilePath, this.Title, this.Icon);
+                var param = new ImageViewerContentsParameter(
+                    this.Parameter.ContentsSources,
+                    this.Parameter.SourcesKey,
+                    getImageFiles(),
+                    file.FilePath,
+                    this.Title,
+                    this.Icon);
                 OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.OverlapTab, param));
             }
             else if (!file.IsFile)
@@ -1052,14 +1070,25 @@ namespace PicSum.UIComponent.Contents.FileListContents
 
                 if (filePathList.Count > 0)
                 {
-                    var dragData = new DragEntity(currentFilePath, filePathList, this.Title, this.Icon);
+                    var dragData = new DragEntity(
+                        this.Parameter.ContentsSources,
+                        this.Parameter.SourcesKey,
+                        currentFilePath,
+                        filePathList,
+                        this.Title,
+                        this.Icon);
                     this.DoDragDrop(dragData, DragDropEffects.All);
                 }
             }
             else if (!currentFileInfo.IsFile)
             {
                 // 選択項目がフォルダの場合。
-                var dragData = new DragEntity(currentFilePath, this.Title, this.Icon);
+                var dragData = new DragEntity(
+                    this.Parameter.ContentsSources,
+                    this.Parameter.SourcesKey,
+                    currentFilePath,
+                    this.Title,
+                    this.Icon);
                 this.DoDragDrop(dragData, DragDropEffects.All);
             }
         }
@@ -1083,19 +1112,37 @@ namespace PicSum.UIComponent.Contents.FileListContents
 
         private void fileContextMenu_FileActiveTabOpen(object sender, PicSum.UIComponent.Common.FileContextMenu.ExecuteFileEventArgs e)
         {
-            ImageViewerContentsParameter param = new ImageViewerContentsParameter(getImageFiles(), e.FilePath, this.Title, this.Icon);
+            var param = new ImageViewerContentsParameter(
+                this.Parameter.ContentsSources,
+                this.Parameter.SourcesKey,
+                getImageFiles(),
+                e.FilePath,
+                this.Title,
+                this.Icon);
             OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.OverlapTab, param));
         }
 
         private void fileContextMenu_FileNewTabOpen(object sender, PicSum.UIComponent.Common.FileContextMenu.ExecuteFileEventArgs e)
         {
-            ImageViewerContentsParameter param = new ImageViewerContentsParameter(getImageFiles(), e.FilePath, this.Title, this.Icon);
+            var param = new ImageViewerContentsParameter(
+                this.Parameter.ContentsSources,
+                this.Parameter.SourcesKey,
+                getImageFiles(),
+                e.FilePath,
+                this.Title,
+                this.Icon);
             OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.AddTab, param));
         }
 
         private void fileContextMenu_FileNewWindowOpen(object sender, PicSum.UIComponent.Common.FileContextMenu.ExecuteFileEventArgs e)
         {
-            ImageViewerContentsParameter param = new ImageViewerContentsParameter(getImageFiles(), e.FilePath, this.Title, this.Icon);
+            var param = new ImageViewerContentsParameter(
+                this.Parameter.ContentsSources,
+                this.Parameter.SourcesKey,
+                getImageFiles(),
+                e.FilePath,
+                this.Title,
+                this.Icon);
             OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.NewWindow, param));
         }
 

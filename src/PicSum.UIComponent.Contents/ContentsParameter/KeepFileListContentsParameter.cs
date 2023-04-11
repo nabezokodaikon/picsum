@@ -9,7 +9,13 @@ namespace PicSum.UIComponent.Contents.ContentsParameter
     /// </summary>
     public class KeepFileListContentsParameter : IContentsParameter
     {
+        public const string CONTENTS_SOURCES = "Keep";
+
         private string _selectedFilePath;
+
+        public string ContentsSources { get; private set; }
+        public string SourcesKey { get; private set; }
+        public string Key { get; private set; }
 
         public string SelectedFilePath
         {
@@ -30,6 +36,9 @@ namespace PicSum.UIComponent.Contents.ContentsParameter
 
         public KeepFileListContentsParameter()
         {
+            this.ContentsSources = CONTENTS_SOURCES;
+            this.SourcesKey = string.Empty;
+            this.Key = string.Format("{0}ListContents", this.ContentsSources);
             _selectedFilePath = string.Empty;
         }
 

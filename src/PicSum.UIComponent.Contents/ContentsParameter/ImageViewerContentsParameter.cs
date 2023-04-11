@@ -13,6 +13,10 @@ namespace PicSum.UIComponent.Contents.ContentsParameter
         private IList<string> _filePathList;
         private string _selectedFilePath;
 
+        public string ContentsSources { get; private set; }
+        public string SourcesKey { get; private set; }
+        public string Key { get; private set; }
+
         public IList<string> FilePathList
         {
             get
@@ -42,7 +46,7 @@ namespace PicSum.UIComponent.Contents.ContentsParameter
 
         public Image ContentsIcon { get; private set; }
 
-        public ImageViewerContentsParameter(IList<string> filePathList, string selectedFilePath, string contentsTitle, Image contentsIcon)
+        public ImageViewerContentsParameter(string contentsSources, string sourcesKey, IList<string> filePathList, string selectedFilePath, string contentsTitle, Image contentsIcon)
         {
             if (filePathList == null)
             {
@@ -53,6 +57,10 @@ namespace PicSum.UIComponent.Contents.ContentsParameter
             {
                 throw new ArgumentNullException("selectedFilePath");
             }
+
+            this.ContentsSources = contentsSources ?? throw new ArgumentNullException(nameof(contentsSources));
+            this.SourcesKey = sourcesKey ?? throw new ArgumentNullException(nameof(sourcesKey));
+            this.Key = string.Format("{0}ImageContents:{1}", this.ContentsSources, this.SourcesKey);
 
             _filePathList = filePathList;
             _selectedFilePath = selectedFilePath;

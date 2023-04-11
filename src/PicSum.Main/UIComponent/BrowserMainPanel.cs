@@ -343,7 +343,13 @@ namespace PicSum.Main.UIComponent
             if (dragData.FilePathList.Count > 0)
             {
                 // ビューアコンテンツを上書きします。
-                this.openContents(new ImageViewerContentsParameter(dragData.FilePathList, dragData.CurrentFilePath, dragData.ContentsTitle, dragData.ContentsIcon), ContentsOpenType.OverlapTab);
+                this.openContents(new ImageViewerContentsParameter(
+                    dragData.ContentsSources,
+                    dragData.SourcesKey,
+                    dragData.FilePathList,
+                    dragData.CurrentFilePath,
+                    dragData.ContentsTitle,
+                    dragData.ContentsIcon), ContentsOpenType.OverlapTab);
             }
             else if (FileUtil.IsFolder(dragData.CurrentFilePath))
             {
@@ -367,7 +373,13 @@ namespace PicSum.Main.UIComponent
             if (dragData.FilePathList.Count > 0)
             {
                 // ビューアコンテンツを挿入します。
-                insertContents(new ImageViewerContentsParameter(dragData.FilePathList, dragData.CurrentFilePath, dragData.ContentsTitle, dragData.ContentsIcon), tabIndex);
+                insertContents(new ImageViewerContentsParameter(
+                    dragData.ContentsSources,
+                    dragData.SourcesKey,
+                    dragData.FilePathList,
+                    dragData.CurrentFilePath,
+                    dragData.ContentsTitle,
+                    dragData.ContentsIcon), tabIndex);
             }
             else if (FileUtil.IsFolder(dragData.CurrentFilePath))
             {
@@ -409,7 +421,13 @@ namespace PicSum.Main.UIComponent
                 }
 
                 var filePath = filePaths.First();
-                var dragData = new DragEntity(filePath, FileUtil.IsFile(filePath) ? FileUtil.GetFileName(FileUtil.GetParentFolderPath(filePath)) : FileUtil.GetFileName(filePath), FileIconCash.SmallFolderIcon);
+                var dirPath = FileUtil.GetParentFolderPath(filePath);
+                var dragData = new DragEntity(
+                    FolderFileListContentsParameter.CONTENTS_SOURCES,
+                    dirPath,
+                    filePath,
+                    FileUtil.IsFile(filePath) ? FileUtil.GetFileName(dirPath) : FileUtil.GetFileName(filePath),
+                    FileIconCash.SmallFolderIcon);
                 if (e.IsOverlap)
                 {
                     overlapContents(dragData, e.TabIndex);
@@ -441,15 +459,33 @@ namespace PicSum.Main.UIComponent
                     tabSwitch.SetActiveTab(e.TabIndex);
                 }
 
-                openContents(new ImageViewerContentsParameter(e.FilePathList, e.SelectedFilePath, dirName, FileIconCash.SmallFolderIcon), ContentsOpenType.OverlapTab);
+                openContents(new ImageViewerContentsParameter(
+                    FolderFileListContentsParameter.CONTENTS_SOURCES,
+                    e.DirectoryPath,
+                    e.FilePathList,
+                    e.SelectedFilePath,
+                    dirName,
+                    FileIconCash.SmallFolderIcon), ContentsOpenType.OverlapTab);
             }
             else if (e.FileOpenType == ContentsOpenType.AddTab)
             {
-                openContents(new ImageViewerContentsParameter(e.FilePathList, e.SelectedFilePath, dirName, FileIconCash.SmallFolderIcon), ContentsOpenType.AddTab);
+                openContents(new ImageViewerContentsParameter(
+                    FolderFileListContentsParameter.CONTENTS_SOURCES,
+                    e.DirectoryPath,
+                    e.FilePathList,
+                    e.SelectedFilePath,
+                    dirName,
+                    FileIconCash.SmallFolderIcon), ContentsOpenType.AddTab);
             }
             else if (e.FileOpenType == ContentsOpenType.InsertTab)
             {
-                insertContents(new ImageViewerContentsParameter(e.FilePathList, e.SelectedFilePath, dirName, FileIconCash.SmallFolderIcon), e.TabIndex);
+                insertContents(new ImageViewerContentsParameter(
+                    FolderFileListContentsParameter.CONTENTS_SOURCES,
+                    e.DirectoryPath,
+                    e.FilePathList,
+                    e.SelectedFilePath,
+                    dirName,
+                    FileIconCash.SmallFolderIcon), e.TabIndex);
             }
         }
 
@@ -671,7 +707,7 @@ namespace PicSum.Main.UIComponent
         }
 
         private void searchRatingToolButton_MouseClick(object sender, MouseEventArgs e)
-        {            
+        {
             if (e.Button == MouseButtons.Left)
             {
                 openContents(new RatingFileListContentsParameter(1), ContentsOpenType.OverlapTab);
