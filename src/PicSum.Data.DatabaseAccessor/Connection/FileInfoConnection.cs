@@ -54,6 +54,17 @@ CREATE TABLE 't_rating' (
      )
 );
 
+/* フォルダ表示回数T */
+CREATE TABLE 't_folder_view_counter' (
+     'file_id'         INTEGER  NOT NULL
+    ,'view_count'      INTEGER  NOT NULL
+    ,'create_date'     DATETIME
+    ,'update_date'     DATETIME
+    ,PRIMARY KEY (
+         'file_id'
+     )
+);
+
 /* フォルダ表示履歴T */
 CREATE TABLE 't_folder_view_history' (
      'file_id'         INTEGER  NOT NULL
@@ -152,6 +163,24 @@ CREATE TRIGGER t_rating_update_trigger
     BEGIN UPDATE t_rating
              SET update_date = DATETIME('NOW', 'LOCALTIME')
            WHERE file_id = NEW.file_id;
+   END;
+
+/* フォルダ表示回数T INSERT */
+CREATE TRIGGER t_folder_view_counter_insert_trigger
+    AFTER INSERT
+       ON t_folder_view_counter
+    BEGIN UPDATE t_folder_view_counter
+             SET create_date     = DATETIME('NOW', 'LOCALTIME')
+           WHERE file_id         = NEW.file_id;
+   END;
+
+/* フォルダ表示回数T UPDATE */
+CREATE TRIGGER t_folder_view_counter_update_trigger
+    AFTER UPDATE
+       ON t_folder_view_counter
+    BEGIN UPDATE t_folder_view_counter
+             SET update_date     = DATETIME('NOW', 'LOCALTIME')
+           WHERE file_id         = NEW.file_id;
    END;
 
 /* フォルダ表示履歴T INSERT */
