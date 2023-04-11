@@ -102,13 +102,8 @@
     <Compile Include="Sql\CreationRatingSql.cs" />
     <Compile Include="Sql\CreationTagSql.cs" />
     <Compile Include="Sql\CreationThumbnailSql.cs" />
-    <Compile Include="Sql\DeletionFileByFileSql.cs" />
-    <Compile Include="Sql\DeletionFileViewHistoryByFileSql.cs" />
-    <Compile Include="Sql\DeletionFolderStateByFileSql.cs" />
     <Compile Include="Sql\DeletionFolderViewCounterByFileSql.cs" />
     <Compile Include="Sql\DeletionTagByFileAndTagSql.cs" />
-    <Compile Include="Sql\DeletionTagByFileSql.cs" />
-    <Compile Include="Sql\DeletionTagByTagSql.cs" />
     <Compile Include="Sql\DeletionThumbnailByFileSql.cs" />
     <Compile Include="Sql\IncrementFolderViewCounterSql.cs" />
     <Compile Include="Sql\ReadAllTagSql.cs" />
