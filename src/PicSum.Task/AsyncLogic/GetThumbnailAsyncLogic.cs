@@ -443,9 +443,10 @@ namespace PicSum.Task.AsyncLogic
 
             try
             {
-                if (_cashDic.ContainsKey(filePath))
+                ThumbnailBufferEntity cach = null;
+                if (_cashDic.TryGetValue(filePath, out cach))
                 {
-                    return _cashDic[filePath];
+                    return cach;
                 }
                 else
                 {
@@ -464,10 +465,10 @@ namespace PicSum.Task.AsyncLogic
 
             try
             {
-                if (_cashDic.ContainsKey(thumb.FilePath))
+                ThumbnailBufferEntity dicCash = null;
+                if (_cashDic.TryGetValue(thumb.FilePath, out dicCash))
                 {
-                    ThumbnailBufferEntity cash = _cashDic[thumb.FilePath];
-                    _cashList.Remove(cash);
+                    _cashList.Remove(dicCash);
                     _cashList.Add(thumb);
                     _cashDic[thumb.FilePath] = thumb;
                 }
