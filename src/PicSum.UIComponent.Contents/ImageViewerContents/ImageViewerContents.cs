@@ -429,7 +429,7 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
 
         private void doDragDrop(string currentFilePath)
         {
-            var dragData = new DragEntity(currentFilePath, _parameter.FilePathList, this, this._parameter.ContentsTitle, _parameter.ContentsIcon);
+            var dragData = new DragEntity(currentFilePath, _parameter.FilePathList, this._parameter.ContentsTitle, _parameter.ContentsIcon);
             this.DoDragDrop(dragData, DragDropEffects.All);
         }
 

@@ -629,18 +629,7 @@ namespace PicSum.Main.UIComponent
 
         private void contentsContainer_DragEnter(object sender, DragEventArgs e)
         {
-            if (e.Data.GetDataPresent(typeof(DragEntity)))
-            {
-                DragEntity dragData = (DragEntity)e.Data.GetData(typeof(DragEntity));
-                if (tabSwitch.ActiveTab != null)
-                {
-                    if (!tabSwitch.ActiveTab.GetContents<BrowserContents>().Equals(dragData.SourceControl))
-                    {
-                        e.Effect = DragDropEffects.Copy;
-                    }
-                }
-            }
-            else if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {
                 e.Effect = DragDropEffects.Copy;
             }

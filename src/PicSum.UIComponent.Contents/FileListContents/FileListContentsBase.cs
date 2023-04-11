@@ -1054,14 +1054,14 @@ namespace PicSum.UIComponent.Contents.FileListContents
 
                 if (filePathList.Count > 0)
                 {
-                    var dragData = new DragEntity(currentFilePath, filePathList, this, this.Title, this.Icon);
+                    var dragData = new DragEntity(currentFilePath, filePathList, this.Title, this.Icon);
                     this.DoDragDrop(dragData, DragDropEffects.All);
                 }
             }
             else if (!currentFileInfo.IsFile)
             {
                 // 選択項目がフォルダの場合。
-                var dragData = new DragEntity(currentFilePath, this, this.Title, this.Icon);
+                var dragData = new DragEntity(currentFilePath, this.Title, this.Icon);
                 this.DoDragDrop(dragData, DragDropEffects.All);
             }
         }
