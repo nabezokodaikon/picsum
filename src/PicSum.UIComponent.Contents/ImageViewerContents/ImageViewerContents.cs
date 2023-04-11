@@ -68,11 +68,11 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
         {
             get
             {
-                return indexToolStripSlider.MaximumValue;
+                return this.indexSlider.MaximumValue;
             }
             set
             {
-                indexToolStripSlider.MaximumValue = value;
+                this.indexSlider.MaximumValue = value;
             }
         }
 
@@ -80,11 +80,11 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
         {
             get
             {
-                return indexToolStripSlider.Value;
+                return this.indexSlider.Value;
             }
             set
             {
-                indexToolStripSlider.Value = value;
+                this.indexSlider.Value = value;
             }
         }
 
@@ -740,6 +740,25 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
         }
 
         private void indexToolStripSlider_ValueChanged(object sender, EventArgs e)
+        {
+            filePathToolTip.Hide(this);
+            readImage();
+        }
+
+        private void indexSlider_ValueChanging(object sender, EventArgs e)
+        {
+            int index = filePathListIndex;
+            if (index < 0 || _parameter.FilePathList.Count - 1 < index)
+            {
+                return;
+            }
+
+            string filePath = _parameter.FilePathList[index];
+            Point p = this.PointToClient(Cursor.Position);
+            filePathToolTip.Show(filePath, this, p.X, -16, 5000);
+        }
+
+        private void indexSlider_ValueChanged(object sender, EventArgs e)
         {
             filePathToolTip.Hide(this);
             readImage();

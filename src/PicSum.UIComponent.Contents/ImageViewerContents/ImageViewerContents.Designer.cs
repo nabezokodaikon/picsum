@@ -48,7 +48,7 @@
             this.toolBar = new PicSum.UIComponent.Contents.ContentsToolBar.ContentsToolBar();
             this.previewIndexToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.nextIndexToolStripButton = new System.Windows.Forms.ToolStripButton();
-            this.indexToolStripSlider = new SWF.UIComponent.Common.ToolStripSlider();
+            this.indexSlider = new SWF.UIComponent.Common.Slider();
             this.checkPatternPanel.SuspendLayout();
             this.viewContextMenuStrip.SuspendLayout();
             this.sizeContextMenuStrip.SuspendLayout();
@@ -62,32 +62,34 @@
             this.leftImagePanel.ContextMenuStrip = this.fileContextMenu;
             this.leftImagePanel.ImageAlign = SWF.UIComponent.ImagePanel.ImageAlign.Center;
             this.leftImagePanel.IsShowThumbnailPanel = true;
-            this.leftImagePanel.Location = new System.Drawing.Point(237, 79);
+            this.leftImagePanel.Location = new System.Drawing.Point(316, 99);
+            this.leftImagePanel.Margin = new System.Windows.Forms.Padding(4);
             this.leftImagePanel.Name = "leftImagePanel";
-            this.leftImagePanel.Size = new System.Drawing.Size(130, 129);
+            this.leftImagePanel.Size = new System.Drawing.Size(173, 161);
             this.leftImagePanel.TabIndex = 1;
             this.leftImagePanel.Text = "imagePanel1";
             this.leftImagePanel.Visible = false;
+            this.leftImagePanel.ImageMouseClick += new System.EventHandler<System.Windows.Forms.MouseEventArgs>(this.leftImagePanel_ImageMouseClick);
             this.leftImagePanel.DragStart += new System.EventHandler(this.leftImagePanel_DragStart);
             this.leftImagePanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.leftImagePanel_MouseDown);
-            this.leftImagePanel.ImageMouseClick += new System.EventHandler<System.Windows.Forms.MouseEventArgs>(this.leftImagePanel_ImageMouseClick);
             // 
             // fileContextMenu
             // 
+            this.fileContextMenu.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.fileContextMenu.IsAddKeepMenuItemVisible = false;
             this.fileContextMenu.IsFileActiveTabOpenMenuItemVisible = false;
             this.fileContextMenu.IsFolderActiveTabOpenMenuItemVisible = true;
             this.fileContextMenu.IsRemoveFromListMenuItemVisible = false;
             this.fileContextMenu.Name = "fileContextMenu";
-            this.fileContextMenu.Size = new System.Drawing.Size(209, 312);
-            this.fileContextMenu.FileOpen += new System.EventHandler<PicSum.UIComponent.Common.FileContextMenu.ExecuteFileEventArgs>(this.fileContextMenu_FileOpen);
+            this.fileContextMenu.Size = new System.Drawing.Size(205, 292);
             this.fileContextMenu.FileNewTabOpen += new System.EventHandler<PicSum.UIComponent.Common.FileContextMenu.ExecuteFileEventArgs>(this.fileContextMenu_FileNewTabOpen);
-            this.fileContextMenu.SaveFolderOpen += new System.EventHandler<PicSum.UIComponent.Common.FileContextMenu.ExecuteFileEventArgs>(this.fileContextMenu_SaveFolderOpen);
-            this.fileContextMenu.AddKeep += new System.EventHandler<PicSum.UIComponent.Common.FileContextMenu.ExecuteFileListEventArgs>(this.fileContextMenu_AddKeep);
-            this.fileContextMenu.NameCopy += new System.EventHandler<PicSum.UIComponent.Common.FileContextMenu.ExecuteFileListEventArgs>(this.fileContextMenu_NameCopy);
-            this.fileContextMenu.Export += new System.EventHandler<PicSum.UIComponent.Common.FileContextMenu.ExecuteFileListEventArgs>(this.fileContextMenu_Export);
             this.fileContextMenu.FileNewWindowOpen += new System.EventHandler<PicSum.UIComponent.Common.FileContextMenu.ExecuteFileEventArgs>(this.fileContextMenu_FileNewWindowOpen);
+            this.fileContextMenu.FileOpen += new System.EventHandler<PicSum.UIComponent.Common.FileContextMenu.ExecuteFileEventArgs>(this.fileContextMenu_FileOpen);
+            this.fileContextMenu.SaveFolderOpen += new System.EventHandler<PicSum.UIComponent.Common.FileContextMenu.ExecuteFileEventArgs>(this.fileContextMenu_SaveFolderOpen);
+            this.fileContextMenu.Export += new System.EventHandler<PicSum.UIComponent.Common.FileContextMenu.ExecuteFileListEventArgs>(this.fileContextMenu_Export);
             this.fileContextMenu.PathCopy += new System.EventHandler<PicSum.UIComponent.Common.FileContextMenu.ExecuteFileListEventArgs>(this.fileContextMenu_PathCopy);
+            this.fileContextMenu.NameCopy += new System.EventHandler<PicSum.UIComponent.Common.FileContextMenu.ExecuteFileListEventArgs>(this.fileContextMenu_NameCopy);
+            this.fileContextMenu.AddKeep += new System.EventHandler<PicSum.UIComponent.Common.FileContextMenu.ExecuteFileListEventArgs>(this.fileContextMenu_AddKeep);
             this.fileContextMenu.Opening += new System.ComponentModel.CancelEventHandler(this.fileContextMenu_Opening);
             // 
             // rightImagePanel
@@ -97,15 +99,16 @@
             this.rightImagePanel.ContextMenuStrip = this.fileContextMenu;
             this.rightImagePanel.ImageAlign = SWF.UIComponent.ImagePanel.ImageAlign.Center;
             this.rightImagePanel.IsShowThumbnailPanel = true;
-            this.rightImagePanel.Location = new System.Drawing.Point(344, 166);
+            this.rightImagePanel.Location = new System.Drawing.Point(459, 208);
+            this.rightImagePanel.Margin = new System.Windows.Forms.Padding(4);
             this.rightImagePanel.Name = "rightImagePanel";
-            this.rightImagePanel.Size = new System.Drawing.Size(132, 144);
+            this.rightImagePanel.Size = new System.Drawing.Size(176, 180);
             this.rightImagePanel.TabIndex = 2;
             this.rightImagePanel.Text = "imagePanel2";
             this.rightImagePanel.Visible = false;
+            this.rightImagePanel.ImageMouseClick += new System.EventHandler<System.Windows.Forms.MouseEventArgs>(this.rightImagePanel_ImageMouseClick);
             this.rightImagePanel.DragStart += new System.EventHandler(this.rightImagePanel_DragStart);
             this.rightImagePanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.rightImagePanel_MouseDown);
-            this.rightImagePanel.ImageMouseClick += new System.EventHandler<System.Windows.Forms.MouseEventArgs>(this.rightImagePanel_ImageMouseClick);
             // 
             // filePathToolTip
             // 
@@ -115,45 +118,46 @@
             // 
             // checkPatternPanel
             // 
-            this.checkPatternPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.checkPatternPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.checkPatternPanel.Controls.Add(this.leftImagePanel);
             this.checkPatternPanel.Controls.Add(this.rightImagePanel);
-            this.checkPatternPanel.Location = new System.Drawing.Point(0, 27);
+            this.checkPatternPanel.Location = new System.Drawing.Point(0, 34);
             this.checkPatternPanel.Margin = new System.Windows.Forms.Padding(0);
             this.checkPatternPanel.Name = "checkPatternPanel";
             this.checkPatternPanel.RectangleSize = 24;
-            this.checkPatternPanel.Size = new System.Drawing.Size(694, 395);
+            this.checkPatternPanel.Size = new System.Drawing.Size(925, 494);
             this.checkPatternPanel.TabIndex = 3;
             // 
             // viewContextMenuStrip
             // 
+            this.viewContextMenuStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.viewContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.singleViewToolStripMenuItem,
             this.leftFacingViewToolStripMenuItem,
             this.rightFacingViewToolStripMenuItem});
             this.viewContextMenuStrip.Name = "viewContextMenuStrip";
-            this.viewContextMenuStrip.Size = new System.Drawing.Size(173, 70);
+            this.viewContextMenuStrip.Size = new System.Drawing.Size(190, 76);
             // 
             // singleViewToolStripMenuItem
             // 
             this.singleViewToolStripMenuItem.Name = "singleViewToolStripMenuItem";
-            this.singleViewToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
+            this.singleViewToolStripMenuItem.Size = new System.Drawing.Size(189, 24);
             this.singleViewToolStripMenuItem.Text = "単一表示";
             this.singleViewToolStripMenuItem.Click += new System.EventHandler(this.singleViewToolStripMenuItem_Click);
             // 
             // leftFacingViewToolStripMenuItem
             // 
             this.leftFacingViewToolStripMenuItem.Name = "leftFacingViewToolStripMenuItem";
-            this.leftFacingViewToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
+            this.leftFacingViewToolStripMenuItem.Size = new System.Drawing.Size(189, 24);
             this.leftFacingViewToolStripMenuItem.Text = "見開き（左送り）";
             this.leftFacingViewToolStripMenuItem.Click += new System.EventHandler(this.leftFacingViewToolStripMenuItem_Click);
             // 
             // rightFacingViewToolStripMenuItem
             // 
             this.rightFacingViewToolStripMenuItem.Name = "rightFacingViewToolStripMenuItem";
-            this.rightFacingViewToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
+            this.rightFacingViewToolStripMenuItem.Size = new System.Drawing.Size(189, 24);
             this.rightFacingViewToolStripMenuItem.Text = "見開き（右送り）";
             this.rightFacingViewToolStripMenuItem.Click += new System.EventHandler(this.rightFacingViewToolStripMenuItem_Click);
             // 
@@ -167,38 +171,39 @@
             this.viewToolStripSplitButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.viewToolStripSplitButton.Margin = new System.Windows.Forms.Padding(6, 1, 0, 2);
             this.viewToolStripSplitButton.Name = "viewToolStripSplitButton";
-            this.viewToolStripSplitButton.Size = new System.Drawing.Size(48, 24);
+            this.viewToolStripSplitButton.Size = new System.Drawing.Size(58, 24);
             this.viewToolStripSplitButton.Text = "表示";
             this.viewToolStripSplitButton.ButtonClick += new System.EventHandler(this.viewToolStripSplitButton_ButtonClick);
             // 
             // sizeContextMenuStrip
             // 
+            this.sizeContextMenuStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.sizeContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.originalSizeToolStripMenuItem,
             this.allFitSizeToolStripMenuItem,
             this.onlyBigImageFitSizeToolStripMenuItem});
             this.sizeContextMenuStrip.Name = "sizeContextMenuStrip";
             this.sizeContextMenuStrip.OwnerItem = this.sizeToolStripSplitButton;
-            this.sizeContextMenuStrip.Size = new System.Drawing.Size(305, 70);
+            this.sizeContextMenuStrip.Size = new System.Drawing.Size(316, 76);
             // 
             // originalSizeToolStripMenuItem
             // 
             this.originalSizeToolStripMenuItem.Name = "originalSizeToolStripMenuItem";
-            this.originalSizeToolStripMenuItem.Size = new System.Drawing.Size(304, 22);
+            this.originalSizeToolStripMenuItem.Size = new System.Drawing.Size(315, 24);
             this.originalSizeToolStripMenuItem.Text = "原寸大";
             this.originalSizeToolStripMenuItem.Click += new System.EventHandler(this.originalSizeToolStripMenuItem_Click);
             // 
             // allFitSizeToolStripMenuItem
             // 
             this.allFitSizeToolStripMenuItem.Name = "allFitSizeToolStripMenuItem";
-            this.allFitSizeToolStripMenuItem.Size = new System.Drawing.Size(304, 22);
+            this.allFitSizeToolStripMenuItem.Size = new System.Drawing.Size(315, 24);
             this.allFitSizeToolStripMenuItem.Text = "ウィンドウにあわせる";
             this.allFitSizeToolStripMenuItem.Click += new System.EventHandler(this.allFitSizeToolStripMenuItem_Click);
             // 
             // onlyBigImageFitSizeToolStripMenuItem
             // 
             this.onlyBigImageFitSizeToolStripMenuItem.Name = "onlyBigImageFitSizeToolStripMenuItem";
-            this.onlyBigImageFitSizeToolStripMenuItem.Size = new System.Drawing.Size(304, 22);
+            this.onlyBigImageFitSizeToolStripMenuItem.Size = new System.Drawing.Size(315, 24);
             this.onlyBigImageFitSizeToolStripMenuItem.Text = "ウィンドウにあわせる（大きい画像のみ）";
             this.onlyBigImageFitSizeToolStripMenuItem.Click += new System.EventHandler(this.onlyBigImageFitSizeToolStripMenuItem_Click);
             // 
@@ -212,21 +217,24 @@
             this.sizeToolStripSplitButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.sizeToolStripSplitButton.Margin = new System.Windows.Forms.Padding(6, 1, 0, 2);
             this.sizeToolStripSplitButton.Name = "sizeToolStripSplitButton";
-            this.sizeToolStripSplitButton.Size = new System.Drawing.Size(60, 24);
+            this.sizeToolStripSplitButton.Size = new System.Drawing.Size(62, 24);
             this.sizeToolStripSplitButton.Text = "サイズ";
             this.sizeToolStripSplitButton.ButtonClick += new System.EventHandler(this.sizeToolStripSplitButton_ButtonClick);
             // 
-            // toolStrip
+            // toolBar
             // 
+            this.toolBar.CanOverflow = false;
+            this.toolBar.Dock = System.Windows.Forms.DockStyle.None;
+            this.toolBar.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
+            this.toolBar.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.toolBar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.viewToolStripSplitButton,
             this.sizeToolStripSplitButton,
             this.previewIndexToolStripButton,
-            this.nextIndexToolStripButton,
-            this.indexToolStripSlider});
+            this.nextIndexToolStripButton});
             this.toolBar.Location = new System.Drawing.Point(0, 0);
-            this.toolBar.Name = "toolStrip";
-            this.toolBar.Size = new System.Drawing.Size(694, 27);
+            this.toolBar.Name = "toolBar";
+            this.toolBar.Size = new System.Drawing.Size(201, 27);
             this.toolBar.TabIndex = 4;
             this.toolBar.Text = "toolStrip1";
             // 
@@ -239,7 +247,7 @@
             this.previewIndexToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.previewIndexToolStripButton.Margin = new System.Windows.Forms.Padding(6, 1, 0, 2);
             this.previewIndexToolStripButton.Name = "previewIndexToolStripButton";
-            this.previewIndexToolStripButton.Size = new System.Drawing.Size(23, 24);
+            this.previewIndexToolStripButton.Size = new System.Drawing.Size(29, 24);
             this.previewIndexToolStripButton.Text = "toolStripButton1";
             this.previewIndexToolStripButton.Click += new System.EventHandler(this.previewIndexToolStripButton_Click);
             // 
@@ -252,31 +260,34 @@
             this.nextIndexToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.nextIndexToolStripButton.Margin = new System.Windows.Forms.Padding(2, 1, 0, 2);
             this.nextIndexToolStripButton.Name = "nextIndexToolStripButton";
-            this.nextIndexToolStripButton.Size = new System.Drawing.Size(23, 24);
+            this.nextIndexToolStripButton.Size = new System.Drawing.Size(29, 24);
             this.nextIndexToolStripButton.Text = "toolStripButton2";
             this.nextIndexToolStripButton.Click += new System.EventHandler(this.nextIndexToolStripButton_Click);
             // 
-            // indexToolStripSlider
+            // indexSlider
             // 
-            this.indexToolStripSlider.BackColor = System.Drawing.Color.Transparent;
-            this.indexToolStripSlider.MaximumValue = 100;
-            this.indexToolStripSlider.MinimumValue = 0;
-            this.indexToolStripSlider.Margin = new System.Windows.Forms.Padding(16, 1, 0, 2);
-            this.indexToolStripSlider.Name = "indexToolStripSlider";
-            this.indexToolStripSlider.Size = new System.Drawing.Size(256, 24);
-            this.indexToolStripSlider.Text = "toolStripSlider1";
-            this.indexToolStripSlider.Value = 0;
-            this.indexToolStripSlider.ValueChanging += new System.EventHandler(this.indexToolStripSlider_ValueChanging);
-            this.indexToolStripSlider.ValueChanged += new System.EventHandler(this.indexToolStripSlider_ValueChanged);
+            this.indexSlider.Location = new System.Drawing.Point(204, 4);
+            this.indexSlider.Margin = new System.Windows.Forms.Padding(3, 3, 6, 3);
+            this.indexSlider.MaximumValue = 100;
+            this.indexSlider.MinimumValue = 0;
+            this.indexSlider.Name = "indexSlider";
+            this.indexSlider.Size = new System.Drawing.Size(715, 23);
+            this.indexSlider.TabIndex = 5;
+            this.indexSlider.Text = "slider1";
+            this.indexSlider.Value = 0;
+            this.indexSlider.ValueChanging += new System.EventHandler(this.indexSlider_ValueChanging);
+            this.indexSlider.ValueChanged += new System.EventHandler(this.indexSlider_ValueChanged);
             // 
             // ImageViewerContents
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.indexSlider);
             this.Controls.Add(this.checkPatternPanel);
             this.Controls.Add(this.toolBar);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "ImageViewerContents";
-            this.Size = new System.Drawing.Size(694, 422);
+            this.Size = new System.Drawing.Size(925, 528);
             this.checkPatternPanel.ResumeLayout(false);
             this.viewContextMenuStrip.ResumeLayout(false);
             this.sizeContextMenuStrip.ResumeLayout(false);
@@ -299,7 +310,6 @@
         private System.Windows.Forms.ToolStripSplitButton sizeToolStripSplitButton;
         private System.Windows.Forms.ToolStripButton previewIndexToolStripButton;
         private System.Windows.Forms.ToolStripButton nextIndexToolStripButton;
-        private SWF.UIComponent.Common.ToolStripSlider indexToolStripSlider;
         private System.Windows.Forms.ContextMenuStrip viewContextMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem singleViewToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem leftFacingViewToolStripMenuItem;
@@ -308,5 +318,6 @@
         private System.Windows.Forms.ToolStripMenuItem originalSizeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem allFitSizeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem onlyBigImageFitSizeToolStripMenuItem;
+        private SWF.UIComponent.Common.Slider indexSlider;
     }
 }
