@@ -8,7 +8,6 @@
 * プロパティをシンプルに定義する。
 * 使われていない項目を削除する。
 * `Folder`を`Directory`にする。
-* `PicSum.Core.Data.FileAccessor`の内容を、`SWF.Common`に移動する。
 * 継承させないクラスに、`sealed`を記述する。
 ## サムネイル
 * フォルダアイコンを大きくする。
