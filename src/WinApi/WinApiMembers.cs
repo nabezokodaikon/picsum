@@ -304,6 +304,8 @@ namespace WinApi
 
         public const int HTCAPTION = 2;
 
+        public const int S_OK = 0;
+
         public enum FileAttributesFlags : uint
         {
             FILE_ATTRIBUTE_ARCHIVE = 0x00000020,
@@ -317,6 +319,7 @@ namespace WinApi
             FILE_ATTRIBUTE_TEMPORARY = 0x00000100
         }
 
+        [Flags]
         public enum ShellFileInfoFlags
         {
             SHGFI_ICON = 0x000000100,
@@ -334,7 +337,9 @@ namespace WinApi
             SHGFI_OPENICON = 0x000000002,
             SHGFI_SHELLICONSIZE = 0x000000004,
             SHGFI_PIDL = 0x000000008,
-            SHGFI_USEFILEATTRIBUTES = 0x000000010
+            SHGFI_USEFILEATTRIBUTES = 0x000000010,
+            SHGFI_ADDOVERLAYS = 0x000000020,
+            SHGFI_OVERLAYINDEX = 0x000000040
         }
 
         public enum ShellSpecialFolder
@@ -427,6 +432,20 @@ namespace WinApi
             CYMAXIMIZED = 62, // 同、高さ
             CLEANBOOT = 67 // Windowsを起動した方法 戻り値(0=通常起動、1=セーフモード、2=ネットワークのセーフモード)
         }
+
+        [Flags]
+        public enum SHIL: int
+        {
+            SHIL_JUMBO = 0x0004,
+            SHIL_EXTRALARGE = 0x0002
+        }
+
+        #endregion
+
+        #region 静的変数
+
+        public static readonly Guid IID_IImageList = new Guid("46EB5926-582E-4017-9FDF-E8998DAA0950");
+        //public static readonly Guid IID_IImageList2 = new Guid("192B9D83-50FC-457B-90A0-2B82A8B5DAE1");
 
         #endregion
 
@@ -530,6 +549,40 @@ namespace WinApi
             public POINTAPI ptMaxTrackSize;
         }
 
+        [StructLayout(LayoutKind.Sequential)]
+        public struct IMAGELISTDRAWPARAMS
+        {
+            public int cbSize;
+            public IntPtr himl;
+            public int i;
+            public IntPtr hdcDst;
+            public int x;
+            public int y;
+            public int cx;
+            public int cy;
+            public int xBitmap;    // x offest from the upperleft of bitmap
+            public int yBitmap;    // y offset from the upperleft of bitmap
+            public int rgbBk;
+            public int rgbFg;
+            public int fStyle;
+            public int dwRop;
+            public int fState;
+            public int Frame;
+            public int crEffect;
+        }
+
+        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+        public struct SHFILEINFO
+        {
+            public IntPtr hIcon;
+            public int iIcon;
+            public int dwAttributes;
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 260)]
+            public string szDisplayName;
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 80)]
+            public string szTypeName;
+        }
+
         #endregion
 
         #region クラス
@@ -603,6 +656,41 @@ namespace WinApi
 
         #endregion
 
+        #region インターフェース
+
+        // interface COM IImageList
+        [ComImportAttribute()]
+        [GuidAttribute("46EB5926-582E-4017-9FDF-E8998DAA0950")]
+        [InterfaceTypeAttribute(ComInterfaceType.InterfaceIsIUnknown)]
+        public interface IImageList
+        {
+            [PreserveSig]
+            int Add(IntPtr hbmImage, IntPtr hbmMask, ref int pi);
+
+            [PreserveSig]
+            int ReplaceIcon(int i, IntPtr hicon, ref int pi);
+
+            [PreserveSig]
+            int SetOverlayImage(int iImage, int iOverlay);
+
+            [PreserveSig]
+            int Replace(int i, IntPtr hbmImage, IntPtr hbmMask);
+
+            [PreserveSig]
+            int AddMasked(IntPtr hbmImage, int crMask, ref int pi);
+
+            [PreserveSig]
+            int Draw(ref IMAGELISTDRAWPARAMS pimldp);
+
+            [PreserveSig]
+            int Remove(int i);
+
+            [PreserveSig]
+            int GetIcon(int i, int flags, ref IntPtr picon);
+        };
+
+        #endregion
+
         #region APIメソッド
 
         [DllImport("kernel32", CharSet = CharSet.Unicode, SetLastError = true)]
@@ -613,6 +701,9 @@ namespace WinApi
 
         [DllImport("kernel32", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = false)]
         public static extern IntPtr GetProcAddress(IntPtr hModule, string lpProcName);
+
+        [DllImport("Shell32.dll", CharSet = CharSet.Unicode)]
+        public static extern IntPtr SHGetFileInfo(string pszPath, int dwFileAttributes, ref SHFILEINFO psfi, int cbFileInfo, int uFlags);
 
         [DllImport("shell32.dll", CharSet = CharSet.Unicode, ExactSpelling = true)]
         public static extern IntPtr SHGetFileInfoW(string pszPath, FileAttributesFlags dwFileAttributes, ref SHFILEINFOW psfi, uint cbSizeFileInfo, ShellFileInfoFlags uFlags);
@@ -628,6 +719,9 @@ namespace WinApi
 
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
         public extern static bool DestroyIcon(IntPtr handle);
+
+        [DllImport("Comctl32.dll")]
+        public static extern bool ImageList_Destroy(IntPtr himl);
 
         [DllImport("gdiplus.dll", CharSet = CharSet.Unicode)]
         public static extern int GdipLoadImageFromFile(string strFileName, ref IntPtr ipImage);
@@ -730,6 +824,19 @@ namespace WinApi
 
         [DllImport("user32.dll")]
         public static extern bool RedrawWindow(IntPtr hWnd, IntPtr lprcUpdate, IntPtr hrgnUpdate, uint flags);
+
+        [DllImport("shell32.dll", EntryPoint = "#727")]
+        public static extern int SHGetImageList(int iImageList, Guid riid, ref IImageList ppv);
+
+        [DllImport("shell32.dll", EntryPoint = "#727")]
+        public static extern int SHGetImageList(SHIL iImageList, Guid riid, out IImageList ppv);
+
+        //
+        [DllImport("shell32.dll", EntryPoint = "#727")]
+        public static extern int SHGetImageList(SHIL iImageList, Guid riid, out IntPtr ppv);
+
+        [DllImport("comctl32.dll", SetLastError = true)]
+        public static extern IntPtr ImageList_GetIcon(IntPtr himl, int i, int flags);
 
         #endregion
 
