@@ -7,7 +7,7 @@ using System;
 
 namespace PicSum.Task.AsyncFacade
 {
-    public class DeleteFolderViewHistoryAsyncFacade
+    public class DeleteFolderViewCounterAsyncFacade
         : OneWayFacadeBase<ListEntity<string>>
     {
         public override void Execute(ListEntity<string> param)
@@ -19,7 +19,7 @@ namespace PicSum.Task.AsyncFacade
 
             using (var tran = DatabaseManager<FileInfoConnection>.BeginTransaction())
             {
-                var logic = new DeleteFolderViewHistoryAsyncLogic(this);
+                var logic = new DeleteFolderViewCounterAsyncLogic(this);
 
                 foreach (var dir in param)
                 {

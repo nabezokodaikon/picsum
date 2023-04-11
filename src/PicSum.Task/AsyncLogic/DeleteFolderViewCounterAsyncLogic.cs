@@ -7,12 +7,12 @@ using System;
 namespace PicSum.Task.AsyncLogic
 {
     /// <summary>
-    /// フォルダの表示履歴を削除します。
+    /// フォルダの表示回数を削除します。
     /// </summary>
-    internal class DeleteFolderViewHistoryAsyncLogic
+    internal class DeleteFolderViewCounterAsyncLogic
         : AsyncLogicBase
     {
-        public DeleteFolderViewHistoryAsyncLogic(AsyncFacadeBase facade)
+        public DeleteFolderViewCounterAsyncLogic(AsyncFacadeBase facade)
             : base(facade) { }
 
         /// <summary>
@@ -26,7 +26,7 @@ namespace PicSum.Task.AsyncLogic
                 throw new ArgumentNullException(nameof(directoryPath));
             }
 
-            var sql = new DeletionFolderViewHistoryByFileSql(directoryPath);
+            var sql = new DeletionFolderViewCounterByFileSql(directoryPath);
             DatabaseManager<FileInfoConnection>.Update(sql);
         }
     }

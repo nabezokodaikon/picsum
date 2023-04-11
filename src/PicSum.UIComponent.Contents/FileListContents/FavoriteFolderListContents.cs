@@ -17,7 +17,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
 
         private FavoriteFolderListContentsParameter _parameter = null;
         private TwoWayProcess<SearchFavoriteFolderAsyncFacade, SearchFavoriteFolderParameterEntity, ListEntity<FileShallowInfoEntity>> _searchFavoriteFolderProcess = null;
-        private OneWayProcess<DeleteFolderViewHistoryAsyncFacade, ListEntity<string>> removeItemProcess = null;
+        private OneWayProcess<DeleteFolderViewCounterAsyncFacade, ListEntity<string>> deleteFolderViewCounterProcess = null;
 
         #endregion
 
@@ -37,18 +37,18 @@ namespace PicSum.UIComponent.Contents.FileListContents
             }
         }
 
-        private OneWayProcess<DeleteFolderViewHistoryAsyncFacade, ListEntity<string>> DeleteFolderViewHistoryProcess
+        private OneWayProcess<DeleteFolderViewCounterAsyncFacade, ListEntity<string>> DeleteFolderViewCounterProcess
         {
             get
             {
-                if (this.removeItemProcess == null)
+                if (this.deleteFolderViewCounterProcess == null)
                 {
-                    this.removeItemProcess
-                        = TaskManager.CreateOneWayProcess<DeleteFolderViewHistoryAsyncFacade, ListEntity<string>>(this.ProcessContainer);
+                    this.deleteFolderViewCounterProcess
+                        = TaskManager.CreateOneWayProcess<DeleteFolderViewCounterAsyncFacade, ListEntity<string>>(this.ProcessContainer);
 
                 }
 
-                return this.removeItemProcess;
+                return this.deleteFolderViewCounterProcess;
             }
         }
 
@@ -100,7 +100,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
         protected override void OnRemoveFile(IList<string> directoryList)
         {
             var param = new ListEntity<string>(directoryList);
-            this.DeleteFolderViewHistoryProcess.Execute(this, param);
+            this.DeleteFolderViewCounterProcess.Execute(this, param);
             this.RemoveFile(directoryList);
 
             this.OnSelectedFileChanged(new SelectedFileChangeEventArgs());
