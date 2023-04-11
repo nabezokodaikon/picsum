@@ -106,7 +106,6 @@
     <Compile Include="Sql\DeletionFileViewHistoryByFileSql.cs" />
     <Compile Include="Sql\DeletionFolderStateByFileSql.cs" />
     <Compile Include="Sql\DeletionFolderViewCounterByFileSql.cs" />
-    <Compile Include="Sql\DeletionFolderViewHistoryByFileSql.cs" />
     <Compile Include="Sql\DeletionTagByFileAndTagSql.cs" />
     <Compile Include="Sql\DeletionTagByFileSql.cs" />
     <Compile Include="Sql\DeletionTagByTagSql.cs" />
