@@ -260,7 +260,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
 
         private void getNextFolderProcess_Callback(object sender, SingleValueEntity<string> e)
         {
-            FolderFileListContentsParameter param = new FolderFileListContentsParameter(e.Value, this._parameter.AfterLoadAction);
+            FolderFileListContentsParameter param = new FolderFileListContentsParameter(e.Value);
             OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.OverlapTab, param));
         }
 

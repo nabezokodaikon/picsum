@@ -33,15 +33,14 @@
             this.infoPanel = new PicSum.UIComponent.InfoPanel.InfoPanel();
             this.tabSwitch = new SWF.UIComponent.TabOperation.TabSwitch();
             this.toolPanel = new System.Windows.Forms.Panel();
-            this.reloadToolButton = new SWF.UIComponent.Common.ToolButton();
+            this.searchTagToolButton = new PicSum.UIComponent.SearchTool.SearchTagToolButton();
+            this.searchRatingToolButton = new SWF.UIComponent.Common.ToolButton();
             this.homeToolButton = new SWF.UIComponent.Common.ToolButton();
             this.keepToolButton = new SWF.UIComponent.Common.ToolButton();
-            this.searchTagToolButton = new PicSum.UIComponent.SearchTool.SearchTagToolButton();
             this.previewContentsHistoryButton = new SWF.UIComponent.Common.ToolButton();
             this.nextContentsHistoryButton = new SWF.UIComponent.Common.ToolButton();
             this.showInfoToolButton = new SWF.UIComponent.Common.ToolButton();
             this.addressBar = new PicSum.UIComponent.AddressBar.AddressBar();
-            this.searchRatingToolButton = new SWF.UIComponent.Common.ToolButton();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
             this.splitContainer.Panel1.SuspendLayout();
             this.splitContainer.Panel2.SuspendLayout();
@@ -122,7 +121,6 @@
             this.toolPanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.toolPanel.Controls.Add(this.searchTagToolButton);
             this.toolPanel.Controls.Add(this.searchRatingToolButton);
-            this.toolPanel.Controls.Add(this.reloadToolButton);
             this.toolPanel.Controls.Add(this.homeToolButton);
             this.toolPanel.Controls.Add(this.keepToolButton);
             this.toolPanel.Controls.Add(this.previewContentsHistoryButton);
@@ -137,21 +135,35 @@
             this.toolPanel.Size = new System.Drawing.Size(746, 34);
             this.toolPanel.TabIndex = 5;
             // 
-            // reloadToolButton
+            // searchTagToolButton
             // 
-            this.reloadToolButton.Image = global::PicSum.Main.Properties.Resources.ReloadIcon;
-            this.reloadToolButton.Location = new System.Drawing.Point(84, 3);
-            this.reloadToolButton.Name = "reloadToolButton";
-            this.reloadToolButton.RegionType = SWF.UIComponent.Common.ToolButton.ToolButtonRegionType.Default;
-            this.reloadToolButton.Size = new System.Drawing.Size(32, 28);
-            this.reloadToolButton.TabIndex = 7;
-            this.reloadToolButton.UseVisualStyleBackColor = true;
-            this.reloadToolButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.reloadToolButton_MouseClick);
+            this.searchTagToolButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.searchTagToolButton.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.searchTagToolButton.Image = global::PicSum.Main.Properties.Resources.TagIcon;
+            this.searchTagToolButton.Location = new System.Drawing.Point(594, 3);
+            this.searchTagToolButton.Name = "searchTagToolButton";
+            this.searchTagToolButton.RegionType = SWF.UIComponent.Common.ToolButton.ToolButtonRegionType.Default;
+            this.searchTagToolButton.Size = new System.Drawing.Size(32, 28);
+            this.searchTagToolButton.TabIndex = 0;
+            this.searchTagToolButton.UseVisualStyleBackColor = true;
+            this.searchTagToolButton.SelectedTag += new System.EventHandler<PicSum.UIComponent.SearchTool.SelectedTagEventArgs>(this.searchTagToolButton_SelectedTag);
+            // 
+            // searchRatingToolButton
+            // 
+            this.searchRatingToolButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.searchRatingToolButton.Image = global::PicSum.Main.Properties.Resources.ActiveRatingIcon;
+            this.searchRatingToolButton.Location = new System.Drawing.Point(632, 3);
+            this.searchRatingToolButton.Name = "searchRatingToolButton";
+            this.searchRatingToolButton.RegionType = SWF.UIComponent.Common.ToolButton.ToolButtonRegionType.Default;
+            this.searchRatingToolButton.Size = new System.Drawing.Size(32, 28);
+            this.searchRatingToolButton.TabIndex = 8;
+            this.searchRatingToolButton.UseVisualStyleBackColor = true;
+            this.searchRatingToolButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.searchRatingToolButton_MouseClick);
             // 
             // homeToolButton
             // 
             this.homeToolButton.Image = global::PicSum.Main.Properties.Resources.HomeIcon;
-            this.homeToolButton.Location = new System.Drawing.Point(122, 3);
+            this.homeToolButton.Location = new System.Drawing.Point(84, 3);
             this.homeToolButton.Name = "homeToolButton";
             this.homeToolButton.RegionType = SWF.UIComponent.Common.ToolButton.ToolButtonRegionType.Default;
             this.homeToolButton.Size = new System.Drawing.Size(32, 28);
@@ -170,19 +182,6 @@
             this.keepToolButton.TabIndex = 0;
             this.keepToolButton.UseVisualStyleBackColor = true;
             this.keepToolButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.keepToolButton_MouseClick);
-            // 
-            // searchTagToolButton
-            // 
-            this.searchTagToolButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.searchTagToolButton.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.searchTagToolButton.Image = global::PicSum.Main.Properties.Resources.TagIcon;
-            this.searchTagToolButton.Location = new System.Drawing.Point(594, 3);
-            this.searchTagToolButton.Name = "searchTagToolButton";
-            this.searchTagToolButton.RegionType = SWF.UIComponent.Common.ToolButton.ToolButtonRegionType.Default;
-            this.searchTagToolButton.Size = new System.Drawing.Size(32, 28);
-            this.searchTagToolButton.TabIndex = 0;
-            this.searchTagToolButton.UseVisualStyleBackColor = true;
-            this.searchTagToolButton.SelectedTag += new System.EventHandler<PicSum.UIComponent.SearchTool.SelectedTagEventArgs>(this.searchTagToolButton_SelectedTag);
             // 
             // previewContentsHistoryButton
             // 
@@ -230,31 +229,19 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.addressBar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(138)))), ((int)(((byte)(153)))));
             this.addressBar.InnerColor = System.Drawing.Color.White;
-            this.addressBar.Location = new System.Drawing.Point(160, 4);
+            this.addressBar.Location = new System.Drawing.Point(122, 4);
             this.addressBar.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.addressBar.MouseDownColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(48)))), ((int)(((byte)(96)))), ((int)(((byte)(144)))));
             this.addressBar.MousePointColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(48)))), ((int)(((byte)(96)))), ((int)(((byte)(144)))));
             this.addressBar.Name = "addressBar";
             this.addressBar.OutlineColor = System.Drawing.Color.Silver;
-            this.addressBar.Size = new System.Drawing.Size(428, 26);
+            this.addressBar.Size = new System.Drawing.Size(466, 26);
             this.addressBar.TabIndex = 0;
             this.addressBar.TextAlignment = System.Drawing.StringAlignment.Center;
             this.addressBar.TextColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.addressBar.TextLineAlignment = System.Drawing.StringAlignment.Center;
             this.addressBar.TextTrimming = System.Drawing.StringTrimming.EllipsisCharacter;
             this.addressBar.SelectedFolder += new System.EventHandler<PicSum.UIComponent.AddressBar.SelectedFolderEventArgs>(this.addressBar_SelectedFolder);
-            // 
-            // searchRatingToolButton
-            // 
-            this.searchRatingToolButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.searchRatingToolButton.Image = global::PicSum.Main.Properties.Resources.ActiveRatingIcon;
-            this.searchRatingToolButton.Location = new System.Drawing.Point(632, 3);
-            this.searchRatingToolButton.Name = "searchRatingToolButton";
-            this.searchRatingToolButton.RegionType = SWF.UIComponent.Common.ToolButton.ToolButtonRegionType.Default;
-            this.searchRatingToolButton.Size = new System.Drawing.Size(32, 28);
-            this.searchRatingToolButton.TabIndex = 8;
-            this.searchRatingToolButton.UseVisualStyleBackColor = true;
-            this.searchRatingToolButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.searchRatingToolButton_MouseClick);
             // 
             // BrowserMainPanel
             // 
@@ -287,7 +274,6 @@
         private PicSum.UIComponent.SearchTool.SearchTagToolButton searchTagToolButton;
         private SWF.UIComponent.Common.ToolButton keepToolButton;
         private SWF.UIComponent.Common.ToolButton homeToolButton;
-        private SWF.UIComponent.Common.ToolButton reloadToolButton;
         private SWF.UIComponent.Common.ToolButton searchRatingToolButton;
     }
 }

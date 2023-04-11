@@ -100,7 +100,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
                 ratingValue = _parameter.RagingValue - 1;
             }
 
-            RatingFileListContentsParameter param = new RatingFileListContentsParameter(ratingValue, this._parameter.AfterLoadAction);
+            RatingFileListContentsParameter param = new RatingFileListContentsParameter(ratingValue);
             OnOpenContents(new BrowserContentsEventArgs(PicSum.Core.Base.Conf.ContentsOpenType.OverlapTab, param));
         }
 
@@ -116,7 +116,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
                 ratingValue = _parameter.RagingValue + 1;
             }
 
-            RatingFileListContentsParameter param = new RatingFileListContentsParameter(ratingValue, this._parameter.AfterLoadAction);
+            RatingFileListContentsParameter param = new RatingFileListContentsParameter(ratingValue);
             OnOpenContents(new BrowserContentsEventArgs(PicSum.Core.Base.Conf.ContentsOpenType.OverlapTab, param));
         }
 

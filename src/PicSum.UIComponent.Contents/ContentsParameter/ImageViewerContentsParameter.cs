@@ -44,7 +44,7 @@ namespace PicSum.UIComponent.Contents.ContentsParameter
 
         public Action<bool> AfterLoadAction { get; private set; }
 
-        public ImageViewerContentsParameter(IList<string> filePathList, string selectedFilePath, Action<bool> afterLoadAction)
+        public ImageViewerContentsParameter(IList<string> filePathList, string selectedFilePath)
         {
             if (filePathList == null)
             {
@@ -60,10 +60,9 @@ namespace PicSum.UIComponent.Contents.ContentsParameter
             _selectedFilePath = selectedFilePath;
             this.ContentsTitle = string.Empty;
             this.ContentsIcon = null;
-            this.AfterLoadAction = afterLoadAction ?? throw new ArgumentNullException(nameof(afterLoadAction));
         }
 
-        public ImageViewerContentsParameter(IList<string> filePathList, string selectedFilePath, string contentsTitle, Image contentsIcon, Action<bool> afterLoadAction)
+        public ImageViewerContentsParameter(IList<string> filePathList, string selectedFilePath, string contentsTitle, Image contentsIcon)
         {
             if (filePathList == null)
             {
@@ -79,7 +78,6 @@ namespace PicSum.UIComponent.Contents.ContentsParameter
             _selectedFilePath = selectedFilePath;
             this.ContentsTitle = contentsTitle ?? throw new ArgumentNullException(nameof(contentsTitle));
             this.ContentsIcon = contentsIcon ?? throw new ArgumentNullException(nameof(contentsIcon));
-            this.AfterLoadAction = afterLoadAction ?? throw new ArgumentNullException(nameof(afterLoadAction));
         }
 
         public ContentsPanel CreateContents()

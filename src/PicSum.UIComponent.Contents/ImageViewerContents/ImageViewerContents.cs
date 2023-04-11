@@ -157,7 +157,6 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
 
         protected override void OnLoad(EventArgs e)
         {
-            this.Parameter.AfterLoadAction(true);
             filePathListIndex = _parameter.FilePathList.IndexOf(_parameter.SelectedFilePath);
         }
 
@@ -847,13 +846,13 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
 
         private void fileContextMenu_FileNewTabOpen(object sender, PicSum.UIComponent.Common.FileContextMenu.ExecuteFileEventArgs e)
         {
-            ImageViewerContentsParameter param = new ImageViewerContentsParameter(_parameter.FilePathList, e.FilePath, this.Title, this.Icon, this._parameter.AfterLoadAction);
+            ImageViewerContentsParameter param = new ImageViewerContentsParameter(_parameter.FilePathList, e.FilePath, this.Title, this.Icon);
             OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.AddTab, param));
         }
 
         private void fileContextMenu_FileNewWindowOpen(object sender, PicSum.UIComponent.Common.FileContextMenu.ExecuteFileEventArgs e)
         {
-            ImageViewerContentsParameter param = new ImageViewerContentsParameter(_parameter.FilePathList, e.FilePath, this.Title, this.Icon, this._parameter.AfterLoadAction);
+            ImageViewerContentsParameter param = new ImageViewerContentsParameter(_parameter.FilePathList, e.FilePath, this.Title, this.Icon);
             OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.NewWindow, param));
         }
 
