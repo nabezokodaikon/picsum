@@ -1,5 +1,4 @@
-﻿using PicSum.Core.Data.FileAccessor;
-using PicSum.Core.Task.Base;
+﻿using PicSum.Core.Task.Base;
 using SWF.Common;
 
 namespace PicSum.Task.Entity

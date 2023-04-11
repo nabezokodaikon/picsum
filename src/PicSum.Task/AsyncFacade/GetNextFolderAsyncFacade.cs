@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using PicSum.Core.Data.FileAccessor;
 using PicSum.Core.Task.AsyncTask;
 using PicSum.Task.AsyncLogic;
 using PicSum.Task.Entity;
+using SWF.Common;
 
 namespace PicSum.Task.AsyncFacade
 {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace PicSum.Core.Data.FileAccessor
+namespace SWF.Common
 {
     /// <summary>
     /// ファイル関連例外クラス。

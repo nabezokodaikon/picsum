@@ -1,11 +1,11 @@
 ﻿using System;
-using PicSum.Core.Data.FileAccessor;
 using PicSum.Core.Task.AsyncTask;
 using PicSum.Main.Conf;
 using PicSum.Main.Properties;
 using PicSum.Task.Entity;
 using PicSum.Task.SyncFacade;
 using PicSum.UIComponent.Contents.Conf;
+using SWF.Common;
 
 namespace PicSum.Main.Mng
 {

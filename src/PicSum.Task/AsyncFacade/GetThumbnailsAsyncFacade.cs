@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using PicSum.Core.Data.DatabaseAccessor;
-using PicSum.Core.Data.FileAccessor;
 using PicSum.Core.Task.AsyncTask;
 using PicSum.Data.DatabaseAccessor.Connection;
 using PicSum.Task.AsyncLogic;

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using PicSum.Core.Data.DatabaseAccessor;
-using PicSum.Core.Data.FileAccessor;
 using PicSum.Core.Task.AsyncTask;
 using PicSum.Data.DatabaseAccessor.Connection;
 using PicSum.Data.DatabaseAccessor.Dto;

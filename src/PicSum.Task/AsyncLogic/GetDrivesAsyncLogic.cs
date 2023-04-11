@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using PicSum.Core.Data.FileAccessor;
 using PicSum.Core.Task.AsyncTask;
 using SWF.Common;
 

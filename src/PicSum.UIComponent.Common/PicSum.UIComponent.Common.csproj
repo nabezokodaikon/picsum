@@ -76,10 +76,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PicSum.Core.Data.FileAccessor\PicSum.Core.Data.FileAccessor.csproj">
-      <Project>{8608A055-6F71-4142-BDF6-98B442763A14}</Project>
-      <Name>PicSum.Core.Data.FileAccessor</Name>
-    </ProjectReference>
     <ProjectReference Include="..\SWF.Common\SWF.Common.csproj">
       <Project>{1D5E61C2-A0F5-4A69-AF24-EDD274B78359}</Project>
       <Name>SWF.Common</Name>

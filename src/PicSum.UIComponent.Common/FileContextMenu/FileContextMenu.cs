@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using PicSum.Core.Data.FileAccessor;
 using SWF.Common;
 
 namespace PicSum.UIComponent.Common.FileContextMenu

@@ -128,10 +128,6 @@
       <Project>{128C4631-F38E-4670-BC8F-E9E60910CE70}</Project>
       <Name>PicSum.Core.Base</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PicSum.Core.Data.FileAccessor\PicSum.Core.Data.FileAccessor.csproj">
-      <Project>{8608A055-6F71-4142-BDF6-98B442763A14}</Project>
-      <Name>PicSum.Core.Data.FileAccessor</Name>
-    </ProjectReference>
     <ProjectReference Include="..\PicSum.Core.Task.AsyncTask\PicSum.Core.Task.AsyncTask.csproj">
       <Project>{E46B47C7-C4E7-44E5-963B-B603E31424E0}</Project>
       <Name>PicSum.Core.Task.AsyncTask</Name>

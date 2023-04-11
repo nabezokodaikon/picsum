@@ -1,7 +1,7 @@
-﻿using PicSum.Core.Data.FileAccessor;
-using PicSum.Core.Task.AsyncTask;
+﻿using PicSum.Core.Task.AsyncTask;
 using PicSum.Task.AsyncLogic;
 using PicSum.Task.Entity;
+using SWF.Common;
 using System;
 using System.Linq;
 

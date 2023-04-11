@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using PicSum.Core.Data.FileAccessor;
 using PicSum.Core.Task.Base;
 using SWF.Common;
 
