@@ -88,9 +88,10 @@ namespace SWF.Common
 
             try
             {
-                if (_smallIconCash.ContainsKey(ex))
+                Image cashIcon = null;
+                if (_smallIconCash.TryGetValue(ex, out cashIcon))
                 {
-                    return _smallIconCash[ex];
+                    return cashIcon;
                 }
                 else
                 {
@@ -98,7 +99,7 @@ namespace SWF.Common
 
                     try
                     {
-                        Image icon = FileUtil.GetSmallIconByExtension(ex);
+                        Image icon = FileUtil.GetSmallIconByFilePath(filePath);
                         _smallIconCash.Add(ex, icon);
                         return icon;
                     }
@@ -127,9 +128,10 @@ namespace SWF.Common
 
             try
             {
-                if (_largeIconCash.ContainsKey(ex))
+                Image cashIcon = null;
+                if (_largeIconCash.TryGetValue(ex, out cashIcon))
                 {
-                    return _largeIconCash[ex];
+                    return cashIcon;
                 }
                 else
                 {
@@ -137,7 +139,7 @@ namespace SWF.Common
 
                     try
                     {
-                        Image icon = FileUtil.GetLargeIconByExtension(ex);
+                        Image icon = FileUtil.GetExtraLargeIconByFilePath(filePath);
                         _largeIconCash.Add(ex, icon);
                         return icon;
                     }
