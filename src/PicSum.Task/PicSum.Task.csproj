@@ -85,6 +85,7 @@
     <Compile Include="AsyncFacade\SearchImageFileByFolderAsyncFacade.cs" />
     <Compile Include="AsyncFacade\UpdateFileRatingAsyncFacade.cs" />
     <Compile Include="AsyncLogic\AddFileRatingAsyncLogic.cs" />
+    <Compile Include="AsyncLogic\AddFolderViewCounterAsyncLogic.cs" />
     <Compile Include="AsyncLogic\AddFolderViewHistoryAsyncLogic.cs" />
     <Compile Include="AsyncLogic\AddFileTagAsyncLogic.cs" />
     <Compile Include="AsyncLogic\DeleteFileTagAsyncLogic.cs" />
@@ -92,6 +93,7 @@
     <Compile Include="AsyncLogic\GetFileDeepInfoAsyncLogic.cs" />
     <Compile Include="AsyncLogic\GetFileTagInfoAsyncLogic.cs" />
     <Compile Include="AsyncLogic\ExportFileAsyncLogic.cs" />
+    <Compile Include="AsyncLogic\IncrementFolderViewCounterAsyncLogic.cs" />
     <Compile Include="AsyncLogic\OperatingKeepListAsyncLogic.cs" />
     <Compile Include="AsyncLogic\SearchFavoriteFolderAsyncLogic.cs" />
     <Compile Include="AsyncLogic\SearchFileByRatingAsyncLogic.cs" />

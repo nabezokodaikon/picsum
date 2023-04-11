@@ -19,13 +19,21 @@ namespace PicSum.Task.AsyncFacade
 
             using (Transaction tran = DatabaseManager<FileInfoConnection>.BeginTransaction())
             {
-                AddFolderViewHistoryAsyncLogic addFolderViewHistory = new AddFolderViewHistoryAsyncLogic(this);
-                AddFileMasterAsyncLogic addFileMaster = new AddFileMasterAsyncLogic(this);
+                var addFolderViewHistory = new AddFolderViewHistoryAsyncLogic(this);
+                var addFileMaster = new AddFileMasterAsyncLogic(this);
+                var addFolderViewCounter = new AddFolderViewCounterAsyncLogic(this);
+                var incrementFolderViewCounter = new IncrementFolderViewCounterAsyncLogic(this);
 
                 if (!addFolderViewHistory.Execute(param.Value))
                 {
                     addFileMaster.Execute(param.Value);
                     addFolderViewHistory.Execute(param.Value);
+                    addFolderViewCounter.Execute(param.Value) ;
+                }
+
+                if (!incrementFolderViewCounter.Execute(param.Value))
+                {
+                    addFolderViewCounter.Execute(param.Value);
                 }
 
                 tran.Commit();
