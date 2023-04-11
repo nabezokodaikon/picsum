@@ -25,8 +25,6 @@ namespace PicSum.UIComponent.Contents.ContentsParameter
             }
         }
 
-        public Action<bool> AfterLoadAction { get; private set; }
-
         public FavoriteFolderListContentsParameter()
         {
             _selectedFilePath = string.Empty;

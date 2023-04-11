@@ -42,8 +42,6 @@ namespace PicSum.UIComponent.Contents.ContentsParameter
 
         public Image ContentsIcon { get; private set; }
 
-        public Action<bool> AfterLoadAction { get; private set; }
-
         public ImageViewerContentsParameter(IList<string> filePathList, string selectedFilePath)
         {
             if (filePathList == null)
