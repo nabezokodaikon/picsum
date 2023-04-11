@@ -42,24 +42,6 @@ namespace PicSum.UIComponent.Contents.ContentsParameter
 
         public Image ContentsIcon { get; private set; }
 
-        public ImageViewerContentsParameter(IList<string> filePathList, string selectedFilePath)
-        {
-            if (filePathList == null)
-            {
-                throw new ArgumentNullException("filePathList");
-            }
-
-            if (selectedFilePath == null)
-            {
-                throw new ArgumentNullException("selectedFilePath");
-            }
-
-            _filePathList = filePathList;
-            _selectedFilePath = selectedFilePath;
-            this.ContentsTitle = string.Empty;
-            this.ContentsIcon = null;
-        }
-
         public ImageViewerContentsParameter(IList<string> filePathList, string selectedFilePath, string contentsTitle, Image contentsIcon)
         {
             if (filePathList == null)
