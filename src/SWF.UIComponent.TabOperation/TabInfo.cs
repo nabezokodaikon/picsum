@@ -148,6 +148,8 @@ namespace SWF.UIComponent.TabOperation
                 throw new Exception("既にコンテンツが存在しています。ClearContentsメソッドでコンテンツをクリアして下さい。");
             }
 
+            // TODO: パラメータにユニークなキーを作成し、リストの最後と追加するキーが一致する場合は、リストに追加しない。
+            // FileListContentsとImageViewerContentsを識別できるようにする。
             _contentsParameterList.Add(param);
             _contentsParameterListIndex = _contentsParameterList.Count - 1;
             _contents = param.CreateContents();
