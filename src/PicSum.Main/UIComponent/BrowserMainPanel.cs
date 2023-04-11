@@ -697,6 +697,18 @@ namespace PicSum.Main.UIComponent
             openContents(new RatingFileListContentsParameter(e.Value, this.reloadButtonEnableAction), e.OpenType);
         }
 
+        private void searchRatingToolButton_MouseClick(object sender, MouseEventArgs e)
+        {            
+            if (e.Button == MouseButtons.Left)
+            {
+                openContents(new RatingFileListContentsParameter(1, this.reloadButtonEnableAction), ContentsOpenType.OverlapTab);
+            }
+            else if (e.Button == MouseButtons.Middle)
+            {
+                openContents(new RatingFileListContentsParameter(1, this.reloadButtonEnableAction), ContentsOpenType.AddTab);
+            }
+        }
+
         private void keepToolButton_MouseClick(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)

@@ -7,6 +7,7 @@ using PicSum.Task.Entity;
 using PicSum.UIComponent.Contents.ContentsParameter;
 using PicSum.UIComponent.Contents.Properties;
 using PicSum.Core.Base.Conf;
+using SWF.Common;
 
 namespace PicSum.UIComponent.Contents.FileListContents
 {
@@ -73,25 +74,8 @@ namespace PicSum.UIComponent.Contents.FileListContents
 
         protected override void OnDrawTabContents(SWF.UIComponent.TabOperation.DrawTabEventArgs e)
         {
-            RectangleF rect = new RectangleF(e.IconRectangle.X,
-                                             e.IconRectangle.Y,
-                                             e.TextRectangle.Right - e.IconRectangle.X,
-                                             e.IconRectangle.Height);
-
-            for (int i = 0; i < _parameter.RagingValue; i++)
-            {
-                float w = Math.Min(this.Icon.Width, e.TextRectangle.Height);
-                float h = w;
-                float x = rect.X + rect.Height * i + (rect.Height - w) / 2f;
-                float y = rect.Y + (rect.Height - h) / 2f;
-
-                if (x + w > rect.Right)
-                {
-                    break;
-                }
-
-                e.Graphics.DrawImage(this.Icon, x, y, w, h);
-            }
+            e.Graphics.DrawImage(this.Icon, e.IconRectangle);
+            DrawTextUtil.DrawText(e.Graphics, this.Title, e.Font, e.TextRectangle, e.TitleColor, e.TitleFormatFlags, e.TextStyle);
         }
 
         protected override void OnBackgroundMouseClick(MouseEventArgs e)

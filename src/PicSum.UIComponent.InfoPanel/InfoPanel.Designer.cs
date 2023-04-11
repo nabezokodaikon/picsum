@@ -238,7 +238,7 @@
             this.ratingBar.BackColor = System.Drawing.Color.Transparent;
             this.ratingBar.Location = new System.Drawing.Point(0, 422);
             this.ratingBar.Margin = new System.Windows.Forms.Padding(3, 9, 3, 9);
-            this.ratingBar.MaximumValue = 5;
+            this.ratingBar.MaximumValue = 1;
             this.ratingBar.Name = "ratingBar";
             this.ratingBar.Size = new System.Drawing.Size(512, 24);
             this.ratingBar.TabIndex = 15;
