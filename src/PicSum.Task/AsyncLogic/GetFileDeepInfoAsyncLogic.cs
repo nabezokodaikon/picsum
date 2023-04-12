@@ -95,7 +95,7 @@ namespace PicSum.Task.AsyncLogic
                         info.ImageSize = new Size(srcImg.Width, srcImg.Height);
                     }
                 }
-                else 
+                else if (!info.IsFile)
                 {
                     var firstImageFile = FileUtil.GetFirstImageFilePath(filePath);
                     if (!string.IsNullOrEmpty(firstImageFile))
