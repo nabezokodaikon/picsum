@@ -356,6 +356,25 @@ namespace SWF.Common
             return sb.ToString();
         }
 
+        /// <summary>
+        /// 指定したディレクトリ内の最初の画像ファイルを取得します。
+        /// </summary>
+        /// <param name="directoryPath"></param>
+        /// <returns></returns>
+        public static string GetFirstImageFilePath(string directoryPath)
+        {
+            if (directoryPath == null)
+            {
+                throw new ArgumentNullException(nameof(directoryPath));
+            }
+
+            return FileUtil.GetFiles(directoryPath)
+                .OrderBy(file => file)
+                .FirstOrDefault(file => 
+                    ImageUtil.ImageFileExtensionList.Contains(FileUtil.GetExtension(file)) 
+                    && FileUtil.CanAccess(file));
+        }
+
         #endregion
 
         #region ファイルリスト取得メソッド
