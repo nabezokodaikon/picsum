@@ -224,7 +224,7 @@ namespace PicSum.Task.AsyncLogic
                         }
                         else
                         {
-                            string thumbFile = getFirstImageFilePath(filePath);
+                            string thumbFile = FileUtil.GetFirstImageFilePath(filePath);
                             if (!string.IsNullOrEmpty(thumbFile))
                             {
                                 // サムネイルを更新します。
@@ -240,7 +240,7 @@ namespace PicSum.Task.AsyncLogic
                     }
                     else
                     {
-                        string thumbFile = getFirstImageFilePath(filePath);
+                        string thumbFile = FileUtil.GetFirstImageFilePath(filePath);
                         if (!string.IsNullOrEmpty(thumbFile))
                         {
                             // サムネイルを作成します。
@@ -271,7 +271,7 @@ namespace PicSum.Task.AsyncLogic
                     }
                     else
                     {
-                        string thumbFile = getFirstImageFilePath(filePath);
+                        string thumbFile = FileUtil.GetFirstImageFilePath(filePath);
                         if (!string.IsNullOrEmpty(thumbFile))
                         {
                             // サムネイルを更新します。                                
@@ -288,7 +288,7 @@ namespace PicSum.Task.AsyncLogic
                 else
                 {
                     // サムネイルを作成します。
-                    string thumbFile = getFirstImageFilePath(filePath);
+                    string thumbFile = FileUtil.GetFirstImageFilePath(filePath);
                     if (!string.IsNullOrEmpty(thumbFile))
                     {
                         DateTime updateDate = FileUtil.GetUpdateDate(filePath);
@@ -302,12 +302,6 @@ namespace PicSum.Task.AsyncLogic
                     }
                 }
             }
-        }
-
-        private string getFirstImageFilePath(string folderPath)
-        {
-            return FileUtil.GetFiles(folderPath).OrderBy(file => file).FirstOrDefault(file => ImageUtil.ImageFileExtensionList.Contains(FileUtil.GetExtension(file)) &&
-                                                                        FileUtil.CanAccess(file));
         }
 
         #region DBキャッシュ操作メソッド
