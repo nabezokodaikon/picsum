@@ -260,11 +260,13 @@ namespace PicSum.Main.UIComponent
                     case Keys.W:
                         {
                             this.RemoveTabOrWindow();
+                            this.Focus();
                             break;
                         }
                     case Keys.T:
                         {
                             this.AddFavoriteFolderListTab();
+                            this.Focus();
                             break;
                         }
                 }
