@@ -382,21 +382,24 @@ namespace PicSum.UIComponent.InfoPanel
 
         private void drawFileIcon(Graphics g, Image icon, Rectangle rect)
         {
-            if (Math.Max(icon.Width, icon.Height) <= Math.Min(rect.Width, rect.Height))
+            var iconWidth = (float)icon.Width;
+            var iconHeight = (float)icon.Height;
+
+            if (Math.Max(iconWidth, iconHeight) <= Math.Min(rect.Width, rect.Height))
             {
-                float w = icon.Width;
-                float h = icon.Height;
-                float x = rect.X + (rect.Width - w) / 2f;
-                float y = rect.Y + (rect.Height - h) / 2f;
+                var w = iconWidth;
+                var h = iconHeight;
+                var x = rect.X + (rect.Width - w) / 2f;
+                var y = rect.Y + (rect.Height - h) / 2f;
                 g.DrawImage(icon, new RectangleF(x, y, w, h));
             }
             else
             {
-                float scale = Math.Min(rect.Width / icon.Width, rect.Height / icon.Height);
-                float w = icon.Width * scale;
-                float h = icon.Width * scale;
-                float x = rect.X + (rect.Width - w) / 2f;
-                float y = rect.Y + (rect.Height - h) / 2f;
+                var scale = Math.Min(rect.Width / iconWidth, rect.Height / iconHeight);
+                var w = iconWidth * scale;
+                var h = iconWidth * scale;
+                var x = rect.X + (rect.Width - w) / 2f;
+                var y = rect.Y + (rect.Height - h) / 2f;
                 g.DrawImage(icon, new RectangleF(x, y, w, h));
             }
         }
