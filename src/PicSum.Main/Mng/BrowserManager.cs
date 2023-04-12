@@ -125,6 +125,10 @@ namespace PicSum.Main.Mng
 
         private void browser_KeyDown(object sender, KeyEventArgs e)
         {
+            // TODO: キーボードショートカットを追加する。
+            // 1. Backspace で戻る。
+            // 2. Alt + 左 で戻る。
+            // 3. Alt + 右 で進む。
             switch (e.KeyCode)
             {
                 case Keys.W:
