@@ -95,6 +95,26 @@ namespace PicSum.Task.AsyncLogic
                         info.ImageSize = new Size(srcImg.Width, srcImg.Height);
                     }
                 }
+                else 
+                {
+                    var firstImageFile = FileUtil.GetFirstImageFilePath(filePath);
+                    if (!string.IsNullOrEmpty(firstImageFile))
+                    {
+                        info.Thumbnail = new ThumbnailImageEntity();
+                        using (var srcImg = ImageUtil.ReadImageFile(firstImageFile))
+                        {
+                            Image thumb = ThumbnailUtil.CreateThumbnail(srcImg, thumbSize.Width, thumbSize.Height);
+                            info.Thumbnail.FilePath = info.FilePath;
+                            info.Thumbnail.FileUpdatedate = info.UpdateDate.Value;
+                            info.Thumbnail.ThumbnailImage = thumb;
+                            info.Thumbnail.ThumbnailWidth = thumbSize.Width;
+                            info.Thumbnail.ThumbnailHeight = thumbSize.Height;
+                            info.Thumbnail.SourceWidth = srcImg.Width;
+                            info.Thumbnail.SourceHeight = srcImg.Height;
+                            info.ImageSize = new Size(srcImg.Width, srcImg.Height);
+                        }
+                    }
+                }
             }
 
             CheckCancel();
