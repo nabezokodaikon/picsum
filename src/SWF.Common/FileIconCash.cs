@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using static WinApi.WinApiMembers;
 
 namespace SWF.Common
 {
@@ -24,6 +25,7 @@ namespace SWF.Common
         private static Image _largeMyComputerIcon = null;
         private static Image _smallFolderIcon = null;
         private static Image _largeFolderIcon = null;
+        private static Image _jumboFolderIcon = null;
 
         public static Image SmallMyComputerIcon
         {
@@ -57,6 +59,14 @@ namespace SWF.Common
             }
         }
 
+        public static Image JumboFolderIcon
+        {
+            get
+            {
+                return _jumboFolderIcon;
+            }
+        }
+
         public static Image GetSmallDriveIcon(string filePath)
         {
             if (filePath == null)
@@ -74,7 +84,7 @@ namespace SWF.Common
                 throw new ArgumentNullException("filePath");
             }
 
-            return FileUtil.GetExtraLargeIconByFilePath(filePath, SHIL.SHIL_EXTRALARGE);
+            return FileUtil.GetExtraLargeIconByFilePath(filePath, SHIL.SHIL_JUMBO);
         }
 
         public static Image GetSmallFileIcon(string filePath)
@@ -205,7 +215,8 @@ namespace SWF.Common
             _smallMyComputerIcon = FileUtil.GetSmallSystemIcon(WinApi.WinApiMembers.ShellSpecialFolder.CSIDL_DRIVES);
             _largeMyComputerIcon = FileUtil.GetLargeSystemIcon(WinApi.WinApiMembers.ShellSpecialFolder.CSIDL_DRIVES);
             _smallFolderIcon = FileUtil.GetSmallIconByFilePath(FileUtil.GetParentFolderPath(Assembly.GetExecutingAssembly().Location));
-            _largeFolderIcon = FileUtil.GetExtraLargeIconByFilePath(FileUtil.GetParentFolderPath(Assembly.GetExecutingAssembly().Location));
+            _largeFolderIcon = FileUtil.GetExtraLargeIconByFilePath(FileUtil.GetParentFolderPath(Assembly.GetExecutingAssembly().Location), SHIL.SHIL_EXTRALARGE);
+            _jumboFolderIcon = FileUtil.GetExtraLargeIconByFilePath(FileUtil.GetParentFolderPath(Assembly.GetExecutingAssembly().Location), SHIL.SHIL_JUMBO);
         }
 
         /// <summary>
@@ -220,6 +231,7 @@ namespace SWF.Common
             _largeMyComputerIcon.Dispose();
             _smallFolderIcon.Dispose();
             _largeFolderIcon.Dispose();
+            _jumboFolderIcon.Dispose();
         }
     }
 }
