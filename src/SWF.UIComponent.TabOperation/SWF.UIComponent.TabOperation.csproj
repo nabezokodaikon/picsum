@@ -73,6 +73,7 @@
   <ItemGroup>
     <Compile Include="AddTabButtonDrawArea.cs" />
     <Compile Include="ContentsDrawArea.cs" />
+    <Compile Include="ContentsHistoryManager.cs" />
     <Compile Include="ContentsPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>

@@ -15,8 +15,7 @@ namespace SWF.UIComponent.TabOperation
         #region インスタンス変数
 
         private readonly TabDrawArea _drawArea = new TabDrawArea();
-        private readonly IList<IContentsParameter> _contentsParameterList = new List<IContentsParameter>();
-        private int _contentsParameterListIndex = 0;
+        private readonly ContentsHistoryManager _historyManager = new ContentsHistoryManager();
         private ContentsPanel _contents = null;
         private TabSwitch _owner = null;
 
@@ -66,7 +65,7 @@ namespace SWF.UIComponent.TabOperation
         {
             get
             {
-                return _contentsParameterListIndex < _contentsParameterList.Count - 1;
+                return _historyManager.CanNext;
             }
         }
 
@@ -74,7 +73,7 @@ namespace SWF.UIComponent.TabOperation
         {
             get
             {
-                return _contentsParameterList.Count > 1 && _contentsParameterListIndex > 0;
+                return _historyManager.CanPreview;
             }
         }
 
@@ -118,8 +117,7 @@ namespace SWF.UIComponent.TabOperation
                 throw new ArgumentNullException("param");
             }
 
-            _contentsParameterList.Add(param);
-            _contentsParameterListIndex = 0;
+            _historyManager.Add(param);
             _contents = param.CreateContents();
         }
 
@@ -149,12 +147,7 @@ namespace SWF.UIComponent.TabOperation
                 throw new Exception("既にコンテンツが存在しています。ClearContentsメソッドでコンテンツをクリアして下さい。");
             }
 
-            if (this._contentsParameterList.Last().Key != param.Key)
-            {
-                _contentsParameterList.Add(param);
-                _contentsParameterListIndex = _contentsParameterList.Count - 1;
-            }
-
+            _historyManager.Add(param);
             _contents = param.CreateContents();
         }
 
@@ -204,14 +197,7 @@ namespace SWF.UIComponent.TabOperation
                 throw new Exception("既にコンテンツが存在しています。ClearContentsメソッドでコンテンツをクリアして下さい。");
             }
 
-            if (_contentsParameterList.Count < 1 ||
-                _contentsParameterListIndex - 1 < 0)
-            {
-                throw new Exception("コンテンツパラメータの前の履歴が存在しません。");
-            }
-
-            _contentsParameterListIndex--;
-            _contents = _contentsParameterList[_contentsParameterListIndex].CreateContents();
+            _contents = _historyManager.CreatePreview();
         }
 
         internal void CreateNextContents()
@@ -221,29 +207,7 @@ namespace SWF.UIComponent.TabOperation
                 throw new Exception("既にコンテンツが存在しています。ClearContentsメソッドでコンテンツをクリアして下さい。");
             }
 
-            if (_contentsParameterList.Count < 1 ||
-                _contentsParameterListIndex + 1 > _contentsParameterList.Count - 1)
-            {
-                throw new Exception("コンテンツパラメータの次の履歴が存在しません。");
-            }
-
-            _contentsParameterListIndex++;
-            _contents = _contentsParameterList[_contentsParameterListIndex].CreateContents();
-        }
-
-        internal void CloneCurrentContents()
-        {
-            if (_contents != null)
-            {
-                throw new Exception("現在のコンテンツが残っています。ClearContentsメソッドでコンテンツをクリアして下さい。");
-            }
-
-            if (_contentsParameterList.Count < 1)
-            {
-                throw new Exception("コンテンツパラメータが存在しません。");
-            }
-
-            _contents = _contentsParameterList[_contentsParameterListIndex].CreateContents();
+            _contents = _historyManager.CreateNext();
         }
 
         private void clearContents()
