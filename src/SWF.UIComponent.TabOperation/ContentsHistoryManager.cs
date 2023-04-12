@@ -66,7 +66,15 @@ namespace SWF.UIComponent.TabOperation
             else
             {
                 // 履歴が2件以上の場合。
-                if (this.list.Count - 1 == this.index)
+                if (this.index == 0)
+                {
+                    // 最初の履歴の場合。
+                    var first = this.list.First();
+                    this.list.Clear();
+                    this.list.AddRange(new IContentsParameter[] { first, param });
+                    this.index = 1;
+                }
+                else if (this.list.Count - 1 == this.index)
                 {
                     // 現在の履歴が最後の場合。
                     if (this.list.Last().Key != param.Key)
@@ -77,9 +85,9 @@ namespace SWF.UIComponent.TabOperation
                 }
                 else
                 {
-                    if (this.list[this.index + 1].Key != param.Key)
+                    // 履歴が途中の場合。
+                    if (this.list[this.index].Key != param.Key)
                     {
-                        // 履歴が最後以外の場合。
                         this.list.RemoveRange(this.index + 1, this.list.Count - this.index - 1);
                         this.list.Add(param);
                         this.index = this.list.Count - 1;
