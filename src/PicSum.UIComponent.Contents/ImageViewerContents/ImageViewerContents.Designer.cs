@@ -76,7 +76,7 @@
             // fileContextMenu
             // 
             this.fileContextMenu.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.fileContextMenu.IsAddKeepMenuItemVisible = false;
+            this.fileContextMenu.IsAddKeepMenuItemVisible = true;
             this.fileContextMenu.IsFileActiveTabOpenMenuItemVisible = false;
             this.fileContextMenu.IsFolderActiveTabOpenMenuItemVisible = true;
             this.fileContextMenu.IsRemoveFromListMenuItemVisible = false;
