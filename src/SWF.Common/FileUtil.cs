@@ -370,8 +370,8 @@ namespace SWF.Common
 
             return FileUtil.GetFiles(directoryPath)
                 .OrderBy(file => file)
-                .FirstOrDefault(file => 
-                    ImageUtil.ImageFileExtensionList.Contains(FileUtil.GetExtension(file)) 
+                .FirstOrDefault(file =>
+                    ImageUtil.ImageFileExtensionList.Contains(FileUtil.GetExtension(file))
                     && FileUtil.CanAccess(file));
         }
 
@@ -602,15 +602,15 @@ namespace SWF.Common
 
             var pimgList = IntPtr.Zero;
             result = WinApiMembers.SHGetImageList(
-                shil, 
-                WinApiMembers.IID_IImageList, 
+                shil,
+                WinApiMembers.IID_IImageList,
                 out pimgList);
             if (result != WinApiMembers.S_OK)
             {
                 return null;
             }
 
-            try 
+            try
             {
                 var hicon = WinApiMembers.ImageList_GetIcon(pimgList, shinfo.iIcon, 0);
                 if (hicon.Equals(IntPtr.Zero))
@@ -628,7 +628,7 @@ namespace SWF.Common
                     WinApiMembers.DestroyIcon(hicon);
                 }
             }
-            finally 
+            finally
             {
                 WinApiMembers.ImageList_Destroy(pimgList);
             }
