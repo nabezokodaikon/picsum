@@ -116,39 +116,11 @@ namespace PicSum.Main.Mng
             browser.Activated += new EventHandler(browser_Activated);
             browser.TabDropouted += new EventHandler<TabDropoutedEventArgs>(browser_TabDropouted);
             browser.NewWindowContentsOpen += new EventHandler<BrowserContentsOpenEventArgs>(browser_NewWindowContentsOpen);
-            browser.KeyDown += browser_KeyDown;
         }
 
         #endregion
 
         #region ブラウザイベント
-
-        private void browser_KeyDown(object sender, KeyEventArgs e)
-        {
-            // TODO: キーボードショートカットを追加する。
-            // 1. Backspace で戻る。
-            // 2. Alt + 左 で戻る。
-            // 3. Alt + 右 で進む。
-            switch (e.KeyCode)
-            {
-                case Keys.W:
-                    if (e.Control)
-                    {
-                        var browser = (BrowserForm)sender;
-                        browser.RemoveTabOrWindow();
-                        browser.Focus();
-                    }
-                    break;
-                case Keys.T:
-                    if (e.Control)
-                    {
-                        var browser = (BrowserForm)sender;
-                        browser.AddFavoriteFolderListTab();
-                        browser.Focus();
-                    }
-                    break;
-            }
-        }
 
         private void browser_FormClosing(object sender, System.Windows.Forms.FormClosingEventArgs e)
         {

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Security.Permissions;
 using System.Windows.Forms;
 using PicSum.Core.Base.Conf;
 using PicSum.Core.Task.AsyncTask;
@@ -13,6 +14,7 @@ using PicSum.UIComponent.Contents.ContentsParameter;
 using PicSum.UIComponent.InfoPanel;
 using SWF.Common;
 using SWF.UIComponent.TabOperation;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace PicSum.Main.UIComponent
 {
@@ -158,6 +160,38 @@ namespace PicSum.Main.UIComponent
                 filePathList.RemoveAt(0);
                 addContents(filePathList);
             }
+        }
+
+        public void MovePreviewContents()
+        {
+            if (!this.previewContentsHistoryButton.Enabled)
+            {
+                return;
+            }
+
+            if (tabSwitch.ActiveTab == null)
+            {
+                throw new NullReferenceException("アクティブなタブが存在しません。");
+            }
+
+            addContentsEventHandler(tabSwitch.SetPreviewContentsHistory<BrowserContents>());
+            setContentsHistoryButtonEnabled();
+        }
+
+        public void MoveNextContents()
+        {
+            if (!this.nextContentsHistoryButton.Enabled)
+            {
+                return;
+            }
+
+            if (tabSwitch.ActiveTab == null)
+            {
+                throw new NullReferenceException("アクティブなタブが存在しません。");
+            }
+
+            addContentsEventHandler(tabSwitch.SetNextContentsHistory<BrowserContents>());
+            setContentsHistoryButtonEnabled();
         }
 
         #endregion
@@ -599,30 +633,22 @@ namespace PicSum.Main.UIComponent
 
         private void previewContentsHistoryButton_MouseClick(object sender, MouseEventArgs e)
         {
-            if (tabSwitch.ActiveTab == null)
+            if (e.Button != MouseButtons.Left)
             {
-                throw new NullReferenceException("アクティブなタブが存在しません。");
+                return;
             }
 
-            if (e.Button == MouseButtons.Left)
-            {
-                addContentsEventHandler(tabSwitch.SetPreviewContentsHistory<BrowserContents>());
-                setContentsHistoryButtonEnabled();
-            }
+            this.MovePreviewContents();
         }
 
         private void nextContentsHistoryButton_MouseClick(object sender, MouseEventArgs e)
         {
-            if (tabSwitch.ActiveTab == null)
+            if (e.Button != MouseButtons.Left)
             {
-                throw new NullReferenceException("アクティブなタブが存在しません。");
+                return;
             }
 
-            if (e.Button == MouseButtons.Left)
-            {
-                addContentsEventHandler(tabSwitch.SetNextContentsHistory<BrowserContents>());
-                setContentsHistoryButtonEnabled();
-            }
+            this.MoveNextContents();
         }
 
         #endregion

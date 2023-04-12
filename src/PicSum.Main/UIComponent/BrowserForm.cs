@@ -53,7 +53,7 @@ namespace PicSum.Main.UIComponent
 
         #endregion
 
-        #region プライベートプロパティ
+        #region パブリックプロパティ
 
         private BrowserMainPanel browserMainPanel
         {
@@ -67,6 +67,10 @@ namespace PicSum.Main.UIComponent
                 return _browserMainPanel;
             }
         }
+
+        #endregion
+
+        #region プライベートプロパティ
 
         #endregion
 
@@ -111,7 +115,7 @@ namespace PicSum.Main.UIComponent
             browserMainPanel.AddTab(param);
         }
 
-        public void AddFavoriteFolderListTab() 
+        public void AddFavoriteFolderListTab()
         {
             browserMainPanel.AddFavoriteFolderListTab();
         }
@@ -122,11 +126,11 @@ namespace PicSum.Main.UIComponent
             {
                 browserMainPanel.RemoveActiveTab();
             }
-            else 
+            else
             {
                 this.Close();
             }
-            
+
         }
 
         public void OpenContentsByCommandLineArgs(string[] args)
@@ -156,7 +160,7 @@ namespace PicSum.Main.UIComponent
                 startupProcess.Callback += new AsyncTaskCallbackEventHandler<DefaultEntity>(startupProcess_Callback);
 
                 var dbDir = Path.Combine(Directory.GetParent(Application.ExecutablePath).FullName, "db");
-                if (!Directory.Exists(dbDir)) 
+                if (!Directory.Exists(dbDir))
                 {
                     Directory.CreateDirectory(dbDir);
                 }
@@ -229,6 +233,52 @@ namespace PicSum.Main.UIComponent
             {
                 NewWindowContentsOpen(this, e);
             }
+        }
+
+        protected override void OnKeyDown(KeyEventArgs e)
+        {
+            if (e.Alt)
+            {
+                switch (e.KeyCode)
+                {
+                    case Keys.Left:
+                        {
+                            this.browserMainPanel.MovePreviewContents();
+                            break;
+                        }
+                    case Keys.Right:
+                        {
+                            this.browserMainPanel.MoveNextContents();
+                            break;
+                        }
+                }
+            }
+            else if (e.Control)
+            {
+                switch (e.KeyCode)
+                {
+                    case Keys.W:
+                        {
+                            this.RemoveTabOrWindow();
+                            break;
+                        }
+                    case Keys.T:
+                        {
+                            this.AddFavoriteFolderListTab();
+                            break;
+                        }
+                }
+            }
+            else if (e.Shift)
+            {
+
+            }
+            else if (e.KeyCode == Keys.Back)
+            {
+                this.browserMainPanel.MovePreviewContents();
+            }
+
+            base.OnKeyDown(e);
         }
 
         #endregion

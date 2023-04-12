@@ -190,6 +190,11 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
         [UIPermission(SecurityAction.Demand, Window = UIPermissionWindow.AllWindows)]
         protected override bool ProcessDialogKey(Keys keyData)
         {
+            if ((keyData & Keys.Alt) == Keys.Alt) 
+            {
+                return false;
+            }
+
             if ((keyData & Keys.KeyCode) == Keys.Right)
             {
                 filePathListIndex = getNextIndex();
@@ -203,7 +208,6 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
 
             return base.ProcessDialogKey(keyData);
         }
-
 
         protected override void OnDrawTabContents(SWF.UIComponent.TabOperation.DrawTabEventArgs e)
         {
