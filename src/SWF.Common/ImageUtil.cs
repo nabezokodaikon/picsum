@@ -89,11 +89,12 @@ namespace SWF.Common
                 throw new ArgumentNullException(nameof(srcImg));
             }
 
-            using (var src = BitmapConverter.ToMat(srcImg))
-            using (var resize = new Mat())
+            var w = (int)(srcImg.Width * scale);
+            var h = (int)(srcImg.Height * scale);
+            var destImg = new Bitmap(w, h);
+            using (var g = Graphics.FromImage(destImg))
             {
-                Cv2.Resize(src, resize, new OpenCvSharp.Size(), scale, scale, InterpolationFlags.Area);
-                var destImg = BitmapConverter.ToBitmap(resize);
+                g.DrawImage(srcImg, 0, 0, w, h);
                 return destImg;
             }
         }
