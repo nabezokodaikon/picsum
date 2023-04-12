@@ -203,12 +203,6 @@ namespace PicSum.UIComponent.SearchTool
 
         private void dropDownList_Opening(object sender, CancelEventArgs e)
         {
-            if (this.ItemList == null) 
-            {
-                e.Cancel = true;
-                return;
-            }
-
             OnDropDownOpening();
         }
 
