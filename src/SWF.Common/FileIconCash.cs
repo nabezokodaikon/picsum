@@ -16,8 +16,10 @@ namespace SWF.Common
     {
         private static readonly ReaderWriterLockSlim _smallIconCashLock = new ReaderWriterLockSlim();
         private static readonly ReaderWriterLockSlim _largeIconCashLock = new ReaderWriterLockSlim();
+        private static readonly ReaderWriterLockSlim _jumboIconCashLock = new ReaderWriterLockSlim();
         private static Dictionary<string, Image> _smallIconCash = null;
         private static Dictionary<string, Image> _largeIconCash = null;
+        private static Dictionary<string, Image> _jumboIconCash = null;
         private static Image _smallMyComputerIcon = null;
         private static Image _largeMyComputerIcon = null;
         private static Image _smallFolderIcon = null;
@@ -72,7 +74,7 @@ namespace SWF.Common
                 throw new ArgumentNullException("filePath");
             }
 
-            return FileUtil.GetExtraLargeIconByFilePath(filePath);
+            return FileUtil.GetExtraLargeIconByFilePath(filePath, SHIL.SHIL_EXTRALARGE);
         }
 
         public static Image GetSmallFileIcon(string filePath)
@@ -139,7 +141,7 @@ namespace SWF.Common
 
                     try
                     {
-                        Image icon = FileUtil.GetExtraLargeIconByFilePath(filePath);
+                        Image icon = FileUtil.GetExtraLargeIconByFilePath(filePath, SHIL.SHIL_EXTRALARGE);
                         _largeIconCash.Add(ex, icon);
                         return icon;
                     }
@@ -155,10 +157,51 @@ namespace SWF.Common
             }
         }
 
+        public static Image GetJumboFileIcon(string filePath)
+        {
+            if (filePath == null)
+            {
+                throw new ArgumentNullException(nameof(filePath));
+            }
+
+            var ex = FileUtil.GetExtension(filePath);
+
+            _jumboIconCashLock.EnterUpgradeableReadLock();
+
+            try
+            {
+                Image cashIcon = null;
+                if (_jumboIconCash.TryGetValue(ex, out cashIcon))
+                {
+                    return cashIcon;
+                }
+                else
+                {
+                    _jumboIconCashLock.EnterWriteLock();
+
+                    try
+                    {
+                        var icon = FileUtil.GetExtraLargeIconByFilePath(filePath, SHIL.SHIL_JUMBO);
+                        _jumboIconCash.Add(ex, icon);
+                        return icon;
+                    }
+                    finally
+                    {
+                        _jumboIconCashLock.ExitWriteLock();
+                    }
+                }
+            }
+            finally
+            {
+                _jumboIconCashLock.ExitUpgradeableReadLock();
+            }
+        }
+
         public static void Init()
         {
             _smallIconCash = new Dictionary<string, Image>();
             _largeIconCash = new Dictionary<string, Image>();
+            _jumboIconCash = new Dictionary<string, Image>();
             _smallMyComputerIcon = FileUtil.GetSmallSystemIcon(WinApi.WinApiMembers.ShellSpecialFolder.CSIDL_DRIVES);
             _largeMyComputerIcon = FileUtil.GetLargeSystemIcon(WinApi.WinApiMembers.ShellSpecialFolder.CSIDL_DRIVES);
             _smallFolderIcon = FileUtil.GetSmallIconByFilePath(FileUtil.GetParentFolderPath(Assembly.GetExecutingAssembly().Location));
@@ -172,6 +215,7 @@ namespace SWF.Common
         {
             _smallIconCashLock.Dispose();
             _largeIconCashLock.Dispose();
+            _jumboIconCashLock.Dispose();
             _smallMyComputerIcon.Dispose();
             _largeMyComputerIcon.Dispose();
             _smallFolderIcon.Dispose();

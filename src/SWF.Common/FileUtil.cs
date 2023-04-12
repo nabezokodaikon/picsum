@@ -9,6 +9,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using WinApi;
+using static WinApi.WinApiMembers;
 
 namespace SWF.Common
 {
@@ -539,7 +540,7 @@ namespace SWF.Common
         /// </summary>
         /// <param name="filePath">ファイルパス</param>
         /// <returns></returns>
-        public static Image GetExtraLargeIconByFilePath(string filePath)
+        public static Image GetExtraLargeIconByFilePath(string filePath, SHIL shil)
         {
             var shinfo = new WinApiMembers.SHFILEINFO();
             var hSuccess = WinApiMembers.SHGetFileInfo(
@@ -557,7 +558,7 @@ namespace SWF.Common
 
             var pimgList = IntPtr.Zero;
             result = WinApiMembers.SHGetImageList(
-                WinApiMembers.SHIL.SHIL_EXTRALARGE, 
+                shil, 
                 WinApiMembers.IID_IImageList, 
                 out pimgList);
             if (result != WinApiMembers.S_OK)
