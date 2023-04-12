@@ -115,6 +115,31 @@ namespace SWF.Common
         }
 
         /// <summary>
+        /// 指定したディレクトリ内に、画像ファイルが存在するか確認します。
+        /// </summary>
+        /// <param name="directoryPath"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        public static bool HasImageFile(string directoryPath)
+        {
+            if (directoryPath == null)
+            {
+                throw new ArgumentNullException(nameof(directoryPath));
+            }
+
+            foreach (var ex in ImageUtil.ImageFileExtensionList)
+            {
+                var result = Directory.EnumerateFiles(directoryPath, string.Format("*{0}", ex)).Any();
+                if (result)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
         /// ファイルにアクセス可能か確認します。
         /// </summary>
         /// <param name="filePath">ファイルパス</param>
