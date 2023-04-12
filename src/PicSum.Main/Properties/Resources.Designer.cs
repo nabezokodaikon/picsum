@@ -73,9 +73,29 @@ namespace PicSum.Main.Properties {
         /// <summary>
         ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
         /// </summary>
-        internal static System.Drawing.Bitmap FileInfoIcon {
+        internal static System.Drawing.Bitmap ClipIcon {
             get {
-                object obj = ResourceManager.GetObject("FileInfoIcon", resourceCulture);
+                object obj = ResourceManager.GetObject("ClipIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
+        /// </summary>
+        internal static System.Drawing.Bitmap GoBackIcon {
+            get {
+                object obj = ResourceManager.GetObject("GoBackIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
+        /// </summary>
+        internal static System.Drawing.Bitmap GoNextIcon {
+            get {
+                object obj = ResourceManager.GetObject("GoNextIcon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -93,29 +113,9 @@ namespace PicSum.Main.Properties {
         /// <summary>
         ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
         /// </summary>
-        internal static System.Drawing.Bitmap KeepIcon {
+        internal static System.Drawing.Bitmap InfoIcon {
             get {
-                object obj = ResourceManager.GetObject("KeepIcon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
-        /// </summary>
-        internal static System.Drawing.Bitmap MiddleArrowLeft {
-            get {
-                object obj = ResourceManager.GetObject("MiddleArrowLeft", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
-        /// </summary>
-        internal static System.Drawing.Bitmap MiddleArrowRight {
-            get {
-                object obj = ResourceManager.GetObject("MiddleArrowRight", resourceCulture);
+                object obj = ResourceManager.GetObject("InfoIcon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

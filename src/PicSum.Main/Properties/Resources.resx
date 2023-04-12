@@ -121,20 +121,20 @@
   <data name="ActiveRatingIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ActiveRatingIcon.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="FileInfoIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\FileInfoIcon.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="ClipIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ClipIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="GoBackIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\GoBackIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="GoNextIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\GoNextIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="HomeIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\HomeIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="KeepIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\KeepIcon.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="MiddleArrowLeft" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\MiddleArrowLeft.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="MiddleArrowRight" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\MiddleArrowRight.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="InfoIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\InfoIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="TagIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\TagIcon.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>

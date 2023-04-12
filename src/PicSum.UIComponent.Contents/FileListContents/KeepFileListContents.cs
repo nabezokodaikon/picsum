@@ -110,7 +110,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
         private void initializeComponent()
         {
             this.Title = "キープ";
-            this.Icon = Resources.KeepIcon;
+            this.Icon = Resources.ClipIcon;
             this.IsAddKeepMenuItemVisible = false;
             this.IsRemoveFromListMenuItemVisible = true;
             this.IsMoveControlVisible = false;

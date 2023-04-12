@@ -73,9 +73,9 @@ namespace PicSum.UIComponent.Contents.Properties {
         /// <summary>
         ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
         /// </summary>
-        internal static System.Drawing.Bitmap HomeIcon {
+        internal static System.Drawing.Bitmap ClipIcon {
             get {
-                object obj = ResourceManager.GetObject("HomeIcon", resourceCulture);
+                object obj = ResourceManager.GetObject("ClipIcon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -83,9 +83,9 @@ namespace PicSum.UIComponent.Contents.Properties {
         /// <summary>
         ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
         /// </summary>
-        internal static System.Drawing.Bitmap KeepIcon {
+        internal static System.Drawing.Bitmap HomeIcon {
             get {
-                object obj = ResourceManager.GetObject("KeepIcon", resourceCulture);
+                object obj = ResourceManager.GetObject("HomeIcon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

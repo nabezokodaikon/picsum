@@ -33,14 +33,14 @@
             this.infoPanel = new PicSum.UIComponent.InfoPanel.InfoPanel();
             this.tabSwitch = new SWF.UIComponent.TabOperation.TabSwitch();
             this.toolPanel = new System.Windows.Forms.Panel();
+            this.addressBar = new PicSum.UIComponent.AddressBar.AddressBar();
+            this.homeToolButton = new SWF.UIComponent.Common.ToolButton();
+            this.nextContentsHistoryButton = new SWF.UIComponent.Common.ToolButton();
             this.searchTagToolButton = new PicSum.UIComponent.SearchTool.SearchTagToolButton();
             this.searchRatingToolButton = new SWF.UIComponent.Common.ToolButton();
-            this.homeToolButton = new SWF.UIComponent.Common.ToolButton();
             this.keepToolButton = new SWF.UIComponent.Common.ToolButton();
             this.previewContentsHistoryButton = new SWF.UIComponent.Common.ToolButton();
-            this.nextContentsHistoryButton = new SWF.UIComponent.Common.ToolButton();
             this.showInfoToolButton = new SWF.UIComponent.Common.ToolButton();
-            this.addressBar = new PicSum.UIComponent.AddressBar.AddressBar();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
             this.splitContainer.Panel1.SuspendLayout();
             this.splitContainer.Panel2.SuspendLayout();
@@ -119,12 +119,12 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.toolPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(241)))), ((int)(((byte)(244)))), ((int)(((byte)(250)))));
             this.toolPanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.toolPanel.Controls.Add(this.homeToolButton);
+            this.toolPanel.Controls.Add(this.nextContentsHistoryButton);
             this.toolPanel.Controls.Add(this.searchTagToolButton);
             this.toolPanel.Controls.Add(this.searchRatingToolButton);
-            this.toolPanel.Controls.Add(this.homeToolButton);
             this.toolPanel.Controls.Add(this.keepToolButton);
             this.toolPanel.Controls.Add(this.previewContentsHistoryButton);
-            this.toolPanel.Controls.Add(this.nextContentsHistoryButton);
             this.toolPanel.Controls.Add(this.showInfoToolButton);
             this.toolPanel.Controls.Add(this.addressBar);
             this.toolPanel.Location = new System.Drawing.Point(0, 29);
@@ -135,9 +135,63 @@
             this.toolPanel.Size = new System.Drawing.Size(746, 34);
             this.toolPanel.TabIndex = 5;
             // 
+            // addressBar
+            // 
+            this.addressBar.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.addressBar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(138)))), ((int)(((byte)(153)))));
+            this.addressBar.InnerColor = System.Drawing.Color.White;
+            this.addressBar.Location = new System.Drawing.Point(114, 4);
+            this.addressBar.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.addressBar.MouseDownColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(48)))), ((int)(((byte)(96)))), ((int)(((byte)(144)))));
+            this.addressBar.MousePointColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(48)))), ((int)(((byte)(96)))), ((int)(((byte)(144)))));
+            this.addressBar.Name = "addressBar";
+            this.addressBar.OutlineColor = System.Drawing.Color.Silver;
+            this.addressBar.Size = new System.Drawing.Size(474, 26);
+            this.addressBar.TabIndex = 0;
+            this.addressBar.TextAlignment = System.Drawing.StringAlignment.Center;
+            this.addressBar.TextColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.addressBar.TextLineAlignment = System.Drawing.StringAlignment.Center;
+            this.addressBar.TextTrimming = System.Drawing.StringTrimming.EllipsisCharacter;
+            this.addressBar.SelectedFolder += new System.EventHandler<PicSum.UIComponent.AddressBar.SelectedFolderEventArgs>(this.addressBar_SelectedFolder);
+            // 
+            // homeToolButton
+            // 
+            this.homeToolButton.FlatAppearance.BorderSize = 0;
+            this.homeToolButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.homeToolButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.homeToolButton.Image = global::PicSum.Main.Properties.Resources.HomeIcon;
+            this.homeToolButton.Location = new System.Drawing.Point(76, 3);
+            this.homeToolButton.Name = "homeToolButton";
+            this.homeToolButton.RegionType = SWF.UIComponent.Common.ToolButton.ToolButtonRegionType.Default;
+            this.homeToolButton.Size = new System.Drawing.Size(32, 28);
+            this.homeToolButton.TabIndex = 6;
+            this.homeToolButton.UseVisualStyleBackColor = true;
+            this.homeToolButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.homeToolButton_MouseClick);
+            // 
+            // nextContentsHistoryButton
+            // 
+            this.nextContentsHistoryButton.Enabled = false;
+            this.nextContentsHistoryButton.FlatAppearance.BorderSize = 0;
+            this.nextContentsHistoryButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.nextContentsHistoryButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.nextContentsHistoryButton.Image = global::PicSum.Main.Properties.Resources.GoNextIcon;
+            this.nextContentsHistoryButton.Location = new System.Drawing.Point(38, 3);
+            this.nextContentsHistoryButton.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
+            this.nextContentsHistoryButton.Name = "nextContentsHistoryButton";
+            this.nextContentsHistoryButton.RegionType = SWF.UIComponent.Common.ToolButton.ToolButtonRegionType.Right;
+            this.nextContentsHistoryButton.Size = new System.Drawing.Size(32, 28);
+            this.nextContentsHistoryButton.TabIndex = 5;
+            this.nextContentsHistoryButton.UseVisualStyleBackColor = true;
+            this.nextContentsHistoryButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.nextContentsHistoryButton_MouseClick);
+            // 
             // searchTagToolButton
             // 
             this.searchTagToolButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.searchTagToolButton.FlatAppearance.BorderSize = 0;
+            this.searchTagToolButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.searchTagToolButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.searchTagToolButton.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.searchTagToolButton.Image = global::PicSum.Main.Properties.Resources.TagIcon;
             this.searchTagToolButton.Location = new System.Drawing.Point(594, 3);
@@ -151,6 +205,9 @@
             // searchRatingToolButton
             // 
             this.searchRatingToolButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.searchRatingToolButton.FlatAppearance.BorderSize = 0;
+            this.searchRatingToolButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.searchRatingToolButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.searchRatingToolButton.Image = global::PicSum.Main.Properties.Resources.ActiveRatingIcon;
             this.searchRatingToolButton.Location = new System.Drawing.Point(632, 3);
             this.searchRatingToolButton.Name = "searchRatingToolButton";
@@ -160,21 +217,13 @@
             this.searchRatingToolButton.UseVisualStyleBackColor = true;
             this.searchRatingToolButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.searchRatingToolButton_MouseClick);
             // 
-            // homeToolButton
-            // 
-            this.homeToolButton.Image = global::PicSum.Main.Properties.Resources.HomeIcon;
-            this.homeToolButton.Location = new System.Drawing.Point(84, 3);
-            this.homeToolButton.Name = "homeToolButton";
-            this.homeToolButton.RegionType = SWF.UIComponent.Common.ToolButton.ToolButtonRegionType.Default;
-            this.homeToolButton.Size = new System.Drawing.Size(32, 28);
-            this.homeToolButton.TabIndex = 6;
-            this.homeToolButton.UseVisualStyleBackColor = true;
-            this.homeToolButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.homeToolButton_MouseClick);
-            // 
             // keepToolButton
             // 
             this.keepToolButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.keepToolButton.Image = global::PicSum.Main.Properties.Resources.KeepIcon;
+            this.keepToolButton.FlatAppearance.BorderSize = 0;
+            this.keepToolButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.keepToolButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.keepToolButton.Image = global::PicSum.Main.Properties.Resources.ClipIcon;
             this.keepToolButton.Location = new System.Drawing.Point(670, 3);
             this.keepToolButton.Name = "keepToolButton";
             this.keepToolButton.RegionType = SWF.UIComponent.Common.ToolButton.ToolButtonRegionType.Default;
@@ -186,33 +235,26 @@
             // previewContentsHistoryButton
             // 
             this.previewContentsHistoryButton.Enabled = false;
-            this.previewContentsHistoryButton.Image = global::PicSum.Main.Properties.Resources.MiddleArrowLeft;
+            this.previewContentsHistoryButton.FlatAppearance.BorderSize = 0;
+            this.previewContentsHistoryButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.previewContentsHistoryButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.previewContentsHistoryButton.Image = global::PicSum.Main.Properties.Resources.GoBackIcon;
             this.previewContentsHistoryButton.Location = new System.Drawing.Point(6, 3);
             this.previewContentsHistoryButton.Margin = new System.Windows.Forms.Padding(6, 3, 0, 3);
             this.previewContentsHistoryButton.Name = "previewContentsHistoryButton";
             this.previewContentsHistoryButton.RegionType = SWF.UIComponent.Common.ToolButton.ToolButtonRegionType.Left;
-            this.previewContentsHistoryButton.Size = new System.Drawing.Size(40, 28);
+            this.previewContentsHistoryButton.Size = new System.Drawing.Size(32, 28);
             this.previewContentsHistoryButton.TabIndex = 0;
             this.previewContentsHistoryButton.UseVisualStyleBackColor = true;
             this.previewContentsHistoryButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.previewContentsHistoryButton_MouseClick);
             // 
-            // nextContentsHistoryButton
-            // 
-            this.nextContentsHistoryButton.Enabled = false;
-            this.nextContentsHistoryButton.Image = global::PicSum.Main.Properties.Resources.MiddleArrowRight;
-            this.nextContentsHistoryButton.Location = new System.Drawing.Point(38, 3);
-            this.nextContentsHistoryButton.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
-            this.nextContentsHistoryButton.Name = "nextContentsHistoryButton";
-            this.nextContentsHistoryButton.RegionType = SWF.UIComponent.Common.ToolButton.ToolButtonRegionType.Right;
-            this.nextContentsHistoryButton.Size = new System.Drawing.Size(40, 28);
-            this.nextContentsHistoryButton.TabIndex = 5;
-            this.nextContentsHistoryButton.UseVisualStyleBackColor = true;
-            this.nextContentsHistoryButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.nextContentsHistoryButton_MouseClick);
-            // 
             // showInfoToolButton
             // 
             this.showInfoToolButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.showInfoToolButton.Image = global::PicSum.Main.Properties.Resources.FileInfoIcon;
+            this.showInfoToolButton.FlatAppearance.BorderSize = 0;
+            this.showInfoToolButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.showInfoToolButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.showInfoToolButton.Image = global::PicSum.Main.Properties.Resources.InfoIcon;
             this.showInfoToolButton.Location = new System.Drawing.Point(708, 3);
             this.showInfoToolButton.Margin = new System.Windows.Forms.Padding(3, 3, 6, 3);
             this.showInfoToolButton.Name = "showInfoToolButton";
@@ -221,27 +263,6 @@
             this.showInfoToolButton.TabIndex = 5;
             this.showInfoToolButton.UseVisualStyleBackColor = true;
             this.showInfoToolButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.showInfoToolButton_MouseClick);
-            // 
-            // addressBar
-            // 
-            this.addressBar.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.addressBar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(138)))), ((int)(((byte)(153)))));
-            this.addressBar.InnerColor = System.Drawing.Color.White;
-            this.addressBar.Location = new System.Drawing.Point(122, 4);
-            this.addressBar.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.addressBar.MouseDownColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(48)))), ((int)(((byte)(96)))), ((int)(((byte)(144)))));
-            this.addressBar.MousePointColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(48)))), ((int)(((byte)(96)))), ((int)(((byte)(144)))));
-            this.addressBar.Name = "addressBar";
-            this.addressBar.OutlineColor = System.Drawing.Color.Silver;
-            this.addressBar.Size = new System.Drawing.Size(466, 26);
-            this.addressBar.TabIndex = 0;
-            this.addressBar.TextAlignment = System.Drawing.StringAlignment.Center;
-            this.addressBar.TextColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.addressBar.TextLineAlignment = System.Drawing.StringAlignment.Center;
-            this.addressBar.TextTrimming = System.Drawing.StringTrimming.EllipsisCharacter;
-            this.addressBar.SelectedFolder += new System.EventHandler<PicSum.UIComponent.AddressBar.SelectedFolderEventArgs>(this.addressBar_SelectedFolder);
             // 
             // BrowserMainPanel
             // 

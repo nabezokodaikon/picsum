@@ -228,28 +228,20 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\FileInfoIcon.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\ActiveRatingIcon.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\TagIcon.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\KeepIcon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\MiddleArrowRight.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\MiddleArrowLeft.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="icon.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="Resources\HomeIcon.png" />
+    <None Include="Resources\GoNextIcon.png" />
+    <None Include="Resources\GoBackIcon.png" />
+    <None Include="Resources\InfoIcon.png" />
+    <None Include="Resources\ClipIcon.png" />
     <Content Include="SQLite.Interop.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
