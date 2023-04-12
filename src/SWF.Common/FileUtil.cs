@@ -201,7 +201,7 @@ namespace SWF.Common
 
             if (string.IsNullOrEmpty(filePath))
             {
-                return "コンピュータ";
+                return "PC";
             }
             else if (IsDrive(filePath))
             {
