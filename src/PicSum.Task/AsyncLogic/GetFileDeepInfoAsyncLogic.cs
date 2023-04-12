@@ -64,7 +64,7 @@ namespace PicSum.Task.AsyncLogic
                 if (info.IsFile)
                 {
                     info.FileSize = FileUtil.GetFileSize(filePath);
-                    info.FileIcon = FileIconCash.GetLargeFileIcon(filePath);
+                    info.FileIcon = FileIconCash.GetJumboFileIcon(filePath);
                 }
                 else
                 {
@@ -75,7 +75,7 @@ namespace PicSum.Task.AsyncLogic
                     }
                     else
                     {
-                        info.FileIcon = FileIconCash.LargeFolderIcon;
+                        info.FileIcon = FileIconCash.JumboFolderIcon;
                     }
                 }
 
