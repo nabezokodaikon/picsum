@@ -34,7 +34,7 @@ namespace PicSum.Task.AsyncLogic
                 var destImg = ImageUtil.ResizeImage(srcImg, scale);
                 if (destImg == null)
                 {
-                    throw new ImageException(filePath);
+                    throw new ImageUtilException(filePath);
                 }
 
                 return destImg;

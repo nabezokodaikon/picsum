@@ -47,7 +47,7 @@ namespace PicSum.Task.AsyncFacade
                     }
                     else
                     {
-                        throw new FileException(string.Format("ファイル '{0}' が見つかりませんでした。", param.Value));
+                        throw new FileUtilException(string.Format("ファイル '{0}' が見つかりませんでした。", param.Value));
                     }
 
                     addressInfo.DirectoryPath = directory;
@@ -69,7 +69,7 @@ namespace PicSum.Task.AsyncFacade
 
                 OnCallback(addressInfo);
             }
-            catch (FileException ex)
+            catch (FileUtilException ex)
             {
                 addressInfo.GetAddressInfoException = ex;
                 OnCallback(addressInfo);

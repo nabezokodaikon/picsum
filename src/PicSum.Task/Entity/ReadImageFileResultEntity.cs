@@ -10,6 +10,6 @@ namespace PicSum.Task.Entity
     {
         public ImageFileEntity Image1 { get; set; }
         public ImageFileEntity Image2 { get; set; }
-        public ImageException ReadImageFileException { get; set; }
+        public ImageUtilException ReadImageFileException { get; set; }
     }
 }

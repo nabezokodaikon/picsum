@@ -100,12 +100,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DrawTextUtil.cs" />
-    <Compile Include="FileException.cs" />
+    <Compile Include="FileUtilException.cs" />
     <Compile Include="FileIconCash.cs" />
     <Compile Include="FileUtil.cs" />
     <Compile Include="ImageUtil.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ImageException.cs" />
+    <Compile Include="ImageUtilException.cs" />
     <Compile Include="Range.cs" />
     <Compile Include="ScreenUtil.cs" />
     <Compile Include="ThumbnailUtil.cs" />

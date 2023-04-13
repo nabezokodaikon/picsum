@@ -179,7 +179,7 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
                     filePathListIndex = getNextIndex();
                 }
             }
-            catch (ImageException ex)
+            catch (ImageUtilException ex)
             {
                 MessageBox.Show(ex.Message, "PicSum", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -716,7 +716,7 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
             {
                 filePathListIndex = getPreviewIndex();
             }
-            catch (ImageException ex)
+            catch (ImageUtilException ex)
             {
                 MessageBox.Show(ex.Message, ex.ToString(), MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -728,7 +728,7 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
             {
                 filePathListIndex = getNextIndex();
             }
-            catch (ImageException ex)
+            catch (ImageUtilException ex)
             {
                 MessageBox.Show(ex.Message, ex.ToString(), MessageBoxButtons.OK, MessageBoxIcon.Error);
             }

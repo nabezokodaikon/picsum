@@ -99,7 +99,7 @@ namespace PicSum.Task.AsyncFacade
 
                 result.ReadImageFileException = null;
             }
-            catch (ImageException ex)
+            catch (ImageUtilException ex)
             {
                 exeptionHandler(result);
                 result.ReadImageFileException = ex;
@@ -107,7 +107,7 @@ namespace PicSum.Task.AsyncFacade
             catch (FileNotFoundException ex)
             {
                 exeptionHandler(result);
-                result.ReadImageFileException = new ImageException(ex);
+                result.ReadImageFileException = new ImageUtilException(ex);
             }
 
             OnCallback(result);

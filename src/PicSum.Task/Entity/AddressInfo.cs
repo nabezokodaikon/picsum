@@ -12,6 +12,6 @@ namespace PicSum.Task.Entity
         public string DirectoryPath { get; set; }
         public IList<FileShallowInfoEntity> DirectoryList { get; set; }
         public bool HasSubDirectory { get; set; }
-        public FileException GetAddressInfoException { get; set; }
+        public FileUtilException GetAddressInfoException { get; set; }
     }
 }

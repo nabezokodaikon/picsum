@@ -51,7 +51,7 @@ namespace PicSum.Task.AsyncFacade
                     {
                         continue;
                     }
-                    catch (ImageException)
+                    catch (ImageUtilException)
                     {
                         continue;
                     }
