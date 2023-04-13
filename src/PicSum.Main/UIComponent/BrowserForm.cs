@@ -292,7 +292,7 @@ namespace PicSum.Main.UIComponent
             this.SuspendLayout();
 
             this.Text = "PicSum";
-            this.Icon = new Icon("icon.ico");
+            this.Icon = new Icon("AppIcon.ico");
             this.AutoScaleMode = AutoScaleMode.None;
             this.StartPosition = FormStartPosition.Manual;
             this.MinimumSize = new Size(320, 240);

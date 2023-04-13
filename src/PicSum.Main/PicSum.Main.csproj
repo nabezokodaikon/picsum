@@ -73,7 +73,7 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>icon.ico</ApplicationIcon>
+    <ApplicationIcon>AppIcon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="PicSum.UIComponent.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -234,7 +234,7 @@
     <None Include="Resources\TagIcon.png" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="icon.ico">
+    <Content Include="AppIcon.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="Resources\HomeIcon.png" />
