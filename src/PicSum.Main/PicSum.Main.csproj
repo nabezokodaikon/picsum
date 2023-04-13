@@ -228,9 +228,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\TagIcon.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="AppIcon.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -240,6 +237,7 @@
     <None Include="Resources\InfoIcon.png" />
     <None Include="Resources\ClipIcon.png" />
     <None Include="Resources\ActiveRatingIcon.png" />
+    <None Include="Resources\TagIcon.png" />
     <Content Include="SQLite.Interop.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
