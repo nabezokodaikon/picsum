@@ -26,43 +26,43 @@ namespace PicSum.Task.AsyncFacade
             {
                 GetFileShallowInfoAsyncLogic logic = new GetFileShallowInfoAsyncLogic(this);
 
-                addressInfo.FolderList = new ListEntity<FileShallowInfoEntity>();
+                addressInfo.DirectoryList = new ListEntity<FileShallowInfoEntity>();
 
                 if (string.IsNullOrEmpty(param.Value))
                 {
-                    addressInfo.FolderPath = string.Empty;
-                    addressInfo.FolderList.Add(logic.Execute(param.Value));
-                    addressInfo.HasSubFolder = true;
+                    addressInfo.DirectoryPath = string.Empty;
+                    addressInfo.DirectoryList.Add(logic.Execute(param.Value));
+                    addressInfo.HasSubDirectory = true;
                 }
                 else
                 {
-                    string folder = string.Empty;
+                    string directory = string.Empty;
                     if (FileUtil.IsFile(param.Value))
                     {
-                        folder = FileUtil.GetParentFolderPath(param.Value);
+                        directory = FileUtil.GetParentDirectoryPath(param.Value);
                     }
-                    else if (FileUtil.IsFolder(param.Value))
+                    else if (FileUtil.IsDirectory(param.Value))
                     {
-                        folder = param.Value;
+                        directory = param.Value;
                     }
                     else
                     {
                         throw new FileException(string.Format("ファイル '{0}' が見つかりませんでした。", param.Value));
                     }
 
-                    addressInfo.FolderPath = folder;
+                    addressInfo.DirectoryPath = directory;
 
-                    string subFolder = FileUtil.GetSubFolders(folder).FirstOrDefault(path => FileUtil.CanAccess(path));
-                    addressInfo.HasSubFolder = !string.IsNullOrEmpty(subFolder);
+                    string subDirectory = FileUtil.GetSubDirectorys(directory).FirstOrDefault(path => FileUtil.CanAccess(path));
+                    addressInfo.HasSubDirectory = !string.IsNullOrEmpty(subDirectory);
 
-                    while (!string.IsNullOrEmpty(folder))
+                    while (!string.IsNullOrEmpty(directory))
                     {
                         CheckCancel();
-                        addressInfo.FolderList.Insert(0, logic.Execute(folder));
-                        folder = FileUtil.GetParentFolderPath(folder);
+                        addressInfo.DirectoryList.Insert(0, logic.Execute(directory));
+                        directory = FileUtil.GetParentDirectoryPath(directory);
                     }
 
-                    addressInfo.FolderList.Insert(0, logic.Execute(string.Empty));
+                    addressInfo.DirectoryList.Insert(0, logic.Execute(string.Empty));
                 }
 
                 addressInfo.GetAddressInfoException = null;

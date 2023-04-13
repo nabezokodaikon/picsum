@@ -35,7 +35,7 @@ namespace PicSum.Main.UIComponent
 
         #region インスタンス変数
 
-        private TwoWayProcess<SearchImageFileByFolderAsyncFacade, SearchImageFileParameterEntity, SearchImageFileResultEntity> _searchImageFileProcess = null;
+        private TwoWayProcess<SearchImageFileByDirectoryAsyncFacade, SearchImageFileParameterEntity, SearchImageFileResultEntity> _searchImageFileProcess = null;
 
         #endregion
 
@@ -69,13 +69,13 @@ namespace PicSum.Main.UIComponent
             }
         }
 
-        private TwoWayProcess<SearchImageFileByFolderAsyncFacade, SearchImageFileParameterEntity, SearchImageFileResultEntity> searchImageFileProcess
+        private TwoWayProcess<SearchImageFileByDirectoryAsyncFacade, SearchImageFileParameterEntity, SearchImageFileResultEntity> searchImageFileProcess
         {
             get
             {
                 if (_searchImageFileProcess == null)
                 {
-                    _searchImageFileProcess = TaskManager.CreateTwoWayProcess<SearchImageFileByFolderAsyncFacade, SearchImageFileParameterEntity, SearchImageFileResultEntity>(components);
+                    _searchImageFileProcess = TaskManager.CreateTwoWayProcess<SearchImageFileByDirectoryAsyncFacade, SearchImageFileParameterEntity, SearchImageFileResultEntity>(components);
                     _searchImageFileProcess.Callback += new AsyncTaskCallbackEventHandler<SearchImageFileResultEntity>(searchImageFileProcess_Callback);
                 }
 
@@ -133,9 +133,9 @@ namespace PicSum.Main.UIComponent
             addContentsEventHandler(tabSwitch.AddTab<BrowserContents>(param));
         }
 
-        public void AddFavoriteFolderListTab()
+        public void AddFavoriteDirectoryListTab()
         {
-            openContents(new FavoriteFolderListContentsParameter(), ContentsOpenType.AddTab);
+            openContents(new FavoriteDirectoryListContentsParameter(), ContentsOpenType.AddTab);
         }
 
         public void RemoveActiveTab()
@@ -325,10 +325,10 @@ namespace PicSum.Main.UIComponent
             if (filePathList.Count == 1)
             {
                 string filePath = filePathList[0];
-                if (FileUtil.IsFolder(filePath))
+                if (FileUtil.IsDirectory(filePath))
                 {
                     // フォルダコンテンツを追加します。
-                    openContents(new FolderFileListContentsParameter(filePath), ContentsOpenType.AddTab);
+                    openContents(new DirectoryFileListContentsParameter(filePath), ContentsOpenType.AddTab);
                 }
                 else if (FileUtil.IsFile(filePath))
                 {
@@ -348,10 +348,10 @@ namespace PicSum.Main.UIComponent
                 List<string> imgFiles = new List<string>();
                 foreach (string filePath in filePathList)
                 {
-                    if (FileUtil.IsFolder(filePath))
+                    if (FileUtil.IsDirectory(filePath))
                     {
                         // フォルダコンテンツを追加します。
-                        openContents(new FolderFileListContentsParameter(filePath), ContentsOpenType.AddTab);
+                        openContents(new DirectoryFileListContentsParameter(filePath), ContentsOpenType.AddTab);
                     }
                     else if (FileUtil.IsFile(filePath))
                     {
@@ -385,10 +385,10 @@ namespace PicSum.Main.UIComponent
                     dragData.ContentsTitle,
                     dragData.ContentsIcon), ContentsOpenType.OverlapTab);
             }
-            else if (FileUtil.IsFolder(dragData.CurrentFilePath))
+            else if (FileUtil.IsDirectory(dragData.CurrentFilePath))
             {
                 // フォルダコンテンツを上書きします。
-                openContents(new FolderFileListContentsParameter(dragData.CurrentFilePath), ContentsOpenType.OverlapTab);
+                openContents(new DirectoryFileListContentsParameter(dragData.CurrentFilePath), ContentsOpenType.OverlapTab);
             }
             else if (FileUtil.IsFile(dragData.CurrentFilePath)
                 && ImageUtil.ImageFileExtensionList.Contains(FileUtil.GetExtension(dragData.CurrentFilePath)))
@@ -415,10 +415,10 @@ namespace PicSum.Main.UIComponent
                     dragData.ContentsTitle,
                     dragData.ContentsIcon), tabIndex);
             }
-            else if (FileUtil.IsFolder(dragData.CurrentFilePath))
+            else if (FileUtil.IsDirectory(dragData.CurrentFilePath))
             {
                 // フォルダコンテンツを挿入します。
-                insertContents(new FolderFileListContentsParameter(dragData.CurrentFilePath), tabIndex);
+                insertContents(new DirectoryFileListContentsParameter(dragData.CurrentFilePath), tabIndex);
             }
             else if (FileUtil.IsFile(dragData.CurrentFilePath)
                 && ImageUtil.ImageFileExtensionList.Contains(FileUtil.GetExtension(dragData.CurrentFilePath)))
@@ -455,13 +455,13 @@ namespace PicSum.Main.UIComponent
                 }
 
                 var filePath = filePaths.First();
-                var dirPath = FileUtil.GetParentFolderPath(filePath);
+                var dirPath = FileUtil.GetParentDirectoryPath(filePath);
                 var dragData = new DragEntity(
-                    FolderFileListContentsParameter.CONTENTS_SOURCES,
+                    DirectoryFileListContentsParameter.CONTENTS_SOURCES,
                     dirPath,
                     filePath,
                     FileUtil.IsFile(filePath) ? FileUtil.GetFileName(dirPath) : FileUtil.GetFileName(filePath),
-                    FileIconCash.SmallFolderIcon);
+                    FileIconCash.SmallDirectoryIcon);
                 if (e.IsOverlap)
                 {
                     overlapContents(dragData, e.TabIndex);
@@ -494,32 +494,32 @@ namespace PicSum.Main.UIComponent
                 }
 
                 openContents(new ImageViewerContentsParameter(
-                    FolderFileListContentsParameter.CONTENTS_SOURCES,
+                    DirectoryFileListContentsParameter.CONTENTS_SOURCES,
                     e.DirectoryPath,
                     e.FilePathList,
                     e.SelectedFilePath,
                     dirName,
-                    FileIconCash.SmallFolderIcon), ContentsOpenType.OverlapTab);
+                    FileIconCash.SmallDirectoryIcon), ContentsOpenType.OverlapTab);
             }
             else if (e.FileOpenType == ContentsOpenType.AddTab)
             {
                 openContents(new ImageViewerContentsParameter(
-                    FolderFileListContentsParameter.CONTENTS_SOURCES,
+                    DirectoryFileListContentsParameter.CONTENTS_SOURCES,
                     e.DirectoryPath,
                     e.FilePathList,
                     e.SelectedFilePath,
                     dirName,
-                    FileIconCash.SmallFolderIcon), ContentsOpenType.AddTab);
+                    FileIconCash.SmallDirectoryIcon), ContentsOpenType.AddTab);
             }
             else if (e.FileOpenType == ContentsOpenType.InsertTab)
             {
                 insertContents(new ImageViewerContentsParameter(
-                    FolderFileListContentsParameter.CONTENTS_SOURCES,
+                    DirectoryFileListContentsParameter.CONTENTS_SOURCES,
                     e.DirectoryPath,
                     e.FilePathList,
                     e.SelectedFilePath,
                     dirName,
-                    FileIconCash.SmallFolderIcon), e.TabIndex);
+                    FileIconCash.SmallDirectoryIcon), e.TabIndex);
             }
         }
 
@@ -552,7 +552,7 @@ namespace PicSum.Main.UIComponent
 
         private void tabSwitch_AddTabButtonMouseClick(object sender, MouseEventArgs e)
         {
-            openContents(new FavoriteFolderListContentsParameter(), ContentsOpenType.AddTab);
+            openContents(new FavoriteDirectoryListContentsParameter(), ContentsOpenType.AddTab);
         }
 
         private void tabSwitch_ActiveTabChanged(object sender, EventArgs e)
@@ -655,9 +655,9 @@ namespace PicSum.Main.UIComponent
 
         #region アドレスバーイベント
 
-        private void addressBar_SelectedFolder(object sender, PicSum.UIComponent.AddressBar.SelectedFolderEventArgs e)
+        private void addressBar_SelectedDirectory(object sender, PicSum.UIComponent.AddressBar.SelectedDirectoryEventArgs e)
         {
-            openContents(new FolderFileListContentsParameter(e.FolderPath, e.SubFolderPath), e.OpenType);
+            openContents(new DirectoryFileListContentsParameter(e.DirectoryPath, e.SubDirectoryPath), e.OpenType);
         }
 
         #endregion
@@ -714,11 +714,11 @@ namespace PicSum.Main.UIComponent
         {
             if (e.Button == MouseButtons.Left)
             {
-                openContents(new FavoriteFolderListContentsParameter(), ContentsOpenType.OverlapTab);
+                openContents(new FavoriteDirectoryListContentsParameter(), ContentsOpenType.OverlapTab);
             }
             else if (e.Button == MouseButtons.Middle)
             {
-                openContents(new FavoriteFolderListContentsParameter(), ContentsOpenType.AddTab);
+                openContents(new FavoriteDirectoryListContentsParameter(), ContentsOpenType.AddTab);
             }
         }
 

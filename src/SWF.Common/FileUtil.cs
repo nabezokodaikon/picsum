@@ -66,7 +66,7 @@ namespace SWF.Common
         /// </summary>
         /// <param name="filePath">ファイルパス</param>
         /// <returns>ファイルパスがフォルダならTrue。フォルダでなければFalse。</returns>
-        public static bool IsFolder(string filePath)
+        public static bool IsDirectory(string filePath)
         {
             if (filePath == null)
             {
@@ -232,7 +232,7 @@ namespace SWF.Common
         /// </summary>
         /// <param name="filePath">ファイルパス</param>
         /// <returns>親フォルダパス</returns>
-        public static string GetParentFolderPath(string filePath)
+        public static string GetParentDirectoryPath(string filePath)
         {
             if (filePath == null)
             {
@@ -393,46 +393,46 @@ namespace SWF.Common
         /// <summary>
         /// フォルダ内のファイルを取得します。
         /// </summary>
-        /// <param name="folderPath">フォルダパス</param>
+        /// <param name="directoryPath">フォルダパス</param>
         /// <returns></returns>
-        public static IList<string> GetFiles(string folderPath)
+        public static IList<string> GetFiles(string directoryPath)
         {
-            if (folderPath == null)
+            if (directoryPath == null)
             {
-                throw new ArgumentNullException("folderPath");
+                throw new ArgumentNullException("directoryPath");
             }
 
-            return Directory.GetFiles(folderPath);
+            return Directory.GetFiles(directoryPath);
         }
 
         /// <summary>
         /// フォルダ内のフォルダを取得します。
         /// </summary>
-        /// <param name="folderPath">フォルダパス</param>
+        /// <param name="directoryPath">フォルダパス</param>
         /// <returns></returns>
-        public static IList<string> GetSubFolders(string folderPath)
+        public static IList<string> GetSubDirectorys(string directoryPath)
         {
-            if (folderPath == null)
+            if (directoryPath == null)
             {
-                throw new ArgumentNullException("folderPath");
+                throw new ArgumentNullException("directoryPath");
             }
 
-            return Directory.GetDirectories(folderPath);
+            return Directory.GetDirectories(directoryPath);
         }
 
         /// <summary>
         /// フォルダ内のファイルとフォルダを取得します。
         /// </summary>
-        /// <param name="folderPath">フォルダパス</param>
+        /// <param name="directoryPath">フォルダパス</param>
         /// <returns></returns>
-        public static IList<string> GetFilesAndSubFolders(string folderPath)
+        public static IList<string> GetFilesAndSubDirectorys(string directoryPath)
         {
-            if (folderPath == null)
+            if (directoryPath == null)
             {
-                throw new ArgumentNullException("folderPath");
+                throw new ArgumentNullException("directoryPath");
             }
 
-            return Directory.GetFileSystemEntries(folderPath);
+            return Directory.GetFileSystemEntries(directoryPath);
         }
 
         #endregion
@@ -484,7 +484,7 @@ namespace SWF.Common
         /// <summary>
         /// 小システムアイコンを取得します。
         /// </summary>
-        /// <param name="spesialFolder">システムアイコンの種類</param>
+        /// <param name="spesialDirectory">システムアイコンの種類</param>
         /// <returns></returns>
         public static Image GetSmallSystemIcon(WinApiMembers.ShellSpecialFolder spesialFolder)
         {
@@ -510,7 +510,7 @@ namespace SWF.Common
         /// <summary>
         /// 大システムアイコンを取得します。
         /// </summary>
-        /// <param name="spesialFolder">システムアイコンの種類</param>
+        /// <param name="spesialDirectory">システムアイコンの種類</param>
         /// <returns></returns>
         public static Image GetLargeSystemIcon(WinApiMembers.ShellSpecialFolder spesialFolder)
         {

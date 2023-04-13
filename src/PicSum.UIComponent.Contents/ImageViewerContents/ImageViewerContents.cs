@@ -883,7 +883,7 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
             FileUtil.OpenFile(e.FilePath);
         }
 
-        private void fileContextMenu_SaveFolderOpen(object sender, PicSum.UIComponent.Common.FileContextMenu.ExecuteFileEventArgs e)
+        private void fileContextMenu_SaveDirectoryOpen(object sender, PicSum.UIComponent.Common.FileContextMenu.ExecuteFileEventArgs e)
         {
             FileUtil.OpenExplorerSelect(e.FilePath);
         }
@@ -892,19 +892,19 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
         {
             using (FolderBrowserDialog fbd = new FolderBrowserDialog())
             {
-                if (FileUtil.IsExists(CommonConfig.ExportFolderPath))
+                if (FileUtil.IsExists(CommonConfig.ExportDirectoryPath))
                 {
-                    fbd.SelectedPath = CommonConfig.ExportFolderPath;
+                    fbd.SelectedPath = CommonConfig.ExportDirectoryPath;
                 }
 
                 if (fbd.ShowDialog() == DialogResult.OK)
                 {
                     ExportFileParameterEntity param = new ExportFileParameterEntity();
-                    param.ExportFolderPath = fbd.SelectedPath;
+                    param.ExportDirectoryPath = fbd.SelectedPath;
                     param.FilePathList = e.FilePathList;
                     exportFileProcess.Execute(this, param);
 
-                    CommonConfig.ExportFolderPath = fbd.SelectedPath;
+                    CommonConfig.ExportDirectoryPath = fbd.SelectedPath;
                 }
             }
         }

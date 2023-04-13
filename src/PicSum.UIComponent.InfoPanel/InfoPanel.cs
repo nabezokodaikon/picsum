@@ -375,9 +375,9 @@ namespace PicSum.UIComponent.InfoPanel
             ThumbnailUtil.DrawFileThumbnail(g, thumb, rect);
         }
 
-        private void drawFolderThumbnail(Graphics g, Image thumb, Rectangle rect)
+        private void drawDirectoryThumbnail(Graphics g, Image thumb, Rectangle rect)
         {
-            ThumbnailUtil.DrawFolderThumbnail(g, thumb, rect, FileIconCash.LargeFolderIcon);
+            ThumbnailUtil.DrawDirectoryThumbnail(g, thumb, rect, FileIconCash.LargeDirectoryIcon);
         }
 
         private void drawFileIcon(Graphics g, Image icon, Rectangle rect)
@@ -489,7 +489,7 @@ namespace PicSum.UIComponent.InfoPanel
                 }
                 else
                 {
-                    drawFolderThumbnail(e.Graphics, thumbnail.ThumbnailImage, rect);
+                    drawDirectoryThumbnail(e.Graphics, thumbnail.ThumbnailImage, rect);
                 }
             }
             else if (fileInfo != null)

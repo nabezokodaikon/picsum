@@ -98,12 +98,12 @@ namespace PicSum.Main.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool FileListContentsIsShowFolder {
+        public bool FileListContentsIsShowDirectory {
             get {
-                return ((bool)(this["FileListContentsIsShowFolder"]));
+                return ((bool)(this["FileListContentsIsShowDirectory"]));
             }
             set {
-                this["FileListContentsIsShowFolder"] = value;
+                this["FileListContentsIsShowDirectory"] = value;
             }
         }
         
@@ -155,21 +155,21 @@ namespace PicSum.Main.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string ExportFolderPath {
+        public string ExportDirectoryPath {
             get {
-                return ((string)(this["ExportFolderPath"]));
+                return ((string)(this["ExportDirectoryPath"]));
             }
             set {
-                this["ExportFolderPath"] = value;
+                this["ExportDirectoryPath"] = value;
             }
         }
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("21")]
-        public int FileListContentsFavoriteFolderCount {
+        public int FileListContentsFavoriteDirectoryCount {
             get {
-                return ((int)(this["FileListContentsFavoriteFolderCount"]));
+                return ((int)(this["FileListContentsFavoriteDirectoryCount"]));
             }
         }
     }

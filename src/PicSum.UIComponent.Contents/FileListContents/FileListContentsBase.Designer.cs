@@ -33,7 +33,7 @@
             this.flowList = new SWF.UIComponent.FlowList.FlowList();
             this.fileContextMenu = new PicSum.UIComponent.Common.FileContextMenu.FileContextMenu();
             this.viewContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.showFolderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.showDirectoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showImageFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showOtherFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
@@ -89,16 +89,16 @@
             // 
             this.fileContextMenu.IsAddKeepMenuItemVisible = false;
             this.fileContextMenu.IsFileActiveTabOpenMenuItemVisible = true;
-            this.fileContextMenu.IsFolderActiveTabOpenMenuItemVisible = true;
+            this.fileContextMenu.IsDirectoryActiveTabOpenMenuItemVisible = true;
             this.fileContextMenu.IsRemoveFromListMenuItemVisible = false;
             this.fileContextMenu.Name = "fileContextMenu";
             this.fileContextMenu.Size = new System.Drawing.Size(209, 312);
-            this.fileContextMenu.FolderActiveTabOpen += new System.EventHandler<PicSum.UIComponent.Common.FileContextMenu.ExecuteFileEventArgs>(this.fileContextMenu_FolderActiveTabOpen);
-            this.fileContextMenu.FolderNewTabOpen += new System.EventHandler<PicSum.UIComponent.Common.FileContextMenu.ExecuteFileEventArgs>(this.fileContextMenu_FolderNewTabOpen);
+            this.fileContextMenu.DirectoryActiveTabOpen += new System.EventHandler<PicSum.UIComponent.Common.FileContextMenu.ExecuteFileEventArgs>(this.fileContextMenu_DirectoryActiveTabOpen);
+            this.fileContextMenu.DirectoryNewTabOpen += new System.EventHandler<PicSum.UIComponent.Common.FileContextMenu.ExecuteFileEventArgs>(this.fileContextMenu_DirectoryNewTabOpen);
             this.fileContextMenu.FileOpen += new System.EventHandler<PicSum.UIComponent.Common.FileContextMenu.ExecuteFileEventArgs>(this.fileContextMenu_FileOpen);
-            this.fileContextMenu.FolderNewWindowOpen += new System.EventHandler<PicSum.UIComponent.Common.FileContextMenu.ExecuteFileEventArgs>(this.fileContextMenu_FolderNewWindowOpen);
+            this.fileContextMenu.DirectoryNewWindowOpen += new System.EventHandler<PicSum.UIComponent.Common.FileContextMenu.ExecuteFileEventArgs>(this.fileContextMenu_DirectoryNewWindowOpen);
             this.fileContextMenu.FileNewTabOpen += new System.EventHandler<PicSum.UIComponent.Common.FileContextMenu.ExecuteFileEventArgs>(this.fileContextMenu_FileNewTabOpen);
-            this.fileContextMenu.SaveFolderOpen += new System.EventHandler<PicSum.UIComponent.Common.FileContextMenu.ExecuteFileEventArgs>(this.fileContextMenu_SaveFolderOpen);
+            this.fileContextMenu.SaveDirectoryOpen += new System.EventHandler<PicSum.UIComponent.Common.FileContextMenu.ExecuteFileEventArgs>(this.fileContextMenu_SaveDirectoryOpen);
             this.fileContextMenu.FileActiveTabOpen += new System.EventHandler<PicSum.UIComponent.Common.FileContextMenu.ExecuteFileEventArgs>(this.fileContextMenu_FileActiveTabOpen);
             this.fileContextMenu.AddKeep += new System.EventHandler<PicSum.UIComponent.Common.FileContextMenu.ExecuteFileListEventArgs>(this.fileContextMenu_AddKeep);
             this.fileContextMenu.NameCopy += new System.EventHandler<PicSum.UIComponent.Common.FileContextMenu.ExecuteFileListEventArgs>(this.fileContextMenu_NameCopy);
@@ -112,7 +112,7 @@
             // viewContextMenuStrip
             // 
             this.viewContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.showFolderToolStripMenuItem,
+            this.showDirectoryToolStripMenuItem,
             this.showImageFileToolStripMenuItem,
             this.showOtherFileToolStripMenuItem,
             this.toolStripSeparator1,
@@ -121,12 +121,12 @@
             this.viewContextMenuStrip.OwnerItem = this.viewToolStripDropDownButton;
             this.viewContextMenuStrip.Size = new System.Drawing.Size(173, 98);
             // 
-            // showFolderToolStripMenuItem
+            // showDirectoryToolStripMenuItem
             // 
-            this.showFolderToolStripMenuItem.Name = "showFolderToolStripMenuItem";
-            this.showFolderToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
-            this.showFolderToolStripMenuItem.Text = "フォルダ";
-            this.showFolderToolStripMenuItem.Click += new System.EventHandler(this.showFolderToolStripMenuItem_Click);
+            this.showDirectoryToolStripMenuItem.Name = "showDirectoryToolStripMenuItem";
+            this.showDirectoryToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
+            this.showDirectoryToolStripMenuItem.Text = "フォルダ";
+            this.showDirectoryToolStripMenuItem.Click += new System.EventHandler(this.showDirectoryToolStripMenuItem_Click);
             // 
             // showImageFileToolStripMenuItem
             // 
@@ -288,7 +288,7 @@
         private System.Windows.Forms.ToolStripButton movePreviewToolStripButton;
         private System.Windows.Forms.ToolStripButton moveNextToolStripButton;
         private System.Windows.Forms.ContextMenuStrip viewContextMenuStrip;
-        private System.Windows.Forms.ToolStripMenuItem showFolderToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem showDirectoryToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem showImageFileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem showOtherFileToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;

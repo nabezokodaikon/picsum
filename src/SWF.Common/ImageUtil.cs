@@ -110,9 +110,9 @@ namespace SWF.Common
                 throw new ArgumentNullException(nameof(filePath));
             }
 
-            var folder = Shell.NameSpace(Path.GetDirectoryName(filePath));
-            var item = folder.ParseName(Path.GetFileName(filePath));
-            string deteils = folder.GetDetailsOf(item, 31);
+            var directory = Shell.NameSpace(Path.GetDirectoryName(filePath));
+            var item = directory.ParseName(Path.GetFileName(filePath));
+            string deteils = directory.GetDetailsOf(item, 31);
             if (string.IsNullOrWhiteSpace(deteils))
             {
                 return ImageUtil.EMPTY_SIZE;

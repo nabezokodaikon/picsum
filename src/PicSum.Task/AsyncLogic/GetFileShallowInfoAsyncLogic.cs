@@ -52,14 +52,14 @@ namespace PicSum.Task.AsyncLogic
                 info.LargeIcon = FileIconCash.GetLargeFileIcon(info.FilePath);
                 info.SmallIcon = FileIconCash.GetSmallFileIcon(info.FilePath);
             }
-            else if (FileUtil.IsFolder(filePath))
+            else if (FileUtil.IsDirectory(filePath))
             {
                 info.IsFile = false;
                 info.IsImageFile = false;
                 info.UpdateDate = FileUtil.GetUpdateDate(filePath);
                 info.CreateDate = FileUtil.GetCreateDate(filePath);
-                info.LargeIcon = FileIconCash.LargeFolderIcon;
-                info.SmallIcon = FileIconCash.SmallFolderIcon;
+                info.LargeIcon = FileIconCash.LargeDirectoryIcon;
+                info.SmallIcon = FileIconCash.SmallDirectoryIcon;
             }
             else
             {

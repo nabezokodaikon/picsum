@@ -22,7 +22,7 @@ namespace PicSum.UIComponent.AddressBar
 
         #region イベント・デリゲート
 
-        public event EventHandler<SelectedFolderEventArgs> SelectedFolder;
+        public event EventHandler<SelectedDirectoryEventArgs> SelectedDirectory;
 
         #endregion
 
@@ -31,10 +31,10 @@ namespace PicSum.UIComponent.AddressBar
         private readonly int _dropDownItemWidth = Resources.SmallArrowDown.Width;
         private readonly Palette _palette = new Palette();
         private readonly OverflowDrawItem _overflowItem = new OverflowDrawItem();
-        private readonly FolderHistoryDrawItem _folderHistoryItem = new FolderHistoryDrawItem();
+        private readonly DirectoryHistoryDrawItem _directoryHistoryItem = new DirectoryHistoryDrawItem();
         private IContainer _components = null;
         private TwoWayProcess<GetAddressInfoAsyncFacade, SingleValueEntity<string>, AddressInfo> _getAddressInfoProcess = null;
-        private string _folderPath = null;
+        private string _directoryPath = null;
         private readonly List<DrawItemBase> _addressItems = new List<DrawItemBase>();
         private DrawItemBase _mousePointItem = null;
         private DrawItemBase _mouseDownItem = null;
@@ -186,14 +186,14 @@ namespace PicSum.UIComponent.AddressBar
             }
         }
 
-        private FolderDrawItem mousePointFolderItem
+        private DirectoryDrawItem mousePointDirectoryItem
         {
             get
             {
                 if (_mousePointItem != null &&
-                    _mousePointItem.GetType() == typeof(FolderDrawItem))
+                    _mousePointItem.GetType() == typeof(DirectoryDrawItem))
                 {
-                    return (FolderDrawItem)_mousePointItem;
+                    return (DirectoryDrawItem)_mousePointItem;
                 }
                 else
                 {
@@ -248,7 +248,7 @@ namespace PicSum.UIComponent.AddressBar
                 }
 
                 _overflowItem.Dispose();
-                _folderHistoryItem.Dispose();
+                _directoryHistoryItem.Dispose();
 
                 clearAddressItems();
             }
@@ -272,7 +272,7 @@ namespace PicSum.UIComponent.AddressBar
             e.Graphics.FillRectangle(_palette.OutLineBrush, this.ClientRectangle);
             e.Graphics.FillRectangle(_palette.InnerBrush, getInnerRectangle());
 
-            _folderHistoryItem.Draw(e.Graphics);
+            _directoryHistoryItem.Draw(e.Graphics);
 
             if (_overflowItem.Items.Count > 0)
             {
@@ -300,7 +300,7 @@ namespace PicSum.UIComponent.AddressBar
         protected override void OnMouseDown(MouseEventArgs e)
         {
             DrawItemBase drawItem = getItemFromPoint(e.X, e.Y);
-            if (drawItem is FolderDrawItem &&
+            if (drawItem is DirectoryDrawItem &&
                 (e.Button == MouseButtons.Left || e.Button == MouseButtons.Middle))
             {
                 setMouseDownItem(drawItem);
@@ -357,11 +357,11 @@ namespace PicSum.UIComponent.AddressBar
             base.OnMouseClick(e);
         }
 
-        protected virtual void OnSelectedFolder(SelectedFolderEventArgs e)
+        protected virtual void OnSelectedDirectory(SelectedDirectoryEventArgs e)
         {
-            if (SelectedFolder != null)
+            if (SelectedDirectory != null)
             {
-                SelectedFolder(this, e);
+                SelectedDirectory(this, e);
             }
         }
 
@@ -374,8 +374,8 @@ namespace PicSum.UIComponent.AddressBar
             _overflowItem.AddressBar = this;
             _overflowItem.Palette = _palette;
 
-            _folderHistoryItem.AddressBar = this;
-            _folderHistoryItem.Palette = _palette;
+            _directoryHistoryItem.AddressBar = this;
+            _directoryHistoryItem.Palette = _palette;
 
             this.SetStyle(ControlStyles.DoubleBuffer |
                           ControlStyles.UserPaint |
@@ -384,11 +384,11 @@ namespace PicSum.UIComponent.AddressBar
 
             _overflowItem.DropDownOpened += new EventHandler(drawItem_DropDownOpened);
             _overflowItem.DropDownClosed += new EventHandler(drawItem_DropDownClosed);
-            _overflowItem.SelectedFolder += new EventHandler<SelectedFolderEventArgs>(drawItem_SelectedFolder);
+            _overflowItem.SelectedDirectory += new EventHandler<SelectedDirectoryEventArgs>(drawItem_SelectedDirectory);
 
-            _folderHistoryItem.DropDownOpened += new EventHandler(drawItem_DropDownOpened);
-            _folderHistoryItem.DropDownClosed += new EventHandler(drawItem_DropDownClosed);
-            _folderHistoryItem.SelectedFolder += new EventHandler<SelectedFolderEventArgs>(drawItem_SelectedFolder);
+            _directoryHistoryItem.DropDownOpened += new EventHandler(drawItem_DropDownOpened);
+            _directoryHistoryItem.DropDownClosed += new EventHandler(drawItem_DropDownClosed);
+            _directoryHistoryItem.SelectedDirectory += new EventHandler<SelectedDirectoryEventArgs>(drawItem_SelectedDirectory);
         }
 
         private void setItemsRectangle()
@@ -397,10 +397,10 @@ namespace PicSum.UIComponent.AddressBar
             _overflowItem.Items.Clear();
 
             Rectangle innerRect = getInnerRectangle();
-            _folderHistoryItem.Left = innerRect.Right - _dropDownItemWidth;
-            _folderHistoryItem.Top = innerRect.Y;
-            _folderHistoryItem.Width = _dropDownItemWidth;
-            _folderHistoryItem.Height = innerRect.Height;
+            _directoryHistoryItem.Left = innerRect.Right - _dropDownItemWidth;
+            _directoryHistoryItem.Top = innerRect.Y;
+            _directoryHistoryItem.Width = _dropDownItemWidth;
+            _directoryHistoryItem.Height = innerRect.Height;
 
             Rectangle addressRect = getAddressRect();
 
@@ -414,9 +414,9 @@ namespace PicSum.UIComponent.AddressBar
                     {
                         DrawItemBase drawItem = _addressItems[i];
 
-                        if (drawItem.GetType() == typeof(FolderDrawItem))
+                        if (drawItem.GetType() == typeof(DirectoryDrawItem))
                         {
-                            drawItem.Width = (int)(g.MeasureString((drawItem as FolderDrawItem).Folder.FolderName + "__", _palette.TextFont).Width);
+                            drawItem.Width = (int)(g.MeasureString((drawItem as DirectoryDrawItem).Directory.DirectoryName + "__", _palette.TextFont).Width);
                         }
                         else if (drawItem.GetType() == typeof(SeparatorDrawItem))
                         {
@@ -436,10 +436,10 @@ namespace PicSum.UIComponent.AddressBar
                 {
                     if (drawItem.Left < addressRect.Left)
                     {
-                        if (drawItem.GetType() == typeof(FolderDrawItem))
+                        if (drawItem.GetType() == typeof(DirectoryDrawItem))
                         {
-                            FolderDrawItem folderDrawItem = (FolderDrawItem)drawItem;
-                            _overflowItem.Items.Add(folderDrawItem.Folder);
+                            DirectoryDrawItem directoryDrawItem = (DirectoryDrawItem)drawItem;
+                            _overflowItem.Items.Add(directoryDrawItem.Directory);
                             if (_overflowItem.Items.Count == 1)
                             {
                                 _overflowItem.Left = left;
@@ -455,7 +455,7 @@ namespace PicSum.UIComponent.AddressBar
                         if (drawItem.GetType() == typeof(SeparatorDrawItem))
                         {
                             SeparatorDrawItem sepDrawItem = (SeparatorDrawItem)drawItem;
-                            if (_overflowItem.Items.Count(folder => folder.FolderPath.Equals(sepDrawItem.Folder.FolderPath, StringComparison.Ordinal)) > 0)
+                            if (_overflowItem.Items.Count(directory => directory.DirectoryPath.Equals(sepDrawItem.Directory.DirectoryPath, StringComparison.Ordinal)) > 0)
                             {
                                 drawItem.Left = -1;
                                 continue;
@@ -473,69 +473,69 @@ namespace PicSum.UIComponent.AddressBar
         {
             List<DrawItemBase> items = new List<DrawItemBase>();
 
-            for (int i = 0; i < addressInfo.FolderList.Count - 1; i++)
+            for (int i = 0; i < addressInfo.DirectoryList.Count - 1; i++)
             {
-                FileShallowInfoEntity info = addressInfo.FolderList[i];
-                FolderEntity folder = new FolderEntity();
-                folder.FolderPath = info.FilePath;
-                folder.FolderName = info.FileName;
-                folder.FolderIcon = info.SmallIcon;
+                FileShallowInfoEntity info = addressInfo.DirectoryList[i];
+                DirectoryEntity directory = new DirectoryEntity();
+                directory.DirectoryPath = info.FilePath;
+                directory.DirectoryName = info.FileName;
+                directory.DirectoryIcon = info.SmallIcon;
 
-                FolderDrawItem folderDraw = new FolderDrawItem();
-                folderDraw.AddressBar = this;
-                folderDraw.Folder = folder;
-                folderDraw.Palette = _palette;
-                folderDraw.SelectedFolder += new EventHandler<SelectedFolderEventArgs>(drawItem_SelectedFolder);
-                items.Add(folderDraw);
+                DirectoryDrawItem directoryDraw = new DirectoryDrawItem();
+                directoryDraw.AddressBar = this;
+                directoryDraw.Directory = directory;
+                directoryDraw.Palette = _palette;
+                directoryDraw.SelectedDirectory += new EventHandler<SelectedDirectoryEventArgs>(drawItem_SelectedDirectory);
+                items.Add(directoryDraw);
 
                 SeparatorDrawItem sepDraw = new SeparatorDrawItem();
                 sepDraw.AddressBar = this;
-                sepDraw.Folder = folder;
+                sepDraw.Directory = directory;
                 sepDraw.Palette = _palette;
-                if (i + 1 < addressInfo.FolderList.Count)
+                if (i + 1 < addressInfo.DirectoryList.Count)
                 {
-                    sepDraw.SelectedSubFolderPath = addressInfo.FolderList[i + 1].FilePath;
+                    sepDraw.SelectedSubDirectoryPath = addressInfo.DirectoryList[i + 1].FilePath;
                 }
-                sepDraw.SelectedFolder += new EventHandler<SelectedFolderEventArgs>(drawItem_SelectedFolder);
+                sepDraw.SelectedDirectory += new EventHandler<SelectedDirectoryEventArgs>(drawItem_SelectedDirectory);
                 items.Add(sepDraw);
             }
 
-            if (addressInfo.HasSubFolder)
+            if (addressInfo.HasSubDirectory)
             {
-                FileShallowInfoEntity info = addressInfo.FolderList.Last();
-                FolderEntity folder = new FolderEntity();
-                folder.FolderPath = info.FilePath;
-                folder.FolderName = info.FileName;
-                folder.FolderIcon = info.SmallIcon;
+                FileShallowInfoEntity info = addressInfo.DirectoryList.Last();
+                DirectoryEntity directory = new DirectoryEntity();
+                directory.DirectoryPath = info.FilePath;
+                directory.DirectoryName = info.FileName;
+                directory.DirectoryIcon = info.SmallIcon;
 
-                FolderDrawItem folderDraw = new FolderDrawItem();
-                folderDraw.AddressBar = this;
-                folderDraw.Folder = folder;
-                folderDraw.Palette = _palette;
-                folderDraw.SelectedFolder += new EventHandler<SelectedFolderEventArgs>(drawItem_SelectedFolder);
-                items.Add(folderDraw);
+                DirectoryDrawItem directoryDraw = new DirectoryDrawItem();
+                directoryDraw.AddressBar = this;
+                directoryDraw.Directory = directory;
+                directoryDraw.Palette = _palette;
+                directoryDraw.SelectedDirectory += new EventHandler<SelectedDirectoryEventArgs>(drawItem_SelectedDirectory);
+                items.Add(directoryDraw);
 
                 SeparatorDrawItem sepDraw = new SeparatorDrawItem();
                 sepDraw.AddressBar = this;
-                sepDraw.Folder = folder;
+                sepDraw.Directory = directory;
                 sepDraw.Palette = _palette;
-                sepDraw.SelectedFolder += new EventHandler<SelectedFolderEventArgs>(drawItem_SelectedFolder);
+                sepDraw.SelectedDirectory += new EventHandler<SelectedDirectoryEventArgs>(drawItem_SelectedDirectory);
                 items.Add(sepDraw);
             }
             else
             {
-                FileShallowInfoEntity info = addressInfo.FolderList.Last();
-                FolderEntity folder = new FolderEntity();
-                folder.FolderPath = info.FilePath;
-                folder.FolderName = info.FileName;
-                folder.FolderIcon = info.SmallIcon;
+                FileShallowInfoEntity info = addressInfo.DirectoryList.Last();
+                DirectoryEntity directory = new DirectoryEntity();
+                directory.DirectoryPath = info.FilePath;
+                directory.DirectoryName = info.FileName;
+                directory.DirectoryIcon = info.SmallIcon;
 
-                FolderDrawItem folderDraw = new FolderDrawItem();
-                folderDraw.AddressBar = this;
-                folderDraw.Folder = folder;
-                folderDraw.Palette = _palette;
-                folderDraw.SelectedFolder += new EventHandler<SelectedFolderEventArgs>(drawItem_SelectedFolder);
-                items.Add(folderDraw);
+                DirectoryDrawItem directoryDraw = new DirectoryDrawItem();
+                directoryDraw.AddressBar = this;
+                directoryDraw.Directory = directory;
+                directoryDraw.Palette = _palette;
+                directoryDraw.SelectedDirectory += new EventHandler<SelectedDirectoryEventArgs>(drawItem_SelectedDirectory);
+                items.Add(directoryDraw);
             }
 
             return items;
@@ -589,7 +589,7 @@ namespace PicSum.UIComponent.AddressBar
                 }
             }
 
-            _folderHistoryItem.IsMousePoint = _folderHistoryItem.Equals(_mousePointItem);
+            _directoryHistoryItem.IsMousePoint = _directoryHistoryItem.Equals(_mousePointItem);
             _overflowItem.IsMousePoint = _overflowItem.Equals(_mousePointItem);
             foreach (DrawItemBase drawItem in _addressItems)
             {
@@ -619,7 +619,7 @@ namespace PicSum.UIComponent.AddressBar
                 }
             }
 
-            _folderHistoryItem.IsMouseDown = _folderHistoryItem.Equals(_mouseDownItem);
+            _directoryHistoryItem.IsMouseDown = _directoryHistoryItem.Equals(_mouseDownItem);
             _overflowItem.IsMouseDown = _overflowItem.Equals(_mouseDownItem);
             foreach (DrawItemBase drawItem in _addressItems)
             {
@@ -635,9 +635,9 @@ namespace PicSum.UIComponent.AddressBar
             {
                 return _overflowItem;
             }
-            else if (_folderHistoryItem.GetRectangle().Contains(x, y))
+            else if (_directoryHistoryItem.GetRectangle().Contains(x, y))
             {
-                return _folderHistoryItem;
+                return _directoryHistoryItem;
             }
             else if (_addressItems != null)
             {
@@ -667,7 +667,7 @@ namespace PicSum.UIComponent.AddressBar
 
             clearAddressItems();
 
-            _folderPath = e.FolderPath;
+            _directoryPath = e.DirectoryPath;
             _addressItems.AddRange(createAddressItems(e));
 
             this.Invalidate();
@@ -683,9 +683,9 @@ namespace PicSum.UIComponent.AddressBar
             this.Invalidate();
         }
 
-        private void drawItem_SelectedFolder(object sender, SelectedFolderEventArgs e)
+        private void drawItem_SelectedDirectory(object sender, SelectedDirectoryEventArgs e)
         {
-            OnSelectedFolder(e);
+            OnSelectedDirectory(e);
         }
 
         #endregion

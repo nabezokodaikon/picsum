@@ -5,7 +5,7 @@ namespace PicSum.Task.Entity
 {
     public class ExportFileParameterEntity : IEntity
     {
-        public string ExportFolderPath { get; set; }
+        public string ExportDirectoryPath { get; set; }
         public IList<string> FilePathList { get; set; }
     }
 }

@@ -4,7 +4,7 @@ using SWF.UIComponent.TabOperation;
 
 namespace PicSum.UIComponent.Contents.ContentsParameter
 {
-    public class FavoriteFolderListContentsParameter : IContentsParameter
+    public class FavoriteDirectoryListContentsParameter : IContentsParameter
     {
         public const string CONTENTS_SOURCES = "Favorite";
 
@@ -31,7 +31,7 @@ namespace PicSum.UIComponent.Contents.ContentsParameter
             }
         }
 
-        public FavoriteFolderListContentsParameter()
+        public FavoriteDirectoryListContentsParameter()
         {
             this.ContentsSources = CONTENTS_SOURCES;
             this.SourcesKey = string.Empty;
@@ -41,7 +41,7 @@ namespace PicSum.UIComponent.Contents.ContentsParameter
 
         public ContentsPanel CreateContents()
         {
-            return new FavoriteFolderListContents(this);
+            return new FavoriteDirectoryListContents(this);
         }
     }
 }

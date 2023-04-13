@@ -125,7 +125,7 @@ namespace SWF.Common
         /// <param name="thumb"></param>
         /// <param name="rect"></param>
         /// <param name="icon"></param>
-        public static void DrawFolderThumbnail(Graphics g, Image thumb, RectangleF rect, Image icon)
+        public static void DrawDirectoryThumbnail(Graphics g, Image thumb, RectangleF rect, Image icon)
         {
             DrawFileThumbnail(g, thumb, rect);
             g.DrawImage(icon, new RectangleF(rect.X, rect.Bottom - icon.Height, icon.Width, icon.Height));
@@ -138,7 +138,7 @@ namespace SWF.Common
         /// <param name="thumb"></param>
         /// <param name="rect"></param>
         /// <param name="icon"></param>
-        public static void AdjustDrawFolderThumbnail(Graphics g, Image thumb, RectangleF rect, Image icon)
+        public static void AdjustDrawDirectoryThumbnail(Graphics g, Image thumb, RectangleF rect, Image icon)
         {
             AdjustDrawFileThumbnail(g, thumb, rect);
             g.DrawImage(icon, new RectangleF(rect.X, rect.Bottom - icon.Height, icon.Width, icon.Height));

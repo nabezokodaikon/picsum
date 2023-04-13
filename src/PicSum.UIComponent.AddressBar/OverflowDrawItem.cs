@@ -69,9 +69,9 @@ namespace PicSum.UIComponent.AddressBar
 
                 using (Graphics g = DropDownList.CreateGraphics())
                 {
-                    foreach (FolderEntity folder in base.Items)
+                    foreach (DirectoryEntity directory in base.Items)
                     {
-                        width = Math.Max(width, (int)g.MeasureString(folder.FolderName + "________", base.Palette.TextFont).Width);
+                        width = Math.Max(width, (int)g.MeasureString(directory.DirectoryName + "________", base.Palette.TextFont).Width);
                     }
                 }
 
@@ -106,11 +106,11 @@ namespace PicSum.UIComponent.AddressBar
                 e.Graphics.FillRectangle(DropDownList.SelectedItemBrush, e.ItemRectangle);
             }
 
-            FolderEntity item = base.Items[e.ItemIndex];
+            DirectoryEntity item = base.Items[e.ItemIndex];
 
-            if (item.FolderIcon != null)
+            if (item.DirectoryIcon != null)
             {
-                int iconSize = Math.Min(base.DropDownList.ItemHeight, item.FolderIcon.Width);
+                int iconSize = Math.Min(base.DropDownList.ItemHeight, item.DirectoryIcon.Width);
 
                 int iconPoint = (int)((base.DropDownList.ItemHeight - iconSize) / 2);
 
@@ -119,7 +119,7 @@ namespace PicSum.UIComponent.AddressBar
                                                    iconSize,
                                                    iconSize);
 
-                e.Graphics.DrawImage(item.FolderIcon, iconRect);
+                e.Graphics.DrawImage(item.DirectoryIcon, iconRect);
             }
 
             Rectangle textRect = new Rectangle(e.ItemRectangle.X + DropDownList.ItemHeight,
@@ -127,7 +127,7 @@ namespace PicSum.UIComponent.AddressBar
                                                e.ItemRectangle.Width - DropDownList.ItemHeight,
                                                e.ItemRectangle.Height);
 
-            e.Graphics.DrawString(item.FolderName,
+            e.Graphics.DrawString(item.DirectoryName,
                                   base.Palette.TextFont,
                                   base.DropDownList.ItemTextBrush,
                                   textRect,

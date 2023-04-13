@@ -23,9 +23,9 @@ namespace SWF.Common
         private static Dictionary<string, Image> _jumboIconCash = null;
         private static Image _smallMyComputerIcon = null;
         private static Image _largeMyComputerIcon = null;
-        private static Image _smallFolderIcon = null;
-        private static Image _largeFolderIcon = null;
-        private static Image _jumboFolderIcon = null;
+        private static Image _smallDirectoryIcon = null;
+        private static Image _largeDirectoryIcon = null;
+        private static Image _jumboDirectoryIcon = null;
 
         public static Image SmallMyComputerIcon
         {
@@ -43,27 +43,27 @@ namespace SWF.Common
             }
         }
 
-        public static Image SmallFolderIcon
+        public static Image SmallDirectoryIcon
         {
             get
             {
-                return _smallFolderIcon;
+                return _smallDirectoryIcon;
             }
         }
 
-        public static Image LargeFolderIcon
+        public static Image LargeDirectoryIcon
         {
             get
             {
-                return _largeFolderIcon;
+                return _largeDirectoryIcon;
             }
         }
 
-        public static Image JumboFolderIcon
+        public static Image JumboDirectoryIcon
         {
             get
             {
-                return _jumboFolderIcon;
+                return _jumboDirectoryIcon;
             }
         }
 
@@ -214,9 +214,9 @@ namespace SWF.Common
             _jumboIconCash = new Dictionary<string, Image>();
             _smallMyComputerIcon = FileUtil.GetSmallSystemIcon(WinApi.WinApiMembers.ShellSpecialFolder.CSIDL_DRIVES);
             _largeMyComputerIcon = FileUtil.GetLargeSystemIcon(WinApi.WinApiMembers.ShellSpecialFolder.CSIDL_DRIVES);
-            _smallFolderIcon = FileUtil.GetSmallIconByFilePath(FileUtil.GetParentFolderPath(Assembly.GetExecutingAssembly().Location));
-            _largeFolderIcon = FileUtil.GetExtraLargeIconByFilePath(FileUtil.GetParentFolderPath(Assembly.GetExecutingAssembly().Location), SHIL.SHIL_EXTRALARGE);
-            _jumboFolderIcon = FileUtil.GetExtraLargeIconByFilePath(FileUtil.GetParentFolderPath(Assembly.GetExecutingAssembly().Location), SHIL.SHIL_JUMBO);
+            _smallDirectoryIcon = FileUtil.GetSmallIconByFilePath(FileUtil.GetParentDirectoryPath(Assembly.GetExecutingAssembly().Location));
+            _largeDirectoryIcon = FileUtil.GetExtraLargeIconByFilePath(FileUtil.GetParentDirectoryPath(Assembly.GetExecutingAssembly().Location), SHIL.SHIL_EXTRALARGE);
+            _jumboDirectoryIcon = FileUtil.GetExtraLargeIconByFilePath(FileUtil.GetParentDirectoryPath(Assembly.GetExecutingAssembly().Location), SHIL.SHIL_JUMBO);
         }
 
         /// <summary>
@@ -229,9 +229,9 @@ namespace SWF.Common
             _jumboIconCashLock.Dispose();
             _smallMyComputerIcon.Dispose();
             _largeMyComputerIcon.Dispose();
-            _smallFolderIcon.Dispose();
-            _largeFolderIcon.Dispose();
-            _jumboFolderIcon.Dispose();
+            _smallDirectoryIcon.Dispose();
+            _largeDirectoryIcon.Dispose();
+            _jumboDirectoryIcon.Dispose();
         }
     }
 }

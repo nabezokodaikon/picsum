@@ -12,7 +12,7 @@ namespace PicSum.Task.AsyncLogic
     {
         public ExportFileAsyncLogic(AsyncFacadeBase facade) : base(facade) { }
 
-        public void Execute(string exportFolder, IList<string> srcFilePathList)
+        public void Execute(string exportDirectory, IList<string> srcFilePathList)
         {
             foreach (string srcFilePath in srcFilePathList)
             {
@@ -27,11 +27,11 @@ namespace PicSum.Task.AsyncLogic
                     string destFilePath;
                     if (count == 0)
                     {
-                        destFilePath = string.Format("{0}\\{1}{2}", exportFolder, name, ex);
+                        destFilePath = string.Format("{0}\\{1}{2}", exportDirectory, name, ex);
                     }
                     else
                     {
-                        destFilePath = string.Format("{0}\\{1}-({2}){3}", exportFolder, name, count, ex);
+                        destFilePath = string.Format("{0}\\{1}-({2}){3}", exportDirectory, name, count, ex);
                     }
 
                     if (!FileUtil.IsExists(destFilePath))

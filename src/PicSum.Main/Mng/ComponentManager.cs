@@ -28,15 +28,15 @@ namespace PicSum.Main.Mng
             BrowserConfig.WindowSize = Settings.Default.BrowserSize;
 
             // コンテンツ共通の設定をセットします。
-            CommonConfig.ExportFolderPath = Settings.Default.ExportFolderPath;
+            CommonConfig.ExportDirectoryPath = Settings.Default.ExportDirectoryPath;
 
             // ファイルリストコンテンツの設定をセットします。
             FileListContentsConfig.ThumbnailSize = Settings.Default.FileListContentsThumbnailSize;
             FileListContentsConfig.IsShowFileName = Settings.Default.FileListContentsIsShowFileName;
-            FileListContentsConfig.IsShowFolder = Settings.Default.FileListContentsIsShowFolder;
+            FileListContentsConfig.IsShowDirectory = Settings.Default.FileListContentsIsShowDirectory;
             FileListContentsConfig.IsShowImageFile = Settings.Default.FileListContentsIsShowImageFile;
             FileListContentsConfig.IsShowOtherFile = Settings.Default.FileListContentsIsShowOthereFile;
-            FileListContentsConfig.FavoriteFolderCount = Settings.Default.FileListContentsFavoriteFolderCount;
+            FileListContentsConfig.FavoriteDirectoryCount = Settings.Default.FileListContentsFavoriteDirectoryCount;
 
             // ビューアコンテンツの設定をセットします。
             ImageViewerContentsConfig.ImageDisplayMode = Settings.Default.ImageViewerContentsImageDisplayMode;
@@ -65,12 +65,12 @@ namespace PicSum.Main.Mng
             Settings.Default.BrowserSize = BrowserConfig.WindowSize;
 
             // コンテンツ共通の設定をセットします。
-            Settings.Default.ExportFolderPath = CommonConfig.ExportFolderPath;
+            Settings.Default.ExportDirectoryPath = CommonConfig.ExportDirectoryPath;
 
             // ファイルリストコンテンツの設定をセットします。
             Settings.Default.FileListContentsThumbnailSize = FileListContentsConfig.ThumbnailSize;
             Settings.Default.FileListContentsIsShowFileName = FileListContentsConfig.IsShowFileName;
-            Settings.Default.FileListContentsIsShowFolder = FileListContentsConfig.IsShowFolder;
+            Settings.Default.FileListContentsIsShowDirectory = FileListContentsConfig.IsShowDirectory;
             Settings.Default.FileListContentsIsShowImageFile = FileListContentsConfig.IsShowImageFile;
             Settings.Default.FileListContentsIsShowOthereFile = FileListContentsConfig.IsShowOtherFile;
 

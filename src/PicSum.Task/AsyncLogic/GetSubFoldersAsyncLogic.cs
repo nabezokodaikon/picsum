@@ -8,29 +8,29 @@ namespace PicSum.Task.AsyncLogic
     /// <summary>
     /// サブフォルダ取得非同期ロジック
     /// </summary>
-    public class GetSubFoldersAsyncLogic : AsyncLogicBase
+    public class GetSubDirectorysAsyncLogic : AsyncLogicBase
     {
-        public GetSubFoldersAsyncLogic(AsyncFacadeBase facade) : base(facade) { }
+        public GetSubDirectorysAsyncLogic(AsyncFacadeBase facade) : base(facade) { }
 
-        public IList<string> Execute(string folderPath)
+        public IList<string> Execute(string directoryPath)
         {
-            if (folderPath == null)
+            if (directoryPath == null)
             {
-                throw new ArgumentNullException("folderPath");
+                throw new ArgumentNullException("directoryPath");
             }
 
-            if (string.IsNullOrEmpty(folderPath))
+            if (string.IsNullOrEmpty(directoryPath))
             {
-                throw new ArgumentException("フォルダが指定されていません。", "folderPath");
+                throw new ArgumentException("フォルダが指定されていません。", "directoryPath");
             }
 
             List<string> list = new List<string>();
-            foreach (string subFolder in FileUtil.GetSubFolders(folderPath))
+            foreach (string subDirectory in FileUtil.GetSubDirectorys(directoryPath))
             {
                 CheckCancel();
-                if (FileUtil.CanAccess(subFolder))
+                if (FileUtil.CanAccess(subDirectory))
                 {                    
-                    list.Add(subFolder);
+                    list.Add(subDirectory);
                 }
             }
 

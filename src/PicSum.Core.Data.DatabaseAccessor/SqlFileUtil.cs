@@ -29,14 +29,14 @@ namespace PicSum.Core.Data.DatabaseAccessor
         /// <summary>
         /// SQLファイルを読込みます。
         /// </summary>
-        /// <param name="sqlFolder">SQLフォルダ</param>
+        /// <param name="sqlDirectory">SQLフォルダ</param>
         /// <param name="sqlName">データアクセサ名</param>
         /// <returns>SQLファイル内の文字列</returns>
-        public static string ReadSqlFile(string sqlFolder, string sqlName)
+        public static string ReadSqlFile(string sqlDirectory, string sqlName)
         {
             string sqlFileName = toSqlFileName(sqlName);
 
-            string path = string.Format("{0}\\{1}{2}", sqlFolder, sqlFileName, ApplicationConst.SqlFileExtension);
+            string path = string.Format("{0}\\{1}{2}", sqlDirectory, sqlFileName, ApplicationConst.SqlFileExtension);
 
             return File.ReadAllText(path, _encoding);
         }

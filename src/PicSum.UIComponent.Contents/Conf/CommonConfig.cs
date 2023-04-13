@@ -10,6 +10,6 @@ namespace PicSum.UIComponent.Contents.Conf
     /// </summary>
     public static class CommonConfig
     {
-        public static string ExportFolderPath { get; set; }
+        public static string ExportDirectoryPath { get; set; }
     }
 }

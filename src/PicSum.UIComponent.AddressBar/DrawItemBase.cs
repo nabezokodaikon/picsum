@@ -16,7 +16,7 @@ namespace PicSum.UIComponent.AddressBar
 
         public event EventHandler DropDownOpened;
         public event EventHandler DropDownClosed;
-        public event EventHandler<SelectedFolderEventArgs> SelectedFolder;
+        public event EventHandler<SelectedDirectoryEventArgs> SelectedDirectory;
 
         private IContainer _components = null;
         private AddressBar _addressBar = null;
@@ -228,11 +228,11 @@ namespace PicSum.UIComponent.AddressBar
             }
         }
 
-        protected virtual void OnSelectedFolder(SelectedFolderEventArgs e)
+        protected virtual void OnSelectedDirectory(SelectedDirectoryEventArgs e)
         {
-            if (SelectedFolder != null)
+            if (SelectedDirectory != null)
             {
-                SelectedFolder(this, e);
+                SelectedDirectory(this, e);
             }
         }
     }

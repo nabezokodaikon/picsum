@@ -22,7 +22,7 @@ namespace PicSum.Task.AsyncLogic
             }
 
             LogWriter.IsWriteLog = param.IsWriteLog;
-            SqlManager.SqlFolder = param.SqlFolderPath;
+            SqlManager.SqlDirectory = param.SqlDirectoryPath;
             DatabaseManager<FileInfoConnection>.Connect(new FileInfoConnection(param.FileInfoDBFilePath));
             DatabaseManager<ThumbnailConnection>.Connect(new ThumbnailConnection(param.ThumbnailDBFilePath));
         }

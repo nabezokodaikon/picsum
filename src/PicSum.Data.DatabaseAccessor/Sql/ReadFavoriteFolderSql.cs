@@ -7,8 +7,8 @@ namespace PicSum.Data.DatabaseAccessor.Sql
     /// マイコンピュータ、ドライブを除く、
     /// 表示回数の多いフォルダを取得します。
     /// </summary>
-    public class ReadFavoriteFolderSql : SqlBase<SingleValueDto<string>>
+    public class ReadFavoriteDirectorySql : SqlBase<SingleValueDto<string>>
     {
-        public ReadFavoriteFolderSql() : base() { }
+        public ReadFavoriteDirectorySql() : base() { }
     }
 }

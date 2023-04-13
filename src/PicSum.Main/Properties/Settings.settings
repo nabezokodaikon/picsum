@@ -20,7 +20,7 @@
     <Setting Name="FileListContentsIsShowImageFile" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="FileListContentsIsShowFolder" Type="System.Boolean" Scope="User">
+    <Setting Name="FileListContentsIsShowDirectory" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="IsWriteLog" Type="System.Boolean" Scope="Application">
@@ -35,10 +35,10 @@
     <Setting Name="FileListContentsIsShowOthereFile" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="ExportFolderPath" Type="System.String" Scope="User">
+    <Setting Name="ExportDirectoryPath" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="FileListContentsFavoriteFolderCount" Type="System.Int32" Scope="Application">
+    <Setting Name="FileListContentsFavoriteDirectoryCount" Type="System.Int32" Scope="Application">
       <Value Profile="(Default)">21</Value>
     </Setting>
   </Settings>

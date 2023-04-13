@@ -12,7 +12,7 @@ namespace PicSum.Core.Data.DatabaseAccessor
         private static readonly ReaderWriterLockSlim _lock = new ReaderWriterLockSlim();
 
         // SQLフォルダ
-        private static string _sqlFolder = string.Empty;
+        private static string _sqlDirectory = string.Empty;
 
         // SQLディクショナリ
         private static readonly Dictionary<string, string> _sqlDictionary = new Dictionary<string, string>();
@@ -20,15 +20,15 @@ namespace PicSum.Core.Data.DatabaseAccessor
         /// <summary>
         /// SQLフォルダ
         /// </summary>
-        public static string SqlFolder
+        public static string SqlDirectory
         {
             get
             {
-                return _sqlFolder;
+                return _sqlDirectory;
             }
             set
             {
-                _sqlFolder = value;
+                _sqlDirectory = value;
             }
         }
 
@@ -57,7 +57,7 @@ namespace PicSum.Core.Data.DatabaseAccessor
 
                     try
                     {
-                        string sql = SqlFileUtil.ReadSqlFile(_sqlFolder, sqlName);
+                        string sql = SqlFileUtil.ReadSqlFile(_sqlDirectory, sqlName);
                         _sqlDictionary.Add(sqlName, sql);
                     }
                     finally

@@ -87,7 +87,7 @@ namespace PicSum.Task.AsyncLogic
             }
             else
             {
-                ThumbnailBufferEntity cash = getFolderCash(filePath, thumbWidth, thumbHeight);
+                ThumbnailBufferEntity cash = getDirectoryCash(filePath, thumbWidth, thumbHeight);
                 if (cash != null)
                 {
                     if (cash.ThumbnailWidth > thumbWidth || cash.ThumbnailHeight > thumbHeight)
@@ -196,7 +196,7 @@ namespace PicSum.Task.AsyncLogic
             }
         }
 
-        private ThumbnailBufferEntity getFolderCash(string filePath, int thumbWidth, int thumbHeight)
+        private ThumbnailBufferEntity getDirectoryCash(string filePath, int thumbWidth, int thumbHeight)
         {
             ThumbnailBufferEntity memCash = getMemoryCash(filePath);
             if (memCash != null)
@@ -228,7 +228,7 @@ namespace PicSum.Task.AsyncLogic
                             if (!string.IsNullOrEmpty(thumbFile))
                             {
                                 // サムネイルを更新します。
-                                ThumbnailBufferEntity thumb = updateDBFolderCash(filePath, thumbFile, thumbWidth, thumbHeight, updateDate);
+                                ThumbnailBufferEntity thumb = updateDBDirectoryCash(filePath, thumbFile, thumbWidth, thumbHeight, updateDate);
                                 updateMemoryCash(thumb);
                                 return thumb;
                             }
@@ -244,7 +244,7 @@ namespace PicSum.Task.AsyncLogic
                         if (!string.IsNullOrEmpty(thumbFile))
                         {
                             // サムネイルを作成します。
-                            ThumbnailBufferEntity thumb = createDBFolderCash(filePath, thumbFile, thumbWidth, thumbHeight, updateDate);
+                            ThumbnailBufferEntity thumb = createDBDirectoryCash(filePath, thumbFile, thumbWidth, thumbHeight, updateDate);
                             updateMemoryCash(thumb);
                             return thumb;
                         }
@@ -275,7 +275,7 @@ namespace PicSum.Task.AsyncLogic
                         if (!string.IsNullOrEmpty(thumbFile))
                         {
                             // サムネイルを更新します。                                
-                            ThumbnailBufferEntity thumb = updateDBFolderCash(filePath, thumbFile, thumbWidth, thumbHeight, updateDate);
+                            ThumbnailBufferEntity thumb = updateDBDirectoryCash(filePath, thumbFile, thumbWidth, thumbHeight, updateDate);
                             updateMemoryCash(thumb);
                             return thumb;
                         }
@@ -292,7 +292,7 @@ namespace PicSum.Task.AsyncLogic
                     if (!string.IsNullOrEmpty(thumbFile))
                     {
                         DateTime updateDate = FileUtil.GetUpdateDate(filePath);
-                        ThumbnailBufferEntity thumb = createDBFolderCash(filePath, thumbFile, thumbWidth, thumbHeight, updateDate);
+                        ThumbnailBufferEntity thumb = createDBDirectoryCash(filePath, thumbFile, thumbWidth, thumbHeight, updateDate);
                         updateMemoryCash(thumb);
                         return thumb;
                     }
@@ -378,7 +378,7 @@ namespace PicSum.Task.AsyncLogic
             }
         }
 
-        private ThumbnailBufferEntity createDBFolderCash(string folderPath, string thumbFilePath, int thumbWidth, int thumbHeight, DateTime folderUpdateDate)
+        private ThumbnailBufferEntity createDBDirectoryCash(string directoryPath, string thumbFilePath, int thumbWidth, int thumbHeight, DateTime directoryUpdateDate)
         {
             using (Image srcImg = ImageUtil.ReadImageFile(thumbFilePath))
             {
@@ -386,23 +386,23 @@ namespace PicSum.Task.AsyncLogic
                 {
                     byte[] thumbBin = ImageUtil.ToCompressionBinary(thumbImg);
 
-                    CreationThumbnailSql sql = new CreationThumbnailSql(folderPath, thumbBin, thumbWidth, thumbHeight, srcImg.Width, srcImg.Height, folderUpdateDate);
+                    CreationThumbnailSql sql = new CreationThumbnailSql(directoryPath, thumbBin, thumbWidth, thumbHeight, srcImg.Width, srcImg.Height, directoryUpdateDate);
                     DatabaseManager<ThumbnailConnection>.Update(sql);
 
                     ThumbnailBufferEntity thumb = new ThumbnailBufferEntity();
-                    thumb.FilePath = folderPath;
+                    thumb.FilePath = directoryPath;
                     thumb.ThumbnailBuffer = thumbBin;
                     thumb.ThumbnailWidth = thumbWidth;
                     thumb.ThumbnailHeight = thumbHeight;
                     thumb.SourceWidth = srcImg.Width;
                     thumb.SourceHeight = srcImg.Height;
-                    thumb.FileUpdatedate = folderUpdateDate;
+                    thumb.FileUpdatedate = directoryUpdateDate;
                     return thumb;
                 }
             }
         }
 
-        private ThumbnailBufferEntity updateDBFolderCash(string folderPath, string thumbFilePath, int thumbWidth, int thumbHeight, DateTime folderUpdateDate)
+        private ThumbnailBufferEntity updateDBDirectoryCash(string directoryPath, string thumbFilePath, int thumbWidth, int thumbHeight, DateTime directoryUpdateDate)
         {
             using (Image srcImg = ImageUtil.ReadImageFile(thumbFilePath))
             {
@@ -410,17 +410,17 @@ namespace PicSum.Task.AsyncLogic
                 {
                     byte[] thumbBin = ImageUtil.ToCompressionBinary(thumbImg);
 
-                    UpdateThumbnailSql sql = new UpdateThumbnailSql(folderPath, thumbBin, thumbWidth, thumbHeight, srcImg.Width, srcImg.Height, folderUpdateDate);
+                    UpdateThumbnailSql sql = new UpdateThumbnailSql(directoryPath, thumbBin, thumbWidth, thumbHeight, srcImg.Width, srcImg.Height, directoryUpdateDate);
                     DatabaseManager<ThumbnailConnection>.Update(sql);
 
                     ThumbnailBufferEntity thumb = new ThumbnailBufferEntity();
-                    thumb.FilePath = folderPath;
+                    thumb.FilePath = directoryPath;
                     thumb.ThumbnailBuffer = thumbBin;
                     thumb.ThumbnailWidth = thumbWidth;
                     thumb.ThumbnailHeight = thumbHeight;
                     thumb.SourceWidth = srcImg.Width;
                     thumb.SourceHeight = srcImg.Height;
-                    thumb.FileUpdatedate = folderUpdateDate;
+                    thumb.FileUpdatedate = directoryUpdateDate;
 
                     return thumb;
                 }

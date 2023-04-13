@@ -11,10 +11,10 @@ namespace PicSum.UIComponent.AddressBar
     abstract class DropDownDrawItemBase : DrawItemBase
     {
         private DropDownList _dropDownList = null;
-        private FolderEntity _mousePointItem = null;
-        private IList<FolderEntity> _items = new List<FolderEntity>();
+        private DirectoryEntity _mousePointItem = null;
+        private IList<DirectoryEntity> _items = new List<DirectoryEntity>();
 
-        public IList<FolderEntity> Items
+        public IList<DirectoryEntity> Items
         {
             get
             {
@@ -92,7 +92,7 @@ namespace PicSum.UIComponent.AddressBar
             _dropDownList.ItemExecute += new EventHandler(dropDownList_ItemExecute);
         }
 
-        private FolderEntity getDropDownItemFromScreenPoint()
+        private DirectoryEntity getDropDownItemFromScreenPoint()
         {
             int index = DropDownList.IndexFromScreenPoint();
             if (index > -1 && _items.Count > index)
@@ -131,14 +131,14 @@ namespace PicSum.UIComponent.AddressBar
                 return;
             }
 
-            FolderEntity item = _items[index];
+            DirectoryEntity item = _items[index];
             if (e.Button == MouseButtons.Left)
             {
-                OnSelectedFolder(new SelectedFolderEventArgs(ContentsOpenType.OverlapTab, item.FolderPath));
+                OnSelectedDirectory(new SelectedDirectoryEventArgs(ContentsOpenType.OverlapTab, item.DirectoryPath));
             }
             else if (e.Button == MouseButtons.Middle)
             {
-                OnSelectedFolder(new SelectedFolderEventArgs(ContentsOpenType.AddTab, item.FolderPath));
+                OnSelectedDirectory(new SelectedDirectoryEventArgs(ContentsOpenType.AddTab, item.DirectoryPath));
             }
         }
 
@@ -152,8 +152,8 @@ namespace PicSum.UIComponent.AddressBar
                 return;
             }
             
-            FolderEntity item = _items[index];
-            OnSelectedFolder(new SelectedFolderEventArgs(ContentsOpenType.OverlapTab, item.FolderPath));
+            DirectoryEntity item = _items[index];
+            OnSelectedDirectory(new SelectedDirectoryEventArgs(ContentsOpenType.OverlapTab, item.DirectoryPath));
         }
 
         private void contextMenu_Opening(object sender, CancelEventArgs e)
@@ -177,19 +177,19 @@ namespace PicSum.UIComponent.AddressBar
         private void contextMenu_ActiveTabOpen(object sender, EventArgs e)
         {
             DropDownList.Close();
-            OnSelectedFolder(new SelectedFolderEventArgs(ContentsOpenType.OverlapTab, _mousePointItem.FolderPath));
+            OnSelectedDirectory(new SelectedDirectoryEventArgs(ContentsOpenType.OverlapTab, _mousePointItem.DirectoryPath));
         }
 
         private void contextMenu_NewTabOpen(object sender, EventArgs e)
         {
             DropDownList.Close();
-            OnSelectedFolder(new SelectedFolderEventArgs(ContentsOpenType.AddTab, _mousePointItem.FolderPath));
+            OnSelectedDirectory(new SelectedDirectoryEventArgs(ContentsOpenType.AddTab, _mousePointItem.DirectoryPath));
         }
 
         private void contextMenu_NewWindowOpen(object sender, EventArgs e)
         {
             DropDownList.Close();
-            OnSelectedFolder(new SelectedFolderEventArgs(ContentsOpenType.NewWindow, _mousePointItem.FolderPath));
+            OnSelectedDirectory(new SelectedDirectoryEventArgs(ContentsOpenType.NewWindow, _mousePointItem.DirectoryPath));
         }
     }
 }

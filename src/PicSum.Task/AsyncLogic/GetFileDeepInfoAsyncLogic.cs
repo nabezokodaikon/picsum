@@ -75,7 +75,7 @@ namespace PicSum.Task.AsyncLogic
                     }
                     else
                     {
-                        info.FileIcon = FileIconCash.JumboFolderIcon;
+                        info.FileIcon = FileIconCash.JumboDirectoryIcon;
                     }
                 }
 

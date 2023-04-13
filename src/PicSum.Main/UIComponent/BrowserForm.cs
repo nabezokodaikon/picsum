@@ -115,9 +115,9 @@ namespace PicSum.Main.UIComponent
             browserMainPanel.AddTab(param);
         }
 
-        public void AddFavoriteFolderListTab()
+        public void AddFavoriteDirectoryListTab()
         {
-            browserMainPanel.AddFavoriteFolderListTab();
+            browserMainPanel.AddFavoriteDirectoryListTab();
         }
 
         public void RemoveTabOrWindow()
@@ -167,7 +167,7 @@ namespace PicSum.Main.UIComponent
 
                 StartupPrameterEntity param = new StartupPrameterEntity();
                 param.IsWriteLog = Settings.Default.IsWriteLog;
-                param.SqlFolderPath = Path.Combine(Directory.GetParent(Application.ExecutablePath).FullName, "sql");
+                param.SqlDirectoryPath = Path.Combine(Directory.GetParent(Application.ExecutablePath).FullName, "sql");
                 param.FileInfoDBFilePath = Path.Combine(dbDir, @"fileinfo.sqlite");
                 param.ThumbnailDBFilePath = Path.Combine(dbDir, @"thumbnail.sqlite");
 
@@ -265,7 +265,7 @@ namespace PicSum.Main.UIComponent
                         }
                     case Keys.T:
                         {
-                            this.AddFavoriteFolderListTab();
+                            this.AddFavoriteDirectoryListTab();
                             this.Focus();
                             break;
                         }

@@ -6,9 +6,9 @@ using PicSum.Core.Task.Base;
 
 namespace PicSum.Task.Entity
 {
-    public class SearchFavoriteFolderParameterEntity : IEntity
+    public class SearchFavoriteDirectoryParameterEntity : IEntity
     {
-        public bool IsOnlyFolder { get; set; }
+        public bool IsOnlyDirectory { get; set; }
         public int Count { get; set; }
     }
 }

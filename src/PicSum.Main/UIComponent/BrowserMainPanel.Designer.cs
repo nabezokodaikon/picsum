@@ -264,7 +264,7 @@
             this.addressBar.TextColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.addressBar.TextLineAlignment = System.Drawing.StringAlignment.Center;
             this.addressBar.TextTrimming = System.Drawing.StringTrimming.EllipsisCharacter;
-            this.addressBar.SelectedFolder += new System.EventHandler<PicSum.UIComponent.AddressBar.SelectedFolderEventArgs>(this.addressBar_SelectedFolder);
+            this.addressBar.SelectedDirectory += new System.EventHandler<PicSum.UIComponent.AddressBar.SelectedDirectoryEventArgs>(this.addressBar_SelectedDirectory);
             // 
             // BrowserMainPanel
             // 

@@ -76,7 +76,7 @@
     <Compile Include="Conf\ImageViewerContentsConfig.cs" />
     <Compile Include="ContentsParameter\FavoriteFolderListContentsParameter.cs" />
     <Compile Include="ContentsParameter\KeepFileListContentsParameter.cs" />
-    <Compile Include="ContentsParameter\FolderFileListContentsParameter.cs" />
+    <Compile Include="ContentsParameter\DirectoryFileListContentsParameter.cs" />
     <Compile Include="ContentsParameter\ImageViewerContentsParameter.cs" />
     <Compile Include="ContentsParameter\RatingFileListContentsParameter.cs" />
     <Compile Include="ContentsParameter\TagFileListContentsParameter.cs" />
@@ -84,9 +84,9 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="ContentsToolBar\ContentsToolBarColorTable.cs" />
-    <Compile Include="ExecuteFolderEventArgs.cs" />
+    <Compile Include="ExecuteDirectoryEventArgs.cs" />
     <Compile Include="ExecuteImageFileEventArgs.cs" />
-    <Compile Include="FileListContents\FavoriteFolderListContents.cs">
+    <Compile Include="FileListContents\FavoriteDirectoryListContents.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="FileListContents\FileEntity.cs" />
@@ -99,7 +99,7 @@
     <Compile Include="FileListContents\FileListContentsBase.Designer.cs">
       <DependentUpon>FileListContentsBase.cs</DependentUpon>
     </Compile>
-    <Compile Include="FileListContents\FolderFileListContents.cs">
+    <Compile Include="FileListContents\DirectoryFileListContents.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="FileListContents\SortInfo.cs" />

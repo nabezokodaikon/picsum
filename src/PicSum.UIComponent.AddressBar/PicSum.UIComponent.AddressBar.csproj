@@ -70,9 +70,9 @@
     </Compile>
     <Compile Include="DrawItemBase.cs" />
     <Compile Include="DropDownDrawItemBase.cs" />
-    <Compile Include="FolderDrawItem.cs" />
-    <Compile Include="FolderEntity.cs" />
-    <Compile Include="FolderHistoryDrawItem.cs" />
+    <Compile Include="DirectoryDrawItem.cs" />
+    <Compile Include="DirectoryEntity.cs" />
+    <Compile Include="DirectoryHistoryDrawItem.cs" />
     <Compile Include="OverflowDrawItem.cs" />
     <Compile Include="Palette.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -81,7 +81,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="SelectedFolderEventArgs.cs" />
+    <Compile Include="SelectedDirectoryEventArgs.cs" />
     <Compile Include="SeparatorDrawItem.cs" />
   </ItemGroup>
   <ItemGroup>

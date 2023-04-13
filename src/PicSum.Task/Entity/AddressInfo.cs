@@ -9,9 +9,9 @@ namespace PicSum.Task.Entity
 {
     public class AddressInfo : IEntity
     {
-        public string FolderPath { get; set; }
-        public IList<FileShallowInfoEntity> FolderList { get; set; }
-        public bool HasSubFolder { get; set; }
+        public string DirectoryPath { get; set; }
+        public IList<FileShallowInfoEntity> DirectoryList { get; set; }
+        public bool HasSubDirectory { get; set; }
         public FileException GetAddressInfoException { get; set; }
     }
 }

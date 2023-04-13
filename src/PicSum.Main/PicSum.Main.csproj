@@ -241,22 +241,22 @@
     <Content Include="SQLite.Interop.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="sql\DeletionFolderViewCounterByFile.sql">
+    <Content Include="sql\DeletionDirectoryViewCounterByFile.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="sql\IncrementFolderViewCounter.sql">
+    <Content Include="sql\IncrementDirectoryViewCounter.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="sql\CreationFile.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="sql\CreationFolderState.sql">
+    <Content Include="sql\CreationDirectoryState.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="sql\CreationFolderViewCounter.sql">
+    <Content Include="sql\CreationDirectoryViewCounter.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="sql\CreationFolderViewHistory.sql">
+    <Content Include="sql\CreationDirectoryViewHistory.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="sql\CreationRating.sql">
@@ -277,7 +277,7 @@
     <Content Include="sql\ReadAllTag.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="sql\ReadFavoriteFolder.sql">
+    <Content Include="sql\ReadFavoriteDirectory.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="sql\ReadFileByRating.sql">
@@ -292,16 +292,16 @@
     <Content Include="sql\ReadFileTag.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="sql\ReadFolderStateByFolder.sql">
+    <Content Include="sql\ReadDirectoryStateByDirectory.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="sql\ReadFolderViewHistory.sql">
+    <Content Include="sql\ReadDirectoryViewHistory.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="sql\ReadThumbnailByFile.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="sql\UpdateFolderState.sql">
+    <Content Include="sql\UpdateDirectoryState.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="sql\UpdateRating.sql">

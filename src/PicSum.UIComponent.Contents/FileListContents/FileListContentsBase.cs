@@ -85,15 +85,15 @@ namespace PicSum.UIComponent.Contents.FileListContents
             }
         }
 
-        public bool IsFolderActiveTabOpenMenuItemVisible
+        public bool IsDirectoryActiveTabOpenMenuItemVisible
         {
             get
             {
-                return fileContextMenu.IsFolderActiveTabOpenMenuItemVisible;
+                return fileContextMenu.IsDirectoryActiveTabOpenMenuItemVisible;
             }
             set
             {
-                fileContextMenu.IsFolderActiveTabOpenMenuItemVisible = value;
+                fileContextMenu.IsDirectoryActiveTabOpenMenuItemVisible = value;
             }
         }
 
@@ -138,15 +138,15 @@ namespace PicSum.UIComponent.Contents.FileListContents
 
         #region プライベートプロパティ
 
-        private bool isShowFolder
+        private bool isShowDirectory
         {
             get
             {
-                return showFolderToolStripMenuItem.Checked;
+                return showDirectoryToolStripMenuItem.Checked;
             }
             set
             {
-                showFolderToolStripMenuItem.Checked = value;
+                showDirectoryToolStripMenuItem.Checked = value;
             }
         }
 
@@ -443,7 +443,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
         {
             this.Font = new Font("メイリオ", 9F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(128)));
             isShowFileName = FileListContentsConfig.IsShowFileName;
-            isShowFolder = FileListContentsConfig.IsShowFolder;
+            isShowDirectory = FileListContentsConfig.IsShowDirectory;
             isShowImageFile = FileListContentsConfig.IsShowImageFile;
             isShowOtherFile = FileListContentsConfig.IsShowOtherFile;
             thumbnailSize = FileListContentsConfig.ThumbnailSize;
@@ -484,7 +484,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
 
         private void setFilter()
         {
-            FileListContentsConfig.IsShowFolder = isShowFolder;
+            FileListContentsConfig.IsShowDirectory = isShowDirectory;
             FileListContentsConfig.IsShowImageFile = isShowImageFile;
             FileListContentsConfig.IsShowOtherFile = isShowOtherFile;
 
@@ -515,7 +515,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
                 }
                 else
                 {
-                    if (isShowFolder)
+                    if (isShowDirectory)
                     {
                         filterList.Add(file);
                     }
@@ -687,11 +687,11 @@ namespace PicSum.UIComponent.Contents.FileListContents
                     Rectangle thumbRect = getThumbnailRectangle(e);
                     if (item.ThumbnailWidth == thumbRect.Width && item.ThumbnailHeight == thumbRect.Height)
                     {
-                        ThumbnailUtil.DrawFolderThumbnail(e.Graphics, item.ThumbnailImage, thumbRect, item.Icon);
+                        ThumbnailUtil.DrawDirectoryThumbnail(e.Graphics, item.ThumbnailImage, thumbRect, item.Icon);
                     }
                     else
                     {
-                        ThumbnailUtil.AdjustDrawFolderThumbnail(e.Graphics, item.ThumbnailImage, thumbRect, item.Icon);
+                        ThumbnailUtil.AdjustDrawDirectoryThumbnail(e.Graphics, item.ThumbnailImage, thumbRect, item.Icon);
                     }
                 }
 
@@ -802,9 +802,9 @@ namespace PicSum.UIComponent.Contents.FileListContents
 
         #region ツールバーイベント
 
-        private void showFolderToolStripMenuItem_Click(object sender, EventArgs e)
+        private void showDirectoryToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            isShowFolder = !isShowFolder;
+            isShowDirectory = !isShowDirectory;
             setFilter();
         }
 
@@ -967,7 +967,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
             }
             else if (!file.IsFile)
             {
-                FolderFileListContentsParameter param = new FolderFileListContentsParameter(file.FilePath);
+                DirectoryFileListContentsParameter param = new DirectoryFileListContentsParameter(file.FilePath);
                 OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.AddTab, param));
             }
         }
@@ -994,7 +994,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
             }
             else if (!file.IsFile)
             {
-                FolderFileListContentsParameter param = new FolderFileListContentsParameter(file.FilePath);
+                DirectoryFileListContentsParameter param = new DirectoryFileListContentsParameter(file.FilePath);
                 OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.OverlapTab, param));
             }
             else
@@ -1025,7 +1025,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
             }
             else if (!file.IsFile)
             {
-                FolderFileListContentsParameter param = new FolderFileListContentsParameter(file.FilePath);
+                DirectoryFileListContentsParameter param = new DirectoryFileListContentsParameter(file.FilePath);
                 OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.OverlapTab, param));
             }
             else
@@ -1151,26 +1151,26 @@ namespace PicSum.UIComponent.Contents.FileListContents
             FileUtil.OpenFile(e.FilePath);
         }
 
-        private void fileContextMenu_SaveFolderOpen(object sender, PicSum.UIComponent.Common.FileContextMenu.ExecuteFileEventArgs e)
+        private void fileContextMenu_SaveDirectoryOpen(object sender, PicSum.UIComponent.Common.FileContextMenu.ExecuteFileEventArgs e)
         {
             FileUtil.OpenExplorerSelect(e.FilePath);
         }
 
-        private void fileContextMenu_FolderActiveTabOpen(object sender, PicSum.UIComponent.Common.FileContextMenu.ExecuteFileEventArgs e)
+        private void fileContextMenu_DirectoryActiveTabOpen(object sender, PicSum.UIComponent.Common.FileContextMenu.ExecuteFileEventArgs e)
         {
-            FolderFileListContentsParameter param = new FolderFileListContentsParameter(e.FilePath);
+            DirectoryFileListContentsParameter param = new DirectoryFileListContentsParameter(e.FilePath);
             OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.OverlapTab, param));
         }
 
-        private void fileContextMenu_FolderNewTabOpen(object sender, PicSum.UIComponent.Common.FileContextMenu.ExecuteFileEventArgs e)
+        private void fileContextMenu_DirectoryNewTabOpen(object sender, PicSum.UIComponent.Common.FileContextMenu.ExecuteFileEventArgs e)
         {
-            FolderFileListContentsParameter param = new FolderFileListContentsParameter(e.FilePath);
+            DirectoryFileListContentsParameter param = new DirectoryFileListContentsParameter(e.FilePath);
             OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.AddTab, param));
         }
 
-        private void fileContextMenu_FolderNewWindowOpen(object sender, PicSum.UIComponent.Common.FileContextMenu.ExecuteFileEventArgs e)
+        private void fileContextMenu_DirectoryNewWindowOpen(object sender, PicSum.UIComponent.Common.FileContextMenu.ExecuteFileEventArgs e)
         {
-            FolderFileListContentsParameter param = new FolderFileListContentsParameter(e.FilePath);
+            DirectoryFileListContentsParameter param = new DirectoryFileListContentsParameter(e.FilePath);
             OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.NewWindow, param));
         }
 
@@ -1190,19 +1190,19 @@ namespace PicSum.UIComponent.Contents.FileListContents
         {
             using (FolderBrowserDialog fbd = new FolderBrowserDialog())
             {
-                if (FileUtil.IsExists(CommonConfig.ExportFolderPath))
+                if (FileUtil.IsExists(CommonConfig.ExportDirectoryPath))
                 {
-                    fbd.SelectedPath = CommonConfig.ExportFolderPath;
+                    fbd.SelectedPath = CommonConfig.ExportDirectoryPath;
                 }
 
                 if (fbd.ShowDialog() == DialogResult.OK)
                 {
                     ExportFileParameterEntity param = new ExportFileParameterEntity();
-                    param.ExportFolderPath = fbd.SelectedPath;
+                    param.ExportDirectoryPath = fbd.SelectedPath;
                     param.FilePathList = e.FilePathList;
                     exportFileProcess.Execute(this, param);
 
-                    CommonConfig.ExportFolderPath = fbd.SelectedPath;
+                    CommonConfig.ExportDirectoryPath = fbd.SelectedPath;
                 }
             }
         }

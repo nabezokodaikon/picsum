@@ -54,8 +54,8 @@ CREATE TABLE 't_rating' (
      )
 );
 
-/* フォルダ表示回数T */
-CREATE TABLE 't_folder_view_counter' (
+/* ディレクトリ表示回数T */
+CREATE TABLE 't_directory_view_counter' (
      'file_id'         INTEGER  NOT NULL
     ,'view_count'      INTEGER  NOT NULL
     ,'create_date'     DATETIME
@@ -65,8 +65,8 @@ CREATE TABLE 't_folder_view_counter' (
      )
 );
 
-/* フォルダ表示履歴T */
-CREATE TABLE 't_folder_view_history' (
+/* ディレクトリ表示履歴T */
+CREATE TABLE 't_directory_view_history' (
      'file_id'         INTEGER  NOT NULL
     ,'file_history_id' INTEGER  NOT NULL
     ,'view_date'       DATETIME NOT NULL
@@ -78,8 +78,8 @@ CREATE TABLE 't_folder_view_history' (
      )
 );
 
-/* フォルダ状態T */
-CREATE TABLE 't_folder_state' (
+/* ディレクトリ状態T */
+CREATE TABLE 't_directory_state' (
      'file_id'            INTEGER  NOT NULL
     ,'sort_type_id'       INTEGER  NOT NULL
     ,'is_ascending'       BOOLEAN  NOT NULL
@@ -165,58 +165,58 @@ CREATE TRIGGER t_rating_update_trigger
            WHERE file_id = NEW.file_id;
    END;
 
-/* フォルダ表示回数T INSERT */
-CREATE TRIGGER t_folder_view_counter_insert_trigger
+/* ディレクトリ表示回数T INSERT */
+CREATE TRIGGER t_directory_view_counter_insert_trigger
     AFTER INSERT
-       ON t_folder_view_counter
-    BEGIN UPDATE t_folder_view_counter
+       ON t_directory_view_counter
+    BEGIN UPDATE t_directory_view_counter
              SET create_date     = DATETIME('NOW', 'LOCALTIME')
            WHERE file_id         = NEW.file_id;
    END;
 
-/* フォルダ表示回数T UPDATE */
-CREATE TRIGGER t_folder_view_counter_update_trigger
+/* ディレクトリ表示回数T UPDATE */
+CREATE TRIGGER t_directory_view_counter_update_trigger
     AFTER UPDATE
-       ON t_folder_view_counter
-    BEGIN UPDATE t_folder_view_counter
+       ON t_directory_view_counter
+    BEGIN UPDATE t_directory_view_counter
              SET update_date     = DATETIME('NOW', 'LOCALTIME')
            WHERE file_id         = NEW.file_id;
    END;
 
-/* フォルダ表示履歴T INSERT */
-CREATE TRIGGER t_folder_view_history_insert_trigger
+/* ディレクトリ表示履歴T INSERT */
+CREATE TRIGGER t_directory_view_history_insert_trigger
     AFTER INSERT
-       ON t_folder_view_history
-    BEGIN UPDATE t_folder_view_history
+       ON t_directory_view_history
+    BEGIN UPDATE t_directory_view_history
              SET create_date     = DATETIME('NOW', 'LOCALTIME')
            WHERE file_id         = NEW.file_id
              AND file_history_id = NEW.file_history_id;
    END;
 
-/* フォルダ表示履歴T UPDATE */
-CREATE TRIGGER t_folder_view_history_update_trigger
+/* ディレクトリ表示履歴T UPDATE */
+CREATE TRIGGER t_directory_view_history_update_trigger
     AFTER UPDATE
-       ON t_folder_view_history
-    BEGIN UPDATE t_folder_view_history
+       ON t_directory_view_history
+    BEGIN UPDATE t_directory_view_history
              SET update_date     = DATETIME('NOW', 'LOCALTIME')
            WHERE file_id         = NEW.file_id
              AND file_history_id = NEW.file_history_id;
    END;
 
-/* フォルダ状態T INSERT */
-CREATE TRIGGER t_folder_state_insert_trigger
+/* ディレクトリ状態T INSERT */
+CREATE TRIGGER t_directory_state_insert_trigger
     AFTER INSERT
-       ON t_folder_state
-    BEGIN UPDATE t_folder_state
+       ON t_directory_state
+    BEGIN UPDATE t_directory_state
              SET create_date = DATETIME('NOW', 'LOCALTIME')
            WHERE file_id     = NEW.file_id;
    END;
 
-/* フォルダ状態T UPDATE */
-CREATE TRIGGER t_folder_state_update_trigger
+/* ディレクトリ状態T UPDATE */
+CREATE TRIGGER t_directory_state_update_trigger
     AFTER UPDATE
-       ON t_folder_state
-    BEGIN UPDATE t_folder_state
+       ON t_directory_state
+    BEGIN UPDATE t_directory_state
              SET update_date = DATETIME('NOW', 'LOCALTIME')
            WHERE file_id     = NEW.file_id;
    END;
