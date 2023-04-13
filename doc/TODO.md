@@ -12,8 +12,6 @@
 ## ロガー
 * 別のプロジェクトで色々実験する。
 ## エラーハンドリング
-* `ImageUtilException`を作成する。
-* `FileUtilException`を作成する。
 * `DatabaseException`を作成する。
 * 画像ファイルへのアクセスを、`ImageUtil`に集約する。
 * ファイルへのアクセスを、`FileUtil`に集約する。
