@@ -60,7 +60,7 @@ namespace SWF.UIComponent.Common
                           ControlStyles.ResizeRedraw |
                           ControlStyles.SupportsTransparentBackColor, true);
 
-            this.Size = new Size(24, 24);
+            this.Size = new Size(48, 48);
             this.MaximumSize = this.Size;
             this.MinimumSize = this.Size;
         }

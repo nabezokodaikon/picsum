@@ -37,12 +37,12 @@
             this.fileTypeLabel = new System.Windows.Forms.Label();
             this.fileNameLabel = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.addTagButton = new SWF.UIComponent.Common.ToolButton();
             this.tagComboBox = new System.Windows.Forms.ComboBox();
             this.tagFlowList = new SWF.UIComponent.FlowList.FlowList();
             this.tagContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tagDeleteMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tagToAllEntryMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addTagButton = new SWF.UIComponent.Common.ToolButton();
             this.ratingBar = new SWF.UIComponent.Common.RatingBar();
             ((System.ComponentModel.ISupportInitialize)(this.thumbnailPictureBox)).BeginInit();
             this.panel1.SuspendLayout();
@@ -145,26 +145,10 @@
             this.panel2.BackColor = System.Drawing.Color.Transparent;
             this.panel2.Controls.Add(this.addTagButton);
             this.panel2.Controls.Add(this.tagComboBox);
-            this.panel2.Location = new System.Drawing.Point(0, 458);
+            this.panel2.Location = new System.Drawing.Point(0, 479);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(512, 39);
             this.panel2.TabIndex = 18;
-            // 
-            // addTagButton
-            // 
-            this.addTagButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.addTagButton.Image = global::PicSum.UIComponent.InfoPanel.Properties.Resources.TagIcon;
-            this.addTagButton.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.addTagButton.Location = new System.Drawing.Point(468, 4);
-            this.addTagButton.Margin = new System.Windows.Forms.Padding(0, 4, 4, 4);
-            this.addTagButton.Name = "addTagButton";
-            this.addTagButton.RegionType = SWF.UIComponent.Common.ToolButton.ToolButtonRegionType.Default;
-            this.addTagButton.Size = new System.Drawing.Size(40, 31);
-            this.addTagButton.TabIndex = 1;
-            this.addTagButton.Text = "+";
-            this.addTagButton.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.addTagButton.UseVisualStyleBackColor = true;
-            this.addTagButton.Click += new System.EventHandler(this.addTagButton_Click);
             // 
             // tagComboBox
             // 
@@ -194,13 +178,13 @@
             this.tagFlowList.ItemTextFormatFlags = System.Drawing.StringFormatFlags.NoWrap;
             this.tagFlowList.ItemTextLineAlignment = System.Drawing.StringAlignment.Center;
             this.tagFlowList.ItemTextTrimming = System.Drawing.StringTrimming.EllipsisCharacter;
-            this.tagFlowList.Location = new System.Drawing.Point(0, 503);
+            this.tagFlowList.Location = new System.Drawing.Point(0, 524);
             this.tagFlowList.Margin = new System.Windows.Forms.Padding(0, 3, 0, 0);
             this.tagFlowList.MousePointItemColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(48)))), ((int)(((byte)(96)))), ((int)(((byte)(144)))));
             this.tagFlowList.Name = "tagFlowList";
             this.tagFlowList.RectangleSelectionColor = System.Drawing.Color.Empty;
             this.tagFlowList.SelectedItemColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(48)))), ((int)(((byte)(96)))), ((int)(((byte)(144)))));
-            this.tagFlowList.Size = new System.Drawing.Size(512, 212);
+            this.tagFlowList.Size = new System.Drawing.Size(512, 191);
             this.tagFlowList.TabIndex = 16;
             this.tagFlowList.Text = "flowList1";
             this.tagFlowList.DrawItem += new System.EventHandler<SWF.UIComponent.FlowList.DrawItemEventArgs>(this.tagFlowList_DrawItem);
@@ -231,16 +215,32 @@
             this.tagToAllEntryMenuItem.Text = "タグを全てに適用";
             this.tagToAllEntryMenuItem.Click += new System.EventHandler(this.tagToAllEntryMenuItem_Click);
             // 
+            // addTagButton
+            // 
+            this.addTagButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.addTagButton.Image = global::PicSum.UIComponent.InfoPanel.Properties.Resources.TagIcon;
+            this.addTagButton.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.addTagButton.Location = new System.Drawing.Point(468, 4);
+            this.addTagButton.Margin = new System.Windows.Forms.Padding(0, 4, 4, 4);
+            this.addTagButton.Name = "addTagButton";
+            this.addTagButton.RegionType = SWF.UIComponent.Common.ToolButton.ToolButtonRegionType.Default;
+            this.addTagButton.Size = new System.Drawing.Size(40, 31);
+            this.addTagButton.TabIndex = 1;
+            this.addTagButton.Text = "+";
+            this.addTagButton.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.addTagButton.UseVisualStyleBackColor = true;
+            this.addTagButton.Click += new System.EventHandler(this.addTagButton_Click);
+            // 
             // ratingBar
             // 
             this.ratingBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.ratingBar.BackColor = System.Drawing.Color.Transparent;
-            this.ratingBar.Location = new System.Drawing.Point(0, 422);
+            this.ratingBar.Location = new System.Drawing.Point(0, 419);
             this.ratingBar.Margin = new System.Windows.Forms.Padding(3, 9, 3, 9);
             this.ratingBar.MaximumValue = 1;
             this.ratingBar.Name = "ratingBar";
-            this.ratingBar.Size = new System.Drawing.Size(512, 24);
+            this.ratingBar.Size = new System.Drawing.Size(512, 48);
             this.ratingBar.TabIndex = 15;
             this.ratingBar.RatingButtonMouseClick += new System.EventHandler<System.Windows.Forms.MouseEventArgs>(this.ratingBar_RatingButtonMouseClick);
             // 

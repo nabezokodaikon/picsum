@@ -63,26 +63,6 @@ namespace PicSum.UIComponent.InfoPanel.Properties {
         /// <summary>
         ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
         /// </summary>
-        internal static System.Drawing.Bitmap ActiveRatingIcon {
-            get {
-                object obj = ResourceManager.GetObject("ActiveRatingIcon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
-        /// </summary>
-        internal static System.Drawing.Bitmap InactiveRatingIcon {
-            get {
-                object obj = ResourceManager.GetObject("InactiveRatingIcon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
-        /// </summary>
         internal static System.Drawing.Bitmap TagIcon {
             get {
                 object obj = ResourceManager.GetObject("TagIcon", resourceCulture);

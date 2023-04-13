@@ -179,14 +179,12 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="Resources\ViewerIcon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\ActiveRatingIcon.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\TagIcon.png" />
@@ -211,6 +209,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\ClipIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ActiveRatingIcon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
