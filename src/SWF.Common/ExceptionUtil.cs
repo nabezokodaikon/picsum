@@ -19,7 +19,7 @@ namespace SWF.Common
         /// <param name="ex"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentNullException"></exception>
-        public static string CreateDetailsMessage(Exception ex) 
+        public static string CreateDetailsMessage(Exception ex)
         {
             if (ex == null)
             {
@@ -35,14 +35,28 @@ namespace SWF.Common
             return sb.ToString();
         }
 
-        public static void ShowErrorDialog(string message) 
+        public static void ShowErrorDialog(Exception ex)
         {
-            if (message == null)
+            if (ex == null)
             {
-                throw new ArgumentNullException(nameof(message));
+                throw new ArgumentNullException(nameof(ex));
             }
 
-            MessageBox.Show(message, "PicSum", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            var detailsMessage = CreateDetailsMessage(ex);
+
+            MessageBox.Show(detailsMessage, "PicSum", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+
+        public static void ShowErrorDialog(string message, Exception ex)
+        {
+            if (ex == null)
+            {
+                throw new ArgumentNullException(nameof(ex));
+            }
+
+            var detailsMessage = CreateDetailsMessage(ex);
+
+            MessageBox.Show(string.Format(string.Format("{0}\n{1}", message, detailsMessage)), "PicSum", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 }
