@@ -7,7 +7,6 @@ using System.IO;
 using System.Text;
 using System.Threading;
 using PicSum.Core.Base.Exception;
-using PicSum.Core.Base.Log;
 
 namespace PicSum.Core.Data.DatabaseAccessor
 {
@@ -354,65 +353,17 @@ namespace PicSum.Core.Data.DatabaseAccessor
 
         private int ExecuteNonQuery(string sqlTitle, SQLiteCommand cmd)
         {
-            Stopwatch sw = Stopwatch.StartNew();
-
-            try
-            {
-                return cmd.ExecuteNonQuery();
-            }
-            finally
-            {
-                sw.Stop();
-                LogWriter.WriteLog(GetLogText(sqlTitle, sw.ElapsedMilliseconds, cmd));
-            }
+            return cmd.ExecuteNonQuery();
         }
 
         private SQLiteDataReader ExecuteReader(string sqlTitle, SQLiteCommand cmd, CommandBehavior cb)
         {
-            Stopwatch sw = Stopwatch.StartNew();
-
-            try
-            {
-                return cmd.ExecuteReader(cb);
-            }
-            finally
-            {
-                sw.Stop();
-                LogWriter.WriteLog(GetLogText(sqlTitle, sw.ElapsedMilliseconds, cmd));
-            }
+            return cmd.ExecuteReader(cb);
         }
 
         private object ExecuteScalar(string sqlTitle, SQLiteCommand cmd)
         {
-            Stopwatch sw = Stopwatch.StartNew();
-
-            try
-            {
-                return cmd.ExecuteScalar();
-            }
-            finally
-            {
-                sw.Stop();
-                LogWriter.WriteLog(GetLogText(sqlTitle, sw.ElapsedMilliseconds, cmd));
-            }
-        }
-
-        public string GetLogText(string sqlTitle, long time, IDbCommand cmd)
-        {
-            StringBuilder log = new StringBuilder();
-
-            log.AppendFormat("SQL：{0}\n", sqlTitle);
-
-            log.AppendFormat("所要時間：{0}ms\n", time);
-
-            foreach (IDataParameter param in cmd.Parameters)
-            {
-                log.AppendFormat("パラメータ：{0} = {1}\n", param.ParameterName, param.Value);
-            }
-
-            log.AppendLine(cmd.CommandText);
-
-            return log.ToString();
+            return cmd.ExecuteScalar();
         }
 
         #endregion

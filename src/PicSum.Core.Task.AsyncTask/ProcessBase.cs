@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading;
 using System.Windows.Forms;
-using PicSum.Core.Base.Log;
 using PicSum.Core.Task.Base;
 
 namespace PicSum.Core.Task.AsyncTask
@@ -153,8 +152,6 @@ namespace PicSum.Core.Task.AsyncTask
         {
             TaskInfo task = (TaskInfo)obj;
 
-            LogWriter.WriteLog(task.GetLogText());
-
             _taskList.Remove(task);
 
             task.EndExecute();
@@ -193,8 +190,6 @@ namespace PicSum.Core.Task.AsyncTask
         protected void OnCancelEnd(object obj)
         {
             TaskInfo task = (TaskInfo)obj;
-
-            LogWriter.WriteLog(task.GetLogText());
 
             _taskList.Remove(task);
 
@@ -236,8 +231,6 @@ namespace PicSum.Core.Task.AsyncTask
             object[] args = (object[])obj;
             TaskInfo task = (TaskInfo)args[0];
             task.SetException((Exception)args[1]);
-
-            LogWriter.WriteLog(task.GetLogText());
 
             _taskList.Remove(task);
 

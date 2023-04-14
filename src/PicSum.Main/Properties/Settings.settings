@@ -23,9 +23,6 @@
     <Setting Name="FileListContentsIsShowDirectory" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="IsWriteLog" Type="System.Boolean" Scope="Application">
-      <Value Profile="(Default)">False</Value>
-    </Setting>
     <Setting Name="ImageViewerContentsImageDisplayMode" Type="PicSum.Core.Base.Conf.ImageDisplayMode" Scope="User">
       <Value Profile="(Default)">Single</Value>
     </Setting>

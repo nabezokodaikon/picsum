@@ -65,7 +65,6 @@
   <ItemGroup>
     <Compile Include="Conf\ApplicationConst.cs" />
     <Compile Include="Exception\PSApplicationException.cs" />
-    <Compile Include="Log\LogWriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

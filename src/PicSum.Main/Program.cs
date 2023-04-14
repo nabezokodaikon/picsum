@@ -1,5 +1,4 @@
 ﻿using NLog;
-using PicSum.Core.Base.Log;
 using PicSum.Core.Data.DatabaseAccessor;
 using PicSum.Main.Mng;
 using PicSum.Main.UIComponent;
@@ -55,7 +54,6 @@ namespace PicSum.Main
                     GetThumbnailAsyncLogic.DisposeStaticResouces();
                     ExportFileAsyncFacade.DisposeStaticResouces();
                     SqlManager.DisposeStaticResouces();
-                    LogWriter.DisposeStaticResouces();
 
                     Logger.Info("アプリケーションを終了します。");
                 }
