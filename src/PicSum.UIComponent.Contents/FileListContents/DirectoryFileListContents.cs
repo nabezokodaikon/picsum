@@ -222,7 +222,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
         {
             if (e.DirectoryNotFoundException != null)
             {
-                MessageBox.Show(e.DirectoryNotFoundException.Message, "PicSum", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ExceptionUtil.ShowErrorDialog(e.DirectoryNotFoundException);
                 return;
             }
 

@@ -323,7 +323,7 @@ namespace PicSum.Main.UIComponent
             if (filePathList.Count == 0)
             {
                 throw new ArgumentException("ファイルパスリストが0件です。", "filePathList");
-            }
+            }            
 
             if (filePathList.Count == 1)
             {
@@ -484,7 +484,7 @@ namespace PicSum.Main.UIComponent
         {
             if (e.DirectoryNotFoundException != null)
             {
-                MessageBox.Show(e.DirectoryNotFoundException.Message, "PicSum", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ExceptionUtil.ShowErrorDialog(e.DirectoryNotFoundException);
                 return;
             }
 

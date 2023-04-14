@@ -181,7 +181,7 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
             }
             catch (ImageUtilException ex)
             {
-                MessageBox.Show(ex.Message, "PicSum", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ExceptionUtil.ShowErrorDialog(ex);
             }
 
             base.OnMouseWheel(e);
@@ -521,7 +521,7 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
         {
             if (e.ReadImageFileException != null)
             {
-                MessageBox.Show(e.ReadImageFileException.Message, "PicSum", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ExceptionUtil.ShowErrorDialog(e.ReadImageFileException);
                 return;
             }
 
@@ -718,7 +718,7 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
             }
             catch (ImageUtilException ex)
             {
-                MessageBox.Show(ex.Message, ex.ToString(), MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ExceptionUtil.ShowErrorDialog(ex);
             }
         }
 
@@ -730,7 +730,7 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
             }
             catch (ImageUtilException ex)
             {
-                MessageBox.Show(ex.Message, ex.ToString(), MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ExceptionUtil.ShowErrorDialog(ex);
             }
         }
 

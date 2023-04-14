@@ -7,6 +7,7 @@ using SWF.UIComponent.Common;
 using PicSum.Core.Task.AsyncTask;
 using System.Windows.Forms;
 using System.Drawing;
+using SWF.Common;
 
 namespace PicSum.Main.UIComponent
 {
@@ -72,7 +73,7 @@ namespace PicSum.Main.UIComponent
         {
             if (e.Task.IsEnd && e.Task.IsError)
             {
-                MessageBox.Show(e.Task.Exception.Message, "PicSum", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ExceptionUtil.ShowErrorDialog(e.Task.Exception);
             }
         }
 

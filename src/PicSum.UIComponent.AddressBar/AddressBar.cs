@@ -9,6 +9,7 @@ using PicSum.Core.Task.AsyncTask;
 using PicSum.Task.AsyncFacade;
 using PicSum.Task.Entity;
 using PicSum.Core.Base.Conf;
+using SWF.Common;
 
 namespace PicSum.UIComponent.AddressBar
 {
@@ -661,7 +662,7 @@ namespace PicSum.UIComponent.AddressBar
         {
             if (e.GetAddressInfoException != null)
             {
-                MessageBox.Show(e.GetAddressInfoException.Message, "PicSum", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ExceptionUtil.ShowErrorDialog(e.GetAddressInfoException);
                 return;
             }
 
