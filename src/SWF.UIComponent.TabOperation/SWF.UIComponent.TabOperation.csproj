@@ -115,9 +115,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\SWF.Common\SWF.Common.csproj">
       <Project>{1D5E61C2-A0F5-4A69-AF24-EDD274B78359}</Project>
       <Name>SWF.Common</Name>
