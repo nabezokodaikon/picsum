@@ -95,13 +95,8 @@ namespace PicSum.Main
             var ex = (Exception)e.ExceptionObject;
             var exMessage = ExceptionUtil.CreateDetailsMessage(ex);
             var message = string.Format("予期しない例外が発生しました。\n{0}", exMessage);
-
             Logger.Fatal(message);
-            Logger.Fatal("アプリケーションを異常終了します。");
-
-            ExceptionUtil.ShowErrorDialog("アプリケーションを異常終了します。", ex);
-
-            Application.Exit();
+            ExceptionUtil.ShowErrorDialog("予期しない例外が発生しました。", ex);
         }
     }
 }
