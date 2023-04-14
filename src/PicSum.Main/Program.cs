@@ -97,7 +97,7 @@ namespace PicSum.Main
             Logger.Fatal(message);
             Logger.Fatal("アプリケーションを異常終了します。");
 
-            ExceptionUtil.ShowErrorDialog(message);            
+            ExceptionUtil.ShowErrorDialog("アプリケーションを異常終了します。", ex);            
             
             Application.Exit();
         }
