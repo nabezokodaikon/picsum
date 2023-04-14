@@ -100,6 +100,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DrawTextUtil.cs" />
+    <Compile Include="ExceptionUtil.cs" />
     <Compile Include="FileUtilException.cs" />
     <Compile Include="FileIconCash.cs" />
     <Compile Include="FileUtil.cs" />
