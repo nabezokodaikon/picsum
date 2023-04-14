@@ -246,7 +246,6 @@
             this.movePreviewToolStripButton.Margin = new System.Windows.Forms.Padding(3, 1, 0, 2);
             this.movePreviewToolStripButton.Name = "movePreviewToolStripButton";
             this.movePreviewToolStripButton.Size = new System.Drawing.Size(23, 24);
-            this.movePreviewToolStripButton.Text = "toolStripButton1";
             this.movePreviewToolStripButton.Click += new System.EventHandler(this.movePreviewToolStripButton_Click);
             // 
             // moveNextToolStripButton
@@ -256,7 +255,6 @@
             this.moveNextToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.moveNextToolStripButton.Name = "moveNextToolStripButton";
             this.moveNextToolStripButton.Size = new System.Drawing.Size(23, 24);
-            this.moveNextToolStripButton.Text = "toolStripButton2";
             this.moveNextToolStripButton.Click += new System.EventHandler(this.moveNextToolStripButton_Click);
             // 
             // FileListContentsBase
