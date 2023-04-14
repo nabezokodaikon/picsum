@@ -10,6 +10,7 @@ using System;
 using System.Runtime.Remoting;
 using System.Runtime.Remoting.Channels;
 using System.Runtime.Remoting.Channels.Ipc;
+using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -32,7 +33,10 @@ namespace PicSum.Main
                 if (mutex.WaitOne(0, false))
                 {
                     Thread.CurrentThread.Name = "Main";
+
                     Logger.Info("アプリケーションを開始します。");
+
+                    AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
 
                     ChannelServices.RegisterChannel(new IpcServerChannel(Application.ProductName), true);
                     RemotingConfiguration.RegisterWellKnownServiceType(typeof(Program), "Program", WellKnownObjectMode.Singleton);
@@ -82,6 +86,20 @@ namespace PicSum.Main
                     }
                 }));
             }
+        }
+
+        private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            var ex = (Exception)e.ExceptionObject;
+            var exMessage = ExceptionUtil.CreateDetailsMessage(ex);
+            var message = string.Format("予期しない例外が発生しました。\n{0}", exMessage);
+
+            Logger.Fatal(message);
+            Logger.Fatal("アプリケーションを異常終了します。");
+
+            ExceptionUtil.ShowErrorDialog(message);            
+            
+            Application.Exit();
         }
     }
 }
