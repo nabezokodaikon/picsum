@@ -33,7 +33,9 @@ namespace PicSum.Main
                 {
                     Thread.CurrentThread.Name = "Main";
 
+#if DEBUG
                     Logger.Info("アプリケーションを開始します。");
+#endif
 
                     AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
 
@@ -55,7 +57,9 @@ namespace PicSum.Main
                     ExportFileAsyncFacade.DisposeStaticResouces();
                     SqlManager.DisposeStaticResouces();
 
+#if DEBUG
                     Logger.Info("アプリケーションを終了します。");
+#endif                
                 }
                 else
                 {
@@ -95,8 +99,8 @@ namespace PicSum.Main
             Logger.Fatal(message);
             Logger.Fatal("アプリケーションを異常終了します。");
 
-            ExceptionUtil.ShowErrorDialog("アプリケーションを異常終了します。", ex);            
-            
+            ExceptionUtil.ShowErrorDialog("アプリケーションを異常終了します。", ex);
+
             Application.Exit();
         }
     }

@@ -48,10 +48,11 @@ namespace PicSum.Core.Task.AsyncTask
         protected override void ExecuteThread(TaskInfo task)
         {
             TFacade facade = new TFacade();
-
             var facadeName = facade.GetType().Name;
             Thread.CurrentThread.Name = facadeName;
+#if DEBUG
             Logger.Debug("タスクID: {0} Facade: {1} を開始します。", task.TaskId, facadeName);
+#endif
 
             facade.Callback += new AsyncTaskCallbackEventHandler<TCallbackEventArgs>
                 ((object sender, TCallbackEventArgs e) => SendMessageThread(OnCallback, new object[] { sender, e }));
@@ -63,21 +64,25 @@ namespace PicSum.Core.Task.AsyncTask
             }
             catch (TaskCancelException)
             {
+#if DEBUG
                 Logger.Debug("タスクID: {0} Facade: {1} がキャンセルされました。", task.TaskId, facadeName);
-
+#endif
                 SendMessageThread(OnCancelEnd, task);
                 return;
             }
             catch (Exception ex)
             {
-                Logger.Debug("タスクID: {0} Facade: {1} で例外が発生しました。\n{2}", task.TaskId, facadeName, ExceptionUtil.CreateDetailsMessage(ex));
-
+#if DEBUG
+                Logger.Error("タスクID: {0} Facade: {1} で例外が発生しました。\n{2}", task.TaskId, facadeName, ExceptionUtil.CreateDetailsMessage(ex));
+#endif
                 SendMessageThread(OnErrorEnd, new object[] { task, ex });
                 return;
             }
             finally
             {
+#if DEBUG
                 Logger.Debug("タスクID: {0} Facade: {1} が終了しました。", task.TaskId, facadeName);
+#endif            
             }
 
             SendMessageThread(OnSuccessEnd, task);
@@ -155,10 +160,11 @@ namespace PicSum.Core.Task.AsyncTask
         protected override void ExecuteThread(TaskInfo task)
         {
             TFacade facade = new TFacade();
-
             var facadeName = facade.GetType().Name;
             Thread.CurrentThread.Name = facadeName;
+#if DEBUG
             Logger.Debug("タスクID: {0} Facade: {1} を開始します。", task.TaskId, facadeName);
+#endif
 
             facade.Callback += new AsyncTaskCallbackEventHandler<TCallbackEventArgs>
                 ((object sender, TCallbackEventArgs e) => SendMessageThread(OnCallback, new object[] { sender, e }));
@@ -170,21 +176,25 @@ namespace PicSum.Core.Task.AsyncTask
             }
             catch (TaskCancelException)
             {
+#if DEBUG
                 Logger.Debug("タスクID: {0} Facade: {1} がキャンセルされました。", task.TaskId, facadeName);
-
+#endif
                 SendMessageThread(OnCancelEnd, task);
                 return;
             }
             catch (Exception ex)
             {
-                Logger.Debug("タスクID: {0} Facade: {1} で例外が発生しました。\n{2}", task.TaskId, facadeName, ExceptionUtil.CreateDetailsMessage(ex));
-
+#if DEBUG
+                Logger.Error("タスクID: {0} Facade: {1} で例外が発生しました。\n{2}", task.TaskId, facadeName, ExceptionUtil.CreateDetailsMessage(ex));
+#endif
                 SendMessageThread(OnErrorEnd, new object[] { task, ex });
                 return;
             }
             finally
             {
+#if DEBUG
                 Logger.Debug("タスクID: {0} Facade: {1} が終了しました。", task.TaskId, facadeName);
+#endif            
             }
 
             SendMessageThread(OnSuccessEnd, task);
