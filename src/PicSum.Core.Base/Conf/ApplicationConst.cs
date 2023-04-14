@@ -21,11 +21,13 @@ namespace PicSum.Core.Base.Conf
         /// </summary>
         public const string NumberingSqlParameterFormat = "{0}_{1}";
 
+        // TODO: 削除。
         /// <summary>
         /// 評価最小値
         /// </summary>
         public const int MinimumRatingValue = 1;
 
+        // TODO: 削除。
         /// <summary>
         /// 評価最大値
         /// </summary>
