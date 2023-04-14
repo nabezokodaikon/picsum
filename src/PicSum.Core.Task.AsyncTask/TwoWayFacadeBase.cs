@@ -21,6 +21,15 @@ namespace PicSum.Core.Task.AsyncTask
         public abstract void Execute();
 
         /// <summary>
+        /// タスクをキャンセルします。
+        /// </summary>
+        /// <exception cref="TaskCancelException">タスクキャンセル例外</exception>
+        public void Cancel()
+        {
+            throw new TaskCancelException(this.Task);
+        }
+
+        /// <summary>
         /// コールバックイベントを発生させます。
         /// </summary>
         /// <param name="e">コールバックイベント引数クラス</param>
@@ -59,6 +68,15 @@ namespace PicSum.Core.Task.AsyncTask
         /// </summary>
         /// <param name="param">パラメータ</param>
         public abstract void Execute(TParameter param);
+
+        /// <summary>
+        /// タスクをキャンセルします。
+        /// </summary>
+        /// <exception cref="TaskCancelException">タスクキャンセル例外</exception>
+        public void Cancel()
+        {
+            throw new TaskCancelException(this.Task);
+        }
 
         /// <summary>
         /// コールバックイベントを発生させます。
