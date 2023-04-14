@@ -31,6 +31,7 @@ namespace PicSum.Main
             {
                 if (mutex.WaitOne(0, false))
                 {
+                    Thread.CurrentThread.Name = "Main";
                     Logger.Info("アプリケーションを開始します。");
 
                     ChannelServices.RegisterChannel(new IpcServerChannel(Application.ProductName), true);
