@@ -88,38 +88,6 @@ namespace PicSum.UIComponent.Contents.FileListContents
 
         }
 
-        protected override void OnMovePreviewButtonClick(EventArgs e)
-        {
-            int ratingValue = 0;
-            if (_parameter.RagingValue <= ApplicationConst.MinimumRatingValue)
-            {
-                ratingValue = ApplicationConst.MaximumRatingValue;
-            }
-            else
-            {
-                ratingValue = _parameter.RagingValue - 1;
-            }
-
-            RatingFileListContentsParameter param = new RatingFileListContentsParameter(ratingValue);
-            OnOpenContents(new BrowserContentsEventArgs(PicSum.Core.Base.Conf.ContentsOpenType.OverlapTab, param));
-        }
-
-        protected override void OnMoveNextButtonClick(EventArgs e)
-        {
-            int ratingValue = 0;
-            if (_parameter.RagingValue >= ApplicationConst.MaximumRatingValue)
-            {
-                ratingValue = ApplicationConst.MinimumRatingValue;
-            }
-            else
-            {
-                ratingValue = _parameter.RagingValue + 1;
-            }
-
-            RatingFileListContentsParameter param = new RatingFileListContentsParameter(ratingValue);
-            OnOpenContents(new BrowserContentsEventArgs(PicSum.Core.Base.Conf.ContentsOpenType.OverlapTab, param));
-        }
-
         #endregion
 
         #region プライベートメソッド
@@ -130,7 +98,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
             this.Icon = Resources.ActiveRatingIcon;
             this.IsAddKeepMenuItemVisible = true;
             this.IsRemoveFromListMenuItemVisible = false;
-            this.IsMoveControlVisible = true;
+            this.IsMoveControlVisible = false;
         }
 
         #endregion

@@ -60,12 +60,9 @@ namespace PicSum.UIComponent.SearchTool
         private void initializeComponent()
         {
             ItemList = new List<SearchInfoEntity<int>>();
-            foreach (int value in new Range(ApplicationConst.MaximumRatingValue, ApplicationConst.MinimumRatingValue))
-            {
-                SearchInfoEntity<int> item = new SearchInfoEntity<int>();
-                item.Value = value;
-                ItemList.Add(item);
-            }
+            SearchInfoEntity<int> item = new SearchInfoEntity<int>();
+            item.Value = 1;
+            ItemList.Add(item);
 
             DropDownList.Size = new Size(DropDownList.ItemHeight * ItemList.Count,
                                          DropDownList.ItemHeight * ItemList.Count);
