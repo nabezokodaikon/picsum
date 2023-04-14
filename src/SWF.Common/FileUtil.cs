@@ -163,16 +163,22 @@ namespace SWF.Common
                 }
                 else
                 {
-                    FileAttributes fa = File.GetAttributes(filePath);
-
-                    if ((fa & FileAttributes.Hidden) == FileAttributes.Hidden ||
-                        (fa & (FileAttributes.Hidden | FileAttributes.System)) == (FileAttributes.Hidden | FileAttributes.System))
+                    try
+                    {
+                        FileAttributes fa = File.GetAttributes(filePath);
+                        if ((fa & FileAttributes.Hidden) == FileAttributes.Hidden ||
+                            (fa & (FileAttributes.Hidden | FileAttributes.System)) == (FileAttributes.Hidden | FileAttributes.System))
+                        {
+                            return false;
+                        }
+                        else
+                        {
+                            return true;
+                        }
+                    }
+                    catch (UnauthorizedAccessException)
                     {
                         return false;
-                    }
-                    else
-                    {
-                        return true;
                     }
                 }
             }
@@ -370,9 +376,7 @@ namespace SWF.Common
 
             return FileUtil.GetFiles(directoryPath)
                 .OrderBy(file => file)
-                .FirstOrDefault(file =>
-                    ImageUtil.ImageFileExtensionList.Contains(FileUtil.GetExtension(file))
-                    && FileUtil.CanAccess(file));
+                .FirstOrDefault(file => ImageUtil.ImageFileExtensionList.Contains(FileUtil.GetExtension(file)));
         }
 
         #endregion
@@ -402,7 +406,24 @@ namespace SWF.Common
                 throw new ArgumentNullException("directoryPath");
             }
 
-            return Directory.GetFiles(directoryPath);
+            if (CanAccess(directoryPath))
+            {
+                try
+                {
+                    return Directory
+                        .GetFiles(directoryPath)
+                        .Where(file => CanAccess(file))
+                        .ToList();
+                }
+                catch (UnauthorizedAccessException)
+                {
+                    return new string[] { };
+                }
+            }
+            else
+            {
+                return new string[] { };
+            }
         }
 
         /// <summary>
@@ -417,7 +438,24 @@ namespace SWF.Common
                 throw new ArgumentNullException("directoryPath");
             }
 
-            return Directory.GetDirectories(directoryPath);
+            if (CanAccess(directoryPath))
+            {
+                try
+                {
+                    return Directory
+                        .GetDirectories(directoryPath)
+                        .Where(file => CanAccess(file))
+                        .ToList();
+                }
+                catch (UnauthorizedAccessException)
+                {
+                    return new string[] { };
+                }
+            }
+            else
+            {
+                return new string[] { };
+            }
         }
 
         /// <summary>
@@ -432,7 +470,24 @@ namespace SWF.Common
                 throw new ArgumentNullException("directoryPath");
             }
 
-            return Directory.GetFileSystemEntries(directoryPath);
+            if (CanAccess(directoryPath))
+            {
+                try
+                {
+                    return Directory
+                        .GetFileSystemEntries(directoryPath)
+                        .Where(file => CanAccess(file))
+                        .ToList();
+                }
+                catch (UnauthorizedAccessException)
+                {
+                    return new string[] { };
+                }
+            }
+            else
+            {
+                return new string[] { };
+            }
         }
 
         #endregion
