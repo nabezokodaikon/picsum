@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Security.Permissions;
 using System.Windows.Forms;
+using NLog;
 using PicSum.Core.Base.Conf;
 using PicSum.Core.Task.AsyncTask;
 using PicSum.Main.Properties;
@@ -20,6 +21,8 @@ namespace PicSum.Main.UIComponent
 {
     public partial class BrowserMainPanel : UserControl
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         #region 定数・列挙
 
         #endregion
@@ -538,7 +541,9 @@ namespace PicSum.Main.UIComponent
             infoPanel.SetFileInfo(e.FilePathList);
             tabSwitch.InvalidateHeader();
 
-            //Console.WriteLine("[{0:HH:mm:ss.fff}] contents_SelectedFileChanged", DateTime.Now);
+#if DEBUG
+            Logger.Debug("コンテンツ内の選択ファイルが変更されました。");
+#endif
         }
 
         private void contents_OpenContents(object sender, BrowserContentsEventArgs e)
@@ -565,7 +570,9 @@ namespace PicSum.Main.UIComponent
                 addressBar.SetAddress(selectedFilePath);
                 infoPanel.SetFileInfo(selectedFilePath);
 
-                //Console.WriteLine("[{0:HH:mm:ss.fff}] tabSwitch_ActiveTabChanged", DateTime.Now);
+#if DEBUG
+                Logger.Debug("アクティブなタブが変更されました。");
+#endif
             }
         }
 

@@ -1,4 +1,5 @@
-﻿using PicSum.Core.Base.Log;
+﻿using NLog;
+using PicSum.Core.Base.Log;
 using PicSum.Core.Data.DatabaseAccessor;
 using PicSum.Main.Mng;
 using PicSum.Main.UIComponent;
@@ -16,6 +17,8 @@ namespace PicSum.Main
 {
     class Program : MarshalByRefObject
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         private static DummyForm _dummyForm = null;
 
         /// <summary>
@@ -28,6 +31,8 @@ namespace PicSum.Main
             {
                 if (mutex.WaitOne(0, false))
                 {
+                    Logger.Info("アプリケーションを開始します。");
+
                     ChannelServices.RegisterChannel(new IpcServerChannel(Application.ProductName), true);
                     RemotingConfiguration.RegisterWellKnownServiceType(typeof(Program), "Program", WellKnownObjectMode.Singleton);
 
@@ -46,6 +51,8 @@ namespace PicSum.Main
                     ExportFileAsyncFacade.DisposeStaticResouces();
                     SqlManager.DisposeStaticResouces();
                     LogWriter.DisposeStaticResouces();
+
+                    Logger.Info("アプリケーションを終了します。");
                 }
                 else
                 {
