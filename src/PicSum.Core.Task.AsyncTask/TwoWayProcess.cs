@@ -1,7 +1,10 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Threading;
 using System.Windows.Forms;
+using NLog;
 using PicSum.Core.Task.Base;
+using SWF.Common;
 
 namespace PicSum.Core.Task.AsyncTask
 {
@@ -14,6 +17,8 @@ namespace PicSum.Core.Task.AsyncTask
         where TFacade : TwoWayFacadeBase<TCallbackEventArgs>, new()
         where TCallbackEventArgs : IEntity
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         /// <summary>
         /// コールバックイベント
         /// </summary>
@@ -43,6 +48,11 @@ namespace PicSum.Core.Task.AsyncTask
         protected override void ExecuteThread(TaskInfo task)
         {
             TFacade facade = new TFacade();
+
+            var facadeName = facade.GetType().Name;
+            Thread.CurrentThread.Name = facadeName;
+            Logger.Debug("タスクID: {0} Facade: {1} を開始します。", task.TaskId, facadeName);
+
             facade.Callback += new AsyncTaskCallbackEventHandler<TCallbackEventArgs>
                 ((object sender, TCallbackEventArgs e) => SendMessageThread(OnCallback, new object[] { sender, e }));
             facade.SetTask(task);
@@ -53,13 +63,21 @@ namespace PicSum.Core.Task.AsyncTask
             }
             catch (TaskCancelException)
             {
+                Logger.Debug("タスクID: {0} Facade: {1} がキャンセルされました。", task.TaskId, facadeName);
+
                 SendMessageThread(OnCancelEnd, task);
                 return;
             }
             catch (Exception ex)
             {
+                Logger.Debug("タスクID: {0} Facade: {1} で例外が発生しました。\n{2}", task.TaskId, facadeName, ExceptionUtil.CreateDetailsMessage(ex));
+
                 SendMessageThread(OnErrorEnd, new object[] { task, ex });
                 return;
+            }
+            finally
+            {
+                Logger.Debug("タスクID: {0} Facade: {1} が終了しました。", task.TaskId, facadeName);
             }
 
             SendMessageThread(OnSuccessEnd, task);
@@ -100,6 +118,8 @@ namespace PicSum.Core.Task.AsyncTask
         where TParameter : IEntity
         where TCallbackEventArgs : IEntity
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         /// <summary>
         /// コールバックイベント
         /// </summary>
@@ -135,6 +155,11 @@ namespace PicSum.Core.Task.AsyncTask
         protected override void ExecuteThread(TaskInfo task)
         {
             TFacade facade = new TFacade();
+
+            var facadeName = facade.GetType().Name;
+            Thread.CurrentThread.Name = facadeName;
+            Logger.Debug("タスクID: {0} Facade: {1} を開始します。", task.TaskId, facadeName);
+
             facade.Callback += new AsyncTaskCallbackEventHandler<TCallbackEventArgs>
                 ((object sender, TCallbackEventArgs e) => SendMessageThread(OnCallback, new object[] { sender, e }));
             facade.SetTask(task);
@@ -145,13 +170,21 @@ namespace PicSum.Core.Task.AsyncTask
             }
             catch (TaskCancelException)
             {
+                Logger.Debug("タスクID: {0} Facade: {1} がキャンセルされました。", task.TaskId, facadeName);
+
                 SendMessageThread(OnCancelEnd, task);
                 return;
             }
             catch (Exception ex)
             {
+                Logger.Debug("タスクID: {0} Facade: {1} で例外が発生しました。\n{2}", task.TaskId, facadeName, ExceptionUtil.CreateDetailsMessage(ex));
+
                 SendMessageThread(OnErrorEnd, new object[] { task, ex });
                 return;
+            }
+            finally
+            {
+                Logger.Debug("タスクID: {0} Facade: {1} が終了しました。", task.TaskId, facadeName);
             }
 
             SendMessageThread(OnSuccessEnd, task);
