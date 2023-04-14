@@ -6,7 +6,7 @@ namespace PicSum.Data.DatabaseAccessor.Sql
     /// <summary>
     /// 全てのタグを読込みます。
     /// </summary>
-    public class ReadAllTagSql : SqlBase<SingleValueDto<string>>
+    public class ReadAllTagSql : SqlBase<TagInfoDto>
     {
         public ReadAllTagSql() : base() { }
     }

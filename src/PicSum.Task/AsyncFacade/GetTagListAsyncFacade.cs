@@ -14,7 +14,6 @@ namespace PicSum.Task.AsyncFacade
         {
             GetTagListAsyncLogic logic = new GetTagListAsyncLogic(this);
             ListEntity<string> result = new ListEntity<string>(logic.Execute());
-            result.Sort((x, y) => x.CompareTo(y));
             OnCallback(result);
         }
     }

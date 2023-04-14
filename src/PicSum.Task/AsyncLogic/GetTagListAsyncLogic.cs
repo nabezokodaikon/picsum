@@ -1,33 +1,36 @@
-﻿using System.Collections.Generic;
-using PicSum.Core.Data.DatabaseAccessor;
+﻿using PicSum.Core.Data.DatabaseAccessor;
 using PicSum.Core.Task.AsyncTask;
 using PicSum.Data.DatabaseAccessor.Connection;
 using PicSum.Data.DatabaseAccessor.Dto;
 using PicSum.Data.DatabaseAccessor.Sql;
-using PicSum.Task.AsyncFacade;
+using SWF.Common;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace PicSum.Task.AsyncLogic
 {
     /// <summary>
     /// タグの一覧を取得します。
     /// </summary>
-    internal class GetTagListAsyncLogic : AsyncLogicBase
+    internal class GetTagListAsyncLogic
+        : AsyncLogicBase
     {
-        public GetTagListAsyncLogic(AsyncFacadeBase facade) : base(facade) { }
+        public GetTagListAsyncLogic(AsyncFacadeBase facade)
+            : base(facade) { }
 
         public IList<string> Execute()
         {
-            ReadAllTagSql sql = new ReadAllTagSql();
-            IList<SingleValueDto<string>> dtoList = DatabaseManager<FileInfoConnection>.ReadList<SingleValueDto<string>>(sql);
+            var sql = new ReadAllTagSql();
+            var dtoList = DatabaseManager<FileInfoConnection>.ReadList<TagInfoDto>(sql);
 
-            List<string> tabList = new List<string>();
-            foreach (SingleValueDto<string> dto in dtoList)
-            {
-                CheckCancel();
-                tabList.Add(dto.Value);
-            }
+            var tagList = dtoList
+                .Where(dto => FileUtil.IsExists(dto.FilePath))
+                .GroupBy(file => file.Tag)
+                .Select(file => file.First().Tag)
+                .OrderBy(tag => tag)
+                .ToList();
 
-            return tabList;
+            return tagList;
         }
     }
 }

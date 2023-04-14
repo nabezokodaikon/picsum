@@ -92,6 +92,7 @@
     <Compile Include="Dto\DirectoryStateDto.cs" />
     <Compile Include="Dto\DirectoryViewHistoryDto.cs" />
     <Compile Include="Dto\SingleValueDto.cs" />
+    <Compile Include="Dto\TagInfoDto.cs" />
     <Compile Include="Dto\ThumbnailDto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sql\CreationFileSql.cs" />
