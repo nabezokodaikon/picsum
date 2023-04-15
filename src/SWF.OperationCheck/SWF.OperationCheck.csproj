@@ -36,6 +36,18 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="PicSum.Core.Base">
+      <HintPath>..\PicSum.Core.Base\bin\Debug\PicSum.Core.Base.dll</HintPath>
+    </Reference>
+    <Reference Include="PicSum.Core.Task.AsyncTask">
+      <HintPath>..\PicSum.Core.Task.AsyncTask\bin\Debug\PicSum.Core.Task.AsyncTask.dll</HintPath>
+    </Reference>
+    <Reference Include="PicSum.Task">
+      <HintPath>..\PicSum.Task\bin\Debug\PicSum.Task.dll</HintPath>
+    </Reference>
+    <Reference Include="PicSum.UIComponent.Common">
+      <HintPath>..\PicSum.UIComponent.Common\bin\Debug\PicSum.UIComponent.Common.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -55,6 +67,14 @@
     <Compile Include="CheckForm.Designer.cs">
       <DependentUpon>CheckForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Contorols\ItemMouseClickEventArgs.cs" />
+    <Compile Include="Contorols\WideDropDownList.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Contorols\WideDropToolButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Contorols\WideDropToolButtonItem.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="CheckForm.resx">
@@ -68,6 +88,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -81,6 +102,27 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PicSum.UIComponent.SearchTool\PicSum.UIComponent.SearchTool.csproj">
+      <Project>{59912BB6-7F9C-4C10-B67E-D616CE5DA771}</Project>
+      <Name>PicSum.UIComponent.SearchTool</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SWF.Common\SWF.Common.csproj">
+      <Project>{1d5e61c2-a0f5-4a69-af24-edd274b78359}</Project>
+      <Name>SWF.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SWF.UIComponent.Common\SWF.UIComponent.Common.csproj">
+      <Project>{73fc3ab9-059a-4b08-ba74-d0e91a1205e4}</Project>
+      <Name>SWF.UIComponent.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SWF.UIComponent.FlowList\SWF.UIComponent.FlowList.csproj">
+      <Project>{15ac93fe-ff3a-46ae-b0a9-a65074c564d1}</Project>
+      <Name>SWF.UIComponent.FlowList</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\TagIcon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
