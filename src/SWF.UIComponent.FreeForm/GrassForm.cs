@@ -27,7 +27,7 @@ namespace SWF.UIComponent.FreeForm
         private WinApiMembers.MARGINS _glassMargins = null;
         private Point _mouseDownCursorPoint = Point.Empty;
         private Rectangle _mouseDownFormRectangle = Rectangle.Empty;
-        private int _topOffset = 32;
+        private int _topOffset = 31;
         private bool _isInit = true;
         private Size _initSize = Size.Empty;
         private FormWindowState _initWindowState = FormWindowState.Normal;
