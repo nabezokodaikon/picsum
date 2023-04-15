@@ -105,7 +105,7 @@
             this.tabSwitch.Name = "tabSwitch";
             this.tabSwitch.Size = new System.Drawing.Size(746, 466);
             this.tabSwitch.TabIndex = 4;
-            this.tabSwitch.TabsRightOffset = 100;
+            this.tabSwitch.TabsRightOffset = 144;
             this.tabSwitch.Text = "tabSwitch1";
             this.tabSwitch.ActiveTabChanged += new System.EventHandler(this.tabSwitch_ActiveTabChanged);
             this.tabSwitch.TabCloseButtonClick += new System.EventHandler<SWF.UIComponent.TabOperation.TabEventArgs>(this.tabSwitch_TabCloseButtonClick);
