@@ -74,7 +74,6 @@
     <Compile Include="Contorols\WideDropToolButton.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Contorols\WideDropToolButtonItem.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="CheckForm.resx">
