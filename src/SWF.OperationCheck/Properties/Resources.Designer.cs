@@ -63,6 +63,16 @@ namespace SWF.OperationCheck.Properties {
         /// <summary>
         ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
         /// </summary>
+        internal static System.Drawing.Bitmap SmallArrowDown {
+            get {
+                object obj = ResourceManager.GetObject("SmallArrowDown", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
+        /// </summary>
         internal static System.Drawing.Bitmap TagIcon {
             get {
                 object obj = ResourceManager.GetObject("TagIcon", resourceCulture);

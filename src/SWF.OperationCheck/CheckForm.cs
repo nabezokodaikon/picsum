@@ -14,8 +14,6 @@ namespace SWF.OperationCheck
 {
     public partial class CheckForm : Form
     {
-        private string selectedItem = "10050";
-
         public CheckForm()
         {
             InitializeComponent();
@@ -36,6 +34,20 @@ namespace SWF.OperationCheck
         private void button1_Click(object sender, EventArgs e)
         {
             this.wideDropToolButton1.SelectedItem = "10050";
+        }
+
+        private void richTextBox1_KeyDown(object sender, KeyEventArgs e)
+        {
+
+        }
+
+        private void richTextBox1_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)Keys.Enter || e.KeyChar == (char)Keys.Back)
+            {
+                e.Handled = true;
+                return;
+            }
         }
     }
 }

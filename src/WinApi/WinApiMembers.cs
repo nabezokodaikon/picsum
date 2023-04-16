@@ -306,6 +306,9 @@ namespace WinApi
 
         public const int S_OK = 0;
 
+        public const int EM_SETRECT = 0xB3; // テキストを表示する領域を設定
+        public const int EM_GETLINECOUNT = 0xBA; // テキストの行数を取得する定数
+
         public enum FileAttributesFlags : uint
         {
             FILE_ATTRIBUTE_ARCHIVE = 0x00000020,
@@ -434,7 +437,7 @@ namespace WinApi
         }
 
         [Flags]
-        public enum SHIL: int
+        public enum SHIL : int
         {
             SHIL_JUMBO = 0x0004,
             SHIL_EXTRALARGE = 0x0002
@@ -735,6 +738,9 @@ namespace WinApi
         [DllImport("User32.dll")]
         public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
 
+        [DllImport("User32.dll")]
+        public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, IntPtr lParam);
+
         [DllImport("shell32.dll", EntryPoint = "ExtractIconEx", CharSet = CharSet.Auto)]
         public static extern int ExtractIconEx([MarshalAs(UnmanagedType.LPTStr)] string file, int index, out IntPtr largeIconHandle, out IntPtr smallIconHandle, int icons);
 
@@ -748,7 +754,7 @@ namespace WinApi
         public static extern bool BitBlt(IntPtr hdcDst, int xDst, int yDst, int width, int height, IntPtr hdcSrc, int xSrc, int ySrc, int rasterOp);
 
         [DllImport("kernel32.dll", CharSet = CharSet.Auto)]
-        public static extern uint GetShortPathName([MarshalAs(UnmanagedType.LPTStr)]string lpszLongPath, [MarshalAs(UnmanagedType.LPTStr)]StringBuilder lpszShortPath, uint cchBuffer);
+        public static extern uint GetShortPathName([MarshalAs(UnmanagedType.LPTStr)] string lpszLongPath, [MarshalAs(UnmanagedType.LPTStr)] StringBuilder lpszShortPath, uint cchBuffer);
 
         [DllImport("dwmapi.dll", PreserveSig = false)]
         public static extern void DwmEnableBlurBehindWindow(IntPtr hWnd, DWM_BLURBEHIND pBlurBehind);
@@ -760,7 +766,7 @@ namespace WinApi
         public static extern bool DwmIsCompositionEnabled();
 
         [DllImport("dwmapi.dll", PreserveSig = false)]
-        public static extern void DwmGetColorizationColor(out int pcrColorization, [MarshalAs(UnmanagedType.Bool)]out bool pfOpaqueBlend);
+        public static extern void DwmGetColorizationColor(out int pcrColorization, [MarshalAs(UnmanagedType.Bool)] out bool pfOpaqueBlend);
 
         [DllImport("dwmapi.dll", PreserveSig = false)]
         public static extern void DwmEnableComposition(bool bEnable);

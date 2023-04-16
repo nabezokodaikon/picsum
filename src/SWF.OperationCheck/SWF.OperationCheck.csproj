@@ -67,7 +67,16 @@
     <Compile Include="CheckForm.Designer.cs">
       <DependentUpon>CheckForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Contorols\InputTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Contorols\ItemMouseClickEventArgs.cs" />
+    <Compile Include="Contorols\WideComboBox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Contorols\WideComboBox.Designer.cs">
+      <DependentUpon>WideComboBox.cs</DependentUpon>
+    </Compile>
     <Compile Include="Contorols\WideDropDownList.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -78,6 +87,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="CheckForm.resx">
       <DependentUpon>CheckForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Contorols\WideComboBox.resx">
+      <DependentUpon>WideComboBox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -119,9 +131,16 @@
       <Project>{15ac93fe-ff3a-46ae-b0a9-a65074c564d1}</Project>
       <Name>SWF.UIComponent.FlowList</Name>
     </ProjectReference>
+    <ProjectReference Include="..\WinApi\WinApi.csproj">
+      <Project>{186f7a43-6415-4f0a-ae75-5b3235d2b0f6}</Project>
+      <Name>WinApi</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\TagIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SmallArrowDown.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
