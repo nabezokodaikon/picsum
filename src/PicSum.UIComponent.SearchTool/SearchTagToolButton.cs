@@ -8,6 +8,7 @@ using PicSum.UIComponent.Common;
 
 namespace PicSum.UIComponent.SearchTool
 {
+    // TODO: WideDropDownでは、このコードをMainPanelで実装する。
     public class SearchTagToolButton : SearchToolButtonBase<string>
     {
         public event EventHandler<SelectedTagEventArgs> SelectedTag;
