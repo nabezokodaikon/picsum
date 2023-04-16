@@ -18,13 +18,18 @@ namespace SWF.OperationCheck.Contorols
         public InputTextBox()
         {
             this.Multiline = true;
+            this.AcceptsReturn = false;
             this.verticalAlignment();
         }
 
-        protected override void OnKeyDown(KeyEventArgs e)
+        protected override bool ProcessDialogKey(Keys keyData)
         {
-            base.OnKeyDown(e);
-            //this.Invalidate();
+            if (keyData == Keys.Return)
+            {
+                this.OnKeyDown(new KeyEventArgs(keyData));
+            }
+            
+            return base.ProcessDialogKey(keyData);
         }
 
         protected override void OnResize(EventArgs e)
@@ -48,21 +53,17 @@ namespace SWF.OperationCheck.Contorols
         private void verticalAlignment()
         {
             SizeF textSize;
-            float twipsPerPixelX;
-            float twipsPerPixelY;
             using (var g = Graphics.FromHwnd(this.Handle))
             {
                 textSize = g.MeasureString("1", this.Font);
-                twipsPerPixelX = 1440f / g.DpiX;
-                twipsPerPixelY = 1440f / g.DpiY;
             }
 
-            var textMargin = textSize.Height / 4;
-            var height = textSize.Height + textMargin;
-            var top = ((this.Height - height)) / 2f;
-            var rect = new Rectangle(0, (int)top, this.Width, this.Height);
-
-            var ptr = Marshal.AllocCoTaskMem(Marshal.SizeOf<RectangleF>());
+            var top = (this.Height - textSize.Height) / 2f;
+            var left = 4;
+            var right = this.Width;
+            var bottom = this.Height;
+            var rect = Rectangle.FromLTRB(left, (int)top, right, bottom);
+            var ptr = Marshal.AllocCoTaskMem(Marshal.SizeOf<Rectangle>());
 
             try
             {

@@ -27,8 +27,9 @@ namespace SWF.OperationCheck
             var icon = Resources.TagIcon;
 
             this.wideDropToolButton1.SetItemSize(128, 32);
-            this.wideDropToolButton1.Icon = Resources.TagIcon;
             this.wideDropToolButton1.SetItems(items);
+
+            this.wideComboBox1.SetItemSize(128, 32);
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -48,6 +49,22 @@ namespace SWF.OperationCheck
                 e.Handled = true;
                 return;
             }
+        }
+
+        private void wideComboBox1_AddItem(object sender, AddItemEventArgs e)
+        {
+            this.wideComboBox1.AddItems(new List<string> { e.Item });
+        }
+
+        private void wideComboBox1_DropDownOpening(object sender, DropDownOpeningEventArgs e)
+        {
+            var items = new List<string>();
+            for (var i = 10000; i < 10100; i++)
+            {
+                items.Add(i.ToString());
+            }
+
+            this.wideComboBox1.AddItems(items);
         }
     }
 }

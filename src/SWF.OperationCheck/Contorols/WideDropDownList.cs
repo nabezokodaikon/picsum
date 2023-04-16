@@ -280,7 +280,33 @@ namespace SWF.OperationCheck.Contorols
             {
                 this.flowList.EndUpdate();
             }
+        }
 
+        public void AddItems(IList<string> itemList)
+        {
+            if (itemList == null)
+            {
+                throw new ArgumentNullException(nameof(itemList));
+            }
+
+            this.flowList.BeginUpdate();
+
+            try
+            {
+                this.itemList.AddRange(itemList);
+                var tempItemList = this.itemList
+                    .GroupBy(item => item)
+                    .Select(item => item.First())
+                    .OrderBy(item => item)
+                    .ToList();
+                this.itemList.Clear();
+                this.itemList.AddRange(tempItemList);
+                this.flowList.ItemCount = this.itemList.Count;
+            }
+            finally
+            {
+                this.flowList.EndUpdate();
+            }
         }
 
         public void SelectItem(string item)
@@ -303,9 +329,9 @@ namespace SWF.OperationCheck.Contorols
                 this.flowList.SelectItem(index);
             }
             finally
-            { 
+            {
                 this.flowList.EndUpdate();
-            }            
+            }
         }
 
         #endregion

@@ -67,6 +67,11 @@
     <Compile Include="CheckForm.Designer.cs">
       <DependentUpon>CheckForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Contorols\AddItemEventArgs.cs" />
+    <Compile Include="Contorols\ArrowPictureBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Contorols\DropDownOpeningEventArgs.cs" />
     <Compile Include="Contorols\InputTextBox.cs">
       <SubType>Component</SubType>
     </Compile>

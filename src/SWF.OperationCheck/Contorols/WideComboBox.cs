@@ -8,46 +8,134 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using WinApi;
 
 namespace SWF.OperationCheck.Contorols
 {
-    public partial class WideComboBox : UserControl
+    public partial class WideComboBox 
+        : UserControl
     {
+        public event EventHandler<DropDownOpeningEventArgs> DropDownOpening;
+        public event EventHandler<AddItemEventArgs> AddItem;
+
+        private readonly WideDropDownList dropDownList = new WideDropDownList();
+
+        public Size DropDownListSize
+        {
+            get
+            {
+                return this.dropDownList.Size;
+            }
+            set
+            {
+                this.dropDownList.Size = value;
+            }
+        }
+
         public WideComboBox()
         {
             InitializeComponent();
-
+            this.dropDownList.Size = new Size(420, 200);
+            this.dropDownList.Closed += dropDownList_Closed;
+            this.dropDownList.ItemMouseClick += dropDownList_ItemMouseClick;
         }
 
-        private RectangleF getIconRectangle()
+        public void SetItemSize(int width, int height)
         {
-            var x = this.inputTextBox.Right;
-            var y = (this.Height - this.inputTextBox.Height) / 2f;
-            var w = this.Width - this.inputTextBox.Width;
-            var h = (this.Height - this.inputTextBox.Height) / 2f;
-            return new RectangleF(x, y, w, h);
+            this.dropDownList.SetItemSize(width, height);
         }
 
-        protected override void OnPaint(PaintEventArgs e)
+        public void SetItems(List<string> items)
         {
-            var icon = Resources.SmallArrowDown;
-            var rect = getIconRectangle();
-            var x = rect.Width - icon.Width / 2f;
-            var y = rect.Height - icon.Height / 2f;
-            var w = rect.Width - icon.Width / 2f;
-            var h = rect.Height - icon.Height / 2f;
+            if (items == null)
+            {
+                throw new ArgumentNullException(nameof(items));
+            }
 
-            e.Graphics.DrawImage(icon, rect, new RectangleF(x, y, w, h), GraphicsUnit.Pixel);
+            this.dropDownList.SetItems(items);
+        }
 
-            base.OnPaint(e);
+        public void AddItems(IList<string> itemList)
+        {
+            if (itemList == null)
+            {
+                throw new ArgumentNullException(nameof(itemList));
+            }
+
+            this.dropDownList.AddItems(itemList.Where(item => !string.IsNullOrEmpty(item)).ToList());
         }
 
         private void inputTextBox_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Enter)
+            if (e.KeyCode != Keys.Enter)
             {
-                e.Handled = true;
+                return;
             }
+
+            e.Handled = true;
+
+            if (string.IsNullOrEmpty(this.inputTextBox.Text))
+            {
+                return;
+            }
+
+            if (this.AddItem != null)
+            {
+                var item = this.inputTextBox.Text.Trim();
+                var args = new AddItemEventArgs(item);
+                this.AddItem(this, args);
+            }
+        }
+
+        private void addButton_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button != MouseButtons.Left)
+            {
+                return;
+            }
+
+            if (string.IsNullOrEmpty(this.inputTextBox.Text))
+            {
+                return;
+            }
+
+            if (this.AddItem != null)
+            {
+                var args = new AddItemEventArgs(this.inputTextBox.Text);
+                this.AddItem(this, args);
+            }
+        }
+
+        private void arrowPictureBox_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button != MouseButtons.Left)
+            {
+                return;
+            }
+
+            if (this.DropDownOpening != null)
+            {
+                var args = new DropDownOpeningEventArgs();
+                this.DropDownOpening(this, args);
+            }
+
+            this.dropDownList.Show(
+                this, new Point(this.Width - this.dropDownList.Size.Width, this.Height));
+
+            if (!string.IsNullOrEmpty(this.inputTextBox.Text)) 
+            {
+                this.dropDownList.SelectItem(this.inputTextBox.Text);
+            }            
+        }
+
+        private void dropDownList_Closed(object sender, ToolStripDropDownClosedEventArgs e)
+        {
+            this.arrowPictureBox.IsSelected = false;
+        }
+
+        private void dropDownList_ItemMouseClick(object sender, ItemMouseClickEventArgs e)
+        {
+            this.inputTextBox.Text = e.Item;
         }
     }
 }

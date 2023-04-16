@@ -14,13 +14,12 @@ namespace SWF.OperationCheck.Contorols
     public class WideDropToolButton
         : ToolButton
     {
-        private readonly WideDropDownList dropDownList = new WideDropDownList();
-
         public event EventHandler<ItemMouseClickEventArgs> ItemMouseClick;
+        public event EventHandler<DropDownOpeningEventArgs> DropDownOpening;
 
+        private readonly WideDropDownList dropDownList = new WideDropDownList();
+        
         public string SelectedItem { get; set; }
-
-        public Image Icon { get; set; }
 
         public Size DropDownListSize
         {
@@ -67,6 +66,17 @@ namespace SWF.OperationCheck.Contorols
 
         protected override void OnMouseClick(MouseEventArgs e)
         {
+            if (e.Button != MouseButtons.Left)
+            {
+                return;
+            }
+
+            if (this.DropDownOpening != null)
+            {
+                var args = new DropDownOpeningEventArgs();
+                this.DropDownOpening(this, args);
+            }
+
             this.dropDownList.Show(
                 this, new Point(this.Width - this.dropDownList.Size.Width, this.Height));
 
