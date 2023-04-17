@@ -30,6 +30,7 @@ namespace SWF.UIComponent.WideDropDown
 
         public WideDropToolButton()
         {
+            this.dropDownList.IsClickAndClose = false;
             this.dropDownList.ItemMouseClick += dropDownList_ItemMouseClick;
         }
 
@@ -84,7 +85,7 @@ namespace SWF.UIComponent.WideDropDown
 
         private void dropDownList_Opening(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            Console.WriteLine();
+
         }
 
         private void dropDownList_ItemMouseClick(object sender, ItemMouseClickEventArgs e)

@@ -21,8 +21,6 @@ namespace SWF.UIComponent.WideDropDown
 
         #region パブリックプロパティ
 
-        public Image Icon { get; set; }
-
         /// <summary>
         /// 項目テキスト色
         /// </summary>
@@ -187,6 +185,8 @@ namespace SWF.UIComponent.WideDropDown
                 return this.flowList.ScrollBarWidth;
             }
         }
+
+        internal bool IsClickAndClose { get; set; } 
 
         #endregion
 
@@ -401,7 +401,10 @@ namespace SWF.UIComponent.WideDropDown
 
         private void flowList_ItemMouseClick(object sender, MouseEventArgs e)
         {
-            this.Close();
+            if (this.IsClickAndClose) 
+            {
+                this.Close();
+            }            
 
             if (this.itemList.Count < 1)
             {
