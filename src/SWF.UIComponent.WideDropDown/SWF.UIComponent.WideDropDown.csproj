@@ -67,8 +67,15 @@
     <Compile Include="WideDropDownList.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="WideDropToolButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SWF.UIComponent.Common\SWF.UIComponent.Common.csproj">
+      <Project>{73fc3ab9-059a-4b08-ba74-d0e91a1205e4}</Project>
+      <Name>SWF.UIComponent.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SWF.UIComponent.FlowList\SWF.UIComponent.FlowList.csproj">
       <Project>{15ac93fe-ff3a-46ae-b0a9-a65074c564d1}</Project>
       <Name>SWF.UIComponent.FlowList</Name>
