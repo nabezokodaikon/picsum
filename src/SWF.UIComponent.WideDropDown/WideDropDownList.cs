@@ -243,7 +243,7 @@ namespace SWF.UIComponent.WideDropDown
             this.flowList.ItemSpace = 0;
             this.flowList.IsMultiSelect = false;
             this.flowList.Font = new Font("メイリオ", 10F, FontStyle.Regular, GraphicsUnit.Point, 128);
-
+            this.flowList.SetItemSize(144, 32);
 
             this.flowList.ItemMouseClick += new EventHandler<MouseEventArgs>(this.flowList_ItemMouseClick);
             this.flowList.DrawItem += new EventHandler<SWF.UIComponent.FlowList.DrawItemEventArgs>(this.flowList_DrawItem);
@@ -252,11 +252,6 @@ namespace SWF.UIComponent.WideDropDown
         #endregion
 
         #region パブリックメソッド
-
-        public void SetItemSize(int width, int height)
-        {
-            this.flowList.SetItemSize(width, height);
-        }
 
         public void SetItems(IList<string> itemList)
         {

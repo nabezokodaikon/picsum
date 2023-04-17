@@ -40,11 +40,6 @@ namespace SWF.UIComponent.WideDropDown
             this.dropDownList.ItemMouseClick += dropDownList_ItemMouseClick;
         }
 
-        public void SetItemSize(int width, int height)
-        {
-            this.dropDownList.SetItemSize(width, height);
-        }
-
         public void SetItems(List<string> items)
         {
             if (items == null)

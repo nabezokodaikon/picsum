@@ -254,8 +254,6 @@ namespace PicSum.UIComponent.InfoPanel
                 components = new Container();
             }
 
-            tagFlowList.ItemHeight = 24;
-            this.wideComboBox.SetItemSize(144, 32);
             this.CreateHandle();
         }
 
