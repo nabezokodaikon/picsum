@@ -469,9 +469,6 @@ namespace PicSum.UIComponent.InfoPanel
 
         private void getTagListProcess_Callback(object sender, ListEntity<string> e)
         {
-            //tagComboBox.Items.Clear();
-            //tagComboBox.Items.AddRange(e.ToArray());
-
             this.wideComboBox.AddItems(e);
             this.wideComboBox.SelectItem();
         }

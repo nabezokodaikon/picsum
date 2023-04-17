@@ -15,6 +15,7 @@ using PicSum.UIComponent.Contents.ContentsParameter;
 using PicSum.UIComponent.InfoPanel;
 using SWF.Common;
 using SWF.UIComponent.TabOperation;
+using SWF.UIComponent.WideDropDown;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace PicSum.Main.UIComponent
@@ -39,6 +40,7 @@ namespace PicSum.Main.UIComponent
         #region インスタンス変数
 
         private TwoWayProcess<SearchImageFileByDirectoryAsyncFacade, SearchImageFileParameterEntity, SearchImageFileResultEntity> _searchImageFileProcess = null;
+        private TwoWayProcess<GetTagListAsyncFacade, ListEntity<string>> _getTagListProcess = null;
 
         #endregion
 
@@ -83,6 +85,20 @@ namespace PicSum.Main.UIComponent
                 }
 
                 return _searchImageFileProcess;
+            }
+        }
+
+        private TwoWayProcess<GetTagListAsyncFacade, ListEntity<string>> getTagListProcess
+        {
+            get
+            {
+                if (this._getTagListProcess == null)
+                {
+                    this._getTagListProcess = TaskManager.CreateTwoWayProcess<GetTagListAsyncFacade, ListEntity<string>>(this.components);
+                    this._getTagListProcess.Callback += new AsyncTaskCallbackEventHandler<ListEntity<string>>(getTagListProcess_Callback);
+                }
+
+                return this._getTagListProcess;
             }
         }
 
@@ -264,6 +280,7 @@ namespace PicSum.Main.UIComponent
             const int INFOPANEL_MINSIZE = 240;
             splitContainer.Panel2MinSize = INFOPANEL_MINSIZE;
             splitContainer.SplitterDistance = splitContainer.Width - splitContainer.Panel2MinSize - splitContainer.SplitterWidth;
+            this.tagDropToolButton.SetItemSize(128, 32);
         }
 
         private void addContentsEventHandler(BrowserContents contents)
@@ -435,7 +452,6 @@ namespace PicSum.Main.UIComponent
             }
         }
 
-
         private void dragDrop(TabAreaDragEventArgs e)
         {
             if (e.Data.GetDataPresent(typeof(DragEntity)))
@@ -524,6 +540,16 @@ namespace PicSum.Main.UIComponent
                     dirName,
                     FileIconCash.SmallDirectoryIcon), e.TabIndex);
             }
+        }
+
+        private void getTagListProcess_Callback(object sender, ListEntity<string> e)
+        {
+            this.tagDropToolButton.SetItems(e);
+
+            if (!string.IsNullOrEmpty(this.tagDropToolButton.SelectedItem))             
+            {
+                this.tagDropToolButton.SelectItem(this.tagDropToolButton.SelectedItem);
+            }            
         }
 
         #endregion
@@ -729,9 +755,21 @@ namespace PicSum.Main.UIComponent
             }
         }
 
-        private void searchTagToolButton_SelectedTag(object sender, PicSum.UIComponent.SearchTool.SelectedTagEventArgs e)
+        private void tagDropToolButton_DropDownOpening(object sender, DropDownOpeningEventArgs e)
         {
-            openContents(new TagFileListContentsParameter(e.Value), e.OpenType);
+            this.getTagListProcess.Execute(this);
+        }
+
+        private void tagDropToolButton_ItemMouseClick(object sender, ItemMouseClickEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                this.openContents(new TagFileListContentsParameter(e.Item), ContentsOpenType.OverlapTab);
+            }
+            else
+            {
+                this.openContents(new TagFileListContentsParameter(e.Item), ContentsOpenType.AddTab);
+            }            
         }
 
         private void searchRatingToolButton_SelectedRating(object sender, PicSum.UIComponent.SearchTool.SelectedRatingEventArgs e)

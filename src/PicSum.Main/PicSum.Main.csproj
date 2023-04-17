@@ -83,6 +83,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\PicSum.UIComponent.Common\obj\Debug\PicSum.UIComponent.Common.dll</HintPath>
     </Reference>
+    <Reference Include="SWF.UIComponent.FlowList, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\SWF.UIComponent.FlowList\bin\Debug\SWF.UIComponent.FlowList.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core">
@@ -95,6 +99,10 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="WinApi, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\WinApi\bin\Debug\WinApi.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Conf\BrowserConfig.cs" />
@@ -202,6 +210,10 @@
     <ProjectReference Include="..\PicSum.UIComponent.SearchTool\PicSum.UIComponent.SearchTool.csproj">
       <Project>{59912BB6-7F9C-4C10-B67E-D616CE5DA771}</Project>
       <Name>PicSum.UIComponent.SearchTool</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SWF.UIComponent.WideDropDown\SWF.UIComponent.WideDropDown.csproj">
+      <Project>{b836f727-9ecf-4f84-b665-076b47a5b9a4}</Project>
+      <Name>SWF.UIComponent.WideDropDown</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

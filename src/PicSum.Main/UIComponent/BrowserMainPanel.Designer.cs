@@ -33,9 +33,9 @@
             this.infoPanel = new PicSum.UIComponent.InfoPanel.InfoPanel();
             this.tabSwitch = new SWF.UIComponent.TabOperation.TabSwitch();
             this.toolPanel = new System.Windows.Forms.Panel();
+            this.tagDropToolButton = new SWF.UIComponent.WideDropDown.WideDropToolButton();
             this.homeToolButton = new SWF.UIComponent.Common.ToolButton();
             this.nextContentsHistoryButton = new SWF.UIComponent.Common.ToolButton();
-            this.searchTagToolButton = new PicSum.UIComponent.SearchTool.SearchTagToolButton();
             this.searchRatingToolButton = new SWF.UIComponent.Common.ToolButton();
             this.keepToolButton = new SWF.UIComponent.Common.ToolButton();
             this.previewContentsHistoryButton = new SWF.UIComponent.Common.ToolButton();
@@ -121,9 +121,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.toolPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(241)))), ((int)(((byte)(244)))), ((int)(((byte)(250)))));
             this.toolPanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.toolPanel.Controls.Add(this.tagDropToolButton);
             this.toolPanel.Controls.Add(this.homeToolButton);
             this.toolPanel.Controls.Add(this.nextContentsHistoryButton);
-            this.toolPanel.Controls.Add(this.searchTagToolButton);
             this.toolPanel.Controls.Add(this.searchRatingToolButton);
             this.toolPanel.Controls.Add(this.keepToolButton);
             this.toolPanel.Controls.Add(this.previewContentsHistoryButton);
@@ -136,6 +136,25 @@
             this.toolPanel.Name = "toolPanel";
             this.toolPanel.Size = new System.Drawing.Size(746, 34);
             this.toolPanel.TabIndex = 5;
+            // 
+            // tagDropToolButton
+            // 
+            this.tagDropToolButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.tagDropToolButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(241)))), ((int)(((byte)(244)))), ((int)(((byte)(250)))));
+            this.tagDropToolButton.DropDownListSize = new System.Drawing.Size(444, 224);
+            this.tagDropToolButton.FlatAppearance.BorderSize = 0;
+            this.tagDropToolButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.tagDropToolButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.tagDropToolButton.Image = global::PicSum.Main.Properties.Resources.TagIcon;
+            this.tagDropToolButton.Location = new System.Drawing.Point(594, 3);
+            this.tagDropToolButton.Name = "tagDropToolButton";
+            this.tagDropToolButton.RegionType = SWF.UIComponent.Common.ToolButton.ToolButtonRegionType.Default;
+            this.tagDropToolButton.SelectedItem = null;
+            this.tagDropToolButton.Size = new System.Drawing.Size(32, 28);
+            this.tagDropToolButton.TabIndex = 9;
+            this.tagDropToolButton.UseVisualStyleBackColor = true;
+            this.tagDropToolButton.ItemMouseClick += new System.EventHandler<SWF.UIComponent.WideDropDown.ItemMouseClickEventArgs>(this.tagDropToolButton_ItemMouseClick);
+            this.tagDropToolButton.DropDownOpening += new System.EventHandler<SWF.UIComponent.WideDropDown.DropDownOpeningEventArgs>(this.tagDropToolButton_DropDownOpening);
             // 
             // homeToolButton
             // 
@@ -166,22 +185,6 @@
             this.nextContentsHistoryButton.TabIndex = 5;
             this.nextContentsHistoryButton.UseVisualStyleBackColor = true;
             this.nextContentsHistoryButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.nextContentsHistoryButton_MouseClick);
-            // 
-            // searchTagToolButton
-            // 
-            this.searchTagToolButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.searchTagToolButton.FlatAppearance.BorderSize = 0;
-            this.searchTagToolButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
-            this.searchTagToolButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.searchTagToolButton.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.searchTagToolButton.Image = global::PicSum.Main.Properties.Resources.TagIcon;
-            this.searchTagToolButton.Location = new System.Drawing.Point(594, 3);
-            this.searchTagToolButton.Name = "searchTagToolButton";
-            this.searchTagToolButton.RegionType = SWF.UIComponent.Common.ToolButton.ToolButtonRegionType.Default;
-            this.searchTagToolButton.Size = new System.Drawing.Size(32, 28);
-            this.searchTagToolButton.TabIndex = 0;
-            this.searchTagToolButton.UseVisualStyleBackColor = true;
-            this.searchTagToolButton.SelectedTag += new System.EventHandler<PicSum.UIComponent.SearchTool.SelectedTagEventArgs>(this.searchTagToolButton_SelectedTag);
             // 
             // searchRatingToolButton
             // 
@@ -294,9 +297,9 @@
         private PicSum.UIComponent.AddressBar.AddressBar addressBar;
         private SWF.UIComponent.Common.ToolButton nextContentsHistoryButton;
         private SWF.UIComponent.Common.ToolButton previewContentsHistoryButton;
-        private PicSum.UIComponent.SearchTool.SearchTagToolButton searchTagToolButton;
         private SWF.UIComponent.Common.ToolButton keepToolButton;
         private SWF.UIComponent.Common.ToolButton homeToolButton;
         private SWF.UIComponent.Common.ToolButton searchRatingToolButton;
+        private SWF.UIComponent.WideDropDown.WideDropToolButton tagDropToolButton;
     }
 }
