@@ -280,7 +280,7 @@ namespace PicSum.Main.UIComponent
             const int INFOPANEL_MINSIZE = 240;
             splitContainer.Panel2MinSize = INFOPANEL_MINSIZE;
             splitContainer.SplitterDistance = splitContainer.Width - splitContainer.Panel2MinSize - splitContainer.SplitterWidth;
-            this.tagDropToolButton.SetItemSize(128, 32);
+            this.tagDropToolButton.SetItemSize(144, 32);
         }
 
         private void addContentsEventHandler(BrowserContents contents)

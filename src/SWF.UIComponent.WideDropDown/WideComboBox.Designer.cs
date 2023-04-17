@@ -57,6 +57,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.inputTextBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.inputTextBox.Font = new System.Drawing.Font("メイリオ", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.inputTextBox.Location = new System.Drawing.Point(3, 3);
             this.inputTextBox.Margin = new System.Windows.Forms.Padding(3, 3, 0, 3);
             this.inputTextBox.Multiline = true;

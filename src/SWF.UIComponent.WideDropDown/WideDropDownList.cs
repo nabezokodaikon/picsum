@@ -242,6 +242,8 @@ namespace SWF.UIComponent.WideDropDown
             this.flowList.IsLileList = false;
             this.flowList.ItemSpace = 0;
             this.flowList.IsMultiSelect = false;
+            this.flowList.Font = new Font("メイリオ", 10F, FontStyle.Regular, GraphicsUnit.Point, 128);
+
 
             this.flowList.ItemMouseClick += new EventHandler<MouseEventArgs>(this.flowList_ItemMouseClick);
             this.flowList.DrawItem += new EventHandler<SWF.UIComponent.FlowList.DrawItemEventArgs>(this.flowList_DrawItem);
@@ -394,7 +396,7 @@ namespace SWF.UIComponent.WideDropDown
             }
 
             var item = this.itemList[e.ItemIndex];
-            e.Graphics.DrawString(item, this.Font, getTextBrush(e), getTextRectangle(e), this.flowList.ItemTextFormat);
+            e.Graphics.DrawString(item, this.flowList.Font, getTextBrush(e), getTextRectangle(e), this.flowList.ItemTextFormat);
         }
 
         private void flowList_ItemMouseClick(object sender, MouseEventArgs e)

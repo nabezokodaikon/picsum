@@ -34,7 +34,7 @@ namespace SWF.UIComponent.WideDropDown
         {
             InitializeComponent();
             this.dropDownList.Font = this.Font;
-            this.dropDownList.Size = new Size(420, 200);
+            this.dropDownList.Size = new Size(512, 200);
             this.dropDownList.Closed += dropDownList_Closed;
             this.dropDownList.ItemMouseClick += dropDownList_ItemMouseClick;
         }

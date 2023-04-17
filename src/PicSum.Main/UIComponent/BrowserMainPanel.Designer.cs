@@ -141,7 +141,7 @@
             // 
             this.tagDropToolButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.tagDropToolButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(241)))), ((int)(((byte)(244)))), ((int)(((byte)(250)))));
-            this.tagDropToolButton.DropDownListSize = new System.Drawing.Size(444, 224);
+            this.tagDropToolButton.DropDownListSize = new System.Drawing.Size(496, 224);
             this.tagDropToolButton.FlatAppearance.BorderSize = 0;
             this.tagDropToolButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
             this.tagDropToolButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;

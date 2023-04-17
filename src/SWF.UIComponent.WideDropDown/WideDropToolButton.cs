@@ -30,7 +30,6 @@ namespace SWF.UIComponent.WideDropDown
 
         public WideDropToolButton()
         {
-            this.dropDownList.Size = new Size(420, 200);
             this.dropDownList.ItemMouseClick += dropDownList_ItemMouseClick;
         }
 
