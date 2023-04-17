@@ -121,6 +121,10 @@
       <Project>{BCB012C4-D8A7-4F01-B158-2BB6AF00E6B5}</Project>
       <Name>PicSum.Task</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SWF.UIComponent.WideDropDown\SWF.UIComponent.WideDropDown.csproj">
+      <Project>{b836f727-9ecf-4f84-b665-076b47a5b9a4}</Project>
+      <Name>SWF.UIComponent.WideDropDown</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\ActiveRatingIcon.png" />

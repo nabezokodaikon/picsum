@@ -20,7 +20,9 @@ namespace SWF.UIComponent.WideDropDown
         {
             if (keyData == Keys.Return)
             {
-                this.OnKeyDown(new KeyEventArgs(keyData));
+                var args = new KeyEventArgs(keyData);
+                this.OnKeyDown(args);
+                return args.Handled;
             }
 
             return base.ProcessDialogKey(keyData);

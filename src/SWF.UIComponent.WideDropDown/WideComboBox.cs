@@ -33,6 +33,7 @@ namespace SWF.UIComponent.WideDropDown
         public WideComboBox()
         {
             InitializeComponent();
+            this.dropDownList.Font = this.Font;
             this.dropDownList.Size = new Size(420, 200);
             this.dropDownList.Closed += dropDownList_Closed;
             this.dropDownList.ItemMouseClick += dropDownList_ItemMouseClick;
@@ -63,6 +64,17 @@ namespace SWF.UIComponent.WideDropDown
             this.dropDownList.AddItems(itemList.Where(item => !string.IsNullOrEmpty(item)).ToList());
         }
 
+        public void SelectItem() 
+        {
+            var item = this.inputTextBox.Text;
+            if (string.IsNullOrEmpty(item))
+            {
+                return;
+            }
+
+            this.dropDownList.SelectItem(item);
+        }
+
         private void inputTextBox_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode != Keys.Enter)
@@ -77,12 +89,14 @@ namespace SWF.UIComponent.WideDropDown
                 return;
             }
 
-            if (this.AddItem != null)
+            if (this.AddItem == null)
             {
-                var item = this.inputTextBox.Text.Trim();
-                var args = new AddItemEventArgs(item);
-                this.AddItem(this, args);
+                return;
             }
+
+            var item = this.inputTextBox.Text.Trim();
+            var args = new AddItemEventArgs(item);
+            this.AddItem(this, args);
         }
 
         private void addButton_MouseClick(object sender, MouseEventArgs e)
@@ -97,11 +111,14 @@ namespace SWF.UIComponent.WideDropDown
                 return;
             }
 
-            if (this.AddItem != null)
+            if (this.AddItem == null)
             {
-                var args = new AddItemEventArgs(this.inputTextBox.Text);
-                this.AddItem(this, args);
+                return;
             }
+
+            var item = this.inputTextBox.Text.Trim();
+            var args = new AddItemEventArgs(item);
+            this.AddItem(this, args);
         }
 
         private void arrowPictureBox_MouseClick(object sender, MouseEventArgs e)
@@ -119,11 +136,6 @@ namespace SWF.UIComponent.WideDropDown
 
             this.dropDownList.Show(
                 this, new Point(this.Width - this.dropDownList.Size.Width, this.Height));
-
-            if (!string.IsNullOrEmpty(this.inputTextBox.Text))
-            {
-                this.dropDownList.SelectItem(this.inputTextBox.Text);
-            }
         }
 
         private void dropDownList_Closed(object sender, ToolStripDropDownClosedEventArgs e)

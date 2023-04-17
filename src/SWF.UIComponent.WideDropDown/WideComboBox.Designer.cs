@@ -29,19 +29,19 @@
         private void InitializeComponent()
         {
             this.addButton = new System.Windows.Forms.Button();
-            this.arrowPictureBox = new SWF.UIComponent.WideDropDown.ArrowPictureBox();
             this.inputTextBox = new SWF.UIComponent.WideDropDown.InputTextBox();
+            this.arrowPictureBox = new SWF.UIComponent.WideDropDown.ArrowPictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.arrowPictureBox)).BeginInit();
             this.SuspendLayout();
             // 
             // addButton
             // 
-            this.addButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            this.addButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.addButton.Font = new System.Drawing.Font("メイリオ", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.addButton.Image = global::SWF.UIComponent.WideDropDown.Properties.Resources.TagIcon;
-            this.addButton.Location = new System.Drawing.Point(594, 3);
-            this.addButton.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.addButton.Location = new System.Drawing.Point(598, 3);
+            this.addButton.Margin = new System.Windows.Forms.Padding(0, 6, 0, 6);
             this.addButton.Name = "addButton";
             this.addButton.Size = new System.Drawing.Size(48, 32);
             this.addButton.TabIndex = 1;
@@ -51,38 +51,37 @@
             this.addButton.UseVisualStyleBackColor = true;
             this.addButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.addButton_MouseClick);
             // 
-            // arrowPictureBox
-            // 
-            this.arrowPictureBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.arrowPictureBox.DefaultColor = System.Drawing.Color.WhiteSmoke;
-            this.arrowPictureBox.EnterColor = System.Drawing.Color.LightGray;
-            this.arrowPictureBox.Image = global::SWF.UIComponent.WideDropDown.Properties.Resources.SmallArrowDown;
-            this.arrowPictureBox.IsSelected = false;
-            this.arrowPictureBox.Location = new System.Drawing.Point(554, 3);
-            this.arrowPictureBox.Margin = new System.Windows.Forms.Padding(0, 6, 4, 6);
-            this.arrowPictureBox.Name = "arrowPictureBox";
-            this.arrowPictureBox.SelectedColor = System.Drawing.Color.DarkGray;
-            this.arrowPictureBox.Size = new System.Drawing.Size(32, 32);
-            this.arrowPictureBox.TabIndex = 2;
-            this.arrowPictureBox.TabStop = false;
-            this.arrowPictureBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.arrowPictureBox_MouseClick);
-            // 
             // inputTextBox
             // 
-            this.inputTextBox.AcceptsReturn = false;
-            this.inputTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-            | System.Windows.Forms.AnchorStyles.Left)
+            this.inputTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.inputTextBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.inputTextBox.Location = new System.Drawing.Point(3, 3);
             this.inputTextBox.Margin = new System.Windows.Forms.Padding(3, 3, 0, 3);
             this.inputTextBox.Multiline = true;
             this.inputTextBox.Name = "inputTextBox";
-            this.inputTextBox.Size = new System.Drawing.Size(551, 32);
+            this.inputTextBox.Size = new System.Drawing.Size(567, 32);
             this.inputTextBox.TabIndex = 3;
             this.inputTextBox.TabStop = false;
             this.inputTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.inputTextBox_KeyDown);
+            // 
+            // arrowPictureBox
+            // 
+            this.arrowPictureBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.arrowPictureBox.DefaultColor = System.Drawing.Color.WhiteSmoke;
+            this.arrowPictureBox.EnterColor = System.Drawing.Color.LightGray;
+            this.arrowPictureBox.Image = global::SWF.UIComponent.WideDropDown.Properties.Resources.SmallArrowDown;
+            this.arrowPictureBox.IsSelected = false;
+            this.arrowPictureBox.Location = new System.Drawing.Point(570, 3);
+            this.arrowPictureBox.Margin = new System.Windows.Forms.Padding(0, 6, 4, 6);
+            this.arrowPictureBox.Name = "arrowPictureBox";
+            this.arrowPictureBox.SelectedColor = System.Drawing.Color.DarkGray;
+            this.arrowPictureBox.Size = new System.Drawing.Size(24, 32);
+            this.arrowPictureBox.TabIndex = 2;
+            this.arrowPictureBox.TabStop = false;
+            this.arrowPictureBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.arrowPictureBox_MouseClick);
             // 
             // WideComboBox
             // 

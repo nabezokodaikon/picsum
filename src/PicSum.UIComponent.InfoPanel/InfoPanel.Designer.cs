@@ -36,17 +36,14 @@
             this.fileSizeLabel = new System.Windows.Forms.Label();
             this.fileTypeLabel = new System.Windows.Forms.Label();
             this.fileNameLabel = new System.Windows.Forms.Label();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.tagComboBox = new System.Windows.Forms.ComboBox();
-            this.tagFlowList = new SWF.UIComponent.FlowList.FlowList();
             this.tagContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tagDeleteMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tagToAllEntryMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.addTagButton = new SWF.UIComponent.Common.ToolButton();
             this.ratingBar = new SWF.UIComponent.Common.RatingBar();
+            this.tagFlowList = new SWF.UIComponent.FlowList.FlowList();
+            this.wideComboBox = new SWF.UIComponent.WideDropDown.WideComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.thumbnailPictureBox)).BeginInit();
             this.panel1.SuspendLayout();
-            this.panel2.SuspendLayout();
             this.tagContextMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -138,30 +135,42 @@
             this.fileNameLabel.Size = new System.Drawing.Size(504, 36);
             this.fileNameLabel.TabIndex = 22;
             // 
-            // panel2
+            // tagContextMenuStrip
             // 
-            this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.tagContextMenuStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.tagContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tagDeleteMenuItem,
+            this.tagToAllEntryMenuItem});
+            this.tagContextMenuStrip.Name = "tagContextMenuStrip";
+            this.tagContextMenuStrip.Size = new System.Drawing.Size(181, 52);
+            this.tagContextMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.tagContextMenuStrip_Opening);
+            // 
+            // tagDeleteMenuItem
+            // 
+            this.tagDeleteMenuItem.Name = "tagDeleteMenuItem";
+            this.tagDeleteMenuItem.Size = new System.Drawing.Size(180, 24);
+            this.tagDeleteMenuItem.Text = "タグを削除";
+            this.tagDeleteMenuItem.Click += new System.EventHandler(this.tagDeleteMenuItem_Click);
+            // 
+            // tagToAllEntryMenuItem
+            // 
+            this.tagToAllEntryMenuItem.Name = "tagToAllEntryMenuItem";
+            this.tagToAllEntryMenuItem.Size = new System.Drawing.Size(180, 24);
+            this.tagToAllEntryMenuItem.Text = "タグを全てに適用";
+            this.tagToAllEntryMenuItem.Click += new System.EventHandler(this.tagToAllEntryMenuItem_Click);
+            // 
+            // ratingBar
+            // 
+            this.ratingBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel2.BackColor = System.Drawing.Color.Transparent;
-            this.panel2.Controls.Add(this.addTagButton);
-            this.panel2.Controls.Add(this.tagComboBox);
-            this.panel2.Location = new System.Drawing.Point(0, 479);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(512, 39);
-            this.panel2.TabIndex = 18;
-            // 
-            // tagComboBox
-            // 
-            this.tagComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tagComboBox.FormattingEnabled = true;
-            this.tagComboBox.Location = new System.Drawing.Point(3, 6);
-            this.tagComboBox.Margin = new System.Windows.Forms.Padding(4);
-            this.tagComboBox.Name = "tagComboBox";
-            this.tagComboBox.Size = new System.Drawing.Size(461, 23);
-            this.tagComboBox.TabIndex = 0;
-            this.tagComboBox.DropDown += new System.EventHandler(this.tagComboBox_DropDown);
-            this.tagComboBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tagComboBox_KeyPress);
+            this.ratingBar.BackColor = System.Drawing.Color.Transparent;
+            this.ratingBar.Location = new System.Drawing.Point(0, 413);
+            this.ratingBar.Margin = new System.Windows.Forms.Padding(0);
+            this.ratingBar.MaximumValue = 1;
+            this.ratingBar.Name = "ratingBar";
+            this.ratingBar.Size = new System.Drawing.Size(512, 58);
+            this.ratingBar.TabIndex = 15;
+            this.ratingBar.RatingButtonMouseClick += new System.EventHandler<System.Windows.Forms.MouseEventArgs>(this.ratingBar_RatingButtonMouseClick);
             // 
             // tagFlowList
             // 
@@ -191,63 +200,24 @@
             this.tagFlowList.MouseClick += new System.Windows.Forms.MouseEventHandler(this.tagFlowList_MouseClick);
             this.tagFlowList.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.tagFlowList_MouseDoubleClick);
             // 
-            // tagContextMenuStrip
+            // wideComboBox
             // 
-            this.tagContextMenuStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.tagContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tagDeleteMenuItem,
-            this.tagToAllEntryMenuItem});
-            this.tagContextMenuStrip.Name = "tagContextMenuStrip";
-            this.tagContextMenuStrip.Size = new System.Drawing.Size(181, 52);
-            this.tagContextMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.tagContextMenuStrip_Opening);
-            // 
-            // tagDeleteMenuItem
-            // 
-            this.tagDeleteMenuItem.Name = "tagDeleteMenuItem";
-            this.tagDeleteMenuItem.Size = new System.Drawing.Size(180, 24);
-            this.tagDeleteMenuItem.Text = "タグを削除";
-            this.tagDeleteMenuItem.Click += new System.EventHandler(this.tagDeleteMenuItem_Click);
-            // 
-            // tagToAllEntryMenuItem
-            // 
-            this.tagToAllEntryMenuItem.Name = "tagToAllEntryMenuItem";
-            this.tagToAllEntryMenuItem.Size = new System.Drawing.Size(180, 24);
-            this.tagToAllEntryMenuItem.Text = "タグを全てに適用";
-            this.tagToAllEntryMenuItem.Click += new System.EventHandler(this.tagToAllEntryMenuItem_Click);
-            // 
-            // addTagButton
-            // 
-            this.addTagButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.addTagButton.Image = global::PicSum.UIComponent.InfoPanel.Properties.Resources.TagIcon;
-            this.addTagButton.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.addTagButton.Location = new System.Drawing.Point(468, 4);
-            this.addTagButton.Margin = new System.Windows.Forms.Padding(0, 4, 4, 4);
-            this.addTagButton.Name = "addTagButton";
-            this.addTagButton.RegionType = SWF.UIComponent.Common.ToolButton.ToolButtonRegionType.Default;
-            this.addTagButton.Size = new System.Drawing.Size(40, 31);
-            this.addTagButton.TabIndex = 1;
-            this.addTagButton.Text = "+";
-            this.addTagButton.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.addTagButton.UseVisualStyleBackColor = true;
-            this.addTagButton.Click += new System.EventHandler(this.addTagButton_Click);
-            // 
-            // ratingBar
-            // 
-            this.ratingBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.wideComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.ratingBar.BackColor = System.Drawing.Color.Transparent;
-            this.ratingBar.Location = new System.Drawing.Point(0, 419);
-            this.ratingBar.Margin = new System.Windows.Forms.Padding(3, 9, 3, 9);
-            this.ratingBar.MaximumValue = 1;
-            this.ratingBar.Name = "ratingBar";
-            this.ratingBar.Size = new System.Drawing.Size(512, 48);
-            this.ratingBar.TabIndex = 15;
-            this.ratingBar.RatingButtonMouseClick += new System.EventHandler<System.Windows.Forms.MouseEventArgs>(this.ratingBar_RatingButtonMouseClick);
+            this.wideComboBox.DropDownListSize = new System.Drawing.Size(432, 212);
+            this.wideComboBox.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.wideComboBox.Location = new System.Drawing.Point(0, 477);
+            this.wideComboBox.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.wideComboBox.Name = "wideComboBox";
+            this.wideComboBox.Size = new System.Drawing.Size(512, 38);
+            this.wideComboBox.TabIndex = 27;
+            this.wideComboBox.DropDownOpening += new System.EventHandler<SWF.UIComponent.WideDropDown.DropDownOpeningEventArgs>(this.wideComboBox_DropDownOpening);
+            this.wideComboBox.AddItem += new System.EventHandler<SWF.UIComponent.WideDropDown.AddItemEventArgs>(this.wideComboBox_AddItem);
             // 
             // InfoPanel
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.Controls.Add(this.panel2);
+            this.Controls.Add(this.wideComboBox);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.thumbnailPictureBox);
             this.Controls.Add(this.ratingBar);
@@ -256,7 +226,6 @@
             this.Size = new System.Drawing.Size(512, 715);
             ((System.ComponentModel.ISupportInitialize)(this.thumbnailPictureBox)).EndInit();
             this.panel1.ResumeLayout(false);
-            this.panel2.ResumeLayout(false);
             this.tagContextMenuStrip.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -273,13 +242,9 @@
         private System.Windows.Forms.Label fileSizeLabel;
         private System.Windows.Forms.Label fileTypeLabel;
         private System.Windows.Forms.Label fileNameLabel;
-        private System.Windows.Forms.Panel panel2;
-        private SWF.UIComponent.Common.ToolButton addTagButton;
-        private System.Windows.Forms.ComboBox tagComboBox;
         private System.Windows.Forms.ContextMenuStrip tagContextMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem tagDeleteMenuItem;
         private System.Windows.Forms.ToolStripMenuItem tagToAllEntryMenuItem;
-
-
+        private SWF.UIComponent.WideDropDown.WideComboBox wideComboBox;
     }
 }

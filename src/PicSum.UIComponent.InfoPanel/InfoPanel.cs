@@ -11,6 +11,7 @@ using PicSum.Task.AsyncFacade;
 using PicSum.Task.Entity;
 using PicSum.UIComponent.InfoPanel.Properties;
 using SWF.Common;
+using SWF.UIComponent.WideDropDown;
 
 namespace PicSum.UIComponent.InfoPanel
 {
@@ -256,6 +257,7 @@ namespace PicSum.UIComponent.InfoPanel
             }
 
             tagFlowList.ItemHeight = 24;
+            this.wideComboBox.SetItemSize(128, 32);
             this.CreateHandle();
         }
 
@@ -467,8 +469,11 @@ namespace PicSum.UIComponent.InfoPanel
 
         private void getTagListProcess_Callback(object sender, ListEntity<string> e)
         {
-            tagComboBox.Items.Clear();
-            tagComboBox.Items.AddRange(e.ToArray());
+            //tagComboBox.Items.Clear();
+            //tagComboBox.Items.AddRange(e.ToArray());
+
+            this.wideComboBox.AddItems(e);
+            this.wideComboBox.SelectItem();
         }
 
         #endregion
@@ -568,68 +573,6 @@ namespace PicSum.UIComponent.InfoPanel
 
         #endregion
 
-        #region タグコンボボックスイベント
-
-        private void tagComboBox_DropDown(object sender, EventArgs e)
-        {
-            getTagListProcess.Execute(this);
-        }
-
-        private void tagComboBox_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (e.KeyChar == (char)Keys.Enter)
-            {
-                e.Handled = true;
-
-                if (filePathList == null || tagList == null)
-                {
-                    return;
-                }
-
-                string tag = tagComboBox.Text;
-
-                if (string.IsNullOrEmpty(tag))
-                {
-                    return;
-                }
-
-                if (tagList.FirstOrDefault(t => t.Tag.Equals(tag, StringComparison.Ordinal) && t.IsAll) != null)
-                {
-                    return;
-                }
-
-                addTag(tag);
-            }
-        }
-
-        #endregion
-
-        #region タグ追加ボタンイベント
-
-        private void addTagButton_Click(object sender, EventArgs e)
-        {
-            if (filePathList == null || tagList == null)
-            {
-                return;
-            }
-
-            string tag = tagComboBox.Text;
-
-            if (string.IsNullOrEmpty(tag))
-            {
-                return;
-            }
-
-            if (tagList.FirstOrDefault(t => t.Tag.Equals(tag, StringComparison.Ordinal) && t.IsAll) != null)
-            {
-                return;
-            }
-
-            addTag(tag);
-        }
-
-        #endregion
-
         #region タグコンテキストメニューイベント
 
         private void tagContextMenuStrip_Opening(object sender, CancelEventArgs e)
@@ -696,6 +639,35 @@ namespace PicSum.UIComponent.InfoPanel
 
             var tagInfo = tagList[index];
             OnSelectedTag(new SelectedTagEventArgs(ContentsOpenType.AddTab, tagInfo.Tag));
+        }
+
+        #endregion
+
+        #region ワイドコンボボックスイベント
+
+        private void wideComboBox_DropDownOpening(object sender, DropDownOpeningEventArgs e)
+        {
+            this.getTagListProcess.Execute(this);
+        }
+
+        private void wideComboBox_AddItem(object sender, AddItemEventArgs e)
+        {
+            if (this.filePathList == null || this.tagList == null)
+            {
+                return;
+            }
+
+            if (string.IsNullOrEmpty(e.Item))
+            {
+                return;
+            }
+
+            if (tagList.FirstOrDefault(t => t.Tag.Equals(e.Item, StringComparison.Ordinal) && t.IsAll) != null)
+            {
+                return;
+            }
+
+            this.addTag(e.Item);
         }
 
         #endregion
