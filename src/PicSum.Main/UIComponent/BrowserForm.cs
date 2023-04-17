@@ -270,14 +270,6 @@ namespace PicSum.Main.UIComponent
                         }
                 }
             }
-            else if (e.Shift)
-            {
-
-            }
-            else if (e.KeyCode == Keys.Back)
-            {
-                this.browserMainPanel.MovePreviewContents();
-            }
 
             base.OnKeyDown(e);
         }
