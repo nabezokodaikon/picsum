@@ -10,7 +10,7 @@ namespace PicSum.UIComponent.AddressBar
 {
     abstract class DrawItemBase
     {
-        protected const int DROPDOWN_ITEM_HEIGHT = 24;
+        protected const int DROPDOWN_ITEM_HEIGHT = 32;
         protected const int MINIMUM_DROPDOWN_WIDHT = 128;
         protected const int MAXIMUM_SHOW_ITEM_COUNT = 16;
 
