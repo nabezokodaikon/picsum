@@ -1,10 +1,14 @@
 # PicSum
-10年以上昔に作った画像ビューアです。
-当時のChromeのタブや、Windows7のアドレスバーを意識して作りました。
+This application browses and displays image files.
 
-## ビルド方法
-* `build.bat`を実行します。
+## How to build
+1. Install `.Net 4.8.1`.
+1. Install `Visual Studio 2022`.
+1. Run the `build_release.bat` file.
 
-## スクリーンショット
-![サムネイル画面](./screenshot/screenshot-001.png)
-![画像表示画面](./screenshot/screenshot-002.png)
+## How to start
+Run `picsum.exe` in the `bin_release` directory created by the build.
+
+## Screenshot
+![Browsing View](./screenshot/screenshot-001.png)
+![Image display](./screenshot/screenshot-002.png)
