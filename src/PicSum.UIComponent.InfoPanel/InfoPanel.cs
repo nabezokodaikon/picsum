@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
 using PicSum.Core.Base.Conf;
 using PicSum.Core.Task.AsyncTask;
 using PicSum.Task.AsyncFacade;
@@ -475,6 +476,7 @@ namespace PicSum.UIComponent.InfoPanel
 
         private void thumbnailPictureBox_Paint(object sender, PaintEventArgs e)
         {
+           
             if (thumbnail != null)
             {
                 int size = Math.Min(thumbnailPictureBox.Width, thumbnailPictureBox.Height);
@@ -492,7 +494,8 @@ namespace PicSum.UIComponent.InfoPanel
             }
             else if (fileInfo != null)
             {
-                Rectangle rect = new Rectangle(0, 0, thumbnailPictureBox.Width, thumbnailPictureBox.Height);
+                const int margin = 32;
+                Rectangle rect = new Rectangle(margin, margin, thumbnailPictureBox.Width - margin * 2, thumbnailPictureBox.Height - margin * 2);
                 drawFileIcon(e.Graphics, fileInfo.FileIcon, rect);
             }
             else if (filePathList != null)
