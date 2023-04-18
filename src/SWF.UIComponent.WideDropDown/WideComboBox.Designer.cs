@@ -91,7 +91,7 @@
             this.Controls.Add(this.inputTextBox);
             this.Controls.Add(this.arrowPictureBox);
             this.Controls.Add(this.addButton);
-            this.Font = new System.Drawing.Font("Courier", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.Font = new System.Drawing.Font("Courier", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.Name = "WideComboBox";
             this.Size = new System.Drawing.Size(646, 38);

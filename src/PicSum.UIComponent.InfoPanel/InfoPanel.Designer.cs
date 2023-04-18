@@ -149,14 +149,14 @@
             // 
             this.tagDeleteMenuItem.Name = "tagDeleteMenuItem";
             this.tagDeleteMenuItem.Size = new System.Drawing.Size(180, 24);
-            this.tagDeleteMenuItem.Text = "タグを削除";
+            this.tagDeleteMenuItem.Text = "Remove Tag";
             this.tagDeleteMenuItem.Click += new System.EventHandler(this.tagDeleteMenuItem_Click);
             // 
             // tagToAllEntryMenuItem
             // 
             this.tagToAllEntryMenuItem.Name = "tagToAllEntryMenuItem";
             this.tagToAllEntryMenuItem.Size = new System.Drawing.Size(180, 24);
-            this.tagToAllEntryMenuItem.Text = "タグを全てに適用";
+            this.tagToAllEntryMenuItem.Text = "Apply Tag to All";
             this.tagToAllEntryMenuItem.Click += new System.EventHandler(this.tagToAllEntryMenuItem_Click);
             // 
             // ratingBar

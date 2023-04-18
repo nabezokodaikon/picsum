@@ -9,7 +9,7 @@ namespace SWF.UIComponent.TabOperation
     /// </summary>
     public class TabPalette : Component
     {
-        private static Font _titleFont = new Font("Courier", 9F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(128)));
+        private static Font _titleFont = new Font("Courier", 10F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(128)));
         private static Color _titleColor = Color.FromArgb(0, 64, 64, 64);
         private static TextFormatFlags _titleFormatFlags = TextFormatFlags.Left |
                                                            TextFormatFlags.VerticalCenter |
