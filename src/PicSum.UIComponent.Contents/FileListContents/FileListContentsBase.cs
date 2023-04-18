@@ -441,7 +441,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
 
         private void initializeComponent()
         {
-            this.Font = new Font("メイリオ", 9F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(128)));
+            this.Font = new Font("Courier", 9F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(128)));
             isShowFileName = FileListContentsConfig.IsShowFileName;
             isShowDirectory = FileListContentsConfig.IsShowDirectory;
             isShowImageFile = FileListContentsConfig.IsShowImageFile;

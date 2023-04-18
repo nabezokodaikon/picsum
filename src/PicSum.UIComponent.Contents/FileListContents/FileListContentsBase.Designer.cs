@@ -125,21 +125,21 @@
             // 
             this.showDirectoryToolStripMenuItem.Name = "showDirectoryToolStripMenuItem";
             this.showDirectoryToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
-            this.showDirectoryToolStripMenuItem.Text = "フォルダ";
+            this.showDirectoryToolStripMenuItem.Text = "Folder";
             this.showDirectoryToolStripMenuItem.Click += new System.EventHandler(this.showDirectoryToolStripMenuItem_Click);
             // 
             // showImageFileToolStripMenuItem
             // 
             this.showImageFileToolStripMenuItem.Name = "showImageFileToolStripMenuItem";
             this.showImageFileToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
-            this.showImageFileToolStripMenuItem.Text = "画像ファイル";
+            this.showImageFileToolStripMenuItem.Text = "Image File";
             this.showImageFileToolStripMenuItem.Click += new System.EventHandler(this.showImageFileToolStripMenuItem_Click);
             // 
             // showOtherFileToolStripMenuItem
             // 
             this.showOtherFileToolStripMenuItem.Name = "showOtherFileToolStripMenuItem";
             this.showOtherFileToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
-            this.showOtherFileToolStripMenuItem.Text = "その他のファイル";
+            this.showOtherFileToolStripMenuItem.Text = "Other File";
             this.showOtherFileToolStripMenuItem.Click += new System.EventHandler(this.showOtherFileToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
@@ -151,7 +151,7 @@
             // 
             this.showFileNameToolStripMenuItem.Name = "showFileNameToolStripMenuItem";
             this.showFileNameToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
-            this.showFileNameToolStripMenuItem.Text = "ファイル名";
+            this.showFileNameToolStripMenuItem.Text = "File Name";
             this.showFileNameToolStripMenuItem.Click += new System.EventHandler(this.showFileNameToolStripMenuItem_Click);
             // 
             // viewToolStripDropDownButton
@@ -164,7 +164,7 @@
             this.viewToolStripDropDownButton.Margin = new System.Windows.Forms.Padding(6, 1, 0, 2);
             this.viewToolStripDropDownButton.Name = "viewToolStripDropDownButton";
             this.viewToolStripDropDownButton.Size = new System.Drawing.Size(45, 24);
-            this.viewToolStripDropDownButton.Text = "表示";
+            this.viewToolStripDropDownButton.Text = "Display";
             // 
             // toolBar
             // 
@@ -190,8 +190,8 @@
             this.sortFileNameToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.sortFileNameToolStripButton.Margin = new System.Windows.Forms.Padding(3, 1, 0, 2);
             this.sortFileNameToolStripButton.Name = "sortFileNameToolStripButton";
-            this.sortFileNameToolStripButton.Size = new System.Drawing.Size(80, 24);
-            this.sortFileNameToolStripButton.Text = "名前";
+            this.sortFileNameToolStripButton.Size = new System.Drawing.Size(120, 24);
+            this.sortFileNameToolStripButton.Text = "Name";
             this.sortFileNameToolStripButton.Click += new System.EventHandler(this.sortFileNameToolStripButton_Click);
             // 
             // sortFilePathToolStripButton
@@ -200,8 +200,8 @@
             this.sortFilePathToolStripButton.AutoToolTip = false;
             this.sortFilePathToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.sortFilePathToolStripButton.Name = "sortFilePathToolStripButton";
-            this.sortFilePathToolStripButton.Size = new System.Drawing.Size(80, 24);
-            this.sortFilePathToolStripButton.Text = "パス";
+            this.sortFilePathToolStripButton.Size = new System.Drawing.Size(120, 24);
+            this.sortFilePathToolStripButton.Text = "Path";
             this.sortFilePathToolStripButton.Click += new System.EventHandler(this.sortFilePathToolStripButton_Click);
             // 
             // sortFileCreateDateToolStripButton
@@ -210,8 +210,8 @@
             this.sortFileCreateDateToolStripButton.AutoToolTip = false;
             this.sortFileCreateDateToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.sortFileCreateDateToolStripButton.Name = "sortFileCreateDateToolStripButton";
-            this.sortFileCreateDateToolStripButton.Size = new System.Drawing.Size(80, 24);
-            this.sortFileCreateDateToolStripButton.Text = "作成日時";
+            this.sortFileCreateDateToolStripButton.Size = new System.Drawing.Size(120, 24);
+            this.sortFileCreateDateToolStripButton.Text = "Creation Date";
             this.sortFileCreateDateToolStripButton.Click += new System.EventHandler(this.sortFileCreateDateToolStripButton_Click);
             // 
             // sortFileUpdateDateToolStripButton
@@ -220,8 +220,8 @@
             this.sortFileUpdateDateToolStripButton.AutoToolTip = false;
             this.sortFileUpdateDateToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.sortFileUpdateDateToolStripButton.Name = "sortFileUpdateDateToolStripButton";
-            this.sortFileUpdateDateToolStripButton.Size = new System.Drawing.Size(80, 24);
-            this.sortFileUpdateDateToolStripButton.Text = "更新日時";
+            this.sortFileUpdateDateToolStripButton.Size = new System.Drawing.Size(120, 24);
+            this.sortFileUpdateDateToolStripButton.Text = "Update Date";
             this.sortFileUpdateDateToolStripButton.Click += new System.EventHandler(this.sortFileUpdateDateToolStripButton_Click);
             // 
             // thumbnailSizeToolStripSlider

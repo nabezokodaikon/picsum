@@ -444,12 +444,12 @@ namespace PicSum.UIComponent.InfoPanel
 
                 if (fileInfo.UpdateDate.HasValue)
                 {
-                    fileUpdatedateLabel.Text = string.Format("更新日時 {0:yyyy/MM/dd}", fileInfo.UpdateDate.Value);
+                    fileUpdatedateLabel.Text = string.Format("Update Date   {0:yyyy/MM/dd}", fileInfo.UpdateDate.Value);
                 }
 
                 if (fileInfo.CreateDate.HasValue)
                 {
-                    fileCreateDateLabel.Text = string.Format("作成日時 {0:yyyy/MM/dd}", fileInfo.CreateDate.Value);
+                    fileCreateDateLabel.Text = string.Format("Creation Date {0:yyyy/MM/dd}", fileInfo.CreateDate.Value);
 
                 }
 

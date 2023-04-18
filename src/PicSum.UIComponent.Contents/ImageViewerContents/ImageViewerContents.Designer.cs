@@ -144,21 +144,21 @@
             // 
             this.singleViewToolStripMenuItem.Name = "singleViewToolStripMenuItem";
             this.singleViewToolStripMenuItem.Size = new System.Drawing.Size(189, 24);
-            this.singleViewToolStripMenuItem.Text = "単一表示";
+            this.singleViewToolStripMenuItem.Text = "Single View";
             this.singleViewToolStripMenuItem.Click += new System.EventHandler(this.singleViewToolStripMenuItem_Click);
             // 
             // leftFacingViewToolStripMenuItem
             // 
             this.leftFacingViewToolStripMenuItem.Name = "leftFacingViewToolStripMenuItem";
             this.leftFacingViewToolStripMenuItem.Size = new System.Drawing.Size(189, 24);
-            this.leftFacingViewToolStripMenuItem.Text = "見開き（左送り）";
+            this.leftFacingViewToolStripMenuItem.Text = "Spread (Left Feed)";
             this.leftFacingViewToolStripMenuItem.Click += new System.EventHandler(this.leftFacingViewToolStripMenuItem_Click);
             // 
             // rightFacingViewToolStripMenuItem
             // 
             this.rightFacingViewToolStripMenuItem.Name = "rightFacingViewToolStripMenuItem";
             this.rightFacingViewToolStripMenuItem.Size = new System.Drawing.Size(189, 24);
-            this.rightFacingViewToolStripMenuItem.Text = "見開き（右送り）";
+            this.rightFacingViewToolStripMenuItem.Text = "Spread (Right Feed)";
             this.rightFacingViewToolStripMenuItem.Click += new System.EventHandler(this.rightFacingViewToolStripMenuItem_Click);
             // 
             // viewToolStripSplitButton
@@ -172,7 +172,7 @@
             this.viewToolStripSplitButton.Margin = new System.Windows.Forms.Padding(6, 1, 0, 2);
             this.viewToolStripSplitButton.Name = "viewToolStripSplitButton";
             this.viewToolStripSplitButton.Size = new System.Drawing.Size(58, 24);
-            this.viewToolStripSplitButton.Text = "表示";
+            this.viewToolStripSplitButton.Text = "Display";
             this.viewToolStripSplitButton.ButtonClick += new System.EventHandler(this.viewToolStripSplitButton_ButtonClick);
             // 
             // sizeContextMenuStrip
@@ -190,21 +190,21 @@
             // 
             this.originalSizeToolStripMenuItem.Name = "originalSizeToolStripMenuItem";
             this.originalSizeToolStripMenuItem.Size = new System.Drawing.Size(315, 24);
-            this.originalSizeToolStripMenuItem.Text = "原寸大";
+            this.originalSizeToolStripMenuItem.Text = "Original Size";
             this.originalSizeToolStripMenuItem.Click += new System.EventHandler(this.originalSizeToolStripMenuItem_Click);
             // 
             // allFitSizeToolStripMenuItem
             // 
             this.allFitSizeToolStripMenuItem.Name = "allFitSizeToolStripMenuItem";
             this.allFitSizeToolStripMenuItem.Size = new System.Drawing.Size(315, 24);
-            this.allFitSizeToolStripMenuItem.Text = "ウィンドウにあわせる";
+            this.allFitSizeToolStripMenuItem.Text = "Fit To Window";
             this.allFitSizeToolStripMenuItem.Click += new System.EventHandler(this.allFitSizeToolStripMenuItem_Click);
             // 
             // onlyBigImageFitSizeToolStripMenuItem
             // 
             this.onlyBigImageFitSizeToolStripMenuItem.Name = "onlyBigImageFitSizeToolStripMenuItem";
             this.onlyBigImageFitSizeToolStripMenuItem.Size = new System.Drawing.Size(315, 24);
-            this.onlyBigImageFitSizeToolStripMenuItem.Text = "ウィンドウにあわせる（大きい画像のみ）";
+            this.onlyBigImageFitSizeToolStripMenuItem.Text = "Fit To Window (Large Image Only)";
             this.onlyBigImageFitSizeToolStripMenuItem.Click += new System.EventHandler(this.onlyBigImageFitSizeToolStripMenuItem_Click);
             // 
             // sizeToolStripSplitButton
@@ -218,7 +218,7 @@
             this.sizeToolStripSplitButton.Margin = new System.Windows.Forms.Padding(6, 1, 0, 2);
             this.sizeToolStripSplitButton.Name = "sizeToolStripSplitButton";
             this.sizeToolStripSplitButton.Size = new System.Drawing.Size(62, 24);
-            this.sizeToolStripSplitButton.Text = "サイズ";
+            this.sizeToolStripSplitButton.Text = "Size";
             this.sizeToolStripSplitButton.ButtonClick += new System.EventHandler(this.sizeToolStripSplitButton_ButtonClick);
             // 
             // toolBar

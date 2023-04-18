@@ -44,25 +44,25 @@ namespace PicSum.UIComponent.Common.FileContextMenu
         private bool _isDirectoryActiveTabOpenMenuItemVisible = false;
 
         // 画像ファイルメニュー項目
-        private ToolStripMenuItem _fileActiveTabOpenMenuItem = new ToolStripMenuItem("開く");
-        private ToolStripMenuItem _fileNewTabOpenMenuItem = new ToolStripMenuItem("新しいタブで開く");
-        private ToolStripMenuItem _fileNewWindowOpenMenuItem = new ToolStripMenuItem("新しいウィンドウで開く");
+        private ToolStripMenuItem _fileActiveTabOpenMenuItem = new ToolStripMenuItem("Open");
+        private ToolStripMenuItem _fileNewTabOpenMenuItem = new ToolStripMenuItem("Open in a new Tab");
+        private ToolStripMenuItem _fileNewWindowOpenMenuItem = new ToolStripMenuItem("Open in a new Window");
 
         // ファイルメニュー項目
-        private ToolStripMenuItem _fileOpen = new ToolStripMenuItem("関連付けて開く");
-        private ToolStripMenuItem _saveDirectoryOpen = new ToolStripMenuItem("保存フォルダを開く");
+        private ToolStripMenuItem _fileOpen = new ToolStripMenuItem("Open in association with");
+        private ToolStripMenuItem _saveDirectoryOpen = new ToolStripMenuItem("Open save folder");
 
         // フォルダメニュー項目
-        private ToolStripMenuItem _directoryActiveTabOpenMenuItem = new ToolStripMenuItem("開く");
-        private ToolStripMenuItem _directoryNewTabOpenMenuItem = new ToolStripMenuItem("新しいタブで開く");
-        private ToolStripMenuItem _directoryNewWindowOpenMenuItem = new ToolStripMenuItem("新しいウィンドウで開く");
-        private ToolStripMenuItem _explorerOpenMenuItem = new ToolStripMenuItem("エクスプローラで開く");
+        private ToolStripMenuItem _directoryActiveTabOpenMenuItem = new ToolStripMenuItem("Open");
+        private ToolStripMenuItem _directoryNewTabOpenMenuItem = new ToolStripMenuItem("Open in a new Tab");
+        private ToolStripMenuItem _directoryNewWindowOpenMenuItem = new ToolStripMenuItem("Open in a new Window");
+        private ToolStripMenuItem _explorerOpenMenuItem = new ToolStripMenuItem("Open in Explorer");
 
-        private ToolStripMenuItem _exportMenuItem = new ToolStripMenuItem("エクスポート");
-        private ToolStripMenuItem _pathCopyMenuItem = new ToolStripMenuItem("パスをコピー");
-        private ToolStripMenuItem _nameCopyMenuItem = new ToolStripMenuItem("名前をコピー");
-        private ToolStripMenuItem _addKeepMenuItem = new ToolStripMenuItem("キープ");
-        private ToolStripMenuItem _removeFromListMenuItem = new ToolStripMenuItem("一覧から削除");
+        private ToolStripMenuItem _exportMenuItem = new ToolStripMenuItem("Export");
+        private ToolStripMenuItem _pathCopyMenuItem = new ToolStripMenuItem("Copy Path");
+        private ToolStripMenuItem _nameCopyMenuItem = new ToolStripMenuItem("Copy Name");
+        private ToolStripMenuItem _addKeepMenuItem = new ToolStripMenuItem("Keeps");
+        private ToolStripMenuItem _removeFromListMenuItem = new ToolStripMenuItem("Remove from list");
 
         #endregion
 
