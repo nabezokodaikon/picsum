@@ -204,8 +204,6 @@
             // 
             this.wideComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.wideComboBox.DropDownListSize = new System.Drawing.Size(496, 224);
-            this.wideComboBox.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.wideComboBox.Location = new System.Drawing.Point(0, 477);
             this.wideComboBox.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.wideComboBox.Name = "wideComboBox";

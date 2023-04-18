@@ -160,22 +160,6 @@ namespace SWF.UIComponent.WideDropDown
         }
 
         /// <summary>
-        /// サイズ
-        /// </summary>
-        public new Size Size
-        {
-            get
-            {
-                return base.Size;
-            }
-            set
-            {
-                base.Size = value;
-                this.toolStripItem.Size = value;
-            }
-        }
-
-        /// <summary>
         /// スクロールバーの幅
         /// </summary>
         public int ScrollBarWidth
@@ -229,6 +213,7 @@ namespace SWF.UIComponent.WideDropDown
 
             this.toolStripItem.AutoSize = false;
             this.toolStripItem.BackColor = this.BackColor;
+            this.toolStripItem.Size = new Size(496, 224);
 
             this.flowList.BackColor = Color.White;
             this.flowList.SelectedItemColor = Color.FromArgb(192, 48, 96, 144);

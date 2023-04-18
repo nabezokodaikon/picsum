@@ -16,18 +16,6 @@ namespace SWF.UIComponent.WideDropDown
 
         public string SelectedItem { get; set; }
 
-        public Size DropDownListSize
-        {
-            get
-            {
-                return this.dropDownList.Size;
-            }
-            set
-            {
-                this.dropDownList.Size = value;
-            }
-        }
-
         public WideDropToolButton()
         {
             this.dropDownList.IsClickAndClose = false;

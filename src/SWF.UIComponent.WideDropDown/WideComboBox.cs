@@ -18,23 +18,10 @@ namespace SWF.UIComponent.WideDropDown
 
         private readonly WideDropDownList dropDownList = new WideDropDownList();
 
-        public Size DropDownListSize
-        {
-            get
-            {
-                return this.dropDownList.Size;
-            }
-            set
-            {
-                this.dropDownList.Size = value;
-            }
-        }
-
         public WideComboBox()
         {
             InitializeComponent();
-            this.dropDownList.Font = this.Font;
-            this.dropDownList.Size = new Size(512, 200);
+
             this.dropDownList.IsClickAndClose = true;
             this.dropDownList.Closed += dropDownList_Closed;
             this.dropDownList.ItemMouseClick += dropDownList_ItemMouseClick;
