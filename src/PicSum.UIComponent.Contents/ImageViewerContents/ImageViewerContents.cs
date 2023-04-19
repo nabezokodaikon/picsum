@@ -15,6 +15,7 @@ using SWF.UIComponent.ImagePanel;
 using PicSum.UIComponent.Contents.ContentsToolBar;
 using System.Security.Permissions;
 using System.Diagnostics;
+using System.Linq;
 
 namespace PicSum.UIComponent.Contents.ImageViewerContents
 {
@@ -40,7 +41,7 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
         private ImageSizeMode _sizeMode = ImageSizeMode.FitOnlyBigImage;
 
         private TwoWayProcess<ReadImageFileAsyncFacade, ReadImageFileParameterEntity, ReadImageFileResultEntity> _readImageFileProcess = null;
-        private OneWayProcess<AddKeepAsyncFacade, ListEntity<string>> _addKeepProcess = null;
+        private OneWayProcess<AddKeepAsyncFacade, ListEntity<KeepFileEntity>> _addKeepProcess = null;
         private OneWayProcess<ExportFileAsyncFacade, ExportFileParameterEntity> _exportFileProcess = null;
 
         #endregion
@@ -103,13 +104,13 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
             }
         }
 
-        private OneWayProcess<AddKeepAsyncFacade, ListEntity<string>> addKeepProcess
+        private OneWayProcess<AddKeepAsyncFacade, ListEntity<KeepFileEntity>> addKeepProcess
         {
             get
             {
                 if (_addKeepProcess == null)
                 {
-                    _addKeepProcess = TaskManager.CreateOneWayProcess<AddKeepAsyncFacade, ListEntity<string>>(ProcessContainer);
+                    _addKeepProcess = TaskManager.CreateOneWayProcess<AddKeepAsyncFacade, ListEntity<KeepFileEntity>>(ProcessContainer);
                 }
 
                 return _addKeepProcess;
@@ -190,7 +191,7 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
         [UIPermission(SecurityAction.Demand, Window = UIPermissionWindow.AllWindows)]
         protected override bool ProcessDialogKey(Keys keyData)
         {
-            if ((keyData & Keys.Alt) == Keys.Alt) 
+            if ((keyData & Keys.Alt) == Keys.Alt)
             {
                 return false;
             }
@@ -423,9 +424,9 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
             OnSelectedFileChanged(new SelectedFileChangeEventArgs(selectedFilePath));
         }
 
-        private void addKeep(IList<string> filePathList)
+        private void addKeep(IList<KeepFileEntity> filePathList)
         {
-            ListEntity<string> param = new ListEntity<string>(filePathList);
+            ListEntity<KeepFileEntity> param = new ListEntity<KeepFileEntity>(filePathList);
             addKeepProcess.Execute(this, param);
         }
 
@@ -794,7 +795,7 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
             {
                 if (!string.IsNullOrEmpty(_leftImageFilePath))
                 {
-                    addKeep(new string[] { _leftImageFilePath });
+                    addKeep(new KeepFileEntity[] { new KeepFileEntity(_leftImageFilePath, DateTime.Now) });
                 }
             }
         }
@@ -807,7 +808,7 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
             {
                 if (!string.IsNullOrEmpty(_rightImageFilePath))
                 {
-                    addKeep(new string[] { _rightImageFilePath });
+                    addKeep(new KeepFileEntity[] { new KeepFileEntity(_rightImageFilePath, DateTime.Now) });
                 }
             }
         }
@@ -921,7 +922,7 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
 
         private void fileContextMenu_AddKeep(object sender, PicSum.UIComponent.Common.FileContextMenu.ExecuteFileListEventArgs e)
         {
-            addKeep(e.FilePathList);
+            addKeep(e.FilePathList.Select(filePath => new KeepFileEntity(filePath, DateTime.Now)).ToList());
         }
 
         #endregion

@@ -14,15 +14,15 @@ namespace PicSum.Task.AsyncFacade
         public override void Execute()
         {
             OperatingKeepListAsyncLogic logic = new OperatingKeepListAsyncLogic(this);
-            IList<string> fileList = logic.GetKeep();
+            IList<KeepFileEntity> keepFileList = logic.GetKeep();
 
             GetFileShallowInfoAsyncLogic getInfoLogic = new GetFileShallowInfoAsyncLogic(this);
             ListEntity<FileShallowInfoEntity> infoList = new ListEntity<FileShallowInfoEntity>();
-            foreach (string file in fileList)
+            foreach (var keepFile in keepFileList)
             {
                 CheckCancel();
 
-                FileShallowInfoEntity info = getInfoLogic.Execute(file);
+                FileShallowInfoEntity info = getInfoLogic.Execute(keepFile.FilePath, keepFile.RegistrationDate);
                 if (info != null)
                 {
                     infoList.Add(info);

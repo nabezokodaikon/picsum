@@ -9,9 +9,9 @@ namespace PicSum.Task.AsyncFacade
     /// キープリストにファイルを追加します。
     /// </summary>
     public class AddKeepAsyncFacade
-        : OneWayFacadeBase<ListEntity<string>>
+        : OneWayFacadeBase<ListEntity<KeepFileEntity>>
     {
-        public override void Execute(ListEntity<string> param)
+        public override void Execute(ListEntity<KeepFileEntity> param)
         {
             if (param == null)
             {

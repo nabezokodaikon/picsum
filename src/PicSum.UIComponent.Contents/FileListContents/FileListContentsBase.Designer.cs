@@ -1,4 +1,6 @@
-﻿namespace PicSum.UIComponent.Contents.FileListContents
+﻿using System;
+
+namespace PicSum.UIComponent.Contents.FileListContents
 {
     partial class FileListContentsBase
     {
@@ -44,6 +46,7 @@
             this.sortFilePathToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.sortFileUpdateDateToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.sortFileCreateDateToolStripButton = new System.Windows.Forms.ToolStripButton();
+            this.sortFileRgistrationDateToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.thumbnailSizeToolStripSlider = new SWF.UIComponent.Common.ToolStripSlider();
             this.movePreviewToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.moveNextToolStripButton = new System.Windows.Forms.ToolStripButton();
@@ -174,6 +177,7 @@
             this.sortFilePathToolStripButton,
             this.sortFileCreateDateToolStripButton,
             this.sortFileUpdateDateToolStripButton,
+            this.sortFileRgistrationDateToolStripButton,
             this.thumbnailSizeToolStripSlider,
             this.movePreviewToolStripButton,
             this.moveNextToolStripButton});
@@ -223,6 +227,16 @@
             this.sortFileUpdateDateToolStripButton.Size = new System.Drawing.Size(120, 24);
             this.sortFileUpdateDateToolStripButton.Text = "Update Date";
             this.sortFileUpdateDateToolStripButton.Click += new System.EventHandler(this.sortFileUpdateDateToolStripButton_Click);
+            // 
+            // sortFilerRgistrationDateToolStripButton
+            // 
+            this.sortFileRgistrationDateToolStripButton.AutoSize = false;
+            this.sortFileRgistrationDateToolStripButton.AutoToolTip = false;
+            this.sortFileRgistrationDateToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.sortFileRgistrationDateToolStripButton.Name = "sortFilerRgistrationDateToolStripButton";
+            this.sortFileRgistrationDateToolStripButton.Size = new System.Drawing.Size(120, 24);
+            this.sortFileRgistrationDateToolStripButton.Text = "Registration Date";
+            this.sortFileRgistrationDateToolStripButton.Click += new System.EventHandler(this.sortFilerRgistrationDateToolStripButton_Click);
             // 
             // thumbnailSizeToolStripSlider
             // 
@@ -282,6 +296,7 @@
         private System.Windows.Forms.ToolStripButton sortFilePathToolStripButton;
         private System.Windows.Forms.ToolStripButton sortFileUpdateDateToolStripButton;
         private System.Windows.Forms.ToolStripButton sortFileCreateDateToolStripButton;
+        protected System.Windows.Forms.ToolStripButton sortFileRgistrationDateToolStripButton;
         private SWF.UIComponent.Common.ToolStripSlider thumbnailSizeToolStripSlider;
         private System.Windows.Forms.ToolStripButton movePreviewToolStripButton;
         private System.Windows.Forms.ToolStripButton moveNextToolStripButton;

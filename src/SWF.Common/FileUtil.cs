@@ -129,10 +129,17 @@ namespace SWF.Common
 
             foreach (var ex in ImageUtil.ImageFileExtensionList)
             {
-                var result = Directory.EnumerateFiles(directoryPath, string.Format("*{0}", ex)).Any();
-                if (result)
+                try 
                 {
-                    return true;
+                    var result = Directory.EnumerateFiles(directoryPath, string.Format("*{0}", ex)).Any();
+                    if (result)
+                    {
+                        return true;
+                    }
+                }
+                catch (UnauthorizedAccessException)
+                {
+                    return false;
                 }
             }
 

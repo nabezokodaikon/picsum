@@ -104,6 +104,7 @@
     <Compile Include="Entity\DragEntity.cs" />
     <Compile Include="Entity\ExportFileParameterEntity.cs" />
     <Compile Include="Entity\GetNextContentsParameterEntity.cs" />
+    <Compile Include="Entity\KeepFileEntity.cs" />
     <Compile Include="Entity\SearchFavoriteFolderParameterEntity.cs" />
     <Compile Include="Entity\SearchImageFileParameterEntity.cs" />
     <Compile Include="Entity\SearchImageFileResultEntity.cs" />

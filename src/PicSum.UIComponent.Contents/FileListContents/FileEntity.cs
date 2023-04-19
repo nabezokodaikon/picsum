@@ -10,6 +10,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
         public string FileName { get; set; }
         public Nullable<DateTime> UpdateDate { get; set; }
         public Nullable<DateTime> CreateDate { get; set; }
+        public Nullable<DateTime> RgistrationDate { get; set; }
         public bool IsFile { get; set; }
         public bool IsImageFile { get; set; }
         public Image Icon { get; set; }

@@ -190,6 +190,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
             this.IsAddKeepMenuItemVisible = true;
             this.IsRemoveFromListMenuItemVisible = false;
             this.IsMoveControlVisible = !string.IsNullOrEmpty(_parameter.DirectoryPath);
+            base.sortFileRgistrationDateToolStripButton.Enabled = false;
         }
 
         private void saveCurrentDirectoryState()

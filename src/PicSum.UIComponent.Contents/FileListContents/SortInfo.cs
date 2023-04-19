@@ -17,6 +17,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
         private bool _isFilePathSortAscending = true;
         private bool _isUpdateDateSortAscending = true;
         private bool _isCreateDateSortAscending = true;
+        private bool _isRgistrationDateSortAscending = true;
 
         public SortTypeID ActiveSortType
         {
@@ -42,6 +43,8 @@ namespace PicSum.UIComponent.Contents.FileListContents
                     return _isUpdateDateSortAscending;
                 case SortTypeID.CreateDate:
                     return _isCreateDateSortAscending;
+                case SortTypeID.RgistrationDate:
+                    return _isRgistrationDateSortAscending;
                 default:
                     return false;
             }
@@ -64,6 +67,9 @@ namespace PicSum.UIComponent.Contents.FileListContents
                     break;
                 case SortTypeID.CreateDate:
                     _isCreateDateSortAscending = isAscending;
+                    break;
+                case SortTypeID.RgistrationDate:
+                    _isRgistrationDateSortAscending = isAscending;
                     break;
                 default:
                     break;

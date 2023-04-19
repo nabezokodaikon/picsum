@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using PicSum.Core.Task.AsyncTask;
+using PicSum.Task.Entity;
 
 namespace PicSum.Task.AsyncLogic
 {
@@ -10,7 +11,7 @@ namespace PicSum.Task.AsyncLogic
     /// </summary>
     public class OperatingKeepListAsyncLogic : AsyncLogicBase
     {
-        private static readonly List<string> _keepList = new List<string>();
+        private static readonly List<KeepFileEntity> _keepList = new List<KeepFileEntity>();
         private static ReaderWriterLockSlim _lock = new ReaderWriterLockSlim();
 
         /// <summary>
@@ -23,21 +24,21 @@ namespace PicSum.Task.AsyncLogic
 
         public OperatingKeepListAsyncLogic(AsyncFacadeBase facade) : base(facade) { }
 
-        public void AddKeep(IList<string> filePathList)
+        public void AddKeep(IList<KeepFileEntity> keepFileList)
         {
-            if (filePathList == null)
+            if (keepFileList == null)
             {
-                throw new ArgumentNullException("filePathList");
+                throw new ArgumentNullException("keepFileList");
             }
 
             _lock.EnterWriteLock();
 
             try
             {
-                foreach (string filePath in filePathList)
+                foreach (var keepFile in keepFileList)
                 {
-                    _keepList.Remove(filePath);
-                    _keepList.Insert(0, filePath);
+                    _keepList.Remove(keepFile);
+                    _keepList.Insert(0, keepFile);
                 }
             }
             finally
@@ -46,20 +47,20 @@ namespace PicSum.Task.AsyncLogic
             }
         }
 
-        public void RemoveKeep(IList<string> filePathList)
+        public void RemoveKeep(IList<string> keepFileList)
         {
-            if (filePathList == null)
+            if (keepFileList == null)
             {
-                throw new ArgumentNullException("filePathList");
+                throw new ArgumentNullException("keepFileList");
             }
 
             _lock.EnterWriteLock();
 
             try
             {
-                foreach (string filePath in filePathList)
+                foreach (var keepFile in keepFileList)
                 {
-                    _keepList.Remove(filePath);
+                    _keepList.Remove(new KeepFileEntity(keepFile));
                 }
             }
             finally
@@ -68,13 +69,13 @@ namespace PicSum.Task.AsyncLogic
             }
         }
 
-        public IList<string> GetKeep()
+        public IList<KeepFileEntity> GetKeep()
         {
             _lock.EnterReadLock();
 
             try
             {
-                return new List<string>(_keepList.ToArray());
+                return new List<KeepFileEntity>(_keepList.ToArray());
             }
             finally
             {

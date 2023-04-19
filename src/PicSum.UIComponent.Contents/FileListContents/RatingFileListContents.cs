@@ -99,6 +99,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
             this.IsAddKeepMenuItemVisible = true;
             this.IsRemoveFromListMenuItemVisible = false;
             this.IsMoveControlVisible = false;
+            base.sortFileRgistrationDateToolStripButton.Enabled = true;
         }
 
         #endregion

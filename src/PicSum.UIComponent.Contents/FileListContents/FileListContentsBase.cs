@@ -38,7 +38,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
         private readonly SolidBrush _selectedTextBrush = new SolidBrush(Color.White);
         private readonly SortInfo _sortInfo = new SortInfo();
         private TwoWayProcess<GetThumbnailsAsyncFacade, GetThumbnailParameterEntity, ThumbnailImageEntity> _getThumbnailsProcess = null;
-        private OneWayProcess<AddKeepAsyncFacade, ListEntity<string>> _addKeepProcess = null;
+        private OneWayProcess<AddKeepAsyncFacade, ListEntity<KeepFileEntity>> _addKeepProcess = null;
         private OneWayProcess<ExportFileAsyncFacade, ExportFileParameterEntity> _exportFileProcess = null;
 
         #endregion
@@ -213,13 +213,13 @@ namespace PicSum.UIComponent.Contents.FileListContents
             }
         }
 
-        private OneWayProcess<AddKeepAsyncFacade, ListEntity<string>> addKeepProcess
+        private OneWayProcess<AddKeepAsyncFacade, ListEntity<KeepFileEntity>> addKeepProcess
         {
             get
             {
                 if (_addKeepProcess == null)
                 {
-                    _addKeepProcess = TaskManager.CreateOneWayProcess<AddKeepAsyncFacade, ListEntity<string>>(ProcessContainer);
+                    _addKeepProcess = TaskManager.CreateOneWayProcess<AddKeepAsyncFacade, ListEntity<KeepFileEntity>>(ProcessContainer);
                 }
 
                 return _addKeepProcess;
@@ -318,6 +318,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
                 destFile.FileName = srcFile.FileName;
                 destFile.UpdateDate = srcFile.UpdateDate;
                 destFile.CreateDate = srcFile.CreateDate;
+                destFile.RgistrationDate = srcFile.RgistrationDate;
                 destFile.Icon = srcFile.LargeIcon;
                 destFile.IsFile = srcFile.IsFile;
                 destFile.IsImageFile = srcFile.IsImageFile;
@@ -462,6 +463,8 @@ namespace PicSum.UIComponent.Contents.FileListContents
                     return sortFileUpdateDateToolStripButton;
                 case SortTypeID.CreateDate:
                     return sortFileCreateDateToolStripButton;
+                case SortTypeID.RgistrationDate:
+                    return sortFileRgistrationDateToolStripButton;
                 default:
                     return null;
             }
@@ -473,6 +476,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
             sortFilePathToolStripButton.Image = null;
             sortFileUpdateDateToolStripButton.Image = null;
             sortFileCreateDateToolStripButton.Image = null;
+            sortFileRgistrationDateToolStripButton.Image = null;
 
             ToolStripButton sortButton = getSortToolStripButton(_sortInfo.ActiveSortType);
             if (sortButton != null)
@@ -577,6 +581,19 @@ namespace PicSum.UIComponent.Contents.FileListContents
                         }
                     });
                     break;
+                case SortTypeID.RgistrationDate:
+                    filterList.Sort((x, y) =>
+                    {
+                        if (isAscending)
+                        {
+                            return x.RgistrationDate.GetValueOrDefault(DateTime.MinValue).CompareTo(y.RgistrationDate.GetValueOrDefault(DateTime.MinValue));
+                        }
+                        else
+                        {
+                            return -x.RgistrationDate.GetValueOrDefault(DateTime.MinValue).CompareTo(y.RgistrationDate.GetValueOrDefault(DateTime.MinValue));
+                        }
+                    });
+                    break;
                 default:
                     break;
             }
@@ -637,9 +654,9 @@ namespace PicSum.UIComponent.Contents.FileListContents
             return imageFiles.ToArray();
         }
 
-        private void addKeep(IList<string> filePathList)
+        private void addKeep(IList<KeepFileEntity> filePathList)
         {
-            ListEntity<string> param = new ListEntity<string>(filePathList);
+            ListEntity<KeepFileEntity> param = new ListEntity<KeepFileEntity>(filePathList);
             addKeepProcess.Execute(this, param);
         }
 
@@ -854,6 +871,14 @@ namespace PicSum.UIComponent.Contents.FileListContents
         {
             _sortInfo.ChangeSortDirection(SortTypeID.CreateDate);
             _sortInfo.ActiveSortType = SortTypeID.CreateDate;
+            setSort();
+            setFilter();
+        }
+
+        private void sortFilerRgistrationDateToolStripButton_Click(object sender, EventArgs e)
+        {
+            _sortInfo.ChangeSortDirection(SortTypeID.RgistrationDate);
+            _sortInfo.ActiveSortType = SortTypeID.RgistrationDate;
             setSort();
             setFilter();
         }
@@ -1233,7 +1258,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
 
         private void fileContextMenu_AddKeep(object sender, PicSum.UIComponent.Common.FileContextMenu.ExecuteFileListEventArgs e)
         {
-            addKeep(e.FilePathList);
+            addKeep(e.FilePathList.Select(filePath => new KeepFileEntity(filePath, DateTime.Now)).ToList());
         }
 
         private void fileContextMenu_RemoveFromList(object sender, PicSum.UIComponent.Common.FileContextMenu.ExecuteFileListEventArgs e)

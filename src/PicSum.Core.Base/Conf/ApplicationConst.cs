@@ -31,7 +31,8 @@ namespace PicSum.Core.Base.Conf
         FileName = 1,
         FilePath = 2,
         UpdateDate = 3,
-        CreateDate = 4
+        CreateDate = 4,
+        RgistrationDate = 5,
     }
 
     /// <summary>
