@@ -23,6 +23,7 @@ namespace PicSum.Task.AsyncLogic
             FileShallowInfoEntity info = new FileShallowInfoEntity();
             info.FilePath = filePath;
             info.FileName = FileUtil.GetFileName(filePath);
+            info.RgistrationDate = null;
 
             if (string.IsNullOrEmpty(filePath))
             {
@@ -65,6 +66,19 @@ namespace PicSum.Task.AsyncLogic
             {
                 return null;
             }
+
+            return info;
+        }
+
+        public FileShallowInfoEntity Execute(string filePath, DateTime registrationDate)
+        {
+            if (filePath == null)
+            {
+                throw new ArgumentNullException("filePath");
+            }
+
+            var info = this.Execute(filePath);
+            info.RgistrationDate = registrationDate;
 
             return info;
         }

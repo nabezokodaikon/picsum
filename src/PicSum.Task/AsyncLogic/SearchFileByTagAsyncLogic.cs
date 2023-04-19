@@ -9,7 +9,6 @@ using SWF.Common;
 
 namespace PicSum.Task.AsyncLogic
 {
-    // TODO: DTOを返すようにする。
     /// <summary>
     /// ファイルをタグで検索します。
     /// </summary>
@@ -17,7 +16,7 @@ namespace PicSum.Task.AsyncLogic
     {
         public SearchFileByTagAsyncLogic(AsyncFacadeBase facade) : base(facade) { }
 
-        public IList<string> Execute(string tag)
+        public IList<FileByTagDto> Execute(string tag)
         {
             if (tag == null)
             {
@@ -27,13 +26,13 @@ namespace PicSum.Task.AsyncLogic
             ReadFileByTagSql sql = new ReadFileByTagSql(tag);
             IList<FileByTagDto> dtoList = DatabaseManager<FileInfoConnection>.ReadList<FileByTagDto>(sql);
 
-            List<string> list = new List<string>();
+            List<FileByTagDto> list = new List<FileByTagDto>();
             foreach (FileByTagDto dto in dtoList)
             {
                 CheckCancel();
                 if (FileUtil.CanAccess(dto.FilePath))
                 {                    
-                    list.Add(dto.FilePath);
+                    list.Add(dto);
                 }
             }
 

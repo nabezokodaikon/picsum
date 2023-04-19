@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using PicSum.Core.Task.AsyncTask;
+using PicSum.Data.DatabaseAccessor.Dto;
 using PicSum.Task.AsyncLogic;
 using PicSum.Task.Entity;
 
@@ -20,15 +21,15 @@ namespace PicSum.Task.AsyncFacade
             }
 
             SearchFileByTagAsyncLogic logic = new SearchFileByTagAsyncLogic(this);
-            IList<string> fileList = logic.Execute(param.Value);
+            IList<FileByTagDto> dtoList = logic.Execute(param.Value);
 
             GetFileShallowInfoAsyncLogic getInfoLogic = new GetFileShallowInfoAsyncLogic(this);
             ListEntity<FileShallowInfoEntity> infoList = new ListEntity<FileShallowInfoEntity>();
-            foreach (string file in fileList)
+            foreach (FileByTagDto dto in dtoList)
             {
                 CheckCancel();
 
-                FileShallowInfoEntity info = getInfoLogic.Execute(file);
+                FileShallowInfoEntity info = getInfoLogic.Execute(dto.FilePath, dto.RegistrationDate);
                 if (info != null)
                 {
                     infoList.Add(info);
