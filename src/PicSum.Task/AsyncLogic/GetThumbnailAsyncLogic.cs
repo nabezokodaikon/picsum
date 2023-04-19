@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using PicSum.Core.Data.DatabaseAccessor;
@@ -125,9 +126,11 @@ namespace PicSum.Task.AsyncLogic
             ThumbnailBufferEntity memCash = getMemoryCash(filePath);
             if (memCash != null)
             {
-                DateTime updateDate = FileUtil.GetCreateDate(filePath);
+                DateTime createDate = FileUtil.GetCreateDate(filePath);
+                DateTime updateDate = FileUtil.GetUpdateDate(filePath);
                 if (memCash.ThumbnailWidth >= thumbWidth &&
                     memCash.ThumbnailHeight >= thumbHeight &&
+                    memCash.FileUpdatedate >= createDate &&
                     memCash.FileUpdatedate >= updateDate)
                 {
                     // メモリキャッシュを返します。
@@ -140,6 +143,7 @@ namespace PicSum.Task.AsyncLogic
                     {
                         if (dbCash.ThumbnailWidth >= thumbWidth &&
                             dbCash.ThumbnailHeight >= thumbHeight &&
+                            dbCash.FileUpdatedate >= createDate &&
                             dbCash.FileUpdatedate >= updateDate)
                         {
                             // DBキャッシュを返します。
@@ -168,9 +172,11 @@ namespace PicSum.Task.AsyncLogic
                 ThumbnailBufferEntity dbCash = getDBCash(filePath);
                 if (dbCash != null)
                 {
-                    DateTime updateDate = FileUtil.GetCreateDate(filePath);
+                    DateTime createDate = FileUtil.GetCreateDate(filePath);
+                    DateTime updateDate = FileUtil.GetUpdateDate(filePath);
                     if (dbCash.ThumbnailWidth >= thumbWidth &&
                         dbCash.ThumbnailHeight >= thumbHeight &&
+                        dbCash.FileUpdatedate >= createDate &&
                         dbCash.FileUpdatedate >= updateDate)
                     {
                         // DBキャッシュを返します。
@@ -201,9 +207,11 @@ namespace PicSum.Task.AsyncLogic
             ThumbnailBufferEntity memCash = getMemoryCash(filePath);
             if (memCash != null)
             {
+                DateTime createDate = FileUtil.GetCreateDate(filePath);
                 DateTime updateDate = FileUtil.GetUpdateDate(filePath);
                 if (memCash.ThumbnailWidth >= thumbWidth &&
                     memCash.ThumbnailHeight >= thumbHeight &&
+                    memCash.FileUpdatedate >= createDate &&
                     memCash.FileUpdatedate >= updateDate)
                 {
                     // メモリキャッシュを返します。
@@ -216,6 +224,7 @@ namespace PicSum.Task.AsyncLogic
                     {
                         if (dbCash.ThumbnailWidth >= thumbWidth &&
                             dbCash.ThumbnailHeight >= thumbHeight &&
+                            dbCash.FileUpdatedate >= createDate &&
                             dbCash.FileUpdatedate >= updateDate)
                         {
                             // DBキャッシュを返します。
@@ -260,9 +269,11 @@ namespace PicSum.Task.AsyncLogic
                 ThumbnailBufferEntity dbCash = getDBCash(filePath);
                 if (dbCash != null)
                 {
+                    DateTime createDate = FileUtil.GetCreateDate(filePath);
                     DateTime updateDate = FileUtil.GetUpdateDate(filePath);
                     if (dbCash.ThumbnailWidth >= thumbWidth &&
                         dbCash.ThumbnailHeight >= thumbHeight &&
+                        dbCash.FileUpdatedate >= createDate &&
                         dbCash.FileUpdatedate >= updateDate)
                     {
                         // DBキャッシュを返します。

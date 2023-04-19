@@ -311,7 +311,7 @@ namespace SWF.Common
                 throw new ArgumentNullException("filePath");
             }
 
-            return DateTime.Parse(File.GetLastWriteTime(filePath).ToString("yyyy/MM/dd hh:mm:ss"));
+            return File.GetLastWriteTime(filePath);
         }
 
         /// <summary>
@@ -326,7 +326,7 @@ namespace SWF.Common
                 throw new ArgumentNullException("filePath");
             }
 
-            return DateTime.Parse(File.GetCreationTime(filePath).ToString("yyyy/MM/dd hh:mm:ss"));
+            return File.GetCreationTime(filePath);
         }
 
         /// <summary>
