@@ -6,6 +6,7 @@ using PicSum.Data.DatabaseAccessor.Dto;
 using PicSum.Data.DatabaseAccessor.Sql;
 using SWF.Common;
 
+// TODO: DTOを返すようにする。
 namespace PicSum.Task.AsyncLogic
 {
     /// <summary>
@@ -18,15 +19,15 @@ namespace PicSum.Task.AsyncLogic
         public IList<string> Execute(int rating)
         {
             ReadFileByRatingSql sql = new ReadFileByRatingSql(rating);
-            IList<SingleValueDto<string>> dtoList = DatabaseManager<FileInfoConnection>.ReadList<SingleValueDto<string>>(sql);
+            IList<FileByRatingDto> dtoList = DatabaseManager<FileInfoConnection>.ReadList<FileByRatingDto>(sql);
 
             List<string> list = new List<string>();
-            foreach (SingleValueDto<string> dto in dtoList)
+            foreach (FileByRatingDto dto in dtoList)
             {
                 CheckCancel();
-                if (FileUtil.CanAccess(dto.Value))
+                if (FileUtil.CanAccess(dto.FilePath))
                 {                    
-                    list.Add(dto.Value);
+                    list.Add(dto.FilePath);
                 }
             }
 

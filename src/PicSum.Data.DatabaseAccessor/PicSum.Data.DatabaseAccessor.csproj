@@ -87,11 +87,13 @@
   <ItemGroup>
     <Compile Include="Connection\FileInfoConnection.cs" />
     <Compile Include="Connection\ThumbnailConnection.cs" />
+    <Compile Include="Dto\FileByRatingDto.cs" />
     <Compile Include="Dto\FileInfoDto.cs" />
     <Compile Include="Dto\FileTagDto.cs" />
     <Compile Include="Dto\DirectoryStateDto.cs" />
     <Compile Include="Dto\DirectoryViewHistoryDto.cs" />
     <Compile Include="Dto\SingleValueDto.cs" />
+    <Compile Include="Dto\FileByTagDto.cs" />
     <Compile Include="Dto\TagInfoDto.cs" />
     <Compile Include="Dto\ThumbnailDto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

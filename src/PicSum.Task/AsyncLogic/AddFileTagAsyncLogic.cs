@@ -13,7 +13,7 @@ namespace PicSum.Task.AsyncLogic
     {
         public AddFileTagAsyncLogic(AsyncFacadeBase facade) : base(facade) { }
 
-        public bool Execute(string filePath, string tag)
+        public bool Execute(string filePath, string tag, DateTime registrationDate)
         {
             if (filePath == null)
             {
@@ -25,7 +25,7 @@ namespace PicSum.Task.AsyncLogic
                 throw new ArgumentNullException("tag");
             }
 
-            CreationTagSql sql = new CreationTagSql(filePath, tag);
+            CreationTagSql sql = new CreationTagSql(filePath, tag, registrationDate);
             return DatabaseManager<FileInfoConnection>.Update(sql);
         }
     }

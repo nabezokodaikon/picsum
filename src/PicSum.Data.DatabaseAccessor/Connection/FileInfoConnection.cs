@@ -32,22 +32,24 @@ CREATE TABLE 'm_file' (
 
 /* タグT */
 CREATE TABLE 't_tag' (
-     'file_id'     INTEGER  NOT NULL
-    ,'tag'         TEXT(64) NOT NULL
-    ,'create_date' DATETIME
-    ,'update_date' DATETIME
+     'file_id'           INTEGER  NOT NULL
+    ,'tag'               TEXT(64) NOT NULL
+    ,'registration_date' DATETIME NOT NULL
+    ,'create_date'       DATETIME
+    ,'update_date'       DATETIME
     ,PRIMARY KEY (
-        'file_id'
-       ,'tag'
+         'file_id'
+        ,'tag'
      )
 );
 
 /* 評価値T */
 CREATE TABLE 't_rating' (
-     'file_id'     INTEGER  NOT NULL
-    ,'rating'      INTEGER  NOT NULL
-    ,'create_date' DATETIME
-    ,'update_date' DATETIME
+     'file_id'           INTEGER  NOT NULL
+    ,'rating'            INTEGER  NOT NULL
+    ,'registration_date' DATETIME NOT NULL
+    ,'create_date'       DATETIME
+    ,'update_date'       DATETIME
     ,PRIMARY KEY (
          'file_id'
         ,'rating'

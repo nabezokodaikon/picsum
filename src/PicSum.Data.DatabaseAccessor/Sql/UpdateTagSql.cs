@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using System;
+using System.Data;
 using PicSum.Core.Data.DatabaseAccessor;
 
 namespace PicSum.Data.DatabaseAccessor.Sql
@@ -9,12 +10,15 @@ namespace PicSum.Data.DatabaseAccessor.Sql
     /// <remarks>タグの存在確認として使用します。</remarks>
     public class UpdateTagSql : SqlBase
     {
-        public UpdateTagSql(string filePath, string tag)
+        public UpdateTagSql(string filePath, string tag, DateTime registrationDate)
             : base()
         {
-            base.ParameterList.AddRange(new IDbDataParameter[] 
-                { SqlParameterUtil.CreateParameter("file_path", filePath), 
-                  SqlParameterUtil.CreateParameter("tag", tag) });
+            base.ParameterList.AddRange(new IDbDataParameter[]
+            {
+                SqlParameterUtil.CreateParameter("file_path", filePath), 
+                SqlParameterUtil.CreateParameter("tag", tag),
+                SqlParameterUtil.CreateParameter("registration_date", registrationDate)
+            });
         }
     }
 }

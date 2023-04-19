@@ -25,15 +25,16 @@ namespace PicSum.Task.AsyncFacade
                 UpdateFileRatingAsyncLogic updateFileRating = new UpdateFileRatingAsyncLogic(this);
                 AddFileRatingAsyncLogic addFileRating = new AddFileRatingAsyncLogic(this);
                 AddFileMasterAsyncLogic addFileMaster = new AddFileMasterAsyncLogic(this);
+                var registrationDate = DateTime.Now;
 
                 foreach (string filePath in param.FilePathList)
                 {
-                    if (!updateFileRating.Execute(filePath, param.RatingValue))
+                    if (!updateFileRating.Execute(filePath, param.RatingValue, registrationDate))
                     {
-                        if (!addFileRating.Execute(filePath, param.RatingValue))
+                        if (!addFileRating.Execute(filePath, param.RatingValue, registrationDate))
                         {
                             addFileMaster.Execute(filePath);
-                            addFileRating.Execute(filePath, param.RatingValue);
+                            addFileRating.Execute(filePath, param.RatingValue, registrationDate);
                         }
                     }
                 }

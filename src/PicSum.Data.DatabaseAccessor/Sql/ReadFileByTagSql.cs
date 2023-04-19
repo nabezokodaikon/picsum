@@ -6,7 +6,7 @@ namespace PicSum.Data.DatabaseAccessor.Sql
     /// <summary>
     /// タグを指定してファイルを読込みます。
     /// </summary>
-    public class ReadFileByTagSql : SqlBase<SingleValueDto<string>>
+    public class ReadFileByTagSql : SqlBase<FileByTagDto>
     {
         public ReadFileByTagSql(string tag)
             : base()

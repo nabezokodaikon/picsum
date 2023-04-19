@@ -25,15 +25,16 @@ namespace PicSum.Task.AsyncFacade
                 UpdateFileTagAsyncLogic updateTag = new UpdateFileTagAsyncLogic(this);
                 AddFileTagAsyncLogic addTag = new AddFileTagAsyncLogic(this);
                 AddFileMasterAsyncLogic addFileMaster = new AddFileMasterAsyncLogic(this);
+                var registrationDate = DateTime.Now;
 
                 foreach (string filePath in param.FilePathList)
                 {
-                    if (!updateTag.Execute(filePath, param.Tag))
+                    if (!updateTag.Execute(filePath, param.Tag, registrationDate))
                     {
-                        if (!addTag.Execute(filePath, param.Tag))
+                        if (!addTag.Execute(filePath, param.Tag, registrationDate))
                         {
                             addFileMaster.Execute(filePath);
-                            addTag.Execute(filePath, param.Tag);
+                            addTag.Execute(filePath, param.Tag, registrationDate);
                         }
                     }
                 }

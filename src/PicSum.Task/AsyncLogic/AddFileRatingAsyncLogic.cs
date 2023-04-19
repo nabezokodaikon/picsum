@@ -13,7 +13,7 @@ namespace PicSum.Task.AsyncLogic
     {
         public AddFileRatingAsyncLogic(AsyncFacadeBase facade) : base(facade) { }
 
-        public bool Execute(string filePath, int ratingValue)
+        public bool Execute(string filePath, int ratingValue, DateTime registrationDate)
         {
             if (filePath == null)
             {
@@ -25,7 +25,7 @@ namespace PicSum.Task.AsyncLogic
                 throw new ArgumentException("0未満は評価値として無効です。", "ratingValue");
             }
 
-            CreationRatingSql sql = new CreationRatingSql(filePath, ratingValue);
+            CreationRatingSql sql = new CreationRatingSql(filePath, ratingValue, registrationDate);
             return DatabaseManager<FileInfoConnection>.Update(sql);
         }
     }
