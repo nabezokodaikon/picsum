@@ -9,12 +9,13 @@ namespace PicSum.Core.Data.DatabaseAccessor
     /// </summary>
     public abstract class SqlBase
     {
-        public string SqlText { get; private set; }
+        private readonly string sqlText;
+
         public List<IDbDataParameter> ParameterList { get; protected set; }
 
         public SqlBase(string sqlText)
         {
-            this.SqlText = sqlText ?? throw new ArgumentNullException(nameof(sqlText));
+            this.sqlText = sqlText ?? throw new ArgumentNullException(nameof(sqlText));
             this.ParameterList = new List<IDbDataParameter>();
         }
 
@@ -24,7 +25,7 @@ namespace PicSum.Core.Data.DatabaseAccessor
         /// <returns>SQL文</returns>
         public string GetExecuteSql()
         {
-            return SqlUtil.GetExecuteSql(this.SqlText, this.ParameterList);
+            return SqlUtil.GetExecuteSql(this.sqlText, this.ParameterList);
         }
     }
 
@@ -33,12 +34,13 @@ namespace PicSum.Core.Data.DatabaseAccessor
     /// </summary>
     public abstract class SqlBase<TDto> where TDto : IDto
     {
-        public string SqlText { get; private set; }
+        private readonly string sqlText;
+
         public List<IDbDataParameter> ParameterList { get; protected set; }
 
         public SqlBase(string sqlText)
         {
-            this.SqlText = sqlText ?? throw new ArgumentNullException(nameof(sqlText));
+            this.sqlText = sqlText ?? throw new ArgumentNullException(nameof(sqlText));
             this.ParameterList = new List<IDbDataParameter>();
         }
 
@@ -48,7 +50,7 @@ namespace PicSum.Core.Data.DatabaseAccessor
         /// <returns>SQL文</returns>
         public string GetExecuteSql()
         {
-            return SqlUtil.GetExecuteSql(this.SqlText, this.ParameterList);
+            return SqlUtil.GetExecuteSql(this.sqlText, this.ParameterList);
         }
     }
 }
