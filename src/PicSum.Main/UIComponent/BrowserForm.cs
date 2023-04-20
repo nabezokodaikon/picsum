@@ -166,7 +166,6 @@ namespace PicSum.Main.UIComponent
                 }
 
                 StartupPrameterEntity param = new StartupPrameterEntity();
-                param.SqlDirectoryPath = Path.Combine(Directory.GetParent(Application.ExecutablePath).FullName, "sql");
                 param.FileInfoDBFilePath = Path.Combine(dbDir, @"fileinfo.sqlite");
                 param.ThumbnailDBFilePath = Path.Combine(dbDir, @"thumbnail.sqlite");
 

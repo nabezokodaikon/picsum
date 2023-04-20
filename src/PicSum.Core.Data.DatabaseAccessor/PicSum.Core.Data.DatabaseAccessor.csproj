@@ -101,8 +101,7 @@
     <Compile Include="IDto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SqlBase.cs" />
-    <Compile Include="SqlFileUtil.cs" />
-    <Compile Include="SqlManager.cs" />
+    <Compile Include="SqlUtil.cs" />
     <Compile Include="SqlParameterUtil.cs" />
     <Compile Include="Transaction.cs" />
   </ItemGroup>

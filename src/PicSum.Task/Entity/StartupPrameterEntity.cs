@@ -9,6 +9,5 @@ namespace PicSum.Task.Entity
     {
         public string FileInfoDBFilePath { get; set; }
         public string ThumbnailDBFilePath { get; set; }
-        public string SqlDirectoryPath { get; set; }
     }
 }

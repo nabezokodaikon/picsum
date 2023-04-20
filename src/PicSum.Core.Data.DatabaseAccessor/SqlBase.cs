@@ -24,7 +24,7 @@ namespace PicSum.Core.Data.DatabaseAccessor
         /// <returns>SQL文</returns>
         public string GetExecuteSql()
         {
-            return SqlFileUtil.GetExecuteSql(this.SqlText, this.ParameterList);
+            return SqlUtil.GetExecuteSql(this.SqlText, this.ParameterList);
         }
     }
 
@@ -48,7 +48,7 @@ namespace PicSum.Core.Data.DatabaseAccessor
         /// <returns>SQL文</returns>
         public string GetExecuteSql()
         {
-            return SqlFileUtil.GetExecuteSql(this.SqlText, this.ParameterList);
+            return SqlUtil.GetExecuteSql(this.SqlText, this.ParameterList);
         }
     }
 }

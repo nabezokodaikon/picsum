@@ -10,9 +10,9 @@ using PicSum.Core.Base.Conf;
 namespace PicSum.Core.Data.DatabaseAccessor
 {
     /// <summary>
-    /// SQLファイルユーティリティ
+    /// SQLユーティリティ
     /// </summary>
-    internal static class SqlFileUtil
+    internal static class SqlUtil
     {
         // SQLファイルエンコード
         private static readonly Encoding _encoding = Encoding.GetEncoding(932);

@@ -20,7 +20,6 @@ namespace PicSum.Task.AsyncLogic
                 throw new ArgumentNullException("param");
             }
 
-            SqlManager.SqlDirectory = param.SqlDirectoryPath;
             DatabaseManager<FileInfoConnection>.Connect(new FileInfoConnection(param.FileInfoDBFilePath));
             DatabaseManager<ThumbnailConnection>.Connect(new ThumbnailConnection(param.ThumbnailDBFilePath));
         }

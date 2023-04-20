@@ -55,7 +55,6 @@ namespace PicSum.Main
                     OperatingKeepListAsyncLogic.DisposeStaticResouces();
                     GetThumbnailAsyncLogic.DisposeStaticResouces();
                     ExportFileAsyncFacade.DisposeStaticResouces();
-                    SqlManager.DisposeStaticResouces();
 
 #if DEBUG
                     Logger.Info("アプリケーションを終了します。");
