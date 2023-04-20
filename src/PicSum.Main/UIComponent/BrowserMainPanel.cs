@@ -286,12 +286,14 @@ namespace PicSum.Main.UIComponent
         {
             contents.SelectedFileChanged += new EventHandler<SelectedFileChangeEventArgs>(contents_SelectedFileChanged);
             contents.OpenContents += new EventHandler<BrowserContentsEventArgs>(contents_OpenContents);
+            contents.MouseClick += new EventHandler<MouseEventArgs>(contents_MouseClick);
         }
 
         private void removeContentsEventHandler(BrowserContents contents)
         {
             contents.SelectedFileChanged -= new EventHandler<SelectedFileChangeEventArgs>(contents_SelectedFileChanged);
             contents.OpenContents -= new EventHandler<BrowserContentsEventArgs>(contents_OpenContents);
+            contents.MouseClick -= new EventHandler<MouseEventArgs>(contents_MouseClick);
         }
 
         private void setContentsHistoryButtonEnabled()
@@ -574,6 +576,20 @@ namespace PicSum.Main.UIComponent
         private void contents_OpenContents(object sender, BrowserContentsEventArgs e)
         {
             openContents(e.Parameter, e.OpenType);
+        }
+
+        private void contents_MouseClick(object sender, MouseEventArgs e)
+        {
+            switch (e.Button)
+            { 
+                case MouseButtons.XButton1:
+                    this.MovePreviewContents();
+                    break;
+                case MouseButtons.XButton2:
+                    this.MoveNextContents();
+                    break;
+                default: break;
+            }
         }
 
         #endregion

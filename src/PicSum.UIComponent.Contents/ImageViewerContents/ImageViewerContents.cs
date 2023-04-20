@@ -787,6 +787,16 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
             rightImagePanel.Focus();
         }
 
+        private void rightImagePanel_MouseUp(object sender, MouseEventArgs e)
+        {
+            base.OnMouseClick(e);
+        }
+
+        private void leftImagePanel_MouseUp(object sender, MouseEventArgs e)
+        {
+            base.OnMouseClick(e);
+        }
+
         private void leftImagePanel_ImageMouseClick(object sender, MouseEventArgs e)
         {
             setTitle(_leftImageFilePath);

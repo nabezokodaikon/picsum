@@ -72,6 +72,7 @@
             this.leftImagePanel.ImageMouseClick += new System.EventHandler<System.Windows.Forms.MouseEventArgs>(this.leftImagePanel_ImageMouseClick);
             this.leftImagePanel.DragStart += new System.EventHandler(this.leftImagePanel_DragStart);
             this.leftImagePanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.leftImagePanel_MouseDown);
+            this.leftImagePanel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.leftImagePanel_MouseUp);
             // 
             // fileContextMenu
             // 
@@ -109,6 +110,7 @@
             this.rightImagePanel.ImageMouseClick += new System.EventHandler<System.Windows.Forms.MouseEventArgs>(this.rightImagePanel_ImageMouseClick);
             this.rightImagePanel.DragStart += new System.EventHandler(this.rightImagePanel_DragStart);
             this.rightImagePanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.rightImagePanel_MouseDown);
+            this.rightImagePanel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.rightImagePanel_MouseUp);
             // 
             // filePathToolTip
             // 

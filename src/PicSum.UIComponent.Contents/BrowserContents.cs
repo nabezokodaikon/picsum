@@ -21,6 +21,7 @@ namespace PicSum.UIComponent.Contents
 
         public event EventHandler<SelectedFileChangeEventArgs> SelectedFileChanged;
         public event EventHandler<BrowserContentsEventArgs> OpenContents;
+        public new event EventHandler<MouseEventArgs> MouseClick;
 
         #endregion
 
@@ -106,6 +107,12 @@ namespace PicSum.UIComponent.Contents
             {
                 OpenContents(this, e);
             }
+        }
+
+        protected new virtual void OnMouseClick(MouseEventArgs e)
+        {
+            if (this.MouseClick == null) return;
+            this.MouseClick(this, e);
         }
 
         protected virtual void OnBackgroundMouseClick(MouseEventArgs e)

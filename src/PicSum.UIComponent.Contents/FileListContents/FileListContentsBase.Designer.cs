@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows.Forms;
 
 namespace PicSum.UIComponent.Contents.FileListContents
 {
@@ -84,6 +85,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
             this.flowList.SelectedItemChanged += new System.EventHandler(this.flowList_SelectedItemChange);
             this.flowList.ItemExecute += new System.EventHandler(this.flowList_ItemExecute);
             this.flowList.MouseDown += new System.Windows.Forms.MouseEventHandler(this.flowList_MouseDown);
+            this.flowList.MouseClick += new System.Windows.Forms.MouseEventHandler(this.flowList_MouseClick);
             this.flowList.ItemMouseClick += new System.EventHandler<System.Windows.Forms.MouseEventArgs>(this.flowList_ItemMouseClick);
             this.flowList.ItemMouseDoubleClick += new System.EventHandler<System.Windows.Forms.MouseEventArgs>(this.flowList_ItemMouseDoubleClick);
             this.flowList.BackgroundMouseClick += new System.EventHandler<System.Windows.Forms.MouseEventArgs>(this.flowLilst_BackgroundMouseClick);

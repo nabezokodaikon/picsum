@@ -919,6 +919,11 @@ namespace PicSum.UIComponent.Contents.FileListContents
             this.Focus();
         }
 
+        private void flowList_MouseClick(object sender, MouseEventArgs e)
+        {
+            base.OnMouseClick(e);
+        }
+
         private void flowList_Drawitem(object sender, SWF.UIComponent.FlowList.DrawItemEventArgs e)
         {
             if (_filterFilePathList == null)
