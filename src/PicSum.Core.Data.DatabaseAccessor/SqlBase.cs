@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 
 namespace PicSum.Core.Data.DatabaseAccessor
@@ -8,17 +9,13 @@ namespace PicSum.Core.Data.DatabaseAccessor
     /// </summary>
     public abstract class SqlBase
     {
-        private List<IDbDataParameter> _parameterList = new List<IDbDataParameter>();
+        public string SqlText { get; private set; }
+        public List<IDbDataParameter> ParameterList { get; protected set; }
 
-        /// <summary>
-        /// パラメータリスト
-        /// </summary>
-        public List<IDbDataParameter> ParameterList
+        public SqlBase(string sqlText)
         {
-            get
-            {
-                return _parameterList;
-            }
+            this.SqlText = sqlText ?? throw new ArgumentNullException(nameof(sqlText));
+            this.ParameterList = new List<IDbDataParameter>();
         }
 
         /// <summary>
@@ -27,10 +24,7 @@ namespace PicSum.Core.Data.DatabaseAccessor
         /// <returns>SQL文</returns>
         public string GetExecuteSql()
         {
-            // 自身のクラス名からSQL文を取得します。
-            string sqlText = SqlManager.GetSqlText(this.GetType().Name);
-
-            return SqlFileUtil.GetExecuteSql(sqlText, _parameterList);
+            return SqlFileUtil.GetExecuteSql(this.SqlText, this.ParameterList);
         }
     }
 
@@ -39,17 +33,13 @@ namespace PicSum.Core.Data.DatabaseAccessor
     /// </summary>
     public abstract class SqlBase<TDto> where TDto : IDto
     {
-        private List<IDbDataParameter> _parameterList = new List<IDbDataParameter>();
+        public string SqlText { get; private set; }
+        public List<IDbDataParameter> ParameterList { get; protected set; }
 
-        /// <summary>
-        /// パラメータリスト
-        /// </summary>
-        public List<IDbDataParameter> ParameterList
+        public SqlBase(string sqlText)
         {
-            get
-            {
-                return _parameterList;
-            }
+            this.SqlText = sqlText ?? throw new ArgumentNullException(nameof(sqlText));
+            this.ParameterList = new List<IDbDataParameter>();
         }
 
         /// <summary>
@@ -58,10 +48,7 @@ namespace PicSum.Core.Data.DatabaseAccessor
         /// <returns>SQL文</returns>
         public string GetExecuteSql()
         {
-            // 自身のクラス名からSQL文を取得します。
-            string sqlText = SqlManager.GetSqlText(this.GetType().Name);
-
-            return SqlFileUtil.GetExecuteSql(sqlText, _parameterList);
+            return SqlFileUtil.GetExecuteSql(this.SqlText, this.ParameterList);
         }
     }
 }

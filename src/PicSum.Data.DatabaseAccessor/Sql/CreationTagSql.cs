@@ -9,8 +9,22 @@ namespace PicSum.Data.DatabaseAccessor.Sql
     /// </summary>
     public class CreationTagSql : SqlBase
     {
+        private const string SQL_TEXT =
+@"
+INSERT INTO t_tag (
+     file_id
+    ,tag
+    ,registration_date
+)
+SELECT mf.file_id
+      ,:tag
+      ,:registration_date
+  FROM m_file mf
+ WHERE mf.file_path = :file_path
+";
+
         public CreationTagSql(string filePath, string tag, DateTime registration_date)
-            : base()
+            : base(SQL_TEXT)
         {
             base.ParameterList.AddRange(new IDbDataParameter[] 
                 { SqlParameterUtil.CreateParameter("file_path", filePath), 

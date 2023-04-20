@@ -98,7 +98,6 @@
     <Compile Include="Dto\ThumbnailDto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sql\CreationFileSql.cs" />
-    <Compile Include="Sql\CreationFileViewHistorySql.cs" />
     <Compile Include="Sql\CreationDirectoryStateSql.cs" />
     <Compile Include="Sql\CreationDirectoryViewCounterSql.cs" />
     <Compile Include="Sql\CreationDirectoryViewHistorySql.cs" />
@@ -112,10 +111,8 @@
     <Compile Include="Sql\ReadAllTagSql.cs" />
     <Compile Include="Sql\ReadFileByRatingSql.cs" />
     <Compile Include="Sql\ReadFileByTagSql.cs" />
-    <Compile Include="Sql\ReadFileByViewDateSql.cs" />
     <Compile Include="Sql\ReadFileInfoSql.cs" />
     <Compile Include="Sql\ReadFileTagSql.cs" />
-    <Compile Include="Sql\ReadFileViewHistorySql.cs" />
     <Compile Include="Sql\ReadFavoriteFolderSql.cs" />
     <Compile Include="Sql\ReadDirectoryStateByFolderSql.cs" />
     <Compile Include="Sql\ReadDirectoryViewHistorySql.cs" />

@@ -183,7 +183,7 @@ namespace PicSum.Core.Data.DatabaseAccessor
                         cmd.Parameters.AddRange(sql.ParameterList.ToArray());
                     }
 
-                    int result = ExecuteNonQuery(sql.GetType().Name, cmd);
+                    int result = ExecuteNonQuery(cmd);
                     if (result > 0)
                     {
                         // 更新されたレコードが存在するため、Trueを返します。
@@ -228,7 +228,7 @@ namespace PicSum.Core.Data.DatabaseAccessor
                         cmd.Parameters.AddRange(sql.ParameterList.ToArray());
                     }
 
-                    using (var reader = ExecuteReader(sql.GetType().Name, cmd, CommandBehavior.Default))
+                    using (var reader = ExecuteReader(cmd, CommandBehavior.Default))
                     {
                         if (reader.HasRows)
                         {
@@ -282,7 +282,7 @@ namespace PicSum.Core.Data.DatabaseAccessor
                         cmd.Parameters.AddRange(sql.ParameterList.ToArray());
                     }
 
-                    using (SQLiteDataReader reader = ExecuteReader(sql.GetType().Name, cmd, CommandBehavior.SingleRow))
+                    using (SQLiteDataReader reader = ExecuteReader(cmd, CommandBehavior.SingleRow))
                     {
                         if (reader.HasRows)
                         {
@@ -330,7 +330,7 @@ namespace PicSum.Core.Data.DatabaseAccessor
                         cmd.Parameters.AddRange(sql.ParameterList.ToArray());
                     }
 
-                    object result = ExecuteScalar(sql.GetType().Name, cmd);
+                    object result = ExecuteScalar(cmd);
                     if (result != null && result != DBNull.Value)
                     {
                         return (T)result;
@@ -351,17 +351,17 @@ namespace PicSum.Core.Data.DatabaseAccessor
 
         #region プライベートメソッド
 
-        private int ExecuteNonQuery(string sqlTitle, SQLiteCommand cmd)
+        private int ExecuteNonQuery(SQLiteCommand cmd)
         {
             return cmd.ExecuteNonQuery();
         }
 
-        private SQLiteDataReader ExecuteReader(string sqlTitle, SQLiteCommand cmd, CommandBehavior cb)
+        private SQLiteDataReader ExecuteReader(SQLiteCommand cmd, CommandBehavior cb)
         {
             return cmd.ExecuteReader(cb);
         }
 
-        private object ExecuteScalar(string sqlTitle, SQLiteCommand cmd)
+        private object ExecuteScalar(SQLiteCommand cmd)
         {
             return cmd.ExecuteScalar();
         }

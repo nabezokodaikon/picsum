@@ -9,8 +9,20 @@ namespace PicSum.Data.DatabaseAccessor.Sql
     /// </summary>
     public class UpdateDirectoryStateSql : SqlBase
     {
+        private const string SQL_TEXT =
+@"
+UPDATE t_directory_state
+   SET sort_type_id       = :sort_type_id
+      ,is_ascending       = :is_ascending
+      ,selected_file_path = :selected_file_path
+ WHERE file_id = (SELECT mf.file_id
+                    FROM m_file mf
+                   WHERE mf.file_path = :directory_path
+                 )
+";
+
         public UpdateDirectoryStateSql(string directoryPath, int sortTypeID, bool isAscending, string selectedFilePath)
-            : base()
+            : base(SQL_TEXT)
         {
             base.ParameterList.AddRange(new IDbDataParameter[]
                 { SqlParameterUtil.CreateParameter("directory_path", directoryPath),
@@ -20,7 +32,7 @@ namespace PicSum.Data.DatabaseAccessor.Sql
         }
 
         public UpdateDirectoryStateSql(string directoryPath, int sortTypeID, bool isAscending)
-            : base()
+            : base(SQL_TEXT)
         {
             base.ParameterList.AddRange(new IDbDataParameter[]
                 { SqlParameterUtil.CreateParameter("directory_path", directoryPath),
