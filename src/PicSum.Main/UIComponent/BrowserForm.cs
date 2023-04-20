@@ -50,6 +50,7 @@ namespace PicSum.Main.UIComponent
 
         private IContainer _components = null;
         private BrowserMainPanel _browserMainPanel = null;
+        private bool isKeyDown = false;
 
         #endregion
 
@@ -235,6 +236,11 @@ namespace PicSum.Main.UIComponent
 
         protected override void OnKeyDown(KeyEventArgs e)
         {
+            if (this.isKeyDown) 
+            {
+                return;
+            }
+
             if (e.Alt)
             {
                 switch (e.KeyCode)
@@ -242,11 +248,13 @@ namespace PicSum.Main.UIComponent
                     case Keys.Left:
                         {
                             this.browserMainPanel.MovePreviewContents();
+                            this.isKeyDown = true;
                             break;
                         }
                     case Keys.Right:
                         {
                             this.browserMainPanel.MoveNextContents();
+                            this.isKeyDown = true;
                             break;
                         }
                 }
@@ -259,18 +267,26 @@ namespace PicSum.Main.UIComponent
                         {
                             this.RemoveTabOrWindow();
                             this.Focus();
+                            this.isKeyDown = true;
                             break;
                         }
                     case Keys.T:
                         {
                             this.AddFavoriteDirectoryListTab();
                             this.Focus();
+                            this.isKeyDown = true;
                             break;
                         }
                 }
             }
 
             base.OnKeyDown(e);
+        }
+
+        protected override void OnKeyUp(KeyEventArgs e)
+        {
+            this.isKeyDown = false;
+            base.OnKeyUp(e);
         }
 
         #endregion

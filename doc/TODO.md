@@ -23,5 +23,3 @@
 * [タイトルバーを消して独自に実装する3つの方法](https://tz-log.com/cs-custom-titlebar/)
 ## アプリケーションの公開
 * [Microsoft ストアへのアプリケーションの公開](https://sorceryforce.net/ja/tips/microsoft-store-release)
-## キー
-* `keydown`ではなく、`keypress`に変更する。
