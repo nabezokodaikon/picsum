@@ -180,6 +180,12 @@ namespace SWF.UIComponent.FlowList
 
         protected override void OnKeyDown(KeyEventArgs e)
         {
+            if (!this.CanKeyDown)
+            {
+                base.OnKeyDown(e);
+                return;
+            }
+
             if (_itemCount > 0 && !_rectangleSelection.IsBegun)
             {
                 _selectedItemIndexs.BeginUpdate();

@@ -229,6 +229,7 @@ namespace SWF.UIComponent.WideDropDown
             this.flowList.IsMultiSelect = false;
             this.flowList.Font = new Font("Courier", 10F, FontStyle.Regular, GraphicsUnit.Point, 128);
             this.flowList.SetItemSize(144, 32);
+            this.flowList.CanKeyDown = false;
 
             this.flowList.ItemMouseClick += new EventHandler<MouseEventArgs>(this.flowList_ItemMouseClick);
             this.flowList.DrawItem += new EventHandler<SWF.UIComponent.FlowList.DrawItemEventArgs>(this.flowList_DrawItem);

@@ -40,6 +40,8 @@ namespace SWF.UIComponent.FlowList
 
         #region パブリックプロパティ
 
+        public bool CanKeyDown { get; set; } = true;
+
         /// <summary>
         /// スクロールバーの幅
         /// </summary>
