@@ -23,3 +23,8 @@
 * [タイトルバーを消して独自に実装する3つの方法](https://tz-log.com/cs-custom-titlebar/)
 ## アプリケーションの公開
 * [Microsoft ストアへのアプリケーションの公開](https://sorceryforce.net/ja/tips/microsoft-store-release)
+## ワイドドロップダウン
+* `Escaple`で、ドロップダウンを消す。
+* エンターキーで、項目を開く。
+### コンボボックス
+* `Alt`+`下`で、ドロップダウンを表示する。
