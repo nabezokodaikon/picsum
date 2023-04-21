@@ -77,6 +77,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
             this.flowList.SelectedItemColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(48)))), ((int)(((byte)(96)))), ((int)(((byte)(144)))));
             this.flowList.Size = new System.Drawing.Size(630, 366);
             this.flowList.TabIndex = 1;
+            this.flowList.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.flowList.Text = "flowList1";
             this.flowList.ItemDelete += new System.EventHandler(this.flowList_ItemDelete);
             this.flowList.DrawItem += new System.EventHandler<SWF.UIComponent.FlowList.DrawItemEventArgs>(this.flowList_Drawitem);

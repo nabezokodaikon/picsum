@@ -8,7 +8,7 @@ namespace SWF.UIComponent.FlowList
     /// <summary>
     /// フローリストコントロール
     /// </summary>
-    public partial class FlowList : Control
+    public partial class FlowList : PictureBox
     {
         #region 定数・列挙
 

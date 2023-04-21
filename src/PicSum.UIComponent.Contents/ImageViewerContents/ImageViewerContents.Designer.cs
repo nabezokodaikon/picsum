@@ -131,6 +131,7 @@
             this.checkPatternPanel.RectangleSize = 24;
             this.checkPatternPanel.Size = new System.Drawing.Size(925, 494);
             this.checkPatternPanel.TabIndex = 3;
+            this.checkPatternPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             // 
             // viewContextMenuStrip
             // 
