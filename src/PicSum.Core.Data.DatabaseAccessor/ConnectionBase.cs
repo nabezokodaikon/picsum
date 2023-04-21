@@ -13,30 +13,14 @@ namespace PicSum.Core.Data.DatabaseAccessor
     /// <summary>
     /// DBに接続するベースクラスです。
     /// </summary>
-    public abstract class ConnectionBase : IDisposable
+    public abstract class ConnectionBase
+        : IDisposable
     {
-        #region インスタンス変数
-
-        private readonly ReaderWriterLockSlim _transactionLock = new ReaderWriterLockSlim();
-        private readonly ReaderWriterLockSlim _executeSqlLock = new ReaderWriterLockSlim();
-        private readonly SQLiteConnection _connection = null;
-        private SQLiteTransaction _transaction = null;
-
-        #endregion
-
-        #region プライベートプロパティ
-
-        private SQLiteConnection Connection
-        {
-            get
-            {
-                return _connection;
-            }
-        }
-
-        #endregion
-
-        #region コンストラクタ
+        private bool disposed = false;
+        private readonly ReaderWriterLockSlim transactionLock = new ReaderWriterLockSlim();
+        private readonly ReaderWriterLockSlim executeSqlLock = new ReaderWriterLockSlim();
+        private readonly SQLiteConnection connection;
+        private SQLiteTransaction transaction = null;
 
         /// <summary>
         /// コンストラクタ
@@ -45,10 +29,8 @@ namespace PicSum.Core.Data.DatabaseAccessor
         /// <param name="tableCreateSql">テーブル作成SQL</param>
         protected ConnectionBase(string dbFilePath, string tableCreateSql)
         {
-            if (dbFilePath == null)
-            {
-                throw new ArgumentNullException("dbFilePath");
-            }
+            if (dbFilePath == null) throw new ArgumentNullException(nameof(dbFilePath));
+            if (tableCreateSql == null) throw new ArgumentNullException(nameof(tableCreateSql));
 
             if (!File.Exists(dbFilePath))
             {
@@ -65,23 +47,42 @@ namespace PicSum.Core.Data.DatabaseAccessor
                 }
             }
 
-            string connectionString = string.Format("Data Source={0}", dbFilePath);
-            _connection = new SQLiteConnection(connectionString);
-            _connection.Open();
+            var connectionString = string.Format("Data Source={0}", dbFilePath);
+            this.connection = new SQLiteConnection(connectionString);
+            this.connection.Open();
         }
 
-        #endregion
+        protected virtual void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
 
-        #region パブリックメソッド
+            if (disposing)
+            {
+                this.connection.Close();
+                this.transactionLock.Dispose();
+                this.executeSqlLock.Dispose();
+            }
+
+            this.transaction = null;
+
+            this.disposed = true;
+        }
 
         /// <summary>
         /// リソースを解放します。
         /// </summary>
         public void Dispose()
         {
-            _connection.Close();
-            _transactionLock.Dispose();
-            _executeSqlLock.Dispose();
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        ~ConnectionBase()
+        {
+            Dispose(false);
         }
 
         /// <summary>
@@ -90,71 +91,71 @@ namespace PicSum.Core.Data.DatabaseAccessor
         /// <returns>トランザクションオブジェクト</returns>
         public Transaction BeginTransaction()
         {
-            _transactionLock.EnterWriteLock();
-            _executeSqlLock.EnterWriteLock();
+            this.transactionLock.EnterWriteLock();
+            this.executeSqlLock.EnterWriteLock();
+
+            if (this.transaction != null)
+            {
+                throw new InvalidOperationException("トランザクションが実行中です。");
+            }
 
             try
             {
-                if (_transaction != null)
-                {
-                    throw new Exception("トランザクションが実行中です。");
-                }
-
-                _transaction = Connection.BeginTransaction();
+                this.transaction = this.connection.BeginTransaction();
                 return new Transaction(this);
             }
             catch (Exception)
             {
-                _transactionLock.ExitWriteLock();
+                this.transactionLock.ExitWriteLock();
                 throw;
             }
             finally
             {
-                _executeSqlLock.ExitWriteLock();
+                this.executeSqlLock.ExitWriteLock();
             }
         }
 
         public void Commit()
         {
-            if (_transaction == null)
-            {
-                throw new NullReferenceException("_transaction");
-            }
+            this.executeSqlLock.EnterWriteLock();
 
-            _executeSqlLock.EnterWriteLock();
+            if (this.transaction == null)
+            {
+                throw new InvalidOperationException("トランザクションが開始されていません。");
+            }
 
             try
             {
-                _transaction.Commit();
+                transaction.Commit();
             }
             finally
             {
-                _transaction.Dispose();
-                _transaction = null;
-                _executeSqlLock.ExitWriteLock();
-                _transactionLock.ExitWriteLock();
+                this.transaction.Dispose();
+                this.transaction = null;
+                this.executeSqlLock.ExitWriteLock();
+                this.transactionLock.ExitWriteLock();
             }
         }
 
         public void Roolback()
         {
-            if (_transaction == null)
-            {
-                throw new NullReferenceException("_transaction");
-            }
+            this.executeSqlLock.EnterWriteLock();
 
-            _executeSqlLock.EnterWriteLock();
+            if (this.transaction == null)
+            {
+                throw new InvalidOperationException("トランザクションが開始されていません。");
+            }
 
             try
             {
-                _transaction.Commit();
+                this.transaction.Commit();
             }
             finally
             {
-                _transaction.Dispose();
-                _transaction = null;
-                _executeSqlLock.ExitWriteLock();
-                _transactionLock.ExitWriteLock();
+                this.transaction.Dispose();
+                this.transaction = null;
+                this.executeSqlLock.ExitWriteLock();
+                this.transactionLock.ExitWriteLock();
             }
         }
 
@@ -165,16 +166,18 @@ namespace PicSum.Core.Data.DatabaseAccessor
         /// <returns>更新されたレコードが存在するならTrue。存在しなければFalseを返します。</returns>
         public bool Update(SqlBase sql)
         {
-            if (sql == null)
-            {
-                throw new ArgumentNullException("sql");
-            }
+            if (sql == null) throw new ArgumentNullException(nameof(sql));
 
-            _executeSqlLock.EnterWriteLock();
+            this.executeSqlLock.EnterWriteLock();
+
+            if (this.transaction == null)
+            {
+                throw new InvalidOperationException("トランザクションが開始されていません。");
+            }
 
             try
             {
-                using (var cmd = Connection.CreateCommand())
+                using (var cmd = this.connection.CreateCommand())
                 {
                     cmd.CommandText = sql.GetExecuteSql();
 
@@ -183,7 +186,7 @@ namespace PicSum.Core.Data.DatabaseAccessor
                         cmd.Parameters.AddRange(sql.ParameterList.ToArray());
                     }
 
-                    int result = ExecuteNonQuery(cmd);
+                    var result = ExecuteNonQuery(cmd);
                     if (result > 0)
                     {
                         // 更新されたレコードが存在するため、Trueを返します。
@@ -198,7 +201,7 @@ namespace PicSum.Core.Data.DatabaseAccessor
             }
             finally
             {
-                _executeSqlLock.ExitWriteLock();
+                this.executeSqlLock.ExitWriteLock();
             }
         }
 
@@ -210,16 +213,13 @@ namespace PicSum.Core.Data.DatabaseAccessor
         /// <returns>Dtoリスト</returns>
         public IList<TDto> ReadList<TDto>(SqlBase<TDto> sql) where TDto : IDto, new()
         {
-            if (sql == null)
-            {
-                throw new ArgumentNullException("sql");
-            }
+            if (sql == null) throw new ArgumentNullException(nameof(sql));
 
-            _executeSqlLock.EnterReadLock();
+            this.executeSqlLock.EnterReadLock();
 
             try
             {
-                using (var cmd = Connection.CreateCommand())
+                using (var cmd = this.connection.CreateCommand())
                 {
                     cmd.CommandText = sql.GetExecuteSql();
 
@@ -232,11 +232,11 @@ namespace PicSum.Core.Data.DatabaseAccessor
                     {
                         if (reader.HasRows)
                         {
-                            IList<TDto> list = new List<TDto>();
+                            var list = new List<TDto>();
 
                             while (reader.Read())
                             {
-                                TDto dto = new TDto();
+                                var dto = new TDto();
                                 dto.Read(reader);
                                 list.Add(dto);
                             }
@@ -252,7 +252,7 @@ namespace PicSum.Core.Data.DatabaseAccessor
             }
             finally
             {
-                _executeSqlLock.ExitReadLock();
+                this.executeSqlLock.ExitReadLock();
             }
         }
 
@@ -264,16 +264,13 @@ namespace PicSum.Core.Data.DatabaseAccessor
         /// <returns>Dto</returns>
         public TDto ReadLine<TDto>(SqlBase<TDto> sql) where TDto : IDto, new()
         {
-            if (sql == null)
-            {
-                throw new ArgumentNullException("sql");
-            }
+            if (sql == null) throw new ArgumentNullException(nameof(sql));
 
-            _executeSqlLock.EnterReadLock();
+            this.executeSqlLock.EnterReadLock();
 
             try
             {
-                using (SQLiteCommand cmd = Connection.CreateCommand())
+                using (var cmd = this.connection.CreateCommand())
                 {
                     cmd.CommandText = sql.GetExecuteSql();
 
@@ -300,7 +297,7 @@ namespace PicSum.Core.Data.DatabaseAccessor
             }
             finally
             {
-                _executeSqlLock.ExitReadLock();
+                this.executeSqlLock.ExitReadLock();
             }
         }
 
@@ -312,16 +309,13 @@ namespace PicSum.Core.Data.DatabaseAccessor
         /// <returns>1オブジェクトの実行結果</returns>
         public T ReadValue<T>(SqlBase sql)
         {
-            if (sql == null)
-            {
-                throw new ArgumentNullException("sql");
-            }
+            if (sql == null) throw new ArgumentNullException(nameof(sql));
 
-            _executeSqlLock.EnterReadLock();
+            this.executeSqlLock.EnterReadLock();
 
             try
             {
-                using (var cmd = Connection.CreateCommand())
+                using (var cmd = this.connection.CreateCommand())
                 {
                     cmd.CommandText = sql.GetExecuteSql();
 
@@ -330,7 +324,7 @@ namespace PicSum.Core.Data.DatabaseAccessor
                         cmd.Parameters.AddRange(sql.ParameterList.ToArray());
                     }
 
-                    object result = ExecuteScalar(cmd);
+                    var result = ExecuteScalar(cmd);
                     if (result != null && result != DBNull.Value)
                     {
                         return (T)result;
@@ -343,13 +337,9 @@ namespace PicSum.Core.Data.DatabaseAccessor
             }
             finally
             {
-                _executeSqlLock.ExitReadLock();
+                this.executeSqlLock.ExitReadLock();
             }
         }
-
-        #endregion
-
-        #region プライベートメソッド
 
         private int ExecuteNonQuery(SQLiteCommand cmd)
         {
@@ -365,7 +355,5 @@ namespace PicSum.Core.Data.DatabaseAccessor
         {
             return cmd.ExecuteScalar();
         }
-
-        #endregion
     }
 }
