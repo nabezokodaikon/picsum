@@ -14,12 +14,12 @@ namespace PicSum.Core.Task.AsyncTask
         #region クラスメンバ
 
         // 新しいタスクID
-        private static int _newTaskId = 0;
+        private static int newTaskId = 0;
 
         // 新しいタスクIDを取得します。
         private static int GetNewTaskId()
         {
-            return Interlocked.Increment(ref _newTaskId);
+            return Interlocked.Increment(ref newTaskId);
         }
 
         #endregion
@@ -35,16 +35,16 @@ namespace PicSum.Core.Task.AsyncTask
 
         #region インスタンス変数
 
-        private readonly int _taskId;
-        private readonly DateTime _startDateTime;
-        private long _endDateTimeTicks = 0;
-        private readonly Type _processType = null;
-        private readonly object _sender = null;
-        private readonly IEntity _parameter;
-        private long _isExecuting = 0;
-        private long _isCancel = 0;
-        private long _isEnd = 0;
-        private Exception _exception = null;
+        private readonly int taskId;
+        private readonly DateTime startDateTime;
+        private long endDateTimeTicks = 0;
+        private readonly Type processType = null;
+        private readonly object sender = null;
+        private readonly IEntity parameter;
+        private long isExecuting = 0;
+        private long isCancel = 0;
+        private long isEnd = 0;
+        private Exception exception = null;
 
         #endregion
 
@@ -57,7 +57,7 @@ namespace PicSum.Core.Task.AsyncTask
         {
             get
             {
-                return _sender;
+                return this.sender;
             }
         }
 
@@ -68,7 +68,7 @@ namespace PicSum.Core.Task.AsyncTask
         {
             get
             {
-                return _taskId;
+                return this.taskId;
             }
         }
 
@@ -79,7 +79,7 @@ namespace PicSum.Core.Task.AsyncTask
         {
             get
             {
-                return _startDateTime;
+                return this.startDateTime;
             }
         }
 
@@ -90,13 +90,13 @@ namespace PicSum.Core.Task.AsyncTask
         {
             get
             {
-                var ticks = Interlocked.Read(ref _endDateTimeTicks);
+                var ticks = Interlocked.Read(ref this.endDateTimeTicks);
                 return new DateTime(ticks);
             }
             set
             {
                 var ticks = value.Ticks;
-                Interlocked.Exchange(ref _endDateTimeTicks, ticks);
+                Interlocked.Exchange(ref this.endDateTimeTicks, ticks);
             }
         }
 
@@ -107,7 +107,7 @@ namespace PicSum.Core.Task.AsyncTask
         {
             get
             {
-                return _processType;
+                return this.processType;
             }
         }
 
@@ -118,11 +118,11 @@ namespace PicSum.Core.Task.AsyncTask
         {
             get
             {
-                return Interlocked.Read(ref _isExecuting) == 1;
+                return Interlocked.Read(ref this.isExecuting) == 1;
             }
             private set
             {
-                Interlocked.Exchange(ref _isExecuting, Convert.ToInt64(value));
+                Interlocked.Exchange(ref this.isExecuting, Convert.ToInt64(value));
             }
         }
 
@@ -133,11 +133,11 @@ namespace PicSum.Core.Task.AsyncTask
         {
             get
             {
-                return Interlocked.Read(ref _isCancel) == 1;
+                return Interlocked.Read(ref this.isCancel) == 1;
             }
             private set
             {
-                Interlocked.Exchange(ref _isCancel, Convert.ToInt64(value));
+                Interlocked.Exchange(ref this.isCancel, Convert.ToInt64(value));
             }
         }
 
@@ -148,11 +148,11 @@ namespace PicSum.Core.Task.AsyncTask
         {
             get
             {
-                return Interlocked.Read(ref _isEnd) == 1;
+                return Interlocked.Read(ref this.isEnd) == 1;
             }
             private set
             {
-                Interlocked.Exchange(ref _isEnd, Convert.ToInt64(value));
+                Interlocked.Exchange(ref this.isEnd, Convert.ToInt64(value));
             }
         }
 
@@ -163,7 +163,7 @@ namespace PicSum.Core.Task.AsyncTask
         {
             get
             {
-                var ex = Interlocked.CompareExchange<Exception>(ref _exception, null, null);
+                var ex = Interlocked.CompareExchange<Exception>(ref this.exception, null, null);
                 return ex != null;
             }
         }
@@ -175,12 +175,8 @@ namespace PicSum.Core.Task.AsyncTask
         {
             get
             {
-                if (_parameter == null)
-                {
-                    throw new NullReferenceException();
-                }
-
-                return _parameter;
+                if (parameter == null) throw new NullReferenceException();
+                return parameter;
             }
         }
 
@@ -191,7 +187,7 @@ namespace PicSum.Core.Task.AsyncTask
         {
             get
             {
-                return Interlocked.CompareExchange<Exception>(ref _exception, null, null);
+                return Interlocked.CompareExchange<Exception>(ref this.exception, null, null);
             }
         }
 
@@ -206,20 +202,10 @@ namespace PicSum.Core.Task.AsyncTask
         /// <param name="processType">プロセスの型</param>
         internal TaskInfo(object sender, Type processType)
         {
-            if (sender == null)
-            {
-                throw new ArgumentNullException("sender");
-            }
-
-            if (processType == null)
-            {
-                throw new ArgumentNullException("processType");
-            }
-
-            _sender = sender;
-            _taskId = GetNewTaskId();
-            _startDateTime = DateTime.Now;
-            _processType = processType;
+            this.sender = sender ?? throw new ArgumentNullException(nameof(sender));
+            this.processType = processType ?? throw new ArgumentNullException("processType");
+            this.taskId = GetNewTaskId();
+            this.startDateTime = DateTime.Now;            
         }
 
         /// <summary>
@@ -230,26 +216,11 @@ namespace PicSum.Core.Task.AsyncTask
         /// <param name="param">パラメータ</param>
         internal TaskInfo(object sender, Type processType, IEntity param)
         {
-            if (sender == null)
-            {
-                throw new ArgumentNullException("sender");
-            }
-
-            if (processType == null)
-            {
-                throw new ArgumentNullException("processType");
-            }
-
-            if (param == null)
-            {
-                throw new ArgumentNullException("param");
-            }
-
-            _sender = sender;
-            _taskId = GetNewTaskId();
-            _startDateTime = DateTime.Now;
-            _processType = processType;
-            _parameter = param;
+            this.sender = sender ?? throw new ArgumentNullException(nameof(sender));
+            this.processType = processType ?? throw new ArgumentNullException("processType");
+            this.parameter = param ?? throw new ArgumentNullException(nameof(param));
+            this.taskId = GetNewTaskId();
+            this.startDateTime = DateTime.Now;
         }
 
         #endregion
@@ -261,17 +232,17 @@ namespace PicSum.Core.Task.AsyncTask
         /// </summary>
         public void BeginCancel()
         {
-            if (IsEnd)
+            if (this.IsEnd)
             {
                 return;
             }
 
-            if (IsCancel)
+            if (this.IsCancel)
             {
                 return;
             }
 
-            CancelExecute();
+            this.CancelExecute();
         }
 
         /// <summary>
@@ -279,24 +250,24 @@ namespace PicSum.Core.Task.AsyncTask
         /// </summary>
         internal void StartExecute()
         {
-            if (IsEnd)
+            if (this.IsEnd)
             {
-                throw new Exception(string.Format("タスク[{0}]は終了しています。", _taskId));
+                throw new Exception(string.Format("タスク[{0}]は終了しています。", taskId));
             }
 
-            if (IsExecuting)
+            if (this.IsExecuting)
             {
-                throw new Exception(string.Format("タスク[{0}]は既に実行中です。", _taskId));
+                throw new Exception(string.Format("タスク[{0}]は既に実行中です。", taskId));
             }
 
-            if (IsCancel)
+            if (this.IsCancel)
             {
-                throw new Exception(string.Format("タスク[{0}]はキャンセルされています。", _taskId));
+                throw new Exception(string.Format("タスク[{0}]はキャンセルされています。", taskId));
             }
 
-            IsExecuting = true;
+            this.IsExecuting = true;
 
-            onTaskStateChanged(new TaskStateChangedEventArgs(this));
+            this.OnTaskStateChanged(new TaskStateChangedEventArgs(this));
         }
 
         /// <summary>
@@ -304,19 +275,19 @@ namespace PicSum.Core.Task.AsyncTask
         /// </summary>
         internal void CancelExecute()
         {
-            if (IsEnd)
+            if (this.IsEnd)
             {
-                throw new Exception(string.Format("タスク[{0}]は終了しています。", _taskId));
+                throw new Exception(string.Format("タスク[{0}]は終了しています。", taskId));
             }
 
-            if (IsCancel)
+            if (this.IsCancel)
             {
-                throw new Exception(string.Format("タスク[{0}]はキャンセルされています。", _taskId));
+                throw new Exception(string.Format("タスク[{0}]はキャンセルされています。", taskId));
             }
 
-            IsCancel = true;
+            this.IsCancel = true;
 
-            onTaskStateChanged(new TaskStateChangedEventArgs(this));
+            this.OnTaskStateChanged(new TaskStateChangedEventArgs(this));
         }
 
         /// <summary>
@@ -324,15 +295,15 @@ namespace PicSum.Core.Task.AsyncTask
         /// </summary>
         internal void EndExecute()
         {
-            if (IsEnd)
+            if (this.IsEnd)
             {
-                throw new Exception(string.Format("タスク[{0}]は終了しています。", _taskId));
+                throw new Exception(string.Format("タスク[{0}]は終了しています。", taskId));
             }
 
-            IsEnd = true;
-            EndDateTime = DateTime.Now;
+            this.IsEnd = true;
+            this.EndDateTime = DateTime.Now;
 
-            onTaskStateChanged(new TaskStateChangedEventArgs(this));
+            this.OnTaskStateChanged(new TaskStateChangedEventArgs(this));
         }
 
         /// <summary>
@@ -341,17 +312,14 @@ namespace PicSum.Core.Task.AsyncTask
         /// <param name="ex"></param>
         internal void SetException(Exception ex)
         {
-            if (ex == null)
-            {
-                throw new ArgumentNullException("ex");
-            }
+            if (ex == null) throw new ArgumentNullException(nameof(ex));
 
-            if (Interlocked.CompareExchange<Exception>(ref _exception, ex, null) != null)
+            if (Interlocked.CompareExchange<Exception>(ref this.exception, ex, null) != null)
             {
                 throw new Exception("既に例外がセットされています。");
             }
 
-            onTaskStateChanged(new TaskStateChangedEventArgs(this));
+            this.OnTaskStateChanged(new TaskStateChangedEventArgs(this));
         }
 
         #region IEquatable<TaskInfo> メンバ
@@ -388,11 +356,11 @@ namespace PicSum.Core.Task.AsyncTask
         #region プライベートメソッド
 
         // タスク状態変更イベントを発生させます。
-        private void onTaskStateChanged(TaskStateChangedEventArgs e)
+        private void OnTaskStateChanged(TaskStateChangedEventArgs e)
         {
-            if (TaskStateChanged != null)
+            if (this.TaskStateChanged != null)
             {
-                TaskStateChanged(this, new TaskStateChangedEventArgs(this));
+                this.TaskStateChanged(this, new TaskStateChangedEventArgs(this));
             }
         }
 

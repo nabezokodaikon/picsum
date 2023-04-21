@@ -1,14 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace PicSum.Core.Data.DatabaseAccessor
 {
     /// <summary>
     /// DB管理
     /// </summary>
-    public static class DatabaseManager<TConnection> where TConnection : ConnectionBase
+    public static class DatabaseManager<TConnection>
+        where TConnection : ConnectionBase
     {
         // DBコネクション
-        private static TConnection _connection = null;
+        private static TConnection connection = null;
 
         /// <summary>
         /// DBに接続します。
@@ -16,7 +18,8 @@ namespace PicSum.Core.Data.DatabaseAccessor
         /// <param name="connection"></param>
         public static void Connect(TConnection connection)
         {
-            _connection = connection;
+            DatabaseManager<TConnection>.connection =
+                connection ?? throw new ArgumentNullException(nameof(connection));
         }
 
         /// <summary>
@@ -24,7 +27,7 @@ namespace PicSum.Core.Data.DatabaseAccessor
         /// </summary>
         public static void Close()
         {
-            _connection.Dispose();
+            DatabaseManager<TConnection>.connection.Dispose();
         }
 
         /// <summary>
@@ -33,7 +36,7 @@ namespace PicSum.Core.Data.DatabaseAccessor
         /// <returns>トランザクションオブジェクト</returns>
         public static Transaction BeginTransaction()
         {
-            return _connection.BeginTransaction();
+            return DatabaseManager<TConnection>.connection.BeginTransaction();
         }
 
         /// <summary>
@@ -43,7 +46,9 @@ namespace PicSum.Core.Data.DatabaseAccessor
         /// <returns>更新されたレコードが存在するならTrue。存在しなければFalseを返します。</returns>
         public static bool Update(SqlBase sql)
         {
-            return _connection.Update(sql);
+            if (sql == null) throw new ArgumentNullException(nameof(sql));
+
+            return DatabaseManager<TConnection>.connection.Update(sql);
         }
 
         /// <summary>
@@ -54,7 +59,9 @@ namespace PicSum.Core.Data.DatabaseAccessor
         /// <returns>Dtoリスト</returns>
         public static IList<TDto> ReadList<TDto>(SqlBase<TDto> sql) where TDto : IDto, new()
         {
-            return _connection.ReadList<TDto>(sql);
+            if (sql == null) throw new ArgumentNullException(nameof(sql));
+
+            return DatabaseManager<TConnection>.connection.ReadList<TDto>(sql);
         }
 
         /// <summary>
@@ -65,7 +72,9 @@ namespace PicSum.Core.Data.DatabaseAccessor
         /// <returns>Dto</returns>
         public static TDto ReadLine<TDto>(SqlBase<TDto> sql) where TDto : IDto, new()
         {
-            return _connection.ReadLine<TDto>(sql);
+            if (sql == null) throw new ArgumentNullException(nameof(sql));
+
+            return DatabaseManager<TConnection>.connection.ReadLine<TDto>(sql);
         }
 
         /// <summary>
@@ -76,7 +85,9 @@ namespace PicSum.Core.Data.DatabaseAccessor
         /// <returns>1オブジェクトの実行結果</returns>
         public static TConnection ReadValue(SqlBase sql)
         {
-            return _connection.ReadValue<TConnection>(sql);
+            if (sql == null) throw new ArgumentNullException(nameof(sql));
+
+            return DatabaseManager<TConnection>.connection.ReadValue<TConnection>(sql);
         }
     }
 }

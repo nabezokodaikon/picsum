@@ -62,6 +62,12 @@ namespace PicSum.Core.Data.DatabaseAccessor
             if (disposing)
             {
                 this.connection.Close();
+
+                if (this.transaction != null) 
+                {
+                    this.transaction.Dispose();
+                }
+                
                 this.transactionLock.Dispose();
                 this.executeSqlLock.Dispose();
             }
@@ -82,7 +88,7 @@ namespace PicSum.Core.Data.DatabaseAccessor
 
         ~ConnectionBase()
         {
-            Dispose(false);
+            this.Dispose(false);
         }
 
         /// <summary>
@@ -211,7 +217,8 @@ namespace PicSum.Core.Data.DatabaseAccessor
         /// <typeparam name="T">戻り値のDto</typeparam>
         /// <param name="sql">データアクセサ</param>
         /// <returns>Dtoリスト</returns>
-        public IList<TDto> ReadList<TDto>(SqlBase<TDto> sql) where TDto : IDto, new()
+        public IList<TDto> ReadList<TDto>(SqlBase<TDto> sql)
+            where TDto : IDto, new()
         {
             if (sql == null) throw new ArgumentNullException(nameof(sql));
 

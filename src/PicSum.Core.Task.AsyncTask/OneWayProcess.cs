@@ -13,7 +13,8 @@ namespace PicSum.Core.Task.AsyncTask
     /// OneWayプロセスクラス
     /// </summary>
     /// <typeparam name="TFacade">ファサードの型</typeparam>
-    public sealed class OneWayProcess<TFacade> : ProcessBase
+    public sealed class OneWayProcess<TFacade>
+        : ProcessBase
         where TFacade : OneWayFacadeBase, new()
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
@@ -22,7 +23,8 @@ namespace PicSum.Core.Task.AsyncTask
         /// コンストラクタ
         /// </summary>
         /// <param name="container">コンテナ</param>
-        internal OneWayProcess(IContainer container) : base(container) { }
+        internal OneWayProcess(IContainer container)
+            : base(container) { }
 
         /// <summary>
         /// 処理を実行します。
@@ -30,18 +32,17 @@ namespace PicSum.Core.Task.AsyncTask
         /// <param name="sender">呼出元</param>
         public void Execute(object sender)
         {
-            if (sender == null)
-            {
-                throw new ArgumentNullException("sender");
-            }
+            if (sender == null) throw new ArgumentNullException(nameof(sender));
 
-            CreateNewTask(sender);
+            this.CreateNewTask(sender);
         }
 
         // 実行スレッド。
         protected override void ExecuteThread(TaskInfo task)
         {
-            TFacade facade = new TFacade();
+            if (task == null) throw new ArgumentNullException(nameof(task));
+
+            var facade = new TFacade();
             var facadeName = facade.GetType().Name;
             Thread.CurrentThread.Name = facadeName;
 #if DEBUG
@@ -60,7 +61,7 @@ namespace PicSum.Core.Task.AsyncTask
                 Logger.Debug("タスクID: {0} Facade: {1} がキャンセルされました。", task.TaskId, facadeName);
 #endif
 
-                SendMessageThread(OnCancelEnd, task);
+                this.SendMessageThread(this.OnCancelEnd, task);
                 return;
             }
             catch (Exception ex)
@@ -68,7 +69,7 @@ namespace PicSum.Core.Task.AsyncTask
 #if DEBUG
                 Logger.Error("タスクID: {0} Facade: {1} で例外が発生しました。\n{2}", task.TaskId, facadeName, ExceptionUtil.CreateDetailsMessage(ex));
 #endif
-                SendMessageThread(OnErrorEnd, new object[] { task, ex });
+                this.SendMessageThread(this.OnErrorEnd, new object[] { task, ex });
                 return;
             }
             finally
@@ -78,7 +79,7 @@ namespace PicSum.Core.Task.AsyncTask
 #endif
             }
 
-            SendMessageThread(OnSuccessEnd, task);
+            this.SendMessageThread(this.OnSuccessEnd, task);
         }
     }
 
@@ -87,7 +88,8 @@ namespace PicSum.Core.Task.AsyncTask
     /// </summary>
     /// <typeparam name="TFacade">ファサードの型</typeparam>
     /// <typeparam name="TParameter">パラメータの型</typeparam>
-    public sealed class OneWayProcess<TFacade, TParameter> : ProcessBase
+    public sealed class OneWayProcess<TFacade, TParameter> 
+        : ProcessBase
         where TFacade : OneWayFacadeBase<TParameter>, new()
         where TParameter : IEntity
     {
@@ -97,7 +99,8 @@ namespace PicSum.Core.Task.AsyncTask
         /// コンストラクタ
         /// </summary>
         /// <param name="container">コンテナ</param>
-        internal OneWayProcess(IContainer container) : base(container) { }
+        internal OneWayProcess(IContainer container) 
+            : base(container) { }
 
         /// <summary>
         /// 処理を実行します。
@@ -106,23 +109,18 @@ namespace PicSum.Core.Task.AsyncTask
         /// <param name="param">パラメータ</param>
         public void Execute(object sender, TParameter param)
         {
-            if (sender == null)
-            {
-                throw new ArgumentNullException("sender");
-            }
+            if (sender == null) throw new ArgumentNullException(nameof(sender));
+            if (param == null) throw new ArgumentNullException(nameof(param));
 
-            if (param == null)
-            {
-                throw new ArgumentNullException("param");
-            }
-
-            CreateNewTask(sender, param);
+            this.CreateNewTask(sender, param);
         }
 
         // 実行スレッド。
         protected override void ExecuteThread(TaskInfo task)
         {
-            TFacade facade = new TFacade();
+            if (task == null) throw new ArgumentNullException(nameof(task));
+
+            var facade = new TFacade();
             var facadeName = facade.GetType().Name;
             Thread.CurrentThread.Name = facadeName;
 #if DEBUG
@@ -139,7 +137,7 @@ namespace PicSum.Core.Task.AsyncTask
 #if DEBUG
                 Logger.Debug("タスクID: {0} Facade: {1} がキャンセルされました。", task.TaskId, facadeName);
 #endif
-                SendMessageThread(OnCancelEnd, task);
+                this.SendMessageThread(this.OnCancelEnd, task);
                 return;
             }
             catch (Exception ex)
@@ -147,7 +145,7 @@ namespace PicSum.Core.Task.AsyncTask
 #if DEBUG
                 Logger.Error("タスクID: {0} Facade: {1} で例外が発生しました。\n{2}", task.TaskId, facadeName, ExceptionUtil.CreateDetailsMessage(ex));
 #endif
-                SendMessageThread(OnErrorEnd, new object[] { task, ex });
+                this.SendMessageThread(this.OnErrorEnd, new object[] { task, ex });
                 return;
             }
             finally
@@ -157,7 +155,7 @@ namespace PicSum.Core.Task.AsyncTask
 #endif          
             }
 
-            SendMessageThread(OnSuccessEnd, task);
+            this.SendMessageThread(this.OnSuccessEnd, task);
         }
     }
 }

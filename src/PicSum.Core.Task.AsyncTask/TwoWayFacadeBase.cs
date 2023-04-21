@@ -1,5 +1,5 @@
-﻿using System;
-using PicSum.Core.Task.Base;
+﻿using PicSum.Core.Task.Base;
+using System;
 
 namespace PicSum.Core.Task.AsyncTask
 {
@@ -7,7 +7,8 @@ namespace PicSum.Core.Task.AsyncTask
     /// ファサード基底クラス
     /// </summary>
     /// <typeparam name="TCallbackEventArgs">コールバックイベント引数クラスの型</typeparam>
-    public abstract class TwoWayFacadeBase<TCallbackEventArgs> : AsyncFacadeBase
+    public abstract class TwoWayFacadeBase<TCallbackEventArgs>
+        : AsyncFacadeBase
         where TCallbackEventArgs : IEntity
     {
         /// <summary>
@@ -35,17 +36,10 @@ namespace PicSum.Core.Task.AsyncTask
         /// <param name="e">コールバックイベント引数クラス</param>
         protected void OnCallback(TCallbackEventArgs e)
         {
-            if (e == null)
-            {
-                throw new ArgumentNullException("e");
-            }
+            if (e == null) throw new ArgumentNullException(nameof(e));
+            if (this.Callback == null) throw new NullReferenceException(nameof(this.Callback));
 
-            if (Callback == null)
-            {
-                throw new NullReferenceException();
-            }
-
-            Callback(Task, e);
+            this.Callback(Task, e);
         }
     }
 
@@ -54,7 +48,8 @@ namespace PicSum.Core.Task.AsyncTask
     /// </summary>
     /// <typeparam name="TParameter">パラメータの型</typeparam>
     /// <typeparam name="TCallbackEventArgs">コールバックイベント引数クラスの型</typeparam>
-    public abstract class TwoWayFacadeBase<TParameter, TCallbackEventArgs> : AsyncFacadeBase
+    public abstract class TwoWayFacadeBase<TParameter, TCallbackEventArgs>
+        : AsyncFacadeBase
         where TParameter : IEntity
         where TCallbackEventArgs : IEntity
     {
@@ -84,17 +79,10 @@ namespace PicSum.Core.Task.AsyncTask
         /// <param name="e">コールバックイベント引数クラス</param>
         protected void OnCallback(TCallbackEventArgs e)
         {
-            if (e == null)
-            {
-                throw new ArgumentNullException("e");
-            }
+            if (e == null) throw new ArgumentNullException(nameof(e));
+            if (this.Callback == null) throw new NullReferenceException(nameof(this.Callback));
 
-            if (Callback == null)
-            {
-                throw new NullReferenceException();
-            }
-
-            Callback(Task, e);
+            this.Callback(Task, e);
         }
     }
 }

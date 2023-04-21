@@ -1,7 +1,7 @@
-﻿using System;
+﻿using PicSum.Core.Task.Base;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using PicSum.Core.Task.Base;
 
 namespace PicSum.Core.Task.AsyncTask
 {
@@ -78,7 +78,7 @@ namespace PicSum.Core.Task.AsyncTask
         /// </summary>
         public static event EventHandler<TaskStateChangedEventArgs> TaskStateChanged;
 
-        private static List<TaskInfo> _taskList = new List<TaskInfo>();
+        private static List<TaskInfo> taskList = new List<TaskInfo>();
 
         /// <summary>
         /// 現在のタスク一覧を取得します。
@@ -86,7 +86,7 @@ namespace PicSum.Core.Task.AsyncTask
         /// <returns>現在のタスク一覧</returns>
         public static IList<TaskInfo> GetTaskList()
         {
-            return _taskList;
+            return taskList;
         }
 
         /// <summary>
@@ -97,15 +97,18 @@ namespace PicSum.Core.Task.AsyncTask
         /// <param name="processType">プロセスの型</param>
         /// <param name="param">パラメータ</param>
         /// <returns>タスク</returns>
-        internal static TaskInfo CreateNewTask<TParameter>(object sender, Type processType, TParameter param) where TParameter : IEntity
+        internal static TaskInfo CreateNewTask<TParameter>(
+            object sender, Type processType, TParameter param) where TParameter : IEntity
         {
-            TaskInfo task = new TaskInfo(sender, processType, param);
+            if (sender == null) throw new ArgumentNullException(nameof(sender));
+            if (processType == null) throw new ArgumentNullException(nameof(processType));
+            if (param == null) throw new ArgumentNullException(nameof(param));
 
-            _taskList.Add(task);
+            var task = new TaskInfo(sender, processType, param);
 
-            onTaskStateChanged(new TaskStateChangedEventArgs(task));
-
-            setupTaskDelegate(task);
+            TaskManager.taskList.Add(task);
+            TaskManager.OnTaskStateChanged(new TaskStateChangedEventArgs(task));
+            TaskManager.SetupTaskDelegate(task);
 
             return task;
         }
@@ -118,21 +121,22 @@ namespace PicSum.Core.Task.AsyncTask
         /// <returns>タスク</returns>
         internal static TaskInfo CreateNewTask(object sender, Type processType)
         {
-            TaskInfo task = new TaskInfo(sender, processType);
+            if (sender == null) throw new ArgumentNullException(nameof(sender));
+            if (processType == null) throw new ArgumentNullException(nameof(processType));
 
-            _taskList.Add(task);
+            var task = new TaskInfo(sender, processType);
 
-            onTaskStateChanged(new TaskStateChangedEventArgs(task));
-
-            setupTaskDelegate(task);
+            TaskManager.taskList.Add(task);
+            TaskManager.OnTaskStateChanged(new TaskStateChangedEventArgs(task));
+            TaskManager.SetupTaskDelegate(task);
 
             return task;
         }
 
         // タスクのデリゲートをセットします。
-        private static void setupTaskDelegate(TaskInfo task)
+        private static void SetupTaskDelegate(TaskInfo task)
         {
-            task.TaskStateChanged += new EventHandler<TaskStateChangedEventArgs>(task_TaskStateChanged);
+            task.TaskStateChanged += new EventHandler<TaskStateChangedEventArgs>(TaskManager.task_TaskStateChanged);
         }
 
         // タスク タスク状態変更イベント
@@ -141,18 +145,18 @@ namespace PicSum.Core.Task.AsyncTask
             if (e.Task.IsEnd || e.Task.IsCancel)
             {
                 // 終了または、キャンセルされた場合
-                _taskList.Remove(e.Task);
+                TaskManager.taskList.Remove(e.Task);
             }
 
-            onTaskStateChanged(new TaskStateChangedEventArgs(e.Task));
+            TaskManager.OnTaskStateChanged(new TaskStateChangedEventArgs(e.Task));
         }
 
         // タスク変更イベントを発生させます。
-        private static void onTaskStateChanged(TaskStateChangedEventArgs e)
+        private static void OnTaskStateChanged(TaskStateChangedEventArgs e)
         {
-            if (TaskStateChanged != null)
+            if (TaskManager.TaskStateChanged != null)
             {
-                TaskStateChanged(null, e);
+                TaskManager.TaskStateChanged(null, e);
             }
         }
 

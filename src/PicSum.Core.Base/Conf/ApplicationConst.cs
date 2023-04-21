@@ -12,14 +12,9 @@ namespace PicSum.Core.Base.Conf
     public static class ApplicationConst
     {
         /// <summary>
-        /// SQLファイルの拡張子
-        /// </summary>
-        public const string SqlFileExtension = ".sql";
-
-        /// <summary>
         /// 番号付SQLパラメータの書式
         /// </summary>
-        public const string NumberingSqlParameterFormat = "{0}_{1}";
+        public const string NUMBERING_SQL_PARAMETER_FORMAT = "{0}_{1}";
     }
 
     /// <summary>

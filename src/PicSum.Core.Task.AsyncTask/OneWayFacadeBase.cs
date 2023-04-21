@@ -5,7 +5,8 @@ namespace PicSum.Core.Task.AsyncTask
     /// <summary>
     /// ファサード基底クラス
     /// </summary>
-    public abstract class OneWayFacadeBase : AsyncFacadeBase
+    public abstract class OneWayFacadeBase 
+        : AsyncFacadeBase
     {
         /// <summary>
         /// 処理を実行します。

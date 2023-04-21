@@ -5,20 +5,23 @@ namespace PicSum.Core.Data.DatabaseAccessor
     /// <summary>
     /// DBトランザクション
     /// </summary>
-    public class Transaction : IDisposable
+    public sealed class Transaction
+        : IDisposable
     {
+        private bool disposed = false;
+
         // コネクション
-        private ConnectionBase _conntenction = null;
+        private ConnectionBase conntenction = null;
 
         // コミットフラグ
-        private bool _isCommitted = false;
+        private bool isCommitted = false;
 
         /// <summary>
         /// コンストラクタ
         /// </summary>
         public Transaction(ConnectionBase connection)
         {
-            _conntenction = connection ?? throw new ArgumentNullException(nameof(connection));
+            this.conntenction = connection ?? throw new ArgumentNullException(nameof(connection));
         }
 
         /// <summary>
@@ -26,8 +29,26 @@ namespace PicSum.Core.Data.DatabaseAccessor
         /// </summary>
         public void Commit()
         {
-            _conntenction.Commit();
-            _isCommitted = true;
+            this.conntenction.Commit();
+            this.isCommitted = true;
+        }
+
+        private void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+                if (!isCommitted)
+                {
+                    this.conntenction.Roolback();                   
+                }
+            }
+
+            this.disposed = true;
         }
 
         /// <summary>
@@ -35,12 +56,13 @@ namespace PicSum.Core.Data.DatabaseAccessor
         /// </summary>
         public void Dispose()
         {
-            if (!_isCommitted)
-            {
-                _conntenction.Roolback();
-            }
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
+        }
 
-            _conntenction = null;
+        ~Transaction()
+        {
+            this.Dispose(false);
         }
     }
 }

@@ -1,26 +1,18 @@
-﻿using System;
-using PicSum.Core.Base.Exception;
+﻿using PicSum.Core.Base.Exception;
+using System;
 
 namespace PicSum.Core.Task.AsyncTask
 {
     /// <summary>
     /// タスクキャンセル例外
     /// </summary>
-    internal class TaskCancelException : PSApplicationException
+    internal sealed class TaskCancelException
+        : PSApplicationException
     {
-        // タスク
-        private readonly TaskInfo _task;
-
         /// <summary>
         /// タスク
         /// </summary>
-        public TaskInfo Task
-        {
-            get
-            {
-                return _task;
-            }
-        }
+        public TaskInfo Task { get; private set; }
 
         /// <summary>
         /// コンストラクタ
@@ -28,12 +20,7 @@ namespace PicSum.Core.Task.AsyncTask
         /// <param name="task">タスク</param>
         public TaskCancelException(TaskInfo task)
         {
-            if (task == null)
-            {
-                throw new ArgumentNullException("task");
-            }
-
-            _task = task;
+            this.Task = task ?? throw new ArgumentNullException(nameof(task));
         }
     }
 }

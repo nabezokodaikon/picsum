@@ -8,7 +8,8 @@ namespace PicSum.Core.Base.Exception
     /// <summary>
     /// アプリケーション例外
     /// </summary>
-    public class PSApplicationException : ApplicationException
+    public class PSApplicationException
+        : ApplicationException
     {
     }
 }

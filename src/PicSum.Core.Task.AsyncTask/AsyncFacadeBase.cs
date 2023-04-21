@@ -1,25 +1,15 @@
 ﻿using PicSum.Core.Task.Base;
+using System;
 
 namespace PicSum.Core.Task.AsyncTask
 {
     /// <summary>
     /// 非同期ファサード基底クラス
     /// </summary>
-    public abstract class AsyncFacadeBase : FacadeBase
+    public abstract class AsyncFacadeBase 
+        : FacadeBase
     {
-        // タスク
-        private TaskInfo _task = null;
-
-        /// <summary>
-        /// タスク
-        /// </summary>
-        protected TaskInfo Task
-        {
-            get
-            {
-                return _task;
-            }
-        }
+        protected TaskInfo Task { get; private set; } = null;
 
         /// <summary>
         /// タスクをセットします。
@@ -27,7 +17,7 @@ namespace PicSum.Core.Task.AsyncTask
         /// <param name="task">タスク</param>
         internal void SetTask(TaskInfo task)
         {
-            _task = task;
+            this.Task = task ?? throw new ArgumentNullException(nameof(task));
         }
 
         /// <summary>
@@ -36,9 +26,9 @@ namespace PicSum.Core.Task.AsyncTask
         /// <exception cref="TaskCancelException">タスクキャンセル例外</exception>
         public void CheckCancel()
         {
-            if (_task.IsCancel)
+            if (this.Task.IsCancel)
             {
-                throw new TaskCancelException(_task);
+                throw new TaskCancelException(this.Task);
             }
         }
     }

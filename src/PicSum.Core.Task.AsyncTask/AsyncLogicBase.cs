@@ -1,15 +1,16 @@
-﻿using System;
-using PicSum.Core.Task.Base;
+﻿using PicSum.Core.Task.Base;
+using System;
 
 namespace PicSum.Core.Task.AsyncTask
 {
     /// <summary>
     /// 非同期ロジック基底クラス
     /// </summary>
-    public abstract class AsyncLogicBase : LogicBase
+    public abstract class AsyncLogicBase
+        : LogicBase
     {
         // ファサード
-        private readonly AsyncFacadeBase _facade;
+        private readonly AsyncFacadeBase facade;
 
         /// <summary>
         /// タスクがキャンセルされていないか確認します。
@@ -17,7 +18,7 @@ namespace PicSum.Core.Task.AsyncTask
         /// <exception cref="TaskCancelException">タスクキャンセル例外</exception>
         protected void CheckCancel()
         {
-            _facade.CheckCancel();
+            this.facade.CheckCancel();
         }
 
         /// <summary>
@@ -26,12 +27,7 @@ namespace PicSum.Core.Task.AsyncTask
         /// <param name="facade">ファサード</param>
         public AsyncLogicBase(AsyncFacadeBase facade)
         {
-            if (facade == null)
-            {
-                throw new ArgumentNullException("facade");
-            }
-
-            _facade = facade;
+            this.facade = facade ?? throw new ArgumentNullException("facade");
         }
     }
 }

@@ -18,8 +18,11 @@ namespace PicSum.Core.Task.AsyncTask
     /// <summary>
     /// プロセス基底クラス
     /// </summary>
-    public abstract class ProcessBase : Component
+    public abstract class ProcessBase 
+        : Component
     {
+        private bool disposed = false;
+
         /// <summary>
         /// 成功終了イベント
         /// </summary>
@@ -36,10 +39,10 @@ namespace PicSum.Core.Task.AsyncTask
         public event EventHandler ErrorEnd;
 
         // タスクリスト
-        private readonly List<TaskInfo> _taskList = new List<TaskInfo>();
+        private readonly List<TaskInfo> taskList = new List<TaskInfo>();
 
         // コンテキスト
-        private readonly SynchronizationContext _context;
+        private readonly SynchronizationContext context;
 
         /// <summary>
         /// コンストラクタ
@@ -47,10 +50,7 @@ namespace PicSum.Core.Task.AsyncTask
         /// <param name="container">コンテナ</param>
         protected ProcessBase(IContainer container)
         {
-            if (container == null)
-            {
-                throw new ArgumentNullException("container");
-            }
+            if (container == null) throw new ArgumentNullException(nameof(container));
 
             container.Add(this);
 
@@ -59,7 +59,30 @@ namespace PicSum.Core.Task.AsyncTask
                 SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
             }
 
-            _context = SynchronizationContext.Current;
+            this.context = SynchronizationContext.Current;
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+                this.Cancel();
+            }
+
+            this.disposed = true;
+
+            base.Dispose(disposing);
+        }
+
+        public new void Dispose()
+        {
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         /// <summary>
@@ -67,7 +90,7 @@ namespace PicSum.Core.Task.AsyncTask
         /// </summary>
         public void Cancel()
         {
-            foreach (TaskInfo task in _taskList)
+            foreach (var task in this.taskList)
             {
                 if (!task.IsCancel && !task.IsEnd)
                 {
@@ -75,7 +98,7 @@ namespace PicSum.Core.Task.AsyncTask
                 }
             }
 
-            _taskList.Clear();
+            this.taskList.Clear();
         }
 
         /// <summary>
@@ -85,15 +108,18 @@ namespace PicSum.Core.Task.AsyncTask
         /// <param name="param">パラメータ</param>
         protected void CreateNewTask(object sender, IEntity param)
         {
-            TaskInfo task = TaskManager.CreateNewTask(sender, this.GetType(), param);
+            if (sender == null) throw new ArgumentNullException(nameof(sender));
+            if (param == null) throw new ArgumentNullException(nameof(param));
 
-            _taskList.Add(task);
+            var task = TaskManager.CreateNewTask(sender, this.GetType(), param);
 
-            if (!hasExecutingTask())
+            this.taskList.Add(task);
+
+            if (!this.HasExecutingTask())
             {
-                if (task.Equals(getNextTask()))
+                if (task.Equals(this.GetNextTask()))
                 {
-                    StartExecuteThread(task);
+                    this.StartExecuteThread(task);
                 }
             }
         }
@@ -104,15 +130,16 @@ namespace PicSum.Core.Task.AsyncTask
         /// <param name="sender">呼出元</param>
         protected void CreateNewTask(object sender)
         {
-            TaskInfo task = TaskManager.CreateNewTask(sender, this.GetType());
+            if (sender == null) throw new ArgumentNullException(nameof(sender));
 
-            _taskList.Add(task);
+            var task = TaskManager.CreateNewTask(sender, this.GetType());
+            this.taskList.Add(task);
 
-            if (!hasExecutingTask())
+            if (!this.HasExecutingTask())
             {
-                if (task.Equals(getNextTask()))
+                if (task.Equals(GetNextTask()))
                 {
-                    StartExecuteThread(task);
+                    this.StartExecuteThread(task);
                 }
             }
         }
@@ -130,7 +157,10 @@ namespace PicSum.Core.Task.AsyncTask
         /// <param name="state">状態</param>
         protected void SendMessageThread(SendOrPostCallback d, object state)
         {
-            _context.Send(d, state);
+            if (d == null) throw new ArgumentNullException(nameof(d));
+            if (state == null) throw new ArgumentNullException(nameof(state));
+
+            this.context.Send(d, state);
         }
 
         /// <summary>
@@ -139,8 +169,10 @@ namespace PicSum.Core.Task.AsyncTask
         /// <param name="task">タスク</param>
         protected void StartExecuteThread(TaskInfo task)
         {
+            if (task == null) throw new ArgumentNullException(nameof(task));
+
             task.StartExecute();
-            Action<TaskInfo> d = new Action<TaskInfo>(ExecuteThread);
+            var d = new Action<TaskInfo>(this.ExecuteThread);
             d.BeginInvoke(task, null, null);
         }
 
@@ -150,35 +182,37 @@ namespace PicSum.Core.Task.AsyncTask
         /// <param name="obj">タスク</param>
         protected void OnSuccessEnd(object obj)
         {
-            TaskInfo task = (TaskInfo)obj;
+            if (obj == null) throw new ArgumentNullException(nameof(obj));
 
-            _taskList.Remove(task);
+            var task = (TaskInfo)obj;
+
+            this.taskList.Remove(task);
 
             task.EndExecute();
 
-            if (SuccessEnd != null)
+            if (this.SuccessEnd != null)
             {
                 if (task.Sender is Control)
                 {
-                    Control ctl = (Control)task.Sender;
+                    var ctl = (Control)task.Sender;
                     if (ctl.IsHandleCreated)
                     {
-                        SuccessEnd(this, new EventArgs());
+                        this.SuccessEnd(this, new EventArgs());
                     }
                 }
                 else
                 {
-                    SuccessEnd(this, new EventArgs());
+                    this.SuccessEnd(this, new EventArgs());
                 }
             }
 
-            if (!hasExecutingTask())
+            if (!this.HasExecutingTask())
             {
-                TaskInfo nextTask = getNextTask();
+                var nextTask = GetNextTask();
 
                 if (nextTask != null)
                 {
-                    StartExecuteThread(nextTask);
+                    this.StartExecuteThread(nextTask);
                 }
             }
         }
@@ -189,35 +223,37 @@ namespace PicSum.Core.Task.AsyncTask
         /// <param name="obj">タスク</param>
         protected void OnCancelEnd(object obj)
         {
-            TaskInfo task = (TaskInfo)obj;
+            if (obj == null) throw new ArgumentNullException(nameof(obj));
 
-            _taskList.Remove(task);
+            var task = (TaskInfo)obj;
+
+            this.taskList.Remove(task);
 
             task.EndExecute();
 
-            if (CancelEnd != null)
+            if (this.CancelEnd != null)
             {
                 if (task.Sender is Control)
                 {
-                    Control ctl = (Control)task.Sender;
+                    var ctl = (Control)task.Sender;
                     if (ctl.IsHandleCreated)
                     {
-                        CancelEnd(this, new EventArgs());
+                        this.CancelEnd(this, new EventArgs());
                     }
                 }
                 else
                 {
-                    CancelEnd(this, new EventArgs());
+                    this.CancelEnd(this, new EventArgs());
                 }
             }
 
-            if (!hasExecutingTask())
+            if (!this.HasExecutingTask())
             {
-                TaskInfo nextTask = getNextTask();
+                var nextTask = GetNextTask();
 
                 if (nextTask != null)
                 {
-                    StartExecuteThread(nextTask);
+                    this.StartExecuteThread(nextTask);
                 }
             }
         }
@@ -228,33 +264,35 @@ namespace PicSum.Core.Task.AsyncTask
         /// <param name="obj"></param>
         protected void OnErrorEnd(object obj)
         {
-            object[] args = (object[])obj;
-            TaskInfo task = (TaskInfo)args[0];
+            if (obj == null) throw new ArgumentNullException(nameof(obj));
+
+            var args = (object[])obj;
+            var task = (TaskInfo)args[0];
             task.SetException((Exception)args[1]);
 
-            _taskList.Remove(task);
+            this.taskList.Remove(task);
 
             task.EndExecute();
 
-            if (ErrorEnd != null)
+            if (this.ErrorEnd != null)
             {
                 if (task.Sender is Control)
                 {
-                    Control ctl = (Control)task.Sender;
+                    var ctl = (Control)task.Sender;
                     if (ctl.IsHandleCreated)
                     {
-                        ErrorEnd(this, new EventArgs());
+                        this.ErrorEnd(this, new EventArgs());
                     }
                 }
                 else
                 {
-                    ErrorEnd(this, new EventArgs());
+                    this.ErrorEnd(this, new EventArgs());
                 }
             }
 
-            if (!hasExecutingTask())
+            if (!this.HasExecutingTask())
             {
-                TaskInfo nextTask = getNextTask();
+                var nextTask = GetNextTask();
 
                 if (nextTask != null)
                 {
@@ -263,17 +301,10 @@ namespace PicSum.Core.Task.AsyncTask
             }
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            Cancel();
-
-            base.Dispose(disposing);
-        }
-
         // 実行中のタスクの存在を確認します。
-        private bool hasExecutingTask()
+        private bool HasExecutingTask()
         {
-            foreach (TaskInfo task in _taskList)
+            foreach (var task in taskList)
             {
                 if (task.IsExecuting)
                 {
@@ -285,9 +316,9 @@ namespace PicSum.Core.Task.AsyncTask
         }
 
         // 次のタスクを取得します。
-        private TaskInfo getNextTask()
+        private TaskInfo GetNextTask()
         {
-            foreach (TaskInfo task in _taskList)
+            foreach (var task in taskList)
             {
                 if (!task.IsCancel)
                 {

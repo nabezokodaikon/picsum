@@ -1,10 +1,10 @@
-﻿using System;
+﻿using NLog;
+using PicSum.Core.Task.Base;
+using SWF.Common;
+using System;
 using System.ComponentModel;
 using System.Threading;
 using System.Windows.Forms;
-using NLog;
-using PicSum.Core.Task.Base;
-using SWF.Common;
 
 namespace PicSum.Core.Task.AsyncTask
 {
@@ -28,7 +28,8 @@ namespace PicSum.Core.Task.AsyncTask
         /// コンストラクタ
         /// </summary>
         /// <param name="container">コンテナ</param>
-        internal TwoWayProcess(IContainer container) : base(container) { }
+        internal TwoWayProcess(IContainer container)
+            : base(container) { }
 
         /// <summary>
         /// 処理を実行します。
@@ -36,18 +37,17 @@ namespace PicSum.Core.Task.AsyncTask
         /// <param name="sender">呼出元</param>
         public void Execute(object sender)
         {
-            if (sender == null)
-            {
-                throw new ArgumentNullException("sender");
-            }
+            if (sender == null) throw new ArgumentNullException(nameof(sender));
 
-            CreateNewTask(sender);
+            this.CreateNewTask(sender);
         }
 
         // 実行スレッド。
         protected override void ExecuteThread(TaskInfo task)
         {
-            TFacade facade = new TFacade();
+            if (task == null) throw new ArgumentNullException(nameof(task));
+
+            var facade = new TFacade();
             var facadeName = facade.GetType().Name;
             Thread.CurrentThread.Name = facadeName;
 #if DEBUG
@@ -55,7 +55,7 @@ namespace PicSum.Core.Task.AsyncTask
 #endif
 
             facade.Callback += new AsyncTaskCallbackEventHandler<TCallbackEventArgs>
-                ((object sender, TCallbackEventArgs e) => SendMessageThread(OnCallback, new object[] { sender, e }));
+                ((object sender, TCallbackEventArgs e) => this.SendMessageThread(this.OnCallback, new object[] { sender, e }));
             facade.SetTask(task);
 
             try
@@ -67,7 +67,7 @@ namespace PicSum.Core.Task.AsyncTask
 #if DEBUG
                 Logger.Debug("タスクID: {0} Facade: {1} がキャンセルされました。", task.TaskId, facadeName);
 #endif
-                SendMessageThread(OnCancelEnd, task);
+                this.SendMessageThread(this.OnCancelEnd, task);
                 return;
             }
             catch (Exception ex)
@@ -75,7 +75,7 @@ namespace PicSum.Core.Task.AsyncTask
 #if DEBUG
                 Logger.Error("タスクID: {0} Facade: {1} で例外が発生しました。\n{2}", task.TaskId, facadeName, ExceptionUtil.CreateDetailsMessage(ex));
 #endif
-                SendMessageThread(OnErrorEnd, new object[] { task, ex });
+                this.SendMessageThread(this.OnErrorEnd, new object[] { task, ex });
                 return;
             }
             finally
@@ -85,28 +85,28 @@ namespace PicSum.Core.Task.AsyncTask
 #endif            
             }
 
-            SendMessageThread(OnSuccessEnd, task);
+            this.SendMessageThread(this.OnSuccessEnd, task);
         }
 
         // コールバックイベントを発生させます。
         private void OnCallback(object obj)
         {
-            object[] args = (object[])obj;
-            TaskInfo task = (TaskInfo)args[0];
-            TCallbackEventArgs e = (TCallbackEventArgs)args[1];
+            var args = (object[])obj;
+            var task = (TaskInfo)args[0];
+            var e = (TCallbackEventArgs)args[1];
 
-            if (Callback != null)
+            if (this.Callback != null)
             {
                 if (task.Sender is Control ctl)
                 {
                     if (ctl.IsHandleCreated)
                     {
-                        Callback(this, e);
+                        this.Callback(this, e);
                     }
                 }
                 else
                 {
-                    Callback(this, e);
+                    this.Callback(this, e);
                 }
             }
         }
@@ -143,23 +143,18 @@ namespace PicSum.Core.Task.AsyncTask
         /// <param name="param">パラメータ</param>
         public void Execute(object sender, TParameter param)
         {
-            if (sender == null)
-            {
-                throw new ArgumentNullException("sender");
-            }
+            if (sender == null) throw new ArgumentNullException(nameof(sender));
+            if (param == null) throw new ArgumentNullException(nameof(param));
 
-            if (param == null)
-            {
-                throw new ArgumentNullException("param");
-            }
-
-            CreateNewTask(sender, param);
+            this.CreateNewTask(sender, param);
         }
 
         // 実行スレッド。
         protected override void ExecuteThread(TaskInfo task)
         {
-            TFacade facade = new TFacade();
+            if (task == null) throw new ArgumentNullException(nameof(task));
+
+            var facade = new TFacade();
             var facadeName = facade.GetType().Name;
             Thread.CurrentThread.Name = facadeName;
 #if DEBUG
@@ -167,7 +162,7 @@ namespace PicSum.Core.Task.AsyncTask
 #endif
 
             facade.Callback += new AsyncTaskCallbackEventHandler<TCallbackEventArgs>
-                ((object sender, TCallbackEventArgs e) => SendMessageThread(OnCallback, new object[] { sender, e }));
+                ((object sender, TCallbackEventArgs e) => this.SendMessageThread(this.OnCallback, new object[] { sender, e }));
             facade.SetTask(task);
 
             try
@@ -179,7 +174,7 @@ namespace PicSum.Core.Task.AsyncTask
 #if DEBUG
                 Logger.Debug("タスクID: {0} Facade: {1} がキャンセルされました。", task.TaskId, facadeName);
 #endif
-                SendMessageThread(OnCancelEnd, task);
+                this.SendMessageThread(this.OnCancelEnd, task);
                 return;
             }
             catch (Exception ex)
@@ -187,7 +182,7 @@ namespace PicSum.Core.Task.AsyncTask
 #if DEBUG
                 Logger.Error("タスクID: {0} Facade: {1} で例外が発生しました。\n{2}", task.TaskId, facadeName, ExceptionUtil.CreateDetailsMessage(ex));
 #endif
-                SendMessageThread(OnErrorEnd, new object[] { task, ex });
+                this.SendMessageThread(this.OnErrorEnd, new object[] { task, ex });
                 return;
             }
             finally
@@ -197,28 +192,28 @@ namespace PicSum.Core.Task.AsyncTask
 #endif            
             }
 
-            SendMessageThread(OnSuccessEnd, task);
+            this.SendMessageThread(this.OnSuccessEnd, task);
         }
 
         // コールバックイベントを発生させます。
         private void OnCallback(object obj)
         {
-            object[] args = (object[])obj;
-            TaskInfo task = (TaskInfo)args[0];
-            TCallbackEventArgs e = (TCallbackEventArgs)args[1];
+            var args = (object[])obj;
+            var task = (TaskInfo)args[0];
+            var e = (TCallbackEventArgs)args[1];
 
-            if (Callback != null)
+            if (this.Callback != null)
             {
                 if (task.Sender is Control ctl)
                 {
                     if (ctl.IsHandleCreated)
                     {
-                        Callback(this, e);
+                        this.Callback(this, e);
                     }
                 }
                 else
                 {
-                    Callback(this, e);
+                    this.Callback(this, e);
                 }
             }
         }

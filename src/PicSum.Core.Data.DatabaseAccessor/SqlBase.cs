@@ -16,6 +16,7 @@ namespace PicSum.Core.Data.DatabaseAccessor
         public SqlBase(string sqlText)
         {
             this.sqlText = sqlText ?? throw new ArgumentNullException(nameof(sqlText));
+
             this.ParameterList = new List<IDbDataParameter>();
         }
 
@@ -32,7 +33,8 @@ namespace PicSum.Core.Data.DatabaseAccessor
     /// <summary>
     /// データアクセサ
     /// </summary>
-    public abstract class SqlBase<TDto> where TDto : IDto
+    public abstract class SqlBase<TDto>
+        where TDto : IDto
     {
         private readonly string sqlText;
 
@@ -41,6 +43,7 @@ namespace PicSum.Core.Data.DatabaseAccessor
         public SqlBase(string sqlText)
         {
             this.sqlText = sqlText ?? throw new ArgumentNullException(nameof(sqlText));
+
             this.ParameterList = new List<IDbDataParameter>();
         }
 

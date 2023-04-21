@@ -7,19 +7,10 @@ namespace PicSum.Core.Task.AsyncTask
     /// </summary>
     public class TaskStateChangedEventArgs : EventArgs
     {
-        // タスク
-        private readonly TaskInfo _task;
-
         /// <summary>
         /// タスク
         /// </summary>
-        public TaskInfo Task
-        {
-            get
-            {
-                return _task;
-            }
-        }
+        public TaskInfo Task { get; private set; }
 
         /// <summary>
         /// コンストラクタ
@@ -27,12 +18,7 @@ namespace PicSum.Core.Task.AsyncTask
         /// <param name="task">タスク</param>
         public TaskStateChangedEventArgs(TaskInfo task)
         {
-            if (task == null)
-            {
-                throw new ArgumentNullException("task");
-            }
-
-            _task = task;
+            this.Task = task ?? throw new ArgumentNullException(nameof(task));
         }
     }
 }

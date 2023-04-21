@@ -1,11 +1,10 @@
-﻿using System;
+﻿using PicSum.Core.Base.Conf;
+using System;
 using System.Collections.Generic;
 using System.Data;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using PicSum.Core.Base.Conf;
 
 namespace PicSum.Core.Data.DatabaseAccessor
 {
@@ -14,32 +13,14 @@ namespace PicSum.Core.Data.DatabaseAccessor
     /// </summary>
     internal static class SqlUtil
     {
-        // SQLファイルエンコード
-        private static readonly Encoding _encoding = Encoding.GetEncoding(932);
-
         // 番号付パラメータ名正規表現
-        private static readonly Regex _numberingParameterNameRegex = new Regex("_\\d+$");
+        private static readonly Regex NUMBERING_PARAMETER_NAME_REGEX = new Regex("_\\d+$");
 
         // 置換文字列正規表現
-        private static readonly Regex _replaceRegex = new Regex("{.*}");
+        private static readonly Regex REPLACE_REGEX = new Regex("{.*}");
 
         // 置換パラメータ文字列正規表現
-        private static readonly Regex _parameterRegex = new Regex(":[a-z][a-z|_]+[a-z]");
-
-        /// <summary>
-        /// SQLファイルを読込みます。
-        /// </summary>
-        /// <param name="sqlDirectory">SQLフォルダ</param>
-        /// <param name="sqlName">データアクセサ名</param>
-        /// <returns>SQLファイル内の文字列</returns>
-        public static string ReadSqlFile(string sqlDirectory, string sqlName)
-        {
-            string sqlFileName = toSqlFileName(sqlName);
-
-            string path = string.Format("{0}\\{1}{2}", sqlDirectory, sqlFileName, ApplicationConst.SqlFileExtension);
-
-            return File.ReadAllText(path, _encoding);
-        }
+        private static readonly Regex PARAMETER_REGEX = new Regex(":[a-z][a-z|_]+[a-z]");
 
         /// <summary>
         /// 実行するSQLを取得します。
@@ -49,8 +30,11 @@ namespace PicSum.Core.Data.DatabaseAccessor
         /// <returns>SQL</returns>
         public static string GetExecuteSql(string sqlText, IList<IDbDataParameter> paramList)
         {
+            if (sqlText == null) throw new ArgumentNullException(nameof(sqlText));
+            if (paramList == null) throw new ArgumentNullException(nameof(paramList));
+
             // SQLテキスト内の置換文字列を取得します。
-            string oldText = getRepalceText(sqlText);
+            var oldText = SqlUtil.GetRepalceText(sqlText);
 
             if (string.IsNullOrEmpty(oldText))
             {
@@ -60,12 +44,12 @@ namespace PicSum.Core.Data.DatabaseAccessor
             else
             {
                 // パラメータリスト内の、番号付パラメータの個数を取得します。
-                int count = getNumberingParameterCount(paramList);
+                var count = SqlUtil.GetNumberingParameterCount(paramList);
 
                 // 置換文字列内のパラメータ文字列リストを取得します。
-                IList<string> paramStringList = getParameterNameList(oldText);
+                var paramStringList = SqlUtil.GetParameterNameList(oldText);
 
-                StringBuilder newText = new StringBuilder();
+                var newText = new StringBuilder();
 
                 newText.Append("(");
 
@@ -73,12 +57,12 @@ namespace PicSum.Core.Data.DatabaseAccessor
                 {
                     newText.Append("(");
 
-                    string text = oldText.Replace("{", "").Replace("}", "");
+                    var text = oldText.Replace("{", "").Replace("}", "");
 
-                    foreach (string paramString in paramStringList)
+                    foreach (var paramString in paramStringList)
                     {
-                        Regex r = new Regex(string.Format("{0}\\s|{0}$", paramString));
-                        text = r.Replace(text, string.Format(ApplicationConst.NumberingSqlParameterFormat + " ", paramString, i.ToString()));
+                        var r = new Regex(string.Format("{0}\\s|{0}$", paramString));
+                        text = r.Replace(text, string.Format(ApplicationConst.NUMBERING_SQL_PARAMETER_FORMAT + " ", paramString, i.ToString()));
                     }
 
                     newText.Append(text);
@@ -97,21 +81,21 @@ namespace PicSum.Core.Data.DatabaseAccessor
             }
         }
 
-        private static string toSqlFileName(string sqlName)
+        private static string ToSqlFileName(string sqlName)
         {
             return sqlName.Substring(0, sqlName.Length - 3);
         }
 
         // パラメータリスト内の、番号付パラメータの個数を取得します。
-        private static int getNumberingParameterCount(IList<IDbDataParameter> paramList)
+        private static int GetNumberingParameterCount(IList<IDbDataParameter> paramList)
         {
-            Dictionary<string, int> dic = new Dictionary<string, int>();
+            var dic = new Dictionary<string, int>();
 
-            foreach (IDbDataParameter param in paramList)
+            foreach (var param in paramList)
             {
-                if (_numberingParameterNameRegex.IsMatch(param.ParameterName))
+                if (SqlUtil.NUMBERING_PARAMETER_NAME_REGEX.IsMatch(param.ParameterName))
                 {
-                    string paramterName = _numberingParameterNameRegex.Replace(param.ParameterName, "");
+                    var paramterName = SqlUtil.NUMBERING_PARAMETER_NAME_REGEX.Replace(param.ParameterName, "");
                     if (!dic.ContainsKey(paramterName))
                     {
                         dic.Add(paramterName, 1);
@@ -132,9 +116,9 @@ namespace PicSum.Core.Data.DatabaseAccessor
         }
 
         // SQLテキスト内の置換文字列を取得します。
-        private static string getRepalceText(string sqlText)
+        private static string GetRepalceText(string sqlText)
         {
-            Match m = _replaceRegex.Match(sqlText);
+            var m = SqlUtil.REPLACE_REGEX.Match(sqlText);
 
             if (m.Success)
             {
@@ -147,11 +131,11 @@ namespace PicSum.Core.Data.DatabaseAccessor
         }
 
         // 置換文字列内のパラメータ名リストを取得します。
-        private static IList<string> getParameterNameList(string replaceText)
+        private static IList<string> GetParameterNameList(string replaceText)
         {
-            List<string> list = new List<string>();
+            var list = new List<string>();
 
-            Match m = _parameterRegex.Match(replaceText);
+            var m = SqlUtil.PARAMETER_REGEX.Match(replaceText);
 
             while (m.Success)
             {
