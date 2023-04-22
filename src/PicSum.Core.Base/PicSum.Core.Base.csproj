@@ -64,7 +64,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Conf\ApplicationConst.cs" />
-    <Compile Include="Exception\PSApplicationException.cs" />
+    <Compile Include="Exception\PicSumException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

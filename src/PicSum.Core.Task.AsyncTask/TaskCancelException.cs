@@ -7,7 +7,7 @@ namespace PicSum.Core.Task.AsyncTask
     /// タスクキャンセル例外
     /// </summary>
     internal sealed class TaskCancelException
-        : PSApplicationException
+        : PicSumException
     {
         /// <summary>
         /// タスク
