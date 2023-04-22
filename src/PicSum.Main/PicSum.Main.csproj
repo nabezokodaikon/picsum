@@ -183,9 +183,9 @@
       <Project>{73FC3AB9-059A-4B08-BA74-D0E91A1205E4}</Project>
       <Name>SWF.UIComponent.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\SWF.UIComponent.FreeForm\SWF.UIComponent.FreeForm.csproj">
-      <Project>{A208ECF3-D614-468E-8034-FE81AD8BD0A1}</Project>
-      <Name>SWF.UIComponent.FreeForm</Name>
+    <ProjectReference Include="..\SWF.UIComponent.Form\SWF.UIComponent.Form.csproj">
+      <Project>{8b800dcf-12ed-4032-b45b-b9dc2265e098}</Project>
+      <Name>SWF.UIComponent.Form</Name>
     </ProjectReference>
     <ProjectReference Include="..\SWF.UIComponent.TabOperation\SWF.UIComponent.TabOperation.csproj">
       <Project>{B9ECCCA2-735B-472A-B503-EE2E933B547B}</Project>

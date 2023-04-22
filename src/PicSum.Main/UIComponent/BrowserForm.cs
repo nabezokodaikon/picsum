@@ -10,7 +10,7 @@ using PicSum.Main.Properties;
 using PicSum.Task.AsyncFacade;
 using PicSum.Task.Entity;
 using PicSum.UIComponent.Contents;
-using SWF.UIComponent.FreeForm;
+using SWF.UIComponent.Form;
 using SWF.UIComponent.TabOperation;
 
 namespace PicSum.Main.UIComponent
