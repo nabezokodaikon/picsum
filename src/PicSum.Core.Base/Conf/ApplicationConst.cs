@@ -15,6 +15,16 @@ namespace PicSum.Core.Base.Conf
         /// 番号付SQLパラメータの書式
         /// </summary>
         public const string NUMBERING_SQL_PARAMETER_FORMAT = "{0}_{1}";
+
+        /// <summary>
+        /// 情報パネルの幅
+        /// </summary>
+        public const int INFOPANEL_WIDTH = 240;
+
+        /// <summary>
+        /// 情報パネルのサムネイルサイズ
+        /// </summary>
+        public const int INFOPANEL_THUMBANIL_SIZE = 200;
     }
 
     /// <summary>

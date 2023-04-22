@@ -221,7 +221,9 @@ namespace PicSum.UIComponent.InfoPanel
 
                 GetFileDeepInfoParameterEntity param = new GetFileDeepInfoParameterEntity();
                 param.FilePathList = filePathList;
-                param.ThumbnailSize = new Size(200, 200);
+                param.ThumbnailSize = new Size(
+                    ApplicationConst.INFOPANEL_THUMBANIL_SIZE, 
+                    ApplicationConst.INFOPANEL_THUMBANIL_SIZE);
 
                 getFileInfoProcess.Cancel();
                 getFileInfoProcess.Execute(this, param);

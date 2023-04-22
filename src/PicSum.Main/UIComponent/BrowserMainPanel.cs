@@ -277,8 +277,7 @@ namespace PicSum.Main.UIComponent
                 components = new Container();
             }
 
-            const int INFOPANEL_MINSIZE = 200;
-            splitContainer.Panel2MinSize = INFOPANEL_MINSIZE;
+            splitContainer.Panel2MinSize = ApplicationConst.INFOPANEL_WIDTH;
             splitContainer.SplitterDistance = splitContainer.Width - splitContainer.Panel2MinSize - splitContainer.SplitterWidth;
         }
 
@@ -341,7 +340,7 @@ namespace PicSum.Main.UIComponent
             if (filePathList.Count == 0)
             {
                 throw new ArgumentException("ファイルパスリストが0件です。", "filePathList");
-            }            
+            }
 
             if (filePathList.Count == 1)
             {
@@ -547,10 +546,10 @@ namespace PicSum.Main.UIComponent
         {
             this.tagDropToolButton.SetItems(e);
 
-            if (!string.IsNullOrEmpty(this.tagDropToolButton.SelectedItem))             
+            if (!string.IsNullOrEmpty(this.tagDropToolButton.SelectedItem))
             {
                 this.tagDropToolButton.SelectItem(this.tagDropToolButton.SelectedItem);
-            }            
+            }
         }
 
         #endregion
@@ -581,7 +580,7 @@ namespace PicSum.Main.UIComponent
         private void contents_MouseClick(object sender, MouseEventArgs e)
         {
             switch (e.Button)
-            { 
+            {
                 case MouseButtons.XButton1:
                     this.MovePreviewContents();
                     break;
@@ -784,7 +783,7 @@ namespace PicSum.Main.UIComponent
             else
             {
                 this.openContents(new TagFileListContentsParameter(e.Item), ContentsOpenType.AddTab);
-            }            
+            }
         }
 
         private void searchRatingToolButton_MouseClick(object sender, MouseEventArgs e)
