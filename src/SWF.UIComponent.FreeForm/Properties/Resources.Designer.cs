@@ -63,16 +63,6 @@ namespace SWF.UIComponent.FreeForm.Properties {
         /// <summary>
         ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
         /// </summary>
-        internal static System.Drawing.Bitmap CloseButtonMousePoint {
-            get {
-                object obj = ResourceManager.GetObject("CloseButtonMousePoint", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
-        /// </summary>
         internal static System.Drawing.Bitmap Corner {
             get {
                 object obj = ResourceManager.GetObject("Corner", resourceCulture);
@@ -86,46 +76,6 @@ namespace SWF.UIComponent.FreeForm.Properties {
         internal static System.Drawing.Bitmap Edge {
             get {
                 object obj = ResourceManager.GetObject("Edge", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
-        /// </summary>
-        internal static System.Drawing.Bitmap MaximumButtonMousePoint {
-            get {
-                object obj = ResourceManager.GetObject("MaximumButtonMousePoint", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
-        /// </summary>
-        internal static System.Drawing.Bitmap MaximumControlBox {
-            get {
-                object obj = ResourceManager.GetObject("MaximumControlBox", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
-        /// </summary>
-        internal static System.Drawing.Bitmap MinimumButtonMousePoint {
-            get {
-                object obj = ResourceManager.GetObject("MinimumButtonMousePoint", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
-        /// </summary>
-        internal static System.Drawing.Bitmap NormalControlBox {
-            get {
-                object obj = ResourceManager.GetObject("NormalControlBox", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
