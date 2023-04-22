@@ -277,7 +277,7 @@ namespace PicSum.Main.UIComponent
                 components = new Container();
             }
 
-            const int INFOPANEL_MINSIZE = 240;
+            const int INFOPANEL_MINSIZE = 200;
             splitContainer.Panel2MinSize = INFOPANEL_MINSIZE;
             splitContainer.SplitterDistance = splitContainer.Width - splitContainer.Panel2MinSize - splitContainer.SplitterWidth;
         }
