@@ -11,7 +11,8 @@
 * ファイルへのアクセスを、`FileUtil`に集約する。
 * `ImageUtil`の戻り値を、`Nullable`にする。
 * `FileUtil`の戻り値を、`Nullable`や、件数`0`にする。
-* `Exception`によるキャッチを削除する。
+* `Exception`をキャッチせず、適切な例外のみをキャッチする。
+* `throw new Exception`を適切な例外クラスにする。
 ## コマンドライン引数
 * コマンドライン引数では実行しないようにする。
 ## ドロップダウン
