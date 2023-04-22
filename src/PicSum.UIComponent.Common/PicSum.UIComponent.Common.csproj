@@ -69,9 +69,9 @@
     <Compile Include="DropDownList.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="FileContextMenu\ExecuteFileEventArgs.cs" />
-    <Compile Include="FileContextMenu\ExecuteFileListEventArgs.cs" />
-    <Compile Include="FileContextMenu\FileContextMenu.cs">
+    <Compile Include="ExecuteFileEventArgs.cs" />
+    <Compile Include="ExecuteFileListEventArgs.cs" />
+    <Compile Include="FileContextMenu.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />

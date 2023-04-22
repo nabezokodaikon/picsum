@@ -90,12 +90,6 @@
     <Compile Include="ToolButton.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="ToolStripCheckBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="ToolStripSepareterEx.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="ToolStripSlider.cs">
       <SubType>Component</SubType>
     </Compile>

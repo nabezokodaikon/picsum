@@ -787,11 +787,6 @@ namespace PicSum.Main.UIComponent
             }            
         }
 
-        private void searchRatingToolButton_SelectedRating(object sender, PicSum.UIComponent.SearchTool.SelectedRatingEventArgs e)
-        {
-            openContents(new RatingFileListContentsParameter(e.Value), e.OpenType);
-        }
-
         private void searchRatingToolButton_MouseClick(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)

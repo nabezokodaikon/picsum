@@ -207,10 +207,6 @@
       <Project>{AD290551-E7B2-41E0-801D-E8118155AE86}</Project>
       <Name>PicSum.UIComponent.InfoPanel</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PicSum.UIComponent.SearchTool\PicSum.UIComponent.SearchTool.csproj">
-      <Project>{59912BB6-7F9C-4C10-B67E-D616CE5DA771}</Project>
-      <Name>PicSum.UIComponent.SearchTool</Name>
-    </ProjectReference>
     <ProjectReference Include="..\SWF.UIComponent.WideDropDown\SWF.UIComponent.WideDropDown.csproj">
       <Project>{b836f727-9ecf-4f84-b665-076b47a5b9a4}</Project>
       <Name>SWF.UIComponent.WideDropDown</Name>

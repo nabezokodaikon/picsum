@@ -1140,7 +1140,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
             }
         }
 
-        private void fileContextMenu_FileActiveTabOpen(object sender, PicSum.UIComponent.Common.FileContextMenu.ExecuteFileEventArgs e)
+        private void fileContextMenu_FileActiveTabOpen(object sender, PicSum.UIComponent.Common.ExecuteFileEventArgs e)
         {
             var param = new ImageViewerContentsParameter(
                 this.Parameter.ContentsSources,
@@ -1152,7 +1152,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
             OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.OverlapTab, param));
         }
 
-        private void fileContextMenu_FileNewTabOpen(object sender, PicSum.UIComponent.Common.FileContextMenu.ExecuteFileEventArgs e)
+        private void fileContextMenu_FileNewTabOpen(object sender, PicSum.UIComponent.Common.ExecuteFileEventArgs e)
         {
             var param = new ImageViewerContentsParameter(
                 this.Parameter.ContentsSources,
@@ -1164,7 +1164,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
             OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.AddTab, param));
         }
 
-        private void fileContextMenu_FileNewWindowOpen(object sender, PicSum.UIComponent.Common.FileContextMenu.ExecuteFileEventArgs e)
+        private void fileContextMenu_FileNewWindowOpen(object sender, PicSum.UIComponent.Common.ExecuteFileEventArgs e)
         {
             var param = new ImageViewerContentsParameter(
                 this.Parameter.ContentsSources,
@@ -1176,35 +1176,35 @@ namespace PicSum.UIComponent.Contents.FileListContents
             OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.NewWindow, param));
         }
 
-        private void fileContextMenu_FileOpen(object sender, PicSum.UIComponent.Common.FileContextMenu.ExecuteFileEventArgs e)
+        private void fileContextMenu_FileOpen(object sender, PicSum.UIComponent.Common.ExecuteFileEventArgs e)
         {
             FileUtil.OpenFile(e.FilePath);
         }
 
-        private void fileContextMenu_SaveDirectoryOpen(object sender, PicSum.UIComponent.Common.FileContextMenu.ExecuteFileEventArgs e)
+        private void fileContextMenu_SaveDirectoryOpen(object sender, PicSum.UIComponent.Common.ExecuteFileEventArgs e)
         {
             FileUtil.OpenExplorerSelect(e.FilePath);
         }
 
-        private void fileContextMenu_DirectoryActiveTabOpen(object sender, PicSum.UIComponent.Common.FileContextMenu.ExecuteFileEventArgs e)
+        private void fileContextMenu_DirectoryActiveTabOpen(object sender, PicSum.UIComponent.Common.ExecuteFileEventArgs e)
         {
             DirectoryFileListContentsParameter param = new DirectoryFileListContentsParameter(e.FilePath);
             OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.OverlapTab, param));
         }
 
-        private void fileContextMenu_DirectoryNewTabOpen(object sender, PicSum.UIComponent.Common.FileContextMenu.ExecuteFileEventArgs e)
+        private void fileContextMenu_DirectoryNewTabOpen(object sender, PicSum.UIComponent.Common.ExecuteFileEventArgs e)
         {
             DirectoryFileListContentsParameter param = new DirectoryFileListContentsParameter(e.FilePath);
             OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.AddTab, param));
         }
 
-        private void fileContextMenu_DirectoryNewWindowOpen(object sender, PicSum.UIComponent.Common.FileContextMenu.ExecuteFileEventArgs e)
+        private void fileContextMenu_DirectoryNewWindowOpen(object sender, PicSum.UIComponent.Common.ExecuteFileEventArgs e)
         {
             DirectoryFileListContentsParameter param = new DirectoryFileListContentsParameter(e.FilePath);
             OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.NewWindow, param));
         }
 
-        private void fileContextMenu_ExplorerOpen(object sender, PicSum.UIComponent.Common.FileContextMenu.ExecuteFileEventArgs e)
+        private void fileContextMenu_ExplorerOpen(object sender, PicSum.UIComponent.Common.ExecuteFileEventArgs e)
         {
             if (string.IsNullOrEmpty(e.FilePath))
             {
@@ -1216,7 +1216,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
             }
         }
 
-        private void fileContextMenu_Export(object sender, PicSum.UIComponent.Common.FileContextMenu.ExecuteFileListEventArgs e)
+        private void fileContextMenu_Export(object sender, PicSum.UIComponent.Common.ExecuteFileListEventArgs e)
         {
             using (FolderBrowserDialog fbd = new FolderBrowserDialog())
             {
@@ -1237,7 +1237,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
             }
         }
 
-        private void fileContextMenu_PathCopy(object sender, PicSum.UIComponent.Common.FileContextMenu.ExecuteFileListEventArgs e)
+        private void fileContextMenu_PathCopy(object sender, PicSum.UIComponent.Common.ExecuteFileListEventArgs e)
         {
             StringBuilder sb = new StringBuilder();
 
@@ -1249,7 +1249,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
             Clipboard.SetText(sb.ToString());
         }
 
-        private void fileContextMenu_NameCopy(object sender, PicSum.UIComponent.Common.FileContextMenu.ExecuteFileListEventArgs e)
+        private void fileContextMenu_NameCopy(object sender, PicSum.UIComponent.Common.ExecuteFileListEventArgs e)
         {
             StringBuilder sb = new StringBuilder();
 
@@ -1261,12 +1261,12 @@ namespace PicSum.UIComponent.Contents.FileListContents
             Clipboard.SetText(sb.ToString());
         }
 
-        private void fileContextMenu_AddKeep(object sender, PicSum.UIComponent.Common.FileContextMenu.ExecuteFileListEventArgs e)
+        private void fileContextMenu_AddKeep(object sender, PicSum.UIComponent.Common.ExecuteFileListEventArgs e)
         {
             addKeep(e.FilePathList.Select(filePath => new KeepFileEntity(filePath, DateTime.Now)).ToList());
         }
 
-        private void fileContextMenu_RemoveFromList(object sender, PicSum.UIComponent.Common.FileContextMenu.ExecuteFileListEventArgs e)
+        private void fileContextMenu_RemoveFromList(object sender, PicSum.UIComponent.Common.ExecuteFileListEventArgs e)
         {
             OnRemoveFile(e.FilePathList);
         }

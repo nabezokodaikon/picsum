@@ -5,7 +5,7 @@ using System.Text;
 using System.Windows.Forms;
 using SWF.Common;
 
-namespace PicSum.UIComponent.Common.FileContextMenu
+namespace PicSum.UIComponent.Common
 {
     /// <summary>
     /// ファイルコンテキストメニュー
