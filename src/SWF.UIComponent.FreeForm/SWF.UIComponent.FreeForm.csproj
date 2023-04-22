@@ -70,9 +70,6 @@
     <Compile Include="GrassForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ControlBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="StandardForm.cs">
       <SubType>Form</SubType>
     </Compile>
