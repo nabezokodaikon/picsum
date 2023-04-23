@@ -16,8 +16,8 @@ namespace SWF.Common
         public static readonly System.Drawing.Size EMPTY_SIZE = new System.Drawing.Size(-1, -1);
 
         private static readonly IList<string> _imageFileExtensionList = getImageFileExtensionList();
-        private static readonly EncoderParameter _encorderParameter = new EncoderParameter(Encoder.Quality, 50L);
-        private static readonly ImageCodecInfo _jpegCodecInfo = ImageCodecInfo.GetImageEncoders().Single(info => info.FormatID == ImageFormat.Jpeg.Guid);
+        private static readonly EncoderParameter _encorderParameter = new EncoderParameter(Encoder.Quality, 100L);
+        private static readonly ImageCodecInfo _pngCodecInfo = ImageCodecInfo.GetImageEncoders().Single(info => info.FormatID == ImageFormat.Png.Guid);
         private static readonly ImageConverter _imageConverter = new ImageConverter();
         private static readonly dynamic Shell = Activator.CreateInstance(Type.GetTypeFromProgID("Shell.Application"));
 
@@ -48,7 +48,7 @@ namespace SWF.Common
             {
                 var eps = new EncoderParameters(1);
                 eps.Param[0] = _encorderParameter;
-                img.Save(mes, _jpegCodecInfo, eps);
+                img.Save(mes, _pngCodecInfo, eps);
                 var buffer = new byte[mes.Length];
                 mes.Position = 0;
                 mes.Read(buffer, 0, buffer.Length);
