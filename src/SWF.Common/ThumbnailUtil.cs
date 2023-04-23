@@ -6,10 +6,10 @@ namespace SWF.Common
 {
     public static class ThumbnailUtil
     {
-        private const int SHADOW_OFFSET = 1;
+        private const int SHADOW_OFFSET = 2;
         private const int FRAME_OFFSET = 1;
-        private static readonly SolidBrush _shadowBrush = new SolidBrush(Color.FromArgb(64, Color.Black));
-        private static readonly SolidBrush _frameBrush = new SolidBrush(Color.White);
+        private static readonly Pen _shadowPen = new Pen(Color.FromArgb(32, Color.Black));
+        private static readonly Pen _framePen = new Pen(Color.FromArgb(64, Color.White));
 
         /// <summary>
         /// サムネイルを作成します。
@@ -70,19 +70,17 @@ namespace SWF.Common
             float x = rect.X + (rect.Width - w) / 2f;
             float y = rect.Y + (rect.Height - h) / 2f;
 
-            int frameOffset = FRAME_OFFSET * 2;
+            g.DrawRectangle(_shadowPen,
+                            x - SHADOW_OFFSET,
+                            y - SHADOW_OFFSET,
+                            w + SHADOW_OFFSET * 2,
+                            h + SHADOW_OFFSET * 2);
 
-            g.FillRectangle(_shadowBrush,
-                            x,
-                            y,
-                            w + frameOffset,
-                            h + frameOffset);
-
-            g.FillRectangle(_frameBrush,
+            g.DrawRectangle(_framePen,
                             x - FRAME_OFFSET,
                             y - FRAME_OFFSET,
-                            w + frameOffset,
-                            h + frameOffset);
+                            w + FRAME_OFFSET * 2,
+                            h + FRAME_OFFSET * 2);
 
             g.DrawImage(thumb, x, y, w, h);
         }
@@ -101,19 +99,20 @@ namespace SWF.Common
             float x = rect.X + (rect.Width - w) / 2f;
             float y = rect.Y + (rect.Height - h) / 2f;
 
-            int frameOffset = FRAME_OFFSET * 2;
+            var shadowOffset = SHADOW_OFFSET * scale;
+            var frameOffset = FRAME_OFFSET * scale;
 
-            g.FillRectangle(_shadowBrush,
-                            x,
-                            y,
-                            w + frameOffset,
-                            h + frameOffset);
+            g.DrawRectangle(_shadowPen,
+                            x - shadowOffset,
+                            y - shadowOffset,
+                            w + shadowOffset * 2,
+                            h + shadowOffset * 2); ;
 
-            g.FillRectangle(_frameBrush,
-                            x - FRAME_OFFSET,
-                            y - FRAME_OFFSET,
-                            w + frameOffset,
-                            h + frameOffset);
+            g.DrawRectangle(_framePen,
+                            x - frameOffset,
+                            y - frameOffset,
+                            w + frameOffset * 2,
+                            h + frameOffset * 2);
 
             g.DrawImage(thumb, x, y, w, h);
         }
