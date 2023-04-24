@@ -1,44 +1,32 @@
-﻿using System;
+﻿using SWF.UIComponent.TabOperation;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
-using SWF.UIComponent.TabOperation;
 
 namespace PicSum.UIComponent.Contents.ContentsParameter
 {
     /// <summary>
     /// 画像表示コンテンツパラメータ
     /// </summary>
-    public class ImageViewerContentsParameter : IContentsParameter
+    public class ImageViewerContentsParameter
+        : IContentsParameter
     {
-        private IList<string> _filePathList;
-        private string _selectedFilePath;
+        private string selectedFilePath;
 
         public string ContentsSources { get; private set; }
         public string SourcesKey { get; private set; }
         public string Key { get; private set; }
-
-        public IList<string> FilePathList
-        {
-            get
-            {
-                return _filePathList;
-            }
-        }
+        public IList<string> FilePathList { get; private set; }
 
         public string SelectedFilePath
         {
             get
             {
-                return _selectedFilePath;
+                return this.selectedFilePath;
             }
             set
             {
-                if (value == null)
-                {
-                    throw new ArgumentNullException("value");
-                }
-
-                _selectedFilePath = value;
+                this.selectedFilePath = value ?? throw new ArgumentNullException(nameof(value));
             }
         }
 
@@ -46,24 +34,19 @@ namespace PicSum.UIComponent.Contents.ContentsParameter
 
         public Image ContentsIcon { get; private set; }
 
-        public ImageViewerContentsParameter(string contentsSources, string sourcesKey, IList<string> filePathList, string selectedFilePath, string contentsTitle, Image contentsIcon)
+        public ImageViewerContentsParameter(
+            string contentsSources,
+            string sourcesKey,
+            IList<string> filePathList,
+            string selectedFilePath,
+            string contentsTitle,
+            Image contentsIcon)
         {
-            if (filePathList == null)
-            {
-                throw new ArgumentNullException("filePathList");
-            }
-
-            if (selectedFilePath == null)
-            {
-                throw new ArgumentNullException("selectedFilePath");
-            }
-
             this.ContentsSources = contentsSources ?? throw new ArgumentNullException(nameof(contentsSources));
             this.SourcesKey = sourcesKey ?? throw new ArgumentNullException(nameof(sourcesKey));
             this.Key = string.Format("{0}ImageContents:{1}", this.ContentsSources, this.SourcesKey);
-
-            _filePathList = filePathList;
-            _selectedFilePath = selectedFilePath;
+            this.FilePathList = filePathList ?? throw new ArgumentNullException(nameof(filePathList));
+            this.selectedFilePath = selectedFilePath ?? throw new ArgumentNullException(nameof(selectedFilePath));
             this.ContentsTitle = contentsTitle ?? throw new ArgumentNullException(nameof(contentsTitle));
             this.ContentsIcon = contentsIcon ?? throw new ArgumentNullException(nameof(contentsIcon));
         }
