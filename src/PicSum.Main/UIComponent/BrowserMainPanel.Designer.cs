@@ -33,6 +33,7 @@
             this.infoPanel = new PicSum.UIComponent.InfoPanel.InfoPanel();
             this.tabSwitch = new SWF.UIComponent.TabOperation.TabSwitch();
             this.toolPanel = new System.Windows.Forms.Panel();
+            this.reloadToolButton = new SWF.UIComponent.Common.ToolButton();
             this.tagDropToolButton = new SWF.UIComponent.WideDropDown.WideDropToolButton();
             this.homeToolButton = new SWF.UIComponent.Common.ToolButton();
             this.nextContentsHistoryButton = new SWF.UIComponent.Common.ToolButton();
@@ -41,7 +42,6 @@
             this.previewContentsHistoryButton = new SWF.UIComponent.Common.ToolButton();
             this.showInfoToolButton = new SWF.UIComponent.Common.ToolButton();
             this.addressBar = new PicSum.UIComponent.AddressBar.AddressBar();
-            this.reloadToolButton = new SWF.UIComponent.Common.ToolButton();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
             this.splitContainer.Panel1.SuspendLayout();
             this.splitContainer.Panel2.SuspendLayout();
@@ -138,6 +138,20 @@
             this.toolPanel.Name = "toolPanel";
             this.toolPanel.Size = new System.Drawing.Size(746, 34);
             this.toolPanel.TabIndex = 5;
+            // 
+            // reloadToolButton
+            // 
+            this.reloadToolButton.FlatAppearance.BorderSize = 0;
+            this.reloadToolButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.reloadToolButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.reloadToolButton.Image = global::PicSum.Main.Properties.Resources.ReloadIcon;
+            this.reloadToolButton.Location = new System.Drawing.Point(76, 3);
+            this.reloadToolButton.Name = "reloadToolButton";
+            this.reloadToolButton.RegionType = SWF.UIComponent.Common.ToolButton.ToolButtonRegionType.Default;
+            this.reloadToolButton.Size = new System.Drawing.Size(32, 28);
+            this.reloadToolButton.TabIndex = 10;
+            this.reloadToolButton.UseVisualStyleBackColor = true;
+            this.reloadToolButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.reloadToolButton_MouseClick);
             // 
             // tagDropToolButton
             // 
@@ -269,19 +283,6 @@
             this.addressBar.TextLineAlignment = System.Drawing.StringAlignment.Center;
             this.addressBar.TextTrimming = System.Drawing.StringTrimming.EllipsisCharacter;
             this.addressBar.SelectedDirectory += new System.EventHandler<PicSum.UIComponent.AddressBar.SelectedDirectoryEventArgs>(this.addressBar_SelectedDirectory);
-            // 
-            // reloadToolButton
-            // 
-            this.reloadToolButton.FlatAppearance.BorderSize = 0;
-            this.reloadToolButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
-            this.reloadToolButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.reloadToolButton.Image = global::PicSum.Main.Properties.Resources.ReloadIcon;
-            this.reloadToolButton.Location = new System.Drawing.Point(76, 3);
-            this.reloadToolButton.Name = "reloadToolButton";
-            this.reloadToolButton.RegionType = SWF.UIComponent.Common.ToolButton.ToolButtonRegionType.Default;
-            this.reloadToolButton.Size = new System.Drawing.Size(32, 28);
-            this.reloadToolButton.TabIndex = 10;
-            this.reloadToolButton.UseVisualStyleBackColor = true;
             // 
             // BrowserMainPanel
             // 
