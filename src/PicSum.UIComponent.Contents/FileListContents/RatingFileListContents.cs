@@ -8,6 +8,7 @@ using PicSum.UIComponent.Contents.ContentsParameter;
 using PicSum.UIComponent.Contents.Properties;
 using PicSum.Core.Base.Conf;
 using SWF.Common;
+using SWF.UIComponent.Common;
 
 namespace PicSum.UIComponent.Contents.FileListContents
 {
@@ -20,6 +21,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
 
         private RatingFileListContentsParameter _parameter = null;
         private TwoWayProcess<SearchFileByRatingAsyncFacade, SingleValueEntity<int>, ListEntity<FileShallowInfoEntity>> _searchFileProcess = null;
+        private OneWayProcess<UpdateFileRatingAsyncFacade, UpdateFileRatingParameterEntity> _updateFileRatingProcess = null;
 
         #endregion
 
@@ -36,6 +38,19 @@ namespace PicSum.UIComponent.Contents.FileListContents
                 }
 
                 return _searchFileProcess;
+            }
+        }
+
+        private OneWayProcess<UpdateFileRatingAsyncFacade, UpdateFileRatingParameterEntity> updateFileRatingProcess
+        {
+            get
+            {
+                if (_updateFileRatingProcess == null)
+                {
+                    _updateFileRatingProcess = TaskManager.CreateOneWayProcess<UpdateFileRatingAsyncFacade, UpdateFileRatingParameterEntity>(ProcessContainer);
+                }
+
+                return _updateFileRatingProcess;
             }
         }
 
@@ -85,7 +100,12 @@ namespace PicSum.UIComponent.Contents.FileListContents
 
         protected override void OnRemoveFile(System.Collections.Generic.IList<string> filePathList)
         {
+            UpdateFileRatingParameterEntity param = new UpdateFileRatingParameterEntity();
+            param.FilePathList = filePathList;
+            param.RatingValue = 0;
+            updateFileRatingProcess.Execute(this, param);
 
+            RemoveFile(filePathList);
         }
 
         #endregion
@@ -97,8 +117,8 @@ namespace PicSum.UIComponent.Contents.FileListContents
             this.Title = "スター";
             this.Icon = Resources.ActiveRatingIcon;
             this.IsAddKeepMenuItemVisible = true;
-            this.IsRemoveFromListMenuItemVisible = false;
             this.IsMoveControlVisible = false;
+            this.IsRemoveFromListMenuItemVisible = true;
             base.sortFileRgistrationDateToolStripButton.Enabled = true;
         }
 
