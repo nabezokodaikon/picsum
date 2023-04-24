@@ -27,7 +27,6 @@ namespace PicSum.UIComponent.Contents.FileListContents
 
         private TagFileListContentsParameter _parameter = null;
         private TwoWayProcess<SearchFileByTagAsyncFacade, SingleValueEntity<string>, ListEntity<FileShallowInfoEntity>> _searchFileProcess = null;
-        private TwoWayProcess<GetNextTagAsyncFacade, GetNextContentsParameterEntity<string>, SingleValueEntity<string>> _getNextTagProcess = null;
         private OneWayProcess<DeleteFileTagAsyncFacade, UpdateFileTagParameterEntity> _deleteFileTagProcess = null;
 
         #endregion
@@ -53,20 +52,6 @@ namespace PicSum.UIComponent.Contents.FileListContents
                 }
 
                 return _searchFileProcess;
-            }
-        }
-
-        private TwoWayProcess<GetNextTagAsyncFacade, GetNextContentsParameterEntity<string>, SingleValueEntity<string>> getNextTagProcess
-        {
-            get
-            {
-                if (_getNextTagProcess == null)
-                {
-                    _getNextTagProcess = TaskManager.CreateTwoWayProcess<GetNextTagAsyncFacade, GetNextContentsParameterEntity<string>, SingleValueEntity<string>>(ProcessContainer);
-                    _getNextTagProcess.Callback += new AsyncTaskCallbackEventHandler<SingleValueEntity<string>>(getNextTagProcess_Callback);
-                }
-
-                return _getNextTagProcess;
             }
         }
 
@@ -142,27 +127,6 @@ namespace PicSum.UIComponent.Contents.FileListContents
             RemoveFile(filePathList);
         }
 
-
-        protected override void OnMovePreviewButtonClick(EventArgs e)
-        {
-            GetNextContentsParameterEntity<string> param = new GetNextContentsParameterEntity<string>();
-            param.CurrentParameter = new SingleValueEntity<string>();
-            param.CurrentParameter.Value = _parameter.Tag;
-            param.IsNext = false;
-            getNextTagProcess.Cancel();
-            getNextTagProcess.Execute(this, param);
-        }
-
-        protected override void OnMoveNextButtonClick(EventArgs e)
-        {
-            GetNextContentsParameterEntity<string> param = new GetNextContentsParameterEntity<string>();
-            param.CurrentParameter = new SingleValueEntity<string>();
-            param.CurrentParameter.Value = _parameter.Tag;
-            param.IsNext = true;
-            getNextTagProcess.Cancel();
-            getNextTagProcess.Execute(this, param);
-        }
-
         #endregion
 
         #region プライベートメソッド
@@ -173,7 +137,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
             this.Icon = Resources.TagIcon;
             this.IsAddKeepMenuItemVisible = true;
             this.IsRemoveFromListMenuItemVisible = true;
-            this.IsMoveControlVisible = true;
+            this.IsMoveControlVisible = false;
             base.sortFileRgistrationDateToolStripButton.Enabled = true;
         }
 
@@ -184,12 +148,6 @@ namespace PicSum.UIComponent.Contents.FileListContents
         private void searchFileProcess_Callback(object sender, ListEntity<FileShallowInfoEntity> e)
         {
             base.SetFile(e, _parameter.SelectedFilePath, SortTypeID.RgistrationDate, false);
-        }
-
-        private void getNextTagProcess_Callback(object sender, SingleValueEntity<string> e)
-        {
-            TagFileListContentsParameter param = new TagFileListContentsParameter(e.Value);
-            OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.OverlapTab, param));
         }
 
         #endregion

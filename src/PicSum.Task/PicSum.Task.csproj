@@ -77,7 +77,6 @@
     <Compile Include="AsyncFacade\GetKeepAsyncFacade.cs" />
     <Compile Include="AsyncFacade\ExportFileAsyncFacade.cs" />
     <Compile Include="AsyncFacade\GetNextDirectoryAsyncFacade.cs" />
-    <Compile Include="AsyncFacade\GetNextTagAsyncFacade.cs" />
     <Compile Include="AsyncFacade\RemoveKeepAsyncFacade.cs" />
     <Compile Include="AsyncFacade\SearchFavoriteDirectoryAsyncFacade.cs" />
     <Compile Include="AsyncFacade\SearchFileByRatingAsyncFacade.cs" />
