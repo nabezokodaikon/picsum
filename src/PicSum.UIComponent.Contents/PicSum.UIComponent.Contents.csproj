@@ -74,7 +74,7 @@
     <Compile Include="Conf\CommonConfig.cs" />
     <Compile Include="Conf\FileListContentsConfig.cs" />
     <Compile Include="Conf\ImageViewerContentsConfig.cs" />
-    <Compile Include="ContentsParameter\FavoriteFolderListContentsParameter.cs" />
+    <Compile Include="ContentsParameter\FavoriteDirectoryListContentsParameter.cs" />
     <Compile Include="ContentsParameter\KeepFileListContentsParameter.cs" />
     <Compile Include="ContentsParameter\DirectoryFileListContentsParameter.cs" />
     <Compile Include="ContentsParameter\ImageViewerContentsParameter.cs" />
