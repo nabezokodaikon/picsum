@@ -210,6 +210,16 @@ namespace SWF.UIComponent.TabOperation
             _contents = _historyManager.CreateNext();
         }
 
+        internal void CloneCurrentContents()
+        {
+            if (_contents != null)
+            {
+                throw new Exception("既にコンテンツが存在しています。ClearContentsメソッドでコンテンツをクリアして下さい。");
+            }
+
+            _contents = _historyManager.CreateClone();
+        }
+
         private void clearContents()
         {
             if (_contents != null)

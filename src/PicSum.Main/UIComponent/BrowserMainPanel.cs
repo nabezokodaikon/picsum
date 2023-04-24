@@ -759,6 +759,26 @@ namespace PicSum.Main.UIComponent
 
         #region ツールボタンイベント
 
+        private void reloadToolButton_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button != MouseButtons.Left)
+            {
+                return;
+            }
+
+            if (this.tabSwitch.ActiveTab == null)
+            {
+                return;
+            }
+
+            if (!this.tabSwitch.ActiveTab.HasContents)
+            {
+                return;
+            }
+
+            this.addContentsEventHandler(this.tabSwitch.CloneCurrentContents<BrowserContents>());
+        }
+
         private void homeToolButton_MouseClick(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)

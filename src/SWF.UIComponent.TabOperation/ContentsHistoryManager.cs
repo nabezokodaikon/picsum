@@ -119,5 +119,16 @@ namespace SWF.UIComponent.TabOperation
             this.index++;
             return this.list[this.index].CreateContents();
         }
+
+        public ContentsPanel CreateClone()
+        {
+            if (this.list.Count < 1 ||
+                this.index > this.list.Count - 1)
+            {
+                throw new IndexOutOfRangeException("コンテンツパラメータの現在の履歴が存在しません。");
+            }
+
+            return this.list[this.index].CreateContents();
+        }
     }
 }
