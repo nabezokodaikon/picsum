@@ -38,7 +38,7 @@
             // 
             this.addButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.addButton.Font = new System.Drawing.Font("Courier", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.addButton.Font = new System.Drawing.Font("Yu Gothic UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.addButton.Image = global::SWF.UIComponent.WideDropDown.Properties.Resources.TagIcon;
             this.addButton.Location = new System.Drawing.Point(598, 3);
             this.addButton.Margin = new System.Windows.Forms.Padding(0, 6, 0, 6);
@@ -57,7 +57,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.inputTextBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.inputTextBox.Font = new System.Drawing.Font("Courier", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.inputTextBox.Font = new System.Drawing.Font("Yu Gothic UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.inputTextBox.Location = new System.Drawing.Point(3, 3);
             this.inputTextBox.Margin = new System.Windows.Forms.Padding(3, 3, 0, 3);
             this.inputTextBox.Multiline = true;
@@ -91,7 +91,7 @@
             this.Controls.Add(this.inputTextBox);
             this.Controls.Add(this.arrowPictureBox);
             this.Controls.Add(this.addButton);
-            this.Font = new System.Drawing.Font("Courier", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.Font = new System.Drawing.Font("Yu Gothic UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.Name = "WideComboBox";
             this.Size = new System.Drawing.Size(646, 38);

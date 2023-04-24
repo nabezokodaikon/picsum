@@ -4,7 +4,7 @@ namespace PicSum.UIComponent.AddressBar
 {
     public class Palette
     {
-        private Font _textFont = new Font("Courier", 10F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(128)));
+        private Font _textFont = new Font("Yu Gothic UI", 10F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(128)));
         private Color _textColor = Color.FromArgb(64, 64, 64);
         private Color _mousePointColor = Color.FromArgb(48, 48, 96, 144);
         private Color _selectedColor = Color.FromArgb(192, 48, 96, 144);

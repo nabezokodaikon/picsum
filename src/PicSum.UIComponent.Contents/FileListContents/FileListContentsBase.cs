@@ -443,7 +443,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
 
         private void initializeComponent()
         {
-            this.Font = new Font("Courier", 10F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(128)));
+            this.Font = new Font("Yu Gothic UI", 10F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(128)));
             isShowFileName = FileListContentsConfig.IsShowFileName;
             isShowDirectory = FileListContentsConfig.IsShowDirectory;
             isShowImageFile = FileListContentsConfig.IsShowImageFile;

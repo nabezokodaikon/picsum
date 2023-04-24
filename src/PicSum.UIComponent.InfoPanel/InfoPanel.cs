@@ -448,7 +448,7 @@ namespace PicSum.UIComponent.InfoPanel
 
                 if (fileInfo.UpdateDate.HasValue)
                 {
-                    fileUpdatedateLabel.Text = string.Format("Update Date   {0:yyyy/MM/dd HH:mm:ss}", fileInfo.UpdateDate.Value);
+                    fileUpdatedateLabel.Text = string.Format("Update Date {0:yyyy/MM/dd HH:mm:ss}", fileInfo.UpdateDate.Value);
                 }
 
                 if (fileInfo.CreateDate.HasValue)

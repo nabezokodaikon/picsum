@@ -85,7 +85,7 @@
             this.fileCreateDateLabel.Name = "fileCreateDateLabel";
             this.fileCreateDateLabel.Size = new System.Drawing.Size(504, 18);
             this.fileCreateDateLabel.TabIndex = 26;
-            this.fileCreateDateLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.fileCreateDateLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // fileUpdatedateLabel
             // 
@@ -97,7 +97,7 @@
             this.fileUpdatedateLabel.Name = "fileUpdatedateLabel";
             this.fileUpdatedateLabel.Size = new System.Drawing.Size(504, 18);
             this.fileUpdatedateLabel.TabIndex = 25;
-            this.fileUpdatedateLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.fileUpdatedateLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // fileSizeLabel
             // 
@@ -204,6 +204,7 @@
             // 
             this.wideComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.wideComboBox.Font = new System.Drawing.Font("Yu Gothic UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.wideComboBox.Location = new System.Drawing.Point(0, 477);
             this.wideComboBox.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.wideComboBox.Name = "wideComboBox";
