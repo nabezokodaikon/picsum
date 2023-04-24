@@ -419,12 +419,6 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
             this.ReadImageFileProcess.Execute(this, param);
         }
 
-        private void SetTitle(string selectedFilePath)
-        {
-            this.Title = FileUtil.GetFileName(selectedFilePath);
-            this.OnSelectedFileChanged(new SelectedFileChangeEventArgs(selectedFilePath));
-        }
-
         private void AddKeep(IList<KeepFileEntity> filePathList)
         {
             var param = new ListEntity<KeepFileEntity>(filePathList);
@@ -546,7 +540,7 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
             }
 
             this.parameter.SelectedFilePath = e.Image1.FilePath;
-            this.SetTitle(e.Image1.FilePath);
+            this.OnSelectedFileChanged(new SelectedFileChangeEventArgs(e.Image1.FilePath));
 
             if (this.displayMode == ImageDisplayMode.Single)
             {
@@ -800,7 +794,7 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
 
         private void LeftImagePanel_ImageMouseClick(object sender, MouseEventArgs e)
         {
-            this.SetTitle(this.leftImageFilePath);
+            this.OnSelectedFileChanged(new SelectedFileChangeEventArgs(this.leftImageFilePath));
 
             if (e.Button == MouseButtons.Middle)
             {
@@ -813,7 +807,7 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
 
         private void RightImagePanel_ImageMouseClick(object sender, MouseEventArgs e)
         {
-            this.SetTitle(this.rightImageFilePath);
+            this.OnSelectedFileChanged(new SelectedFileChangeEventArgs(this.rightImageFilePath));
 
             if (e.Button == MouseButtons.Middle)
             {
