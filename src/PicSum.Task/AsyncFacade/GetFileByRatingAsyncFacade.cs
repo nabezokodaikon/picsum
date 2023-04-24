@@ -8,24 +8,24 @@ using PicSum.Task.Entity;
 namespace PicSum.Task.AsyncFacade
 {
     /// <summary>
-    /// ファイルをタグで検索します。
+    /// ファイルを評価値で検索します。
     /// </summary>
-    public class SearchFileByTagAsyncFacade
-        : TwoWayFacadeBase<SingleValueEntity<string>, ListEntity<FileShallowInfoEntity>>
+    public class GetFileByRatingAsyncFacade
+        : TwoWayFacadeBase<SingleValueEntity<int>, ListEntity<FileShallowInfoEntity>>
     {
-        public override void Execute(SingleValueEntity<string> param)
+        public override void Execute(SingleValueEntity<int> param)
         {
             if (param == null)
             {
                 throw new ArgumentNullException("param");
             }
 
-            SearchFileByTagAsyncLogic logic = new SearchFileByTagAsyncLogic(this);
-            IList<FileByTagDto> dtoList = logic.Execute(param.Value);
+            GetFileByRatingAsyncLogic logic = new GetFileByRatingAsyncLogic(this);
+            IList<FileByRatingDto> fileList = logic.Execute(param.Value);
 
             GetFileShallowInfoAsyncLogic getInfoLogic = new GetFileShallowInfoAsyncLogic(this);
             ListEntity<FileShallowInfoEntity> infoList = new ListEntity<FileShallowInfoEntity>();
-            foreach (FileByTagDto dto in dtoList)
+            foreach (FileByRatingDto dto in fileList)
             {
                 CheckCancel();
 

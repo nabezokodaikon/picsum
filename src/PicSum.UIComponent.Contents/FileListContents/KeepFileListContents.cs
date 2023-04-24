@@ -18,7 +18,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
 
         private KeepFileListContentsParameter _parameter = null;
         private TwoWayProcess<GetKeepAsyncFacade, ListEntity<FileShallowInfoEntity>> _searchFileProcess = null;
-        private OneWayProcess<RemoveKeepAsyncFacade, ListEntity<string>> _removeKeepProcess = null;
+        private OneWayProcess<DeleteKeepAsyncFacade, ListEntity<string>> _removeKeepProcess = null;
 
         #endregion
 
@@ -38,13 +38,13 @@ namespace PicSum.UIComponent.Contents.FileListContents
             }
         }
 
-        private OneWayProcess<RemoveKeepAsyncFacade, ListEntity<string>> removeKeepProcess
+        private OneWayProcess<DeleteKeepAsyncFacade, ListEntity<string>> removeKeepProcess
         {
             get
             {
                 if (_removeKeepProcess == null)
                 {
-                    _removeKeepProcess = TaskManager.CreateOneWayProcess<RemoveKeepAsyncFacade, ListEntity<string>>(ProcessContainer);
+                    _removeKeepProcess = TaskManager.CreateOneWayProcess<DeleteKeepAsyncFacade, ListEntity<string>>(ProcessContainer);
                 }
 
                 return _removeKeepProcess;

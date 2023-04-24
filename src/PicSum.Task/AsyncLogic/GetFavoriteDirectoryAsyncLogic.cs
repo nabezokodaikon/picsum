@@ -11,9 +11,9 @@ using System.Linq;
 
 namespace PicSum.Task.AsyncLogic
 {
-    internal class SearchFavoriteDirectoryAsyncLogic : AsyncLogicBase
+    internal class GetFavoriteDirectoryAsyncLogic : AsyncLogicBase
     {
-        public SearchFavoriteDirectoryAsyncLogic(AsyncFacadeBase facade) : base(facade) { }
+        public GetFavoriteDirectoryAsyncLogic(AsyncFacadeBase facade) : base(facade) { }
 
         public IList<string> Execute()
         {

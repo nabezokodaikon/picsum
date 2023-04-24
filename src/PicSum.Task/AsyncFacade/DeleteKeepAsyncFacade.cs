@@ -8,7 +8,7 @@ namespace PicSum.Task.AsyncFacade
     /// <summary>
     /// キープリストからファイルを削除します。
     /// </summary>
-    public class RemoveKeepAsyncFacade
+    public class DeleteKeepAsyncFacade
         : OneWayFacadeBase<ListEntity<string>>
     {
         public override void Execute(ListEntity<string> param)

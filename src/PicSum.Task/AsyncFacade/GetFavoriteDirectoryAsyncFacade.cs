@@ -7,7 +7,7 @@ using SWF.Common;
 
 namespace PicSum.Task.AsyncFacade
 {
-    public class SearchFavoriteDirectoryAsyncFacade
+    public class GetFavoriteDirectoryAsyncFacade
         : TwoWayFacadeBase<SearchFavoriteDirectoryParameterEntity, ListEntity<FileShallowInfoEntity>>
     {
         public override void Execute(SearchFavoriteDirectoryParameterEntity param)
@@ -17,7 +17,7 @@ namespace PicSum.Task.AsyncFacade
                 throw new ArgumentNullException();
             }
 
-            SearchFavoriteDirectoryAsyncLogic logic = new SearchFavoriteDirectoryAsyncLogic(this);
+            GetFavoriteDirectoryAsyncLogic logic = new GetFavoriteDirectoryAsyncLogic(this);
             IList<string> fileList = logic.Execute();
 
             GetFileShallowInfoAsyncLogic getInfoLogic = new GetFileShallowInfoAsyncLogic(this);

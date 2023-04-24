@@ -40,7 +40,7 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
         private ImageDisplayMode _displayMode = ImageDisplayMode.LeftFacing;
         private ImageSizeMode _sizeMode = ImageSizeMode.FitOnlyBigImage;
 
-        private TwoWayProcess<ReadImageFileAsyncFacade, ReadImageFileParameterEntity, ReadImageFileResultEntity> _readImageFileProcess = null;
+        private TwoWayProcess<GetImageFileAsyncFacade, ReadImageFileParameterEntity, ReadImageFileResultEntity> _readImageFileProcess = null;
         private OneWayProcess<AddKeepAsyncFacade, ListEntity<KeepFileEntity>> _addKeepProcess = null;
         private OneWayProcess<ExportFileAsyncFacade, ExportFileParameterEntity> _exportFileProcess = null;
 
@@ -88,13 +88,13 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
             }
         }
 
-        private TwoWayProcess<ReadImageFileAsyncFacade, ReadImageFileParameterEntity, ReadImageFileResultEntity> readImageFileProcess
+        private TwoWayProcess<GetImageFileAsyncFacade, ReadImageFileParameterEntity, ReadImageFileResultEntity> readImageFileProcess
         {
             get
             {
                 if (_readImageFileProcess == null)
                 {
-                    _readImageFileProcess = TaskManager.CreateTwoWayProcess<ReadImageFileAsyncFacade, ReadImageFileParameterEntity, ReadImageFileResultEntity>(ProcessContainer);
+                    _readImageFileProcess = TaskManager.CreateTwoWayProcess<GetImageFileAsyncFacade, ReadImageFileParameterEntity, ReadImageFileResultEntity>(ProcessContainer);
                     _readImageFileProcess.Callback += new AsyncTaskCallbackEventHandler<ReadImageFileResultEntity>(readImageFileProcess_Callback);
                     _readImageFileProcess.SuccessEnd += new EventHandler(readImageFileProcess_SuccessEnd);
                     _readImageFileProcess.ErrorEnd += new EventHandler(readImageFileProcess_ErrorEnd);

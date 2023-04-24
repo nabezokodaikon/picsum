@@ -16,20 +16,20 @@ namespace PicSum.UIComponent.Contents.FileListContents
         #region インスタンス変数
 
         private FavoriteDirectoryListContentsParameter _parameter = null;
-        private TwoWayProcess<SearchFavoriteDirectoryAsyncFacade, SearchFavoriteDirectoryParameterEntity, ListEntity<FileShallowInfoEntity>> _searchFavoriteDirectoryProcess = null;
+        private TwoWayProcess<GetFavoriteDirectoryAsyncFacade, SearchFavoriteDirectoryParameterEntity, ListEntity<FileShallowInfoEntity>> _searchFavoriteDirectoryProcess = null;
         private OneWayProcess<DeleteDirectoryViewCounterAsyncFacade, ListEntity<string>> deleteDirectoryViewCounterProcess = null;
 
         #endregion
 
         #region プライベートプロパティ
 
-        private TwoWayProcess<SearchFavoriteDirectoryAsyncFacade, SearchFavoriteDirectoryParameterEntity, ListEntity<FileShallowInfoEntity>> searchFavoriteDirectoryProcess
+        private TwoWayProcess<GetFavoriteDirectoryAsyncFacade, SearchFavoriteDirectoryParameterEntity, ListEntity<FileShallowInfoEntity>> searchFavoriteDirectoryProcess
         {
             get
             {
                 if (_searchFavoriteDirectoryProcess == null)
                 {
-                    _searchFavoriteDirectoryProcess = TaskManager.CreateTwoWayProcess<SearchFavoriteDirectoryAsyncFacade, SearchFavoriteDirectoryParameterEntity, ListEntity<FileShallowInfoEntity>>(ProcessContainer);
+                    _searchFavoriteDirectoryProcess = TaskManager.CreateTwoWayProcess<GetFavoriteDirectoryAsyncFacade, SearchFavoriteDirectoryParameterEntity, ListEntity<FileShallowInfoEntity>>(ProcessContainer);
                     _searchFavoriteDirectoryProcess.Callback += new AsyncTaskCallbackEventHandler<ListEntity<FileShallowInfoEntity>>(searchFavoriteDirectoryProcess_Callback);
                 }
 

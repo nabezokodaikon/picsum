@@ -11,9 +11,9 @@ namespace PicSum.Task.AsyncLogic
     /// <summary>
     /// 画像ファイル読込ロジック
     /// </summary>
-    internal class ReadImageFileAsyncLogic : AsyncLogicBase
+    internal class GetImageFileAsyncLogic : AsyncLogicBase
     {
-        public ReadImageFileAsyncLogic(AsyncFacadeBase facade) : base(facade) { }
+        public GetImageFileAsyncLogic(AsyncFacadeBase facade) : base(facade) { }
 
         public Image CreateImage(string filePath, Bitmap srcImg, ImageSizeMode sizeMode, Size drawSize)
         {

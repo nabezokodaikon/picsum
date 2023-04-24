@@ -20,20 +20,20 @@ namespace PicSum.UIComponent.Contents.FileListContents
         #region インスタンス変数
 
         private RatingFileListContentsParameter _parameter = null;
-        private TwoWayProcess<SearchFileByRatingAsyncFacade, SingleValueEntity<int>, ListEntity<FileShallowInfoEntity>> _searchFileProcess = null;
+        private TwoWayProcess<GetFileByRatingAsyncFacade, SingleValueEntity<int>, ListEntity<FileShallowInfoEntity>> _searchFileProcess = null;
         private OneWayProcess<UpdateFileRatingAsyncFacade, UpdateFileRatingParameterEntity> _updateFileRatingProcess = null;
 
         #endregion
 
         #region プライベートプロパティ
 
-        private TwoWayProcess<SearchFileByRatingAsyncFacade, SingleValueEntity<int>, ListEntity<FileShallowInfoEntity>> searchFileProcess
+        private TwoWayProcess<GetFileByRatingAsyncFacade, SingleValueEntity<int>, ListEntity<FileShallowInfoEntity>> searchFileProcess
         {
             get
             {
                 if (_searchFileProcess == null)
                 {
-                    _searchFileProcess = TaskManager.CreateTwoWayProcess<SearchFileByRatingAsyncFacade, SingleValueEntity<int>, ListEntity<FileShallowInfoEntity>>(ProcessContainer);
+                    _searchFileProcess = TaskManager.CreateTwoWayProcess<GetFileByRatingAsyncFacade, SingleValueEntity<int>, ListEntity<FileShallowInfoEntity>>(ProcessContainer);
                     searchFileProcess.Callback += new AsyncTaskCallbackEventHandler<ListEntity<FileShallowInfoEntity>>(searchFileProcess_Callback);
                 }
 

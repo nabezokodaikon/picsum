@@ -39,7 +39,7 @@ namespace PicSum.Main.UIComponent
 
         #region インスタンス変数
 
-        private TwoWayProcess<SearchImageFileByDirectoryAsyncFacade, SearchImageFileParameterEntity, SearchImageFileResultEntity> _searchImageFileProcess = null;
+        private TwoWayProcess<GetImageFileByDirectoryAsyncFacade, SearchImageFileParameterEntity, SearchImageFileResultEntity> _searchImageFileProcess = null;
         private TwoWayProcess<GetTagListAsyncFacade, ListEntity<string>> _getTagListProcess = null;
 
         #endregion
@@ -74,13 +74,13 @@ namespace PicSum.Main.UIComponent
             }
         }
 
-        private TwoWayProcess<SearchImageFileByDirectoryAsyncFacade, SearchImageFileParameterEntity, SearchImageFileResultEntity> searchImageFileProcess
+        private TwoWayProcess<GetImageFileByDirectoryAsyncFacade, SearchImageFileParameterEntity, SearchImageFileResultEntity> searchImageFileProcess
         {
             get
             {
                 if (_searchImageFileProcess == null)
                 {
-                    _searchImageFileProcess = TaskManager.CreateTwoWayProcess<SearchImageFileByDirectoryAsyncFacade, SearchImageFileParameterEntity, SearchImageFileResultEntity>(components);
+                    _searchImageFileProcess = TaskManager.CreateTwoWayProcess<GetImageFileByDirectoryAsyncFacade, SearchImageFileParameterEntity, SearchImageFileResultEntity>(components);
                     _searchImageFileProcess.Callback += new AsyncTaskCallbackEventHandler<SearchImageFileResultEntity>(searchImageFileProcess_Callback);
                 }
 

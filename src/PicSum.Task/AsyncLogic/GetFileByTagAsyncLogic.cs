@@ -12,9 +12,9 @@ namespace PicSum.Task.AsyncLogic
     /// <summary>
     /// ファイルをタグで検索します。
     /// </summary>
-    internal class SearchFileByTagAsyncLogic : AsyncLogicBase
+    internal class GetFileByTagAsyncLogic : AsyncLogicBase
     {
-        public SearchFileByTagAsyncLogic(AsyncFacadeBase facade) : base(facade) { }
+        public GetFileByTagAsyncLogic(AsyncFacadeBase facade) : base(facade) { }
 
         public IList<FileByTagDto> Execute(string tag)
         {

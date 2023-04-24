@@ -12,7 +12,7 @@ namespace PicSum.Task.AsyncFacade
     /// <summary>
     /// 画像ファイルを読込みます。
     /// </summary>
-    public class ReadImageFileAsyncFacade
+    public class GetImageFileAsyncFacade
         : TwoWayFacadeBase<ReadImageFileParameterEntity, ReadImageFileResultEntity>
     {
         public override void Execute(ReadImageFileParameterEntity param)
@@ -23,7 +23,7 @@ namespace PicSum.Task.AsyncFacade
             }
 
             var result = new ReadImageFileResultEntity();
-            var logic = new ReadImageFileAsyncLogic(this);
+            var logic = new GetImageFileAsyncLogic(this);
             var currentFilePath = param.FilePathList[param.CurrentIndex];
 
             try
