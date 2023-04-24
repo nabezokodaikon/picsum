@@ -28,6 +28,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
         private TagFileListContentsParameter _parameter = null;
         private TwoWayProcess<SearchFileByTagAsyncFacade, SingleValueEntity<string>, ListEntity<FileShallowInfoEntity>> _searchFileProcess = null;
         private TwoWayProcess<GetNextTagAsyncFacade, GetNextContentsParameterEntity<string>, SingleValueEntity<string>> _getNextTagProcess = null;
+        private OneWayProcess<DeleteFileTagAsyncFacade, UpdateFileTagParameterEntity> _deleteFileTagProcess = null;
 
         #endregion
 
@@ -66,6 +67,19 @@ namespace PicSum.UIComponent.Contents.FileListContents
                 }
 
                 return _getNextTagProcess;
+            }
+        }
+
+        private OneWayProcess<DeleteFileTagAsyncFacade, UpdateFileTagParameterEntity> deleteFileTagProcess
+        {
+            get
+            {
+                if (_deleteFileTagProcess == null)
+                {
+                    _deleteFileTagProcess = TaskManager.CreateOneWayProcess<DeleteFileTagAsyncFacade, UpdateFileTagParameterEntity>(ProcessContainer);
+                }
+
+                return _deleteFileTagProcess;
             }
         }
 
@@ -120,7 +134,12 @@ namespace PicSum.UIComponent.Contents.FileListContents
 
         protected override void OnRemoveFile(System.Collections.Generic.IList<string> filePathList)
         {
+            UpdateFileTagParameterEntity param = new UpdateFileTagParameterEntity();
+            param.FilePathList = filePathList;
+            param.Tag = _parameter.Tag;
+            deleteFileTagProcess.Execute(this, param);
 
+            RemoveFile(filePathList);
         }
 
 
@@ -153,7 +172,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
             this.Title = _parameter.Tag;
             this.Icon = Resources.TagIcon;
             this.IsAddKeepMenuItemVisible = true;
-            this.IsRemoveFromListMenuItemVisible = false;
+            this.IsRemoveFromListMenuItemVisible = true;
             this.IsMoveControlVisible = true;
             base.sortFileRgistrationDateToolStripButton.Enabled = true;
         }
