@@ -10,7 +10,7 @@ namespace PicSum.Task.AsyncFacade
     /// <summary>
     /// ファイルをタグで検索します。
     /// </summary>
-    public class GetFileByTagAsyncFacade
+    public class GetFilesByTagAsyncFacade
         : TwoWayFacadeBase<SingleValueEntity<string>, ListEntity<FileShallowInfoEntity>>
     {
         public override void Execute(SingleValueEntity<string> param)

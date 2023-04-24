@@ -27,7 +27,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
         #region インスタンス変数
 
         private TagFileListContentsParameter _parameter = null;
-        private TwoWayProcess<GetFileByTagAsyncFacade, SingleValueEntity<string>, ListEntity<FileShallowInfoEntity>> _searchFileProcess = null;
+        private TwoWayProcess<GetFilesByTagAsyncFacade, SingleValueEntity<string>, ListEntity<FileShallowInfoEntity>> _searchFileProcess = null;
         private OneWayProcess<DeleteFileTagAsyncFacade, UpdateFileTagParameter> _deleteFileTagProcess = null;
 
         #endregion
@@ -42,13 +42,13 @@ namespace PicSum.UIComponent.Contents.FileListContents
 
         #region プライベートプロパティ
 
-        private TwoWayProcess<GetFileByTagAsyncFacade, SingleValueEntity<string>, ListEntity<FileShallowInfoEntity>> searchFileProcess
+        private TwoWayProcess<GetFilesByTagAsyncFacade, SingleValueEntity<string>, ListEntity<FileShallowInfoEntity>> searchFileProcess
         {
             get
             {
                 if (_searchFileProcess == null)
                 {
-                    _searchFileProcess = TaskManager.CreateTwoWayProcess<GetFileByTagAsyncFacade, SingleValueEntity<string>, ListEntity<FileShallowInfoEntity>>(ProcessContainer);
+                    _searchFileProcess = TaskManager.CreateTwoWayProcess<GetFilesByTagAsyncFacade, SingleValueEntity<string>, ListEntity<FileShallowInfoEntity>>(ProcessContainer);
                     searchFileProcess.Callback += new AsyncTaskCallbackEventHandler<ListEntity<FileShallowInfoEntity>>(searchFileProcess_Callback);
                 }
 

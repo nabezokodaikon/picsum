@@ -11,7 +11,7 @@ namespace PicSum.Task.AsyncFacade
     /// <summary>
     /// ファイルをフォルダで検索します。
     /// </summary>
-    public class GetFileByDirectoryAsyncFacade
+    public class GetFilesByDirectoryAsyncFacade
         : TwoWayFacadeBase<SingleValueEntity<string>, GetDirectoryResult>
     {
         public override void Execute(SingleValueEntity<string> param)

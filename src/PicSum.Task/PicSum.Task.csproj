@@ -79,8 +79,8 @@
     <Compile Include="AsyncFacade\GetNextDirectoryAsyncFacade.cs" />
     <Compile Include="AsyncFacade\DeleteKeepAsyncFacade.cs" />
     <Compile Include="AsyncFacade\GetFavoriteDirectoryAsyncFacade.cs" />
-    <Compile Include="AsyncFacade\GetFileByRatingAsyncFacade.cs" />
-    <Compile Include="AsyncFacade\GetFileByTagAsyncFacade.cs" />
+    <Compile Include="AsyncFacade\GetFilesByRatingAsyncFacade.cs" />
+    <Compile Include="AsyncFacade\GetFilesByTagAsyncFacade.cs" />
     <Compile Include="AsyncFacade\GetImageFileByDirectoryAsyncFacade.cs" />
     <Compile Include="AsyncFacade\UpdateFileRatingAsyncFacade.cs" />
     <Compile Include="AsyncLogic\AddFileRatingAsyncLogic.cs" />
@@ -121,7 +121,7 @@
     <Compile Include="AsyncFacade\GetSubDirectoryAsyncFacade.cs" />
     <Compile Include="AsyncFacade\GetTagListAsyncFacade.cs" />
     <Compile Include="AsyncFacade\GetThumbnailsAsyncFacade.cs" />
-    <Compile Include="AsyncFacade\GetFileByDirectoryAsyncFacade.cs" />
+    <Compile Include="AsyncFacade\GetFilesByDirectoryAsyncFacade.cs" />
     <Compile Include="AsyncFacade\StartupAsyncFacade.cs" />
     <Compile Include="AsyncFacade\UpdateDirectoryStateAsynceFacade.cs" />
     <Compile Include="AsyncLogic\AddDirectoryStateAsyncLogic.cs" />

@@ -10,7 +10,7 @@ namespace PicSum.Task.AsyncFacade
     /// <summary>
     /// ファイルを評価値で検索します。
     /// </summary>
-    public class GetFileByRatingAsyncFacade
+    public class GetFilesByRatingAsyncFacade
         : TwoWayFacadeBase<SingleValueEntity<int>, ListEntity<FileShallowInfoEntity>>
     {
         public override void Execute(SingleValueEntity<int> param)

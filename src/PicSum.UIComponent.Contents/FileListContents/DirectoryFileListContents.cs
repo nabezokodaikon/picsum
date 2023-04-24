@@ -21,7 +21,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
         #region インスタンス変数
 
         private readonly DirectoryFileListContentsParameter _parameter = null;
-        private TwoWayProcess<GetFileByDirectoryAsyncFacade, SingleValueEntity<string>, GetDirectoryResult> _searchDirectoryProcess = null;
+        private TwoWayProcess<GetFilesByDirectoryAsyncFacade, SingleValueEntity<string>, GetDirectoryResult> _searchDirectoryProcess = null;
         private OneWayProcess<UpdateDirectoryStateAsynceFacade, DirectoryStateEntity> _updateDirectoryStateProcess = null;
         private OneWayProcess<AddDirectoryViewHistoryAsyncFacade, SingleValueEntity<string>> _addDirectoryHistoryProcess = null;
         private TwoWayProcess<GetNextDirectoryAsyncFacade, GetNextContentsParameter<string>, SingleValueEntity<string>> _getNextDirectoryProcess = null;
@@ -30,13 +30,13 @@ namespace PicSum.UIComponent.Contents.FileListContents
 
         #region プライベートプロパティ
 
-        private TwoWayProcess<GetFileByDirectoryAsyncFacade, SingleValueEntity<string>, GetDirectoryResult> searchDirectoryProcess
+        private TwoWayProcess<GetFilesByDirectoryAsyncFacade, SingleValueEntity<string>, GetDirectoryResult> searchDirectoryProcess
         {
             get
             {
                 if (_searchDirectoryProcess == null)
                 {
-                    _searchDirectoryProcess = TaskManager.CreateTwoWayProcess<GetFileByDirectoryAsyncFacade, SingleValueEntity<string>, GetDirectoryResult>(ProcessContainer);
+                    _searchDirectoryProcess = TaskManager.CreateTwoWayProcess<GetFilesByDirectoryAsyncFacade, SingleValueEntity<string>, GetDirectoryResult>(ProcessContainer);
                     _searchDirectoryProcess.Callback += new AsyncTaskCallbackEventHandler<GetDirectoryResult>(searchDirectoryProcess_Callback);
                 }
 
