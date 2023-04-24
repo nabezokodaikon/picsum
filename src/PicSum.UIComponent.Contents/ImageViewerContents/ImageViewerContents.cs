@@ -1,23 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Windows.Forms;
-using PicSum.Core.Base.Conf;
+﻿using PicSum.Core.Base.Conf;
 using PicSum.Core.Task.AsyncTask;
 using PicSum.Task.AsyncFacade;
 using PicSum.Task.Entity;
+using PicSum.Task.Paramter;
+using PicSum.Task.Result;
+using PicSum.UIComponent.Common;
 using PicSum.UIComponent.Contents.Conf;
 using PicSum.UIComponent.Contents.ContentsParameter;
 using PicSum.UIComponent.Contents.Properties;
 using SWF.Common;
 using SWF.UIComponent.ImagePanel;
-using PicSum.UIComponent.Contents.ContentsToolBar;
-using System.Security.Permissions;
-using System.Diagnostics;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Drawing;
 using System.Linq;
-using PicSum.Task.Paramter;
-using PicSum.Task.Result;
+using System.Security.Permissions;
+using System.Windows.Forms;
 
 namespace PicSum.UIComponent.Contents.ImageViewerContents
 {
@@ -36,15 +35,15 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
 
         #region インスタンス変数
 
-        private readonly ImageViewerContentsParameter _parameter = null;
-        private string _leftImageFilePath = string.Empty;
-        private string _rightImageFilePath = string.Empty;
-        private ImageDisplayMode _displayMode = ImageDisplayMode.LeftFacing;
-        private ImageSizeMode _sizeMode = ImageSizeMode.FitOnlyBigImage;
+        private readonly ImageViewerContentsParameter parameter = null;
+        private string leftImageFilePath = string.Empty;
+        private string rightImageFilePath = string.Empty;
+        private ImageDisplayMode displayMode = ImageDisplayMode.LeftFacing;
+        private ImageSizeMode sizeMode = ImageSizeMode.FitOnlyBigImage;
 
-        private TwoWayProcess<GetImageFileAsyncFacade, GetImageFileParameter, GetImageFileResult> _readImageFileProcess = null;
-        private OneWayProcess<AddKeepAsyncFacade, ListEntity<KeepFileEntity>> _addKeepProcess = null;
-        private OneWayProcess<ExportFileAsyncFacade, ExportFileParameter> _exportFileProcess = null;
+        private TwoWayProcess<GetImageFileAsyncFacade, GetImageFileParameter, GetImageFileResult> readImageFileProcess = null;
+        private OneWayProcess<AddKeepAsyncFacade, ListEntity<KeepFileEntity>> addKeepProcess = null;
+        private OneWayProcess<ExportFileAsyncFacade, ExportFileParameter> exportFileProcess = null;
 
         #endregion
 
@@ -54,7 +53,7 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
         {
             get
             {
-                return _parameter.SelectedFilePath;
+                return this.parameter.SelectedFilePath;
             }
         }
 
@@ -66,7 +65,7 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
 
         #region プライベートプロパティ
 
-        private int maximumIndex
+        private int MaximumIndex
         {
             get
             {
@@ -78,7 +77,7 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
             }
         }
 
-        private int filePathListIndex
+        private int FilePathListIndex
         {
             get
             {
@@ -90,45 +89,45 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
             }
         }
 
-        private TwoWayProcess<GetImageFileAsyncFacade, GetImageFileParameter, GetImageFileResult> readImageFileProcess
+        private TwoWayProcess<GetImageFileAsyncFacade, GetImageFileParameter, GetImageFileResult> ReadImageFileProcess
         {
             get
             {
-                if (_readImageFileProcess == null)
+                if (this.readImageFileProcess == null)
                 {
-                    _readImageFileProcess = TaskManager.CreateTwoWayProcess<GetImageFileAsyncFacade, GetImageFileParameter, GetImageFileResult>(ProcessContainer);
-                    _readImageFileProcess.Callback += new AsyncTaskCallbackEventHandler<GetImageFileResult>(readImageFileProcess_Callback);
-                    _readImageFileProcess.SuccessEnd += new EventHandler(readImageFileProcess_SuccessEnd);
-                    _readImageFileProcess.ErrorEnd += new EventHandler(readImageFileProcess_ErrorEnd);
+                    this.readImageFileProcess = TaskManager.CreateTwoWayProcess<GetImageFileAsyncFacade, GetImageFileParameter, GetImageFileResult>(this.ProcessContainer);
+                    this.readImageFileProcess.Callback += new AsyncTaskCallbackEventHandler<GetImageFileResult>(this.ReadImageFileProcess_Callback);
+                    this.readImageFileProcess.SuccessEnd += new EventHandler(this.ReadImageFileProcess_SuccessEnd);
+                    this.readImageFileProcess.ErrorEnd += new EventHandler(this.ReadImageFileProcess_ErrorEnd);
                 }
 
-                return _readImageFileProcess;
+                return this.readImageFileProcess;
             }
         }
 
-        private OneWayProcess<AddKeepAsyncFacade, ListEntity<KeepFileEntity>> addKeepProcess
+        private OneWayProcess<AddKeepAsyncFacade, ListEntity<KeepFileEntity>> AddKeepProcess
         {
             get
             {
-                if (_addKeepProcess == null)
+                if (this.addKeepProcess == null)
                 {
-                    _addKeepProcess = TaskManager.CreateOneWayProcess<AddKeepAsyncFacade, ListEntity<KeepFileEntity>>(ProcessContainer);
+                    this.addKeepProcess = TaskManager.CreateOneWayProcess<AddKeepAsyncFacade, ListEntity<KeepFileEntity>>(this.ProcessContainer);
                 }
 
-                return _addKeepProcess;
+                return this.addKeepProcess;
             }
         }
 
-        private OneWayProcess<ExportFileAsyncFacade, ExportFileParameter> exportFileProcess
+        private OneWayProcess<ExportFileAsyncFacade, ExportFileParameter> ExportFileProcess
         {
             get
             {
-                if (_exportFileProcess == null)
+                if (this.exportFileProcess == null)
                 {
-                    _exportFileProcess = TaskManager.CreateOneWayProcess<ExportFileAsyncFacade, ExportFileParameter>(ProcessContainer);
+                    this.exportFileProcess = TaskManager.CreateOneWayProcess<ExportFileAsyncFacade, ExportFileParameter>(this.ProcessContainer);
                 }
 
-                return _exportFileProcess;
+                return this.exportFileProcess;
             }
         }
 
@@ -144,10 +143,10 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
                 throw new ArgumentNullException("param");
             }
 
-            _parameter = param;
+            this.parameter = param;
 
-            InitializeComponent();
-            initializeComponent();
+            this.InitializeComponent();
+            this.SubInitializeComponent();
         }
 
         #endregion
@@ -160,12 +159,12 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
 
         protected override void OnLoad(EventArgs e)
         {
-            filePathListIndex = _parameter.FilePathList.IndexOf(_parameter.SelectedFilePath);
+            this.FilePathListIndex = this.parameter.FilePathList.IndexOf(parameter.SelectedFilePath);
         }
 
         protected override void OnResize(EventArgs e)
         {
-            changeImagePanelSize();
+            this.ChangeImagePanelSize();
             base.OnResize(e);
         }
 
@@ -175,11 +174,11 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
             {
                 if (e.Delta > 0)
                 {
-                    filePathListIndex = getPreviewIndex();
+                    this.FilePathListIndex = this.GetPreviewIndex();
                 }
                 else
                 {
-                    filePathListIndex = getNextIndex();
+                    this.FilePathListIndex = this.GetNextIndex();
                 }
             }
             catch (ImageUtilException ex)
@@ -200,12 +199,12 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
 
             if ((keyData & Keys.KeyCode) == Keys.Right)
             {
-                filePathListIndex = getNextIndex();
+                this.FilePathListIndex = this.GetNextIndex();
                 return true;
             }
             else if ((keyData & Keys.KeyCode) == Keys.Left)
             {
-                filePathListIndex = getPreviewIndex();
+                this.FilePathListIndex = this.GetPreviewIndex();
                 return true;
             }
 
@@ -214,10 +213,10 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
 
         protected override void OnDrawTabContents(SWF.UIComponent.TabOperation.DrawTabEventArgs e)
         {
-            if (!string.IsNullOrEmpty(this._parameter.ContentsTitle) && this._parameter.ContentsIcon != null)
+            if (!string.IsNullOrEmpty(this.parameter.ContentsTitle) && this.parameter.ContentsIcon != null)
             {
-                e.Graphics.DrawImage(this._parameter.ContentsIcon, e.IconRectangle);
-                DrawTextUtil.DrawText(e.Graphics, this._parameter.ContentsTitle, e.Font, e.TextRectangle, e.TitleColor, e.TitleFormatFlags, e.TextStyle);
+                e.Graphics.DrawImage(this.parameter.ContentsIcon, e.IconRectangle);
+                DrawTextUtil.DrawText(e.Graphics, this.parameter.ContentsTitle, e.Font, e.TextRectangle, e.TitleColor, e.TitleFormatFlags, e.TextStyle);
             }
             else
             {
@@ -230,104 +229,104 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
 
         #region プライベートメソッド
 
-        private void initializeComponent()
+        private void SubInitializeComponent()
         {
             this.Icon = Resources.ViewerIcon;
-            maximumIndex = _parameter.FilePathList.Count - 1;
-            setDisplayMode(ImageViewerContentsConfig.ImageDisplayMode);
-            setSizeMode(ImageViewerContentsConfig.ImageSizeMode);
-            setThumbnailPanelVisible();
+            this.MaximumIndex = this.parameter.FilePathList.Count - 1;
+            this.SetDisplayMode(ImageViewerContentsConfig.ImageDisplayMode);
+            this.SetSizeMode(ImageViewerContentsConfig.ImageSizeMode);
+            this.SetThumbnailPanelVisible();
         }
 
-        private void changeImagePanelSize()
+        private void ChangeImagePanelSize()
         {
-            if (leftImagePanel.HasImage && rightImagePanel.HasImage)
+            if (this.leftImagePanel.HasImage && this.rightImagePanel.HasImage)
             {
-                int w = (int)(checkPatternPanel.Width / 2f);
-                int h = checkPatternPanel.Height;
-                int lx = 0;
-                int rx = checkPatternPanel.Width - w;
-                int y = 0;
+                var w = (int)(this.checkPatternPanel.Width / 2f);
+                var h = this.checkPatternPanel.Height;
+                var lx = 0;
+                var rx = this.checkPatternPanel.Width - w;
+                var y = 0;
 
-                leftImagePanel.SetBounds(lx, y, w, h, BoundsSpecified.All);
-                rightImagePanel.SetBounds(rx, y, w, h, BoundsSpecified.All);
+                this.leftImagePanel.SetBounds(lx, y, w, h, BoundsSpecified.All);
+                this.rightImagePanel.SetBounds(rx, y, w, h, BoundsSpecified.All);
 
-                leftImagePanel.ImageAlign = ImageAlign.Right;
-                rightImagePanel.ImageAlign = ImageAlign.Left;
+                this.leftImagePanel.ImageAlign = ImageAlign.Right;
+                this.rightImagePanel.ImageAlign = ImageAlign.Left;
 
-                leftImagePanel.Visible = true;
-                rightImagePanel.Visible = true;
+                this.leftImagePanel.Visible = true;
+                this.rightImagePanel.Visible = true;
             }
-            else if (leftImagePanel.HasImage)
+            else if (this.leftImagePanel.HasImage)
             {
-                int w = checkPatternPanel.Width;
-                int h = checkPatternPanel.Height;
-                int x = 0;
-                int y = 0;
+                var w = this.checkPatternPanel.Width;
+                var h = this.checkPatternPanel.Height;
+                var x = 0;
+                var y = 0;
 
-                leftImagePanel.SetBounds(x, y, w, h, BoundsSpecified.All);
-                leftImagePanel.ImageAlign = ImageAlign.Center;
+                this.leftImagePanel.SetBounds(x, y, w, h, BoundsSpecified.All);
+                this.leftImagePanel.ImageAlign = ImageAlign.Center;
 
-                leftImagePanel.Visible = true;
-                rightImagePanel.Visible = false;
+                this.leftImagePanel.Visible = true;
+                this.rightImagePanel.Visible = false;
             }
-            else if (rightImagePanel.HasImage)
+            else if (this.rightImagePanel.HasImage)
             {
-                int w = checkPatternPanel.Width;
-                int h = checkPatternPanel.Height;
-                int x = 0;
-                int y = 0;
+                var w = this.checkPatternPanel.Width;
+                var h = this.checkPatternPanel.Height;
+                var x = 0;
+                var y = 0;
 
-                rightImagePanel.SetBounds(x, y, w, h, BoundsSpecified.All);
-                rightImagePanel.ImageAlign = ImageAlign.Center;
+                this.rightImagePanel.SetBounds(x, y, w, h, BoundsSpecified.All);
+                this.rightImagePanel.ImageAlign = ImageAlign.Center;
 
-                leftImagePanel.Visible = false;
-                rightImagePanel.Visible = true;
+                this.leftImagePanel.Visible = false;
+                this.rightImagePanel.Visible = true;
             }
             else
             {
-                leftImagePanel.Visible = false;
-                rightImagePanel.Visible = false;
+                this.leftImagePanel.Visible = false;
+                this.rightImagePanel.Visible = false;
             }
         }
 
-        private Size getImageSize(string filePath)
+        private Size GetImageSize(string filePath)
         {
             var size = ImageUtil.GetImageSize(filePath);
             return size;
         }
 
-        private int getNextIndex()
+        private int GetNextIndex()
         {
-            if (_displayMode == ImageDisplayMode.Single)
+            if (this.displayMode == ImageDisplayMode.Single)
             {
-                if (filePathListIndex == maximumIndex)
+                if (this.FilePathListIndex == MaximumIndex)
                 {
                     return 0;
                 }
                 else
                 {
-                    return filePathListIndex + 1;
+                    return this.FilePathListIndex + 1;
                 }
             }
             else
             {
-                int currentIndex = filePathListIndex;
-                string currentFilePath = _parameter.FilePathList[currentIndex];
-                Size currentImageSize = getImageSize(currentFilePath);
+                var currentIndex = this.FilePathListIndex;
+                var currentFilePath = this.parameter.FilePathList[currentIndex];
+                var currentImageSize = this.GetImageSize(currentFilePath);
                 if (currentImageSize.Width < currentImageSize.Height)
                 {
-                    int nextIndex = currentIndex + 1;
-                    if (nextIndex > maximumIndex)
+                    var nextIndex = currentIndex + 1;
+                    if (nextIndex > MaximumIndex)
                     {
                         nextIndex = 0;
                     }
 
-                    string nextFilePath = _parameter.FilePathList[nextIndex];
-                    Size nextImageSize = getImageSize(nextFilePath);
+                    var nextFilePath = this.parameter.FilePathList[nextIndex];
+                    var nextImageSize = this.GetImageSize(nextFilePath);
                     if (nextImageSize.Width < nextImageSize.Height)
                     {
-                        if (nextIndex == maximumIndex)
+                        if (nextIndex == MaximumIndex)
                         {
                             return 0;
                         }
@@ -343,51 +342,51 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
                 }
                 else
                 {
-                    if (filePathListIndex == maximumIndex)
+                    if (this.FilePathListIndex == this.MaximumIndex)
                     {
                         return 0;
                     }
                     else
                     {
-                        return filePathListIndex + 1;
+                        return this.FilePathListIndex + 1;
                     }
                 }
             }
         }
 
-        private int getPreviewIndex()
+        private int GetPreviewIndex()
         {
-            if (_displayMode == ImageDisplayMode.Single)
+            if (this.displayMode == ImageDisplayMode.Single)
             {
-                if (filePathListIndex == 0)
+                if (this.FilePathListIndex == 0)
                 {
-                    return maximumIndex;
+                    return this.MaximumIndex;
                 }
                 else
                 {
-                    return filePathListIndex - 1;
+                    return this.FilePathListIndex - 1;
                 }
             }
             else
             {
-                int prevIndex1 = filePathListIndex - 1;
+                var prevIndex1 = this.FilePathListIndex - 1;
                 if (prevIndex1 < 0)
                 {
-                    prevIndex1 = maximumIndex;
+                    prevIndex1 = MaximumIndex;
                 }
 
-                string prevFilePath1 = _parameter.FilePathList[prevIndex1];
-                Size prevImageSize1 = getImageSize(prevFilePath1);
+                var prevFilePath1 = this.parameter.FilePathList[prevIndex1];
+                var prevImageSize1 = this.GetImageSize(prevFilePath1);
                 if (prevImageSize1.Width < prevImageSize1.Height)
                 {
-                    int prevIndex2 = prevIndex1 - 1;
+                    var prevIndex2 = prevIndex1 - 1;
                     if (prevIndex2 < 0)
                     {
-                        prevIndex2 = maximumIndex;
+                        prevIndex2 = this.MaximumIndex;
                     }
 
-                    string prevFilePath2 = _parameter.FilePathList[prevIndex2];
-                    Size prevImageSize2 = getImageSize(prevFilePath2);
+                    var prevFilePath2 = this.parameter.FilePathList[prevIndex2];
+                    var prevImageSize2 = this.GetImageSize(prevFilePath2);
                     if (prevImageSize2.Width < prevImageSize2.Height)
                     {
                         return prevIndex2;
@@ -404,55 +403,55 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
             }
         }
 
-        private void readImage()
+        private void ReadImage()
         {
             this.Cursor = Cursors.WaitCursor;
 
-            GetImageFileParameter param = new GetImageFileParameter();
-            param.CurrentIndex = filePathListIndex;
-            param.FilePathList = _parameter.FilePathList;
-            param.ImageDisplayMode = _displayMode;
-            param.ImageSizeMode = _sizeMode;
-            param.DrawSize = checkPatternPanel.Size;
-            param.ThumbnailSize = leftImagePanel.ThumbnailSize;
+            var param = new GetImageFileParameter();
+            param.CurrentIndex = this.FilePathListIndex;
+            param.FilePathList = this.parameter.FilePathList;
+            param.ImageDisplayMode = this.displayMode;
+            param.ImageSizeMode = this.sizeMode;
+            param.DrawSize = this.checkPatternPanel.Size;
+            param.ThumbnailSize = this.leftImagePanel.ThumbnailSize;
 
-            readImageFileProcess.Cancel();
-            readImageFileProcess.Execute(this, param);
+            this.ReadImageFileProcess.Cancel();
+            this.ReadImageFileProcess.Execute(this, param);
         }
 
-        private void setTitle(string selectedFilePath)
+        private void SetTitle(string selectedFilePath)
         {
             this.Title = FileUtil.GetFileName(selectedFilePath);
-            OnSelectedFileChanged(new SelectedFileChangeEventArgs(selectedFilePath));
+            this.OnSelectedFileChanged(new SelectedFileChangeEventArgs(selectedFilePath));
         }
 
-        private void addKeep(IList<KeepFileEntity> filePathList)
+        private void AddKeep(IList<KeepFileEntity> filePathList)
         {
-            ListEntity<KeepFileEntity> param = new ListEntity<KeepFileEntity>(filePathList);
-            addKeepProcess.Execute(this, param);
+            var param = new ListEntity<KeepFileEntity>(filePathList);
+            this.AddKeepProcess.Execute(this, param);
         }
 
-        private void doDragDrop(string currentFilePath)
+        private void DoDragDrop(string currentFilePath)
         {
             var dragData = new DragEntity(
                 this.Parameter.ContentsSources,
                 this.Parameter.SourcesKey,
                 currentFilePath,
-                _parameter.FilePathList,
-                this._parameter.ContentsTitle,
-                _parameter.ContentsIcon);
+                parameter.FilePathList,
+                this.parameter.ContentsTitle,
+                parameter.ContentsIcon);
             this.DoDragDrop(dragData, DragDropEffects.All);
         }
 
-        private bool setDisplayMode(ImageDisplayMode mode)
+        private bool SetDisplayMode(ImageDisplayMode mode)
         {
-            singleViewToolStripMenuItem.Checked = mode == ImageDisplayMode.Single;
-            leftFacingViewToolStripMenuItem.Checked = mode == ImageDisplayMode.LeftFacing;
-            rightFacingViewToolStripMenuItem.Checked = mode == ImageDisplayMode.RightFacing;
+            this.singleViewToolStripMenuItem.Checked = mode == ImageDisplayMode.Single;
+            this.leftFacingViewToolStripMenuItem.Checked = mode == ImageDisplayMode.LeftFacing;
+            this.rightFacingViewToolStripMenuItem.Checked = mode == ImageDisplayMode.RightFacing;
 
-            if (_displayMode != mode)
+            if (this.displayMode != mode)
             {
-                _displayMode = mode;
+                this.displayMode = mode;
                 return true;
             }
             else
@@ -461,15 +460,15 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
             }
         }
 
-        private bool setSizeMode(ImageSizeMode mode)
+        private bool SetSizeMode(ImageSizeMode mode)
         {
-            originalSizeToolStripMenuItem.Checked = mode == ImageSizeMode.Original;
-            allFitSizeToolStripMenuItem.Checked = mode == ImageSizeMode.FitAllImage;
-            onlyBigImageFitSizeToolStripMenuItem.Checked = mode == ImageSizeMode.FitOnlyBigImage;
+            this.originalSizeToolStripMenuItem.Checked = mode == ImageSizeMode.Original;
+            this.allFitSizeToolStripMenuItem.Checked = mode == ImageSizeMode.FitAllImage;
+            this.onlyBigImageFitSizeToolStripMenuItem.Checked = mode == ImageSizeMode.FitOnlyBigImage;
 
-            if (_sizeMode != mode)
+            if (this.sizeMode != mode)
             {
-                _sizeMode = mode;
+                this.sizeMode = mode;
                 return true;
             }
             else
@@ -478,19 +477,19 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
             }
         }
 
-        private void setThumbnailPanelVisible()
+        private void SetThumbnailPanelVisible()
         {
-            leftImagePanel.IsShowThumbnailPanel = _sizeMode == ImageSizeMode.Original;
-            rightImagePanel.IsShowThumbnailPanel = leftImagePanel.IsShowThumbnailPanel;
+            this.leftImagePanel.IsShowThumbnailPanel = this.sizeMode == ImageSizeMode.Original;
+            this.rightImagePanel.IsShowThumbnailPanel = this.leftImagePanel.IsShowThumbnailPanel;
         }
 
-        private ImageDisplayMode getNextDisplayMode()
+        private ImageDisplayMode GetNextDisplayMode()
         {
-            if (_displayMode == ImageDisplayMode.Single)
+            if (this.displayMode == ImageDisplayMode.Single)
             {
                 return ImageDisplayMode.LeftFacing;
             }
-            else if (_displayMode == ImageDisplayMode.LeftFacing)
+            else if (this.displayMode == ImageDisplayMode.LeftFacing)
             {
                 return ImageDisplayMode.RightFacing;
             }
@@ -500,13 +499,13 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
             }
         }
 
-        private ImageSizeMode getNextSizeMode()
+        private ImageSizeMode GetNextSizeMode()
         {
-            if (_sizeMode == ImageSizeMode.Original)
+            if (this.sizeMode == ImageSizeMode.Original)
             {
                 return ImageSizeMode.FitAllImage;
             }
-            else if (_sizeMode == ImageSizeMode.FitAllImage)
+            else if (this.sizeMode == ImageSizeMode.FitAllImage)
             {
                 return ImageSizeMode.FitOnlyBigImage;
             }
@@ -520,7 +519,7 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
 
         #region プロセスイベント
 
-        private void readImageFileProcess_Callback(object sender, GetImageFileResult e)
+        private void ReadImageFileProcess_Callback(object sender, GetImageFileResult e)
         {
             if (e.ReadImageFileException != null)
             {
@@ -530,65 +529,65 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
 
             if (leftImagePanel.HasImage)
             {
-                _leftImageFilePath = string.Empty;
-                leftImagePanel.ClearImage();
+                this.leftImageFilePath = string.Empty;
+                this.leftImagePanel.ClearImage();
             }
 
             if (rightImagePanel.HasImage)
             {
-                _rightImageFilePath = string.Empty;
-                rightImagePanel.ClearImage();
+                this.rightImageFilePath = string.Empty;
+                this.rightImagePanel.ClearImage();
             }
 
-            int index = _parameter.FilePathList.IndexOf(e.Image1.FilePath);
-            if (index != filePathListIndex)
+            var index = this.parameter.FilePathList.IndexOf(e.Image1.FilePath);
+            if (index != this.FilePathListIndex)
             {
                 return;
             }
 
-            _parameter.SelectedFilePath = e.Image1.FilePath;
-            setTitle(e.Image1.FilePath);
+            this.parameter.SelectedFilePath = e.Image1.FilePath;
+            this.SetTitle(e.Image1.FilePath);
 
-            if (_displayMode == ImageDisplayMode.Single)
+            if (this.displayMode == ImageDisplayMode.Single)
             {
-                _leftImageFilePath = e.Image1.FilePath;
-                leftImagePanel.SetImage(e.Image1.Image, e.Image1.Thumbnail);
+                this.leftImageFilePath = e.Image1.FilePath;
+                this.leftImagePanel.SetImage(e.Image1.Image, e.Image1.Thumbnail);
             }
-            else if (_displayMode == ImageDisplayMode.LeftFacing)
+            else if (displayMode == ImageDisplayMode.LeftFacing)
             {
-                _leftImageFilePath = e.Image1.FilePath;
-                leftImagePanel.SetImage(e.Image1.Image, e.Image1.Thumbnail);
+                this.leftImageFilePath = e.Image1.FilePath;
+                this.leftImagePanel.SetImage(e.Image1.Image, e.Image1.Thumbnail);
                 if (e.Image2 != null)
                 {
-                    _rightImageFilePath = e.Image2.FilePath;
-                    rightImagePanel.SetImage(e.Image2.Image, e.Image2.Thumbnail);
+                    this.rightImageFilePath = e.Image2.FilePath;
+                    this.rightImagePanel.SetImage(e.Image2.Image, e.Image2.Thumbnail);
                 }
             }
-            else if (_displayMode == ImageDisplayMode.RightFacing)
+            else if (this.displayMode == ImageDisplayMode.RightFacing)
             {
-                _rightImageFilePath = e.Image1.FilePath;
-                rightImagePanel.SetImage(e.Image1.Image, e.Image1.Thumbnail);
+                this.rightImageFilePath = e.Image1.FilePath;
+                this.rightImagePanel.SetImage(e.Image1.Image, e.Image1.Thumbnail);
                 if (e.Image2 != null)
                 {
-                    _leftImageFilePath = e.Image2.FilePath;
-                    leftImagePanel.SetImage(e.Image2.Image, e.Image2.Thumbnail);
+                    this.leftImageFilePath = e.Image2.FilePath;
+                    this.leftImagePanel.SetImage(e.Image2.Image, e.Image2.Thumbnail);
                 }
             }
 
-            changeImagePanelSize();
+            this.ChangeImagePanelSize();
 
-            leftImagePanel.Invalidate();
-            rightImagePanel.Invalidate();
+            this.leftImagePanel.Invalidate();
+            this.rightImagePanel.Invalidate();
 
             this.Focus();
         }
 
-        private void readImageFileProcess_SuccessEnd(object sender, EventArgs e)
+        private void ReadImageFileProcess_SuccessEnd(object sender, EventArgs e)
         {
             this.Cursor = Cursors.Default;
         }
 
-        private void readImageFileProcess_ErrorEnd(object sender, EventArgs e)
+        private void ReadImageFileProcess_ErrorEnd(object sender, EventArgs e)
         {
             this.Cursor = Cursors.Default;
         }
@@ -597,127 +596,127 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
 
         #region ツールバーイベント
 
-        private void viewToolStripSplitButton_ButtonClick(object sender, EventArgs e)
+        private void ViewToolStripSplitButton_ButtonClick(object sender, EventArgs e)
         {
             if (!this.IsHandleCreated)
             {
                 return;
             }
 
-            if (setDisplayMode(getNextDisplayMode()))
+            if (this.SetDisplayMode(GetNextDisplayMode()))
             {
-                ImageViewerContentsConfig.ImageDisplayMode = _displayMode;
-                readImage();
+                ImageViewerContentsConfig.ImageDisplayMode = this.displayMode;
+                this.ReadImage();
             }
         }
 
-        private void singleViewToolStripMenuItem_Click(object sender, EventArgs e)
+        private void SingleViewToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (!this.IsHandleCreated)
             {
                 return;
             }
 
-            if (setDisplayMode(ImageDisplayMode.Single))
+            if (this.SetDisplayMode(ImageDisplayMode.Single))
             {
-                ImageViewerContentsConfig.ImageDisplayMode = _displayMode;
-                readImage();
+                ImageViewerContentsConfig.ImageDisplayMode = this.displayMode;
+                this.ReadImage();
             }
         }
 
-        private void leftFacingViewToolStripMenuItem_Click(object sender, EventArgs e)
+        private void LeftFacingViewToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (!this.IsHandleCreated)
             {
                 return;
             }
 
-            if (setDisplayMode(ImageDisplayMode.LeftFacing))
+            if (this.SetDisplayMode(ImageDisplayMode.LeftFacing))
             {
-                ImageViewerContentsConfig.ImageDisplayMode = _displayMode;
-                readImage();
+                ImageViewerContentsConfig.ImageDisplayMode = this.displayMode;
+                this.ReadImage();
             }
         }
 
-        private void rightFacingViewToolStripMenuItem_Click(object sender, EventArgs e)
+        private void RightFacingViewToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (!this.IsHandleCreated)
             {
                 return;
             }
 
-            if (setDisplayMode(ImageDisplayMode.RightFacing))
+            if (this.SetDisplayMode(ImageDisplayMode.RightFacing))
             {
-                ImageViewerContentsConfig.ImageDisplayMode = _displayMode;
-                readImage();
+                ImageViewerContentsConfig.ImageDisplayMode = this.displayMode;
+                this.ReadImage();
             }
         }
 
-        private void sizeToolStripSplitButton_ButtonClick(object sender, EventArgs e)
+        private void SizeToolStripSplitButton_ButtonClick(object sender, EventArgs e)
         {
             if (!this.IsHandleCreated)
             {
                 return;
             }
 
-            if (setSizeMode(getNextSizeMode()))
+            if (this.SetSizeMode(GetNextSizeMode()))
             {
-                ImageViewerContentsConfig.ImageSizeMode = _sizeMode;
-                setThumbnailPanelVisible();
-                readImage();
+                ImageViewerContentsConfig.ImageSizeMode = this.sizeMode;
+                this.SetThumbnailPanelVisible();
+                this.ReadImage();
             }
         }
 
-        private void originalSizeToolStripMenuItem_Click(object sender, EventArgs e)
+        private void OriginalSizeToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (!this.IsHandleCreated)
             {
                 return;
             }
 
-            if (setSizeMode(ImageSizeMode.Original))
+            if (this.SetSizeMode(ImageSizeMode.Original))
             {
-                ImageViewerContentsConfig.ImageSizeMode = _sizeMode;
-                setThumbnailPanelVisible();
-                readImage();
+                ImageViewerContentsConfig.ImageSizeMode = this.sizeMode;
+                this.SetThumbnailPanelVisible();
+                this.ReadImage();
             }
         }
 
-        private void allFitSizeToolStripMenuItem_Click(object sender, EventArgs e)
+        private void AllFitSizeToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (!this.IsHandleCreated)
             {
                 return;
             }
 
-            if (setSizeMode(ImageSizeMode.FitAllImage))
+            if (this.SetSizeMode(ImageSizeMode.FitAllImage))
             {
-                ImageViewerContentsConfig.ImageSizeMode = _sizeMode;
-                setThumbnailPanelVisible();
-                readImage();
+                ImageViewerContentsConfig.ImageSizeMode = this.sizeMode;
+                this.SetThumbnailPanelVisible();
+                this.ReadImage();
             }
         }
 
-        private void onlyBigImageFitSizeToolStripMenuItem_Click(object sender, EventArgs e)
+        private void OnlyBigImageFitSizeToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (!this.IsHandleCreated)
             {
                 return;
             }
 
-            if (setSizeMode(ImageSizeMode.FitOnlyBigImage))
+            if (this.SetSizeMode(ImageSizeMode.FitOnlyBigImage))
             {
-                ImageViewerContentsConfig.ImageSizeMode = _sizeMode;
-                setThumbnailPanelVisible();
-                readImage();
+                ImageViewerContentsConfig.ImageSizeMode = this.sizeMode;
+                this.SetThumbnailPanelVisible();
+                this.ReadImage();
             }
         }
 
-        private void previewIndexToolStripButton_Click(object sender, EventArgs e)
+        private void PreviewIndexToolStripButton_Click(object sender, EventArgs e)
         {
             try
             {
-                filePathListIndex = getPreviewIndex();
+                this.FilePathListIndex = this.GetPreviewIndex();
             }
             catch (ImageUtilException ex)
             {
@@ -725,11 +724,11 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
             }
         }
 
-        private void nextIndexToolStripButton_Click(object sender, EventArgs e)
+        private void NextIndexToolStripButton_Click(object sender, EventArgs e)
         {
             try
             {
-                filePathListIndex = getNextIndex();
+                this.FilePathListIndex = this.GetNextIndex();
             }
             catch (ImageUtilException ex)
             {
@@ -737,107 +736,107 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
             }
         }
 
-        private void indexToolStripSlider_ValueChanging(object sender, EventArgs e)
+        private void IndexToolStripSlider_ValueChanging(object sender, EventArgs e)
         {
-            int index = filePathListIndex;
-            if (index < 0 || _parameter.FilePathList.Count - 1 < index)
+            var index = this.FilePathListIndex;
+            if (index < 0 || this.parameter.FilePathList.Count - 1 < index)
             {
                 return;
             }
 
-            string filePath = _parameter.FilePathList[index];
-            Point p = this.PointToClient(Cursor.Position);
-            filePathToolTip.Show(filePath, this, p.X, -16, 5000);
+            var filePath = this.parameter.FilePathList[index];
+            var p = this.PointToClient(Cursor.Position);
+            this.filePathToolTip.Show(filePath, this, p.X, -16, 5000);
         }
 
-        private void indexToolStripSlider_ValueChanged(object sender, EventArgs e)
+        private void IndexToolStripSlider_ValueChanged(object sender, EventArgs e)
         {
-            filePathToolTip.Hide(this);
-            readImage();
+            this.filePathToolTip.Hide(this);
+            this.ReadImage();
         }
 
-        private void indexSlider_ValueChanging(object sender, EventArgs e)
+        private void IndexSlider_ValueChanging(object sender, EventArgs e)
         {
-            int index = filePathListIndex;
-            if (index < 0 || _parameter.FilePathList.Count - 1 < index)
+            var index = this.FilePathListIndex;
+            if (index < 0 || this.parameter.FilePathList.Count - 1 < index)
             {
                 return;
             }
 
-            string filePath = _parameter.FilePathList[index];
-            Point p = this.PointToClient(Cursor.Position);
-            filePathToolTip.Show(filePath, this, p.X, -16, 5000);
+            var filePath = this.parameter.FilePathList[index];
+            var p = this.PointToClient(Cursor.Position);
+            this.filePathToolTip.Show(filePath, this, p.X, -16, 5000);
         }
 
-        private void indexSlider_ValueChanged(object sender, EventArgs e)
+        private void IndexSlider_ValueChanged(object sender, EventArgs e)
         {
-            filePathToolTip.Hide(this);
-            readImage();
+            this.filePathToolTip.Hide(this);
+            this.ReadImage();
         }
 
         #endregion
 
         #region 画像パネルイベント
 
-        private void leftImagePanel_MouseDown(object sender, MouseEventArgs e)
+        private void LeftImagePanel_MouseDown(object sender, MouseEventArgs e)
         {
-            leftImagePanel.Focus();
+            this.leftImagePanel.Focus();
         }
 
-        private void rightImagePanel_MouseDown(object sender, MouseEventArgs e)
+        private void RightImagePanel_MouseDown(object sender, MouseEventArgs e)
         {
-            rightImagePanel.Focus();
+            this.rightImagePanel.Focus();
         }
 
-        private void rightImagePanel_MouseUp(object sender, MouseEventArgs e)
+        private void RightImagePanel_MouseUp(object sender, MouseEventArgs e)
         {
             base.OnMouseClick(e);
         }
 
-        private void leftImagePanel_MouseUp(object sender, MouseEventArgs e)
+        private void LeftImagePanel_MouseUp(object sender, MouseEventArgs e)
         {
             base.OnMouseClick(e);
         }
 
-        private void leftImagePanel_ImageMouseClick(object sender, MouseEventArgs e)
+        private void LeftImagePanel_ImageMouseClick(object sender, MouseEventArgs e)
         {
-            setTitle(_leftImageFilePath);
+            this.SetTitle(this.leftImageFilePath);
 
             if (e.Button == MouseButtons.Middle)
             {
-                if (!string.IsNullOrEmpty(_leftImageFilePath))
+                if (!string.IsNullOrEmpty(this.leftImageFilePath))
                 {
-                    addKeep(new KeepFileEntity[] { new KeepFileEntity(_leftImageFilePath, DateTime.Now) });
+                    this.AddKeep(new KeepFileEntity[] { new KeepFileEntity(this.leftImageFilePath, DateTime.Now) });
                 }
             }
         }
 
-        private void rightImagePanel_ImageMouseClick(object sender, MouseEventArgs e)
+        private void RightImagePanel_ImageMouseClick(object sender, MouseEventArgs e)
         {
-            setTitle(_rightImageFilePath);
+            this.SetTitle(this.rightImageFilePath);
 
             if (e.Button == MouseButtons.Middle)
             {
-                if (!string.IsNullOrEmpty(_rightImageFilePath))
+                if (!string.IsNullOrEmpty(this.rightImageFilePath))
                 {
-                    addKeep(new KeepFileEntity[] { new KeepFileEntity(_rightImageFilePath, DateTime.Now) });
+                    this.AddKeep(new KeepFileEntity[] { new KeepFileEntity(this.rightImageFilePath, DateTime.Now) });
                 }
             }
         }
 
-        private void leftImagePanel_DragStart(object sender, EventArgs e)
+        private void LeftImagePanel_DragStart(object sender, EventArgs e)
         {
-            if (!string.IsNullOrEmpty(_leftImageFilePath))
+            if (!string.IsNullOrEmpty(this.leftImageFilePath))
             {
-                doDragDrop(_leftImageFilePath);
+                this.DoDragDrop(leftImageFilePath);
             }
         }
 
-        private void rightImagePanel_DragStart(object sender, EventArgs e)
+        private void RightImagePanel_DragStart(object sender, EventArgs e)
         {
-            if (!string.IsNullOrEmpty(_rightImageFilePath))
+            if (!string.IsNullOrEmpty(this.rightImageFilePath))
             {
-                doDragDrop(_rightImageFilePath);
+                this.DoDragDrop(this.rightImageFilePath);
             }
         }
 
@@ -845,21 +844,21 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
 
         #region ファイルコンテキストメニューイベント
 
-        private void fileContextMenu_Opening(object sender, CancelEventArgs e)
+        private void FileContextMenu_Opening(object sender, CancelEventArgs e)
         {
-            if (fileContextMenu.SourceControl.Equals(leftImagePanel))
+            if (this.fileContextMenu.SourceControl.Equals(this.leftImagePanel))
             {
-                if (!string.IsNullOrEmpty(_leftImageFilePath))
+                if (!string.IsNullOrEmpty(this.leftImageFilePath))
                 {
-                    fileContextMenu.SetFile(_leftImageFilePath);
+                    this.fileContextMenu.SetFile(this.leftImageFilePath);
                     return;
                 }
             }
-            else if (fileContextMenu.SourceControl.Equals(rightImagePanel))
+            else if (this.fileContextMenu.SourceControl.Equals(this.rightImagePanel))
             {
-                if (!string.IsNullOrEmpty(_rightImageFilePath))
+                if (!string.IsNullOrEmpty(this.rightImageFilePath))
                 {
-                    fileContextMenu.SetFile(_rightImageFilePath);
+                    this.fileContextMenu.SetFile(this.rightImageFilePath);
                     return;
                 }
             }
@@ -867,43 +866,43 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
             e.Cancel = true;
         }
 
-        private void fileContextMenu_FileNewTabOpen(object sender, PicSum.UIComponent.Common.ExecuteFileEventArgs e)
+        private void FileContextMenu_FileNewTabOpen(object sender, ExecuteFileEventArgs e)
         {
             var param = new ImageViewerContentsParameter(
                 this.Parameter.ContentsSources,
                 this.Parameter.SourcesKey,
-                _parameter.FilePathList,
+                this.parameter.FilePathList,
                 e.FilePath,
                 this.Title,
                 this.Icon);
-            OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.AddTab, param));
+            this.OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.AddTab, param));
         }
 
-        private void fileContextMenu_FileNewWindowOpen(object sender, PicSum.UIComponent.Common.ExecuteFileEventArgs e)
+        private void FileContextMenu_FileNewWindowOpen(object sender, ExecuteFileEventArgs e)
         {
             var param = new ImageViewerContentsParameter(
                 this.Parameter.ContentsSources,
                 this.Parameter.SourcesKey,
-                _parameter.FilePathList,
+                this.parameter.FilePathList,
                 e.FilePath,
                 this.Title,
                 this.Icon);
-            OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.NewWindow, param));
+            this.OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.NewWindow, param));
         }
 
-        private void fileContextMenu_FileOpen(object sender, PicSum.UIComponent.Common.ExecuteFileEventArgs e)
+        private void FileContextMenu_FileOpen(object sender, ExecuteFileEventArgs e)
         {
             FileUtil.OpenFile(e.FilePath);
         }
 
-        private void fileContextMenu_SaveDirectoryOpen(object sender, PicSum.UIComponent.Common.ExecuteFileEventArgs e)
+        private void FileContextMenu_SaveDirectoryOpen(object sender, ExecuteFileEventArgs e)
         {
             FileUtil.OpenExplorerSelect(e.FilePath);
         }
 
-        private void fileContextMenu_Export(object sender, PicSum.UIComponent.Common.ExecuteFileListEventArgs e)
+        private void FileContextMenu_Export(object sender, ExecuteFileListEventArgs e)
         {
-            using (FolderBrowserDialog fbd = new FolderBrowserDialog())
+            using (var fbd = new FolderBrowserDialog())
             {
                 if (FileUtil.IsExists(CommonConfig.ExportDirectoryPath))
                 {
@@ -912,29 +911,29 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
 
                 if (fbd.ShowDialog() == DialogResult.OK)
                 {
-                    ExportFileParameter param = new ExportFileParameter();
+                    var param = new ExportFileParameter();
                     param.ExportDirectoryPath = fbd.SelectedPath;
                     param.FilePathList = e.FilePathList;
-                    exportFileProcess.Execute(this, param);
+                    this.ExportFileProcess.Execute(this, param);
 
                     CommonConfig.ExportDirectoryPath = fbd.SelectedPath;
                 }
             }
         }
 
-        private void fileContextMenu_PathCopy(object sender, PicSum.UIComponent.Common.ExecuteFileListEventArgs e)
+        private void FileContextMenu_PathCopy(object sender, ExecuteFileListEventArgs e)
         {
             Clipboard.SetText(e.FilePathList[0]);
         }
 
-        private void fileContextMenu_NameCopy(object sender, PicSum.UIComponent.Common.ExecuteFileListEventArgs e)
+        private void FileContextMenu_NameCopy(object sender, ExecuteFileListEventArgs e)
         {
             Clipboard.SetText(FileUtil.GetFileName(e.FilePathList[0]));
         }
 
-        private void fileContextMenu_AddKeep(object sender, PicSum.UIComponent.Common.ExecuteFileListEventArgs e)
+        private void FileContextMenu_AddKeep(object sender, ExecuteFileListEventArgs e)
         {
-            addKeep(e.FilePathList.Select(filePath => new KeepFileEntity(filePath, DateTime.Now)).ToList());
+            this.AddKeep(e.FilePathList.Select(filePath => new KeepFileEntity(filePath, DateTime.Now)).ToList());
         }
 
         #endregion

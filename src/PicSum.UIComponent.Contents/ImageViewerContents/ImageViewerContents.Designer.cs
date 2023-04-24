@@ -69,10 +69,10 @@
             this.leftImagePanel.TabIndex = 1;
             this.leftImagePanel.Text = "imagePanel1";
             this.leftImagePanel.Visible = false;
-            this.leftImagePanel.ImageMouseClick += new System.EventHandler<System.Windows.Forms.MouseEventArgs>(this.leftImagePanel_ImageMouseClick);
-            this.leftImagePanel.DragStart += new System.EventHandler(this.leftImagePanel_DragStart);
-            this.leftImagePanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.leftImagePanel_MouseDown);
-            this.leftImagePanel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.leftImagePanel_MouseUp);
+            this.leftImagePanel.ImageMouseClick += new System.EventHandler<System.Windows.Forms.MouseEventArgs>(this.LeftImagePanel_ImageMouseClick);
+            this.leftImagePanel.DragStart += new System.EventHandler(this.LeftImagePanel_DragStart);
+            this.leftImagePanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.LeftImagePanel_MouseDown);
+            this.leftImagePanel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.LeftImagePanel_MouseUp);
             // 
             // fileContextMenu
             // 
@@ -83,15 +83,15 @@
             this.fileContextMenu.IsRemoveFromListMenuItemVisible = false;
             this.fileContextMenu.Name = "fileContextMenu";
             this.fileContextMenu.Size = new System.Drawing.Size(205, 292);
-            this.fileContextMenu.FileNewTabOpen += new System.EventHandler<PicSum.UIComponent.Common.ExecuteFileEventArgs>(this.fileContextMenu_FileNewTabOpen);
-            this.fileContextMenu.FileNewWindowOpen += new System.EventHandler<PicSum.UIComponent.Common.ExecuteFileEventArgs>(this.fileContextMenu_FileNewWindowOpen);
-            this.fileContextMenu.FileOpen += new System.EventHandler<PicSum.UIComponent.Common.ExecuteFileEventArgs>(this.fileContextMenu_FileOpen);
-            this.fileContextMenu.SaveDirectoryOpen += new System.EventHandler<PicSum.UIComponent.Common.ExecuteFileEventArgs>(this.fileContextMenu_SaveDirectoryOpen);
-            this.fileContextMenu.Export += new System.EventHandler<PicSum.UIComponent.Common.ExecuteFileListEventArgs>(this.fileContextMenu_Export);
-            this.fileContextMenu.PathCopy += new System.EventHandler<PicSum.UIComponent.Common.ExecuteFileListEventArgs>(this.fileContextMenu_PathCopy);
-            this.fileContextMenu.NameCopy += new System.EventHandler<PicSum.UIComponent.Common.ExecuteFileListEventArgs>(this.fileContextMenu_NameCopy);
-            this.fileContextMenu.AddKeep += new System.EventHandler<PicSum.UIComponent.Common.ExecuteFileListEventArgs>(this.fileContextMenu_AddKeep);
-            this.fileContextMenu.Opening += new System.ComponentModel.CancelEventHandler(this.fileContextMenu_Opening);
+            this.fileContextMenu.FileNewTabOpen += new System.EventHandler<PicSum.UIComponent.Common.ExecuteFileEventArgs>(this.FileContextMenu_FileNewTabOpen);
+            this.fileContextMenu.FileNewWindowOpen += new System.EventHandler<PicSum.UIComponent.Common.ExecuteFileEventArgs>(this.FileContextMenu_FileNewWindowOpen);
+            this.fileContextMenu.FileOpen += new System.EventHandler<PicSum.UIComponent.Common.ExecuteFileEventArgs>(this.FileContextMenu_FileOpen);
+            this.fileContextMenu.SaveDirectoryOpen += new System.EventHandler<PicSum.UIComponent.Common.ExecuteFileEventArgs>(this.FileContextMenu_SaveDirectoryOpen);
+            this.fileContextMenu.Export += new System.EventHandler<PicSum.UIComponent.Common.ExecuteFileListEventArgs>(this.FileContextMenu_Export);
+            this.fileContextMenu.PathCopy += new System.EventHandler<PicSum.UIComponent.Common.ExecuteFileListEventArgs>(this.FileContextMenu_PathCopy);
+            this.fileContextMenu.NameCopy += new System.EventHandler<PicSum.UIComponent.Common.ExecuteFileListEventArgs>(this.FileContextMenu_NameCopy);
+            this.fileContextMenu.AddKeep += new System.EventHandler<PicSum.UIComponent.Common.ExecuteFileListEventArgs>(this.FileContextMenu_AddKeep);
+            this.fileContextMenu.Opening += new System.ComponentModel.CancelEventHandler(this.FileContextMenu_Opening);
             // 
             // rightImagePanel
             // 
@@ -107,10 +107,10 @@
             this.rightImagePanel.TabIndex = 2;
             this.rightImagePanel.Text = "imagePanel2";
             this.rightImagePanel.Visible = false;
-            this.rightImagePanel.ImageMouseClick += new System.EventHandler<System.Windows.Forms.MouseEventArgs>(this.rightImagePanel_ImageMouseClick);
-            this.rightImagePanel.DragStart += new System.EventHandler(this.rightImagePanel_DragStart);
-            this.rightImagePanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.rightImagePanel_MouseDown);
-            this.rightImagePanel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.rightImagePanel_MouseUp);
+            this.rightImagePanel.ImageMouseClick += new System.EventHandler<System.Windows.Forms.MouseEventArgs>(this.RightImagePanel_ImageMouseClick);
+            this.rightImagePanel.DragStart += new System.EventHandler(this.RightImagePanel_DragStart);
+            this.rightImagePanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.RightImagePanel_MouseDown);
+            this.rightImagePanel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.RightImagePanel_MouseUp);
             // 
             // filePathToolTip
             // 
@@ -148,21 +148,21 @@
             this.singleViewToolStripMenuItem.Name = "singleViewToolStripMenuItem";
             this.singleViewToolStripMenuItem.Size = new System.Drawing.Size(189, 24);
             this.singleViewToolStripMenuItem.Text = "Single View";
-            this.singleViewToolStripMenuItem.Click += new System.EventHandler(this.singleViewToolStripMenuItem_Click);
+            this.singleViewToolStripMenuItem.Click += new System.EventHandler(this.SingleViewToolStripMenuItem_Click);
             // 
             // leftFacingViewToolStripMenuItem
             // 
             this.leftFacingViewToolStripMenuItem.Name = "leftFacingViewToolStripMenuItem";
             this.leftFacingViewToolStripMenuItem.Size = new System.Drawing.Size(189, 24);
             this.leftFacingViewToolStripMenuItem.Text = "Spread (Left Feed)";
-            this.leftFacingViewToolStripMenuItem.Click += new System.EventHandler(this.leftFacingViewToolStripMenuItem_Click);
+            this.leftFacingViewToolStripMenuItem.Click += new System.EventHandler(this.LeftFacingViewToolStripMenuItem_Click);
             // 
             // rightFacingViewToolStripMenuItem
             // 
             this.rightFacingViewToolStripMenuItem.Name = "rightFacingViewToolStripMenuItem";
             this.rightFacingViewToolStripMenuItem.Size = new System.Drawing.Size(189, 24);
             this.rightFacingViewToolStripMenuItem.Text = "Spread (Right Feed)";
-            this.rightFacingViewToolStripMenuItem.Click += new System.EventHandler(this.rightFacingViewToolStripMenuItem_Click);
+            this.rightFacingViewToolStripMenuItem.Click += new System.EventHandler(this.RightFacingViewToolStripMenuItem_Click);
             // 
             // viewToolStripSplitButton
             // 
@@ -176,7 +176,7 @@
             this.viewToolStripSplitButton.Name = "viewToolStripSplitButton";
             this.viewToolStripSplitButton.Size = new System.Drawing.Size(58, 24);
             this.viewToolStripSplitButton.Text = "Display";
-            this.viewToolStripSplitButton.ButtonClick += new System.EventHandler(this.viewToolStripSplitButton_ButtonClick);
+            this.viewToolStripSplitButton.ButtonClick += new System.EventHandler(this.ViewToolStripSplitButton_ButtonClick);
             // 
             // sizeContextMenuStrip
             // 
@@ -194,21 +194,21 @@
             this.originalSizeToolStripMenuItem.Name = "originalSizeToolStripMenuItem";
             this.originalSizeToolStripMenuItem.Size = new System.Drawing.Size(315, 24);
             this.originalSizeToolStripMenuItem.Text = "Original Size";
-            this.originalSizeToolStripMenuItem.Click += new System.EventHandler(this.originalSizeToolStripMenuItem_Click);
+            this.originalSizeToolStripMenuItem.Click += new System.EventHandler(this.OriginalSizeToolStripMenuItem_Click);
             // 
             // allFitSizeToolStripMenuItem
             // 
             this.allFitSizeToolStripMenuItem.Name = "allFitSizeToolStripMenuItem";
             this.allFitSizeToolStripMenuItem.Size = new System.Drawing.Size(315, 24);
             this.allFitSizeToolStripMenuItem.Text = "Fit To Window";
-            this.allFitSizeToolStripMenuItem.Click += new System.EventHandler(this.allFitSizeToolStripMenuItem_Click);
+            this.allFitSizeToolStripMenuItem.Click += new System.EventHandler(this.AllFitSizeToolStripMenuItem_Click);
             // 
             // onlyBigImageFitSizeToolStripMenuItem
             // 
             this.onlyBigImageFitSizeToolStripMenuItem.Name = "onlyBigImageFitSizeToolStripMenuItem";
             this.onlyBigImageFitSizeToolStripMenuItem.Size = new System.Drawing.Size(315, 24);
             this.onlyBigImageFitSizeToolStripMenuItem.Text = "Fit To Window (Large Image Only)";
-            this.onlyBigImageFitSizeToolStripMenuItem.Click += new System.EventHandler(this.onlyBigImageFitSizeToolStripMenuItem_Click);
+            this.onlyBigImageFitSizeToolStripMenuItem.Click += new System.EventHandler(this.OnlyBigImageFitSizeToolStripMenuItem_Click);
             // 
             // sizeToolStripSplitButton
             // 
@@ -222,7 +222,7 @@
             this.sizeToolStripSplitButton.Name = "sizeToolStripSplitButton";
             this.sizeToolStripSplitButton.Size = new System.Drawing.Size(62, 24);
             this.sizeToolStripSplitButton.Text = "Size";
-            this.sizeToolStripSplitButton.ButtonClick += new System.EventHandler(this.sizeToolStripSplitButton_ButtonClick);
+            this.sizeToolStripSplitButton.ButtonClick += new System.EventHandler(this.SizeToolStripSplitButton_ButtonClick);
             // 
             // toolBar
             // 
@@ -252,7 +252,7 @@
             this.previewIndexToolStripButton.Name = "previewIndexToolStripButton";
             this.previewIndexToolStripButton.Size = new System.Drawing.Size(29, 24);
             this.previewIndexToolStripButton.Text = "toolStripButton1";
-            this.previewIndexToolStripButton.Click += new System.EventHandler(this.previewIndexToolStripButton_Click);
+            this.previewIndexToolStripButton.Click += new System.EventHandler(this.PreviewIndexToolStripButton_Click);
             // 
             // nextIndexToolStripButton
             // 
@@ -265,7 +265,7 @@
             this.nextIndexToolStripButton.Name = "nextIndexToolStripButton";
             this.nextIndexToolStripButton.Size = new System.Drawing.Size(29, 24);
             this.nextIndexToolStripButton.Text = "toolStripButton2";
-            this.nextIndexToolStripButton.Click += new System.EventHandler(this.nextIndexToolStripButton_Click);
+            this.nextIndexToolStripButton.Click += new System.EventHandler(this.NextIndexToolStripButton_Click);
             // 
             // indexSlider
             // 
@@ -280,8 +280,8 @@
             this.indexSlider.TabIndex = 5;
             this.indexSlider.Text = "slider1";
             this.indexSlider.Value = 0;
-            this.indexSlider.ValueChanging += new System.EventHandler(this.indexSlider_ValueChanging);
-            this.indexSlider.ValueChanged += new System.EventHandler(this.indexSlider_ValueChanged);
+            this.indexSlider.ValueChanging += new System.EventHandler(this.IndexSlider_ValueChanging);
+            this.indexSlider.ValueChanged += new System.EventHandler(this.IndexSlider_ValueChanged);
             // 
             // ImageViewerContents
             // 
