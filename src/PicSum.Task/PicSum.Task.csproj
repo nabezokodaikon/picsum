@@ -93,7 +93,7 @@
     <Compile Include="AsyncLogic\GetFileTagInfoAsyncLogic.cs" />
     <Compile Include="AsyncLogic\ExportFileAsyncLogic.cs" />
     <Compile Include="AsyncLogic\IncrementDirectoryViewCounterAsyncLogic.cs" />
-    <Compile Include="AsyncLogic\OperatingKeepListAsyncLogic.cs" />
+    <Compile Include="AsyncLogic\KeepListOperatingAsyncLogic.cs" />
     <Compile Include="AsyncLogic\GetFavoriteDirectoryAsyncLogic.cs" />
     <Compile Include="AsyncLogic\GetFileByRatingAsyncLogic.cs" />
     <Compile Include="AsyncLogic\GetFileByTagAsyncLogic.cs" />

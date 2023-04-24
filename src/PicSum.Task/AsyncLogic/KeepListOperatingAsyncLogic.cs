@@ -9,7 +9,7 @@ namespace PicSum.Task.AsyncLogic
     /// <summary>
     /// キープリスト操作非同期ロジック
     /// </summary>
-    public class OperatingKeepListAsyncLogic : AsyncLogicBase
+    public class KeepListOperatingAsyncLogic : AsyncLogicBase
     {
         private static readonly List<KeepFileEntity> _keepList = new List<KeepFileEntity>();
         private static ReaderWriterLockSlim _lock = new ReaderWriterLockSlim();
@@ -22,7 +22,7 @@ namespace PicSum.Task.AsyncLogic
             _lock.Dispose();
         }
 
-        public OperatingKeepListAsyncLogic(AsyncFacadeBase facade) : base(facade) { }
+        public KeepListOperatingAsyncLogic(AsyncFacadeBase facade) : base(facade) { }
 
         public void AddKeep(IList<KeepFileEntity> keepFileList)
         {

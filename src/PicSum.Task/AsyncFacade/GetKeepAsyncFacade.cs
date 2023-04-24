@@ -13,7 +13,7 @@ namespace PicSum.Task.AsyncFacade
     {
         public override void Execute()
         {
-            OperatingKeepListAsyncLogic logic = new OperatingKeepListAsyncLogic(this);
+            KeepListOperatingAsyncLogic logic = new KeepListOperatingAsyncLogic(this);
             IList<KeepFileEntity> keepFileList = logic.GetKeep();
 
             GetFileShallowInfoAsyncLogic getInfoLogic = new GetFileShallowInfoAsyncLogic(this);

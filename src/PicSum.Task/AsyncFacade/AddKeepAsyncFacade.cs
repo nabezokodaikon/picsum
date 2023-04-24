@@ -18,7 +18,7 @@ namespace PicSum.Task.AsyncFacade
                 throw new ArgumentNullException("param");
             }
 
-            OperatingKeepListAsyncLogic logic = new OperatingKeepListAsyncLogic(this);
+            KeepListOperatingAsyncLogic logic = new KeepListOperatingAsyncLogic(this);
             logic.AddKeep(param);
         }
     }
