@@ -649,10 +649,19 @@ namespace PicSum.UIComponent.Contents.FileListContents
 
         private IList<string> getImageFiles()
         {
-            var imageFiles = from file in _filterFilePathList
-                             where _masterFileDictionary.ContainsKey(file) && _masterFileDictionary[file].IsImageFile
-                             select file;
-            return imageFiles.ToArray();
+            return this._filterFilePathList
+                .Where(item =>
+                {
+                    if (this._masterFileDictionary.TryGetValue(item, out var file))
+                    {
+                        return file.IsImageFile;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                })
+                .ToArray();
         }
 
         private void addKeep(IList<KeepFileEntity> filePathList)
