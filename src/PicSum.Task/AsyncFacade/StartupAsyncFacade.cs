@@ -2,6 +2,7 @@
 using PicSum.Core.Task.AsyncTask;
 using PicSum.Task.AsyncLogic;
 using PicSum.Task.Entity;
+using PicSum.Task.Paramter;
 
 namespace PicSum.Task.AsyncFacade
 {
@@ -9,9 +10,9 @@ namespace PicSum.Task.AsyncFacade
     /// スタートアップ非同期ファサード
     /// </summary>
     public class StartupAsyncFacade
-        : TwoWayFacadeBase<StartupPrameterEntity, DefaultEntity>
+        : TwoWayFacadeBase<StartupPrameter, DefaultEntity>
     {
-        public override void Execute(StartupPrameterEntity param)
+        public override void Execute(StartupPrameter param)
         {
             if (param == null)
             {

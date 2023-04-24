@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using PicSum.Core.Task.AsyncTask;
 using PicSum.Task.AsyncLogic;
 using PicSum.Task.Entity;
+using PicSum.Task.Paramter;
 using SWF.Common;
 
 namespace PicSum.Task.AsyncFacade
 {
     public class GetFavoriteDirectoryAsyncFacade
-        : TwoWayFacadeBase<SearchFavoriteDirectoryParameterEntity, ListEntity<FileShallowInfoEntity>>
+        : TwoWayFacadeBase<GetFavoriteFolderParameter, ListEntity<FileShallowInfoEntity>>
     {
-        public override void Execute(SearchFavoriteDirectoryParameterEntity param)
+        public override void Execute(GetFavoriteFolderParameter param)
         {
             if (param == null)
             {

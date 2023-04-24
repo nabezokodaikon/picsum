@@ -8,6 +8,7 @@ using PicSum.UIComponent.Contents.Properties;
 using SWF.Common;
 using PicSum.UIComponent.Contents.Conf;
 using System.Collections.Generic;
+using PicSum.Task.Paramter;
 
 namespace PicSum.UIComponent.Contents.FileListContents
 {
@@ -16,20 +17,20 @@ namespace PicSum.UIComponent.Contents.FileListContents
         #region インスタンス変数
 
         private FavoriteDirectoryListContentsParameter _parameter = null;
-        private TwoWayProcess<GetFavoriteDirectoryAsyncFacade, SearchFavoriteDirectoryParameterEntity, ListEntity<FileShallowInfoEntity>> _searchFavoriteDirectoryProcess = null;
+        private TwoWayProcess<GetFavoriteDirectoryAsyncFacade, GetFavoriteFolderParameter, ListEntity<FileShallowInfoEntity>> _searchFavoriteDirectoryProcess = null;
         private OneWayProcess<DeleteDirectoryViewCounterAsyncFacade, ListEntity<string>> deleteDirectoryViewCounterProcess = null;
 
         #endregion
 
         #region プライベートプロパティ
 
-        private TwoWayProcess<GetFavoriteDirectoryAsyncFacade, SearchFavoriteDirectoryParameterEntity, ListEntity<FileShallowInfoEntity>> searchFavoriteDirectoryProcess
+        private TwoWayProcess<GetFavoriteDirectoryAsyncFacade, GetFavoriteFolderParameter, ListEntity<FileShallowInfoEntity>> searchFavoriteDirectoryProcess
         {
             get
             {
                 if (_searchFavoriteDirectoryProcess == null)
                 {
-                    _searchFavoriteDirectoryProcess = TaskManager.CreateTwoWayProcess<GetFavoriteDirectoryAsyncFacade, SearchFavoriteDirectoryParameterEntity, ListEntity<FileShallowInfoEntity>>(ProcessContainer);
+                    _searchFavoriteDirectoryProcess = TaskManager.CreateTwoWayProcess<GetFavoriteDirectoryAsyncFacade, GetFavoriteFolderParameter, ListEntity<FileShallowInfoEntity>>(ProcessContainer);
                     _searchFavoriteDirectoryProcess.Callback += new AsyncTaskCallbackEventHandler<ListEntity<FileShallowInfoEntity>>(searchFavoriteDirectoryProcess_Callback);
                 }
 
@@ -70,7 +71,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            SearchFavoriteDirectoryParameterEntity param = new SearchFavoriteDirectoryParameterEntity();
+            GetFavoriteFolderParameter param = new GetFavoriteFolderParameter();
             param.IsOnlyDirectory = true;
             param.Count = FileListContentsConfig.FavoriteDirectoryCount;
             searchFavoriteDirectoryProcess.Execute(this, param);

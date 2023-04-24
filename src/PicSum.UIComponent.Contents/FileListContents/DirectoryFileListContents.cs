@@ -6,6 +6,8 @@ using PicSum.Core.Base.Conf;
 using PicSum.Core.Task.AsyncTask;
 using PicSum.Task.AsyncFacade;
 using PicSum.Task.Entity;
+using PicSum.Task.Paramter;
+using PicSum.Task.Result;
 using PicSum.UIComponent.Contents.ContentsParameter;
 using SWF.Common;
 
@@ -19,23 +21,23 @@ namespace PicSum.UIComponent.Contents.FileListContents
         #region インスタンス変数
 
         private readonly DirectoryFileListContentsParameter _parameter = null;
-        private TwoWayProcess<GetFileByDirectoryAsyncFacade, SingleValueEntity<string>, SearchDirectoryResultEntity> _searchDirectoryProcess = null;
+        private TwoWayProcess<GetFileByDirectoryAsyncFacade, SingleValueEntity<string>, GetDirectoryResult> _searchDirectoryProcess = null;
         private OneWayProcess<UpdateDirectoryStateAsynceFacade, DirectoryStateEntity> _updateDirectoryStateProcess = null;
         private OneWayProcess<AddDirectoryViewHistoryAsyncFacade, SingleValueEntity<string>> _addDirectoryHistoryProcess = null;
-        private TwoWayProcess<GetNextDirectoryAsyncFacade, GetNextContentsParameterEntity<string>, SingleValueEntity<string>> _getNextDirectoryProcess = null;
+        private TwoWayProcess<GetNextDirectoryAsyncFacade, GetNextContentsParameter<string>, SingleValueEntity<string>> _getNextDirectoryProcess = null;
 
         #endregion
 
         #region プライベートプロパティ
 
-        private TwoWayProcess<GetFileByDirectoryAsyncFacade, SingleValueEntity<string>, SearchDirectoryResultEntity> searchDirectoryProcess
+        private TwoWayProcess<GetFileByDirectoryAsyncFacade, SingleValueEntity<string>, GetDirectoryResult> searchDirectoryProcess
         {
             get
             {
                 if (_searchDirectoryProcess == null)
                 {
-                    _searchDirectoryProcess = TaskManager.CreateTwoWayProcess<GetFileByDirectoryAsyncFacade, SingleValueEntity<string>, SearchDirectoryResultEntity>(ProcessContainer);
-                    _searchDirectoryProcess.Callback += new AsyncTaskCallbackEventHandler<SearchDirectoryResultEntity>(searchDirectoryProcess_Callback);
+                    _searchDirectoryProcess = TaskManager.CreateTwoWayProcess<GetFileByDirectoryAsyncFacade, SingleValueEntity<string>, GetDirectoryResult>(ProcessContainer);
+                    _searchDirectoryProcess.Callback += new AsyncTaskCallbackEventHandler<GetDirectoryResult>(searchDirectoryProcess_Callback);
                 }
 
                 return _searchDirectoryProcess;
@@ -68,13 +70,13 @@ namespace PicSum.UIComponent.Contents.FileListContents
             }
         }
 
-        private TwoWayProcess<GetNextDirectoryAsyncFacade, GetNextContentsParameterEntity<string>, SingleValueEntity<string>> getNextDirectoryProcess
+        private TwoWayProcess<GetNextDirectoryAsyncFacade, GetNextContentsParameter<string>, SingleValueEntity<string>> getNextDirectoryProcess
         {
             get
             {
                 if (_getNextDirectoryProcess == null)
                 {
-                    _getNextDirectoryProcess = TaskManager.CreateTwoWayProcess<GetNextDirectoryAsyncFacade, GetNextContentsParameterEntity<string>, SingleValueEntity<string>>(ProcessContainer);
+                    _getNextDirectoryProcess = TaskManager.CreateTwoWayProcess<GetNextDirectoryAsyncFacade, GetNextContentsParameter<string>, SingleValueEntity<string>>(ProcessContainer);
                     _getNextDirectoryProcess.Callback += new AsyncTaskCallbackEventHandler<SingleValueEntity<string>>(getNextDirectoryProcess_Callback);
                 }
 
@@ -148,7 +150,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
 
         protected override void OnMovePreviewButtonClick(EventArgs e)
         {
-            GetNextContentsParameterEntity<string> param = new GetNextContentsParameterEntity<string>();
+            GetNextContentsParameter<string> param = new GetNextContentsParameter<string>();
             param.CurrentParameter = new SingleValueEntity<string>();
             param.CurrentParameter.Value = _parameter.DirectoryPath;
             param.IsNext = false;
@@ -158,7 +160,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
 
         protected override void OnMoveNextButtonClick(EventArgs e)
         {
-            GetNextContentsParameterEntity<string> param = new GetNextContentsParameterEntity<string>();
+            GetNextContentsParameter<string> param = new GetNextContentsParameter<string>();
             param.CurrentParameter = new SingleValueEntity<string>();
             param.CurrentParameter.Value = _parameter.DirectoryPath;
             param.IsNext = true;
@@ -219,7 +221,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
 
         #region プロセスイベント
 
-        private void searchDirectoryProcess_Callback(object sender, SearchDirectoryResultEntity e)
+        private void searchDirectoryProcess_Callback(object sender, GetDirectoryResult e)
         {
             if (e.DirectoryNotFoundException != null)
             {

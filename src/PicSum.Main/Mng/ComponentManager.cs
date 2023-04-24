@@ -3,6 +3,7 @@ using PicSum.Core.Task.AsyncTask;
 using PicSum.Main.Conf;
 using PicSum.Main.Properties;
 using PicSum.Task.Entity;
+using PicSum.Task.Paramter;
 using PicSum.Task.SyncFacade;
 using PicSum.UIComponent.Contents.Conf;
 using SWF.Common;
@@ -56,7 +57,7 @@ namespace PicSum.Main.Mng
 
             // 終了処理を行います。
             ClosingSyncFacade closingFacade = new ClosingSyncFacade();
-            ClosingParameterEntity param = new ClosingParameterEntity();
+            ClosingParameter param = new ClosingParameter();
             closingFacade.Execute(param);
 
             // ブラウザの設定を保存します。

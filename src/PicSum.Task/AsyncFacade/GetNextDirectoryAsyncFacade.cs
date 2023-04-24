@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using PicSum.Core.Task.AsyncTask;
 using PicSum.Task.AsyncLogic;
 using PicSum.Task.Entity;
+using PicSum.Task.Paramter;
 using SWF.Common;
 
 namespace PicSum.Task.AsyncFacade
@@ -11,9 +12,9 @@ namespace PicSum.Task.AsyncFacade
     /// 次のフォルダを取得します。
     /// </summary>
     public class GetNextDirectoryAsyncFacade
-        : TwoWayFacadeBase<GetNextContentsParameterEntity<string>, SingleValueEntity<string>>
+        : TwoWayFacadeBase<GetNextContentsParameter<string>, SingleValueEntity<string>>
     {
-        public override void Execute(GetNextContentsParameterEntity<string> param)
+        public override void Execute(GetNextContentsParameter<string> param)
         {
             if (param == null)
             {

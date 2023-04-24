@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using PicSum.Core.Task.Base;
 
-namespace PicSum.Task.Entity
+namespace PicSum.Task.Paramter
 {
-    public class SearchFavoriteDirectoryParameterEntity : IEntity
+    public class GetFavoriteFolderParameter : IEntity
     {
         public bool IsOnlyDirectory { get; set; }
         public int Count { get; set; }

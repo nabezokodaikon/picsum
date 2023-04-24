@@ -4,6 +4,8 @@ using PicSum.Task.AsyncLogic;
 using PicSum.Task.Entity;
 using System.IO;
 using SWF.Common;
+using PicSum.Task.Paramter;
+using PicSum.Task.Result;
 
 namespace PicSum.Task.AsyncFacade
 {
@@ -11,16 +13,16 @@ namespace PicSum.Task.AsyncFacade
     /// ファイルの深い情報取得非同期ファサード
     /// </summary>
     public class GetFileDeepInfoAsyncFacade
-        : TwoWayFacadeBase<GetFileDeepInfoParameterEntity, GetFileDeepInfoResultEntity>
+        : TwoWayFacadeBase<GetFileDeepInfoParameter, GetFileDeepInfoResult>
     {
-        public override void Execute(GetFileDeepInfoParameterEntity param)
+        public override void Execute(GetFileDeepInfoParameter param)
         {
             if (param == null)
             {
                 throw new ArgumentNullException("param");
             }
 
-            GetFileDeepInfoResultEntity result = new GetFileDeepInfoResultEntity();
+            GetFileDeepInfoResult result = new GetFileDeepInfoResult();
 
             try
             {

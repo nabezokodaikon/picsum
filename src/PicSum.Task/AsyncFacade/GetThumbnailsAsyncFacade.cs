@@ -8,6 +8,7 @@ using PicSum.Core.Task.AsyncTask;
 using PicSum.Data.DatabaseAccessor.Connection;
 using PicSum.Task.AsyncLogic;
 using PicSum.Task.Entity;
+using PicSum.Task.Paramter;
 using SWF.Common;
 
 namespace PicSum.Task.AsyncFacade
@@ -16,9 +17,9 @@ namespace PicSum.Task.AsyncFacade
     /// サムネイルを取得します。
     /// </summary>
     public class GetThumbnailsAsyncFacade
-        : TwoWayFacadeBase<GetThumbnailParameterEntity, ThumbnailImageEntity>
+        : TwoWayFacadeBase<GetThumbnailParameter, ThumbnailImageEntity>
     {
-        public override void Execute(GetThumbnailParameterEntity param)
+        public override void Execute(GetThumbnailParameter param)
         {
             if (param == null)
             {

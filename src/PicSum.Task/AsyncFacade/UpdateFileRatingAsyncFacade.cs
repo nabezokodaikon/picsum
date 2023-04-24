@@ -4,6 +4,7 @@ using PicSum.Core.Task.AsyncTask;
 using PicSum.Data.DatabaseAccessor.Connection;
 using PicSum.Task.AsyncLogic;
 using PicSum.Task.Entity;
+using PicSum.Task.Paramter;
 
 namespace PicSum.Task.AsyncFacade
 {
@@ -11,9 +12,9 @@ namespace PicSum.Task.AsyncFacade
     /// ファイルの評価値を更新します。
     /// </summary>
     public class UpdateFileRatingAsyncFacade
-        : OneWayFacadeBase<UpdateFileRatingParameterEntity>
+        : OneWayFacadeBase<UpdateFileRatingParameter>
     {
-        public override void Execute(UpdateFileRatingParameterEntity param)
+        public override void Execute(UpdateFileRatingParameter param)
         {
             if (param == null)
             {

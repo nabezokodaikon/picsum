@@ -1,12 +1,13 @@
 ﻿using PicSum.Core.Task.Base;
+using PicSum.Task.Entity;
 using SWF.Common;
 
-namespace PicSum.Task.Entity
+namespace PicSum.Task.Result
 {
     /// <summary>
     /// 画像読込結果エンティティ
     /// </summary>
-    public class ReadImageFileResultEntity : IEntity
+    public class GetImageFileResult : IEntity
     {
         public ImageFileEntity Image1 { get; set; }
         public ImageFileEntity Image2 { get; set; }

@@ -9,6 +9,7 @@ using PicSum.UIComponent.Contents.Properties;
 using PicSum.Core.Base.Conf;
 using SWF.Common;
 using SWF.UIComponent.Common;
+using PicSum.Task.Paramter;
 
 namespace PicSum.UIComponent.Contents.FileListContents
 {
@@ -21,7 +22,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
 
         private RatingFileListContentsParameter _parameter = null;
         private TwoWayProcess<GetFileByRatingAsyncFacade, SingleValueEntity<int>, ListEntity<FileShallowInfoEntity>> _searchFileProcess = null;
-        private OneWayProcess<UpdateFileRatingAsyncFacade, UpdateFileRatingParameterEntity> _updateFileRatingProcess = null;
+        private OneWayProcess<UpdateFileRatingAsyncFacade, UpdateFileRatingParameter> _updateFileRatingProcess = null;
 
         #endregion
 
@@ -41,13 +42,13 @@ namespace PicSum.UIComponent.Contents.FileListContents
             }
         }
 
-        private OneWayProcess<UpdateFileRatingAsyncFacade, UpdateFileRatingParameterEntity> updateFileRatingProcess
+        private OneWayProcess<UpdateFileRatingAsyncFacade, UpdateFileRatingParameter> updateFileRatingProcess
         {
             get
             {
                 if (_updateFileRatingProcess == null)
                 {
-                    _updateFileRatingProcess = TaskManager.CreateOneWayProcess<UpdateFileRatingAsyncFacade, UpdateFileRatingParameterEntity>(ProcessContainer);
+                    _updateFileRatingProcess = TaskManager.CreateOneWayProcess<UpdateFileRatingAsyncFacade, UpdateFileRatingParameter>(ProcessContainer);
                 }
 
                 return _updateFileRatingProcess;
@@ -100,7 +101,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
 
         protected override void OnRemoveFile(System.Collections.Generic.IList<string> filePathList)
         {
-            UpdateFileRatingParameterEntity param = new UpdateFileRatingParameterEntity();
+            UpdateFileRatingParameter param = new UpdateFileRatingParameter();
             param.FilePathList = filePathList;
             param.RatingValue = 0;
             updateFileRatingProcess.Execute(this, param);

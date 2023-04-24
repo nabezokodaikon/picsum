@@ -1,6 +1,7 @@
 ﻿using System;
 using PicSum.Core.Task.SyncTask;
 using PicSum.Task.Entity;
+using PicSum.Task.Paramter;
 using PicSum.Task.SyncLogic;
 
 namespace PicSum.Task.SyncFacade
@@ -10,7 +11,7 @@ namespace PicSum.Task.SyncFacade
     /// </summary>
     public class ClosingSyncFacade : SyncFacadeBase
     {
-        public void Execute(ClosingParameterEntity param)
+        public void Execute(ClosingParameter param)
         {
             if (param == null)
             {

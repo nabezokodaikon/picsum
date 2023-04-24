@@ -2,6 +2,8 @@
 using PicSum.Core.Task.AsyncTask;
 using PicSum.Task.AsyncLogic;
 using PicSum.Task.Entity;
+using PicSum.Task.Paramter;
+using PicSum.Task.Result;
 using SWF.Common;
 using System;
 using System.Drawing;
@@ -13,16 +15,16 @@ namespace PicSum.Task.AsyncFacade
     /// 画像ファイルを読込みます。
     /// </summary>
     public class GetImageFileAsyncFacade
-        : TwoWayFacadeBase<ReadImageFileParameterEntity, ReadImageFileResultEntity>
+        : TwoWayFacadeBase<GetImageFileParameter, GetImageFileResult>
     {
-        public override void Execute(ReadImageFileParameterEntity param)
+        public override void Execute(GetImageFileParameter param)
         {
             if (param == null)
             {
                 throw new ArgumentNullException("param");
             }
 
-            var result = new ReadImageFileResultEntity();
+            var result = new GetImageFileResult();
             var logic = new GetImageFileAsyncLogic(this);
             var currentFilePath = param.FilePathList[param.CurrentIndex];
 
@@ -113,7 +115,7 @@ namespace PicSum.Task.AsyncFacade
             OnCallback(result);
         }
 
-        private void exeptionHandler(ReadImageFileResultEntity result)
+        private void exeptionHandler(GetImageFileResult result)
         {
             if (result.Image1 != null)
             {

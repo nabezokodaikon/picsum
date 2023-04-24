@@ -4,6 +4,7 @@ using System.IO;
 using PicSum.Core.Task.AsyncTask;
 using PicSum.Task.AsyncLogic;
 using PicSum.Task.Entity;
+using PicSum.Task.Result;
 
 namespace PicSum.Task.AsyncFacade
 {
@@ -11,7 +12,7 @@ namespace PicSum.Task.AsyncFacade
     /// ファイルをフォルダで検索します。
     /// </summary>
     public class GetFileByDirectoryAsyncFacade
-        : TwoWayFacadeBase<SingleValueEntity<string>, SearchDirectoryResultEntity>
+        : TwoWayFacadeBase<SingleValueEntity<string>, GetDirectoryResult>
     {
         public override void Execute(SingleValueEntity<string> param)
         {
@@ -20,7 +21,7 @@ namespace PicSum.Task.AsyncFacade
                 throw new ArgumentNullException("param");
             }
 
-            SearchDirectoryResultEntity result = new SearchDirectoryResultEntity();
+            GetDirectoryResult result = new GetDirectoryResult();
             result.DirectoryPath = param.Value;
 
             IList<string> fileList = null;

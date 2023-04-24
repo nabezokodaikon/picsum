@@ -16,6 +16,8 @@ using PicSum.UIComponent.Contents.ContentsToolBar;
 using System.Security.Permissions;
 using System.Diagnostics;
 using System.Linq;
+using PicSum.Task.Paramter;
+using PicSum.Task.Result;
 
 namespace PicSum.UIComponent.Contents.ImageViewerContents
 {
@@ -40,9 +42,9 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
         private ImageDisplayMode _displayMode = ImageDisplayMode.LeftFacing;
         private ImageSizeMode _sizeMode = ImageSizeMode.FitOnlyBigImage;
 
-        private TwoWayProcess<GetImageFileAsyncFacade, ReadImageFileParameterEntity, ReadImageFileResultEntity> _readImageFileProcess = null;
+        private TwoWayProcess<GetImageFileAsyncFacade, GetImageFileParameter, GetImageFileResult> _readImageFileProcess = null;
         private OneWayProcess<AddKeepAsyncFacade, ListEntity<KeepFileEntity>> _addKeepProcess = null;
-        private OneWayProcess<ExportFileAsyncFacade, ExportFileParameterEntity> _exportFileProcess = null;
+        private OneWayProcess<ExportFileAsyncFacade, ExportFileParameter> _exportFileProcess = null;
 
         #endregion
 
@@ -88,14 +90,14 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
             }
         }
 
-        private TwoWayProcess<GetImageFileAsyncFacade, ReadImageFileParameterEntity, ReadImageFileResultEntity> readImageFileProcess
+        private TwoWayProcess<GetImageFileAsyncFacade, GetImageFileParameter, GetImageFileResult> readImageFileProcess
         {
             get
             {
                 if (_readImageFileProcess == null)
                 {
-                    _readImageFileProcess = TaskManager.CreateTwoWayProcess<GetImageFileAsyncFacade, ReadImageFileParameterEntity, ReadImageFileResultEntity>(ProcessContainer);
-                    _readImageFileProcess.Callback += new AsyncTaskCallbackEventHandler<ReadImageFileResultEntity>(readImageFileProcess_Callback);
+                    _readImageFileProcess = TaskManager.CreateTwoWayProcess<GetImageFileAsyncFacade, GetImageFileParameter, GetImageFileResult>(ProcessContainer);
+                    _readImageFileProcess.Callback += new AsyncTaskCallbackEventHandler<GetImageFileResult>(readImageFileProcess_Callback);
                     _readImageFileProcess.SuccessEnd += new EventHandler(readImageFileProcess_SuccessEnd);
                     _readImageFileProcess.ErrorEnd += new EventHandler(readImageFileProcess_ErrorEnd);
                 }
@@ -117,13 +119,13 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
             }
         }
 
-        private OneWayProcess<ExportFileAsyncFacade, ExportFileParameterEntity> exportFileProcess
+        private OneWayProcess<ExportFileAsyncFacade, ExportFileParameter> exportFileProcess
         {
             get
             {
                 if (_exportFileProcess == null)
                 {
-                    _exportFileProcess = TaskManager.CreateOneWayProcess<ExportFileAsyncFacade, ExportFileParameterEntity>(ProcessContainer);
+                    _exportFileProcess = TaskManager.CreateOneWayProcess<ExportFileAsyncFacade, ExportFileParameter>(ProcessContainer);
                 }
 
                 return _exportFileProcess;
@@ -406,7 +408,7 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
         {
             this.Cursor = Cursors.WaitCursor;
 
-            ReadImageFileParameterEntity param = new ReadImageFileParameterEntity();
+            GetImageFileParameter param = new GetImageFileParameter();
             param.CurrentIndex = filePathListIndex;
             param.FilePathList = _parameter.FilePathList;
             param.ImageDisplayMode = _displayMode;
@@ -518,7 +520,7 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
 
         #region プロセスイベント
 
-        private void readImageFileProcess_Callback(object sender, ReadImageFileResultEntity e)
+        private void readImageFileProcess_Callback(object sender, GetImageFileResult e)
         {
             if (e.ReadImageFileException != null)
             {
@@ -910,7 +912,7 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
 
                 if (fbd.ShowDialog() == DialogResult.OK)
                 {
-                    ExportFileParameterEntity param = new ExportFileParameterEntity();
+                    ExportFileParameter param = new ExportFileParameter();
                     param.ExportDirectoryPath = fbd.SelectedPath;
                     param.FilePathList = e.FilePathList;
                     exportFileProcess.Execute(this, param);

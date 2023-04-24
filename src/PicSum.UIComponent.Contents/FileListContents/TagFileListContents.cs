@@ -4,6 +4,7 @@ using PicSum.Core.Base.Conf;
 using PicSum.Core.Task.AsyncTask;
 using PicSum.Task.AsyncFacade;
 using PicSum.Task.Entity;
+using PicSum.Task.Paramter;
 using PicSum.UIComponent.Contents.ContentsParameter;
 using PicSum.UIComponent.Contents.Properties;
 using SWF.Common;
@@ -27,7 +28,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
 
         private TagFileListContentsParameter _parameter = null;
         private TwoWayProcess<GetFileByTagAsyncFacade, SingleValueEntity<string>, ListEntity<FileShallowInfoEntity>> _searchFileProcess = null;
-        private OneWayProcess<DeleteFileTagAsyncFacade, UpdateFileTagParameterEntity> _deleteFileTagProcess = null;
+        private OneWayProcess<DeleteFileTagAsyncFacade, UpdateFileTagParameter> _deleteFileTagProcess = null;
 
         #endregion
 
@@ -55,13 +56,13 @@ namespace PicSum.UIComponent.Contents.FileListContents
             }
         }
 
-        private OneWayProcess<DeleteFileTagAsyncFacade, UpdateFileTagParameterEntity> deleteFileTagProcess
+        private OneWayProcess<DeleteFileTagAsyncFacade, UpdateFileTagParameter> deleteFileTagProcess
         {
             get
             {
                 if (_deleteFileTagProcess == null)
                 {
-                    _deleteFileTagProcess = TaskManager.CreateOneWayProcess<DeleteFileTagAsyncFacade, UpdateFileTagParameterEntity>(ProcessContainer);
+                    _deleteFileTagProcess = TaskManager.CreateOneWayProcess<DeleteFileTagAsyncFacade, UpdateFileTagParameter>(ProcessContainer);
                 }
 
                 return _deleteFileTagProcess;
@@ -119,7 +120,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
 
         protected override void OnRemoveFile(System.Collections.Generic.IList<string> filePathList)
         {
-            UpdateFileTagParameterEntity param = new UpdateFileTagParameterEntity();
+            UpdateFileTagParameter param = new UpdateFileTagParameter();
             param.FilePathList = filePathList;
             param.Tag = _parameter.Tag;
             deleteFileTagProcess.Execute(this, param);

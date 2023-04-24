@@ -3,6 +3,7 @@ using System.Threading;
 using PicSum.Core.Task.AsyncTask;
 using PicSum.Task.AsyncLogic;
 using PicSum.Task.Entity;
+using PicSum.Task.Paramter;
 
 namespace PicSum.Task.AsyncFacade
 {
@@ -10,7 +11,7 @@ namespace PicSum.Task.AsyncFacade
     /// 画像ファイルエクスポート非同期ファサード
     /// </summary>
     public class ExportFileAsyncFacade
-        : OneWayFacadeBase<ExportFileParameterEntity>
+        : OneWayFacadeBase<ExportFileParameter>
     {
         private static readonly ReaderWriterLockSlim _lock = new ReaderWriterLockSlim();
 
@@ -22,7 +23,7 @@ namespace PicSum.Task.AsyncFacade
             _lock.Dispose();
         }
 
-        public override void Execute(ExportFileParameterEntity param)
+        public override void Execute(ExportFileParameter param)
         {
             if (param == null)
             {

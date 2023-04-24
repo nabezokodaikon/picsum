@@ -10,6 +10,7 @@ using PicSum.Core.Base.Conf;
 using PicSum.Core.Task.AsyncTask;
 using PicSum.Task.AsyncFacade;
 using PicSum.Task.Entity;
+using PicSum.Task.Paramter;
 using PicSum.UIComponent.Contents.Conf;
 using PicSum.UIComponent.Contents.ContentsParameter;
 using SWF.Common;
@@ -37,9 +38,9 @@ namespace PicSum.UIComponent.Contents.FileListContents
         private string _selectedFilePath = string.Empty;
         private readonly SolidBrush _selectedTextBrush = new SolidBrush(Color.White);
         private readonly SortInfo _sortInfo = new SortInfo();
-        private TwoWayProcess<GetThumbnailsAsyncFacade, GetThumbnailParameterEntity, ThumbnailImageEntity> _getThumbnailsProcess = null;
+        private TwoWayProcess<GetThumbnailsAsyncFacade, GetThumbnailParameter, ThumbnailImageEntity> _getThumbnailsProcess = null;
         private OneWayProcess<AddKeepAsyncFacade, ListEntity<KeepFileEntity>> _addKeepProcess = null;
-        private OneWayProcess<ExportFileAsyncFacade, ExportFileParameterEntity> _exportFileProcess = null;
+        private OneWayProcess<ExportFileAsyncFacade, ExportFileParameter> _exportFileProcess = null;
 
         #endregion
 
@@ -198,13 +199,13 @@ namespace PicSum.UIComponent.Contents.FileListContents
             }
         }
 
-        private TwoWayProcess<GetThumbnailsAsyncFacade, GetThumbnailParameterEntity, ThumbnailImageEntity> getThumbnailsProcess
+        private TwoWayProcess<GetThumbnailsAsyncFacade, GetThumbnailParameter, ThumbnailImageEntity> getThumbnailsProcess
         {
             get
             {
                 if (_getThumbnailsProcess == null)
                 {
-                    _getThumbnailsProcess = TaskManager.CreateTwoWayProcess<GetThumbnailsAsyncFacade, GetThumbnailParameterEntity, ThumbnailImageEntity>(ProcessContainer);
+                    _getThumbnailsProcess = TaskManager.CreateTwoWayProcess<GetThumbnailsAsyncFacade, GetThumbnailParameter, ThumbnailImageEntity>(ProcessContainer);
                     _getThumbnailsProcess.Callback += new AsyncTaskCallbackEventHandler<ThumbnailImageEntity>(getThumbnailsProcess_Callback);
 
                 }
@@ -226,13 +227,13 @@ namespace PicSum.UIComponent.Contents.FileListContents
             }
         }
 
-        private OneWayProcess<ExportFileAsyncFacade, ExportFileParameterEntity> exportFileProcess
+        private OneWayProcess<ExportFileAsyncFacade, ExportFileParameter> exportFileProcess
         {
             get
             {
                 if (_exportFileProcess == null)
                 {
-                    _exportFileProcess = TaskManager.CreateOneWayProcess<ExportFileAsyncFacade, ExportFileParameterEntity>(ProcessContainer);
+                    _exportFileProcess = TaskManager.CreateOneWayProcess<ExportFileAsyncFacade, ExportFileParameter>(ProcessContainer);
                 }
 
                 return _exportFileProcess;
@@ -946,7 +947,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
                 e.DrawLastItemIndex > -1 &&
                 e.DrawLastItemIndex < _filterFilePathList.Count)
             {
-                GetThumbnailParameterEntity param = new GetThumbnailParameterEntity();
+                GetThumbnailParameter param = new GetThumbnailParameter();
                 param.FilePathList = _filterFilePathList;
                 param.FirstIndex = e.DrawFirstItemIndex;
                 param.LastIndex = e.DrawLastItemIndex;
@@ -1227,7 +1228,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
 
                 if (fbd.ShowDialog() == DialogResult.OK)
                 {
-                    ExportFileParameterEntity param = new ExportFileParameterEntity();
+                    ExportFileParameter param = new ExportFileParameter();
                     param.ExportDirectoryPath = fbd.SelectedPath;
                     param.FilePathList = e.FilePathList;
                     exportFileProcess.Execute(this, param);

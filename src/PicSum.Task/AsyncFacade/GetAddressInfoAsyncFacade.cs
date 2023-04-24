@@ -1,6 +1,7 @@
 ﻿using PicSum.Core.Task.AsyncTask;
 using PicSum.Task.AsyncLogic;
 using PicSum.Task.Entity;
+using PicSum.Task.Result;
 using SWF.Common;
 using System;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace PicSum.Task.AsyncFacade
     /// アドレスの情報を取得します。
     /// </summary>
     public class GetAddressInfoAsyncFacade
-        : TwoWayFacadeBase<SingleValueEntity<string>, AddressInfo>
+        : TwoWayFacadeBase<SingleValueEntity<string>, GetAddressInfoResult>
     {
         public override void Execute(SingleValueEntity<string> param)
         {
@@ -20,7 +21,7 @@ namespace PicSum.Task.AsyncFacade
                 throw new ArgumentNullException("param");
             }
 
-            var addressInfo = new AddressInfo();
+            var addressInfo = new GetAddressInfoResult();
 
             try
             {

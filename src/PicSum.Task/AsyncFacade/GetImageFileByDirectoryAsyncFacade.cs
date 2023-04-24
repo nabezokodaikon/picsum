@@ -4,6 +4,8 @@ using System.IO;
 using PicSum.Core.Task.AsyncTask;
 using PicSum.Task.AsyncLogic;
 using PicSum.Task.Entity;
+using PicSum.Task.Paramter;
+using PicSum.Task.Result;
 using SWF.Common;
 
 namespace PicSum.Task.AsyncFacade
@@ -12,9 +14,9 @@ namespace PicSum.Task.AsyncFacade
     /// フォルダ内の画像ファイルを検索します。
     /// </summary>
     public class GetImageFileByDirectoryAsyncFacade
-        : TwoWayFacadeBase<SearchImageFileParameterEntity, SearchImageFileResultEntity>
+        : TwoWayFacadeBase<GetImageFileByDirectoryParameter, GetImageFileByDirectoryResult>
     {
-        public override void Execute(SearchImageFileParameterEntity param)
+        public override void Execute(GetImageFileByDirectoryParameter param)
         {
             if (param == null)
             {
@@ -26,7 +28,7 @@ namespace PicSum.Task.AsyncFacade
                 throw new ArgumentException("空文字は無効です。", "param");
             }
 
-            SearchImageFileResultEntity result = new SearchImageFileResultEntity();
+            GetImageFileByDirectoryResult result = new GetImageFileByDirectoryResult();
             result.FileOpenType = param.FileOpenType;
             result.TabIndex = param.TabIndex;
             if (FileUtil.IsDirectory(param.FilePath))

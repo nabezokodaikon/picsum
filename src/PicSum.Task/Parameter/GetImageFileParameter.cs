@@ -3,12 +3,12 @@ using System.Drawing;
 using PicSum.Core.Base.Conf;
 using PicSum.Core.Task.Base;
 
-namespace PicSum.Task.Entity
+namespace PicSum.Task.Paramter
 {
     /// <summary>
     /// 画像読込パラメータエンティティ
     /// </summary>
-    public class ReadImageFileParameterEntity : IEntity
+    public class GetImageFileParameter : IEntity
     {
         public int CurrentIndex { get; set; }
         public IList<string> FilePathList { get; set; }

@@ -10,6 +10,7 @@ using PicSum.Task.AsyncFacade;
 using PicSum.Task.Entity;
 using PicSum.Core.Base.Conf;
 using SWF.Common;
+using PicSum.Task.Result;
 
 namespace PicSum.UIComponent.AddressBar
 {
@@ -34,7 +35,7 @@ namespace PicSum.UIComponent.AddressBar
         private readonly OverflowDrawItem _overflowItem = new OverflowDrawItem();
         private readonly DirectoryHistoryDrawItem _directoryHistoryItem = new DirectoryHistoryDrawItem();
         private IContainer _components = null;
-        private TwoWayProcess<GetAddressInfoAsyncFacade, SingleValueEntity<string>, AddressInfo> _getAddressInfoProcess = null;
+        private TwoWayProcess<GetAddressInfoAsyncFacade, SingleValueEntity<string>, GetAddressInfoResult> _getAddressInfoProcess = null;
         private string _directoryPath = null;
         private readonly List<DrawItemBase> _addressItems = new List<DrawItemBase>();
         private DrawItemBase _mousePointItem = null;
@@ -173,14 +174,14 @@ namespace PicSum.UIComponent.AddressBar
             }
         }
 
-        private TwoWayProcess<GetAddressInfoAsyncFacade, SingleValueEntity<string>, AddressInfo> getAddressInfoProcess
+        private TwoWayProcess<GetAddressInfoAsyncFacade, SingleValueEntity<string>, GetAddressInfoResult> getAddressInfoProcess
         {
             get
             {
                 if (_getAddressInfoProcess == null)
                 {
-                    _getAddressInfoProcess = TaskManager.CreateTwoWayProcess<GetAddressInfoAsyncFacade, SingleValueEntity<string>, AddressInfo>(components);
-                    getAddressInfoProcess.Callback += new AsyncTaskCallbackEventHandler<AddressInfo>(getAddressInfoProcess_Callback);
+                    _getAddressInfoProcess = TaskManager.CreateTwoWayProcess<GetAddressInfoAsyncFacade, SingleValueEntity<string>, GetAddressInfoResult>(components);
+                    getAddressInfoProcess.Callback += new AsyncTaskCallbackEventHandler<GetAddressInfoResult>(getAddressInfoProcess_Callback);
                 }
 
                 return _getAddressInfoProcess;
@@ -470,7 +471,7 @@ namespace PicSum.UIComponent.AddressBar
             }
         }
 
-        private IList<DrawItemBase> createAddressItems(AddressInfo addressInfo)
+        private IList<DrawItemBase> createAddressItems(GetAddressInfoResult addressInfo)
         {
             List<DrawItemBase> items = new List<DrawItemBase>();
 
@@ -658,7 +659,7 @@ namespace PicSum.UIComponent.AddressBar
 
         #region イベント
 
-        private void getAddressInfoProcess_Callback(object sender, AddressInfo e)
+        private void getAddressInfoProcess_Callback(object sender, GetAddressInfoResult e)
         {
             if (e.GetAddressInfoException != null)
             {

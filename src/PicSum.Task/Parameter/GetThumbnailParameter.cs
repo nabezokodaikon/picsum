@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using PicSum.Core.Task.Base;
 
-namespace PicSum.Task.Entity
+namespace PicSum.Task.Paramter
 {
-    public class GetThumbnailParameterEntity : IEntity
+    public class GetThumbnailParameter : IEntity
     {
         public IList<string> FilePathList { get; set; }
         public int FirstIndex { get; set; }

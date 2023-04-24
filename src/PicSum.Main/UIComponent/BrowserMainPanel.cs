@@ -10,6 +10,8 @@ using PicSum.Core.Task.AsyncTask;
 using PicSum.Main.Properties;
 using PicSum.Task.AsyncFacade;
 using PicSum.Task.Entity;
+using PicSum.Task.Paramter;
+using PicSum.Task.Result;
 using PicSum.UIComponent.Contents;
 using PicSum.UIComponent.Contents.ContentsParameter;
 using PicSum.UIComponent.InfoPanel;
@@ -39,7 +41,7 @@ namespace PicSum.Main.UIComponent
 
         #region インスタンス変数
 
-        private TwoWayProcess<GetImageFileByDirectoryAsyncFacade, SearchImageFileParameterEntity, SearchImageFileResultEntity> _searchImageFileProcess = null;
+        private TwoWayProcess<GetImageFileByDirectoryAsyncFacade, GetImageFileByDirectoryParameter, GetImageFileByDirectoryResult> _searchImageFileProcess = null;
         private TwoWayProcess<GetTagListAsyncFacade, ListEntity<string>> _getTagListProcess = null;
 
         #endregion
@@ -74,14 +76,14 @@ namespace PicSum.Main.UIComponent
             }
         }
 
-        private TwoWayProcess<GetImageFileByDirectoryAsyncFacade, SearchImageFileParameterEntity, SearchImageFileResultEntity> searchImageFileProcess
+        private TwoWayProcess<GetImageFileByDirectoryAsyncFacade, GetImageFileByDirectoryParameter, GetImageFileByDirectoryResult> searchImageFileProcess
         {
             get
             {
                 if (_searchImageFileProcess == null)
                 {
-                    _searchImageFileProcess = TaskManager.CreateTwoWayProcess<GetImageFileByDirectoryAsyncFacade, SearchImageFileParameterEntity, SearchImageFileResultEntity>(components);
-                    _searchImageFileProcess.Callback += new AsyncTaskCallbackEventHandler<SearchImageFileResultEntity>(searchImageFileProcess_Callback);
+                    _searchImageFileProcess = TaskManager.CreateTwoWayProcess<GetImageFileByDirectoryAsyncFacade, GetImageFileByDirectoryParameter, GetImageFileByDirectoryResult>(components);
+                    _searchImageFileProcess.Callback += new AsyncTaskCallbackEventHandler<GetImageFileByDirectoryResult>(searchImageFileProcess_Callback);
                 }
 
                 return _searchImageFileProcess;
@@ -356,7 +358,7 @@ namespace PicSum.Main.UIComponent
                     if (ImageUtil.ImageFileExtensionList.Contains(ex))
                     {
                         // ビューアコンテンツを追加します。
-                        SearchImageFileParameterEntity param = new SearchImageFileParameterEntity();
+                        GetImageFileByDirectoryParameter param = new GetImageFileByDirectoryParameter();
                         param.FilePath = filePath;
                         param.FileOpenType = ContentsOpenType.AddTab;
                         searchImageFileProcess.Execute(this, param);
@@ -414,7 +416,7 @@ namespace PicSum.Main.UIComponent
                 && ImageUtil.ImageFileExtensionList.Contains(FileUtil.GetExtension(dragData.CurrentFilePath)))
             {
                 // ビューアコンテンツを上書きします。
-                SearchImageFileParameterEntity param = new SearchImageFileParameterEntity();
+                GetImageFileByDirectoryParameter param = new GetImageFileByDirectoryParameter();
                 param.FilePath = dragData.CurrentFilePath;
                 param.FileOpenType = ContentsOpenType.OverlapTab;
                 param.TabIndex = tabIndex;
@@ -444,7 +446,7 @@ namespace PicSum.Main.UIComponent
                 && ImageUtil.ImageFileExtensionList.Contains(FileUtil.GetExtension(dragData.CurrentFilePath)))
             {
                 // ビューアコンテンツを挿入します。
-                SearchImageFileParameterEntity param = new SearchImageFileParameterEntity();
+                GetImageFileByDirectoryParameter param = new GetImageFileByDirectoryParameter();
                 param.FilePath = dragData.CurrentFilePath;
                 param.FileOpenType = ContentsOpenType.InsertTab;
                 param.TabIndex = tabIndex;
@@ -496,7 +498,7 @@ namespace PicSum.Main.UIComponent
 
         #region プロセスイベント
 
-        private void searchImageFileProcess_Callback(object sender, SearchImageFileResultEntity e)
+        private void searchImageFileProcess_Callback(object sender, GetImageFileByDirectoryResult e)
         {
             if (e.DirectoryNotFoundException != null)
             {

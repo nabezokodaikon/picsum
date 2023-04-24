@@ -1,9 +1,9 @@
 ﻿using PicSum.Core.Base.Conf;
 using PicSum.Core.Task.Base;
 
-namespace PicSum.Task.Entity
+namespace PicSum.Task.Paramter
 {
-    public class SearchImageFileParameterEntity : IEntity
+    public class GetImageFileByDirectoryParameter : IEntity
     {
         public string FilePath { get; set; }
         public ContentsOpenType FileOpenType { get; set; }

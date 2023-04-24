@@ -1,11 +1,11 @@
 ﻿using PicSum.Core.Task.Base;
 
-namespace PicSum.Task.Entity
+namespace PicSum.Task.Paramter
 {
     /// <summary>
     /// スタートアップパラメータエンティティ
     /// </summary>
-    public class StartupPrameterEntity : IEntity
+    public class StartupPrameter : IEntity
     {
         public string FileInfoDBFilePath { get; set; }
         public string ThumbnailDBFilePath { get; set; }

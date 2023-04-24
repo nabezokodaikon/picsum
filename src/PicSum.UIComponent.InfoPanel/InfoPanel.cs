@@ -10,6 +10,8 @@ using PicSum.Core.Base.Conf;
 using PicSum.Core.Task.AsyncTask;
 using PicSum.Task.AsyncFacade;
 using PicSum.Task.Entity;
+using PicSum.Task.Paramter;
+using PicSum.Task.Result;
 using PicSum.UIComponent.InfoPanel.Properties;
 using SWF.Common;
 using SWF.UIComponent.WideDropDown;
@@ -30,13 +32,13 @@ namespace PicSum.UIComponent.InfoPanel
 
         #region インスタンス変数
 
-        private TwoWayProcess<GetFileDeepInfoAsyncFacade, GetFileDeepInfoParameterEntity, GetFileDeepInfoResultEntity> _getFileInfoProcess = null;
-        private OneWayProcess<UpdateFileRatingAsyncFacade, UpdateFileRatingParameterEntity> _updateFileRatingProcess = null;
+        private TwoWayProcess<GetFileDeepInfoAsyncFacade, GetFileDeepInfoParameter, GetFileDeepInfoResult> _getFileInfoProcess = null;
+        private OneWayProcess<UpdateFileRatingAsyncFacade, UpdateFileRatingParameter> _updateFileRatingProcess = null;
         private TwoWayProcess<GetTagListAsyncFacade, ListEntity<string>> _getTagListProcess = null;
-        private OneWayProcess<AddFileTagAsyncFacade, UpdateFileTagParameterEntity> _addFileTagProcess = null;
-        private OneWayProcess<DeleteFileTagAsyncFacade, UpdateFileTagParameterEntity> _deleteFileTagProcess = null;
+        private OneWayProcess<AddFileTagAsyncFacade, UpdateFileTagParameter> _addFileTagProcess = null;
+        private OneWayProcess<DeleteFileTagAsyncFacade, UpdateFileTagParameter> _deleteFileTagProcess = null;
 
-        private GetFileDeepInfoResultEntity _fileInfoSource = null;
+        private GetFileDeepInfoResult _fileInfoSource = null;
         private Font _allTagFont = null;
         private Image _tagIcon = Resources.TagIcon;
         private string _contextMenuOperationTag = string.Empty;
@@ -53,27 +55,27 @@ namespace PicSum.UIComponent.InfoPanel
 
         #region プライベートプロパティ
 
-        private TwoWayProcess<GetFileDeepInfoAsyncFacade, GetFileDeepInfoParameterEntity, GetFileDeepInfoResultEntity> getFileInfoProcess
+        private TwoWayProcess<GetFileDeepInfoAsyncFacade, GetFileDeepInfoParameter, GetFileDeepInfoResult> getFileInfoProcess
         {
             get
             {
                 if (_getFileInfoProcess == null)
                 {
-                    _getFileInfoProcess = TaskManager.CreateTwoWayProcess<GetFileDeepInfoAsyncFacade, GetFileDeepInfoParameterEntity, GetFileDeepInfoResultEntity>(components);
-                    _getFileInfoProcess.Callback += new AsyncTaskCallbackEventHandler<GetFileDeepInfoResultEntity>(getFileInfoProcess_Callback);
+                    _getFileInfoProcess = TaskManager.CreateTwoWayProcess<GetFileDeepInfoAsyncFacade, GetFileDeepInfoParameter, GetFileDeepInfoResult>(components);
+                    _getFileInfoProcess.Callback += new AsyncTaskCallbackEventHandler<GetFileDeepInfoResult>(getFileInfoProcess_Callback);
                 }
 
                 return _getFileInfoProcess;
             }
         }
 
-        private OneWayProcess<UpdateFileRatingAsyncFacade, UpdateFileRatingParameterEntity> updateFileRatingProcess
+        private OneWayProcess<UpdateFileRatingAsyncFacade, UpdateFileRatingParameter> updateFileRatingProcess
         {
             get
             {
                 if (_updateFileRatingProcess == null)
                 {
-                    _updateFileRatingProcess = TaskManager.CreateOneWayProcess<UpdateFileRatingAsyncFacade, UpdateFileRatingParameterEntity>(components);
+                    _updateFileRatingProcess = TaskManager.CreateOneWayProcess<UpdateFileRatingAsyncFacade, UpdateFileRatingParameter>(components);
                 }
 
                 return _updateFileRatingProcess;
@@ -94,26 +96,26 @@ namespace PicSum.UIComponent.InfoPanel
             }
         }
 
-        private OneWayProcess<AddFileTagAsyncFacade, UpdateFileTagParameterEntity> addFileTagProcess
+        private OneWayProcess<AddFileTagAsyncFacade, UpdateFileTagParameter> addFileTagProcess
         {
             get
             {
                 if (_addFileTagProcess == null)
                 {
-                    _addFileTagProcess = TaskManager.CreateOneWayProcess<AddFileTagAsyncFacade, UpdateFileTagParameterEntity>(components);
+                    _addFileTagProcess = TaskManager.CreateOneWayProcess<AddFileTagAsyncFacade, UpdateFileTagParameter>(components);
                 }
 
                 return _addFileTagProcess;
             }
         }
 
-        private OneWayProcess<DeleteFileTagAsyncFacade, UpdateFileTagParameterEntity> deleteFileTagProcess
+        private OneWayProcess<DeleteFileTagAsyncFacade, UpdateFileTagParameter> deleteFileTagProcess
         {
             get
             {
                 if (_deleteFileTagProcess == null)
                 {
-                    _deleteFileTagProcess = TaskManager.CreateOneWayProcess<DeleteFileTagAsyncFacade, UpdateFileTagParameterEntity>(components);
+                    _deleteFileTagProcess = TaskManager.CreateOneWayProcess<DeleteFileTagAsyncFacade, UpdateFileTagParameter>(components);
                 }
 
                 return _deleteFileTagProcess;
@@ -219,7 +221,7 @@ namespace PicSum.UIComponent.InfoPanel
                     return;
                 }
 
-                GetFileDeepInfoParameterEntity param = new GetFileDeepInfoParameterEntity();
+                GetFileDeepInfoParameter param = new GetFileDeepInfoParameter();
                 param.FilePathList = filePathList;
                 param.ThumbnailSize = new Size(
                     ApplicationConst.INFOPANEL_THUMBANIL_SIZE, 
@@ -322,7 +324,7 @@ namespace PicSum.UIComponent.InfoPanel
                 throw new Exception("既に登録されているタグです。");
             }
 
-            UpdateFileTagParameterEntity param = new UpdateFileTagParameterEntity();
+            UpdateFileTagParameter param = new UpdateFileTagParameter();
             param.Tag = tag;
             param.FilePathList = filePathList;
             addFileTagProcess.Execute(this, param);
@@ -361,7 +363,7 @@ namespace PicSum.UIComponent.InfoPanel
                 throw new Exception("リストに存在しないタグを指定しました。");
             }
 
-            UpdateFileTagParameterEntity param = new UpdateFileTagParameterEntity();
+            UpdateFileTagParameter param = new UpdateFileTagParameter();
             param.Tag = tag;
             param.FilePathList = filePathList;
             deleteFileTagProcess.Execute(this, param);
@@ -424,7 +426,7 @@ namespace PicSum.UIComponent.InfoPanel
 
         #region プロセスイベント
 
-        private void getFileInfoProcess_Callback(object sender, GetFileDeepInfoResultEntity e)
+        private void getFileInfoProcess_Callback(object sender, GetFileDeepInfoResult e)
         {
             clearInfo();
 
@@ -563,7 +565,7 @@ namespace PicSum.UIComponent.InfoPanel
                 return;
             }
 
-            UpdateFileRatingParameterEntity param = new UpdateFileRatingParameterEntity();
+            UpdateFileRatingParameter param = new UpdateFileRatingParameter();
             param.FilePathList = _fileInfoSource.FilePathList;
             param.RatingValue = ratingBar.Value;
             updateFileRatingProcess.Execute(this, param);

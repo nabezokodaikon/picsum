@@ -2,6 +2,7 @@
 using PicSum.Core.Task.SyncTask;
 using PicSum.Data.DatabaseAccessor.Connection;
 using PicSum.Task.Entity;
+using PicSum.Task.Paramter;
 
 namespace PicSum.Task.SyncLogic
 {
@@ -10,7 +11,7 @@ namespace PicSum.Task.SyncLogic
     /// </summary>
     internal class ClosingSyncLogic : SyncLogicBase
     {
-        public void Execute(ClosingParameterEntity param)
+        public void Execute(ClosingParameter param)
         {
             DatabaseManager<FileInfoConnection>.Close();
             DatabaseManager<ThumbnailConnection>.Close();

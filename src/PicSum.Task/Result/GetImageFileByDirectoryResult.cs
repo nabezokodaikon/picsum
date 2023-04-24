@@ -3,9 +3,9 @@ using System.IO;
 using PicSum.Core.Base.Conf;
 using PicSum.Core.Task.Base;
 
-namespace PicSum.Task.Entity
+namespace PicSum.Task.Result
 {
-    public class SearchImageFileResultEntity : IEntity
+    public class GetImageFileByDirectoryResult : IEntity
     {
         public string DirectoryPath { get; set; }
         public IList<string> FilePathList { get; set; }

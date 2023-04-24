@@ -9,6 +9,7 @@ using PicSum.Main.Conf;
 using PicSum.Main.Properties;
 using PicSum.Task.AsyncFacade;
 using PicSum.Task.Entity;
+using PicSum.Task.Paramter;
 using PicSum.UIComponent.Contents;
 using SWF.UIComponent.Form;
 using SWF.UIComponent.TabOperation;
@@ -23,9 +24,9 @@ namespace PicSum.Main.UIComponent
 
         #region クラスメンバ
 
-        private static TwoWayProcess<StartupAsyncFacade, StartupPrameterEntity, DefaultEntity> _startupProcess = null;
+        private static TwoWayProcess<StartupAsyncFacade, StartupPrameter, DefaultEntity> _startupProcess = null;
 
-        private static TwoWayProcess<StartupAsyncFacade, StartupPrameterEntity, DefaultEntity> startupProcess
+        private static TwoWayProcess<StartupAsyncFacade, StartupPrameter, DefaultEntity> startupProcess
         {
             get
             {
@@ -157,7 +158,7 @@ namespace PicSum.Main.UIComponent
                     _components = new Container();
                 }
 
-                startupProcess = TaskManager.CreateTwoWayProcess<StartupAsyncFacade, StartupPrameterEntity, DefaultEntity>(_components);
+                startupProcess = TaskManager.CreateTwoWayProcess<StartupAsyncFacade, StartupPrameter, DefaultEntity>(_components);
                 startupProcess.Callback += new AsyncTaskCallbackEventHandler<DefaultEntity>(startupProcess_Callback);
 
                 var dbDir = Path.Combine(Directory.GetParent(Application.ExecutablePath).FullName, "db");
@@ -166,7 +167,7 @@ namespace PicSum.Main.UIComponent
                     Directory.CreateDirectory(dbDir);
                 }
 
-                StartupPrameterEntity param = new StartupPrameterEntity();
+                StartupPrameter param = new StartupPrameter();
                 param.FileInfoDBFilePath = Path.Combine(dbDir, @"fileinfo.sqlite");
                 param.ThumbnailDBFilePath = Path.Combine(dbDir, @"thumbnail.sqlite");
 
