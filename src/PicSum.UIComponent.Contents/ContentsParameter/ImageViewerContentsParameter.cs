@@ -31,7 +31,6 @@ namespace PicSum.UIComponent.Contents.ContentsParameter
         }
 
         public string ContentsTitle { get; private set; }
-
         public Image ContentsIcon { get; private set; }
 
         public ImageViewerContentsParameter(
