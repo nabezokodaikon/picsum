@@ -299,7 +299,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
             throw new NotImplementedException("継承先から呼び出して下さい。");
         }
 
-        protected void SetFile(IList<FileShallowInfoEntity> srcFiles, string selectedFilePath, SortTypeID sortTypeID, bool isAscending)
+        protected void SetFiles(IList<FileShallowInfoEntity> srcFiles, string selectedFilePath, SortTypeID sortTypeID, bool isAscending)
         {
             if (srcFiles == null)
             {
@@ -347,7 +347,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
                 throw new ArgumentNullException("selectedFilePath");
             }
 
-            SetFile(srcFiles, selectedFilePath, SortTypeID.Default, false);
+            SetFiles(srcFiles, selectedFilePath, SortTypeID.Default, false);
         }
 
         protected IList<string> GetSelectedFiles()

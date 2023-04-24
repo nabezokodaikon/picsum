@@ -148,7 +148,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
 
         private void searchFileProcess_Callback(object sender, ListEntity<FileShallowInfoEntity> e)
         {
-            base.SetFile(e, _parameter.SelectedFilePath, SortTypeID.RgistrationDate, false);
+            base.SetFiles(e, _parameter.SelectedFilePath, SortTypeID.RgistrationDate, false);
         }
 
         #endregion

@@ -123,7 +123,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
 
         private void searchFileProcess_Callback(object sender, ListEntity<FileShallowInfoEntity> e)
         {
-            base.SetFile(e, _parameter.SelectedFilePath, PicSum.Core.Base.Conf.SortTypeID.RgistrationDate, false);
+            base.SetFiles(e, _parameter.SelectedFilePath, PicSum.Core.Base.Conf.SortTypeID.RgistrationDate, false);
 
             if (string.IsNullOrEmpty(_parameter.SelectedFilePath))
             {

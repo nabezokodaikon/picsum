@@ -233,18 +233,18 @@ namespace PicSum.UIComponent.Contents.FileListContents
             {
                 if (e.DirectoryState != null)
                 {
-                    base.SetFile(e.FileInfoList, _parameter.SelectedFilePath, e.DirectoryState.SortTypeID, e.DirectoryState.IsAscending);
+                    base.SetFiles(e.FileInfoList, _parameter.SelectedFilePath, e.DirectoryState.SortTypeID, e.DirectoryState.IsAscending);
                 }
                 else
                 {
-                    base.SetFile(e.FileInfoList, _parameter.SelectedFilePath, SortTypeID.FilePath, true);
+                    base.SetFiles(e.FileInfoList, _parameter.SelectedFilePath, SortTypeID.FilePath, true);
                 }
             }
             else
             {
                 if (e.DirectoryState != null)
                 {
-                    base.SetFile(e.FileInfoList, e.DirectoryState.SelectedFilePath, e.DirectoryState.SortTypeID, e.DirectoryState.IsAscending);
+                    base.SetFiles(e.FileInfoList, e.DirectoryState.SelectedFilePath, e.DirectoryState.SortTypeID, e.DirectoryState.IsAscending);
                     if (e.FileInfoList.Count < 1) 
                     {
                         base.OnSelectedFileChanged(new SelectedFileChangeEventArgs(e.DirectoryState.DirectoryPath));
@@ -252,7 +252,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
                 }
                 else
                 {
-                    base.SetFile(e.FileInfoList, string.Empty, SortTypeID.FilePath, true);
+                    base.SetFiles(e.FileInfoList, string.Empty, SortTypeID.FilePath, true);
                 }
             }
 
