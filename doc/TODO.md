@@ -24,3 +24,5 @@
 * [タイトルバーを消して独自に実装する3つの方法](https://tz-log.com/cs-custom-titlebar/)
 ## アプリケーションの公開
 * [Microsoft ストアへのアプリケーションの公開](https://sorceryforce.net/ja/tips/microsoft-store-release)
+## 不具合
+* 存在しないファイルを画像ビューアに表示したまま、別のウィンドウへドロップすると、おかしくなる。
