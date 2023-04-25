@@ -65,7 +65,8 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         {
             get
             {
-                return this.filePathList != null;
+                return this.filePathList != null && 
+                    this.filePathList.Count > 0;
             }
         }
 
@@ -547,8 +548,15 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         {
             this.filePathList = e.FilePathList;
 
-            this.MaximumIndex = this.filePathList.Count - 1;
-
+            if (this.filePathList.Count > 0)
+            {
+                this.MaximumIndex = this.filePathList.Count - 1;
+            }
+            else 
+            {
+                this.MaximumIndex = 0;
+            }
+            
             var selectedFilePath = this.parameter.SelectedFilePath != string.Empty ?
                 this.parameter.SelectedFilePath : e.SelectedFilePath;
             var index = this.filePathList.IndexOf(selectedFilePath);
