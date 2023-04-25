@@ -172,8 +172,19 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
         private void Parameter_GetImageFiles(object sender, GetImageFilesEventArgs e)
         {
             this.filePathList = e.FilePathList;
+
+            this.MaximumIndex = this.filePathList.Count - 1;
+
             var index = this.filePathList.IndexOf(e.SelectedFilePath);
-            this.FilePathListIndex = index < 0 ? 0 : index;
+            if (index < 0)
+            {
+                this.FilePathListIndex = 0;
+            }
+            else 
+            {
+                this.FilePathListIndex = index;
+            }
+
             this.SubInitializeComponent();
         }
 
@@ -255,8 +266,7 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
         #region プライベートメソッド
 
         private void SubInitializeComponent()
-        {
-            this.MaximumIndex = this.filePathList.Count - 1;
+        {            
             this.SetDisplayMode(ImageViewerContentsConfig.ImageDisplayMode);
             this.SetSizeMode(ImageViewerContentsConfig.ImageSizeMode);
             this.SetThumbnailPanelVisible();
