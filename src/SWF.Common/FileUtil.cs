@@ -55,7 +55,7 @@ namespace SWF.Common
             }
             else
             {
-                return (Path.GetDirectoryName(filePath) == null);
+                return Path.GetDirectoryName(filePath) == null;
             }
         }
 
@@ -77,7 +77,7 @@ namespace SWF.Common
             }
             else
             {
-                return (Directory.Exists(filePath));
+                return Directory.Exists(filePath);
             }
         }
 
@@ -609,20 +609,18 @@ namespace SWF.Common
                 return null;
             }
 
-            int result;
-
-            var pimgList = IntPtr.Zero;
-            result = WinApiMembers.SHGetImageList(
+            var result = WinApiMembers.SHGetImageList(
                 shil,
                 WinApiMembers.IID_IImageList,
-                out pimgList);
-            if (result != WinApiMembers.S_OK)
-            {
-                return null;
-            }
+                out IntPtr pimgList);
 
             try
             {
+                if (result != WinApiMembers.S_OK)
+                {
+                    return null;
+                }
+
                 var hicon = WinApiMembers.ImageList_GetIcon(pimgList, shinfo.iIcon, 0);
                 if (hicon.Equals(IntPtr.Zero))
                 {
@@ -631,8 +629,10 @@ namespace SWF.Common
 
                 try
                 {
-                    var icon = Icon.FromHandle(hicon).ToBitmap();
-                    return icon;
+                    using (var icon = Icon.FromHandle(hicon))
+                    {
+                        return icon.ToBitmap();
+                    }
                 }
                 finally
                 {
