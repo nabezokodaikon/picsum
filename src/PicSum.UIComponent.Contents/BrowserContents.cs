@@ -27,7 +27,7 @@ namespace PicSum.UIComponent.Contents
 
         #region インスタンス変数
 
-        private IContainer _processContainer = null;
+        private IContainer processContainer = null;
 
         #endregion
 
@@ -43,12 +43,12 @@ namespace PicSum.UIComponent.Contents
         {
             get
             {
-                if (_processContainer == null)
+                if (this.processContainer == null)
                 {
-                    _processContainer = new Container();
+                    this.processContainer = new Container();
                 }
 
-                return _processContainer;
+                return this.processContainer;
             }
         }
 
@@ -64,7 +64,7 @@ namespace PicSum.UIComponent.Contents
 
         public BrowserContents(IContentsParameter parameter)
         {
-            initializeComponent();
+            this.SubInitializeComponent();
             this.Parameter = parameter ?? throw new ArgumentNullException(nameof(parameter));
         }
 
@@ -80,10 +80,10 @@ namespace PicSum.UIComponent.Contents
         {
             if (disposing)
             {
-                if (_processContainer != null)
+                if (this.processContainer != null)
                 {
-                    _processContainer.Dispose();
-                    _processContainer = null;
+                    this.processContainer.Dispose();
+                    this.processContainer = null;
                 }
             }
 
@@ -92,36 +92,35 @@ namespace PicSum.UIComponent.Contents
 
         protected virtual void OnSelectedFileChanged(SelectedFileChangeEventArgs e)
         {
-            if (SelectedFileChanged != null)
+            if (this.SelectedFileChanged != null)
             {
-                SelectedFileChanged(this, e);
+                this.SelectedFileChanged(this, e);
             }
         }
 
         protected virtual void OnOpenContents(BrowserContentsEventArgs e)
         {
-            if (OpenContents != null)
+            if (this.OpenContents != null)
             {
-                OpenContents(this, e);
+                this.OpenContents(this, e);
             }
         }
 
         protected new virtual void OnMouseClick(MouseEventArgs e)
         {
-            if (this.MouseClick == null) return;
-            this.MouseClick(this, e);
+            if (this.MouseClick != null) 
+            {
+                this.MouseClick(this, e);
+            }
         }
 
-        protected virtual void OnBackgroundMouseClick(MouseEventArgs e)
-        {
-            throw new NotImplementedException("継承先のメソッドを使用してください。");
-        }
+        protected abstract void OnBackgroundMouseClick(MouseEventArgs e);
 
         #endregion
 
         #region プライベートメソッド
 
-        private void initializeComponent()
+        private void SubInitializeComponent()
         {
 
         }

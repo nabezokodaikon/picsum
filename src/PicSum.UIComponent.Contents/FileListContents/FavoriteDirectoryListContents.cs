@@ -13,7 +13,8 @@ using PicSum.Core.Base.Conf;
 
 namespace PicSum.UIComponent.Contents.FileListContents
 {
-    internal class FavoriteDirectoryListContents : FileListContentsBase
+    internal class FavoriteDirectoryListContents 
+        : FileListContentsBase
     {
         #region インスタンス変数
 
@@ -109,6 +110,16 @@ namespace PicSum.UIComponent.Contents.FileListContents
         }
 
         protected override Action GetImageFilesAction(ImageViewerContentsParameter paramter)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override void OnMovePreviewButtonClick(EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override void OnMoveNextButtonClick(EventArgs e)
         {
             throw new NotImplementedException();
         }

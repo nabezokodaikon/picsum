@@ -135,6 +135,16 @@ namespace PicSum.UIComponent.Contents.FileListContents
             };
         }
 
+        protected override void OnMovePreviewButtonClick(EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override void OnMoveNextButtonClick(EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
 
         #region プライベートメソッド

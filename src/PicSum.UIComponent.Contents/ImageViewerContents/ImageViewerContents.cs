@@ -7,7 +7,6 @@ using PicSum.Task.Result;
 using PicSum.UIComponent.Common;
 using PicSum.UIComponent.Contents.Conf;
 using PicSum.UIComponent.Contents.ContentsParameter;
-using PicSum.UIComponent.Contents.Properties;
 using SWF.Common;
 using SWF.UIComponent.ImagePanel;
 using System;
@@ -23,7 +22,8 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
     /// <summary>
     /// 画像ビューアコンテンツ
     /// </summary>
-    public partial class ImageViewerContents : BrowserContents
+    public partial class ImageViewerContents 
+        : BrowserContents
     {
         #region 定数・列挙
 
@@ -233,6 +233,11 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
                 e.Graphics.DrawImage(this.Icon, e.IconRectangle);
                 DrawTextUtil.DrawText(e.Graphics, this.Title, e.Font, e.TextRectangle, e.TitleColor, e.TitleFormatFlags, e.TextStyle);
             }
+        }
+
+        protected override void OnBackgroundMouseClick(MouseEventArgs e)
+        {
+            // 処理無し。
         }
 
         #endregion

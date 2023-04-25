@@ -1,20 +1,21 @@
-﻿using System;
-using System.Collections;
+﻿using PicSum.Core.Base.Conf;
+using PicSum.Core.Task.AsyncTask;
+using PicSum.Task.AsyncFacade;
+using PicSum.Task.Entity;
+using PicSum.Task.Paramter;
+using PicSum.UIComponent.Common;
+using PicSum.UIComponent.Contents.Conf;
+using PicSum.UIComponent.Contents.ContentsParameter;
+using SWF.Common;
+using SWF.UIComponent.FlowList;
+using SWF.UIComponent.TabOperation;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using PicSum.Core.Base.Conf;
-using PicSum.Core.Task.AsyncTask;
-using PicSum.Task.AsyncFacade;
-using PicSum.Task.Entity;
-using PicSum.Task.Paramter;
-using PicSum.UIComponent.Contents.Conf;
-using PicSum.UIComponent.Contents.ContentsParameter;
-using SWF.Common;
-using SWF.UIComponent.TabOperation;
 
 namespace PicSum.UIComponent.Contents.FileListContents
 {
@@ -33,13 +34,13 @@ namespace PicSum.UIComponent.Contents.FileListContents
 
         #region インスタンス変数
 
-        private Dictionary<string, FileEntity> _masterFileDictionary = null;
-        private List<string> _filterFilePathList = null;
-        private readonly SolidBrush _selectedTextBrush = new SolidBrush(Color.White);
-        private readonly SortInfo _sortInfo = new SortInfo();
-        private TwoWayProcess<GetThumbnailsAsyncFacade, GetThumbnailParameter, ThumbnailImageEntity> _getThumbnailsProcess = null;
-        private OneWayProcess<AddKeepAsyncFacade, ListEntity<KeepFileEntity>> _addKeepProcess = null;
-        private OneWayProcess<ExportFileAsyncFacade, ExportFileParameter> _exportFileProcess = null;
+        private Dictionary<string, FileEntity> masterFileDictionary = null;
+        private List<string> filterFilePathList = null;
+        private readonly SolidBrush selectedTextBrush = new SolidBrush(Color.White);
+        private readonly SortInfo sortInfo = new SortInfo();
+        private TwoWayProcess<GetThumbnailsAsyncFacade, GetThumbnailParameter, ThumbnailImageEntity> getThumbnailsProcess = null;
+        private OneWayProcess<AddKeepAsyncFacade, ListEntity<KeepFileEntity>> addKeepProcess = null;
+        private OneWayProcess<ExportFileAsyncFacade, ExportFileParameter> exportFileProcess = null;
 
         #endregion
 
@@ -55,7 +56,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
         {
             get
             {
-                return _sortInfo.IsAscending(_sortInfo.ActiveSortType);
+                return this.sortInfo.IsAscending(this.sortInfo.ActiveSortType);
             }
         }
 
@@ -63,7 +64,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
         {
             get
             {
-                return _sortInfo.ActiveSortType;
+                return this.sortInfo.ActiveSortType;
             }
         }
 
@@ -71,11 +72,11 @@ namespace PicSum.UIComponent.Contents.FileListContents
         {
             get
             {
-                return fileContextMenu.IsFileActiveTabOpenMenuItemVisible;
+                return this.fileContextMenu.IsFileActiveTabOpenMenuItemVisible;
             }
             set
             {
-                fileContextMenu.IsFileActiveTabOpenMenuItemVisible = value;
+                this.fileContextMenu.IsFileActiveTabOpenMenuItemVisible = value;
             }
         }
 
@@ -83,11 +84,11 @@ namespace PicSum.UIComponent.Contents.FileListContents
         {
             get
             {
-                return fileContextMenu.IsDirectoryActiveTabOpenMenuItemVisible;
+                return this.fileContextMenu.IsDirectoryActiveTabOpenMenuItemVisible;
             }
             set
             {
-                fileContextMenu.IsDirectoryActiveTabOpenMenuItemVisible = value;
+                this.fileContextMenu.IsDirectoryActiveTabOpenMenuItemVisible = value;
             }
         }
 
@@ -95,11 +96,11 @@ namespace PicSum.UIComponent.Contents.FileListContents
         {
             get
             {
-                return fileContextMenu.IsAddKeepMenuItemVisible;
+                return this.fileContextMenu.IsAddKeepMenuItemVisible;
             }
             set
             {
-                fileContextMenu.IsAddKeepMenuItemVisible = value;
+                this.fileContextMenu.IsAddKeepMenuItemVisible = value;
             }
         }
 
@@ -107,11 +108,11 @@ namespace PicSum.UIComponent.Contents.FileListContents
         {
             get
             {
-                return fileContextMenu.IsRemoveFromListMenuItemVisible;
+                return this.fileContextMenu.IsRemoveFromListMenuItemVisible;
             }
             set
             {
-                fileContextMenu.IsRemoveFromListMenuItemVisible = value;
+                this.fileContextMenu.IsRemoveFromListMenuItemVisible = value;
             }
         }
 
@@ -119,12 +120,12 @@ namespace PicSum.UIComponent.Contents.FileListContents
         {
             get
             {
-                return movePreviewToolStripButton.Visible;
+                return this.movePreviewToolStripButton.Visible;
             }
             set
             {
-                movePreviewToolStripButton.Visible = value;
-                moveNextToolStripButton.Visible = value;
+                this.movePreviewToolStripButton.Visible = value;
+                this.moveNextToolStripButton.Visible = value;
             }
         }
 
@@ -132,108 +133,108 @@ namespace PicSum.UIComponent.Contents.FileListContents
 
         #region プライベートプロパティ
 
-        private bool isShowDirectory
+        private bool IsShowDirectory
         {
             get
             {
-                return showDirectoryToolStripMenuItem.Checked;
+                return this.showDirectoryToolStripMenuItem.Checked;
             }
             set
             {
-                showDirectoryToolStripMenuItem.Checked = value;
+                this.showDirectoryToolStripMenuItem.Checked = value;
             }
         }
 
-        private bool isShowImageFile
+        private bool IsShowImageFile
         {
             get
             {
-                return showImageFileToolStripMenuItem.Checked;
+                return this.showImageFileToolStripMenuItem.Checked;
             }
             set
             {
-                showImageFileToolStripMenuItem.Checked = value;
+                this.showImageFileToolStripMenuItem.Checked = value;
             }
         }
 
-        private bool isShowOtherFile
+        private bool IsShowOtherFile
         {
             get
             {
-                return showOtherFileToolStripMenuItem.Checked;
+                return this.showOtherFileToolStripMenuItem.Checked;
             }
             set
             {
-                showOtherFileToolStripMenuItem.Checked = value;
+                this.showOtherFileToolStripMenuItem.Checked = value;
             }
         }
 
-        private bool isShowFileName
+        private bool IsShowFileName
         {
             get
             {
-                return showFileNameToolStripMenuItem.Checked;
+                return this.showFileNameToolStripMenuItem.Checked;
             }
             set
             {
-                showFileNameToolStripMenuItem.Checked = value;
+                this.showFileNameToolStripMenuItem.Checked = value;
             }
         }
 
-        private int thumbnailSize
+        private int ThumbnailSize
         {
             get
             {
-                return thumbnailSizeToolStripSlider.Value;
+                return this.thumbnailSizeToolStripSlider.Value;
             }
             set
             {
-                thumbnailSizeToolStripSlider.Value = value;
+                this.thumbnailSizeToolStripSlider.Value = value;
             }
         }
 
-        private TwoWayProcess<GetThumbnailsAsyncFacade, GetThumbnailParameter, ThumbnailImageEntity> getThumbnailsProcess
+        private TwoWayProcess<GetThumbnailsAsyncFacade, GetThumbnailParameter, ThumbnailImageEntity> GetThumbnailsProcess
         {
             get
             {
-                if (_getThumbnailsProcess == null)
+                if (this.getThumbnailsProcess == null)
                 {
-                    _getThumbnailsProcess = TaskManager.CreateTwoWayProcess<GetThumbnailsAsyncFacade, GetThumbnailParameter, ThumbnailImageEntity>(ProcessContainer);
-                    _getThumbnailsProcess.Callback += new AsyncTaskCallbackEventHandler<ThumbnailImageEntity>(getThumbnailsProcess_Callback);
+                    this.getThumbnailsProcess = TaskManager.CreateTwoWayProcess<GetThumbnailsAsyncFacade, GetThumbnailParameter, ThumbnailImageEntity>(this.ProcessContainer);
+                    this.getThumbnailsProcess.Callback += new AsyncTaskCallbackEventHandler<ThumbnailImageEntity>(this.GetThumbnailsProcess_Callback);
 
                 }
 
-                return _getThumbnailsProcess;
+                return this.getThumbnailsProcess;
             }
         }
 
-        private OneWayProcess<AddKeepAsyncFacade, ListEntity<KeepFileEntity>> addKeepProcess
+        private OneWayProcess<AddKeepAsyncFacade, ListEntity<KeepFileEntity>> AddKeepProcess
         {
             get
             {
-                if (_addKeepProcess == null)
+                if (this.addKeepProcess == null)
                 {
-                    _addKeepProcess = TaskManager.CreateOneWayProcess<AddKeepAsyncFacade, ListEntity<KeepFileEntity>>(ProcessContainer);
+                    this.addKeepProcess = TaskManager.CreateOneWayProcess<AddKeepAsyncFacade, ListEntity<KeepFileEntity>>(this.ProcessContainer);
                 }
 
-                return _addKeepProcess;
+                return this.addKeepProcess;
             }
         }
 
-        private OneWayProcess<ExportFileAsyncFacade, ExportFileParameter> exportFileProcess
+        private OneWayProcess<ExportFileAsyncFacade, ExportFileParameter> ExportFileProcess
         {
             get
             {
-                if (_exportFileProcess == null)
+                if (this.exportFileProcess == null)
                 {
-                    _exportFileProcess = TaskManager.CreateOneWayProcess<ExportFileAsyncFacade, ExportFileParameter>(ProcessContainer);
+                    this.exportFileProcess = TaskManager.CreateOneWayProcess<ExportFileAsyncFacade, ExportFileParameter>(this.ProcessContainer);
                 }
 
-                return _exportFileProcess;
+                return this.exportFileProcess;
             }
         }
 
-        private int itemTextHeight
+        private int ItemTextHeight
         {
             get
             {
@@ -248,8 +249,8 @@ namespace PicSum.UIComponent.Contents.FileListContents
         public FileListContentsBase(IContentsParameter param)
             : base(param)
         {
-            InitializeComponent();
-            initializeComponent();
+            this.InitializeComponent();
+            this.SubInitializeComponent();
         }
 
         #endregion
@@ -267,45 +268,36 @@ namespace PicSum.UIComponent.Contents.FileListContents
 
         protected override void OnInvalidated(InvalidateEventArgs e)
         {
-            getThumbnailsProcess.Cancel();
+            this.GetThumbnailsProcess.Cancel();
             base.OnInvalidated(e);
         }
 
         protected override void OnMouseWheel(MouseEventArgs e)
         {
-            flowList.MouseWheelProcess(e);
+            this.flowList.MouseWheelProcess(e);
             base.OnMouseWheel(e);
         }
 
-        protected virtual void OnRemoveFile(IList<string> filePathList)
-        {
-            throw new NotImplementedException("継承先から呼び出して下さい。");
-        }
+        protected abstract void OnRemoveFile(IList<string> filePathList);
 
-        protected virtual void OnMovePreviewButtonClick(EventArgs e)
-        {
-            throw new NotImplementedException("継承先から呼び出して下さい。");
-        }
+        protected abstract void OnMovePreviewButtonClick(EventArgs e);
 
-        protected virtual void OnMoveNextButtonClick(EventArgs e)
-        {
-            throw new NotImplementedException("継承先から呼び出して下さい。");
-        }
+        protected abstract void OnMoveNextButtonClick(EventArgs e);
 
         protected void SetFiles(IList<FileShallowInfoEntity> srcFiles, string selectedFilePath, SortTypeID sortTypeID, bool isAscending)
         {
             if (srcFiles == null)
             {
-                throw new ArgumentNullException("srcFiles");
+                throw new ArgumentNullException(nameof(srcFiles));
             }
 
             if (selectedFilePath == null)
             {
-                throw new ArgumentNullException("selectedFilePath");
+                throw new ArgumentNullException(nameof(selectedFilePath));
             }
 
-            _masterFileDictionary = new Dictionary<string, FileEntity>();
-            foreach (FileShallowInfoEntity srcFile in srcFiles)
+            this.masterFileDictionary = new Dictionary<string, FileEntity>();
+            foreach (var srcFile in srcFiles)
             {
                 FileEntity destFile = new FileEntity();
                 destFile.FilePath = srcFile.FilePath;
@@ -316,14 +308,14 @@ namespace PicSum.UIComponent.Contents.FileListContents
                 destFile.Icon = srcFile.LargeIcon;
                 destFile.IsFile = srcFile.IsFile;
                 destFile.IsImageFile = srcFile.IsImageFile;
-                _masterFileDictionary.Add(destFile.FilePath, destFile);
+                this.masterFileDictionary.Add(destFile.FilePath, destFile);
             }
 
             this.SelectedFilePath = selectedFilePath;
-            _sortInfo.SetSortType(sortTypeID, isAscending);
+            this.sortInfo.SetSortType(sortTypeID, isAscending);
 
-            setSort();
-            setFilter();
+            this.SetSort();
+            this.SetFilter();
 
             this.Focus();
         }
@@ -332,26 +324,26 @@ namespace PicSum.UIComponent.Contents.FileListContents
         {
             if (srcFiles == null)
             {
-                throw new ArgumentNullException("srcFiles");
+                throw new ArgumentNullException(nameof(srcFiles));
             }
 
             if (selectedFilePath == null)
             {
-                throw new ArgumentNullException("selectedFilePath");
+                throw new ArgumentNullException(nameof(selectedFilePath));
             }
 
-            SetFiles(srcFiles, selectedFilePath, SortTypeID.Default, false);
+            this.SetFiles(srcFiles, selectedFilePath, SortTypeID.Default, false);
         }
 
         protected IList<string> GetSelectedFiles()
         {
-            List<string> filePathList = new List<string>();
-            IList<int> selectedIndexs = flowList.GetSelectedIndexs();
+            var filePathList = new List<string>();
+            var selectedIndexs = flowList.GetSelectedIndexs();
             if (selectedIndexs.Count > 0)
             {
-                foreach (int index in selectedIndexs)
+                foreach (var index in selectedIndexs)
                 {
-                    filePathList.Add(_filterFilePathList[index]);
+                    filePathList.Add(this.filterFilePathList[index]);
                 }
             }
 
@@ -362,22 +354,22 @@ namespace PicSum.UIComponent.Contents.FileListContents
         {
             if (filePathList == null)
             {
-                throw new ArgumentNullException("filePathList");
+                throw new ArgumentNullException(nameof(filePathList));
             }
 
             if (filePathList.Count == 0)
             {
-                throw new ArgumentException("0件のファイルリストはセットできません。", "filePathList");
+                throw new ArgumentException("0件のファイルリストはセットできません。", nameof(filePathList));
             }
 
-            fileContextMenu.SetFile(filePathList);
+            this.fileContextMenu.SetFile(filePathList);
         }
 
         protected void SetContextMenuFiles(string filePath)
         {
             if (filePath == null)
             {
-                throw new ArgumentNullException("filePath");
+                throw new ArgumentNullException(nameof(filePath));
             }
 
             SetContextMenuFiles(new List<string>() { filePath });
@@ -387,34 +379,34 @@ namespace PicSum.UIComponent.Contents.FileListContents
         {
             if (filePathList == null)
             {
-                throw new ArgumentNullException("filePathList");
+                throw new ArgumentNullException(nameof(filePathList));
             }
 
             if (filePathList.Count == 0)
             {
-                throw new ArgumentException("削除するファイルパスが0件です。", "filePath");
+                throw new ArgumentException("削除するファイルパスが0件です。", nameof(filePathList));
             }
 
-            List<int> _indexList = new List<int>();
-            foreach (string filePath in filePathList)
+            var indexList = new List<int>();
+            foreach (var filePath in filePathList)
             {
-                _masterFileDictionary.Remove(filePath);
-                _indexList.Add(_filterFilePathList.IndexOf(filePath));
+                this.masterFileDictionary.Remove(filePath);
+                indexList.Add(this.filterFilePathList.IndexOf(filePath));
             }
 
-            if (_indexList.Count > 0)
+            if (indexList.Count > 0)
             {
-                int maximumIndex = _indexList.Max();
-                if (maximumIndex + 1 < _filterFilePathList.Count)
+                var maximumIndex = indexList.Max();
+                if (maximumIndex + 1 < this.filterFilePathList.Count)
                 {
-                    this.SelectedFilePath = _filterFilePathList[maximumIndex + 1];
+                    this.SelectedFilePath = this.filterFilePathList[maximumIndex + 1];
                 }
                 else
                 {
-                    int minimumIndex = _indexList.Min();
+                    var minimumIndex = indexList.Min();
                     if (minimumIndex - 1 > -1)
                     {
-                        this.SelectedFilePath = _filterFilePathList[minimumIndex - 1];
+                        this.SelectedFilePath = this.filterFilePathList[minimumIndex - 1];
                     }
                     else
                     {
@@ -427,7 +419,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
                 this.SelectedFilePath = string.Empty;
             }
 
-            setFilter();
+            this.SetFilter();
         }
 
         protected abstract Action GetImageFilesAction(ImageViewerContentsParameter paramter);
@@ -436,78 +428,78 @@ namespace PicSum.UIComponent.Contents.FileListContents
 
         #region プライベートメソッド
 
-        private void initializeComponent()
+        private void SubInitializeComponent()
         {
             this.Font = new Font("Yu Gothic UI", 10F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(128)));
-            isShowFileName = FileListContentsConfig.IsShowFileName;
-            isShowDirectory = FileListContentsConfig.IsShowDirectory;
-            isShowImageFile = FileListContentsConfig.IsShowImageFile;
-            isShowOtherFile = FileListContentsConfig.IsShowOtherFile;
-            thumbnailSize = FileListContentsConfig.ThumbnailSize;
-            setFlowListItemSize();
+            this.IsShowFileName = FileListContentsConfig.IsShowFileName;
+            this.IsShowDirectory = FileListContentsConfig.IsShowDirectory;
+            this.IsShowImageFile = FileListContentsConfig.IsShowImageFile;
+            this.IsShowOtherFile = FileListContentsConfig.IsShowOtherFile;
+            ThumbnailSize = FileListContentsConfig.ThumbnailSize;
+            this.SetFlowListItemSize();
         }
 
-        private ToolStripButton getSortToolStripButton(SortTypeID sortType)
+        private ToolStripButton GetSortToolStripButton(SortTypeID sortType)
         {
             switch (sortType)
             {
                 case SortTypeID.FileName:
-                    return sortFileNameToolStripButton;
+                    return this.sortFileNameToolStripButton;
                 case SortTypeID.FilePath:
-                    return sortFilePathToolStripButton;
+                    return this.sortFilePathToolStripButton;
                 case SortTypeID.UpdateDate:
-                    return sortFileUpdateDateToolStripButton;
+                    return this.sortFileUpdateDateToolStripButton;
                 case SortTypeID.CreateDate:
-                    return sortFileCreateDateToolStripButton;
+                    return this.sortFileCreateDateToolStripButton;
                 case SortTypeID.RgistrationDate:
-                    return sortFileRgistrationDateToolStripButton;
+                    return this.sortFileRgistrationDateToolStripButton;
                 default:
                     return null;
             }
         }
 
-        private void setSort()
+        private void SetSort()
         {
-            sortFileNameToolStripButton.Image = null;
-            sortFilePathToolStripButton.Image = null;
-            sortFileUpdateDateToolStripButton.Image = null;
-            sortFileCreateDateToolStripButton.Image = null;
-            sortFileRgistrationDateToolStripButton.Image = null;
+            this.sortFileNameToolStripButton.Image = null;
+            this.sortFilePathToolStripButton.Image = null;
+            this.sortFileUpdateDateToolStripButton.Image = null;
+            this.sortFileCreateDateToolStripButton.Image = null;
+            this.sortFileRgistrationDateToolStripButton.Image = null;
 
-            ToolStripButton sortButton = getSortToolStripButton(_sortInfo.ActiveSortType);
+            var sortButton = this.GetSortToolStripButton(this.sortInfo.ActiveSortType);
             if (sortButton != null)
             {
-                bool isAscending = _sortInfo.IsAscending(_sortInfo.ActiveSortType);
-                sortButton.Image = _sortInfo.GetSortDirectionImage(isAscending);
+                var isAscending = this.sortInfo.IsAscending(this.sortInfo.ActiveSortType);
+                sortButton.Image = this.sortInfo.GetSortDirectionImage(isAscending);
             }
         }
 
-        private void setFilter()
+        private void SetFilter()
         {
-            FileListContentsConfig.IsShowDirectory = isShowDirectory;
-            FileListContentsConfig.IsShowImageFile = isShowImageFile;
-            FileListContentsConfig.IsShowOtherFile = isShowOtherFile;
+            FileListContentsConfig.IsShowDirectory = this.IsShowDirectory;
+            FileListContentsConfig.IsShowImageFile = this.IsShowImageFile;
+            FileListContentsConfig.IsShowOtherFile = this.IsShowOtherFile;
 
-            if (_masterFileDictionary == null)
+            if (this.masterFileDictionary == null)
             {
                 return;
             }
 
-            List<FileEntity> filterList = new List<FileEntity>();
-            foreach (FileEntity file in _masterFileDictionary.Values)
+            var filterList = new List<FileEntity>();
+            foreach (var file in this.masterFileDictionary.Values)
             {
                 if (file.IsFile)
                 {
                     if (file.IsImageFile)
                     {
-                        if (isShowImageFile)
+                        if (this.IsShowImageFile)
                         {
                             filterList.Add(file);
                         }
                     }
                     else
                     {
-                        if (isShowOtherFile)
+                        if (this.IsShowOtherFile)
                         {
                             filterList.Add(file);
                         }
@@ -515,15 +507,15 @@ namespace PicSum.UIComponent.Contents.FileListContents
                 }
                 else
                 {
-                    if (isShowDirectory)
+                    if (this.IsShowDirectory)
                     {
                         filterList.Add(file);
                     }
                 }
             }
 
-            bool isAscending = _sortInfo.IsAscending(_sortInfo.ActiveSortType);
-            switch (_sortInfo.ActiveSortType)
+            var isAscending = this.sortInfo.IsAscending(this.sortInfo.ActiveSortType);
+            switch (this.sortInfo.ActiveSortType)
             {
                 case SortTypeID.FileName:
                     filterList.Sort((x, y) =>
@@ -594,60 +586,60 @@ namespace PicSum.UIComponent.Contents.FileListContents
                     break;
             }
 
-            flowList.BeginUpdate();
+            this.flowList.BeginUpdate();
 
             try
             {
-                _filterFilePathList = new List<string>(filterList.ConvertAll(f => f.FilePath));
-                flowList.ItemCount = filterList.Count;
-                FileEntity selectedFile = filterList.FirstOrDefault(f => f.FilePath.Equals(this.SelectedFilePath, StringComparison.Ordinal));
+                this.filterFilePathList = new List<string>(filterList.ConvertAll(f => f.FilePath));
+                this.flowList.ItemCount = filterList.Count;
+                var selectedFile = filterList.FirstOrDefault(f => f.FilePath.Equals(this.SelectedFilePath, StringComparison.Ordinal));
                 if (selectedFile != null)
                 {
-                    flowList.SelectItem(filterList.IndexOf(selectedFile));
+                    this.flowList.SelectItem(filterList.IndexOf(selectedFile));
                 }
-                else if (flowList.ItemCount > 0)
+                else if (this.flowList.ItemCount > 0)
                 {
-                    flowList.SelectItem(0);
+                    this.flowList.SelectItem(0);
                 }
             }
             finally
             {
-                flowList.EndUpdate();
+                this.flowList.EndUpdate();
             }
         }
 
-        private void changeFileNameVisible()
+        private void ChangeFileNameVisible()
         {
-            FileListContentsConfig.IsShowFileName = isShowFileName;
-            flowList.BeginUpdate();
+            FileListContentsConfig.IsShowFileName = this.IsShowFileName;
+            this.flowList.BeginUpdate();
             try
             {
-                setFlowListItemSize();
+                this.SetFlowListItemSize();
             }
             finally
             {
-                flowList.EndUpdate();
+                this.flowList.EndUpdate();
             }
         }
 
-        private void setFlowListItemSize()
+        private void SetFlowListItemSize()
         {
-            if (isShowFileName)
+            if (this.IsShowFileName)
             {
-                flowList.SetItemSize(thumbnailSize, thumbnailSize + itemTextHeight);
+                this.flowList.SetItemSize(this.ThumbnailSize, this.ThumbnailSize + this.ItemTextHeight);
             }
             else
             {
-                flowList.SetItemSize(thumbnailSize, thumbnailSize);
+                this.flowList.SetItemSize(this.ThumbnailSize, this.ThumbnailSize);
             }
         }
 
-        private IList<string> getImageFiles()
+        private IList<string> GetImageFiles()
         {
-            return this._filterFilePathList
+            return this.filterFilePathList
                 .Where(item =>
                 {
-                    if (this._masterFileDictionary.TryGetValue(item, out var file))
+                    if (this.masterFileDictionary.TryGetValue(item, out var file))
                     {
                         return file.IsImageFile;
                     }
@@ -659,42 +651,42 @@ namespace PicSum.UIComponent.Contents.FileListContents
                 .ToArray();
         }
 
-        private void addKeep(IList<KeepFileEntity> filePathList)
+        private void AddKeep(IList<KeepFileEntity> filePathList)
         {
-            ListEntity<KeepFileEntity> param = new ListEntity<KeepFileEntity>(filePathList);
-            addKeepProcess.Execute(this, param);
+            var param = new ListEntity<KeepFileEntity>(filePathList);
+            this.addKeepProcess.Execute(this, param);
         }
 
-        private void drawItem(SWF.UIComponent.FlowList.DrawItemEventArgs e)
+        private void DrawItem(SWF.UIComponent.FlowList.DrawItemEventArgs e)
         {
             if (e.IsSelected)
             {
-                e.Graphics.FillRectangle(flowList.SelectedItemBrush, e.ItemRectangle);
+                e.Graphics.FillRectangle(this.flowList.SelectedItemBrush, e.ItemRectangle);
             }
 
             if (e.IsFocus)
             {
-                e.Graphics.FillRectangle(flowList.FocusItemBrush, e.ItemRectangle);
+                e.Graphics.FillRectangle(this.flowList.FocusItemBrush, e.ItemRectangle);
             }
 
             if (e.IsMousePoint)
             {
-                e.Graphics.FillRectangle(flowList.MousePointItemBrush, e.ItemRectangle);
+                e.Graphics.FillRectangle(this.flowList.MousePointItemBrush, e.ItemRectangle);
             }
 
-            string filePath = _filterFilePathList[e.ItemIndex];
-            FileEntity item = _masterFileDictionary[filePath];
+            var filePath = this.filterFilePathList[e.ItemIndex];
+            var item = this.masterFileDictionary[filePath];
 
             if (item.ThumbnailImage == null)
             {
-                ThumbnailUtil.DrawIcon(e.Graphics, item.Icon, getIconRectangle(e));
-                e.Graphics.DrawString(item.FileName, this.Font, getTextBrush(e), getTextRectangle(e), flowList.ItemTextFormat);
+                ThumbnailUtil.DrawIcon(e.Graphics, item.Icon, this.GetIconRectangle(e));
+                e.Graphics.DrawString(item.FileName, this.Font, this.GetTextBrush(e), this.GetTextRectangle(e), this.flowList.ItemTextFormat);
             }
             else
             {
                 if (item.IsFile)
                 {
-                    Rectangle thumbRect = getThumbnailRectangle(e);
+                    var thumbRect = this.GetThumbnailRectangle(e);
                     if (item.ThumbnailWidth == thumbRect.Width && item.ThumbnailHeight == thumbRect.Height)
                     {
                         ThumbnailUtil.DrawFileThumbnail(e.Graphics, item.ThumbnailImage, thumbRect);
@@ -706,7 +698,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
                 }
                 else
                 {
-                    Rectangle thumbRect = getThumbnailRectangle(e);
+                    var thumbRect = GetThumbnailRectangle(e);
                     if (item.ThumbnailWidth == thumbRect.Width && item.ThumbnailHeight == thumbRect.Height)
                     {
                         ThumbnailUtil.DrawDirectoryThumbnail(e.Graphics, item.ThumbnailImage, thumbRect, item.Icon);
@@ -717,29 +709,29 @@ namespace PicSum.UIComponent.Contents.FileListContents
                     }
                 }
 
-                if (isShowFileName)
+                if (this.IsShowFileName)
                 {
-                    e.Graphics.DrawString(item.FileName, this.Font, getTextBrush(e), getTextRectangle(e), flowList.ItemTextFormat);
+                    e.Graphics.DrawString(item.FileName, this.Font, this.GetTextBrush(e), this.GetTextRectangle(e), this.flowList.ItemTextFormat);
                 }
             }
         }
 
-        private Rectangle getIconRectangle(SWF.UIComponent.FlowList.DrawItemEventArgs e)
+        private Rectangle GetIconRectangle(SWF.UIComponent.FlowList.DrawItemEventArgs e)
         {
             return new Rectangle(e.ItemRectangle.X,
                                  e.ItemRectangle.Y,
                                  e.ItemRectangle.Width,
-                                 e.ItemRectangle.Height - itemTextHeight);
+                                 e.ItemRectangle.Height - ItemTextHeight);
         }
 
-        private Rectangle getThumbnailRectangle(SWF.UIComponent.FlowList.DrawItemEventArgs e)
+        private Rectangle GetThumbnailRectangle(SWF.UIComponent.FlowList.DrawItemEventArgs e)
         {
-            if (isShowFileName)
+            if (this.IsShowFileName)
             {
                 return new Rectangle(e.ItemRectangle.X,
                                      e.ItemRectangle.Y,
                                      e.ItemRectangle.Width,
-                                     e.ItemRectangle.Height - itemTextHeight);
+                                     e.ItemRectangle.Height - ItemTextHeight);
             }
             else
             {
@@ -747,23 +739,23 @@ namespace PicSum.UIComponent.Contents.FileListContents
             }
         }
 
-        private Rectangle getTextRectangle(SWF.UIComponent.FlowList.DrawItemEventArgs e)
+        private Rectangle GetTextRectangle(SWF.UIComponent.FlowList.DrawItemEventArgs e)
         {
             return new Rectangle(e.ItemRectangle.X,
-                                 e.ItemRectangle.Bottom - itemTextHeight,
+                                 e.ItemRectangle.Bottom - ItemTextHeight,
                                  e.ItemRectangle.Width,
-                                 itemTextHeight);
+                                 this.ItemTextHeight);
         }
 
-        private SolidBrush getTextBrush(SWF.UIComponent.FlowList.DrawItemEventArgs e)
+        private SolidBrush GetTextBrush(SWF.UIComponent.FlowList.DrawItemEventArgs e)
         {
             if (e.IsSelected)
             {
-                return _selectedTextBrush;
+                return this.selectedTextBrush;
             }
             else
             {
-                return flowList.ItemTextBrush;
+                return this.flowList.ItemTextBrush;
             }
         }
 
@@ -771,14 +763,14 @@ namespace PicSum.UIComponent.Contents.FileListContents
 
         #region プロセスイベント
 
-        private void getThumbnailsProcess_Callback(object sender, ThumbnailImageEntity e)
+        private void GetThumbnailsProcess_Callback(object sender, ThumbnailImageEntity e)
         {
-            if (_masterFileDictionary == null || !_masterFileDictionary.ContainsKey(e.FilePath))
+            if (this.masterFileDictionary == null || !this.masterFileDictionary.ContainsKey(e.FilePath))
             {
                 return;
             }
 
-            FileEntity file = _masterFileDictionary[e.FilePath];
+            var file = this.masterFileDictionary[e.FilePath];
 
             if (file.ThumbnailImage != null)
             {
@@ -810,12 +802,12 @@ namespace PicSum.UIComponent.Contents.FileListContents
                 file.UpdateDate = e.FileUpdatedate;
             }
 
-            if (_filterFilePathList != null)
+            if (this.filterFilePathList != null)
             {
-                int index = _filterFilePathList.IndexOf(file.FilePath);
+                var index = this.filterFilePathList.IndexOf(file.FilePath);
                 if (index > -1)
                 {
-                    flowList.InvalidateFromItemIndex(index);
+                    this.flowList.InvalidateFromItemIndex(index);
                 }
             }
         }
@@ -824,171 +816,172 @@ namespace PicSum.UIComponent.Contents.FileListContents
 
         #region ツールバーイベント
 
-        private void showDirectoryToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ShowDirectoryToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            isShowDirectory = !isShowDirectory;
-            setFilter();
+            this.IsShowDirectory = !this.IsShowDirectory;
+            this.SetFilter();
         }
 
-        private void showImageFileToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ShowImageFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            isShowImageFile = !isShowImageFile;
-            setFilter();
+            this.IsShowImageFile = !this.IsShowImageFile;
+            this.SetFilter();
         }
 
-        private void showOtherFileToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ShowOtherFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            isShowOtherFile = !isShowOtherFile;
-            setFilter();
+            this.IsShowOtherFile = !this.IsShowOtherFile;
+            this.SetFilter();
         }
 
-        private void showFileNameToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ShowFileNameToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            isShowFileName = !isShowFileName;
-            changeFileNameVisible();
+            this.IsShowFileName = !this.IsShowFileName;
+            this.ChangeFileNameVisible();
         }
 
-        private void sortFileNameToolStripButton_Click(object sender, EventArgs e)
+        private void SortFileNameToolStripButton_Click(object sender, EventArgs e)
         {
-            _sortInfo.ChangeSortDirection(SortTypeID.FileName);
-            _sortInfo.ActiveSortType = SortTypeID.FileName;
-            setSort();
-            setFilter();
+            this.sortInfo.ChangeSortDirection(SortTypeID.FileName);
+            this.sortInfo.ActiveSortType = SortTypeID.FileName;
+            this.SetSort();
+            this.SetFilter();
         }
 
-        private void sortFilePathToolStripButton_Click(object sender, EventArgs e)
+        private void SortFilePathToolStripButton_Click(object sender, EventArgs e)
         {
-            _sortInfo.ChangeSortDirection(SortTypeID.FilePath);
-            _sortInfo.ActiveSortType = SortTypeID.FilePath;
-            setSort();
-            setFilter();
+            this.sortInfo.ChangeSortDirection(SortTypeID.FilePath);
+            this.sortInfo.ActiveSortType = SortTypeID.FilePath;
+            this.SetSort();
+            this.SetFilter();
         }
 
-        private void sortFileUpdateDateToolStripButton_Click(object sender, EventArgs e)
+        private void SortFileUpdateDateToolStripButton_Click(object sender, EventArgs e)
         {
-            _sortInfo.ChangeSortDirection(SortTypeID.UpdateDate);
-            _sortInfo.ActiveSortType = SortTypeID.UpdateDate;
-            setSort();
-            setFilter();
+            this.sortInfo.ChangeSortDirection(SortTypeID.UpdateDate);
+            this.sortInfo.ActiveSortType = SortTypeID.UpdateDate;
+            this.SetSort();
+            this.SetFilter();
         }
 
-        private void sortFileCreateDateToolStripButton_Click(object sender, EventArgs e)
+        private void SortFileCreateDateToolStripButton_Click(object sender, EventArgs e)
         {
-            _sortInfo.ChangeSortDirection(SortTypeID.CreateDate);
-            _sortInfo.ActiveSortType = SortTypeID.CreateDate;
-            setSort();
-            setFilter();
+            this.sortInfo.ChangeSortDirection(SortTypeID.CreateDate);
+            this.sortInfo.ActiveSortType = SortTypeID.CreateDate;
+            this.SetSort();
+            this.SetFilter();
         }
 
-        private void sortFilerRgistrationDateToolStripButton_Click(object sender, EventArgs e)
+        private void SortFilerRgistrationDateToolStripButton_Click(object sender, EventArgs e)
         {
-            _sortInfo.ChangeSortDirection(SortTypeID.RgistrationDate);
-            _sortInfo.ActiveSortType = SortTypeID.RgistrationDate;
-            setSort();
-            setFilter();
+            this.sortInfo.ChangeSortDirection(SortTypeID.RgistrationDate);
+            this.sortInfo.ActiveSortType = SortTypeID.RgistrationDate;
+            this.SetSort();
+            this.SetFilter();
         }
 
-        private void thumbnailSizeToolStripSlider_BeginValueChange(object sender, EventArgs e)
+        private void ThumbnailSizeToolStripSlider_BeginValueChange(object sender, EventArgs e)
         {
-            setFlowListItemSize();
+            this.SetFlowListItemSize();
         }
 
-        private void thumbnailSizeToolStripSlider_ValueChanged(object sender, EventArgs e)
+        private void ThumbnailSizeToolStripSlider_ValueChanged(object sender, EventArgs e)
         {
-            setFlowListItemSize();
+            this.SetFlowListItemSize();
         }
 
-        private void thumbnailSizeToolStripSlider_ValueChanging(object sender, EventArgs e)
+        private void ThumbnailSizeToolStripSlider_ValueChanging(object sender, EventArgs e)
         {
-            FileListContentsConfig.ThumbnailSize = thumbnailSize;
-            setFlowListItemSize();
-            flowList.Refresh();
+            FileListContentsConfig.ThumbnailSize = ThumbnailSize;
+            this.SetFlowListItemSize();
+            this.flowList.Refresh();
         }
 
-        private void movePreviewToolStripButton_Click(object sender, EventArgs e)
+        private void MovePreviewToolStripButton_Click(object sender, EventArgs e)
         {
-            OnMovePreviewButtonClick(e);
+            this.OnMovePreviewButtonClick(e);
         }
 
-        private void moveNextToolStripButton_Click(object sender, EventArgs e)
+        private void MoveNextToolStripButton_Click(object sender, EventArgs e)
         {
-            OnMoveNextButtonClick(e);
+            this.OnMoveNextButtonClick(e);
         }
 
         #endregion
 
         #region フローリストイベント
 
-        private void flowList_MouseDown(object sender, MouseEventArgs e)
+        private void FlowList_MouseDown(object sender, MouseEventArgs e)
         {
             this.Focus();
         }
 
-        private void flowList_MouseClick(object sender, MouseEventArgs e)
+        private void FlowList_MouseClick(object sender, MouseEventArgs e)
         {
             base.OnMouseClick(e);
         }
 
-        private void flowList_Drawitem(object sender, SWF.UIComponent.FlowList.DrawItemEventArgs e)
+        private void FlowList_Drawitem(object sender, SWF.UIComponent.FlowList.DrawItemEventArgs e)
         {
-            if (_filterFilePathList == null)
+            if (this.filterFilePathList == null)
             {
                 return;
             }
 
-            drawItem(e);
+            this.DrawItem(e);
         }
 
-        private void flowList_DrawItemChanged(object sender, SWF.UIComponent.FlowList.DrawItemChangedEventArgs e)
+        private void FlowList_DrawItemChanged(object sender, DrawItemChangedEventArgs e)
         {
-            if (_filterFilePathList == null)
+            if (this.filterFilePathList == null)
             {
                 return;
             }
 
-            if (_filterFilePathList.Count > 0 &&
+            if (this.filterFilePathList.Count > 0 &&
                 e.DrawFirstItemIndex > -1 &&
                 e.DrawLastItemIndex > -1 &&
-                e.DrawLastItemIndex < _filterFilePathList.Count)
+                e.DrawLastItemIndex < this.filterFilePathList.Count)
             {
-                GetThumbnailParameter param = new GetThumbnailParameter();
-                param.FilePathList = _filterFilePathList;
+                var param = new GetThumbnailParameter();
+                param.FilePathList = this.filterFilePathList;
                 param.FirstIndex = e.DrawFirstItemIndex;
                 param.LastIndex = e.DrawLastItemIndex;
-                param.ThumbnailWidth = flowList.ItemWidth - flowList.ItemSpace * 2;
-                if (isShowFileName)
+                param.ThumbnailWidth = this.flowList.ItemWidth - this.flowList.ItemSpace * 2;
+                if (IsShowFileName)
                 {
-                    param.ThumbnailHeight = flowList.ItemHeight - flowList.ItemSpace * 2 - itemTextHeight;
+                    param.ThumbnailHeight = this.flowList.ItemHeight - this.flowList.ItemSpace * 2 - this.ItemTextHeight;
                 }
                 else
                 {
-                    param.ThumbnailHeight = flowList.ItemHeight - flowList.ItemSpace * 2;
+                    param.ThumbnailHeight = this.flowList.ItemHeight - this.flowList.ItemSpace * 2;
                 }
-                getThumbnailsProcess.Cancel();
-                getThumbnailsProcess.Execute(this, param);
+
+                this.GetThumbnailsProcess.Cancel();
+                this.GetThumbnailsProcess.Execute(this, param);
             }
         }
 
-        private void flowList_SelectedItemChange(object sender, EventArgs e)
+        private void FlowList_SelectedItemChange(object sender, EventArgs e)
         {
-            IList<string> filePathList = GetSelectedFiles();
+            var filePathList = this.GetSelectedFiles();
             if (filePathList.Count > 0)
             {
                 this.SelectedFilePath = filePathList.First();
             }
 
-            OnSelectedFileChanged(new SelectedFileChangeEventArgs(filePathList));
+            this.OnSelectedFileChanged(new SelectedFileChangeEventArgs(filePathList));
         }
 
-        private void flowList_ItemMouseClick(object sender, MouseEventArgs e)
+        private void FlowList_ItemMouseClick(object sender, MouseEventArgs e)
         {
             if (e.Button != MouseButtons.Middle)
             {
                 return;
             }
 
-            string filePath = _filterFilePathList[flowList.GetSelectedIndexs()[0]];
-            FileEntity file = _masterFileDictionary[filePath];
+            var filePath = this.filterFilePathList[this.flowList.GetSelectedIndexs()[0]];
+            var file = this.masterFileDictionary[filePath];
             if (file.IsImageFile)
             {
                 var param = new ImageViewerContentsParameter(
@@ -997,24 +990,24 @@ namespace PicSum.UIComponent.Contents.FileListContents
                     this.GetImageFilesAction,
                     this.Title,
                     this.Icon);
-                OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.AddTab, param));
+                this.OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.AddTab, param));
             }
             else if (!file.IsFile)
             {
-                DirectoryFileListContentsParameter param = new DirectoryFileListContentsParameter(file.FilePath);
-                OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.AddTab, param));
+                var param = new DirectoryFileListContentsParameter(file.FilePath);
+                this.OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.AddTab, param));
             }
         }
 
-        private void flowList_ItemMouseDoubleClick(object sender, MouseEventArgs e)
+        private void FlowList_ItemMouseDoubleClick(object sender, MouseEventArgs e)
         {
             if (e.Button != MouseButtons.Left)
             {
                 return;
             }
 
-            string filePath = _filterFilePathList[flowList.GetSelectedIndexs()[0]];
-            FileEntity file = _masterFileDictionary[filePath];
+            var filePath = this.filterFilePathList[this.flowList.GetSelectedIndexs()[0]];
+            var file = this.masterFileDictionary[filePath];
             if (file.IsImageFile)
             {
                 var param = new ImageViewerContentsParameter(
@@ -1023,12 +1016,12 @@ namespace PicSum.UIComponent.Contents.FileListContents
                     this.GetImageFilesAction,
                     this.Title,
                     this.Icon);
-                OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.OverlapTab, param));
+                this.OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.OverlapTab, param));
             }
             else if (!file.IsFile)
             {
-                DirectoryFileListContentsParameter param = new DirectoryFileListContentsParameter(file.FilePath);
-                OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.OverlapTab, param));
+                var param = new DirectoryFileListContentsParameter(file.FilePath);
+                this.OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.OverlapTab, param));
             }
             else
             {
@@ -1036,15 +1029,15 @@ namespace PicSum.UIComponent.Contents.FileListContents
             }
         }
 
-        protected virtual void flowLilst_BackgroundMouseClick(object sender, MouseEventArgs e)
+        protected virtual void FlowLilst_BackgroundMouseClick(object sender, MouseEventArgs e)
         {
             this.OnBackgroundMouseClick(e);
         }
 
-        private void flowList_ItemExecute(object sender, EventArgs e)
+        private void FlowList_ItemExecute(object sender, EventArgs e)
         {
-            string filePath = _filterFilePathList[flowList.GetSelectedIndexs()[0]];
-            FileEntity file = _masterFileDictionary[filePath];
+            var filePath = this.filterFilePathList[this.flowList.GetSelectedIndexs()[0]];
+            var file = this.masterFileDictionary[filePath];
             if (file.IsImageFile)
             {
                 var param = new ImageViewerContentsParameter(
@@ -1053,12 +1046,12 @@ namespace PicSum.UIComponent.Contents.FileListContents
                     this.GetImageFilesAction,
                     this.Title,
                     this.Icon);
-                OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.OverlapTab, param));
+                this.OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.OverlapTab, param));
             }
             else if (!file.IsFile)
             {
-                DirectoryFileListContentsParameter param = new DirectoryFileListContentsParameter(file.FilePath);
-                OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.OverlapTab, param));
+                var param = new DirectoryFileListContentsParameter(file.FilePath);
+                this.OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.OverlapTab, param));
             }
             else
             {
@@ -1066,34 +1059,34 @@ namespace PicSum.UIComponent.Contents.FileListContents
             }
         }
 
-        private void flowList_ItemDelete(object sender, EventArgs e)
+        private void FlowList_ItemDelete(object sender, EventArgs e)
         {
-            List<string> filePathList = new List<string>();
-            foreach (int index in flowList.GetSelectedIndexs())
+            var filePathList = new List<string>();
+            foreach (var index in flowList.GetSelectedIndexs())
             {
-                filePathList.Add(_filterFilePathList[index]);
+                filePathList.Add(this.filterFilePathList[index]);
             }
 
-            OnRemoveFile(filePathList);
+            this.OnRemoveFile(filePathList);
         }
 
-        private void flowList_DragStart(object sender, EventArgs e)
+        private void FlowList_DragStart(object sender, EventArgs e)
         {
-            IList<int> selectedIndexList = flowList.GetSelectedIndexs();
+            var selectedIndexList = this.flowList.GetSelectedIndexs();
             if (selectedIndexList.Count < 1)
             {
                 return;
             }
 
-            string currentFilePath = _filterFilePathList[selectedIndexList.First()];
-            FileEntity currentFileInfo = _masterFileDictionary[currentFilePath];
+            var currentFilePath = this.filterFilePathList[selectedIndexList.First()];
+            var currentFileInfo = this.masterFileDictionary[currentFilePath];
             if (currentFileInfo.IsFile && currentFileInfo.IsImageFile)
             {
                 // 選択項目が画像ファイルの場合。
-                List<string> filePathList = new List<string>();
-                foreach (string filePath in _filterFilePathList)
+                var filePathList = new List<string>();
+                foreach (var filePath in this.filterFilePathList)
                 {
-                    FileEntity fileInfo = _masterFileDictionary[filePath];
+                    var fileInfo = this.masterFileDictionary[filePath];
                     if (fileInfo.IsFile && fileInfo.IsImageFile)
                     {
                         filePathList.Add(filePath);
@@ -1137,10 +1130,10 @@ namespace PicSum.UIComponent.Contents.FileListContents
 
         protected virtual void FileContextMenu_Opening(object sender, CancelEventArgs e)
         {
-            IList<string> filePathList = GetSelectedFiles();
+            var filePathList = this.GetSelectedFiles();
             if (filePathList.Count > 0)
             {
-                fileContextMenu.SetFile(filePathList);
+                this.fileContextMenu.SetFile(filePathList);
             }
             else
             {
@@ -1148,7 +1141,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
             }
         }
 
-        private void fileContextMenu_FileActiveTabOpen(object sender, PicSum.UIComponent.Common.ExecuteFileEventArgs e)
+        private void FileContextMenu_FileActiveTabOpen(object sender, ExecuteFileEventArgs e)
         {
             var param = new ImageViewerContentsParameter(
                 this.Parameter.ContentsSources,
@@ -1156,10 +1149,10 @@ namespace PicSum.UIComponent.Contents.FileListContents
                 this.GetImageFilesAction,
                 this.Title,
                 this.Icon);
-            OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.OverlapTab, param));
+            this.OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.OverlapTab, param));
         }
 
-        private void fileContextMenu_FileNewTabOpen(object sender, PicSum.UIComponent.Common.ExecuteFileEventArgs e)
+        private void FileContextMenu_FileNewTabOpen(object sender, ExecuteFileEventArgs e)
         {
             var param = new ImageViewerContentsParameter(
                 this.Parameter.ContentsSources,
@@ -1167,10 +1160,10 @@ namespace PicSum.UIComponent.Contents.FileListContents
                 this.GetImageFilesAction,
                 this.Title,
                 this.Icon);
-            OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.AddTab, param));
+            this.OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.AddTab, param));
         }
 
-        private void fileContextMenu_FileNewWindowOpen(object sender, PicSum.UIComponent.Common.ExecuteFileEventArgs e)
+        private void FileContextMenu_FileNewWindowOpen(object sender, ExecuteFileEventArgs e)
         {
             var param = new ImageViewerContentsParameter(
                 this.Parameter.ContentsSources,
@@ -1178,38 +1171,38 @@ namespace PicSum.UIComponent.Contents.FileListContents
                 this.GetImageFilesAction,
                 this.Title,
                 this.Icon);
-            OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.NewWindow, param));
+            this.OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.NewWindow, param));
         }
 
-        private void fileContextMenu_FileOpen(object sender, PicSum.UIComponent.Common.ExecuteFileEventArgs e)
+        private void FileContextMenu_FileOpen(object sender, ExecuteFileEventArgs e)
         {
             FileUtil.OpenFile(e.FilePath);
         }
 
-        private void fileContextMenu_SaveDirectoryOpen(object sender, PicSum.UIComponent.Common.ExecuteFileEventArgs e)
+        private void FileContextMenu_SaveDirectoryOpen(object sender, ExecuteFileEventArgs e)
         {
             FileUtil.OpenExplorerSelect(e.FilePath);
         }
 
-        private void fileContextMenu_DirectoryActiveTabOpen(object sender, PicSum.UIComponent.Common.ExecuteFileEventArgs e)
+        private void FileContextMenu_DirectoryActiveTabOpen(object sender, ExecuteFileEventArgs e)
         {
-            DirectoryFileListContentsParameter param = new DirectoryFileListContentsParameter(e.FilePath);
-            OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.OverlapTab, param));
+            var param = new DirectoryFileListContentsParameter(e.FilePath);
+            this.OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.OverlapTab, param));
         }
 
-        private void fileContextMenu_DirectoryNewTabOpen(object sender, PicSum.UIComponent.Common.ExecuteFileEventArgs e)
+        private void FileContextMenu_DirectoryNewTabOpen(object sender, ExecuteFileEventArgs e)
         {
-            DirectoryFileListContentsParameter param = new DirectoryFileListContentsParameter(e.FilePath);
-            OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.AddTab, param));
+            var param = new DirectoryFileListContentsParameter(e.FilePath);
+            this.OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.AddTab, param));
         }
 
-        private void fileContextMenu_DirectoryNewWindowOpen(object sender, PicSum.UIComponent.Common.ExecuteFileEventArgs e)
+        private void FileContextMenu_DirectoryNewWindowOpen(object sender, ExecuteFileEventArgs e)
         {
-            DirectoryFileListContentsParameter param = new DirectoryFileListContentsParameter(e.FilePath);
-            OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.NewWindow, param));
+            var param = new DirectoryFileListContentsParameter(e.FilePath);
+            this.OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.NewWindow, param));
         }
 
-        private void fileContextMenu_ExplorerOpen(object sender, PicSum.UIComponent.Common.ExecuteFileEventArgs e)
+        private void FileContextMenu_ExplorerOpen(object sender, ExecuteFileEventArgs e)
         {
             if (string.IsNullOrEmpty(e.FilePath))
             {
@@ -1221,9 +1214,9 @@ namespace PicSum.UIComponent.Contents.FileListContents
             }
         }
 
-        private void fileContextMenu_Export(object sender, PicSum.UIComponent.Common.ExecuteFileListEventArgs e)
+        private void FileContextMenu_Export(object sender, ExecuteFileListEventArgs e)
         {
-            using (FolderBrowserDialog fbd = new FolderBrowserDialog())
+            using (var fbd = new FolderBrowserDialog())
             {
                 if (FileUtil.IsExists(CommonConfig.ExportDirectoryPath))
                 {
@@ -1232,7 +1225,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
 
                 if (fbd.ShowDialog() == DialogResult.OK)
                 {
-                    ExportFileParameter param = new ExportFileParameter();
+                    var param = new ExportFileParameter();
                     param.ExportDirectoryPath = fbd.SelectedPath;
                     param.FilePathList = e.FilePathList;
                     exportFileProcess.Execute(this, param);
@@ -1242,11 +1235,11 @@ namespace PicSum.UIComponent.Contents.FileListContents
             }
         }
 
-        private void fileContextMenu_PathCopy(object sender, PicSum.UIComponent.Common.ExecuteFileListEventArgs e)
+        private void FileContextMenu_PathCopy(object sender, ExecuteFileListEventArgs e)
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
 
-            foreach (string filePath in e.FilePathList)
+            foreach (var filePath in e.FilePathList)
             {
                 sb.AppendLine(filePath);
             }
@@ -1254,11 +1247,11 @@ namespace PicSum.UIComponent.Contents.FileListContents
             Clipboard.SetText(sb.ToString());
         }
 
-        private void fileContextMenu_NameCopy(object sender, PicSum.UIComponent.Common.ExecuteFileListEventArgs e)
+        private void FileContextMenu_NameCopy(object sender, ExecuteFileListEventArgs e)
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
 
-            foreach (string filePath in e.FilePathList)
+            foreach (var filePath in e.FilePathList)
             {
                 sb.AppendLine(FileUtil.GetFileName(filePath));
             }
@@ -1266,14 +1259,14 @@ namespace PicSum.UIComponent.Contents.FileListContents
             Clipboard.SetText(sb.ToString());
         }
 
-        private void fileContextMenu_AddKeep(object sender, PicSum.UIComponent.Common.ExecuteFileListEventArgs e)
+        private void FileContextMenu_AddKeep(object sender, ExecuteFileListEventArgs e)
         {
-            addKeep(e.FilePathList.Select(filePath => new KeepFileEntity(filePath, DateTime.Now)).ToList());
+            this.AddKeep(e.FilePathList.Select(filePath => new KeepFileEntity(filePath, DateTime.Now)).ToList());
         }
 
-        private void fileContextMenu_RemoveFromList(object sender, PicSum.UIComponent.Common.ExecuteFileListEventArgs e)
+        private void FileContextMenu_RemoveFromList(object sender, ExecuteFileListEventArgs e)
         {
-            OnRemoveFile(e.FilePathList);
+            this.OnRemoveFile(e.FilePathList);
         }
 
         #endregion

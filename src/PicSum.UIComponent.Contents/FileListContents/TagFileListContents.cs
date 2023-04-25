@@ -119,7 +119,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
 
         protected override void OnBackgroundMouseClick(MouseEventArgs e)
         {
-            //base.OnBackgroundMouseClick(e);
+            // 処理無し。
         }
 
         protected override void OnRemoveFile(System.Collections.Generic.IList<string> filePathList)
@@ -154,6 +154,16 @@ namespace PicSum.UIComponent.Contents.FileListContents
 
                 proces.Execute(this, new SingleValueEntity<string>() { Value = this._parameter.Tag });
             };            
+        }
+
+        protected override void OnMovePreviewButtonClick(EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override void OnMoveNextButtonClick(EventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion

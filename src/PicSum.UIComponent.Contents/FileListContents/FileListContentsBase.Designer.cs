@@ -79,17 +79,17 @@ namespace PicSum.UIComponent.Contents.FileListContents
             this.flowList.TabIndex = 1;
             this.flowList.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.flowList.Text = "flowList1";
-            this.flowList.ItemDelete += new System.EventHandler(this.flowList_ItemDelete);
-            this.flowList.DrawItem += new System.EventHandler<SWF.UIComponent.FlowList.DrawItemEventArgs>(this.flowList_Drawitem);
-            this.flowList.DrawItemChanged += new System.EventHandler<SWF.UIComponent.FlowList.DrawItemChangedEventArgs>(this.flowList_DrawItemChanged);
-            this.flowList.DragStart += new System.EventHandler(this.flowList_DragStart);
-            this.flowList.SelectedItemChanged += new System.EventHandler(this.flowList_SelectedItemChange);
-            this.flowList.ItemExecute += new System.EventHandler(this.flowList_ItemExecute);
-            this.flowList.MouseDown += new System.Windows.Forms.MouseEventHandler(this.flowList_MouseDown);
-            this.flowList.MouseClick += new System.Windows.Forms.MouseEventHandler(this.flowList_MouseClick);
-            this.flowList.ItemMouseClick += new System.EventHandler<System.Windows.Forms.MouseEventArgs>(this.flowList_ItemMouseClick);
-            this.flowList.ItemMouseDoubleClick += new System.EventHandler<System.Windows.Forms.MouseEventArgs>(this.flowList_ItemMouseDoubleClick);
-            this.flowList.BackgroundMouseClick += new System.EventHandler<System.Windows.Forms.MouseEventArgs>(this.flowLilst_BackgroundMouseClick);
+            this.flowList.ItemDelete += new System.EventHandler(this.FlowList_ItemDelete);
+            this.flowList.DrawItem += new System.EventHandler<SWF.UIComponent.FlowList.DrawItemEventArgs>(this.FlowList_Drawitem);
+            this.flowList.DrawItemChanged += new System.EventHandler<SWF.UIComponent.FlowList.DrawItemChangedEventArgs>(this.FlowList_DrawItemChanged);
+            this.flowList.DragStart += new System.EventHandler(this.FlowList_DragStart);
+            this.flowList.SelectedItemChanged += new System.EventHandler(this.FlowList_SelectedItemChange);
+            this.flowList.ItemExecute += new System.EventHandler(this.FlowList_ItemExecute);
+            this.flowList.MouseDown += new System.Windows.Forms.MouseEventHandler(this.FlowList_MouseDown);
+            this.flowList.MouseClick += new System.Windows.Forms.MouseEventHandler(this.FlowList_MouseClick);
+            this.flowList.ItemMouseClick += new System.EventHandler<System.Windows.Forms.MouseEventArgs>(this.FlowList_ItemMouseClick);
+            this.flowList.ItemMouseDoubleClick += new System.EventHandler<System.Windows.Forms.MouseEventArgs>(this.FlowList_ItemMouseDoubleClick);
+            this.flowList.BackgroundMouseClick += new System.EventHandler<System.Windows.Forms.MouseEventArgs>(this.FlowLilst_BackgroundMouseClick);
             // 
             // fileContextMenu
             // 
@@ -99,21 +99,21 @@ namespace PicSum.UIComponent.Contents.FileListContents
             this.fileContextMenu.IsRemoveFromListMenuItemVisible = false;
             this.fileContextMenu.Name = "fileContextMenu";
             this.fileContextMenu.Size = new System.Drawing.Size(209, 312);
-            this.fileContextMenu.DirectoryActiveTabOpen += new System.EventHandler<PicSum.UIComponent.Common.ExecuteFileEventArgs>(this.fileContextMenu_DirectoryActiveTabOpen);
-            this.fileContextMenu.DirectoryNewTabOpen += new System.EventHandler<PicSum.UIComponent.Common.ExecuteFileEventArgs>(this.fileContextMenu_DirectoryNewTabOpen);
-            this.fileContextMenu.FileOpen += new System.EventHandler<PicSum.UIComponent.Common.ExecuteFileEventArgs>(this.fileContextMenu_FileOpen);
-            this.fileContextMenu.DirectoryNewWindowOpen += new System.EventHandler<PicSum.UIComponent.Common.ExecuteFileEventArgs>(this.fileContextMenu_DirectoryNewWindowOpen);
-            this.fileContextMenu.FileNewTabOpen += new System.EventHandler<PicSum.UIComponent.Common.ExecuteFileEventArgs>(this.fileContextMenu_FileNewTabOpen);
-            this.fileContextMenu.SaveDirectoryOpen += new System.EventHandler<PicSum.UIComponent.Common.ExecuteFileEventArgs>(this.fileContextMenu_SaveDirectoryOpen);
-            this.fileContextMenu.FileActiveTabOpen += new System.EventHandler<PicSum.UIComponent.Common.ExecuteFileEventArgs>(this.fileContextMenu_FileActiveTabOpen);
-            this.fileContextMenu.AddKeep += new System.EventHandler<PicSum.UIComponent.Common.ExecuteFileListEventArgs>(this.fileContextMenu_AddKeep);
-            this.fileContextMenu.NameCopy += new System.EventHandler<PicSum.UIComponent.Common.ExecuteFileListEventArgs>(this.fileContextMenu_NameCopy);
-            this.fileContextMenu.Export += new System.EventHandler<PicSum.UIComponent.Common.ExecuteFileListEventArgs>(this.fileContextMenu_Export);
-            this.fileContextMenu.ExplorerOpen += new System.EventHandler<PicSum.UIComponent.Common.ExecuteFileEventArgs>(this.fileContextMenu_ExplorerOpen);
-            this.fileContextMenu.FileNewWindowOpen += new System.EventHandler<PicSum.UIComponent.Common.ExecuteFileEventArgs>(this.fileContextMenu_FileNewWindowOpen);
-            this.fileContextMenu.PathCopy += new System.EventHandler<PicSum.UIComponent.Common.ExecuteFileListEventArgs>(this.fileContextMenu_PathCopy);
+            this.fileContextMenu.DirectoryActiveTabOpen += new System.EventHandler<PicSum.UIComponent.Common.ExecuteFileEventArgs>(this.FileContextMenu_DirectoryActiveTabOpen);
+            this.fileContextMenu.DirectoryNewTabOpen += new System.EventHandler<PicSum.UIComponent.Common.ExecuteFileEventArgs>(this.FileContextMenu_DirectoryNewTabOpen);
+            this.fileContextMenu.FileOpen += new System.EventHandler<PicSum.UIComponent.Common.ExecuteFileEventArgs>(this.FileContextMenu_FileOpen);
+            this.fileContextMenu.DirectoryNewWindowOpen += new System.EventHandler<PicSum.UIComponent.Common.ExecuteFileEventArgs>(this.FileContextMenu_DirectoryNewWindowOpen);
+            this.fileContextMenu.FileNewTabOpen += new System.EventHandler<PicSum.UIComponent.Common.ExecuteFileEventArgs>(this.FileContextMenu_FileNewTabOpen);
+            this.fileContextMenu.SaveDirectoryOpen += new System.EventHandler<PicSum.UIComponent.Common.ExecuteFileEventArgs>(this.FileContextMenu_SaveDirectoryOpen);
+            this.fileContextMenu.FileActiveTabOpen += new System.EventHandler<PicSum.UIComponent.Common.ExecuteFileEventArgs>(this.FileContextMenu_FileActiveTabOpen);
+            this.fileContextMenu.AddKeep += new System.EventHandler<PicSum.UIComponent.Common.ExecuteFileListEventArgs>(this.FileContextMenu_AddKeep);
+            this.fileContextMenu.NameCopy += new System.EventHandler<PicSum.UIComponent.Common.ExecuteFileListEventArgs>(this.FileContextMenu_NameCopy);
+            this.fileContextMenu.Export += new System.EventHandler<PicSum.UIComponent.Common.ExecuteFileListEventArgs>(this.FileContextMenu_Export);
+            this.fileContextMenu.ExplorerOpen += new System.EventHandler<PicSum.UIComponent.Common.ExecuteFileEventArgs>(this.FileContextMenu_ExplorerOpen);
+            this.fileContextMenu.FileNewWindowOpen += new System.EventHandler<PicSum.UIComponent.Common.ExecuteFileEventArgs>(this.FileContextMenu_FileNewWindowOpen);
+            this.fileContextMenu.PathCopy += new System.EventHandler<PicSum.UIComponent.Common.ExecuteFileListEventArgs>(this.FileContextMenu_PathCopy);
             this.fileContextMenu.Opening += new System.ComponentModel.CancelEventHandler(this.FileContextMenu_Opening);
-            this.fileContextMenu.RemoveFromList += new System.EventHandler<PicSum.UIComponent.Common.ExecuteFileListEventArgs>(this.fileContextMenu_RemoveFromList);
+            this.fileContextMenu.RemoveFromList += new System.EventHandler<PicSum.UIComponent.Common.ExecuteFileListEventArgs>(this.FileContextMenu_RemoveFromList);
             // 
             // viewContextMenuStrip
             // 
@@ -132,21 +132,21 @@ namespace PicSum.UIComponent.Contents.FileListContents
             this.showDirectoryToolStripMenuItem.Name = "showDirectoryToolStripMenuItem";
             this.showDirectoryToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
             this.showDirectoryToolStripMenuItem.Text = "Folder";
-            this.showDirectoryToolStripMenuItem.Click += new System.EventHandler(this.showDirectoryToolStripMenuItem_Click);
+            this.showDirectoryToolStripMenuItem.Click += new System.EventHandler(this.ShowDirectoryToolStripMenuItem_Click);
             // 
             // showImageFileToolStripMenuItem
             // 
             this.showImageFileToolStripMenuItem.Name = "showImageFileToolStripMenuItem";
             this.showImageFileToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
             this.showImageFileToolStripMenuItem.Text = "Image File";
-            this.showImageFileToolStripMenuItem.Click += new System.EventHandler(this.showImageFileToolStripMenuItem_Click);
+            this.showImageFileToolStripMenuItem.Click += new System.EventHandler(this.ShowImageFileToolStripMenuItem_Click);
             // 
             // showOtherFileToolStripMenuItem
             // 
             this.showOtherFileToolStripMenuItem.Name = "showOtherFileToolStripMenuItem";
             this.showOtherFileToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
             this.showOtherFileToolStripMenuItem.Text = "Other File";
-            this.showOtherFileToolStripMenuItem.Click += new System.EventHandler(this.showOtherFileToolStripMenuItem_Click);
+            this.showOtherFileToolStripMenuItem.Click += new System.EventHandler(this.ShowOtherFileToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
@@ -158,7 +158,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
             this.showFileNameToolStripMenuItem.Name = "showFileNameToolStripMenuItem";
             this.showFileNameToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
             this.showFileNameToolStripMenuItem.Text = "File Name";
-            this.showFileNameToolStripMenuItem.Click += new System.EventHandler(this.showFileNameToolStripMenuItem_Click);
+            this.showFileNameToolStripMenuItem.Click += new System.EventHandler(this.ShowFileNameToolStripMenuItem_Click);
             // 
             // viewToolStripDropDownButton
             // 
@@ -199,7 +199,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
             this.sortFileNameToolStripButton.Name = "sortFileNameToolStripButton";
             this.sortFileNameToolStripButton.Size = new System.Drawing.Size(120, 24);
             this.sortFileNameToolStripButton.Text = "Name";
-            this.sortFileNameToolStripButton.Click += new System.EventHandler(this.sortFileNameToolStripButton_Click);
+            this.sortFileNameToolStripButton.Click += new System.EventHandler(this.SortFileNameToolStripButton_Click);
             // 
             // sortFilePathToolStripButton
             // 
@@ -209,7 +209,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
             this.sortFilePathToolStripButton.Name = "sortFilePathToolStripButton";
             this.sortFilePathToolStripButton.Size = new System.Drawing.Size(120, 24);
             this.sortFilePathToolStripButton.Text = "Path";
-            this.sortFilePathToolStripButton.Click += new System.EventHandler(this.sortFilePathToolStripButton_Click);
+            this.sortFilePathToolStripButton.Click += new System.EventHandler(this.SortFilePathToolStripButton_Click);
             // 
             // sortFileCreateDateToolStripButton
             // 
@@ -219,7 +219,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
             this.sortFileCreateDateToolStripButton.Name = "sortFileCreateDateToolStripButton";
             this.sortFileCreateDateToolStripButton.Size = new System.Drawing.Size(120, 24);
             this.sortFileCreateDateToolStripButton.Text = "Creation Date";
-            this.sortFileCreateDateToolStripButton.Click += new System.EventHandler(this.sortFileCreateDateToolStripButton_Click);
+            this.sortFileCreateDateToolStripButton.Click += new System.EventHandler(this.SortFileCreateDateToolStripButton_Click);
             // 
             // sortFileUpdateDateToolStripButton
             // 
@@ -229,7 +229,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
             this.sortFileUpdateDateToolStripButton.Name = "sortFileUpdateDateToolStripButton";
             this.sortFileUpdateDateToolStripButton.Size = new System.Drawing.Size(120, 24);
             this.sortFileUpdateDateToolStripButton.Text = "Update Date";
-            this.sortFileUpdateDateToolStripButton.Click += new System.EventHandler(this.sortFileUpdateDateToolStripButton_Click);
+            this.sortFileUpdateDateToolStripButton.Click += new System.EventHandler(this.SortFileUpdateDateToolStripButton_Click);
             // 
             // sortFilerRgistrationDateToolStripButton
             // 
@@ -239,7 +239,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
             this.sortFileRgistrationDateToolStripButton.Name = "sortFilerRgistrationDateToolStripButton";
             this.sortFileRgistrationDateToolStripButton.Size = new System.Drawing.Size(120, 24);
             this.sortFileRgistrationDateToolStripButton.Text = "Registration Date";
-            this.sortFileRgistrationDateToolStripButton.Click += new System.EventHandler(this.sortFilerRgistrationDateToolStripButton_Click);
+            this.sortFileRgistrationDateToolStripButton.Click += new System.EventHandler(this.SortFilerRgistrationDateToolStripButton_Click);
             // 
             // thumbnailSizeToolStripSlider
             // 
@@ -251,9 +251,9 @@ namespace PicSum.UIComponent.Contents.FileListContents
             this.thumbnailSizeToolStripSlider.Size = new System.Drawing.Size(96, 24);
             this.thumbnailSizeToolStripSlider.Text = "toolStripSlider1";
             this.thumbnailSizeToolStripSlider.Value = 96;
-            this.thumbnailSizeToolStripSlider.ValueChanging += new System.EventHandler(this.thumbnailSizeToolStripSlider_ValueChanging);
-            this.thumbnailSizeToolStripSlider.BeginValueChange += new System.EventHandler(this.thumbnailSizeToolStripSlider_BeginValueChange);
-            this.thumbnailSizeToolStripSlider.ValueChanged += new System.EventHandler(this.thumbnailSizeToolStripSlider_ValueChanged);
+            this.thumbnailSizeToolStripSlider.ValueChanging += new System.EventHandler(this.ThumbnailSizeToolStripSlider_ValueChanging);
+            this.thumbnailSizeToolStripSlider.BeginValueChange += new System.EventHandler(this.ThumbnailSizeToolStripSlider_BeginValueChange);
+            this.thumbnailSizeToolStripSlider.ValueChanged += new System.EventHandler(this.ThumbnailSizeToolStripSlider_ValueChanged);
             // 
             // movePreviewToolStripButton
             // 
@@ -263,7 +263,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
             this.movePreviewToolStripButton.Margin = new System.Windows.Forms.Padding(3, 1, 0, 2);
             this.movePreviewToolStripButton.Name = "movePreviewToolStripButton";
             this.movePreviewToolStripButton.Size = new System.Drawing.Size(23, 24);
-            this.movePreviewToolStripButton.Click += new System.EventHandler(this.movePreviewToolStripButton_Click);
+            this.movePreviewToolStripButton.Click += new System.EventHandler(this.MovePreviewToolStripButton_Click);
             // 
             // moveNextToolStripButton
             // 
@@ -272,7 +272,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
             this.moveNextToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.moveNextToolStripButton.Name = "moveNextToolStripButton";
             this.moveNextToolStripButton.Size = new System.Drawing.Size(23, 24);
-            this.moveNextToolStripButton.Click += new System.EventHandler(this.moveNextToolStripButton_Click);
+            this.moveNextToolStripButton.Click += new System.EventHandler(this.MoveNextToolStripButton_Click);
             // 
             // FileListContentsBase
             // 

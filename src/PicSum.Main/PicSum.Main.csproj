@@ -175,6 +175,10 @@
       <Project>{AD2472A8-9878-4969-9D82-B69255743CBA}</Project>
       <Name>PicSum.Core.Task.SyncTask</Name>
     </ProjectReference>
+    <ProjectReference Include="..\PicSum.UIComponent.Contents\PicSum.UIComponent.Contents.csproj">
+      <Project>{8fb6f625-792e-4a72-ab48-5c2f558c74f3}</Project>
+      <Name>PicSum.UIComponent.Contents</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SWF.Common\SWF.Common.csproj">
       <Project>{1D5E61C2-A0F5-4A69-AF24-EDD274B78359}</Project>
       <Name>SWF.Common</Name>
@@ -198,10 +202,6 @@
     <ProjectReference Include="..\PicSum.UIComponent.AddressBar\PicSum.UIComponent.AddressBar.csproj">
       <Project>{290188E5-55A5-40C7-A311-4E3474C23789}</Project>
       <Name>PicSum.UIComponent.AddressBar</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PicSum.UIComponent.Contents\PicSum.UIComponent.Contents.csproj">
-      <Project>{8FB6F625-792E-4A72-AB48-5C2F558C74F3}</Project>
-      <Name>PicSum.UIComponent.Contents</Name>
     </ProjectReference>
     <ProjectReference Include="..\PicSum.UIComponent.InfoPanel\PicSum.UIComponent.InfoPanel.csproj">
       <Project>{AD290551-E7B2-41E0-801D-E8118155AE86}</Project>
