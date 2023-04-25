@@ -67,6 +67,14 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
 
         #region プライベートプロパティ
 
+        private bool CanOperation
+        {
+            get
+            {
+                return this.filePathList != null;
+            }
+        }
+
         private int MaximumIndex
         {
             get
@@ -177,6 +185,11 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
 
         protected override void OnMouseWheel(MouseEventArgs e)
         {
+            if (!this.CanOperation)
+            {
+                return;
+            }
+
             try
             {
                 if (e.Delta > 0)
@@ -199,6 +212,11 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
         [UIPermission(SecurityAction.Demand, Window = UIPermissionWindow.AllWindows)]
         protected override bool ProcessDialogKey(Keys keyData)
         {
+            if (!this.CanOperation)
+            {
+                return false;
+            }
+
             if ((keyData & Keys.Alt) == Keys.Alt)
             {
                 return false;
@@ -602,6 +620,11 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
             {
                 return;
             }
+            
+            if (!this.CanOperation)
+            {
+                return;
+            }
 
             if (this.SetDisplayMode(GetNextDisplayMode()))
             {
@@ -613,6 +636,11 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
         private void SingleViewToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (!this.IsHandleCreated)
+            {
+                return;
+            }
+
+            if (!this.CanOperation)
             {
                 return;
             }
@@ -631,6 +659,11 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
                 return;
             }
 
+            if (!this.CanOperation)
+            {
+                return;
+            }
+
             if (this.SetDisplayMode(ImageDisplayMode.LeftFacing))
             {
                 ImageViewerContentsConfig.ImageDisplayMode = this.displayMode;
@@ -645,6 +678,11 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
                 return;
             }
 
+            if (!this.CanOperation)
+            {
+                return;
+            }
+
             if (this.SetDisplayMode(ImageDisplayMode.RightFacing))
             {
                 ImageViewerContentsConfig.ImageDisplayMode = this.displayMode;
@@ -655,6 +693,11 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
         private void SizeToolStripSplitButton_ButtonClick(object sender, EventArgs e)
         {
             if (!this.IsHandleCreated)
+            {
+                return;
+            }
+
+            if (!this.CanOperation)
             {
                 return;
             }
@@ -674,6 +717,11 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
                 return;
             }
 
+            if (!this.CanOperation)
+            {
+                return;
+            }
+
             if (this.SetSizeMode(ImageSizeMode.Original))
             {
                 ImageViewerContentsConfig.ImageSizeMode = this.sizeMode;
@@ -685,6 +733,11 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
         private void AllFitSizeToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (!this.IsHandleCreated)
+            {
+                return;
+            }
+
+            if (!this.CanOperation)
             {
                 return;
             }
@@ -704,6 +757,11 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
                 return;
             }
 
+            if (!this.CanOperation)
+            {
+                return;
+            }
+
             if (this.SetSizeMode(ImageSizeMode.FitOnlyBigImage))
             {
                 ImageViewerContentsConfig.ImageSizeMode = this.sizeMode;
@@ -714,6 +772,11 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
 
         private void PreviewIndexToolStripButton_Click(object sender, EventArgs e)
         {
+            if (!this.CanOperation)
+            {
+                return;
+            }
+
             try
             {
                 this.FilePathListIndex = this.GetPreviewIndex();
@@ -726,6 +789,11 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
 
         private void NextIndexToolStripButton_Click(object sender, EventArgs e)
         {
+            if (!this.CanOperation)
+            {
+                return;
+            }
+
             try
             {
                 this.FilePathListIndex = this.GetNextIndex();
@@ -738,6 +806,11 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
 
         private void IndexToolStripSlider_ValueChanging(object sender, EventArgs e)
         {
+            if (!this.CanOperation)
+            {
+                return;
+            }
+
             var index = this.FilePathListIndex;
             if (index < 0 || this.filePathList.Count - 1 < index)
             {
@@ -751,12 +824,22 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
 
         private void IndexToolStripSlider_ValueChanged(object sender, EventArgs e)
         {
+            if (!this.CanOperation)
+            {
+                return;
+            }
+
             this.filePathToolTip.Hide(this);
             this.ReadImage();
         }
 
         private void IndexSlider_ValueChanging(object sender, EventArgs e)
         {
+            if (!this.CanOperation)
+            {
+                return;
+            }
+
             var index = this.FilePathListIndex;
             if (index < 0 || this.filePathList.Count - 1 < index)
             {
@@ -770,6 +853,11 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
 
         private void IndexSlider_ValueChanged(object sender, EventArgs e)
         {
+            if (!this.CanOperation)
+            {
+                return;
+            }
+
             this.filePathToolTip.Hide(this);
             this.ReadImage();
         }
