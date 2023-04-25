@@ -11,7 +11,7 @@ namespace PicSum.UIComponent.Contents.ContentsParameter
         public string ContentsSources { get; private set; }
         public string SourcesKey { get; private set; }
         public string Key { get; private set; }
-        public string SelectedFilePath { get; private set; }
+        public string SelectedFilePath { get; set; }
 
         public FavoriteDirectoryListContentsParameter()
         {

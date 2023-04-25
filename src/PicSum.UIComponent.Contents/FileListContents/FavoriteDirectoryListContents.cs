@@ -69,6 +69,16 @@ namespace PicSum.UIComponent.Contents.FileListContents
 
         #region 継承メソッド
 
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                this._parameter.SelectedFilePath = base.SelectedFilePath;
+            }
+
+            base.Dispose(disposing);
+        }
+
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
