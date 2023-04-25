@@ -654,7 +654,7 @@ namespace PicSum.UIComponent.Contents.FileList
         private void AddKeep(IList<KeepFileEntity> filePathList)
         {
             var param = new ListEntity<KeepFileEntity>(filePathList);
-            this.addKeepProcess.Execute(this, param);
+            this.AddKeepProcess.Execute(this, param);
         }
 
         private void DrawItem(SWF.UIComponent.FlowList.DrawItemEventArgs e)
