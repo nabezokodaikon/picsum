@@ -1,50 +1,35 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using PicSum.Core.Base.Conf;
 using PicSum.UIComponent.Contents.Properties;
 using System.Drawing;
-using PicSum.Core.Base.Conf;
 
 namespace PicSum.UIComponent.Contents.FileListContents
 {
-    class SortInfo
+    internal sealed class SortInfo
     {
-        private readonly Image _sortAscendingImage = Resources.SmallArrowUp;
-        private readonly Image _sortDescendingImage = Resources.SmallArrowDown;
-        private SortTypeID _activeSortType = SortTypeID.Default;
-        private bool _isFileNameSortAscending = true;
-        private bool _isFilePathSortAscending = true;
-        private bool _isUpdateDateSortAscending = true;
-        private bool _isCreateDateSortAscending = true;
-        private bool _isRgistrationDateSortAscending = true;
+        private readonly Image sortAscendingImage = Resources.SmallArrowUp;
+        private readonly Image sortDescendingImage = Resources.SmallArrowDown;
+        private bool isFileNameSortAscending = true;
+        private bool isFilePathSortAscending = true;
+        private bool isUpdateDateSortAscending = true;
+        private bool isCreateDateSortAscending = true;
+        private bool isRgistrationDateSortAscending = true;
 
-        public SortTypeID ActiveSortType
-        {
-            get
-            {
-                return _activeSortType;
-            }
-            set
-            {
-                _activeSortType = value;
-            }
-        }
+        public SortTypeID ActiveSortType { get; set; }
 
         public bool IsAscending(SortTypeID sortType)
         {
             switch (sortType)
             {
                 case SortTypeID.FileName:
-                    return _isFileNameSortAscending;
+                    return this.isFileNameSortAscending;
                 case SortTypeID.FilePath:
-                    return _isFilePathSortAscending;
+                    return this.isFilePathSortAscending;
                 case SortTypeID.UpdateDate:
-                    return _isUpdateDateSortAscending;
+                    return this.isUpdateDateSortAscending;
                 case SortTypeID.CreateDate:
-                    return _isCreateDateSortAscending;
+                    return this.isCreateDateSortAscending;
                 case SortTypeID.RgistrationDate:
-                    return _isRgistrationDateSortAscending;
+                    return this.isRgistrationDateSortAscending;
                 default:
                     return false;
             }
@@ -52,24 +37,24 @@ namespace PicSum.UIComponent.Contents.FileListContents
 
         public void SetSortType(SortTypeID sortType, bool isAscending)
         {
-            _activeSortType = sortType;
+            this.ActiveSortType = sortType;
 
             switch (sortType)
             {
                 case SortTypeID.FileName:
-                    _isFileNameSortAscending = isAscending;
+                    this.isFileNameSortAscending = isAscending;
                     break;
                 case SortTypeID.FilePath:
-                    _isFilePathSortAscending = isAscending;
+                    this.isFilePathSortAscending = isAscending;
                     break;
                 case SortTypeID.UpdateDate:
-                    _isUpdateDateSortAscending = isAscending;
+                    this.isUpdateDateSortAscending = isAscending;
                     break;
                 case SortTypeID.CreateDate:
-                    _isCreateDateSortAscending = isAscending;
+                    this.isCreateDateSortAscending = isAscending;
                     break;
                 case SortTypeID.RgistrationDate:
-                    _isRgistrationDateSortAscending = isAscending;
+                    this.isRgistrationDateSortAscending = isAscending;
                     break;
                 default:
                     break;
@@ -80,23 +65,23 @@ namespace PicSum.UIComponent.Contents.FileListContents
         {
             if (isAcending)
             {
-                return _sortAscendingImage;
+                return this.sortAscendingImage;
             }
             else
             {
-                return _sortDescendingImage;
+                return this.sortDescendingImage;
             }
         }
 
         public void ChangeSortDirection(SortTypeID sortType)
         {
-            if (_activeSortType == sortType)
+            if (this.ActiveSortType == sortType)
             {
-                SetSortType(sortType, !IsAscending(sortType));
+                this.SetSortType(sortType, !this.IsAscending(sortType));
             }
             else
             {
-                SetSortType(sortType, IsAscending(sortType));
+                this.SetSortType(sortType, this.IsAscending(sortType));
             }
         }
     }
