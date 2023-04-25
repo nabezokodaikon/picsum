@@ -78,16 +78,6 @@ namespace PicSum.UIComponent.Contents.FileListContents
             searchFavoriteDirectoryProcess.Execute(this, param);
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                _parameter.SelectedFilePath = base.SelectedFilePath;
-            }
-
-            base.Dispose(disposing);
-        }
-
         protected override void OnDrawTabContents(SWF.UIComponent.TabOperation.DrawTabEventArgs e)
         {
             e.Graphics.DrawImage(this.Icon, e.IconRectangle);
