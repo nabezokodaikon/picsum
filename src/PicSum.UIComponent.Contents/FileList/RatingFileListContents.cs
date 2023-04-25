@@ -151,7 +151,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private void initializeComponent()
         {
-            this.Title = "スター";
+            this.Title = "Star";
             this.Icon = Resources.ActiveRatingIcon;
             this.IsAddKeepMenuItemVisible = true;
             this.IsMoveControlVisible = false;
