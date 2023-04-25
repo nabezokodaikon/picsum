@@ -3,7 +3,7 @@ using System.Windows.Forms;
 using PicSum.Core.Task.AsyncTask;
 using PicSum.Task.AsyncFacade;
 using PicSum.Task.Entity;
-using PicSum.UIComponent.Contents.ContentsParameter;
+using PicSum.UIComponent.Contents.Parameter;
 using PicSum.UIComponent.Contents.Properties;
 using SWF.Common;
 using PicSum.UIComponent.Contents.Conf;
@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using PicSum.Task.Paramter;
 using PicSum.Core.Base.Conf;
 
-namespace PicSum.UIComponent.Contents.FileListContents
+namespace PicSum.UIComponent.Contents.FileList
 {
     internal class FavoriteDirectoryListContents 
         : FileListContentsBase

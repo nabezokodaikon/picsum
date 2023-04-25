@@ -2,7 +2,7 @@
 using System.Drawing;
 using PicSum.Task.Entity;
 
-namespace PicSum.UIComponent.Contents.FileListContents
+namespace PicSum.UIComponent.Contents.FileList
 {
     internal class FileEntity
     {

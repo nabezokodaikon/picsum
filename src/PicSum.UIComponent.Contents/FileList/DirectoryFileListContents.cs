@@ -4,7 +4,7 @@ using PicSum.Task.AsyncFacade;
 using PicSum.Task.Entity;
 using PicSum.Task.Paramter;
 using PicSum.Task.Result;
-using PicSum.UIComponent.Contents.ContentsParameter;
+using PicSum.UIComponent.Contents.Parameter;
 using SWF.Common;
 using System;
 using System.Collections.Generic;
@@ -12,7 +12,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace PicSum.UIComponent.Contents.FileListContents
+namespace PicSum.UIComponent.Contents.FileList
 {
     /// <summary>
     /// フォルダファイルリストコンテンツ

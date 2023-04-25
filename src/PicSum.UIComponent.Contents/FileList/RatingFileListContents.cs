@@ -3,39 +3,40 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Forms;
-using PicSum.Core.Base.Conf;
 using PicSum.Core.Task.AsyncTask;
 using PicSum.Task.AsyncFacade;
 using PicSum.Task.Entity;
-using PicSum.Task.Result;
-using PicSum.UIComponent.Contents.ContentsParameter;
+using PicSum.UIComponent.Contents.Parameter;
 using PicSum.UIComponent.Contents.Properties;
+using PicSum.Core.Base.Conf;
 using SWF.Common;
+using SWF.UIComponent.Common;
+using PicSum.Task.Paramter;
 
-namespace PicSum.UIComponent.Contents.FileListContents
+namespace PicSum.UIComponent.Contents.FileList
 {
     /// <summary>
-    /// キープファイルリストコンテンツ
+    /// 評価値ファイルリストコンテンツ
     /// </summary>
-    internal class KeepFileListContents : FileListContentsBase
+    internal class RatingFileListContents : FileListContentsBase
     {
         #region インスタンス変数
 
-        private KeepFileListContentsParameter _parameter = null;
-        private TwoWayProcess<GetKeepAsyncFacade, ListEntity<FileShallowInfoEntity>> _searchFileProcess = null;
-        private OneWayProcess<DeleteKeepAsyncFacade, ListEntity<string>> _removeKeepProcess = null;
+        private RatingFileListContentsParameter _parameter = null;
+        private TwoWayProcess<GetFilesByRatingAsyncFacade, SingleValueEntity<int>, ListEntity<FileShallowInfoEntity>> _searchFileProcess = null;
+        private OneWayProcess<UpdateFileRatingAsyncFacade, UpdateFileRatingParameter> _updateFileRatingProcess = null;
 
         #endregion
 
         #region プライベートプロパティ
 
-        private TwoWayProcess<GetKeepAsyncFacade, ListEntity<FileShallowInfoEntity>> searchFileProcess
+        private TwoWayProcess<GetFilesByRatingAsyncFacade, SingleValueEntity<int>, ListEntity<FileShallowInfoEntity>> searchFileProcess
         {
             get
             {
                 if (_searchFileProcess == null)
                 {
-                    _searchFileProcess = TaskManager.CreateTwoWayProcess<GetKeepAsyncFacade, ListEntity<FileShallowInfoEntity>>(ProcessContainer);
+                    _searchFileProcess = TaskManager.CreateTwoWayProcess<GetFilesByRatingAsyncFacade, SingleValueEntity<int>, ListEntity<FileShallowInfoEntity>>(ProcessContainer);
                     searchFileProcess.Callback += new AsyncTaskCallbackEventHandler<ListEntity<FileShallowInfoEntity>>(searchFileProcess_Callback);
                 }
 
@@ -43,16 +44,16 @@ namespace PicSum.UIComponent.Contents.FileListContents
             }
         }
 
-        private OneWayProcess<DeleteKeepAsyncFacade, ListEntity<string>> removeKeepProcess
+        private OneWayProcess<UpdateFileRatingAsyncFacade, UpdateFileRatingParameter> updateFileRatingProcess
         {
             get
             {
-                if (_removeKeepProcess == null)
+                if (_updateFileRatingProcess == null)
                 {
-                    _removeKeepProcess = TaskManager.CreateOneWayProcess<DeleteKeepAsyncFacade, ListEntity<string>>(ProcessContainer);
+                    _updateFileRatingProcess = TaskManager.CreateOneWayProcess<UpdateFileRatingAsyncFacade, UpdateFileRatingParameter>(ProcessContainer);
                 }
 
-                return _removeKeepProcess;
+                return _updateFileRatingProcess;
             }
         }
 
@@ -60,7 +61,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
 
         #region コンストラクタ
 
-        public KeepFileListContents(KeepFileListContentsParameter param)
+        public RatingFileListContents(RatingFileListContentsParameter param)
             : base(param)
         {
             _parameter = param;
@@ -74,7 +75,9 @@ namespace PicSum.UIComponent.Contents.FileListContents
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            searchFileProcess.Execute(this);
+            SingleValueEntity<int> param = new SingleValueEntity<int>();
+            param.Value = _parameter.RagingValue;
+            searchFileProcess.Execute(this, param);
         }
 
         protected override void Dispose(bool disposing)
@@ -100,19 +103,19 @@ namespace PicSum.UIComponent.Contents.FileListContents
 
         protected override void OnRemoveFile(System.Collections.Generic.IList<string> filePathList)
         {
-            ListEntity<string> param = new ListEntity<string>(filePathList);
-            removeKeepProcess.Execute(this, param);
+            UpdateFileRatingParameter param = new UpdateFileRatingParameter();
+            param.FilePathList = filePathList;
+            param.RatingValue = 0;
+            updateFileRatingProcess.Execute(this, param);
 
             RemoveFile(filePathList);
-
-            this.OnSelectedFileChanged(new SelectedFileChangeEventArgs());
         }
 
         protected override Action GetImageFilesAction(ImageViewerContentsParameter paramter)
         {
             return () =>
             {
-                var proces = TaskManager.CreateTwoWayProcess<GetKeepAsyncFacade, ListEntity<FileShallowInfoEntity>>(this.ProcessContainer);
+                var proces = TaskManager.CreateTwoWayProcess<GetFilesByRatingAsyncFacade, SingleValueEntity<int>, ListEntity<FileShallowInfoEntity>>(this.ProcessContainer);
                 proces.Callback += ((sender, e) =>
                 {
                     var imageFiles = e
@@ -128,7 +131,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
                     paramter.OnGetImageFiles(eventArgs);
                 });
 
-                proces.Execute(this);
+                proces.Execute(this, new SingleValueEntity<int>() { Value = this._parameter.RagingValue });
             };
         }
 
@@ -148,11 +151,11 @@ namespace PicSum.UIComponent.Contents.FileListContents
 
         private void initializeComponent()
         {
-            this.Title = "キープ";
-            this.Icon = Resources.ClipIcon;
-            this.IsAddKeepMenuItemVisible = false;
-            this.IsRemoveFromListMenuItemVisible = true;
+            this.Title = "スター";
+            this.Icon = Resources.ActiveRatingIcon;
+            this.IsAddKeepMenuItemVisible = true;
             this.IsMoveControlVisible = false;
+            this.IsRemoveFromListMenuItemVisible = true;
             base.sortFileRgistrationDateToolStripButton.Enabled = true;
         }
 
@@ -162,7 +165,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
 
         private void searchFileProcess_Callback(object sender, ListEntity<FileShallowInfoEntity> e)
         {
-            base.SetFiles(e, _parameter.SelectedFilePath, PicSum.Core.Base.Conf.SortTypeID.RgistrationDate, false);
+            base.SetFiles(e, _parameter.SelectedFilePath, SortTypeID.RgistrationDate, false);
 
             if (string.IsNullOrEmpty(_parameter.SelectedFilePath))
             {

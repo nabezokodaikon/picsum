@@ -74,47 +74,47 @@
     <Compile Include="Conf\CommonConfig.cs" />
     <Compile Include="Conf\FileListContentsConfig.cs" />
     <Compile Include="Conf\ImageViewerContentsConfig.cs" />
-    <Compile Include="ContentsParameter\FavoriteDirectoryListContentsParameter.cs" />
-    <Compile Include="ContentsParameter\GetImageFilesEventArgs.cs" />
-    <Compile Include="ContentsParameter\KeepFileListContentsParameter.cs" />
-    <Compile Include="ContentsParameter\DirectoryFileListContentsParameter.cs" />
-    <Compile Include="ContentsParameter\ImageViewerContentsParameter.cs" />
-    <Compile Include="ContentsParameter\RatingFileListContentsParameter.cs" />
-    <Compile Include="ContentsParameter\TagFileListContentsParameter.cs" />
+    <Compile Include="Parameter\FavoriteDirectoryListContentsParameter.cs" />
+    <Compile Include="Parameter\GetImageFilesEventArgs.cs" />
+    <Compile Include="Parameter\KeepFileListContentsParameter.cs" />
+    <Compile Include="Parameter\DirectoryFileListContentsParameter.cs" />
+    <Compile Include="Parameter\ImageViewerContentsParameter.cs" />
+    <Compile Include="Parameter\RatingFileListContentsParameter.cs" />
+    <Compile Include="Parameter\TagFileListContentsParameter.cs" />
     <Compile Include="ContentsToolBar\ContentsToolBar.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="ContentsToolBar\ContentsToolBarColorTable.cs" />
     <Compile Include="ExecuteDirectoryEventArgs.cs" />
     <Compile Include="ExecuteImageFileEventArgs.cs" />
-    <Compile Include="FileListContents\FavoriteDirectoryListContents.cs">
+    <Compile Include="FileList\FavoriteDirectoryListContents.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="FileListContents\FileEntity.cs" />
-    <Compile Include="FileListContents\KeepFileListContents.cs">
+    <Compile Include="FileList\FileEntity.cs" />
+    <Compile Include="FileList\KeepFileListContents.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="FileListContents\FileListContentsBase.cs">
+    <Compile Include="FileList\FileListContentsBase.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="FileListContents\FileListContentsBase.Designer.cs">
+    <Compile Include="FileList\FileListContentsBase.Designer.cs">
       <DependentUpon>FileListContentsBase.cs</DependentUpon>
     </Compile>
-    <Compile Include="FileListContents\DirectoryFileListContents.cs">
+    <Compile Include="FileList\DirectoryFileListContents.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="FileListContents\SortInfo.cs" />
-    <Compile Include="ImageViewerContents\ImageViewerContents.cs">
+    <Compile Include="FileList\SortInfo.cs" />
+    <Compile Include="ImageViewer\ImageViewerContents.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="ImageViewerContents\ImageViewerContents.Designer.cs">
+    <Compile Include="ImageViewer\ImageViewerContents.Designer.cs">
       <DependentUpon>ImageViewerContents.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="FileListContents\RatingFileListContents.cs">
+    <Compile Include="FileList\RatingFileListContents.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="FileListContents\TagFileListContents.cs">
+    <Compile Include="FileList\TagFileListContents.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
@@ -171,10 +171,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="FileListContents\FileListContentsBase.resx">
+    <EmbeddedResource Include="FileList\FileListContentsBase.resx">
       <DependentUpon>FileListContentsBase.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ImageViewerContents\ImageViewerContents.resx">
+    <EmbeddedResource Include="ImageViewer\ImageViewerContents.resx">
       <DependentUpon>ImageViewerContents.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">

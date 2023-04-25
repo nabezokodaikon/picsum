@@ -13,7 +13,7 @@ using PicSum.Task.Entity;
 using PicSum.Task.Paramter;
 using PicSum.Task.Result;
 using PicSum.UIComponent.Contents;
-using PicSum.UIComponent.Contents.ContentsParameter;
+using PicSum.UIComponent.Contents.Parameter;
 using PicSum.UIComponent.InfoPanel;
 using SWF.Common;
 using SWF.UIComponent.TabOperation;

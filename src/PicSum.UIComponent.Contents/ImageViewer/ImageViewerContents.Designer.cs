@@ -1,4 +1,4 @@
-﻿namespace PicSum.UIComponent.Contents.ImageViewerContents
+﻿namespace PicSum.UIComponent.Contents.ImageViewer
 {
     partial class ImageViewerContents
     {

@@ -1,21 +1,24 @@
-﻿using PicSum.UIComponent.Contents.FileListContents;
+﻿using PicSum.UIComponent.Contents.FileList;
 using SWF.UIComponent.TabOperation;
 
-namespace PicSum.UIComponent.Contents.ContentsParameter
+namespace PicSum.UIComponent.Contents.Parameter
 {
-    public sealed class FavoriteDirectoryListContentsParameter
+    /// <summary>
+    /// クリップボードファイルリストコンテンツパラメータ
+    /// </summary>
+    public sealed class KeepFileListContentsParameter
         : IContentsParameter
     {
-        public const string CONTENTS_SOURCES = "Favorite";
+        public const string CONTENTS_SOURCES = "Keep";
 
         public string ContentsSources { get; private set; }
         public string SourcesKey { get; private set; }
         public string Key { get; private set; }
         public string SelectedFilePath { get; set; }
 
-        public FavoriteDirectoryListContentsParameter()
+        public KeepFileListContentsParameter()
         {
-            this.ContentsSources = FavoriteDirectoryListContentsParameter.CONTENTS_SOURCES;
+            this.ContentsSources = KeepFileListContentsParameter.CONTENTS_SOURCES;
             this.SourcesKey = string.Empty;
             this.Key = string.Format("{0}ListContents", this.ContentsSources);
             this.SelectedFilePath = string.Empty;
@@ -23,8 +26,7 @@ namespace PicSum.UIComponent.Contents.ContentsParameter
 
         public ContentsPanel CreateContents()
         {
-            // ディレクトリのみ表示のため、画像ビューアへの遷移は有り得ない。
-            return new FavoriteDirectoryListContents(this);
+            return new KeepFileListContents(this);
         }
     }
 }

@@ -6,7 +6,7 @@ using PicSum.Task.Paramter;
 using PicSum.Task.Result;
 using PicSum.UIComponent.Common;
 using PicSum.UIComponent.Contents.Conf;
-using PicSum.UIComponent.Contents.ContentsParameter;
+using PicSum.UIComponent.Contents.Parameter;
 using SWF.Common;
 using SWF.UIComponent.ImagePanel;
 using System;
@@ -17,7 +17,7 @@ using System.Linq;
 using System.Security.Permissions;
 using System.Windows.Forms;
 
-namespace PicSum.UIComponent.Contents.ImageViewerContents
+namespace PicSum.UIComponent.Contents.ImageViewer
 {
     /// <summary>
     /// 画像ビューアコンテンツ

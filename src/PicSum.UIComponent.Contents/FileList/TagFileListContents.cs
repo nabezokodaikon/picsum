@@ -9,11 +9,11 @@ using PicSum.Core.Task.AsyncTask;
 using PicSum.Task.AsyncFacade;
 using PicSum.Task.Entity;
 using PicSum.Task.Paramter;
-using PicSum.UIComponent.Contents.ContentsParameter;
+using PicSum.UIComponent.Contents.Parameter;
 using PicSum.UIComponent.Contents.Properties;
 using SWF.Common;
 
-namespace PicSum.UIComponent.Contents.FileListContents
+namespace PicSum.UIComponent.Contents.FileList
 {
     /// <summary>
     /// タグファイルリストコンテンツ

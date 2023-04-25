@@ -2,7 +2,7 @@
 using PicSum.UIComponent.Contents.Properties;
 using System.Drawing;
 
-namespace PicSum.UIComponent.Contents.FileListContents
+namespace PicSum.UIComponent.Contents.FileList
 {
     internal sealed class SortInfo
     {

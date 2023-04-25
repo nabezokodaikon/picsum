@@ -5,7 +5,7 @@ using PicSum.Task.Entity;
 using PicSum.Task.Paramter;
 using PicSum.UIComponent.Common;
 using PicSum.UIComponent.Contents.Conf;
-using PicSum.UIComponent.Contents.ContentsParameter;
+using PicSum.UIComponent.Contents.Parameter;
 using SWF.Common;
 using SWF.UIComponent.FlowList;
 using SWF.UIComponent.TabOperation;
@@ -17,7 +17,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace PicSum.UIComponent.Contents.FileListContents
+namespace PicSum.UIComponent.Contents.FileList
 {
     /// <summary>
     /// ファイルリストコンテンツ基底クラス

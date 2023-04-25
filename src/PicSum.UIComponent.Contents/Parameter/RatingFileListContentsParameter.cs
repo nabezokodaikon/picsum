@@ -1,8 +1,8 @@
-﻿using PicSum.UIComponent.Contents.FileListContents;
+﻿using PicSum.UIComponent.Contents.FileList;
 using SWF.UIComponent.TabOperation;
 using System;
 
-namespace PicSum.UIComponent.Contents.ContentsParameter
+namespace PicSum.UIComponent.Contents.Parameter
 {
     /// <summary>
     /// 評価値ファイルリストコンテンツパラメータ
