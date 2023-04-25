@@ -15,8 +15,6 @@ namespace SWF.Common
 {
     public static class FileUtil
     {
-        #region ファイル確認メソッド
-
         /// <summary>
         /// ファイル、フォルダの存在を確認します。
         /// </summary>
@@ -26,7 +24,7 @@ namespace SWF.Common
         {
             if (filePath == null)
             {
-                throw new ArgumentNullException("filePath");
+                throw new ArgumentNullException(nameof(filePath));
             }
 
             if (string.IsNullOrEmpty(filePath))
@@ -48,7 +46,7 @@ namespace SWF.Common
         {
             if (filePath == null)
             {
-                throw new ArgumentNullException("filePath");
+                throw new ArgumentNullException(nameof(filePath));
             }
 
             if (string.IsNullOrEmpty(filePath))
@@ -70,7 +68,7 @@ namespace SWF.Common
         {
             if (filePath == null)
             {
-                throw new ArgumentNullException("filePath");
+                throw new ArgumentNullException(nameof(filePath));
             }
 
             if (string.IsNullOrEmpty(filePath))
@@ -92,26 +90,10 @@ namespace SWF.Common
         {
             if (filePath == null)
             {
-                throw new ArgumentNullException("filePath");
+                throw new ArgumentNullException(nameof(filePath));
             }
 
             return File.Exists(filePath);
-        }
-
-        /// <summary>
-        /// 指定したディレクトリ内に、ファイルが存在するか確認します。
-        /// </summary>
-        /// <param name="directoryPath"></param>
-        /// <returns></returns>
-        /// <exception cref="ArgumentNullException"></exception>
-        public static bool HasFile(string directoryPath)
-        {
-            if (directoryPath == null)
-            {
-                throw new ArgumentNullException(nameof(directoryPath));
-            }
-
-            return Directory.EnumerateFiles(directoryPath).Any();
         }
 
         /// <summary>
@@ -129,12 +111,12 @@ namespace SWF.Common
 
             foreach (var ex in ImageUtil.ImageFileExtensionList)
             {
-                try 
+                try
                 {
                     var result = Directory.EnumerateFiles(directoryPath, string.Format("*{0}", ex)).Any();
                     if (result)
                     {
-                        return true;
+                        return result;
                     }
                 }
                 catch (UnauthorizedAccessException)
@@ -155,16 +137,16 @@ namespace SWF.Common
         {
             if (filePath == null)
             {
-                throw new ArgumentNullException("filePath");
+                throw new ArgumentNullException(nameof(filePath));
             }
 
             if (string.IsNullOrEmpty(filePath))
             {
                 return true;
             }
-            else if (IsExists(filePath))
+            else if (FileUtil.IsExists(filePath))
             {
-                if (IsDrive(filePath))
+                if (FileUtil.IsDrive(filePath))
                 {
                     return true;
                 }
@@ -172,7 +154,7 @@ namespace SWF.Common
                 {
                     try
                     {
-                        FileAttributes fa = File.GetAttributes(filePath);
+                        var fa = File.GetAttributes(filePath);
                         if ((fa & FileAttributes.Hidden) == FileAttributes.Hidden ||
                             (fa & (FileAttributes.Hidden | FileAttributes.System)) == (FileAttributes.Hidden | FileAttributes.System))
                         {
@@ -195,10 +177,6 @@ namespace SWF.Common
             }
         }
 
-        #endregion
-
-        #region ファイル情報取得メソッド
-
         /// <summary>
         /// ファイル名を取得します。
         /// </summary>
@@ -209,16 +187,16 @@ namespace SWF.Common
         {
             if (filePath == null)
             {
-                throw new ArgumentNullException("filePath");
+                throw new ArgumentNullException(nameof(filePath));
             }
 
             if (string.IsNullOrEmpty(filePath))
             {
                 return "PC";
             }
-            else if (IsDrive(filePath))
+            else if (FileUtil.IsDrive(filePath))
             {
-                DriveInfo driveInfo = DriveInfo.GetDrives().FirstOrDefault(di => di.Name == filePath ||
+                var driveInfo = DriveInfo.GetDrives().FirstOrDefault(di => di.Name == filePath ||
                                                                            di.Name == filePath + "\\");
                 if (driveInfo == null)
                 {
@@ -227,11 +205,11 @@ namespace SWF.Common
 
                 if (string.IsNullOrEmpty(driveInfo.VolumeLabel))
                 {
-                    return toRemoveLastPathSeparate(filePath);
+                    return FileUtil.ToRemoveLastPathSeparate(filePath);
                 }
                 else
                 {
-                    return string.Format("{0}({1})", driveInfo.VolumeLabel, toRemoveLastPathSeparate(filePath));
+                    return string.Format("{0}({1})", driveInfo.VolumeLabel, FileUtil.ToRemoveLastPathSeparate(filePath));
                 }
             }
             else
@@ -249,12 +227,12 @@ namespace SWF.Common
         {
             if (filePath == null)
             {
-                throw new ArgumentNullException("filePath");
+                throw new ArgumentNullException(nameof(filePath));
             }
 
             if (string.IsNullOrEmpty(filePath))
             {
-                throw new ArgumentException("システムルートが指定されました。", "filePath");
+                throw new ArgumentException("システムルートが指定されました。", nameof(filePath));
             }
 
             return Path.GetDirectoryName(filePath);
@@ -269,7 +247,7 @@ namespace SWF.Common
         {
             if (filePath == null)
             {
-                throw new ArgumentNullException("filePath");
+                throw new ArgumentNullException(nameof(filePath));
             }
 
             return Path.GetExtension(filePath).ToUpper();
@@ -284,17 +262,17 @@ namespace SWF.Common
         {
             if (filePath == null)
             {
-                throw new ArgumentNullException("filePath");
+                throw new ArgumentNullException(nameof(filePath));
             }
 
             if (string.IsNullOrEmpty(filePath))
             {
-                return "システムルート";
+                return "System root";
             }
             else
             {
-                WinApiMembers.SHFILEINFOW sh = new WinApiMembers.SHFILEINFOW();
-                IntPtr hSuccess = WinApiMembers.SHGetFileInfoW(filePath, 0, ref sh, (uint)Marshal.SizeOf(sh), WinApiMembers.ShellFileInfoFlags.SHGFI_TYPENAME);
+                var sh = new WinApiMembers.SHFILEINFOW();
+                var hSuccess = WinApiMembers.SHGetFileInfoW(filePath, 0, ref sh, (uint)Marshal.SizeOf(sh), WinApiMembers.ShellFileInfoFlags.SHGFI_TYPENAME);
                 if (!hSuccess.Equals(IntPtr.Zero))
                 {
                     return sh.szTypeName;
@@ -315,7 +293,7 @@ namespace SWF.Common
         {
             if (filePath == null)
             {
-                throw new ArgumentNullException("filePath");
+                throw new ArgumentNullException(nameof(filePath));
             }
 
             return File.GetLastWriteTime(filePath);
@@ -330,7 +308,7 @@ namespace SWF.Common
         {
             if (filePath == null)
             {
-                throw new ArgumentNullException("filePath");
+                throw new ArgumentNullException(nameof(filePath));
             }
 
             return File.GetCreationTime(filePath);
@@ -345,28 +323,11 @@ namespace SWF.Common
         {
             if (filePath == null)
             {
-                throw new ArgumentNullException("filePath");
+                throw new ArgumentNullException(nameof(filePath));
             }
 
-            FileInfo fi = new FileInfo(filePath);
+            var fi = new FileInfo(filePath);
             return fi.Length;
-        }
-
-        /// <summary>
-        /// 短いファイルパスを取得します。
-        /// </summary>
-        /// <param name="filePath"></param>
-        /// <returns></returns>
-        public static string GetShortPathName(string filePath)
-        {
-            StringBuilder sb = new StringBuilder(1024);
-            uint ret = WinApiMembers.GetShortPathName(filePath, sb, (uint)sb.Capacity);
-            if (ret == 0)
-            {
-                throw new Exception("短いファイル名の取得に失敗しました。");
-            }
-
-            return sb.ToString();
         }
 
         /// <summary>
@@ -386,19 +347,16 @@ namespace SWF.Common
                 .FirstOrDefault(file => ImageUtil.ImageFileExtensionList.Contains(FileUtil.GetExtension(file)));
         }
 
-        #endregion
-
-        #region ファイルリスト取得メソッド
-
         /// <summary>
         /// ドライブリストを取得します。
         /// </summary>
         /// <returns></returns>
         public static IList<string> GetDriveList()
         {
-            var drives = from drive in DriveInfo.GetDrives()
-                         select toRemoveLastPathSeparate(drive.Name + "\\");
-            return drives.ToList();
+            var drives = DriveInfo.GetDrives()
+                .Select(drive => FileUtil.ToRemoveLastPathSeparate(string.Format(@"{0}\", drive.Name)))
+                .ToArray();
+            return drives;
         }
 
         /// <summary>
@@ -410,10 +368,10 @@ namespace SWF.Common
         {
             if (directoryPath == null)
             {
-                throw new ArgumentNullException("directoryPath");
+                throw new ArgumentNullException(nameof(directoryPath));
             }
 
-            if (CanAccess(directoryPath))
+            if (FileUtil.CanAccess(directoryPath))
             {
                 try
                 {
@@ -442,10 +400,10 @@ namespace SWF.Common
         {
             if (directoryPath == null)
             {
-                throw new ArgumentNullException("directoryPath");
+                throw new ArgumentNullException(nameof(directoryPath));
             }
 
-            if (CanAccess(directoryPath))
+            if (FileUtil.CanAccess(directoryPath))
             {
                 try
                 {
@@ -474,10 +432,10 @@ namespace SWF.Common
         {
             if (directoryPath == null)
             {
-                throw new ArgumentNullException("directoryPath");
+                throw new ArgumentNullException(nameof(directoryPath));
             }
 
-            if (CanAccess(directoryPath))
+            if (FileUtil.CanAccess(directoryPath))
             {
                 try
                 {
@@ -497,10 +455,6 @@ namespace SWF.Common
             }
         }
 
-        #endregion
-
-        #region 変換メソッド
-
         /// <summary>
         /// ファイルサイズを文字列に変換します。
         /// </summary>
@@ -510,7 +464,7 @@ namespace SWF.Common
         {
             if (fileSize < 0)
             {
-                throw new ArgumentOutOfRangeException("fileSize");
+                throw new ArgumentOutOfRangeException(nameof(fileSize));
             }
 
             if (fileSize < 1024)
@@ -535,13 +489,9 @@ namespace SWF.Common
             }
             else
             {
-                throw new ArgumentOutOfRangeException("fileSize");
+                throw new ArgumentOutOfRangeException(nameof(fileSize));
             }
         }
-
-        #endregion
-
-        #region アイコン取得メソッド
 
         /// <summary>
         /// 小システムアイコンを取得します。
@@ -550,22 +500,29 @@ namespace SWF.Common
         /// <returns></returns>
         public static Image GetSmallSystemIcon(WinApiMembers.ShellSpecialFolder spesialFolder)
         {
-            IntPtr idHandle = IntPtr.Zero;
-            WinApiMembers.SHGetSpecialFolderLocation(IntPtr.Zero, spesialFolder, out idHandle);
-            WinApiMembers.SHFILEINFOW sh = new WinApiMembers.SHFILEINFOW();
-            IntPtr hSuccess = WinApiMembers.SHGetFileInfoW(idHandle, 0, ref sh, (uint)Marshal.SizeOf(sh),
+            WinApiMembers.SHGetSpecialFolderLocation(IntPtr.Zero, spesialFolder, out var idHandle);
+            var sh = new WinApiMembers.SHFILEINFOW();
+            var hSuccess = WinApiMembers.SHGetFileInfoW(idHandle, 0, ref sh, (uint)Marshal.SizeOf(sh),
                                                            WinApiMembers.ShellFileInfoFlags.SHGFI_ICON |
                                                            WinApiMembers.ShellFileInfoFlags.SHGFI_PIDL |
                                                            WinApiMembers.ShellFileInfoFlags.SHGFI_SMALLICON);
-            if (!hSuccess.Equals(IntPtr.Zero))
+            try
             {
-                Image icon = Icon.FromHandle(sh.hIcon).ToBitmap();
-                WinApiMembers.DestroyIcon(sh.hIcon);
-                return icon;
+                if (!hSuccess.Equals(IntPtr.Zero))
+                {
+                    using (var icon = Icon.FromHandle(sh.hIcon))
+                    {
+                        return icon.ToBitmap();
+                    }
+                }
+                else
+                {
+                    return null;
+                }
             }
-            else
+            finally
             {
-                return null;
+                WinApiMembers.DestroyIcon(sh.hIcon);
             }
         }
 
@@ -576,22 +533,29 @@ namespace SWF.Common
         /// <returns></returns>
         public static Image GetLargeSystemIcon(WinApiMembers.ShellSpecialFolder spesialFolder)
         {
-            IntPtr idHandle = IntPtr.Zero;
-            WinApiMembers.SHGetSpecialFolderLocation(IntPtr.Zero, spesialFolder, out idHandle);
-            WinApiMembers.SHFILEINFOW sh = new WinApiMembers.SHFILEINFOW();
-            IntPtr hSuccess = WinApiMembers.SHGetFileInfoW(idHandle, 0, ref sh, (uint)Marshal.SizeOf(sh),
+            WinApiMembers.SHGetSpecialFolderLocation(IntPtr.Zero, spesialFolder, out var idHandle);
+            var sh = new WinApiMembers.SHFILEINFOW();
+            var hSuccess = WinApiMembers.SHGetFileInfoW(idHandle, 0, ref sh, (uint)Marshal.SizeOf(sh),
                                                            WinApiMembers.ShellFileInfoFlags.SHGFI_ICON |
                                                            WinApiMembers.ShellFileInfoFlags.SHGFI_PIDL |
                                                            WinApiMembers.ShellFileInfoFlags.SHGFI_LARGEICON);
-            if (!hSuccess.Equals(IntPtr.Zero))
+            try
             {
-                Image icon = Icon.FromHandle(sh.hIcon).ToBitmap();
-                WinApiMembers.DestroyIcon(sh.hIcon);
-                return icon;
+                if (!hSuccess.Equals(IntPtr.Zero))
+                {
+                    using (var icon = Icon.FromHandle(sh.hIcon))
+                    {
+                        return icon.ToBitmap();
+                    }
+                }
+                else
+                {
+                    return null;
+                }
             }
-            else
+            finally
             {
-                return null;
+                WinApiMembers.DestroyIcon(sh.hIcon);
             }
         }
 
@@ -602,42 +566,27 @@ namespace SWF.Common
         /// <returns></returns>
         public static Image GetSmallIconByFilePath(string filePath)
         {
-            WinApiMembers.SHFILEINFOW sh = new WinApiMembers.SHFILEINFOW();
-            IntPtr hSuccess = WinApiMembers.SHGetFileInfoW(filePath, 0, ref sh, (uint)Marshal.SizeOf(sh),
+            var sh = new WinApiMembers.SHFILEINFOW();
+            var hSuccess = WinApiMembers.SHGetFileInfoW(filePath, 0, ref sh, (uint)Marshal.SizeOf(sh),
                                                            WinApiMembers.ShellFileInfoFlags.SHGFI_ICON |
                                                            WinApiMembers.ShellFileInfoFlags.SHGFI_SMALLICON);
-            if (!hSuccess.Equals(IntPtr.Zero))
+            try
             {
-                Image icon = Icon.FromHandle(sh.hIcon).ToBitmap();
+                if (!hSuccess.Equals(IntPtr.Zero))
+                {
+                    using (var icon = Icon.FromHandle(sh.hIcon))
+                    {
+                        return icon.ToBitmap();
+                    }
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            finally
+            {
                 WinApiMembers.DestroyIcon(sh.hIcon);
-                return icon;
-            }
-            else
-            {
-                return null;
-            }
-        }
-
-        /// <summary>
-        /// ファイルパスを指定して大アイコンを取得します。
-        /// </summary>
-        /// <param name="filePath">ファイルパス</param>
-        /// <returns></returns>
-        public static Image GetLargeIconByFilePath(string filePath)
-        {
-            WinApiMembers.SHFILEINFOW sh = new WinApiMembers.SHFILEINFOW();
-            IntPtr hSuccess = WinApiMembers.SHGetFileInfoW(filePath, 0, ref sh, (uint)Marshal.SizeOf(sh),
-                                                           WinApiMembers.ShellFileInfoFlags.SHGFI_ICON |
-                                                           WinApiMembers.ShellFileInfoFlags.SHGFI_LARGEICON);
-            if (!hSuccess.Equals(IntPtr.Zero))
-            {
-                Image icon = Icon.FromHandle(sh.hIcon).ToBitmap();
-                WinApiMembers.DestroyIcon(sh.hIcon);
-                return icon;
-            }
-            else
-            {
-                return null;
             }
         }
 
@@ -696,96 +645,6 @@ namespace SWF.Common
             }
         }
 
-        /// <summary>
-        /// 拡張子を指定して小アイコンを取得します。
-        /// </summary>
-        /// <param name="filePath">ファイルパス</param>
-        /// <returns></returns>
-        public static Image GetSmallIconByExtension(string ex)
-        {
-            WinApiMembers.SHFILEINFOW sh = new WinApiMembers.SHFILEINFOW();
-            IntPtr hSuccess = WinApiMembers.SHGetFileInfoW(string.Format(@"*{0}", ex), 0, ref sh, (uint)Marshal.SizeOf(sh),
-                                                           WinApiMembers.ShellFileInfoFlags.SHGFI_USEFILEATTRIBUTES |
-                                                           WinApiMembers.ShellFileInfoFlags.SHGFI_ICON |
-                                                           WinApiMembers.ShellFileInfoFlags.SHGFI_SMALLICON);
-            if (!hSuccess.Equals(IntPtr.Zero))
-            {
-                Image icon = Icon.FromHandle(sh.hIcon).ToBitmap();
-                WinApiMembers.DestroyIcon(sh.hIcon);
-                return icon;
-            }
-            else
-            {
-                return null;
-            }
-        }
-
-        /// <summary>
-        /// 拡張子を指定して大アイコンを取得します。
-        /// </summary>
-        /// <param name="filePath">ファイルパス</param>
-        /// <returns></returns>
-        public static Image GetLargeIconByExtension(string ex)
-        {
-            WinApiMembers.SHFILEINFOW sh = new WinApiMembers.SHFILEINFOW();
-            IntPtr hSuccess = WinApiMembers.SHGetFileInfoW(string.Format(@"*{0}", ex), 0, ref sh, (uint)Marshal.SizeOf(sh),
-                                                           WinApiMembers.ShellFileInfoFlags.SHGFI_USEFILEATTRIBUTES |
-                                                           WinApiMembers.ShellFileInfoFlags.SHGFI_ICON |
-                                                           WinApiMembers.ShellFileInfoFlags.SHGFI_LARGEICON);
-            if (!hSuccess.Equals(IntPtr.Zero))
-            {
-                Image icon = Icon.FromHandle(sh.hIcon).ToBitmap();
-                WinApiMembers.DestroyIcon(sh.hIcon);
-                return icon;
-            }
-            else
-            {
-                return null;
-            }
-        }
-
-        /// <summary>
-        /// 指定された実行可能ファイル、
-        /// ダイナミックリンクライブラリ（DLL）、
-        /// アイコンファイルのいずれかから、小さいアイコンを取得します。
-        /// </summary>
-        /// <param name="path">抽出するファイルパス</param>
-        /// <param name="iconIndex">アイコンのインデックス</param>
-        /// <returns></returns>
-        public static Image GetSmallIconFromFile(string path, int iconIndex)
-        {
-            IntPtr largeIconHandle = IntPtr.Zero;
-            IntPtr smallIconHandle = IntPtr.Zero;
-            WinApiMembers.ExtractIconEx(path, iconIndex, out largeIconHandle, out smallIconHandle, 1);
-            Image icon = Icon.FromHandle(smallIconHandle).ToBitmap();
-            WinApiMembers.DestroyIcon(largeIconHandle);
-            WinApiMembers.DestroyIcon(smallIconHandle);
-            return icon;
-        }
-
-        /// <summary>
-        /// 指定された実行可能ファイル、
-        /// ダイナミックリンクライブラリ（DLL）、
-        /// アイコンファイルのいずれかから、大きいアイコンを取得します。
-        /// </summary>
-        /// <param name="path">抽出するファイルパス</param>
-        /// <param name="iconIndex">アイコンのインデックス</param>
-        /// <returns></returns>
-        public static Image GetLargeIconFromFile(string path, int iconIndex)
-        {
-            IntPtr largeIconHandle = IntPtr.Zero;
-            IntPtr smallIconHandle = IntPtr.Zero;
-            WinApiMembers.ExtractIconEx(path, iconIndex, out largeIconHandle, out smallIconHandle, 1);
-            Image icon = Icon.FromHandle(largeIconHandle).ToBitmap();
-            WinApiMembers.DestroyIcon(largeIconHandle);
-            WinApiMembers.DestroyIcon(smallIconHandle);
-            return icon;
-        }
-
-        #endregion
-
-        #region プロセス関連メソッド
-
         public static void OpenFile(string filePath)
         {
             if (filePath == null)
@@ -828,13 +687,11 @@ namespace SWF.Common
             Process.Start("EXPLORER.EXE", string.Format(@"/select,{0}", filePath));
         }
 
-        #endregion
-
         // ファイルパスの末尾が"\"の場合取り除きます。
-        private static string toRemoveLastPathSeparate(string filePath)
+        private static string ToRemoveLastPathSeparate(string filePath)
         {
-            int length = filePath.Length;
-            string lastChar = filePath.Substring(length - 1, 1);
+            var length = filePath.Length;
+            var lastChar = filePath.Substring(length - 1, 1);
             if (lastChar.Equals("\\", StringComparison.Ordinal))
             {
                 return filePath.Substring(0, length - 1);
