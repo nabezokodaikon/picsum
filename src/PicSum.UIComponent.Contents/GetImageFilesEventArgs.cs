@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PicSum.UIComponent.Contents.Parameter
+namespace PicSum.UIComponent.Contents
 {
     public sealed class GetImageFilesEventArgs
         : EventArgs
