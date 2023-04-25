@@ -1,29 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 
 namespace PicSum.UIComponent.Contents.ContentsToolBar
 {
-    public class ContentsToolBar : ToolStrip
+    public class ContentsToolBar
+        : ToolStrip
     {
         public ContentsToolBar()
         {
-            initializeComponent();
+            InitializeComponent();
         }
 
-        private void initializeComponent()
+        private void InitializeComponent()
         {
             this.DoubleBuffered = true;
             this.CanOverflow = false;
             this.GripStyle = ToolStripGripStyle.Hidden;
-            this.Renderer = getRenderer();
+            this.Renderer = this.GetRenderer();
         }
 
-        private ToolStripRenderer getRenderer()
+        private ToolStripRenderer GetRenderer()
         {
-            ToolStripProfessionalRenderer renderer = new ToolStripProfessionalRenderer(new ContentsToolBarColorTable());
+            var renderer = new ToolStripProfessionalRenderer(new ContentsToolBarColorTable());
             renderer.RoundedEdges = false;
             return renderer;
         }
