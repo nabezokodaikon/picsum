@@ -12,6 +12,7 @@ using SWF.UIComponent.ImagePanel;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data.Common;
 using System.Drawing;
 using System.Linq;
 using System.Security.Permissions;
@@ -155,6 +156,22 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         #endregion
 
         #region 継承メソッド
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                this.parameter.SelectedFilePath = this.SelectedFilePath;
+                this.parameter.GetImageFiles -= this.Parameter_GetImageFiles;
+
+                if (this.components != null) 
+                {
+                    this.components.Dispose();
+                }
+            }
+
+            base.Dispose(disposing);
+        }
 
         protected override void OnLoad(EventArgs e)
         {
@@ -532,7 +549,9 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
             this.MaximumIndex = this.filePathList.Count - 1;
 
-            var index = this.filePathList.IndexOf(e.SelectedFilePath);
+            var selectedFilePath = this.parameter.SelectedFilePath != string.Empty ?
+                this.parameter.SelectedFilePath : e.SelectedFilePath;
+            var index = this.filePathList.IndexOf(selectedFilePath);
             if (index < 0)
             {
                 this.FilePathListIndex = 0;

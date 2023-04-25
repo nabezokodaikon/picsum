@@ -19,6 +19,7 @@ namespace PicSum.UIComponent.Contents.Parameter
         public Func<ImageViewerContentsParameter, Action> GetImageFilesAction { get; private set; }
         public string ContentsTitle { get; private set; }
         public Image ContentsIcon { get; private set; }
+        public string SelectedFilePath { get; set; }
 
         public ImageViewerContentsParameter(
             string contentsSources,
@@ -33,6 +34,7 @@ namespace PicSum.UIComponent.Contents.Parameter
             this.GetImageFilesAction = getImageFilesAction ?? throw new ArgumentNullException(nameof(getImageFilesAction));
             this.ContentsTitle = contentsTitle ?? throw new ArgumentNullException(nameof(contentsTitle));
             this.ContentsIcon = contentsIcon ?? throw new ArgumentNullException(nameof(contentsIcon));
+            this.SelectedFilePath = string.Empty;
         }
 
         public ContentsPanel CreateContents()
