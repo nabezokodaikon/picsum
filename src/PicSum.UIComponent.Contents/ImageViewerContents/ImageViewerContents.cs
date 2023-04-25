@@ -41,7 +41,6 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
         private ImageDisplayMode displayMode = ImageDisplayMode.LeftFacing;
         private ImageSizeMode sizeMode = ImageSizeMode.FitOnlyBigImage;
         private IList<string> filePathList = null;
-        private string selectedFilePath = string.Empty;
 
         private TwoWayProcess<GetImageFileAsyncFacade, GetImageFileParameter, GetImageFileResult> readImageFileProcess = null;
         private OneWayProcess<AddKeepAsyncFacade, ListEntity<KeepFileEntity>> addKeepProcess = null;
@@ -51,13 +50,7 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
 
         #region パブリックプロパティ
 
-        public override string SelectedFilePath
-        {
-            get
-            {
-                return this.selectedFilePath;
-            }
-        }
+        public override string SelectedFilePath { get; protected set; } = string.Empty;
 
         #endregion
 
@@ -573,7 +566,7 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
                 return;
             }
 
-            this.selectedFilePath = e.Image1.FilePath;
+            this.SelectedFilePath = e.Image1.FilePath;
             this.OnSelectedFileChanged(new SelectedFileChangeEventArgs(e.Image1.FilePath));
 
             if (this.displayMode == ImageDisplayMode.Single)

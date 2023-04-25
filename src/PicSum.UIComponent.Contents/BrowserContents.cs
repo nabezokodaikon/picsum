@@ -33,10 +33,7 @@ namespace PicSum.UIComponent.Contents
 
         #region パブリックプロパティ
 
-        public abstract string SelectedFilePath
-        {
-            get;
-        }
+        public abstract string SelectedFilePath { get; protected set; }
 
         #endregion
 

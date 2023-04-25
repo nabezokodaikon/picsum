@@ -35,7 +35,6 @@ namespace PicSum.UIComponent.Contents.FileListContents
 
         private Dictionary<string, FileEntity> _masterFileDictionary = null;
         private List<string> _filterFilePathList = null;
-        private string _selectedFilePath = string.Empty;
         private readonly SolidBrush _selectedTextBrush = new SolidBrush(Color.White);
         private readonly SortInfo _sortInfo = new SortInfo();
         private TwoWayProcess<GetThumbnailsAsyncFacade, GetThumbnailParameter, ThumbnailImageEntity> _getThumbnailsProcess = null;
@@ -46,13 +45,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
 
         #region パブリックプロパティ
 
-        public override string SelectedFilePath
-        {
-            get
-            {
-                return _selectedFilePath;
-            }
-        }
+        public override string SelectedFilePath { get; protected set; } = string.Empty;
 
         #endregion
 
@@ -326,7 +319,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
                 _masterFileDictionary.Add(destFile.FilePath, destFile);
             }
 
-            _selectedFilePath = selectedFilePath;
+            this.SelectedFilePath = selectedFilePath;
             _sortInfo.SetSortType(sortTypeID, isAscending);
 
             setSort();
@@ -414,24 +407,24 @@ namespace PicSum.UIComponent.Contents.FileListContents
                 int maximumIndex = _indexList.Max();
                 if (maximumIndex + 1 < _filterFilePathList.Count)
                 {
-                    _selectedFilePath = _filterFilePathList[maximumIndex + 1];
+                    this.SelectedFilePath = _filterFilePathList[maximumIndex + 1];
                 }
                 else
                 {
                     int minimumIndex = _indexList.Min();
                     if (minimumIndex - 1 > -1)
                     {
-                        _selectedFilePath = _filterFilePathList[minimumIndex - 1];
+                        this.SelectedFilePath = _filterFilePathList[minimumIndex - 1];
                     }
                     else
                     {
-                        _selectedFilePath = string.Empty;
+                        this.SelectedFilePath = string.Empty;
                     }
                 }
             }
             else
             {
-                _selectedFilePath = string.Empty;
+                this.SelectedFilePath = string.Empty;
             }
 
             setFilter();
@@ -607,7 +600,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
             {
                 _filterFilePathList = new List<string>(filterList.ConvertAll(f => f.FilePath));
                 flowList.ItemCount = filterList.Count;
-                FileEntity selectedFile = filterList.FirstOrDefault(f => f.FilePath.Equals(_selectedFilePath, StringComparison.Ordinal));
+                FileEntity selectedFile = filterList.FirstOrDefault(f => f.FilePath.Equals(this.SelectedFilePath, StringComparison.Ordinal));
                 if (selectedFile != null)
                 {
                     flowList.SelectItem(filterList.IndexOf(selectedFile));
@@ -981,7 +974,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
             IList<string> filePathList = GetSelectedFiles();
             if (filePathList.Count > 0)
             {
-                _selectedFilePath = filePathList.First();
+                this.SelectedFilePath = filePathList.First();
             }
 
             OnSelectedFileChanged(new SelectedFileChangeEventArgs(filePathList));
@@ -1115,10 +1108,10 @@ namespace PicSum.UIComponent.Contents.FileListContents
                         currentFilePath,
                         this.GetImageFilesAction(
                             new ImageViewerContentsParameter(
-                                this.Parameter.ContentsSources, 
-                                this.Parameter.SourcesKey, 
-                                this.GetImageFilesAction, 
-                                this.Title, 
+                                this.Parameter.ContentsSources,
+                                this.Parameter.SourcesKey,
+                                this.GetImageFilesAction,
+                                this.Title,
                                 this.Icon)),
                         this.Title,
                         this.Icon);
