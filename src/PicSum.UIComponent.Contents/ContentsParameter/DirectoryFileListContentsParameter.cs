@@ -7,7 +7,7 @@ namespace PicSum.UIComponent.Contents.ContentsParameter
     /// <summary>
     /// フォルダファイルリストコンテンツパラメータ
     /// </summary>
-    public class DirectoryFileListContentsParameter
+    public sealed class DirectoryFileListContentsParameter
         : IContentsParameter
     {
         public const string CONTENTS_SOURCES = "Directory";

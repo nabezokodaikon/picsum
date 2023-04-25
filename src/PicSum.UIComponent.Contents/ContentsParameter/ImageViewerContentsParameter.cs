@@ -1,6 +1,5 @@
 ﻿using SWF.UIComponent.TabOperation;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 
 namespace PicSum.UIComponent.Contents.ContentsParameter
@@ -8,7 +7,7 @@ namespace PicSum.UIComponent.Contents.ContentsParameter
     /// <summary>
     /// 画像表示コンテンツパラメータ
     /// </summary>
-    public class ImageViewerContentsParameter
+    public sealed class ImageViewerContentsParameter
         : IContentsParameter
     {
         public event EventHandler<GetImageFilesEventArgs> GetImageFiles;

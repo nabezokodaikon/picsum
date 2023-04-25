@@ -3,7 +3,7 @@ using SWF.UIComponent.TabOperation;
 
 namespace PicSum.UIComponent.Contents.ContentsParameter
 {
-    public class FavoriteDirectoryListContentsParameter
+    public sealed class FavoriteDirectoryListContentsParameter
         : IContentsParameter
     {
         public const string CONTENTS_SOURCES = "Favorite";
