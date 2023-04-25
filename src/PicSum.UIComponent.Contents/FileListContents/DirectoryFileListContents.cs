@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Windows.Forms;
-using PicSum.Core.Base.Conf;
+﻿using PicSum.Core.Base.Conf;
 using PicSum.Core.Task.AsyncTask;
 using PicSum.Task.AsyncFacade;
 using PicSum.Task.Entity;
@@ -10,6 +6,11 @@ using PicSum.Task.Paramter;
 using PicSum.Task.Result;
 using PicSum.UIComponent.Contents.ContentsParameter;
 using SWF.Common;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Windows.Forms;
 
 namespace PicSum.UIComponent.Contents.FileListContents
 {
@@ -166,6 +167,31 @@ namespace PicSum.UIComponent.Contents.FileListContents
             param.IsNext = true;
             getNextDirectoryProcess.Cancel();
             getNextDirectoryProcess.Execute(this, param);
+        }
+
+        protected override void GetImageFilesAction(ImageViewerContentsParameter paramter)
+        {
+            var proces = TaskManager.CreateTwoWayProcess<GetFilesByDirectoryAsyncFacade, SingleValueEntity<string>, GetDirectoryResult>(this.ProcessContainer);
+            proces.Callback += ((sender, e) => 
+            {
+                if (e.DirectoryNotFoundException != null)
+                {
+                    ExceptionUtil.ShowErrorDialog(e.DirectoryNotFoundException);
+                    return;
+                }
+
+                var imageFiles = e.FileInfoList
+                    .Where(fileInfo => fileInfo.IsImageFile)
+                    .Select(fileInfo => fileInfo.FilePath)
+                    .ToArray();
+
+                var ex = FileUtil.GetExtension(this.SelectedFilePath);
+                var selectedFilePath = ImageUtil.ImageFileExtensionList.Contains(ex) ? 
+                    this.SelectedFilePath: string.Empty;
+
+                var eventArgs = new GetImageFilesEventArgs(imageFiles, selectedFilePath);
+                paramter.OnGetImageFiles(eventArgs);
+            });
         }
 
         #endregion

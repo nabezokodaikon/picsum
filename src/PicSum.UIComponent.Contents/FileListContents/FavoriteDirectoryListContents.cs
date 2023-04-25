@@ -9,6 +9,7 @@ using SWF.Common;
 using PicSum.UIComponent.Contents.Conf;
 using System.Collections.Generic;
 using PicSum.Task.Paramter;
+using PicSum.Core.Base.Conf;
 
 namespace PicSum.UIComponent.Contents.FileListContents
 {
@@ -105,6 +106,11 @@ namespace PicSum.UIComponent.Contents.FileListContents
             this.RemoveFile(directoryList);
 
             this.OnSelectedFileChanged(new SelectedFileChangeEventArgs());
+        }
+
+        protected override void GetImageFilesAction(ImageViewerContentsParameter paramter)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion
