@@ -135,16 +135,6 @@ namespace PicSum.Main.UIComponent
 
         }
 
-        public void OpenContentsByCommandLineArgs(string[] args)
-        {
-            if (args == null)
-            {
-                throw new ArgumentNullException("args");
-            }
-
-            browserMainPanel.OpenContentsByCommandLineArgs(args);
-        }
-
         #endregion
 
         #region 継承メソッド

@@ -40,6 +40,8 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
         private string rightImageFilePath = string.Empty;
         private ImageDisplayMode displayMode = ImageDisplayMode.LeftFacing;
         private ImageSizeMode sizeMode = ImageSizeMode.FitOnlyBigImage;
+        private IList<string> filePathList = null;
+        private string selectedFilePath = string.Empty;
 
         private TwoWayProcess<GetImageFileAsyncFacade, GetImageFileParameter, GetImageFileResult> readImageFileProcess = null;
         private OneWayProcess<AddKeepAsyncFacade, ListEntity<KeepFileEntity>> addKeepProcess = null;
@@ -53,7 +55,7 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
         {
             get
             {
-                return this.parameter.SelectedFilePath;
+                return this.selectedFilePath;
             }
         }
 
@@ -135,18 +137,14 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
 
         #region コンストラクタ
 
-        public ImageViewerContents(ImageViewerContentsParameter param)
-            : base(param)
+        public ImageViewerContents(ImageViewerContentsParameter parameter)
+            : base(parameter)
         {
-            if (param == null)
-            {
-                throw new ArgumentNullException("param");
-            }
-
-            this.parameter = param;
-
             this.InitializeComponent();
-            this.SubInitializeComponent();
+
+            this.parameter = parameter;
+            this.Title = this.parameter.ContentsTitle;
+            this.Icon = this.parameter.ContentsIcon;
         }
 
         #endregion
@@ -159,7 +157,16 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
 
         protected override void OnLoad(EventArgs e)
         {
-            this.FilePathListIndex = this.parameter.FilePathList.IndexOf(parameter.SelectedFilePath);
+            this.parameter.GetImageFiles += Parameter_GetImageFiles;
+            this.parameter.GetImageFilesAction(this.parameter)();
+        }
+
+        private void Parameter_GetImageFiles(object sender, GetImageFilesEventArgs e)
+        {
+            this.filePathList = e.FilePathList;
+            var index = this.filePathList.IndexOf(e.SelectedFilePath);
+            this.FilePathListIndex = index < 0 ? 0 : index;
+            this.SubInitializeComponent();
         }
 
         protected override void OnResize(EventArgs e)
@@ -231,8 +238,7 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
 
         private void SubInitializeComponent()
         {
-            this.Icon = Resources.ViewerIcon;
-            this.MaximumIndex = this.parameter.FilePathList.Count - 1;
+            this.MaximumIndex = this.filePathList.Count - 1;
             this.SetDisplayMode(ImageViewerContentsConfig.ImageDisplayMode);
             this.SetSizeMode(ImageViewerContentsConfig.ImageSizeMode);
             this.SetThumbnailPanelVisible();
@@ -312,7 +318,7 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
             else
             {
                 var currentIndex = this.FilePathListIndex;
-                var currentFilePath = this.parameter.FilePathList[currentIndex];
+                var currentFilePath = this.filePathList[currentIndex];
                 var currentImageSize = this.GetImageSize(currentFilePath);
                 if (currentImageSize.Width < currentImageSize.Height)
                 {
@@ -322,7 +328,7 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
                         nextIndex = 0;
                     }
 
-                    var nextFilePath = this.parameter.FilePathList[nextIndex];
+                    var nextFilePath = this.filePathList[nextIndex];
                     var nextImageSize = this.GetImageSize(nextFilePath);
                     if (nextImageSize.Width < nextImageSize.Height)
                     {
@@ -375,7 +381,7 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
                     prevIndex1 = MaximumIndex;
                 }
 
-                var prevFilePath1 = this.parameter.FilePathList[prevIndex1];
+                var prevFilePath1 = this.filePathList[prevIndex1];
                 var prevImageSize1 = this.GetImageSize(prevFilePath1);
                 if (prevImageSize1.Width < prevImageSize1.Height)
                 {
@@ -385,7 +391,7 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
                         prevIndex2 = this.MaximumIndex;
                     }
 
-                    var prevFilePath2 = this.parameter.FilePathList[prevIndex2];
+                    var prevFilePath2 = this.filePathList[prevIndex2];
                     var prevImageSize2 = this.GetImageSize(prevFilePath2);
                     if (prevImageSize2.Width < prevImageSize2.Height)
                     {
@@ -409,7 +415,7 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
 
             var param = new GetImageFileParameter();
             param.CurrentIndex = this.FilePathListIndex;
-            param.FilePathList = this.parameter.FilePathList;
+            param.FilePathList = this.filePathList;
             param.ImageDisplayMode = this.displayMode;
             param.ImageSizeMode = this.sizeMode;
             param.DrawSize = this.checkPatternPanel.Size;
@@ -431,9 +437,9 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
                 this.Parameter.ContentsSources,
                 this.Parameter.SourcesKey,
                 currentFilePath,
-                parameter.FilePathList,
+                this.parameter.GetImageFilesAction(this.parameter),
                 this.parameter.ContentsTitle,
-                parameter.ContentsIcon);
+                this.parameter.ContentsIcon);
             this.DoDragDrop(dragData, DragDropEffects.All);
         }
 
@@ -533,13 +539,13 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
                 this.rightImagePanel.ClearImage();
             }
 
-            var index = this.parameter.FilePathList.IndexOf(e.Image1.FilePath);
+            var index = this.filePathList.IndexOf(e.Image1.FilePath);
             if (index != this.FilePathListIndex)
             {
                 return;
             }
 
-            this.parameter.SelectedFilePath = e.Image1.FilePath;
+            this.selectedFilePath = e.Image1.FilePath;
             this.OnSelectedFileChanged(new SelectedFileChangeEventArgs(e.Image1.FilePath));
 
             if (this.displayMode == ImageDisplayMode.Single)
@@ -733,12 +739,12 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
         private void IndexToolStripSlider_ValueChanging(object sender, EventArgs e)
         {
             var index = this.FilePathListIndex;
-            if (index < 0 || this.parameter.FilePathList.Count - 1 < index)
+            if (index < 0 || this.filePathList.Count - 1 < index)
             {
                 return;
             }
 
-            var filePath = this.parameter.FilePathList[index];
+            var filePath = this.filePathList[index];
             var p = this.PointToClient(Cursor.Position);
             this.filePathToolTip.Show(filePath, this, p.X, -16, 5000);
         }
@@ -752,12 +758,12 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
         private void IndexSlider_ValueChanging(object sender, EventArgs e)
         {
             var index = this.FilePathListIndex;
-            if (index < 0 || this.parameter.FilePathList.Count - 1 < index)
+            if (index < 0 || this.filePathList.Count - 1 < index)
             {
                 return;
             }
 
-            var filePath = this.parameter.FilePathList[index];
+            var filePath = this.filePathList[index];
             var p = this.PointToClient(Cursor.Position);
             this.filePathToolTip.Show(filePath, this, p.X, -16, 5000);
         }
@@ -865,8 +871,7 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
             var param = new ImageViewerContentsParameter(
                 this.Parameter.ContentsSources,
                 this.Parameter.SourcesKey,
-                this.parameter.FilePathList,
-                e.FilePath,
+                this.parameter.GetImageFilesAction,
                 this.Title,
                 this.Icon);
             this.OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.AddTab, param));
@@ -877,8 +882,7 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
             var param = new ImageViewerContentsParameter(
                 this.Parameter.ContentsSources,
                 this.Parameter.SourcesKey,
-                this.parameter.FilePathList,
-                e.FilePath,
+                this.parameter.GetImageFilesAction,
                 this.Title,
                 this.Icon);
             this.OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.NewWindow, param));

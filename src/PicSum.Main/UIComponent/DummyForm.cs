@@ -33,26 +33,10 @@ namespace PicSum.Main.UIComponent
 
         #region パブリックメソッド
 
-        public void OpenContentsByCommandLineArgs(string[] args)
+        public void ActivateBrowser()
         {
-            if (args == null)
-            {
-                throw new ArgumentNullException("args");
-            }
-
             BrowserForm browser = _browserManager.GetActiveBrowser();
-            if (args.Length == 1)
-            {
-                browser.Activate();
-            }
-            else if (args.Length > 1)
-            {
-                browser.OpenContentsByCommandLineArgs(args);
-            }
-            else
-            {
-                throw new Exception("コマンドライン引数の数が不正です。");
-            }
+            browser.Activate();
         }
 
         #endregion

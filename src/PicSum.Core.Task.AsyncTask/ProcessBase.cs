@@ -192,18 +192,7 @@ namespace PicSum.Core.Task.AsyncTask
 
             if (this.SuccessEnd != null)
             {
-                if (task.Sender is Control)
-                {
-                    var ctl = (Control)task.Sender;
-                    if (ctl.IsHandleCreated)
-                    {
-                        this.SuccessEnd(this, new EventArgs());
-                    }
-                }
-                else
-                {
-                    this.SuccessEnd(this, new EventArgs());
-                }
+                this.SuccessEnd(this, new EventArgs());
             }
 
             if (!this.HasExecutingTask())
@@ -233,18 +222,7 @@ namespace PicSum.Core.Task.AsyncTask
 
             if (this.CancelEnd != null)
             {
-                if (task.Sender is Control)
-                {
-                    var ctl = (Control)task.Sender;
-                    if (ctl.IsHandleCreated)
-                    {
-                        this.CancelEnd(this, new EventArgs());
-                    }
-                }
-                else
-                {
-                    this.CancelEnd(this, new EventArgs());
-                }
+                this.CancelEnd(this, new EventArgs());
             }
 
             if (!this.HasExecutingTask())
@@ -276,18 +254,7 @@ namespace PicSum.Core.Task.AsyncTask
 
             if (this.ErrorEnd != null)
             {
-                if (task.Sender is Control)
-                {
-                    var ctl = (Control)task.Sender;
-                    if (ctl.IsHandleCreated)
-                    {
-                        this.ErrorEnd(this, new EventArgs());
-                    }
-                }
-                else
-                {
-                    this.ErrorEnd(this, new EventArgs());
-                }
+                this.ErrorEnd(this, new EventArgs());
             }
 
             if (!this.HasExecutingTask())

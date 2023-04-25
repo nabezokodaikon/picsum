@@ -11,7 +11,5 @@ namespace PicSum.Task.Result
         public IList<string> FilePathList { get; set; }
         public string SelectedFilePath { get; set; }
         public DirectoryNotFoundException DirectoryNotFoundException { get; set; }
-        public ContentsOpenType FileOpenType { get; set; }
-        public int TabIndex { get; set; }
     }
 }

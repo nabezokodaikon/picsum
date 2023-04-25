@@ -169,29 +169,34 @@ namespace PicSum.UIComponent.Contents.FileListContents
             getNextDirectoryProcess.Execute(this, param);
         }
 
-        protected override void GetImageFilesAction(ImageViewerContentsParameter paramter)
+        protected override Action GetImageFilesAction(ImageViewerContentsParameter paramter)
         {
-            var proces = TaskManager.CreateTwoWayProcess<GetFilesByDirectoryAsyncFacade, SingleValueEntity<string>, GetDirectoryResult>(this.ProcessContainer);
-            proces.Callback += ((sender, e) => 
+            return () => 
             {
-                if (e.DirectoryNotFoundException != null)
+                var proces = TaskManager.CreateTwoWayProcess<GetFilesByDirectoryAsyncFacade, SingleValueEntity<string>, GetDirectoryResult>(this.ProcessContainer);
+                proces.Callback += ((sender, e) =>
                 {
-                    ExceptionUtil.ShowErrorDialog(e.DirectoryNotFoundException);
-                    return;
-                }
+                    if (e.DirectoryNotFoundException != null)
+                    {
+                        ExceptionUtil.ShowErrorDialog(e.DirectoryNotFoundException);
+                        return;
+                    }
 
-                var imageFiles = e.FileInfoList
-                    .Where(fileInfo => fileInfo.IsImageFile)
-                    .Select(fileInfo => fileInfo.FilePath)
-                    .ToArray();
+                    var imageFiles = e.FileInfoList
+                        .Where(fileInfo => fileInfo.IsImageFile)
+                        .Select(fileInfo => fileInfo.FilePath)
+                        .ToArray();
 
-                var ex = FileUtil.GetExtension(this.SelectedFilePath);
-                var selectedFilePath = ImageUtil.ImageFileExtensionList.Contains(ex) ? 
-                    this.SelectedFilePath: string.Empty;
+                    var ex = FileUtil.GetExtension(this.SelectedFilePath);
+                    var selectedFilePath = ImageUtil.ImageFileExtensionList.Contains(ex) ?
+                        this.SelectedFilePath : string.Empty;
 
-                var eventArgs = new GetImageFilesEventArgs(imageFiles, selectedFilePath);
-                paramter.OnGetImageFiles(eventArgs);
-            });
+                    var eventArgs = new GetImageFilesEventArgs(imageFiles, selectedFilePath);
+                    paramter.OnGetImageFiles(eventArgs);
+                });
+
+                proces.Execute(this, new SingleValueEntity<string>() { Value = this._parameter.DirectoryPath });
+            };
         }
 
         #endregion

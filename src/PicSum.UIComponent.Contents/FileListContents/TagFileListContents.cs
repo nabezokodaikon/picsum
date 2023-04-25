@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
 using PicSum.Core.Base.Conf;
@@ -131,23 +132,28 @@ namespace PicSum.UIComponent.Contents.FileListContents
             RemoveFile(filePathList);
         }
 
-        protected override void GetImageFilesAction(ImageViewerContentsParameter paramter)
+        protected override Action GetImageFilesAction(ImageViewerContentsParameter paramter)
         {
-            var proces = TaskManager.CreateTwoWayProcess<GetFilesByTagAsyncFacade, SingleValueEntity<string>, ListEntity<FileShallowInfoEntity>>(this.ProcessContainer);
-            proces.Callback += ((sender, e) =>
+            return () =>
             {
-                var imageFiles = e
-                    .Where(fileInfo => fileInfo.IsImageFile)
-                    .Select(fileInfo => fileInfo.FilePath)
-                    .ToArray();
+                var proces = TaskManager.CreateTwoWayProcess<GetFilesByTagAsyncFacade, SingleValueEntity<string>, ListEntity<FileShallowInfoEntity>>(this.ProcessContainer);
+                proces.Callback += ((sender, e) =>
+                {
+                    var imageFiles = e
+                        .Where(fileInfo => fileInfo.IsImageFile)
+                        .Select(fileInfo => fileInfo.FilePath)
+                        .ToArray();
 
-                var ex = FileUtil.GetExtension(this.SelectedFilePath);
-                var selectedFilePath = ImageUtil.ImageFileExtensionList.Contains(ex) ?
-                    this.SelectedFilePath : string.Empty;
+                    var ex = FileUtil.GetExtension(this.SelectedFilePath);
+                    var selectedFilePath = ImageUtil.ImageFileExtensionList.Contains(ex) ?
+                        this.SelectedFilePath : string.Empty;
 
-                var eventArgs = new GetImageFilesEventArgs(imageFiles, selectedFilePath);
-                paramter.OnGetImageFiles(eventArgs);
-            });
+                    var eventArgs = new GetImageFilesEventArgs(imageFiles, selectedFilePath);
+                    paramter.OnGetImageFiles(eventArgs);
+                });
+
+                proces.Execute(this, new SingleValueEntity<string>() { Value = this._parameter.Tag });
+            };            
         }
 
         #endregion

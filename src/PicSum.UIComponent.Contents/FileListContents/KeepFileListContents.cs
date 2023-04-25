@@ -108,23 +108,28 @@ namespace PicSum.UIComponent.Contents.FileListContents
             this.OnSelectedFileChanged(new SelectedFileChangeEventArgs());
         }
 
-        protected override void GetImageFilesAction(ImageViewerContentsParameter paramter)
+        protected override Action GetImageFilesAction(ImageViewerContentsParameter paramter)
         {
-            var proces = TaskManager.CreateTwoWayProcess<GetKeepAsyncFacade, ListEntity<FileShallowInfoEntity>>(this.ProcessContainer);
-            proces.Callback += ((sender, e) =>
+            return () =>
             {
-                var imageFiles = e
-                    .Where(fileInfo => fileInfo.IsImageFile)
-                    .Select(fileInfo => fileInfo.FilePath)
-                    .ToArray();
+                var proces = TaskManager.CreateTwoWayProcess<GetKeepAsyncFacade, ListEntity<FileShallowInfoEntity>>(this.ProcessContainer);
+                proces.Callback += ((sender, e) =>
+                {
+                    var imageFiles = e
+                        .Where(fileInfo => fileInfo.IsImageFile)
+                        .Select(fileInfo => fileInfo.FilePath)
+                        .ToArray();
 
-                var ex = FileUtil.GetExtension(this.SelectedFilePath);
-                var selectedFilePath = ImageUtil.ImageFileExtensionList.Contains(ex) ?
-                    this.SelectedFilePath : string.Empty;
+                    var ex = FileUtil.GetExtension(this.SelectedFilePath);
+                    var selectedFilePath = ImageUtil.ImageFileExtensionList.Contains(ex) ?
+                        this.SelectedFilePath : string.Empty;
 
-                var eventArgs = new GetImageFilesEventArgs(imageFiles, selectedFilePath);
-                paramter.OnGetImageFiles(eventArgs);
-            });
+                    var eventArgs = new GetImageFilesEventArgs(imageFiles, selectedFilePath);
+                    paramter.OnGetImageFiles(eventArgs);
+                });
+
+                proces.Execute(this);
+            };
         }
 
         #endregion

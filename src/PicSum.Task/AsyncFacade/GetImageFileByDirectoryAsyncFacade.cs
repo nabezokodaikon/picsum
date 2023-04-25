@@ -29,8 +29,6 @@ namespace PicSum.Task.AsyncFacade
             }
 
             GetImageFileByDirectoryResult result = new GetImageFileByDirectoryResult();
-            result.FileOpenType = param.FileOpenType;
-            result.TabIndex = param.TabIndex;
             if (FileUtil.IsDirectory(param.FilePath))
             {
                 result.DirectoryPath = param.FilePath;

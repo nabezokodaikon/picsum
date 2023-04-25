@@ -21,7 +21,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
     /// <summary>
     /// ファイルリストコンテンツ基底クラス
     /// </summary>
-    internal partial class FileListContentsBase : BrowserContents
+    internal abstract partial class FileListContentsBase : BrowserContents
     {
         #region 定数・列挙
 
@@ -436,6 +436,8 @@ namespace PicSum.UIComponent.Contents.FileListContents
 
             setFilter();
         }
+
+        protected abstract Action GetImageFilesAction(ImageViewerContentsParameter paramter);
 
         #endregion
 
@@ -999,8 +1001,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
                 var param = new ImageViewerContentsParameter(
                     this.Parameter.ContentsSources,
                     this.Parameter.SourcesKey,
-                    getImageFiles(),
-                    file.FilePath,
+                    this.GetImageFilesAction,
                     this.Title,
                     this.Icon);
                 OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.AddTab, param));
@@ -1026,8 +1027,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
                 var param = new ImageViewerContentsParameter(
                     this.Parameter.ContentsSources,
                     this.Parameter.SourcesKey,
-                    getImageFiles(),
-                    file.FilePath,
+                    this.GetImageFilesAction,
                     this.Title,
                     this.Icon);
                 OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.OverlapTab, param));
@@ -1057,8 +1057,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
                 var param = new ImageViewerContentsParameter(
                     this.Parameter.ContentsSources,
                     this.Parameter.SourcesKey,
-                    getImageFiles(),
-                    file.FilePath,
+                    this.GetImageFilesAction,
                     this.Title,
                     this.Icon);
                 OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.OverlapTab, param));
@@ -1114,7 +1113,13 @@ namespace PicSum.UIComponent.Contents.FileListContents
                         this.Parameter.ContentsSources,
                         this.Parameter.SourcesKey,
                         currentFilePath,
-                        filePathList,
+                        this.GetImageFilesAction(
+                            new ImageViewerContentsParameter(
+                                this.Parameter.ContentsSources, 
+                                this.Parameter.SourcesKey, 
+                                this.GetImageFilesAction, 
+                                this.Title, 
+                                this.Icon)),
                         this.Title,
                         this.Icon);
                     this.DoDragDrop(dragData, DragDropEffects.All);
@@ -1155,8 +1160,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
             var param = new ImageViewerContentsParameter(
                 this.Parameter.ContentsSources,
                 this.Parameter.SourcesKey,
-                getImageFiles(),
-                e.FilePath,
+                this.GetImageFilesAction,
                 this.Title,
                 this.Icon);
             OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.OverlapTab, param));
@@ -1167,8 +1171,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
             var param = new ImageViewerContentsParameter(
                 this.Parameter.ContentsSources,
                 this.Parameter.SourcesKey,
-                getImageFiles(),
-                e.FilePath,
+                this.GetImageFilesAction,
                 this.Title,
                 this.Icon);
             OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.AddTab, param));
@@ -1179,8 +1182,7 @@ namespace PicSum.UIComponent.Contents.FileListContents
             var param = new ImageViewerContentsParameter(
                 this.Parameter.ContentsSources,
                 this.Parameter.SourcesKey,
-                getImageFiles(),
-                e.FilePath,
+                this.GetImageFilesAction,
                 this.Title,
                 this.Icon);
             OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.NewWindow, param));

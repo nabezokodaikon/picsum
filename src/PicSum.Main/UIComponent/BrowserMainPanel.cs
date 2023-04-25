@@ -41,7 +41,6 @@ namespace PicSum.Main.UIComponent
 
         #region インスタンス変数
 
-        private TwoWayProcess<GetImageFileByDirectoryAsyncFacade, GetImageFileByDirectoryParameter, GetImageFileByDirectoryResult> _searchImageFileProcess = null;
         private TwoWayProcess<GetTagListAsyncFacade, ListEntity<string>> _getTagListProcess = null;
 
         #endregion
@@ -73,20 +72,6 @@ namespace PicSum.Main.UIComponent
             set
             {
                 splitContainer.Panel2Collapsed = !value;
-            }
-        }
-
-        private TwoWayProcess<GetImageFileByDirectoryAsyncFacade, GetImageFileByDirectoryParameter, GetImageFileByDirectoryResult> searchImageFileProcess
-        {
-            get
-            {
-                if (_searchImageFileProcess == null)
-                {
-                    _searchImageFileProcess = TaskManager.CreateTwoWayProcess<GetImageFileByDirectoryAsyncFacade, GetImageFileByDirectoryParameter, GetImageFileByDirectoryResult>(components);
-                    _searchImageFileProcess.Callback += new AsyncTaskCallbackEventHandler<GetImageFileByDirectoryResult>(searchImageFileProcess_Callback);
-                }
-
-                return _searchImageFileProcess;
             }
         }
 
@@ -164,25 +149,6 @@ namespace PicSum.Main.UIComponent
             tabSwitch.RemoveActiveTab();
         }
 
-        public void OpenContentsByCommandLineArgs(string[] args)
-        {
-            if (args == null)
-            {
-                throw new ArgumentNullException("args");
-            }
-
-            if (args.Length == 1)
-            {
-                addressBar.SetAddress();
-            }
-            else
-            {
-                List<string> filePathList = new List<string>(args);
-                filePathList.RemoveAt(0);
-                addContents(filePathList);
-            }
-        }
-
         public void MovePreviewContents()
         {
             if (!this.previewContentsHistoryButton.Enabled)
@@ -221,18 +187,7 @@ namespace PicSum.Main.UIComponent
 
         protected override void OnLoad(EventArgs e)
         {
-            IList<string> cmdLineList = new List<string>(Environment.GetCommandLineArgs());
-            cmdLineList.RemoveAt(0);
-
-            if (cmdLineList.Count > 0)
-            {
-                addContents(cmdLineList);
-            }
-            else
-            {
-                addressBar.SetAddress();
-            }
-
+            this.addressBar.SetAddress();
             base.OnLoad(e);
         }
 
@@ -337,120 +292,49 @@ namespace PicSum.Main.UIComponent
             addContentsEventHandler(tabSwitch.InsertTab<BrowserContents>(tabIndex, param));
         }
 
-        private void addContents(IList<string> filePathList)
-        {
-            if (filePathList.Count == 0)
-            {
-                throw new ArgumentException("ファイルパスリストが0件です。", "filePathList");
-            }
-
-            if (filePathList.Count == 1)
-            {
-                string filePath = filePathList[0];
-                if (FileUtil.IsDirectory(filePath))
-                {
-                    // フォルダコンテンツを追加します。
-                    openContents(new DirectoryFileListContentsParameter(filePath), ContentsOpenType.AddTab);
-                }
-                else if (FileUtil.IsFile(filePath))
-                {
-                    string ex = FileUtil.GetExtension(filePath);
-                    if (ImageUtil.ImageFileExtensionList.Contains(ex))
-                    {
-                        // ビューアコンテンツを追加します。
-                        GetImageFileByDirectoryParameter param = new GetImageFileByDirectoryParameter();
-                        param.FilePath = filePath;
-                        param.FileOpenType = ContentsOpenType.AddTab;
-                        searchImageFileProcess.Execute(this, param);
-                    }
-                }
-            }
-            else
-            {
-                List<string> imgFiles = new List<string>();
-                foreach (string filePath in filePathList)
-                {
-                    if (FileUtil.IsDirectory(filePath))
-                    {
-                        // フォルダコンテンツを追加します。
-                        openContents(new DirectoryFileListContentsParameter(filePath), ContentsOpenType.AddTab);
-                    }
-                    else if (FileUtil.IsFile(filePath))
-                    {
-                        string ex = FileUtil.GetExtension(filePath);
-                        if (ImageUtil.ImageFileExtensionList.Contains(ex))
-                        {
-                            imgFiles.Add(filePath);
-                        }
-                    }
-                }
-
-                if (imgFiles.Count > 0)
-                {
-                    // TODO: コマンドライン引数、関連付けされた場合を考える。
-                    // 引数に画像ファイルが存在する場合、ビューアコンテンツを追加します。
-                    //openContents(new ImageViewerContentsParameter(imgFiles, imgFiles[0]), ContentsOpenType.AddTab);
-                }
-            }
-        }
-
         private void overlapContents(DragEntity dragData, int tabIndex)
         {
-            if (dragData.FilePathList.Count > 0)
-            {
-                // ビューアコンテンツを上書きします。
-                this.openContents(new ImageViewerContentsParameter(
-                    dragData.ContentsSources,
-                    dragData.SourcesKey,
-                    dragData.FilePathList,
-                    dragData.CurrentFilePath,
-                    dragData.ContentsTitle,
-                    dragData.ContentsIcon), ContentsOpenType.OverlapTab);
-            }
-            else if (FileUtil.IsDirectory(dragData.CurrentFilePath))
+            if (FileUtil.IsDirectory(dragData.CurrentFilePath))
             {
                 // フォルダコンテンツを上書きします。
-                openContents(new DirectoryFileListContentsParameter(dragData.CurrentFilePath), ContentsOpenType.OverlapTab);
+                this.openContents(new DirectoryFileListContentsParameter(dragData.CurrentFilePath), ContentsOpenType.OverlapTab);
             }
             else if (FileUtil.IsFile(dragData.CurrentFilePath)
                 && ImageUtil.ImageFileExtensionList.Contains(FileUtil.GetExtension(dragData.CurrentFilePath)))
             {
                 // ビューアコンテンツを上書きします。
-                GetImageFileByDirectoryParameter param = new GetImageFileByDirectoryParameter();
-                param.FilePath = dragData.CurrentFilePath;
-                param.FileOpenType = ContentsOpenType.OverlapTab;
-                param.TabIndex = tabIndex;
-                searchImageFileProcess.Execute(this, param);
+                var dirPath = FileUtil.GetParentDirectoryPath(dragData.CurrentFilePath);
+                var dirName = FileUtil.GetFileName(dirPath);
+                var parameter = new ImageViewerContentsParameter(
+                    DirectoryFileListContentsParameter.CONTENTS_SOURCES,
+                    dirPath,
+                    this.GetImageFilesAction(new GetImageFileByDirectoryParameter() { FilePath = dragData.CurrentFilePath }),
+                    dirName,
+                    FileIconCash.SmallDirectoryIcon);
+                this.openContents(parameter, ContentsOpenType.OverlapTab);
             }
         }
 
         private void insertContents(DragEntity dragData, int tabIndex)
         {
-            if (dragData.FilePathList.Count > 0)
-            {
-                // ビューアコンテンツを挿入します。
-                insertContents(new ImageViewerContentsParameter(
-                    dragData.ContentsSources,
-                    dragData.SourcesKey,
-                    dragData.FilePathList,
-                    dragData.CurrentFilePath,
-                    dragData.ContentsTitle,
-                    dragData.ContentsIcon), tabIndex);
-            }
-            else if (FileUtil.IsDirectory(dragData.CurrentFilePath))
+            if (FileUtil.IsDirectory(dragData.CurrentFilePath))
             {
                 // フォルダコンテンツを挿入します。
-                insertContents(new DirectoryFileListContentsParameter(dragData.CurrentFilePath), tabIndex);
+                this.insertContents(new DirectoryFileListContentsParameter(dragData.CurrentFilePath), tabIndex);
             }
             else if (FileUtil.IsFile(dragData.CurrentFilePath)
                 && ImageUtil.ImageFileExtensionList.Contains(FileUtil.GetExtension(dragData.CurrentFilePath)))
             {
                 // ビューアコンテンツを挿入します。
-                GetImageFileByDirectoryParameter param = new GetImageFileByDirectoryParameter();
-                param.FilePath = dragData.CurrentFilePath;
-                param.FileOpenType = ContentsOpenType.InsertTab;
-                param.TabIndex = tabIndex;
-                searchImageFileProcess.Execute(this, param);
+                var dirPath = FileUtil.GetParentDirectoryPath(dragData.CurrentFilePath);
+                var dirName = FileUtil.GetFileName(dirPath);
+                var parameter = new ImageViewerContentsParameter(
+                    DirectoryFileListContentsParameter.CONTENTS_SOURCES,
+                    dirPath,
+                    this.GetImageFilesAction(new GetImageFileByDirectoryParameter() { FilePath = dragData.CurrentFilePath }),
+                    dirName,
+                    FileIconCash.SmallDirectoryIcon);
+                this.insertContents(parameter, tabIndex);
             }
         }
 
@@ -498,50 +382,29 @@ namespace PicSum.Main.UIComponent
 
         #region プロセスイベント
 
-        private void searchImageFileProcess_Callback(object sender, GetImageFileByDirectoryResult e)
+        private Func<ImageViewerContentsParameter, Action>GetImageFilesAction(
+            GetImageFileByDirectoryParameter subParamter)
         {
-            if (e.DirectoryNotFoundException != null)
+            return (parameter) =>
             {
-                ExceptionUtil.ShowErrorDialog(e.DirectoryNotFoundException);
-                return;
-            }
-
-            var dirName = FileUtil.GetFileName(e.DirectoryPath);
-            if (e.FileOpenType == ContentsOpenType.OverlapTab)
-            {
-                if (e.TabIndex > -1 && tabSwitch.TabCount > e.TabIndex)
+                return () =>
                 {
-                    tabSwitch.SetActiveTab(e.TabIndex);
-                }
+                    var proces = TaskManager.CreateTwoWayProcess<GetImageFileByDirectoryAsyncFacade, GetImageFileByDirectoryParameter, GetImageFileByDirectoryResult>(this.components);
+                    proces.Callback += ((sender, e) =>
+                    {
+                        if (e.DirectoryNotFoundException != null)
+                        {
+                            ExceptionUtil.ShowErrorDialog(e.DirectoryNotFoundException);
+                            return;
+                        }
 
-                openContents(new ImageViewerContentsParameter(
-                    DirectoryFileListContentsParameter.CONTENTS_SOURCES,
-                    e.DirectoryPath,
-                    e.FilePathList,
-                    e.SelectedFilePath,
-                    dirName,
-                    FileIconCash.SmallDirectoryIcon), ContentsOpenType.OverlapTab);
-            }
-            else if (e.FileOpenType == ContentsOpenType.AddTab)
-            {
-                openContents(new ImageViewerContentsParameter(
-                    DirectoryFileListContentsParameter.CONTENTS_SOURCES,
-                    e.DirectoryPath,
-                    e.FilePathList,
-                    e.SelectedFilePath,
-                    dirName,
-                    FileIconCash.SmallDirectoryIcon), ContentsOpenType.AddTab);
-            }
-            else if (e.FileOpenType == ContentsOpenType.InsertTab)
-            {
-                insertContents(new ImageViewerContentsParameter(
-                    DirectoryFileListContentsParameter.CONTENTS_SOURCES,
-                    e.DirectoryPath,
-                    e.FilePathList,
-                    e.SelectedFilePath,
-                    dirName,
-                    FileIconCash.SmallDirectoryIcon), e.TabIndex);
-            }
+                        var eventArgs = new GetImageFilesEventArgs(e.FilePathList, e.SelectedFilePath);
+                        parameter.OnGetImageFiles(eventArgs);
+                    });
+
+                    proces.Execute(this, subParamter);
+                };
+            };
         }
 
         private void getTagListProcess_Callback(object sender, ListEntity<string> e)

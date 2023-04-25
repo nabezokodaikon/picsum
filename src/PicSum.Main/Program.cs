@@ -65,25 +65,20 @@ namespace PicSum.Main
                     ChannelServices.RegisterChannel(new IpcClientChannel(), true);
                     RemotingConfiguration.RegisterWellKnownClientType(typeof(Program), "ipc://" + Application.ProductName + "/Program");
                     Program pg = new Program();
-                    pg.OpenContentsByCommandLineArgs(Environment.GetCommandLineArgs());
+                    pg.ActivateBrowser();
                 }
             }
         }
 
-        public void OpenContentsByCommandLineArgs(string[] args)
+        public void ActivateBrowser()
         {
-            if (args == null)
-            {
-                throw new ArgumentNullException();
-            }
-
             if (_dummyForm != null && _dummyForm.IsHandleCreated)
             {
                 _dummyForm.Invoke((Action)(() =>
                 {
                     if (_dummyForm != null && _dummyForm.IsHandleCreated)
                     {
-                        _dummyForm.OpenContentsByCommandLineArgs(args);
+                        _dummyForm.ActivateBrowser();
                     }
                 }));
             }

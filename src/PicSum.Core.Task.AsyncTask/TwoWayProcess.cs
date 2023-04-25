@@ -97,17 +97,7 @@ namespace PicSum.Core.Task.AsyncTask
 
             if (this.Callback != null)
             {
-                if (task.Sender is Control ctl)
-                {
-                    if (ctl.IsHandleCreated)
-                    {
-                        this.Callback(this, e);
-                    }
-                }
-                else
-                {
-                    this.Callback(this, e);
-                }
+                this.Callback(this, e);
             }
         }
     }
@@ -204,17 +194,7 @@ namespace PicSum.Core.Task.AsyncTask
 
             if (this.Callback != null)
             {
-                if (task.Sender is Control ctl)
-                {
-                    if (ctl.IsHandleCreated)
-                    {
-                        this.Callback(this, e);
-                    }
-                }
-                else
-                {
-                    this.Callback(this, e);
-                }
+                this.Callback(this, e);
             }
         }
     }
