@@ -317,7 +317,7 @@ namespace PicSum.UIComponent.Contents.FileList
             this.SetSort();
             this.SetFilter();
 
-            this.Focus();
+            this.flowList.Focus();
         }
 
         protected void SetFile(IList<FileShallowInfoEntity> srcFiles, string selectedFilePath)
