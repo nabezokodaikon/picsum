@@ -145,10 +145,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         {
             this.InitializeComponent();
 
-            this.SetStyle(ControlStyles.DoubleBuffer |
-                          ControlStyles.UserPaint |
-                          ControlStyles.AllPaintingInWmPaint, true);
-
             this.parameter = parameter;
             this.Title = this.parameter.ContentsTitle;
             this.Icon = this.parameter.ContentsIcon;
