@@ -45,7 +45,7 @@
             this.allFitSizeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.onlyBigImageFitSizeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.sizeToolStripSplitButton = new System.Windows.Forms.ToolStripSplitButton();
-            this.toolBar = new PicSum.UIComponent.Contents.ContentsToolBar.ContentsToolBar();
+            this.toolBar = new PicSum.UIComponent.Contents.ToolBar.ContentsToolBar();
             this.previewIndexToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.nextIndexToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.indexSlider = new SWF.UIComponent.Common.Slider();
@@ -310,7 +310,7 @@
         private PicSum.UIComponent.Common.FileContextMenu fileContextMenu;
         private System.Windows.Forms.ToolTip filePathToolTip;
         private SWF.UIComponent.Common.CheckPatternPanel checkPatternPanel;
-        private PicSum.UIComponent.Contents.ContentsToolBar.ContentsToolBar toolBar;
+        private PicSum.UIComponent.Contents.ToolBar.ContentsToolBar toolBar;
         private System.Windows.Forms.ToolStripSplitButton viewToolStripSplitButton;
         private System.Windows.Forms.ToolStripSplitButton sizeToolStripSplitButton;
         private System.Windows.Forms.ToolStripButton previewIndexToolStripButton;

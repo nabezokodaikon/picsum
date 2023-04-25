@@ -42,7 +42,7 @@ namespace PicSum.UIComponent.Contents.FileList
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.showFileNameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewToolStripDropDownButton = new System.Windows.Forms.ToolStripDropDownButton();
-            this.toolBar = new PicSum.UIComponent.Contents.ContentsToolBar.ContentsToolBar();
+            this.toolBar = new PicSum.UIComponent.Contents.ToolBar.ContentsToolBar();
             this.sortFileNameToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.sortFilePathToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.sortFileUpdateDateToolStripButton = new System.Windows.Forms.ToolStripButton();
@@ -293,7 +293,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private SWF.UIComponent.FlowList.FlowList flowList;
         private PicSum.UIComponent.Common.FileContextMenu fileContextMenu;
-        private PicSum.UIComponent.Contents.ContentsToolBar.ContentsToolBar toolBar;
+        private PicSum.UIComponent.Contents.ToolBar.ContentsToolBar toolBar;
         private System.Windows.Forms.ToolStripDropDownButton viewToolStripDropDownButton;
         private System.Windows.Forms.ToolStripButton sortFileNameToolStripButton;
         private System.Windows.Forms.ToolStripButton sortFilePathToolStripButton;

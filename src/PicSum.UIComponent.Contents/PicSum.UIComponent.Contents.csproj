@@ -81,10 +81,10 @@
     <Compile Include="Parameter\ImageViewerContentsParameter.cs" />
     <Compile Include="Parameter\RatingFileListContentsParameter.cs" />
     <Compile Include="Parameter\TagFileListContentsParameter.cs" />
-    <Compile Include="ContentsToolBar\ContentsToolBar.cs">
+    <Compile Include="ToolBar\ContentsToolBar.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="ContentsToolBar\ContentsToolBarColorTable.cs" />
+    <Compile Include="ToolBar\ContentsToolBarColorTable.cs" />
     <Compile Include="ExecuteDirectoryEventArgs.cs" />
     <Compile Include="ExecuteImageFileEventArgs.cs" />
     <Compile Include="FileList\FavoriteDirectoryListContents.cs">

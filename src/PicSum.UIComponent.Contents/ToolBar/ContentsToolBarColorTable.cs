@@ -1,7 +1,7 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
 
-namespace PicSum.UIComponent.Contents.ContentsToolBar
+namespace PicSum.UIComponent.Contents.ToolBar
 {
     internal sealed class ContentsToolBarColorTable
         : ProfessionalColorTable

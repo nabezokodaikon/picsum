@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 
-namespace PicSum.UIComponent.Contents.ContentsToolBar
+namespace PicSum.UIComponent.Contents.ToolBar
 {
     public class ContentsToolBar
         : ToolStrip
