@@ -158,27 +158,8 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
 
         protected override void OnLoad(EventArgs e)
         {
-            this.parameter.GetImageFiles += Parameter_GetImageFiles;
+            this.parameter.GetImageFiles += this.Parameter_GetImageFiles;
             this.parameter.GetImageFilesAction(this.parameter)();
-        }
-
-        private void Parameter_GetImageFiles(object sender, GetImageFilesEventArgs e)
-        {
-            this.filePathList = e.FilePathList;
-
-            this.MaximumIndex = this.filePathList.Count - 1;
-
-            var index = this.filePathList.IndexOf(e.SelectedFilePath);
-            if (index < 0)
-            {
-                this.FilePathListIndex = 0;
-            }
-            else 
-            {
-                this.FilePathListIndex = index;
-            }
-
-            this.SubInitializeComponent();
         }
 
         protected override void OnResize(EventArgs e)
@@ -259,7 +240,7 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
         #region プライベートメソッド
 
         private void SubInitializeComponent()
-        {            
+        {
             this.SetDisplayMode(ImageViewerContentsConfig.ImageDisplayMode);
             this.SetSizeMode(ImageViewerContentsConfig.ImageSizeMode);
             this.SetThumbnailPanelVisible();
@@ -540,6 +521,25 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
 
         #region プロセスイベント
 
+        private void Parameter_GetImageFiles(object sender, GetImageFilesEventArgs e)
+        {
+            this.filePathList = e.FilePathList;
+
+            this.MaximumIndex = this.filePathList.Count - 1;
+
+            var index = this.filePathList.IndexOf(e.SelectedFilePath);
+            if (index < 0)
+            {
+                this.FilePathListIndex = 0;
+            }
+            else
+            {
+                this.FilePathListIndex = index;
+            }
+
+            this.SubInitializeComponent();
+        }
+
         private void ReadImageFileProcess_Callback(object sender, GetImageFileResult e)
         {
             if (e.ReadImageFileException != null)
@@ -548,13 +548,13 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
                 return;
             }
 
-            if (leftImagePanel.HasImage)
+            if (this.leftImagePanel.HasImage)
             {
                 this.leftImageFilePath = string.Empty;
                 this.leftImagePanel.ClearImage();
             }
 
-            if (rightImagePanel.HasImage)
+            if (this.rightImagePanel.HasImage)
             {
                 this.rightImageFilePath = string.Empty;
                 this.rightImagePanel.ClearImage();
@@ -623,7 +623,7 @@ namespace PicSum.UIComponent.Contents.ImageViewerContents
             {
                 return;
             }
-            
+
             if (!this.CanOperation)
             {
                 return;
