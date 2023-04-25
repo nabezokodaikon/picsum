@@ -28,10 +28,27 @@ namespace SWF.Common
 
             var sb = new StringBuilder();
             sb.AppendFormat("Message={0}\n", ex.Message);
-            sb.AppendFormat("Source={0}\n", ex.Source);
-            sb.AppendFormat("HelpLink={0}\n", ex.HelpLink);
-            sb.AppendFormat("TargetSite={0}\n", ex.TargetSite.ToString());
-            sb.AppendFormat("StackTrace={0}", ex.StackTrace);
+            
+            if (!string.IsNullOrEmpty(ex.Source))
+            {
+                sb.AppendFormat("Source={0}\n", ex.Source);
+            }
+
+            if (!string.IsNullOrEmpty(ex.HelpLink)) 
+            {
+                sb.AppendFormat("HelpLink={0}\n", ex.HelpLink);
+            }
+
+            if (ex.TargetSite != null) 
+            {
+                sb.AppendFormat("TargetSite={0}\n", ex.TargetSite.ToString());
+            }
+
+            if (!string.IsNullOrEmpty(ex.StackTrace))
+            {
+                sb.AppendFormat("StackTrace={0}\n", ex.StackTrace);
+            }
+
             return sb.ToString();
         }
 
