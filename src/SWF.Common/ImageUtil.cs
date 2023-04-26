@@ -24,7 +24,7 @@ namespace SWF.Common
         /// <summary>
         /// 画像ファイルの拡張子リスト
         /// </summary>
-        public static IList<string> ImageFileExtensionList
+        internal static IList<string> ImageFileExtensionList
         {
             get
             {

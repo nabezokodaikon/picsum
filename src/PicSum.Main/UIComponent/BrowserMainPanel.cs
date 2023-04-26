@@ -299,8 +299,8 @@ namespace PicSum.Main.UIComponent
                 // フォルダコンテンツを上書きします。
                 this.openContents(new DirectoryFileListContentsParameter(dragData.CurrentFilePath), ContentsOpenType.OverlapTab);
             }
-            else if (FileUtil.IsFile(dragData.CurrentFilePath)
-                && ImageUtil.ImageFileExtensionList.Contains(FileUtil.GetExtension(dragData.CurrentFilePath)))
+            else if (FileUtil.IsFile(dragData.CurrentFilePath) && 
+                FileUtil.IsImageFile(dragData.CurrentFilePath))
             {
                 // ビューアコンテンツを上書きします。
                 var dirPath = FileUtil.GetParentDirectoryPath(dragData.CurrentFilePath);
@@ -322,8 +322,8 @@ namespace PicSum.Main.UIComponent
                 // フォルダコンテンツを挿入します。
                 this.insertContents(new DirectoryFileListContentsParameter(dragData.CurrentFilePath), tabIndex);
             }
-            else if (FileUtil.IsFile(dragData.CurrentFilePath)
-                && ImageUtil.ImageFileExtensionList.Contains(FileUtil.GetExtension(dragData.CurrentFilePath)))
+            else if (FileUtil.IsFile(dragData.CurrentFilePath) &&
+                FileUtil.IsImageFile(dragData.CurrentFilePath))
             {
                 // ビューアコンテンツを挿入します。
                 var dirPath = FileUtil.GetParentDirectoryPath(dragData.CurrentFilePath);

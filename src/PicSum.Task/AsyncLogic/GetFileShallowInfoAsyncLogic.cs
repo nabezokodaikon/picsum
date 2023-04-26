@@ -47,7 +47,7 @@ namespace PicSum.Task.AsyncLogic
             {
                 info.IsFile = true;
                 string ex = FileUtil.GetExtension(filePath);
-                info.IsImageFile = ImageUtil.ImageFileExtensionList.Contains(ex);
+                info.IsImageFile = FileUtil.IsImageFile(filePath);
                 info.UpdateDate = FileUtil.GetUpdateDate(filePath);
                 info.CreateDate = FileUtil.GetCreateDate(filePath);
                 info.LargeIcon = FileIconCash.GetLargeFileIcon(info.FilePath);

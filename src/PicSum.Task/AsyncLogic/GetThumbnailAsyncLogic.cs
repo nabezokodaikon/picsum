@@ -24,7 +24,6 @@ namespace PicSum.Task.AsyncLogic
         private static List<ThumbnailBufferEntity> _cashList = new List<ThumbnailBufferEntity>(CashCapacity);
         private static Dictionary<string, ThumbnailBufferEntity> _cashDic = new Dictionary<string, ThumbnailBufferEntity>(CashCapacity);
         private static readonly ReaderWriterLockSlim _cashLock = new ReaderWriterLockSlim();
-        private readonly IList<string> _imageFileExtensionList = ImageUtil.ImageFileExtensionList;
 
         /// <summary>
         /// 静的リソースを解放します。
@@ -48,9 +47,8 @@ namespace PicSum.Task.AsyncLogic
                 return null;
             }
             else if (FileUtil.IsFile(filePath))
-            {
-                string ex = FileUtil.GetExtension(filePath);
-                if (!_imageFileExtensionList.Contains(ex))
+            {                
+                if (!FileUtil.IsImageFile(filePath))
                 {
                     return null;
                 }

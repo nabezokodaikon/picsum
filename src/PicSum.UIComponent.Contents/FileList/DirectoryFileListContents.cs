@@ -171,7 +171,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
         protected override Action GetImageFilesAction(ImageViewerContentsParameter paramter)
         {
-            return () => 
+            return () =>
             {
                 var proces = TaskManager.CreateTwoWayProcess<GetFilesByDirectoryAsyncFacade, SingleValueEntity<string>, GetDirectoryResult>(this.ProcessContainer);
                 proces.Callback += ((sender, e) =>
@@ -187,8 +187,7 @@ namespace PicSum.UIComponent.Contents.FileList
                         .Select(fileInfo => fileInfo.FilePath)
                         .ToArray();
 
-                    var ex = FileUtil.GetExtension(this.SelectedFilePath);
-                    var selectedFilePath = ImageUtil.ImageFileExtensionList.Contains(ex) ?
+                    var selectedFilePath = FileUtil.IsImageFile(this.SelectedFilePath) ?
                         this.SelectedFilePath : string.Empty;
 
                     var eventArgs = new GetImageFilesEventArgs(imageFiles, selectedFilePath);
@@ -276,7 +275,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 if (e.DirectoryState != null)
                 {
                     base.SetFiles(e.FileInfoList, e.DirectoryState.SelectedFilePath, e.DirectoryState.SortTypeID, e.DirectoryState.IsAscending);
-                    if (e.FileInfoList.Count < 1) 
+                    if (e.FileInfoList.Count < 1)
                     {
                         base.OnSelectedFileChanged(new SelectedFileChangeEventArgs(e.DirectoryState.DirectoryPath));
                     }

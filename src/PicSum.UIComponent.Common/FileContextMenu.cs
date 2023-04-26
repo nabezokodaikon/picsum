@@ -157,12 +157,12 @@ namespace PicSum.UIComponent.Common
                 setImageFileMenuItemVisible(false);
                 setFileMenuItemVisible(false);
                 setDirectoryMenuItemVisible(false);
-                _exportMenuItem.Visible = filePathList.FirstOrDefault(file => !ImageUtil.ImageFileExtensionList.Contains(FileUtil.GetExtension(file))) == null;
+                _exportMenuItem.Visible = filePathList.FirstOrDefault(file => !FileUtil.IsImageFile(file)) == null;
             }
             else
             {
                 string filePath = filePathList.First();
-                setImageFileMenuItemVisible(ImageUtil.ImageFileExtensionList.Contains(FileUtil.GetExtension(filePath)));
+                setImageFileMenuItemVisible(FileUtil.IsImageFile(filePath));
                 setFileMenuItemVisible(FileUtil.IsFile(filePath));
                 setDirectoryMenuItemVisible(!FileUtil.IsFile(filePath));
             }
@@ -302,19 +302,19 @@ namespace PicSum.UIComponent.Common
 
         private void initializeComponent()
         {
-            this.Items.AddRange(new ToolStripItem[] { _fileActiveTabOpenMenuItem, 
-                                                      _fileNewTabOpenMenuItem, 
-                                                      _fileNewWindowOpenMenuItem, 
+            this.Items.AddRange(new ToolStripItem[] { _fileActiveTabOpenMenuItem,
+                                                      _fileNewTabOpenMenuItem,
+                                                      _fileNewWindowOpenMenuItem,
                                                       _fileOpen,
                                                       _saveDirectoryOpen,
-                                                      _directoryActiveTabOpenMenuItem, 
-                                                      _directoryNewTabOpenMenuItem, 
-                                                      _directoryNewWindowOpenMenuItem, 
+                                                      _directoryActiveTabOpenMenuItem,
+                                                      _directoryNewTabOpenMenuItem,
+                                                      _directoryNewWindowOpenMenuItem,
                                                       _explorerOpenMenuItem,
                                                       _pathCopyMenuItem,
                                                       _nameCopyMenuItem,
                                                       _exportMenuItem,
-                                                      _addKeepMenuItem, 
+                                                      _addKeepMenuItem,
                                                       _removeFromListMenuItem });
 
             _fileActiveTabOpenMenuItem.Click += new EventHandler(_fileActiveTabOpenMenuItem_Click);

@@ -144,8 +144,7 @@ namespace PicSum.UIComponent.Contents.FileList
                         .Select(fileInfo => fileInfo.FilePath)
                         .ToArray();
 
-                    var ex = FileUtil.GetExtension(this.SelectedFilePath);
-                    var selectedFilePath = ImageUtil.ImageFileExtensionList.Contains(ex) ?
+                    var selectedFilePath = FileUtil.IsImageFile(this.SelectedFilePath) ?
                         this.SelectedFilePath : string.Empty;
 
                     var eventArgs = new GetImageFilesEventArgs(imageFiles, selectedFilePath);
@@ -153,7 +152,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 });
 
                 proces.Execute(this, new SingleValueEntity<string>() { Value = this._parameter.Tag });
-            };            
+            };
         }
 
         protected override void OnMovePreviewButtonClick(EventArgs e)

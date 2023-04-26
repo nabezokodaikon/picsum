@@ -53,8 +53,7 @@ namespace PicSum.Task.AsyncLogic
 
                 if (info.IsFile)
                 {
-                    string ex = FileUtil.GetExtension(filePath);
-                    info.IsImageFile = ImageUtil.ImageFileExtensionList.Contains(ex);
+                    info.IsImageFile = FileUtil.IsImageFile(filePath);
                 }
                 else
                 {

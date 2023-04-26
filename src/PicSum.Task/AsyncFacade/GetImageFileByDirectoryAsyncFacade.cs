@@ -57,11 +57,9 @@ namespace PicSum.Task.AsyncFacade
             }
 
             result.FilePathList = new List<string>();
-            IList<string> exList = ImageUtil.ImageFileExtensionList;
             foreach (string filePath in filePathList)
             {
-                string ex = FileUtil.GetExtension(filePath);
-                if (exList.Contains(ex))
+                if (FileUtil.IsImageFile(filePath))
                 {
                     result.FilePathList.Add(filePath);
                 }
