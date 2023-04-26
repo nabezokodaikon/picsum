@@ -118,7 +118,7 @@ namespace SWF.Common
             }
 
             var ex = FileUtil.GetExtension(filePath);
-            return ImageUtil.ImageFileExtensionList.Contains(ex);
+            return ImageUtil.IMAGE_FILE_EXTENSION_LIST.Contains(ex);
         }
 
         /// <summary>
@@ -139,7 +139,7 @@ namespace SWF.Common
                 throw new ArgumentException(nameof(directoryPath));
             }
 
-            foreach (var ex in ImageUtil.ImageFileExtensionList)
+            foreach (var ex in ImageUtil.IMAGE_FILE_EXTENSION_LIST)
             {
                 try
                 {

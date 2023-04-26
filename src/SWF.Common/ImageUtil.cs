@@ -13,24 +13,12 @@ namespace SWF.Common
 {
     public static class ImageUtil
     {
-        public static readonly System.Drawing.Size EMPTY_SIZE = new System.Drawing.Size(-1, -1);
+        public static readonly Size EMPTY_SIZE = new Size(-1, -1);
+        public static readonly IList<string> IMAGE_FILE_EXTENSION_LIST = ImageUtil.getImageFileExtensionList();
 
-        private static readonly IList<string> _imageFileExtensionList = getImageFileExtensionList();
-        private static readonly EncoderParameter _encorderParameter = new EncoderParameter(Encoder.Quality, 100L);
-        private static readonly ImageCodecInfo _pngCodecInfo = ImageCodecInfo.GetImageEncoders().Single(info => info.FormatID == ImageFormat.Png.Guid);
-        private static readonly ImageConverter _imageConverter = new ImageConverter();
-        private static readonly dynamic Shell = Activator.CreateInstance(Type.GetTypeFromProgID("Shell.Application"));
-
-        /// <summary>
-        /// 画像ファイルの拡張子リスト
-        /// </summary>
-        internal static IList<string> ImageFileExtensionList
-        {
-            get
-            {
-                return _imageFileExtensionList;
-            }
-        }
+        private static readonly EncoderParameter ENCORDER_PARAMETER = new EncoderParameter(Encoder.Quality, 100L);
+        private static readonly ImageCodecInfo PNG_CODEC_INFO = ImageCodecInfo.GetImageEncoders().Single(info => info.FormatID == ImageFormat.Png.Guid);
+        private static readonly dynamic SHELL = Activator.CreateInstance(Type.GetTypeFromProgID("Shell.Application"));
 
         /// <summary>
         /// イメージオブジェクトを圧縮したバイナリに変換します。
@@ -47,8 +35,8 @@ namespace SWF.Common
             using (var mes = new MemoryStream())
             {
                 var eps = new EncoderParameters(1);
-                eps.Param[0] = _encorderParameter;
-                img.Save(mes, _pngCodecInfo, eps);
+                eps.Param[0] = ImageUtil.ENCORDER_PARAMETER;
+                img.Save(mes, ImageUtil.PNG_CODEC_INFO, eps);
                 var buffer = new byte[mes.Length];
                 mes.Position = 0;
                 mes.Read(buffer, 0, buffer.Length);
@@ -103,16 +91,16 @@ namespace SWF.Common
         /// <param name="filePath">取得するファイルのパス。</param>
         /// <returns>取得した画像サイズ。</returns>
         /// <exception cref="ArgumentNullException"></exception>
-        public static System.Drawing.Size GetImageSize(string filePath)
+        public static Size GetImageSize(string filePath)
         {
             if (filePath == null)
             {
                 throw new ArgumentNullException(nameof(filePath));
             }
 
-            var directory = Shell.NameSpace(Path.GetDirectoryName(filePath));
+            var directory = ImageUtil.SHELL.NameSpace(Path.GetDirectoryName(filePath));
             var item = directory.ParseName(Path.GetFileName(filePath));
-            string deteils = directory.GetDetailsOf(item, 31);
+            var deteils = directory.GetDetailsOf(item, 31);
             if (string.IsNullOrWhiteSpace(deteils))
             {
                 return ImageUtil.EMPTY_SIZE;
@@ -127,14 +115,12 @@ namespace SWF.Common
             var wText = v[0];
             var hText = v[1];
 
-            int w;
-            if (!int.TryParse(wText.Substring(1).Trim(), out w))
+            if (!int.TryParse(wText.Substring(1).Trim(), out int w))
             {
                 return ImageUtil.EMPTY_SIZE;
             }
 
-            int h;
-            if (!int.TryParse(hText.Substring(0, hText.Length - 1).Trim(), out h))
+            if (!int.TryParse(hText.Substring(0, hText.Length - 1).Trim(), out int h))
             {
                 return ImageUtil.EMPTY_SIZE;
             }
@@ -167,17 +153,6 @@ namespace SWF.Common
         }
 
         /// <summary>
-        /// ポイント値をピクセル値に変換します。
-        /// </summary>
-        /// <param name="points">Font.SizeInPoints</param>
-        /// <param name="dpiY">Graphics.DpiY</param>
-        /// <returns></returns>
-        public static float PointsToPixels(float points, float dpiY)
-        {
-            return points * dpiY / 72f;
-        }
-
-        /// <summary>
         /// ビットマップの指定座標の色を取得します。
         /// </summary>
         /// <param name="bmp"></param>
@@ -193,7 +168,7 @@ namespace SWF.Common
 
             if (bmp.PixelFormat != PixelFormat.Format32bppArgb)
             {
-                throw new ArgumentException(string.Format("ピクセルフォーマットが{0}ではありません。", System.Drawing.Imaging.PixelFormat.Format32bppArgb));
+                throw new ArgumentException(string.Format("ピクセルフォーマットが'{0}'ではありません。", PixelFormat.Format32bppArgb));
             }
 
             var w = bmp.Width;
@@ -231,22 +206,7 @@ namespace SWF.Common
         }
 
         /// <summary>
-        /// 透過色を除いた画像の領域を取得します。
-        /// </summary>
-        /// <param name="bmp"></param>
-        /// <returns></returns>
-        public static Region GetRegion(Bitmap bmp)
-        {
-            if (bmp == null)
-            {
-                throw new ArgumentNullException(nameof(bmp));
-            }
-
-            return GetRegion(bmp, Color.Transparent);
-        }
-
-        /// <summary>
-        /// 透過色を除いた画像の領域を取得します。
+        /// 指定した色を除いた画像の領域を取得します。
         /// </summary>
         /// <param name="bmp"></param>
         /// <param name="transparent"></param>
@@ -260,7 +220,7 @@ namespace SWF.Common
 
             if (bmp.PixelFormat != PixelFormat.Format32bppArgb)
             {
-                throw new ArgumentException(string.Format("ピクセルフォーマットが{0}ではありません。", System.Drawing.Imaging.PixelFormat.Format32bppArgb));
+                throw new ArgumentException(string.Format("ピクセルフォーマットが'{0}'ではありません。", System.Drawing.Imaging.PixelFormat.Format32bppArgb));
             }
 
             var w = bmp.Width;
