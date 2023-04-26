@@ -56,9 +56,11 @@ namespace SWF.Common
                 throw new ArgumentNullException(nameof(bf));
             }
 
-            var mes = new MemoryStream(bf);
-            var img = Image.FromStream(mes, false, false);
-            return img;
+            using (var mes = new MemoryStream(bf))
+            {
+                var img = Image.FromStream(mes, false, false);
+                return img;
+            }
         }
 
         /// <summary>
