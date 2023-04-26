@@ -753,7 +753,7 @@ namespace SWF.Common
         /// <returns></returns>
         public static Image GetSmallIconByFilePath(string filePath)
         {
-            if (filePath == null) 
+            if (filePath == null)
             {
                 throw new ArgumentNullException(nameof(filePath));
             }
@@ -868,7 +868,7 @@ namespace SWF.Common
         }
 
         public static void OpenMyComputer()
-        {            
+        {
             try
             {
                 Process.Start("EXPLORER.EXE", "::{20D04FE0-3AEA-1069-A2D8-08002B30309D}");
@@ -892,7 +892,7 @@ namespace SWF.Common
             if (filePath == null)
             {
                 throw new ArgumentNullException("filePath");
-            }            
+            }
 
             try
             {
@@ -934,7 +934,7 @@ namespace SWF.Common
             catch (FileNotFoundException)
             {
                 return;
-            }            
+            }
         }
 
         // ファイルパスの末尾が"\"の場合取り除きます。
@@ -968,7 +968,7 @@ namespace SWF.Common
 
         // ファイルパスがシステムルートであるか確認します。
         private static bool IsSystemRoot(string filePath)
-        { 
+        {
             return filePath.Trim() == string.Empty;
         }
     }
