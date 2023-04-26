@@ -190,6 +190,10 @@ namespace SWF.Common
             {
                 return true;
             }
+            else if (FileUtil.IsDrive(filePath))
+            {
+                return true;
+            }
             else if (FileUtil.IsExists(filePath))
             {
                 try
