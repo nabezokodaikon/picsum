@@ -8,6 +8,7 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Security;
 
 namespace SWF.Common
 {
@@ -147,10 +148,41 @@ namespace SWF.Common
                 throw new ArgumentNullException(nameof(filePath));
             }
 
-            using (var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+            try
             {
-                var destImg = new Bitmap(fs);
-                return destImg;
+                using (var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                {
+                    var destImg = new Bitmap(fs);
+                    return destImg;
+                }
+            }
+            catch (NotSupportedException)
+            {
+                return ImageUtil.CreateEmptyBitmap();
+            }
+            catch (FileNotFoundException)
+            {
+                return ImageUtil.CreateEmptyBitmap();
+            }
+            catch (SecurityException)
+            {
+                return ImageUtil.CreateEmptyBitmap();
+            }
+            catch (DirectoryNotFoundException)
+            {
+                return ImageUtil.CreateEmptyBitmap();
+            }
+            catch (PathTooLongException)
+            {
+                return ImageUtil.CreateEmptyBitmap();
+            }
+            catch (IOException)
+            {
+                return ImageUtil.CreateEmptyBitmap();
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return ImageUtil.CreateEmptyBitmap();
             }
         }
 
@@ -222,7 +254,7 @@ namespace SWF.Common
 
             if (bmp.PixelFormat != PixelFormat.Format32bppArgb)
             {
-                throw new ArgumentException(string.Format("ピクセルフォーマットが'{0}'ではありません。", System.Drawing.Imaging.PixelFormat.Format32bppArgb));
+                throw new ArgumentException(string.Format("ピクセルフォーマットが'{0}'ではありません。", PixelFormat.Format32bppArgb));
             }
 
             var w = bmp.Width;
@@ -282,6 +314,11 @@ namespace SWF.Common
             }
 
             return exList;
+        }
+
+        private static Bitmap CreateEmptyBitmap()
+        {
+            return new Bitmap(1, 1);
         }
     }
 }
