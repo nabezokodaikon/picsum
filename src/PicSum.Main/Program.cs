@@ -87,10 +87,7 @@ namespace PicSum.Main
         private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             var ex = (Exception)e.ExceptionObject;
-            var exMessage = ExceptionUtil.CreateDetailsMessage(ex);
-            var message = string.Format("予期しない例外が発生しました。\n{0}", exMessage);
-            Logger.Fatal(message);
-            ExceptionUtil.ShowErrorDialog("予期しない例外が発生しました。", ex);
+            ExceptionUtil.ShowErrorDialog("補足されない例外が発生しました。", ex);
         }
     }
 }

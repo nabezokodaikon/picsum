@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using NLog;
+using System;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Windows.Interop;
 
 namespace SWF.Common
 {
@@ -13,6 +10,8 @@ namespace SWF.Common
     /// </summary>
     public static class ExceptionUtil
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         /// <summary>
         /// 例外の詳細なメッセージを作成します。
         /// </summary>
@@ -28,18 +27,18 @@ namespace SWF.Common
 
             var sb = new StringBuilder();
             sb.AppendFormat("Message={0}\n", ex.Message);
-            
+
             if (!string.IsNullOrEmpty(ex.Source))
             {
                 sb.AppendFormat("Source={0}\n", ex.Source);
             }
 
-            if (!string.IsNullOrEmpty(ex.HelpLink)) 
+            if (!string.IsNullOrEmpty(ex.HelpLink))
             {
                 sb.AppendFormat("HelpLink={0}\n", ex.HelpLink);
             }
 
-            if (ex.TargetSite != null) 
+            if (ex.TargetSite != null)
             {
                 sb.AppendFormat("TargetSite={0}\n", ex.TargetSite.ToString());
             }
@@ -49,7 +48,14 @@ namespace SWF.Common
                 sb.AppendFormat("StackTrace={0}\n", ex.StackTrace);
             }
 
-            return sb.ToString();
+            if (ex.InnerException == null)
+            {
+                return sb.ToString();
+            }
+            else
+            {
+                return string.Format("{0}{1}", sb.ToString(), ExceptionUtil.CreateDetailsMessage(ex.InnerException));
+            }
         }
 
         public static void ShowErrorDialog(Exception ex)
@@ -60,8 +66,10 @@ namespace SWF.Common
             }
 
             var detailsMessage = CreateDetailsMessage(ex);
-
+            Logger.Error(detailsMessage);
+#if DEBUG            
             MessageBox.Show(detailsMessage, "PicSum", MessageBoxButtons.OK, MessageBoxIcon.Error);
+#endif
         }
 
         public static void ShowErrorDialog(string message, Exception ex)
@@ -71,9 +79,11 @@ namespace SWF.Common
                 throw new ArgumentNullException(nameof(ex));
             }
 
-            var detailsMessage = CreateDetailsMessage(ex);
-
-            MessageBox.Show(string.Format(string.Format("{0}\n{1}", message, detailsMessage)), "PicSum", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            var detailsMessage = ExceptionUtil.CreateDetailsMessage(ex);
+            Logger.Error(string.Format("{0}\n{1}", message, detailsMessage));
+#if DEBUG
+            MessageBox.Show(string.Format("{0}\n{1}", message, detailsMessage), "PicSum", MessageBoxButtons.OK, MessageBoxIcon.Error);
+#endif
         }
     }
 }

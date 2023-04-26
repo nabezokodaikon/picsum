@@ -158,31 +158,31 @@ namespace SWF.Common
             }
             catch (NotSupportedException)
             {
-                return ImageUtil.CreateEmptyBitmap();
+                throw;
             }
             catch (FileNotFoundException)
             {
-                return ImageUtil.CreateEmptyBitmap();
+                throw;
             }
             catch (SecurityException)
             {
-                return ImageUtil.CreateEmptyBitmap();
+                throw;
             }
             catch (DirectoryNotFoundException)
             {
-                return ImageUtil.CreateEmptyBitmap();
+                throw;
             }
             catch (PathTooLongException)
             {
-                return ImageUtil.CreateEmptyBitmap();
+                throw;
             }
             catch (IOException)
             {
-                return ImageUtil.CreateEmptyBitmap();
+                throw;
             }
             catch (UnauthorizedAccessException)
             {
-                return ImageUtil.CreateEmptyBitmap();
+                throw;
             }
         }
 
@@ -314,11 +314,6 @@ namespace SWF.Common
             }
 
             return exList;
-        }
-
-        private static Bitmap CreateEmptyBitmap()
-        {
-            return new Bitmap(1, 1);
         }
     }
 }
