@@ -6,6 +6,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 using WinApi;
@@ -15,6 +16,9 @@ namespace SWF.Common
 {
     public static class FileUtil
     {
+        private const string ROOT_DIRECTORY_NAME = "PC";
+        private const string ROOT_DIRECTORY_TYPE_NAME = "System root";
+
         /// <summary>
         /// ファイル、フォルダの存在を確認します。
         /// </summary>
@@ -27,7 +31,7 @@ namespace SWF.Common
                 throw new ArgumentNullException(nameof(filePath));
             }
 
-            if (string.IsNullOrEmpty(filePath))
+            if (FileUtil.IsSystemRoot(filePath))
             {
                 return true;
             }
@@ -49,13 +53,20 @@ namespace SWF.Common
                 throw new ArgumentNullException(nameof(filePath));
             }
 
-            if (string.IsNullOrEmpty(filePath))
+            if (FileUtil.IsSystemRoot(filePath))
             {
                 return false;
             }
             else
             {
-                return Path.GetDirectoryName(filePath) == null;
+                try
+                {
+                    return Path.GetDirectoryName(filePath) == null;
+                }
+                catch (PathTooLongException)
+                {
+                    return false;
+                }
             }
         }
 
@@ -71,7 +82,7 @@ namespace SWF.Common
                 throw new ArgumentNullException(nameof(filePath));
             }
 
-            if (string.IsNullOrEmpty(filePath))
+            if (FileUtil.IsSystemRoot(filePath))
             {
                 return true;
             }
@@ -97,6 +108,22 @@ namespace SWF.Common
         }
 
         /// <summary>
+        /// 指定したファイルが画像ファイルであるか確認します。
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <returns></returns>
+        public static bool IsImageFile(string filePath)
+        {
+            if (filePath == null)
+            {
+                throw new ArgumentNullException(nameof(filePath));
+            }
+
+            var ex = FileUtil.GetExtension(filePath);
+            return ImageUtil.ImageFileExtensionList.Contains(ex);
+        }
+
+        /// <summary>
         /// 指定したディレクトリ内に、画像ファイルが存在するか確認します。
         /// </summary>
         /// <param name="directoryPath"></param>
@@ -109,6 +136,11 @@ namespace SWF.Common
                 throw new ArgumentNullException(nameof(directoryPath));
             }
 
+            if (string.IsNullOrEmpty(directoryPath))
+            {
+                throw new ArgumentException(nameof(directoryPath));
+            }
+
             foreach (var ex in ImageUtil.ImageFileExtensionList)
             {
                 try
@@ -119,7 +151,23 @@ namespace SWF.Common
                         return result;
                     }
                 }
+                catch (DirectoryNotFoundException)
+                {
+                    return false;
+                }
+                catch (PathTooLongException)
+                {
+                    return false;
+                }
+                catch (IOException)
+                {
+                    return false;
+                }
                 catch (UnauthorizedAccessException)
+                {
+                    return false;
+                }
+                catch (SecurityException)
                 {
                     return false;
                 }
@@ -140,35 +188,48 @@ namespace SWF.Common
                 throw new ArgumentNullException(nameof(filePath));
             }
 
-            if (string.IsNullOrEmpty(filePath))
+            if (FileUtil.IsSystemRoot(filePath))
             {
                 return true;
             }
             else if (FileUtil.IsExists(filePath))
             {
-                if (FileUtil.IsDrive(filePath))
+                try
                 {
-                    return true;
-                }
-                else
-                {
-                    try
-                    {
-                        var fa = File.GetAttributes(filePath);
-                        if ((fa & FileAttributes.Hidden) == FileAttributes.Hidden ||
-                            (fa & (FileAttributes.Hidden | FileAttributes.System)) == (FileAttributes.Hidden | FileAttributes.System))
-                        {
-                            return false;
-                        }
-                        else
-                        {
-                            return true;
-                        }
-                    }
-                    catch (UnauthorizedAccessException)
+                    var fa = File.GetAttributes(filePath);
+                    if ((fa & FileAttributes.Hidden) == FileAttributes.Hidden ||
+                        (fa & (FileAttributes.Hidden | FileAttributes.System)) == (FileAttributes.Hidden | FileAttributes.System))
                     {
                         return false;
                     }
+                    else
+                    {
+                        return true;
+                    }
+                }
+                catch (PathTooLongException)
+                {
+                    return false;
+                }
+                catch (NotSupportedException)
+                {
+                    return false;
+                }
+                catch (FileNotFoundException)
+                {
+                    return false;
+                }
+                catch (DirectoryNotFoundException)
+                {
+                    return false;
+                }
+                catch (IOException)
+                {
+                    return false;
+                }
+                catch (UnauthorizedAccessException)
+                {
+                    return false;
                 }
             }
             else
@@ -190,26 +251,34 @@ namespace SWF.Common
                 throw new ArgumentNullException(nameof(filePath));
             }
 
-            if (string.IsNullOrEmpty(filePath))
+            if (FileUtil.IsSystemRoot(filePath))
             {
-                return "PC";
+                return FileUtil.ROOT_DIRECTORY_NAME;
             }
             else if (FileUtil.IsDrive(filePath))
             {
-                var driveInfo = DriveInfo.GetDrives().FirstOrDefault(di => di.Name == filePath ||
-                                                                           di.Name == filePath + "\\");
-                if (driveInfo == null)
+                try
                 {
-                    throw new NullReferenceException("ドライブが存在しません。");
+                    var driveInfo = DriveInfo.GetDrives()
+                        .FirstOrDefault(di => di.Name == filePath || di.Name == string.Format(@"{0}\", filePath));
+                    if (string.IsNullOrEmpty(driveInfo.VolumeLabel))
+                    {
+                        return FileUtil.ToRemoveLastPathSeparate(filePath);
+                    }
+                    else
+                    {
+                        return string.Format("{0}({1})", driveInfo.VolumeLabel, FileUtil.ToRemoveLastPathSeparate(filePath));
+                    }
                 }
-
-                if (string.IsNullOrEmpty(driveInfo.VolumeLabel))
+                catch (IOException)
                 {
-                    return FileUtil.ToRemoveLastPathSeparate(filePath);
+                    // ドライブ情報の取得に失敗した場合、ルートディレクトリと判断します。
+                    return FileUtil.ROOT_DIRECTORY_NAME;
                 }
-                else
+                catch (UnauthorizedAccessException)
                 {
-                    return string.Format("{0}({1})", driveInfo.VolumeLabel, FileUtil.ToRemoveLastPathSeparate(filePath));
+                    // ドライブ情報の取得に失敗した場合、ルートディレクトリと判断します。
+                    return FileUtil.ROOT_DIRECTORY_NAME;
                 }
             }
             else
@@ -230,12 +299,19 @@ namespace SWF.Common
                 throw new ArgumentNullException(nameof(filePath));
             }
 
-            if (string.IsNullOrEmpty(filePath))
+            if (FileUtil.IsSystemRoot(filePath))
             {
                 throw new ArgumentException("システムルートが指定されました。", nameof(filePath));
             }
 
-            return Path.GetDirectoryName(filePath);
+            try
+            {
+                return Path.GetDirectoryName(filePath);
+            }
+            catch (IOException)
+            {
+                throw new ArgumentException("不明なファイルパスが指定されました。", nameof(filePath));
+            }
         }
 
         /// <summary>
@@ -248,6 +324,11 @@ namespace SWF.Common
             if (filePath == null)
             {
                 throw new ArgumentNullException(nameof(filePath));
+            }
+
+            if (FileUtil.HasInvalidChar(filePath))
+            {
+                throw new ArgumentException("ファイルパスに無効な文字が含まれています。", nameof(filePath));
             }
 
             return Path.GetExtension(filePath).ToUpper();
@@ -265,9 +346,9 @@ namespace SWF.Common
                 throw new ArgumentNullException(nameof(filePath));
             }
 
-            if (string.IsNullOrEmpty(filePath))
+            if (FileUtil.IsSystemRoot(filePath))
             {
-                return "System root";
+                return FileUtil.ROOT_DIRECTORY_TYPE_NAME;
             }
             else
             {
@@ -284,6 +365,8 @@ namespace SWF.Common
             }
         }
 
+
+
         /// <summary>
         /// ファイルの更新日時を取得します。
         /// </summary>
@@ -296,7 +379,32 @@ namespace SWF.Common
                 throw new ArgumentNullException(nameof(filePath));
             }
 
-            return File.GetLastWriteTime(filePath);
+            if (FileUtil.IsSystemRoot(filePath))
+            {
+                throw new ArgumentException("システムルートの更新日時は取得できません。", nameof(filePath));
+            }
+
+            if (FileUtil.HasInvalidChar(filePath))
+            {
+                throw new ArgumentException("ファイルパスに無効な文字が含まれています。", nameof(filePath));
+            }
+
+            try
+            {
+                return File.GetLastWriteTime(filePath);
+            }
+            catch (UnauthorizedAccessException)
+            {
+                throw;
+            }
+            catch (PathTooLongException)
+            {
+                throw;
+            }
+            catch (NotSupportedException)
+            {
+                throw;
+            }
         }
 
         /// <summary>
@@ -311,7 +419,32 @@ namespace SWF.Common
                 throw new ArgumentNullException(nameof(filePath));
             }
 
-            return File.GetCreationTime(filePath);
+            if (FileUtil.IsSystemRoot(filePath))
+            {
+                throw new ArgumentException("システムルートの作成日時は取得できません。", nameof(filePath));
+            }
+
+            if (FileUtil.HasInvalidChar(filePath))
+            {
+                throw new ArgumentException("ファイルパスに無効な文字が含まれています。", nameof(filePath));
+            }
+
+            try
+            {
+                return File.GetCreationTime(filePath);
+            }
+            catch (UnauthorizedAccessException)
+            {
+                throw;
+            }
+            catch (PathTooLongException)
+            {
+                throw;
+            }
+            catch (NotSupportedException)
+            {
+                throw;
+            }
         }
 
         /// <summary>
@@ -326,8 +459,27 @@ namespace SWF.Common
                 throw new ArgumentNullException(nameof(filePath));
             }
 
-            var fi = new FileInfo(filePath);
-            return fi.Length;
+            try
+            {
+                var fi = new FileInfo(filePath);
+                return fi.Length;
+            }
+            catch (SecurityException)
+            {
+                throw;
+            }
+            catch (UnauthorizedAccessException)
+            {
+                throw;
+            }
+            catch (PathTooLongException)
+            {
+                throw;
+            }
+            catch (NotSupportedException)
+            {
+                throw;
+            }
         }
 
         /// <summary>
@@ -344,7 +496,7 @@ namespace SWF.Common
 
             return FileUtil.GetFiles(directoryPath)
                 .OrderBy(file => file)
-                .FirstOrDefault(file => ImageUtil.ImageFileExtensionList.Contains(FileUtil.GetExtension(file)));
+                .FirstOrDefault(file => FileUtil.IsImageFile(file));
         }
 
         /// <summary>
@@ -353,10 +505,21 @@ namespace SWF.Common
         /// <returns></returns>
         public static IList<string> GetDriveList()
         {
-            var drives = DriveInfo.GetDrives()
-                .Select(drive => FileUtil.ToRemoveLastPathSeparate(string.Format(@"{0}\", drive.Name)))
-                .ToArray();
-            return drives;
+            try
+            {
+                var drives = DriveInfo.GetDrives()
+                    .Select(drive => FileUtil.ToRemoveLastPathSeparate(string.Format(@"{0}\", drive.Name)))
+                    .ToArray();
+                return drives;
+            }
+            catch (IOException)
+            {
+                return new string[] { };
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return new string[] { };
+            }
         }
 
         /// <summary>
@@ -416,6 +579,18 @@ namespace SWF.Common
                 {
                     return new string[] { };
                 }
+                catch (PathTooLongException)
+                {
+                    return new string[] { };
+                }
+                catch (DirectoryNotFoundException)
+                {
+                    return new string[] { };
+                }
+                catch (IOException)
+                {
+                    return new string[] { };
+                }
             }
             else
             {
@@ -445,6 +620,18 @@ namespace SWF.Common
                         .ToList();
                 }
                 catch (UnauthorizedAccessException)
+                {
+                    return new string[] { };
+                }
+                catch (PathTooLongException)
+                {
+                    return new string[] { };
+                }
+                catch (DirectoryNotFoundException)
+                {
+                    return new string[] { };
+                }
+                catch (IOException)
                 {
                     return new string[] { };
                 }
@@ -566,6 +753,11 @@ namespace SWF.Common
         /// <returns></returns>
         public static Image GetSmallIconByFilePath(string filePath)
         {
+            if (filePath == null) 
+            {
+                throw new ArgumentNullException(nameof(filePath));
+            }
+
             var sh = new WinApiMembers.SHFILEINFOW();
             var hSuccess = WinApiMembers.SHGetFileInfoW(filePath, 0, ref sh, (uint)Marshal.SizeOf(sh),
                                                            WinApiMembers.ShellFileInfoFlags.SHGFI_ICON |
@@ -597,6 +789,11 @@ namespace SWF.Common
         /// <returns></returns>
         public static Image GetExtraLargeIconByFilePath(string filePath, SHIL shil)
         {
+            if (filePath == null)
+            {
+                throw new ArgumentNullException(nameof(filePath));
+            }
+
             var shinfo = new WinApiMembers.SHFILEINFO();
             var hSuccess = WinApiMembers.SHGetFileInfo(
                 filePath,
@@ -660,11 +857,34 @@ namespace SWF.Common
             {
                 return;
             }
+            catch (ObjectDisposedException)
+            {
+                return;
+            }
+            catch (FileNotFoundException)
+            {
+                return;
+            }
         }
 
         public static void OpenMyComputer()
-        {
-            Process.Start("EXPLORER.EXE", "::{20D04FE0-3AEA-1069-A2D8-08002B30309D}");
+        {            
+            try
+            {
+                Process.Start("EXPLORER.EXE", "::{20D04FE0-3AEA-1069-A2D8-08002B30309D}");
+            }
+            catch (Win32Exception)
+            {
+                return;
+            }
+            catch (ObjectDisposedException)
+            {
+                return;
+            }
+            catch (FileNotFoundException)
+            {
+                return;
+            }
         }
 
         public static void OpenExplorer(string filePath)
@@ -672,9 +892,24 @@ namespace SWF.Common
             if (filePath == null)
             {
                 throw new ArgumentNullException("filePath");
-            }
+            }            
 
-            Process.Start("EXPLORER.EXE", filePath);
+            try
+            {
+                Process.Start("EXPLORER.EXE", filePath);
+            }
+            catch (Win32Exception)
+            {
+                return;
+            }
+            catch (ObjectDisposedException)
+            {
+                return;
+            }
+            catch (FileNotFoundException)
+            {
+                return;
+            }
         }
 
         public static void OpenExplorerSelect(string filePath)
@@ -684,7 +919,22 @@ namespace SWF.Common
                 throw new ArgumentNullException("filePath");
             }
 
-            Process.Start("EXPLORER.EXE", string.Format(@"/select,{0}", filePath));
+            try
+            {
+                Process.Start("EXPLORER.EXE", string.Format(@"/select,{0}", filePath));
+            }
+            catch (Win32Exception)
+            {
+                return;
+            }
+            catch (ObjectDisposedException)
+            {
+                return;
+            }
+            catch (FileNotFoundException)
+            {
+                return;
+            }            
         }
 
         // ファイルパスの末尾が"\"の場合取り除きます。
@@ -692,7 +942,7 @@ namespace SWF.Common
         {
             var length = filePath.Length;
             var lastChar = filePath.Substring(length - 1, 1);
-            if (lastChar.Equals("\\", StringComparison.Ordinal))
+            if (lastChar.Equals(@"\", StringComparison.Ordinal))
             {
                 return filePath.Substring(0, length - 1);
             }
@@ -700,6 +950,26 @@ namespace SWF.Common
             {
                 return filePath;
             }
+        }
+
+        // ファイルパスに無効な文字が含まれているか確認します。
+        private static bool HasInvalidChar(string filePath)
+        {
+            foreach (var c in Path.GetInvalidPathChars())
+            {
+                if (filePath.Contains(c))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        // ファイルパスがシステムルートであるか確認します。
+        private static bool IsSystemRoot(string filePath)
+        { 
+            return filePath.Trim() == string.Empty;
         }
     }
 }
