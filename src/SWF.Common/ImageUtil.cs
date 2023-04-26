@@ -132,7 +132,7 @@ namespace SWF.Common
                 return ImageUtil.EMPTY_SIZE;
             }
 
-            return new System.Drawing.Size(w, h);
+            return new Size(w, h);
         }
 
         /// <summary>
