@@ -5,7 +5,8 @@ namespace PicSum.Core.Task.AsyncTask
     /// <summary>
     /// タスク状態変更イベント
     /// </summary>
-    public class TaskStateChangedEventArgs : EventArgs
+    public class TaskStateChangedEventArgs
+        : EventArgs
     {
         /// <summary>
         /// タスク

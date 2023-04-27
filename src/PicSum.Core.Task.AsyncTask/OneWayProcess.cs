@@ -1,11 +1,9 @@
-﻿using System;
-using System.ComponentModel;
+﻿using NLog;
 using PicSum.Core.Task.Base;
-using PicSum.Core.Base.Exception;
-using System.Threading;
-using NLog;
 using SWF.Common;
-using System.Diagnostics;
+using System;
+using System.ComponentModel;
+using System.Threading;
 
 namespace PicSum.Core.Task.AsyncTask
 {

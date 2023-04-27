@@ -4,7 +4,6 @@ using SWF.Common;
 using System;
 using System.ComponentModel;
 using System.Threading;
-using System.Windows.Forms;
 
 namespace PicSum.Core.Task.AsyncTask
 {

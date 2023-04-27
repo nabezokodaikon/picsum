@@ -50,7 +50,7 @@ namespace PicSum.Main.Mng
         public void Dispose()
         {
             // 全ての非同期タスクが終了するまで待機します。
-            while (TaskManager.GetTaskList().Count > 0)
+            while (TaskManager.TaskList.Count > 0)
             {
                 System.Windows.Forms.Application.DoEvents();
             }

@@ -5,6 +5,10 @@
 * 使われていない項目を削除する。
 * 継承させないクラスに、`sealed`を記述する。
 * 引数が3個以上の関数に、別途クラスを用意する。
+### リファクタリング済みプロジェクト
+* PicSum.Core.Base
+* PicSum.Core.Data.DatabaseAccessor
+* PicSum.Core.Task.AsyncTask
 ## エラーハンドリング
 * `DatabaseException`を作成する。
 * 画像ファイルへのアクセスを、`ImageUtil`に集約する。

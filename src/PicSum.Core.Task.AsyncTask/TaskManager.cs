@@ -78,16 +78,10 @@ namespace PicSum.Core.Task.AsyncTask
         /// </summary>
         public static event EventHandler<TaskStateChangedEventArgs> TaskStateChanged;
 
-        private static List<TaskInfo> taskList = new List<TaskInfo>();
-
         /// <summary>
         /// 現在のタスク一覧を取得します。
         /// </summary>
-        /// <returns>現在のタスク一覧</returns>
-        public static IList<TaskInfo> GetTaskList()
-        {
-            return taskList;
-        }
+        public readonly static List<TaskInfo> TaskList = new List<TaskInfo>();
 
         /// <summary>
         /// 新しいタスクを作成します。
@@ -106,7 +100,7 @@ namespace PicSum.Core.Task.AsyncTask
 
             var task = new TaskInfo(sender, processType, param);
 
-            TaskManager.taskList.Add(task);
+            TaskManager.TaskList.Add(task);
             TaskManager.OnTaskStateChanged(new TaskStateChangedEventArgs(task));
             TaskManager.SetupTaskDelegate(task);
 
@@ -126,7 +120,7 @@ namespace PicSum.Core.Task.AsyncTask
 
             var task = new TaskInfo(sender, processType);
 
-            TaskManager.taskList.Add(task);
+            TaskManager.TaskList.Add(task);
             TaskManager.OnTaskStateChanged(new TaskStateChangedEventArgs(task));
             TaskManager.SetupTaskDelegate(task);
 
@@ -145,7 +139,7 @@ namespace PicSum.Core.Task.AsyncTask
             if (e.Task.IsEnd || e.Task.IsCancel)
             {
                 // 終了または、キャンセルされた場合
-                TaskManager.taskList.Remove(e.Task);
+                TaskManager.TaskList.Remove(e.Task);
             }
 
             TaskManager.OnTaskStateChanged(new TaskStateChangedEventArgs(e.Task));

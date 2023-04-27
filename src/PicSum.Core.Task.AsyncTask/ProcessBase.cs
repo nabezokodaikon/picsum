@@ -1,9 +1,8 @@
-﻿using System;
+﻿using PicSum.Core.Task.Base;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading;
-using System.Windows.Forms;
-using PicSum.Core.Task.Base;
 
 namespace PicSum.Core.Task.AsyncTask
 {

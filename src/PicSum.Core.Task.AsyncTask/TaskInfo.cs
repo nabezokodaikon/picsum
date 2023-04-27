@@ -1,8 +1,6 @@
-﻿using System;
+﻿using PicSum.Core.Task.Base;
+using System;
 using System.Threading;
-using PicSum.Core.Base.Exception;
-using PicSum.Core.Task.Base;
-using System.Text;
 
 namespace PicSum.Core.Task.AsyncTask
 {
@@ -35,11 +33,7 @@ namespace PicSum.Core.Task.AsyncTask
 
         #region インスタンス変数
 
-        private readonly int taskId;
-        private readonly DateTime startDateTime;
         private long endDateTimeTicks = 0;
-        private readonly Type processType = null;
-        private readonly object sender = null;
         private readonly IEntity parameter;
         private long isExecuting = 0;
         private long isCancel = 0;
@@ -53,35 +47,17 @@ namespace PicSum.Core.Task.AsyncTask
         /// <summary>
         /// 呼出元
         /// </summary>
-        public object Sender
-        {
-            get
-            {
-                return this.sender;
-            }
-        }
+        public object Sender { get; private set; }
 
         /// <summary>
         /// タスクID
         /// </summary>
-        public int TaskId
-        {
-            get
-            {
-                return this.taskId;
-            }
-        }
+        public int TaskId { get; private set; }
 
         /// <summary>
         /// タスク開始日時
         /// </summary>
-        public DateTime StartDateTime
-        {
-            get
-            {
-                return this.startDateTime;
-            }
-        }
+        public DateTime StartDateTime { get; private set; }
 
         /// <summary>
         /// タスク終了日時
@@ -103,13 +79,7 @@ namespace PicSum.Core.Task.AsyncTask
         /// <summary>
         /// プロセスの型
         /// </summary>
-        public Type ProcessType
-        {
-            get
-            {
-                return this.processType;
-            }
-        }
+        public Type ProcessType { get; private set; }
 
         /// <summary>
         /// 実行中フラグ
@@ -202,10 +172,10 @@ namespace PicSum.Core.Task.AsyncTask
         /// <param name="processType">プロセスの型</param>
         internal TaskInfo(object sender, Type processType)
         {
-            this.sender = sender ?? throw new ArgumentNullException(nameof(sender));
-            this.processType = processType ?? throw new ArgumentNullException("processType");
-            this.taskId = GetNewTaskId();
-            this.startDateTime = DateTime.Now;            
+            this.Sender = sender ?? throw new ArgumentNullException(nameof(sender));
+            this.ProcessType = processType ?? throw new ArgumentNullException(nameof(processType));
+            this.TaskId = TaskInfo.GetNewTaskId();
+            this.StartDateTime = DateTime.Now;
         }
 
         /// <summary>
@@ -216,11 +186,11 @@ namespace PicSum.Core.Task.AsyncTask
         /// <param name="param">パラメータ</param>
         internal TaskInfo(object sender, Type processType, IEntity param)
         {
-            this.sender = sender ?? throw new ArgumentNullException(nameof(sender));
-            this.processType = processType ?? throw new ArgumentNullException("processType");
+            this.Sender = sender ?? throw new ArgumentNullException(nameof(sender));
+            this.ProcessType = processType ?? throw new ArgumentNullException(nameof(processType));
             this.parameter = param ?? throw new ArgumentNullException(nameof(param));
-            this.taskId = GetNewTaskId();
-            this.startDateTime = DateTime.Now;
+            this.TaskId = TaskInfo.GetNewTaskId();
+            this.StartDateTime = DateTime.Now;
         }
 
         #endregion
@@ -252,17 +222,17 @@ namespace PicSum.Core.Task.AsyncTask
         {
             if (this.IsEnd)
             {
-                throw new Exception(string.Format("タスク[{0}]は終了しています。", taskId));
+                throw new Exception(string.Format("タスク[{0}]は終了しています。", this.TaskId));
             }
 
             if (this.IsExecuting)
             {
-                throw new Exception(string.Format("タスク[{0}]は既に実行中です。", taskId));
+                throw new Exception(string.Format("タスク[{0}]は既に実行中です。", this.TaskId));
             }
 
             if (this.IsCancel)
             {
-                throw new Exception(string.Format("タスク[{0}]はキャンセルされています。", taskId));
+                throw new Exception(string.Format("タスク[{0}]はキャンセルされています。", this.TaskId));
             }
 
             this.IsExecuting = true;
@@ -277,12 +247,12 @@ namespace PicSum.Core.Task.AsyncTask
         {
             if (this.IsEnd)
             {
-                throw new Exception(string.Format("タスク[{0}]は終了しています。", taskId));
+                throw new Exception(string.Format("タスク[{0}]は終了しています。", this.TaskId));
             }
 
             if (this.IsCancel)
             {
-                throw new Exception(string.Format("タスク[{0}]はキャンセルされています。", taskId));
+                throw new Exception(string.Format("タスク[{0}]はキャンセルされています。", this.TaskId));
             }
 
             this.IsCancel = true;
@@ -297,7 +267,7 @@ namespace PicSum.Core.Task.AsyncTask
         {
             if (this.IsEnd)
             {
-                throw new Exception(string.Format("タスク[{0}]は終了しています。", taskId));
+                throw new Exception(string.Format("タスク[{0}]は終了しています。", this.TaskId));
             }
 
             this.IsEnd = true;
