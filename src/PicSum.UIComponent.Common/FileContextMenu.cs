@@ -26,6 +26,7 @@ namespace PicSum.UIComponent.Common
         public event EventHandler<ExecuteFileEventArgs> DirectoryNewTabOpen;
         public event EventHandler<ExecuteFileEventArgs> DirectoryNewWindowOpen;
         public event EventHandler<ExecuteFileEventArgs> ExplorerOpen;
+        public event EventHandler<ExecuteFileEventArgs> Bookmark;
 
         public event EventHandler<ExecuteFileListEventArgs> Export;
         public event EventHandler<ExecuteFileListEventArgs> PathCopy;
@@ -46,6 +47,7 @@ namespace PicSum.UIComponent.Common
         private readonly ToolStripMenuItem fileActiveTabOpenMenuItem = new ToolStripMenuItem("Open");
         private readonly ToolStripMenuItem fileNewTabOpenMenuItem = new ToolStripMenuItem("Open in a new Tab");
         private readonly ToolStripMenuItem fileNewWindowOpenMenuItem = new ToolStripMenuItem("Open in a new Window");
+        private readonly ToolStripMenuItem fileBookmarkMenuItem = new ToolStripMenuItem("Bookmark");
 
         // ファイルメニュー項目
         private readonly ToolStripMenuItem fileOpen = new ToolStripMenuItem("Open in association with");
@@ -279,6 +281,14 @@ namespace PicSum.UIComponent.Common
             }
         }
 
+        protected virtual void OnBookmark(ExecuteFileEventArgs e)
+        {
+            if (this.Bookmark != null)
+            {
+                this.Bookmark(this, e);
+            }
+        }
+
         protected virtual void OnAddKeep(ExecuteFileListEventArgs e)
         {
             if (this.AddKeep != null)
@@ -313,6 +323,7 @@ namespace PicSum.UIComponent.Common
                                                       this.pathCopyMenuItem,
                                                       this.nameCopyMenuItem,
                                                       this.exportMenuItem,
+                                                      this.fileBookmarkMenuItem,
                                                       this.addKeepMenuItem,
                                                       this.removeFromListMenuItem });
 
@@ -328,6 +339,7 @@ namespace PicSum.UIComponent.Common
             this.pathCopyMenuItem.Click += new EventHandler(this.PathCopyMenuItem_Click);
             this.nameCopyMenuItem.Click += new EventHandler(this.NameCopyMenuItem_Click);
             this.exportMenuItem.Click += new EventHandler(this.ExportMenuItem_Click);
+            this.fileBookmarkMenuItem.Click += new EventHandler(this.FileBookmarkMenuItem_Click);
             this.addKeepMenuItem.Click += new EventHandler(this.AddKeepMenuItem_Click);
             this.removeFromListMenuItem.Click += new EventHandler(this.RemoveFromListMenuItem_Click);
         }
@@ -346,6 +358,7 @@ namespace PicSum.UIComponent.Common
             this.fileNewTabOpenMenuItem.Visible = isVisible;
             this.fileNewWindowOpenMenuItem.Visible = isVisible;
             this.exportMenuItem.Visible = isVisible;
+            this.fileBookmarkMenuItem.Visible = isVisible;
         }
 
         private void SetFileMenuItemVisible(bool isVisible)
@@ -432,6 +445,11 @@ namespace PicSum.UIComponent.Common
         private void ExportMenuItem_Click(object sender, EventArgs e)
         {
             this.OnExport(new ExecuteFileListEventArgs(this.filePathList));
+        }
+
+        private void FileBookmarkMenuItem_Click(object sender, EventArgs e)
+        {
+            this.OnBookmark(new ExecuteFileEventArgs(this.filePathList.First()));
         }
 
         private void AddKeepMenuItem_Click(object sender, EventArgs e)
