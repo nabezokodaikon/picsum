@@ -1,11 +1,9 @@
-﻿using System;
+﻿using SWF.UIComponent.FlowList;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
-using SWF.UIComponent.FlowList;
 
 namespace PicSum.UIComponent.Common
 {
@@ -32,11 +30,11 @@ namespace PicSum.UIComponent.Common
         {
             get
             {
-                return flowList.ItemCount;
+                return this.FlowList.ItemCount;
             }
             set
             {
-                flowList.ItemCount = value;
+                this.FlowList.ItemCount = value;
             }
         }
 
@@ -48,11 +46,11 @@ namespace PicSum.UIComponent.Common
         {
             get
             {
-                return flowList.ItemHeight;
+                return this.FlowList.ItemHeight;
             }
             set
             {
-                flowList.ItemHeight = value;
+                this.FlowList.ItemHeight = value;
             }
         }
 
@@ -64,11 +62,11 @@ namespace PicSum.UIComponent.Common
         {
             get
             {
-                return flowList.ItemTextColor;
+                return this.FlowList.ItemTextColor;
             }
             set
             {
-                flowList.ItemTextColor = value;
+                this.FlowList.ItemTextColor = value;
             }
         }
 
@@ -80,11 +78,11 @@ namespace PicSum.UIComponent.Common
         {
             get
             {
-                return flowList.SelectedItemColor;
+                return this.FlowList.SelectedItemColor;
             }
             set
             {
-                flowList.SelectedItemColor = value;
+                this.FlowList.SelectedItemColor = value;
             }
         }
 
@@ -96,11 +94,11 @@ namespace PicSum.UIComponent.Common
         {
             get
             {
-                return flowList.FocusItemColor;
+                return this.FlowList.FocusItemColor;
             }
             set
             {
-                flowList.FocusItemColor = value;
+                this.FlowList.FocusItemColor = value;
             }
         }
 
@@ -112,11 +110,11 @@ namespace PicSum.UIComponent.Common
         {
             get
             {
-                return flowList.MousePointItemColor;
+                return this.FlowList.MousePointItemColor;
             }
             set
             {
-                flowList.MousePointItemColor = value;
+                this.FlowList.MousePointItemColor = value;
             }
         }
 
@@ -128,11 +126,11 @@ namespace PicSum.UIComponent.Common
         {
             get
             {
-                return flowList.RectangleSelectionColor;
+                return this.FlowList.RectangleSelectionColor;
             }
             set
             {
-                flowList.RectangleSelectionColor = value;
+                this.FlowList.RectangleSelectionColor = value;
             }
         }
 
@@ -144,11 +142,11 @@ namespace PicSum.UIComponent.Common
         {
             get
             {
-                return flowList.ItemTextTrimming;
+                return this.FlowList.ItemTextTrimming;
             }
             set
             {
-                flowList.ItemTextTrimming = value;
+                this.FlowList.ItemTextTrimming = value;
             }
         }
 
@@ -160,11 +158,11 @@ namespace PicSum.UIComponent.Common
         {
             get
             {
-                return flowList.ItemTextAlignment;
+                return this.FlowList.ItemTextAlignment;
             }
             set
             {
-                flowList.ItemTextAlignment = value;
+                this.FlowList.ItemTextAlignment = value;
             }
         }
 
@@ -176,11 +174,11 @@ namespace PicSum.UIComponent.Common
         {
             get
             {
-                return flowList.ItemTextLineAlignment;
+                return this.FlowList.ItemTextLineAlignment;
             }
             set
             {
-                flowList.ItemTextLineAlignment = value;
+                this.FlowList.ItemTextLineAlignment = value;
             }
         }
 
@@ -192,11 +190,11 @@ namespace PicSum.UIComponent.Common
         {
             get
             {
-                return flowList.ItemTextFormatFlags;
+                return this.FlowList.ItemTextFormatFlags;
             }
             set
             {
-                flowList.ItemTextFormatFlags = value;
+                this.FlowList.ItemTextFormatFlags = value;
             }
         }
 
@@ -205,7 +203,7 @@ namespace PicSum.UIComponent.Common
         {
             get
             {
-                return flowList.ItemTextBrush;
+                return this.FlowList.ItemTextBrush;
             }
         }
 
@@ -214,7 +212,7 @@ namespace PicSum.UIComponent.Common
         {
             get
             {
-                return flowList.SelectedItemBrush;
+                return this.FlowList.SelectedItemBrush;
             }
         }
 
@@ -223,7 +221,7 @@ namespace PicSum.UIComponent.Common
         {
             get
             {
-                return flowList.FocusItemBrush;
+                return this.FlowList.FocusItemBrush;
             }
         }
 
@@ -232,7 +230,7 @@ namespace PicSum.UIComponent.Common
         {
             get
             {
-                return flowList.MousePointItemBrush;
+                return this.FlowList.MousePointItemBrush;
             }
         }
 
@@ -241,7 +239,7 @@ namespace PicSum.UIComponent.Common
         {
             get
             {
-                return flowList.ItemTextFormat;
+                return this.FlowList.ItemTextFormat;
             }
         }
 
@@ -257,8 +255,8 @@ namespace PicSum.UIComponent.Common
             set
             {
                 base.BackColor = value;
-                toolStripItem.BackColor = value;
-                flowList.BackColor = value;
+                this.toolStripItem.BackColor = value;
+                this.FlowList.BackColor = value;
             }
         }
 
@@ -274,7 +272,7 @@ namespace PicSum.UIComponent.Common
             set
             {
                 base.Size = value;
-                toolStripItem.Size = value;
+                this.toolStripItem.Size = value;
             }
         }
 
@@ -285,7 +283,7 @@ namespace PicSum.UIComponent.Common
         {
             get
             {
-                return flowList.ScrollBarWidth;
+                return this.FlowList.ScrollBarWidth;
             }
         }
 
@@ -301,11 +299,11 @@ namespace PicSum.UIComponent.Common
             }
         }
 
-        private FlowList flowList
+        private FlowList FlowList
         {
             get
             {
-                return (FlowList)toolStripItem.Control;
+                return (FlowList)this.toolStripItem.Control;
             }
         }
 
@@ -315,7 +313,7 @@ namespace PicSum.UIComponent.Common
 
         public DropDownList()
         {
-            initializeComponent();
+            this.InitializeComponent();
         }
 
         #endregion
@@ -327,7 +325,7 @@ namespace PicSum.UIComponent.Common
         /// </summary>
         public void BeginUpdate()
         {
-            flowList.BeginUpdate();
+            this.FlowList.BeginUpdate();
         }
 
         /// <summary>
@@ -335,7 +333,7 @@ namespace PicSum.UIComponent.Common
         /// </summary>
         public void EndUpdate()
         {
-            flowList.EndUpdate();
+            this.FlowList.EndUpdate();
         }
 
         /// <summary>
@@ -343,7 +341,7 @@ namespace PicSum.UIComponent.Common
         /// </summary>
         public void ClearSelectedItems()
         {
-            flowList.ClearSelectedItems();
+            this.FlowList.ClearSelectedItems();
         }
 
         /// <summary>
@@ -352,7 +350,7 @@ namespace PicSum.UIComponent.Common
         /// <param name="itemIndex"></param>
         public void SelectItem(int itemIndex)
         {
-            flowList.SelectItem(itemIndex);
+            this.FlowList.SelectItem(itemIndex);
         }
 
         /// <summary>
@@ -361,8 +359,8 @@ namespace PicSum.UIComponent.Common
         /// <returns>座標上に項目が存在する場合は、項目のインデックス。存在しない場合は-1を返します。</returns>
         public int IndexFromScreenPoint()
         {
-            Point clientPoint = flowList.PointToClient(Cursor.Position);
-            return flowList.IndexFromPoint(clientPoint.X, clientPoint.Y);
+            var clientPoint = this.FlowList.PointToClient(Cursor.Position);
+            return this.FlowList.IndexFromPoint(clientPoint.X, clientPoint.Y);
         }
 
         /// <summary>
@@ -371,7 +369,7 @@ namespace PicSum.UIComponent.Common
         /// <returns></returns>
         public IList<int> GetSelectedIndexs()
         {
-            return flowList.GetSelectedIndexs();
+            return this.FlowList.GetSelectedIndexs();
         }
 
         #endregion
@@ -380,38 +378,38 @@ namespace PicSum.UIComponent.Common
 
         protected override void OnOpened(EventArgs e)
         {
-            flowList.Focus();
+            this.FlowList.Focus();
 
             base.OnOpened(e);
         }
 
         protected override void OnInvalidated(InvalidateEventArgs e)
         {
-            flowList.Invalidate();
+            this.FlowList.Invalidate();
             base.OnInvalidated(e);
         }
 
         protected virtual void OnDrawItem(SWF.UIComponent.FlowList.DrawItemEventArgs e)
         {
-            if (Drawitem != null)
+            if (this.Drawitem != null)
             {
-                Drawitem(this, e);
+                this.Drawitem(this, e);
             }
         }
 
         protected virtual void OnItemMouseClick(MouseEventArgs e)
         {
-            if (ItemMouseClick != null)
+            if (this.ItemMouseClick != null)
             {
-                ItemMouseClick(this, e);
+                this.ItemMouseClick(this, e);
             }
         }
 
         protected virtual void OnItemExecute(EventArgs e)
         {
-            if (ItemExecute != null)
+            if (this.ItemExecute != null)
             {
-                ItemExecute(this, e);
+                this.ItemExecute(this, e);
             }
         }
 
@@ -419,44 +417,44 @@ namespace PicSum.UIComponent.Common
 
         #region プライベートメソッド
 
-        private void initializeComponent()
+        private void InitializeComponent()
         {
             this.SetStyle(ControlStyles.Selectable, false);
 
             this.Items.Add(new ToolStripControlHost(new FlowList()));
             this.Padding = new Padding(2, 1, 2, 0);
 
-            toolStripItem.AutoSize = false;
-            toolStripItem.BackColor = this.BackColor;
+            this.toolStripItem.AutoSize = false;
+            this.toolStripItem.BackColor = this.BackColor;
 
-            flowList.Dock = DockStyle.Fill;
-            flowList.IsLileList = true;
-            flowList.ItemSpace = 0;
-            flowList.IsMultiSelect = false;
-            flowList.BackColor = this.BackColor;
+            this.FlowList.Dock = DockStyle.Fill;
+            this.FlowList.IsLileList = true;
+            this.FlowList.ItemSpace = 0;
+            this.FlowList.IsMultiSelect = false;
+            this.FlowList.BackColor = this.BackColor;
 
-            flowList.DrawItem += new EventHandler<SWF.UIComponent.FlowList.DrawItemEventArgs>(flowList_Drawitem);
-            flowList.ItemExecute += new EventHandler(flowList_ItemExecute);
-            flowList.ItemMouseClick += new EventHandler<MouseEventArgs>(flowList_ItemMouseClick);
+            this.FlowList.DrawItem += new EventHandler<SWF.UIComponent.FlowList.DrawItemEventArgs>(this.FlowList_Drawitem);
+            this.FlowList.ItemExecute += new EventHandler(FlowList_ItemExecute);
+            this.FlowList.ItemMouseClick += new EventHandler<MouseEventArgs>(this.FlowList_ItemMouseClick);
         }
 
         #endregion
 
         #region フローリストイベント
 
-        private void flowList_Drawitem(object sender, SWF.UIComponent.FlowList.DrawItemEventArgs e)
+        private void FlowList_Drawitem(object sender, SWF.UIComponent.FlowList.DrawItemEventArgs e)
         {
-            OnDrawItem(e);
+            this.OnDrawItem(e);
         }
 
-        private void flowList_ItemMouseClick(object sender, MouseEventArgs e)
+        private void FlowList_ItemMouseClick(object sender, MouseEventArgs e)
         {
-            OnItemMouseClick(e);
+            this.OnItemMouseClick(e);
         }
 
-        private void flowList_ItemExecute(object sender, EventArgs e)
+        private void FlowList_ItemExecute(object sender, EventArgs e)
         {
-            OnItemExecute(e);
+            this.OnItemExecute(e);
         }
 
         #endregion
