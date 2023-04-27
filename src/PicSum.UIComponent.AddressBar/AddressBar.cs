@@ -217,11 +217,6 @@ namespace PicSum.UIComponent.AddressBar
 
         #region パブリックメソッド
 
-        public void SetAddress()
-        {
-            SetAddress(FileUtil.ROOT_DIRECTORY_PATH);
-        }
-
         public void SetAddress(string filePath)
         {
             if (filePath == null)
