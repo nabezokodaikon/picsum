@@ -28,4 +28,27 @@
 * [Microsoft ストアへのアプリケーションの公開](https://sorceryforce.net/ja/tips/microsoft-store-release)
 ## エクスポート
 * プログレスバーを実装する。
-## 不具合
+## ブックマーク
+* `t_bookmark`テーブルを作成する。(トリガーも忘れずに)
+* `t_bookmark`テーブルに対する、`INSERT`SQLを作成する。
+* `t_bookmark`テーブルに対する、`DELETE`SQLを作成する。
+* `t_bookmark`テーブルに追加するときは、先に`DELETE`SQLを実行する。
+* `BookmarkFileListContents`コントロールを実装する。
+* ブックマークボタンを追加する。
+## コンテキストメニューのアイコン
+* `Keep`アイコン
+* `Bookmark`アイコン
+* `Open in a new Tab`アイコン
+    * Firefoxのアイコンを参考にする。
+* `Open in a new Window`アイコン
+    * Firefoxのアイコンを参考にする。
+* `Copy Path`アイコン
+    * `クリップボードアイコン`でググったら出てくる。
+* `Copy Name`アイコン
+    * `クリップボードアイコン`でググったら出てくる。
+* `Export`アイコン
+    * `エクスポートアイコン`でググったら出てくる。
+* `関連付けて開く`アイコン
+    * `ExtractAssociatedIcon関数`でできるらしい。
+* `フォルダを開く`アイコン
+    * `フォルダを開く アイコン`でググったら出てくる。
