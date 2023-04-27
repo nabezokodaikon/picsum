@@ -26,3 +26,6 @@
 * [Microsoft ストアへのアプリケーションの公開](https://sorceryforce.net/ja/tips/microsoft-store-release)
 ## エクスポート
 * プログレスバーを実装する。
+## 不具合
+* システムルートへ戻るができない。
+* システムルートから進むができない。
