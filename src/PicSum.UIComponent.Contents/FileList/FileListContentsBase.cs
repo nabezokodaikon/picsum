@@ -46,7 +46,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
         #region パブリックプロパティ
 
-        public override string SelectedFilePath { get; protected set; } = string.Empty;
+        public override string SelectedFilePath { get; protected set; } = FileUtil.ROOT_DIRECTORY_PATH;
 
         #endregion
 
@@ -1204,14 +1204,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private void FileContextMenu_ExplorerOpen(object sender, ExecuteFileEventArgs e)
         {
-            if (string.IsNullOrEmpty(e.FilePath))
-            {
-                FileUtil.OpenMyComputer();
-            }
-            else
-            {
-                FileUtil.OpenExplorer(e.FilePath);
-            }
+            FileUtil.OpenExplorer(e.FilePath);
         }
 
         private void FileContextMenu_Export(object sender, ExecuteFileListEventArgs e)

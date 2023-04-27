@@ -31,16 +31,8 @@ namespace PicSum.Task.AsyncFacade
                 throw new ArgumentException("カレントパラメータが空文字です。", "param");
             }
 
-            List<string> list = null;
             string parentDirectory = FileUtil.GetParentDirectoryPath(param.CurrentParameter.Value);
-            if (string.IsNullOrEmpty(parentDirectory))
-            {
-                list = new List<string>((new GetDrivesAsyncLogic(this)).Execute());
-            }
-            else
-            {
-                list = new List<string>((new GetSubDirectorysAsyncLogic(this)).Execute(parentDirectory));
-            }
+            List<string> list = new List<string>((new GetSubDirectorysAsyncLogic(this)).Execute(parentDirectory));
 
             list.Sort((x, y) => x.CompareTo(y));
             int index = list.IndexOf(param.CurrentParameter.Value);

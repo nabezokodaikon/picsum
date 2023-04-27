@@ -25,7 +25,7 @@ namespace PicSum.Task.AsyncLogic
             info.FileName = FileUtil.GetFileName(filePath);
             info.RgistrationDate = null;
 
-            if (string.IsNullOrEmpty(filePath))
+            if (FileUtil.IsSystemRoot(filePath))
             {
                 info.IsFile = false;
                 info.IsImageFile = false;

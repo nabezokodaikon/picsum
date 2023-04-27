@@ -21,16 +21,8 @@ namespace PicSum.Task.AsyncFacade
                 throw new ArgumentNullException("param");
             }
 
-            IList<string> subDirectorys = null;
-            if (string.IsNullOrEmpty(param.Value))
-            {
-                subDirectorys = (new GetDrivesAsyncLogic(this)).Execute();
-            }
-            else
-            {
-                subDirectorys = (new GetSubDirectorysAsyncLogic(this)).Execute(param.Value);
-            }            
-
+            IList<string> subDirectorys = (new GetSubDirectorysAsyncLogic(this)).Execute(param.Value);
+          
             GetFileShallowInfoAsyncLogic logic=new GetFileShallowInfoAsyncLogic(this);
             ListEntity<FileShallowInfoEntity> result = new ListEntity<FileShallowInfoEntity>();
             foreach (string subDirectory in subDirectorys)

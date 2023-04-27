@@ -126,22 +126,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
         protected override void OnBackgroundMouseClick(MouseEventArgs e)
         {
-            base.OnSelectedFileChanged(new SelectedFileChangeEventArgs(_parameter.DirectoryPath));
-        }
-
-        protected override void FileContextMenu_Opening(object sender, CancelEventArgs e)
-        {
-            IList<string> filePathList = GetSelectedFiles();
-            if (filePathList.Count > 0)
-            {
-                IsDirectoryActiveTabOpenMenuItemVisible = true;
-                SetContextMenuFiles(filePathList);
-            }
-            else
-            {
-                IsDirectoryActiveTabOpenMenuItemVisible = false;
-                SetContextMenuFiles(_parameter.DirectoryPath);
-            }
+            // 処理無し。
         }
 
         protected override void OnRemoveFile(System.Collections.Generic.IList<string> filePathList)

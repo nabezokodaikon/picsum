@@ -24,26 +24,18 @@ namespace PicSum.Task.AsyncFacade
             GetDirectoryResult result = new GetDirectoryResult();
             result.DirectoryPath = param.Value;
 
-            IList<string> fileList = null;
-            if (string.IsNullOrEmpty(param.Value))
+            IList<string> fileList;
+            GetFilesAndSubDirectorysAsyncLogic getFilesLogic = new GetFilesAndSubDirectorysAsyncLogic(this);
+            try
             {
-                GetDrivesAsyncLogic getFilesLogic = new GetDrivesAsyncLogic(this);
-                fileList = getFilesLogic.Execute();
+                fileList = getFilesLogic.Execute(param.Value);
+                result.DirectoryNotFoundException = null;
             }
-            else
+            catch (DirectoryNotFoundException ex)
             {
-                GetFilesAndSubDirectorysAsyncLogic getFilesLogic = new GetFilesAndSubDirectorysAsyncLogic(this);
-                try
-                {
-                    fileList = getFilesLogic.Execute(param.Value);
-                    result.DirectoryNotFoundException = null;
-                }
-                catch (DirectoryNotFoundException ex)
-                {
-                    result.DirectoryNotFoundException = ex;
-                    OnCallback(result);
-                    return;
-                }
+                result.DirectoryNotFoundException = ex;
+                OnCallback(result);
+                return;
             }
 
             GetFileShallowInfoAsyncLogic getInfoLogic = new GetFileShallowInfoAsyncLogic(this);

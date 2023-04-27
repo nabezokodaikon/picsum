@@ -17,6 +17,9 @@ namespace SWF.Common
         private const string ROOT_DIRECTORY_NAME = "PC";
         private const string ROOT_DIRECTORY_TYPE_NAME = "System root";
 
+        public const string ROOT_DIRECTORY_PATH =
+            "1435810adf6f3080e21df9c3b666c7887883da42ad582d911a81931c38e720da1235036c60c69389e8c4fcc26be0c796626ef8ed3296bd9c65445ff12168fb22";
+
         /// <summary>
         /// ファイル、フォルダの存在を確認します。
         /// </summary>
@@ -37,6 +40,16 @@ namespace SWF.Common
             {
                 return WinApiMembers.PathFileExists(filePath) == 1;
             }
+        }
+
+        /// <summary>
+        /// ファイルパスがシステムルートであるか確認します。
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <returns></returns>
+        public static bool IsSystemRoot(string filePath)
+        {
+            return filePath.Trim() == FileUtil.ROOT_DIRECTORY_PATH;
         }
 
         /// <summary>
@@ -308,7 +321,14 @@ namespace SWF.Common
 
             try
             {
-                return Path.GetDirectoryName(filePath);
+                if (FileUtil.IsDrive(filePath))
+                {
+                    return FileUtil.ROOT_DIRECTORY_PATH;
+                }
+                else
+                {
+                    return Path.GetDirectoryName(filePath);
+                }
             }
             catch (IOException)
             {
@@ -326,11 +346,6 @@ namespace SWF.Common
             if (filePath == null)
             {
                 throw new ArgumentNullException(nameof(filePath));
-            }
-
-            if (FileUtil.HasInvalidChar(filePath))
-            {
-                throw new ArgumentException("ファイルパスに無効な文字が含まれています。", nameof(filePath));
             }
 
             return Path.GetExtension(filePath).ToUpper();
@@ -374,7 +389,7 @@ namespace SWF.Common
         /// </summary>
         /// <param name="filePath">ファイルパス</param>
         /// <returns>ファイル更新日時</returns>
-        public static DateTime GetUpdateDate(string filePath)
+        public static DateTime? GetUpdateDate(string filePath)
         {
             if (filePath == null)
             {
@@ -383,12 +398,7 @@ namespace SWF.Common
 
             if (FileUtil.IsSystemRoot(filePath))
             {
-                throw new ArgumentException("システムルートの更新日時は取得できません。", nameof(filePath));
-            }
-
-            if (FileUtil.HasInvalidChar(filePath))
-            {
-                throw new ArgumentException("ファイルパスに無効な文字が含まれています。", nameof(filePath));
+                return null;
             }
 
             try
@@ -414,7 +424,7 @@ namespace SWF.Common
         /// </summary>
         /// <param name="filePath">ファイルパス</param>
         /// <returns>ファイル作成日時</returns>
-        public static DateTime GetCreateDate(string filePath)
+        public static DateTime? GetCreateDate(string filePath)
         {
             if (filePath == null)
             {
@@ -423,12 +433,7 @@ namespace SWF.Common
 
             if (FileUtil.IsSystemRoot(filePath))
             {
-                throw new ArgumentException("システムルートの作成日時は取得できません。", nameof(filePath));
-            }
-
-            if (FileUtil.HasInvalidChar(filePath))
-            {
-                throw new ArgumentException("ファイルパスに無効な文字が含まれています。", nameof(filePath));
+                return null;
             }
 
             try
@@ -502,29 +507,6 @@ namespace SWF.Common
         }
 
         /// <summary>
-        /// ドライブリストを取得します。
-        /// </summary>
-        /// <returns></returns>
-        public static IList<string> GetDriveList()
-        {
-            try
-            {
-                var drives = DriveInfo.GetDrives()
-                    .Select(drive => FileUtil.ToRemoveLastPathSeparate(string.Format(@"{0}\", drive.Name)))
-                    .ToArray();
-                return drives;
-            }
-            catch (IOException)
-            {
-                return new string[] { };
-            }
-            catch (UnauthorizedAccessException)
-            {
-                return new string[] { };
-            }
-        }
-
-        /// <summary>
         /// フォルダ内のファイルを取得します。
         /// </summary>
         /// <param name="directoryPath">フォルダパス</param>
@@ -549,6 +531,18 @@ namespace SWF.Common
                 {
                     return new string[] { };
                 }
+                catch (PathTooLongException) 
+                {
+                    return new string[] { };
+                }
+                catch (DirectoryNotFoundException)
+                {
+                    return new string[] { };
+                }
+                catch (IOException)
+                {
+                    return new string[] { };
+                }
             }
             else
             {
@@ -566,6 +560,11 @@ namespace SWF.Common
             if (directoryPath == null)
             {
                 throw new ArgumentNullException(nameof(directoryPath));
+            }
+
+            if (FileUtil.IsSystemRoot(directoryPath)) 
+            {
+                return FileUtil.GetDriveList();
             }
 
             if (FileUtil.CanAccess(directoryPath))
@@ -610,6 +609,11 @@ namespace SWF.Common
             if (directoryPath == null)
             {
                 throw new ArgumentNullException(nameof(directoryPath));
+            }
+
+            if (FileUtil.IsSystemRoot(directoryPath))
+            {
+                return FileUtil.GetDriveList();
             }
 
             if (FileUtil.CanAccess(directoryPath))
@@ -869,26 +873,6 @@ namespace SWF.Common
             }
         }
 
-        public static void OpenMyComputer()
-        {
-            try
-            {
-                Process.Start("EXPLORER.EXE", "::{20D04FE0-3AEA-1069-A2D8-08002B30309D}");
-            }
-            catch (Win32Exception)
-            {
-                return;
-            }
-            catch (ObjectDisposedException)
-            {
-                return;
-            }
-            catch (FileNotFoundException)
-            {
-                return;
-            }
-        }
-
         public static void OpenExplorer(string filePath)
         {
             if (filePath == null)
@@ -898,7 +882,14 @@ namespace SWF.Common
 
             try
             {
-                Process.Start("EXPLORER.EXE", filePath);
+                if (FileUtil.IsSystemRoot(filePath))
+                {
+                    Process.Start("EXPLORER.EXE", "::{20D04FE0-3AEA-1069-A2D8-08002B30309D}");
+                }
+                else 
+                {
+                    Process.Start("EXPLORER.EXE", filePath);
+                }                
             }
             catch (Win32Exception)
             {
@@ -954,24 +945,24 @@ namespace SWF.Common
             }
         }
 
-        // ファイルパスに無効な文字が含まれているか確認します。
-        private static bool HasInvalidChar(string filePath)
+        // ドライブリストを取得します。
+        private static IList<string> GetDriveList()
         {
-            foreach (var c in Path.GetInvalidPathChars())
+            try
             {
-                if (filePath.Contains(c))
-                {
-                    return true;
-                }
+                var drives = DriveInfo.GetDrives()
+                    .Select(drive => FileUtil.ToRemoveLastPathSeparate(string.Format(@"{0}\", drive.Name)))
+                    .ToArray();
+                return drives;
             }
-
-            return false;
-        }
-
-        // ファイルパスがシステムルートであるか確認します。
-        private static bool IsSystemRoot(string filePath)
-        {
-            return filePath.Trim() == string.Empty;
+            catch (IOException)
+            {
+                return new string[] { };
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return new string[] { };
+            }
         }
     }
 }

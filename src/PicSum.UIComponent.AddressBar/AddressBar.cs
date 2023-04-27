@@ -219,7 +219,7 @@ namespace PicSum.UIComponent.AddressBar
 
         public void SetAddress()
         {
-            SetAddress(string.Empty);
+            SetAddress(FileUtil.ROOT_DIRECTORY_PATH);
         }
 
         public void SetAddress(string filePath)
