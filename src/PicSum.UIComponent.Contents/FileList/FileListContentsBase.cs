@@ -422,6 +422,66 @@ namespace PicSum.UIComponent.Contents.FileList
             this.SetFilter();
         }
 
+        protected IEnumerable<FileShallowInfoEntity> GetSortFiles(IEnumerable<FileShallowInfoEntity> files) 
+        {
+            if (files == null)
+            {
+                throw new ArgumentNullException(nameof(files));
+            }
+
+            var isAscending = this.sortInfo.IsAscending(this.sortInfo.ActiveSortType);
+            switch (this.sortInfo.ActiveSortType)
+            {
+                case SortTypeID.FileName:
+                    if (isAscending)
+                    {
+                        return files.OrderBy(file => file.FileName);
+                    }
+                    else
+                    {
+                        return files.OrderByDescending(file => file.FileName);
+                    }
+                case SortTypeID.FilePath:
+                    if (isAscending)
+                    {
+                        return files.OrderBy(file => file.FilePath);
+                    }
+                    else
+                    {
+                        return files.OrderByDescending(file => file.FilePath);
+                    }
+                case SortTypeID.UpdateDate:
+                    if (isAscending)
+                    {
+                        return files.OrderBy(file => file.UpdateDate.GetValueOrDefault(DateTime.MinValue));
+                    }
+                    else
+                    {
+                        return files.OrderByDescending(file => file.UpdateDate.GetValueOrDefault(DateTime.MinValue));
+                    }
+                case SortTypeID.CreateDate:
+                    if (isAscending)
+                    {
+                        return files.OrderBy(file => file.CreateDate.GetValueOrDefault(DateTime.MinValue));
+                    }
+                    else
+                    {
+                        return files.OrderByDescending(file => file.CreateDate.GetValueOrDefault(DateTime.MinValue));
+                    }
+                case SortTypeID.RgistrationDate:
+                    if (isAscending)
+                    {
+                        return files.OrderBy(file => file.RgistrationDate.GetValueOrDefault(DateTime.MinValue));
+                    }
+                    else
+                    {
+                        return files.OrderByDescending(file => file.RgistrationDate.GetValueOrDefault(DateTime.MinValue));
+                    }
+                default:
+                    return files;
+            }
+        }
+
         protected abstract Action GetImageFilesAction(ImageViewerContentsParameter paramter);
 
         #endregion

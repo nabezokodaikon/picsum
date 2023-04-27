@@ -116,14 +116,15 @@ namespace PicSum.UIComponent.Contents.FileList
                 proces.Callback += ((sender, e) =>
                 {
                     var imageFiles = e
-                        .Where(fileInfo => fileInfo.IsImageFile)
+                        .Where(fileInfo => fileInfo.IsImageFile);
+                    var sortImageFiles = base.GetSortFiles(imageFiles)
                         .Select(fileInfo => fileInfo.FilePath)
                         .ToArray();
 
                     var selectedFilePath = FileUtil.IsImageFile(this.SelectedFilePath) ?
                         this.SelectedFilePath : string.Empty;
 
-                    var eventArgs = new GetImageFilesEventArgs(imageFiles, selectedFilePath);
+                    var eventArgs = new GetImageFilesEventArgs(sortImageFiles, selectedFilePath);
                     paramter.OnGetImageFiles(eventArgs);
                 });
 
