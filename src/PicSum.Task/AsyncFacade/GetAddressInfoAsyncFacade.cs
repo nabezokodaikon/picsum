@@ -23,12 +23,17 @@ namespace PicSum.Task.AsyncFacade
                 throw new ArgumentNullException("param");
             }
 
+            if (string.IsNullOrEmpty(param.Value))
+            {
+                throw new ArgumentNullException("空白が指定されました。", nameof(param));
+            }
+
             var addressInfo = new GetAddressInfoResult();
 
             try
             {
                 IList<string> l = new List<string>();
-                
+
                 GetFileShallowInfoAsyncLogic logic = new GetFileShallowInfoAsyncLogic(this);
 
                 addressInfo.DirectoryList = new ListEntity<FileShallowInfoEntity>();
