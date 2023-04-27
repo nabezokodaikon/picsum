@@ -62,7 +62,7 @@ namespace PicSum.UIComponent.Common
         private readonly ToolStripMenuItem exportMenuItem = new ToolStripMenuItem("Export");
         private readonly ToolStripMenuItem pathCopyMenuItem = new ToolStripMenuItem("Copy Path");
         private readonly ToolStripMenuItem nameCopyMenuItem = new ToolStripMenuItem("Copy Name");
-        private readonly ToolStripMenuItem addKeepMenuItem = new ToolStripMenuItem("Keeps");
+        private readonly ToolStripMenuItem addKeepMenuItem = new ToolStripMenuItem("Keep");
         private readonly ToolStripMenuItem removeFromListMenuItem = new ToolStripMenuItem("Remove from list");
 
         #endregion
