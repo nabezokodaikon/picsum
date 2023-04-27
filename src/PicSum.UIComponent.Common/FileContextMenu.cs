@@ -43,25 +43,25 @@ namespace PicSum.UIComponent.Common
         private bool isDirectoryActiveTabOpenMenuItemVisible = false;
 
         // 画像ファイルメニュー項目
-        private ToolStripMenuItem fileActiveTabOpenMenuItem = new ToolStripMenuItem("Open");
-        private ToolStripMenuItem fileNewTabOpenMenuItem = new ToolStripMenuItem("Open in a new Tab");
-        private ToolStripMenuItem fileNewWindowOpenMenuItem = new ToolStripMenuItem("Open in a new Window");
+        private readonly ToolStripMenuItem fileActiveTabOpenMenuItem = new ToolStripMenuItem("Open");
+        private readonly ToolStripMenuItem fileNewTabOpenMenuItem = new ToolStripMenuItem("Open in a new Tab");
+        private readonly ToolStripMenuItem fileNewWindowOpenMenuItem = new ToolStripMenuItem("Open in a new Window");
 
         // ファイルメニュー項目
-        private ToolStripMenuItem fileOpen = new ToolStripMenuItem("Open in association with");
-        private ToolStripMenuItem saveDirectoryOpen = new ToolStripMenuItem("Open save folder");
+        private readonly ToolStripMenuItem fileOpen = new ToolStripMenuItem("Open in association with");
+        private readonly ToolStripMenuItem saveDirectoryOpen = new ToolStripMenuItem("Open save folder");
 
         // フォルダメニュー項目
-        private ToolStripMenuItem directoryActiveTabOpenMenuItem = new ToolStripMenuItem("Open");
-        private ToolStripMenuItem directoryNewTabOpenMenuItem = new ToolStripMenuItem("Open in a new Tab");
-        private ToolStripMenuItem directoryNewWindowOpenMenuItem = new ToolStripMenuItem("Open in a new Window");
-        private ToolStripMenuItem explorerOpenMenuItem = new ToolStripMenuItem("Open in Explorer");
+        private readonly ToolStripMenuItem directoryActiveTabOpenMenuItem = new ToolStripMenuItem("Open");
+        private readonly ToolStripMenuItem directoryNewTabOpenMenuItem = new ToolStripMenuItem("Open in a new Tab");
+        private readonly ToolStripMenuItem directoryNewWindowOpenMenuItem = new ToolStripMenuItem("Open in a new Window");
+        private readonly ToolStripMenuItem explorerOpenMenuItem = new ToolStripMenuItem("Open in Explorer");
 
-        private ToolStripMenuItem exportMenuItem = new ToolStripMenuItem("Export");
-        private ToolStripMenuItem pathCopyMenuItem = new ToolStripMenuItem("Copy Path");
-        private ToolStripMenuItem nameCopyMenuItem = new ToolStripMenuItem("Copy Name");
-        private ToolStripMenuItem addKeepMenuItem = new ToolStripMenuItem("Keeps");
-        private ToolStripMenuItem removeFromListMenuItem = new ToolStripMenuItem("Remove from list");
+        private readonly ToolStripMenuItem exportMenuItem = new ToolStripMenuItem("Export");
+        private readonly ToolStripMenuItem pathCopyMenuItem = new ToolStripMenuItem("Copy Path");
+        private readonly ToolStripMenuItem nameCopyMenuItem = new ToolStripMenuItem("Copy Name");
+        private readonly ToolStripMenuItem addKeepMenuItem = new ToolStripMenuItem("Keeps");
+        private readonly ToolStripMenuItem removeFromListMenuItem = new ToolStripMenuItem("Remove from list");
 
         #endregion
 
