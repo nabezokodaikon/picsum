@@ -3,7 +3,7 @@ using PicSum.Data.DatabaseAccessor.Dto;
 
 namespace PicSum.Data.DatabaseAccessor.Sql
 {
-    public sealed class ReadBookmarks
+    public sealed class ReadBookmarkSql
         : SqlBase<BookmarkDto>
     {
         const string SQL_TEXT =
@@ -16,7 +16,7 @@ SELECT mf.file_path
 ORDER BY tb.registration_date DESC
 ";
 
-        public ReadBookmarks()
+        public ReadBookmarkSql()
             : base(SQL_TEXT)
         {
         }
