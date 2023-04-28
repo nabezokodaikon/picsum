@@ -93,6 +93,17 @@ CREATE TABLE 't_directory_state' (
      )
 );
 
+/* ブックマークT */
+CREATE TABLE 't_bookmark' (
+     'file_id'         INTEGER  NOT NULL
+    ,'register_date'   DATETIME NOT NULL
+    ,'create_date'     DATETIME
+    ,'update_date'     DATETIME
+    ,PRIMARY KEY (
+         'file_id'
+     )
+);
+
 /* ファイルIDM INSERT */
 CREATE TRIGGER m_file_id_insert_trigger
     AFTER INSERT
@@ -221,6 +232,24 @@ CREATE TRIGGER t_directory_state_update_trigger
     BEGIN UPDATE t_directory_state
              SET update_date = DATETIME('NOW', 'LOCALTIME')
            WHERE file_id     = NEW.file_id;
+   END;
+
+/* ブックマークT INSERT */
+CREATE TRIGGER t_bookmark_insert_trigger
+    AFTER INSERT
+       ON t_bookmark
+    BEGIN UPDATE t_bookmark
+             SET create_date = DATETIME('NOW', 'LOCALTIME')
+           WHERE file_id = NEW.file_id;
+   END;
+
+/* ブックマークT UPDATE */
+CREATE TRIGGER t_bookmark_update_trigger
+    AFTER UPDATE
+       ON t_bookmark
+    BEGIN UPDATE t_bookmark
+             SET update_date = DATETIME('NOW', 'LOCALTIME')
+           WHERE file_id = NEW.file_id;
    END;
 
 /* ファイルM挿入時に、ファイルMID.ファイルIDをインクリメントします。*/
