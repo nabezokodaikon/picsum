@@ -67,12 +67,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AsyncFacade\AddBookmarkAsyncFacade.cs" />
     <Compile Include="AsyncFacade\AddDirectoryViewHistoryAsyncFacade.cs" />
     <Compile Include="AsyncFacade\AddFileTagAsyncFacade.cs" />
     <Compile Include="AsyncFacade\AddKeepAsyncFacade.cs" />
+    <Compile Include="AsyncFacade\DeleteBookmarkAsyncFacade.cs" />
     <Compile Include="AsyncFacade\DeleteFileTagAsyncFacade.cs" />
     <Compile Include="AsyncFacade\DeleteDirectoryViewCounterAsyncFacade.cs" />
     <Compile Include="AsyncFacade\GetAddressInfoAsyncFacade.cs" />
+    <Compile Include="AsyncFacade\GetBookmarkAsyncFacade.cs" />
     <Compile Include="AsyncFacade\GetFileDeepInfoAsyncFacade.cs" />
     <Compile Include="AsyncFacade\GetKeepAsyncFacade.cs" />
     <Compile Include="AsyncFacade\ExportFileAsyncFacade.cs" />
