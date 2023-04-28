@@ -17,7 +17,7 @@ DELETE FROM t_bookmark
         public DeletionBookmarkSql(string filePath)
             : base(SQL_TEXT)
         {
-            base.ParameterList.Add(SqlParameterUtil.CreateParameter("filePath", filePath));
+            base.ParameterList.Add(SqlParameterUtil.CreateParameter("file_path", filePath));
         }
     }
 }
