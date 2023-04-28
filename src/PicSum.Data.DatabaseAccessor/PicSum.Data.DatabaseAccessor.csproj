@@ -87,6 +87,7 @@
   <ItemGroup>
     <Compile Include="Connection\FileInfoConnection.cs" />
     <Compile Include="Connection\ThumbnailConnection.cs" />
+    <Compile Include="Dto\BookmarkDto.cs" />
     <Compile Include="Dto\FileByRatingDto.cs" />
     <Compile Include="Dto\FileInfoDto.cs" />
     <Compile Include="Dto\FileTagDto.cs" />
@@ -111,6 +112,7 @@
     <Compile Include="Sql\DeletionThumbnailByFileSql.cs" />
     <Compile Include="Sql\IncrementDirectoryViewCounterSql.cs" />
     <Compile Include="Sql\ReadAllTagSql.cs" />
+    <Compile Include="Sql\ReadBookmarkSql.cs" />
     <Compile Include="Sql\ReadFileByRatingSql.cs" />
     <Compile Include="Sql\ReadFileByTagSql.cs" />
     <Compile Include="Sql\ReadFileInfoSql.cs" />

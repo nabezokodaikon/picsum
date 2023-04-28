@@ -83,10 +83,12 @@
     <Compile Include="AsyncFacade\GetFilesByTagAsyncFacade.cs" />
     <Compile Include="AsyncFacade\GetImageFileByDirectoryAsyncFacade.cs" />
     <Compile Include="AsyncFacade\UpdateFileRatingAsyncFacade.cs" />
+    <Compile Include="AsyncLogic\AddBookmarkAsyncLogic.cs" />
     <Compile Include="AsyncLogic\AddFileRatingAsyncLogic.cs" />
     <Compile Include="AsyncLogic\AddDirectoryViewCounterAsyncLogic.cs" />
     <Compile Include="AsyncLogic\AddDirectoryViewHistoryAsyncLogic.cs" />
     <Compile Include="AsyncLogic\AddFileTagAsyncLogic.cs" />
+    <Compile Include="AsyncLogic\DeleteBookmarkAsyncLogic.cs" />
     <Compile Include="AsyncLogic\DeleteFileTagAsyncLogic.cs" />
     <Compile Include="AsyncLogic\DeleteDirectoryViewCounterAsyncLogic.cs" />
     <Compile Include="AsyncLogic\GetFileDeepInfoAsyncLogic.cs" />
@@ -97,6 +99,7 @@
     <Compile Include="AsyncLogic\GetFavoriteDirectoryAsyncLogic.cs" />
     <Compile Include="AsyncLogic\GetFileByRatingAsyncLogic.cs" />
     <Compile Include="AsyncLogic\GetFileByTagAsyncLogic.cs" />
+    <Compile Include="AsyncLogic\GetBookmarkListAsyncLogic.cs" />
     <Compile Include="AsyncLogic\UpdateFileRatingAsyncLogic.cs" />
     <Compile Include="AsyncLogic\UpdateFileTagAsyncLogic.cs" />
     <Compile Include="Result\GetAddressInfoResult.cs" />
