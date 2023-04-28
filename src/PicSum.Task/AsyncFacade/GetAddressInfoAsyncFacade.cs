@@ -25,7 +25,9 @@ namespace PicSum.Task.AsyncFacade
 
             if (string.IsNullOrEmpty(param.Value))
             {
-                throw new ArgumentNullException("空白が指定されました。", nameof(param));
+                // TODO; ファイルパスに空白が指定された場合。
+                //throw new ArgumentNullException("空白が指定されました。", nameof(param));
+                return;
             }
 
             var addressInfo = new GetAddressInfoResult();
