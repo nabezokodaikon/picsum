@@ -95,10 +95,10 @@ CREATE TABLE 't_directory_state' (
 
 /* ブックマークT */
 CREATE TABLE 't_bookmark' (
-     'file_id'         INTEGER  NOT NULL
-    ,'register_date'   DATETIME NOT NULL
-    ,'create_date'     DATETIME
-    ,'update_date'     DATETIME
+     'file_id'           INTEGER  NOT NULL
+    ,'registration_date' DATETIME NOT NULL
+    ,'create_date'       DATETIME
+    ,'update_date'       DATETIME
     ,PRIMARY KEY (
          'file_id'
      )
