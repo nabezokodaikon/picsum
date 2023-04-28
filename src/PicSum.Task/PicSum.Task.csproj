@@ -100,7 +100,6 @@
     <Compile Include="AsyncLogic\UpdateFileRatingAsyncLogic.cs" />
     <Compile Include="AsyncLogic\UpdateFileTagAsyncLogic.cs" />
     <Compile Include="Result\GetAddressInfoResult.cs" />
-    <Compile Include="Entity\DragEntity.cs" />
     <Compile Include="Parameter\ExportFileParameter.cs" />
     <Compile Include="Parameter\GetNextContentsParameter.cs" />
     <Compile Include="Entity\KeepFileEntity.cs" />

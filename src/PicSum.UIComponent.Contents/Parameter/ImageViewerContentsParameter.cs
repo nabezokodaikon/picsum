@@ -15,7 +15,7 @@ namespace PicSum.UIComponent.Contents.Parameter
 
         public string ContentsSources { get; private set; }
         public string SourcesKey { get; private set; }
-        public string Key { get; private set; }   
+        public string Key { get; private set; }
         public Func<ImageViewerContentsParameter, Action> GetImageFilesAction { get; private set; }
         public string ContentsTitle { get; private set; }
         public Image ContentsIcon { get; private set; }
@@ -45,10 +45,10 @@ namespace PicSum.UIComponent.Contents.Parameter
 
         public void OnGetImageFiles(GetImageFilesEventArgs e)
         {
-            if (this.GetImageFiles != null) 
+            if (this.GetImageFiles != null)
             {
                 this.GetImageFiles(this, e);
-            }             
+            }
         }
     }
 }

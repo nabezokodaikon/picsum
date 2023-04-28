@@ -299,19 +299,17 @@ namespace PicSum.Main.UIComponent
                 // フォルダコンテンツを上書きします。
                 this.openContents(new DirectoryFileListContentsParameter(dragData.CurrentFilePath), ContentsOpenType.OverlapTab);
             }
-            else if (FileUtil.IsFile(dragData.CurrentFilePath) && 
+            else if (FileUtil.IsFile(dragData.CurrentFilePath) &&
                 FileUtil.IsImageFile(dragData.CurrentFilePath))
             {
                 // ビューアコンテンツを上書きします。
-                var dirPath = FileUtil.GetParentDirectoryPath(dragData.CurrentFilePath);
-                var dirName = FileUtil.GetFileName(dirPath);
                 var parameter = new ImageViewerContentsParameter(
-                    DirectoryFileListContentsParameter.CONTENTS_SOURCES,
-                    dirPath,
-                    this.GetImageFilesAction(new GetImageFileByDirectoryParameter() { FilePath = dragData.CurrentFilePath }),
+                    dragData.ContentsSources,
+                    dragData.SourcesKey,
+                    dragData.GetImageFilesAction,
                     dragData.CurrentFilePath,
-                    dirName,
-                    FileIconCash.SmallDirectoryIcon);
+                    dragData.ContentsTitle,
+                    dragData.ContentsIcon);
                 this.openContents(parameter, ContentsOpenType.OverlapTab);
             }
         }
@@ -326,17 +324,14 @@ namespace PicSum.Main.UIComponent
             else if (FileUtil.IsFile(dragData.CurrentFilePath) &&
                 FileUtil.IsImageFile(dragData.CurrentFilePath))
             {
-                // TODO: 呼び出し元がディレクトリ以外でも、ディレクトリになってしまう。
                 // ビューアコンテンツを挿入します。
-                var dirPath = FileUtil.GetParentDirectoryPath(dragData.CurrentFilePath);
-                var dirName = FileUtil.GetFileName(dirPath);
                 var parameter = new ImageViewerContentsParameter(
-                    DirectoryFileListContentsParameter.CONTENTS_SOURCES,
-                    dirPath,
-                    this.GetImageFilesAction(new GetImageFileByDirectoryParameter() { FilePath = dragData.CurrentFilePath }),
+                    dragData.ContentsSources,
+                    dragData.SourcesKey,
+                    dragData.GetImageFilesAction,
                     dragData.CurrentFilePath,
-                    dirName,
-                    FileIconCash.SmallDirectoryIcon);
+                    dragData.ContentsTitle,
+                    dragData.ContentsIcon);
                 this.insertContents(parameter, tabIndex);
             }
         }
@@ -368,7 +363,8 @@ namespace PicSum.Main.UIComponent
                     DirectoryFileListContentsParameter.CONTENTS_SOURCES,
                     dirPath,
                     filePath,
-                    FileUtil.IsFile(filePath) ? FileUtil.GetFileName(dirPath) : FileUtil.GetFileName(filePath),
+                    this.GetImageFilesAction(new GetImageFileByDirectoryParameter(dirPath)),
+                    FileUtil.GetFileName(dirPath),
                     FileIconCash.SmallDirectoryIcon);
                 if (e.IsOverlap)
                 {
@@ -385,7 +381,7 @@ namespace PicSum.Main.UIComponent
 
         #region プロセスイベント
 
-        private Func<ImageViewerContentsParameter, Action>GetImageFilesAction(
+        private Func<ImageViewerContentsParameter, Action> GetImageFilesAction(
             GetImageFileByDirectoryParameter subParamter)
         {
             return (parameter) =>

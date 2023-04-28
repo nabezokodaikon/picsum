@@ -422,7 +422,7 @@ namespace PicSum.UIComponent.Contents.FileList
             this.SetFilter();
         }
 
-        protected IEnumerable<FileShallowInfoEntity> GetSortFiles(IEnumerable<FileShallowInfoEntity> files) 
+        protected IEnumerable<FileShallowInfoEntity> GetSortFiles(IEnumerable<FileShallowInfoEntity> files)
         {
             if (files == null)
             {
@@ -1162,14 +1162,7 @@ namespace PicSum.UIComponent.Contents.FileList
                         this.Parameter.ContentsSources,
                         this.Parameter.SourcesKey,
                         currentFilePath,
-                        this.GetImageFilesAction(
-                            new ImageViewerContentsParameter(
-                                this.Parameter.ContentsSources,
-                                this.Parameter.SourcesKey,
-                                this.GetImageFilesAction,
-                                currentFileInfo.FilePath,
-                                this.Title,
-                                this.Icon)),
+                        this.GetImageFilesAction,
                         this.Title,
                         this.Icon); ;
                     this.DoDragDrop(dragData, DragDropEffects.All);
@@ -1182,6 +1175,7 @@ namespace PicSum.UIComponent.Contents.FileList
                     this.Parameter.ContentsSources,
                     this.Parameter.SourcesKey,
                     currentFilePath,
+                    this.GetImageFilesAction,
                     this.Title,
                     this.Icon);
                 this.DoDragDrop(dragData, DragDropEffects.All);

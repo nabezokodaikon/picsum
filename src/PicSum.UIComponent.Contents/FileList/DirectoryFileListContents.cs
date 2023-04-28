@@ -7,8 +7,6 @@ using PicSum.Task.Result;
 using PicSum.UIComponent.Contents.Parameter;
 using SWF.Common;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Windows.Forms;
 

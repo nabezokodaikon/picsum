@@ -1,19 +1,18 @@
-﻿using System;
-using System.Windows.Forms;
-using PicSum.Core.Task.AsyncTask;
+﻿using PicSum.Core.Task.AsyncTask;
 using PicSum.Task.AsyncFacade;
 using PicSum.Task.Entity;
+using PicSum.Task.Paramter;
+using PicSum.UIComponent.Contents.Conf;
 using PicSum.UIComponent.Contents.Parameter;
 using PicSum.UIComponent.Contents.Properties;
 using SWF.Common;
-using PicSum.UIComponent.Contents.Conf;
+using System;
 using System.Collections.Generic;
-using PicSum.Task.Paramter;
-using PicSum.Core.Base.Conf;
+using System.Windows.Forms;
 
 namespace PicSum.UIComponent.Contents.FileList
 {
-    internal class FavoriteDirectoryListContents 
+    internal class FavoriteDirectoryListContents
         : FileListContentsBase
     {
         #region インスタンス変数

@@ -12,7 +12,6 @@ using SWF.UIComponent.ImagePanel;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data.Common;
 using System.Drawing;
 using System.Linq;
 using System.Security.Permissions;
@@ -23,7 +22,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
     /// <summary>
     /// 画像ビューアコンテンツ
     /// </summary>
-    public partial class ImageViewerContents 
+    public partial class ImageViewerContents
         : BrowserContents
     {
         #region 定数・列挙
@@ -65,7 +64,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         {
             get
             {
-                return this.filePathList != null && 
+                return this.filePathList != null &&
                     this.filePathList.Count > 0;
             }
         }
@@ -165,7 +164,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 this.parameter.SelectedFilePath = this.SelectedFilePath;
                 this.parameter.GetImageFiles -= this.Parameter_GetImageFiles;
 
-                if (this.components != null) 
+                if (this.components != null)
                 {
                     this.components.Dispose();
                 }
@@ -462,7 +461,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 this.Parameter.ContentsSources,
                 this.Parameter.SourcesKey,
                 currentFilePath,
-                this.parameter.GetImageFilesAction(this.parameter),
+                this.parameter.GetImageFilesAction,
                 this.parameter.ContentsTitle,
                 this.parameter.ContentsIcon);
             this.DoDragDrop(dragData, DragDropEffects.All);
@@ -552,11 +551,11 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             {
                 this.MaximumIndex = this.filePathList.Count - 1;
             }
-            else 
+            else
             {
                 this.MaximumIndex = 0;
             }
-            
+
             var selectedFilePath = this.parameter.SelectedFilePath != string.Empty ?
                 this.parameter.SelectedFilePath : e.SelectedFilePath;
             var index = this.filePathList.IndexOf(selectedFilePath);
