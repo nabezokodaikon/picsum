@@ -995,6 +995,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 this.Parameter.ContentsSources,
                 this.Parameter.SourcesKey,
                 this.parameter.GetImageFilesAction,
+                e.FilePath,
                 this.Title,
                 this.Icon);
             this.OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.AddTab, param));
@@ -1006,6 +1007,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 this.Parameter.ContentsSources,
                 this.Parameter.SourcesKey,
                 this.parameter.GetImageFilesAction,
+                e.FilePath,
                 this.Title,
                 this.Icon);
             this.OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.NewWindow, param));

@@ -309,6 +309,7 @@ namespace PicSum.Main.UIComponent
                     DirectoryFileListContentsParameter.CONTENTS_SOURCES,
                     dirPath,
                     this.GetImageFilesAction(new GetImageFileByDirectoryParameter() { FilePath = dragData.CurrentFilePath }),
+                    dragData.CurrentFilePath,
                     dirName,
                     FileIconCash.SmallDirectoryIcon);
                 this.openContents(parameter, ContentsOpenType.OverlapTab);
@@ -325,6 +326,7 @@ namespace PicSum.Main.UIComponent
             else if (FileUtil.IsFile(dragData.CurrentFilePath) &&
                 FileUtil.IsImageFile(dragData.CurrentFilePath))
             {
+                // TODO: 呼び出し元がディレクトリ以外でも、ディレクトリになってしまう。
                 // ビューアコンテンツを挿入します。
                 var dirPath = FileUtil.GetParentDirectoryPath(dragData.CurrentFilePath);
                 var dirName = FileUtil.GetFileName(dirPath);
@@ -332,6 +334,7 @@ namespace PicSum.Main.UIComponent
                     DirectoryFileListContentsParameter.CONTENTS_SOURCES,
                     dirPath,
                     this.GetImageFilesAction(new GetImageFileByDirectoryParameter() { FilePath = dragData.CurrentFilePath }),
+                    dragData.CurrentFilePath,
                     dirName,
                     FileIconCash.SmallDirectoryIcon);
                 this.insertContents(parameter, tabIndex);

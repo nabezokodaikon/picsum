@@ -1048,6 +1048,7 @@ namespace PicSum.UIComponent.Contents.FileList
                     this.Parameter.ContentsSources,
                     this.Parameter.SourcesKey,
                     this.GetImageFilesAction,
+                    filePath,
                     this.Title,
                     this.Icon);
                 this.OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.AddTab, param));
@@ -1074,6 +1075,7 @@ namespace PicSum.UIComponent.Contents.FileList
                     this.Parameter.ContentsSources,
                     this.Parameter.SourcesKey,
                     this.GetImageFilesAction,
+                    filePath,
                     this.Title,
                     this.Icon);
                 this.OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.OverlapTab, param));
@@ -1104,6 +1106,7 @@ namespace PicSum.UIComponent.Contents.FileList
                     this.Parameter.ContentsSources,
                     this.Parameter.SourcesKey,
                     this.GetImageFilesAction,
+                    filePath,
                     this.Title,
                     this.Icon);
                 this.OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.OverlapTab, param));
@@ -1164,10 +1167,11 @@ namespace PicSum.UIComponent.Contents.FileList
                                 this.Parameter.ContentsSources,
                                 this.Parameter.SourcesKey,
                                 this.GetImageFilesAction,
+                                currentFileInfo.FilePath,
                                 this.Title,
                                 this.Icon)),
                         this.Title,
-                        this.Icon);
+                        this.Icon); ;
                     this.DoDragDrop(dragData, DragDropEffects.All);
                 }
             }
@@ -1207,6 +1211,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 this.Parameter.ContentsSources,
                 this.Parameter.SourcesKey,
                 this.GetImageFilesAction,
+                e.FilePath,
                 this.Title,
                 this.Icon);
             this.OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.OverlapTab, param));
@@ -1218,6 +1223,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 this.Parameter.ContentsSources,
                 this.Parameter.SourcesKey,
                 this.GetImageFilesAction,
+                e.FilePath,
                 this.Title,
                 this.Icon);
             this.OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.AddTab, param));
@@ -1229,6 +1235,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 this.Parameter.ContentsSources,
                 this.Parameter.SourcesKey,
                 this.GetImageFilesAction,
+                e.FilePath,
                 this.Title,
                 this.Icon);
             this.OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.NewWindow, param));
