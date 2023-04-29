@@ -256,7 +256,7 @@ CREATE TRIGGER t_bookmark_update_trigger
    END;
 
 /* ファイルM挿入時に、ファイルMID.ファイルIDをインクリメントします。*/
-CREATE TRIGGER Increment_file_id
+CREATE TRIGGER increment_file_id
     AFTER INSERT
        ON m_file
     BEGIN UPDATE m_file_id
