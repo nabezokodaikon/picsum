@@ -103,6 +103,7 @@
     <Compile Include="AsyncLogic\GetFileByRatingAsyncLogic.cs" />
     <Compile Include="AsyncLogic\GetFileByTagAsyncLogic.cs" />
     <Compile Include="AsyncLogic\GetBookmarkListAsyncLogic.cs" />
+    <Compile Include="AsyncLogic\UpdateFileMasterAsyncLogic.cs" />
     <Compile Include="AsyncLogic\UpdateFileRatingAsyncLogic.cs" />
     <Compile Include="AsyncLogic\UpdateFileTagAsyncLogic.cs" />
     <Compile Include="Result\GetAddressInfoResult.cs" />

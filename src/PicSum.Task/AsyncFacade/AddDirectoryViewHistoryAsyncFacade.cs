@@ -20,20 +20,26 @@ namespace PicSum.Task.AsyncFacade
             using (Transaction tran = DatabaseManager<FileInfoConnection>.BeginTransaction())
             {
                 var addDirectoryViewHistory = new AddDirectoryViewHistoryAsyncLogic(this);
-                var addFileMaster = new AddFileMasterAsyncLogic(this);
-                var addDirectoryViewCounter = new AddDirectoryViewCounterAsyncLogic(this);
-                var incrementDirectoryViewCounter = new IncrementDirectoryViewCounterAsyncLogic(this);
-
                 if (!addDirectoryViewHistory.Execute(param.Value))
                 {
-                    addFileMaster.Execute(param.Value);
-                    addDirectoryViewHistory.Execute(param.Value);
-                    addDirectoryViewCounter.Execute(param.Value) ;
+                    var updateFileMaster = new UpdateFileMasterAsyncLogic(this);
+                    if (!updateFileMaster.Execute(param.Value))
+                    {
+                        var addFileMaster = new AddFileMasterAsyncLogic(this);
+                        var addDirectoryViewCounter = new AddDirectoryViewCounterAsyncLogic(this);
+                        addFileMaster.Execute(param.Value);
+                        addDirectoryViewHistory.Execute(param.Value);
+                        addDirectoryViewCounter.Execute(param.Value);
+                    }
                 }
-
-                if (!incrementDirectoryViewCounter.Execute(param.Value))
+                else 
                 {
-                    addDirectoryViewCounter.Execute(param.Value);
+                    var incrementDirectoryViewCounter = new IncrementDirectoryViewCounterAsyncLogic(this);
+                    if (!incrementDirectoryViewCounter.Execute(param.Value))
+                    {
+                        var addDirectoryViewCounter = new AddDirectoryViewCounterAsyncLogic(this);
+                        addDirectoryViewCounter.Execute(param.Value);
+                    }
                 }
 
                 tran.Commit();

@@ -122,6 +122,7 @@
     <Compile Include="Sql\ReadDirectoryViewHistorySql.cs" />
     <Compile Include="Sql\ReadThumbnailByFileSql.cs" />
     <Compile Include="Sql\UpdateDirectoryStateSql.cs" />
+    <Compile Include="Sql\UpdateFileSql.cs" />
     <Compile Include="Sql\UpdateRatingSql.cs" />
     <Compile Include="Sql\UpdateTagSql.cs" />
     <Compile Include="Sql\UpdateThumbnailSql.cs" />
