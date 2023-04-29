@@ -358,7 +358,8 @@ namespace PicSum.Main.UIComponent
                 }
 
                 var filePath = filePaths.First();
-                var dirPath = FileUtil.GetParentDirectoryPath(filePath);
+                var dirPath = FileUtil.IsDirectory(filePath) ?
+                    filePath : FileUtil.GetParentDirectoryPath(filePath);
                 var dragData = new DragEntity(
                     DirectoryFileListContentsParameter.CONTENTS_SOURCES,
                     dirPath,
@@ -397,7 +398,9 @@ namespace PicSum.Main.UIComponent
                             return;
                         }
 
-                        var title = FileUtil.GetFileName(FileUtil.GetParentDirectoryPath(subParamter.FilePath));
+                        var title = FileUtil.IsDirectory(subParamter.FilePath) ?
+                        FileUtil.GetFileName(subParamter.FilePath) :
+                        FileUtil.GetFileName(FileUtil.GetParentDirectoryPath(subParamter.FilePath));
 
                         var eventArgs = new GetImageFilesEventArgs(
                             e.FilePathList, e.SelectedFilePath, title, FileIconCash.SmallDirectoryIcon);
