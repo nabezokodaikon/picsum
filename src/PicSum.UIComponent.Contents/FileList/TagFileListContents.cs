@@ -172,7 +172,6 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             this.Title = _parameter.Tag;
             this.Icon = Resources.TagIcon;
-            this.IsAddKeepMenuItemVisible = true;
             this.IsRemoveFromListMenuItemVisible = true;
             this.IsMoveControlVisible = false;
             this.IsBookmarkMenuItem = true;

@@ -52,7 +52,6 @@ namespace PicSum.Main
                     }
 
                     FileIconCash.DisposeStaticResouces();
-                    KeepListOperatingAsyncLogic.DisposeStaticResouces();
                     GetThumbnailAsyncLogic.DisposeStaticResouces();
                     ExportFileAsyncFacade.DisposeStaticResouces();
 

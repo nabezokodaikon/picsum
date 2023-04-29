@@ -81,7 +81,6 @@
     <Compile Include="Parameter\DragEntity.cs" />
     <Compile Include="Parameter\FavoriteDirectoryListContentsParameter.cs" />
     <Compile Include="GetImageFilesEventArgs.cs" />
-    <Compile Include="Parameter\KeepFileListContentsParameter.cs" />
     <Compile Include="Parameter\DirectoryFileListContentsParameter.cs" />
     <Compile Include="Parameter\ImageViewerContentsParameter.cs" />
     <Compile Include="Parameter\RatingFileListContentsParameter.cs" />
@@ -96,9 +95,6 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="FileList\FileEntity.cs" />
-    <Compile Include="FileList\KeepFileListContents.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
     <Compile Include="FileList\FileListContentsBase.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -208,9 +204,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\HomeIcon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\ClipIcon.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\ActiveRatingIcon.png" />

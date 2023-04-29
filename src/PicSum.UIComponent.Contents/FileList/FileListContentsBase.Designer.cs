@@ -93,7 +93,6 @@ namespace PicSum.UIComponent.Contents.FileList
             // 
             // fileContextMenu
             // 
-            this.fileContextMenu.IsAddKeepMenuItemVisible = false;
             this.fileContextMenu.IsFileActiveTabOpenMenuItemVisible = true;
             this.fileContextMenu.IsDirectoryActiveTabOpenMenuItemVisible = true;
             this.fileContextMenu.IsRemoveFromListMenuItemVisible = false;
@@ -106,7 +105,6 @@ namespace PicSum.UIComponent.Contents.FileList
             this.fileContextMenu.FileNewTabOpen += new System.EventHandler<PicSum.UIComponent.Common.ExecuteFileEventArgs>(this.FileContextMenu_FileNewTabOpen);
             this.fileContextMenu.SaveDirectoryOpen += new System.EventHandler<PicSum.UIComponent.Common.ExecuteFileEventArgs>(this.FileContextMenu_SaveDirectoryOpen);
             this.fileContextMenu.FileActiveTabOpen += new System.EventHandler<PicSum.UIComponent.Common.ExecuteFileEventArgs>(this.FileContextMenu_FileActiveTabOpen);
-            this.fileContextMenu.AddKeep += new System.EventHandler<PicSum.UIComponent.Common.ExecuteFileListEventArgs>(this.FileContextMenu_AddKeep);
             this.fileContextMenu.Bookmark += new System.EventHandler<PicSum.UIComponent.Common.ExecuteFileEventArgs>(this.FileContextMenu_Bookmark);
             this.fileContextMenu.NameCopy += new System.EventHandler<PicSum.UIComponent.Common.ExecuteFileListEventArgs>(this.FileContextMenu_NameCopy);
             this.fileContextMenu.Export += new System.EventHandler<PicSum.UIComponent.Common.ExecuteFileListEventArgs>(this.FileContextMenu_Export);

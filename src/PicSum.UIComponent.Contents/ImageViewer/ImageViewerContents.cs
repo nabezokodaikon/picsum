@@ -43,7 +43,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         private IList<string> filePathList = null;
 
         private TwoWayProcess<GetImageFileAsyncFacade, GetImageFileParameter, GetImageFileResult> readImageFileProcess = null;
-        private OneWayProcess<AddKeepAsyncFacade, ListEntity<KeepFileEntity>> addKeepProcess = null;
         private OneWayProcess<AddBookmarkAsyncFacade, SingleValueEntity<string>> addBookmarkProcess = null;
         private OneWayProcess<ExportFileAsyncFacade, ExportFileParameter> exportFileProcess = null;
 
@@ -107,19 +106,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 }
 
                 return this.readImageFileProcess;
-            }
-        }
-
-        private OneWayProcess<AddKeepAsyncFacade, ListEntity<KeepFileEntity>> AddKeepProcess
-        {
-            get
-            {
-                if (this.addKeepProcess == null)
-                {
-                    this.addKeepProcess = TaskManager.CreateOneWayProcess<AddKeepAsyncFacade, ListEntity<KeepFileEntity>>(this.ProcessContainer);
-                }
-
-                return this.addKeepProcess;
             }
         }
 
@@ -451,12 +437,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
             this.ReadImageFileProcess.Cancel();
             this.ReadImageFileProcess.Execute(this, param);
-        }
-
-        private void AddKeep(IList<KeepFileEntity> filePathList)
-        {
-            var param = new ListEntity<KeepFileEntity>(filePathList);
-            this.AddKeepProcess.Execute(this, param);
         }
 
         private void DoDragDrop(string currentFilePath)
@@ -930,27 +910,11 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         private void LeftImagePanel_ImageMouseClick(object sender, MouseEventArgs e)
         {
             this.OnSelectedFileChanged(new SelectedFileChangeEventArgs(this.leftImageFilePath));
-
-            if (e.Button == MouseButtons.Middle)
-            {
-                if (!string.IsNullOrEmpty(this.leftImageFilePath))
-                {
-                    this.AddKeep(new KeepFileEntity[] { new KeepFileEntity(this.leftImageFilePath, DateTime.Now) });
-                }
-            }
         }
 
         private void RightImagePanel_ImageMouseClick(object sender, MouseEventArgs e)
         {
             this.OnSelectedFileChanged(new SelectedFileChangeEventArgs(this.rightImageFilePath));
-
-            if (e.Button == MouseButtons.Middle)
-            {
-                if (!string.IsNullOrEmpty(this.rightImageFilePath))
-                {
-                    this.AddKeep(new KeepFileEntity[] { new KeepFileEntity(this.rightImageFilePath, DateTime.Now) });
-                }
-            }
         }
 
         private void LeftImagePanel_DragStart(object sender, EventArgs e)
@@ -1058,11 +1022,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         private void FileContextMenu_NameCopy(object sender, ExecuteFileListEventArgs e)
         {
             Clipboard.SetText(FileUtil.GetFileName(e.FilePathList[0]));
-        }
-
-        private void FileContextMenu_AddKeep(object sender, ExecuteFileListEventArgs e)
-        {
-            this.AddKeep(e.FilePathList.Select(filePath => new KeepFileEntity(filePath, DateTime.Now)).ToList());
         }
 
         private void FileContextMenu_Bookmark(object sender, ExecuteFileEventArgs e)

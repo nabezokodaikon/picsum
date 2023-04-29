@@ -67,7 +67,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             // fileContextMenu
             // 
             this.fileContextMenu.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.fileContextMenu.IsAddKeepMenuItemVisible = true;
             this.fileContextMenu.IsFileActiveTabOpenMenuItemVisible = false;
             this.fileContextMenu.IsDirectoryActiveTabOpenMenuItemVisible = true;
             this.fileContextMenu.IsRemoveFromListMenuItemVisible = false;
@@ -80,7 +79,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.fileContextMenu.Export += new System.EventHandler<PicSum.UIComponent.Common.ExecuteFileListEventArgs>(this.FileContextMenu_Export);
             this.fileContextMenu.PathCopy += new System.EventHandler<PicSum.UIComponent.Common.ExecuteFileListEventArgs>(this.FileContextMenu_PathCopy);
             this.fileContextMenu.NameCopy += new System.EventHandler<PicSum.UIComponent.Common.ExecuteFileListEventArgs>(this.FileContextMenu_NameCopy);
-            this.fileContextMenu.AddKeep += new System.EventHandler<PicSum.UIComponent.Common.ExecuteFileListEventArgs>(this.FileContextMenu_AddKeep);
             this.fileContextMenu.Bookmark += new System.EventHandler<PicSum.UIComponent.Common.ExecuteFileEventArgs>(this.FileContextMenu_Bookmark);
             this.fileContextMenu.Opening += new System.ComponentModel.CancelEventHandler(this.FileContextMenu_Opening);
             // 

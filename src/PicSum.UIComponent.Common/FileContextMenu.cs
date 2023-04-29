@@ -31,7 +31,6 @@ namespace PicSum.UIComponent.Common
         public event EventHandler<ExecuteFileListEventArgs> Export;
         public event EventHandler<ExecuteFileListEventArgs> PathCopy;
         public event EventHandler<ExecuteFileListEventArgs> NameCopy;
-        public event EventHandler<ExecuteFileListEventArgs> AddKeep;
         public event EventHandler<ExecuteFileListEventArgs> RemoveFromList;
 
         #endregion
@@ -62,7 +61,6 @@ namespace PicSum.UIComponent.Common
         private readonly ToolStripMenuItem exportMenuItem = new ToolStripMenuItem("Export");
         private readonly ToolStripMenuItem pathCopyMenuItem = new ToolStripMenuItem("Copy Path");
         private readonly ToolStripMenuItem nameCopyMenuItem = new ToolStripMenuItem("Copy Name");
-        private readonly ToolStripMenuItem addKeepMenuItem = new ToolStripMenuItem("Keep");
         private readonly ToolStripMenuItem removeFromListMenuItem = new ToolStripMenuItem("Remove from list");
 
         #endregion
@@ -90,18 +88,6 @@ namespace PicSum.UIComponent.Common
             set
             {
                 this.isDirectoryActiveTabOpenMenuItemVisible = value;
-            }
-        }
-
-        public bool IsAddKeepMenuItemVisible
-        {
-            get
-            {
-                return this.addKeepMenuItem.Visible;
-            }
-            set
-            {
-                this.addKeepMenuItem.Visible = value;
             }
         }
 
@@ -301,14 +287,6 @@ namespace PicSum.UIComponent.Common
             }
         }
 
-        protected virtual void OnAddKeep(ExecuteFileListEventArgs e)
-        {
-            if (this.AddKeep != null)
-            {
-                this.AddKeep(this, e);
-            }
-        }
-
         protected virtual void OnRemoveFromList(ExecuteFileListEventArgs e)
         {
             if (this.RemoveFromList != null)
@@ -336,7 +314,6 @@ namespace PicSum.UIComponent.Common
                                                       this.nameCopyMenuItem,
                                                       this.exportMenuItem,
                                                       this.fileBookmarkMenuItem,
-                                                      this.addKeepMenuItem,
                                                       this.removeFromListMenuItem });
 
             this.fileActiveTabOpenMenuItem.Click += new EventHandler(this.FileActiveTabOpenMenuItem_Click);
@@ -352,7 +329,6 @@ namespace PicSum.UIComponent.Common
             this.nameCopyMenuItem.Click += new EventHandler(this.NameCopyMenuItem_Click);
             this.exportMenuItem.Click += new EventHandler(this.ExportMenuItem_Click);
             this.fileBookmarkMenuItem.Click += new EventHandler(this.FileBookmarkMenuItem_Click);
-            this.addKeepMenuItem.Click += new EventHandler(this.AddKeepMenuItem_Click);
             this.removeFromListMenuItem.Click += new EventHandler(this.RemoveFromListMenuItem_Click);
         }
 
@@ -461,11 +437,6 @@ namespace PicSum.UIComponent.Common
         private void FileBookmarkMenuItem_Click(object sender, EventArgs e)
         {
             this.OnBookmark(new ExecuteFileEventArgs(this.filePathList.First()));
-        }
-
-        private void AddKeepMenuItem_Click(object sender, EventArgs e)
-        {
-            this.OnAddKeep(new ExecuteFileListEventArgs(this.filePathList));
         }
 
         private void RemoveFromListMenuItem_Click(object sender, EventArgs e)

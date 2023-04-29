@@ -131,7 +131,6 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             this.Title = "Home";
             this.Icon = Resources.HomeIcon;
-            this.IsAddKeepMenuItemVisible = true;
             this.IsRemoveFromListMenuItemVisible = true;
             this.IsMoveControlVisible = false;
             this.IsBookmarkMenuItem = false;

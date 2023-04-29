@@ -204,7 +204,6 @@ namespace PicSum.UIComponent.Contents.FileList
                 this.Icon = FileIconCash.SmallDirectoryIcon;
             }
 
-            this.IsAddKeepMenuItemVisible = true;
             this.IsRemoveFromListMenuItemVisible = false;
             this.IsMoveControlVisible = !string.IsNullOrEmpty(_parameter.DirectoryPath);
             this.IsBookmarkMenuItem = true;

@@ -39,7 +39,6 @@ namespace PicSum.UIComponent.Contents.FileList
         private readonly SolidBrush selectedTextBrush = new SolidBrush(Color.White);
         private readonly SortInfo sortInfo = new SortInfo();
         private TwoWayProcess<GetThumbnailsAsyncFacade, GetThumbnailParameter, ThumbnailImageEntity> getThumbnailsProcess = null;
-        private OneWayProcess<AddKeepAsyncFacade, ListEntity<KeepFileEntity>> addKeepProcess = null;
         private OneWayProcess<ExportFileAsyncFacade, ExportFileParameter> exportFileProcess = null;
         private OneWayProcess<AddBookmarkAsyncFacade, SingleValueEntity<string>> addBookmarkProcess = null;
 
@@ -90,18 +89,6 @@ namespace PicSum.UIComponent.Contents.FileList
             set
             {
                 this.fileContextMenu.IsDirectoryActiveTabOpenMenuItemVisible = value;
-            }
-        }
-
-        protected bool IsAddKeepMenuItemVisible
-        {
-            get
-            {
-                return this.fileContextMenu.IsAddKeepMenuItemVisible;
-            }
-            set
-            {
-                this.fileContextMenu.IsAddKeepMenuItemVisible = value;
             }
         }
 
@@ -218,19 +205,6 @@ namespace PicSum.UIComponent.Contents.FileList
                 }
 
                 return this.getThumbnailsProcess;
-            }
-        }
-
-        private OneWayProcess<AddKeepAsyncFacade, ListEntity<KeepFileEntity>> AddKeepProcess
-        {
-            get
-            {
-                if (this.addKeepProcess == null)
-                {
-                    this.addKeepProcess = TaskManager.CreateOneWayProcess<AddKeepAsyncFacade, ListEntity<KeepFileEntity>>(this.ProcessContainer);
-                }
-
-                return this.addKeepProcess;
             }
         }
 
@@ -735,12 +709,6 @@ namespace PicSum.UIComponent.Contents.FileList
                     }
                 })
                 .ToArray();
-        }
-
-        private void AddKeep(IList<KeepFileEntity> filePathList)
-        {
-            var param = new ListEntity<KeepFileEntity>(filePathList);
-            this.AddKeepProcess.Execute(this, param);
         }
 
         private void DrawItem(SWF.UIComponent.FlowList.DrawItemEventArgs e)
@@ -1337,11 +1305,6 @@ namespace PicSum.UIComponent.Contents.FileList
             }
 
             Clipboard.SetText(sb.ToString());
-        }
-
-        private void FileContextMenu_AddKeep(object sender, ExecuteFileListEventArgs e)
-        {
-            this.AddKeep(e.FilePathList.Select(filePath => new KeepFileEntity(filePath, DateTime.Now)).ToList());
         }
 
         private void FileContextMenu_RemoveFromList(object sender, ExecuteFileListEventArgs e)

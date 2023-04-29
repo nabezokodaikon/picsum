@@ -688,18 +688,6 @@ namespace PicSum.Main.UIComponent
             }
         }
 
-        private void keepToolButton_MouseClick(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Left)
-            {
-                openContents(new KeepFileListContentsParameter(), ContentsOpenType.OverlapTab);
-            }
-            else if (e.Button == MouseButtons.Middle)
-            {
-                openContents(new KeepFileListContentsParameter(), ContentsOpenType.AddTab);
-            }
-        }
-
         private void searchBookmarkToolButton_MouseClick(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)

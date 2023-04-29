@@ -33,16 +33,15 @@
             this.infoPanel = new PicSum.UIComponent.InfoPanel.InfoPanel();
             this.tabSwitch = new SWF.UIComponent.TabOperation.TabSwitch();
             this.toolPanel = new System.Windows.Forms.Panel();
+            this.searchBookmarkToolButton = new SWF.UIComponent.Common.ToolButton();
             this.reloadToolButton = new SWF.UIComponent.Common.ToolButton();
             this.tagDropToolButton = new SWF.UIComponent.WideDropDown.WideDropToolButton();
             this.homeToolButton = new SWF.UIComponent.Common.ToolButton();
             this.nextContentsHistoryButton = new SWF.UIComponent.Common.ToolButton();
             this.searchRatingToolButton = new SWF.UIComponent.Common.ToolButton();
-            this.keepToolButton = new SWF.UIComponent.Common.ToolButton();
             this.previewContentsHistoryButton = new SWF.UIComponent.Common.ToolButton();
             this.showInfoToolButton = new SWF.UIComponent.Common.ToolButton();
             this.addressBar = new PicSum.UIComponent.AddressBar.AddressBar();
-            this.searchBookmarkToolButton = new SWF.UIComponent.Common.ToolButton();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
             this.splitContainer.Panel1.SuspendLayout();
             this.splitContainer.Panel2.SuspendLayout();
@@ -129,7 +128,6 @@
             this.toolPanel.Controls.Add(this.homeToolButton);
             this.toolPanel.Controls.Add(this.nextContentsHistoryButton);
             this.toolPanel.Controls.Add(this.searchRatingToolButton);
-            this.toolPanel.Controls.Add(this.keepToolButton);
             this.toolPanel.Controls.Add(this.previewContentsHistoryButton);
             this.toolPanel.Controls.Add(this.showInfoToolButton);
             this.toolPanel.Controls.Add(this.addressBar);
@@ -140,6 +138,21 @@
             this.toolPanel.Name = "toolPanel";
             this.toolPanel.Size = new System.Drawing.Size(746, 34);
             this.toolPanel.TabIndex = 5;
+            // 
+            // searchBookmarkToolButton
+            // 
+            this.searchBookmarkToolButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.searchBookmarkToolButton.FlatAppearance.BorderSize = 0;
+            this.searchBookmarkToolButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.searchBookmarkToolButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.searchBookmarkToolButton.Image = global::PicSum.Main.Properties.Resources.BookmarkIcon;
+            this.searchBookmarkToolButton.Location = new System.Drawing.Point(670, 3);
+            this.searchBookmarkToolButton.Name = "searchBookmarkToolButton";
+            this.searchBookmarkToolButton.RegionType = SWF.UIComponent.Common.ToolButton.ToolButtonRegionType.Default;
+            this.searchBookmarkToolButton.Size = new System.Drawing.Size(32, 28);
+            this.searchBookmarkToolButton.TabIndex = 11;
+            this.searchBookmarkToolButton.UseVisualStyleBackColor = true;
+            this.searchBookmarkToolButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.searchBookmarkToolButton_MouseClick);
             // 
             // reloadToolButton
             // 
@@ -163,7 +176,7 @@
             this.tagDropToolButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
             this.tagDropToolButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.tagDropToolButton.Image = global::PicSum.Main.Properties.Resources.TagIcon;
-            this.tagDropToolButton.Location = new System.Drawing.Point(556, 3);
+            this.tagDropToolButton.Location = new System.Drawing.Point(594, 3);
             this.tagDropToolButton.Name = "tagDropToolButton";
             this.tagDropToolButton.RegionType = SWF.UIComponent.Common.ToolButton.ToolButtonRegionType.Default;
             this.tagDropToolButton.SelectedItem = null;
@@ -210,28 +223,13 @@
             this.searchRatingToolButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
             this.searchRatingToolButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.searchRatingToolButton.Image = global::PicSum.Main.Properties.Resources.ActiveRatingIcon;
-            this.searchRatingToolButton.Location = new System.Drawing.Point(594, 3);
+            this.searchRatingToolButton.Location = new System.Drawing.Point(632, 3);
             this.searchRatingToolButton.Name = "searchRatingToolButton";
             this.searchRatingToolButton.RegionType = SWF.UIComponent.Common.ToolButton.ToolButtonRegionType.Default;
             this.searchRatingToolButton.Size = new System.Drawing.Size(32, 28);
             this.searchRatingToolButton.TabIndex = 8;
             this.searchRatingToolButton.UseVisualStyleBackColor = true;
             this.searchRatingToolButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.searchRatingToolButton_MouseClick);
-            // 
-            // keepToolButton
-            // 
-            this.keepToolButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.keepToolButton.FlatAppearance.BorderSize = 0;
-            this.keepToolButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
-            this.keepToolButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.keepToolButton.Image = global::PicSum.Main.Properties.Resources.ClipIcon;
-            this.keepToolButton.Location = new System.Drawing.Point(670, 3);
-            this.keepToolButton.Name = "keepToolButton";
-            this.keepToolButton.RegionType = SWF.UIComponent.Common.ToolButton.ToolButtonRegionType.Default;
-            this.keepToolButton.Size = new System.Drawing.Size(32, 28);
-            this.keepToolButton.TabIndex = 0;
-            this.keepToolButton.UseVisualStyleBackColor = true;
-            this.keepToolButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.keepToolButton_MouseClick);
             // 
             // previewContentsHistoryButton
             // 
@@ -278,28 +276,13 @@
             this.addressBar.MousePointColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(48)))), ((int)(((byte)(96)))), ((int)(((byte)(144)))));
             this.addressBar.Name = "addressBar";
             this.addressBar.OutlineColor = System.Drawing.Color.Silver;
-            this.addressBar.Size = new System.Drawing.Size(398, 26);
+            this.addressBar.Size = new System.Drawing.Size(436, 26);
             this.addressBar.TabIndex = 0;
             this.addressBar.TextAlignment = System.Drawing.StringAlignment.Center;
             this.addressBar.TextColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.addressBar.TextLineAlignment = System.Drawing.StringAlignment.Center;
             this.addressBar.TextTrimming = System.Drawing.StringTrimming.EllipsisCharacter;
             this.addressBar.SelectedDirectory += new System.EventHandler<PicSum.UIComponent.AddressBar.SelectedDirectoryEventArgs>(this.addressBar_SelectedDirectory);
-            // 
-            // searchBookmarkToolButton
-            // 
-            this.searchBookmarkToolButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.searchBookmarkToolButton.FlatAppearance.BorderSize = 0;
-            this.searchBookmarkToolButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
-            this.searchBookmarkToolButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.searchBookmarkToolButton.Image = global::PicSum.Main.Properties.Resources.BookmarkIcon;
-            this.searchBookmarkToolButton.Location = new System.Drawing.Point(632, 3);
-            this.searchBookmarkToolButton.Name = "searchBookmarkToolButton";
-            this.searchBookmarkToolButton.RegionType = SWF.UIComponent.Common.ToolButton.ToolButtonRegionType.Default;
-            this.searchBookmarkToolButton.Size = new System.Drawing.Size(32, 28);
-            this.searchBookmarkToolButton.TabIndex = 11;
-            this.searchBookmarkToolButton.UseVisualStyleBackColor = true;
-            this.searchBookmarkToolButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.searchBookmarkToolButton_MouseClick);
             // 
             // BrowserMainPanel
             // 
@@ -329,7 +312,6 @@
         private PicSum.UIComponent.AddressBar.AddressBar addressBar;
         private SWF.UIComponent.Common.ToolButton nextContentsHistoryButton;
         private SWF.UIComponent.Common.ToolButton previewContentsHistoryButton;
-        private SWF.UIComponent.Common.ToolButton keepToolButton;
         private SWF.UIComponent.Common.ToolButton homeToolButton;
         private SWF.UIComponent.Common.ToolButton searchRatingToolButton;
         private SWF.UIComponent.WideDropDown.WideDropToolButton tagDropToolButton;

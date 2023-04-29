@@ -249,7 +249,6 @@
     <None Include="Resources\GoNextIcon.png" />
     <None Include="Resources\GoBackIcon.png" />
     <None Include="Resources\InfoIcon.png" />
-    <None Include="Resources\ClipIcon.png" />
     <None Include="Resources\ActiveRatingIcon.png" />
     <None Include="Resources\TagIcon.png" />
     <Content Include="AppIcon.ico">

@@ -70,17 +70,14 @@
     <Compile Include="AsyncFacade\AddBookmarkAsyncFacade.cs" />
     <Compile Include="AsyncFacade\AddDirectoryViewHistoryAsyncFacade.cs" />
     <Compile Include="AsyncFacade\AddFileTagAsyncFacade.cs" />
-    <Compile Include="AsyncFacade\AddKeepAsyncFacade.cs" />
     <Compile Include="AsyncFacade\DeleteBookmarkAsyncFacade.cs" />
     <Compile Include="AsyncFacade\DeleteFileTagAsyncFacade.cs" />
     <Compile Include="AsyncFacade\DeleteDirectoryViewCounterAsyncFacade.cs" />
     <Compile Include="AsyncFacade\GetAddressInfoAsyncFacade.cs" />
     <Compile Include="AsyncFacade\GetBookmarkAsyncFacade.cs" />
     <Compile Include="AsyncFacade\GetFileDeepInfoAsyncFacade.cs" />
-    <Compile Include="AsyncFacade\GetKeepAsyncFacade.cs" />
     <Compile Include="AsyncFacade\ExportFileAsyncFacade.cs" />
     <Compile Include="AsyncFacade\GetNextDirectoryAsyncFacade.cs" />
-    <Compile Include="AsyncFacade\DeleteKeepAsyncFacade.cs" />
     <Compile Include="AsyncFacade\GetFavoriteDirectoryAsyncFacade.cs" />
     <Compile Include="AsyncFacade\GetFilesByRatingAsyncFacade.cs" />
     <Compile Include="AsyncFacade\GetFilesByTagAsyncFacade.cs" />
@@ -98,7 +95,6 @@
     <Compile Include="AsyncLogic\GetFileTagInfoAsyncLogic.cs" />
     <Compile Include="AsyncLogic\ExportFileAsyncLogic.cs" />
     <Compile Include="AsyncLogic\IncrementDirectoryViewCounterAsyncLogic.cs" />
-    <Compile Include="AsyncLogic\KeepListOperatingAsyncLogic.cs" />
     <Compile Include="AsyncLogic\GetFavoriteDirectoryAsyncLogic.cs" />
     <Compile Include="AsyncLogic\GetFileByRatingAsyncLogic.cs" />
     <Compile Include="AsyncLogic\GetFileByTagAsyncLogic.cs" />
@@ -109,7 +105,6 @@
     <Compile Include="Result\GetAddressInfoResult.cs" />
     <Compile Include="Parameter\ExportFileParameter.cs" />
     <Compile Include="Parameter\GetNextContentsParameter.cs" />
-    <Compile Include="Entity\KeepFileEntity.cs" />
     <Compile Include="Parameter\GetFavoriteFolderParameter.cs" />
     <Compile Include="Parameter\GetImageFileByDirectoryParameter.cs" />
     <Compile Include="Result\GetImageFileByDirectoryResult.cs" />

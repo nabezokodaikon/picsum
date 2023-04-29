@@ -144,7 +144,6 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             this.Title = "Bookmark";
             this.Icon = Resources.BookmarkIcon;
-            this.IsAddKeepMenuItemVisible = true;
             this.IsRemoveFromListMenuItemVisible = true;
             this.IsMoveControlVisible = false;
             this.IsBookmarkMenuItem = false;
