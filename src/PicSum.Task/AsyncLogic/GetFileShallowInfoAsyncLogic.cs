@@ -21,12 +21,12 @@ namespace PicSum.Task.AsyncLogic
             }
 
             FileShallowInfoEntity info = new FileShallowInfoEntity();
-            info.FilePath = filePath;
-            info.FileName = FileUtil.GetFileName(filePath);
             info.RgistrationDate = null;
 
             if (FileUtil.IsSystemRoot(filePath))
             {
+                info.FilePath = filePath;
+                info.FileName = FileUtil.GetFileName(filePath);
                 info.IsFile = false;
                 info.IsImageFile = false;
                 info.UpdateDate = null;
@@ -36,6 +36,8 @@ namespace PicSum.Task.AsyncLogic
             }
             else if (FileUtil.IsDrive(filePath))
             {
+                info.FilePath = filePath;
+                info.FileName = FileUtil.GetFileName(filePath);
                 info.IsFile = false;
                 info.IsImageFile = false;
                 info.UpdateDate = FileUtil.GetUpdateDate(filePath);
@@ -45,6 +47,8 @@ namespace PicSum.Task.AsyncLogic
             }
             else if (FileUtil.IsFile(filePath))
             {
+                info.FilePath = filePath;
+                info.FileName = FileUtil.GetFileName(filePath);
                 info.IsFile = true;
                 string ex = FileUtil.GetExtension(filePath);
                 info.IsImageFile = FileUtil.IsImageFile(filePath);
@@ -55,6 +59,8 @@ namespace PicSum.Task.AsyncLogic
             }
             else if (FileUtil.IsDirectory(filePath))
             {
+                info.FilePath = filePath;
+                info.FileName = FileUtil.GetFileName(filePath);
                 info.IsFile = false;
                 info.IsImageFile = false;
                 info.UpdateDate = FileUtil.GetUpdateDate(filePath);

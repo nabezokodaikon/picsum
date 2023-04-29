@@ -5,6 +5,7 @@ using PicSum.UIComponent.AddressBar.Properties;
 using PicSum.Core.Task.AsyncTask;
 using PicSum.Task.AsyncFacade;
 using PicSum.Task.Entity;
+using SWF.Common;
 
 namespace PicSum.UIComponent.AddressBar
 {
@@ -128,7 +129,10 @@ namespace PicSum.UIComponent.AddressBar
                                                e.ItemRectangle.Width - base.DropDownList.ItemHeight,
                                                e.ItemRectangle.Height);
 
-            e.Graphics.DrawString(item.DirectoryPath,
+            var dirPath = FileUtil.IsSystemRoot(item.DirectoryPath) ? 
+                item.DirectoryName : item.DirectoryPath;
+
+            e.Graphics.DrawString(dirPath,
                                   base.Palette.TextFont,
                                   base.DropDownList.ItemTextBrush,
                                   textRect,

@@ -27,8 +27,7 @@ namespace PicSum.Task.AsyncLogic
                 .OrderByDescending(value => value.ViewDate))
             {
                 CheckCancel();
-                if (FileUtil.CanAccess(dto.DirectoryPath) && 
-                    !FileUtil.IsSystemRoot(dto.DirectoryPath))
+                if (FileUtil.CanAccess(dto.DirectoryPath))
                 {
                     if (!directoryPathList.Contains(dto.DirectoryPath))
                     {
