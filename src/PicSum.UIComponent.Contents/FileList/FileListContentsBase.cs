@@ -1252,7 +1252,7 @@ namespace PicSum.UIComponent.Contents.FileList
                     var param = new ExportFileParameter();
                     param.ExportDirectoryPath = fbd.SelectedPath;
                     param.FilePathList = e.FilePathList;
-                    exportFileProcess.Execute(this, param);
+                    ExportFileProcess.Execute(this, param);
 
                     CommonConfig.ExportDirectoryPath = fbd.SelectedPath;
                 }
