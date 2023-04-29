@@ -74,6 +74,10 @@
     <Compile Include="Conf\CommonConfig.cs" />
     <Compile Include="Conf\FileListContentsConfig.cs" />
     <Compile Include="Conf\ImageViewerContentsConfig.cs" />
+    <Compile Include="FileList\BookmarkFileListContents.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Parameter\BookmarkFileListContentsParameter.cs" />
     <Compile Include="Parameter\DragEntity.cs" />
     <Compile Include="Parameter\FavoriteDirectoryListContentsParameter.cs" />
     <Compile Include="GetImageFilesEventArgs.cs" />
@@ -213,6 +217,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\TagIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\BookmarkIcon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

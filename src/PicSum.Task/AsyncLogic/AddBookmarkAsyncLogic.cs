@@ -11,14 +11,14 @@ namespace PicSum.Task.AsyncLogic
     {
         public AddBookmarkAsyncLogic(AsyncFacadeBase facade) : base(facade) { }
 
-        public bool Execute(string filePath, DateTime registration_date)
+        public bool Execute(string filePath, DateTime registrationDate)
         {
             if (filePath == null)
             {
                 throw new ArgumentNullException(nameof(filePath));
             }
 
-            var sql = new CreationBookmarkSql(filePath, registration_date);
+            var sql = new CreationBookmarkSql(filePath, registrationDate);
 
             return DatabaseManager<FileInfoConnection>.Update(sql);
         }

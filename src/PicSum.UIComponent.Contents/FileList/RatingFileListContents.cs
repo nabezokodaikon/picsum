@@ -127,7 +127,8 @@ namespace PicSum.UIComponent.Contents.FileList
                     var selectedFilePath = FileUtil.IsImageFile(this.SelectedFilePath) ?
                         this.SelectedFilePath : string.Empty;
 
-                    var eventArgs = new GetImageFilesEventArgs(sortImageFiles, selectedFilePath);
+                    var eventArgs = new GetImageFilesEventArgs(
+                        sortImageFiles, selectedFilePath, this.Title, this.Icon);
                     paramter.OnGetImageFiles(eventArgs);
                 });
 
@@ -156,6 +157,7 @@ namespace PicSum.UIComponent.Contents.FileList
             this.IsAddKeepMenuItemVisible = true;
             this.IsMoveControlVisible = false;
             this.IsRemoveFromListMenuItemVisible = true;
+            this.IsBookmarkMenuItem = true;
             base.sortFileRgistrationDateToolStripButton.Enabled = true;
         }
 

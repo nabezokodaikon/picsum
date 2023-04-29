@@ -117,6 +117,18 @@ namespace PicSum.UIComponent.Common
             }
         }
 
+        public bool IsBookmarkMenuItem
+        {
+            get
+            {
+                return this.fileBookmarkMenuItem.Visible;
+            }
+            set
+            {
+                this.fileBookmarkMenuItem.Visible = value;
+            }
+        }
+
         #endregion
 
         #region 継承プロパティ
@@ -358,7 +370,6 @@ namespace PicSum.UIComponent.Common
             this.fileNewTabOpenMenuItem.Visible = isVisible;
             this.fileNewWindowOpenMenuItem.Visible = isVisible;
             this.exportMenuItem.Visible = isVisible;
-            this.fileBookmarkMenuItem.Visible = isVisible;
         }
 
         private void SetFileMenuItemVisible(bool isVisible)

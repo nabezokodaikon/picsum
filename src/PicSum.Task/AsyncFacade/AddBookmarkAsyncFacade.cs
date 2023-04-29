@@ -17,6 +17,8 @@ namespace PicSum.Task.AsyncFacade
                 throw new ArgumentNullException(nameof(param));
             }
 
+            var registrationDate = DateTime.Now;
+
             using (var tran = DatabaseManager<FileInfoConnection>.BeginTransaction())
             {
                 var deleteLogic = new DeleteBookmarkAsyncLogic(this);
@@ -24,11 +26,13 @@ namespace PicSum.Task.AsyncFacade
 
                 if (!deleteLogic.Execute(param.Value))
                 {
-                    var addFileMasterLogic = new AddFileMasterAsyncLogic(this);
-                    addFileMasterLogic.Execute(param.Value);
+                    if (!addLogic.Execute(param.Value, registrationDate))
+                    {
+                        var addFileMasterLogic = new AddFileMasterAsyncLogic(this);
+                        addFileMasterLogic.Execute(param.Value);
+                        addLogic.Execute(param.Value, registrationDate);
+                    }
                 }
-
-                addLogic.Execute(param.Value, DateTime.Now);
 
                 tran.Commit();
             }

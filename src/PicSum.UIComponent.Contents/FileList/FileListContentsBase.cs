@@ -41,6 +41,7 @@ namespace PicSum.UIComponent.Contents.FileList
         private TwoWayProcess<GetThumbnailsAsyncFacade, GetThumbnailParameter, ThumbnailImageEntity> getThumbnailsProcess = null;
         private OneWayProcess<AddKeepAsyncFacade, ListEntity<KeepFileEntity>> addKeepProcess = null;
         private OneWayProcess<ExportFileAsyncFacade, ExportFileParameter> exportFileProcess = null;
+        private OneWayProcess<AddBookmarkAsyncFacade, SingleValueEntity<string>> addBookmarkProcess = null;
 
         #endregion
 
@@ -126,6 +127,18 @@ namespace PicSum.UIComponent.Contents.FileList
             {
                 this.movePreviewToolStripButton.Visible = value;
                 this.moveNextToolStripButton.Visible = value;
+            }
+        }
+
+        public bool IsBookmarkMenuItem
+        {
+            get
+            {
+                return this.fileContextMenu.IsBookmarkMenuItem;
+            }
+            set
+            {
+                this.fileContextMenu.IsBookmarkMenuItem = value;
             }
         }
 
@@ -231,6 +244,19 @@ namespace PicSum.UIComponent.Contents.FileList
                 }
 
                 return this.exportFileProcess;
+            }
+        }
+
+        private OneWayProcess<AddBookmarkAsyncFacade, SingleValueEntity<string>> AddBookmarkProcess
+        {
+            get
+            {
+                if (this.addBookmarkProcess == null)
+                {
+                    this.addBookmarkProcess = TaskManager.CreateOneWayProcess<AddBookmarkAsyncFacade, SingleValueEntity<string>>(this.ProcessContainer);
+                }
+
+                return this.addBookmarkProcess;
             }
         }
 
@@ -1321,6 +1347,16 @@ namespace PicSum.UIComponent.Contents.FileList
         private void FileContextMenu_RemoveFromList(object sender, ExecuteFileListEventArgs e)
         {
             this.OnRemoveFile(e.FilePathList);
+        }
+
+        private void FileContextMenu_Bookmark(object sender, ExecuteFileEventArgs e)
+        {
+            var paramter = new SingleValueEntity<string>()
+            {
+                Value = e.FilePath,
+            };
+
+            this.AddBookmarkProcess.Execute(this, paramter);
         }
 
         #endregion

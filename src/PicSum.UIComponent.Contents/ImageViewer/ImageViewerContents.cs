@@ -159,8 +159,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.InitializeComponent();
 
             this.parameter = parameter;
-            this.Title = this.parameter.ContentsTitle;
-            this.Icon = this.parameter.ContentsIcon;
         }
 
         #endregion
@@ -254,16 +252,8 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
         protected override void OnDrawTabContents(SWF.UIComponent.TabOperation.DrawTabEventArgs e)
         {
-            if (!string.IsNullOrEmpty(this.parameter.ContentsTitle) && this.parameter.ContentsIcon != null)
-            {
-                e.Graphics.DrawImage(this.parameter.ContentsIcon, e.IconRectangle);
-                DrawTextUtil.DrawText(e.Graphics, this.parameter.ContentsTitle, e.Font, e.TextRectangle, e.TitleColor, e.TitleFormatFlags, e.TextStyle);
-            }
-            else
-            {
-                e.Graphics.DrawImage(this.Icon, e.IconRectangle);
-                DrawTextUtil.DrawText(e.Graphics, this.Title, e.Font, e.TextRectangle, e.TitleColor, e.TitleFormatFlags, e.TextStyle);
-            }
+            e.Graphics.DrawImage(this.Icon, e.IconRectangle);
+            DrawTextUtil.DrawText(e.Graphics, this.Title, e.Font, e.TextRectangle, e.TitleColor, e.TitleFormatFlags, e.TextStyle);
         }
 
         protected override void OnBackgroundMouseClick(MouseEventArgs e)
@@ -560,6 +550,9 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         private void Parameter_GetImageFiles(object sender, GetImageFilesEventArgs e)
         {
             this.filePathList = e.FilePathList;
+
+            this.Title = e.ContentsTitle;
+            this.Icon = e.ContentsIcon;
 
             if (this.filePathList.Count > 0)
             {
@@ -1074,7 +1067,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
         private void FileContextMenu_Bookmark(object sender, ExecuteFileEventArgs e)
         {
-            var paramter = new SingleValueEntity<string>() 
+            var paramter = new SingleValueEntity<string>()
             {
                 Value = e.FilePath,
             };

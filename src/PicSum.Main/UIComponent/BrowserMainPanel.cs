@@ -397,7 +397,10 @@ namespace PicSum.Main.UIComponent
                             return;
                         }
 
-                        var eventArgs = new GetImageFilesEventArgs(e.FilePathList, e.SelectedFilePath);
+                        var title = FileUtil.GetFileName(FileUtil.GetParentDirectoryPath(subParamter.FilePath));
+
+                        var eventArgs = new GetImageFilesEventArgs(
+                            e.FilePathList, e.SelectedFilePath, title, FileIconCash.SmallDirectoryIcon);
                         parameter.OnGetImageFiles(eventArgs);
                     });
 
@@ -696,7 +699,14 @@ namespace PicSum.Main.UIComponent
 
         private void searchBookmarkToolButton_MouseClick(object sender, MouseEventArgs e)
         {
-
+            if (e.Button == MouseButtons.Left)
+            {
+                openContents(new BookmarkFileListContentsParameter(), ContentsOpenType.OverlapTab);
+            }
+            else if (e.Button == MouseButtons.Middle)
+            {
+                openContents(new BookmarkFileListContentsParameter(), ContentsOpenType.AddTab);
+            }
         }
 
         #endregion
