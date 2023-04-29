@@ -175,6 +175,7 @@
             this.tagDropToolButton.FlatAppearance.BorderSize = 0;
             this.tagDropToolButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
             this.tagDropToolButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.tagDropToolButton.Icon = global::PicSum.Main.Properties.Resources.TagIcon;
             this.tagDropToolButton.Image = global::PicSum.Main.Properties.Resources.TagIcon;
             this.tagDropToolButton.Location = new System.Drawing.Point(594, 3);
             this.tagDropToolButton.Name = "tagDropToolButton";

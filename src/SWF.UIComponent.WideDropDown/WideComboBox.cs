@@ -18,6 +18,18 @@ namespace SWF.UIComponent.WideDropDown
 
         private readonly WideDropDownList dropDownList = new WideDropDownList();
 
+        public Image Icon
+        {
+            get
+            {
+                return this.dropDownList.Icon;
+            }
+            set
+            {
+                this.dropDownList.Icon = value;
+            }
+        }
+
         public WideComboBox()
         {
             InitializeComponent();

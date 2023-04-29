@@ -170,6 +170,8 @@ namespace SWF.UIComponent.WideDropDown
             }
         }
 
+        public Image Icon { get; set; }
+
         internal bool IsClickAndClose { get; set; } 
 
         #endregion
@@ -346,12 +348,38 @@ namespace SWF.UIComponent.WideDropDown
             }
         }
 
+        private Rectangle getIconRectangle(SWF.UIComponent.FlowList.DrawItemEventArgs e)
+        {
+            if (this.Icon != null)
+            {
+                return new Rectangle(e.ItemRectangle.X + this.Icon.Width / 4,
+                                     e.ItemRectangle.Y + this.Icon.Height / 2,
+                                     this.Icon.Width,
+                                     this.Icon.Height);
+            }
+            else
+            {
+                return new Rectangle(e.ItemRectangle.X, e.ItemRectangle.Y, 0, 0);
+            }
+        }
+
         private Rectangle getTextRectangle(SWF.UIComponent.FlowList.DrawItemEventArgs e)
         {
-            return new Rectangle(e.ItemRectangle.X,
-                                 e.ItemRectangle.Bottom - itemTextHeight,
-                                 e.ItemRectangle.Width,
-                                 itemTextHeight);
+            if (this.Icon != null)
+            {
+                return new Rectangle(e.ItemRectangle.X + this.Icon.Width + this.Icon.Width / 2,
+                                     e.ItemRectangle.Bottom - itemTextHeight,
+                                     e.ItemRectangle.Width,
+                                     itemTextHeight);
+            }
+            else 
+            {
+                return new Rectangle(e.ItemRectangle.X,
+                                     e.ItemRectangle.Bottom - itemTextHeight,
+                                     e.ItemRectangle.Width,
+                                     itemTextHeight);
+            }
+
         }
 
         private void flowList_DrawItem(object sender, UIComponent.FlowList.DrawItemEventArgs e)
@@ -359,6 +387,12 @@ namespace SWF.UIComponent.WideDropDown
             if (this.itemList.Count < 1)
             {
                 return;
+            }
+
+            if (this.Icon != null)
+            {
+                var rect = this.getIconRectangle(e);
+                e.Graphics.DrawImage(this.Icon, rect);
             }
 
             if (e.IsSelected)
