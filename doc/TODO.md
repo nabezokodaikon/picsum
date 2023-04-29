@@ -28,13 +28,6 @@
 * [Microsoft ストアへのアプリケーションの公開](https://sorceryforce.net/ja/tips/microsoft-store-release)
 ## エクスポート
 * プログレスバーを実装する。
-## ブックマーク
-* `t_bookmark`テーブルを作成する。(トリガーも忘れずに)
-* `t_bookmark`テーブルに対する、`INSERT`SQLを作成する。
-* `t_bookmark`テーブルに対する、`DELETE`SQLを作成する。
-* `t_bookmark`テーブルに追加するときは、先に`DELETE`SQLを実行する。
-* `BookmarkFileListContents`コントロールを実装する。
-* ブックマークボタンを追加する。
 ## コンテキストメニューのアイコン
 * `Keep`アイコン
 * `Bookmark`アイコン
