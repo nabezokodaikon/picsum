@@ -1,4 +1,7 @@
-﻿namespace PicSum.UIComponent.Contents.ImageViewer
+﻿using PicSum.UIComponent.Common;
+using System;
+
+namespace PicSum.UIComponent.Contents.ImageViewer
 {
     partial class ImageViewerContents
     {
@@ -78,6 +81,7 @@
             this.fileContextMenu.PathCopy += new System.EventHandler<PicSum.UIComponent.Common.ExecuteFileListEventArgs>(this.FileContextMenu_PathCopy);
             this.fileContextMenu.NameCopy += new System.EventHandler<PicSum.UIComponent.Common.ExecuteFileListEventArgs>(this.FileContextMenu_NameCopy);
             this.fileContextMenu.AddKeep += new System.EventHandler<PicSum.UIComponent.Common.ExecuteFileListEventArgs>(this.FileContextMenu_AddKeep);
+            this.fileContextMenu.Bookmark += new System.EventHandler<PicSum.UIComponent.Common.ExecuteFileEventArgs>(this.FileContextMenu_Bookmark);
             this.fileContextMenu.Opening += new System.ComponentModel.CancelEventHandler(this.FileContextMenu_Opening);
             // 
             // rightImagePanel

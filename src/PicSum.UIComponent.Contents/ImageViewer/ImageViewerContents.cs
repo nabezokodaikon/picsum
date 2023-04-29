@@ -44,6 +44,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
         private TwoWayProcess<GetImageFileAsyncFacade, GetImageFileParameter, GetImageFileResult> readImageFileProcess = null;
         private OneWayProcess<AddKeepAsyncFacade, ListEntity<KeepFileEntity>> addKeepProcess = null;
+        private OneWayProcess<AddBookmarkAsyncFacade, SingleValueEntity<string>> addBookmarkProcess = null;
         private OneWayProcess<ExportFileAsyncFacade, ExportFileParameter> exportFileProcess = null;
 
         #endregion
@@ -119,6 +120,19 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 }
 
                 return this.addKeepProcess;
+            }
+        }
+
+        private OneWayProcess<AddBookmarkAsyncFacade, SingleValueEntity<string>> AddBookmarkProcess
+        {
+            get
+            {
+                if (this.addBookmarkProcess == null)
+                {
+                    this.addBookmarkProcess = TaskManager.CreateOneWayProcess<AddBookmarkAsyncFacade, SingleValueEntity<string>>(this.ProcessContainer);
+                }
+
+                return this.addBookmarkProcess;
             }
         }
 
@@ -1056,6 +1070,16 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         private void FileContextMenu_AddKeep(object sender, ExecuteFileListEventArgs e)
         {
             this.AddKeep(e.FilePathList.Select(filePath => new KeepFileEntity(filePath, DateTime.Now)).ToList());
+        }
+
+        private void FileContextMenu_Bookmark(object sender, ExecuteFileEventArgs e)
+        {
+            var paramter = new SingleValueEntity<string>() 
+            {
+                Value = e.FilePath,
+            };
+
+            this.AddBookmarkProcess.Execute(this, paramter);
         }
 
         #endregion
