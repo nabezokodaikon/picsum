@@ -1,7 +1,9 @@
-﻿using SWF.Common;
+﻿using PicSum.UIComponent.Common.Properties;
+using SWF.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Windows.Forms;
 
 namespace PicSum.UIComponent.Common
@@ -44,8 +46,8 @@ namespace PicSum.UIComponent.Common
 
         // 画像ファイルメニュー項目
         private readonly ToolStripMenuItem fileActiveTabOpenMenuItem = new ToolStripMenuItem("Open");
-        private readonly ToolStripMenuItem fileNewTabOpenMenuItem = new ToolStripMenuItem("Open in a new Tab");
-        private readonly ToolStripMenuItem fileNewWindowOpenMenuItem = new ToolStripMenuItem("Open in a new Window");
+        private readonly ToolStripMenuItem fileNewTabOpenMenuItem = new ToolStripMenuItem("Open new Tab");
+        private readonly ToolStripMenuItem fileNewWindowOpenMenuItem = new ToolStripMenuItem("Open new Window");
         private readonly ToolStripMenuItem fileBookmarkMenuItem = new ToolStripMenuItem("Bookmark");
 
         // ファイルメニュー項目
@@ -54,8 +56,8 @@ namespace PicSum.UIComponent.Common
 
         // フォルダメニュー項目
         private readonly ToolStripMenuItem directoryActiveTabOpenMenuItem = new ToolStripMenuItem("Open");
-        private readonly ToolStripMenuItem directoryNewTabOpenMenuItem = new ToolStripMenuItem("Open in a new Tab");
-        private readonly ToolStripMenuItem directoryNewWindowOpenMenuItem = new ToolStripMenuItem("Open in a new Window");
+        private readonly ToolStripMenuItem directoryNewTabOpenMenuItem = new ToolStripMenuItem("Open new Tab");
+        private readonly ToolStripMenuItem directoryNewWindowOpenMenuItem = new ToolStripMenuItem("Open new Window");
         private readonly ToolStripMenuItem explorerOpenMenuItem = new ToolStripMenuItem("Open in Explorer");
 
         private readonly ToolStripMenuItem exportMenuItem = new ToolStripMenuItem("Export");
@@ -115,6 +117,18 @@ namespace PicSum.UIComponent.Common
             }
         }
 
+        public bool IsExportMenuItem
+        {
+            get
+            {
+                return this.exportMenuItem.Visible;
+            }
+            set
+            {
+                this.exportMenuItem.Visible = value;
+            }
+        }
+
         #endregion
 
         #region 継承プロパティ
@@ -153,17 +167,17 @@ namespace PicSum.UIComponent.Common
 
             if (filePathList.Count > 1)
             {
-                this.SetImageFileMenuItemVisible(false);
-                this.SetFileMenuItemVisible(false);
                 this.SetDirectoryMenuItemVisible(false);
-                this.exportMenuItem.Visible = filePathList.FirstOrDefault(file => !FileUtil.IsImageFile(file)) == null;
+                this.SetFileMenuItemVisible(false);
+                var isImageFile = filePathList.FirstOrDefault(file => !FileUtil.IsImageFile(file)) == null;
+                this.SetImageFileMenuItemVisible(isImageFile);
             }
             else
             {
                 var filePath = filePathList.First();
-                this.SetImageFileMenuItemVisible(FileUtil.IsImageFile(filePath));
-                this.SetFileMenuItemVisible(FileUtil.IsFile(filePath));
                 this.SetDirectoryMenuItemVisible(!FileUtil.IsFile(filePath));
+                this.SetFileMenuItemVisible(FileUtil.IsFile(filePath));
+                this.SetImageFileMenuItemVisible(FileUtil.IsImageFile(filePath));
             }
 
             this.filePathList = filePathList;
@@ -316,6 +330,21 @@ namespace PicSum.UIComponent.Common
                                                       this.fileBookmarkMenuItem,
                                                       this.removeFromListMenuItem });
 
+            this.fileOpen.Image = Resources.AssociationOpenIcon;
+            this.fileActiveTabOpenMenuItem.Image = Resources.ImageFileOpenIcon;
+            this.fileNewTabOpenMenuItem.Image = Resources.TabPlusIcon;
+            this.fileNewWindowOpenMenuItem.Image = Resources.WindowOpenIcon;
+            this.directoryActiveTabOpenMenuItem.Image = Resources.DirectoryOpenIcon;
+            this.directoryNewTabOpenMenuItem.Image = Resources.TabPlusIcon;
+            this.directoryNewWindowOpenMenuItem.Image = Resources.WindowOpenIcon;
+            this.pathCopyMenuItem.Image = Resources.ClipboardIcon;
+            this.nameCopyMenuItem.Image = Resources.ClipboardIcon;
+            this.saveDirectoryOpen.Image = Resources.DirectoryOpenIcon;
+            this.explorerOpenMenuItem.Image = Resources.DirectoryOpenIcon;
+            this.exportMenuItem.Image = Resources.ExportIcon;
+            this.fileBookmarkMenuItem.Image = Resources.BookmarkIcon;
+            this.removeFromListMenuItem.Image = Resources.RemoveIcon;
+
             this.fileActiveTabOpenMenuItem.Click += new EventHandler(this.FileActiveTabOpenMenuItem_Click);
             this.fileNewTabOpenMenuItem.Click += new EventHandler(this.FileNewTabOpenMenuItem_Click);
             this.fileNewWindowOpenMenuItem.Click += new EventHandler(this.FileNewWindowOpenMenuItem_Click);
@@ -346,6 +375,7 @@ namespace PicSum.UIComponent.Common
             this.fileNewTabOpenMenuItem.Visible = isVisible;
             this.fileNewWindowOpenMenuItem.Visible = isVisible;
             this.exportMenuItem.Visible = isVisible;
+            this.fileBookmarkMenuItem.Visible = isVisible;
         }
 
         private void SetFileMenuItemVisible(bool isVisible)
@@ -368,6 +398,7 @@ namespace PicSum.UIComponent.Common
             this.directoryNewTabOpenMenuItem.Visible = isVisible;
             this.directoryNewWindowOpenMenuItem.Visible = isVisible;
             this.explorerOpenMenuItem.Visible = isVisible;
+            this.exportMenuItem.Visible = isVisible;
         }
 
         #endregion

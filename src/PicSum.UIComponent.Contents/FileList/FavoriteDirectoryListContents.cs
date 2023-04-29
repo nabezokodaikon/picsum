@@ -133,7 +133,6 @@ namespace PicSum.UIComponent.Contents.FileList
             this.Icon = Resources.HomeIcon;
             this.IsRemoveFromListMenuItemVisible = true;
             this.IsMoveControlVisible = false;
-            this.IsBookmarkMenuItem = false;
             base.sortFileRgistrationDateToolStripButton.Enabled = false;
         }
 

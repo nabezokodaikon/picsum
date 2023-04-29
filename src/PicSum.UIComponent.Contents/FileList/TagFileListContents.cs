@@ -174,7 +174,6 @@ namespace PicSum.UIComponent.Contents.FileList
             this.Icon = Resources.TagIcon;
             this.IsRemoveFromListMenuItemVisible = true;
             this.IsMoveControlVisible = false;
-            this.IsBookmarkMenuItem = true;
             base.sortFileRgistrationDateToolStripButton.Enabled = true;
         }
 

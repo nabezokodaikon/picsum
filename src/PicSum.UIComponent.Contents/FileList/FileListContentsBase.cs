@@ -68,30 +68,6 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
-        public bool IsFileActiveTabOpenMenuItemVisible
-        {
-            get
-            {
-                return this.fileContextMenu.IsFileActiveTabOpenMenuItemVisible;
-            }
-            set
-            {
-                this.fileContextMenu.IsFileActiveTabOpenMenuItemVisible = value;
-            }
-        }
-
-        public bool IsDirectoryActiveTabOpenMenuItemVisible
-        {
-            get
-            {
-                return this.fileContextMenu.IsDirectoryActiveTabOpenMenuItemVisible;
-            }
-            set
-            {
-                this.fileContextMenu.IsDirectoryActiveTabOpenMenuItemVisible = value;
-            }
-        }
-
         protected bool IsRemoveFromListMenuItemVisible
         {
             get
@@ -104,7 +80,7 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
-        public bool IsMoveControlVisible
+        protected bool IsMoveControlVisible
         {
             get
             {
@@ -117,7 +93,7 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
-        public bool IsBookmarkMenuItem
+        protected bool IsBookmarkMenuItem
         {
             get
             {

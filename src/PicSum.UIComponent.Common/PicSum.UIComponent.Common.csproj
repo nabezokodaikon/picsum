@@ -75,6 +75,11 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SWF.Common\SWF.Common.csproj">
@@ -85,6 +90,39 @@
       <Project>{15AC93FE-FF3A-46AE-B0A9-A65074C564D1}</Project>
       <Name>SWF.UIComponent.FlowList</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\BookmarkIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\DirectoryOpenIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\RemoveIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ClipboardIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ExportIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\WindowOpenIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\TabPlusIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ImageFileOpenIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AssociationOpenIcon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

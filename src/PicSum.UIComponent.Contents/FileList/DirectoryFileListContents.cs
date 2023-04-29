@@ -216,7 +216,6 @@ namespace PicSum.UIComponent.Contents.FileList
 
             this.IsRemoveFromListMenuItemVisible = false;
             this.IsMoveControlVisible = !string.IsNullOrEmpty(_parameter.DirectoryPath);
-            this.IsBookmarkMenuItem = true;
             base.sortFileRgistrationDateToolStripButton.Enabled = false;
         }
 

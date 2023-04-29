@@ -9,6 +9,7 @@ using SWF.Common;
 using SWF.UIComponent.TabOperation;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data.Common;
 using System.Linq;
 using System.Text;
@@ -140,13 +141,18 @@ namespace PicSum.UIComponent.Contents.FileList
             throw new NotImplementedException();
         }
 
+        protected override void FileContextMenu_Opening(object sender, CancelEventArgs e)
+        {
+            base.FileContextMenu_Opening(sender, e);
+            this.IsBookmarkMenuItem = false;
+        }
+
         private void InitializeComponent()
         {
             this.Title = "Bookmark";
             this.Icon = Resources.BookmarkIcon;
             this.IsRemoveFromListMenuItemVisible = true;
             this.IsMoveControlVisible = false;
-            this.IsBookmarkMenuItem = false;
             base.sortFileRgistrationDateToolStripButton.Enabled = true;
         }
 

@@ -156,7 +156,6 @@ namespace PicSum.UIComponent.Contents.FileList
             this.Icon = Resources.ActiveRatingIcon;
             this.IsMoveControlVisible = false;
             this.IsRemoveFromListMenuItemVisible = true;
-            this.IsBookmarkMenuItem = true;
             base.sortFileRgistrationDateToolStripButton.Enabled = true;
         }
 
