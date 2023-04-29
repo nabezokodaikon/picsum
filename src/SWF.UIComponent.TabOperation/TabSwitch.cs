@@ -1336,6 +1336,10 @@ namespace SWF.UIComponent.TabOperation
         {
             getDrawTabMethod(tab)(g);
             getDrawCloseButtonMethod(tab)(g);
+            if (tab.Icon == null)
+            {
+                return;
+            }
 
             DrawTabEventArgs args = new DrawTabEventArgs();
             args.Graphics = g;
