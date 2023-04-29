@@ -28,8 +28,8 @@ namespace PicSum.Task.AsyncFacade
                 {
                     if (!addLogic.Execute(param.Value, registrationDate))
                     {
-                        var updateFileMasterLogic = new UpdateFileMasterAsyncLogic(this);
-                        if (!updateFileMasterLogic.Execute(param.Value)) 
+                        var updateFileMaster = new UpdateFileMasterAsyncLogic(this);
+                        if (!updateFileMaster.Execute(param.Value)) 
                         {
                             var addFileMasterLogic = new AddFileMasterAsyncLogic(this);
                             addFileMasterLogic.Execute(param.Value);

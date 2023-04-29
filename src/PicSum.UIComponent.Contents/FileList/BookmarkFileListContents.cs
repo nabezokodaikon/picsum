@@ -110,8 +110,8 @@ namespace PicSum.UIComponent.Contents.FileList
                     }
 
                     var imageFiles = e.FileInfoList
-                        .Where(fileInfo => fileInfo.IsImageFile);
-                    var sortImageFiles = base.GetSortFiles(imageFiles)
+                        .Where(fileInfo => fileInfo.IsImageFile)                        
+                        .OrderBy(fileInfo => fileInfo.FilePath)
                         .Select(fileInfo => fileInfo.FilePath)
                         .ToArray();
 
@@ -121,7 +121,7 @@ namespace PicSum.UIComponent.Contents.FileList
                     var title = FileUtil.GetFileName(FileUtil.GetParentDirectoryPath(selectedFilePath));
 
                     var eventArgs = new GetImageFilesEventArgs(
-                        sortImageFiles, selectedFilePath, title, FileIconCash.SmallDirectoryIcon);
+                        imageFiles, selectedFilePath, title, FileIconCash.SmallDirectoryIcon);
                     paramter.OnGetImageFiles(eventArgs);
                 });
 
