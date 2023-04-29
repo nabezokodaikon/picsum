@@ -27,6 +27,7 @@ CREATE TABLE 'm_file' (
      ,'update_date' DATETIME
      ,PRIMARY KEY (
           'file_id'
+         ,'file_path'
       )
 );
 
