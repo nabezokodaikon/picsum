@@ -134,6 +134,11 @@ namespace PicSum.UIComponent.Contents.FileList
 
         protected override void OnMovePreviewButtonClick(EventArgs e)
         {
+            if (FileUtil.IsSystemRoot(_parameter.DirectoryPath))
+            {
+                return;
+            }
+
             GetNextContentsParameter<string> param = new GetNextContentsParameter<string>();
             param.CurrentParameter = new SingleValueEntity<string>();
             param.CurrentParameter.Value = _parameter.DirectoryPath;
@@ -144,6 +149,11 @@ namespace PicSum.UIComponent.Contents.FileList
 
         protected override void OnMoveNextButtonClick(EventArgs e)
         {
+            if (FileUtil.IsSystemRoot(_parameter.DirectoryPath))
+            {
+                return;
+            }
+
             GetNextContentsParameter<string> param = new GetNextContentsParameter<string>();
             param.CurrentParameter = new SingleValueEntity<string>();
             param.CurrentParameter.Value = _parameter.DirectoryPath;
