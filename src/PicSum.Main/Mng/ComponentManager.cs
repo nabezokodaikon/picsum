@@ -1,19 +1,20 @@
-﻿using System;
-using PicSum.Core.Task.AsyncTask;
+﻿using PicSum.Core.Task.AsyncTask;
 using PicSum.Main.Conf;
 using PicSum.Main.Properties;
-using PicSum.Task.Entity;
 using PicSum.Task.Paramter;
 using PicSum.Task.SyncFacade;
 using PicSum.UIComponent.Contents.Conf;
 using SWF.Common;
+using System;
+using System.Windows.Forms;
 
 namespace PicSum.Main.Mng
 {
     /// <summary>
     /// コンポーネント管理クラス
     /// </summary>
-    class ComponentManager : IDisposable
+    internal sealed class ComponentManager
+        : IDisposable
     {
         /// <summary>
         /// コンストラクタ
@@ -52,12 +53,12 @@ namespace PicSum.Main.Mng
             // 全ての非同期タスクが終了するまで待機します。
             while (TaskManager.TaskList.Count > 0)
             {
-                System.Windows.Forms.Application.DoEvents();
+                Application.DoEvents();
             }
 
             // 終了処理を行います。
-            ClosingSyncFacade closingFacade = new ClosingSyncFacade();
-            ClosingParameter param = new ClosingParameter();
+            var closingFacade = new ClosingSyncFacade();
+            var param = new ClosingParameter();
             closingFacade.Execute(param);
 
             // ブラウザの設定を保存します。
