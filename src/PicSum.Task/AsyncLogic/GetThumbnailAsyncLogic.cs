@@ -1,39 +1,40 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.IO;
-using System.Linq;
-using System.Threading;
-using PicSum.Core.Data.DatabaseAccessor;
+﻿using PicSum.Core.Data.DatabaseAccessor;
 using PicSum.Core.Task.AsyncTask;
 using PicSum.Data.DatabaseAccessor.Connection;
 using PicSum.Data.DatabaseAccessor.Dto;
 using PicSum.Data.DatabaseAccessor.Sql;
 using PicSum.Task.Entity;
 using SWF.Common;
+using System;
+using System.Collections.Generic;
+using System.Threading;
 
 namespace PicSum.Task.AsyncLogic
 {
     /// <summary>
     /// サムネイルを読込みます。
     /// </summary>
-    public class GetThumbnailAsyncLogic : AbstractAsyncLogic
+    public sealed class GetThumbnailAsyncLogic
+        : AbstractAsyncLogic
     {
-        private const int CashCapacity = 1000;
-        private static List<ThumbnailBufferEntity> _cashList = new List<ThumbnailBufferEntity>(CashCapacity);
-        private static Dictionary<string, ThumbnailBufferEntity> _cashDic = new Dictionary<string, ThumbnailBufferEntity>(CashCapacity);
-        private static readonly ReaderWriterLockSlim _cashLock = new ReaderWriterLockSlim();
+        private const int CASH_CAPACITY = 1000;
+        private static readonly List<ThumbnailBufferEntity> CASH_LIST = new List<ThumbnailBufferEntity>(CASH_CAPACITY);
+        private static readonly Dictionary<string, ThumbnailBufferEntity> CASH_DICTIONARY = new Dictionary<string, ThumbnailBufferEntity>(CASH_CAPACITY);
+        private static readonly ReaderWriterLockSlim CASH_LOCK = new ReaderWriterLockSlim();
 
         /// <summary>
         /// 静的リソースを解放します。
         /// </summary>
         public static void DisposeStaticResouces()
         {
-            _cashLock.Dispose();
+            CASH_LOCK.Dispose();
         }
 
-        public GetThumbnailAsyncLogic(AbstractAsyncFacade facade) : base(facade) { }
+        public GetThumbnailAsyncLogic(AbstractAsyncFacade facade)
+            : base(facade)
+        {
+
+        }
 
         public ThumbnailBufferEntity Execute(string filePath, int thumbWidth, int thumbHeight)
         {
@@ -53,16 +54,16 @@ namespace PicSum.Task.AsyncLogic
                     return null;
                 }
 
-                ThumbnailBufferEntity cash = getFileCash(filePath, thumbWidth, thumbHeight);
+                var cash = this.GetFileCash(filePath, thumbWidth, thumbHeight);
                 if (cash != null)
                 {
                     if (cash.ThumbnailWidth > thumbWidth || cash.ThumbnailHeight > thumbHeight)
                     {
                         using (var cashThumb = ImageUtil.ToImage(cash.ThumbnailBuffer))
                         {
-                            using (Image newThumb = ThumbnailUtil.CreateThumbnail(cashThumb, thumbWidth, thumbHeight))
+                            using (var newThumb = ThumbnailUtil.CreateThumbnail(cashThumb, thumbWidth, thumbHeight))
                             {
-                                ThumbnailBufferEntity thumb = new ThumbnailBufferEntity();
+                                var thumb = new ThumbnailBufferEntity();
                                 thumb.FilePath = cash.FilePath;
                                 thumb.ThumbnailBuffer = ImageUtil.ToCompressionBinary(newThumb);
                                 thumb.ThumbnailWidth = thumbWidth;
@@ -86,16 +87,16 @@ namespace PicSum.Task.AsyncLogic
             }
             else
             {
-                ThumbnailBufferEntity cash = getDirectoryCash(filePath, thumbWidth, thumbHeight);
+                var cash = this.GetDirectoryCash(filePath, thumbWidth, thumbHeight);
                 if (cash != null)
                 {
                     if (cash.ThumbnailWidth > thumbWidth || cash.ThumbnailHeight > thumbHeight)
                     {
-                        using (Image cashThumb = ImageUtil.ToImage(cash.ThumbnailBuffer))
+                        using (var cashThumb = ImageUtil.ToImage(cash.ThumbnailBuffer))
                         {
-                            using (Image newThumb = ThumbnailUtil.CreateThumbnail(cashThumb, thumbWidth, thumbHeight))
+                            using (var newThumb = ThumbnailUtil.CreateThumbnail(cashThumb, thumbWidth, thumbHeight))
                             {
-                                ThumbnailBufferEntity thumb = new ThumbnailBufferEntity();
+                                var thumb = new ThumbnailBufferEntity();
                                 thumb.FilePath = cash.FilePath;
                                 thumb.ThumbnailBuffer = ImageUtil.ToCompressionBinary(newThumb);
                                 thumb.ThumbnailWidth = thumbWidth;
@@ -119,9 +120,9 @@ namespace PicSum.Task.AsyncLogic
             }
         }
 
-        private ThumbnailBufferEntity getFileCash(string filePath, int thumbWidth, int thumbHeight)
+        private ThumbnailBufferEntity GetFileCash(string filePath, int thumbWidth, int thumbHeight)
         {
-            ThumbnailBufferEntity memCash = getMemoryCash(filePath);
+            var memCash = GetMemoryCash(filePath);
             if (memCash != null)
             {
                 var createDate = FileUtil.GetCreateDate(filePath);
@@ -141,7 +142,7 @@ namespace PicSum.Task.AsyncLogic
                 }
                 else
                 {
-                    ThumbnailBufferEntity dbCash = getDBCash(filePath);
+                    var dbCash = this.GetDBCash(filePath);
                     if (dbCash != null)
                     {
                         if (dbCash.ThumbnailWidth >= thumbWidth &&
@@ -150,29 +151,29 @@ namespace PicSum.Task.AsyncLogic
                             dbCash.FileUpdatedate >= updateDate.Value)
                         {
                             // DBキャッシュを返します。
-                            updateMemoryCash(dbCash);
+                            UpdateMemoryCash(dbCash);
                             return dbCash;
                         }
                         else
                         {
                             // サムネイルを更新します。
-                            ThumbnailBufferEntity thumb = updateDBFileCash(filePath, thumbWidth, thumbHeight, updateDate.Value);
-                            updateMemoryCash(thumb);
+                            var thumb = this.UpdateDBFileCash(filePath, thumbWidth, thumbHeight, updateDate.Value);
+                            UpdateMemoryCash(thumb);
                             return thumb;
                         }
                     }
                     else
                     {
                         // サムネイルを作成します。
-                        ThumbnailBufferEntity thumb = createDBFileCash(filePath, thumbWidth, thumbHeight, updateDate.Value);
-                        updateMemoryCash(thumb);
+                        var thumb = this.CreateDBFileCash(filePath, thumbWidth, thumbHeight, updateDate.Value);
+                        UpdateMemoryCash(thumb);
                         return thumb;
                     }
                 }
             }
             else
             {
-                ThumbnailBufferEntity dbCash = getDBCash(filePath);
+                var dbCash = this.GetDBCash(filePath);
                 if (dbCash != null)
                 {
                     var createDate = FileUtil.GetCreateDate(filePath);
@@ -188,14 +189,14 @@ namespace PicSum.Task.AsyncLogic
                         dbCash.FileUpdatedate >= updateDate)
                     {
                         // DBキャッシュを返します。
-                        updateMemoryCash(dbCash);
+                        UpdateMemoryCash(dbCash);
                         return dbCash;
                     }
                     else
                     {
                         // サムネイルを更新します。
-                        ThumbnailBufferEntity thumb = updateDBFileCash(filePath, thumbWidth, thumbHeight, updateDate.Value);
-                        updateMemoryCash(thumb);
+                        var thumb = UpdateDBFileCash(filePath, thumbWidth, thumbHeight, updateDate.Value);
+                        UpdateMemoryCash(thumb);
                         return thumb;
                     }
                 }
@@ -208,16 +209,16 @@ namespace PicSum.Task.AsyncLogic
                         return null;
                     }
 
-                    ThumbnailBufferEntity thumb = createDBFileCash(filePath, thumbWidth, thumbHeight, updateDate.Value);
-                    updateMemoryCash(thumb);
+                    var thumb = this.CreateDBFileCash(filePath, thumbWidth, thumbHeight, updateDate.Value);
+                    UpdateMemoryCash(thumb);
                     return thumb;
                 }
             }
         }
 
-        private ThumbnailBufferEntity getDirectoryCash(string filePath, int thumbWidth, int thumbHeight)
+        private ThumbnailBufferEntity GetDirectoryCash(string filePath, int thumbWidth, int thumbHeight)
         {
-            ThumbnailBufferEntity memCash = getMemoryCash(filePath);
+            var memCash = GetMemoryCash(filePath);
             if (memCash != null)
             {
                 var createDate = FileUtil.GetCreateDate(filePath);
@@ -237,7 +238,7 @@ namespace PicSum.Task.AsyncLogic
                 }
                 else
                 {
-                    ThumbnailBufferEntity dbCash = getDBCash(filePath);
+                    var dbCash = this.GetDBCash(filePath);
                     if (dbCash != null)
                     {
                         if (dbCash.ThumbnailWidth >= thumbWidth &&
@@ -246,17 +247,17 @@ namespace PicSum.Task.AsyncLogic
                             dbCash.FileUpdatedate >= updateDate)
                         {
                             // DBキャッシュを返します。
-                            updateMemoryCash(dbCash);
+                            UpdateMemoryCash(dbCash);
                             return dbCash;
                         }
                         else
                         {
-                            string thumbFile = FileUtil.GetFirstImageFilePath(filePath);
+                            var thumbFile = FileUtil.GetFirstImageFilePath(filePath);
                             if (!string.IsNullOrEmpty(thumbFile))
                             {
                                 // サムネイルを更新します。
-                                ThumbnailBufferEntity thumb = updateDBDirectoryCash(filePath, thumbFile, thumbWidth, thumbHeight, updateDate.Value);
-                                updateMemoryCash(thumb);
+                                var thumb = UpdateDBDirectoryCash(filePath, thumbFile, thumbWidth, thumbHeight, updateDate.Value);
+                                UpdateMemoryCash(thumb);
                                 return thumb;
                             }
                             else
@@ -267,12 +268,12 @@ namespace PicSum.Task.AsyncLogic
                     }
                     else
                     {
-                        string thumbFile = FileUtil.GetFirstImageFilePath(filePath);
+                        var thumbFile = FileUtil.GetFirstImageFilePath(filePath);
                         if (!string.IsNullOrEmpty(thumbFile))
                         {
                             // サムネイルを作成します。
-                            ThumbnailBufferEntity thumb = createDBDirectoryCash(filePath, thumbFile, thumbWidth, thumbHeight, updateDate.Value);
-                            updateMemoryCash(thumb);
+                            var thumb = CreateDBDirectoryCash(filePath, thumbFile, thumbWidth, thumbHeight, updateDate.Value);
+                            UpdateMemoryCash(thumb);
                             return thumb;
                         }
                         else
@@ -284,7 +285,7 @@ namespace PicSum.Task.AsyncLogic
             }
             else
             {
-                ThumbnailBufferEntity dbCash = getDBCash(filePath);
+                var dbCash = this.GetDBCash(filePath);
                 if (dbCash != null)
                 {
                     var createDate = FileUtil.GetCreateDate(filePath);
@@ -300,17 +301,17 @@ namespace PicSum.Task.AsyncLogic
                         dbCash.FileUpdatedate >= updateDate.Value)
                     {
                         // DBキャッシュを返します。
-                        updateMemoryCash(dbCash);
+                        UpdateMemoryCash(dbCash);
                         return dbCash;
                     }
                     else
                     {
-                        string thumbFile = FileUtil.GetFirstImageFilePath(filePath);
+                        var thumbFile = FileUtil.GetFirstImageFilePath(filePath);
                         if (!string.IsNullOrEmpty(thumbFile))
                         {
                             // サムネイルを更新します。                                
-                            ThumbnailBufferEntity thumb = updateDBDirectoryCash(filePath, thumbFile, thumbWidth, thumbHeight, updateDate.Value);
-                            updateMemoryCash(thumb);
+                            var thumb = UpdateDBDirectoryCash(filePath, thumbFile, thumbWidth, thumbHeight, updateDate.Value);
+                            UpdateMemoryCash(thumb);
                             return thumb;
                         }
                         else
@@ -322,7 +323,7 @@ namespace PicSum.Task.AsyncLogic
                 else
                 {
                     // サムネイルを作成します。
-                    string thumbFile = FileUtil.GetFirstImageFilePath(filePath);
+                    var thumbFile = FileUtil.GetFirstImageFilePath(filePath);
                     if (!string.IsNullOrEmpty(thumbFile))
                     {
                         var updateDate = FileUtil.GetUpdateDate(filePath);
@@ -331,8 +332,8 @@ namespace PicSum.Task.AsyncLogic
                             return null;
                         }
 
-                        ThumbnailBufferEntity thumb = createDBDirectoryCash(filePath, thumbFile, thumbWidth, thumbHeight, updateDate.Value);
-                        updateMemoryCash(thumb);
+                        var thumb = CreateDBDirectoryCash(filePath, thumbFile, thumbWidth, thumbHeight, updateDate.Value);
+                        UpdateMemoryCash(thumb);
                         return thumb;
                     }
                     else
@@ -345,13 +346,13 @@ namespace PicSum.Task.AsyncLogic
 
         #region DBキャッシュ操作メソッド
 
-        private ThumbnailBufferEntity getDBCash(string filePath)
+        private ThumbnailBufferEntity GetDBCash(string filePath)
         {
-            ReadThumbnailByFileSql sql = new ReadThumbnailByFileSql(filePath);
-            ThumbnailDto dto = DatabaseManager<ThumbnailConnection>.ReadLine<ThumbnailDto>(sql);
+            var sql = new ReadThumbnailByFileSql(filePath);
+            var dto = DatabaseManager<ThumbnailConnection>.ReadLine<ThumbnailDto>(sql);
             if (dto != null)
             {
-                ThumbnailBufferEntity thumb = new ThumbnailBufferEntity();
+                var thumb = new ThumbnailBufferEntity();
                 thumb.FilePath = dto.FilePath;
                 thumb.ThumbnailBuffer = dto.ThumbnailBuffer;
                 thumb.ThumbnailWidth = dto.ThumbnailWidth;
@@ -367,18 +368,18 @@ namespace PicSum.Task.AsyncLogic
             }
         }
 
-        private ThumbnailBufferEntity createDBFileCash(string filePath, int thumbWidth, int thumbHeight, DateTime fileUpdateDate)
+        private ThumbnailBufferEntity CreateDBFileCash(string filePath, int thumbWidth, int thumbHeight, DateTime fileUpdateDate)
         {
-            using (Image srcImg = ImageUtil.ReadImageFile(filePath))
+            using (var srcImg = ImageUtil.ReadImageFile(filePath))
             {
-                using (Image thumbImg = ThumbnailUtil.CreateThumbnail(srcImg, thumbWidth, thumbHeight))
+                using (var thumbImg = ThumbnailUtil.CreateThumbnail(srcImg, thumbWidth, thumbHeight))
                 {
-                    byte[] thumbBin = ImageUtil.ToCompressionBinary(thumbImg);
+                    var thumbBin = ImageUtil.ToCompressionBinary(thumbImg);
 
-                    CreationThumbnailSql sql = new CreationThumbnailSql(filePath, thumbBin, thumbWidth, thumbHeight, srcImg.Width, srcImg.Height, fileUpdateDate);
+                    var sql = new CreationThumbnailSql(filePath, thumbBin, thumbWidth, thumbHeight, srcImg.Width, srcImg.Height, fileUpdateDate);
                     DatabaseManager<ThumbnailConnection>.Update(sql);
 
-                    ThumbnailBufferEntity thumb = new ThumbnailBufferEntity();
+                    var thumb = new ThumbnailBufferEntity();
                     thumb.FilePath = filePath;
                     thumb.ThumbnailBuffer = thumbBin;
                     thumb.ThumbnailWidth = thumbWidth;
@@ -392,18 +393,18 @@ namespace PicSum.Task.AsyncLogic
             }
         }
 
-        private ThumbnailBufferEntity updateDBFileCash(string filePath, int thumbWidth, int thumbHeight, DateTime fileUpdateDate)
+        private ThumbnailBufferEntity UpdateDBFileCash(string filePath, int thumbWidth, int thumbHeight, DateTime fileUpdateDate)
         {
-            using (Image srcImg = ImageUtil.ReadImageFile(filePath))
+            using (var srcImg = ImageUtil.ReadImageFile(filePath))
             {
-                using (Image thumbImg = ThumbnailUtil.CreateThumbnail(srcImg, thumbWidth, thumbHeight))
+                using (var thumbImg = ThumbnailUtil.CreateThumbnail(srcImg, thumbWidth, thumbHeight))
                 {
-                    byte[] thumbBin = ImageUtil.ToCompressionBinary(thumbImg);
+                    var thumbBin = ImageUtil.ToCompressionBinary(thumbImg);
 
-                    UpdateThumbnailSql sql = new UpdateThumbnailSql(filePath, thumbBin, thumbWidth, thumbHeight, srcImg.Width, srcImg.Height, fileUpdateDate);
+                    var sql = new UpdateThumbnailSql(filePath, thumbBin, thumbWidth, thumbHeight, srcImg.Width, srcImg.Height, fileUpdateDate);
                     DatabaseManager<ThumbnailConnection>.Update(sql);
 
-                    ThumbnailBufferEntity thumb = new ThumbnailBufferEntity();
+                    var thumb = new ThumbnailBufferEntity();
                     thumb.FilePath = filePath;
                     thumb.ThumbnailBuffer = thumbBin;
                     thumb.ThumbnailWidth = thumbWidth;
@@ -417,18 +418,18 @@ namespace PicSum.Task.AsyncLogic
             }
         }
 
-        private ThumbnailBufferEntity createDBDirectoryCash(string directoryPath, string thumbFilePath, int thumbWidth, int thumbHeight, DateTime directoryUpdateDate)
+        private ThumbnailBufferEntity CreateDBDirectoryCash(string directoryPath, string thumbFilePath, int thumbWidth, int thumbHeight, DateTime directoryUpdateDate)
         {
-            using (Image srcImg = ImageUtil.ReadImageFile(thumbFilePath))
+            using (var srcImg = ImageUtil.ReadImageFile(thumbFilePath))
             {
-                using (Image thumbImg = ThumbnailUtil.CreateThumbnail(srcImg, thumbWidth, thumbHeight))
+                using (var thumbImg = ThumbnailUtil.CreateThumbnail(srcImg, thumbWidth, thumbHeight))
                 {
-                    byte[] thumbBin = ImageUtil.ToCompressionBinary(thumbImg);
+                    var thumbBin = ImageUtil.ToCompressionBinary(thumbImg);
 
-                    CreationThumbnailSql sql = new CreationThumbnailSql(directoryPath, thumbBin, thumbWidth, thumbHeight, srcImg.Width, srcImg.Height, directoryUpdateDate);
+                    var sql = new CreationThumbnailSql(directoryPath, thumbBin, thumbWidth, thumbHeight, srcImg.Width, srcImg.Height, directoryUpdateDate);
                     DatabaseManager<ThumbnailConnection>.Update(sql);
 
-                    ThumbnailBufferEntity thumb = new ThumbnailBufferEntity();
+                    var thumb = new ThumbnailBufferEntity();
                     thumb.FilePath = directoryPath;
                     thumb.ThumbnailBuffer = thumbBin;
                     thumb.ThumbnailWidth = thumbWidth;
@@ -441,15 +442,15 @@ namespace PicSum.Task.AsyncLogic
             }
         }
 
-        private ThumbnailBufferEntity updateDBDirectoryCash(string directoryPath, string thumbFilePath, int thumbWidth, int thumbHeight, DateTime directoryUpdateDate)
+        private ThumbnailBufferEntity UpdateDBDirectoryCash(string directoryPath, string thumbFilePath, int thumbWidth, int thumbHeight, DateTime directoryUpdateDate)
         {
-            using (Image srcImg = ImageUtil.ReadImageFile(thumbFilePath))
+            using (var srcImg = ImageUtil.ReadImageFile(thumbFilePath))
             {
-                using (Image thumbImg = ThumbnailUtil.CreateThumbnail(srcImg, thumbWidth, thumbHeight))
+                using (var thumbImg = ThumbnailUtil.CreateThumbnail(srcImg, thumbWidth, thumbHeight))
                 {
-                    byte[] thumbBin = ImageUtil.ToCompressionBinary(thumbImg);
+                    var thumbBin = ImageUtil.ToCompressionBinary(thumbImg);
 
-                    UpdateThumbnailSql sql = new UpdateThumbnailSql(directoryPath, thumbBin, thumbWidth, thumbHeight, srcImg.Width, srcImg.Height, directoryUpdateDate);
+                    var sql = new UpdateThumbnailSql(directoryPath, thumbBin, thumbWidth, thumbHeight, srcImg.Width, srcImg.Height, directoryUpdateDate);
                     DatabaseManager<ThumbnailConnection>.Update(sql);
 
                     ThumbnailBufferEntity thumb = new ThumbnailBufferEntity();
@@ -470,14 +471,13 @@ namespace PicSum.Task.AsyncLogic
 
         #region メモリーキャッシュ操作メソッド
 
-        private static ThumbnailBufferEntity getMemoryCash(string filePath)
+        private static ThumbnailBufferEntity GetMemoryCash(string filePath)
         {
-            _cashLock.EnterReadLock();
+            CASH_LOCK.EnterReadLock();
 
             try
             {
-                ThumbnailBufferEntity cach = null;
-                if (_cashDic.TryGetValue(filePath, out cach))
+                if (CASH_DICTIONARY.TryGetValue(filePath, out ThumbnailBufferEntity cach))
                 {
                     return cach;
                 }
@@ -488,39 +488,38 @@ namespace PicSum.Task.AsyncLogic
             }
             finally
             {
-                _cashLock.ExitReadLock();
+                CASH_LOCK.ExitReadLock();
             }
         }
 
-        private static void updateMemoryCash(ThumbnailBufferEntity thumb)
+        private static void UpdateMemoryCash(ThumbnailBufferEntity thumb)
         {
-            _cashLock.EnterWriteLock();
+            CASH_LOCK.EnterWriteLock();
 
             try
             {
-                ThumbnailBufferEntity dicCash = null;
-                if (_cashDic.TryGetValue(thumb.FilePath, out dicCash))
+                if (CASH_DICTIONARY.TryGetValue(thumb.FilePath, out ThumbnailBufferEntity dicCash))
                 {
-                    _cashList.Remove(dicCash);
-                    _cashList.Add(thumb);
-                    _cashDic[thumb.FilePath] = thumb;
+                    CASH_LIST.Remove(dicCash);
+                    CASH_LIST.Add(thumb);
+                    CASH_DICTIONARY[thumb.FilePath] = thumb;
                 }
                 else
                 {
-                    if (_cashList.Count == _cashList.Capacity)
+                    if (CASH_LIST.Count == CASH_LIST.Capacity)
                     {
-                        ThumbnailBufferEntity cash = _cashList[0];
-                        _cashList.Remove(cash);
-                        _cashDic.Remove(thumb.FilePath);
+                        var cash = CASH_LIST[0];
+                        CASH_LIST.Remove(cash);
+                        CASH_DICTIONARY.Remove(thumb.FilePath);
                     }
 
-                    _cashList.Add(thumb);
-                    _cashDic.Add(thumb.FilePath, thumb);
+                    CASH_LIST.Add(thumb);
+                    CASH_DICTIONARY.Add(thumb.FilePath, thumb);
                 }
             }
             finally
             {
-                _cashLock.ExitWriteLock();
+                CASH_LOCK.ExitWriteLock();
             }
         }
 
