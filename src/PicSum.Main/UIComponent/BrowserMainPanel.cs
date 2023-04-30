@@ -187,9 +187,6 @@ namespace PicSum.Main.UIComponent
 
         protected override void OnLoad(EventArgs e)
         {
-            this.openContents(
-                new DirectoryFileListContentsParameter(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures)), 
-                ContentsOpenType.AddTab);
             base.OnLoad(e);
         }
 
