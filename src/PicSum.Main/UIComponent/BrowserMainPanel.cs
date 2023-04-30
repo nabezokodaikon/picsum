@@ -479,8 +479,11 @@ namespace PicSum.Main.UIComponent
             if (tabSwitch.ActiveTab != null)
             {
                 var selectedFilePath = tabSwitch.ActiveTab.GetContents<BrowserContents>().SelectedFilePath;
-                addressBar.SetAddress(selectedFilePath);
-                infoPanel.SetFileInfo(selectedFilePath);
+                if (!string.IsNullOrEmpty(selectedFilePath)) 
+                {
+                    addressBar.SetAddress(selectedFilePath);
+                    infoPanel.SetFileInfo(selectedFilePath);
+                }
 
 #if DEBUG
                 Logger.Debug("アクティブなタブが変更されました。");
