@@ -1,4 +1,4 @@
-![AppIcon](https://user-images.githubusercontent.com/3197942/233235268-b041e75a-4ff5-49a0-92b0-e096704c7f13.png) 
+![AppIcon](./resource/appicon.png) 
 
 # PicSum
 This is an application for viewing image files.
@@ -12,7 +12,7 @@ It has the following features.
     * Image files can be starred.
     * Add arbitrary tags to image files.
 ### Supplement
-* Browsing history, star and tag features are only stored in this application's database.
+* Browsing history, star, tag and bookmark features are only stored in this application's database.
 * This application is intended only for viewing image files and does not have file editing functions.
 
 ## How to build
