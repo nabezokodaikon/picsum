@@ -125,7 +125,10 @@ namespace PicSum.UIComponent.Contents.FileList
 
         protected override void OnBackgroundMouseClick(MouseEventArgs e)
         {
-            // 処理無し。
+            if (!FileUtil.IsSystemRoot(_parameter.DirectoryPath))
+            {
+                base.OnSelectedFileChanged(new SelectedFileChangeEventArgs(_parameter.DirectoryPath));
+            }
         }
 
         protected override void OnRemoveFile(System.Collections.Generic.IList<string> filePathList)
@@ -194,6 +197,25 @@ namespace PicSum.UIComponent.Contents.FileList
 
                 proces.Execute(this, new SingleValueEntity<string>() { Value = this._parameter.DirectoryPath });
             };
+        }
+
+        protected override void FileContextMenu_Opening(object sender, CancelEventArgs e)
+        {
+            IList<string> filePathList = GetSelectedFiles();
+            if (filePathList.Count > 0)
+            {
+                IsDirectoryActiveTabOpenMenuItemVisible = true;
+                SetContextMenuFiles(filePathList);
+            }
+            else if (!FileUtil.IsSystemRoot(_parameter.DirectoryPath))
+            {
+                IsDirectoryActiveTabOpenMenuItemVisible = false;
+                SetContextMenuFiles(_parameter.DirectoryPath);
+            }
+            else
+            {
+                e.Cancel = true;
+            }
         }
 
         #endregion

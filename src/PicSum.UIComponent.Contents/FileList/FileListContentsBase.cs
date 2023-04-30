@@ -104,6 +104,18 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
+        protected bool IsDirectoryActiveTabOpenMenuItemVisible
+        {
+            get
+            {
+                return fileContextMenu.IsDirectoryActiveTabOpenMenuItemVisible;
+            }
+            set
+            {
+                fileContextMenu.IsDirectoryActiveTabOpenMenuItemVisible = value;
+            }
+        }
+
         #endregion
 
         #region プライベートプロパティ
