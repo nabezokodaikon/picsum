@@ -270,17 +270,12 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.addressBar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(138)))), ((int)(((byte)(153)))));
-            this.addressBar.InnerColor = System.Drawing.Color.White;
             this.addressBar.Location = new System.Drawing.Point(152, 4);
             this.addressBar.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.addressBar.MouseDownColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(48)))), ((int)(((byte)(96)))), ((int)(((byte)(144)))));
-            this.addressBar.MousePointColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(48)))), ((int)(((byte)(96)))), ((int)(((byte)(144)))));
             this.addressBar.Name = "addressBar";
-            this.addressBar.OutlineColor = System.Drawing.Color.Silver;
             this.addressBar.Size = new System.Drawing.Size(436, 26);
             this.addressBar.TabIndex = 0;
             this.addressBar.TextAlignment = System.Drawing.StringAlignment.Center;
-            this.addressBar.TextColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.addressBar.TextLineAlignment = System.Drawing.StringAlignment.Center;
             this.addressBar.TextTrimming = System.Drawing.StringTrimming.EllipsisCharacter;
             this.addressBar.SelectedDirectory += new System.EventHandler<PicSum.UIComponent.AddressBar.SelectedDirectoryEventArgs>(this.addressBar_SelectedDirectory);

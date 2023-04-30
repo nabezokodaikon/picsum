@@ -51,10 +51,6 @@ namespace PicSum.UIComponent.AddressBar
             {
                 return _palette.TextColor;
             }
-            set
-            {
-                _palette.TextColor = value;
-            }
         }
 
         public Color MousePointColor
@@ -62,10 +58,6 @@ namespace PicSum.UIComponent.AddressBar
             get
             {
                 return _palette.MousePointColor;
-            }
-            set
-            {
-                _palette.MousePointColor = value;
             }
         }
 
@@ -75,10 +67,6 @@ namespace PicSum.UIComponent.AddressBar
             {
                 return _palette.MouseDownColor;
             }
-            set
-            {
-                _palette.MouseDownColor = value;
-            }
         }
 
         public Color OutlineColor
@@ -87,10 +75,6 @@ namespace PicSum.UIComponent.AddressBar
             {
                 return _palette.OutlineColor;
             }
-            set
-            {
-                _palette.OutlineColor = value;
-            }
         }
 
         public Color InnerColor
@@ -98,10 +82,6 @@ namespace PicSum.UIComponent.AddressBar
             get
             {
                 return _palette.InnerColor;
-            }
-            set
-            {
-                _palette.InnerColor = value;
             }
         }
 

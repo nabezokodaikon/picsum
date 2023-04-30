@@ -60,11 +60,12 @@ namespace PicSum.UIComponent.AddressBar
 
             if (base.IsMouseDown)
             {
-                g.FillRectangle(base.Palette.MouseDownBrush, rect);
+                g.FillRectangle(base.Palette.MouseDownBrush, rect);                
             }
             else if (base.IsMousePoint)
             {
                 g.FillRectangle(base.Palette.MousePointBrush, rect);
+                g.DrawRectangle(base.Palette.MousePointPen, rect);
             }
 
             g.DrawString(_directory.DirectoryName, base.Palette.TextFont, base.Palette.TextBrush, rect, base.Palette.TextFormat);

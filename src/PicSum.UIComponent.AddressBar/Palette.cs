@@ -5,10 +5,27 @@ namespace PicSum.UIComponent.AddressBar
     public class Palette
     {
         private Font _textFont = new Font("Yu Gothic UI", 10F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(128)));
-        private Color _textColor = Color.FromArgb(64, 64, 64);
-        private Color _mousePointColor = Color.FromArgb(48, 48, 96, 144);
-        private Color _selectedColor = Color.FromArgb(192, 48, 96, 144);
-        private Color _outlineColor = Color.FromArgb(64, 64, 64);
+        
+        private Color _textColor = Color.FromArgb(
+            SystemColors.ControlText.A,
+            SystemColors.ControlText.R,
+            SystemColors.ControlText.G,
+            SystemColors.ControlText.B);
+        
+        private Color _mousePointColor = Color.FromArgb(
+            SystemColors.Highlight.A / 8,
+            SystemColors.Highlight.R,
+            SystemColors.Highlight.G,
+            SystemColors.Highlight.B);
+        
+        private Color _selectedColor = Color.FromArgb(
+            SystemColors.Highlight.A / 8,
+            SystemColors.Highlight.R,
+            SystemColors.Highlight.G,
+            SystemColors.Highlight.B);
+
+        private Color _outlineColor = SystemColors.ControlDark;
+        
         private Color _innerColor = Color.White;
         private StringTrimming _textTrimming = StringTrimming.EllipsisCharacter;
         private StringAlignment _textAlignment = StringAlignment.Center;
@@ -16,6 +33,7 @@ namespace PicSum.UIComponent.AddressBar
         private StringFormatFlags _textFormatFlags = 0;
         private SolidBrush _textBrush = null;
         private SolidBrush _mousePointBrush = null;
+        private Pen _mousePointPen = null;
         private SolidBrush _mouseDownBrush = null;
         private SolidBrush _outlineBrush = null;
         private SolidBrush _innerBrush = null;
@@ -149,12 +167,6 @@ namespace PicSum.UIComponent.AddressBar
                 {
                     _textBrush = new SolidBrush(_textColor);
                 }
-                else if (!_textBrush.Color.Equals(_textColor))
-                {
-                    _textBrush.Dispose();
-                    _textBrush = null;
-                    _textBrush = new SolidBrush(_textColor);
-                }
 
                 return _textBrush;
             }
@@ -168,14 +180,21 @@ namespace PicSum.UIComponent.AddressBar
                 {
                     _mousePointBrush = new SolidBrush(_mousePointColor);
                 }
-                else if (!_mousePointBrush.Color.Equals(_mousePointColor))
-                {
-                    _mousePointBrush.Dispose();
-                    _mousePointBrush = null;
-                    _mousePointBrush = new SolidBrush(_mousePointColor);
-                }
 
                 return _mousePointBrush;
+            }
+        }
+
+        public Pen MousePointPen
+        {
+            get
+            {
+                if (_mousePointPen == null)
+                {
+                    _mousePointPen = new Pen(_mousePointColor);
+                }
+
+                return _mousePointPen;
             }
         }
 
@@ -185,12 +204,6 @@ namespace PicSum.UIComponent.AddressBar
             {
                 if (_mouseDownBrush == null)
                 {
-                    _mouseDownBrush = new SolidBrush(_selectedColor);
-                }
-                else if (!_mouseDownBrush.Color.Equals(_selectedColor))
-                {
-                    _mouseDownBrush.Dispose();
-                    _mouseDownBrush = null;
                     _mouseDownBrush = new SolidBrush(_selectedColor);
                 }
 
@@ -206,12 +219,6 @@ namespace PicSum.UIComponent.AddressBar
                 {
                     _outlineBrush = new SolidBrush(_outlineColor);
                 }
-                else if (!_outlineBrush.Color.Equals(_outlineColor))
-                {
-                    _outlineBrush.Dispose();
-                    _outlineBrush = null;
-                    _outlineBrush = new SolidBrush(_outlineColor);
-                }
 
                 return _outlineBrush;
             }
@@ -223,12 +230,6 @@ namespace PicSum.UIComponent.AddressBar
             {
                 if (_innerBrush == null)
                 {
-                    _innerBrush = new SolidBrush(_innerColor);
-                }
-                else if (!_innerBrush.Color.Equals(_innerColor))
-                {
-                    _innerBrush.Dispose();
-                    _innerBrush = null;
                     _innerBrush = new SolidBrush(_innerColor);
                 }
 

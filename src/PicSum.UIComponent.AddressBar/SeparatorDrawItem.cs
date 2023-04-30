@@ -124,12 +124,14 @@ namespace PicSum.UIComponent.AddressBar
             if (base.IsMouseDown || base.IsDropDown)
             {
                 g.FillRectangle(base.Palette.MouseDownBrush, rect);
-                g.DrawImage(_mouseDownImage, getImageDrawRectangle(_mouseDownImage));
+                g.DrawRectangle(base.Palette.MousePointPen, rect);
+                g.DrawImage(_mouseDownImage, getImageDrawRectangle(_mousePointImage));                
             }
             else if (base.IsMousePoint)
             {
                 g.FillRectangle(base.Palette.MousePointBrush, rect);
-                g.DrawImage(_mousePointImage, getImageDrawRectangle(_mousePointImage));
+                g.DrawRectangle(base.Palette.MousePointPen, rect);
+                g.DrawImage(_mousePointImage, getImageDrawRectangle(_mousePointImage));                
             }
             else
             {
@@ -167,9 +169,14 @@ namespace PicSum.UIComponent.AddressBar
 
         protected override void drawDropDownItem(SWF.UIComponent.FlowList.DrawItemEventArgs e)
         {
-            if (e.IsFocus || e.IsMousePoint || e.IsSelected)
+            if (e.IsFocus || e.IsMousePoint)
             {
                 e.Graphics.FillRectangle(base.DropDownList.SelectedItemBrush, e.ItemRectangle);
+            }
+
+            if (e.IsSelected)
+            {
+                e.Graphics.DrawRectangle(base.DropDownList.SelectedItemPen, e.ItemRectangle);
             }
 
             DirectoryEntity item = base.Items[e.ItemIndex];
