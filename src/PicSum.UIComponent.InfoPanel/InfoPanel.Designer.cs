@@ -204,7 +204,7 @@
             this.wideComboBox.Location = new System.Drawing.Point(0, 477);
             this.wideComboBox.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.wideComboBox.Name = "wideComboBox";
-            this.wideComboBox.Size = new System.Drawing.Size(512, 38);
+            this.wideComboBox.Size = new System.Drawing.Size(508, 38);
             this.wideComboBox.TabIndex = 27;
             this.wideComboBox.DropDownOpening += new System.EventHandler<SWF.UIComponent.WideDropDown.DropDownOpeningEventArgs>(this.wideComboBox_DropDownOpening);
             this.wideComboBox.AddItem += new System.EventHandler<SWF.UIComponent.WideDropDown.AddItemEventArgs>(this.wideComboBox_AddItem);
