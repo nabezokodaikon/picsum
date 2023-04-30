@@ -16,7 +16,6 @@ namespace SWF.UIComponent.WideDropDown
 
         #endregion
 
-        private readonly SolidBrush selectedTextBrush = new SolidBrush(Color.White);
         private readonly List<string> itemList = new List<string>();
 
         #region パブリックプロパティ
@@ -31,10 +30,6 @@ namespace SWF.UIComponent.WideDropDown
             {
                 return this.flowList.ItemTextColor;
             }
-            set
-            {
-                this.flowList.ItemTextColor = value;
-            }
         }
 
         /// <summary>
@@ -47,10 +42,6 @@ namespace SWF.UIComponent.WideDropDown
             {
                 return this.flowList.SelectedItemColor;
             }
-            set
-            {
-                this.flowList.SelectedItemColor = value;
-            }
         }
 
         /// <summary>
@@ -62,10 +53,6 @@ namespace SWF.UIComponent.WideDropDown
             get
             {
                 return this.flowList.MousePointItemColor;
-            }
-            set
-            {
-                this.flowList.MousePointItemColor = value;
             }
         }
 
@@ -218,9 +205,6 @@ namespace SWF.UIComponent.WideDropDown
             this.toolStripItem.Size = new Size(456, 224);
 
             this.flowList.BackColor = Color.White;
-            this.flowList.SelectedItemColor = Color.FromArgb(192, 48, 96, 144);
-            this.flowList.MousePointItemColor = Color.FromArgb(24, 48, 96, 144);
-            this.flowList.ItemTextColor = Color.FromArgb(64, 64, 64);
             this.flowList.ItemTextTrimming = StringTrimming.EllipsisCharacter;
             this.flowList.ItemTextLineAlignment = StringAlignment.Center;
             this.flowList.ItemTextAlignment = StringAlignment.Near;
@@ -336,18 +320,6 @@ namespace SWF.UIComponent.WideDropDown
 
         #region プライベートメソッド
 
-        private SolidBrush getTextBrush(SWF.UIComponent.FlowList.DrawItemEventArgs e)
-        {
-            if (e.IsSelected)
-            {
-                return selectedTextBrush;
-            }
-            else
-            {
-                return flowList.ItemTextBrush;
-            }
-        }
-
         private Rectangle getIconRectangle(SWF.UIComponent.FlowList.DrawItemEventArgs e)
         {
             if (this.Icon != null)
@@ -398,6 +370,7 @@ namespace SWF.UIComponent.WideDropDown
             if (e.IsSelected)
             {
                 e.Graphics.FillRectangle(this.flowList.SelectedItemBrush, e.ItemRectangle);
+                e.Graphics.DrawRectangle(this.flowList.SelectedItemPen, e.ItemRectangle);
             }
 
             if (e.IsFocus)
@@ -411,7 +384,7 @@ namespace SWF.UIComponent.WideDropDown
             }
 
             var item = this.itemList[e.ItemIndex];
-            e.Graphics.DrawString(item, this.flowList.Font, getTextBrush(e), getTextRectangle(e), this.flowList.ItemTextFormat);
+            e.Graphics.DrawString(item, this.flowList.Font, this.flowList.ItemTextBrush, getTextRectangle(e), this.flowList.ItemTextFormat);
         }
 
         private void flowList_ItemMouseClick(object sender, MouseEventArgs e)

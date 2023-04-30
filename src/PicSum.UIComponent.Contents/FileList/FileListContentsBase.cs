@@ -36,7 +36,6 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private Dictionary<string, FileEntity> masterFileDictionary = null;
         private List<string> filterFilePathList = null;
-        private readonly SolidBrush selectedTextBrush = new SolidBrush(Color.White);
         private readonly SortInfo sortInfo = new SortInfo();
         private TwoWayProcess<GetThumbnailsAsyncFacade, GetThumbnailParameter, ThumbnailImageEntity> getThumbnailsProcess = null;
         private OneWayProcess<ExportFileAsyncFacade, ExportFileParameter> exportFileProcess = null;
@@ -692,6 +691,7 @@ namespace PicSum.UIComponent.Contents.FileList
             if (e.IsSelected)
             {
                 e.Graphics.FillRectangle(this.flowList.SelectedItemBrush, e.ItemRectangle);
+                e.Graphics.DrawRectangle(this.flowList.SelectedItemPen, e.ItemRectangle);
             }
 
             if (e.IsFocus)
@@ -710,7 +710,7 @@ namespace PicSum.UIComponent.Contents.FileList
             if (item.ThumbnailImage == null)
             {
                 ThumbnailUtil.DrawIcon(e.Graphics, item.Icon, this.GetIconRectangle(e));
-                e.Graphics.DrawString(item.FileName, this.Font, this.GetTextBrush(e), this.GetTextRectangle(e), this.flowList.ItemTextFormat);
+                e.Graphics.DrawString(item.FileName, this.Font, this.flowList.ItemTextBrush, this.GetTextRectangle(e), this.flowList.ItemTextFormat);
             }
             else
             {
@@ -741,7 +741,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
                 if (this.IsShowFileName)
                 {
-                    e.Graphics.DrawString(item.FileName, this.Font, this.GetTextBrush(e), this.GetTextRectangle(e), this.flowList.ItemTextFormat);
+                    e.Graphics.DrawString(item.FileName, this.Font, this.flowList.ItemTextBrush, this.GetTextRectangle(e), this.flowList.ItemTextFormat);
                 }
             }
         }
@@ -775,18 +775,6 @@ namespace PicSum.UIComponent.Contents.FileList
                                  e.ItemRectangle.Bottom - ItemTextHeight,
                                  e.ItemRectangle.Width,
                                  this.ItemTextHeight);
-        }
-
-        private SolidBrush GetTextBrush(SWF.UIComponent.FlowList.DrawItemEventArgs e)
-        {
-            if (e.IsSelected)
-            {
-                return this.selectedTextBrush;
-            }
-            else
-            {
-                return this.flowList.ItemTextBrush;
-            }
         }
 
         #endregion

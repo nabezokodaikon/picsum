@@ -244,10 +244,6 @@ namespace SWF.UIComponent.FlowList
             {
                 return _itemTextColor;
             }
-            set
-            {
-                _itemTextColor = value;
-            }
         }
 
         /// <summary>
@@ -259,10 +255,6 @@ namespace SWF.UIComponent.FlowList
             get
             {
                 return _selectedItemColor;
-            }
-            set
-            {
-                _selectedItemColor = value;
             }
         }
 
@@ -276,10 +268,6 @@ namespace SWF.UIComponent.FlowList
             {
                 return _focusItemColor;
             }
-            set
-            {
-                _focusItemColor = value;
-            }
         }
 
         /// <summary>
@@ -292,10 +280,6 @@ namespace SWF.UIComponent.FlowList
             {
                 return _mousePointItemColor;
             }
-            set
-            {
-                _mousePointItemColor = value;
-            }
         }
 
         /// <summary>
@@ -307,10 +291,6 @@ namespace SWF.UIComponent.FlowList
             get
             {
                 return _rectangleSelectionColor;
-            }
-            set
-            {
-                _rectangleSelectionColor = value;
             }
         }
 
@@ -383,7 +363,7 @@ namespace SWF.UIComponent.FlowList
         {
             get
             {
-                if (_itemTextBrush == null || _itemTextBrush.Color != _itemTextColor)
+                if (_itemTextBrush == null)
                 {
                     _itemTextBrush = new SolidBrush(_itemTextColor);
                 }
@@ -397,7 +377,7 @@ namespace SWF.UIComponent.FlowList
         {
             get
             {
-                if (_selectedItemBrush == null || _selectedItemBrush.Color != _selectedItemColor)
+                if (_selectedItemBrush == null)
                 {
                     _selectedItemBrush = new SolidBrush(_selectedItemColor);
                 }
@@ -407,11 +387,29 @@ namespace SWF.UIComponent.FlowList
         }
 
         [Browsable(false)]
+        public Pen SelectedItemPen
+        {
+            get
+            {
+                if (_selectedItemPen == null)
+                {
+                    _selectedItemPen = new Pen(Color.FromArgb(
+                        _selectedItemColor.A * 2, 
+                        _selectedItemColor.R, 
+                        _selectedItemColor.G, 
+                        _selectedItemColor.B));
+                }
+
+                return _selectedItemPen;
+            }
+        }
+
+        [Browsable(false)]
         public SolidBrush FocusItemBrush
         {
             get
             {
-                if (_foucusItemBrush == null || _foucusItemBrush.Color != _focusItemColor)
+                if (_foucusItemBrush == null)
                 {
                     _foucusItemBrush = new SolidBrush(_focusItemColor);
                 }
@@ -425,7 +423,7 @@ namespace SWF.UIComponent.FlowList
         {
             get
             {
-                if (_mousePointItemBrush == null || _mousePointItemBrush.Color != _mousePointItemColor)
+                if (_mousePointItemBrush == null)
                 {
                     _mousePointItemBrush = new SolidBrush(_mousePointItemColor);
                 }

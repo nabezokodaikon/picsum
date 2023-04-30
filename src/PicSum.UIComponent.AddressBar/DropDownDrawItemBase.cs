@@ -75,10 +75,6 @@ namespace PicSum.UIComponent.AddressBar
         {
             _dropDownList = new DropDownList();
             _dropDownList.BackColor = base.Palette.InnerColor;
-            _dropDownList.SelectedItemColor = base.Palette.MousePointColor;
-            _dropDownList.MousePointItemColor = Color.Empty;
-            _dropDownList.FocusItemColor = Color.Empty;
-            _dropDownList.ItemTextColor = base.Palette.TextColor;
             _dropDownList.ItemHeight = DROPDOWN_ITEM_HEIGHT;
             _dropDownList.ItemTextTrimming = StringTrimming.EllipsisCharacter;
             _dropDownList.ItemTextAlignment = StringAlignment.Near;

@@ -69,11 +69,35 @@ namespace SWF.UIComponent.FlowList
 
         #region 描画オブジェクト
 
-        private Color _itemTextColor = Color.Empty;
-        private Color _selectedItemColor = Color.Empty;
-        private Color _focusItemColor = Color.Empty;
-        private Color _mousePointItemColor = Color.Empty;
-        private Color _rectangleSelectionColor = Color.Empty;
+        private Color _itemTextColor = Color.FromArgb(
+            SystemColors.ControlText.A, 
+            SystemColors.ControlText.R, 
+            SystemColors.ControlText.G, 
+            SystemColors.ControlText.B);
+
+        private Color _selectedItemColor = Color.FromArgb(
+            SystemColors.Highlight.A / 8, 
+            SystemColors.Highlight.R, 
+            SystemColors.Highlight.G, 
+            SystemColors.Highlight.B);
+        
+        private Color _focusItemColor = Color.FromArgb(
+            SystemColors.Highlight.A / 8,
+            SystemColors.Highlight.R, 
+            SystemColors.Highlight.G, 
+            SystemColors.Highlight.B);
+        
+        private Color _mousePointItemColor = Color.FromArgb(
+            SystemColors.Highlight.A / 8,
+            SystemColors.Highlight.R,
+            SystemColors.Highlight.G,
+            SystemColors.Highlight.B);
+        
+        private Color _rectangleSelectionColor = Color.FromArgb(
+            SystemColors.Highlight.A / 4,
+            SystemColors.Highlight.R,
+            SystemColors.Highlight.G,
+            SystemColors.Highlight.B);
 
         private StringTrimming _itemTextTrimming = StringTrimming.EllipsisCharacter;
         private StringAlignment _itemTextAlignment = StringAlignment.Center;
@@ -82,9 +106,11 @@ namespace SWF.UIComponent.FlowList
 
         private SolidBrush _itemTextBrush = null;
         private SolidBrush _selectedItemBrush = null;
+        private Pen _selectedItemPen = null;
         private SolidBrush _foucusItemBrush = null;
         private SolidBrush _mousePointItemBrush = null;
         private SolidBrush _rectangleSelectionBrush = null;
+        private Pen _rectangleSelectionPen = null;
         private StringFormat _itemTextFormat = null;
 
         #endregion
@@ -97,12 +123,29 @@ namespace SWF.UIComponent.FlowList
         {
             get
             {
-                if (_rectangleSelectionBrush == null || _rectangleSelectionBrush.Color != _rectangleSelectionColor)
+                if (_rectangleSelectionBrush == null)
                 {
                     _rectangleSelectionBrush = new SolidBrush(_rectangleSelectionColor);
                 }
 
                 return _rectangleSelectionBrush;
+            }
+        }
+
+        private Pen rectangleSelectionPen
+        {
+            get
+            {
+                if (_rectangleSelectionPen == null)
+                {
+                    _rectangleSelectionPen = new Pen(Color.FromArgb(
+                        _rectangleSelectionColor.A * 2, 
+                        _rectangleSelectionColor.R, 
+                        _rectangleSelectionColor.G, 
+                        _rectangleSelectionColor.B));
+                }
+
+                return _rectangleSelectionPen;
             }
         }
 
@@ -879,6 +922,7 @@ namespace SWF.UIComponent.FlowList
         private void drawRectangleSelection(Graphics g)
         {
             g.FillRectangle(rectangleSelectionBrush, _rectangleSelection.GetDrawRectangle(_scrollBar.Value));
+            g.DrawRectangle(rectangleSelectionPen, _rectangleSelection.GetDrawRectangle(_scrollBar.Value));
         }
 
         #endregion

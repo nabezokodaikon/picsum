@@ -64,10 +64,6 @@ namespace PicSum.UIComponent.Common
             {
                 return this.FlowList.ItemTextColor;
             }
-            set
-            {
-                this.FlowList.ItemTextColor = value;
-            }
         }
 
         /// <summary>
@@ -79,10 +75,6 @@ namespace PicSum.UIComponent.Common
             get
             {
                 return this.FlowList.SelectedItemColor;
-            }
-            set
-            {
-                this.FlowList.SelectedItemColor = value;
             }
         }
 
@@ -96,10 +88,6 @@ namespace PicSum.UIComponent.Common
             {
                 return this.FlowList.FocusItemColor;
             }
-            set
-            {
-                this.FlowList.FocusItemColor = value;
-            }
         }
 
         /// <summary>
@@ -111,26 +99,6 @@ namespace PicSum.UIComponent.Common
             get
             {
                 return this.FlowList.MousePointItemColor;
-            }
-            set
-            {
-                this.FlowList.MousePointItemColor = value;
-            }
-        }
-
-        /// <summary>
-        /// 短形選択色
-        /// </summary>
-        [Category("項目描画")]
-        public Color RectangleSelectionColor
-        {
-            get
-            {
-                return this.FlowList.RectangleSelectionColor;
-            }
-            set
-            {
-                this.FlowList.RectangleSelectionColor = value;
             }
         }
 
@@ -213,6 +181,15 @@ namespace PicSum.UIComponent.Common
             get
             {
                 return this.FlowList.SelectedItemBrush;
+            }
+        }
+
+        [Browsable(false)]
+        public Pen SelectedItemPen
+        {
+            get
+            {
+                return this.FlowList.SelectedItemPen;
             }
         }
 
