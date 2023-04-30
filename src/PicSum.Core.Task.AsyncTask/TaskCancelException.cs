@@ -1,5 +1,4 @@
 ﻿using PicSum.Core.Base.Exception;
-using System;
 
 namespace PicSum.Core.Task.AsyncTask
 {
@@ -19,8 +18,11 @@ namespace PicSum.Core.Task.AsyncTask
         /// </summary>
         /// <param name="task">タスク</param>
         public TaskCancelException(TaskInfo task)
+            : base(string.Format(
+                "タスクがキャンセルされました。タスクID: '{0}', タスク型: '{1}'",
+                task.TaskId, task.ProcessType))
         {
-            this.Task = task ?? throw new ArgumentNullException(nameof(task));
+            this.Task = task;
         }
     }
 }
