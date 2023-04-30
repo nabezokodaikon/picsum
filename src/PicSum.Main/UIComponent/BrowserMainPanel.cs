@@ -187,6 +187,7 @@ namespace PicSum.Main.UIComponent
 
         protected override void OnLoad(EventArgs e)
         {
+            this.addressBar.SetAddress(FileUtil.ROOT_DIRECTORY_PATH);
             base.OnLoad(e);
         }
 
