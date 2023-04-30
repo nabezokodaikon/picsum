@@ -1,4 +1,5 @@
 ﻿using PicSum.Core.Base.Conf;
+using PicSum.Core.Base.Exception;
 using PicSum.Core.Task.AsyncTask;
 using PicSum.Task.AsyncFacade;
 using PicSum.Task.Entity;
@@ -181,11 +182,13 @@ namespace PicSum.UIComponent.Contents.FileList
                         .Select(fileInfo => fileInfo.FilePath)
                         .ToArray();
 
-                    var selectedFilePath = FileUtil.IsImageFile(this.SelectedFilePath) ?
-                        this.SelectedFilePath : string.Empty;
+                    if (!FileUtil.IsImageFile(this.SelectedFilePath))
+                    {
+                        throw new PicSumException(string.Format("画像ファイルが選択されていません。'{0}'", this.SelectedFilePath));
+                    }
 
                     var eventArgs = new GetImageFilesEventArgs(
-                        sortImageFiles, selectedFilePath, this.Title, this.Icon);
+                        sortImageFiles, this.SelectedFilePath, this.Title, this.Icon);
                     paramter.OnGetImageFiles(eventArgs);
                 });
 
