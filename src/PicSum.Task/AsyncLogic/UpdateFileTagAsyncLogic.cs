@@ -10,9 +10,9 @@ namespace PicSum.Task.AsyncLogic
     /// タグを更新します。
     /// </summary>
     /// <remarks>タグの存在確認として使用します。</remarks>
-    internal class UpdateFileTagAsyncLogic : AsyncLogicBase
+    internal class UpdateFileTagAsyncLogic : AbstractAsyncLogic
     {
-        public UpdateFileTagAsyncLogic(AsyncFacadeBase facade) : base(facade) { }
+        public UpdateFileTagAsyncLogic(AbstractAsyncFacade facade) : base(facade) { }
 
         public bool Execute(string filePath, string tag, DateTime registrationDate)
         {

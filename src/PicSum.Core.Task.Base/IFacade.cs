@@ -1,9 +1,9 @@
 ﻿namespace PicSum.Core.Task.Base
 {
     /// <summary>
-    /// エンティティインターフェース
+    /// ファサードインターフェース
     /// </summary>
-    public interface IEntity
+    public interface IFacade
     {
 
     }

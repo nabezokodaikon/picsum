@@ -7,9 +7,9 @@ using System;
 namespace PicSum.Task.AsyncLogic
 {
     internal sealed class IncrementDirectoryViewCounterAsyncLogic
-        : AsyncLogicBase
+        : AbstractAsyncLogic
     {
-        public IncrementDirectoryViewCounterAsyncLogic(AsyncFacadeBase facade) 
+        public IncrementDirectoryViewCounterAsyncLogic(AbstractAsyncFacade facade) 
             : base(facade) { }
 
         public bool Execute(string directoryPath)

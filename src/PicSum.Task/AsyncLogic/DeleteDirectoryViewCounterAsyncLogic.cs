@@ -10,9 +10,9 @@ namespace PicSum.Task.AsyncLogic
     /// フォルダの表示回数を削除します。
     /// </summary>
     internal class DeleteDirectoryViewCounterAsyncLogic
-        : AsyncLogicBase
+        : AbstractAsyncLogic
     {
-        public DeleteDirectoryViewCounterAsyncLogic(AsyncFacadeBase facade)
+        public DeleteDirectoryViewCounterAsyncLogic(AbstractAsyncFacade facade)
             : base(facade) { }
 
         /// <summary>

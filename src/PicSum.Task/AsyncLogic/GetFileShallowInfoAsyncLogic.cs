@@ -9,9 +9,9 @@ namespace PicSum.Task.AsyncLogic
     /// <summary>
     /// ファイルの浅い情報を取得します。
     /// </summary>
-    internal class GetFileShallowInfoAsyncLogic : AsyncLogicBase
+    internal class GetFileShallowInfoAsyncLogic : AbstractAsyncLogic
     {
-        public GetFileShallowInfoAsyncLogic(AsyncFacadeBase facade) : base(facade) { }
+        public GetFileShallowInfoAsyncLogic(AbstractAsyncFacade facade) : base(facade) { }
 
         public FileShallowInfoEntity Execute(string filePath)
         {

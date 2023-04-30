@@ -9,9 +9,9 @@ namespace PicSum.Task.AsyncLogic
     /// <summary>
     /// サムネイルを削除します。
     /// </summary>
-    public class DeleteThumbnailAsyncLogic:AsyncLogicBase
+    public class DeleteThumbnailAsyncLogic:AbstractAsyncLogic
     {
-        public DeleteThumbnailAsyncLogic(AsyncFacadeBase facade) : base(facade) { }
+        public DeleteThumbnailAsyncLogic(AbstractAsyncFacade facade) : base(facade) { }
 
         public void Execute(string filePath)
         {

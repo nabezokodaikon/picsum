@@ -11,9 +11,9 @@ using System.Threading.Tasks;
 namespace PicSum.Task.AsyncLogic
 {
     internal sealed class UpdateFileMasterAsyncLogic
-        : AsyncLogicBase
+        : AbstractAsyncLogic
     {
-        public UpdateFileMasterAsyncLogic(AsyncFacadeBase facade) : base(facade) { }
+        public UpdateFileMasterAsyncLogic(AbstractAsyncFacade facade) : base(facade) { }
 
         /// <summary>
         /// 処理を実行します。

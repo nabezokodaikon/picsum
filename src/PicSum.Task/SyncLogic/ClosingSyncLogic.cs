@@ -9,7 +9,7 @@ namespace PicSum.Task.SyncLogic
     /// <summary>
     /// 終了同期ロジック
     /// </summary>
-    internal class ClosingSyncLogic : SyncLogicBase
+    internal class ClosingSyncLogic : AbstractSyncLogic
     {
         public void Execute(ClosingParameter param)
         {

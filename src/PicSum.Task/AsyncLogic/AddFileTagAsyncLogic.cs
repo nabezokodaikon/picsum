@@ -9,9 +9,9 @@ namespace PicSum.Task.AsyncLogic
     /// <summary>
     /// タグ追加ロジック
     /// </summary>
-    internal class AddFileTagAsyncLogic:AsyncLogicBase
+    internal class AddFileTagAsyncLogic:AbstractAsyncLogic
     {
-        public AddFileTagAsyncLogic(AsyncFacadeBase facade) : base(facade) { }
+        public AddFileTagAsyncLogic(AbstractAsyncFacade facade) : base(facade) { }
 
         public bool Execute(string filePath, string tag, DateTime registrationDate)
         {

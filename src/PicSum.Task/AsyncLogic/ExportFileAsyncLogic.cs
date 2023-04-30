@@ -8,9 +8,9 @@ namespace PicSum.Task.AsyncLogic
     /// <summary>
     /// 画像ファイルエクスポート非同期ロジック
     /// </summary>
-    internal class ExportFileAsyncLogic : AsyncLogicBase
+    internal class ExportFileAsyncLogic : AbstractAsyncLogic
     {
-        public ExportFileAsyncLogic(AsyncFacadeBase facade) : base(facade) { }
+        public ExportFileAsyncLogic(AbstractAsyncFacade facade) : base(facade) { }
 
         public void Execute(string exportDirectory, IList<string> srcFilePathList)
         {

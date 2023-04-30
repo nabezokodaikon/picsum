@@ -9,7 +9,7 @@ namespace PicSum.Task.SyncFacade
     /// <summary>
     /// 終了同期ファサード
     /// </summary>
-    public class ClosingSyncFacade : SyncFacadeBase
+    public class ClosingSyncFacade : AbstractSyncFacade
     {
         public void Execute(ClosingParameter param)
         {

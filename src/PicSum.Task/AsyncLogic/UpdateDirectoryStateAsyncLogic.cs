@@ -11,9 +11,9 @@ namespace PicSum.Task.AsyncLogic
     /// <summary>
     /// フォルダ状態テーブルを更新します。
     /// </summary>
-    internal class UpdateDirectoryStateAsyncLogic : AsyncLogicBase
+    internal class UpdateDirectoryStateAsyncLogic : AbstractAsyncLogic
     {
-        public UpdateDirectoryStateAsyncLogic(AsyncFacadeBase facade) : base(facade) { }
+        public UpdateDirectoryStateAsyncLogic(AbstractAsyncFacade facade) : base(facade) { }
 
         public bool Execute(DirectoryStateEntity directoryState)
         {

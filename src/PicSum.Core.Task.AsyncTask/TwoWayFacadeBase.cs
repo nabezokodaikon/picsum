@@ -8,7 +8,7 @@ namespace PicSum.Core.Task.AsyncTask
     /// </summary>
     /// <typeparam name="TCallbackEventArgs">コールバックイベント引数クラスの型</typeparam>
     public abstract class TwoWayFacadeBase<TCallbackEventArgs>
-        : AsyncFacadeBase
+        : AbstractAsyncFacade
         where TCallbackEventArgs : IEntity
     {
         /// <summary>
@@ -49,7 +49,7 @@ namespace PicSum.Core.Task.AsyncTask
     /// <typeparam name="TParameter">パラメータの型</typeparam>
     /// <typeparam name="TCallbackEventArgs">コールバックイベント引数クラスの型</typeparam>
     public abstract class TwoWayFacadeBase<TParameter, TCallbackEventArgs>
-        : AsyncFacadeBase
+        : AbstractAsyncFacade
         where TParameter : IEntity
         where TCallbackEventArgs : IEntity
     {

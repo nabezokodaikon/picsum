@@ -12,9 +12,9 @@ namespace PicSum.Task.AsyncLogic
     /// <summary>
     /// フォルダ状態を取得します。
     /// </summary>
-    internal class GetDirectoryStateAsyncLogic : AsyncLogicBase
+    internal class GetDirectoryStateAsyncLogic : AbstractAsyncLogic
     {
-        public GetDirectoryStateAsyncLogic(AsyncFacadeBase facade) : base(facade) { }
+        public GetDirectoryStateAsyncLogic(AbstractAsyncFacade facade) : base(facade) { }
 
         public DirectoryStateEntity Execute(string directoryPath)
         {

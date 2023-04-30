@@ -11,9 +11,9 @@ namespace PicSum.Task.AsyncLogic
     /// <summary>
     /// ファイルを評価値で検索します。
     /// </summary>
-    internal class GetFileByRatingAsyncLogic : AsyncLogicBase
+    internal class GetFileByRatingAsyncLogic : AbstractAsyncLogic
     {
-        public GetFileByRatingAsyncLogic(AsyncFacadeBase facade) : base(facade) { }
+        public GetFileByRatingAsyncLogic(AbstractAsyncFacade facade) : base(facade) { }
 
         public IList<FileByRatingDto> Execute(int rating)
         {

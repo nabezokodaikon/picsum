@@ -9,9 +9,9 @@ using System.Collections.Generic;
 namespace PicSum.Task.AsyncLogic
 {
     internal sealed class GetBookmarkListAsyncLogic
-        : AsyncLogicBase
+        : AbstractAsyncLogic
     {
-        public GetBookmarkListAsyncLogic(AsyncFacadeBase facade) : base(facade) { }
+        public GetBookmarkListAsyncLogic(AbstractAsyncFacade facade) : base(facade) { }
 
         public IList<BookmarkDto> Execute()
         {

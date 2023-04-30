@@ -9,9 +9,9 @@ namespace PicSum.Task.AsyncLogic
     /// <summary>
     /// フォルダの表示履歴を追加します。
     /// </summary>
-    internal class AddDirectoryViewHistoryAsyncLogic : AsyncLogicBase
+    internal class AddDirectoryViewHistoryAsyncLogic : AbstractAsyncLogic
     {
-        public AddDirectoryViewHistoryAsyncLogic(AsyncFacadeBase facade) : base(facade) { }
+        public AddDirectoryViewHistoryAsyncLogic(AbstractAsyncFacade facade) : base(facade) { }
 
         /// <summary>
         /// 処理を実行します。

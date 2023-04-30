@@ -6,7 +6,7 @@ namespace PicSum.Core.Task.AsyncTask
     /// ファサード基底クラス
     /// </summary>
     public abstract class OneWayFacadeBase 
-        : AsyncFacadeBase
+        : AbstractAsyncFacade
     {
         /// <summary>
         /// 処理を実行します。
@@ -18,7 +18,7 @@ namespace PicSum.Core.Task.AsyncTask
     /// ファサード基底クラス
     /// </summary>
     /// <typeparam name="TParameter">パラメータの型</typeparam>
-    public abstract class OneWayFacadeBase<TParameter> : AsyncFacadeBase
+    public abstract class OneWayFacadeBase<TParameter> : AbstractAsyncFacade
         where TParameter : IEntity
     {
         /// <summary>

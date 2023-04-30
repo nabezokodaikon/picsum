@@ -7,9 +7,9 @@ using System;
 namespace PicSum.Task.AsyncLogic
 {
     internal sealed class AddBookmarkAsyncLogic
-        : AsyncLogicBase
+        : AbstractAsyncLogic
     {
-        public AddBookmarkAsyncLogic(AsyncFacadeBase facade) : base(facade) { }
+        public AddBookmarkAsyncLogic(AbstractAsyncFacade facade) : base(facade) { }
 
         public bool Execute(string filePath, DateTime registrationDate)
         {

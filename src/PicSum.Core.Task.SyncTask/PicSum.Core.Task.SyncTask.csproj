@@ -63,8 +63,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="SyncFacadeBase.cs" />
-    <Compile Include="SyncLogicBase.cs" />
+    <Compile Include="AbstractSyncFacade.cs" />
+    <Compile Include="AbstractSyncLogic.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

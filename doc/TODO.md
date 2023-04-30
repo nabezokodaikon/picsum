@@ -9,6 +9,8 @@
 * PicSum.Core.Base
 * PicSum.Core.Data.DatabaseAccessor
 * PicSum.Core.Task.AsyncTask
+* PicSum.Core.Task.Base
+* PicSum.Core.Task.SyncTask
 * PicSum.UIComponent.Common
 ## エラーハンドリング
 * `DatabaseException`を作成する。

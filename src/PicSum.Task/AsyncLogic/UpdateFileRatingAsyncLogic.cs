@@ -9,9 +9,9 @@ namespace PicSum.Task.AsyncLogic
     /// <summary>
     /// ファイル指定評価T更新
     /// </summary>
-    internal class UpdateFileRatingAsyncLogic : AsyncLogicBase
+    internal class UpdateFileRatingAsyncLogic : AbstractAsyncLogic
     {
-        public UpdateFileRatingAsyncLogic(AsyncFacadeBase facade) : base(facade) { }
+        public UpdateFileRatingAsyncLogic(AbstractAsyncFacade facade) : base(facade) { }
 
         public bool Execute(string filePath, int ratingValue, DateTime registrationDate)
         {

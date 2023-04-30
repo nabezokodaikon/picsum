@@ -6,11 +6,11 @@ namespace PicSum.Core.Task.AsyncTask
     /// <summary>
     /// 非同期ロジック基底クラス
     /// </summary>
-    public abstract class AsyncLogicBase
-        : LogicBase
+    public abstract class AbstractAsyncLogic
+        : ILogic
     {
         // ファサード
-        private readonly AsyncFacadeBase facade;
+        private readonly AbstractAsyncFacade facade;
 
         /// <summary>
         /// タスクがキャンセルされていないか確認します。
@@ -25,7 +25,7 @@ namespace PicSum.Core.Task.AsyncTask
         /// コンストラクタ
         /// </summary>
         /// <param name="facade">ファサード</param>
-        public AsyncLogicBase(AsyncFacadeBase facade)
+        public AbstractAsyncLogic(AbstractAsyncFacade facade)
         {
             this.facade = facade ?? throw new ArgumentNullException("facade");
         }

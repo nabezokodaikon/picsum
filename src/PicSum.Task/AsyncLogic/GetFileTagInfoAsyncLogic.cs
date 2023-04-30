@@ -12,9 +12,9 @@ namespace PicSum.Task.AsyncLogic
     /// <summary>
     /// ファイルタグ取得非同期ロジック
     /// </summary>
-    public class GetFileTagInfoAsyncLogic : AsyncLogicBase
+    public class GetFileTagInfoAsyncLogic : AbstractAsyncLogic
     {
-        public GetFileTagInfoAsyncLogic(AsyncFacadeBase facade) : base(facade) { }
+        public GetFileTagInfoAsyncLogic(AbstractAsyncFacade facade) : base(facade) { }
 
         public ListEntity<FileTagInfoEntity> Execute(IList<string> filePathList)
         {

@@ -9,9 +9,9 @@ namespace PicSum.Task.AsyncLogic
     /// <summary>
     /// ファイルマスタに登録します。
     /// </summary>
-    internal class AddFileMasterAsyncLogic : AsyncLogicBase
+    internal class AddFileMasterAsyncLogic : AbstractAsyncLogic
     {
-        public AddFileMasterAsyncLogic(AsyncFacadeBase facade) : base(facade) { }
+        public AddFileMasterAsyncLogic(AbstractAsyncFacade facade) : base(facade) { }
 
         /// <summary>
         /// 処理を実行します。

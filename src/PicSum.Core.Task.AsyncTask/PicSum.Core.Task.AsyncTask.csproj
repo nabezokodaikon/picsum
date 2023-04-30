@@ -70,10 +70,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AsyncFacadeBase.cs" />
+    <Compile Include="AbstractAsyncFacade.cs" />
     <Compile Include="OneWayFacadeBase.cs" />
     <Compile Include="TwoWayFacadeBase.cs" />
-    <Compile Include="AsyncLogicBase.cs" />
+    <Compile Include="AbstractAsyncLogic.cs" />
     <Compile Include="OneWayProcess.cs">
       <SubType>Component</SubType>
     </Compile>

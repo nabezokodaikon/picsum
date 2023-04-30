@@ -9,9 +9,9 @@ namespace PicSum.Task.AsyncLogic
     /// <summary>
     /// タグTを、ファイルパスとタグを指定して削除します。
     /// </summary>
-    internal class DeleteFileTagAsyncLogic : AsyncLogicBase
+    internal class DeleteFileTagAsyncLogic : AbstractAsyncLogic
     {
-        public DeleteFileTagAsyncLogic(AsyncFacadeBase facade) : base(facade) { }
+        public DeleteFileTagAsyncLogic(AbstractAsyncFacade facade) : base(facade) { }
 
         public void Execute(string filePath, string tag)
         {

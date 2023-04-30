@@ -8,9 +8,9 @@ namespace PicSum.Task.AsyncLogic
     /// <summary>
     /// サブフォルダ取得非同期ロジック
     /// </summary>
-    public class GetSubDirectorysAsyncLogic : AsyncLogicBase
+    public class GetSubDirectorysAsyncLogic : AbstractAsyncLogic
     {
-        public GetSubDirectorysAsyncLogic(AsyncFacadeBase facade) : base(facade) { }
+        public GetSubDirectorysAsyncLogic(AbstractAsyncFacade facade) : base(facade) { }
 
         public IList<string> Execute(string directoryPath)
         {

@@ -10,9 +10,9 @@ namespace PicSum.Task.AsyncLogic
     /// <summary>
     /// スタートアップ非同期ロジック
     /// </summary>
-    internal class StartupAsyncLogic : AsyncLogicBase
+    internal class StartupAsyncLogic : AbstractAsyncLogic
     {
-        public StartupAsyncLogic(AsyncFacadeBase facade) : base(facade) { }
+        public StartupAsyncLogic(AbstractAsyncFacade facade) : base(facade) { }
 
         public void Execute(StartupPrameter param)
         {

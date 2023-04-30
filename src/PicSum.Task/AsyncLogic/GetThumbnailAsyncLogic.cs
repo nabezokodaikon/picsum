@@ -18,7 +18,7 @@ namespace PicSum.Task.AsyncLogic
     /// <summary>
     /// サムネイルを読込みます。
     /// </summary>
-    public class GetThumbnailAsyncLogic : AsyncLogicBase
+    public class GetThumbnailAsyncLogic : AbstractAsyncLogic
     {
         private const int CashCapacity = 1000;
         private static List<ThumbnailBufferEntity> _cashList = new List<ThumbnailBufferEntity>(CashCapacity);
@@ -33,7 +33,7 @@ namespace PicSum.Task.AsyncLogic
             _cashLock.Dispose();
         }
 
-        public GetThumbnailAsyncLogic(AsyncFacadeBase facade) : base(facade) { }
+        public GetThumbnailAsyncLogic(AbstractAsyncFacade facade) : base(facade) { }
 
         public ThumbnailBufferEntity Execute(string filePath, int thumbWidth, int thumbHeight)
         {
