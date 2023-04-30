@@ -204,6 +204,11 @@ namespace PicSum.UIComponent.AddressBar
                 throw new ArgumentNullException("filePath");
             }
 
+            if (string.IsNullOrEmpty(filePath))
+            {
+                throw new ArgumentException("アドレスバーに空白は設定できません。", nameof(filePath));
+            }
+
             getAddressInfoProcess.Cancel();
 
             SingleValueEntity<string> param = new SingleValueEntity<string>();
