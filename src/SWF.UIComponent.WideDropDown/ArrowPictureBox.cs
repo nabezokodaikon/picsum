@@ -7,86 +7,22 @@ namespace SWF.UIComponent.WideDropDown
     public sealed class ArrowPictureBox
         : PictureBox
     {
-        private SolidBrush defaultBrush = new SolidBrush(Color.White);
-        private SolidBrush enterBrush = new SolidBrush(Color.White);
-        private SolidBrush selectedBrush = new SolidBrush(Color.White);
+        private readonly SolidBrush defaultBrush = new SolidBrush(Color.White);
+
+        private readonly SolidBrush enterBrush = new SolidBrush(Color.FromArgb(
+            SystemColors.Highlight.A / 8,
+            SystemColors.Highlight.R,
+            SystemColors.Highlight.G,
+            SystemColors.Highlight.B));
+
+        private readonly SolidBrush selectedBrush = new SolidBrush(Color.FromArgb(
+            SystemColors.Highlight.A / 4,
+            SystemColors.Highlight.R,
+            SystemColors.Highlight.G,
+            SystemColors.Highlight.B));
+
         private bool isMouseEnter = false;
         private bool isSelected = false;
-
-        public Color DefaultColor
-        {
-            get
-            {
-                if (this.defaultBrush != null)
-                {
-                    return this.defaultBrush.Color;
-                }
-                else
-                {
-                    return Color.White;
-                }
-            }
-            set
-            {
-                if (value == null)
-                {
-                    throw new ArgumentNullException(nameof(value));
-                }
-
-                this.defaultBrush.Dispose();
-                this.defaultBrush = new SolidBrush(value);
-            }
-        }
-
-        public Color EnterColor
-        {
-            get
-            {
-                if (this.enterBrush != null)
-                {
-                    return this.enterBrush.Color;
-                }
-                else
-                {
-                    return Color.White;
-                }
-            }
-            set
-            {
-                if (value == null)
-                {
-                    throw new ArgumentNullException(nameof(value));
-                }
-
-                this.enterBrush.Dispose();
-                this.enterBrush = new SolidBrush(value);
-            }
-        }
-
-        public Color SelectedColor
-        {
-            get
-            {
-                if (this.selectedBrush != null)
-                {
-                    return this.selectedBrush.Color;
-                }
-                else
-                {
-                    return Color.White;
-                }
-            }
-            set
-            {
-                if (value == null)
-                {
-                    throw new ArgumentNullException(nameof(value));
-                }
-
-                this.selectedBrush.Dispose();
-                this.selectedBrush = new SolidBrush(value);
-            }
-        }
 
         public bool IsSelected
         {
@@ -135,7 +71,7 @@ namespace SWF.UIComponent.WideDropDown
                 return;
             }
 
-            var brush = this.getBrush();
+            var brush = this.GetBrush();
             pe.Graphics.FillRectangle(brush, 0, 0, this.Width, this.Height);
 
             var x = (this.Width - this.Image.Width) / 2f;
@@ -145,7 +81,7 @@ namespace SWF.UIComponent.WideDropDown
             pe.Graphics.DrawImage(this.Image, new RectangleF(x, y, w, h));
         }
 
-        private SolidBrush getBrush()
+        private SolidBrush GetBrush()
         {
             if (this.isSelected)
             {

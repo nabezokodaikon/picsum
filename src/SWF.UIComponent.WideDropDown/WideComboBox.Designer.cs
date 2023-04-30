@@ -1,4 +1,6 @@
-﻿namespace SWF.UIComponent.WideDropDown
+﻿using System.Drawing;
+
+namespace SWF.UIComponent.WideDropDown
 {
     partial class WideComboBox
     {
@@ -71,14 +73,11 @@
             // 
             this.arrowPictureBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.arrowPictureBox.DefaultColor = System.Drawing.Color.WhiteSmoke;
-            this.arrowPictureBox.EnterColor = System.Drawing.Color.LightGray;
             this.arrowPictureBox.Image = global::SWF.UIComponent.WideDropDown.Properties.Resources.SmallArrowDown;
             this.arrowPictureBox.IsSelected = false;
             this.arrowPictureBox.Location = new System.Drawing.Point(570, 3);
             this.arrowPictureBox.Margin = new System.Windows.Forms.Padding(0, 6, 4, 6);
             this.arrowPictureBox.Name = "arrowPictureBox";
-            this.arrowPictureBox.SelectedColor = System.Drawing.Color.DarkGray;
             this.arrowPictureBox.Size = new System.Drawing.Size(24, 32);
             this.arrowPictureBox.TabIndex = 2;
             this.arrowPictureBox.TabStop = false;
