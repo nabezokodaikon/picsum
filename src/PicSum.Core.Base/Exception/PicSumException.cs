@@ -8,5 +8,7 @@ namespace PicSum.Core.Base.Exception
     public class PicSumException
         : ApplicationException
     {
+        public PicSumException(string message)
+            : base(message) { }
     }
 }
