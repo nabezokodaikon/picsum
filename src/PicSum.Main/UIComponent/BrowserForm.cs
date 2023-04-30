@@ -409,18 +409,5 @@ namespace PicSum.Main.UIComponent
         }
 
         #endregion
-
-        private void InitializeComponent()
-        {
-            this.SuspendLayout();
-            // 
-            // BrowserForm
-            // 
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
-            this.ClientSize = new System.Drawing.Size(166, 47);
-            this.Name = "BrowserForm";
-            this.ResumeLayout(false);
-
-        }
     }
 }
