@@ -5,7 +5,8 @@ namespace PicSum.Data.DatabaseAccessor.Connection
     /// <summary>
     /// thumb.sqlite コネクション
     /// </summary>
-    public class ThumbnailConnection : ConnectionBase
+    public sealed class ThumbnailConnection
+        : ConnectionBase
     {
         private static string tableCreateSql =
         @"
@@ -44,7 +45,7 @@ CREATE TRIGGER t_thumbnail_update_trigger
    END;
         ";
 
-        public ThumbnailConnection(string dbFilePath) 
+        public ThumbnailConnection(string dbFilePath)
             : base(dbFilePath, tableCreateSql) { }
     }
 }

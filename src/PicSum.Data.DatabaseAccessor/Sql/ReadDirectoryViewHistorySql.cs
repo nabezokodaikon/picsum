@@ -6,7 +6,8 @@ namespace PicSum.Data.DatabaseAccessor.Sql
     /// <summary>
     /// フォルダの表示履歴を取得します。
     /// </summary>
-    public class ReadDirectoryViewHistorySql : SqlBase<DirectoryViewHistoryDto>
+    public sealed class ReadDirectoryViewHistorySql
+        : SqlBase<DirectoryViewHistoryDto>
     {
         const string SQL_TEXT =
 @"

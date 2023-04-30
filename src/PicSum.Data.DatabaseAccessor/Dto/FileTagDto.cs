@@ -1,36 +1,27 @@
-﻿using System.Data;
-using PicSum.Core.Data.DatabaseAccessor;
+﻿using PicSum.Core.Data.DatabaseAccessor;
+using System;
+using System.Data;
 
 namespace PicSum.Data.DatabaseAccessor.Dto
 {
     /// <summary>
     /// 複数ファイル情報DTO
     /// </summary>
-    public class FileTagDto : IDto
+    public sealed class FileTagDto
+        : IDto
     {
-        private string _tag;
-        private bool _isAll;
-
-        public string Tag
-        {
-            get
-            {
-                return _tag;
-            }
-        }
-
-        public bool IsAll
-        {
-            get
-            {
-                return _isAll;
-            }
-        }
+        public string Tag { get; private set; }
+        public bool IsAll { get; private set; }
 
         public void Read(IDataReader reader)
         {
-            _tag = (string)reader["tag"];
-            _isAll = bool.Parse(reader["is_all"].ToString());
+            if (reader == null)
+            {
+                throw new ArgumentNullException(nameof(reader));
+            }
+
+            this.Tag = (string)reader["tag"];
+            this.IsAll = bool.Parse(reader["is_all"].ToString());
         }
     }
 }

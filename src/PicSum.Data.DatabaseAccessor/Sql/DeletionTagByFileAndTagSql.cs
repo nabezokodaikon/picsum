@@ -1,12 +1,14 @@
-﻿using System.Data;
-using PicSum.Core.Data.DatabaseAccessor;
+﻿using PicSum.Core.Data.DatabaseAccessor;
+using System;
+using System.Data;
 
 namespace PicSum.Data.DatabaseAccessor.Sql
 {
     /// <summary>
     /// タグTを、ファイルパスとタグを指定して削除します。
     /// </summary>
-    public class DeletionTagByFileAndTagSql : SqlBase
+    public sealed class DeletionTagByFileAndTagSql
+        : SqlBase
     {
         private const string SQL_TEXT =
 @"
@@ -21,8 +23,18 @@ DELETE FROM t_tag
         public DeletionTagByFileAndTagSql(string filePath, string tag)
             : base(SQL_TEXT)
         {
-            base.ParameterList.AddRange(new IDbDataParameter[] 
-                { SqlParameterUtil.CreateParameter("file_path", filePath), 
+            if (filePath == null)
+            {
+                throw new ArgumentNullException(nameof(filePath));
+            }
+
+            if (tag == null)
+            {
+                throw new ArgumentNullException(nameof(tag));
+            }
+
+            base.ParameterList.AddRange(new IDbDataParameter[]
+                { SqlParameterUtil.CreateParameter("file_path", filePath),
                   SqlParameterUtil.CreateParameter("tag", tag) });
         }
     }

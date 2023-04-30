@@ -7,7 +7,8 @@ namespace PicSum.Data.DatabaseAccessor.Sql
     /// <summary>
     /// 評価T更新
     /// </summary>
-    public class UpdateRatingSql : SqlBase
+    public sealed class UpdateRatingSql
+        : SqlBase
     {
         private const string SQL_TEXT =
 @"
@@ -23,9 +24,14 @@ UPDATE t_rating
         public UpdateRatingSql(string filePath, int rating, DateTime registrationDate)
             : base(SQL_TEXT)
         {
-            base.ParameterList.AddRange(new IDbDataParameter[] 
+            if (filePath == null)
+            {
+                throw new ArgumentNullException(nameof(filePath));
+            }
+
+            base.ParameterList.AddRange(new IDbDataParameter[]
                 {
-                    SqlParameterUtil.CreateParameter("file_path", filePath), 
+                    SqlParameterUtil.CreateParameter("file_path", filePath),
                     SqlParameterUtil.CreateParameter("rating", rating),
                     SqlParameterUtil.CreateParameter("registration_date", registrationDate)
                 });

@@ -1,13 +1,14 @@
-﻿using System;
+﻿using PicSum.Core.Data.DatabaseAccessor;
+using System;
 using System.Data;
-using PicSum.Core.Data.DatabaseAccessor;
 
 namespace PicSum.Data.DatabaseAccessor.Sql
 {
     /// <summary>
     /// フォルダ状態T作成
     /// </summary>
-    public class CreationDirectoryStateSql : SqlBase
+    public sealed class CreationDirectoryStateSql
+        : SqlBase
     {
         private const string SQL_TEXT =
 @"
@@ -28,6 +29,16 @@ SELECT mf.file_id
         public CreationDirectoryStateSql(string directoryPath, int sortTypeId, bool isAscending, string selectedFilePath)
             : base(SQL_TEXT)
         {
+            if (directoryPath == null)
+            {
+                throw new ArgumentNullException(nameof(directoryPath));
+            }
+
+            if (selectedFilePath == null)
+            {
+                throw new ArgumentNullException(nameof(selectedFilePath));
+            }
+
             base.ParameterList.AddRange(new IDbDataParameter[]
                 { SqlParameterUtil.CreateParameter("directory_path", directoryPath),
                   SqlParameterUtil.CreateParameter("sort_type_id", sortTypeId),
@@ -38,6 +49,11 @@ SELECT mf.file_id
         public CreationDirectoryStateSql(string directoryPath, int sortTypeId, bool isAscending)
             : base(SQL_TEXT)
         {
+            if (directoryPath == null)
+            {
+                throw new ArgumentNullException(nameof(directoryPath));
+            }
+
             base.ParameterList.AddRange(new IDbDataParameter[]
                 { SqlParameterUtil.CreateParameter("directory_path", directoryPath),
                   SqlParameterUtil.CreateParameter("sort_type_id", sortTypeId),

@@ -5,7 +5,8 @@ namespace PicSum.Data.DatabaseAccessor.Connection
     /// <summary>
     /// fileinfo.sqlite コネクション
     /// </summary>
-    public class FileInfoConnection : ConnectionBase
+    public sealed class FileInfoConnection
+        : ConnectionBase
     {
         private static readonly string tableCreateSql =
         @"

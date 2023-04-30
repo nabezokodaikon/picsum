@@ -7,7 +7,8 @@ namespace PicSum.Data.DatabaseAccessor.Sql
     /// <summary>
     /// 評価T作成
     /// </summary>
-    public class CreationRatingSql : SqlBase
+    public sealed class CreationRatingSql
+        : SqlBase
     {
         const string SQL_TEXT =
 @"
@@ -26,6 +27,11 @@ SELECT mf.file_id
         public CreationRatingSql(string filePath, int rating, DateTime registration_date)
             : base(SQL_TEXT)
         {
+            if (filePath == null)
+            {
+                throw new ArgumentNullException(nameof(filePath));
+            }
+
             base.ParameterList.AddRange(new IDbDataParameter[] {
                 SqlParameterUtil.CreateParameter("file_path", filePath),
                 SqlParameterUtil.CreateParameter("rating", rating),

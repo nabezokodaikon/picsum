@@ -6,7 +6,8 @@ namespace PicSum.Data.DatabaseAccessor.Sql
     /// <summary>
     /// 評価値を指定してファイルを読込みます。
     /// </summary>
-    public class ReadFileByRatingSql : SqlBase<FileByRatingDto>
+    public sealed class ReadFileByRatingSql
+        : SqlBase<FileByRatingDto>
     {
         const string SQL_TEXT =
 @"

@@ -1,12 +1,14 @@
 ﻿using PicSum.Core.Data.DatabaseAccessor;
 using PicSum.Data.DatabaseAccessor.Dto;
+using System;
 
 namespace PicSum.Data.DatabaseAccessor.Sql
 {
     /// <summary>
     /// フォルダを指定してフォルダ状態を取得します。
     /// </summary>
-    public class ReadDirectoryStateByDirectorySql : SqlBase<DirectoryStateDto>
+    public sealed class ReadDirectoryStateByDirectorySql
+        : SqlBase<DirectoryStateDto>
     {
         const string SQL_TEXT =
 @"
@@ -23,6 +25,11 @@ SELECT mf1.file_path AS directory_path
         public ReadDirectoryStateByDirectorySql(string directoryPath)
             : base(SQL_TEXT)
         {
+            if (directoryPath == null)
+            {
+                throw new ArgumentNullException(nameof(directoryPath));
+            }
+
             base.ParameterList.Add(SqlParameterUtil.CreateParameter("directory_path", directoryPath));
         }
     }

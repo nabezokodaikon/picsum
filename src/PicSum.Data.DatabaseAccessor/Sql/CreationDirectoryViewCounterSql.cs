@@ -1,4 +1,5 @@
 ﻿using PicSum.Core.Data.DatabaseAccessor;
+using System;
 
 namespace PicSum.Data.DatabaseAccessor.Sql
 {
@@ -20,6 +21,11 @@ SELECT mf.file_id
         public CreationDirectoryViewCounterSql(string directoryPath)
             : base(SQL_TEXT)
         {
+            if (directoryPath == null)
+            {
+                throw new ArgumentNullException(nameof(directoryPath));
+            }
+
             base.ParameterList.Add(SqlParameterUtil.CreateParameter("file_path", directoryPath));
         }
     }

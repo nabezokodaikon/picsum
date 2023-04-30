@@ -1,63 +1,37 @@
-﻿using System;
+﻿using PicSum.Core.Data.DatabaseAccessor;
+using System;
 using System.Data;
-using PicSum.Core.Data.DatabaseAccessor;
 
 namespace PicSum.Data.DatabaseAccessor.Dto
 {
     /// <summary>
     /// フォルダ状態DTO
     /// </summary>
-    public class DirectoryStateDto : IDto
+    public sealed class DirectoryStateDto
+        : IDto
     {
-        private string _directoryPath;
-        private int _sortTypeId;
-        private bool _isAscending;
-        private string _selectedFilePath;
-
-        public string DirectoryPath
-        {
-            get
-            {
-                return _directoryPath;
-            }
-        }
-
-        public int SortTypeId
-        {
-            get
-            {
-                return _sortTypeId;
-            }
-        }
-
-        public bool IsAscending
-        {
-            get
-            {
-                return _isAscending;
-            }
-        }
-
-        public string SelectedFilePath
-        {
-            get
-            {
-                return _selectedFilePath;
-            }
-        }
+        public string DirectoryPath { get; private set; }
+        public int SortTypeId { get; private set; }
+        public bool IsAscending { get; private set; }
+        public string SelectedFilePath { get; private set; }
 
         public void Read(IDataReader reader)
         {
-            _directoryPath = (string)reader["directory_path"];
-            _sortTypeId = (int)(long)reader["sort_type_id"];
-            _isAscending = (bool)reader["is_ascending"];
+            if (reader == null)
+            {
+                throw new ArgumentNullException(nameof(reader));
+            }
+
+            this.DirectoryPath = (string)reader["directory_path"];
+            this.SortTypeId = (int)(long)reader["sort_type_id"];
+            this.IsAscending = (bool)reader["is_ascending"];
             if (!reader["selected_file_path"].Equals(DBNull.Value))
             {
-                _selectedFilePath = (string)reader["selected_file_path"];
+                this.SelectedFilePath = (string)reader["selected_file_path"];
             }
             else
             {
-                _selectedFilePath = string.Empty;
+                this.SelectedFilePath = string.Empty;
             }
         }
     }

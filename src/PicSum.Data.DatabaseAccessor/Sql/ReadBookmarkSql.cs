@@ -19,6 +19,7 @@ ORDER BY tb.registration_date DESC
         public ReadBookmarkSql()
             : base(SQL_TEXT)
         {
+
         }
     }
 }

@@ -1,87 +1,37 @@
-﻿using System;
+﻿using PicSum.Core.Data.DatabaseAccessor;
+using System;
 using System.Data;
-using PicSum.Core.Data.DatabaseAccessor;
 
 namespace PicSum.Data.DatabaseAccessor.Dto
 {
     /// <summary>
     /// サムネイルDTO
     /// </summary>
-    public class ThumbnailDto : IDto
+    public sealed class ThumbnailDto
+        : IDto
     {
-        private string _filePath;
-        private byte[] _thumbnailBuffer;
-        private int _thumbnailWidth;
-        private int _thumbnailHeight;
-        private int _sourceWidth;
-        private int _sourceHeight;
-        private DateTime _fileUpdatedate;
-
-        public string FilePath
-        {
-            get
-            {
-                return _filePath;
-            }
-        }
-
-        public byte[] ThumbnailBuffer
-        {
-            get
-            {
-                return _thumbnailBuffer;
-            }
-        }
-
-        public int ThumbnailWidth
-        {
-            get
-            {
-                return _thumbnailWidth;
-            }
-        }
-
-        public int ThumbnailHeight
-        {
-            get
-            {
-                return _thumbnailHeight;
-            }
-        }
-
-        public int SourceWidth
-        {
-            get
-            {
-                return _sourceWidth;
-            }
-        }
-
-        public int SourceHeight
-        {
-            get
-            {
-                return _sourceHeight;
-            }
-        }
-
-        public DateTime FileUpdatedate
-        {
-            get
-            {
-                return _fileUpdatedate;
-            }
-        }
+        public string FilePath { get; private set; }
+        public byte[] ThumbnailBuffer { get; private set; }
+        public int ThumbnailWidth { get; private set; }
+        public int ThumbnailHeight { get; private set; }
+        public int SourceWidth { get; private set; }
+        public int SourceHeight { get; private set; }
+        public DateTime FileUpdatedate { get; private set; }
 
         public void Read(IDataReader reader)
         {
-            _filePath = (string)reader["file_path"];
-            _thumbnailBuffer = (byte[])reader["thumbnail_buffer"];
-            _thumbnailWidth = (int)(long)reader["thumbnail_width"];
-            _thumbnailHeight = (int)(long)reader["thumbnail_height"];
-            _sourceWidth = (int)(long)reader["source_width"];
-            _sourceHeight = (int)(long)reader["source_height"];
-            _fileUpdatedate = (DateTime)reader["file_update_date"];
+            if (reader == null)
+            {
+                throw new ArgumentNullException(nameof(reader));
+            }
+
+            this.FilePath = (string)reader["file_path"];
+            this.ThumbnailBuffer = (byte[])reader["thumbnail_buffer"];
+            this.ThumbnailWidth = (int)(long)reader["thumbnail_width"];
+            this.ThumbnailHeight = (int)(long)reader["thumbnail_height"];
+            this.SourceWidth = (int)(long)reader["source_width"];
+            this.SourceHeight = (int)(long)reader["source_height"];
+            this.FileUpdatedate = (DateTime)reader["file_update_date"];
         }
     }
 }

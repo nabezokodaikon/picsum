@@ -22,6 +22,11 @@ SELECT mf.file_id
         public CreationBookmarkSql(string filePath, DateTime registration_date)
             : base(SQL_TEXT)
         {
+            if (filePath == null)
+            {
+                throw new ArgumentNullException(nameof(filePath));
+            }
+
             base.ParameterList.AddRange(new IDbDataParameter[]
                 { SqlParameterUtil.CreateParameter("file_path", filePath),
                   SqlParameterUtil.CreateParameter("registration_date", registration_date)

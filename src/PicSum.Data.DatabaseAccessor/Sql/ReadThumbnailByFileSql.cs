@@ -1,12 +1,14 @@
 ﻿using PicSum.Core.Data.DatabaseAccessor;
 using PicSum.Data.DatabaseAccessor.Dto;
+using System;
 
 namespace PicSum.Data.DatabaseAccessor.Sql
 {
     /// <summary>
     /// ファイルを指定してサムネイルを読込みます。
     /// </summary>
-    public class ReadThumbnailByFileSql : SqlBase<ThumbnailDto>
+    public sealed class ReadThumbnailByFileSql
+        : SqlBase<ThumbnailDto>
     {
         private const string SQL_TEXT =
 @"
@@ -24,6 +26,11 @@ SELECT tt.file_path
         public ReadThumbnailByFileSql(string filePath)
             : base(SQL_TEXT)
         {
+            if (filePath == null)
+            {
+                throw new ArgumentNullException(nameof(filePath));
+            }
+
             base.ParameterList.Add(SqlParameterUtil.CreateParameter("file_path", filePath));
         }
     }

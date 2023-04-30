@@ -1,11 +1,13 @@
 ﻿using PicSum.Core.Data.DatabaseAccessor;
+using System;
 
 namespace PicSum.Data.DatabaseAccessor.Sql
 {
     /// <summary>
     /// フォルダ表示履歴T作成
     /// </summary>
-    public class CreationDirectoryViewHistorySql : SqlBase
+    public sealed class CreationDirectoryViewHistorySql
+        : SqlBase
     {
         private const string SQL_TEXT =
 @"
@@ -27,6 +29,11 @@ SELECT mf.file_id
         public CreationDirectoryViewHistorySql(string directoryPath)
             : base(SQL_TEXT)
         {
+            if (directoryPath == null)
+            {
+                throw new ArgumentNullException(nameof(directoryPath));
+            }
+
             base.ParameterList.Add(SqlParameterUtil.CreateParameter("directory_path", directoryPath));
         }
     }

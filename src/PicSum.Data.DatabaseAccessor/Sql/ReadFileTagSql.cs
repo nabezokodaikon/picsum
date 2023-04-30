@@ -1,13 +1,15 @@
-﻿using System.Collections.Generic;
-using PicSum.Core.Data.DatabaseAccessor;
+﻿using PicSum.Core.Data.DatabaseAccessor;
 using PicSum.Data.DatabaseAccessor.Dto;
+using System;
+using System.Collections.Generic;
 
 namespace PicSum.Data.DatabaseAccessor.Sql
 {
     /// <summary>
     /// 複数ファイルの情報を取得します。
     /// </summary>
-    public class ReadFileTagSql : SqlBase<FileTagDto>
+    public sealed class ReadFileTagSql
+        : SqlBase<FileTagDto>
     {
         private const string SQL_TEXT =
 @"
@@ -25,6 +27,11 @@ SELECT tt.tag
         public ReadFileTagSql(IList<string> filePathList)
             : base(SQL_TEXT)
         {
+            if (filePathList == null)
+            {
+                throw new ArgumentNullException(nameof(filePathList));
+            }
+
             base.ParameterList.Add(SqlParameterUtil.CreateParameter("file_count", filePathList.Count));
             base.ParameterList.AddRange(SqlParameterUtil.CreateParameter("file_path", filePathList));
         }

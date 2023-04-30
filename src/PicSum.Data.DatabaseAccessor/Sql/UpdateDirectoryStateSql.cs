@@ -1,5 +1,5 @@
-﻿using System;
-using PicSum.Core.Data.DatabaseAccessor;
+﻿using PicSum.Core.Data.DatabaseAccessor;
+using System;
 using System.Data;
 
 namespace PicSum.Data.DatabaseAccessor.Sql
@@ -7,7 +7,8 @@ namespace PicSum.Data.DatabaseAccessor.Sql
     /// <summary>
     /// フォルダ状態Tを更新します。
     /// </summary>
-    public class UpdateDirectoryStateSql : SqlBase
+    public sealed class UpdateDirectoryStateSql
+        : SqlBase
     {
         private const string SQL_TEXT =
 @"
@@ -24,6 +25,16 @@ UPDATE t_directory_state
         public UpdateDirectoryStateSql(string directoryPath, int sortTypeID, bool isAscending, string selectedFilePath)
             : base(SQL_TEXT)
         {
+            if (directoryPath == null)
+            {
+                throw new ArgumentNullException(nameof(directoryPath));
+            }
+
+            if (selectedFilePath == null)
+            {
+                throw new ArgumentNullException(nameof(selectedFilePath));
+            }
+
             base.ParameterList.AddRange(new IDbDataParameter[]
                 { SqlParameterUtil.CreateParameter("directory_path", directoryPath),
                   SqlParameterUtil.CreateParameter("sort_type_id", sortTypeID),
@@ -34,6 +45,11 @@ UPDATE t_directory_state
         public UpdateDirectoryStateSql(string directoryPath, int sortTypeID, bool isAscending)
             : base(SQL_TEXT)
         {
+            if (directoryPath == null)
+            {
+                throw new ArgumentNullException(nameof(directoryPath));
+            }
+
             base.ParameterList.AddRange(new IDbDataParameter[]
                 { SqlParameterUtil.CreateParameter("directory_path", directoryPath),
                   SqlParameterUtil.CreateParameter("sort_type_id", sortTypeID),

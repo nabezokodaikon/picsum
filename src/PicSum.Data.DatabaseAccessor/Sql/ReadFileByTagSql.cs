@@ -1,12 +1,14 @@
 ﻿using PicSum.Core.Data.DatabaseAccessor;
 using PicSum.Data.DatabaseAccessor.Dto;
+using System;
 
 namespace PicSum.Data.DatabaseAccessor.Sql
 {
     /// <summary>
     /// タグを指定してファイルを読込みます。
     /// </summary>
-    public class ReadFileByTagSql : SqlBase<FileByTagDto>
+    public sealed class ReadFileByTagSql
+        : SqlBase<FileByTagDto>
     {
         private const string SQL_TEXT =
 @"
@@ -23,6 +25,11 @@ SELECT mf.file_path
         public ReadFileByTagSql(string tag)
             : base(SQL_TEXT)
         {
+            if (tag == null)
+            {
+                throw new ArgumentNullException(nameof(tag));
+            }
+
             base.ParameterList.Add(SqlParameterUtil.CreateParameter("tag", tag));
         }
     }

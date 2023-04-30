@@ -6,7 +6,8 @@ namespace PicSum.Data.DatabaseAccessor.Sql
     /// <summary>
     /// 全てのタグを読込みます。
     /// </summary>
-    public class ReadAllTagSql : SqlBase<TagInfoDto>
+    public sealed class ReadAllTagSql
+        : SqlBase<TagInfoDto>
     {
         const string SQL_TEXT =
 @"
@@ -17,6 +18,10 @@ SELECT mf.file_path
          ON tt.file_id = mf.file_id
 ";
 
-        public ReadAllTagSql() : base(SQL_TEXT) { }
+        public ReadAllTagSql()
+            : base(SQL_TEXT)
+        {
+
+        }
     }
 }

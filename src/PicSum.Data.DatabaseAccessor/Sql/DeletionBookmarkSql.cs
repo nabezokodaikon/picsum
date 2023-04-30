@@ -1,4 +1,5 @@
 ﻿using PicSum.Core.Data.DatabaseAccessor;
+using System;
 
 namespace PicSum.Data.DatabaseAccessor.Sql
 {
@@ -17,6 +18,11 @@ DELETE FROM t_bookmark
         public DeletionBookmarkSql(string filePath)
             : base(SQL_TEXT)
         {
+            if (filePath == null)
+            {
+                throw new ArgumentNullException(nameof(filePath));
+            }
+
             base.ParameterList.Add(SqlParameterUtil.CreateParameter("file_path", filePath));
         }
     }

@@ -1,26 +1,19 @@
-﻿using System.Data;
-using PicSum.Core.Data.DatabaseAccessor;
+﻿using PicSum.Core.Data.DatabaseAccessor;
+using System.Data;
 
 namespace PicSum.Data.DatabaseAccessor.Dto
 {
     /// <summary>
     /// 単一値DTO
     /// </summary>
-    public class SingleValueDto<T> : IDto
+    public sealed class SingleValueDto<T> 
+        : IDto
     {
-        private T _value;
-
-        public T Value
-        {
-            get
-            {
-                return _value;
-            }
-        }
+        public T Value { get; private set; }
 
         public void Read(IDataReader reader)
         {
-            _value = (T)reader[0];
+            this.Value = (T)reader[0];
         }
     }
 }
