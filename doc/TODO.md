@@ -13,6 +13,7 @@
 * `PicSum.Core.Task.SyncTask`
 * `PicSum.Data.DatabaseAccessor`
 * `PicSum.UIComponent.Common`
+* `PicSum.Main`
 ## エラーハンドリング
 * `DatabaseException`を作成する。
 * 画像ファイルへのアクセスを、`ImageUtil`に集約する。

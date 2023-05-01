@@ -1,5 +1,4 @@
 ﻿using NLog;
-using PicSum.Core.Data.DatabaseAccessor;
 using PicSum.Main.Mng;
 using PicSum.Main.UIComponent;
 using PicSum.Task.AsyncFacade;
@@ -9,17 +8,17 @@ using System;
 using System.Runtime.Remoting;
 using System.Runtime.Remoting.Channels;
 using System.Runtime.Remoting.Channels.Ipc;
-using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 
 namespace PicSum.Main
 {
-    class Program : MarshalByRefObject
+    internal sealed class Program
+        : MarshalByRefObject
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        private static DummyForm _dummyForm = null;
+        private static DummyForm dummyForm = null;
 
         /// <summary>
         /// アプリケーションのメイン エントリ ポイントです。
@@ -27,7 +26,7 @@ namespace PicSum.Main
         [STAThread]
         static void Main()
         {
-            using (Mutex mutex = new Mutex(false, Application.ProductName))
+            using (var mutex = new Mutex(false, Application.ProductName))
             {
                 if (mutex.WaitOne(0, false))
                 {
@@ -45,10 +44,10 @@ namespace PicSum.Main
                     Application.EnableVisualStyles();
                     Application.SetCompatibleTextRenderingDefault(false);
 
-                    using (ComponentManager component = new ComponentManager())
+                    using (var component = new ComponentManager())
                     {
-                        _dummyForm = new DummyForm();
-                        Application.Run(_dummyForm);
+                        Program.dummyForm = new DummyForm();
+                        Application.Run(Program.dummyForm);
                     }
 
                     FileIconCash.DisposeStaticResouces();
@@ -71,13 +70,13 @@ namespace PicSum.Main
 
         public void ActivateBrowser()
         {
-            if (_dummyForm != null && _dummyForm.IsHandleCreated)
+            if (Program.dummyForm != null && Program.dummyForm.IsHandleCreated)
             {
-                _dummyForm.Invoke((Action)(() =>
+                Program.dummyForm.Invoke((Action)(() =>
                 {
-                    if (_dummyForm != null && _dummyForm.IsHandleCreated)
+                    if (Program.dummyForm != null && Program.dummyForm.IsHandleCreated)
                     {
-                        _dummyForm.ActivateBrowser();
+                        Program.dummyForm.ActivateBrowser();
                     }
                 }));
             }

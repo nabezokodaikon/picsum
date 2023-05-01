@@ -1,35 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using PicSum.UIComponent.Contents;
-using SWF.UIComponent.TabOperation;
+﻿using SWF.UIComponent.TabOperation;
+using System;
 
 namespace PicSum.Main.UIComponent
 {
     /// <summary>
     /// ブラウザコンテンツ表示イベントクラス
     /// </summary>
-    public class BrowserContentsOpenEventArgs : EventArgs
+    public sealed class BrowserContentsOpenEventArgs
+        : EventArgs
     {
-        private IContentsParameter _contentsParameter;
-
-        public IContentsParameter ContentsParameter
-        {
-            get
-            {
-                return _contentsParameter;
-            }
-        }
+        public IContentsParameter ContentsParameter { get; private set; }
 
         public BrowserContentsOpenEventArgs(IContentsParameter contentsParameter)
         {
             if (contentsParameter == null)
             {
-                throw new ArgumentNullException("contentsParameter");
+                throw new ArgumentNullException(nameof(contentsParameter));
             }
 
-            _contentsParameter = contentsParameter;
+            this.ContentsParameter = contentsParameter;
         }
     }
 }

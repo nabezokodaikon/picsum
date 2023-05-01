@@ -84,8 +84,8 @@
             this.contentsContainer.Name = "contentsContainer";
             this.contentsContainer.Size = new System.Drawing.Size(746, 402);
             this.contentsContainer.TabIndex = 1;
-            this.contentsContainer.DragDrop += new System.Windows.Forms.DragEventHandler(this.contentsContainer_DragDrop);
-            this.contentsContainer.DragEnter += new System.Windows.Forms.DragEventHandler(this.contentsContainer_DragEnter);
+            this.contentsContainer.DragDrop += new System.Windows.Forms.DragEventHandler(this.ContentsContainer_DragDrop);
+            this.contentsContainer.DragEnter += new System.Windows.Forms.DragEventHandler(this.ContentsContainer_DragEnter);
             // 
             // infoPanel
             // 
@@ -95,7 +95,7 @@
             this.infoPanel.Name = "infoPanel";
             this.infoPanel.Size = new System.Drawing.Size(96, 100);
             this.infoPanel.TabIndex = 0;
-            this.infoPanel.SelectedTag += new System.EventHandler<PicSum.UIComponent.InfoPanel.SelectedTagEventArgs>(this.infoPanel_SelectedTag);
+            this.infoPanel.SelectedTag += new System.EventHandler<PicSum.UIComponent.InfoPanel.SelectedTagEventArgs>(this.InfoPanel_SelectedTag);
             // 
             // tabSwitch
             // 
@@ -108,13 +108,13 @@
             this.tabSwitch.TabIndex = 4;
             this.tabSwitch.TabsRightOffset = 144;
             this.tabSwitch.Text = "tabSwitch1";
-            this.tabSwitch.ActiveTabChanged += new System.EventHandler(this.tabSwitch_ActiveTabChanged);
-            this.tabSwitch.TabCloseButtonClick += new System.EventHandler<SWF.UIComponent.TabOperation.TabEventArgs>(this.tabSwitch_TabCloseButtonClick);
-            this.tabSwitch.TabDropouted += new System.EventHandler<SWF.UIComponent.TabOperation.TabDropoutedEventArgs>(this.tabSwitch_TabDropouted);
-            this.tabSwitch.BackgroundMouseDoubleLeftClick += new System.EventHandler(this.tabSwitch_BackgroundMouseDoubleLeftClick);
-            this.tabSwitch.TabAreaDragOver += new System.EventHandler<System.Windows.Forms.DragEventArgs>(this.tabSwitch_TabAreaDragOver);
-            this.tabSwitch.TabAreaDragDrop += new System.EventHandler<SWF.UIComponent.TabOperation.TabAreaDragEventArgs>(this.tabSwitch_TabAreaDragDrop);
-            this.tabSwitch.AddTabButtonMouseClick += new System.EventHandler<System.Windows.Forms.MouseEventArgs>(this.tabSwitch_AddTabButtonMouseClick);
+            this.tabSwitch.ActiveTabChanged += new System.EventHandler(this.TabSwitch_ActiveTabChanged);
+            this.tabSwitch.TabCloseButtonClick += new System.EventHandler<SWF.UIComponent.TabOperation.TabEventArgs>(this.TabSwitch_TabCloseButtonClick);
+            this.tabSwitch.TabDropouted += new System.EventHandler<SWF.UIComponent.TabOperation.TabDropoutedEventArgs>(this.TabSwitch_TabDropouted);
+            this.tabSwitch.BackgroundMouseDoubleLeftClick += new System.EventHandler(this.TabSwitch_BackgroundMouseDoubleLeftClick);
+            this.tabSwitch.TabAreaDragOver += new System.EventHandler<System.Windows.Forms.DragEventArgs>(this.TabSwitch_TabAreaDragOver);
+            this.tabSwitch.TabAreaDragDrop += new System.EventHandler<SWF.UIComponent.TabOperation.TabAreaDragEventArgs>(this.TabSwitch_TabAreaDragDrop);
+            this.tabSwitch.AddTabButtonMouseClick += new System.EventHandler<System.Windows.Forms.MouseEventArgs>(this.TabSwitch_AddTabButtonMouseClick);
             // 
             // toolPanel
             // 
@@ -152,7 +152,7 @@
             this.searchBookmarkToolButton.Size = new System.Drawing.Size(32, 28);
             this.searchBookmarkToolButton.TabIndex = 11;
             this.searchBookmarkToolButton.UseVisualStyleBackColor = true;
-            this.searchBookmarkToolButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.searchBookmarkToolButton_MouseClick);
+            this.searchBookmarkToolButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.SearchBookmarkToolButton_MouseClick);
             // 
             // reloadToolButton
             // 
@@ -166,7 +166,7 @@
             this.reloadToolButton.Size = new System.Drawing.Size(32, 28);
             this.reloadToolButton.TabIndex = 10;
             this.reloadToolButton.UseVisualStyleBackColor = true;
-            this.reloadToolButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.reloadToolButton_MouseClick);
+            this.reloadToolButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.ReloadToolButton_MouseClick);
             // 
             // tagDropToolButton
             // 
@@ -184,8 +184,8 @@
             this.tagDropToolButton.Size = new System.Drawing.Size(32, 28);
             this.tagDropToolButton.TabIndex = 9;
             this.tagDropToolButton.UseVisualStyleBackColor = true;
-            this.tagDropToolButton.ItemMouseClick += new System.EventHandler<SWF.UIComponent.WideDropDown.ItemMouseClickEventArgs>(this.tagDropToolButton_ItemMouseClick);
-            this.tagDropToolButton.DropDownOpening += new System.EventHandler<SWF.UIComponent.WideDropDown.DropDownOpeningEventArgs>(this.tagDropToolButton_DropDownOpening);
+            this.tagDropToolButton.ItemMouseClick += new System.EventHandler<SWF.UIComponent.WideDropDown.ItemMouseClickEventArgs>(this.TagDropToolButton_ItemMouseClick);
+            this.tagDropToolButton.DropDownOpening += new System.EventHandler<SWF.UIComponent.WideDropDown.DropDownOpeningEventArgs>(this.TagDropToolButton_DropDownOpening);
             // 
             // homeToolButton
             // 
@@ -199,7 +199,7 @@
             this.homeToolButton.Size = new System.Drawing.Size(32, 28);
             this.homeToolButton.TabIndex = 6;
             this.homeToolButton.UseVisualStyleBackColor = true;
-            this.homeToolButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.homeToolButton_MouseClick);
+            this.homeToolButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.HomeToolButton_MouseClick);
             // 
             // nextContentsHistoryButton
             // 
@@ -215,7 +215,7 @@
             this.nextContentsHistoryButton.Size = new System.Drawing.Size(32, 28);
             this.nextContentsHistoryButton.TabIndex = 5;
             this.nextContentsHistoryButton.UseVisualStyleBackColor = true;
-            this.nextContentsHistoryButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.nextContentsHistoryButton_MouseClick);
+            this.nextContentsHistoryButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.NextContentsHistoryButton_MouseClick);
             // 
             // searchRatingToolButton
             // 
@@ -230,7 +230,7 @@
             this.searchRatingToolButton.Size = new System.Drawing.Size(32, 28);
             this.searchRatingToolButton.TabIndex = 8;
             this.searchRatingToolButton.UseVisualStyleBackColor = true;
-            this.searchRatingToolButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.searchRatingToolButton_MouseClick);
+            this.searchRatingToolButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.SearchRatingToolButton_MouseClick);
             // 
             // previewContentsHistoryButton
             // 
@@ -246,7 +246,7 @@
             this.previewContentsHistoryButton.Size = new System.Drawing.Size(32, 28);
             this.previewContentsHistoryButton.TabIndex = 0;
             this.previewContentsHistoryButton.UseVisualStyleBackColor = true;
-            this.previewContentsHistoryButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.previewContentsHistoryButton_MouseClick);
+            this.previewContentsHistoryButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.PreviewContentsHistoryButton_MouseClick);
             // 
             // showInfoToolButton
             // 
@@ -262,7 +262,7 @@
             this.showInfoToolButton.Size = new System.Drawing.Size(32, 28);
             this.showInfoToolButton.TabIndex = 5;
             this.showInfoToolButton.UseVisualStyleBackColor = true;
-            this.showInfoToolButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.showInfoToolButton_MouseClick);
+            this.showInfoToolButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.ShowInfoToolButton_MouseClick);
             // 
             // addressBar
             // 
@@ -278,7 +278,7 @@
             this.addressBar.TextAlignment = System.Drawing.StringAlignment.Center;
             this.addressBar.TextLineAlignment = System.Drawing.StringAlignment.Center;
             this.addressBar.TextTrimming = System.Drawing.StringTrimming.EllipsisCharacter;
-            this.addressBar.SelectedDirectory += new System.EventHandler<PicSum.UIComponent.AddressBar.SelectedDirectoryEventArgs>(this.addressBar_SelectedDirectory);
+            this.addressBar.SelectedDirectory += new System.EventHandler<PicSum.UIComponent.AddressBar.SelectedDirectoryEventArgs>(this.AddressBar_SelectedDirectory);
             // 
             // BrowserMainPanel
             // 

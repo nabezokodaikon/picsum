@@ -1,24 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using PicSum.Core.Task.AsyncTask;
 using PicSum.Main.Mng;
-using SWF.UIComponent.Common;
-using PicSum.Core.Task.AsyncTask;
-using System.Windows.Forms;
-using System.Drawing;
 using SWF.Common;
+using SWF.UIComponent.Common;
+using System;
 
 namespace PicSum.Main.UIComponent
 {
     /// <summary>
     /// ダミーフォーム
     /// </summary>
-    class DummyForm : HideForm
+    internal sealed class DummyForm : HideForm
     {
         #region インスタンス変数
 
-        private BrowserManager _browserManager = new BrowserManager();
+        private BrowserManager browserManager = new BrowserManager();
 
         #endregion
 
@@ -26,7 +21,7 @@ namespace PicSum.Main.UIComponent
 
         public DummyForm()
         {
-            initializeComponent();
+            InitializeComponent();
         }
 
         #endregion
@@ -35,7 +30,7 @@ namespace PicSum.Main.UIComponent
 
         public void ActivateBrowser()
         {
-            BrowserForm browser = _browserManager.GetActiveBrowser();
+            var browser = this.browserManager.GetActiveBrowser();
             browser.Activate();
         }
 
@@ -43,10 +38,10 @@ namespace PicSum.Main.UIComponent
 
         #region プライベートメソッド
 
-        private void initializeComponent()
+        private void InitializeComponent()
         {
-            TaskManager.TaskStateChanged += new EventHandler<TaskStateChangedEventArgs>(TaskManager_TaskStateChanged);
-            _browserManager.BrowserNothing += new EventHandler(_browserManager_BrowserNothing);
+            TaskManager.TaskStateChanged += new EventHandler<TaskStateChangedEventArgs>(this.TaskManager_TaskStateChanged);
+            this.browserManager.BrowserNothing += new EventHandler(this.BrowserManager_BrowserNothing);
         }
 
         #endregion
@@ -65,7 +60,7 @@ namespace PicSum.Main.UIComponent
 
         #region ブラウザ管理クラスイベント
 
-        private void _browserManager_BrowserNothing(object sender, EventArgs e)
+        private void BrowserManager_BrowserNothing(object sender, EventArgs e)
         {
             this.Close();
         }
@@ -76,7 +71,7 @@ namespace PicSum.Main.UIComponent
 
         protected override void OnLoad(EventArgs e)
         {
-            BrowserForm form = _browserManager.GetActiveBrowser();
+            var form = this.browserManager.GetActiveBrowser();
             form.Show();
 
             base.OnLoad(e);

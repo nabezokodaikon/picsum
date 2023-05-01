@@ -1,42 +1,24 @@
-﻿using System;
-using System.ComponentModel;
-using System.Drawing;
-using System.IO;
-using System.Runtime.InteropServices;
-using System.Windows.Forms;
-using PicSum.Core.Task.AsyncTask;
+﻿using PicSum.Core.Task.AsyncTask;
 using PicSum.Main.Conf;
-using PicSum.Main.Properties;
 using PicSum.Task.AsyncFacade;
 using PicSum.Task.Entity;
 using PicSum.Task.Paramter;
 using PicSum.UIComponent.Contents;
 using SWF.UIComponent.Form;
 using SWF.UIComponent.TabOperation;
+using System;
+using System.ComponentModel;
+using System.Drawing;
+using System.IO;
+using System.Windows.Forms;
 
 namespace PicSum.Main.UIComponent
 {
-    public class BrowserForm : GrassForm
+    public sealed class BrowserForm : GrassForm
     {
-        #region 定数・列挙
-
-        #endregion
-
         #region クラスメンバ
 
-        private static TwoWayProcess<StartupAsyncFacade, StartupPrameter, DefaultEntity> _startupProcess = null;
-
-        private static TwoWayProcess<StartupAsyncFacade, StartupPrameter, DefaultEntity> startupProcess
-        {
-            get
-            {
-                return _startupProcess;
-            }
-            set
-            {
-                _startupProcess = value;
-            }
-        }
+        private static TwoWayProcess<StartupAsyncFacade, StartupPrameter, DefaultEntity> startupProcess = null;
 
         #endregion
 
@@ -49,30 +31,26 @@ namespace PicSum.Main.UIComponent
 
         #region インスタンス変数
 
-        private IContainer _components = null;
-        private BrowserMainPanel _browserMainPanel = null;
+        private IContainer components = null;
+        private BrowserMainPanel browserMainPanel = null;
         private bool isKeyDown = false;
 
         #endregion
 
-        #region パブリックプロパティ
+        #region プライベートプロパティ
 
-        private BrowserMainPanel browserMainPanel
+        private BrowserMainPanel BrowserMainPanel
         {
             get
             {
-                if (_browserMainPanel == null)
+                if (this.browserMainPanel == null)
                 {
-                    createBrowserMainPanel();
+                    this.CreateBrowserMainPanel();
                 }
 
-                return _browserMainPanel;
+                return this.browserMainPanel;
             }
         }
-
-        #endregion
-
-        #region プライベートプロパティ
 
         #endregion
 
@@ -80,7 +58,7 @@ namespace PicSum.Main.UIComponent
 
         public BrowserForm()
         {
-            initializeComponent();
+            this.InitializeComponent();
         }
 
         #endregion
@@ -91,10 +69,10 @@ namespace PicSum.Main.UIComponent
         {
             if (contents == null)
             {
-                throw new ArgumentNullException("contents");
+                throw new ArgumentNullException(nameof(contents));
             }
 
-            browserMainPanel.AddContentsEventHandler(contents);
+            this.BrowserMainPanel.AddContentsEventHandler(contents);
         }
 
         public void AddTab(TabInfo tab)
@@ -104,29 +82,29 @@ namespace PicSum.Main.UIComponent
                 throw new ArgumentNullException("tab");
             }
 
-            browserMainPanel.AddTab(tab);
+            this.BrowserMainPanel.AddTab(tab);
         }
 
         public void AddTab(IContentsParameter param)
         {
             if (param == null)
             {
-                throw new ArgumentNullException("param");
+                throw new ArgumentNullException(nameof(param));
             }
 
-            browserMainPanel.AddTab(param);
+            this.BrowserMainPanel.AddTab(param);
         }
 
         public void AddFavoriteDirectoryListTab()
         {
-            browserMainPanel.AddFavoriteDirectoryListTab();
+            this.BrowserMainPanel.AddFavoriteDirectoryListTab();
         }
 
         public void RemoveTabOrWindow()
         {
-            if (browserMainPanel.TabCount > 1)
+            if (this.BrowserMainPanel.TabCount > 1)
             {
-                browserMainPanel.RemoveActiveTab();
+                this.BrowserMainPanel.RemoveActiveTab();
             }
             else
             {
@@ -141,15 +119,15 @@ namespace PicSum.Main.UIComponent
 
         protected override void OnHandleCreated(EventArgs e)
         {
-            if (startupProcess == null)
+            if (BrowserForm.startupProcess == null)
             {
-                if (_components == null)
+                if (this.components == null)
                 {
-                    _components = new Container();
+                    this.components = new Container();
                 }
 
-                startupProcess = TaskManager.CreateTwoWayProcess<StartupAsyncFacade, StartupPrameter, DefaultEntity>(_components);
-                startupProcess.Callback += new AsyncTaskCallbackEventHandler<DefaultEntity>(startupProcess_Callback);
+                BrowserForm.startupProcess = TaskManager.CreateTwoWayProcess<StartupAsyncFacade, StartupPrameter, DefaultEntity>(this.components);
+                BrowserForm.startupProcess.Callback += new AsyncTaskCallbackEventHandler<DefaultEntity>(StartupProcess_Callback);
 
                 var dbDir = Path.Combine(Directory.GetParent(Application.ExecutablePath).FullName, "db");
                 if (!Directory.Exists(dbDir))
@@ -157,11 +135,11 @@ namespace PicSum.Main.UIComponent
                     Directory.CreateDirectory(dbDir);
                 }
 
-                StartupPrameter param = new StartupPrameter();
+                var param = new StartupPrameter();
                 param.FileInfoDBFilePath = Path.Combine(dbDir, @"fileinfo.sqlite");
                 param.ThumbnailDBFilePath = Path.Combine(dbDir, @"thumbnail.sqlite");
 
-                startupProcess.Execute(this, param);
+                BrowserForm.startupProcess.Execute(this, param);
             }
 
             base.OnHandleCreated(e);
@@ -188,9 +166,9 @@ namespace PicSum.Main.UIComponent
 
         protected override void Dispose(bool disposing)
         {
-            if (disposing && (_components != null))
+            if (disposing && (components != null))
             {
-                _components.Dispose();
+                this.components.Dispose();
             }
 
             base.Dispose(disposing);
@@ -200,8 +178,8 @@ namespace PicSum.Main.UIComponent
         {
             this.SuspendLayout();
 
-            setProperty();
-            setBrowserMainPanelProperty(_browserMainPanel);
+            this.SetProperty();
+            this.SetBrowserMainPanelProperty(this.browserMainPanel);
 
             this.ResetGrass();
             this.SetGrass();
@@ -209,25 +187,9 @@ namespace PicSum.Main.UIComponent
             this.ResumeLayout();
         }
 
-        protected virtual void OnTabDropouted(TabDropoutedEventArgs e)
-        {
-            if (TabDropouted != null)
-            {
-                TabDropouted(this, e);
-            }
-        }
-
-        protected virtual void OnNewWindowContentsOpen(BrowserContentsOpenEventArgs e)
-        {
-            if (NewWindowContentsOpen != null)
-            {
-                NewWindowContentsOpen(this, e);
-            }
-        }
-
         protected override void OnKeyDown(KeyEventArgs e)
         {
-            if (this.isKeyDown) 
+            if (this.isKeyDown)
             {
                 return;
             }
@@ -284,7 +246,7 @@ namespace PicSum.Main.UIComponent
 
         #region プライベートメソッド
 
-        private void initializeComponent()
+        private void InitializeComponent()
         {
             this.SuspendLayout();
 
@@ -296,7 +258,7 @@ namespace PicSum.Main.UIComponent
             this.TopOffset = 41;
             this.KeyPreview = true;
 
-            setProperty();
+            this.SetProperty();
 
             this.Location = BrowserConfig.WindowLocaion;
             this.Size = BrowserConfig.WindowSize;
@@ -306,33 +268,33 @@ namespace PicSum.Main.UIComponent
             this.ResumeLayout();
         }
 
-        private void createBrowserMainPanel()
+        private void CreateBrowserMainPanel()
         {
-            if (_browserMainPanel != null)
+            if (this.browserMainPanel != null)
             {
                 throw new Exception("メインコントロールは既に存在しています。");
             }
 
-            waitInit();
+            this.WaitInit();
 
-            BrowserMainPanel browserMainPanel = new BrowserMainPanel();
+            var browserMainPanel = new BrowserMainPanel();
 
-            setBrowserMainPanelProperty(browserMainPanel);
+            SetBrowserMainPanelProperty(browserMainPanel);
 
-            browserMainPanel.Close += new EventHandler(browserMainPanel_Close);
-            browserMainPanel.BackgroundMouseDoubleLeftClick += new EventHandler(browserMainPanel_BackgroundMouseDoubleLeftClick);
-            browserMainPanel.NewWindowContentsOpen += new EventHandler<BrowserContentsOpenEventArgs>(browserMainPanel_NewWindowContentsOpen);
-            browserMainPanel.TabDropouted += new EventHandler<TabDropoutedEventArgs>(browserMainPanel_TabDropouted);
+            browserMainPanel.Close += new EventHandler(BrowserMainPanel_Close);
+            browserMainPanel.BackgroundMouseDoubleLeftClick += new EventHandler(BrowserMainPanel_BackgroundMouseDoubleLeftClick);
+            browserMainPanel.NewWindowContentsOpen += new EventHandler<BrowserContentsOpenEventArgs>(BrowserMainPanel_NewWindowContentsOpen);
+            browserMainPanel.TabDropouted += new EventHandler<TabDropoutedEventArgs>(BrowserMainPanel_TabDropouted);
 
             this.SuspendLayout();
             this.Controls.Add(browserMainPanel);
             this.SetControlRegion();
             this.ResumeLayout();
 
-            _browserMainPanel = browserMainPanel;
+            this.browserMainPanel = browserMainPanel;
         }
 
-        private void setProperty()
+        private void SetProperty()
         {
             if (this.IsGrassEnabled)
             {
@@ -344,29 +306,29 @@ namespace PicSum.Main.UIComponent
             }
         }
 
-        private void setBrowserMainPanelProperty(BrowserMainPanel browserMainPanel)
+        private void SetBrowserMainPanelProperty(BrowserMainPanel browserMainPanel)
         {
             if (this.IsGrassEnabled)
             {
-                int x = this.Padding.Left;
-                int y = this.Padding.Top;
-                int w = this.Width - this.Padding.Left - this.Padding.Right;
-                int h = this.Height - this.Padding.Top - this.Padding.Bottom;
+                var x = this.Padding.Left;
+                var y = this.Padding.Top;
+                var w = this.Width - this.Padding.Left - this.Padding.Right;
+                var h = this.Height - this.Padding.Top - this.Padding.Bottom;
                 browserMainPanel.SetBounds(x, y, w, h, BoundsSpecified.All);
             }
             else
             {
-                int x = this.Padding.Left;
-                int y = this.Padding.Top;
-                int w = this.ClientRectangle.Width - this.Padding.Left - this.Padding.Right;
-                int h = this.ClientRectangle.Height - this.Padding.Top - this.Padding.Bottom;
+                var x = this.Padding.Left;
+                var y = this.Padding.Top;
+                var w = this.ClientRectangle.Width - this.Padding.Left - this.Padding.Right;
+                var h = this.ClientRectangle.Height - this.Padding.Top - this.Padding.Bottom;
                 browserMainPanel.SetBounds(x, y, w, h, BoundsSpecified.All);
             }
 
             browserMainPanel.Anchor = ((AnchorStyles)(AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right));
         }
 
-        private void waitInit()
+        private void WaitInit()
         {
             // ウィンドウの初期表示が終了するまで待機します。
             while (base.IsInit)
@@ -375,37 +337,53 @@ namespace PicSum.Main.UIComponent
             }
         }
 
+        private void OnTabDropouted(TabDropoutedEventArgs e)
+        {
+            if (this.TabDropouted != null)
+            {
+                this.TabDropouted(this, e);
+            }
+        }
+
+        private void OnNewWindowContentsOpen(BrowserContentsOpenEventArgs e)
+        {
+            if (this.NewWindowContentsOpen != null)
+            {
+                this.NewWindowContentsOpen(this, e);
+            }
+        }
+
         #endregion
 
         #region プロセスコールバックイベント
 
-        private void startupProcess_Callback(object sender, DefaultEntity e)
+        private void StartupProcess_Callback(object sender, DefaultEntity e)
         {
-            createBrowserMainPanel();
+            this.CreateBrowserMainPanel();
         }
 
         #endregion
 
         #region ブラウザメインパネルイベント
 
-        private void browserMainPanel_Close(object sender, EventArgs e)
+        private void BrowserMainPanel_Close(object sender, EventArgs e)
         {
             this.Close();
         }
 
-        private void browserMainPanel_BackgroundMouseDoubleLeftClick(object sender, EventArgs e)
+        private void BrowserMainPanel_BackgroundMouseDoubleLeftClick(object sender, EventArgs e)
         {
             base.MouseLeftDoubleClickProcess();
         }
 
-        private void browserMainPanel_NewWindowContentsOpen(object sender, BrowserContentsOpenEventArgs e)
+        private void BrowserMainPanel_NewWindowContentsOpen(object sender, BrowserContentsOpenEventArgs e)
         {
-            OnNewWindowContentsOpen(e);
+            this.OnNewWindowContentsOpen(e);
         }
 
-        private void browserMainPanel_TabDropouted(object sender, TabDropoutedEventArgs e)
+        private void BrowserMainPanel_TabDropouted(object sender, TabDropoutedEventArgs e)
         {
-            OnTabDropouted(e);
+            this.OnTabDropouted(e);
         }
 
         #endregion
