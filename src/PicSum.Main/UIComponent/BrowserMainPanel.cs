@@ -110,7 +110,9 @@ namespace PicSum.Main.UIComponent
                 throw new ArgumentNullException(nameof(contents));
             }
 
-            this.addContentsEventHandler(contents);
+            contents.SelectedFileChanged += new EventHandler<SelectedFileChangeEventArgs>(this.Contents_SelectedFileChanged);
+            contents.OpenContents += new EventHandler<BrowserContentsEventArgs>(this.Contents_OpenContents);
+            contents.MouseClick += new EventHandler<MouseEventArgs>(this.Contents_MouseClick);
         }
 
         public void AddTab(TabInfo tab)
@@ -120,7 +122,7 @@ namespace PicSum.Main.UIComponent
                 throw new ArgumentNullException(nameof(tab));
             }
 
-            this.addContentsEventHandler(tab.GetContents<BrowserContents>());
+            this.AddContentsEventHandler(tab.GetContents<BrowserContents>());
 
             this.tabSwitch.AddTab(tab);
         }
@@ -132,7 +134,7 @@ namespace PicSum.Main.UIComponent
                 throw new ArgumentNullException(nameof(param));
             }
 
-            this.addContentsEventHandler(tabSwitch.AddTab<BrowserContents>(param));
+            this.AddContentsEventHandler(tabSwitch.AddTab<BrowserContents>(param));
         }
 
         public void AddFavoriteDirectoryListTab()
@@ -157,7 +159,7 @@ namespace PicSum.Main.UIComponent
                 throw new NullReferenceException("アクティブなタブが存在しません。");
             }
 
-            this.addContentsEventHandler(this.tabSwitch.SetPreviewContentsHistory<BrowserContents>());
+            this.AddContentsEventHandler(this.tabSwitch.SetPreviewContentsHistory<BrowserContents>());
             this.SetContentsHistoryButtonEnabled();
         }
 
@@ -173,7 +175,7 @@ namespace PicSum.Main.UIComponent
                 throw new NullReferenceException("アクティブなタブが存在しません。");
             }
 
-            this.addContentsEventHandler(this.tabSwitch.SetNextContentsHistory<BrowserContents>());
+            this.AddContentsEventHandler(this.tabSwitch.SetNextContentsHistory<BrowserContents>());
             this.SetContentsHistoryButtonEnabled();
         }
 
@@ -202,13 +204,6 @@ namespace PicSum.Main.UIComponent
             this.splitContainer.SplitterDistance = this.splitContainer.Width - this.splitContainer.Panel2MinSize - this.splitContainer.SplitterWidth;
         }
 
-        private void addContentsEventHandler(BrowserContents contents)
-        {
-            contents.SelectedFileChanged += new EventHandler<SelectedFileChangeEventArgs>(this.Contents_SelectedFileChanged);
-            contents.OpenContents += new EventHandler<BrowserContentsEventArgs>(this.Contents_OpenContents);
-            contents.MouseClick += new EventHandler<MouseEventArgs>(this.Contents_MouseClick);
-        }
-
         private void RemoveContentsEventHandler(BrowserContents contents)
         {
             contents.SelectedFileChanged -= new EventHandler<SelectedFileChangeEventArgs>(this.Contents_SelectedFileChanged);
@@ -234,12 +229,12 @@ namespace PicSum.Main.UIComponent
         {
             if (openType == ContentsOpenType.OverlapTab)
             {
-                this.addContentsEventHandler(tabSwitch.OverwriteTab<BrowserContents>(param));
+                this.AddContentsEventHandler(tabSwitch.OverwriteTab<BrowserContents>(param));
                 this.SetContentsHistoryButtonEnabled();
             }
             else if (openType == ContentsOpenType.AddTab)
             {
-                this.addContentsEventHandler(tabSwitch.AddTab<BrowserContents>(param));
+                this.AddContentsEventHandler(tabSwitch.AddTab<BrowserContents>(param));
             }
             else if (openType == ContentsOpenType.NewWindow)
             {
@@ -253,7 +248,7 @@ namespace PicSum.Main.UIComponent
 
         private void InsertContents(IContentsParameter param, int tabIndex)
         {
-            this.addContentsEventHandler(tabSwitch.InsertTab<BrowserContents>(tabIndex, param));
+            this.AddContentsEventHandler(tabSwitch.InsertTab<BrowserContents>(tabIndex, param));
         }
 
         private void OverlapContents(DragEntity dragData, int tabIndex)
@@ -643,7 +638,7 @@ namespace PicSum.Main.UIComponent
                 return;
             }
 
-            this.addContentsEventHandler(this.tabSwitch.CloneCurrentContents<BrowserContents>());
+            this.AddContentsEventHandler(this.tabSwitch.CloneCurrentContents<BrowserContents>());
         }
 
         private void HomeToolButton_MouseClick(object sender, MouseEventArgs e)
