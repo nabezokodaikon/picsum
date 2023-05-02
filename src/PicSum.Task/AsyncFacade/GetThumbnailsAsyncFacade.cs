@@ -72,7 +72,7 @@ namespace PicSum.Task.AsyncFacade
                     }
                 }
 
-                this.tran.Commit();
+                tran.Commit();
             }
         }
     }
