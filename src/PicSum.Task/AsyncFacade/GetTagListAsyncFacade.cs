@@ -7,14 +7,14 @@ namespace PicSum.Task.AsyncFacade
     /// <summary>
     /// タグの一覧を取得します。
     /// </summary>
-    public class GetTagListAsyncFacade
+    public sealed class GetTagListAsyncFacade
         : TwoWayFacadeBase<ListEntity<string>>
     {
         public override void Execute()
         {
-            GetTagListAsyncLogic logic = new GetTagListAsyncLogic(this);
-            ListEntity<string> result = new ListEntity<string>(logic.Execute());
-            OnCallback(result);
+            var logic = new GetTagListAsyncLogic(this);
+            var result = new ListEntity<string>(logic.Execute());
+            this.OnCallback(result);
         }
     }
 }

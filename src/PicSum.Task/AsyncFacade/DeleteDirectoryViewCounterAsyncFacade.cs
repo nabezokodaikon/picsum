@@ -7,7 +7,7 @@ using System;
 
 namespace PicSum.Task.AsyncFacade
 {
-    public class DeleteDirectoryViewCounterAsyncFacade
+    public sealed class DeleteDirectoryViewCounterAsyncFacade
         : OneWayFacadeBase<ListEntity<string>>
     {
         public override void Execute(ListEntity<string> param)

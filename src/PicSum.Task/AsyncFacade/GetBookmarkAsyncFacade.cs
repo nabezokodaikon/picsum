@@ -16,7 +16,7 @@ namespace PicSum.Task.AsyncFacade
             var infoList = new ListEntity<FileShallowInfoEntity>();
             foreach (var dto in dtoList)
             {
-                CheckCancel();
+                this.CheckCancel();
 
                 var info = getInfoLogic.Execute(dto.FilePath, dto.RegistrationDate);
                 if (info != null)
@@ -25,7 +25,7 @@ namespace PicSum.Task.AsyncFacade
                 }
             }
 
-            OnCallback(infoList);
+            this.OnCallback(infoList);
         }
     }
 }

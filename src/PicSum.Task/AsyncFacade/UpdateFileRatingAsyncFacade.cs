@@ -1,34 +1,33 @@
-﻿using System;
-using PicSum.Core.Data.DatabaseAccessor;
+﻿using PicSum.Core.Data.DatabaseAccessor;
 using PicSum.Core.Task.AsyncTask;
 using PicSum.Data.DatabaseAccessor.Connection;
 using PicSum.Task.AsyncLogic;
-using PicSum.Task.Entity;
 using PicSum.Task.Paramter;
+using System;
 
 namespace PicSum.Task.AsyncFacade
 {
     /// <summary>
     /// ファイルの評価値を更新します。
     /// </summary>
-    public class UpdateFileRatingAsyncFacade
+    public sealed class UpdateFileRatingAsyncFacade
         : OneWayFacadeBase<UpdateFileRatingParameter>
     {
         public override void Execute(UpdateFileRatingParameter param)
         {
             if (param == null)
             {
-                throw new ArgumentNullException("param");
+                throw new ArgumentNullException(nameof(param));
             }
 
-            using (Transaction tran = DatabaseManager<FileInfoConnection>.BeginTransaction())
+            using (var tran = DatabaseManager<FileInfoConnection>.BeginTransaction())
             {
-                UpdateFileRatingAsyncLogic updateFileRating = new UpdateFileRatingAsyncLogic(this);
-                AddFileRatingAsyncLogic addFileRating = new AddFileRatingAsyncLogic(this);
-                AddFileMasterAsyncLogic addFileMaster = new AddFileMasterAsyncLogic(this);
+                var updateFileRating = new UpdateFileRatingAsyncLogic(this);
+                var addFileRating = new AddFileRatingAsyncLogic(this);
+                var addFileMaster = new AddFileMasterAsyncLogic(this);
                 var registrationDate = DateTime.Now;
 
-                foreach (string filePath in param.FilePathList)
+                foreach (var filePath in param.FilePathList)
                 {
                     if (!updateFileRating.Execute(filePath, param.RatingValue, registrationDate))
                     {

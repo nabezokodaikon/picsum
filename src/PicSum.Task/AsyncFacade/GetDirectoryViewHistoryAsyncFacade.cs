@@ -7,20 +7,20 @@ namespace PicSum.Task.AsyncFacade
     /// <summary>
     /// フォルダの表示履歴を取得します。
     /// </summary>
-    public class GetDirectoryViewHistoryAsyncFacade
+    public sealed class GetDirectoryViewHistoryAsyncFacade
         : TwoWayFacadeBase<ListEntity<FileShallowInfoEntity>>
     {
         public override void Execute()
         {
-            GetFileShallowInfoAsyncLogic logic = new GetFileShallowInfoAsyncLogic(this);
-            ListEntity<FileShallowInfoEntity> result = new ListEntity<FileShallowInfoEntity>();            
-            foreach (string directoryPath in (new GetDirectoryViewHistoryAsyncLogic(this)).Execute())
+            var logic = new GetFileShallowInfoAsyncLogic(this);
+            var result = new ListEntity<FileShallowInfoEntity>();
+            foreach (var directoryPath in (new GetDirectoryViewHistoryAsyncLogic(this)).Execute())
             {
-                CheckCancel();
+                this.CheckCancel();
                 result.Add(logic.Execute(directoryPath));
             }
 
-            OnCallback(result);
+            this.OnCallback(result);
         }
     }
 }

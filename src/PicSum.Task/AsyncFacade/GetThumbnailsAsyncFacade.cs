@@ -1,38 +1,35 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using PicSum.Core.Data.DatabaseAccessor;
+﻿using PicSum.Core.Data.DatabaseAccessor;
 using PicSum.Core.Task.AsyncTask;
 using PicSum.Data.DatabaseAccessor.Connection;
 using PicSum.Task.AsyncLogic;
 using PicSum.Task.Entity;
 using PicSum.Task.Paramter;
 using SWF.Common;
+using System;
+using System.IO;
 
 namespace PicSum.Task.AsyncFacade
 {
     /// <summary>
     /// サムネイルを取得します。
     /// </summary>
-    public class GetThumbnailsAsyncFacade
+    public sealed class GetThumbnailsAsyncFacade
         : TwoWayFacadeBase<GetThumbnailParameter, ThumbnailImageEntity>
     {
         public override void Execute(GetThumbnailParameter param)
         {
             if (param == null)
             {
-                throw new ArgumentNullException("param");
+                throw new ArgumentNullException(nameof(param));
             }
 
-            using (Transaction tran = DatabaseManager<ThumbnailConnection>.BeginTransaction())
+            using (var tran = DatabaseManager<ThumbnailConnection>.BeginTransaction())
             {
-                GetThumbnailAsyncLogic getLogic = new GetThumbnailAsyncLogic(this);
+                var getLogic = new GetThumbnailAsyncLogic(this);
 
-                for (int index = param.FirstIndex; index <= param.LastIndex; index++)
+                for (var index = param.FirstIndex; index <= param.LastIndex; index++)
                 {
-                    CheckCancel();
+                    this.CheckCancel();
 
                     ThumbnailBufferEntity bf = null;
 
@@ -63,7 +60,7 @@ namespace PicSum.Task.AsyncFacade
 
                     if (bf != null)
                     {
-                        ThumbnailImageEntity img = new ThumbnailImageEntity();
+                        var img = new ThumbnailImageEntity();
                         img.FilePath = bf.FilePath;
                         img.ThumbnailImage = ImageUtil.ToImage(bf.ThumbnailBuffer);
                         img.ThumbnailWidth = bf.ThumbnailWidth;
@@ -71,11 +68,11 @@ namespace PicSum.Task.AsyncFacade
                         img.SourceWidth = bf.SourceWidth;
                         img.SourceHeight = bf.SourceHeight;
                         img.FileUpdatedate = bf.FileUpdatedate;
-                        OnCallback(img);
+                        this.OnCallback(img);
                     }
                 }
 
-                tran.Commit();
+                this.tran.Commit();
             }
         }
     }

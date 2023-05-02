@@ -1,31 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using PicSum.Core.Task.AsyncTask;
+﻿using PicSum.Core.Task.AsyncTask;
 using PicSum.Task.AsyncLogic;
 using PicSum.Task.Entity;
 using PicSum.Task.Result;
+using System;
+using System.Collections.Generic;
+using System.IO;
 
 namespace PicSum.Task.AsyncFacade
 {
     /// <summary>
     /// ファイルをフォルダで検索します。
     /// </summary>
-    public class GetFilesByDirectoryAsyncFacade
+    public sealed class GetFilesByDirectoryAsyncFacade
         : TwoWayFacadeBase<SingleValueEntity<string>, GetDirectoryResult>
     {
         public override void Execute(SingleValueEntity<string> param)
         {
             if (param == null)
             {
-                throw new ArgumentNullException("param");
+                throw new ArgumentNullException(nameof(param));
             }
 
-            GetDirectoryResult result = new GetDirectoryResult();
+            var result = new GetDirectoryResult();
             result.DirectoryPath = param.Value;
 
             IList<string> fileList;
-            GetFilesAndSubDirectorysAsyncLogic getFilesLogic = new GetFilesAndSubDirectorysAsyncLogic(this);
+            var getFilesLogic = new GetFilesAndSubDirectorysAsyncLogic(this);
             try
             {
                 fileList = getFilesLogic.Execute(param.Value);
@@ -38,26 +38,26 @@ namespace PicSum.Task.AsyncFacade
                 return;
             }
 
-            GetFileShallowInfoAsyncLogic getInfoLogic = new GetFileShallowInfoAsyncLogic(this);
-            ListEntity<FileShallowInfoEntity> infoList = new ListEntity<FileShallowInfoEntity>();
-            foreach (string file in fileList)
+            var getInfoLogic = new GetFileShallowInfoAsyncLogic(this);
+            var infoList = new ListEntity<FileShallowInfoEntity>();
+            foreach (var file in fileList)
             {
-                CheckCancel();
+                this.CheckCancel();
 
-                FileShallowInfoEntity info = getInfoLogic.Execute(file);
+                var info = getInfoLogic.Execute(file);
                 if (info != null)
                 {
                     infoList.Add(info);
                 }
             }
 
-            GetDirectoryStateAsyncLogic getDirectoryStateLogic = new GetDirectoryStateAsyncLogic(this);
-            DirectoryStateEntity directoryState = getDirectoryStateLogic.Execute(param.Value);
+            var getDirectoryStateLogic = new GetDirectoryStateAsyncLogic(this);
+            var directoryState = getDirectoryStateLogic.Execute(param.Value);
 
             result.FileInfoList = infoList;
             result.DirectoryState = directoryState;
 
-            OnCallback(result);
+            this.OnCallback(result);
         }
     }
 }

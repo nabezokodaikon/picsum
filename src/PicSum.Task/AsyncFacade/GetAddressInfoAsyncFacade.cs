@@ -3,24 +3,23 @@ using PicSum.Task.AsyncLogic;
 using PicSum.Task.Entity;
 using PicSum.Task.Result;
 using SWF.Common;
-using System.IO;
-using System.Linq;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace PicSum.Task.AsyncFacade
 {
     /// <summary>
     /// アドレスの情報を取得します。
     /// </summary>
-    public class GetAddressInfoAsyncFacade
+    public sealed class GetAddressInfoAsyncFacade
         : TwoWayFacadeBase<SingleValueEntity<string>, GetAddressInfoResult>
     {
         public override void Execute(SingleValueEntity<string> param)
         {
             if (param == null)
             {
-                throw new ArgumentNullException("param");
+                throw new ArgumentNullException(nameof(param));
             }
 
             if (string.IsNullOrEmpty(param.Value))
@@ -34,9 +33,9 @@ namespace PicSum.Task.AsyncFacade
 
             try
             {
-                IList<string> l = new List<string>();
+                var l = new List<string>();
 
-                GetFileShallowInfoAsyncLogic logic = new GetFileShallowInfoAsyncLogic(this);
+                var logic = new GetFileShallowInfoAsyncLogic(this);
 
                 addressInfo.DirectoryList = new ListEntity<FileShallowInfoEntity>();
 
@@ -48,7 +47,7 @@ namespace PicSum.Task.AsyncFacade
                 }
                 else
                 {
-                    string directory = string.Empty;
+                    var directory = string.Empty;
                     if (FileUtil.IsFile(param.Value))
                     {
                         directory = FileUtil.GetParentDirectoryPath(param.Value);
@@ -64,12 +63,12 @@ namespace PicSum.Task.AsyncFacade
 
                     addressInfo.DirectoryPath = directory;
 
-                    string subDirectory = FileUtil.GetSubDirectorys(directory).FirstOrDefault(path => FileUtil.CanAccess(path));
+                    var subDirectory = FileUtil.GetSubDirectorys(directory).FirstOrDefault(path => FileUtil.CanAccess(path));
                     addressInfo.HasSubDirectory = !string.IsNullOrEmpty(subDirectory);
 
                     while (!FileUtil.IsSystemRoot(directory))
                     {
-                        CheckCancel();
+                        this.CheckCancel();
                         addressInfo.DirectoryList.Insert(0, logic.Execute(directory));
                         directory = FileUtil.GetParentDirectoryPath(directory);
                     }
@@ -79,12 +78,12 @@ namespace PicSum.Task.AsyncFacade
 
                 addressInfo.GetAddressInfoException = null;
 
-                OnCallback(addressInfo);
+                this.OnCallback(addressInfo);
             }
             catch (FileUtilException ex)
             {
                 addressInfo.GetAddressInfoException = ex;
-                OnCallback(addressInfo);
+                this.OnCallback(addressInfo);
             }
         }
     }

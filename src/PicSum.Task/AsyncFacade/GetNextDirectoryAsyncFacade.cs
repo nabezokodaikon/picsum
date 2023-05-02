@@ -1,47 +1,47 @@
-﻿using System;
-using System.Collections.Generic;
-using PicSum.Core.Task.AsyncTask;
+﻿using PicSum.Core.Task.AsyncTask;
 using PicSum.Task.AsyncLogic;
 using PicSum.Task.Entity;
 using PicSum.Task.Paramter;
 using SWF.Common;
+using System;
+using System.Collections.Generic;
 
 namespace PicSum.Task.AsyncFacade
 {
     /// <summary>
     /// 次のフォルダを取得します。
     /// </summary>
-    public class GetNextDirectoryAsyncFacade
+    public sealed class GetNextDirectoryAsyncFacade
         : TwoWayFacadeBase<GetNextContentsParameter<string>, SingleValueEntity<string>>
     {
         public override void Execute(GetNextContentsParameter<string> param)
         {
             if (param == null)
             {
-                throw new ArgumentNullException("param");
+                throw new ArgumentNullException(nameof(param));
             }
 
             if (param.CurrentParameter == null)
             {
-                throw new ArgumentException("カレントパラメータがNULLです。", "param");
+                throw new ArgumentException("カレントパラメータがNULLです。", nameof(param));
             }
 
             if (string.IsNullOrEmpty(param.CurrentParameter.Value))
             {
-                throw new ArgumentException("カレントパラメータが空文字です。", "param");
+                throw new ArgumentException("カレントパラメータが空文字です。", nameof(param));
             }
 
-            string parentDirectory = FileUtil.GetParentDirectoryPath(param.CurrentParameter.Value);
-            List<string> list = new List<string>((new GetSubDirectorysAsyncLogic(this)).Execute(parentDirectory));
+            var parentDirectory = FileUtil.GetParentDirectoryPath(param.CurrentParameter.Value);
+            var list = new List<string>((new GetSubDirectorysAsyncLogic(this)).Execute(parentDirectory));
 
             list.Sort((x, y) => x.CompareTo(y));
-            int index = list.IndexOf(param.CurrentParameter.Value);
+            var index = list.IndexOf(param.CurrentParameter.Value);
             if (index < 0)
             {
                 return;
             }
 
-            SingleValueEntity<string> result = new SingleValueEntity<string>();
+            var result = new SingleValueEntity<string>();
             if (param.IsNext)
             {
                 if (index + 1 > list.Count - 1)
@@ -65,7 +65,7 @@ namespace PicSum.Task.AsyncFacade
                 }
             }
 
-            OnCallback(result);
+            this.OnCallback(result);
         }
     }
 }

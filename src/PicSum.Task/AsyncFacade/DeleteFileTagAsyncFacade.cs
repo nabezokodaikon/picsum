@@ -1,10 +1,9 @@
-﻿using System;
-using PicSum.Core.Data.DatabaseAccessor;
+﻿using PicSum.Core.Data.DatabaseAccessor;
 using PicSum.Core.Task.AsyncTask;
 using PicSum.Data.DatabaseAccessor.Connection;
 using PicSum.Task.AsyncLogic;
-using PicSum.Task.Entity;
 using PicSum.Task.Paramter;
+using System;
 
 namespace PicSum.Task.AsyncFacade
 {
@@ -18,10 +17,10 @@ namespace PicSum.Task.AsyncFacade
         {
             if (param == null)
             {
-                throw new ArgumentNullException("param");
+                throw new ArgumentNullException(nameof(param));
             }
 
-            using (Transaction tran = DatabaseManager<FileInfoConnection>.BeginTransaction())
+            using (var tran = DatabaseManager<FileInfoConnection>.BeginTransaction())
             {
                 DeleteFileTagAsyncLogic logic = new DeleteFileTagAsyncLogic(this);
                 

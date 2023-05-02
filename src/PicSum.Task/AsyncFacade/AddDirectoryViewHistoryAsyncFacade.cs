@@ -1,23 +1,23 @@
-﻿using System;
-using PicSum.Core.Data.DatabaseAccessor;
+﻿using PicSum.Core.Data.DatabaseAccessor;
 using PicSum.Core.Task.AsyncTask;
 using PicSum.Data.DatabaseAccessor.Connection;
 using PicSum.Task.AsyncLogic;
 using PicSum.Task.Entity;
+using System;
 
 namespace PicSum.Task.AsyncFacade
 {
-    public class AddDirectoryViewHistoryAsyncFacade
+    public sealed class AddDirectoryViewHistoryAsyncFacade
         : OneWayFacadeBase<SingleValueEntity<string>>
     {
         public override void Execute(SingleValueEntity<string> param)
         {
             if (param == null)
             {
-                throw new ArgumentNullException("param");
+                throw new ArgumentNullException(nameof(param));
             }
 
-            using (Transaction tran = DatabaseManager<FileInfoConnection>.BeginTransaction())
+            using (var tran = DatabaseManager<FileInfoConnection>.BeginTransaction())
             {
                 var addDirectoryViewHistory = new AddDirectoryViewHistoryAsyncLogic(this);
                 if (!addDirectoryViewHistory.Execute(param.Value))
@@ -32,7 +32,7 @@ namespace PicSum.Task.AsyncFacade
                         addDirectoryViewCounter.Execute(param.Value);
                     }
                 }
-                else 
+                else
                 {
                     var incrementDirectoryViewCounter = new IncrementDirectoryViewCounterAsyncLogic(this);
                     if (!incrementDirectoryViewCounter.Execute(param.Value))

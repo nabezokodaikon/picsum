@@ -1,42 +1,40 @@
-﻿using System;
-using System.Collections.Generic;
-using PicSum.Core.Task.AsyncTask;
-using PicSum.Data.DatabaseAccessor.Dto;
+﻿using PicSum.Core.Task.AsyncTask;
 using PicSum.Task.AsyncLogic;
 using PicSum.Task.Entity;
+using System;
 
 namespace PicSum.Task.AsyncFacade
 {
     /// <summary>
     /// ファイルを評価値で検索します。
     /// </summary>
-    public class GetFilesByRatingAsyncFacade
+    public sealed class GetFilesByRatingAsyncFacade
         : TwoWayFacadeBase<SingleValueEntity<int>, ListEntity<FileShallowInfoEntity>>
     {
         public override void Execute(SingleValueEntity<int> param)
         {
             if (param == null)
             {
-                throw new ArgumentNullException("param");
+                throw new ArgumentNullException(nameof(param));
             }
 
-            GetFileByRatingAsyncLogic logic = new GetFileByRatingAsyncLogic(this);
-            IList<FileByRatingDto> fileList = logic.Execute(param.Value);
+            var logic = new GetFileByRatingAsyncLogic(this);
+            var fileList = logic.Execute(param.Value);
 
-            GetFileShallowInfoAsyncLogic getInfoLogic = new GetFileShallowInfoAsyncLogic(this);
-            ListEntity<FileShallowInfoEntity> infoList = new ListEntity<FileShallowInfoEntity>();
-            foreach (FileByRatingDto dto in fileList)
+            var getInfoLogic = new GetFileShallowInfoAsyncLogic(this);
+            var infoList = new ListEntity<FileShallowInfoEntity>();
+            foreach (var dto in fileList)
             {
-                CheckCancel();
+                this.CheckCancel();
 
-                FileShallowInfoEntity info = getInfoLogic.Execute(dto.FilePath, dto.RegistrationDate);
+                var info = getInfoLogic.Execute(dto.FilePath, dto.RegistrationDate);
                 if (info != null)
                 {
                     infoList.Add(info);
                 }
             }
 
-            OnCallback(infoList);
+            this.OnCallback(infoList);
         }
     }
 }

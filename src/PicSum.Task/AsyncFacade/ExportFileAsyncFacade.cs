@@ -1,45 +1,44 @@
-﻿using System;
-using System.Threading;
-using PicSum.Core.Task.AsyncTask;
+﻿using PicSum.Core.Task.AsyncTask;
 using PicSum.Task.AsyncLogic;
-using PicSum.Task.Entity;
 using PicSum.Task.Paramter;
+using System;
+using System.Threading;
 
 namespace PicSum.Task.AsyncFacade
 {
     /// <summary>
     /// 画像ファイルエクスポート非同期ファサード
     /// </summary>
-    public class ExportFileAsyncFacade
+    public sealed class ExportFileAsyncFacade
         : OneWayFacadeBase<ExportFileParameter>
     {
-        private static readonly ReaderWriterLockSlim _lock = new ReaderWriterLockSlim();
+        private static readonly ReaderWriterLockSlim facadeLock = new ReaderWriterLockSlim();
 
         /// <summary>
         /// 静的リソースを解放します。
         /// </summary>
         public static void DisposeStaticResouces()
         {
-            _lock.Dispose();
+            ExportFileAsyncFacade.facadeLock.Dispose();
         }
 
         public override void Execute(ExportFileParameter param)
         {
             if (param == null)
             {
-                throw new ArgumentNullException("param");
+                throw new ArgumentNullException(nameof(param));
             }
 
-            _lock.EnterWriteLock();
+            ExportFileAsyncFacade.facadeLock.EnterWriteLock();
 
             try
             {
-                ExportFileAsyncLogic logic = new ExportFileAsyncLogic(this);
+                var logic = new ExportFileAsyncLogic(this);
                 logic.Execute(param.ExportDirectoryPath, param.FilePathList);
             }
             finally
             {
-                _lock.ExitWriteLock();
+                ExportFileAsyncFacade.facadeLock.ExitWriteLock();
             }
         }
     }

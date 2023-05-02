@@ -1,8 +1,7 @@
-﻿using System;
-using PicSum.Core.Task.AsyncTask;
+﻿using PicSum.Core.Task.AsyncTask;
 using PicSum.Task.AsyncLogic;
 using PicSum.Task.Entity;
-using System.Collections;
+using System;
 using System.Collections.Generic;
 
 namespace PicSum.Task.AsyncFacade
@@ -11,27 +10,27 @@ namespace PicSum.Task.AsyncFacade
     /// サブフォルダ取得非同期ファサード
     /// </summary>
     /// <remarks>フォルダパスが空文字の場合、ドライブリストを取得します。</remarks>
-    public class GetSubDirectoryAsyncFacade
+    public sealed class GetSubDirectoryAsyncFacade
         : TwoWayFacadeBase<SingleValueEntity<string>, ListEntity<FileShallowInfoEntity>>
     {
         public override void Execute(SingleValueEntity<string> param)
         {
             if (param == null)
             {
-                throw new ArgumentNullException("param");
+                throw new ArgumentNullException(nameof(param));
             }
 
-            IList<string> subDirectorys = (new GetSubDirectorysAsyncLogic(this)).Execute(param.Value);
-          
-            GetFileShallowInfoAsyncLogic logic=new GetFileShallowInfoAsyncLogic(this);
-            ListEntity<FileShallowInfoEntity> result = new ListEntity<FileShallowInfoEntity>();
-            foreach (string subDirectory in subDirectorys)
+            var subDirectorys = (new GetSubDirectorysAsyncLogic(this)).Execute(param.Value);
+
+            var logic = new GetFileShallowInfoAsyncLogic(this);
+            var result = new ListEntity<FileShallowInfoEntity>();
+            foreach (var subDirectory in subDirectorys)
             {
-                CheckCancel();
+                this.CheckCancel();
                 result.Add(logic.Execute(subDirectory));
             }
-            
-            OnCallback(result);
+
+            this.OnCallback(result);
         }
     }
 }

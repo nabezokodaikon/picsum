@@ -1,34 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using PicSum.Core.Task.AsyncTask;
+﻿using PicSum.Core.Task.AsyncTask;
 using PicSum.Task.AsyncLogic;
-using PicSum.Task.Entity;
 using PicSum.Task.Paramter;
 using PicSum.Task.Result;
 using SWF.Common;
+using System;
+using System.Collections.Generic;
+using System.IO;
 
 namespace PicSum.Task.AsyncFacade
 {
     /// <summary>
     /// フォルダ内の画像ファイルを検索します。
     /// </summary>
-    public class GetImageFileByDirectoryAsyncFacade
+    public sealed class GetImageFileByDirectoryAsyncFacade
         : TwoWayFacadeBase<GetImageFileByDirectoryParameter, GetImageFileByDirectoryResult>
     {
         public override void Execute(GetImageFileByDirectoryParameter param)
         {
             if (param == null)
             {
-                throw new ArgumentNullException("param");
+                throw new ArgumentNullException(nameof(param));
             }
 
             if (string.IsNullOrEmpty(param.FilePath))
             {
-                throw new ArgumentException("空文字は無効です。", "param");
+                throw new ArgumentException("空文字は無効です。", nameof(param));
             }
 
-            GetImageFileByDirectoryResult result = new GetImageFileByDirectoryResult();
+            var result = new GetImageFileByDirectoryResult();
             if (FileUtil.IsDirectory(param.FilePath))
             {
                 result.DirectoryPath = param.FilePath;
@@ -39,25 +38,25 @@ namespace PicSum.Task.AsyncFacade
             }
             else
             {
-                throw new ArgumentException("ファイルまたはフォルダのパスではありません。", "param");
+                throw new ArgumentException("ファイルまたはフォルダのパスではありません。", nameof(param));
             }
 
             IList<string> filePathList = null;
             try
             {
-                GetFilesAndSubDirectorysAsyncLogic getFilesLogic = new GetFilesAndSubDirectorysAsyncLogic(this);
+                var getFilesLogic = new GetFilesAndSubDirectorysAsyncLogic(this);
                 filePathList = getFilesLogic.Execute(result.DirectoryPath);
                 result.DirectoryNotFoundException = null;
             }
             catch (DirectoryNotFoundException ex)
             {
                 result.DirectoryNotFoundException = ex;
-                OnCallback(result);
+                this.OnCallback(result);
                 return;
             }
 
             result.FilePathList = new List<string>();
-            foreach (string filePath in filePathList)
+            foreach (var filePath in filePathList)
             {
                 if (FileUtil.IsImageFile(filePath))
                 {
@@ -74,7 +73,7 @@ namespace PicSum.Task.AsyncFacade
                 result.SelectedFilePath = string.Empty;
             }
 
-            OnCallback(result);
+            this.OnCallback(result);
         }
     }
 }

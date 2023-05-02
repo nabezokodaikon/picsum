@@ -1,31 +1,30 @@
-﻿using System;
-using PicSum.Core.Data.DatabaseAccessor;
+﻿using PicSum.Core.Data.DatabaseAccessor;
 using PicSum.Core.Task.AsyncTask;
 using PicSum.Data.DatabaseAccessor.Connection;
 using PicSum.Task.AsyncLogic;
-using PicSum.Task.Entity;
 using PicSum.Task.Paramter;
+using System;
 
 namespace PicSum.Task.AsyncFacade
 {
     /// <summary>
     /// ファイルにタグを追加します。
     /// </summary>
-    public class AddFileTagAsyncFacade
+    public sealed class AddFileTagAsyncFacade
         : OneWayFacadeBase<UpdateFileTagParameter>
     {
         public override void Execute(UpdateFileTagParameter param)
         {
             if (param == null)
             {
-                throw new ArgumentNullException("param");
+                throw new ArgumentNullException(nameof(param));
             }
 
-            using (Transaction tran = DatabaseManager<FileInfoConnection>.BeginTransaction())
+            using (var tran = DatabaseManager<FileInfoConnection>.BeginTransaction())
             {
-                UpdateFileTagAsyncLogic updateTag = new UpdateFileTagAsyncLogic(this);
-                AddFileTagAsyncLogic addTag = new AddFileTagAsyncLogic(this);
-                AddFileMasterAsyncLogic addFileMaster = new AddFileMasterAsyncLogic(this);
+                var updateTag = new UpdateFileTagAsyncLogic(this);
+                var addTag = new AddFileTagAsyncLogic(this);
+                var addFileMaster = new AddFileMasterAsyncLogic(this);
                 var updateFileMaster = new UpdateFileMasterAsyncLogic(this);
                 var registrationDate = DateTime.Now;
 
