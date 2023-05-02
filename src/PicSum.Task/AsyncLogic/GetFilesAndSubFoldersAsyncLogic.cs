@@ -1,22 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using PicSum.Core.Task.AsyncTask;
+﻿using PicSum.Core.Task.AsyncTask;
 using SWF.Common;
+using System;
+using System.Collections.Generic;
 
 namespace PicSum.Task.AsyncLogic
 {
     /// <summary>
     /// フォルダ内のファイルとサブフォルダ取得非同期ロジック
     /// </summary>
-    internal class GetFilesAndSubDirectorysAsyncLogic : AbstractAsyncLogic
+    internal sealed class GetFilesAndSubDirectorysAsyncLogic
+        : AbstractAsyncLogic
     {
-        public GetFilesAndSubDirectorysAsyncLogic(AbstractAsyncFacade facade) : base(facade) { }
+        public GetFilesAndSubDirectorysAsyncLogic(AbstractAsyncFacade facade)
+            : base(facade)
+        {
+
+        }
 
         public IList<string> Execute(string directoryPath)
         {
             if (directoryPath == null)
             {
-                throw new ArgumentNullException("directoryPath");
+                throw new ArgumentNullException(nameof(directoryPath));
             }
 
             if (string.IsNullOrEmpty(directoryPath))
@@ -24,12 +29,12 @@ namespace PicSum.Task.AsyncLogic
                 throw new ArgumentException("フォルダが指定されていません。", "directoryPath");
             }
 
-            List<string> list = new List<string>();
-            foreach (string file in FileUtil.GetFilesAndSubDirectorys(directoryPath))
+            var list = new List<string>();
+            foreach (var file in FileUtil.GetFilesAndSubDirectorys(directoryPath))
             {
-                CheckCancel();
+                this.CheckCancel();
                 if (FileUtil.CanAccess(file))
-                {                    
+                {
                     list.Add(file);
                 }
             }

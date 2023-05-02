@@ -13,7 +13,10 @@ namespace PicSum.Task.AsyncLogic
         : AbstractAsyncLogic
     {
         public DeleteDirectoryViewCounterAsyncLogic(AbstractAsyncFacade facade)
-            : base(facade) { }
+            : base(facade)
+        {
+
+        }
 
         /// <summary>
         /// 処理を実行します。

@@ -12,9 +12,14 @@ namespace PicSum.Task.AsyncLogic
     /// <summary>
     /// フォルダの表示履歴を取得します。
     /// </summary>
-    public class GetDirectoryViewHistoryAsyncLogic : AbstractAsyncLogic
+    internal sealed class GetDirectoryViewHistoryAsyncLogic
+        : AbstractAsyncLogic
     {
-        public GetDirectoryViewHistoryAsyncLogic(AbstractAsyncFacade facade) : base(facade) { }
+        public GetDirectoryViewHistoryAsyncLogic(AbstractAsyncFacade facade)
+            : base(facade)
+        {
+
+        }
 
         public IList<string> Execute()
         {
@@ -26,13 +31,13 @@ namespace PicSum.Task.AsyncLogic
                 .Select(value => new { DirectoryPath = value.DirectoryPath, ViewDate = value.ViewDate })
                 .OrderByDescending(value => value.ViewDate))
             {
-                CheckCancel();
+                this.CheckCancel();
                 if (FileUtil.CanAccess(dto.DirectoryPath))
                 {
                     if (!directoryPathList.Contains(dto.DirectoryPath))
                     {
                         directoryPathList.Add(dto.DirectoryPath);
-                    }                     
+                    }
                 }
             }
 

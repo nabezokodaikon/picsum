@@ -1,8 +1,8 @@
-﻿using System;
-using PicSum.Core.Data.DatabaseAccessor;
+﻿using PicSum.Core.Data.DatabaseAccessor;
 using PicSum.Core.Task.AsyncTask;
 using PicSum.Data.DatabaseAccessor.Connection;
 using PicSum.Data.DatabaseAccessor.Sql;
+using System;
 
 namespace PicSum.Task.AsyncLogic
 {
@@ -10,23 +10,28 @@ namespace PicSum.Task.AsyncLogic
     /// タグを更新します。
     /// </summary>
     /// <remarks>タグの存在確認として使用します。</remarks>
-    internal class UpdateFileTagAsyncLogic : AbstractAsyncLogic
+    internal sealed class UpdateFileTagAsyncLogic
+        : AbstractAsyncLogic
     {
-        public UpdateFileTagAsyncLogic(AbstractAsyncFacade facade) : base(facade) { }
+        public UpdateFileTagAsyncLogic(AbstractAsyncFacade facade)
+            : base(facade)
+        {
+
+        }
 
         public bool Execute(string filePath, string tag, DateTime registrationDate)
         {
             if (filePath == null)
             {
-                throw new ArgumentNullException("filePath");
+                throw new ArgumentNullException(nameof(filePath));
             }
 
             if (tag == null)
             {
-                throw new ArgumentNullException("tag");
+                throw new ArgumentNullException(nameof(tag));
             }
 
-            UpdateTagSql sql = new UpdateTagSql(filePath, tag, registrationDate);
+            var sql = new UpdateTagSql(filePath, tag, registrationDate);
             return DatabaseManager<FileInfoConnection>.Update(sql);
         }
     }

@@ -9,8 +9,11 @@ namespace PicSum.Task.AsyncLogic
     internal sealed class IncrementDirectoryViewCounterAsyncLogic
         : AbstractAsyncLogic
     {
-        public IncrementDirectoryViewCounterAsyncLogic(AbstractAsyncFacade facade) 
-            : base(facade) { }
+        public IncrementDirectoryViewCounterAsyncLogic(AbstractAsyncFacade facade)
+            : base(facade)
+        {
+
+        }
 
         public bool Execute(string directoryPath)
         {

@@ -1,32 +1,36 @@
-﻿using System;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using PicSum.Core.Data.DatabaseAccessor;
+﻿using PicSum.Core.Data.DatabaseAccessor;
 using PicSum.Core.Task.AsyncTask;
 using PicSum.Data.DatabaseAccessor.Connection;
 using PicSum.Data.DatabaseAccessor.Dto;
 using PicSum.Data.DatabaseAccessor.Sql;
 using PicSum.Task.Entity;
 using SWF.Common;
+using System;
+using System.Drawing;
+using System.IO;
 
 namespace PicSum.Task.AsyncLogic
 {
     /// <summary>
     /// ファイルの深い情報取得ロジック
     /// </summary>
-    internal class GetFileDeepInfoAsyncLogic : AbstractAsyncLogic
+    internal sealed class GetFileDeepInfoAsyncLogic 
+        : AbstractAsyncLogic
     {
-        public GetFileDeepInfoAsyncLogic(AbstractAsyncFacade facade) : base(facade) { }
+        public GetFileDeepInfoAsyncLogic(AbstractAsyncFacade facade) 
+            : base(facade) 
+        { 
+        
+        }
 
         public FileDeepInfoEntity Execute(string filePath, Size thumbSize)
         {
             if (filePath == null)
             {
-                throw new ArgumentNullException("filePath");
+                throw new ArgumentNullException(nameof(filePath));
             }
 
-            FileDeepInfoEntity info = new FileDeepInfoEntity();
+            var info = new FileDeepInfoEntity();
             info.FilePath = filePath;
             info.FileName = FileUtil.GetFileName(filePath);
             info.FileType = FileUtil.GetTypeName(filePath);
@@ -116,10 +120,10 @@ namespace PicSum.Task.AsyncLogic
                 }
             }
 
-            CheckCancel();
+            this.CheckCancel();
 
-            ReadFileInfoSql sql = new ReadFileInfoSql(info.FilePath);
-            FileInfoDto dto = DatabaseManager<FileInfoConnection>.ReadLine<FileInfoDto>(sql);
+            var sql = new ReadFileInfoSql(info.FilePath);
+            var dto = DatabaseManager<FileInfoConnection>.ReadLine<FileInfoDto>(sql);
             if (dto != null)
             {
                 info.Rating = dto.Rating;
@@ -129,7 +133,7 @@ namespace PicSum.Task.AsyncLogic
                 info.Rating = 0;
             }
 
-            CheckCancel();
+            this.CheckCancel();
 
             return info;
         }

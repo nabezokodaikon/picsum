@@ -1,25 +1,34 @@
-﻿using System;
-using System.Diagnostics;
-using System.Drawing;
-using System.Drawing.Drawing2D;
-using PicSum.Core.Base.Conf;
+﻿using PicSum.Core.Base.Conf;
 using PicSum.Core.Task.AsyncTask;
 using SWF.Common;
+using System;
+using System.Drawing;
+using System.Drawing.Drawing2D;
 
 namespace PicSum.Task.AsyncLogic
 {
     /// <summary>
     /// 画像ファイル読込ロジック
     /// </summary>
-    internal class GetImageFileAsyncLogic : AbstractAsyncLogic
+    internal sealed class GetImageFileAsyncLogic
+        : AbstractAsyncLogic
     {
-        public GetImageFileAsyncLogic(AbstractAsyncFacade facade) : base(facade) { }
+        public GetImageFileAsyncLogic(AbstractAsyncFacade facade)
+            : base(facade)
+        {
+
+        }
 
         public Image CreateImage(string filePath, Bitmap srcImg, ImageSizeMode sizeMode, Size drawSize)
         {
+            if (filePath == null)
+            {
+                throw new ArgumentNullException(nameof(filePath));
+            }
+
             if (srcImg == null)
             {
-                throw new ArgumentNullException("srcImg");
+                throw new ArgumentNullException(nameof(srcImg));
             }
 
             if (sizeMode == ImageSizeMode.Original ||
@@ -45,12 +54,12 @@ namespace PicSum.Task.AsyncLogic
         {
             if (srcImg == null)
             {
-                throw new ArgumentNullException("srcImg");
+                throw new ArgumentNullException(nameof(srcImg));
             }
 
             if (thumbSize < 0)
             {
-                throw new ArgumentOutOfRangeException("thumbSize");
+                throw new ArgumentOutOfRangeException(nameof(thumbSize));
             }
 
             var scale = Math.Min(thumbSize / (double)srcImg.Width, thumbSize / (double)srcImg.Height);

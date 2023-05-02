@@ -1,35 +1,38 @@
-﻿using System;
-using PicSum.Core.Base.Conf;
-using PicSum.Core.Data.DatabaseAccessor;
+﻿using PicSum.Core.Data.DatabaseAccessor;
 using PicSum.Core.Task.AsyncTask;
 using PicSum.Data.DatabaseAccessor.Connection;
 using PicSum.Data.DatabaseAccessor.Sql;
 using PicSum.Task.Entity;
+using System;
 
 namespace PicSum.Task.AsyncLogic
 {
     /// <summary>
     /// フォルダ状態テーブルに登録します。
     /// </summary>
-    internal class AddDirectoryStateAsyncLogic : AbstractAsyncLogic
+    internal sealed class AddDirectoryStateAsyncLogic : AbstractAsyncLogic
     {
-        public AddDirectoryStateAsyncLogic(AbstractAsyncFacade facade) : base(facade) { }
+        public AddDirectoryStateAsyncLogic(AbstractAsyncFacade facade)
+            : base(facade) 
+        {
+        
+        }
 
         public bool Execute(DirectoryStateEntity directoryState)
         {
             if (directoryState == null)
             {
-                throw new ArgumentNullException("directoryState");
+                throw new ArgumentNullException(nameof(directoryState));
             }
 
             if (directoryState.DirectoryPath == null)
             {
-                throw new ArgumentException("フォルダパスがNULLです。", "directoryState");
+                throw new ArgumentException("フォルダパスがNULLです。", nameof(directoryState));
             }
 
             if (directoryState.SelectedFilePath == null)
             {
-                throw new ArgumentException("選択ファイルパスがNULLです。", "directoryState");
+                throw new ArgumentException("選択ファイルパスがNULLです。", nameof(directoryState));
             }
 
             CreationDirectoryStateSql sql = null;

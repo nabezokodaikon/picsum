@@ -12,11 +12,14 @@ namespace PicSum.Task.AsyncLogic
     /// <summary>
     /// タグの一覧を取得します。
     /// </summary>
-    internal class GetTagListAsyncLogic
+    internal sealed class GetTagListAsyncLogic
         : AbstractAsyncLogic
     {
         public GetTagListAsyncLogic(AbstractAsyncFacade facade)
-            : base(facade) { }
+            : base(facade)
+        {
+
+        }
 
         public IList<string> Execute()
         {

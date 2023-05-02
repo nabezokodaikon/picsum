@@ -9,7 +9,11 @@ namespace PicSum.Task.AsyncLogic
     internal sealed class AddBookmarkAsyncLogic
         : AbstractAsyncLogic
     {
-        public AddBookmarkAsyncLogic(AbstractAsyncFacade facade) : base(facade) { }
+        public AddBookmarkAsyncLogic(AbstractAsyncFacade facade)
+            : base(facade)
+        {
+
+        }
 
         public bool Execute(string filePath, DateTime registrationDate)
         {

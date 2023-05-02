@@ -3,17 +3,17 @@ using PicSum.Core.Task.AsyncTask;
 using PicSum.Data.DatabaseAccessor.Connection;
 using PicSum.Data.DatabaseAccessor.Sql;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PicSum.Task.AsyncLogic
 {
     internal sealed class UpdateFileMasterAsyncLogic
         : AbstractAsyncLogic
     {
-        public UpdateFileMasterAsyncLogic(AbstractAsyncFacade facade) : base(facade) { }
+        public UpdateFileMasterAsyncLogic(AbstractAsyncFacade facade)
+            : base(facade)
+        {
+
+        }
 
         /// <summary>
         /// 処理を実行します。
@@ -27,7 +27,7 @@ namespace PicSum.Task.AsyncLogic
             }
 
             var sql = new UpdateFileSql(filePath);
-            return  DatabaseManager<FileInfoConnection>.Update(sql);
+            return DatabaseManager<FileInfoConnection>.Update(sql);
         }
     }
 }

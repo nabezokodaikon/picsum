@@ -9,7 +9,11 @@ namespace PicSum.Task.AsyncLogic
     internal sealed class DeleteBookmarkAsyncLogic
         : AbstractAsyncLogic
     {
-        public DeleteBookmarkAsyncLogic(AbstractAsyncFacade facade) : base(facade) { }
+        public DeleteBookmarkAsyncLogic(AbstractAsyncFacade facade)
+            : base(facade)
+        {
+
+        }
 
         public bool Execute(string filePath)
         {

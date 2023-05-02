@@ -1,26 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using PicSum.Core.Task.AsyncTask;
+﻿using PicSum.Core.Task.AsyncTask;
 using PicSum.Task.Entity;
 using SWF.Common;
+using System;
 
 namespace PicSum.Task.AsyncLogic
 {
     /// <summary>
     /// ファイルの浅い情報を取得します。
     /// </summary>
-    internal class GetFileShallowInfoAsyncLogic : AbstractAsyncLogic
+    internal sealed class GetFileShallowInfoAsyncLogic
+        : AbstractAsyncLogic
     {
-        public GetFileShallowInfoAsyncLogic(AbstractAsyncFacade facade) : base(facade) { }
+        public GetFileShallowInfoAsyncLogic(AbstractAsyncFacade facade)
+            : base(facade)
+        {
+
+        }
 
         public FileShallowInfoEntity Execute(string filePath)
         {
             if (filePath == null)
             {
-                throw new ArgumentNullException("filePath");
+                throw new ArgumentNullException(nameof(filePath));
             }
 
-            FileShallowInfoEntity info = new FileShallowInfoEntity();
+            var info = new FileShallowInfoEntity();
             info.RgistrationDate = null;
 
             if (FileUtil.IsSystemRoot(filePath))
@@ -80,7 +84,7 @@ namespace PicSum.Task.AsyncLogic
         {
             if (filePath == null)
             {
-                throw new ArgumentNullException("filePath");
+                throw new ArgumentNullException(nameof(filePath));
             }
 
             var info = this.Execute(filePath);

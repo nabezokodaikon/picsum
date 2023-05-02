@@ -1,40 +1,45 @@
-﻿using System;
-using PicSum.Core.Base.Conf;
+﻿using PicSum.Core.Base.Conf;
 using PicSum.Core.Data.DatabaseAccessor;
 using PicSum.Core.Task.AsyncTask;
 using PicSum.Data.DatabaseAccessor.Connection;
 using PicSum.Data.DatabaseAccessor.Sql;
 using PicSum.Task.Entity;
+using System;
 
 namespace PicSum.Task.AsyncLogic
 {
     /// <summary>
     /// フォルダ状態テーブルを更新します。
     /// </summary>
-    internal class UpdateDirectoryStateAsyncLogic : AbstractAsyncLogic
+    internal sealed class UpdateDirectoryStateAsyncLogic
+        : AbstractAsyncLogic
     {
-        public UpdateDirectoryStateAsyncLogic(AbstractAsyncFacade facade) : base(facade) { }
+        public UpdateDirectoryStateAsyncLogic(AbstractAsyncFacade facade)
+            : base(facade)
+        {
+
+        }
 
         public bool Execute(DirectoryStateEntity directoryState)
         {
             if (directoryState == null)
             {
-                throw new ArgumentNullException("directoryState");
+                throw new ArgumentNullException(nameof(directoryState));
             }
 
             if (directoryState.DirectoryPath == null)
             {
-                throw new ArgumentException("フォルダパスがNULLです。", "directoryState");
+                throw new ArgumentException("フォルダパスがNULLです。", nameof(directoryState));
             }
 
             if (directoryState.SelectedFilePath == null)
             {
-                throw new ArgumentException("選択ファイルパスがNULLです。", "directoryState");
+                throw new ArgumentException("選択ファイルパスがNULLです。", nameof(directoryState));
             }
 
             if (directoryState.SortTypeID == SortTypeID.Default)
             {
-                throw new ArgumentException("ソートIDがデフォルトです。", "directoryState");
+                throw new ArgumentException("ソートIDがデフォルトです。", nameof(directoryState));
             }
 
             UpdateDirectoryStateSql sql = null;

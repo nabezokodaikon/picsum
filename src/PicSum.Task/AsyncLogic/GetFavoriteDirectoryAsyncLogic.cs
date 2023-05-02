@@ -4,16 +4,19 @@ using PicSum.Data.DatabaseAccessor.Connection;
 using PicSum.Data.DatabaseAccessor.Dto;
 using PicSum.Data.DatabaseAccessor.Sql;
 using SWF.Common;
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 
 namespace PicSum.Task.AsyncLogic
 {
-    internal class GetFavoriteDirectoryAsyncLogic : AbstractAsyncLogic
+    internal sealed class GetFavoriteDirectoryAsyncLogic
+        : AbstractAsyncLogic
     {
-        public GetFavoriteDirectoryAsyncLogic(AbstractAsyncFacade facade) : base(facade) { }
+        public GetFavoriteDirectoryAsyncLogic(AbstractAsyncFacade facade)
+            : base(facade)
+        {
+
+        }
 
         public IList<string> Execute()
         {

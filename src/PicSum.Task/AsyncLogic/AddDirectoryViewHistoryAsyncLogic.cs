@@ -1,17 +1,21 @@
-﻿using System;
-using PicSum.Core.Data.DatabaseAccessor;
+﻿using PicSum.Core.Data.DatabaseAccessor;
 using PicSum.Core.Task.AsyncTask;
 using PicSum.Data.DatabaseAccessor.Connection;
 using PicSum.Data.DatabaseAccessor.Sql;
+using System;
 
 namespace PicSum.Task.AsyncLogic
 {
     /// <summary>
     /// フォルダの表示履歴を追加します。
     /// </summary>
-    internal class AddDirectoryViewHistoryAsyncLogic : AbstractAsyncLogic
+    internal sealed class AddDirectoryViewHistoryAsyncLogic : AbstractAsyncLogic
     {
-        public AddDirectoryViewHistoryAsyncLogic(AbstractAsyncFacade facade) : base(facade) { }
+        public AddDirectoryViewHistoryAsyncLogic(AbstractAsyncFacade facade)
+            : base(facade)
+        {
+
+        }
 
         /// <summary>
         /// 処理を実行します。
@@ -22,7 +26,7 @@ namespace PicSum.Task.AsyncLogic
         {
             if (directoryPath == null)
             {
-                throw new ArgumentNullException("directoryPath");
+                throw new ArgumentNullException(nameof(directoryPath));
             }
 
             CreationDirectoryViewHistorySql sql = new CreationDirectoryViewHistorySql(directoryPath);

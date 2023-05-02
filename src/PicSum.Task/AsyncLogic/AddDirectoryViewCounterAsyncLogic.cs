@@ -10,7 +10,10 @@ namespace PicSum.Task.AsyncLogic
         : AbstractAsyncLogic
     {
         public AddDirectoryViewCounterAsyncLogic(AbstractAsyncFacade facade)
-            : base(facade) { }
+            : base(facade)
+        {
+
+        }
 
         public bool Execute(string directoryPath)
         {

@@ -1,17 +1,22 @@
-﻿using System;
-using PicSum.Core.Data.DatabaseAccessor;
+﻿using PicSum.Core.Data.DatabaseAccessor;
 using PicSum.Core.Task.AsyncTask;
 using PicSum.Data.DatabaseAccessor.Connection;
 using PicSum.Data.DatabaseAccessor.Sql;
+using System;
 
 namespace PicSum.Task.AsyncLogic
 {
     /// <summary>
     /// ファイルマスタに登録します。
     /// </summary>
-    internal class AddFileMasterAsyncLogic : AbstractAsyncLogic
+    internal sealed class AddFileMasterAsyncLogic
+        : AbstractAsyncLogic
     {
-        public AddFileMasterAsyncLogic(AbstractAsyncFacade facade) : base(facade) { }
+        public AddFileMasterAsyncLogic(AbstractAsyncFacade facade)
+            : base(facade)
+        {
+
+        }
 
         /// <summary>
         /// 処理を実行します。
@@ -21,10 +26,10 @@ namespace PicSum.Task.AsyncLogic
         {
             if (filePath == null)
             {
-                throw new ArgumentNullException("filePath");
+                throw new ArgumentNullException(nameof(filePath));
             }
 
-            CreationFileSql sql = new CreationFileSql(filePath);
+            var sql = new CreationFileSql(filePath);
             DatabaseManager<FileInfoConnection>.Update(sql);
         }
     }

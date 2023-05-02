@@ -11,7 +11,11 @@ namespace PicSum.Task.AsyncLogic
     internal sealed class GetBookmarkListAsyncLogic
         : AbstractAsyncLogic
     {
-        public GetBookmarkListAsyncLogic(AbstractAsyncFacade facade) : base(facade) { }
+        public GetBookmarkListAsyncLogic(AbstractAsyncFacade facade)
+            : base(facade)
+        {
+
+        }
 
         public IList<BookmarkDto> Execute()
         {

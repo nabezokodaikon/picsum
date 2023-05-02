@@ -1,26 +1,42 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using PicSum.Core.Task.AsyncTask;
+﻿using PicSum.Core.Task.AsyncTask;
 using SWF.Common;
+using System;
+using System.Collections.Generic;
+using System.IO;
 
 namespace PicSum.Task.AsyncLogic
 {
     /// <summary>
     /// 画像ファイルエクスポート非同期ロジック
     /// </summary>
-    internal class ExportFileAsyncLogic : AbstractAsyncLogic
+    internal sealed class ExportFileAsyncLogic
+        : AbstractAsyncLogic
     {
-        public ExportFileAsyncLogic(AbstractAsyncFacade facade) : base(facade) { }
+        public ExportFileAsyncLogic(AbstractAsyncFacade facade)
+            : base(facade)
+        {
+
+        }
 
         public void Execute(string exportDirectory, IList<string> srcFilePathList)
         {
-            foreach (string srcFilePath in srcFilePathList)
+            if (exportDirectory == null)
             {
-                string ex = FileUtil.GetExtension(srcFilePath).ToLower();
-                string name = FileUtil.GetFileName(srcFilePath);
+                throw new ArgumentNullException(nameof(exportDirectory));
+            }
+
+            if (srcFilePathList == null)
+            {
+                throw new ArgumentNullException(nameof(srcFilePathList));
+            }
+
+            foreach (var srcFilePath in srcFilePathList)
+            {
+                var ex = FileUtil.GetExtension(srcFilePath).ToLower();
+                var name = FileUtil.GetFileName(srcFilePath);
                 name = name.Substring(0, name.Length - ex.Length);
 
-                int count = 0;
+                var count = 0;
 
                 do
                 {
