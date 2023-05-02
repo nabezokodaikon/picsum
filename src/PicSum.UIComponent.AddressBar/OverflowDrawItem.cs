@@ -1,17 +1,18 @@
-﻿using System;
+﻿using PicSum.UIComponent.AddressBar.Properties;
+using PicSum.UIComponent.Common;
+using System;
 using System.Drawing;
 using System.Windows.Forms;
-using PicSum.UIComponent.AddressBar.Properties;
-using PicSum.UIComponent.Common;
 
 namespace PicSum.UIComponent.AddressBar
 {
-    class OverflowDrawItem : DropDownDrawItemBase, IDisposable
+    internal sealed class OverflowDrawItem 
+        : DropDownDrawItemBase, IDisposable
     {
         #region インスタンス変数
 
-        private Image _mousePointImage = Resources.SmallArrowLeft;
-        private Image _mouseDownImage = Resources.SmallArrowDown;
+        private Image mousePointImage = Resources.SmallArrowLeft;
+        private Image mouseDownImage = Resources.SmallArrowDown;
 
         #endregion
 
@@ -19,7 +20,7 @@ namespace PicSum.UIComponent.AddressBar
 
         public OverflowDrawItem()
         {
-            initializeComponent();
+
         }
 
         #endregion
@@ -35,24 +36,24 @@ namespace PicSum.UIComponent.AddressBar
         {
             if (g == null)
             {
-                throw new ArgumentNullException("g");
+                throw new ArgumentNullException(nameof(g));
             }
 
-            Rectangle rect = GetRectangle();
+            var rect = GetRectangle();
 
-            if (base.IsMouseDown || IsDropDown)
+            if (base.IsMouseDown || this.IsDropDown)
             {
                 g.FillRectangle(base.Palette.MouseDownBrush, rect);
-                g.DrawImage(_mouseDownImage, getImageDrawRectangle(_mouseDownImage));
+                g.DrawImage(this.mouseDownImage, this.GetImageDrawRectangle(this.mouseDownImage));
             }
             else if (base.IsMousePoint)
             {
                 g.FillRectangle(base.Palette.MousePointBrush, rect);
-                g.DrawImage(_mousePointImage, getImageDrawRectangle(_mousePointImage));
+                g.DrawImage(this.mousePointImage, this.GetImageDrawRectangle(this.mousePointImage));
             }
             else
             {
-                g.DrawImage(_mousePointImage, getImageDrawRectangle(_mousePointImage));
+                g.DrawImage(this.mousePointImage, this.GetImageDrawRectangle(this.mousePointImage));
             }
         }
 
@@ -65,11 +66,11 @@ namespace PicSum.UIComponent.AddressBar
 
             if (e.Button == MouseButtons.Left)
             {
-                int width = MINIMUM_DROPDOWN_WIDHT;
+                var width = MINIMUM_DROPDOWN_WIDHT;
 
-                using (Graphics g = DropDownList.CreateGraphics())
+                using (var g = DropDownList.CreateGraphics())
                 {
-                    foreach (DirectoryEntity directory in base.Items)
+                    foreach (var directory in base.Items)
                     {
                         width = Math.Max(width, (int)g.MeasureString(directory.DirectoryName + "________", base.Palette.TextFont).Width);
                     }
@@ -93,39 +94,36 @@ namespace PicSum.UIComponent.AddressBar
 
         public override void OnMouseClick(MouseEventArgs e)
         {
-            if (e == null)
-            {
-                throw new ArgumentNullException("e");
-            }
+
         }
 
-        protected override void drawDropDownItem(SWF.UIComponent.FlowList.DrawItemEventArgs e)
+        protected override void DrawDropDownItem(SWF.UIComponent.FlowList.DrawItemEventArgs e)
         {
             if (e.IsFocus || e.IsMousePoint || e.IsSelected)
             {
                 e.Graphics.FillRectangle(DropDownList.SelectedItemBrush, e.ItemRectangle);
             }
 
-            DirectoryEntity item = base.Items[e.ItemIndex];
+            var item = base.Items[e.ItemIndex];
 
             if (item.DirectoryIcon != null)
             {
-                int iconSize = Math.Min(base.DropDownList.ItemHeight, item.DirectoryIcon.Width);
+                var iconSize = Math.Min(base.DropDownList.ItemHeight, item.DirectoryIcon.Width);
 
-                int iconPoint = (int)((base.DropDownList.ItemHeight - iconSize) / 2);
+                var iconPoint = (int)((base.DropDownList.ItemHeight - iconSize) / 2);
 
-                Rectangle iconRect = new Rectangle(e.ItemRectangle.X + iconPoint,
-                                                   e.ItemRectangle.Y + iconPoint,
-                                                   iconSize,
-                                                   iconSize);
+                var iconRect = new Rectangle(e.ItemRectangle.X + iconPoint,
+                                             e.ItemRectangle.Y + iconPoint,
+                                             iconSize,
+                                             iconSize);
 
                 e.Graphics.DrawImage(item.DirectoryIcon, iconRect);
             }
 
-            Rectangle textRect = new Rectangle(e.ItemRectangle.X + DropDownList.ItemHeight,
-                                               e.ItemRectangle.Y,
-                                               e.ItemRectangle.Width - DropDownList.ItemHeight,
-                                               e.ItemRectangle.Height);
+            var textRect = new Rectangle(e.ItemRectangle.X + DropDownList.ItemHeight,
+                                         e.ItemRectangle.Y,
+                                         e.ItemRectangle.Width - DropDownList.ItemHeight,
+                                         e.ItemRectangle.Height);
 
             e.Graphics.DrawString(item.DirectoryName,
                                   base.Palette.TextFont,
@@ -134,17 +132,12 @@ namespace PicSum.UIComponent.AddressBar
                                   base.DropDownList.ItemTextFormat);
         }
 
-        private void initializeComponent()
+        private Rectangle GetImageDrawRectangle(Image img)
         {
-
-        }
-
-        private Rectangle getImageDrawRectangle(Image img)
-        {
-            int w = img.Width;
-            int h = img.Height;
-            int x = (int)(base.X + (base.Width - img.Width) / 2d);
-            int y = (int)(base.Y + (base.Height - img.Height) / 2d);
+            var w = img.Width;
+            var h = img.Height;
+            var x = (int)(base.X + (base.Width - img.Width) / 2d);
+            var y = (int)(base.Y + (base.Height - img.Height) / 2d);
             return new Rectangle(x, y, w, h);
         }
 

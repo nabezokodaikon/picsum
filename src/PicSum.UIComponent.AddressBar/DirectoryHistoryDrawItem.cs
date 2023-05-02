@@ -1,36 +1,37 @@
-﻿using System;
-using System.Drawing;
-using System.Windows.Forms;
-using PicSum.UIComponent.AddressBar.Properties;
-using PicSum.Core.Task.AsyncTask;
+﻿using PicSum.Core.Task.AsyncTask;
 using PicSum.Task.AsyncFacade;
 using PicSum.Task.Entity;
+using PicSum.UIComponent.AddressBar.Properties;
 using SWF.Common;
+using System;
+using System.Drawing;
+using System.Windows.Forms;
 
 namespace PicSum.UIComponent.AddressBar
 {
-    class DirectoryHistoryDrawItem : DropDownDrawItemBase, IDisposable
+    internal sealed class DirectoryHistoryDrawItem
+        : DropDownDrawItemBase, IDisposable
     {
         #region インスタンス変数
 
-        private Image _drawImage = Resources.SmallArrowDown;
-        private TwoWayProcess<GetDirectoryViewHistoryAsyncFacade, ListEntity<FileShallowInfoEntity>> _getDirectoryHistoryProcess = null;
+        private Image drawImage = Resources.SmallArrowDown;
+        private TwoWayProcess<GetDirectoryViewHistoryAsyncFacade, ListEntity<FileShallowInfoEntity>> getDirectoryHistoryProcess = null;
 
         #endregion
 
         #region プロパティ
 
-        private TwoWayProcess<GetDirectoryViewHistoryAsyncFacade, ListEntity<FileShallowInfoEntity>> getDirectoryHistoryProcess
+        private TwoWayProcess<GetDirectoryViewHistoryAsyncFacade, ListEntity<FileShallowInfoEntity>> GetDirectoryHistoryProcess
         {
             get
             {
-                if (_getDirectoryHistoryProcess == null)
+                if (this.getDirectoryHistoryProcess == null)
                 {
-                    _getDirectoryHistoryProcess = TaskManager.CreateTwoWayProcess<GetDirectoryViewHistoryAsyncFacade, ListEntity<FileShallowInfoEntity>>(base.components);
-                    _getDirectoryHistoryProcess.Callback += new AsyncTaskCallbackEventHandler<ListEntity<FileShallowInfoEntity>>(getDirectoryHistoryProcess_Callback);
+                    this.getDirectoryHistoryProcess = TaskManager.CreateTwoWayProcess<GetDirectoryViewHistoryAsyncFacade, ListEntity<FileShallowInfoEntity>>(base.Components);
+                    this.getDirectoryHistoryProcess.Callback += new AsyncTaskCallbackEventHandler<ListEntity<FileShallowInfoEntity>>(this.GetDirectoryHistoryProcess_Callback);
                 }
 
-                return _getDirectoryHistoryProcess;
+                return this.getDirectoryHistoryProcess;
             }
         }
 
@@ -40,7 +41,7 @@ namespace PicSum.UIComponent.AddressBar
 
         public DirectoryHistoryDrawItem()
         {
-            initializeComponent();
+
         }
 
         #endregion
@@ -56,10 +57,10 @@ namespace PicSum.UIComponent.AddressBar
         {
             if (g == null)
             {
-                throw new ArgumentNullException("g");
+                throw new ArgumentNullException(nameof(g));
             }
 
-            Rectangle rect = GetRectangle();
+            var rect = this.GetRectangle();
 
             if (base.IsMouseDown || base.IsDropDown)
             {
@@ -70,7 +71,7 @@ namespace PicSum.UIComponent.AddressBar
                 g.FillRectangle(base.Palette.MousePointBrush, rect);
             }
 
-            g.DrawImage(_drawImage, getImageDrawRectangle(_drawImage));
+            g.DrawImage(drawImage, this.GetImageDrawRectangle(drawImage));
         }
 
         public override void OnMouseDown(MouseEventArgs e)
@@ -83,53 +84,50 @@ namespace PicSum.UIComponent.AddressBar
             if (e.Button == MouseButtons.Left)
             {
                 base.Items.Clear();
-                int width = Math.Max(MINIMUM_DROPDOWN_WIDHT, base.AddressBar.Width);
-                int height = MAXIMUM_SHOW_ITEM_COUNT * base.DropDownList.ItemHeight;
+                var width = Math.Max(MINIMUM_DROPDOWN_WIDHT, base.AddressBar.Width);
+                var height = MAXIMUM_SHOW_ITEM_COUNT * base.DropDownList.ItemHeight;
                 base.DropDownList.Size = new Size(width, height);
                 base.DropDownList.ClearSelectedItems();
                 base.DropDownList.ItemCount = 0;
                 base.DropDownList.Show(base.AddressBar, 0, base.AddressBar.Height);
-                getDirectoryHistoryProcess.Execute(this);
+                this.GetDirectoryHistoryProcess.Execute(this);
             }
         }
 
         public override void OnMouseClick(MouseEventArgs e)
         {
-            if (e == null)
-            {
-                throw new ArgumentNullException("e");
-            }
+
         }
 
-        protected override void drawDropDownItem(SWF.UIComponent.FlowList.DrawItemEventArgs e)
+        protected override void DrawDropDownItem(SWF.UIComponent.FlowList.DrawItemEventArgs e)
         {
             if (e.IsFocus || e.IsMousePoint || e.IsSelected)
             {
                 e.Graphics.FillRectangle(base.DropDownList.SelectedItemBrush, e.ItemRectangle);
             }
 
-            DirectoryEntity item = base.Items[e.ItemIndex];
+            var item = base.Items[e.ItemIndex];
 
             if (item.DirectoryIcon != null)
             {
-                int iconSize = Math.Min(base.DropDownList.ItemHeight, item.DirectoryIcon.Width);
+                var iconSize = Math.Min(base.DropDownList.ItemHeight, item.DirectoryIcon.Width);
 
-                int iconPoint = (int)((base.DropDownList.ItemHeight - iconSize) / 2);
+                var iconPoint = (int)((base.DropDownList.ItemHeight - iconSize) / 2);
 
-                Rectangle iconRect = new Rectangle(e.ItemRectangle.X + iconPoint,
-                                                   e.ItemRectangle.Y + iconPoint,
-                                                   iconSize,
-                                                   iconSize);
+                var iconRect = new Rectangle(e.ItemRectangle.X + iconPoint,
+                                             e.ItemRectangle.Y + iconPoint,
+                                             iconSize,
+                                             iconSize);
 
                 e.Graphics.DrawImage(item.DirectoryIcon, iconRect);
             }
 
-            Rectangle textRect = new Rectangle(e.ItemRectangle.X + base.DropDownList.ItemHeight,
-                                               e.ItemRectangle.Y,
-                                               e.ItemRectangle.Width - base.DropDownList.ItemHeight,
-                                               e.ItemRectangle.Height);
+            var textRect = new Rectangle(e.ItemRectangle.X + base.DropDownList.ItemHeight,
+                                         e.ItemRectangle.Y,
+                                         e.ItemRectangle.Width - base.DropDownList.ItemHeight,
+                                         e.ItemRectangle.Height);
 
-            var dirPath = FileUtil.IsSystemRoot(item.DirectoryPath) ? 
+            var dirPath = FileUtil.IsSystemRoot(item.DirectoryPath) ?
                 item.DirectoryName : item.DirectoryPath;
 
             e.Graphics.DrawString(dirPath,
@@ -139,17 +137,12 @@ namespace PicSum.UIComponent.AddressBar
                                   base.DropDownList.ItemTextFormat);
         }
 
-        private void initializeComponent()
+        private Rectangle GetImageDrawRectangle(Image img)
         {
-
-        }
-
-        private Rectangle getImageDrawRectangle(Image img)
-        {
-            int w = img.Width;
-            int h = img.Height;
-            int x = (int)(base.X + (base.Width - img.Width) / 2d);
-            int y = (int)(base.Y + (base.Height - img.Height) / 2d);
+            var w = img.Width;
+            var h = img.Height;
+            var x = (int)(base.X + (base.Width - img.Width) / 2d);
+            var y = (int)(base.Y + (base.Height - img.Height) / 2d);
             return new Rectangle(x, y, w, h);
         }
 
@@ -157,15 +150,15 @@ namespace PicSum.UIComponent.AddressBar
 
         #region イベント
 
-        private void getDirectoryHistoryProcess_Callback(object sender, ListEntity<FileShallowInfoEntity> e)
+        private void GetDirectoryHistoryProcess_Callback(object sender, ListEntity<FileShallowInfoEntity> e)
         {
-            int width = 0;
+            var width = 0;
 
-            using (Graphics g = base.DropDownList.CreateGraphics())
+            using (var g = base.DropDownList.CreateGraphics())
             {
-                foreach (FileShallowInfoEntity info in e)
+                foreach (var info in e)
                 {
-                    DirectoryEntity item = new DirectoryEntity();
+                    var item = new DirectoryEntity();
                     item.DirectoryPath = info.FilePath;
                     item.DirectoryName = info.FileName;
                     item.DirectoryIcon = info.SmallIcon;

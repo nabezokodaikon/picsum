@@ -13,74 +13,52 @@ using PicSum.UIComponent.Common;
 
 namespace PicSum.UIComponent.AddressBar
 {
-    class SeparatorDrawItem : DropDownDrawItemBase, IDisposable
+    internal sealed class SeparatorDrawItem 
+        : DropDownDrawItemBase, IDisposable
     {
         #region インスタンス変数
 
-        private Image _mousePointImage = Resources.SmallArrowRight;
-        private Image _mouseDownImage = Resources.SmallArrowDown;
-        private bool _isRead = false;
-        private DirectoryEntity _directory = null;
-        private string _selectedSubDirectoryPath = string.Empty;
-        private Font _selectedSubDirectoryFont = null;
-        private TwoWayProcess<GetSubDirectoryAsyncFacade, SingleValueEntity<string>, ListEntity<FileShallowInfoEntity>> _getSubDirectoryProcess = null;
+        private Image mousePointImage = Resources.SmallArrowRight;
+        private Image mouseDownImage = Resources.SmallArrowDown;
+        private bool isRead = false;
+        private Font selectedSubDirectoryFont = null;
+        private TwoWayProcess<GetSubDirectoryAsyncFacade, SingleValueEntity<string>, ListEntity<FileShallowInfoEntity>> getSubDirectoryProcess = null;
 
         #endregion
 
         #region プロパティ
 
-        public DirectoryEntity Directory
-        {
-            get
-            {
-                return _directory;
-            }
-            set
-            {
-                _directory = value;
-            }
-        }
+        public DirectoryEntity Directory { get; set; }
+        public string SelectedSubDirectoryPath { get; set; }
 
-        public string SelectedSubDirectoryPath
+        private TwoWayProcess<GetSubDirectoryAsyncFacade, SingleValueEntity<string>, ListEntity<FileShallowInfoEntity>> GetSubDirectoryProcess
         {
             get
             {
-                return _selectedSubDirectoryPath;
-            }
-            set
-            {
-                _selectedSubDirectoryPath = value;
-            }
-        }
-
-        private TwoWayProcess<GetSubDirectoryAsyncFacade, SingleValueEntity<string>, ListEntity<FileShallowInfoEntity>> getSubDirectoryProcess
-        {
-            get
-            {
-                if (_getSubDirectoryProcess == null)
+                if (this.getSubDirectoryProcess == null)
                 {
-                    _getSubDirectoryProcess = TaskManager.CreateTwoWayProcess<GetSubDirectoryAsyncFacade, SingleValueEntity<string>, ListEntity<FileShallowInfoEntity>>(base.components);
-                    _getSubDirectoryProcess.Callback += new AsyncTaskCallbackEventHandler<ListEntity<FileShallowInfoEntity>>(getSubDirectoryProcess_Callback);
+                    this.getSubDirectoryProcess = TaskManager.CreateTwoWayProcess<GetSubDirectoryAsyncFacade, SingleValueEntity<string>, ListEntity<FileShallowInfoEntity>>(base.Components);
+                    this.getSubDirectoryProcess.Callback += new AsyncTaskCallbackEventHandler<ListEntity<FileShallowInfoEntity>>(this.GetSubDirectoryProcess_Callback);
                 }
 
-                return _getSubDirectoryProcess;
+                return this.getSubDirectoryProcess;
             }
         }
 
-        private Font selectedSubDirectoryFont
+        private Font SelectedSubDirectoryFont
         {
             get
             {
-                if (_selectedSubDirectoryFont == null)
+                if (this.selectedSubDirectoryFont == null)
                 {
-                    _selectedSubDirectoryFont = new Font(base.Palette.TextFont.FontFamily,
-                                                      base.Palette.TextFont.Size,
-                                                      FontStyle.Bold,
-                                                      base.Palette.TextFont.Unit,
-                                                      base.Palette.TextFont.GdiCharSet);
+                    this.selectedSubDirectoryFont = new Font(base.Palette.TextFont.FontFamily,
+                                                              base.Palette.TextFont.Size,
+                                                              FontStyle.Bold,
+                                                              base.Palette.TextFont.Unit,
+                                                              base.Palette.TextFont.GdiCharSet);
                 }
 
-                return _selectedSubDirectoryFont;
+                return this.selectedSubDirectoryFont;
             }
         }
 
@@ -90,7 +68,7 @@ namespace PicSum.UIComponent.AddressBar
 
         public SeparatorDrawItem()
         {
-            initializeComponent();
+
         }
 
         #endregion
@@ -99,9 +77,9 @@ namespace PicSum.UIComponent.AddressBar
 
         public new void Dispose()
         {
-            if (_selectedSubDirectoryFont != null)
+            if (this.selectedSubDirectoryFont != null)
             {
-                _selectedSubDirectoryFont.Dispose();
+                this.selectedSubDirectoryFont.Dispose();
             }
 
             base.Dispose();
@@ -111,7 +89,7 @@ namespace PicSum.UIComponent.AddressBar
         {
             if (g == null)
             {
-                throw new ArgumentNullException("g");
+                throw new ArgumentNullException(nameof(g));
             }
 
             if (base.Palette == null)
@@ -119,23 +97,23 @@ namespace PicSum.UIComponent.AddressBar
                 return;
             }
 
-            Rectangle rect = GetRectangle();
+            var rect = this.GetRectangle();
 
             if (base.IsMouseDown || base.IsDropDown)
             {
                 g.FillRectangle(base.Palette.MouseDownBrush, rect);
                 g.DrawRectangle(base.Palette.MousePointPen, rect);
-                g.DrawImage(_mouseDownImage, getImageDrawRectangle(_mousePointImage));                
+                g.DrawImage(mouseDownImage, this.GetImageDrawRectangle(this.mousePointImage));                
             }
             else if (base.IsMousePoint)
             {
                 g.FillRectangle(base.Palette.MousePointBrush, rect);
                 g.DrawRectangle(base.Palette.MousePointPen, rect);
-                g.DrawImage(_mousePointImage, getImageDrawRectangle(_mousePointImage));                
+                g.DrawImage(mousePointImage, this.GetImageDrawRectangle(this.mousePointImage));                
             }
             else
             {
-                g.DrawImage(_mousePointImage, getImageDrawRectangle(_mousePointImage));
+                g.DrawImage(mousePointImage, this.GetImageDrawRectangle(this.mousePointImage));
             }
         }
 
@@ -143,18 +121,18 @@ namespace PicSum.UIComponent.AddressBar
         {
             if (e == null)
             {
-                throw new ArgumentNullException("e");
+                throw new ArgumentNullException(nameof(e));
             }
 
             if (e.Button == MouseButtons.Left)
             {
                 base.DropDownList.Show(base.AddressBar, this.Left, this.Bottom);
 
-                if (!_isRead)
+                if (!isRead)
                 {
                     SingleValueEntity<string> param = new SingleValueEntity<string>();
-                    param.Value = _directory.DirectoryPath;
-                    getSubDirectoryProcess.Execute(this, param);
+                    param.Value = this.Directory.DirectoryPath;
+                    this.GetSubDirectoryProcess.Execute(this, param);
                 }
             }
         }
@@ -167,7 +145,7 @@ namespace PicSum.UIComponent.AddressBar
             }
         }
 
-        protected override void drawDropDownItem(SWF.UIComponent.FlowList.DrawItemEventArgs e)
+        protected override void DrawDropDownItem(SWF.UIComponent.FlowList.DrawItemEventArgs e)
         {
             if (e.IsFocus || e.IsMousePoint)
             {
@@ -179,53 +157,48 @@ namespace PicSum.UIComponent.AddressBar
                 e.Graphics.DrawRectangle(base.DropDownList.SelectedItemPen, e.ItemRectangle);
             }
 
-            DirectoryEntity item = base.Items[e.ItemIndex];
+            var item = base.Items[e.ItemIndex];
 
             if (item.DirectoryIcon != null)
             {
-                int iconSize = Math.Min(base.DropDownList.ItemHeight, item.DirectoryIcon.Width);
+                var iconSize = Math.Min(base.DropDownList.ItemHeight, item.DirectoryIcon.Width);
 
-                int iconPoint = (int)((base.DropDownList.ItemHeight - iconSize) / 2);
+                var iconPoint = (int)((base.DropDownList.ItemHeight - iconSize) / 2);
 
-                Rectangle iconRect = new Rectangle(e.ItemRectangle.X + iconPoint,
-                                                   e.ItemRectangle.Y + iconPoint,
-                                                   iconSize,
-                                                   iconSize);
+                var iconRect = new Rectangle(e.ItemRectangle.X + iconPoint,
+                                             e.ItemRectangle.Y + iconPoint,
+                                             iconSize,
+                                             iconSize);
 
                 e.Graphics.DrawImage(item.DirectoryIcon, iconRect);
             }
 
-            Rectangle textRect = new Rectangle(e.ItemRectangle.X + base.DropDownList.ItemHeight,
-                                               e.ItemRectangle.Y,
-                                               e.ItemRectangle.Width - base.DropDownList.ItemHeight,
-                                               e.ItemRectangle.Height);
+            var textRect = new Rectangle(e.ItemRectangle.X + base.DropDownList.ItemHeight,
+                                         e.ItemRectangle.Y,
+                                         e.ItemRectangle.Width - base.DropDownList.ItemHeight,
+                                         e.ItemRectangle.Height);
 
             e.Graphics.DrawString(item.DirectoryName,
-                                  getFont(item.DirectoryPath),
+                                  this.GetFont(item.DirectoryPath),
                                   base.DropDownList.ItemTextBrush,
                                   textRect,
                                   base.DropDownList.ItemTextFormat);
         }
 
-        private void initializeComponent()
+        private Rectangle GetImageDrawRectangle(Image img)
         {
-
-        }
-
-        private Rectangle getImageDrawRectangle(Image img)
-        {
-            int w = img.Width;
-            int h = img.Height;
-            int x = (int)(base.X + (base.Width - img.Width) / 2d);
-            int y = (int)(base.Y + (base.Height - img.Height) / 2d);
+            var w = img.Width;
+            var h = img.Height;
+            var x = (int)(base.X + (base.Width - img.Width) / 2d);
+            var y = (int)(base.Y + (base.Height - img.Height) / 2d);
             return new Rectangle(x, y, w, h);
         }
 
-        private Font getFont(string directoryPath)
+        private Font GetFont(string directoryPath)
         {
-            if (directoryPath.Equals(_selectedSubDirectoryPath, StringComparison.Ordinal))
+            if (directoryPath.Equals(this.SelectedSubDirectoryPath, StringComparison.Ordinal))
             {
-                return selectedSubDirectoryFont;
+                return this.SelectedSubDirectoryFont;
             }
             else
             {
@@ -237,23 +210,23 @@ namespace PicSum.UIComponent.AddressBar
 
         #region イベント
 
-        private void getSubDirectoryProcess_Callback(object sender, ListEntity<FileShallowInfoEntity> e)
+        private void GetSubDirectoryProcess_Callback(object sender, ListEntity<FileShallowInfoEntity> e)
         {
-            int width = MINIMUM_DROPDOWN_WIDHT;
+            var width = MINIMUM_DROPDOWN_WIDHT;
 
-            using (Graphics g = base.DropDownList.CreateGraphics())
+            using (var g = base.DropDownList.CreateGraphics())
             {
-                List<FileShallowInfoEntity> srcItems = e.ToList();
+                var srcItems = e.ToList();
                 srcItems.Sort((x, y) => x.FilePath.CompareTo(y.FilePath));
-                foreach (FileShallowInfoEntity info in srcItems )
+                foreach (var info in srcItems )
                 {
-                    DirectoryEntity item = new DirectoryEntity();
+                    var item = new DirectoryEntity();
                     item.DirectoryPath = info.FilePath;
                     item.DirectoryName = info.FileName;
                     item.DirectoryIcon = info.SmallIcon;
                     base.Items.Add(item);
 
-                    width = Math.Max(width, (int)g.MeasureString(item.DirectoryName + "________", selectedSubDirectoryFont).Width);
+                    width = Math.Max(width, (int)g.MeasureString(item.DirectoryName + "________", SelectedSubDirectoryFont).Width);
                 }
             }
 
@@ -262,20 +235,20 @@ namespace PicSum.UIComponent.AddressBar
                 width += base.DropDownList.ScrollBarWidth;
             }
 
-            int height = Math.Min(MAXIMUM_SHOW_ITEM_COUNT * base.DropDownList.ItemHeight,
+            var height = Math.Min(MAXIMUM_SHOW_ITEM_COUNT * base.DropDownList.ItemHeight,
                                   base.Items.Count * base.DropDownList.ItemHeight);
 
           
             base.DropDownList.Size = new Size(width + base.DropDownList.ItemHeight, height);
             base.DropDownList.ItemCount = base.Items.Count;            
 
-            DirectoryEntity selectedItem = base.Items.SingleOrDefault(item => item.DirectoryPath.Equals(_selectedSubDirectoryPath, StringComparison.Ordinal));
+            var selectedItem = base.Items.SingleOrDefault(item => item.DirectoryPath.Equals(this.SelectedSubDirectoryPath, StringComparison.Ordinal));
             if (selectedItem != null)
             {
                 base.DropDownList.SelectItem(base.Items.IndexOf(selectedItem));
             }
 
-            _isRead = true;
+            this.isRead = true;
         }
 
         #endregion

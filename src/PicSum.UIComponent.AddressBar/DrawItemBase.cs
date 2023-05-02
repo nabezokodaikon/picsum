@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
-using System.ComponentModel;
 
 namespace PicSum.UIComponent.AddressBar
 {
@@ -18,25 +15,25 @@ namespace PicSum.UIComponent.AddressBar
         public event EventHandler DropDownClosed;
         public event EventHandler<SelectedDirectoryEventArgs> SelectedDirectory;
 
-        private IContainer _components = null;
-        private AddressBar _addressBar = null;
-        private Palette _palette = null;
-        private bool _isMousePoint = false;
-        private bool _isMouseDown = false;
-        private int _x = 0;
-        private int _y = 0;
-        private int _width = 0;
-        private int _height = 0;
+        private IContainer components = null;
+        private AddressBar addressBar = null;
+        private Palette palette = null;
+        private bool isMousePoint = false;
+        private bool isMouseDown = false;
+        private int x = 0;
+        private int y = 0;
+        private int width = 0;
+        private int height = 0;
 
         public AddressBar AddressBar
         {
             get
             {
-                return _addressBar;
+                return this.addressBar;
             }
             set
             {
-                _addressBar = value;
+                this.addressBar = value;
             }
         }
 
@@ -44,11 +41,11 @@ namespace PicSum.UIComponent.AddressBar
         {
             get
             {
-                return _palette;
+                return this.palette;
             }
             set
             {
-                _palette = value;
+                this.palette = value;
             }
         }
 
@@ -56,11 +53,11 @@ namespace PicSum.UIComponent.AddressBar
         {
             get
             {
-                return _isMousePoint;
+                return this.isMousePoint;
             }
             set
             {
-                _isMousePoint = value;
+                this.isMousePoint = value;
             }
         }
 
@@ -68,11 +65,11 @@ namespace PicSum.UIComponent.AddressBar
         {
             get
             {
-                return _isMouseDown;
+                return this.isMouseDown;
             }
             set
             {
-                _isMouseDown = value;
+                this.isMouseDown = value;
             }
         }
 
@@ -80,11 +77,11 @@ namespace PicSum.UIComponent.AddressBar
         {
             get
             {
-                return _x;
+                return this.x;
             }
             set
             {
-                _x = value;
+                this.x = value;
             }
         }
 
@@ -92,11 +89,11 @@ namespace PicSum.UIComponent.AddressBar
         {
             get
             {
-                return _y;
+                return this.y;
             }
             set
             {
-                _y = value;
+                this.y = value;
             }
         }
 
@@ -104,11 +101,11 @@ namespace PicSum.UIComponent.AddressBar
         {
             get
             {
-                return _x;
+                return this.x;
             }
             set
             {
-                _x = value;
+                this.x = value;
             }
         }
 
@@ -116,11 +113,11 @@ namespace PicSum.UIComponent.AddressBar
         {
             get
             {
-                return _y;
+                return this.y;
             }
             set
             {
-                _y = value;
+                this.y = value;
             }
         }
 
@@ -128,11 +125,11 @@ namespace PicSum.UIComponent.AddressBar
         {
             get
             {
-                return _x + _width;
+                return this.x + this.width;
             }
             set
             {
-                _x = value - _width;
+                this.x = value - this.width;
             }
         }
 
@@ -140,11 +137,11 @@ namespace PicSum.UIComponent.AddressBar
         {
             get
             {
-                return _y + _height;
+                return this.y + height;
             }
             set
             {
-                _y = value - _height;
+                this.y = value - height;
             }
         }
 
@@ -152,11 +149,11 @@ namespace PicSum.UIComponent.AddressBar
         {
             get
             {
-                return _width;
+                return this.width;
             }
             set
             {
-                _width = value;
+                this.width = value;
             }
         }
 
@@ -164,24 +161,24 @@ namespace PicSum.UIComponent.AddressBar
         {
             get
             {
-                return _height;
+                return this.height;
             }
             set
             {
-                _height = value;
+                this.height = value;
             }
         }
 
-        protected IContainer components
+        protected IContainer Components
         {
             get
             {
-                if (_components == null)
+                if (this.components == null)
                 {
-                    _components = new Container();
+                    this.components = new Container();
                 }
 
-                return _components;
+                return this.components;
             }
         }
 
@@ -193,46 +190,46 @@ namespace PicSum.UIComponent.AddressBar
 
         public Rectangle GetRectangle()
         {
-            return new Rectangle(_x, _y, _width, _height);
+            return new Rectangle(this.x, this.y, this.width, this.height);
         }
 
         public void ClearRectangle()
         {
-            _x = 0;
-            _y = 0;
-            _width = 0;
-            _height = 0;
+            this.x = 0;
+            this.y = 0;
+            this.width = 0;
+            this.height = 0;
         }
 
         protected virtual void Dispose()
         {
-            if (_components != null)
+            if (this.components != null)
             {
-                _components.Dispose();
+                this.components.Dispose();
             }
         }
 
         protected virtual void OnDropDownOpened(EventArgs e)
         {
-            if (DropDownOpened != null)
+            if (this.DropDownOpened != null)
             {
-                DropDownOpened(this, e);
+                this.DropDownOpened(this, e);
             }
         }
 
         protected virtual void OnDropDownClosed(EventArgs e)
         {
-            if (DropDownClosed != null)
+            if (this.DropDownClosed != null)
             {
-                DropDownClosed(this, e);
+                this.DropDownClosed(this, e);
             }
         }
 
         protected virtual void OnSelectedDirectory(SelectedDirectoryEventArgs e)
         {
-            if (SelectedDirectory != null)
+            if (this.SelectedDirectory != null)
             {
-                SelectedDirectory(this, e);
+                this.SelectedDirectory(this, e);
             }
         }
     }

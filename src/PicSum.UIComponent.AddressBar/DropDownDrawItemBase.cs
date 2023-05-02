@@ -8,17 +8,18 @@ using PicSum.UIComponent.Common;
 
 namespace PicSum.UIComponent.AddressBar
 {
-    abstract class DropDownDrawItemBase : DrawItemBase
+    abstract class DropDownDrawItemBase 
+        : DrawItemBase
     {
-        private DropDownList _dropDownList = null;
-        private DirectoryEntity _mousePointItem = null;
-        private IList<DirectoryEntity> _items = new List<DirectoryEntity>();
+        private DropDownList dropDownList = null;
+        private DirectoryEntity mousePointItem = null;
+        private IList<DirectoryEntity> items = new List<DirectoryEntity>();
 
         public IList<DirectoryEntity> Items
         {
             get
             {
-                return _items;
+                return this.items;
             }
         }
 
@@ -26,7 +27,7 @@ namespace PicSum.UIComponent.AddressBar
         {
             get
             {
-                return _dropDownList != null && _dropDownList.Visible;
+                return this.dropDownList != null && this.dropDownList.Visible;
             }
         }
 
@@ -34,12 +35,12 @@ namespace PicSum.UIComponent.AddressBar
         {
             get
             {
-                if (_dropDownList == null)
+                if (this.dropDownList == null)
                 {
-                    createDropDownList();
+                    this.CreateDropDownList();
                 }
 
-                return _dropDownList;
+                return this.dropDownList;
             }
         }
 
@@ -58,134 +59,134 @@ namespace PicSum.UIComponent.AddressBar
             throw new NotImplementedException();
         }
 
-        protected abstract void drawDropDownItem(SWF.UIComponent.FlowList.DrawItemEventArgs e);
+        protected abstract void DrawDropDownItem(SWF.UIComponent.FlowList.DrawItemEventArgs e);
 
         protected override void Dispose()
         {
-            if (_dropDownList != null)
+            if (this.dropDownList != null)
             {
-                _dropDownList.Close();
-                _dropDownList.Dispose();
+                this.dropDownList.Close();
+                this.dropDownList.Dispose();
             }
 
             base.Dispose();
         }
 
-        private void createDropDownList()
+        private void CreateDropDownList()
         {
-            _dropDownList = new DropDownList();
-            _dropDownList.BackColor = base.Palette.InnerColor;
-            _dropDownList.ItemHeight = DROPDOWN_ITEM_HEIGHT;
-            _dropDownList.ItemTextTrimming = StringTrimming.EllipsisCharacter;
-            _dropDownList.ItemTextAlignment = StringAlignment.Near;
-            _dropDownList.ItemTextLineAlignment = StringAlignment.Center;
-            _dropDownList.ItemTextFormatFlags = StringFormatFlags.NoWrap;
-            
-            _dropDownList.Opened += new EventHandler(dropDownList_Opened);
-            _dropDownList.Closed += new ToolStripDropDownClosedEventHandler(dropDownList_Closed);
-            _dropDownList.Drawitem += new EventHandler<SWF.UIComponent.FlowList.DrawItemEventArgs>(dropDownList_Drawitem);
-            _dropDownList.ItemMouseClick += new EventHandler<MouseEventArgs>(dropDownList_ItemMouseClick);
-            _dropDownList.ItemExecute += new EventHandler(dropDownList_ItemExecute);
+            this.dropDownList = new DropDownList();
+            this.dropDownList.BackColor = base.Palette.InnerColor;
+            this.dropDownList.ItemHeight = DROPDOWN_ITEM_HEIGHT;
+            this.dropDownList.ItemTextTrimming = StringTrimming.EllipsisCharacter;
+            this.dropDownList.ItemTextAlignment = StringAlignment.Near;
+            this.dropDownList.ItemTextLineAlignment = StringAlignment.Center;
+            this.dropDownList.ItemTextFormatFlags = StringFormatFlags.NoWrap;
+
+            this.dropDownList.Opened += new EventHandler(this.DropDownList_Opened);
+            this.dropDownList.Closed += new ToolStripDropDownClosedEventHandler(this.DropDownList_Closed);
+            this.dropDownList.Drawitem += new EventHandler<SWF.UIComponent.FlowList.DrawItemEventArgs>(this.DropDownList_Drawitem);
+            this.dropDownList.ItemMouseClick += new EventHandler<MouseEventArgs>(this.DropDownList_ItemMouseClick);
+            this.dropDownList.ItemExecute += new EventHandler(this.DropDownList_ItemExecute);
         }
 
-        private DirectoryEntity getDropDownItemFromScreenPoint()
+        private DirectoryEntity GetDropDownItemFromScreenPoint()
         {
-            int index = DropDownList.IndexFromScreenPoint();
-            if (index > -1 && _items.Count > index)
+            var index = this.DropDownList.IndexFromScreenPoint();
+            if (index > -1 && items.Count > index)
             {
-                return _items[index];
+                return items[index];
             }
 
             return null;
         }
 
-        private void dropDownList_Opened(object sender, EventArgs e)
+        private void DropDownList_Opened(object sender, EventArgs e)
         {
-            OnDropDownOpened(e);
+            this.OnDropDownOpened(e);
         }
 
-        private void dropDownList_Closed(object sender, ToolStripDropDownClosedEventArgs e)
+        private void DropDownList_Closed(object sender, ToolStripDropDownClosedEventArgs e)
         {
-            OnDropDownClosed(e);
+            this.OnDropDownClosed(e);
         }
 
-        private void dropDownList_Drawitem(object sender, SWF.UIComponent.FlowList.DrawItemEventArgs e)
+        private void DropDownList_Drawitem(object sender, SWF.UIComponent.FlowList.DrawItemEventArgs e)
         {
-            if (_items.Count > 0)
+            if (this.items.Count > 0)
             {
-                drawDropDownItem(e);
+                this.DrawDropDownItem(e);
             }
         }
 
-        private void dropDownList_ItemMouseClick(object sender, MouseEventArgs e)
+        private void DropDownList_ItemMouseClick(object sender, MouseEventArgs e)
         {
-            DropDownList.Close();
+            this.DropDownList.Close();
 
-            int index = DropDownList.GetSelectedIndexs()[0];
-            if (index < 0 || _items.Count - 1 < index)
+            var index = this.DropDownList.GetSelectedIndexs()[0];
+            if (index < 0 || this.items.Count - 1 < index)
             {
                 return;
             }
 
-            DirectoryEntity item = _items[index];
+            var item = this.items[index];
             if (e.Button == MouseButtons.Left)
             {
-                OnSelectedDirectory(new SelectedDirectoryEventArgs(ContentsOpenType.OverlapTab, item.DirectoryPath));
+                this.OnSelectedDirectory(new SelectedDirectoryEventArgs(ContentsOpenType.OverlapTab, item.DirectoryPath));
             }
             else if (e.Button == MouseButtons.Middle)
             {
-                OnSelectedDirectory(new SelectedDirectoryEventArgs(ContentsOpenType.AddTab, item.DirectoryPath));
+                this.OnSelectedDirectory(new SelectedDirectoryEventArgs(ContentsOpenType.AddTab, item.DirectoryPath));
             }
         }
 
-        private void dropDownList_ItemExecute(object sender, EventArgs e)
+        private void DropDownList_ItemExecute(object sender, EventArgs e)
         {
-            DropDownList.Close();
+            this.DropDownList.Close();
 
-            int index = DropDownList.GetSelectedIndexs()[0];
-            if (index < 0 || _items.Count - 1 < index)
+            var index = this.DropDownList.GetSelectedIndexs()[0];
+            if (index < 0 || this.items.Count - 1 < index)
             {
                 return;
             }
             
-            DirectoryEntity item = _items[index];
-            OnSelectedDirectory(new SelectedDirectoryEventArgs(ContentsOpenType.OverlapTab, item.DirectoryPath));
+            var item = this.items[index];
+            this.OnSelectedDirectory(new SelectedDirectoryEventArgs(ContentsOpenType.OverlapTab, item.DirectoryPath));
         }
 
-        private void contextMenu_Opening(object sender, CancelEventArgs e)
+        private void ContextMenu_Opening(object sender, CancelEventArgs e)
         {
-            if (_items == null)
+            if (this.items == null)
             {
-                _mousePointItem = null;
+                this.mousePointItem = null;
                 e.Cancel = true;
             }
             else
             {
-                _mousePointItem = getDropDownItemFromScreenPoint();
+                this.mousePointItem = this.GetDropDownItemFromScreenPoint();
             }
         }
 
-        private void contextMenu_Closing(object sender, ToolStripDropDownClosingEventArgs e)
+        private void ContextMenu_Closing(object sender, ToolStripDropDownClosingEventArgs e)
         {
-            DropDownList.Focus();
+            this.DropDownList.Focus();
         }
 
-        private void contextMenu_ActiveTabOpen(object sender, EventArgs e)
+        private void ContextMenu_ActiveTabOpen(object sender, EventArgs e)
         {
-            DropDownList.Close();
-            OnSelectedDirectory(new SelectedDirectoryEventArgs(ContentsOpenType.OverlapTab, _mousePointItem.DirectoryPath));
+            this.DropDownList.Close();
+            this.OnSelectedDirectory(new SelectedDirectoryEventArgs(ContentsOpenType.OverlapTab, this.mousePointItem.DirectoryPath));
         }
 
-        private void contextMenu_NewTabOpen(object sender, EventArgs e)
+        private void ContextMenu_NewTabOpen(object sender, EventArgs e)
         {
-            DropDownList.Close();
-            OnSelectedDirectory(new SelectedDirectoryEventArgs(ContentsOpenType.AddTab, _mousePointItem.DirectoryPath));
+            this.DropDownList.Close();
+            this.OnSelectedDirectory(new SelectedDirectoryEventArgs(ContentsOpenType.AddTab, this.mousePointItem.DirectoryPath));
         }
 
-        private void contextMenu_NewWindowOpen(object sender, EventArgs e)
+        private void ContextMenu_NewWindowOpen(object sender, EventArgs e)
         {
-            DropDownList.Close();
-            OnSelectedDirectory(new SelectedDirectoryEventArgs(ContentsOpenType.NewWindow, _mousePointItem.DirectoryPath));
+            this.DropDownList.Close();
+            this.OnSelectedDirectory(new SelectedDirectoryEventArgs(ContentsOpenType.NewWindow, this.mousePointItem.DirectoryPath));
         }
     }
 }

@@ -2,52 +2,52 @@
 
 namespace PicSum.UIComponent.AddressBar
 {
-    public class Palette
+    internal sealed class Palette
     {
-        private Font _textFont = new Font("Yu Gothic UI", 10F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(128)));
-        
-        private Color _textColor = Color.FromArgb(
+        private Font textFont = new Font("Yu Gothic UI", 10F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(128)));
+
+        private Color textColor = Color.FromArgb(
             SystemColors.ControlText.A,
             SystemColors.ControlText.R,
             SystemColors.ControlText.G,
             SystemColors.ControlText.B);
-        
-        private Color _mousePointColor = Color.FromArgb(
-            SystemColors.Highlight.A / 8,
-            SystemColors.Highlight.R,
-            SystemColors.Highlight.G,
-            SystemColors.Highlight.B);
-        
-        private Color _selectedColor = Color.FromArgb(
+
+        private Color mousePointColor = Color.FromArgb(
             SystemColors.Highlight.A / 8,
             SystemColors.Highlight.R,
             SystemColors.Highlight.G,
             SystemColors.Highlight.B);
 
-        private Color _outlineColor = SystemColors.ControlDark;
-        
-        private Color _innerColor = Color.White;
-        private StringTrimming _textTrimming = StringTrimming.EllipsisCharacter;
-        private StringAlignment _textAlignment = StringAlignment.Center;
-        private StringAlignment _textLineAlignment = StringAlignment.Center;
-        private StringFormatFlags _textFormatFlags = 0;
-        private SolidBrush _textBrush = null;
-        private SolidBrush _mousePointBrush = null;
-        private Pen _mousePointPen = null;
-        private SolidBrush _mouseDownBrush = null;
-        private SolidBrush _outlineBrush = null;
-        private SolidBrush _innerBrush = null;
-        private StringFormat _textFormat = null;
+        private Color selectedColor = Color.FromArgb(
+            SystemColors.Highlight.A / 8,
+            SystemColors.Highlight.R,
+            SystemColors.Highlight.G,
+            SystemColors.Highlight.B);
+
+        private Color outlineColor = SystemColors.ControlDark;
+
+        private Color innerColor = Color.White;
+        private StringTrimming textTrimming = StringTrimming.EllipsisCharacter;
+        private StringAlignment textAlignment = StringAlignment.Center;
+        private StringAlignment textLineAlignment = StringAlignment.Center;
+        private StringFormatFlags textFormatFlags = 0;
+        private SolidBrush textBrush = null;
+        private SolidBrush mousePointBrush = null;
+        private Pen mousePointPen = null;
+        private SolidBrush mouseDownBrush = null;
+        private SolidBrush outlineBrush = null;
+        private SolidBrush innerBrush = null;
+        private StringFormat textFormat = null;
 
         public Font TextFont
         {
             get
             {
-                return _textFont;
+                return this.textFont;
             }
             set
             {
-                _textFont = value;
+                this.textFont = value;
             }
         }
 
@@ -55,11 +55,11 @@ namespace PicSum.UIComponent.AddressBar
         {
             get
             {
-                return _textColor;
+                return this.textColor;
             }
             set
             {
-                _textColor = value;
+                this.textColor = value;
             }
         }
 
@@ -67,11 +67,11 @@ namespace PicSum.UIComponent.AddressBar
         {
             get
             {
-                return _mousePointColor;
+                return this.mousePointColor;
             }
             set
             {
-                _mousePointColor = value;
+                this.mousePointColor = value;
             }
         }
 
@@ -79,11 +79,11 @@ namespace PicSum.UIComponent.AddressBar
         {
             get
             {
-                return _selectedColor;
+                return this.selectedColor;
             }
             set
             {
-                _selectedColor = value;
+                this.selectedColor = value;
             }
         }
 
@@ -91,11 +91,11 @@ namespace PicSum.UIComponent.AddressBar
         {
             get
             {
-                return _outlineColor;
+                return this.outlineColor;
             }
             set
             {
-                _outlineColor = value;
+                this.outlineColor = value;
             }
         }
 
@@ -103,11 +103,11 @@ namespace PicSum.UIComponent.AddressBar
         {
             get
             {
-                return _innerColor;
+                return this.innerColor;
             }
             set
             {
-                _innerColor = value;
+                this.innerColor = value;
             }
         }
 
@@ -115,11 +115,11 @@ namespace PicSum.UIComponent.AddressBar
         {
             get
             {
-                return _textTrimming;
+                return this.textTrimming;
             }
             set
             {
-                _textTrimming = value;
+                this.textTrimming = value;
             }
         }
 
@@ -127,11 +127,11 @@ namespace PicSum.UIComponent.AddressBar
         {
             get
             {
-                return _textAlignment;
+                return this.textAlignment;
             }
             set
             {
-                _textAlignment = value;
+                this.textAlignment = value;
             }
         }
 
@@ -139,11 +139,11 @@ namespace PicSum.UIComponent.AddressBar
         {
             get
             {
-                return _textLineAlignment;
+                return this.textLineAlignment;
             }
             set
             {
-                _textLineAlignment = value;
+                this.textLineAlignment = value;
             }
         }
 
@@ -151,11 +151,11 @@ namespace PicSum.UIComponent.AddressBar
         {
             get
             {
-                return _textFormatFlags;
+                return this.textFormatFlags;
             }
             set
             {
-                _textFormatFlags = value;
+                this.textFormatFlags = value;
             }
         }
 
@@ -163,12 +163,12 @@ namespace PicSum.UIComponent.AddressBar
         {
             get
             {
-                if (_textBrush == null)
+                if (this.textBrush == null)
                 {
-                    _textBrush = new SolidBrush(_textColor);
+                    this.textBrush = new SolidBrush(this.textColor);
                 }
 
-                return _textBrush;
+                return this.textBrush;
             }
         }
 
@@ -176,12 +176,12 @@ namespace PicSum.UIComponent.AddressBar
         {
             get
             {
-                if (_mousePointBrush == null)
+                if (this.mousePointBrush == null)
                 {
-                    _mousePointBrush = new SolidBrush(_mousePointColor);
+                    this.mousePointBrush = new SolidBrush(this.mousePointColor);
                 }
 
-                return _mousePointBrush;
+                return mousePointBrush;
             }
         }
 
@@ -189,12 +189,12 @@ namespace PicSum.UIComponent.AddressBar
         {
             get
             {
-                if (_mousePointPen == null)
+                if (this.mousePointPen == null)
                 {
-                    _mousePointPen = new Pen(_mousePointColor);
+                    this.mousePointPen = new Pen(this.mousePointColor);
                 }
 
-                return _mousePointPen;
+                return this.mousePointPen;
             }
         }
 
@@ -202,12 +202,12 @@ namespace PicSum.UIComponent.AddressBar
         {
             get
             {
-                if (_mouseDownBrush == null)
+                if (this.mouseDownBrush == null)
                 {
-                    _mouseDownBrush = new SolidBrush(_selectedColor);
+                    this.mouseDownBrush = new SolidBrush(this.selectedColor);
                 }
 
-                return _mouseDownBrush;
+                return this.mouseDownBrush;
             }
         }
 
@@ -215,12 +215,12 @@ namespace PicSum.UIComponent.AddressBar
         {
             get
             {
-                if (_outlineBrush == null)
+                if (this.outlineBrush == null)
                 {
-                    _outlineBrush = new SolidBrush(_outlineColor);
+                    this.outlineBrush = new SolidBrush(this.outlineColor);
                 }
 
-                return _outlineBrush;
+                return this.outlineBrush;
             }
         }
 
@@ -228,12 +228,12 @@ namespace PicSum.UIComponent.AddressBar
         {
             get
             {
-                if (_innerBrush == null)
+                if (this.innerBrush == null)
                 {
-                    _innerBrush = new SolidBrush(_innerColor);
+                    this.innerBrush = new SolidBrush(this.innerColor);
                 }
 
-                return _innerBrush;
+                return this.innerBrush;
             }
         }
 
@@ -241,29 +241,29 @@ namespace PicSum.UIComponent.AddressBar
         {
             get
             {
-                if (_textFormat == null)
+                if (this.textFormat == null)
                 {
-                    _textFormat = new StringFormat();
-                    _textFormat.Trimming = _textTrimming;
-                    _textFormat.Alignment = _textAlignment;
-                    _textFormat.LineAlignment = _textLineAlignment;
-                    _textFormat.FormatFlags = _textFormatFlags;
+                    this.textFormat = new StringFormat();
+                    this.textFormat.Trimming = this.textTrimming;
+                    this.textFormat.Alignment = this.textAlignment;
+                    this.textFormat.LineAlignment = this.textLineAlignment;
+                    this.textFormat.FormatFlags = this.textFormatFlags;
                 }
-                else if (!_textFormat.Trimming.Equals(_textTrimming) ||
-                         !_textFormat.Alignment.Equals(_textAlignment) ||
-                         !_textFormat.LineAlignment.Equals(_textLineAlignment) ||
-                         !_textFormat.FormatFlags.Equals(_textFormatFlags))
+                else if (!this.textFormat.Trimming.Equals(this.textTrimming) ||
+                         !this.textFormat.Alignment.Equals(this.textAlignment) ||
+                         !this.textFormat.LineAlignment.Equals(this.textLineAlignment) ||
+                         !this.textFormat.FormatFlags.Equals(this.textFormatFlags))
                 {
-                    _textFormat.Dispose();
-                    _textFormat = null;
-                    _textFormat = new StringFormat();
-                    _textFormat.Trimming = _textTrimming;
-                    _textFormat.Alignment = _textAlignment;
-                    _textFormat.LineAlignment = _textLineAlignment;
-                    _textFormat.FormatFlags = _textFormatFlags;
+                    this.textFormat.Dispose();
+                    this.textFormat = null;
+                    this.textFormat = new StringFormat();
+                    this.textFormat.Trimming = this.textTrimming;
+                    this.textFormat.Alignment = this.textAlignment;
+                    this.textFormat.LineAlignment = this.textLineAlignment;
+                    this.textFormat.FormatFlags = this.textFormatFlags;
                 }
 
-                return _textFormat;
+                return this.textFormat;
             }
         }
     }

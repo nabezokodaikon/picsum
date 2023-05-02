@@ -1,64 +1,41 @@
-﻿using System;
-using PicSum.Core.Base.Conf;
+﻿using PicSum.Core.Base.Conf;
+using System;
 
 namespace PicSum.UIComponent.AddressBar
 {
-    public class SelectedDirectoryEventArgs : EventArgs
+    public sealed class SelectedDirectoryEventArgs
+        : EventArgs
     {
-        private ContentsOpenType _openType = ContentsOpenType.Default;
-        private string _directoryPath = string.Empty;
-        private string _subDirectoryPath = string.Empty;
-
-        public ContentsOpenType OpenType
-        {
-            get
-            {
-                return _openType;
-            }
-        }
-
-        public string DirectoryPath
-        {
-            get
-            {
-                return _directoryPath;
-            }
-        }
-
-        public string SubDirectoryPath
-        {
-            get
-            {
-                return _subDirectoryPath;
-            }
-        }
+        public ContentsOpenType OpenType { get; private set; } = ContentsOpenType.Default;
+        public string DirectoryPath { get; private set; } = string.Empty;
+        public string SubDirectoryPath { get; private set; } = string.Empty;
 
         public SelectedDirectoryEventArgs(ContentsOpenType openType, string directoryPath)
         {
             if (directoryPath == null)
             {
-                throw new ArgumentNullException("directoryPath");
+                throw new ArgumentNullException(nameof(directoryPath));
             }
 
-            _openType = openType;
-            _directoryPath = directoryPath;
+            this.OpenType = openType;
+            this.DirectoryPath = directoryPath;
         }
 
         public SelectedDirectoryEventArgs(ContentsOpenType openType, string directoryPath, string subDirectoryPath)
         {
             if (directoryPath == null)
             {
-                throw new ArgumentNullException("directoryPath");
+                throw new ArgumentNullException(nameof(directoryPath));
             }
 
             if (subDirectoryPath == null)
             {
-                throw new ArgumentNullException("subDirectoryPath");
+                throw new ArgumentNullException(nameof(subDirectoryPath));
             }
 
-            _openType = openType;
-            _directoryPath = directoryPath;
-            _subDirectoryPath = subDirectoryPath;
+            this.OpenType = openType;
+            this.DirectoryPath = directoryPath;
+            this.SubDirectoryPath = subDirectoryPath;
         }
     }
 }
