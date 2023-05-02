@@ -1,7 +1,4 @@
-﻿using System;
-using PicSum.Core.Task.SyncTask;
-using PicSum.Task.Entity;
-using PicSum.Task.Paramter;
+﻿using PicSum.Core.Task.SyncTask;
 using PicSum.Task.SyncLogic;
 
 namespace PicSum.Task.SyncFacade
@@ -9,17 +6,13 @@ namespace PicSum.Task.SyncFacade
     /// <summary>
     /// 終了同期ファサード
     /// </summary>
-    public class ClosingSyncFacade : AbstractSyncFacade
+    public sealed class ClosingSyncFacade
+        : AbstractSyncFacade
     {
-        public void Execute(ClosingParameter param)
+        public void Execute()
         {
-            if (param == null)
-            {
-                throw new ArgumentNullException("param");
-            }
-
-            ClosingSyncLogic logic = new ClosingSyncLogic();
-            logic.Execute(param);
+            var logic = new ClosingSyncLogic();
+            logic.Execute();
         }
     }
 }

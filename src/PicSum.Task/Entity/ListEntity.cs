@@ -1,8 +1,5 @@
-﻿using System;
+﻿using PicSum.Core.Task.Base;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using PicSum.Core.Task.Base;
 
 namespace PicSum.Task.Entity
 {
@@ -12,10 +9,18 @@ namespace PicSum.Task.Entity
     /// リストエンティティ
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class ListEntity<T> : List<T>, IEntity
+    public sealed class ListEntity<T> :
+        List<T>, IEntity
     {
-        public ListEntity() { }
+        public ListEntity()
+        {
 
-        public ListEntity(IEnumerable<T> collection) : base(collection) { }
+        }
+
+        public ListEntity(IEnumerable<T> collection)
+            : base(collection)
+        {
+
+        }
     }
 }

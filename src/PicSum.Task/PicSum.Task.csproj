@@ -127,7 +127,6 @@
     <Compile Include="AsyncFacade\UpdateDirectoryStateAsynceFacade.cs" />
     <Compile Include="AsyncLogic\AddDirectoryStateAsyncLogic.cs" />
     <Compile Include="SyncLogic\ClosingSyncLogic.cs" />
-    <Compile Include="Parameter\ClosingParameter.cs" />
     <Compile Include="AsyncLogic\DeleteThumbnailAsyncLogic.cs" />
     <Compile Include="AsyncLogic\GetFilesInDirectoryAsyncLogic.cs" />
     <Compile Include="AsyncLogic\GetDirectoryStateAsyncLogic.cs" />

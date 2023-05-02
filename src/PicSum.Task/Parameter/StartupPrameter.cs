@@ -5,7 +5,8 @@ namespace PicSum.Task.Paramter
     /// <summary>
     /// スタートアップパラメータエンティティ
     /// </summary>
-    public class StartupPrameter : IEntity
+    public sealed class StartupPrameter
+        : IEntity
     {
         public string FileInfoDBFilePath { get; set; }
         public string ThumbnailDBFilePath { get; set; }

@@ -1,12 +1,10 @@
-﻿using System;
+﻿using PicSum.Core.Task.Base;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using PicSum.Core.Task.Base;
 
 namespace PicSum.Task.Paramter
 {
-    public class GetThumbnailParameter : IEntity
+    public sealed class GetThumbnailParameter
+        : IEntity
     {
         public IList<string> FilePathList { get; set; }
         public int FirstIndex { get; set; }

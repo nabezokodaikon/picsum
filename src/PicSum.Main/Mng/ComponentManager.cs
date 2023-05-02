@@ -58,8 +58,7 @@ namespace PicSum.Main.Mng
 
             // 終了処理を行います。
             var closingFacade = new ClosingSyncFacade();
-            var param = new ClosingParameter();
-            closingFacade.Execute(param);
+            closingFacade.Execute();
 
             // ブラウザの設定を保存します。
             Settings.Default.BrowserWindowState = BrowserConfig.WindowState;

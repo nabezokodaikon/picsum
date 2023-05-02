@@ -1,12 +1,13 @@
-﻿using System.Drawing;
-using PicSum.Core.Task.Base;
+﻿using PicSum.Core.Task.Base;
+using System.Drawing;
 
 namespace PicSum.Task.Entity
 {
     /// <summary>
     /// 画像ファイルエンティティ
     /// </summary>
-    public class ImageFileEntity : IEntity
+    public sealed class ImageFileEntity
+        : IEntity
     {
         public string FilePath { get; set; }
         public Image Image { get; set; }

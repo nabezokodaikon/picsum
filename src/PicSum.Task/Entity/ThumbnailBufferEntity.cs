@@ -1,12 +1,13 @@
-﻿using System;
-using PicSum.Core.Task.Base;
+﻿using PicSum.Core.Task.Base;
+using System;
 
 namespace PicSum.Task.Entity
 {
     /// <summary>
     /// サムネイルバッファエンティティ
     /// </summary>
-    public class ThumbnailBufferEntity : IEntity
+    public sealed class ThumbnailBufferEntity
+        : IEntity
     {
         public string FilePath { get; set; }
         public byte[] ThumbnailBuffer { get; set; }

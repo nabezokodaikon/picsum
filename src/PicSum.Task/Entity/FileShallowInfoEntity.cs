@@ -1,13 +1,14 @@
-﻿using System;
+﻿using PicSum.Core.Task.Base;
+using System;
 using System.Drawing;
-using PicSum.Core.Task.Base;
 
 namespace PicSum.Task.Entity
 {
     /// <summary>
     /// ファイルの浅い情報エンティティ
     /// </summary>
-    public class FileShallowInfoEntity : IEntity
+    public sealed class FileShallowInfoEntity
+        : IEntity
     {
         public string FilePath { get; set; }
         public string FileName { get; set; }
