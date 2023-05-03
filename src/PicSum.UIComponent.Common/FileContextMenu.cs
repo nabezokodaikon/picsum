@@ -11,12 +11,9 @@ namespace PicSum.UIComponent.Common
     /// <summary>
     /// ファイルコンテキストメニュー
     /// </summary>
-    public class FileContextMenu : ContextMenuStrip
+    public class FileContextMenu 
+        : ContextMenuStrip
     {
-        #region 定数・列挙
-
-        #endregion
-
         #region イベント・デリゲート
 
         public event EventHandler<ExecuteFileEventArgs> FileActiveTabOpen;
@@ -41,8 +38,8 @@ namespace PicSum.UIComponent.Common
 
         private IList<string> filePathList = null;
 
-        private bool isFileActiveTabOpenMenuItemVisible = false;
-        private bool isDirectoryActiveTabOpenMenuItemVisible = false;
+        private bool visibleFileActiveTabOpenMenuItem = false;
+        private bool visibleDirectoryActiveTabOpenMenuItem = false;
 
         // 画像ファイルメニュー項目
         private readonly ToolStripMenuItem fileActiveTabOpenMenuItem = new ToolStripMenuItem("Open");
@@ -69,31 +66,31 @@ namespace PicSum.UIComponent.Common
 
         #region パブリックプロパティ
 
-        public bool IsFileActiveTabOpenMenuItemVisible
+        public bool VisibleFileActiveTabOpenMenuItem
         {
             get
             {
-                return this.isFileActiveTabOpenMenuItemVisible;
+                return this.visibleFileActiveTabOpenMenuItem;
             }
             set
             {
-                this.isFileActiveTabOpenMenuItemVisible = value;
+                this.visibleFileActiveTabOpenMenuItem = value;
             }
         }
 
-        public bool IsDirectoryActiveTabOpenMenuItemVisible
+        public bool VisibleDirectoryActiveTabOpenMenuItem
         {
             get
             {
-                return this.isDirectoryActiveTabOpenMenuItemVisible;
+                return this.visibleDirectoryActiveTabOpenMenuItem;
             }
             set
             {
-                this.isDirectoryActiveTabOpenMenuItemVisible = value;
+                this.visibleDirectoryActiveTabOpenMenuItem = value;
             }
         }
 
-        public bool IsRemoveFromListMenuItemVisible
+        public bool VisibleRemoveFromListMenuItem
         {
             get
             {
@@ -105,7 +102,7 @@ namespace PicSum.UIComponent.Common
             }
         }
 
-        public bool IsBookmarkMenuItem
+        public bool VisibleBookmarkMenuItem
         {
             get
             {
@@ -117,7 +114,7 @@ namespace PicSum.UIComponent.Common
             }
         }
 
-        public bool IsExportMenuItem
+        public bool VisibleExportMenuItem
         {
             get
             {
@@ -128,14 +125,6 @@ namespace PicSum.UIComponent.Common
                 this.exportMenuItem.Visible = value;
             }
         }
-
-        #endregion
-
-        #region 継承プロパティ
-
-        #endregion
-
-        #region プライベートプロパティ
 
         #endregion
 
@@ -328,7 +317,8 @@ namespace PicSum.UIComponent.Common
                                                       this.nameCopyMenuItem,
                                                       this.exportMenuItem,
                                                       this.fileBookmarkMenuItem,
-                                                      this.removeFromListMenuItem });
+                                                      this.removeFromListMenuItem
+                                                    });
 
             this.fileOpen.Image = Resources.AssociationOpenIcon;
             this.fileActiveTabOpenMenuItem.Image = Resources.ImageFileOpenIcon;
@@ -363,7 +353,7 @@ namespace PicSum.UIComponent.Common
 
         private void SetImageFileMenuItemVisible(bool isVisible)
         {
-            if (this.isFileActiveTabOpenMenuItemVisible)
+            if (this.visibleFileActiveTabOpenMenuItem)
             {
                 this.fileActiveTabOpenMenuItem.Visible = isVisible;
             }
@@ -386,7 +376,7 @@ namespace PicSum.UIComponent.Common
 
         private void SetDirectoryMenuItemVisible(bool isVisible)
         {
-            if (this.isDirectoryActiveTabOpenMenuItemVisible)
+            if (this.visibleDirectoryActiveTabOpenMenuItem)
             {
                 this.directoryActiveTabOpenMenuItem.Visible = isVisible;
             }

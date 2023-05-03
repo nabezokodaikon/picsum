@@ -71,11 +71,11 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             get
             {
-                return this.fileContextMenu.IsRemoveFromListMenuItemVisible;
+                return this.fileContextMenu.VisibleRemoveFromListMenuItem;
             }
             set
             {
-                this.fileContextMenu.IsRemoveFromListMenuItemVisible = value;
+                this.fileContextMenu.VisibleRemoveFromListMenuItem = value;
             }
         }
 
@@ -96,11 +96,11 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             get
             {
-                return this.fileContextMenu.IsBookmarkMenuItem;
+                return this.fileContextMenu.VisibleBookmarkMenuItem;
             }
             set
             {
-                this.fileContextMenu.IsBookmarkMenuItem = value;
+                this.fileContextMenu.VisibleBookmarkMenuItem = value;
             }
         }
 
@@ -108,11 +108,11 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             get
             {
-                return fileContextMenu.IsDirectoryActiveTabOpenMenuItemVisible;
+                return fileContextMenu.VisibleDirectoryActiveTabOpenMenuItem;
             }
             set
             {
-                fileContextMenu.IsDirectoryActiveTabOpenMenuItemVisible = value;
+                fileContextMenu.VisibleDirectoryActiveTabOpenMenuItem = value;
             }
         }
 

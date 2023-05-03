@@ -67,9 +67,9 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             // fileContextMenu
             // 
             this.fileContextMenu.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.fileContextMenu.IsFileActiveTabOpenMenuItemVisible = false;
-            this.fileContextMenu.IsDirectoryActiveTabOpenMenuItemVisible = true;
-            this.fileContextMenu.IsRemoveFromListMenuItemVisible = false;
+            this.fileContextMenu.VisibleFileActiveTabOpenMenuItem = false;
+            this.fileContextMenu.VisibleDirectoryActiveTabOpenMenuItem = true;
+            this.fileContextMenu.VisibleRemoveFromListMenuItem = false;
             this.fileContextMenu.Name = "fileContextMenu";
             this.fileContextMenu.Size = new System.Drawing.Size(205, 292);
             this.fileContextMenu.FileNewTabOpen += new System.EventHandler<PicSum.UIComponent.Common.ExecuteFileEventArgs>(this.FileContextMenu_FileNewTabOpen);

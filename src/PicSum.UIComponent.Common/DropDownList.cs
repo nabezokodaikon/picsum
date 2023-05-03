@@ -10,7 +10,8 @@ namespace PicSum.UIComponent.Common
     /// <summary>
     /// ドロップダウンリスト
     /// </summary>
-    public class DropDownList : ToolStripDropDown
+    public class DropDownList
+        : ToolStripDropDown
     {
         #region イベント・デリゲート
 
@@ -232,7 +233,7 @@ namespace PicSum.UIComponent.Common
             set
             {
                 base.BackColor = value;
-                this.toolStripItem.BackColor = value;
+                this.ToolStripItem.BackColor = value;
                 this.FlowList.BackColor = value;
             }
         }
@@ -249,7 +250,7 @@ namespace PicSum.UIComponent.Common
             set
             {
                 base.Size = value;
-                this.toolStripItem.Size = value;
+                this.ToolStripItem.Size = value;
             }
         }
 
@@ -268,7 +269,7 @@ namespace PicSum.UIComponent.Common
 
         #region プライベートプロパティ
 
-        private ToolStripControlHost toolStripItem
+        private ToolStripControlHost ToolStripItem
         {
             get
             {
@@ -280,7 +281,7 @@ namespace PicSum.UIComponent.Common
         {
             get
             {
-                return (FlowList)this.toolStripItem.Control;
+                return (FlowList)this.ToolStripItem.Control;
             }
         }
 
@@ -401,8 +402,8 @@ namespace PicSum.UIComponent.Common
             this.Items.Add(new ToolStripControlHost(new FlowList()));
             this.Padding = new Padding(2, 1, 2, 0);
 
-            this.toolStripItem.AutoSize = false;
-            this.toolStripItem.BackColor = this.BackColor;
+            this.ToolStripItem.AutoSize = false;
+            this.ToolStripItem.BackColor = this.BackColor;
 
             this.FlowList.Dock = DockStyle.Fill;
             this.FlowList.IsLileList = true;
