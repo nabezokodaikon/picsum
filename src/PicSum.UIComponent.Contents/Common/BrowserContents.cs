@@ -3,7 +3,7 @@ using System;
 using System.ComponentModel;
 using System.Windows.Forms;
 
-namespace PicSum.UIComponent.Contents
+namespace PicSum.UIComponent.Contents.Common
 {
     /// <summary>
     /// コンテンツ基底クラス

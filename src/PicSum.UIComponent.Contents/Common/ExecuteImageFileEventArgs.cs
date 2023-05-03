@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace PicSum.UIComponent.Contents
+namespace PicSum.UIComponent.Contents.Common
 {
     /// <summary>
     /// 画像ファイル実行イベント引数クラス

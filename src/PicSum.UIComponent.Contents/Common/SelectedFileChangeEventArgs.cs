@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace PicSum.UIComponent.Contents
+namespace PicSum.UIComponent.Contents.Common
 {
     public sealed class SelectedFileChangeEventArgs
         : EventArgs

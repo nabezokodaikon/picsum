@@ -2,7 +2,7 @@
 using SWF.UIComponent.TabOperation;
 using System;
 
-namespace PicSum.UIComponent.Contents
+namespace PicSum.UIComponent.Contents.Common
 {
     public sealed class BrowserContentsEventArgs
         : EventArgs

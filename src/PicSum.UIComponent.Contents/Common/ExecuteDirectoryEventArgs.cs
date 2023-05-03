@@ -1,7 +1,7 @@
 ﻿using PicSum.Core.Base.Conf;
 using System;
 
-namespace PicSum.UIComponent.Contents
+namespace PicSum.UIComponent.Contents.Common
 {
     /// <summary>
     /// フォルダ実行イベント引数クラス

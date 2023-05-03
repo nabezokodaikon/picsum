@@ -67,10 +67,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BrowserContents.cs">
+    <Compile Include="Common\BrowserContents.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="BrowserContentsEventArgs.cs" />
+    <Compile Include="Common\BrowserContentsEventArgs.cs" />
     <Compile Include="Conf\CommonConfig.cs" />
     <Compile Include="Conf\FileListContentsConfig.cs" />
     <Compile Include="Conf\ImageViewerContentsConfig.cs" />
@@ -85,7 +85,7 @@
     <Compile Include="Parameter\BookmarkFileListContentsParameter.cs" />
     <Compile Include="Parameter\DragEntity.cs" />
     <Compile Include="Parameter\FavoriteDirectoryListContentsParameter.cs" />
-    <Compile Include="GetImageFilesEventArgs.cs" />
+    <Compile Include="Common\GetImageFilesEventArgs.cs" />
     <Compile Include="Parameter\DirectoryFileListContentsParameter.cs" />
     <Compile Include="Parameter\ImageViewerContentsParameter.cs" />
     <Compile Include="Parameter\RatingFileListContentsParameter.cs" />
@@ -94,8 +94,8 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="ToolBar\ContentsToolBarColorTable.cs" />
-    <Compile Include="ExecuteDirectoryEventArgs.cs" />
-    <Compile Include="ExecuteImageFileEventArgs.cs" />
+    <Compile Include="Common\ExecuteDirectoryEventArgs.cs" />
+    <Compile Include="Common\ExecuteImageFileEventArgs.cs" />
     <Compile Include="FileList\FavoriteDirectoryListContents.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -128,7 +128,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="SelectedFileChangeEventArgs.cs" />
+    <Compile Include="Common\SelectedFileChangeEventArgs.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PicSum.Core.Base\PicSum.Core.Base.csproj">
