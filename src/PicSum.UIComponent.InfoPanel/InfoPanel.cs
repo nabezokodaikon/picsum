@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Linq;
-using System.Reflection;
-using System.Windows.Forms;
-using System.Windows.Forms.VisualStyles;
-using PicSum.Core.Base.Conf;
+﻿using PicSum.Core.Base.Conf;
 using PicSum.Core.Task.AsyncTask;
 using PicSum.Task.AsyncFacade;
 using PicSum.Task.Entity;
@@ -15,15 +7,18 @@ using PicSum.Task.Result;
 using PicSum.UIComponent.InfoPanel.Properties;
 using SWF.Common;
 using SWF.UIComponent.WideDropDown;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Drawing;
+using System.Linq;
+using System.Windows.Forms;
 
 namespace PicSum.UIComponent.InfoPanel
 {
-    public partial class InfoPanel : UserControl
+    public sealed partial class InfoPanel
+        : UserControl
     {
-        #region 定数・列挙
-
-        #endregion
-
         #region イベント・デリゲート
 
         public event EventHandler<SelectedTagEventArgs> SelectedTag;
@@ -32,103 +27,95 @@ namespace PicSum.UIComponent.InfoPanel
 
         #region インスタンス変数
 
-        private TwoWayProcess<GetFileDeepInfoAsyncFacade, GetFileDeepInfoParameter, GetFileDeepInfoResult> _getFileInfoProcess = null;
-        private OneWayProcess<UpdateFileRatingAsyncFacade, UpdateFileRatingParameter> _updateFileRatingProcess = null;
-        private TwoWayProcess<GetTagListAsyncFacade, ListEntity<string>> _getTagListProcess = null;
-        private OneWayProcess<AddFileTagAsyncFacade, UpdateFileTagParameter> _addFileTagProcess = null;
-        private OneWayProcess<DeleteFileTagAsyncFacade, UpdateFileTagParameter> _deleteFileTagProcess = null;
+        private TwoWayProcess<GetFileDeepInfoAsyncFacade, GetFileDeepInfoParameter, GetFileDeepInfoResult> getFileInfoProcess = null;
+        private OneWayProcess<UpdateFileRatingAsyncFacade, UpdateFileRatingParameter> updateFileRatingProcess = null;
+        private TwoWayProcess<GetTagListAsyncFacade, ListEntity<string>> getTagListProcess = null;
+        private OneWayProcess<AddFileTagAsyncFacade, UpdateFileTagParameter> addFileTagProcess = null;
+        private OneWayProcess<DeleteFileTagAsyncFacade, UpdateFileTagParameter> deleteFileTagProcess = null;
 
-        private GetFileDeepInfoResult _fileInfoSource = null;
-        private Font _allTagFont = null;
-        private Image _tagIcon = Resources.TagIcon;
-        private string _contextMenuOperationTag = string.Empty;
-
-        #endregion
-
-        #region パブリックプロパティ
-
-        #endregion
-
-        #region 継承プロパティ
+        private GetFileDeepInfoResult fileInfoSource = null;
+        private Font allTagFont = null;
+        private Image tagIcon = Resources.TagIcon;
+        private string contextMenuOperationTag = string.Empty;
 
         #endregion
 
         #region プライベートプロパティ
 
-        private TwoWayProcess<GetFileDeepInfoAsyncFacade, GetFileDeepInfoParameter, GetFileDeepInfoResult> getFileInfoProcess
+        private TwoWayProcess<GetFileDeepInfoAsyncFacade, GetFileDeepInfoParameter, GetFileDeepInfoResult> GetFileInfoProcess
         {
             get
             {
-                if (_getFileInfoProcess == null)
+                if (this.getFileInfoProcess == null)
                 {
-                    _getFileInfoProcess = TaskManager.CreateTwoWayProcess<GetFileDeepInfoAsyncFacade, GetFileDeepInfoParameter, GetFileDeepInfoResult>(components);
-                    _getFileInfoProcess.Callback += new AsyncTaskCallbackEventHandler<GetFileDeepInfoResult>(getFileInfoProcess_Callback);
+                    this.getFileInfoProcess = TaskManager.CreateTwoWayProcess<GetFileDeepInfoAsyncFacade, GetFileDeepInfoParameter, GetFileDeepInfoResult>(this.components);
+                    this.getFileInfoProcess.Callback += new AsyncTaskCallbackEventHandler<GetFileDeepInfoResult>(this.GetFileInfoProcess_Callback);
                 }
 
-                return _getFileInfoProcess;
+                return this.getFileInfoProcess;
             }
         }
 
-        private OneWayProcess<UpdateFileRatingAsyncFacade, UpdateFileRatingParameter> updateFileRatingProcess
+        private OneWayProcess<UpdateFileRatingAsyncFacade, UpdateFileRatingParameter> UpdateFileRatingProcess
         {
             get
             {
-                if (_updateFileRatingProcess == null)
+                if (this.updateFileRatingProcess == null)
                 {
-                    _updateFileRatingProcess = TaskManager.CreateOneWayProcess<UpdateFileRatingAsyncFacade, UpdateFileRatingParameter>(components);
+                    this.updateFileRatingProcess = TaskManager.CreateOneWayProcess<UpdateFileRatingAsyncFacade, UpdateFileRatingParameter>(this.components);
                 }
 
-                return _updateFileRatingProcess;
+                return this.updateFileRatingProcess;
             }
         }
 
-        private TwoWayProcess<GetTagListAsyncFacade, ListEntity<string>> getTagListProcess
+        private TwoWayProcess<GetTagListAsyncFacade, ListEntity<string>> GetTagListProcess
         {
             get
             {
-                if (_getTagListProcess == null)
+                if (this.getTagListProcess == null)
                 {
-                    _getTagListProcess = TaskManager.CreateTwoWayProcess<GetTagListAsyncFacade, ListEntity<string>>(components);
-                    _getTagListProcess.Callback += new AsyncTaskCallbackEventHandler<ListEntity<string>>(getTagListProcess_Callback);
+                    this.getTagListProcess = TaskManager.CreateTwoWayProcess<GetTagListAsyncFacade, ListEntity<string>>(this.components);
+                    this.getTagListProcess.Callback += new AsyncTaskCallbackEventHandler<ListEntity<string>>(this.GetTagListProcess_Callback);
                 }
 
-                return _getTagListProcess;
+                return this.getTagListProcess;
             }
         }
 
-        private OneWayProcess<AddFileTagAsyncFacade, UpdateFileTagParameter> addFileTagProcess
+        private OneWayProcess<AddFileTagAsyncFacade, UpdateFileTagParameter> AddFileTagProcess
         {
             get
             {
-                if (_addFileTagProcess == null)
+                if (this.addFileTagProcess == null)
                 {
-                    _addFileTagProcess = TaskManager.CreateOneWayProcess<AddFileTagAsyncFacade, UpdateFileTagParameter>(components);
+                    this.addFileTagProcess = TaskManager.CreateOneWayProcess<AddFileTagAsyncFacade, UpdateFileTagParameter>(this.components);
                 }
 
-                return _addFileTagProcess;
+                return this.addFileTagProcess;
             }
         }
 
-        private OneWayProcess<DeleteFileTagAsyncFacade, UpdateFileTagParameter> deleteFileTagProcess
+        private OneWayProcess<DeleteFileTagAsyncFacade, UpdateFileTagParameter> DeleteFileTagProcess
         {
             get
             {
-                if (_deleteFileTagProcess == null)
+                if (this.deleteFileTagProcess == null)
                 {
-                    _deleteFileTagProcess = TaskManager.CreateOneWayProcess<DeleteFileTagAsyncFacade, UpdateFileTagParameter>(components);
+                    this.deleteFileTagProcess = TaskManager.CreateOneWayProcess<DeleteFileTagAsyncFacade, UpdateFileTagParameter>(this.components);
                 }
 
-                return _deleteFileTagProcess;
+                return this.deleteFileTagProcess;
             }
         }
 
-        private IList<string> filePathList
+        private IList<string> FilePathList
         {
             get
             {
-                if (_fileInfoSource != null && _fileInfoSource.FilePathList != null)
+                if (this.fileInfoSource != null && this.fileInfoSource.FilePathList != null)
                 {
-                    return _fileInfoSource.FilePathList;
+                    return this.fileInfoSource.FilePathList;
                 }
                 else
                 {
@@ -137,13 +124,13 @@ namespace PicSum.UIComponent.InfoPanel
             }
         }
 
-        private FileDeepInfoEntity fileInfo
+        private FileDeepInfoEntity FileInfo
         {
             get
             {
-                if (_fileInfoSource != null && _fileInfoSource.FileInfo != null)
+                if (this.fileInfoSource != null && this.fileInfoSource.FileInfo != null)
                 {
-                    return _fileInfoSource.FileInfo;
+                    return this.fileInfoSource.FileInfo;
                 }
                 else
                 {
@@ -152,13 +139,13 @@ namespace PicSum.UIComponent.InfoPanel
             }
         }
 
-        private ThumbnailImageEntity thumbnail
+        private ThumbnailImageEntity Thumbnail
         {
             get
             {
-                if (fileInfo != null && fileInfo.Thumbnail != null)
+                if (this.FileInfo != null && this.FileInfo.Thumbnail != null)
                 {
-                    return fileInfo.Thumbnail;
+                    return this.FileInfo.Thumbnail;
                 }
                 else
                 {
@@ -167,13 +154,13 @@ namespace PicSum.UIComponent.InfoPanel
             }
         }
 
-        private ListEntity<FileTagInfoEntity> tagList
+        private ListEntity<FileTagInfoEntity> TagList
         {
             get
             {
-                if (_fileInfoSource != null && _fileInfoSource.TagInfoList != null)
+                if (this.fileInfoSource != null && this.fileInfoSource.TagInfoList != null)
                 {
-                    return _fileInfoSource.TagInfoList;
+                    return this.fileInfoSource.TagInfoList;
                 }
                 else
                 {
@@ -188,11 +175,11 @@ namespace PicSum.UIComponent.InfoPanel
 
         public InfoPanel()
         {
-            InitializeComponent();
+            this.InitializeComponent();
 
             if (!this.DesignMode)
             {
-                initializeComponent();
+                this.SubInitializeComponent();
             }
         }
 
@@ -202,14 +189,19 @@ namespace PicSum.UIComponent.InfoPanel
 
         public void SetFileInfo(string filePath)
         {
-            SetFileInfo(new List<string>() { filePath });
+            if (filePath == null)
+            {
+                throw new ArgumentNullException(nameof(filePath));
+            }
+
+            this.SetFileInfo(new List<string>() { filePath });
         }
 
         public void SetFileInfo(IList<string> filePathList)
         {
             if (filePathList == null)
             {
-                throw new ArgumentNullException("filePathList");
+                throw new ArgumentNullException(nameof(filePathList));
             }
 
             if (filePathList.Count > 0)
@@ -217,34 +209,22 @@ namespace PicSum.UIComponent.InfoPanel
                 // コンピュータ(空文字)の場合は、情報を表示しない。
                 if (string.IsNullOrEmpty(filePathList.First()))
                 {
-                    clearInfo();
+                    this.ClearInfo();
                     return;
                 }
 
-                GetFileDeepInfoParameter param = new GetFileDeepInfoParameter();
+                var param = new GetFileDeepInfoParameter();
                 param.FilePathList = filePathList;
                 param.ThumbnailSize = new Size(
-                    ApplicationConst.INFOPANEL_THUMBANIL_SIZE, 
+                    ApplicationConst.INFOPANEL_THUMBANIL_SIZE,
                     ApplicationConst.INFOPANEL_THUMBANIL_SIZE);
 
-                getFileInfoProcess.Cancel();
-                getFileInfoProcess.Execute(this, param);
+                this.GetFileInfoProcess.Cancel();
+                this.GetFileInfoProcess.Execute(this, param);
             }
             else
             {
-                clearInfo();
-            }
-        }
-
-        #endregion
-
-        #region 継承メソッド
-
-        protected virtual void OnSelectedTag(SelectedTagEventArgs e)
-        {
-            if (SelectedTag != null)
-            {
-                SelectedTag(this, e);
+                this.ClearInfo();
             }
         }
 
@@ -252,54 +232,62 @@ namespace PicSum.UIComponent.InfoPanel
 
         #region プライベートメソッド
 
-        private void initializeComponent()
+        private void OnSelectedTag(SelectedTagEventArgs e)
         {
-            if (components == null)
+            if (this.SelectedTag != null)
             {
-                components = new Container();
+                this.SelectedTag(this, e);
+            }
+        }
+
+        private void SubInitializeComponent()
+        {
+            if (this.components == null)
+            {
+                this.components = new Container();
             }
 
             this.CreateHandle();
         }
 
-        private void clearInfo()
+        private void ClearInfo()
         {
-            if (thumbnail != null)
+            if (this.Thumbnail != null)
             {
-                thumbnail.ThumbnailImage.Dispose();
-                thumbnail.ThumbnailImage = null;
+                this.Thumbnail.ThumbnailImage.Dispose();
+                this.Thumbnail.ThumbnailImage = null;
             }
 
-            _fileInfoSource = null;
+            this.fileInfoSource = null;
 
-            fileNameLabel.Text = string.Empty;
-            fileTypeLabel.Text = string.Empty;
-            fileSizeLabel.Text = string.Empty;
-            fileUpdatedateLabel.Text = string.Empty;
-            fileCreateDateLabel.Text = string.Empty;
-            ratingBar.SetValue(0);
-            thumbnailPictureBox.Invalidate();
-            tagFlowList.ItemCount = 0;
+            this.fileNameLabel.Text = string.Empty;
+            this.fileTypeLabel.Text = string.Empty;
+            this.fileSizeLabel.Text = string.Empty;
+            this.fileUpdatedateLabel.Text = string.Empty;
+            this.fileCreateDateLabel.Text = string.Empty;
+            this.ratingBar.SetValue(0);
+            this.thumbnailPictureBox.Invalidate();
+            this.tagFlowList.ItemCount = 0;
 
-            _contextMenuOperationTag = string.Empty;
-            tagContextMenuStrip.Close();
+            this.contextMenuOperationTag = string.Empty;
+            this.tagContextMenuStrip.Close();
         }
 
-        private Font getAllTagFont()
+        private Font GetAllTagFont()
         {
-            if (_allTagFont == null)
+            if (this.allTagFont == null)
             {
-                _allTagFont = new Font(this.Font.FontFamily, this.Font.Size, FontStyle.Bold, this.Font.Unit, this.Font.GdiCharSet);
+                this.allTagFont = new Font(this.Font.FontFamily, this.Font.Size, FontStyle.Bold, this.Font.Unit, this.Font.GdiCharSet);
             }
 
-            return _allTagFont;
+            return this.allTagFont;
         }
 
-        private Font getTagFont(FileTagInfoEntity tagInfo)
+        private Font GetTagFont(FileTagInfoEntity tagInfo)
         {
             if (tagInfo.IsAll)
             {
-                return getAllTagFont();
+                return this.GetAllTagFont();
             }
             else
             {
@@ -307,9 +295,9 @@ namespace PicSum.UIComponent.InfoPanel
             }
         }
 
-        private void addTag(string tag)
+        private void AddTag(string tag)
         {
-            if (filePathList == null || tagList == null)
+            if (this.FilePathList == null || TagList == null)
             {
                 throw new NullReferenceException("ファイルの情報が存在しません。");
             }
@@ -319,36 +307,36 @@ namespace PicSum.UIComponent.InfoPanel
                 throw new Exception("NULLまたは長さ0の文字列は、タグに登録できません。");
             }
 
-            if (tagList.Find(t => t.Tag.Equals(tag, StringComparison.Ordinal) && t.IsAll) != null)
+            if (this.TagList.Find(t => t.Tag.Equals(tag, StringComparison.Ordinal) && t.IsAll) != null)
             {
                 throw new Exception("既に登録されているタグです。");
             }
 
-            UpdateFileTagParameter param = new UpdateFileTagParameter();
+            var param = new UpdateFileTagParameter();
             param.Tag = tag;
-            param.FilePathList = filePathList;
-            addFileTagProcess.Execute(this, param);
+            param.FilePathList = FilePathList;
+            this.AddFileTagProcess.Execute(this, param);
 
-            FileTagInfoEntity tagInfo = tagList.Find(t => t.Tag.Equals(tag, StringComparison.Ordinal));
+            var tagInfo = TagList.Find(t => t.Tag.Equals(tag, StringComparison.Ordinal));
             if (tagInfo != null)
             {
                 tagInfo.IsAll = true;
-                tagFlowList.Invalidate();
+                this.tagFlowList.Invalidate();
             }
             else
             {
                 tagInfo = new FileTagInfoEntity();
                 tagInfo.Tag = tag;
                 tagInfo.IsAll = true;
-                tagList.Add(tagInfo);
-                tagList.Sort((x, y) => x.Tag.CompareTo(y.Tag));
-                tagFlowList.ItemCount = tagList.Count;
+                this.TagList.Add(tagInfo);
+                this.TagList.Sort((x, y) => x.Tag.CompareTo(y.Tag));
+                this.tagFlowList.ItemCount = this.TagList.Count;
             }
         }
 
-        private void deleteTag(string tag)
+        private void DeleteTag(string tag)
         {
-            if (filePathList == null || tagList == null)
+            if (this.FilePathList == null || this.TagList == null)
             {
                 throw new NullReferenceException("ファイルの情報が存在しません。");
             }
@@ -358,32 +346,32 @@ namespace PicSum.UIComponent.InfoPanel
                 throw new Exception("タグがNULLまたは長さ0の文字列です。");
             }
 
-            if (tagList.Find(t => t.Tag.Equals(tag, StringComparison.Ordinal)) == null)
+            if (this.TagList.Find(t => t.Tag.Equals(tag, StringComparison.Ordinal)) == null)
             {
                 throw new Exception("リストに存在しないタグを指定しました。");
             }
 
-            UpdateFileTagParameter param = new UpdateFileTagParameter();
+            var param = new UpdateFileTagParameter();
             param.Tag = tag;
-            param.FilePathList = filePathList;
-            deleteFileTagProcess.Execute(this, param);
+            param.FilePathList = FilePathList;
+            this.DeleteFileTagProcess.Execute(this, param);
 
-            FileTagInfoEntity tagInfo = tagList.Find(t => t.Tag.Equals(tag, StringComparison.Ordinal));
-            tagList.Remove(tagInfo);
-            tagFlowList.ItemCount = tagList.Count;
+            var tagInfo = TagList.Find(t => t.Tag.Equals(tag, StringComparison.Ordinal));
+            this.TagList.Remove(tagInfo);
+            this.tagFlowList.ItemCount = TagList.Count;
         }
 
-        private void drawImageFileThumbnail(Graphics g, Image thumb, Rectangle rect)
+        private void DrawImageFileThumbnail(Graphics g, Image thumb, Rectangle rect)
         {
             ThumbnailUtil.DrawFileThumbnail(g, thumb, rect);
         }
 
-        private void drawDirectoryThumbnail(Graphics g, Image thumb, Rectangle rect)
+        private void DrawDirectoryThumbnail(Graphics g, Image thumb, Rectangle rect)
         {
             ThumbnailUtil.DrawDirectoryThumbnail(g, thumb, rect, FileIconCash.LargeDirectoryIcon);
         }
 
-        private void drawFileIcon(Graphics g, Image icon, Rectangle rect)
+        private void DrawFileIcon(Graphics g, Image icon, Rectangle rect)
         {
             var iconWidth = (float)icon.Width;
             var iconHeight = (float)icon.Height;
@@ -407,18 +395,16 @@ namespace PicSum.UIComponent.InfoPanel
             }
         }
 
-        private void drawSelectedFileCount(Graphics g, int count, Rectangle rect)
+        private void DrawSelectedFileCount(Graphics g, int count, Rectangle rect)
         {
-            using (SolidBrush sb = new SolidBrush(this.ForeColor))
+            using (var sb = new SolidBrush(this.ForeColor))
+            using (var sf = new StringFormat())
             {
-                using (StringFormat sf = new StringFormat())
-                {
-                    sf.Alignment = StringAlignment.Center;
-                    sf.LineAlignment = StringAlignment.Center;
-                    sf.Trimming = StringTrimming.EllipsisCharacter;
-                    string text = string.Format("Select {0} file", filePathList.Count);
-                    g.DrawString(text, this.Font, sb, rect, sf);
-                }
+                sf.Alignment = StringAlignment.Center;
+                sf.LineAlignment = StringAlignment.Center;
+                sf.Trimming = StringTrimming.EllipsisCharacter;
+                string text = string.Format("Select {0} file", FilePathList.Count);
+                g.DrawString(text, this.Font, sb, rect, sf);
             }
         }
 
@@ -426,49 +412,49 @@ namespace PicSum.UIComponent.InfoPanel
 
         #region プロセスイベント
 
-        private void getFileInfoProcess_Callback(object sender, GetFileDeepInfoResult e)
+        private void GetFileInfoProcess_Callback(object sender, GetFileDeepInfoResult e)
         {
-            clearInfo();
+            this.ClearInfo();
 
-            _fileInfoSource = e;
+            this.fileInfoSource = e;
 
-            if (fileInfo != null)
+            if (this.FileInfo != null)
             {
-                fileNameLabel.Text = fileInfo.FileName;
-                fileTypeLabel.Text = fileInfo.FileType;
+                this.fileNameLabel.Text = this.FileInfo.FileName;
+                this.fileTypeLabel.Text = this.FileInfo.FileType;
 
-                if (fileInfo.FileSize.HasValue)
+                if (this.FileInfo.FileSize.HasValue)
                 {
-                    fileSizeLabel.Text = FileUtil.ToSizeString(fileInfo.FileSize.Value);
-                    if (fileInfo.ImageSize.HasValue)
+                    this.fileSizeLabel.Text = FileUtil.ToSizeString(this.FileInfo.FileSize.Value);
+                    if (this.FileInfo.ImageSize.HasValue)
                     {
-                        fileSizeLabel.Text += string.Format(" ({0} x {1})", fileInfo.ImageSize.Value.Width, fileInfo.ImageSize.Value.Height);
+                        this.fileSizeLabel.Text += string.Format(" ({0} x {1})", this.FileInfo.ImageSize.Value.Width, this.FileInfo.ImageSize.Value.Height);
                     }
                 }
 
-                if (fileInfo.UpdateDate.HasValue)
+                if (this.FileInfo.UpdateDate.HasValue)
                 {
-                    fileUpdatedateLabel.Text = string.Format("Update Date {0:yyyy/MM/dd HH:mm:ss}", fileInfo.UpdateDate.Value);
+                    this.fileUpdatedateLabel.Text = string.Format("Update Date {0:yyyy/MM/dd HH:mm:ss}", this.FileInfo.UpdateDate.Value);
                 }
 
-                if (fileInfo.CreateDate.HasValue)
+                if (this.FileInfo.CreateDate.HasValue)
                 {
-                    fileCreateDateLabel.Text = string.Format("Creation Date {0:yyyy/MM/dd HH:mm:ss}", fileInfo.CreateDate.Value);
+                    this.fileCreateDateLabel.Text = string.Format("Creation Date {0:yyyy/MM/dd HH:mm:ss}", this.FileInfo.CreateDate.Value);
 
                 }
 
-                ratingBar.SetValue(fileInfo.Rating);
+                this.ratingBar.SetValue(this.FileInfo.Rating);
             }
 
-            if (tagList != null)
+            if (this.TagList != null)
             {
-                tagFlowList.ItemCount = tagList.Count;
+                this.tagFlowList.ItemCount = this.TagList.Count;
             }
 
-            thumbnailPictureBox.Invalidate();
+            this.thumbnailPictureBox.Invalidate();
         }
 
-        private void getTagListProcess_Callback(object sender, ListEntity<string> e)
+        private void GetTagListProcess_Callback(object sender, ListEntity<string> e)
         {
             this.wideComboBox.AddItems(e);
             this.wideComboBox.SelectItem();
@@ -478,34 +464,34 @@ namespace PicSum.UIComponent.InfoPanel
 
         #region サムネイルピクチャーボックスイベント
 
-        private void thumbnailPictureBox_Paint(object sender, PaintEventArgs e)
+        private void ThumbnailPictureBox_Paint(object sender, PaintEventArgs e)
         {
-           
-            if (thumbnail != null)
+
+            if (this.Thumbnail != null)
             {
-                int size = Math.Min(thumbnailPictureBox.Width, thumbnailPictureBox.Height);
-                int x = (int)(0 + (thumbnailPictureBox.Width - size) / 2d);
-                int y = (int)(0 + (thumbnailPictureBox.Height - size) / 2d);
-                Rectangle rect = new Rectangle(x, y, size, size);
-                if (fileInfo.IsFile)
+                var size = Math.Min(this.thumbnailPictureBox.Width, this.thumbnailPictureBox.Height);
+                var x = (int)(0 + (this.thumbnailPictureBox.Width - size) / 2d);
+                var y = (int)(0 + (this.thumbnailPictureBox.Height - size) / 2d);
+                var rect = new Rectangle(x, y, size, size);
+                if (this.FileInfo.IsFile)
                 {
-                    drawImageFileThumbnail(e.Graphics, thumbnail.ThumbnailImage, rect);
+                    this.DrawImageFileThumbnail(e.Graphics, this.Thumbnail.ThumbnailImage, rect);
                 }
                 else
                 {
-                    drawDirectoryThumbnail(e.Graphics, thumbnail.ThumbnailImage, rect);
+                    this.DrawDirectoryThumbnail(e.Graphics, this.Thumbnail.ThumbnailImage, rect);
                 }
             }
-            else if (fileInfo != null)
+            else if (this.FileInfo != null)
             {
                 const int margin = 32;
-                Rectangle rect = new Rectangle(margin, margin, thumbnailPictureBox.Width - margin * 2, thumbnailPictureBox.Height - margin * 2);
-                drawFileIcon(e.Graphics, fileInfo.FileIcon, rect);
+                var rect = new Rectangle(margin, margin, this.thumbnailPictureBox.Width - margin * 2, this.thumbnailPictureBox.Height - margin * 2);
+                this.DrawFileIcon(e.Graphics, this.FileInfo.FileIcon, rect);
             }
-            else if (filePathList != null)
+            else if (this.FilePathList != null)
             {
-                Rectangle rect = new Rectangle(0, 0, thumbnailPictureBox.Width, thumbnailPictureBox.Height);
-                drawSelectedFileCount(e.Graphics, filePathList.Count, rect);
+                var rect = new Rectangle(0, 0, this.thumbnailPictureBox.Width, this.thumbnailPictureBox.Height);
+                this.DrawSelectedFileCount(e.Graphics, this.FilePathList.Count, rect);
             }
         }
 
@@ -513,147 +499,147 @@ namespace PicSum.UIComponent.InfoPanel
 
         #region タグリストイベント
 
-        private void tagFlowList_DrawItem(object sender, SWF.UIComponent.FlowList.DrawItemEventArgs e)
+        private void TagFlowList_DrawItem(object sender, SWF.UIComponent.FlowList.DrawItemEventArgs e)
         {
-            if (tagList == null)
+            if (this.TagList == null)
             {
                 return;
             }
 
             if (e.IsSelected)
             {
-                e.Graphics.FillRectangle(tagFlowList.SelectedItemBrush, e.ItemRectangle);
-                e.Graphics.DrawRectangle(tagFlowList.SelectedItemPen, e.ItemRectangle);
+                e.Graphics.FillRectangle(this.tagFlowList.SelectedItemBrush, e.ItemRectangle);
+                e.Graphics.DrawRectangle(this.tagFlowList.SelectedItemPen, e.ItemRectangle);
             }
             else if (e.IsMousePoint)
             {
-                e.Graphics.FillRectangle(tagFlowList.MousePointItemBrush, e.ItemRectangle);
+                e.Graphics.FillRectangle(this.tagFlowList.MousePointItemBrush, e.ItemRectangle);
             }
 
-            FileTagInfoEntity item = tagList[e.ItemIndex];
+            var item = this.TagList[e.ItemIndex];
 
-            int iconSize = Math.Min(tagFlowList.ItemHeight, _tagIcon.Width);
+            var iconSize = Math.Min(this.tagFlowList.ItemHeight, tagIcon.Width);
 
-            int iconPoint = (int)((tagFlowList.ItemHeight - iconSize) / 2);
+            var iconPoint = (int)((this.tagFlowList.ItemHeight - iconSize) / 2);
 
-            Rectangle iconRect = new Rectangle(e.ItemRectangle.X + iconPoint,
-                                               e.ItemRectangle.Y + iconPoint,
-                                               iconSize,
-                                               iconSize);
+            var iconRect = new Rectangle(e.ItemRectangle.X + iconPoint,
+                                         e.ItemRectangle.Y + iconPoint,
+                                         iconSize,
+                                         iconSize);
 
-            e.Graphics.DrawImage(_tagIcon, iconRect);
+            e.Graphics.DrawImage(this.tagIcon, iconRect);
 
-            Rectangle textRect = new Rectangle(e.ItemRectangle.X + tagFlowList.ItemHeight,
-                                               e.ItemRectangle.Y,
-                                               e.ItemRectangle.Width - tagFlowList.ItemHeight,
-                                               e.ItemRectangle.Height);
+            var textRect = new Rectangle(e.ItemRectangle.X + this.tagFlowList.ItemHeight,
+                                         e.ItemRectangle.Y,
+                                         e.ItemRectangle.Width - this.tagFlowList.ItemHeight,
+                                         e.ItemRectangle.Height);
 
             e.Graphics.DrawString(item.Tag,
-                                  getTagFont(item),
-                                  tagFlowList.ItemTextBrush,
+                                  this.GetTagFont(item),
+                                  this.tagFlowList.ItemTextBrush,
                                   textRect,
-                                  tagFlowList.ItemTextFormat);
+                                  this.tagFlowList.ItemTextFormat);
         }
 
         #endregion
 
         #region 評価値バーイベント
 
-        private void ratingBar_RatingButtonMouseClick(object sender, MouseEventArgs e)
+        private void RatingBar_RatingButtonMouseClick(object sender, MouseEventArgs e)
         {
-            if (_fileInfoSource == null)
+            if (this.fileInfoSource == null)
             {
                 return;
             }
 
-            UpdateFileRatingParameter param = new UpdateFileRatingParameter();
-            param.FilePathList = _fileInfoSource.FilePathList;
-            param.RatingValue = ratingBar.Value;
-            updateFileRatingProcess.Execute(this, param);
+            var param = new UpdateFileRatingParameter();
+            param.FilePathList = this.fileInfoSource.FilePathList;
+            param.RatingValue = this.ratingBar.Value;
+            this.UpdateFileRatingProcess.Execute(this, param);
         }
 
         #endregion
 
         #region タグコンテキストメニューイベント
 
-        private void tagContextMenuStrip_Opening(object sender, CancelEventArgs e)
+        private void TagContextMenuStrip_Opening(object sender, CancelEventArgs e)
         {
-            Point p = tagFlowList.PointToClient(Cursor.Position);
-            int index = tagFlowList.IndexFromPoint(p.X, p.Y);
+            var p = this.tagFlowList.PointToClient(Cursor.Position);
+            var index = this.tagFlowList.IndexFromPoint(p.X, p.Y);
             if (index < 0)
             {
                 e.Cancel = true;
                 return;
             }
 
-            FileTagInfoEntity tagInfo = tagList[index];
-            tagToAllEntryMenuItem.Visible = !tagInfo.IsAll;
-            _contextMenuOperationTag = tagInfo.Tag;
+            var tagInfo = this.TagList[index];
+            this.tagToAllEntryMenuItem.Visible = !tagInfo.IsAll;
+            this.contextMenuOperationTag = tagInfo.Tag;
         }
 
-        private void tagDeleteMenuItem_Click(object sender, EventArgs e)
+        private void TagDeleteMenuItem_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(_contextMenuOperationTag))
+            if (string.IsNullOrEmpty(this.contextMenuOperationTag))
             {
                 return;
             }
 
-            deleteTag(_contextMenuOperationTag);
+            this.DeleteTag(this.contextMenuOperationTag);
         }
 
-        private void tagToAllEntryMenuItem_Click(object sender, EventArgs e)
+        private void TagToAllEntryMenuItem_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(_contextMenuOperationTag))
+            if (string.IsNullOrEmpty(this.contextMenuOperationTag))
             {
                 return;
             }
 
-            addTag(_contextMenuOperationTag);
+            this.AddTag(this.contextMenuOperationTag);
         }
 
-        private void tagFlowList_MouseDoubleClick(object sender, MouseEventArgs e)
+        private void TagFlowList_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            var p = tagFlowList.PointToClient(Cursor.Position);
-            int index = tagFlowList.IndexFromPoint(p.X, p.Y);
+            var p = this.tagFlowList.PointToClient(Cursor.Position);
+            int index = this.tagFlowList.IndexFromPoint(p.X, p.Y);
             if (index < 0)
             {
                 return;
             }
 
-            var tagInfo = tagList[index];
-            OnSelectedTag(new SelectedTagEventArgs(ContentsOpenType.OverlapTab, tagInfo.Tag));
+            var tagInfo = this.TagList[index];
+            this.OnSelectedTag(new SelectedTagEventArgs(ContentsOpenType.OverlapTab, tagInfo.Tag));
         }
 
-        private void tagFlowList_MouseClick(object sender, MouseEventArgs e)
+        private void TagFlowList_MouseClick(object sender, MouseEventArgs e)
         {
             if (e.Button != MouseButtons.Middle)
             {
                 return;
             }
 
-            var p = tagFlowList.PointToClient(Cursor.Position);
-            int index = tagFlowList.IndexFromPoint(p.X, p.Y);
+            var p = this.tagFlowList.PointToClient(Cursor.Position);
+            var index = this.tagFlowList.IndexFromPoint(p.X, p.Y);
             if (index < 0)
             {
                 return;
             }
 
-            var tagInfo = tagList[index];
-            OnSelectedTag(new SelectedTagEventArgs(ContentsOpenType.AddTab, tagInfo.Tag));
+            var tagInfo = this.TagList[index];
+            this.OnSelectedTag(new SelectedTagEventArgs(ContentsOpenType.AddTab, tagInfo.Tag));
         }
 
         #endregion
 
         #region ワイドコンボボックスイベント
 
-        private void wideComboBox_DropDownOpening(object sender, DropDownOpeningEventArgs e)
+        private void WideComboBox_DropDownOpening(object sender, DropDownOpeningEventArgs e)
         {
-            this.getTagListProcess.Execute(this);
+            this.GetTagListProcess.Execute(this);
         }
 
-        private void wideComboBox_AddItem(object sender, AddItemEventArgs e)
+        private void WideComboBox_AddItem(object sender, AddItemEventArgs e)
         {
-            if (this.filePathList == null || this.tagList == null)
+            if (this.FilePathList == null || this.TagList == null)
             {
                 return;
             }
@@ -663,12 +649,12 @@ namespace PicSum.UIComponent.InfoPanel
                 return;
             }
 
-            if (tagList.FirstOrDefault(t => t.Tag.Equals(e.Item, StringComparison.Ordinal) && t.IsAll) != null)
+            if (this.TagList.FirstOrDefault(t => t.Tag.Equals(e.Item, StringComparison.Ordinal) && t.IsAll) != null)
             {
                 return;
             }
 
-            this.addTag(e.Item);
+            this.AddTag(e.Item);
         }
 
         #endregion

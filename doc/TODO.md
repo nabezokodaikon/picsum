@@ -18,6 +18,7 @@
 * `PicSum.UIComponent.AddressBar`
 * `PicSum.UIComponent.Common`
 * `PicSum.UIComponent.Contents`
+* `PicSum.UIComponent.InfoPanel`
 ## エラーハンドリング
 * `DatabaseException`を作成する。
 * 画像ファイルへのアクセスを、`ImageUtil`に集約する。

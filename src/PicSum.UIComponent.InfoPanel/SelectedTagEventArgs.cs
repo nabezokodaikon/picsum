@@ -3,7 +3,7 @@ using System;
 
 namespace PicSum.UIComponent.InfoPanel
 {
-    public class SelectedTagEventArgs
+    public sealed class SelectedTagEventArgs
         : EventArgs
     {
         public ContentsOpenType OpenType { get; private set; }

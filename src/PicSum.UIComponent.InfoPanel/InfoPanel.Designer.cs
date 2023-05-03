@@ -58,7 +58,7 @@
             this.thumbnailPictureBox.TabIndex = 0;
             this.thumbnailPictureBox.TabStop = false;
             this.thumbnailPictureBox.Text = "thumbnailPictureBox1";
-            this.thumbnailPictureBox.Paint += new System.Windows.Forms.PaintEventHandler(this.thumbnailPictureBox_Paint);
+            this.thumbnailPictureBox.Paint += new System.Windows.Forms.PaintEventHandler(this.ThumbnailPictureBox_Paint);
             // 
             // panel1
             // 
@@ -143,21 +143,21 @@
             this.tagToAllEntryMenuItem});
             this.tagContextMenuStrip.Name = "tagContextMenuStrip";
             this.tagContextMenuStrip.Size = new System.Drawing.Size(181, 52);
-            this.tagContextMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.tagContextMenuStrip_Opening);
+            this.tagContextMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.TagContextMenuStrip_Opening);
             // 
             // tagDeleteMenuItem
             // 
             this.tagDeleteMenuItem.Name = "tagDeleteMenuItem";
             this.tagDeleteMenuItem.Size = new System.Drawing.Size(180, 24);
             this.tagDeleteMenuItem.Text = "Remove Tag";
-            this.tagDeleteMenuItem.Click += new System.EventHandler(this.tagDeleteMenuItem_Click);
+            this.tagDeleteMenuItem.Click += new System.EventHandler(this.TagDeleteMenuItem_Click);
             // 
             // tagToAllEntryMenuItem
             // 
             this.tagToAllEntryMenuItem.Name = "tagToAllEntryMenuItem";
             this.tagToAllEntryMenuItem.Size = new System.Drawing.Size(180, 24);
             this.tagToAllEntryMenuItem.Text = "Apply Tag to All";
-            this.tagToAllEntryMenuItem.Click += new System.EventHandler(this.tagToAllEntryMenuItem_Click);
+            this.tagToAllEntryMenuItem.Click += new System.EventHandler(this.TagToAllEntryMenuItem_Click);
             // 
             // ratingBar
             // 
@@ -170,7 +170,7 @@
             this.ratingBar.Name = "ratingBar";
             this.ratingBar.Size = new System.Drawing.Size(512, 58);
             this.ratingBar.TabIndex = 15;
-            this.ratingBar.RatingButtonMouseClick += new System.EventHandler<System.Windows.Forms.MouseEventArgs>(this.ratingBar_RatingButtonMouseClick);
+            this.ratingBar.RatingButtonMouseClick += new System.EventHandler<System.Windows.Forms.MouseEventArgs>(this.RatingBar_RatingButtonMouseClick);
             // 
             // tagFlowList
             // 
@@ -191,9 +191,9 @@
             this.tagFlowList.Size = new System.Drawing.Size(512, 191);
             this.tagFlowList.TabIndex = 16;
             this.tagFlowList.Text = "flowList1";
-            this.tagFlowList.DrawItem += new System.EventHandler<SWF.UIComponent.FlowList.DrawItemEventArgs>(this.tagFlowList_DrawItem);
-            this.tagFlowList.MouseClick += new System.Windows.Forms.MouseEventHandler(this.tagFlowList_MouseClick);
-            this.tagFlowList.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.tagFlowList_MouseDoubleClick);
+            this.tagFlowList.DrawItem += new System.EventHandler<SWF.UIComponent.FlowList.DrawItemEventArgs>(this.TagFlowList_DrawItem);
+            this.tagFlowList.MouseClick += new System.Windows.Forms.MouseEventHandler(this.TagFlowList_MouseClick);
+            this.tagFlowList.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.TagFlowList_MouseDoubleClick);
             // 
             // wideComboBox
             // 
@@ -206,8 +206,8 @@
             this.wideComboBox.Name = "wideComboBox";
             this.wideComboBox.Size = new System.Drawing.Size(508, 38);
             this.wideComboBox.TabIndex = 27;
-            this.wideComboBox.DropDownOpening += new System.EventHandler<SWF.UIComponent.WideDropDown.DropDownOpeningEventArgs>(this.wideComboBox_DropDownOpening);
-            this.wideComboBox.AddItem += new System.EventHandler<SWF.UIComponent.WideDropDown.AddItemEventArgs>(this.wideComboBox_AddItem);
+            this.wideComboBox.DropDownOpening += new System.EventHandler<SWF.UIComponent.WideDropDown.DropDownOpeningEventArgs>(this.WideComboBox_DropDownOpening);
+            this.wideComboBox.AddItem += new System.EventHandler<SWF.UIComponent.WideDropDown.AddItemEventArgs>(this.WideComboBox_AddItem);
             // 
             // InfoPanel
             // 
