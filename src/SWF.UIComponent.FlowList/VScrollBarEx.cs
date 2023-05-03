@@ -5,7 +5,8 @@ namespace SWF.UIComponent.FlowList
     /// <summary>
     /// 垂直スクロールバー拡張
     /// </summary>
-    internal class VScrollBarEx : VScrollBar
+    internal sealed class VScrollBarEx 
+        : VScrollBar
     {
         /// <summary>
         /// 最大値
@@ -14,15 +15,15 @@ namespace SWF.UIComponent.FlowList
         {
             get
             {
-                return base.Maximum - getMargin();
+                return base.Maximum - this.GetMargin();
             }
             set
             {
-                base.Maximum = value + getMargin();
+                base.Maximum = value + this.GetMargin();
             }
         }
 
-        private int getMargin()
+        private int GetMargin()
         {
             return this.LargeChange - 1;
         }

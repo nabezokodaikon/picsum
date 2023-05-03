@@ -20,6 +20,7 @@
 * `PicSum.UIComponent.Contents`
 * `PicSum.UIComponent.InfoPanel`
 * `SWF.Common`
+* `SWF.UIComponent.FlowList`
 ## エラーハンドリング
 * `DatabaseException`を作成する。
 * 画像ファイルへのアクセスを、`ImageUtil`に集約する。

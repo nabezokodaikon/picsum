@@ -5,104 +5,47 @@ namespace SWF.UIComponent.FlowList
     /// <summary>
     /// 描画パラメータ
     /// </summary>
-    internal class DrawParameter
+    internal sealed class DrawParameter
     {
-        private int _rowCount = 0;
-        private int _colCount = 0;
-        private int _drawFirstRow = -1;
-        private int _drawLastRow = -1;
-        private int _drawFirstItemIndex = -1;
-        private int _drawLastItemIndex = -1;
-        private int _itemSideSpace = 0;
-        private int _scrollBarMaximum = 0;
-
         /// <summary>
         /// 行数
         /// </summary>
-        public int RowCount
-        {
-            get
-            {
-                return _rowCount;
-            }
-        }
+        public int RowCount { get; private set; }
 
         /// <summary>
         /// 列数
         /// </summary>
-        public int ColCount
-        {
-            get
-            {
-                return _colCount;
-            }
-        }
+        public int ColCount { get; private set; }
 
         /// <summary>
         /// 描画する最初の行
         /// </summary>
-        public int DrawFirstRow
-        {
-            get
-            {
-                return _drawFirstRow;
-            }
-        }
+        public int DrawFirstRow { get; private set; }
 
         /// <summary>
         /// 描画する最後の行
         /// </summary>
-        public int DrawLastRow
-        {
-            get
-            {
-                return _drawLastRow;
-            }
-        }
+        public int DrawLastRow { get; private set; }
 
         /// <summary>
         /// 描画する最初の項目インデックス
         /// </summary>
-        public int DrawFirstItemIndex
-        {
-            get
-            {
-                return _drawFirstItemIndex;
-            }
-        }
+        public int DrawFirstItemIndex { get; private set; }
 
         /// <summary>
         /// 描画する最後の項目インデックス
         /// </summary>
-        public int DrawLastItemIndex
-        {
-            get
-            {
-                return _drawLastItemIndex;
-            }
-        }
+        public int DrawLastItemIndex { get; private set; }
 
         /// <summary>
         /// 項目間の横スペース
         /// </summary>
-        public int ItemSideSpace
-        {
-            get
-            {
-                return _itemSideSpace;
-            }
-        }
+        public int ItemSideSpace { get; private set; }
 
         /// <summary>
         /// スクロールバー最大値
         /// </summary>
-        public int ScrollBarMaximum
-        {
-            get
-            {
-                return _scrollBarMaximum;
-            }
-        }
+        public int ScrollBarMaximum { get; private set; }
 
         /// <summary>
         /// コンストラクタ
@@ -129,47 +72,47 @@ namespace SWF.UIComponent.FlowList
         {
             if (rowCount < 1)
             {
-                throw new ArgumentException("行数が1未満です。", "rowCount");
+                throw new ArgumentException("行数が1未満です。", nameof(rowCount));
             }
 
             if (colCount < 1)
             {
-                throw new ArgumentException("列数が1未満です。", "colCount");
+                throw new ArgumentException("列数が1未満です。", nameof(colCount));
             }
 
             if (drawFirstRow < 0)
             {
-                throw new ArgumentException("描画する最初の行が0未満です。", "drawFirstRow");
+                throw new ArgumentException("描画する最初の行が0未満です。", nameof(drawFirstRow));
             }
 
             if (drawLastRow < 0)
             {
-                throw new ArgumentException("描画する最後の行が0未満です。", "drawLastRow");
+                throw new ArgumentException("描画する最後の行が0未満です。", nameof(drawLastRow));
             }
 
             if (drawFirstItemIndex < 0)
             {
-                throw new ArgumentException("描画する最初の項目インデックスが0未満です。", "drawFirstItemIndex");
+                throw new ArgumentException("描画する最初の項目インデックスが0未満です。", nameof(drawFirstItemIndex));
             }
 
             if (drawLastItemIndex < 0)
             {
-                throw new ArgumentException("描画する最後の項目インデックスが0未満です。", "drawLastItemIndex");
+                throw new ArgumentException("描画する最後の項目インデックスが0未満です。", nameof(drawLastItemIndex));
             }
 
             if (itemSideSpace < 0)
             {
-                throw new ArgumentException("項目間の横スペースが0未満です。", "itemSideSpace");
+                throw new ArgumentException("項目間の横スペースが0未満です。", nameof(itemSideSpace));
             }
 
-            _rowCount = rowCount;
-            _colCount = colCount;
-            _drawFirstRow = drawFirstRow;
-            _drawLastRow = drawLastRow;
-            _drawFirstItemIndex = drawFirstItemIndex;
-            _drawLastItemIndex = drawLastItemIndex;
-            _itemSideSpace = itemSideSpace;
-            _scrollBarMaximum = scrollBarMaximum;
+            this.RowCount = rowCount;
+            this.ColCount = colCount;
+            this.DrawFirstRow = drawFirstRow;
+            this.DrawLastRow = drawLastRow;
+            this.DrawFirstItemIndex = drawFirstItemIndex;
+            this.DrawLastItemIndex = drawLastItemIndex;
+            this.ItemSideSpace = itemSideSpace;
+            this.ScrollBarMaximum = scrollBarMaximum;
         }
     }
 }

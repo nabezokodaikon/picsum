@@ -11,8 +11,8 @@ namespace SWF.UIComponent.FlowList
         /// <returns></returns>
         public static int ToRoundDown(double dValue)
         {
-            double dCoef = Math.Pow(10, 0);
-            double result = dValue > 0 ? Math.Floor(dValue * dCoef) / dCoef : Math.Ceiling(dValue * dCoef) / dCoef;
+            var dCoef = Math.Pow(10, 0);
+            var result = dValue > 0 ? Math.Floor(dValue * dCoef) / dCoef : Math.Ceiling(dValue * dCoef) / dCoef;
             return (int)result;
         }
 
@@ -23,8 +23,8 @@ namespace SWF.UIComponent.FlowList
         /// <returns></returns>
         public static int ToRoundUp(double dValue)
         {
-            double dCoef = Math.Pow(10, 0);
-            double result = dValue > 0 ? Math.Ceiling(dValue * dCoef) / dCoef : Math.Floor(dValue * dCoef) / dCoef;
+            var dCoef = Math.Pow(10, 0);
+            var result = dValue > 0 ? Math.Ceiling(dValue * dCoef) / dCoef : Math.Floor(dValue * dCoef) / dCoef;
             return (int)result;
         }
     }

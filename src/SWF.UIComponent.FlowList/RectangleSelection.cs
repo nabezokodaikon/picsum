@@ -6,22 +6,22 @@ namespace SWF.UIComponent.FlowList
     /// <summary>
     /// 短形選択クラス
     /// </summary>
-    internal class RectangleSelection
+    internal sealed class RectangleSelection
     {
-        private bool _isUse = false;
-        private bool _isBegun = false;
-        private Point _drawFromPoint = Point.Empty;
-        private Rectangle _virtualRectangle = Rectangle.Empty;
+        private bool isUse = false;
+        private bool isBegun = false;
+        private Point drawFromPoint = Point.Empty;
+        private Rectangle virtualRectangle = Rectangle.Empty;
 
         public bool IsUse
         {
             get
             {
-                return _isUse;
+                return this.isUse;
             }
             set
             {
-                _isUse = value;
+                this.isUse = value;
             }
         }
 
@@ -29,7 +29,7 @@ namespace SWF.UIComponent.FlowList
         {
             get
             {
-                return _isBegun;
+                return this.isBegun;
             }
         }
 
@@ -37,48 +37,48 @@ namespace SWF.UIComponent.FlowList
         {
             get
             {
-                return _virtualRectangle;
+                return this.virtualRectangle;
             }
         }
 
         public Rectangle GetDrawRectangle(int scrollValue)
         {
-            return new Rectangle(_virtualRectangle.X,
-                                 _virtualRectangle.Y - scrollValue,
-                                 _virtualRectangle.Width,
-                                 _virtualRectangle.Height);
+            return new Rectangle(this.virtualRectangle.X,
+                                 this.virtualRectangle.Y - scrollValue,
+                                 this.virtualRectangle.Width,
+                                 this.virtualRectangle.Height);
         }
 
         public void BeginSelection(int drawX, int drawY, int scrollValue)
         {
-            if (!_isUse)
+            if (!this.isUse)
             {
                 return;
             }
 
-            if (_isBegun)
+            if (this.isBegun)
             {
-                throw new Exception("短形選択は開始されています。");
+                throw new InvalidOperationException("短形選択は開始されています。");
             }
 
-            _drawFromPoint = new Point(drawX, drawY + scrollValue);
-            _isBegun = true;
+            this.drawFromPoint = new Point(drawX, drawY + scrollValue);
+            this.isBegun = true;
         }
 
         public void ChangeSelection(int drawX, int drawY, int scrollValue)
         {
-            int x = Math.Min(_drawFromPoint.X, drawX);
-            int y = Math.Min(_drawFromPoint.Y, drawY + scrollValue);
-            int w = Math.Abs(_drawFromPoint.X - drawX);
-            int h = Math.Abs(_drawFromPoint.Y - (drawY + scrollValue));
-            _virtualRectangle = new Rectangle(x, y, w, h);
+            var x = Math.Min(this.drawFromPoint.X, drawX);
+            var y = Math.Min(this.drawFromPoint.Y, drawY + scrollValue);
+            var w = Math.Abs(this.drawFromPoint.X - drawX);
+            var h = Math.Abs(this.drawFromPoint.Y - (drawY + scrollValue));
+            this.virtualRectangle = new Rectangle(x, y, w, h);
         }
 
         public void EndSelection()
         {
-            _drawFromPoint = Point.Empty;
-            _virtualRectangle = Rectangle.Empty;
-            _isBegun = false;
+            this.drawFromPoint = Point.Empty;
+            this.virtualRectangle = Rectangle.Empty;
+            this.isBegun = false;
         }
     }
 }

@@ -6,116 +6,52 @@ namespace SWF.UIComponent.FlowList
     /// <summary>
     /// 座標情報
     /// </summary>
-    internal class HitTestInfo
+    internal sealed class HitTestInfo
     {
-        private int _itemIndex = -1;
-        private int _row = -1;
-        private int _col = -1;
-        private Rectangle _virtualRectangle = Rectangle.Empty;
-        private Rectangle _drawRectangle = Rectangle.Empty;
-        private bool _isItem = false;
-        private bool _isSelected = false;
-        private bool _isMousePoint = false;
-        private bool _isFocus = false;
-
         /// <summary>
         /// 項目のインデックス
         /// </summary>
-        public int ItemIndex
-        {
-            get
-            {
-                return _itemIndex;
-            }
-        }
+        public int ItemIndex { get; private set; }
 
         /// <summary>
         /// 項目の行
         /// </summary>
-        public int Row
-        {
-            get
-            {
-                return _row;
-            }
-        }
+        public int Row { get; private set; }
 
         /// <summary>
         /// 項目の列ス
         /// </summary>
-        public int Col
-        {
-            get
-            {
-                return _col;
-            }
-        }
+        public int Col { get; private set; }
 
         /// <summary>
         /// 項目の仮想領域
         /// </summary>
-        public Rectangle VirtualRectangle
-        {
-            get
-            {
-                return _virtualRectangle;
-            }
-        }
+        public Rectangle VirtualRectangle { get; private set; }
 
         /// <summary>
         /// 項目の描画領域
         /// </summary>
-        public Rectangle DrawRectangle
-        {
-            get
-            {
-                return _drawRectangle;
-            }
-        }
+        public Rectangle DrawRectangle { get; private set; }
 
         /// <summary>
         /// 項目であるか、そうでないかを表します。
         /// </summary>
-        public bool IsItem
-        {
-            get
-            {
-                return _isItem;
-            }
-        }
+        public bool IsItem { get; private set; }
 
         /// <summary>
         /// 項目が選択されているか、されていないかを表します。
         /// </summary>
-        public bool IsSelected
-        {
-            get
-            {
-                return _isSelected;
-            }
-        }
+        public bool IsSelected { get; private set; }
 
         /// <summary>
         /// 項目がマウスポイントされているか、されていないかを表します。
         /// </summary>
-        public bool IsMousePoint
-        {
-            get
-            {
-                return _isMousePoint;
-            }
-        }
+        public bool IsMousePoint { get; private set; }
 
         /// <summary>
         /// 項目がフォーカスされているか、されていないかを表します。
         /// </summary>
-        public bool IsFocus
-        {
-            get
-            {
-                return _isFocus;
-            }
-        }
+        public bool IsFocus { get; private set; }
 
         /// <summary>
         /// コンストラクタ
@@ -139,28 +75,28 @@ namespace SWF.UIComponent.FlowList
         {
             if (itemIndex < 0)
             {
-                throw new ArgumentException("項目のインデックスが0未満です。", "itemIndex");
+                throw new ArgumentException("項目のインデックスが0未満です。", nameof(itemIndex));
             }
 
             if (row < 0)
             {
-                throw new ArgumentException("項目の行が0未満です。", "row");
+                throw new ArgumentException("項目の行が0未満です。", nameof(row));
             }
 
             if (col < 0)
             {
-                throw new ArgumentException("項目の列が0未満です。", "col");
+                throw new ArgumentException("項目の列が0未満です。", nameof(col));
             }
 
-            _itemIndex = itemIndex;
-            _row = row;
-            _col = col;
-            _virtualRectangle = virtualRectangle;
-            _drawRectangle = drawRectangle;
-            _isItem = isItem;
-            _isSelected = isSelected;
-            _isMousePoint = isMousePoint;
-            _isFocus = isFocus;
+            this.ItemIndex = itemIndex;
+            this.Row = row;
+            this.Col = col;
+            this.VirtualRectangle = virtualRectangle;
+            this.DrawRectangle = drawRectangle;
+            this.IsItem = isItem;
+            this.IsSelected = isSelected;
+            this.IsMousePoint = isMousePoint;
+            this.IsFocus = isFocus;
         }
     }
 }

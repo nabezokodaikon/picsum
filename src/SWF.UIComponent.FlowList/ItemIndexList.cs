@@ -7,151 +7,151 @@ namespace SWF.UIComponent.FlowList
     /// <summary>
     /// 選択項目インデックスリスト
     /// </summary>
-    internal class ItemIndexList
+    internal sealed class ItemIndexList
     {
         public event EventHandler Change;
 
-        private readonly List<int> _list = new List<int>();
-        private List<int> _beforeList = null;
+        private readonly List<int> list = new List<int>();
+        private List<int> beforeList = null;
 
         public int Count
         {
             get
             {
-                return _list.Count;
+                return this.list.Count;
             }
         }
 
         public IList<int> GetList()
         {
-            List<int> list = new List<int>(_list.ToArray());
+            var list = new List<int>(this.list.ToArray());
             list.Sort();
             return list;
         }
 
         public bool Contains(int itemIndex)
         {
-            return _list.Contains(itemIndex);
+            return this.list.Contains(itemIndex);
         }
 
         public void Add(int itemIndex)
         {
-            if (_list.Contains(itemIndex))
+            if (this.list.Contains(itemIndex))
             {
                 throw new ArgumentException("既に存在する項目を追加しようとしました。");
             }
 
-            _list.Add(itemIndex);
+            this.list.Add(itemIndex);
         }
 
         public void AddRange(int itemIndex)
         {
-            if (_list.Count > 0)
+            if (this.list.Count > 0)
             {
-                int min = _list.Min();
-                int max = _list.Max();
+                var min = this.list.Min();
+                var max = this.list.Max();
                 if (itemIndex < min)
                 {
-                    for (int index = itemIndex; index <= max; index++)
+                    for (var index = itemIndex; index <= max; index++)
                     {
-                        if (!_list.Contains(index))
+                        if (!this.list.Contains(index))
                         {
-                            _list.Add(index);
+                            this.list.Add(index);
                         }
                     }
                 }
                 else if (itemIndex > max)
                 {
-                    for (int index = min; index <= itemIndex; index++)
+                    for (var index = min; index <= itemIndex; index++)
                     {
-                        if (!_list.Contains(index))
+                        if (!this.list.Contains(index))
                         {
-                            _list.Add(index);
+                            this.list.Add(index);
                         }
                     }
                 }
             }
             else
             {
-                _list.Add(itemIndex);
+                this.list.Add(itemIndex);
             }
         }
 
         public void Remove(int itemIndex)
         {
-            if (!_list.Contains(itemIndex))
+            if (!this.list.Contains(itemIndex))
             {
                 throw new ArgumentException("存在しない項目を削除しようとしました。");
             }
 
-            _list.Remove(itemIndex);
+            this.list.Remove(itemIndex);
         }
 
         public void Union(ItemIndexList other)
         {
-            bool isChange = false;
+            var isChange = false;
 
-            foreach (int itemIndex in other.GetList())
+            foreach (var itemIndex in other.GetList())
             {
-                if (!_list.Contains(itemIndex))
+                if (!this.list.Contains(itemIndex))
                 {
-                    _list.Add(itemIndex);
+                    this.list.Add(itemIndex);
                     isChange = true;
                 }
             }
 
             if (isChange)
             {
-                OnChange(new EventArgs());
+                this.OnChange(new EventArgs());
             }
         }
 
         public void Clear()
         {
-            _list.Clear();
+            this.list.Clear();
         }
 
         public void BeginUpdate()
         {
-            if (_beforeList != null)
+            if (this.beforeList != null)
             {
-                throw new Exception("既に更新中です。");
+                throw new InvalidOperationException("既に更新中です。");
             }
 
-            _beforeList = new List<int>(_list.ToArray());
+            this.beforeList = new List<int>(list.ToArray());
         }
 
         public void EndUpdate()
         {
-            if (_beforeList == null)
+            if (this.beforeList == null)
             {
-                throw new Exception("更新中ではありません。");
+                throw new InvalidOperationException("更新中ではありません。");
             }
 
-            if (_beforeList.Count != _list.Count)
+            if (this.beforeList.Count != list.Count)
             {
-                OnChange(new EventArgs());
+                this.OnChange(new EventArgs());
             }
             else
             {
-                for (int i = 0; i < _list.Count; i++)
+                for (var i = 0; i < list.Count; i++)
                 {
-                    if (_beforeList[i] != _list[i])
+                    if (this.beforeList[i] != list[i])
                     {
-                        OnChange(new EventArgs());
+                        this.OnChange(new EventArgs());
                         break;
                     }
                 }
             }
 
-            _beforeList = null;
+            this.beforeList = null;
         }
 
-        protected virtual void OnChange(EventArgs e)
+        private void OnChange(EventArgs e)
         {
-            if (Change != null)
+            if (this.Change != null)
             {
-                Change(this, e);
+                this.Change(this, e);
             }
         }
     }

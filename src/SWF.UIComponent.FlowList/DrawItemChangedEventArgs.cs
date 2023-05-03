@@ -2,32 +2,18 @@
 
 namespace SWF.UIComponent.FlowList
 {
-    public class DrawItemChangedEventArgs : EventArgs
+    public sealed class DrawItemChangedEventArgs
+        : EventArgs
     {
-        private int _drawFirstItemIndex = -1;
-        private int _drawLastItemIndex = -1;
-
         /// <summary>
         /// 描画する最初の項目インデックス
         /// </summary>
-        public int DrawFirstItemIndex
-        {
-            get
-            {
-                return _drawFirstItemIndex;
-            }
-        }
+        public int DrawFirstItemIndex { get; private set; }
 
         /// <summary>
         /// 描画する最後の項目インデックス
         /// </summary>
-        public int DrawLastItemIndex
-        {
-            get
-            {
-                return _drawLastItemIndex;
-            }
-        }
+        public int DrawLastItemIndex { get; private set; }
 
         /// <summary>
         /// コンストラクタ
@@ -36,8 +22,8 @@ namespace SWF.UIComponent.FlowList
         /// <param name="drawLastItemIndex"></param>
         public DrawItemChangedEventArgs(int drawFirstItemIndex, int drawLastItemIndex)
         {
-            _drawFirstItemIndex = drawFirstItemIndex;
-            _drawLastItemIndex = drawLastItemIndex;
+            this.DrawFirstItemIndex = drawFirstItemIndex;
+            this.DrawLastItemIndex = drawLastItemIndex;
         }
     }
 }

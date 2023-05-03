@@ -9,30 +9,20 @@ namespace SWF.UIComponent.FlowList
     /// <summary>
     /// フローリストコントロール
     /// </summary>
-    public partial class FlowList
+    public sealed partial class FlowList
     {
         #region イベント・デリゲート
 
         public event EventHandler<DrawItemEventArgs> DrawItem;
-
         public event EventHandler<DrawItemChangedEventArgs> DrawItemChanged;
-
         public event EventHandler SelectedItemChanged;
-
         public event EventHandler<MouseEventArgs> ItemMouseClick;
-
         public event EventHandler<MouseEventArgs> ItemMouseDoubleClick;
-
         public event EventHandler<MouseEventArgs> BackgroundMouseClick;
-
         public event EventHandler ItemExecute;
-
         public event EventHandler ItemDelete;
-
         public event EventHandler ItemCopy;
-
         public event EventHandler ItemCut;
-
         public event EventHandler DragStart;
 
         #endregion
@@ -48,7 +38,7 @@ namespace SWF.UIComponent.FlowList
         {
             get
             {
-                return _scrollBar.Width;
+                return this.scrollBar.Width;
             }
         }
 
@@ -59,7 +49,7 @@ namespace SWF.UIComponent.FlowList
         {
             get
             {
-                return _scrollBar.Visible;
+                return this.scrollBar.Visible;
             }
         }
 
@@ -71,30 +61,30 @@ namespace SWF.UIComponent.FlowList
         {
             get
             {
-                return _itemCount;
+                return this.itemCount;
             }
             set
             {
                 if (value < 0)
                 {
-                    throw new ArgumentOutOfRangeException("value");
+                    throw new ArgumentOutOfRangeException(nameof(value));
                 }
 
-                if (_rectangleSelection.IsBegun)
+                if (this.rectangleSelection.IsBegun)
                 {
-                    _rectangleSelection.EndSelection();
+                    this.rectangleSelection.EndSelection();
                 }
 
-                _selectedItemIndexs.Clear();
+                this.selectedItemIndexs.Clear();
 
-                _mousePointItemIndex = -1;
+                this.mousePointItemIndex = -1;
 
-                if (_foucusItemIndex > value - 1)
+                if (this.foucusItemIndex > value - 1)
                 {
-                    _foucusItemIndex = -1;
+                    this.foucusItemIndex = -1;
                 }
 
-                _itemCount = value;
+                this.itemCount = value;
 
                 this.Invalidate();
             }
@@ -103,26 +93,26 @@ namespace SWF.UIComponent.FlowList
         /// <summary>
         /// 項目幅
         /// </summary>
-        [Category("項目表示"), DefaultValue(MinimumItemSize)]
+        [Category("項目表示"), DefaultValue(MINIMUM_ITEM_SIZE)]
         public int ItemWidth
         {
             get
             {
-                return _itemWidth;
+                return this.itemWidth;
             }
             set
             {
-                if (_rectangleSelection.IsBegun)
+                if (this.rectangleSelection.IsBegun)
                 {
-                    throw new Exception("短形選択中は設定できません。");
+                    throw new InvalidOperationException("短形選択中は設定できません。");
                 }
 
-                if (value < MinimumItemSize || MaximumItemSize < value)
+                if (value < MINIMUM_ITEM_SIZE || MAXIMUM_ITEM_SIZE < value)
                 {
-                    throw new ArgumentOutOfRangeException("value");
+                    throw new ArgumentOutOfRangeException(nameof(value));
                 }
 
-                _itemWidth = value;
+                this.itemWidth = value;
 
                 this.Invalidate();
             }
@@ -131,26 +121,26 @@ namespace SWF.UIComponent.FlowList
         /// <summary>
         /// 項目高さ
         /// </summary>
-        [Category("項目表示"), DefaultValue(MinimumItemSize)]
+        [Category("項目表示"), DefaultValue(MINIMUM_ITEM_SIZE)]
         public int ItemHeight
         {
             get
             {
-                return _itemHeight;
+                return this.itemHeight;
             }
             set
             {
-                if (_rectangleSelection.IsBegun)
+                if (this.rectangleSelection.IsBegun)
                 {
-                    throw new Exception("短形選択中は設定できません。");
+                    throw new InvalidOperationException("短形選択中は設定できません。");
                 }
 
-                if (value < MinimumItemSize || MaximumItemSize < value)
+                if (value < MINIMUM_ITEM_SIZE || MAXIMUM_ITEM_SIZE < value)
                 {
-                    throw new ArgumentOutOfRangeException("value");
+                    throw new ArgumentOutOfRangeException(nameof(value));
                 }
 
-                _itemHeight = value;
+                this.itemHeight = value;
 
                 this.Invalidate();
             }
@@ -164,21 +154,21 @@ namespace SWF.UIComponent.FlowList
         {
             get
             {
-                return _itemSpace;
+                return this.itemSpace;
             }
             set
             {
-                if (_rectangleSelection.IsBegun)
+                if (this.rectangleSelection.IsBegun)
                 {
-                    throw new Exception("短形選択中は設定できません。");
+                    throw new InvalidOperationException("短形選択中は設定できません。");
                 }
 
                 if (value < 0)
                 {
-                    throw new ArgumentOutOfRangeException("value");
+                    throw new ArgumentOutOfRangeException(nameof(value));
                 }
 
-                _itemSpace = value;
+                this.itemSpace = value;
 
                 this.Invalidate();
             }
@@ -192,16 +182,16 @@ namespace SWF.UIComponent.FlowList
         {
             get
             {
-                return _isLileList;
+                return this.isLileList;
             }
             set
             {
-                if (_rectangleSelection.IsBegun)
+                if (this.rectangleSelection.IsBegun)
                 {
-                    throw new Exception("短形選択中は設定できません。");
+                    throw new InvalidOperationException("短形選択中は設定できません。");
                 }
 
-                _isLileList = value;
+                this.isLileList = value;
 
                 this.Invalidate();
             }
@@ -215,19 +205,19 @@ namespace SWF.UIComponent.FlowList
         {
             get
             {
-                return _isMultiSelect;
+                return this.isMultiSelect;
             }
             set
             {
-                if (_rectangleSelection.IsBegun)
+                if (this.rectangleSelection.IsBegun)
                 {
-                    throw new Exception("短形選択中は設定できません。");
+                    throw new InvalidOperationException("短形選択中は設定できません。");
                 }
 
-                _selectedItemIndexs.Clear();
+                this.selectedItemIndexs.Clear();
 
-                _isMultiSelect = value;
-                _rectangleSelection.IsUse = value;
+                this.isMultiSelect = value;
+                this.rectangleSelection.IsUse = value;
 
                 this.Invalidate();
             }
@@ -241,7 +231,7 @@ namespace SWF.UIComponent.FlowList
         {
             get
             {
-                return _itemTextColor;
+                return this.itemTextColor;
             }
         }
 
@@ -253,7 +243,7 @@ namespace SWF.UIComponent.FlowList
         {
             get
             {
-                return _selectedItemColor;
+                return this.selectedItemColor;
             }
         }
 
@@ -265,7 +255,7 @@ namespace SWF.UIComponent.FlowList
         {
             get
             {
-                return _focusItemColor;
+                return this.focusItemColor;
             }
         }
 
@@ -277,7 +267,7 @@ namespace SWF.UIComponent.FlowList
         {
             get
             {
-                return _mousePointItemColor;
+                return this.mousePointItemColor;
             }
         }
 
@@ -289,7 +279,7 @@ namespace SWF.UIComponent.FlowList
         {
             get
             {
-                return _rectangleSelectionColor;
+                return this.rectangleSelectionColor;
             }
         }
 
@@ -301,11 +291,11 @@ namespace SWF.UIComponent.FlowList
         {
             get
             {
-                return _itemTextTrimming;
+                return this.itemTextTrimming;
             }
             set
             {
-                _itemTextTrimming = value;
+                this.itemTextTrimming = value;
             }
         }
 
@@ -317,11 +307,11 @@ namespace SWF.UIComponent.FlowList
         {
             get
             {
-                return _itemTextAlignment;
+                return this.itemTextAlignment;
             }
             set
             {
-                _itemTextAlignment = value;
+                this.itemTextAlignment = value;
             }
         }
 
@@ -333,11 +323,11 @@ namespace SWF.UIComponent.FlowList
         {
             get
             {
-                return _itemTextLineAlignment;
+                return this.itemTextLineAlignment;
             }
             set
             {
-                _itemTextLineAlignment = value;
+                this.itemTextLineAlignment = value;
             }
         }
 
@@ -349,11 +339,11 @@ namespace SWF.UIComponent.FlowList
         {
             get
             {
-                return _itemTextFormatFlags;
+                return this.itemTextFormatFlags;
             }
             set
             {
-                _itemTextFormatFlags = value;
+                this.itemTextFormatFlags = value;
             }
         }
 
@@ -362,12 +352,12 @@ namespace SWF.UIComponent.FlowList
         {
             get
             {
-                if (_itemTextBrush == null)
+                if (this.itemTextBrush == null)
                 {
-                    _itemTextBrush = new SolidBrush(_itemTextColor);
+                    this.itemTextBrush = new SolidBrush(itemTextColor);
                 }
 
-                return _itemTextBrush;
+                return this.itemTextBrush;
             }
         }
 
@@ -376,12 +366,12 @@ namespace SWF.UIComponent.FlowList
         {
             get
             {
-                if (_selectedItemBrush == null)
+                if (this.selectedItemBrush == null)
                 {
-                    _selectedItemBrush = new SolidBrush(_selectedItemColor);
+                    this.selectedItemBrush = new SolidBrush(selectedItemColor);
                 }
 
-                return _selectedItemBrush;
+                return this.selectedItemBrush;
             }
         }
 
@@ -390,16 +380,16 @@ namespace SWF.UIComponent.FlowList
         {
             get
             {
-                if (_selectedItemPen == null)
+                if (this.selectedItemPen == null)
                 {
-                    _selectedItemPen = new Pen(Color.FromArgb(
-                        _selectedItemColor.A * 2,
-                        _selectedItemColor.R,
-                        _selectedItemColor.G,
-                        _selectedItemColor.B));
+                    this.selectedItemPen = new Pen(Color.FromArgb(
+                        this.selectedItemColor.A * 2,
+                        this.selectedItemColor.R,
+                        this.selectedItemColor.G,
+                        this.selectedItemColor.B));
                 }
 
-                return _selectedItemPen;
+                return this.selectedItemPen;
             }
         }
 
@@ -408,12 +398,12 @@ namespace SWF.UIComponent.FlowList
         {
             get
             {
-                if (_foucusItemBrush == null)
+                if (this.foucusItemBrush == null)
                 {
-                    _foucusItemBrush = new SolidBrush(_focusItemColor);
+                    this.foucusItemBrush = new SolidBrush(this.focusItemColor);
                 }
 
-                return _foucusItemBrush;
+                return this.foucusItemBrush;
             }
         }
 
@@ -422,12 +412,12 @@ namespace SWF.UIComponent.FlowList
         {
             get
             {
-                if (_mousePointItemBrush == null)
+                if (this.mousePointItemBrush == null)
                 {
-                    _mousePointItemBrush = new SolidBrush(_mousePointItemColor);
+                    this.mousePointItemBrush = new SolidBrush(this.mousePointItemColor);
                 }
 
-                return _mousePointItemBrush;
+                return this.mousePointItemBrush;
             }
         }
 
@@ -436,17 +426,17 @@ namespace SWF.UIComponent.FlowList
         {
             get
             {
-                if (_itemTextFormat == null)
+                if (this.itemTextFormat == null)
                 {
-                    _itemTextFormat = new StringFormat();
+                    this.itemTextFormat = new StringFormat();
                 }
 
-                _itemTextFormat.Trimming = _itemTextTrimming;
-                _itemTextFormat.Alignment = _itemTextAlignment;
-                _itemTextFormat.LineAlignment = _itemTextLineAlignment;
-                _itemTextFormat.FormatFlags = _itemTextFormatFlags;
+                this.itemTextFormat.Trimming = this.itemTextTrimming;
+                this.itemTextFormat.Alignment = this.itemTextAlignment;
+                this.itemTextFormat.LineAlignment = this.itemTextLineAlignment;
+                this.itemTextFormat.FormatFlags = this.itemTextFormatFlags;
 
-                return _itemTextFormat;
+                return this.itemTextFormat;
             }
         }
 
@@ -459,7 +449,7 @@ namespace SWF.UIComponent.FlowList
         /// </summary>
         public new void Refresh()
         {
-            _drawParameter = new DrawParameter();
+            this.drawParameter = new DrawParameter();
             this.Invalidate();
             this.Update();
         }
@@ -469,7 +459,7 @@ namespace SWF.UIComponent.FlowList
         /// </summary>
         public void BeginUpdate()
         {
-            _isDraw = false;
+            this.isDraw = false;
         }
 
         /// <summary>
@@ -477,7 +467,7 @@ namespace SWF.UIComponent.FlowList
         /// </summary>
         public void EndUpdate()
         {
-            _isDraw = true;
+            this.isDraw = true;
             this.Invalidate();
             this.Update();
         }
@@ -489,23 +479,23 @@ namespace SWF.UIComponent.FlowList
         /// <param name="height"></param>
         public void SetItemSize(int width, int height)
         {
-            if (_rectangleSelection.IsBegun)
+            if (this.rectangleSelection.IsBegun)
             {
-                throw new Exception("短形選択中は設定できません。");
+                throw new InvalidOperationException("短形選択中は設定できません。");
             }
 
-            if (width < MinimumItemSize || MaximumItemSize < width)
+            if (width < MINIMUM_ITEM_SIZE || MAXIMUM_ITEM_SIZE < width)
             {
                 throw new ArgumentOutOfRangeException("width");
             }
 
-            if (height < MinimumItemSize || MaximumItemSize < height)
+            if (height < MINIMUM_ITEM_SIZE || MAXIMUM_ITEM_SIZE < height)
             {
                 throw new ArgumentOutOfRangeException("height");
             }
 
-            _itemWidth = width;
-            _itemHeight = height;
+            this.itemWidth = width;
+            this.itemHeight = height;
 
             this.Invalidate();
         }
@@ -515,9 +505,9 @@ namespace SWF.UIComponent.FlowList
         /// </summary>
         public void ClearSelectedItems()
         {
-            _selectedItemIndexs.Clear();
-            _foucusItemIndex = -1;
-            _mousePointItemIndex = -1;
+            this.selectedItemIndexs.Clear();
+            this.foucusItemIndex = -1;
+            this.mousePointItemIndex = -1;
             this.Invalidate();
         }
 
@@ -527,26 +517,26 @@ namespace SWF.UIComponent.FlowList
         /// <param name="itemIndex"></param>
         public void SelectItem(int itemIndex)
         {
-            if (_rectangleSelection.IsBegun)
+            if (this.rectangleSelection.IsBegun)
             {
-                throw new Exception("短形選択中は設定できません。");
+                throw new InvalidOperationException("短形選択中は設定できません。");
             }
 
-            if (itemIndex < 0 || _itemCount - 1 < itemIndex)
+            if (itemIndex < 0 || this.itemCount - 1 < itemIndex)
             {
                 throw new ArgumentOutOfRangeException("itemIndex");
             }
 
-            _foucusItemIndex = itemIndex;
+            this.foucusItemIndex = itemIndex;
 
-            _selectedItemIndexs.Clear();
-            _selectedItemIndexs.Add(itemIndex);
+            this.selectedItemIndexs.Clear();
+            this.selectedItemIndexs.Add(itemIndex);
 
-            ensureVisible(itemIndex);
+            this.EnsureVisible(itemIndex);
 
             this.Invalidate();
 
-            OnSelectedItemChanged(new EventArgs());
+            this.OnSelectedItemChanged(new EventArgs());
         }
 
         /// <summary>
@@ -555,12 +545,12 @@ namespace SWF.UIComponent.FlowList
         /// <returns></returns>
         public IList<int> GetSelectedIndexs()
         {
-            if (_rectangleSelection.IsBegun)
+            if (this.rectangleSelection.IsBegun)
             {
-                throw new Exception("短形選択中は取得できません。");
+                throw new InvalidOperationException("短形選択中は取得できません。");
             }
 
-            return _selectedItemIndexs.GetList();
+            return this.selectedItemIndexs.GetList();
         }
 
         /// <summary>
@@ -571,7 +561,7 @@ namespace SWF.UIComponent.FlowList
         /// <returns>座標上に項目が存在する場合は、項目のインデックス。存在しない場合は-1を返します。</returns>
         public int IndexFromPoint(int x, int y)
         {
-            HitTestInfo ht = getHitTestFromDrawPoint(x, y);
+            var ht = this.getHitTestFromDrawPoint(x, y);
             return ht.ItemIndex;
         }
 
@@ -581,12 +571,13 @@ namespace SWF.UIComponent.FlowList
         /// <param name="itemIndex">項目インデックス</param>
         public void InvalidateFromItemIndex(int itemIndex)
         {
-            if (itemIndex < 0 || _itemCount - 1 < itemIndex)
+            if (itemIndex < 0 || itemCount - 1 < itemIndex)
             {
                 throw new ArgumentOutOfRangeException("itemIndex");
             }
 
-            invalidateFromItemIndex(itemIndex);
+            var rect = this.GetItemDrawRectangle(itemIndex);
+            this.Invalidate(rect);
         }
 
         /// <summary>
@@ -597,23 +588,23 @@ namespace SWF.UIComponent.FlowList
         {
             if (e == null)
             {
-                throw new ArgumentNullException("e");
+                throw new ArgumentNullException(nameof(e));
             }
 
             if (e.Delta != 0)
             {
-                int value = _scrollBar.Value - (int)(_itemHeight * 0.8 * (e.Delta / Math.Abs(e.Delta)));
-                if (value < _scrollBar.Minimum)
+                var value = this.scrollBar.Value - (int)(this.itemHeight * 0.8 * (e.Delta / Math.Abs(e.Delta)));
+                if (value < this.scrollBar.Minimum)
                 {
-                    _scrollBar.Value = _scrollBar.Minimum;
+                    this.scrollBar.Value = this.scrollBar.Minimum;
                 }
-                else if (value > _scrollBar.Maximum)
+                else if (value > this.scrollBar.Maximum)
                 {
-                    _scrollBar.Value = _scrollBar.Maximum;
+                    this.scrollBar.Value = this.scrollBar.Maximum;
                 }
                 else
                 {
-                    _scrollBar.Value = value;
+                    this.scrollBar.Value = value;
                 }
             }
 
@@ -624,91 +615,91 @@ namespace SWF.UIComponent.FlowList
 
         #region イベント発生メソッド
 
-        protected virtual void OnDrawItem(DrawItemEventArgs e)
+        private void OnDrawItem(DrawItemEventArgs e)
         {
-            if (DrawItem != null)
+            if (this.DrawItem != null)
             {
-                DrawItem(this, e);
+                this.DrawItem(this, e);
             }
         }
 
-        protected virtual void OnDrawItemChanged(DrawItemChangedEventArgs e)
+        private void OnDrawItemChanged(DrawItemChangedEventArgs e)
         {
-            if (DrawItemChanged != null)
+            if (this.DrawItemChanged != null)
             {
-                DrawItemChanged(this, e);
+                this.DrawItemChanged(this, e);
             }
         }
 
-        protected virtual void OnSelectedItemChanged(EventArgs e)
+        private void OnSelectedItemChanged(EventArgs e)
         {
-            if (SelectedItemChanged != null)
+            if (this.SelectedItemChanged != null)
             {
-                SelectedItemChanged(this, e);
+                this.SelectedItemChanged(this, e);
             }
         }
 
-        protected virtual void OnItemMouseClick(MouseEventArgs e)
+        private void OnItemMouseClick(MouseEventArgs e)
         {
-            if (ItemMouseClick != null)
+            if (this.ItemMouseClick != null)
             {
-                ItemMouseClick(this, e);
+                this.ItemMouseClick(this, e);
             }
         }
 
-        protected virtual void OnItemMouseDoubleClick(MouseEventArgs e)
+        private void OnItemMouseDoubleClick(MouseEventArgs e)
         {
-            if (ItemMouseDoubleClick != null)
+            if (this.ItemMouseDoubleClick != null)
             {
-                ItemMouseDoubleClick(this, e);
+                this.ItemMouseDoubleClick(this, e);
             }
         }
 
-        protected virtual void OnBackgroundMouseClick(MouseEventArgs e)
+        private void OnBackgroundMouseClick(MouseEventArgs e)
         {
-            if (BackgroundMouseClick != null)
+            if (this.BackgroundMouseClick != null)
             {
-                BackgroundMouseClick(this, e);
+                this.BackgroundMouseClick(this, e);
             }
         }
 
-        protected virtual void OnItemExecute(EventArgs e)
+        private void OnItemExecute(EventArgs e)
         {
-            if (ItemExecute != null)
+            if (this.ItemExecute != null)
             {
-                ItemExecute(this, e);
+                this.ItemExecute(this, e);
             }
         }
 
-        protected virtual void OnItemDelete(EventArgs e)
+        private void OnItemDelete(EventArgs e)
         {
-            if (ItemDelete != null)
+            if (this.ItemDelete != null)
             {
-                ItemDelete(this, e);
+                this.ItemDelete(this, e);
             }
         }
 
-        protected virtual void OnItemCopy(EventArgs e)
+        private void OnItemCopy(EventArgs e)
         {
-            if (ItemCopy != null)
+            if (this.ItemCopy != null)
             {
-                ItemCopy(this, e);
+                this.ItemCopy(this, e);
             }
         }
 
-        protected virtual void OnItemCut(EventArgs e)
+        private void OnItemCut(EventArgs e)
         {
-            if (ItemCut != null)
+            if (this.ItemCut != null)
             {
-                ItemCut(this, e);
+                this.ItemCut(this, e);
             }
         }
 
-        protected virtual void OnDragStart(EventArgs e)
+        private void OnDragStart(EventArgs e)
         {
-            if (DragStart != null)
+            if (this.DragStart != null)
             {
-                DragStart(this, e);
+                this.DragStart(this, e);
             }
         }
 
