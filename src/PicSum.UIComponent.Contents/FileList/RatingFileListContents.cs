@@ -1,60 +1,58 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Windows.Forms;
+﻿using PicSum.Core.Base.Conf;
+using PicSum.Core.Base.Exception;
 using PicSum.Core.Task.AsyncTask;
 using PicSum.Task.AsyncFacade;
 using PicSum.Task.Entity;
+using PicSum.Task.Paramter;
 using PicSum.UIComponent.Contents.Parameter;
 using PicSum.UIComponent.Contents.Properties;
-using PicSum.Core.Base.Conf;
 using SWF.Common;
-using SWF.UIComponent.Common;
-using PicSum.Task.Paramter;
-using PicSum.Core.Base.Exception;
+using System;
+using System.Linq;
+using System.Windows.Forms;
 
 namespace PicSum.UIComponent.Contents.FileList
 {
     /// <summary>
     /// 評価値ファイルリストコンテンツ
     /// </summary>
-    internal class RatingFileListContents : FileListContentsBase
+    internal sealed class RatingFileListContents 
+        : FileListContentsBase
     {
         #region インスタンス変数
 
-        private RatingFileListContentsParameter _parameter = null;
-        private TwoWayProcess<GetFilesByRatingAsyncFacade, SingleValueEntity<int>, ListEntity<FileShallowInfoEntity>> _searchFileProcess = null;
-        private OneWayProcess<UpdateFileRatingAsyncFacade, UpdateFileRatingParameter> _updateFileRatingProcess = null;
+        private RatingFileListContentsParameter parameter = null;
+        private TwoWayProcess<GetFilesByRatingAsyncFacade, SingleValueEntity<int>, ListEntity<FileShallowInfoEntity>> searchFileProcess = null;
+        private OneWayProcess<UpdateFileRatingAsyncFacade, UpdateFileRatingParameter> updateFileRatingProcess = null;
 
         #endregion
 
         #region プライベートプロパティ
 
-        private TwoWayProcess<GetFilesByRatingAsyncFacade, SingleValueEntity<int>, ListEntity<FileShallowInfoEntity>> searchFileProcess
+        private TwoWayProcess<GetFilesByRatingAsyncFacade, SingleValueEntity<int>, ListEntity<FileShallowInfoEntity>> SearchFileProcess
         {
             get
             {
-                if (_searchFileProcess == null)
+                if (this.searchFileProcess == null)
                 {
-                    _searchFileProcess = TaskManager.CreateTwoWayProcess<GetFilesByRatingAsyncFacade, SingleValueEntity<int>, ListEntity<FileShallowInfoEntity>>(ProcessContainer);
-                    searchFileProcess.Callback += new AsyncTaskCallbackEventHandler<ListEntity<FileShallowInfoEntity>>(searchFileProcess_Callback);
+                    this.searchFileProcess = TaskManager.CreateTwoWayProcess<GetFilesByRatingAsyncFacade, SingleValueEntity<int>, ListEntity<FileShallowInfoEntity>>(this.ProcessContainer);
+                    this.searchFileProcess.Callback += new AsyncTaskCallbackEventHandler<ListEntity<FileShallowInfoEntity>>(this.SearchFileProcess_Callback);
                 }
 
-                return _searchFileProcess;
+                return this.searchFileProcess;
             }
         }
 
-        private OneWayProcess<UpdateFileRatingAsyncFacade, UpdateFileRatingParameter> updateFileRatingProcess
+        private OneWayProcess<UpdateFileRatingAsyncFacade, UpdateFileRatingParameter> UpdateFileRatingProcess
         {
             get
             {
-                if (_updateFileRatingProcess == null)
+                if (this.updateFileRatingProcess == null)
                 {
-                    _updateFileRatingProcess = TaskManager.CreateOneWayProcess<UpdateFileRatingAsyncFacade, UpdateFileRatingParameter>(ProcessContainer);
+                    this.updateFileRatingProcess = TaskManager.CreateOneWayProcess<UpdateFileRatingAsyncFacade, UpdateFileRatingParameter>(this.ProcessContainer);
                 }
 
-                return _updateFileRatingProcess;
+                return this.updateFileRatingProcess;
             }
         }
 
@@ -65,8 +63,8 @@ namespace PicSum.UIComponent.Contents.FileList
         public RatingFileListContents(RatingFileListContentsParameter param)
             : base(param)
         {
-            _parameter = param;
-            initializeComponent();
+            this.parameter = param;
+            this.InitializeComponent();
         }
 
         #endregion
@@ -76,16 +74,16 @@ namespace PicSum.UIComponent.Contents.FileList
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            SingleValueEntity<int> param = new SingleValueEntity<int>();
-            param.Value = _parameter.RagingValue;
-            searchFileProcess.Execute(this, param);
+            var param = new SingleValueEntity<int>();
+            param.Value = parameter.RagingValue;
+            this.SearchFileProcess.Execute(this, param);
         }
 
         protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
-                _parameter.SelectedFilePath = base.SelectedFilePath;
+                this.parameter.SelectedFilePath = base.SelectedFilePath;
             }
 
             base.Dispose(disposing);
@@ -104,12 +102,12 @@ namespace PicSum.UIComponent.Contents.FileList
 
         protected override void OnRemoveFile(System.Collections.Generic.IList<string> filePathList)
         {
-            UpdateFileRatingParameter param = new UpdateFileRatingParameter();
+            var param = new UpdateFileRatingParameter();
             param.FilePathList = filePathList;
             param.RatingValue = 0;
-            updateFileRatingProcess.Execute(this, param);
+            this.UpdateFileRatingProcess.Execute(this, param);
 
-            RemoveFile(filePathList);
+            this.RemoveFile(filePathList);
         }
 
         protected override Action GetImageFilesAction(ImageViewerContentsParameter paramter)
@@ -135,7 +133,7 @@ namespace PicSum.UIComponent.Contents.FileList
                     paramter.OnGetImageFiles(eventArgs);
                 });
 
-                proces.Execute(this, new SingleValueEntity<int>() { Value = this._parameter.RagingValue });
+                proces.Execute(this, new SingleValueEntity<int>() { Value = this.parameter.RagingValue });
             };
         }
 
@@ -153,7 +151,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
         #region プライベートメソッド
 
-        private void initializeComponent()
+        private void InitializeComponent()
         {
             this.Title = "Star";
             this.Icon = Resources.ActiveRatingIcon;
@@ -166,11 +164,11 @@ namespace PicSum.UIComponent.Contents.FileList
 
         #region プロセスイベント
 
-        private void searchFileProcess_Callback(object sender, ListEntity<FileShallowInfoEntity> e)
+        private void SearchFileProcess_Callback(object sender, ListEntity<FileShallowInfoEntity> e)
         {
-            base.SetFiles(e, _parameter.SelectedFilePath, SortTypeID.RgistrationDate, false);
+            base.SetFiles(e, this.parameter.SelectedFilePath, SortTypeID.RgistrationDate, false);
 
-            if (string.IsNullOrEmpty(_parameter.SelectedFilePath))
+            if (string.IsNullOrEmpty(this.parameter.SelectedFilePath))
             {
                 base.OnSelectedFileChanged(new SelectedFileChangeEventArgs());
             }

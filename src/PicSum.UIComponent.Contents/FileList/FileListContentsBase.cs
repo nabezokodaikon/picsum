@@ -22,16 +22,9 @@ namespace PicSum.UIComponent.Contents.FileList
     /// <summary>
     /// ファイルリストコンテンツ基底クラス
     /// </summary>
-    internal abstract partial class FileListContentsBase : BrowserContents
+    internal abstract partial class FileListContentsBase
+        : BrowserContents
     {
-        #region 定数・列挙
-
-        #endregion
-
-        #region イベント・デリゲート
-
-        #endregion
-
         #region インスタンス変数
 
         private Dictionary<string, FileEntity> masterFileDictionary = null;
@@ -242,10 +235,6 @@ namespace PicSum.UIComponent.Contents.FileList
 
         #endregion
 
-        #region パブリックメソッド
-
-        #endregion
-
         #region 継承メソッド
 
         protected override void OnLoad(EventArgs e)
@@ -286,7 +275,7 @@ namespace PicSum.UIComponent.Contents.FileList
             this.masterFileDictionary = new Dictionary<string, FileEntity>();
             foreach (var srcFile in srcFiles)
             {
-                FileEntity destFile = new FileEntity();
+                var destFile = new FileEntity();
                 destFile.FilePath = srcFile.FilePath;
                 destFile.FileName = srcFile.FileName;
                 destFile.UpdateDate = srcFile.UpdateDate;
@@ -359,7 +348,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 throw new ArgumentNullException(nameof(filePath));
             }
 
-            SetContextMenuFiles(new List<string>() { filePath });
+            this.SetContextMenuFiles(new List<string>() { filePath });
         }
 
         protected void RemoveFile(IList<string> filePathList)
@@ -482,7 +471,7 @@ namespace PicSum.UIComponent.Contents.FileList
             this.IsShowDirectory = FileListContentsConfig.IsShowDirectory;
             this.IsShowImageFile = FileListContentsConfig.IsShowImageFile;
             this.IsShowOtherFile = FileListContentsConfig.IsShowOtherFile;
-            ThumbnailSize = FileListContentsConfig.ThumbnailSize;
+            this.ThumbnailSize = FileListContentsConfig.ThumbnailSize;
             this.SetFlowListItemSize();
         }
 

@@ -2,7 +2,6 @@
 using PicSum.Core.Task.AsyncTask;
 using PicSum.Task.AsyncFacade;
 using PicSum.Task.Entity;
-using PicSum.Task.Paramter;
 using PicSum.Task.Result;
 using PicSum.UIComponent.Contents.Parameter;
 using PicSum.UIComponent.Contents.Properties;
@@ -11,10 +10,7 @@ using SWF.UIComponent.TabOperation;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data.Common;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace PicSum.UIComponent.Contents.FileList

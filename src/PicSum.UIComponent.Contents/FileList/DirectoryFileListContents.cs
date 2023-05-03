@@ -8,7 +8,6 @@ using PicSum.Task.Result;
 using PicSum.UIComponent.Contents.Parameter;
 using SWF.Common;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Forms;
@@ -18,71 +17,72 @@ namespace PicSum.UIComponent.Contents.FileList
     /// <summary>
     /// フォルダファイルリストコンテンツ
     /// </summary>
-    internal class DirectoryFileListContents : FileListContentsBase
+    internal sealed class DirectoryFileListContents
+        : FileListContentsBase
     {
         #region インスタンス変数
 
-        private readonly DirectoryFileListContentsParameter _parameter = null;
-        private TwoWayProcess<GetFilesByDirectoryAsyncFacade, SingleValueEntity<string>, GetDirectoryResult> _searchDirectoryProcess = null;
-        private OneWayProcess<UpdateDirectoryStateAsynceFacade, DirectoryStateEntity> _updateDirectoryStateProcess = null;
-        private OneWayProcess<AddDirectoryViewHistoryAsyncFacade, SingleValueEntity<string>> _addDirectoryHistoryProcess = null;
-        private TwoWayProcess<GetNextDirectoryAsyncFacade, GetNextContentsParameter<string>, SingleValueEntity<string>> _getNextDirectoryProcess = null;
+        private readonly DirectoryFileListContentsParameter parameter = null;
+        private TwoWayProcess<GetFilesByDirectoryAsyncFacade, SingleValueEntity<string>, GetDirectoryResult> searchDirectoryProcess = null;
+        private OneWayProcess<UpdateDirectoryStateAsynceFacade, DirectoryStateEntity> updateDirectoryStateProcess = null;
+        private OneWayProcess<AddDirectoryViewHistoryAsyncFacade, SingleValueEntity<string>> addDirectoryHistoryProcess = null;
+        private TwoWayProcess<GetNextDirectoryAsyncFacade, GetNextContentsParameter<string>, SingleValueEntity<string>> getNextDirectoryProcess = null;
 
         #endregion
 
         #region プライベートプロパティ
 
-        private TwoWayProcess<GetFilesByDirectoryAsyncFacade, SingleValueEntity<string>, GetDirectoryResult> searchDirectoryProcess
+        private TwoWayProcess<GetFilesByDirectoryAsyncFacade, SingleValueEntity<string>, GetDirectoryResult> SearchDirectoryProcess
         {
             get
             {
-                if (_searchDirectoryProcess == null)
+                if (this.searchDirectoryProcess == null)
                 {
-                    _searchDirectoryProcess = TaskManager.CreateTwoWayProcess<GetFilesByDirectoryAsyncFacade, SingleValueEntity<string>, GetDirectoryResult>(ProcessContainer);
-                    _searchDirectoryProcess.Callback += new AsyncTaskCallbackEventHandler<GetDirectoryResult>(searchDirectoryProcess_Callback);
+                    this.searchDirectoryProcess = TaskManager.CreateTwoWayProcess<GetFilesByDirectoryAsyncFacade, SingleValueEntity<string>, GetDirectoryResult>(this.ProcessContainer);
+                    this.searchDirectoryProcess.Callback += new AsyncTaskCallbackEventHandler<GetDirectoryResult>(this.SearchDirectoryProcess_Callback);
                 }
 
-                return _searchDirectoryProcess;
+                return this.searchDirectoryProcess;
             }
         }
 
-        private OneWayProcess<UpdateDirectoryStateAsynceFacade, DirectoryStateEntity> updateDirectoryStateProcess
+        private OneWayProcess<UpdateDirectoryStateAsynceFacade, DirectoryStateEntity> UpdateDirectoryStateProcess
         {
             get
             {
-                if (_updateDirectoryStateProcess == null)
+                if (this.updateDirectoryStateProcess == null)
                 {
-                    _updateDirectoryStateProcess = TaskManager.CreateOneWayProcess<UpdateDirectoryStateAsynceFacade, DirectoryStateEntity>(ProcessContainer);
+                    this.updateDirectoryStateProcess = TaskManager.CreateOneWayProcess<UpdateDirectoryStateAsynceFacade, DirectoryStateEntity>(this.ProcessContainer);
                 }
 
-                return _updateDirectoryStateProcess;
+                return this.updateDirectoryStateProcess;
             }
         }
 
-        private OneWayProcess<AddDirectoryViewHistoryAsyncFacade, SingleValueEntity<string>> addDirectoryHistoryProcess
+        private OneWayProcess<AddDirectoryViewHistoryAsyncFacade, SingleValueEntity<string>> AddDirectoryHistoryProcess
         {
             get
             {
-                if (_addDirectoryHistoryProcess == null)
+                if (this.addDirectoryHistoryProcess == null)
                 {
-                    _addDirectoryHistoryProcess = TaskManager.CreateOneWayProcess<AddDirectoryViewHistoryAsyncFacade, SingleValueEntity<string>>(ProcessContainer);
+                    this.addDirectoryHistoryProcess = TaskManager.CreateOneWayProcess<AddDirectoryViewHistoryAsyncFacade, SingleValueEntity<string>>(this.ProcessContainer);
                 }
 
-                return _addDirectoryHistoryProcess;
+                return this.addDirectoryHistoryProcess;
             }
         }
 
-        private TwoWayProcess<GetNextDirectoryAsyncFacade, GetNextContentsParameter<string>, SingleValueEntity<string>> getNextDirectoryProcess
+        private TwoWayProcess<GetNextDirectoryAsyncFacade, GetNextContentsParameter<string>, SingleValueEntity<string>> GetNextDirectoryProcess
         {
             get
             {
-                if (_getNextDirectoryProcess == null)
+                if (this.getNextDirectoryProcess == null)
                 {
-                    _getNextDirectoryProcess = TaskManager.CreateTwoWayProcess<GetNextDirectoryAsyncFacade, GetNextContentsParameter<string>, SingleValueEntity<string>>(ProcessContainer);
-                    _getNextDirectoryProcess.Callback += new AsyncTaskCallbackEventHandler<SingleValueEntity<string>>(getNextDirectoryProcess_Callback);
+                    this.getNextDirectoryProcess = TaskManager.CreateTwoWayProcess<GetNextDirectoryAsyncFacade, GetNextContentsParameter<string>, SingleValueEntity<string>>(this.ProcessContainer);
+                    this.getNextDirectoryProcess.Callback += new AsyncTaskCallbackEventHandler<SingleValueEntity<string>>(this.GetNextDirectoryProcess_Callback);
                 }
 
-                return _getNextDirectoryProcess;
+                return this.getNextDirectoryProcess;
             }
         }
 
@@ -93,8 +93,8 @@ namespace PicSum.UIComponent.Contents.FileList
         public DirectoryFileListContents(DirectoryFileListContentsParameter param)
             : base(param)
         {
-            _parameter = param;
-            initializeComponent();
+            this.parameter = param;
+            this.InitializeComponent();
         }
 
         #endregion
@@ -104,16 +104,16 @@ namespace PicSum.UIComponent.Contents.FileList
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            SingleValueEntity<string> param = new SingleValueEntity<string>();
-            param.Value = _parameter.DirectoryPath;
-            searchDirectoryProcess.Execute(this, param);
+            var param = new SingleValueEntity<string>();
+            param.Value = parameter.DirectoryPath;
+            this.SearchDirectoryProcess.Execute(this, param);
         }
 
         protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
-                saveCurrentDirectoryState();
+                this.SaveCurrentDirectoryState();
             }
 
             base.Dispose(disposing);
@@ -127,9 +127,9 @@ namespace PicSum.UIComponent.Contents.FileList
 
         protected override void OnBackgroundMouseClick(MouseEventArgs e)
         {
-            if (!FileUtil.IsSystemRoot(_parameter.DirectoryPath))
+            if (!FileUtil.IsSystemRoot(parameter.DirectoryPath))
             {
-                base.OnSelectedFileChanged(new SelectedFileChangeEventArgs(_parameter.DirectoryPath));
+                base.OnSelectedFileChanged(new SelectedFileChangeEventArgs(this.parameter.DirectoryPath));
             }
         }
 
@@ -140,32 +140,32 @@ namespace PicSum.UIComponent.Contents.FileList
 
         protected override void OnMovePreviewButtonClick(EventArgs e)
         {
-            if (FileUtil.IsSystemRoot(_parameter.DirectoryPath))
+            if (FileUtil.IsSystemRoot(parameter.DirectoryPath))
             {
                 return;
             }
 
-            GetNextContentsParameter<string> param = new GetNextContentsParameter<string>();
+            var param = new GetNextContentsParameter<string>();
             param.CurrentParameter = new SingleValueEntity<string>();
-            param.CurrentParameter.Value = _parameter.DirectoryPath;
+            param.CurrentParameter.Value = this.parameter.DirectoryPath;
             param.IsNext = false;
-            getNextDirectoryProcess.Cancel();
-            getNextDirectoryProcess.Execute(this, param);
+            this.GetNextDirectoryProcess.Cancel();
+            this.GetNextDirectoryProcess.Execute(this, param);
         }
 
         protected override void OnMoveNextButtonClick(EventArgs e)
         {
-            if (FileUtil.IsSystemRoot(_parameter.DirectoryPath))
+            if (FileUtil.IsSystemRoot(parameter.DirectoryPath))
             {
                 return;
             }
 
-            GetNextContentsParameter<string> param = new GetNextContentsParameter<string>();
+            var param = new GetNextContentsParameter<string>();
             param.CurrentParameter = new SingleValueEntity<string>();
-            param.CurrentParameter.Value = _parameter.DirectoryPath;
+            param.CurrentParameter.Value = this.parameter.DirectoryPath;
             param.IsNext = true;
-            getNextDirectoryProcess.Cancel();
-            getNextDirectoryProcess.Execute(this, param);
+            this.GetNextDirectoryProcess.Cancel();
+            this.GetNextDirectoryProcess.Execute(this, param);
         }
 
         protected override Action GetImageFilesAction(ImageViewerContentsParameter paramter)
@@ -197,22 +197,22 @@ namespace PicSum.UIComponent.Contents.FileList
                     paramter.OnGetImageFiles(eventArgs);
                 });
 
-                proces.Execute(this, new SingleValueEntity<string>() { Value = this._parameter.DirectoryPath });
+                proces.Execute(this, new SingleValueEntity<string>() { Value = this.parameter.DirectoryPath });
             };
         }
 
         protected override void FileContextMenu_Opening(object sender, CancelEventArgs e)
         {
-            IList<string> filePathList = GetSelectedFiles();
+            var filePathList = GetSelectedFiles();
             if (filePathList.Count > 0)
             {
-                IsDirectoryActiveTabOpenMenuItemVisible = true;
-                SetContextMenuFiles(filePathList);
+                this.IsDirectoryActiveTabOpenMenuItemVisible = true;
+                this.SetContextMenuFiles(filePathList);
             }
-            else if (!FileUtil.IsSystemRoot(_parameter.DirectoryPath))
+            else if (!FileUtil.IsSystemRoot(this.parameter.DirectoryPath))
             {
-                IsDirectoryActiveTabOpenMenuItemVisible = false;
-                SetContextMenuFiles(_parameter.DirectoryPath);
+                this.IsDirectoryActiveTabOpenMenuItemVisible = false;
+                this.SetContextMenuFiles(this.parameter.DirectoryPath);
             }
             else
             {
@@ -224,17 +224,17 @@ namespace PicSum.UIComponent.Contents.FileList
 
         #region プライベートメソッド
 
-        private void initializeComponent()
+        private void InitializeComponent()
         {
-            this.Title = FileUtil.GetFileName(_parameter.DirectoryPath);
+            this.Title = FileUtil.GetFileName(this.parameter.DirectoryPath);
 
-            if (string.IsNullOrEmpty(_parameter.DirectoryPath))
+            if (string.IsNullOrEmpty(this.parameter.DirectoryPath))
             {
                 this.Icon = FileIconCash.SmallMyComputerIcon;
             }
-            else if (FileUtil.IsDrive(_parameter.DirectoryPath))
+            else if (FileUtil.IsDrive(this.parameter.DirectoryPath))
             {
-                this.Icon = FileIconCash.GetSmallDriveIcon(_parameter.DirectoryPath);
+                this.Icon = FileIconCash.GetSmallDriveIcon(this.parameter.DirectoryPath);
             }
             else
             {
@@ -242,15 +242,15 @@ namespace PicSum.UIComponent.Contents.FileList
             }
 
             this.IsRemoveFromListMenuItemVisible = false;
-            this.IsMoveControlVisible = !string.IsNullOrEmpty(_parameter.DirectoryPath);
+            this.IsMoveControlVisible = !string.IsNullOrEmpty(this.parameter.DirectoryPath);
             base.sortFileRgistrationDateToolStripButton.Enabled = false;
         }
 
-        private void saveCurrentDirectoryState()
+        private void SaveCurrentDirectoryState()
         {
-            DirectoryStateEntity param = new DirectoryStateEntity();
+            var param = new DirectoryStateEntity();
 
-            param.DirectoryPath = _parameter.DirectoryPath;
+            param.DirectoryPath = this.parameter.DirectoryPath;
 
             if (base.SortTypeID == SortTypeID.Default)
             {
@@ -265,14 +265,14 @@ namespace PicSum.UIComponent.Contents.FileList
 
             param.SelectedFilePath = base.SelectedFilePath;
 
-            updateDirectoryStateProcess.Execute(this, param);
+            this.UpdateDirectoryStateProcess.Execute(this, param);
         }
 
         #endregion
 
         #region プロセスイベント
 
-        private void searchDirectoryProcess_Callback(object sender, GetDirectoryResult e)
+        private void SearchDirectoryProcess_Callback(object sender, GetDirectoryResult e)
         {
             if (e.DirectoryNotFoundException != null)
             {
@@ -280,15 +280,15 @@ namespace PicSum.UIComponent.Contents.FileList
                 return;
             }
 
-            if (!string.IsNullOrEmpty(_parameter.SelectedFilePath))
+            if (!string.IsNullOrEmpty(this.parameter.SelectedFilePath))
             {
                 if (e.DirectoryState != null)
                 {
-                    base.SetFiles(e.FileInfoList, _parameter.SelectedFilePath, e.DirectoryState.SortTypeID, e.DirectoryState.IsAscending);
+                    base.SetFiles(e.FileInfoList, this.parameter.SelectedFilePath, e.DirectoryState.SortTypeID, e.DirectoryState.IsAscending);
                 }
                 else
                 {
-                    base.SetFiles(e.FileInfoList, _parameter.SelectedFilePath, SortTypeID.FilePath, true);
+                    base.SetFiles(e.FileInfoList, this.parameter.SelectedFilePath, SortTypeID.FilePath, true);
                 }
             }
             else
@@ -307,15 +307,15 @@ namespace PicSum.UIComponent.Contents.FileList
                 }
             }
 
-            SingleValueEntity<string> param = new SingleValueEntity<string>();
+            var param = new SingleValueEntity<string>();
             param.Value = e.DirectoryPath;
-            addDirectoryHistoryProcess.Execute(this, param);
+            this.AddDirectoryHistoryProcess.Execute(this, param);
         }
 
-        private void getNextDirectoryProcess_Callback(object sender, SingleValueEntity<string> e)
+        private void GetNextDirectoryProcess_Callback(object sender, SingleValueEntity<string> e)
         {
-            DirectoryFileListContentsParameter param = new DirectoryFileListContentsParameter(e.Value);
-            OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.OverlapTab, param));
+            var param = new DirectoryFileListContentsParameter(e.Value);
+            this.OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.OverlapTab, param));
         }
 
         #endregion

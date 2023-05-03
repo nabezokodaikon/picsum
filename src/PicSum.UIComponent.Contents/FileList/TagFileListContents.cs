@@ -7,7 +7,9 @@ using PicSum.Task.Paramter;
 using PicSum.UIComponent.Contents.Parameter;
 using PicSum.UIComponent.Contents.Properties;
 using SWF.Common;
+using SWF.UIComponent.TabOperation;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -16,21 +18,14 @@ namespace PicSum.UIComponent.Contents.FileList
     /// <summary>
     /// タグファイルリストコンテンツ
     /// </summary>
-    internal class TagFileListContents : FileListContentsBase
+    internal sealed class TagFileListContents
+        : FileListContentsBase
     {
-        #region 定数・列挙
-
-        #endregion
-
-        #region イベント・デリゲート
-
-        #endregion
-
         #region インスタンス変数
 
-        private TagFileListContentsParameter _parameter = null;
-        private TwoWayProcess<GetFilesByTagAsyncFacade, SingleValueEntity<string>, ListEntity<FileShallowInfoEntity>> _searchFileProcess = null;
-        private OneWayProcess<DeleteFileTagAsyncFacade, UpdateFileTagParameter> _deleteFileTagProcess = null;
+        private TagFileListContentsParameter parameter = null;
+        private TwoWayProcess<GetFilesByTagAsyncFacade, SingleValueEntity<string>, ListEntity<FileShallowInfoEntity>> searchFileProcess = null;
+        private OneWayProcess<DeleteFileTagAsyncFacade, UpdateFileTagParameter> deleteFileTagProcess = null;
 
         #endregion
 
@@ -44,30 +39,30 @@ namespace PicSum.UIComponent.Contents.FileList
 
         #region プライベートプロパティ
 
-        private TwoWayProcess<GetFilesByTagAsyncFacade, SingleValueEntity<string>, ListEntity<FileShallowInfoEntity>> searchFileProcess
+        private TwoWayProcess<GetFilesByTagAsyncFacade, SingleValueEntity<string>, ListEntity<FileShallowInfoEntity>> SearchFileProcess
         {
             get
             {
-                if (_searchFileProcess == null)
+                if (this.searchFileProcess == null)
                 {
-                    _searchFileProcess = TaskManager.CreateTwoWayProcess<GetFilesByTagAsyncFacade, SingleValueEntity<string>, ListEntity<FileShallowInfoEntity>>(ProcessContainer);
-                    searchFileProcess.Callback += new AsyncTaskCallbackEventHandler<ListEntity<FileShallowInfoEntity>>(searchFileProcess_Callback);
+                    this.searchFileProcess = TaskManager.CreateTwoWayProcess<GetFilesByTagAsyncFacade, SingleValueEntity<string>, ListEntity<FileShallowInfoEntity>>(this.ProcessContainer);
+                    this.searchFileProcess.Callback += new AsyncTaskCallbackEventHandler<ListEntity<FileShallowInfoEntity>>(this.SearchFileProcess_Callback);
                 }
 
-                return _searchFileProcess;
+                return this.searchFileProcess;
             }
         }
 
-        private OneWayProcess<DeleteFileTagAsyncFacade, UpdateFileTagParameter> deleteFileTagProcess
+        private OneWayProcess<DeleteFileTagAsyncFacade, UpdateFileTagParameter> DeleteFileTagProcess
         {
             get
             {
-                if (_deleteFileTagProcess == null)
+                if (this.deleteFileTagProcess == null)
                 {
-                    _deleteFileTagProcess = TaskManager.CreateOneWayProcess<DeleteFileTagAsyncFacade, UpdateFileTagParameter>(ProcessContainer);
+                    this.deleteFileTagProcess = TaskManager.CreateOneWayProcess<DeleteFileTagAsyncFacade, UpdateFileTagParameter>(this.ProcessContainer);
                 }
 
-                return _deleteFileTagProcess;
+                return this.deleteFileTagProcess;
             }
         }
 
@@ -78,13 +73,9 @@ namespace PicSum.UIComponent.Contents.FileList
         public TagFileListContents(TagFileListContentsParameter param)
             : base(param)
         {
-            _parameter = param;
-            initializeComponent();
+            this.parameter = param;
+            this.InitializeComponent();
         }
-
-        #endregion
-
-        #region パブリックメソッド
 
         #endregion
 
@@ -94,22 +85,22 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             base.OnLoad(e);
 
-            SingleValueEntity<string> param = new SingleValueEntity<string>();
-            param.Value = _parameter.Tag;
-            searchFileProcess.Execute(this, param);
+            var param = new SingleValueEntity<string>();
+            param.Value = parameter.Tag;
+            this.SearchFileProcess.Execute(this, param);
         }
 
         protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
-                _parameter.SelectedFilePath = base.SelectedFilePath;
+                this.parameter.SelectedFilePath = base.SelectedFilePath;
             }
 
             base.Dispose(disposing);
         }
 
-        protected override void OnDrawTabContents(SWF.UIComponent.TabOperation.DrawTabEventArgs e)
+        protected override void OnDrawTabContents(DrawTabEventArgs e)
         {
             e.Graphics.DrawImage(this.Icon, e.IconRectangle);
             DrawTextUtil.DrawText(e.Graphics, this.Title, e.Font, e.TextRectangle, e.TitleColor, e.TitleFormatFlags, e.TextStyle);
@@ -120,14 +111,14 @@ namespace PicSum.UIComponent.Contents.FileList
             // 処理無し。
         }
 
-        protected override void OnRemoveFile(System.Collections.Generic.IList<string> filePathList)
+        protected override void OnRemoveFile(IList<string> filePathList)
         {
-            UpdateFileTagParameter param = new UpdateFileTagParameter();
+            var param = new UpdateFileTagParameter();
             param.FilePathList = filePathList;
-            param.Tag = _parameter.Tag;
-            deleteFileTagProcess.Execute(this, param);
+            param.Tag = parameter.Tag;
+            this.DeleteFileTagProcess.Execute(this, param);
 
-            RemoveFile(filePathList);
+            this.RemoveFile(filePathList);
         }
 
         protected override Action GetImageFilesAction(ImageViewerContentsParameter paramter)
@@ -153,7 +144,7 @@ namespace PicSum.UIComponent.Contents.FileList
                     paramter.OnGetImageFiles(eventArgs);
                 });
 
-                proces.Execute(this, new SingleValueEntity<string>() { Value = this._parameter.Tag });
+                proces.Execute(this, new SingleValueEntity<string>() { Value = this.parameter.Tag });
             };
         }
 
@@ -171,9 +162,9 @@ namespace PicSum.UIComponent.Contents.FileList
 
         #region プライベートメソッド
 
-        private void initializeComponent()
+        private void InitializeComponent()
         {
-            this.Title = _parameter.Tag;
+            this.Title = this.parameter.Tag;
             this.Icon = Resources.TagIcon;
             this.IsRemoveFromListMenuItemVisible = true;
             this.IsMoveControlVisible = false;
@@ -184,9 +175,9 @@ namespace PicSum.UIComponent.Contents.FileList
 
         #region プロセスイベント
 
-        private void searchFileProcess_Callback(object sender, ListEntity<FileShallowInfoEntity> e)
+        private void SearchFileProcess_Callback(object sender, ListEntity<FileShallowInfoEntity> e)
         {
-            base.SetFiles(e, _parameter.SelectedFilePath, SortTypeID.RgistrationDate, false);
+            base.SetFiles(e, this.parameter.SelectedFilePath, SortTypeID.RgistrationDate, false);
         }
 
         #endregion

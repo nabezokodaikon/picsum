@@ -12,30 +12,30 @@ using System.Windows.Forms;
 
 namespace PicSum.UIComponent.Contents.FileList
 {
-    internal class FavoriteDirectoryListContents
+    internal sealed class FavoriteDirectoryListContents
         : FileListContentsBase
     {
         #region インスタンス変数
 
-        private FavoriteDirectoryListContentsParameter _parameter = null;
-        private TwoWayProcess<GetFavoriteDirectoryAsyncFacade, GetFavoriteFolderParameter, ListEntity<FileShallowInfoEntity>> _searchFavoriteDirectoryProcess = null;
+        private FavoriteDirectoryListContentsParameter parameter = null;
+        private TwoWayProcess<GetFavoriteDirectoryAsyncFacade, GetFavoriteFolderParameter, ListEntity<FileShallowInfoEntity>> searchFavoriteDirectoryProcess = null;
         private OneWayProcess<DeleteDirectoryViewCounterAsyncFacade, ListEntity<string>> deleteDirectoryViewCounterProcess = null;
 
         #endregion
 
         #region プライベートプロパティ
 
-        private TwoWayProcess<GetFavoriteDirectoryAsyncFacade, GetFavoriteFolderParameter, ListEntity<FileShallowInfoEntity>> searchFavoriteDirectoryProcess
+        private TwoWayProcess<GetFavoriteDirectoryAsyncFacade, GetFavoriteFolderParameter, ListEntity<FileShallowInfoEntity>> SearchFavoriteDirectoryProcess
         {
             get
             {
-                if (_searchFavoriteDirectoryProcess == null)
+                if (this.searchFavoriteDirectoryProcess == null)
                 {
-                    _searchFavoriteDirectoryProcess = TaskManager.CreateTwoWayProcess<GetFavoriteDirectoryAsyncFacade, GetFavoriteFolderParameter, ListEntity<FileShallowInfoEntity>>(ProcessContainer);
-                    _searchFavoriteDirectoryProcess.Callback += new AsyncTaskCallbackEventHandler<ListEntity<FileShallowInfoEntity>>(searchFavoriteDirectoryProcess_Callback);
+                    this.searchFavoriteDirectoryProcess = TaskManager.CreateTwoWayProcess<GetFavoriteDirectoryAsyncFacade, GetFavoriteFolderParameter, ListEntity<FileShallowInfoEntity>>(this.ProcessContainer);
+                    this.searchFavoriteDirectoryProcess.Callback += new AsyncTaskCallbackEventHandler<ListEntity<FileShallowInfoEntity>>(this.SearchFavoriteDirectoryProcess_Callback);
                 }
 
-                return _searchFavoriteDirectoryProcess;
+                return this.searchFavoriteDirectoryProcess;
             }
         }
 
@@ -61,8 +61,8 @@ namespace PicSum.UIComponent.Contents.FileList
         public FavoriteDirectoryListContents(FavoriteDirectoryListContentsParameter param)
             : base(param)
         {
-            _parameter = param;
-            initializeComponent();
+            this.parameter = param;
+            this.InitializeComponent();
         }
 
         #endregion
@@ -73,7 +73,7 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             if (disposing)
             {
-                this._parameter.SelectedFilePath = base.SelectedFilePath;
+                this.parameter.SelectedFilePath = base.SelectedFilePath;
             }
 
             base.Dispose(disposing);
@@ -82,10 +82,10 @@ namespace PicSum.UIComponent.Contents.FileList
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            GetFavoriteFolderParameter param = new GetFavoriteFolderParameter();
+            var param = new GetFavoriteFolderParameter();
             param.IsOnlyDirectory = true;
             param.Count = FileListContentsConfig.FavoriteDirectoryCount;
-            searchFavoriteDirectoryProcess.Execute(this, param);
+            this.SearchFavoriteDirectoryProcess.Execute(this, param);
         }
 
         protected override void OnDrawTabContents(SWF.UIComponent.TabOperation.DrawTabEventArgs e)
@@ -127,7 +127,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
         #region プライベートメソッド
 
-        private void initializeComponent()
+        private void InitializeComponent()
         {
             this.Title = "Home";
             this.Icon = Resources.HomeIcon;
@@ -140,9 +140,9 @@ namespace PicSum.UIComponent.Contents.FileList
 
         #region プロセスイベント
 
-        private void searchFavoriteDirectoryProcess_Callback(object sender, ListEntity<FileShallowInfoEntity> e)
+        private void SearchFavoriteDirectoryProcess_Callback(object sender, ListEntity<FileShallowInfoEntity> e)
         {
-            base.SetFile(e, _parameter.SelectedFilePath);
+            base.SetFile(e, parameter.SelectedFilePath);
         }
 
         #endregion
