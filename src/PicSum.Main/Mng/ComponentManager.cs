@@ -20,9 +20,6 @@ namespace PicSum.Main.Mng
         /// </summary>
         public ComponentManager()
         {
-            // ファイルアイコンのキャッシュを初期化します。
-            FileIconCash.Init();
-
             // ブラウザの設定をセットします。
             BrowserConfig.WindowState = Settings.Default.BrowserWindowState;
             BrowserConfig.WindowLocaion = Settings.Default.BrowserLocation;

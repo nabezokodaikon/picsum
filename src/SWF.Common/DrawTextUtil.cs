@@ -15,56 +15,56 @@ namespace SWF.Common
             Glowing
         }
 
-        private readonly static bool _isSupportedDrawThemeTextExWindowsVersion = (6 <= Environment.OSVersion.Version.Major);
+        private readonly static bool IS_SUPPORTED_DRAW_THEME_TEXT_EX_WINDOWS_VERSION = (6 <= Environment.OSVersion.Version.Major);
 
         public static void DrawText(Graphics srcDc, string text, Font font, Rectangle bounds, Color color, TextFormatFlags flags, TextStyle style)
         {
-            if (_isSupportedDrawThemeTextExWindowsVersion && isSupportedTheme())
+            if (IS_SUPPORTED_DRAW_THEME_TEXT_EX_WINDOWS_VERSION && IsSupportedTheme())
             {
-                drawGrassText(srcDc, text, font, bounds, color, flags, style);
+                DrawGrassText(srcDc, text, font, bounds, color, flags, style);
             }
             else
             {
-                drawClassicText(srcDc, text, font, bounds, color, flags);
+                DrawClassicText(srcDc, text, font, bounds, color, flags);
             }
         }
 
-        private static void drawClassicText(Graphics srcDc, string text, Font font, Rectangle bounds, Color color, TextFormatFlags flags)
+        private static void DrawClassicText(Graphics srcDc, string text, Font font, Rectangle bounds, Color color, TextFormatFlags flags)
         {
             TextRenderer.DrawText(srcDc, text, font, bounds, color, flags);
         }
 
-        private static void drawGrassText(Graphics srcDc, string text, Font font, Rectangle bounds, Color color, TextFormatFlags flags, TextStyle style)
+        private static void DrawGrassText(Graphics srcDc, string text, Font font, Rectangle bounds, Color color, TextFormatFlags flags, TextStyle style)
         {
-            IntPtr srcHdc = srcDc.GetHdc();
+            var srcHdc = srcDc.GetHdc();
 
             // Create a memory DC so we can work offscreen
-            IntPtr memoryHdc = WinApiMembers.CreateCompatibleDC(srcHdc);
+            var memoryHdc = WinApiMembers.CreateCompatibleDC(srcHdc);
 
             // Create a device-independent bitmap and select it into our DC
-            WinApiMembers.BITMAPINFO bi = new WinApiMembers.BITMAPINFO();
+            var bi = new WinApiMembers.BITMAPINFO();
             bi.biSize = Marshal.SizeOf(bi);
             bi.biWidth = bounds.Width;
             bi.biHeight = -bounds.Height;
             bi.biPlanes = 1;
             bi.biBitCount = 32;
             bi.biCompression = 0; // BI_RGB
-            IntPtr dib = WinApiMembers.CreateDIBSection(srcHdc, bi, 0, 0, IntPtr.Zero, 0);
+            var dib = WinApiMembers.CreateDIBSection(srcHdc, bi, 0, 0, IntPtr.Zero, 0);
             WinApiMembers.SelectObject(memoryHdc, dib);
 
             // Create and select font
-            IntPtr fontHandle = font.ToHfont();
+            var fontHandle = font.ToHfont();
             WinApiMembers.SelectObject(memoryHdc, fontHandle);
 
             // Draw glowing text
-            VisualStyleRenderer renderer = new VisualStyleRenderer(VisualStyleElement.Window.Caption.Active);
-            WinApiMembers.DTTOPTS dttOpts = new WinApiMembers.DTTOPTS();
+            var renderer = new VisualStyleRenderer(VisualStyleElement.Window.Caption.Active);
+            var dttOpts = new WinApiMembers.DTTOPTS();
             dttOpts.dwSize = Marshal.SizeOf(typeof(WinApiMembers.DTTOPTS));
-            dttOpts.dwFlags = getDwFlags(style);
+            dttOpts.dwFlags = GetDwFlags(style);
 
             dttOpts.crText = ColorTranslator.ToWin32(color);
             dttOpts.iGlowSize = 8; // This is about the size Microsoft Word 2007 uses
-            WinApiMembers.RECT textBounds = new WinApiMembers.RECT(0, 0, bounds.Right - bounds.Left, bounds.Bottom - bounds.Top);
+            var textBounds = new WinApiMembers.RECT(0, 0, bounds.Right - bounds.Left, bounds.Bottom - bounds.Top);
 
             WinApiMembers.BitBlt(memoryHdc, 0, 0, bounds.Width, bounds.Height, srcHdc, bounds.Left, bounds.Top, WinApiMembers.SRCCOPY);
 
@@ -81,7 +81,7 @@ namespace SWF.Common
             srcDc.ReleaseHdc(srcHdc);
         }
 
-        private static bool isSupportedTheme()
+        private static bool IsSupportedTheme()
         {
             if (VisualStyleInformation.IsSupportedByOS &&
                 VisualStyleInformation.IsEnabledByUser)
@@ -94,21 +94,7 @@ namespace SWF.Common
             }
         }
 
-        private static bool hasUxThemeDll()
-        {
-            IntPtr dll = WinApiMembers.LoadLibrary("UxTheme.dll");
-            if (dll != IntPtr.Zero)
-            {
-                WinApiMembers.FreeLibrary(dll);
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        private static int getDwFlags(TextStyle style)
+        private static int GetDwFlags(TextStyle style)
         {
             if (style == TextStyle.Glowing)
             {

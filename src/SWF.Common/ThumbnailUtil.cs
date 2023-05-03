@@ -8,8 +8,8 @@ namespace SWF.Common
     {
         private const int SHADOW_OFFSET = 2;
         private const int FRAME_OFFSET = 1;
-        private static readonly Pen _shadowPen = new Pen(Color.FromArgb(32, Color.Black));
-        private static readonly Pen _framePen = new Pen(Color.FromArgb(64, Color.White));
+        private static readonly Pen SHADOW_PEN = new Pen(Color.FromArgb(32, Color.Black));
+        private static readonly Pen FRAME_PEN = new Pen(Color.FromArgb(64, Color.White));
 
         /// <summary>
         /// サムネイルを作成します。
@@ -22,13 +22,13 @@ namespace SWF.Common
         {
             if (srcImg == null)
             {
-                throw new ArgumentNullException("srcImg");
+                throw new ArgumentNullException(nameof(srcImg));
             }
 
-            int offset = (SHADOW_OFFSET + FRAME_OFFSET) * 2;
+            var offset = (SHADOW_OFFSET + FRAME_OFFSET) * 2;
 
-            int tw = thumbWidth - offset;
-            int th = thumbHeight - offset;
+            var tw = thumbWidth - offset;
+            var th = thumbHeight - offset;
 
             int w, h;
             if (Math.Max(srcImg.Width, srcImg.Height) <= Math.Min(tw, th))
@@ -38,17 +38,17 @@ namespace SWF.Common
             }
             else
             {
-                double scale = Math.Min(tw / (double)srcImg.Width, th / (double)srcImg.Height);
+                var scale = Math.Min(tw / (double)srcImg.Width, th / (double)srcImg.Height);
                 w = (int)(srcImg.Width * scale);
                 h = (int)(srcImg.Height * scale);
             }
 
-            Image thumb = new Bitmap(w, h);
-            using (Graphics g = Graphics.FromImage(thumb))
+            var thumb = new Bitmap(w, h);
+            using (var g = Graphics.FromImage(thumb))
             {
                 g.InterpolationMode = InterpolationMode.Low;
                 g.SmoothingMode = SmoothingMode.HighSpeed;
-                using (Image temp = srcImg.GetThumbnailImage(w, h, () => false, IntPtr.Zero))
+                using (var temp = srcImg.GetThumbnailImage(w, h, () => false, IntPtr.Zero))
                 {
                     g.DrawImage(temp, 0, 0, w, h);
                 }
@@ -65,18 +65,28 @@ namespace SWF.Common
         /// <param name="rect"></param>
         public static void DrawFileThumbnail(Graphics g, Image thumb, RectangleF rect)
         {
-            float w = thumb.Width;
-            float h = thumb.Height;
-            float x = rect.X + (rect.Width - w) / 2f;
-            float y = rect.Y + (rect.Height - h) / 2f;
+            if (g == null)
+            {
+                throw new ArgumentNullException(nameof(g));
+            }
 
-            g.DrawRectangle(_shadowPen,
+            if (thumb == null)
+            {
+                throw new ArgumentNullException(nameof(thumb));
+            }
+
+            var w = thumb.Width;
+            var h = thumb.Height;
+            var x = rect.X + (rect.Width - w) / 2f;
+            var y = rect.Y + (rect.Height - h) / 2f;
+
+            g.DrawRectangle(SHADOW_PEN,
                             x - SHADOW_OFFSET,
                             y - SHADOW_OFFSET,
                             w + SHADOW_OFFSET * 2,
                             h + SHADOW_OFFSET * 2);
 
-            g.DrawRectangle(_framePen,
+            g.DrawRectangle(FRAME_PEN,
                             x - FRAME_OFFSET,
                             y - FRAME_OFFSET,
                             w + FRAME_OFFSET * 2,
@@ -93,22 +103,32 @@ namespace SWF.Common
         /// <param name="rect"></param>
         public static void AdjustDrawFileThumbnail(Graphics g, Image thumb, RectangleF rect)
         {
-            float scale = Math.Min(rect.Width / thumb.Width, rect.Height / thumb.Height);
-            float w = thumb.Width * scale - (SHADOW_OFFSET + FRAME_OFFSET) * 2;
-            float h = thumb.Height * scale - (SHADOW_OFFSET + FRAME_OFFSET) * 2;
-            float x = rect.X + (rect.Width - w) / 2f;
-            float y = rect.Y + (rect.Height - h) / 2f;
+            if (g == null)
+            {
+                throw new ArgumentNullException(nameof(g));
+            }
+
+            if (thumb == null)
+            {
+                throw new ArgumentNullException(nameof(thumb));
+            }
+
+            var scale = Math.Min(rect.Width / thumb.Width, rect.Height / thumb.Height);
+            var w = thumb.Width * scale - (SHADOW_OFFSET + FRAME_OFFSET) * 2;
+            var h = thumb.Height * scale - (SHADOW_OFFSET + FRAME_OFFSET) * 2;
+            var x = rect.X + (rect.Width - w) / 2f;
+            var y = rect.Y + (rect.Height - h) / 2f;
 
             var shadowOffset = SHADOW_OFFSET * scale;
             var frameOffset = FRAME_OFFSET * scale;
 
-            g.DrawRectangle(_shadowPen,
+            g.DrawRectangle(SHADOW_PEN,
                             x - shadowOffset,
                             y - shadowOffset,
                             w + shadowOffset * 2,
                             h + shadowOffset * 2); ;
 
-            g.DrawRectangle(_framePen,
+            g.DrawRectangle(FRAME_PEN,
                             x - frameOffset,
                             y - frameOffset,
                             w + frameOffset * 2,
@@ -126,6 +146,21 @@ namespace SWF.Common
         /// <param name="icon"></param>
         public static void DrawDirectoryThumbnail(Graphics g, Image thumb, RectangleF rect, Image icon)
         {
+            if (g == null)
+            {
+                throw new ArgumentNullException(nameof(g));
+            }
+
+            if (thumb == null)
+            {
+                throw new ArgumentNullException(nameof(thumb));
+            }
+
+            if (icon == null)
+            {
+                throw new ArgumentNullException(nameof(icon));
+            }
+
             DrawFileThumbnail(g, thumb, rect);
             g.DrawImage(icon, new RectangleF(rect.X, rect.Bottom - icon.Height, icon.Width, icon.Height));
         }
@@ -139,6 +174,21 @@ namespace SWF.Common
         /// <param name="icon"></param>
         public static void AdjustDrawDirectoryThumbnail(Graphics g, Image thumb, RectangleF rect, Image icon)
         {
+            if (g == null)
+            {
+                throw new ArgumentNullException(nameof(g));
+            }
+
+            if (thumb == null)
+            {
+                throw new ArgumentNullException(nameof(thumb));
+            }
+
+            if (icon == null)
+            {
+                throw new ArgumentNullException(nameof(icon));
+            }
+
             AdjustDrawFileThumbnail(g, thumb, rect);
             g.DrawImage(icon, new RectangleF(rect.X, rect.Bottom - icon.Height, icon.Width, icon.Height));
         }
@@ -153,29 +203,29 @@ namespace SWF.Common
         {
             if (g == null)
             {
-                throw new ArgumentNullException("g");
+                throw new ArgumentNullException(nameof(g));
             }
 
             if (icon == null)
             {
-                throw new ArgumentNullException("icon");
+                throw new ArgumentNullException(nameof(icon));
             }
 
             if (Math.Max(icon.Width, icon.Height) <= Math.Min(rect.Width, rect.Height))
             {
-                float w = icon.Width;
-                float h = icon.Height;
-                float x = rect.X + (rect.Width - w) / 2f;
-                float y = rect.Y + (rect.Height - h) / 2f;
+                var w = icon.Width;
+                var h = icon.Height;
+                var x = rect.X + (rect.Width - w) / 2f;
+                var y = rect.Y + (rect.Height - h) / 2f;
                 g.DrawImage(icon, new RectangleF(x, y, w, h));
             }
             else
             {
-                float scale = Math.Min(rect.Width / icon.Width, rect.Height / icon.Height);
-                float w = icon.Width * scale;
-                float h = icon.Width * scale;
-                float x = rect.X + (rect.Width - w) / 2f;
-                float y = rect.Y + (rect.Height - h) / 2f;
+                var scale = Math.Min(rect.Width / icon.Width, rect.Height / icon.Height);
+                var w = icon.Width * scale;
+                var h = icon.Width * scale;
+                var x = rect.X + (rect.Width - w) / 2f;
+                var y = rect.Y + (rect.Height - h) / 2f;
                 g.DrawImage(icon, new RectangleF(x, y, w, h));
             }
         }
