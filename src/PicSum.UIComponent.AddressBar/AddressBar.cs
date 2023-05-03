@@ -13,7 +13,7 @@ using System.Windows.Forms;
 
 namespace PicSum.UIComponent.AddressBar
 {
-    public sealed class AddressBar 
+    public sealed class AddressBar
         : Control
     {
         #region 定数・列挙

@@ -8,7 +8,7 @@ namespace PicSum.UIComponent.Contents.Common
     /// <summary>
     /// コンテンツ基底クラス
     /// </summary>
-    public abstract class BrowserContents 
+    public abstract class BrowserContents
         : ContentsPanel
     {
         #region イベント・デリゲート
@@ -102,7 +102,7 @@ namespace PicSum.UIComponent.Contents.Common
 
         protected new virtual void OnMouseClick(MouseEventArgs e)
         {
-            if (this.MouseClick != null) 
+            if (this.MouseClick != null)
             {
                 this.MouseClick(this, e);
             }

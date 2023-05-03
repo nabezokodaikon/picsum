@@ -1,7 +1,7 @@
-﻿using System;
+﻿using SWF.UIComponent.Common.Properties;
+using System;
 using System.Drawing;
 using System.Windows.Forms;
-using SWF.UIComponent.Common.Properties;
 
 namespace SWF.UIComponent.Common
 {

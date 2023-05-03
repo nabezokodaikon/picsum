@@ -86,7 +86,7 @@ namespace PicSum.Core.Task.AsyncTask
     /// </summary>
     /// <typeparam name="TFacade">ファサードの型</typeparam>
     /// <typeparam name="TParameter">パラメータの型</typeparam>
-    public sealed class OneWayProcess<TFacade, TParameter> 
+    public sealed class OneWayProcess<TFacade, TParameter>
         : ProcessBase
         where TFacade : OneWayFacadeBase<TParameter>, new()
         where TParameter : IEntity
@@ -97,7 +97,7 @@ namespace PicSum.Core.Task.AsyncTask
         /// コンストラクタ
         /// </summary>
         /// <param name="container">コンテナ</param>
-        internal OneWayProcess(IContainer container) 
+        internal OneWayProcess(IContainer container)
             : base(container) { }
 
         /// <summary>

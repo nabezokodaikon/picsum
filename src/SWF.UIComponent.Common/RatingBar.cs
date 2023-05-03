@@ -123,7 +123,7 @@ namespace SWF.UIComponent.Common
 
         private void initializeComponent()
         {
-            this.SetStyle(ControlStyles.ResizeRedraw | 
+            this.SetStyle(ControlStyles.ResizeRedraw |
                           ControlStyles.SupportsTransparentBackColor, true);
         }
 

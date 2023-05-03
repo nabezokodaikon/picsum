@@ -1,10 +1,8 @@
-﻿using System;
+﻿using SWF.UIComponent.ImagePanel.Properties;
+using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
-using SWF.UIComponent.ImagePanel.Properties;
-using System.Drawing.Imaging;
-using System.Runtime.InteropServices;
 
 namespace SWF.UIComponent.ImagePanel
 {

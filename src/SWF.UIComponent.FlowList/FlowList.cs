@@ -70,29 +70,29 @@ namespace SWF.UIComponent.FlowList
         #region 描画オブジェクト
 
         private Color _itemTextColor = Color.FromArgb(
-            SystemColors.ControlText.A, 
-            SystemColors.ControlText.R, 
-            SystemColors.ControlText.G, 
+            SystemColors.ControlText.A,
+            SystemColors.ControlText.R,
+            SystemColors.ControlText.G,
             SystemColors.ControlText.B);
 
         private Color _selectedItemColor = Color.FromArgb(
-            SystemColors.Highlight.A / 8, 
-            SystemColors.Highlight.R, 
-            SystemColors.Highlight.G, 
+            SystemColors.Highlight.A / 8,
+            SystemColors.Highlight.R,
+            SystemColors.Highlight.G,
             SystemColors.Highlight.B);
-        
+
         private Color _focusItemColor = Color.FromArgb(
             SystemColors.Highlight.A / 8,
-            SystemColors.Highlight.R, 
-            SystemColors.Highlight.G, 
+            SystemColors.Highlight.R,
+            SystemColors.Highlight.G,
             SystemColors.Highlight.B);
-        
+
         private Color _mousePointItemColor = Color.FromArgb(
             SystemColors.Highlight.A / 8,
             SystemColors.Highlight.R,
             SystemColors.Highlight.G,
             SystemColors.Highlight.B);
-        
+
         private Color _rectangleSelectionColor = Color.FromArgb(
             SystemColors.Highlight.A / 4,
             SystemColors.Highlight.R,
@@ -139,9 +139,9 @@ namespace SWF.UIComponent.FlowList
                 if (_rectangleSelectionPen == null)
                 {
                     _rectangleSelectionPen = new Pen(Color.FromArgb(
-                        _rectangleSelectionColor.A * 2, 
-                        _rectangleSelectionColor.R, 
-                        _rectangleSelectionColor.G, 
+                        _rectangleSelectionColor.A * 2,
+                        _rectangleSelectionColor.R,
+                        _rectangleSelectionColor.G,
                         _rectangleSelectionColor.B));
                 }
 

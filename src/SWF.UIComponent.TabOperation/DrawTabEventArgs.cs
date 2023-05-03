@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using SWF.Common;
+using System;
 using System.Drawing;
 using System.Windows.Forms;
-using SWF.Common;
 
 namespace SWF.UIComponent.TabOperation
 {

@@ -17,7 +17,7 @@ namespace PicSum.UIComponent.Contents.FileList
     /// <summary>
     /// 評価値ファイルリストコンテンツ
     /// </summary>
-    internal sealed class RatingFileListContents 
+    internal sealed class RatingFileListContents
         : FileListContentsBase
     {
         #region インスタンス変数

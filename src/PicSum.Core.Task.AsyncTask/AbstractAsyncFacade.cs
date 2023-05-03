@@ -6,7 +6,7 @@ namespace PicSum.Core.Task.AsyncTask
     /// <summary>
     /// 非同期ファサード基底クラス
     /// </summary>
-    public abstract class AbstractAsyncFacade 
+    public abstract class AbstractAsyncFacade
         : IFacade
     {
         protected TaskInfo Task { get; private set; } = null;

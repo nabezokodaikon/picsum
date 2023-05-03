@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
 
 namespace SWF.UIComponent.FlowList
@@ -394,9 +393,9 @@ namespace SWF.UIComponent.FlowList
                 if (_selectedItemPen == null)
                 {
                     _selectedItemPen = new Pen(Color.FromArgb(
-                        _selectedItemColor.A * 2, 
-                        _selectedItemColor.R, 
-                        _selectedItemColor.G, 
+                        _selectedItemColor.A * 2,
+                        _selectedItemColor.R,
+                        _selectedItemColor.G,
                         _selectedItemColor.B));
                 }
 

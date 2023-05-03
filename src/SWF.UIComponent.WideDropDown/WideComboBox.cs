@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace SWF.UIComponent.WideDropDown
@@ -59,7 +56,7 @@ namespace SWF.UIComponent.WideDropDown
             this.dropDownList.AddItems(itemList.Where(item => !string.IsNullOrEmpty(item)).ToList());
         }
 
-        public void SelectItem() 
+        public void SelectItem()
         {
             var item = this.inputTextBox.Text;
             if (string.IsNullOrEmpty(item))

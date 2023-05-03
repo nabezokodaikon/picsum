@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Drawing;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
 using WinApi;
@@ -84,7 +83,7 @@ namespace SWF.Common
 
         private static bool isSupportedTheme()
         {
-            if (VisualStyleInformation.IsSupportedByOS && 
+            if (VisualStyleInformation.IsSupportedByOS &&
                 VisualStyleInformation.IsEnabledByUser)
             {
                 return true;

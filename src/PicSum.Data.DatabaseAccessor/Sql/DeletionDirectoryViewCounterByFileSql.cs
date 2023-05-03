@@ -15,7 +15,7 @@ DELETE FROM t_directory_view_counter
                  )
 ";
 
-        public DeletionDirectoryViewCounterByFileSql(string directoryPath) 
+        public DeletionDirectoryViewCounterByFileSql(string directoryPath)
             : base(SQL_TEXT)
         {
             if (directoryPath == null)

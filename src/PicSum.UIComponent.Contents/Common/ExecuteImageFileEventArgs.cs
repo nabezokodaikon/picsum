@@ -7,7 +7,7 @@ namespace PicSum.UIComponent.Contents.Common
     /// <summary>
     /// 画像ファイル実行イベント引数クラス
     /// </summary>
-    public sealed class ExecuteImageFileEventArgs 
+    public sealed class ExecuteImageFileEventArgs
         : EventArgs
     {
         public ContentsOpenType OpenType { get; private set; }

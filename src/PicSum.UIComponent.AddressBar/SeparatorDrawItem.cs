@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 namespace PicSum.UIComponent.AddressBar
 {
-    internal sealed class SeparatorDrawItem 
+    internal sealed class SeparatorDrawItem
         : DropDownDrawItemBase, IDisposable
     {
         #region インスタンス変数
@@ -99,13 +99,13 @@ namespace PicSum.UIComponent.AddressBar
             {
                 g.FillRectangle(base.Palette.MouseDownBrush, rect);
                 g.DrawRectangle(base.Palette.MousePointPen, rect);
-                g.DrawImage(mouseDownImage, this.GetImageDrawRectangle(this.mousePointImage));                
+                g.DrawImage(mouseDownImage, this.GetImageDrawRectangle(this.mousePointImage));
             }
             else if (base.IsMousePoint)
             {
                 g.FillRectangle(base.Palette.MousePointBrush, rect);
                 g.DrawRectangle(base.Palette.MousePointPen, rect);
-                g.DrawImage(mousePointImage, this.GetImageDrawRectangle(this.mousePointImage));                
+                g.DrawImage(mousePointImage, this.GetImageDrawRectangle(this.mousePointImage));
             }
             else
             {
@@ -214,7 +214,7 @@ namespace PicSum.UIComponent.AddressBar
             {
                 var srcItems = e.ToList();
                 srcItems.Sort((x, y) => x.FilePath.CompareTo(y.FilePath));
-                foreach (var info in srcItems )
+                foreach (var info in srcItems)
                 {
                     var item = new DirectoryEntity();
                     item.DirectoryPath = info.FilePath;
@@ -234,9 +234,9 @@ namespace PicSum.UIComponent.AddressBar
             var height = Math.Min(MAXIMUM_SHOW_ITEM_COUNT * base.DropDownList.ItemHeight,
                                   base.Items.Count * base.DropDownList.ItemHeight);
 
-          
+
             base.DropDownList.Size = new Size(width + base.DropDownList.ItemHeight, height);
-            base.DropDownList.ItemCount = base.Items.Count;            
+            base.DropDownList.ItemCount = base.Items.Count;
 
             var selectedItem = base.Items.SingleOrDefault(item => item.DirectoryPath.Equals(this.SelectedSubDirectoryPath, StringComparison.Ordinal));
             if (selectedItem != null)

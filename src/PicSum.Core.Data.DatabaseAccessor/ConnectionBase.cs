@@ -60,11 +60,11 @@ namespace PicSum.Core.Data.DatabaseAccessor
             {
                 this.connection.Close();
 
-                if (this.transaction != null) 
+                if (this.transaction != null)
                 {
                     this.transaction.Dispose();
                 }
-                
+
                 this.transactionLock.Dispose();
                 this.executeSqlLock.Dispose();
             }

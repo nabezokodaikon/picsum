@@ -531,7 +531,7 @@ namespace SWF.Common
                 {
                     return new string[] { };
                 }
-                catch (PathTooLongException) 
+                catch (PathTooLongException)
                 {
                     return new string[] { };
                 }
@@ -562,7 +562,7 @@ namespace SWF.Common
                 throw new ArgumentNullException(nameof(directoryPath));
             }
 
-            if (FileUtil.IsSystemRoot(directoryPath)) 
+            if (FileUtil.IsSystemRoot(directoryPath))
             {
                 return FileUtil.GetDriveList();
             }
@@ -886,10 +886,10 @@ namespace SWF.Common
                 {
                     Process.Start("EXPLORER.EXE", "::{20D04FE0-3AEA-1069-A2D8-08002B30309D}");
                 }
-                else 
+                else
                 {
                     Process.Start("EXPLORER.EXE", filePath);
-                }                
+                }
             }
             catch (Win32Exception)
             {

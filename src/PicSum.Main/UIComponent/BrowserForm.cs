@@ -3,7 +3,6 @@ using PicSum.Main.Conf;
 using PicSum.Task.AsyncFacade;
 using PicSum.Task.Entity;
 using PicSum.Task.Paramter;
-using PicSum.UIComponent.Contents;
 using PicSum.UIComponent.Contents.Common;
 using SWF.UIComponent.Form;
 using SWF.UIComponent.TabOperation;

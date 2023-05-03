@@ -6,7 +6,7 @@ namespace PicSum.Data.DatabaseAccessor.Dto
     /// <summary>
     /// 単一値DTO
     /// </summary>
-    public sealed class SingleValueDto<T> 
+    public sealed class SingleValueDto<T>
         : IDto
     {
         public T Value { get; private set; }

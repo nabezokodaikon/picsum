@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Drawing;
-using System.Windows.Forms;
-using System.Collections.Generic;
-using System.Collections;
-using System.Linq;
 
 namespace SWF.UIComponent.TabOperation
 {

@@ -109,7 +109,7 @@ namespace PicSum.UIComponent.Contents.FileList
                     }
 
                     var imageFiles = e.FileInfoList
-                        .Where(fileInfo => fileInfo.IsImageFile)                        
+                        .Where(fileInfo => fileInfo.IsImageFile)
                         .OrderBy(fileInfo => fileInfo.FilePath)
                         .Select(fileInfo => fileInfo.FilePath)
                         .ToArray();

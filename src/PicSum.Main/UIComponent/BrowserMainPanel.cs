@@ -5,7 +5,6 @@ using PicSum.Task.AsyncFacade;
 using PicSum.Task.Entity;
 using PicSum.Task.Paramter;
 using PicSum.Task.Result;
-using PicSum.UIComponent.Contents;
 using PicSum.UIComponent.Contents.Common;
 using PicSum.UIComponent.Contents.Parameter;
 using PicSum.UIComponent.InfoPanel;

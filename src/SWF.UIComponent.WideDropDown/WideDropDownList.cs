@@ -159,7 +159,7 @@ namespace SWF.UIComponent.WideDropDown
 
         public Image Icon { get; set; }
 
-        internal bool IsClickAndClose { get; set; } 
+        internal bool IsClickAndClose { get; set; }
 
         #endregion
 
@@ -344,7 +344,7 @@ namespace SWF.UIComponent.WideDropDown
                                      e.ItemRectangle.Width,
                                      itemTextHeight);
             }
-            else 
+            else
             {
                 return new Rectangle(e.ItemRectangle.X,
                                      e.ItemRectangle.Bottom - itemTextHeight,
@@ -389,10 +389,10 @@ namespace SWF.UIComponent.WideDropDown
 
         private void flowList_ItemMouseClick(object sender, MouseEventArgs e)
         {
-            if (this.IsClickAndClose) 
+            if (this.IsClickAndClose)
             {
                 this.Close();
-            }            
+            }
 
             if (this.itemList.Count < 1)
             {

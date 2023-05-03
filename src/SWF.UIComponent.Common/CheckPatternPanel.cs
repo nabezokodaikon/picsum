@@ -90,9 +90,9 @@ namespace SWF.UIComponent.Common
             int h = this.ClientRectangle.Height;
 
             // グラデーション描画            
-            using (LinearGradientBrush b = new LinearGradientBrush(this.ClientRectangle, 
-                                                                   Color.FromArgb(80, 80, 80), 
-                                                                   Color.FromArgb(16, 16, 16), 
+            using (LinearGradientBrush b = new LinearGradientBrush(this.ClientRectangle,
+                                                                   Color.FromArgb(80, 80, 80),
+                                                                   Color.FromArgb(16, 16, 16),
                                                                    LinearGradientMode.ForwardDiagonal))
             {
                 g.FillRectangle(b, this.ClientRectangle);

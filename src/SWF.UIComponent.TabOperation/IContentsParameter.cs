@@ -1,7 +1,4 @@
-﻿
-using System;
-
-namespace SWF.UIComponent.TabOperation
+﻿namespace SWF.UIComponent.TabOperation
 {
     /// <summary>
     /// コンテンツパラメータインターフェース

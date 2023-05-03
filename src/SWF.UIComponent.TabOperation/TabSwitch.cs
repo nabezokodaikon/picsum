@@ -1,13 +1,12 @@
-﻿using System;
+﻿using SWF.Common;
+using SWF.UIComponent.TabOperation.Properties;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Windows.Forms;
-using SWF.Common;
-using SWF.UIComponent.TabOperation.Properties;
 using WinApi;
-using System.Globalization;
 
 namespace SWF.UIComponent.TabOperation
 {
@@ -1418,7 +1417,7 @@ namespace SWF.UIComponent.TabOperation
                 {
                     return tab.DrawArea.DrawInactiveMousePointTabCloseButton;
                 }
-                
+
             }
             else
             {
@@ -1429,7 +1428,7 @@ namespace SWF.UIComponent.TabOperation
                 else
                 {
                     return tab.DrawArea.DrawInactiveTabCloseButton;
-                }                
+                }
             }
         }
 

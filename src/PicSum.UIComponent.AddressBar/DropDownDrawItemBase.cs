@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace PicSum.UIComponent.AddressBar
 {
-    abstract class DropDownDrawItemBase 
+    abstract class DropDownDrawItemBase
         : DrawItemBase
     {
         private DropDownList dropDownList = null;
@@ -147,7 +147,7 @@ namespace PicSum.UIComponent.AddressBar
             {
                 return;
             }
-            
+
             var item = this.items[index];
             this.OnSelectedDirectory(new SelectedDirectoryEventArgs(ContentsOpenType.OverlapTab, item.DirectoryPath));
         }

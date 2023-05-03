@@ -14,13 +14,13 @@ namespace PicSum.Task.AsyncLogic
     /// <summary>
     /// ファイルの深い情報取得ロジック
     /// </summary>
-    internal sealed class GetFileDeepInfoAsyncLogic 
+    internal sealed class GetFileDeepInfoAsyncLogic
         : AbstractAsyncLogic
     {
-        public GetFileDeepInfoAsyncLogic(AbstractAsyncFacade facade) 
-            : base(facade) 
-        { 
-        
+        public GetFileDeepInfoAsyncLogic(AbstractAsyncFacade facade)
+            : base(facade)
+        {
+
         }
 
         public FileDeepInfoEntity Execute(string filePath, Size thumbSize)
@@ -45,7 +45,7 @@ namespace PicSum.Task.AsyncLogic
             }
             else
             {
-                if (!FileUtil.CanAccess(filePath)) 
+                if (!FileUtil.CanAccess(filePath))
                 {
                     throw new FileNotFoundException(string.Format("ファイル '{0}' が見つかりませんでした。", filePath));
                 }

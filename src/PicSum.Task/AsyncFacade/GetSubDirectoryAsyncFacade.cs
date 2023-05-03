@@ -2,7 +2,6 @@
 using PicSum.Task.AsyncLogic;
 using PicSum.Task.Entity;
 using System;
-using System.Collections.Generic;
 
 namespace PicSum.Task.AsyncFacade
 {

@@ -44,7 +44,7 @@ namespace PicSum.Core.Data.DatabaseAccessor
             {
                 if (!isCommitted)
                 {
-                    this.conntenction.Roolback();                   
+                    this.conntenction.Roolback();
                 }
             }
 

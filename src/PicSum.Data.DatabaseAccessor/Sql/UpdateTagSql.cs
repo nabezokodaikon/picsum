@@ -1,6 +1,6 @@
-﻿using System;
+﻿using PicSum.Core.Data.DatabaseAccessor;
+using System;
 using System.Data;
-using PicSum.Core.Data.DatabaseAccessor;
 
 namespace PicSum.Data.DatabaseAccessor.Sql
 {

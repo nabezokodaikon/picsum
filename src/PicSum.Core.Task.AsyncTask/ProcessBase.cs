@@ -17,7 +17,7 @@ namespace PicSum.Core.Task.AsyncTask
     /// <summary>
     /// プロセス基底クラス
     /// </summary>
-    public abstract class ProcessBase 
+    public abstract class ProcessBase
         : Component
     {
         private bool disposed = false;

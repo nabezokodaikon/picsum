@@ -6,7 +6,7 @@ namespace PicSum.Task.Entity
     /// <summary>
     /// フォルダ状態
     /// </summary>
-    public sealed class DirectoryStateEntity 
+    public sealed class DirectoryStateEntity
         : IEntity
     {
         public string DirectoryPath { get; set; }

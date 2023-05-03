@@ -1,8 +1,6 @@
-﻿using System;
+﻿using SWF.UIComponent.TabOperation.Properties;
+using System;
 using System.Drawing;
-using System.Security.AccessControl;
-using System.Windows.Forms;
-using SWF.UIComponent.TabOperation.Properties;
 
 namespace SWF.UIComponent.TabOperation
 {

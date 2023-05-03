@@ -5,7 +5,7 @@ using System.Windows.Forms;
 
 namespace PicSum.UIComponent.AddressBar
 {
-    internal sealed class OverflowDrawItem 
+    internal sealed class OverflowDrawItem
         : DropDownDrawItemBase, IDisposable
     {
         #region インスタンス変数
@@ -86,7 +86,7 @@ namespace PicSum.UIComponent.AddressBar
                 base.DropDownList.Size = new Size(width + base.DropDownList.ItemHeight, height);
                 base.DropDownList.ClearSelectedItems();
                 base.DropDownList.ItemCount = 0;
-                base.DropDownList.ItemCount = base.Items.Count;                
+                base.DropDownList.ItemCount = base.Items.Count;
                 base.DropDownList.Show(base.AddressBar, base.Left, base.Bottom);
             }
         }

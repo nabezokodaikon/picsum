@@ -1,7 +1,6 @@
 ﻿using PicSum.Core.Task.AsyncTask;
 using PicSum.Main.Conf;
 using PicSum.Main.Properties;
-using PicSum.Task.Paramter;
 using PicSum.Task.SyncFacade;
 using PicSum.UIComponent.Contents.Conf;
 using SWF.Common;

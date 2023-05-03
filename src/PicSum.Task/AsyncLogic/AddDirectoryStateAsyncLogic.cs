@@ -13,9 +13,9 @@ namespace PicSum.Task.AsyncLogic
     internal sealed class AddDirectoryStateAsyncLogic : AbstractAsyncLogic
     {
         public AddDirectoryStateAsyncLogic(AbstractAsyncFacade facade)
-            : base(facade) 
+            : base(facade)
         {
-        
+
         }
 
         public bool Execute(DirectoryStateEntity directoryState)
