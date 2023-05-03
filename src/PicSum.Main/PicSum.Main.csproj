@@ -79,10 +79,6 @@
     <Reference Include="NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <HintPath>..\packages\NLog.5.1.3\lib\net46\NLog.dll</HintPath>
     </Reference>
-    <Reference Include="PicSum.UIComponent.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\PicSum.UIComponent.Common\obj\Debug\PicSum.UIComponent.Common.dll</HintPath>
-    </Reference>
     <Reference Include="SWF.UIComponent.FlowList, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\SWF.UIComponent.FlowList\bin\Debug\SWF.UIComponent.FlowList.dll</HintPath>
