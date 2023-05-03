@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using PicSum.Core.Base.Conf;
 
 namespace PicSum.UIComponent.Contents
@@ -7,46 +8,23 @@ namespace PicSum.UIComponent.Contents
     /// <summary>
     /// 画像ファイル実行イベント引数クラス
     /// </summary>
-    public class ExecuteImageFileEventArgs : EventArgs
+    public sealed class ExecuteImageFileEventArgs 
+        : EventArgs
     {
-        private ContentsOpenType _openType = ContentsOpenType.Default;
-        private IList<string> _filePathList = null;
-        private string _selectedFilePath = string.Empty;
-
-        public ContentsOpenType OpenType
-        {
-            get
-            {
-                return _openType;
-            }
-        }
-
-        public IList<string> FilePathList
-        {
-            get
-            {
-                return _filePathList;
-            }
-        }
-
-        public string SelectedFilePath
-        {
-            get
-            {
-                return _selectedFilePath;
-            }
-        }
+        public ContentsOpenType OpenType { get; private set; }
+        public IList<string> FilePathList { get; private set; }
+        public string SelectedFilePath { get; private set; }
 
         public ExecuteImageFileEventArgs(ContentsOpenType openType, IList<string> filePathList, string selectedFilePath)
         {
             if (filePathList == null)
             {
-                throw new ArgumentNullException("filePathList");
+                throw new ArgumentNullException(nameof(filePathList));
             }
 
             if (filePathList.Count == 0)
             {
-                throw new ArgumentException("ファイルパスリストが0件です。", "filePathList");
+                throw new ArgumentException("ファイルパスリストが0件です。", nameof(filePathList));
             }
 
             if (selectedFilePath == null)
@@ -56,29 +34,12 @@ namespace PicSum.UIComponent.Contents
 
             if (!filePathList.Contains(selectedFilePath))
             {
-                throw new ArgumentException("選択ファイルパスがファイルパスリスト内に存在しません。", "selectedFilePath");
+                throw new ArgumentException("選択ファイルパスがファイルパスリスト内に存在しません。", nameof(selectedFilePath));
             }
 
-            _openType = openType;
-            _filePathList = filePathList;
-            _selectedFilePath = selectedFilePath;
-        }
-
-        public ExecuteImageFileEventArgs(ContentsOpenType openType, IList<string> filePathList)
-        {
-            if (filePathList == null)
-            {
-                throw new ArgumentNullException("filePathList");
-            }
-
-            if (filePathList.Count == 0)
-            {
-                throw new ArgumentException("ファイルパスリストが0件です。", "filePathList");
-            }
-
-            _openType = openType;
-            _filePathList = filePathList;
-            _selectedFilePath = filePathList[0];
+            this.OpenType = openType;
+            this.FilePathList = filePathList;
+            this.SelectedFilePath = selectedFilePath;
         }
     }
 }

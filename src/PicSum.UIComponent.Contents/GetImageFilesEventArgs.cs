@@ -13,7 +13,7 @@ namespace PicSum.UIComponent.Contents
         public Image ContentsIcon { get; private set; }
 
         public GetImageFilesEventArgs(
-            IList<string> filePathList, 
+            IList<string> filePathList,
             string selectedFilePath,
             string contentsTitle,
             Image contentsIcon)

@@ -11,12 +11,9 @@ namespace PicSum.UIComponent.Contents
     /// <summary>
     /// コンテンツ基底クラス
     /// </summary>
-    public abstract class BrowserContents : ContentsPanel
+    public abstract class BrowserContents 
+        : ContentsPanel
     {
-        #region 定数・列挙
-
-        #endregion
-
         #region イベント・デリゲート
 
         public event EventHandler<SelectedFileChangeEventArgs> SelectedFileChanged;
@@ -71,10 +68,6 @@ namespace PicSum.UIComponent.Contents
             this.SubInitializeComponent();
             this.Parameter = parameter ?? throw new ArgumentNullException(nameof(parameter));
         }
-
-        #endregion
-
-        #region パブリックメソッド
 
         #endregion
 

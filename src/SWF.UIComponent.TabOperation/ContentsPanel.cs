@@ -7,12 +7,9 @@ namespace SWF.UIComponent.TabOperation
     /// <summary>
     /// コンテンツコントロール
     /// </summary>
-    public class ContentsPanel : UserControl
+    public class ContentsPanel
+        : UserControl
     {
-        #region 定数・列挙
-
-        #endregion
-
         #region イベント・デリゲート
 
         public event EventHandler Activated;
@@ -23,8 +20,8 @@ namespace SWF.UIComponent.TabOperation
 
         #region インスタンス変数
 
-        private string _title = string.Empty;
-        private Image _icon = null;
+        private string title = string.Empty;
+        private Image icon = null;
 
         #endregion
 
@@ -34,16 +31,16 @@ namespace SWF.UIComponent.TabOperation
         {
             get
             {
-                return _title;
+                return this.title;
             }
             set
             {
                 if (value == null)
                 {
-                    throw new ArgumentNullException("value");
+                    throw new ArgumentNullException(nameof(value));
                 }
 
-                _title = value;
+                this.title = value;
             }
         }
 
@@ -51,25 +48,13 @@ namespace SWF.UIComponent.TabOperation
         {
             get
             {
-                return _icon;
+                return icon;
             }
             set
             {
-                _icon = value;
+                icon = value;
             }
         }
-
-        #endregion
-
-        #region 継承プロパティ
-
-        #endregion
-
-        #region プライベートプロパティ
-
-        #endregion
-
-        #region コンストラクタ
 
         #endregion
 
@@ -80,7 +65,7 @@ namespace SWF.UIComponent.TabOperation
         /// </summary>
         public void Active()
         {
-            OnActivated(new EventArgs());
+            this.OnActivated(new EventArgs());
         }
 
         /// <summary>
@@ -88,7 +73,7 @@ namespace SWF.UIComponent.TabOperation
         /// </summary>
         public void Inactive()
         {
-            OnInactivated(new EventArgs());
+            this.OnInactivated(new EventArgs());
         }
 
         public void DrawingTabContents(DrawTabEventArgs e)
@@ -98,7 +83,7 @@ namespace SWF.UIComponent.TabOperation
                 throw new ArgumentNullException("e");
             }
 
-            OnDrawTabContents(e);
+            this.OnDrawTabContents(e);
         }
 
         #endregion
@@ -107,35 +92,26 @@ namespace SWF.UIComponent.TabOperation
 
         protected void OnActivated(EventArgs e)
         {
-            if (Activated != null)
+            if (this.Activated != null)
             {
-                Activated(this, e);
+                this.Activated(this, e);
             }
         }
 
         protected void OnInactivated(EventArgs e)
         {
-            if (Inactivated != null)
+            if (this.Inactivated != null)
             {
-                Inactivated(this, e);
+                this.Inactivated(this, e);
             }
         }
 
         protected virtual void OnDrawTabContents(DrawTabEventArgs e)
         {
-            if (DrawTabContents != null)
+            if (this.DrawTabContents != null)
             {
-                DrawTabContents(this, e);
+                this.DrawTabContents(this, e);
             }
-        }
-
-        #endregion
-
-        #region プライベートメソッド
-
-        private void initializeComponent()
-        {
-
         }
 
         #endregion

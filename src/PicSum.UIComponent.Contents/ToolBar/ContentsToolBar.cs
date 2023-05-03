@@ -2,12 +2,12 @@
 
 namespace PicSum.UIComponent.Contents.ToolBar
 {
-    public class ContentsToolBar
+    public sealed class ContentsToolBar
         : ToolStrip
     {
         public ContentsToolBar()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
 
         private void InitializeComponent()

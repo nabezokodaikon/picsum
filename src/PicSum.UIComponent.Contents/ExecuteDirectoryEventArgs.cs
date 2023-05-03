@@ -1,31 +1,16 @@
-﻿using System;
-using PicSum.Core.Base.Conf;
+﻿using PicSum.Core.Base.Conf;
+using System;
 
 namespace PicSum.UIComponent.Contents
 {
     /// <summary>
     /// フォルダ実行イベント引数クラス
     /// </summary>
-    public class ExecuteDirectoryEventArgs : EventArgs
+    public sealed class ExecuteDirectoryEventArgs 
+        : EventArgs
     {
-        private ContentsOpenType _openType = ContentsOpenType.Default;
-        private string _directoryPath = string.Empty;
-
-        public ContentsOpenType OpenType
-        {
-            get
-            {
-                return _openType;
-            }
-        }
-
-        public string DirectoryPath
-        {
-            get
-            {
-                return _directoryPath;
-            }
-        }
+        public ContentsOpenType OpenType { get; private set; }
+        public string DirectoryPath { get; private set; }
 
         public ExecuteDirectoryEventArgs(ContentsOpenType openType, string directoryPath)
         {
@@ -34,8 +19,8 @@ namespace PicSum.UIComponent.Contents
                 throw new ArgumentNullException("directoryPath");
             }
 
-            _openType = openType;
-            _directoryPath = directoryPath;
+            this.OpenType = openType;
+            this.DirectoryPath = directoryPath;
         }
     }
 }

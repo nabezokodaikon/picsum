@@ -13,7 +13,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using System.Linq;
 using System.Security.Permissions;
 using System.Windows.Forms;
 
@@ -22,17 +21,9 @@ namespace PicSum.UIComponent.Contents.ImageViewer
     /// <summary>
     /// 画像ビューアコンテンツ
     /// </summary>
-    public partial class ImageViewerContents
+    public sealed partial class ImageViewerContents
         : BrowserContents
     {
-        #region 定数・列挙
-
-        #endregion
-
-        #region イベント・デリゲート
-
-        #endregion
-
         #region インスタンス変数
 
         private readonly ImageViewerContentsParameter parameter = null;
@@ -146,10 +137,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
             this.parameter = parameter;
         }
-
-        #endregion
-
-        #region パブリックメソッド
 
         #endregion
 

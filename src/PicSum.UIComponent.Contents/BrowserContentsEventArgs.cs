@@ -1,29 +1,14 @@
-﻿using System;
-using PicSum.Core.Base.Conf;
+﻿using PicSum.Core.Base.Conf;
 using SWF.UIComponent.TabOperation;
+using System;
 
 namespace PicSum.UIComponent.Contents
 {
-    public class BrowserContentsEventArgs : EventArgs
+    public sealed class BrowserContentsEventArgs
+        : EventArgs
     {
-        private ContentsOpenType _openType = ContentsOpenType.Default;
-        private IContentsParameter _parameter = null;
-
-        public ContentsOpenType OpenType
-        {
-            get
-            {
-                return _openType;
-            }
-        }
-
-        public IContentsParameter Parameter
-        {
-            get
-            {
-                return _parameter;
-            }
-        }
+        public ContentsOpenType OpenType { get; private set; }
+        public IContentsParameter Parameter { get; private set; }
 
         public BrowserContentsEventArgs(ContentsOpenType openType, IContentsParameter param)
         {
@@ -32,8 +17,8 @@ namespace PicSum.UIComponent.Contents
                 throw new ArgumentNullException("param");
             }
 
-            _openType = openType;
-            _parameter = param;
+            this.OpenType = openType;
+            this.Parameter = param;
         }
     }
 }
