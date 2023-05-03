@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace PicSum.UIComponent.Common
+namespace PicSum.UIComponent.Contents.ContextMenu
 {
     /// <summary>
     /// ファイル実行イベント引数クラス

@@ -34,7 +34,7 @@ namespace PicSum.UIComponent.Contents.FileList
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FileListContentsBase));
             this.flowList = new SWF.UIComponent.FlowList.FlowList();
-            this.fileContextMenu = new PicSum.UIComponent.Common.FileContextMenu();
+            this.fileContextMenu = new PicSum.UIComponent.Contents.ContextMenu.FileContextMenu();
             this.viewContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.showDirectoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showImageFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -93,21 +93,21 @@ namespace PicSum.UIComponent.Contents.FileList
             this.fileContextMenu.VisibleRemoveFromListMenuItem = false;
             this.fileContextMenu.Name = "fileContextMenu";
             this.fileContextMenu.Size = new System.Drawing.Size(209, 312);
-            this.fileContextMenu.DirectoryActiveTabOpen += new System.EventHandler<PicSum.UIComponent.Common.ExecuteFileEventArgs>(this.FileContextMenu_DirectoryActiveTabOpen);
-            this.fileContextMenu.DirectoryNewTabOpen += new System.EventHandler<PicSum.UIComponent.Common.ExecuteFileEventArgs>(this.FileContextMenu_DirectoryNewTabOpen);
-            this.fileContextMenu.FileOpen += new System.EventHandler<PicSum.UIComponent.Common.ExecuteFileEventArgs>(this.FileContextMenu_FileOpen);
-            this.fileContextMenu.DirectoryNewWindowOpen += new System.EventHandler<PicSum.UIComponent.Common.ExecuteFileEventArgs>(this.FileContextMenu_DirectoryNewWindowOpen);
-            this.fileContextMenu.FileNewTabOpen += new System.EventHandler<PicSum.UIComponent.Common.ExecuteFileEventArgs>(this.FileContextMenu_FileNewTabOpen);
-            this.fileContextMenu.SaveDirectoryOpen += new System.EventHandler<PicSum.UIComponent.Common.ExecuteFileEventArgs>(this.FileContextMenu_SaveDirectoryOpen);
-            this.fileContextMenu.FileActiveTabOpen += new System.EventHandler<PicSum.UIComponent.Common.ExecuteFileEventArgs>(this.FileContextMenu_FileActiveTabOpen);
-            this.fileContextMenu.Bookmark += new System.EventHandler<PicSum.UIComponent.Common.ExecuteFileEventArgs>(this.FileContextMenu_Bookmark);
-            this.fileContextMenu.NameCopy += new System.EventHandler<PicSum.UIComponent.Common.ExecuteFileListEventArgs>(this.FileContextMenu_NameCopy);
-            this.fileContextMenu.Export += new System.EventHandler<PicSum.UIComponent.Common.ExecuteFileListEventArgs>(this.FileContextMenu_Export);
-            this.fileContextMenu.ExplorerOpen += new System.EventHandler<PicSum.UIComponent.Common.ExecuteFileEventArgs>(this.FileContextMenu_ExplorerOpen);
-            this.fileContextMenu.FileNewWindowOpen += new System.EventHandler<PicSum.UIComponent.Common.ExecuteFileEventArgs>(this.FileContextMenu_FileNewWindowOpen);
-            this.fileContextMenu.PathCopy += new System.EventHandler<PicSum.UIComponent.Common.ExecuteFileListEventArgs>(this.FileContextMenu_PathCopy);
+            this.fileContextMenu.DirectoryActiveTabOpen += new System.EventHandler<PicSum.UIComponent.Contents.ContextMenu.ExecuteFileEventArgs>(this.FileContextMenu_DirectoryActiveTabOpen);
+            this.fileContextMenu.DirectoryNewTabOpen += new System.EventHandler<PicSum.UIComponent.Contents.ContextMenu.ExecuteFileEventArgs>(this.FileContextMenu_DirectoryNewTabOpen);
+            this.fileContextMenu.FileOpen += new System.EventHandler<PicSum.UIComponent.Contents.ContextMenu.ExecuteFileEventArgs>(this.FileContextMenu_FileOpen);
+            this.fileContextMenu.DirectoryNewWindowOpen += new System.EventHandler<PicSum.UIComponent.Contents.ContextMenu.ExecuteFileEventArgs>(this.FileContextMenu_DirectoryNewWindowOpen);
+            this.fileContextMenu.FileNewTabOpen += new System.EventHandler<PicSum.UIComponent.Contents.ContextMenu.ExecuteFileEventArgs>(this.FileContextMenu_FileNewTabOpen);
+            this.fileContextMenu.SaveDirectoryOpen += new System.EventHandler<PicSum.UIComponent.Contents.ContextMenu.ExecuteFileEventArgs>(this.FileContextMenu_SaveDirectoryOpen);
+            this.fileContextMenu.FileActiveTabOpen += new System.EventHandler<PicSum.UIComponent.Contents.ContextMenu.ExecuteFileEventArgs>(this.FileContextMenu_FileActiveTabOpen);
+            this.fileContextMenu.Bookmark += new System.EventHandler<PicSum.UIComponent.Contents.ContextMenu.ExecuteFileEventArgs>(this.FileContextMenu_Bookmark);
+            this.fileContextMenu.NameCopy += new System.EventHandler<PicSum.UIComponent.Contents.ContextMenu.ExecuteFileListEventArgs>(this.FileContextMenu_NameCopy);
+            this.fileContextMenu.Export += new System.EventHandler<PicSum.UIComponent.Contents.ContextMenu.ExecuteFileListEventArgs>(this.FileContextMenu_Export);
+            this.fileContextMenu.ExplorerOpen += new System.EventHandler<PicSum.UIComponent.Contents.ContextMenu.ExecuteFileEventArgs>(this.FileContextMenu_ExplorerOpen);
+            this.fileContextMenu.FileNewWindowOpen += new System.EventHandler<PicSum.UIComponent.Contents.ContextMenu.ExecuteFileEventArgs>(this.FileContextMenu_FileNewWindowOpen);
+            this.fileContextMenu.PathCopy += new System.EventHandler<PicSum.UIComponent.Contents.ContextMenu.ExecuteFileListEventArgs>(this.FileContextMenu_PathCopy);
             this.fileContextMenu.Opening += new System.ComponentModel.CancelEventHandler(this.FileContextMenu_Opening);
-            this.fileContextMenu.RemoveFromList += new System.EventHandler<PicSum.UIComponent.Common.ExecuteFileListEventArgs>(this.FileContextMenu_RemoveFromList);
+            this.fileContextMenu.RemoveFromList += new System.EventHandler<PicSum.UIComponent.Contents.ContextMenu.ExecuteFileListEventArgs>(this.FileContextMenu_RemoveFromList);
             // 
             // viewContextMenuStrip
             // 
@@ -286,7 +286,7 @@ namespace PicSum.UIComponent.Contents.FileList
         #endregion
 
         private SWF.UIComponent.FlowList.FlowList flowList;
-        private PicSum.UIComponent.Common.FileContextMenu fileContextMenu;
+        private PicSum.UIComponent.Contents.ContextMenu.FileContextMenu fileContextMenu;
         private PicSum.UIComponent.Contents.ToolBar.ContentsToolBar toolBar;
         private System.Windows.Forms.ToolStripDropDownButton viewToolStripDropDownButton;
         private System.Windows.Forms.ToolStripButton sortFileNameToolStripButton;

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace PicSum.UIComponent.Common
+namespace PicSum.UIComponent.Contents.ContextMenu
 {
     /// <summary>
     /// ファイルリスト実行イベント引数クラス

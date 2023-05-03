@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using PicSum.Core.Task.AsyncTask;
+using PicSum.Task.AsyncFacade;
+using PicSum.Task.Entity;
+using PicSum.UIComponent.AddressBar.Properties;
+using System;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using PicSum.UIComponent.AddressBar.Properties;
-using PicSum.Core.Base.Conf;
-using PicSum.Core.Task.AsyncTask;
-using PicSum.Task.AsyncFacade;
-using PicSum.Task.Entity;
-using PicSum.UIComponent.Common;
 
 namespace PicSum.UIComponent.AddressBar
 {

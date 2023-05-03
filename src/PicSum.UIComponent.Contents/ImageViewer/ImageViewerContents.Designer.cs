@@ -1,5 +1,4 @@
-﻿using PicSum.UIComponent.Common;
-using System;
+﻿using System;
 
 namespace PicSum.UIComponent.Contents.ImageViewer
 {
@@ -21,7 +20,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ImageViewerContents));
             this.leftImagePanel = new SWF.UIComponent.ImagePanel.ImagePanel();
-            this.fileContextMenu = new PicSum.UIComponent.Common.FileContextMenu();
+            this.fileContextMenu = new PicSum.UIComponent.Contents.ContextMenu.FileContextMenu();
             this.rightImagePanel = new SWF.UIComponent.ImagePanel.ImagePanel();
             this.filePathToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.checkPatternPanel = new SWF.UIComponent.Common.CheckPatternPanel();
@@ -72,14 +71,14 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.fileContextMenu.VisibleRemoveFromListMenuItem = false;
             this.fileContextMenu.Name = "fileContextMenu";
             this.fileContextMenu.Size = new System.Drawing.Size(205, 292);
-            this.fileContextMenu.FileNewTabOpen += new System.EventHandler<PicSum.UIComponent.Common.ExecuteFileEventArgs>(this.FileContextMenu_FileNewTabOpen);
-            this.fileContextMenu.FileNewWindowOpen += new System.EventHandler<PicSum.UIComponent.Common.ExecuteFileEventArgs>(this.FileContextMenu_FileNewWindowOpen);
-            this.fileContextMenu.FileOpen += new System.EventHandler<PicSum.UIComponent.Common.ExecuteFileEventArgs>(this.FileContextMenu_FileOpen);
-            this.fileContextMenu.SaveDirectoryOpen += new System.EventHandler<PicSum.UIComponent.Common.ExecuteFileEventArgs>(this.FileContextMenu_SaveDirectoryOpen);
-            this.fileContextMenu.Export += new System.EventHandler<PicSum.UIComponent.Common.ExecuteFileListEventArgs>(this.FileContextMenu_Export);
-            this.fileContextMenu.PathCopy += new System.EventHandler<PicSum.UIComponent.Common.ExecuteFileListEventArgs>(this.FileContextMenu_PathCopy);
-            this.fileContextMenu.NameCopy += new System.EventHandler<PicSum.UIComponent.Common.ExecuteFileListEventArgs>(this.FileContextMenu_NameCopy);
-            this.fileContextMenu.Bookmark += new System.EventHandler<PicSum.UIComponent.Common.ExecuteFileEventArgs>(this.FileContextMenu_Bookmark);
+            this.fileContextMenu.FileNewTabOpen += new System.EventHandler<PicSum.UIComponent.Contents.ContextMenu.ExecuteFileEventArgs>(this.FileContextMenu_FileNewTabOpen);
+            this.fileContextMenu.FileNewWindowOpen += new System.EventHandler<PicSum.UIComponent.Contents.ContextMenu.ExecuteFileEventArgs>(this.FileContextMenu_FileNewWindowOpen);
+            this.fileContextMenu.FileOpen += new System.EventHandler<PicSum.UIComponent.Contents.ContextMenu.ExecuteFileEventArgs>(this.FileContextMenu_FileOpen);
+            this.fileContextMenu.SaveDirectoryOpen += new System.EventHandler<PicSum.UIComponent.Contents.ContextMenu.ExecuteFileEventArgs>(this.FileContextMenu_SaveDirectoryOpen);
+            this.fileContextMenu.Export += new System.EventHandler<PicSum.UIComponent.Contents.ContextMenu.ExecuteFileListEventArgs>(this.FileContextMenu_Export);
+            this.fileContextMenu.PathCopy += new System.EventHandler<PicSum.UIComponent.Contents.ContextMenu.ExecuteFileListEventArgs>(this.FileContextMenu_PathCopy);
+            this.fileContextMenu.NameCopy += new System.EventHandler<PicSum.UIComponent.Contents.ContextMenu.ExecuteFileListEventArgs>(this.FileContextMenu_NameCopy);
+            this.fileContextMenu.Bookmark += new System.EventHandler<PicSum.UIComponent.Contents.ContextMenu.ExecuteFileEventArgs>(this.FileContextMenu_Bookmark);
             this.fileContextMenu.Opening += new System.ComponentModel.CancelEventHandler(this.FileContextMenu_Opening);
             // 
             // rightImagePanel
@@ -296,7 +295,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
         private SWF.UIComponent.ImagePanel.ImagePanel leftImagePanel;
         private SWF.UIComponent.ImagePanel.ImagePanel rightImagePanel;
-        private PicSum.UIComponent.Common.FileContextMenu fileContextMenu;
+        private PicSum.UIComponent.Contents.ContextMenu.FileContextMenu fileContextMenu;
         private System.Windows.Forms.ToolTip filePathToolTip;
         private SWF.UIComponent.Common.CheckPatternPanel checkPatternPanel;
         private PicSum.UIComponent.Contents.ToolBar.ContentsToolBar toolBar;

@@ -74,6 +74,11 @@
     <Compile Include="Conf\CommonConfig.cs" />
     <Compile Include="Conf\FileListContentsConfig.cs" />
     <Compile Include="Conf\ImageViewerContentsConfig.cs" />
+    <Compile Include="ContextMenu\ExecuteFileEventArgs.cs" />
+    <Compile Include="ContextMenu\ExecuteFileListEventArgs.cs" />
+    <Compile Include="ContextMenu\FileContextMenu.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="FileList\BookmarkFileListContents.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -166,10 +171,6 @@
       <Project>{BCB012C4-D8A7-4F01-B158-2BB6AF00E6B5}</Project>
       <Name>PicSum.Task</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PicSum.UIComponent.Common\PicSum.UIComponent.Common.csproj">
-      <Project>{70C76E7B-79B7-46FF-9ABC-B1A89FAA86A9}</Project>
-      <Name>PicSum.UIComponent.Common</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="FileList\FileListContentsBase.resx">
@@ -212,7 +213,31 @@
     <None Include="Resources\TagIcon.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\AssociationOpenIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
     <None Include="Resources\BookmarkIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ClipboardIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\DirectoryOpenIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ExportIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ImageFileOpenIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\RemoveIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\TabPlusIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\WindowOpenIcon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

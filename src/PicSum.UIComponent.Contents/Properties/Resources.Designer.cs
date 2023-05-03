@@ -73,6 +73,16 @@ namespace PicSum.UIComponent.Contents.Properties {
         /// <summary>
         ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
         /// </summary>
+        internal static System.Drawing.Bitmap AssociationOpenIcon {
+            get {
+                object obj = ResourceManager.GetObject("AssociationOpenIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
+        /// </summary>
         internal static System.Drawing.Bitmap BookmarkIcon {
             get {
                 object obj = ResourceManager.GetObject("BookmarkIcon", resourceCulture);
@@ -83,9 +93,49 @@ namespace PicSum.UIComponent.Contents.Properties {
         /// <summary>
         ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
         /// </summary>
+        internal static System.Drawing.Bitmap ClipboardIcon {
+            get {
+                object obj = ResourceManager.GetObject("ClipboardIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
+        /// </summary>
+        internal static System.Drawing.Bitmap DirectoryOpenIcon {
+            get {
+                object obj = ResourceManager.GetObject("DirectoryOpenIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
+        /// </summary>
+        internal static System.Drawing.Bitmap ExportIcon {
+            get {
+                object obj = ResourceManager.GetObject("ExportIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
+        /// </summary>
         internal static System.Drawing.Bitmap HomeIcon {
             get {
                 object obj = ResourceManager.GetObject("HomeIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
+        /// </summary>
+        internal static System.Drawing.Bitmap ImageFileOpenIcon {
+            get {
+                object obj = ResourceManager.GetObject("ImageFileOpenIcon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -113,6 +163,16 @@ namespace PicSum.UIComponent.Contents.Properties {
         /// <summary>
         ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
         /// </summary>
+        internal static System.Drawing.Bitmap RemoveIcon {
+            get {
+                object obj = ResourceManager.GetObject("RemoveIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
+        /// </summary>
         internal static System.Drawing.Bitmap SmallArrowDown {
             get {
                 object obj = ResourceManager.GetObject("SmallArrowDown", resourceCulture);
@@ -133,6 +193,16 @@ namespace PicSum.UIComponent.Contents.Properties {
         /// <summary>
         ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
         /// </summary>
+        internal static System.Drawing.Bitmap TabPlusIcon {
+            get {
+                object obj = ResourceManager.GetObject("TabPlusIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
+        /// </summary>
         internal static System.Drawing.Bitmap TagIcon {
             get {
                 object obj = ResourceManager.GetObject("TagIcon", resourceCulture);
@@ -146,6 +216,16 @@ namespace PicSum.UIComponent.Contents.Properties {
         internal static System.Drawing.Bitmap ViewerIcon {
             get {
                 object obj = ResourceManager.GetObject("ViewerIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
+        /// </summary>
+        internal static System.Drawing.Bitmap WindowOpenIcon {
+            get {
+                object obj = ResourceManager.GetObject("WindowOpenIcon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

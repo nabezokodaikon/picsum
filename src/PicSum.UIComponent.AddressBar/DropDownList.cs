@@ -5,7 +5,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace PicSum.UIComponent.Common
+namespace PicSum.UIComponent.AddressBar
 {
     /// <summary>
     /// ドロップダウンリスト

@@ -1,10 +1,9 @@
-﻿using System;
+﻿using PicSum.Core.Base.Conf;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
-using PicSum.Core.Base.Conf;
-using PicSum.UIComponent.Common;
 
 namespace PicSum.UIComponent.AddressBar
 {

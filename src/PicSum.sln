@@ -21,8 +21,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PicSum.Task", "PicSum.Task\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PicSum.UIComponent.AddressBar", "PicSum.UIComponent.AddressBar\PicSum.UIComponent.AddressBar.csproj", "{290188E5-55A5-40C7-A311-4E3474C23789}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PicSum.UIComponent.Common", "PicSum.UIComponent.Common\PicSum.UIComponent.Common.csproj", "{70C76E7B-79B7-46FF-9ABC-B1A89FAA86A9}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PicSum.UIComponent.Contents", "PicSum.UIComponent.Contents\PicSum.UIComponent.Contents.csproj", "{8FB6F625-792E-4A72-AB48-5C2F558C74F3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PicSum.UIComponent.InfoPanel", "PicSum.UIComponent.InfoPanel\PicSum.UIComponent.InfoPanel.csproj", "{AD290551-E7B2-41E0-801D-E8118155AE86}"
@@ -123,14 +121,6 @@ Global
 		{290188E5-55A5-40C7-A311-4E3474C23789}.Release|Any CPU.Build.0 = Release|Any CPU
 		{290188E5-55A5-40C7-A311-4E3474C23789}.Release|x64.ActiveCfg = Release|x64
 		{290188E5-55A5-40C7-A311-4E3474C23789}.Release|x64.Build.0 = Release|x64
-		{70C76E7B-79B7-46FF-9ABC-B1A89FAA86A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{70C76E7B-79B7-46FF-9ABC-B1A89FAA86A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{70C76E7B-79B7-46FF-9ABC-B1A89FAA86A9}.Debug|x64.ActiveCfg = Debug|x64
-		{70C76E7B-79B7-46FF-9ABC-B1A89FAA86A9}.Debug|x64.Build.0 = Debug|x64
-		{70C76E7B-79B7-46FF-9ABC-B1A89FAA86A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{70C76E7B-79B7-46FF-9ABC-B1A89FAA86A9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{70C76E7B-79B7-46FF-9ABC-B1A89FAA86A9}.Release|x64.ActiveCfg = Release|x64
-		{70C76E7B-79B7-46FF-9ABC-B1A89FAA86A9}.Release|x64.Build.0 = Release|x64
 		{8FB6F625-792E-4A72-AB48-5C2F558C74F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8FB6F625-792E-4A72-AB48-5C2F558C74F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8FB6F625-792E-4A72-AB48-5C2F558C74F3}.Debug|x64.ActiveCfg = Debug|x64

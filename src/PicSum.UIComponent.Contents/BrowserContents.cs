@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using SWF.UIComponent.TabOperation;
+using System;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
-using SWF.UIComponent.TabOperation;
 
 namespace PicSum.UIComponent.Contents
 {

@@ -73,6 +73,9 @@
     <Compile Include="DirectoryDrawItem.cs" />
     <Compile Include="DirectoryEntity.cs" />
     <Compile Include="DirectoryHistoryDrawItem.cs" />
+    <Compile Include="DropDownList.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="OverflowDrawItem.cs" />
     <Compile Include="Palette.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -108,10 +111,6 @@
     <ProjectReference Include="..\PicSum.Task\PicSum.Task.csproj">
       <Project>{BCB012C4-D8A7-4F01-B158-2BB6AF00E6B5}</Project>
       <Name>PicSum.Task</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PicSum.UIComponent.Common\PicSum.UIComponent.Common.csproj">
-      <Project>{70C76E7B-79B7-46FF-9ABC-B1A89FAA86A9}</Project>
-      <Name>PicSum.UIComponent.Common</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

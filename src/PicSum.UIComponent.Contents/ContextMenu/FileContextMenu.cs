@@ -1,11 +1,11 @@
-﻿using PicSum.UIComponent.Common.Properties;
+﻿using PicSum.UIComponent.Contents.Properties;
 using SWF.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace PicSum.UIComponent.Common
+namespace PicSum.UIComponent.Contents.ContextMenu
 {
     /// <summary>
     /// ファイルコンテキストメニュー
@@ -59,7 +59,7 @@ namespace PicSum.UIComponent.Common
         private readonly ToolStripMenuItem exportMenuItem = new ToolStripMenuItem("Export");
         private readonly ToolStripMenuItem pathCopyMenuItem = new ToolStripMenuItem("Copy Path");
         private readonly ToolStripMenuItem nameCopyMenuItem = new ToolStripMenuItem("Copy Name");
-        private readonly ToolStripMenuItem removeFromListMenuItem = new ToolStripMenuItem("Remove From List");
+        private readonly ToolStripMenuItem removeFromListMenuItem = new ToolStripMenuItem("Remove");
 
         #endregion
 
