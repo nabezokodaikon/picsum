@@ -3,7 +3,6 @@ using SWF.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Windows.Forms;
 
 namespace PicSum.UIComponent.Common
@@ -11,7 +10,7 @@ namespace PicSum.UIComponent.Common
     /// <summary>
     /// ファイルコンテキストメニュー
     /// </summary>
-    public class FileContextMenu 
+    public sealed class FileContextMenu
         : ContextMenuStrip
     {
         #region イベント・デリゲート
@@ -184,122 +183,6 @@ namespace PicSum.UIComponent.Common
 
         #endregion
 
-        #region 継承メソッド
-
-        protected virtual void OnFileActiveTabOpen(ExecuteFileEventArgs e)
-        {
-            if (this.FileActiveTabOpen != null)
-            {
-                this.FileActiveTabOpen(this, e);
-            }
-        }
-
-        protected virtual void OnFileNewTabOpen(ExecuteFileEventArgs e)
-        {
-            if (this.FileNewTabOpen != null)
-            {
-                this.FileNewTabOpen(this, e);
-            }
-        }
-
-        protected virtual void OnFileNewWindowOpen(ExecuteFileEventArgs e)
-        {
-            if (this.FileNewWindowOpen != null)
-            {
-                this.FileNewWindowOpen(this, e);
-            }
-        }
-
-        protected virtual void OnFileOpen(ExecuteFileEventArgs e)
-        {
-            if (this.FileOpen != null)
-            {
-                this.FileOpen(this, e);
-            }
-        }
-
-        protected virtual void OnSaveDirectoryOpen(ExecuteFileEventArgs e)
-        {
-            if (this.SaveDirectoryOpen != null)
-            {
-                this.SaveDirectoryOpen(this, e);
-            }
-        }
-
-        protected virtual void OnDirectoryActiveTabOpen(ExecuteFileEventArgs e)
-        {
-            if (this.DirectoryActiveTabOpen != null)
-            {
-                this.DirectoryActiveTabOpen(this, e);
-            }
-        }
-
-        protected virtual void OnDirectoryNewTabOpen(ExecuteFileEventArgs e)
-        {
-            if (this.DirectoryNewTabOpen != null)
-            {
-                this.DirectoryNewTabOpen(this, e);
-            }
-        }
-
-        protected virtual void OnDirectoryNewWindowOpen(ExecuteFileEventArgs e)
-        {
-            if (this.DirectoryNewWindowOpen != null)
-            {
-                this.DirectoryNewWindowOpen(this, e);
-            }
-        }
-
-        protected virtual void OnExplorerOpen(ExecuteFileEventArgs e)
-        {
-            if (this.ExplorerOpen != null)
-            {
-                this.ExplorerOpen(this, e);
-            }
-        }
-
-        protected virtual void OnExport(ExecuteFileListEventArgs e)
-        {
-            if (this.Export != null)
-            {
-                this.Export(this, e);
-            }
-        }
-
-        protected virtual void OnPathCopy(ExecuteFileListEventArgs e)
-        {
-            if (this.PathCopy != null)
-            {
-                this.PathCopy(this, e);
-            }
-        }
-
-        protected virtual void OnNameCopy(ExecuteFileListEventArgs e)
-        {
-            if (this.NameCopy != null)
-            {
-                this.NameCopy(this, e);
-            }
-        }
-
-        protected virtual void OnBookmark(ExecuteFileEventArgs e)
-        {
-            if (this.Bookmark != null)
-            {
-                this.Bookmark(this, e);
-            }
-        }
-
-        protected virtual void OnRemoveFromList(ExecuteFileListEventArgs e)
-        {
-            if (this.RemoveFromList != null)
-            {
-                this.RemoveFromList(this, e);
-            }
-        }
-
-        #endregion
-
         #region プライベートメソッド
 
         private void InitializeComponent()
@@ -394,6 +277,118 @@ namespace PicSum.UIComponent.Common
         #endregion
 
         #region コンテキストメニューイベント
+
+        private void OnFileActiveTabOpen(ExecuteFileEventArgs e)
+        {
+            if (this.FileActiveTabOpen != null)
+            {
+                this.FileActiveTabOpen(this, e);
+            }
+        }
+
+        private void OnFileNewTabOpen(ExecuteFileEventArgs e)
+        {
+            if (this.FileNewTabOpen != null)
+            {
+                this.FileNewTabOpen(this, e);
+            }
+        }
+
+        private void OnFileNewWindowOpen(ExecuteFileEventArgs e)
+        {
+            if (this.FileNewWindowOpen != null)
+            {
+                this.FileNewWindowOpen(this, e);
+            }
+        }
+
+        private void OnFileOpen(ExecuteFileEventArgs e)
+        {
+            if (this.FileOpen != null)
+            {
+                this.FileOpen(this, e);
+            }
+        }
+
+        private void OnSaveDirectoryOpen(ExecuteFileEventArgs e)
+        {
+            if (this.SaveDirectoryOpen != null)
+            {
+                this.SaveDirectoryOpen(this, e);
+            }
+        }
+
+        private void OnDirectoryActiveTabOpen(ExecuteFileEventArgs e)
+        {
+            if (this.DirectoryActiveTabOpen != null)
+            {
+                this.DirectoryActiveTabOpen(this, e);
+            }
+        }
+
+        private void OnDirectoryNewTabOpen(ExecuteFileEventArgs e)
+        {
+            if (this.DirectoryNewTabOpen != null)
+            {
+                this.DirectoryNewTabOpen(this, e);
+            }
+        }
+
+        private void OnDirectoryNewWindowOpen(ExecuteFileEventArgs e)
+        {
+            if (this.DirectoryNewWindowOpen != null)
+            {
+                this.DirectoryNewWindowOpen(this, e);
+            }
+        }
+
+        private void OnExplorerOpen(ExecuteFileEventArgs e)
+        {
+            if (this.ExplorerOpen != null)
+            {
+                this.ExplorerOpen(this, e);
+            }
+        }
+
+        private void OnExport(ExecuteFileListEventArgs e)
+        {
+            if (this.Export != null)
+            {
+                this.Export(this, e);
+            }
+        }
+
+        private void OnPathCopy(ExecuteFileListEventArgs e)
+        {
+            if (this.PathCopy != null)
+            {
+                this.PathCopy(this, e);
+            }
+        }
+
+        private void OnNameCopy(ExecuteFileListEventArgs e)
+        {
+            if (this.NameCopy != null)
+            {
+                this.NameCopy(this, e);
+            }
+        }
+
+        private void OnBookmark(ExecuteFileEventArgs e)
+        {
+            if (this.Bookmark != null)
+            {
+                this.Bookmark(this, e);
+            }
+        }
+
+        private void OnRemoveFromList(ExecuteFileListEventArgs e)
+        {
+            if (this.RemoveFromList != null)
+            {
+                this.RemoveFromList(this, e);
+            }
+        }
 
         private void FileActiveTabOpenMenuItem_Click(object sender, EventArgs e)
         {

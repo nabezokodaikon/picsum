@@ -5,7 +5,7 @@ namespace PicSum.UIComponent.Common
     /// <summary>
     /// ファイル実行イベント引数クラス
     /// </summary>
-    public class ExecuteFileEventArgs
+    public sealed class ExecuteFileEventArgs
         : EventArgs
     {
         public string FilePath { get; private set; }

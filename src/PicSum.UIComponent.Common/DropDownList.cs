@@ -10,7 +10,7 @@ namespace PicSum.UIComponent.Common
     /// <summary>
     /// ドロップダウンリスト
     /// </summary>
-    public class DropDownList
+    public sealed class DropDownList
         : ToolStripDropDown
     {
         #region イベント・デリゲート
@@ -367,30 +367,6 @@ namespace PicSum.UIComponent.Common
             base.OnInvalidated(e);
         }
 
-        protected virtual void OnDrawItem(SWF.UIComponent.FlowList.DrawItemEventArgs e)
-        {
-            if (this.Drawitem != null)
-            {
-                this.Drawitem(this, e);
-            }
-        }
-
-        protected virtual void OnItemMouseClick(MouseEventArgs e)
-        {
-            if (this.ItemMouseClick != null)
-            {
-                this.ItemMouseClick(this, e);
-            }
-        }
-
-        protected virtual void OnItemExecute(EventArgs e)
-        {
-            if (this.ItemExecute != null)
-            {
-                this.ItemExecute(this, e);
-            }
-        }
-
         #endregion
 
         #region プライベートメソッド
@@ -414,6 +390,30 @@ namespace PicSum.UIComponent.Common
             this.FlowList.DrawItem += new EventHandler<SWF.UIComponent.FlowList.DrawItemEventArgs>(this.FlowList_Drawitem);
             this.FlowList.ItemExecute += new EventHandler(FlowList_ItemExecute);
             this.FlowList.ItemMouseClick += new EventHandler<MouseEventArgs>(this.FlowList_ItemMouseClick);
+        }
+
+        private void OnDrawItem(SWF.UIComponent.FlowList.DrawItemEventArgs e)
+        {
+            if (this.Drawitem != null)
+            {
+                this.Drawitem(this, e);
+            }
+        }
+
+        private void OnItemMouseClick(MouseEventArgs e)
+        {
+            if (this.ItemMouseClick != null)
+            {
+                this.ItemMouseClick(this, e);
+            }
+        }
+
+        private void OnItemExecute(EventArgs e)
+        {
+            if (this.ItemExecute != null)
+            {
+                this.ItemExecute(this, e);
+            }
         }
 
         #endregion
