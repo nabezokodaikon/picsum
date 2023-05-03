@@ -478,13 +478,13 @@ namespace SWF.UIComponent.Form
             // TODO: コントロールボックスのサイズ。
             // ハードコーディングでなく、WinApiで取得できるようにする。
             int w = frameWidth + buttonWidth + 40;
-            int h = WinApiMembers.GetSystemMetrics(WinApiMembers.SM.CYCAPTION) + 18;
+            int h = WinApiMembers.GetSystemMetrics(WinApiMembers.SM.CYCAPTION) + 16;
 
             if (this.WindowState == FormWindowState.Maximized)
             {
                 Screen screen = Screen.FromControl(this);
-                w += (screen.Bounds.X - this.Location.X);
-                h += (screen.Bounds.Y - this.Location.Y);
+                w -= (screen.Bounds.X - this.Location.X);
+                h -= (screen.Bounds.Y - this.Location.Y);
             }
 
             Point p = new Point(this.Right - w, this.Top);
