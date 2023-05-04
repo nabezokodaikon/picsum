@@ -13,7 +13,7 @@ namespace SWF.UIComponent.WideDropDown
         {
             this.Multiline = true;
             this.AcceptsReturn = false;
-            this.verticalAlignment();
+            this.VerticalAlignment();
         }
 
         protected override bool ProcessDialogKey(Keys keyData)
@@ -30,23 +30,23 @@ namespace SWF.UIComponent.WideDropDown
 
         protected override void OnResize(EventArgs e)
         {
-            this.verticalAlignment();
+            this.VerticalAlignment();
             base.OnResize(e);
         }
 
         protected override void OnLostFocus(EventArgs e)
         {
-            this.verticalAlignment();
+            this.VerticalAlignment();
             base.OnLostFocus(e);
         }
 
         protected override void OnGotFocus(EventArgs e)
         {
-            this.verticalAlignment();
+            this.VerticalAlignment();
             base.OnGotFocus(e);
         }
 
-        private void verticalAlignment()
+        private void VerticalAlignment()
         {
             SizeF textSize;
             using (var g = Graphics.FromHwnd(this.Handle))

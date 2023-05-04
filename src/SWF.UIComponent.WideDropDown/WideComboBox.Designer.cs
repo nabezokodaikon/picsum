@@ -51,7 +51,7 @@ namespace SWF.UIComponent.WideDropDown
             this.addButton.Text = "+";
             this.addButton.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
             this.addButton.UseVisualStyleBackColor = true;
-            this.addButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.addButton_MouseClick);
+            this.addButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.AddButton_MouseClick);
             // 
             // inputTextBox
             // 
@@ -67,7 +67,7 @@ namespace SWF.UIComponent.WideDropDown
             this.inputTextBox.Size = new System.Drawing.Size(567, 32);
             this.inputTextBox.TabIndex = 3;
             this.inputTextBox.TabStop = false;
-            this.inputTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.inputTextBox_KeyDown);
+            this.inputTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.InputTextBox_KeyDown);
             // 
             // arrowPictureBox
             // 
@@ -81,7 +81,7 @@ namespace SWF.UIComponent.WideDropDown
             this.arrowPictureBox.Size = new System.Drawing.Size(24, 32);
             this.arrowPictureBox.TabIndex = 2;
             this.arrowPictureBox.TabStop = false;
-            this.arrowPictureBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.arrowPictureBox_MouseClick);
+            this.arrowPictureBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.ArrowPictureBox_MouseClick);
             // 
             // WideComboBox
             // 

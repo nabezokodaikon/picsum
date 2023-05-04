@@ -29,11 +29,11 @@ namespace SWF.UIComponent.WideDropDown
 
         public WideComboBox()
         {
-            InitializeComponent();
+            this.InitializeComponent();
 
             this.dropDownList.IsClickAndClose = true;
-            this.dropDownList.Closed += dropDownList_Closed;
-            this.dropDownList.ItemMouseClick += dropDownList_ItemMouseClick;
+            this.dropDownList.Closed += this.DropDownList_Closed;
+            this.dropDownList.ItemMouseClick += this.DropDownList_ItemMouseClick;
         }
 
         public void SetItems(List<string> items)
@@ -67,7 +67,7 @@ namespace SWF.UIComponent.WideDropDown
             this.dropDownList.SelectItem(item);
         }
 
-        private void inputTextBox_KeyDown(object sender, KeyEventArgs e)
+        private void InputTextBox_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode != Keys.Enter)
             {
@@ -91,7 +91,7 @@ namespace SWF.UIComponent.WideDropDown
             this.AddItem(this, args);
         }
 
-        private void addButton_MouseClick(object sender, MouseEventArgs e)
+        private void AddButton_MouseClick(object sender, MouseEventArgs e)
         {
             if (e.Button != MouseButtons.Left)
             {
@@ -113,7 +113,7 @@ namespace SWF.UIComponent.WideDropDown
             this.AddItem(this, args);
         }
 
-        private void arrowPictureBox_MouseClick(object sender, MouseEventArgs e)
+        private void ArrowPictureBox_MouseClick(object sender, MouseEventArgs e)
         {
             if (e.Button != MouseButtons.Left)
             {
@@ -130,12 +130,12 @@ namespace SWF.UIComponent.WideDropDown
                 this, new Point(this.Width - this.dropDownList.Size.Width, this.Height));
         }
 
-        private void dropDownList_Closed(object sender, ToolStripDropDownClosedEventArgs e)
+        private void DropDownList_Closed(object sender, ToolStripDropDownClosedEventArgs e)
         {
             this.arrowPictureBox.IsSelected = false;
         }
 
-        private void dropDownList_ItemMouseClick(object sender, ItemMouseClickEventArgs e)
+        private void DropDownList_ItemMouseClick(object sender, ItemMouseClickEventArgs e)
         {
             this.inputTextBox.Text = e.Item;
         }
