@@ -22,6 +22,7 @@
 * `SWF.Common`
 * `SWF.UIComponent.FlowList`
 * `SWF.UIComponent.Form`
+* `SWF.UIComponent.ImagePanel`
 ## エラーハンドリング
 * `DatabaseException`を作成する。
 * 画像ファイルへのアクセスを、`ImageUtil`に集約する。

@@ -25,12 +25,13 @@ namespace SWF.UIComponent.ImagePanel
     /// <summary>
     /// 画像パネルコントロール
     /// </summary>
-    public class ImagePanel : Control
+    public sealed class ImagePanel
+        : Control
     {
         #region 定数・列挙
 
-        private const int ThumbnailPanelOffset = 16;
-        private const int ThumbnailOffset = 8;
+        private const int THUMBNAIL_PANEL_OFFSET = 16;
+        private const int THUMBNAIL_OFFSET = 8;
 
         #endregion
 
@@ -44,24 +45,24 @@ namespace SWF.UIComponent.ImagePanel
 
         #region インスタンス変数
 
-        private Image _thumbnailPanelImage = Resources.ThumbnailPanel;
-        private ImageAlign _imageAlign = ImageAlign.Center;
-        private bool _isShowThumbnailPanel = false;
+        private Image thumbnailPanelImage = Resources.ThumbnailPanel;
+        private ImageAlign imageAlign = ImageAlign.Center;
+        private bool isShowThumbnailPanel = false;
 
-        private Image _image = null;
-        private Image _thumbnail = null;
+        private Image image = null;
+        private Image thumbnail = null;
 
-        private int _hMaximumScrollValue = 0;
-        private int _vMaximumScrollValue = 0;
-        private int _hScrollValue = 0;
-        private int _vScrollValue = 0;
+        private int hMaximumScrollValue = 0;
+        private int vMaximumScrollValue = 0;
+        private int hScrollValue = 0;
+        private int vScrollValue = 0;
 
-        private bool _isDrag = false;
-        private bool _isImageMove = false;
-        private bool _isThumbnailMove = false;
-        private Point _moveFromPoint = Point.Empty;
+        private bool isDrag = false;
+        private bool isImageMove = false;
+        private bool isThumbnailMove = false;
+        private Point moveFromPoint = Point.Empty;
 
-        private SolidBrush _thumbnailFilterBrush = new SolidBrush(Color.FromArgb(128, 0, 0, 0));
+        private SolidBrush thumbnailFilterBrush = new SolidBrush(Color.FromArgb(128, 0, 0, 0));
 
         #endregion
 
@@ -71,7 +72,7 @@ namespace SWF.UIComponent.ImagePanel
         {
             get
             {
-                return _thumbnailPanelImage.Width - ThumbnailOffset;
+                return this.thumbnailPanelImage.Width - THUMBNAIL_OFFSET;
             }
         }
 
@@ -79,13 +80,13 @@ namespace SWF.UIComponent.ImagePanel
         {
             get
             {
-                return _imageAlign;
+                return this.imageAlign;
             }
             set
             {
-                if (value != _imageAlign)
+                if (value != this.imageAlign)
                 {
-                    _imageAlign = value;
+                    this.imageAlign = value;
                     this.Invalidate();
                 }
             }
@@ -95,13 +96,13 @@ namespace SWF.UIComponent.ImagePanel
         {
             get
             {
-                return _isShowThumbnailPanel;
+                return this.isShowThumbnailPanel;
             }
             set
             {
-                if (value != _isShowThumbnailPanel)
+                if (value != this.isShowThumbnailPanel)
                 {
-                    _isShowThumbnailPanel = value;
+                    this.isShowThumbnailPanel = value;
                     this.Invalidate();
                 }
             }
@@ -111,7 +112,7 @@ namespace SWF.UIComponent.ImagePanel
         {
             get
             {
-                return _isImageMove || _isThumbnailMove;
+                return this.isImageMove || this.isThumbnailMove;
             }
         }
 
@@ -119,7 +120,7 @@ namespace SWF.UIComponent.ImagePanel
         {
             get
             {
-                return _image != null;
+                return this.image != null;
             }
         }
 
@@ -131,11 +132,11 @@ namespace SWF.UIComponent.ImagePanel
 
         #region プライベートプロパティ
 
-        private int thumbnailPanelSize
+        private int ThumbnailPanelSize
         {
             get
             {
-                return _thumbnailPanelImage.Width;
+                return this.thumbnailPanelImage.Width;
             }
         }
 
@@ -145,7 +146,7 @@ namespace SWF.UIComponent.ImagePanel
 
         public ImagePanel()
         {
-            initializeComponent();
+            this.InitializeComponent();
         }
 
         #endregion
@@ -164,31 +165,31 @@ namespace SWF.UIComponent.ImagePanel
                 throw new ArgumentNullException("thumb");
             }
 
-            if (_image != null)
+            if (this.image != null)
             {
                 throw new Exception("既にイメージが存在しています。");
             }
 
-            _image = img;
-            _thumbnail = thumb;
+            this.image = img;
+            this.thumbnail = thumb;
         }
 
         public void ClearImage()
         {
-            if (_image == null)
+            if (this.image == null)
             {
                 throw new Exception("イメージが存在していません。");
             }
 
-            _thumbnail.Dispose();
-            _thumbnail = null;
-            _image.Dispose();
-            _image = null;
+            this.thumbnail.Dispose();
+            this.thumbnail = null;
+            this.image.Dispose();
+            this.image = null;
         }
 
         public bool IsImagePoint(int x, int y)
         {
-            return getImageDestRectangle().Contains(x, y);
+            return this.GetImageDestRectangle().Contains(x, y);
         }
 
         #endregion
@@ -197,7 +198,7 @@ namespace SWF.UIComponent.ImagePanel
 
         protected override void OnInvalidated(InvalidateEventArgs e)
         {
-            setDrawParameter();
+            this.setDrawParameter();
 
             base.OnInvalidated(e);
         }
@@ -209,22 +210,22 @@ namespace SWF.UIComponent.ImagePanel
 
         protected override void OnPaint(PaintEventArgs e)
         {
-            if (_image != null)
+            if (this.image != null)
             {
-                e.Graphics.SmoothingMode = getSmoothingMode();
-                e.Graphics.InterpolationMode = getInterpolationMode();
-                e.Graphics.CompositingQuality = getCompositingQuality();
+                e.Graphics.SmoothingMode = this.GetSmoothingMode();
+                e.Graphics.InterpolationMode = this.GetInterpolationMode();
+                e.Graphics.CompositingQuality = this.GetCompositingQuality();
 
-                drawImage(e.Graphics);
+                this.DrawImage(e.Graphics);
 
-                if (_isShowThumbnailPanel &&
-                    (_hMaximumScrollValue > 0 || _vMaximumScrollValue > 0))
+                if (this.isShowThumbnailPanel &&
+                    (this.hMaximumScrollValue > 0 || this.vMaximumScrollValue > 0))
                 {
                     e.Graphics.SmoothingMode = SmoothingMode.HighSpeed;
                     e.Graphics.InterpolationMode = InterpolationMode.Low;
                     e.Graphics.CompositingQuality = CompositingQuality.HighSpeed;
 
-                    drawThumbnailPanel(e.Graphics);
+                    this.DrawThumbnailPanel(e.Graphics);
                 }
             }
 
@@ -233,7 +234,7 @@ namespace SWF.UIComponent.ImagePanel
 
         protected override void OnMouseLeave(EventArgs e)
         {
-            _isDrag = false;
+            this.isDrag = false;
             base.OnMouseLeave(e);
         }
 
@@ -241,51 +242,51 @@ namespace SWF.UIComponent.ImagePanel
         {
             if (e.Button == MouseButtons.Left)
             {
-                if (_isShowThumbnailPanel &&
-                    (_hMaximumScrollValue > 0 || _vMaximumScrollValue > 0))
+                if (this.isShowThumbnailPanel &&
+                    (this.hMaximumScrollValue > 0 || this.vMaximumScrollValue > 0))
                 {
-                    if (getThumbnailViewRectangle().Contains(e.X, e.Y))
+                    if (this.GetThumbnailViewRectangle().Contains(e.X, e.Y))
                     {
                         // サムネイル内の画像表示領域
-                        _isThumbnailMove = true;
-                        _moveFromPoint.X = e.X;
-                        _moveFromPoint.Y = e.Y;
+                        this.isThumbnailMove = true;
+                        this.moveFromPoint.X = e.X;
+                        this.moveFromPoint.Y = e.Y;
                     }
-                    else if (getThumbnailRectangle().Contains(e.X, e.Y))
+                    else if (this.GetThumbnailRectangle().Contains(e.X, e.Y))
                     {
                         // サムネイル
-                        float scale = _image.Width / (float)_thumbnail.Width;
-                        RectangleF thumbRect = getThumbnailRectangle();
-                        RectangleF srcRect = getImageSrcRectangle();
-                        PointF centerPoint = new PointF(srcRect.X + srcRect.Width / 2f, srcRect.Y + srcRect.Height / 2f);
-                        if (setHScrollValue(_hScrollValue + (int)((e.X - thumbRect.X) * scale - centerPoint.X)) |
-                            setVScrollValue(_vScrollValue + (int)((e.Y - thumbRect.Y) * scale - centerPoint.Y)))
+                        var scale = this.image.Width / (float)this.thumbnail.Width;
+                        var thumbRect = this.GetThumbnailRectangle();
+                        var srcRect = this.GetImageSrcRectangle();
+                        var centerPoint = new PointF(srcRect.X + srcRect.Width / 2f, srcRect.Y + srcRect.Height / 2f);
+                        if (this.SetHScrollValue(this.hScrollValue + (int)((e.X - thumbRect.X) * scale - centerPoint.X)) |
+                            this.SetVScrollValue(this.vScrollValue + (int)((e.Y - thumbRect.Y) * scale - centerPoint.Y)))
                         {
                             this.Invalidate();
                         }
 
-                        _isThumbnailMove = true;
-                        _moveFromPoint.X = e.X;
-                        _moveFromPoint.Y = e.Y;
+                        this.isThumbnailMove = true;
+                        this.moveFromPoint.X = e.X;
+                        this.moveFromPoint.Y = e.Y;
                     }
-                    else if (getThumbnailPanelRectangle().Contains(e.X, e.Y))
+                    else if (this.GetThumbnailPanelRectangle().Contains(e.X, e.Y))
                     {
                         // サムネイル表示領域
                     }
-                    else if (isMousePointImage(e.X, e.Y))
+                    else if (this.IsMousePointImage(e.X, e.Y))
                     {
                         // 画像
-                        _isImageMove = true;
-                        _moveFromPoint.X = e.X;
-                        _moveFromPoint.Y = e.Y;
+                        this.isImageMove = true;
+                        this.moveFromPoint.X = e.X;
+                        this.moveFromPoint.Y = e.Y;
                         this.Cursor = Cursors.NoMove2D;
                     }
                 }
-                else if (isMousePointImage(e.X, e.Y))
+                else if (this.IsMousePointImage(e.X, e.Y))
                 {
-                    _isDrag = true;
-                    _moveFromPoint.X = e.X;
-                    _moveFromPoint.Y = e.Y;
+                    this.isDrag = true;
+                    this.moveFromPoint.X = e.X;
+                    this.moveFromPoint.Y = e.Y;
                 }
             }
 
@@ -294,41 +295,41 @@ namespace SWF.UIComponent.ImagePanel
 
         protected override void OnMouseMove(MouseEventArgs e)
         {
-            if (_isThumbnailMove)
+            if (this.isThumbnailMove)
             {
-                float scale = _image.Width / (float)_thumbnail.Width;
-                if (setHScrollValue(_hScrollValue + (int)((e.X - _moveFromPoint.X) * scale)) |
-                    setVScrollValue(_vScrollValue + (int)((e.Y - _moveFromPoint.Y) * scale)))
+                float scale = this.image.Width / (float)this.thumbnail.Width;
+                if (this.SetHScrollValue(this.hScrollValue + (int)((e.X - this.moveFromPoint.X) * scale)) |
+                    this.SetVScrollValue(this.vScrollValue + (int)((e.Y - this.moveFromPoint.Y) * scale)))
                 {
                     this.Invalidate();
                 }
 
-                _moveFromPoint.X = e.X;
-                _moveFromPoint.Y = e.Y;
+                this.moveFromPoint.X = e.X;
+                this.moveFromPoint.Y = e.Y;
             }
-            else if (_isImageMove)
+            else if (this.isImageMove)
             {
-                if (setHScrollValue(_hScrollValue - (e.X - _moveFromPoint.X)) |
-                    setVScrollValue(_vScrollValue - (e.Y - _moveFromPoint.Y)))
+                if (this.SetHScrollValue(this.hScrollValue - (e.X - this.moveFromPoint.X)) |
+                    this.SetVScrollValue(this.vScrollValue - (e.Y - this.moveFromPoint.Y)))
                 {
                     this.Invalidate();
                 }
 
-                _moveFromPoint.X = e.X;
-                _moveFromPoint.Y = e.Y;
+                this.moveFromPoint.X = e.X;
+                this.moveFromPoint.Y = e.Y;
             }
-            else if (_isDrag)
+            else if (this.isDrag)
             {
                 // ドラッグとしないマウスの移動範囲を取得します。
-                Rectangle moveRect = new Rectangle(_moveFromPoint.X - SystemInformation.DragSize.Width / 2,
-                                                   _moveFromPoint.Y - SystemInformation.DragSize.Height / 2,
-                                                   SystemInformation.DragSize.Width,
-                                                   SystemInformation.DragSize.Height);
+                var moveRect = new Rectangle(this.moveFromPoint.X - SystemInformation.DragSize.Width / 2,
+                                             this.moveFromPoint.Y - SystemInformation.DragSize.Height / 2,
+                                             SystemInformation.DragSize.Width,
+                                             SystemInformation.DragSize.Height);
 
                 if (!moveRect.Contains(e.X, e.Y))
                 {
-                    _isDrag = true;
-                    OnDragStart(new EventArgs());
+                    this.isDrag = true;
+                    this.OnDragStart(new EventArgs());
                 }
             }
 
@@ -342,14 +343,14 @@ namespace SWF.UIComponent.ImagePanel
                 this.Cursor = Cursors.Default;
             }
 
-            if (_isImageMove || _isThumbnailMove)
+            if (this.isImageMove || this.isThumbnailMove)
             {
-                _isImageMove = false;
-                _isThumbnailMove = false;
+                this.isImageMove = false;
+                this.isThumbnailMove = false;
                 this.Invalidate();
             }
 
-            _isDrag = false;
+            this.isDrag = false;
             base.OnMouseUp(e);
         }
 
@@ -360,17 +361,17 @@ namespace SWF.UIComponent.ImagePanel
                 this.Cursor = Cursors.Default;
             }
 
-            _isImageMove = false;
-            _isThumbnailMove = false;
+            this.isImageMove = false;
+            this.isThumbnailMove = false;
 
             base.OnLostFocus(e);
         }
 
         protected override void OnMouseClick(MouseEventArgs e)
         {
-            if (isMousePointImage(e.X, e.Y))
+            if (this.IsMousePointImage(e.X, e.Y))
             {
-                OnImageMouseClick(e);
+                this.OnImageMouseClick(e);
             }
 
             base.OnMouseClick(e);
@@ -378,43 +379,19 @@ namespace SWF.UIComponent.ImagePanel
 
         protected override void OnMouseDoubleClick(MouseEventArgs e)
         {
-            if (isMousePointImage(e.X, e.Y))
+            if (this.IsMousePointImage(e.X, e.Y))
             {
-                OnImageMouseDoubleClick(e);
+                this.OnImageMouseDoubleClick(e);
             }
 
             base.OnMouseDoubleClick(e);
-        }
-
-        protected virtual void OnImageMouseClick(MouseEventArgs e)
-        {
-            if (ImageMouseClick != null)
-            {
-                ImageMouseClick(this, e);
-            }
-        }
-
-        protected virtual void OnImageMouseDoubleClick(MouseEventArgs e)
-        {
-            if (ImageMouseDoubleClick != null)
-            {
-                ImageMouseDoubleClick(this, e);
-            }
-        }
-
-        protected virtual void OnDragStart(EventArgs e)
-        {
-            if (DragStart != null)
-            {
-                DragStart(this, e);
-            }
         }
 
         #endregion
 
         #region プライベートメソッド
 
-        private void initializeComponent()
+        private void InitializeComponent()
         {
             this.SetStyle(ControlStyles.DoubleBuffer |
                           ControlStyles.UserPaint |
@@ -423,32 +400,56 @@ namespace SWF.UIComponent.ImagePanel
                           ControlStyles.SupportsTransparentBackColor, true);
         }
 
-        private void setDrawParameter()
+        private void OnImageMouseClick(MouseEventArgs e)
         {
-            if (_image != null)
+            if (this.ImageMouseClick != null)
             {
-                _hMaximumScrollValue = Math.Max(0, _image.Width - this.Width);
-                _vMaximumScrollValue = Math.Max(0, _image.Height - this.Height);
-                _hScrollValue = Math.Min(_hScrollValue, _hMaximumScrollValue);
-                _vScrollValue = Math.Min(_vScrollValue, _vMaximumScrollValue);
-            }
-            else
-            {
-                _hMaximumScrollValue = 0;
-                _vMaximumScrollValue = 0;
-                _hScrollValue = 0;
-                _vScrollValue = 0;
+                this.ImageMouseClick(this, e);
             }
         }
 
-        private bool isMousePointImage(int x, int y)
+        private void OnImageMouseDoubleClick(MouseEventArgs e)
         {
-            if (_image != null)
+            if (this.ImageMouseDoubleClick != null)
             {
-                RectangleF rect = getImageDestRectangle();
-                int imgX = x - (int)rect.X;
-                int imgY = y - (int)rect.Y;
-                if (imgX >= 0 && _image.Width >= imgX && imgY >= 0 && _image.Height >= imgY)
+                this.ImageMouseDoubleClick(this, e);
+            }
+        }
+
+        private void OnDragStart(EventArgs e)
+        {
+            if (this.DragStart != null)
+            {
+                this.DragStart(this, e);
+            }
+        }
+
+        private void setDrawParameter()
+        {
+            if (this.image != null)
+            {
+                this.hMaximumScrollValue = Math.Max(0, this.image.Width - this.Width);
+                this.vMaximumScrollValue = Math.Max(0, this.image.Height - this.Height);
+                this.hScrollValue = Math.Min(this.hScrollValue, this.hMaximumScrollValue);
+                this.vScrollValue = Math.Min(this.vScrollValue, this.vMaximumScrollValue);
+            }
+            else
+            {
+                this.hMaximumScrollValue = 0;
+                this.vMaximumScrollValue = 0;
+                this.hScrollValue = 0;
+                this.vScrollValue = 0;
+            }
+        }
+
+        private bool IsMousePointImage(int x, int y)
+        {
+            if (this.image != null)
+            {
+                var rect = this.GetImageDestRectangle();
+                var imgX = x - (int)rect.X;
+                var imgY = y - (int)rect.Y;
+                if (imgX >= 0 && this.image.Width >= imgX && imgY >= 0 && this.image.Height >= imgY)
                 {
                     //Bitmap bmp = (Bitmap)_image;
                     //Color cr = bmp.GetPixel(imgX, imgY);
@@ -466,16 +467,16 @@ namespace SWF.UIComponent.ImagePanel
             }
         }
 
-        private RectangleF getImageDestRectangle()
+        private RectangleF GetImageDestRectangle()
         {
             float x;
-            if (_hMaximumScrollValue > 0)
+            if (this.hMaximumScrollValue > 0)
             {
                 x = 0f;
             }
             else
             {
-                switch (_imageAlign)
+                switch (this.imageAlign)
                 {
                     case ImageAlign.Left:
                         x = 0f;
@@ -487,28 +488,28 @@ namespace SWF.UIComponent.ImagePanel
                         x = 0f;
                         break;
                     case ImageAlign.Right:
-                        x = this.Width - _image.Width;
+                        x = this.Width - this.image.Width;
                         break;
                     case ImageAlign.RightTop:
-                        x = this.Width - _image.Width;
+                        x = this.Width - this.image.Width;
                         break;
                     case ImageAlign.RightBottom:
-                        x = this.Width - _image.Width;
+                        x = this.Width - this.image.Width;
                         break;
                     default:
-                        x = (this.Width - _image.Width) / 2f;
+                        x = (this.Width - this.image.Width) / 2f;
                         break;
                 }
             }
 
             float y;
-            if (_vMaximumScrollValue > 0)
+            if (this.vMaximumScrollValue > 0)
             {
                 y = 0f;
             }
             else
             {
-                switch (_imageAlign)
+                switch (this.imageAlign)
                 {
                     case ImageAlign.Top:
                         y = 0f;
@@ -520,113 +521,113 @@ namespace SWF.UIComponent.ImagePanel
                         y = 0f;
                         break;
                     case ImageAlign.Bottom:
-                        y = this.Height - _image.Height;
+                        y = this.Height - this.image.Height;
                         break;
                     case ImageAlign.LeftBottom:
-                        y = this.Height - _image.Height;
+                        y = this.Height - this.image.Height;
                         break;
                     case ImageAlign.RightBottom:
-                        y = this.Height - _image.Height;
+                        y = this.Height - this.image.Height;
                         break;
                     default:
-                        y = (this.Height - _image.Height) / 2f;
+                        y = (this.Height - this.image.Height) / 2f;
                         break;
                 }
             }
 
-            float w = _image.Width - _hMaximumScrollValue;
-            float h = _image.Height - _vMaximumScrollValue;
+            var w = this.image.Width - this.hMaximumScrollValue;
+            var h = this.image.Height - this.vMaximumScrollValue;
 
             return new RectangleF(x, y, w, h);
         }
 
-        private RectangleF getImageSrcRectangle()
+        private RectangleF GetImageSrcRectangle()
         {
-            float x = _hScrollValue;
-            float y = _vScrollValue;
-            float w = _image.Width - _hMaximumScrollValue;
-            float h = _image.Height - _vMaximumScrollValue;
+            var x = this.hScrollValue;
+            var y = this.vScrollValue;
+            var w = this.image.Width - this.hMaximumScrollValue;
+            var h = this.image.Height - this.vMaximumScrollValue;
 
             return new RectangleF(x, y, w, h);
         }
 
-        private Rectangle getThumbnailPanelRectangle()
+        private Rectangle GetThumbnailPanelRectangle()
         {
-            int x = this.Width - ThumbnailPanelOffset - thumbnailPanelSize;
-            int y = this.Height - ThumbnailPanelOffset - thumbnailPanelSize;
-            int w = thumbnailPanelSize;
-            int h = thumbnailPanelSize;
+            var x = this.Width - THUMBNAIL_PANEL_OFFSET - this.ThumbnailPanelSize;
+            var y = this.Height - THUMBNAIL_PANEL_OFFSET - this.ThumbnailPanelSize;
+            var w = this.ThumbnailPanelSize;
+            var h = this.ThumbnailPanelSize;
             return new Rectangle(x, y, w, h);
         }
 
-        private RectangleF getThumbnailRectangle(Rectangle panelRect)
+        private RectangleF GetThumbnailRectangle(Rectangle panelRect)
         {
-            float x = panelRect.X + (panelRect.Width - _thumbnail.Width) / 2f;
-            float y = panelRect.Y + (panelRect.Height - _thumbnail.Height) / 2f;
-            float w = _thumbnail.Width;
-            float h = _thumbnail.Height;
+            var x = panelRect.X + (panelRect.Width - this.thumbnail.Width) / 2f;
+            var y = panelRect.Y + (panelRect.Height - this.thumbnail.Height) / 2f;
+            var w = this.thumbnail.Width;
+            var h = this.thumbnail.Height;
             return new RectangleF(x, y, w, h);
         }
 
-        private RectangleF getThumbnailRectangle()
+        private RectangleF GetThumbnailRectangle()
         {
-            return getThumbnailRectangle(getThumbnailPanelRectangle());
+            return this.GetThumbnailRectangle(this.GetThumbnailPanelRectangle());
         }
 
-        private RectangleF getThumbnailViewRectangle(RectangleF thumbRect, RectangleF srcRect)
+        private RectangleF GetThumbnailViewRectangle(RectangleF thumbRect, RectangleF srcRect)
         {
-            float scale = _thumbnail.Width / (float)_image.Width;
-            float x = thumbRect.X + srcRect.X * scale;
-            float y = thumbRect.Y + srcRect.Y * scale;
-            float w = srcRect.Width * scale;
-            float h = srcRect.Height * scale;
-
-            return new RectangleF(x, y, w, h);
-        }
-
-        private RectangleF getThumbnailViewDestRectangle(RectangleF thumbRect, RectangleF srcRect)
-        {
-            float scale = _thumbnail.Width / (float)_image.Width;
-            float x = srcRect.X * scale;
-            float y = srcRect.Y * scale;
-            float w = srcRect.Width * scale;
-            float h = srcRect.Height * scale;
+            var scale = this.thumbnail.Width / (float)this.image.Width;
+            var x = thumbRect.X + srcRect.X * scale;
+            var y = thumbRect.Y + srcRect.Y * scale;
+            var w = srcRect.Width * scale;
+            var h = srcRect.Height * scale;
 
             return new RectangleF(x, y, w, h);
         }
 
-        private RectangleF getThumbnailViewRectangle()
+        private RectangleF GetThumbnailViewDestRectangle(RectangleF thumbRect, RectangleF srcRect)
         {
-            return getThumbnailViewRectangle(getThumbnailRectangle(), getImageSrcRectangle());
+            var scale = this.thumbnail.Width / (float)this.image.Width;
+            var x = srcRect.X * scale;
+            var y = srcRect.Y * scale;
+            var w = srcRect.Width * scale;
+            var h = srcRect.Height * scale;
+
+            return new RectangleF(x, y, w, h);
         }
 
-        private void drawImage(Graphics g)
+        private RectangleF GetThumbnailViewRectangle()
         {
-            g.DrawImage(_image, getImageDestRectangle(), getImageSrcRectangle(), GraphicsUnit.Pixel);
+            return this.GetThumbnailViewRectangle(this.GetThumbnailRectangle(), this.GetImageSrcRectangle());
         }
 
-        private void drawThumbnailPanel(Graphics g)
+        private void DrawImage(Graphics g)
         {
-            Rectangle panelRect = getThumbnailPanelRectangle();
-            g.DrawImage(_thumbnailPanelImage, panelRect);
+            g.DrawImage(this.image, this.GetImageDestRectangle(), this.GetImageSrcRectangle(), GraphicsUnit.Pixel);
+        }
 
-            RectangleF thumbRect = getThumbnailRectangle(panelRect);
-            g.DrawImage(_thumbnail, thumbRect);
-            g.FillRectangle(_thumbnailFilterBrush, thumbRect);
+        private void DrawThumbnailPanel(Graphics g)
+        {
+            var panelRect = this.GetThumbnailPanelRectangle();
+            g.DrawImage(this.thumbnailPanelImage, panelRect);
 
-            RectangleF srcRect = getImageSrcRectangle();
-            RectangleF viewRect = getThumbnailViewRectangle(thumbRect, srcRect);
-            RectangleF viewDestRect = getThumbnailViewDestRectangle(thumbRect, srcRect);
+            var thumbRect = this.GetThumbnailRectangle(panelRect);
+            g.DrawImage(this.thumbnail, thumbRect);
+            g.FillRectangle(this.thumbnailFilterBrush, thumbRect);
+
+            var srcRect = this.GetImageSrcRectangle();
+            var viewRect = this.GetThumbnailViewRectangle(thumbRect, srcRect);
+            var viewDestRect = this.GetThumbnailViewDestRectangle(thumbRect, srcRect);
             //g.FillRectangle(_thumbnailViewBrush, viewRect);
-            g.DrawImage(_thumbnail, viewRect, viewDestRect, GraphicsUnit.Pixel);
+            g.DrawImage(this.thumbnail, viewRect, viewDestRect, GraphicsUnit.Pixel);
         }
 
-        private bool setHScrollValue(int value)
+        private bool SetHScrollValue(int value)
         {
             int newValue;
-            if (value > _hMaximumScrollValue)
+            if (value > this.hMaximumScrollValue)
             {
-                newValue = _hMaximumScrollValue;
+                newValue = this.hMaximumScrollValue;
             }
             else if (value < 0)
             {
@@ -637,9 +638,9 @@ namespace SWF.UIComponent.ImagePanel
                 newValue = value;
             }
 
-            if (newValue != _hScrollValue)
+            if (newValue != this.hScrollValue)
             {
-                _hScrollValue = newValue;
+                this.hScrollValue = newValue;
                 return true;
             }
             else
@@ -648,12 +649,12 @@ namespace SWF.UIComponent.ImagePanel
             }
         }
 
-        private bool setVScrollValue(int value)
+        private bool SetVScrollValue(int value)
         {
             int newValue;
-            if (value > _vMaximumScrollValue)
+            if (value > this.vMaximumScrollValue)
             {
-                newValue = _vMaximumScrollValue;
+                newValue = this.vMaximumScrollValue;
             }
             else if (value < 0)
             {
@@ -664,9 +665,9 @@ namespace SWF.UIComponent.ImagePanel
                 newValue = value;
             }
 
-            if (newValue != _vScrollValue)
+            if (newValue != this.vScrollValue)
             {
-                _vScrollValue = newValue;
+                this.vScrollValue = newValue;
                 return true;
             }
             else
@@ -675,9 +676,9 @@ namespace SWF.UIComponent.ImagePanel
             }
         }
 
-        private SmoothingMode getSmoothingMode()
+        private SmoothingMode GetSmoothingMode()
         {
-            if (_isImageMove || _isThumbnailMove)
+            if (this.isImageMove || this.isThumbnailMove)
             {
                 return SmoothingMode.HighSpeed;
             }
@@ -687,9 +688,9 @@ namespace SWF.UIComponent.ImagePanel
             }
         }
 
-        private InterpolationMode getInterpolationMode()
+        private InterpolationMode GetInterpolationMode()
         {
-            if (_isImageMove || _isThumbnailMove)
+            if (this.isImageMove || this.isThumbnailMove)
             {
                 return InterpolationMode.Low;
             }
@@ -699,9 +700,9 @@ namespace SWF.UIComponent.ImagePanel
             }
         }
 
-        private CompositingQuality getCompositingQuality()
+        private CompositingQuality GetCompositingQuality()
         {
-            if (_isImageMove || _isThumbnailMove)
+            if (this.isImageMove || this.isThumbnailMove)
             {
                 return CompositingQuality.HighSpeed;
             }
