@@ -696,7 +696,8 @@ namespace SWF.UIComponent.FlowList
                 this.scrollBar.Maximum = this.drawParameter.ScrollBarMaximum;
             }
 
-            if (beforeDrawParameter.DrawFirstItemIndex != this.drawParameter.DrawFirstItemIndex ||
+            if (this.drawParameter.DrawFirstItemIndex == 0 && this.drawParameter.DrawLastItemIndex == 0 ||
+                beforeDrawParameter.DrawFirstItemIndex != this.drawParameter.DrawFirstItemIndex ||
                 beforeDrawParameter.DrawLastItemIndex != this.drawParameter.DrawLastItemIndex)
             {
                 this.OnDrawItemChanged(new DrawItemChangedEventArgs(this.drawParameter.DrawFirstItemIndex, this.drawParameter.DrawLastItemIndex));
