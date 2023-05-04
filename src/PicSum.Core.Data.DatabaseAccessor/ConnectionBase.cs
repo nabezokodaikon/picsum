@@ -129,7 +129,7 @@ namespace PicSum.Core.Data.DatabaseAccessor
 
             try
             {
-                transaction.Commit();
+                this.transaction.Commit();
             }
             finally
             {
@@ -189,7 +189,7 @@ namespace PicSum.Core.Data.DatabaseAccessor
                         cmd.Parameters.AddRange(sql.ParameterList.ToArray());
                     }
 
-                    var result = ExecuteNonQuery(cmd);
+                    var result = this.ExecuteNonQuery(cmd);
                     if (result > 0)
                     {
                         // 更新されたレコードが存在するため、Trueを返します。
@@ -232,7 +232,7 @@ namespace PicSum.Core.Data.DatabaseAccessor
                         cmd.Parameters.AddRange(sql.ParameterList.ToArray());
                     }
 
-                    using (var reader = ExecuteReader(cmd, CommandBehavior.Default))
+                    using (var reader = this.ExecuteReader(cmd, CommandBehavior.Default))
                     {
                         if (reader.HasRows)
                         {
@@ -283,7 +283,7 @@ namespace PicSum.Core.Data.DatabaseAccessor
                         cmd.Parameters.AddRange(sql.ParameterList.ToArray());
                     }
 
-                    using (SQLiteDataReader reader = ExecuteReader(cmd, CommandBehavior.SingleRow))
+                    using (var reader = this.ExecuteReader(cmd, CommandBehavior.SingleRow))
                     {
                         if (reader.HasRows)
                         {
@@ -328,7 +328,7 @@ namespace PicSum.Core.Data.DatabaseAccessor
                         cmd.Parameters.AddRange(sql.ParameterList.ToArray());
                     }
 
-                    var result = ExecuteScalar(cmd);
+                    var result = this.ExecuteScalar(cmd);
                     if (result != null && result != DBNull.Value)
                     {
                         return (T)result;

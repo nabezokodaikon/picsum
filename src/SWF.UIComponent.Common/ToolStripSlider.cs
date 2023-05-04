@@ -33,11 +33,11 @@ namespace SWF.UIComponent.Common
         {
             get
             {
-                return slider.MaximumValue;
+                return this.slider.MaximumValue;
             }
             set
             {
-                slider.MaximumValue = value;
+                this.slider.MaximumValue = value;
             }
         }
 
@@ -45,11 +45,11 @@ namespace SWF.UIComponent.Common
         {
             get
             {
-                return slider.MinimumValue;
+                return this.slider.MinimumValue;
             }
             set
             {
-                slider.MinimumValue = value;
+                this.slider.MinimumValue = value;
             }
         }
 
@@ -57,11 +57,11 @@ namespace SWF.UIComponent.Common
         {
             get
             {
-                return slider.Value;
+                return this.slider.Value;
             }
             set
             {
-                slider.Value = value;
+                this.slider.Value = value;
             }
         }
 
@@ -84,7 +84,7 @@ namespace SWF.UIComponent.Common
         public ToolStripSlider()
             : base(new Slider())
         {
-            initializeComponent();
+            this.initializeComponent();
         }
 
         #endregion
@@ -97,8 +97,8 @@ namespace SWF.UIComponent.Common
 
         private void initializeComponent()
         {
-            slider.Size = new Size(96, 24);
-            slider.BackColor = Color.Transparent;
+            this.slider.Size = new Size(96, 24);
+            this.slider.BackColor = Color.Transparent;
         }
 
         #endregion
@@ -109,18 +109,18 @@ namespace SWF.UIComponent.Common
         {
             base.OnSubscribeControlEvents(control);
             Slider slider = (Slider)control;
-            slider.BeginValueChange += new EventHandler(slider_BeginValueChange);
-            slider.ValueChanging += new EventHandler(slider_ValueChanging);
-            slider.ValueChanged += new EventHandler(slider_ValueChanged);
+            slider.BeginValueChange += new EventHandler(this.slider_BeginValueChange);
+            slider.ValueChanging += new EventHandler(this.slider_ValueChanging);
+            slider.ValueChanged += new EventHandler(this.slider_ValueChanged);
         }
 
         protected override void OnUnsubscribeControlEvents(Control control)
         {
             base.OnSubscribeControlEvents(control);
             Slider slider = (Slider)control;
-            slider.BeginValueChange -= new EventHandler(slider_BeginValueChange);
-            slider.ValueChanging -= new EventHandler(slider_ValueChanging);
-            slider.ValueChanged -= new EventHandler(slider_ValueChanged);
+            slider.BeginValueChange -= new EventHandler(this.slider_BeginValueChange);
+            slider.ValueChanging -= new EventHandler(this.slider_ValueChanging);
+            slider.ValueChanged -= new EventHandler(this.slider_ValueChanged);
         }
 
         protected virtual void OnBeginValueChange(EventArgs e)
@@ -153,17 +153,17 @@ namespace SWF.UIComponent.Common
 
         private void slider_BeginValueChange(object sender, EventArgs e)
         {
-            OnBeginValueChange(e);
+            this.OnBeginValueChange(e);
         }
 
         private void slider_ValueChanging(object sender, EventArgs e)
         {
-            OnValueChanging(e);
+            this.OnValueChanging(e);
         }
 
         private void slider_ValueChanged(object sender, EventArgs e)
         {
-            OnValueChanged(e);
+            this.OnValueChanged(e);
         }
 
         #endregion

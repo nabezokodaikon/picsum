@@ -137,11 +137,11 @@ namespace PicSum.UIComponent.AddressBar
         {
             get
             {
-                return this.y + height;
+                return this.y + this.height;
             }
             set
             {
-                this.y = value - height;
+                this.y = value - this.height;
             }
         }
 

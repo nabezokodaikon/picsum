@@ -195,7 +195,7 @@ namespace PicSum.Task.AsyncLogic
                     else
                     {
                         // サムネイルを更新します。
-                        var thumb = UpdateDBFileCash(filePath, thumbWidth, thumbHeight, updateDate.Value);
+                        var thumb = this.UpdateDBFileCash(filePath, thumbWidth, thumbHeight, updateDate.Value);
                         UpdateMemoryCash(thumb);
                         return thumb;
                     }
@@ -256,7 +256,7 @@ namespace PicSum.Task.AsyncLogic
                             if (!string.IsNullOrEmpty(thumbFile))
                             {
                                 // サムネイルを更新します。
-                                var thumb = UpdateDBDirectoryCash(filePath, thumbFile, thumbWidth, thumbHeight, updateDate.Value);
+                                var thumb = this.UpdateDBDirectoryCash(filePath, thumbFile, thumbWidth, thumbHeight, updateDate.Value);
                                 UpdateMemoryCash(thumb);
                                 return thumb;
                             }
@@ -272,7 +272,7 @@ namespace PicSum.Task.AsyncLogic
                         if (!string.IsNullOrEmpty(thumbFile))
                         {
                             // サムネイルを作成します。
-                            var thumb = CreateDBDirectoryCash(filePath, thumbFile, thumbWidth, thumbHeight, updateDate.Value);
+                            var thumb = this.CreateDBDirectoryCash(filePath, thumbFile, thumbWidth, thumbHeight, updateDate.Value);
                             UpdateMemoryCash(thumb);
                             return thumb;
                         }
@@ -310,7 +310,7 @@ namespace PicSum.Task.AsyncLogic
                         if (!string.IsNullOrEmpty(thumbFile))
                         {
                             // サムネイルを更新します。                                
-                            var thumb = UpdateDBDirectoryCash(filePath, thumbFile, thumbWidth, thumbHeight, updateDate.Value);
+                            var thumb = this.UpdateDBDirectoryCash(filePath, thumbFile, thumbWidth, thumbHeight, updateDate.Value);
                             UpdateMemoryCash(thumb);
                             return thumb;
                         }
@@ -332,7 +332,7 @@ namespace PicSum.Task.AsyncLogic
                             return null;
                         }
 
-                        var thumb = CreateDBDirectoryCash(filePath, thumbFile, thumbWidth, thumbHeight, updateDate.Value);
+                        var thumb = this.CreateDBDirectoryCash(filePath, thumbFile, thumbWidth, thumbHeight, updateDate.Value);
                         UpdateMemoryCash(thumb);
                         return thumb;
                     }

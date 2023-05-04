@@ -118,7 +118,7 @@ namespace SWF.UIComponent.FlowList
                 throw new InvalidOperationException("既に更新中です。");
             }
 
-            this.beforeList = new List<int>(list.ToArray());
+            this.beforeList = new List<int>(this.list.ToArray());
         }
 
         public void EndUpdate()
@@ -128,15 +128,15 @@ namespace SWF.UIComponent.FlowList
                 throw new InvalidOperationException("更新中ではありません。");
             }
 
-            if (this.beforeList.Count != list.Count)
+            if (this.beforeList.Count != this.list.Count)
             {
                 this.OnChange(new EventArgs());
             }
             else
             {
-                for (var i = 0; i < list.Count; i++)
+                for (var i = 0; i < this.list.Count; i++)
                 {
-                    if (this.beforeList[i] != list[i])
+                    if (this.beforeList[i] != this.list[i])
                     {
                         this.OnChange(new EventArgs());
                         break;

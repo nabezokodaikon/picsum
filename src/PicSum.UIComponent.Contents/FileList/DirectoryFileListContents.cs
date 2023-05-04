@@ -106,7 +106,7 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             base.OnLoad(e);
             var param = new SingleValueEntity<string>();
-            param.Value = parameter.DirectoryPath;
+            param.Value = this.parameter.DirectoryPath;
             this.SearchDirectoryProcess.Execute(this, param);
         }
 
@@ -128,7 +128,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
         protected override void OnBackgroundMouseClick(MouseEventArgs e)
         {
-            if (!FileUtil.IsSystemRoot(parameter.DirectoryPath))
+            if (!FileUtil.IsSystemRoot(this.parameter.DirectoryPath))
             {
                 base.OnSelectedFileChanged(new SelectedFileChangeEventArgs(this.parameter.DirectoryPath));
             }
@@ -141,7 +141,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
         protected override void OnMovePreviewButtonClick(EventArgs e)
         {
-            if (FileUtil.IsSystemRoot(parameter.DirectoryPath))
+            if (FileUtil.IsSystemRoot(this.parameter.DirectoryPath))
             {
                 return;
             }
@@ -156,7 +156,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
         protected override void OnMoveNextButtonClick(EventArgs e)
         {
-            if (FileUtil.IsSystemRoot(parameter.DirectoryPath))
+            if (FileUtil.IsSystemRoot(this.parameter.DirectoryPath))
             {
                 return;
             }
@@ -204,7 +204,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
         protected override void FileContextMenu_Opening(object sender, CancelEventArgs e)
         {
-            var filePathList = GetSelectedFiles();
+            var filePathList = this.GetSelectedFiles();
             if (filePathList.Count > 0)
             {
                 this.IsDirectoryActiveTabOpenMenuItemVisible = true;

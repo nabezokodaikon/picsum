@@ -39,7 +39,7 @@ namespace PicSum.Core.Task.AsyncTask
             if (e == null) throw new ArgumentNullException(nameof(e));
             if (this.Callback == null) throw new NullReferenceException(nameof(this.Callback));
 
-            this.Callback(Task, e);
+            this.Callback(this.Task, e);
         }
     }
 
@@ -82,7 +82,7 @@ namespace PicSum.Core.Task.AsyncTask
             if (e == null) throw new ArgumentNullException(nameof(e));
             if (this.Callback == null) throw new NullReferenceException(nameof(this.Callback));
 
-            this.Callback(Task, e);
+            this.Callback(this.Task, e);
         }
     }
 }

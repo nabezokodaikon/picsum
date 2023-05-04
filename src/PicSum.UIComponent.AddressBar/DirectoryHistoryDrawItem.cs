@@ -71,7 +71,7 @@ namespace PicSum.UIComponent.AddressBar
                 g.FillRectangle(base.Palette.MousePointBrush, rect);
             }
 
-            g.DrawImage(drawImage, this.GetImageDrawRectangle(drawImage));
+            g.DrawImage(this.drawImage, this.GetImageDrawRectangle(this.drawImage));
         }
 
         public override void OnMouseDown(MouseEventArgs e)

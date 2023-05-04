@@ -76,7 +76,7 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             base.OnLoad(e);
             var param = new SingleValueEntity<int>();
-            param.Value = parameter.RagingValue;
+            param.Value = this.parameter.RagingValue;
             this.SearchFileProcess.Execute(this, param);
         }
 

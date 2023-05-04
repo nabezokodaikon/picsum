@@ -41,20 +41,20 @@ namespace SWF.UIComponent.Common
         {
             get
             {
-                return _maximumValue;
+                return this._maximumValue;
             }
             set
             {
-                if (value < _minimumValue)
+                if (value < this._minimumValue)
                 {
                     throw new ArgumentOutOfRangeException("value");
                 }
 
-                _maximumValue = value;
+                this._maximumValue = value;
 
-                if (_value > value)
+                if (this._value > value)
                 {
-                    _value = value;
+                    this._value = value;
                 }
             }
         }
@@ -63,19 +63,19 @@ namespace SWF.UIComponent.Common
         {
             get
             {
-                return _minimumValue;
+                return this._minimumValue;
             }
             set
             {
-                if (value > _maximumValue)
+                if (value > this._maximumValue)
                 {
                     throw new ArgumentOutOfRangeException("value");
                 }
 
-                _minimumValue = value;
-                if (_value < value)
+                this._minimumValue = value;
+                if (this._value < value)
                 {
-                    _value = value;
+                    this._value = value;
                 }
             }
         }
@@ -84,21 +84,21 @@ namespace SWF.UIComponent.Common
         {
             get
             {
-                return _value;
+                return this._value;
             }
             set
             {
-                if (value > _maximumValue || _minimumValue > value)
+                if (value > this._maximumValue || this._minimumValue > value)
                 {
                     throw new ArgumentOutOfRangeException("value");
                 }
 
-                _value = value;
-                setButtonPointX(_value);
+                this._value = value;
+                this.setButtonPointX(this._value);
                 this.Invalidate();
                 this.Update();
 
-                OnValueChanged(new EventArgs());
+                this.OnValueChanged(new EventArgs());
             }
         }
 
@@ -108,7 +108,7 @@ namespace SWF.UIComponent.Common
 
         public Slider()
         {
-            initializeComponent();
+            this.initializeComponent();
         }
 
         #endregion
@@ -129,7 +129,7 @@ namespace SWF.UIComponent.Common
                           ControlStyles.ResizeRedraw |
                           ControlStyles.SupportsTransparentBackColor, true);
 
-            _value = _minimumValue;
+            this._value = this._minimumValue;
         }
 
         private PointF getCenterPoint()
@@ -139,13 +139,13 @@ namespace SWF.UIComponent.Common
 
         private float getButtonPointX(float x)
         {
-            if (x < getMinimumButtonPointX())
+            if (x < this.getMinimumButtonPointX())
             {
-                return getMinimumButtonPointX();
+                return this.getMinimumButtonPointX();
             }
-            else if (x > getMaximumButtonPointX())
+            else if (x > this.getMaximumButtonPointX())
             {
-                return getMaximumButtonPointX();
+                return this.getMaximumButtonPointX();
             }
             else
             {
@@ -155,36 +155,36 @@ namespace SWF.UIComponent.Common
 
         private bool setButtonPointX(int value)
         {
-            if (value > _maximumValue || _minimumValue > value)
+            if (value > this._maximumValue || this._minimumValue > value)
             {
                 throw new ArgumentOutOfRangeException("value");
             }
 
-            if (value == _maximumValue)
+            if (value == this._maximumValue)
             {
-                float pointX = getButtonPointX(getMaximumButtonPointX());
-                if (pointX != _buttonPointX)
+                float pointX = this.getButtonPointX(this.getMaximumButtonPointX());
+                if (pointX != this._buttonPointX)
                 {
-                    _buttonPointX = pointX;
+                    this._buttonPointX = pointX;
                     return true;
                 }
             }
-            else if (value == _minimumValue)
+            else if (value == this._minimumValue)
             {
-                float pointX = getButtonPointX(getMinimumButtonPointX());
-                if (pointX != _buttonPointX)
+                float pointX = this.getButtonPointX(this.getMinimumButtonPointX());
+                if (pointX != this._buttonPointX)
                 {
-                    _buttonPointX = pointX;
+                    this._buttonPointX = pointX;
                     return true;
                 }
             }
             else
             {
-                float rate = (value - _minimumValue) / (float)(_maximumValue - _minimumValue);
-                float pointX = getButtonPointX(this.Width * rate);
-                if (pointX != _buttonPointX)
+                float rate = (value - this._minimumValue) / (float)(this._maximumValue - this._minimumValue);
+                float pointX = this.getButtonPointX(this.Width * rate);
+                if (pointX != this._buttonPointX)
                 {
-                    _buttonPointX = pointX;
+                    this._buttonPointX = pointX;
                     return true;
                 }
             }
@@ -194,37 +194,37 @@ namespace SWF.UIComponent.Common
 
         private int getValue(float x)
         {
-            if (x == getMinimumButtonPointX())
+            if (x == this.getMinimumButtonPointX())
             {
-                return _minimumValue;
+                return this._minimumValue;
             }
-            else if (x == getMaximumButtonPointX())
+            else if (x == this.getMaximumButtonPointX())
             {
-                return _maximumValue;
+                return this._maximumValue;
             }
             else
             {
-                float rate = x / getMaximumButtonPointX();
-                float value = _minimumValue + ((_maximumValue - _minimumValue) * rate);
+                float rate = x / this.getMaximumButtonPointX();
+                float value = this._minimumValue + ((this._maximumValue - this._minimumValue) * rate);
                 return (int)value;
             }
         }
 
         private float getMaximumButtonPointX()
         {
-            return this.Width - _button.Width / 2f;
+            return this.Width - this._button.Width / 2f;
         }
 
         private float getMinimumButtonPointX()
         {
-            return _button.Width / 2f;
+            return this._button.Width / 2f;
         }
 
         #region 描画メソッド
 
         private void drawBar(Graphics g)
         {
-            PointF centerPoint = getCenterPoint();
+            PointF centerPoint = this.getCenterPoint();
 
             RectangleF shadowRect = new RectangleF(0,
                                                    centerPoint.Y - BarHeight / 2f,
@@ -247,14 +247,14 @@ namespace SWF.UIComponent.Common
 
         private void drawButton(Graphics g)
         {
-            PointF centerPoint = getCenterPoint();
+            PointF centerPoint = this.getCenterPoint();
 
-            Rectangle rect = new Rectangle((int)(_buttonPointX - _button.Width / 2f),
-                                           (int)(centerPoint.Y - _button.Height / 2f),
-                                           _button.Width,
-                                           _button.Height);
+            Rectangle rect = new Rectangle((int)(this._buttonPointX - this._button.Width / 2f),
+                                           (int)(centerPoint.Y - this._button.Height / 2f),
+                                           this._button.Width,
+                                           this._button.Height);
 
-            g.DrawImage(_button, rect);
+            g.DrawImage(this._button, rect);
         }
 
         #endregion
@@ -265,7 +265,7 @@ namespace SWF.UIComponent.Common
 
         protected override void OnInvalidated(InvalidateEventArgs e)
         {
-            if (setButtonPointX(_value))
+            if (this.setButtonPointX(this._value))
             {
                 base.OnInvalidated(e);
             }
@@ -273,8 +273,8 @@ namespace SWF.UIComponent.Common
 
         protected override void OnPaint(PaintEventArgs e)
         {
-            drawBar(e.Graphics);
-            drawButton(e.Graphics);
+            this.drawBar(e.Graphics);
+            this.drawButton(e.Graphics);
 
             base.OnPaint(e);
         }
@@ -283,20 +283,20 @@ namespace SWF.UIComponent.Common
         {
             if (e.Button == MouseButtons.Left)
             {
-                OnBeginValueChange(new EventArgs());
+                this.OnBeginValueChange(new EventArgs());
 
-                float pointX = getButtonPointX(e.X);
-                if (pointX != _buttonPointX)
+                float pointX = this.getButtonPointX(e.X);
+                if (pointX != this._buttonPointX)
                 {
-                    _buttonPointX = pointX;
+                    this._buttonPointX = pointX;
                     this.Invalidate();
                     this.Update();
 
-                    int value = getValue(pointX);
-                    if (value != _value)
+                    int value = this.getValue(pointX);
+                    if (value != this._value)
                     {
-                        _value = value;
-                        OnValueChanging(new EventArgs());
+                        this._value = value;
+                        this.OnValueChanging(new EventArgs());
                     }
                 }
             }
@@ -309,7 +309,7 @@ namespace SWF.UIComponent.Common
             if (e.Button == MouseButtons.Left)
             {
                 //OnValueChanged(new EventArgs());
-                Value = Value;
+                this.Value = this.Value;
             }
 
             base.OnMouseUp(e);
@@ -319,18 +319,18 @@ namespace SWF.UIComponent.Common
         {
             if (e.Button == MouseButtons.Left)
             {
-                float pointX = getButtonPointX(e.X);
-                if (pointX != _buttonPointX)
+                float pointX = this.getButtonPointX(e.X);
+                if (pointX != this._buttonPointX)
                 {
-                    _buttonPointX = pointX;
+                    this._buttonPointX = pointX;
                     this.Invalidate();
                     this.Update();
 
-                    int value = getValue(pointX);
-                    if (value != _value)
+                    int value = this.getValue(pointX);
+                    if (value != this._value)
                     {
-                        _value = value;
-                        OnValueChanging(new EventArgs());
+                        this._value = value;
+                        this.OnValueChanging(new EventArgs());
                     }
                 }
             }

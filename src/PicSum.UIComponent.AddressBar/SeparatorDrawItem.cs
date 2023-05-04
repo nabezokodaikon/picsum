@@ -99,17 +99,17 @@ namespace PicSum.UIComponent.AddressBar
             {
                 g.FillRectangle(base.Palette.MouseDownBrush, rect);
                 g.DrawRectangle(base.Palette.MousePointPen, rect);
-                g.DrawImage(mouseDownImage, this.GetImageDrawRectangle(this.mousePointImage));
+                g.DrawImage(this.mouseDownImage, this.GetImageDrawRectangle(this.mousePointImage));
             }
             else if (base.IsMousePoint)
             {
                 g.FillRectangle(base.Palette.MousePointBrush, rect);
                 g.DrawRectangle(base.Palette.MousePointPen, rect);
-                g.DrawImage(mousePointImage, this.GetImageDrawRectangle(this.mousePointImage));
+                g.DrawImage(this.mousePointImage, this.GetImageDrawRectangle(this.mousePointImage));
             }
             else
             {
-                g.DrawImage(mousePointImage, this.GetImageDrawRectangle(this.mousePointImage));
+                g.DrawImage(this.mousePointImage, this.GetImageDrawRectangle(this.mousePointImage));
             }
         }
 
@@ -124,7 +124,7 @@ namespace PicSum.UIComponent.AddressBar
             {
                 base.DropDownList.Show(base.AddressBar, this.Left, this.Bottom);
 
-                if (!isRead)
+                if (!this.isRead)
                 {
                     SingleValueEntity<string> param = new SingleValueEntity<string>();
                     param.Value = this.Directory.DirectoryPath;
@@ -222,7 +222,7 @@ namespace PicSum.UIComponent.AddressBar
                     item.DirectoryIcon = info.SmallIcon;
                     base.Items.Add(item);
 
-                    width = Math.Max(width, (int)g.MeasureString(item.DirectoryName + "________", SelectedSubDirectoryFont).Width);
+                    width = Math.Max(width, (int)g.MeasureString(item.DirectoryName + "________", this.SelectedSubDirectoryFont).Width);
                 }
             }
 

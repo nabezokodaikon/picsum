@@ -21,7 +21,7 @@ namespace PicSum.Main.UIComponent
 
         public DummyForm()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
 
         #endregion

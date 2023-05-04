@@ -616,10 +616,10 @@ namespace WinApi
             public int cxLeftWidth, cxRightWidth, cyTopHeight, cyBottomHeight;
             public MARGINS(int left, int top, int right, int bottom)
             {
-                cxLeftWidth = left;
-                cyTopHeight = top;
-                cxRightWidth = right;
-                cyBottomHeight = bottom;
+                this.cxLeftWidth = left;
+                this.cyTopHeight = top;
+                this.cxRightWidth = right;
+                this.cyBottomHeight = bottom;
             }
             public MARGINS() { }
         }

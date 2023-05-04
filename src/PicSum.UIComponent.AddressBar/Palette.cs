@@ -181,7 +181,7 @@ namespace PicSum.UIComponent.AddressBar
                     this.mousePointBrush = new SolidBrush(this.mousePointColor);
                 }
 
-                return mousePointBrush;
+                return this.mousePointBrush;
             }
         }
 

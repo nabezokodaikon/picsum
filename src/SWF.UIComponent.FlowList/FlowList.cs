@@ -524,7 +524,7 @@ namespace SWF.UIComponent.FlowList
                                                  SystemInformation.DragSize.Height);
                     if (!moveRect.Contains(e.X, e.Y))
                     {
-                        if (this.mouseDownHitTestInfo.IsItem && !isDrag)
+                        if (this.mouseDownHitTestInfo.IsItem && !this.isDrag)
                         {
                             // 項目のドラッグを開始します。
                             this.isDrag = true;
@@ -633,27 +633,27 @@ namespace SWF.UIComponent.FlowList
                     }
 
                     colCount = Utility.ToRoundDown(width / (double)this.itemWidth);
-                    rowCount = Utility.ToRoundUp(itemCount / (double)colCount);
+                    rowCount = Utility.ToRoundUp(this.itemCount / (double)colCount);
                     virtualHeight = this.itemHeight * rowCount;
                     itemSideSpace = (int)((width - this.ItemWidth * colCount) / (double)(colCount + 1));
                     scrollBarMaximum = virtualHeight - this.Height;
                 }
 
                 var drawFirstRow = Utility.ToRoundDown(this.scrollBar.Value / (double)this.itemHeight);
-                var drawRowCount = Utility.ToRoundUp((this.Height - ((drawFirstRow + 1) * this.itemHeight - this.scrollBar.Value)) / (double)itemHeight);
+                var drawRowCount = Utility.ToRoundUp((this.Height - ((drawFirstRow + 1) * this.itemHeight - this.scrollBar.Value)) / (double)this.itemHeight);
                 var drawLastRow = drawFirstRow + drawRowCount + 1;
                 var drawFirstItemIndex = drawFirstRow * colCount;
                 var drawLastItemIndex = drawLastRow * colCount - 1;
                 for (int row = drawLastRow; row >= drawFirstRow; row--)
                 {
-                    if (drawLastItemIndex < itemCount)
+                    if (drawLastItemIndex < this.itemCount)
                     {
                         break;
                     }
 
                     for (var colIndex = colCount - 1; colIndex >= 0; colIndex--)
                     {
-                        if (drawLastItemIndex < itemCount)
+                        if (drawLastItemIndex < this.itemCount)
                         {
                             break;
                         }
@@ -673,7 +673,7 @@ namespace SWF.UIComponent.FlowList
                                                         itemSideSpace,
                                                         scrollBarMaximum);
 
-                if (drawParameter.ScrollBarMaximum > 0)
+                if (this.drawParameter.ScrollBarMaximum > 0)
                 {
                     this.scrollBar.LargeChange = (int)(this.Height / 2);
                     this.scrollBar.Maximum = this.drawParameter.ScrollBarMaximum;
@@ -913,8 +913,8 @@ namespace SWF.UIComponent.FlowList
 
         private void DrawRectangleSelection(Graphics g)
         {
-            g.FillRectangle(RectangleSelectionBrush, this.rectangleSelection.GetDrawRectangle(this.scrollBar.Value));
-            g.DrawRectangle(RectangleSelectionPen, this.rectangleSelection.GetDrawRectangle(this.scrollBar.Value));
+            g.FillRectangle(this.RectangleSelectionBrush, this.rectangleSelection.GetDrawRectangle(this.scrollBar.Value));
+            g.DrawRectangle(this.RectangleSelectionPen, this.rectangleSelection.GetDrawRectangle(this.scrollBar.Value));
         }
 
         #endregion
@@ -947,7 +947,7 @@ namespace SWF.UIComponent.FlowList
                 throw new InvalidOperationException("項目が存在しません。");
             }
 
-            var newIndex = foucusItemIndex - 1;
+            var newIndex = this.foucusItemIndex - 1;
             if (newIndex > -1)
             {
                 if (this.isMultiSelect && (Control.ModifierKeys & Keys.Shift) == Keys.Shift)
@@ -969,7 +969,7 @@ namespace SWF.UIComponent.FlowList
                 var itemRect = this.GetItemDrawRectangle(newIndex);
                 if (itemRect.Top < 0)
                 {
-                    this.scrollBar.Value -= itemHeight;
+                    this.scrollBar.Value -= this.itemHeight;
                 }
 
                 this.EnsureVisible(newIndex);
@@ -1013,7 +1013,7 @@ namespace SWF.UIComponent.FlowList
                 var itemRect = this.GetItemDrawRectangle(newIndex);
                 if (itemRect.Bottom > this.Height)
                 {
-                    this.scrollBar.Value += itemHeight;
+                    this.scrollBar.Value += this.itemHeight;
                 }
 
                 this.EnsureVisible(newIndex);
@@ -1261,7 +1261,7 @@ namespace SWF.UIComponent.FlowList
 
         private void LeftMouseDown(int x, int y)
         {
-            var ht = getHitTestFromDrawPoint(x, y);
+            var ht = this.getHitTestFromDrawPoint(x, y);
 
             if (this.isMultiSelect && (Control.ModifierKeys & Keys.Shift) == Keys.Shift)
             {

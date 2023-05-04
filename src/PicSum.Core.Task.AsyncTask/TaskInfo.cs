@@ -145,8 +145,8 @@ namespace PicSum.Core.Task.AsyncTask
         {
             get
             {
-                if (parameter == null) throw new NullReferenceException();
-                return parameter;
+                if (this.parameter == null) throw new NullReferenceException();
+                return this.parameter;
             }
         }
 

@@ -134,7 +134,7 @@ namespace PicSum.Main.UIComponent
                 throw new ArgumentNullException(nameof(param));
             }
 
-            this.AddContentsEventHandler(tabSwitch.AddTab<BrowserContents>(param));
+            this.AddContentsEventHandler(this.tabSwitch.AddTab<BrowserContents>(param));
         }
 
         public void AddFavoriteDirectoryListTab()
@@ -229,12 +229,12 @@ namespace PicSum.Main.UIComponent
         {
             if (openType == ContentsOpenType.OverlapTab)
             {
-                this.AddContentsEventHandler(tabSwitch.OverwriteTab<BrowserContents>(param));
+                this.AddContentsEventHandler(this.tabSwitch.OverwriteTab<BrowserContents>(param));
                 this.SetContentsHistoryButtonEnabled();
             }
             else if (openType == ContentsOpenType.AddTab)
             {
-                this.AddContentsEventHandler(tabSwitch.AddTab<BrowserContents>(param));
+                this.AddContentsEventHandler(this.tabSwitch.AddTab<BrowserContents>(param));
             }
             else if (openType == ContentsOpenType.NewWindow)
             {
@@ -248,7 +248,7 @@ namespace PicSum.Main.UIComponent
 
         private void InsertContents(IContentsParameter param, int tabIndex)
         {
-            this.AddContentsEventHandler(tabSwitch.InsertTab<BrowserContents>(tabIndex, param));
+            this.AddContentsEventHandler(this.tabSwitch.InsertTab<BrowserContents>(tabIndex, param));
         }
 
         private void OverlapContents(DragEntity dragData, int tabIndex)
@@ -577,7 +577,7 @@ namespace PicSum.Main.UIComponent
 
         private void ShowInfoToolButton_MouseClick(object sender, MouseEventArgs e)
         {
-            this.IsShowFileInfo = !IsShowFileInfo;
+            this.IsShowFileInfo = !this.IsShowFileInfo;
         }
 
         #endregion

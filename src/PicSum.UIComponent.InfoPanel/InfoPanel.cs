@@ -297,7 +297,7 @@ namespace PicSum.UIComponent.InfoPanel
 
         private void AddTag(string tag)
         {
-            if (this.FilePathList == null || TagList == null)
+            if (this.FilePathList == null || this.TagList == null)
             {
                 throw new NullReferenceException("ファイルの情報が存在しません。");
             }
@@ -314,10 +314,10 @@ namespace PicSum.UIComponent.InfoPanel
 
             var param = new UpdateFileTagParameter();
             param.Tag = tag;
-            param.FilePathList = FilePathList;
+            param.FilePathList = this.FilePathList;
             this.AddFileTagProcess.Execute(this, param);
 
-            var tagInfo = TagList.Find(t => t.Tag.Equals(tag, StringComparison.Ordinal));
+            var tagInfo = this.TagList.Find(t => t.Tag.Equals(tag, StringComparison.Ordinal));
             if (tagInfo != null)
             {
                 tagInfo.IsAll = true;
@@ -353,12 +353,12 @@ namespace PicSum.UIComponent.InfoPanel
 
             var param = new UpdateFileTagParameter();
             param.Tag = tag;
-            param.FilePathList = FilePathList;
+            param.FilePathList = this.FilePathList;
             this.DeleteFileTagProcess.Execute(this, param);
 
-            var tagInfo = TagList.Find(t => t.Tag.Equals(tag, StringComparison.Ordinal));
+            var tagInfo = this.TagList.Find(t => t.Tag.Equals(tag, StringComparison.Ordinal));
             this.TagList.Remove(tagInfo);
-            this.tagFlowList.ItemCount = TagList.Count;
+            this.tagFlowList.ItemCount = this.TagList.Count;
         }
 
         private void DrawImageFileThumbnail(Graphics g, Image thumb, Rectangle rect)
@@ -403,7 +403,7 @@ namespace PicSum.UIComponent.InfoPanel
                 sf.Alignment = StringAlignment.Center;
                 sf.LineAlignment = StringAlignment.Center;
                 sf.Trimming = StringTrimming.EllipsisCharacter;
-                string text = string.Format("Select {0} file", FilePathList.Count);
+                string text = string.Format("Select {0} file", this.FilePathList.Count);
                 g.DrawString(text, this.Font, sb, rect, sf);
             }
         }
@@ -518,7 +518,7 @@ namespace PicSum.UIComponent.InfoPanel
 
             var item = this.TagList[e.ItemIndex];
 
-            var iconSize = Math.Min(this.tagFlowList.ItemHeight, tagIcon.Width);
+            var iconSize = Math.Min(this.tagFlowList.ItemHeight, this.tagIcon.Width);
 
             var iconPoint = (int)((this.tagFlowList.ItemHeight - iconSize) / 2);
 

@@ -103,12 +103,12 @@ namespace PicSum.Task.AsyncFacade
             }
             catch (ImageUtilException ex)
             {
-                exeptionHandler(result);
+                this.exeptionHandler(result);
                 result.ReadImageFileException = ex;
             }
             catch (FileNotFoundException ex)
             {
-                exeptionHandler(result);
+                this.exeptionHandler(result);
                 result.ReadImageFileException = new ImageUtilException(ex);
             }
 

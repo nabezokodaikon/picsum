@@ -143,7 +143,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private void SearchFavoriteDirectoryProcess_Callback(object sender, ListEntity<FileShallowInfoEntity> e)
         {
-            base.SetFile(e, parameter.SelectedFilePath);
+            base.SetFile(e, this.parameter.SelectedFilePath);
         }
 
         #endregion

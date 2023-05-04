@@ -29,11 +29,11 @@ namespace SWF.UIComponent.Common
         {
             get
             {
-                return _rectangleSize;
+                return this._rectangleSize;
             }
             set
             {
-                _rectangleSize = value;
+                this._rectangleSize = value;
                 this.Invalidate();
             }
         }
@@ -52,7 +52,7 @@ namespace SWF.UIComponent.Common
 
         public CheckPatternPanel()
         {
-            initializeComponent();
+            this.initializeComponent();
         }
 
         #endregion
@@ -69,7 +69,7 @@ namespace SWF.UIComponent.Common
             e.Graphics.InterpolationMode = InterpolationMode.Low;
             e.Graphics.CompositingQuality = CompositingQuality.HighSpeed;
 
-            drawCheckRectangle(e.Graphics);
+            this.drawCheckRectangle(e.Graphics);
         }
 
         #endregion
@@ -99,39 +99,39 @@ namespace SWF.UIComponent.Common
             }
 
             // チェック描画サイズ取得
-            if ((int)(w / _rectangleSize) % 2 == 1)
+            if ((int)(w / this._rectangleSize) % 2 == 1)
             {
-                w += _rectangleSize;
+                w += this._rectangleSize;
             }
 
-            if ((int)(h / _rectangleSize) % 2 == 1)
+            if ((int)(h / this._rectangleSize) % 2 == 1)
             {
-                h += _rectangleSize;
+                h += this._rectangleSize;
             }
 
             // チェック描画領域取得
             List<Rectangle> rectsA = new List<Rectangle>();
             List<Rectangle> rectsB = new List<Rectangle>();
             bool addA = true;
-            for (int x = 0; x <= w; x += _rectangleSize)
+            for (int x = 0; x <= w; x += this._rectangleSize)
             {
-                for (int y = 0; y <= h; y += _rectangleSize)
+                for (int y = 0; y <= h; y += this._rectangleSize)
                 {
                     if (addA)
                     {
-                        rectsA.Add(new Rectangle(x, y, _rectangleSize, _rectangleSize));
+                        rectsA.Add(new Rectangle(x, y, this._rectangleSize, this._rectangleSize));
                     }
                     else
                     {
-                        rectsB.Add(new Rectangle(x, y, _rectangleSize, _rectangleSize));
+                        rectsB.Add(new Rectangle(x, y, this._rectangleSize, this._rectangleSize));
                     }
                     addA = !addA;
                 }
             }
 
             // チェック描画
-            g.FillRectangles(_brushA, rectsA.ToArray());
-            g.FillRectangles(_brushB, rectsB.ToArray());
+            g.FillRectangles(this._brushA, rectsA.ToArray());
+            g.FillRectangles(this._brushB, rectsB.ToArray());
         }
 
         #endregion

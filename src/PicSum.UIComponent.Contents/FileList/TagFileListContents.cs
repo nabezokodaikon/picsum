@@ -87,7 +87,7 @@ namespace PicSum.UIComponent.Contents.FileList
             base.OnLoad(e);
 
             var param = new SingleValueEntity<string>();
-            param.Value = parameter.Tag;
+            param.Value = this.parameter.Tag;
             this.SearchFileProcess.Execute(this, param);
         }
 
@@ -116,7 +116,7 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             var param = new UpdateFileTagParameter();
             param.FilePathList = filePathList;
-            param.Tag = parameter.Tag;
+            param.Tag = this.parameter.Tag;
             this.DeleteFileTagProcess.Execute(this, param);
 
             this.RemoveFile(filePathList);

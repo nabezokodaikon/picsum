@@ -102,11 +102,11 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             get
             {
-                return fileContextMenu.VisibleDirectoryActiveTabOpenMenuItem;
+                return this.fileContextMenu.VisibleDirectoryActiveTabOpenMenuItem;
             }
             set
             {
-                fileContextMenu.VisibleDirectoryActiveTabOpenMenuItem = value;
+                this.fileContextMenu.VisibleDirectoryActiveTabOpenMenuItem = value;
             }
         }
 
@@ -315,7 +315,7 @@ namespace PicSum.UIComponent.Contents.FileList
         protected IList<string> GetSelectedFiles()
         {
             var filePathList = new List<string>();
-            var selectedIndexs = flowList.GetSelectedIndexs();
+            var selectedIndexs = this.flowList.GetSelectedIndexs();
             if (selectedIndexs.Count > 0)
             {
                 foreach (var index in selectedIndexs)
@@ -730,7 +730,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 }
                 else
                 {
-                    var thumbRect = GetThumbnailRectangle(e);
+                    var thumbRect = this.GetThumbnailRectangle(e);
                     if (item.ThumbnailWidth == thumbRect.Width && item.ThumbnailHeight == thumbRect.Height)
                     {
                         ThumbnailUtil.DrawDirectoryThumbnail(e.Graphics, item.ThumbnailImage, thumbRect, item.Icon);
@@ -753,7 +753,7 @@ namespace PicSum.UIComponent.Contents.FileList
             return new Rectangle(e.ItemRectangle.X,
                                  e.ItemRectangle.Y,
                                  e.ItemRectangle.Width,
-                                 e.ItemRectangle.Height - ItemTextHeight);
+                                 e.ItemRectangle.Height - this.ItemTextHeight);
         }
 
         private Rectangle GetThumbnailRectangle(SWF.UIComponent.FlowList.DrawItemEventArgs e)
@@ -763,7 +763,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 return new Rectangle(e.ItemRectangle.X,
                                      e.ItemRectangle.Y,
                                      e.ItemRectangle.Width,
-                                     e.ItemRectangle.Height - ItemTextHeight);
+                                     e.ItemRectangle.Height - this.ItemTextHeight);
             }
             else
             {
@@ -774,7 +774,7 @@ namespace PicSum.UIComponent.Contents.FileList
         private Rectangle GetTextRectangle(SWF.UIComponent.FlowList.DrawItemEventArgs e)
         {
             return new Rectangle(e.ItemRectangle.X,
-                                 e.ItemRectangle.Bottom - ItemTextHeight,
+                                 e.ItemRectangle.Bottom - this.ItemTextHeight,
                                  e.ItemRectangle.Width,
                                  this.ItemTextHeight);
         }
@@ -912,7 +912,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private void ThumbnailSizeToolStripSlider_ValueChanging(object sender, EventArgs e)
         {
-            FileListContentsConfig.ThumbnailSize = ThumbnailSize;
+            FileListContentsConfig.ThumbnailSize = this.ThumbnailSize;
             this.SetFlowListItemSize();
             this.flowList.Refresh();
         }
@@ -968,7 +968,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 param.FirstIndex = e.DrawFirstItemIndex;
                 param.LastIndex = e.DrawLastItemIndex;
                 param.ThumbnailWidth = this.flowList.ItemWidth - this.flowList.ItemSpace * 2;
-                if (IsShowFileName)
+                if (this.IsShowFileName)
                 {
                     param.ThumbnailHeight = this.flowList.ItemHeight - this.flowList.ItemSpace * 2 - this.ItemTextHeight;
                 }
@@ -1085,7 +1085,7 @@ namespace PicSum.UIComponent.Contents.FileList
         private void FlowList_ItemDelete(object sender, EventArgs e)
         {
             var filePathList = new List<string>();
-            foreach (var index in flowList.GetSelectedIndexs())
+            foreach (var index in this.flowList.GetSelectedIndexs())
             {
                 filePathList.Add(this.filterFilePathList[index]);
             }
@@ -1242,7 +1242,7 @@ namespace PicSum.UIComponent.Contents.FileList
                     var param = new ExportFileParameter();
                     param.ExportDirectoryPath = fbd.SelectedPath;
                     param.FilePathList = e.FilePathList;
-                    ExportFileProcess.Execute(this, param);
+                    this.ExportFileProcess.Execute(this, param);
 
                     CommonConfig.ExportDirectoryPath = fbd.SelectedPath;
                 }

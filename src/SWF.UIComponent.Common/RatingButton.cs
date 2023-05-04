@@ -13,11 +13,11 @@ namespace SWF.UIComponent.Common
         {
             get
             {
-                return _isActive;
+                return this._isActive;
             }
             set
             {
-                _isActive = value;
+                this._isActive = value;
                 this.Invalidate();
             }
         }
@@ -26,7 +26,7 @@ namespace SWF.UIComponent.Common
         {
             get
             {
-                if (_isActive)
+                if (this._isActive)
                 {
                     return Resources.ActiveRatingIcon;
                 }
@@ -39,7 +39,7 @@ namespace SWF.UIComponent.Common
 
         public RatingButton()
         {
-            initializeComponent();
+            this.initializeComponent();
         }
 
         protected override void OnPaint(PaintEventArgs e)

@@ -42,7 +42,7 @@ namespace PicSum.Core.Data.DatabaseAccessor
 
             if (disposing)
             {
-                if (!isCommitted)
+                if (!this.isCommitted)
                 {
                     this.conntenction.Roolback();
                 }

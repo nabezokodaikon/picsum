@@ -91,9 +91,9 @@ namespace PicSum.UIComponent.AddressBar
         private DirectoryEntity GetDropDownItemFromScreenPoint()
         {
             var index = this.DropDownList.IndexFromScreenPoint();
-            if (index > -1 && items.Count > index)
+            if (index > -1 && this.items.Count > index)
             {
-                return items[index];
+                return this.items[index];
             }
 
             return null;

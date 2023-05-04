@@ -354,7 +354,7 @@ namespace SWF.UIComponent.FlowList
             {
                 if (this.itemTextBrush == null)
                 {
-                    this.itemTextBrush = new SolidBrush(itemTextColor);
+                    this.itemTextBrush = new SolidBrush(this.itemTextColor);
                 }
 
                 return this.itemTextBrush;
@@ -368,7 +368,7 @@ namespace SWF.UIComponent.FlowList
             {
                 if (this.selectedItemBrush == null)
                 {
-                    this.selectedItemBrush = new SolidBrush(selectedItemColor);
+                    this.selectedItemBrush = new SolidBrush(this.selectedItemColor);
                 }
 
                 return this.selectedItemBrush;
@@ -571,7 +571,7 @@ namespace SWF.UIComponent.FlowList
         /// <param name="itemIndex">項目インデックス</param>
         public void InvalidateFromItemIndex(int itemIndex)
         {
-            if (itemIndex < 0 || itemCount - 1 < itemIndex)
+            if (itemIndex < 0 || this.itemCount - 1 < itemIndex)
             {
                 throw new ArgumentOutOfRangeException("itemIndex");
             }

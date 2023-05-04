@@ -231,8 +231,8 @@ namespace PicSum.UIComponent.AddressBar
 
         protected override void OnPaint(PaintEventArgs e)
         {
-            e.Graphics.FillRectangle(palette.OutLineBrush, this.ClientRectangle);
-            e.Graphics.FillRectangle(palette.InnerBrush, this.GetInnerRectangle());
+            e.Graphics.FillRectangle(this.palette.OutLineBrush, this.ClientRectangle);
+            e.Graphics.FillRectangle(this.palette.InnerBrush, this.GetInnerRectangle());
 
             this.directoryHistoryItem.Draw(e.Graphics);
 
@@ -241,7 +241,7 @@ namespace PicSum.UIComponent.AddressBar
                 this.overflowItem.Draw(e.Graphics);
             }
 
-            foreach (var drawItem in addressItems)
+            foreach (var drawItem in this.addressItems)
             {
                 if (drawItem.Left >= this.overflowItem.Right)
                 {
@@ -309,7 +309,7 @@ namespace PicSum.UIComponent.AddressBar
         {
             if (this.mouseDownItem != null)
             {
-                var drawItem = GetItemFromPoint(e.X, e.Y);
+                var drawItem = this.GetItemFromPoint(e.X, e.Y);
                 if (this.mouseDownItem.Equals(drawItem))
                 {
                     this.mouseDownItem.OnMouseClick(e);
@@ -326,10 +326,10 @@ namespace PicSum.UIComponent.AddressBar
         private void InitializeComponent()
         {
             this.overflowItem.AddressBar = this;
-            this.overflowItem.Palette = palette;
+            this.overflowItem.Palette = this.palette;
 
             this.directoryHistoryItem.AddressBar = this;
-            this.directoryHistoryItem.Palette = palette;
+            this.directoryHistoryItem.Palette = this.palette;
 
             this.SetStyle(ControlStyles.DoubleBuffer |
                           ControlStyles.UserPaint |
@@ -364,17 +364,17 @@ namespace PicSum.UIComponent.AddressBar
 
                 using (var g = this.CreateGraphics())
                 {
-                    for (var i = addressItems.Count - 1; i > -1; i--)
+                    for (var i = this.addressItems.Count - 1; i > -1; i--)
                     {
-                        var drawItem = addressItems[i];
+                        var drawItem = this.addressItems[i];
 
                         if (drawItem.GetType() == typeof(DirectoryDrawItem))
                         {
-                            drawItem.Width = (int)(g.MeasureString((drawItem as DirectoryDrawItem).Directory.DirectoryName + "__", palette.TextFont).Width);
+                            drawItem.Width = (int)(g.MeasureString((drawItem as DirectoryDrawItem).Directory.DirectoryName + "__", this.palette.TextFont).Width);
                         }
                         else if (drawItem.GetType() == typeof(SeparatorDrawItem))
                         {
-                            drawItem.Width = dropDownItemWidth;
+                            drawItem.Width = this.dropDownItemWidth;
                         }
 
                         drawItem.Left = right - drawItem.Width;
@@ -386,7 +386,7 @@ namespace PicSum.UIComponent.AddressBar
                 }
 
                 var left = addressRect.Left;
-                foreach (var drawItem in addressItems)
+                foreach (var drawItem in this.addressItems)
                 {
                     if (drawItem.Left < addressRect.Left)
                     {
@@ -465,14 +465,14 @@ namespace PicSum.UIComponent.AddressBar
                 var directoryDraw = new DirectoryDrawItem();
                 directoryDraw.AddressBar = this;
                 directoryDraw.Directory = directory;
-                directoryDraw.Palette = palette;
+                directoryDraw.Palette = this.palette;
                 directoryDraw.SelectedDirectory += new EventHandler<SelectedDirectoryEventArgs>(this.DrawItem_SelectedDirectory);
                 items.Add(directoryDraw);
 
                 var sepDraw = new SeparatorDrawItem();
                 sepDraw.AddressBar = this;
                 sepDraw.Directory = directory;
-                sepDraw.Palette = palette;
+                sepDraw.Palette = this.palette;
                 sepDraw.SelectedDirectory += new EventHandler<SelectedDirectoryEventArgs>(this.DrawItem_SelectedDirectory);
                 items.Add(sepDraw);
             }
@@ -487,7 +487,7 @@ namespace PicSum.UIComponent.AddressBar
                 var directoryDraw = new DirectoryDrawItem();
                 directoryDraw.AddressBar = this;
                 directoryDraw.Directory = directory;
-                directoryDraw.Palette = palette;
+                directoryDraw.Palette = this.palette;
                 directoryDraw.SelectedDirectory += new EventHandler<SelectedDirectoryEventArgs>(this.DrawItem_SelectedDirectory);
                 items.Add(directoryDraw);
             }
@@ -497,12 +497,12 @@ namespace PicSum.UIComponent.AddressBar
 
         private void ClearAddressItems()
         {
-            foreach (IDisposable item in addressItems)
+            foreach (IDisposable item in this.addressItems)
             {
                 item.Dispose();
             }
 
-            addressItems.Clear();
+            this.addressItems.Clear();
         }
 
         private Rectangle GetInnerRectangle()
@@ -545,7 +545,7 @@ namespace PicSum.UIComponent.AddressBar
 
             this.directoryHistoryItem.IsMousePoint = this.directoryHistoryItem.Equals(this.mousePointItem);
             this.overflowItem.IsMousePoint = this.overflowItem.Equals(this.mousePointItem);
-            foreach (var drawItem in addressItems)
+            foreach (var drawItem in this.addressItems)
             {
                 drawItem.IsMousePoint = drawItem.Equals(this.mousePointItem);
             }
@@ -558,24 +558,24 @@ namespace PicSum.UIComponent.AddressBar
             var ret = false;
             if (newDrawItem != null)
             {
-                if (!newDrawItem.Equals(mouseDownItem))
+                if (!newDrawItem.Equals(this.mouseDownItem))
                 {
-                    mouseDownItem = newDrawItem;
+                    this.mouseDownItem = newDrawItem;
                     ret = true;
                 }
             }
             else
             {
-                if (mouseDownItem != null)
+                if (this.mouseDownItem != null)
                 {
-                    mouseDownItem = null;
+                    this.mouseDownItem = null;
                     ret = true;
                 }
             }
 
             this.directoryHistoryItem.IsMouseDown = this.directoryHistoryItem.Equals(this.mouseDownItem);
             this.overflowItem.IsMouseDown = this.overflowItem.Equals(this.mouseDownItem);
-            foreach (var drawItem in addressItems)
+            foreach (var drawItem in this.addressItems)
             {
                 drawItem.IsMouseDown = drawItem.Equals(this.mouseDownItem);
             }
@@ -595,7 +595,7 @@ namespace PicSum.UIComponent.AddressBar
             }
             else if (this.addressItems != null)
             {
-                foreach (var drawItem in addressItems)
+                foreach (var drawItem in this.addressItems)
                 {
                     if (drawItem.GetRectangle().Contains(x, y))
                     {
@@ -630,7 +630,7 @@ namespace PicSum.UIComponent.AddressBar
             this.ClearAddressItems();
 
             this.directoryPath = e.DirectoryPath;
-            this.addressItems.AddRange(CreateAddressItems(e));
+            this.addressItems.AddRange(this.CreateAddressItems(e));
 
             this.Invalidate();
         }
@@ -647,7 +647,7 @@ namespace PicSum.UIComponent.AddressBar
 
         private void DrawItem_SelectedDirectory(object sender, SelectedDirectoryEventArgs e)
         {
-            OnSelectedDirectory(e);
+            this.OnSelectedDirectory(e);
         }
 
         #endregion

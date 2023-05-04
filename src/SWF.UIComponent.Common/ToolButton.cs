@@ -35,50 +35,50 @@ namespace SWF.UIComponent.Common
         {
             get
             {
-                return _regionType;
+                return this._regionType;
             }
             set
             {
-                _regionType = value;
+                this._regionType = value;
 
                 switch (value)
                 {
                     case ToolButtonRegionType.Left:
-                        _getRectangleMethod = new Func<Rectangle>(getLeftRectangle);
+                        this._getRectangleMethod = new Func<Rectangle>(this.getLeftRectangle);
                         break;
                     case ToolButtonRegionType.Top:
-                        _getRectangleMethod = new Func<Rectangle>(getTopRectangle);
+                        this._getRectangleMethod = new Func<Rectangle>(this.getTopRectangle);
                         break;
                     case ToolButtonRegionType.Right:
-                        _getRectangleMethod = new Func<Rectangle>(getRightRectangle);
+                        this._getRectangleMethod = new Func<Rectangle>(this.getRightRectangle);
                         break;
                     case ToolButtonRegionType.Bottom:
-                        _getRectangleMethod = new Func<Rectangle>(getBottomRectangle);
+                        this._getRectangleMethod = new Func<Rectangle>(this.getBottomRectangle);
                         break;
                     case ToolButtonRegionType.HorizonCenter:
-                        _getRectangleMethod = new Func<Rectangle>(getHorizonCenterRectangle);
+                        this._getRectangleMethod = new Func<Rectangle>(this.getHorizonCenterRectangle);
                         break;
                     case ToolButtonRegionType.VerticalCenter:
-                        _getRectangleMethod = new Func<Rectangle>(getVerticalCenterRectangle);
+                        this._getRectangleMethod = new Func<Rectangle>(this.getVerticalCenterRectangle);
                         break;
                     default:
-                        _getRectangleMethod = new Func<Rectangle>(getDefaultRectangle);
+                        this._getRectangleMethod = new Func<Rectangle>(this.getDefaultRectangle);
                         break;
                 }
 
-                this.Region = getRegion();
+                this.Region = this.getRegion();
                 this.Refresh();
             }
         }
 
         public ToolButton()
         {
-            initializeComponent();
+            this.initializeComponent();
         }
 
         public Rectangle GetRegionBounds()
         {
-            Rectangle rect = _getRectangleMethod();
+            Rectangle rect = this._getRectangleMethod();
             int x = this.Bounds.Left + rect.Left;
             int y = this.Bounds.Top + rect.Top;
             int w = rect.Width;
@@ -88,7 +88,7 @@ namespace SWF.UIComponent.Common
 
         protected override void OnResize(EventArgs e)
         {
-            this.Region = getRegion();
+            this.Region = this.getRegion();
             this.Invalidate();
             base.OnResize(e);
         }
@@ -97,8 +97,8 @@ namespace SWF.UIComponent.Common
         {
             if (e.Button == MouseButtons.Left)
             {
-                _isLeftClick = !_isLeftClick;
-                if (_isLeftClick)
+                this._isLeftClick = !this._isLeftClick;
+                if (this._isLeftClick)
                 {
                     base.OnMouseClick(e);
                 }
@@ -118,8 +118,8 @@ namespace SWF.UIComponent.Common
 
             this.SetStyle(ControlStyles.Selectable, false);
 
-            _getRectangleMethod = new Func<Rectangle>(getDefaultRectangle);
-            this.Region = getRegion();
+            this._getRectangleMethod = new Func<Rectangle>(this.getDefaultRectangle);
+            this.Region = this.getRegion();
         }
 
         private Rectangle getDefaultRectangle()
@@ -187,7 +187,7 @@ namespace SWF.UIComponent.Common
 
         private Region getRegion()
         {
-            return new Region(_getRectangleMethod());
+            return new Region(this._getRectangleMethod());
         }
     }
 }

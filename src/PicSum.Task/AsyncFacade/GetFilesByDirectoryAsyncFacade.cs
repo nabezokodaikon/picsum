@@ -34,7 +34,7 @@ namespace PicSum.Task.AsyncFacade
             catch (DirectoryNotFoundException ex)
             {
                 result.DirectoryNotFoundException = ex;
-                OnCallback(result);
+                this.OnCallback(result);
                 return;
             }
 

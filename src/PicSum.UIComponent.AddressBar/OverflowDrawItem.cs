@@ -38,7 +38,7 @@ namespace PicSum.UIComponent.AddressBar
                 throw new ArgumentNullException(nameof(g));
             }
 
-            var rect = GetRectangle();
+            var rect = this.GetRectangle();
 
             if (base.IsMouseDown || this.IsDropDown)
             {
@@ -67,7 +67,7 @@ namespace PicSum.UIComponent.AddressBar
             {
                 var width = MINIMUM_DROPDOWN_WIDHT;
 
-                using (var g = DropDownList.CreateGraphics())
+                using (var g = this.DropDownList.CreateGraphics())
                 {
                     foreach (var directory in base.Items)
                     {
@@ -100,7 +100,7 @@ namespace PicSum.UIComponent.AddressBar
         {
             if (e.IsFocus || e.IsMousePoint || e.IsSelected)
             {
-                e.Graphics.FillRectangle(DropDownList.SelectedItemBrush, e.ItemRectangle);
+                e.Graphics.FillRectangle(this.DropDownList.SelectedItemBrush, e.ItemRectangle);
             }
 
             var item = base.Items[e.ItemIndex];
@@ -119,9 +119,9 @@ namespace PicSum.UIComponent.AddressBar
                 e.Graphics.DrawImage(item.DirectoryIcon, iconRect);
             }
 
-            var textRect = new Rectangle(e.ItemRectangle.X + DropDownList.ItemHeight,
+            var textRect = new Rectangle(e.ItemRectangle.X + this.DropDownList.ItemHeight,
                                          e.ItemRectangle.Y,
-                                         e.ItemRectangle.Width - DropDownList.ItemHeight,
+                                         e.ItemRectangle.Width - this.DropDownList.ItemHeight,
                                          e.ItemRectangle.Height);
 
             e.Graphics.DrawString(item.DirectoryName,

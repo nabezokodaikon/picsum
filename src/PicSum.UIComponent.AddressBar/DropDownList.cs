@@ -388,7 +388,7 @@ namespace PicSum.UIComponent.AddressBar
             this.FlowList.BackColor = this.BackColor;
 
             this.FlowList.DrawItem += new EventHandler<SWF.UIComponent.FlowList.DrawItemEventArgs>(this.FlowList_Drawitem);
-            this.FlowList.ItemExecute += new EventHandler(FlowList_ItemExecute);
+            this.FlowList.ItemExecute += new EventHandler(this.FlowList_ItemExecute);
             this.FlowList.ItemMouseClick += new EventHandler<MouseEventArgs>(this.FlowList_ItemMouseClick);
         }
 

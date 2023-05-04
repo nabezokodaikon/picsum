@@ -136,7 +136,7 @@ namespace PicSum.Core.Task.AsyncTask
 
             if (!this.HasExecutingTask())
             {
-                if (task.Equals(GetNextTask()))
+                if (task.Equals(this.GetNextTask()))
                 {
                     this.StartExecuteThread(task);
                 }
@@ -196,7 +196,7 @@ namespace PicSum.Core.Task.AsyncTask
 
             if (!this.HasExecutingTask())
             {
-                var nextTask = GetNextTask();
+                var nextTask = this.GetNextTask();
 
                 if (nextTask != null)
                 {
@@ -226,7 +226,7 @@ namespace PicSum.Core.Task.AsyncTask
 
             if (!this.HasExecutingTask())
             {
-                var nextTask = GetNextTask();
+                var nextTask = this.GetNextTask();
 
                 if (nextTask != null)
                 {
@@ -258,11 +258,11 @@ namespace PicSum.Core.Task.AsyncTask
 
             if (!this.HasExecutingTask())
             {
-                var nextTask = GetNextTask();
+                var nextTask = this.GetNextTask();
 
                 if (nextTask != null)
                 {
-                    StartExecuteThread(nextTask);
+                    this.StartExecuteThread(nextTask);
                 }
             }
         }
@@ -270,7 +270,7 @@ namespace PicSum.Core.Task.AsyncTask
         // 実行中のタスクの存在を確認します。
         private bool HasExecutingTask()
         {
-            foreach (var task in taskList)
+            foreach (var task in this.taskList)
             {
                 if (task.IsExecuting)
                 {
@@ -284,7 +284,7 @@ namespace PicSum.Core.Task.AsyncTask
         // 次のタスクを取得します。
         private TaskInfo GetNextTask()
         {
-            foreach (var task in taskList)
+            foreach (var task in this.taskList)
             {
                 if (!task.IsCancel)
                 {

@@ -127,7 +127,7 @@ namespace PicSum.Main.UIComponent
                 }
 
                 BrowserForm.startupProcess = TaskManager.CreateTwoWayProcess<StartupAsyncFacade, StartupPrameter, DefaultEntity>(this.components);
-                BrowserForm.startupProcess.Callback += new AsyncTaskCallbackEventHandler<DefaultEntity>(StartupProcess_Callback);
+                BrowserForm.startupProcess.Callback += new AsyncTaskCallbackEventHandler<DefaultEntity>(this.StartupProcess_Callback);
 
                 var dbDir = Path.Combine(Directory.GetParent(Application.ExecutablePath).FullName, "db");
                 if (!Directory.Exists(dbDir))
@@ -166,7 +166,7 @@ namespace PicSum.Main.UIComponent
 
         protected override void Dispose(bool disposing)
         {
-            if (disposing && (components != null))
+            if (disposing && (this.components != null))
             {
                 this.components.Dispose();
             }
@@ -279,12 +279,12 @@ namespace PicSum.Main.UIComponent
 
             var browserMainPanel = new BrowserMainPanel();
 
-            SetBrowserMainPanelProperty(browserMainPanel);
+            this.SetBrowserMainPanelProperty(browserMainPanel);
 
-            browserMainPanel.Close += new EventHandler(BrowserMainPanel_Close);
-            browserMainPanel.BackgroundMouseDoubleLeftClick += new EventHandler(BrowserMainPanel_BackgroundMouseDoubleLeftClick);
-            browserMainPanel.NewWindowContentsOpen += new EventHandler<BrowserContentsOpenEventArgs>(BrowserMainPanel_NewWindowContentsOpen);
-            browserMainPanel.TabDropouted += new EventHandler<TabDropoutedEventArgs>(BrowserMainPanel_TabDropouted);
+            browserMainPanel.Close += new EventHandler(this.BrowserMainPanel_Close);
+            browserMainPanel.BackgroundMouseDoubleLeftClick += new EventHandler(this.BrowserMainPanel_BackgroundMouseDoubleLeftClick);
+            browserMainPanel.NewWindowContentsOpen += new EventHandler<BrowserContentsOpenEventArgs>(this.BrowserMainPanel_NewWindowContentsOpen);
+            browserMainPanel.TabDropouted += new EventHandler<TabDropoutedEventArgs>(this.BrowserMainPanel_TabDropouted);
 
             this.SuspendLayout();
             this.Controls.Add(browserMainPanel);

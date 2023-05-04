@@ -3,7 +3,6 @@ using PicSum.Main.Conf;
 using PicSum.Main.Properties;
 using PicSum.Task.SyncFacade;
 using PicSum.UIComponent.Contents.Conf;
-using SWF.Common;
 using System;
 using System.Windows.Forms;
 

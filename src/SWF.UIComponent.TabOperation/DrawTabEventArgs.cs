@@ -5,7 +5,7 @@ using System.Windows.Forms;
 
 namespace SWF.UIComponent.TabOperation
 {
-    public sealed class DrawTabEventArgs 
+    public sealed class DrawTabEventArgs
         : EventArgs
     {
         public Graphics Graphics { get; set; }
