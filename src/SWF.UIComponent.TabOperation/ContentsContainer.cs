@@ -6,7 +6,8 @@ namespace SWF.UIComponent.TabOperation
     /// <summary>
     /// コンテンツコンテナ
     /// </summary>
-    public class ContentsContainer : Panel
+    public sealed class ContentsContainer
+        : Panel
     {
         public ContentsContainer()
         {
@@ -56,7 +57,7 @@ namespace SWF.UIComponent.TabOperation
         /// </summary>
         internal void ClearContents()
         {
-            ContentsPanel contents = contentsPanel;
+            var contents = this.contentsPanel;
             this.Controls.Clear();
         }
     }

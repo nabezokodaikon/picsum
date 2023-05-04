@@ -9,7 +9,8 @@ namespace SWF.UIComponent.TabOperation
     /// <summary>
     /// ドラッグ中のコンテンツを表示するフォーム
     /// </summary>
-    internal class TabDragForm : Form
+    internal sealed class TabDragForm
+        : Form
     {
         #region 定数・列挙
 
@@ -19,83 +20,71 @@ namespace SWF.UIComponent.TabOperation
 
         #endregion
 
-        #region イベント・デリゲート
-
-        #endregion
-
         #region インスタンス変数
 
-        private TabPalette _tabPalette = null;
-        private TabDropForm _tabDropForm = null;
-        private TabDrawArea _tabDrawArea = null;
-        private DrawTabEventArgs _drawTabEventArgs = null;
+        private TabPalette tabPalette = null;
+        private TabDropForm tabDropForm = null;
+        private TabDrawArea tabDrawArea = null;
+        private DrawTabEventArgs drawTabEventArgs = null;
 
-        private Bitmap _regionImage = null;
-        private Action<DrawTabEventArgs> _drawTabContentsMethod = null;
-
-        #endregion
-
-        #region パブリックプロパティ
-
-        #endregion
-
-        #region 継承プロパティ
+        private Bitmap regionImage = null;
+        private Action<DrawTabEventArgs> drawTabContentsMethod = null;
 
         #endregion
 
         #region プライベートプロパティ
 
-        private TabPalette tabPalette
+        private TabPalette TabPalette
         {
             get
             {
-                if (_tabPalette == null)
+                if (this.tabPalette == null)
                 {
-                    _tabPalette = new TabPalette();
+                    this.tabPalette = new TabPalette();
                 }
 
-                return _tabPalette;
+                return this.tabPalette;
             }
         }
 
-        private TabDropForm tabDropForm
+        private TabDropForm TabDropForm
         {
             get
             {
-                if (_tabDropForm == null)
+                if (this.tabDropForm == null)
                 {
-                    _tabDropForm = new TabDropForm();
+                    this.tabDropForm = new TabDropForm();
                 }
 
-                return _tabDropForm;
+                return this.tabDropForm;
             }
         }
 
-        private TabDrawArea tabDrawArea
+        private TabDrawArea TabDrawArea
         {
             get
             {
-                if (_tabDrawArea == null)
+                if (this.tabDrawArea == null)
                 {
-                    _tabDrawArea = new TabDrawArea();
-                    _tabDrawArea.X = DRAW_TAB_WIDHT_OFFSET;
-                    _tabDrawArea.Y = 0;
+                    this.tabDrawArea = new TabDrawArea();
+                    this.tabDrawArea.X = DRAW_TAB_WIDHT_OFFSET;
+                    this.tabDrawArea.Y = 0;
                 }
 
-                return _tabDrawArea;
+                return this.tabDrawArea;
             }
         }
 
-        private DrawTabEventArgs drawTabEventArgs
+        private DrawTabEventArgs DrawTabEventArgs
         {
             get
             {
-                if (_drawTabEventArgs == null)
+                if (this.drawTabEventArgs == null)
                 {
-                    _drawTabEventArgs = new DrawTabEventArgs();
+                    this.drawTabEventArgs = new DrawTabEventArgs();
                 }
 
-                return _drawTabEventArgs;
+                return this.drawTabEventArgs;
             }
         }
 
@@ -105,7 +94,7 @@ namespace SWF.UIComponent.TabOperation
 
         public TabDragForm()
         {
-            initializeComponent();
+            this.InitializeComponent();
         }
 
         #endregion
@@ -114,37 +103,37 @@ namespace SWF.UIComponent.TabOperation
 
         public void SetLocation(int xOffset, int yOffset)
         {
-            Point screenPoint = Cursor.Position;
+            var screenPoint = Cursor.Position;
             this.Location = new Point(screenPoint.X - DRAW_TAB_WIDHT_OFFSET - xOffset, screenPoint.Y - yOffset);
 
-            Rectangle topRect = ScreenUtil.GetTopRect(tabDropForm.Size);
+            var topRect = ScreenUtil.GetTopRect(this.TabDropForm.Size);
             if (topRect.Contains(screenPoint))
             {
-                tabDropForm.Location = new Point(topRect.X, topRect.Y);
-                tabDropForm.SetMaximumImage();
-                tabDropForm.Visible = true;
+                this.TabDropForm.Location = new Point(topRect.X, topRect.Y);
+                this.TabDropForm.SetMaximumImage();
+                this.TabDropForm.Visible = true;
                 return;
             }
 
-            Rectangle leftRect = ScreenUtil.GetLeftRect(tabDropForm.Size);
+            var leftRect = ScreenUtil.GetLeftRect(this.TabDropForm.Size);
             if (leftRect.Contains(screenPoint))
             {
-                tabDropForm.Location = new Point(leftRect.X, leftRect.Y);
-                tabDropForm.SetLeftImage();
-                tabDropForm.Visible = true;
+                this.TabDropForm.Location = new Point(leftRect.X, leftRect.Y);
+                this.TabDropForm.SetLeftImage();
+                this.TabDropForm.Visible = true;
                 return;
             }
 
-            Rectangle rightRect = ScreenUtil.GetRightRect(tabDropForm.Size);
+            var rightRect = ScreenUtil.GetRightRect(this.TabDropForm.Size);
             if (rightRect.Contains(screenPoint))
             {
-                tabDropForm.Location = new Point(rightRect.X, rightRect.Y);
-                tabDropForm.SetRightImage();
-                tabDropForm.Visible = true;
+                this.TabDropForm.Location = new Point(rightRect.X, rightRect.Y);
+                this.TabDropForm.SetRightImage();
+                this.TabDropForm.Visible = true;
                 return;
             }
 
-            tabDropForm.Visible = false;
+            this.TabDropForm.Visible = false;
         }
 
         public void SetTab(TabInfo tab)
@@ -159,58 +148,58 @@ namespace SWF.UIComponent.TabOperation
                 throw new ArgumentException("タブはどこにも所有されていません。", "tab");
             }
 
-            if (_regionImage != null)
+            if (this.regionImage != null)
             {
                 throw new Exception("領域のイメージが初期化されていません。");
             }
 
-            using (Bitmap contentsCap = tab.GetContentsCapture())
+            using (var contentsCap = tab.GetContentsCapture())
             {
-                Size contentsSize = getContentsSize(contentsCap);
-                Size regionSize = getRegionSize(contentsSize);
-                Bitmap regionImage = new Bitmap(regionSize.Width, regionSize.Height);
+                var contentsSize = this.GetContentsSize(contentsCap);
+                var regionSize = this.GetRegionSize(contentsSize);
+                var regionImage = new Bitmap(regionSize.Width, regionSize.Height);
 
-                using (Graphics g = Graphics.FromImage(regionImage))
+                using (var g = Graphics.FromImage(regionImage))
                 {
                     g.SmoothingMode = SmoothingMode.None;
                     g.InterpolationMode = InterpolationMode.Low;
 
-                    Rectangle outlineRect = getOutlineRectangle(contentsSize);
+                    var outlineRect = this.GetOutlineRectangle(contentsSize);
                     g.FillRectangle(tab.Owner.OutlineBrush, outlineRect);
 
-                    Rectangle contentsRect = getContentsRectangle(outlineRect);
+                    var contentsRect = this.GetContentsRectangle(outlineRect);
                     g.DrawImage(contentsCap, contentsRect);
 
-                    tabDrawArea.DrawActiveTab(g);
+                    this.TabDrawArea.DrawActiveTab(g);
                 }
 
-                _regionImage = regionImage;
+                this.regionImage = regionImage;
             }
 
-            drawTabEventArgs.Font = tabPalette.TitleFont;
-            drawTabEventArgs.TitleColor = tabPalette.TitleColor;
-            drawTabEventArgs.TitleFormatFlags = tabPalette.TitleFormatFlags;
-            drawTabEventArgs.TextRectangle = tabDrawArea.GetContentsRectangle();
-            drawTabEventArgs.IconRectangle = tabDrawArea.GetIconRectangle(tab.Icon);
-            drawTabEventArgs.CloseButtonRectangle = tabDrawArea.GetCloseButtonRectangle();
-            drawTabEventArgs.TextStyle = DrawTextUtil.TextStyle.Glowing;
+            this.DrawTabEventArgs.Font = this.TabPalette.TitleFont;
+            this.DrawTabEventArgs.TitleColor = this.TabPalette.TitleColor;
+            this.DrawTabEventArgs.TitleFormatFlags = this.TabPalette.TitleFormatFlags;
+            this.DrawTabEventArgs.TextRectangle = this.TabDrawArea.GetContentsRectangle();
+            this.DrawTabEventArgs.IconRectangle = this.TabDrawArea.GetIconRectangle(tab.Icon);
+            this.DrawTabEventArgs.CloseButtonRectangle = this.TabDrawArea.GetCloseButtonRectangle();
+            this.DrawTabEventArgs.TextStyle = DrawTextUtil.TextStyle.Glowing;
 
-            _drawTabContentsMethod = tab.DrawingTabContents;
+            this.drawTabContentsMethod = tab.DrawingTabContents;
 
-            this.Size = _regionImage.Size;
-            this.Region = ImageUtil.GetRegion(_regionImage, Color.FromArgb(0, 0, 0, 0));
+            this.Size = this.regionImage.Size;
+            this.Region = ImageUtil.GetRegion(this.regionImage, Color.FromArgb(0, 0, 0, 0));
         }
 
         public void Clear()
         {
-            tabDropForm.Visible = false;
+            this.TabDropForm.Visible = false;
 
-            _drawTabContentsMethod = null;
+            this.drawTabContentsMethod = null;
 
-            if (_regionImage != null)
+            if (this.regionImage != null)
             {
-                _regionImage.Dispose();
-                _regionImage = null;
+                this.regionImage.Dispose();
+                this.regionImage = null;
             }
         }
 
@@ -220,23 +209,23 @@ namespace SWF.UIComponent.TabOperation
 
         protected override void OnPaint(PaintEventArgs e)
         {
-            if (_drawTabContentsMethod == null ||
-                _regionImage == null)
+            if (this.drawTabContentsMethod == null ||
+                this.regionImage == null)
             {
                 return;
             }
 
-            e.Graphics.DrawImage(_regionImage, 0, 0, _regionImage.Width, _regionImage.Height);
+            e.Graphics.DrawImage(this.regionImage, 0, 0, this.regionImage.Width, this.regionImage.Height);
 
-            drawTabEventArgs.Graphics = e.Graphics;
-            _drawTabContentsMethod(drawTabEventArgs);
+            this.DrawTabEventArgs.Graphics = e.Graphics;
+            this.drawTabContentsMethod(this.DrawTabEventArgs);
         }
 
         #endregion
 
         #region プライベートメソッド
 
-        private void initializeComponent()
+        private void InitializeComponent()
         {
             this.SetStyle(ControlStyles.DoubleBuffer |
                           ControlStyles.UserPaint |
@@ -249,36 +238,36 @@ namespace SWF.UIComponent.TabOperation
             this.Opacity = 0.75d;
         }
 
-        private Size getContentsSize(Bitmap contentsCap)
+        private Size GetContentsSize(Bitmap contentsCap)
         {
-            double scale = CAPTURE_WIDTH / (double)contentsCap.Width;
-            int w = (int)(contentsCap.Width * scale);
-            int h = (int)(contentsCap.Height * scale);
+            var scale = CAPTURE_WIDTH / (double)contentsCap.Width;
+            var w = (int)(contentsCap.Width * scale);
+            var h = (int)(contentsCap.Height * scale);
             return new Size(w, h);
         }
 
-        private Size getRegionSize(Size contentsSize)
+        private Size GetRegionSize(Size contentsSize)
         {
-            int w = contentsSize.Width + OUTLINE_OFFSET * 2;
-            int h = tabDrawArea.Height + contentsSize.Height + OUTLINE_OFFSET;
+            var w = contentsSize.Width + OUTLINE_OFFSET * 2;
+            var h = this.TabDrawArea.Height + contentsSize.Height + OUTLINE_OFFSET;
             return new Size(w, h);
         }
 
-        private Rectangle getOutlineRectangle(Size contentsSize)
+        private Rectangle GetOutlineRectangle(Size contentsSize)
         {
-            int w = contentsSize.Width + OUTLINE_OFFSET * 2;
-            int h = contentsSize.Height + OUTLINE_OFFSET * 2;
-            int x = 0;
-            int y = tabDrawArea.Height - OUTLINE_OFFSET;
+            var w = contentsSize.Width + OUTLINE_OFFSET * 2;
+            var h = contentsSize.Height + OUTLINE_OFFSET * 2;
+            var x = 0;
+            var y = this.TabDrawArea.Height - OUTLINE_OFFSET;
             return new Rectangle(x, y, w, h);
         }
 
-        private Rectangle getContentsRectangle(Rectangle outlineRectangle)
+        private Rectangle GetContentsRectangle(Rectangle outlineRectangle)
         {
-            int l = outlineRectangle.Left + OUTLINE_OFFSET;
-            int t = outlineRectangle.Top + OUTLINE_OFFSET;
-            int r = outlineRectangle.Right - OUTLINE_OFFSET;
-            int b = outlineRectangle.Bottom - OUTLINE_OFFSET;
+            var l = outlineRectangle.Left + OUTLINE_OFFSET;
+            var t = outlineRectangle.Top + OUTLINE_OFFSET;
+            var r = outlineRectangle.Right - OUTLINE_OFFSET;
+            var b = outlineRectangle.Bottom - OUTLINE_OFFSET;
             return Rectangle.FromLTRB(l, t, r, b);
         }
 

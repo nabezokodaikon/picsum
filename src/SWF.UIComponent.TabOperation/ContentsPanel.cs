@@ -48,11 +48,11 @@ namespace SWF.UIComponent.TabOperation
         {
             get
             {
-                return icon;
+                return this.icon;
             }
             set
             {
-                icon = value;
+                this.icon = value;
             }
         }
 
@@ -80,7 +80,7 @@ namespace SWF.UIComponent.TabOperation
         {
             if (e == null)
             {
-                throw new ArgumentNullException("e");
+                throw new ArgumentNullException(nameof(e));
             }
 
             this.OnDrawTabContents(e);

@@ -13,24 +13,25 @@ namespace SWF.UIComponent.TabOperation
     /// <summary>
     /// タブ切替コントロール
     /// </summary>
-    public class TabSwitch : Control
+    public sealed class TabSwitch
+        : Control
     {
         #region 定数・列挙
 
         // タブ同士のの間隔
-        private const int TabMargin = 2;
+        private const int TAB_MARGIN = 2;
 
         // タブの最大幅
-        private const int TabMaximumWidth = 256;
+        private const int TAB_MAXIMUM_WIDTH = 256;
 
         // タブの最小幅
-        private const int TabMinimumWidth = 64;
+        private const int TAB_MINIMUM_WIDTH = 64;
 
         // タブ領域の間隔
-        internal const int TabsMargin = 8;
+        internal const int TABS_MARGIN = 8;
 
         // タブを移動するとみなす重なりの比率
-        private const float TabDragOverlapRate = 0.4f;
+        private const float TAB_DRAG_OVERLAP_RATE = 0.4f;
 
         #endregion
 
@@ -76,34 +77,34 @@ namespace SWF.UIComponent.TabOperation
         #region インスタンス変数
 
         // タブの高さ
-        private readonly int _tabHeight = Resources.ActiveTab.Height;
+        private readonly int tabHeight = Resources.ActiveTab.Height;
 
         // タブ領域右側の差分
-        private int _tabsRightOffset = 0;
+        private int tabsRightOffset = 0;
 
         // タブ描画パレット
-        private readonly TabPalette _tabPalette = new TabPalette();
+        private readonly TabPalette tabPalette = new TabPalette();
 
         // タブ情報リスト
-        private readonly List<TabInfo> _tabList = new List<TabInfo>();
+        private readonly List<TabInfo> tabList = new List<TabInfo>();
 
         // マウスダウンしたタブ
-        private TabInfo _mouseDownTab = null;
+        private TabInfo mouseDownTab = null;
 
         // マウスポイントされているタブ
-        private TabInfo _mousePointTab = null;
+        private TabInfo mousePointTab = null;
 
         // アクティブなタブ
-        private TabInfo _activeTab = null;
+        private TabInfo activeTab = null;
 
         // ドロップされている座標
-        private Nullable<Point> _dropPoint = null;
+        private Nullable<Point> dropPoint = null;
 
         // タブ追加ボタン病が暮らす
-        private AddTabButtonDrawArea _addTabButtonDrawArea = new AddTabButtonDrawArea();
+        private AddTabButtonDrawArea addTabButtonDrawArea = new AddTabButtonDrawArea();
 
         // コンテンツ描画クラス
-        private ContentsDrawArea _contentsDrawArea = new ContentsDrawArea();
+        private ContentsDrawArea contentsDrawArea = new ContentsDrawArea();
 
         #endregion
 
@@ -116,7 +117,7 @@ namespace SWF.UIComponent.TabOperation
         {
             get
             {
-                return _tabHeight;
+                return this.tabHeight;
             }
         }
 
@@ -127,16 +128,16 @@ namespace SWF.UIComponent.TabOperation
         {
             get
             {
-                return _tabsRightOffset;
+                return this.tabsRightOffset;
             }
             set
             {
                 if (value < 0)
                 {
-                    throw new ArgumentOutOfRangeException("value");
+                    throw new ArgumentOutOfRangeException(nameof(value));
                 }
 
-                _tabsRightOffset = value;
+                this.tabsRightOffset = value;
             }
         }
 
@@ -147,7 +148,7 @@ namespace SWF.UIComponent.TabOperation
         {
             get
             {
-                return (_tabList.Count > 0);
+                return (this.tabList.Count > 0);
             }
         }
 
@@ -158,7 +159,7 @@ namespace SWF.UIComponent.TabOperation
         {
             get
             {
-                return _activeTab;
+                return this.activeTab;
             }
         }
 
@@ -169,9 +170,9 @@ namespace SWF.UIComponent.TabOperation
         {
             get
             {
-                if (_activeTab != null)
+                if (this.activeTab != null)
                 {
-                    return _tabList.IndexOf(_activeTab);
+                    return this.tabList.IndexOf(this.activeTab);
                 }
                 else
                 {
@@ -187,7 +188,7 @@ namespace SWF.UIComponent.TabOperation
         {
             get
             {
-                return _tabList.Count;
+                return this.tabList.Count;
             }
         }
 
@@ -198,7 +199,7 @@ namespace SWF.UIComponent.TabOperation
         {
             get
             {
-                return _contentsDrawArea.OutlineColor;
+                return this.contentsDrawArea.OutlineColor;
             }
         }
 
@@ -209,7 +210,7 @@ namespace SWF.UIComponent.TabOperation
         {
             get
             {
-                return _contentsDrawArea.OutlineBrush;
+                return this.contentsDrawArea.OutlineBrush;
             }
         }
 
@@ -220,7 +221,7 @@ namespace SWF.UIComponent.TabOperation
         {
             get
             {
-                return _contentsDrawArea.ContentsColor;
+                return this.contentsDrawArea.ContentsColor;
             }
         }
 
@@ -231,7 +232,7 @@ namespace SWF.UIComponent.TabOperation
         {
             get
             {
-                return _contentsDrawArea.ContentsBrush;
+                return this.contentsDrawArea.ContentsBrush;
             }
         }
 
@@ -241,7 +242,7 @@ namespace SWF.UIComponent.TabOperation
 
         public TabSwitch()
         {
-            initializeComponent();
+            this.InitializeComponent();
         }
 
         #endregion
@@ -255,7 +256,7 @@ namespace SWF.UIComponent.TabOperation
         /// <returns></returns>
         public T GetForm<T>() where T : Form
         {
-            return (T)getForm();
+            return (T)this.GetForm();
         }
 
         /// <summary>
@@ -266,21 +267,21 @@ namespace SWF.UIComponent.TabOperation
         {
             if (tab == null)
             {
-                throw new ArgumentNullException("tab");
+                throw new ArgumentNullException(nameof(tab));
             }
 
-            if (_tabList.Contains(tab))
+            if (this.tabList.Contains(tab))
             {
-                throw new ArgumentException("既に含まれているタブを追加しようとしました。", "tab");
+                throw new ArgumentException("既に含まれているタブを追加しようとしました。", nameof(tab));
             }
 
             tab.Owner = this;
 
-            _tabList.Add(tab);
+            this.tabList.Add(tab);
 
-            if (setActiveTab(tab))
+            if (this.SetActiveTab(tab))
             {
-                OnActiveTabChanged(new EventArgs());
+                this.OnActiveTabChanged(new EventArgs());
             }
 
             this.Invalidate();
@@ -300,27 +301,27 @@ namespace SWF.UIComponent.TabOperation
 
             if (tab == null)
             {
-                throw new ArgumentNullException("tab");
+                throw new ArgumentNullException(nameof(tab));
             }
 
-            if (_tabList.Contains(tab))
+            if (this.tabList.Contains(tab))
             {
-                throw new ArgumentException("既に含まれているタブを挿入しようとしました。", "tab");
+                throw new ArgumentException("既に含まれているタブを挿入しようとしました。", nameof(tab));
             }
 
-            if (index > _tabList.Count - 1)
+            if (index > this.tabList.Count - 1)
             {
-                AddTab(tab);
+                this.AddTab(tab);
             }
             else
             {
                 tab.Owner = this;
 
-                _tabList.Insert(index, tab);
+                this.tabList.Insert(index, tab);
 
-                if (setActiveTab(tab))
+                if (this.SetActiveTab(tab))
                 {
-                    OnActiveTabChanged(new EventArgs());
+                    this.OnActiveTabChanged(new EventArgs());
                 }
 
                 this.Invalidate();
@@ -337,11 +338,11 @@ namespace SWF.UIComponent.TabOperation
         {
             if (param == null)
             {
-                throw new ArgumentNullException("param");
+                throw new ArgumentNullException(nameof(param));
             }
 
-            TabInfo tab = new TabInfo(param);
-            AddTab(tab);
+            var tab = new TabInfo(param);
+            this.AddTab(tab);
             return (T)tab.Contents;
         }
 
@@ -352,15 +353,16 @@ namespace SWF.UIComponent.TabOperation
         /// <param name="index"></param>
         /// <param name="param"></param>
         /// <returns></returns>
-        public T InsertTab<T>(int index, IContentsParameter param) where T : ContentsPanel
+        public T InsertTab<T>(int index, IContentsParameter param)
+            where T : ContentsPanel
         {
             if (param == null)
             {
-                throw new ArgumentNullException("param");
+                throw new ArgumentNullException(nameof(param));
             }
 
-            TabInfo tab = new TabInfo(param);
-            InsertTab(index, tab);
+            var tab = new TabInfo(param);
+            this.InsertTab(index, tab);
             return (T)tab.Contents;
         }
 
@@ -374,25 +376,25 @@ namespace SWF.UIComponent.TabOperation
         {
             if (param == null)
             {
-                throw new ArgumentNullException("param");
+                throw new ArgumentNullException(nameof(param));
             }
 
-            if (_activeTab != null)
+            if (this.activeTab != null)
             {
-                _activeTab.ClearContents();
-                _activeTab.OverwriteContents(param);
+                this.activeTab.ClearContents();
+                this.activeTab.OverwriteContents(param);
 
-                ContentsContainer container = getContainer();
+                var container = this.GetContainer();
                 container.ClearContents();
-                container.SetContents(_activeTab.Contents);
+                container.SetContents(this.activeTab.Contents);
 
                 this.Invalidate();
 
-                return (T)_activeTab.Contents;
+                return (T)this.activeTab.Contents;
             }
             else
             {
-                return AddTab<T>(param);
+                return this.AddTab<T>(param);
             }
         }
 
@@ -403,26 +405,26 @@ namespace SWF.UIComponent.TabOperation
         /// <returns></returns>
         public T SetPreviewContentsHistory<T>() where T : ContentsPanel
         {
-            if (_activeTab == null)
+            if (this.activeTab == null)
             {
                 throw new NullReferenceException("アクティブなタブが存在しません。");
             }
 
-            if (!_activeTab.HasPreviewContents)
+            if (!this.activeTab.HasPreviewContents)
             {
-                throw new Exception("コンテンツの前の履歴が存在しません。");
+                throw new InvalidOperationException("コンテンツの前の履歴が存在しません。");
             }
 
-            _activeTab.ClearContents();
-            _activeTab.CreatePreviewContents();
+            this.activeTab.ClearContents();
+            this.activeTab.CreatePreviewContents();
 
-            ContentsContainer container = getContainer();
+            var container = this.GetContainer();
             container.ClearContents();
-            container.SetContents(_activeTab.Contents);
+            container.SetContents(this.activeTab.Contents);
 
             this.Invalidate();
 
-            return (T)_activeTab.Contents;
+            return (T)this.activeTab.Contents;
         }
 
         /// <summary>
@@ -432,26 +434,26 @@ namespace SWF.UIComponent.TabOperation
         /// <returns></returns>
         public T SetNextContentsHistory<T>() where T : ContentsPanel
         {
-            if (_activeTab == null)
+            if (this.activeTab == null)
             {
                 throw new NullReferenceException("アクティブなタブが存在しません。");
             }
 
-            if (!_activeTab.HasNextContents)
+            if (!this.activeTab.HasNextContents)
             {
-                throw new Exception("コンテンツの次の履歴が存在しません。");
+                throw new InvalidOperationException("コンテンツの次の履歴が存在しません。");
             }
 
-            _activeTab.ClearContents();
-            _activeTab.CreateNextContents();
+            this.activeTab.ClearContents();
+            this.activeTab.CreateNextContents();
 
-            ContentsContainer container = getContainer();
+            var container = this.GetContainer();
             container.ClearContents();
-            container.SetContents(_activeTab.Contents);
+            container.SetContents(this.activeTab.Contents);
 
             this.Invalidate();
 
-            return (T)_activeTab.Contents;
+            return (T)this.activeTab.Contents;
         }
 
         /// <summary>
@@ -462,26 +464,26 @@ namespace SWF.UIComponent.TabOperation
         public T CloneCurrentContents<T>()
             where T : ContentsPanel
         {
-            if (this._activeTab == null)
+            if (this.activeTab == null)
             {
                 throw new NullReferenceException("アクティブなタブが存在しません。");
             }
 
-            if (!this._activeTab.HasContents)
+            if (!this.activeTab.HasContents)
             {
-                throw new Exception("コンテンツが存在しません。");
+                throw new InvalidOperationException("コンテンツが存在しません。");
             }
 
-            this._activeTab.ClearContents();
-            this._activeTab.CloneCurrentContents();
+            this.activeTab.ClearContents();
+            this.activeTab.CloneCurrentContents();
 
-            var container = this.getContainer();
+            var container = this.GetContainer();
             container.ClearContents();
-            container.SetContents(_activeTab.Contents);
+            container.SetContents(this.activeTab.Contents);
 
             this.Invalidate();
 
-            return (T)this._activeTab.Contents;
+            return (T)this.activeTab.Contents;
         }
 
         /// <summary>
@@ -492,33 +494,33 @@ namespace SWF.UIComponent.TabOperation
         {
             if (tab == null)
             {
-                throw new ArgumentNullException("tab");
+                throw new ArgumentNullException(nameof(tab));
             }
 
-            if (!_tabList.Contains(tab))
+            if (!this.tabList.Contains(tab))
             {
-                throw new ArgumentException("含まれていないタブを削除しようとしました。", "tab");
+                throw new ArgumentException("含まれていないタブを削除しようとしました。", nameof(tab));
             }
 
-            TabInfo nextActiveTab = getNextTab(tab);
+            var nextActiveTab = this.GetNextTab(tab);
             if (nextActiveTab == null)
             {
-                nextActiveTab = getPreviewTab(tab);
+                nextActiveTab = this.GetPreviewTab(tab);
             }
 
-            if (setActiveTab(nextActiveTab))
+            if (this.SetActiveTab(nextActiveTab))
             {
-                OnActiveTabChanged(new EventArgs());
+                this.OnActiveTabChanged(new EventArgs());
             }
 
-            if (tab.Equals(_mousePointTab))
+            if (tab.Equals(this.mousePointTab))
             {
-                _mousePointTab = null;
+                this.mousePointTab = null;
             }
 
             tab.Owner = null;
 
-            _tabList.Remove(tab);
+            this.tabList.Remove(tab);
 
             this.Invalidate();
         }
@@ -528,12 +530,12 @@ namespace SWF.UIComponent.TabOperation
         /// </summary>
         public void RemoveActiveTab()
         {
-            if (_activeTab == null)
+            if (this.activeTab == null)
             {
                 return;
             }
 
-            RemoveTab(_activeTab);
+            this.RemoveTab(this.activeTab);
         }
 
         /// <summary>
@@ -542,15 +544,15 @@ namespace SWF.UIComponent.TabOperation
         /// <param name="index"></param>
         public void SetActiveTab(int index)
         {
-            if (index < 0 || _tabList.Count - 1 < index)
+            if (index < 0 || this.tabList.Count - 1 < index)
             {
-                throw new ArgumentOutOfRangeException("index");
+                throw new ArgumentOutOfRangeException(nameof(index));
             }
 
-            if (setActiveTab(_tabList[index]))
+            if (this.SetActiveTab(this.tabList[index]))
             {
                 this.Invalidate();
-                OnActiveTabChanged(new EventArgs());
+                this.OnActiveTabChanged(new EventArgs());
             }
         }
 
@@ -559,7 +561,7 @@ namespace SWF.UIComponent.TabOperation
         /// </summary>
         public void InvalidateHeader()
         {
-            invalidateHeader();
+            this.Invalidate(this.GetHeaderRectangle());
         }
 
         /// <summary>
@@ -568,12 +570,12 @@ namespace SWF.UIComponent.TabOperation
         /// <returns></returns>
         internal Rectangle GetTabsScreenRectangle()
         {
-            Rectangle rect = getTabsRectangle();
-            Point p = this.PointToScreen(new Point(rect.X, rect.Y));
-            int x = p.X;
-            int y = p.Y;
-            int w = rect.Width;
-            int h = rect.Height;
+            var rect = this.GetTabsRectangle();
+            var p = this.PointToScreen(new Point(rect.X, rect.Y));
+            var x = p.X;
+            var y = p.Y;
+            var w = rect.Width;
+            var h = rect.Height;
             return new Rectangle(x, y, w, h);
         }
 
@@ -583,7 +585,7 @@ namespace SWF.UIComponent.TabOperation
         /// <returns></returns>
         internal Rectangle GetTabsClientRectangle()
         {
-            return getTabsRectangle();
+            return this.GetTabsRectangle();
         }
 
         #endregion
@@ -594,7 +596,7 @@ namespace SWF.UIComponent.TabOperation
         {
             if (!this.DesignMode)
             {
-                Form form = getForm();
+                var form = this.GetForm();
                 TabDragOperation.AddForm(form);
             }
 
@@ -605,7 +607,7 @@ namespace SWF.UIComponent.TabOperation
         {
             if (disposing)
             {
-                foreach (TabInfo tab in _tabList)
+                foreach (var tab in this.tabList)
                 {
                     tab.Close();
                 }
@@ -616,8 +618,8 @@ namespace SWF.UIComponent.TabOperation
 
         protected override void OnInvalidated(InvalidateEventArgs e)
         {
-            setTabsDrawArea();
-            setAddTabButtonDrawArea();
+            this.SetTabsDrawArea();
+            this.SetAddTabButtonDrawArea();
             base.OnInvalidated(e);
         }
 
@@ -631,34 +633,34 @@ namespace SWF.UIComponent.TabOperation
             e.Graphics.SmoothingMode = SmoothingMode.HighQuality;
             e.Graphics.InterpolationMode = InterpolationMode.Low;
 
-            foreach (TabInfo tab in _tabList.FindAll((t) => !t.Equals(_activeTab)))
+            foreach (var tab in this.tabList.FindAll((t) => !t.Equals(this.activeTab)))
             {
-                drawTab(tab, e.Graphics);
+                this.DrawTab(tab, e.Graphics);
             }
 
-            getAddTabButtonDrawMethod()(e.Graphics);
+            this.GetAddTabButtonDrawMethod()(e.Graphics);
 
-            _contentsDrawArea.Draw(e.Graphics);
+            this.contentsDrawArea.Draw(e.Graphics);
 
-            if (_activeTab != null)
+            if (this.activeTab != null)
             {
-                drawTab(_activeTab, e.Graphics);
+                this.DrawTab(this.activeTab, e.Graphics);
             }
 
-            drawDropPoint(e.Graphics);
+            this.DrawDropPoint(e.Graphics);
 
             base.OnPaint(e);
         }
 
         protected override void OnMouseLeave(EventArgs e)
         {
-            if (_mousePointTab != null)
+            if (this.mousePointTab != null)
             {
-                setMousePointTab(null);
+                this.SetMousePointTab(null);
             }
 
-            _mouseDownTab = null;
-            invalidateHeader();
+            this.mouseDownTab = null;
+            this.InvalidateHeader();
 
             base.OnMouseLeave(e);
         }
@@ -671,14 +673,14 @@ namespace SWF.UIComponent.TabOperation
             }
             else
             {
-                TabInfo tab = getTabFromPoint(e.X, e.Y);
-                setMousePointTab(tab);
-                invalidateHeader();
+                var tab = this.GetTabFromPoint(e.X, e.Y);
+                this.SetMousePointTab(tab);
+                this.InvalidateHeader();
 
-                Form form = getForm();
+                var form = this.GetForm();
                 if (form.Equals(Form.ActiveForm))
                 {
-                    if (getHeaderRectangle().Contains(e.X, e.Y))
+                    if (this.GetHeaderRectangle().Contains(e.X, e.Y))
                     {
                         this.Focus();
                     }
@@ -696,16 +698,16 @@ namespace SWF.UIComponent.TabOperation
 
         protected override void OnMouseDown(MouseEventArgs e)
         {
-            TabInfo tab = getTabFromPoint(e.X, e.Y);
+            var tab = this.GetTabFromPoint(e.X, e.Y);
             if (tab != null)
             {
-                _mouseDownTab = tab;
+                this.mouseDownTab = tab;
 
                 if (tab.DrawArea.GetCloseButtonRectangle().Contains(e.X, e.Y))
                 {
                     if (e.Button == MouseButtons.Left)
                     {
-                        invalidateHeader();
+                        this.InvalidateHeader();
                     }
                 }
                 else
@@ -713,10 +715,10 @@ namespace SWF.UIComponent.TabOperation
                     switch (e.Button)
                     {
                         case MouseButtons.Left:
-                            if (setActiveTab(tab))
+                            if (this.SetActiveTab(tab))
                             {
                                 this.Invalidate();
-                                OnActiveTabChanged(new EventArgs());
+                                this.OnActiveTabChanged(new EventArgs());
                             }
                             TabDragOperation.BeginTabDragOperation(tab);
                             break;
@@ -727,9 +729,9 @@ namespace SWF.UIComponent.TabOperation
                     }
                 }
             }
-            else if (_addTabButtonDrawArea.Contents(e.X, e.Y))
+            else if (this.addTabButtonDrawArea.Contents(e.X, e.Y))
             {
-                invalidateHeader();
+                this.InvalidateHeader();
             }
 
             base.OnMouseDown(e);
@@ -739,76 +741,76 @@ namespace SWF.UIComponent.TabOperation
         {
             if (TabDragOperation.IsBegin)
             {
-                TabInfo tab = TabDragOperation.EndTabDragOperation();
+                var tab = TabDragOperation.EndTabDragOperation();
                 if (tab.Owner != null)
                 {
-                    invalidateHeader();
+                    this.InvalidateHeader();
 
                     if (!tab.Owner.Equals(this))
                     {
-                        OnTabDropouted(new TabDropoutedEventArgs(tab));
+                        this.OnTabDropouted(new TabDropoutedEventArgs(tab));
                     }
                 }
                 else
                 {
-                    Point screenPoint = this.PointToScreen(new Point(e.X, e.Y));
-                    Form form = getForm();
+                    var screenPoint = this.PointToScreen(new Point(e.X, e.Y));
+                    var form = this.GetForm();
 
                     if (ScreenUtil.GetTopRect(Resources.DropMaximum.Size).Contains(screenPoint))
                     {
-                        OnTabDropouted(new TabDropoutedEventArgs(tab, screenPoint, form.ClientSize, FormWindowState.Maximized));
+                        this.OnTabDropouted(new TabDropoutedEventArgs(tab, screenPoint, form.ClientSize, FormWindowState.Maximized));
                     }
                     else if (ScreenUtil.GetLeftRect(Resources.DropMaximum.Size).Contains(screenPoint))
                     {
-                        Rectangle screenRect = Screen.GetWorkingArea(Cursor.Position);
-                        int w = (int)(screenRect.Width / 2f);
-                        int h = screenRect.Height;
-                        int x = screenRect.Left;
-                        int y = screenRect.Top;
-                        OnTabDropouted(new TabDropoutedEventArgs(tab, new Point(x, y), new Size(w, h), FormWindowState.Normal));
+                        var screenRect = Screen.GetWorkingArea(Cursor.Position);
+                        var w = (int)(screenRect.Width / 2f);
+                        var h = screenRect.Height;
+                        var x = screenRect.Left;
+                        var y = screenRect.Top;
+                        this.OnTabDropouted(new TabDropoutedEventArgs(tab, new Point(x, y), new Size(w, h), FormWindowState.Normal));
                     }
                     else if (ScreenUtil.GetRightRect(Resources.DropMaximum.Size).Contains(screenPoint))
                     {
-                        Rectangle screenRect = Screen.GetWorkingArea(Cursor.Position);
-                        int w = (int)(screenRect.Width / 2f);
-                        int h = screenRect.Height;
-                        int x = screenRect.Right - w;
-                        int y = screenRect.Top;
-                        OnTabDropouted(new TabDropoutedEventArgs(tab, new Point(x, y), new Size(w, h), FormWindowState.Normal));
+                        var screenRect = Screen.GetWorkingArea(Cursor.Position);
+                        var w = (int)(screenRect.Width / 2f);
+                        var h = screenRect.Height;
+                        var x = screenRect.Right - w;
+                        var y = screenRect.Top;
+                        this.OnTabDropouted(new TabDropoutedEventArgs(tab, new Point(x, y), new Size(w, h), FormWindowState.Normal));
                     }
                     else
                     {
-                        OnTabDropouted(new TabDropoutedEventArgs(tab, screenPoint, form.RestoreBounds.Size, FormWindowState.Normal));
+                        this.OnTabDropouted(new TabDropoutedEventArgs(tab, screenPoint, form.RestoreBounds.Size, FormWindowState.Normal));
                     }
                 }
             }
 
-            _mouseDownTab = null;
+            this.mouseDownTab = null;
 
             base.OnMouseUp(e);
         }
 
         protected override void OnMouseClick(MouseEventArgs e)
         {
-            TabInfo tab = getTabFromPoint(e.X, e.Y);
-            if (tab != null && tab.Equals(_mouseDownTab))
+            var tab = this.GetTabFromPoint(e.X, e.Y);
+            if (tab != null && tab.Equals(this.mouseDownTab))
             {
                 if (e.Button == MouseButtons.Middle)
                 {
-                    OnTabCloseButtonClick(new TabEventArgs(tab));
+                    this.OnTabCloseButtonClick(new TabEventArgs(tab));
                 }
                 else
                 {
-                    RectangleF rect = tab.DrawArea.GetCloseButtonRectangle();
+                    var rect = tab.DrawArea.GetCloseButtonRectangle();
                     if (rect.Contains(e.X, e.Y))
                     {
-                        OnTabCloseButtonClick(new TabEventArgs(tab));
+                        this.OnTabCloseButtonClick(new TabEventArgs(tab));
                     }
                 }
             }
-            else if (_addTabButtonDrawArea.Contents(e.X, e.Y))
+            else if (this.addTabButtonDrawArea.Contents(e.X, e.Y))
             {
-                OnAddTabButtonMouseClick(e);
+                this.OnAddTabButtonMouseClick(e);
             }
 
             base.OnMouseClick(e);
@@ -818,11 +820,11 @@ namespace SWF.UIComponent.TabOperation
         {
             if (e.Button == MouseButtons.Left)
             {
-                TabInfo tab = getTabFromPoint(e.X, e.Y);
+                var tab = this.GetTabFromPoint(e.X, e.Y);
                 if (tab == null &&
-                    getHeaderRectangle().Contains(e.X, e.Y))
+                    this.GetHeaderRectangle().Contains(e.X, e.Y))
                 {
-                    OnBackgroundMouseLeftDoubleClick(new EventArgs());
+                    this.OnBackgroundMouseLeftDoubleClick(new EventArgs());
                     //Form form = getForm();
                     //Point p = form.PointToClient(Cursor.Position);
                     //string x = p.X.ToString("X4");
@@ -837,51 +839,51 @@ namespace SWF.UIComponent.TabOperation
 
         protected override void OnMouseWheel(MouseEventArgs e)
         {
-            if (_tabList.Count > 1)
+            if (this.tabList.Count > 1)
             {
-                if (_activeTab == null)
+                if (this.activeTab == null)
                 {
                     throw new NullReferenceException("アクティブなタブがNULLです。");
                 }
 
-                if (getHeaderRectangle().Contains(e.X, e.Y))
+                if (this.GetHeaderRectangle().Contains(e.X, e.Y))
                 {
-                    int index = _tabList.IndexOf(_activeTab);
+                    var index = this.tabList.IndexOf(this.activeTab);
                     if (e.Delta > 0)
                     {
                         if (index - 1 < 0)
                         {
-                            setActiveTab(_tabList.Last());
+                            this.SetActiveTab(this.tabList.Last());
                         }
                         else
                         {
-                            setActiveTab(_tabList[index - 1]);
+                            this.SetActiveTab(this.tabList[index - 1]);
                         }
                     }
                     else
                     {
-                        if (index + 1 > _tabList.Count - 1)
+                        if (index + 1 > this.tabList.Count - 1)
                         {
-                            setActiveTab(_tabList.First());
+                            this.SetActiveTab(this.tabList.First());
                         }
                         else
                         {
-                            setActiveTab(_tabList[index + 1]);
+                            this.SetActiveTab(this.tabList[index + 1]);
                         }
                     }
 
-                    invalidateHeader();
+                    this.InvalidateHeader();
                 }
                 else
                 {
-                    _activeTab.Contents.Focus();
+                    this.activeTab.Contents.Focus();
                 }
 
-                OnActiveTabChanged(new EventArgs());
+                this.OnActiveTabChanged(new EventArgs());
             }
-            else if (_activeTab != null)
+            else if (this.activeTab != null)
             {
-                _activeTab.Contents.Focus();
+                this.activeTab.Contents.Focus();
             }
 
             base.OnMouseWheel(e);
@@ -889,73 +891,73 @@ namespace SWF.UIComponent.TabOperation
 
         protected override void OnDragOver(DragEventArgs drgevent)
         {
-            _dropPoint = this.PointToClient(new Point(drgevent.X, drgevent.Y));
-            if (getHeaderRectangle().Contains(_dropPoint.Value))
+            this.dropPoint = this.PointToClient(new Point(drgevent.X, drgevent.Y));
+            if (this.GetHeaderRectangle().Contains(this.dropPoint.Value))
             {
-                int dropX = _dropPoint.Value.X;
-                int dropY = _dropPoint.Value.Y;
-                foreach (TabInfo tab in _tabList)
+                var dropX = this.dropPoint.Value.X;
+                var dropY = this.dropPoint.Value.Y;
+                foreach (var tab in this.tabList)
                 {
                     if (tab.DrawArea.Contents(dropX, dropY))
                     {
-                        if (setActiveTab(tab))
+                        if (this.SetActiveTab(tab))
                         {
-                            OnActiveTabChanged(new EventArgs());
+                            this.OnActiveTabChanged(new EventArgs());
                             break;
                         }
                     }
                 }
 
                 drgevent.Effect = DragDropEffects.All;
-                OnTabAreaDragOver(drgevent);
+                this.OnTabAreaDragOver(drgevent);
             }
             else
             {
                 drgevent.Effect = DragDropEffects.None;
             }
 
-            invalidateHeader();
+            this.InvalidateHeader();
             base.OnDragOver(drgevent);
         }
 
         protected override void OnDragLeave(EventArgs e)
         {
-            _dropPoint = null;
+            this.dropPoint = null;
             this.Invalidate();
             base.OnDragLeave(e);
         }
 
         protected override void OnDragDrop(DragEventArgs drgevent)
         {
-            if (!_dropPoint.HasValue)
+            if (!this.dropPoint.HasValue)
             {
                 throw new Exception("ドロップされている座標がNULLです。");
             }
 
-            if (getHeaderRectangle().Contains(_dropPoint.Value))
+            if (this.GetHeaderRectangle().Contains(this.dropPoint.Value))
             {
-                int dropX = _dropPoint.Value.X;
-                int dropY = _dropPoint.Value.Y;
-                bool isExecuteEvent = false;
-                foreach (TabInfo tab in _tabList)
+                var dropX = this.dropPoint.Value.X;
+                var dropY = this.dropPoint.Value.Y;
+                var isExecuteEvent = false;
+                foreach (TabInfo tab in this.tabList)
                 {
                     if (tab.DrawArea.Contents(dropX, dropY))
                     {
-                        if (isTabLeftDrop(dropX, tab))
+                        if (this.IsTabLeftDrop(dropX, tab))
                         {
-                            OnTabAreaDragDrop(new TabAreaDragEventArgs(false, _tabList.IndexOf(tab), drgevent));
+                            this.OnTabAreaDragDrop(new TabAreaDragEventArgs(false, this.tabList.IndexOf(tab), drgevent));
                             isExecuteEvent = true;
                             break;
                         }
-                        else if (isTabRightDrop(dropX, tab))
+                        else if (this.IsTabRightDrop(dropX, tab))
                         {
-                            OnTabAreaDragDrop(new TabAreaDragEventArgs(false, _tabList.IndexOf(tab) + 1, drgevent));
+                            this.OnTabAreaDragDrop(new TabAreaDragEventArgs(false, this.tabList.IndexOf(tab) + 1, drgevent));
                             isExecuteEvent = true;
                             break;
                         }
                         else
                         {
-                            OnTabAreaDragDrop(new TabAreaDragEventArgs(true, _tabList.IndexOf(tab), drgevent));
+                            this.OnTabAreaDragDrop(new TabAreaDragEventArgs(true, this.tabList.IndexOf(tab), drgevent));
                             isExecuteEvent = true;
                             break;
                         }
@@ -964,99 +966,100 @@ namespace SWF.UIComponent.TabOperation
 
                 if (!isExecuteEvent)
                 {
-                    OnTabAreaDragDrop(new TabAreaDragEventArgs(false, _tabList.Count, drgevent));
+                    this.OnTabAreaDragDrop(new TabAreaDragEventArgs(false, this.tabList.Count, drgevent));
                 }
             }
 
-            _dropPoint = null;
+            this.dropPoint = null;
             base.OnDragDrop(drgevent);
-        }
-
-        protected virtual void OnActiveTabChanged(EventArgs e)
-        {
-            if (ActiveTabChanged != null)
-            {
-                ActiveTabChanged(this, e);
-            }
-        }
-
-        protected virtual void OnTabCloseButtonClick(TabEventArgs e)
-        {
-            if (TabCloseButtonClick != null)
-            {
-                TabCloseButtonClick(this, e);
-            }
-        }
-
-        protected virtual void OnTabDropouted(TabDropoutedEventArgs e)
-        {
-            if (TabDropouted != null)
-            {
-                TabDropouted(this, e);
-            }
-        }
-
-        protected virtual void OnBackgroundMouseLeftDoubleClick(EventArgs e)
-        {
-            if (BackgroundMouseDoubleLeftClick != null)
-            {
-                BackgroundMouseDoubleLeftClick(this, e);
-            }
-        }
-
-        protected virtual void OnTabAreaDragOver(DragEventArgs e)
-        {
-            if (TabAreaDragOver != null)
-            {
-                TabAreaDragOver(this, e);
-            }
-        }
-
-        protected virtual void OnTabAreaDragDrop(TabAreaDragEventArgs e)
-        {
-            if (TabAreaDragDrop != null)
-            {
-                TabAreaDragDrop(this, e);
-            }
-        }
-
-        protected virtual void OnAddTabButtonMouseClick(MouseEventArgs e)
-        {
-            if (AddTabButtonMouseClick != null)
-            {
-                AddTabButtonMouseClick(this, e);
-            }
         }
 
         #endregion
 
         #region プライベートメソッド
 
-        private void initializeComponent()
+        private void InitializeComponent()
         {
             this.SetStyle(ControlStyles.DoubleBuffer |
                           ControlStyles.UserPaint |
                           ControlStyles.AllPaintingInWmPaint |
                           ControlStyles.ResizeRedraw, true);
 
-            setAddTabButtonDrawArea();
+            this.SetAddTabButtonDrawArea();
         }
 
-        private bool setMousePointTab(TabInfo tab)
+
+        private void OnActiveTabChanged(EventArgs e)
+        {
+            if (this.ActiveTabChanged != null)
+            {
+                this.ActiveTabChanged(this, e);
+            }
+        }
+
+        private void OnTabCloseButtonClick(TabEventArgs e)
+        {
+            if (this.TabCloseButtonClick != null)
+            {
+                this.TabCloseButtonClick(this, e);
+            }
+        }
+
+        private void OnTabDropouted(TabDropoutedEventArgs e)
+        {
+            if (this.TabDropouted != null)
+            {
+                this.TabDropouted(this, e);
+            }
+        }
+
+        private void OnBackgroundMouseLeftDoubleClick(EventArgs e)
+        {
+            if (this.BackgroundMouseDoubleLeftClick != null)
+            {
+                this.BackgroundMouseDoubleLeftClick(this, e);
+            }
+        }
+
+        private void OnTabAreaDragOver(DragEventArgs e)
+        {
+            if (this.TabAreaDragOver != null)
+            {
+                this.TabAreaDragOver(this, e);
+            }
+        }
+
+        private void OnTabAreaDragDrop(TabAreaDragEventArgs e)
+        {
+            if (this.TabAreaDragDrop != null)
+            {
+                this.TabAreaDragDrop(this, e);
+            }
+        }
+
+        private void OnAddTabButtonMouseClick(MouseEventArgs e)
+        {
+            if (this.AddTabButtonMouseClick != null)
+            {
+                this.AddTabButtonMouseClick(this, e);
+            }
+        }
+
+        private bool SetMousePointTab(TabInfo tab)
         {
             if (tab != null)
             {
-                if (!tab.Equals(_mousePointTab))
+                if (!tab.Equals(this.mousePointTab))
                 {
-                    _mousePointTab = tab;
+                    this.mousePointTab = tab;
                     return true;
                 }
             }
             else
             {
-                if (_mousePointTab != null)
+                if (this.mousePointTab != null)
                 {
-                    _mousePointTab = null;
+                    this.mousePointTab = null;
                     return true;
                 }
             }
@@ -1064,18 +1067,18 @@ namespace SWF.UIComponent.TabOperation
             return false;
         }
 
-        private bool setActiveTab(TabInfo tab)
+        private bool SetActiveTab(TabInfo tab)
         {
             if (tab != null)
             {
-                if (!tab.Equals(_activeTab))
+                if (!tab.Equals(this.activeTab))
                 {
-                    ContentsContainer container = getContainer();
+                    var container = this.GetContainer();
                     container.SuspendLayout();
                     container.ClearContents();
                     container.SetContents(tab.Contents);
                     container.ResumeLayout();
-                    _activeTab = tab;
+                    this.activeTab = tab;
                     return true;
                 }
                 else
@@ -1085,13 +1088,13 @@ namespace SWF.UIComponent.TabOperation
             }
             else
             {
-                ContentsContainer container = getContainer();
+                var container = this.GetContainer();
                 container.SuspendLayout();
                 container.ClearContents();
                 container.ResumeLayout();
-                if (_activeTab != null)
+                if (this.activeTab != null)
                 {
-                    _activeTab = null;
+                    this.activeTab = null;
                     return true;
                 }
                 else
@@ -1101,13 +1104,13 @@ namespace SWF.UIComponent.TabOperation
             }
         }
 
-        private TabInfo getPreviewTab(TabInfo tab)
+        private TabInfo GetPreviewTab(TabInfo tab)
         {
-            int index = _tabList.IndexOf(tab);
+            var index = this.tabList.IndexOf(tab);
 
             if (index > 0)
             {
-                return _tabList[index - 1];
+                return this.tabList[index - 1];
             }
             else
             {
@@ -1115,13 +1118,13 @@ namespace SWF.UIComponent.TabOperation
             }
         }
 
-        private TabInfo getNextTab(TabInfo tab)
+        private TabInfo GetNextTab(TabInfo tab)
         {
-            int index = _tabList.IndexOf(tab);
+            var index = this.tabList.IndexOf(tab);
 
-            if (index < _tabList.Count - 1)
+            if (index < this.tabList.Count - 1)
             {
-                return _tabList[index + 1];
+                return this.tabList[index + 1];
             }
             else
             {
@@ -1129,15 +1132,15 @@ namespace SWF.UIComponent.TabOperation
             }
         }
 
-        private TabInfo getTabFromPoint(int x, int y)
+        private TabInfo GetTabFromPoint(int x, int y)
         {
-            return _tabList.FirstOrDefault<TabInfo>((t) => t.DrawArea.Contents(x, y));
+            return this.tabList.FirstOrDefault<TabInfo>((t) => t.DrawArea.Contents(x, y));
         }
 
-        private ContentsContainer getContainer()
+        private ContentsContainer GetContainer()
         {
-            Form form = getForm();
-            ContentsContainer container = getContainer(form);
+            var form = this.GetForm();
+            var container = this.GetContainer(form);
             if (container != null)
             {
                 return container;
@@ -1148,7 +1151,7 @@ namespace SWF.UIComponent.TabOperation
             }
         }
 
-        private ContentsContainer getContainer(Control parent)
+        private ContentsContainer GetContainer(Control parent)
         {
             foreach (Control child in parent.Controls)
             {
@@ -1158,7 +1161,7 @@ namespace SWF.UIComponent.TabOperation
                 }
                 else if (child.Controls.Count > 0)
                 {
-                    ContentsContainer result = getContainer(child);
+                    var result = this.GetContainer(child);
                     if (result != null)
                     {
                         return result;
@@ -1169,7 +1172,7 @@ namespace SWF.UIComponent.TabOperation
             return null;
         }
 
-        private Form getForm()
+        private Form GetForm()
         {
             Control ctl = this;
             while (ctl.Parent != null)
@@ -1187,119 +1190,114 @@ namespace SWF.UIComponent.TabOperation
             }
         }
 
-        private void invalidateHeader()
+        private Rectangle GetHeaderRectangle()
         {
-            this.Invalidate(getHeaderRectangle());
-        }
-
-        private Rectangle getHeaderRectangle()
-        {
-            Rectangle rect = this.ClientRectangle;
-            int x = rect.X;
-            int y = rect.Y;
-            int w = rect.Width;
-            int h = _tabHeight;
+            var rect = this.ClientRectangle;
+            var x = rect.X;
+            var y = rect.Y;
+            var w = rect.Width;
+            var h = this.tabHeight;
             return new Rectangle(x, y, w, h);
         }
 
-        private Rectangle getTabsRectangle()
+        private Rectangle GetTabsRectangle()
         {
-            Rectangle rect = this.ClientRectangle;
-            int x = rect.X + TabsMargin;
-            int y = rect.Y;
-            int w = rect.Width - _tabsRightOffset - TabsMargin * 2 - TabMargin - _addTabButtonDrawArea.Width;
-            int h = _tabHeight;
+            var rect = this.ClientRectangle;
+            var x = rect.X + TABS_MARGIN;
+            var y = rect.Y;
+            var w = rect.Width - this.tabsRightOffset - TABS_MARGIN * 2 - TAB_MARGIN - this.addTabButtonDrawArea.Width;
+            var h = this.tabHeight;
             return new Rectangle(x, y, w, h);
         }
 
-        private void setTabsDrawArea()
+        private void SetTabsDrawArea()
         {
             if (TabDragOperation.IsBegin)
             {
-                _tabList.Sort((a, b) => sortTabList(a, b));
-                Rectangle rect = getTabsRectangle();
-                int x = rect.X;
-                foreach (TabInfo tab in _tabList)
+                this.tabList.Sort((a, b) => this.SortTabList(a, b));
+                var rect = this.GetTabsRectangle();
+                var x = rect.X;
+                foreach (var tab in this.tabList)
                 {
                     if (!TabDragOperation.IsTarget(tab))
                     {
                         tab.DrawArea.X = x;
                         tab.DrawArea.Y = rect.Y;
                     }
-                    x += (tab.DrawArea.Width + TabMargin);
+                    x += (tab.DrawArea.Width + TAB_MARGIN);
                 }
             }
             else
             {
-                Rectangle rect = getTabsRectangle();
-                int w = getTabWidth();
-                int x = rect.X;
-                foreach (TabInfo tab in _tabList)
+                var rect = this.GetTabsRectangle();
+                var w = this.GetTabWidth();
+                var x = rect.X;
+                foreach (var tab in this.tabList)
                 {
                     tab.DrawArea.X = x;
                     tab.DrawArea.Y = rect.Y;
                     tab.DrawArea.Width = w;
-                    x += (w + TabMargin);
+                    x += (w + TAB_MARGIN);
                 }
             }
         }
 
-        private void setAddTabButtonDrawArea()
+        private void SetAddTabButtonDrawArea()
         {
-            if (_tabList.Count > 0)
+            if (this.tabList.Count > 0)
             {
-                TabInfo tab = _tabList.Last();
+                var tab = this.tabList.Last();
                 if (TabDragOperation.IsTarget(tab))
                 {
-                    if (_tabList.Count > 1)
+                    if (this.tabList.Count > 1)
                     {
-                        int index = _tabList.IndexOf(tab) - 1;
-                        _addTabButtonDrawArea.X = _tabList[index].DrawArea.Right + TabsMargin;
+                        int index = this.tabList.IndexOf(tab) - 1;
+                        this.addTabButtonDrawArea.X = this.tabList[index].DrawArea.Right + TABS_MARGIN;
                     }
                     else
                     {
-                        _addTabButtonDrawArea.X = this.ClientRectangle.X + TabsMargin;
+                        this.addTabButtonDrawArea.X = this.ClientRectangle.X + TABS_MARGIN;
                     }
                 }
                 else
                 {
-                    _addTabButtonDrawArea.X = tab.DrawArea.Right + TabsMargin;
+                    this.addTabButtonDrawArea.X = tab.DrawArea.Right + TABS_MARGIN;
                 }
 
-                Rectangle rect = getTabsRectangle();
-                if (_addTabButtonDrawArea.Right > rect.Right)
+                var rect = this.GetTabsRectangle();
+                if (this.addTabButtonDrawArea.Right > rect.Right)
                 {
-                    _addTabButtonDrawArea.X = rect.Right + TabMargin;
+                    this.addTabButtonDrawArea.X = rect.Right + TAB_MARGIN;
                 }
             }
             else
             {
-                _addTabButtonDrawArea.X = this.ClientRectangle.X + TabsMargin;
+                this.addTabButtonDrawArea.X = this.ClientRectangle.X + TABS_MARGIN;
             }
         }
 
-        private int getTabWidth()
+        private int GetTabWidth()
         {
-            RectangleF rect = getTabsRectangle();
+            var rect = this.GetTabsRectangle();
 
-            float defAllTabW = TabMaximumWidth * _tabList.Count + TabMargin * (_tabList.Count - 1);
+            var defAllTabW = TAB_MAXIMUM_WIDTH * this.tabList.Count + TAB_MARGIN * (this.tabList.Count - 1);
 
             if (defAllTabW > rect.Width)
             {
-                float tabW = (rect.Width - TabMargin * (_tabList.Count - 1)) / _tabList.Count;
-                return (int)Math.Max(tabW, TabMinimumWidth);
+                float tabW = (rect.Width - TAB_MARGIN * (this.tabList.Count - 1)) / this.tabList.Count;
+                return (int)Math.Max(tabW, TAB_MINIMUM_WIDTH);
             }
             else
             {
-                return TabMaximumWidth;
+                return TAB_MAXIMUM_WIDTH;
             }
         }
 
-        private int sortTabList(TabInfo a, TabInfo b)
+        private int SortTabList(TabInfo a, TabInfo b)
         {
             if (TabDragOperation.IsTarget(a))
             {
-                float margin = b.DrawArea.Width * TabDragOverlapRate;
+                var margin = b.DrawArea.Width * TAB_DRAG_OVERLAP_RATE;
                 if (margin > Math.Abs(a.DrawArea.X - b.DrawArea.X))
                 {
                     if (a.DrawArea.X > b.DrawArea.X)
@@ -1314,7 +1312,7 @@ namespace SWF.UIComponent.TabOperation
             }
             else if (TabDragOperation.IsTarget(b))
             {
-                float margin = a.DrawArea.Width * TabDragOverlapRate;
+                var margin = a.DrawArea.Width * TAB_DRAG_OVERLAP_RATE;
                 if (margin > Math.Abs(a.DrawArea.X - b.DrawArea.X))
                 {
                     if (a.DrawArea.X > b.DrawArea.X)
@@ -1331,20 +1329,20 @@ namespace SWF.UIComponent.TabOperation
             return (int)(a.DrawArea.X - b.DrawArea.X);
         }
 
-        private void drawTab(TabInfo tab, Graphics g)
+        private void DrawTab(TabInfo tab, Graphics g)
         {
-            getDrawTabMethod(tab)(g);
-            getDrawCloseButtonMethod(tab)(g);
+            this.GetDrawTabMethod(tab)(g);
+            this.GetDrawCloseButtonMethod(tab)(g);
             if (tab.Icon == null)
             {
                 return;
             }
 
-            DrawTabEventArgs args = new DrawTabEventArgs();
+            var args = new DrawTabEventArgs();
             args.Graphics = g;
-            args.Font = _tabPalette.TitleFont;
-            args.TitleColor = _tabPalette.TitleColor;
-            args.TitleFormatFlags = _tabPalette.TitleFormatFlags;
+            args.Font = this.tabPalette.TitleFont;
+            args.TitleColor = this.tabPalette.TitleColor;
+            args.TitleFormatFlags = this.tabPalette.TitleFormatFlags;
             args.TextRectangle = tab.DrawArea.GetContentsRectangle();
             args.IconRectangle = tab.DrawArea.GetIconRectangle(tab.Icon);
             args.CloseButtonRectangle = tab.DrawArea.GetCloseButtonRectangle();
@@ -1352,33 +1350,33 @@ namespace SWF.UIComponent.TabOperation
             tab.DrawingTabContents(args);
         }
 
-        private void drawDropPoint(Graphics g)
+        private void DrawDropPoint(Graphics g)
         {
-            if (_dropPoint == null)
+            if (this.dropPoint == null)
             {
                 return;
             }
 
-            int dropX = _dropPoint.Value.X;
-            int dropY = _dropPoint.Value.Y;
+            var dropX = this.dropPoint.Value.X;
+            var dropY = this.dropPoint.Value.Y;
 
-            foreach (TabInfo tab in _tabList)
+            foreach (var tab in this.tabList)
             {
                 if (tab.DrawArea.Contents(dropX, dropY))
                 {
-                    if (isTabLeftDrop(dropX, tab))
+                    if (this.IsTabLeftDrop(dropX, tab))
                     {
-                        Image img = Resources.DropArrow;
-                        float x = (tab.DrawArea.Left - TabMargin / 2f) - img.Width / 2f;
-                        float y = 0;
+                        var img = Resources.DropArrow;
+                        var x = (tab.DrawArea.Left - TAB_MARGIN / 2f) - img.Width / 2f;
+                        var y = 0;
                         g.DrawImage(img, x, y, img.Width, img.Height);
                         return;
                     }
-                    else if (isTabRightDrop(dropX, tab))
+                    else if (this.IsTabRightDrop(dropX, tab))
                     {
-                        Image img = Resources.DropArrow;
-                        float x = (tab.DrawArea.Right - TabMargin / 2f) - img.Width / 2f;
-                        float y = 0;
+                        var img = Resources.DropArrow;
+                        var x = (tab.DrawArea.Right - TAB_MARGIN / 2f) - img.Width / 2f;
+                        var y = 0;
                         g.DrawImage(img, x, y, img.Width, img.Height);
                         return;
                     }
@@ -1386,13 +1384,13 @@ namespace SWF.UIComponent.TabOperation
             }
         }
 
-        private Action<Graphics> getDrawTabMethod(TabInfo tab)
+        private Action<Graphics> GetDrawTabMethod(TabInfo tab)
         {
-            if (tab.Equals(_activeTab))
+            if (tab.Equals(this.activeTab))
             {
                 return tab.DrawArea.DrawActiveTab;
             }
-            else if (tab.Equals(_mousePointTab))
+            else if (tab.Equals(this.mousePointTab))
             {
                 return tab.DrawArea.DrawMousePointTab;
             }
@@ -1402,14 +1400,14 @@ namespace SWF.UIComponent.TabOperation
             }
         }
 
-        private Action<Graphics> getDrawCloseButtonMethod(TabInfo tab)
+        private Action<Graphics> GetDrawCloseButtonMethod(TabInfo tab)
         {
-            Point p = this.PointToClient(Cursor.Position);
-            RectangleF rect = tab.DrawArea.GetCloseButtonRectangle();
+            var p = this.PointToClient(Cursor.Position);
+            var rect = tab.DrawArea.GetCloseButtonRectangle();
 
             if (rect.Contains(p))
             {
-                if (tab.Equals(_activeTab))
+                if (tab.Equals(this.activeTab))
                 {
                     return tab.DrawArea.DrawActiveMousePointTabCloseButton;
                 }
@@ -1421,7 +1419,7 @@ namespace SWF.UIComponent.TabOperation
             }
             else
             {
-                if (tab.Equals(_activeTab))
+                if (tab.Equals(this.activeTab))
                 {
                     return tab.DrawArea.DrawActiveTabCloseButton;
                 }
@@ -1432,25 +1430,25 @@ namespace SWF.UIComponent.TabOperation
             }
         }
 
-        private Action<Graphics> getAddTabButtonDrawMethod()
+        private Action<Graphics> GetAddTabButtonDrawMethod()
         {
-            Point p = this.PointToClient(Cursor.Position);
-            if (_addTabButtonDrawArea.Contents(p))
+            var p = this.PointToClient(Cursor.Position);
+            if (this.addTabButtonDrawArea.Contents(p))
             {
-                return _addTabButtonDrawArea.DrawMousePointImage;
+                return this.addTabButtonDrawArea.DrawMousePointImage;
             }
             else
             {
-                return _addTabButtonDrawArea.DrawInactiveImage;
+                return this.addTabButtonDrawArea.DrawInactiveImage;
             }
         }
 
-        private bool isTabLeftDrop(int x, TabInfo tab)
+        private bool IsTabLeftDrop(int x, TabInfo tab)
         {
             return x > tab.DrawArea.Left && tab.DrawArea.Left + tab.DrawArea.Width / 3f > x;
         }
 
-        private bool isTabRightDrop(int x, TabInfo tab)
+        private bool IsTabRightDrop(int x, TabInfo tab)
         {
             return tab.DrawArea.Right > x && x > tab.DrawArea.Right - tab.DrawArea.Width / 3f;
         }

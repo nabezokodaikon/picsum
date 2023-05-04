@@ -5,26 +5,19 @@ namespace SWF.UIComponent.TabOperation
     /// <summary>
     /// タブイベントクラス
     /// </summary>
-    public class TabEventArgs : EventArgs
+    public class TabEventArgs
+        : EventArgs
     {
-        private TabInfo _tab = null;
-
-        public TabInfo Tab
-        {
-            get
-            {
-                return _tab;
-            }
-        }
+        public TabInfo Tab { get; private set; }
 
         public TabEventArgs(TabInfo tab)
         {
             if (tab == null)
             {
-                throw new ArgumentNullException("tab");
+                throw new ArgumentNullException(nameof(tab));
             }
 
-            _tab = tab;
+            this.Tab = tab;
         }
     }
 }

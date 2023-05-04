@@ -5,7 +5,7 @@ using System.Drawing;
 
 namespace SWF.UIComponent.TabOperation
 {
-    public class ContentsDrawArea
+    public sealed class ContentsDrawArea
     {
         #region 定数・列挙
 
@@ -18,17 +18,17 @@ namespace SWF.UIComponent.TabOperation
 
         private static Color GetOutlineColor()
         {
-            Bitmap bmp = Resources.ActiveTab;
-            int x = 0;
-            int y = bmp.Height - 1;
+            var bmp = Resources.ActiveTab;
+            var x = 0;
+            var y = bmp.Height - 1;
             return ImageUtil.GetPixel(bmp, x, y);
         }
 
         private static Color GetInnerColor()
         {
-            Bitmap bmp = Resources.ActiveTab;
-            int x = bmp.Width / 2;
-            int y = bmp.Height - 1;
+            var bmp = Resources.ActiveTab;
+            var x = bmp.Width / 2;
+            var y = bmp.Height - 1;
             return ImageUtil.GetPixel(bmp, x, y);
         }
 
@@ -36,9 +36,9 @@ namespace SWF.UIComponent.TabOperation
 
         #region インスタンス変数
 
-        private readonly SolidBrush _outlineBrush = new SolidBrush(GetOutlineColor());
-        private readonly SolidBrush _innerBrush = new SolidBrush(GetInnerColor());
-        private readonly int _top = Resources.ActiveTab.Height - TAB_OVERLAP;
+        private readonly SolidBrush outlineBrush = new SolidBrush(GetOutlineColor());
+        private readonly SolidBrush innerBrush = new SolidBrush(GetInnerColor());
+        private readonly int top = Resources.ActiveTab.Height - TAB_OVERLAP;
 
         #endregion
 
@@ -48,7 +48,7 @@ namespace SWF.UIComponent.TabOperation
         {
             get
             {
-                return _outlineBrush.Color;
+                return this.outlineBrush.Color;
             }
         }
 
@@ -56,7 +56,7 @@ namespace SWF.UIComponent.TabOperation
         {
             get
             {
-                return _outlineBrush;
+                return this.outlineBrush;
             }
         }
 
@@ -64,7 +64,7 @@ namespace SWF.UIComponent.TabOperation
         {
             get
             {
-                return _innerBrush.Color;
+                return this.innerBrush.Color;
             }
         }
 
@@ -72,17 +72,8 @@ namespace SWF.UIComponent.TabOperation
         {
             get
             {
-                return _innerBrush;
+                return this.innerBrush;
             }
-        }
-
-        #endregion
-
-        #region コンストラクタ
-
-        public ContentsDrawArea()
-        {
-
         }
 
         #endregion
@@ -93,29 +84,29 @@ namespace SWF.UIComponent.TabOperation
         {
             if (g == null)
             {
-                throw new ArgumentNullException("g");
+                throw new ArgumentNullException(nameof(g));
             }
 
-            drawOutline(g);
-            drawInnerRectangle(g);
+            this.drawOutline(g);
+            this.drawInnerRectangle(g);
         }
 
         private void drawOutline(Graphics g)
         {
-            int x = (int)g.ClipBounds.X;
-            int y = _top;
-            int w = (int)g.ClipBounds.Width;
-            int h = 1;
-            g.FillRectangle(_outlineBrush, x, y, w, h);
+            var x = (int)g.ClipBounds.X;
+            var y = this.top;
+            var w = (int)g.ClipBounds.Width;
+            var h = 1;
+            g.FillRectangle(this.outlineBrush, x, y, w, h);
         }
 
         private void drawInnerRectangle(Graphics g)
         {
-            int x = (int)g.ClipBounds.X;
-            int y = _top + 1;
-            int w = (int)g.ClipBounds.Width;
-            int h = (int)g.ClipBounds.Height - y;
-            g.FillRectangle(_innerBrush, x, y, w, h);
+            var x = (int)g.ClipBounds.X;
+            var y = this.top + 1;
+            var w = (int)g.ClipBounds.Width;
+            var h = (int)g.ClipBounds.Height - y;
+            g.FillRectangle(this.innerBrush, x, y, w, h);
         }
 
         #endregion

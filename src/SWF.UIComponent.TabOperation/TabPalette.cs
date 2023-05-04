@@ -7,24 +7,25 @@ namespace SWF.UIComponent.TabOperation
     /// <summary>
     /// タブパレットクラス
     /// </summary>
-    public class TabPalette : Component
+    public sealed class TabPalette
+        : Component
     {
-        private static Font _titleFont = new Font("Yu Gothic UI", 10F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(128)));
-        private static Color _titleColor = Color.FromArgb(0, 64, 64, 64);
-        private static TextFormatFlags _titleFormatFlags = TextFormatFlags.Left |
-                                                           TextFormatFlags.VerticalCenter |
-                                                           TextFormatFlags.SingleLine |
-                                                           TextFormatFlags.EndEllipsis;
+        private static Font titleFont = new Font("Yu Gothic UI", 10F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(128)));
+        private static Color titleColor = Color.FromArgb(0, 64, 64, 64);
+        private static TextFormatFlags titleFormatFlags = TextFormatFlags.Left |
+                                                          TextFormatFlags.VerticalCenter |
+                                                          TextFormatFlags.SingleLine |
+                                                          TextFormatFlags.EndEllipsis;
 
         public Font TitleFont
         {
             get
             {
-                return _titleFont;
+                return titleFont;
             }
             set
             {
-                _titleFont = value;
+                titleFont = value;
             }
         }
 
@@ -32,11 +33,11 @@ namespace SWF.UIComponent.TabOperation
         {
             get
             {
-                return _titleColor;
+                return titleColor;
             }
             set
             {
-                _titleColor = value;
+                titleColor = value;
             }
         }
 
@@ -44,11 +45,11 @@ namespace SWF.UIComponent.TabOperation
         {
             get
             {
-                return _titleFormatFlags;
+                return titleFormatFlags;
             }
             set
             {
-                _titleFormatFlags = value;
+                titleFormatFlags = value;
             }
         }
     }

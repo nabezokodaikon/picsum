@@ -6,58 +6,30 @@ namespace SWF.UIComponent.TabOperation
     /// <summary>
     /// タブをドロップアウトしたイベント
     /// </summary>
-    public class TabDropoutedEventArgs : TabEventArgs
+    public sealed class TabDropoutedEventArgs
+        : TabEventArgs
     {
-        private bool _toOtherOwner = false;
-        private Point _windowLocation = Point.Empty;
-        private Size _windowSize = Size.Empty;
-        private FormWindowState _windowState = FormWindowState.Normal;
-
-        public bool ToOtherOwner
-        {
-            get
-            {
-                return _toOtherOwner;
-            }
-        }
-
-        public Point WindowLocation
-        {
-            get
-            {
-                return _windowLocation;
-            }
-        }
-
-        public Size WindowSize
-        {
-            get
-            {
-                return _windowSize;
-            }
-        }
-
-        public FormWindowState WindowState
-        {
-            get
-            {
-                return _windowState;
-            }
-        }
+        public bool ToOtherOwner { get; private set; }
+        public Point WindowLocation { get; private set; }
+        public Size WindowSize { get; private set; }
+        public FormWindowState WindowState { get; private set; }
 
         public TabDropoutedEventArgs(TabInfo tab, Point windowLocation, Size windowSize, FormWindowState windowState)
             : base(tab)
         {
-            _toOtherOwner = false;
-            _windowLocation = windowLocation;
-            _windowSize = windowSize;
-            _windowState = windowState;
+            this.ToOtherOwner = false;
+            this.WindowLocation = windowLocation;
+            this.WindowSize = windowSize;
+            this.WindowState = windowState;
         }
 
         public TabDropoutedEventArgs(TabInfo tab)
             : base(tab)
         {
-            _toOtherOwner = true;
+            this.ToOtherOwner = true;
+            this.WindowLocation = Point.Empty;
+            this.WindowSize = Size.Empty;
+            this.WindowState = FormWindowState.Normal;
         }
     }
 }

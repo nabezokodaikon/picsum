@@ -6,34 +6,15 @@ using System.Windows.Forms;
 
 namespace SWF.UIComponent.TabOperation
 {
-    class TabDropForm : Form
+    internal sealed class TabDropForm
+        : Form
     {
-        #region 定数・列挙
-
-        #endregion
-
-        #region イベント・デリゲート
-
-        #endregion
-
         #region インスタンス変数
 
-        private Bitmap _dropMaximumImage = Resources.DropMaximum;
-        private Bitmap _dropLeftImage = Resources.DropLeft;
-        private Bitmap _dropRightImage = Resources.DropRight;
-        private Bitmap _dropImage = null;
-
-        #endregion
-
-        #region パブリックプロパティ
-
-        #endregion
-
-        #region 継承プロパティ
-
-        #endregion
-
-        #region プライベートプロパティ
+        private readonly Bitmap dropMaximumImage = Resources.DropMaximum;
+        private readonly Bitmap dropLeftImage = Resources.DropLeft;
+        private readonly Bitmap dropRightImage = Resources.DropRight;
+        private Bitmap dropImage = null;
 
         #endregion
 
@@ -43,7 +24,7 @@ namespace SWF.UIComponent.TabOperation
         {
             if (!this.DesignMode)
             {
-                initializeComponent();
+                this.InitializeComponent();
             }
         }
 
@@ -53,17 +34,17 @@ namespace SWF.UIComponent.TabOperation
 
         public void SetMaximumImage()
         {
-            _dropImage = _dropMaximumImage;
+            this.dropImage = this.dropMaximumImage;
         }
 
         public void SetLeftImage()
         {
-            _dropImage = _dropLeftImage;
+            this.dropImage = this.dropLeftImage;
         }
 
         public void SetRightImage()
         {
-            _dropImage = _dropRightImage;
+            this.dropImage = this.dropRightImage;
         }
 
         #endregion
@@ -77,9 +58,9 @@ namespace SWF.UIComponent.TabOperation
 
         protected override void OnPaint(PaintEventArgs e)
         {
-            if (_dropImage != null)
+            if (this.dropImage != null)
             {
-                e.Graphics.DrawImage(_dropImage, 0, 0, _dropImage.Width, _dropImage.Height);
+                e.Graphics.DrawImage(this.dropImage, 0, 0, this.dropImage.Width, this.dropImage.Height);
             }
 
             base.OnPaint(e);
@@ -87,7 +68,7 @@ namespace SWF.UIComponent.TabOperation
 
         protected override void OnLoad(EventArgs e)
         {
-            this.Region = ImageUtil.GetRegion(_dropMaximumImage, Color.FromArgb(0, 0, 0, 0));
+            this.Region = ImageUtil.GetRegion(this.dropMaximumImage, Color.FromArgb(0, 0, 0, 0));
             base.OnLoad(e);
         }
 
@@ -95,12 +76,12 @@ namespace SWF.UIComponent.TabOperation
 
         #region プライベートメソッド
 
-        private void initializeComponent()
+        private void InitializeComponent()
         {
             this.FormBorderStyle = FormBorderStyle.None;
-            this.MaximumSize = _dropMaximumImage.Size;
-            this.MinimumSize = _dropMaximumImage.Size;
-            this.Size = _dropMaximumImage.Size;
+            this.MaximumSize = this.dropMaximumImage.Size;
+            this.MinimumSize = this.dropMaximumImage.Size;
+            this.Size = this.dropMaximumImage.Size;
             this.ShowInTaskbar = false;
             this.Opacity = 0.75;
         }
