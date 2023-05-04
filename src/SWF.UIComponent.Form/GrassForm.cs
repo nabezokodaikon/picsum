@@ -274,9 +274,9 @@ namespace SWF.UIComponent.Form
 
         protected virtual void OnDwmCompositionChanged(EventArgs e)
         {
-            if (DwmCompositionChanged != null)
+            if (this.DwmCompositionChanged != null)
             {
-                DwmCompositionChanged(this, e);
+                this.DwmCompositionChanged(this, e);
             }
         }
 
@@ -306,7 +306,7 @@ namespace SWF.UIComponent.Form
             {
                 if (this.isSizeRestored)
                 {
-                    WinApiMembers.WINDOWPOS wp = (WinApiMembers.WINDOWPOS)Marshal.PtrToStructure(m.LParam, typeof(WinApiMembers.WINDOWPOS));
+                    var wp = (WinApiMembers.WINDOWPOS)Marshal.PtrToStructure(m.LParam, typeof(WinApiMembers.WINDOWPOS));
                     wp.cx = this.restoredSize.Width;
                     wp.cy = this.restoredSize.Height;
                     Marshal.StructureToPtr(wp, m.LParam, true);
@@ -445,7 +445,7 @@ namespace SWF.UIComponent.Form
 
             if (this.WindowState == FormWindowState.Maximized)
             {
-                Screen screen = Screen.FromControl(this);
+                var screen = Screen.FromControl(this);
                 w -= (screen.Bounds.X - this.Location.X);
                 h -= (screen.Bounds.Y - this.Location.Y);
             }
