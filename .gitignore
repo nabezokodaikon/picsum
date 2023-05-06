@@ -33,6 +33,7 @@ bld/
 [Ll]ogs/
 bin_debug/
 bin_release/
+bin_vscode/
 
 # Visual Studio 2015/2017 cache/options directory
 .vs/

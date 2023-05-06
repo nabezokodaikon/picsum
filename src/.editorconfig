@@ -1,0 +1,4 @@
+root = true
+
+[*.cs]
+indent_size = 4

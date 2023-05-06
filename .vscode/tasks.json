@@ -1,0 +1,18 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build-Debug",
+            "type": "shell",
+            "command": "C:\\'Program Files'\\'Microsoft Visual Studio'\\2022\\Community\\Msbuild\\Current\\Bin\\MSBuild.exe",
+            "args": [
+                "src\\PicSum.sln",
+                "/p:OutputPath=../../bin_vscode",
+                "/p:Configuration=Debug",
+                "/p:Platform='\"Any CPU\"'",
+                "/t:Clean",
+                "/t:Rebuild",
+            ]
+        }
+    ]
+}
