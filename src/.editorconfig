@@ -2,3 +2,12 @@ root = true
 
 [*.cs]
 indent_size = 4
+indent_style = space
+end_of_line = lf
+charset = utf-8
+
+# 文末スペースの設定(true=削除)
+trim_trailing_whitespace = true
+
+# 最終行の改行設定(true=改行あり)
+insert_final_newline = true
