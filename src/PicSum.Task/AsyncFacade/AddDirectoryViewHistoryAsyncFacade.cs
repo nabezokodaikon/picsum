@@ -1,4 +1,4 @@
-﻿using PicSum.Core.Data.DatabaseAccessor;
+using PicSum.Core.Data.DatabaseAccessor;
 using PicSum.Core.Task.AsyncTask;
 using PicSum.Data.DatabaseAccessor.Connection;
 using PicSum.Task.AsyncLogic;
@@ -26,11 +26,12 @@ namespace PicSum.Task.AsyncFacade
                     if (!updateFileMaster.Execute(param.Value))
                     {
                         var addFileMaster = new AddFileMasterAsyncLogic(this);
-                        var addDirectoryViewCounter = new AddDirectoryViewCounterAsyncLogic(this);
                         addFileMaster.Execute(param.Value);
-                        addDirectoryViewHistory.Execute(param.Value);
-                        addDirectoryViewCounter.Execute(param.Value);
                     }
+
+                    var addDirectoryViewCounter = new AddDirectoryViewCounterAsyncLogic(this);
+                    addDirectoryViewHistory.Execute(param.Value);
+                    addDirectoryViewCounter.Execute(param.Value);
                 }
                 else
                 {
