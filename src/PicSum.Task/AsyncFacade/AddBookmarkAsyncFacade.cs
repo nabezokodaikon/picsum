@@ -1,4 +1,4 @@
-﻿using PicSum.Core.Data.DatabaseAccessor;
+using PicSum.Core.Data.DatabaseAccessor;
 using PicSum.Core.Task.AsyncTask;
 using PicSum.Data.DatabaseAccessor.Connection;
 using PicSum.Task.AsyncLogic;
@@ -33,9 +33,14 @@ namespace PicSum.Task.AsyncFacade
                         {
                             var addFileMasterLogic = new AddFileMasterAsyncLogic(this);
                             addFileMasterLogic.Execute(param.Value);
-                            addLogic.Execute(param.Value, registrationDate);
                         }
+
+                        addLogic.Execute(param.Value, registrationDate);
                     }
+                }
+                else
+                {
+                    addLogic.Execute(param.Value, registrationDate);
                 }
 
                 tran.Commit();
