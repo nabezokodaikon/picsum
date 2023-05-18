@@ -1,4 +1,4 @@
-﻿using PicSum.Core.Data.DatabaseAccessor;
+using PicSum.Core.Data.DatabaseAccessor;
 using PicSum.Core.Task.AsyncTask;
 using PicSum.Data.DatabaseAccessor.Connection;
 using PicSum.Task.AsyncLogic;
@@ -38,10 +38,8 @@ namespace PicSum.Task.AsyncFacade
                             {
                                 addFileMaster.Execute(filePath);
                             }
-                            else
-                            {
-                                addTag.Execute(filePath, param.Tag, registrationDate);
-                            }
+
+                            addTag.Execute(filePath, param.Tag, registrationDate);
                         }
                     }
                 }
