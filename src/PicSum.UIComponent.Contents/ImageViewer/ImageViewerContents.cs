@@ -1,4 +1,4 @@
-﻿using PicSum.Core.Base.Conf;
+using PicSum.Core.Base.Conf;
 using PicSum.Core.Task.AsyncTask;
 using PicSum.Task.AsyncFacade;
 using PicSum.Task.Entity;
@@ -14,6 +14,8 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
+using System.Linq;
+using System.Security.Cryptography;
 using System.Security.Permissions;
 using System.Windows.Forms;
 
@@ -983,21 +985,24 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
         private void FileContextMenu_Export(object sender, ExecuteFileListEventArgs e)
         {
-            using (var fbd = new FolderBrowserDialog())
+            using (var ofd = new OpenFileDialog())
             {
                 if (FileUtil.IsExists(CommonConfig.ExportDirectoryPath))
                 {
-                    fbd.SelectedPath = CommonConfig.ExportDirectoryPath;
+                    ofd.InitialDirectory = CommonConfig.ExportDirectoryPath;
+                    ofd.FileName = FileUtil.GetFileName(e.FilePathList.First());
+                    ofd.CheckFileExists = false;
                 }
 
-                if (fbd.ShowDialog() == DialogResult.OK)
+                if (ofd.ShowDialog() == DialogResult.OK)
                 {
+                    var dir = FileUtil.GetParentDirectoryPath(ofd.FileName);
                     var param = new ExportFileParameter();
-                    param.ExportDirectoryPath = fbd.SelectedPath;
+                    param.ExportDirectoryPath = dir;
                     param.FilePathList = e.FilePathList;
                     this.ExportFileProcess.Execute(this, param);
 
-                    CommonConfig.ExportDirectoryPath = fbd.SelectedPath;
+                    CommonConfig.ExportDirectoryPath = dir;
                 }
             }
         }
