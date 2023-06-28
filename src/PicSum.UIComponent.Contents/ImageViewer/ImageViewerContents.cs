@@ -987,12 +987,9 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         {
             using (var ofd = new OpenFileDialog())
             {
-                if (FileUtil.IsExists(CommonConfig.ExportDirectoryPath))
-                {
-                    ofd.InitialDirectory = CommonConfig.ExportDirectoryPath;
-                    ofd.FileName = FileUtil.GetFileName(e.FilePathList.First());
-                    ofd.CheckFileExists = false;
-                }
+                ofd.InitialDirectory = CommonConfig.ExportDirectoryPath;
+                ofd.FileName = FileUtil.GetFileName(e.FilePathList.First());
+                ofd.CheckFileExists = false;
 
                 if (ofd.ShowDialog() == DialogResult.OK)
                 {

@@ -1,4 +1,4 @@
-﻿using PicSum.Core.Base.Conf;
+using PicSum.Core.Base.Conf;
 using PicSum.Core.Task.AsyncTask;
 using PicSum.Task.AsyncFacade;
 using PicSum.Task.Entity;
@@ -1230,14 +1230,11 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private void FileContextMenu_Export(object sender, ExecuteFileListEventArgs e)
         {
-            using (var ofd = new OpenFileDialog())
+            using (var ofd = new SaveFileDialog())
             {
-                if (FileUtil.IsExists(CommonConfig.ExportDirectoryPath))
-                {
-                    ofd.InitialDirectory = CommonConfig.ExportDirectoryPath;
-                    ofd.FileName = FileUtil.GetFileName(e.FilePathList.First());
-                    ofd.CheckFileExists = false;
-                }
+                ofd.InitialDirectory = CommonConfig.ExportDirectoryPath;
+                ofd.FileName = FileUtil.GetFileName(e.FilePathList.First());
+                ofd.CheckFileExists = false;
 
                 if (ofd.ShowDialog() == DialogResult.OK)
                 {
