@@ -152,8 +152,11 @@ namespace SWF.Common
             {
                 if (FileUtil.IsWEBPFile(filePath))
                 {
-                    var wf = new WebPFormat();
-                    return (Bitmap)wf.Load(new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read));
+                    using (var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                    {
+                        var wf = new WebPFormat();
+                        return (Bitmap)wf.Load(fs);
+                    }
                 }
                 else
                 {
