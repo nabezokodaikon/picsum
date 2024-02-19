@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -132,6 +132,22 @@ namespace SWF.Common
 
             var ex = FileUtil.GetExtension(filePath);
             return ImageUtil.IMAGE_FILE_EXTENSION_LIST.Contains(ex);
+        }
+
+        /// <summary>
+        /// 指定したファイルがWEBPファイルであるか確認します。
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <returns></returns>
+        public static bool IsWEBPFile(string filePath)
+        {
+            if (filePath == null)
+            {
+                throw new ArgumentNullException(nameof(filePath));
+            }
+
+            var ex = FileUtil.GetExtension(filePath);
+            return (ex == ImageUtil.WEBP_FILE_EXTENSION);
         }
 
         /// <summary>

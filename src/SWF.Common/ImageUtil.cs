@@ -1,4 +1,5 @@
-﻿using System;
+using ImageProcessor.Plugins.WebP.Imaging.Formats;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -11,6 +12,8 @@ namespace SWF.Common
 {
     public static class ImageUtil
     {
+        internal const string WEBP_FILE_EXTENSION = ".WEBP";
+
         public static readonly Size EMPTY_SIZE = new Size(-1, -1);
         internal static readonly IList<string> IMAGE_FILE_EXTENSION_LIST = ImageUtil.GetImageFileExtensionList();
 
@@ -147,10 +150,18 @@ namespace SWF.Common
 
             try
             {
-                using (var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                if (FileUtil.IsWEBPFile(filePath))
                 {
-                    var destImg = new Bitmap(fs);
-                    return destImg;
+                    var wf = new WebPFormat();
+                    return (Bitmap)wf.Load(new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read));
+                }
+                else
+                {
+                    using (var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                    {
+                        var destImg = new Bitmap(fs);
+                        return destImg;
+                    }
                 }
             }
             catch (NotSupportedException)
@@ -309,6 +320,8 @@ namespace SWF.Common
                 var exs = enc.FilenameExtension.Replace("*", string.Empty).Split(';');
                 exList.AddRange(exs);
             }
+
+            exList.Add(ImageUtil.WEBP_FILE_EXTENSION);
 
             return exList;
         }
