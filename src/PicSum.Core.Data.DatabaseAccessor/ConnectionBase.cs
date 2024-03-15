@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
@@ -18,6 +18,8 @@ namespace PicSum.Core.Data.DatabaseAccessor
         private readonly ReaderWriterLockSlim executeSqlLock = new ReaderWriterLockSlim();
         private readonly SQLiteConnection connection;
         private SQLiteTransaction transaction = null;
+
+        public string DBFilePath { get; private set; }
 
         /// <summary>
         /// コンストラクタ
@@ -47,6 +49,8 @@ namespace PicSum.Core.Data.DatabaseAccessor
             var connectionString = string.Format("Data Source={0}", dbFilePath);
             this.connection = new SQLiteConnection(connectionString);
             this.connection.Open();
+
+            this.DBFilePath = dbFilePath;
         }
 
         protected virtual void Dispose(bool disposing)

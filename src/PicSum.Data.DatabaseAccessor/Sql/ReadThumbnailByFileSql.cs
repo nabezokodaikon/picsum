@@ -1,4 +1,4 @@
-﻿using PicSum.Core.Data.DatabaseAccessor;
+using PicSum.Core.Data.DatabaseAccessor;
 using PicSum.Data.DatabaseAccessor.Dto;
 using System;
 
@@ -13,7 +13,9 @@ namespace PicSum.Data.DatabaseAccessor.Sql
         private const string SQL_TEXT =
 @"
 SELECT tt.file_path
-      ,tt.thumbnail_buffer
+      ,tt.thumbnail_id
+      ,tt.thumbnail_start_point
+      ,tt.thumbnail_size
       ,tt.thumbnail_width
       ,tt.thumbnail_height
       ,tt.source_width

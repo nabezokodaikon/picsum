@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace PicSum.Core.Data.DatabaseAccessor
@@ -11,6 +11,17 @@ namespace PicSum.Core.Data.DatabaseAccessor
     {
         // DBコネクション
         private static TConnection connection = null;
+
+        /// <summary>
+        /// DBファイルパス。
+        /// </summary>
+        public static string DBFilePath
+        {
+            get
+            {
+                return connection.DBFilePath;
+            }
+        }
 
         /// <summary>
         /// DBに接続します。
@@ -83,11 +94,11 @@ namespace PicSum.Core.Data.DatabaseAccessor
         /// <typeparam name="TDto">戻り値の型</typeparam>
         /// <param name="sql">データアクセサ</param>
         /// <returns>1オブジェクトの実行結果</returns>
-        public static TConnection ReadValue(SqlBase sql)
+        public static T ReadValue<T>(SqlBase sql)
         {
             if (sql == null) throw new ArgumentNullException(nameof(sql));
 
-            return DatabaseManager<TConnection>.connection.ReadValue<TConnection>(sql);
+            return (T)DatabaseManager<TConnection>.connection.ReadValue<T>(sql);
         }
     }
 }

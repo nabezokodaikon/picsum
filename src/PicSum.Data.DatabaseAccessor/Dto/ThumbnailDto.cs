@@ -1,4 +1,4 @@
-﻿using PicSum.Core.Data.DatabaseAccessor;
+using PicSum.Core.Data.DatabaseAccessor;
 using System;
 using System.Data;
 
@@ -11,7 +11,9 @@ namespace PicSum.Data.DatabaseAccessor.Dto
         : IDto
     {
         public string FilePath { get; private set; }
-        public byte[] ThumbnailBuffer { get; private set; }
+        public int ThumbnailID { get; private set; }
+        public int ThumbnailStartPoint { get; private set; }
+        public int ThumbnailSize { get; private set; }
         public int ThumbnailWidth { get; private set; }
         public int ThumbnailHeight { get; private set; }
         public int SourceWidth { get; private set; }
@@ -26,7 +28,9 @@ namespace PicSum.Data.DatabaseAccessor.Dto
             }
 
             this.FilePath = (string)reader["file_path"];
-            this.ThumbnailBuffer = (byte[])reader["thumbnail_buffer"];
+            this.ThumbnailID = (int)(long)reader["thumbnail_id"];
+            this.ThumbnailStartPoint = (int)(long)reader["thumbnail_start_point"];
+            this.ThumbnailSize = (int)(long)reader["thumbnail_size"];
             this.ThumbnailWidth = (int)(long)reader["thumbnail_width"];
             this.ThumbnailHeight = (int)(long)reader["thumbnail_height"];
             this.SourceWidth = (int)(long)reader["source_width"];

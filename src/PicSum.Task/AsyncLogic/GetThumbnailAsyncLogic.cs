@@ -1,4 +1,4 @@
-﻿using PicSum.Core.Data.DatabaseAccessor;
+using PicSum.Core.Data.DatabaseAccessor;
 using PicSum.Core.Task.AsyncTask;
 using PicSum.Data.DatabaseAccessor.Connection;
 using PicSum.Data.DatabaseAccessor.Dto;
@@ -7,6 +7,7 @@ using PicSum.Task.Entity;
 using SWF.Common;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading;
 
 namespace PicSum.Task.AsyncLogic
@@ -346,6 +347,62 @@ namespace PicSum.Task.AsyncLogic
 
         #region DBキャッシュ操作メソッド
 
+        private string GetThumbnailBufferFilePath(int id)
+        {
+            var dbDir = Directory.GetParent(DatabaseManager<ThumbnailConnection>.DBFilePath).FullName;
+            return Path.Combine(dbDir, $"{id}.thumbnail");
+        }
+
+        private int GetCurrentThumbnailBufferID()
+        {
+            const int BUFFER_FILE_MAX_SIZE = 1000 * 1000 * 100;
+
+            var id = (int)DatabaseManager<ThumbnailConnection>.ReadValue<long>(new ReadThumbnailIDSql());
+            var thumbFile = this.GetThumbnailBufferFilePath(id);
+            if (!File.Exists(thumbFile))
+            {
+                return id;
+            }
+
+            using (var fs = new FileStream(thumbFile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+            {
+                var size = fs.Length;
+                if (size < BUFFER_FILE_MAX_SIZE)
+                {
+                    return id;
+                }
+                else
+                {
+                    DatabaseManager<ThumbnailConnection>.Update(new UpdateThumbnailIDSql());
+                    var newID = (int)DatabaseManager<ThumbnailConnection>.ReadValue<long>(new ReadThumbnailIDSql());
+                    return newID;
+                }
+            }
+        }
+
+        private byte[] GetThumbnailBuffer(string filePath, int startPoint, int size)
+        {
+            using (var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+            {
+                var bf = new byte[size];
+                fs.Seek(startPoint, SeekOrigin.Begin);
+                fs.Read(bf, 0, size);
+                return bf;
+            }
+        }
+
+        private int AddThumbnailBuffer(int id, byte[] buffer)
+        {
+            var thumbFile = this.GetThumbnailBufferFilePath(id);
+            using (var fs = new FileStream(thumbFile, FileMode.Append, FileAccess.Write, FileShare.Read))
+            {
+                var offset = (int)fs.Length;
+                fs.Seek(fs.Length, SeekOrigin.Begin);
+                fs.Write(buffer, 0, buffer.Length);
+                return offset;
+            }
+        }
+
         private ThumbnailBufferEntity GetDBCash(string filePath)
         {
             var sql = new ReadThumbnailByFileSql(filePath);
@@ -354,12 +411,15 @@ namespace PicSum.Task.AsyncLogic
             {
                 var thumb = new ThumbnailBufferEntity();
                 thumb.FilePath = dto.FilePath;
-                thumb.ThumbnailBuffer = dto.ThumbnailBuffer;
                 thumb.ThumbnailWidth = dto.ThumbnailWidth;
                 thumb.ThumbnailHeight = dto.ThumbnailHeight;
                 thumb.SourceWidth = dto.SourceWidth;
                 thumb.SourceHeight = dto.SourceHeight;
                 thumb.FileUpdatedate = dto.FileUpdatedate;
+
+                var thumbBufferFile = this.GetThumbnailBufferFilePath(dto.ThumbnailID);
+                thumb.ThumbnailBuffer = this.GetThumbnailBuffer(thumbBufferFile, dto.ThumbnailStartPoint, dto.ThumbnailSize);
+
                 return thumb;
             }
             else
@@ -368,15 +428,19 @@ namespace PicSum.Task.AsyncLogic
             }
         }
 
-        private ThumbnailBufferEntity CreateDBFileCash(string filePath, int thumbWidth, int thumbHeight, DateTime fileUpdateDate)
+        private ThumbnailBufferEntity CreateDBFileCash(
+            string filePath, int thumbWidth, int thumbHeight, DateTime fileUpdateDate)
         {
             using (var srcImg = ImageUtil.ReadImageFile(filePath))
             {
                 using (var thumbImg = ThumbnailUtil.CreateThumbnail(srcImg, thumbWidth, thumbHeight))
                 {
                     var thumbBin = ImageUtil.ToCompressionBinary(thumbImg);
+                    var thumbID = this.GetCurrentThumbnailBufferID();
+                    var thumbStartPoint = this.AddThumbnailBuffer(thumbID, thumbBin);
 
-                    var sql = new CreationThumbnailSql(filePath, thumbBin, thumbWidth, thumbHeight, srcImg.Width, srcImg.Height, fileUpdateDate);
+                    var sql = new CreationThumbnailSql(
+                        filePath, thumbID, thumbStartPoint, thumbBin.Length, thumbWidth, thumbHeight, srcImg.Width, srcImg.Height, fileUpdateDate);
                     DatabaseManager<ThumbnailConnection>.Update(sql);
 
                     var thumb = new ThumbnailBufferEntity();
@@ -400,8 +464,11 @@ namespace PicSum.Task.AsyncLogic
                 using (var thumbImg = ThumbnailUtil.CreateThumbnail(srcImg, thumbWidth, thumbHeight))
                 {
                     var thumbBin = ImageUtil.ToCompressionBinary(thumbImg);
+                    var thumbID = this.GetCurrentThumbnailBufferID();
+                    var thumbStartPoint = this.AddThumbnailBuffer(thumbID, thumbBin);
 
-                    var sql = new UpdateThumbnailSql(filePath, thumbBin, thumbWidth, thumbHeight, srcImg.Width, srcImg.Height, fileUpdateDate);
+                    var sql = new UpdateThumbnailSql(
+                        filePath, thumbID, thumbStartPoint, thumbBin.Length, thumbWidth, thumbHeight, srcImg.Width, srcImg.Height, fileUpdateDate);
                     DatabaseManager<ThumbnailConnection>.Update(sql);
 
                     var thumb = new ThumbnailBufferEntity();
@@ -425,8 +492,11 @@ namespace PicSum.Task.AsyncLogic
                 using (var thumbImg = ThumbnailUtil.CreateThumbnail(srcImg, thumbWidth, thumbHeight))
                 {
                     var thumbBin = ImageUtil.ToCompressionBinary(thumbImg);
+                    var thumbID = this.GetCurrentThumbnailBufferID();
+                    var thumbStartPoint = this.AddThumbnailBuffer(thumbID, thumbBin);
 
-                    var sql = new CreationThumbnailSql(directoryPath, thumbBin, thumbWidth, thumbHeight, srcImg.Width, srcImg.Height, directoryUpdateDate);
+                    var sql = new CreationThumbnailSql(
+                        directoryPath, thumbID, thumbStartPoint, thumbBin.Length, thumbWidth, thumbHeight, srcImg.Width, srcImg.Height, directoryUpdateDate);
                     DatabaseManager<ThumbnailConnection>.Update(sql);
 
                     var thumb = new ThumbnailBufferEntity();
@@ -449,8 +519,11 @@ namespace PicSum.Task.AsyncLogic
                 using (var thumbImg = ThumbnailUtil.CreateThumbnail(srcImg, thumbWidth, thumbHeight))
                 {
                     var thumbBin = ImageUtil.ToCompressionBinary(thumbImg);
+                    var thumbID = this.GetCurrentThumbnailBufferID();
+                    var thumbStartPoint = this.AddThumbnailBuffer(thumbID, thumbBin);
 
-                    var sql = new UpdateThumbnailSql(directoryPath, thumbBin, thumbWidth, thumbHeight, srcImg.Width, srcImg.Height, directoryUpdateDate);
+                    var sql = new UpdateThumbnailSql(
+                        directoryPath, thumbID, thumbStartPoint, thumbBin.Length, thumbWidth, thumbHeight, srcImg.Width, srcImg.Height, directoryUpdateDate);
                     DatabaseManager<ThumbnailConnection>.Update(sql);
 
                     ThumbnailBufferEntity thumb = new ThumbnailBufferEntity();

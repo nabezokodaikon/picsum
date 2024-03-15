@@ -1,4 +1,4 @@
-﻿using PicSum.Core.Data.DatabaseAccessor;
+using PicSum.Core.Data.DatabaseAccessor;
 
 namespace PicSum.Data.DatabaseAccessor.Connection
 {
@@ -107,15 +107,6 @@ CREATE TABLE 't_bookmark' (
          'file_id'
      )
 );
-
-/* ファイルIDM INSERT */
-CREATE TRIGGER m_file_id_insert_trigger
-    AFTER INSERT
-       ON m_file_id
-    BEGIN UPDATE m_file_id
-             SET create_date = DATETIME('NOW', 'LOCALTIME')
-           WHERE file_id = NEW.file_id;
-   END;
 
 /* ファイルIDM UPDATE */
 CREATE TRIGGER m_file_id_update_trigger

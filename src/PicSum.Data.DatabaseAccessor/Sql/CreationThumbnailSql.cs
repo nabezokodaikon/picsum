@@ -1,4 +1,4 @@
-﻿using PicSum.Core.Data.DatabaseAccessor;
+using PicSum.Core.Data.DatabaseAccessor;
 using System;
 using System.Data;
 
@@ -14,7 +14,9 @@ namespace PicSum.Data.DatabaseAccessor.Sql
 @"
 INSERT INTO t_thumbnail (
      file_path
-    ,thumbnail_buffer
+    ,thumbnail_id
+    ,thumbnail_start_point
+    ,thumbnail_size
     ,thumbnail_width
     ,thumbnail_height
     ,source_width
@@ -22,7 +24,9 @@ INSERT INTO t_thumbnail (
     ,file_update_date
 ) VALUES (
      :file_path
-    ,:thumbnail_buffer
+    ,:thumbnail_id
+    ,:thumbnail_start_point
+    ,:thumbnail_size
     ,:thumbnail_width
     ,:thumbnail_height
     ,:source_width
@@ -31,7 +35,16 @@ INSERT INTO t_thumbnail (
 )
 ";
 
-        public CreationThumbnailSql(string filePath, byte[] thumbnailBuffer, int thumbnailWidth, int thumbnailHeight, int sourceWidth, int sourceHeight, DateTime fileUpdateDate)
+        public CreationThumbnailSql(
+            string filePath,
+            int thumbnailID,
+            int thumbnailStartPoint,
+            int thumbnailSize,
+            int thumbnailWidth,
+            int thumbnailHeight,
+            int sourceWidth,
+            int sourceHeight,
+            DateTime fileUpdateDate)
             : base(SQL_TEXT)
         {
             if (filePath == null)
@@ -39,14 +52,11 @@ INSERT INTO t_thumbnail (
                 throw new ArgumentNullException(nameof(filePath));
             }
 
-            if (thumbnailBuffer == null)
-            {
-                throw new ArgumentNullException(nameof(thumbnailBuffer));
-            }
-
             base.ParameterList.AddRange(new IDbDataParameter[]
             { SqlParameterUtil.CreateParameter("file_path", filePath),
-              SqlParameterUtil.CreateParameter("thumbnail_buffer", thumbnailBuffer),
+              SqlParameterUtil.CreateParameter("thumbnail_id", thumbnailID),
+              SqlParameterUtil.CreateParameter("thumbnail_start_point", thumbnailStartPoint),
+              SqlParameterUtil.CreateParameter("thumbnail_size", thumbnailSize),
               SqlParameterUtil.CreateParameter("thumbnail_width", thumbnailWidth),
               SqlParameterUtil.CreateParameter("thumbnail_height", thumbnailHeight),
               SqlParameterUtil.CreateParameter("source_width", sourceWidth),
