@@ -70,7 +70,7 @@ namespace PicSum.UIComponent.Contents.Common
 
         #region パブリックメソッド
 
-        public abstract void RefreshContents();
+        public abstract void RedrawContents();
 
         #endregion
 

@@ -473,7 +473,7 @@ namespace PicSum.Main.UIComponent
                 {
                     this.addressBar.SetAddress(selectedFilePath);
                     this.infoPanel.SetFileInfo(selectedFilePath);
-                    contents.RefreshContents();
+                    contents.RedrawContents();
                 }
 
 #if DEBUG

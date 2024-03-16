@@ -145,7 +145,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
         #region パブリックメソッド
 
-        public override void RefreshContents()
+        public override void RedrawContents()
         {
             
         }

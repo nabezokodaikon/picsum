@@ -238,7 +238,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
         #region パブリックメソッド
 
-        public override void RefreshContents()
+        public override void RedrawContents()
         {
             this.flowList.Refresh();
         }
