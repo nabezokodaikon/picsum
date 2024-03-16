@@ -147,7 +147,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
         public override void RedrawContents()
         {
-            
+            // TODO: 画像を再描画する。
         }
 
         #endregion
@@ -178,7 +178,8 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
         protected override void OnResize(EventArgs e)
         {
-            this.ChangeImagePanelSize();
+            // TODO: 画像を再描画する。
+
             base.OnResize(e);
         }
 
