@@ -1,4 +1,4 @@
-﻿using SWF.UIComponent.ImagePanel.Properties;
+using SWF.UIComponent.ImagePanel.Properties;
 using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
