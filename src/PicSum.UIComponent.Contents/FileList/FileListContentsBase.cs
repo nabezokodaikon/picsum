@@ -236,6 +236,15 @@ namespace PicSum.UIComponent.Contents.FileList
 
         #endregion
 
+        #region パブリックメソッド
+
+        public override void RefreshContents()
+        {
+            this.flowList.Refresh();
+        }
+
+        #endregion
+
         #region 継承メソッド
 
         protected override void OnLoad(EventArgs e)

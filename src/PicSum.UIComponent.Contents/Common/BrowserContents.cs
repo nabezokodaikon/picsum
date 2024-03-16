@@ -1,4 +1,4 @@
-﻿using SWF.UIComponent.TabOperation;
+using SWF.UIComponent.TabOperation;
 using System;
 using System.ComponentModel;
 using System.Windows.Forms;
@@ -65,6 +65,12 @@ namespace PicSum.UIComponent.Contents.Common
             this.SubInitializeComponent();
             this.Parameter = parameter ?? throw new ArgumentNullException(nameof(parameter));
         }
+
+        #endregion
+
+        #region パブリックメソッド
+
+        public abstract void RefreshContents();
 
         #endregion
 

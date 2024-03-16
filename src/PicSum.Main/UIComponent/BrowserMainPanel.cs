@@ -1,4 +1,4 @@
-﻿using NLog;
+using NLog;
 using PicSum.Core.Base.Conf;
 using PicSum.Core.Task.AsyncTask;
 using PicSum.Task.AsyncFacade;
@@ -467,11 +467,13 @@ namespace PicSum.Main.UIComponent
 
             if (this.tabSwitch.ActiveTab != null)
             {
-                var selectedFilePath = this.tabSwitch.ActiveTab.GetContents<BrowserContents>().SelectedFilePath;
+                var contents = this.tabSwitch.ActiveTab.GetContents<BrowserContents>();
+                var selectedFilePath = contents.SelectedFilePath;
                 if (!string.IsNullOrEmpty(selectedFilePath))
                 {
                     this.addressBar.SetAddress(selectedFilePath);
                     this.infoPanel.SetFileInfo(selectedFilePath);
+                    contents.RefreshContents();
                 }
 
 #if DEBUG

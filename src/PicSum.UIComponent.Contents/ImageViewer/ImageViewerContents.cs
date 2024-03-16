@@ -143,6 +143,15 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
         #endregion
 
+        #region パブリックメソッド
+
+        public override void RefreshContents()
+        {
+            
+        }
+
+        #endregion
+
         #region 継承メソッド
 
         protected override void Dispose(bool disposing)
