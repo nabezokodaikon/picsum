@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 
@@ -41,6 +41,16 @@ namespace SWF.Common
                 var scale = Math.Min(tw / (double)srcImg.Width, th / (double)srcImg.Height);
                 w = (int)(srcImg.Width * scale);
                 h = (int)(srcImg.Height * scale);
+            }
+
+            if (w < 1)
+            {
+                w = 1;
+            }
+
+            if (h < 1)
+            {
+                h = 1;
             }
 
             var thumb = new Bitmap(w, h);
