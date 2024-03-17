@@ -1,8 +1,10 @@
-﻿using System.Drawing;
+using System.Drawing;
+using System.Runtime.Versioning;
 using System.Windows.Forms;
 
 namespace SWF.UIComponent.TabOperation
 {
+    [SupportedOSPlatform("windows")]
     public static class ScreenUtil
     {
         public static Rectangle GetTopRect(Size rectSize)

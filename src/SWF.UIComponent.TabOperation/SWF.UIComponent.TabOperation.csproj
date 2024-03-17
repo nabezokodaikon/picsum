@@ -1,165 +1,50 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{B9ECCCA2-735B-472A-B503-EE2E933B547B}</ProjectGuid>
+    <TargetFramework>net8.0-windows10.0.17763.0</TargetFramework>
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SWF.UIComponent.TabOperation</RootNamespace>
-    <AssemblyName>SWF.UIComponent.TabOperation</AssemblyName>
-    <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
-    <OldToolsVersion>3.5</OldToolsVersion>
-    <UpgradeBackupLocation />
-    <TargetFrameworkProfile />
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <Prefer32Bit>false</Prefer32Bit>
-    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
-    <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\x64\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <LangVersion>7.3</LangVersion>
-    <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <OutputPath>bin\x64\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <LangVersion>7.3</LangVersion>
-    <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core">
+    <Reference Update="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
-    <Reference Include="System.Data" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AddTabButtonDrawArea.cs" />
-    <Compile Include="ContentsDrawArea.cs" />
-    <Compile Include="ContentsHistoryManager.cs" />
-    <Compile Include="ContentsPanel.cs">
+    <Compile Update="ContentsPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="ContentsContainer.cs">
+    <Compile Update="ContentsContainer.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="TabDropForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="IContentsParameter.cs" />
-    <Compile Include="TabDragForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="DrawTabEventArgs.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Include="TabAreaDragEventArgs.cs" />
-    <Compile Include="TabDragOperation.cs" />
-    <Compile Include="TabDrawArea.cs" />
-    <Compile Include="TabDropoutedEventArgs.cs" />
-    <Compile Include="TabEventArgs.cs" />
-    <Compile Include="TabInfo.cs" />
-    <Compile Include="TabPalette.cs">
+    <Compile Update="TabPalette.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="TabSwitch.cs">
+    <Compile Update="TabSwitch.cs">
       <SubType>Component</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
+    <ProjectReference Include="..\SWF.Common\SWF.Common.csproj" />
+    <ProjectReference Include="..\WinApi\WinApi.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SWF.Common\SWF.Common.csproj">
-      <Project>{1D5E61C2-A0F5-4A69-AF24-EDD274B78359}</Project>
-      <Name>SWF.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\WinApi\WinApi.csproj">
-      <Project>{186F7A43-6415-4F0A-AE75-5B3235D2B0F6}</Project>
-      <Name>WinApi</Name>
-    </ProjectReference>
+    <Compile Remove="ToolBarDrawArea.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\MousePointAddTabButton.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\InactiveAddTabButton.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\DragTab.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\DropLeft.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\DropRight.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\DropMaximum.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\DropArrow.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\InactiveTab.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\MousePointTab.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\ActiveTab.png" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

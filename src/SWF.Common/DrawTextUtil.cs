@@ -1,12 +1,14 @@
-﻿using System;
+using System;
 using System.Drawing;
 using System.Runtime.InteropServices;
+using System.Runtime.Versioning;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
 using WinApi;
 
 namespace SWF.Common
 {
+    [SupportedOSPlatform("windows")]
     public static class DrawTextUtil
     {
         public enum TextStyle

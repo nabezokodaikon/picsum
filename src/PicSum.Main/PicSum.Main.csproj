@@ -1,17 +1,8 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{0689D5BA-499C-45E8-87D3-04A4CD261CCC}</ProjectGuid>
+    <TargetFramework>net8.0-windows10.0.17763.0</TargetFramework>
     <OutputType>WinExe</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PicSum.Main</RootNamespace>
     <AssemblyName>picsum</AssemblyName>
-    <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
     <StartupObject>PicSum.Main.Program</StartupObject>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
@@ -28,185 +19,50 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
-    <OldToolsVersion>3.5</OldToolsVersion>
-    <UpgradeBackupLocation />
-    <TargetFrameworkProfile />
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
-    <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\x64\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <LangVersion>7.3</LangVersion>
-    <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <OutputPath>bin\x64\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <LangVersion>7.3</LangVersion>
-    <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>AppIcon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.5.1.3\lib\net46\NLog.dll</HintPath>
-    </Reference>
-    <Reference Include="SWF.UIComponent.FlowList, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\SWF.UIComponent.FlowList\bin\Debug\SWF.UIComponent.FlowList.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Core">
+    <Reference Update="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
-    <Reference Include="System.Data" />
-    <Reference Include="System.IO.Compression" />
-    <Reference Include="System.Runtime.Remoting" />
-    <Reference Include="System.Deployment" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
-    <Reference Include="WinApi, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\WinApi\bin\Debug\WinApi.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Conf\BrowserConfig.cs" />
-    <Compile Include="UIComponent\BrowserForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Mng\BrowserManager.cs" />
-    <Compile Include="Mng\ComponentManager.cs" />
-    <Compile Include="UIComponent\BrowserContentsOpenEventArgs.cs" />
-    <Compile Include="UIComponent\BrowserMainPanel.cs">
+    <Compile Update="UIComponent\BrowserMainPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UIComponent\BrowserMainPanel.Designer.cs">
-      <DependentUpon>BrowserMainPanel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UIComponent\DummyForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Program.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UIComponent\BrowserForm.resx">
-      <DependentUpon>BrowserForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UIComponent\BrowserMainPanel.resx">
-      <DependentUpon>BrowserMainPanel.cs</DependentUpon>
-    </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <None Include="app.config" />
-    <None Include="NLog.config">
+    <None Update="NLog.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="packages.config" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PicSum.Core.Base\PicSum.Core.Base.csproj">
-      <Project>{128C4631-F38E-4670-BC8F-E9E60910CE70}</Project>
-      <Name>PicSum.Core.Base</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PicSum.Core.Data.DatabaseAccessor\PicSum.Core.Data.DatabaseAccessor.csproj">
-      <Project>{4EE2E470-303F-4495-A7D1-0D7462202D24}</Project>
-      <Name>PicSum.Core.Data.DatabaseAccessor</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PicSum.Core.Task.AsyncTask\PicSum.Core.Task.AsyncTask.csproj">
-      <Project>{E46B47C7-C4E7-44E5-963B-B603E31424E0}</Project>
-      <Name>PicSum.Core.Task.AsyncTask</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PicSum.Core.Task.Base\PicSum.Core.Task.Base.csproj">
-      <Project>{106CC18E-82F9-4FE8-A7D5-29E1ED3BAA72}</Project>
-      <Name>PicSum.Core.Task.Base</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PicSum.Core.Task.SyncTask\PicSum.Core.Task.SyncTask.csproj">
-      <Project>{AD2472A8-9878-4969-9D82-B69255743CBA}</Project>
-      <Name>PicSum.Core.Task.SyncTask</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PicSum.UIComponent.Contents\PicSum.UIComponent.Contents.csproj">
-      <Project>{8fb6f625-792e-4a72-ab48-5c2f558c74f3}</Project>
-      <Name>PicSum.UIComponent.Contents</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SWF.Common\SWF.Common.csproj">
-      <Project>{1D5E61C2-A0F5-4A69-AF24-EDD274B78359}</Project>
-      <Name>SWF.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SWF.UIComponent.Common\SWF.UIComponent.Common.csproj">
-      <Project>{73FC3AB9-059A-4B08-BA74-D0E91A1205E4}</Project>
-      <Name>SWF.UIComponent.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SWF.UIComponent.Form\SWF.UIComponent.Form.csproj">
-      <Project>{8b800dcf-12ed-4032-b45b-b9dc2265e098}</Project>
-      <Name>SWF.UIComponent.Form</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SWF.UIComponent.TabOperation\SWF.UIComponent.TabOperation.csproj">
-      <Project>{B9ECCCA2-735B-472A-B503-EE2E933B547B}</Project>
-      <Name>SWF.UIComponent.TabOperation</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PicSum.Task\PicSum.Task.csproj">
-      <Project>{BCB012C4-D8A7-4F01-B158-2BB6AF00E6B5}</Project>
-      <Name>PicSum.Task</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PicSum.UIComponent.AddressBar\PicSum.UIComponent.AddressBar.csproj">
-      <Project>{290188E5-55A5-40C7-A311-4E3474C23789}</Project>
-      <Name>PicSum.UIComponent.AddressBar</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PicSum.UIComponent.InfoPanel\PicSum.UIComponent.InfoPanel.csproj">
-      <Project>{AD290551-E7B2-41E0-801D-E8118155AE86}</Project>
-      <Name>PicSum.UIComponent.InfoPanel</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SWF.UIComponent.WideDropDown\SWF.UIComponent.WideDropDown.csproj">
-      <Project>{b836f727-9ecf-4f84-b665-076b47a5b9a4}</Project>
-      <Name>SWF.UIComponent.WideDropDown</Name>
-    </ProjectReference>
+    <ProjectReference Include="..\PicSum.Core.Base\PicSum.Core.Base.csproj" />
+    <ProjectReference Include="..\PicSum.Core.Data.DatabaseAccessor\PicSum.Core.Data.DatabaseAccessor.csproj" />
+    <ProjectReference Include="..\PicSum.Core.Task.AsyncTask\PicSum.Core.Task.AsyncTask.csproj" />
+    <ProjectReference Include="..\PicSum.Core.Task.Base\PicSum.Core.Task.Base.csproj" />
+    <ProjectReference Include="..\PicSum.Core.Task.SyncTask\PicSum.Core.Task.SyncTask.csproj" />
+    <ProjectReference Include="..\PicSum.UIComponent.Contents\PicSum.UIComponent.Contents.csproj" />
+    <ProjectReference Include="..\SWF.Common\SWF.Common.csproj" />
+    <ProjectReference Include="..\SWF.UIComponent.Common\SWF.UIComponent.Common.csproj" />
+    <ProjectReference Include="..\SWF.UIComponent.Form\SWF.UIComponent.Form.csproj" />
+    <ProjectReference Include="..\SWF.UIComponent.TabOperation\SWF.UIComponent.TabOperation.csproj" />
+    <ProjectReference Include="..\PicSum.Task\PicSum.Task.csproj" />
+    <ProjectReference Include="..\PicSum.UIComponent.AddressBar\PicSum.UIComponent.AddressBar.csproj" />
+    <ProjectReference Include="..\PicSum.UIComponent.InfoPanel\PicSum.UIComponent.InfoPanel.csproj" />
+    <ProjectReference Include="..\SWF.UIComponent.WideDropDown\SWF.UIComponent.WideDropDown.csproj" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -241,33 +97,19 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\HomeIcon.png" />
-    <None Include="Resources\GoNextIcon.png" />
-    <None Include="Resources\GoBackIcon.png" />
-    <None Include="Resources\InfoIcon.png" />
-    <None Include="Resources\ActiveRatingIcon.png" />
-    <None Include="Resources\TagIcon.png" />
     <Content Include="AppIcon.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="Resources\ReloadIcon.png" />
-    <None Include="Resources\BookmarkIcon.png" />
     <Content Include="SQLite.Interop.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
-  <PropertyGroup>
-    <PreBuildEvent>
-    </PreBuildEvent>
-    <PostBuildEvent>
-    </PostBuildEvent>
-  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="NLog" Version="5.1.3" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Settings.cs" />
+  </ItemGroup>
+  <PropertyGroup />
 </Project>

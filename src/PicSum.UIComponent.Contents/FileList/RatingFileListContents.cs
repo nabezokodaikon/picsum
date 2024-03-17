@@ -1,4 +1,4 @@
-﻿using PicSum.Core.Base.Conf;
+using PicSum.Core.Base.Conf;
 using PicSum.Core.Base.Exception;
 using PicSum.Core.Task.AsyncTask;
 using PicSum.Task.AsyncFacade;
@@ -10,6 +10,7 @@ using PicSum.UIComponent.Contents.Properties;
 using SWF.Common;
 using System;
 using System.Linq;
+using System.Runtime.Versioning;
 using System.Windows.Forms;
 
 namespace PicSum.UIComponent.Contents.FileList
@@ -17,6 +18,7 @@ namespace PicSum.UIComponent.Contents.FileList
     /// <summary>
     /// 評価値ファイルリストコンテンツ
     /// </summary>
+    [SupportedOSPlatform("windows")]
     internal sealed class RatingFileListContents
         : FileListContentsBase
     {

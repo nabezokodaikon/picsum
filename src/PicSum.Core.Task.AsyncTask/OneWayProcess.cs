@@ -1,8 +1,9 @@
-﻿using NLog;
+using NLog;
 using PicSum.Core.Task.Base;
 using SWF.Common;
 using System;
 using System.ComponentModel;
+using System.Runtime.Versioning;
 using System.Threading;
 
 namespace PicSum.Core.Task.AsyncTask
@@ -11,6 +12,7 @@ namespace PicSum.Core.Task.AsyncTask
     /// OneWayプロセスクラス
     /// </summary>
     /// <typeparam name="TFacade">ファサードの型</typeparam>
+    [SupportedOSPlatform("windows")]
     public sealed class OneWayProcess<TFacade>
         : ProcessBase
         where TFacade : OneWayFacadeBase, new()
@@ -86,6 +88,7 @@ namespace PicSum.Core.Task.AsyncTask
     /// </summary>
     /// <typeparam name="TFacade">ファサードの型</typeparam>
     /// <typeparam name="TParameter">パラメータの型</typeparam>
+    [SupportedOSPlatform("windows")]
     public sealed class OneWayProcess<TFacade, TParameter>
         : ProcessBase
         where TFacade : OneWayFacadeBase<TParameter>, new()

@@ -1,4 +1,4 @@
-﻿using PicSum.Core.Data.DatabaseAccessor;
+using PicSum.Core.Data.DatabaseAccessor;
 using PicSum.Core.Task.AsyncTask;
 using PicSum.Data.DatabaseAccessor.Connection;
 using PicSum.Data.DatabaseAccessor.Dto;
@@ -8,12 +8,14 @@ using SWF.Common;
 using System;
 using System.Drawing;
 using System.IO;
+using System.Runtime.Versioning;
 
 namespace PicSum.Task.AsyncLogic
 {
     /// <summary>
     /// ファイルの深い情報取得ロジック
     /// </summary>
+    [SupportedOSPlatform("windows")]
     internal sealed class GetFileDeepInfoAsyncLogic
         : AbstractAsyncLogic
     {

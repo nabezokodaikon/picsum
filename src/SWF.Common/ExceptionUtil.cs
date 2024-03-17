@@ -1,5 +1,6 @@
-﻿using NLog;
+using NLog;
 using System;
+using System.Runtime.Versioning;
 using System.Text;
 using System.Windows.Forms;
 
@@ -8,6 +9,7 @@ namespace SWF.Common
     /// <summary>
     /// 例外ユーティリティクラス。
     /// </summary>
+    [SupportedOSPlatform("windows")]
     public static class ExceptionUtil
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();

@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using System.Runtime.Versioning;
 using System.Windows.Forms;
 
 namespace SWF.UIComponent.TabOperation
@@ -6,6 +7,7 @@ namespace SWF.UIComponent.TabOperation
     /// <summary>
     /// コンテンツコンテナ
     /// </summary>
+    [SupportedOSPlatform("windows")]
     public sealed class ContentsContainer
         : Panel
     {

@@ -1,11 +1,13 @@
-﻿using SWF.Common;
+using SWF.Common;
 using SWF.UIComponent.TabOperation.Properties;
 using System;
 using System.Drawing;
+using System.Runtime.Versioning;
 using System.Windows.Forms;
 
 namespace SWF.UIComponent.TabOperation
 {
+    [SupportedOSPlatform("windows")]
     internal sealed class TabDropForm
         : Form
     {

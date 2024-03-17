@@ -1,4 +1,4 @@
-﻿using PicSum.Core.Base.Conf;
+using PicSum.Core.Base.Conf;
 using PicSum.Core.Task.AsyncTask;
 using PicSum.Task.AsyncLogic;
 using PicSum.Task.Entity;
@@ -8,12 +8,14 @@ using SWF.Common;
 using System;
 using System.Drawing;
 using System.IO;
+using System.Runtime.Versioning;
 
 namespace PicSum.Task.AsyncFacade
 {
     /// <summary>
     /// 画像ファイルを読込みます。
     /// </summary>
+    [SupportedOSPlatform("windows")]
     public sealed class GetImageFileAsyncFacade
         : TwoWayFacadeBase<GetImageFileParameter, GetImageFileResult>
     {

@@ -1,4 +1,4 @@
-﻿using PicSum.Core.Task.AsyncTask;
+using PicSum.Core.Task.AsyncTask;
 using PicSum.Task.AsyncLogic;
 using PicSum.Task.Paramter;
 using PicSum.Task.Result;
@@ -6,12 +6,14 @@ using SWF.Common;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.Versioning;
 
 namespace PicSum.Task.AsyncFacade
 {
     /// <summary>
     /// フォルダ内の画像ファイルを検索します。
     /// </summary>
+    [SupportedOSPlatform("windows")]
     public sealed class GetImageFileByDirectoryAsyncFacade
         : TwoWayFacadeBase<GetImageFileByDirectoryParameter, GetImageFileByDirectoryResult>
     {

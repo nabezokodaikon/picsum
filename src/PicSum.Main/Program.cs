@@ -1,18 +1,23 @@
-﻿using NLog;
+using NLog;
 using PicSum.Main.Mng;
 using PicSum.Main.UIComponent;
 using PicSum.Task.AsyncFacade;
 using PicSum.Task.AsyncLogic;
 using SWF.Common;
 using System;
-using System.Runtime.Remoting;
-using System.Runtime.Remoting.Channels;
-using System.Runtime.Remoting.Channels.Ipc;
+using System.Runtime.Versioning;
+
+// TODO: 多重起動制御処理を、.net8.0に合わせる。
+//using System.Runtime.Remoting;
+//using System.Runtime.Remoting.Channels;
+//using System.Runtime.Remoting.Channels.Ipc;
+
 using System.Threading;
 using System.Windows.Forms;
 
 namespace PicSum.Main
 {
+    [SupportedOSPlatform("windows")]
     internal sealed class Program
         : MarshalByRefObject
     {
@@ -38,8 +43,9 @@ namespace PicSum.Main
 
                     AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
 
-                    ChannelServices.RegisterChannel(new IpcServerChannel(Application.ProductName), true);
-                    RemotingConfiguration.RegisterWellKnownServiceType(typeof(Program), "Program", WellKnownObjectMode.Singleton);
+                    // TODO: 多重起動制御処理を、.net8.0に合わせる。
+                    //ChannelServices.RegisterChannel(new IpcServerChannel(Application.ProductName), true);
+                    //RemotingConfiguration.RegisterWellKnownServiceType(typeof(Program), "Program", WellKnownObjectMode.Singleton);
 
                     Application.EnableVisualStyles();
                     Application.SetCompatibleTextRenderingDefault(false);
@@ -60,8 +66,9 @@ namespace PicSum.Main
                 }
                 else
                 {
-                    ChannelServices.RegisterChannel(new IpcClientChannel(), true);
-                    RemotingConfiguration.RegisterWellKnownClientType(typeof(Program), "ipc://" + Application.ProductName + "/Program");
+                    // TODO: 多重起動制御処理を、.net8.0に合わせる。
+                    //ChannelServices.RegisterChannel(new IpcClientChannel(), true);
+                    //RemotingConfiguration.RegisterWellKnownClientType(typeof(Program), "ipc://" + Application.ProductName + "/Program");
                     Program pg = new Program();
                     pg.ActivateBrowser();
                 }

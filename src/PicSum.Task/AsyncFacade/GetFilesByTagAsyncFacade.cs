@@ -1,13 +1,15 @@
-﻿using PicSum.Core.Task.AsyncTask;
+using PicSum.Core.Task.AsyncTask;
 using PicSum.Task.AsyncLogic;
 using PicSum.Task.Entity;
 using System;
+using System.Runtime.Versioning;
 
 namespace PicSum.Task.AsyncFacade
 {
     /// <summary>
     /// ファイルをタグで検索します。
     /// </summary>
+    [SupportedOSPlatform("windows")]
     public sealed class GetFilesByTagAsyncFacade
         : TwoWayFacadeBase<SingleValueEntity<string>, ListEntity<FileShallowInfoEntity>>
     {

@@ -1,7 +1,8 @@
-﻿using PicSum.Core.Task.AsyncTask;
+using PicSum.Core.Task.AsyncTask;
 using PicSum.Task.AsyncLogic;
 using PicSum.Task.Paramter;
 using System;
+using System.Runtime.Versioning;
 using System.Threading;
 
 namespace PicSum.Task.AsyncFacade
@@ -9,6 +10,7 @@ namespace PicSum.Task.AsyncFacade
     /// <summary>
     /// 画像ファイルエクスポート非同期ファサード
     /// </summary>
+    [SupportedOSPlatform("windows")]
     public sealed class ExportFileAsyncFacade
         : OneWayFacadeBase<ExportFileParameter>
     {

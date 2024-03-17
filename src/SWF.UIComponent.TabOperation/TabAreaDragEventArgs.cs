@@ -1,7 +1,9 @@
-﻿using System.Windows.Forms;
+using System.Runtime.Versioning;
+using System.Windows.Forms;
 
 namespace SWF.UIComponent.TabOperation
 {
+    [SupportedOSPlatform("windows")]
     public sealed class TabAreaDragEventArgs
         : DragEventArgs
     {

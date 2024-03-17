@@ -1,8 +1,10 @@
-﻿using System.Windows.Forms;
+using System.Runtime.Versioning;
+using System.Windows.Forms;
 using WinApi;
 
 namespace SWF.UIComponent.Common
 {
+    [SupportedOSPlatform("windows")]
     public class HideForm : Form
     {
         protected override CreateParams CreateParams

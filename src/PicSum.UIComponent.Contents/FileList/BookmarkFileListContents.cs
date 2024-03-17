@@ -1,4 +1,4 @@
-﻿using PicSum.Core.Base.Exception;
+using PicSum.Core.Base.Exception;
 using PicSum.Core.Task.AsyncTask;
 using PicSum.Task.AsyncFacade;
 using PicSum.Task.Entity;
@@ -12,10 +12,12 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.Versioning;
 using System.Windows.Forms;
 
 namespace PicSum.UIComponent.Contents.FileList
 {
+    [SupportedOSPlatform("windows")]
     internal sealed class BookmarkFileListContents
         : FileListContentsBase
     {

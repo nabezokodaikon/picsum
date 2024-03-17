@@ -1,6 +1,7 @@
-﻿using System;
+using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Runtime.Versioning;
 using System.Windows.Forms;
 
 namespace SWF.UIComponent.FlowList
@@ -8,6 +9,7 @@ namespace SWF.UIComponent.FlowList
     /// <summary>
     /// フローリストコントロール
     /// </summary>
+    [SupportedOSPlatform("windows")]
     public sealed partial class FlowList
         : PictureBox
     {

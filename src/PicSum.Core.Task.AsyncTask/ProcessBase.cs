@@ -1,7 +1,8 @@
-﻿using PicSum.Core.Task.Base;
+using PicSum.Core.Task.Base;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Runtime.Versioning;
 using System.Threading;
 
 namespace PicSum.Core.Task.AsyncTask
@@ -17,6 +18,7 @@ namespace PicSum.Core.Task.AsyncTask
     /// <summary>
     /// プロセス基底クラス
     /// </summary>
+    [SupportedOSPlatform("windows")]
     public abstract class ProcessBase
         : Component
     {
@@ -166,13 +168,12 @@ namespace PicSum.Core.Task.AsyncTask
         /// 実行スレッドを開始します。
         /// </summary>
         /// <param name="task">タスク</param>
-        protected void StartExecuteThread(TaskInfo task)
+        protected async void StartExecuteThread(TaskInfo task)
         {
             if (task == null) throw new ArgumentNullException(nameof(task));
 
             task.StartExecute();
-            var d = new Action<TaskInfo>(this.ExecuteThread);
-            d.BeginInvoke(task, null, null);
+            await System.Threading.Tasks.Task.Run(() => this.ExecuteThread(task));
         }
 
         /// <summary>

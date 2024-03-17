@@ -1,13 +1,15 @@
-﻿using PicSum.Core.Task.AsyncTask;
+using PicSum.Core.Task.AsyncTask;
 using PicSum.Task.Entity;
 using SWF.Common;
 using System;
+using System.Runtime.Versioning;
 
 namespace PicSum.Task.AsyncLogic
 {
     /// <summary>
     /// ファイルの浅い情報を取得します。
     /// </summary>
+    [SupportedOSPlatform("windows")]
     internal sealed class GetFileShallowInfoAsyncLogic
         : AbstractAsyncLogic
     {

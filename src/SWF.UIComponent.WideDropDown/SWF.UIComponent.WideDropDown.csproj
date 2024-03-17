@@ -1,104 +1,38 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{B836F727-9ECF-4F84-B665-076B47A5B9A4}</ProjectGuid>
+    <TargetFramework>net8.0-windows10.0.17763.0</TargetFramework>
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SWF.UIComponent.WideDropDown</RootNamespace>
-    <AssemblyName>SWF.UIComponent.WideDropDown</AssemblyName>
-    <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <Deterministic>true</Deterministic>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="AddItemEventArgs.cs" />
-    <Compile Include="ArrowPictureBox.cs">
+    <Compile Update="ArrowPictureBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="DropDownOpeningEventArgs.cs" />
-    <Compile Include="InputTextBox.cs">
+    <Compile Update="InputTextBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="ItemMouseClickEventArgs.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Include="WideComboBox.cs">
+    <Compile Update="WideComboBox.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="WideComboBox.Designer.cs">
-      <DependentUpon>WideComboBox.cs</DependentUpon>
-    </Compile>
-    <Compile Include="WideDropDownList.cs">
+    <Compile Update="WideDropDownList.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="WideDropToolButton.cs">
+    <Compile Update="WideDropToolButton.cs">
       <SubType>Component</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SWF.UIComponent.Common\SWF.UIComponent.Common.csproj">
-      <Project>{73fc3ab9-059a-4b08-ba74-d0e91a1205e4}</Project>
-      <Name>SWF.UIComponent.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SWF.UIComponent.FlowList\SWF.UIComponent.FlowList.csproj">
-      <Project>{15ac93fe-ff3a-46ae-b0a9-a65074c564d1}</Project>
-      <Name>SWF.UIComponent.FlowList</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\WinApi\WinApi.csproj">
-      <Project>{186f7a43-6415-4f0a-ae75-5b3235d2b0f6}</Project>
-      <Name>WinApi</Name>
-    </ProjectReference>
+    <ProjectReference Include="..\SWF.UIComponent.Common\SWF.UIComponent.Common.csproj" />
+    <ProjectReference Include="..\SWF.UIComponent.FlowList\SWF.UIComponent.FlowList.csproj" />
+    <ProjectReference Include="..\WinApi\WinApi.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="WideComboBox.resx">
-      <DependentUpon>WideComboBox.cs</DependentUpon>
-    </EmbeddedResource>
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+    <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\SmallArrowDown.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\TagIcon.png" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

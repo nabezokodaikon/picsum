@@ -1,11 +1,13 @@
-﻿using SWF.UIComponent.Common;
+using SWF.UIComponent.Common;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Runtime.Versioning;
 using System.Windows.Forms;
 
 namespace SWF.UIComponent.WideDropDown
 {
+    [SupportedOSPlatform("windows")]
     public class WideDropToolButton
         : ToolButton
     {

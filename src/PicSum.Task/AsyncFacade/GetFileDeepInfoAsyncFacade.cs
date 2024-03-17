@@ -1,4 +1,4 @@
-﻿using PicSum.Core.Task.AsyncTask;
+using PicSum.Core.Task.AsyncTask;
 using PicSum.Task.AsyncLogic;
 using PicSum.Task.Entity;
 using PicSum.Task.Paramter;
@@ -6,12 +6,14 @@ using PicSum.Task.Result;
 using SWF.Common;
 using System;
 using System.IO;
+using System.Runtime.Versioning;
 
 namespace PicSum.Task.AsyncFacade
 {
     /// <summary>
     /// ファイルの深い情報取得非同期ファサード
     /// </summary>
+    [SupportedOSPlatform("windows")]
     public sealed class GetFileDeepInfoAsyncFacade
         : TwoWayFacadeBase<GetFileDeepInfoParameter, GetFileDeepInfoResult>
     {

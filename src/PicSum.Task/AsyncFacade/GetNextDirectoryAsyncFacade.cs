@@ -1,16 +1,18 @@
-﻿using PicSum.Core.Task.AsyncTask;
+using PicSum.Core.Task.AsyncTask;
 using PicSum.Task.AsyncLogic;
 using PicSum.Task.Entity;
 using PicSum.Task.Paramter;
 using SWF.Common;
 using System;
 using System.Collections.Generic;
+using System.Runtime.Versioning;
 
 namespace PicSum.Task.AsyncFacade
 {
     /// <summary>
     /// 次のフォルダを取得します。
     /// </summary>
+    [SupportedOSPlatform("windows")]
     public sealed class GetNextDirectoryAsyncFacade
         : TwoWayFacadeBase<GetNextContentsParameter<string>, SingleValueEntity<string>>
     {

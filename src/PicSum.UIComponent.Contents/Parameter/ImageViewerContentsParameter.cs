@@ -1,14 +1,16 @@
-﻿using PicSum.UIComponent.Contents.Common;
+using PicSum.UIComponent.Contents.Common;
 using PicSum.UIComponent.Contents.ImageViewer;
 using SWF.UIComponent.TabOperation;
 using System;
 using System.Drawing;
+using System.Runtime.Versioning;
 
 namespace PicSum.UIComponent.Contents.Parameter
 {
     /// <summary>
     /// 画像表示コンテンツパラメータ
     /// </summary>
+    [SupportedOSPlatform("windows")]
     public sealed class ImageViewerContentsParameter
         : IContentsParameter
     {

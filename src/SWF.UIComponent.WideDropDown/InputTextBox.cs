@@ -1,11 +1,13 @@
-﻿using System;
+using System;
 using System.Drawing;
 using System.Runtime.InteropServices;
+using System.Runtime.Versioning;
 using System.Windows.Forms;
 using WinApi;
 
 namespace SWF.UIComponent.WideDropDown
 {
+    [SupportedOSPlatform("windows")]
     public sealed class InputTextBox
         : TextBox
     {

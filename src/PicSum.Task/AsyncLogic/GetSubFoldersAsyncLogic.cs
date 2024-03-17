@@ -1,13 +1,15 @@
-﻿using PicSum.Core.Task.AsyncTask;
+using PicSum.Core.Task.AsyncTask;
 using SWF.Common;
 using System;
 using System.Collections.Generic;
+using System.Runtime.Versioning;
 
 namespace PicSum.Task.AsyncLogic
 {
     /// <summary>
     /// サブフォルダ取得非同期ロジック
     /// </summary>
+    [SupportedOSPlatform("windows")]
     internal sealed class GetSubDirectorysAsyncLogic
         : AbstractAsyncLogic
     {

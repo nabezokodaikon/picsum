@@ -1,6 +1,7 @@
 using SWF.UIComponent.TabOperation;
 using System;
 using System.ComponentModel;
+using System.Runtime.Versioning;
 using System.Windows.Forms;
 
 namespace PicSum.UIComponent.Contents.Common
@@ -8,6 +9,7 @@ namespace PicSum.UIComponent.Contents.Common
     /// <summary>
     /// コンテンツ基底クラス
     /// </summary>
+    [SupportedOSPlatform("windows")]
     public abstract class BrowserContents
         : ContentsPanel
     {

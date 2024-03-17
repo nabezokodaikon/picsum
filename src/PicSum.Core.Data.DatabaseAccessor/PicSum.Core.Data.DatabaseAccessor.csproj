@@ -1,135 +1,39 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.props" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{4EE2E470-303F-4495-A7D1-0D7462202D24}</ProjectGuid>
+    <TargetFramework>net8.0-windows10.0.17763.0</TargetFramework>
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PicSum.Core.Data.DatabaseAccessor</RootNamespace>
-    <AssemblyName>PicSum.Core.Data.DatabaseAccessor</AssemblyName>
-    <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
-    <OldToolsVersion>3.5</OldToolsVersion>
-    <UpgradeBackupLocation />
-    <TargetFrameworkProfile />
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <AssemblyTitle>PicSum.Core.Data.DatabaseAccessor</AssemblyTitle>
+    <Product>PicSum.Core.Data.DatabaseAccessor</Product>
+    <Copyright>Copyright ©  2009</Copyright>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
-    <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\x64\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <LangVersion>7.3</LangVersion>
-    <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <OutputPath>bin\x64\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <LangVersion>7.3</LangVersion>
-    <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.dll</HintPath>
-    </Reference>
-    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.SqlServer.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Buffers, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Buffers.4.4.0\lib\netstandard2.0\System.Buffers.dll</HintPath>
-    </Reference>
-    <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Core">
+    <Reference Update="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
-    <Reference Include="System.Data" />
-    <Reference Include="System.Data.SQLite, Version=1.0.117.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
-      <HintPath>..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.117.0\lib\net46\System.Data.SQLite.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Data.SQLite.EF6, Version=1.0.117.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Data.SQLite.EF6.1.0.117.0\lib\net46\System.Data.SQLite.EF6.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Data.SQLite.Linq, Version=1.0.117.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Data.SQLite.Linq.1.0.117.0\lib\net46\System.Data.SQLite.Linq.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Memory.4.5.3\lib\netstandard2.0\System.Memory.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Numerics" />
-    <Reference Include="System.Numerics.Vectors, Version=4.1.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Numerics.Vectors.4.4.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.2\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConnectionBase.cs" />
-    <Compile Include="DatabaseManager.cs" />
-    <Compile Include="IDto.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SqlBase.cs" />
-    <Compile Include="SqlUtil.cs" />
-    <Compile Include="SqlParameterUtil.cs" />
-    <Compile Include="Transaction.cs" />
+    <ProjectReference Include="..\PicSum.Core.Base\PicSum.Core.Base.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PicSum.Core.Base\PicSum.Core.Base.csproj">
-      <Project>{128C4631-F38E-4670-BC8F-E9E60910CE70}</Project>
-      <Name>PicSum.Core.Base</Name>
-    </ProjectReference>
+    <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
+    <PackageReference Include="EntityFramework" Version="6.4.4" />
+    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.0.0" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <PackageReference Include="System.Data.SQLite" Version="1.0.117.0" />
+    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.117.0" />
+    <PackageReference Include="System.Data.SQLite.EF6" Version="1.0.117.0" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.props'))" />
-    <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.targets'))" />
-    <Error Condition="!Exists('..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.117.0\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.117.0\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets'))" />
-  </Target>
-  <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" />
-  <Import Project="..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.117.0\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets" Condition="Exists('..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.117.0\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets')" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

@@ -1,12 +1,14 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.Versioning;
 using System.Windows.Forms;
 
 namespace SWF.UIComponent.WideDropDown
 {
+    [SupportedOSPlatform("windows")]
     public sealed class WideDropDownList
         : ToolStripDropDown
     {

@@ -1,8 +1,9 @@
-﻿using NLog;
+using NLog;
 using PicSum.Core.Task.Base;
 using SWF.Common;
 using System;
 using System.ComponentModel;
+using System.Runtime.Versioning;
 using System.Threading;
 
 namespace PicSum.Core.Task.AsyncTask
@@ -12,6 +13,7 @@ namespace PicSum.Core.Task.AsyncTask
     /// </summary>
     /// <typeparam name="TFacade">ファサードの型</typeparam>
     /// <typeparam name="TCallbackEventArgs">コールバックイベント引数クラスの型</typeparam>
+    [SupportedOSPlatform("windows")]
     public sealed class TwoWayProcess<TFacade, TCallbackEventArgs> : ProcessBase
         where TFacade : TwoWayFacadeBase<TCallbackEventArgs>, new()
         where TCallbackEventArgs : IEntity
@@ -107,6 +109,7 @@ namespace PicSum.Core.Task.AsyncTask
     /// <typeparam name="TFacade">ファサードの型</typeparam>
     /// <typeparam name="TParameter">パラメータの型</typeparam>
     /// <typeparam name="TCallbackEventArgs">コールバックイベント引数クラスの型</typeparam>
+    [SupportedOSPlatform("windows")]
     public sealed class TwoWayProcess<TFacade, TParameter, TCallbackEventArgs> : ProcessBase
         where TFacade : TwoWayFacadeBase<TParameter, TCallbackEventArgs>, new()
         where TParameter : IEntity

@@ -1,4 +1,4 @@
-﻿using PicSum.Core.Task.AsyncTask;
+using PicSum.Core.Task.AsyncTask;
 using PicSum.Task.AsyncLogic;
 using PicSum.Task.Entity;
 using PicSum.Task.Result;
@@ -6,12 +6,14 @@ using SWF.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Versioning;
 
 namespace PicSum.Task.AsyncFacade
 {
     /// <summary>
     /// アドレスの情報を取得します。
     /// </summary>
+    [SupportedOSPlatform("windows")]
     public sealed class GetAddressInfoAsyncFacade
         : TwoWayFacadeBase<SingleValueEntity<string>, GetAddressInfoResult>
     {

@@ -1,9 +1,10 @@
-﻿using PicSum.Core.Task.AsyncTask;
+using PicSum.Core.Task.AsyncTask;
 using PicSum.Main.Conf;
 using PicSum.Main.Properties;
 using PicSum.Task.SyncFacade;
 using PicSum.UIComponent.Contents.Conf;
 using System;
+using System.Runtime.Versioning;
 using System.Windows.Forms;
 
 namespace PicSum.Main.Mng
@@ -11,6 +12,7 @@ namespace PicSum.Main.Mng
     /// <summary>
     /// コンポーネント管理クラス
     /// </summary>
+    [SupportedOSPlatform("windows")]
     internal sealed class ComponentManager
         : IDisposable
     {

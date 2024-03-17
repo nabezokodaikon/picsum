@@ -1,13 +1,15 @@
-﻿using PicSum.Core.Task.AsyncTask;
+using PicSum.Core.Task.AsyncTask;
 using PicSum.Task.AsyncLogic;
 using PicSum.Task.Entity;
 using System;
+using System.Runtime.Versioning;
 
 namespace PicSum.Task.AsyncFacade
 {
     /// <summary>
     /// ファイルを評価値で検索します。
     /// </summary>
+    [SupportedOSPlatform("windows")]
     public sealed class GetFilesByRatingAsyncFacade
         : TwoWayFacadeBase<SingleValueEntity<int>, ListEntity<FileShallowInfoEntity>>
     {

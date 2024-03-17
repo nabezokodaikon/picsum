@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Runtime.Versioning;
 using System.Windows.Forms;
 
 namespace SWF.UIComponent.Common
 {
+    [SupportedOSPlatform("windows")]
     public class CheckPatternPanel : Panel
     {
         #region 定数・列挙

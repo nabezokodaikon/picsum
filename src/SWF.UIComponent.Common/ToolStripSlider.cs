@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.Drawing;
+using System.Runtime.Versioning;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
 
@@ -8,6 +9,7 @@ namespace SWF.UIComponent.Common
     /// <summary>
     /// ツールストリップスライダー
     /// </summary>
+    [SupportedOSPlatform("windows")]
     [ToolStripItemDesignerAvailability(ToolStripItemDesignerAvailability.All)]
     public class ToolStripSlider : ToolStripControlHost
     {

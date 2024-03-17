@@ -1,6 +1,7 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Runtime.Versioning;
 using System.Windows.Forms;
 
 namespace SWF.UIComponent.TabOperation
@@ -8,6 +9,7 @@ namespace SWF.UIComponent.TabOperation
     /// <summary>
     /// タブのドラッグ操作を制御するクラスです。
     /// </summary>
+    [SupportedOSPlatform("windows")]
     internal static class TabDragOperation
     {
         private const int DEFAULT_WIDTH_OFFSET = 8;

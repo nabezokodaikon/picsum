@@ -1,16 +1,18 @@
-﻿using PicSum.Core.Data.DatabaseAccessor;
+using PicSum.Core.Data.DatabaseAccessor;
 using PicSum.Core.Task.AsyncTask;
 using PicSum.Data.DatabaseAccessor.Connection;
 using PicSum.Data.DatabaseAccessor.Dto;
 using PicSum.Data.DatabaseAccessor.Sql;
 using SWF.Common;
 using System.Collections.Generic;
+using System.Runtime.Versioning;
 
 namespace PicSum.Task.AsyncLogic
 {
     /// <summary>
     /// ファイルを評価値で検索します。
     /// </summary>
+    [SupportedOSPlatform("windows")]
     internal sealed class GetFileByRatingAsyncLogic
         : AbstractAsyncLogic
     {

@@ -1,9 +1,10 @@
-﻿using PicSum.Main.UIComponent;
+using PicSum.Main.UIComponent;
 using SWF.UIComponent.TabOperation;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.Versioning;
 using System.Windows.Forms;
 
 namespace PicSum.Main.Mng
@@ -11,6 +12,7 @@ namespace PicSum.Main.Mng
     /// <summary>
     /// ブラウザ管理クラス
     /// </summary>
+    [SupportedOSPlatform("windows")]
     public sealed class BrowserManager
     {
         #region イベント

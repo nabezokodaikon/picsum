@@ -1,9 +1,11 @@
 using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Runtime.Versioning;
 
 namespace SWF.Common
 {
+    [SupportedOSPlatform("windows")]
     public static class ThumbnailUtil
     {
         private const int SHADOW_OFFSET = 2;

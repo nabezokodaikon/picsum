@@ -1,9 +1,11 @@
-﻿using SWF.UIComponent.TabOperation.Properties;
+using SWF.UIComponent.TabOperation.Properties;
 using System;
 using System.Drawing;
+using System.Runtime.Versioning;
 
 namespace SWF.UIComponent.TabOperation
 {
+    [SupportedOSPlatform("windows")]
     internal sealed class AddTabButtonDrawArea
     {
         #region 定数・列挙

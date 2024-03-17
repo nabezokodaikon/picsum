@@ -1,7 +1,9 @@
-﻿using System.Drawing;
+using System.Drawing;
+using System.Runtime.Versioning;
 
 namespace PicSum.UIComponent.AddressBar
 {
+    [SupportedOSPlatform("windows")]
     internal sealed class Palette
     {
         private Font textFont = new Font("Yu Gothic UI", 10F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(128)));

@@ -1,10 +1,11 @@
-﻿using SWF.Common;
+using SWF.Common;
 using SWF.UIComponent.TabOperation.Properties;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
+using System.Runtime.Versioning;
 using System.Windows.Forms;
 using WinApi;
 
@@ -13,6 +14,7 @@ namespace SWF.UIComponent.TabOperation
     /// <summary>
     /// タブ切替コントロール
     /// </summary>
+    [SupportedOSPlatform("windows")]
     public sealed class TabSwitch
         : Control
     {

@@ -1,4 +1,4 @@
-﻿using PicSum.Core.Task.AsyncTask;
+using PicSum.Core.Task.AsyncTask;
 using PicSum.Main.Conf;
 using PicSum.Task.AsyncFacade;
 using PicSum.Task.Entity;
@@ -10,10 +10,12 @@ using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.IO;
+using System.Runtime.Versioning;
 using System.Windows.Forms;
 
 namespace PicSum.Main.UIComponent
 {
+    [SupportedOSPlatform("windows")]
     public sealed class BrowserForm : GrassForm
     {
         #region クラスメンバ

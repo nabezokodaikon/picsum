@@ -1,14 +1,16 @@
-﻿using PicSum.Core.Task.AsyncTask;
+using PicSum.Core.Task.AsyncTask;
 using PicSum.Task.AsyncFacade;
 using PicSum.Task.Entity;
 using PicSum.UIComponent.AddressBar.Properties;
 using SWF.Common;
 using System;
 using System.Drawing;
+using System.Runtime.Versioning;
 using System.Windows.Forms;
 
 namespace PicSum.UIComponent.AddressBar
 {
+    [SupportedOSPlatform("windows")]
     internal sealed class DirectoryHistoryDrawItem
         : DropDownDrawItemBase, IDisposable
     {

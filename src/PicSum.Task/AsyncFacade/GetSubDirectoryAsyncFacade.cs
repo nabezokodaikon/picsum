@@ -1,7 +1,8 @@
-﻿using PicSum.Core.Task.AsyncTask;
+using PicSum.Core.Task.AsyncTask;
 using PicSum.Task.AsyncLogic;
 using PicSum.Task.Entity;
 using System;
+using System.Runtime.Versioning;
 
 namespace PicSum.Task.AsyncFacade
 {
@@ -9,6 +10,7 @@ namespace PicSum.Task.AsyncFacade
     /// サブフォルダ取得非同期ファサード
     /// </summary>
     /// <remarks>フォルダパスが空文字の場合、ドライブリストを取得します。</remarks>
+    [SupportedOSPlatform("windows")]
     public sealed class GetSubDirectoryAsyncFacade
         : TwoWayFacadeBase<SingleValueEntity<string>, ListEntity<FileShallowInfoEntity>>
     {

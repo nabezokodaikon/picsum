@@ -1,11 +1,13 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.Versioning;
 using System.Windows.Forms;
 
 namespace SWF.UIComponent.Common
 {
+    [SupportedOSPlatform("windows")]
     public class RatingBar : Control
     {
         #region 定数・列挙

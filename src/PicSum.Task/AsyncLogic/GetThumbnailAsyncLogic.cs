@@ -8,6 +8,7 @@ using SWF.Common;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.Versioning;
 using System.Threading;
 
 namespace PicSum.Task.AsyncLogic
@@ -15,6 +16,7 @@ namespace PicSum.Task.AsyncLogic
     /// <summary>
     /// サムネイルを読込みます。
     /// </summary>
+    [SupportedOSPlatform("windows")]
     public sealed class GetThumbnailAsyncLogic
         : AbstractAsyncLogic
     {

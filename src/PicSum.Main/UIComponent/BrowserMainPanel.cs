@@ -14,10 +14,12 @@ using SWF.UIComponent.WideDropDown;
 using System;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.Versioning;
 using System.Windows.Forms;
 
 namespace PicSum.Main.UIComponent
 {
+    [SupportedOSPlatform("windows")]
     public sealed partial class BrowserMainPanel : UserControl
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();

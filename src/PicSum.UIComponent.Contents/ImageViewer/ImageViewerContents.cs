@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.Versioning;
 using System.Security.Cryptography;
 using System.Security.Permissions;
 using System.Windows.Forms;
@@ -24,6 +25,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
     /// <summary>
     /// 画像ビューアコンテンツ
     /// </summary>
+    [SupportedOSPlatform("windows")]
     public sealed partial class ImageViewerContents
         : BrowserContents
     {

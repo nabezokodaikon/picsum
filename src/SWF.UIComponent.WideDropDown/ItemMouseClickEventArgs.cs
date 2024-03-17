@@ -1,8 +1,10 @@
-﻿using System;
+using System;
+using System.Runtime.Versioning;
 using System.Windows.Forms;
 
 namespace SWF.UIComponent.WideDropDown
 {
+    [SupportedOSPlatform("windows")]
     public sealed class ItemMouseClickEventArgs
         : MouseEventArgs
     {

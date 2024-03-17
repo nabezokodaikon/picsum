@@ -1,194 +1,32 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{BCB012C4-D8A7-4F01-B158-2BB6AF00E6B5}</ProjectGuid>
+    <TargetFramework>net8.0-windows10.0.17763.0</TargetFramework>
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PicSum.Task</RootNamespace>
-    <AssemblyName>PicSum.Task</AssemblyName>
-    <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
-    <OldToolsVersion>3.5</OldToolsVersion>
-    <UpgradeBackupLocation />
-    <TargetFrameworkProfile />
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
-    <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\x64\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <LangVersion>7.3</LangVersion>
-    <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <OutputPath>bin\x64\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <LangVersion>7.3</LangVersion>
-    <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core">
+    <Reference Update="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
-    <Reference Include="System.Data" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AsyncFacade\AddBookmarkAsyncFacade.cs" />
-    <Compile Include="AsyncFacade\AddDirectoryViewHistoryAsyncFacade.cs" />
-    <Compile Include="AsyncFacade\AddFileTagAsyncFacade.cs" />
-    <Compile Include="AsyncFacade\DeleteBookmarkAsyncFacade.cs" />
-    <Compile Include="AsyncFacade\DeleteFileTagAsyncFacade.cs" />
-    <Compile Include="AsyncFacade\DeleteDirectoryViewCounterAsyncFacade.cs" />
-    <Compile Include="AsyncFacade\GetAddressInfoAsyncFacade.cs" />
-    <Compile Include="AsyncFacade\GetBookmarkAsyncFacade.cs" />
-    <Compile Include="AsyncFacade\GetFileDeepInfoAsyncFacade.cs" />
-    <Compile Include="AsyncFacade\ExportFileAsyncFacade.cs" />
-    <Compile Include="AsyncFacade\GetNextDirectoryAsyncFacade.cs" />
-    <Compile Include="AsyncFacade\GetFavoriteDirectoryAsyncFacade.cs" />
-    <Compile Include="AsyncFacade\GetFilesByRatingAsyncFacade.cs" />
-    <Compile Include="AsyncFacade\GetFilesByTagAsyncFacade.cs" />
-    <Compile Include="AsyncFacade\GetImageFileByDirectoryAsyncFacade.cs" />
-    <Compile Include="AsyncFacade\UpdateFileRatingAsyncFacade.cs" />
-    <Compile Include="AsyncLogic\AddBookmarkAsyncLogic.cs" />
-    <Compile Include="AsyncLogic\AddFileRatingAsyncLogic.cs" />
-    <Compile Include="AsyncLogic\AddDirectoryViewCounterAsyncLogic.cs" />
-    <Compile Include="AsyncLogic\AddDirectoryViewHistoryAsyncLogic.cs" />
-    <Compile Include="AsyncLogic\AddFileTagAsyncLogic.cs" />
-    <Compile Include="AsyncLogic\DeleteBookmarkAsyncLogic.cs" />
-    <Compile Include="AsyncLogic\DeleteFileTagAsyncLogic.cs" />
-    <Compile Include="AsyncLogic\DeleteDirectoryViewCounterAsyncLogic.cs" />
-    <Compile Include="AsyncLogic\GetFileDeepInfoAsyncLogic.cs" />
-    <Compile Include="AsyncLogic\GetFileTagInfoAsyncLogic.cs" />
-    <Compile Include="AsyncLogic\ExportFileAsyncLogic.cs" />
-    <Compile Include="AsyncLogic\IncrementDirectoryViewCounterAsyncLogic.cs" />
-    <Compile Include="AsyncLogic\GetFavoriteDirectoryAsyncLogic.cs" />
-    <Compile Include="AsyncLogic\GetFileByRatingAsyncLogic.cs" />
-    <Compile Include="AsyncLogic\GetFileByTagAsyncLogic.cs" />
-    <Compile Include="AsyncLogic\GetBookmarkListAsyncLogic.cs" />
-    <Compile Include="AsyncLogic\UpdateFileMasterAsyncLogic.cs" />
-    <Compile Include="AsyncLogic\UpdateFileRatingAsyncLogic.cs" />
-    <Compile Include="AsyncLogic\UpdateFileTagAsyncLogic.cs" />
-    <Compile Include="Result\GetAddressInfoResult.cs" />
-    <Compile Include="Parameter\ExportFileParameter.cs" />
-    <Compile Include="Parameter\GetNextContentsParameter.cs" />
-    <Compile Include="Parameter\GetFavoriteFolderParameter.cs" />
-    <Compile Include="Parameter\GetImageFileByDirectoryParameter.cs" />
-    <Compile Include="Result\GetImageFileByDirectoryResult.cs" />
-    <Compile Include="Parameter\UpdateFileTagParameter.cs" />
-    <Compile Include="Entity\FileDeepInfoEntity.cs" />
-    <Compile Include="Entity\FileTagInfoEntity.cs" />
-    <Compile Include="Parameter\GetFileDeepInfoParameter.cs" />
-    <Compile Include="Result\GetFileDeepInfoResult.cs" />
-    <Compile Include="Parameter\GetImageFileParameter.cs" />
-    <Compile Include="Result\GetImageFileResult.cs" />
-    <Compile Include="Entity\ThumbnailImageEntity.cs" />
-    <Compile Include="Parameter\UpdateFileRatingParameter.cs" />
-    <Compile Include="SyncFacade\ClosingSyncFacade.cs" />
-    <Compile Include="AsyncFacade\GetDirectoryViewHistoryAsyncFacade.cs" />
-    <Compile Include="AsyncFacade\GetSubDirectoryAsyncFacade.cs" />
-    <Compile Include="AsyncFacade\GetTagListAsyncFacade.cs" />
-    <Compile Include="AsyncFacade\GetThumbnailsAsyncFacade.cs" />
-    <Compile Include="AsyncFacade\GetFilesByDirectoryAsyncFacade.cs" />
-    <Compile Include="AsyncFacade\StartupAsyncFacade.cs" />
-    <Compile Include="AsyncFacade\UpdateDirectoryStateAsynceFacade.cs" />
-    <Compile Include="AsyncLogic\AddDirectoryStateAsyncLogic.cs" />
-    <Compile Include="SyncLogic\ClosingSyncLogic.cs" />
-    <Compile Include="AsyncLogic\DeleteThumbnailAsyncLogic.cs" />
-    <Compile Include="AsyncLogic\GetFilesInDirectoryAsyncLogic.cs" />
-    <Compile Include="AsyncLogic\GetDirectoryStateAsyncLogic.cs" />
-    <Compile Include="AsyncLogic\GetDirectoryViewHistoryAsyncLogic.cs" />
-    <Compile Include="AsyncLogic\GetFileShallowInfoAsyncLogic.cs" />
-    <Compile Include="AsyncLogic\GetSubFoldersAsyncLogic.cs" />
-    <Compile Include="AsyncLogic\GetTagListAsyncLogic.cs" />
-    <Compile Include="AsyncLogic\GetFilesAndSubFoldersAsyncLogic.cs" />
-    <Compile Include="AsyncLogic\GetThumbnailAsyncLogic.cs" />
-    <Compile Include="AsyncLogic\StartupAsyncLogic.cs" />
-    <Compile Include="AsyncLogic\UpdateDirectoryStateAsyncLogic.cs" />
-    <Compile Include="Entity\DefaultEntity.cs" />
-    <Compile Include="Entity\FileShallowInfoEntity.cs" />
-    <Compile Include="Entity\DirectoryStateEntity.cs" />
-    <Compile Include="Parameter\GetThumbnailParameter.cs" />
-    <Compile Include="Result\GetDirectoryResult.cs" />
-    <Compile Include="Entity\SingleValueEntity.cs" />
-    <Compile Include="Entity\ListEntity.cs" />
-    <Compile Include="Entity\ImageFileEntity.cs" />
-    <Compile Include="AsyncFacade\GetImageFileAsyncFacade.cs" />
-    <Compile Include="AsyncLogic\GetImageFileAsyncLogic.cs" />
-    <Compile Include="AsyncLogic\AddFileMasterAsyncLogic.cs" />
-    <Compile Include="Parameter\StartupPrameter.cs" />
-    <Compile Include="Entity\ThumbnailBufferEntity.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <ProjectReference Include="..\PicSum.Core.Base\PicSum.Core.Base.csproj" />
+    <ProjectReference Include="..\PicSum.Core.Data.DatabaseAccessor\PicSum.Core.Data.DatabaseAccessor.csproj" />
+    <ProjectReference Include="..\PicSum.Core.Task.AsyncTask\PicSum.Core.Task.AsyncTask.csproj" />
+    <ProjectReference Include="..\PicSum.Core.Task.Base\PicSum.Core.Task.Base.csproj" />
+    <ProjectReference Include="..\PicSum.Core.Task.SyncTask\PicSum.Core.Task.SyncTask.csproj" />
+    <ProjectReference Include="..\SWF.Common\SWF.Common.csproj" />
+    <ProjectReference Include="..\PicSum.Data.DatabaseAccessor\PicSum.Data.DatabaseAccessor.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\PicSum.Core.Base\PicSum.Core.Base.csproj">
-      <Project>{128C4631-F38E-4670-BC8F-E9E60910CE70}</Project>
-      <Name>PicSum.Core.Base</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PicSum.Core.Data.DatabaseAccessor\PicSum.Core.Data.DatabaseAccessor.csproj">
-      <Project>{4EE2E470-303F-4495-A7D1-0D7462202D24}</Project>
-      <Name>PicSum.Core.Data.DatabaseAccessor</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PicSum.Core.Task.AsyncTask\PicSum.Core.Task.AsyncTask.csproj">
-      <Project>{E46B47C7-C4E7-44E5-963B-B603E31424E0}</Project>
-      <Name>PicSum.Core.Task.AsyncTask</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PicSum.Core.Task.Base\PicSum.Core.Task.Base.csproj">
-      <Project>{106CC18E-82F9-4FE8-A7D5-29E1ED3BAA72}</Project>
-      <Name>PicSum.Core.Task.Base</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PicSum.Core.Task.SyncTask\PicSum.Core.Task.SyncTask.csproj">
-      <Project>{AD2472A8-9878-4969-9D82-B69255743CBA}</Project>
-      <Name>PicSum.Core.Task.SyncTask</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SWF.Common\SWF.Common.csproj">
-      <Project>{1D5E61C2-A0F5-4A69-AF24-EDD274B78359}</Project>
-      <Name>SWF.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PicSum.Data.DatabaseAccessor\PicSum.Data.DatabaseAccessor.csproj">
-      <Project>{B638D175-DF52-4A95-AAB6-D1099EFDE33A}</Project>
-      <Name>PicSum.Data.DatabaseAccessor</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

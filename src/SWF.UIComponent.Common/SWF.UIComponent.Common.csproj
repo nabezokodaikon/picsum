@@ -1,126 +1,46 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{73FC3AB9-059A-4B08-BA74-D0E91A1205E4}</ProjectGuid>
+    <TargetFramework>net8.0-windows10.0.17763.0</TargetFramework>
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SWF.UIComponent.Common</RootNamespace>
-    <AssemblyName>SWF.UIComponent.Common</AssemblyName>
-    <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
-    <OldToolsVersion>3.5</OldToolsVersion>
-    <UpgradeBackupLocation />
-    <TargetFrameworkProfile />
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-    <DebugSymbols>false</DebugSymbols>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
-    <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\x64\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <LangVersion>7.3</LangVersion>
-    <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <OutputPath>bin\x64\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <LangVersion>7.3</LangVersion>
-    <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core">
+    <Reference Update="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CheckPatternPanel.cs">
+    <Compile Update="CheckPatternPanel.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="HideForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Include="RatingBar.cs">
+    <Compile Update="RatingBar.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="RatingButton.cs">
+    <Compile Update="RatingButton.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Slider.cs">
+    <Compile Update="Slider.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="ToolButton.cs">
+    <Compile Update="ToolButton.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="ToolStripSlider.cs">
+    <Compile Update="ToolStripSlider.cs">
       <SubType>Component</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
+    <ProjectReference Include="..\WinApi\WinApi.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\WinApi\WinApi.csproj">
-      <Project>{186F7A43-6415-4F0A-AE75-5B3235D2B0F6}</Project>
-      <Name>WinApi</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\SliderButton.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\InactiveRatingIcon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\ActiveRatingIcon.png" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

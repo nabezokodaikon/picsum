@@ -1,4 +1,9 @@
-using ImageProcessor.Plugins.WebP.Imaging.Formats;
+using HeyRed.ImageSharp.Heif.Formats.Avif;
+using HeyRed.ImageSharp.Heif.Formats.Heif;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Formats;
+using SixLabors.ImageSharp.Formats.Bmp;
+using SixLabors.ImageSharp.PixelFormats;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -6,27 +11,37 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Runtime.Versioning;
 using System.Security;
 
 namespace SWF.Common
 {
+    [SupportedOSPlatform("windows")]
     public static class ImageUtil
     {
         internal const string WEBP_FILE_EXTENSION = ".WEBP";
+        internal const string AVIF_FILE_EXTENSION = ".AVIF";
 
-        public static readonly Size EMPTY_SIZE = new Size(-1, -1);
+        public static readonly System.Drawing.Size EMPTY_SIZE = new System.Drawing.Size(-1, -1);
         internal static readonly IList<string> IMAGE_FILE_EXTENSION_LIST = ImageUtil.GetImageFileExtensionList();
 
         private static readonly EncoderParameter ENCORDER_PARAMETER = new EncoderParameter(Encoder.Quality, 100L);
         private static readonly ImageCodecInfo PNG_CODEC_INFO = ImageCodecInfo.GetImageEncoders().Single(info => info.FormatID == ImageFormat.Png.Guid);
         private static readonly dynamic SHELL = Activator.CreateInstance(Type.GetTypeFromProgID("Shell.Application"));
+        private static readonly DecoderOptions AVIF_DECODER_OPTIONS = new DecoderOptions()
+        {
+            Configuration = new Configuration(
+                new AvifConfigurationModule(),
+                new HeifConfigurationModule())
+        };
+        private static readonly BmpEncoder AVIF_ENCODER = new SixLabors.ImageSharp.Formats.Bmp.BmpEncoder();
 
         /// <summary>
         /// イメージオブジェクトを圧縮したバイナリに変換します。
         /// </summary>
         /// <param name="img">イメージオブジェクト</param>
         /// <returns></returns>
-        public static byte[] ToCompressionBinary(Image img)
+        public static byte[] ToCompressionBinary(System.Drawing.Image img)
         {
             if (img == null)
             {
@@ -50,7 +65,7 @@ namespace SWF.Common
         /// </summary>
         /// <param name="bf">バイト配列</param>
         /// <returns>イメージオブジェクト</returns>
-        public static Image ToImage(byte[] bf)
+        public static System.Drawing.Image ToImage(byte[] bf)
         {
             if (bf == null)
             {
@@ -59,7 +74,7 @@ namespace SWF.Common
 
             using (var mes = new MemoryStream(bf))
             {
-                var img = Image.FromStream(mes, false, false);
+                var img = System.Drawing.Image.FromStream(mes, false, false);
                 return img;
             }
         }
@@ -71,7 +86,7 @@ namespace SWF.Common
         /// <param name="scale"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentNullException"></exception>
-        public static Image ResizeImage(Bitmap srcImg, double scale)
+        public static System.Drawing.Image ResizeImage(Bitmap srcImg, double scale)
         {
             if (srcImg == null)
             {
@@ -94,7 +109,7 @@ namespace SWF.Common
         /// <param name="filePath">取得するファイルのパス。</param>
         /// <returns>取得した画像サイズ。</returns>
         /// <exception cref="ArgumentNullException"></exception>
-        public static Size GetImageSize(string filePath)
+        public static System.Drawing.Size GetImageSize(string filePath)
         {
             if (filePath == null)
             {
@@ -133,7 +148,7 @@ namespace SWF.Common
                 return ImageUtil.EMPTY_SIZE;
             }
 
-            return new Size(w, h);
+            return new System.Drawing.Size(w, h);
         }
 
         /// <summary>
@@ -152,10 +167,31 @@ namespace SWF.Common
             {
                 if (FileUtil.IsWEBPFile(filePath))
                 {
+
                     using (var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
                     {
-                        var wf = new WebPFormat();
-                        return (Bitmap)wf.Load(fs);
+                        using (Image<Rgba32> webpImage = SixLabors.ImageSharp.Image.Load<Rgba32>(fs))
+                        {
+                            using (var mem = new MemoryStream())
+                            {
+                                webpImage.SaveAsBmp(mem);
+                                mem.Position = 0;
+                                var bitmap = (Bitmap)System.Drawing.Image.FromStream(mem);
+                                return bitmap;
+                            }
+                        }
+                    }
+                }
+                if (FileUtil.IsAVIFFile(filePath))
+                {
+                    using (var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                    using (var image = SixLabors.ImageSharp.Image.Load(AVIF_DECODER_OPTIONS, fs))
+                    using (var mem = new MemoryStream())
+                    {
+                        image.SaveAsBmp(mem, AVIF_ENCODER);
+                        mem.Position = 0;
+                        var bitmap = (Bitmap)System.Drawing.Image.FromStream(mem);
+                        return bitmap;
                     }
                 }
                 else
@@ -204,7 +240,7 @@ namespace SWF.Common
         /// <param name="x"></param>
         /// <param name="y"></param>
         /// <returns></returns>
-        public static Color GetPixel(Bitmap bmp, int x, int y)
+        public static System.Drawing.Color GetPixel(Bitmap bmp, int x, int y)
         {
             if (bmp == null)
             {
@@ -229,7 +265,7 @@ namespace SWF.Common
                 throw new ArgumentOutOfRangeException("y");
             }
 
-            var bd = bmp.LockBits(new Rectangle(0, 0, w, h), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
+            var bd = bmp.LockBits(new System.Drawing.Rectangle(0, 0, w, h), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
 
             try
             {
@@ -241,7 +277,7 @@ namespace SWF.Common
                     var r = p[2];
                     var g = p[1];
                     var b = p[0];
-                    return Color.FromArgb(a, r, g, b);
+                    return System.Drawing.Color.FromArgb(a, r, g, b);
                 }
             }
             finally
@@ -256,7 +292,7 @@ namespace SWF.Common
         /// <param name="bmp"></param>
         /// <param name="transparent"></param>
         /// <returns></returns>
-        public static Region GetRegion(Bitmap bmp, Color transparent)
+        public static Region GetRegion(Bitmap bmp, System.Drawing.Color transparent)
         {
             if (bmp == null)
             {
@@ -273,7 +309,7 @@ namespace SWF.Common
 
             using (var path = new GraphicsPath())
             {
-                var rect = new Rectangle(0, 0, bmp.Width, bmp.Height);
+                var rect = new System.Drawing.Rectangle(0, 0, bmp.Width, bmp.Height);
                 path.AddRectangle(rect);
                 var bd = bmp.LockBits(rect, ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
 
@@ -292,7 +328,7 @@ namespace SWF.Common
                                     p[1] == transparent.G &&
                                     p[0] == transparent.B)
                                 {
-                                    path.AddRectangle(new Rectangle(x, y, 1, 1));
+                                    path.AddRectangle(new System.Drawing.Rectangle(x, y, 1, 1));
                                 }
 
                                 p += 4;
@@ -325,6 +361,7 @@ namespace SWF.Common
             }
 
             exList.Add(ImageUtil.WEBP_FILE_EXTENSION);
+            exList.Add(ImageUtil.AVIF_FILE_EXTENSION);
 
             return exList;
         }

@@ -1,15 +1,17 @@
-﻿using PicSum.Core.Base.Conf;
+using PicSum.Core.Base.Conf;
 using PicSum.Core.Task.AsyncTask;
 using SWF.Common;
 using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Runtime.Versioning;
 
 namespace PicSum.Task.AsyncLogic
 {
     /// <summary>
     /// 画像ファイル読込ロジック
     /// </summary>
+    [SupportedOSPlatform("windows")]
     internal sealed class GetImageFileAsyncLogic
         : AbstractAsyncLogic
     {

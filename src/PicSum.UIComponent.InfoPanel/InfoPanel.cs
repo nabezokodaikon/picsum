@@ -1,4 +1,4 @@
-﻿using PicSum.Core.Base.Conf;
+using PicSum.Core.Base.Conf;
 using PicSum.Core.Task.AsyncTask;
 using PicSum.Task.AsyncFacade;
 using PicSum.Task.Entity;
@@ -12,10 +12,12 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.Versioning;
 using System.Windows.Forms;
 
 namespace PicSum.UIComponent.InfoPanel
 {
+    [SupportedOSPlatform("windows")]
     public sealed partial class InfoPanel
         : UserControl
     {

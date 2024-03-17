@@ -1,12 +1,14 @@
-﻿using System;
+using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Runtime.InteropServices;
+using System.Runtime.Versioning;
 using System.Windows.Forms;
 using WinApi;
 
 namespace SWF.UIComponent.Form
 {
+    [SupportedOSPlatform("windows")]
     public class GrassForm
         : System.Windows.Forms.Form
     {

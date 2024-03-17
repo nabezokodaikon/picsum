@@ -1,7 +1,8 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Reflection;
+using System.Runtime.Versioning;
 using System.Threading;
 using WinApi;
 using static WinApi.WinApiMembers;
@@ -11,6 +12,7 @@ namespace SWF.Common
     /// <summary>
     /// ファイルアイコンキャッシュクラス
     /// </summary>
+    [SupportedOSPlatform("windows")]
     public static class FileIconCash
     {
         private static readonly ReaderWriterLockSlim SMALL_ICON_CASH_LOCK = new ReaderWriterLockSlim();

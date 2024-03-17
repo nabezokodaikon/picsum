@@ -1,15 +1,5 @@
 ﻿using System.Reflection;
 using System.Runtime.InteropServices;
-
-// アセンブリに関する一般情報は以下の属性セットをとおして制御されます。
-// アセンブリに関連付けられている情報を変更するには、
-// これらの属性値を変更してください。
-[assembly: AssemblyTitle("PicSum.Core.Task.Base")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("PicSum.Core.Task.Base")]
-[assembly: AssemblyCopyright("Copyright ©  2009")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -20,16 +10,3 @@ using System.Runtime.InteropServices;
 
 // 次の GUID は、このプロジェクトが COM に公開される場合の、typelib の ID です
 [assembly: Guid("cd68b3a8-9ac3-415b-a34d-9f935caf7d41")]
-
-// アセンブリのバージョン情報は、以下の 4 つの値で構成されています:
-//
-//      Major Version
-//      Minor Version 
-//      Build Number
-//      Revision
-//
-// すべての値を指定するか、下のように '*' を使ってビルドおよびリビジョン番号を 
-// 既定値にすることができます:
-// [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]

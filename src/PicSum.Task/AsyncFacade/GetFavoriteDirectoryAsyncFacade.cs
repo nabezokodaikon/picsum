@@ -1,12 +1,14 @@
-﻿using PicSum.Core.Task.AsyncTask;
+using PicSum.Core.Task.AsyncTask;
 using PicSum.Task.AsyncLogic;
 using PicSum.Task.Entity;
 using PicSum.Task.Paramter;
 using SWF.Common;
 using System;
+using System.Runtime.Versioning;
 
 namespace PicSum.Task.AsyncFacade
 {
+    [SupportedOSPlatform("windows")]
     public sealed class GetFavoriteDirectoryAsyncFacade
         : TwoWayFacadeBase<GetFavoriteFolderParameter, ListEntity<FileShallowInfoEntity>>
     {

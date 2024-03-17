@@ -1,5 +1,6 @@
-﻿using System.ComponentModel;
+using System.ComponentModel;
 using System.Drawing;
+using System.Runtime.Versioning;
 using System.Windows.Forms;
 
 namespace SWF.UIComponent.TabOperation
@@ -7,6 +8,7 @@ namespace SWF.UIComponent.TabOperation
     /// <summary>
     /// タブパレットクラス
     /// </summary>
+    [SupportedOSPlatform("windows")]
     public sealed class TabPalette
         : Component
     {

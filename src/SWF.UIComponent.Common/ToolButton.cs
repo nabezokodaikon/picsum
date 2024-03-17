@@ -1,9 +1,11 @@
-﻿using System;
+using System;
 using System.Drawing;
+using System.Runtime.Versioning;
 using System.Windows.Forms;
 
 namespace SWF.UIComponent.Common
 {
+    [SupportedOSPlatform("windows")]
     public class ToolButton : Button
     {
         private const int REGION_OFFSET = 4;

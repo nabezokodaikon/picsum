@@ -1,8 +1,10 @@
-﻿using PicSum.UIComponent.Contents.FileList;
+using PicSum.UIComponent.Contents.FileList;
 using SWF.UIComponent.TabOperation;
+using System.Runtime.Versioning;
 
 namespace PicSum.UIComponent.Contents.Parameter
 {
+    [SupportedOSPlatform("windows")]
     public sealed class FavoriteDirectoryListContentsParameter
         : IContentsParameter
     {

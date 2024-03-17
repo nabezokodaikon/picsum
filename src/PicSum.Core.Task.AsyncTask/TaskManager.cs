@@ -1,7 +1,8 @@
-﻿using PicSum.Core.Task.Base;
+using PicSum.Core.Task.Base;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Runtime.Versioning;
 
 namespace PicSum.Core.Task.AsyncTask
 {
@@ -9,6 +10,7 @@ namespace PicSum.Core.Task.AsyncTask
     /// タスク管理
     /// </summary>
     /// <remarks>メッセージスレッドより使用してください。</remarks>
+    [SupportedOSPlatform("windows")]
     public static class TaskManager
     {
         #region プロセスインスタンス作成

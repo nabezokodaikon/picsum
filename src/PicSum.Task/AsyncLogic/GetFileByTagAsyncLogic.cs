@@ -1,4 +1,4 @@
-﻿using PicSum.Core.Data.DatabaseAccessor;
+using PicSum.Core.Data.DatabaseAccessor;
 using PicSum.Core.Task.AsyncTask;
 using PicSum.Data.DatabaseAccessor.Connection;
 using PicSum.Data.DatabaseAccessor.Dto;
@@ -6,12 +6,14 @@ using PicSum.Data.DatabaseAccessor.Sql;
 using SWF.Common;
 using System;
 using System.Collections.Generic;
+using System.Runtime.Versioning;
 
 namespace PicSum.Task.AsyncLogic
 {
     /// <summary>
     /// ファイルをタグで検索します。
     /// </summary>
+    [SupportedOSPlatform("windows")]
     internal sealed class GetFileByTagAsyncLogic
         : AbstractAsyncLogic
     {

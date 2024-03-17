@@ -1,12 +1,14 @@
-﻿using PicSum.Core.Task.AsyncTask;
+using PicSum.Core.Task.AsyncTask;
 using PicSum.Task.AsyncLogic;
 using PicSum.Task.Entity;
+using System.Runtime.Versioning;
 
 namespace PicSum.Task.AsyncFacade
 {
     /// <summary>
     /// フォルダの表示履歴を取得します。
     /// </summary>
+    [SupportedOSPlatform("windows")]
     public sealed class GetDirectoryViewHistoryAsyncFacade
         : TwoWayFacadeBase<ListEntity<FileShallowInfoEntity>>
     {

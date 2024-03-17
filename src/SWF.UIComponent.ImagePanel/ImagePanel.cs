@@ -2,6 +2,7 @@ using SWF.UIComponent.ImagePanel.Properties;
 using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Runtime.Versioning;
 using System.Windows.Forms;
 
 namespace SWF.UIComponent.ImagePanel
@@ -25,6 +26,7 @@ namespace SWF.UIComponent.ImagePanel
     /// <summary>
     /// 画像パネルコントロール
     /// </summary>
+    [SupportedOSPlatform("windows")]
     public sealed class ImagePanel
         : Control
     {

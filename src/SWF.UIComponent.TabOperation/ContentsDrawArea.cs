@@ -1,10 +1,12 @@
-﻿using SWF.Common;
+using SWF.Common;
 using SWF.UIComponent.TabOperation.Properties;
 using System;
 using System.Drawing;
+using System.Runtime.Versioning;
 
 namespace SWF.UIComponent.TabOperation
 {
+    [SupportedOSPlatform("windows")]
     public sealed class ContentsDrawArea
     {
         #region 定数・列挙

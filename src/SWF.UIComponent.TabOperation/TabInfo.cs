@@ -1,11 +1,13 @@
-﻿using System;
+using System;
 using System.Drawing;
+using System.Runtime.Versioning;
 
 namespace SWF.UIComponent.TabOperation
 {
     /// <summary>
     /// タブ情報クラス
     /// </summary>
+    [SupportedOSPlatform("windows")]
     public sealed class TabInfo
     {
         #region インスタンス変数

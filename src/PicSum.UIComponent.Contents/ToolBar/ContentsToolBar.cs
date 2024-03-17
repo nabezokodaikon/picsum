@@ -1,7 +1,9 @@
-﻿using System.Windows.Forms;
+using System.Runtime.Versioning;
+using System.Windows.Forms;
 
 namespace PicSum.UIComponent.Contents.ToolBar
 {
+    [SupportedOSPlatform("windows")]
     public sealed class ContentsToolBar
         : ToolStrip
     {

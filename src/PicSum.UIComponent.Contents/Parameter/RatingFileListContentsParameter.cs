@@ -1,12 +1,14 @@
-﻿using PicSum.UIComponent.Contents.FileList;
+using PicSum.UIComponent.Contents.FileList;
 using SWF.UIComponent.TabOperation;
 using System;
+using System.Runtime.Versioning;
 
 namespace PicSum.UIComponent.Contents.Parameter
 {
     /// <summary>
     /// 評価値ファイルリストコンテンツパラメータ
     /// </summary>
+    [SupportedOSPlatform("windows")]
     public sealed class RatingFileListContentsParameter
         : IContentsParameter
     {

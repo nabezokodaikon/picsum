@@ -6,12 +6,14 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Runtime.Versioning;
 using System.Security;
 using WinApi;
 using static WinApi.WinApiMembers;
 
 namespace SWF.Common
 {
+    [SupportedOSPlatform("windows")]
     public static class FileUtil
     {
         private const string ROOT_DIRECTORY_NAME = "PC";
@@ -148,6 +150,22 @@ namespace SWF.Common
 
             var ex = FileUtil.GetExtension(filePath);
             return (ex == ImageUtil.WEBP_FILE_EXTENSION);
+        }
+
+        /// <summary>
+        /// 指定したファイルがAVIFファイルであるか確認します。
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <returns></returns>
+        public static bool IsAVIFFile(string filePath)
+        {
+            if (filePath == null)
+            {
+                throw new ArgumentNullException(nameof(filePath));
+            }
+
+            var ex = FileUtil.GetExtension(filePath);
+            return (ex == ImageUtil.AVIF_FILE_EXTENSION);
         }
 
         /// <summary>

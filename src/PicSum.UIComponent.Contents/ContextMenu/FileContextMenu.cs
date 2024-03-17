@@ -1,8 +1,9 @@
-﻿using PicSum.UIComponent.Contents.Properties;
+using PicSum.UIComponent.Contents.Properties;
 using SWF.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Versioning;
 using System.Windows.Forms;
 
 namespace PicSum.UIComponent.Contents.ContextMenu
@@ -10,6 +11,7 @@ namespace PicSum.UIComponent.Contents.ContextMenu
     /// <summary>
     /// ファイルコンテキストメニュー
     /// </summary>
+    [SupportedOSPlatform("windows")]
     public sealed class FileContextMenu
         : ContextMenuStrip
     {

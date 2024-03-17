@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.Versioning;
 using System.Text;
 using System.Windows.Forms;
 
@@ -23,6 +24,7 @@ namespace PicSum.UIComponent.Contents.FileList
     /// <summary>
     /// ファイルリストコンテンツ基底クラス
     /// </summary>
+    [SupportedOSPlatform("windows")]
     internal abstract partial class FileListContentsBase
         : BrowserContents
     {

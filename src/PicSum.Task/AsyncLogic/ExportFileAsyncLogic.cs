@@ -1,14 +1,16 @@
-﻿using PicSum.Core.Task.AsyncTask;
+using PicSum.Core.Task.AsyncTask;
 using SWF.Common;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.Versioning;
 
 namespace PicSum.Task.AsyncLogic
 {
     /// <summary>
     /// 画像ファイルエクスポート非同期ロジック
     /// </summary>
+    [SupportedOSPlatform("windows")]
     internal sealed class ExportFileAsyncLogic
         : AbstractAsyncLogic
     {

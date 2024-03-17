@@ -1,14 +1,16 @@
-﻿using PicSum.Core.Task.AsyncTask;
+using PicSum.Core.Task.AsyncTask;
 using PicSum.Main.Mng;
 using SWF.Common;
 using SWF.UIComponent.Common;
 using System;
+using System.Runtime.Versioning;
 
 namespace PicSum.Main.UIComponent
 {
     /// <summary>
     /// ダミーフォーム
     /// </summary>
+    [SupportedOSPlatform("windows")]
     internal sealed class DummyForm : HideForm
     {
         #region インスタンス変数

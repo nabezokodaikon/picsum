@@ -1,9 +1,11 @@
-﻿using System;
+using System;
 using System.Drawing;
+using System.Runtime.Versioning;
 using System.Windows.Forms;
 
 namespace SWF.UIComponent.WideDropDown
 {
+    [SupportedOSPlatform("windows")]
     public sealed class ArrowPictureBox
         : PictureBox
     {
