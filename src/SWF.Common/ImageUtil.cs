@@ -28,13 +28,6 @@ namespace SWF.Common
         private static readonly EncoderParameter ENCORDER_PARAMETER = new EncoderParameter(Encoder.Quality, 100L);
         private static readonly ImageCodecInfo PNG_CODEC_INFO = ImageCodecInfo.GetImageEncoders().Single(info => info.FormatID == ImageFormat.Png.Guid);
         private static readonly dynamic SHELL = Activator.CreateInstance(Type.GetTypeFromProgID("Shell.Application"));
-        private static readonly DecoderOptions AVIF_DECODER_OPTIONS = new DecoderOptions()
-        {
-            Configuration = new Configuration(
-                new AvifConfigurationModule(),
-                new HeifConfigurationModule())
-        };
-        private static readonly BmpEncoder AVIF_ENCODER = new SixLabors.ImageSharp.Formats.Bmp.BmpEncoder();
 
         /// <summary>
         /// イメージオブジェクトを圧縮したバイナリに変換します。
@@ -171,15 +164,7 @@ namespace SWF.Common
                 }
                 if (FileUtil.IsAVIFFile(filePath))
                 {
-                    using (var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
-                    using (var image = SixLabors.ImageSharp.Image.Load(AVIF_DECODER_OPTIONS, fs))
-                    using (var mem = new MemoryStream())
-                    {
-                        image.SaveAsBmp(mem, AVIF_ENCODER);
-                        mem.Position = 0;
-                        var bitmap = (Bitmap)System.Drawing.Image.FromStream(mem);
-                        return bitmap;
-                    }
+                    return AVIFUtil.ReadImageFile(filePath);
                 }
                 else
                 {
