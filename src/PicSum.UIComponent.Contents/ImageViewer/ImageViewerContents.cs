@@ -16,8 +16,6 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.Versioning;
-using System.Security.Cryptography;
-using System.Security.Permissions;
 using System.Windows.Forms;
 
 namespace PicSum.UIComponent.Contents.ImageViewer
@@ -211,7 +209,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             base.OnMouseWheel(e);
         }
 
-        [UIPermission(SecurityAction.Demand, Window = UIPermissionWindow.AllWindows)]
         protected override bool ProcessDialogKey(Keys keyData)
         {
             if (!this.CanOperation)
