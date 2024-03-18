@@ -167,20 +167,7 @@ namespace SWF.Common
             {
                 if (FileUtil.IsWEBPFile(filePath))
                 {
-
-                    using (var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
-                    {
-                        using (Image<Rgba32> webpImage = SixLabors.ImageSharp.Image.Load<Rgba32>(fs))
-                        {
-                            using (var mem = new MemoryStream())
-                            {
-                                webpImage.SaveAsBmp(mem);
-                                mem.Position = 0;
-                                var bitmap = (Bitmap)System.Drawing.Image.FromStream(mem);
-                                return bitmap;
-                            }
-                        }
-                    }
+                    return WEBPUtil.ReadImageFile(filePath);
                 }
                 if (FileUtil.IsAVIFFile(filePath))
                 {
