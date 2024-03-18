@@ -392,8 +392,6 @@ namespace SWF.UIComponent.TabOperation
 
         private void DrawTab(Bitmap bmp, Graphics g)
         {
-            g.DrawImage(bmp, this.GetDestLeftRectangle(), this.GetSourceLeftRectangle(), GraphicsUnit.Pixel);
-            g.DrawImage(bmp, this.GetDestRightRectangle(), this.GetSourceRightRectangle(), GraphicsUnit.Pixel);
             g.DrawImage(bmp, this.GetDestCenterRectangle(), this.GetSourceCenterRectangle(), GraphicsUnit.Pixel);
         }
 
@@ -433,54 +431,18 @@ namespace SWF.UIComponent.TabOperation
 
         private Rectangle GetDestCenterRectangle()
         {
-            var x = this.drawPoint.X + SIDE_WIDTH;
-            var y = this.drawPoint.Y;
-            var w = this.width - SIDE_WIDTH * 2;
-            var h = this.height;
-            return new Rectangle(x, y, w, h);
-        }
-
-        private Rectangle GetDestLeftRectangle()
-        {
             var x = this.drawPoint.X;
             var y = this.drawPoint.Y;
-            var w = SIDE_WIDTH;
-            var h = this.height;
-            return new Rectangle(x, y, w, h);
-        }
-
-        private Rectangle GetDestRightRectangle()
-        {
-            var x = this.drawPoint.X + this.width - SIDE_WIDTH;
-            var y = this.drawPoint.Y;
-            var w = SIDE_WIDTH;
+            var w = this.width;
             var h = this.height;
             return new Rectangle(x, y, w, h);
         }
 
         private Rectangle GetSourceCenterRectangle()
         {
-            var x = SIDE_WIDTH;
-            var y = 0;
-            var w = this.activeTabImage.Width - SIDE_WIDTH * 2;
-            var h = this.height;
-            return new Rectangle(x, y, w, h);
-        }
-
-        private Rectangle GetSourceLeftRectangle()
-        {
             var x = 0;
             var y = 0;
-            var w = SIDE_WIDTH;
-            var h = this.height;
-            return new Rectangle(x, y, w, h);
-        }
-
-        private Rectangle GetSourceRightRectangle()
-        {
-            var x = this.activeTabImage.Width - SIDE_WIDTH;
-            var y = 0;
-            var w = SIDE_WIDTH;
+            var w = this.activeTabImage.Width;
             var h = this.height;
             return new Rectangle(x, y, w, h);
         }
