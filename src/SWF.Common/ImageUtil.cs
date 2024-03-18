@@ -1,9 +1,3 @@
-using HeyRed.ImageSharp.Heif.Formats.Avif;
-using HeyRed.ImageSharp.Heif.Formats.Heif;
-using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.Formats;
-using SixLabors.ImageSharp.Formats.Bmp;
-using SixLabors.ImageSharp.PixelFormats;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -22,7 +16,7 @@ namespace SWF.Common
         internal const string WEBP_FILE_EXTENSION = ".WEBP";
         internal const string AVIF_FILE_EXTENSION = ".AVIF";
 
-        public static readonly System.Drawing.Size EMPTY_SIZE = new System.Drawing.Size(-1, -1);
+        public static readonly Size EMPTY_SIZE = new Size(-1, -1);
         internal static readonly IList<string> IMAGE_FILE_EXTENSION_LIST = ImageUtil.GetImageFileExtensionList();
 
         private static readonly EncoderParameter ENCORDER_PARAMETER = new EncoderParameter(Encoder.Quality, 100L);
@@ -34,7 +28,7 @@ namespace SWF.Common
         /// </summary>
         /// <param name="img">イメージオブジェクト</param>
         /// <returns></returns>
-        public static byte[] ToCompressionBinary(System.Drawing.Image img)
+        public static byte[] ToCompressionBinary(Image img)
         {
             if (img == null)
             {
@@ -58,7 +52,7 @@ namespace SWF.Common
         /// </summary>
         /// <param name="bf">バイト配列</param>
         /// <returns>イメージオブジェクト</returns>
-        public static System.Drawing.Image ToImage(byte[] bf)
+        public static Image ToImage(byte[] bf)
         {
             if (bf == null)
             {
@@ -67,7 +61,7 @@ namespace SWF.Common
 
             using (var mes = new MemoryStream(bf))
             {
-                var img = System.Drawing.Image.FromStream(mes, false, false);
+                var img = Image.FromStream(mes, false, false);
                 return img;
             }
         }
@@ -79,7 +73,7 @@ namespace SWF.Common
         /// <param name="scale"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentNullException"></exception>
-        public static System.Drawing.Image ResizeImage(Bitmap srcImg, double scale)
+        public static Image ResizeImage(Bitmap srcImg, double scale)
         {
             if (srcImg == null)
             {
@@ -102,7 +96,7 @@ namespace SWF.Common
         /// <param name="filePath">取得するファイルのパス。</param>
         /// <returns>取得した画像サイズ。</returns>
         /// <exception cref="ArgumentNullException"></exception>
-        public static System.Drawing.Size GetImageSize(string filePath)
+        public static Size GetImageSize(string filePath)
         {
             if (filePath == null)
             {
@@ -141,7 +135,7 @@ namespace SWF.Common
                 return ImageUtil.EMPTY_SIZE;
             }
 
-            return new System.Drawing.Size(w, h);
+            return new Size(w, h);
         }
 
         /// <summary>
@@ -212,7 +206,7 @@ namespace SWF.Common
         /// <param name="x"></param>
         /// <param name="y"></param>
         /// <returns></returns>
-        public static System.Drawing.Color GetPixel(Bitmap bmp, int x, int y)
+        public static Color GetPixel(Bitmap bmp, int x, int y)
         {
             if (bmp == null)
             {
@@ -237,7 +231,7 @@ namespace SWF.Common
                 throw new ArgumentOutOfRangeException("y");
             }
 
-            var bd = bmp.LockBits(new System.Drawing.Rectangle(0, 0, w, h), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
+            var bd = bmp.LockBits(new Rectangle(0, 0, w, h), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
 
             try
             {
@@ -249,7 +243,7 @@ namespace SWF.Common
                     var r = p[2];
                     var g = p[1];
                     var b = p[0];
-                    return System.Drawing.Color.FromArgb(a, r, g, b);
+                    return Color.FromArgb(a, r, g, b);
                 }
             }
             finally
@@ -264,7 +258,7 @@ namespace SWF.Common
         /// <param name="bmp"></param>
         /// <param name="transparent"></param>
         /// <returns></returns>
-        public static Region GetRegion(Bitmap bmp, System.Drawing.Color transparent)
+        public static Region GetRegion(Bitmap bmp, Color transparent)
         {
             if (bmp == null)
             {
@@ -281,7 +275,7 @@ namespace SWF.Common
 
             using (var path = new GraphicsPath())
             {
-                var rect = new System.Drawing.Rectangle(0, 0, bmp.Width, bmp.Height);
+                var rect = new Rectangle(0, 0, bmp.Width, bmp.Height);
                 path.AddRectangle(rect);
                 var bd = bmp.LockBits(rect, ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
 
@@ -300,7 +294,7 @@ namespace SWF.Common
                                     p[1] == transparent.G &&
                                     p[0] == transparent.B)
                                 {
-                                    path.AddRectangle(new System.Drawing.Rectangle(x, y, 1, 1));
+                                    path.AddRectangle(new Rectangle(x, y, 1, 1));
                                 }
 
                                 p += 4;

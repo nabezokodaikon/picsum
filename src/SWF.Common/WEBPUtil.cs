@@ -7,7 +7,7 @@ using System.Runtime.Versioning;
 namespace SWF.Common
 {
     [SupportedOSPlatform("windows")]
-    internal class WEBPUtil
+    internal static class WEBPUtil
     {
         public static Bitmap ReadImageFile(string filePath)
         {
