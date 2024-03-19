@@ -17,7 +17,7 @@ namespace SWF.Common
         internal const string AVIF_FILE_EXTENSION = ".AVIF";
 
         public static readonly Size EMPTY_SIZE = new Size(-1, -1);
-        internal static readonly IList<string> IMAGE_FILE_EXTENSION_LIST = ImageUtil.GetImageFileExtensionList();
+        internal static readonly List<string> IMAGE_FILE_EXTENSION_LIST = ImageUtil.GetImageFileExtensionList();
 
         private static readonly EncoderParameter ENCORDER_PARAMETER = new EncoderParameter(Encoder.Quality, 100L);
         private static readonly ImageCodecInfo PNG_CODEC_INFO = ImageCodecInfo.GetImageEncoders().Single(info => info.FormatID == ImageFormat.Png.Guid);
@@ -356,7 +356,7 @@ namespace SWF.Common
         /// </summary>
         /// <remarks>リスト内の各項目には、ピリオド + 英大文字 * n の文字列(.XXX)が格納されます。</remarks>
         /// <returns></returns>
-        private static IList<string> GetImageFileExtensionList()
+        private static List<string> GetImageFileExtensionList()
         {
             var exList = new List<string>();
             var encs = ImageCodecInfo.GetImageEncoders();

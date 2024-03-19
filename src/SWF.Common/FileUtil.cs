@@ -589,7 +589,7 @@ namespace SWF.Common
         /// </summary>
         /// <param name="directoryPath">フォルダパス</param>
         /// <returns></returns>
-        public static IList<string> GetSubDirectorys(string directoryPath)
+        public static string[] GetSubDirectorys(string directoryPath)
         {
             if (directoryPath == null)
             {
@@ -608,7 +608,7 @@ namespace SWF.Common
                     return Directory
                         .GetDirectories(directoryPath)
                         .Where(file => CanAccess(file))
-                        .ToList();
+                        .ToArray();
                 }
                 catch (UnauthorizedAccessException)
                 {
@@ -985,7 +985,7 @@ namespace SWF.Common
         }
 
         // ドライブリストを取得します。
-        private static IList<string> GetDriveList()
+        private static string[] GetDriveList()
         {
             try
             {
