@@ -891,7 +891,12 @@ namespace SWF.Common
 
             try
             {
-                Process.Start(filePath);
+                using (var p = new Process())
+                {
+                    p.StartInfo.UseShellExecute = true;
+                    p.StartInfo.FileName = filePath;
+                    p.Start();
+                }
             }
             catch (Win32Exception)
             {
