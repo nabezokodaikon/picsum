@@ -25,5 +25,14 @@ namespace SWF.Common
                 }
             }
         }
+
+        public static System.Drawing.Size GetImageSize(string filePath)
+        {
+            using (var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+            using (Image<Rgba32> webpImage = SixLabors.ImageSharp.Image.Load<Rgba32>(fs))
+            {
+                return new System.Drawing.Size(webpImage.Width, webpImage.Height);
+            }
+        }
     }
 }
