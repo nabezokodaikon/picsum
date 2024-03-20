@@ -74,7 +74,8 @@ namespace SWF.Common
             {
                 try
                 {
-                    return Path.GetDirectoryName(filePath) == null;
+                    return Directory.Exists(filePath)
+                        && Path.GetDirectoryName(filePath) == null;
                 }
                 catch (PathTooLongException)
                 {
@@ -310,13 +311,13 @@ namespace SWF.Common
                 {
                     var driveInfo = DriveInfo.GetDrives()
                         .FirstOrDefault(di => di.Name == filePath || di.Name == string.Format(@"{0}\", filePath));
-                    if (string.IsNullOrEmpty(driveInfo.VolumeLabel))
+                    if (driveInfo != null)
                     {
-                        return FileUtil.ToRemoveLastPathSeparate(filePath);
+                        return string.Format("{0}({1})", driveInfo.VolumeLabel, FileUtil.ToRemoveLastPathSeparate(filePath));
                     }
                     else
                     {
-                        return string.Format("{0}({1})", driveInfo.VolumeLabel, FileUtil.ToRemoveLastPathSeparate(filePath));
+                        return FileUtil.ROOT_DIRECTORY_NAME;
                     }
                 }
                 catch (IOException)
