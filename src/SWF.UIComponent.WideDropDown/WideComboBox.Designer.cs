@@ -31,73 +31,68 @@ namespace SWF.UIComponent.WideDropDown
         private void InitializeComponent()
         {
             this.addButton = new System.Windows.Forms.Button();
-            this.inputTextBox = new SWF.UIComponent.WideDropDown.InputTextBox();
-            this.arrowPictureBox = new SWF.UIComponent.WideDropDown.ArrowPictureBox();
-            ((System.ComponentModel.ISupportInitialize)(this.arrowPictureBox)).BeginInit();
+            this.inputTextBox = new InputTextBox();
+            this.arrowPictureBox = new ArrowPictureBox();
+            ((System.ComponentModel.ISupportInitialize)this.arrowPictureBox).BeginInit();
             this.SuspendLayout();
             // 
             // addButton
             // 
-            this.addButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.addButton.Font = new System.Drawing.Font("Yu Gothic UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.addButton.Image = global::SWF.UIComponent.WideDropDown.Properties.Resources.TagIcon;
-            this.addButton.Location = new System.Drawing.Point(598, 3);
+            this.addButton.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
+            this.addButton.Font = new Font("Yu Gothic UI", 7.8F, FontStyle.Regular, GraphicsUnit.Point, 128);
+            this.addButton.Image = Properties.Resources.TagIcon;
+            this.addButton.Location = new Point(598, 3);
             this.addButton.Margin = new System.Windows.Forms.Padding(0, 6, 0, 6);
             this.addButton.Name = "addButton";
-            this.addButton.Size = new System.Drawing.Size(48, 32);
+            this.addButton.Size = new Size(48, 32);
             this.addButton.TabIndex = 1;
             this.addButton.TabStop = false;
             this.addButton.Text = "+";
             this.addButton.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
             this.addButton.UseVisualStyleBackColor = true;
-            this.addButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.AddButton_MouseClick);
+            this.addButton.MouseClick += this.AddButton_MouseClick;
             // 
             // inputTextBox
             // 
-            this.inputTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.inputTextBox.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             this.inputTextBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.inputTextBox.Font = new System.Drawing.Font("Yu Gothic UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.inputTextBox.Location = new System.Drawing.Point(3, 3);
+            this.inputTextBox.Font = new Font("Yu Gothic UI", 10F, FontStyle.Regular, GraphicsUnit.Point, 128);
+            this.inputTextBox.Location = new Point(3, 3);
             this.inputTextBox.Margin = new System.Windows.Forms.Padding(3, 3, 0, 3);
             this.inputTextBox.Multiline = true;
             this.inputTextBox.Name = "inputTextBox";
-            this.inputTextBox.Size = new System.Drawing.Size(567, 32);
+            this.inputTextBox.Size = new Size(567, 32);
             this.inputTextBox.TabIndex = 3;
             this.inputTextBox.TabStop = false;
-            this.inputTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.InputTextBox_KeyDown);
+            this.inputTextBox.KeyDown += this.InputTextBox_KeyDown;
             // 
             // arrowPictureBox
             // 
-            this.arrowPictureBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.arrowPictureBox.Image = global::SWF.UIComponent.WideDropDown.Properties.Resources.SmallArrowDown;
+            this.arrowPictureBox.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
+            this.arrowPictureBox.Image = Properties.Resources.SmallArrowDown;
             this.arrowPictureBox.IsSelected = false;
-            this.arrowPictureBox.Location = new System.Drawing.Point(570, 3);
+            this.arrowPictureBox.Location = new Point(570, 3);
             this.arrowPictureBox.Margin = new System.Windows.Forms.Padding(0, 6, 4, 6);
             this.arrowPictureBox.Name = "arrowPictureBox";
-            this.arrowPictureBox.Size = new System.Drawing.Size(24, 32);
+            this.arrowPictureBox.Size = new Size(24, 32);
             this.arrowPictureBox.TabIndex = 2;
             this.arrowPictureBox.TabStop = false;
-            this.arrowPictureBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.ArrowPictureBox_MouseClick);
+            this.arrowPictureBox.MouseClick += this.ArrowPictureBox_MouseClick;
             // 
             // WideComboBox
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 23F);
+            this.AutoScaleDimensions = new SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.inputTextBox);
             this.Controls.Add(this.arrowPictureBox);
             this.Controls.Add(this.addButton);
-            this.Font = new System.Drawing.Font("Yu Gothic UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.Font = new Font("Yu Gothic UI", 10F, FontStyle.Regular, GraphicsUnit.Point, 128);
             this.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.Name = "WideComboBox";
-            this.Size = new System.Drawing.Size(646, 38);
-            ((System.ComponentModel.ISupportInitialize)(this.arrowPictureBox)).EndInit();
+            this.Size = new Size(646, 38);
+            ((System.ComponentModel.ISupportInitialize)this.arrowPictureBox).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
-
         }
 
         #endregion
