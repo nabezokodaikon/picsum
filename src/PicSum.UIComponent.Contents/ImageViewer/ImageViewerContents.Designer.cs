@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace PicSum.UIComponent.Contents.ImageViewer
 {
@@ -123,7 +123,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             // 
             // viewContextMenuStrip
             // 
-            this.viewContextMenuStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.viewContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.singleViewToolStripMenuItem,
             this.leftFacingViewToolStripMenuItem,
@@ -168,7 +167,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             // 
             // sizeContextMenuStrip
             // 
-            this.sizeContextMenuStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.sizeContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.originalSizeToolStripMenuItem,
             this.allFitSizeToolStripMenuItem,
