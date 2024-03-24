@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -305,6 +305,8 @@ namespace WinApi
         public const int HTCAPTION = 2;
 
         public const int S_OK = 0;
+
+        public const int SW_RESTORE = 0x09;
 
         public const int EM_SETRECT = 0xB3; // テキストを表示する領域を設定
         public const int EM_GETLINECOUNT = 0xBA; // テキストの行数を取得する定数
@@ -843,6 +845,12 @@ namespace WinApi
 
         [DllImport("comctl32.dll", SetLastError = true)]
         public static extern IntPtr ImageList_GetIcon(IntPtr himl, int i, int flags);
+
+        [DllImport("user32.dll")]
+        public static extern bool SetForegroundWindow(IntPtr hWnd);
+
+        [DllImport("user32.dll")]
+        public static extern bool IsIconic(IntPtr hWnd);
 
         #endregion
 

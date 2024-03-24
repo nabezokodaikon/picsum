@@ -5,15 +5,11 @@ using PicSum.Task.AsyncFacade;
 using PicSum.Task.AsyncLogic;
 using SWF.Common;
 using System;
+using System.Diagnostics;
 using System.Runtime.Versioning;
-
-// TODO: 多重起動制御処理を、.net8.0に合わせる。
-//using System.Runtime.Remoting;
-//using System.Runtime.Remoting.Channels;
-//using System.Runtime.Remoting.Channels.Ipc;
-
 using System.Threading;
 using System.Windows.Forms;
+using WinApi;
 
 namespace PicSum.Main
 {
@@ -22,8 +18,40 @@ namespace PicSum.Main
         : MarshalByRefObject
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private static Mutex mutex;
 
-        private static InitialForm dummyForm = null;
+        public static Process GetPreviousProcess()
+        {
+            var curProcess = Process.GetCurrentProcess();
+            var currentPath = curProcess.MainModule.FileName;
+            var allProcesses = Process.GetProcessesByName(curProcess.ProcessName);
+
+            foreach (var checkProcess in allProcesses)
+            {
+                if (checkProcess.Id != curProcess.Id)
+                {
+                    string checkPath;
+
+                    try
+                    {
+                        checkPath = checkProcess.MainModule.FileName;
+                    }
+                    catch (System.ComponentModel.Win32Exception)
+                    {
+                        // アクセス権限がない場合は無視
+                        continue;
+                    }
+
+                    // プロセスのフルパス名を比較して同じアプリケーションか検証
+                    if (String.Compare(checkPath, currentPath, true) == 0)
+                    {
+                        return checkProcess;
+                    }
+                }
+            }
+
+            return null;
+        }
 
         /// <summary>
         /// アプリケーションのメイン エントリ ポイントです。
@@ -31,62 +59,64 @@ namespace PicSum.Main
         [STAThread]
         static void Main()
         {
-            using (var mutex = new Mutex(false, Application.ProductName))
+            mutex = new Mutex(true, "PicSum", out var createdNew);
+
+            try
             {
-                if (mutex.WaitOne(0, false))
+                if (!createdNew)
                 {
-                    Thread.CurrentThread.Name = "Main";
+                    var previousProcess = GetPreviousProcess();
+                    if (previousProcess != null)
+                    {
+                        // 既存のプロセスのメインウィンドウを前面に表示
+                        var hWnd = previousProcess.MainWindowHandle;
+                        if (hWnd != IntPtr.Zero)
+                        {
+                            WinApiMembers.SetForegroundWindow(hWnd);
+                        }
+                        else
+                        {
+                            MessageBox.Show("既に実行中のウィンドウが見つかりませんでした。");
+                        }
+                    }
+
+                    return;
+                }
+            }
+            finally
+            {
+                if (createdNew)
+                {
+                    mutex.ReleaseMutex();
+                }
+            }
+
+
+            Thread.CurrentThread.Name = "Main";
 
 #if DEBUG
-                    Logger.Info("アプリケーションを開始します。");
+            Logger.Info("アプリケーションを開始します。");
 #endif
 
-                    AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
+            AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
 
-                    // TODO: 多重起動制御処理を、.net8.0に合わせる。
-                    //ChannelServices.RegisterChannel(new IpcServerChannel(Application.ProductName), true);
-                    //RemotingConfiguration.RegisterWellKnownServiceType(typeof(Program), "Program", WellKnownObjectMode.Singleton);
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
 
-                    Application.EnableVisualStyles();
-                    Application.SetCompatibleTextRenderingDefault(false);
+            using (var component = new ComponentManager())
+            {
+                Application.Run(new InitialForm());
+            }
 
-                    using (var component = new ComponentManager())
-                    {
-                        Program.dummyForm = new InitialForm();
-                        Application.Run(Program.dummyForm);
-                    }
-
-                    FileIconCash.DisposeStaticResouces();
-                    GetThumbnailAsyncLogic.DisposeStaticResouces();
-                    ExportFileAsyncFacade.DisposeStaticResouces();
+            FileIconCash.DisposeStaticResouces();
+            GetThumbnailAsyncLogic.DisposeStaticResouces();
+            ExportFileAsyncFacade.DisposeStaticResouces();
 
 #if DEBUG
-                    Logger.Info("アプリケーションを終了します。");
-#endif                
-                }
-                else
-                {
-                    // TODO: 多重起動制御処理を、.net8.0に合わせる。
-                    //ChannelServices.RegisterChannel(new IpcClientChannel(), true);
-                    //RemotingConfiguration.RegisterWellKnownClientType(typeof(Program), "ipc://" + Application.ProductName + "/Program");
-                    Program pg = new Program();
-                    pg.ActivateBrowser();
-                }
-            }
-        }
+            Logger.Info("アプリケーションを終了します。");
+#endif
 
-        public void ActivateBrowser()
-        {
-            if (Program.dummyForm != null && Program.dummyForm.IsHandleCreated)
-            {
-                Program.dummyForm.Invoke((Action)(() =>
-                {
-                    if (Program.dummyForm != null && Program.dummyForm.IsHandleCreated)
-                    {
-                        Program.dummyForm.ActivateBrowser();
-                    }
-                }));
-            }
+            return;
         }
 
         private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)

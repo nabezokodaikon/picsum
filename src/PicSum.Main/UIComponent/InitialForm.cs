@@ -28,16 +28,6 @@ namespace PicSum.Main.UIComponent
 
         #endregion
 
-        #region パブリックメソッド
-
-        public void ActivateBrowser()
-        {
-            var browser = this.browserManager.GetActiveBrowser();
-            browser.Activate();
-        }
-
-        #endregion
-
         #region プライベートメソッド
 
         private void InitializeComponent()
