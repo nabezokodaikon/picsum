@@ -23,7 +23,7 @@ namespace PicSum.Main
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        private static DummyForm dummyForm = null;
+        private static InitialForm dummyForm = null;
 
         /// <summary>
         /// アプリケーションのメイン エントリ ポイントです。
@@ -52,7 +52,7 @@ namespace PicSum.Main
 
                     using (var component = new ComponentManager())
                     {
-                        Program.dummyForm = new DummyForm();
+                        Program.dummyForm = new InitialForm();
                         Application.Run(Program.dummyForm);
                     }
 

@@ -11,7 +11,7 @@ namespace PicSum.Main.UIComponent
     /// ダミーフォーム
     /// </summary>
     [SupportedOSPlatform("windows")]
-    internal sealed class DummyForm : HideForm
+    internal sealed class InitialForm : HideForm
     {
         #region インスタンス変数
 
@@ -21,7 +21,7 @@ namespace PicSum.Main.UIComponent
 
         #region コンストラクタ
 
-        public DummyForm()
+        public InitialForm()
         {
             this.InitializeComponent();
         }
