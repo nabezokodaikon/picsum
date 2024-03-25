@@ -1286,7 +1286,16 @@ namespace SWF.UIComponent.TabOperation
 
             if (defAllTabW > rect.Width)
             {
-                float tabW = (rect.Width - TAB_MARGIN * (this.tabList.Count - 1)) / this.tabList.Count;
+                float tabW;
+                if (this.tabList.Count > 0)
+                {
+                    tabW = (rect.Width - TAB_MARGIN * (this.tabList.Count - 1)) / this.tabList.Count;
+                }
+                else
+                {
+                    tabW = rect.Width;
+                }
+
                 return (int)Math.Max(tabW, TAB_MINIMUM_WIDTH);
             }
             else
