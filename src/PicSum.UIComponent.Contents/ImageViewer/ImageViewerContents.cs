@@ -309,12 +309,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             }
         }
 
-        private Size GetImageSize(string filePath)
-        {
-            var size = ImageUtil.GetImageSize(filePath);
-            return size;
-        }
-
         private int GetNextIndex()
         {
             if (this.displayMode == ImageDisplayMode.Single)
@@ -332,7 +326,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             {
                 var currentIndex = this.FilePathListIndex;
                 var currentFilePath = this.filePathList[currentIndex];
-                var currentImageSize = this.GetImageSize(currentFilePath);
+                var currentImageSize = ImageUtil.GetImageSize(currentFilePath); ;
                 if (currentImageSize.Width < currentImageSize.Height)
                 {
                     var nextIndex = currentIndex + 1;
@@ -342,7 +336,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                     }
 
                     var nextFilePath = this.filePathList[nextIndex];
-                    var nextImageSize = this.GetImageSize(nextFilePath);
+                    var nextImageSize = ImageUtil.GetImageSize(nextFilePath);
                     if (nextImageSize.Width < nextImageSize.Height)
                     {
                         if (nextIndex == this.MaximumIndex)
@@ -395,7 +389,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 }
 
                 var prevFilePath1 = this.filePathList[prevIndex1];
-                var prevImageSize1 = this.GetImageSize(prevFilePath1);
+                var prevImageSize1 = ImageUtil.GetImageSize(prevFilePath1);
                 if (prevImageSize1.Width < prevImageSize1.Height)
                 {
                     var prevIndex2 = prevIndex1 - 1;
@@ -405,7 +399,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                     }
 
                     var prevFilePath2 = this.filePathList[prevIndex2];
-                    var prevImageSize2 = this.GetImageSize(prevFilePath2);
+                    var prevImageSize2 = ImageUtil.GetImageSize(prevFilePath2);
                     if (prevImageSize2.Width < prevImageSize2.Height)
                     {
                         return prevIndex2;
