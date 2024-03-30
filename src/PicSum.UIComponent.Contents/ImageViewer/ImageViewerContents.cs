@@ -824,35 +824,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             }
         }
 
-        private void IndexToolStripSlider_ValueChanging(object sender, EventArgs e)
-        {
-            if (!this.CanOperation)
-            {
-                return;
-            }
-
-            var index = this.FilePathListIndex;
-            if (index < 0 || this.filePathList.Count - 1 < index)
-            {
-                return;
-            }
-
-            var filePath = this.filePathList[index];
-            var p = this.PointToClient(Cursor.Position);
-            this.filePathToolTip.Show(filePath, this, p.X, -16, 5000);
-        }
-
-        private void IndexToolStripSlider_ValueChanged(object sender, EventArgs e)
-        {
-            if (!this.CanOperation)
-            {
-                return;
-            }
-
-            this.filePathToolTip.Hide(this);
-            this.ReadImage();
-        }
-
         private void IndexSlider_ValueChanging(object sender, EventArgs e)
         {
             if (!this.CanOperation)
