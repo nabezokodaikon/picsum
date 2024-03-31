@@ -576,8 +576,23 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 return;
             }
 
-            this.SelectedFilePath = e.Image1.FilePath;
-            this.OnSelectedFileChanged(new SelectedFileChangeEventArgs(e.Image1.FilePath));
+            if (e.Image2 == null)
+            {
+                if (this.SelectedFilePath != e.Image1.FilePath)
+                {
+                    this.SelectedFilePath = e.Image1.FilePath;
+                    this.OnSelectedFileChanged(new SelectedFileChangeEventArgs(e.Image1.FilePath));
+                }
+            }
+            else
+            {
+                if (this.SelectedFilePath != e.Image1.FilePath
+                    && this.SelectedFilePath != e.Image2.FilePath)
+                {
+                    this.SelectedFilePath = e.Image1.FilePath;
+                    this.OnSelectedFileChanged(new SelectedFileChangeEventArgs(e.Image1.FilePath));
+                }
+            }
 
             if (this.displayMode == ImageDisplayMode.Single)
             {
