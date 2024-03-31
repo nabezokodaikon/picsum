@@ -109,7 +109,8 @@ namespace PicSum.Main.UIComponent
         {
             if (this.tabSwitch.ActiveTab != null)
             {
-                this.tabSwitch.ActiveTab.Contents.ResizeEnd();
+                var contents = this.tabSwitch.ActiveTab.GetContents<BrowserContents>();
+                contents.ResizeEnd();
             }            
         }
 
