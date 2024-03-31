@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -59,6 +59,14 @@ namespace SWF.UIComponent.TabOperation
         #endregion
 
         #region パブリックメソッド
+
+        /// <summary>
+        /// サイズの変更が完了したときに呼び出されます。
+        /// </summary>
+        public virtual void ResizeEnd()
+        {
+
+        }
 
         /// <summary>
         /// アクティブにします。

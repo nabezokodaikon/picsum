@@ -119,6 +119,12 @@ namespace PicSum.Main.UIComponent
 
         #region 継承メソッド
 
+        protected override void OnResizeEnd(EventArgs e)
+        {
+            this.browserMainPanel.ResizeEnd();
+            base.OnResizeEnd(e);
+        }
+
         protected override void OnHandleCreated(EventArgs e)
         {
             if (BrowserForm.startupProcess == null)

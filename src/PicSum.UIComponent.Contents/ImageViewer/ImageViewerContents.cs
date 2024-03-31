@@ -145,9 +145,15 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
         #region パブリックメソッド
 
-        public override void RedrawContents()
+        public override void ResizeEnd()
         {
-            // TODO: 画像を再描画する。
+            this.ReadImage();
+            base.ResizeEnd();
+        }
+
+        public override void RedrawContents()
+        {            
+            this.ReadImage();
         }
 
         #endregion
@@ -174,13 +180,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         {
             this.parameter.GetImageFiles += this.Parameter_GetImageFiles;
             this.parameter.GetImageFilesAction(this.parameter)();
-        }
-
-        protected override void OnResize(EventArgs e)
-        {
-            // TODO: 画像を再描画する。
-
-            base.OnResize(e);
         }
 
         protected override void OnMouseWheel(MouseEventArgs e)
