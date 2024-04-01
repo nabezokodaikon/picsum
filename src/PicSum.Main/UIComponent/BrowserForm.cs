@@ -182,19 +182,6 @@ namespace PicSum.Main.UIComponent
             base.Dispose(disposing);
         }
 
-        protected override void OnDwmCompositionChanged(EventArgs e)
-        {
-            this.SuspendLayout();
-
-            this.SetProperty();
-            this.SetBrowserMainPanelProperty(this.browserMainPanel);
-
-            this.ResetGrass();
-            this.SetGrass();
-
-            this.ResumeLayout();
-        }
-
         protected override void OnKeyDown(KeyEventArgs e)
         {
             if (this.isKeyDown)
@@ -283,8 +270,6 @@ namespace PicSum.Main.UIComponent
                 throw new Exception("メインコントロールは既に存在しています。");
             }
 
-            this.WaitInit();
-
             var browserMainPanel = new BrowserMainPanel();
 
             this.SetBrowserMainPanelProperty(browserMainPanel);
@@ -304,45 +289,18 @@ namespace PicSum.Main.UIComponent
 
         private void SetProperty()
         {
-            if (this.IsGrassEnabled)
-            {
-                this.Padding = new Padding(8, 12, 8, 8);
-            }
-            else
-            {
-                this.Padding = new Padding(0, 0, 0, 0);
-            }
+            this.Padding = new Padding(8, 12, 8, 8);
         }
 
         private void SetBrowserMainPanelProperty(BrowserMainPanel browserMainPanel)
         {
-            if (this.IsGrassEnabled)
-            {
-                var x = this.Padding.Left;
-                var y = this.Padding.Top;
-                var w = this.Width - this.Padding.Left - this.Padding.Right;
-                var h = this.Height - this.Padding.Top - this.Padding.Bottom;
-                browserMainPanel.SetBounds(x, y, w, h, BoundsSpecified.All);
-            }
-            else
-            {
-                var x = this.Padding.Left;
-                var y = this.Padding.Top;
-                var w = this.ClientRectangle.Width - this.Padding.Left - this.Padding.Right;
-                var h = this.ClientRectangle.Height - this.Padding.Top - this.Padding.Bottom;
-                browserMainPanel.SetBounds(x, y, w, h, BoundsSpecified.All);
-            }
+            var x = this.Padding.Left;
+            var y = this.Padding.Top;
+            var w = this.Width - this.Padding.Left - this.Padding.Right;
+            var h = this.Height - this.Padding.Top - this.Padding.Bottom;
+            browserMainPanel.SetBounds(x, y, w, h, BoundsSpecified.All);
 
             browserMainPanel.Anchor = ((AnchorStyles)(AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right));
-        }
-
-        private void WaitInit()
-        {
-            // ウィンドウの初期表示が終了するまで待機します。
-            while (base.IsInit)
-            {
-                Application.DoEvents();
-            }
         }
 
         private void OnTabDropouted(TabDropoutedEventArgs e)

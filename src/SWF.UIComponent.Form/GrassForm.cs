@@ -18,18 +18,9 @@ namespace SWF.UIComponent.Form
 
         #endregion
 
-        #region イベント・デリゲート
-
-        public event EventHandler DwmCompositionChanged;
-
-        #endregion
-
         #region インスタンス変数
 
-        private readonly bool isGlassWindowsVersion = (6 <= Environment.OSVersion.Version.Major);
         private WinApiMembers.MARGINS glassMargins = null;
-        private Point mouseDownCursorPoint = Point.Empty;
-        private Rectangle mouseDownFormRectangle = Rectangle.Empty;
         private int topOffset = 31;
         private bool isInit = true;
         private Size initSize = Size.Empty;
@@ -58,16 +49,9 @@ namespace SWF.UIComponent.Form
         {
             get
             {
-                if (this.IsGrassEnabled)
+                if (this.isInit)
                 {
-                    if (this.isInit)
-                    {
-                        return this.initSize;
-                    }
-                    else
-                    {
-                        return base.Size;
-                    }
+                    return this.initSize;
                 }
                 else
                 {
@@ -76,20 +60,12 @@ namespace SWF.UIComponent.Form
             }
             set
             {
-                if (this.IsGrassEnabled)
+                if (this.isInit)
                 {
-                    if (this.isInit)
-                    {
-                        this.initSize = value;
-                    }
-                    else
-                    {
-                        base.Size = value;
-                    }
+                    this.initSize = value;
                 }
                 else
                 {
-                    this.initSize = value;
                     base.Size = value;
                 }
             }
@@ -99,16 +75,9 @@ namespace SWF.UIComponent.Form
         {
             get
             {
-                if (this.IsGrassEnabled)
+                if (this.isInit)
                 {
-                    if (this.isInit)
-                    {
-                        return this.initWindowState;
-                    }
-                    else
-                    {
-                        return base.WindowState;
-                    }
+                    return this.initWindowState;
                 }
                 else
                 {
@@ -117,42 +86,14 @@ namespace SWF.UIComponent.Form
             }
             set
             {
-                if (this.IsGrassEnabled)
+                if (this.isInit)
                 {
-                    if (this.isInit)
-                    {
-                        this.initWindowState = value;
-                    }
-                    else
-                    {
-                        base.WindowState = value;
-                    }
+                    this.initWindowState = value;
                 }
                 else
                 {
-                    this.initWindowState = value;
                     base.WindowState = value;
                 }
-            }
-        }
-
-        public bool IsGrassEnabled
-        {
-            get
-            {
-                return this.isGlassWindowsVersion && WinApiMembers.DwmIsCompositionEnabled();
-            }
-        }
-
-        #endregion
-
-        #region 継承プロパティ
-
-        protected bool IsInit
-        {
-            get
-            {
-                return this.isInit;
             }
         }
 
@@ -192,110 +133,9 @@ namespace SWF.UIComponent.Form
                 this.glassMargins = null;
                 this.isSizeRestored = false;
                 this.SetWindowPos();
-                this.OnDwmCompositionChanged(new EventArgs());
                 base.WndProc(ref m);
             }
 
-            if (this.IsGrassEnabled)
-            {
-                this.GrassWndProc(ref m);
-            }
-            else
-            {
-                this.ClassicWndProc(ref m);
-            }
-        }
-
-        protected override void OnResize(EventArgs e)
-        {
-            base.OnResize(e);
-
-            if (this.IsGrassEnabled)
-            {
-                this.SettingtControlRegion();
-            }
-            else
-            {
-                this.ReSettingControlRegion();
-            }
-        }
-
-        protected override void OnPaintBackground(PaintEventArgs e)
-        {
-            //base.OnPaintBackground(e);
-        }
-
-        protected override void OnPaint(PaintEventArgs e)
-        {
-            //base.OnPaint(e);
-        }
-
-        protected override void OnShown(EventArgs e)
-        {
-            if (this.isInit)
-            {
-                base.Size = this.initSize;
-                base.WindowState = this.initWindowState;
-                this.isInit = false;
-            }
-
-            base.OnShown(e);
-        }
-
-        protected void SetGrass()
-        {
-            if (this.IsGrassEnabled)
-            {
-                WinApiMembers.DwmExtendFrameIntoClientArea(this.Handle, this.glassMargins);
-            }
-        }
-
-        protected void ResetGrass()
-        {
-            if (this.IsGrassEnabled)
-            {
-                var bbhOff = new WinApiMembers.DWM_BLURBEHIND();
-                bbhOff.dwFlags = WinApiMembers.DWM_BLURBEHIND.DWM_BB_ENABLE | WinApiMembers.DWM_BLURBEHIND.DWM_BB_BLURREGION;
-                bbhOff.fEnable = false;
-                bbhOff.hRegionBlur = IntPtr.Zero;
-                WinApiMembers.DwmEnableBlurBehindWindow(this.Handle, bbhOff);
-            }
-        }
-
-        protected void SetControlRegion()
-        {
-            if (this.IsGrassEnabled)
-            {
-                this.SettingtControlRegion();
-            }
-            else
-            {
-                this.ReSettingControlRegion();
-            }
-        }
-
-        protected virtual void OnDwmCompositionChanged(EventArgs e)
-        {
-            if (this.DwmCompositionChanged != null)
-            {
-                this.DwmCompositionChanged(this, e);
-            }
-        }
-
-        #endregion
-
-        #region プライベートメソッド
-
-        private void InitializeComponent()
-        {
-            this.SetStyle(ControlStyles.DoubleBuffer |
-                          ControlStyles.UserPaint |
-                          ControlStyles.AllPaintingInWmPaint |
-                          ControlStyles.ResizeRedraw, true);
-        }
-
-        private void GrassWndProc(ref Message m)
-        {
             IntPtr result;
             int dwmHandled = WinApiMembers.DwmDefWindowProc(m.HWnd, m.Msg, m.WParam, m.LParam, out result);
             if (dwmHandled == 1)
@@ -401,17 +241,64 @@ namespace SWF.UIComponent.Form
             }
         }
 
-        private void ClassicWndProc(ref Message m)
+        protected override void OnResize(EventArgs e)
         {
-            if (m.Msg == WinApiMembers.WM_NCCALCSIZE && (int)m.WParam == 1)
+            base.OnResize(e);
+
+            this.SettingtControlRegion();
+        }
+
+        protected override void OnPaintBackground(PaintEventArgs e)
+        {
+            //base.OnPaintBackground(e);
+        }
+
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            //base.OnPaint(e);
+        }
+
+        protected override void OnShown(EventArgs e)
+        {
+            if (this.isInit)
             {
-                if (this.glassMargins == null)
-                {
-                    this.glassMargins = new WinApiMembers.MARGINS();
-                }
+                base.Size = this.initSize;
+                base.WindowState = this.initWindowState;
+                this.isInit = false;
             }
 
-            base.WndProc(ref m);
+            base.OnShown(e);
+        }
+
+        protected void SetGrass()
+        {
+            WinApiMembers.DwmExtendFrameIntoClientArea(this.Handle, this.glassMargins);
+        }
+
+        protected void ResetGrass()
+        {
+            var bbhOff = new WinApiMembers.DWM_BLURBEHIND();
+            bbhOff.dwFlags = WinApiMembers.DWM_BLURBEHIND.DWM_BB_ENABLE | WinApiMembers.DWM_BLURBEHIND.DWM_BB_BLURREGION;
+            bbhOff.fEnable = false;
+            bbhOff.hRegionBlur = IntPtr.Zero;
+            WinApiMembers.DwmEnableBlurBehindWindow(this.Handle, bbhOff);
+        }
+
+        protected void SetControlRegion()
+        {
+            this.SettingtControlRegion();
+        }
+
+        #endregion
+
+        #region プライベートメソッド
+
+        private void InitializeComponent()
+        {
+            this.SetStyle(ControlStyles.DoubleBuffer |
+                          ControlStyles.UserPaint |
+                          ControlStyles.AllPaintingInWmPaint |
+                          ControlStyles.ResizeRedraw, true);
         }
 
         private void SetWindowPos()
@@ -425,14 +312,6 @@ namespace SWF.UIComponent.Form
                                        WinApiMembers.RECTWIDTH(rect),
                                        WinApiMembers.RECTHEIGHT(rect),
                                        WinApiMembers.SWP_FRAMECHANGED);
-        }
-
-        private void ReSettingControlRegion()
-        {
-            foreach (Control ctl in this.Controls)
-            {
-                ctl.Region = new Region(new Rectangle(0, 0, ctl.Width, ctl.Height));
-            }
         }
 
         private void SettingtControlRegion()
