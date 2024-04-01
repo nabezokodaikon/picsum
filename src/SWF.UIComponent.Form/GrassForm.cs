@@ -200,7 +200,7 @@ namespace SWF.UIComponent.Form
             {
                 if (this.glassMargins == null)
                 {
-                    WinApiMembers.NCCALCSIZE_PARAMS nccsp = (WinApiMembers.NCCALCSIZE_PARAMS)Marshal.PtrToStructure(m.LParam, typeof(WinApiMembers.NCCALCSIZE_PARAMS));
+                    var nccsp = (WinApiMembers.NCCALCSIZE_PARAMS)Marshal.PtrToStructure(m.LParam, typeof(WinApiMembers.NCCALCSIZE_PARAMS));
 
                     this.glassMargins = new WinApiMembers.MARGINS();
 
