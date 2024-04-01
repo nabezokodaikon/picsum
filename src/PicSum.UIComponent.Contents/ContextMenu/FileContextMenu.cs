@@ -159,8 +159,7 @@ namespace PicSum.UIComponent.Contents.ContextMenu
             {
                 this.SetDirectoryMenuItemVisible(false);
                 this.SetFileMenuItemVisible(false);
-                var isImageFile = filePathList.FirstOrDefault(file => !FileUtil.IsImageFile(file)) == null;
-                this.SetImageFileMenuItemVisible(isImageFile);
+                this.SetImageFileMenuItemVisible(false);
             }
             else
             {
