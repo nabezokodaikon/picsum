@@ -970,6 +970,42 @@ namespace SWF.Common
             }
         }
 
+        /// <summary>
+        /// エクスポート可能なファイルパスを取得します。
+        /// </summary>
+        /// <param name="exportDirectoryPath">エクスポートディレクトリパス</param>
+        /// <param name="srcFilePath">エクスポートファイル名</param>
+        /// <returns></returns>
+        public static string GetExportFileName(string exportDirectoryPath, string srcFilePath)
+        {
+            var ex = FileUtil.GetExtension(srcFilePath).ToLower();
+            var name = FileUtil.GetFileName(srcFilePath);
+            name = name.Substring(0, name.Length - ex.Length);
+
+            var count = 0;
+
+            do
+            {
+                string destFilePath;
+                if (count == 0)
+                {
+                    destFilePath = @$"{exportDirectoryPath}\{name}{ex}";
+                }
+                else
+                {
+                    destFilePath = @$"{exportDirectoryPath}\{name} ({count + 1}){ex}";
+                }
+
+                if (!FileUtil.IsExists(destFilePath))
+                {
+                    return destFilePath;
+                }
+
+                count++;
+
+            } while (true);
+        }
+
         // ファイルパスの末尾が"\"の場合取り除きます。
         private static string ToRemoveLastPathSeparate(string filePath)
         {

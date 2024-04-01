@@ -36,7 +36,7 @@ namespace PicSum.Task.AsyncFacade
             try
             {
                 var logic = new ExportFileAsyncLogic(this);
-                logic.Execute(param.ExportDirectoryPath, param.FilePathList);
+                logic.Execute(param.SrcFilePath, param.ExportFilePath);
             }
             finally
             {

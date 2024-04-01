@@ -1,7 +1,5 @@
 using PicSum.Core.Task.AsyncTask;
-using SWF.Common;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Versioning;
 
@@ -20,48 +18,19 @@ namespace PicSum.Task.AsyncLogic
 
         }
 
-        public void Execute(string exportDirectory, IList<string> srcFilePathList)
+        public void Execute(string srcFilePath, string exportFilePath)
         {
-            if (exportDirectory == null)
+            if (srcFilePath == null)
             {
-                throw new ArgumentNullException(nameof(exportDirectory));
+                throw new ArgumentNullException(nameof(srcFilePath));
             }
 
-            if (srcFilePathList == null)
+            if (exportFilePath == null)
             {
-                throw new ArgumentNullException(nameof(srcFilePathList));
+                throw new ArgumentNullException(nameof(exportFilePath));
             }
 
-            foreach (var srcFilePath in srcFilePathList)
-            {
-                var ex = FileUtil.GetExtension(srcFilePath).ToLower();
-                var name = FileUtil.GetFileName(srcFilePath);
-                name = name.Substring(0, name.Length - ex.Length);
-
-                var count = 0;
-
-                do
-                {
-                    string destFilePath;
-                    if (count == 0)
-                    {
-                        destFilePath = string.Format("{0}\\{1}{2}", exportDirectory, name, ex);
-                    }
-                    else
-                    {
-                        destFilePath = string.Format("{0}\\{1}-({2}){3}", exportDirectory, name, count, ex);
-                    }
-
-                    if (!FileUtil.IsExists(destFilePath))
-                    {
-                        File.Copy(srcFilePath, destFilePath);
-                        break;
-                    }
-
-                    count++;
-
-                } while (true);
-            }
+            File.Copy(srcFilePath, exportFilePath);
         }
     }
 }

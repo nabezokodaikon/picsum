@@ -973,18 +973,21 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
         private void FileContextMenu_Export(object sender, ExecuteFileListEventArgs e)
         {
-            using (var ofd = new OpenFileDialog())
+            using (var ofd = new SaveFileDialog())
             {
+                var srcFilePath = e.FilePathList.First();
                 ofd.InitialDirectory = CommonConfig.ExportDirectoryPath;
-                ofd.FileName = FileUtil.GetFileName(e.FilePathList.First());
+                ofd.FileName = FileUtil.GetExportFileName(
+                    CommonConfig.ExportDirectoryPath,
+                    srcFilePath);
                 ofd.CheckFileExists = false;
 
                 if (ofd.ShowDialog() == DialogResult.OK)
                 {
                     var dir = FileUtil.GetParentDirectoryPath(ofd.FileName);
                     var param = new ExportFileParameter();
-                    param.ExportDirectoryPath = dir;
-                    param.FilePathList = e.FilePathList;
+                    param.SrcFilePath = srcFilePath;
+                    param.ExportFilePath = ofd.FileName;
                     this.ExportFileProcess.Execute(this, param);
 
                     CommonConfig.ExportDirectoryPath = dir;
