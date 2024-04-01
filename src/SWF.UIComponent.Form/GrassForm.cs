@@ -128,14 +128,6 @@ namespace SWF.UIComponent.Form
 
         protected override void WndProc(ref Message m)
         {
-            if (m.Msg == WinApiMembers.WM_DWMCOMPOSITIONCHANGED)
-            {
-                this.glassMargins = null;
-                this.isSizeRestored = false;
-                this.SetWindowPos();
-                base.WndProc(ref m);
-            }
-
             IntPtr result;
             int dwmHandled = WinApiMembers.DwmDefWindowProc(m.HWnd, m.Msg, m.WParam, m.LParam, out result);
             if (dwmHandled == 1)
