@@ -250,7 +250,6 @@ namespace PicSum.Main.UIComponent
             this.AutoScaleMode = AutoScaleMode.None;
             this.StartPosition = FormStartPosition.Manual;
             this.MinimumSize = new Size(320, 240);
-            this.TopOffset = 41;
             this.KeyPreview = true;
 
             this.SetProperty();

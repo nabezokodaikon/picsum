@@ -12,16 +12,15 @@ namespace SWF.UIComponent.Form
     public class GrassForm
         : System.Windows.Forms.Form
     {
-        #region 定数・列挙
+        #region クラスメンバ
 
-        private const int DEFAULT_GRASS_MARGIN = 8;
+        private const int TOP_OFFSET = 41;
 
         #endregion
 
         #region インスタンス変数
 
         private WinApiMembers.MARGINS glassMargins = null;
-        private int topOffset = 31;
         private bool isInit = true;
         private Size initSize = Size.Empty;
         private FormWindowState initWindowState = FormWindowState.Normal;
@@ -29,18 +28,6 @@ namespace SWF.UIComponent.Form
         #endregion
 
         #region パブリックプロパティ
-
-        public int TopOffset
-        {
-            get
-            {
-                return this.topOffset;
-            }
-            set
-            {
-                this.topOffset = value;
-            }
-        }
 
         public new Size Size
         {
@@ -132,44 +119,18 @@ namespace SWF.UIComponent.Form
                 m.Result = result;
                 return;
             }
-            
-            if (m.Msg == WinApiMembers.WM_ACTIVATE)
-            {
-                int wParam = ((int)m.WParam) & 0xFFFF;
-                if (wParam == WinApiMembers.WA_ACTIVE)
-                {
-                    this.SetWindowPos();
-                }
 
-                base.WndProc(ref m);
-            }
-            else if (m.Msg == WinApiMembers.WM_NCCALCSIZE && (int)m.WParam == 1)
+            if (m.Msg == WinApiMembers.WM_NCCALCSIZE && (int)m.WParam == 1)
             {
                 if (this.glassMargins == null)
                 {
                     var nccsp = (WinApiMembers.NCCALCSIZE_PARAMS)Marshal.PtrToStructure(m.LParam, typeof(WinApiMembers.NCCALCSIZE_PARAMS));
 
                     this.glassMargins = new WinApiMembers.MARGINS();
-
-                    this.glassMargins.cyTopHeight = this.topOffset;
-
+                    this.glassMargins.cyTopHeight = TOP_OFFSET;
                     this.glassMargins.cxLeftWidth = nccsp.rgrc2.left - nccsp.rgrc1.left;
-                    if (this.glassMargins.cxLeftWidth <= 0)
-                    {
-                        this.glassMargins.cxLeftWidth = DEFAULT_GRASS_MARGIN;
-                    }
-
                     this.glassMargins.cxRightWidth = nccsp.rgrc1.right - nccsp.rgrc2.right;
-                    if (this.glassMargins.cxRightWidth <= 0)
-                    {
-                        this.glassMargins.cxRightWidth = DEFAULT_GRASS_MARGIN;
-                    }
-
                     this.glassMargins.cyBottomHeight = nccsp.rgrc1.bottom - nccsp.rgrc2.bottom;
-                    if (this.glassMargins.cyBottomHeight <= 0)
-                    {
-                        this.glassMargins.cyBottomHeight = DEFAULT_GRASS_MARGIN;
-                    }
 
                     nccsp.rgrc0.top -= 1;
 
@@ -200,11 +161,6 @@ namespace SWF.UIComponent.Form
             //base.OnPaintBackground(e);
         }
 
-        protected override void OnPaint(PaintEventArgs e)
-        {
-            //base.OnPaint(e);
-        }
-
         protected override void OnShown(EventArgs e)
         {
             if (this.isInit)
@@ -222,15 +178,6 @@ namespace SWF.UIComponent.Form
             WinApiMembers.DwmExtendFrameIntoClientArea(this.Handle, this.glassMargins);
         }
 
-        protected void ResetGrass()
-        {
-            var bbhOff = new WinApiMembers.DWM_BLURBEHIND();
-            bbhOff.dwFlags = WinApiMembers.DWM_BLURBEHIND.DWM_BB_ENABLE | WinApiMembers.DWM_BLURBEHIND.DWM_BB_BLURREGION;
-            bbhOff.fEnable = false;
-            bbhOff.hRegionBlur = IntPtr.Zero;
-            WinApiMembers.DwmEnableBlurBehindWindow(this.Handle, bbhOff);
-        }
-
         protected void SetControlRegion()
         {
             this.SettingtControlRegion();
@@ -242,23 +189,13 @@ namespace SWF.UIComponent.Form
 
         private void InitializeComponent()
         {
-            this.SetStyle(ControlStyles.DoubleBuffer |
-                          ControlStyles.UserPaint |
-                          ControlStyles.AllPaintingInWmPaint |
-                          ControlStyles.ResizeRedraw, true);
-        }
-
-        private void SetWindowPos()
-        {
-            WinApiMembers.RECT rect;
-            WinApiMembers.GetWindowRect(this.Handle, out rect);
-            WinApiMembers.SetWindowPos(this.Handle,
-                                       WinApiMembers.HWND.HWND_TOP,
-                                       rect.left,
-                                       rect.top,
-                                       WinApiMembers.RECTWIDTH(rect),
-                                       WinApiMembers.RECTHEIGHT(rect),
-                                       WinApiMembers.SWP_FRAMECHANGED);
+            this.SetStyle(
+                ControlStyles.AllPaintingInWmPaint |
+                ControlStyles.ContainerControl |
+                ControlStyles.OptimizedDoubleBuffer |
+                ControlStyles.UserPaint |
+                ControlStyles.ResizeRedraw, true
+                );
         }
 
         private void SettingtControlRegion()
