@@ -25,9 +25,6 @@ namespace SWF.UIComponent.Form
         private bool isInit = true;
         private Size initSize = Size.Empty;
         private FormWindowState initWindowState = FormWindowState.Normal;
-        private bool isMaximum = false;
-        private bool isSizeRestored = false;
-        private Size restoredSize = Size.Empty;
 
         #endregion
 
@@ -135,50 +132,8 @@ namespace SWF.UIComponent.Form
                 m.Result = result;
                 return;
             }
-
-            if (m.Msg == WinApiMembers.WM_WINDOWPOSCHANGING)
-            {
-                if (this.isSizeRestored)
-                {
-                    var wp = (WinApiMembers.WINDOWPOS)Marshal.PtrToStructure(m.LParam, typeof(WinApiMembers.WINDOWPOS));
-                    wp.cx = this.restoredSize.Width;
-                    wp.cy = this.restoredSize.Height;
-                    Marshal.StructureToPtr(wp, m.LParam, true);
-                    this.isSizeRestored = false;
-                }
-
-                base.WndProc(ref m);
-            }
-            else if (m.Msg == WinApiMembers.WM_SIZE)
-            {
-                int wParam = (int)m.WParam;
-                if (wParam == WinApiMembers.SIZE_RESTORED)
-                {
-                    if (this.isMaximum)
-                    {
-                        this.isSizeRestored = true;
-                    }
-
-                    if (!this.isSizeRestored)
-                    {
-                        int lParam = (int)m.LParam;
-                        int w = WinApiMembers.LoWord(lParam);
-                        int h = WinApiMembers.HiWord(lParam);
-                        this.restoredSize = new Size(w, h);
-                    }
-                }
-                else if (wParam == WinApiMembers.SIZE_MINIMIZED)
-                {
-                    this.isMaximum = true;
-                }
-                else if (wParam == WinApiMembers.SIZE_MAXIMIZED)
-                {
-                    this.isMaximum = true;
-                }
-
-                base.WndProc(ref m);
-            }
-            else if (m.Msg == WinApiMembers.WM_ACTIVATE)
+            
+            if (m.Msg == WinApiMembers.WM_ACTIVATE)
             {
                 int wParam = ((int)m.WParam) & 0xFFFF;
                 if (wParam == WinApiMembers.WA_ACTIVE)
