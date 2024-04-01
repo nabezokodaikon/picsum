@@ -1272,7 +1272,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 sb.AppendLine(filePath);
             }
 
-            Clipboard.SetText(sb.ToString());
+            Clipboard.SetText(sb.ToString().TrimEnd('\n', '\r'));
         }
 
         private void FileContextMenu_NameCopy(object sender, ExecuteFileListEventArgs e)
@@ -1284,7 +1284,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 sb.AppendLine(FileUtil.GetFileName(filePath));
             }
 
-            Clipboard.SetText(sb.ToString());
+            Clipboard.SetText(sb.ToString().TrimEnd('\n', '\r'));
         }
 
         private void FileContextMenu_RemoveFromList(object sender, ExecuteFileListEventArgs e)
