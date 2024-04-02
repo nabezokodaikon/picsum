@@ -971,6 +971,18 @@ namespace SWF.Common
         }
 
         /// <summary>
+        /// エクスポート時のダイアログのフィルター文字列を取得します。
+        /// </summary>
+        /// <param name="filePath">エクスポートするファイルパス。</param>
+        /// <returns></returns>
+        public static string GetExportFilterText(string filePath)
+        {
+            var ex = FileUtil.GetExtension(filePath)
+                .Substring(1);
+            return $"{ex.ToUpper()} Files (*.{ex.ToLower()})|*.{ex.ToLower()}|All Files (*.*)|*.*";
+        }
+
+        /// <summary>
         /// エクスポート可能なファイルパスを取得します。
         /// </summary>
         /// <param name="exportDirectoryPath">エクスポートディレクトリパス</param>

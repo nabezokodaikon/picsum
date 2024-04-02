@@ -1249,6 +1249,8 @@ namespace PicSum.UIComponent.Contents.FileList
                     CommonConfig.ExportDirectoryPath,
                     srcFilePath);
                 ofd.CheckFileExists = false;
+                ofd.Filter = FileUtil.GetExportFilterText(srcFilePath);
+                ofd.FilterIndex = 0;
 
                 if (ofd.ShowDialog() == DialogResult.OK)
                 {
