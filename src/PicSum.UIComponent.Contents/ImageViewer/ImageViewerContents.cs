@@ -308,9 +308,9 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             }
         }
 
-        private int GetNextIndex(bool isSingle)
+        private int GetNextIndex(bool isForceSingle)
         {
-            if (this.displayMode == ImageDisplayMode.Single || isSingle)
+            if (isForceSingle || this.displayMode == ImageDisplayMode.Single)
             {
                 if (this.FilePathListIndex == this.MaximumIndex)
                 {
