@@ -193,11 +193,11 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             {
                 if (e.Delta > 0)
                 {
-                    this.FilePathListIndex = this.GetPreviewIndex();
+                    this.FilePathListIndex = this.GetPreviewIndex(false);
                 }
                 else
                 {
-                    this.FilePathListIndex = this.GetNextIndex();
+                    this.FilePathListIndex = this.GetNextIndex(false);
                 }
             }
             catch (ImageUtilException ex)
@@ -222,12 +222,12 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
             if ((keyData & Keys.KeyCode) == Keys.Right)
             {
-                this.FilePathListIndex = this.GetNextIndex();
+                this.FilePathListIndex = this.GetNextIndex(false);
                 return true;
             }
             else if ((keyData & Keys.KeyCode) == Keys.Left)
             {
-                this.FilePathListIndex = this.GetPreviewIndex();
+                this.FilePathListIndex = this.GetPreviewIndex(false);
                 return true;
             }
 
@@ -308,9 +308,9 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             }
         }
 
-        private int GetNextIndex()
+        private int GetNextIndex(bool isSingle)
         {
-            if (this.displayMode == ImageDisplayMode.Single)
+            if (this.displayMode == ImageDisplayMode.Single || isSingle)
             {
                 if (this.FilePathListIndex == this.MaximumIndex)
                 {
@@ -366,9 +366,9 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             }
         }
 
-        private int GetPreviewIndex()
+        private int GetPreviewIndex(bool isSingle)
         {
-            if (this.displayMode == ImageDisplayMode.Single)
+            if (this.displayMode == ImageDisplayMode.Single || isSingle)
             {
                 if (this.FilePathListIndex == 0)
                 {
@@ -807,7 +807,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
             try
             {
-                this.FilePathListIndex = this.GetPreviewIndex();
+                this.FilePathListIndex = this.GetPreviewIndex(false);
             }
             catch (ImageUtilException ex)
             {
@@ -824,7 +824,41 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
             try
             {
-                this.FilePathListIndex = this.GetNextIndex();
+                this.FilePathListIndex = this.GetNextIndex(false);
+            }
+            catch (ImageUtilException ex)
+            {
+                ExceptionUtil.ShowErrorDialog(ex);
+            }
+        }
+
+        private void SinglePreviewIndexToolStripButton_Click(object sender, EventArgs e)
+        {
+            if (!this.CanOperation)
+            {
+                return;
+            }
+
+            try
+            {
+                this.FilePathListIndex = this.GetPreviewIndex(true);
+            }
+            catch (ImageUtilException ex)
+            {
+                ExceptionUtil.ShowErrorDialog(ex);
+            }
+        }
+
+        private void SingleNextIndexToolStripButton_Click(object sender, EventArgs e)
+        {
+            if (!this.CanOperation)
+            {
+                return;
+            }
+
+            try
+            {
+                this.FilePathListIndex = this.GetNextIndex(true);
             }
             catch (ImageUtilException ex)
             {
