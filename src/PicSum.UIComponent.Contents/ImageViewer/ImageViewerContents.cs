@@ -445,42 +445,28 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
         private bool SetDisplayMode(ImageDisplayMode mode)
         {
-            if (mode == ImageDisplayMode.Single)
+            this.singleViewToolStripMenuItem.Checked = false;
+            this.leftFacingViewToolStripMenuItem.Checked = false;
+            this.rightFacingViewToolStripMenuItem.Checked = false;
+
+            switch (mode)
             {
-                this.singleViewToolStripMenuItem.Checked = true;
-                this.doublePreviewIndexToolStripButton.Enabled = false;
-                this.doubleNextIndexToolStripButton.Enabled = false;
-            }
-            else if (mode != ImageDisplayMode.Single)
-            {
-                this.singleViewToolStripMenuItem.Checked = false;
-                this.doublePreviewIndexToolStripButton.Enabled = true;
-                this.doubleNextIndexToolStripButton.Enabled = true;
-            }
-            else if (mode == ImageDisplayMode.LeftFacing)
-            {
-                this.leftFacingViewToolStripMenuItem.Checked = true;
-                this.doublePreviewIndexToolStripButton.Enabled = true;
-                this.doubleNextIndexToolStripButton.Enabled = true;
-            }
-            else if (mode != ImageDisplayMode.LeftFacing)
-            {
-                this.leftFacingViewToolStripMenuItem.Checked = false;
-                this.doublePreviewIndexToolStripButton.Enabled = false;
-                this.doubleNextIndexToolStripButton.Enabled = false;
-            }
-            else if (mode == ImageDisplayMode.RightFacing)
-            {
-                this.rightFacingViewToolStripMenuItem.Checked = true;
-                this.doublePreviewIndexToolStripButton.Enabled = true;
-                this.doubleNextIndexToolStripButton.Enabled = true;
-            }
-            else if (mode != ImageDisplayMode.RightFacing)
-            {
-                this.rightFacingViewToolStripMenuItem.Checked = false;
-                this.doublePreviewIndexToolStripButton.Enabled = false;
-                this.doubleNextIndexToolStripButton.Enabled = false;
-            }
+                case ImageDisplayMode.Single:
+                    this.singleViewToolStripMenuItem.Checked = true;
+                    this.doublePreviewIndexToolStripButton.Enabled = false;
+                    this.doubleNextIndexToolStripButton.Enabled = false;
+                    break;
+                case ImageDisplayMode.LeftFacing:
+                    this.leftFacingViewToolStripMenuItem.Checked = true;
+                    this.doublePreviewIndexToolStripButton.Enabled = true;
+                    this.doubleNextIndexToolStripButton.Enabled = true;
+                    break;
+                case ImageDisplayMode.RightFacing:
+                    this.rightFacingViewToolStripMenuItem.Checked = true;
+                    this.doublePreviewIndexToolStripButton.Enabled = true;
+                    this.doubleNextIndexToolStripButton.Enabled = true;
+                    break;
+            }           
 
             if (this.displayMode != mode)
             {
