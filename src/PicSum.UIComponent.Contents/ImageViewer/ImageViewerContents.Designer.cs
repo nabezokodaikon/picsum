@@ -159,7 +159,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.viewToolStripSplitButton.ForeColor = System.Drawing.SystemColors.ControlText;
             this.viewToolStripSplitButton.Image = ((System.Drawing.Image)(resources.GetObject("viewToolStripSplitButton.Image")));
             this.viewToolStripSplitButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.viewToolStripSplitButton.Margin = new System.Windows.Forms.Padding(6, 1, 0, 2);
+            this.viewToolStripSplitButton.Margin = new System.Windows.Forms.Padding(6, 5, 0, 2);
             this.viewToolStripSplitButton.Name = "viewToolStripSplitButton";
             this.viewToolStripSplitButton.Size = new System.Drawing.Size(58, 24);
             this.viewToolStripSplitButton.Text = "Display";
@@ -204,7 +204,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.sizeToolStripSplitButton.ForeColor = System.Drawing.SystemColors.ControlText;
             this.sizeToolStripSplitButton.Image = ((System.Drawing.Image)(resources.GetObject("sizeToolStripSplitButton.Image")));
             this.sizeToolStripSplitButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.sizeToolStripSplitButton.Margin = new System.Windows.Forms.Padding(6, 1, 0, 2);
+            this.sizeToolStripSplitButton.Margin = new System.Windows.Forms.Padding(6, 5, 0, 2);
             this.sizeToolStripSplitButton.Name = "sizeToolStripSplitButton";
             this.sizeToolStripSplitButton.Size = new System.Drawing.Size(62, 24);
             this.sizeToolStripSplitButton.Text = "Size";
@@ -230,27 +230,25 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             // previewIndexToolStripButton
             // 
             this.previewIndexToolStripButton.AutoToolTip = false;
-            this.previewIndexToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.previewIndexToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.previewIndexToolStripButton.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.previewIndexToolStripButton.Image = global::PicSum.UIComponent.Contents.Properties.Resources.MiddleArrowLeft;
             this.previewIndexToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.previewIndexToolStripButton.Margin = new System.Windows.Forms.Padding(6, 1, 0, 2);
+            this.previewIndexToolStripButton.Margin = new System.Windows.Forms.Padding(6, 5, 0, 2);
             this.previewIndexToolStripButton.Name = "previewIndexToolStripButton";
             this.previewIndexToolStripButton.Size = new System.Drawing.Size(29, 24);
-            this.previewIndexToolStripButton.Text = "toolStripButton1";
+            this.previewIndexToolStripButton.Text = "<<-";
             this.previewIndexToolStripButton.Click += new System.EventHandler(this.PreviewIndexToolStripButton_Click);
             // 
             // nextIndexToolStripButton
             // 
             this.nextIndexToolStripButton.AutoToolTip = false;
-            this.nextIndexToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.nextIndexToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.nextIndexToolStripButton.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.nextIndexToolStripButton.Image = global::PicSum.UIComponent.Contents.Properties.Resources.MiddleArrowRight;
             this.nextIndexToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.nextIndexToolStripButton.Margin = new System.Windows.Forms.Padding(2, 1, 0, 2);
+            this.nextIndexToolStripButton.Margin = new System.Windows.Forms.Padding(2, 5, 0, 2);
             this.nextIndexToolStripButton.Name = "nextIndexToolStripButton";
             this.nextIndexToolStripButton.Size = new System.Drawing.Size(29, 24);
-            this.nextIndexToolStripButton.Text = "toolStripButton2";
+            this.nextIndexToolStripButton.Text = "->>";
             this.nextIndexToolStripButton.Click += new System.EventHandler(this.NextIndexToolStripButton_Click);
             // 
             // indexSlider
