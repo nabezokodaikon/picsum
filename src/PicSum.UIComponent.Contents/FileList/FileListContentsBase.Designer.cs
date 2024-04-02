@@ -249,9 +249,8 @@ namespace PicSum.UIComponent.Contents.FileList
             // 
             // movePreviewToolStripButton
             // 
-            this.movePreviewToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.movePreviewToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("movePreviewToolStripButton.Image")));
-            this.movePreviewToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.movePreviewToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.movePreviewToolStripButton.Text = "<-";
             this.movePreviewToolStripButton.Margin = new System.Windows.Forms.Padding(3, 1, 0, 2);
             this.movePreviewToolStripButton.Name = "movePreviewToolStripButton";
             this.movePreviewToolStripButton.Size = new System.Drawing.Size(23, 24);
@@ -259,9 +258,8 @@ namespace PicSum.UIComponent.Contents.FileList
             // 
             // moveNextToolStripButton
             // 
-            this.moveNextToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.moveNextToolStripButton.Image = global::PicSum.UIComponent.Contents.Properties.Resources.MiddleArrowRight;
-            this.moveNextToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.moveNextToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.moveNextToolStripButton.Text = "->";
             this.moveNextToolStripButton.Name = "moveNextToolStripButton";
             this.moveNextToolStripButton.Size = new System.Drawing.Size(23, 24);
             this.moveNextToolStripButton.Click += new System.EventHandler(this.MoveNextToolStripButton_Click);
