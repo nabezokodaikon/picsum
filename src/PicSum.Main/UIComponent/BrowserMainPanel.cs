@@ -591,6 +591,13 @@ namespace PicSum.Main.UIComponent
         private void ShowInfoToolButton_MouseClick(object sender, MouseEventArgs e)
         {
             this.IsShowFileInfo = !this.IsShowFileInfo;
+
+            var activeTab = this.tabSwitch.ActiveTab;
+            if (activeTab != null)
+            {
+                var contents = activeTab.GetContents<BrowserContents>();
+                contents.RedrawContents();
+            }
         }
 
         #endregion
