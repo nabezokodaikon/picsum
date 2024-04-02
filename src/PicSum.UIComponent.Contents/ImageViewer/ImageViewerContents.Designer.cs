@@ -28,12 +28,12 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.singleViewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.leftFacingViewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rightFacingViewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.viewToolStripSplitButton = new System.Windows.Forms.ToolStripSplitButton();
+            this.viewToolStripDropDownButton = new System.Windows.Forms.ToolStripDropDownButton();
             this.sizeContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.originalSizeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.allFitSizeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.onlyBigImageFitSizeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.sizeToolStripSplitButton = new System.Windows.Forms.ToolStripSplitButton();
+            this.sizeToolStripDropDownButton = new System.Windows.Forms.ToolStripDropDownButton();
             this.toolBar = new PicSum.UIComponent.Contents.ToolBar.ContentsToolBar();
             this.doublePreviewIndexToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.doubleNextIndexToolStripButton = new System.Windows.Forms.ToolStripButton();
@@ -155,17 +155,14 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             // 
             // viewToolStripSplitButton
             // 
-            this.viewToolStripSplitButton.AutoToolTip = false;
-            this.viewToolStripSplitButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.viewToolStripSplitButton.DropDown = this.viewContextMenuStrip;
-            this.viewToolStripSplitButton.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.viewToolStripSplitButton.Image = ((System.Drawing.Image)(resources.GetObject("viewToolStripSplitButton.Image")));
-            this.viewToolStripSplitButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.viewToolStripSplitButton.Margin = new System.Windows.Forms.Padding(6, 5, 0, 2);
-            this.viewToolStripSplitButton.Name = "viewToolStripSplitButton";
-            this.viewToolStripSplitButton.Size = new System.Drawing.Size(58, 24);
-            this.viewToolStripSplitButton.Text = "Display";
-            this.viewToolStripSplitButton.ButtonClick += new System.EventHandler(this.ViewToolStripSplitButton_ButtonClick);
+            this.viewToolStripDropDownButton.AutoToolTip = false;
+            this.viewToolStripDropDownButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.viewToolStripDropDownButton.DropDown = this.viewContextMenuStrip;
+            this.viewToolStripDropDownButton.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.viewToolStripDropDownButton.Margin = new System.Windows.Forms.Padding(6, 5, 0, 2);
+            this.viewToolStripDropDownButton.Name = "viewToolStripSplitButton";
+            this.viewToolStripDropDownButton.Size = new System.Drawing.Size(58, 24);
+            this.viewToolStripDropDownButton.Text = "Display";
             // 
             // sizeContextMenuStrip
             // 
@@ -174,7 +171,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.allFitSizeToolStripMenuItem,
             this.onlyBigImageFitSizeToolStripMenuItem});
             this.sizeContextMenuStrip.Name = "sizeContextMenuStrip";
-            this.sizeContextMenuStrip.OwnerItem = this.sizeToolStripSplitButton;
+            this.sizeContextMenuStrip.OwnerItem = this.sizeToolStripDropDownButton;
             this.sizeContextMenuStrip.Size = new System.Drawing.Size(316, 76);
             // 
             // originalSizeToolStripMenuItem
@@ -200,17 +197,16 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             // 
             // sizeToolStripSplitButton
             // 
-            this.sizeToolStripSplitButton.AutoToolTip = false;
-            this.sizeToolStripSplitButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.sizeToolStripSplitButton.DropDown = this.sizeContextMenuStrip;
-            this.sizeToolStripSplitButton.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.sizeToolStripSplitButton.Image = ((System.Drawing.Image)(resources.GetObject("sizeToolStripSplitButton.Image")));
-            this.sizeToolStripSplitButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.sizeToolStripSplitButton.Margin = new System.Windows.Forms.Padding(6, 5, 0, 2);
-            this.sizeToolStripSplitButton.Name = "sizeToolStripSplitButton";
-            this.sizeToolStripSplitButton.Size = new System.Drawing.Size(62, 24);
-            this.sizeToolStripSplitButton.Text = "Size";
-            this.sizeToolStripSplitButton.ButtonClick += new System.EventHandler(this.SizeToolStripSplitButton_ButtonClick);
+            this.sizeToolStripDropDownButton.AutoToolTip = false;
+            this.sizeToolStripDropDownButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.sizeToolStripDropDownButton.DropDown = this.sizeContextMenuStrip;
+            this.sizeToolStripDropDownButton.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.sizeToolStripDropDownButton.Image = ((System.Drawing.Image)(resources.GetObject("sizeToolStripSplitButton.Image")));
+            this.sizeToolStripDropDownButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.sizeToolStripDropDownButton.Margin = new System.Windows.Forms.Padding(6, 5, 0, 2);
+            this.sizeToolStripDropDownButton.Name = "sizeToolStripSplitButton";
+            this.sizeToolStripDropDownButton.Size = new System.Drawing.Size(62, 24);
+            this.sizeToolStripDropDownButton.Text = "Size";
             // 
             // toolBar
             // 
@@ -219,8 +215,8 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.toolBar.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
             this.toolBar.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.toolBar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.viewToolStripSplitButton,
-            this.sizeToolStripSplitButton,
+            this.viewToolStripDropDownButton,
+            this.sizeToolStripDropDownButton,
             this.doublePreviewIndexToolStripButton,
             this.singlePreviewIndexToolStripButton,
             this.singleNextIndexToolStripButton,
@@ -323,8 +319,8 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         private System.Windows.Forms.ToolTip filePathToolTip;
         private SWF.UIComponent.Common.CheckPatternPanel checkPatternPanel;
         private PicSum.UIComponent.Contents.ToolBar.ContentsToolBar toolBar;
-        private System.Windows.Forms.ToolStripSplitButton viewToolStripSplitButton;
-        private System.Windows.Forms.ToolStripSplitButton sizeToolStripSplitButton;
+        private System.Windows.Forms.ToolStripDropDownButton viewToolStripDropDownButton;
+        private System.Windows.Forms.ToolStripDropDownButton sizeToolStripDropDownButton;
         private System.Windows.Forms.ToolStripButton doublePreviewIndexToolStripButton;
         private System.Windows.Forms.ToolStripButton doubleNextIndexToolStripButton;
         private System.Windows.Forms.ToolStripButton singlePreviewIndexToolStripButton;

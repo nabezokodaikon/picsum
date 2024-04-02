@@ -661,25 +661,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
         #region ツールバーイベント
 
-        private void ViewToolStripSplitButton_ButtonClick(object sender, EventArgs e)
-        {
-            if (!this.IsHandleCreated)
-            {
-                return;
-            }
-
-            if (!this.CanOperation)
-            {
-                return;
-            }
-
-            if (this.SetDisplayMode(this.GetNextDisplayMode()))
-            {
-                ImageViewerContentsConfig.ImageDisplayMode = this.displayMode;
-                this.ReadImage();
-            }
-        }
-
         private void SingleViewToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (!this.IsHandleCreated)
@@ -733,26 +714,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             if (this.SetDisplayMode(ImageDisplayMode.RightFacing))
             {
                 ImageViewerContentsConfig.ImageDisplayMode = this.displayMode;
-                this.ReadImage();
-            }
-        }
-
-        private void SizeToolStripSplitButton_ButtonClick(object sender, EventArgs e)
-        {
-            if (!this.IsHandleCreated)
-            {
-                return;
-            }
-
-            if (!this.CanOperation)
-            {
-                return;
-            }
-
-            if (this.SetSizeMode(this.GetNextSizeMode()))
-            {
-                ImageViewerContentsConfig.ImageSizeMode = this.sizeMode;
-                this.SetThumbnailPanelVisible();
                 this.ReadImage();
             }
         }
