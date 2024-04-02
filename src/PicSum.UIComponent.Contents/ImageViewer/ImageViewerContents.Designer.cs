@@ -35,8 +35,8 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.onlyBigImageFitSizeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.sizeToolStripSplitButton = new System.Windows.Forms.ToolStripSplitButton();
             this.toolBar = new PicSum.UIComponent.Contents.ToolBar.ContentsToolBar();
-            this.previewIndexToolStripButton = new System.Windows.Forms.ToolStripButton();
-            this.nextIndexToolStripButton = new System.Windows.Forms.ToolStripButton();
+            this.doublePreviewIndexToolStripButton = new System.Windows.Forms.ToolStripButton();
+            this.doubleNextIndexToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.singlePreviewIndexToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.singleNextIndexToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.indexSlider = new SWF.UIComponent.Common.Slider();
@@ -221,10 +221,10 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.toolBar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.viewToolStripSplitButton,
             this.sizeToolStripSplitButton,
-            this.previewIndexToolStripButton,
+            this.doublePreviewIndexToolStripButton,
             this.singlePreviewIndexToolStripButton,
             this.singleNextIndexToolStripButton,
-            this.nextIndexToolStripButton});
+            this.doubleNextIndexToolStripButton});
             this.toolBar.Location = new System.Drawing.Point(0, 0);
             this.toolBar.Name = "toolBar";
             this.toolBar.Size = new System.Drawing.Size(201, 27);
@@ -233,27 +233,27 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             // 
             // previewIndexToolStripButton
             // 
-            this.previewIndexToolStripButton.AutoToolTip = false;
-            this.previewIndexToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.previewIndexToolStripButton.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.previewIndexToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.previewIndexToolStripButton.Margin = new System.Windows.Forms.Padding(6, 5, 0, 2);
-            this.previewIndexToolStripButton.Name = "previewIndexToolStripButton";
-            this.previewIndexToolStripButton.Size = new System.Drawing.Size(29, 24);
-            this.previewIndexToolStripButton.Text = "<<-";
-            this.previewIndexToolStripButton.Click += new System.EventHandler(this.PreviewIndexToolStripButton_Click);
+            this.doublePreviewIndexToolStripButton.AutoToolTip = false;
+            this.doublePreviewIndexToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.doublePreviewIndexToolStripButton.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.doublePreviewIndexToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.doublePreviewIndexToolStripButton.Margin = new System.Windows.Forms.Padding(6, 5, 0, 2);
+            this.doublePreviewIndexToolStripButton.Name = "previewIndexToolStripButton";
+            this.doublePreviewIndexToolStripButton.Size = new System.Drawing.Size(29, 24);
+            this.doublePreviewIndexToolStripButton.Text = "<<-";
+            this.doublePreviewIndexToolStripButton.Click += new System.EventHandler(this.DoublePreviewIndexToolStripButton_Click);
             // 
             // nextIndexToolStripButton
             // 
-            this.nextIndexToolStripButton.AutoToolTip = false;
-            this.nextIndexToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.nextIndexToolStripButton.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.nextIndexToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.nextIndexToolStripButton.Margin = new System.Windows.Forms.Padding(2, 5, 0, 2);
-            this.nextIndexToolStripButton.Name = "nextIndexToolStripButton";
-            this.nextIndexToolStripButton.Size = new System.Drawing.Size(29, 24);
-            this.nextIndexToolStripButton.Text = "->>";
-            this.nextIndexToolStripButton.Click += new System.EventHandler(this.NextIndexToolStripButton_Click);
+            this.doubleNextIndexToolStripButton.AutoToolTip = false;
+            this.doubleNextIndexToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.doubleNextIndexToolStripButton.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.doubleNextIndexToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.doubleNextIndexToolStripButton.Margin = new System.Windows.Forms.Padding(2, 5, 0, 2);
+            this.doubleNextIndexToolStripButton.Name = "nextIndexToolStripButton";
+            this.doubleNextIndexToolStripButton.Size = new System.Drawing.Size(29, 24);
+            this.doubleNextIndexToolStripButton.Text = "->>";
+            this.doubleNextIndexToolStripButton.Click += new System.EventHandler(this.DoubleNextIndexToolStripButton_Click);
             // 
             // singlePreviewIndexToolStripButton
             // 
@@ -325,8 +325,8 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         private PicSum.UIComponent.Contents.ToolBar.ContentsToolBar toolBar;
         private System.Windows.Forms.ToolStripSplitButton viewToolStripSplitButton;
         private System.Windows.Forms.ToolStripSplitButton sizeToolStripSplitButton;
-        private System.Windows.Forms.ToolStripButton previewIndexToolStripButton;
-        private System.Windows.Forms.ToolStripButton nextIndexToolStripButton;
+        private System.Windows.Forms.ToolStripButton doublePreviewIndexToolStripButton;
+        private System.Windows.Forms.ToolStripButton doubleNextIndexToolStripButton;
         private System.Windows.Forms.ToolStripButton singlePreviewIndexToolStripButton;
         private System.Windows.Forms.ToolStripButton singleNextIndexToolStripButton;
         private System.Windows.Forms.ContextMenuStrip viewContextMenuStrip;

@@ -445,9 +445,42 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
         private bool SetDisplayMode(ImageDisplayMode mode)
         {
-            this.singleViewToolStripMenuItem.Checked = mode == ImageDisplayMode.Single;
-            this.leftFacingViewToolStripMenuItem.Checked = mode == ImageDisplayMode.LeftFacing;
-            this.rightFacingViewToolStripMenuItem.Checked = mode == ImageDisplayMode.RightFacing;
+            if (mode == ImageDisplayMode.Single)
+            {
+                this.singleViewToolStripMenuItem.Checked = true;
+                this.doublePreviewIndexToolStripButton.Enabled = false;
+                this.doubleNextIndexToolStripButton.Enabled = false;
+            }
+            else if (mode != ImageDisplayMode.Single)
+            {
+                this.singleViewToolStripMenuItem.Checked = false;
+                this.doublePreviewIndexToolStripButton.Enabled = true;
+                this.doubleNextIndexToolStripButton.Enabled = true;
+            }
+            else if (mode == ImageDisplayMode.LeftFacing)
+            {
+                this.leftFacingViewToolStripMenuItem.Checked = true;
+                this.doublePreviewIndexToolStripButton.Enabled = true;
+                this.doubleNextIndexToolStripButton.Enabled = true;
+            }
+            else if (mode != ImageDisplayMode.LeftFacing)
+            {
+                this.leftFacingViewToolStripMenuItem.Checked = false;
+                this.doublePreviewIndexToolStripButton.Enabled = false;
+                this.doubleNextIndexToolStripButton.Enabled = false;
+            }
+            else if (mode == ImageDisplayMode.RightFacing)
+            {
+                this.rightFacingViewToolStripMenuItem.Checked = true;
+                this.doublePreviewIndexToolStripButton.Enabled = true;
+                this.doubleNextIndexToolStripButton.Enabled = true;
+            }
+            else if (mode != ImageDisplayMode.RightFacing)
+            {
+                this.rightFacingViewToolStripMenuItem.Checked = false;
+                this.doublePreviewIndexToolStripButton.Enabled = false;
+                this.doubleNextIndexToolStripButton.Enabled = false;
+            }
 
             if (this.displayMode != mode)
             {
@@ -798,7 +831,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             }
         }
 
-        private void PreviewIndexToolStripButton_Click(object sender, EventArgs e)
+        private void DoublePreviewIndexToolStripButton_Click(object sender, EventArgs e)
         {
             if (!this.CanOperation)
             {
@@ -815,7 +848,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             }
         }
 
-        private void NextIndexToolStripButton_Click(object sender, EventArgs e)
+        private void DoubleNextIndexToolStripButton_Click(object sender, EventArgs e)
         {
             if (!this.CanOperation)
             {
