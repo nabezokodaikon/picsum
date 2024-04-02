@@ -55,18 +55,8 @@ namespace SWF.Common
                 h = 1;
             }
 
-            var thumb = new Bitmap(w, h);
-            using (var g = Graphics.FromImage(thumb))
-            {
-                g.InterpolationMode = InterpolationMode.Low;
-                g.SmoothingMode = SmoothingMode.HighSpeed;
-                using (var temp = srcImg.GetThumbnailImage(w, h, () => false, IntPtr.Zero))
-                {
-                    g.DrawImage(temp, 0, 0, w, h);
-                }
-            }
-
-            return thumb;
+            var thumb = srcImg.GetThumbnailImage(w, h, () => false, IntPtr.Zero);
+            return new Bitmap(thumb);
         }
 
         /// <summary>
