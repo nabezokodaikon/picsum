@@ -188,6 +188,8 @@ namespace PicSum.UIComponent.Contents.ContextMenu
 
         private void InitializeComponent()
         {
+            this.ShowImageMargin = false;
+
             this.Items.AddRange(new ToolStripItem[] { this.fileActiveTabOpenMenuItem,
                                                       this.fileNewTabOpenMenuItem,
                                                       this.fileNewWindowOpenMenuItem,
@@ -203,22 +205,6 @@ namespace PicSum.UIComponent.Contents.ContextMenu
                                                       this.fileBookmarkMenuItem,
                                                       this.removeFromListMenuItem
                                                     });
-
-            this.fileOpen.Image = Resources.AssociationOpenIcon;
-            this.fileActiveTabOpenMenuItem.Image = Resources.ImageFileOpenIcon;
-            this.fileNewTabOpenMenuItem.Image = Resources.TabPlusIcon;
-            this.fileNewWindowOpenMenuItem.Image = Resources.WindowOpenIcon;
-            this.directoryActiveTabOpenMenuItem.Image = Resources.DirectoryOpenIcon;
-            this.directoryNewTabOpenMenuItem.Image = Resources.TabPlusIcon;
-            this.directoryNewWindowOpenMenuItem.Image = Resources.WindowOpenIcon;
-            this.pathCopyMenuItem.Image = Resources.ClipboardIcon;
-            this.nameCopyMenuItem.Image = Resources.ClipboardIcon;
-            this.saveDirectoryOpen.Image = Resources.DirectoryOpenIcon;
-            this.explorerOpenMenuItem.Image = Resources.DirectoryOpenIcon;
-            this.exportMenuItem.Image = Resources.ExportIcon;
-            this.fileBookmarkMenuItem.Image = Resources.BookmarkIcon;
-            this.removeFromListMenuItem.Image = Resources.RemoveIcon;
-
             this.fileActiveTabOpenMenuItem.Click += new EventHandler(this.FileActiveTabOpenMenuItem_Click);
             this.fileNewTabOpenMenuItem.Click += new EventHandler(this.FileNewTabOpenMenuItem_Click);
             this.fileNewWindowOpenMenuItem.Click += new EventHandler(this.FileNewWindowOpenMenuItem_Click);
