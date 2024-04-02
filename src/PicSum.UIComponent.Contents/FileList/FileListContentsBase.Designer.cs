@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Windows.Forms;
 
 namespace PicSum.UIComponent.Contents.FileList
@@ -159,8 +159,6 @@ namespace PicSum.UIComponent.Contents.FileList
             this.viewToolStripDropDownButton.AutoToolTip = false;
             this.viewToolStripDropDownButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.viewToolStripDropDownButton.DropDown = this.viewContextMenuStrip;
-            this.viewToolStripDropDownButton.Image = ((System.Drawing.Image)(resources.GetObject("viewToolStripDropDownButton.Image")));
-            this.viewToolStripDropDownButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.viewToolStripDropDownButton.Margin = new System.Windows.Forms.Padding(6, 1, 0, 2);
             this.viewToolStripDropDownButton.Name = "viewToolStripDropDownButton";
             this.viewToolStripDropDownButton.Size = new System.Drawing.Size(45, 24);
