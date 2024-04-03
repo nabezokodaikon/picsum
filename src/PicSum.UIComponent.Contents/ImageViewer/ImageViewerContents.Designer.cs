@@ -279,12 +279,12 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             // 
             this.indexSlider.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.indexSlider.Location = new System.Drawing.Point(300, 4);
+            this.indexSlider.Location = new System.Drawing.Point(270, 4);
             this.indexSlider.Margin = new System.Windows.Forms.Padding(3, 3, 6, 3);
             this.indexSlider.MaximumValue = 100;
             this.indexSlider.MinimumValue = 0;
             this.indexSlider.Name = "indexSlider";
-            this.indexSlider.Size = new System.Drawing.Size(590, 23);
+            this.indexSlider.Size = new System.Drawing.Size(635, 23);
             this.indexSlider.TabIndex = 5;
             this.indexSlider.Text = "slider1";
             this.indexSlider.Value = 0;
