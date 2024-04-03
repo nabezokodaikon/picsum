@@ -246,15 +246,15 @@ namespace PicSum.Main.UIComponent
             this.StartPosition = FormStartPosition.Manual;
             this.MinimumSize = new Size(320, 240);
             this.KeyPreview = true;
-
-            this.SetProperty();
+            this.Padding = new Padding(8, 12, 8, 8);
 
             this.Location = BrowserConfig.WindowLocaion;
             this.Size = BrowserConfig.WindowSize;
             this.WindowState = BrowserConfig.WindowState;
+
             this.SetGrass();
 
-            this.ResumeLayout();
+            this.ResumeLayout(false);
         }
 
         private void CreateBrowserMainPanel()
@@ -279,11 +279,6 @@ namespace PicSum.Main.UIComponent
             this.ResumeLayout();
 
             this.browserMainPanel = browserMainPanel;
-        }
-
-        private void SetProperty()
-        {
-            this.Padding = new Padding(8, 12, 8, 8);
         }
 
         private void SetBrowserMainPanelProperty(BrowserMainPanel browserMainPanel)
