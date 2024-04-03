@@ -105,12 +105,12 @@ namespace PicSum.Main.UIComponent
 
         #region パブリックメソッド
 
-        public void ResizeEnd()
+        public void RedrawContents()
         {
             if (this.tabSwitch.ActiveTab != null)
             {
                 var contents = this.tabSwitch.ActiveTab.GetContents<BrowserContents>();
-                contents.ResizeEnd();
+                contents.RedrawContents();
             }            
         }
 

@@ -145,12 +145,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
         #region パブリックメソッド
 
-        public override void ResizeEnd()
-        {
-            this.ReadImage();
-            base.ResizeEnd();
-        }
-
         public override void RedrawContents()
         {            
             this.ReadImage();

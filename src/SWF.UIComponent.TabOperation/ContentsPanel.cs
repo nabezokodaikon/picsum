@@ -61,9 +61,9 @@ namespace SWF.UIComponent.TabOperation
         #region パブリックメソッド
 
         /// <summary>
-        /// サイズの変更が完了したときに呼び出されます。
+        /// コンテンツを再描画します。
         /// </summary>
-        public virtual void ResizeEnd()
+        public virtual void RedrawContents()
         {
 
         }
