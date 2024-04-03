@@ -231,7 +231,6 @@ namespace PicSum.Main.UIComponent
         {
             if (this.Size != this.previrewSize)
             {
-                Console.WriteLine("RedrawTimer_Tick");
                 this.previrewSize = this.Size;
                 this.RedrawContents();
             }
