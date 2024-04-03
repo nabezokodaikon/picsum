@@ -167,17 +167,29 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         {
             this.ChangeImagePanelSize();
 
+            Size backgroudSize = Size.Empty;
+            if (this.leftImagePanel.HasImage && this.leftImagePanel.HasImage)
+            {
+                backgroudSize = new Size(
+                    (int)(this.checkPatternPanel.Size.Width / 2f),
+                    this.checkPatternPanel.Size.Height);
+            }
+            else
+            {
+                backgroudSize = this.checkPatternPanel.Size;
+            }
+
             if (this.leftImagePanel.HasImage)
             {
                 var leftImageScale = GetImageScale(
-                    this.leftImagePanel.ImageSize, this.checkPatternPanel.Size, this.sizeMode);
+                    this.leftImagePanel.ImageSize, backgroudSize, this.sizeMode);
                 this.leftImagePanel.SetScale(leftImageScale);
             }
 
             if (this.rightImagePanel.HasImage)
             {
                 var rightImageScale = GetImageScale(
-                    this.rightImagePanel.ImageSize, this.checkPatternPanel.Size, this.sizeMode);
+                    this.rightImagePanel.ImageSize, backgroudSize, this.sizeMode);
                 this.rightImagePanel.SetScale(rightImageScale);
             }
 
