@@ -780,9 +780,17 @@ namespace SWF.UIComponent.TabOperation
                         var y = screenRect.Top;
                         this.OnTabDropouted(new TabDropoutedEventArgs(tab, new Point(x, y), new Size(w, h), FormWindowState.Normal));
                     }
-                    else
+                    else if (form.WindowState == FormWindowState.Normal)
+                    {                        
+                        this.OnTabDropouted(new TabDropoutedEventArgs(tab, screenPoint, form.ClientSize, FormWindowState.Normal));
+                    }
+                    else if (form.WindowState == FormWindowState.Maximized)
                     {
                         this.OnTabDropouted(new TabDropoutedEventArgs(tab, screenPoint, form.RestoreBounds.Size, FormWindowState.Normal));
+                    }
+                    else
+                    {
+                        throw new NotImplementedException("未定義のタブ操作です。");
                     }
                 }
             }
