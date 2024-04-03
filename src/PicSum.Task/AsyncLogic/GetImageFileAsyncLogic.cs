@@ -1,6 +1,5 @@
 using PicSum.Core.Base.Conf;
 using PicSum.Core.Task.AsyncTask;
-using SWF.Common;
 using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -21,38 +20,26 @@ namespace PicSum.Task.AsyncLogic
 
         }
 
-        public Image CreateImage(string filePath, Bitmap srcImg, ImageSizeMode sizeMode, Size drawSize)
+        public float GetImageScale(Bitmap bmp, ImageSizeMode sizeMode, Size drawSize)
         {
-            if (filePath == null)
+            if (bmp == null)
             {
-                throw new ArgumentNullException(nameof(filePath));
-            }
-
-            if (srcImg == null)
-            {
-                throw new ArgumentNullException(nameof(srcImg));
+                throw new ArgumentNullException(nameof(bmp));
             }
 
             if (sizeMode == ImageSizeMode.Original ||
-                sizeMode == ImageSizeMode.FitOnlyBigImage && srcImg.Width <= drawSize.Width && srcImg.Height <= drawSize.Height)
+                sizeMode == ImageSizeMode.FitOnlyBigImage && bmp.Width <= drawSize.Width && bmp.Height <= drawSize.Height)
             {
-                var destImg = (Image)srcImg.Clone();
-                return destImg;
+                return 1.0f;
             }
             else
             {
-                var scale = Math.Min(drawSize.Width / (double)srcImg.Width, drawSize.Height / (double)srcImg.Height);
-                var destImg = ImageUtil.ResizeImage(srcImg, scale);
-                if (destImg == null)
-                {
-                    throw new ImageUtilException(filePath);
-                }
-
-                return destImg;
+                var scale = Math.Min(drawSize.Width / (float)bmp.Width, drawSize.Height / (float)bmp.Height);
+                return scale;
             }
         }
 
-        public Image CreateThumbnail(Image srcImg, int thumbSize, ImageSizeMode sizeMode)
+        public Bitmap CreateThumbnail(Image srcImg, int thumbSize, ImageSizeMode sizeMode)
         {
             if (srcImg == null)
             {

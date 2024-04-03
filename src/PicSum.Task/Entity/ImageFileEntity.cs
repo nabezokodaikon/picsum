@@ -1,4 +1,4 @@
-﻿using PicSum.Core.Task.Base;
+using PicSum.Core.Task.Base;
 using System.Drawing;
 
 namespace PicSum.Task.Entity
@@ -10,7 +10,8 @@ namespace PicSum.Task.Entity
         : IEntity
     {
         public string FilePath { get; set; }
-        public Image Image { get; set; }
-        public Image Thumbnail { get; set; }
+        public Bitmap Image { get; set; }
+        public float ImageScale { get; set; }
+        public Bitmap Thumbnail { get; set; }
     }
 }
