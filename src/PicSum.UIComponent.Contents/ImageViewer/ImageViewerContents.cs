@@ -27,6 +27,24 @@ namespace PicSum.UIComponent.Contents.ImageViewer
     public sealed partial class ImageViewerContents
         : BrowserContents
     {
+        private static float GetImageScale(Size imageSize, Size backgroudSize, ImageSizeMode mode)
+        {
+            if (mode == ImageSizeMode.Original ||
+                mode == ImageSizeMode.FitOnlyBigImage
+                && imageSize.Width <= backgroudSize.Width
+                && imageSize.Height <= backgroudSize.Height)
+            {
+                return 1.0f;
+            }
+            else
+            {
+                var scale = Math.Min(
+                    backgroudSize.Width / (float)imageSize.Width,
+                    backgroudSize.Height / (float)imageSize.Height);
+                return scale;
+            }
+        }
+
         #region インスタンス変数
 
         private readonly ImageViewerContentsParameter parameter = null;
@@ -151,13 +169,15 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
             if (this.leftImagePanel.HasImage)
             {
-                var leftImageScale = this.GetImageScale(this.leftImagePanel.Image);
+                var leftImageScale = GetImageScale(
+                    this.leftImagePanel.ImageSize, this.checkPatternPanel.Size, this.sizeMode);
                 this.leftImagePanel.SetScale(leftImageScale);
             }
 
             if (this.rightImagePanel.HasImage)
             {
-                var rightImageScale = this.GetImageScale(this.rightImagePanel.Image);
+                var rightImageScale = GetImageScale(
+                    this.rightImagePanel.ImageSize, this.checkPatternPanel.Size, this.sizeMode);
                 this.rightImagePanel.SetScale(rightImageScale);
             }
 
@@ -431,29 +451,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 {
                     return prevIndex1;
                 }
-            }
-        }
-
-        private float GetImageScale(Bitmap bmp)
-        {
-            if (bmp == null)
-            {
-                throw new ArgumentNullException(nameof(bmp));
-            }
-
-            if (sizeMode == ImageSizeMode.Original ||
-                sizeMode == ImageSizeMode.FitOnlyBigImage
-                && bmp.Width <= this.checkPatternPanel.Size.Width
-                && bmp.Height <= this.checkPatternPanel.Size.Height)
-            {
-                return 1.0f;
-            }
-            else
-            {
-                var scale = Math.Min(
-                    this.checkPatternPanel.Size.Width / (float)bmp.Width,
-                    this.checkPatternPanel.Size.Height / (float)bmp.Height);
-                return scale;
             }
         }
 
