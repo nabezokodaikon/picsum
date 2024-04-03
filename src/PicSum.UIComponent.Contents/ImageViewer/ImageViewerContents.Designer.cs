@@ -162,7 +162,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.viewToolStripDropDownButton.Margin = new System.Windows.Forms.Padding(6, 5, 0, 2);
             this.viewToolStripDropDownButton.Name = "viewToolStripSplitButton";
             this.viewToolStripDropDownButton.Size = new System.Drawing.Size(58, 24);
-            this.viewToolStripDropDownButton.Text = "Display";
+            this.viewToolStripDropDownButton.Text = "View";
             // 
             // sizeContextMenuStrip
             // 

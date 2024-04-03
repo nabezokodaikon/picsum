@@ -161,7 +161,7 @@ namespace PicSum.UIComponent.Contents.FileList
             this.viewToolStripDropDownButton.Margin = new System.Windows.Forms.Padding(6, 1, 0, 2);
             this.viewToolStripDropDownButton.Name = "viewToolStripDropDownButton";
             this.viewToolStripDropDownButton.Size = new System.Drawing.Size(45, 24);
-            this.viewToolStripDropDownButton.Text = "Display";
+            this.viewToolStripDropDownButton.Text = "View";
             // 
             // toolBar
             // 
