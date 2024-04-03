@@ -128,16 +128,14 @@ namespace PicSum.Task.AsyncLogic
             var memCash = GetMemoryCash(filePath);
             if (memCash != null)
             {
-                var createDate = FileUtil.GetCreateDate(filePath);
                 var updateDate = FileUtil.GetUpdateDate(filePath);
-                if (!createDate.HasValue || !updateDate.HasValue)
+                if (!updateDate.HasValue)
                 {
                     return null;
                 }
 
                 if (memCash.ThumbnailWidth >= thumbWidth &&
                     memCash.ThumbnailHeight >= thumbHeight &&
-                    memCash.FileUpdatedate >= createDate &&
                     memCash.FileUpdatedate >= updateDate)
                 {
                     // メモリキャッシュを返します。
@@ -150,7 +148,6 @@ namespace PicSum.Task.AsyncLogic
                     {
                         if (dbCash.ThumbnailWidth >= thumbWidth &&
                             dbCash.ThumbnailHeight >= thumbHeight &&
-                            dbCash.FileUpdatedate >= createDate.Value &&
                             dbCash.FileUpdatedate >= updateDate.Value)
                         {
                             // DBキャッシュを返します。
@@ -179,16 +176,14 @@ namespace PicSum.Task.AsyncLogic
                 var dbCash = this.GetDBCash(filePath);
                 if (dbCash != null)
                 {
-                    var createDate = FileUtil.GetCreateDate(filePath);
                     var updateDate = FileUtil.GetUpdateDate(filePath);
-                    if (!createDate.HasValue || !updateDate.HasValue)
+                    if (!updateDate.HasValue)
                     {
                         return null;
                     }
 
                     if (dbCash.ThumbnailWidth >= thumbWidth &&
                         dbCash.ThumbnailHeight >= thumbHeight &&
-                        dbCash.FileUpdatedate >= createDate &&
                         dbCash.FileUpdatedate >= updateDate)
                     {
                         // DBキャッシュを返します。
@@ -206,7 +201,7 @@ namespace PicSum.Task.AsyncLogic
                 else
                 {
                     // サムネイルを作成します。
-                    var updateDate = FileUtil.GetCreateDate(filePath);
+                    var updateDate = FileUtil.GetUpdateDate(filePath);
                     if (!updateDate.HasValue)
                     {
                         return null;
@@ -224,16 +219,14 @@ namespace PicSum.Task.AsyncLogic
             var memCash = GetMemoryCash(filePath);
             if (memCash != null)
             {
-                var createDate = FileUtil.GetCreateDate(filePath);
                 var updateDate = FileUtil.GetUpdateDate(filePath);
-                if (!createDate.HasValue || !updateDate.HasValue)
+                if (!updateDate.HasValue)
                 {
                     return null;
                 }
 
                 if (memCash.ThumbnailWidth >= thumbWidth &&
                     memCash.ThumbnailHeight >= thumbHeight &&
-                    memCash.FileUpdatedate >= createDate &&
                     memCash.FileUpdatedate >= updateDate)
                 {
                     // メモリキャッシュを返します。
@@ -246,7 +239,6 @@ namespace PicSum.Task.AsyncLogic
                     {
                         if (dbCash.ThumbnailWidth >= thumbWidth &&
                             dbCash.ThumbnailHeight >= thumbHeight &&
-                            dbCash.FileUpdatedate >= createDate &&
                             dbCash.FileUpdatedate >= updateDate)
                         {
                             // DBキャッシュを返します。
@@ -291,16 +283,14 @@ namespace PicSum.Task.AsyncLogic
                 var dbCash = this.GetDBCash(filePath);
                 if (dbCash != null)
                 {
-                    var createDate = FileUtil.GetCreateDate(filePath);
                     var updateDate = FileUtil.GetUpdateDate(filePath);
-                    if (!createDate.HasValue || !updateDate.HasValue)
+                    if (!updateDate.HasValue)
                     {
                         return null;
                     }
 
                     if (dbCash.ThumbnailWidth >= thumbWidth &&
                         dbCash.ThumbnailHeight >= thumbHeight &&
-                        dbCash.FileUpdatedate >= createDate.Value &&
                         dbCash.FileUpdatedate >= updateDate.Value)
                     {
                         // DBキャッシュを返します。

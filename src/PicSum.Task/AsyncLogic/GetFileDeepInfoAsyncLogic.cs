@@ -39,7 +39,6 @@ namespace PicSum.Task.AsyncLogic
             if (string.IsNullOrEmpty(filePath))
             {
                 info.UpdateDate = null;
-                info.CreateDate = null;
                 info.IsFile = false;
                 info.IsImageFile = false;
                 info.FileSize = null;
@@ -53,7 +52,6 @@ namespace PicSum.Task.AsyncLogic
                 }
 
                 info.UpdateDate = FileUtil.GetUpdateDate(filePath);
-                info.CreateDate = FileUtil.GetCreateDate(filePath);
 
                 info.IsFile = FileUtil.IsFile(filePath);
 

@@ -291,7 +291,6 @@ namespace PicSum.UIComponent.Contents.FileList
                 destFile.FilePath = srcFile.FilePath;
                 destFile.FileName = srcFile.FileName;
                 destFile.UpdateDate = srcFile.UpdateDate;
-                destFile.CreateDate = srcFile.CreateDate;
                 destFile.RgistrationDate = srcFile.RgistrationDate;
                 destFile.Icon = srcFile.LargeIcon;
                 destFile.IsFile = srcFile.IsFile;
@@ -447,15 +446,6 @@ namespace PicSum.UIComponent.Contents.FileList
                     {
                         return files.OrderByDescending(file => file.UpdateDate.GetValueOrDefault(DateTime.MinValue));
                     }
-                case SortTypeID.CreateDate:
-                    if (isAscending)
-                    {
-                        return files.OrderBy(file => file.CreateDate.GetValueOrDefault(DateTime.MinValue));
-                    }
-                    else
-                    {
-                        return files.OrderByDescending(file => file.CreateDate.GetValueOrDefault(DateTime.MinValue));
-                    }
                 case SortTypeID.RgistrationDate:
                     if (isAscending)
                     {
@@ -497,8 +487,6 @@ namespace PicSum.UIComponent.Contents.FileList
                     return this.sortFilePathToolStripButton;
                 case SortTypeID.UpdateDate:
                     return this.sortFileUpdateDateToolStripButton;
-                case SortTypeID.CreateDate:
-                    return this.sortFileCreateDateToolStripButton;
                 case SortTypeID.RgistrationDate:
                     return this.sortFileRgistrationDateToolStripButton;
                 default:
@@ -511,7 +499,6 @@ namespace PicSum.UIComponent.Contents.FileList
             this.sortFileNameToolStripButton.Image = null;
             this.sortFilePathToolStripButton.Image = null;
             this.sortFileUpdateDateToolStripButton.Image = null;
-            this.sortFileCreateDateToolStripButton.Image = null;
             this.sortFileRgistrationDateToolStripButton.Image = null;
 
             var sortButton = this.GetSortToolStripButton(this.sortInfo.ActiveSortType);
@@ -601,19 +588,6 @@ namespace PicSum.UIComponent.Contents.FileList
                         else
                         {
                             return -x.UpdateDate.GetValueOrDefault(DateTime.MinValue).CompareTo(y.UpdateDate.GetValueOrDefault(DateTime.MinValue));
-                        }
-                    });
-                    break;
-                case SortTypeID.CreateDate:
-                    filterList.Sort((x, y) =>
-                    {
-                        if (isAscending)
-                        {
-                            return x.CreateDate.GetValueOrDefault(DateTime.MinValue).CompareTo(y.CreateDate.GetValueOrDefault(DateTime.MinValue));
-                        }
-                        else
-                        {
-                            return -x.CreateDate.GetValueOrDefault(DateTime.MinValue).CompareTo(y.CreateDate.GetValueOrDefault(DateTime.MinValue));
                         }
                     });
                     break;
@@ -891,14 +865,6 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             this.sortInfo.ChangeSortDirection(SortTypeID.UpdateDate);
             this.sortInfo.ActiveSortType = SortTypeID.UpdateDate;
-            this.SetSort();
-            this.SetFilter();
-        }
-
-        private void SortFileCreateDateToolStripButton_Click(object sender, EventArgs e)
-        {
-            this.sortInfo.ChangeSortDirection(SortTypeID.CreateDate);
-            this.sortInfo.ActiveSortType = SortTypeID.CreateDate;
             this.SetSort();
             this.SetFilter();
         }

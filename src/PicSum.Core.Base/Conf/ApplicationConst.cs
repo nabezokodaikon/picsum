@@ -1,4 +1,4 @@
-﻿namespace PicSum.Core.Base.Conf
+namespace PicSum.Core.Base.Conf
 {
     /// <summary>
     /// アプリケーション定数クラス
@@ -30,7 +30,6 @@
         FileName = 1,
         FilePath = 2,
         UpdateDate = 3,
-        CreateDate = 4,
         RgistrationDate = 5,
     }
 

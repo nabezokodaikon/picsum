@@ -266,7 +266,6 @@ namespace PicSum.UIComponent.InfoPanel
             this.fileTypeLabel.Text = string.Empty;
             this.fileSizeLabel.Text = string.Empty;
             this.fileUpdatedateLabel.Text = string.Empty;
-            this.fileCreateDateLabel.Text = string.Empty;
             this.ratingBar.SetValue(0);
             this.thumbnailPictureBox.Invalidate();
             this.tagFlowList.ItemCount = 0;
@@ -436,13 +435,7 @@ namespace PicSum.UIComponent.InfoPanel
 
                 if (this.FileInfo.UpdateDate.HasValue)
                 {
-                    this.fileUpdatedateLabel.Text = string.Format("Update Date {0:yyyy/MM/dd HH:mm:ss}", this.FileInfo.UpdateDate.Value);
-                }
-
-                if (this.FileInfo.CreateDate.HasValue)
-                {
-                    this.fileCreateDateLabel.Text = string.Format("Creation Date {0:yyyy/MM/dd HH:mm:ss}", this.FileInfo.CreateDate.Value);
-
+                    this.fileUpdatedateLabel.Text = string.Format("Time stamp {0:yyyy/MM/dd HH:mm:ss}", this.FileInfo.UpdateDate.Value);
                 }
 
                 this.ratingBar.SetValue(this.FileInfo.Rating);

@@ -1,4 +1,4 @@
-﻿using PicSum.Core.Base.Conf;
+using PicSum.Core.Base.Conf;
 using PicSum.UIComponent.Contents.Properties;
 using System.Drawing;
 
@@ -11,7 +11,6 @@ namespace PicSum.UIComponent.Contents.FileList
         private bool isFileNameSortAscending = true;
         private bool isFilePathSortAscending = true;
         private bool isUpdateDateSortAscending = true;
-        private bool isCreateDateSortAscending = true;
         private bool isRgistrationDateSortAscending = true;
 
         public SortTypeID ActiveSortType { get; set; }
@@ -26,8 +25,6 @@ namespace PicSum.UIComponent.Contents.FileList
                     return this.isFilePathSortAscending;
                 case SortTypeID.UpdateDate:
                     return this.isUpdateDateSortAscending;
-                case SortTypeID.CreateDate:
-                    return this.isCreateDateSortAscending;
                 case SortTypeID.RgistrationDate:
                     return this.isRgistrationDateSortAscending;
                 default:
@@ -49,9 +46,6 @@ namespace PicSum.UIComponent.Contents.FileList
                     break;
                 case SortTypeID.UpdateDate:
                     this.isUpdateDateSortAscending = isAscending;
-                    break;
-                case SortTypeID.CreateDate:
-                    this.isCreateDateSortAscending = isAscending;
                     break;
                 case SortTypeID.RgistrationDate:
                     this.isRgistrationDateSortAscending = isAscending;

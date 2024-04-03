@@ -31,7 +31,6 @@
             this.components = new System.ComponentModel.Container();
             this.thumbnailPictureBox = new System.Windows.Forms.PictureBox();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.fileCreateDateLabel = new System.Windows.Forms.Label();
             this.fileUpdatedateLabel = new System.Windows.Forms.Label();
             this.fileSizeLabel = new System.Windows.Forms.Label();
             this.fileTypeLabel = new System.Windows.Forms.Label();
@@ -42,9 +41,10 @@
             this.ratingBar = new SWF.UIComponent.Common.RatingBar();
             this.tagFlowList = new SWF.UIComponent.FlowList.FlowList();
             this.wideComboBox = new SWF.UIComponent.WideDropDown.WideComboBox();
-            ((System.ComponentModel.ISupportInitialize)(this.thumbnailPictureBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)this.thumbnailPictureBox).BeginInit();
             this.panel1.SuspendLayout();
             this.tagContextMenuStrip.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)this.tagFlowList).BeginInit();
             this.SuspendLayout();
             // 
             // thumbnailPictureBox
@@ -58,51 +58,35 @@
             this.thumbnailPictureBox.TabIndex = 0;
             this.thumbnailPictureBox.TabStop = false;
             this.thumbnailPictureBox.Text = "thumbnailPictureBox1";
-            this.thumbnailPictureBox.Paint += new System.Windows.Forms.PaintEventHandler(this.ThumbnailPictureBox_Paint);
+            this.thumbnailPictureBox.Paint += this.ThumbnailPictureBox_Paint;
             // 
             // panel1
             // 
-            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel1.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             this.panel1.BackColor = System.Drawing.Color.Transparent;
-            this.panel1.Controls.Add(this.fileCreateDateLabel);
             this.panel1.Controls.Add(this.fileUpdatedateLabel);
             this.panel1.Controls.Add(this.fileSizeLabel);
             this.panel1.Controls.Add(this.fileTypeLabel);
             this.panel1.Controls.Add(this.fileNameLabel);
             this.panel1.Location = new System.Drawing.Point(0, 262);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(512, 148);
+            this.panel1.Size = new System.Drawing.Size(512, 125);
             this.panel1.TabIndex = 17;
-            // 
-            // fileCreateDateLabel
-            // 
-            this.fileCreateDateLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.fileCreateDateLabel.BackColor = System.Drawing.Color.Transparent;
-            this.fileCreateDateLabel.Location = new System.Drawing.Point(4, 100);
-            this.fileCreateDateLabel.Margin = new System.Windows.Forms.Padding(4);
-            this.fileCreateDateLabel.Name = "fileCreateDateLabel";
-            this.fileCreateDateLabel.Size = new System.Drawing.Size(504, 18);
-            this.fileCreateDateLabel.TabIndex = 26;
-            this.fileCreateDateLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // fileUpdatedateLabel
             // 
-            this.fileUpdatedateLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.fileUpdatedateLabel.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             this.fileUpdatedateLabel.BackColor = System.Drawing.Color.Transparent;
-            this.fileUpdatedateLabel.Location = new System.Drawing.Point(4, 126);
+            this.fileUpdatedateLabel.Location = new System.Drawing.Point(4, 100);
             this.fileUpdatedateLabel.Margin = new System.Windows.Forms.Padding(4);
             this.fileUpdatedateLabel.Name = "fileUpdatedateLabel";
             this.fileUpdatedateLabel.Size = new System.Drawing.Size(504, 18);
             this.fileUpdatedateLabel.TabIndex = 25;
-            this.fileUpdatedateLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.fileUpdatedateLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // fileSizeLabel
             // 
-            this.fileSizeLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.fileSizeLabel.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             this.fileSizeLabel.BackColor = System.Drawing.Color.Transparent;
             this.fileSizeLabel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.fileSizeLabel.Location = new System.Drawing.Point(4, 74);
@@ -113,8 +97,7 @@
             // 
             // fileTypeLabel
             // 
-            this.fileTypeLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.fileTypeLabel.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             this.fileTypeLabel.BackColor = System.Drawing.Color.Transparent;
             this.fileTypeLabel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.fileTypeLabel.Location = new System.Drawing.Point(4, 48);
@@ -125,8 +108,7 @@
             // 
             // fileNameLabel
             // 
-            this.fileNameLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.fileNameLabel.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             this.fileNameLabel.BackColor = System.Drawing.Color.Transparent;
             this.fileNameLabel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.fileNameLabel.Location = new System.Drawing.Point(4, 4);
@@ -138,46 +120,42 @@
             // tagContextMenuStrip
             // 
             this.tagContextMenuStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.tagContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tagDeleteMenuItem,
-            this.tagToAllEntryMenuItem});
+            this.tagContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { this.tagDeleteMenuItem, this.tagToAllEntryMenuItem });
             this.tagContextMenuStrip.Name = "tagContextMenuStrip";
-            this.tagContextMenuStrip.Size = new System.Drawing.Size(181, 52);
-            this.tagContextMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.TagContextMenuStrip_Opening);
+            this.tagContextMenuStrip.Size = new System.Drawing.Size(158, 48);
+            this.tagContextMenuStrip.Opening += this.TagContextMenuStrip_Opening;
             // 
             // tagDeleteMenuItem
             // 
             this.tagDeleteMenuItem.Name = "tagDeleteMenuItem";
-            this.tagDeleteMenuItem.Size = new System.Drawing.Size(180, 24);
+            this.tagDeleteMenuItem.Size = new System.Drawing.Size(157, 22);
             this.tagDeleteMenuItem.Text = "Remove Tag";
-            this.tagDeleteMenuItem.Click += new System.EventHandler(this.TagDeleteMenuItem_Click);
+            this.tagDeleteMenuItem.Click += this.TagDeleteMenuItem_Click;
             // 
             // tagToAllEntryMenuItem
             // 
             this.tagToAllEntryMenuItem.Name = "tagToAllEntryMenuItem";
-            this.tagToAllEntryMenuItem.Size = new System.Drawing.Size(180, 24);
+            this.tagToAllEntryMenuItem.Size = new System.Drawing.Size(157, 22);
             this.tagToAllEntryMenuItem.Text = "Apply Tag to All";
-            this.tagToAllEntryMenuItem.Click += new System.EventHandler(this.TagToAllEntryMenuItem_Click);
+            this.tagToAllEntryMenuItem.Click += this.TagToAllEntryMenuItem_Click;
             // 
             // ratingBar
             // 
-            this.ratingBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.ratingBar.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             this.ratingBar.BackColor = System.Drawing.Color.Transparent;
-            this.ratingBar.Location = new System.Drawing.Point(0, 413);
+            this.ratingBar.Location = new System.Drawing.Point(0, 390);
             this.ratingBar.Margin = new System.Windows.Forms.Padding(0);
             this.ratingBar.MaximumValue = 1;
             this.ratingBar.Name = "ratingBar";
-            this.ratingBar.Size = new System.Drawing.Size(512, 58);
+            this.ratingBar.Size = new System.Drawing.Size(512, 56);
             this.ratingBar.TabIndex = 15;
-            this.ratingBar.RatingButtonMouseClick += new System.EventHandler<System.Windows.Forms.MouseEventArgs>(this.RatingBar_RatingButtonMouseClick);
+            this.ratingBar.RatingButtonMouseClick += this.RatingBar_RatingButtonMouseClick;
             // 
             // tagFlowList
             // 
-            this.tagFlowList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tagFlowList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(241)))), ((int)(((byte)(244)))), ((int)(((byte)(250)))));
+            this.tagFlowList.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            this.tagFlowList.BackColor = System.Drawing.Color.FromArgb(241, 244, 250);
+            this.tagFlowList.CanKeyDown = true;
             this.tagFlowList.ContextMenuStrip = this.tagContextMenuStrip;
             this.tagFlowList.IsLileList = true;
             this.tagFlowList.ItemHeight = 24;
@@ -185,29 +163,29 @@
             this.tagFlowList.ItemTextFormatFlags = System.Drawing.StringFormatFlags.NoWrap;
             this.tagFlowList.ItemTextLineAlignment = System.Drawing.StringAlignment.Center;
             this.tagFlowList.ItemTextTrimming = System.Drawing.StringTrimming.EllipsisCharacter;
-            this.tagFlowList.Location = new System.Drawing.Point(0, 524);
+            this.tagFlowList.Location = new System.Drawing.Point(0, 499);
             this.tagFlowList.Margin = new System.Windows.Forms.Padding(0, 3, 0, 0);
             this.tagFlowList.Name = "tagFlowList";
-            this.tagFlowList.Size = new System.Drawing.Size(512, 191);
+            this.tagFlowList.Size = new System.Drawing.Size(512, 216);
             this.tagFlowList.TabIndex = 16;
+            this.tagFlowList.TabStop = false;
             this.tagFlowList.Text = "flowList1";
-            this.tagFlowList.DrawItem += new System.EventHandler<SWF.UIComponent.FlowList.DrawItemEventArgs>(this.TagFlowList_DrawItem);
-            this.tagFlowList.MouseClick += new System.Windows.Forms.MouseEventHandler(this.TagFlowList_MouseClick);
-            this.tagFlowList.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.TagFlowList_MouseDoubleClick);
+            this.tagFlowList.DrawItem += this.TagFlowList_DrawItem;
+            this.tagFlowList.MouseClick += this.TagFlowList_MouseClick;
+            this.tagFlowList.MouseDoubleClick += this.TagFlowList_MouseDoubleClick;
             // 
             // wideComboBox
             // 
-            this.wideComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.wideComboBox.Font = new System.Drawing.Font("Yu Gothic UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.wideComboBox.Icon = global::PicSum.UIComponent.InfoPanel.Properties.Resources.TagIcon;
-            this.wideComboBox.Location = new System.Drawing.Point(0, 477);
+            this.wideComboBox.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            this.wideComboBox.Font = new System.Drawing.Font("Yu Gothic UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 128);
+            this.wideComboBox.Icon = Properties.Resources.TagIcon;
+            this.wideComboBox.Location = new System.Drawing.Point(0, 452);
             this.wideComboBox.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.wideComboBox.Name = "wideComboBox";
-            this.wideComboBox.Size = new System.Drawing.Size(508, 38);
+            this.wideComboBox.Size = new System.Drawing.Size(512, 38);
             this.wideComboBox.TabIndex = 27;
-            this.wideComboBox.DropDownOpening += new System.EventHandler<SWF.UIComponent.WideDropDown.DropDownOpeningEventArgs>(this.WideComboBox_DropDownOpening);
-            this.wideComboBox.AddItem += new System.EventHandler<SWF.UIComponent.WideDropDown.AddItemEventArgs>(this.WideComboBox_AddItem);
+            this.wideComboBox.DropDownOpening += this.WideComboBox_DropDownOpening;
+            this.wideComboBox.AddItem += this.WideComboBox_AddItem;
             // 
             // InfoPanel
             // 
@@ -217,14 +195,14 @@
             this.Controls.Add(this.thumbnailPictureBox);
             this.Controls.Add(this.ratingBar);
             this.Controls.Add(this.tagFlowList);
-            this.Font = new System.Drawing.Font("Yu Gothic UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.Font = new System.Drawing.Font("Yu Gothic UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 128);
             this.Name = "InfoPanel";
             this.Size = new System.Drawing.Size(512, 715);
-            ((System.ComponentModel.ISupportInitialize)(this.thumbnailPictureBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)this.thumbnailPictureBox).EndInit();
             this.panel1.ResumeLayout(false);
             this.tagContextMenuStrip.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)this.tagFlowList).EndInit();
             this.ResumeLayout(false);
-
         }
 
         #endregion
@@ -233,7 +211,6 @@
         private SWF.UIComponent.Common.RatingBar ratingBar;
         private SWF.UIComponent.FlowList.FlowList tagFlowList;
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Label fileCreateDateLabel;
         private System.Windows.Forms.Label fileUpdatedateLabel;
         private System.Windows.Forms.Label fileSizeLabel;
         private System.Windows.Forms.Label fileTypeLabel;

@@ -46,7 +46,6 @@ namespace PicSum.UIComponent.Contents.FileList
             this.sortFileNameToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.sortFilePathToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.sortFileUpdateDateToolStripButton = new System.Windows.Forms.ToolStripButton();
-            this.sortFileCreateDateToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.sortFileRgistrationDateToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.thumbnailSizeToolStripSlider = new SWF.UIComponent.Common.ToolStripSlider();
             this.movePreviewToolStripButton = new System.Windows.Forms.ToolStripButton();
@@ -170,7 +169,6 @@ namespace PicSum.UIComponent.Contents.FileList
             this.viewToolStripDropDownButton,
             this.sortFileNameToolStripButton,
             this.sortFilePathToolStripButton,
-            this.sortFileCreateDateToolStripButton,
             this.sortFileUpdateDateToolStripButton,
             this.sortFileRgistrationDateToolStripButton,
             this.thumbnailSizeToolStripSlider,
@@ -203,16 +201,6 @@ namespace PicSum.UIComponent.Contents.FileList
             this.sortFilePathToolStripButton.Text = "Path";
             this.sortFilePathToolStripButton.Click += new System.EventHandler(this.SortFilePathToolStripButton_Click);
             // 
-            // sortFileCreateDateToolStripButton
-            // 
-            this.sortFileCreateDateToolStripButton.AutoSize = false;
-            this.sortFileCreateDateToolStripButton.AutoToolTip = false;
-            this.sortFileCreateDateToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.sortFileCreateDateToolStripButton.Name = "sortFileCreateDateToolStripButton";
-            this.sortFileCreateDateToolStripButton.Size = new System.Drawing.Size(120, 24);
-            this.sortFileCreateDateToolStripButton.Text = "Creation Date";
-            this.sortFileCreateDateToolStripButton.Click += new System.EventHandler(this.SortFileCreateDateToolStripButton_Click);
-            // 
             // sortFileUpdateDateToolStripButton
             // 
             this.sortFileUpdateDateToolStripButton.AutoSize = false;
@@ -220,7 +208,7 @@ namespace PicSum.UIComponent.Contents.FileList
             this.sortFileUpdateDateToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.sortFileUpdateDateToolStripButton.Name = "sortFileUpdateDateToolStripButton";
             this.sortFileUpdateDateToolStripButton.Size = new System.Drawing.Size(120, 24);
-            this.sortFileUpdateDateToolStripButton.Text = "Update Date";
+            this.sortFileUpdateDateToolStripButton.Text = "Time stamp";
             this.sortFileUpdateDateToolStripButton.Click += new System.EventHandler(this.SortFileUpdateDateToolStripButton_Click);
             // 
             // sortFilerRgistrationDateToolStripButton
@@ -288,7 +276,6 @@ namespace PicSum.UIComponent.Contents.FileList
         private System.Windows.Forms.ToolStripButton sortFileNameToolStripButton;
         private System.Windows.Forms.ToolStripButton sortFilePathToolStripButton;
         private System.Windows.Forms.ToolStripButton sortFileUpdateDateToolStripButton;
-        private System.Windows.Forms.ToolStripButton sortFileCreateDateToolStripButton;
         protected System.Windows.Forms.ToolStripButton sortFileRgistrationDateToolStripButton;
         private SWF.UIComponent.Common.ToolStripSlider thumbnailSizeToolStripSlider;
         private System.Windows.Forms.ToolStripButton movePreviewToolStripButton;

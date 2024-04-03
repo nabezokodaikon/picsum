@@ -1,4 +1,4 @@
-﻿using PicSum.Core.Task.Base;
+using PicSum.Core.Task.Base;
 using System;
 using System.Drawing;
 
@@ -13,7 +13,6 @@ namespace PicSum.Task.Entity
         public string FilePath { get; set; }
         public string FileName { get; set; }
         public Nullable<DateTime> UpdateDate { get; set; }
-        public Nullable<DateTime> CreateDate { get; set; }
         public bool IsFile { get; set; }
         public bool IsImageFile { get; set; }
         public string FileType { get; set; }

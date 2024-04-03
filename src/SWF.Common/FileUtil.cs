@@ -455,41 +455,6 @@ namespace SWF.Common
         }
 
         /// <summary>
-        /// ファイルの作成日時を取得します。
-        /// </summary>
-        /// <param name="filePath">ファイルパス</param>
-        /// <returns>ファイル作成日時</returns>
-        public static DateTime? GetCreateDate(string filePath)
-        {
-            if (filePath == null)
-            {
-                throw new ArgumentNullException(nameof(filePath));
-            }
-
-            if (FileUtil.IsSystemRoot(filePath))
-            {
-                return null;
-            }
-
-            try
-            {
-                return File.GetCreationTime(filePath);
-            }
-            catch (UnauthorizedAccessException)
-            {
-                throw;
-            }
-            catch (PathTooLongException)
-            {
-                throw;
-            }
-            catch (NotSupportedException)
-            {
-                throw;
-            }
-        }
-
-        /// <summary>
         /// ファイルサイズを取得します。
         /// </summary>
         /// <param name="filePath"></param>
