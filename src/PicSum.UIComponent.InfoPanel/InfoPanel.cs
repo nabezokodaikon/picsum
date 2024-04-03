@@ -435,7 +435,7 @@ namespace PicSum.UIComponent.InfoPanel
 
                 if (this.FileInfo.UpdateDate.HasValue)
                 {
-                    this.fileUpdatedateLabel.Text = string.Format("Time stamp {0:yyyy/MM/dd HH:mm:ss}", this.FileInfo.UpdateDate.Value);
+                    this.fileUpdatedateLabel.Text = string.Format("{0:yyyy/MM/dd HH:mm:ss}", this.FileInfo.UpdateDate.Value);
                 }
 
                 this.ratingBar.SetValue(this.FileInfo.Rating);

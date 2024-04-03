@@ -77,7 +77,7 @@
             // 
             this.fileUpdatedateLabel.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             this.fileUpdatedateLabel.BackColor = System.Drawing.Color.Transparent;
-            this.fileUpdatedateLabel.Location = new System.Drawing.Point(4, 100);
+            this.fileUpdatedateLabel.Location = new System.Drawing.Point(4, 74);
             this.fileUpdatedateLabel.Margin = new System.Windows.Forms.Padding(4);
             this.fileUpdatedateLabel.Name = "fileUpdatedateLabel";
             this.fileUpdatedateLabel.Size = new System.Drawing.Size(504, 18);
@@ -89,11 +89,12 @@
             this.fileSizeLabel.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             this.fileSizeLabel.BackColor = System.Drawing.Color.Transparent;
             this.fileSizeLabel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.fileSizeLabel.Location = new System.Drawing.Point(4, 74);
+            this.fileSizeLabel.Location = new System.Drawing.Point(4, 100);
             this.fileSizeLabel.Margin = new System.Windows.Forms.Padding(4);
             this.fileSizeLabel.Name = "fileSizeLabel";
             this.fileSizeLabel.Size = new System.Drawing.Size(504, 18);
             this.fileSizeLabel.TabIndex = 24;
+            this.fileSizeLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // fileTypeLabel
             // 
@@ -105,6 +106,7 @@
             this.fileTypeLabel.Name = "fileTypeLabel";
             this.fileTypeLabel.Size = new System.Drawing.Size(504, 18);
             this.fileTypeLabel.TabIndex = 23;
+            this.fileTypeLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // fileNameLabel
             // 
@@ -116,6 +118,7 @@
             this.fileNameLabel.Name = "fileNameLabel";
             this.fileNameLabel.Size = new System.Drawing.Size(504, 36);
             this.fileNameLabel.TabIndex = 22;
+            this.fileNameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // tagContextMenuStrip
             // 
