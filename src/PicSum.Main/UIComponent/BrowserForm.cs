@@ -36,8 +36,6 @@ namespace PicSum.Main.UIComponent
         private IContainer components = null;
         private BrowserMainPanel browserMainPanel = null;
         private bool isKeyDown = false;
-        private Size previrewSize = Size.Empty;
-        private Timer redrawTimer = null;
 
         #endregion
 
@@ -63,21 +61,7 @@ namespace PicSum.Main.UIComponent
         public BrowserForm()
         {
             this.InitializeComponent();
-
-            this.redrawTimer = new Timer();
-            this.redrawTimer.Enabled = true;
-            this.redrawTimer.Interval = 100;
-            this.redrawTimer.Tick += this.RedrawTimer_Tick;
         }        
-
-        private void RedrawTimer_Tick(object sender, EventArgs e)
-        {
-            if (this.Size != this.previrewSize)
-            {
-                this.previrewSize = this.Size;
-                this.browserMainPanel.RedrawContents();
-            }
-        }
 
         #endregion
 
@@ -167,15 +151,12 @@ namespace PicSum.Main.UIComponent
         {
             this.Activate();
 
-            this.previrewSize = this.Size;
-            this.redrawTimer.Start();
 
             base.OnShown(e);
         }
 
         protected override void OnClosing(CancelEventArgs e)
         {
-            this.redrawTimer.Stop();
             if (this.WindowState == FormWindowState.Normal)
             {
                 BrowserConfig.WindowState = this.WindowState;
@@ -191,7 +172,6 @@ namespace PicSum.Main.UIComponent
             if (disposing && (this.components != null))
             {
                 this.components.Dispose();
-                this.redrawTimer.Dispose();
             }
 
             base.Dispose(disposing);

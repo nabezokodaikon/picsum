@@ -13,6 +13,7 @@ using SWF.UIComponent.TabOperation;
 using SWF.UIComponent.WideDropDown;
 using System;
 using System.ComponentModel;
+using System.Drawing;
 using System.Linq;
 using System.Runtime.Versioning;
 using System.Windows.Forms;
@@ -39,6 +40,8 @@ namespace PicSum.Main.UIComponent
 
         #region インスタンス変数
 
+        private Size previrewSize = Size.Empty;
+        private Timer redrawTimer = null;
         private TwoWayProcess<GetTagListAsyncFacade, ListEntity<string>> getTagListProcess = null;
 
         #endregion
@@ -104,15 +107,6 @@ namespace PicSum.Main.UIComponent
         #endregion
 
         #region パブリックメソッド
-
-        public void RedrawContents()
-        {
-            if (this.tabSwitch.ActiveTab != null)
-            {
-                var contents = this.tabSwitch.ActiveTab.GetContents<BrowserContents>();
-                contents.RedrawContents();
-            }            
-        }
 
         public void AddContentsEventHandler(BrowserContents contents)
         {
@@ -196,6 +190,8 @@ namespace PicSum.Main.UIComponent
 
         protected override void OnLoad(EventArgs e)
         {
+            this.previrewSize = this.Size;
+            this.redrawTimer.Start();
             this.addressBar.SetAddress(FileUtil.ROOT_DIRECTORY_PATH);
             base.OnLoad(e);
         }
@@ -213,6 +209,32 @@ namespace PicSum.Main.UIComponent
 
             this.splitContainer.Panel2MinSize = ApplicationConst.INFOPANEL_WIDTH;
             this.splitContainer.SplitterDistance = this.splitContainer.Width - this.splitContainer.Panel2MinSize - this.splitContainer.SplitterWidth;
+
+            this.redrawTimer = new Timer();
+            this.redrawTimer = new Timer();
+            this.redrawTimer.Enabled = true;
+            this.redrawTimer.Interval = 100;
+            this.redrawTimer.Tick += this.RedrawTimer_Tick;
+
+        }
+
+        private void RedrawContents()
+        {
+            if (this.tabSwitch.ActiveTab != null)
+            {
+                var contents = this.tabSwitch.ActiveTab.GetContents<BrowserContents>();
+                contents.RedrawContents();
+            }
+        }
+
+        private void RedrawTimer_Tick(object sender, EventArgs e)
+        {
+            if (this.Size != this.previrewSize)
+            {
+                Console.WriteLine("RedrawTimer_Tick");
+                this.previrewSize = this.Size;
+                this.RedrawContents();
+            }
         }
 
         private void RemoveContentsEventHandler(BrowserContents contents)
@@ -501,6 +523,8 @@ namespace PicSum.Main.UIComponent
 
             if (!this.tabSwitch.HasTab)
             {
+                this.redrawTimer.Stop();
+                this.redrawTimer.Dispose();
                 this.OnClose(new EventArgs());
             }
         }
@@ -521,6 +545,8 @@ namespace PicSum.Main.UIComponent
 
             if (!this.tabSwitch.HasTab)
             {
+                this.redrawTimer.Stop();
+                this.redrawTimer.Dispose();
                 this.OnClose(new EventArgs());
             }
         }
