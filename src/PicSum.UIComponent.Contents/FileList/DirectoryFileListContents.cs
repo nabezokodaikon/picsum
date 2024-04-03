@@ -231,7 +231,7 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             this.Title = FileUtil.GetFileName(this.parameter.DirectoryPath);
 
-            if (string.IsNullOrEmpty(this.parameter.DirectoryPath))
+            if (FileUtil.IsSystemRoot(this.parameter.DirectoryPath))
             {
                 this.Icon = FileIconCash.SmallMyComputerIcon;
             }
