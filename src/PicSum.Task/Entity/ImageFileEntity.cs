@@ -11,7 +11,6 @@ namespace PicSum.Task.Entity
     {
         public string FilePath { get; set; }
         public Bitmap Image { get; set; }
-        public float ImageScale { get; set; }
         public Bitmap Thumbnail { get; set; }
     }
 }

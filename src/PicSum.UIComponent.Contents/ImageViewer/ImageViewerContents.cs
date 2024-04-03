@@ -475,7 +475,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             param.FilePathList = this.filePathList;
             param.ImageDisplayMode = this.displayMode;
             param.ImageSizeMode = this.sizeMode;
-            param.DrawSize = this.checkPatternPanel.Size;
             param.ThumbnailSize = this.leftImagePanel.ThumbnailSize;
 
             this.ReadImageFileProcess.Cancel();
@@ -614,6 +613,18 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 return;
             }
 
+            Size bgSize;
+            if (e.Image1 != null && e.Image2 != null)
+            {
+                bgSize = new Size(
+                    (int)(this.checkPatternPanel.Size.Width / 2f),
+                    this.checkPatternPanel.Size.Height);
+            }
+            else
+            {
+                bgSize = this.checkPatternPanel.Size;
+            }
+
             if (e.Image2 == null)
             {
                 if (this.SelectedFilePath != e.Image1.FilePath)
@@ -636,32 +647,57 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             {
                 this.leftImageFilePath = e.Image1.FilePath;
                 this.leftImagePanel.SetImage(e.Image1.Image, e.Image1.Thumbnail);
-                this.leftImagePanel.SetScale(e.Image1.ImageScale);
+
+                var scale = GetImageScale(
+                    this.leftImagePanel.ImageSize, bgSize, this.sizeMode);
+                this.leftImagePanel.SetScale(scale);
             }
             else if (this.displayMode == ImageDisplayMode.LeftFacing)
             {
                 this.leftImageFilePath = e.Image1.FilePath;
                 this.leftImagePanel.SetImage(e.Image1.Image, e.Image1.Thumbnail);
-                this.leftImagePanel.SetScale(e.Image1.ImageScale);
+                var leftImageScale = GetImageScale(
+                    this.leftImagePanel.ImageSize, bgSize, this.sizeMode);
+
                 if (e.Image2 != null)
                 {
+                    this.leftImagePanel.SetScale(leftImageScale);
+
                     this.rightImageFilePath = e.Image2.FilePath;
                     this.rightImagePanel.SetImage(e.Image2.Image, e.Image2.Thumbnail);
-                    this.rightImagePanel.SetScale(e.Image2.ImageScale);
+
+                    var rightImageScale = GetImageScale(
+                        this.rightImagePanel.ImageSize, bgSize, this.sizeMode);
+                    this.rightImagePanel.SetScale(rightImageScale);
+                }
+                else
+                {
+                    this.leftImagePanel.SetScale(leftImageScale);
                 }
             }
             else if (this.displayMode == ImageDisplayMode.RightFacing)
             {
                 this.rightImageFilePath = e.Image1.FilePath;
                 this.rightImagePanel.SetImage(e.Image1.Image, e.Image1.Thumbnail);
-                this.rightImagePanel.SetScale(e.Image1.ImageScale);
+                var rightImageScale = GetImageScale(
+                    this.rightImagePanel.ImageSize, bgSize, this.sizeMode);
+
                 if (e.Image2 != null)
                 {
+                    this.rightImagePanel.SetScale(rightImageScale);
+
                     this.leftImageFilePath = e.Image2.FilePath;
                     this.leftImagePanel.SetImage(e.Image2.Image, e.Image2.Thumbnail);
-                    this.leftImagePanel.SetScale(e.Image2.ImageScale);
+
+                    var leftImageScale = GetImageScale(
+                        this.leftImagePanel.ImageSize, bgSize, this.sizeMode);
+                    this.leftImagePanel.SetScale(leftImageScale);
                 }
-            }         
+                else
+                {
+                    this.rightImagePanel.SetScale(rightImageScale);
+                }
+            }
 
             this.ChangeImagePanelSize();
 

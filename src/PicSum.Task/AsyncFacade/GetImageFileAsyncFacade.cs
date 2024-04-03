@@ -6,7 +6,6 @@ using PicSum.Task.Paramter;
 using PicSum.Task.Result;
 using SWF.Common;
 using System;
-using System.Drawing;
 using System.IO;
 using System.Runtime.Versioning;
 
@@ -53,25 +52,20 @@ namespace PicSum.Task.AsyncFacade
                         var img2 = ImageUtil.ReadImageFile(nextFilePath);
                         this.CheckCancel();
 
-                        var drawSize = new Size((int)(param.DrawSize.Width / 2f), param.DrawSize.Height);
-
                         result.Image1 = new ImageFileEntity();
                         result.Image1.FilePath = currentFilePath;
 
                         this.CheckCancel();
                         result.Image1.Image = img1;
-                        result.Image1.ImageScale = logic.GetImageScale(img1, param.ImageSizeMode, drawSize);
                         this.CheckCancel();
                         result.Image1.Thumbnail = logic.CreateThumbnail(result.Image1.Image, param.ThumbnailSize, param.ImageSizeMode);
                         this.CheckCancel();
-
 
                         result.Image2 = new ImageFileEntity();
                         result.Image2.FilePath = nextFilePath;
 
                         this.CheckCancel();
                         result.Image2.Image = img2;
-                        result.Image2.ImageScale = logic.GetImageScale(img2, param.ImageSizeMode, drawSize);
                         this.CheckCancel();
                         result.Image2.Thumbnail = logic.CreateThumbnail(result.Image2.Image, param.ThumbnailSize, param.ImageSizeMode);
                         this.CheckCancel();
@@ -83,7 +77,6 @@ namespace PicSum.Task.AsyncFacade
 
                         this.CheckCancel();
                         result.Image1.Image = img1;
-                        result.Image1.ImageScale = logic.GetImageScale(img1, param.ImageSizeMode, param.DrawSize);
                         this.CheckCancel();
                         result.Image1.Thumbnail = logic.CreateThumbnail(result.Image1.Image, param.ThumbnailSize, param.ImageSizeMode);
                         this.CheckCancel();
@@ -95,7 +88,6 @@ namespace PicSum.Task.AsyncFacade
                     result.Image1.FilePath = currentFilePath;
                     this.CheckCancel();
                     result.Image1.Image = img1;
-                    result.Image1.ImageScale = logic.GetImageScale(img1, param.ImageSizeMode, param.DrawSize);
                     this.CheckCancel();
                     result.Image1.Thumbnail = logic.CreateThumbnail(result.Image1.Image, param.ThumbnailSize, param.ImageSizeMode);
                     this.CheckCancel();

@@ -20,25 +20,6 @@ namespace PicSum.Task.AsyncLogic
 
         }
 
-        public float GetImageScale(Bitmap bmp, ImageSizeMode sizeMode, Size drawSize)
-        {
-            if (bmp == null)
-            {
-                throw new ArgumentNullException(nameof(bmp));
-            }
-
-            if (sizeMode == ImageSizeMode.Original ||
-                sizeMode == ImageSizeMode.FitOnlyBigImage && bmp.Width <= drawSize.Width && bmp.Height <= drawSize.Height)
-            {
-                return 1.0f;
-            }
-            else
-            {
-                var scale = Math.Min(drawSize.Width / (float)bmp.Width, drawSize.Height / (float)bmp.Height);
-                return scale;
-            }
-        }
-
         public Bitmap CreateThumbnail(Image srcImg, int thumbSize, ImageSizeMode sizeMode)
         {
             if (srcImg == null)
