@@ -266,7 +266,12 @@ namespace PicSum.Main.UIComponent
 
             var browserMainPanel = new BrowserMainPanel();
 
-            this.SetBrowserMainPanelProperty(browserMainPanel);
+            var x = this.Padding.Left;
+            var y = this.Padding.Top;
+            var w = this.Width - this.Padding.Left - this.Padding.Right;
+            var h = this.Height - this.Padding.Top - this.Padding.Bottom;
+            browserMainPanel.SetBounds(x, y, w, h, BoundsSpecified.All);
+            browserMainPanel.Anchor = ((AnchorStyles)(AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right));
 
             browserMainPanel.Close += new EventHandler(this.BrowserMainPanel_Close);
             browserMainPanel.BackgroundMouseDoubleLeftClick += new EventHandler(this.BrowserMainPanel_BackgroundMouseDoubleLeftClick);
@@ -279,17 +284,6 @@ namespace PicSum.Main.UIComponent
             this.ResumeLayout();
 
             this.browserMainPanel = browserMainPanel;
-        }
-
-        private void SetBrowserMainPanelProperty(BrowserMainPanel browserMainPanel)
-        {
-            var x = this.Padding.Left;
-            var y = this.Padding.Top;
-            var w = this.Width - this.Padding.Left - this.Padding.Right;
-            var h = this.Height - this.Padding.Top - this.Padding.Bottom;
-            browserMainPanel.SetBounds(x, y, w, h, BoundsSpecified.All);
-
-            browserMainPanel.Anchor = ((AnchorStyles)(AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right));
         }
 
         private void OnTabDropouted(TabDropoutedEventArgs e)
