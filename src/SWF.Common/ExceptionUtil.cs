@@ -70,7 +70,7 @@ namespace SWF.Common
             var detailsMessage = CreateDetailsMessage(ex);
             Logger.Error(detailsMessage);
 #if DEBUG            
-            MessageBox.Show(detailsMessage, "PicSum", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(ex.Message, "PicSum", MessageBoxButtons.OK, MessageBoxIcon.Error);
 #endif
         }
 
@@ -84,7 +84,7 @@ namespace SWF.Common
             var detailsMessage = ExceptionUtil.CreateDetailsMessage(ex);
             Logger.Error(string.Format("{0}\n{1}", message, detailsMessage));
 #if DEBUG
-            MessageBox.Show(string.Format("{0}\n{1}", message, detailsMessage), "PicSum", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(message, "PicSum", MessageBoxButtons.OK, MessageBoxIcon.Error);
 #endif
         }
     }

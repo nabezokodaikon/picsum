@@ -28,7 +28,7 @@ namespace PicSum.Task.AsyncFacade
                 var updateFileMaster = new UpdateFileMasterAsyncLogic(this);
                 var registrationDate = DateTime.Now;
 
-                foreach (string filePath in param.FilePathList)
+                foreach (var filePath in param.FilePathList)
                 {
                     if (!updateTag.Execute(filePath, param.Tag, registrationDate))
                     {

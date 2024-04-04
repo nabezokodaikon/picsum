@@ -36,7 +36,7 @@ namespace PicSum.Task.AsyncLogic
             info.FilePath = filePath;
             info.FileName = FileUtil.GetFileName(filePath);
             info.FileType = FileUtil.GetTypeName(filePath);
-            if (string.IsNullOrEmpty(filePath))
+            if (FileUtil.IsSystemRoot(filePath))
             {
                 info.UpdateDate = null;
                 info.IsFile = false;
@@ -46,11 +46,6 @@ namespace PicSum.Task.AsyncLogic
             }
             else
             {
-                if (!FileUtil.CanAccess(filePath))
-                {
-                    throw new FileNotFoundException(string.Format("ファイル '{0}' が見つかりませんでした。", filePath));
-                }
-
                 info.UpdateDate = FileUtil.GetUpdateDate(filePath);
 
                 info.IsFile = FileUtil.IsFile(filePath);
@@ -58,19 +53,12 @@ namespace PicSum.Task.AsyncLogic
                 if (info.IsFile)
                 {
                     info.IsImageFile = FileUtil.IsImageFile(filePath);
-                }
-                else
-                {
-                    info.IsImageFile = false;
-                }
-
-                if (info.IsFile)
-                {
                     info.FileSize = FileUtil.GetFileSize(filePath);
                     info.FileIcon = FileIconCash.GetJumboFileIcon(filePath);
                 }
                 else
                 {
+                    info.IsImageFile = false;
                     info.FileSize = null;
                     if (FileUtil.IsDrive(filePath))
                     {
@@ -87,7 +75,7 @@ namespace PicSum.Task.AsyncLogic
                     info.Thumbnail = new ThumbnailImageEntity();
                     using (var srcImg = ImageUtil.ReadImageFile(filePath))
                     {
-                        Image thumb = ThumbnailUtil.CreateThumbnail(srcImg, thumbSize.Width, thumbSize.Height);
+                        var thumb = ThumbnailUtil.CreateThumbnail(srcImg, thumbSize.Width, thumbSize.Height);
                         info.Thumbnail.FilePath = info.FilePath;
                         info.Thumbnail.FileUpdatedate = info.UpdateDate.Value;
                         info.Thumbnail.ThumbnailImage = thumb;

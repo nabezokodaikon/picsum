@@ -1,5 +1,6 @@
 using PicSum.Core.Base.Conf;
 using PicSum.Core.Task.AsyncTask;
+using PicSum.Core.Task.Base;
 using PicSum.Task.AsyncLogic;
 using PicSum.Task.Entity;
 using PicSum.Task.Paramter;
@@ -93,17 +94,12 @@ namespace PicSum.Task.AsyncFacade
                     this.CheckCancel();
                 }
 
-                result.ReadImageFileException = null;
+                result.TaskException = null;
             }
             catch (ImageUtilException ex)
             {
                 this.exeptionHandler(result);
-                result.ReadImageFileException = ex;
-            }
-            catch (FileNotFoundException ex)
-            {
-                this.exeptionHandler(result);
-                result.ReadImageFileException = new ImageUtilException(ex);
+                result.TaskException = new TaskException(ex);
             }
 
             this.OnCallback(result);

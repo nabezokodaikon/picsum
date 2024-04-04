@@ -1,6 +1,7 @@
 using PicSum.Core.Task.AsyncTask;
 using PicSum.Task.AsyncLogic;
 using PicSum.Task.Entity;
+using SWF.Common;
 using System.Runtime.Versioning;
 
 namespace PicSum.Task.AsyncFacade
@@ -20,10 +21,17 @@ namespace PicSum.Task.AsyncFacade
             {
                 this.CheckCancel();
 
-                var info = getInfoLogic.Execute(dto.FilePath, dto.RegistrationDate);
-                if (info != null)
+                try
                 {
-                    infoList.Add(info);
+                    var info = getInfoLogic.Execute(dto.FilePath, dto.RegistrationDate);
+                    if (info != null)
+                    {
+                        infoList.Add(info);
+                    }
+                }
+                catch (FileUtilException)
+                {
+                    continue;
                 }
             }
 

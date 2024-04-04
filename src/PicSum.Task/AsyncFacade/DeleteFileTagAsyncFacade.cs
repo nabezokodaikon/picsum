@@ -1,4 +1,4 @@
-﻿using PicSum.Core.Data.DatabaseAccessor;
+using PicSum.Core.Data.DatabaseAccessor;
 using PicSum.Core.Task.AsyncTask;
 using PicSum.Data.DatabaseAccessor.Connection;
 using PicSum.Task.AsyncLogic;
@@ -22,9 +22,9 @@ namespace PicSum.Task.AsyncFacade
 
             using (var tran = DatabaseManager<FileInfoConnection>.BeginTransaction())
             {
-                DeleteFileTagAsyncLogic logic = new DeleteFileTagAsyncLogic(this);
+                var logic = new DeleteFileTagAsyncLogic(this);
 
-                foreach (string filePath in param.FilePathList)
+                foreach (var filePath in param.FilePathList)
                 {
                     logic.Execute(filePath, param.Tag);
                 }

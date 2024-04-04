@@ -1,4 +1,5 @@
 using PicSum.Core.Task.AsyncTask;
+using PicSum.Core.Task.Base;
 using PicSum.Task.AsyncLogic;
 using PicSum.Task.Entity;
 using PicSum.Task.Result;
@@ -60,7 +61,7 @@ namespace PicSum.Task.AsyncFacade
                     }
                     else
                     {
-                        throw new FileUtilException(string.Format("ファイル '{0}' が見つかりませんでした。", param.Value));
+                        throw new FileUtilException(param.Value);
                     }
 
                     addressInfo.DirectoryPath = directory;
@@ -78,13 +79,13 @@ namespace PicSum.Task.AsyncFacade
                     addressInfo.DirectoryList.Insert(0, logic.Execute(FileUtil.ROOT_DIRECTORY_PATH));
                 }
 
-                addressInfo.GetAddressInfoException = null;
+                addressInfo.TaskException = null;
 
                 this.OnCallback(addressInfo);
             }
             catch (FileUtilException ex)
             {
-                addressInfo.GetAddressInfoException = ex;
+                addressInfo.TaskException = new TaskException(ex);
                 this.OnCallback(addressInfo);
             }
         }

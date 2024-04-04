@@ -1,4 +1,4 @@
-﻿using PicSum.Core.Data.DatabaseAccessor;
+using PicSum.Core.Data.DatabaseAccessor;
 using PicSum.Core.Task.AsyncTask;
 using PicSum.Data.DatabaseAccessor.Connection;
 using PicSum.Task.AsyncLogic;
@@ -21,7 +21,7 @@ namespace PicSum.Task.AsyncFacade
             {
                 var deleteLogic = new DeleteBookmarkAsyncLogic(this);
 
-                foreach (string filePath in param)
+                foreach (var filePath in param)
                 {
                     deleteLogic.Execute(filePath);
                 }

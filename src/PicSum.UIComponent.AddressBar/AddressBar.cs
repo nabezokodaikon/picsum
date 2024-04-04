@@ -623,9 +623,9 @@ namespace PicSum.UIComponent.AddressBar
 
         private void GetAddressInfoProcess_Callback(object sender, GetAddressInfoResult e)
         {
-            if (e.GetAddressInfoException != null)
+            if (e.TaskException != null)
             {
-                ExceptionUtil.ShowErrorDialog(e.GetAddressInfoException);
+                ExceptionUtil.ShowErrorDialog(e.TaskException.InnerException);
                 return;
             }
 

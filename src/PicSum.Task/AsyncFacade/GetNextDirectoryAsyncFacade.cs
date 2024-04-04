@@ -5,6 +5,7 @@ using PicSum.Task.Paramter;
 using SWF.Common;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.Versioning;
 
 namespace PicSum.Task.AsyncFacade
@@ -33,10 +34,18 @@ namespace PicSum.Task.AsyncFacade
                 throw new ArgumentException("カレントパラメータが空文字です。", nameof(param));
             }
 
-            var parentDirectory = FileUtil.GetParentDirectoryPath(param.CurrentParameter.Value);
-            var list = new List<string>((new GetSubDirectorysAsyncLogic(this)).Execute(parentDirectory));
+            IList<string> list;
+            try
+            {
+                var parentDirectory = FileUtil.GetParentDirectoryPath(param.CurrentParameter.Value);
+                list = (new GetSubDirectorysAsyncLogic(this)).Execute(parentDirectory);
+            }
+            catch (FileUtilException)
+            {
+                return;
+            }
 
-            list.Sort((x, y) => x.CompareTo(y));
+            list.OrderBy(f => f).ToList();
             var index = list.IndexOf(param.CurrentParameter.Value);
             if (index < 0)
             {

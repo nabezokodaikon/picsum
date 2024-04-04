@@ -589,9 +589,9 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
         private void ReadImageFileProcess_Callback(object sender, GetImageFileResult e)
         {
-            if (e.ReadImageFileException != null)
+            if (e.TaskException != null)
             {
-                ExceptionUtil.ShowErrorDialog(e.ReadImageFileException);
+                ExceptionUtil.ShowErrorDialog(e.TaskException.InnerException);
                 return;
             }
 

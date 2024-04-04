@@ -178,9 +178,9 @@ namespace PicSum.UIComponent.Contents.FileList
                 var proces = TaskManager.CreateTwoWayProcess<GetFilesByDirectoryAsyncFacade, SingleValueEntity<string>, GetDirectoryResult>(this.ProcessContainer);
                 proces.Callback += ((sender, e) =>
                 {
-                    if (e.DirectoryNotFoundException != null)
+                    if (e.TaskException != null)
                     {
-                        ExceptionUtil.ShowErrorDialog(e.DirectoryNotFoundException);
+                        ExceptionUtil.ShowErrorDialog(e.TaskException.InnerException);
                         return;
                     }
 
@@ -277,9 +277,9 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private void SearchDirectoryProcess_Callback(object sender, GetDirectoryResult e)
         {
-            if (e.DirectoryNotFoundException != null)
+            if (e.TaskException != null)
             {
-                ExceptionUtil.ShowErrorDialog(e.DirectoryNotFoundException);
+                ExceptionUtil.ShowErrorDialog(e.TaskException.InnerException);
                 return;
             }
 

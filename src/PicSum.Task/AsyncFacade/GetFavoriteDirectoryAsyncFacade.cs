@@ -39,10 +39,17 @@ namespace PicSum.Task.AsyncFacade
                     continue;
                 }
 
-                var info = getInfoLogic.Execute(file);
-                if (info != null)
+                try
                 {
-                    infoList.Add(info);
+                    var info = getInfoLogic.Execute(file);
+                    if (info != null)
+                    {
+                        infoList.Add(info);
+                    }
+                }
+                catch (FileUtilException)
+                {
+                    continue;
                 }
             }
 

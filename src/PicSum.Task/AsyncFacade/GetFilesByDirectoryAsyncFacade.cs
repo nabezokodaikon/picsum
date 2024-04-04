@@ -1,7 +1,9 @@
 using PicSum.Core.Task.AsyncTask;
+using PicSum.Core.Task.Base;
 using PicSum.Task.AsyncLogic;
 using PicSum.Task.Entity;
 using PicSum.Task.Result;
+using SWF.Common;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -31,11 +33,11 @@ namespace PicSum.Task.AsyncFacade
             try
             {
                 fileList = getFilesLogic.Execute(param.Value);
-                result.DirectoryNotFoundException = null;
+                result.TaskException = null;
             }
-            catch (DirectoryNotFoundException ex)
+            catch (FileUtilException ex)
             {
-                result.DirectoryNotFoundException = ex;
+                result.TaskException = new TaskException(ex);
                 this.OnCallback(result);
                 return;
             }
@@ -46,10 +48,17 @@ namespace PicSum.Task.AsyncFacade
             {
                 this.CheckCancel();
 
-                var info = getInfoLogic.Execute(file);
-                if (info != null)
+                try
                 {
-                    infoList.Add(info);
+                    var info = getInfoLogic.Execute(file);
+                    if (info != null)
+                    {
+                        infoList.Add(info);
+                    }
+                }
+                catch (FileUtilException)
+                {
+                    continue;
                 }
             }
 

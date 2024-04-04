@@ -415,9 +415,9 @@ namespace PicSum.Main.UIComponent
                     var proces = TaskManager.CreateTwoWayProcess<GetImageFileByDirectoryAsyncFacade, GetImageFileByDirectoryParameter, GetImageFileByDirectoryResult>(this.components);
                     proces.Callback += ((sender, e) =>
                     {
-                        if (e.DirectoryNotFoundException != null)
+                        if (e.TaskException != null)
                         {
-                            ExceptionUtil.ShowErrorDialog(e.DirectoryNotFoundException);
+                            ExceptionUtil.ShowErrorDialog(e.TaskException);
                             return;
                         }
 

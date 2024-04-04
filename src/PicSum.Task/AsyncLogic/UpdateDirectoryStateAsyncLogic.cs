@@ -1,4 +1,4 @@
-﻿using PicSum.Core.Base.Conf;
+using PicSum.Core.Base.Conf;
 using PicSum.Core.Data.DatabaseAccessor;
 using PicSum.Core.Task.AsyncTask;
 using PicSum.Data.DatabaseAccessor.Connection;
@@ -42,7 +42,7 @@ namespace PicSum.Task.AsyncLogic
                 throw new ArgumentException("ソートIDがデフォルトです。", nameof(directoryState));
             }
 
-            UpdateDirectoryStateSql sql = null;
+            UpdateDirectoryStateSql sql;
             if (string.IsNullOrEmpty(directoryState.SelectedFilePath))
             {
                 sql = new UpdateDirectoryStateSql(directoryState.DirectoryPath, (int)directoryState.SortTypeID, directoryState.IsAscending);

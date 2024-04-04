@@ -2,6 +2,7 @@ using PicSum.Core.Task.AsyncTask;
 using PicSum.Task.AsyncLogic;
 using PicSum.Task.Paramter;
 using System;
+using System.IO;
 using System.Runtime.Versioning;
 using System.Threading;
 
@@ -37,6 +38,26 @@ namespace PicSum.Task.AsyncFacade
             {
                 var logic = new ExportFileAsyncLogic(this);
                 logic.Execute(param.SrcFilePath, param.ExportFilePath);
+            }
+            catch (PathTooLongException)
+            {
+                return;
+            }
+            catch (DirectoryNotFoundException)
+            {
+                return;
+            }
+            catch (FileNotFoundException)
+            {
+                return;
+            }
+            catch (IOException)
+            {
+                return;
+            }
+            catch (NotSupportedException)
+            {
+                return;
             }
             finally
             {

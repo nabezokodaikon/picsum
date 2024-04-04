@@ -1,6 +1,7 @@
 using PicSum.Core.Task.AsyncTask;
 using PicSum.Task.AsyncLogic;
 using PicSum.Task.Entity;
+using SWF.Common;
 using System;
 using System.Runtime.Versioning;
 
@@ -28,7 +29,15 @@ namespace PicSum.Task.AsyncFacade
             foreach (var subDirectory in subDirectorys)
             {
                 this.CheckCancel();
-                result.Add(logic.Execute(subDirectory));
+
+                try
+                {
+                    result.Add(logic.Execute(subDirectory));
+                }
+                catch (FileUtilException)
+                {
+                    continue;
+                }                
             }
 
             this.OnCallback(result);

@@ -1,4 +1,4 @@
-﻿using PicSum.Core.Data.DatabaseAccessor;
+using PicSum.Core.Data.DatabaseAccessor;
 using PicSum.Core.Task.AsyncTask;
 using PicSum.Data.DatabaseAccessor.Connection;
 using PicSum.Data.DatabaseAccessor.Sql;
@@ -35,7 +35,7 @@ namespace PicSum.Task.AsyncLogic
                 throw new ArgumentException("選択ファイルパスがNULLです。", nameof(directoryState));
             }
 
-            CreationDirectoryStateSql sql = null;
+            CreationDirectoryStateSql sql;
             if (string.IsNullOrEmpty(directoryState.SelectedFilePath))
             {
                 sql = new CreationDirectoryStateSql(directoryState.DirectoryPath, (int)directoryState.SortTypeID, directoryState.IsAscending);

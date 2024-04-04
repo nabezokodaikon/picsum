@@ -26,49 +26,37 @@ namespace PicSum.Task.AsyncFacade
 
             var result = new GetFileDeepInfoResult();
 
-            try
-            {
-                result.FilePathList = param.FilePathList;
+            result.FilePathList = param.FilePathList;
 
-                if (param.FilePathList.Count == 1)
+            if (param.FilePathList.Count == 1)
+            {
+                try
                 {
                     var getInfoLogic = new GetFileDeepInfoAsyncLogic(this);
                     var filePath = param.FilePathList[0];
                     result.FileInfo = getInfoLogic.Execute(filePath, param.ThumbnailSize);
                 }
-
-                if (param.FilePathList.Count <= 997)
+                catch (FileUtilException)
                 {
-                    var logic = new GetFileTagInfoAsyncLogic(this);
-                    result.TagInfoList = logic.Execute(result.FilePathList);
+                    return;
                 }
-                else
+                catch (ImageUtilException)
                 {
-                    result.TagInfoList = new ListEntity<FileTagInfoEntity>();
+                    return;
                 }
+            }
 
-                this.CheckCancel();
-            }
-            catch (ArgumentException)
+            if (param.FilePathList.Count <= 997)
             {
-                return;
+                var logic = new GetFileTagInfoAsyncLogic(this);
+                result.TagInfoList = logic.Execute(result.FilePathList);
             }
-            catch (FileNotFoundException)
+            else
             {
-                return;
+                result.TagInfoList = new ListEntity<FileTagInfoEntity>();
             }
-            catch (DirectoryNotFoundException)
-            {
-                return;
-            }
-            catch (DriveNotFoundException)
-            {
-                return;
-            }
-            catch (ImageUtilException)
-            {
-                return;
-            }
+
+            this.CheckCancel();
 
             this.OnCallback(result);
         }

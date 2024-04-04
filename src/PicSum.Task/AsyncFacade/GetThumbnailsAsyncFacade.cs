@@ -6,7 +6,6 @@ using PicSum.Task.Entity;
 using PicSum.Task.Paramter;
 using SWF.Common;
 using System;
-using System.IO;
 using System.Runtime.Versioning;
 
 namespace PicSum.Task.AsyncFacade
@@ -33,35 +32,14 @@ namespace PicSum.Task.AsyncFacade
                 {
                     this.CheckCancel();
 
-                    ThumbnailBufferEntity bf = null;
-
                     try
                     {
-                        bf = getLogic.Execute(param.FilePathList[index], param.ThumbnailWidth, param.ThumbnailHeight);
-                    }
-                    catch (FileNotFoundException)
-                    {
-                        continue;
-                    }
-                    catch (DirectoryNotFoundException)
-                    {
-                        continue;
-                    }
-                    catch (DriveNotFoundException)
-                    {
-                        continue;
-                    }
-                    catch (UnauthorizedAccessException)
-                    {
-                        continue;
-                    }
-                    catch (ImageUtilException)
-                    {
-                        continue;
-                    }
+                        var bf = getLogic.Execute(param.FilePathList[index], param.ThumbnailWidth, param.ThumbnailHeight);
+                        if (bf == null)
+                        {
+                            continue;
+                        }
 
-                    if (bf != null)
-                    {
                         var img = new ThumbnailImageEntity();
                         img.FilePath = bf.FilePath;
                         img.ThumbnailImage = ImageUtil.ToImage(bf.ThumbnailBuffer);
@@ -71,6 +49,14 @@ namespace PicSum.Task.AsyncFacade
                         img.SourceHeight = bf.SourceHeight;
                         img.FileUpdatedate = bf.FileUpdatedate;
                         this.OnCallback(img);
+                    }
+                    catch (FileUtilException)
+                    {
+                        continue;
+                    }
+                    catch (ImageUtilException)
+                    {
+                        continue;
                     }
                 }
 
