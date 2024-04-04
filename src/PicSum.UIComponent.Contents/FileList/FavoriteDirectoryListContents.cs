@@ -21,20 +21,20 @@ namespace PicSum.UIComponent.Contents.FileList
         #region インスタンス変数
 
         private FavoriteDirectoryListContentsParameter parameter = null;
-        private TwoWayProcess<GetFavoriteDirectoryAsyncTask, GetFavoriteFolderParameter, ListEntity<FileShallowInfoEntity>> searchFavoriteDirectoryProcess = null;
+        private TwoWayProcess<GetFavoriteDirectoryAsyncTask, GetFavoriteDirectoryParameter, ListEntity<FileShallowInfoEntity>> searchFavoriteDirectoryProcess = null;
         private OneWayProcess<DeleteDirectoryViewCounterAsyncTask, ListEntity<string>> deleteDirectoryViewCounterProcess = null;
 
         #endregion
 
         #region プライベートプロパティ
 
-        private TwoWayProcess<GetFavoriteDirectoryAsyncTask, GetFavoriteFolderParameter, ListEntity<FileShallowInfoEntity>> SearchFavoriteDirectoryProcess
+        private TwoWayProcess<GetFavoriteDirectoryAsyncTask, GetFavoriteDirectoryParameter, ListEntity<FileShallowInfoEntity>> SearchFavoriteDirectoryProcess
         {
             get
             {
                 if (this.searchFavoriteDirectoryProcess == null)
                 {
-                    this.searchFavoriteDirectoryProcess = TaskManager.CreateTwoWayProcess<GetFavoriteDirectoryAsyncTask, GetFavoriteFolderParameter, ListEntity<FileShallowInfoEntity>>(this.ProcessContainer);
+                    this.searchFavoriteDirectoryProcess = TaskManager.CreateTwoWayProcess<GetFavoriteDirectoryAsyncTask, GetFavoriteDirectoryParameter, ListEntity<FileShallowInfoEntity>>(this.ProcessContainer);
                     this.searchFavoriteDirectoryProcess.Callback += new AsyncTaskCallbackEventHandler<ListEntity<FileShallowInfoEntity>>(this.SearchFavoriteDirectoryProcess_Callback);
                 }
 
@@ -85,7 +85,7 @@ namespace PicSum.UIComponent.Contents.FileList
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            var param = new GetFavoriteFolderParameter();
+            var param = new GetFavoriteDirectoryParameter();
             param.IsOnlyDirectory = true;
             param.Count = FileListContentsConfig.FavoriteDirectoryCount;
             this.SearchFavoriteDirectoryProcess.Execute(this, param);

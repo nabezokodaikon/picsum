@@ -2,7 +2,7 @@
 
 namespace PicSum.Task.Paramter
 {
-    public sealed class GetFavoriteFolderParameter
+    public sealed class GetFavoriteDirectoryParameter
         : IEntity
     {
         public bool IsOnlyDirectory { get; set; }
