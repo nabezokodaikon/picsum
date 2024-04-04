@@ -169,7 +169,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.ChangeImagePanelSize();
 
             Size backgroudSize = Size.Empty;
-            if (this.leftImagePanel.HasImage && this.leftImagePanel.HasImage)
+            if (this.leftImagePanel.HasImage && this.rightImagePanel.HasImage)
             {
                 backgroudSize = new Size(
                     (int)(this.checkPatternPanel.Size.Width / 2f),
