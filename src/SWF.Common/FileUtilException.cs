@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace SWF.Common
 {
@@ -8,14 +8,22 @@ namespace SWF.Common
     public class FileUtilException
         : Exception
     {
-        // TODO: 英語にする。
-        public FileUtilException(Exception ex)
-            : base("ファイル関連の例外が発生しました。", ex) { }
+        public FileUtilException(string filePath, Exception exception)
+            : base($"'{filePath}'を読み込めませんでした。", exception)
+        {
 
-        public FileUtilException(string message)
-            : base(message) { }
+        }
 
-        public FileUtilException(string message, string filePath)
-            : base(string.Format("[{0}] {1}", filePath, message)) { }
+        public FileUtilException(Exception exception)
+            : base(exception.Message, exception)
+        {
+
+        }
+
+        public FileUtilException(string filePath)
+            : base($"'{filePath}'を読み込めませんでした。")
+        {
+
+        }
     }
 }

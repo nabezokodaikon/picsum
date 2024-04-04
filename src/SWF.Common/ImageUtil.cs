@@ -61,8 +61,15 @@ namespace SWF.Common
 
             using (var mes = new MemoryStream(bf))
             {
-                var img = Image.FromStream(mes, false, false);
-                return img;
+                try
+                {
+                    var img = Image.FromStream(mes, false, false);
+                    return img;
+                }
+                catch (OutOfMemoryException ex)
+                {
+                    throw new ImageUtilException(ex);
+                }
             }
         }
 
@@ -114,33 +121,33 @@ namespace SWF.Common
                     return AVIFUtil.GetImageSize(filePath);
                 }
             }
-            catch (NotSupportedException)
+            catch (NotSupportedException ex)
             {
-                throw;
+                throw new ImageUtilException(filePath, ex);
             }
-            catch (FileNotFoundException)
+            catch (FileNotFoundException ex)
             {
-                throw;
+                throw new ImageUtilException(filePath, ex);
             }
-            catch (SecurityException)
+            catch (SecurityException ex)
             {
-                throw;
+                throw new ImageUtilException(filePath, ex);
             }
-            catch (DirectoryNotFoundException)
+            catch (DirectoryNotFoundException ex)
             {
-                throw;
+                throw new ImageUtilException(filePath, ex);
             }
-            catch (PathTooLongException)
+            catch (PathTooLongException ex)
             {
-                throw;
+                throw new ImageUtilException(filePath, ex);
             }
-            catch (IOException)
+            catch (IOException ex)
             {
-                throw;
+                throw new ImageUtilException(filePath, ex);
             }
-            catch (UnauthorizedAccessException)
+            catch (UnauthorizedAccessException ex)
             {
-                throw;
+                throw new ImageUtilException(filePath, ex);
             }
 
             var directory = ImageUtil.SHELL.NameSpace(Path.GetDirectoryName(filePath));
@@ -209,33 +216,45 @@ namespace SWF.Common
                     }
                 }
             }
-            catch (NotSupportedException)
+            catch (NotSupportedException ex)
             {
-                throw;
+                throw new ImageUtilException(filePath, ex);
             }
-            catch (FileNotFoundException)
+            catch (FileNotFoundException ex)
             {
-                throw;
+                throw new ImageUtilException(filePath, ex);
             }
-            catch (SecurityException)
+            catch (SecurityException ex)
             {
-                throw;
+                throw new ImageUtilException(filePath, ex);
             }
-            catch (DirectoryNotFoundException)
+            catch (DirectoryNotFoundException ex)
             {
-                throw;
+                throw new ImageUtilException(filePath, ex);
             }
-            catch (PathTooLongException)
+            catch (PathTooLongException ex)
             {
-                throw;
+                throw new ImageUtilException(filePath, ex);
             }
-            catch (IOException)
+            catch (IOException ex)
             {
-                throw;
+                throw new ImageUtilException(filePath, ex);
             }
-            catch (UnauthorizedAccessException)
+            catch (UnauthorizedAccessException ex)
             {
-                throw;
+                throw new ImageUtilException(filePath, ex);
+            }
+            catch (SixLabors.ImageSharp.InvalidImageContentException ex)
+            {
+                throw new ImageUtilException(filePath, ex);
+            }
+            catch (SixLabors.ImageSharp.UnknownImageFormatException ex)
+            {
+                throw new ImageUtilException(filePath, ex);
+            }
+            catch (OutOfMemoryException ex)
+            {
+                throw new ImageUtilException(filePath, ex);
             }
         }
 

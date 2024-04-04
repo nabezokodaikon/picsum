@@ -77,9 +77,9 @@ namespace SWF.Common
                     return Directory.Exists(filePath)
                         && Path.GetDirectoryName(filePath) == null;
                 }
-                catch (PathTooLongException)
+                catch (PathTooLongException ex)
                 {
-                    return false;
+                    throw new FileUtilException(filePath, ex);
                 }
             }
         }
@@ -197,25 +197,25 @@ namespace SWF.Common
                         return result;
                     }
                 }
-                catch (DirectoryNotFoundException)
+                catch (DirectoryNotFoundException exception)
                 {
-                    return false;
+                    throw new FileUtilException(directoryPath, exception);
                 }
-                catch (PathTooLongException)
+                catch (PathTooLongException exception)
                 {
-                    return false;
+                    throw new FileUtilException(directoryPath, exception);
                 }
-                catch (IOException)
+                catch (IOException exception)
                 {
-                    return false;
+                    throw new FileUtilException(directoryPath, exception);
                 }
-                catch (UnauthorizedAccessException)
+                catch (UnauthorizedAccessException exception)
                 {
-                    return false;
+                    throw new FileUtilException(directoryPath, exception);
                 }
-                catch (SecurityException)
+                catch (SecurityException exception)
                 {
-                    return false;
+                    throw new FileUtilException(directoryPath, exception);
                 }
             }
 
@@ -257,29 +257,29 @@ namespace SWF.Common
                         return true;
                     }
                 }
-                catch (PathTooLongException)
+                catch (PathTooLongException ex)
                 {
-                    return false;
+                    throw new FileUtilException(filePath, ex);
                 }
-                catch (NotSupportedException)
+                catch (NotSupportedException ex)
                 {
-                    return false;
+                    throw new FileUtilException(filePath, ex);
                 }
-                catch (FileNotFoundException)
+                catch (FileNotFoundException ex)
                 {
-                    return false;
+                    throw new FileUtilException(filePath, ex);
                 }
-                catch (DirectoryNotFoundException)
+                catch (DirectoryNotFoundException ex)
                 {
-                    return false;
+                    throw new FileUtilException(filePath, ex);
                 }
-                catch (IOException)
+                catch (IOException ex)
                 {
-                    return false;
+                    throw new FileUtilException(filePath, ex);
                 }
-                catch (UnauthorizedAccessException)
+                catch (UnauthorizedAccessException ex)
                 {
-                    return false;
+                    throw new FileUtilException(filePath, ex);
                 }
             }
             else
@@ -320,15 +320,13 @@ namespace SWF.Common
                         return FileUtil.ROOT_DIRECTORY_NAME;
                     }
                 }
-                catch (IOException)
+                catch (IOException ex)
                 {
-                    // ドライブ情報の取得に失敗した場合、ルートディレクトリと判断します。
-                    return FileUtil.ROOT_DIRECTORY_NAME;
+                    throw new FileUtilException(filePath, ex);
                 }
-                catch (UnauthorizedAccessException)
+                catch (UnauthorizedAccessException ex)
                 {
-                    // ドライブ情報の取得に失敗した場合、ルートディレクトリと判断します。
-                    return FileUtil.ROOT_DIRECTORY_NAME;
+                    throw new FileUtilException(filePath, ex);
                 }
             }
             else
@@ -354,20 +352,25 @@ namespace SWF.Common
                 throw new ArgumentException("システムルートが指定されました。", nameof(filePath));
             }
 
-            try
+            if (FileUtil.IsDrive(filePath))
             {
-                if (FileUtil.IsDrive(filePath))
-                {
-                    return FileUtil.ROOT_DIRECTORY_PATH;
-                }
-                else
+                return FileUtil.ROOT_DIRECTORY_PATH;
+            }
+            else
+            {
+                try
                 {
                     return Path.GetDirectoryName(filePath);
                 }
-            }
-            catch (IOException)
-            {
-                throw new ArgumentException("不明なファイルパスが指定されました。", nameof(filePath));
+                catch (PathTooLongException ex)
+                {
+                    throw new FileUtilException(filePath, ex);
+                }
+                catch (IOException ex)
+                {
+                    throw new FileUtilException(filePath, ex);
+                }
+
             }
         }
 
@@ -417,8 +420,6 @@ namespace SWF.Common
             }
         }
 
-
-
         /// <summary>
         /// ファイルの更新日時を取得します。
         /// </summary>
@@ -440,17 +441,17 @@ namespace SWF.Common
             {
                 return File.GetLastWriteTime(filePath);
             }
-            catch (UnauthorizedAccessException)
+            catch (UnauthorizedAccessException ex)
             {
-                throw;
+                throw new FileUtilException(filePath, ex);
             }
-            catch (PathTooLongException)
+            catch (PathTooLongException ex)
             {
-                throw;
+                throw new FileUtilException(filePath, ex);
             }
-            catch (NotSupportedException)
+            catch (NotSupportedException ex)
             {
-                throw;
+                throw new FileUtilException(filePath, ex);
             }
         }
 
@@ -471,21 +472,21 @@ namespace SWF.Common
                 var fi = new FileInfo(filePath);
                 return fi.Length;
             }
-            catch (SecurityException)
+            catch (SecurityException ex)
             {
-                throw;
+                throw new FileUtilException(filePath, ex);
             }
-            catch (UnauthorizedAccessException)
+            catch (UnauthorizedAccessException ex)
             {
-                throw;
+                throw new FileUtilException(filePath, ex);
             }
-            catch (PathTooLongException)
+            catch (PathTooLongException ex)
             {
-                throw;
+                throw new FileUtilException(filePath, ex);
             }
-            catch (NotSupportedException)
+            catch (NotSupportedException ex)
             {
-                throw;
+                throw new FileUtilException(filePath, ex);
             }
         }
 
@@ -527,26 +528,26 @@ namespace SWF.Common
                         .Where(file => CanAccess(file))
                         .ToList();
                 }
-                catch (UnauthorizedAccessException)
+                catch (UnauthorizedAccessException ex)
                 {
-                    return new string[] { };
+                    throw new FileUtilException(directoryPath, ex);
                 }
-                catch (PathTooLongException)
+                catch (PathTooLongException ex)
                 {
-                    return new string[] { };
+                    throw new FileUtilException(directoryPath, ex);
                 }
-                catch (DirectoryNotFoundException)
+                catch (DirectoryNotFoundException ex)
                 {
-                    return new string[] { };
+                    throw new FileUtilException(directoryPath, ex);
                 }
-                catch (IOException)
+                catch (IOException ex)
                 {
-                    return new string[] { };
+                    throw new FileUtilException(directoryPath, ex);
                 }
             }
             else
             {
-                return new string[] { };
+                return [];
             }
         }
 
@@ -576,26 +577,26 @@ namespace SWF.Common
                         .Where(file => CanAccess(file))
                         .ToArray();
                 }
-                catch (UnauthorizedAccessException)
+                catch (UnauthorizedAccessException ex)
                 {
-                    return new string[] { };
+                    throw new FileUtilException(directoryPath, ex);
                 }
-                catch (PathTooLongException)
+                catch (PathTooLongException ex)
                 {
-                    return new string[] { };
+                    throw new FileUtilException(directoryPath, ex);
                 }
-                catch (DirectoryNotFoundException)
+                catch (DirectoryNotFoundException ex)
                 {
-                    return new string[] { };
+                    throw new FileUtilException(directoryPath, ex);
                 }
-                catch (IOException)
+                catch (IOException ex)
                 {
-                    return new string[] { };
+                    throw new FileUtilException(directoryPath, ex);
                 }
             }
             else
             {
-                return new string[] { };
+                return [];
             }
         }
 
@@ -625,26 +626,26 @@ namespace SWF.Common
                         .Where(file => CanAccess(file))
                         .ToList();
                 }
-                catch (UnauthorizedAccessException)
+                catch (UnauthorizedAccessException ex)
                 {
-                    return new string[] { };
+                    throw new FileUtilException(directoryPath, ex);
                 }
-                catch (PathTooLongException)
+                catch (PathTooLongException ex)
                 {
-                    return new string[] { };
+                    throw new FileUtilException(directoryPath, ex);
                 }
-                catch (DirectoryNotFoundException)
+                catch (DirectoryNotFoundException ex)
                 {
-                    return new string[] { };
+                    throw new FileUtilException(directoryPath, ex);
                 }
-                catch (IOException)
+                catch (IOException ex)
                 {
-                    return new string[] { };
+                    throw new FileUtilException(directoryPath, ex);
                 }
             }
             else
             {
-                return new string[] { };
+                return [];
             }
         }
 
@@ -864,17 +865,17 @@ namespace SWF.Common
                     p.Start();
                 }
             }
-            catch (Win32Exception)
+            catch (Win32Exception ex)
             {
-                return;
+                throw new FileUtilException(filePath, ex);
             }
-            catch (ObjectDisposedException)
+            catch (ObjectDisposedException ex)
             {
-                return;
+                throw new FileUtilException(filePath, ex);
             }
-            catch (FileNotFoundException)
+            catch (FileNotFoundException ex)
             {
-                return;
+                throw new FileUtilException(filePath, ex);
             }
         }
 
@@ -896,17 +897,17 @@ namespace SWF.Common
                     Process.Start("EXPLORER.EXE", filePath);
                 }
             }
-            catch (Win32Exception)
+            catch (Win32Exception ex)
             {
-                return;
+                throw new FileUtilException(filePath, ex);
             }
-            catch (ObjectDisposedException)
+            catch (ObjectDisposedException ex)
             {
-                return;
+                throw new FileUtilException(filePath, ex);
             }
-            catch (FileNotFoundException)
+            catch (FileNotFoundException ex)
             {
-                return;
+                throw new FileUtilException(filePath, ex);
             }
         }
 
@@ -921,17 +922,17 @@ namespace SWF.Common
             {
                 Process.Start("EXPLORER.EXE", string.Format(@"/select,{0}", filePath));
             }
-            catch (Win32Exception)
+            catch (Win32Exception ex)
             {
-                return;
+                throw new FileUtilException(filePath, ex);
             }
-            catch (ObjectDisposedException)
+            catch (ObjectDisposedException ex)
             {
-                return;
+                throw new FileUtilException(filePath, ex);
             }
-            catch (FileNotFoundException)
+            catch (FileNotFoundException ex)
             {
-                return;
+                throw new FileUtilException(filePath, ex);
             }
         }
 
@@ -1008,13 +1009,13 @@ namespace SWF.Common
                     .ToArray();
                 return drives;
             }
-            catch (IOException)
+            catch (IOException ex)
             {
-                return new string[] { };
+                throw new FileUtilException(ex);
             }
-            catch (UnauthorizedAccessException)
+            catch (UnauthorizedAccessException ex)
             {
-                return new string[] { };
+                throw new FileUtilException(ex);
             }
         }
     }
