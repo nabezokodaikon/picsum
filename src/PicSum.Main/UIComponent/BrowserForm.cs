@@ -271,7 +271,7 @@ namespace PicSum.Main.UIComponent
             var w = this.Width - this.Padding.Left - this.Padding.Right;
             var h = this.Height - this.Padding.Top - this.Padding.Bottom;
             browserMainPanel.SetBounds(x, y, w, h, BoundsSpecified.All);
-            browserMainPanel.Anchor = ((AnchorStyles)(AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right));
+            browserMainPanel.Dock = DockStyle.Fill;
 
             browserMainPanel.Close += new EventHandler(this.BrowserMainPanel_Close);
             browserMainPanel.BackgroundMouseDoubleLeftClick += new EventHandler(this.BrowserMainPanel_BackgroundMouseDoubleLeftClick);
