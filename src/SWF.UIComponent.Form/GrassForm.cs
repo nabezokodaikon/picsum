@@ -161,7 +161,7 @@ namespace SWF.UIComponent.Form
             //base.OnPaintBackground(e);
         }
 
-        protected override void OnShown(EventArgs e)
+        protected override void OnLoad(EventArgs e)
         {
             if (this.isInit)
             {
@@ -170,7 +170,7 @@ namespace SWF.UIComponent.Form
                 this.isInit = false;
             }
 
-            base.OnShown(e);
+            base.OnLoad(e);
         }
 
         protected void SetGrass()
