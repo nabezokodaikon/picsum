@@ -155,6 +155,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             : base(parameter)
         {
             this.InitializeComponent();
+            this.SubInitializeComponent();
 
             this.parameter = parameter;
         }
@@ -228,6 +229,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         {
             this.parameter.GetImageFiles += this.Parameter_GetImageFiles;
             this.parameter.GetImageFilesAction(this.parameter)();
+            base.OnLoad(e);
         }
 
         protected override void OnMouseWheel(MouseEventArgs e)
@@ -583,8 +585,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             {
                 this.FilePathListIndex = index;
             }
-
-            this.SubInitializeComponent();
         }
 
         private void ReadImageFileProcess_Callback(object sender, GetImageFileResult e)
