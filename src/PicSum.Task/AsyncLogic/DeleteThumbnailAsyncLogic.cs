@@ -1,4 +1,4 @@
-﻿using PicSum.Core.Data.DatabaseAccessor;
+using PicSum.Core.Data.DatabaseAccessor;
 using PicSum.Core.Task.AsyncTask;
 using PicSum.Data.DatabaseAccessor.Connection;
 using PicSum.Data.DatabaseAccessor.Sql;
@@ -12,8 +12,8 @@ namespace PicSum.Task.AsyncLogic
     public class DeleteThumbnailAsyncLogic
         : AbstractAsyncLogic
     {
-        public DeleteThumbnailAsyncLogic(AbstractAsyncFacade facade)
-            : base(facade)
+        public DeleteThumbnailAsyncLogic(AbstractAsyncTask task)
+            : base(task)
         {
 
         }

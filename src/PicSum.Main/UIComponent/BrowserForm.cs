@@ -1,6 +1,6 @@
 using PicSum.Core.Task.AsyncTask;
 using PicSum.Main.Conf;
-using PicSum.Task.AsyncFacade;
+using PicSum.Task.AsyncTask;
 using PicSum.Task.Entity;
 using PicSum.Task.Paramter;
 using PicSum.UIComponent.Contents.Common;
@@ -20,7 +20,7 @@ namespace PicSum.Main.UIComponent
     {
         #region クラスメンバ
 
-        private static TwoWayProcess<StartupAsyncFacade, StartupPrameter, DefaultEntity> startupProcess = null;
+        private static TwoWayProcess<StartupAsyncTask, StartupPrameter, DefaultEntity> startupProcess = null;
 
         #endregion
 
@@ -128,7 +128,7 @@ namespace PicSum.Main.UIComponent
                     this.components = new Container();
                 }
 
-                BrowserForm.startupProcess = TaskManager.CreateTwoWayProcess<StartupAsyncFacade, StartupPrameter, DefaultEntity>(this.components);
+                BrowserForm.startupProcess = TaskManager.CreateTwoWayProcess<StartupAsyncTask, StartupPrameter, DefaultEntity>(this.components);
                 BrowserForm.startupProcess.Callback += new AsyncTaskCallbackEventHandler<DefaultEntity>(this.StartupProcess_Callback);
 
                 var dbDir = Path.Combine(Directory.GetParent(Application.ExecutablePath).FullName, "db");

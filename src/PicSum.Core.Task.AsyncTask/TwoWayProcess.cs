@@ -11,11 +11,11 @@ namespace PicSum.Core.Task.AsyncTask
     /// <summary>
     /// TwoWayプロセスクラス
     /// </summary>
-    /// <typeparam name="TFacade">ファサードの型</typeparam>
+    /// <typeparam name="TTask">タスクの型</typeparam>
     /// <typeparam name="TCallbackEventArgs">コールバックイベント引数クラスの型</typeparam>
     [SupportedOSPlatform("windows")]
-    public sealed class TwoWayProcess<TFacade, TCallbackEventArgs> : ProcessBase
-        where TFacade : TwoWayFacadeBase<TCallbackEventArgs>, new()
+    public sealed class TwoWayProcess<TTask, TCallbackEventArgs> : ProcessBase
+        where TTask : TwoWayTaskBase<TCallbackEventArgs>, new()
         where TCallbackEventArgs : IEntity
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
@@ -44,49 +44,49 @@ namespace PicSum.Core.Task.AsyncTask
         }
 
         // 実行スレッド。
-        protected override void ExecuteThread(TaskInfo task)
+        protected override void ExecuteThread(TaskInfo taskInfo)
         {
-            if (task == null) throw new ArgumentNullException(nameof(task));
+            if (taskInfo == null) throw new ArgumentNullException(nameof(taskInfo));
 
-            var facade = new TFacade();
-            var facadeName = facade.GetType().Name;
-            Thread.CurrentThread.Name = facadeName;
+            var task = new TTask();
+            var taskName = task.GetType().Name;
+            Thread.CurrentThread.Name = taskName;
 #if DEBUG
-            Logger.Debug("タスクID: {0} Facade: {1} を開始します。", task.TaskId, facadeName);
+            Logger.Debug("TaskID: {0}, Task: {1} を開始します。", taskInfo.TaskId, taskName);
 #endif
 
-            facade.Callback += new AsyncTaskCallbackEventHandler<TCallbackEventArgs>
-                ((object sender, TCallbackEventArgs e) => this.SendMessageThread(this.OnCallback, new object[] { sender, e }));
-            facade.SetTask(task);
+            task.Callback += new AsyncTaskCallbackEventHandler<TCallbackEventArgs>
+                ((object sender, TCallbackEventArgs e) => this.SendToUIThread(this.OnCallback, new object[] { sender, e }));
+            task.SetTask(taskInfo);
 
             try
             {
-                facade.Execute();
+                task.Execute();
             }
             catch (TaskCancelException)
             {
 #if DEBUG
-                Logger.Debug("タスクID: {0} Facade: {1} がキャンセルされました。", task.TaskId, facadeName);
+                Logger.Debug("TaskID: {0}, Task: {1} がキャンセルされました。", taskInfo.TaskId, taskName);
 #endif
-                this.SendMessageThread(this.OnCancelEnd, task);
+                this.SendToUIThread(this.OnCancelEnd, taskInfo);
                 return;
             }
             catch (Exception ex)
             {
 #if DEBUG
-                Logger.Error("タスクID: {0} Facade: {1} で例外が発生しました。\n{2}", task.TaskId, facadeName, ExceptionUtil.CreateDetailsMessage(ex));
+                Logger.Error("TaskID: {0}, Task: {1} で例外が発生しました。\n{2}", taskInfo.TaskId, taskName, ExceptionUtil.CreateDetailsMessage(ex));
 #endif
-                this.SendMessageThread(this.OnErrorEnd, new object[] { task, ex });
+                this.SendToUIThread(this.OnErrorEnd, new object[] { taskInfo, ex });
                 return;
             }
             finally
             {
 #if DEBUG
-                Logger.Debug("タスクID: {0} Facade: {1} が終了しました。", task.TaskId, facadeName);
+                Logger.Debug("TaskID: {0}, Task: {1} が終了しました。", taskInfo.TaskId, taskName);
 #endif            
             }
 
-            this.SendMessageThread(this.OnSuccessEnd, task);
+            this.SendToUIThread(this.OnSuccessEnd, taskInfo);
         }
 
         // コールバックイベントを発生させます。
@@ -106,12 +106,12 @@ namespace PicSum.Core.Task.AsyncTask
     /// <summary>
     /// TwoWayプロセスクラス
     /// </summary>
-    /// <typeparam name="TFacade">ファサードの型</typeparam>
+    /// <typeparam name="TTask">タスクの型</typeparam>
     /// <typeparam name="TParameter">パラメータの型</typeparam>
     /// <typeparam name="TCallbackEventArgs">コールバックイベント引数クラスの型</typeparam>
     [SupportedOSPlatform("windows")]
-    public sealed class TwoWayProcess<TFacade, TParameter, TCallbackEventArgs> : ProcessBase
-        where TFacade : TwoWayFacadeBase<TParameter, TCallbackEventArgs>, new()
+    public sealed class TwoWayProcess<TTask, TParameter, TCallbackEventArgs> : ProcessBase
+        where TTask : TwoWayTaskBase<TParameter, TCallbackEventArgs>, new()
         where TParameter : IEntity
         where TCallbackEventArgs : IEntity
     {
@@ -142,49 +142,49 @@ namespace PicSum.Core.Task.AsyncTask
         }
 
         // 実行スレッド。
-        protected override void ExecuteThread(TaskInfo task)
+        protected override void ExecuteThread(TaskInfo taskInfo)
         {
-            if (task == null) throw new ArgumentNullException(nameof(task));
+            if (taskInfo == null) throw new ArgumentNullException(nameof(taskInfo));
 
-            var facade = new TFacade();
-            var facadeName = facade.GetType().Name;
-            Thread.CurrentThread.Name = facadeName;
+            var task = new TTask();
+            var taskName = task.GetType().Name;
+            Thread.CurrentThread.Name = taskName;
 #if DEBUG
-            Logger.Debug("タスクID: {0} Facade: {1} を開始します。", task.TaskId, facadeName);
+            Logger.Debug("TaskID: {0}, Task: {1} を開始します。", taskInfo.TaskId, taskName);
 #endif
 
-            facade.Callback += new AsyncTaskCallbackEventHandler<TCallbackEventArgs>
-                ((object sender, TCallbackEventArgs e) => this.SendMessageThread(this.OnCallback, new object[] { sender, e }));
-            facade.SetTask(task);
+            task.Callback += new AsyncTaskCallbackEventHandler<TCallbackEventArgs>
+                ((object sender, TCallbackEventArgs e) => this.SendToUIThread(this.OnCallback, new object[] { sender, e }));
+            task.SetTask(taskInfo);
 
             try
             {
-                facade.Execute((TParameter)task.Parameter);
+                task.Execute((TParameter)taskInfo.Parameter);
             }
             catch (TaskCancelException)
             {
 #if DEBUG
-                Logger.Debug("タスクID: {0} Facade: {1} がキャンセルされました。", task.TaskId, facadeName);
+                Logger.Debug("TaskID: {0}, Task: {1} がキャンセルされました。", taskInfo.TaskId, taskName);
 #endif
-                this.SendMessageThread(this.OnCancelEnd, task);
+                this.SendToUIThread(this.OnCancelEnd, taskInfo);
                 return;
             }
             catch (Exception ex)
             {
 #if DEBUG
-                Logger.Error("タスクID: {0} Facade: {1} で例外が発生しました。\n{2}", task.TaskId, facadeName, ExceptionUtil.CreateDetailsMessage(ex));
+                Logger.Error("TaskID: {0}, Task: {1} で例外が発生しました。\n{2}", taskInfo.TaskId, taskName, ExceptionUtil.CreateDetailsMessage(ex));
 #endif
-                this.SendMessageThread(this.OnErrorEnd, new object[] { task, ex });
+                this.SendToUIThread(this.OnErrorEnd, new object[] { taskInfo, ex });
                 return;
             }
             finally
             {
 #if DEBUG
-                Logger.Debug("タスクID: {0} Facade: {1} が終了しました。", task.TaskId, facadeName);
+                Logger.Debug("TaskID: {0}, Task: {1} が終了しました。", taskInfo.TaskId, taskName);
 #endif            
             }
 
-            this.SendMessageThread(this.OnSuccessEnd, task);
+            this.SendToUIThread(this.OnSuccessEnd, taskInfo);
         }
 
         // コールバックイベントを発生させます。

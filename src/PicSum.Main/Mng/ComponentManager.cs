@@ -1,7 +1,7 @@
 using PicSum.Core.Task.AsyncTask;
 using PicSum.Main.Conf;
 using PicSum.Main.Properties;
-using PicSum.Task.SyncFacade;
+using PicSum.Task.SyncTask;
 using PicSum.UIComponent.Contents.Conf;
 using System;
 using System.Runtime.Versioning;
@@ -54,8 +54,8 @@ namespace PicSum.Main.Mng
             }
 
             // 終了処理を行います。
-            var closingFacade = new ClosingSyncFacade();
-            closingFacade.Execute();
+            var closingTask = new ClosingSyncTask();
+            closingTask.Execute();
 
             // ブラウザの設定を保存します。
             Settings.Default.BrowserWindowState = BrowserConfig.WindowState;

@@ -1,6 +1,6 @@
 using PicSum.Core.Base.Conf;
 using PicSum.Core.Task.AsyncTask;
-using PicSum.Task.AsyncFacade;
+using PicSum.Task.AsyncTask;
 using PicSum.Task.Entity;
 using PicSum.Task.Paramter;
 using PicSum.Task.Result;
@@ -54,9 +54,9 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         private ImageSizeMode sizeMode = ImageSizeMode.FitOnlyBigImage;
         private IList<string> filePathList = null;
 
-        private TwoWayProcess<GetImageFileAsyncFacade, GetImageFileParameter, GetImageFileResult> readImageFileProcess = null;
-        private OneWayProcess<AddBookmarkAsyncFacade, SingleValueEntity<string>> addBookmarkProcess = null;
-        private OneWayProcess<ExportFileAsyncFacade, ExportFileParameter> exportFileProcess = null;
+        private TwoWayProcess<GetImageFileAsyncTask, GetImageFileParameter, GetImageFileResult> readImageFileProcess = null;
+        private OneWayProcess<AddBookmarkAsyncTask, SingleValueEntity<string>> addBookmarkProcess = null;
+        private OneWayProcess<ExportFileAsyncTask, ExportFileParameter> exportFileProcess = null;
 
         #endregion
 
@@ -105,13 +105,13 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             }
         }
 
-        private TwoWayProcess<GetImageFileAsyncFacade, GetImageFileParameter, GetImageFileResult> ReadImageFileProcess
+        private TwoWayProcess<GetImageFileAsyncTask, GetImageFileParameter, GetImageFileResult> ReadImageFileProcess
         {
             get
             {
                 if (this.readImageFileProcess == null)
                 {
-                    this.readImageFileProcess = TaskManager.CreateTwoWayProcess<GetImageFileAsyncFacade, GetImageFileParameter, GetImageFileResult>(this.ProcessContainer);
+                    this.readImageFileProcess = TaskManager.CreateTwoWayProcess<GetImageFileAsyncTask, GetImageFileParameter, GetImageFileResult>(this.ProcessContainer);
                     this.readImageFileProcess.Callback += new AsyncTaskCallbackEventHandler<GetImageFileResult>(this.ReadImageFileProcess_Callback);
                     this.readImageFileProcess.SuccessEnd += new EventHandler(this.ReadImageFileProcess_SuccessEnd);
                     this.readImageFileProcess.ErrorEnd += new EventHandler(this.ReadImageFileProcess_ErrorEnd);
@@ -121,26 +121,26 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             }
         }
 
-        private OneWayProcess<AddBookmarkAsyncFacade, SingleValueEntity<string>> AddBookmarkProcess
+        private OneWayProcess<AddBookmarkAsyncTask, SingleValueEntity<string>> AddBookmarkProcess
         {
             get
             {
                 if (this.addBookmarkProcess == null)
                 {
-                    this.addBookmarkProcess = TaskManager.CreateOneWayProcess<AddBookmarkAsyncFacade, SingleValueEntity<string>>(this.ProcessContainer);
+                    this.addBookmarkProcess = TaskManager.CreateOneWayProcess<AddBookmarkAsyncTask, SingleValueEntity<string>>(this.ProcessContainer);
                 }
 
                 return this.addBookmarkProcess;
             }
         }
 
-        private OneWayProcess<ExportFileAsyncFacade, ExportFileParameter> ExportFileProcess
+        private OneWayProcess<ExportFileAsyncTask, ExportFileParameter> ExportFileProcess
         {
             get
             {
                 if (this.exportFileProcess == null)
                 {
-                    this.exportFileProcess = TaskManager.CreateOneWayProcess<ExportFileAsyncFacade, ExportFileParameter>(this.ProcessContainer);
+                    this.exportFileProcess = TaskManager.CreateOneWayProcess<ExportFileAsyncTask, ExportFileParameter>(this.ProcessContainer);
                 }
 
                 return this.exportFileProcess;

@@ -12,8 +12,8 @@ namespace PicSum.Task.AsyncLogic
     internal sealed class ExportFileAsyncLogic
         : AbstractAsyncLogic
     {
-        public ExportFileAsyncLogic(AbstractAsyncFacade facade)
-            : base(facade)
+        public ExportFileAsyncLogic(AbstractAsyncTask task)
+            : base(task)
         {
 
         }

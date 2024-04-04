@@ -1,4 +1,4 @@
-﻿using PicSum.Core.Data.DatabaseAccessor;
+using PicSum.Core.Data.DatabaseAccessor;
 using PicSum.Core.Task.AsyncTask;
 using PicSum.Data.DatabaseAccessor.Connection;
 using PicSum.Data.DatabaseAccessor.Dto;
@@ -15,8 +15,8 @@ namespace PicSum.Task.AsyncLogic
     internal sealed class GetFileTagInfoAsyncLogic
         : AbstractAsyncLogic
     {
-        public GetFileTagInfoAsyncLogic(AbstractAsyncFacade facade)
-            : base(facade)
+        public GetFileTagInfoAsyncLogic(AbstractAsyncTask task)
+            : base(task)
         {
 
         }

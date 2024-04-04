@@ -1,5 +1,5 @@
 using PicSum.Core.Task.AsyncTask;
-using PicSum.Task.AsyncFacade;
+using PicSum.Task.AsyncTask;
 using PicSum.Task.Entity;
 using PicSum.UIComponent.AddressBar.Properties;
 using SWF.Common;
@@ -17,19 +17,19 @@ namespace PicSum.UIComponent.AddressBar
         #region インスタンス変数
 
         private Image drawImage = Resources.SmallArrowDown;
-        private TwoWayProcess<GetDirectoryViewHistoryAsyncFacade, ListEntity<FileShallowInfoEntity>> getDirectoryHistoryProcess = null;
+        private TwoWayProcess<GetDirectoryViewHistoryAsyncTask, ListEntity<FileShallowInfoEntity>> getDirectoryHistoryProcess = null;
 
         #endregion
 
         #region プロパティ
 
-        private TwoWayProcess<GetDirectoryViewHistoryAsyncFacade, ListEntity<FileShallowInfoEntity>> GetDirectoryHistoryProcess
+        private TwoWayProcess<GetDirectoryViewHistoryAsyncTask, ListEntity<FileShallowInfoEntity>> GetDirectoryHistoryProcess
         {
             get
             {
                 if (this.getDirectoryHistoryProcess == null)
                 {
-                    this.getDirectoryHistoryProcess = TaskManager.CreateTwoWayProcess<GetDirectoryViewHistoryAsyncFacade, ListEntity<FileShallowInfoEntity>>(base.Components);
+                    this.getDirectoryHistoryProcess = TaskManager.CreateTwoWayProcess<GetDirectoryViewHistoryAsyncTask, ListEntity<FileShallowInfoEntity>>(base.Components);
                     this.getDirectoryHistoryProcess.Callback += new AsyncTaskCallbackEventHandler<ListEntity<FileShallowInfoEntity>>(this.GetDirectoryHistoryProcess_Callback);
                 }
 

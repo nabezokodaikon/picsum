@@ -1,5 +1,5 @@
 using PicSum.Core.Task.AsyncTask;
-using PicSum.Task.AsyncFacade;
+using PicSum.Task.AsyncTask;
 using PicSum.Task.Entity;
 using PicSum.UIComponent.AddressBar.Properties;
 using System;
@@ -20,7 +20,7 @@ namespace PicSum.UIComponent.AddressBar
         private Image mouseDownImage = Resources.SmallArrowDown;
         private bool isRead = false;
         private Font selectedSubDirectoryFont = null;
-        private TwoWayProcess<GetSubDirectoryAsyncFacade, SingleValueEntity<string>, ListEntity<FileShallowInfoEntity>> getSubDirectoryProcess = null;
+        private TwoWayProcess<GetSubDirectoryAsyncTask, SingleValueEntity<string>, ListEntity<FileShallowInfoEntity>> getSubDirectoryProcess = null;
 
         #endregion
 
@@ -29,13 +29,13 @@ namespace PicSum.UIComponent.AddressBar
         public DirectoryEntity Directory { get; set; }
         public string SelectedSubDirectoryPath { get; set; }
 
-        private TwoWayProcess<GetSubDirectoryAsyncFacade, SingleValueEntity<string>, ListEntity<FileShallowInfoEntity>> GetSubDirectoryProcess
+        private TwoWayProcess<GetSubDirectoryAsyncTask, SingleValueEntity<string>, ListEntity<FileShallowInfoEntity>> GetSubDirectoryProcess
         {
             get
             {
                 if (this.getSubDirectoryProcess == null)
                 {
-                    this.getSubDirectoryProcess = TaskManager.CreateTwoWayProcess<GetSubDirectoryAsyncFacade, SingleValueEntity<string>, ListEntity<FileShallowInfoEntity>>(base.Components);
+                    this.getSubDirectoryProcess = TaskManager.CreateTwoWayProcess<GetSubDirectoryAsyncTask, SingleValueEntity<string>, ListEntity<FileShallowInfoEntity>>(base.Components);
                     this.getSubDirectoryProcess.Callback += new AsyncTaskCallbackEventHandler<ListEntity<FileShallowInfoEntity>>(this.GetSubDirectoryProcess_Callback);
                 }
 

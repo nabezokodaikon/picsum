@@ -9,7 +9,7 @@ namespace PicSum.Core.Task.AsyncTask
     /// <summary>
     /// タスク管理
     /// </summary>
-    /// <remarks>メッセージスレッドより使用してください。</remarks>
+    /// <remarks>UIスレッドより使用してください。</remarks>
     [SupportedOSPlatform("windows")]
     public static class TaskManager
     {
@@ -18,57 +18,57 @@ namespace PicSum.Core.Task.AsyncTask
         /// <summary>
         /// プロセスのインスタンスを作成します。
         /// </summary>
-        /// <typeparam name="TFacade">ファサードの型</typeparam>
+        /// <typeparam name="TTask">タスクの型</typeparam>
         /// <param name="container">コンテナ</param>
         /// <returns>プロセス</returns>
-        public static OneWayProcess<TFacade> CreateOneWayProcess<TFacade>(IContainer container)
-            where TFacade : OneWayFacadeBase, new()
+        public static OneWayProcess<TTask> CreateOneWayProcess<TTask>(IContainer container)
+            where TTask : OneWayTaskBase, new()
         {
-            return new OneWayProcess<TFacade>(container);
+            return new OneWayProcess<TTask>(container);
         }
 
         /// <summary>
         /// プロセスのインスタンスを作成します。
         /// </summary>
-        /// <typeparam name="TFacade">ファサードの型</typeparam>
+        /// <typeparam name="TTask">タスクの型</typeparam>
         /// <typeparam name="TParameter">パラメータの型</typeparam>
         /// <param name="container">コンテナ</param>
         /// <returns>プロセス</returns>
-        public static OneWayProcess<TFacade, TParameter> CreateOneWayProcess<TFacade, TParameter>(IContainer container)
-            where TFacade : OneWayFacadeBase<TParameter>, new()
+        public static OneWayProcess<TTask, TParameter> CreateOneWayProcess<TTask, TParameter>(IContainer container)
+            where TTask : OneWayTaskBase<TParameter>, new()
             where TParameter : IEntity
         {
-            return new OneWayProcess<TFacade, TParameter>(container);
+            return new OneWayProcess<TTask, TParameter>(container);
         }
 
         /// <summary>
         /// プロセスのインスタンスを作成します。
         /// </summary>
-        /// <typeparam name="TFacade">ファサードの型</typeparam>
+        /// <typeparam name="TTask">タスクの型</typeparam>
         /// <typeparam name="TCallbackEventArgs">コールバックイベント引数クラスの型</typeparam>
         /// <param name="container">コンテナ</param>
         /// <returns>プロセス</returns>
-        public static TwoWayProcess<TFacade, TCallbackEventArgs> CreateTwoWayProcess<TFacade, TCallbackEventArgs>(IContainer container)
-            where TFacade : TwoWayFacadeBase<TCallbackEventArgs>, new()
+        public static TwoWayProcess<TTask, TCallbackEventArgs> CreateTwoWayProcess<TTask, TCallbackEventArgs>(IContainer container)
+            where TTask : TwoWayTaskBase<TCallbackEventArgs>, new()
             where TCallbackEventArgs : IEntity
         {
-            return new TwoWayProcess<TFacade, TCallbackEventArgs>(container);
+            return new TwoWayProcess<TTask, TCallbackEventArgs>(container);
         }
 
         /// <summary>
         /// プロセスのインスタンスを作成します。
         /// </summary>
-        /// <typeparam name="TFacade">ファサードの型</typeparam>
+        /// <typeparam name="TTask">タスクの型</typeparam>
         /// <typeparam name="TParameter">パラメータの型</typeparam>
         /// <typeparam name="TCallbackEventArgs">コールバックイベント引数クラスの型</typeparam>
         /// <param name="container">コンテナ</param>
         /// <returns>プロセス</returns>
-        public static TwoWayProcess<TFacade, TParameter, TCallbackEventArgs> CreateTwoWayProcess<TFacade, TParameter, TCallbackEventArgs>(IContainer container)
-            where TFacade : TwoWayFacadeBase<TParameter, TCallbackEventArgs>, new()
+        public static TwoWayProcess<TTask, TParameter, TCallbackEventArgs> CreateTwoWayProcess<TTask, TParameter, TCallbackEventArgs>(IContainer container)
+            where TTask : TwoWayTaskBase<TParameter, TCallbackEventArgs>, new()
             where TParameter : IEntity
             where TCallbackEventArgs : IEntity
         {
-            return new TwoWayProcess<TFacade, TParameter, TCallbackEventArgs>(container);
+            return new TwoWayProcess<TTask, TParameter, TCallbackEventArgs>(container);
         }
 
         #endregion

@@ -152,11 +152,11 @@ namespace PicSum.Core.Task.AsyncTask
         protected abstract void ExecuteThread(TaskInfo task);
 
         /// <summary>
-        /// メッセージスレッドに処理を委譲します。
+        /// UIスレッドに処理を委譲します。
         /// </summary>
         /// <param name="d">コールバックデリゲート</param>
         /// <param name="state">状態</param>
-        protected void SendMessageThread(SendOrPostCallback d, object state)
+        protected void SendToUIThread(SendOrPostCallback d, object state)
         {
             if (d == null) throw new ArgumentNullException(nameof(d));
             if (state == null) throw new ArgumentNullException(nameof(state));

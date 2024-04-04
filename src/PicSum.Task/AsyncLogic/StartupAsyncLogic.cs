@@ -1,4 +1,4 @@
-﻿using PicSum.Core.Data.DatabaseAccessor;
+using PicSum.Core.Data.DatabaseAccessor;
 using PicSum.Core.Task.AsyncTask;
 using PicSum.Data.DatabaseAccessor.Connection;
 using PicSum.Task.Paramter;
@@ -11,8 +11,8 @@ namespace PicSum.Task.AsyncLogic
     /// </summary>
     internal sealed class StartupAsyncLogic : AbstractAsyncLogic
     {
-        public StartupAsyncLogic(AbstractAsyncFacade facade)
-            : base(facade)
+        public StartupAsyncLogic(AbstractAsyncTask task)
+            : base(task)
         {
 
         }

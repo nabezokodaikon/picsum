@@ -1,5 +1,5 @@
 using PicSum.Core.Task.AsyncTask;
-using PicSum.Task.AsyncFacade;
+using PicSum.Task.AsyncTask;
 using PicSum.Task.Entity;
 using PicSum.Task.Paramter;
 using PicSum.UIComponent.Contents.Common;
@@ -21,20 +21,20 @@ namespace PicSum.UIComponent.Contents.FileList
         #region インスタンス変数
 
         private FavoriteDirectoryListContentsParameter parameter = null;
-        private TwoWayProcess<GetFavoriteDirectoryAsyncFacade, GetFavoriteFolderParameter, ListEntity<FileShallowInfoEntity>> searchFavoriteDirectoryProcess = null;
-        private OneWayProcess<DeleteDirectoryViewCounterAsyncFacade, ListEntity<string>> deleteDirectoryViewCounterProcess = null;
+        private TwoWayProcess<GetFavoriteDirectoryAsyncTask, GetFavoriteFolderParameter, ListEntity<FileShallowInfoEntity>> searchFavoriteDirectoryProcess = null;
+        private OneWayProcess<DeleteDirectoryViewCounterAsyncTask, ListEntity<string>> deleteDirectoryViewCounterProcess = null;
 
         #endregion
 
         #region プライベートプロパティ
 
-        private TwoWayProcess<GetFavoriteDirectoryAsyncFacade, GetFavoriteFolderParameter, ListEntity<FileShallowInfoEntity>> SearchFavoriteDirectoryProcess
+        private TwoWayProcess<GetFavoriteDirectoryAsyncTask, GetFavoriteFolderParameter, ListEntity<FileShallowInfoEntity>> SearchFavoriteDirectoryProcess
         {
             get
             {
                 if (this.searchFavoriteDirectoryProcess == null)
                 {
-                    this.searchFavoriteDirectoryProcess = TaskManager.CreateTwoWayProcess<GetFavoriteDirectoryAsyncFacade, GetFavoriteFolderParameter, ListEntity<FileShallowInfoEntity>>(this.ProcessContainer);
+                    this.searchFavoriteDirectoryProcess = TaskManager.CreateTwoWayProcess<GetFavoriteDirectoryAsyncTask, GetFavoriteFolderParameter, ListEntity<FileShallowInfoEntity>>(this.ProcessContainer);
                     this.searchFavoriteDirectoryProcess.Callback += new AsyncTaskCallbackEventHandler<ListEntity<FileShallowInfoEntity>>(this.SearchFavoriteDirectoryProcess_Callback);
                 }
 
@@ -42,14 +42,14 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
-        private OneWayProcess<DeleteDirectoryViewCounterAsyncFacade, ListEntity<string>> DeleteDirectoryViewCounterProcess
+        private OneWayProcess<DeleteDirectoryViewCounterAsyncTask, ListEntity<string>> DeleteDirectoryViewCounterProcess
         {
             get
             {
                 if (this.deleteDirectoryViewCounterProcess == null)
                 {
                     this.deleteDirectoryViewCounterProcess
-                        = TaskManager.CreateOneWayProcess<DeleteDirectoryViewCounterAsyncFacade, ListEntity<string>>(this.ProcessContainer);
+                        = TaskManager.CreateOneWayProcess<DeleteDirectoryViewCounterAsyncTask, ListEntity<string>>(this.ProcessContainer);
 
                 }
 

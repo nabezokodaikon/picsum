@@ -1,4 +1,4 @@
-﻿using PicSum.Core.Base.Conf;
+using PicSum.Core.Base.Conf;
 using PicSum.Core.Data.DatabaseAccessor;
 using PicSum.Core.Task.AsyncTask;
 using PicSum.Data.DatabaseAccessor.Connection;
@@ -15,8 +15,8 @@ namespace PicSum.Task.AsyncLogic
     internal sealed class GetDirectoryStateAsyncLogic
         : AbstractAsyncLogic
     {
-        public GetDirectoryStateAsyncLogic(AbstractAsyncFacade facade)
-            : base(facade)
+        public GetDirectoryStateAsyncLogic(AbstractAsyncTask task)
+            : base(task)
         {
 
         }

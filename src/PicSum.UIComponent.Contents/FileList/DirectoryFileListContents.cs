@@ -1,7 +1,7 @@
 using PicSum.Core.Base.Conf;
 using PicSum.Core.Base.Exception;
 using PicSum.Core.Task.AsyncTask;
-using PicSum.Task.AsyncFacade;
+using PicSum.Task.AsyncTask;
 using PicSum.Task.Entity;
 using PicSum.Task.Paramter;
 using PicSum.Task.Result;
@@ -26,22 +26,22 @@ namespace PicSum.UIComponent.Contents.FileList
         #region インスタンス変数
 
         private readonly DirectoryFileListContentsParameter parameter = null;
-        private TwoWayProcess<GetFilesByDirectoryAsyncFacade, SingleValueEntity<string>, GetDirectoryResult> searchDirectoryProcess = null;
-        private OneWayProcess<UpdateDirectoryStateAsynceFacade, DirectoryStateEntity> updateDirectoryStateProcess = null;
-        private OneWayProcess<AddDirectoryViewHistoryAsyncFacade, SingleValueEntity<string>> addDirectoryHistoryProcess = null;
-        private TwoWayProcess<GetNextDirectoryAsyncFacade, GetNextContentsParameter<string>, SingleValueEntity<string>> getNextDirectoryProcess = null;
+        private TwoWayProcess<GetFilesByDirectoryAsyncTask, SingleValueEntity<string>, GetDirectoryResult> searchDirectoryProcess = null;
+        private OneWayProcess<UpdateDirectoryStateAsynceTask, DirectoryStateEntity> updateDirectoryStateProcess = null;
+        private OneWayProcess<AddDirectoryViewHistoryAsyncTask, SingleValueEntity<string>> addDirectoryHistoryProcess = null;
+        private TwoWayProcess<GetNextDirectoryAsyncTask, GetNextContentsParameter<string>, SingleValueEntity<string>> getNextDirectoryProcess = null;
 
         #endregion
 
         #region プライベートプロパティ
 
-        private TwoWayProcess<GetFilesByDirectoryAsyncFacade, SingleValueEntity<string>, GetDirectoryResult> SearchDirectoryProcess
+        private TwoWayProcess<GetFilesByDirectoryAsyncTask, SingleValueEntity<string>, GetDirectoryResult> SearchDirectoryProcess
         {
             get
             {
                 if (this.searchDirectoryProcess == null)
                 {
-                    this.searchDirectoryProcess = TaskManager.CreateTwoWayProcess<GetFilesByDirectoryAsyncFacade, SingleValueEntity<string>, GetDirectoryResult>(this.ProcessContainer);
+                    this.searchDirectoryProcess = TaskManager.CreateTwoWayProcess<GetFilesByDirectoryAsyncTask, SingleValueEntity<string>, GetDirectoryResult>(this.ProcessContainer);
                     this.searchDirectoryProcess.Callback += new AsyncTaskCallbackEventHandler<GetDirectoryResult>(this.SearchDirectoryProcess_Callback);
                 }
 
@@ -49,39 +49,39 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
-        private OneWayProcess<UpdateDirectoryStateAsynceFacade, DirectoryStateEntity> UpdateDirectoryStateProcess
+        private OneWayProcess<UpdateDirectoryStateAsynceTask, DirectoryStateEntity> UpdateDirectoryStateProcess
         {
             get
             {
                 if (this.updateDirectoryStateProcess == null)
                 {
-                    this.updateDirectoryStateProcess = TaskManager.CreateOneWayProcess<UpdateDirectoryStateAsynceFacade, DirectoryStateEntity>(this.ProcessContainer);
+                    this.updateDirectoryStateProcess = TaskManager.CreateOneWayProcess<UpdateDirectoryStateAsynceTask, DirectoryStateEntity>(this.ProcessContainer);
                 }
 
                 return this.updateDirectoryStateProcess;
             }
         }
 
-        private OneWayProcess<AddDirectoryViewHistoryAsyncFacade, SingleValueEntity<string>> AddDirectoryHistoryProcess
+        private OneWayProcess<AddDirectoryViewHistoryAsyncTask, SingleValueEntity<string>> AddDirectoryHistoryProcess
         {
             get
             {
                 if (this.addDirectoryHistoryProcess == null)
                 {
-                    this.addDirectoryHistoryProcess = TaskManager.CreateOneWayProcess<AddDirectoryViewHistoryAsyncFacade, SingleValueEntity<string>>(this.ProcessContainer);
+                    this.addDirectoryHistoryProcess = TaskManager.CreateOneWayProcess<AddDirectoryViewHistoryAsyncTask, SingleValueEntity<string>>(this.ProcessContainer);
                 }
 
                 return this.addDirectoryHistoryProcess;
             }
         }
 
-        private TwoWayProcess<GetNextDirectoryAsyncFacade, GetNextContentsParameter<string>, SingleValueEntity<string>> GetNextDirectoryProcess
+        private TwoWayProcess<GetNextDirectoryAsyncTask, GetNextContentsParameter<string>, SingleValueEntity<string>> GetNextDirectoryProcess
         {
             get
             {
                 if (this.getNextDirectoryProcess == null)
                 {
-                    this.getNextDirectoryProcess = TaskManager.CreateTwoWayProcess<GetNextDirectoryAsyncFacade, GetNextContentsParameter<string>, SingleValueEntity<string>>(this.ProcessContainer);
+                    this.getNextDirectoryProcess = TaskManager.CreateTwoWayProcess<GetNextDirectoryAsyncTask, GetNextContentsParameter<string>, SingleValueEntity<string>>(this.ProcessContainer);
                     this.getNextDirectoryProcess.Callback += new AsyncTaskCallbackEventHandler<SingleValueEntity<string>>(this.GetNextDirectoryProcess_Callback);
                 }
 
@@ -175,7 +175,7 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             return () =>
             {
-                var proces = TaskManager.CreateTwoWayProcess<GetFilesByDirectoryAsyncFacade, SingleValueEntity<string>, GetDirectoryResult>(this.ProcessContainer);
+                var proces = TaskManager.CreateTwoWayProcess<GetFilesByDirectoryAsyncTask, SingleValueEntity<string>, GetDirectoryResult>(this.ProcessContainer);
                 proces.Callback += ((sender, e) =>
                 {
                     if (e.TaskException != null)

@@ -1,7 +1,7 @@
 using NLog;
 using PicSum.Core.Base.Conf;
 using PicSum.Core.Task.AsyncTask;
-using PicSum.Task.AsyncFacade;
+using PicSum.Task.AsyncTask;
 using PicSum.Task.Entity;
 using PicSum.Task.Paramter;
 using PicSum.Task.Result;
@@ -42,7 +42,7 @@ namespace PicSum.Main.UIComponent
 
         private Size previrewSize = Size.Empty;
         private Timer redrawTimer = null;
-        private TwoWayProcess<GetTagListAsyncFacade, ListEntity<string>> getTagListProcess = null;
+        private TwoWayProcess<GetTagListAsyncTask, ListEntity<string>> getTagListProcess = null;
 
         #endregion
 
@@ -76,13 +76,13 @@ namespace PicSum.Main.UIComponent
             }
         }
 
-        private TwoWayProcess<GetTagListAsyncFacade, ListEntity<string>> GetTagListProcess
+        private TwoWayProcess<GetTagListAsyncTask, ListEntity<string>> GetTagListProcess
         {
             get
             {
                 if (this.getTagListProcess == null)
                 {
-                    this.getTagListProcess = TaskManager.CreateTwoWayProcess<GetTagListAsyncFacade, ListEntity<string>>(this.components);
+                    this.getTagListProcess = TaskManager.CreateTwoWayProcess<GetTagListAsyncTask, ListEntity<string>>(this.components);
                     this.getTagListProcess.Callback += new AsyncTaskCallbackEventHandler<ListEntity<string>>(this.GetTagListProcess_Callback);
                 }
 
@@ -412,7 +412,7 @@ namespace PicSum.Main.UIComponent
             {
                 return () =>
                 {
-                    var proces = TaskManager.CreateTwoWayProcess<GetImageFileByDirectoryAsyncFacade, GetImageFileByDirectoryParameter, GetImageFileByDirectoryResult>(this.components);
+                    var proces = TaskManager.CreateTwoWayProcess<GetImageFileByDirectoryAsyncTask, GetImageFileByDirectoryParameter, GetImageFileByDirectoryResult>(this.components);
                     proces.Callback += ((sender, e) =>
                     {
                         if (e.TaskException != null)

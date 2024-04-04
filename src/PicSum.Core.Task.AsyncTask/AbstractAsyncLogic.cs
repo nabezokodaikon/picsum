@@ -1,4 +1,4 @@
-﻿using PicSum.Core.Task.Base;
+using PicSum.Core.Task.Base;
 using System;
 
 namespace PicSum.Core.Task.AsyncTask
@@ -9,8 +9,8 @@ namespace PicSum.Core.Task.AsyncTask
     public abstract class AbstractAsyncLogic
         : ILogic
     {
-        // ファサード
-        private readonly AbstractAsyncFacade facade;
+        // タスク
+        private readonly AbstractAsyncTask task;
 
         /// <summary>
         /// タスクがキャンセルされていないか確認します。
@@ -18,16 +18,16 @@ namespace PicSum.Core.Task.AsyncTask
         /// <exception cref="TaskCancelException">タスクキャンセル例外</exception>
         protected void CheckCancel()
         {
-            this.facade.CheckCancel();
+            this.task.CheckCancel();
         }
 
         /// <summary>
         /// コンストラクタ
         /// </summary>
-        /// <param name="facade">ファサード</param>
-        public AbstractAsyncLogic(AbstractAsyncFacade facade)
+        /// <param name="task">タスク</param>
+        public AbstractAsyncLogic(AbstractAsyncTask task)
         {
-            this.facade = facade ?? throw new ArgumentNullException("facade");
+            this.task = task ?? throw new ArgumentNullException("task");
         }
     }
 }

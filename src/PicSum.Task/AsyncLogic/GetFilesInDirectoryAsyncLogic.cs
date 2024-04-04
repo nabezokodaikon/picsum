@@ -12,8 +12,8 @@ namespace PicSum.Task.AsyncLogic
     [SupportedOSPlatform("windows")]
     internal sealed class GetFilesInDirectoryAsyncLogic : AbstractAsyncLogic
     {
-        public GetFilesInDirectoryAsyncLogic(AbstractAsyncFacade facade)
-            : base(facade)
+        public GetFilesInDirectoryAsyncLogic(AbstractAsyncTask task)
+            : base(task)
         {
 
         }

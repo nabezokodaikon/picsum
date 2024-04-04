@@ -1,4 +1,4 @@
-﻿using PicSum.Core.Data.DatabaseAccessor;
+using PicSum.Core.Data.DatabaseAccessor;
 using PicSum.Core.Task.AsyncTask;
 using PicSum.Data.DatabaseAccessor.Connection;
 using PicSum.Data.DatabaseAccessor.Sql;
@@ -11,8 +11,8 @@ namespace PicSum.Task.AsyncLogic
     /// </summary>
     internal sealed class AddDirectoryViewHistoryAsyncLogic : AbstractAsyncLogic
     {
-        public AddDirectoryViewHistoryAsyncLogic(AbstractAsyncFacade facade)
-            : base(facade)
+        public AddDirectoryViewHistoryAsyncLogic(AbstractAsyncTask task)
+            : base(task)
         {
 
         }

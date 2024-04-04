@@ -1,5 +1,5 @@
 using PicSum.Core.Task.AsyncTask;
-using PicSum.Task.AsyncFacade;
+using PicSum.Task.AsyncTask;
 using PicSum.Task.Entity;
 using PicSum.Task.Result;
 using PicSum.UIComponent.AddressBar.Properties;
@@ -37,7 +37,7 @@ namespace PicSum.UIComponent.AddressBar
         private readonly OverflowDrawItem overflowItem = new OverflowDrawItem();
         private readonly DirectoryHistoryDrawItem directoryHistoryItem = new DirectoryHistoryDrawItem();
         private IContainer components = null;
-        private TwoWayProcess<GetAddressInfoAsyncFacade, SingleValueEntity<string>, GetAddressInfoResult> getAddressInfoProcess = null;
+        private TwoWayProcess<GetAddressInfoAsyncTask, SingleValueEntity<string>, GetAddressInfoResult> getAddressInfoProcess = null;
         private string directoryPath = null;
         private readonly List<DrawItemBase> addressItems = new List<DrawItemBase>();
         private DrawItemBase mousePointItem = null;
@@ -152,13 +152,13 @@ namespace PicSum.UIComponent.AddressBar
             }
         }
 
-        private TwoWayProcess<GetAddressInfoAsyncFacade, SingleValueEntity<string>, GetAddressInfoResult> GetAddressInfoProcess
+        private TwoWayProcess<GetAddressInfoAsyncTask, SingleValueEntity<string>, GetAddressInfoResult> GetAddressInfoProcess
         {
             get
             {
                 if (this.getAddressInfoProcess == null)
                 {
-                    this.getAddressInfoProcess = TaskManager.CreateTwoWayProcess<GetAddressInfoAsyncFacade, SingleValueEntity<string>, GetAddressInfoResult>(this.Components);
+                    this.getAddressInfoProcess = TaskManager.CreateTwoWayProcess<GetAddressInfoAsyncTask, SingleValueEntity<string>, GetAddressInfoResult>(this.Components);
                     this.GetAddressInfoProcess.Callback += new AsyncTaskCallbackEventHandler<GetAddressInfoResult>(this.GetAddressInfoProcess_Callback);
                 }
 

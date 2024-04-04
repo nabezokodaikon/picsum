@@ -1,6 +1,6 @@
 using PicSum.Core.Base.Exception;
 using PicSum.Core.Task.AsyncTask;
-using PicSum.Task.AsyncFacade;
+using PicSum.Task.AsyncTask;
 using PicSum.Task.Entity;
 using PicSum.Task.Result;
 using PicSum.UIComponent.Contents.Common;
@@ -22,16 +22,16 @@ namespace PicSum.UIComponent.Contents.FileList
         : FileListContentsBase
     {
         private BookmarkFileListContentsParameter paramter = null;
-        private TwoWayProcess<GetBookmarkAsyncFacade, ListEntity<FileShallowInfoEntity>> searchProcess = null;
-        private OneWayProcess<DeleteBookmarkAsyncFacade, ListEntity<string>> deleteProcess = null;
+        private TwoWayProcess<GetBookmarkAsyncTask, ListEntity<FileShallowInfoEntity>> searchProcess = null;
+        private OneWayProcess<DeleteBookmarkAsyncTask, ListEntity<string>> deleteProcess = null;
 
-        private TwoWayProcess<GetBookmarkAsyncFacade, ListEntity<FileShallowInfoEntity>> SearchProcess
+        private TwoWayProcess<GetBookmarkAsyncTask, ListEntity<FileShallowInfoEntity>> SearchProcess
         {
             get
             {
                 if (this.searchProcess == null)
                 {
-                    this.searchProcess = TaskManager.CreateTwoWayProcess<GetBookmarkAsyncFacade, ListEntity<FileShallowInfoEntity>>(this.ProcessContainer);
+                    this.searchProcess = TaskManager.CreateTwoWayProcess<GetBookmarkAsyncTask, ListEntity<FileShallowInfoEntity>>(this.ProcessContainer);
                     this.searchProcess.Callback += new AsyncTaskCallbackEventHandler<ListEntity<FileShallowInfoEntity>>(this.SearchProcess_Callback);
                 }
 
@@ -39,13 +39,13 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
-        private OneWayProcess<DeleteBookmarkAsyncFacade, ListEntity<string>> DeleteProcess
+        private OneWayProcess<DeleteBookmarkAsyncTask, ListEntity<string>> DeleteProcess
         {
             get
             {
                 if (this.deleteProcess == null)
                 {
-                    this.deleteProcess = TaskManager.CreateOneWayProcess<DeleteBookmarkAsyncFacade, ListEntity<string>>(this.ProcessContainer);
+                    this.deleteProcess = TaskManager.CreateOneWayProcess<DeleteBookmarkAsyncTask, ListEntity<string>>(this.ProcessContainer);
                 }
 
                 return this.deleteProcess;
@@ -101,7 +101,7 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             return () =>
             {
-                var proces = TaskManager.CreateTwoWayProcess<GetFilesByDirectoryAsyncFacade, SingleValueEntity<string>, GetDirectoryResult>(this.ProcessContainer);
+                var proces = TaskManager.CreateTwoWayProcess<GetFilesByDirectoryAsyncTask, SingleValueEntity<string>, GetDirectoryResult>(this.ProcessContainer);
                 proces.Callback += ((sender, e) =>
                 {
                     if (e.TaskException != null)

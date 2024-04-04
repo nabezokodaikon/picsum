@@ -17,8 +17,8 @@ namespace PicSum.Task.AsyncLogic
     internal sealed class GetDirectoryViewHistoryAsyncLogic
         : AbstractAsyncLogic
     {
-        public GetDirectoryViewHistoryAsyncLogic(AbstractAsyncFacade facade)
-            : base(facade)
+        public GetDirectoryViewHistoryAsyncLogic(AbstractAsyncTask task)
+            : base(task)
         {
 
         }

@@ -14,8 +14,8 @@ namespace PicSum.Task.AsyncLogic
     internal sealed class GetFavoriteDirectoryAsyncLogic
         : AbstractAsyncLogic
     {
-        public GetFavoriteDirectoryAsyncLogic(AbstractAsyncFacade facade)
-            : base(facade)
+        public GetFavoriteDirectoryAsyncLogic(AbstractAsyncTask task)
+            : base(task)
         {
 
         }
@@ -26,7 +26,7 @@ namespace PicSum.Task.AsyncLogic
             var dtoList = DatabaseManager<FileInfoConnection>.ReadList<SingleValueDto<string>>(sql);
 
             var dirList = dtoList
-                .Where(dto => !string.IsNullOrEmpty(dto.Value) && FileUtil.CanAccess(dto.Value) && FileUtil.HasImageFile(dto.Value))
+                .Where(dto => !FileUtil.IsSystemRoot(dto.Value) && FileUtil.CanAccess(dto.Value) && FileUtil.HasImageFile(dto.Value))
                 .Select(dto => dto.Value)
                 .ToList();
 

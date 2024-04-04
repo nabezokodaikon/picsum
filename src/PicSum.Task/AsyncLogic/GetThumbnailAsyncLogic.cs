@@ -33,8 +33,8 @@ namespace PicSum.Task.AsyncLogic
             CASH_LOCK.Dispose();
         }
 
-        public GetThumbnailAsyncLogic(AbstractAsyncFacade facade)
-            : base(facade)
+        public GetThumbnailAsyncLogic(AbstractAsyncTask task)
+            : base(task)
         {
 
         }

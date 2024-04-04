@@ -13,8 +13,8 @@ namespace PicSum.Task.AsyncLogic
     internal sealed class GetFilesAndSubDirectorysAsyncLogic
         : AbstractAsyncLogic
     {
-        public GetFilesAndSubDirectorysAsyncLogic(AbstractAsyncFacade facade)
-            : base(facade)
+        public GetFilesAndSubDirectorysAsyncLogic(AbstractAsyncTask task)
+            : base(task)
         {
 
         }

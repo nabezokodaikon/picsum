@@ -11,11 +11,11 @@ namespace PicSum.Core.Task.AsyncTask
     /// <summary>
     /// OneWayプロセスクラス
     /// </summary>
-    /// <typeparam name="TFacade">ファサードの型</typeparam>
+    /// <typeparam name="TTask">タスクの型</typeparam>
     [SupportedOSPlatform("windows")]
-    public sealed class OneWayProcess<TFacade>
+    public sealed class OneWayProcess<TTask>
         : ProcessBase
-        where TFacade : OneWayFacadeBase, new()
+        where TTask : OneWayTaskBase, new()
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
@@ -38,60 +38,60 @@ namespace PicSum.Core.Task.AsyncTask
         }
 
         // 実行スレッド。
-        protected override void ExecuteThread(TaskInfo task)
+        protected override void ExecuteThread(TaskInfo taskInfo)
         {
-            if (task == null) throw new ArgumentNullException(nameof(task));
+            if (taskInfo == null) throw new ArgumentNullException(nameof(taskInfo));
 
-            var facade = new TFacade();
-            var facadeName = facade.GetType().Name;
-            Thread.CurrentThread.Name = facadeName;
+            var task = new TTask();
+            var taskName = task.GetType().Name;
+            Thread.CurrentThread.Name = taskName;
 #if DEBUG
-            Logger.Debug("タスクID: {0} Facade: {1} を開始します。", task.TaskId, facadeName);
+            Logger.Debug("TaskID: {0}, Task: {1} を開始します。", taskInfo.TaskId, taskName);
 #endif
 
-            facade.SetTask(task);
+            task.SetTask(taskInfo);
 
             try
             {
-                facade.Execute();
+                task.Execute();
             }
             catch (TaskCancelException)
             {
 #if DEBUG
-                Logger.Debug("タスクID: {0} Facade: {1} がキャンセルされました。", task.TaskId, facadeName);
+                Logger.Debug("TaskID: {0}, Task: {1} がキャンセルされました。", taskInfo.TaskId, taskName);
 #endif
 
-                this.SendMessageThread(this.OnCancelEnd, task);
+                this.SendToUIThread(this.OnCancelEnd, taskInfo);
                 return;
             }
             catch (Exception ex)
             {
 #if DEBUG
-                Logger.Error("タスクID: {0} Facade: {1} で例外が発生しました。\n{2}", task.TaskId, facadeName, ExceptionUtil.CreateDetailsMessage(ex));
+                Logger.Error("TaskID: {0}, Task: {1} で例外が発生しました。\n{2}", taskInfo.TaskId, taskName, ExceptionUtil.CreateDetailsMessage(ex));
 #endif
-                this.SendMessageThread(this.OnErrorEnd, new object[] { task, ex });
+                this.SendToUIThread(this.OnErrorEnd, new object[] { taskInfo, ex });
                 return;
             }
             finally
             {
 #if DEBUG
-                Logger.Debug("タスクID: {0} Facade: {1} が終了しました。", task.TaskId, facadeName);
+                Logger.Debug("TaskID: {0}, Task: {1} が終了しました。", taskInfo.TaskId, taskName);
 #endif
             }
 
-            this.SendMessageThread(this.OnSuccessEnd, task);
+            this.SendToUIThread(this.OnSuccessEnd, taskInfo);
         }
     }
 
     /// <summary>
     /// OneWayプロセスクラス
     /// </summary>
-    /// <typeparam name="TFacade">ファサードの型</typeparam>
+    /// <typeparam name="TTask">タスクの型</typeparam>
     /// <typeparam name="TParameter">パラメータの型</typeparam>
     [SupportedOSPlatform("windows")]
-    public sealed class OneWayProcess<TFacade, TParameter>
+    public sealed class OneWayProcess<TTask, TParameter>
         : ProcessBase
-        where TFacade : OneWayFacadeBase<TParameter>, new()
+        where TTask : OneWayTaskBase<TParameter>, new()
         where TParameter : IEntity
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
@@ -117,46 +117,46 @@ namespace PicSum.Core.Task.AsyncTask
         }
 
         // 実行スレッド。
-        protected override void ExecuteThread(TaskInfo task)
+        protected override void ExecuteThread(TaskInfo taskInfo)
         {
-            if (task == null) throw new ArgumentNullException(nameof(task));
+            if (taskInfo == null) throw new ArgumentNullException(nameof(taskInfo));
 
-            var facade = new TFacade();
-            var facadeName = facade.GetType().Name;
-            Thread.CurrentThread.Name = facadeName;
+            var task = new TTask();
+            var taskName = task.GetType().Name;
+            Thread.CurrentThread.Name = taskName;
 #if DEBUG
-            Logger.Debug("タスクID: {0} Facade: {1} を開始します。", task.TaskId, facadeName);
+            Logger.Debug("TaskID: {0}, Task: {1} を開始します。", taskInfo.TaskId, taskName);
 #endif
-            facade.SetTask(task);
+            task.SetTask(taskInfo);
 
             try
             {
-                facade.Execute((TParameter)task.Parameter);
+                task.Execute((TParameter)taskInfo.Parameter);
             }
             catch (TaskCancelException)
             {
 #if DEBUG
-                Logger.Debug("タスクID: {0} Facade: {1} がキャンセルされました。", task.TaskId, facadeName);
+                Logger.Debug("TaskID: {0}, Task: {1} がキャンセルされました。", taskInfo.TaskId, taskName);
 #endif
-                this.SendMessageThread(this.OnCancelEnd, task);
+                this.SendToUIThread(this.OnCancelEnd, taskInfo);
                 return;
             }
             catch (Exception ex)
             {
 #if DEBUG
-                Logger.Error("タスクID: {0} Facade: {1} で例外が発生しました。\n{2}", task.TaskId, facadeName, ExceptionUtil.CreateDetailsMessage(ex));
+                Logger.Error("TaskID: {0}, Task: {1} で例外が発生しました。\n{2}", taskInfo.TaskId, taskName, ExceptionUtil.CreateDetailsMessage(ex));
 #endif
-                this.SendMessageThread(this.OnErrorEnd, new object[] { task, ex });
+                this.SendToUIThread(this.OnErrorEnd, new object[] { taskInfo, ex });
                 return;
             }
             finally
             {
 #if DEBUG
-                Logger.Debug("タスクID: {0} Facade: {1} が終了しました。", task.TaskId, facadeName);
+                Logger.Debug("TaskID: {0}, Task: {1} が終了しました。", taskInfo.TaskId, taskName);
 #endif          
             }
 
-            this.SendMessageThread(this.OnSuccessEnd, task);
+            this.SendToUIThread(this.OnSuccessEnd, taskInfo);
         }
     }
 }

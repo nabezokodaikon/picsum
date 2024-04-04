@@ -1,4 +1,4 @@
-﻿using PicSum.Core.Data.DatabaseAccessor;
+using PicSum.Core.Data.DatabaseAccessor;
 using PicSum.Core.Task.AsyncTask;
 using PicSum.Data.DatabaseAccessor.Connection;
 using PicSum.Data.DatabaseAccessor.Sql;
@@ -12,8 +12,8 @@ namespace PicSum.Task.AsyncLogic
     internal class DeleteDirectoryViewCounterAsyncLogic
         : AbstractAsyncLogic
     {
-        public DeleteDirectoryViewCounterAsyncLogic(AbstractAsyncFacade facade)
-            : base(facade)
+        public DeleteDirectoryViewCounterAsyncLogic(AbstractAsyncTask task)
+            : base(task)
         {
 
         }

@@ -17,8 +17,8 @@ namespace PicSum.Task.AsyncLogic
     internal sealed class GetTagListAsyncLogic
         : AbstractAsyncLogic
     {
-        public GetTagListAsyncLogic(AbstractAsyncFacade facade)
-            : base(facade)
+        public GetTagListAsyncLogic(AbstractAsyncTask task)
+            : base(task)
         {
 
         }
