@@ -781,7 +781,7 @@ namespace SWF.UIComponent.TabOperation
                         this.OnTabDropouted(new TabDropoutedEventArgs(tab, new Point(x, y), new Size(w, h), FormWindowState.Normal));
                     }
                     else if (form.WindowState == FormWindowState.Normal)
-                    {                        
+                    {
                         this.OnTabDropouted(new TabDropoutedEventArgs(tab, screenPoint, form.ClientSize, FormWindowState.Normal));
                     }
                     else if (form.WindowState == FormWindowState.Maximized)
@@ -990,10 +990,13 @@ namespace SWF.UIComponent.TabOperation
 
         private void InitializeComponent()
         {
-            this.SetStyle(ControlStyles.DoubleBuffer |
-                          ControlStyles.UserPaint |
-                          ControlStyles.AllPaintingInWmPaint |
-                          ControlStyles.ResizeRedraw, true);
+            this.SetStyle(
+                ControlStyles.AllPaintingInWmPaint |
+                ControlStyles.DoubleBuffer |
+                ControlStyles.ResizeRedraw |
+                ControlStyles.UserPaint,
+                true);
+            this.UpdateStyles();
 
             this.SetAddTabButtonDrawArea();
         }

@@ -14,12 +14,12 @@ namespace SWF.UIComponent.Common
     {
         public DoubleBufferedSplitContainer()
         {
-            //this.SetStyle(
-            //    ControlStyles.OptimizedDoubleBuffer |
-            //    ControlStyles.AllPaintingInWmPaint,
-            //    true);
-
-            //this.UpdateStyles();
+            this.SetStyle(
+                ControlStyles.AllPaintingInWmPaint |
+                ControlStyles.DoubleBuffer |
+                ControlStyles.UserPaint,
+                true);
+            this.UpdateStyles();
         }
     }
 }

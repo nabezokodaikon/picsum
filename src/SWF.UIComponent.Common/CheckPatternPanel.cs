@@ -80,10 +80,13 @@ namespace SWF.UIComponent.Common
 
         private void initializeComponent()
         {
-            this.SetStyle(ControlStyles.DoubleBuffer |
-                          ControlStyles.UserPaint |
-                          ControlStyles.AllPaintingInWmPaint |
-                          ControlStyles.ResizeRedraw, true);
+            this.SetStyle(
+                ControlStyles.AllPaintingInWmPaint |
+                ControlStyles.DoubleBuffer |
+                ControlStyles.ResizeRedraw |
+                ControlStyles.UserPaint,
+                true);
+            this.UpdateStyles();
         }
 
         private void drawCheckRectangle(Graphics g)

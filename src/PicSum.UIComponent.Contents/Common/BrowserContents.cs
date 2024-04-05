@@ -60,9 +60,12 @@ namespace PicSum.UIComponent.Contents.Common
 
         public BrowserContents(IContentsParameter parameter)
         {
-            this.SetStyle(ControlStyles.DoubleBuffer |
-                          ControlStyles.UserPaint |
-                          ControlStyles.AllPaintingInWmPaint, true);
+            this.SetStyle(
+                ControlStyles.AllPaintingInWmPaint |
+                ControlStyles.DoubleBuffer |
+                ControlStyles.UserPaint,
+                true);
+            this.UpdateStyles();
 
             this.SubInitializeComponent();
             this.Parameter = parameter ?? throw new ArgumentNullException(nameof(parameter));

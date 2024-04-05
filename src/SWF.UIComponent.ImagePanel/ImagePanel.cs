@@ -422,11 +422,14 @@ namespace SWF.UIComponent.ImagePanel
 
         private void InitializeComponent()
         {
-            this.SetStyle(ControlStyles.DoubleBuffer |
-                          ControlStyles.UserPaint |
-                          ControlStyles.AllPaintingInWmPaint |
-                          ControlStyles.ResizeRedraw |
-                          ControlStyles.SupportsTransparentBackColor, true);
+            this.SetStyle(
+                ControlStyles.AllPaintingInWmPaint |
+                ControlStyles.DoubleBuffer |
+                ControlStyles.ResizeRedraw |
+                ControlStyles.SupportsTransparentBackColor |
+                ControlStyles.UserPaint,
+                true);
+            this.UpdateStyles();
         }
 
         private void OnImageMouseClick(MouseEventArgs e)

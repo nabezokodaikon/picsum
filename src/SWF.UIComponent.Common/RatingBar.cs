@@ -125,8 +125,14 @@ namespace SWF.UIComponent.Common
 
         private void initializeComponent()
         {
-            this.SetStyle(ControlStyles.ResizeRedraw |
-                          ControlStyles.SupportsTransparentBackColor, true);
+            this.SetStyle(
+                ControlStyles.AllPaintingInWmPaint |
+                ControlStyles.DoubleBuffer |
+                ControlStyles.ResizeRedraw |
+                ControlStyles.SupportsTransparentBackColor |
+                ControlStyles.UserPaint,
+                true);
+            this.UpdateStyles();
         }
 
         private void createRatingButtons()

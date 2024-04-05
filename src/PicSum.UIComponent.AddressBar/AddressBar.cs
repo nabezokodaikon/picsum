@@ -333,10 +333,13 @@ namespace PicSum.UIComponent.AddressBar
             this.directoryHistoryItem.AddressBar = this;
             this.directoryHistoryItem.Palette = this.palette;
 
-            this.SetStyle(ControlStyles.DoubleBuffer |
-                          ControlStyles.UserPaint |
-                          ControlStyles.AllPaintingInWmPaint |
-                          ControlStyles.ResizeRedraw, true);
+            this.SetStyle(
+                ControlStyles.AllPaintingInWmPaint |
+                ControlStyles.DoubleBuffer |
+                ControlStyles.ResizeRedraw |
+                ControlStyles.UserPaint,
+                true);
+            this.UpdateStyles();
 
             this.overflowItem.DropDownOpened += new EventHandler(this.DrawItem_DropDownOpened);
             this.overflowItem.DropDownClosed += new EventHandler(this.DrawItem_DropDownClosed);

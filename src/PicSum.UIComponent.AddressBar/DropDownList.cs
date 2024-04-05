@@ -375,7 +375,17 @@ namespace PicSum.UIComponent.AddressBar
 
         private void InitializeComponent()
         {
-            this.SetStyle(ControlStyles.Selectable, false);
+            this.SetStyle(
+                ControlStyles.AllPaintingInWmPaint |
+                ControlStyles.DoubleBuffer |
+                ControlStyles.UserPaint,
+                true);
+
+            this.SetStyle(
+                ControlStyles.Selectable,
+                false);
+
+            this.UpdateStyles();
 
             this.Items.Add(new ToolStripControlHost(new FlowList()));
             this.Padding = new Padding(2, 1, 2, 0);

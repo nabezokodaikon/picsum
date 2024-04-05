@@ -1,4 +1,6 @@
-﻿namespace PicSum.Main.UIComponent
+using Windows.Storage;
+
+namespace PicSum.Main.UIComponent
 {
     partial class BrowserMainPanel
     {
@@ -28,7 +30,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.splitContainer = new System.Windows.Forms.SplitContainer();
+            this.splitContainer = new SWF.UIComponent.Common.DoubleBufferedSplitContainer();
             this.contentsContainer = new SWF.UIComponent.TabOperation.ContentsContainer();
             this.infoPanel = new PicSum.UIComponent.InfoPanel.InfoPanel();
             this.tabSwitch = new SWF.UIComponent.TabOperation.TabSwitch();
@@ -299,7 +301,7 @@
 
         #endregion
 
-        private System.Windows.Forms.SplitContainer splitContainer;
+        private SWF.UIComponent.Common.DoubleBufferedSplitContainer splitContainer;
         private SWF.UIComponent.TabOperation.ContentsContainer contentsContainer;
         private PicSum.UIComponent.InfoPanel.InfoPanel infoPanel;
         private SWF.UIComponent.TabOperation.TabSwitch tabSwitch;

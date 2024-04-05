@@ -113,12 +113,18 @@ namespace SWF.UIComponent.Common
 
         private void initializeComponent()
         {
-            this.SetStyle(ControlStyles.DoubleBuffer |
-                          ControlStyles.UserPaint |
-                          ControlStyles.AllPaintingInWmPaint |
-                          ControlStyles.StandardClick, true);
+            this.SetStyle(
+                ControlStyles.AllPaintingInWmPaint |
+                ControlStyles.DoubleBuffer |
+                ControlStyles.StandardClick |
+                ControlStyles.UserPaint,
+                true);
 
-            this.SetStyle(ControlStyles.Selectable, false);
+            this.SetStyle(
+                ControlStyles.Selectable,
+                false);
+
+            this.UpdateStyles();
 
             this._getRectangleMethod = new Func<Rectangle>(this.getDefaultRectangle);
             this.Region = this.getRegion();

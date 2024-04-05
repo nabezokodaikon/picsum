@@ -589,10 +589,13 @@ namespace SWF.UIComponent.FlowList
 
         private void InitializeComponent()
         {
-            this.SetStyle(ControlStyles.DoubleBuffer |
-                          ControlStyles.UserPaint |
-                          ControlStyles.AllPaintingInWmPaint |
-                          ControlStyles.ResizeRedraw, true);
+            this.SetStyle(
+                ControlStyles.AllPaintingInWmPaint |
+                ControlStyles.DoubleBuffer |
+                ControlStyles.ResizeRedraw |
+                ControlStyles.UserPaint,
+                true);
+            this.UpdateStyles();
 
             this.scrollBar.Dock = DockStyle.Right;
             this.scrollBar.ValueChanged += new EventHandler(this.ScrollBar_ValueChanged);

@@ -56,11 +56,14 @@ namespace SWF.UIComponent.Common
 
         private void initializeComponent()
         {
-            this.SetStyle(ControlStyles.DoubleBuffer |
-                          ControlStyles.UserPaint |
-                          ControlStyles.AllPaintingInWmPaint |
-                          ControlStyles.ResizeRedraw |
-                          ControlStyles.SupportsTransparentBackColor, true);
+            this.SetStyle(
+                ControlStyles.AllPaintingInWmPaint |
+                ControlStyles.DoubleBuffer |
+                ControlStyles.ResizeRedraw |
+                ControlStyles.SupportsTransparentBackColor |
+                ControlStyles.UserPaint,
+                true);
+            this.UpdateStyles();
 
             this.Size = new Size(48, 48);
             this.MaximumSize = this.Size;
