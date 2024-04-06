@@ -5,17 +5,11 @@ namespace SWF.Common
     /// <summary>
     /// 画像ユーティリティ例外クラス。
     /// </summary>
-    public class ImageUtilException
-        : Exception
+    public sealed class ImageUtilException
+        : SWFException
     {
-        public ImageUtilException(string filePath, Exception exception)
-            : base($"'{filePath}'を読み込めませんでした。", exception)
-        {
-
-        }
-
-        public ImageUtilException(Exception exception)
-            : base(exception.Message, exception)
+        public ImageUtilException(string message, Exception exception)
+            : base(message, exception)
         {
 
         }

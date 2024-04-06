@@ -79,7 +79,7 @@ namespace SWF.Common
                 }
                 catch (PathTooLongException ex)
                 {
-                    throw new FileUtilException(filePath, ex);
+                    throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
                 }
             }
         }
@@ -199,23 +199,23 @@ namespace SWF.Common
                 }
                 catch (DirectoryNotFoundException exception)
                 {
-                    throw new FileUtilException(directoryPath, exception);
+                    throw new FileUtilException(CreateFileAccessErrorMessage(directoryPath), exception);
                 }
                 catch (PathTooLongException exception)
                 {
-                    throw new FileUtilException(directoryPath, exception);
+                    throw new FileUtilException(CreateFileAccessErrorMessage(directoryPath), exception);
                 }
                 catch (IOException exception)
                 {
-                    throw new FileUtilException(directoryPath, exception);
+                    throw new FileUtilException(CreateFileAccessErrorMessage(directoryPath), exception);
                 }
                 catch (UnauthorizedAccessException exception)
                 {
-                    throw new FileUtilException(directoryPath, exception);
+                    throw new FileUtilException(CreateFileAccessErrorMessage(directoryPath), exception);
                 }
                 catch (SecurityException exception)
                 {
-                    throw new FileUtilException(directoryPath, exception);
+                    throw new FileUtilException(CreateFileAccessErrorMessage(directoryPath), exception);
                 }
             }
 
@@ -259,27 +259,27 @@ namespace SWF.Common
                 }
                 catch (PathTooLongException ex)
                 {
-                    throw new FileUtilException(filePath, ex);
+                    throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
                 }
                 catch (NotSupportedException ex)
                 {
-                    throw new FileUtilException(filePath, ex);
+                    throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
                 }
                 catch (FileNotFoundException ex)
                 {
-                    throw new FileUtilException(filePath, ex);
+                    throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
                 }
                 catch (DirectoryNotFoundException ex)
                 {
-                    throw new FileUtilException(filePath, ex);
+                    throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
                 }
                 catch (IOException ex)
                 {
-                    throw new FileUtilException(filePath, ex);
+                    throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
                 }
                 catch (UnauthorizedAccessException ex)
                 {
-                    throw new FileUtilException(filePath, ex);
+                    throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
                 }
             }
             else
@@ -322,11 +322,11 @@ namespace SWF.Common
                 }
                 catch (IOException ex)
                 {
-                    throw new FileUtilException(filePath, ex);
+                    throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
                 }
                 catch (UnauthorizedAccessException ex)
                 {
-                    throw new FileUtilException(filePath, ex);
+                    throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
                 }
             }
             else
@@ -364,11 +364,11 @@ namespace SWF.Common
                 }
                 catch (PathTooLongException ex)
                 {
-                    throw new FileUtilException(filePath, ex);
+                    throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
                 }
                 catch (IOException ex)
                 {
-                    throw new FileUtilException(filePath, ex);
+                    throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
                 }
 
             }
@@ -443,15 +443,15 @@ namespace SWF.Common
             }
             catch (UnauthorizedAccessException ex)
             {
-                throw new FileUtilException(filePath, ex);
+                throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
             }
             catch (PathTooLongException ex)
             {
-                throw new FileUtilException(filePath, ex);
+                throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
             }
             catch (NotSupportedException ex)
             {
-                throw new FileUtilException(filePath, ex);
+                throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
             }
         }
 
@@ -474,19 +474,19 @@ namespace SWF.Common
             }
             catch (SecurityException ex)
             {
-                throw new FileUtilException(filePath, ex);
+                throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
             }
             catch (UnauthorizedAccessException ex)
             {
-                throw new FileUtilException(filePath, ex);
+                throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
             }
             catch (PathTooLongException ex)
             {
-                throw new FileUtilException(filePath, ex);
+                throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
             }
             catch (NotSupportedException ex)
             {
-                throw new FileUtilException(filePath, ex);
+                throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
             }
         }
 
@@ -530,19 +530,19 @@ namespace SWF.Common
                 }
                 catch (UnauthorizedAccessException ex)
                 {
-                    throw new FileUtilException(directoryPath, ex);
+                    throw new FileUtilException(CreateFileAccessErrorMessage(directoryPath), ex);
                 }
                 catch (PathTooLongException ex)
                 {
-                    throw new FileUtilException(directoryPath, ex);
+                    throw new FileUtilException(CreateFileAccessErrorMessage(directoryPath), ex);
                 }
                 catch (DirectoryNotFoundException ex)
                 {
-                    throw new FileUtilException(directoryPath, ex);
+                    throw new FileUtilException(CreateFileAccessErrorMessage(directoryPath), ex);
                 }
                 catch (IOException ex)
                 {
-                    throw new FileUtilException(directoryPath, ex);
+                    throw new FileUtilException(CreateFileAccessErrorMessage(directoryPath), ex);
                 }
             }
             else
@@ -579,19 +579,19 @@ namespace SWF.Common
                 }
                 catch (UnauthorizedAccessException ex)
                 {
-                    throw new FileUtilException(directoryPath, ex);
+                    throw new FileUtilException(CreateFileAccessErrorMessage(directoryPath), ex);
                 }
                 catch (PathTooLongException ex)
                 {
-                    throw new FileUtilException(directoryPath, ex);
+                    throw new FileUtilException(CreateFileAccessErrorMessage(directoryPath), ex);
                 }
                 catch (DirectoryNotFoundException ex)
                 {
-                    throw new FileUtilException(directoryPath, ex);
+                    throw new FileUtilException(CreateFileAccessErrorMessage(directoryPath), ex);
                 }
                 catch (IOException ex)
                 {
-                    throw new FileUtilException(directoryPath, ex);
+                    throw new FileUtilException(CreateFileAccessErrorMessage(directoryPath), ex);
                 }
             }
             else
@@ -628,19 +628,19 @@ namespace SWF.Common
                 }
                 catch (UnauthorizedAccessException ex)
                 {
-                    throw new FileUtilException(directoryPath, ex);
+                    throw new FileUtilException(CreateFileAccessErrorMessage(directoryPath), ex);
                 }
                 catch (PathTooLongException ex)
                 {
-                    throw new FileUtilException(directoryPath, ex);
+                    throw new FileUtilException(CreateFileAccessErrorMessage(directoryPath), ex);
                 }
                 catch (DirectoryNotFoundException ex)
                 {
-                    throw new FileUtilException(directoryPath, ex);
+                    throw new FileUtilException(CreateFileAccessErrorMessage(directoryPath), ex);
                 }
                 catch (IOException ex)
                 {
-                    throw new FileUtilException(directoryPath, ex);
+                    throw new FileUtilException(CreateFileAccessErrorMessage(directoryPath), ex);
                 }
             }
             else
@@ -867,15 +867,15 @@ namespace SWF.Common
             }
             catch (Win32Exception ex)
             {
-                throw new FileUtilException(filePath, ex);
+                throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
             }
             catch (ObjectDisposedException ex)
             {
-                throw new FileUtilException(filePath, ex);
+                throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
             }
             catch (FileNotFoundException ex)
             {
-                throw new FileUtilException(filePath, ex);
+                throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
             }
         }
 
@@ -899,15 +899,15 @@ namespace SWF.Common
             }
             catch (Win32Exception ex)
             {
-                throw new FileUtilException(filePath, ex);
+                throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
             }
             catch (ObjectDisposedException ex)
             {
-                throw new FileUtilException(filePath, ex);
+                throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
             }
             catch (FileNotFoundException ex)
             {
-                throw new FileUtilException(filePath, ex);
+                throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
             }
         }
 
@@ -924,15 +924,15 @@ namespace SWF.Common
             }
             catch (Win32Exception ex)
             {
-                throw new FileUtilException(filePath, ex);
+                throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
             }
             catch (ObjectDisposedException ex)
             {
-                throw new FileUtilException(filePath, ex);
+                throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
             }
             catch (FileNotFoundException ex)
             {
-                throw new FileUtilException(filePath, ex);
+                throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
             }
         }
 
@@ -1011,12 +1011,17 @@ namespace SWF.Common
             }
             catch (IOException ex)
             {
-                throw new FileUtilException(ex);
+                throw new FileUtilException("ドライブリストの取得に失敗しました。", ex);
             }
             catch (UnauthorizedAccessException ex)
             {
-                throw new FileUtilException(ex);
+                throw new FileUtilException("ドライブリストの取得に失敗しました。", ex);
             }
+        }
+
+        private static string CreateFileAccessErrorMessage(string path)
+        {
+            return $"'{path}'にアクセスできませんでした。";
         }
     }
 }

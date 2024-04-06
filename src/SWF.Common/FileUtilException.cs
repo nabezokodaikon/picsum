@@ -5,23 +5,17 @@ namespace SWF.Common
     /// <summary>
     /// ファイルユーティリティ例外クラス。
     /// </summary>
-    public class FileUtilException
-        : Exception
+    public sealed class FileUtilException
+        : SWFException
     {
-        public FileUtilException(string filePath, Exception exception)
-            : base($"'{filePath}'を読み込めませんでした。", exception)
+        public FileUtilException(string message, Exception exception)
+            : base(message, exception)
         {
 
         }
 
-        public FileUtilException(Exception exception)
-            : base(exception.Message, exception)
-        {
-
-        }
-
-        public FileUtilException(string filePath)
-            : base($"'{filePath}'を読み込めませんでした。")
+        public FileUtilException(string message)
+            : base(message)
         {
 
         }

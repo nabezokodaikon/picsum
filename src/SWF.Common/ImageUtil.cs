@@ -68,7 +68,7 @@ namespace SWF.Common
                 }
                 catch (OutOfMemoryException ex)
                 {
-                    throw new ImageUtilException(ex);
+                    throw new ImageUtilException("メモリが不足しています。", ex);
                 }
             }
         }
@@ -123,31 +123,31 @@ namespace SWF.Common
             }
             catch (NotSupportedException ex)
             {
-                throw new ImageUtilException(filePath, ex);
+                throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
             }
             catch (FileNotFoundException ex)
             {
-                throw new ImageUtilException(filePath, ex);
+                throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
             }
             catch (SecurityException ex)
             {
-                throw new ImageUtilException(filePath, ex);
+                throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
             }
             catch (DirectoryNotFoundException ex)
             {
-                throw new ImageUtilException(filePath, ex);
+                throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
             }
             catch (PathTooLongException ex)
             {
-                throw new ImageUtilException(filePath, ex);
+                throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
             }
             catch (IOException ex)
             {
-                throw new ImageUtilException(filePath, ex);
+                throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
             }
             catch (UnauthorizedAccessException ex)
             {
-                throw new ImageUtilException(filePath, ex);
+                throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
             }
 
             var directory = ImageUtil.SHELL.NameSpace(Path.GetDirectoryName(filePath));
@@ -218,43 +218,43 @@ namespace SWF.Common
             }
             catch (NotSupportedException ex)
             {
-                throw new ImageUtilException(filePath, ex);
+                throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
             }
             catch (FileNotFoundException ex)
             {
-                throw new ImageUtilException(filePath, ex);
+                throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
             }
             catch (SecurityException ex)
             {
-                throw new ImageUtilException(filePath, ex);
+                throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
             }
             catch (DirectoryNotFoundException ex)
             {
-                throw new ImageUtilException(filePath, ex);
+                throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
             }
             catch (PathTooLongException ex)
             {
-                throw new ImageUtilException(filePath, ex);
+                throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
             }
             catch (IOException ex)
             {
-                throw new ImageUtilException(filePath, ex);
+                throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
             }
             catch (UnauthorizedAccessException ex)
             {
-                throw new ImageUtilException(filePath, ex);
+                throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
             }
             catch (SixLabors.ImageSharp.InvalidImageContentException ex)
             {
-                throw new ImageUtilException(filePath, ex);
+                throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
             }
             catch (SixLabors.ImageSharp.UnknownImageFormatException ex)
             {
-                throw new ImageUtilException(filePath, ex);
+                throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
             }
             catch (OutOfMemoryException ex)
             {
-                throw new ImageUtilException(filePath, ex);
+                throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
             }
         }
 
@@ -389,6 +389,11 @@ namespace SWF.Common
             exList.Add(ImageUtil.AVIF_FILE_EXTENSION);
 
             return exList;
+        }
+
+        private static string CreateFileAccessErrorMessage(string path)
+        {
+            return $"'{path}'にアクセスできませんでした。";
         }
     }
 }
