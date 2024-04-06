@@ -1,11 +1,11 @@
 using PicSum.Core.Base.Conf;
 using PicSum.Core.Base.Exception;
-using PicSum.Core.Task.AsyncTask;
-using PicSum.Task.Tasks;
+using PicSum.Core.Task.AsyncTaskV2;
 using PicSum.Task.Entities;
 using PicSum.Task.Parameters;
 using PicSum.Task.Paramters;
 using PicSum.Task.Results;
+using PicSum.Task.Tasks;
 using PicSum.UIComponent.Contents.Common;
 using PicSum.UIComponent.Contents.Parameter;
 using SWF.Common;
@@ -27,66 +27,77 @@ namespace PicSum.UIComponent.Contents.FileList
         #region インスタンス変数
 
         private readonly DirectoryFileListContentsParameter parameter = null;
-        private TwoWayProcess<GetFilesByDirectoryTask, SingleValueEntity<string>, GetDirectoryResult> searchDirectoryProcess = null;
-        private OneWayProcess<UpdateDirectoryStateTask, DirectoryStateParameter> updateDirectoryStateProcess = null;
-        private OneWayProcess<AddDirectoryViewHistoryTask, SingleValueEntity<string>> addDirectoryHistoryProcess = null;
-        private TwoWayProcess<GetNextDirectoryTask, GetNextContentsParameter<string>, SingleValueEntity<string>> getNextDirectoryProcess = null;
+        private TaskWrapper<GetFilesByDirectoryTask, ValueParameter<string>, GetDirectoryResult> searchTask = null;
+        private TaskWrapper<UpdateDirectoryStateTask, DirectoryStateParameter> updateDirectoryStateTask = null;
+        private TaskWrapper<AddDirectoryViewHistoryTask, ValueParameter<string>> addDirectoryHistoryTask = null;
+        private TaskWrapper<GetNextDirectoryTask, GetNextContentsParameter<string>, ValueResult<string>> getNextDirectoryTask = null;
+        private TaskWrapper<GetFilesByDirectoryTask, ValueParameter<string>, GetDirectoryResult> getFilesTask = null;
 
         #endregion
 
         #region プライベートプロパティ
 
-        private TwoWayProcess<GetFilesByDirectoryTask, SingleValueEntity<string>, GetDirectoryResult> SearchDirectoryProcess
+        private TaskWrapper<GetFilesByDirectoryTask, ValueParameter<string>, GetDirectoryResult> SearchTask
         {
             get
             {
-                if (this.searchDirectoryProcess == null)
+                if (this.searchTask == null)
                 {
-                    this.searchDirectoryProcess = TaskManager.CreateTwoWayProcess<GetFilesByDirectoryTask, SingleValueEntity<string>, GetDirectoryResult>(this.ProcessContainer);
-                    this.searchDirectoryProcess.Callback += new AsyncTaskCallbackEventHandler<GetDirectoryResult>(this.SearchDirectoryProcess_Callback);
+                    this.searchTask = new();
+                    this.searchTask
+                        .Callback(this.SearchTask_Callback)
+                        .Catch(e =>
+                        {
+                            ExceptionUtil.ShowErrorDialog(e.InnerException);
+                        })
+                        .StartThread();
                 }
 
-                return this.searchDirectoryProcess;
+                return this.searchTask;
             }
         }
 
-        private OneWayProcess<UpdateDirectoryStateTask, DirectoryStateParameter> UpdateDirectoryStateProcess
+        private TaskWrapper<UpdateDirectoryStateTask, DirectoryStateParameter> UpdateDirectoryStateTask
         {
             get
             {
-                if (this.updateDirectoryStateProcess == null)
+                if (this.updateDirectoryStateTask == null)
                 {
-                    this.updateDirectoryStateProcess = TaskManager.CreateOneWayProcess<UpdateDirectoryStateTask, DirectoryStateParameter>(this.ProcessContainer);
+                    this.updateDirectoryStateTask = new();
+                    this.updateDirectoryStateTask.StartThread();
                 }
 
-                return this.updateDirectoryStateProcess;
+                return this.updateDirectoryStateTask;
             }
         }
 
-        private OneWayProcess<AddDirectoryViewHistoryTask, SingleValueEntity<string>> AddDirectoryHistoryProcess
+        private TaskWrapper<AddDirectoryViewHistoryTask, ValueParameter<string>> AddDirectoryHistoryTask
         {
             get
             {
-                if (this.addDirectoryHistoryProcess == null)
+                if (this.addDirectoryHistoryTask == null)
                 {
-                    this.addDirectoryHistoryProcess = TaskManager.CreateOneWayProcess<AddDirectoryViewHistoryTask, SingleValueEntity<string>>(this.ProcessContainer);
+                    this.addDirectoryHistoryTask = new();
+                    this.addDirectoryHistoryTask.StartThread();
                 }
 
-                return this.addDirectoryHistoryProcess;
+                return this.addDirectoryHistoryTask;
             }
         }
 
-        private TwoWayProcess<GetNextDirectoryTask, GetNextContentsParameter<string>, SingleValueEntity<string>> GetNextDirectoryProcess
+        private TaskWrapper<GetNextDirectoryTask, GetNextContentsParameter<string>, ValueResult<string>> GetNextDirectoryTask
         {
             get
             {
-                if (this.getNextDirectoryProcess == null)
+                if (this.getNextDirectoryTask == null)
                 {
-                    this.getNextDirectoryProcess = TaskManager.CreateTwoWayProcess<GetNextDirectoryTask, GetNextContentsParameter<string>, SingleValueEntity<string>>(this.ProcessContainer);
-                    this.getNextDirectoryProcess.Callback += new AsyncTaskCallbackEventHandler<SingleValueEntity<string>>(this.GetNextDirectoryProcess_Callback);
+                    this.getNextDirectoryTask = new();
+                    this.getNextDirectoryTask
+                        .Callback(this.GetNextDirectoryProcess_Callback)
+                        .StartThread();
                 }
 
-                return this.getNextDirectoryProcess;
+                return this.getNextDirectoryTask;
             }
         }
 
@@ -108,9 +119,9 @@ namespace PicSum.UIComponent.Contents.FileList
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            var param = new SingleValueEntity<string>();
+            var param = new ValueParameter<string>();
             param.Value = this.parameter.DirectoryPath;
-            this.SearchDirectoryProcess.Execute(this, param);
+            this.SearchTask.StartTask(param);
         }
 
         protected override void Dispose(bool disposing)
@@ -118,6 +129,36 @@ namespace PicSum.UIComponent.Contents.FileList
             if (disposing)
             {
                 this.SaveCurrentDirectoryState();
+
+                if (this.searchTask != null)
+                {
+                    this.searchTask.Dispose();
+                    this.searchTask = null;
+                }
+
+                if (this.updateDirectoryStateTask != null)
+                {
+                    this.updateDirectoryStateTask.Dispose();
+                    this.updateDirectoryStateTask = null;
+                }
+
+                if (this.addDirectoryHistoryTask != null)
+                {
+                    this.addDirectoryHistoryTask.Dispose();
+                    this.addDirectoryHistoryTask = null;
+                }
+
+                if (this.getNextDirectoryTask != null)
+                {
+                    this.getNextDirectoryTask.Dispose();
+                    this.getNextDirectoryTask = null;
+                }
+
+                if (this.getFilesTask != null)
+                {
+                    this.getFilesTask.Dispose();
+                    this.getFilesTask = null;
+                }
             }
 
             base.Dispose(disposing);
@@ -153,8 +194,7 @@ namespace PicSum.UIComponent.Contents.FileList
             param.CurrentParameter = new SingleValueEntity<string>();
             param.CurrentParameter.Value = this.parameter.DirectoryPath;
             param.IsNext = false;
-            this.GetNextDirectoryProcess.Cancel();
-            this.GetNextDirectoryProcess.Execute(this, param);
+            this.GetNextDirectoryTask.StartTask(param);
         }
 
         protected override void OnMoveNextButtonClick(EventArgs e)
@@ -168,23 +208,17 @@ namespace PicSum.UIComponent.Contents.FileList
             param.CurrentParameter = new SingleValueEntity<string>();
             param.CurrentParameter.Value = this.parameter.DirectoryPath;
             param.IsNext = true;
-            this.GetNextDirectoryProcess.Cancel();
-            this.GetNextDirectoryProcess.Execute(this, param);
+            this.GetNextDirectoryTask.StartTask(param);
         }
 
         protected override Action GetImageFilesAction(ImageViewerContentsParameter paramter)
         {
             return () =>
             {
-                var proces = TaskManager.CreateTwoWayProcess<GetFilesByDirectoryTask, SingleValueEntity<string>, GetDirectoryResult>(this.ProcessContainer);
-                proces.Callback += ((sender, e) =>
+                var task = this.CreateNewGetFilesTask();
+                task
+                .Callback(e =>
                 {
-                    if (e.TaskException != null)
-                    {
-                        ExceptionUtil.ShowErrorDialog(e.TaskException.InnerException);
-                        return;
-                    }
-
                     var imageFiles = e.FileInfoList
                         .Where(fileInfo => fileInfo.IsImageFile);
                     var sortImageFiles = base.GetSortFiles(imageFiles)
@@ -199,9 +233,11 @@ namespace PicSum.UIComponent.Contents.FileList
                     var eventArgs = new GetImageFilesEventArgs(
                         sortImageFiles, this.SelectedFilePath, this.Title, this.Icon);
                     paramter.OnGetImageFiles(eventArgs);
-                });
+                })
+                .Catch(e => ExceptionUtil.ShowErrorDialog(e.InnerException))
+                .StartThread();
 
-                proces.Execute(this, new SingleValueEntity<string>() { Value = this.parameter.DirectoryPath });
+                task.StartTask(new ValueParameter<string>() { Value = this.parameter.DirectoryPath });
             };
         }
 
@@ -250,6 +286,18 @@ namespace PicSum.UIComponent.Contents.FileList
             base.sortFileRgistrationDateToolStripButton.Enabled = false;
         }
 
+        private TaskWrapper<GetFilesByDirectoryTask, ValueParameter<string>, GetDirectoryResult> CreateNewGetFilesTask()
+        {
+            if (this.getFilesTask != null)
+            {
+                this.getFilesTask.Dispose();
+                this.getFilesTask = null;
+            }
+
+            this.getFilesTask = new();
+            return this.getFilesTask;
+        }
+
         private void SaveCurrentDirectoryState()
         {
             var param = new DirectoryStateParameter();
@@ -269,21 +317,15 @@ namespace PicSum.UIComponent.Contents.FileList
 
             param.SelectedFilePath = base.SelectedFilePath;
 
-            this.UpdateDirectoryStateProcess.Execute(this, param);
+            this.UpdateDirectoryStateTask.StartTask(param);
         }
 
         #endregion
 
         #region プロセスイベント
 
-        private void SearchDirectoryProcess_Callback(object sender, GetDirectoryResult e)
+        private void SearchTask_Callback(GetDirectoryResult e)
         {
-            if (e.TaskException != null)
-            {
-                ExceptionUtil.ShowErrorDialog(e.TaskException.InnerException);
-                return;
-            }
-
             if (!string.IsNullOrEmpty(this.parameter.SelectedFilePath))
             {
                 if (e.DirectoryState != null)
@@ -311,12 +353,12 @@ namespace PicSum.UIComponent.Contents.FileList
                 }
             }
 
-            var param = new SingleValueEntity<string>();
+            var param = new ValueParameter<string>();
             param.Value = e.DirectoryPath;
-            this.AddDirectoryHistoryProcess.Execute(this, param);
+            this.AddDirectoryHistoryTask.StartTask(param);
         }
 
-        private void GetNextDirectoryProcess_Callback(object sender, SingleValueEntity<string> e)
+        private void GetNextDirectoryProcess_Callback(ValueResult<string> e)
         {
             var param = new DirectoryFileListContentsParameter(e.Value);
             this.OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.OverlapTab, param));

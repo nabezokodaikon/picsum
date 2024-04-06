@@ -17,7 +17,7 @@ namespace PicSum.Core.Task.AsyncTaskV2
         private readonly ConcurrentQueue<TTask> taskQueue = new();
         private System.Threading.Tasks.Task? thread;
         private Action<TTaskResult>? callbackAction;
-        private Action<Exception>? catchAction;
+        private Action<TaskException>? catchAction;
         private Action? completeAction;
 
         public TaskWrapper()
@@ -84,7 +84,7 @@ namespace PicSum.Core.Task.AsyncTaskV2
             return this;
         }
 
-        public TaskWrapper<TTask, TTaskParameter, TTaskResult> Catch(Action<Exception> action)
+        public TaskWrapper<TTask, TTaskParameter, TTaskResult> Catch(Action<TaskException> action)
         {
             if (action == null)
                 throw new ArgumentNullException(nameof(action));

@@ -91,6 +91,8 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             if (disposing)
             {
+                this.parameter.SelectedFilePath = base.SelectedFilePath;
+
                 if (this.searchTask != null)
                 {
                     this.searchTask.Dispose();
@@ -108,8 +110,6 @@ namespace PicSum.UIComponent.Contents.FileList
                     this.getFilesTask.Dispose();
                     this.getFilesTask = null;
                 }
-
-                this.parameter.SelectedFilePath = base.SelectedFilePath;
             }
 
             base.Dispose(disposing);

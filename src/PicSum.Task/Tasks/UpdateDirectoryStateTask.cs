@@ -11,7 +11,7 @@ namespace PicSum.Task.Tasks
     /// フォルダ状態更新タスク
     /// </summary>
     public sealed class UpdateDirectoryStateTask
-        : AbstractAsyncTask<DirectoryStateParameter, EmptyResult>
+        : AbstractAsyncTask<DirectoryStateParameter>
     {
         protected override void Execute(DirectoryStateParameter param)
         {
