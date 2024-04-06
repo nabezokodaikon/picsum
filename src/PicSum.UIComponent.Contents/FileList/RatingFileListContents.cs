@@ -1,9 +1,9 @@
 using PicSum.Core.Base.Conf;
 using PicSum.Core.Base.Exception;
-using PicSum.Core.Task.AsyncTask;
-using PicSum.Task.Tasks;
+using PicSum.Core.Task.AsyncTaskV2;
 using PicSum.Task.Entities;
 using PicSum.Task.Paramters;
+using PicSum.Task.Tasks;
 using PicSum.UIComponent.Contents.Common;
 using PicSum.UIComponent.Contents.Parameter;
 using PicSum.UIComponent.Contents.Properties;
@@ -25,37 +25,42 @@ namespace PicSum.UIComponent.Contents.FileList
         #region インスタンス変数
 
         private RatingFileListContentsParameter parameter = null;
-        private TwoWayProcess<GetFilesByRatingTask, SingleValueEntity<int>, ListEntity<FileShallowInfoEntity>> searchFileProcess = null;
-        private OneWayProcess<UpdateFileRatingTask, UpdateFileRatingParameter> updateFileRatingProcess = null;
+        private TaskWrapper<GetFilesByRatingTask, ValueParameter<int>, ListResult<FileShallowInfoEntity>> searchTask = null;
+        private TaskWrapper<UpdateFileRatingTask, UpdateFileRatingParameter> deleteTask = null;
+        private TaskWrapper<GetFilesByRatingTask, ValueParameter<int>, ListResult<FileShallowInfoEntity>> getFilesTask = null;
+
 
         #endregion
 
         #region プライベートプロパティ
 
-        private TwoWayProcess<GetFilesByRatingTask, SingleValueEntity<int>, ListEntity<FileShallowInfoEntity>> SearchFileProcess
+        private TaskWrapper<GetFilesByRatingTask, ValueParameter<int>, ListResult<FileShallowInfoEntity>> SearchTask
         {
             get
             {
-                if (this.searchFileProcess == null)
+                if (this.searchTask == null)
                 {
-                    this.searchFileProcess = TaskManager.CreateTwoWayProcess<GetFilesByRatingTask, SingleValueEntity<int>, ListEntity<FileShallowInfoEntity>>(this.ProcessContainer);
-                    this.searchFileProcess.Callback += new AsyncTaskCallbackEventHandler<ListEntity<FileShallowInfoEntity>>(this.SearchFileProcess_Callback);
+                    this.searchTask = new();
+                    this.searchTask
+                        .Callback(this.SearchTask_Callback)
+                        .StartThread();
                 }
 
-                return this.searchFileProcess;
+                return this.searchTask;
             }
         }
 
-        private OneWayProcess<UpdateFileRatingTask, UpdateFileRatingParameter> UpdateFileRatingProcess
+        private TaskWrapper<UpdateFileRatingTask, UpdateFileRatingParameter> DeleteTask
         {
             get
             {
-                if (this.updateFileRatingProcess == null)
+                if (this.deleteTask == null)
                 {
-                    this.updateFileRatingProcess = TaskManager.CreateOneWayProcess<UpdateFileRatingTask, UpdateFileRatingParameter>(this.ProcessContainer);
+                    this.deleteTask = new();
+                    this.deleteTask.StartThread();
                 }
 
-                return this.updateFileRatingProcess;
+                return this.deleteTask;
             }
         }
 
@@ -77,15 +82,33 @@ namespace PicSum.UIComponent.Contents.FileList
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            var param = new SingleValueEntity<int>();
+            var param = new ValueParameter<int>();
             param.Value = this.parameter.RagingValue;
-            this.SearchFileProcess.Execute(this, param);
+            this.SearchTask.StartTask(param);
         }
 
         protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
+                if (this.searchTask != null)
+                {
+                    this.searchTask.Dispose();
+                    this.searchTask = null;
+                }
+
+                if (this.deleteTask != null)
+                {
+                    this.deleteTask.Dispose();
+                    this.deleteTask = null;
+                }
+
+                if (this.getFilesTask != null)
+                {
+                    this.getFilesTask.Dispose();
+                    this.getFilesTask = null;
+                }
+
                 this.parameter.SelectedFilePath = base.SelectedFilePath;
             }
 
@@ -108,7 +131,7 @@ namespace PicSum.UIComponent.Contents.FileList
             var param = new UpdateFileRatingParameter();
             param.FilePathList = filePathList;
             param.RatingValue = 0;
-            this.UpdateFileRatingProcess.Execute(this, param);
+            this.DeleteTask.StartTask(param);
 
             this.RemoveFile(filePathList);
         }
@@ -117,8 +140,8 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             return () =>
             {
-                var proces = TaskManager.CreateTwoWayProcess<GetFilesByRatingTask, SingleValueEntity<int>, ListEntity<FileShallowInfoEntity>>(this.ProcessContainer);
-                proces.Callback += ((sender, e) =>
+                var task = this.CreateNewGetFilesTask();
+                task.Callback(e =>
                 {
                     var imageFiles = e
                         .Where(fileInfo => fileInfo.IsImageFile);
@@ -134,9 +157,10 @@ namespace PicSum.UIComponent.Contents.FileList
                     var eventArgs = new GetImageFilesEventArgs(
                         sortImageFiles, this.SelectedFilePath, this.Title, this.Icon);
                     paramter.OnGetImageFiles(eventArgs);
-                });
+                })
+                .StartThread();
 
-                proces.Execute(this, new SingleValueEntity<int>() { Value = this.parameter.RagingValue });
+                task.StartTask(new ValueParameter<int>() { Value = this.parameter.RagingValue });
             };
         }
 
@@ -163,11 +187,23 @@ namespace PicSum.UIComponent.Contents.FileList
             base.sortFileRgistrationDateToolStripButton.Enabled = true;
         }
 
+        private TaskWrapper<GetFilesByRatingTask, ValueParameter<int>, ListResult<FileShallowInfoEntity>> CreateNewGetFilesTask()
+        {
+            if (this.getFilesTask != null)
+            {
+                this.getFilesTask.Dispose();
+                this.getFilesTask = null;
+            }
+
+            this.getFilesTask = new();
+            return this.getFilesTask;
+        }
+
         #endregion
 
         #region プロセスイベント
 
-        private void SearchFileProcess_Callback(object sender, ListEntity<FileShallowInfoEntity> e)
+        private void SearchTask_Callback(ListResult<FileShallowInfoEntity> e)
         {
             base.SetFiles(e, this.parameter.SelectedFilePath, SortTypeID.RgistrationDate, false);
 
