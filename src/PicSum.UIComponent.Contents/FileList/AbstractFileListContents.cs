@@ -1,9 +1,9 @@
 using PicSum.Core.Base.Conf;
-using PicSum.Core.Task.AsyncTask;
-using PicSum.Task.Tasks;
+using PicSum.Core.Task.AsyncTaskV2;
 using PicSum.Task.Entities;
 using PicSum.Task.Paramters;
 using PicSum.Task.Results;
+using PicSum.Task.Tasks;
 using PicSum.UIComponent.Contents.Common;
 using PicSum.UIComponent.Contents.Conf;
 using PicSum.UIComponent.Contents.ContextMenu;
@@ -26,7 +26,7 @@ namespace PicSum.UIComponent.Contents.FileList
     /// ファイルリストコンテンツ基底クラス
     /// </summary>
     [SupportedOSPlatform("windows")]
-    internal abstract partial class FileListContentsBase
+    internal abstract partial class AbstractFileListContents
         : BrowserContents
     {
         #region インスタンス変数
@@ -34,9 +34,9 @@ namespace PicSum.UIComponent.Contents.FileList
         private Dictionary<string, FileEntity> masterFileDictionary = null;
         private List<string> filterFilePathList = null;
         private readonly SortInfo sortInfo = new SortInfo();
-        private TwoWayProcess<GetThumbnailsTask, GetThumbnailParameter, ThumbnailImageResult> getThumbnailsProcess = null;
-        private OneWayProcess<ExportFileTask, ExportFileParameter> exportFileProcess = null;
-        private OneWayProcess<AddBookmarkTask, SingleValueEntity<string>> addBookmarkProcess = null;
+        private TaskWrapper<GetThumbnailsTask, GetThumbnailParameter, ThumbnailImageResult> getThumbnailsTask = null;
+        private TaskWrapper<ExportFileTask, ExportFileParameter> exportFileTask = null;
+        private TaskWrapper<AddBookmarkTask, ValueParameter<string>> addBookmarkTask = null;
 
         #endregion
 
@@ -177,44 +177,49 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
-        private TwoWayProcess<GetThumbnailsTask, GetThumbnailParameter, ThumbnailImageResult> GetThumbnailsProcess
+        private TaskWrapper<GetThumbnailsTask, GetThumbnailParameter, ThumbnailImageResult> GetThumbnailsTask
         {
             get
             {
-                if (this.getThumbnailsProcess == null)
+                if (this.getThumbnailsTask == null)
                 {
-                    this.getThumbnailsProcess = TaskManager.CreateTwoWayProcess<GetThumbnailsTask, GetThumbnailParameter, ThumbnailImageResult>(this.ProcessContainer);
-                    this.getThumbnailsProcess.Callback += new AsyncTaskCallbackEventHandler<ThumbnailImageResult>(this.GetThumbnailsProcess_Callback);
-
+                    this.getThumbnailsTask = new();
+                    this.getThumbnailsTask
+                        .Callback(this.GetThumbnailsTask_Callback)
+                        .StartThread();
                 }
 
-                return this.getThumbnailsProcess;
+                return this.getThumbnailsTask;
             }
         }
 
-        private OneWayProcess<ExportFileTask, ExportFileParameter> ExportFileProcess
+        private TaskWrapper<ExportFileTask, ExportFileParameter> ExportFileTask
         {
             get
             {
-                if (this.exportFileProcess == null)
+                if (this.exportFileTask == null)
                 {
-                    this.exportFileProcess = TaskManager.CreateOneWayProcess<ExportFileTask, ExportFileParameter>(this.ProcessContainer);
+                    this.exportFileTask = new();
+                    this.exportFileTask
+                        .StartThread();
                 }
 
-                return this.exportFileProcess;
+                return this.exportFileTask;
             }
         }
 
-        private OneWayProcess<AddBookmarkTask, SingleValueEntity<string>> AddBookmarkProcess
+        private TaskWrapper<AddBookmarkTask, ValueParameter<string>> AddBookmarkTask
         {
             get
             {
-                if (this.addBookmarkProcess == null)
+                if (this.addBookmarkTask == null)
                 {
-                    this.addBookmarkProcess = TaskManager.CreateOneWayProcess<AddBookmarkTask, SingleValueEntity<string>>(this.ProcessContainer);
+                    this.addBookmarkTask = new();
+                    this.addBookmarkTask
+                        .StartThread();
                 }
 
-                return this.addBookmarkProcess;
+                return this.addBookmarkTask;
             }
         }
 
@@ -230,7 +235,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
         #region コンストラクタ
 
-        public FileListContentsBase(IContentsParameter param)
+        public AbstractFileListContents(IContentsParameter param)
             : base(param)
         {
             this.InitializeComponent();
@@ -250,6 +255,33 @@ namespace PicSum.UIComponent.Contents.FileList
 
         #region 継承メソッド
 
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                if (this.getThumbnailsTask != null)
+                {
+                    this.getThumbnailsTask.Dispose();
+                    this.getThumbnailsTask = null;
+                }
+
+                if (this.exportFileTask != null)
+                {
+                    this.exportFileTask.Dispose();
+                    this.exportFileTask = null;
+                }
+
+                if (this.addBookmarkTask != null)
+                {
+                    this.addBookmarkTask.Dispose();
+                    this.addBookmarkTask = null;
+                }
+
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -257,7 +289,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
         protected override void OnInvalidated(InvalidateEventArgs e)
         {
-            this.GetThumbnailsProcess.Cancel();
+            this.GetThumbnailsTask.BeginCancel();
             base.OnInvalidated(e);
         }
 
@@ -769,7 +801,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
         #region プロセスイベント
 
-        private void GetThumbnailsProcess_Callback(object sender, ThumbnailImageResult e)
+        private void GetThumbnailsTask_Callback(ThumbnailImageResult e)
         {
             if (this.masterFileDictionary == null || !this.masterFileDictionary.ContainsKey(e.FilePath))
             {
@@ -955,8 +987,7 @@ namespace PicSum.UIComponent.Contents.FileList
                     param.ThumbnailHeight = this.flowList.ItemHeight - this.flowList.ItemSpace * 2;
                 }
 
-                this.GetThumbnailsProcess.Cancel();
-                this.GetThumbnailsProcess.Execute(this, param);
+                this.GetThumbnailsTask.StartTask(param);
             }
         }
 
@@ -1225,7 +1256,7 @@ namespace PicSum.UIComponent.Contents.FileList
                     var param = new ExportFileParameter();
                     param.SrcFilePath = srcFilePath;
                     param.ExportFilePath = ofd.FileName;
-                    this.ExportFileProcess.Execute(this, param);
+                    this.ExportFileTask.StartTask(param);
 
                     CommonConfig.ExportDirectoryPath = dir;
                 }
@@ -1263,12 +1294,12 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private void FileContextMenu_Bookmark(object sender, ExecuteFileEventArgs e)
         {
-            var paramter = new SingleValueEntity<string>()
+            var paramter = new ValueParameter<string>()
             {
                 Value = e.FilePath,
             };
 
-            this.AddBookmarkProcess.Execute(this, paramter);
+            this.AddBookmarkTask.StartTask(paramter);
         }
 
         #endregion

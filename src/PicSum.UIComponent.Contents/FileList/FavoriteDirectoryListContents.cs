@@ -16,7 +16,7 @@ namespace PicSum.UIComponent.Contents.FileList
 {
     [SupportedOSPlatform("windows")]
     internal sealed class FavoriteDirectoryListContents
-        : FileListContentsBase
+        : AbstractFileListContents
     {
         #region インスタンス変数
 

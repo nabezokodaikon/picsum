@@ -20,7 +20,7 @@ namespace PicSum.UIComponent.Contents.FileList
     /// </summary>
     [SupportedOSPlatform("windows")]
     internal sealed class RatingFileListContents
-        : FileListContentsBase
+        : AbstractFileListContents
     {
         #region インスタンス変数
 

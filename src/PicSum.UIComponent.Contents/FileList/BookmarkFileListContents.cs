@@ -19,7 +19,7 @@ namespace PicSum.UIComponent.Contents.FileList
 {
     [SupportedOSPlatform("windows")]
     internal sealed class BookmarkFileListContents
-        : FileListContentsBase
+        : AbstractFileListContents
     {
         private BookmarkFileListContentsParameter paramter = null;
         private TwoWayProcess<GetBookmarkTask, ListEntity<FileShallowInfoEntity>> searchProcess = null;

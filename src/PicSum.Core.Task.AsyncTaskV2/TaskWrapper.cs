@@ -138,6 +138,11 @@ namespace PicSum.Core.Task.AsyncTaskV2
             this.taskQueue.Enqueue(task);
         }
 
+        public void BeginCancel()
+        {
+            this.ClearQueue();
+        }
+
         private void ClearQueue()
         {
             while (this.taskQueue.TryDequeue(out var t))

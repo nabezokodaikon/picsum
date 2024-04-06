@@ -3,25 +3,12 @@ using System.Windows.Forms;
 
 namespace PicSum.UIComponent.Contents.FileList
 {
-    partial class FileListContentsBase
+    partial class AbstractFileListContents
     {
         /// <summary> 
         /// 必要なデザイナ変数です。
         /// </summary>
         private System.ComponentModel.IContainer components = null;
-
-        /// <summary> 
-        /// 使用中のリソースをすべてクリーンアップします。
-        /// </summary>
-        /// <param name="disposing">マネージ リソースが破棄される場合 true、破棄されない場合は false です。</param>
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing && (components != null))
-            {
-                components.Dispose();
-            }
-            base.Dispose(disposing);
-        }
 
         #region コンポーネント デザイナで生成されたコード
 
@@ -32,7 +19,7 @@ namespace PicSum.UIComponent.Contents.FileList
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FileListContentsBase));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AbstractFileListContents));
             this.flowList = new SWF.UIComponent.FlowList.FlowList();
             this.fileContextMenu = new PicSum.UIComponent.Contents.ContextMenu.FileContextMenu();
             this.viewContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);

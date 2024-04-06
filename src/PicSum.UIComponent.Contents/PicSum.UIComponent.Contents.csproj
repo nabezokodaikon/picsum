@@ -36,7 +36,7 @@
     <Compile Update="FileList\FavoriteDirectoryListContents.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Update="FileList\FileListContentsBase.cs">
+    <Compile Update="FileList\AbstractFileListContents.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Update="FileList\DirectoryFileListContents.cs">

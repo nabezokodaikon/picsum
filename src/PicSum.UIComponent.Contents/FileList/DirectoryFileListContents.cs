@@ -22,7 +22,7 @@ namespace PicSum.UIComponent.Contents.FileList
     /// </summary>
     [SupportedOSPlatform("windows")]
     internal sealed class DirectoryFileListContents
-        : FileListContentsBase
+        : AbstractFileListContents
     {
         #region インスタンス変数
 
