@@ -37,6 +37,7 @@ namespace PicSum.UIComponent.Contents.FileList
         private TaskWrapper<GetThumbnailsTask, GetThumbnailParameter, ThumbnailImageResult> getThumbnailsTask = null;
         private TaskWrapper<ExportFileTask, ExportFileParameter> exportFileTask = null;
         private TaskWrapper<AddBookmarkTask, ValueParameter<string>> addBookmarkTask = null;
+        private TaskWrapper<GetFilesByDirectoryTask, ValueParameter<string>, GetDirectoryResult> getFilesByDirectoryTask = null;
 
         #endregion
 
@@ -255,6 +256,18 @@ namespace PicSum.UIComponent.Contents.FileList
 
         #region 継承メソッド
 
+        protected TaskWrapper<GetFilesByDirectoryTask, ValueParameter<string>, GetDirectoryResult> CreateNewGetFilesByDirectoryTask()
+        {
+            if (this.getFilesByDirectoryTask != null)
+            {
+                this.getFilesByDirectoryTask.Dispose();
+                this.getFilesByDirectoryTask = null;
+            }
+
+            this.getFilesByDirectoryTask = new();
+            return this.getFilesByDirectoryTask;
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -277,8 +290,15 @@ namespace PicSum.UIComponent.Contents.FileList
                     this.addBookmarkTask = null;
                 }
 
+                if (this.getFilesByDirectoryTask != null)
+                {
+                    this.getFilesByDirectoryTask.Dispose();
+                    this.getFilesByDirectoryTask = null;
+                }
+
                 components.Dispose();
             }
+
             base.Dispose(disposing);
         }
 

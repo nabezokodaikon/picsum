@@ -21,32 +21,9 @@ namespace PicSum.UIComponent.Contents.Common
 
         #endregion
 
-        #region インスタンス変数
-
-        private IContainer processContainer = null;
-
-        #endregion
-
         #region パブリックプロパティ
 
         public abstract string SelectedFilePath { get; protected set; }
-
-        #endregion
-
-        #region 継承プロパティ
-
-        protected IContainer ProcessContainer
-        {
-            get
-            {
-                if (this.processContainer == null)
-                {
-                    this.processContainer = new Container();
-                }
-
-                return this.processContainer;
-            }
-        }
 
         #endregion
 

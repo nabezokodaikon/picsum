@@ -7,7 +7,7 @@ using System;
 namespace PicSum.Task.Tasks
 {
     public sealed class DeleteBookmarkTask
-        : AbstractAsyncTask<ListParameter<string>, EmptyResult>
+        : AbstractAsyncTask<ListParameter<string>>
     {
         protected override void Execute(ListParameter<string> param)
         {

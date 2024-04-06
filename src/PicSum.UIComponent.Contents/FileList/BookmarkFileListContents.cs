@@ -14,6 +14,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.Versioning;
 using System.Windows.Forms;
+using PicSum.Core.Task.AsyncTaskV2;
 
 namespace PicSum.UIComponent.Contents.FileList
 {
@@ -22,33 +23,37 @@ namespace PicSum.UIComponent.Contents.FileList
         : AbstractFileListContents
     {
         private BookmarkFileListContentsParameter paramter = null;
-        private TwoWayProcess<GetBookmarkTask, ListEntity<FileShallowInfoEntity>> searchProcess = null;
-        private OneWayProcess<DeleteBookmarkTask, ListEntity<string>> deleteProcess = null;
+        private TaskWrapper<GetBookmarkTask, EmptyParameter, ListResult<FileShallowInfoEntity>> searchTask = null;
+        private TaskWrapper<DeleteBookmarkTask, ListParameter<string>> deleteTask = null;
 
-        private TwoWayProcess<GetBookmarkTask, ListEntity<FileShallowInfoEntity>> SearchProcess
+        private TaskWrapper<GetBookmarkTask, EmptyParameter, ListResult<FileShallowInfoEntity>> SearchTask
         {
             get
             {
-                if (this.searchProcess == null)
+                if (this.searchTask == null)
                 {
-                    this.searchProcess = TaskManager.CreateTwoWayProcess<GetBookmarkTask, ListEntity<FileShallowInfoEntity>>(this.ProcessContainer);
-                    this.searchProcess.Callback += new AsyncTaskCallbackEventHandler<ListEntity<FileShallowInfoEntity>>(this.SearchProcess_Callback);
+                    this.searchTask = new();
+                    this.searchTask
+                        .Callback(this.SearchTask_Callback)
+                        .StartThread();
                 }
 
-                return this.searchProcess;
+                return this.searchTask;
             }
         }
 
-        private OneWayProcess<DeleteBookmarkTask, ListEntity<string>> DeleteProcess
+        private TaskWrapper<DeleteBookmarkTask, ListParameter<string>> DeleteTask
         {
             get
             {
-                if (this.deleteProcess == null)
+                if (this.deleteTask == null)
                 {
-                    this.deleteProcess = TaskManager.CreateOneWayProcess<DeleteBookmarkTask, ListEntity<string>>(this.ProcessContainer);
+                    this.deleteTask = new();
+                    this.deleteTask
+                        .StartThread();
                 }
 
-                return this.deleteProcess;
+                return this.deleteTask;
             }
         }
 
@@ -62,13 +67,25 @@ namespace PicSum.UIComponent.Contents.FileList
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            this.SearchProcess.Execute(this);
+            this.SearchTask.StartTask();
         }
 
         protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
+                if (this.searchTask != null)
+                {
+                    this.searchTask.Dispose();
+                    this.searchTask = null;
+                }
+
+                if (this.deleteTask != null)
+                {
+                    this.deleteTask.Dispose();
+                    this.deleteTask = null;
+                }
+
                 this.paramter.SelectedFilePath = base.SelectedFilePath;
             }
 
@@ -88,9 +105,9 @@ namespace PicSum.UIComponent.Contents.FileList
 
         protected override void OnRemoveFile(IList<string> filePathList)
         {
-            var parameter = new ListEntity<string>();
+            var parameter = new ListParameter<string>();
             parameter.AddRange(filePathList);
-            this.DeleteProcess.Execute(this, parameter);
+            this.DeleteTask.StartTask(parameter);
 
             base.RemoveFile(filePathList);
 
@@ -101,15 +118,11 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             return () =>
             {
-                var proces = TaskManager.CreateTwoWayProcess<GetFilesByDirectoryTask, SingleValueEntity<string>, GetDirectoryResult>(this.ProcessContainer);
-                proces.Callback += ((sender, e) =>
-                {
-                    if (e.TaskException != null)
-                    {
-                        ExceptionUtil.ShowErrorDialog(e.TaskException.InnerException);
-                        return;
-                    }
+                var task = base.CreateNewGetFilesByDirectoryTask();
 
+                task
+                .Callback(e =>
+                {
                     var imageFiles = e.FileInfoList
                         .Where(fileInfo => fileInfo.IsImageFile)
                         .OrderBy(fileInfo => fileInfo.FilePath)
@@ -126,10 +139,11 @@ namespace PicSum.UIComponent.Contents.FileList
                     var eventArgs = new GetImageFilesEventArgs(
                         imageFiles, this.SelectedFilePath, title, FileIconCash.SmallDirectoryIcon);
                     paramter.OnGetImageFiles(eventArgs);
-                });
+                })
+                .StartThread();
 
                 var dir = FileUtil.GetParentDirectoryPath(paramter.SelectedFilePath);
-                proces.Execute(this, new SingleValueEntity<string>() { Value = dir });
+                task.StartTask(new ValueParameter<string>() { Value = dir });
             };
         }
 
@@ -158,9 +172,9 @@ namespace PicSum.UIComponent.Contents.FileList
             base.sortFileRgistrationDateToolStripButton.Enabled = true;
         }
 
-        private void SearchProcess_Callback(object sender, ListEntity<FileShallowInfoEntity> e)
+        private void SearchTask_Callback(ListResult<FileShallowInfoEntity> result)
         {
-            base.SetFiles(e, this.paramter.SelectedFilePath, PicSum.Core.Base.Conf.SortTypeID.RgistrationDate, false);
+            base.SetFiles(result, this.paramter.SelectedFilePath, PicSum.Core.Base.Conf.SortTypeID.RgistrationDate, false);
 
             if (string.IsNullOrEmpty(this.paramter.SelectedFilePath))
             {
