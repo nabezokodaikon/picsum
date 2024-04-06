@@ -115,7 +115,10 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                     this.getImageFileTask = new();
                     this.getImageFileTask
                         .Callback(this.GetImageFileTask_Callback)
-                        .Catch(ex => this.Cursor = Cursors.Default)
+                        .Catch(ex => {
+                            this.Cursor = Cursors.Default;
+                            ExceptionUtil.ShowErrorDialog(ex.InnerException);
+                        })
                         .Complete(() => this.Cursor = Cursors.Default)
                         .StartThread();
                 }
@@ -597,12 +600,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
         private void GetImageFileTask_Callback(GetImageFileResult e)
         {
-            if (e.TaskException != null)
-            {
-                ExceptionUtil.ShowErrorDialog(e.TaskException.InnerException);
-                return;
-            }
-
             if (this.leftImagePanel.HasImage)
             {
                 this.leftImageFilePath = string.Empty;

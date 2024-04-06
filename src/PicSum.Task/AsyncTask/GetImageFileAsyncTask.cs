@@ -86,13 +86,11 @@ namespace PicSum.Task.AsyncTask
                     result.Image1.Thumbnail = logic.CreateThumbnail(result.Image1.Image, parameter.ThumbnailSize, parameter.ImageSizeMode);
                     this.CheckCancel();
                 }
-
-                result.TaskException = null;
             }
             catch (ImageUtilException ex)
             {
                 this.ExeptionHandler(result);
-                result.TaskException = new TaskException(this.ID, ex);
+                throw new TaskException(this.ID, ex);
             }
             catch (TaskCancelException)
             {
@@ -105,39 +103,43 @@ namespace PicSum.Task.AsyncTask
 
         private void ExeptionHandler(GetImageFileResult result)
         {
-            try
-            {
-                if (result.Image1 != null)
-                {
-                    if (result.Image1.Image != null)
-                    {
-                        result.Image1.Image.Dispose();
-                        result.Image1.Image = null;
-                    }
+            bool isDisposed = false;
 
-                    if (result.Image1.Thumbnail != null)
-                    {
-                        result.Image1.Thumbnail.Dispose();
-                        result.Image1.Thumbnail = null;
-                    }
+            if (result.Image1 != null)
+            {
+                if (result.Image1.Image != null)
+                {
+                    result.Image1.Image.Dispose();
+                    result.Image1.Image = null;
+                    isDisposed = true;
                 }
 
-                if (result.Image2 != null)
+                if (result.Image1.Thumbnail != null)
                 {
-                    if (result.Image2.Image != null)
-                    {
-                        result.Image2.Image.Dispose();
-                        result.Image2.Image = null;
-                    }
-
-                    if (result.Image2.Thumbnail != null)
-                    {
-                        result.Image2.Thumbnail.Dispose();
-                        result.Image2.Thumbnail = null;
-                    }
+                    result.Image1.Thumbnail.Dispose();
+                    result.Image1.Thumbnail = null;
+                    isDisposed = true;
                 }
             }
-            finally
+
+            if (result.Image2 != null)
+            {
+                if (result.Image2.Image != null)
+                {
+                    result.Image2.Image.Dispose();
+                    result.Image2.Image = null;
+                    isDisposed = true;
+                }
+
+                if (result.Image2.Thumbnail != null)
+                {
+                    result.Image2.Thumbnail.Dispose();
+                    result.Image2.Thumbnail = null;
+                    isDisposed = true;
+                }
+            }
+
+            if (isDisposed)
             {
                 GC.Collect();
             }
