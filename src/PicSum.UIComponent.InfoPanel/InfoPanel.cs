@@ -682,7 +682,7 @@ namespace PicSum.UIComponent.InfoPanel
 
         private void WideComboBox_DropDownOpening(object sender, DropDownOpeningEventArgs e)
         {
-            this.GetTagListTask.StartTask();
+            this.GetTagListTask.StartTask(EmptyParameter.Instance);
         }
 
         private void WideComboBox_AddItem(object sender, AddItemEventArgs e)

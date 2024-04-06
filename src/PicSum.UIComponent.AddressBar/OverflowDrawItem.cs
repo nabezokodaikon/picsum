@@ -8,7 +8,7 @@ namespace PicSum.UIComponent.AddressBar
 {
     [SupportedOSPlatform("windows")]
     internal sealed class OverflowDrawItem
-        : DropDownDrawItemBase
+        : DropDownDrawItemBase, IDisposable
     {
         #region インスタンス変数
 

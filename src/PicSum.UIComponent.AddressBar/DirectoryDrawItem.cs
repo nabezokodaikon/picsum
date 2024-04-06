@@ -8,7 +8,7 @@ namespace PicSum.UIComponent.AddressBar
 {
     [SupportedOSPlatform("windows")]
     internal sealed class DirectoryDrawItem
-        : DrawItemBase
+        : DrawItemBase, IDisposable
     {
         #region インスタンス変数
 

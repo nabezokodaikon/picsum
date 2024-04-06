@@ -13,7 +13,7 @@ namespace PicSum.UIComponent.AddressBar
 {
     [SupportedOSPlatform("windows")]
     internal sealed class SeparatorDrawItem
-        : DropDownDrawItemBase
+        : DropDownDrawItemBase, IDisposable
     {
         #region インスタンス変数
 

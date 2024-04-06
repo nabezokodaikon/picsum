@@ -18,11 +18,7 @@ namespace PicSum.Main.UIComponent
     public sealed class BrowserForm
         : GrassForm
     {
-        #region クラスメンバ
-
-        private static TaskWrapper<StartupTask, StartupPrameter, EmptyResult> startupTask = null;
-
-        #endregion
+        private static bool isStartUp = true;
 
         #region イベント
 
@@ -35,6 +31,7 @@ namespace PicSum.Main.UIComponent
 
         private BrowserMainPanel browserMainPanel = null;
         private bool isKeyDown = false;
+        private TaskWrapper<StartupTask, StartupPrameter, EmptyResult> startupTask = null;
 
         #endregion
 
@@ -120,10 +117,10 @@ namespace PicSum.Main.UIComponent
 
         protected override void OnHandleCreated(EventArgs e)
         {
-            if (BrowserForm.startupTask == null)
+            if (BrowserForm.isStartUp)
             {
-                BrowserForm.startupTask = new();
-                BrowserForm.startupTask
+                this.startupTask = new();
+                this.startupTask
                     .Callback(this.StartupProcess_Callback)
                     .StartThread();
 
@@ -137,7 +134,9 @@ namespace PicSum.Main.UIComponent
                 param.FileInfoDBFilePath = Path.Combine(dbDir, @"fileinfo.sqlite");
                 param.ThumbnailDBFilePath = Path.Combine(dbDir, @"thumbnail.sqlite");
 
-                BrowserForm.startupTask.StartTask(param);
+                this.startupTask.StartTask(param);
+
+                BrowserForm.isStartUp = false;
             }
 
             base.OnHandleCreated(e);
@@ -146,7 +145,6 @@ namespace PicSum.Main.UIComponent
         protected override void OnShown(EventArgs e)
         {
             this.Activate();
-
 
             base.OnShown(e);
         }
@@ -167,10 +165,10 @@ namespace PicSum.Main.UIComponent
         {
             if (disposing)
             {
-                if (BrowserForm.startupTask != null)
+                if (this.startupTask != null)
                 {
-                    BrowserForm.startupTask.Dispose();
-                    BrowserForm.startupTask = null;
+                    this.startupTask.Dispose();
+                    this.startupTask = null;
                 }
             }
 

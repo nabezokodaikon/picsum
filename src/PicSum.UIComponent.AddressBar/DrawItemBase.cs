@@ -187,7 +187,7 @@ namespace PicSum.UIComponent.AddressBar
             this.height = 0;
         }
 
-        protected virtual void Dispose()
+        protected void Dispose()
         {
             this.DropDownOpened = null;
             this.DropDownClosed = null;

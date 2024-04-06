@@ -21,6 +21,8 @@ namespace PicSum.Task.Tasks
 
             var logic = new StartupLogic(this);
             logic.Execute(param);
+
+            this.Callback(EmptyResult.Instance);
         }
     }
 }

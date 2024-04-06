@@ -13,7 +13,7 @@ namespace PicSum.UIComponent.AddressBar
 {
     [SupportedOSPlatform("windows")]
     internal sealed class DirectoryHistoryDrawItem
-        : DropDownDrawItemBase
+        : DropDownDrawItemBase, IDisposable
     {
         #region インスタンス変数
 
@@ -101,7 +101,7 @@ namespace PicSum.UIComponent.AddressBar
                 base.DropDownList.ClearSelectedItems();
                 base.DropDownList.ItemCount = 0;
                 base.DropDownList.Show(base.AddressBar, 0, base.AddressBar.Height);
-                this.GetDirectoryHistoryTask.StartTask();
+                this.GetDirectoryHistoryTask.StartTask(EmptyParameter.Instance);
             }
         }
 

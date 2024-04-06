@@ -62,7 +62,7 @@ namespace PicSum.UIComponent.AddressBar
 
         protected abstract void DrawDropDownItem(SWF.UIComponent.FlowList.DrawItemEventArgs e);
 
-        protected override void Dispose()
+        public new void Dispose()
         {
             if (this.dropDownList != null)
             {
