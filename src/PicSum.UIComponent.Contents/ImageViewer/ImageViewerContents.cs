@@ -1,10 +1,10 @@
 using PicSum.Core.Base.Conf;
 using PicSum.Core.Task.AsyncTask;
 using PicSum.Core.Task.AsyncTaskV2;
-using PicSum.Task.AsyncTask;
-using PicSum.Task.Entity;
-using PicSum.Task.Paramter;
-using PicSum.Task.Result;
+using PicSum.Task.Tasks;
+using PicSum.Task.Entities;
+using PicSum.Task.Paramters;
+using PicSum.Task.Results;
 using PicSum.UIComponent.Contents.Common;
 using PicSum.UIComponent.Contents.Conf;
 using PicSum.UIComponent.Contents.ContextMenu;
@@ -55,9 +55,9 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         private ImageSizeMode sizeMode = ImageSizeMode.FitOnlyBigImage;
         private IList<string> filePathList = null;
 
-        private TaskWrapper<GetImageFileAsyncTask, GetImageFileParameter, GetImageFileResult> getImageFileTask = null;
-        private TaskWrapper<AddBookmarkAsyncTask, ValueResult<string>> addBookmarkTask = null;
-        private OneWayProcess<ExportFileAsyncTask, ExportFileParameter> exportFileTask = null;
+        private TaskWrapper<GetImageFileTask, GetImageFileParameter, GetImageFileResult> getImageFileTask = null;
+        private TaskWrapper<AddBookmarkTask, ValueResult<string>> addBookmarkTask = null;
+        private OneWayProcess<ExportFileTask, ExportFileParameter> exportFileTask = null;
 
         #endregion
 
@@ -106,7 +106,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             }
         }
 
-        private TaskWrapper<GetImageFileAsyncTask, GetImageFileParameter, GetImageFileResult> GetImageFileTask
+        private TaskWrapper<GetImageFileTask, GetImageFileParameter, GetImageFileResult> GetImageFileTask
         {
             get
             {
@@ -127,26 +127,26 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             }
         }
 
-        private OneWayProcess<AddBookmarkAsyncTask, SingleValueEntity<string>> AddBookmarkTask
+        private OneWayProcess<AddBookmarkTask, SingleValueEntity<string>> AddBookmarkTask
         {
             get
             {
                 if (this.addBookmarkTask == null)
                 {
-                    this.addBookmarkTask = TaskManager.CreateOneWayProcess<AddBookmarkAsyncTask, SingleValueEntity<string>>(this.ProcessContainer);
+                    this.addBookmarkTask = TaskManager.CreateOneWayProcess<AddBookmarkTask, SingleValueEntity<string>>(this.ProcessContainer);
                 }
 
                 return this.addBookmarkTask;
             }
         }
 
-        private OneWayProcess<ExportFileAsyncTask, ExportFileParameter> ExportFileTask
+        private OneWayProcess<ExportFileTask, ExportFileParameter> ExportFileTask
         {
             get
             {
                 if (this.exportFileTask == null)
                 {
-                    this.exportFileTask = TaskManager.CreateOneWayProcess<ExportFileAsyncTask, ExportFileParameter>(this.ProcessContainer);
+                    this.exportFileTask = TaskManager.CreateOneWayProcess<ExportFileTask, ExportFileParameter>(this.ProcessContainer);
                 }
 
                 return this.exportFileTask;

@@ -1,9 +1,9 @@
 using PicSum.Core.Base.Conf;
 using PicSum.Core.Base.Exception;
 using PicSum.Core.Task.AsyncTask;
-using PicSum.Task.AsyncTask;
-using PicSum.Task.Entity;
-using PicSum.Task.Paramter;
+using PicSum.Task.Tasks;
+using PicSum.Task.Entities;
+using PicSum.Task.Paramters;
 using PicSum.UIComponent.Contents.Common;
 using PicSum.UIComponent.Contents.Parameter;
 using PicSum.UIComponent.Contents.Properties;
@@ -27,8 +27,8 @@ namespace PicSum.UIComponent.Contents.FileList
         #region インスタンス変数
 
         private TagFileListContentsParameter parameter = null;
-        private TwoWayProcess<GetFilesByTagAsyncTask, SingleValueEntity<string>, ListEntity<FileShallowInfoEntity>> searchFileProcess = null;
-        private OneWayProcess<DeleteFileTagAsyncTask, UpdateFileTagParameter> deleteFileTagProcess = null;
+        private TwoWayProcess<GetFilesByTagTask, SingleValueEntity<string>, ListEntity<FileShallowInfoEntity>> searchFileProcess = null;
+        private OneWayProcess<DeleteFileTagTask, UpdateFileTagParameter> deleteFileTagProcess = null;
 
         #endregion
 
@@ -42,13 +42,13 @@ namespace PicSum.UIComponent.Contents.FileList
 
         #region プライベートプロパティ
 
-        private TwoWayProcess<GetFilesByTagAsyncTask, SingleValueEntity<string>, ListEntity<FileShallowInfoEntity>> SearchFileProcess
+        private TwoWayProcess<GetFilesByTagTask, SingleValueEntity<string>, ListEntity<FileShallowInfoEntity>> SearchFileProcess
         {
             get
             {
                 if (this.searchFileProcess == null)
                 {
-                    this.searchFileProcess = TaskManager.CreateTwoWayProcess<GetFilesByTagAsyncTask, SingleValueEntity<string>, ListEntity<FileShallowInfoEntity>>(this.ProcessContainer);
+                    this.searchFileProcess = TaskManager.CreateTwoWayProcess<GetFilesByTagTask, SingleValueEntity<string>, ListEntity<FileShallowInfoEntity>>(this.ProcessContainer);
                     this.searchFileProcess.Callback += new AsyncTaskCallbackEventHandler<ListEntity<FileShallowInfoEntity>>(this.SearchFileProcess_Callback);
                 }
 
@@ -56,13 +56,13 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
-        private OneWayProcess<DeleteFileTagAsyncTask, UpdateFileTagParameter> DeleteFileTagProcess
+        private OneWayProcess<DeleteFileTagTask, UpdateFileTagParameter> DeleteFileTagProcess
         {
             get
             {
                 if (this.deleteFileTagProcess == null)
                 {
-                    this.deleteFileTagProcess = TaskManager.CreateOneWayProcess<DeleteFileTagAsyncTask, UpdateFileTagParameter>(this.ProcessContainer);
+                    this.deleteFileTagProcess = TaskManager.CreateOneWayProcess<DeleteFileTagTask, UpdateFileTagParameter>(this.ProcessContainer);
                 }
 
                 return this.deleteFileTagProcess;
@@ -128,7 +128,7 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             return () =>
             {
-                var proces = TaskManager.CreateTwoWayProcess<GetFilesByTagAsyncTask, SingleValueEntity<string>, ListEntity<FileShallowInfoEntity>>(this.ProcessContainer);
+                var proces = TaskManager.CreateTwoWayProcess<GetFilesByTagTask, SingleValueEntity<string>, ListEntity<FileShallowInfoEntity>>(this.ProcessContainer);
                 proces.Callback += ((sender, e) =>
                 {
                     var imageFiles = e

@@ -1,9 +1,9 @@
 using PicSum.Core.Base.Conf;
 using PicSum.Core.Task.AsyncTask;
-using PicSum.Task.AsyncTask;
-using PicSum.Task.Entity;
-using PicSum.Task.Paramter;
-using PicSum.Task.Result;
+using PicSum.Task.Tasks;
+using PicSum.Task.Entities;
+using PicSum.Task.Paramters;
+using PicSum.Task.Results;
 using PicSum.UIComponent.Contents.Common;
 using PicSum.UIComponent.Contents.Conf;
 using PicSum.UIComponent.Contents.ContextMenu;
@@ -34,9 +34,9 @@ namespace PicSum.UIComponent.Contents.FileList
         private Dictionary<string, FileEntity> masterFileDictionary = null;
         private List<string> filterFilePathList = null;
         private readonly SortInfo sortInfo = new SortInfo();
-        private TwoWayProcess<GetThumbnailsAsyncTask, GetThumbnailParameter, ThumbnailImageResult> getThumbnailsProcess = null;
-        private OneWayProcess<ExportFileAsyncTask, ExportFileParameter> exportFileProcess = null;
-        private OneWayProcess<AddBookmarkAsyncTask, SingleValueEntity<string>> addBookmarkProcess = null;
+        private TwoWayProcess<GetThumbnailsTask, GetThumbnailParameter, ThumbnailImageResult> getThumbnailsProcess = null;
+        private OneWayProcess<ExportFileTask, ExportFileParameter> exportFileProcess = null;
+        private OneWayProcess<AddBookmarkTask, SingleValueEntity<string>> addBookmarkProcess = null;
 
         #endregion
 
@@ -177,13 +177,13 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
-        private TwoWayProcess<GetThumbnailsAsyncTask, GetThumbnailParameter, ThumbnailImageResult> GetThumbnailsProcess
+        private TwoWayProcess<GetThumbnailsTask, GetThumbnailParameter, ThumbnailImageResult> GetThumbnailsProcess
         {
             get
             {
                 if (this.getThumbnailsProcess == null)
                 {
-                    this.getThumbnailsProcess = TaskManager.CreateTwoWayProcess<GetThumbnailsAsyncTask, GetThumbnailParameter, ThumbnailImageResult>(this.ProcessContainer);
+                    this.getThumbnailsProcess = TaskManager.CreateTwoWayProcess<GetThumbnailsTask, GetThumbnailParameter, ThumbnailImageResult>(this.ProcessContainer);
                     this.getThumbnailsProcess.Callback += new AsyncTaskCallbackEventHandler<ThumbnailImageResult>(this.GetThumbnailsProcess_Callback);
 
                 }
@@ -192,26 +192,26 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
-        private OneWayProcess<ExportFileAsyncTask, ExportFileParameter> ExportFileProcess
+        private OneWayProcess<ExportFileTask, ExportFileParameter> ExportFileProcess
         {
             get
             {
                 if (this.exportFileProcess == null)
                 {
-                    this.exportFileProcess = TaskManager.CreateOneWayProcess<ExportFileAsyncTask, ExportFileParameter>(this.ProcessContainer);
+                    this.exportFileProcess = TaskManager.CreateOneWayProcess<ExportFileTask, ExportFileParameter>(this.ProcessContainer);
                 }
 
                 return this.exportFileProcess;
             }
         }
 
-        private OneWayProcess<AddBookmarkAsyncTask, SingleValueEntity<string>> AddBookmarkProcess
+        private OneWayProcess<AddBookmarkTask, SingleValueEntity<string>> AddBookmarkProcess
         {
             get
             {
                 if (this.addBookmarkProcess == null)
                 {
-                    this.addBookmarkProcess = TaskManager.CreateOneWayProcess<AddBookmarkAsyncTask, SingleValueEntity<string>>(this.ProcessContainer);
+                    this.addBookmarkProcess = TaskManager.CreateOneWayProcess<AddBookmarkTask, SingleValueEntity<string>>(this.ProcessContainer);
                 }
 
                 return this.addBookmarkProcess;

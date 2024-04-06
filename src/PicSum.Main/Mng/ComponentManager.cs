@@ -1,7 +1,7 @@
 using PicSum.Core.Task.AsyncTask;
 using PicSum.Main.Conf;
 using PicSum.Main.Properties;
-using PicSum.Task.SyncTask;
+using PicSum.Task.SyncTasks;
 using PicSum.UIComponent.Contents.Conf;
 using System;
 using System.Runtime.Versioning;

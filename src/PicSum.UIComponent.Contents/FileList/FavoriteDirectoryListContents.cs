@@ -1,7 +1,7 @@
 using PicSum.Core.Task.AsyncTask;
-using PicSum.Task.AsyncTask;
-using PicSum.Task.Entity;
-using PicSum.Task.Paramter;
+using PicSum.Task.Tasks;
+using PicSum.Task.Entities;
+using PicSum.Task.Paramters;
 using PicSum.UIComponent.Contents.Common;
 using PicSum.UIComponent.Contents.Conf;
 using PicSum.UIComponent.Contents.Parameter;
@@ -21,20 +21,20 @@ namespace PicSum.UIComponent.Contents.FileList
         #region インスタンス変数
 
         private FavoriteDirectoryListContentsParameter parameter = null;
-        private TwoWayProcess<GetFavoriteDirectoryAsyncTask, GetFavoriteDirectoryParameter, ListEntity<FileShallowInfoEntity>> searchFavoriteDirectoryProcess = null;
-        private OneWayProcess<DeleteDirectoryViewCounterAsyncTask, ListEntity<string>> deleteDirectoryViewCounterProcess = null;
+        private TwoWayProcess<GetFavoriteDirectoryTask, GetFavoriteDirectoryParameter, ListEntity<FileShallowInfoEntity>> searchFavoriteDirectoryProcess = null;
+        private OneWayProcess<DeleteDirectoryViewCounterTask, ListEntity<string>> deleteDirectoryViewCounterProcess = null;
 
         #endregion
 
         #region プライベートプロパティ
 
-        private TwoWayProcess<GetFavoriteDirectoryAsyncTask, GetFavoriteDirectoryParameter, ListEntity<FileShallowInfoEntity>> SearchFavoriteDirectoryProcess
+        private TwoWayProcess<GetFavoriteDirectoryTask, GetFavoriteDirectoryParameter, ListEntity<FileShallowInfoEntity>> SearchFavoriteDirectoryProcess
         {
             get
             {
                 if (this.searchFavoriteDirectoryProcess == null)
                 {
-                    this.searchFavoriteDirectoryProcess = TaskManager.CreateTwoWayProcess<GetFavoriteDirectoryAsyncTask, GetFavoriteDirectoryParameter, ListEntity<FileShallowInfoEntity>>(this.ProcessContainer);
+                    this.searchFavoriteDirectoryProcess = TaskManager.CreateTwoWayProcess<GetFavoriteDirectoryTask, GetFavoriteDirectoryParameter, ListEntity<FileShallowInfoEntity>>(this.ProcessContainer);
                     this.searchFavoriteDirectoryProcess.Callback += new AsyncTaskCallbackEventHandler<ListEntity<FileShallowInfoEntity>>(this.SearchFavoriteDirectoryProcess_Callback);
                 }
 
@@ -42,14 +42,14 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
-        private OneWayProcess<DeleteDirectoryViewCounterAsyncTask, ListEntity<string>> DeleteDirectoryViewCounterProcess
+        private OneWayProcess<DeleteDirectoryViewCounterTask, ListEntity<string>> DeleteDirectoryViewCounterProcess
         {
             get
             {
                 if (this.deleteDirectoryViewCounterProcess == null)
                 {
                     this.deleteDirectoryViewCounterProcess
-                        = TaskManager.CreateOneWayProcess<DeleteDirectoryViewCounterAsyncTask, ListEntity<string>>(this.ProcessContainer);
+                        = TaskManager.CreateOneWayProcess<DeleteDirectoryViewCounterTask, ListEntity<string>>(this.ProcessContainer);
 
                 }
 

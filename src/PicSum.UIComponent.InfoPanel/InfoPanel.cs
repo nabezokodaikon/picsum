@@ -1,9 +1,9 @@
 using PicSum.Core.Base.Conf;
 using PicSum.Core.Task.AsyncTask;
-using PicSum.Task.AsyncTask;
-using PicSum.Task.Entity;
-using PicSum.Task.Paramter;
-using PicSum.Task.Result;
+using PicSum.Task.Tasks;
+using PicSum.Task.Entities;
+using PicSum.Task.Paramters;
+using PicSum.Task.Results;
 using PicSum.UIComponent.InfoPanel.Properties;
 using SWF.Common;
 using SWF.UIComponent.WideDropDown;
@@ -29,11 +29,11 @@ namespace PicSum.UIComponent.InfoPanel
 
         #region インスタンス変数
 
-        private TwoWayProcess<GetFileDeepInfoAsyncTask, GetFileDeepInfoParameter, GetFileDeepInfoResult> getFileInfoProcess = null;
-        private OneWayProcess<UpdateFileRatingAsyncTask, UpdateFileRatingParameter> updateFileRatingProcess = null;
-        private TwoWayProcess<GetTagListAsyncTask, ListEntity<string>> getTagListProcess = null;
-        private OneWayProcess<AddFileTagAsyncTask, UpdateFileTagParameter> addFileTagProcess = null;
-        private OneWayProcess<DeleteFileTagAsyncTask, UpdateFileTagParameter> deleteFileTagProcess = null;
+        private TwoWayProcess<GetFileDeepInfoTask, GetFileDeepInfoParameter, GetFileDeepInfoResult> getFileInfoProcess = null;
+        private OneWayProcess<UpdateFileRatingTask, UpdateFileRatingParameter> updateFileRatingProcess = null;
+        private TwoWayProcess<GetTagListTask, ListEntity<string>> getTagListProcess = null;
+        private OneWayProcess<AddFileTagTask, UpdateFileTagParameter> addFileTagProcess = null;
+        private OneWayProcess<DeleteFileTagTask, UpdateFileTagParameter> deleteFileTagProcess = null;
 
         private GetFileDeepInfoResult fileInfoSource = null;
         private Font allTagFont = null;
@@ -44,13 +44,13 @@ namespace PicSum.UIComponent.InfoPanel
 
         #region プライベートプロパティ
 
-        private TwoWayProcess<GetFileDeepInfoAsyncTask, GetFileDeepInfoParameter, GetFileDeepInfoResult> GetFileInfoProcess
+        private TwoWayProcess<GetFileDeepInfoTask, GetFileDeepInfoParameter, GetFileDeepInfoResult> GetFileInfoProcess
         {
             get
             {
                 if (this.getFileInfoProcess == null)
                 {
-                    this.getFileInfoProcess = TaskManager.CreateTwoWayProcess<GetFileDeepInfoAsyncTask, GetFileDeepInfoParameter, GetFileDeepInfoResult>(this.components);
+                    this.getFileInfoProcess = TaskManager.CreateTwoWayProcess<GetFileDeepInfoTask, GetFileDeepInfoParameter, GetFileDeepInfoResult>(this.components);
                     this.getFileInfoProcess.Callback += new AsyncTaskCallbackEventHandler<GetFileDeepInfoResult>(this.GetFileInfoProcess_Callback);
                 }
 
@@ -58,26 +58,26 @@ namespace PicSum.UIComponent.InfoPanel
             }
         }
 
-        private OneWayProcess<UpdateFileRatingAsyncTask, UpdateFileRatingParameter> UpdateFileRatingProcess
+        private OneWayProcess<UpdateFileRatingTask, UpdateFileRatingParameter> UpdateFileRatingProcess
         {
             get
             {
                 if (this.updateFileRatingProcess == null)
                 {
-                    this.updateFileRatingProcess = TaskManager.CreateOneWayProcess<UpdateFileRatingAsyncTask, UpdateFileRatingParameter>(this.components);
+                    this.updateFileRatingProcess = TaskManager.CreateOneWayProcess<UpdateFileRatingTask, UpdateFileRatingParameter>(this.components);
                 }
 
                 return this.updateFileRatingProcess;
             }
         }
 
-        private TwoWayProcess<GetTagListAsyncTask, ListEntity<string>> GetTagListProcess
+        private TwoWayProcess<GetTagListTask, ListEntity<string>> GetTagListProcess
         {
             get
             {
                 if (this.getTagListProcess == null)
                 {
-                    this.getTagListProcess = TaskManager.CreateTwoWayProcess<GetTagListAsyncTask, ListEntity<string>>(this.components);
+                    this.getTagListProcess = TaskManager.CreateTwoWayProcess<GetTagListTask, ListEntity<string>>(this.components);
                     this.getTagListProcess.Callback += new AsyncTaskCallbackEventHandler<ListEntity<string>>(this.GetTagListProcess_Callback);
                 }
 
@@ -85,26 +85,26 @@ namespace PicSum.UIComponent.InfoPanel
             }
         }
 
-        private OneWayProcess<AddFileTagAsyncTask, UpdateFileTagParameter> AddFileTagProcess
+        private OneWayProcess<AddFileTagTask, UpdateFileTagParameter> AddFileTagProcess
         {
             get
             {
                 if (this.addFileTagProcess == null)
                 {
-                    this.addFileTagProcess = TaskManager.CreateOneWayProcess<AddFileTagAsyncTask, UpdateFileTagParameter>(this.components);
+                    this.addFileTagProcess = TaskManager.CreateOneWayProcess<AddFileTagTask, UpdateFileTagParameter>(this.components);
                 }
 
                 return this.addFileTagProcess;
             }
         }
 
-        private OneWayProcess<DeleteFileTagAsyncTask, UpdateFileTagParameter> DeleteFileTagProcess
+        private OneWayProcess<DeleteFileTagTask, UpdateFileTagParameter> DeleteFileTagProcess
         {
             get
             {
                 if (this.deleteFileTagProcess == null)
                 {
-                    this.deleteFileTagProcess = TaskManager.CreateOneWayProcess<DeleteFileTagAsyncTask, UpdateFileTagParameter>(this.components);
+                    this.deleteFileTagProcess = TaskManager.CreateOneWayProcess<DeleteFileTagTask, UpdateFileTagParameter>(this.components);
                 }
 
                 return this.deleteFileTagProcess;

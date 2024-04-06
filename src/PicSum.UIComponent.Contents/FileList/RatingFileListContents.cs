@@ -1,9 +1,9 @@
 using PicSum.Core.Base.Conf;
 using PicSum.Core.Base.Exception;
 using PicSum.Core.Task.AsyncTask;
-using PicSum.Task.AsyncTask;
-using PicSum.Task.Entity;
-using PicSum.Task.Paramter;
+using PicSum.Task.Tasks;
+using PicSum.Task.Entities;
+using PicSum.Task.Paramters;
 using PicSum.UIComponent.Contents.Common;
 using PicSum.UIComponent.Contents.Parameter;
 using PicSum.UIComponent.Contents.Properties;
@@ -25,20 +25,20 @@ namespace PicSum.UIComponent.Contents.FileList
         #region インスタンス変数
 
         private RatingFileListContentsParameter parameter = null;
-        private TwoWayProcess<GetFilesByRatingAsyncTask, SingleValueEntity<int>, ListEntity<FileShallowInfoEntity>> searchFileProcess = null;
-        private OneWayProcess<UpdateFileRatingAsyncTask, UpdateFileRatingParameter> updateFileRatingProcess = null;
+        private TwoWayProcess<GetFilesByRatingTask, SingleValueEntity<int>, ListEntity<FileShallowInfoEntity>> searchFileProcess = null;
+        private OneWayProcess<UpdateFileRatingTask, UpdateFileRatingParameter> updateFileRatingProcess = null;
 
         #endregion
 
         #region プライベートプロパティ
 
-        private TwoWayProcess<GetFilesByRatingAsyncTask, SingleValueEntity<int>, ListEntity<FileShallowInfoEntity>> SearchFileProcess
+        private TwoWayProcess<GetFilesByRatingTask, SingleValueEntity<int>, ListEntity<FileShallowInfoEntity>> SearchFileProcess
         {
             get
             {
                 if (this.searchFileProcess == null)
                 {
-                    this.searchFileProcess = TaskManager.CreateTwoWayProcess<GetFilesByRatingAsyncTask, SingleValueEntity<int>, ListEntity<FileShallowInfoEntity>>(this.ProcessContainer);
+                    this.searchFileProcess = TaskManager.CreateTwoWayProcess<GetFilesByRatingTask, SingleValueEntity<int>, ListEntity<FileShallowInfoEntity>>(this.ProcessContainer);
                     this.searchFileProcess.Callback += new AsyncTaskCallbackEventHandler<ListEntity<FileShallowInfoEntity>>(this.SearchFileProcess_Callback);
                 }
 
@@ -46,13 +46,13 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
-        private OneWayProcess<UpdateFileRatingAsyncTask, UpdateFileRatingParameter> UpdateFileRatingProcess
+        private OneWayProcess<UpdateFileRatingTask, UpdateFileRatingParameter> UpdateFileRatingProcess
         {
             get
             {
                 if (this.updateFileRatingProcess == null)
                 {
-                    this.updateFileRatingProcess = TaskManager.CreateOneWayProcess<UpdateFileRatingAsyncTask, UpdateFileRatingParameter>(this.ProcessContainer);
+                    this.updateFileRatingProcess = TaskManager.CreateOneWayProcess<UpdateFileRatingTask, UpdateFileRatingParameter>(this.ProcessContainer);
                 }
 
                 return this.updateFileRatingProcess;
@@ -117,7 +117,7 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             return () =>
             {
-                var proces = TaskManager.CreateTwoWayProcess<GetFilesByRatingAsyncTask, SingleValueEntity<int>, ListEntity<FileShallowInfoEntity>>(this.ProcessContainer);
+                var proces = TaskManager.CreateTwoWayProcess<GetFilesByRatingTask, SingleValueEntity<int>, ListEntity<FileShallowInfoEntity>>(this.ProcessContainer);
                 proces.Callback += ((sender, e) =>
                 {
                     var imageFiles = e
