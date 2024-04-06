@@ -1,10 +1,9 @@
 using NLog;
 using PicSum.Core.Base.Conf;
-using PicSum.Core.Task.AsyncTask;
-using PicSum.Task.Tasks;
-using PicSum.Task.Entities;
+using PicSum.Core.Task.AsyncTaskV2;
 using PicSum.Task.Paramters;
 using PicSum.Task.Results;
+using PicSum.Task.Tasks;
 using PicSum.UIComponent.Contents.Common;
 using PicSum.UIComponent.Contents.Parameter;
 using PicSum.UIComponent.InfoPanel;
@@ -42,7 +41,8 @@ namespace PicSum.Main.UIComponent
 
         private Size previrewSize = Size.Empty;
         private Timer redrawTimer = null;
-        private TwoWayProcess<GetTagListTask, ListEntity<string>> getTagListProcess = null;
+        private TaskWrapper<GetTagListTask, EmptyParameter, ListResult<string>> getTagListTask = null;
+        private TaskWrapper<GetImageFileByDirectoryTask, GetImageFileByDirectoryParameter, GetImageFileByDirectoryResult> getFilesTask = null;
 
         #endregion
 
@@ -76,17 +76,19 @@ namespace PicSum.Main.UIComponent
             }
         }
 
-        private TwoWayProcess<GetTagListTask, ListEntity<string>> GetTagListProcess
+        private TaskWrapper<GetTagListTask, EmptyParameter, ListResult<string>> GetTagListTask
         {
             get
             {
-                if (this.getTagListProcess == null)
+                if (this.getTagListTask == null)
                 {
-                    this.getTagListProcess = TaskManager.CreateTwoWayProcess<GetTagListTask, ListEntity<string>>(this.components);
-                    this.getTagListProcess.Callback += new AsyncTaskCallbackEventHandler<ListEntity<string>>(this.GetTagListProcess_Callback);
+                    this.getTagListTask = new();
+                    this.getTagListTask
+                        .Callback(this.GetTagListTask_Callback)
+                        .StartThread();
                 }
 
-                return this.getTagListProcess;
+                return this.getTagListTask;
             }
         }
 
@@ -188,6 +190,27 @@ namespace PicSum.Main.UIComponent
 
         #region 継承メソッド
 
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                if (this.getTagListTask != null)
+                {
+                    this.getTagListTask.Dispose();
+                    this.getTagListTask = null;
+                }
+
+                if (this.getFilesTask != null)
+                {
+                    this.getFilesTask.Dispose();
+                    this.getFilesTask = null;
+                }
+
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
         protected override void OnLoad(EventArgs e)
         {
             this.previrewSize = this.Size;
@@ -215,7 +238,6 @@ namespace PicSum.Main.UIComponent
             this.redrawTimer.Enabled = true;
             this.redrawTimer.Interval = 100;
             this.redrawTimer.Tick += this.RedrawTimer_Tick;
-
         }
 
         private void RedrawContents()
@@ -234,6 +256,18 @@ namespace PicSum.Main.UIComponent
                 this.previrewSize = this.Size;
                 this.RedrawContents();
             }
+        }
+
+        private TaskWrapper<GetImageFileByDirectoryTask, GetImageFileByDirectoryParameter, GetImageFileByDirectoryResult> CreateNewGetFilesTask()
+        {
+            if (this.getFilesTask != null)
+            {
+                this.getFilesTask.Dispose();
+                this.getFilesTask = null;
+            }
+
+            this.getFilesTask = new();
+            return this.getFilesTask;
         }
 
         private void RemoveContentsEventHandler(BrowserContents contents)
@@ -412,15 +446,10 @@ namespace PicSum.Main.UIComponent
             {
                 return () =>
                 {
-                    var proces = TaskManager.CreateTwoWayProcess<GetImageFileByDirectoryTask, GetImageFileByDirectoryParameter, GetImageFileByDirectoryResult>(this.components);
-                    proces.Callback += ((sender, e) =>
+                    var task = this.CreateNewGetFilesTask();
+                    task
+                    .Callback(e =>
                     {
-                        if (e.TaskException != null)
-                        {
-                            ExceptionUtil.ShowErrorDialog(e.TaskException);
-                            return;
-                        }
-
                         var title = FileUtil.IsDirectory(subParamter.FilePath) ?
                         FileUtil.GetFileName(subParamter.FilePath) :
                         FileUtil.GetFileName(FileUtil.GetParentDirectoryPath(subParamter.FilePath));
@@ -428,14 +457,16 @@ namespace PicSum.Main.UIComponent
                         var eventArgs = new GetImageFilesEventArgs(
                             e.FilePathList, e.SelectedFilePath, title, FileIconCash.SmallDirectoryIcon);
                         parameter.OnGetImageFiles(eventArgs);
-                    });
+                    })
+                    .Catch(e => ExceptionUtil.ShowErrorDialog(e.InnerException))
+                    .StartThread();
 
-                    proces.Execute(this, subParamter);
+                    task.StartTask(subParamter);
                 };
             };
         }
 
-        private void GetTagListProcess_Callback(object sender, ListEntity<string> e)
+        private void GetTagListTask_Callback(ListResult<string> e)
         {
             this.tagDropToolButton.SetItems(e);
 
@@ -700,7 +731,7 @@ namespace PicSum.Main.UIComponent
 
         private void TagDropToolButton_DropDownOpening(object sender, DropDownOpeningEventArgs e)
         {
-            this.GetTagListProcess.Execute(this);
+            this.GetTagListTask.StartTask(EmptyParameter.Instance);
         }
 
         private void TagDropToolButton_ItemMouseClick(object sender, ItemMouseClickEventArgs e)

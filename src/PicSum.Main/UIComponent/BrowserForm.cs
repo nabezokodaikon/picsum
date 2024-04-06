@@ -1,8 +1,7 @@
-using PicSum.Core.Task.AsyncTask;
+using PicSum.Core.Task.AsyncTaskV2;
 using PicSum.Main.Conf;
-using PicSum.Task.Tasks;
-using PicSum.Task.Entities;
 using PicSum.Task.Paramters;
+using PicSum.Task.Tasks;
 using PicSum.UIComponent.Contents.Common;
 using SWF.UIComponent.Form;
 using SWF.UIComponent.TabOperation;
@@ -16,11 +15,12 @@ using System.Windows.Forms;
 namespace PicSum.Main.UIComponent
 {
     [SupportedOSPlatform("windows")]
-    public sealed class BrowserForm : GrassForm
+    public sealed class BrowserForm
+        : GrassForm
     {
         #region クラスメンバ
 
-        private static TwoWayProcess<StartupTask, StartupPrameter, DefaultEntity> startupProcess = null;
+        private static TaskWrapper<StartupTask, StartupPrameter, EmptyResult> startupTask = null;
 
         #endregion
 
@@ -33,7 +33,6 @@ namespace PicSum.Main.UIComponent
 
         #region インスタンス変数
 
-        private IContainer components = null;
         private BrowserMainPanel browserMainPanel = null;
         private bool isKeyDown = false;
 
@@ -61,7 +60,7 @@ namespace PicSum.Main.UIComponent
         public BrowserForm()
         {
             this.InitializeComponent();
-        }        
+        }
 
         #endregion
 
@@ -121,15 +120,12 @@ namespace PicSum.Main.UIComponent
 
         protected override void OnHandleCreated(EventArgs e)
         {
-            if (BrowserForm.startupProcess == null)
+            if (BrowserForm.startupTask == null)
             {
-                if (this.components == null)
-                {
-                    this.components = new Container();
-                }
-
-                BrowserForm.startupProcess = TaskManager.CreateTwoWayProcess<StartupTask, StartupPrameter, DefaultEntity>(this.components);
-                BrowserForm.startupProcess.Callback += new AsyncTaskCallbackEventHandler<DefaultEntity>(this.StartupProcess_Callback);
+                BrowserForm.startupTask = new();
+                BrowserForm.startupTask
+                    .Callback(this.StartupProcess_Callback)
+                    .StartThread();
 
                 var dbDir = Path.Combine(Directory.GetParent(Application.ExecutablePath).FullName, "db");
                 if (!Directory.Exists(dbDir))
@@ -141,7 +137,7 @@ namespace PicSum.Main.UIComponent
                 param.FileInfoDBFilePath = Path.Combine(dbDir, @"fileinfo.sqlite");
                 param.ThumbnailDBFilePath = Path.Combine(dbDir, @"thumbnail.sqlite");
 
-                BrowserForm.startupProcess.Execute(this, param);
+                BrowserForm.startupTask.StartTask(param);
             }
 
             base.OnHandleCreated(e);
@@ -169,9 +165,13 @@ namespace PicSum.Main.UIComponent
 
         protected override void Dispose(bool disposing)
         {
-            if (disposing && (this.components != null))
+            if (disposing)
             {
-                this.components.Dispose();
+                if (BrowserForm.startupTask != null)
+                {
+                    BrowserForm.startupTask.Dispose();
+                    BrowserForm.startupTask = null;
+                }
             }
 
             base.Dispose(disposing);
@@ -306,7 +306,7 @@ namespace PicSum.Main.UIComponent
 
         #region プロセスコールバックイベント
 
-        private void StartupProcess_Callback(object sender, DefaultEntity e)
+        private void StartupProcess_Callback(EmptyResult _)
         {
             this.CreateBrowserMainPanel();
         }

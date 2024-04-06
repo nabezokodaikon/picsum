@@ -62,11 +62,7 @@ namespace PicSum.UIComponent.Contents.Common
         {
             if (disposing)
             {
-                if (this.processContainer != null)
-                {
-                    this.processContainer.Dispose();
-                    this.processContainer = null;
-                }
+
             }
 
             base.Dispose(disposing);
