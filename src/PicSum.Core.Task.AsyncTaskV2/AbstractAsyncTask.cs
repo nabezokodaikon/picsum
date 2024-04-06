@@ -102,17 +102,6 @@ namespace PicSum.Core.Task.AsyncTaskV2
             }
         }
 
-        protected void Catch(TaskException exception)
-        {
-            if (exception == null)
-                throw new ArgumentNullException(nameof(exception));
-
-            if (this.CatchAction != null)
-            {
-                this.CatchAction(exception);
-            }
-        }
-
         protected void Complete()
         {
             if (this.CompleteAction != null)
