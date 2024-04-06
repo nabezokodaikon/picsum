@@ -11,7 +11,7 @@ namespace PicSum.Task.Tasks
     /// ファイルにタグを追加します。
     /// </summary>
     public sealed class AddFileTagTask
-        : AbstractAsyncTask<UpdateFileTagParameter, EmptyResult>
+        : AbstractAsyncTask<UpdateFileTagParameter>
     {
         protected override void Execute(UpdateFileTagParameter param)
         {

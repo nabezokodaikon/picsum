@@ -11,7 +11,7 @@ namespace PicSum.Task.Tasks
     /// ファイルのタグを削除します。
     /// </summary>
     public class DeleteFileTagTask
-        : AbstractAsyncTask<UpdateFileTagParameter, EmptyResult>
+        : AbstractAsyncTask<UpdateFileTagParameter>
     {
         protected override void Execute(UpdateFileTagParameter param)
         {

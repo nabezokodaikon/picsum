@@ -1,9 +1,9 @@
 using PicSum.Core.Base.Conf;
-using PicSum.Core.Task.AsyncTask;
-using PicSum.Task.Tasks;
+using PicSum.Core.Task.AsyncTaskV2;
 using PicSum.Task.Entities;
 using PicSum.Task.Paramters;
 using PicSum.Task.Results;
+using PicSum.Task.Tasks;
 using PicSum.UIComponent.InfoPanel.Properties;
 using SWF.Common;
 using SWF.UIComponent.WideDropDown;
@@ -29,11 +29,11 @@ namespace PicSum.UIComponent.InfoPanel
 
         #region インスタンス変数
 
-        private TwoWayProcess<GetFileDeepInfoTask, GetFileDeepInfoParameter, GetFileDeepInfoResult> getFileInfoProcess = null;
-        private OneWayProcess<UpdateFileRatingTask, UpdateFileRatingParameter> updateFileRatingProcess = null;
-        private TwoWayProcess<GetTagListTask, ListEntity<string>> getTagListProcess = null;
-        private OneWayProcess<AddFileTagTask, UpdateFileTagParameter> addFileTagProcess = null;
-        private OneWayProcess<DeleteFileTagTask, UpdateFileTagParameter> deleteFileTagProcess = null;
+        private TaskWrapper<GetFileDeepInfoTask, GetFileDeepInfoParameter, GetFileDeepInfoResult> getFileInfoTask = null;
+        private TaskWrapper<UpdateFileRatingTask, UpdateFileRatingParameter> updateFileRatingTask = null;
+        private TaskWrapper<GetTagListTask, EmptyParameter, ListResult<string>> getTagListTask = null;
+        private TaskWrapper<AddFileTagTask, UpdateFileTagParameter> addFileTagTask = null;
+        private TaskWrapper<DeleteFileTagTask, UpdateFileTagParameter> deleteFileTagTask = null;
 
         private GetFileDeepInfoResult fileInfoSource = null;
         private Font allTagFont = null;
@@ -44,70 +44,80 @@ namespace PicSum.UIComponent.InfoPanel
 
         #region プライベートプロパティ
 
-        private TwoWayProcess<GetFileDeepInfoTask, GetFileDeepInfoParameter, GetFileDeepInfoResult> GetFileInfoProcess
+        private TaskWrapper<GetFileDeepInfoTask, GetFileDeepInfoParameter, GetFileDeepInfoResult> GetFileInfoTask
         {
             get
             {
-                if (this.getFileInfoProcess == null)
+                if (this.getFileInfoTask == null)
                 {
-                    this.getFileInfoProcess = TaskManager.CreateTwoWayProcess<GetFileDeepInfoTask, GetFileDeepInfoParameter, GetFileDeepInfoResult>(this.components);
-                    this.getFileInfoProcess.Callback += new AsyncTaskCallbackEventHandler<GetFileDeepInfoResult>(this.GetFileInfoProcess_Callback);
+                    this.getFileInfoTask = new();
+                    this.getFileInfoTask
+                        .Callback(this.GetFileInfoTask_Callback)
+                        .StartThread();
                 }
 
-                return this.getFileInfoProcess;
+                return this.getFileInfoTask;
             }
         }
 
-        private OneWayProcess<UpdateFileRatingTask, UpdateFileRatingParameter> UpdateFileRatingProcess
+        private TaskWrapper<UpdateFileRatingTask, UpdateFileRatingParameter> UpdateFileRatingTask
         {
             get
             {
-                if (this.updateFileRatingProcess == null)
+                if (this.updateFileRatingTask == null)
                 {
-                    this.updateFileRatingProcess = TaskManager.CreateOneWayProcess<UpdateFileRatingTask, UpdateFileRatingParameter>(this.components);
+                    this.updateFileRatingTask = new();
+                    this.updateFileRatingTask
+                        .StartThread();
                 }
 
-                return this.updateFileRatingProcess;
+                return this.updateFileRatingTask;
             }
         }
 
-        private TwoWayProcess<GetTagListTask, ListEntity<string>> GetTagListProcess
+        private TaskWrapper<GetTagListTask, EmptyParameter, ListResult<string>> GetTagListTask
         {
             get
             {
-                if (this.getTagListProcess == null)
+                if (this.getTagListTask == null)
                 {
-                    this.getTagListProcess = TaskManager.CreateTwoWayProcess<GetTagListTask, ListEntity<string>>(this.components);
-                    this.getTagListProcess.Callback += new AsyncTaskCallbackEventHandler<ListEntity<string>>(this.GetTagListProcess_Callback);
+                    this.getTagListTask = new();
+                    this.getTagListTask
+                        .Callback(this.GetTagListTask_Callback)
+                        .StartThread();
                 }
 
-                return this.getTagListProcess;
+                return this.getTagListTask;
             }
         }
 
-        private OneWayProcess<AddFileTagTask, UpdateFileTagParameter> AddFileTagProcess
+        private TaskWrapper<AddFileTagTask, UpdateFileTagParameter> AddFileTagTask
         {
             get
             {
-                if (this.addFileTagProcess == null)
+                if (this.addFileTagTask == null)
                 {
-                    this.addFileTagProcess = TaskManager.CreateOneWayProcess<AddFileTagTask, UpdateFileTagParameter>(this.components);
+                    this.addFileTagTask = new();
+                    this.addFileTagTask
+                        .StartThread();
                 }
 
-                return this.addFileTagProcess;
+                return this.addFileTagTask;
             }
         }
 
-        private OneWayProcess<DeleteFileTagTask, UpdateFileTagParameter> DeleteFileTagProcess
+        private TaskWrapper<DeleteFileTagTask, UpdateFileTagParameter> DeleteFileTagTask
         {
             get
             {
-                if (this.deleteFileTagProcess == null)
+                if (this.deleteFileTagTask == null)
                 {
-                    this.deleteFileTagProcess = TaskManager.CreateOneWayProcess<DeleteFileTagTask, UpdateFileTagParameter>(this.components);
+                    this.deleteFileTagTask = new();
+                    this.deleteFileTagTask
+                        .StartThread();
                 }
 
-                return this.deleteFileTagProcess;
+                return this.deleteFileTagTask;
             }
         }
 
@@ -221,13 +231,56 @@ namespace PicSum.UIComponent.InfoPanel
                     ApplicationConst.INFOPANEL_THUMBANIL_SIZE,
                     ApplicationConst.INFOPANEL_THUMBANIL_SIZE);
 
-                this.GetFileInfoProcess.Cancel();
-                this.GetFileInfoProcess.Execute(this, param);
+                this.GetFileInfoTask.StartTask(param);
             }
             else
             {
                 this.ClearInfo();
             }
+        }
+
+        #endregion
+
+        #region 継承メソッド
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                if (this.getFileInfoTask != null)
+                {
+                    this.getFileInfoTask.Dispose();
+                    this.getFileInfoTask = null;
+                }
+
+                if (this.updateFileRatingTask != null)
+                {
+                    this.updateFileRatingTask.Dispose();
+                    this.updateFileRatingTask = null;
+                }
+
+                if (this.getTagListTask != null)
+                {
+                    this.getTagListTask.Dispose();
+                    this.getTagListTask = null;
+                }
+
+                if (this.addFileTagTask != null)
+                {
+                    this.addFileTagTask.Dispose();
+                    this.addFileTagTask = null;
+                }
+
+                if (this.deleteFileTagTask != null)
+                {
+                    this.deleteFileTagTask.Dispose();
+                    this.deleteFileTagTask = null;
+                }
+
+                components.Dispose();
+            }
+
+            base.Dispose(disposing);
         }
 
         #endregion
@@ -316,7 +369,7 @@ namespace PicSum.UIComponent.InfoPanel
             var param = new UpdateFileTagParameter();
             param.Tag = tag;
             param.FilePathList = this.FilePathList;
-            this.AddFileTagProcess.Execute(this, param);
+            this.AddFileTagTask.StartTask(param);
 
             var tagInfo = this.TagList.Find(t => t.Tag.Equals(tag, StringComparison.Ordinal));
             if (tagInfo != null)
@@ -355,7 +408,7 @@ namespace PicSum.UIComponent.InfoPanel
             var param = new UpdateFileTagParameter();
             param.Tag = tag;
             param.FilePathList = this.FilePathList;
-            this.DeleteFileTagProcess.Execute(this, param);
+            this.DeleteFileTagTask.StartTask(param);
 
             var tagInfo = this.TagList.Find(t => t.Tag.Equals(tag, StringComparison.Ordinal));
             this.TagList.Remove(tagInfo);
@@ -413,11 +466,11 @@ namespace PicSum.UIComponent.InfoPanel
 
         #region プロセスイベント
 
-        private void GetFileInfoProcess_Callback(object sender, GetFileDeepInfoResult e)
+        private void GetFileInfoTask_Callback(GetFileDeepInfoResult result)
         {
             this.ClearInfo();
 
-            this.fileInfoSource = e;
+            this.fileInfoSource = result;
 
             if (this.FileInfo != null)
             {
@@ -449,9 +502,9 @@ namespace PicSum.UIComponent.InfoPanel
             this.thumbnailPictureBox.Invalidate();
         }
 
-        private void GetTagListProcess_Callback(object sender, ListEntity<string> e)
+        private void GetTagListTask_Callback(ListResult<string> result)
         {
-            this.wideComboBox.AddItems(e);
+            this.wideComboBox.AddItems(result);
             this.wideComboBox.SelectItem();
         }
 
@@ -550,7 +603,7 @@ namespace PicSum.UIComponent.InfoPanel
             var param = new UpdateFileRatingParameter();
             param.FilePathList = this.fileInfoSource.FilePathList;
             param.RatingValue = this.ratingBar.Value;
-            this.UpdateFileRatingProcess.Execute(this, param);
+            this.UpdateFileRatingTask.StartTask(param);
         }
 
         #endregion
@@ -629,7 +682,7 @@ namespace PicSum.UIComponent.InfoPanel
 
         private void WideComboBox_DropDownOpening(object sender, DropDownOpeningEventArgs e)
         {
-            this.GetTagListProcess.Execute(this);
+            this.GetTagListTask.StartTask();
         }
 
         private void WideComboBox_AddItem(object sender, AddItemEventArgs e)
