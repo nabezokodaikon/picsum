@@ -3,6 +3,7 @@ using PicSum.Core.Task.AsyncTaskV2;
 using PicSum.Data.DatabaseAccessor.Connection;
 using PicSum.Data.DatabaseAccessor.Sql;
 using System;
+using System.Runtime.Versioning;
 
 namespace PicSum.Task.Logics
 {
@@ -10,6 +11,7 @@ namespace PicSum.Task.Logics
     /// タグを更新します。
     /// </summary>
     /// <remarks>タグの存在確認として使用します。</remarks>
+    [SupportedOSPlatform("windows")]
     internal sealed class UpdateFileTagLogic
         : AbstractAsyncLogic
     {

@@ -5,12 +5,14 @@ using PicSum.Data.DatabaseAccessor.Connection;
 using PicSum.Data.DatabaseAccessor.Sql;
 using PicSum.Task.Parameters;
 using System;
+using System.Runtime.Versioning;
 
 namespace PicSum.Task.Logics
 {
     /// <summary>
     /// フォルダ状態テーブルを更新します。
     /// </summary>
+    [SupportedOSPlatform("windows")]
     internal sealed class UpdateDirectoryStateLogic
         : AbstractAsyncLogic
     {

@@ -3,12 +3,14 @@ using PicSum.Task.Logics;
 using PicSum.Task.Entities;
 using PicSum.Task.Paramters;
 using System;
+using System.Runtime.Versioning;
 
 namespace PicSum.Task.Tasks
 {
     /// <summary>
     /// スタートアップ非同期タスク
     /// </summary>
+    [SupportedOSPlatform("windows")]
     public sealed class StartupTask
         : AbstractAsyncTask<StartupPrameter>
     {

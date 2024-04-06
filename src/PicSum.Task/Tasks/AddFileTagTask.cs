@@ -4,12 +4,14 @@ using PicSum.Data.DatabaseAccessor.Connection;
 using PicSum.Task.Logics;
 using PicSum.Task.Paramters;
 using System;
+using System.Runtime.Versioning;
 
 namespace PicSum.Task.Tasks
 {
     /// <summary>
     /// ファイルにタグを追加します。
     /// </summary>
+    [SupportedOSPlatform("windows")]
     public sealed class AddFileTagTask
         : AbstractAsyncTask<UpdateFileTagParameter>
     {

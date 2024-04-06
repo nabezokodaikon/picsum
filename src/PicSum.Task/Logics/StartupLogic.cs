@@ -3,12 +3,14 @@ using PicSum.Core.Task.AsyncTaskV2;
 using PicSum.Data.DatabaseAccessor.Connection;
 using PicSum.Task.Paramters;
 using System;
+using System.Runtime.Versioning;
 
 namespace PicSum.Task.Logics
 {
     /// <summary>
     /// スタートアップ非同期ロジック
     /// </summary>
+    [SupportedOSPlatform("windows")]
     internal sealed class StartupLogic
         : AbstractAsyncLogic
     {

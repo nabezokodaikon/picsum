@@ -3,12 +3,14 @@ using PicSum.Core.Task.AsyncTaskV2;
 using PicSum.Data.DatabaseAccessor.Connection;
 using PicSum.Data.DatabaseAccessor.Sql;
 using System;
+using System.Runtime.Versioning;
 
 namespace PicSum.Task.Logics
 {
     /// <summary>
     /// フォルダの表示履歴を追加します。
     /// </summary>
+    [SupportedOSPlatform("windows")]
     internal sealed class AddDirectoryViewHistoryLogic
         : AbstractAsyncLogic
     {

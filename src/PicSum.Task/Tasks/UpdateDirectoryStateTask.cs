@@ -4,12 +4,14 @@ using PicSum.Data.DatabaseAccessor.Connection;
 using PicSum.Task.Logics;
 using PicSum.Task.Parameters;
 using System;
+using System.Runtime.Versioning;
 
 namespace PicSum.Task.Tasks
 {
     /// <summary>
     /// フォルダ状態更新タスク
     /// </summary>
+    [SupportedOSPlatform("windows")]
     public sealed class UpdateDirectoryStateTask
         : AbstractAsyncTask<DirectoryStateParameter>
     {

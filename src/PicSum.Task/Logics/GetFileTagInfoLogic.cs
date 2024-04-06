@@ -6,12 +6,14 @@ using PicSum.Data.DatabaseAccessor.Sql;
 using PicSum.Task.Entities;
 using System;
 using System.Collections.Generic;
+using System.Runtime.Versioning;
 
 namespace PicSum.Task.Logics
 {
     /// <summary>
     /// ファイルタグ取得非同期ロジック
     /// </summary>
+    [SupportedOSPlatform("windows")]
     internal sealed class GetFileTagInfoLogic
         : AbstractAsyncLogic
     {

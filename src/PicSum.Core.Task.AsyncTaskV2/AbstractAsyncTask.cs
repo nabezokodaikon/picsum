@@ -57,16 +57,16 @@ namespace PicSum.Core.Task.AsyncTaskV2
                     this.CompleteAction();
                 }
             }
+            catch (TaskCancelException)
+            {
+                throw;
+            }
             catch (TaskException ex)
             {
                 if (this.CatchAction != null)
                 {
                     this.CatchAction(ex);
                 }
-            }
-            catch (TaskCancelException)
-            {
-                throw;
             }
         }
 

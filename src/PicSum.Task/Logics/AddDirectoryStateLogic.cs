@@ -4,12 +4,14 @@ using PicSum.Data.DatabaseAccessor.Connection;
 using PicSum.Data.DatabaseAccessor.Sql;
 using PicSum.Task.Parameters;
 using System;
+using System.Runtime.Versioning;
 
 namespace PicSum.Task.Logics
 {
     /// <summary>
     /// フォルダ状態テーブルに登録します。
     /// </summary>
+    [SupportedOSPlatform("windows")]
     internal sealed class AddDirectoryStateLogic
         : AbstractAsyncLogic
     {

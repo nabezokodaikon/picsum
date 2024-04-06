@@ -61,7 +61,7 @@ namespace PicSum.Task.Tasks
                     else
                     {
                         throw new FileUtilException(
-                            $"'{param.Value}'はファイルでもディレクトリでもありません。");
+                            $"'{param.Value}'にアクセスできませんでした。");
                     }
 
                     addressInfo.DirectoryPath = directory;
