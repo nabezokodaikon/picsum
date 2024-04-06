@@ -3,6 +3,7 @@ using PicSum.Main.Conf;
 using PicSum.Task.Paramters;
 using PicSum.Task.Tasks;
 using PicSum.UIComponent.Contents.Common;
+using SWF.Common;
 using SWF.UIComponent.Form;
 using SWF.UIComponent.TabOperation;
 using System;
@@ -121,7 +122,14 @@ namespace PicSum.Main.UIComponent
             {
                 this.startupTask = new();
                 this.startupTask
-                    .Callback(this.StartupProcess_Callback)
+                    .Catch(ex =>
+                    {
+                        ExceptionUtil.ShowErrorDialog("起動処理が失敗しました。", ex);
+                    })
+                    .Complete(() =>
+                    {
+                        this.CreateBrowserMainPanel();
+                    })
                     .StartThread();
 
                 var dbDir = Path.Combine(Directory.GetParent(Application.ExecutablePath).FullName, "db");
@@ -298,15 +306,6 @@ namespace PicSum.Main.UIComponent
             {
                 this.NewWindowContentsOpen(this, e);
             }
-        }
-
-        #endregion
-
-        #region プロセスコールバックイベント
-
-        private void StartupProcess_Callback(EmptyResult _)
-        {
-            this.CreateBrowserMainPanel();
         }
 
         #endregion
