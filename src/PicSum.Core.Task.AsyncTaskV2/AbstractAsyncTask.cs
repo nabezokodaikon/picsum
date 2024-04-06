@@ -16,10 +16,11 @@ namespace PicSum.Core.Task.AsyncTaskV2
         private long isCancel = 0;
 
         public TaskID? ID { get; internal set; }
-        public TParameter? Parameter { get; internal set; }
-        public Action<TResult>? ThenAction { get; internal set; }
-        public Action<Exception>? CatchAction { get; internal set; }
-        public Action? CompleteAction { get; internal set; }
+        internal TParameter? Parameter { get; set; }
+        internal Action? WaitAction;
+        internal Action<TResult>? CallbackAction { get; set; }
+        internal Action<TaskException>? CatchAction { get; set; }
+        internal Action? CompleteAction { get; set; }
 
         private bool IsCancel
         {
@@ -40,16 +41,18 @@ namespace PicSum.Core.Task.AsyncTaskV2
 
         internal void ExecuteWrapper()
         {
+            if (this.Parameter == null)
+                throw new NullReferenceException("タスクパラーターがNULLです。");
+
             try
             {
-                if (this.Parameter == null)
-                    throw new NullReferenceException(nameof(this.Parameter));
-
                 this.Execute(this.Parameter);
             }
             catch (TaskException ex)
             {
-                this.CatchAction?.Invoke(ex);
+                if (this.CatchAction == null)
+                    throw new NullReferenceException("タスク例外アクションがNULLです。");
+                this.CatchAction(ex);
             }
             catch (TaskCancelException)
             {
@@ -57,10 +60,10 @@ namespace PicSum.Core.Task.AsyncTaskV2
             }
             finally
             {
-
+                if (this.CompleteAction == null)
+                    throw new NullReferenceException("タスク完了アクションがNULLです。");
+                this.CompleteAction();
             }
-
-            this.CompleteAction?.Invoke();
         }
 
         protected abstract void Execute(TParameter parameter);
@@ -74,14 +77,47 @@ namespace PicSum.Core.Task.AsyncTaskV2
         {
             if (this.IsCancel)
             {
-                if (this.ID != null)
-                {
-                    throw new TaskCancelException(this.ID);
-                }
-                else
-                {
-                    throw new TaskCancelException();
-                }
+                if (this.ID == null)
+                    throw new NullReferenceException("タスクIDがNULLです。");
+                throw new TaskCancelException(this.ID);
+            }
+        }
+
+        protected void Wait()
+        {
+            if (this.WaitAction == null)
+                throw new NullReferenceException("タスク待機アクションがNULLです。");
+
+            this.WaitAction();
+        }
+
+        protected void Callback(TResult result)
+        {
+            if (result == null)
+                throw new ArgumentNullException(nameof(result));
+
+            if (this.CallbackAction != null)
+            {
+                this.CallbackAction(result);
+            }
+        }
+
+        protected void Catch(TaskException exception)
+        {
+            if (exception == null)
+                throw new ArgumentNullException(nameof(exception));
+
+            if (this.CatchAction != null)
+            {
+                this.CatchAction(exception);
+            }
+        }
+
+        protected void Complete()
+        {
+            if (this.CompleteAction != null)
+            {
+                this.CompleteAction();
             }
         }
     }

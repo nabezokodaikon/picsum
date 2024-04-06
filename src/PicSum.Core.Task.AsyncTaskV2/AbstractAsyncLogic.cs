@@ -7,7 +7,7 @@ namespace PicSum.Core.Task.AsyncTaskV2
     {
         private readonly IAsyncTask task;
 
-        protected void CheckCancel()
+        public void CheckCancel()
         {
             this.task.CheckCancel();
         }

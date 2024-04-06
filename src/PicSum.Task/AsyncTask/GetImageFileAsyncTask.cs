@@ -100,7 +100,7 @@ namespace PicSum.Task.AsyncTask
                 throw;
             }
 
-            this.ThenAction(result);
+            this.Callback(result);
         }
 
         private void ExeptionHandler(GetImageFileResult result)

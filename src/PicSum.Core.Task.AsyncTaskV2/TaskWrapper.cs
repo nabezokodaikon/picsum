@@ -16,7 +16,7 @@ namespace PicSum.Core.Task.AsyncTaskV2
         private readonly CancellationTokenSource source = new();
         private readonly ConcurrentQueue<TTask> taskQueue = new();
         private System.Threading.Tasks.Task? thread;
-        private Action<TTaskResult>? thenAction;
+        private Action<TTaskResult>? callbackAction;
         private Action<Exception>? catchAction;
         private Action? completeAction;
 
@@ -33,7 +33,7 @@ namespace PicSum.Core.Task.AsyncTaskV2
             }
             else
             {
-                throw new NullReferenceException("コンテキストがNullのため、取得できませんでした。");
+                throw new NullReferenceException("コンテキストがNullです。");
             }
         }
 
@@ -72,15 +72,15 @@ namespace PicSum.Core.Task.AsyncTaskV2
             }
         }
 
-        public TaskWrapper<TTask, TTaskParameter, TTaskResult> Then(Action<TTaskResult> action)
+        public TaskWrapper<TTask, TTaskParameter, TTaskResult> Callback(Action<TTaskResult> action)
         {
             if (action == null)
                 throw new ArgumentNullException(nameof(action));
 
-            if (this.thenAction != null)
-                throw new InvalidOperationException("既にthenデリゲートが設定されています。");
+            if (this.callbackAction != null)
+                throw new InvalidOperationException("既にコールバックアクションが設定されています。");
 
-            this.thenAction = action;
+            this.callbackAction = action;
             return this;
         }
 
@@ -90,7 +90,7 @@ namespace PicSum.Core.Task.AsyncTaskV2
                 throw new ArgumentNullException(nameof(action));
 
             if (this.catchAction != null)
-                throw new InvalidOperationException("既にcatchデリゲートが設定されています。");
+                throw new InvalidOperationException("既に例外アクションが設定されています。");
 
             this.catchAction = action;
             return this;
@@ -102,7 +102,7 @@ namespace PicSum.Core.Task.AsyncTaskV2
                 throw new ArgumentNullException(nameof(action));
 
             if (this.completeAction != null)
-                throw new InvalidOperationException("既にcompleteデリゲートが設定されています。");
+                throw new InvalidOperationException("既に完了アクションが設定されています。");
 
             this.completeAction = action;
             return this;
@@ -166,18 +166,20 @@ namespace PicSum.Core.Task.AsyncTaskV2
                         if (task.ID == null)
                             throw new NullReferenceException(nameof(task.ID));
 
-                        Logger.Debug($"タスクを実行します。タスクID: {task.ID}");
+                        Logger.Debug($"タスクを実行します。タスクID: {task.ID}, タスク: {task.GetType().Name}");
 
-                        if (this.thenAction != null)
+                        task.WaitAction = () => token.WaitHandle.WaitOne(1);
+
+                        if (this.callbackAction != null)
                         {
-                            task.ThenAction = r =>
+                            task.CallbackAction = r =>
                             {
                                 this.context.Post(state =>
                                 {
                                     if (state == null)
                                         throw new ArgumentNullException(nameof(state));
                                     var result = (TTaskResult)state;
-                                    this.thenAction(result);
+                                    this.callbackAction(result);
                                 }, r);
                             };
                         }
@@ -199,7 +201,7 @@ namespace PicSum.Core.Task.AsyncTaskV2
                         if (this.completeAction != null)
                         {
                             task.CompleteAction = () =>
-                            {
+                            {                                
                                 this.context.Post(state =>
                                 {
                                     this.completeAction();
@@ -213,7 +215,11 @@ namespace PicSum.Core.Task.AsyncTaskV2
                         }
                         catch (TaskCancelException)
                         {
-                            Logger.Debug($"タスクがキャンセルされました。。タスクID: {task.ID}");
+                            Logger.Debug($"タスクがキャンセルされました。タスクID: {task.ID}, タスク: {task.GetType().Name}");
+                        }
+                        finally
+                        {
+                            Logger.Debug($"タスクが完了しました。タスクID: {task.ID}, タスク: {task.GetType().Name}");
                         }
                     }
 

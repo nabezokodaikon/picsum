@@ -8,11 +8,5 @@ namespace PicSum.Core.Task.AsyncTaskV2
         {
 
         }
-
-        public TaskCancelException()
-            : base($"タスクがキャンセルされました。")
-        {
-
-        }
     }
 }
