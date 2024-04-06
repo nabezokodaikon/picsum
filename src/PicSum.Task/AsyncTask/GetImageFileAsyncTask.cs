@@ -93,6 +93,11 @@ namespace PicSum.Task.AsyncTask
                 this.exeptionHandler(result);
                 result.TaskException = new TaskException(ex);
             }
+            catch (TaskCancelException)
+            {
+                this.exeptionHandler(result);
+                throw;
+            }
 
             this.ThenAction(result);
         }
