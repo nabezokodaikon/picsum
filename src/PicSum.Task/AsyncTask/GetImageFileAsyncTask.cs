@@ -5,6 +5,7 @@ using PicSum.Task.Entity;
 using PicSum.Task.Paramter;
 using PicSum.Task.Result;
 using SWF.Common;
+using System;
 using System.Runtime.Versioning;
 
 namespace PicSum.Task.AsyncTask
@@ -104,34 +105,41 @@ namespace PicSum.Task.AsyncTask
 
         private void ExeptionHandler(GetImageFileResult result)
         {
-            if (result.Image1 != null)
+            try
             {
-                if (result.Image1.Image != null)
+                if (result.Image1 != null)
                 {
-                    result.Image1.Image.Dispose();
-                    result.Image1.Image = null;
+                    if (result.Image1.Image != null)
+                    {
+                        result.Image1.Image.Dispose();
+                        result.Image1.Image = null;
+                    }
+
+                    if (result.Image1.Thumbnail != null)
+                    {
+                        result.Image1.Thumbnail.Dispose();
+                        result.Image1.Thumbnail = null;
+                    }
                 }
 
-                if (result.Image1.Thumbnail != null)
+                if (result.Image2 != null)
                 {
-                    result.Image1.Thumbnail.Dispose();
-                    result.Image1.Thumbnail = null;
+                    if (result.Image2.Image != null)
+                    {
+                        result.Image2.Image.Dispose();
+                        result.Image2.Image = null;
+                    }
+
+                    if (result.Image2.Thumbnail != null)
+                    {
+                        result.Image2.Thumbnail.Dispose();
+                        result.Image2.Thumbnail = null;
+                    }
                 }
             }
-
-            if (result.Image2 != null)
+            finally
             {
-                if (result.Image2.Image != null)
-                {
-                    result.Image2.Image.Dispose();
-                    result.Image2.Image = null;
-                }
-
-                if (result.Image2.Thumbnail != null)
-                {
-                    result.Image2.Thumbnail.Dispose();
-                    result.Image2.Thumbnail = null;
-                }
+                GC.Collect();
             }
         }
     }

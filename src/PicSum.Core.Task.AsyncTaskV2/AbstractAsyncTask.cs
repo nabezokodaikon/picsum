@@ -57,7 +57,7 @@ namespace PicSum.Core.Task.AsyncTaskV2
             }
             finally
             {
-                GC.Collect();
+
             }
 
             this.CompleteAction?.Invoke();
