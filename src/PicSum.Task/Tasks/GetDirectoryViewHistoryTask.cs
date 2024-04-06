@@ -13,7 +13,7 @@ namespace PicSum.Task.Tasks
     public sealed class GetDirectoryViewHistoryTask
         : AbstractAsyncTask<EmptyParameter, ListResult<FileShallowInfoEntity>>
     {
-        protected override void Execute(EmptyParameter parameter)
+        protected override void Execute()
         {
             var logic = new GetFileShallowInfoLogic(this);
             var result = new ListResult<FileShallowInfoEntity>();

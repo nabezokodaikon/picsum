@@ -13,7 +13,7 @@ namespace PicSum.Task.Tasks
     public sealed class GetTagListTask
         : AbstractAsyncTask<EmptyParameter, ListResult<string>>
     {
-        protected override void Execute(EmptyParameter _)
+        protected override void Execute()
         {
             var logic = new GetTagListLogic(this);
             var result = new ListResult<string>(logic.Execute());

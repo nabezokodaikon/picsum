@@ -41,17 +41,21 @@ namespace PicSum.Core.Task.AsyncTaskV2
 
         internal void ExecuteWrapper()
         {
-            if (this.Parameter == null)
-                throw new NullReferenceException("タスクパラーターがNULLです。");
-
             try
             {
-                this.Execute(this.Parameter);
+                if (this.Parameter != null)
+                {
+                    this.Execute(this.Parameter);
+                }
+                else
+                {
+                    this.Execute();
+                }
 
                 if (this.CompleteAction != null)
                 {
                     this.CompleteAction();
-                }                
+                }
             }
             catch (TaskException ex)
             {
@@ -66,7 +70,15 @@ namespace PicSum.Core.Task.AsyncTaskV2
             }
         }
 
-        protected abstract void Execute(TParameter parameter);
+        protected virtual void Execute(TParameter parameter)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected virtual void Execute()
+        {
+            throw new NotImplementedException();
+        }
 
         internal void BeginCancel()
         {

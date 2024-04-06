@@ -67,7 +67,7 @@ namespace PicSum.UIComponent.Contents.FileList
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            this.SearchTask.StartTask(EmptyParameter.Instance);
+            this.SearchTask.StartTask();
         }
 
         protected override void Dispose(bool disposing)

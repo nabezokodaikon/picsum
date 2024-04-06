@@ -11,7 +11,7 @@ namespace PicSum.Task.Tasks
     public sealed class GetBookmarkTask
         : AbstractAsyncTask<EmptyParameter, ListResult<FileShallowInfoEntity>>
     {
-        protected override void Execute(EmptyParameter parameter)
+        protected override void Execute()
         {
             var getBookmarkLogic = new GetBookmarkListLogic(this);
             var dtoList = getBookmarkLogic.Execute();

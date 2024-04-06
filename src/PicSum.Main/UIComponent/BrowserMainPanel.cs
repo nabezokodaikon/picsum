@@ -731,7 +731,7 @@ namespace PicSum.Main.UIComponent
 
         private void TagDropToolButton_DropDownOpening(object sender, DropDownOpeningEventArgs e)
         {
-            this.GetTagListTask.StartTask(EmptyParameter.Instance);
+            this.GetTagListTask.StartTask();
         }
 
         private void TagDropToolButton_ItemMouseClick(object sender, ItemMouseClickEventArgs e)
