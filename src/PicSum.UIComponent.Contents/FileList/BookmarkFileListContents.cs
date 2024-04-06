@@ -1,8 +1,8 @@
 using PicSum.Core.Base.Exception;
-using PicSum.Core.Task.AsyncTask;
-using PicSum.Task.Tasks;
+using PicSum.Core.Task.AsyncTaskV2;
 using PicSum.Task.Entities;
 using PicSum.Task.Results;
+using PicSum.Task.Tasks;
 using PicSum.UIComponent.Contents.Common;
 using PicSum.UIComponent.Contents.Parameter;
 using PicSum.UIComponent.Contents.Properties;
@@ -14,7 +14,6 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.Versioning;
 using System.Windows.Forms;
-using PicSum.Core.Task.AsyncTaskV2;
 
 namespace PicSum.UIComponent.Contents.FileList
 {
@@ -25,6 +24,7 @@ namespace PicSum.UIComponent.Contents.FileList
         private BookmarkFileListContentsParameter paramter = null;
         private TaskWrapper<GetBookmarkTask, EmptyParameter, ListResult<FileShallowInfoEntity>> searchTask = null;
         private TaskWrapper<DeleteBookmarkTask, ListParameter<string>> deleteTask = null;
+        private TaskWrapper<GetFilesByDirectoryTask, ValueParameter<string>, GetDirectoryResult> getFilesTask = null;
 
         private TaskWrapper<GetBookmarkTask, EmptyParameter, ListResult<FileShallowInfoEntity>> SearchTask
         {
@@ -86,6 +86,12 @@ namespace PicSum.UIComponent.Contents.FileList
                     this.deleteTask = null;
                 }
 
+                if (this.getFilesTask != null)
+                {
+                    this.getFilesTask.Dispose();
+                    this.getFilesTask = null;
+                }
+
                 this.paramter.SelectedFilePath = base.SelectedFilePath;
             }
 
@@ -118,7 +124,7 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             return () =>
             {
-                var task = base.CreateNewGetFilesByDirectoryTask();
+                var task = this.CreateNewGetFilesTask();
 
                 task
                 .Callback(e =>
@@ -170,6 +176,18 @@ namespace PicSum.UIComponent.Contents.FileList
             this.IsRemoveFromListMenuItemVisible = true;
             this.IsMoveControlVisible = false;
             base.sortFileRgistrationDateToolStripButton.Enabled = true;
+        }
+
+        private TaskWrapper<GetFilesByDirectoryTask, ValueParameter<string>, GetDirectoryResult> CreateNewGetFilesTask()
+        {
+            if (this.getFilesTask != null)
+            {
+                this.getFilesTask.Dispose();
+                this.getFilesTask = null;
+            }
+
+            this.getFilesTask = new();
+            return this.getFilesTask;
         }
 
         private void SearchTask_Callback(ListResult<FileShallowInfoEntity> result)
