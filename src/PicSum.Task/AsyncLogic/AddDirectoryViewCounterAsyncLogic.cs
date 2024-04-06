@@ -1,5 +1,5 @@
 using PicSum.Core.Data.DatabaseAccessor;
-using PicSum.Core.Task.AsyncTask;
+using PicSum.Core.Task.AsyncTaskV2;
 using PicSum.Data.DatabaseAccessor.Connection;
 using PicSum.Data.DatabaseAccessor.Sql;
 using System;
@@ -9,7 +9,7 @@ namespace PicSum.Task.AsyncLogic
     internal sealed class AddDirectoryViewCounterAsyncLogic
         : AbstractAsyncLogic
     {
-        public AddDirectoryViewCounterAsyncLogic(AbstractAsyncTask task)
+        public AddDirectoryViewCounterAsyncLogic(IAsyncTask task)
             : base(task)
         {
 

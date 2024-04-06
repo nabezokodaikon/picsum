@@ -7,7 +7,7 @@ namespace PicSum.Task.Result
     /// 画像読込結果エンティティ
     /// </summary>
     public sealed class GetImageFileResult
-        : AbstractTaskResult
+        : ITaskResult
     {
         public ImageFileEntity Image1 { get; set; }
         public ImageFileEntity Image2 { get; set; }

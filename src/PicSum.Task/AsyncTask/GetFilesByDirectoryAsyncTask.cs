@@ -1,12 +1,10 @@
-using PicSum.Core.Task.AsyncTask;
-using PicSum.Core.Task.Base;
+using PicSum.Core.Task.AsyncTaskV2;
 using PicSum.Task.AsyncLogic;
 using PicSum.Task.Entity;
 using PicSum.Task.Result;
 using SWF.Common;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Runtime.Versioning;
 
 namespace PicSum.Task.AsyncTask
@@ -16,9 +14,9 @@ namespace PicSum.Task.AsyncTask
     /// </summary>
     [SupportedOSPlatform("windows")]
     public sealed class GetFilesByDirectoryAsyncTask
-        : TwoWayTaskBase<SingleValueEntity<string>, GetDirectoryResult>
+        : AbstractAsyncTask<ValueParameter<string>, GetDirectoryResult>
     {
-        public override void Execute(SingleValueEntity<string> param)
+        protected override void Execute(ValueParameter<string> param)
         {
             if (param == null)
             {
@@ -33,13 +31,10 @@ namespace PicSum.Task.AsyncTask
             try
             {
                 fileList = getFilesLogic.Execute(param.Value);
-                result.TaskException = null;
             }
             catch (FileUtilException ex)
             {
-                result.TaskException = new TaskException(ex);
-                this.OnCallback(result);
-                return;
+                throw new TaskException(this.ID, ex);
             }
 
             var getInfoLogic = new GetFileShallowInfoAsyncLogic(this);
@@ -68,7 +63,7 @@ namespace PicSum.Task.AsyncTask
             result.FileInfoList = infoList;
             result.DirectoryState = directoryState;
 
-            this.OnCallback(result);
+            this.Callback(result);
         }
     }
 }

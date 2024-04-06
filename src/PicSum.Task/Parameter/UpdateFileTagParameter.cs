@@ -1,4 +1,4 @@
-﻿using PicSum.Core.Task.Base;
+using PicSum.Core.Task.AsyncTaskV2;
 using System.Collections.Generic;
 
 namespace PicSum.Task.Paramter
@@ -7,7 +7,7 @@ namespace PicSum.Task.Paramter
     /// タグを更新するパラメータエンティティ
     /// </summary>
     public sealed class UpdateFileTagParameter
-        : IEntity
+        : ITaskParameter
     {
         public IList<string> FilePathList { get; set; }
         public string Tag { get; set; }

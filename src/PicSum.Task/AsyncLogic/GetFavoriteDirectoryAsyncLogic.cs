@@ -1,5 +1,5 @@
 using PicSum.Core.Data.DatabaseAccessor;
-using PicSum.Core.Task.AsyncTask;
+using PicSum.Core.Task.AsyncTaskV2;
 using PicSum.Data.DatabaseAccessor.Connection;
 using PicSum.Data.DatabaseAccessor.Dto;
 using PicSum.Data.DatabaseAccessor.Sql;
@@ -14,7 +14,7 @@ namespace PicSum.Task.AsyncLogic
     internal sealed class GetFavoriteDirectoryAsyncLogic
         : AbstractAsyncLogic
     {
-        public GetFavoriteDirectoryAsyncLogic(AbstractAsyncTask task)
+        public GetFavoriteDirectoryAsyncLogic(IAsyncTask task)
             : base(task)
         {
 

@@ -1,4 +1,4 @@
-using PicSum.Core.Task.AsyncTask;
+using PicSum.Core.Task.AsyncTaskV2;
 using PicSum.Task.Entity;
 using SWF.Common;
 using System;
@@ -13,7 +13,7 @@ namespace PicSum.Task.AsyncLogic
     internal sealed class GetFileShallowInfoAsyncLogic
         : AbstractAsyncLogic
     {
-        public GetFileShallowInfoAsyncLogic(AbstractAsyncTask task)
+        public GetFileShallowInfoAsyncLogic(IAsyncTask task)
             : base(task)
         {
 

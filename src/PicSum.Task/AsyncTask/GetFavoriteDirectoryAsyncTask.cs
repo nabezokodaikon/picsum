@@ -1,4 +1,4 @@
-using PicSum.Core.Task.AsyncTask;
+using PicSum.Core.Task.AsyncTaskV2;
 using PicSum.Task.AsyncLogic;
 using PicSum.Task.Entity;
 using PicSum.Task.Paramter;
@@ -10,9 +10,9 @@ namespace PicSum.Task.AsyncTask
 {
     [SupportedOSPlatform("windows")]
     public sealed class GetFavoriteDirectoryAsyncTask
-        : TwoWayTaskBase<GetFavoriteDirectoryParameter, ListEntity<FileShallowInfoEntity>>
+        : AbstractAsyncTask<GetFavoriteDirectoryParameter, ListResult<FileShallowInfoEntity>>
     {
-        public override void Execute(GetFavoriteDirectoryParameter param)
+        protected override void Execute(GetFavoriteDirectoryParameter param)
         {
             if (param == null)
             {
@@ -23,7 +23,7 @@ namespace PicSum.Task.AsyncTask
             var fileList = logic.Execute();
 
             var getInfoLogic = new GetFileShallowInfoAsyncLogic(this);
-            var infoList = new ListEntity<FileShallowInfoEntity>();
+            var infoList = new ListResult<FileShallowInfoEntity>();
             foreach (var file in fileList)
             {
                 this.CheckCancel();
@@ -53,7 +53,7 @@ namespace PicSum.Task.AsyncTask
                 }
             }
 
-            this.OnCallback(infoList);
+            this.Callback(infoList);
         }
     }
 }

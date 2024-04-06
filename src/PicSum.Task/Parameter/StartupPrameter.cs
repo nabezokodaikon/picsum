@@ -1,4 +1,4 @@
-﻿using PicSum.Core.Task.Base;
+using PicSum.Core.Task.AsyncTaskV2;
 
 namespace PicSum.Task.Paramter
 {
@@ -6,7 +6,7 @@ namespace PicSum.Task.Paramter
     /// スタートアップパラメータエンティティ
     /// </summary>
     public sealed class StartupPrameter
-        : IEntity
+        : ITaskParameter
     {
         public string FileInfoDBFilePath { get; set; }
         public string ThumbnailDBFilePath { get; set; }

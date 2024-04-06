@@ -1,11 +1,10 @@
-using PicSum.Core.Task.AsyncTask;
+using PicSum.Core.Task.AsyncTaskV2;
 using PicSum.Task.AsyncLogic;
 using PicSum.Task.Entity;
 using PicSum.Task.Paramter;
 using PicSum.Task.Result;
 using SWF.Common;
 using System;
-using System.IO;
 using System.Runtime.Versioning;
 
 namespace PicSum.Task.AsyncTask
@@ -15,9 +14,9 @@ namespace PicSum.Task.AsyncTask
     /// </summary>
     [SupportedOSPlatform("windows")]
     public sealed class GetFileDeepInfoAsyncTask
-        : TwoWayTaskBase<GetFileDeepInfoParameter, GetFileDeepInfoResult>
+        : AbstractAsyncTask<GetFileDeepInfoParameter, GetFileDeepInfoResult>
     {
-        public override void Execute(GetFileDeepInfoParameter param)
+        protected override void Execute(GetFileDeepInfoParameter param)
         {
             if (param == null)
             {
@@ -36,13 +35,13 @@ namespace PicSum.Task.AsyncTask
                     var filePath = param.FilePathList[0];
                     result.FileInfo = getInfoLogic.Execute(filePath, param.ThumbnailSize);
                 }
-                catch (FileUtilException)
+                catch (FileUtilException ex)
                 {
-                    return;
+                    throw new TaskException(this.ID, ex);
                 }
-                catch (ImageUtilException)
+                catch (ImageUtilException ex)
                 {
-                    return;
+                    throw new TaskException(this.ID, ex);
                 }
             }
 
@@ -58,7 +57,7 @@ namespace PicSum.Task.AsyncTask
 
             this.CheckCancel();
 
-            this.OnCallback(result);
+            this.Callback(result);
         }
     }
 }

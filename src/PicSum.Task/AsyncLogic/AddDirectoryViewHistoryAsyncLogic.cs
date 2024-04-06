@@ -1,5 +1,5 @@
 using PicSum.Core.Data.DatabaseAccessor;
-using PicSum.Core.Task.AsyncTask;
+using PicSum.Core.Task.AsyncTaskV2;
 using PicSum.Data.DatabaseAccessor.Connection;
 using PicSum.Data.DatabaseAccessor.Sql;
 using System;
@@ -9,9 +9,10 @@ namespace PicSum.Task.AsyncLogic
     /// <summary>
     /// フォルダの表示履歴を追加します。
     /// </summary>
-    internal sealed class AddDirectoryViewHistoryAsyncLogic : AbstractAsyncLogic
+    internal sealed class AddDirectoryViewHistoryAsyncLogic
+        : AbstractAsyncLogic
     {
-        public AddDirectoryViewHistoryAsyncLogic(AbstractAsyncTask task)
+        public AddDirectoryViewHistoryAsyncLogic(IAsyncTask task)
             : base(task)
         {
 

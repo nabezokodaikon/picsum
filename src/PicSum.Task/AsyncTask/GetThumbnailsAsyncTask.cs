@@ -1,9 +1,9 @@
 using PicSum.Core.Data.DatabaseAccessor;
-using PicSum.Core.Task.AsyncTask;
+using PicSum.Core.Task.AsyncTaskV2;
 using PicSum.Data.DatabaseAccessor.Connection;
 using PicSum.Task.AsyncLogic;
-using PicSum.Task.Entity;
 using PicSum.Task.Paramter;
+using PicSum.Task.Result;
 using SWF.Common;
 using System;
 using System.Runtime.Versioning;
@@ -15,9 +15,9 @@ namespace PicSum.Task.AsyncTask
     /// </summary>
     [SupportedOSPlatform("windows")]
     public sealed class GetThumbnailsAsyncTask
-        : TwoWayTaskBase<GetThumbnailParameter, ThumbnailImageEntity>
+        : AbstractAsyncTask<GetThumbnailParameter, ThumbnailImageResult>
     {
-        public override void Execute(GetThumbnailParameter param)
+        protected override void Execute(GetThumbnailParameter param)
         {
             if (param == null)
             {
@@ -31,6 +31,7 @@ namespace PicSum.Task.AsyncTask
                 for (var index = param.FirstIndex; index <= param.LastIndex; index++)
                 {
                     this.CheckCancel();
+                    this.Wait();
 
                     try
                     {
@@ -40,7 +41,7 @@ namespace PicSum.Task.AsyncTask
                             continue;
                         }
 
-                        var img = new ThumbnailImageEntity();
+                        var img = new ThumbnailImageResult();
                         img.FilePath = bf.FilePath;
                         img.ThumbnailImage = ImageUtil.ToImage(bf.ThumbnailBuffer);
                         img.ThumbnailWidth = bf.ThumbnailWidth;
@@ -48,7 +49,7 @@ namespace PicSum.Task.AsyncTask
                         img.SourceWidth = bf.SourceWidth;
                         img.SourceHeight = bf.SourceHeight;
                         img.FileUpdatedate = bf.FileUpdatedate;
-                        this.OnCallback(img);
+                        this.Callback(img);
                     }
                     catch (FileUtilException)
                     {

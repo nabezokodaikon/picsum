@@ -1,10 +1,9 @@
-using PicSum.Core.Task.Base;
-using System.Collections.Generic;
+using PicSum.Core.Task.AsyncTaskV2;
 
 namespace PicSum.Task.Paramter
 {
     public sealed class ExportFileParameter
-        : IEntity
+        : ITaskParameter
     {
         public string SrcFilePath { get; set; }
         public string ExportFilePath { get; set; }

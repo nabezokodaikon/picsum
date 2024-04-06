@@ -1,13 +1,13 @@
 using PicSum.Core.Data.DatabaseAccessor;
-using PicSum.Core.Task.AsyncTask;
+using PicSum.Core.Task.AsyncTaskV2;
 using PicSum.Data.DatabaseAccessor.Connection;
 using PicSum.Data.DatabaseAccessor.Dto;
 using PicSum.Data.DatabaseAccessor.Sql;
 using PicSum.Task.Entity;
+using PicSum.Task.Result;
 using SWF.Common;
 using System;
 using System.Drawing;
-using System.IO;
 using System.Runtime.Versioning;
 
 namespace PicSum.Task.AsyncLogic
@@ -19,7 +19,7 @@ namespace PicSum.Task.AsyncLogic
     internal sealed class GetFileDeepInfoAsyncLogic
         : AbstractAsyncLogic
     {
-        public GetFileDeepInfoAsyncLogic(AbstractAsyncTask task)
+        public GetFileDeepInfoAsyncLogic(IAsyncTask task)
             : base(task)
         {
 
@@ -72,7 +72,7 @@ namespace PicSum.Task.AsyncLogic
 
                 if (info.IsImageFile)
                 {
-                    info.Thumbnail = new ThumbnailImageEntity();
+                    info.Thumbnail = new ThumbnailImageResult();
                     using (var srcImg = ImageUtil.ReadImageFile(filePath))
                     {
                         var thumb = ThumbnailUtil.CreateThumbnail(srcImg, thumbSize.Width, thumbSize.Height);
@@ -91,7 +91,7 @@ namespace PicSum.Task.AsyncLogic
                     var firstImageFile = FileUtil.GetFirstImageFilePath(filePath);
                     if (!string.IsNullOrEmpty(firstImageFile))
                     {
-                        info.Thumbnail = new ThumbnailImageEntity();
+                        info.Thumbnail = new ThumbnailImageResult();
                         using (var srcImg = ImageUtil.ReadImageFile(firstImageFile))
                         {
                             Image thumb = ThumbnailUtil.CreateThumbnail(srcImg, thumbSize.Width, thumbSize.Height);

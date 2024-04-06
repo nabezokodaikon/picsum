@@ -1,4 +1,5 @@
 using PicSum.Core.Task.Base;
+using PicSum.Task.Result;
 using System;
 using System.Drawing;
 
@@ -20,6 +21,6 @@ namespace PicSum.Task.Entity
         public Nullable<Size> ImageSize { get; set; }
         public Image FileIcon { get; set; }
         public int Rating { get; set; }
-        public ThumbnailImageEntity Thumbnail { get; set; }
+        public ThumbnailImageResult Thumbnail { get; set; }
     }
 }

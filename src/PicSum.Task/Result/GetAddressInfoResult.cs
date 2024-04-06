@@ -1,12 +1,11 @@
-using PicSum.Core.Task.Base;
+using PicSum.Core.Task.AsyncTaskV2;
 using PicSum.Task.Entity;
-using SWF.Common;
 using System.Collections.Generic;
 
 namespace PicSum.Task.Result
 {
     public sealed class GetAddressInfoResult
-        : AbstractResultEntity
+        : ITaskResult
     {
         public string DirectoryPath { get; set; }
         public IList<FileShallowInfoEntity> DirectoryList { get; set; }

@@ -1,4 +1,4 @@
-using PicSum.Core.Task.AsyncTask;
+using PicSum.Core.Task.AsyncTaskV2;
 using PicSum.Task.AsyncLogic;
 using PicSum.Task.Entity;
 using SWF.Common;
@@ -11,12 +11,12 @@ namespace PicSum.Task.AsyncTask
     /// </summary>
     [SupportedOSPlatform("windows")]
     public sealed class GetDirectoryViewHistoryAsyncTask
-        : TwoWayTaskBase<ListEntity<FileShallowInfoEntity>>
+        : AbstractAsyncTask<EmptyParameter, ListResult<FileShallowInfoEntity>>
     {
-        public override void Execute()
+        protected override void Execute(EmptyParameter parameter)
         {
             var logic = new GetFileShallowInfoAsyncLogic(this);
-            var result = new ListEntity<FileShallowInfoEntity>();
+            var result = new ListResult<FileShallowInfoEntity>();
 
             foreach (var directoryPath in (new GetDirectoryViewHistoryAsyncLogic(this)).Execute())
             {
@@ -32,7 +32,7 @@ namespace PicSum.Task.AsyncTask
                 }
             }
 
-            this.OnCallback(result);
+            this.Callback(result);
         }
     }
 }

@@ -1,17 +1,17 @@
 namespace PicSum.Core.Task.AsyncTaskV2
 {
     public abstract class AbstractAsyncTask<TParameter>
-        : AbstractAsyncTask<TParameter, TaskEmptyResult>,
+        : AbstractAsyncTask<TParameter, EmptyResult>,
           IAsyncTask
-        where TParameter : AbstractTaskParameter
+        where TParameter : ITaskParameter
     {
 
     }
 
     public abstract class AbstractAsyncTask<TParameter, TResult>
         : IAsyncTask
-        where TParameter : AbstractTaskParameter
-        where TResult : AbstractTaskResult
+        where TParameter : ITaskParameter
+        where TResult : ITaskResult
     {
         private long isCancel = 0;
 
@@ -99,14 +99,6 @@ namespace PicSum.Core.Task.AsyncTaskV2
             if (this.CallbackAction != null)
             {
                 this.CallbackAction(result);
-            }
-        }
-
-        protected void Complete()
-        {
-            if (this.CompleteAction != null)
-            {
-                this.CompleteAction();
             }
         }
     }

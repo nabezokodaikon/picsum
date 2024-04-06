@@ -1,5 +1,5 @@
 using PicSum.Core.Data.DatabaseAccessor;
-using PicSum.Core.Task.AsyncTask;
+using PicSum.Core.Task.AsyncTaskV2;
 using PicSum.Data.DatabaseAccessor.Connection;
 using PicSum.Data.DatabaseAccessor.Sql;
 using System;
@@ -9,7 +9,7 @@ namespace PicSum.Task.AsyncLogic
     internal sealed class UpdateFileMasterAsyncLogic
         : AbstractAsyncLogic
     {
-        public UpdateFileMasterAsyncLogic(AbstractAsyncTask task)
+        public UpdateFileMasterAsyncLogic(IAsyncTask task)
             : base(task)
         {
 

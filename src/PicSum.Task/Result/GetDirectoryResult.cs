@@ -1,7 +1,7 @@
-using PicSum.Core.Task.Base;
+using PicSum.Core.Task.AsyncTaskV2;
 using PicSum.Task.Entity;
+using PicSum.Task.Parameter;
 using System.Collections.Generic;
-using System.IO;
 
 namespace PicSum.Task.Result
 {
@@ -9,10 +9,10 @@ namespace PicSum.Task.Result
     /// フォルダ内検索結果
     /// </summary>
     public sealed class GetDirectoryResult
-        : AbstractResultEntity
+        : ITaskResult
     {
         public string DirectoryPath { get; set; }
-        public DirectoryStateEntity DirectoryState { get; set; }
+        public DirectoryStateParameter DirectoryState { get; set; }
         public IList<FileShallowInfoEntity> FileInfoList { get; set; }
     }
 }

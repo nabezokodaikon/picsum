@@ -3,6 +3,7 @@ using PicSum.Core.Task.AsyncTask;
 using PicSum.Task.AsyncTask;
 using PicSum.Task.Entity;
 using PicSum.Task.Paramter;
+using PicSum.Task.Result;
 using PicSum.UIComponent.Contents.Common;
 using PicSum.UIComponent.Contents.Conf;
 using PicSum.UIComponent.Contents.ContextMenu;
@@ -33,7 +34,7 @@ namespace PicSum.UIComponent.Contents.FileList
         private Dictionary<string, FileEntity> masterFileDictionary = null;
         private List<string> filterFilePathList = null;
         private readonly SortInfo sortInfo = new SortInfo();
-        private TwoWayProcess<GetThumbnailsAsyncTask, GetThumbnailParameter, ThumbnailImageEntity> getThumbnailsProcess = null;
+        private TwoWayProcess<GetThumbnailsAsyncTask, GetThumbnailParameter, ThumbnailImageResult> getThumbnailsProcess = null;
         private OneWayProcess<ExportFileAsyncTask, ExportFileParameter> exportFileProcess = null;
         private OneWayProcess<AddBookmarkAsyncTask, SingleValueEntity<string>> addBookmarkProcess = null;
 
@@ -176,14 +177,14 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
-        private TwoWayProcess<GetThumbnailsAsyncTask, GetThumbnailParameter, ThumbnailImageEntity> GetThumbnailsProcess
+        private TwoWayProcess<GetThumbnailsAsyncTask, GetThumbnailParameter, ThumbnailImageResult> GetThumbnailsProcess
         {
             get
             {
                 if (this.getThumbnailsProcess == null)
                 {
-                    this.getThumbnailsProcess = TaskManager.CreateTwoWayProcess<GetThumbnailsAsyncTask, GetThumbnailParameter, ThumbnailImageEntity>(this.ProcessContainer);
-                    this.getThumbnailsProcess.Callback += new AsyncTaskCallbackEventHandler<ThumbnailImageEntity>(this.GetThumbnailsProcess_Callback);
+                    this.getThumbnailsProcess = TaskManager.CreateTwoWayProcess<GetThumbnailsAsyncTask, GetThumbnailParameter, ThumbnailImageResult>(this.ProcessContainer);
+                    this.getThumbnailsProcess.Callback += new AsyncTaskCallbackEventHandler<ThumbnailImageResult>(this.GetThumbnailsProcess_Callback);
 
                 }
 
@@ -768,7 +769,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
         #region プロセスイベント
 
-        private void GetThumbnailsProcess_Callback(object sender, ThumbnailImageEntity e)
+        private void GetThumbnailsProcess_Callback(object sender, ThumbnailImageResult e)
         {
             if (this.masterFileDictionary == null || !this.masterFileDictionary.ContainsKey(e.FilePath))
             {

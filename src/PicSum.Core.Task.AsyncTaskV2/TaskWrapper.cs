@@ -6,8 +6,8 @@ namespace PicSum.Core.Task.AsyncTaskV2
     public class TaskWrapper<TTask, TTaskParameter, TTaskResult>
         : IDisposable
         where TTask : AbstractAsyncTask<TTaskParameter, TTaskResult>, new()
-        where TTaskParameter : AbstractTaskParameter
-        where TTaskResult : AbstractTaskResult
+        where TTaskParameter : ITaskParameter
+        where TTaskResult : ITaskResult
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
@@ -242,9 +242,9 @@ namespace PicSum.Core.Task.AsyncTaskV2
     }
 
     public sealed class TaskWrapper<TTask, TTaskParameter>
-        : TaskWrapper<TTask, TTaskParameter, TaskEmptyResult>
+        : TaskWrapper<TTask, TTaskParameter, EmptyResult>
         where TTask : AbstractAsyncTask<TTaskParameter>, new()
-        where TTaskParameter : AbstractTaskParameter
+        where TTaskParameter : ITaskParameter
     {
         public TaskWrapper()
             : base()

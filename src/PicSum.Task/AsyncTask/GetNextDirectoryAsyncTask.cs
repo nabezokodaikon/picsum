@@ -1,6 +1,5 @@
-using PicSum.Core.Task.AsyncTask;
+using PicSum.Core.Task.AsyncTaskV2;
 using PicSum.Task.AsyncLogic;
-using PicSum.Task.Entity;
 using PicSum.Task.Paramter;
 using SWF.Common;
 using System;
@@ -15,9 +14,9 @@ namespace PicSum.Task.AsyncTask
     /// </summary>
     [SupportedOSPlatform("windows")]
     public sealed class GetNextDirectoryAsyncTask
-        : TwoWayTaskBase<GetNextContentsParameter<string>, SingleValueEntity<string>>
+        : AbstractAsyncTask<GetNextContentsParameter<string>, ValueResult<string>>
     {
-        public override void Execute(GetNextContentsParameter<string> param)
+        protected override void Execute(GetNextContentsParameter<string> param)
         {
             if (param == null)
             {
@@ -52,7 +51,7 @@ namespace PicSum.Task.AsyncTask
                 return;
             }
 
-            var result = new SingleValueEntity<string>();
+            var result = new ValueResult<string>();
             if (param.IsNext)
             {
                 if (index + 1 > list.Count - 1)
@@ -76,7 +75,7 @@ namespace PicSum.Task.AsyncTask
                 }
             }
 
-            this.OnCallback(result);
+            this.Callback(result);
         }
     }
 }

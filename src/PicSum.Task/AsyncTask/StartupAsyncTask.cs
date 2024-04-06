@@ -1,4 +1,4 @@
-using PicSum.Core.Task.AsyncTask;
+using PicSum.Core.Task.AsyncTaskV2;
 using PicSum.Task.AsyncLogic;
 using PicSum.Task.Entity;
 using PicSum.Task.Paramter;
@@ -10,9 +10,9 @@ namespace PicSum.Task.AsyncTask
     /// スタートアップ非同期タスク
     /// </summary>
     public sealed class StartupAsyncTask
-        : TwoWayTaskBase<StartupPrameter, DefaultEntity>
+        : AbstractAsyncTask<StartupPrameter>
     {
-        public override void Execute(StartupPrameter param)
+        protected override void Execute(StartupPrameter param)
         {
             if (param == null)
             {
@@ -21,8 +21,6 @@ namespace PicSum.Task.AsyncTask
 
             var logic = new StartupAsyncLogic(this);
             logic.Execute(param);
-
-            this.OnCallback(new DefaultEntity());
         }
     }
 }

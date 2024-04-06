@@ -8,7 +8,7 @@ namespace PicSum.Task.Paramter
     /// 画像読込パラメータエンティティ
     /// </summary>
     public sealed class GetImageFileParameter
-        : AbstractTaskParameter
+        : ITaskParameter
     {
         public int CurrentIndex { get; set; }
         public IList<string> FilePathList { get; set; }

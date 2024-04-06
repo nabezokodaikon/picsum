@@ -1,4 +1,4 @@
-using PicSum.Core.Task.AsyncTask;
+using PicSum.Core.Task.AsyncTaskV2;
 using SWF.Common;
 using System;
 using System.Collections.Generic;
@@ -13,7 +13,7 @@ namespace PicSum.Task.AsyncLogic
     internal sealed class GetFilesAndSubDirectorysAsyncLogic
         : AbstractAsyncLogic
     {
-        public GetFilesAndSubDirectorysAsyncLogic(AbstractAsyncTask task)
+        public GetFilesAndSubDirectorysAsyncLogic(IAsyncTask task)
             : base(task)
         {
 

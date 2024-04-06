@@ -1,5 +1,5 @@
 using PicSum.Core.Data.DatabaseAccessor;
-using PicSum.Core.Task.AsyncTask;
+using PicSum.Core.Task.AsyncTaskV2;
 using PicSum.Data.DatabaseAccessor.Connection;
 using PicSum.Task.AsyncLogic;
 using PicSum.Task.Paramter;
@@ -11,9 +11,9 @@ namespace PicSum.Task.AsyncTask
     /// ファイルのタグを削除します。
     /// </summary>
     public class DeleteFileTagAsyncTask
-        : OneWayTaskBase<UpdateFileTagParameter>
+        : AbstractAsyncTask<UpdateFileTagParameter, EmptyResult>
     {
-        public override void Execute(UpdateFileTagParameter param)
+        protected override void Execute(UpdateFileTagParameter param)
         {
             if (param == null)
             {

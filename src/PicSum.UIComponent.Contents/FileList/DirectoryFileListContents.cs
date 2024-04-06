@@ -3,6 +3,7 @@ using PicSum.Core.Base.Exception;
 using PicSum.Core.Task.AsyncTask;
 using PicSum.Task.AsyncTask;
 using PicSum.Task.Entity;
+using PicSum.Task.Parameter;
 using PicSum.Task.Paramter;
 using PicSum.Task.Result;
 using PicSum.UIComponent.Contents.Common;
@@ -27,7 +28,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private readonly DirectoryFileListContentsParameter parameter = null;
         private TwoWayProcess<GetFilesByDirectoryAsyncTask, SingleValueEntity<string>, GetDirectoryResult> searchDirectoryProcess = null;
-        private OneWayProcess<UpdateDirectoryStateAsynceTask, DirectoryStateEntity> updateDirectoryStateProcess = null;
+        private OneWayProcess<UpdateDirectoryStateAsynceTask, DirectoryStateParameter> updateDirectoryStateProcess = null;
         private OneWayProcess<AddDirectoryViewHistoryAsyncTask, SingleValueEntity<string>> addDirectoryHistoryProcess = null;
         private TwoWayProcess<GetNextDirectoryAsyncTask, GetNextContentsParameter<string>, SingleValueEntity<string>> getNextDirectoryProcess = null;
 
@@ -49,13 +50,13 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
-        private OneWayProcess<UpdateDirectoryStateAsynceTask, DirectoryStateEntity> UpdateDirectoryStateProcess
+        private OneWayProcess<UpdateDirectoryStateAsynceTask, DirectoryStateParameter> UpdateDirectoryStateProcess
         {
             get
             {
                 if (this.updateDirectoryStateProcess == null)
                 {
-                    this.updateDirectoryStateProcess = TaskManager.CreateOneWayProcess<UpdateDirectoryStateAsynceTask, DirectoryStateEntity>(this.ProcessContainer);
+                    this.updateDirectoryStateProcess = TaskManager.CreateOneWayProcess<UpdateDirectoryStateAsynceTask, DirectoryStateParameter>(this.ProcessContainer);
                 }
 
                 return this.updateDirectoryStateProcess;
@@ -251,7 +252,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private void SaveCurrentDirectoryState()
         {
-            var param = new DirectoryStateEntity();
+            var param = new DirectoryStateParameter();
 
             param.DirectoryPath = this.parameter.DirectoryPath;
 

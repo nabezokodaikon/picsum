@@ -56,7 +56,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         private IList<string> filePathList = null;
 
         private TaskWrapper<GetImageFileAsyncTask, GetImageFileParameter, GetImageFileResult> getImageFileTask = null;
-        private OneWayProcess<AddBookmarkAsyncTask, SingleValueEntity<string>> addBookmarkTask = null;
+        private TaskWrapper<AddBookmarkAsyncTask, ValueResult<string>> addBookmarkTask = null;
         private OneWayProcess<ExportFileAsyncTask, ExportFileParameter> exportFileTask = null;
 
         #endregion

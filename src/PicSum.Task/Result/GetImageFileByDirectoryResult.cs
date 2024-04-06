@@ -1,11 +1,10 @@
-using PicSum.Core.Task.Base;
+using PicSum.Core.Task.AsyncTaskV2;
 using System.Collections.Generic;
-using System.IO;
 
 namespace PicSum.Task.Result
 {
     public sealed class GetImageFileByDirectoryResult
-        : AbstractResultEntity
+        : ITaskResult
     {
         public string DirectoryPath { get; set; }
         public IList<string> FilePathList { get; set; }

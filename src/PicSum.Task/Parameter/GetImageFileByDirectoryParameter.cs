@@ -1,10 +1,10 @@
-﻿using PicSum.Core.Task.Base;
+using PicSum.Core.Task.AsyncTaskV2;
 using System;
 
 namespace PicSum.Task.Paramter
 {
     public sealed class GetImageFileByDirectoryParameter
-        : IEntity
+        : ITaskParameter
     {
         public string FilePath { get; private set; }
 

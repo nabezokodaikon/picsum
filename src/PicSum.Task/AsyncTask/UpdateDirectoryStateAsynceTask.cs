@@ -1,8 +1,8 @@
 using PicSum.Core.Data.DatabaseAccessor;
-using PicSum.Core.Task.AsyncTask;
+using PicSum.Core.Task.AsyncTaskV2;
 using PicSum.Data.DatabaseAccessor.Connection;
 using PicSum.Task.AsyncLogic;
-using PicSum.Task.Entity;
+using PicSum.Task.Parameter;
 using System;
 
 namespace PicSum.Task.AsyncTask
@@ -11,9 +11,9 @@ namespace PicSum.Task.AsyncTask
     /// フォルダ状態更新タスク
     /// </summary>
     public sealed class UpdateDirectoryStateAsynceTask
-        : OneWayTaskBase<DirectoryStateEntity>
+        : AbstractAsyncTask<DirectoryStateParameter, EmptyResult>
     {
-        public override void Execute(DirectoryStateEntity param)
+        protected override void Execute(DirectoryStateParameter param)
         {
             if (param == null)
             {

@@ -1,13 +1,13 @@
-﻿using PicSum.Core.Base.Conf;
-using PicSum.Core.Task.Base;
+using PicSum.Core.Base.Conf;
+using PicSum.Core.Task.AsyncTaskV2;
 
-namespace PicSum.Task.Entity
+namespace PicSum.Task.Parameter
 {
     /// <summary>
     /// フォルダ状態
     /// </summary>
-    public sealed class DirectoryStateEntity
-        : IEntity
+    public sealed class DirectoryStateParameter
+        : ITaskParameter
     {
         public string DirectoryPath { get; set; }
         public SortTypeID SortTypeID { get; set; }

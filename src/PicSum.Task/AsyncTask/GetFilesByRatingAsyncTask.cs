@@ -1,4 +1,4 @@
-using PicSum.Core.Task.AsyncTask;
+using PicSum.Core.Task.AsyncTaskV2;
 using PicSum.Task.AsyncLogic;
 using PicSum.Task.Entity;
 using SWF.Common;
@@ -12,9 +12,9 @@ namespace PicSum.Task.AsyncTask
     /// </summary>
     [SupportedOSPlatform("windows")]
     public sealed class GetFilesByRatingAsyncTask
-        : TwoWayTaskBase<SingleValueEntity<int>, ListEntity<FileShallowInfoEntity>>
+        : AbstractAsyncTask<ValueParameter<int>, ListResult<FileShallowInfoEntity>>
     {
-        public override void Execute(SingleValueEntity<int> param)
+        protected override void Execute(ValueParameter<int> param)
         {
             if (param == null)
             {
@@ -25,7 +25,7 @@ namespace PicSum.Task.AsyncTask
             var fileList = logic.Execute(param.Value);
 
             var getInfoLogic = new GetFileShallowInfoAsyncLogic(this);
-            var infoList = new ListEntity<FileShallowInfoEntity>();
+            var infoList = new ListResult<FileShallowInfoEntity>();
             foreach (var dto in fileList)
             {
                 this.CheckCancel();
@@ -44,7 +44,7 @@ namespace PicSum.Task.AsyncTask
                 }
             }
 
-            this.OnCallback(infoList);
+            this.Callback(infoList);
         }
     }
 }

@@ -1,10 +1,10 @@
 using PicSum.Core.Base.Conf;
 using PicSum.Core.Data.DatabaseAccessor;
-using PicSum.Core.Task.AsyncTask;
+using PicSum.Core.Task.AsyncTaskV2;
 using PicSum.Data.DatabaseAccessor.Connection;
 using PicSum.Data.DatabaseAccessor.Dto;
 using PicSum.Data.DatabaseAccessor.Sql;
-using PicSum.Task.Entity;
+using PicSum.Task.Parameter;
 using System;
 
 namespace PicSum.Task.AsyncLogic
@@ -15,13 +15,13 @@ namespace PicSum.Task.AsyncLogic
     internal sealed class GetDirectoryStateAsyncLogic
         : AbstractAsyncLogic
     {
-        public GetDirectoryStateAsyncLogic(AbstractAsyncTask task)
+        public GetDirectoryStateAsyncLogic(IAsyncTask task)
             : base(task)
         {
 
         }
 
-        public DirectoryStateEntity Execute(string directoryPath)
+        public DirectoryStateParameter Execute(string directoryPath)
         {
             if (directoryPath == null)
             {
@@ -32,7 +32,7 @@ namespace PicSum.Task.AsyncLogic
             var dto = DatabaseManager<FileInfoConnection>.ReadLine<DirectoryStateDto>(sql);
             if (dto != null)
             {
-                var directoryState = new DirectoryStateEntity();
+                var directoryState = new DirectoryStateParameter();
                 directoryState.DirectoryPath = dto.DirectoryPath;
                 directoryState.SortTypeID = (SortTypeID)dto.SortTypeId;
                 directoryState.IsAscending = dto.IsAscending;

@@ -1,8 +1,8 @@
 using PicSum.Core.Data.DatabaseAccessor;
-using PicSum.Core.Task.AsyncTask;
+using PicSum.Core.Task.AsyncTaskV2;
 using PicSum.Data.DatabaseAccessor.Connection;
 using PicSum.Data.DatabaseAccessor.Sql;
-using PicSum.Task.Entity;
+using PicSum.Task.Parameter;
 using System;
 
 namespace PicSum.Task.AsyncLogic
@@ -10,15 +10,16 @@ namespace PicSum.Task.AsyncLogic
     /// <summary>
     /// フォルダ状態テーブルに登録します。
     /// </summary>
-    internal sealed class AddDirectoryStateAsyncLogic : AbstractAsyncLogic
+    internal sealed class AddDirectoryStateAsyncLogic
+        : AbstractAsyncLogic
     {
-        public AddDirectoryStateAsyncLogic(AbstractAsyncTask task)
+        public AddDirectoryStateAsyncLogic(IAsyncTask task)
             : base(task)
         {
 
         }
 
-        public bool Execute(DirectoryStateEntity directoryState)
+        public bool Execute(DirectoryStateParameter directoryState)
         {
             if (directoryState == null)
             {

@@ -141,7 +141,7 @@ namespace PicSum.UIComponent.InfoPanel
             }
         }
 
-        private ThumbnailImageEntity Thumbnail
+        private ThumbnailImageResult Thumbnail
         {
             get
             {

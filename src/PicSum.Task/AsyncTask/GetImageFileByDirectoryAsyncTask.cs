@@ -1,5 +1,4 @@
-using PicSum.Core.Task.AsyncTask;
-using PicSum.Core.Task.Base;
+using PicSum.Core.Task.AsyncTaskV2;
 using PicSum.Task.AsyncLogic;
 using PicSum.Task.Paramter;
 using PicSum.Task.Result;
@@ -15,9 +14,9 @@ namespace PicSum.Task.AsyncTask
     /// </summary>
     [SupportedOSPlatform("windows")]
     public sealed class GetImageFileByDirectoryAsyncTask
-        : TwoWayTaskBase<GetImageFileByDirectoryParameter, GetImageFileByDirectoryResult>
+        : AbstractAsyncTask<GetImageFileByDirectoryParameter, GetImageFileByDirectoryResult>
     {
-        public override void Execute(GetImageFileByDirectoryParameter param)
+        protected override void Execute(GetImageFileByDirectoryParameter param)
         {
             if (param == null)
             {
@@ -43,7 +42,6 @@ namespace PicSum.Task.AsyncTask
 
                 var getFilesLogic = new GetFilesAndSubDirectorysAsyncLogic(this);
                 var filePathList = getFilesLogic.Execute(result.DirectoryPath);
-                result.TaskException = null;
 
                 result.FilePathList = new List<string>();
                 foreach (var filePath in filePathList)
@@ -65,12 +63,10 @@ namespace PicSum.Task.AsyncTask
             }
             catch (FileUtilException ex)
             {
-                result.TaskException = new TaskException(ex);
-                this.OnCallback(result);
-                return;
+                throw new TaskException(this.ID, ex);
             }
 
-            this.OnCallback(result);
+            this.Callback(result);
         }
     }
 }

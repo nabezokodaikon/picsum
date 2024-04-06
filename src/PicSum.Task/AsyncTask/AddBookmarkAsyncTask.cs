@@ -1,5 +1,5 @@
 using PicSum.Core.Data.DatabaseAccessor;
-using PicSum.Core.Task.AsyncTask;
+using PicSum.Core.Task.AsyncTaskV2;
 using PicSum.Data.DatabaseAccessor.Connection;
 using PicSum.Task.AsyncLogic;
 using PicSum.Task.Entity;
@@ -8,9 +8,9 @@ using System;
 namespace PicSum.Task.AsyncTask
 {
     public sealed class AddBookmarkAsyncTask
-        : OneWayTaskBase<SingleValueEntity<string>>
+        : AbstractAsyncTask<ValueParameter<string>, EmptyResult>
     {
-        public override void Execute(SingleValueEntity<string> param)
+        protected override void Execute(ValueParameter<string> param)
         {
             if (param == null)
             {

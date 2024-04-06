@@ -1,4 +1,4 @@
-using PicSum.Core.Task.AsyncTask;
+using PicSum.Core.Task.AsyncTaskV2;
 using PicSum.Task.AsyncLogic;
 using PicSum.Task.Paramter;
 using System;
@@ -13,7 +13,7 @@ namespace PicSum.Task.AsyncTask
     /// </summary>
     [SupportedOSPlatform("windows")]
     public sealed class ExportFileAsyncTask
-        : OneWayTaskBase<ExportFileParameter>
+        : AbstractAsyncTask<ExportFileParameter>
     {
         private static readonly ReaderWriterLockSlim taskLock = new ReaderWriterLockSlim();
 
@@ -25,7 +25,7 @@ namespace PicSum.Task.AsyncTask
             ExportFileAsyncTask.taskLock.Dispose();
         }
 
-        public override void Execute(ExportFileParameter param)
+        protected override void Execute(ExportFileParameter param)
         {
             if (param == null)
             {

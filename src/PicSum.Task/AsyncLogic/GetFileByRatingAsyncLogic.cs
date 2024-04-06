@@ -1,5 +1,5 @@
 using PicSum.Core.Data.DatabaseAccessor;
-using PicSum.Core.Task.AsyncTask;
+using PicSum.Core.Task.AsyncTaskV2;
 using PicSum.Data.DatabaseAccessor.Connection;
 using PicSum.Data.DatabaseAccessor.Dto;
 using PicSum.Data.DatabaseAccessor.Sql;
@@ -16,7 +16,7 @@ namespace PicSum.Task.AsyncLogic
     internal sealed class GetFileByRatingAsyncLogic
         : AbstractAsyncLogic
     {
-        public GetFileByRatingAsyncLogic(AbstractAsyncTask task)
+        public GetFileByRatingAsyncLogic(IAsyncTask task)
             : base(task)
         {
 

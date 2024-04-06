@@ -1,4 +1,4 @@
-using PicSum.Core.Task.AsyncTask;
+using PicSum.Core.Task.AsyncTaskV2;
 using System;
 using System.IO;
 using System.Runtime.Versioning;
@@ -12,7 +12,7 @@ namespace PicSum.Task.AsyncLogic
     internal sealed class ExportFileAsyncLogic
         : AbstractAsyncLogic
     {
-        public ExportFileAsyncLogic(AbstractAsyncTask task)
+        public ExportFileAsyncLogic(IAsyncTask task)
             : base(task)
         {
 

@@ -1,5 +1,5 @@
 using PicSum.Core.Data.DatabaseAccessor;
-using PicSum.Core.Task.AsyncTask;
+using PicSum.Core.Task.AsyncTaskV2;
 using PicSum.Data.DatabaseAccessor.Connection;
 using PicSum.Task.Paramter;
 using System;
@@ -9,9 +9,10 @@ namespace PicSum.Task.AsyncLogic
     /// <summary>
     /// スタートアップ非同期ロジック
     /// </summary>
-    internal sealed class StartupAsyncLogic : AbstractAsyncLogic
+    internal sealed class StartupAsyncLogic
+        : AbstractAsyncLogic
     {
-        public StartupAsyncLogic(AbstractAsyncTask task)
+        public StartupAsyncLogic(IAsyncTask task)
             : base(task)
         {
 

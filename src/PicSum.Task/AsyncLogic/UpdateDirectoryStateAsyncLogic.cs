@@ -1,9 +1,9 @@
 using PicSum.Core.Base.Conf;
 using PicSum.Core.Data.DatabaseAccessor;
-using PicSum.Core.Task.AsyncTask;
+using PicSum.Core.Task.AsyncTaskV2;
 using PicSum.Data.DatabaseAccessor.Connection;
 using PicSum.Data.DatabaseAccessor.Sql;
-using PicSum.Task.Entity;
+using PicSum.Task.Parameter;
 using System;
 
 namespace PicSum.Task.AsyncLogic
@@ -14,13 +14,13 @@ namespace PicSum.Task.AsyncLogic
     internal sealed class UpdateDirectoryStateAsyncLogic
         : AbstractAsyncLogic
     {
-        public UpdateDirectoryStateAsyncLogic(AbstractAsyncTask task)
+        public UpdateDirectoryStateAsyncLogic(IAsyncTask task)
             : base(task)
         {
 
         }
 
-        public bool Execute(DirectoryStateEntity directoryState)
+        public bool Execute(DirectoryStateParameter directoryState)
         {
             if (directoryState == null)
             {

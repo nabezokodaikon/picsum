@@ -1,5 +1,4 @@
-using PicSum.Core.Task.AsyncTask;
-using PicSum.Core.Task.Base;
+using PicSum.Core.Task.AsyncTaskV2;
 using PicSum.Task.AsyncLogic;
 using PicSum.Task.Entity;
 using PicSum.Task.Result;
@@ -16,9 +15,9 @@ namespace PicSum.Task.AsyncTask
     /// </summary>
     [SupportedOSPlatform("windows")]
     public sealed class GetAddressInfoAsyncTask
-        : TwoWayTaskBase<SingleValueEntity<string>, GetAddressInfoResult>
+        : AbstractAsyncTask<ValueParameter<string>, GetAddressInfoResult>
     {
-        public override void Execute(SingleValueEntity<string> param)
+        protected override void Execute(ValueParameter<string> param)
         {
             if (param == null)
             {
@@ -79,14 +78,11 @@ namespace PicSum.Task.AsyncTask
                     addressInfo.DirectoryList.Insert(0, logic.Execute(FileUtil.ROOT_DIRECTORY_PATH));
                 }
 
-                addressInfo.TaskException = null;
-
-                this.OnCallback(addressInfo);
+                this.Callback(addressInfo);
             }
             catch (FileUtilException ex)
             {
-                addressInfo.TaskException = new TaskException(ex);
-                this.OnCallback(addressInfo);
+                throw new TaskException(this.ID, ex);
             }
         }
     }

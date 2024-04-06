@@ -1,5 +1,5 @@
 using PicSum.Core.Data.DatabaseAccessor;
-using PicSum.Core.Task.AsyncTask;
+using PicSum.Core.Task.AsyncTaskV2;
 using PicSum.Data.DatabaseAccessor.Connection;
 using PicSum.Task.AsyncLogic;
 using PicSum.Task.Paramter;
@@ -11,9 +11,9 @@ namespace PicSum.Task.AsyncTask
     /// ファイルの評価値を更新します。
     /// </summary>
     public sealed class UpdateFileRatingAsyncTask
-        : OneWayTaskBase<UpdateFileRatingParameter>
+        : AbstractAsyncTask<UpdateFileRatingParameter>
     {
-        public override void Execute(UpdateFileRatingParameter param)
+        protected override void Execute(UpdateFileRatingParameter param)
         {
             if (param == null)
             {
