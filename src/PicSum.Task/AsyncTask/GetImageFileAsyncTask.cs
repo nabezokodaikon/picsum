@@ -1,13 +1,10 @@
 using PicSum.Core.Base.Conf;
-using PicSum.Core.Task.AsyncTask;
-using PicSum.Core.Task.Base;
+using PicSum.Core.Task.AsyncTaskV2;
 using PicSum.Task.AsyncLogic;
 using PicSum.Task.Entity;
 using PicSum.Task.Paramter;
 using PicSum.Task.Result;
 using SWF.Common;
-using System;
-using System.IO;
 using System.Runtime.Versioning;
 
 namespace PicSum.Task.AsyncTask
@@ -17,18 +14,13 @@ namespace PicSum.Task.AsyncTask
     /// </summary>
     [SupportedOSPlatform("windows")]
     public sealed class GetImageFileAsyncTask
-        : TwoWayTaskBase<GetImageFileParameter, GetImageFileResult>
+        : AbstractAsyncTask<GetImageFileParameter, GetImageFileResult>
     {
-        public override void Execute(GetImageFileParameter param)
+        protected override void Execute(GetImageFileParameter parameter)
         {
-            if (param == null)
-            {
-                throw new ArgumentNullException(nameof(param));
-            }
-
             var result = new GetImageFileResult();
             var logic = new GetImageFileAsyncLogic(this);
-            var currentFilePath = param.FilePathList[param.CurrentIndex];
+            var currentFilePath = parameter.FilePathList[parameter.CurrentIndex];
 
             try
             {
@@ -36,16 +28,16 @@ namespace PicSum.Task.AsyncTask
                 var img1 = ImageUtil.ReadImageFile(currentFilePath);
                 this.CheckCancel();
 
-                if (param.ImageDisplayMode != ImageDisplayMode.Single &&
+                if (parameter.ImageDisplayMode != ImageDisplayMode.Single &&
                     img1.Width < img1.Height)
                 {
-                    var nextIndex = param.CurrentIndex + 1;
-                    if (nextIndex > param.FilePathList.Count - 1)
+                    var nextIndex = parameter.CurrentIndex + 1;
+                    if (nextIndex > parameter.FilePathList.Count - 1)
                     {
                         nextIndex = 0;
                     }
 
-                    var nextFilePath = param.FilePathList[nextIndex];
+                    var nextFilePath = parameter.FilePathList[nextIndex];
                     var srcImg2Size = ImageUtil.GetImageSize(nextFilePath);
                     if (srcImg2Size.Width < srcImg2Size.Height)
                     {
@@ -59,7 +51,7 @@ namespace PicSum.Task.AsyncTask
                         this.CheckCancel();
                         result.Image1.Image = img1;
                         this.CheckCancel();
-                        result.Image1.Thumbnail = logic.CreateThumbnail(result.Image1.Image, param.ThumbnailSize, param.ImageSizeMode);
+                        result.Image1.Thumbnail = logic.CreateThumbnail(result.Image1.Image, parameter.ThumbnailSize, parameter.ImageSizeMode);
                         this.CheckCancel();
 
                         result.Image2 = new ImageFileEntity();
@@ -68,7 +60,7 @@ namespace PicSum.Task.AsyncTask
                         this.CheckCancel();
                         result.Image2.Image = img2;
                         this.CheckCancel();
-                        result.Image2.Thumbnail = logic.CreateThumbnail(result.Image2.Image, param.ThumbnailSize, param.ImageSizeMode);
+                        result.Image2.Thumbnail = logic.CreateThumbnail(result.Image2.Image, parameter.ThumbnailSize, parameter.ImageSizeMode);
                         this.CheckCancel();
                     }
                     else
@@ -79,7 +71,7 @@ namespace PicSum.Task.AsyncTask
                         this.CheckCancel();
                         result.Image1.Image = img1;
                         this.CheckCancel();
-                        result.Image1.Thumbnail = logic.CreateThumbnail(result.Image1.Image, param.ThumbnailSize, param.ImageSizeMode);
+                        result.Image1.Thumbnail = logic.CreateThumbnail(result.Image1.Image, parameter.ThumbnailSize, parameter.ImageSizeMode);
                         this.CheckCancel();
                     }
                 }
@@ -90,7 +82,7 @@ namespace PicSum.Task.AsyncTask
                     this.CheckCancel();
                     result.Image1.Image = img1;
                     this.CheckCancel();
-                    result.Image1.Thumbnail = logic.CreateThumbnail(result.Image1.Image, param.ThumbnailSize, param.ImageSizeMode);
+                    result.Image1.Thumbnail = logic.CreateThumbnail(result.Image1.Image, parameter.ThumbnailSize, parameter.ImageSizeMode);
                     this.CheckCancel();
                 }
 
@@ -102,7 +94,7 @@ namespace PicSum.Task.AsyncTask
                 result.TaskException = new TaskException(ex);
             }
 
-            this.OnCallback(result);
+            this.ThenAction(result);
         }
 
         private void exeptionHandler(GetImageFileResult result)

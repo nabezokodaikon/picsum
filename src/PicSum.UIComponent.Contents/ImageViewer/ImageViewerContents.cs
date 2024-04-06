@@ -1,5 +1,6 @@
 using PicSum.Core.Base.Conf;
 using PicSum.Core.Task.AsyncTask;
+using PicSum.Core.Task.AsyncTaskV2;
 using PicSum.Task.AsyncTask;
 using PicSum.Task.Entity;
 using PicSum.Task.Paramter;
@@ -54,9 +55,9 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         private ImageSizeMode sizeMode = ImageSizeMode.FitOnlyBigImage;
         private IList<string> filePathList = null;
 
-        private TwoWayProcess<GetImageFileAsyncTask, GetImageFileParameter, GetImageFileResult> readImageFileProcess = null;
-        private OneWayProcess<AddBookmarkAsyncTask, SingleValueEntity<string>> addBookmarkProcess = null;
-        private OneWayProcess<ExportFileAsyncTask, ExportFileParameter> exportFileProcess = null;
+        private TaskWrapper<GetImageFileAsyncTask, GetImageFileParameter, GetImageFileResult> getImageFileTask = null;
+        private OneWayProcess<AddBookmarkAsyncTask, SingleValueEntity<string>> addBookmarkTask = null;
+        private OneWayProcess<ExportFileAsyncTask, ExportFileParameter> exportFileTask = null;
 
         #endregion
 
@@ -105,45 +106,47 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             }
         }
 
-        private TwoWayProcess<GetImageFileAsyncTask, GetImageFileParameter, GetImageFileResult> ReadImageFileProcess
+        private TaskWrapper<GetImageFileAsyncTask, GetImageFileParameter, GetImageFileResult> GetImageFileTask
         {
             get
             {
-                if (this.readImageFileProcess == null)
+                if (this.getImageFileTask == null)
                 {
-                    this.readImageFileProcess = TaskManager.CreateTwoWayProcess<GetImageFileAsyncTask, GetImageFileParameter, GetImageFileResult>(this.ProcessContainer);
-                    this.readImageFileProcess.Callback += new AsyncTaskCallbackEventHandler<GetImageFileResult>(this.ReadImageFileProcess_Callback);
-                    this.readImageFileProcess.SuccessEnd += new EventHandler(this.ReadImageFileProcess_SuccessEnd);
-                    this.readImageFileProcess.ErrorEnd += new EventHandler(this.ReadImageFileProcess_ErrorEnd);
+                    this.getImageFileTask = new();
+                    this.getImageFileTask
+                        .Then(this.GetImageFileTask_Callback)
+                        .Catch(ex => this.Cursor = Cursors.Default)
+                        .Complete(() => this.Cursor = Cursors.Default)
+                        .StartThread();
                 }
 
-                return this.readImageFileProcess;
+                return this.getImageFileTask;
             }
         }
 
-        private OneWayProcess<AddBookmarkAsyncTask, SingleValueEntity<string>> AddBookmarkProcess
+        private OneWayProcess<AddBookmarkAsyncTask, SingleValueEntity<string>> AddBookmarkTask
         {
             get
             {
-                if (this.addBookmarkProcess == null)
+                if (this.addBookmarkTask == null)
                 {
-                    this.addBookmarkProcess = TaskManager.CreateOneWayProcess<AddBookmarkAsyncTask, SingleValueEntity<string>>(this.ProcessContainer);
+                    this.addBookmarkTask = TaskManager.CreateOneWayProcess<AddBookmarkAsyncTask, SingleValueEntity<string>>(this.ProcessContainer);
                 }
 
-                return this.addBookmarkProcess;
+                return this.addBookmarkTask;
             }
         }
 
-        private OneWayProcess<ExportFileAsyncTask, ExportFileParameter> ExportFileProcess
+        private OneWayProcess<ExportFileAsyncTask, ExportFileParameter> ExportFileTask
         {
             get
             {
-                if (this.exportFileProcess == null)
+                if (this.exportFileTask == null)
                 {
-                    this.exportFileProcess = TaskManager.CreateOneWayProcess<ExportFileAsyncTask, ExportFileParameter>(this.ProcessContainer);
+                    this.exportFileTask = TaskManager.CreateOneWayProcess<ExportFileAsyncTask, ExportFileParameter>(this.ProcessContainer);
                 }
 
-                return this.exportFileProcess;
+                return this.exportFileTask;
             }
         }
 
@@ -213,6 +216,12 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         {
             if (disposing)
             {
+                if (this.getImageFileTask != null)
+                {
+                    this.getImageFileTask.Dispose();
+                    this.getImageFileTask = null;
+                }
+
                 this.parameter.SelectedFilePath = this.SelectedFilePath;
                 this.parameter.GetImageFiles -= this.Parameter_GetImageFiles;
 
@@ -479,8 +488,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             param.ImageSizeMode = this.sizeMode;
             param.ThumbnailSize = this.leftImagePanel.ThumbnailSize;
 
-            this.ReadImageFileProcess.Cancel();
-            this.ReadImageFileProcess.Execute(this, param);
+            this.GetImageFileTask.StartTask(param);
         }
 
         private void DoDragDrop(string currentFilePath)
@@ -587,7 +595,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             }
         }
 
-        private void ReadImageFileProcess_Callback(object sender, GetImageFileResult e)
+        private void GetImageFileTask_Callback(GetImageFileResult e)
         {
             if (e.TaskException != null)
             {
@@ -705,16 +713,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.rightImagePanel.Invalidate();
 
             this.Focus();
-        }
-
-        private void ReadImageFileProcess_SuccessEnd(object sender, EventArgs e)
-        {
-            this.Cursor = Cursors.Default;
-        }
-
-        private void ReadImageFileProcess_ErrorEnd(object sender, EventArgs e)
-        {
-            this.Cursor = Cursors.Default;
         }
 
         #endregion
@@ -1064,7 +1062,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                     var param = new ExportFileParameter();
                     param.SrcFilePath = srcFilePath;
                     param.ExportFilePath = ofd.FileName;
-                    this.ExportFileProcess.Execute(this, param);
+                    this.ExportFileTask.Execute(this, param);
 
                     CommonConfig.ExportDirectoryPath = dir;
                 }
@@ -1088,7 +1086,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 Value = e.FilePath,
             };
 
-            this.AddBookmarkProcess.Execute(this, paramter);
+            this.AddBookmarkTask.Execute(this, paramter);
         }
 
         #endregion

@@ -1,5 +1,5 @@
 using PicSum.Core.Base.Conf;
-using PicSum.Core.Task.AsyncTask;
+using PicSum.Core.Task.AsyncTaskV2;
 using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -14,7 +14,7 @@ namespace PicSum.Task.AsyncLogic
     internal sealed class GetImageFileAsyncLogic
         : AbstractAsyncLogic
     {
-        public GetImageFileAsyncLogic(AbstractAsyncTask task)
+        public GetImageFileAsyncLogic(IAsyncTask task)
             : base(task)
         {
 

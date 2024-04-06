@@ -1,7 +1,6 @@
 using PicSum.Core.Base.Conf;
-using PicSum.Core.Task.Base;
+using PicSum.Core.Task.AsyncTaskV2;
 using System.Collections.Generic;
-using System.Drawing;
 
 namespace PicSum.Task.Paramter
 {
@@ -9,7 +8,7 @@ namespace PicSum.Task.Paramter
     /// 画像読込パラメータエンティティ
     /// </summary>
     public sealed class GetImageFileParameter
-        : IEntity
+        : AbstractTaskParameter
     {
         public int CurrentIndex { get; set; }
         public IList<string> FilePathList { get; set; }
