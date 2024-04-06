@@ -47,6 +47,10 @@ namespace PicSum.Core.Task.AsyncTaskV2
             try
             {
                 this.Execute(this.Parameter);
+
+                if (this.CompleteAction == null)
+                    throw new NullReferenceException("タスク完了アクションがNULLです。");
+                this.CompleteAction();
             }
             catch (TaskException ex)
             {
@@ -57,12 +61,6 @@ namespace PicSum.Core.Task.AsyncTaskV2
             catch (TaskCancelException)
             {
                 throw;
-            }
-            finally
-            {
-                if (this.CompleteAction == null)
-                    throw new NullReferenceException("タスク完了アクションがNULLです。");
-                this.CompleteAction();
             }
         }
 
