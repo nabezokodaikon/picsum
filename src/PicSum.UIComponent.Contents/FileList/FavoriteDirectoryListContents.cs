@@ -1,7 +1,7 @@
-using PicSum.Core.Task.AsyncTask;
-using PicSum.Task.Tasks;
+using PicSum.Core.Task.AsyncTaskV2;
 using PicSum.Task.Entities;
 using PicSum.Task.Paramters;
+using PicSum.Task.Tasks;
 using PicSum.UIComponent.Contents.Common;
 using PicSum.UIComponent.Contents.Conf;
 using PicSum.UIComponent.Contents.Parameter;
@@ -21,39 +21,41 @@ namespace PicSum.UIComponent.Contents.FileList
         #region インスタンス変数
 
         private FavoriteDirectoryListContentsParameter parameter = null;
-        private TwoWayProcess<GetFavoriteDirectoryTask, GetFavoriteDirectoryParameter, ListEntity<FileShallowInfoEntity>> searchFavoriteDirectoryProcess = null;
-        private OneWayProcess<DeleteDirectoryViewCounterTask, ListEntity<string>> deleteDirectoryViewCounterProcess = null;
+        private TaskWrapper<GetFavoriteDirectoryTask, GetFavoriteDirectoryParameter, ListResult<FileShallowInfoEntity>> searchTask = null;
+        private TaskWrapper<DeleteDirectoryViewCounterTask, ListParameter<string>> deleteTask = null;
 
         #endregion
 
         #region プライベートプロパティ
 
-        private TwoWayProcess<GetFavoriteDirectoryTask, GetFavoriteDirectoryParameter, ListEntity<FileShallowInfoEntity>> SearchFavoriteDirectoryProcess
+        private TaskWrapper<GetFavoriteDirectoryTask, GetFavoriteDirectoryParameter, ListResult<FileShallowInfoEntity>> SearchTask
         {
             get
             {
-                if (this.searchFavoriteDirectoryProcess == null)
+                if (this.searchTask == null)
                 {
-                    this.searchFavoriteDirectoryProcess = TaskManager.CreateTwoWayProcess<GetFavoriteDirectoryTask, GetFavoriteDirectoryParameter, ListEntity<FileShallowInfoEntity>>(this.ProcessContainer);
-                    this.searchFavoriteDirectoryProcess.Callback += new AsyncTaskCallbackEventHandler<ListEntity<FileShallowInfoEntity>>(this.SearchFavoriteDirectoryProcess_Callback);
+                    this.searchTask = new();
+                    this.searchTask
+                        .Callback(this.SearchTask_Callback)
+                        .StartThread();
                 }
 
-                return this.searchFavoriteDirectoryProcess;
+                return this.searchTask;
             }
         }
 
-        private OneWayProcess<DeleteDirectoryViewCounterTask, ListEntity<string>> DeleteDirectoryViewCounterProcess
+        private TaskWrapper<DeleteDirectoryViewCounterTask, ListParameter<string>> DeleteTask
         {
             get
             {
-                if (this.deleteDirectoryViewCounterProcess == null)
+                if (this.deleteTask == null)
                 {
-                    this.deleteDirectoryViewCounterProcess
-                        = TaskManager.CreateOneWayProcess<DeleteDirectoryViewCounterTask, ListEntity<string>>(this.ProcessContainer);
-
+                    this.deleteTask = new();
+                    this.searchTask
+                        .StartThread();
                 }
 
-                return this.deleteDirectoryViewCounterProcess;
+                return this.deleteTask;
             }
         }
 
@@ -77,6 +79,18 @@ namespace PicSum.UIComponent.Contents.FileList
             if (disposing)
             {
                 this.parameter.SelectedFilePath = base.SelectedFilePath;
+
+                if (this.searchTask != null)
+                {
+                    this.searchTask.Dispose();
+                    this.searchTask = null;
+                }
+
+                if (this.deleteTask != null)
+                {
+                    this.deleteTask.Dispose();
+                    this.deleteTask = null;
+                }
             }
 
             base.Dispose(disposing);
@@ -88,7 +102,7 @@ namespace PicSum.UIComponent.Contents.FileList
             var param = new GetFavoriteDirectoryParameter();
             param.IsOnlyDirectory = true;
             param.Count = FileListContentsConfig.FavoriteDirectoryCount;
-            this.SearchFavoriteDirectoryProcess.Execute(this, param);
+            this.SearchTask.StartTask(param);
         }
 
         protected override void OnDrawTabContents(SWF.UIComponent.TabOperation.DrawTabEventArgs e)
@@ -104,8 +118,8 @@ namespace PicSum.UIComponent.Contents.FileList
 
         protected override void OnRemoveFile(IList<string> directoryList)
         {
-            var param = new ListEntity<string>(directoryList);
-            this.DeleteDirectoryViewCounterProcess.Execute(this, param);
+            var param = new ListParameter<string>(directoryList);
+            this.DeleteTask.StartTask(param);
             this.RemoveFile(directoryList);
 
             this.OnSelectedFileChanged(new SelectedFileChangeEventArgs());
@@ -143,7 +157,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
         #region プロセスイベント
 
-        private void SearchFavoriteDirectoryProcess_Callback(object sender, ListEntity<FileShallowInfoEntity> e)
+        private void SearchTask_Callback(ListResult<FileShallowInfoEntity> e)
         {
             base.SetFile(e, this.parameter.SelectedFilePath);
         }

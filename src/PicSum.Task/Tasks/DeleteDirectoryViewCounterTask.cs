@@ -1,16 +1,15 @@
 using PicSum.Core.Data.DatabaseAccessor;
-using PicSum.Core.Task.AsyncTask;
+using PicSum.Core.Task.AsyncTaskV2;
 using PicSum.Data.DatabaseAccessor.Connection;
 using PicSum.Task.Logics;
-using PicSum.Task.Entities;
 using System;
 
 namespace PicSum.Task.Tasks
 {
     public sealed class DeleteDirectoryViewCounterTask
-        : OneWayTaskBase<ListEntity<string>>
+        : AbstractAsyncTask<ListParameter<string>>
     {
-        public override void Execute(ListEntity<string> param)
+        protected override void Execute(ListParameter<string> param)
         {
             if (param == null)
             {
