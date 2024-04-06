@@ -90,19 +90,19 @@ namespace PicSum.Task.AsyncTask
             }
             catch (ImageUtilException ex)
             {
-                this.exeptionHandler(result);
+                this.ExeptionHandler(result);
                 result.TaskException = new TaskException(this.ID, ex);
             }
             catch (TaskCancelException)
             {
-                this.exeptionHandler(result);
+                this.ExeptionHandler(result);
                 throw;
             }
 
             this.ThenAction(result);
         }
 
-        private void exeptionHandler(GetImageFileResult result)
+        private void ExeptionHandler(GetImageFileResult result)
         {
             if (result.Image1 != null)
             {
