@@ -91,7 +91,7 @@ namespace PicSum.Task.AsyncTask
             catch (ImageUtilException ex)
             {
                 this.exeptionHandler(result);
-                result.TaskException = new TaskException(ex);
+                result.TaskException = new TaskException(this.ID, ex);
             }
             catch (TaskCancelException)
             {

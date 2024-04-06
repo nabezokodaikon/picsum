@@ -3,7 +3,7 @@ namespace PicSum.Core.Task.AsyncTaskV2
     public abstract class AbstractAsyncTask<TParameter>
         : AbstractAsyncTask<TParameter, TaskEmptyResult>,
           IAsyncTask
-        where TParameter : AbstractTaskParameter                
+        where TParameter : AbstractTaskParameter
     {
 
     }
@@ -15,11 +15,11 @@ namespace PicSum.Core.Task.AsyncTaskV2
     {
         private long isCancel = 0;
 
-        public TaskID? ID { get; set; }
-        public TParameter? Parameter { get; set; }
-        public Action<TResult>? ThenAction { get; set; }
-        public Action<Exception>? CatchAction { get; set; }
-        public Action? CompleteAction { get; set; }
+        public TaskID? ID { get; internal set; }
+        public TParameter? Parameter { get; internal set; }
+        public Action<TResult>? ThenAction { get; internal set; }
+        public Action<Exception>? CatchAction { get; internal set; }
+        public Action? CompleteAction { get; internal set; }
 
         private bool IsCancel
         {
@@ -38,7 +38,7 @@ namespace PicSum.Core.Task.AsyncTaskV2
 
         }
 
-        public void ExecuteWrapper()
+        internal void ExecuteWrapper()
         {
             try
             {
@@ -55,13 +55,17 @@ namespace PicSum.Core.Task.AsyncTaskV2
             {
                 throw;
             }
+            finally
+            {
+                GC.Collect();
+            }
 
             this.CompleteAction?.Invoke();
         }
 
         protected abstract void Execute(TParameter parameter);
 
-        public void BeginCancel()
+        internal void BeginCancel()
         {
             this.IsCancel = true;
         }
@@ -70,7 +74,14 @@ namespace PicSum.Core.Task.AsyncTaskV2
         {
             if (this.IsCancel)
             {
-                throw new TaskCancelException();
+                if (this.ID != null)
+                {
+                    throw new TaskCancelException(this.ID);
+                }
+                else
+                {
+                    throw new TaskCancelException();
+                }
             }
         }
     }
