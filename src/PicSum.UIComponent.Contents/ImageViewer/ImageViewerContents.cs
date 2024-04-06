@@ -1,10 +1,8 @@
 using PicSum.Core.Base.Conf;
-using PicSum.Core.Task.AsyncTask;
 using PicSum.Core.Task.AsyncTaskV2;
-using PicSum.Task.Tasks;
-using PicSum.Task.Entities;
 using PicSum.Task.Paramters;
 using PicSum.Task.Results;
+using PicSum.Task.Tasks;
 using PicSum.UIComponent.Contents.Common;
 using PicSum.UIComponent.Contents.Conf;
 using PicSum.UIComponent.Contents.ContextMenu;
@@ -56,8 +54,8 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         private IList<string> filePathList = null;
 
         private TaskWrapper<GetImageFileTask, GetImageFileParameter, GetImageFileResult> getImageFileTask = null;
-        private TaskWrapper<AddBookmarkTask, ValueResult<string>> addBookmarkTask = null;
-        private OneWayProcess<ExportFileTask, ExportFileParameter> exportFileTask = null;
+        private TaskWrapper<AddBookmarkTask, ValueParameter<string>> addBookmarkTask = null;
+        private TaskWrapper<ExportFileTask, ExportFileParameter> exportFileTask = null;
 
         #endregion
 
@@ -115,7 +113,8 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                     this.getImageFileTask = new();
                     this.getImageFileTask
                         .Callback(this.GetImageFileTask_Callback)
-                        .Catch(ex => {
+                        .Catch(ex =>
+                        {
                             this.Cursor = Cursors.Default;
                             ExceptionUtil.ShowErrorDialog(ex.InnerException);
                         })
@@ -127,26 +126,30 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             }
         }
 
-        private OneWayProcess<AddBookmarkTask, SingleValueEntity<string>> AddBookmarkTask
+        private TaskWrapper<AddBookmarkTask, ValueParameter<string>> AddBookmarkTask
         {
             get
             {
                 if (this.addBookmarkTask == null)
                 {
-                    this.addBookmarkTask = TaskManager.CreateOneWayProcess<AddBookmarkTask, SingleValueEntity<string>>(this.ProcessContainer);
+                    this.addBookmarkTask = new();
+                    this.addBookmarkTask
+                        .StartThread();
                 }
 
                 return this.addBookmarkTask;
             }
         }
 
-        private OneWayProcess<ExportFileTask, ExportFileParameter> ExportFileTask
+        private TaskWrapper<ExportFileTask, ExportFileParameter> ExportFileTask
         {
             get
             {
                 if (this.exportFileTask == null)
                 {
-                    this.exportFileTask = TaskManager.CreateOneWayProcess<ExportFileTask, ExportFileParameter>(this.ProcessContainer);
+                    this.exportFileTask = new();
+                    this.exportFileTask
+                        .StartThread();
                 }
 
                 return this.exportFileTask;
@@ -223,6 +226,18 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 {
                     this.getImageFileTask.Dispose();
                     this.getImageFileTask = null;
+                }
+
+                if (this.addBookmarkTask != null)
+                {
+                    this.addBookmarkTask.Dispose();
+                    this.addBookmarkTask = null;
+                }
+
+                if (this.exportFileTask != null)
+                {
+                    this.exportFileTask.Dispose();
+                    this.exportFileTask = null;
                 }
 
                 this.parameter.SelectedFilePath = this.SelectedFilePath;
@@ -1059,7 +1074,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                     var param = new ExportFileParameter();
                     param.SrcFilePath = srcFilePath;
                     param.ExportFilePath = ofd.FileName;
-                    this.ExportFileTask.Execute(this, param);
+                    this.ExportFileTask.StartTask(param);
 
                     CommonConfig.ExportDirectoryPath = dir;
                 }
@@ -1078,12 +1093,12 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
         private void FileContextMenu_Bookmark(object sender, ExecuteFileEventArgs e)
         {
-            var paramter = new SingleValueEntity<string>()
+            var paramter = new ValueParameter<string>()
             {
                 Value = e.FilePath,
             };
 
-            this.AddBookmarkTask.Execute(this, paramter);
+            this.AddBookmarkTask.StartTask(paramter);
         }
 
         #endregion
