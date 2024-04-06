@@ -1,13 +1,12 @@
-using PicSum.Core.Task.AsyncTask;
-using PicSum.Task.Tasks;
+using PicSum.Core.Task.AsyncTaskV2;
 using PicSum.Task.Entities;
+using PicSum.Task.Tasks;
 using PicSum.UIComponent.AddressBar.Properties;
 using SWF.Common;
 using System;
 using System.Drawing;
 using System.Runtime.Versioning;
 using System.Windows.Forms;
-using PicSum.Core.Task.AsyncTaskV2;
 
 namespace PicSum.UIComponent.AddressBar
 {

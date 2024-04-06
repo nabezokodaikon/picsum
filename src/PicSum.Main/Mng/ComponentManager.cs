@@ -1,11 +1,9 @@
-using PicSum.Core.Task.AsyncTask;
 using PicSum.Main.Conf;
 using PicSum.Main.Properties;
 using PicSum.Task.SyncTasks;
 using PicSum.UIComponent.Contents.Conf;
 using System;
 using System.Runtime.Versioning;
-using System.Windows.Forms;
 
 namespace PicSum.Main.Mng
 {
@@ -47,12 +45,6 @@ namespace PicSum.Main.Mng
         /// </summary>
         public void Dispose()
         {
-            // 全ての非同期タスクが終了するまで待機します。
-            while (TaskManager.TaskList.Count > 0)
-            {
-                Application.DoEvents();
-            }
-
             // 終了処理を行います。
             var closingTask = new ClosingSyncTask();
             closingTask.Execute();

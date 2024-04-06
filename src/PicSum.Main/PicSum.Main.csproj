@@ -51,7 +51,6 @@
   <ItemGroup>
     <ProjectReference Include="..\PicSum.Core.Base\PicSum.Core.Base.csproj" />
     <ProjectReference Include="..\PicSum.Core.Data.DatabaseAccessor\PicSum.Core.Data.DatabaseAccessor.csproj" />
-    <ProjectReference Include="..\PicSum.Core.Task.AsyncTask\PicSum.Core.Task.AsyncTask.csproj" />
     <ProjectReference Include="..\PicSum.Core.Task.Base\PicSum.Core.Task.Base.csproj" />
     <ProjectReference Include="..\PicSum.Core.Task.SyncTask\PicSum.Core.Task.SyncTask.csproj" />
     <ProjectReference Include="..\PicSum.UIComponent.Contents\PicSum.UIComponent.Contents.csproj" />

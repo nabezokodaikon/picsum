@@ -1,8 +1,6 @@
-using PicSum.Core.Task.AsyncTask;
-using PicSum.Task.Logics;
-using PicSum.Task.Entities;
-using System.Runtime.Versioning;
 using PicSum.Core.Task.AsyncTaskV2;
+using PicSum.Task.Logics;
+using System.Runtime.Versioning;
 
 namespace PicSum.Task.Tasks
 {

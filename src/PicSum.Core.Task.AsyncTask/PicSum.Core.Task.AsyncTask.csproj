@@ -21,17 +21,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Update="OneWayProcess.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="ProcessBase.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="TwoWayProcess.cs">
-      <SubType>Component</SubType>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\PicSum.Core.Base\PicSum.Core.Base.csproj" />
     <ProjectReference Include="..\PicSum.Core.Task.Base\PicSum.Core.Task.Base.csproj" />
     <ProjectReference Include="..\SWF.Common\SWF.Common.csproj" />
