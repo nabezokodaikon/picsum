@@ -1,12 +1,10 @@
-using PicSum.Core.Task.AsyncTask;
-using PicSum.Task.Tasks;
-using PicSum.Task.Entities;
+using PicSum.Core.Task.AsyncTaskV2;
 using PicSum.Task.Results;
+using PicSum.Task.Tasks;
 using PicSum.UIComponent.AddressBar.Properties;
 using SWF.Common;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.Versioning;
@@ -33,13 +31,12 @@ namespace PicSum.UIComponent.AddressBar
         #region インスタンス変数
 
         private readonly int dropDownItemWidth = Resources.SmallArrowDown.Width;
-        private readonly Palette palette = new Palette();
-        private readonly OverflowDrawItem overflowItem = new OverflowDrawItem();
-        private readonly DirectoryHistoryDrawItem directoryHistoryItem = new DirectoryHistoryDrawItem();
-        private IContainer components = null;
-        private TwoWayProcess<GetAddressInfoTask, SingleValueEntity<string>, GetAddressInfoResult> getAddressInfoProcess = null;
+        private readonly Palette palette = new();
+        private readonly OverflowDrawItem overflowItem = new();
+        private readonly DirectoryHistoryDrawItem directoryHistoryItem = new();
+        private TaskWrapper<GetAddressInfoTask, ValueParameter<string>, GetAddressInfoResult> getAddressInfoTask = null;
         private string directoryPath = null;
-        private readonly List<DrawItemBase> addressItems = new List<DrawItemBase>();
+        private readonly List<DrawItemBase> addressItems = new();
         private DrawItemBase mousePointItem = null;
         private DrawItemBase mouseDownItem = null;
 
@@ -139,30 +136,23 @@ namespace PicSum.UIComponent.AddressBar
 
         #region プライベートプロパティ
 
-        private IContainer Components
+        private TaskWrapper<GetAddressInfoTask, ValueParameter<string>, GetAddressInfoResult> GetAddressInfoProcess
         {
             get
             {
-                if (this.components == null)
+                if (this.getAddressInfoTask == null)
                 {
-                    this.components = new Container();
+                    this.getAddressInfoTask = new();
+                    this.getAddressInfoTask
+                        .Callback(this.GetAddressInfoProcess_Callback)
+                        .Catch(ex =>
+                        {
+                            ExceptionUtil.ShowErrorDialog(ex.InnerException);
+                        })
+                        .StartThread();
                 }
 
-                return this.components;
-            }
-        }
-
-        private TwoWayProcess<GetAddressInfoTask, SingleValueEntity<string>, GetAddressInfoResult> GetAddressInfoProcess
-        {
-            get
-            {
-                if (this.getAddressInfoProcess == null)
-                {
-                    this.getAddressInfoProcess = TaskManager.CreateTwoWayProcess<GetAddressInfoTask, SingleValueEntity<string>, GetAddressInfoResult>(this.Components);
-                    this.GetAddressInfoProcess.Callback += new AsyncTaskCallbackEventHandler<GetAddressInfoResult>(this.GetAddressInfoProcess_Callback);
-                }
-
-                return this.getAddressInfoProcess;
+                return this.getAddressInfoTask;
             }
         }
 
@@ -191,11 +181,9 @@ namespace PicSum.UIComponent.AddressBar
                 throw new ArgumentException("アドレスバーに空白は設定できません。", nameof(filePath));
             }
 
-            this.GetAddressInfoProcess.Cancel();
-
-            var param = new SingleValueEntity<string>();
+            var param = new ValueParameter<string>();
             param.Value = filePath;
-            this.GetAddressInfoProcess.Execute(this, param);
+            this.GetAddressInfoProcess.StartTask(param);
         }
 
         #endregion
@@ -206,9 +194,10 @@ namespace PicSum.UIComponent.AddressBar
         {
             if (disposing)
             {
-                if (this.components != null)
+                if (this.getAddressInfoTask != null)
                 {
-                    this.components.Dispose();
+                    this.getAddressInfoTask.Dispose();
+                    this.getAddressInfoTask = null;
                 }
 
                 this.overflowItem.Dispose();
@@ -624,14 +613,8 @@ namespace PicSum.UIComponent.AddressBar
             }
         }
 
-        private void GetAddressInfoProcess_Callback(object sender, GetAddressInfoResult e)
+        private void GetAddressInfoProcess_Callback(GetAddressInfoResult e)
         {
-            if (e.TaskException != null)
-            {
-                ExceptionUtil.ShowErrorDialog(e.TaskException.InnerException);
-                return;
-            }
-
             this.ClearAddressItems();
 
             this.directoryPath = e.DirectoryPath;

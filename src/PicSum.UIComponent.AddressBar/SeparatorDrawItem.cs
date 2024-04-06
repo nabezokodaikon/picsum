@@ -7,12 +7,13 @@ using System.Drawing;
 using System.Linq;
 using System.Runtime.Versioning;
 using System.Windows.Forms;
+using PicSum.Core.Task.AsyncTaskV2;
 
 namespace PicSum.UIComponent.AddressBar
 {
     [SupportedOSPlatform("windows")]
     internal sealed class SeparatorDrawItem
-        : DropDownDrawItemBase, IDisposable
+        : DropDownDrawItemBase
     {
         #region インスタンス変数
 
@@ -20,7 +21,7 @@ namespace PicSum.UIComponent.AddressBar
         private Image mouseDownImage = Resources.SmallArrowDown;
         private bool isRead = false;
         private Font selectedSubDirectoryFont = null;
-        private TwoWayProcess<GetSubDirectoryTask, SingleValueEntity<string>, ListEntity<FileShallowInfoEntity>> getSubDirectoryProcess = null;
+        private TaskWrapper<GetSubDirectoryTask, ValueParameter<string>, ListResult<FileShallowInfoEntity>> getSubDirectoryTask = null;
 
         #endregion
 
@@ -29,17 +30,19 @@ namespace PicSum.UIComponent.AddressBar
         public DirectoryEntity Directory { get; set; }
         public string SelectedSubDirectoryPath { get; set; }
 
-        private TwoWayProcess<GetSubDirectoryTask, SingleValueEntity<string>, ListEntity<FileShallowInfoEntity>> GetSubDirectoryProcess
+        private TaskWrapper<GetSubDirectoryTask, ValueParameter<string>, ListResult<FileShallowInfoEntity>> GetSubDirectoryTask
         {
             get
             {
-                if (this.getSubDirectoryProcess == null)
+                if (this.getSubDirectoryTask == null)
                 {
-                    this.getSubDirectoryProcess = TaskManager.CreateTwoWayProcess<GetSubDirectoryTask, SingleValueEntity<string>, ListEntity<FileShallowInfoEntity>>(base.Components);
-                    this.getSubDirectoryProcess.Callback += new AsyncTaskCallbackEventHandler<ListEntity<FileShallowInfoEntity>>(this.GetSubDirectoryProcess_Callback);
+                    this.getSubDirectoryTask = new();
+                    this.getSubDirectoryTask
+                        .Callback(this.GetSubDirectoryTask_Callback)
+                        .StartThread();
                 }
 
-                return this.getSubDirectoryProcess;
+                return this.getSubDirectoryTask;
             }
         }
 
@@ -78,6 +81,13 @@ namespace PicSum.UIComponent.AddressBar
             if (this.selectedSubDirectoryFont != null)
             {
                 this.selectedSubDirectoryFont.Dispose();
+                this.selectedSubDirectoryFont = null;
+            }
+
+            if (this.getSubDirectoryTask != null)
+            {
+                this.getSubDirectoryTask.Dispose();
+                this.getSubDirectoryTask = null;
             }
 
             base.Dispose();
@@ -128,9 +138,9 @@ namespace PicSum.UIComponent.AddressBar
 
                 if (!this.isRead)
                 {
-                    SingleValueEntity<string> param = new SingleValueEntity<string>();
+                    ValueParameter<string> param = new();
                     param.Value = this.Directory.DirectoryPath;
-                    this.GetSubDirectoryProcess.Execute(this, param);
+                    this.GetSubDirectoryTask.StartTask(param);
                 }
             }
         }
@@ -208,7 +218,7 @@ namespace PicSum.UIComponent.AddressBar
 
         #region イベント
 
-        private void GetSubDirectoryProcess_Callback(object sender, ListEntity<FileShallowInfoEntity> e)
+        private void GetSubDirectoryTask_Callback(ListResult<FileShallowInfoEntity> e)
         {
             var width = MINIMUM_DROPDOWN_WIDHT;
 

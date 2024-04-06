@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
@@ -15,7 +15,6 @@ namespace PicSum.UIComponent.AddressBar
         public event EventHandler DropDownClosed;
         public event EventHandler<SelectedDirectoryEventArgs> SelectedDirectory;
 
-        private IContainer components = null;
         private AddressBar addressBar = null;
         private Palette palette = null;
         private bool isMousePoint = false;
@@ -169,19 +168,6 @@ namespace PicSum.UIComponent.AddressBar
             }
         }
 
-        protected IContainer Components
-        {
-            get
-            {
-                if (this.components == null)
-                {
-                    this.components = new Container();
-                }
-
-                return this.components;
-            }
-        }
-
         public abstract void Draw(Graphics g);
 
         public abstract void OnMouseDown(MouseEventArgs e);
@@ -203,10 +189,11 @@ namespace PicSum.UIComponent.AddressBar
 
         protected virtual void Dispose()
         {
-            if (this.components != null)
-            {
-                this.components.Dispose();
-            }
+            this.DropDownOpened = null;
+            this.DropDownClosed = null;
+            this.SelectedDirectory = null;
+            this.addressBar = null;
+            this.palette = null;
         }
 
         protected virtual void OnDropDownOpened(EventArgs e)

@@ -8,7 +8,7 @@ using System;
 namespace PicSum.Task.Tasks
 {
     public sealed class AddBookmarkTask
-        : AbstractAsyncTask<ValueParameter<string>, EmptyResult>
+        : AbstractAsyncTask<ValueParameter<string>>
     {
         protected override void Execute(ValueParameter<string> param)
         {

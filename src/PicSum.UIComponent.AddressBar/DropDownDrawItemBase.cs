@@ -68,6 +68,7 @@ namespace PicSum.UIComponent.AddressBar
             {
                 this.dropDownList.Close();
                 this.dropDownList.Dispose();
+                this.dropDownList = null;
             }
 
             base.Dispose();

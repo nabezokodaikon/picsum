@@ -7,33 +7,36 @@ using System;
 using System.Drawing;
 using System.Runtime.Versioning;
 using System.Windows.Forms;
+using PicSum.Core.Task.AsyncTaskV2;
 
 namespace PicSum.UIComponent.AddressBar
 {
     [SupportedOSPlatform("windows")]
     internal sealed class DirectoryHistoryDrawItem
-        : DropDownDrawItemBase, IDisposable
+        : DropDownDrawItemBase
     {
         #region インスタンス変数
 
-        private Image drawImage = Resources.SmallArrowDown;
-        private TwoWayProcess<GetDirectoryViewHistoryTask, ListEntity<FileShallowInfoEntity>> getDirectoryHistoryProcess = null;
+        private readonly Image drawImage = Resources.SmallArrowDown;
+        private TaskWrapper<GetDirectoryViewHistoryTask, EmptyParameter, ListResult<FileShallowInfoEntity>> getDirectoryHistoryTask = null;
 
         #endregion
 
         #region プロパティ
 
-        private TwoWayProcess<GetDirectoryViewHistoryTask, ListEntity<FileShallowInfoEntity>> GetDirectoryHistoryProcess
+        private TaskWrapper<GetDirectoryViewHistoryTask, EmptyParameter, ListResult<FileShallowInfoEntity>> GetDirectoryHistoryTask
         {
             get
             {
-                if (this.getDirectoryHistoryProcess == null)
+                if (this.getDirectoryHistoryTask == null)
                 {
-                    this.getDirectoryHistoryProcess = TaskManager.CreateTwoWayProcess<GetDirectoryViewHistoryTask, ListEntity<FileShallowInfoEntity>>(base.Components);
-                    this.getDirectoryHistoryProcess.Callback += new AsyncTaskCallbackEventHandler<ListEntity<FileShallowInfoEntity>>(this.GetDirectoryHistoryProcess_Callback);
+                    this.getDirectoryHistoryTask = new();
+                    this.getDirectoryHistoryTask
+                        .Callback(r => this.GetDirectoryHistoryTask_Callback(r))
+                        .StartThread();
                 }
 
-                return this.getDirectoryHistoryProcess;
+                return this.getDirectoryHistoryTask;
             }
         }
 
@@ -52,6 +55,12 @@ namespace PicSum.UIComponent.AddressBar
 
         public new void Dispose()
         {
+            if (this.getDirectoryHistoryTask != null)
+            {
+                this.getDirectoryHistoryTask.Dispose();
+                this.getDirectoryHistoryTask = null;
+            }
+
             base.Dispose();
         }
 
@@ -92,7 +101,7 @@ namespace PicSum.UIComponent.AddressBar
                 base.DropDownList.ClearSelectedItems();
                 base.DropDownList.ItemCount = 0;
                 base.DropDownList.Show(base.AddressBar, 0, base.AddressBar.Height);
-                this.GetDirectoryHistoryProcess.Execute(this);
+                this.GetDirectoryHistoryTask.StartTask();
             }
         }
 
@@ -152,7 +161,7 @@ namespace PicSum.UIComponent.AddressBar
 
         #region イベント
 
-        private void GetDirectoryHistoryProcess_Callback(object sender, ListEntity<FileShallowInfoEntity> e)
+        private void GetDirectoryHistoryTask_Callback(ListResult<FileShallowInfoEntity> e)
         {
             var width = 0;
 

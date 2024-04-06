@@ -129,6 +129,15 @@ namespace PicSum.Core.Task.AsyncTaskV2
             this.taskQueue.Enqueue(task);
         }
 
+        public void StartTask()
+        {
+            this.ClearQueue();
+
+            var task = new TTask();
+            task.ID = new();
+            this.taskQueue.Enqueue(task);
+        }
+
         private void ClearQueue()
         {
             while (this.taskQueue.TryDequeue(out var t))
@@ -201,7 +210,7 @@ namespace PicSum.Core.Task.AsyncTaskV2
                         if (this.completeAction != null)
                         {
                             task.CompleteAction = () =>
-                            {                                
+                            {
                                 this.context.Post(state =>
                                 {
                                     this.completeAction();
