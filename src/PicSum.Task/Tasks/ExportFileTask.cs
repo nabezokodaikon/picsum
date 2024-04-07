@@ -39,24 +39,29 @@ namespace PicSum.Task.Tasks
                 var logic = new ExportFileLogic(this);
                 logic.Execute(param.SrcFilePath, param.ExportFilePath);
             }
-            catch (PathTooLongException)
+            catch (PathTooLongException ex)
             {
+                this.WriteErrorLog(ex);
                 return;
             }
-            catch (DirectoryNotFoundException)
+            catch (DirectoryNotFoundException ex)
             {
+                this.WriteErrorLog(ex);
                 return;
             }
-            catch (FileNotFoundException)
+            catch (FileNotFoundException ex)
             {
+                this.WriteErrorLog(ex);
                 return;
             }
-            catch (IOException)
+            catch (IOException ex)
             {
+                this.WriteErrorLog(ex);
                 return;
             }
-            catch (NotSupportedException)
+            catch (NotSupportedException ex)
             {
+                this.WriteErrorLog(ex);
                 return;
             }
             finally

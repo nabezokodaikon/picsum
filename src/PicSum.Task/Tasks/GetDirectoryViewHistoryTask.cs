@@ -26,8 +26,9 @@ namespace PicSum.Task.Tasks
                 {
                     result.Add(logic.Execute(directoryPath));
                 }
-                catch (FileUtilException)
+                catch (FileUtilException ex)
                 {
+                    this.WriteErrorLog(ex);
                     continue;
                 }
             }

@@ -29,8 +29,9 @@ namespace PicSum.Task.Tasks
                         infoList.Add(info);
                     }
                 }
-                catch (FileUtilException)
+                catch (FileUtilException ex)
                 {
+                    this.WriteErrorLog(ex);
                     continue;
                 }
             }

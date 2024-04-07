@@ -1021,7 +1021,7 @@ namespace SWF.Common
 
         private static string CreateFileAccessErrorMessage(string path)
         {
-            return $"'{path}'にアクセスできませんでした。";
+            return $"'{path}'を開けませんでした。";
         }
     }
 }

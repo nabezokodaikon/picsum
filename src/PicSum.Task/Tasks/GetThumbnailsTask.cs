@@ -50,12 +50,14 @@ namespace PicSum.Task.Tasks
                         img.FileUpdatedate = bf.FileUpdatedate;
                         this.Callback(img);
                     }
-                    catch (FileUtilException)
+                    catch (FileUtilException ex)
                     {
+                        this.WriteErrorLog(ex);
                         continue;
                     }
-                    catch (ImageUtilException)
+                    catch (ImageUtilException ex)
                     {
+                        this.WriteErrorLog(ex);
                         continue;
                     }
                 }

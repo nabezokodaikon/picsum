@@ -1,3 +1,6 @@
+using NLog;
+using SWF.Common;
+
 namespace PicSum.Core.Task.AsyncTaskV2
 {
     public abstract class AbstractTwoWayTask<TParameter, TResult>
@@ -5,6 +8,8 @@ namespace PicSum.Core.Task.AsyncTaskV2
         where TParameter : ITaskParameter
         where TResult : ITaskResult
     {
+        protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         private long isCancel = 0;
 
         public TaskID? ID { get; internal set; }
@@ -54,6 +59,8 @@ namespace PicSum.Core.Task.AsyncTaskV2
             }
             catch (TaskException ex)
             {
+                Logger.Error($"{this.ID} {ex}");
+
                 if (this.CatchAction != null)
                 {
                     this.CatchAction(ex);
@@ -69,6 +76,11 @@ namespace PicSum.Core.Task.AsyncTaskV2
         protected virtual void Execute()
         {
             throw new NotImplementedException();
+        }
+
+        protected void WriteErrorLog(Exception ex)
+        {
+            Logger.Error($"{this.ID} {ex}");
         }
 
         internal void BeginCancel()

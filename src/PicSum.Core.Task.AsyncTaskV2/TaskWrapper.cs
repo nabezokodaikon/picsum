@@ -41,7 +41,7 @@ namespace PicSum.Core.Task.AsyncTaskV2
 
             this.threadID = ThreadID.GetNew();
             this.taskType = typeof(TTask);
-            this.taskInfo = $"[{this.taskType.Name}] {this.threadID}";
+            this.taskInfo = $"{this.taskType.Name} {this.threadID}";
         }
 
         ~TwoWayTask()
@@ -160,7 +160,9 @@ namespace PicSum.Core.Task.AsyncTaskV2
 
         private void DoWork(CancellationToken token)
         {
-            Logger.Debug($"{this.taskInfo} タスク実行スレッドが開始されました。");
+            Thread.CurrentThread.Name = this.taskInfo;
+
+            Logger.Debug($"タスク実行スレッドが開始されました。");
 
             TTask? previewTask = null;
 
@@ -170,7 +172,7 @@ namespace PicSum.Core.Task.AsyncTaskV2
                 {
                     if (token.IsCancellationRequested)
                     {
-                        Logger.Debug($"{this.taskInfo} タスク実行スレッドにキャンセルリクエストがありました。");
+                        Logger.Debug($"タスク実行スレッドにキャンセルリクエストがありました。");
                         token.ThrowIfCancellationRequested();
                     }
 
@@ -187,7 +189,7 @@ namespace PicSum.Core.Task.AsyncTaskV2
                         if (task.ID == null)
                             throw new NullReferenceException(nameof(task.ID));
 
-                        Logger.Debug($"{this.taskInfo}, {task.ID} タスクを実行します。");
+                        Logger.Debug($"{task.ID} タスクを実行します。");
 
                         if (this.callbackAction != null)
                         {
@@ -234,11 +236,11 @@ namespace PicSum.Core.Task.AsyncTaskV2
                         }
                         catch (TaskCancelException)
                         {
-                            Logger.Debug($"{this.taskInfo}, {task.ID}  タスクがキャンセルされました。");
+                            Logger.Debug($"{task.ID}  タスクがキャンセルされました。");
                         }
                         finally
                         {
-                            Logger.Debug($"{this.taskInfo}, {task.ID}  タスクが終了しました。");
+                            Logger.Debug($"{task.ID}  タスクが終了しました。");
                         }
                     }
 

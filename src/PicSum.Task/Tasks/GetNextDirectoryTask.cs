@@ -39,8 +39,9 @@ namespace PicSum.Task.Tasks
                 var parentDirectory = FileUtil.GetParentDirectoryPath(param.CurrentParameter.Value);
                 list = (new GetSubDirectorysLogic(this)).Execute(parentDirectory);
             }
-            catch (FileUtilException)
+            catch (FileUtilException ex)
             {
+                this.WriteErrorLog(ex);
                 return;
             }
 

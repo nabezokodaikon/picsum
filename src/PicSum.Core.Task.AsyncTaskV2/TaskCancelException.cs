@@ -4,7 +4,7 @@ namespace PicSum.Core.Task.AsyncTaskV2
         : TaskException
     {
         internal TaskCancelException(TaskID id)
-            : base($"タスク[{id}]がキャンセルされました。")
+            : base($"{id} がキャンセルされました。")
         {
 
         }
