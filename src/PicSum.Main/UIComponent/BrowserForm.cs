@@ -129,14 +129,17 @@ namespace PicSum.Main.UIComponent
                     .Complete(() =>
                     {
                         // MEMO: DBをクリーンアップする場合は、コメントを外す。
-                        this.dbCleanupTask = new();
-                        this.dbCleanupTask
-                            .Catch(ex =>
-                                ExceptionUtil.ShowErrorDialog("DBクリーンアップ処理が失敗しました。", ex))
-                            .Complete(
-                                this.CreateBrowserMainPanel)
-                            .StartThread();
-                        this.dbCleanupTask.StartTask();
+                        //this.dbCleanupTask = new();
+                        //this.dbCleanupTask
+                        //    .Catch(ex =>
+                        //        ExceptionUtil.ShowErrorDialog("DBクリーンアップ処理が失敗しました。", ex))
+                        //    .Complete(
+                        //        this.CreateBrowserMainPanel)
+                        //    .StartThread();
+                        //this.dbCleanupTask.StartTask();
+
+                        // MEMO: DBをクリーンアップしない場合は、コメントアウトする。
+                        this.CreateBrowserMainPanel();
                     })
                     .StartThread();
 
