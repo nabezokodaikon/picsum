@@ -255,18 +255,6 @@ namespace PicSum.Core.Task.AsyncTaskV2
         }
     }
 
-    public sealed class TaskWrapper<TTask, TTaskParameter>
-        : TwoWayTask<TTask, TTaskParameter, EmptyResult>
-        where TTask : AbstractOneWayTask<TTaskParameter>, new()
-        where TTaskParameter : ITaskParameter
-    {
-        public TaskWrapper()
-            : base()
-        {
-
-        }
-    }
-
     public sealed class TwoWayTask<TTask, TTaskResult>
         : TwoWayTask<TTask, EmptyParameter, TTaskResult>
         where TTask : AbstractTwoWayTask<TTaskResult>, new()

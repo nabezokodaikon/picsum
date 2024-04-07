@@ -28,7 +28,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private TagFileListContentsParameter parameter = null;
         private TwoWayTask<GetFilesByTagTask, ValueParameter<string>, ListResult<FileShallowInfoEntity>> searchTask = null;
-        private TaskWrapper<DeleteFileTagTask, UpdateFileTagParameter> deleteTask = null;
+        private OneWayTask<DeleteFileTagTask, UpdateFileTagParameter> deleteTask = null;
         private TwoWayTask<GetFilesByTagTask, ValueParameter<string>, ListResult<FileShallowInfoEntity>> getFilesTask = null;
 
         #endregion
@@ -51,7 +51,7 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
-        private TaskWrapper<DeleteFileTagTask, UpdateFileTagParameter> DeleteTask
+        private OneWayTask<DeleteFileTagTask, UpdateFileTagParameter> DeleteTask
         {
             get
             {

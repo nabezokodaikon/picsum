@@ -22,7 +22,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private FavoriteDirectoryListContentsParameter parameter = null;
         private TwoWayTask<GetFavoriteDirectoryTask, GetFavoriteDirectoryParameter, ListResult<FileShallowInfoEntity>> searchTask = null;
-        private TaskWrapper<DeleteDirectoryViewCounterTask, ListParameter<string>> deleteTask = null;
+        private OneWayTask<DeleteDirectoryViewCounterTask, ListParameter<string>> deleteTask = null;
 
         #endregion
 
@@ -44,7 +44,7 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
-        private TaskWrapper<DeleteDirectoryViewCounterTask, ListParameter<string>> DeleteTask
+        private OneWayTask<DeleteDirectoryViewCounterTask, ListParameter<string>> DeleteTask
         {
             get
             {

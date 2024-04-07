@@ -28,8 +28,8 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private readonly DirectoryFileListContentsParameter parameter = null;
         private TwoWayTask<GetFilesByDirectoryTask, ValueParameter<string>, GetDirectoryResult> searchTask = null;
-        private TaskWrapper<UpdateDirectoryStateTask, DirectoryStateParameter> updateDirectoryStateTask = null;
-        private TaskWrapper<AddDirectoryViewHistoryTask, ValueParameter<string>> addDirectoryHistoryTask = null;
+        private OneWayTask<UpdateDirectoryStateTask, DirectoryStateParameter> updateDirectoryStateTask = null;
+        private OneWayTask<AddDirectoryViewHistoryTask, ValueParameter<string>> addDirectoryHistoryTask = null;
         private TwoWayTask<GetNextDirectoryTask, GetNextContentsParameter<string>, ValueResult<string>> getNextDirectoryTask = null;
         private TwoWayTask<GetFilesByDirectoryTask, ValueParameter<string>, GetDirectoryResult> getFilesTask = null;
 
@@ -57,7 +57,7 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
-        private TaskWrapper<UpdateDirectoryStateTask, DirectoryStateParameter> UpdateDirectoryStateTask
+        private OneWayTask<UpdateDirectoryStateTask, DirectoryStateParameter> UpdateDirectoryStateTask
         {
             get
             {
@@ -71,7 +71,7 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
-        private TaskWrapper<AddDirectoryViewHistoryTask, ValueParameter<string>> AddDirectoryHistoryTask
+        private OneWayTask<AddDirectoryViewHistoryTask, ValueParameter<string>> AddDirectoryHistoryTask
         {
             get
             {

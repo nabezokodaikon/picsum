@@ -8,7 +8,7 @@ namespace PicSum.Task.Tasks
 {
     [SupportedOSPlatform("windows")]
     public sealed class GetBookmarkTask
-        : AbstractTwoWayTask<EmptyParameter, ListResult<FileShallowInfoEntity>>
+        : AbstractTwoWayTask<ListResult<FileShallowInfoEntity>>
     {
         protected override void Execute()
         {

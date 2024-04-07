@@ -30,10 +30,10 @@ namespace PicSum.UIComponent.InfoPanel
         #region インスタンス変数
 
         private TwoWayTask<GetFileDeepInfoTask, GetFileDeepInfoParameter, GetFileDeepInfoResult> getFileInfoTask = null;
-        private TaskWrapper<UpdateFileRatingTask, UpdateFileRatingParameter> updateFileRatingTask = null;
-        private TwoWayTask<GetTagListTask, EmptyParameter, ListResult<string>> getTagListTask = null;
-        private TaskWrapper<AddFileTagTask, UpdateFileTagParameter> addFileTagTask = null;
-        private TaskWrapper<DeleteFileTagTask, UpdateFileTagParameter> deleteFileTagTask = null;
+        private OneWayTask<UpdateFileRatingTask, UpdateFileRatingParameter> updateFileRatingTask = null;
+        private TwoWayTask<GetTagListTask, ListResult<string>> getTagListTask = null;
+        private OneWayTask<AddFileTagTask, UpdateFileTagParameter> addFileTagTask = null;
+        private OneWayTask<DeleteFileTagTask, UpdateFileTagParameter> deleteFileTagTask = null;
 
         private GetFileDeepInfoResult fileInfoSource = null;
         private Font allTagFont = null;
@@ -60,7 +60,7 @@ namespace PicSum.UIComponent.InfoPanel
             }
         }
 
-        private TaskWrapper<UpdateFileRatingTask, UpdateFileRatingParameter> UpdateFileRatingTask
+        private OneWayTask<UpdateFileRatingTask, UpdateFileRatingParameter> UpdateFileRatingTask
         {
             get
             {
@@ -75,7 +75,7 @@ namespace PicSum.UIComponent.InfoPanel
             }
         }
 
-        private TwoWayTask<GetTagListTask, EmptyParameter, ListResult<string>> GetTagListTask
+        private TwoWayTask<GetTagListTask, ListResult<string>> GetTagListTask
         {
             get
             {
@@ -91,7 +91,7 @@ namespace PicSum.UIComponent.InfoPanel
             }
         }
 
-        private TaskWrapper<AddFileTagTask, UpdateFileTagParameter> AddFileTagTask
+        private OneWayTask<AddFileTagTask, UpdateFileTagParameter> AddFileTagTask
         {
             get
             {
@@ -106,7 +106,7 @@ namespace PicSum.UIComponent.InfoPanel
             }
         }
 
-        private TaskWrapper<DeleteFileTagTask, UpdateFileTagParameter> DeleteFileTagTask
+        private OneWayTask<DeleteFileTagTask, UpdateFileTagParameter> DeleteFileTagTask
         {
             get
             {

@@ -35,8 +35,8 @@ namespace PicSum.UIComponent.Contents.FileList
         private List<string> filterFilePathList = null;
         private readonly SortInfo sortInfo = new SortInfo();
         private TwoWayTask<GetThumbnailsTask, GetThumbnailParameter, ThumbnailImageResult> getThumbnailsTask = null;
-        private TaskWrapper<ExportFileTask, ExportFileParameter> exportFileTask = null;
-        private TaskWrapper<AddBookmarkTask, ValueParameter<string>> addBookmarkTask = null;
+        private OneWayTask<ExportFileTask, ExportFileParameter> exportFileTask = null;
+        private OneWayTask<AddBookmarkTask, ValueParameter<string>> addBookmarkTask = null;
 
         #endregion
 
@@ -193,7 +193,7 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
-        private TaskWrapper<ExportFileTask, ExportFileParameter> ExportFileTask
+        private OneWayTask<ExportFileTask, ExportFileParameter> ExportFileTask
         {
             get
             {
@@ -208,7 +208,7 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
-        private TaskWrapper<AddBookmarkTask, ValueParameter<string>> AddBookmarkTask
+        private OneWayTask<AddBookmarkTask, ValueParameter<string>> AddBookmarkTask
         {
             get
             {

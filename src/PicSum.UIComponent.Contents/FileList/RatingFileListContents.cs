@@ -26,7 +26,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private RatingFileListContentsParameter parameter = null;
         private TwoWayTask<GetFilesByRatingTask, ValueParameter<int>, ListResult<FileShallowInfoEntity>> searchTask = null;
-        private TaskWrapper<UpdateFileRatingTask, UpdateFileRatingParameter> deleteTask = null;
+        private OneWayTask<UpdateFileRatingTask, UpdateFileRatingParameter> deleteTask = null;
         private TwoWayTask<GetFilesByRatingTask, ValueParameter<int>, ListResult<FileShallowInfoEntity>> getFilesTask = null;
 
 
@@ -50,7 +50,7 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
-        private TaskWrapper<UpdateFileRatingTask, UpdateFileRatingParameter> DeleteTask
+        private OneWayTask<UpdateFileRatingTask, UpdateFileRatingParameter> DeleteTask
         {
             get
             {

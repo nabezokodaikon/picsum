@@ -11,7 +11,7 @@ namespace PicSum.Task.Tasks
     /// </summary>
     [SupportedOSPlatform("windows")]
     public sealed class GetDirectoryViewHistoryTask
-        : AbstractTwoWayTask<EmptyParameter, ListResult<FileShallowInfoEntity>>
+        : AbstractTwoWayTask<ListResult<FileShallowInfoEntity>>
     {
         protected override void Execute()
         {

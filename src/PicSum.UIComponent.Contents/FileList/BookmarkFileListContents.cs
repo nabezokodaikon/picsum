@@ -22,11 +22,11 @@ namespace PicSum.UIComponent.Contents.FileList
         : AbstractFileListContents
     {
         private BookmarkFileListContentsParameter paramter = null;
-        private TwoWayTask<GetBookmarkTask, EmptyParameter, ListResult<FileShallowInfoEntity>> searchTask = null;
-        private TaskWrapper<DeleteBookmarkTask, ListParameter<string>> deleteTask = null;
+        private TwoWayTask<GetBookmarkTask, ListResult<FileShallowInfoEntity>> searchTask = null;
+        private OneWayTask<DeleteBookmarkTask, ListParameter<string>> deleteTask = null;
         private TwoWayTask<GetFilesByDirectoryTask, ValueParameter<string>, GetDirectoryResult> getFilesTask = null;
 
-        private TwoWayTask<GetBookmarkTask, EmptyParameter, ListResult<FileShallowInfoEntity>> SearchTask
+        private TwoWayTask<GetBookmarkTask, ListResult<FileShallowInfoEntity>> SearchTask
         {
             get
             {
@@ -42,7 +42,7 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
-        private TaskWrapper<DeleteBookmarkTask, ListParameter<string>> DeleteTask
+        private OneWayTask<DeleteBookmarkTask, ListParameter<string>> DeleteTask
         {
             get
             {

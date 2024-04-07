@@ -54,8 +54,8 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         private IList<string> filePathList = null;
 
         private TwoWayTask<GetImageFileTask, GetImageFileParameter, GetImageFileResult> getImageFileTask = null;
-        private TaskWrapper<AddBookmarkTask, ValueParameter<string>> addBookmarkTask = null;
-        private TaskWrapper<ExportFileTask, ExportFileParameter> exportFileTask = null;
+        private OneWayTask<AddBookmarkTask, ValueParameter<string>> addBookmarkTask = null;
+        private OneWayTask<ExportFileTask, ExportFileParameter> exportFileTask = null;
 
         #endregion
 
@@ -126,7 +126,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             }
         }
 
-        private TaskWrapper<AddBookmarkTask, ValueParameter<string>> AddBookmarkTask
+        private OneWayTask<AddBookmarkTask, ValueParameter<string>> AddBookmarkTask
         {
             get
             {
@@ -141,7 +141,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             }
         }
 
-        private TaskWrapper<ExportFileTask, ExportFileParameter> ExportFileTask
+        private OneWayTask<ExportFileTask, ExportFileParameter> ExportFileTask
         {
             get
             {

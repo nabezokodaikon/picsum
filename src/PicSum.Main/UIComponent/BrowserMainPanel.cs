@@ -41,7 +41,7 @@ namespace PicSum.Main.UIComponent
 
         private Size previrewSize = Size.Empty;
         private Timer redrawTimer = null;
-        private TwoWayTask<GetTagListTask, EmptyParameter, ListResult<string>> getTagListTask = null;
+        private TwoWayTask<GetTagListTask, ListResult<string>> getTagListTask = null;
         private TwoWayTask<GetImageFileByDirectoryTask, GetImageFileByDirectoryParameter, GetImageFileByDirectoryResult> getFilesTask = null;
 
         #endregion
@@ -76,7 +76,7 @@ namespace PicSum.Main.UIComponent
             }
         }
 
-        private TwoWayTask<GetTagListTask, EmptyParameter, ListResult<string>> GetTagListTask
+        private TwoWayTask<GetTagListTask, ListResult<string>> GetTagListTask
         {
             get
             {
