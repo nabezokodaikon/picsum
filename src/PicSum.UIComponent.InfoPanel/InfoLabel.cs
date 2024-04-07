@@ -15,7 +15,7 @@ namespace PicSum.UIComponent.InfoPanel
             SystemColors.ControlText.R,
             SystemColors.ControlText.G,
             SystemColors.ControlText.B);
-        private SolidBrush? textBrush = null;
+        private SolidBrush textBrush = null;
 
         private string fileName = string.Empty;
         private string timestamp = string.Empty;
