@@ -315,10 +315,10 @@ namespace PicSum.UIComponent.InfoPanel
 
             this.fileInfoSource = null;
 
-            this.fileNameLabel.Text = string.Empty;
-            this.fileTypeLabel.Text = string.Empty;
-            this.fileSizeLabel.Text = string.Empty;
-            this.fileUpdatedateLabel.Text = string.Empty;
+            this.fileInfoLabel.FileName = string.Empty;
+            this.fileInfoLabel.FileType = string.Empty;
+            this.fileInfoLabel.FileSize = string.Empty;
+            this.fileInfoLabel.Timestamp = string.Empty;
             this.ratingBar.SetValue(0);
             this.thumbnailPictureBox.Invalidate();
             this.tagFlowList.ItemCount = 0;
@@ -474,21 +474,21 @@ namespace PicSum.UIComponent.InfoPanel
 
             if (this.FileInfo != null)
             {
-                this.fileNameLabel.Text = this.FileInfo.FileName;
-                this.fileTypeLabel.Text = this.FileInfo.FileType;
+                this.fileInfoLabel.FileName = this.FileInfo.FileName;
+                this.fileInfoLabel.FileType = this.FileInfo.FileType;
 
                 if (this.FileInfo.FileSize.HasValue)
                 {
-                    this.fileSizeLabel.Text = FileUtil.ToSizeString(this.FileInfo.FileSize.Value);
+                    this.fileInfoLabel.FileSize = FileUtil.ToSizeUnitString(this.FileInfo.FileSize.Value);
                     if (this.FileInfo.ImageSize.HasValue)
                     {
-                        this.fileSizeLabel.Text += string.Format(" ({0} x {1})", this.FileInfo.ImageSize.Value.Width, this.FileInfo.ImageSize.Value.Height);
+                        this.fileInfoLabel.FileSize += string.Format(" ({0} x {1})", this.FileInfo.ImageSize.Value.Width, this.FileInfo.ImageSize.Value.Height);
                     }
                 }
 
                 if (this.FileInfo.UpdateDate.HasValue)
                 {
-                    this.fileUpdatedateLabel.Text = string.Format("{0:yyyy/MM/dd HH:mm:ss}", this.FileInfo.UpdateDate.Value);
+                    this.fileInfoLabel.Timestamp = string.Format("{0:yyyy/MM/dd HH:mm:ss}", this.FileInfo.UpdateDate.Value);
                 }
 
                 this.ratingBar.SetValue(this.FileInfo.Rating);

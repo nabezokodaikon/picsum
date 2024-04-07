@@ -654,7 +654,7 @@ namespace SWF.Common
         /// </summary>
         /// <param name="fileSize">ファイルサイズ</param>
         /// <returns>ファイルサイズの文字列</returns>
-        public static string ToSizeString(long fileSize)
+        public static string ToSizeUnitString(long fileSize)
         {
             if (fileSize < 0)
             {

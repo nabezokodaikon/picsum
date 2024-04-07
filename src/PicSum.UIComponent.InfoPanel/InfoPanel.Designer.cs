@@ -18,16 +18,13 @@ namespace PicSum.UIComponent.InfoPanel
             this.components = new System.ComponentModel.Container();
             this.thumbnailPictureBox = new System.Windows.Forms.PictureBox();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.fileUpdatedateLabel = new System.Windows.Forms.Label();
-            this.fileSizeLabel = new System.Windows.Forms.Label();
-            this.fileTypeLabel = new System.Windows.Forms.Label();
-            this.fileNameLabel = new System.Windows.Forms.Label();
             this.tagContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tagDeleteMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tagToAllEntryMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ratingBar = new SWF.UIComponent.Common.RatingBar();
             this.tagFlowList = new SWF.UIComponent.FlowList.FlowList();
             this.wideComboBox = new SWF.UIComponent.WideDropDown.WideComboBox();
+            this.fileInfoLabel = new FileInfoLabel();
             ((System.ComponentModel.ISupportInitialize)this.thumbnailPictureBox).BeginInit();
             this.panel1.SuspendLayout();
             this.tagContextMenuStrip.SuspendLayout();
@@ -51,61 +48,11 @@ namespace PicSum.UIComponent.InfoPanel
             // 
             this.panel1.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             this.panel1.BackColor = System.Drawing.Color.Transparent;
-            this.panel1.Controls.Add(this.fileUpdatedateLabel);
-            this.panel1.Controls.Add(this.fileSizeLabel);
-            this.panel1.Controls.Add(this.fileTypeLabel);
-            this.panel1.Controls.Add(this.fileNameLabel);
+            this.panel1.Controls.Add(this.fileInfoLabel);
             this.panel1.Location = new System.Drawing.Point(0, 262);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(512, 125);
             this.panel1.TabIndex = 17;
-            // 
-            // fileUpdatedateLabel
-            // 
-            this.fileUpdatedateLabel.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
-            this.fileUpdatedateLabel.BackColor = System.Drawing.Color.Transparent;
-            this.fileUpdatedateLabel.Location = new System.Drawing.Point(4, 74);
-            this.fileUpdatedateLabel.Margin = new System.Windows.Forms.Padding(4);
-            this.fileUpdatedateLabel.Name = "fileUpdatedateLabel";
-            this.fileUpdatedateLabel.Size = new System.Drawing.Size(504, 18);
-            this.fileUpdatedateLabel.TabIndex = 25;
-            this.fileUpdatedateLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // fileSizeLabel
-            // 
-            this.fileSizeLabel.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
-            this.fileSizeLabel.BackColor = System.Drawing.Color.Transparent;
-            this.fileSizeLabel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.fileSizeLabel.Location = new System.Drawing.Point(4, 100);
-            this.fileSizeLabel.Margin = new System.Windows.Forms.Padding(4);
-            this.fileSizeLabel.Name = "fileSizeLabel";
-            this.fileSizeLabel.Size = new System.Drawing.Size(504, 18);
-            this.fileSizeLabel.TabIndex = 24;
-            this.fileSizeLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // fileTypeLabel
-            // 
-            this.fileTypeLabel.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
-            this.fileTypeLabel.BackColor = System.Drawing.Color.Transparent;
-            this.fileTypeLabel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.fileTypeLabel.Location = new System.Drawing.Point(4, 48);
-            this.fileTypeLabel.Margin = new System.Windows.Forms.Padding(4);
-            this.fileTypeLabel.Name = "fileTypeLabel";
-            this.fileTypeLabel.Size = new System.Drawing.Size(504, 18);
-            this.fileTypeLabel.TabIndex = 23;
-            this.fileTypeLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // fileNameLabel
-            // 
-            this.fileNameLabel.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
-            this.fileNameLabel.BackColor = System.Drawing.Color.Transparent;
-            this.fileNameLabel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.fileNameLabel.Location = new System.Drawing.Point(4, 4);
-            this.fileNameLabel.Margin = new System.Windows.Forms.Padding(4);
-            this.fileNameLabel.Name = "fileNameLabel";
-            this.fileNameLabel.Size = new System.Drawing.Size(504, 36);
-            this.fileNameLabel.TabIndex = 22;
-            this.fileNameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // tagContextMenuStrip
             // 
@@ -177,6 +124,19 @@ namespace PicSum.UIComponent.InfoPanel
             this.wideComboBox.DropDownOpening += this.WideComboBox_DropDownOpening;
             this.wideComboBox.AddItem += this.WideComboBox_AddItem;
             // 
+            // fileInfoLabel
+            // 
+            this.fileInfoLabel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.fileInfoLabel.FileName = "";
+            this.fileInfoLabel.FileSize = "";
+            this.fileInfoLabel.FileType = "";
+            this.fileInfoLabel.Location = new System.Drawing.Point(0, 0);
+            this.fileInfoLabel.Name = "fileInfoLabel";
+            this.fileInfoLabel.Size = new System.Drawing.Size(512, 125);
+            this.fileInfoLabel.TabIndex = 0;
+            this.fileInfoLabel.Text = "fileInfoLabel1";
+            this.fileInfoLabel.Timestamp = "";
+            // 
             // InfoPanel
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -201,13 +161,10 @@ namespace PicSum.UIComponent.InfoPanel
         private SWF.UIComponent.Common.RatingBar ratingBar;
         private SWF.UIComponent.FlowList.FlowList tagFlowList;
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Label fileUpdatedateLabel;
-        private System.Windows.Forms.Label fileSizeLabel;
-        private System.Windows.Forms.Label fileTypeLabel;
-        private System.Windows.Forms.Label fileNameLabel;
         private System.Windows.Forms.ContextMenuStrip tagContextMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem tagDeleteMenuItem;
         private System.Windows.Forms.ToolStripMenuItem tagToAllEntryMenuItem;
         private SWF.UIComponent.WideDropDown.WideComboBox wideComboBox;
+        private FileInfoLabel fileInfoLabel;
     }
 }
