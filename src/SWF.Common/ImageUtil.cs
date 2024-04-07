@@ -216,6 +216,10 @@ namespace SWF.Common
                     }
                 }
             }
+            catch (ArgumentException ex)
+            {
+                throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
+            }
             catch (NotSupportedException ex)
             {
                 throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
