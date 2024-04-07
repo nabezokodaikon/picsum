@@ -11,10 +11,10 @@ namespace PicSum.Core.Task.AsyncTaskV2
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
+        private bool disposed = false;
         private readonly ThreadID threadID;
         private readonly Type taskType;
         private readonly string taskInfo;
-        private bool disposed = false;
         private readonly SynchronizationContext context;
         private readonly CancellationTokenSource source = new();
         private readonly ConcurrentQueue<TTask> taskQueue = new();
