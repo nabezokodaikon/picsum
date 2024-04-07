@@ -1,4 +1,4 @@
-﻿using PicSum.Core.Base.Conf;
+using PicSum.Core.Base.Conf;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -34,6 +34,13 @@ namespace PicSum.Core.Data.DatabaseAccessor
             if (paramName == null) throw new ArgumentNullException(nameof(paramName));
 
             return SqlParameterUtil.CreateParameter(paramName, value, DbType.Int32);
+        }
+
+        public static IDbDataParameter CreateParameter(string paramName, long value)
+        {
+            if (paramName == null) throw new ArgumentNullException(nameof(paramName));
+
+            return SqlParameterUtil.CreateParameter(paramName, value, DbType.Int64);
         }
 
         public static IDbDataParameter CreateParameter(string paramName, bool value)
