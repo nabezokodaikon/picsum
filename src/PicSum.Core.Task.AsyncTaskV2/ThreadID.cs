@@ -18,7 +18,7 @@ namespace PicSum.Core.Task.AsyncTaskV2
 
         public override string ToString()
         {
-            return this.value.ToString();
+            return $"ThreadID: [{this.value.ToString()}]";
         }
     }
 }
