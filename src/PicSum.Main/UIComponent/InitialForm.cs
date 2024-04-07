@@ -12,22 +12,22 @@ namespace PicSum.Main.UIComponent
     [SupportedOSPlatform("windows")]
     internal sealed class InitialForm : HideForm
     {
-        #region インスタンス変数
-
         private BrowserManager browserManager = new();
-
-        #endregion
-
-        #region コンストラクタ
 
         public InitialForm()
         {
-
+            this.InitializeComponent();
         }
 
-        #endregion
+        private void InitializeComponent()
+        {
+            this.browserManager.BrowserNothing += new EventHandler(this.BrowserManager_BrowserNothing);
+        }
 
-        #region 継承メソッド
+        private void BrowserManager_BrowserNothing(object sender, EventArgs e)
+        {
+            this.Close();
+        }
 
         protected override void OnLoad(EventArgs e)
         {
@@ -36,7 +36,5 @@ namespace PicSum.Main.UIComponent
 
             base.OnLoad(e);
         }
-
-        #endregion
     }
 }
