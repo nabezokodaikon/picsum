@@ -111,11 +111,6 @@ namespace PicSum.Core.Data.DatabaseAccessor
                 this.transaction = this.connection.BeginTransaction();
                 return new Transaction(this);
             }
-            catch (Exception)
-            {
-                this.transactionLock.ExitWriteLock();
-                throw;
-            }
             finally
             {
                 this.executeSqlLock.ExitWriteLock();
