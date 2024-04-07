@@ -11,6 +11,9 @@ namespace PicSum.Core.Task.AsyncTaskV2
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
+        private readonly ThreadID threadID;
+        private readonly Type taskType;
+        private readonly string taskInfo;
         private bool disposed = false;
         private readonly SynchronizationContext context;
         private readonly CancellationTokenSource source = new();
@@ -35,6 +38,10 @@ namespace PicSum.Core.Task.AsyncTaskV2
             {
                 throw new NullReferenceException("コンテキストがNullです。");
             }
+
+            this.threadID = ThreadID.GetNew();
+            this.taskType = typeof(TTask);
+            this.taskInfo = $"[{this.taskType.Name}] {this.threadID}";
         }
 
         ~TwoWayTask()
@@ -60,7 +67,7 @@ namespace PicSum.Core.Task.AsyncTaskV2
                     {
                         this.source.Cancel();
                         this.thread.Wait();
-                        Logger.Debug("スレッドが終了しました。");
+                        Logger.Debug($"{this.taskInfo} タスク実行スレッドが終了しました。");
                     }
 
                     this.source.Dispose();
@@ -78,7 +85,7 @@ namespace PicSum.Core.Task.AsyncTaskV2
                 throw new ArgumentNullException(nameof(action));
 
             if (this.callbackAction != null)
-                throw new InvalidOperationException("既にコールバックアクションが設定されています。");
+                throw new InvalidOperationException($"{this.taskInfo} 既にコールバックアクションが設定されています。");
 
             this.callbackAction = action;
             return this;
@@ -90,7 +97,7 @@ namespace PicSum.Core.Task.AsyncTaskV2
                 throw new ArgumentNullException(nameof(action));
 
             if (this.catchAction != null)
-                throw new InvalidOperationException("既に例外アクションが設定されています。");
+                throw new InvalidOperationException($"{this.taskInfo} 既に例外アクションが設定されています。");
 
             this.catchAction = action;
             return this;
@@ -102,7 +109,7 @@ namespace PicSum.Core.Task.AsyncTaskV2
                 throw new ArgumentNullException(nameof(action));
 
             if (this.completeAction != null)
-                throw new InvalidOperationException("既に完了アクションが設定されています。");
+                throw new InvalidOperationException($"{this.taskInfo} 既に完了アクションが設定されています。");
 
             this.completeAction = action;
             return this;
@@ -111,7 +118,7 @@ namespace PicSum.Core.Task.AsyncTaskV2
         public void StartThread()
         {
             if (this.thread != null)
-                throw new InvalidOperationException("既にタスク実行スレッドが開始されています。");
+                throw new InvalidOperationException($"{this.taskInfo} 既にタスク実行スレッドが開始されています。");
 
             this.thread = System.Threading.Tasks.Task.Run(() => this.DoWork(this.source.Token));
         }
@@ -153,7 +160,7 @@ namespace PicSum.Core.Task.AsyncTaskV2
 
         private void DoWork(CancellationToken token)
         {
-            Logger.Debug("タスク実行スレッドが開始されました。");
+            Logger.Debug($"{this.taskInfo} タスク実行スレッドが開始されました。");
 
             TTask? previewTask = null;
 
@@ -163,7 +170,7 @@ namespace PicSum.Core.Task.AsyncTaskV2
                 {
                     if (token.IsCancellationRequested)
                     {
-                        Logger.Debug("タスク実行スレッドにキャンセルリクエストがありました。");
+                        Logger.Debug($"{this.taskInfo} タスク実行スレッドにキャンセルリクエストがありました。");
                         token.ThrowIfCancellationRequested();
                     }
 
@@ -180,7 +187,7 @@ namespace PicSum.Core.Task.AsyncTaskV2
                         if (task.ID == null)
                             throw new NullReferenceException(nameof(task.ID));
 
-                        Logger.Debug($"タスクを実行します。タスクID: {task.ID}, タスク: {task.GetType().Name}");
+                        Logger.Debug($"{this.taskInfo}, {task.ID} タスクを実行します。");
 
                         if (this.callbackAction != null)
                         {
@@ -227,11 +234,11 @@ namespace PicSum.Core.Task.AsyncTaskV2
                         }
                         catch (TaskCancelException)
                         {
-                            Logger.Debug($"タスクがキャンセルされました。タスクID: {task.ID}, タスク: {task.GetType().Name}");
+                            Logger.Debug($"{this.taskInfo}, {task.ID}  タスクがキャンセルされました。");
                         }
                         finally
                         {
-                            Logger.Debug($"タスクが完了しました。タスクID: {task.ID}, タスク: {task.GetType().Name}");
+                            Logger.Debug($"{this.taskInfo}, {task.ID}  タスクが終了しました。");
                         }
                     }
 
@@ -240,15 +247,15 @@ namespace PicSum.Core.Task.AsyncTaskV2
             }
             catch (OperationCanceledException)
             {
-                Logger.Debug("タスク実行スレッドをキャンセルします。");
+                Logger.Debug($"{this.taskInfo} タスク実行スレッドをキャンセルします。");
             }
             catch (Exception ex)
             {
-                Logger.Debug($"タスク実行スレッドで補足されない例外が発生しました。: {ex.Message}");
+                Logger.Debug($"{this.taskInfo} タスク実行スレッドで補足されない例外が発生しました。: {ex.Message}");
             }
             finally
             {
-                Logger.Debug("タスク実行スレッドが終了します。");
+                Logger.Debug($"{this.taskInfo} タスク実行スレッドが終了します。");
             }
         }
     }
