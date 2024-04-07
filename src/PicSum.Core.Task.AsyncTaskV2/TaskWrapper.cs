@@ -269,7 +269,7 @@ namespace PicSum.Core.Task.AsyncTaskV2
 
     public sealed class OneWayTask<TTask>
         : TwoWayTask<TTask, EmptyParameter, EmptyResult>
-        where TTask : AbstractOneWayTask<EmptyParameter>, new()
+        where TTask : AbstractOneWayTask, new()
     {
         public OneWayTask()
             : base()
