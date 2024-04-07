@@ -1,5 +1,6 @@
+using PicSum.Core.Task.AsyncTaskV2;
 using PicSum.Main.Mng;
-using SWF.Common;
+using PicSum.Task.Tasks;
 using SWF.UIComponent.Common;
 using System;
 using System.Runtime.Versioning;
