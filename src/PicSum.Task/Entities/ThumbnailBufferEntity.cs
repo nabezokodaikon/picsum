@@ -1,4 +1,3 @@
-using PicSum.Core.Task.Base;
 using System;
 
 namespace PicSum.Task.Entities
@@ -7,7 +6,6 @@ namespace PicSum.Task.Entities
     /// サムネイルバッファエンティティ
     /// </summary>
     public sealed class ThumbnailBufferEntity
-        : IEntity
     {
         public string FilePath { get; set; }
         public int ThumbnailWidth { get; set; }

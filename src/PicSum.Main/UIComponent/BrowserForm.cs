@@ -1,3 +1,4 @@
+using PicSum.Core.Base.Exception;
 using PicSum.Core.Task.AsyncTaskV2;
 using PicSum.Main.Conf;
 using PicSum.Task.Paramters;
@@ -267,7 +268,7 @@ namespace PicSum.Main.UIComponent
         {
             if (this.browserMainPanel != null)
             {
-                throw new Exception("メインコントロールは既に存在しています。");
+                throw new PicSumException("メインコントロールは既に存在しています。");
             }
 
             var browserMainPanel = new BrowserMainPanel();

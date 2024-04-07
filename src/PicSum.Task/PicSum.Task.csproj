@@ -24,8 +24,6 @@
     <ProjectReference Include="..\PicSum.Core.Base\PicSum.Core.Base.csproj" />
     <ProjectReference Include="..\PicSum.Core.Data.DatabaseAccessor\PicSum.Core.Data.DatabaseAccessor.csproj" />
     <ProjectReference Include="..\PicSum.Core.Task.AsyncTaskV2\PicSum.Core.Task.AsyncTaskV2.csproj" />
-    <ProjectReference Include="..\PicSum.Core.Task.Base\PicSum.Core.Task.Base.csproj" />
-    <ProjectReference Include="..\PicSum.Core.Task.SyncTask\PicSum.Core.Task.SyncTask.csproj" />
     <ProjectReference Include="..\SWF.Common\SWF.Common.csproj" />
     <ProjectReference Include="..\PicSum.Data.DatabaseAccessor\PicSum.Data.DatabaseAccessor.csproj" />
   </ItemGroup>

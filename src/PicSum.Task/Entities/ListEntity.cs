@@ -1,4 +1,3 @@
-﻿using PicSum.Core.Task.Base;
 using System.Collections.Generic;
 
 namespace PicSum.Task.Entities
@@ -9,8 +8,8 @@ namespace PicSum.Task.Entities
     /// リストエンティティ
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public sealed class ListEntity<T> :
-        List<T>, IEntity
+    public sealed class ListEntity<T>
+        : List<T>
     {
         public ListEntity()
         {

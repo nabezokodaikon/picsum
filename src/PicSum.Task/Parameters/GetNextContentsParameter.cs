@@ -9,7 +9,7 @@ namespace PicSum.Task.Paramters
     public sealed class GetNextContentsParameter<T>
         : ITaskParameter
     {
-        public SingleValueEntity<T> CurrentParameter { get; set; }
+        public ValueEntity<T> CurrentParameter { get; set; }
         public bool IsNext { get; set; }
     }
 }

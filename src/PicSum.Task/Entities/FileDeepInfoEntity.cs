@@ -1,4 +1,3 @@
-using PicSum.Core.Task.Base;
 using PicSum.Task.Results;
 using System;
 using System.Drawing;
@@ -9,7 +8,6 @@ namespace PicSum.Task.Entities
     /// ファイルの深い情報エンティティ
     /// </summary>
     public sealed class FileDeepInfoEntity
-        : IEntity
     {
         public string FilePath { get; set; }
         public string FileName { get; set; }

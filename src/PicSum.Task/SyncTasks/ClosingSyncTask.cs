@@ -1,4 +1,4 @@
-using PicSum.Core.Task.SyncTask;
+using PicSum.Core.Task.AsyncTaskV2;
 using PicSum.Task.SyncLogics;
 
 namespace PicSum.Task.SyncTasks

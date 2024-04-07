@@ -191,7 +191,7 @@ namespace PicSum.UIComponent.Contents.FileList
             }
 
             var param = new GetNextContentsParameter<string>();
-            param.CurrentParameter = new SingleValueEntity<string>();
+            param.CurrentParameter = new ValueEntity<string>();
             param.CurrentParameter.Value = this.parameter.DirectoryPath;
             param.IsNext = false;
             this.GetNextDirectoryTask.StartTask(param);
@@ -205,7 +205,7 @@ namespace PicSum.UIComponent.Contents.FileList
             }
 
             var param = new GetNextContentsParameter<string>();
-            param.CurrentParameter = new SingleValueEntity<string>();
+            param.CurrentParameter = new ValueEntity<string>();
             param.CurrentParameter.Value = this.parameter.DirectoryPath;
             param.IsNext = true;
             this.GetNextDirectoryTask.StartTask(param);

@@ -1,11 +1,9 @@
-﻿using PicSum.Core.Task.Base;
 using System;
 using System.Drawing;
 
 namespace PicSum.UIComponent.Contents.Parameter
 {
     public class DragEntity
-        : IEntity
     {
         public string ContentsSources { get; private set; }
         public string SourcesKey { get; private set; }
