@@ -124,7 +124,7 @@ namespace PicSum.Core.Task.AsyncTaskV2
             this.ClearQueue();
 
             var task = new TTask();
-            task.ID = new();
+            task.ID = TaskID.GetNew();
             task.Parameter = parameter;
             this.taskQueue.Enqueue(task);
         }
@@ -134,7 +134,7 @@ namespace PicSum.Core.Task.AsyncTaskV2
             this.ClearQueue();
 
             var task = new TTask();
-            task.ID = new();
+            task.ID = TaskID.GetNew();
             this.taskQueue.Enqueue(task);
         }
 
