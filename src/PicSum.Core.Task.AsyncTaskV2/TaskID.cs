@@ -4,11 +4,6 @@ namespace PicSum.Core.Task.AsyncTaskV2
     {
         private static long currentID = 0;
 
-        private static long GetNewID()
-        {
-            return Interlocked.Increment(ref currentID);
-        }
-
         public static TaskID GetNew()
         {
             return new TaskID(Interlocked.Increment(ref currentID));
