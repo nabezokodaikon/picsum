@@ -9,7 +9,6 @@ namespace PicSum.Core.Task.AsyncTaskV2
 
         public TaskID? ID { get; internal set; }
         internal TParameter? Parameter { get; set; }
-        internal Action? WaitAction;
         internal Action<TResult>? CallbackAction { get; set; }
         internal Action<TaskException>? CatchAction { get; set; }
         internal Action? CompleteAction { get; set; }
@@ -85,14 +84,6 @@ namespace PicSum.Core.Task.AsyncTaskV2
                     throw new NullReferenceException("タスクIDがNULLです。");
                 throw new TaskCancelException(this.ID);
             }
-        }
-
-        protected void Wait()
-        {
-            if (this.WaitAction == null)
-                throw new NullReferenceException("タスク待機アクションがNULLです。");
-
-            this.WaitAction();
         }
 
         protected void Callback(TResult result)

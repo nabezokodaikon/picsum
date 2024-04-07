@@ -182,8 +182,6 @@ namespace PicSum.Core.Task.AsyncTaskV2
 
                         Logger.Debug($"タスクを実行します。タスクID: {task.ID}, タスク: {task.GetType().Name}");
 
-                        task.WaitAction = () => token.WaitHandle.WaitOne(1);
-
                         if (this.callbackAction != null)
                         {
                             task.CallbackAction = r =>

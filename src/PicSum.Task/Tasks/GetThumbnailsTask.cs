@@ -31,7 +31,6 @@ namespace PicSum.Task.Tasks
                 for (var index = param.FirstIndex; index <= param.LastIndex; index++)
                 {
                     this.CheckCancel();
-                    this.Wait();
 
                     try
                     {
