@@ -15,7 +15,7 @@ namespace PicSum.Task.Tasks
     /// </summary>
     [SupportedOSPlatform("windows")]
     public sealed class GetThumbnailsTask
-        : AbstractAsyncTask<GetThumbnailParameter, ThumbnailImageResult>
+        : AbstractTwoWayTask<GetThumbnailParameter, ThumbnailImageResult>
     {
         protected override void Execute(GetThumbnailParameter param)
         {

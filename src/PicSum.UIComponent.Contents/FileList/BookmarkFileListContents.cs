@@ -22,11 +22,11 @@ namespace PicSum.UIComponent.Contents.FileList
         : AbstractFileListContents
     {
         private BookmarkFileListContentsParameter paramter = null;
-        private TaskWrapper<GetBookmarkTask, EmptyParameter, ListResult<FileShallowInfoEntity>> searchTask = null;
+        private TwoWayTask<GetBookmarkTask, EmptyParameter, ListResult<FileShallowInfoEntity>> searchTask = null;
         private TaskWrapper<DeleteBookmarkTask, ListParameter<string>> deleteTask = null;
-        private TaskWrapper<GetFilesByDirectoryTask, ValueParameter<string>, GetDirectoryResult> getFilesTask = null;
+        private TwoWayTask<GetFilesByDirectoryTask, ValueParameter<string>, GetDirectoryResult> getFilesTask = null;
 
-        private TaskWrapper<GetBookmarkTask, EmptyParameter, ListResult<FileShallowInfoEntity>> SearchTask
+        private TwoWayTask<GetBookmarkTask, EmptyParameter, ListResult<FileShallowInfoEntity>> SearchTask
         {
             get
             {
@@ -178,7 +178,7 @@ namespace PicSum.UIComponent.Contents.FileList
             base.sortFileRgistrationDateToolStripButton.Enabled = true;
         }
 
-        private TaskWrapper<GetFilesByDirectoryTask, ValueParameter<string>, GetDirectoryResult> CreateNewGetFilesTask()
+        private TwoWayTask<GetFilesByDirectoryTask, ValueParameter<string>, GetDirectoryResult> CreateNewGetFilesTask()
         {
             if (this.getFilesTask != null)
             {

@@ -14,7 +14,7 @@ namespace PicSum.Task.Tasks
     /// </summary>
     [SupportedOSPlatform("windows")]
     public sealed class GetFileDeepInfoTask
-        : AbstractAsyncTask<GetFileDeepInfoParameter, GetFileDeepInfoResult>
+        : AbstractTwoWayTask<GetFileDeepInfoParameter, GetFileDeepInfoResult>
     {
         protected override void Execute(GetFileDeepInfoParameter param)
         {

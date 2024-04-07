@@ -13,7 +13,7 @@ namespace PicSum.Task.Tasks
     /// </summary>
     [SupportedOSPlatform("windows")]
     public class DeleteFileTagTask
-        : AbstractAsyncTask<UpdateFileTagParameter>
+        : AbstractOneWayTask<UpdateFileTagParameter>
     {
         protected override void Execute(UpdateFileTagParameter param)
         {

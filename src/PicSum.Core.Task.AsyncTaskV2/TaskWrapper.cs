@@ -3,9 +3,9 @@ using System.Collections.Concurrent;
 
 namespace PicSum.Core.Task.AsyncTaskV2
 {
-    public class TaskWrapper<TTask, TTaskParameter, TTaskResult>
+    public class TwoWayTask<TTask, TTaskParameter, TTaskResult>
         : IDisposable
-        where TTask : AbstractAsyncTask<TTaskParameter, TTaskResult>, new()
+        where TTask : AbstractTwoWayTask<TTaskParameter, TTaskResult>, new()
         where TTaskParameter : ITaskParameter
         where TTaskResult : ITaskResult
     {
@@ -20,7 +20,7 @@ namespace PicSum.Core.Task.AsyncTaskV2
         private Action<TaskException>? catchAction;
         private Action? completeAction;
 
-        public TaskWrapper()
+        public TwoWayTask()
         {
             if (SynchronizationContext.Current == null)
             {
@@ -37,7 +37,7 @@ namespace PicSum.Core.Task.AsyncTaskV2
             }
         }
 
-        ~TaskWrapper()
+        ~TwoWayTask()
         {
             this.Dispose(false);
         }
@@ -72,7 +72,7 @@ namespace PicSum.Core.Task.AsyncTaskV2
             }
         }
 
-        public TaskWrapper<TTask, TTaskParameter, TTaskResult> Callback(Action<TTaskResult> action)
+        public TwoWayTask<TTask, TTaskParameter, TTaskResult> Callback(Action<TTaskResult> action)
         {
             if (action == null)
                 throw new ArgumentNullException(nameof(action));
@@ -84,7 +84,7 @@ namespace PicSum.Core.Task.AsyncTaskV2
             return this;
         }
 
-        public TaskWrapper<TTask, TTaskParameter, TTaskResult> Catch(Action<TaskException> action)
+        public TwoWayTask<TTask, TTaskParameter, TTaskResult> Catch(Action<TaskException> action)
         {
             if (action == null)
                 throw new ArgumentNullException(nameof(action));
@@ -96,7 +96,7 @@ namespace PicSum.Core.Task.AsyncTaskV2
             return this;
         }
 
-        public TaskWrapper<TTask, TTaskParameter, TTaskResult> Complete(Action action)
+        public TwoWayTask<TTask, TTaskParameter, TTaskResult> Complete(Action action)
         {
             if (action == null)
                 throw new ArgumentNullException(nameof(action));
@@ -256,11 +256,46 @@ namespace PicSum.Core.Task.AsyncTaskV2
     }
 
     public sealed class TaskWrapper<TTask, TTaskParameter>
-        : TaskWrapper<TTask, TTaskParameter, EmptyResult>
-        where TTask : AbstractAsyncTask<TTaskParameter>, new()
+        : TwoWayTask<TTask, TTaskParameter, EmptyResult>
+        where TTask : AbstractOneWayTask<TTaskParameter>, new()
         where TTaskParameter : ITaskParameter
     {
         public TaskWrapper()
+            : base()
+        {
+
+        }
+    }
+
+    public sealed class TwoWayTask<TTask, TTaskResult>
+        : TwoWayTask<TTask, EmptyParameter, TTaskResult>
+        where TTask : AbstractTwoWayTask<TTaskResult>, new()
+        where TTaskResult : ITaskResult
+    {
+        public TwoWayTask()
+            : base()
+        {
+
+        }
+    }
+
+    public sealed class OneWayTask<TTask>
+        : TwoWayTask<TTask, EmptyParameter, EmptyResult>
+        where TTask : AbstractOneWayTask<EmptyParameter>, new()
+    {
+        public OneWayTask()
+            : base()
+        {
+
+        }
+    }
+
+    public sealed class OneWayTask<TTask, TTaskParameter>
+        : TwoWayTask<TTask, TTaskParameter, EmptyResult>
+        where TTask : AbstractOneWayTask<TTaskParameter>, new()
+        where TTaskParameter : ITaskParameter
+    {
+        public OneWayTask()
             : base()
         {
 

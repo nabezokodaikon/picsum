@@ -33,7 +33,7 @@ namespace PicSum.Main.UIComponent
 
         private BrowserMainPanel browserMainPanel = null;
         private bool isKeyDown = false;
-        private TaskWrapper<StartupTask, StartupPrameter, EmptyResult> startupTask = null;
+        private TwoWayTask<StartupTask, StartupPrameter, EmptyResult> startupTask = null;
 
         #endregion
 

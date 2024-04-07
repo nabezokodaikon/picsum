@@ -9,7 +9,7 @@ namespace PicSum.Task.Tasks
     /// </summary>
     [SupportedOSPlatform("windows")]
     public sealed class GetTagListTask
-        : AbstractAsyncTask<EmptyParameter, ListResult<string>>
+        : AbstractTwoWayTask<EmptyParameter, ListResult<string>>
     {
         protected override void Execute()
         {

@@ -3,11 +3,13 @@ using PicSum.Core.Task.AsyncTaskV2;
 using PicSum.Data.DatabaseAccessor.Connection;
 using PicSum.Task.Logics;
 using System;
+using System.Runtime.Versioning;
 
 namespace PicSum.Task.Tasks
 {
+    [SupportedOSPlatform("windows")]
     public sealed class AddDirectoryViewHistoryTask
-        : AbstractAsyncTask<ValueParameter<string>>
+        : AbstractOneWayTask<ValueParameter<string>>
     {
         protected override void Execute(ValueParameter<string> param)
         {

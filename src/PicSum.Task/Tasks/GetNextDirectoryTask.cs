@@ -14,7 +14,7 @@ namespace PicSum.Task.Tasks
     /// </summary>
     [SupportedOSPlatform("windows")]
     public sealed class GetNextDirectoryTask
-        : AbstractAsyncTask<GetNextContentsParameter<string>, ValueResult<string>>
+        : AbstractTwoWayTask<GetNextContentsParameter<string>, ValueResult<string>>
     {
         protected override void Execute(GetNextContentsParameter<string> param)
         {

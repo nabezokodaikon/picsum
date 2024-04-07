@@ -4,11 +4,13 @@ using PicSum.Data.DatabaseAccessor.Connection;
 using PicSum.Task.Logics;
 using PicSum.Tasks.Logics;
 using System;
+using System.Runtime.Versioning;
 
 namespace PicSum.Task.Tasks
 {
+    [SupportedOSPlatform("windows")]
     public sealed class AddBookmarkTask
-        : AbstractAsyncTask<ValueParameter<string>>
+        : AbstractOneWayTask<ValueParameter<string>>
     {
         protected override void Execute(ValueParameter<string> param)
         {

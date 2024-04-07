@@ -27,17 +27,17 @@ namespace PicSum.UIComponent.Contents.FileList
         #region インスタンス変数
 
         private readonly DirectoryFileListContentsParameter parameter = null;
-        private TaskWrapper<GetFilesByDirectoryTask, ValueParameter<string>, GetDirectoryResult> searchTask = null;
+        private TwoWayTask<GetFilesByDirectoryTask, ValueParameter<string>, GetDirectoryResult> searchTask = null;
         private TaskWrapper<UpdateDirectoryStateTask, DirectoryStateParameter> updateDirectoryStateTask = null;
         private TaskWrapper<AddDirectoryViewHistoryTask, ValueParameter<string>> addDirectoryHistoryTask = null;
-        private TaskWrapper<GetNextDirectoryTask, GetNextContentsParameter<string>, ValueResult<string>> getNextDirectoryTask = null;
-        private TaskWrapper<GetFilesByDirectoryTask, ValueParameter<string>, GetDirectoryResult> getFilesTask = null;
+        private TwoWayTask<GetNextDirectoryTask, GetNextContentsParameter<string>, ValueResult<string>> getNextDirectoryTask = null;
+        private TwoWayTask<GetFilesByDirectoryTask, ValueParameter<string>, GetDirectoryResult> getFilesTask = null;
 
         #endregion
 
         #region プライベートプロパティ
 
-        private TaskWrapper<GetFilesByDirectoryTask, ValueParameter<string>, GetDirectoryResult> SearchTask
+        private TwoWayTask<GetFilesByDirectoryTask, ValueParameter<string>, GetDirectoryResult> SearchTask
         {
             get
             {
@@ -85,7 +85,7 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
-        private TaskWrapper<GetNextDirectoryTask, GetNextContentsParameter<string>, ValueResult<string>> GetNextDirectoryTask
+        private TwoWayTask<GetNextDirectoryTask, GetNextContentsParameter<string>, ValueResult<string>> GetNextDirectoryTask
         {
             get
             {
@@ -286,7 +286,7 @@ namespace PicSum.UIComponent.Contents.FileList
             base.sortFileRgistrationDateToolStripButton.Enabled = false;
         }
 
-        private TaskWrapper<GetFilesByDirectoryTask, ValueParameter<string>, GetDirectoryResult> CreateNewGetFilesTask()
+        private TwoWayTask<GetFilesByDirectoryTask, ValueParameter<string>, GetDirectoryResult> CreateNewGetFilesTask()
         {
             if (this.getFilesTask != null)
             {

@@ -9,7 +9,7 @@ namespace PicSum.Task.Tasks
 {
     [SupportedOSPlatform("windows")]
     public sealed class DeleteDirectoryViewCounterTask
-        : AbstractAsyncTask<ListParameter<string>>
+        : AbstractOneWayTask<ListParameter<string>>
     {
         protected override void Execute(ListParameter<string> param)
         {

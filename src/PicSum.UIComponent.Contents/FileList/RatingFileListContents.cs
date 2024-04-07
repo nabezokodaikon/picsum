@@ -25,16 +25,16 @@ namespace PicSum.UIComponent.Contents.FileList
         #region インスタンス変数
 
         private RatingFileListContentsParameter parameter = null;
-        private TaskWrapper<GetFilesByRatingTask, ValueParameter<int>, ListResult<FileShallowInfoEntity>> searchTask = null;
+        private TwoWayTask<GetFilesByRatingTask, ValueParameter<int>, ListResult<FileShallowInfoEntity>> searchTask = null;
         private TaskWrapper<UpdateFileRatingTask, UpdateFileRatingParameter> deleteTask = null;
-        private TaskWrapper<GetFilesByRatingTask, ValueParameter<int>, ListResult<FileShallowInfoEntity>> getFilesTask = null;
+        private TwoWayTask<GetFilesByRatingTask, ValueParameter<int>, ListResult<FileShallowInfoEntity>> getFilesTask = null;
 
 
         #endregion
 
         #region プライベートプロパティ
 
-        private TaskWrapper<GetFilesByRatingTask, ValueParameter<int>, ListResult<FileShallowInfoEntity>> SearchTask
+        private TwoWayTask<GetFilesByRatingTask, ValueParameter<int>, ListResult<FileShallowInfoEntity>> SearchTask
         {
             get
             {
@@ -187,7 +187,7 @@ namespace PicSum.UIComponent.Contents.FileList
             base.sortFileRgistrationDateToolStripButton.Enabled = true;
         }
 
-        private TaskWrapper<GetFilesByRatingTask, ValueParameter<int>, ListResult<FileShallowInfoEntity>> CreateNewGetFilesTask()
+        private TwoWayTask<GetFilesByRatingTask, ValueParameter<int>, ListResult<FileShallowInfoEntity>> CreateNewGetFilesTask()
         {
             if (this.getFilesTask != null)
             {

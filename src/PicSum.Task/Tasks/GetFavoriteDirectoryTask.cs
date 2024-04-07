@@ -10,7 +10,7 @@ namespace PicSum.Task.Tasks
 {
     [SupportedOSPlatform("windows")]
     public sealed class GetFavoriteDirectoryTask
-        : AbstractAsyncTask<GetFavoriteDirectoryParameter, ListResult<FileShallowInfoEntity>>
+        : AbstractTwoWayTask<GetFavoriteDirectoryParameter, ListResult<FileShallowInfoEntity>>
     {
         protected override void Execute(GetFavoriteDirectoryParameter param)
         {

@@ -13,7 +13,7 @@ namespace PicSum.Task.Tasks
     /// </summary>
     [SupportedOSPlatform("windows")]
     public sealed class ExportFileTask
-        : AbstractAsyncTask<ExportFileParameter>
+        : AbstractOneWayTask<ExportFileParameter>
     {
         private static readonly ReaderWriterLockSlim taskLock = new ReaderWriterLockSlim();
 

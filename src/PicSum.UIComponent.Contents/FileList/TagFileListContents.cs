@@ -27,15 +27,15 @@ namespace PicSum.UIComponent.Contents.FileList
         #region インスタンス変数
 
         private TagFileListContentsParameter parameter = null;
-        private TaskWrapper<GetFilesByTagTask, ValueParameter<string>, ListResult<FileShallowInfoEntity>> searchTask = null;
+        private TwoWayTask<GetFilesByTagTask, ValueParameter<string>, ListResult<FileShallowInfoEntity>> searchTask = null;
         private TaskWrapper<DeleteFileTagTask, UpdateFileTagParameter> deleteTask = null;
-        private TaskWrapper<GetFilesByTagTask, ValueParameter<string>, ListResult<FileShallowInfoEntity>> getFilesTask = null;
+        private TwoWayTask<GetFilesByTagTask, ValueParameter<string>, ListResult<FileShallowInfoEntity>> getFilesTask = null;
 
         #endregion
 
         #region プライベートプロパティ
 
-        private TaskWrapper<GetFilesByTagTask, ValueParameter<string>, ListResult<FileShallowInfoEntity>> SearchTask
+        private TwoWayTask<GetFilesByTagTask, ValueParameter<string>, ListResult<FileShallowInfoEntity>> SearchTask
         {
             get
             {
@@ -192,7 +192,7 @@ namespace PicSum.UIComponent.Contents.FileList
             base.sortFileRgistrationDateToolStripButton.Enabled = true;
         }
 
-        private TaskWrapper<GetFilesByTagTask, ValueParameter<string>, ListResult<FileShallowInfoEntity>> CreateNewGetFilesTask()
+        private TwoWayTask<GetFilesByTagTask, ValueParameter<string>, ListResult<FileShallowInfoEntity>> CreateNewGetFilesTask()
         {
             if (this.getFilesTask != null)
             {

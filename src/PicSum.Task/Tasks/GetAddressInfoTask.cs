@@ -15,7 +15,7 @@ namespace PicSum.Task.Tasks
     /// </summary>
     [SupportedOSPlatform("windows")]
     public sealed class GetAddressInfoTask
-        : AbstractAsyncTask<ValueParameter<string>, GetAddressInfoResult>
+        : AbstractTwoWayTask<ValueParameter<string>, GetAddressInfoResult>
     {
         protected override void Execute(ValueParameter<string> param)
         {

@@ -12,7 +12,7 @@ namespace PicSum.Task.Tasks
     /// </summary>
     [SupportedOSPlatform("windows")]
     public sealed class GetFilesByTagTask
-        : AbstractAsyncTask<ValueParameter<string>, ListResult<FileShallowInfoEntity>>
+        : AbstractTwoWayTask<ValueParameter<string>, ListResult<FileShallowInfoEntity>>
     {
         protected override void Execute(ValueParameter<string> param)
         {

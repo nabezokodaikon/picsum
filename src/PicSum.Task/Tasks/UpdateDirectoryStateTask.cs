@@ -13,7 +13,7 @@ namespace PicSum.Task.Tasks
     /// </summary>
     [SupportedOSPlatform("windows")]
     public sealed class UpdateDirectoryStateTask
-        : AbstractAsyncTask<DirectoryStateParameter>
+        : AbstractOneWayTask<DirectoryStateParameter>
     {
         protected override void Execute(DirectoryStateParameter param)
         {

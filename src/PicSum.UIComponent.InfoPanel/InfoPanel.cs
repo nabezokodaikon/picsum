@@ -29,9 +29,9 @@ namespace PicSum.UIComponent.InfoPanel
 
         #region インスタンス変数
 
-        private TaskWrapper<GetFileDeepInfoTask, GetFileDeepInfoParameter, GetFileDeepInfoResult> getFileInfoTask = null;
+        private TwoWayTask<GetFileDeepInfoTask, GetFileDeepInfoParameter, GetFileDeepInfoResult> getFileInfoTask = null;
         private TaskWrapper<UpdateFileRatingTask, UpdateFileRatingParameter> updateFileRatingTask = null;
-        private TaskWrapper<GetTagListTask, EmptyParameter, ListResult<string>> getTagListTask = null;
+        private TwoWayTask<GetTagListTask, EmptyParameter, ListResult<string>> getTagListTask = null;
         private TaskWrapper<AddFileTagTask, UpdateFileTagParameter> addFileTagTask = null;
         private TaskWrapper<DeleteFileTagTask, UpdateFileTagParameter> deleteFileTagTask = null;
 
@@ -44,7 +44,7 @@ namespace PicSum.UIComponent.InfoPanel
 
         #region プライベートプロパティ
 
-        private TaskWrapper<GetFileDeepInfoTask, GetFileDeepInfoParameter, GetFileDeepInfoResult> GetFileInfoTask
+        private TwoWayTask<GetFileDeepInfoTask, GetFileDeepInfoParameter, GetFileDeepInfoResult> GetFileInfoTask
         {
             get
             {
@@ -75,7 +75,7 @@ namespace PicSum.UIComponent.InfoPanel
             }
         }
 
-        private TaskWrapper<GetTagListTask, EmptyParameter, ListResult<string>> GetTagListTask
+        private TwoWayTask<GetTagListTask, EmptyParameter, ListResult<string>> GetTagListTask
         {
             get
             {

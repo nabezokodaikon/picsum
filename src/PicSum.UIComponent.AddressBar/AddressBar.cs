@@ -34,7 +34,7 @@ namespace PicSum.UIComponent.AddressBar
         private readonly Palette palette = new();
         private readonly OverflowDrawItem overflowItem = new();
         private readonly DirectoryHistoryDrawItem directoryHistoryItem = new();
-        private TaskWrapper<GetAddressInfoTask, ValueParameter<string>, GetAddressInfoResult> getAddressInfoTask = null;
+        private TwoWayTask<GetAddressInfoTask, ValueParameter<string>, GetAddressInfoResult> getAddressInfoTask = null;
         private string directoryPath = null;
         private readonly List<DrawItemBase> addressItems = new();
         private DrawItemBase mousePointItem = null;
@@ -136,7 +136,7 @@ namespace PicSum.UIComponent.AddressBar
 
         #region プライベートプロパティ
 
-        private TaskWrapper<GetAddressInfoTask, ValueParameter<string>, GetAddressInfoResult> GetAddressInfoProcess
+        private TwoWayTask<GetAddressInfoTask, ValueParameter<string>, GetAddressInfoResult> GetAddressInfoProcess
         {
             get
             {

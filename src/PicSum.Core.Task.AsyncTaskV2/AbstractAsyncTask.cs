@@ -1,14 +1,6 @@
 namespace PicSum.Core.Task.AsyncTaskV2
 {
-    public abstract class AbstractAsyncTask<TParameter>
-        : AbstractAsyncTask<TParameter, EmptyResult>,
-          IAsyncTask
-        where TParameter : ITaskParameter
-    {
-
-    }
-
-    public abstract class AbstractAsyncTask<TParameter, TResult>
+    public abstract class AbstractTwoWayTask<TParameter, TResult>
         : IAsyncTask
         where TParameter : ITaskParameter
         where TResult : ITaskResult
@@ -34,7 +26,7 @@ namespace PicSum.Core.Task.AsyncTaskV2
             }
         }
 
-        public AbstractAsyncTask()
+        public AbstractTwoWayTask()
         {
 
         }
@@ -113,5 +105,28 @@ namespace PicSum.Core.Task.AsyncTaskV2
                 this.CallbackAction(result);
             }
         }
+    }
+
+    public abstract class AbstractTwoWayTask<TResult>
+        : AbstractTwoWayTask<EmptyParameter, TResult>,
+          IAsyncTask
+        where TResult : ITaskResult
+    {
+
+    }
+
+    public abstract class AbstractOneWayTask<TParameter>
+        : AbstractTwoWayTask<TParameter, EmptyResult>,
+          IAsyncTask
+        where TParameter : ITaskParameter
+    {
+
+    }
+
+    public abstract class AbstractOneWayTask
+        : AbstractTwoWayTask<EmptyParameter, EmptyResult>,
+          IAsyncTask
+    {
+
     }
 }

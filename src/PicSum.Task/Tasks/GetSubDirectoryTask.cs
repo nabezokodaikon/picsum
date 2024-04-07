@@ -13,7 +13,7 @@ namespace PicSum.Task.Tasks
     /// <remarks>フォルダパスが空文字の場合、ドライブリストを取得します。</remarks>
     [SupportedOSPlatform("windows")]
     public sealed class GetSubDirectoryTask
-        : AbstractAsyncTask<ValueParameter<string>, ListResult<FileShallowInfoEntity>>
+        : AbstractTwoWayTask<ValueParameter<string>, ListResult<FileShallowInfoEntity>>
     {
         protected override void Execute(ValueParameter<string> param)
         {

@@ -41,8 +41,8 @@ namespace PicSum.Main.UIComponent
 
         private Size previrewSize = Size.Empty;
         private Timer redrawTimer = null;
-        private TaskWrapper<GetTagListTask, EmptyParameter, ListResult<string>> getTagListTask = null;
-        private TaskWrapper<GetImageFileByDirectoryTask, GetImageFileByDirectoryParameter, GetImageFileByDirectoryResult> getFilesTask = null;
+        private TwoWayTask<GetTagListTask, EmptyParameter, ListResult<string>> getTagListTask = null;
+        private TwoWayTask<GetImageFileByDirectoryTask, GetImageFileByDirectoryParameter, GetImageFileByDirectoryResult> getFilesTask = null;
 
         #endregion
 
@@ -76,7 +76,7 @@ namespace PicSum.Main.UIComponent
             }
         }
 
-        private TaskWrapper<GetTagListTask, EmptyParameter, ListResult<string>> GetTagListTask
+        private TwoWayTask<GetTagListTask, EmptyParameter, ListResult<string>> GetTagListTask
         {
             get
             {
@@ -258,7 +258,7 @@ namespace PicSum.Main.UIComponent
             }
         }
 
-        private TaskWrapper<GetImageFileByDirectoryTask, GetImageFileByDirectoryParameter, GetImageFileByDirectoryResult> CreateNewGetFilesTask()
+        private TwoWayTask<GetImageFileByDirectoryTask, GetImageFileByDirectoryParameter, GetImageFileByDirectoryResult> CreateNewGetFilesTask()
         {
             if (this.getFilesTask != null)
             {

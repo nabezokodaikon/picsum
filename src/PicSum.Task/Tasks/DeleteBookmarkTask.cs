@@ -9,7 +9,7 @@ namespace PicSum.Task.Tasks
 {
     [SupportedOSPlatform("windows")]
     public sealed class DeleteBookmarkTask
-        : AbstractAsyncTask<ListParameter<string>>
+        : AbstractOneWayTask<ListParameter<string>>
     {
         protected override void Execute(ListParameter<string> param)
         {

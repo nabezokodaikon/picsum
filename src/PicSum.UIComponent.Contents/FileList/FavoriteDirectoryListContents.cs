@@ -21,14 +21,14 @@ namespace PicSum.UIComponent.Contents.FileList
         #region インスタンス変数
 
         private FavoriteDirectoryListContentsParameter parameter = null;
-        private TaskWrapper<GetFavoriteDirectoryTask, GetFavoriteDirectoryParameter, ListResult<FileShallowInfoEntity>> searchTask = null;
+        private TwoWayTask<GetFavoriteDirectoryTask, GetFavoriteDirectoryParameter, ListResult<FileShallowInfoEntity>> searchTask = null;
         private TaskWrapper<DeleteDirectoryViewCounterTask, ListParameter<string>> deleteTask = null;
 
         #endregion
 
         #region プライベートプロパティ
 
-        private TaskWrapper<GetFavoriteDirectoryTask, GetFavoriteDirectoryParameter, ListResult<FileShallowInfoEntity>> SearchTask
+        private TwoWayTask<GetFavoriteDirectoryTask, GetFavoriteDirectoryParameter, ListResult<FileShallowInfoEntity>> SearchTask
         {
             get
             {

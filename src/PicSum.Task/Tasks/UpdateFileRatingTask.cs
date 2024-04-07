@@ -13,7 +13,7 @@ namespace PicSum.Task.Tasks
     /// </summary>
     [SupportedOSPlatform("windows")]
     public sealed class UpdateFileRatingTask
-        : AbstractAsyncTask<UpdateFileRatingParameter>
+        : AbstractOneWayTask<UpdateFileRatingParameter>
     {
         protected override void Execute(UpdateFileRatingParameter param)
         {

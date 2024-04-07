@@ -34,7 +34,7 @@ namespace PicSum.UIComponent.Contents.FileList
         private Dictionary<string, FileEntity> masterFileDictionary = null;
         private List<string> filterFilePathList = null;
         private readonly SortInfo sortInfo = new SortInfo();
-        private TaskWrapper<GetThumbnailsTask, GetThumbnailParameter, ThumbnailImageResult> getThumbnailsTask = null;
+        private TwoWayTask<GetThumbnailsTask, GetThumbnailParameter, ThumbnailImageResult> getThumbnailsTask = null;
         private TaskWrapper<ExportFileTask, ExportFileParameter> exportFileTask = null;
         private TaskWrapper<AddBookmarkTask, ValueParameter<string>> addBookmarkTask = null;
 
@@ -177,7 +177,7 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
-        private TaskWrapper<GetThumbnailsTask, GetThumbnailParameter, ThumbnailImageResult> GetThumbnailsTask
+        private TwoWayTask<GetThumbnailsTask, GetThumbnailParameter, ThumbnailImageResult> GetThumbnailsTask
         {
             get
             {

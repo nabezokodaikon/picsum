@@ -11,7 +11,7 @@ namespace PicSum.Task.Tasks
     /// </summary>
     [SupportedOSPlatform("windows")]
     public sealed class StartupTask
-        : AbstractAsyncTask<StartupPrameter>
+        : AbstractOneWayTask<StartupPrameter>
     {
         protected override void Execute(StartupPrameter param)
         {
