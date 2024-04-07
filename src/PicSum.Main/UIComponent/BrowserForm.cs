@@ -34,6 +34,7 @@ namespace PicSum.Main.UIComponent
         private BrowserMainPanel browserMainPanel = null;
         private bool isKeyDown = false;
         private TwoWayTask<StartupTask, StartupPrameter, EmptyResult> startupTask = null;
+        private OneWayTask<DBCleanupTask> dbCleanupTask = null;
 
         #endregion
 
@@ -124,12 +125,18 @@ namespace PicSum.Main.UIComponent
                 this.startupTask = new();
                 this.startupTask
                     .Catch(ex =>
-                    {
-                        ExceptionUtil.ShowErrorDialog("起動処理が失敗しました。", ex);
-                    })
+                        ExceptionUtil.ShowErrorDialog("起動処理が失敗しました。", ex))
                     .Complete(() =>
                     {
-                        this.CreateBrowserMainPanel();
+                        // MEMO: DBをクリーンアップする場合は、コメントを外す。
+                        this.dbCleanupTask = new();
+                        this.dbCleanupTask
+                            .Catch(ex =>
+                                ExceptionUtil.ShowErrorDialog("DBクリーンアップ処理が失敗しました。", ex))
+                            .Complete(
+                                this.CreateBrowserMainPanel)
+                            .StartThread();
+                        this.dbCleanupTask.StartTask();
                     })
                     .StartThread();
 
@@ -178,6 +185,12 @@ namespace PicSum.Main.UIComponent
                 {
                     this.startupTask.Dispose();
                     this.startupTask = null;
+                }
+
+                if (this.dbCleanupTask != null)
+                {
+                    this.dbCleanupTask.Dispose();
+                    this.dbCleanupTask = null;
                 }
             }
 
