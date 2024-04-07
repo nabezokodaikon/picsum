@@ -138,7 +138,7 @@ namespace PicSum.Main.UIComponent
                         //    .StartThread();
                         //this.dbCleanupTask.StartTask();
 
-                        // MEMO: DBをクリーンアップしない場合は、コメントアウトする。
+                        // MEMO: DBをクリーンアップする場合は、コメントアウトする。
                         this.CreateBrowserMainPanel();
                     })
                     .StartThread();
