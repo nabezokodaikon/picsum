@@ -1,3 +1,4 @@
+using NLog;
 using PicSum.Core.Base.Exception;
 using PicSum.Core.Task.AsyncTaskV2;
 using PicSum.Main.Conf;
@@ -11,6 +12,7 @@ using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Runtime.Versioning;
 using System.Windows.Forms;
 
@@ -20,7 +22,19 @@ namespace PicSum.Main.UIComponent
     public sealed class BrowserForm
         : GrassForm
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         private static bool isStartUp = true;
+
+        private static bool isCleanup()
+        {
+            return Environment.GetCommandLineArgs().Contains("--cleanup");
+        }
+
+        private static bool isHome()
+        {
+            return Environment.GetCommandLineArgs().Contains("--home");
+        }
 
         #region イベント
 
@@ -128,18 +142,26 @@ namespace PicSum.Main.UIComponent
                         ExceptionUtil.ShowErrorDialog("起動処理が失敗しました。", ex))
                     .Complete(() =>
                     {
-                        // MEMO: DBをクリーンアップする場合は、コメントを外す。
-                        //this.dbCleanupTask = new();
-                        //this.dbCleanupTask
-                        //    .Catch(ex =>
-                        //        ExceptionUtil.ShowErrorDialog("DBクリーンアップ処理が失敗しました。", ex))
-                        //    .Complete(
-                        //        this.CreateBrowserMainPanel)
-                        //    .StartThread();
-                        //this.dbCleanupTask.StartTask();
-
-                        // MEMO: DBをクリーンアップする場合は、コメントアウトする。
-                        this.CreateBrowserMainPanel();
+                        if (BrowserForm.isCleanup())
+                        {
+                            Logger.Debug("DBのクリーンアップ処理を実行します。");
+                            this.dbCleanupTask = new();
+                            this.dbCleanupTask
+                                .Catch(ex =>
+                                    ExceptionUtil.ShowErrorDialog("DBクリーンアップ処理が失敗しました。", ex))
+                                .Complete(() =>
+                                {
+                                    this.CreateBrowserMainPanel();
+                                    BrowserForm.isStartUp = false;
+                                })
+                                    .StartThread();
+                            this.dbCleanupTask.StartTask();
+                        }
+                        else
+                        {
+                            this.CreateBrowserMainPanel();
+                            BrowserForm.isStartUp = false;
+                        }
                     })
                     .StartThread();
 
@@ -154,8 +176,6 @@ namespace PicSum.Main.UIComponent
                 param.ThumbnailDBFilePath = Path.Combine(dbDir, @"thumbnail.sqlite");
 
                 this.startupTask.StartTask(param);
-
-                BrowserForm.isStartUp = false;
             }
 
             base.OnHandleCreated(e);
@@ -303,6 +323,13 @@ namespace PicSum.Main.UIComponent
 
             this.SuspendLayout();
             this.Controls.Add(browserMainPanel);
+
+            if (BrowserForm.isStartUp && BrowserForm.isHome())
+            {
+                Logger.Debug("起動時にホームタブを追加します。");
+                browserMainPanel.AddFavoriteDirectoryListTab();
+            }
+
             this.SetControlRegion();
             this.ResumeLayout();
 
