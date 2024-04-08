@@ -258,7 +258,11 @@ namespace SWF.UIComponent.Form
             const int HTBOTTOMLEFT = 16;
             const int HTBOTTOMRIGHT = 17;
 
-            var p = new Point(WinApiMembers.LoWord((int)lparam), WinApiMembers.HiWord((int)lparam));
+            Point p;
+            checked
+            {
+                p = new Point(WinApiMembers.LoWord((int)lparam), WinApiMembers.HiWord((int)lparam));
+            }
 
             var topleft = this.RectangleToScreen(new Rectangle(0, 0, this.glassMargins.cxLeftWidth, this.glassMargins.cxLeftWidth));
             if (topleft.Contains(p))
