@@ -136,6 +136,17 @@ namespace PicSum.Main.UIComponent
         {
             if (BrowserForm.isStartUp)
             {
+                this.Location = BrowserConfig.WindowLocaion;
+            }
+            else
+            {
+                this.Location = new Point(
+                    BrowserConfig.WindowLocaion.X + 16,
+                    BrowserConfig.WindowLocaion.Y + 16);
+            }
+
+            if (BrowserForm.isStartUp)
+            {
                 this.startupTask = new();
                 this.startupTask
                     .Catch(ex =>
@@ -290,8 +301,7 @@ namespace PicSum.Main.UIComponent
             this.MinimumSize = new Size(320, 240);
             this.KeyPreview = true;
             this.Padding = new Padding(8, 12, 8, 8);
-
-            this.Location = BrowserConfig.WindowLocaion;
+            
             this.Size = BrowserConfig.WindowSize;
             this.WindowState = BrowserConfig.WindowState;
 
