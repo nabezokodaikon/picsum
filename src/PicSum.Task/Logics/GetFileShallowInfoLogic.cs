@@ -50,7 +50,6 @@ namespace PicSum.Task.Logics
                 info.FilePath = filePath;
                 info.FileName = FileUtil.GetFileName(filePath);
                 info.IsFile = true;
-                string ex = FileUtil.GetExtension(filePath);
                 info.IsImageFile = FileUtil.IsImageFile(filePath);
                 info.UpdateDate = FileUtil.GetUpdateDate(filePath);
                 info.LargeIcon = FileIconCash.GetLargeFileIcon(info.FilePath);
