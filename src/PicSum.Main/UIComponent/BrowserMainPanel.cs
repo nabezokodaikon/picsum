@@ -491,9 +491,7 @@ namespace PicSum.Main.UIComponent
             this.infoPanel.SetFileInfo(e.FilePathList);
             this.tabSwitch.InvalidateHeader();
 
-#if DEBUG
             Logger.Debug("コンテンツ内の選択ファイルが変更されました。");
-#endif
         }
 
         private void Contents_OpenContents(object sender, BrowserContentsEventArgs e)
@@ -539,9 +537,7 @@ namespace PicSum.Main.UIComponent
                     contents.RedrawContents();
                 }
 
-#if DEBUG
                 Logger.Debug("アクティブなタブが変更されました。");
-#endif
             }
         }
 
