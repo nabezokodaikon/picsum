@@ -13,15 +13,9 @@ namespace PicSum.Task.Logics
     /// フォルダ状態テーブルを更新します。
     /// </summary>
     [SupportedOSPlatform("windows")]
-    internal sealed class UpdateDirectoryStateLogic
-        : AbstractAsyncLogic
+    internal sealed class UpdateDirectoryStateLogic(IAsyncTask task)
+        : AbstractAsyncLogic(task)
     {
-        public UpdateDirectoryStateLogic(IAsyncTask task)
-            : base(task)
-        {
-
-        }
-
         public bool Execute(DirectoryStateParameter directoryState)
         {
             if (directoryState == null)

@@ -14,31 +14,24 @@ namespace PicSum.Task.Logics
     /// フォルダ状態を取得します。
     /// </summary>
     [SupportedOSPlatform("windows")]
-    internal sealed class GetDirectoryStateLogic
-        : AbstractAsyncLogic
+    internal sealed class GetDirectoryStateLogic(IAsyncTask task)
+        : AbstractAsyncLogic(task)
     {
-        public GetDirectoryStateLogic(IAsyncTask task)
-            : base(task)
-        {
-
-        }
-
         public DirectoryStateParameter Execute(string directoryPath)
         {
-            if (directoryPath == null)
-            {
-                throw new ArgumentNullException(nameof(directoryPath));
-            }
+            ArgumentException.ThrowIfNullOrEmpty(directoryPath, nameof(directoryPath));
 
             var sql = new ReadDirectoryStateByDirectorySql(directoryPath);
             var dto = DatabaseManager<FileInfoConnection>.ReadLine<DirectoryStateDto>(sql);
             if (dto != null)
             {
-                var directoryState = new DirectoryStateParameter();
-                directoryState.DirectoryPath = dto.DirectoryPath;
-                directoryState.SortTypeID = (SortTypeID)dto.SortTypeId;
-                directoryState.IsAscending = dto.IsAscending;
-                directoryState.SelectedFilePath = dto.SelectedFilePath;
+                var directoryState = new DirectoryStateParameter
+                {
+                    DirectoryPath = dto.DirectoryPath,
+                    SortTypeID = (SortTypeID)dto.SortTypeId,
+                    IsAscending = dto.IsAscending,
+                    SelectedFilePath = dto.SelectedFilePath
+                };
                 return directoryState;
             }
             else

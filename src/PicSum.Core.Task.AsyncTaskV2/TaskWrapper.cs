@@ -1,4 +1,5 @@
 using NLog;
+using System;
 using System.Collections.Concurrent;
 
 namespace PicSum.Core.Task.AsyncTaskV2
@@ -81,8 +82,7 @@ namespace PicSum.Core.Task.AsyncTaskV2
 
         public TwoWayTask<TTask, TTaskParameter, TTaskResult> Callback(Action<TTaskResult> action)
         {
-            if (action == null)
-                throw new ArgumentNullException(nameof(action));
+            ArgumentNullException.ThrowIfNull(action, nameof(action));
 
             if (this.callbackAction != null)
                 throw new InvalidOperationException($"{this.taskInfo} 既にコールバックアクションが設定されています。");
@@ -93,8 +93,7 @@ namespace PicSum.Core.Task.AsyncTaskV2
 
         public TwoWayTask<TTask, TTaskParameter, TTaskResult> Catch(Action<TaskException> action)
         {
-            if (action == null)
-                throw new ArgumentNullException(nameof(action));
+            ArgumentNullException.ThrowIfNull(action, nameof(action));
 
             if (this.catchAction != null)
                 throw new InvalidOperationException($"{this.taskInfo} 既に例外アクションが設定されています。");
@@ -105,8 +104,7 @@ namespace PicSum.Core.Task.AsyncTaskV2
 
         public TwoWayTask<TTask, TTaskParameter, TTaskResult> Complete(Action action)
         {
-            if (action == null)
-                throw new ArgumentNullException(nameof(action));
+            ArgumentNullException.ThrowIfNull(action, nameof(action));
 
             if (this.completeAction != null)
                 throw new InvalidOperationException($"{this.taskInfo} 既に完了アクションが設定されています。");
@@ -130,9 +128,11 @@ namespace PicSum.Core.Task.AsyncTaskV2
 
             this.ClearQueue();
 
-            var task = new TTask();
-            task.ID = TaskID.GetNew();
-            task.Parameter = parameter;
+            var task = new TTask
+            {
+                ID = TaskID.GetNew(),
+                Parameter = parameter
+            };
             this.taskQueue.Enqueue(task);
         }
 
@@ -140,8 +140,10 @@ namespace PicSum.Core.Task.AsyncTaskV2
         {
             this.ClearQueue();
 
-            var task = new TTask();
-            task.ID = TaskID.GetNew();
+            var task = new TTask
+            {
+                ID = TaskID.GetNew()
+            };
             this.taskQueue.Enqueue(task);
         }
 
@@ -197,8 +199,7 @@ namespace PicSum.Core.Task.AsyncTaskV2
                             {
                                 this.context.Post(state =>
                                 {
-                                    if (state == null)
-                                        throw new ArgumentNullException(nameof(state));
+                                    ArgumentNullException.ThrowIfNull(state, nameof(state));
                                     var result = (TTaskResult)state;
                                     this.callbackAction(result);
                                 }, r);
@@ -211,8 +212,7 @@ namespace PicSum.Core.Task.AsyncTaskV2
                             {
                                 this.context.Post(state =>
                                 {
-                                    if (state == null)
-                                        throw new ArgumentNullException(nameof(state));
+                                    ArgumentNullException.ThrowIfNull(state, nameof(state));
                                     var ex = (TaskException)state;
                                     this.catchAction(ex);
                                 }, e);

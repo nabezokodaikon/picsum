@@ -13,15 +13,9 @@ namespace PicSum.Task.Logics
     /// ファイルを評価値で検索します。
     /// </summary>
     [SupportedOSPlatform("windows")]
-    internal sealed class GetFileByRatingLogic
-        : AbstractAsyncLogic
+    internal sealed class GetFileByRatingLogic(IAsyncTask task)
+        : AbstractAsyncLogic(task)
     {
-        public GetFileByRatingLogic(IAsyncTask task)
-            : base(task)
-        {
-
-        }
-
         public IList<FileByRatingDto> Execute(int rating)
         {
             var sql = new ReadFileByRatingSql(rating);

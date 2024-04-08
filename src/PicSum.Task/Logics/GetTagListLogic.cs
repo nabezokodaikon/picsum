@@ -14,15 +14,9 @@ namespace PicSum.Task.Logics
     /// タグの一覧を取得します。
     /// </summary>
     [SupportedOSPlatform("windows")]
-    internal sealed class GetTagListLogic
-        : AbstractAsyncLogic
+    internal sealed class GetTagListLogic(IAsyncTask task)
+        : AbstractAsyncLogic(task)
     {
-        public GetTagListLogic(IAsyncTask task)
-            : base(task)
-        {
-
-        }
-
         public IList<string> Execute()
         {
             var sql = new ReadAllTagSql();

@@ -8,15 +8,9 @@ using System.Runtime.Versioning;
 namespace PicSum.Task.Logics
 {
     [SupportedOSPlatform("windows")]
-    internal sealed class CleanupThumbnailDBLogic
-        : AbstractAsyncLogic
+    internal sealed class CleanupThumbnailDBLogic(IAsyncTask task)
+        : AbstractAsyncLogic(task)
     {
-        public CleanupThumbnailDBLogic(IAsyncTask task)
-            : base(task)
-        {
-
-        }
-
         public void Execute()
         {
             using (var tran = DatabaseManager<ThumbnailConnection>.BeginTransaction())

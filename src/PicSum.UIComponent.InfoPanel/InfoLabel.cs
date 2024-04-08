@@ -10,7 +10,7 @@ namespace PicSum.UIComponent.InfoPanel
     {
         private const float MARGIN = 8;
 
-        private Color textColor = Color.FromArgb(
+        private readonly Color textColor = Color.FromArgb(
             SystemColors.ControlText.A,
             SystemColors.ControlText.R,
             SystemColors.ControlText.G,
@@ -78,11 +78,7 @@ namespace PicSum.UIComponent.InfoPanel
         {
             get
             {
-                if (this.textBrush == null)
-                {
-                    this.textBrush = new SolidBrush(this.textColor);
-                }
-
+                this.textBrush ??= new SolidBrush(this.textColor);
                 return this.textBrush;
             }
         }

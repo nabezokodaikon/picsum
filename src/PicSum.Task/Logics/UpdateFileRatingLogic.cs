@@ -11,15 +11,9 @@ namespace PicSum.Task.Logics
     /// ファイル指定評価T更新
     /// </summary>
     [SupportedOSPlatform("windows")]
-    internal sealed class UpdateFileRatingLogic
-        : AbstractAsyncLogic
+    internal sealed class UpdateFileRatingLogic(IAsyncTask task)
+        : AbstractAsyncLogic(task)
     {
-        public UpdateFileRatingLogic(IAsyncTask task)
-            : base(task)
-        {
-
-        }
-
         public bool Execute(string filePath, int ratingValue, DateTime registrationDate)
         {
             if (filePath == null)

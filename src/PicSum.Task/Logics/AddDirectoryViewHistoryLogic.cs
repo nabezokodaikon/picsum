@@ -11,15 +11,9 @@ namespace PicSum.Task.Logics
     /// フォルダの表示履歴を追加します。
     /// </summary>
     [SupportedOSPlatform("windows")]
-    internal sealed class AddDirectoryViewHistoryLogic
-        : AbstractAsyncLogic
+    internal sealed class AddDirectoryViewHistoryLogic(IAsyncTask task)
+        : AbstractAsyncLogic(task)
     {
-        public AddDirectoryViewHistoryLogic(IAsyncTask task)
-            : base(task)
-        {
-
-        }
-
         /// <summary>
         /// 処理を実行します。
         /// </summary>
@@ -27,13 +21,9 @@ namespace PicSum.Task.Logics
         /// <returns>表示履歴が追加されたらTrue、追加されなければFalseを返します。</returns>
         public bool Execute(string directoryPath)
         {
-            if (directoryPath == null)
-            {
-                throw new ArgumentNullException(nameof(directoryPath));
-            }
+            ArgumentNullException.ThrowIfNull(directoryPath, nameof(directoryPath));
 
-            CreationDirectoryViewHistorySql sql = new CreationDirectoryViewHistorySql(directoryPath);
-
+            var sql = new CreationDirectoryViewHistorySql(directoryPath);
             return DatabaseManager<FileInfoConnection>.Update(sql);
         }
     }

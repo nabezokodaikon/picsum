@@ -14,15 +14,9 @@ namespace PicSum.Task.Logics
     /// フォルダの表示履歴を取得します。
     /// </summary>
     [SupportedOSPlatform("windows")]
-    internal sealed class GetDirectoryViewHistoryLogic
-        : AbstractAsyncLogic
+    internal sealed class GetDirectoryViewHistoryLogic(IAsyncTask task)
+        : AbstractAsyncLogic(task)
     {
-        public GetDirectoryViewHistoryLogic(IAsyncTask task)
-            : base(task)
-        {
-
-        }
-
         public IList<string> Execute()
         {
             var sql = new ReadDirectoryViewHistorySql(100);

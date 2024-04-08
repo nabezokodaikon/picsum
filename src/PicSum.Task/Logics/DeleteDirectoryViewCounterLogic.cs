@@ -11,15 +11,9 @@ namespace PicSum.Task.Logics
     /// フォルダの表示回数を削除します。
     /// </summary>
     [SupportedOSPlatform("windows")]
-    internal class DeleteDirectoryViewCounterLogic
-        : AbstractAsyncLogic
+    internal class DeleteDirectoryViewCounterLogic(IAsyncTask task)
+        : AbstractAsyncLogic(task)
     {
-        public DeleteDirectoryViewCounterLogic(IAsyncTask task)
-            : base(task)
-        {
-
-        }
-
         /// <summary>
         /// 処理を実行します。
         /// </summary>

@@ -33,7 +33,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private Dictionary<string, FileEntity> masterFileDictionary = null;
         private List<string> filterFilePathList = null;
-        private readonly SortInfo sortInfo = new SortInfo();
+        private readonly SortInfo sortInfo = new();
         private TwoWayTask<GetThumbnailsTask, GetThumbnailParameter, ThumbnailImageResult> getThumbnailsTask = null;
         private OneWayTask<ExportFileTask, ExportFileParameter> exportFileTask = null;
         private OneWayTask<AddBookmarkTask, ValueParameter<string>> addBookmarkTask = null;
@@ -308,17 +308,10 @@ namespace PicSum.UIComponent.Contents.FileList
 
         protected void SetFiles(IList<FileShallowInfoEntity> srcFiles, string selectedFilePath, SortTypeID sortTypeID, bool isAscending)
         {
-            if (srcFiles == null)
-            {
-                throw new ArgumentNullException(nameof(srcFiles));
-            }
+            ArgumentNullException.ThrowIfNull(srcFiles, nameof(srcFiles));
+            ArgumentNullException.ThrowIfNull(selectedFilePath, nameof(selectedFilePath));
 
-            if (selectedFilePath == null)
-            {
-                throw new ArgumentNullException(nameof(selectedFilePath));
-            }
-
-            this.masterFileDictionary = new Dictionary<string, FileEntity>();
+            this.masterFileDictionary = [];
             foreach (var srcFile in srcFiles)
             {
                 var destFile = new FileEntity();
@@ -343,15 +336,8 @@ namespace PicSum.UIComponent.Contents.FileList
 
         protected void SetFile(IList<FileShallowInfoEntity> srcFiles, string selectedFilePath)
         {
-            if (srcFiles == null)
-            {
-                throw new ArgumentNullException(nameof(srcFiles));
-            }
-
-            if (selectedFilePath == null)
-            {
-                throw new ArgumentNullException(nameof(selectedFilePath));
-            }
+            ArgumentNullException.ThrowIfNull(srcFiles, nameof(srcFiles));
+            ArgumentNullException.ThrowIfNull(selectedFilePath, nameof(selectedFilePath));
 
             this.SetFiles(srcFiles, selectedFilePath, SortTypeID.Default, false);
         }
@@ -373,10 +359,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
         protected void SetContextMenuFiles(IList<string> filePathList)
         {
-            if (filePathList == null)
-            {
-                throw new ArgumentNullException(nameof(filePathList));
-            }
+            ArgumentNullException.ThrowIfNull(filePathList, nameof(filePathList));
 
             if (filePathList.Count == 0)
             {
@@ -388,20 +371,14 @@ namespace PicSum.UIComponent.Contents.FileList
 
         protected void SetContextMenuFiles(string filePath)
         {
-            if (filePath == null)
-            {
-                throw new ArgumentNullException(nameof(filePath));
-            }
+            ArgumentNullException.ThrowIfNull(filePath, nameof(filePath));
 
             this.SetContextMenuFiles(new List<string>() { filePath });
         }
 
         protected void RemoveFile(IList<string> filePathList)
         {
-            if (filePathList == null)
-            {
-                throw new ArgumentNullException(nameof(filePathList));
-            }
+            ArgumentNullException.ThrowIfNull(filePathList, nameof(filePathList));
 
             if (filePathList.Count == 0)
             {
@@ -445,10 +422,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
         protected IEnumerable<FileShallowInfoEntity> GetSortFiles(IEnumerable<FileShallowInfoEntity> files)
         {
-            if (files == null)
-            {
-                throw new ArgumentNullException(nameof(files));
-            }
+            ArgumentNullException.ThrowIfNull(files, nameof(files));
 
             var isAscending = this.sortInfo.IsAscending(this.sortInfo.ActiveSortType);
             switch (this.sortInfo.ActiveSortType)
@@ -513,19 +487,14 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private ToolStripButton GetSortToolStripButton(SortTypeID sortType)
         {
-            switch (sortType)
+            return sortType switch
             {
-                case SortTypeID.FileName:
-                    return this.sortFileNameToolStripButton;
-                case SortTypeID.FilePath:
-                    return this.sortFilePathToolStripButton;
-                case SortTypeID.UpdateDate:
-                    return this.sortFileUpdateDateToolStripButton;
-                case SortTypeID.RgistrationDate:
-                    return this.sortFileRgistrationDateToolStripButton;
-                default:
-                    return null;
-            }
+                SortTypeID.FileName => this.sortFileNameToolStripButton,
+                SortTypeID.FilePath => this.sortFilePathToolStripButton,
+                SortTypeID.UpdateDate => this.sortFileUpdateDateToolStripButton,
+                SortTypeID.RgistrationDate => this.sortFileRgistrationDateToolStripButton,
+                _ => null,
+            };
         }
 
         private void SetSort()
@@ -690,23 +659,6 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
-        private IList<string> GetImageFiles()
-        {
-            return this.filterFilePathList
-                .Where(item =>
-                {
-                    if (this.masterFileDictionary.TryGetValue(item, out var file))
-                    {
-                        return file.IsImageFile;
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                })
-                .ToArray();
-        }
-
         private void DrawItem(SWF.UIComponent.FlowList.DrawItemEventArgs e)
         {
             if (e.IsSelected)
@@ -804,12 +756,11 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private void GetThumbnailsTask_Callback(ThumbnailImageResult e)
         {
-            if (this.masterFileDictionary == null || !this.masterFileDictionary.ContainsKey(e.FilePath))
+            if (this.masterFileDictionary == null
+                || !this.masterFileDictionary.TryGetValue(e.FilePath, out var file))
             {
                 return;
             }
-
-            var file = this.masterFileDictionary[e.FilePath];
 
             if (file.ThumbnailImage != null)
             {

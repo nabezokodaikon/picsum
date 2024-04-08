@@ -177,7 +177,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         {
             this.ChangeImagePanelSize();
 
-            Size backgroudSize = Size.Empty;
+            Size backgroudSize;
             if (this.leftImagePanel.HasImage && this.rightImagePanel.HasImage)
             {
                 backgroudSize = new Size(
@@ -243,10 +243,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 this.parameter.SelectedFilePath = this.SelectedFilePath;
                 this.parameter.GetImageFiles -= this.Parameter_GetImageFiles;
 
-                if (this.components != null)
-                {
-                    this.components.Dispose();
-                }
+                this.components?.Dispose();
             }
 
             base.Dispose(disposing);

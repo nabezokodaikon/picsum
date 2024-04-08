@@ -11,15 +11,9 @@ namespace PicSum.Task.Logics
     /// スタートアップ非同期ロジック
     /// </summary>
     [SupportedOSPlatform("windows")]
-    internal sealed class StartupLogic
-        : AbstractAsyncLogic
+    internal sealed class StartupLogic(IAsyncTask task)
+        : AbstractAsyncLogic(task)
     {
-        public StartupLogic(IAsyncTask task)
-            : base(task)
-        {
-
-        }
-
         public void Execute(StartupPrameter param)
         {
             if (param == null)

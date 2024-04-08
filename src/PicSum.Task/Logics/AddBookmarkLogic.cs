@@ -8,24 +8,14 @@ using System.Runtime.Versioning;
 namespace PicSum.Tasks.Logics
 {
     [SupportedOSPlatform("windows")]
-    internal sealed class AddBookmarkLogic
-        : AbstractAsyncLogic
+    internal sealed class AddBookmarkLogic(IAsyncTask task)
+        : AbstractAsyncLogic(task)
     {
-        public AddBookmarkLogic(IAsyncTask task)
-            : base(task)
-        {
-
-        }
-
         public bool Execute(string filePath, DateTime registrationDate)
         {
-            if (filePath == null)
-            {
-                throw new ArgumentNullException(nameof(filePath));
-            }
+            ArgumentNullException.ThrowIfNull(filePath, nameof(filePath));
 
             var sql = new CreationBookmarkSql(filePath, registrationDate);
-
             return DatabaseManager<FileInfoConnection>.Update(sql);
         }
     }

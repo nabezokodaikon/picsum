@@ -50,10 +50,7 @@ namespace PicSum.UIComponent.AddressBar
 
         public override void Draw(Graphics g)
         {
-            if (g == null)
-            {
-                throw new ArgumentNullException(nameof(g));
-            }
+            ArgumentNullException.ThrowIfNull(g, nameof(g));
 
             if (this.directory == null)
             {
@@ -82,10 +79,7 @@ namespace PicSum.UIComponent.AddressBar
 
         public override void OnMouseClick(MouseEventArgs e)
         {
-            if (e == null)
-            {
-                throw new ArgumentNullException(nameof(e));
-            }
+            ArgumentNullException.ThrowIfNull(e, nameof(e));
 
             if (e.Button == MouseButtons.Left)
             {

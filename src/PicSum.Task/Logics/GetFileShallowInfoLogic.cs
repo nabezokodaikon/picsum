@@ -10,15 +10,9 @@ namespace PicSum.Task.Logics
     /// ファイルの浅い情報を取得します。
     /// </summary>
     [SupportedOSPlatform("windows")]
-    internal sealed class GetFileShallowInfoLogic
-        : AbstractAsyncLogic
+    internal sealed class GetFileShallowInfoLogic(IAsyncTask task)
+        : AbstractAsyncLogic(task)
     {
-        public GetFileShallowInfoLogic(IAsyncTask task)
-            : base(task)
-        {
-
-        }
-
         public FileShallowInfoEntity Execute(string filePath)
         {
             if (filePath == null)
@@ -26,8 +20,10 @@ namespace PicSum.Task.Logics
                 throw new ArgumentNullException(nameof(filePath));
             }
 
-            var info = new FileShallowInfoEntity();
-            info.RgistrationDate = null;
+            var info = new FileShallowInfoEntity
+            {
+                RgistrationDate = null
+            };
 
             if (FileUtil.IsSystemRoot(filePath))
             {

@@ -17,91 +17,7 @@ namespace PicSum.Task.Tasks
     public sealed class GetImageFileTask
         : AbstractTwoWayTask<GetImageFileParameter, GetImageFileResult>
     {
-        protected override void Execute(GetImageFileParameter parameter)
-        {
-            var result = new GetImageFileResult();
-            var logic = new GetImageFileLogic(this);
-            var currentFilePath = parameter.FilePathList[parameter.CurrentIndex];
-
-            try
-            {
-                this.CheckCancel();
-                var img1 = ImageUtil.ReadImageFile(currentFilePath);
-                this.CheckCancel();
-
-                if (parameter.ImageDisplayMode != ImageDisplayMode.Single &&
-                    img1.Width < img1.Height)
-                {
-                    var nextIndex = parameter.CurrentIndex + 1;
-                    if (nextIndex > parameter.FilePathList.Count - 1)
-                    {
-                        nextIndex = 0;
-                    }
-
-                    var nextFilePath = parameter.FilePathList[nextIndex];
-                    var srcImg2Size = ImageUtil.GetImageSize(nextFilePath);
-                    if (srcImg2Size.Width < srcImg2Size.Height)
-                    {
-                        this.CheckCancel();
-                        var img2 = ImageUtil.ReadImageFile(nextFilePath);
-                        this.CheckCancel();
-
-                        result.Image1 = new ImageFileEntity();
-                        result.Image1.FilePath = currentFilePath;
-
-                        this.CheckCancel();
-                        result.Image1.Image = img1;
-                        this.CheckCancel();
-                        result.Image1.Thumbnail = logic.CreateThumbnail(result.Image1.Image, parameter.ThumbnailSize, parameter.ImageSizeMode);
-                        this.CheckCancel();
-
-                        result.Image2 = new ImageFileEntity();
-                        result.Image2.FilePath = nextFilePath;
-
-                        this.CheckCancel();
-                        result.Image2.Image = img2;
-                        this.CheckCancel();
-                        result.Image2.Thumbnail = logic.CreateThumbnail(result.Image2.Image, parameter.ThumbnailSize, parameter.ImageSizeMode);
-                        this.CheckCancel();
-                    }
-                    else
-                    {
-                        result.Image1 = new ImageFileEntity();
-                        result.Image1.FilePath = currentFilePath;
-
-                        this.CheckCancel();
-                        result.Image1.Image = img1;
-                        this.CheckCancel();
-                        result.Image1.Thumbnail = logic.CreateThumbnail(result.Image1.Image, parameter.ThumbnailSize, parameter.ImageSizeMode);
-                        this.CheckCancel();
-                    }
-                }
-                else
-                {
-                    result.Image1 = new ImageFileEntity();
-                    result.Image1.FilePath = currentFilePath;
-                    this.CheckCancel();
-                    result.Image1.Image = img1;
-                    this.CheckCancel();
-                    result.Image1.Thumbnail = logic.CreateThumbnail(result.Image1.Image, parameter.ThumbnailSize, parameter.ImageSizeMode);
-                    this.CheckCancel();
-                }
-            }
-            catch (ImageUtilException ex)
-            {
-                this.ExeptionHandler(result);
-                throw new TaskException(this.ID, ex);
-            }
-            catch (TaskCancelException)
-            {
-                this.ExeptionHandler(result);
-                throw;
-            }
-
-            this.Callback(result);
-        }
-
-        private void ExeptionHandler(GetImageFileResult result)
+        private static void ExeptionHandler(GetImageFileResult result)
         {
             bool isDisposed = false;
 
@@ -143,6 +59,78 @@ namespace PicSum.Task.Tasks
             {
                 GC.Collect();
             }
+        }
+
+        protected override void Execute(GetImageFileParameter parameter)
+        {
+            var result = new GetImageFileResult();
+            var logic = new GetImageFileLogic(this);
+            var currentFilePath = parameter.FilePathList[parameter.CurrentIndex];
+
+            try
+            {
+                this.CheckCancel();
+                var img1 = ImageUtil.ReadImageFile(currentFilePath);
+
+                if (parameter.ImageDisplayMode != ImageDisplayMode.Single &&
+                    img1.Width < img1.Height)
+                {
+                    var nextIndex = parameter.CurrentIndex + 1;
+                    if (nextIndex > parameter.FilePathList.Count - 1)
+                    {
+                        nextIndex = 0;
+                    }
+
+                    this.CheckCancel();
+                    var nextFilePath = parameter.FilePathList[nextIndex];
+                    var srcImg2Size = ImageUtil.GetImageSize(nextFilePath);
+                    if (srcImg2Size.Width < srcImg2Size.Height)
+                    {
+                        this.CheckCancel();
+                        var img2 = ImageUtil.ReadImageFile(nextFilePath);
+
+                        this.CheckCancel();
+                        result.Image1 = new ImageFileEntity();
+                        result.Image1.FilePath = currentFilePath;
+                        result.Image1.Image = img1;
+                        result.Image1.Thumbnail = logic.CreateThumbnail(result.Image1.Image, parameter.ThumbnailSize, parameter.ImageSizeMode);
+
+                        this.CheckCancel();
+                        result.Image2 = new ImageFileEntity();
+                        result.Image2.FilePath = nextFilePath;      
+                        result.Image2.Image = img2;
+                        result.Image2.Thumbnail = logic.CreateThumbnail(result.Image2.Image, parameter.ThumbnailSize, parameter.ImageSizeMode);
+                    }
+                    else
+                    {
+                        this.CheckCancel();
+                        result.Image1 = new ImageFileEntity();
+                        result.Image1.FilePath = currentFilePath;
+                        result.Image1.Image = img1;
+                        result.Image1.Thumbnail = logic.CreateThumbnail(result.Image1.Image, parameter.ThumbnailSize, parameter.ImageSizeMode);
+                    }
+                }
+                else
+                {
+                    this.CheckCancel();
+                    result.Image1 = new ImageFileEntity();
+                    result.Image1.FilePath = currentFilePath;                    
+                    result.Image1.Image = img1;
+                    result.Image1.Thumbnail = logic.CreateThumbnail(result.Image1.Image, parameter.ThumbnailSize, parameter.ImageSizeMode);
+                }
+            }
+            catch (ImageUtilException ex)
+            {
+                ExeptionHandler(result);
+                throw new TaskException(this.ID, ex);
+            }
+            catch (TaskCancelException)
+            {
+                ExeptionHandler(result);
+                throw;
+            }
+
+            this.Callback(result);
         }
     }
 }

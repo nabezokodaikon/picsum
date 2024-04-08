@@ -10,15 +10,9 @@ namespace PicSum.Task.Logics
     /// フォルダ内のファイルとサブフォルダ取得非同期ロジック
     /// </summary>
     [SupportedOSPlatform("windows")]
-    internal sealed class GetFilesAndSubFoldersLogic
-        : AbstractAsyncLogic
+    internal sealed class GetFilesAndSubFoldersLogic(IAsyncTask task)
+        : AbstractAsyncLogic(task)
     {
-        public GetFilesAndSubFoldersLogic(IAsyncTask task)
-            : base(task)
-        {
-
-        }
-
         public IList<string> Execute(string directoryPath)
         {
             if (directoryPath == null)

@@ -11,15 +11,9 @@ namespace PicSum.Task.Logics
     /// タグ追加ロジック
     /// </summary>
     [SupportedOSPlatform("windows")]
-    internal sealed class AddFileTagLogic
-        : AbstractAsyncLogic
+    internal sealed class AddFileTagLogic(IAsyncTask task)
+        : AbstractAsyncLogic(task)
     {
-        public AddFileTagLogic(IAsyncTask task)
-            : base(task)
-        {
-
-        }
-
         public bool Execute(string filePath, string tag, DateTime registrationDate)
         {
             if (filePath == null)

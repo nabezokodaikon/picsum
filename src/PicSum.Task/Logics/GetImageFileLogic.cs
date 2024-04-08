@@ -11,25 +11,16 @@ namespace PicSum.Task.Logics
     /// 画像ファイル読込ロジック
     /// </summary>
     [SupportedOSPlatform("windows")]
-    internal sealed class GetImageFileLogic
-        : AbstractAsyncLogic
+    internal sealed class GetImageFileLogic(IAsyncTask task)
+        : AbstractAsyncLogic(task)
     {
-        public GetImageFileLogic(IAsyncTask task)
-            : base(task)
-        {
-
-        }
-
         public Bitmap CreateThumbnail(Image srcImg, int thumbSize, ImageSizeMode sizeMode)
         {
-            if (srcImg == null)
-            {
-                throw new ArgumentNullException(nameof(srcImg));
-            }
+            ArgumentNullException.ThrowIfNull(srcImg, nameof(srcImg));
 
             if (thumbSize < 0)
             {
-                throw new ArgumentOutOfRangeException(nameof(thumbSize));
+                ArgumentOutOfRangeException.ThrowIfNegative(thumbSize, nameof(thumbSize));
             }
 
             var scale = Math.Min(thumbSize / (double)srcImg.Width, thumbSize / (double)srcImg.Height);

@@ -11,14 +11,9 @@ namespace PicSum.Task.Logics
     /// タグTを、ファイルパスとタグを指定して削除します。
     /// </summary>
     [SupportedOSPlatform("windows")]
-    internal sealed class DeleteFileTagLogic : AbstractAsyncLogic
+    internal sealed class DeleteFileTagLogic(IAsyncTask task)
+        : AbstractAsyncLogic(task)
     {
-        public DeleteFileTagLogic(IAsyncTask task)
-            : base(task)
-        {
-
-        }
-
         public void Execute(string filePath, string tag)
         {
             if (filePath == null)

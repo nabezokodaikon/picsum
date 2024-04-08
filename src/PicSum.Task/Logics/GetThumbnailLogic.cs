@@ -17,13 +17,13 @@ namespace PicSum.Task.Logics
     /// サムネイルを読込みます。
     /// </summary>
     [SupportedOSPlatform("windows")]
-    public sealed class GetThumbnailLogic
-        : AbstractAsyncLogic
+    public sealed class GetThumbnailLogic(IAsyncTask task)
+        : AbstractAsyncLogic(task)
     {
         private const int CASH_CAPACITY = 1000;
-        private static readonly List<ThumbnailBufferEntity> CASH_LIST = new List<ThumbnailBufferEntity>(CASH_CAPACITY);
-        private static readonly Dictionary<string, ThumbnailBufferEntity> CASH_DICTIONARY = new Dictionary<string, ThumbnailBufferEntity>(CASH_CAPACITY);
-        private static readonly ReaderWriterLockSlim CASH_LOCK = new ReaderWriterLockSlim();
+        private static readonly List<ThumbnailBufferEntity> CASH_LIST = new(CASH_CAPACITY);
+        private static readonly Dictionary<string, ThumbnailBufferEntity> CASH_DICTIONARY = new(CASH_CAPACITY);
+        private static readonly ReaderWriterLockSlim CASH_LOCK = new();
 
         /// <summary>
         /// 静的リソースを解放します。
@@ -31,12 +31,6 @@ namespace PicSum.Task.Logics
         public static void DisposeStaticResouces()
         {
             CASH_LOCK.Dispose();
-        }
-
-        public GetThumbnailLogic(IAsyncTask task)
-            : base(task)
-        {
-
         }
 
         public ThumbnailBufferEntity Execute(string filePath, int thumbWidth, int thumbHeight)
@@ -66,14 +60,16 @@ namespace PicSum.Task.Logics
                         {
                             using (var newThumb = ThumbnailUtil.CreateThumbnail(cashThumb, thumbWidth, thumbHeight))
                             {
-                                var thumb = new ThumbnailBufferEntity();
-                                thumb.FilePath = cash.FilePath;
-                                thumb.ThumbnailBuffer = ImageUtil.ToCompressionBinary(newThumb);
-                                thumb.ThumbnailWidth = thumbWidth;
-                                thumb.ThumbnailHeight = thumbHeight;
-                                thumb.SourceWidth = cash.SourceWidth;
-                                thumb.SourceHeight = cash.SourceHeight;
-                                thumb.FileUpdatedate = cash.FileUpdatedate;
+                                var thumb = new ThumbnailBufferEntity
+                                {
+                                    FilePath = cash.FilePath,
+                                    ThumbnailBuffer = ImageUtil.ToCompressionBinary(newThumb),
+                                    ThumbnailWidth = thumbWidth,
+                                    ThumbnailHeight = thumbHeight,
+                                    SourceWidth = cash.SourceWidth,
+                                    SourceHeight = cash.SourceHeight,
+                                    FileUpdatedate = cash.FileUpdatedate
+                                };
                                 return thumb;
                             }
                         }
@@ -99,14 +95,16 @@ namespace PicSum.Task.Logics
                         {
                             using (var newThumb = ThumbnailUtil.CreateThumbnail(cashThumb, thumbWidth, thumbHeight))
                             {
-                                var thumb = new ThumbnailBufferEntity();
-                                thumb.FilePath = cash.FilePath;
-                                thumb.ThumbnailBuffer = ImageUtil.ToCompressionBinary(newThumb);
-                                thumb.ThumbnailWidth = thumbWidth;
-                                thumb.ThumbnailHeight = thumbHeight;
-                                thumb.SourceWidth = cash.SourceWidth;
-                                thumb.SourceHeight = cash.SourceHeight;
-                                thumb.FileUpdatedate = cash.FileUpdatedate;
+                                var thumb = new ThumbnailBufferEntity
+                                {
+                                    FilePath = cash.FilePath,
+                                    ThumbnailBuffer = ImageUtil.ToCompressionBinary(newThumb),
+                                    ThumbnailWidth = thumbWidth,
+                                    ThumbnailHeight = thumbHeight,
+                                    SourceWidth = cash.SourceWidth,
+                                    SourceHeight = cash.SourceHeight,
+                                    FileUpdatedate = cash.FileUpdatedate
+                                };
                                 return thumb;
                             }
                         }
@@ -401,13 +399,15 @@ namespace PicSum.Task.Logics
             var dto = DatabaseManager<ThumbnailConnection>.ReadLine<ThumbnailDto>(sql);
             if (dto != null)
             {
-                var thumb = new ThumbnailBufferEntity();
-                thumb.FilePath = dto.FilePath;
-                thumb.ThumbnailWidth = dto.ThumbnailWidth;
-                thumb.ThumbnailHeight = dto.ThumbnailHeight;
-                thumb.SourceWidth = dto.SourceWidth;
-                thumb.SourceHeight = dto.SourceHeight;
-                thumb.FileUpdatedate = dto.FileUpdatedate;
+                var thumb = new ThumbnailBufferEntity
+                {
+                    FilePath = dto.FilePath,
+                    ThumbnailWidth = dto.ThumbnailWidth,
+                    ThumbnailHeight = dto.ThumbnailHeight,
+                    SourceWidth = dto.SourceWidth,
+                    SourceHeight = dto.SourceHeight,
+                    FileUpdatedate = dto.FileUpdatedate
+                };
 
                 var thumbBufferFile = this.GetThumbnailBufferFilePath(dto.ThumbnailID);
                 thumb.ThumbnailBuffer = this.GetThumbnailBuffer(thumbBufferFile, dto.ThumbnailStartPoint, dto.ThumbnailSize);
@@ -435,14 +435,16 @@ namespace PicSum.Task.Logics
                         filePath, thumbID, thumbStartPoint, thumbBin.Length, thumbWidth, thumbHeight, srcImg.Width, srcImg.Height, fileUpdateDate);
                     DatabaseManager<ThumbnailConnection>.Update(sql);
 
-                    var thumb = new ThumbnailBufferEntity();
-                    thumb.FilePath = filePath;
-                    thumb.ThumbnailBuffer = thumbBin;
-                    thumb.ThumbnailWidth = thumbWidth;
-                    thumb.ThumbnailHeight = thumbHeight;
-                    thumb.SourceWidth = srcImg.Width;
-                    thumb.SourceHeight = srcImg.Height;
-                    thumb.FileUpdatedate = fileUpdateDate;
+                    var thumb = new ThumbnailBufferEntity
+                    {
+                        FilePath = filePath,
+                        ThumbnailBuffer = thumbBin,
+                        ThumbnailWidth = thumbWidth,
+                        ThumbnailHeight = thumbHeight,
+                        SourceWidth = srcImg.Width,
+                        SourceHeight = srcImg.Height,
+                        FileUpdatedate = fileUpdateDate
+                    };
 
                     return thumb;
                 }
@@ -463,14 +465,16 @@ namespace PicSum.Task.Logics
                         filePath, thumbID, thumbStartPoint, thumbBin.Length, thumbWidth, thumbHeight, srcImg.Width, srcImg.Height, fileUpdateDate);
                     DatabaseManager<ThumbnailConnection>.Update(sql);
 
-                    var thumb = new ThumbnailBufferEntity();
-                    thumb.FilePath = filePath;
-                    thumb.ThumbnailBuffer = thumbBin;
-                    thumb.ThumbnailWidth = thumbWidth;
-                    thumb.ThumbnailHeight = thumbHeight;
-                    thumb.SourceWidth = srcImg.Width;
-                    thumb.SourceHeight = srcImg.Height;
-                    thumb.FileUpdatedate = fileUpdateDate;
+                    var thumb = new ThumbnailBufferEntity
+                    {
+                        FilePath = filePath,
+                        ThumbnailBuffer = thumbBin,
+                        ThumbnailWidth = thumbWidth,
+                        ThumbnailHeight = thumbHeight,
+                        SourceWidth = srcImg.Width,
+                        SourceHeight = srcImg.Height,
+                        FileUpdatedate = fileUpdateDate
+                    };
 
                     return thumb;
                 }
@@ -491,14 +495,16 @@ namespace PicSum.Task.Logics
                         directoryPath, thumbID, thumbStartPoint, thumbBin.Length, thumbWidth, thumbHeight, srcImg.Width, srcImg.Height, directoryUpdateDate);
                     DatabaseManager<ThumbnailConnection>.Update(sql);
 
-                    var thumb = new ThumbnailBufferEntity();
-                    thumb.FilePath = directoryPath;
-                    thumb.ThumbnailBuffer = thumbBin;
-                    thumb.ThumbnailWidth = thumbWidth;
-                    thumb.ThumbnailHeight = thumbHeight;
-                    thumb.SourceWidth = srcImg.Width;
-                    thumb.SourceHeight = srcImg.Height;
-                    thumb.FileUpdatedate = directoryUpdateDate;
+                    var thumb = new ThumbnailBufferEntity
+                    {
+                        FilePath = directoryPath,
+                        ThumbnailBuffer = thumbBin,
+                        ThumbnailWidth = thumbWidth,
+                        ThumbnailHeight = thumbHeight,
+                        SourceWidth = srcImg.Width,
+                        SourceHeight = srcImg.Height,
+                        FileUpdatedate = directoryUpdateDate
+                    };
                     return thumb;
                 }
             }
@@ -518,14 +524,16 @@ namespace PicSum.Task.Logics
                         directoryPath, thumbID, thumbStartPoint, thumbBin.Length, thumbWidth, thumbHeight, srcImg.Width, srcImg.Height, directoryUpdateDate);
                     DatabaseManager<ThumbnailConnection>.Update(sql);
 
-                    ThumbnailBufferEntity thumb = new ThumbnailBufferEntity();
-                    thumb.FilePath = directoryPath;
-                    thumb.ThumbnailBuffer = thumbBin;
-                    thumb.ThumbnailWidth = thumbWidth;
-                    thumb.ThumbnailHeight = thumbHeight;
-                    thumb.SourceWidth = srcImg.Width;
-                    thumb.SourceHeight = srcImg.Height;
-                    thumb.FileUpdatedate = directoryUpdateDate;
+                    var thumb = new ThumbnailBufferEntity
+                    {
+                        FilePath = directoryPath,
+                        ThumbnailBuffer = thumbBin,
+                        ThumbnailWidth = thumbWidth,
+                        ThumbnailHeight = thumbHeight,
+                        SourceWidth = srcImg.Width,
+                        SourceHeight = srcImg.Height,
+                        FileUpdatedate = directoryUpdateDate
+                    };
 
                     return thumb;
                 }

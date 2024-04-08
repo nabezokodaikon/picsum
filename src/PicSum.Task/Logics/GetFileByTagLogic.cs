@@ -14,15 +14,9 @@ namespace PicSum.Task.Logics
     /// ファイルをタグで検索します。
     /// </summary>
     [SupportedOSPlatform("windows")]
-    internal sealed class GetFileByTagLogic
-        : AbstractAsyncLogic
+    internal sealed class GetFileByTagLogic(IAsyncTask task)
+        : AbstractAsyncLogic(task)
     {
-        public GetFileByTagLogic(IAsyncTask task)
-            : base(task)
-        {
-
-        }
-
         public IList<FileByTagDto> Execute(string tag)
         {
             if (tag == null)

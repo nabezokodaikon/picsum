@@ -47,7 +47,7 @@ namespace SWF.UIComponent.ImagePanel
 
         #region インスタンス変数
 
-        private Image thumbnailPanelImage = Resources.ThumbnailPanel;
+        private readonly Image thumbnailPanelImage = Resources.ThumbnailPanel;
         private ImageAlign imageAlign = ImageAlign.Center;
         private bool isShowThumbnailPanel = false;
 
@@ -65,7 +65,7 @@ namespace SWF.UIComponent.ImagePanel
         private bool isThumbnailMove = false;
         private Point moveFromPoint = Point.Empty;
 
-        private SolidBrush thumbnailFilterBrush = new SolidBrush(Color.FromArgb(128, 0, 0, 0));
+        private readonly SolidBrush thumbnailFilterBrush = new(Color.FromArgb(128, 0, 0, 0));
 
         #endregion
 
@@ -171,19 +171,12 @@ namespace SWF.UIComponent.ImagePanel
 
         public void SetImage(Bitmap img, Bitmap thumb)
         {
-            if (img == null)
-            {
-                throw new ArgumentNullException("img");
-            }
-
-            if (thumb == null)
-            {
-                throw new ArgumentNullException("thumb");
-            }
+            ArgumentNullException.ThrowIfNull(img, nameof(img));
+            ArgumentNullException.ThrowIfNull(thumb, nameof(thumb));
 
             if (this.image != null)
             {
-                throw new Exception("既にイメージが存在しています。");
+                throw new InvalidOperationException("既にイメージが存在しています。");
             }
 
             this.image = img;
@@ -227,7 +220,7 @@ namespace SWF.UIComponent.ImagePanel
 
         protected override void OnInvalidated(InvalidateEventArgs e)
         {
-            this.setDrawParameter();
+            this.SetDrawParameter();
 
             base.OnInvalidated(e);
         }
@@ -434,29 +427,20 @@ namespace SWF.UIComponent.ImagePanel
 
         private void OnImageMouseClick(MouseEventArgs e)
         {
-            if (this.ImageMouseClick != null)
-            {
-                this.ImageMouseClick(this, e);
-            }
+            this.ImageMouseClick?.Invoke(this, e);
         }
 
         private void OnImageMouseDoubleClick(MouseEventArgs e)
         {
-            if (this.ImageMouseDoubleClick != null)
-            {
-                this.ImageMouseDoubleClick(this, e);
-            }
+            this.ImageMouseDoubleClick?.Invoke(this, e);
         }
 
         private void OnDragStart(EventArgs e)
         {
-            if (this.DragStart != null)
-            {
-                this.DragStart(this, e);
-            }
+            this.DragStart?.Invoke(this, e);
         }
 
-        private void setDrawParameter()
+        private void SetDrawParameter()
         {
             if (this.image != null)
             {
@@ -508,30 +492,16 @@ namespace SWF.UIComponent.ImagePanel
             }
             else
             {
-                switch (this.imageAlign)
+                x = this.imageAlign switch
                 {
-                    case ImageAlign.Left:
-                        x = 0f;
-                        break;
-                    case ImageAlign.LeftTop:
-                        x = 0f;
-                        break;
-                    case ImageAlign.LeftBottom:
-                        x = 0f;
-                        break;
-                    case ImageAlign.Right:
-                        x = this.Width - this.imageScaleSize.Width;
-                        break;
-                    case ImageAlign.RightTop:
-                        x = this.Width - this.imageScaleSize.Width;
-                        break;
-                    case ImageAlign.RightBottom:
-                        x = this.Width - this.imageScaleSize.Width;
-                        break;
-                    default:
-                        x = (this.Width - this.imageScaleSize.Width) / 2f;
-                        break;
-                }
+                    ImageAlign.Left => 0f,
+                    ImageAlign.LeftTop => 0f,
+                    ImageAlign.LeftBottom => 0f,
+                    ImageAlign.Right => this.Width - this.imageScaleSize.Width,
+                    ImageAlign.RightTop => this.Width - this.imageScaleSize.Width,
+                    ImageAlign.RightBottom => this.Width - this.imageScaleSize.Width,
+                    _ => (this.Width - this.imageScaleSize.Width) / 2f,
+                };
             }
 
             float y;
@@ -541,30 +511,16 @@ namespace SWF.UIComponent.ImagePanel
             }
             else
             {
-                switch (this.imageAlign)
+                y = this.imageAlign switch
                 {
-                    case ImageAlign.Top:
-                        y = 0f;
-                        break;
-                    case ImageAlign.LeftTop:
-                        y = 0f;
-                        break;
-                    case ImageAlign.RightTop:
-                        y = 0f;
-                        break;
-                    case ImageAlign.Bottom:
-                        y = this.Height - this.imageScaleSize.Height;
-                        break;
-                    case ImageAlign.LeftBottom:
-                        y = this.Height - this.imageScaleSize.Height;
-                        break;
-                    case ImageAlign.RightBottom:
-                        y = this.Height - this.imageScaleSize.Height;
-                        break;
-                    default:
-                        y = (this.Height - this.imageScaleSize.Height) / 2f;
-                        break;
-                }
+                    ImageAlign.Top => 0f,
+                    ImageAlign.LeftTop => 0f,
+                    ImageAlign.RightTop => 0f,
+                    ImageAlign.Bottom => this.Height - this.imageScaleSize.Height,
+                    ImageAlign.LeftBottom => this.Height - this.imageScaleSize.Height,
+                    ImageAlign.RightBottom => this.Height - this.imageScaleSize.Height,
+                    _ => (this.Height - this.imageScaleSize.Height) / 2f,
+                };
             }
 
             var w = this.imageScaleSize.Width - this.hMaximumScrollValue;
@@ -617,7 +573,7 @@ namespace SWF.UIComponent.ImagePanel
             return new RectangleF(x, y, w, h);
         }
 
-        private RectangleF GetThumbnailViewDestRectangle(RectangleF thumbRect, RectangleF srcRect)
+        private RectangleF GetThumbnailViewDestRectangle(RectangleF srcRect)
         {
             var scale = this.thumbnail.Width / this.imageScaleSize.Width;
             var x = srcRect.X * scale;
@@ -649,7 +605,7 @@ namespace SWF.UIComponent.ImagePanel
 
             var srcRect = this.GetImageSrcRectangle();
             var viewRect = this.GetThumbnailViewRectangle(thumbRect, srcRect);
-            var viewDestRect = this.GetThumbnailViewDestRectangle(thumbRect, srcRect);
+            var viewDestRect = this.GetThumbnailViewDestRectangle(srcRect);
             g.DrawImage(this.thumbnail, viewRect, viewDestRect, GraphicsUnit.Pixel);
         }
 

@@ -1,4 +1,4 @@
-﻿using PicSum.Core.Data.DatabaseAccessor;
+using PicSum.Core.Data.DatabaseAccessor;
 using PicSum.Data.DatabaseAccessor.Dto;
 using System;
 
@@ -25,10 +25,7 @@ SELECT mf1.file_path AS directory_path
         public ReadDirectoryStateByDirectorySql(string directoryPath)
             : base(SQL_TEXT)
         {
-            if (directoryPath == null)
-            {
-                throw new ArgumentNullException(nameof(directoryPath));
-            }
+            ArgumentException.ThrowIfNullOrEmpty(directoryPath, nameof(directoryPath));
 
             base.ParameterList.Add(SqlParameterUtil.CreateParameter("directory_path", directoryPath));
         }

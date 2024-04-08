@@ -10,15 +10,9 @@ using System.Runtime.Versioning;
 namespace PicSum.Task.Logics
 {
     [SupportedOSPlatform("windows")]
-    internal sealed class GetBookmarkListLogic
-        : AbstractAsyncLogic
+    internal sealed class GetBookmarkListLogic(IAsyncTask task)
+        : AbstractAsyncLogic(task)
     {
-        public GetBookmarkListLogic(IAsyncTask task)
-            : base(task)
-        {
-
-        }
-
         public IList<BookmarkDto> Execute()
         {
             var sql = new ReadBookmarkSql();

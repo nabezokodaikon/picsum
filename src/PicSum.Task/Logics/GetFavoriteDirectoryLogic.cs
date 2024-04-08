@@ -11,15 +11,9 @@ using System.Runtime.Versioning;
 namespace PicSum.Task.Logics
 {
     [SupportedOSPlatform("windows")]
-    internal sealed class GetFavoriteDirectoryLogic
-        : AbstractAsyncLogic
+    internal sealed class GetFavoriteDirectoryLogic(IAsyncTask task)
+        : AbstractAsyncLogic(task)
     {
-        public GetFavoriteDirectoryLogic(IAsyncTask task)
-            : base(task)
-        {
-
-        }
-
         public IList<string> Execute()
         {
             var sql = new ReadFavoriteDirectorySql();

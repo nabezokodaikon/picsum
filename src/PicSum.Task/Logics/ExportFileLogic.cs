@@ -9,15 +9,9 @@ namespace PicSum.Task.Logics
     /// 画像ファイルエクスポート非同期ロジック
     /// </summary>
     [SupportedOSPlatform("windows")]
-    internal sealed class ExportFileLogic
-        : AbstractAsyncLogic
+    internal sealed class ExportFileLogic(IAsyncTask task)
+        : AbstractAsyncLogic(task)
     {
-        public ExportFileLogic(IAsyncTask task)
-            : base(task)
-        {
-
-        }
-
         public void Execute(string srcFilePath, string exportFilePath)
         {
             if (srcFilePath == null)

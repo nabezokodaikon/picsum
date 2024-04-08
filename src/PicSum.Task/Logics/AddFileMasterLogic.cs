@@ -11,25 +11,16 @@ namespace PicSum.Task.Logics
     /// ファイルマスタに登録します。
     /// </summary>
     [SupportedOSPlatform("windows")]
-    internal sealed class AddFileMasterLogic
-        : AbstractAsyncLogic
+    internal sealed class AddFileMasterLogic(IAsyncTask task)
+        : AbstractAsyncLogic(task)
     {
-        public AddFileMasterLogic(IAsyncTask task)
-            : base(task)
-        {
-
-        }
-
         /// <summary>
         /// 処理を実行します。
         /// </summary>
         /// <param name="filePath">ファイルパス</param>
         public void Execute(string filePath)
         {
-            if (filePath == null)
-            {
-                throw new ArgumentNullException(nameof(filePath));
-            }
+            ArgumentNullException.ThrowIfNull(filePath, nameof(filePath));
 
             var sql = new CreationFileSql(filePath);
             DatabaseManager<FileInfoConnection>.Update(sql);

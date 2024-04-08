@@ -18,13 +18,12 @@ namespace PicSum.Task.Tasks
     {
         protected override void Execute(ValueParameter<string> param)
         {
-            if (param == null)
-            {
-                throw new ArgumentNullException(nameof(param));
-            }
+            ArgumentNullException.ThrowIfNull(param, nameof(param));
 
-            var result = new GetDirectoryResult();
-            result.DirectoryPath = param.Value;
+            var result = new GetDirectoryResult
+            {
+                DirectoryPath = param.Value
+            };
 
             IList<string> fileList;
             var getFilesLogic = new GetFilesAndSubFoldersLogic(this);

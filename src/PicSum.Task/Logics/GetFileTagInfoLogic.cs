@@ -14,15 +14,9 @@ namespace PicSum.Task.Logics
     /// ファイルタグ取得非同期ロジック
     /// </summary>
     [SupportedOSPlatform("windows")]
-    internal sealed class GetFileTagInfoLogic
-        : AbstractAsyncLogic
+    internal sealed class GetFileTagInfoLogic(IAsyncTask task)
+        : AbstractAsyncLogic(task)
     {
-        public GetFileTagInfoLogic(IAsyncTask task)
-            : base(task)
-        {
-
-        }
-
         public ListEntity<FileTagInfoEntity> Execute(IList<string> filePathList)
         {
             if (filePathList == null)
@@ -38,9 +32,11 @@ namespace PicSum.Task.Logics
             {
                 this.CheckCancel();
 
-                var info = new FileTagInfoEntity();
-                info.Tag = dto.Tag;
-                info.IsAll = dto.IsAll;
+                var info = new FileTagInfoEntity
+                {
+                    Tag = dto.Tag,
+                    IsAll = dto.IsAll
+                };
                 infoList.Add(info);
             }
 

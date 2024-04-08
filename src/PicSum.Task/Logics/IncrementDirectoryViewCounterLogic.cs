@@ -8,15 +8,9 @@ using System.Runtime.Versioning;
 namespace PicSum.Task.Logics
 {
     [SupportedOSPlatform("windows")]
-    internal sealed class IncrementDirectoryViewCounterLogic
-        : AbstractAsyncLogic
+    internal sealed class IncrementDirectoryViewCounterLogic(IAsyncTask task)
+        : AbstractAsyncLogic(task)
     {
-        public IncrementDirectoryViewCounterLogic(IAsyncTask task)
-            : base(task)
-        {
-
-        }
-
         public bool Execute(string directoryPath)
         {
             if (directoryPath == null)

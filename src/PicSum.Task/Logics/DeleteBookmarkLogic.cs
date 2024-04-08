@@ -8,15 +8,9 @@ using System.Runtime.Versioning;
 namespace PicSum.Task.Logics
 {
     [SupportedOSPlatform("windows")]
-    internal sealed class DeleteBookmarkLogic
-        : AbstractAsyncLogic
+    internal sealed class DeleteBookmarkLogic(IAsyncTask task)
+        : AbstractAsyncLogic(task)
     {
-        public DeleteBookmarkLogic(IAsyncTask task)
-            : base(task)
-        {
-
-        }
-
         public bool Execute(string filePath)
         {
             if (filePath == null)

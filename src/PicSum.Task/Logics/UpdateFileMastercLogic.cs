@@ -8,15 +8,9 @@ using System.Runtime.Versioning;
 namespace PicSum.Task.Logics
 {
     [SupportedOSPlatform("windows")]
-    internal sealed class UpdateFileMastercLogic
-        : AbstractAsyncLogic
+    internal sealed class UpdateFileMastercLogic(IAsyncTask task)
+        : AbstractAsyncLogic(task)
     {
-        public UpdateFileMastercLogic(IAsyncTask task)
-            : base(task)
-        {
-
-        }
-
         /// <summary>
         /// 処理を実行します。
         /// </summary>

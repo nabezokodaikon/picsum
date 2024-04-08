@@ -11,21 +11,12 @@ namespace PicSum.Task.Logics
     /// ファイルの評価値を登録します。
     /// </summary>
     [SupportedOSPlatform("windows")]
-    internal sealed class AddFileRatingLogic
-        : AbstractAsyncLogic
+    internal sealed class AddFileRatingLogic(IAsyncTask task)
+        : AbstractAsyncLogic(task)
     {
-        public AddFileRatingLogic(IAsyncTask task)
-            : base(task)
-        {
-
-        }
-
         public bool Execute(string filePath, int ratingValue, DateTime registrationDate)
         {
-            if (filePath == null)
-            {
-                throw new ArgumentNullException(nameof(filePath));
-            }
+            ArgumentNullException.ThrowIfNull(filePath, nameof(filePath));
 
             if (ratingValue < 0)
             {

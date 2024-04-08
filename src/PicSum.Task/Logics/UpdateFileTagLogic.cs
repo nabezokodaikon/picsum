@@ -12,15 +12,9 @@ namespace PicSum.Task.Logics
     /// </summary>
     /// <remarks>タグの存在確認として使用します。</remarks>
     [SupportedOSPlatform("windows")]
-    internal sealed class UpdateFileTagLogic
-        : AbstractAsyncLogic
+    internal sealed class UpdateFileTagLogic(IAsyncTask task)
+        : AbstractAsyncLogic(task)
     {
-        public UpdateFileTagLogic(IAsyncTask task)
-            : base(task)
-        {
-
-        }
-
         public bool Execute(string filePath, string tag, DateTime registrationDate)
         {
             if (filePath == null)

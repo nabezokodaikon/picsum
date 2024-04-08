@@ -21,6 +21,16 @@ namespace PicSum.UIComponent.InfoPanel
     public sealed partial class InfoPanel
         : UserControl
     {
+        private static void DrawImageFileThumbnail(Graphics g, Image thumb, Rectangle rect)
+        {
+            ThumbnailUtil.DrawFileThumbnail(g, thumb, rect);
+        }
+
+        private static void DrawDirectoryThumbnail(Graphics g, Image thumb, Rectangle rect)
+        {
+            ThumbnailUtil.DrawDirectoryThumbnail(g, thumb, rect, FileIconCash.LargeDirectoryIcon);
+        }
+
         #region イベント・デリゲート
 
         public event EventHandler<SelectedTagEventArgs> SelectedTag;
@@ -37,7 +47,7 @@ namespace PicSum.UIComponent.InfoPanel
 
         private GetFileDeepInfoResult fileInfoSource = null;
         private Font allTagFont = null;
-        private Image tagIcon = Resources.TagIcon;
+        private readonly Image tagIcon = Resources.TagIcon;
         private string contextMenuOperationTag = string.Empty;
 
         #endregion
@@ -201,20 +211,14 @@ namespace PicSum.UIComponent.InfoPanel
 
         public void SetFileInfo(string filePath)
         {
-            if (filePath == null)
-            {
-                throw new ArgumentNullException(nameof(filePath));
-            }
+            ArgumentNullException.ThrowIfNull(filePath, nameof(filePath));
 
             this.SetFileInfo(new List<string>() { filePath });
         }
 
         public void SetFileInfo(IList<string> filePathList)
         {
-            if (filePathList == null)
-            {
-                throw new ArgumentNullException(nameof(filePathList));
-            }
+            ArgumentNullException.ThrowIfNull(filePathList, nameof(filePathList));
 
             if (filePathList.Count > 0)
             {
@@ -289,19 +293,12 @@ namespace PicSum.UIComponent.InfoPanel
 
         private void OnSelectedTag(SelectedTagEventArgs e)
         {
-            if (this.SelectedTag != null)
-            {
-                this.SelectedTag(this, e);
-            }
+            this.SelectedTag?.Invoke(this, e);
         }
 
         private void SubInitializeComponent()
         {
-            if (this.components == null)
-            {
-                this.components = new Container();
-            }
-
+            this.components ??= new Container();
             this.CreateHandle();
         }
 
@@ -329,11 +326,13 @@ namespace PicSum.UIComponent.InfoPanel
 
         private Font GetAllTagFont()
         {
-            if (this.allTagFont == null)
-            {
-                this.allTagFont = new Font(this.Font.FontFamily, this.Font.Size, FontStyle.Bold, this.Font.Unit, this.Font.GdiCharSet);
-            }
-
+            this.allTagFont ??=
+                new Font(
+                    this.Font.FontFamily,
+                    this.Font.Size,
+                    FontStyle.Bold,
+                    this.Font.Unit,
+                    this.Font.GdiCharSet);
             return this.allTagFont;
         }
 
@@ -415,16 +414,6 @@ namespace PicSum.UIComponent.InfoPanel
             this.tagFlowList.ItemCount = this.TagList.Count;
         }
 
-        private void DrawImageFileThumbnail(Graphics g, Image thumb, Rectangle rect)
-        {
-            ThumbnailUtil.DrawFileThumbnail(g, thumb, rect);
-        }
-
-        private void DrawDirectoryThumbnail(Graphics g, Image thumb, Rectangle rect)
-        {
-            ThumbnailUtil.DrawDirectoryThumbnail(g, thumb, rect, FileIconCash.LargeDirectoryIcon);
-        }
-
         private void DrawFileIcon(Graphics g, Image icon, Rectangle rect)
         {
             var iconWidth = (float)icon.Width;
@@ -449,7 +438,7 @@ namespace PicSum.UIComponent.InfoPanel
             }
         }
 
-        private void DrawSelectedFileCount(Graphics g, int count, Rectangle rect)
+        private void DrawSelectedFileCount(Graphics g, Rectangle rect)
         {
             using (var sb = new SolidBrush(this.ForeColor))
             using (var sf = new StringFormat())
@@ -523,11 +512,11 @@ namespace PicSum.UIComponent.InfoPanel
                 var rect = new Rectangle(x, y, size, size);
                 if (this.FileInfo.IsFile)
                 {
-                    this.DrawImageFileThumbnail(e.Graphics, this.Thumbnail.ThumbnailImage, rect);
+                    DrawImageFileThumbnail(e.Graphics, this.Thumbnail.ThumbnailImage, rect);
                 }
                 else
                 {
-                    this.DrawDirectoryThumbnail(e.Graphics, this.Thumbnail.ThumbnailImage, rect);
+                    DrawDirectoryThumbnail(e.Graphics, this.Thumbnail.ThumbnailImage, rect);
                 }
             }
             else if (this.FileInfo != null)
@@ -539,7 +528,7 @@ namespace PicSum.UIComponent.InfoPanel
             else if (this.FilePathList != null)
             {
                 var rect = new Rectangle(0, 0, this.thumbnailPictureBox.Width, this.thumbnailPictureBox.Height);
-                this.DrawSelectedFileCount(e.Graphics, this.FilePathList.Count, rect);
+                this.DrawSelectedFileCount(e.Graphics, rect);
             }
         }
 

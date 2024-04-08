@@ -5,6 +5,7 @@ using System;
 using System.IO;
 using System.Runtime.Versioning;
 using System.Threading;
+using static System.Windows.Forms.AxHost;
 
 namespace PicSum.Task.Tasks
 {
@@ -15,7 +16,7 @@ namespace PicSum.Task.Tasks
     public sealed class ExportFileTask
         : AbstractOneWayTask<ExportFileParameter>
     {
-        private static readonly ReaderWriterLockSlim taskLock = new ReaderWriterLockSlim();
+        private static readonly ReaderWriterLockSlim taskLock = new();
 
         /// <summary>
         /// 静的リソースを解放します。
@@ -27,10 +28,7 @@ namespace PicSum.Task.Tasks
 
         protected override void Execute(ExportFileParameter param)
         {
-            if (param == null)
-            {
-                throw new ArgumentNullException(nameof(param));
-            }
+            ArgumentNullException.ThrowIfNull(param, nameof(param));
 
             ExportFileTask.taskLock.EnterWriteLock();
 

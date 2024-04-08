@@ -12,21 +12,12 @@ namespace PicSum.Task.Logics
     /// フォルダ状態テーブルに登録します。
     /// </summary>
     [SupportedOSPlatform("windows")]
-    internal sealed class AddDirectoryStateLogic
-        : AbstractAsyncLogic
+    internal sealed class AddDirectoryStateLogic(IAsyncTask task)
+        : AbstractAsyncLogic(task)
     {
-        public AddDirectoryStateLogic(IAsyncTask task)
-            : base(task)
-        {
-
-        }
-
         public bool Execute(DirectoryStateParameter directoryState)
         {
-            if (directoryState == null)
-            {
-                throw new ArgumentNullException(nameof(directoryState));
-            }
+            ArgumentNullException.ThrowIfNull(directoryState, nameof(directoryState));
 
             if (directoryState.DirectoryPath == null)
             {

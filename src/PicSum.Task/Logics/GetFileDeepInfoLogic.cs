@@ -16,15 +16,9 @@ namespace PicSum.Task.Logics
     /// ファイルの深い情報取得ロジック
     /// </summary>
     [SupportedOSPlatform("windows")]
-    internal sealed class GetFileDeepInfoLogic
-        : AbstractAsyncLogic
+    internal sealed class GetFileDeepInfoLogic(IAsyncTask task)
+        : AbstractAsyncLogic(task)
     {
-        public GetFileDeepInfoLogic(IAsyncTask task)
-            : base(task)
-        {
-
-        }
-
         public FileDeepInfoEntity Execute(string filePath, Size thumbSize)
         {
             if (filePath == null)
@@ -32,10 +26,12 @@ namespace PicSum.Task.Logics
                 throw new ArgumentNullException(nameof(filePath));
             }
 
-            var info = new FileDeepInfoEntity();
-            info.FilePath = filePath;
-            info.FileName = FileUtil.GetFileName(filePath);
-            info.FileType = FileUtil.GetTypeName(filePath);
+            var info = new FileDeepInfoEntity
+            {
+                FilePath = filePath,
+                FileName = FileUtil.GetFileName(filePath),
+                FileType = FileUtil.GetTypeName(filePath)
+            };
             if (FileUtil.IsSystemRoot(filePath))
             {
                 info.UpdateDate = null;
