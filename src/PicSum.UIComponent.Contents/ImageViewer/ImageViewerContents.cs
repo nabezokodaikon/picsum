@@ -969,12 +969,20 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
         private void LeftImagePanel_ImageMouseClick(object sender, MouseEventArgs e)
         {
-            this.OnSelectedFileChanged(new SelectedFileChangeEventArgs(this.leftImageFilePath));
+            if (this.SelectedFilePath != this.leftImageFilePath)
+            {
+                this.SelectedFilePath = this.leftImageFilePath;
+                this.OnSelectedFileChanged(new SelectedFileChangeEventArgs(this.leftImageFilePath));
+            }
         }
 
         private void RightImagePanel_ImageMouseClick(object sender, MouseEventArgs e)
         {
-            this.OnSelectedFileChanged(new SelectedFileChangeEventArgs(this.rightImageFilePath));
+            if (this.SelectedFilePath != this.rightImageFilePath)
+            {
+                this.SelectedFilePath = this.rightImageFilePath;
+                this.OnSelectedFileChanged(new SelectedFileChangeEventArgs(this.rightImageFilePath));
+            }
         }
 
         private void LeftImagePanel_DragStart(object sender, EventArgs e)
