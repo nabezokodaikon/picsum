@@ -222,8 +222,8 @@ namespace PicSum.UIComponent.InfoPanel
 
             if (filePathList.Count > 0)
             {
-                // コンピュータ(空文字)の場合は、情報を表示しない。
-                if (string.IsNullOrEmpty(filePathList.First()))
+                // コンピュータの場合は情報を表示しない。
+                if (FileUtil.IsSystemRoot(filePathList.First()))
                 {
                     this.ClearInfo();
                     return;
