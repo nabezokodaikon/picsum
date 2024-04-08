@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace SWF.UIComponent.WideDropDown
 {
@@ -9,11 +9,7 @@ namespace SWF.UIComponent.WideDropDown
 
         public AddItemEventArgs(string item)
         {
-            if (item == null)
-            {
-                throw new ArgumentNullException(nameof(item));
-            }
-
+            ArgumentNullException.ThrowIfNull(item, nameof(item));
             this.Item = item;
         }
     }

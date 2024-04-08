@@ -17,10 +17,7 @@ namespace PicSum.Task.Tasks
     {
         protected override void Execute(DirectoryStateParameter param)
         {
-            if (param == null)
-            {
-                throw new ArgumentNullException(nameof(param));
-            }
+            ArgumentNullException.ThrowIfNull(param, nameof(param));
 
             using (var tran = DatabaseManager<FileInfoConnection>.BeginTransaction())
             {

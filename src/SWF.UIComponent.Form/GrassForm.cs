@@ -112,8 +112,7 @@ namespace SWF.UIComponent.Form
 
         protected override void WndProc(ref Message m)
         {
-            IntPtr result;
-            int dwmHandled = WinApiMembers.DwmDefWindowProc(m.HWnd, m.Msg, m.WParam, m.LParam, out result);
+            int dwmHandled = WinApiMembers.DwmDefWindowProc(m.HWnd, m.Msg, m.WParam, m.LParam, out var result);
             if (dwmHandled == 1)
             {
                 m.Result = result;
@@ -126,11 +125,13 @@ namespace SWF.UIComponent.Form
                 {
                     var nccsp = (WinApiMembers.NCCALCSIZE_PARAMS)Marshal.PtrToStructure(m.LParam, typeof(WinApiMembers.NCCALCSIZE_PARAMS));
 
-                    this.glassMargins = new WinApiMembers.MARGINS();
-                    this.glassMargins.cyTopHeight = TOP_OFFSET;
-                    this.glassMargins.cxLeftWidth = nccsp.rgrc2.left - nccsp.rgrc1.left;
-                    this.glassMargins.cxRightWidth = nccsp.rgrc1.right - nccsp.rgrc2.right;
-                    this.glassMargins.cyBottomHeight = nccsp.rgrc1.bottom - nccsp.rgrc2.bottom;
+                    this.glassMargins = new()
+                    {
+                        cyTopHeight = TOP_OFFSET,
+                        cxLeftWidth = nccsp.rgrc2.left - nccsp.rgrc1.left,
+                        cxRightWidth = nccsp.rgrc1.right - nccsp.rgrc2.right,
+                        cyBottomHeight = nccsp.rgrc1.bottom - nccsp.rgrc2.bottom
+                    };
 
                     nccsp.rgrc0.top -= 1;
 
@@ -141,7 +142,7 @@ namespace SWF.UIComponent.Form
             }
             else if (m.Msg == WinApiMembers.WM_NCHITTEST && (int)m.Result == 0)
             {
-                m.Result = this.HitTestNCA(m.HWnd, m.WParam, m.LParam);
+                m.Result = this.HitTestNCA(m.LParam);
             }
             else
             {
@@ -244,7 +245,7 @@ namespace SWF.UIComponent.Form
             }
         }
 
-        private IntPtr HitTestNCA(IntPtr hwnd, IntPtr wparam, IntPtr lparam)
+        private IntPtr HitTestNCA(IntPtr lparam)
         {
             const int HTCLIENT = 1;
             const int HTCAPTION = 2;

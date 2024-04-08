@@ -20,8 +20,8 @@ namespace SWF.UIComponent.Common
         #region インスタンス変数
 
         private int _rectangleSize = 24;
-        private SolidBrush _brushA = new SolidBrush(Color.FromArgb(64, Color.FromArgb(48, 48, 48)));
-        private SolidBrush _brushB = new SolidBrush(Color.FromArgb(64, Color.FromArgb(16, 16, 16)));
+        private readonly SolidBrush brushA = new(Color.FromArgb(64, Color.FromArgb(48, 48, 48)));
+        private readonly SolidBrush brushB = new(Color.FromArgb(64, Color.FromArgb(16, 16, 16)));
 
         #endregion
 
@@ -54,7 +54,7 @@ namespace SWF.UIComponent.Common
 
         public CheckPatternPanel()
         {
-            this.initializeComponent();
+            this.InitializeComponent();
         }
 
         #endregion
@@ -71,14 +71,14 @@ namespace SWF.UIComponent.Common
             e.Graphics.InterpolationMode = InterpolationMode.Low;
             e.Graphics.CompositingQuality = CompositingQuality.HighSpeed;
 
-            this.drawCheckRectangle(e.Graphics);
+            this.DrawCheckRectangle(e.Graphics);
         }
 
         #endregion
 
         #region プライベートメソッド
 
-        private void initializeComponent()
+        private void InitializeComponent()
         {
             this.SetStyle(
                 ControlStyles.AllPaintingInWmPaint |
@@ -89,7 +89,7 @@ namespace SWF.UIComponent.Common
             this.UpdateStyles();
         }
 
-        private void drawCheckRectangle(Graphics g)
+        private void DrawCheckRectangle(Graphics g)
         {
             int w = this.ClientRectangle.Width;
             int h = this.ClientRectangle.Height;
@@ -115,8 +115,8 @@ namespace SWF.UIComponent.Common
             }
 
             // チェック描画領域取得
-            List<Rectangle> rectsA = new List<Rectangle>();
-            List<Rectangle> rectsB = new List<Rectangle>();
+            var rectsA = new List<Rectangle>();
+            var rectsB = new List<Rectangle>();
             bool addA = true;
             for (int x = 0; x <= w; x += this._rectangleSize)
             {
@@ -135,8 +135,8 @@ namespace SWF.UIComponent.Common
             }
 
             // チェック描画
-            g.FillRectangles(this._brushA, rectsA.ToArray());
-            g.FillRectangles(this._brushB, rectsB.ToArray());
+            g.FillRectangles(this.brushA, rectsA.ToArray());
+            g.FillRectangles(this.brushB, rectsB.ToArray());
         }
 
         #endregion

@@ -449,8 +449,8 @@ namespace WinApi
 
         #region 静的変数
 
-        public static readonly Guid IID_IImageList = new Guid("46EB5926-582E-4017-9FDF-E8998DAA0950");
-        //public static readonly Guid IID_IImageList2 = new Guid("192B9D83-50FC-457B-90A0-2B82A8B5DAE1");
+        public static readonly Guid IID_IImageList = new("46EB5926-582E-4017-9FDF-E8998DAA0950");
+        //public static readonly Guid IID_IImageList2 = new("192B9D83-50FC-457B-90A0-2B82A8B5DAE1");
 
         #endregion
 
@@ -469,16 +469,9 @@ namespace WinApi
         }
 
         [StructLayout(LayoutKind.Sequential)]
-        public struct RECT
+        public struct RECT(int left, int top, int right, int bottom)
         {
-            public int left, top, right, bottom;
-            public RECT(int left, int top, int right, int bottom)
-            {
-                this.left = left;
-                this.top = top;
-                this.right = right;
-                this.bottom = bottom;
-            }
+            public int left = left, top = top, right = right, bottom = bottom;
         }
 
         [StructLayout(LayoutKind.Sequential)]
@@ -496,16 +489,10 @@ namespace WinApi
         }
 
         [StructLayout(LayoutKind.Sequential)]
-        public struct POINT
+        public struct POINT(int x, int y)
         {
-            public POINT(int x, int y)
-            {
-                this.x = x;
-                this.y = y;
-            }
-
-            public int x;
-            public int y;
+            public int x = x;
+            public int y = y;
         }
 
         [StructLayout(LayoutKind.Sequential)]

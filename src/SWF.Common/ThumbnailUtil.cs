@@ -10,8 +10,8 @@ namespace SWF.Common
     {
         private const int SHADOW_OFFSET = 2;
         private const int FRAME_OFFSET = 1;
-        private static readonly Pen SHADOW_PEN = new Pen(Color.FromArgb(32, Color.Black));
-        private static readonly Pen FRAME_PEN = new Pen(Color.FromArgb(64, Color.White));
+        private static readonly Pen SHADOW_PEN = new(Color.FromArgb(32, Color.Black));
+        private static readonly Pen FRAME_PEN = new(Color.FromArgb(64, Color.White));
 
         /// <summary>
         /// サムネイルを作成します。
@@ -22,10 +22,7 @@ namespace SWF.Common
         /// <returns>サムネイル</returns>
         public static Image CreateThumbnail(Image srcImg, int thumbWidth, int thumbHeight)
         {
-            if (srcImg == null)
-            {
-                throw new ArgumentNullException(nameof(srcImg));
-            }
+            ArgumentNullException.ThrowIfNull(srcImg, nameof(srcImg));
 
             var offset = (SHADOW_OFFSET + FRAME_OFFSET) * 2;
 
@@ -67,15 +64,8 @@ namespace SWF.Common
         /// <param name="rect"></param>
         public static void DrawFileThumbnail(Graphics g, Image thumb, RectangleF rect)
         {
-            if (g == null)
-            {
-                throw new ArgumentNullException(nameof(g));
-            }
-
-            if (thumb == null)
-            {
-                throw new ArgumentNullException(nameof(thumb));
-            }
+            ArgumentNullException.ThrowIfNull(g, nameof(g));
+            ArgumentNullException.ThrowIfNull(thumb, nameof(thumb));
 
             var w = thumb.Width;
             var h = thumb.Height;
@@ -105,15 +95,8 @@ namespace SWF.Common
         /// <param name="rect"></param>
         public static void AdjustDrawFileThumbnail(Graphics g, Image thumb, RectangleF rect)
         {
-            if (g == null)
-            {
-                throw new ArgumentNullException(nameof(g));
-            }
-
-            if (thumb == null)
-            {
-                throw new ArgumentNullException(nameof(thumb));
-            }
+            ArgumentNullException.ThrowIfNull(g, nameof(g));
+            ArgumentNullException.ThrowIfNull(thumb, nameof(thumb));
 
             var scale = Math.Min(rect.Width / thumb.Width, rect.Height / thumb.Height);
             var w = thumb.Width * scale - (SHADOW_OFFSET + FRAME_OFFSET) * 2;
@@ -148,20 +131,9 @@ namespace SWF.Common
         /// <param name="icon"></param>
         public static void DrawDirectoryThumbnail(Graphics g, Image thumb, RectangleF rect, Image icon)
         {
-            if (g == null)
-            {
-                throw new ArgumentNullException(nameof(g));
-            }
-
-            if (thumb == null)
-            {
-                throw new ArgumentNullException(nameof(thumb));
-            }
-
-            if (icon == null)
-            {
-                throw new ArgumentNullException(nameof(icon));
-            }
+            ArgumentNullException.ThrowIfNull(g, nameof(g));
+            ArgumentNullException.ThrowIfNull(thumb, nameof(thumb));
+            ArgumentNullException.ThrowIfNull(icon, nameof(icon));
 
             DrawFileThumbnail(g, thumb, rect);
             g.DrawImage(icon, new RectangleF(rect.X, rect.Bottom - icon.Height, icon.Width, icon.Height));
@@ -176,20 +148,9 @@ namespace SWF.Common
         /// <param name="icon"></param>
         public static void AdjustDrawDirectoryThumbnail(Graphics g, Image thumb, RectangleF rect, Image icon)
         {
-            if (g == null)
-            {
-                throw new ArgumentNullException(nameof(g));
-            }
-
-            if (thumb == null)
-            {
-                throw new ArgumentNullException(nameof(thumb));
-            }
-
-            if (icon == null)
-            {
-                throw new ArgumentNullException(nameof(icon));
-            }
+            ArgumentNullException.ThrowIfNull(g, nameof(g));
+            ArgumentNullException.ThrowIfNull(thumb, nameof(thumb));
+            ArgumentNullException.ThrowIfNull(icon, nameof(icon));
 
             AdjustDrawFileThumbnail(g, thumb, rect);
             g.DrawImage(icon, new RectangleF(rect.X, rect.Bottom - icon.Height, icon.Width, icon.Height));
@@ -203,15 +164,8 @@ namespace SWF.Common
         /// <param name="rect">描画領域</param>
         public static void DrawIcon(Graphics g, Image icon, RectangleF rect)
         {
-            if (g == null)
-            {
-                throw new ArgumentNullException(nameof(g));
-            }
-
-            if (icon == null)
-            {
-                throw new ArgumentNullException(nameof(icon));
-            }
+            ArgumentNullException.ThrowIfNull(g, nameof(g));
+            ArgumentNullException.ThrowIfNull(icon, nameof(icon));
 
             if (Math.Max(icon.Width, icon.Height) <= Math.Min(rect.Width, rect.Height))
             {

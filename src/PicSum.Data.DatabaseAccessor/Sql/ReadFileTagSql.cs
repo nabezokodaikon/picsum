@@ -1,4 +1,4 @@
-﻿using PicSum.Core.Data.DatabaseAccessor;
+using PicSum.Core.Data.DatabaseAccessor;
 using PicSum.Data.DatabaseAccessor.Dto;
 using System;
 using System.Collections.Generic;
@@ -27,10 +27,7 @@ SELECT tt.tag
         public ReadFileTagSql(IList<string> filePathList)
             : base(SQL_TEXT)
         {
-            if (filePathList == null)
-            {
-                throw new ArgumentNullException(nameof(filePathList));
-            }
+            ArgumentNullException.ThrowIfNull(filePathList, nameof(filePathList));
 
             base.ParameterList.Add(SqlParameterUtil.CreateParameter("file_count", filePathList.Count));
             base.ParameterList.AddRange(SqlParameterUtil.CreateParameter("file_path", filePathList));

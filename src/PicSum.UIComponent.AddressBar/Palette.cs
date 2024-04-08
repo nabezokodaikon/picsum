@@ -6,7 +6,7 @@ namespace PicSum.UIComponent.AddressBar
     [SupportedOSPlatform("windows")]
     internal sealed class Palette
     {
-        private Font textFont = new Font("Yu Gothic UI", 10F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(128)));
+        private Font textFont = new("Yu Gothic UI", 10F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(128)));
 
         private Color textColor = Color.FromArgb(
             SystemColors.ControlText.A,
@@ -165,11 +165,7 @@ namespace PicSum.UIComponent.AddressBar
         {
             get
             {
-                if (this.textBrush == null)
-                {
-                    this.textBrush = new SolidBrush(this.textColor);
-                }
-
+                this.textBrush ??= new SolidBrush(this.textColor);
                 return this.textBrush;
             }
         }
@@ -178,11 +174,7 @@ namespace PicSum.UIComponent.AddressBar
         {
             get
             {
-                if (this.mousePointBrush == null)
-                {
-                    this.mousePointBrush = new SolidBrush(this.mousePointColor);
-                }
-
+                this.mousePointBrush ??= new SolidBrush(this.mousePointColor);
                 return this.mousePointBrush;
             }
         }
@@ -191,11 +183,7 @@ namespace PicSum.UIComponent.AddressBar
         {
             get
             {
-                if (this.mousePointPen == null)
-                {
-                    this.mousePointPen = new Pen(this.mousePointColor);
-                }
-
+                this.mousePointPen ??= new Pen(this.mousePointColor);
                 return this.mousePointPen;
             }
         }
@@ -204,11 +192,7 @@ namespace PicSum.UIComponent.AddressBar
         {
             get
             {
-                if (this.mouseDownBrush == null)
-                {
-                    this.mouseDownBrush = new SolidBrush(this.selectedColor);
-                }
-
+                this.mouseDownBrush ??= new SolidBrush(this.selectedColor);
                 return this.mouseDownBrush;
             }
         }
@@ -217,11 +201,7 @@ namespace PicSum.UIComponent.AddressBar
         {
             get
             {
-                if (this.outlineBrush == null)
-                {
-                    this.outlineBrush = new SolidBrush(this.outlineColor);
-                }
-
+                this.outlineBrush ??= new SolidBrush(this.outlineColor);
                 return this.outlineBrush;
             }
         }
@@ -230,11 +210,7 @@ namespace PicSum.UIComponent.AddressBar
         {
             get
             {
-                if (this.innerBrush == null)
-                {
-                    this.innerBrush = new SolidBrush(this.innerColor);
-                }
-
+                this.innerBrush ??= new SolidBrush(this.innerColor);
                 return this.innerBrush;
             }
         }
@@ -245,11 +221,13 @@ namespace PicSum.UIComponent.AddressBar
             {
                 if (this.textFormat == null)
                 {
-                    this.textFormat = new StringFormat();
-                    this.textFormat.Trimming = this.textTrimming;
-                    this.textFormat.Alignment = this.textAlignment;
-                    this.textFormat.LineAlignment = this.textLineAlignment;
-                    this.textFormat.FormatFlags = this.textFormatFlags;
+                    this.textFormat = new()
+                    {
+                        Trimming = this.textTrimming,
+                        Alignment = this.textAlignment,
+                        LineAlignment = this.textLineAlignment,
+                        FormatFlags = this.textFormatFlags
+                    };
                 }
                 else if (!this.textFormat.Trimming.Equals(this.textTrimming) ||
                          !this.textFormat.Alignment.Equals(this.textAlignment) ||
@@ -258,11 +236,13 @@ namespace PicSum.UIComponent.AddressBar
                 {
                     this.textFormat.Dispose();
                     this.textFormat = null;
-                    this.textFormat = new StringFormat();
-                    this.textFormat.Trimming = this.textTrimming;
-                    this.textFormat.Alignment = this.textAlignment;
-                    this.textFormat.LineAlignment = this.textLineAlignment;
-                    this.textFormat.FormatFlags = this.textFormatFlags;
+                    this.textFormat = new StringFormat
+                    {
+                        Trimming = this.textTrimming,
+                        Alignment = this.textAlignment,
+                        LineAlignment = this.textLineAlignment,
+                        FormatFlags = this.textFormatFlags
+                    };
                 }
 
                 return this.textFormat;

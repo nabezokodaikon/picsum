@@ -14,8 +14,8 @@ namespace PicSum.Core.Data.DatabaseAccessor
         : IDisposable
     {
         private bool disposed = false;
-        private readonly ReaderWriterLockSlim transactionLock = new ReaderWriterLockSlim();
-        private readonly ReaderWriterLockSlim executeSqlLock = new ReaderWriterLockSlim();
+        private readonly ReaderWriterLockSlim transactionLock = new();
+        private readonly ReaderWriterLockSlim executeSqlLock = new();
         private readonly SQLiteConnection connection;
         private SQLiteTransaction transaction = null;
 
@@ -28,8 +28,8 @@ namespace PicSum.Core.Data.DatabaseAccessor
         /// <param name="tableCreateSql">テーブル作成SQL</param>
         protected ConnectionBase(string dbFilePath, string tableCreateSql)
         {
-            if (dbFilePath == null) throw new ArgumentNullException(nameof(dbFilePath));
-            if (tableCreateSql == null) throw new ArgumentNullException(nameof(tableCreateSql));
+            ArgumentNullException.ThrowIfNull(dbFilePath, nameof(dbFilePath));
+            ArgumentNullException.ThrowIfNull(tableCreateSql, nameof(tableCreateSql));
 
             if (!File.Exists(dbFilePath))
             {
@@ -63,12 +63,7 @@ namespace PicSum.Core.Data.DatabaseAccessor
             if (disposing)
             {
                 this.connection.Close();
-
-                if (this.transaction != null)
-                {
-                    this.transaction.Dispose();
-                }
-
+                this.transaction?.Dispose();
                 this.transactionLock.Dispose();
                 this.executeSqlLock.Dispose();
             }
@@ -168,7 +163,7 @@ namespace PicSum.Core.Data.DatabaseAccessor
         /// <returns>更新されたレコードが存在するならTrue。存在しなければFalseを返します。</returns>
         public bool Update(SqlBase sql)
         {
-            if (sql == null) throw new ArgumentNullException(nameof(sql));
+            ArgumentNullException.ThrowIfNull(sql, nameof(sql));
 
             this.executeSqlLock.EnterWriteLock();
 
@@ -216,7 +211,7 @@ namespace PicSum.Core.Data.DatabaseAccessor
         public IList<TDto> ReadList<TDto>(SqlBase<TDto> sql)
             where TDto : IDto, new()
         {
-            if (sql == null) throw new ArgumentNullException(nameof(sql));
+            ArgumentNullException.ThrowIfNull(sql, nameof(sql));
 
             this.executeSqlLock.EnterReadLock();
 
@@ -248,7 +243,7 @@ namespace PicSum.Core.Data.DatabaseAccessor
                         }
                         else
                         {
-                            return new List<TDto>();
+                            return [];
                         }
                     }
                 }
@@ -267,7 +262,7 @@ namespace PicSum.Core.Data.DatabaseAccessor
         /// <returns>Dto</returns>
         public TDto ReadLine<TDto>(SqlBase<TDto> sql) where TDto : IDto, new()
         {
-            if (sql == null) throw new ArgumentNullException(nameof(sql));
+            ArgumentNullException.ThrowIfNull(sql, nameof(sql));
 
             this.executeSqlLock.EnterReadLock();
 
@@ -312,7 +307,7 @@ namespace PicSum.Core.Data.DatabaseAccessor
         /// <returns>1オブジェクトの実行結果</returns>
         public T ReadValue<T>(SqlBase sql)
         {
-            if (sql == null) throw new ArgumentNullException(nameof(sql));
+            ArgumentNullException.ThrowIfNull(sql, nameof(sql));
 
             this.executeSqlLock.EnterReadLock();
 
