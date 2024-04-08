@@ -35,7 +35,7 @@ namespace PicSum.UIComponent.AddressBar
         private readonly OverflowDrawItem overflowItem = new();
         private readonly DirectoryHistoryDrawItem directoryHistoryItem = new();
         private TwoWayTask<GetAddressInfoTask, ValueParameter<string>, GetAddressInfoResult> getAddressInfoTask = null;
-        private string directoryPath = null;
+        private string currentDirectoryPath = null;
         private readonly List<DrawItemBase> addressItems = new();
         private DrawItemBase mousePointItem = null;
         private DrawItemBase mouseDownItem = null;
@@ -181,8 +181,24 @@ namespace PicSum.UIComponent.AddressBar
                 throw new ArgumentException("アドレスバーに空白は設定できません。", nameof(filePath));
             }
 
+            if (FileUtil.IsFile(filePath))
+            {
+                if (FileUtil.GetParentDirectoryPath(filePath) == this.currentDirectoryPath)
+                {
+                    return;
+                }
+            }
+            else
+            {
+                if (filePath == this.currentDirectoryPath)
+                {
+                    return;
+                }
+            }
+
             var param = new ValueParameter<string>();
             param.Value = filePath;
+           
             this.GetAddressInfoProcess.StartTask(param);
         }
 
@@ -617,7 +633,7 @@ namespace PicSum.UIComponent.AddressBar
         {
             this.ClearAddressItems();
 
-            this.directoryPath = e.DirectoryPath;
+            this.currentDirectoryPath = e.DirectoryPath;
             this.addressItems.AddRange(this.CreateAddressItems(e));
 
             this.Invalidate();
