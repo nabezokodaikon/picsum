@@ -66,6 +66,7 @@ namespace PicSum.Task.Tasks
 
                     addressInfo.DirectoryPath = directory;
 
+                    this.CheckCancel();
                     var subDirectory = FileUtil.GetSubDirectorys(directory).FirstOrDefault(path => FileUtil.CanAccess(path));
                     addressInfo.HasSubDirectory = !string.IsNullOrEmpty(subDirectory);
 
