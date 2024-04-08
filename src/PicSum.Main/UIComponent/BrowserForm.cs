@@ -137,16 +137,7 @@ namespace PicSum.Main.UIComponent
             if (BrowserForm.isStartUp)
             {
                 this.Location = BrowserConfig.WindowLocaion;
-            }
-            else
-            {
-                this.Location = new Point(
-                    BrowserConfig.WindowLocaion.X + 16,
-                    BrowserConfig.WindowLocaion.Y + 16);
-            }
 
-            if (BrowserForm.isStartUp)
-            {
                 this.startupTask = new();
                 this.startupTask
                     .Catch(ex =>
@@ -187,6 +178,12 @@ namespace PicSum.Main.UIComponent
                 param.ThumbnailDBFilePath = Path.Combine(dbDir, @"thumbnail.sqlite");
 
                 this.startupTask.StartTask(param);
+            }
+            else
+            {
+                this.Location = new Point(
+                    BrowserConfig.WindowLocaion.X + 16,
+                    BrowserConfig.WindowLocaion.Y + 16);
             }
 
             base.OnHandleCreated(e);
