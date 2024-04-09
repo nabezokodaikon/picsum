@@ -18,18 +18,18 @@ namespace SWF.Common
         private static readonly ReaderWriterLockSlim SMALL_ICON_CASH_LOCK = new ReaderWriterLockSlim();
         private static readonly ReaderWriterLockSlim LARGE_ICON_CASH_LOCK = new ReaderWriterLockSlim();
         private static readonly ReaderWriterLockSlim JUMBO_ICON_CASH_LOCK = new ReaderWriterLockSlim();
-        private static readonly Dictionary<string, Image> SMALL_ICON_CASH = new Dictionary<string, Image>();
-        private static readonly Dictionary<string, Image> LARGE_ICON_CASH = new Dictionary<string, Image>();
-        private static readonly Dictionary<string, Image> JUMBO_ICON_CASH = new Dictionary<string, Image>();
-        private static readonly Image SMALL_PC_ICON =
+        private static readonly Dictionary<string, Bitmap> SMALL_ICON_CASH = new Dictionary<string, Bitmap>();
+        private static readonly Dictionary<string, Bitmap> LARGE_ICON_CASH = new Dictionary<string, Bitmap>();
+        private static readonly Dictionary<string, Bitmap> JUMBO_ICON_CASH = new Dictionary<string, Bitmap>();
+        private static readonly Bitmap SMALL_PC_ICON =
             FileUtil.GetSmallSystemIcon(WinApiMembers.ShellSpecialFolder.CSIDL_DRIVES);
-        private static readonly Image LARGE_PC_ICON =
+        private static readonly Bitmap LARGE_PC_ICON =
             FileUtil.GetLargeSystemIcon(WinApiMembers.ShellSpecialFolder.CSIDL_DRIVES);
-        private static readonly Image SMALL_DIRECTORY_ICON =
+        private static readonly Bitmap SMALL_DIRECTORY_ICON =
             FileUtil.GetSmallIconByFilePath(FileUtil.GetParentDirectoryPath(Assembly.GetExecutingAssembly().Location));
-        private static readonly Image LARGE_DIRECTORY_ICON =
+        private static readonly Bitmap LARGE_DIRECTORY_ICON =
             FileUtil.GetExtraLargeIconByFilePath(FileUtil.GetParentDirectoryPath(Assembly.GetExecutingAssembly().Location), SHIL.SHIL_EXTRALARGE);
-        private static readonly Image JUMBO_DIRECTORY_ICON =
+        private static readonly Bitmap JUMBO_DIRECTORY_ICON =
             FileUtil.GetExtraLargeIconByFilePath(FileUtil.GetParentDirectoryPath(Assembly.GetExecutingAssembly().Location), SHIL.SHIL_JUMBO);
 
         public static Image SmallMyComputerIcon
@@ -170,7 +170,7 @@ namespace SWF.Common
             }
         }
 
-        public static Image GetJumboFileIcon(string filePath)
+        public static Bitmap GetJumboFileIcon(string filePath)
         {
             if (filePath == null)
             {

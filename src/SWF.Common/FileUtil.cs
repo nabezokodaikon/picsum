@@ -630,7 +630,7 @@ namespace SWF.Common
         /// </summary>
         /// <param name="spesialDirectory">システムアイコンの種類</param>
         /// <returns></returns>
-        public static Image GetSmallSystemIcon(WinApiMembers.ShellSpecialFolder spesialFolder)
+        public static Bitmap GetSmallSystemIcon(WinApiMembers.ShellSpecialFolder spesialFolder)
         {
             WinApiMembers.SHGetSpecialFolderLocation(IntPtr.Zero, spesialFolder, out var idHandle);
             var sh = new WinApiMembers.SHFILEINFOW();
@@ -663,7 +663,7 @@ namespace SWF.Common
         /// </summary>
         /// <param name="spesialDirectory">システムアイコンの種類</param>
         /// <returns></returns>
-        public static Image GetLargeSystemIcon(WinApiMembers.ShellSpecialFolder spesialFolder)
+        public static Bitmap GetLargeSystemIcon(WinApiMembers.ShellSpecialFolder spesialFolder)
         {
             WinApiMembers.SHGetSpecialFolderLocation(IntPtr.Zero, spesialFolder, out var idHandle);
             var sh = new WinApiMembers.SHFILEINFOW();
@@ -696,7 +696,7 @@ namespace SWF.Common
         /// </summary>
         /// <param name="filePath">ファイルパス</param>
         /// <returns></returns>
-        public static Image GetSmallIconByFilePath(string filePath)
+        public static Bitmap GetSmallIconByFilePath(string filePath)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
@@ -729,7 +729,7 @@ namespace SWF.Common
         /// </summary>
         /// <param name="filePath">ファイルパス</param>
         /// <returns></returns>
-        public static Image GetExtraLargeIconByFilePath(string filePath, SHIL shil)
+        public static Bitmap GetExtraLargeIconByFilePath(string filePath, SHIL shil)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
