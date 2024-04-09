@@ -120,8 +120,14 @@ namespace PicSum.UIComponent.InfoPanel
 
             if (!string.IsNullOrEmpty(this.FileName))
             {
-                e.Graphics.DrawString(
-                    this.FileName, this.Font, this.TextBrush, fileNameRect);
+                using (var sf = new StringFormat())
+                {
+                    sf.Alignment = StringAlignment.Near;
+                    sf.LineAlignment = StringAlignment.Near;
+                    sf.Trimming = StringTrimming.EllipsisCharacter;
+                    e.Graphics.DrawString(
+                        this.FileName, this.Font, this.TextBrush, fileNameRect, sf);
+                }
 
             }
 
