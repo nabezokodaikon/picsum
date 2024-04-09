@@ -8,8 +8,6 @@ namespace PicSum.UIComponent.InfoPanel
     internal class FileInfoLabel
         : Control
     {
-        private const float MARGIN = 8;
-
         private readonly Color textColor = Color.FromArgb(
             SystemColors.ControlText.A,
             SystemColors.ControlText.R,
@@ -111,12 +109,13 @@ namespace PicSum.UIComponent.InfoPanel
 
         protected override void OnPaint(PaintEventArgs e)
         {
+            const float MARGIN = 8;
             var textSize = e.Graphics.MeasureString("あ", this.Font);
 
             var fileNameRect = new RectangleF(
-                MARGIN,
-                MARGIN,
-                this.Width - MARGIN * 2,
+                0,
+                0,
+                this.Width,
                 textSize.Height * 2);
 
             if (!string.IsNullOrEmpty(this.FileName))
@@ -129,22 +128,22 @@ namespace PicSum.UIComponent.InfoPanel
             if (!string.IsNullOrEmpty(this.FileType))
             {
                 e.Graphics.DrawString(
-                    this.FileType, this.Font, this.TextBrush, MARGIN,
+                    this.FileType, this.Font, this.TextBrush, 0,
                     fileNameRect.Bottom + MARGIN);
             }
 
             if (!string.IsNullOrEmpty(this.Timestamp))
             {
                 e.Graphics.DrawString(
-                    this.Timestamp, this.Font, this.TextBrush, MARGIN,
-                    fileNameRect.Bottom + +MARGIN + textSize.Height + MARGIN);
+                    this.Timestamp, this.Font, this.TextBrush, 0,
+                    fileNameRect.Bottom + MARGIN + textSize.Height + MARGIN);
             }
 
             if (!string.IsNullOrEmpty(this.fileSize))
             {
                 e.Graphics.DrawString(
-                    this.fileSize, this.Font, this.TextBrush, MARGIN,
-                    fileNameRect.Bottom + +MARGIN + (textSize.Height + MARGIN) * 2);
+                    this.fileSize, this.Font, this.TextBrush, 0,
+                    fileNameRect.Bottom + MARGIN + (textSize.Height + MARGIN) * 2);
             }
 
             base.OnPaint(e);

@@ -14,11 +14,6 @@ namespace PicSum.Core.Base.Conf
         /// 情報パネルの幅
         /// </summary>
         public const int INFOPANEL_WIDTH = 240;
-
-        /// <summary>
-        /// 情報パネルのサムネイルサイズ
-        /// </summary>
-        public const int INFOPANEL_THUMBANIL_SIZE = 200;
     }
 
     /// <summary>
