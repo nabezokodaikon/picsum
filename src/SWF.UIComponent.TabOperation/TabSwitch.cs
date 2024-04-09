@@ -782,11 +782,13 @@ namespace SWF.UIComponent.TabOperation
                     }
                     else if (form.WindowState == FormWindowState.Normal)
                     {
-                        this.OnTabDropouted(new TabDropoutedEventArgs(tab, screenPoint, form.ClientSize, FormWindowState.Normal));
+                        // マウスカーソルの位置にタブが来るようにずらします。
+                        this.OnTabDropouted(new TabDropoutedEventArgs(tab, new Point(screenPoint.X - 128, screenPoint.Y - 24), form.ClientSize, FormWindowState.Normal));
                     }
                     else if (form.WindowState == FormWindowState.Maximized)
                     {
-                        this.OnTabDropouted(new TabDropoutedEventArgs(tab, screenPoint, form.RestoreBounds.Size, FormWindowState.Normal));
+                        // マウスカーソルの位置にタブが来るようにずらします。
+                        this.OnTabDropouted(new TabDropoutedEventArgs(tab, new Point(screenPoint.X - 128, screenPoint.Y - 24), form.RestoreBounds.Size, FormWindowState.Normal));
                     }
                     else
                     {
