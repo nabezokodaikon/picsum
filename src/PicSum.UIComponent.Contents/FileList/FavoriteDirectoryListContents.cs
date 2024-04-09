@@ -51,7 +51,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 if (this.deleteTask == null)
                 {
                     this.deleteTask = new();
-                    this.searchTask
+                    this.deleteTask
                         .StartThread();
                 }
 
