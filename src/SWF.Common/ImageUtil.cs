@@ -262,6 +262,24 @@ namespace SWF.Common
             }
         }
 
+        public static Bitmap CreateErrorImage()
+        {
+            const string message = "Failed to load image file.";
+
+            var bmp = new Bitmap(512, 512);
+            using (var font = new Font("Yu Gothic UI", 10F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(128))))
+            using (var g = Graphics.FromImage(bmp))
+            {
+                var textSize = g.MeasureString(message, font);
+                var x = (bmp.Width - textSize.Width) / 2f;
+                var y = (bmp.Height - textSize.Height) / 2f;
+                //g.FillRectangle(Brushes.AliceBlue, 0, 0, bmp.Width, bmp.Height);
+                g.DrawString(message, font, Brushes.White, new RectangleF(x, y, textSize.Width, textSize.Height));
+            }
+
+            return bmp;
+        }
+
         /// <summary>
         /// ビットマップの指定座標の色を取得します。
         /// </summary>
