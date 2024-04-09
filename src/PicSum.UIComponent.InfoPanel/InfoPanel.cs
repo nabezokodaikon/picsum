@@ -446,7 +446,7 @@ namespace PicSum.UIComponent.InfoPanel
                 sf.Alignment = StringAlignment.Center;
                 sf.LineAlignment = StringAlignment.Center;
                 sf.Trimming = StringTrimming.EllipsisCharacter;
-                string text = string.Format("Select {0} file", this.FilePathList.Count);
+                var text = $"{this.FilePathList.Count} files are already selected.";
                 g.DrawString(text, this.Font, sb, rect, sf);
             }
         }
