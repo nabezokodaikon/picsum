@@ -273,7 +273,6 @@ namespace SWF.Common
                 var textSize = g.MeasureString(message, font);
                 var x = (bmp.Width - textSize.Width) / 2f;
                 var y = (bmp.Height - textSize.Height) / 2f;
-                //g.FillRectangle(Brushes.AliceBlue, 0, 0, bmp.Width, bmp.Height);
                 g.DrawString(message, font, Brushes.White, new RectangleF(x, y, textSize.Width, textSize.Height));
             }
 
