@@ -7,14 +7,19 @@ namespace PicSum.Core.Task.AsyncTaskV2
     {
         private readonly IAsyncTask task;
 
-        protected void CheckCancel()
-        {
-            this.task.CheckCancel();
-        }
-
         public AbstractAsyncLogic(IAsyncTask task)
         {
             this.task = task ?? throw new ArgumentNullException("task");
+        }
+
+        protected void WriteErrorLog(Exception ex)
+        {
+            task.WriteErrorLog(ex);
+        }
+
+        protected void CheckCancel()
+        {
+            this.task.CheckCancel();
         }
     }
 }
