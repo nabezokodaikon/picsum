@@ -147,7 +147,9 @@ namespace PicSum.UIComponent.AddressBar
                         .Callback(this.GetAddressInfoProcess_Callback)
                         .Catch(ex =>
                         {
-                            ExceptionUtil.ShowErrorDialog(ex.InnerException);
+                            this.currentDirectoryPath = string.Empty;
+                            this.ClearAddressItems();
+                            this.Invalidate();
                         })
                         .StartThread();
                 }
