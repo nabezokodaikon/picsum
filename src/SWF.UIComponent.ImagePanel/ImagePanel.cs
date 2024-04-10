@@ -103,7 +103,6 @@ namespace SWF.UIComponent.ImagePanel
                 if (value != this.imageAlign)
                 {
                     this.imageAlign = value;
-                    this.Invalidate();
                 }
             }
         }
@@ -119,7 +118,6 @@ namespace SWF.UIComponent.ImagePanel
                 if (value != this.isShowThumbnailPanel)
                 {
                     this.isShowThumbnailPanel = value;
-                    this.Invalidate();
                 }
             }
         }

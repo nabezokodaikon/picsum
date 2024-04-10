@@ -348,9 +348,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
                 this.leftImagePanel.Visible = true;
                 this.rightImagePanel.Visible = true;
-
-                this.leftImagePanel.Invalidate();
-                this.rightImagePanel.Invalidate();
             }
             else if (this.leftImagePanel.HasImage)
             {
@@ -364,8 +361,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
                 this.leftImagePanel.Visible = true;
                 this.rightImagePanel.Visible = false;
-
-                this.leftImagePanel.Invalidate();
             }
             else if (this.rightImagePanel.HasImage)
             {
@@ -379,8 +374,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
                 this.leftImagePanel.Visible = false;
                 this.rightImagePanel.Visible = true;
-
-                this.rightImagePanel.Invalidate();
             }
             else
             {
@@ -721,6 +714,9 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             }
 
             this.ChangeImagePanelSize();
+
+            this.leftImagePanel.Invalidate();
+            this.rightImagePanel.Invalidate();
 
             this.Focus();
         }
