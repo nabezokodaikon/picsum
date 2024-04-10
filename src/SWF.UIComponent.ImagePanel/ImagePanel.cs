@@ -138,6 +138,8 @@ namespace SWF.UIComponent.ImagePanel
             }
         }
 
+        public bool IsErrorImage { get; private set; } = false;
+
         #endregion
 
         #region 継承プロパティ
@@ -145,8 +147,6 @@ namespace SWF.UIComponent.ImagePanel
         #endregion
 
         #region プライベートプロパティ
-
-        public bool IsErrorImage { get; private set; } = false;
 
         private int ThumbnailPanelSize
         {
