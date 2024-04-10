@@ -1,5 +1,4 @@
 using NLog;
-using SWF.Common;
 
 namespace PicSum.Core.Task.AsyncTaskV2
 {
@@ -33,6 +32,11 @@ namespace PicSum.Core.Task.AsyncTaskV2
         public AbstractTwoWayTask()
         {
 
+        }
+
+        public void WriteErrorLog(Exception ex)
+        {
+            Logger.Error($"{this.ID} {ex}");
         }
 
         internal void ExecuteWrapper()
@@ -76,11 +80,6 @@ namespace PicSum.Core.Task.AsyncTaskV2
         protected virtual void Execute()
         {
             throw new NotImplementedException();
-        }
-
-        protected void WriteErrorLog(Exception ex)
-        {
-            Logger.Error($"{this.ID} {ex}");
         }
 
         internal void BeginCancel()
