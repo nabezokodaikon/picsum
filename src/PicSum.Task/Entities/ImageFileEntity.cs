@@ -10,5 +10,6 @@ namespace PicSum.Task.Entities
         public string FilePath { get; set; }
         public Bitmap Image { get; set; }
         public Bitmap Thumbnail { get; set; }
+        public bool IsError { get; set; }
     }
 }

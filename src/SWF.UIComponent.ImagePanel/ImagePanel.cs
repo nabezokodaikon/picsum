@@ -148,6 +148,8 @@ namespace SWF.UIComponent.ImagePanel
 
         #region プライベートプロパティ
 
+        public bool IsErrorImage { get; private set; } = false;
+
         private int ThumbnailPanelSize
         {
             get
@@ -169,7 +171,7 @@ namespace SWF.UIComponent.ImagePanel
 
         #region パブリックメソッド
 
-        public void SetImage(Bitmap img, Bitmap thumb)
+        public void SetImage(bool isErrorImage, Bitmap img, Bitmap thumb)
         {
             ArgumentNullException.ThrowIfNull(img, nameof(img));
             ArgumentNullException.ThrowIfNull(thumb, nameof(thumb));
@@ -179,20 +181,31 @@ namespace SWF.UIComponent.ImagePanel
                 throw new InvalidOperationException("既にイメージが存在しています。");
             }
 
+            this.IsErrorImage = isErrorImage;
             this.image = img;
             this.thumbnail = thumb;
         }
 
         public void SetScale(float scale)
         {
+            const float ERROR_IMAGE_SCALE = 1.0f;
             if (this.image == null)
             {
                 throw new NullReferenceException("イメージが存在しません。");
             }
 
-            this.imageScaleSize = new SizeF(
-                this.image.Width * scale,
-                this.image.Height * scale);
+            if (this.IsErrorImage)
+            {
+                this.imageScaleSize = new SizeF(
+                    this.image.Width * ERROR_IMAGE_SCALE,
+                    this.image.Height * ERROR_IMAGE_SCALE);
+            }
+            else
+            {
+                this.imageScaleSize = new SizeF(
+                    this.image.Width * scale,
+                    this.image.Height * scale);
+            }
         }
 
         public void ClearImage()

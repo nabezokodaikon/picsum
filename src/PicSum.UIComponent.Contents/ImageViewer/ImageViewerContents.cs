@@ -667,7 +667,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             if (this.displayMode == ImageDisplayMode.Single)
             {
                 this.leftImageFilePath = e.Image1.FilePath;
-                this.leftImagePanel.SetImage(e.Image1.Image, e.Image1.Thumbnail);
+                this.leftImagePanel.SetImage(e.Image1.IsError, e.Image1.Image, e.Image1.Thumbnail);
 
                 var scale = GetImageScale(
                     this.leftImagePanel.ImageSize, bgSize, this.sizeMode);
@@ -676,7 +676,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             else if (this.displayMode == ImageDisplayMode.LeftFacing)
             {
                 this.leftImageFilePath = e.Image1.FilePath;
-                this.leftImagePanel.SetImage(e.Image1.Image, e.Image1.Thumbnail);
+                this.leftImagePanel.SetImage(e.Image1.IsError, e.Image1.Image, e.Image1.Thumbnail);
                 var leftImageScale = GetImageScale(
                     this.leftImagePanel.ImageSize, bgSize, this.sizeMode);
 
@@ -685,7 +685,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                     this.leftImagePanel.SetScale(leftImageScale);
 
                     this.rightImageFilePath = e.Image2.FilePath;
-                    this.rightImagePanel.SetImage(e.Image2.Image, e.Image2.Thumbnail);
+                    this.rightImagePanel.SetImage(e.Image2.IsError, e.Image2.Image, e.Image2.Thumbnail);
 
                     var rightImageScale = GetImageScale(
                         this.rightImagePanel.ImageSize, bgSize, this.sizeMode);
@@ -699,7 +699,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             else if (this.displayMode == ImageDisplayMode.RightFacing)
             {
                 this.rightImageFilePath = e.Image1.FilePath;
-                this.rightImagePanel.SetImage(e.Image1.Image, e.Image1.Thumbnail);
+                this.rightImagePanel.SetImage(e.Image1.IsError, e.Image1.Image, e.Image1.Thumbnail);
                 var rightImageScale = GetImageScale(
                     this.rightImagePanel.ImageSize, bgSize, this.sizeMode);
 
@@ -708,7 +708,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                     this.rightImagePanel.SetScale(rightImageScale);
 
                     this.leftImageFilePath = e.Image2.FilePath;
-                    this.leftImagePanel.SetImage(e.Image2.Image, e.Image2.Thumbnail);
+                    this.leftImagePanel.SetImage(e.Image2.IsError, e.Image2.Image, e.Image2.Thumbnail);
 
                     var leftImageScale = GetImageScale(
                         this.leftImagePanel.ImageSize, bgSize, this.sizeMode);

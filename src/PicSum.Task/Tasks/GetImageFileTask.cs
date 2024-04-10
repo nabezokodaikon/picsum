@@ -71,7 +71,7 @@ namespace PicSum.Task.Tasks
             try
             {
                 this.CheckCancel();
-                var img1 = this.ReadImageFile(currentFilePath);
+                var isImg1Error = this.ReadImageFile(currentFilePath, out var img1);
 
                 if (parameter.ImageDisplayMode != ImageDisplayMode.Single &&
                     img1.Width < img1.Height)
@@ -88,19 +88,21 @@ namespace PicSum.Task.Tasks
                     if (srcImg2Size.Width < srcImg2Size.Height)
                     {
                         this.CheckCancel();
-                        var img2 = this.ReadImageFile(nextFilePath);
+                        var isImg2Error = this.ReadImageFile(nextFilePath, out var img2);
 
                         this.CheckCancel();
                         result.Image1 = new ImageFileEntity();
                         result.Image1.FilePath = currentFilePath;
                         result.Image1.Image = img1;
                         result.Image1.Thumbnail = logic.CreateThumbnail(result.Image1.Image, parameter.ThumbnailSize, parameter.ImageSizeMode);
+                        result.Image1.IsError = isImg1Error;
 
                         this.CheckCancel();
                         result.Image2 = new ImageFileEntity();
                         result.Image2.FilePath = nextFilePath;
                         result.Image2.Image = img2;
                         result.Image2.Thumbnail = logic.CreateThumbnail(result.Image2.Image, parameter.ThumbnailSize, parameter.ImageSizeMode);
+                        result.Image2.IsError = isImg2Error;
                     }
                     else
                     {
@@ -109,6 +111,7 @@ namespace PicSum.Task.Tasks
                         result.Image1.FilePath = currentFilePath;
                         result.Image1.Image = img1;
                         result.Image1.Thumbnail = logic.CreateThumbnail(result.Image1.Image, parameter.ThumbnailSize, parameter.ImageSizeMode);
+                        result.Image1.IsError = isImg1Error;
                     }
                 }
                 else
@@ -118,6 +121,7 @@ namespace PicSum.Task.Tasks
                     result.Image1.FilePath = currentFilePath;
                     result.Image1.Image = img1;
                     result.Image1.Thumbnail = logic.CreateThumbnail(result.Image1.Image, parameter.ThumbnailSize, parameter.ImageSizeMode);
+                    result.Image1.IsError = isImg1Error;
                 }
             }
             catch (TaskCancelException)
@@ -129,21 +133,21 @@ namespace PicSum.Task.Tasks
             this.Callback(result);
         }
 
-        private Bitmap ReadImageFile(string filePath)
+        private bool ReadImageFile(string filePath, out Bitmap bmp)
         {
-            Bitmap bmp = null;
+            bmp = null;
             try
             {
                 bmp = ImageUtil.ReadImageFile(filePath);
+                return false;
             }
             catch (ImageUtilException ex)
             {
                 WriteErrorLog(ex);
                 bmp?.Dispose();
                 bmp = ImageUtil.CreateErrorImage();
+                return true;
             }
-
-            return bmp;
         }
     }
 }
