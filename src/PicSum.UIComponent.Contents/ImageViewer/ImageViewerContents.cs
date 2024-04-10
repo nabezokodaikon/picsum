@@ -332,6 +332,9 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
         private void ChangeImagePanelSize()
         {
+            this.leftImagePanel.Visible = false;
+            this.rightImagePanel.Visible = false;
+
             if (this.leftImagePanel.HasImage && this.rightImagePanel.HasImage)
             {
                 var w = (int)(this.checkPatternPanel.Width / 2f);
@@ -374,11 +377,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
                 this.leftImagePanel.Visible = false;
                 this.rightImagePanel.Visible = true;
-            }
-            else
-            {
-                this.leftImagePanel.Visible = false;
-                this.rightImagePanel.Visible = false;
             }
         }
 
