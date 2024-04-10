@@ -50,7 +50,7 @@ namespace PicSum.Task.Logics
                 {
                     info.IsImageFile = FileUtil.IsImageFile(filePath);
                     info.FileSize = FileUtil.GetFileSize(filePath);
-                    info.FileIcon = FileIconCash.GetJumboFileIcon(filePath);
+                    info.FileIcon = FileIconCash.GetLargeFileIcon(filePath);
                 }
                 else
                 {
