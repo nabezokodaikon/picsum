@@ -34,14 +34,5 @@ namespace SWF.Common
                 return bitmap;
             }
         }
-
-        public static System.Drawing.Size GetImageSize(string filePath)
-        {
-            using (var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
-            using (var image = SixLabors.ImageSharp.Image.Load(AVIF_DECODER_OPTIONS, fs))
-            {
-                return new System.Drawing.Size(image.Width, image.Height);
-            }
-        }
     }
 }

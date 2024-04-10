@@ -109,47 +109,7 @@ namespace SWF.Common
             {
                 throw new ArgumentNullException(nameof(filePath));
             }
-
-            try
-            {
-                if (FileUtil.IsWEBPFile(filePath))
-                {
-                    return WEBPUtil.GetImageSize(filePath);
-                }
-                else if (FileUtil.IsAVIFFile(filePath))
-                {
-                    return AVIFUtil.GetImageSize(filePath);
-                }
-            }
-            catch (NotSupportedException ex)
-            {
-                throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
-            }
-            catch (FileNotFoundException ex)
-            {
-                throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
-            }
-            catch (SecurityException ex)
-            {
-                throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
-            }
-            catch (DirectoryNotFoundException ex)
-            {
-                throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
-            }
-            catch (PathTooLongException ex)
-            {
-                throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
-            }
-            catch (IOException ex)
-            {
-                throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
-            }
-            catch (UnauthorizedAccessException ex)
-            {
-                throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
-            }
-
+          
             var directory = ImageUtil.SHELL.NameSpace(Path.GetDirectoryName(filePath));
             var item = directory.ParseName(Path.GetFileName(filePath));
             var deteils = directory.GetDetailsOf(item, 31);
