@@ -221,11 +221,11 @@ namespace PicSum.Main.UIComponent
             this.contentsContainer.SetBounds(
                 0,
                 64,
-                this.Width - ApplicationConst.INFOPANEL_WIDTH,
+                this.Width,
                 402);
 
             this.infoPanel.SetBounds(
-                this.contentsContainer.Width,
+                this.contentsContainer.Width - ApplicationConst.INFOPANEL_WIDTH,
                 this.contentsContainer.Location.Y,
                 ApplicationConst.INFOPANEL_WIDTH,
                 402);
