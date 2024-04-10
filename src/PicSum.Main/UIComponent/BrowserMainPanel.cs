@@ -64,18 +64,6 @@ namespace PicSum.Main.UIComponent
 
         #region プライベートプロパティ
 
-        private bool IsShowFileInfo
-        {
-            get
-            {
-                return !this.splitContainer.Panel2Collapsed;
-            }
-            set
-            {
-                this.splitContainer.Panel2Collapsed = !value;
-            }
-        }
-
         private TwoWayTask<GetTagListTask, ListResult<string>> GetTagListTask
         {
             get
@@ -230,8 +218,37 @@ namespace PicSum.Main.UIComponent
                 this.components = new Container();
             }
 
-            this.splitContainer.Panel2MinSize = ApplicationConst.INFOPANEL_WIDTH;
-            this.splitContainer.SplitterDistance = this.splitContainer.Width - this.splitContainer.Panel2MinSize - this.splitContainer.SplitterWidth;
+            this.contentsContainer.SetBounds(
+                0,
+                64,
+                this.Width - ApplicationConst.INFOPANEL_WIDTH,
+                402);
+
+            this.infoPanel.SetBounds(
+                this.contentsContainer.Width,
+                this.contentsContainer.Location.Y,
+                ApplicationConst.INFOPANEL_WIDTH,
+                402);
+
+            this.contentsContainer.Anchor
+                = AnchorStyles.Top
+                | AnchorStyles.Bottom
+                | AnchorStyles.Left
+                | AnchorStyles.Right;
+
+            this.infoPanel.Anchor
+                = AnchorStyles.Top
+                | AnchorStyles.Bottom
+                | AnchorStyles.Right;
+
+            this.Controls.AddRange(new Control[]
+            {
+                this.contentsContainer,
+                this.infoPanel,
+            });
+
+            this.infoPanel.BringToFront();
+            this.contentsContainer.BringToFront();
 
             this.redrawTimer = new Timer();
             this.redrawTimer.Enabled = true;
@@ -641,7 +658,14 @@ namespace PicSum.Main.UIComponent
 
         private void ShowInfoToolButton_MouseClick(object sender, MouseEventArgs e)
         {
-            this.IsShowFileInfo = !this.IsShowFileInfo;
+            if (this.contentsContainer.Width == this.Width)
+            {
+                this.contentsContainer.Width = this.Width - ApplicationConst.INFOPANEL_WIDTH;
+            }
+            else
+            {
+                this.contentsContainer.Width = this.Width;
+            }
 
             var activeTab = this.tabSwitch.ActiveTab;
             if (activeTab != null)

@@ -17,7 +17,6 @@ namespace PicSum.Main.UIComponent
         /// </summary>
         private void InitializeComponent()
         {
-            this.splitContainer = new SWF.UIComponent.Common.DoubleBufferedSplitContainer();
             this.contentsContainer = new SWF.UIComponent.TabOperation.ContentsContainer();
             this.infoPanel = new PicSum.UIComponent.InfoPanel.InfoPanel();
             this.tabSwitch = new SWF.UIComponent.TabOperation.TabSwitch();
@@ -31,39 +30,8 @@ namespace PicSum.Main.UIComponent
             this.previewContentsHistoryButton = new SWF.UIComponent.Common.ToolButton();
             this.showInfoToolButton = new SWF.UIComponent.Common.ToolButton();
             this.addressBar = new PicSum.UIComponent.AddressBar.AddressBar();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
-            this.splitContainer.Panel1.SuspendLayout();
-            this.splitContainer.Panel2.SuspendLayout();
-            this.splitContainer.SuspendLayout();
             this.toolPanel.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // splitContainer
-            // 
-            this.splitContainer.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.splitContainer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(241)))), ((int)(((byte)(244)))), ((int)(((byte)(250)))));
-            this.splitContainer.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
-            this.splitContainer.IsSplitterFixed = true;
-            this.splitContainer.Location = new System.Drawing.Point(0, 64);
-            this.splitContainer.Margin = new System.Windows.Forms.Padding(0);
-            this.splitContainer.Name = "splitContainer";
-            // 
-            // splitContainer.Panel1
-            // 
-            this.splitContainer.Panel1.Controls.Add(this.contentsContainer);
-            this.splitContainer.Panel1MinSize = 320;
-            // 
-            // splitContainer.Panel2
-            // 
-            this.splitContainer.Panel2.Controls.Add(this.infoPanel);
-            this.splitContainer.Panel2Collapsed = true;
-            this.splitContainer.Size = new System.Drawing.Size(746, 402);
-            this.splitContainer.SplitterDistance = 320;
-            this.splitContainer.SplitterWidth = 6;
-            this.splitContainer.TabIndex = 3;
-            this.splitContainer.TabStop = false;
             // 
             // contentsContainer
             // 
@@ -272,23 +240,17 @@ namespace PicSum.Main.UIComponent
             // BrowserMainPanel
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(241)))), ((int)(((byte)(244)))), ((int)(((byte)(250)))));
             this.Controls.Add(this.toolPanel);
-            this.Controls.Add(this.splitContainer);
             this.Controls.Add(this.tabSwitch);
             this.Name = "BrowserMainPanel";
             this.Size = new System.Drawing.Size(746, 466);
-            this.splitContainer.Panel1.ResumeLayout(false);
-            this.splitContainer.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).EndInit();
-            this.splitContainer.ResumeLayout(false);
             this.toolPanel.ResumeLayout(false);
             this.ResumeLayout(false);
-
         }
 
         #endregion
 
-        private SWF.UIComponent.Common.DoubleBufferedSplitContainer splitContainer;
         private SWF.UIComponent.TabOperation.ContentsContainer contentsContainer;
         private PicSum.UIComponent.InfoPanel.InfoPanel infoPanel;
         private SWF.UIComponent.TabOperation.TabSwitch tabSwitch;

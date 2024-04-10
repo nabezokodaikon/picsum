@@ -279,6 +279,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             // 
             this.indexSlider.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.indexSlider.BackColor = System.Drawing.Color.Transparent;
             this.indexSlider.Location = new System.Drawing.Point(270, 4);
             this.indexSlider.Margin = new System.Windows.Forms.Padding(3, 3, 6, 3);
             this.indexSlider.MaximumValue = 100;
@@ -295,6 +296,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(241)))), ((int)(((byte)(244)))), ((int)(((byte)(250)))));
             this.Controls.Add(this.indexSlider);
             this.Controls.Add(this.checkPatternPanel);
             this.Controls.Add(this.toolBar);

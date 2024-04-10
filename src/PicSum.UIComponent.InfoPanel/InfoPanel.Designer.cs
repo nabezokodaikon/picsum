@@ -140,6 +140,7 @@ namespace PicSum.UIComponent.InfoPanel
             // InfoPanel
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(241)))), ((int)(((byte)(244)))), ((int)(((byte)(250)))));
             this.Controls.Add(this.wideComboBox);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.thumbnailPictureBox);
