@@ -143,9 +143,10 @@ namespace PicSum.Task.Tasks
             }
             catch (ImageUtilException ex)
             {
+                const int size = 512;
                 WriteErrorLog(ex);
                 bmp?.Dispose();
-                bmp = ImageUtil.CreateErrorImage();
+                bmp = ImageUtil.CreateErrorImage(size);
                 return true;
             }
         }
