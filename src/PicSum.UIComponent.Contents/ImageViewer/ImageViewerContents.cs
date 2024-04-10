@@ -610,17 +610,10 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
         private void GetImageFileTask_Callback(GetImageFileResult e)
         {
-            if (this.leftImagePanel.HasImage)
-            {
-                this.leftImageFilePath = string.Empty;
-                this.leftImagePanel.ClearImage();
-            }
-
-            if (this.rightImagePanel.HasImage)
-            {
-                this.rightImageFilePath = string.Empty;
-                this.rightImagePanel.ClearImage();
-            }
+            this.leftImageFilePath = string.Empty;
+            this.leftImagePanel.ClearImage();
+            this.rightImageFilePath = string.Empty;
+            this.rightImagePanel.ClearImage();
 
             var index = this.filePathList.IndexOf(e.Image1.FilePath);
             if (index != this.FilePathListIndex)

@@ -208,15 +208,18 @@ namespace SWF.UIComponent.ImagePanel
 
         public void ClearImage()
         {
-            if (this.image == null)
+            if (this.thumbnail != null)
             {
-                throw new Exception("イメージが存在していません。");
+                this.thumbnail.Dispose();
+                this.thumbnail = null;
             }
 
-            this.thumbnail.Dispose();
-            this.thumbnail = null;
-            this.image.Dispose();
-            this.image = null;
+            if (this.image != null)
+            {
+                this.image.Dispose();
+                this.image = null;
+            }
+
             this.imageScaleSize = SizeF.Empty;
         }
 
