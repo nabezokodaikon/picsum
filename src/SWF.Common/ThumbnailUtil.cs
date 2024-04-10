@@ -52,8 +52,7 @@ namespace SWF.Common
                 h = 1;
             }
 
-            var thumb = srcImg.GetThumbnailImage(w, h, () => false, IntPtr.Zero);
-            return new Bitmap(thumb);
+            return srcImg.GetThumbnailImage(w, h, () => false, IntPtr.Zero);
         }
 
         /// <summary>
