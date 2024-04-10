@@ -16,15 +16,9 @@ namespace PicSum.Task.Logics
     /// ファイルの深い情報取得ロジック
     /// </summary>
     [SupportedOSPlatform("windows")]
-    internal sealed class GetFileDeepInfoLogic
-        : AbstractAsyncLogic
+    internal sealed class GetFileDeepInfoLogic(IAsyncTask task)
+        : AbstractAsyncLogic(task)
     {
-        public GetFileDeepInfoLogic(IAsyncTask task)
-            : base(task)
-        {
-
-        }
-
         public FileDeepInfoEntity Execute(string filePath, Size thumbSize)
         {
             if (filePath == null)
