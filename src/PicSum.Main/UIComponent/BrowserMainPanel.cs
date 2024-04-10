@@ -234,7 +234,6 @@ namespace PicSum.Main.UIComponent
             this.splitContainer.SplitterDistance = this.splitContainer.Width - this.splitContainer.Panel2MinSize - this.splitContainer.SplitterWidth;
 
             this.redrawTimer = new Timer();
-            this.redrawTimer = new Timer();
             this.redrawTimer.Enabled = true;
             this.redrawTimer.Interval = 100;
             this.redrawTimer.Tick += this.RedrawTimer_Tick;
