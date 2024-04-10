@@ -16,9 +16,15 @@ namespace PicSum.Task.Logics
     /// ファイルの深い情報取得ロジック
     /// </summary>
     [SupportedOSPlatform("windows")]
-    internal sealed class GetFileDeepInfoLogic(IAsyncTask task)
-        : AbstractAsyncLogic(task)
+    internal sealed class GetFileDeepInfoLogic
+        : AbstractAsyncLogic
     {
+        public GetFileDeepInfoLogic(IAsyncTask task)
+            : base(task)
+        {
+
+        }
+
         public FileDeepInfoEntity Execute(string filePath, Size thumbSize)
         {
             if (filePath == null)
@@ -32,6 +38,7 @@ namespace PicSum.Task.Logics
                 FileName = FileUtil.GetFileName(filePath),
                 FileType = FileUtil.GetTypeName(filePath)
             };
+
             if (FileUtil.IsSystemRoot(filePath))
             {
                 info.UpdateDate = null;
@@ -43,9 +50,7 @@ namespace PicSum.Task.Logics
             else
             {
                 info.UpdateDate = FileUtil.GetUpdateDate(filePath);
-
                 info.IsFile = FileUtil.IsFile(filePath);
-
                 if (info.IsFile)
                 {
                     info.IsImageFile = FileUtil.IsImageFile(filePath);
@@ -68,29 +73,13 @@ namespace PicSum.Task.Logics
 
                 if (info.IsImageFile)
                 {
-                    info.Thumbnail = new ThumbnailImageResult();
-                    using (var srcImg = ImageUtil.ReadImageFile(filePath))
+                    var isImgError = this.ReadImageFile(filePath, out var srcImg);
+                    if (!isImgError)
                     {
-                        var thumb = ThumbnailUtil.CreateThumbnail(srcImg, thumbSize.Width, thumbSize.Height);
-                        info.Thumbnail.FilePath = info.FilePath;
-                        info.Thumbnail.FileUpdatedate = info.UpdateDate.Value;
-                        info.Thumbnail.ThumbnailImage = thumb;
-                        info.Thumbnail.ThumbnailWidth = thumbSize.Width;
-                        info.Thumbnail.ThumbnailHeight = thumbSize.Height;
-                        info.Thumbnail.SourceWidth = srcImg.Width;
-                        info.Thumbnail.SourceHeight = srcImg.Height;
-                        info.ImageSize = new Size(srcImg.Width, srcImg.Height);
-                    }
-                }
-                else if (!info.IsFile)
-                {
-                    var firstImageFile = FileUtil.GetFirstImageFilePath(filePath);
-                    if (!string.IsNullOrEmpty(firstImageFile))
-                    {
-                        info.Thumbnail = new ThumbnailImageResult();
-                        using (var srcImg = ImageUtil.ReadImageFile(firstImageFile))
+                        using (srcImg)
                         {
-                            Image thumb = ThumbnailUtil.CreateThumbnail(srcImg, thumbSize.Width, thumbSize.Height);
+                            var thumb = ThumbnailUtil.CreateThumbnail(srcImg, thumbSize.Width, thumbSize.Height);
+                            info.Thumbnail = new ThumbnailImageResult();
                             info.Thumbnail.FilePath = info.FilePath;
                             info.Thumbnail.FileUpdatedate = info.UpdateDate.Value;
                             info.Thumbnail.ThumbnailImage = thumb;
@@ -99,6 +88,30 @@ namespace PicSum.Task.Logics
                             info.Thumbnail.SourceWidth = srcImg.Width;
                             info.Thumbnail.SourceHeight = srcImg.Height;
                             info.ImageSize = new Size(srcImg.Width, srcImg.Height);
+                        }
+                    }
+                }
+                else if (!info.IsFile)
+                {
+                    var firstImageFile = FileUtil.GetFirstImageFilePath(filePath);
+                    if (!string.IsNullOrEmpty(firstImageFile))
+                    {
+                        var isImgError = this.ReadImageFile(firstImageFile, out var srcImg);
+                        if (!isImgError)
+                        {
+                            using (srcImg)
+                            {
+                                var thumb = ThumbnailUtil.CreateThumbnail(srcImg, thumbSize.Width, thumbSize.Height);
+                                info.Thumbnail = new ThumbnailImageResult();
+                                info.Thumbnail.FilePath = info.FilePath;
+                                info.Thumbnail.FileUpdatedate = info.UpdateDate.Value;
+                                info.Thumbnail.ThumbnailImage = thumb;
+                                info.Thumbnail.ThumbnailWidth = thumbSize.Width;
+                                info.Thumbnail.ThumbnailHeight = thumbSize.Height;
+                                info.Thumbnail.SourceWidth = srcImg.Width;
+                                info.Thumbnail.SourceHeight = srcImg.Height;
+                                info.ImageSize = new Size(srcImg.Width, srcImg.Height);
+                            }
                         }
                     }
                 }
@@ -120,6 +133,21 @@ namespace PicSum.Task.Logics
             this.CheckCancel();
 
             return info;
+        }
+
+        private bool ReadImageFile(string filePath, out Bitmap bmp)
+        {
+            try
+            {
+                bmp = ImageUtil.ReadImageFile(filePath);
+                return false;
+            }
+            catch (ImageUtilException ex)
+            {
+                bmp = null;
+                this.WriteErrorLog(ex);
+                return true;
+            }
         }
     }
 }
