@@ -229,6 +229,16 @@ namespace SWF.UIComponent.ImagePanel
 
         #region 継承メソッド
 
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                this.ClearImage();
+            }
+
+            base.Dispose(disposing);
+        }
+
         protected override void OnInvalidated(InvalidateEventArgs e)
         {
             this.SetDrawParameter();

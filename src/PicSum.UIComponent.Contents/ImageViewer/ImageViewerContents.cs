@@ -240,6 +240,9 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                     this.exportFileTask = null;
                 }
 
+                this.leftImagePanel.Dispose();
+                this.rightImagePanel.Dispose();
+
                 this.parameter.SelectedFilePath = this.SelectedFilePath;
                 this.parameter.GetImageFiles -= this.Parameter_GetImageFiles;
 
