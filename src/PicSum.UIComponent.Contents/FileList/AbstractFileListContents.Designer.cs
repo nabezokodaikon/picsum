@@ -110,33 +110,28 @@ namespace PicSum.UIComponent.Contents.FileList
             // showDirectoryToolStripMenuItem
             // 
             this.showDirectoryToolStripMenuItem.Name = "showDirectoryToolStripMenuItem";
-            this.showDirectoryToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
             this.showDirectoryToolStripMenuItem.Text = "Folder";
             this.showDirectoryToolStripMenuItem.Click += new System.EventHandler(this.ShowDirectoryToolStripMenuItem_Click);
             // 
             // showImageFileToolStripMenuItem
             // 
             this.showImageFileToolStripMenuItem.Name = "showImageFileToolStripMenuItem";
-            this.showImageFileToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
             this.showImageFileToolStripMenuItem.Text = "Image File";
             this.showImageFileToolStripMenuItem.Click += new System.EventHandler(this.ShowImageFileToolStripMenuItem_Click);
             // 
             // showOtherFileToolStripMenuItem
             // 
             this.showOtherFileToolStripMenuItem.Name = "showOtherFileToolStripMenuItem";
-            this.showOtherFileToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
             this.showOtherFileToolStripMenuItem.Text = "Other File";
             this.showOtherFileToolStripMenuItem.Click += new System.EventHandler(this.ShowOtherFileToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(169, 6);
             // 
             // showFileNameToolStripMenuItem
             // 
             this.showFileNameToolStripMenuItem.Name = "showFileNameToolStripMenuItem";
-            this.showFileNameToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
             this.showFileNameToolStripMenuItem.Text = "File Name";
             this.showFileNameToolStripMenuItem.Click += new System.EventHandler(this.ShowFileNameToolStripMenuItem_Click);
             // 
@@ -147,7 +142,6 @@ namespace PicSum.UIComponent.Contents.FileList
             this.viewToolStripDropDownButton.DropDown = this.viewContextMenuStrip;
             this.viewToolStripDropDownButton.Margin = new System.Windows.Forms.Padding(6, 1, 0, 2);
             this.viewToolStripDropDownButton.Name = "viewToolStripDropDownButton";
-            this.viewToolStripDropDownButton.Size = new System.Drawing.Size(45, 24);
             this.viewToolStripDropDownButton.Text = "View";
             // 
             // toolBar
@@ -171,7 +165,6 @@ namespace PicSum.UIComponent.Contents.FileList
             // 
             this.sortFileNameToolStripButton.AutoSize = false;
             this.sortFileNameToolStripButton.AutoToolTip = false;
-            this.sortFileNameToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.sortFileNameToolStripButton.Margin = new System.Windows.Forms.Padding(3, 1, 0, 2);
             this.sortFileNameToolStripButton.Name = "sortFileNameToolStripButton";
             this.sortFileNameToolStripButton.Size = new System.Drawing.Size(120, 24);
@@ -183,6 +176,7 @@ namespace PicSum.UIComponent.Contents.FileList
             this.sortFilePathToolStripButton.AutoSize = false;
             this.sortFilePathToolStripButton.AutoToolTip = false;
             this.sortFilePathToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.sortFilePathToolStripButton.Margin = new System.Windows.Forms.Padding(3, 1, 0, 2);
             this.sortFilePathToolStripButton.Name = "sortFilePathToolStripButton";
             this.sortFilePathToolStripButton.Size = new System.Drawing.Size(120, 24);
             this.sortFilePathToolStripButton.Text = "Path";
@@ -193,6 +187,7 @@ namespace PicSum.UIComponent.Contents.FileList
             this.sortFileUpdateDateToolStripButton.AutoSize = false;
             this.sortFileUpdateDateToolStripButton.AutoToolTip = false;
             this.sortFileUpdateDateToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.sortFileUpdateDateToolStripButton.Margin = new System.Windows.Forms.Padding(3, 1, 0, 2);
             this.sortFileUpdateDateToolStripButton.Name = "sortFileUpdateDateToolStripButton";
             this.sortFileUpdateDateToolStripButton.Size = new System.Drawing.Size(120, 24);
             this.sortFileUpdateDateToolStripButton.Text = "Time stamp";
@@ -203,6 +198,7 @@ namespace PicSum.UIComponent.Contents.FileList
             this.sortFileRgistrationDateToolStripButton.AutoSize = false;
             this.sortFileRgistrationDateToolStripButton.AutoToolTip = false;
             this.sortFileRgistrationDateToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.sortFileRgistrationDateToolStripButton.Margin = new System.Windows.Forms.Padding(3, 1, 0, 2);
             this.sortFileRgistrationDateToolStripButton.Name = "sortFilerRgistrationDateToolStripButton";
             this.sortFileRgistrationDateToolStripButton.Size = new System.Drawing.Size(120, 24);
             this.sortFileRgistrationDateToolStripButton.Text = "Registration Date";
@@ -223,20 +219,23 @@ namespace PicSum.UIComponent.Contents.FileList
             this.thumbnailSizeToolStripSlider.ValueChanged += new System.EventHandler(this.ThumbnailSizeToolStripSlider_ValueChanged);
             // 
             // movePreviewToolStripButton
-            // 
-            this.movePreviewToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.movePreviewToolStripButton.Text = "<-";
+            //
+            this.movePreviewToolStripButton.AutoSize = false;
+            this.movePreviewToolStripButton.AutoToolTip = false;
             this.movePreviewToolStripButton.Margin = new System.Windows.Forms.Padding(3, 1, 0, 2);
             this.movePreviewToolStripButton.Name = "movePreviewToolStripButton";
-            this.movePreviewToolStripButton.Size = new System.Drawing.Size(23, 24);
+            this.movePreviewToolStripButton.Size = new System.Drawing.Size(64, 24);
+            this.movePreviewToolStripButton.Text = "<-";
             this.movePreviewToolStripButton.Click += new System.EventHandler(this.MovePreviewToolStripButton_Click);
             // 
             // moveNextToolStripButton
-            // 
-            this.moveNextToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.moveNextToolStripButton.Text = "->";
+            //
+            this.moveNextToolStripButton.AutoSize = false;
+            this.moveNextToolStripButton.AutoToolTip = false;
+            this.moveNextToolStripButton.Margin = new System.Windows.Forms.Padding(3, 1, 0, 2);
             this.moveNextToolStripButton.Name = "moveNextToolStripButton";
-            this.moveNextToolStripButton.Size = new System.Drawing.Size(23, 24);
+            this.moveNextToolStripButton.Size = new System.Drawing.Size(64, 24);
+            this.moveNextToolStripButton.Text = "->";
             this.moveNextToolStripButton.Click += new System.EventHandler(this.MoveNextToolStripButton_Click);
             // 
             // FileListContentsBase
