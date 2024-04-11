@@ -1,6 +1,5 @@
 using PicSum.Core.Task.AsyncTaskV2;
 using PicSum.Task.Logics;
-using PicSum.Task.Entities;
 using PicSum.Task.Paramters;
 using PicSum.Task.Results;
 using SWF.Common;
@@ -18,14 +17,12 @@ namespace PicSum.Task.Tasks
     {
         protected override void Execute(GetFileDeepInfoParameter param)
         {
-            if (param == null)
+            ArgumentNullException.ThrowIfNull(param, nameof(param));
+
+            var result = new GetFileDeepInfoResult
             {
-                throw new ArgumentNullException(nameof(param));
-            }
-
-            var result = new GetFileDeepInfoResult();
-
-            result.FilePathList = param.FilePathList;
+                FilePathList = param.FilePathList
+            };
 
             if (param.FilePathList.Count == 1)
             {
@@ -52,7 +49,7 @@ namespace PicSum.Task.Tasks
             }
             else
             {
-                result.TagInfoList = new ListEntity<FileTagInfoEntity>();
+                result.TagInfoList = [];
             }
 
             this.CheckCancel();

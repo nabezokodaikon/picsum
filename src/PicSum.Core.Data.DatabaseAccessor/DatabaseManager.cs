@@ -57,7 +57,7 @@ namespace PicSum.Core.Data.DatabaseAccessor
         /// <returns>更新されたレコードが存在するならTrue。存在しなければFalseを返します。</returns>
         public static bool Update(SqlBase sql)
         {
-            if (sql == null) throw new ArgumentNullException(nameof(sql));
+            ArgumentNullException.ThrowIfNull(sql, nameof(sql));
 
             return DatabaseManager<TConnection>.connection.Update(sql);
         }
@@ -70,7 +70,7 @@ namespace PicSum.Core.Data.DatabaseAccessor
         /// <returns>Dtoリスト</returns>
         public static IList<TDto> ReadList<TDto>(SqlBase<TDto> sql) where TDto : IDto, new()
         {
-            if (sql == null) throw new ArgumentNullException(nameof(sql));
+            ArgumentNullException.ThrowIfNull(sql, nameof(sql));
 
             return DatabaseManager<TConnection>.connection.ReadList<TDto>(sql);
         }
@@ -83,7 +83,7 @@ namespace PicSum.Core.Data.DatabaseAccessor
         /// <returns>Dto</returns>
         public static TDto ReadLine<TDto>(SqlBase<TDto> sql) where TDto : IDto, new()
         {
-            if (sql == null) throw new ArgumentNullException(nameof(sql));
+            ArgumentNullException.ThrowIfNull(sql, nameof(sql));
 
             return DatabaseManager<TConnection>.connection.ReadLine<TDto>(sql);
         }
@@ -96,7 +96,7 @@ namespace PicSum.Core.Data.DatabaseAccessor
         /// <returns>1オブジェクトの実行結果</returns>
         public static T ReadValue<T>(SqlBase sql)
         {
-            if (sql == null) throw new ArgumentNullException(nameof(sql));
+            ArgumentNullException.ThrowIfNull(sql, nameof(sql));
 
             return (T)DatabaseManager<TConnection>.connection.ReadValue<T>(sql);
         }
