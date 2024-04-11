@@ -106,7 +106,7 @@ namespace PicSum.Core.Data.DatabaseAccessor
                 throw new ArgumentException("番号付パラメータが存在しません。", nameof(paramList));
             }
 
-            return dic.Count;
+            return dic.Values.First();
         }
 
         // SQLテキスト内の置換文字列を取得します。
