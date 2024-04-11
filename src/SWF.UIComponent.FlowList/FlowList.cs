@@ -47,10 +47,10 @@ namespace SWF.UIComponent.FlowList
         private int itemSpace = 0;
 
         // 描画パラメータ
-        private DrawParameter drawParameter = new DrawParameter();
+        private DrawParameter drawParameter = new();
 
         // 垂直スクロールバー
-        private VScrollBarEx scrollBar = new VScrollBarEx();
+        private readonly VScrollBarEx scrollBar = new ();
 
         // フォーカスされている項目のインデックス
         private int foucusItemIndex = -1;
@@ -59,44 +59,44 @@ namespace SWF.UIComponent.FlowList
         private int mousePointItemIndex = -1;
 
         // 選択されている項目インデックスのリスト
-        private ItemIndexList selectedItemIndexs = new ItemIndexList();
+        private readonly ItemIndexList selectedItemIndexs = new();
 
         // 短形選択クラス
-        private readonly RectangleSelection rectangleSelection = new RectangleSelection();
+        private readonly RectangleSelection rectangleSelection = new();
 
         // マウスダウンした座標情報
-        private HitTestInfo mouseDownHitTestInfo = new HitTestInfo();
+        private HitTestInfo mouseDownHitTestInfo = new();
 
         // ドラッグフラグ
         private bool isDrag = false;
 
         #region 描画オブジェクト
 
-        private Color itemTextColor = Color.FromArgb(
+        private readonly Color itemTextColor = Color.FromArgb(
             SystemColors.ControlText.A,
             SystemColors.ControlText.R,
             SystemColors.ControlText.G,
             SystemColors.ControlText.B);
 
-        private Color selectedItemColor = Color.FromArgb(
+        private readonly Color selectedItemColor = Color.FromArgb(
             SystemColors.Highlight.A / 8,
             SystemColors.Highlight.R,
             SystemColors.Highlight.G,
             SystemColors.Highlight.B);
 
-        private Color focusItemColor = Color.FromArgb(
+        private readonly Color focusItemColor = Color.FromArgb(
             SystemColors.Highlight.A / 8,
             SystemColors.Highlight.R,
             SystemColors.Highlight.G,
             SystemColors.Highlight.B);
 
-        private Color mousePointItemColor = Color.FromArgb(
+        private readonly Color mousePointItemColor = Color.FromArgb(
             SystemColors.Highlight.A / 8,
             SystemColors.Highlight.R,
             SystemColors.Highlight.G,
             SystemColors.Highlight.B);
 
-        private Color rectangleSelectionColor = Color.FromArgb(
+        private readonly Color rectangleSelectionColor = Color.FromArgb(
             SystemColors.Highlight.A / 4,
             SystemColors.Highlight.R,
             SystemColors.Highlight.G,
@@ -126,11 +126,7 @@ namespace SWF.UIComponent.FlowList
         {
             get
             {
-                if (this.rectangleSelectionBrush == null)
-                {
-                    this.rectangleSelectionBrush = new SolidBrush(this.rectangleSelectionColor);
-                }
-
+                this.rectangleSelectionBrush ??= new(this.rectangleSelectionColor);
                 return this.rectangleSelectionBrush;
             }
         }
@@ -139,15 +135,11 @@ namespace SWF.UIComponent.FlowList
         {
             get
             {
-                if (this.rectangleSelectionPen == null)
-                {
-                    this.rectangleSelectionPen = new Pen(Color.FromArgb(
-                        this.rectangleSelectionColor.A * 2,
-                        this.rectangleSelectionColor.R,
-                        this.rectangleSelectionColor.G,
-                        this.rectangleSelectionColor.B));
-                }
-
+                this.rectangleSelectionPen ??= new(Color.FromArgb(
+                    this.rectangleSelectionColor.A * 2,
+                    this.rectangleSelectionColor.R,
+                    this.rectangleSelectionColor.G,
+                    this.rectangleSelectionColor.B));
                 return this.rectangleSelectionPen;
             }
         }
@@ -167,7 +159,7 @@ namespace SWF.UIComponent.FlowList
 
         protected override void OnInvalidated(InvalidateEventArgs e)
         {
-            this.setDrawParameter();
+            this.SetDrawParameter();
 
             base.OnInvalidated(e);
         }
@@ -298,7 +290,7 @@ namespace SWF.UIComponent.FlowList
                         case Keys.Enter:
                             if (this.selectedItemIndexs.Count > 0)
                             {
-                                this.OnItemExecute(new EventArgs());
+                                this.OnItemExecute(EventArgs.Empty);
                             }
                             break;
                         case Keys.Delete:
@@ -306,11 +298,11 @@ namespace SWF.UIComponent.FlowList
                             {
                                 if (this.selectedItemIndexs.Contains(this.foucusItemIndex))
                                 {
-                                    this.OnItemDelete(new EventArgs());
+                                    this.OnItemDelete(EventArgs.Empty);
                                 }
                                 else
                                 {
-                                    this.OnItemDelete(new EventArgs());
+                                    this.OnItemDelete(EventArgs.Empty);
                                 }
                             }
                             break;
@@ -319,11 +311,11 @@ namespace SWF.UIComponent.FlowList
                             {
                                 if (this.selectedItemIndexs.Contains(this.foucusItemIndex))
                                 {
-                                    this.OnItemCopy(new EventArgs());
+                                    this.OnItemCopy(EventArgs.Empty);
                                 }
                                 else
                                 {
-                                    this.OnItemCopy(new EventArgs());
+                                    this.OnItemCopy(EventArgs.Empty);
                                 }
                             }
                             break;
@@ -332,11 +324,11 @@ namespace SWF.UIComponent.FlowList
                             {
                                 if (this.selectedItemIndexs.Contains(this.foucusItemIndex))
                                 {
-                                    this.OnItemCut(new EventArgs());
+                                    this.OnItemCut(EventArgs.Empty);
                                 }
                                 else
                                 {
-                                    this.OnItemCut(new EventArgs());
+                                    this.OnItemCut(EventArgs.Empty);
                                 }
                             }
                             break;
@@ -381,7 +373,7 @@ namespace SWF.UIComponent.FlowList
                 }
 
                 // マウスダウンした座標情報を保持します。
-                this.mouseDownHitTestInfo = this.getHitTestFromDrawPoint(e.X, e.Y);
+                this.mouseDownHitTestInfo = this.GetHitTestFromDrawPoint(e.X, e.Y);
             }
             else if (e.Button == MouseButtons.Right)
             {
@@ -426,7 +418,7 @@ namespace SWF.UIComponent.FlowList
             }
             else
             {
-                var ht = this.getHitTestFromDrawPoint(e.X, e.Y);
+                var ht = this.GetHitTestFromDrawPoint(e.X, e.Y);
                 if (ht.IsItem)
                 {
                     if (e.Button == MouseButtons.Left)
@@ -490,7 +482,7 @@ namespace SWF.UIComponent.FlowList
             }
             else
             {
-                var ht = this.getHitTestFromDrawPoint(e.X, e.Y);
+                var ht = this.GetHitTestFromDrawPoint(e.X, e.Y);
                 if (ht.IsItem)
                 {
                     var oldIndex = this.mousePointItemIndex;
@@ -530,7 +522,7 @@ namespace SWF.UIComponent.FlowList
                         {
                             // 項目のドラッグを開始します。
                             this.isDrag = true;
-                            this.OnDragStart(new EventArgs());
+                            this.OnDragStart(EventArgs.Empty);
                         }
                         else if (!this.mouseDownHitTestInfo.IsItem)
                         {
@@ -548,7 +540,7 @@ namespace SWF.UIComponent.FlowList
         {
             if (e.Button == MouseButtons.Left)
             {
-                var ht = this.getHitTestFromDrawPoint(e.X, e.Y);
+                var ht = this.GetHitTestFromDrawPoint(e.X, e.Y);
                 if (ht.IsItem)
                 {
                     if (this.selectedItemIndexs.Count > 0)
@@ -598,14 +590,13 @@ namespace SWF.UIComponent.FlowList
             this.UpdateStyles();
 
             this.scrollBar.Dock = DockStyle.Right;
-            this.scrollBar.ValueChanged += new EventHandler(this.ScrollBar_ValueChanged);
-
-            this.selectedItemIndexs.Change += new EventHandler(this.SelectedItemIndexs_Change);
+            this.scrollBar.ValueChanged += new(this.ScrollBar_ValueChanged);
+            this.selectedItemIndexs.Change += new(this.SelectedItemIndexs_Change);
 
             this.Controls.Add(this.scrollBar);
         }
 
-        private void setDrawParameter()
+        private void SetDrawParameter()
         {
             var beforeDrawParameter = this.drawParameter;
 
@@ -709,7 +700,7 @@ namespace SWF.UIComponent.FlowList
             }
         }
 
-        private HitTestInfo getHitTestFromDrawPoint(int x, int y)
+        private HitTestInfo GetHitTestFromDrawPoint(int x, int y)
         {
             var col = this.GetColFromX(x);
             if (col > this.drawParameter.ColCount - 1 || col < 0)
@@ -1267,7 +1258,7 @@ namespace SWF.UIComponent.FlowList
 
         private void LeftMouseDown(int x, int y)
         {
-            var ht = this.getHitTestFromDrawPoint(x, y);
+            var ht = this.GetHitTestFromDrawPoint(x, y);
 
             if (this.isMultiSelect && (Control.ModifierKeys & Keys.Shift) == Keys.Shift)
             {
@@ -1320,7 +1311,7 @@ namespace SWF.UIComponent.FlowList
 
         private void RightMouseDown(int x, int y)
         {
-            var ht = this.getHitTestFromDrawPoint(x, y);
+            var ht = this.GetHitTestFromDrawPoint(x, y);
 
             if (ht.IsItem)
             {
@@ -1343,7 +1334,7 @@ namespace SWF.UIComponent.FlowList
 
         private void MiddleMouseDown(int x, int y)
         {
-            var ht = this.getHitTestFromDrawPoint(x, y);
+            var ht = this.GetHitTestFromDrawPoint(x, y);
 
             if (ht.IsItem)
             {
@@ -1381,7 +1372,7 @@ namespace SWF.UIComponent.FlowList
 
         private void SelectedItemIndexs_Change(object sender, EventArgs e)
         {
-            this.OnSelectedItemChanged(new EventArgs());
+            this.OnSelectedItemChanged(EventArgs.Empty);
         }
 
         #endregion

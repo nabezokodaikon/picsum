@@ -34,7 +34,7 @@ namespace PicSum.UIComponent.Contents.Parameter
         {
             this.PageSources = pageSources ?? throw new ArgumentNullException(nameof(pageSources));
             this.SourcesKey = sourcesKey ?? throw new ArgumentNullException(nameof(sourcesKey));
-            this.Key = string.Format("{0}ImageViewerPage:{1}", this.PageSources, this.SourcesKey);
+            this.Key = $"{this.PageSources}ImageViewerPage: {this.SourcesKey}";
             this.GetImageFilesAction = getImageFilesAction ?? throw new ArgumentNullException(nameof(getImageFilesAction));
             this.PageTitle = pageTitle ?? throw new ArgumentNullException(nameof(pageTitle));
             this.PageIcon = pageIcon ?? throw new ArgumentNullException(nameof(pageIcon));
@@ -48,10 +48,7 @@ namespace PicSum.UIComponent.Contents.Parameter
 
         public void OnGetImageFiles(GetImageFilesEventArgs e)
         {
-            if (this.GetImageFiles != null)
-            {
-                this.GetImageFiles(this, e);
-            }
+            this.GetImageFiles?.Invoke(this, e);
         }
     }
 }

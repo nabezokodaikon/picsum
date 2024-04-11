@@ -70,26 +70,17 @@ namespace PicSum.UIComponent.Contents.Common
 
         protected virtual void OnSelectedFileChanged(SelectedFileChangeEventArgs e)
         {
-            if (this.SelectedFileChanged != null)
-            {
-                this.SelectedFileChanged(this, e);
-            }
+            this.SelectedFileChanged?.Invoke(this, e);
         }
 
         protected virtual void OnOpenPage(BrowserPageEventArgs e)
         {
-            if (this.OpenPage != null)
-            {
-                this.OpenPage(this, e);
-            }
+            this.OpenPage?.Invoke(this, e);
         }
 
         protected new virtual void OnMouseClick(MouseEventArgs e)
         {
-            if (this.MouseClick != null)
-            {
-                this.MouseClick(this, e);
-            }
+            this.MouseClick?.Invoke(this, e);
         }
 
         protected abstract void OnBackgroundMouseClick(MouseEventArgs e);

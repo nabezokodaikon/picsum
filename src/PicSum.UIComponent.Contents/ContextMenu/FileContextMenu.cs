@@ -43,25 +43,25 @@ namespace PicSum.UIComponent.Contents.ContextMenu
         private bool visibleDirectoryActiveTabOpenMenuItem = false;
 
         // 画像ファイルメニュー項目
-        private readonly ToolStripMenuItem fileActiveTabOpenMenuItem = new ToolStripMenuItem("Open");
-        private readonly ToolStripMenuItem fileNewTabOpenMenuItem = new ToolStripMenuItem("Open New Tab");
-        private readonly ToolStripMenuItem fileNewWindowOpenMenuItem = new ToolStripMenuItem("Open New Window");
-        private readonly ToolStripMenuItem fileBookmarkMenuItem = new ToolStripMenuItem("Bookmark");
+        private readonly ToolStripMenuItem fileActiveTabOpenMenuItem = new("Open");
+        private readonly ToolStripMenuItem fileNewTabOpenMenuItem = new("Open New Tab");
+        private readonly ToolStripMenuItem fileNewWindowOpenMenuItem = new ("Open New Window");
+        private readonly ToolStripMenuItem fileBookmarkMenuItem = new("Bookmark");
 
         // ファイルメニュー項目
-        private readonly ToolStripMenuItem fileOpen = new ToolStripMenuItem("Open In Association");
-        private readonly ToolStripMenuItem saveDirectoryOpen = new ToolStripMenuItem("Open Save Folder");
+        private readonly ToolStripMenuItem fileOpen = new("Open In Association");
+        private readonly ToolStripMenuItem saveDirectoryOpen = new("Open Save Folder");
 
         // フォルダメニュー項目
-        private readonly ToolStripMenuItem directoryActiveTabOpenMenuItem = new ToolStripMenuItem("Open");
-        private readonly ToolStripMenuItem directoryNewTabOpenMenuItem = new ToolStripMenuItem("Open New Tab");
-        private readonly ToolStripMenuItem directoryNewWindowOpenMenuItem = new ToolStripMenuItem("Open New Window");
-        private readonly ToolStripMenuItem explorerOpenMenuItem = new ToolStripMenuItem("Open In Explorer");
+        private readonly ToolStripMenuItem directoryActiveTabOpenMenuItem = new("Open");
+        private readonly ToolStripMenuItem directoryNewTabOpenMenuItem = new("Open New Tab");
+        private readonly ToolStripMenuItem directoryNewWindowOpenMenuItem = new("Open New Window");
+        private readonly ToolStripMenuItem explorerOpenMenuItem = new("Open In Explorer");
 
-        private readonly ToolStripMenuItem exportMenuItem = new ToolStripMenuItem("Export");
-        private readonly ToolStripMenuItem pathCopyMenuItem = new ToolStripMenuItem("Copy Path");
-        private readonly ToolStripMenuItem nameCopyMenuItem = new ToolStripMenuItem("Copy Name");
-        private readonly ToolStripMenuItem removeFromListMenuItem = new ToolStripMenuItem("Remove");
+        private readonly ToolStripMenuItem exportMenuItem = new("Export");
+        private readonly ToolStripMenuItem pathCopyMenuItem = new("Copy Path");
+        private readonly ToolStripMenuItem nameCopyMenuItem = new("Copy Name");
+        private readonly ToolStripMenuItem removeFromListMenuItem = new("Remove");
 
         #endregion
 
@@ -145,10 +145,7 @@ namespace PicSum.UIComponent.Contents.ContextMenu
 
         public void SetFile(IList<string> filePathList)
         {
-            if (filePathList == null)
-            {
-                throw new ArgumentNullException(nameof(filePathList));
-            }
+            ArgumentNullException.ThrowIfNull(filePathList, nameof(filePathList));
 
             if (filePathList.Count == 0)
             {
@@ -174,10 +171,7 @@ namespace PicSum.UIComponent.Contents.ContextMenu
 
         public void SetFile(string filePath)
         {
-            if (filePath == null)
-            {
-                throw new ArgumentNullException(nameof(filePath));
-            }
+            ArgumentNullException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
             this.SetFile(new List<string>() { filePath });
         }
@@ -205,20 +199,20 @@ namespace PicSum.UIComponent.Contents.ContextMenu
                                                       this.fileBookmarkMenuItem,
                                                       this.removeFromListMenuItem
                                                     });
-            this.fileActiveTabOpenMenuItem.Click += new EventHandler(this.FileActiveTabOpenMenuItem_Click);
-            this.fileNewTabOpenMenuItem.Click += new EventHandler(this.FileNewTabOpenMenuItem_Click);
-            this.fileNewWindowOpenMenuItem.Click += new EventHandler(this.FileNewWindowOpenMenuItem_Click);
-            this.fileOpen.Click += new EventHandler(this.FileOpen_Click);
-            this.saveDirectoryOpen.Click += new EventHandler(this.SaveDirectoryOpen_Click);
-            this.directoryActiveTabOpenMenuItem.Click += new EventHandler(this.DirectoryActiveTabOpenMenuItem_Click);
-            this.directoryNewTabOpenMenuItem.Click += new EventHandler(this.DirectoryNewTabOpenMenuItem_Click);
-            this.directoryNewWindowOpenMenuItem.Click += new EventHandler(this.DirectoryNewWindowOpenMenuItem_Click);
-            this.explorerOpenMenuItem.Click += new EventHandler(this.ExplorerOpenMenuItem_Click);
-            this.pathCopyMenuItem.Click += new EventHandler(this.PathCopyMenuItem_Click);
-            this.nameCopyMenuItem.Click += new EventHandler(this.NameCopyMenuItem_Click);
-            this.exportMenuItem.Click += new EventHandler(this.ExportMenuItem_Click);
-            this.fileBookmarkMenuItem.Click += new EventHandler(this.FileBookmarkMenuItem_Click);
-            this.removeFromListMenuItem.Click += new EventHandler(this.RemoveFromListMenuItem_Click);
+            this.fileActiveTabOpenMenuItem.Click += new(this.FileActiveTabOpenMenuItem_Click);
+            this.fileNewTabOpenMenuItem.Click += new(this.FileNewTabOpenMenuItem_Click);
+            this.fileNewWindowOpenMenuItem.Click += new(this.FileNewWindowOpenMenuItem_Click);
+            this.fileOpen.Click += new(this.FileOpen_Click);
+            this.saveDirectoryOpen.Click += new(this.SaveDirectoryOpen_Click);
+            this.directoryActiveTabOpenMenuItem.Click += new(this.DirectoryActiveTabOpenMenuItem_Click);
+            this.directoryNewTabOpenMenuItem.Click += new(this.DirectoryNewTabOpenMenuItem_Click);
+            this.directoryNewWindowOpenMenuItem.Click += new(this.DirectoryNewWindowOpenMenuItem_Click);
+            this.explorerOpenMenuItem.Click += new(this.ExplorerOpenMenuItem_Click);
+            this.pathCopyMenuItem.Click += new(this.PathCopyMenuItem_Click);
+            this.nameCopyMenuItem.Click += new(this.NameCopyMenuItem_Click);
+            this.exportMenuItem.Click += new(this.ExportMenuItem_Click);
+            this.fileBookmarkMenuItem.Click += new(this.FileBookmarkMenuItem_Click);
+            this.removeFromListMenuItem.Click += new(this.RemoveFromListMenuItem_Click);
         }
 
         private void SetImageFileMenuItemVisible(bool isVisible)
@@ -267,114 +261,72 @@ namespace PicSum.UIComponent.Contents.ContextMenu
 
         private void OnFileActiveTabOpen(ExecuteFileEventArgs e)
         {
-            if (this.FileActiveTabOpen != null)
-            {
-                this.FileActiveTabOpen(this, e);
-            }
+            this.FileActiveTabOpen?.Invoke(this, e);
         }
 
         private void OnFileNewTabOpen(ExecuteFileEventArgs e)
         {
-            if (this.FileNewTabOpen != null)
-            {
-                this.FileNewTabOpen(this, e);
-            }
+            this.FileNewTabOpen?.Invoke(this, e);
         }
 
         private void OnFileNewWindowOpen(ExecuteFileEventArgs e)
         {
-            if (this.FileNewWindowOpen != null)
-            {
-                this.FileNewWindowOpen(this, e);
-            }
+            this.FileNewWindowOpen?.Invoke(this, e);
         }
 
         private void OnFileOpen(ExecuteFileEventArgs e)
         {
-            if (this.FileOpen != null)
-            {
-                this.FileOpen(this, e);
-            }
+            this.FileOpen?.Invoke(this, e);
         }
 
         private void OnSaveDirectoryOpen(ExecuteFileEventArgs e)
         {
-            if (this.SaveDirectoryOpen != null)
-            {
-                this.SaveDirectoryOpen(this, e);
-            }
+            this.SaveDirectoryOpen?.Invoke(this, e);
         }
 
         private void OnDirectoryActiveTabOpen(ExecuteFileEventArgs e)
         {
-            if (this.DirectoryActiveTabOpen != null)
-            {
-                this.DirectoryActiveTabOpen(this, e);
-            }
+            this.DirectoryActiveTabOpen?.Invoke(this, e);
         }
 
         private void OnDirectoryNewTabOpen(ExecuteFileEventArgs e)
         {
-            if (this.DirectoryNewTabOpen != null)
-            {
-                this.DirectoryNewTabOpen(this, e);
-            }
+            this.DirectoryNewTabOpen?.Invoke(this, e);
         }
 
         private void OnDirectoryNewWindowOpen(ExecuteFileEventArgs e)
         {
-            if (this.DirectoryNewWindowOpen != null)
-            {
-                this.DirectoryNewWindowOpen(this, e);
-            }
+            this.DirectoryNewWindowOpen?.Invoke(this, e);
         }
 
         private void OnExplorerOpen(ExecuteFileEventArgs e)
         {
-            if (this.ExplorerOpen != null)
-            {
-                this.ExplorerOpen(this, e);
-            }
+            this.ExplorerOpen?.Invoke(this, e);
         }
 
         private void OnExport(ExecuteFileListEventArgs e)
         {
-            if (this.Export != null)
-            {
-                this.Export(this, e);
-            }
+            this.Export?.Invoke(this, e);
         }
 
         private void OnPathCopy(ExecuteFileListEventArgs e)
         {
-            if (this.PathCopy != null)
-            {
-                this.PathCopy(this, e);
-            }
+            this.PathCopy?.Invoke(this, e);
         }
 
         private void OnNameCopy(ExecuteFileListEventArgs e)
         {
-            if (this.NameCopy != null)
-            {
-                this.NameCopy(this, e);
-            }
+            this.NameCopy?.Invoke(this, e);
         }
 
         private void OnBookmark(ExecuteFileEventArgs e)
         {
-            if (this.Bookmark != null)
-            {
-                this.Bookmark(this, e);
-            }
+            this.Bookmark?.Invoke(this, e);
         }
 
         private void OnRemoveFromList(ExecuteFileListEventArgs e)
         {
-            if (this.RemoveFromList != null)
-            {
-                this.RemoveFromList(this, e);
-            }
+            this.RemoveFromList?.Invoke(this, e);
         }
 
         private void FileActiveTabOpenMenuItem_Click(object sender, EventArgs e)

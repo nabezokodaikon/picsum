@@ -18,7 +18,7 @@ namespace PicSum.Core.Task.AsyncTaskV2
 
         public override string ToString()
         {
-            return $"TaskID: [{this.value.ToString()}]";
+            return $"TaskID: [{this.value}]";
         }
     }
 }

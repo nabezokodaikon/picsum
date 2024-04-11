@@ -18,7 +18,7 @@ namespace SWF.UIComponent.WideDropDown
 
         #endregion
 
-        private readonly List<string> itemList = new List<string>();
+        private readonly List<string> itemList = [];
 
         #region パブリックプロパティ
 
@@ -229,8 +229,8 @@ namespace SWF.UIComponent.WideDropDown
             this.FlowList.SetItemSize(144, 32);
             this.FlowList.CanKeyDown = false;
 
-            this.FlowList.ItemMouseClick += new EventHandler<MouseEventArgs>(this.FlowList_ItemMouseClick);
-            this.FlowList.DrawItem += new EventHandler<SWF.UIComponent.FlowList.DrawItemEventArgs>(this.FlowList_DrawItem);
+            this.FlowList.ItemMouseClick += new(this.FlowList_ItemMouseClick);
+            this.FlowList.DrawItem += new(this.FlowList_DrawItem);
         }
 
         #endregion
@@ -239,10 +239,7 @@ namespace SWF.UIComponent.WideDropDown
 
         public void SetItems(IList<string> itemList)
         {
-            if (itemList == null)
-            {
-                throw new ArgumentNullException(nameof(itemList));
-            }
+            ArgumentNullException.ThrowIfNull(itemList, nameof(itemList));
 
             this.FlowList.BeginUpdate();
 
@@ -262,10 +259,7 @@ namespace SWF.UIComponent.WideDropDown
 
         public void AddItems(IList<string> itemList)
         {
-            if (itemList == null)
-            {
-                throw new ArgumentNullException(nameof(itemList));
-            }
+            ArgumentNullException.ThrowIfNull(itemList, nameof(itemList));
 
             this.FlowList.BeginUpdate();
 
@@ -289,10 +283,7 @@ namespace SWF.UIComponent.WideDropDown
 
         public void SelectItem(string item)
         {
-            if (item == null)
-            {
-                throw new ArgumentNullException(nameof(item));
-            }
+            ArgumentNullException.ThrowIfNullOrEmpty(item, nameof(item));
 
             var index = this.itemList.IndexOf(item);
             if (index < 0)

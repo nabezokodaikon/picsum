@@ -99,9 +99,11 @@ namespace PicSum.UIComponent.Contents.FileList
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            var param = new GetFavoriteDirectoryParameter();
-            param.IsOnlyDirectory = true;
-            param.Count = FileListPageConfig.FavoriteDirectoryCount;
+            var param = new GetFavoriteDirectoryParameter
+            {
+                IsOnlyDirectory = true,
+                Count = FileListPageConfig.FavoriteDirectoryCount
+            };
             this.SearchTask.StartTask(param);
         }
 

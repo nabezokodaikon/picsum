@@ -14,7 +14,7 @@ namespace SWF.UIComponent.WideDropDown
         public event EventHandler<ItemMouseClickEventArgs> ItemMouseClick;
         public event EventHandler<DropDownOpeningEventArgs> DropDownOpening;
 
-        private readonly WideDropDownList dropDownList = new WideDropDownList();
+        private readonly WideDropDownList dropDownList = new();
 
         public Image Icon
         {
@@ -38,20 +38,14 @@ namespace SWF.UIComponent.WideDropDown
 
         public void SetItems(List<string> items)
         {
-            if (items == null)
-            {
-                throw new ArgumentNullException(nameof(items));
-            }
+            ArgumentNullException.ThrowIfNull(items, nameof(items));
 
             this.dropDownList.SetItems(items);
         }
 
         public void SelectItem(string item)
         {
-            if (item == null)
-            {
-                throw new ArgumentNullException(nameof(item));
-            }
+            ArgumentNullException.ThrowIfNullOrEmpty(item, nameof(item));
 
             this.dropDownList.SelectItem(item);
         }
@@ -88,11 +82,7 @@ namespace SWF.UIComponent.WideDropDown
         private void DropDownList_ItemMouseClick(object sender, ItemMouseClickEventArgs e)
         {
             this.SelectedItem = e.Item;
-
-            if (this.ItemMouseClick != null)
-            {
-                this.ItemMouseClick(this, e);
-            }
+            this.ItemMouseClick?.Invoke(this, e);
         }
     }
 }

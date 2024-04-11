@@ -17,20 +17,17 @@ namespace PicSum.UIComponent.Contents.Parameter
         public string PageSources { get; private set; }
         public string SourcesKey { get; private set; }
         public string Key { get; private set; }
-        public int RagingValue { get; private set; }
+        public int RatingValue { get; private set; }
         public string SelectedFilePath { get; set; }
 
-        public RatingFileListPageParameter(int ragingValue)
+        public RatingFileListPageParameter(int ratingValue)
         {
-            if (ragingValue < 1)
-            {
-                throw new ArgumentOutOfRangeException(nameof(ragingValue));
-            }
+            ArgumentOutOfRangeException.ThrowIfLessThan(ratingValue, 1, nameof(ratingValue));
 
             this.PageSources = PAGE_SOURCES;
-            this.SourcesKey = ragingValue.ToString();
-            this.Key = string.Format("{0}ListPage:{1}", this.PageSources, this.SourcesKey);
-            this.RagingValue = ragingValue;
+            this.SourcesKey = ratingValue.ToString();
+            this.Key = $"{this.PageSources}ListPage: {this.SourcesKey}";
+            this.RatingValue = ratingValue;
             this.SelectedFilePath = string.Empty;
         }
 

@@ -102,7 +102,7 @@ namespace SWF.UIComponent.FlowList
 
             if (isChange)
             {
-                this.OnChange(new EventArgs());
+                this.OnChange(EventArgs.Empty);
             }
         }
 
@@ -130,7 +130,7 @@ namespace SWF.UIComponent.FlowList
 
             if (this.beforeList.Count != this.list.Count)
             {
-                this.OnChange(new EventArgs());
+                this.OnChange(EventArgs.Empty);
             }
             else
             {
@@ -138,7 +138,7 @@ namespace SWF.UIComponent.FlowList
                 {
                     if (this.beforeList[i] != this.list[i])
                     {
-                        this.OnChange(new EventArgs());
+                        this.OnChange(EventArgs.Empty);
                         break;
                     }
                 }

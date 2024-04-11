@@ -111,18 +111,18 @@ namespace SWF.UIComponent.Common
         {
             base.OnSubscribeControlEvents(control);
             Slider slider = (Slider)control;
-            slider.BeginValueChange += new EventHandler(this.Slider_BeginValueChange);
-            slider.ValueChanging += new EventHandler(this.Slider_ValueChanging);
-            slider.ValueChanged += new EventHandler(this.Slider_ValueChanged);
+            slider.BeginValueChange += new(this.Slider_BeginValueChange);
+            slider.ValueChanging += new(this.Slider_ValueChanging);
+            slider.ValueChanged += new(this.Slider_ValueChanged);
         }
 
         protected override void OnUnsubscribeControlEvents(Control control)
         {
             base.OnSubscribeControlEvents(control);
             Slider slider = (Slider)control;
-            slider.BeginValueChange -= new EventHandler(this.Slider_BeginValueChange);
-            slider.ValueChanging -= new EventHandler(this.Slider_ValueChanging);
-            slider.ValueChanged -= new EventHandler(this.Slider_ValueChanged);
+            slider.BeginValueChange -= new(this.Slider_BeginValueChange);
+            slider.ValueChanging -= new(this.Slider_ValueChanging);
+            slider.ValueChanged -= new(this.Slider_ValueChanged);
         }
 
         protected virtual void OnBeginValueChange(EventArgs e)

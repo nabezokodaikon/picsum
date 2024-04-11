@@ -15,67 +15,67 @@ namespace PicSum.Core.Data.DatabaseAccessor
 
         public static IDbDataParameter CreateParameter(string paramName, string value)
         {
-            if (paramName == null) throw new ArgumentNullException(nameof(paramName));
-            if (value == null) throw new ArgumentNullException(nameof(value));
+            ArgumentException.ThrowIfNullOrEmpty(paramName, nameof(paramName));
+            ArgumentException.ThrowIfNullOrEmpty(value, nameof(value));
 
             return SqlParameterUtil.CreateParameter(paramName, value, DbType.String);
         }
 
         public static IDbDataParameter CreateParameter(string paramName, string value, int size)
         {
-            if (paramName == null) throw new ArgumentNullException(nameof(paramName));
-            if (value == null) throw new ArgumentNullException(nameof(value));
+            ArgumentException.ThrowIfNullOrEmpty(paramName, nameof(paramName));
+            ArgumentException.ThrowIfNullOrEmpty(value, nameof(value));
 
             return SqlParameterUtil.CreateParameter(paramName, value, size, DbType.String);
         }
 
         public static IDbDataParameter CreateParameter(string paramName, int value)
         {
-            if (paramName == null) throw new ArgumentNullException(nameof(paramName));
+            ArgumentException.ThrowIfNullOrEmpty(paramName, nameof(paramName));
 
             return SqlParameterUtil.CreateParameter(paramName, value, DbType.Int32);
         }
 
         public static IDbDataParameter CreateParameter(string paramName, long value)
         {
-            if (paramName == null) throw new ArgumentNullException(nameof(paramName));
+            ArgumentException.ThrowIfNullOrEmpty(paramName, nameof(paramName));
 
             return SqlParameterUtil.CreateParameter(paramName, value, DbType.Int64);
         }
 
         public static IDbDataParameter CreateParameter(string paramName, bool value)
         {
-            if (paramName == null) throw new ArgumentNullException(nameof(paramName));
+            ArgumentException.ThrowIfNullOrEmpty(paramName, nameof(paramName));
 
             return SqlParameterUtil.CreateParameter(paramName, value, DbType.Boolean);
         }
 
         public static IDbDataParameter CreateParameter(string paramName, DateTime value)
         {
-            if (paramName == null) throw new ArgumentNullException(nameof(paramName));
+            ArgumentException.ThrowIfNullOrEmpty(paramName, nameof(paramName));
 
             return SqlParameterUtil.CreateParameter(paramName, value, DbType.DateTime);
         }
 
         public static IDbDataParameter CreateParameter(string paramName, byte[] value)
         {
-            if (paramName == null) throw new ArgumentNullException(nameof(paramName));
-            if (value == null) throw new ArgumentNullException(nameof(value));
+            ArgumentException.ThrowIfNullOrEmpty(paramName, nameof(paramName));
+            ArgumentNullException.ThrowIfNull(value, nameof(value));
 
             return SqlParameterUtil.CreateParameter(paramName, value, DbType.Binary);
         }
 
         public static IDbDataParameter CreateParameter(string paramName, DBNull value)
         {
-            if (paramName == null) throw new ArgumentNullException(nameof(paramName));
+            ArgumentException.ThrowIfNullOrEmpty(paramName, nameof(paramName));
 
             return new SQLiteParameter(paramName, value);
         }
 
         public static IList<IDbDataParameter> CreateParameter(string paramName, IList<string> valueList)
         {
-            if (paramName == null) throw new ArgumentNullException(nameof(paramName));
-            if (valueList == null) throw new ArgumentNullException(nameof(valueList));
+            ArgumentException.ThrowIfNullOrEmpty(paramName, nameof(paramName));
+            ArgumentNullException.ThrowIfNull(valueList, nameof(valueList));
 
             var list = new List<IDbDataParameter>();
 
@@ -91,8 +91,8 @@ namespace PicSum.Core.Data.DatabaseAccessor
 
         public static IList<IDbDataParameter> CreateParameter(string paramName, IList<string> valueList, int size)
         {
-            if (paramName == null) throw new ArgumentNullException(nameof(paramName));
-            if (valueList == null) throw new ArgumentNullException(nameof(valueList));
+            ArgumentException.ThrowIfNullOrEmpty(paramName, nameof(paramName));
+            ArgumentNullException.ThrowIfNull(valueList, nameof(valueList));
 
             var list = new List<IDbDataParameter>();
 
@@ -108,8 +108,8 @@ namespace PicSum.Core.Data.DatabaseAccessor
 
         public static IList<IDbDataParameter> CreateParameter(string paramName, IList<int> valueList)
         {
-            if (paramName == null) throw new ArgumentNullException(nameof(paramName));
-            if (valueList == null) throw new ArgumentNullException(nameof(valueList));
+            ArgumentException.ThrowIfNullOrEmpty(paramName, nameof(paramName));
+            ArgumentNullException.ThrowIfNull(valueList, nameof(valueList));
 
             var list = new List<IDbDataParameter>();
 
@@ -125,8 +125,8 @@ namespace PicSum.Core.Data.DatabaseAccessor
 
         public static IList<IDbDataParameter> CreateParameter(string paramName, IList<bool> valueList)
         {
-            if (paramName == null) throw new ArgumentNullException(nameof(paramName));
-            if (valueList == null) throw new ArgumentNullException(nameof(valueList));
+            ArgumentException.ThrowIfNullOrEmpty(paramName, nameof(paramName));
+            ArgumentNullException.ThrowIfNull(valueList, nameof(valueList));
 
             var list = new List<IDbDataParameter>();
 
@@ -142,8 +142,8 @@ namespace PicSum.Core.Data.DatabaseAccessor
 
         public static IList<IDbDataParameter> CreateParameter(string paramName, IList<DateTime> valueList)
         {
-            if (paramName == null) throw new ArgumentNullException(nameof(paramName));
-            if (valueList == null) throw new ArgumentNullException(nameof(valueList));
+            ArgumentException.ThrowIfNullOrEmpty(paramName, nameof(paramName));
+            ArgumentNullException.ThrowIfNull(valueList, nameof(valueList));
 
             var list = new List<IDbDataParameter>();
 
@@ -159,8 +159,8 @@ namespace PicSum.Core.Data.DatabaseAccessor
 
         public static IList<IDbDataParameter> CreateParameter(string paramName, IList<byte[]> valueList)
         {
-            if (paramName == null) throw new ArgumentNullException(nameof(paramName));
-            if (valueList == null) throw new ArgumentNullException(nameof(valueList));
+            ArgumentException.ThrowIfNullOrEmpty(paramName, nameof(paramName));
+            ArgumentNullException.ThrowIfNull(valueList, nameof(valueList));
 
             var list = new List<IDbDataParameter>();
 
@@ -176,8 +176,8 @@ namespace PicSum.Core.Data.DatabaseAccessor
 
         private static SQLiteParameter CreateParameter(string paramName, object value, DbType dbType)
         {
-            if (paramName == null) throw new ArgumentNullException(nameof(paramName));
-            if (value == null) throw new ArgumentNullException(nameof(value));
+            ArgumentException.ThrowIfNullOrEmpty(paramName, nameof(paramName));
+            ArgumentNullException.ThrowIfNull(value, nameof(value));
 
             var param = new SQLiteParameter
             {
@@ -191,8 +191,8 @@ namespace PicSum.Core.Data.DatabaseAccessor
 
         private static SQLiteParameter CreateParameter(string paramName, object value, int size, DbType dbType)
         {
-            if (paramName == null) throw new ArgumentNullException(nameof(paramName));
-            if (value == null) throw new ArgumentNullException(nameof(value));
+            ArgumentException.ThrowIfNullOrEmpty(paramName, nameof(paramName));
+            ArgumentNullException.ThrowIfNull(value, nameof(value));
 
             var param = new SQLiteParameter
             {

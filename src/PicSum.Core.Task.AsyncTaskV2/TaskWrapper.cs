@@ -164,7 +164,7 @@ namespace PicSum.Core.Task.AsyncTaskV2
         {
             Thread.CurrentThread.Name = this.taskInfo;
 
-            Logger.Debug($"タスク実行スレッドが開始されました。");
+            Logger.Debug("タスク実行スレッドが開始されました。");
 
             TTask? previewTask = null;
 
@@ -174,7 +174,7 @@ namespace PicSum.Core.Task.AsyncTaskV2
                 {
                     if (token.IsCancellationRequested)
                     {
-                        Logger.Debug($"タスク実行スレッドにキャンセルリクエストがありました。");
+                        Logger.Debug("タスク実行スレッドにキャンセルリクエストがありました。");
                         token.ThrowIfCancellationRequested();
                     }
 

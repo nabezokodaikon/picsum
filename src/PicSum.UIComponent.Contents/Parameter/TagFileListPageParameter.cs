@@ -24,7 +24,7 @@ namespace PicSum.UIComponent.Contents.Parameter
         {
             this.PageSources = TagFileListPageParameter.PAGE_SOURCES;
             this.SourcesKey = tag;
-            this.Key = string.Format("{0}ListPage:{1}", this.PageSources, this.SourcesKey);
+            this.Key = $"{this.PageSources}ListPage: {this.SourcesKey}";
             this.Tag = tag ?? throw new ArgumentNullException(nameof(tag));
             this.SelectedFilePath = string.Empty;
         }

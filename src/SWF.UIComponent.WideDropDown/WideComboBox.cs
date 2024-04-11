@@ -40,14 +40,14 @@ namespace SWF.UIComponent.WideDropDown
 
         public void SetItems(List<string> items)
         {
-            ArgumentNullException.ThrowIfNull(nameof(items));
+            ArgumentNullException.ThrowIfNull(items, nameof(items));
 
             this.dropDownList.SetItems(items);
         }
 
         public void AddItems(IList<string> itemList)
         {
-            ArgumentNullException.ThrowIfNull(nameof(itemList));
+            ArgumentNullException.ThrowIfNull(itemList, nameof(itemList));
 
             this.dropDownList.AddItems(itemList.Where(item => !string.IsNullOrEmpty(item)).ToList());
         }

@@ -13,10 +13,7 @@ namespace PicSum.Main.UIComponent
 
         public BrowserPageOpenEventArgs(IPageParameter pageParameter)
         {
-            if (pageParameter == null)
-            {
-                throw new ArgumentNullException(nameof(pageParameter));
-            }
+            ArgumentNullException.ThrowIfNull(pageParameter, nameof(pageParameter));
 
             this.PageParameter = pageParameter;
         }

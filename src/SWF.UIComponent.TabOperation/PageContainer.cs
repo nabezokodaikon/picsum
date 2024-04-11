@@ -22,10 +22,7 @@ namespace SWF.UIComponent.TabOperation
         /// <param name="page"></param>
         internal void SetPage(PagePanel page)
         {
-            if (page == null)
-            {
-                throw new ArgumentNullException("page");
-            }
+            ArgumentNullException.ThrowIfNull(page, nameof(page));
 
             if (this.Controls.Count > 0)
             {

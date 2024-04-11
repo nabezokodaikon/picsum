@@ -21,7 +21,7 @@ namespace PicSum.Task.Logics
     {
         public FileDeepInfoEntity Execute(string filePath, Size thumbSize)
         {
-            ArgumentNullException.ThrowIfNull(nameof(filePath));
+            ArgumentNullException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
             var info = new FileDeepInfoEntity
             {

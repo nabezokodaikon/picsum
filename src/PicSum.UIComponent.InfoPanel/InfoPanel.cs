@@ -211,7 +211,7 @@ namespace PicSum.UIComponent.InfoPanel
 
         public void SetFileInfo(string filePath)
         {
-            ArgumentNullException.ThrowIfNull(filePath, nameof(filePath));
+            ArgumentNullException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
             this.SetFileInfo(new List<string>() { filePath });
         }
@@ -479,13 +479,15 @@ namespace PicSum.UIComponent.InfoPanel
                     this.fileInfoLabel.FileSize = FileUtil.ToSizeUnitString(this.FileInfo.FileSize.Value);
                     if (this.FileInfo.ImageSize.HasValue)
                     {
-                        this.fileInfoLabel.FileSize += string.Format(" ({0} x {1})", this.FileInfo.ImageSize.Value.Width, this.FileInfo.ImageSize.Value.Height);
+                        this.fileInfoLabel.FileSize
+                            += $" ({this.FileInfo.ImageSize.Value.Width} x {this.FileInfo.ImageSize.Value.Height})";
                     }
                 }
 
                 if (this.FileInfo.UpdateDate.HasValue)
                 {
-                    this.fileInfoLabel.Timestamp = string.Format("{0:yyyy/MM/dd HH:mm:ss}", this.FileInfo.UpdateDate.Value);
+                    this.fileInfoLabel.Timestamp
+                        = $"{this.FileInfo.UpdateDate.Value:yyyy/MM/dd HH:mm:ss}";
                 }
 
                 this.ratingBar.SetValue(this.FileInfo.Rating);

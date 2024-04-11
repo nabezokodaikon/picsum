@@ -65,10 +65,7 @@ namespace PicSum.Main.Mng
 
         public void OnBrowserNothing(EventArgs e)
         {
-            if (this.BrowserNothing != null)
-            {
-                this.BrowserNothing(this, e);
-            }
+            this.BrowserNothing?.Invoke(this, e);
         }
 
         #endregion
@@ -84,11 +81,12 @@ namespace PicSum.Main.Mng
 
         private BrowserForm CreateBrowser(Point windowLocation, Size windowSize, FormWindowState windowState)
         {
-            var browser = new BrowserForm();
-
-            browser.Location = windowLocation;
-            browser.Size = windowSize;
-            browser.WindowState = windowState;
+            var browser = new BrowserForm
+            {
+                Location = windowLocation,
+                Size = windowSize,
+                WindowState = windowState
+            };
 
             this.InitializeBrowserDelegate(browser);
 
@@ -97,10 +95,10 @@ namespace PicSum.Main.Mng
 
         private void InitializeBrowserDelegate(BrowserForm browser)
         {
-            browser.FormClosing += new FormClosingEventHandler(this.Browser_FormClosing);
-            browser.Activated += new EventHandler(this.Browser_Activated);
-            browser.TabDropouted += new EventHandler<TabDropoutedEventArgs>(this.Browser_TabDropouted);
-            browser.NewWindowPageOpen += new EventHandler<BrowserPageOpenEventArgs>(this.Browser_NewWindowPageOpen);
+            browser.FormClosing += new(this.Browser_FormClosing);
+            browser.Activated += new(this.Browser_Activated);
+            browser.TabDropouted += new(this.Browser_TabDropouted);
+            browser.NewWindowPageOpen += new(this.Browser_NewWindowPageOpen);
         }
 
         #endregion

@@ -1,4 +1,4 @@
-﻿using PicSum.Core.Base.Conf;
+using PicSum.Core.Base.Conf;
 using System;
 
 namespace PicSum.UIComponent.Contents.Common
@@ -14,10 +14,7 @@ namespace PicSum.UIComponent.Contents.Common
 
         public ExecuteDirectoryEventArgs(PageOpenType openType, string directoryPath)
         {
-            if (directoryPath == null)
-            {
-                throw new ArgumentNullException("directoryPath");
-            }
+            ArgumentNullException.ThrowIfNullOrEmpty(directoryPath, nameof(directoryPath));
 
             this.OpenType = openType;
             this.DirectoryPath = directoryPath;

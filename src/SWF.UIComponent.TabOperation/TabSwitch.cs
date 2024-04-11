@@ -85,7 +85,7 @@ namespace SWF.UIComponent.TabOperation
         private int tabsRightOffset = 0;
 
         // タブ描画パレット
-        private readonly TabPalette tabPalette = new TabPalette();
+        private readonly TabPalette tabPalette = new();
 
         // タブ情報リスト
         private readonly List<TabInfo> tabList = [];
@@ -103,10 +103,10 @@ namespace SWF.UIComponent.TabOperation
         private Nullable<Point> dropPoint = null;
 
         // タブ追加ボタン病が暮らす
-        private readonly AddTabButtonDrawArea addTabButtonDrawArea = new AddTabButtonDrawArea();
+        private readonly AddTabButtonDrawArea addTabButtonDrawArea = new();
 
         // コンテンツ描画クラス
-        private readonly PageDrawArea pageDrawArea = new PageDrawArea();
+        private readonly PageDrawArea pageDrawArea = new();
 
         #endregion
 
@@ -134,10 +134,7 @@ namespace SWF.UIComponent.TabOperation
             }
             set
             {
-                if (value < 0)
-                {
-                    throw new ArgumentOutOfRangeException(nameof(value));
-                }
+                ArgumentOutOfRangeException.ThrowIfLessThan(value, 0, nameof(value));
 
                 this.tabsRightOffset = value;
             }
@@ -267,10 +264,7 @@ namespace SWF.UIComponent.TabOperation
         /// <param name="tab"></param>
         public void AddTab(TabInfo tab)
         {
-            if (tab == null)
-            {
-                throw new ArgumentNullException(nameof(tab));
-            }
+            ArgumentNullException.ThrowIfNull(tab, nameof(tab));
 
             if (this.tabList.Contains(tab))
             {
@@ -283,7 +277,7 @@ namespace SWF.UIComponent.TabOperation
 
             if (this.SetActiveTab(tab))
             {
-                this.OnActiveTabChanged(new EventArgs());
+                this.OnActiveTabChanged(EventArgs.Empty);
             }
 
             this.Invalidate();
@@ -296,15 +290,8 @@ namespace SWF.UIComponent.TabOperation
         /// <param name="tab"></param>
         public void InsertTab(int index, TabInfo tab)
         {
-            if (index < 0)
-            {
-                throw new ArgumentOutOfRangeException("index");
-            }
-
-            if (tab == null)
-            {
-                throw new ArgumentNullException(nameof(tab));
-            }
+            ArgumentOutOfRangeException.ThrowIfLessThan(index, 0, nameof(index));
+            ArgumentNullException.ThrowIfNull(tab, nameof(tab));
 
             if (this.tabList.Contains(tab))
             {
@@ -323,7 +310,7 @@ namespace SWF.UIComponent.TabOperation
 
                 if (this.SetActiveTab(tab))
                 {
-                    this.OnActiveTabChanged(new EventArgs());
+                    this.OnActiveTabChanged(EventArgs.Empty);
                 }
 
                 this.Invalidate();
@@ -338,10 +325,7 @@ namespace SWF.UIComponent.TabOperation
         /// <returns></returns>
         public T AddTab<T>(IPageParameter param) where T : PagePanel
         {
-            if (param == null)
-            {
-                throw new ArgumentNullException(nameof(param));
-            }
+            ArgumentNullException.ThrowIfNull(param, nameof(param));
 
             var tab = new TabInfo(param);
             this.AddTab(tab);
@@ -358,10 +342,7 @@ namespace SWF.UIComponent.TabOperation
         public T InsertTab<T>(int index, IPageParameter param)
             where T : PagePanel
         {
-            if (param == null)
-            {
-                throw new ArgumentNullException(nameof(param));
-            }
+            ArgumentNullException.ThrowIfNull(param, nameof(param));
 
             var tab = new TabInfo(param);
             this.InsertTab(index, tab);
@@ -376,10 +357,7 @@ namespace SWF.UIComponent.TabOperation
         /// <returns></returns>
         public T OverwriteTab<T>(IPageParameter param) where T : PagePanel
         {
-            if (param == null)
-            {
-                throw new ArgumentNullException(nameof(param));
-            }
+            ArgumentNullException.ThrowIfNull(param, nameof(param));
 
             if (this.activeTab != null)
             {
@@ -494,10 +472,7 @@ namespace SWF.UIComponent.TabOperation
         /// <param name="tab"></param>
         public void RemoveTab(TabInfo tab)
         {
-            if (tab == null)
-            {
-                throw new ArgumentNullException(nameof(tab));
-            }
+            ArgumentNullException.ThrowIfNull(tab, nameof(tab));
 
             if (!this.tabList.Contains(tab))
             {
@@ -508,7 +483,7 @@ namespace SWF.UIComponent.TabOperation
 
             if (this.SetActiveTab(nextActiveTab))
             {
-                this.OnActiveTabChanged(new EventArgs());
+                this.OnActiveTabChanged(EventArgs.Empty);
             }
 
             if (tab.Equals(this.mousePointTab))
@@ -550,7 +525,7 @@ namespace SWF.UIComponent.TabOperation
             if (this.SetActiveTab(this.tabList[index]))
             {
                 this.Invalidate();
-                this.OnActiveTabChanged(new EventArgs());
+                this.OnActiveTabChanged(EventArgs.Empty);
             }
         }
 
@@ -716,7 +691,7 @@ namespace SWF.UIComponent.TabOperation
                             if (this.SetActiveTab(tab))
                             {
                                 this.Invalidate();
-                                this.OnActiveTabChanged(new EventArgs());
+                                this.OnActiveTabChanged(EventArgs.Empty);
                             }
                             TabDragOperation.BeginTabDragOperation(tab);
                             break;
@@ -832,7 +807,7 @@ namespace SWF.UIComponent.TabOperation
                 if (tab == null &&
                     this.GetHeaderRectangle().Contains(e.X, e.Y))
                 {
-                    this.OnBackgroundMouseLeftDoubleClick(new EventArgs());
+                    this.OnBackgroundMouseLeftDoubleClick(EventArgs.Empty);
                     //Form form = getForm();
                     //Point p = form.PointToClient(Cursor.Position);
                     //string x = p.X.ToString("X4");
@@ -887,11 +862,11 @@ namespace SWF.UIComponent.TabOperation
                     this.activeTab.Page.Focus();
                 }
 
-                this.OnActiveTabChanged(new EventArgs());
+                this.OnActiveTabChanged(EventArgs.Empty);
             }
-            else if (this.activeTab != null)
+            else
             {
-                this.activeTab.Page.Focus();
+                this.activeTab?.Page.Focus();
             }
 
             base.OnMouseWheel(e);
@@ -910,7 +885,7 @@ namespace SWF.UIComponent.TabOperation
                     {
                         if (this.SetActiveTab(tab))
                         {
-                            this.OnActiveTabChanged(new EventArgs());
+                            this.OnActiveTabChanged(EventArgs.Empty);
                             break;
                         }
                     }
@@ -1002,58 +977,38 @@ namespace SWF.UIComponent.TabOperation
 
         private void OnActiveTabChanged(EventArgs e)
         {
-            if (this.ActiveTabChanged != null)
-            {
-                this.ActiveTabChanged(this, e);
-            }
+            this.ActiveTabChanged?.Invoke(this, e);
+
         }
 
         private void OnTabCloseButtonClick(TabEventArgs e)
         {
-            if (this.TabCloseButtonClick != null)
-            {
-                this.TabCloseButtonClick(this, e);
-            }
+            this.TabCloseButtonClick?.Invoke(this, e);
         }
 
         private void OnTabDropouted(TabDropoutedEventArgs e)
         {
-            if (this.TabDropouted != null)
-            {
-                this.TabDropouted(this, e);
-            }
+            this.TabDropouted?.Invoke(this, e);
         }
 
         private void OnBackgroundMouseLeftDoubleClick(EventArgs e)
         {
-            if (this.BackgroundMouseDoubleLeftClick != null)
-            {
-                this.BackgroundMouseDoubleLeftClick(this, e);
-            }
+            this.BackgroundMouseDoubleLeftClick?.Invoke(this, e);
         }
 
         private void OnTabAreaDragOver(DragEventArgs e)
         {
-            if (this.TabAreaDragOver != null)
-            {
-                this.TabAreaDragOver(this, e);
-            }
+            this.TabAreaDragOver?.Invoke(this, e);
         }
 
         private void OnTabAreaDragDrop(TabAreaDragEventArgs e)
         {
-            if (this.TabAreaDragDrop != null)
-            {
-                this.TabAreaDragDrop(this, e);
-            }
+            this.TabAreaDragDrop?.Invoke(this, e);
         }
 
         private void OnAddTabButtonMouseClick(MouseEventArgs e)
         {
-            if (this.AddTabButtonMouseClick != null)
-            {
-                this.AddTabButtonMouseClick(this, e);
-            }
+            this.AddTabButtonMouseClick?.Invoke(this, e);
         }
 
         private bool SetMousePointTab(TabInfo tab)
@@ -1166,9 +1121,9 @@ namespace SWF.UIComponent.TabOperation
         {
             foreach (Control child in parent.Controls)
             {
-                if (child is PageContainer)
+                if (child is PageContainer container)
                 {
-                    return (PageContainer)child;
+                    return container;
                 }
                 else if (child.Controls.Count > 0)
                 {
@@ -1191,9 +1146,9 @@ namespace SWF.UIComponent.TabOperation
                 ctl = ctl.Parent;
             }
 
-            if (ctl is Form)
+            if (ctl is Form form)
             {
-                return (Form)ctl;
+                return form;
             }
             else
             {
@@ -1358,15 +1313,17 @@ namespace SWF.UIComponent.TabOperation
                 return;
             }
 
-            var args = new DrawTabEventArgs();
-            args.Graphics = g;
-            args.Font = this.tabPalette.TitleFont;
-            args.TitleColor = this.tabPalette.TitleColor;
-            args.TitleFormatFlags = this.tabPalette.TitleFormatFlags;
-            args.TextRectangle = tab.DrawArea.GetPageRectangle();
-            args.IconRectangle = tab.DrawArea.GetIconRectangle(tab.Icon);
-            args.CloseButtonRectangle = tab.DrawArea.GetCloseButtonRectangle();
-            args.TextStyle = DrawTextUtil.TextStyle.Glowing;
+            var args = new DrawTabEventArgs
+            {
+                Graphics = g,
+                Font = this.tabPalette.TitleFont,
+                TitleColor = this.tabPalette.TitleColor,
+                TitleFormatFlags = this.tabPalette.TitleFormatFlags,
+                TextRectangle = tab.DrawArea.GetPageRectangle(),
+                IconRectangle = tab.DrawArea.GetIconRectangle(tab.Icon),
+                CloseButtonRectangle = tab.DrawArea.GetCloseButtonRectangle(),
+                TextStyle = DrawTextUtil.TextStyle.Glowing
+            };
             tab.DrawingTabPage(args);
         }
 

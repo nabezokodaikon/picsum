@@ -19,7 +19,7 @@ namespace PicSum.UIComponent.Contents.Parameter
         {
             this.PageSources = FavoriteDirectoryListPageParameter.PAGE_SOURCES;
             this.SourcesKey = string.Empty;
-            this.Key = string.Format("{0}ListPage", this.PageSources);
+            this.Key = $"{this.PageSources}ListPage";
             this.SelectedFilePath = string.Empty;
         }
 

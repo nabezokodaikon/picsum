@@ -82,21 +82,21 @@ namespace PicSum.Main.UIComponent
 
         public void AddPageEventHandler(BrowserPage page)
         {
-            ArgumentNullException.ThrowIfNull(nameof(page));
+            ArgumentNullException.ThrowIfNull(page, nameof(page));
 
             this.BrowserMainPanel.AddPageEventHandler(page);
         }
 
         public void AddTab(TabInfo tab)
         {
-            ArgumentNullException.ThrowIfNull(nameof(tab));
+            ArgumentNullException.ThrowIfNull(tab, nameof(tab));
 
             this.BrowserMainPanel.AddTab(tab);
         }
 
         public void AddTab(IPageParameter param)
         {
-            ArgumentNullException.ThrowIfNull(nameof(param));
+            ArgumentNullException.ThrowIfNull(param, nameof(param));
 
             this.BrowserMainPanel.AddTab(param);
         }
@@ -316,10 +316,10 @@ namespace PicSum.Main.UIComponent
             browserMainPanel.SetBounds(x, y, w, h, BoundsSpecified.All);
             browserMainPanel.Dock = DockStyle.Fill;
 
-            browserMainPanel.Close += new EventHandler(this.BrowserMainPanel_Close);
-            browserMainPanel.BackgroundMouseDoubleLeftClick += new EventHandler(this.BrowserMainPanel_BackgroundMouseDoubleLeftClick);
-            browserMainPanel.NewWindowPageOpen += new EventHandler<BrowserPageOpenEventArgs>(this.BrowserMainPanel_NewWindowPageOpen);
-            browserMainPanel.TabDropouted += new EventHandler<TabDropoutedEventArgs>(this.BrowserMainPanel_TabDropouted);
+            browserMainPanel.Close += new(this.BrowserMainPanel_Close);
+            browserMainPanel.BackgroundMouseDoubleLeftClick += new(this.BrowserMainPanel_BackgroundMouseDoubleLeftClick);
+            browserMainPanel.NewWindowPageOpen += new(this.BrowserMainPanel_NewWindowPageOpen);
+            browserMainPanel.TabDropouted += new(this.BrowserMainPanel_TabDropouted);
 
             this.SuspendLayout();
             this.Controls.Add(browserMainPanel);

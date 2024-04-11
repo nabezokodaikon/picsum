@@ -119,8 +119,10 @@ namespace PicSum.UIComponent.Contents.FileList
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            var param = new ValueParameter<string>();
-            param.Value = this.parameter.DirectoryPath;
+            var param = new ValueParameter<string>
+            {
+                Value = this.parameter.DirectoryPath
+            };
             this.SearchTask.StartTask(param);
         }
 
@@ -190,10 +192,12 @@ namespace PicSum.UIComponent.Contents.FileList
                 return;
             }
 
-            var param = new GetNextPageParameter<string>();
-            param.CurrentParameter = new ValueEntity<string>();
+            var param = new GetNextPageParameter<string>
+            {
+                CurrentParameter = new ValueEntity<string>(),
+                IsNext = false,
+        };
             param.CurrentParameter.Value = this.parameter.DirectoryPath;
-            param.IsNext = false;
             this.GetNextDirectoryTask.StartTask(param);
         }
 
@@ -204,10 +208,12 @@ namespace PicSum.UIComponent.Contents.FileList
                 return;
             }
 
-            var param = new GetNextPageParameter<string>();
-            param.CurrentParameter = new ValueEntity<string>();
+            var param = new GetNextPageParameter<string>
+            {
+                IsNext = true,
+                CurrentParameter = new ValueEntity<string>()
+            };
             param.CurrentParameter.Value = this.parameter.DirectoryPath;
-            param.IsNext = true;
             this.GetNextDirectoryTask.StartTask(param);
         }
 
@@ -227,7 +233,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
                     if (!FileUtil.IsImageFile(this.SelectedFilePath))
                     {
-                        throw new PicSumException(string.Format("画像ファイルが選択されていません。'{0}'", this.SelectedFilePath));
+                        throw new PicSumException($"画像ファイルが選択されていません。'{this.SelectedFilePath}'");
                     }
 
                     var eventArgs = new GetImageFilesEventArgs(
@@ -300,9 +306,10 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private void SaveCurrentDirectoryState()
         {
-            var param = new DirectoryStateParameter();
-
-            param.DirectoryPath = this.parameter.DirectoryPath;
+            var param = new DirectoryStateParameter
+            {
+                DirectoryPath = this.parameter.DirectoryPath
+            };
 
             if (base.SortTypeID == SortTypeID.Default)
             {
@@ -353,8 +360,10 @@ namespace PicSum.UIComponent.Contents.FileList
                 }
             }
 
-            var param = new ValueParameter<string>();
-            param.Value = e.DirectoryPath;
+            var param = new ValueParameter<string>
+            {
+                Value = e.DirectoryPath
+            };
             this.AddDirectoryHistoryTask.StartTask(param);
         }
 

@@ -37,10 +37,7 @@ namespace SWF.UIComponent.TabOperation
         /// <param name="form"></param>
         public static void AddForm(Form form)
         {
-            if (form == null)
-            {
-                throw new ArgumentNullException(nameof(form));
-            }
+            ArgumentNullException.ThrowIfNull(form, nameof(form));
 
             if (FORM_LIST.Contains(form))
             {
@@ -79,14 +76,11 @@ namespace SWF.UIComponent.TabOperation
         /// <param name="tab"></param>
         public static void BeginTabDragOperation(TabInfo tab)
         {
-            if (tab == null)
-            {
-                throw new ArgumentNullException("tab");
-            }
+            ArgumentNullException.ThrowIfNull(tab, nameof(tab));
 
             if (tab.Owner == null)
             {
-                throw new ArgumentException("タブはどこにも所有されていません。", "tab");
+                throw new ArgumentException("タブはどこにも所有されていません。", nameof(tab));
             }
 
             if (isBegin)
@@ -231,10 +225,7 @@ namespace SWF.UIComponent.TabOperation
         /// <returns></returns>
         public static bool IsTarget(TabInfo tab)
         {
-            if (tab == null)
-            {
-                throw new ArgumentNullException(nameof(tab));
-            }
+            ArgumentNullException.ThrowIfNull(tab, nameof(tab));
 
             return tab.Equals(TabDragOperation.tab);
         }
@@ -256,9 +247,9 @@ namespace SWF.UIComponent.TabOperation
         {
             foreach (Control child in controls)
             {
-                if (child is TabSwitch)
+                if (child is TabSwitch @switch)
                 {
-                    return (TabSwitch)child;
+                    return @switch;
                 }
                 else if (child.Controls.Count > 0)
                 {
@@ -275,23 +266,22 @@ namespace SWF.UIComponent.TabOperation
 
         private static void AddFormHandler(Form form)
         {
-            form.Activated += new EventHandler(Form_Activated);
-            form.FormClosing += new FormClosingEventHandler(Form_FormClosing);
+            form.Activated += new(Form_Activated);
+            form.FormClosing += new(Form_FormClosing);
         }
 
         private static void RemoveFormHandler(Form form)
         {
-            form.Activated -= new EventHandler(Form_Activated);
-            form.FormClosing -= new FormClosingEventHandler(Form_FormClosing);
+            form.Activated -= new(Form_Activated);
+            form.FormClosing -= new(Form_FormClosing);
         }
 
         #region フォームイベント
 
         private static void Form_Activated(object sender, EventArgs e)
         {
-            if (sender != null && sender is Form)
+            if (sender != null && sender is Form form)
             {
-                var form = (Form)sender;
                 FORM_LIST.Remove(form);
                 FORM_LIST.Insert(0, form);
             }
@@ -299,9 +289,8 @@ namespace SWF.UIComponent.TabOperation
 
         private static void Form_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (sender != null && sender is Form)
+            if (sender != null && sender is Form form)
             {
-                var form = (Form)sender;
                 FORM_LIST.Remove(form);
                 RemoveFormHandler(form);
             }

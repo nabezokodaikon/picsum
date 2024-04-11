@@ -31,7 +31,7 @@ namespace SWF.Common
         /// <returns></returns>
         public static byte[] ToCompressionBinary(Image img)
         {
-            ArgumentNullException.ThrowIfNull(nameof(img));
+            ArgumentNullException.ThrowIfNull(img, nameof(img));
 
             using (var mes = new MemoryStream())
             {
@@ -52,7 +52,7 @@ namespace SWF.Common
         /// <returns>イメージオブジェクト</returns>
         public static Image ToImage(byte[] bf)
         {
-            ArgumentNullException.ThrowIfNull(nameof(bf));
+            ArgumentNullException.ThrowIfNull(bf, nameof(bf));
 
             using (var mes = new MemoryStream(bf))
             {
@@ -77,7 +77,7 @@ namespace SWF.Common
         /// <exception cref="ArgumentNullException"></exception>
         public static Image ResizeImage(Bitmap srcImg, double scale)
         {
-            ArgumentNullException.ThrowIfNull(nameof(srcImg));
+            ArgumentNullException.ThrowIfNull(srcImg, nameof(srcImg));
 
             var w = (int)(srcImg.Width * scale);
             var h = (int)(srcImg.Height * scale);
@@ -97,7 +97,7 @@ namespace SWF.Common
         /// <exception cref="ArgumentNullException"></exception>
         public static Size GetImageSize(string filePath)
         {
-            ArgumentNullException.ThrowIfNull(nameof(filePath));
+            ArgumentNullException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
             var directory = ImageUtil.SHELL.NameSpace(Path.GetDirectoryName(filePath));
             var item = directory.ParseName(Path.GetFileName(filePath));
@@ -141,7 +141,7 @@ namespace SWF.Common
         /// <returns></returns>
         public static Bitmap ReadImageFile(string filePath)
         {
-            ArgumentNullException.ThrowIfNull(nameof(filePath));
+            ArgumentNullException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
             try
             {
@@ -234,11 +234,11 @@ namespace SWF.Common
         /// <returns></returns>
         public static Color GetPixel(Bitmap bmp, int x, int y)
         {
-            ArgumentNullException.ThrowIfNull(nameof(bmp));
+            ArgumentNullException.ThrowIfNull(bmp, nameof(bmp));
 
             if (bmp.PixelFormat != PixelFormat.Format32bppArgb)
             {
-                throw new ArgumentException(string.Format("ピクセルフォーマットが'{0}'ではありません。", PixelFormat.Format32bppArgb));
+                throw new ArgumentException($"ピクセルフォーマットが'{PixelFormat.Format32bppArgb}'ではありません。");
             }
 
             var w = bmp.Width;
@@ -283,11 +283,11 @@ namespace SWF.Common
         /// <returns></returns>
         public static Region GetRegion(Bitmap bmp, Color transparent)
         {
-            ArgumentNullException.ThrowIfNull(nameof(bmp));
+            ArgumentNullException.ThrowIfNull(bmp, nameof(bmp));
 
             if (bmp.PixelFormat != PixelFormat.Format32bppArgb)
             {
-                throw new ArgumentException(string.Format("ピクセルフォーマットが'{0}'ではありません。", PixelFormat.Format32bppArgb));
+                throw new ArgumentException($"ピクセルフォーマットが'{PixelFormat.Format32bppArgb}'ではありません。");
             }
 
             var w = bmp.Width;

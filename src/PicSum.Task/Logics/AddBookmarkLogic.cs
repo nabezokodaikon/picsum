@@ -13,7 +13,7 @@ namespace PicSum.Tasks.Logics
     {
         public bool Execute(string filePath, DateTime registrationDate)
         {
-            ArgumentNullException.ThrowIfNull(filePath, nameof(filePath));
+            ArgumentNullException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
             var sql = new CreationBookmarkSql(filePath, registrationDate);
             return DatabaseManager<FileInfoConnection>.Update(sql);

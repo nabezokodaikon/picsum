@@ -28,13 +28,13 @@ namespace PicSum.Core.Data.DatabaseAccessor
         /// <param name="tableCreateSql">テーブル作成SQL</param>
         protected ConnectionBase(string dbFilePath, string tableCreateSql)
         {
-            ArgumentNullException.ThrowIfNull(dbFilePath, nameof(dbFilePath));
-            ArgumentNullException.ThrowIfNull(tableCreateSql, nameof(tableCreateSql));
+            ArgumentNullException.ThrowIfNullOrEmpty(dbFilePath, nameof(dbFilePath));
+            ArgumentNullException.ThrowIfNullOrEmpty(tableCreateSql, nameof(tableCreateSql));
 
             if (!File.Exists(dbFilePath))
             {
                 SQLiteConnection.CreateFile(dbFilePath);
-                using (var con = new SQLiteConnection(string.Format("Data Source={0}", dbFilePath)))
+                using (var con = new SQLiteConnection($"Data Source={dbFilePath}"))
                 {
                     con.Open();
                     using (var cmd = con.CreateCommand())
@@ -46,7 +46,7 @@ namespace PicSum.Core.Data.DatabaseAccessor
                 }
             }
 
-            var connectionString = string.Format("Data Source={0}", dbFilePath);
+            var connectionString = $"Data Source={dbFilePath}";
             this.connection = new SQLiteConnection(connectionString);
             this.connection.Open();
 

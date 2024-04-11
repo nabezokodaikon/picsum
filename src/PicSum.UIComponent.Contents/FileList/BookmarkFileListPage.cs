@@ -137,7 +137,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
                     if (!FileUtil.IsImageFile(this.SelectedFilePath))
                     {
-                        throw new PicSumException(string.Format("画像ファイルが選択されていません。'{0}'", this.SelectedFilePath));
+                        throw new PicSumException($"画像ファイルが選択されていません。'{this.SelectedFilePath}'");
                     }
 
                     var title = FileUtil.GetFileName(FileUtil.GetParentDirectoryPath(this.SelectedFilePath));

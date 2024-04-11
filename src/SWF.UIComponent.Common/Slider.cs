@@ -93,7 +93,7 @@ namespace SWF.UIComponent.Common
                 this.SetButtonPointX(this.value);
                 this.Invalidate();
 
-                this.OnValueChanged(new EventArgs());
+                this.OnValueChanged(EventArgs.Empty);
             }
         }
 
@@ -281,7 +281,7 @@ namespace SWF.UIComponent.Common
         {
             if (e.Button == MouseButtons.Left)
             {
-                this.OnBeginValueChange(new EventArgs());
+                this.OnBeginValueChange(EventArgs.Empty);
 
                 float pointX = this.GetButtonPointX(e.X);
                 if (pointX != this.buttonPointX)
@@ -294,7 +294,7 @@ namespace SWF.UIComponent.Common
                     if (value != this.value)
                     {
                         this.value = value;
-                        this.OnValueChanging(new EventArgs());
+                        this.OnValueChanging(EventArgs.Empty);
                     }
                 }
             }
@@ -327,7 +327,7 @@ namespace SWF.UIComponent.Common
                     if (value != this.value)
                     {
                         this.value = value;
-                        this.OnValueChanging(new EventArgs());
+                        this.OnValueChanging(EventArgs.Empty);
                     }
                 }
             }

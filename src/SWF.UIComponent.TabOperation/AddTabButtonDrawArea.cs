@@ -28,10 +28,10 @@ namespace SWF.UIComponent.TabOperation
             return new Rectangle(x, y, w, h);
         }
 
-        private static readonly SolidBrush MOUSE_POINT_BRUSH = new SolidBrush(Color.FromArgb(128, 255, 255, 255));
-        private static readonly SolidBrush NORMAL_BRUSH = new SolidBrush(Color.FromArgb(64, 0, 0, 0));
-        private static readonly Pen MOUSE_POINT_PEN = new Pen(Color.Black, 2f);
-        private static readonly Pen NORMAL_PEN = new Pen(Color.White, 2f);
+        private static readonly SolidBrush MOUSE_POINT_BRUSH = new(Color.FromArgb(128, 255, 255, 255));
+        private static readonly SolidBrush NORMAL_BRUSH = new(Color.FromArgb(64, 0, 0, 0));
+        private static readonly Pen MOUSE_POINT_PEN = new(Color.Black, 2f);
+        private static readonly Pen NORMAL_PEN = new(Color.White, 2f);
 
         #endregion
 
@@ -43,7 +43,7 @@ namespace SWF.UIComponent.TabOperation
 
         private readonly int width = DEFAULT_RECTANGLE.Width;
         private readonly int height = DEFAULT_RECTANGLE.Height;
-        private Point drawPoint = new Point(DEFAULT_RECTANGLE.X, DEFAULT_RECTANGLE.Y);
+        private Point drawPoint = new(DEFAULT_RECTANGLE.X, DEFAULT_RECTANGLE.Y);
 
         #endregion
 
@@ -154,20 +154,14 @@ namespace SWF.UIComponent.TabOperation
 
         public void DrawInactiveImage(Graphics g)
         {
-            if (g == null)
-            {
-                throw new ArgumentNullException("g");
-            }
+            ArgumentNullException.ThrowIfNull(g, nameof(g));
 
             this.Draw(g, false);
         }
 
         public void DrawMousePointImage(Graphics g)
         {
-            if (g == null)
-            {
-                throw new ArgumentNullException("g");
-            }
+            ArgumentNullException.ThrowIfNull(g, nameof(g));
 
             this.Draw(g, true);
         }

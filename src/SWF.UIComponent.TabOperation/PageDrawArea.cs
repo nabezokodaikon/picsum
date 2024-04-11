@@ -37,8 +37,8 @@ namespace SWF.UIComponent.TabOperation
 
         #region インスタンス変数
 
-        private readonly SolidBrush outlineBrush = new SolidBrush(GetOutlineColor());
-        private readonly SolidBrush innerBrush = new SolidBrush(GetInnerColor());
+        private readonly SolidBrush outlineBrush = new(GetOutlineColor());
+        private readonly SolidBrush innerBrush = new(GetInnerColor());
         private readonly int top = Resources.ActiveTab.Height - TAB_OVERLAP;
 
         #endregion
@@ -83,10 +83,7 @@ namespace SWF.UIComponent.TabOperation
 
         public void Draw(Graphics g)
         {
-            if (g == null)
-            {
-                throw new ArgumentNullException(nameof(g));
-            }
+            ArgumentNullException.ThrowIfNull(nameof(g));
 
             this.DrawOutline(g);
             this.DrawInnerRectangle(g);

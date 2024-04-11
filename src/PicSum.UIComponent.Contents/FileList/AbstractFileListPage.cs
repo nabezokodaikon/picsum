@@ -373,7 +373,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
         protected void SetContextMenuFiles(string filePath)
         {
-            ArgumentNullException.ThrowIfNull(filePath, nameof(filePath));
+            ArgumentNullException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
             this.SetContextMenuFiles(new List<string>() { filePath });
         }

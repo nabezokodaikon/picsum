@@ -86,11 +86,11 @@ namespace PicSum.UIComponent.AddressBar
                 ItemTextFormatFlags = StringFormatFlags.NoWrap
             };
 
-            this.dropDownList.Opened += new EventHandler(this.DropDownList_Opened);
-            this.dropDownList.Closed += new ToolStripDropDownClosedEventHandler(this.DropDownList_Closed);
-            this.dropDownList.Drawitem += new EventHandler<SWF.UIComponent.FlowList.DrawItemEventArgs>(this.DropDownList_Drawitem);
-            this.dropDownList.ItemMouseClick += new EventHandler<MouseEventArgs>(this.DropDownList_ItemMouseClick);
-            this.dropDownList.ItemExecute += new EventHandler(this.DropDownList_ItemExecute);
+            this.dropDownList.Opened += new(this.DropDownList_Opened);
+            this.dropDownList.Closed += new(this.DropDownList_Closed);
+            this.dropDownList.Drawitem += new(this.DropDownList_Drawitem);
+            this.dropDownList.ItemMouseClick +=(this.DropDownList_ItemMouseClick);
+            this.dropDownList.ItemExecute += new(this.DropDownList_ItemExecute);
         }
 
         private DirectoryEntity GetDropDownItemFromScreenPoint()

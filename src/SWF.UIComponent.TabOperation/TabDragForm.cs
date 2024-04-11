@@ -58,13 +58,11 @@ namespace SWF.UIComponent.TabOperation
         {
             get
             {
-                if (this.tabDrawArea == null)
+                this.tabDrawArea ??= new()
                 {
-                    this.tabDrawArea = new();
-                    this.tabDrawArea.X = DRAW_TAB_WIDHT_OFFSET;
-                    this.tabDrawArea.Y = 0;
-                }
-
+                    X = DRAW_TAB_WIDHT_OFFSET,
+                    Y = 0
+                };
                 return this.tabDrawArea;
             }
         }
@@ -128,14 +126,11 @@ namespace SWF.UIComponent.TabOperation
 
         public void SetTab(TabInfo tab)
         {
-            if (tab == null)
-            {
-                throw new ArgumentNullException("tab");
-            }
+            ArgumentNullException.ThrowIfNull(tab, nameof(tab));
 
             if (tab.Owner == null)
             {
-                throw new ArgumentException("タブはどこにも所有されていません。", "tab");
+                throw new ArgumentException("タブはどこにも所有されていません。", nameof(tab));
             }
 
             if (this.regionImage != null)

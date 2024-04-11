@@ -100,25 +100,24 @@ namespace PicSum.Main.UIComponent
 
         public void AddPageEventHandler(BrowserPage page)
         {
-            ArgumentNullException.ThrowIfNull(nameof(page));
+            ArgumentNullException.ThrowIfNull(page, nameof(page));
 
-            page.SelectedFileChanged += new EventHandler<SelectedFileChangeEventArgs>(this.Page_SelectedFileChanged);
-            page.OpenPage += new EventHandler<BrowserPageEventArgs>(this.Page_OpenPage);
-            page.MouseClick += new EventHandler<MouseEventArgs>(this.Page_MouseClick);
+            page.SelectedFileChanged += new(this.Page_SelectedFileChanged);
+            page.OpenPage += new(this.Page_OpenPage);
+            page.MouseClick += new(this.Page_MouseClick);
         }
 
         public void AddTab(TabInfo tab)
         {
-            ArgumentNullException.ThrowIfNull(nameof(tab));
+            ArgumentNullException.ThrowIfNull(tab, nameof(tab));
 
             this.AddPageEventHandler(tab.GetPage<BrowserPage>());
-
             this.tabSwitch.AddTab(tab);
         }
 
         public void AddTab(IPageParameter param)
         {
-            ArgumentNullException.ThrowIfNull(nameof(param));
+            ArgumentNullException.ThrowIfNull(param, nameof(param));
 
             this.AddPageEventHandler(this.tabSwitch.AddTab<BrowserPage>(param));
         }
@@ -278,9 +277,9 @@ namespace PicSum.Main.UIComponent
 
         private void RemovePageEventHandler(BrowserPage page)
         {
-            page.SelectedFileChanged -= new EventHandler<SelectedFileChangeEventArgs>(this.Page_SelectedFileChanged);
-            page.OpenPage -= new EventHandler<BrowserPageEventArgs>(this.Page_OpenPage);
-            page.MouseClick -= new EventHandler<MouseEventArgs>(this.Page_MouseClick);
+            page.SelectedFileChanged -= new(this.Page_SelectedFileChanged);
+            page.OpenPage -= new(this.Page_OpenPage);
+            page.MouseClick -= new(this.Page_MouseClick);
         }
 
         private void SetPageHistoryButtonEnabled()
@@ -545,7 +544,7 @@ namespace PicSum.Main.UIComponent
             {
                 this.redrawTimer.Stop();
                 this.redrawTimer.Dispose();
-                this.OnClose(new EventArgs());
+                this.OnClose(EventArgs.Empty);
             }
         }
 
@@ -567,7 +566,7 @@ namespace PicSum.Main.UIComponent
             {
                 this.redrawTimer.Stop();
                 this.redrawTimer.Dispose();
-                this.OnClose(new EventArgs());
+                this.OnClose(EventArgs.Empty);
             }
         }
 

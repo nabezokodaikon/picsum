@@ -24,24 +24,31 @@ namespace SWF.UIComponent.TabOperation
 
         #region クラスメンバ
 
-        private readonly static IList<Point> LEFT_TRANSPARENT_POINTS = GetLeftTransparentPoints(Resources.ActiveTab);
-        private readonly static IList<Point> RIGHT_TRANSPARENT_POINTS = GetRightTransparentPoints(Resources.ActiveTab);
-        private readonly static Rectangle ICON_RECTANGLE = new Rectangle(SIDE_WIDTH, PAGE_OFFSET, PAGE_SIZE, PAGE_SIZE);
-        private readonly static Rectangle CLOSE_BUTTON_RECTANGLE = new Rectangle(Resources.ActiveTab.Width - SIDE_WIDTH - PAGE_SIZE,
-                                                                                 PAGE_OFFSET,
-                                                                                 PAGE_SIZE,
-                                                                                 PAGE_SIZE);
+        private readonly static IList<Point> LEFT_TRANSPARENT_POINTS
+            = GetLeftTransparentPoints(Resources.ActiveTab);
+        private readonly static IList<Point> RIGHT_TRANSPARENT_POINTS
+            = GetRightTransparentPoints(Resources.ActiveTab);
+        private readonly static Rectangle ICON_RECTANGLE
+            = new(SIDE_WIDTH, PAGE_OFFSET, PAGE_SIZE, PAGE_SIZE);
+        private readonly static Rectangle CLOSE_BUTTON_RECTANGLE
+            = new(Resources.ActiveTab.Width - SIDE_WIDTH - PAGE_SIZE,
+                  PAGE_OFFSET,
+                  PAGE_SIZE,
+                  PAGE_SIZE);
 
-        private readonly static SolidBrush TAB_CLOSE_ACTIVE_BUTTON_BRUSH = new SolidBrush(Color.FromArgb(64, 0, 0, 0));
-        private readonly static SolidBrush TAB_CLOSE_INACTIVE_BUTTON_BRUSH = new SolidBrush(Color.FromArgb(64, 0, 0, 0));
-        private readonly static Pen TAB_CLOSE_BUTTON_SLASH_PEN = new Pen(Color.Black, 2f);
+        private readonly static SolidBrush TAB_CLOSE_ACTIVE_BUTTON_BRUSH
+            = new(Color.FromArgb(64, 0, 0, 0));
+        private readonly static SolidBrush TAB_CLOSE_INACTIVE_BUTTON_BRUSH
+            = new(Color.FromArgb(64, 0, 0, 0));
+        private readonly static Pen TAB_CLOSE_BUTTON_SLASH_PEN
+            = new(Color.Black, 2f);
 
 
         private static List<Point> GetLeftTransparentPoints(Bitmap bmp)
         {
             if (bmp.PixelFormat != PixelFormat.Format32bppArgb)
             {
-                throw new ArgumentException(string.Format("ピクセルフォーマットが{0}ではありません。", PixelFormat.Format32bppArgb));
+                throw new ArgumentException($"ピクセルフォーマットが{PixelFormat.Format32bppArgb}ではありません。");
             }
 
             var pList = new List<Point>();
@@ -78,7 +85,7 @@ namespace SWF.UIComponent.TabOperation
         {
             if (bmp.PixelFormat != PixelFormat.Format32bppArgb)
             {
-                throw new ArgumentException(string.Format("ピクセルフォーマットが{0}ではありません。", PixelFormat.Format32bppArgb));
+                throw new ArgumentException($"ピクセルフォーマットが{PixelFormat.Format32bppArgb}ではありません。");
             }
 
             var pList = new List<Point>();
@@ -122,7 +129,7 @@ namespace SWF.UIComponent.TabOperation
         private readonly Bitmap mousePointTabImage = Resources.MousePointTab;
         private readonly Rectangle iconRectangle = ICON_RECTANGLE;
         private readonly Rectangle closeButtonRectangle = CLOSE_BUTTON_RECTANGLE;
-        private Point drawPoint = new Point(0, 0);
+        private Point drawPoint = new(0, 0);
         private int width = Resources.ActiveTab.Width;
         private readonly int height = Resources.ActiveTab.Height;
 
@@ -218,10 +225,7 @@ namespace SWF.UIComponent.TabOperation
             }
             set
             {
-                if (value < MINIMUM_WIDHT)
-                {
-                    throw new ArgumentOutOfRangeException(nameof(value));
-                }
+                ArgumentOutOfRangeException.ThrowIfLessThan(value, MINIMUM_WIDHT, nameof(value));
 
                 this.width = value;
             }
@@ -241,70 +245,49 @@ namespace SWF.UIComponent.TabOperation
 
         public void DrawActiveTab(Graphics g)
         {
-            if (g == null)
-            {
-                throw new ArgumentNullException(nameof(g));
-            }
+            ArgumentNullException.ThrowIfNull(g, nameof(g));
 
             this.DrawTab(this.activeTabImage, g);
         }
 
         public void DrawInactiveTab(Graphics g)
         {
-            if (g == null)
-            {
-                throw new ArgumentNullException(nameof(g));
-            }
+            ArgumentNullException.ThrowIfNull(g, nameof(g));
 
             this.DrawTab(this.inactiveTabImage, g);
         }
 
         public void DrawMousePointTab(Graphics g)
         {
-            if (g == null)
-            {
-                throw new ArgumentNullException(nameof(g));
-            }
+            ArgumentNullException.ThrowIfNull(g, nameof(g));
 
             this.DrawTab(this.mousePointTabImage, g);
         }
 
         public void DrawActiveMousePointTabCloseButton(Graphics g)
         {
-            if (g == null)
-            {
-                throw new ArgumentNullException(nameof(g));
-            }
+            ArgumentNullException.ThrowIfNull(g, nameof(g));
 
             this.DrawTabCloseButton(g, true, true);
         }
 
         public void DrawInactiveMousePointTabCloseButton(Graphics g)
         {
-            if (g == null)
-            {
-                throw new ArgumentNullException(nameof(g));
-            }
+            ArgumentNullException.ThrowIfNull(g, nameof(g));
 
             this.DrawTabCloseButton(g, true, false);
         }
 
         public void DrawInactiveTabCloseButton(Graphics g)
         {
-            if (g == null)
-            {
-                throw new ArgumentNullException(nameof(g));
-            }
+            ArgumentNullException.ThrowIfNull(g, nameof(g));
 
             this.DrawTabCloseButton(g, false, false);
         }
 
         public void DrawActiveTabCloseButton(Graphics g)
         {
-            if (g == null)
-            {
-                throw new ArgumentNullException(nameof(g));
-            }
+            ArgumentNullException.ThrowIfNull(g, nameof(g));
 
             this.DrawTabCloseButton(g, false, true);
         }
@@ -361,10 +344,7 @@ namespace SWF.UIComponent.TabOperation
 
         public Rectangle GetIconRectangle(Image icon)
         {
-            if (icon == null)
-            {
-                throw new ArgumentNullException("icon");
-            }
+            ArgumentNullException.ThrowIfNull(icon, nameof(icon));
 
             var rect = this.GetIconRectangle();
             var w = Math.Min(icon.Width, rect.Width);

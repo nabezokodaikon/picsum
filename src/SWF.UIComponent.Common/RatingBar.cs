@@ -10,10 +10,6 @@ namespace SWF.UIComponent.Common
     [SupportedOSPlatform("windows")]
     public class RatingBar : Control
     {
-        #region 定数・列挙
-
-        #endregion
-
         #region イベント・デリゲート
 
         public event EventHandler<MouseEventArgs> RatingButtonMouseClick;
@@ -22,9 +18,9 @@ namespace SWF.UIComponent.Common
 
         #region インスタンス変数
 
-        private int _maximumValue = 5;
-        private int _value = 0;
-        private readonly List<RatingButton> _ratingButtonList = new List<RatingButton>();
+        private int maximumValue = 5;
+        private int value = 0;
+        private readonly List<RatingButton> ratingButtonList = [];
 
         #endregion
 
@@ -34,25 +30,22 @@ namespace SWF.UIComponent.Common
         {
             get
             {
-                return this._maximumValue;
+                return this.maximumValue;
             }
             set
             {
-                if (value < 1)
+                ArgumentOutOfRangeException.ThrowIfLessThan(value, 1, nameof(value));
+
+                if (value < this.value)
                 {
-                    throw new ArgumentOutOfRangeException("value");
+                    this.value = value;
                 }
 
-                if (value < this._value)
-                {
-                    this._value = value;
-                }
+                this.maximumValue = value;
 
-                this._maximumValue = value;
-
-                this.createRatingButtons();
-                this.setRatingButtonsLocation();
-                this.SetValue(this._value);
+                this.CreateRatingButtons();
+                this.SetRatingButtonsLocation();
+                this.SetValue(this.value);
             }
         }
 
@@ -60,17 +53,9 @@ namespace SWF.UIComponent.Common
         {
             get
             {
-                return this._value;
+                return this.value;
             }
         }
-
-        #endregion
-
-        #region 継承プロパティ
-
-        #endregion
-
-        #region プライベートプロパティ
 
         #endregion
 
@@ -78,7 +63,7 @@ namespace SWF.UIComponent.Common
 
         public RatingBar()
         {
-            this.initializeComponent();
+            this.InitializeComponent();
         }
 
         #endregion
@@ -87,18 +72,18 @@ namespace SWF.UIComponent.Common
 
         public void SetValue(int value)
         {
-            if (this._value < 0 || this._maximumValue < this._value)
+            if (this.value < 0 || this.maximumValue < this.value)
             {
-                throw new ArgumentOutOfRangeException("value");
+                throw new ArgumentOutOfRangeException(nameof(value));
             }
 
-            for (int index = 0; index < this._maximumValue; index++)
+            for (int index = 0; index < this.maximumValue; index++)
             {
-                RatingButton btn = this._ratingButtonList[index];
+                var btn = this.ratingButtonList[index];
                 btn.IsActive = index < value;
             }
 
-            this._value = value;
+            this.value = value;
         }
 
         #endregion
@@ -107,23 +92,20 @@ namespace SWF.UIComponent.Common
 
         protected override void OnInvalidated(InvalidateEventArgs e)
         {
-            this.setRatingButtonsLocation();
+            this.SetRatingButtonsLocation();
             base.OnInvalidated(e);
         }
 
         protected virtual void OnRatingButtonMouseClick(MouseEventArgs e)
         {
-            if (RatingButtonMouseClick != null)
-            {
-                RatingButtonMouseClick(this, e);
-            }
+            this.RatingButtonMouseClick?.Invoke(this, e);
         }
 
         #endregion
 
         #region プライベートメソッド
 
-        private void initializeComponent()
+        private void InitializeComponent()
         {
             this.SetStyle(
                 ControlStyles.AllPaintingInWmPaint |
@@ -135,45 +117,45 @@ namespace SWF.UIComponent.Common
             this.UpdateStyles();
         }
 
-        private void createRatingButtons()
+        private void CreateRatingButtons()
         {
-            foreach (RatingButton btn in this._ratingButtonList)
+            foreach (var btn in this.ratingButtonList)
             {
                 this.Controls.Remove(btn);
             }
 
-            this._ratingButtonList.Clear();
+            this.ratingButtonList.Clear();
 
-            List<RatingButton> list = new List<RatingButton>();
-            for (int i = 0; i < this._maximumValue; i++)
+            var list = new List<RatingButton>();
+            for (var i = 0; i < this.maximumValue; i++)
             {
-                RatingButton btn = new RatingButton();
-                btn.MouseClick += new MouseEventHandler(this.ratingButton_MouseClick);
+                var btn = new RatingButton();
+                btn.MouseClick += new(this.RatingButton_MouseClick);
                 btn.BackColor = this.BackColor;
                 list.Add(btn);
             }
 
-            RatingButton[] ary = list.ToArray();
+            var ary = list.ToArray();
 
-            this._ratingButtonList.AddRange(ary);
+            this.ratingButtonList.AddRange(ary);
 
             this.Controls.AddRange(ary);
         }
 
-        private void setRatingButtonsLocation()
+        private void SetRatingButtonsLocation()
         {
-            RatingButton firstBtn = this._ratingButtonList.FirstOrDefault();
+            var firstBtn = this.ratingButtonList.FirstOrDefault();
             if (firstBtn == null)
             {
                 return;
             }
 
-            int allWidth = firstBtn.Width * this._ratingButtonList.Count;
+            var allWidth = firstBtn.Width * this.ratingButtonList.Count;
 
-            int x = (int)((this.Width - allWidth) / 2f);
-            int y = (int)((this.Height - firstBtn.Height) / 2f);
+            var x = (int)((this.Width - allWidth) / 2f);
+            var y = (int)((this.Height - firstBtn.Height) / 2f);
 
-            foreach (RatingButton btn in this._ratingButtonList)
+            foreach (var btn in this.ratingButtonList)
             {
                 btn.Location = new Point(x, y);
                 x += btn.Width;
@@ -184,21 +166,21 @@ namespace SWF.UIComponent.Common
 
         #region イベント
 
-        private void ratingButton_MouseClick(object sender, MouseEventArgs e)
+        private void RatingButton_MouseClick(object sender, MouseEventArgs e)
         {
-            if (!(sender is RatingButton))
+            if (sender is not RatingButton)
             {
-                throw new ArgumentException("評価値ボタンコントロールと互換性がありません。", "sender");
+                throw new ArgumentException("評価値ボタンコントロールと互換性がありません。", nameof(sender));
             }
 
-            int index = this._ratingButtonList.IndexOf((RatingButton)sender);
+            var index = this.ratingButtonList.IndexOf((RatingButton)sender);
             if (index < 0)
             {
-                throw new ArgumentException("createRatingButtonsメソッドで作成されたRatingButtonではありません。", "sender");
+                throw new ArgumentException("createRatingButtonsメソッドで作成されたRatingButtonではありません。", nameof(sender));
             }
 
-            RatingButton btn = this._ratingButtonList[index];
-            if (btn.IsActive && index == this._value - 1)
+            var btn = this.ratingButtonList[index];
+            if (btn.IsActive && index == this.value - 1)
             {
                 this.SetValue(index);
             }

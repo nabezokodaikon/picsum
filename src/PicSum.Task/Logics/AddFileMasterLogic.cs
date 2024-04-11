@@ -20,7 +20,7 @@ namespace PicSum.Task.Logics
         /// <param name="filePath">ファイルパス</param>
         public void Execute(string filePath)
         {
-            ArgumentNullException.ThrowIfNull(filePath, nameof(filePath));
+            ArgumentNullException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
             var sql = new CreationFileSql(filePath);
             DatabaseManager<FileInfoConnection>.Update(sql);

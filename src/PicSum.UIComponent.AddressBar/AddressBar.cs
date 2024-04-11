@@ -173,7 +173,7 @@ namespace PicSum.UIComponent.AddressBar
 
         public void SetAddress(string filePath)
         {
-            ArgumentNullException.ThrowIfNull(nameof(filePath));
+            ArgumentNullException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
             if (string.IsNullOrEmpty(filePath))
             {
@@ -344,13 +344,13 @@ namespace PicSum.UIComponent.AddressBar
                 true);
             this.UpdateStyles();
 
-            this.overflowItem.DropDownOpened += new EventHandler(this.DrawItem_DropDownOpened);
-            this.overflowItem.DropDownClosed += new EventHandler(this.DrawItem_DropDownClosed);
-            this.overflowItem.SelectedDirectory += new EventHandler<SelectedDirectoryEventArgs>(this.DrawItem_SelectedDirectory);
+            this.overflowItem.DropDownOpened += new(this.DrawItem_DropDownOpened);
+            this.overflowItem.DropDownClosed += new(this.DrawItem_DropDownClosed);
+            this.overflowItem.SelectedDirectory += new(this.DrawItem_SelectedDirectory);
 
-            this.directoryHistoryItem.DropDownOpened += new EventHandler(this.DrawItem_DropDownOpened);
-            this.directoryHistoryItem.DropDownClosed += new EventHandler(this.DrawItem_DropDownClosed);
-            this.directoryHistoryItem.SelectedDirectory += new EventHandler<SelectedDirectoryEventArgs>(this.DrawItem_SelectedDirectory);
+            this.directoryHistoryItem.DropDownOpened += new(this.DrawItem_DropDownOpened);
+            this.directoryHistoryItem.DropDownClosed += new(this.DrawItem_DropDownClosed);
+            this.directoryHistoryItem.SelectedDirectory += new(this.DrawItem_SelectedDirectory);
         }
 
         private void SetItemsRectangle()
@@ -453,7 +453,7 @@ namespace PicSum.UIComponent.AddressBar
                     Directory = directory,
                     Palette = this.palette
                 };
-                directoryDraw.SelectedDirectory += new EventHandler<SelectedDirectoryEventArgs>(this.DrawItem_SelectedDirectory);
+                directoryDraw.SelectedDirectory += new(this.DrawItem_SelectedDirectory);
                 items.Add(directoryDraw);
 
                 var sepDraw = new SeparatorDrawItem
@@ -466,7 +466,7 @@ namespace PicSum.UIComponent.AddressBar
                 {
                     sepDraw.SelectedSubDirectoryPath = addressInfo.DirectoryList[i + 1].FilePath;
                 }
-                sepDraw.SelectedDirectory += new EventHandler<SelectedDirectoryEventArgs>(this.DrawItem_SelectedDirectory);
+                sepDraw.SelectedDirectory += new(this.DrawItem_SelectedDirectory);
                 items.Add(sepDraw);
             }
 
@@ -486,7 +486,7 @@ namespace PicSum.UIComponent.AddressBar
                     Directory = directory,
                     Palette = this.palette
                 };
-                directoryDraw.SelectedDirectory += new EventHandler<SelectedDirectoryEventArgs>(this.DrawItem_SelectedDirectory);
+                directoryDraw.SelectedDirectory += new(this.DrawItem_SelectedDirectory);
                 items.Add(directoryDraw);
 
                 var sepDraw = new SeparatorDrawItem
@@ -495,7 +495,7 @@ namespace PicSum.UIComponent.AddressBar
                     Directory = directory,
                     Palette = this.palette
                 };
-                sepDraw.SelectedDirectory += new EventHandler<SelectedDirectoryEventArgs>(this.DrawItem_SelectedDirectory);
+                sepDraw.SelectedDirectory += new(this.DrawItem_SelectedDirectory);
                 items.Add(sepDraw);
             }
             else
@@ -514,7 +514,7 @@ namespace PicSum.UIComponent.AddressBar
                     Directory = directory,
                     Palette = this.palette,
                 };
-                directoryDraw.SelectedDirectory += new EventHandler<SelectedDirectoryEventArgs>(this.DrawItem_SelectedDirectory);
+                directoryDraw.SelectedDirectory += new(this.DrawItem_SelectedDirectory);
                 items.Add(directoryDraw);
             }
 

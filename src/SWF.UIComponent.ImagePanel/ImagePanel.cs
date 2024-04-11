@@ -375,7 +375,7 @@ namespace SWF.UIComponent.ImagePanel
                 if (!moveRect.Contains(e.X, e.Y))
                 {
                     this.isDrag = true;
-                    this.OnDragStart(new EventArgs());
+                    this.OnDragStart(EventArgs.Empty);
                 }
             }
 

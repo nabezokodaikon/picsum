@@ -96,7 +96,7 @@ namespace PicSum.Main
 
             Logger.Info("アプリケーションを開始します。");
 
-            AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
+            AppDomain.CurrentDomain.UnhandledException += new(CurrentDomain_UnhandledException);
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);

@@ -35,10 +35,7 @@ namespace PicSum.Task.Logics
 
         public ThumbnailBufferEntity Execute(string filePath, int thumbWidth, int thumbHeight)
         {
-            if (filePath == null)
-            {
-                throw new ArgumentNullException("filePath");
-            }
+            ArgumentNullException.ThrowIfNull(filePath, nameof(filePath));
 
             if (string.IsNullOrEmpty(filePath))
             {

@@ -1,4 +1,4 @@
-﻿using PicSum.Core.Base.Conf;
+using PicSum.Core.Base.Conf;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -11,16 +11,19 @@ namespace PicSum.Core.Data.DatabaseAccessor
     /// <summary>
     /// SQLユーティリティ
     /// </summary>
-    internal static class SqlUtil
+    internal static partial class SqlUtil
     {
         // 番号付パラメータ名正規表現
-        private static readonly Regex NUMBERING_PARAMETER_NAME_REGEX = new Regex("_\\d+$");
+        [GeneratedRegex("_\\d+$")]
+        private static partial Regex NumberingParameterNameRegex();
 
         // 置換文字列正規表現
-        private static readonly Regex REPLACE_REGEX = new Regex("{.*}");
+        [GeneratedRegex("{.*}")]
+        private static partial Regex ReplaceRegex();
 
         // 置換パラメータ文字列正規表現
-        private static readonly Regex PARAMETER_REGEX = new Regex(":[a-z][a-z|_]+[a-z]");
+        [GeneratedRegex(":[a-z][a-z|_]+[a-z]")]
+        private static partial Regex ParameterRegex();
 
         /// <summary>
         /// 実行するSQLを取得します。
@@ -30,8 +33,8 @@ namespace PicSum.Core.Data.DatabaseAccessor
         /// <returns>SQL</returns>
         public static string GetExecuteSql(string sqlText, IList<IDbDataParameter> paramList)
         {
-            if (sqlText == null) throw new ArgumentNullException(nameof(sqlText));
-            if (paramList == null) throw new ArgumentNullException(nameof(paramList));
+            ArgumentException.ThrowIfNullOrEmpty(sqlText, nameof(sqlText));
+            ArgumentNullException.ThrowIfNull(paramList, nameof(paramList));
 
             // SQLテキスト内の置換文字列を取得します。
             var oldText = SqlUtil.GetRepalceText(sqlText);
@@ -51,23 +54,23 @@ namespace PicSum.Core.Data.DatabaseAccessor
 
                 var newText = new StringBuilder();
 
-                newText.Append("(");
+                newText.Append('(');
 
                 for (int i = 0; i < count; i++)
                 {
-                    newText.Append("(");
+                    newText.Append('(');
 
                     var text = oldText.Replace("{", "").Replace("}", "");
 
                     foreach (var paramString in paramStringList)
                     {
-                        var r = new Regex(string.Format("{0}\\s|{0}$", paramString));
+                        var r = new Regex($"{paramString}\\s|{paramString}$");
                         text = r.Replace(text, string.Format(ApplicationConst.NUMBERING_SQL_PARAMETER_FORMAT + " ", paramString, i.ToString()));
                     }
 
                     newText.Append(text);
 
-                    newText.Append(")");
+                    newText.Append(')');
 
                     if (i < count - 1)
                     {
@@ -75,15 +78,10 @@ namespace PicSum.Core.Data.DatabaseAccessor
                     }
                 }
 
-                newText.Append(")");
+                newText.Append(')');
 
                 return sqlText.Replace(oldText, newText.ToString());
             }
-        }
-
-        private static string ToSqlFileName(string sqlName)
-        {
-            return sqlName.Substring(0, sqlName.Length - 3);
         }
 
         // パラメータリスト内の、番号付パラメータの個数を取得します。
@@ -93,14 +91,10 @@ namespace PicSum.Core.Data.DatabaseAccessor
 
             foreach (var param in paramList)
             {
-                if (SqlUtil.NUMBERING_PARAMETER_NAME_REGEX.IsMatch(param.ParameterName))
+                if (SqlUtil.NumberingParameterNameRegex().IsMatch(param.ParameterName))
                 {
-                    var paramterName = SqlUtil.NUMBERING_PARAMETER_NAME_REGEX.Replace(param.ParameterName, "");
-                    if (!dic.ContainsKey(paramterName))
-                    {
-                        dic.Add(paramterName, 1);
-                    }
-                    else
+                    var paramterName = SqlUtil.NumberingParameterNameRegex().Replace(param.ParameterName, "");
+                    if (!dic.TryAdd(paramterName, 1))
                     {
                         dic[paramterName] += 1;
                     }
@@ -109,16 +103,16 @@ namespace PicSum.Core.Data.DatabaseAccessor
 
             if (dic.Count == 0)
             {
-                throw new ArgumentException("番号付パラメータが存在しません。", "paramList");
+                throw new ArgumentException("番号付パラメータが存在しません。", nameof(paramList));
             }
 
-            return dic.Values.First();
+            return dic.Count;
         }
 
         // SQLテキスト内の置換文字列を取得します。
         private static string GetRepalceText(string sqlText)
         {
-            var m = SqlUtil.REPLACE_REGEX.Match(sqlText);
+            var m = SqlUtil.ReplaceRegex().Match(sqlText);
 
             if (m.Success)
             {
@@ -131,11 +125,11 @@ namespace PicSum.Core.Data.DatabaseAccessor
         }
 
         // 置換文字列内のパラメータ名リストを取得します。
-        private static IList<string> GetParameterNameList(string replaceText)
+        private static List<string> GetParameterNameList(string replaceText)
         {
             var list = new List<string>();
 
-            var m = SqlUtil.PARAMETER_REGEX.Match(replaceText);
+            var m = SqlUtil.ParameterRegex().Match(replaceText);
 
             while (m.Success)
             {

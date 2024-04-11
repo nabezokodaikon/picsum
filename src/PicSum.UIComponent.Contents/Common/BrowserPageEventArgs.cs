@@ -1,4 +1,4 @@
-﻿using PicSum.Core.Base.Conf;
+using PicSum.Core.Base.Conf;
 using SWF.UIComponent.TabOperation;
 using System;
 
@@ -12,10 +12,7 @@ namespace PicSum.UIComponent.Contents.Common
 
         public BrowserPageEventArgs(PageOpenType openType, IPageParameter param)
         {
-            if (param == null)
-            {
-                throw new ArgumentNullException("param");
-            }
+            ArgumentNullException.ThrowIfNull(param, nameof(param));
 
             this.OpenType = openType;
             this.Parameter = param;

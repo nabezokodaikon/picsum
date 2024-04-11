@@ -35,10 +35,7 @@ namespace SWF.UIComponent.TabOperation
             }
             set
             {
-                if (value == null)
-                {
-                    throw new ArgumentNullException(nameof(value));
-                }
+                ArgumentNullException.ThrowIfNullOrEmpty(value, nameof(value));
 
                 this.title = value;
             }
@@ -73,7 +70,7 @@ namespace SWF.UIComponent.TabOperation
         /// </summary>
         public void Active()
         {
-            this.OnActivated(new EventArgs());
+            this.OnActivated(EventArgs.Empty);
         }
 
         /// <summary>
@@ -81,15 +78,12 @@ namespace SWF.UIComponent.TabOperation
         /// </summary>
         public void Inactive()
         {
-            this.OnInactivated(new EventArgs());
+            this.OnInactivated(EventArgs.Empty);
         }
 
         public void DrawingTabPage(DrawTabEventArgs e)
         {
-            if (e == null)
-            {
-                throw new ArgumentNullException(nameof(e));
-            }
+            ArgumentNullException.ThrowIfNull(e, nameof(e));
 
             this.OnDrawTabPage(e);
         }
@@ -100,26 +94,17 @@ namespace SWF.UIComponent.TabOperation
 
         protected void OnActivated(EventArgs e)
         {
-            if (this.Activated != null)
-            {
-                this.Activated(this, e);
-            }
+            this.Activated?.Invoke(this, e);
         }
 
         protected void OnInactivated(EventArgs e)
         {
-            if (this.Inactivated != null)
-            {
-                this.Inactivated(this, e);
-            }
+            this.Inactivated?.Invoke(this, e);
         }
 
         protected virtual void OnDrawTabPage(DrawTabEventArgs e)
         {
-            if (this.DrawTabPage != null)
-            {
-                this.DrawTabPage(this, e);
-            }
+            this.DrawTabPage?.Invoke(this, e);
         }
 
         #endregion

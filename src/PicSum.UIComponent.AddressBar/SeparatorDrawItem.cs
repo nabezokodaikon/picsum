@@ -92,7 +92,7 @@ namespace PicSum.UIComponent.AddressBar
 
         public override void Draw(Graphics g)
         {
-            ArgumentNullException.ThrowIfNull(nameof(g));
+            ArgumentNullException.ThrowIfNull(g, nameof(g));
 
             if (base.Palette == null)
             {
@@ -121,7 +121,7 @@ namespace PicSum.UIComponent.AddressBar
 
         public override void OnMouseDown(MouseEventArgs e)
         {
-            ArgumentNullException.ThrowIfNull(nameof(e));
+            ArgumentNullException.ThrowIfNull(e, nameof(e));
 
             if (e.Button == MouseButtons.Left)
             {
@@ -140,7 +140,7 @@ namespace PicSum.UIComponent.AddressBar
 
         public override void OnMouseClick(MouseEventArgs e)
         {
-            ArgumentNullException.ThrowIfNull(nameof(e));
+            ArgumentNullException.ThrowIfNull(e, nameof(e));
         }
 
         protected override void DrawDropDownItem(SWF.UIComponent.FlowList.DrawItemEventArgs e)

@@ -19,10 +19,7 @@ namespace PicSum.Task.Tasks
     {
         protected override void Execute(ValueParameter<string> param)
         {
-            if (param == null)
-            {
-                throw new ArgumentNullException(nameof(param));
-            }
+            ArgumentNullException.ThrowIfNull(param, nameof(param));
 
             if (string.IsNullOrEmpty(param.Value))
             {
@@ -39,7 +36,7 @@ namespace PicSum.Task.Tasks
 
                 var logic = new GetFileShallowInfoLogic(this);
 
-                addressInfo.DirectoryList = new ListEntity<FileShallowInfoEntity>();
+                addressInfo.DirectoryList = [];
 
                 if (FileUtil.IsSystemRoot(param.Value))
                 {

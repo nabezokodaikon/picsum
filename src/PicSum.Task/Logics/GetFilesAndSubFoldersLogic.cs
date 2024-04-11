@@ -15,15 +15,7 @@ namespace PicSum.Task.Logics
     {
         public IList<string> Execute(string directoryPath)
         {
-            if (directoryPath == null)
-            {
-                throw new ArgumentNullException(nameof(directoryPath));
-            }
-
-            if (string.IsNullOrEmpty(directoryPath))
-            {
-                throw new ArgumentException("フォルダが指定されていません。", "directoryPath");
-            }
+            ArgumentException.ThrowIfNullOrEmpty(directoryPath, nameof(directoryPath));
 
             var list = new List<string>();
             foreach (var file in FileUtil.GetFilesAndSubDirectorys(directoryPath))

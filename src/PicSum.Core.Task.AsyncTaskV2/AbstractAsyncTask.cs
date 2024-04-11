@@ -52,10 +52,7 @@ namespace PicSum.Core.Task.AsyncTaskV2
                     this.Execute();
                 }
 
-                if (this.CompleteAction != null)
-                {
-                    this.CompleteAction();
-                }
+                this.CompleteAction?.Invoke();
             }
             catch (TaskCancelException)
             {
@@ -64,11 +61,8 @@ namespace PicSum.Core.Task.AsyncTaskV2
             catch (TaskException ex)
             {
                 Logger.Error($"{this.ID} {ex}");
+                this.CatchAction?.Invoke(ex);
 
-                if (this.CatchAction != null)
-                {
-                    this.CatchAction(ex);
-                }
             }
         }
 
@@ -99,13 +93,9 @@ namespace PicSum.Core.Task.AsyncTaskV2
 
         protected void Callback(TResult result)
         {
-            if (result == null)
-                throw new ArgumentNullException(nameof(result));
+            ArgumentNullException.ThrowIfNull(result, nameof(result));
 
-            if (this.CallbackAction != null)
-            {
-                this.CallbackAction(result);
-            }
+            this.CallbackAction?.Invoke(result);
         }
     }
 

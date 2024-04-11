@@ -24,7 +24,7 @@ namespace PicSum.UIComponent.Contents.Parameter
         {
             this.PageSources = DirectoryFileListPageParameter.PAGE_SOURCES;
             this.SourcesKey = directoryPath;
-            this.Key = string.Format("{0}ListPage:{1}", this.PageSources, this.SourcesKey);
+            this.Key = $"{this.PageSources}ListPage: {this.SourcesKey}";
             this.DirectoryPath = directoryPath ?? throw new ArgumentNullException(nameof(directoryPath));
             this.SelectedFilePath = selectedFilePath;
         }
@@ -33,7 +33,7 @@ namespace PicSum.UIComponent.Contents.Parameter
         {
             this.PageSources = DirectoryFileListPageParameter.PAGE_SOURCES;
             this.SourcesKey = directoryPath;
-            this.Key = string.Format("{0}ListPage:{1}", this.PageSources, this.SourcesKey);
+            this.Key = $"{this.PageSources}ListPage: {this.SourcesKey}";
             this.DirectoryPath = directoryPath ?? throw new ArgumentNullException(nameof(directoryPath));
             this.SelectedFilePath = string.Empty;
         }

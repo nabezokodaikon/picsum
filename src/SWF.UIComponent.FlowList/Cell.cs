@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace SWF.UIComponent.FlowList
 {
@@ -9,15 +9,8 @@ namespace SWF.UIComponent.FlowList
 
         public Cell(int row, int col)
         {
-            if (row < 0)
-            {
-                throw new ArgumentOutOfRangeException(nameof(row));
-            }
-
-            if (col < 0)
-            {
-                throw new ArgumentOutOfRangeException(nameof(col));
-            }
+            ArgumentOutOfRangeException.ThrowIfLessThan(row, 0, nameof(row));
+            ArgumentOutOfRangeException.ThrowIfLessThan(col, 0, nameof(col));
 
             this.Row = row;
             this.Col = col;

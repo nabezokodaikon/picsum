@@ -162,7 +162,7 @@ namespace SWF.Common
             {
                 try
                 {
-                    var result = Directory.EnumerateFiles(directoryPath, string.Format("*{0}", ex)).Any();
+                    var result = Directory.EnumerateFiles(directoryPath, $"*{ex}").Any();
                     if (result)
                     {
                         return result;
@@ -200,7 +200,7 @@ namespace SWF.Common
         /// <returns>隠しファイル、システムファイルならFalse。それ以外ならTrue。</returns>
         public static bool CanAccess(string filePath)
         {
-            ArgumentNullException.ThrowIfNull(filePath, nameof(filePath));
+            ArgumentNullException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
             if (IsSystemRoot(filePath))
             {
@@ -275,10 +275,10 @@ namespace SWF.Common
                 try
                 {
                     var driveInfo = DriveInfo.GetDrives()
-                        .FirstOrDefault(di => di.Name == filePath || di.Name == string.Format(@"{0}\", filePath));
+                        .FirstOrDefault(di => di.Name == filePath || di.Name == $"{filePath}");
                     if (driveInfo != null)
                     {
-                        return string.Format("{0}({1})", driveInfo.VolumeLabel, FileUtil.ToRemoveLastPathSeparate(filePath));
+                        return $"{driveInfo.VolumeLabel}({FileUtil.ToRemoveLastPathSeparate(filePath)})";
                     }
                     else
                     {
@@ -632,7 +632,7 @@ namespace SWF.Common
         /// <returns></returns>
         public static Bitmap GetSmallSystemIcon(WinApiMembers.ShellSpecialFolder spesialFolder)
         {
-            WinApiMembers.SHGetSpecialFolderLocation(IntPtr.Zero, spesialFolder, out var idHandle);
+            _ = WinApiMembers.SHGetSpecialFolderLocation(IntPtr.Zero, spesialFolder, out var idHandle);
             var sh = new WinApiMembers.SHFILEINFOW();
             var hSuccess = WinApiMembers.SHGetFileInfoW(idHandle, 0, ref sh, (uint)Marshal.SizeOf(sh),
                                                            WinApiMembers.ShellFileInfoFlags.SHGFI_ICON |
@@ -665,7 +665,7 @@ namespace SWF.Common
         /// <returns></returns>
         public static Bitmap GetLargeSystemIcon(WinApiMembers.ShellSpecialFolder spesialFolder)
         {
-            WinApiMembers.SHGetSpecialFolderLocation(IntPtr.Zero, spesialFolder, out var idHandle);
+            _ = WinApiMembers.SHGetSpecialFolderLocation(IntPtr.Zero, spesialFolder, out var idHandle);
             var sh = new WinApiMembers.SHFILEINFOW();
             var hSuccess = WinApiMembers.SHGetFileInfoW(idHandle, 0, ref sh, (uint)Marshal.SizeOf(sh),
                                                            WinApiMembers.ShellFileInfoFlags.SHGFI_ICON |
@@ -843,7 +843,7 @@ namespace SWF.Common
 
             try
             {
-                Process.Start("EXPLORER.EXE", string.Format(@"/select,{0}", filePath));
+                Process.Start("EXPLORER.EXE", $"/select,{filePath}");
             }
             catch (Win32Exception ex)
             {
@@ -868,8 +868,7 @@ namespace SWF.Common
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
-            var ex = FileUtil.GetExtension(filePath)
-                .Substring(1);
+            var ex = FileUtil.GetExtension(filePath)[1..];
             return $"{ex.ToUpper()} Files (*.{ex.ToLower()})|*.{ex.ToLower()}|All Files (*.*)|*.*";
         }
 
@@ -886,7 +885,7 @@ namespace SWF.Common
 
             var ex = FileUtil.GetExtension(srcFilePath).ToLower();
             var name = FileUtil.GetFileName(srcFilePath);
-            name = name.Substring(0, name.Length - ex.Length);
+            name = name[..^ex.Length];
 
             var count = 0;
 
@@ -919,7 +918,7 @@ namespace SWF.Common
             var lastChar = filePath.Substring(length - 1, 1);
             if (lastChar.Equals(@"\", StringComparison.Ordinal))
             {
-                return filePath.Substring(0, length - 1);
+                return filePath[..(length - 1)];
             }
             else
             {
@@ -933,7 +932,7 @@ namespace SWF.Common
             try
             {
                 var drives = DriveInfo.GetDrives()
-                    .Select(drive => FileUtil.ToRemoveLastPathSeparate(string.Format(@"{0}\", drive.Name)))
+                    .Select(drive => FileUtil.ToRemoveLastPathSeparate(@$"{drive.Name}\"))
                     .ToArray();
                 return drives;
             }

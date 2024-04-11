@@ -82,8 +82,10 @@ namespace PicSum.UIComponent.Contents.FileList
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            var param = new ValueParameter<int>();
-            param.Value = this.parameter.RagingValue;
+            var param = new ValueParameter<int>
+            {
+                Value = this.parameter.RatingValue
+            };
             this.SearchTask.StartTask(param);
         }
 
@@ -128,9 +130,11 @@ namespace PicSum.UIComponent.Contents.FileList
 
         protected override void OnRemoveFile(System.Collections.Generic.IList<string> filePathList)
         {
-            var param = new UpdateFileRatingParameter();
-            param.FilePathList = filePathList;
-            param.RatingValue = 0;
+            var param = new UpdateFileRatingParameter
+            {
+                FilePathList = filePathList,
+                RatingValue = 0
+            };
             this.DeleteTask.StartTask(param);
 
             this.RemoveFile(filePathList);
@@ -151,7 +155,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
                     if (!FileUtil.IsImageFile(this.SelectedFilePath))
                     {
-                        throw new PicSumException(string.Format("画像ファイルが選択されていません。'{0}'", this.SelectedFilePath));
+                        throw new PicSumException($"画像ファイルが選択されていません。'{this.SelectedFilePath}'");
                     }
 
                     var eventArgs = new GetImageFilesEventArgs(
@@ -160,7 +164,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 })
                 .StartThread();
 
-                task.StartTask(new ValueParameter<int>() { Value = this.parameter.RagingValue });
+                task.StartTask(new ValueParameter<int>() { Value = this.parameter.RatingValue });
             };
         }
 

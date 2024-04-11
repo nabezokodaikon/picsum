@@ -1,6 +1,4 @@
-using PicSum.Core.Task.AsyncTaskV2;
 using PicSum.Main.Mng;
-using PicSum.Task.Tasks;
 using SWF.UIComponent.Common;
 using System;
 using System.Runtime.Versioning;
@@ -13,7 +11,7 @@ namespace PicSum.Main.UIComponent
     [SupportedOSPlatform("windows")]
     internal sealed class InitialForm : HideForm
     {
-        private BrowserManager browserManager = new();
+        private readonly BrowserManager browserManager = new();
 
         public InitialForm()
         {
@@ -22,7 +20,7 @@ namespace PicSum.Main.UIComponent
 
         private void InitializeComponent()
         {
-            this.browserManager.BrowserNothing += new EventHandler(this.BrowserManager_BrowserNothing);
+            this.browserManager.BrowserNothing += new(this.BrowserManager_BrowserNothing);
         }
 
         private void BrowserManager_BrowserNothing(object sender, EventArgs e)

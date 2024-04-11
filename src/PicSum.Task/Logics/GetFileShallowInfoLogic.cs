@@ -15,10 +15,7 @@ namespace PicSum.Task.Logics
     {
         public FileShallowInfoEntity Execute(string filePath)
         {
-            if (filePath == null)
-            {
-                throw new ArgumentNullException(nameof(filePath));
-            }
+            ArgumentNullException.ThrowIfNull(filePath, nameof(filePath));
 
             var info = new FileShallowInfoEntity
             {
@@ -75,10 +72,7 @@ namespace PicSum.Task.Logics
 
         public FileShallowInfoEntity Execute(string filePath, DateTime registrationDate)
         {
-            if (filePath == null)
-            {
-                throw new ArgumentNullException(nameof(filePath));
-            }
+            ArgumentNullException.ThrowIfNull(filePath, nameof(filePath));
 
             var info = this.Execute(filePath);
             info.RgistrationDate = registrationDate;

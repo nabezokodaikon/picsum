@@ -12,8 +12,8 @@ namespace SWF.UIComponent.TabOperation
     {
         #region インスタンス変数
 
-        private readonly TabDrawArea drawArea = new TabDrawArea();
-        private readonly PageHistoryManager historyManager = new PageHistoryManager();
+        private readonly TabDrawArea drawArea = new();
+        private readonly PageHistoryManager historyManager = new();
         private PagePanel page = null;
         private TabSwitch owner = null;
 
@@ -110,10 +110,7 @@ namespace SWF.UIComponent.TabOperation
 
         internal TabInfo(IPageParameter param)
         {
-            if (param == null)
-            {
-                throw new ArgumentNullException(nameof(param));
-            }
+            ArgumentNullException.ThrowIfNull(param, nameof(param));
 
             this.historyManager.Add(param);
             this.page = param.CreatePage();
@@ -135,10 +132,7 @@ namespace SWF.UIComponent.TabOperation
 
         public void OverwritePage(IPageParameter param)
         {
-            if (param == null)
-            {
-                throw new ArgumentNullException(nameof(param));
-            }
+            ArgumentNullException.ThrowIfNull(param, nameof(param));
 
             if (this.page != null)
             {
@@ -156,10 +150,7 @@ namespace SWF.UIComponent.TabOperation
 
         public void DrawingTabPage(DrawTabEventArgs e)
         {
-            if (e == null)
-            {
-                throw new ArgumentNullException(nameof(e));
-            }
+            ArgumentNullException.ThrowIfNull(e, nameof(e));
 
             if (this.page == null)
             {

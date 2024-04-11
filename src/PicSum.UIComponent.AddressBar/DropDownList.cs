@@ -399,33 +399,24 @@ namespace PicSum.UIComponent.AddressBar
             this.FlowList.IsMultiSelect = false;
             this.FlowList.BackColor = this.BackColor;
 
-            this.FlowList.DrawItem += new EventHandler<SWF.UIComponent.FlowList.DrawItemEventArgs>(this.FlowList_Drawitem);
-            this.FlowList.ItemExecute += new EventHandler(this.FlowList_ItemExecute);
-            this.FlowList.ItemMouseClick += new EventHandler<MouseEventArgs>(this.FlowList_ItemMouseClick);
+            this.FlowList.DrawItem += new(this.FlowList_Drawitem);
+            this.FlowList.ItemExecute += new(this.FlowList_ItemExecute);
+            this.FlowList.ItemMouseClick += new(this.FlowList_ItemMouseClick);
         }
 
         private void OnDrawItem(SWF.UIComponent.FlowList.DrawItemEventArgs e)
         {
-            if (this.Drawitem != null)
-            {
-                this.Drawitem(this, e);
-            }
+            this.Drawitem?.Invoke(this, e);
         }
 
         private void OnItemMouseClick(MouseEventArgs e)
         {
-            if (this.ItemMouseClick != null)
-            {
-                this.ItemMouseClick(this, e);
-            }
+            this.ItemMouseClick?.Invoke(this, e);
         }
 
         private void OnItemExecute(EventArgs e)
         {
-            if (this.ItemExecute != null)
-            {
-                this.ItemExecute(this, e);
-            }
+            this.ItemExecute?.Invoke(this, e);
         }
 
         #endregion
