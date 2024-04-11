@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 
@@ -7,18 +7,11 @@ namespace PicSum.Core.Data.DatabaseAccessor
     /// <summary>
     /// SQL基底クラス
     /// </summary>
-    public abstract class SqlBase
+    public abstract class SqlBase(string sqlText)
     {
-        private readonly string sqlText;
+        private readonly string sqlText = sqlText ?? throw new ArgumentNullException(nameof(sqlText));
 
-        public List<IDbDataParameter> ParameterList { get; protected set; }
-
-        public SqlBase(string sqlText)
-        {
-            this.sqlText = sqlText ?? throw new ArgumentNullException(nameof(sqlText));
-
-            this.ParameterList = new List<IDbDataParameter>();
-        }
+        public List<IDbDataParameter> ParameterList { get; protected set; } = [];
 
         /// <summary>
         /// 実行するSQLを取得します。
@@ -33,19 +26,12 @@ namespace PicSum.Core.Data.DatabaseAccessor
     /// <summary>
     /// データアクセサ
     /// </summary>
-    public abstract class SqlBase<TDto>
+    public abstract class SqlBase<TDto>(string sqlText)
         where TDto : IDto
     {
-        private readonly string sqlText;
+        private readonly string sqlText = sqlText ?? throw new ArgumentNullException(nameof(sqlText));
 
-        public List<IDbDataParameter> ParameterList { get; protected set; }
-
-        public SqlBase(string sqlText)
-        {
-            this.sqlText = sqlText ?? throw new ArgumentNullException(nameof(sqlText));
-
-            this.ParameterList = new List<IDbDataParameter>();
-        }
+        public List<IDbDataParameter> ParameterList { get; protected set; } = [];
 
         /// <summary>
         /// 実行するSQLを取得します。
