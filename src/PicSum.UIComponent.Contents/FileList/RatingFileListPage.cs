@@ -24,7 +24,7 @@ namespace PicSum.UIComponent.Contents.FileList
     {
         #region インスタンス変数
 
-        private RatingFileListPageParameter parameter = null;
+        private readonly RatingFileListPageParameter parameter = null;
         private TwoWayTask<GetFilesByRatingTask, ValueParameter<int>, ListResult<FileShallowInfoEntity>> searchTask = null;
         private OneWayTask<UpdateFileRatingTask, UpdateFileRatingParameter> deleteTask = null;
         private TwoWayTask<GetFilesByRatingTask, ValueParameter<int>, ListResult<FileShallowInfoEntity>> getFilesTask = null;

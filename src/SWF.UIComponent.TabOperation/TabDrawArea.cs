@@ -37,7 +37,7 @@ namespace SWF.UIComponent.TabOperation
         private readonly static Pen TAB_CLOSE_BUTTON_SLASH_PEN = new Pen(Color.Black, 2f);
 
 
-        private static IList<Point> GetLeftTransparentPoints(Bitmap bmp)
+        private static List<Point> GetLeftTransparentPoints(Bitmap bmp)
         {
             if (bmp.PixelFormat != PixelFormat.Format32bppArgb)
             {
@@ -74,7 +74,7 @@ namespace SWF.UIComponent.TabOperation
             return pList;
         }
 
-        private static IList<Point> GetRightTransparentPoints(Bitmap bmp)
+        private static List<Point> GetRightTransparentPoints(Bitmap bmp)
         {
             if (bmp.PixelFormat != PixelFormat.Format32bppArgb)
             {

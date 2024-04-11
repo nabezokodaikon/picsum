@@ -88,7 +88,7 @@ namespace SWF.UIComponent.TabOperation
         private readonly TabPalette tabPalette = new TabPalette();
 
         // タブ情報リスト
-        private readonly List<TabInfo> tabList = new List<TabInfo>();
+        private readonly List<TabInfo> tabList = [];
 
         // マウスダウンしたタブ
         private TabInfo mouseDownTab = null;
@@ -103,10 +103,10 @@ namespace SWF.UIComponent.TabOperation
         private Nullable<Point> dropPoint = null;
 
         // タブ追加ボタン病が暮らす
-        private AddTabButtonDrawArea addTabButtonDrawArea = new AddTabButtonDrawArea();
+        private readonly AddTabButtonDrawArea addTabButtonDrawArea = new AddTabButtonDrawArea();
 
         // コンテンツ描画クラス
-        private PageDrawArea pageDrawArea = new PageDrawArea();
+        private readonly PageDrawArea pageDrawArea = new PageDrawArea();
 
         #endregion
 
@@ -504,11 +504,7 @@ namespace SWF.UIComponent.TabOperation
                 throw new ArgumentException("含まれていないタブを削除しようとしました。", nameof(tab));
             }
 
-            var nextActiveTab = this.GetNextTab(tab);
-            if (nextActiveTab == null)
-            {
-                nextActiveTab = this.GetPreviewTab(tab);
-            }
+            var nextActiveTab = this.GetNextTab(tab) ?? this.GetPreviewTab(tab);
 
             if (this.SetActiveTab(nextActiveTab))
             {
@@ -691,7 +687,7 @@ namespace SWF.UIComponent.TabOperation
                 if (tab == null && e.Button == MouseButtons.Left)
                 {
                     WinApiMembers.ReleaseCapture();
-                    WinApiMembers.SendMessage(form.Handle, WinApiMembers.WM_NCLBUTTONDOWN, WinApiMembers.HTCAPTION, 0);
+                    _ = WinApiMembers.SendMessage(form.Handle, WinApiMembers.WM_NCLBUTTONDOWN, WinApiMembers.HTCAPTION, 0);
                 }
             }
 

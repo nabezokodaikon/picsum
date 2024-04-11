@@ -13,7 +13,7 @@ namespace SWF.UIComponent.TabOperation
     internal static class TabDragOperation
     {
         private const int DEFAULT_WIDTH_OFFSET = 8;
-        private static readonly List<Form> FORM_LIST = new List<Form>();
+        private static readonly List<Form> FORM_LIST = [];
         private static TabDragForm tabDragForm = null;
         private static TabInfo tab = null;
         private static Point fromScreenPoint = Point.Empty;
@@ -26,11 +26,7 @@ namespace SWF.UIComponent.TabOperation
         {
             get
             {
-                if (tabDragForm == null)
-                {
-                    tabDragForm = new TabDragForm();
-                }
-
+                tabDragForm ??= new TabDragForm();
                 return tabDragForm;
             }
         }
@@ -168,7 +164,7 @@ namespace SWF.UIComponent.TabOperation
                 {
                     var clientPoint = tab.Owner.PointToClient(toScreenPoint);
 
-                    int toX = clientPoint.X;
+                    int toX;
                     if (tab.DrawArea.Width > widthOffset)
                     {
                         toX = clientPoint.X - widthOffset;

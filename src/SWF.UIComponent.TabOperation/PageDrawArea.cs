@@ -12,7 +12,6 @@ namespace SWF.UIComponent.TabOperation
         #region 定数・列挙
 
         private const int TAB_OVERLAP = 1;
-        private const int SIDE_WIDTH = 16;
 
         #endregion
 
@@ -89,11 +88,11 @@ namespace SWF.UIComponent.TabOperation
                 throw new ArgumentNullException(nameof(g));
             }
 
-            this.drawOutline(g);
-            this.drawInnerRectangle(g);
+            this.DrawOutline(g);
+            this.DrawInnerRectangle(g);
         }
 
-        private void drawOutline(Graphics g)
+        private void DrawOutline(Graphics g)
         {
             var x = (int)g.ClipBounds.X;
             var y = this.top;
@@ -102,7 +101,7 @@ namespace SWF.UIComponent.TabOperation
             g.FillRectangle(this.outlineBrush, x, y, w, h);
         }
 
-        private void drawInnerRectangle(Graphics g)
+        private void DrawInnerRectangle(Graphics g)
         {
             var x = (int)g.ClipBounds.X;
             var y = this.top + 1;

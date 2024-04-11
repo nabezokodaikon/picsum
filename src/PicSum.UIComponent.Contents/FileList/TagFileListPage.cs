@@ -26,7 +26,7 @@ namespace PicSum.UIComponent.Contents.FileList
     {
         #region インスタンス変数
 
-        private TagFileListPageParameter parameter = null;
+        private readonly TagFileListPageParameter parameter = null;
         private TwoWayTask<GetFilesByTagTask, ValueParameter<string>, ListResult<FileShallowInfoEntity>> searchTask = null;
         private OneWayTask<DeleteFileTagTask, UpdateFileTagParameter> deleteTask = null;
         private TwoWayTask<GetFilesByTagTask, ValueParameter<string>, ListResult<FileShallowInfoEntity>> getFilesTask = null;

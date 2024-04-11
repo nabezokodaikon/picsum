@@ -21,7 +21,7 @@ namespace PicSum.UIComponent.Contents.FileList
     internal sealed class BookmarkFileListPage
         : AbstractFileListPage
     {
-        private BookmarkFileListPageParameter paramter = null;
+        private readonly BookmarkFileListPageParameter paramter = null;
         private TwoWayTask<GetBookmarkTask, ListResult<FileShallowInfoEntity>> searchTask = null;
         private OneWayTask<DeleteBookmarkTask, ListParameter<string>> deleteTask = null;
         private TwoWayTask<GetFilesByDirectoryTask, ValueParameter<string>, GetDirectoryResult> getFilesTask = null;

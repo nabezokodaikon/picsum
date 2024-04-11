@@ -16,21 +16,6 @@ namespace SWF.UIComponent.TabOperation
             this.DoubleBuffered = true;
         }
 
-        private PagePanel pagePanel
-        {
-            get
-            {
-                if (this.Controls.Count == 1)
-                {
-                    return (PagePanel)this.Controls[0];
-                }
-                else
-                {
-                    return null;
-                }
-            }
-        }
-
         /// <summary>
         /// ページを設定します。
         /// </summary>

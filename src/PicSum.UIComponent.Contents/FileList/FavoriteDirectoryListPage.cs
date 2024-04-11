@@ -20,7 +20,7 @@ namespace PicSum.UIComponent.Contents.FileList
     {
         #region インスタンス変数
 
-        private FavoriteDirectoryListPageParameter parameter = null;
+        private readonly FavoriteDirectoryListPageParameter parameter = null;
         private TwoWayTask<GetFavoriteDirectoryTask, GetFavoriteDirectoryParameter, ListResult<FileShallowInfoEntity>> searchTask = null;
         private OneWayTask<DeleteDirectoryViewCounterTask, ListParameter<string>> deleteTask = null;
 

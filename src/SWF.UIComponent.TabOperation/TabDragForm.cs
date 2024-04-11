@@ -40,11 +40,7 @@ namespace SWF.UIComponent.TabOperation
         {
             get
             {
-                if (this.tabPalette == null)
-                {
-                    this.tabPalette = new TabPalette();
-                }
-
+                this.tabPalette ??= new TabPalette();
                 return this.tabPalette;
             }
         }
@@ -53,11 +49,7 @@ namespace SWF.UIComponent.TabOperation
         {
             get
             {
-                if (this.tabDropForm == null)
-                {
-                    this.tabDropForm = new TabDropForm();
-                }
-
+                this.tabDropForm ??= new TabDropForm();
                 return this.tabDropForm;
             }
         }
@@ -68,7 +60,7 @@ namespace SWF.UIComponent.TabOperation
             {
                 if (this.tabDrawArea == null)
                 {
-                    this.tabDrawArea = new TabDrawArea();
+                    this.tabDrawArea = new();
                     this.tabDrawArea.X = DRAW_TAB_WIDHT_OFFSET;
                     this.tabDrawArea.Y = 0;
                 }
@@ -81,11 +73,7 @@ namespace SWF.UIComponent.TabOperation
         {
             get
             {
-                if (this.drawTabEventArgs == null)
-                {
-                    this.drawTabEventArgs = new DrawTabEventArgs();
-                }
-
+                this.drawTabEventArgs ??= new DrawTabEventArgs();
                 return this.drawTabEventArgs;
             }
         }

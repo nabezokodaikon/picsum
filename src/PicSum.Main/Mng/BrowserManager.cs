@@ -26,7 +26,7 @@ namespace PicSum.Main.Mng
 
         #region インスタンス変数
 
-        private readonly List<BrowserForm> browserList = new List<BrowserForm>();
+        private readonly List<BrowserForm> browserList = [];
 
         #endregion
 
