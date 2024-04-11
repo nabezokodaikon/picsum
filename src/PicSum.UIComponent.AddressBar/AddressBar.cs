@@ -36,7 +36,7 @@ namespace PicSum.UIComponent.AddressBar
         private readonly DirectoryHistoryDrawItem directoryHistoryItem = new();
         private TwoWayTask<GetAddressInfoTask, ValueParameter<string>, GetAddressInfoResult> getAddressInfoTask = null;
         private string currentDirectoryPath = null;
-        private readonly List<DrawItemBase> addressItems = new();
+        private readonly List<DrawItemBase> addressItems = [];
         private DrawItemBase mousePointItem = null;
         private DrawItemBase mouseDownItem = null;
 
@@ -173,10 +173,7 @@ namespace PicSum.UIComponent.AddressBar
 
         public void SetAddress(string filePath)
         {
-            if (filePath == null)
-            {
-                throw new ArgumentNullException(nameof(filePath));
-            }
+            ArgumentNullException.ThrowIfNull(nameof(filePath));
 
             if (string.IsNullOrEmpty(filePath))
             {
@@ -198,9 +195,11 @@ namespace PicSum.UIComponent.AddressBar
                 }
             }
 
-            var param = new ValueParameter<string>();
-            param.Value = filePath;
-           
+            var param = new ValueParameter<string>
+            {
+                Value = filePath
+            };
+
             this.GetAddressInfoProcess.StartTask(param);
         }
 
@@ -288,10 +287,7 @@ namespace PicSum.UIComponent.AddressBar
 
             this.Invalidate();
 
-            if (this.mouseDownItem != null)
-            {
-                this.mouseDownItem.OnMouseDown(e);
-            }
+            this.mouseDownItem?.OnMouseDown(e);
 
             base.OnMouseDown(e);
         }
@@ -421,7 +417,9 @@ namespace PicSum.UIComponent.AddressBar
                         if (drawItem.GetType() == typeof(SeparatorDrawItem))
                         {
                             var sepDrawItem = (SeparatorDrawItem)drawItem;
-                            if (this.overflowItem.Items.Count(directory => directory.DirectoryPath.Equals(sepDrawItem.Directory.DirectoryPath, StringComparison.Ordinal)) > 0)
+                            var count = this.overflowItem.Items
+                                .Count(dir => dir.DirectoryPath.Equals(sepDrawItem.Directory.DirectoryPath, StringComparison.Ordinal));
+                            if (count > 0)
                             {
                                 drawItem.Left = -1;
                                 continue;
@@ -435,29 +433,35 @@ namespace PicSum.UIComponent.AddressBar
             }
         }
 
-        private IList<DrawItemBase> CreateAddressItems(GetAddressInfoResult addressInfo)
+        private List<DrawItemBase> CreateAddressItems(GetAddressInfoResult addressInfo)
         {
             var items = new List<DrawItemBase>();
 
             for (var i = 0; i < addressInfo.DirectoryList.Count - 1; i++)
             {
                 var info = addressInfo.DirectoryList[i];
-                var directory = new DirectoryEntity();
-                directory.DirectoryPath = info.FilePath;
-                directory.DirectoryName = info.FileName;
-                directory.DirectoryIcon = info.SmallIcon;
+                var directory = new DirectoryEntity
+                {
+                    DirectoryPath = info.FilePath,
+                    DirectoryName = info.FileName,
+                    DirectoryIcon = info.SmallIcon
+                };
 
-                var directoryDraw = new DirectoryDrawItem();
-                directoryDraw.AddressBar = this;
-                directoryDraw.Directory = directory;
-                directoryDraw.Palette = this.palette;
+                var directoryDraw = new DirectoryDrawItem
+                {
+                    AddressBar = this,
+                    Directory = directory,
+                    Palette = this.palette
+                };
                 directoryDraw.SelectedDirectory += new EventHandler<SelectedDirectoryEventArgs>(this.DrawItem_SelectedDirectory);
                 items.Add(directoryDraw);
 
-                var sepDraw = new SeparatorDrawItem();
-                sepDraw.AddressBar = this;
-                sepDraw.Directory = directory;
-                sepDraw.Palette = this.palette;
+                var sepDraw = new SeparatorDrawItem
+                {
+                    AddressBar = this,
+                    Directory = directory,
+                    Palette = this.palette
+                };
                 if (i + 1 < addressInfo.DirectoryList.Count)
                 {
                     sepDraw.SelectedSubDirectoryPath = addressInfo.DirectoryList[i + 1].FilePath;
@@ -469,37 +473,47 @@ namespace PicSum.UIComponent.AddressBar
             if (addressInfo.HasSubDirectory)
             {
                 var info = addressInfo.DirectoryList.Last();
-                var directory = new DirectoryEntity();
-                directory.DirectoryPath = info.FilePath;
-                directory.DirectoryName = info.FileName;
-                directory.DirectoryIcon = info.SmallIcon;
+                var directory = new DirectoryEntity
+                {
+                    DirectoryPath = info.FilePath,
+                    DirectoryName = info.FileName,
+                    DirectoryIcon = info.SmallIcon
+                };
 
-                var directoryDraw = new DirectoryDrawItem();
-                directoryDraw.AddressBar = this;
-                directoryDraw.Directory = directory;
-                directoryDraw.Palette = this.palette;
+                var directoryDraw = new DirectoryDrawItem
+                {
+                    AddressBar = this,
+                    Directory = directory,
+                    Palette = this.palette
+                };
                 directoryDraw.SelectedDirectory += new EventHandler<SelectedDirectoryEventArgs>(this.DrawItem_SelectedDirectory);
                 items.Add(directoryDraw);
 
-                var sepDraw = new SeparatorDrawItem();
-                sepDraw.AddressBar = this;
-                sepDraw.Directory = directory;
-                sepDraw.Palette = this.palette;
+                var sepDraw = new SeparatorDrawItem
+                {
+                    AddressBar = this,
+                    Directory = directory,
+                    Palette = this.palette
+                };
                 sepDraw.SelectedDirectory += new EventHandler<SelectedDirectoryEventArgs>(this.DrawItem_SelectedDirectory);
                 items.Add(sepDraw);
             }
             else
             {
                 var info = addressInfo.DirectoryList.Last();
-                var directory = new DirectoryEntity();
-                directory.DirectoryPath = info.FilePath;
-                directory.DirectoryName = info.FileName;
-                directory.DirectoryIcon = info.SmallIcon;
+                var directory = new DirectoryEntity
+                {
+                    DirectoryPath = info.FilePath,
+                    DirectoryName = info.FileName,
+                    DirectoryIcon = info.SmallIcon
+                };
 
-                var directoryDraw = new DirectoryDrawItem();
-                directoryDraw.AddressBar = this;
-                directoryDraw.Directory = directory;
-                directoryDraw.Palette = this.palette;
+                var directoryDraw = new DirectoryDrawItem
+                {
+                    AddressBar = this,
+                    Directory = directory,
+                    Palette = this.palette,
+                };
                 directoryDraw.SelectedDirectory += new EventHandler<SelectedDirectoryEventArgs>(this.DrawItem_SelectedDirectory);
                 items.Add(directoryDraw);
             }
@@ -509,7 +523,7 @@ namespace PicSum.UIComponent.AddressBar
 
         private void ClearAddressItems()
         {
-            foreach (IDisposable item in this.addressItems)
+            foreach (IDisposable item in this.addressItems.Cast<IDisposable>())
             {
                 item.Dispose();
             }
@@ -625,10 +639,7 @@ namespace PicSum.UIComponent.AddressBar
 
         private void OnSelectedDirectory(SelectedDirectoryEventArgs e)
         {
-            if (this.SelectedDirectory != null)
-            {
-                this.SelectedDirectory(this, e);
-            }
+            this.SelectedDirectory?.Invoke(this, e);
         }
 
         private void GetAddressInfoProcess_Callback(GetAddressInfoResult e)

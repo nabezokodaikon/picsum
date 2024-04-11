@@ -5,6 +5,7 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Runtime.Versioning;
 using System.Security;
 
@@ -16,10 +17,10 @@ namespace SWF.Common
         internal const string WEBP_FILE_EXTENSION = ".WEBP";
         internal const string AVIF_FILE_EXTENSION = ".AVIF";
 
-        public static readonly Size EMPTY_SIZE = new Size(-1, -1);
+        public static readonly Size EMPTY_SIZE = new(-1, -1);
         internal static readonly List<string> IMAGE_FILE_EXTENSION_LIST = ImageUtil.GetImageFileExtensionList();
 
-        private static readonly EncoderParameter ENCORDER_PARAMETER = new EncoderParameter(Encoder.Quality, 100L);
+        private static readonly EncoderParameter ENCORDER_PARAMETER = new(Encoder.Quality, 100L);
         private static readonly ImageCodecInfo PNG_CODEC_INFO = ImageCodecInfo.GetImageEncoders().Single(info => info.FormatID == ImageFormat.Png.Guid);
         private static readonly dynamic SHELL = Activator.CreateInstance(Type.GetTypeFromProgID("Shell.Application"));
 
@@ -30,10 +31,7 @@ namespace SWF.Common
         /// <returns></returns>
         public static byte[] ToCompressionBinary(Image img)
         {
-            if (img == null)
-            {
-                throw new ArgumentNullException(nameof(img));
-            }
+            ArgumentNullException.ThrowIfNull(nameof(img));
 
             using (var mes = new MemoryStream())
             {
@@ -54,10 +52,7 @@ namespace SWF.Common
         /// <returns>イメージオブジェクト</returns>
         public static Image ToImage(byte[] bf)
         {
-            if (bf == null)
-            {
-                throw new ArgumentNullException(nameof(bf));
-            }
+            ArgumentNullException.ThrowIfNull(nameof(bf));
 
             using (var mes = new MemoryStream(bf))
             {
@@ -82,10 +77,7 @@ namespace SWF.Common
         /// <exception cref="ArgumentNullException"></exception>
         public static Image ResizeImage(Bitmap srcImg, double scale)
         {
-            if (srcImg == null)
-            {
-                throw new ArgumentNullException(nameof(srcImg));
-            }
+            ArgumentNullException.ThrowIfNull(nameof(srcImg));
 
             var w = (int)(srcImg.Width * scale);
             var h = (int)(srcImg.Height * scale);
@@ -105,11 +97,8 @@ namespace SWF.Common
         /// <exception cref="ArgumentNullException"></exception>
         public static Size GetImageSize(string filePath)
         {
-            if (filePath == null)
-            {
-                throw new ArgumentNullException(nameof(filePath));
-            }
-          
+            ArgumentNullException.ThrowIfNull(nameof(filePath));
+
             var directory = ImageUtil.SHELL.NameSpace(Path.GetDirectoryName(filePath));
             var item = directory.ParseName(Path.GetFileName(filePath));
             var deteils = directory.GetDetailsOf(item, 31);
@@ -152,10 +141,7 @@ namespace SWF.Common
         /// <returns></returns>
         public static Bitmap ReadImageFile(string filePath)
         {
-            if (filePath == null)
-            {
-                throw new ArgumentNullException(nameof(filePath));
-            }
+            ArgumentNullException.ThrowIfNull(nameof(filePath));
 
             try
             {
@@ -248,10 +234,7 @@ namespace SWF.Common
         /// <returns></returns>
         public static Color GetPixel(Bitmap bmp, int x, int y)
         {
-            if (bmp == null)
-            {
-                throw new ArgumentNullException(nameof(bmp));
-            }
+            ArgumentNullException.ThrowIfNull(nameof(bmp));
 
             if (bmp.PixelFormat != PixelFormat.Format32bppArgb)
             {
@@ -263,12 +246,12 @@ namespace SWF.Common
 
             if (x < 0 || x > w - 1)
             {
-                throw new ArgumentOutOfRangeException("x");
+                throw new ArgumentOutOfRangeException(nameof(x));
             }
 
             if (y < 0 || y > h - 1)
             {
-                throw new ArgumentOutOfRangeException("y");
+                throw new ArgumentOutOfRangeException(nameof(y));
             }
 
             var bd = bmp.LockBits(new Rectangle(0, 0, w, h), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
@@ -300,10 +283,7 @@ namespace SWF.Common
         /// <returns></returns>
         public static Region GetRegion(Bitmap bmp, Color transparent)
         {
-            if (bmp == null)
-            {
-                throw new ArgumentNullException(nameof(bmp));
-            }
+            ArgumentNullException.ThrowIfNull(nameof(bmp));
 
             if (bmp.PixelFormat != PixelFormat.Format32bppArgb)
             {

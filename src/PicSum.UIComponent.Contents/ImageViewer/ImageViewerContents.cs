@@ -494,12 +494,14 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         {
             this.Cursor = Cursors.WaitCursor;
 
-            var param = new GetImageFileParameter();
-            param.CurrentIndex = this.FilePathListIndex;
-            param.FilePathList = this.filePathList;
-            param.ImageDisplayMode = this.displayMode;
-            param.ImageSizeMode = this.sizeMode;
-            param.ThumbnailSize = this.leftImagePanel.ThumbnailSize;
+            var param = new GetImageFileParameter
+            {
+                CurrentIndex = this.FilePathListIndex,
+                FilePathList = this.filePathList,
+                ImageDisplayMode = this.displayMode,
+                ImageSizeMode = this.sizeMode,
+                ThumbnailSize = this.leftImagePanel.ThumbnailSize
+            };
 
             this.GetImageFileTask.StartTask(param);
         }
@@ -1067,9 +1069,11 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 if (ofd.ShowDialog() == DialogResult.OK)
                 {
                     var dir = FileUtil.GetParentDirectoryPath(ofd.FileName);
-                    var param = new ExportFileParameter();
-                    param.SrcFilePath = srcFilePath;
-                    param.ExportFilePath = ofd.FileName;
+                    var param = new ExportFileParameter
+                    {
+                        SrcFilePath = srcFilePath,
+                        ExportFilePath = ofd.FileName
+                    };
                     this.ExportFileTask.StartTask(param);
 
                     CommonConfig.ExportDirectoryPath = dir;

@@ -14,7 +14,7 @@ namespace PicSum.UIComponent.AddressBar
     {
         private DropDownList dropDownList = null;
         private DirectoryEntity mousePointItem = null;
-        private IList<DirectoryEntity> items = new List<DirectoryEntity>();
+        private readonly List<DirectoryEntity> items = [];
 
         public IList<DirectoryEntity> Items
         {
@@ -76,13 +76,15 @@ namespace PicSum.UIComponent.AddressBar
 
         private void CreateDropDownList()
         {
-            this.dropDownList = new DropDownList();
-            this.dropDownList.BackColor = base.Palette.InnerColor;
-            this.dropDownList.ItemHeight = DROPDOWN_ITEM_HEIGHT;
-            this.dropDownList.ItemTextTrimming = StringTrimming.EllipsisCharacter;
-            this.dropDownList.ItemTextAlignment = StringAlignment.Near;
-            this.dropDownList.ItemTextLineAlignment = StringAlignment.Center;
-            this.dropDownList.ItemTextFormatFlags = StringFormatFlags.NoWrap;
+            this.dropDownList = new()
+            {
+                BackColor = base.Palette.InnerColor,
+                ItemHeight = DROPDOWN_ITEM_HEIGHT,
+                ItemTextTrimming = StringTrimming.EllipsisCharacter,
+                ItemTextAlignment = StringAlignment.Near,
+                ItemTextLineAlignment = StringAlignment.Center,
+                ItemTextFormatFlags = StringFormatFlags.NoWrap
+            };
 
             this.dropDownList.Opened += new EventHandler(this.DropDownList_Opened);
             this.dropDownList.Closed += new ToolStripDropDownClosedEventHandler(this.DropDownList_Closed);

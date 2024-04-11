@@ -21,10 +21,7 @@ namespace PicSum.Task.Logics
     {
         public FileDeepInfoEntity Execute(string filePath, Size thumbSize)
         {
-            if (filePath == null)
-            {
-                throw new ArgumentNullException(nameof(filePath));
-            }
+            ArgumentNullException.ThrowIfNull(nameof(filePath));
 
             var info = new FileDeepInfoEntity
             {
@@ -73,15 +70,17 @@ namespace PicSum.Task.Logics
                         using (srcImg)
                         {
                             var thumb = ThumbnailUtil.CreateThumbnail(srcImg, thumbSize.Width, thumbSize.Height);
-                            info.Thumbnail = new ThumbnailImageResult();
-                            info.Thumbnail.FilePath = info.FilePath;
-                            info.Thumbnail.FileUpdatedate = info.UpdateDate.Value;
-                            info.Thumbnail.ThumbnailImage = thumb;
-                            info.Thumbnail.ThumbnailWidth = thumbSize.Width;
-                            info.Thumbnail.ThumbnailHeight = thumbSize.Height;
-                            info.Thumbnail.SourceWidth = srcImg.Width;
-                            info.Thumbnail.SourceHeight = srcImg.Height;
-                            info.ImageSize = new Size(srcImg.Width, srcImg.Height);
+                            info.Thumbnail = new()
+                            {
+                                FilePath = info.FilePath,
+                                FileUpdatedate = info.UpdateDate.Value,
+                                ThumbnailImage = thumb,
+                                ThumbnailWidth = thumbSize.Width,
+                                ThumbnailHeight = thumbSize.Height,
+                                SourceWidth = srcImg.Width,
+                                SourceHeight = srcImg.Height
+                            };
+                            info.ImageSize = new(srcImg.Width, srcImg.Height);
                         }
                     }
                 }
@@ -96,15 +95,17 @@ namespace PicSum.Task.Logics
                             using (srcImg)
                             {
                                 var thumb = ThumbnailUtil.CreateThumbnail(srcImg, thumbSize.Width, thumbSize.Height);
-                                info.Thumbnail = new ThumbnailImageResult();
-                                info.Thumbnail.FilePath = info.FilePath;
-                                info.Thumbnail.FileUpdatedate = info.UpdateDate.Value;
-                                info.Thumbnail.ThumbnailImage = thumb;
-                                info.Thumbnail.ThumbnailWidth = thumbSize.Width;
-                                info.Thumbnail.ThumbnailHeight = thumbSize.Height;
-                                info.Thumbnail.SourceWidth = srcImg.Width;
-                                info.Thumbnail.SourceHeight = srcImg.Height;
-                                info.ImageSize = new Size(srcImg.Width, srcImg.Height);
+                                info.Thumbnail = new()
+                                {
+                                    FilePath = info.FilePath,
+                                    FileUpdatedate = info.UpdateDate.Value,
+                                    ThumbnailImage = thumb,
+                                    ThumbnailWidth = thumbSize.Width,
+                                    ThumbnailHeight = thumbSize.Height,
+                                    SourceWidth = srcImg.Width,
+                                    SourceHeight = srcImg.Height,
+                                };
+                                info.ImageSize = new(srcImg.Width, srcImg.Height);
                             }
                         }
                     }

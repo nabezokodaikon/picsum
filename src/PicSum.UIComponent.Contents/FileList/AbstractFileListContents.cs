@@ -314,14 +314,16 @@ namespace PicSum.UIComponent.Contents.FileList
             this.masterFileDictionary = [];
             foreach (var srcFile in srcFiles)
             {
-                var destFile = new FileEntity();
-                destFile.FilePath = srcFile.FilePath;
-                destFile.FileName = srcFile.FileName;
-                destFile.UpdateDate = srcFile.UpdateDate;
-                destFile.RgistrationDate = srcFile.RgistrationDate;
-                destFile.Icon = srcFile.LargeIcon;
-                destFile.IsFile = srcFile.IsFile;
-                destFile.IsImageFile = srcFile.IsImageFile;
+                var destFile = new FileEntity
+                {
+                    FilePath = srcFile.FilePath,
+                    FileName = srcFile.FileName,
+                    UpdateDate = srcFile.UpdateDate,
+                    RgistrationDate = srcFile.RgistrationDate,
+                    Icon = srcFile.LargeIcon,
+                    IsFile = srcFile.IsFile,
+                    IsImageFile = srcFile.IsImageFile
+                };
                 this.masterFileDictionary.Add(destFile.FilePath, destFile);
             }
 
@@ -925,11 +927,13 @@ namespace PicSum.UIComponent.Contents.FileList
                 e.DrawLastItemIndex > -1 &&
                 e.DrawLastItemIndex < this.filterFilePathList.Count)
             {
-                var param = new GetThumbnailParameter();
-                param.FilePathList = this.filterFilePathList;
-                param.FirstIndex = e.DrawFirstItemIndex;
-                param.LastIndex = e.DrawLastItemIndex;
-                param.ThumbnailWidth = this.flowList.ItemWidth - this.flowList.ItemSpace * 2;
+                var param = new GetThumbnailParameter
+                {
+                    FilePathList = this.filterFilePathList,
+                    FirstIndex = e.DrawFirstItemIndex,
+                    LastIndex = e.DrawLastItemIndex,
+                    ThumbnailWidth = this.flowList.ItemWidth - this.flowList.ItemSpace * 2
+                };
                 if (this.IsShowFileName)
                 {
                     param.ThumbnailHeight = this.flowList.ItemHeight - this.flowList.ItemSpace * 2 - this.ItemTextHeight;
@@ -1205,9 +1209,11 @@ namespace PicSum.UIComponent.Contents.FileList
                 if (ofd.ShowDialog() == DialogResult.OK)
                 {
                     var dir = FileUtil.GetParentDirectoryPath(ofd.FileName);
-                    var param = new ExportFileParameter();
-                    param.SrcFilePath = srcFilePath;
-                    param.ExportFilePath = ofd.FileName;
+                    var param = new ExportFileParameter
+                    {
+                        SrcFilePath = srcFilePath,
+                        ExportFilePath = ofd.FileName
+                    };
                     this.ExportFileTask.StartTask(param);
 
                     CommonConfig.ExportDirectoryPath = dir;

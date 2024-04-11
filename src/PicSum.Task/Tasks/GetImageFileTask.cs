@@ -91,37 +91,45 @@ namespace PicSum.Task.Tasks
                         var isImg2Error = this.ReadImageFile(nextFilePath, out var img2);
 
                         this.CheckCancel();
-                        result.Image1 = new ImageFileEntity();
-                        result.Image1.FilePath = currentFilePath;
-                        result.Image1.Image = img1;
-                        result.Image1.Thumbnail = logic.CreateThumbnail(result.Image1.Image, parameter.ThumbnailSize, parameter.ImageSizeMode);
-                        result.Image1.IsError = isImg1Error;
+                        result.Image1 = new()
+                        {
+                            FilePath = currentFilePath,
+                            Image = img1,
+                            Thumbnail = logic.CreateThumbnail(img1, parameter.ThumbnailSize, parameter.ImageSizeMode),
+                            IsError = isImg1Error,
+                        };
 
                         this.CheckCancel();
-                        result.Image2 = new ImageFileEntity();
-                        result.Image2.FilePath = nextFilePath;
-                        result.Image2.Image = img2;
-                        result.Image2.Thumbnail = logic.CreateThumbnail(result.Image2.Image, parameter.ThumbnailSize, parameter.ImageSizeMode);
-                        result.Image2.IsError = isImg2Error;
+                        result.Image2 = new()
+                        {
+                            FilePath = nextFilePath,
+                            Image = img2,
+                            Thumbnail = logic.CreateThumbnail(img2, parameter.ThumbnailSize, parameter.ImageSizeMode),
+                            IsError = isImg2Error,
+                        };
                     }
                     else
                     {
                         this.CheckCancel();
-                        result.Image1 = new ImageFileEntity();
-                        result.Image1.FilePath = currentFilePath;
-                        result.Image1.Image = img1;
-                        result.Image1.Thumbnail = logic.CreateThumbnail(result.Image1.Image, parameter.ThumbnailSize, parameter.ImageSizeMode);
-                        result.Image1.IsError = isImg1Error;
+                        result.Image1 = new()
+                        {
+                            FilePath = currentFilePath,
+                            Image = img1,
+                            Thumbnail = logic.CreateThumbnail(img1, parameter.ThumbnailSize, parameter.ImageSizeMode),
+                            IsError = isImg1Error,
+                        };
                     }
                 }
                 else
                 {
                     this.CheckCancel();
-                    result.Image1 = new ImageFileEntity();
-                    result.Image1.FilePath = currentFilePath;
-                    result.Image1.Image = img1;
-                    result.Image1.Thumbnail = logic.CreateThumbnail(result.Image1.Image, parameter.ThumbnailSize, parameter.ImageSizeMode);
-                    result.Image1.IsError = isImg1Error;
+                    result.Image1 = new()
+                    {
+                        FilePath = currentFilePath,
+                        Image = img1,
+                        Thumbnail = logic.CreateThumbnail(img1, parameter.ThumbnailSize, parameter.ImageSizeMode),
+                        IsError = isImg1Error
+                    };
                 }
             }
             catch (TaskCancelException)

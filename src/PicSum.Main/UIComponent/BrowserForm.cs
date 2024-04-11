@@ -26,12 +26,12 @@ namespace PicSum.Main.UIComponent
 
         private static bool isStartUp = true;
 
-        private static bool isCleanup()
+        private static bool IsCleanup()
         {
             return Environment.GetCommandLineArgs().Contains("--cleanup");
         }
 
-        private static bool isHome()
+        private static bool IsHome()
         {
             return Environment.GetCommandLineArgs().Contains("--home");
         }
@@ -82,30 +82,21 @@ namespace PicSum.Main.UIComponent
 
         public void AddContentsEventHandler(BrowserContents contents)
         {
-            if (contents == null)
-            {
-                throw new ArgumentNullException(nameof(contents));
-            }
+            ArgumentNullException.ThrowIfNull(nameof(contents));
 
             this.BrowserMainPanel.AddContentsEventHandler(contents);
         }
 
         public void AddTab(TabInfo tab)
         {
-            if (tab == null)
-            {
-                throw new ArgumentNullException("tab");
-            }
+            ArgumentNullException.ThrowIfNull(nameof(tab));
 
             this.BrowserMainPanel.AddTab(tab);
         }
 
         public void AddTab(IContentsParameter param)
         {
-            if (param == null)
-            {
-                throw new ArgumentNullException(nameof(param));
-            }
+            ArgumentNullException.ThrowIfNull(nameof(param));
 
             this.BrowserMainPanel.AddTab(param);
         }
@@ -144,7 +135,7 @@ namespace PicSum.Main.UIComponent
                         ExceptionUtil.ShowErrorDialog("起動処理が失敗しました。", ex))
                     .Complete(() =>
                     {
-                        if (BrowserForm.isCleanup())
+                        if (BrowserForm.IsCleanup())
                         {
                             Logger.Debug("DBのクリーンアップ処理を実行します。");
                             this.dbCleanupTask = new();
@@ -173,9 +164,11 @@ namespace PicSum.Main.UIComponent
                     Directory.CreateDirectory(dbDir);
                 }
 
-                var param = new StartupPrameter();
-                param.FileInfoDBFilePath = Path.Combine(dbDir, @"fileinfo.sqlite");
-                param.ThumbnailDBFilePath = Path.Combine(dbDir, @"thumbnail.sqlite");
+                var param = new StartupPrameter
+                {
+                    FileInfoDBFilePath = Path.Combine(dbDir, @"fileinfo.sqlite"),
+                    ThumbnailDBFilePath = Path.Combine(dbDir, @"thumbnail.sqlite")
+                };
 
                 this.startupTask.StartTask(param);
             }
@@ -298,7 +291,7 @@ namespace PicSum.Main.UIComponent
             this.MinimumSize = new Size(320, 240);
             this.KeyPreview = true;
             this.Padding = new Padding(8, 12, 8, 8);
-            
+
             this.Size = BrowserConfig.WindowSize;
             this.WindowState = BrowserConfig.WindowState;
 
@@ -331,7 +324,7 @@ namespace PicSum.Main.UIComponent
             this.SuspendLayout();
             this.Controls.Add(browserMainPanel);
 
-            if (BrowserForm.isStartUp && BrowserForm.isHome())
+            if (BrowserForm.isStartUp && BrowserForm.IsHome())
             {
                 Logger.Debug("起動時にホームタブを追加します。");
                 browserMainPanel.AddFavoriteDirectoryListTab();
@@ -345,18 +338,12 @@ namespace PicSum.Main.UIComponent
 
         private void OnTabDropouted(TabDropoutedEventArgs e)
         {
-            if (this.TabDropouted != null)
-            {
-                this.TabDropouted(this, e);
-            }
+            this.TabDropouted?.Invoke(this, e);
         }
 
         private void OnNewWindowContentsOpen(BrowserContentsOpenEventArgs e)
         {
-            if (this.NewWindowContentsOpen != null)
-            {
-                this.NewWindowContentsOpen(this, e);
-            }
+            this.NewWindowContentsOpen?.Invoke(this, e);
         }
 
         #endregion

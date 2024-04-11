@@ -16,8 +16,8 @@ namespace PicSum.UIComponent.AddressBar
     {
         #region インスタンス変数
 
-        private Image mousePointImage = Resources.SmallArrowRight;
-        private Image mouseDownImage = Resources.SmallArrowDown;
+        private readonly Image mousePointImage = Resources.SmallArrowRight;
+        private readonly Image mouseDownImage = Resources.SmallArrowDown;
         private bool isRead = false;
         private Font selectedSubDirectoryFont = null;
         private TwoWayTask<GetSubDirectoryTask, ValueParameter<string>, ListResult<FileShallowInfoEntity>> getSubDirectoryTask = null;
@@ -49,14 +49,12 @@ namespace PicSum.UIComponent.AddressBar
         {
             get
             {
-                if (this.selectedSubDirectoryFont == null)
-                {
-                    this.selectedSubDirectoryFont = new Font(base.Palette.TextFont.FontFamily,
-                                                              base.Palette.TextFont.Size,
-                                                              FontStyle.Bold,
-                                                              base.Palette.TextFont.Unit,
-                                                              base.Palette.TextFont.GdiCharSet);
-                }
+                this.selectedSubDirectoryFont
+                    ??= new Font(base.Palette.TextFont.FontFamily,
+                                 base.Palette.TextFont.Size,
+                                 FontStyle.Bold,
+                                 base.Palette.TextFont.Unit,
+                                 base.Palette.TextFont.GdiCharSet);
 
                 return this.selectedSubDirectoryFont;
             }
@@ -94,10 +92,7 @@ namespace PicSum.UIComponent.AddressBar
 
         public override void Draw(Graphics g)
         {
-            if (g == null)
-            {
-                throw new ArgumentNullException(nameof(g));
-            }
+            ArgumentNullException.ThrowIfNull(nameof(g));
 
             if (base.Palette == null)
             {
@@ -126,10 +121,7 @@ namespace PicSum.UIComponent.AddressBar
 
         public override void OnMouseDown(MouseEventArgs e)
         {
-            if (e == null)
-            {
-                throw new ArgumentNullException(nameof(e));
-            }
+            ArgumentNullException.ThrowIfNull(nameof(e));
 
             if (e.Button == MouseButtons.Left)
             {
@@ -137,8 +129,10 @@ namespace PicSum.UIComponent.AddressBar
 
                 if (!this.isRead)
                 {
-                    ValueParameter<string> param = new();
-                    param.Value = this.Directory.DirectoryPath;
+                    var param = new ValueParameter<string>
+                    {
+                        Value = this.Directory.DirectoryPath
+                    };
                     this.GetSubDirectoryTask.StartTask(param);
                 }
             }
@@ -146,10 +140,7 @@ namespace PicSum.UIComponent.AddressBar
 
         public override void OnMouseClick(MouseEventArgs e)
         {
-            if (e == null)
-            {
-                throw new ArgumentNullException("e");
-            }
+            ArgumentNullException.ThrowIfNull(nameof(e));
         }
 
         protected override void DrawDropDownItem(SWF.UIComponent.FlowList.DrawItemEventArgs e)
@@ -227,10 +218,12 @@ namespace PicSum.UIComponent.AddressBar
                 srcItems.Sort((x, y) => x.FilePath.CompareTo(y.FilePath));
                 foreach (var info in srcItems)
                 {
-                    var item = new DirectoryEntity();
-                    item.DirectoryPath = info.FilePath;
-                    item.DirectoryName = info.FileName;
-                    item.DirectoryIcon = info.SmallIcon;
+                    var item = new DirectoryEntity
+                    {
+                        DirectoryPath = info.FilePath,
+                        DirectoryName = info.FileName,
+                        DirectoryIcon = info.SmallIcon
+                    };
                     base.Items.Add(item);
 
                     width = Math.Max(width, (int)g.MeasureString(item.DirectoryName + "________", this.SelectedSubDirectoryFont).Width);

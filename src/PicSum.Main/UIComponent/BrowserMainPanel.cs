@@ -100,10 +100,7 @@ namespace PicSum.Main.UIComponent
 
         public void AddContentsEventHandler(BrowserContents contents)
         {
-            if (contents == null)
-            {
-                throw new ArgumentNullException(nameof(contents));
-            }
+            ArgumentNullException.ThrowIfNull(nameof(contents));
 
             contents.SelectedFileChanged += new EventHandler<SelectedFileChangeEventArgs>(this.Contents_SelectedFileChanged);
             contents.OpenContents += new EventHandler<BrowserContentsEventArgs>(this.Contents_OpenContents);
@@ -112,10 +109,7 @@ namespace PicSum.Main.UIComponent
 
         public void AddTab(TabInfo tab)
         {
-            if (tab == null)
-            {
-                throw new ArgumentNullException(nameof(tab));
-            }
+            ArgumentNullException.ThrowIfNull(nameof(tab));
 
             this.AddContentsEventHandler(tab.GetContents<BrowserContents>());
 
@@ -124,10 +118,7 @@ namespace PicSum.Main.UIComponent
 
         public void AddTab(IContentsParameter param)
         {
-            if (param == null)
-            {
-                throw new ArgumentNullException(nameof(param));
-            }
+            ArgumentNullException.ThrowIfNull(nameof(param));
 
             this.AddContentsEventHandler(this.tabSwitch.AddTab<BrowserContents>(param));
         }
@@ -213,10 +204,7 @@ namespace PicSum.Main.UIComponent
 
         private void SubInitializeComponent()
         {
-            if (this.components == null)
-            {
-                this.components = new Container();
-            }
+            this.components ??= new Container();
 
             this.contentsContainer.SetBounds(
                 0,
@@ -241,18 +229,20 @@ namespace PicSum.Main.UIComponent
                 | AnchorStyles.Bottom
                 | AnchorStyles.Right;
 
-            this.Controls.AddRange(new Control[]
-            {
+            this.Controls.AddRange(
+            [
                 this.contentsContainer,
                 this.infoPanel,
-            });
+            ]);
 
             this.infoPanel.BringToFront();
             this.contentsContainer.BringToFront();
 
-            this.redrawTimer = new Timer();
-            this.redrawTimer.Enabled = true;
-            this.redrawTimer.Interval = 100;
+            this.redrawTimer = new Timer
+            {
+                Enabled = true,
+                Interval = 100
+            };
             this.redrawTimer.Tick += this.RedrawTimer_Tick;
         }
 
@@ -333,7 +323,7 @@ namespace PicSum.Main.UIComponent
             this.AddContentsEventHandler(this.tabSwitch.InsertTab<BrowserContents>(tabIndex, param));
         }
 
-        private void OverlapContents(DragEntity dragData, int tabIndex)
+        private void OverlapContents(DragEntity dragData)
         {
             if (FileUtil.IsDirectory(dragData.CurrentFilePath))
             {
@@ -383,7 +373,7 @@ namespace PicSum.Main.UIComponent
             {
                 if (e.IsOverlap)
                 {
-                    this.OverlapContents((DragEntity)e.Data.GetData(typeof(DragEntity)), e.TabIndex);
+                    this.OverlapContents((DragEntity)e.Data.GetData(typeof(DragEntity)));
                 }
                 else
                 {
@@ -410,7 +400,7 @@ namespace PicSum.Main.UIComponent
                     FileIconCash.SmallDirectoryIcon);
                 if (e.IsOverlap)
                 {
-                    this.OverlapContents(dragData, e.TabIndex);
+                    this.OverlapContents(dragData);
                 }
                 else
                 {
@@ -421,34 +411,22 @@ namespace PicSum.Main.UIComponent
 
         private void OnTabDropouted(TabDropoutedEventArgs e)
         {
-            if (this.TabDropouted != null)
-            {
-                this.TabDropouted(this, e);
-            }
+            this.TabDropouted?.Invoke(this, e);
         }
 
         private void OnNewWindowContentsOpen(BrowserContentsOpenEventArgs e)
         {
-            if (this.NewWindowContentsOpen != null)
-            {
-                this.NewWindowContentsOpen(this, e);
-            }
+            this.NewWindowContentsOpen?.Invoke(this, e);
         }
 
         private void OnClose(EventArgs e)
         {
-            if (this.Close != null)
-            {
-                this.Close(this, e);
-            }
+            this.Close?.Invoke(this, e);
         }
 
         private void OnBackgroundMouseLeftDoubleClick(EventArgs e)
         {
-            if (this.BackgroundMouseDoubleLeftClick != null)
-            {
-                this.BackgroundMouseDoubleLeftClick(this, e);
-            }
+            this.BackgroundMouseDoubleLeftClick?.Invoke(this, e);
         }
 
         #endregion

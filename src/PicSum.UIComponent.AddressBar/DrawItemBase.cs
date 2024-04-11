@@ -187,7 +187,7 @@ namespace PicSum.UIComponent.AddressBar
             this.height = 0;
         }
 
-        protected void Dispose()
+        public void Dispose()
         {
             this.DropDownOpened = null;
             this.DropDownClosed = null;
@@ -198,26 +198,17 @@ namespace PicSum.UIComponent.AddressBar
 
         protected virtual void OnDropDownOpened(EventArgs e)
         {
-            if (this.DropDownOpened != null)
-            {
-                this.DropDownOpened(this, e);
-            }
+            this.DropDownOpened?.Invoke(this, e);
         }
 
         protected virtual void OnDropDownClosed(EventArgs e)
         {
-            if (this.DropDownClosed != null)
-            {
-                this.DropDownClosed(this, e);
-            }
+            this.DropDownClosed?.Invoke(this, e);
         }
 
         protected virtual void OnSelectedDirectory(SelectedDirectoryEventArgs e)
         {
-            if (this.SelectedDirectory != null)
-            {
-                this.SelectedDirectory(this, e);
-            }
+            this.SelectedDirectory?.Invoke(this, e);
         }
     }
 }

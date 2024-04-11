@@ -229,11 +229,13 @@ namespace PicSum.UIComponent.InfoPanel
                     return;
                 }
 
-                var param = new GetFileDeepInfoParameter();
-                param.FilePathList = filePathList;
-                param.ThumbnailSize = new Size(
-                    ApplicationConst.INFOPANEL_WIDTH,
-                    ApplicationConst.INFOPANEL_WIDTH);
+                var param = new GetFileDeepInfoParameter
+                {
+                    FilePathList = filePathList,
+                    ThumbnailSize = new Size(
+                        ApplicationConst.INFOPANEL_WIDTH,
+                        ApplicationConst.INFOPANEL_WIDTH)
+                };
 
                 this.GetFileInfoTask.StartTask(param);
             }
@@ -365,9 +367,11 @@ namespace PicSum.UIComponent.InfoPanel
                 throw new Exception("既に登録されているタグです。");
             }
 
-            var param = new UpdateFileTagParameter();
-            param.Tag = tag;
-            param.FilePathList = this.FilePathList;
+            var param = new UpdateFileTagParameter
+            {
+                Tag = tag,
+                FilePathList = this.FilePathList
+            };
             this.AddFileTagTask.StartTask(param);
 
             var tagInfo = this.TagList.Find(t => t.Tag.Equals(tag, StringComparison.Ordinal));
@@ -378,9 +382,11 @@ namespace PicSum.UIComponent.InfoPanel
             }
             else
             {
-                tagInfo = new FileTagInfoEntity();
-                tagInfo.Tag = tag;
-                tagInfo.IsAll = true;
+                tagInfo = new FileTagInfoEntity
+                {
+                    Tag = tag,
+                    IsAll = true
+                };
                 this.TagList.Add(tagInfo);
                 this.TagList.Sort((x, y) => x.Tag.CompareTo(y.Tag));
                 this.tagFlowList.ItemCount = this.TagList.Count;
@@ -404,9 +410,11 @@ namespace PicSum.UIComponent.InfoPanel
                 throw new Exception("リストに存在しないタグを指定しました。");
             }
 
-            var param = new UpdateFileTagParameter();
-            param.Tag = tag;
-            param.FilePathList = this.FilePathList;
+            var param = new UpdateFileTagParameter
+            {
+                Tag = tag,
+                FilePathList = this.FilePathList
+            };
             this.DeleteFileTagTask.StartTask(param);
 
             var tagInfo = this.TagList.Find(t => t.Tag.Equals(tag, StringComparison.Ordinal));
@@ -589,9 +597,11 @@ namespace PicSum.UIComponent.InfoPanel
                 return;
             }
 
-            var param = new UpdateFileRatingParameter();
-            param.FilePathList = this.fileInfoSource.FilePathList;
-            param.RatingValue = this.ratingBar.Value;
+            var param = new UpdateFileRatingParameter
+            {
+                FilePathList = this.fileInfoSource.FilePathList,
+                RatingValue = this.ratingBar.Value
+            };
             this.UpdateFileRatingTask.StartTask(param);
         }
 

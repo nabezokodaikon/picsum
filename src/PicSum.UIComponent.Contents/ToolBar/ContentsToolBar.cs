@@ -20,10 +20,12 @@ namespace PicSum.UIComponent.Contents.ToolBar
             this.Renderer = this.GetRenderer();
         }
 
-        private ToolStripRenderer GetRenderer()
+        private ToolStripProfessionalRenderer GetRenderer()
         {
-            var renderer = new ToolStripProfessionalRenderer(new ContentsToolBarColorTable());
-            renderer.RoundedEdges = false;
+            var renderer = new ToolStripProfessionalRenderer(new ContentsToolBarColorTable())
+            {
+                RoundedEdges = false
+            };
             return renderer;
         }
     }

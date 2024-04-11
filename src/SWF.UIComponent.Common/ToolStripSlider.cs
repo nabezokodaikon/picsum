@@ -35,11 +35,11 @@ namespace SWF.UIComponent.Common
         {
             get
             {
-                return this.slider.MaximumValue;
+                return this.Slider.MaximumValue;
             }
             set
             {
-                this.slider.MaximumValue = value;
+                this.Slider.MaximumValue = value;
             }
         }
 
@@ -47,11 +47,11 @@ namespace SWF.UIComponent.Common
         {
             get
             {
-                return this.slider.MinimumValue;
+                return this.Slider.MinimumValue;
             }
             set
             {
-                this.slider.MinimumValue = value;
+                this.Slider.MinimumValue = value;
             }
         }
 
@@ -59,11 +59,11 @@ namespace SWF.UIComponent.Common
         {
             get
             {
-                return this.slider.Value;
+                return this.Slider.Value;
             }
             set
             {
-                this.slider.Value = value;
+                this.Slider.Value = value;
             }
         }
 
@@ -71,7 +71,7 @@ namespace SWF.UIComponent.Common
 
         #region プライベートプロパティ
 
-        private Slider slider
+        private Slider Slider
         {
             get
             {
@@ -86,7 +86,7 @@ namespace SWF.UIComponent.Common
         public ToolStripSlider()
             : base(new Slider())
         {
-            this.initializeComponent();
+            this.InitializeComponent();
         }
 
         #endregion
@@ -97,10 +97,10 @@ namespace SWF.UIComponent.Common
 
         #region プライベートメソッド
 
-        private void initializeComponent()
+        private void InitializeComponent()
         {
-            this.slider.Size = new Size(96, 24);
-            this.slider.BackColor = Color.Transparent;
+            this.Slider.Size = new(96, 24);
+            this.Slider.BackColor = Color.Transparent;
         }
 
         #endregion
@@ -111,59 +111,50 @@ namespace SWF.UIComponent.Common
         {
             base.OnSubscribeControlEvents(control);
             Slider slider = (Slider)control;
-            slider.BeginValueChange += new EventHandler(this.slider_BeginValueChange);
-            slider.ValueChanging += new EventHandler(this.slider_ValueChanging);
-            slider.ValueChanged += new EventHandler(this.slider_ValueChanged);
+            slider.BeginValueChange += new EventHandler(this.Slider_BeginValueChange);
+            slider.ValueChanging += new EventHandler(this.Slider_ValueChanging);
+            slider.ValueChanged += new EventHandler(this.Slider_ValueChanged);
         }
 
         protected override void OnUnsubscribeControlEvents(Control control)
         {
             base.OnSubscribeControlEvents(control);
             Slider slider = (Slider)control;
-            slider.BeginValueChange -= new EventHandler(this.slider_BeginValueChange);
-            slider.ValueChanging -= new EventHandler(this.slider_ValueChanging);
-            slider.ValueChanged -= new EventHandler(this.slider_ValueChanged);
+            slider.BeginValueChange -= new EventHandler(this.Slider_BeginValueChange);
+            slider.ValueChanging -= new EventHandler(this.Slider_ValueChanging);
+            slider.ValueChanged -= new EventHandler(this.Slider_ValueChanged);
         }
 
         protected virtual void OnBeginValueChange(EventArgs e)
         {
-            if (BeginValueChange != null)
-            {
-                BeginValueChange(this, e);
-            }
+            BeginValueChange?.Invoke(this, e);
         }
 
         protected virtual void OnValueChanging(EventArgs e)
         {
-            if (ValueChanging != null)
-            {
-                ValueChanging(this, e);
-            }
+            ValueChanging?.Invoke(this, e);
         }
 
         protected virtual void OnValueChanged(EventArgs e)
         {
-            if (ValueChanged != null)
-            {
-                ValueChanged(this, e);
-            }
+            ValueChanged?.Invoke(this, e);
         }
 
         #endregion
 
         #region ホストしているコントロールのイベント
 
-        private void slider_BeginValueChange(object sender, EventArgs e)
+        private void Slider_BeginValueChange(object sender, EventArgs e)
         {
             this.OnBeginValueChange(e);
         }
 
-        private void slider_ValueChanging(object sender, EventArgs e)
+        private void Slider_ValueChanging(object sender, EventArgs e)
         {
             this.OnValueChanging(e);
         }
 
-        private void slider_ValueChanged(object sender, EventArgs e)
+        private void Slider_ValueChanged(object sender, EventArgs e)
         {
             this.OnValueChanged(e);
         }
