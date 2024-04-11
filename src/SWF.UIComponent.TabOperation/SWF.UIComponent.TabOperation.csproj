@@ -27,10 +27,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Update="ContentsPanel.cs">
+    <Compile Update="PagePanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Update="ContentsContainer.cs">
+    <Compile Update="PageContainer.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Update="TabPalette.cs">

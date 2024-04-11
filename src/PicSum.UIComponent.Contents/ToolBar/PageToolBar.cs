@@ -4,10 +4,10 @@ using System.Windows.Forms;
 namespace PicSum.UIComponent.Contents.ToolBar
 {
     [SupportedOSPlatform("windows")]
-    public sealed class ContentsToolBar
+    public sealed class PageToolBar
         : ToolStrip
     {
-        public ContentsToolBar()
+        public PageToolBar()
         {
             this.InitializeComponent();
         }
@@ -22,7 +22,7 @@ namespace PicSum.UIComponent.Contents.ToolBar
 
         private ToolStripProfessionalRenderer GetRenderer()
         {
-            var renderer = new ToolStripProfessionalRenderer(new ContentsToolBarColorTable())
+            var renderer = new ToolStripProfessionalRenderer(new PageToolBarColorTable())
             {
                 RoundedEdges = false
             };

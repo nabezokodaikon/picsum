@@ -18,10 +18,10 @@ using System.Windows.Forms;
 namespace PicSum.UIComponent.Contents.FileList
 {
     [SupportedOSPlatform("windows")]
-    internal sealed class BookmarkFileListContents
-        : AbstractFileListContents
+    internal sealed class BookmarkFileListPage
+        : AbstractFileListPage
     {
-        private BookmarkFileListContentsParameter paramter = null;
+        private BookmarkFileListPageParameter paramter = null;
         private TwoWayTask<GetBookmarkTask, ListResult<FileShallowInfoEntity>> searchTask = null;
         private OneWayTask<DeleteBookmarkTask, ListParameter<string>> deleteTask = null;
         private TwoWayTask<GetFilesByDirectoryTask, ValueParameter<string>, GetDirectoryResult> getFilesTask = null;
@@ -57,7 +57,7 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
-        public BookmarkFileListContents(BookmarkFileListContentsParameter parameter)
+        public BookmarkFileListPage(BookmarkFileListPageParameter parameter)
             : base(parameter)
         {
             this.paramter = parameter;
@@ -98,7 +98,7 @@ namespace PicSum.UIComponent.Contents.FileList
             base.Dispose(disposing);
         }
 
-        protected override void OnDrawTabContents(DrawTabEventArgs e)
+        protected override void OnDrawTabPage(DrawTabEventArgs e)
         {
             e.Graphics.DrawImage(this.Icon, e.IconRectangle);
             DrawTextUtil.DrawText(e.Graphics, this.Title, e.Font, e.TextRectangle, e.TitleColor, e.TitleFormatFlags, e.TextStyle);
@@ -120,7 +120,7 @@ namespace PicSum.UIComponent.Contents.FileList
             this.OnSelectedFileChanged(new SelectedFileChangeEventArgs());
         }
 
-        protected override Action GetImageFilesAction(ImageViewerContentsParameter paramter)
+        protected override Action GetImageFilesAction(ImageViewerPageParameter paramter)
         {
             return () =>
             {

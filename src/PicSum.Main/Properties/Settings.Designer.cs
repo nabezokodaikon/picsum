@@ -12,7 +12,7 @@ namespace PicSum.Main.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.5.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.9.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -62,84 +62,84 @@ namespace PicSum.Main.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("128")]
-        public int FileListContentsThumbnailSize {
+        public int FileListPageThumbnailSize {
             get {
-                return ((int)(this["FileListContentsThumbnailSize"]));
+                return ((int)(this["FileListPageThumbnailSize"]));
             }
             set {
-                this["FileListContentsThumbnailSize"] = value;
+                this["FileListPageThumbnailSize"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool FileListContentsIsShowFileName {
+        public bool FileListPageIsShowFileName {
             get {
-                return ((bool)(this["FileListContentsIsShowFileName"]));
+                return ((bool)(this["FileListPageIsShowFileName"]));
             }
             set {
-                this["FileListContentsIsShowFileName"] = value;
+                this["FileListPageIsShowFileName"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool FileListContentsIsShowImageFile {
+        public bool FileListPageIsShowImageFile {
             get {
-                return ((bool)(this["FileListContentsIsShowImageFile"]));
+                return ((bool)(this["FileListPageIsShowImageFile"]));
             }
             set {
-                this["FileListContentsIsShowImageFile"] = value;
+                this["FileListPageIsShowImageFile"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool FileListContentsIsShowDirectory {
+        public bool FileListPageIsShowDirectory {
             get {
-                return ((bool)(this["FileListContentsIsShowDirectory"]));
+                return ((bool)(this["FileListPageIsShowDirectory"]));
             }
             set {
-                this["FileListContentsIsShowDirectory"] = value;
+                this["FileListPageIsShowDirectory"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Single")]
-        public global::PicSum.Core.Base.Conf.ImageDisplayMode ImageViewerContentsImageDisplayMode {
+        public global::PicSum.Core.Base.Conf.ImageDisplayMode ImageViewerPageImageDisplayMode {
             get {
-                return ((global::PicSum.Core.Base.Conf.ImageDisplayMode)(this["ImageViewerContentsImageDisplayMode"]));
+                return ((global::PicSum.Core.Base.Conf.ImageDisplayMode)(this["ImageViewerPageImageDisplayMode"]));
             }
             set {
-                this["ImageViewerContentsImageDisplayMode"] = value;
+                this["ImageViewerPageImageDisplayMode"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("FitAllImage")]
-        public global::PicSum.Core.Base.Conf.ImageSizeMode ImageViewerContentsImageSizeMode {
+        public global::PicSum.Core.Base.Conf.ImageSizeMode ImageViewerPageImageSizeMode {
             get {
-                return ((global::PicSum.Core.Base.Conf.ImageSizeMode)(this["ImageViewerContentsImageSizeMode"]));
+                return ((global::PicSum.Core.Base.Conf.ImageSizeMode)(this["ImageViewerPageImageSizeMode"]));
             }
             set {
-                this["ImageViewerContentsImageSizeMode"] = value;
+                this["ImageViewerPageImageSizeMode"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool FileListContentsIsShowOthereFile {
+        public bool FileListPageIsShowOthereFile {
             get {
-                return ((bool)(this["FileListContentsIsShowOthereFile"]));
+                return ((bool)(this["FileListPageIsShowOthereFile"]));
             }
             set {
-                this["FileListContentsIsShowOthereFile"] = value;
+                this["FileListPageIsShowOthereFile"] = value;
             }
         }
         
@@ -158,9 +158,9 @@ namespace PicSum.Main.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("21")]
-        public int FileListContentsFavoriteDirectoryCount {
+        public int FileListPageFavoriteDirectoryCount {
             get {
-                return ((int)(this["FileListContentsFavoriteDirectoryCount"]));
+                return ((int)(this["FileListPageFavoriteDirectoryCount"]));
             }
         }
     }

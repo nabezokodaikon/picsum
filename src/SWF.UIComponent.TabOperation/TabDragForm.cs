@@ -30,7 +30,7 @@ namespace SWF.UIComponent.TabOperation
         private DrawTabEventArgs drawTabEventArgs = null;
 
         private Bitmap regionImage = null;
-        private Action<DrawTabEventArgs> drawTabContentsMethod = null;
+        private Action<DrawTabEventArgs> drawTabPageMethod = null;
 
         #endregion
 
@@ -155,10 +155,10 @@ namespace SWF.UIComponent.TabOperation
                 throw new Exception("領域のイメージが初期化されていません。");
             }
 
-            using (var contentsCap = tab.GetContentsCapture())
+            using (var pageCap = tab.GetPageCapture())
             {
-                var contentsSize = this.GetContentsSize(contentsCap);
-                var regionSize = this.GetRegionSize(contentsSize);
+                var pageSize = this.GetPageSize(pageCap);
+                var regionSize = this.GetRegionSize(pageSize);
                 var regionImage = new Bitmap(regionSize.Width, regionSize.Height);
 
                 using (var g = Graphics.FromImage(regionImage))
@@ -166,11 +166,11 @@ namespace SWF.UIComponent.TabOperation
                     g.SmoothingMode = SmoothingMode.None;
                     g.InterpolationMode = InterpolationMode.Low;
 
-                    var outlineRect = this.GetOutlineRectangle(contentsSize);
+                    var outlineRect = this.GetOutlineRectangle(pageSize);
                     g.FillRectangle(tab.Owner.OutlineBrush, outlineRect);
 
-                    var contentsRect = this.GetContentsRectangle(outlineRect);
-                    g.DrawImage(contentsCap, contentsRect);
+                    var pageRect = this.GetPageRectangle(outlineRect);
+                    g.DrawImage(pageCap, pageRect);
 
                     this.TabDrawArea.DrawActiveTab(g);
                 }
@@ -181,12 +181,12 @@ namespace SWF.UIComponent.TabOperation
             this.DrawTabEventArgs.Font = this.TabPalette.TitleFont;
             this.DrawTabEventArgs.TitleColor = this.TabPalette.TitleColor;
             this.DrawTabEventArgs.TitleFormatFlags = this.TabPalette.TitleFormatFlags;
-            this.DrawTabEventArgs.TextRectangle = this.TabDrawArea.GetContentsRectangle();
+            this.DrawTabEventArgs.TextRectangle = this.TabDrawArea.GetPageRectangle();
             this.DrawTabEventArgs.IconRectangle = this.TabDrawArea.GetIconRectangle(tab.Icon);
             this.DrawTabEventArgs.CloseButtonRectangle = this.TabDrawArea.GetCloseButtonRectangle();
             this.DrawTabEventArgs.TextStyle = DrawTextUtil.TextStyle.Glowing;
 
-            this.drawTabContentsMethod = tab.DrawingTabContents;
+            this.drawTabPageMethod = tab.DrawingTabPage;
 
             this.Size = this.regionImage.Size;
             this.Region = ImageUtil.GetRegion(this.regionImage, Color.FromArgb(0, 0, 0, 0));
@@ -196,7 +196,7 @@ namespace SWF.UIComponent.TabOperation
         {
             this.TabDropForm.Visible = false;
 
-            this.drawTabContentsMethod = null;
+            this.drawTabPageMethod = null;
 
             if (this.regionImage != null)
             {
@@ -211,7 +211,7 @@ namespace SWF.UIComponent.TabOperation
 
         protected override void OnPaint(PaintEventArgs e)
         {
-            if (this.drawTabContentsMethod == null ||
+            if (this.drawTabPageMethod == null ||
                 this.regionImage == null)
             {
                 return;
@@ -220,7 +220,7 @@ namespace SWF.UIComponent.TabOperation
             e.Graphics.DrawImage(this.regionImage, 0, 0, this.regionImage.Width, this.regionImage.Height);
 
             this.DrawTabEventArgs.Graphics = e.Graphics;
-            this.drawTabContentsMethod(this.DrawTabEventArgs);
+            this.drawTabPageMethod(this.DrawTabEventArgs);
         }
 
         #endregion
@@ -243,31 +243,31 @@ namespace SWF.UIComponent.TabOperation
             this.Opacity = 0.75d;
         }
 
-        private Size GetContentsSize(Bitmap contentsCap)
+        private Size GetPageSize(Bitmap pageCap)
         {
-            var scale = CAPTURE_WIDTH / (double)contentsCap.Width;
-            var w = (int)(contentsCap.Width * scale);
-            var h = (int)(contentsCap.Height * scale);
+            var scale = CAPTURE_WIDTH / (double)pageCap.Width;
+            var w = (int)(pageCap.Width * scale);
+            var h = (int)(pageCap.Height * scale);
             return new Size(w, h);
         }
 
-        private Size GetRegionSize(Size contentsSize)
+        private Size GetRegionSize(Size pageSize)
         {
-            var w = contentsSize.Width + OUTLINE_OFFSET * 2;
-            var h = this.TabDrawArea.Height + contentsSize.Height + OUTLINE_OFFSET;
+            var w = pageSize.Width + OUTLINE_OFFSET * 2;
+            var h = this.TabDrawArea.Height + pageSize.Height + OUTLINE_OFFSET;
             return new Size(w, h);
         }
 
-        private Rectangle GetOutlineRectangle(Size contentsSize)
+        private Rectangle GetOutlineRectangle(Size pageSize)
         {
-            var w = contentsSize.Width + OUTLINE_OFFSET * 2;
-            var h = contentsSize.Height + OUTLINE_OFFSET * 2;
+            var w = pageSize.Width + OUTLINE_OFFSET * 2;
+            var h = pageSize.Height + OUTLINE_OFFSET * 2;
             var x = 0;
             var y = this.TabDrawArea.Height - OUTLINE_OFFSET;
             return new Rectangle(x, y, w, h);
         }
 
-        private Rectangle GetContentsRectangle(Rectangle outlineRectangle)
+        private Rectangle GetPageRectangle(Rectangle outlineRectangle)
         {
             var l = outlineRectangle.Left + OUTLINE_OFFSET;
             var t = outlineRectangle.Top + OUTLINE_OFFSET;

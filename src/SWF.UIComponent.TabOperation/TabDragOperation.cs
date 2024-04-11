@@ -61,7 +61,7 @@ namespace SWF.UIComponent.TabOperation
         /// </summary>
         /// <param name="form"></param>
         /// <returns></returns>
-        public static bool ContentsForm(Form form)
+        public static bool ContainsForm(Form form)
         {
             return FORM_LIST.Contains(form);
         }

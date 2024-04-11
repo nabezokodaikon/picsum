@@ -13,8 +13,8 @@ namespace SWF.UIComponent.TabOperation
         #region インスタンス変数
 
         private readonly TabDrawArea drawArea = new TabDrawArea();
-        private readonly ContentsHistoryManager historyManager = new ContentsHistoryManager();
-        private ContentsPanel contents = null;
+        private readonly PageHistoryManager historyManager = new PageHistoryManager();
+        private PagePanel page = null;
         private TabSwitch owner = null;
 
         #endregion
@@ -25,12 +25,12 @@ namespace SWF.UIComponent.TabOperation
         {
             get
             {
-                if (this.contents == null)
+                if (this.page == null)
                 {
-                    throw new NullReferenceException("コンテンツが設定されていません。");
+                    throw new NullReferenceException("ページが設定されていません。");
                 }
 
-                return this.contents.Title;
+                return this.page.Title;
             }
         }
 
@@ -38,12 +38,12 @@ namespace SWF.UIComponent.TabOperation
         {
             get
             {
-                if (this.contents == null)
+                if (this.page == null)
                 {
-                    throw new NullReferenceException("コンテンツが設定されていません。");
+                    throw new NullReferenceException("ページが設定されていません。");
                 }
 
-                return this.contents.Icon;
+                return this.page.Icon;
             }
         }
 
@@ -59,7 +59,7 @@ namespace SWF.UIComponent.TabOperation
             }
         }
 
-        public bool HasNextContents
+        public bool HasNextPage
         {
             get
             {
@@ -67,7 +67,7 @@ namespace SWF.UIComponent.TabOperation
             }
         }
 
-        public bool HasPreviewContents
+        public bool HasPreviewPage
         {
             get
             {
@@ -75,24 +75,24 @@ namespace SWF.UIComponent.TabOperation
             }
         }
 
-        public bool HasContents
+        public bool HasPage
         {
             get
             {
-                return this.contents != null;
+                return this.page != null;
             }
         }
 
-        public ContentsPanel Contents
+        public PagePanel Page
         {
             get
             {
-                if (this.contents == null)
+                if (this.page == null)
                 {
-                    throw new NullReferenceException("コンテンツが設定されていません。");
+                    throw new NullReferenceException("ページが設定されていません。");
                 }
 
-                return this.contents;
+                return this.page;
             }
         }
 
@@ -108,7 +108,7 @@ namespace SWF.UIComponent.TabOperation
 
         #region コンストラクタ
 
-        internal TabInfo(IContentsParameter param)
+        internal TabInfo(IPageParameter param)
         {
             if (param == null)
             {
@@ -116,110 +116,110 @@ namespace SWF.UIComponent.TabOperation
             }
 
             this.historyManager.Add(param);
-            this.contents = param.CreateContents();
+            this.page = param.CreatePage();
         }
 
         #endregion
 
         #region メソッド
 
-        public T GetContents<T>() where T : ContentsPanel
+        public T GetPage<T>() where T : PagePanel
         {
-            if (this.contents == null)
+            if (this.page == null)
             {
-                throw new NullReferenceException("コンテンツが設定されていません。");
+                throw new NullReferenceException("ページが設定されていません。");
             }
 
-            return (T)this.contents;
+            return (T)this.page;
         }
 
-        public void OverwriteContents(IContentsParameter param)
+        public void OverwritePage(IPageParameter param)
         {
             if (param == null)
             {
                 throw new ArgumentNullException(nameof(param));
             }
 
-            if (this.contents != null)
+            if (this.page != null)
             {
-                throw new Exception("既にコンテンツが存在しています。ClearContentsメソッドでコンテンツをクリアして下さい。");
+                throw new InvalidOperationException("既にページが存在しています。ClearPageメソッドでページをクリアして下さい。");
             }
 
             this.historyManager.Add(param);
-            this.contents = param.CreateContents();
+            this.page = param.CreatePage();
         }
 
         public void Close()
         {
-            this.ClearContents();
+            this.ClearPage();
         }
 
-        public void DrawingTabContents(DrawTabEventArgs e)
+        public void DrawingTabPage(DrawTabEventArgs e)
         {
             if (e == null)
             {
                 throw new ArgumentNullException(nameof(e));
             }
 
-            if (this.contents == null)
+            if (this.page == null)
             {
-                throw new NullReferenceException("コンテンツが設定されていません。");
+                throw new NullReferenceException("ページが設定されていません。");
             }
 
-            this.contents.DrawingTabContents(e);
+            this.page.DrawingTabPage(e);
         }
 
-        internal Bitmap GetContentsCapture()
+        internal Bitmap GetPageCapture()
         {
-            if (this.contents == null)
+            if (this.page == null)
             {
-                throw new NullReferenceException("コンテンツが設定されていません。");
+                throw new NullReferenceException("ページが設定されていません。");
             }
 
-            var w = this.contents.Width;
-            var h = this.contents.Height;
+            var w = this.page.Width;
+            var h = this.page.Height;
             var bmp = new Bitmap(w, h);
-            this.contents.DrawToBitmap(bmp, this.contents.ClientRectangle);
+            this.page.DrawToBitmap(bmp, this.page.ClientRectangle);
             return bmp;
         }
 
-        internal void ClearContents()
+        internal void ClearPage()
         {
-            if (this.contents != null)
+            if (this.page != null)
             {
-                this.contents.Dispose();
-                this.contents = null;
+                this.page.Dispose();
+                this.page = null;
             }
         }
 
-        internal void CreatePreviewContents()
+        internal void CreatePreviewPage()
         {
-            if (this.contents != null)
+            if (this.page != null)
             {
-                throw new Exception("既にコンテンツが存在しています。ClearContentsメソッドでコンテンツをクリアして下さい。");
+                throw new InvalidOperationException("既にページが存在しています。ClearPageメソッドでページをクリアして下さい。");
             }
 
-            this.contents = this.historyManager.CreatePreview();
+            this.page = this.historyManager.CreatePreview();
         }
 
-        internal void CreateNextContents()
+        internal void CreateNextPage()
         {
-            if (this.contents != null)
+            if (this.page != null)
             {
-                throw new Exception("既にコンテンツが存在しています。ClearContentsメソッドでコンテンツをクリアして下さい。");
+                throw new InvalidOperationException("既にページが存在しています。ClearPageメソッドでページをクリアして下さい。");
             }
 
-            this.contents = this.historyManager.CreateNext();
+            this.page = this.historyManager.CreateNext();
         }
 
-        internal void CloneCurrentContents()
+        internal void CloneCurrentPage()
         {
-            if (this.contents != null)
+            if (this.page != null)
             {
-                throw new Exception("既にコンテンツが存在しています。ClearContentsメソッドでコンテンツをクリアして下さい。");
+                throw new InvalidOperationException("既にページが存在しています。ClearPageメソッドでページをクリアして下さい。");
             }
 
-            this.contents = this.historyManager.CreateClone();
+            this.page = this.historyManager.CreateClone();
         }
 
         #endregion

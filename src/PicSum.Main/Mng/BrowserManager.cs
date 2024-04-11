@@ -100,7 +100,7 @@ namespace PicSum.Main.Mng
             browser.FormClosing += new FormClosingEventHandler(this.Browser_FormClosing);
             browser.Activated += new EventHandler(this.Browser_Activated);
             browser.TabDropouted += new EventHandler<TabDropoutedEventArgs>(this.Browser_TabDropouted);
-            browser.NewWindowContentsOpen += new EventHandler<BrowserContentsOpenEventArgs>(this.Browser_NewWindowContentsOpen);
+            browser.NewWindowPageOpen += new EventHandler<BrowserPageOpenEventArgs>(this.Browser_NewWindowPageOpen);
         }
 
         #endregion
@@ -134,12 +134,12 @@ namespace PicSum.Main.Mng
             browser.AddTab(e.Tab);
         }
 
-        private void Browser_NewWindowContentsOpen(object sender, BrowserContentsOpenEventArgs e)
+        private void Browser_NewWindowPageOpen(object sender, BrowserPageOpenEventArgs e)
         {
             var browser = this.CreateBrowser();
             this.browserList.Add(browser);
             browser.Show();
-            browser.AddTab(e.ContentsParameter);
+            browser.AddTab(e.PageParameter);
         }
 
         #endregion

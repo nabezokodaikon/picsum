@@ -31,7 +31,7 @@ namespace PicSum.Core.Base.Conf
     /// <summary>
     /// コンテンツ表示種別
     /// </summary>
-    public enum ContentsOpenType
+    public enum PageOpenType
     {
         Default = 0,
         OverlapTab = 1,

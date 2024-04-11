@@ -3,7 +3,7 @@ using System.Windows.Forms;
 
 namespace PicSum.UIComponent.Contents.FileList
 {
-    partial class AbstractFileListContents
+    partial class AbstractFileListPage
     {
         /// <summary> 
         /// 必要なデザイナ変数です。
@@ -19,7 +19,7 @@ namespace PicSum.UIComponent.Contents.FileList
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AbstractFileListContents));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AbstractFileListPage));
             this.flowList = new SWF.UIComponent.FlowList.FlowList();
             this.fileContextMenu = new PicSum.UIComponent.Contents.ContextMenu.FileContextMenu();
             this.viewContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -29,7 +29,7 @@ namespace PicSum.UIComponent.Contents.FileList
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.showFileNameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewToolStripDropDownButton = new System.Windows.Forms.ToolStripDropDownButton();
-            this.toolBar = new PicSum.UIComponent.Contents.ToolBar.ContentsToolBar();
+            this.toolBar = new PicSum.UIComponent.Contents.ToolBar.PageToolBar();
             this.sortFileNameToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.sortFilePathToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.sortFileUpdateDateToolStripButton = new System.Windows.Forms.ToolStripButton();
@@ -238,12 +238,12 @@ namespace PicSum.UIComponent.Contents.FileList
             this.moveNextToolStripButton.Text = "->";
             this.moveNextToolStripButton.Click += new System.EventHandler(this.MoveNextToolStripButton_Click);
             // 
-            // FileListContentsBase
+            // FileListPageBase
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.Controls.Add(this.flowList);
             this.Controls.Add(this.toolBar);
-            this.Name = "FileListContentsBase";
+            this.Name = "FileListPageBase";
             this.Size = new System.Drawing.Size(630, 393);
             this.viewContextMenuStrip.ResumeLayout(false);
             this.toolBar.ResumeLayout(false);
@@ -257,7 +257,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private SWF.UIComponent.FlowList.FlowList flowList;
         private PicSum.UIComponent.Contents.ContextMenu.FileContextMenu fileContextMenu;
-        private PicSum.UIComponent.Contents.ToolBar.ContentsToolBar toolBar;
+        private PicSum.UIComponent.Contents.ToolBar.PageToolBar toolBar;
         private System.Windows.Forms.ToolStripDropDownButton viewToolStripDropDownButton;
         private System.Windows.Forms.ToolStripButton sortFileNameToolStripButton;
         private System.Windows.Forms.ToolStripButton sortFilePathToolStripButton;

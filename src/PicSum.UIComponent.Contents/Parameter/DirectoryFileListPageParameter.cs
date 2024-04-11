@@ -9,38 +9,38 @@ namespace PicSum.UIComponent.Contents.Parameter
     /// フォルダファイルリストコンテンツパラメータ
     /// </summary>
     [SupportedOSPlatform("windows")]
-    public sealed class DirectoryFileListContentsParameter
-        : IContentsParameter
+    public sealed class DirectoryFileListPageParameter
+        : IPageParameter
     {
-        public const string CONTENTS_SOURCES = "Directory";
+        public const string PAGE_SOURCES = "Directory";
 
-        public string ContentsSources { get; private set; }
+        public string PageSources { get; private set; }
         public string SourcesKey { get; private set; }
         public string Key { get; private set; }
         public string DirectoryPath { get; private set; }
         public string SelectedFilePath { get; private set; }
 
-        public DirectoryFileListContentsParameter(string directoryPath, string selectedFilePath)
+        public DirectoryFileListPageParameter(string directoryPath, string selectedFilePath)
         {
-            this.ContentsSources = DirectoryFileListContentsParameter.CONTENTS_SOURCES;
+            this.PageSources = DirectoryFileListPageParameter.PAGE_SOURCES;
             this.SourcesKey = directoryPath;
-            this.Key = string.Format("{0}ListContents:{1}", this.ContentsSources, this.SourcesKey);
+            this.Key = string.Format("{0}ListPage:{1}", this.PageSources, this.SourcesKey);
             this.DirectoryPath = directoryPath ?? throw new ArgumentNullException(nameof(directoryPath));
             this.SelectedFilePath = selectedFilePath;
         }
 
-        public DirectoryFileListContentsParameter(string directoryPath)
+        public DirectoryFileListPageParameter(string directoryPath)
         {
-            this.ContentsSources = DirectoryFileListContentsParameter.CONTENTS_SOURCES;
+            this.PageSources = DirectoryFileListPageParameter.PAGE_SOURCES;
             this.SourcesKey = directoryPath;
-            this.Key = string.Format("{0}ListContents:{1}", this.ContentsSources, this.SourcesKey);
+            this.Key = string.Format("{0}ListPage:{1}", this.PageSources, this.SourcesKey);
             this.DirectoryPath = directoryPath ?? throw new ArgumentNullException(nameof(directoryPath));
             this.SelectedFilePath = string.Empty;
         }
 
-        public ContentsPanel CreateContents()
+        public PagePanel CreatePage()
         {
-            return new DirectoryFileListContents(this);
+            return new DirectoryFileListPage(this);
         }
     }
 }

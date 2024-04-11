@@ -9,10 +9,10 @@ namespace PicSum.UIComponent.Contents.Common
     public sealed class ExecuteDirectoryEventArgs
         : EventArgs
     {
-        public ContentsOpenType OpenType { get; private set; }
+        public PageOpenType OpenType { get; private set; }
         public string DirectoryPath { get; private set; }
 
-        public ExecuteDirectoryEventArgs(ContentsOpenType openType, string directoryPath)
+        public ExecuteDirectoryEventArgs(PageOpenType openType, string directoryPath)
         {
             if (directoryPath == null)
             {

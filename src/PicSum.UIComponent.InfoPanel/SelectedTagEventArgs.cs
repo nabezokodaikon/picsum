@@ -6,10 +6,10 @@ namespace PicSum.UIComponent.InfoPanel
     public sealed class SelectedTagEventArgs
         : EventArgs
     {
-        public ContentsOpenType OpenType { get; private set; }
+        public PageOpenType OpenType { get; private set; }
         public string Tag { get; private set; }
 
-        public SelectedTagEventArgs(ContentsOpenType openType, string tag)
+        public SelectedTagEventArgs(PageOpenType openType, string tag)
         {
             if (tag == null)
             {

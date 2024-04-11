@@ -10,7 +10,7 @@ namespace SWF.UIComponent.TabOperation
     {
         #region 定数・列挙
 
-        private const int CONTENTS_SIZE = 24;
+        private const int PAGE_SIZE = 24;
 
         #endregion
 
@@ -22,9 +22,9 @@ namespace SWF.UIComponent.TabOperation
         {
             var tabHeight = Resources.ActiveTab.Height;
             var x = 0;
-            var y = (int)((tabHeight - CONTENTS_SIZE) / 2d);
-            var w = CONTENTS_SIZE;
-            var h = CONTENTS_SIZE;
+            var y = (int)((tabHeight - PAGE_SIZE) / 2d);
+            var w = PAGE_SIZE;
+            var h = PAGE_SIZE;
             return new Rectangle(x, y, w, h);
         }
 
@@ -141,12 +141,12 @@ namespace SWF.UIComponent.TabOperation
 
         #region メソッド
 
-        public bool Contents(Point p)
+        public bool Page(Point p)
         {
-            return this.Contents(p.X, p.Y);
+            return this.Page(p.X, p.Y);
         }
 
-        public bool Contents(int x, int y)
+        public bool Page(int x, int y)
         {
             var rect = new Rectangle(this.drawPoint.X, this.drawPoint.Y, this.width, this.height);
             return rect.Contains(x, y);

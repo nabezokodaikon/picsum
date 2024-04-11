@@ -5,28 +5,28 @@ using System.Runtime.Versioning;
 namespace PicSum.UIComponent.Contents.Parameter
 {
     [SupportedOSPlatform("windows")]
-    public sealed class FavoriteDirectoryListContentsParameter
-        : IContentsParameter
+    public sealed class FavoriteDirectoryListPageParameter
+        : IPageParameter
     {
-        public const string CONTENTS_SOURCES = "Favorite";
+        public const string PAGE_SOURCES = "Favorite";
 
-        public string ContentsSources { get; private set; }
+        public string PageSources { get; private set; }
         public string SourcesKey { get; private set; }
         public string Key { get; private set; }
         public string SelectedFilePath { get; set; }
 
-        public FavoriteDirectoryListContentsParameter()
+        public FavoriteDirectoryListPageParameter()
         {
-            this.ContentsSources = FavoriteDirectoryListContentsParameter.CONTENTS_SOURCES;
+            this.PageSources = FavoriteDirectoryListPageParameter.PAGE_SOURCES;
             this.SourcesKey = string.Empty;
-            this.Key = string.Format("{0}ListContents", this.ContentsSources);
+            this.Key = string.Format("{0}ListPage", this.PageSources);
             this.SelectedFilePath = string.Empty;
         }
 
-        public ContentsPanel CreateContents()
+        public PagePanel CreatePage()
         {
             // ディレクトリのみ表示のため、画像ビューアへの遷移は有り得ない。
-            return new FavoriteDirectoryListContents(this);
+            return new FavoriteDirectoryListPage(this);
         }
     }
 }

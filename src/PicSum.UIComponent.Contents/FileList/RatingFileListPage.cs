@@ -8,9 +8,7 @@ using PicSum.UIComponent.Contents.Common;
 using PicSum.UIComponent.Contents.Parameter;
 using PicSum.UIComponent.Contents.Properties;
 using SWF.Common;
-using SWF.UIComponent.TabOperation;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Versioning;
 using System.Windows.Forms;
@@ -18,24 +16,25 @@ using System.Windows.Forms;
 namespace PicSum.UIComponent.Contents.FileList
 {
     /// <summary>
-    /// タグファイルリストコンテンツ
+    /// 評価値ファイルリストコンテンツ
     /// </summary>
     [SupportedOSPlatform("windows")]
-    internal sealed class TagFileListContents
-        : AbstractFileListContents
+    internal sealed class RatingFileListPage
+        : AbstractFileListPage
     {
         #region インスタンス変数
 
-        private TagFileListContentsParameter parameter = null;
-        private TwoWayTask<GetFilesByTagTask, ValueParameter<string>, ListResult<FileShallowInfoEntity>> searchTask = null;
-        private OneWayTask<DeleteFileTagTask, UpdateFileTagParameter> deleteTask = null;
-        private TwoWayTask<GetFilesByTagTask, ValueParameter<string>, ListResult<FileShallowInfoEntity>> getFilesTask = null;
+        private RatingFileListPageParameter parameter = null;
+        private TwoWayTask<GetFilesByRatingTask, ValueParameter<int>, ListResult<FileShallowInfoEntity>> searchTask = null;
+        private OneWayTask<UpdateFileRatingTask, UpdateFileRatingParameter> deleteTask = null;
+        private TwoWayTask<GetFilesByRatingTask, ValueParameter<int>, ListResult<FileShallowInfoEntity>> getFilesTask = null;
+
 
         #endregion
 
         #region プライベートプロパティ
 
-        private TwoWayTask<GetFilesByTagTask, ValueParameter<string>, ListResult<FileShallowInfoEntity>> SearchTask
+        private TwoWayTask<GetFilesByRatingTask, ValueParameter<int>, ListResult<FileShallowInfoEntity>> SearchTask
         {
             get
             {
@@ -51,15 +50,14 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
-        private OneWayTask<DeleteFileTagTask, UpdateFileTagParameter> DeleteTask
+        private OneWayTask<UpdateFileRatingTask, UpdateFileRatingParameter> DeleteTask
         {
             get
             {
                 if (this.deleteTask == null)
                 {
                     this.deleteTask = new();
-                    this.deleteTask
-                        .StartThread();
+                    this.deleteTask.StartThread();
                 }
 
                 return this.deleteTask;
@@ -70,7 +68,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
         #region コンストラクタ
 
-        public TagFileListContents(TagFileListContentsParameter param)
+        public RatingFileListPage(RatingFileListPageParameter param)
             : base(param)
         {
             this.parameter = param;
@@ -84,9 +82,8 @@ namespace PicSum.UIComponent.Contents.FileList
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-
-            var param = new ValueParameter<string>();
-            param.Value = this.parameter.Tag;
+            var param = new ValueParameter<int>();
+            param.Value = this.parameter.RagingValue;
             this.SearchTask.StartTask(param);
         }
 
@@ -118,7 +115,7 @@ namespace PicSum.UIComponent.Contents.FileList
             base.Dispose(disposing);
         }
 
-        protected override void OnDrawTabContents(DrawTabEventArgs e)
+        protected override void OnDrawTabPage(SWF.UIComponent.TabOperation.DrawTabEventArgs e)
         {
             e.Graphics.DrawImage(this.Icon, e.IconRectangle);
             DrawTextUtil.DrawText(e.Graphics, this.Title, e.Font, e.TextRectangle, e.TitleColor, e.TitleFormatFlags, e.TextStyle);
@@ -129,24 +126,22 @@ namespace PicSum.UIComponent.Contents.FileList
             // 処理無し。
         }
 
-        protected override void OnRemoveFile(IList<string> filePathList)
+        protected override void OnRemoveFile(System.Collections.Generic.IList<string> filePathList)
         {
-            var param = new UpdateFileTagParameter();
+            var param = new UpdateFileRatingParameter();
             param.FilePathList = filePathList;
-            param.Tag = this.parameter.Tag;
+            param.RatingValue = 0;
             this.DeleteTask.StartTask(param);
 
             this.RemoveFile(filePathList);
         }
 
-        protected override Action GetImageFilesAction(ImageViewerContentsParameter paramter)
+        protected override Action GetImageFilesAction(ImageViewerPageParameter paramter)
         {
             return () =>
             {
                 var task = this.CreateNewGetFilesTask();
-
-                task
-                .Callback(e =>
+                task.Callback(e =>
                 {
                     var imageFiles = e
                         .Where(fileInfo => fileInfo.IsImageFile);
@@ -165,7 +160,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 })
                 .StartThread();
 
-                task.StartTask(new ValueParameter<string>() { Value = this.parameter.Tag });
+                task.StartTask(new ValueParameter<int>() { Value = this.parameter.RagingValue });
             };
         }
 
@@ -185,14 +180,14 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private void InitializeComponent()
         {
-            this.Title = this.parameter.Tag;
-            this.Icon = Resources.TagIcon;
-            this.IsRemoveFromListMenuItemVisible = true;
+            this.Title = "Star";
+            this.Icon = Resources.ActiveRatingIcon;
             this.IsMoveControlVisible = false;
+            this.IsRemoveFromListMenuItemVisible = true;
             base.sortFileRgistrationDateToolStripButton.Enabled = true;
         }
 
-        private TwoWayTask<GetFilesByTagTask, ValueParameter<string>, ListResult<FileShallowInfoEntity>> CreateNewGetFilesTask()
+        private TwoWayTask<GetFilesByRatingTask, ValueParameter<int>, ListResult<FileShallowInfoEntity>> CreateNewGetFilesTask()
         {
             if (this.getFilesTask != null)
             {
@@ -211,6 +206,11 @@ namespace PicSum.UIComponent.Contents.FileList
         private void SearchTask_Callback(ListResult<FileShallowInfoEntity> e)
         {
             base.SetFiles(e, this.parameter.SelectedFilePath, SortTypeID.RgistrationDate, false);
+
+            if (string.IsNullOrEmpty(this.parameter.SelectedFilePath))
+            {
+                base.OnSelectedFileChanged(new SelectedFileChangeEventArgs());
+            }
         }
 
         #endregion

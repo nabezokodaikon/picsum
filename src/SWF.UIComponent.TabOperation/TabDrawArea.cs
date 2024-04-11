@@ -17,8 +17,8 @@ namespace SWF.UIComponent.TabOperation
 
         private const int MINIMUM_WIDHT = 64;
         private const int SIDE_WIDTH = 8;
-        private const int CONTENTS_SIZE = 24;
-        private const int CONTENTS_OFFSET = 2;
+        private const int PAGE_SIZE = 24;
+        private const int PAGE_OFFSET = 2;
 
         #endregion
 
@@ -26,11 +26,11 @@ namespace SWF.UIComponent.TabOperation
 
         private readonly static IList<Point> LEFT_TRANSPARENT_POINTS = GetLeftTransparentPoints(Resources.ActiveTab);
         private readonly static IList<Point> RIGHT_TRANSPARENT_POINTS = GetRightTransparentPoints(Resources.ActiveTab);
-        private readonly static Rectangle ICON_RECTANGLE = new Rectangle(SIDE_WIDTH, CONTENTS_OFFSET, CONTENTS_SIZE, CONTENTS_SIZE);
-        private readonly static Rectangle CLOSE_BUTTON_RECTANGLE = new Rectangle(Resources.ActiveTab.Width - SIDE_WIDTH - CONTENTS_SIZE,
-                                                                                 CONTENTS_OFFSET,
-                                                                                 CONTENTS_SIZE,
-                                                                                 CONTENTS_SIZE);
+        private readonly static Rectangle ICON_RECTANGLE = new Rectangle(SIDE_WIDTH, PAGE_OFFSET, PAGE_SIZE, PAGE_SIZE);
+        private readonly static Rectangle CLOSE_BUTTON_RECTANGLE = new Rectangle(Resources.ActiveTab.Width - SIDE_WIDTH - PAGE_SIZE,
+                                                                                 PAGE_OFFSET,
+                                                                                 PAGE_SIZE,
+                                                                                 PAGE_SIZE);
 
         private readonly static SolidBrush TAB_CLOSE_ACTIVE_BUTTON_BRUSH = new SolidBrush(Color.FromArgb(64, 0, 0, 0));
         private readonly static SolidBrush TAB_CLOSE_INACTIVE_BUTTON_BRUSH = new SolidBrush(Color.FromArgb(64, 0, 0, 0));
@@ -309,7 +309,7 @@ namespace SWF.UIComponent.TabOperation
             this.DrawTabCloseButton(g, false, true);
         }
 
-        public bool Contents(int x, int y)
+        public bool Contains(int x, int y)
         {
             if (x < this.Left || this.Right < x || y < this.Top || this.Bottom < y)
             {
@@ -336,9 +336,9 @@ namespace SWF.UIComponent.TabOperation
             return true;
         }
 
-        public bool Contents(Point p)
+        public bool Contains(Point p)
         {
-            return this.Contents(p.X, p.Y);
+            return this.Contains(p.X, p.Y);
         }
 
         public Rectangle GetRectangle()
@@ -383,11 +383,11 @@ namespace SWF.UIComponent.TabOperation
             return new Rectangle(x, y, w, h);
         }
 
-        public Rectangle GetContentsRectangle()
+        public Rectangle GetPageRectangle()
         {
-            var x = this.iconRectangle.Right + CONTENTS_OFFSET + this.drawPoint.X;
+            var x = this.iconRectangle.Right + PAGE_OFFSET + this.drawPoint.X;
             var y = this.iconRectangle.Y + this.drawPoint.Y;
-            return Rectangle.FromLTRB(x, y, this.closeButtonRectangle.X - (this.activeTabImage.Width - this.width) + this.drawPoint.X - CONTENTS_OFFSET, y + this.iconRectangle.Height);
+            return Rectangle.FromLTRB(x, y, this.closeButtonRectangle.X - (this.activeTabImage.Width - this.width) + this.drawPoint.X - PAGE_OFFSET, y + this.iconRectangle.Height);
         }
 
         private void DrawTab(Bitmap bmp, Graphics g)

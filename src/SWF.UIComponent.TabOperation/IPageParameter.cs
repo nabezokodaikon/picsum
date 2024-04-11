@@ -1,13 +1,13 @@
-﻿namespace SWF.UIComponent.TabOperation
+namespace SWF.UIComponent.TabOperation
 {
     /// <summary>
     /// コンテンツパラメータインターフェース
     /// </summary>
-    public interface IContentsParameter
+    public interface IPageParameter
     {
         string Key { get; }
-        string ContentsSources { get; }
+        string PageSources { get; }
         string SourcesKey { get; }
-        ContentsPanel CreateContents();
+        PagePanel CreatePage();
     }
 }

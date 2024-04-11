@@ -6,7 +6,7 @@ namespace PicSum.Task.Paramters
     /// <summary>
     /// 次のコンテンツのパラメータを取得するエンティティ
     /// </summary>
-    public sealed class GetNextContentsParameter<T>
+    public sealed class GetNextPageParameter<T>
         : ITaskParameter
     {
         public ValueEntity<T> CurrentParameter { get; set; }

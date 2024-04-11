@@ -26,12 +26,12 @@ namespace PicSum.UIComponent.Contents.FileList
     /// ファイルリストコンテンツ基底クラス
     /// </summary>
     [SupportedOSPlatform("windows")]
-    internal abstract partial class AbstractFileListContents
-        : BrowserContents
+    internal abstract partial class AbstractFileListPage
+        : BrowserPage
     {
         #region インスタンス変数
 
-        private Dictionary<string, FileEntity> masterFileDictionary = null;
+        private Dictionary<string, FilePage> masterFileDictionary = null;
         private List<string> filterFilePathList = null;
         private readonly SortInfo sortInfo = new();
         private TwoWayTask<GetThumbnailsTask, GetThumbnailParameter, ThumbnailImageResult> getThumbnailsTask = null;
@@ -235,7 +235,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
         #region コンストラクタ
 
-        public AbstractFileListContents(IContentsParameter param)
+        public AbstractFileListPage(IPageParameter param)
             : base(param)
         {
             this.InitializeComponent();
@@ -246,7 +246,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
         #region パブリックメソッド
 
-        public override void RedrawContents()
+        public override void RedrawPage()
         {
             this.flowList.Refresh();
         }
@@ -314,7 +314,7 @@ namespace PicSum.UIComponent.Contents.FileList
             this.masterFileDictionary = [];
             foreach (var srcFile in srcFiles)
             {
-                var destFile = new FileEntity
+                var destFile = new FilePage
                 {
                     FilePath = srcFile.FilePath,
                     FileName = srcFile.FileName,
@@ -470,7 +470,7 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
-        protected abstract Action GetImageFilesAction(ImageViewerContentsParameter paramter);
+        protected abstract Action GetImageFilesAction(ImageViewerPageParameter paramter);
 
         #endregion
 
@@ -479,11 +479,11 @@ namespace PicSum.UIComponent.Contents.FileList
         private void SubInitializeComponent()
         {
             this.Font = new Font("Yu Gothic UI", 10F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(128)));
-            this.IsShowFileName = FileListContentsConfig.IsShowFileName;
-            this.IsShowDirectory = FileListContentsConfig.IsShowDirectory;
-            this.IsShowImageFile = FileListContentsConfig.IsShowImageFile;
-            this.IsShowOtherFile = FileListContentsConfig.IsShowOtherFile;
-            this.ThumbnailSize = FileListContentsConfig.ThumbnailSize;
+            this.IsShowFileName = FileListPageConfig.IsShowFileName;
+            this.IsShowDirectory = FileListPageConfig.IsShowDirectory;
+            this.IsShowImageFile = FileListPageConfig.IsShowImageFile;
+            this.IsShowOtherFile = FileListPageConfig.IsShowOtherFile;
+            this.ThumbnailSize = FileListPageConfig.ThumbnailSize;
             this.SetFlowListItemSize();
         }
 
@@ -516,16 +516,16 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private void SetFilter()
         {
-            FileListContentsConfig.IsShowDirectory = this.IsShowDirectory;
-            FileListContentsConfig.IsShowImageFile = this.IsShowImageFile;
-            FileListContentsConfig.IsShowOtherFile = this.IsShowOtherFile;
+            FileListPageConfig.IsShowDirectory = this.IsShowDirectory;
+            FileListPageConfig.IsShowImageFile = this.IsShowImageFile;
+            FileListPageConfig.IsShowOtherFile = this.IsShowOtherFile;
 
             if (this.masterFileDictionary == null)
             {
                 return;
             }
 
-            var filterList = new List<FileEntity>();
+            var filterList = new List<FilePage>();
             foreach (var file in this.masterFileDictionary.Values)
             {
                 if (file.IsFile)
@@ -637,7 +637,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private void ChangeFileNameVisible()
         {
-            FileListContentsConfig.IsShowFileName = this.IsShowFileName;
+            FileListPageConfig.IsShowFileName = this.IsShowFileName;
             this.flowList.BeginUpdate();
             try
             {
@@ -876,7 +876,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private void ThumbnailSizeToolStripSlider_ValueChanging(object sender, EventArgs e)
         {
-            FileListContentsConfig.ThumbnailSize = this.ThumbnailSize;
+            FileListPageConfig.ThumbnailSize = this.ThumbnailSize;
             this.SetFlowListItemSize();
             this.flowList.Refresh();
         }
@@ -969,19 +969,19 @@ namespace PicSum.UIComponent.Contents.FileList
             var file = this.masterFileDictionary[filePath];
             if (file.IsImageFile)
             {
-                var param = new ImageViewerContentsParameter(
-                    this.Parameter.ContentsSources,
+                var param = new ImageViewerPageParameter(
+                    this.Parameter.PageSources,
                     this.Parameter.SourcesKey,
                     this.GetImageFilesAction,
                     filePath,
                     this.Title,
                     this.Icon);
-                this.OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.AddTab, param));
+                this.OnOpenPage(new BrowserPageEventArgs(PageOpenType.AddTab, param));
             }
             else if (!file.IsFile)
             {
-                var param = new DirectoryFileListContentsParameter(file.FilePath);
-                this.OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.AddTab, param));
+                var param = new DirectoryFileListPageParameter(file.FilePath);
+                this.OnOpenPage(new BrowserPageEventArgs(PageOpenType.AddTab, param));
             }
         }
 
@@ -996,19 +996,19 @@ namespace PicSum.UIComponent.Contents.FileList
             var file = this.masterFileDictionary[filePath];
             if (file.IsImageFile)
             {
-                var param = new ImageViewerContentsParameter(
-                    this.Parameter.ContentsSources,
+                var param = new ImageViewerPageParameter(
+                    this.Parameter.PageSources,
                     this.Parameter.SourcesKey,
                     this.GetImageFilesAction,
                     filePath,
                     this.Title,
                     this.Icon);
-                this.OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.OverlapTab, param));
+                this.OnOpenPage(new BrowserPageEventArgs(PageOpenType.OverlapTab, param));
             }
             else if (!file.IsFile)
             {
-                var param = new DirectoryFileListContentsParameter(file.FilePath);
-                this.OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.OverlapTab, param));
+                var param = new DirectoryFileListPageParameter(file.FilePath);
+                this.OnOpenPage(new BrowserPageEventArgs(PageOpenType.OverlapTab, param));
             }
             else
             {
@@ -1027,19 +1027,19 @@ namespace PicSum.UIComponent.Contents.FileList
             var file = this.masterFileDictionary[filePath];
             if (file.IsImageFile)
             {
-                var param = new ImageViewerContentsParameter(
-                    this.Parameter.ContentsSources,
+                var param = new ImageViewerPageParameter(
+                    this.Parameter.PageSources,
                     this.Parameter.SourcesKey,
                     this.GetImageFilesAction,
                     filePath,
                     this.Title,
                     this.Icon);
-                this.OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.OverlapTab, param));
+                this.OnOpenPage(new BrowserPageEventArgs(PageOpenType.OverlapTab, param));
             }
             else if (!file.IsFile)
             {
-                var param = new DirectoryFileListContentsParameter(file.FilePath);
-                this.OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.OverlapTab, param));
+                var param = new DirectoryFileListPageParameter(file.FilePath);
+                this.OnOpenPage(new BrowserPageEventArgs(PageOpenType.OverlapTab, param));
             }
             else
             {
@@ -1084,7 +1084,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 if (filePathList.Count > 0)
                 {
                     var dragData = new DragEntity(
-                        this.Parameter.ContentsSources,
+                        this.Parameter.PageSources,
                         this.Parameter.SourcesKey,
                         currentFilePath,
                         this.GetImageFilesAction,
@@ -1097,7 +1097,7 @@ namespace PicSum.UIComponent.Contents.FileList
             {
                 // 選択項目がフォルダの場合。
                 var dragData = new DragEntity(
-                    this.Parameter.ContentsSources,
+                    this.Parameter.PageSources,
                     this.Parameter.SourcesKey,
                     currentFilePath,
                     this.GetImageFilesAction,
@@ -1126,38 +1126,38 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private void FileContextMenu_FileActiveTabOpen(object sender, ExecuteFileEventArgs e)
         {
-            var param = new ImageViewerContentsParameter(
-                this.Parameter.ContentsSources,
+            var param = new ImageViewerPageParameter(
+                this.Parameter.PageSources,
                 this.Parameter.SourcesKey,
                 this.GetImageFilesAction,
                 e.FilePath,
                 this.Title,
                 this.Icon);
-            this.OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.OverlapTab, param));
+            this.OnOpenPage(new BrowserPageEventArgs(PageOpenType.OverlapTab, param));
         }
 
         private void FileContextMenu_FileNewTabOpen(object sender, ExecuteFileEventArgs e)
         {
-            var param = new ImageViewerContentsParameter(
-                this.Parameter.ContentsSources,
+            var param = new ImageViewerPageParameter(
+                this.Parameter.PageSources,
                 this.Parameter.SourcesKey,
                 this.GetImageFilesAction,
                 e.FilePath,
                 this.Title,
                 this.Icon);
-            this.OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.AddTab, param));
+            this.OnOpenPage(new BrowserPageEventArgs(PageOpenType.AddTab, param));
         }
 
         private void FileContextMenu_FileNewWindowOpen(object sender, ExecuteFileEventArgs e)
         {
-            var param = new ImageViewerContentsParameter(
-                this.Parameter.ContentsSources,
+            var param = new ImageViewerPageParameter(
+                this.Parameter.PageSources,
                 this.Parameter.SourcesKey,
                 this.GetImageFilesAction,
                 e.FilePath,
                 this.Title,
                 this.Icon);
-            this.OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.NewWindow, param));
+            this.OnOpenPage(new BrowserPageEventArgs(PageOpenType.NewWindow, param));
         }
 
         private void FileContextMenu_FileOpen(object sender, ExecuteFileEventArgs e)
@@ -1172,20 +1172,20 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private void FileContextMenu_DirectoryActiveTabOpen(object sender, ExecuteFileEventArgs e)
         {
-            var param = new DirectoryFileListContentsParameter(e.FilePath);
-            this.OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.OverlapTab, param));
+            var param = new DirectoryFileListPageParameter(e.FilePath);
+            this.OnOpenPage(new BrowserPageEventArgs(PageOpenType.OverlapTab, param));
         }
 
         private void FileContextMenu_DirectoryNewTabOpen(object sender, ExecuteFileEventArgs e)
         {
-            var param = new DirectoryFileListContentsParameter(e.FilePath);
-            this.OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.AddTab, param));
+            var param = new DirectoryFileListPageParameter(e.FilePath);
+            this.OnOpenPage(new BrowserPageEventArgs(PageOpenType.AddTab, param));
         }
 
         private void FileContextMenu_DirectoryNewWindowOpen(object sender, ExecuteFileEventArgs e)
         {
-            var param = new DirectoryFileListContentsParameter(e.FilePath);
-            this.OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.NewWindow, param));
+            var param = new DirectoryFileListPageParameter(e.FilePath);
+            this.OnOpenPage(new BrowserPageEventArgs(PageOpenType.NewWindow, param));
         }
 
         private void FileContextMenu_ExplorerOpen(object sender, ExecuteFileEventArgs e)

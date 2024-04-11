@@ -3,7 +3,7 @@
     /// <summary>
     /// ファイルリストコンテンツ設定
     /// </summary>
-    public static class FileListContentsConfig
+    public static class FileListPageConfig
     {
         public static int ThumbnailSize { get; set; }
         public static bool IsShowFileName { get; set; }

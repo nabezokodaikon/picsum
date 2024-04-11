@@ -17,7 +17,7 @@ namespace PicSum.Main.UIComponent
         /// </summary>
         private void InitializeComponent()
         {
-            this.contentsContainer = new SWF.UIComponent.TabOperation.ContentsContainer();
+            this.pageContainer = new SWF.UIComponent.TabOperation.PageContainer();
             this.infoPanel = new PicSum.UIComponent.InfoPanel.InfoPanel();
             this.tabSwitch = new SWF.UIComponent.TabOperation.TabSwitch();
             this.toolPanel = new System.Windows.Forms.Panel();
@@ -25,24 +25,24 @@ namespace PicSum.Main.UIComponent
             this.reloadToolButton = new SWF.UIComponent.Common.ToolButton();
             this.tagDropToolButton = new SWF.UIComponent.WideDropDown.WideDropToolButton();
             this.homeToolButton = new SWF.UIComponent.Common.ToolButton();
-            this.nextContentsHistoryButton = new SWF.UIComponent.Common.ToolButton();
+            this.nextPageHistoryButton = new SWF.UIComponent.Common.ToolButton();
             this.searchRatingToolButton = new SWF.UIComponent.Common.ToolButton();
-            this.previewContentsHistoryButton = new SWF.UIComponent.Common.ToolButton();
+            this.previewPageHistoryButton = new SWF.UIComponent.Common.ToolButton();
             this.showInfoToolButton = new SWF.UIComponent.Common.ToolButton();
             this.addressBar = new PicSum.UIComponent.AddressBar.AddressBar();
             this.toolPanel.SuspendLayout();
             this.SuspendLayout();
             // 
-            // contentsContainer
+            // pageContainer
             // 
-            this.contentsContainer.AllowDrop = true;
-            this.contentsContainer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.contentsContainer.Location = new System.Drawing.Point(0, 0);
-            this.contentsContainer.Name = "contentsContainer";
-            this.contentsContainer.Size = new System.Drawing.Size(746, 402);
-            this.contentsContainer.TabIndex = 1;
-            this.contentsContainer.DragDrop += new System.Windows.Forms.DragEventHandler(this.ContentsContainer_DragDrop);
-            this.contentsContainer.DragEnter += new System.Windows.Forms.DragEventHandler(this.ContentsContainer_DragEnter);
+            this.pageContainer.AllowDrop = true;
+            this.pageContainer.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pageContainer.Location = new System.Drawing.Point(0, 0);
+            this.pageContainer.Name = "pageContainer";
+            this.pageContainer.Size = new System.Drawing.Size(746, 402);
+            this.pageContainer.TabIndex = 1;
+            this.pageContainer.DragDrop += new System.Windows.Forms.DragEventHandler(this.PageContainer_DragDrop);
+            this.pageContainer.DragEnter += new System.Windows.Forms.DragEventHandler(this.PageContainer_DragEnter);
             // 
             // infoPanel
             // 
@@ -83,9 +83,9 @@ namespace PicSum.Main.UIComponent
             this.toolPanel.Controls.Add(this.reloadToolButton);
             this.toolPanel.Controls.Add(this.tagDropToolButton);
             this.toolPanel.Controls.Add(this.homeToolButton);
-            this.toolPanel.Controls.Add(this.nextContentsHistoryButton);
+            this.toolPanel.Controls.Add(this.nextPageHistoryButton);
             this.toolPanel.Controls.Add(this.searchRatingToolButton);
-            this.toolPanel.Controls.Add(this.previewContentsHistoryButton);
+            this.toolPanel.Controls.Add(this.previewPageHistoryButton);
             this.toolPanel.Controls.Add(this.showInfoToolButton);
             this.toolPanel.Controls.Add(this.addressBar);
             this.toolPanel.Location = new System.Drawing.Point(0, 29);
@@ -158,21 +158,21 @@ namespace PicSum.Main.UIComponent
             this.homeToolButton.UseVisualStyleBackColor = true;
             this.homeToolButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.HomeToolButton_MouseClick);
             // 
-            // nextContentsHistoryButton
+            // nextPageHistoryButton
             // 
-            this.nextContentsHistoryButton.Enabled = false;
-            this.nextContentsHistoryButton.FlatAppearance.BorderSize = 0;
-            this.nextContentsHistoryButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
-            this.nextContentsHistoryButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.nextContentsHistoryButton.Image = global::PicSum.Main.Properties.Resources.GoNextIcon;
-            this.nextContentsHistoryButton.Location = new System.Drawing.Point(38, 3);
-            this.nextContentsHistoryButton.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
-            this.nextContentsHistoryButton.Name = "nextContentsHistoryButton";
-            this.nextContentsHistoryButton.RegionType = SWF.UIComponent.Common.ToolButton.ToolButtonRegionType.Right;
-            this.nextContentsHistoryButton.Size = new System.Drawing.Size(32, 28);
-            this.nextContentsHistoryButton.TabIndex = 5;
-            this.nextContentsHistoryButton.UseVisualStyleBackColor = true;
-            this.nextContentsHistoryButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.NextContentsHistoryButton_MouseClick);
+            this.nextPageHistoryButton.Enabled = false;
+            this.nextPageHistoryButton.FlatAppearance.BorderSize = 0;
+            this.nextPageHistoryButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.nextPageHistoryButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.nextPageHistoryButton.Image = global::PicSum.Main.Properties.Resources.GoNextIcon;
+            this.nextPageHistoryButton.Location = new System.Drawing.Point(38, 3);
+            this.nextPageHistoryButton.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
+            this.nextPageHistoryButton.Name = "nextPageHistoryButton";
+            this.nextPageHistoryButton.RegionType = SWF.UIComponent.Common.ToolButton.ToolButtonRegionType.Right;
+            this.nextPageHistoryButton.Size = new System.Drawing.Size(32, 28);
+            this.nextPageHistoryButton.TabIndex = 5;
+            this.nextPageHistoryButton.UseVisualStyleBackColor = true;
+            this.nextPageHistoryButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.NextPageHistoryButton_MouseClick);
             // 
             // searchRatingToolButton
             // 
@@ -189,21 +189,21 @@ namespace PicSum.Main.UIComponent
             this.searchRatingToolButton.UseVisualStyleBackColor = true;
             this.searchRatingToolButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.SearchRatingToolButton_MouseClick);
             // 
-            // previewContentsHistoryButton
+            // previewPageHistoryButton
             // 
-            this.previewContentsHistoryButton.Enabled = false;
-            this.previewContentsHistoryButton.FlatAppearance.BorderSize = 0;
-            this.previewContentsHistoryButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
-            this.previewContentsHistoryButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.previewContentsHistoryButton.Image = global::PicSum.Main.Properties.Resources.GoBackIcon;
-            this.previewContentsHistoryButton.Location = new System.Drawing.Point(6, 3);
-            this.previewContentsHistoryButton.Margin = new System.Windows.Forms.Padding(6, 3, 0, 3);
-            this.previewContentsHistoryButton.Name = "previewContentsHistoryButton";
-            this.previewContentsHistoryButton.RegionType = SWF.UIComponent.Common.ToolButton.ToolButtonRegionType.Left;
-            this.previewContentsHistoryButton.Size = new System.Drawing.Size(32, 28);
-            this.previewContentsHistoryButton.TabIndex = 0;
-            this.previewContentsHistoryButton.UseVisualStyleBackColor = true;
-            this.previewContentsHistoryButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.PreviewContentsHistoryButton_MouseClick);
+            this.previewPageHistoryButton.Enabled = false;
+            this.previewPageHistoryButton.FlatAppearance.BorderSize = 0;
+            this.previewPageHistoryButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.previewPageHistoryButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.previewPageHistoryButton.Image = global::PicSum.Main.Properties.Resources.GoBackIcon;
+            this.previewPageHistoryButton.Location = new System.Drawing.Point(6, 3);
+            this.previewPageHistoryButton.Margin = new System.Windows.Forms.Padding(6, 3, 0, 3);
+            this.previewPageHistoryButton.Name = "previewPageHistoryButton";
+            this.previewPageHistoryButton.RegionType = SWF.UIComponent.Common.ToolButton.ToolButtonRegionType.Left;
+            this.previewPageHistoryButton.Size = new System.Drawing.Size(32, 28);
+            this.previewPageHistoryButton.TabIndex = 0;
+            this.previewPageHistoryButton.UseVisualStyleBackColor = true;
+            this.previewPageHistoryButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.PreviewPageHistoryButton_MouseClick);
             // 
             // showInfoToolButton
             // 
@@ -251,14 +251,14 @@ namespace PicSum.Main.UIComponent
 
         #endregion
 
-        private SWF.UIComponent.TabOperation.ContentsContainer contentsContainer;
+        private SWF.UIComponent.TabOperation.PageContainer pageContainer;
         private PicSum.UIComponent.InfoPanel.InfoPanel infoPanel;
         private SWF.UIComponent.TabOperation.TabSwitch tabSwitch;
         private System.Windows.Forms.Panel toolPanel;
         private SWF.UIComponent.Common.ToolButton showInfoToolButton;
         private PicSum.UIComponent.AddressBar.AddressBar addressBar;
-        private SWF.UIComponent.Common.ToolButton nextContentsHistoryButton;
-        private SWF.UIComponent.Common.ToolButton previewContentsHistoryButton;
+        private SWF.UIComponent.Common.ToolButton nextPageHistoryButton;
+        private SWF.UIComponent.Common.ToolButton previewPageHistoryButton;
         private SWF.UIComponent.Common.ToolButton homeToolButton;
         private SWF.UIComponent.Common.ToolButton searchRatingToolButton;
         private SWF.UIComponent.WideDropDown.WideDropToolButton tagDropToolButton;

@@ -654,7 +654,7 @@ namespace PicSum.UIComponent.InfoPanel
             }
 
             var tagInfo = this.TagList[index];
-            this.OnSelectedTag(new SelectedTagEventArgs(ContentsOpenType.OverlapTab, tagInfo.Tag));
+            this.OnSelectedTag(new SelectedTagEventArgs(PageOpenType.OverlapTab, tagInfo.Tag));
         }
 
         private void TagFlowList_MouseClick(object sender, MouseEventArgs e)
@@ -672,7 +672,7 @@ namespace PicSum.UIComponent.InfoPanel
             }
 
             var tagInfo = this.TagList[index];
-            this.OnSelectedTag(new SelectedTagEventArgs(ContentsOpenType.AddTab, tagInfo.Tag));
+            this.OnSelectedTag(new SelectedTagEventArgs(PageOpenType.AddTab, tagInfo.Tag));
         }
 
         #endregion

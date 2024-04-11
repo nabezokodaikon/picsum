@@ -7,9 +7,9 @@ namespace SWF.UIComponent.TabOperation
     /// <summary>
     /// タブページ内の履歴を管理するクラス。
     /// </summary>
-    internal sealed class ContentsHistoryManager
+    internal sealed class PageHistoryManager
     {
-        private readonly List<IContentsParameter> list = new List<IContentsParameter>();
+        private readonly List<IPageParameter> list = new List<IPageParameter>();
         private int index = -1;
 
         /// <summary>
@@ -34,12 +34,12 @@ namespace SWF.UIComponent.TabOperation
             }
         }
 
-        internal ContentsHistoryManager()
+        internal PageHistoryManager()
         {
 
         }
 
-        public void Add(IContentsParameter param)
+        public void Add(IPageParameter param)
         {
             if (param == null)
             {
@@ -69,7 +69,7 @@ namespace SWF.UIComponent.TabOperation
                     // 最初の履歴の場合。
                     var first = this.list.First();
                     this.list.Clear();
-                    this.list.AddRange(new IContentsParameter[] { first, param });
+                    this.list.AddRange(new IPageParameter[] { first, param });
                     this.index = 1;
                 }
                 else if (this.list.Count - 1 == this.index)
@@ -94,7 +94,7 @@ namespace SWF.UIComponent.TabOperation
             }
         }
 
-        public ContentsPanel CreatePreview()
+        public PagePanel CreatePreview()
         {
             if (this.list.Count < 1 ||
                 this.index - 1 < 0)
@@ -103,10 +103,10 @@ namespace SWF.UIComponent.TabOperation
             }
 
             this.index--;
-            return this.list[this.index].CreateContents();
+            return this.list[this.index].CreatePage();
         }
 
-        public ContentsPanel CreateNext()
+        public PagePanel CreateNext()
         {
             if (this.list.Count < 1 ||
                 this.index + 1 > this.list.Count - 1)
@@ -115,10 +115,10 @@ namespace SWF.UIComponent.TabOperation
             }
 
             this.index++;
-            return this.list[this.index].CreateContents();
+            return this.list[this.index].CreatePage();
         }
 
-        public ContentsPanel CreateClone()
+        public PagePanel CreateClone()
         {
             if (this.list.Count < 1 ||
                 this.index > this.list.Count - 1)
@@ -126,7 +126,7 @@ namespace SWF.UIComponent.TabOperation
                 throw new IndexOutOfRangeException("コンテンツパラメータの現在の履歴が存在しません。");
             }
 
-            return this.list[this.index].CreateContents();
+            return this.list[this.index].CreatePage();
         }
     }
 }

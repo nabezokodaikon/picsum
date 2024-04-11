@@ -83,11 +83,11 @@ namespace PicSum.UIComponent.AddressBar
 
             if (e.Button == MouseButtons.Left)
             {
-                this.OnSelectedDirectory(new SelectedDirectoryEventArgs(ContentsOpenType.OverlapTab, this.directory.DirectoryPath));
+                this.OnSelectedDirectory(new SelectedDirectoryEventArgs(PageOpenType.OverlapTab, this.directory.DirectoryPath));
             }
             else if (e.Button == MouseButtons.Middle)
             {
-                this.OnSelectedDirectory(new SelectedDirectoryEventArgs(ContentsOpenType.AddTab, this.directory.DirectoryPath));
+                this.OnSelectedDirectory(new SelectedDirectoryEventArgs(PageOpenType.AddTab, this.directory.DirectoryPath));
             }
         }
 

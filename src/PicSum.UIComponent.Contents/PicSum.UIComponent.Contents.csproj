@@ -25,34 +25,32 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Update="Common\BrowserContents.cs">
+    <Compile Update="Common\BrowserPage.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Update="ContextMenu\FileContextMenu.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Update="FileList\BookmarkFileListContents.cs">
+    <Compile Update="FileList\BookmarkFileListPage.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Update="ToolBar\ContentsToolBar.cs">
+    <Compile Update="ToolBar\PageToolBar.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Update="FileList\FavoriteDirectoryListContents.cs">
+    <Compile Update="FileList\FavoriteDirectoryListPage.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Update="FileList\AbstractFileListContents.cs">
+    <Compile Update="FileList\AbstractFileListPage.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Update="FileList\DirectoryFileListContents.cs">
+    <Compile Update="FileList\DirectoryFileListPage.cs" />
+    <Compile Update="ImageViewer\ImageViewerPage.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Update="ImageViewer\ImageViewerContents.cs">
+    <Compile Update="FileList\RatingFileListPage.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Update="FileList\RatingFileListContents.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Update="FileList\TagFileListContents.cs">
+    <Compile Update="FileList\TagFileListPage.cs">
       <SubType>UserControl</SubType>
     </Compile>
   </ItemGroup>

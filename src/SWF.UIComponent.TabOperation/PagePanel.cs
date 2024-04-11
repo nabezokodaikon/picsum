@@ -7,14 +7,14 @@ namespace SWF.UIComponent.TabOperation
     /// <summary>
     /// コンテンツコントロール
     /// </summary>
-    public class ContentsPanel
+    public class PagePanel
         : UserControl
     {
         #region イベント・デリゲート
 
         public event EventHandler Activated;
         public event EventHandler Inactivated;
-        public event EventHandler<DrawTabEventArgs> DrawTabContents;
+        public event EventHandler<DrawTabEventArgs> DrawTabPage;
 
         #endregion
 
@@ -63,7 +63,7 @@ namespace SWF.UIComponent.TabOperation
         /// <summary>
         /// コンテンツを再描画します。
         /// </summary>
-        public virtual void RedrawContents()
+        public virtual void RedrawPage()
         {
 
         }
@@ -84,14 +84,14 @@ namespace SWF.UIComponent.TabOperation
             this.OnInactivated(new EventArgs());
         }
 
-        public void DrawingTabContents(DrawTabEventArgs e)
+        public void DrawingTabPage(DrawTabEventArgs e)
         {
             if (e == null)
             {
                 throw new ArgumentNullException(nameof(e));
             }
 
-            this.OnDrawTabContents(e);
+            this.OnDrawTabPage(e);
         }
 
         #endregion
@@ -114,11 +114,11 @@ namespace SWF.UIComponent.TabOperation
             }
         }
 
-        protected virtual void OnDrawTabContents(DrawTabEventArgs e)
+        protected virtual void OnDrawTabPage(DrawTabEventArgs e)
         {
-            if (this.DrawTabContents != null)
+            if (this.DrawTabPage != null)
             {
-                this.DrawTabContents(this, e);
+                this.DrawTabPage(this, e);
             }
         }
 

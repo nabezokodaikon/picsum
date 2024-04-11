@@ -6,11 +6,11 @@ namespace PicSum.UIComponent.AddressBar
     public sealed class SelectedDirectoryEventArgs
         : EventArgs
     {
-        public ContentsOpenType OpenType { get; private set; } = ContentsOpenType.Default;
+        public PageOpenType OpenType { get; private set; } = PageOpenType.Default;
         public string DirectoryPath { get; private set; } = string.Empty;
         public string SubDirectoryPath { get; private set; } = string.Empty;
 
-        public SelectedDirectoryEventArgs(ContentsOpenType openType, string directoryPath)
+        public SelectedDirectoryEventArgs(PageOpenType openType, string directoryPath)
         {
             if (directoryPath == null)
             {
@@ -21,7 +21,7 @@ namespace PicSum.UIComponent.AddressBar
             this.DirectoryPath = directoryPath;
         }
 
-        public SelectedDirectoryEventArgs(ContentsOpenType openType, string directoryPath, string subDirectoryPath)
+        public SelectedDirectoryEventArgs(PageOpenType openType, string directoryPath, string subDirectoryPath)
         {
             if (directoryPath == null)
             {

@@ -9,34 +9,34 @@ namespace PicSum.UIComponent.Contents.Parameter
     /// 評価値ファイルリストコンテンツパラメータ
     /// </summary>
     [SupportedOSPlatform("windows")]
-    public sealed class RatingFileListContentsParameter
-        : IContentsParameter
+    public sealed class RatingFileListPageParameter
+        : IPageParameter
     {
-        public const string CONTENTS_SOURCES = "Rating";
+        public const string PAGE_SOURCES = "Rating";
 
-        public string ContentsSources { get; private set; }
+        public string PageSources { get; private set; }
         public string SourcesKey { get; private set; }
         public string Key { get; private set; }
         public int RagingValue { get; private set; }
         public string SelectedFilePath { get; set; }
 
-        public RatingFileListContentsParameter(int ragingValue)
+        public RatingFileListPageParameter(int ragingValue)
         {
             if (ragingValue < 1)
             {
                 throw new ArgumentOutOfRangeException(nameof(ragingValue));
             }
 
-            this.ContentsSources = CONTENTS_SOURCES;
+            this.PageSources = PAGE_SOURCES;
             this.SourcesKey = ragingValue.ToString();
-            this.Key = string.Format("{0}ListContents:{1}", this.ContentsSources, this.SourcesKey);
+            this.Key = string.Format("{0}ListPage:{1}", this.PageSources, this.SourcesKey);
             this.RagingValue = ragingValue;
             this.SelectedFilePath = string.Empty;
         }
 
-        public ContentsPanel CreateContents()
+        public PagePanel CreatePage()
         {
-            return new RatingFileListContents(this);
+            return new RatingFileListPage(this);
         }
     }
 }

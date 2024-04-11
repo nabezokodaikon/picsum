@@ -4,13 +4,13 @@ using System;
 
 namespace PicSum.UIComponent.Contents.Common
 {
-    public sealed class BrowserContentsEventArgs
+    public sealed class BrowserPageEventArgs
         : EventArgs
     {
-        public ContentsOpenType OpenType { get; private set; }
-        public IContentsParameter Parameter { get; private set; }
+        public PageOpenType OpenType { get; private set; }
+        public IPageParameter Parameter { get; private set; }
 
-        public BrowserContentsEventArgs(ContentsOpenType openType, IContentsParameter param)
+        public BrowserPageEventArgs(PageOpenType openType, IPageParameter param)
         {
             if (param == null)
             {

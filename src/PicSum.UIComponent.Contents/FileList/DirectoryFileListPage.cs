@@ -21,16 +21,16 @@ namespace PicSum.UIComponent.Contents.FileList
     /// フォルダファイルリストコンテンツ
     /// </summary>
     [SupportedOSPlatform("windows")]
-    internal sealed class DirectoryFileListContents
-        : AbstractFileListContents
+    internal sealed class DirectoryFileListPage
+        : AbstractFileListPage
     {
         #region インスタンス変数
 
-        private readonly DirectoryFileListContentsParameter parameter = null;
+        private readonly DirectoryFileListPageParameter parameter = null;
         private TwoWayTask<GetFilesByDirectoryTask, ValueParameter<string>, GetDirectoryResult> searchTask = null;
         private OneWayTask<UpdateDirectoryStateTask, DirectoryStateParameter> updateDirectoryStateTask = null;
         private OneWayTask<AddDirectoryViewHistoryTask, ValueParameter<string>> addDirectoryHistoryTask = null;
-        private TwoWayTask<GetNextDirectoryTask, GetNextContentsParameter<string>, ValueResult<string>> getNextDirectoryTask = null;
+        private TwoWayTask<GetNextDirectoryTask, GetNextPageParameter<string>, ValueResult<string>> getNextDirectoryTask = null;
         private TwoWayTask<GetFilesByDirectoryTask, ValueParameter<string>, GetDirectoryResult> getFilesTask = null;
 
         #endregion
@@ -85,7 +85,7 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
-        private TwoWayTask<GetNextDirectoryTask, GetNextContentsParameter<string>, ValueResult<string>> GetNextDirectoryTask
+        private TwoWayTask<GetNextDirectoryTask, GetNextPageParameter<string>, ValueResult<string>> GetNextDirectoryTask
         {
             get
             {
@@ -105,7 +105,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
         #region コンストラクタ
 
-        public DirectoryFileListContents(DirectoryFileListContentsParameter param)
+        public DirectoryFileListPage(DirectoryFileListPageParameter param)
             : base(param)
         {
             this.parameter = param;
@@ -164,7 +164,7 @@ namespace PicSum.UIComponent.Contents.FileList
             base.Dispose(disposing);
         }
 
-        protected override void OnDrawTabContents(SWF.UIComponent.TabOperation.DrawTabEventArgs e)
+        protected override void OnDrawTabPage(SWF.UIComponent.TabOperation.DrawTabEventArgs e)
         {
             e.Graphics.DrawImage(this.Icon, e.IconRectangle);
             DrawTextUtil.DrawText(e.Graphics, this.Title, e.Font, e.TextRectangle, e.TitleColor, e.TitleFormatFlags, e.TextStyle);
@@ -190,7 +190,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 return;
             }
 
-            var param = new GetNextContentsParameter<string>();
+            var param = new GetNextPageParameter<string>();
             param.CurrentParameter = new ValueEntity<string>();
             param.CurrentParameter.Value = this.parameter.DirectoryPath;
             param.IsNext = false;
@@ -204,14 +204,14 @@ namespace PicSum.UIComponent.Contents.FileList
                 return;
             }
 
-            var param = new GetNextContentsParameter<string>();
+            var param = new GetNextPageParameter<string>();
             param.CurrentParameter = new ValueEntity<string>();
             param.CurrentParameter.Value = this.parameter.DirectoryPath;
             param.IsNext = true;
             this.GetNextDirectoryTask.StartTask(param);
         }
 
-        protected override Action GetImageFilesAction(ImageViewerContentsParameter paramter)
+        protected override Action GetImageFilesAction(ImageViewerPageParameter paramter)
         {
             return () =>
             {
@@ -360,8 +360,8 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private void GetNextDirectoryProcess_Callback(ValueResult<string> e)
         {
-            var param = new DirectoryFileListContentsParameter(e.Value);
-            this.OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.OverlapTab, param));
+            var param = new DirectoryFileListPageParameter(e.Value);
+            this.OnOpenPage(new BrowserPageEventArgs(PageOpenType.OverlapTab, param));
         }
 
         #endregion

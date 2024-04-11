@@ -9,29 +9,29 @@ namespace PicSum.UIComponent.Contents.Parameter
     /// タグファイルリストコンテンツパラメータ
     /// </summary>
     [SupportedOSPlatform("windows")]
-    public sealed class TagFileListContentsParameter
-        : IContentsParameter
+    public sealed class TagFileListPageParameter
+        : IPageParameter
     {
-        public const string CONTENTS_SOURCES = "Tag";
+        public const string PAGE_SOURCES = "Tag";
 
-        public string ContentsSources { get; private set; }
+        public string PageSources { get; private set; }
         public string SourcesKey { get; private set; }
         public string Key { get; private set; }
         public String Tag { get; private set; }
         public string SelectedFilePath { get; set; }
 
-        public TagFileListContentsParameter(string tag)
+        public TagFileListPageParameter(string tag)
         {
-            this.ContentsSources = TagFileListContentsParameter.CONTENTS_SOURCES;
+            this.PageSources = TagFileListPageParameter.PAGE_SOURCES;
             this.SourcesKey = tag;
-            this.Key = string.Format("{0}ListContents:{1}", this.ContentsSources, this.SourcesKey);
+            this.Key = string.Format("{0}ListPage:{1}", this.PageSources, this.SourcesKey);
             this.Tag = tag ?? throw new ArgumentNullException(nameof(tag));
             this.SelectedFilePath = string.Empty;
         }
 
-        public ContentsPanel CreateContents()
+        public PagePanel CreatePage()
         {
-            return new TagFileListContents(this);
+            return new TagFileListPage(this);
         }
     }
 }

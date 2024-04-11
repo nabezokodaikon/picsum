@@ -7,7 +7,7 @@ using System.Runtime.Versioning;
 namespace SWF.UIComponent.TabOperation
 {
     [SupportedOSPlatform("windows")]
-    public sealed class ContentsDrawArea
+    public sealed class PageDrawArea
     {
         #region 定数・列挙
 
@@ -62,7 +62,7 @@ namespace SWF.UIComponent.TabOperation
             }
         }
 
-        public Color ContentsColor
+        public Color PageColor
         {
             get
             {
@@ -70,7 +70,7 @@ namespace SWF.UIComponent.TabOperation
             }
         }
 
-        public SolidBrush ContentsBrush
+        public SolidBrush PageBrush
         {
             get
             {

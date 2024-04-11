@@ -106,7 +106,7 @@ namespace SWF.UIComponent.TabOperation
         private AddTabButtonDrawArea addTabButtonDrawArea = new AddTabButtonDrawArea();
 
         // コンテンツ描画クラス
-        private ContentsDrawArea contentsDrawArea = new ContentsDrawArea();
+        private PageDrawArea pageDrawArea = new PageDrawArea();
 
         #endregion
 
@@ -201,7 +201,7 @@ namespace SWF.UIComponent.TabOperation
         {
             get
             {
-                return this.contentsDrawArea.OutlineColor;
+                return this.pageDrawArea.OutlineColor;
             }
         }
 
@@ -212,29 +212,29 @@ namespace SWF.UIComponent.TabOperation
         {
             get
             {
-                return this.contentsDrawArea.OutlineBrush;
+                return this.pageDrawArea.OutlineBrush;
             }
         }
 
         /// <summary>
         /// コンテンツ色
         /// </summary>
-        public Color ContentsColor
+        public Color PageColor
         {
             get
             {
-                return this.contentsDrawArea.ContentsColor;
+                return this.pageDrawArea.PageColor;
             }
         }
 
         /// <summary>
         /// コンテンツブラシ
         /// </summary>
-        public SolidBrush ContentsBrush
+        public SolidBrush PageBrush
         {
             get
             {
-                return this.contentsDrawArea.ContentsBrush;
+                return this.pageDrawArea.PageBrush;
             }
         }
 
@@ -331,12 +331,12 @@ namespace SWF.UIComponent.TabOperation
         }
 
         /// <summary>
-        /// タブにコンテンツを追加します。
+        /// タブにページを追加します。
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="param"></param>
         /// <returns></returns>
-        public T AddTab<T>(IContentsParameter param) where T : ContentsPanel
+        public T AddTab<T>(IPageParameter param) where T : PagePanel
         {
             if (param == null)
             {
@@ -345,18 +345,18 @@ namespace SWF.UIComponent.TabOperation
 
             var tab = new TabInfo(param);
             this.AddTab(tab);
-            return (T)tab.Contents;
+            return (T)tab.Page;
         }
 
         /// <summary>
-        /// タブにコンテンツを挿入します。
+        /// タブにページを挿入します。
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="index"></param>
         /// <param name="param"></param>
         /// <returns></returns>
-        public T InsertTab<T>(int index, IContentsParameter param)
-            where T : ContentsPanel
+        public T InsertTab<T>(int index, IPageParameter param)
+            where T : PagePanel
         {
             if (param == null)
             {
@@ -365,16 +365,16 @@ namespace SWF.UIComponent.TabOperation
 
             var tab = new TabInfo(param);
             this.InsertTab(index, tab);
-            return (T)tab.Contents;
+            return (T)tab.Page;
         }
 
         /// <summary>
-        /// タブにコンテンツを上書きします。
+        /// タブにページを上書きします。
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="param"></param>
         /// <returns></returns>
-        public T OverwriteTab<T>(IContentsParameter param) where T : ContentsPanel
+        public T OverwriteTab<T>(IPageParameter param) where T : PagePanel
         {
             if (param == null)
             {
@@ -383,16 +383,16 @@ namespace SWF.UIComponent.TabOperation
 
             if (this.activeTab != null)
             {
-                this.activeTab.ClearContents();
-                this.activeTab.OverwriteContents(param);
+                this.activeTab.ClearPage();
+                this.activeTab.OverwritePage(param);
 
                 var container = this.GetContainer();
-                container.ClearContents();
-                container.SetContents(this.activeTab.Contents);
+                container.ClearPage();
+                container.SetPage(this.activeTab.Page);
 
                 this.Invalidate();
 
-                return (T)this.activeTab.Contents;
+                return (T)this.activeTab.Page;
             }
             else
             {
@@ -401,91 +401,91 @@ namespace SWF.UIComponent.TabOperation
         }
 
         /// <summary>
-        /// 履歴の前のコンテンツを表示します。
+        /// 履歴の前のページを表示します。
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public T SetPreviewContentsHistory<T>() where T : ContentsPanel
+        public T SetPreviewHistory<T>() where T : PagePanel
         {
             if (this.activeTab == null)
             {
                 throw new NullReferenceException("アクティブなタブが存在しません。");
             }
 
-            if (!this.activeTab.HasPreviewContents)
+            if (!this.activeTab.HasPreviewPage)
             {
                 throw new InvalidOperationException("コンテンツの前の履歴が存在しません。");
             }
 
-            this.activeTab.ClearContents();
-            this.activeTab.CreatePreviewContents();
+            this.activeTab.ClearPage();
+            this.activeTab.CreatePreviewPage();
 
             var container = this.GetContainer();
-            container.ClearContents();
-            container.SetContents(this.activeTab.Contents);
+            container.ClearPage();
+            container.SetPage(this.activeTab.Page);
 
             this.Invalidate();
 
-            return (T)this.activeTab.Contents;
+            return (T)this.activeTab.Page;
         }
 
         /// <summary>
-        /// 履歴の次のコンテンツを表示します。
+        /// 履歴の次のページを表示します。
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public T SetNextContentsHistory<T>() where T : ContentsPanel
+        public T SetNextPageHistory<T>() where T : PagePanel
         {
             if (this.activeTab == null)
             {
                 throw new NullReferenceException("アクティブなタブが存在しません。");
             }
 
-            if (!this.activeTab.HasNextContents)
+            if (!this.activeTab.HasNextPage)
             {
-                throw new InvalidOperationException("コンテンツの次の履歴が存在しません。");
+                throw new InvalidOperationException("ページの次の履歴が存在しません。");
             }
 
-            this.activeTab.ClearContents();
-            this.activeTab.CreateNextContents();
+            this.activeTab.ClearPage();
+            this.activeTab.CreateNextPage();
 
             var container = this.GetContainer();
-            container.ClearContents();
-            container.SetContents(this.activeTab.Contents);
+            container.ClearPage();
+            container.SetPage(this.activeTab.Page);
 
             this.Invalidate();
 
-            return (T)this.activeTab.Contents;
+            return (T)this.activeTab.Page;
         }
 
         /// <summary>
-        /// 現在のコンテンツのクローンを取得します。
+        /// 現在のページのクローンを取得します。
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public T CloneCurrentContents<T>()
-            where T : ContentsPanel
+        public T CloneCurrentPage<T>()
+            where T : PagePanel
         {
             if (this.activeTab == null)
             {
                 throw new NullReferenceException("アクティブなタブが存在しません。");
             }
 
-            if (!this.activeTab.HasContents)
+            if (!this.activeTab.HasPage)
             {
-                throw new InvalidOperationException("コンテンツが存在しません。");
+                throw new InvalidOperationException("ページが存在しません。");
             }
 
-            this.activeTab.ClearContents();
-            this.activeTab.CloneCurrentContents();
+            this.activeTab.ClearPage();
+            this.activeTab.CloneCurrentPage();
 
             var container = this.GetContainer();
-            container.ClearContents();
-            container.SetContents(this.activeTab.Contents);
+            container.ClearPage();
+            container.SetPage(this.activeTab.Page);
 
             this.Invalidate();
 
-            return (T)this.activeTab.Contents;
+            return (T)this.activeTab.Page;
         }
 
         /// <summary>
@@ -642,7 +642,7 @@ namespace SWF.UIComponent.TabOperation
 
             this.GetAddTabButtonDrawMethod()(e.Graphics);
 
-            this.contentsDrawArea.Draw(e.Graphics);
+            this.pageDrawArea.Draw(e.Graphics);
 
             if (this.activeTab != null)
             {
@@ -731,7 +731,7 @@ namespace SWF.UIComponent.TabOperation
                     }
                 }
             }
-            else if (this.addTabButtonDrawArea.Contents(e.X, e.Y))
+            else if (this.addTabButtonDrawArea.Page(e.X, e.Y))
             {
                 this.InvalidateHeader();
             }
@@ -820,7 +820,7 @@ namespace SWF.UIComponent.TabOperation
                     }
                 }
             }
-            else if (this.addTabButtonDrawArea.Contents(e.X, e.Y))
+            else if (this.addTabButtonDrawArea.Page(e.X, e.Y))
             {
                 this.OnAddTabButtonMouseClick(e);
             }
@@ -888,14 +888,14 @@ namespace SWF.UIComponent.TabOperation
                 }
                 else
                 {
-                    this.activeTab.Contents.Focus();
+                    this.activeTab.Page.Focus();
                 }
 
                 this.OnActiveTabChanged(new EventArgs());
             }
             else if (this.activeTab != null)
             {
-                this.activeTab.Contents.Focus();
+                this.activeTab.Page.Focus();
             }
 
             base.OnMouseWheel(e);
@@ -910,7 +910,7 @@ namespace SWF.UIComponent.TabOperation
                 var dropY = this.dropPoint.Value.Y;
                 foreach (var tab in this.tabList)
                 {
-                    if (tab.DrawArea.Contents(dropX, dropY))
+                    if (tab.DrawArea.Contains(dropX, dropY))
                     {
                         if (this.SetActiveTab(tab))
                         {
@@ -953,7 +953,7 @@ namespace SWF.UIComponent.TabOperation
                 var isExecuteEvent = false;
                 foreach (TabInfo tab in this.tabList)
                 {
-                    if (tab.DrawArea.Contents(dropX, dropY))
+                    if (tab.DrawArea.Contains(dropX, dropY))
                     {
                         if (this.IsTabLeftDrop(dropX, tab))
                         {
@@ -1090,8 +1090,8 @@ namespace SWF.UIComponent.TabOperation
                 {
                     var container = this.GetContainer();
                     container.SuspendLayout();
-                    container.ClearContents();
-                    container.SetContents(tab.Contents);
+                    container.ClearPage();
+                    container.SetPage(tab.Page);
                     container.ResumeLayout();
                     this.activeTab = tab;
                     return true;
@@ -1105,7 +1105,7 @@ namespace SWF.UIComponent.TabOperation
             {
                 var container = this.GetContainer();
                 container.SuspendLayout();
-                container.ClearContents();
+                container.ClearPage();
                 container.ResumeLayout();
                 if (this.activeTab != null)
                 {
@@ -1149,10 +1149,10 @@ namespace SWF.UIComponent.TabOperation
 
         private TabInfo GetTabFromPoint(int x, int y)
         {
-            return this.tabList.FirstOrDefault<TabInfo>((t) => t.DrawArea.Contents(x, y));
+            return this.tabList.FirstOrDefault<TabInfo>((t) => t.DrawArea.Contains(x, y));
         }
 
-        private ContentsContainer GetContainer()
+        private PageContainer GetContainer()
         {
             var form = this.GetForm();
             var container = this.GetContainer(form);
@@ -1166,13 +1166,13 @@ namespace SWF.UIComponent.TabOperation
             }
         }
 
-        private ContentsContainer GetContainer(Control parent)
+        private PageContainer GetContainer(Control parent)
         {
             foreach (Control child in parent.Controls)
             {
-                if (child is ContentsContainer)
+                if (child is PageContainer)
                 {
-                    return (ContentsContainer)child;
+                    return (PageContainer)child;
                 }
                 else if (child.Controls.Count > 0)
                 {
@@ -1367,11 +1367,11 @@ namespace SWF.UIComponent.TabOperation
             args.Font = this.tabPalette.TitleFont;
             args.TitleColor = this.tabPalette.TitleColor;
             args.TitleFormatFlags = this.tabPalette.TitleFormatFlags;
-            args.TextRectangle = tab.DrawArea.GetContentsRectangle();
+            args.TextRectangle = tab.DrawArea.GetPageRectangle();
             args.IconRectangle = tab.DrawArea.GetIconRectangle(tab.Icon);
             args.CloseButtonRectangle = tab.DrawArea.GetCloseButtonRectangle();
             args.TextStyle = DrawTextUtil.TextStyle.Glowing;
-            tab.DrawingTabContents(args);
+            tab.DrawingTabPage(args);
         }
 
         private void DrawDropPoint(Graphics g)
@@ -1386,7 +1386,7 @@ namespace SWF.UIComponent.TabOperation
 
             foreach (var tab in this.tabList)
             {
-                if (tab.DrawArea.Contents(dropX, dropY))
+                if (tab.DrawArea.Contains(dropX, dropY))
                 {
                     if (this.IsTabLeftDrop(dropX, tab))
                     {
@@ -1457,7 +1457,7 @@ namespace SWF.UIComponent.TabOperation
         private Action<Graphics> GetAddTabButtonDrawMethod()
         {
             var p = this.PointToClient(Cursor.Position);
-            if (this.addTabButtonDrawArea.Contents(p))
+            if (this.addTabButtonDrawArea.Page(p))
             {
                 return this.addTabButtonDrawArea.DrawMousePointImage;
             }

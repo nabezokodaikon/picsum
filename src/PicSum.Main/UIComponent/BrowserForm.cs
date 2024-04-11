@@ -39,7 +39,7 @@ namespace PicSum.Main.UIComponent
         #region イベント
 
         public event EventHandler<TabDropoutedEventArgs> TabDropouted;
-        public event EventHandler<BrowserContentsOpenEventArgs> NewWindowContentsOpen;
+        public event EventHandler<BrowserPageOpenEventArgs> NewWindowPageOpen;
 
         #endregion
 
@@ -80,11 +80,11 @@ namespace PicSum.Main.UIComponent
 
         #region パブリックメソッド
 
-        public void AddContentsEventHandler(BrowserContents contents)
+        public void AddPageEventHandler(BrowserPage page)
         {
-            ArgumentNullException.ThrowIfNull(nameof(contents));
+            ArgumentNullException.ThrowIfNull(nameof(page));
 
-            this.BrowserMainPanel.AddContentsEventHandler(contents);
+            this.BrowserMainPanel.AddPageEventHandler(page);
         }
 
         public void AddTab(TabInfo tab)
@@ -94,7 +94,7 @@ namespace PicSum.Main.UIComponent
             this.BrowserMainPanel.AddTab(tab);
         }
 
-        public void AddTab(IContentsParameter param)
+        public void AddTab(IPageParameter param)
         {
             ArgumentNullException.ThrowIfNull(nameof(param));
 
@@ -234,13 +234,13 @@ namespace PicSum.Main.UIComponent
                 {
                     case Keys.Left:
                         {
-                            this.browserMainPanel.MovePreviewContents();
+                            this.browserMainPanel.MovePreviewPage();
                             this.isKeyDown = true;
                             break;
                         }
                     case Keys.Right:
                         {
-                            this.browserMainPanel.MoveNextContents();
+                            this.browserMainPanel.MoveNextPage();
                             this.isKeyDown = true;
                             break;
                         }
@@ -318,7 +318,7 @@ namespace PicSum.Main.UIComponent
 
             browserMainPanel.Close += new EventHandler(this.BrowserMainPanel_Close);
             browserMainPanel.BackgroundMouseDoubleLeftClick += new EventHandler(this.BrowserMainPanel_BackgroundMouseDoubleLeftClick);
-            browserMainPanel.NewWindowContentsOpen += new EventHandler<BrowserContentsOpenEventArgs>(this.BrowserMainPanel_NewWindowContentsOpen);
+            browserMainPanel.NewWindowPageOpen += new EventHandler<BrowserPageOpenEventArgs>(this.BrowserMainPanel_NewWindowPageOpen);
             browserMainPanel.TabDropouted += new EventHandler<TabDropoutedEventArgs>(this.BrowserMainPanel_TabDropouted);
 
             this.SuspendLayout();
@@ -341,9 +341,9 @@ namespace PicSum.Main.UIComponent
             this.TabDropouted?.Invoke(this, e);
         }
 
-        private void OnNewWindowContentsOpen(BrowserContentsOpenEventArgs e)
+        private void OnNewWindowPageOpen(BrowserPageOpenEventArgs e)
         {
-            this.NewWindowContentsOpen?.Invoke(this, e);
+            this.NewWindowPageOpen?.Invoke(this, e);
         }
 
         #endregion
@@ -360,9 +360,9 @@ namespace PicSum.Main.UIComponent
             base.MouseLeftDoubleClickProcess();
         }
 
-        private void BrowserMainPanel_NewWindowContentsOpen(object sender, BrowserContentsOpenEventArgs e)
+        private void BrowserMainPanel_NewWindowPageOpen(object sender, BrowserPageOpenEventArgs e)
         {
-            this.OnNewWindowContentsOpen(e);
+            this.OnNewWindowPageOpen(e);
         }
 
         private void BrowserMainPanel_TabDropouted(object sender, TabDropoutedEventArgs e)

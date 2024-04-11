@@ -23,8 +23,8 @@ namespace PicSum.UIComponent.Contents.ImageViewer
     /// 画像ビューアコンテンツ
     /// </summary>
     [SupportedOSPlatform("windows")]
-    public sealed partial class ImageViewerContents
-        : BrowserContents
+    public sealed partial class ImageViewerPage
+        : BrowserPage
     {
         private static float GetImageScale(Size imageSize, Size backgroudSize, ImageSizeMode mode)
         {
@@ -46,7 +46,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
         #region インスタンス変数
 
-        private readonly ImageViewerContentsParameter parameter = null;
+        private readonly ImageViewerPageParameter parameter = null;
         private string leftImageFilePath = string.Empty;
         private string rightImageFilePath = string.Empty;
         private ImageDisplayMode displayMode = ImageDisplayMode.LeftFacing;
@@ -160,7 +160,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
         #region コンストラクタ
 
-        public ImageViewerContents(ImageViewerContentsParameter parameter)
+        public ImageViewerPage(ImageViewerPageParameter parameter)
             : base(parameter)
         {
             this.InitializeComponent();
@@ -173,7 +173,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
         #region パブリックメソッド
 
-        public override void RedrawContents()
+        public override void RedrawPage()
         {
             this.ChangeImagePanelSize();
 
@@ -213,7 +213,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
         protected override void OnResize(EventArgs e)
         {
-            this.RedrawContents();
+            this.RedrawPage();
 
             base.OnResize(e);
         }
@@ -311,7 +311,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             return base.ProcessDialogKey(keyData);
         }
 
-        protected override void OnDrawTabContents(SWF.UIComponent.TabOperation.DrawTabEventArgs e)
+        protected override void OnDrawTabPage(SWF.UIComponent.TabOperation.DrawTabEventArgs e)
         {
             e.Graphics.DrawImage(this.Icon, e.IconRectangle);
             DrawTextUtil.DrawText(e.Graphics, this.Title, e.Font, e.TextRectangle, e.TitleColor, e.TitleFormatFlags, e.TextStyle);
@@ -328,8 +328,8 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
         private void SubInitializeComponent()
         {
-            this.SetDisplayMode(ImageViewerContentsConfig.ImageDisplayMode);
-            this.SetSizeMode(ImageViewerContentsConfig.ImageSizeMode);
+            this.SetDisplayMode(ImageViewerPageConfig.ImageDisplayMode);
+            this.SetSizeMode(ImageViewerPageConfig.ImageSizeMode);
             this.SetThumbnailPanelVisible();
         }
 
@@ -509,12 +509,12 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         private void DoDragDrop(string currentFilePath)
         {
             var dragData = new DragEntity(
-                this.Parameter.ContentsSources,
+                this.Parameter.PageSources,
                 this.Parameter.SourcesKey,
                 currentFilePath,
                 this.parameter.GetImageFilesAction,
-                this.parameter.ContentsTitle,
-                this.parameter.ContentsIcon);
+                this.parameter.PageTitle,
+                this.parameter.PageIcon);
             this.DoDragDrop(dragData, DragDropEffects.All);
         }
 
@@ -585,8 +585,8 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         {
             this.filePathList = e.FilePathList;
 
-            this.Title = e.ContentsTitle;
-            this.Icon = e.ContentsIcon;
+            this.Title = e.PageTitle;
+            this.Icon = e.PageIcon;
 
             if (this.filePathList.Count > 0)
             {
@@ -735,7 +735,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
             if (this.SetDisplayMode(ImageDisplayMode.Single))
             {
-                ImageViewerContentsConfig.ImageDisplayMode = this.displayMode;
+                ImageViewerPageConfig.ImageDisplayMode = this.displayMode;
                 this.ReadImage();
             }
         }
@@ -754,7 +754,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
             if (this.SetDisplayMode(ImageDisplayMode.LeftFacing))
             {
-                ImageViewerContentsConfig.ImageDisplayMode = this.displayMode;
+                ImageViewerPageConfig.ImageDisplayMode = this.displayMode;
                 this.ReadImage();
             }
         }
@@ -773,7 +773,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
             if (this.SetDisplayMode(ImageDisplayMode.RightFacing))
             {
-                ImageViewerContentsConfig.ImageDisplayMode = this.displayMode;
+                ImageViewerPageConfig.ImageDisplayMode = this.displayMode;
                 this.ReadImage();
             }
         }
@@ -792,7 +792,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
             if (this.SetSizeMode(ImageSizeMode.Original))
             {
-                ImageViewerContentsConfig.ImageSizeMode = this.sizeMode;
+                ImageViewerPageConfig.ImageSizeMode = this.sizeMode;
                 this.SetThumbnailPanelVisible();
                 this.ReadImage();
             }
@@ -812,7 +812,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
             if (this.SetSizeMode(ImageSizeMode.FitAllImage))
             {
-                ImageViewerContentsConfig.ImageSizeMode = this.sizeMode;
+                ImageViewerPageConfig.ImageSizeMode = this.sizeMode;
                 this.SetThumbnailPanelVisible();
                 this.ReadImage();
             }
@@ -832,7 +832,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
             if (this.SetSizeMode(ImageSizeMode.FitOnlyBigImage))
             {
-                ImageViewerContentsConfig.ImageSizeMode = this.sizeMode;
+                ImageViewerPageConfig.ImageSizeMode = this.sizeMode;
                 this.SetThumbnailPanelVisible();
                 this.ReadImage();
             }
@@ -1021,26 +1021,26 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
         private void FileContextMenu_FileNewTabOpen(object sender, ExecuteFileEventArgs e)
         {
-            var param = new ImageViewerContentsParameter(
-                this.Parameter.ContentsSources,
+            var param = new ImageViewerPageParameter(
+                this.Parameter.PageSources,
                 this.Parameter.SourcesKey,
                 this.parameter.GetImageFilesAction,
                 e.FilePath,
                 this.Title,
                 this.Icon);
-            this.OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.AddTab, param));
+            this.OnOpenPage(new BrowserPageEventArgs(PageOpenType.AddTab, param));
         }
 
         private void FileContextMenu_FileNewWindowOpen(object sender, ExecuteFileEventArgs e)
         {
-            var param = new ImageViewerContentsParameter(
-                this.Parameter.ContentsSources,
+            var param = new ImageViewerPageParameter(
+                this.Parameter.PageSources,
                 this.Parameter.SourcesKey,
                 this.parameter.GetImageFilesAction,
                 e.FilePath,
                 this.Title,
                 this.Icon);
-            this.OnOpenContents(new BrowserContentsEventArgs(ContentsOpenType.NewWindow, param));
+            this.OnOpenPage(new BrowserPageEventArgs(PageOpenType.NewWindow, param));
         }
 
         private void FileContextMenu_FileOpen(object sender, ExecuteFileEventArgs e)

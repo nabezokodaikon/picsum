@@ -2,7 +2,7 @@ using System;
 
 namespace PicSum.UIComponent.Contents.ImageViewer
 {
-    partial class ImageViewerContents
+    partial class ImageViewerPage
     {
         /// <summary> 
         /// 必要なデザイナ変数です。
@@ -18,7 +18,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ImageViewerContents));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ImageViewerPage));
             this.leftImagePanel = new SWF.UIComponent.ImagePanel.ImagePanel();
             this.fileContextMenu = new PicSum.UIComponent.Contents.ContextMenu.FileContextMenu();
             this.rightImagePanel = new SWF.UIComponent.ImagePanel.ImagePanel();
@@ -34,7 +34,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.allFitSizeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.onlyBigImageFitSizeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.sizeToolStripDropDownButton = new System.Windows.Forms.ToolStripDropDownButton();
-            this.toolBar = new PicSum.UIComponent.Contents.ToolBar.ContentsToolBar();
+            this.toolBar = new PicSum.UIComponent.Contents.ToolBar.PageToolBar();
             this.doublePreviewIndexToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.doubleNextIndexToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.singlePreviewIndexToolStripButton = new System.Windows.Forms.ToolStripButton();
@@ -274,7 +274,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.indexSlider.ValueChanging += new System.EventHandler(this.IndexSlider_ValueChanging);
             this.indexSlider.ValueChanged += new System.EventHandler(this.IndexSlider_ValueChanged);
             // 
-            // ImageViewerContents
+            // ImageViewerPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -283,7 +283,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.Controls.Add(this.checkPatternPanel);
             this.Controls.Add(this.toolBar);
             this.Margin = new System.Windows.Forms.Padding(4);
-            this.Name = "ImageViewerContents";
+            this.Name = "ImageViewerPage";
             this.Size = new System.Drawing.Size(925, 528);
             this.checkPatternPanel.ResumeLayout(false);
             this.viewContextMenuStrip.ResumeLayout(false);
@@ -302,7 +302,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         private PicSum.UIComponent.Contents.ContextMenu.FileContextMenu fileContextMenu;
         private System.Windows.Forms.ToolTip filePathToolTip;
         private SWF.UIComponent.Common.CheckPatternPanel checkPatternPanel;
-        private PicSum.UIComponent.Contents.ToolBar.ContentsToolBar toolBar;
+        private PicSum.UIComponent.Contents.ToolBar.PageToolBar toolBar;
         private System.Windows.Forms.ToolStripDropDownButton viewToolStripDropDownButton;
         private System.Windows.Forms.ToolStripDropDownButton sizeToolStripDropDownButton;
         private System.Windows.Forms.ToolStripButton doublePreviewIndexToolStripButton;

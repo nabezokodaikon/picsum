@@ -15,12 +15,12 @@ using System.Windows.Forms;
 namespace PicSum.UIComponent.Contents.FileList
 {
     [SupportedOSPlatform("windows")]
-    internal sealed class FavoriteDirectoryListContents
-        : AbstractFileListContents
+    internal sealed class FavoriteDirectoryListPage
+        : AbstractFileListPage
     {
         #region インスタンス変数
 
-        private FavoriteDirectoryListContentsParameter parameter = null;
+        private FavoriteDirectoryListPageParameter parameter = null;
         private TwoWayTask<GetFavoriteDirectoryTask, GetFavoriteDirectoryParameter, ListResult<FileShallowInfoEntity>> searchTask = null;
         private OneWayTask<DeleteDirectoryViewCounterTask, ListParameter<string>> deleteTask = null;
 
@@ -63,7 +63,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
         #region コンストラクタ
 
-        public FavoriteDirectoryListContents(FavoriteDirectoryListContentsParameter param)
+        public FavoriteDirectoryListPage(FavoriteDirectoryListPageParameter param)
             : base(param)
         {
             this.parameter = param;
@@ -101,11 +101,11 @@ namespace PicSum.UIComponent.Contents.FileList
             base.OnLoad(e);
             var param = new GetFavoriteDirectoryParameter();
             param.IsOnlyDirectory = true;
-            param.Count = FileListContentsConfig.FavoriteDirectoryCount;
+            param.Count = FileListPageConfig.FavoriteDirectoryCount;
             this.SearchTask.StartTask(param);
         }
 
-        protected override void OnDrawTabContents(SWF.UIComponent.TabOperation.DrawTabEventArgs e)
+        protected override void OnDrawTabPage(SWF.UIComponent.TabOperation.DrawTabEventArgs e)
         {
             e.Graphics.DrawImage(this.Icon, e.IconRectangle);
             DrawTextUtil.DrawText(e.Graphics, this.Title, e.Font, e.TextRectangle, e.TitleColor, e.TitleFormatFlags, e.TextStyle);
@@ -125,7 +125,7 @@ namespace PicSum.UIComponent.Contents.FileList
             this.OnSelectedFileChanged(new SelectedFileChangeEventArgs());
         }
 
-        protected override Action GetImageFilesAction(ImageViewerContentsParameter paramter)
+        protected override Action GetImageFilesAction(ImageViewerPageParameter paramter)
         {
             throw new NotImplementedException();
         }

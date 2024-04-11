@@ -31,7 +31,7 @@ namespace PicSum.Main.UIComponent
         #region イベント
 
         public event EventHandler<TabDropoutedEventArgs> TabDropouted;
-        public event EventHandler<BrowserContentsOpenEventArgs> NewWindowContentsOpen;
+        public event EventHandler<BrowserPageOpenEventArgs> NewWindowPageOpen;
         public event EventHandler Close;
         public event EventHandler BackgroundMouseDoubleLeftClick;
 
@@ -98,34 +98,34 @@ namespace PicSum.Main.UIComponent
 
         #region パブリックメソッド
 
-        public void AddContentsEventHandler(BrowserContents contents)
+        public void AddPageEventHandler(BrowserPage page)
         {
-            ArgumentNullException.ThrowIfNull(nameof(contents));
+            ArgumentNullException.ThrowIfNull(nameof(page));
 
-            contents.SelectedFileChanged += new EventHandler<SelectedFileChangeEventArgs>(this.Contents_SelectedFileChanged);
-            contents.OpenContents += new EventHandler<BrowserContentsEventArgs>(this.Contents_OpenContents);
-            contents.MouseClick += new EventHandler<MouseEventArgs>(this.Contents_MouseClick);
+            page.SelectedFileChanged += new EventHandler<SelectedFileChangeEventArgs>(this.Page_SelectedFileChanged);
+            page.OpenPage += new EventHandler<BrowserPageEventArgs>(this.Page_OpenPage);
+            page.MouseClick += new EventHandler<MouseEventArgs>(this.Page_MouseClick);
         }
 
         public void AddTab(TabInfo tab)
         {
             ArgumentNullException.ThrowIfNull(nameof(tab));
 
-            this.AddContentsEventHandler(tab.GetContents<BrowserContents>());
+            this.AddPageEventHandler(tab.GetPage<BrowserPage>());
 
             this.tabSwitch.AddTab(tab);
         }
 
-        public void AddTab(IContentsParameter param)
+        public void AddTab(IPageParameter param)
         {
             ArgumentNullException.ThrowIfNull(nameof(param));
 
-            this.AddContentsEventHandler(this.tabSwitch.AddTab<BrowserContents>(param));
+            this.AddPageEventHandler(this.tabSwitch.AddTab<BrowserPage>(param));
         }
 
         public void AddFavoriteDirectoryListTab()
         {
-            this.OpenContents(new FavoriteDirectoryListContentsParameter(), ContentsOpenType.AddTab);
+            this.OpenPage(new FavoriteDirectoryListPageParameter(), PageOpenType.AddTab);
         }
 
         public void RemoveActiveTab()
@@ -133,9 +133,9 @@ namespace PicSum.Main.UIComponent
             this.tabSwitch.RemoveActiveTab();
         }
 
-        public void MovePreviewContents()
+        public void MovePreviewPage()
         {
-            if (!this.previewContentsHistoryButton.Enabled)
+            if (!this.previewPageHistoryButton.Enabled)
             {
                 return;
             }
@@ -145,13 +145,13 @@ namespace PicSum.Main.UIComponent
                 throw new NullReferenceException("アクティブなタブが存在しません。");
             }
 
-            this.AddContentsEventHandler(this.tabSwitch.SetPreviewContentsHistory<BrowserContents>());
-            this.SetContentsHistoryButtonEnabled();
+            this.AddPageEventHandler(this.tabSwitch.SetPreviewHistory<BrowserPage>());
+            this.SetPageHistoryButtonEnabled();
         }
 
-        public void MoveNextContents()
+        public void MoveNextPage()
         {
-            if (!this.nextContentsHistoryButton.Enabled)
+            if (!this.nextPageHistoryButton.Enabled)
             {
                 return;
             }
@@ -161,8 +161,8 @@ namespace PicSum.Main.UIComponent
                 throw new NullReferenceException("アクティブなタブが存在しません。");
             }
 
-            this.AddContentsEventHandler(this.tabSwitch.SetNextContentsHistory<BrowserContents>());
-            this.SetContentsHistoryButtonEnabled();
+            this.AddPageEventHandler(this.tabSwitch.SetNextPageHistory<BrowserPage>());
+            this.SetPageHistoryButtonEnabled();
         }
 
         #endregion
@@ -206,19 +206,19 @@ namespace PicSum.Main.UIComponent
         {
             this.components ??= new Container();
 
-            this.contentsContainer.SetBounds(
+            this.pageContainer.SetBounds(
                 0,
                 64,
                 this.Width,
                 402);
 
             this.infoPanel.SetBounds(
-                this.contentsContainer.Width - ApplicationConst.INFOPANEL_WIDTH,
-                this.contentsContainer.Location.Y,
+                this.pageContainer.Width - ApplicationConst.INFOPANEL_WIDTH,
+                this.pageContainer.Location.Y,
                 ApplicationConst.INFOPANEL_WIDTH,
                 402);
 
-            this.contentsContainer.Anchor
+            this.pageContainer.Anchor
                 = AnchorStyles.Top
                 | AnchorStyles.Bottom
                 | AnchorStyles.Left
@@ -231,12 +231,12 @@ namespace PicSum.Main.UIComponent
 
             this.Controls.AddRange(
             [
-                this.contentsContainer,
+                this.pageContainer,
                 this.infoPanel,
             ]);
 
             this.infoPanel.BringToFront();
-            this.contentsContainer.BringToFront();
+            this.pageContainer.BringToFront();
 
             this.redrawTimer = new Timer
             {
@@ -246,12 +246,12 @@ namespace PicSum.Main.UIComponent
             this.redrawTimer.Tick += this.RedrawTimer_Tick;
         }
 
-        private void RedrawContents()
+        private void RedrawPage()
         {
             if (this.tabSwitch.ActiveTab != null)
             {
-                var contents = this.tabSwitch.ActiveTab.GetContents<BrowserContents>();
-                contents.RedrawContents();
+                var page = this.tabSwitch.ActiveTab.GetPage<BrowserPage>();
+                page.RedrawPage();
             }
         }
 
@@ -260,7 +260,7 @@ namespace PicSum.Main.UIComponent
             if (this.Size != this.previrewSize)
             {
                 this.previrewSize = this.Size;
-                this.RedrawContents();
+                this.RedrawPage();
             }
         }
 
@@ -276,41 +276,41 @@ namespace PicSum.Main.UIComponent
             return this.getFilesTask;
         }
 
-        private void RemoveContentsEventHandler(BrowserContents contents)
+        private void RemovePageEventHandler(BrowserPage page)
         {
-            contents.SelectedFileChanged -= new EventHandler<SelectedFileChangeEventArgs>(this.Contents_SelectedFileChanged);
-            contents.OpenContents -= new EventHandler<BrowserContentsEventArgs>(this.Contents_OpenContents);
-            contents.MouseClick -= new EventHandler<MouseEventArgs>(this.Contents_MouseClick);
+            page.SelectedFileChanged -= new EventHandler<SelectedFileChangeEventArgs>(this.Page_SelectedFileChanged);
+            page.OpenPage -= new EventHandler<BrowserPageEventArgs>(this.Page_OpenPage);
+            page.MouseClick -= new EventHandler<MouseEventArgs>(this.Page_MouseClick);
         }
 
-        private void SetContentsHistoryButtonEnabled()
+        private void SetPageHistoryButtonEnabled()
         {
             if (this.tabSwitch.ActiveTab != null)
             {
-                this.previewContentsHistoryButton.Enabled = this.tabSwitch.ActiveTab.HasPreviewContents;
-                this.nextContentsHistoryButton.Enabled = this.tabSwitch.ActiveTab.HasNextContents;
+                this.previewPageHistoryButton.Enabled = this.tabSwitch.ActiveTab.HasPreviewPage;
+                this.nextPageHistoryButton.Enabled = this.tabSwitch.ActiveTab.HasNextPage;
             }
             else
             {
-                this.previewContentsHistoryButton.Enabled = false;
-                this.nextContentsHistoryButton.Enabled = false;
+                this.previewPageHistoryButton.Enabled = false;
+                this.nextPageHistoryButton.Enabled = false;
             }
         }
 
-        private void OpenContents(IContentsParameter param, ContentsOpenType openType)
+        private void OpenPage(IPageParameter param, PageOpenType openType)
         {
-            if (openType == ContentsOpenType.OverlapTab)
+            if (openType == PageOpenType.OverlapTab)
             {
-                this.AddContentsEventHandler(this.tabSwitch.OverwriteTab<BrowserContents>(param));
-                this.SetContentsHistoryButtonEnabled();
+                this.AddPageEventHandler(this.tabSwitch.OverwriteTab<BrowserPage>(param));
+                this.SetPageHistoryButtonEnabled();
             }
-            else if (openType == ContentsOpenType.AddTab)
+            else if (openType == PageOpenType.AddTab)
             {
-                this.AddContentsEventHandler(this.tabSwitch.AddTab<BrowserContents>(param));
+                this.AddPageEventHandler(this.tabSwitch.AddTab<BrowserPage>(param));
             }
-            else if (openType == ContentsOpenType.NewWindow)
+            else if (openType == PageOpenType.NewWindow)
             {
-                this.OnNewWindowContentsOpen(new BrowserContentsOpenEventArgs(param));
+                this.OnNewWindowPageOpen(new BrowserPageOpenEventArgs(param));
             }
             else
             {
@@ -318,52 +318,52 @@ namespace PicSum.Main.UIComponent
             }
         }
 
-        private void InsertContents(IContentsParameter param, int tabIndex)
+        private void InsertPage(IPageParameter param, int tabIndex)
         {
-            this.AddContentsEventHandler(this.tabSwitch.InsertTab<BrowserContents>(tabIndex, param));
+            this.AddPageEventHandler(this.tabSwitch.InsertTab<BrowserPage>(tabIndex, param));
         }
 
-        private void OverlapContents(DragEntity dragData)
+        private void OverlapPage(DragEntity dragData)
         {
             if (FileUtil.IsDirectory(dragData.CurrentFilePath))
             {
                 // フォルダコンテンツを上書きします。
-                this.OpenContents(new DirectoryFileListContentsParameter(dragData.CurrentFilePath), ContentsOpenType.OverlapTab);
+                this.OpenPage(new DirectoryFileListPageParameter(dragData.CurrentFilePath), PageOpenType.OverlapTab);
             }
             else if (FileUtil.IsFile(dragData.CurrentFilePath) &&
                 FileUtil.IsImageFile(dragData.CurrentFilePath))
             {
                 // ビューアコンテンツを上書きします。
-                var parameter = new ImageViewerContentsParameter(
-                    dragData.ContentsSources,
+                var parameter = new ImageViewerPageParameter(
+                    dragData.PageSources,
                     dragData.SourcesKey,
                     dragData.GetImageFilesAction,
                     dragData.CurrentFilePath,
-                    dragData.ContentsTitle,
-                    dragData.ContentsIcon);
-                this.OpenContents(parameter, ContentsOpenType.OverlapTab);
+                    dragData.PageTitle,
+                    dragData.PageIcon);
+                this.OpenPage(parameter, PageOpenType.OverlapTab);
             }
         }
 
-        private void InsertContents(DragEntity dragData, int tabIndex)
+        private void InsertPage(DragEntity dragData, int tabIndex)
         {
             if (FileUtil.IsDirectory(dragData.CurrentFilePath))
             {
                 // フォルダコンテンツを挿入します。
-                this.InsertContents(new DirectoryFileListContentsParameter(dragData.CurrentFilePath), tabIndex);
+                this.InsertPage(new DirectoryFileListPageParameter(dragData.CurrentFilePath), tabIndex);
             }
             else if (FileUtil.IsFile(dragData.CurrentFilePath) &&
                 FileUtil.IsImageFile(dragData.CurrentFilePath))
             {
                 // ビューアコンテンツを挿入します。
-                var parameter = new ImageViewerContentsParameter(
-                    dragData.ContentsSources,
+                var parameter = new ImageViewerPageParameter(
+                    dragData.PageSources,
                     dragData.SourcesKey,
                     dragData.GetImageFilesAction,
                     dragData.CurrentFilePath,
-                    dragData.ContentsTitle,
-                    dragData.ContentsIcon);
-                this.InsertContents(parameter, tabIndex);
+                    dragData.PageTitle,
+                    dragData.PageIcon);
+                this.InsertPage(parameter, tabIndex);
             }
         }
 
@@ -373,11 +373,11 @@ namespace PicSum.Main.UIComponent
             {
                 if (e.IsOverlap)
                 {
-                    this.OverlapContents((DragEntity)e.Data.GetData(typeof(DragEntity)));
+                    this.OverlapPage((DragEntity)e.Data.GetData(typeof(DragEntity)));
                 }
                 else
                 {
-                    this.InsertContents((DragEntity)e.Data.GetData(typeof(DragEntity)), e.TabIndex);
+                    this.InsertPage((DragEntity)e.Data.GetData(typeof(DragEntity)), e.TabIndex);
                 }
             }
             else if (e.Data.GetDataPresent(DataFormats.FileDrop))
@@ -392,7 +392,7 @@ namespace PicSum.Main.UIComponent
                 var dirPath = FileUtil.IsDirectory(filePath) ?
                     filePath : FileUtil.GetParentDirectoryPath(filePath);
                 var dragData = new DragEntity(
-                    DirectoryFileListContentsParameter.CONTENTS_SOURCES,
+                    DirectoryFileListPageParameter.PAGE_SOURCES,
                     dirPath,
                     filePath,
                     this.GetImageFilesAction(new GetImageFileByDirectoryParameter(dirPath)),
@@ -400,11 +400,11 @@ namespace PicSum.Main.UIComponent
                     FileIconCash.SmallDirectoryIcon);
                 if (e.IsOverlap)
                 {
-                    this.OverlapContents(dragData);
+                    this.OverlapPage(dragData);
                 }
                 else
                 {
-                    this.InsertContents(dragData, e.TabIndex);
+                    this.InsertPage(dragData, e.TabIndex);
                 }
             }
         }
@@ -414,9 +414,9 @@ namespace PicSum.Main.UIComponent
             this.TabDropouted?.Invoke(this, e);
         }
 
-        private void OnNewWindowContentsOpen(BrowserContentsOpenEventArgs e)
+        private void OnNewWindowPageOpen(BrowserPageOpenEventArgs e)
         {
-            this.NewWindowContentsOpen?.Invoke(this, e);
+            this.NewWindowPageOpen?.Invoke(this, e);
         }
 
         private void OnClose(EventArgs e)
@@ -433,7 +433,7 @@ namespace PicSum.Main.UIComponent
 
         #region プロセスイベント
 
-        private Func<ImageViewerContentsParameter, Action> GetImageFilesAction(
+        private Func<ImageViewerPageParameter, Action> GetImageFilesAction(
             GetImageFileByDirectoryParameter subParamter)
         {
             return (parameter) =>
@@ -475,7 +475,7 @@ namespace PicSum.Main.UIComponent
         #region コンテンツイベント
 
         // TODO: tabSwitch_ActiveTabChanged の直後に呼び出される場合がある。
-        private void Contents_SelectedFileChanged(object sender, SelectedFileChangeEventArgs e)
+        private void Page_SelectedFileChanged(object sender, SelectedFileChangeEventArgs e)
         {
             if (e.FilePathList.Count > 0)
             {
@@ -488,20 +488,20 @@ namespace PicSum.Main.UIComponent
             Logger.Debug("コンテンツ内の選択ファイルが変更されました。");
         }
 
-        private void Contents_OpenContents(object sender, BrowserContentsEventArgs e)
+        private void Page_OpenPage(object sender, BrowserPageEventArgs e)
         {
-            this.OpenContents(e.Parameter, e.OpenType);
+            this.OpenPage(e.Parameter, e.OpenType);
         }
 
-        private void Contents_MouseClick(object sender, MouseEventArgs e)
+        private void Page_MouseClick(object sender, MouseEventArgs e)
         {
             switch (e.Button)
             {
                 case MouseButtons.XButton1:
-                    this.MovePreviewContents();
+                    this.MovePreviewPage();
                     break;
                 case MouseButtons.XButton2:
-                    this.MoveNextContents();
+                    this.MoveNextPage();
                     break;
                 default: break;
             }
@@ -513,22 +513,22 @@ namespace PicSum.Main.UIComponent
 
         private void TabSwitch_AddTabButtonMouseClick(object sender, MouseEventArgs e)
         {
-            this.OpenContents(new FavoriteDirectoryListContentsParameter(), ContentsOpenType.AddTab);
+            this.OpenPage(new FavoriteDirectoryListPageParameter(), PageOpenType.AddTab);
         }
 
         private void TabSwitch_ActiveTabChanged(object sender, EventArgs e)
         {
-            this.SetContentsHistoryButtonEnabled();
+            this.SetPageHistoryButtonEnabled();
 
             if (this.tabSwitch.ActiveTab != null)
             {
-                var contents = this.tabSwitch.ActiveTab.GetContents<BrowserContents>();
-                var selectedFilePath = contents.SelectedFilePath;
+                var page = this.tabSwitch.ActiveTab.GetPage<BrowserPage>();
+                var selectedFilePath = page.SelectedFilePath;
                 if (!string.IsNullOrEmpty(selectedFilePath))
                 {
                     this.addressBar.SetAddress(selectedFilePath);
                     this.infoPanel.SetFileInfo(selectedFilePath);
-                    contents.RedrawContents();
+                    page.RedrawPage();
                 }
 
                 Logger.Debug("アクティブなタブが変更されました。");
@@ -551,12 +551,12 @@ namespace PicSum.Main.UIComponent
 
         private void TabSwitch_TabDropouted(object sender, TabDropoutedEventArgs e)
         {
-            this.RemoveContentsEventHandler(e.Tab.GetContents<BrowserContents>());
+            this.RemovePageEventHandler(e.Tab.GetPage<BrowserPage>());
 
             if (e.ToOtherOwner)
             {
                 var browser = e.Tab.Owner.GetForm<BrowserForm>();
-                browser.AddContentsEventHandler(e.Tab.GetContents<BrowserContents>());
+                browser.AddPageEventHandler(e.Tab.GetPage<BrowserPage>());
             }
             else
             {
@@ -601,24 +601,24 @@ namespace PicSum.Main.UIComponent
 
         #region コンテンツ履歴ボタンイベント
 
-        private void PreviewContentsHistoryButton_MouseClick(object sender, MouseEventArgs e)
+        private void PreviewPageHistoryButton_MouseClick(object sender, MouseEventArgs e)
         {
             if (e.Button != MouseButtons.Left)
             {
                 return;
             }
 
-            this.MovePreviewContents();
+            this.MovePreviewPage();
         }
 
-        private void NextContentsHistoryButton_MouseClick(object sender, MouseEventArgs e)
+        private void NextPageHistoryButton_MouseClick(object sender, MouseEventArgs e)
         {
             if (e.Button != MouseButtons.Left)
             {
                 return;
             }
 
-            this.MoveNextContents();
+            this.MoveNextPage();
         }
 
         #endregion
@@ -627,7 +627,7 @@ namespace PicSum.Main.UIComponent
 
         private void AddressBar_SelectedDirectory(object sender, PicSum.UIComponent.AddressBar.SelectedDirectoryEventArgs e)
         {
-            this.OpenContents(new DirectoryFileListContentsParameter(e.DirectoryPath, e.SubDirectoryPath), e.OpenType);
+            this.OpenPage(new DirectoryFileListPageParameter(e.DirectoryPath, e.SubDirectoryPath), e.OpenType);
         }
 
         #endregion
@@ -636,20 +636,20 @@ namespace PicSum.Main.UIComponent
 
         private void ShowInfoToolButton_MouseClick(object sender, MouseEventArgs e)
         {
-            if (this.contentsContainer.Width == this.Width)
+            if (this.pageContainer.Width == this.Width)
             {
-                this.contentsContainer.Width = this.Width - ApplicationConst.INFOPANEL_WIDTH;
+                this.pageContainer.Width = this.Width - ApplicationConst.INFOPANEL_WIDTH;
             }
             else
             {
-                this.contentsContainer.Width = this.Width;
+                this.pageContainer.Width = this.Width;
             }
 
             var activeTab = this.tabSwitch.ActiveTab;
             if (activeTab != null)
             {
-                var contents = activeTab.GetContents<BrowserContents>();
-                contents.RedrawContents();
+                var page = activeTab.GetPage<BrowserPage>();
+                page.RedrawPage();
             }
         }
 
@@ -659,14 +659,14 @@ namespace PicSum.Main.UIComponent
 
         private void InfoPanel_SelectedTag(object sender, SelectedTagEventArgs e)
         {
-            this.OpenContents(new TagFileListContentsParameter(e.Tag), e.OpenType);
+            this.OpenPage(new TagFileListPageParameter(e.Tag), e.OpenType);
         }
 
         #endregion
 
         #region コンテンツコンテナイベント
 
-        private void ContentsContainer_DragEnter(object sender, DragEventArgs e)
+        private void PageContainer_DragEnter(object sender, DragEventArgs e)
         {
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {
@@ -678,7 +678,7 @@ namespace PicSum.Main.UIComponent
             }
         }
 
-        private void ContentsContainer_DragDrop(object sender, DragEventArgs e)
+        private void PageContainer_DragDrop(object sender, DragEventArgs e)
         {
             if (this.tabSwitch.ActiveTabIndex < 0)
             {
@@ -706,23 +706,23 @@ namespace PicSum.Main.UIComponent
                 return;
             }
 
-            if (!this.tabSwitch.ActiveTab.HasContents)
+            if (!this.tabSwitch.ActiveTab.HasPage)
             {
                 return;
             }
 
-            this.AddContentsEventHandler(this.tabSwitch.CloneCurrentContents<BrowserContents>());
+            this.AddPageEventHandler(this.tabSwitch.CloneCurrentPage<BrowserPage>());
         }
 
         private void HomeToolButton_MouseClick(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
             {
-                this.OpenContents(new FavoriteDirectoryListContentsParameter(), ContentsOpenType.OverlapTab);
+                this.OpenPage(new FavoriteDirectoryListPageParameter(), PageOpenType.OverlapTab);
             }
             else if (e.Button == MouseButtons.Middle)
             {
-                this.OpenContents(new FavoriteDirectoryListContentsParameter(), ContentsOpenType.AddTab);
+                this.OpenPage(new FavoriteDirectoryListPageParameter(), PageOpenType.AddTab);
             }
         }
 
@@ -735,11 +735,11 @@ namespace PicSum.Main.UIComponent
         {
             if (e.Button == MouseButtons.Left)
             {
-                this.OpenContents(new TagFileListContentsParameter(e.Item), ContentsOpenType.OverlapTab);
+                this.OpenPage(new TagFileListPageParameter(e.Item), PageOpenType.OverlapTab);
             }
             else
             {
-                this.OpenContents(new TagFileListContentsParameter(e.Item), ContentsOpenType.AddTab);
+                this.OpenPage(new TagFileListPageParameter(e.Item), PageOpenType.AddTab);
             }
         }
 
@@ -747,11 +747,11 @@ namespace PicSum.Main.UIComponent
         {
             if (e.Button == MouseButtons.Left)
             {
-                this.OpenContents(new RatingFileListContentsParameter(1), ContentsOpenType.OverlapTab);
+                this.OpenPage(new RatingFileListPageParameter(1), PageOpenType.OverlapTab);
             }
             else if (e.Button == MouseButtons.Middle)
             {
-                this.OpenContents(new RatingFileListContentsParameter(1), ContentsOpenType.AddTab);
+                this.OpenPage(new RatingFileListPageParameter(1), PageOpenType.AddTab);
             }
         }
 
@@ -759,11 +759,11 @@ namespace PicSum.Main.UIComponent
         {
             if (e.Button == MouseButtons.Left)
             {
-                this.OpenContents(new BookmarkFileListContentsParameter(), ContentsOpenType.OverlapTab);
+                this.OpenPage(new BookmarkFileListPageParameter(), PageOpenType.OverlapTab);
             }
             else if (e.Button == MouseButtons.Middle)
             {
-                this.OpenContents(new BookmarkFileListContentsParameter(), ContentsOpenType.AddTab);
+                this.OpenPage(new BookmarkFileListPageParameter(), PageOpenType.AddTab);
             }
         }
 

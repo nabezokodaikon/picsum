@@ -10,13 +10,13 @@ namespace PicSum.UIComponent.Contents.Common
     /// コンテンツ基底クラス
     /// </summary>
     [SupportedOSPlatform("windows")]
-    public abstract class BrowserContents
-        : ContentsPanel
+    public abstract class BrowserPage
+        : PagePanel
     {
         #region イベント・デリゲート
 
         public event EventHandler<SelectedFileChangeEventArgs> SelectedFileChanged;
-        public event EventHandler<BrowserContentsEventArgs> OpenContents;
+        public event EventHandler<BrowserPageEventArgs> OpenPage;
         public new event EventHandler<MouseEventArgs> MouseClick;
 
         #endregion
@@ -29,13 +29,13 @@ namespace PicSum.UIComponent.Contents.Common
 
         #region プライベートプロパティ
 
-        protected IContentsParameter Parameter { get; private set; }
+        protected IPageParameter Parameter { get; private set; }
 
         #endregion
 
         #region コンストラクタ
 
-        public BrowserContents(IContentsParameter parameter)
+        public BrowserPage(IPageParameter parameter)
         {
             this.SetStyle(
                 ControlStyles.AllPaintingInWmPaint |
@@ -52,7 +52,7 @@ namespace PicSum.UIComponent.Contents.Common
 
         #region パブリックメソッド
 
-        public abstract override void RedrawContents();
+        public abstract override void RedrawPage();
 
         #endregion
 
@@ -76,11 +76,11 @@ namespace PicSum.UIComponent.Contents.Common
             }
         }
 
-        protected virtual void OnOpenContents(BrowserContentsEventArgs e)
+        protected virtual void OnOpenPage(BrowserPageEventArgs e)
         {
-            if (this.OpenContents != null)
+            if (this.OpenPage != null)
             {
-                this.OpenContents(this, e);
+                this.OpenPage(this, e);
             }
         }
 

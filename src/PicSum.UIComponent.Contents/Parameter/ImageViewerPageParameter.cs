@@ -11,39 +11,39 @@ namespace PicSum.UIComponent.Contents.Parameter
     /// 画像表示コンテンツパラメータ
     /// </summary>
     [SupportedOSPlatform("windows")]
-    public sealed class ImageViewerContentsParameter
-        : IContentsParameter
+    public sealed class ImageViewerPageParameter
+        : IPageParameter
     {
         public event EventHandler<GetImageFilesEventArgs> GetImageFiles;
 
-        public string ContentsSources { get; private set; }
+        public string PageSources { get; private set; }
         public string SourcesKey { get; private set; }
         public string Key { get; private set; }
-        public Func<ImageViewerContentsParameter, Action> GetImageFilesAction { get; private set; }
-        public string ContentsTitle { get; private set; }
-        public Image ContentsIcon { get; private set; }
+        public Func<ImageViewerPageParameter, Action> GetImageFilesAction { get; private set; }
+        public string PageTitle { get; private set; }
+        public Image PageIcon { get; private set; }
         public string SelectedFilePath { get; set; }
 
-        public ImageViewerContentsParameter(
-            string contentsSources,
+        public ImageViewerPageParameter(
+            string pageSources,
             string sourcesKey,
-            Func<ImageViewerContentsParameter, Action> getImageFilesAction,
+            Func<ImageViewerPageParameter, Action> getImageFilesAction,
             string selectedFilePath,
-            string contentsTitle,
-            Image contentsIcon)
+            string pageTitle,
+            Image pageIcon)
         {
-            this.ContentsSources = contentsSources ?? throw new ArgumentNullException(nameof(contentsSources));
+            this.PageSources = pageSources ?? throw new ArgumentNullException(nameof(pageSources));
             this.SourcesKey = sourcesKey ?? throw new ArgumentNullException(nameof(sourcesKey));
-            this.Key = string.Format("{0}ImageContents:{1}", this.ContentsSources, this.SourcesKey);
+            this.Key = string.Format("{0}ImageViewerPage:{1}", this.PageSources, this.SourcesKey);
             this.GetImageFilesAction = getImageFilesAction ?? throw new ArgumentNullException(nameof(getImageFilesAction));
-            this.ContentsTitle = contentsTitle ?? throw new ArgumentNullException(nameof(contentsTitle));
-            this.ContentsIcon = contentsIcon ?? throw new ArgumentNullException(nameof(contentsIcon));
+            this.PageTitle = pageTitle ?? throw new ArgumentNullException(nameof(pageTitle));
+            this.PageIcon = pageIcon ?? throw new ArgumentNullException(nameof(pageIcon));
             this.SelectedFilePath = selectedFilePath ?? throw new ArgumentNullException(nameof(selectedFilePath));
         }
 
-        public ContentsPanel CreateContents()
+        public PagePanel CreatePage()
         {
-            return new ImageViewerContents(this);
+            return new ImageViewerPage(this);
         }
 
         public void OnGetImageFiles(GetImageFilesEventArgs e)

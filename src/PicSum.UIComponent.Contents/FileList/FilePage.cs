@@ -3,7 +3,7 @@ using System.Drawing;
 
 namespace PicSum.UIComponent.Contents.FileList
 {
-    internal sealed class FileEntity
+    internal sealed class FilePage
     {
         public string FilePath { get; set; }
         public string FileName { get; set; }
