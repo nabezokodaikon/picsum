@@ -267,7 +267,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.indexSlider.MaximumValue = 100;
             this.indexSlider.MinimumValue = 0;
             this.indexSlider.Name = "indexSlider";
-            this.indexSlider.Size = new System.Drawing.Size(635, 23);
+            this.indexSlider.Size = new System.Drawing.Size(475, 23);
             this.indexSlider.TabIndex = 5;
             this.indexSlider.Text = "slider1";
             this.indexSlider.Value = 0;
