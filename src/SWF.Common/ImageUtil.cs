@@ -213,7 +213,7 @@ namespace SWF.Common
             const string message = "Failed to load file";
 
             var bmp = new Bitmap(size, size);
-            using (var font = new Font("Yu Gothic UI", 10F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(128))))
+            using (var font = new Font("Yu Gothic UI", 12F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(128))))
             using (var g = Graphics.FromImage(bmp))
             {
                 var textSize = g.MeasureString(message, font);
