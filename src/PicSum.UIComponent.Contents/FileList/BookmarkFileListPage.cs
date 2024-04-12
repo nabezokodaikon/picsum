@@ -24,7 +24,6 @@ namespace PicSum.UIComponent.Contents.FileList
         private readonly BookmarkFileListPageParameter paramter = null;
         private TwoWayTask<GetBookmarkTask, ListResult<FileShallowInfoEntity>> searchTask = null;
         private OneWayTask<DeleteBookmarkTask, ListParameter<string>> deleteTask = null;
-        private TwoWayTask<GetFilesByDirectoryTask, ValueParameter<string>, GetDirectoryResult> getFilesTask = null;
 
         private TwoWayTask<GetBookmarkTask, ListResult<FileShallowInfoEntity>> SearchTask
         {
@@ -88,12 +87,6 @@ namespace PicSum.UIComponent.Contents.FileList
                     this.deleteTask = null;
                 }
 
-                if (this.getFilesTask != null)
-                {
-                    this.getFilesTask.Dispose();
-                    this.getFilesTask = null;
-                }
-
                 GC.Collect();
             }
 
@@ -122,11 +115,11 @@ namespace PicSum.UIComponent.Contents.FileList
             this.OnSelectedFileChanged(new SelectedFileChangeEventArgs());
         }
 
-        protected override Action GetImageFilesAction(ImageViewerPageParameter paramter)
+        protected override Action GetImageFilesAction(ImageViewerPageParameter param)
         {
             return () =>
             {
-                var task = this.CreateNewGetFilesTask();
+                var task = new TwoWayTask<GetFilesByDirectoryTask, ValueParameter<string>, GetDirectoryResult>();
 
                 task
                 .Callback(e =>
@@ -137,21 +130,23 @@ namespace PicSum.UIComponent.Contents.FileList
                         .Select(fileInfo => fileInfo.FilePath)
                         .ToArray();
 
-                    if (!FileUtil.IsImageFile(this.SelectedFilePath))
+                    if (!FileUtil.IsImageFile(param.SelectedFilePath))
                     {
-                        throw new PicSumException($"画像ファイルが選択されていません。'{this.SelectedFilePath}'");
+                        throw new PicSumException($"画像ファイルが選択されていません。'{param.SelectedFilePath}'");
                     }
 
-                    var title = FileUtil.GetFileName(FileUtil.GetParentDirectoryPath(this.SelectedFilePath));
+                    var title = FileUtil.GetFileName(FileUtil.GetParentDirectoryPath(param.SelectedFilePath));
 
                     var eventArgs = new GetImageFilesEventArgs(
-                        imageFiles, this.SelectedFilePath, title, FileIconCash.SmallDirectoryIcon);
-                    paramter.OnGetImageFiles(eventArgs);
+                        imageFiles, param.SelectedFilePath, title, FileIconCash.SmallDirectoryIcon);
+                    param.OnGetImageFiles(eventArgs);
                 })
                 .StartThread();
 
-                var dir = FileUtil.GetParentDirectoryPath(paramter.SelectedFilePath);
+                var dir = FileUtil.GetParentDirectoryPath(param.SelectedFilePath);
                 task.StartTask(new ValueParameter<string>() { Value = dir });
+                task.Wait();
+                task.Dispose();
             };
         }
 
@@ -178,18 +173,6 @@ namespace PicSum.UIComponent.Contents.FileList
             this.IsRemoveFromListMenuItemVisible = true;
             this.IsMoveControlVisible = false;
             base.sortFileRgistrationDateToolStripButton.Enabled = true;
-        }
-
-        private TwoWayTask<GetFilesByDirectoryTask, ValueParameter<string>, GetDirectoryResult> CreateNewGetFilesTask()
-        {
-            if (this.getFilesTask != null)
-            {
-                this.getFilesTask.Dispose();
-                this.getFilesTask = null;
-            }
-
-            this.getFilesTask = new();
-            return this.getFilesTask;
         }
 
         private void SearchTask_Callback(ListResult<FileShallowInfoEntity> result)
