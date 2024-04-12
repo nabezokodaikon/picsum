@@ -18,10 +18,7 @@ namespace PicSum.Task.Logics
     {
         public bool Execute(DirectoryStateParameter directoryState)
         {
-            if (directoryState == null)
-            {
-                throw new ArgumentNullException(nameof(directoryState));
-            }
+            ArgumentNullException.ThrowIfNull(directoryState, nameof(directoryState));
 
             if (directoryState.DirectoryPath == null)
             {

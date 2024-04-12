@@ -17,19 +17,14 @@ namespace PicSum.UIComponent.Contents.FileList
 
         public bool IsAscending(SortTypeID sortType)
         {
-            switch (sortType)
+            return sortType switch
             {
-                case SortTypeID.FileName:
-                    return this.isFileNameSortAscending;
-                case SortTypeID.FilePath:
-                    return this.isFilePathSortAscending;
-                case SortTypeID.UpdateDate:
-                    return this.isUpdateDateSortAscending;
-                case SortTypeID.RgistrationDate:
-                    return this.isRgistrationDateSortAscending;
-                default:
-                    return false;
-            }
+                SortTypeID.FileName => this.isFileNameSortAscending,
+                SortTypeID.FilePath => this.isFilePathSortAscending,
+                SortTypeID.UpdateDate => this.isUpdateDateSortAscending,
+                SortTypeID.RgistrationDate => this.isRgistrationDateSortAscending,
+                _ => false,
+            };
         }
 
         public void SetSortType(SortTypeID sortType, bool isAscending)
