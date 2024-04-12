@@ -60,20 +60,28 @@ namespace PicSum.UIComponent.Contents.FileList
                 case SortTypeID.UpdateDate:
                     if (isAscending)
                     {
-                        return files.OrderBy(file => file.UpdateDate.GetValueOrDefault(DateTime.MinValue));
+                        return files
+                            .OrderBy(file => file.FilePath)
+                            .OrderBy(file => file.UpdateDate.GetValueOrDefault(DateTime.MinValue));
                     }
                     else
                     {
-                        return files.OrderByDescending(file => file.UpdateDate.GetValueOrDefault(DateTime.MinValue));
+                        return files
+                            .OrderByDescending(file => file.FilePath)
+                            .OrderByDescending(file => file.UpdateDate.GetValueOrDefault(DateTime.MinValue));
                     }
                 case SortTypeID.RgistrationDate:
                     if (isAscending)
                     {
-                        return files.OrderBy(file => file.RgistrationDate.GetValueOrDefault(DateTime.MinValue));
+                        return files
+                            .OrderBy(file => file.FilePath)
+                            .OrderBy(file => file.RgistrationDate.GetValueOrDefault(DateTime.MinValue));
                     }
                     else
                     {
-                        return files.OrderByDescending(file => file.RgistrationDate.GetValueOrDefault(DateTime.MinValue));
+                        return files
+                            .OrderByDescending(file => file.FilePath)
+                            .OrderByDescending(file => file.RgistrationDate.GetValueOrDefault(DateTime.MinValue));
                     }
                 default:
                     return files;
@@ -590,26 +598,58 @@ namespace PicSum.UIComponent.Contents.FileList
                 case SortTypeID.UpdateDate:
                     filterList.Sort((x, y) =>
                     {
+                        var xDate = x.UpdateDate.GetValueOrDefault(DateTime.MinValue);
+                        var yDate = y.UpdateDate.GetValueOrDefault(DateTime.MinValue);
                         if (isAscending)
                         {
-                            return x.UpdateDate.GetValueOrDefault(DateTime.MinValue).CompareTo(y.UpdateDate.GetValueOrDefault(DateTime.MinValue));
+                            if (xDate == yDate)
+                            {
+                                return x.FilePath.CompareTo(y.FilePath);
+                            }
+                            else
+                            {
+                                return xDate.CompareTo(yDate);
+                            }                            
                         }
                         else
                         {
-                            return -x.UpdateDate.GetValueOrDefault(DateTime.MinValue).CompareTo(y.UpdateDate.GetValueOrDefault(DateTime.MinValue));
+                            if (xDate == yDate)
+                            {
+                                return -x.FilePath.CompareTo(y.FilePath);
+                            }
+                            else
+                            {
+                                return -xDate.CompareTo(yDate);
+                            }
                         }
                     });
                     break;
                 case SortTypeID.RgistrationDate:
                     filterList.Sort((x, y) =>
                     {
+                        var xDate = x.RgistrationDate.GetValueOrDefault(DateTime.MinValue);
+                        var yDate = y.RgistrationDate.GetValueOrDefault(DateTime.MinValue);
                         if (isAscending)
                         {
-                            return x.RgistrationDate.GetValueOrDefault(DateTime.MinValue).CompareTo(y.RgistrationDate.GetValueOrDefault(DateTime.MinValue));
+                            if (xDate == yDate)
+                            {
+                                return x.FilePath.CompareTo(y.FilePath);
+                            }
+                            else
+                            {
+                                return xDate.CompareTo(yDate);
+                            }
                         }
                         else
                         {
-                            return -x.RgistrationDate.GetValueOrDefault(DateTime.MinValue).CompareTo(y.RgistrationDate.GetValueOrDefault(DateTime.MinValue));
+                            if (xDate == yDate)
+                            {
+                                return -x.FilePath.CompareTo(y.FilePath);
+                            }
+                            else
+                            {
+                                return -xDate.CompareTo(yDate);
+                            }
                         }
                     });
                     break;
