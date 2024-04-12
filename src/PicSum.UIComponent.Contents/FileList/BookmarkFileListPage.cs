@@ -152,6 +152,8 @@ namespace PicSum.UIComponent.Contents.FileList
 
                 var dir = FileUtil.GetParentDirectoryPath(paramter.SelectedFilePath);
                 task.StartTask(new ValueParameter<string>() { Value = dir });
+                task.Wait();
+                task.Dispose();
             };
         }
 

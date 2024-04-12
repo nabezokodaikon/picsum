@@ -172,6 +172,8 @@ namespace PicSum.UIComponent.Contents.FileList
                 .StartThread();
 
                 task.StartTask(new ValueParameter<string>() { Value = this.parameter.Tag });
+                task.Wait();
+                task.Dispose();
             };
         }
 
