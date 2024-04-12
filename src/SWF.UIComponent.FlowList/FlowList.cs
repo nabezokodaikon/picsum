@@ -50,7 +50,7 @@ namespace SWF.UIComponent.FlowList
         private DrawParameter drawParameter = new();
 
         // 垂直スクロールバー
-        private readonly VScrollBarEx scrollBar = new ();
+        private readonly VScrollBarEx scrollBar = new();
 
         // フォーカスされている項目のインデックス
         private int foucusItemIndex = -1;
@@ -603,36 +603,28 @@ namespace SWF.UIComponent.FlowList
             if (this.itemCount > 0)
             {
                 var width = this.Width;
-
                 if (this.isLileList)
                 {
                     this.itemWidth = width;
                 }
 
-                var colCount = Utility.ToRoundDown(width / (double)this.itemWidth);
+                var colCount = Math.Max(Utility.ToRoundDown(width / (double)this.itemWidth), 1);
                 var rowCount = Utility.ToRoundUp(this.itemCount / (double)colCount);
                 var virtualHeight = this.itemHeight * rowCount;
+                var itemSideSpace = Math.Max((int)((width - this.ItemWidth * colCount) / (double)(colCount + 1)), 0);
                 int scrollBarMaximum;
-                int itemSideSpace;
                 if (virtualHeight <= this.Height)
                 {
-                    itemSideSpace = (int)((width - this.ItemWidth * colCount) / (double)(colCount + 1));
                     scrollBarMaximum = this.scrollBar.Minimum;
                 }
                 else
                 {
+                    scrollBarMaximum = virtualHeight - this.Height;
                     width = this.Width - this.scrollBar.Width;
-
                     if (this.isLileList)
                     {
                         this.itemWidth = width;
                     }
-
-                    colCount = Utility.ToRoundDown(width / (double)this.itemWidth);
-                    rowCount = Utility.ToRoundUp(this.itemCount / (double)colCount);
-                    virtualHeight = this.itemHeight * rowCount;
-                    itemSideSpace = (int)((width - this.ItemWidth * colCount) / (double)(colCount + 1));
-                    scrollBarMaximum = virtualHeight - this.Height;
                 }
 
                 var drawFirstRow = Utility.ToRoundDown(this.scrollBar.Value / (double)this.itemHeight);
