@@ -62,7 +62,7 @@ namespace PicSum.UIComponent.Contents.Common
         {
             if (disposing)
             {
-                GC.Collect();
+
             }
 
             base.Dispose(disposing);
