@@ -26,7 +26,6 @@ namespace PicSum.UIComponent.InfoPanel
             this.fileInfoLabel = new FileInfoLabel();
             ((System.ComponentModel.ISupportInitialize)this.thumbnailPictureBox).BeginInit();
             this.tagContextMenuStrip.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)this.tagFlowList).BeginInit();
             this.SuspendLayout();
             // 
             // thumbnailPictureBox
@@ -142,7 +141,6 @@ namespace PicSum.UIComponent.InfoPanel
             this.Size = new System.Drawing.Size(512, 715);
             ((System.ComponentModel.ISupportInitialize)this.thumbnailPictureBox).EndInit();
             this.tagContextMenuStrip.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)this.tagFlowList).EndInit();
             this.ResumeLayout(false);
         }
 
