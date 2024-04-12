@@ -181,7 +181,7 @@ namespace PicSum.Core.Task.AsyncTaskV2
             {
                 Application.DoEvents();
             }
-            Logger.Debug("UIスレッドの待機を解除します。");
+            Logger.Debug("UIスレッドの待機が解除されました。");
         }
 
         private void ClearQueue()
