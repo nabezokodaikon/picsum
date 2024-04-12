@@ -1,6 +1,6 @@
 using NLog;
-using System;
 using System.Collections.Concurrent;
+using System.Windows.Forms;
 
 namespace PicSum.Core.Task.AsyncTaskV2
 {
@@ -23,6 +23,19 @@ namespace PicSum.Core.Task.AsyncTaskV2
         private Action<TTaskResult>? callbackAction;
         private Action<TaskException>? catchAction;
         private Action? completeAction;
+        private long waitUIThread = 0;
+
+        private bool WaitUIThread
+        {
+            get
+            {
+                return Interlocked.Read(ref this.waitUIThread) == 1;
+            }
+            set
+            {
+                Interlocked.Exchange(ref this.waitUIThread, Convert.ToInt64(value));
+            }
+        }
 
         public TwoWayTask()
         {
@@ -85,7 +98,9 @@ namespace PicSum.Core.Task.AsyncTaskV2
             ArgumentNullException.ThrowIfNull(action, nameof(action));
 
             if (this.callbackAction != null)
+            {
                 throw new InvalidOperationException($"{this.taskInfo} 既にコールバックアクションが設定されています。");
+            }
 
             this.callbackAction = action;
             return this;
@@ -96,7 +111,9 @@ namespace PicSum.Core.Task.AsyncTaskV2
             ArgumentNullException.ThrowIfNull(action, nameof(action));
 
             if (this.catchAction != null)
+            {
                 throw new InvalidOperationException($"{this.taskInfo} 既に例外アクションが設定されています。");
+            }
 
             this.catchAction = action;
             return this;
@@ -107,7 +124,9 @@ namespace PicSum.Core.Task.AsyncTaskV2
             ArgumentNullException.ThrowIfNull(action, nameof(action));
 
             if (this.completeAction != null)
+            {
                 throw new InvalidOperationException($"{this.taskInfo} 既に完了アクションが設定されています。");
+            }
 
             this.completeAction = action;
             return this;
@@ -116,15 +135,16 @@ namespace PicSum.Core.Task.AsyncTaskV2
         public void StartThread()
         {
             if (this.thread != null)
+            {
                 throw new InvalidOperationException($"{this.taskInfo} 既にタスク実行スレッドが開始されています。");
+            }
 
             this.thread = System.Threading.Tasks.Task.Run(() => this.DoWork(this.source.Token));
         }
 
         public void StartTask(TTaskParameter parameter)
         {
-            if (parameter == null)
-                throw new ArgumentNullException(nameof(parameter));
+            ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
 
             this.ClearQueue();
 
@@ -150,6 +170,18 @@ namespace PicSum.Core.Task.AsyncTaskV2
         public void BeginCancel()
         {
             this.ClearQueue();
+        }
+
+        public void Wait()
+        {
+            this.WaitUIThread = true;
+
+            Logger.Debug("UIスレッドを待機します。");
+            while (this.WaitUIThread)
+            {
+                Application.DoEvents();
+            }
+            Logger.Debug("UIスレッドの待機を解除します。");
         }
 
         private void ClearQueue()
@@ -191,7 +223,7 @@ namespace PicSum.Core.Task.AsyncTaskV2
                         if (task.ID == null)
                             throw new NullReferenceException(nameof(task.ID));
 
-                        Logger.Debug($"{task.ID} タスクを実行します。");
+                        Logger.Debug($"{task.ID} を実行します。");
 
                         if (this.callbackAction != null)
                         {
@@ -202,6 +234,13 @@ namespace PicSum.Core.Task.AsyncTaskV2
                                     ArgumentNullException.ThrowIfNull(state, nameof(state));
                                     var result = (TTaskResult)state;
                                     this.callbackAction(result);
+                                    this.WaitUIThread = false;
+
+                                    if (this.WaitUIThread)
+                                    {
+                                        Logger.Debug($"{task.ID} UIスレッドの待機を解除します。");
+                                        this.WaitUIThread = false;
+                                    }
                                 }, r);
                             };
                         }
@@ -215,6 +254,12 @@ namespace PicSum.Core.Task.AsyncTaskV2
                                     ArgumentNullException.ThrowIfNull(state, nameof(state));
                                     var ex = (TaskException)state;
                                     this.catchAction(ex);
+
+                                    if (this.WaitUIThread)
+                                    {
+                                        Logger.Debug($"{task.ID} UIスレッドの待機を解除します。");
+                                        this.WaitUIThread = false;
+                                    }
                                 }, e);
                             };
                         }
@@ -226,6 +271,12 @@ namespace PicSum.Core.Task.AsyncTaskV2
                                 this.context.Post(state =>
                                 {
                                     this.completeAction();
+
+                                    if (this.WaitUIThread)
+                                    {
+                                        Logger.Debug($"{task.ID} UIスレッドの待機を解除します。");
+                                        this.WaitUIThread = false;
+                                    }
                                 }, null);
                             };
                         }
@@ -233,14 +284,25 @@ namespace PicSum.Core.Task.AsyncTaskV2
                         try
                         {
                             task.ExecuteWrapper();
+
+                            if (this.WaitUIThread)
+                            {
+                                Logger.Debug($"{task.ID} が終了するまで待機します。");
+                                while (this.WaitUIThread)
+                                {
+                                    token.WaitHandle.WaitOne(1);
+                                }
+
+                                return;
+                            }
                         }
                         catch (TaskCancelException)
                         {
-                            Logger.Debug($"{task.ID}  タスクがキャンセルされました。");
+                            Logger.Debug($"{task.ID} がキャンセルされました。");
                         }
                         finally
                         {
-                            Logger.Debug($"{task.ID}  タスクが終了しました。");
+                            Logger.Debug($"{task.ID} が終了しました。");
                         }
                     }
 
@@ -249,15 +311,15 @@ namespace PicSum.Core.Task.AsyncTaskV2
             }
             catch (OperationCanceledException)
             {
-                Logger.Debug($"{this.taskInfo} タスク実行スレッドをキャンセルします。");
+                Logger.Debug($"タスク実行スレッドをキャンセルします。");
             }
             catch (Exception ex)
             {
-                Logger.Debug($"{this.taskInfo} タスク実行スレッドで補足されない例外が発生しました。: {ex.Message}");
+                Logger.Debug($"タスク実行スレッドで補足されない例外が発生しました。: {ex.Message}");
             }
             finally
             {
-                Logger.Debug($"{this.taskInfo} タスク実行スレッドが終了します。");
+                Logger.Debug($"タスク実行スレッドが終了します。");
             }
         }
     }
