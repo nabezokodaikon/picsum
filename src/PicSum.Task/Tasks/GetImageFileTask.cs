@@ -61,7 +61,6 @@ namespace PicSum.Task.Tasks
             {
                 this.CheckCancel();
                 var isImg1Error = this.ReadImageFile(currentFilePath, out var img1);
-
                 if (parameter.ImageDisplayMode != ImageDisplayMode.Single &&
                     img1.Width < img1.Height)
                 {
@@ -71,15 +70,10 @@ namespace PicSum.Task.Tasks
                         nextIndex = 0;
                     }
 
-                    this.CheckCancel();
                     var nextFilePath = parameter.FilePathList[nextIndex];
                     var srcImg2Size = ImageUtil.GetImageSize(nextFilePath);
                     if (srcImg2Size.Width < srcImg2Size.Height)
-                    {
-                        this.CheckCancel();
-                        var isImg2Error = this.ReadImageFile(nextFilePath, out var img2);
-
-                        this.CheckCancel();
+                    {                        
                         result.Image1 = new()
                         {
                             FilePath = currentFilePath,
@@ -89,6 +83,8 @@ namespace PicSum.Task.Tasks
                         };
 
                         this.CheckCancel();
+
+                        var isImg2Error = this.ReadImageFile(nextFilePath, out var img2);
                         result.Image2 = new()
                         {
                             FilePath = nextFilePath,
@@ -96,10 +92,11 @@ namespace PicSum.Task.Tasks
                             Thumbnail = logic.CreateThumbnail(img2, parameter.ThumbnailSize, parameter.ImageSizeMode),
                             IsError = isImg2Error,
                         };
+
+                        this.CheckCancel();
                     }
                     else
-                    {
-                        this.CheckCancel();
+                    {                        
                         result.Image1 = new()
                         {
                             FilePath = currentFilePath,
@@ -107,11 +104,12 @@ namespace PicSum.Task.Tasks
                             Thumbnail = logic.CreateThumbnail(img1, parameter.ThumbnailSize, parameter.ImageSizeMode),
                             IsError = isImg1Error,
                         };
+
+                        this.CheckCancel();
                     }
                 }
                 else
-                {
-                    this.CheckCancel();
+                {                    
                     result.Image1 = new()
                     {
                         FilePath = currentFilePath,
@@ -119,6 +117,8 @@ namespace PicSum.Task.Tasks
                         Thumbnail = logic.CreateThumbnail(img1, parameter.ThumbnailSize, parameter.ImageSizeMode),
                         IsError = isImg1Error
                     };
+
+                    this.CheckCancel();
                 }
             }
             catch (TaskCancelException)
