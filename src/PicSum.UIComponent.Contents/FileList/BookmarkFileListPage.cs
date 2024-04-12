@@ -21,6 +21,41 @@ namespace PicSum.UIComponent.Contents.FileList
     internal sealed class BookmarkFileListPage
         : AbstractFileListPage
     {
+        private static Action GetImageFilesAction(ImageViewerPageParameter param)
+        {
+            return () =>
+            {
+                var task = new TwoWayTask<GetFilesByDirectoryTask, ValueParameter<string>, GetDirectoryResult>();
+
+                task
+                .Callback(e =>
+                {
+                    var imageFiles = e.FileInfoList
+                        .Where(fileInfo => fileInfo.IsImageFile)
+                        .OrderBy(fileInfo => fileInfo.FilePath)
+                        .Select(fileInfo => fileInfo.FilePath)
+                        .ToArray();
+
+                    if (!FileUtil.IsImageFile(param.SelectedFilePath))
+                    {
+                        throw new PicSumException($"画像ファイルが選択されていません。'{param.SelectedFilePath}'");
+                    }
+
+                    var title = FileUtil.GetFileName(FileUtil.GetParentDirectoryPath(param.SelectedFilePath));
+
+                    var eventArgs = new GetImageFilesEventArgs(
+                        imageFiles, param.SelectedFilePath, title, FileIconCash.SmallDirectoryIcon);
+                    param.OnGetImageFiles(eventArgs);
+                })
+                .StartThread();
+
+                var dir = FileUtil.GetParentDirectoryPath(param.SelectedFilePath);
+                task.StartTask(new ValueParameter<string>() { Value = dir });
+                task.Wait();
+                task.Dispose();
+            };
+        }
+
         private readonly BookmarkFileListPageParameter paramter = null;
         private TwoWayTask<GetBookmarkTask, ListResult<FileShallowInfoEntity>> searchTask = null;
         private OneWayTask<DeleteBookmarkTask, ListParameter<string>> deleteTask = null;
@@ -115,39 +150,9 @@ namespace PicSum.UIComponent.Contents.FileList
             this.OnSelectedFileChanged(new SelectedFileChangeEventArgs());
         }
 
-        protected override Action GetImageFilesAction(ImageViewerPageParameter param)
+        protected override Action GetGetImageFilesAction(ImageViewerPageParameter param)
         {
-            return () =>
-            {
-                var task = new TwoWayTask<GetFilesByDirectoryTask, ValueParameter<string>, GetDirectoryResult>();
-
-                task
-                .Callback(e =>
-                {
-                    var imageFiles = e.FileInfoList
-                        .Where(fileInfo => fileInfo.IsImageFile)
-                        .OrderBy(fileInfo => fileInfo.FilePath)
-                        .Select(fileInfo => fileInfo.FilePath)
-                        .ToArray();
-
-                    if (!FileUtil.IsImageFile(param.SelectedFilePath))
-                    {
-                        throw new PicSumException($"画像ファイルが選択されていません。'{param.SelectedFilePath}'");
-                    }
-
-                    var title = FileUtil.GetFileName(FileUtil.GetParentDirectoryPath(param.SelectedFilePath));
-
-                    var eventArgs = new GetImageFilesEventArgs(
-                        imageFiles, param.SelectedFilePath, title, FileIconCash.SmallDirectoryIcon);
-                    param.OnGetImageFiles(eventArgs);
-                })
-                .StartThread();
-
-                var dir = FileUtil.GetParentDirectoryPath(param.SelectedFilePath);
-                task.StartTask(new ValueParameter<string>() { Value = dir });
-                task.Wait();
-                task.Dispose();
-            };
+            return GetImageFilesAction(param);
         }
 
         protected override void OnMoveNextButtonClick(EventArgs e)

@@ -24,6 +24,38 @@ namespace PicSum.UIComponent.Contents.FileList
     internal sealed class DirectoryFileListPage
         : AbstractFileListPage
     {
+        private static Action GetImageFilesAction(ImageViewerPageParameter param)
+        {
+            return () =>
+            {
+                var task = new TwoWayTask<GetFilesByDirectoryTask, ValueParameter<string>, GetDirectoryResult>();
+                task
+                .Callback(e =>
+                {
+                    var imageFiles = e.FileInfoList
+                        .Where(fileInfo => fileInfo.IsImageFile);
+                    var sortImageFiles = GetSortFiles(imageFiles, param.SortInfo)
+                        .Select(fileInfo => fileInfo.FilePath)
+                        .ToArray();
+
+                    if (!FileUtil.IsImageFile(param.SelectedFilePath))
+                    {
+                        throw new PicSumException($"画像ファイルが選択されていません。'{param.SelectedFilePath}'");
+                    }
+
+                    var eventArgs = new GetImageFilesEventArgs(
+                        sortImageFiles, param.SelectedFilePath, param.PageTitle, param.PageIcon);
+                    param.OnGetImageFiles(eventArgs);
+                })
+                .Catch(e => ExceptionUtil.ShowErrorDialog(e.InnerException))
+                .StartThread();
+
+                task.StartTask(new ValueParameter<string>() { Value = param.SourcesKey });
+                task.Wait();
+                task.Dispose();
+            };
+        }
+
         #region インスタンス変数
 
         private readonly DirectoryFileListPageParameter parameter = null;
@@ -212,37 +244,10 @@ namespace PicSum.UIComponent.Contents.FileList
             this.GetNextDirectoryTask.StartTask(param);
         }
 
-        protected override Action GetImageFilesAction(ImageViewerPageParameter param)
+        protected override Action GetGetImageFilesAction(ImageViewerPageParameter param)
         {
-            return () =>
-            {
-                var task = new TwoWayTask<GetFilesByDirectoryTask, ValueParameter<string>, GetDirectoryResult>();
-                task
-                .Callback(e =>
-                {
-                    var imageFiles = e.FileInfoList
-                        .Where(fileInfo => fileInfo.IsImageFile);
-                    var sortImageFiles = GetSortFiles(imageFiles, param.SortInfo)
-                        .Select(fileInfo => fileInfo.FilePath)
-                        .ToArray();
-
-                    if (!FileUtil.IsImageFile(param.SelectedFilePath))
-                    {
-                        throw new PicSumException($"画像ファイルが選択されていません。'{param.SelectedFilePath}'");
-                    }
-
-                    var eventArgs = new GetImageFilesEventArgs(
-                        sortImageFiles, param.SelectedFilePath, param.PageTitle, param.PageIcon);
-                    param.OnGetImageFiles(eventArgs);
-                })
-                .Catch(e => ExceptionUtil.ShowErrorDialog(e.InnerException))
-                .StartThread();
-
-                task.StartTask(new ValueParameter<string>() { Value = param.SourcesKey });
-                task.Wait();
-                task.Dispose();
-            };
-        }
+            return GetImageFilesAction(param);
+        }       
 
         protected override void FileContextMenu_Opening(object sender, CancelEventArgs e)
         {

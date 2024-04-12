@@ -24,6 +24,38 @@ namespace PicSum.UIComponent.Contents.FileList
     internal sealed class TagFileListPage
         : AbstractFileListPage
     {
+        private static Action GetImageFilesAction(ImageViewerPageParameter param)
+        {
+            return () =>
+            {
+                var task = new TwoWayTask<GetFilesByTagTask, ValueParameter<string>, ListResult<FileShallowInfoEntity>>();
+
+                task
+                .Callback(e =>
+                {
+                    var imageFiles = e
+                        .Where(fileInfo => fileInfo.IsImageFile);
+                    var sortImageFiles = GetSortFiles(imageFiles, param.SortInfo)
+                        .Select(fileInfo => fileInfo.FilePath)
+                        .ToArray();
+
+                    if (!FileUtil.IsImageFile(param.SelectedFilePath))
+                    {
+                        throw new PicSumException($"画像ファイルが選択されていません。'{param.SelectedFilePath}'");
+                    }
+
+                    var eventArgs = new GetImageFilesEventArgs(
+                        sortImageFiles, param.SelectedFilePath, param.PageTitle, param.PageIcon);
+                    param.OnGetImageFiles(eventArgs);
+                })
+                .StartThread();
+
+                task.StartTask(new ValueParameter<string>() { Value = param.SourcesKey });
+                task.Wait();
+                task.Dispose();
+            };
+        }
+
         #region インスタンス変数
 
         private readonly TagFileListPageParameter parameter = null;
@@ -138,36 +170,9 @@ namespace PicSum.UIComponent.Contents.FileList
             this.RemoveFile(filePathList);
         }
 
-        protected override Action GetImageFilesAction(ImageViewerPageParameter param)
+        protected override Action GetGetImageFilesAction(ImageViewerPageParameter param)
         {
-            return () =>
-            {
-                var task = new TwoWayTask<GetFilesByTagTask, ValueParameter<string>, ListResult<FileShallowInfoEntity>>();
-
-                task
-                .Callback(e =>
-                {
-                    var imageFiles = e
-                        .Where(fileInfo => fileInfo.IsImageFile);
-                    var sortImageFiles = GetSortFiles(imageFiles, param.SortInfo)
-                        .Select(fileInfo => fileInfo.FilePath)
-                        .ToArray();
-
-                    if (!FileUtil.IsImageFile(param.SelectedFilePath))
-                    {
-                        throw new PicSumException($"画像ファイルが選択されていません。'{param.SelectedFilePath}'");
-                    }
-
-                    var eventArgs = new GetImageFilesEventArgs(
-                        sortImageFiles, param.SelectedFilePath, param.PageTitle, param.PageIcon);
-                    param.OnGetImageFiles(eventArgs);
-                })
-                .StartThread();
-
-                task.StartTask(new ValueParameter<string>() { Value = param.SourcesKey });
-                task.Wait();
-                task.Dispose();
-            };
+            return GetImageFilesAction(param);
         }
 
         protected override void OnMovePreviewButtonClick(EventArgs e)

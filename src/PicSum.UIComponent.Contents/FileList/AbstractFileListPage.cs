@@ -480,9 +480,9 @@ namespace PicSum.UIComponent.Contents.FileList
                 this.SelectedFilePath = string.Empty;
             }
             this.SetFilter();
-        }        
+        }
 
-        protected abstract Action GetImageFilesAction(ImageViewerPageParameter paramter);
+        protected abstract Action GetGetImageFilesAction(ImageViewerPageParameter paramter);
 
         #endregion
 
@@ -609,7 +609,7 @@ namespace PicSum.UIComponent.Contents.FileList
                             else
                             {
                                 return xDate.CompareTo(yDate);
-                            }                            
+                            }
                         }
                         else
                         {
@@ -1016,7 +1016,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 var param = new ImageViewerPageParameter(
                     this.Parameter.PageSources,
                     this.Parameter.SourcesKey,
-                    this.GetImageFilesAction,
+                    this.GetGetImageFilesAction,
                     filePath,
                     this.sortInfo,
                     this.Title,
@@ -1044,7 +1044,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 var param = new ImageViewerPageParameter(
                     this.Parameter.PageSources,
                     this.Parameter.SourcesKey,
-                    this.GetImageFilesAction,
+                    this.GetGetImageFilesAction,
                     filePath,
                     this.sortInfo,
                     this.Title,
@@ -1076,7 +1076,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 var param = new ImageViewerPageParameter(
                     this.Parameter.PageSources,
                     this.Parameter.SourcesKey,
-                    this.GetImageFilesAction,
+                    this.GetGetImageFilesAction,
                     filePath,
                     this.sortInfo,
                     this.Title,
@@ -1134,7 +1134,7 @@ namespace PicSum.UIComponent.Contents.FileList
                         this.Parameter.PageSources,
                         this.Parameter.SourcesKey,
                         currentFilePath,
-                        this.GetImageFilesAction,
+                        this.GetGetImageFilesAction,
                         this.Title,
                         this.Icon); ;
                     this.DoDragDrop(dragData, DragDropEffects.All);
@@ -1147,7 +1147,7 @@ namespace PicSum.UIComponent.Contents.FileList
                     this.Parameter.PageSources,
                     this.Parameter.SourcesKey,
                     currentFilePath,
-                    this.GetImageFilesAction,
+                    this.GetGetImageFilesAction,
                     this.Title,
                     this.Icon);
                 this.DoDragDrop(dragData, DragDropEffects.All);
@@ -1176,7 +1176,7 @@ namespace PicSum.UIComponent.Contents.FileList
             var param = new ImageViewerPageParameter(
                 this.Parameter.PageSources,
                 this.Parameter.SourcesKey,
-                this.GetImageFilesAction,
+                this.GetGetImageFilesAction,
                 e.FilePath,
                 this.sortInfo,
                 this.Title,
@@ -1189,7 +1189,7 @@ namespace PicSum.UIComponent.Contents.FileList
             var param = new ImageViewerPageParameter(
                 this.Parameter.PageSources,
                 this.Parameter.SourcesKey,
-                this.GetImageFilesAction,
+                this.GetGetImageFilesAction,
                 e.FilePath,
                 this.sortInfo,
                 this.Title,
@@ -1202,7 +1202,7 @@ namespace PicSum.UIComponent.Contents.FileList
             var param = new ImageViewerPageParameter(
                 this.Parameter.PageSources,
                 this.Parameter.SourcesKey,
-                this.GetImageFilesAction,
+                this.GetGetImageFilesAction,
                 e.FilePath,
                 this.sortInfo,
                 this.Title,
