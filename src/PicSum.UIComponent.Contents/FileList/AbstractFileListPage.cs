@@ -337,8 +337,6 @@ namespace PicSum.UIComponent.Contents.FileList
                 }
 
                 components.Dispose();
-
-                GC.Collect();
             }
 
             base.Dispose(disposing);

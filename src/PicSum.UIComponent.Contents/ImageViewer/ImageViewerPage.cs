@@ -247,8 +247,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 this.parameter.GetImageFiles -= this.Parameter_GetImageFiles;
 
                 this.components?.Dispose();
-
-                GC.Collect();
             }
 
             base.Dispose(disposing);

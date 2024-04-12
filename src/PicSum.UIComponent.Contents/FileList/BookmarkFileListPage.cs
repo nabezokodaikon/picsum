@@ -120,9 +120,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 {
                     this.deleteTask.Dispose();
                     this.deleteTask = null;
-                }
-
-                GC.Collect();
+                }                
             }
 
             base.Dispose(disposing);

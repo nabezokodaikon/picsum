@@ -186,8 +186,6 @@ namespace PicSum.UIComponent.Contents.FileList
                     this.getNextDirectoryTask.Dispose();
                     this.getNextDirectoryTask = null;
                 }
-
-                GC.Collect();
             }
 
             base.Dispose(disposing);
