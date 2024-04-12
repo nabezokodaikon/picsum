@@ -31,7 +31,6 @@ namespace PicSum.UIComponent.Contents.FileList
         private OneWayTask<UpdateDirectoryStateTask, DirectoryStateParameter> updateDirectoryStateTask = null;
         private OneWayTask<AddDirectoryViewHistoryTask, ValueParameter<string>> addDirectoryHistoryTask = null;
         private TwoWayTask<GetNextDirectoryTask, GetNextPageParameter<string>, ValueResult<string>> getNextDirectoryTask = null;
-        private TwoWayTask<GetFilesByDirectoryTask, ValueParameter<string>, GetDirectoryResult> getFilesTask = null;
 
         #endregion
 
@@ -156,12 +155,6 @@ namespace PicSum.UIComponent.Contents.FileList
                     this.getNextDirectoryTask = null;
                 }
 
-                if (this.getFilesTask != null)
-                {
-                    this.getFilesTask.Dispose();
-                    this.getFilesTask = null;
-                }
-
                 GC.Collect();
             }
 
@@ -198,7 +191,7 @@ namespace PicSum.UIComponent.Contents.FileList
             {
                 CurrentParameter = new ValueEntity<string>(),
                 IsNext = false,
-        };
+            };
             param.CurrentParameter.Value = this.parameter.DirectoryPath;
             this.GetNextDirectoryTask.StartTask(param);
         }
@@ -219,33 +212,33 @@ namespace PicSum.UIComponent.Contents.FileList
             this.GetNextDirectoryTask.StartTask(param);
         }
 
-        protected override Action GetImageFilesAction(ImageViewerPageParameter paramter)
+        protected override Action GetImageFilesAction(ImageViewerPageParameter param)
         {
             return () =>
             {
-                var task = this.CreateNewGetFilesTask();
+                var task = new TwoWayTask<GetFilesByDirectoryTask, ValueParameter<string>, GetDirectoryResult>();
                 task
                 .Callback(e =>
                 {
                     var imageFiles = e.FileInfoList
                         .Where(fileInfo => fileInfo.IsImageFile);
-                    var sortImageFiles = base.GetSortFiles(imageFiles)
+                    var sortImageFiles = this.GetSortFiles(imageFiles)
                         .Select(fileInfo => fileInfo.FilePath)
                         .ToArray();
 
-                    if (!FileUtil.IsImageFile(this.SelectedFilePath))
+                    if (!FileUtil.IsImageFile(param.SelectedFilePath))
                     {
-                        throw new PicSumException($"画像ファイルが選択されていません。'{this.SelectedFilePath}'");
+                        throw new PicSumException($"画像ファイルが選択されていません。'{param.SelectedFilePath}'");
                     }
 
                     var eventArgs = new GetImageFilesEventArgs(
-                        sortImageFiles, this.SelectedFilePath, this.Title, this.Icon);
-                    paramter.OnGetImageFiles(eventArgs);
+                        sortImageFiles, param.SelectedFilePath, param.PageTitle, param.PageIcon);
+                    param.OnGetImageFiles(eventArgs);
                 })
                 .Catch(e => ExceptionUtil.ShowErrorDialog(e.InnerException))
                 .StartThread();
 
-                task.StartTask(new ValueParameter<string>() { Value = this.parameter.DirectoryPath });
+                task.StartTask(new ValueParameter<string>() { Value = param.SourcesKey });
                 task.Wait();
                 task.Dispose();
             };
@@ -294,18 +287,6 @@ namespace PicSum.UIComponent.Contents.FileList
             this.IsRemoveFromListMenuItemVisible = false;
             this.IsMoveControlVisible = !string.IsNullOrEmpty(this.parameter.DirectoryPath);
             base.sortFileRgistrationDateToolStripButton.Enabled = false;
-        }
-
-        private TwoWayTask<GetFilesByDirectoryTask, ValueParameter<string>, GetDirectoryResult> CreateNewGetFilesTask()
-        {
-            if (this.getFilesTask != null)
-            {
-                this.getFilesTask.Dispose();
-                this.getFilesTask = null;
-            }
-
-            this.getFilesTask = new();
-            return this.getFilesTask;
         }
 
         private void SaveCurrentDirectoryState()

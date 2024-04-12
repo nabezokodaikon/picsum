@@ -29,7 +29,6 @@ namespace PicSum.UIComponent.Contents.FileList
         private readonly TagFileListPageParameter parameter = null;
         private TwoWayTask<GetFilesByTagTask, ValueParameter<string>, ListResult<FileShallowInfoEntity>> searchTask = null;
         private OneWayTask<DeleteFileTagTask, UpdateFileTagParameter> deleteTask = null;
-        private TwoWayTask<GetFilesByTagTask, ValueParameter<string>, ListResult<FileShallowInfoEntity>> getFilesTask = null;
 
         #endregion
 
@@ -110,12 +109,6 @@ namespace PicSum.UIComponent.Contents.FileList
                     this.deleteTask = null;
                 }
 
-                if (this.getFilesTask != null)
-                {
-                    this.getFilesTask.Dispose();
-                    this.getFilesTask = null;
-                }
-
                 GC.Collect();
             }
 
@@ -145,33 +138,33 @@ namespace PicSum.UIComponent.Contents.FileList
             this.RemoveFile(filePathList);
         }
 
-        protected override Action GetImageFilesAction(ImageViewerPageParameter paramter)
+        protected override Action GetImageFilesAction(ImageViewerPageParameter param)
         {
             return () =>
             {
-                var task = this.CreateNewGetFilesTask();
+                var task = new TwoWayTask<GetFilesByTagTask, ValueParameter<string>, ListResult<FileShallowInfoEntity>>();
 
                 task
                 .Callback(e =>
                 {
                     var imageFiles = e
                         .Where(fileInfo => fileInfo.IsImageFile);
-                    var sortImageFiles = base.GetSortFiles(imageFiles)
+                    var sortImageFiles = this.GetSortFiles(imageFiles)
                         .Select(fileInfo => fileInfo.FilePath)
                         .ToArray();
 
-                    if (!FileUtil.IsImageFile(this.SelectedFilePath))
+                    if (!FileUtil.IsImageFile(param.SelectedFilePath))
                     {
-                        throw new PicSumException($"画像ファイルが選択されていません。'{this.SelectedFilePath}'");
+                        throw new PicSumException($"画像ファイルが選択されていません。'{param.SelectedFilePath}'");
                     }
 
                     var eventArgs = new GetImageFilesEventArgs(
-                        sortImageFiles, this.SelectedFilePath, this.Title, this.Icon);
-                    paramter.OnGetImageFiles(eventArgs);
+                        sortImageFiles, param.SelectedFilePath, param.PageTitle, param.PageIcon);
+                    param.OnGetImageFiles(eventArgs);
                 })
                 .StartThread();
 
-                task.StartTask(new ValueParameter<string>() { Value = this.parameter.Tag });
+                task.StartTask(new ValueParameter<string>() { Value = param.SourcesKey });
                 task.Wait();
                 task.Dispose();
             };
@@ -198,18 +191,6 @@ namespace PicSum.UIComponent.Contents.FileList
             this.IsRemoveFromListMenuItemVisible = true;
             this.IsMoveControlVisible = false;
             base.sortFileRgistrationDateToolStripButton.Enabled = true;
-        }
-
-        private TwoWayTask<GetFilesByTagTask, ValueParameter<string>, ListResult<FileShallowInfoEntity>> CreateNewGetFilesTask()
-        {
-            if (this.getFilesTask != null)
-            {
-                this.getFilesTask.Dispose();
-                this.getFilesTask = null;
-            }
-
-            this.getFilesTask = new();
-            return this.getFilesTask;
         }
 
         #endregion
