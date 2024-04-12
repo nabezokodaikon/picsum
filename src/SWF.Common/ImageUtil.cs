@@ -210,7 +210,7 @@ namespace SWF.Common
 
         public static Bitmap CreateErrorImage(int size)
         {
-            const string message = "Failed to load image file";
+            const string message = "Failed to load file";
 
             var bmp = new Bitmap(size, size);
             using (var font = new Font("Yu Gothic UI", 10F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(128))))
