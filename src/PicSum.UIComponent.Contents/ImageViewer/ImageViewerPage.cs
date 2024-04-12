@@ -666,11 +666,11 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             {
                 this.leftImageFilePath = e.Image1.FilePath;
                 this.leftImagePanel.SetImage(e.Image1.IsError, e.Image1.Image, e.Image1.Thumbnail);
-                var leftImageScale = GetImageScale(
-                    this.leftImagePanel.ImageSize, bgSize, this.sizeMode);
 
                 if (e.Image2 != null)
                 {
+                    var leftImageScale = GetImageScale(
+                        this.leftImagePanel.ImageSize, bgSize, this.sizeMode);
                     this.leftImagePanel.SetScale(leftImageScale);
 
                     this.rightImageFilePath = e.Image2.FilePath;
@@ -682,6 +682,8 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 }
                 else
                 {
+                    var leftImageScale = GetImageScale(
+                        this.leftImagePanel.ImageSize, bgSize, this.sizeMode);
                     this.leftImagePanel.SetScale(leftImageScale);
                 }
             }
@@ -689,11 +691,11 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             {
                 this.rightImageFilePath = e.Image1.FilePath;
                 this.rightImagePanel.SetImage(e.Image1.IsError, e.Image1.Image, e.Image1.Thumbnail);
-                var rightImageScale = GetImageScale(
-                    this.rightImagePanel.ImageSize, bgSize, this.sizeMode);
 
                 if (e.Image2 != null)
                 {
+                    var rightImageScale = GetImageScale(
+                        this.rightImagePanel.ImageSize, bgSize, this.sizeMode);
                     this.rightImagePanel.SetScale(rightImageScale);
 
                     this.leftImageFilePath = e.Image2.FilePath;
@@ -705,6 +707,8 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 }
                 else
                 {
+                    var rightImageScale = GetImageScale(
+                        this.rightImagePanel.ImageSize, bgSize, this.sizeMode);
                     this.rightImagePanel.SetScale(rightImageScale);
                 }
             }
