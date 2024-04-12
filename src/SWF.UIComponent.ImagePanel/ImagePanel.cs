@@ -138,7 +138,7 @@ namespace SWF.UIComponent.ImagePanel
             }
         }
 
-        public bool IsErrorImage { get; private set; } = false;
+        public bool IsError { get; private set; } = false;
 
         #endregion
 
@@ -169,7 +169,7 @@ namespace SWF.UIComponent.ImagePanel
 
         #region パブリックメソッド
 
-        public void SetImage(bool isErrorImage, Bitmap img, Bitmap thumb)
+        public void SetImage(Bitmap img, Bitmap thumb)
         {
             ArgumentNullException.ThrowIfNull(img, nameof(img));
             ArgumentNullException.ThrowIfNull(thumb, nameof(thumb));
@@ -179,7 +179,7 @@ namespace SWF.UIComponent.ImagePanel
                 throw new InvalidOperationException("既にイメージが存在しています。");
             }
 
-            this.IsErrorImage = isErrorImage;
+            this.IsError = false;
             this.image = img;
             this.thumbnail = thumb;
         }
@@ -192,7 +192,7 @@ namespace SWF.UIComponent.ImagePanel
                 throw new NullReferenceException("イメージが存在しません。");
             }
 
-            if (this.IsErrorImage)
+            if (this.IsError)
             {
                 this.imageScaleSize = new SizeF(
                     this.image.Width * ERROR_IMAGE_SCALE,
@@ -204,6 +204,11 @@ namespace SWF.UIComponent.ImagePanel
                     this.image.Width * scale,
                     this.image.Height * scale);
             }
+        }
+
+        public void SetError()
+        {
+            this.IsError = true;
         }
 
         public void ClearImage()
@@ -256,7 +261,23 @@ namespace SWF.UIComponent.ImagePanel
 
         protected override void OnPaint(PaintEventArgs e)
         {
-            if (!this.IsErrorImage && this.image != null)
+            if (this.IsError)
+            {
+                using (var sf = new StringFormat())
+                {
+                    sf.Alignment = StringAlignment.Center;
+                    sf.LineAlignment = StringAlignment.Center;
+                    sf.Trimming = StringTrimming.EllipsisCharacter;
+                    var text = $"Failed to load file";
+                    e.Graphics.DrawString(
+                        text,
+                        this.Font,
+                        Brushes.White,
+                        new Rectangle(0, 0, this.Width, this.Height),
+                        sf);
+                }
+            }
+            else if (this.image != null)
             {
                 e.Graphics.SmoothingMode = this.GetSmoothingMode();
                 e.Graphics.InterpolationMode = this.GetInterpolationMode();
@@ -272,17 +293,6 @@ namespace SWF.UIComponent.ImagePanel
                     e.Graphics.CompositingQuality = CompositingQuality.HighSpeed;
 
                     this.DrawThumbnailPanel(e.Graphics);
-                }
-            }
-            else
-            {
-                using (var sf = new StringFormat())
-                {
-                    sf.Alignment = StringAlignment.Center;
-                    sf.LineAlignment = StringAlignment.Center;
-                    sf.Trimming = StringTrimming.EllipsisCharacter;
-                    var text = $"Failed to load file";
-                    e.Graphics.DrawString(text, this.Font, Brushes.White, new Rectangle(0, 0, this.Width, this.Height), sf);
                 }
             }
 

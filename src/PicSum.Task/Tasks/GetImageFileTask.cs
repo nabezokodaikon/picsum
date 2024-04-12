@@ -61,8 +61,9 @@ namespace PicSum.Task.Tasks
             {
                 this.CheckCancel();
                 var isImg1Error = this.ReadImageFile(currentFilePath, out var img1);
-                if (parameter.ImageDisplayMode != ImageDisplayMode.Single &&
-                    img1.Width < img1.Height)
+                if (parameter.ImageDisplayMode != ImageDisplayMode.Single
+                    && img1 != null
+                    && img1.Width < img1.Height)
                 {
                     var nextIndex = parameter.CurrentIndex + 1;
                     if (nextIndex > parameter.FilePathList.Count - 1)
@@ -73,15 +74,16 @@ namespace PicSum.Task.Tasks
                     var nextFilePath = parameter.FilePathList[nextIndex];
                     var srcImg2Size = ImageUtil.GetImageSize(nextFilePath);
                     if (srcImg2Size.Width < srcImg2Size.Height)
-                    {                        
+                    {
                         result.Image1 = new()
                         {
                             FilePath = currentFilePath,
+                            Thumbnail = (isImg1Error) ?
+                                null :
+                                logic.CreateThumbnail(img1, parameter.ThumbnailSize, parameter.ImageSizeMode),
                             Image = img1,
-                            Thumbnail = logic.CreateThumbnail(img1, parameter.ThumbnailSize, parameter.ImageSizeMode),
                             IsError = isImg1Error,
                         };
-
                         this.CheckCancel();
 
                         var isImg2Error = this.ReadImageFile(nextFilePath, out var img2);
@@ -89,35 +91,38 @@ namespace PicSum.Task.Tasks
                         {
                             FilePath = nextFilePath,
                             Image = img2,
-                            Thumbnail = logic.CreateThumbnail(img2, parameter.ThumbnailSize, parameter.ImageSizeMode),
+                            Thumbnail = (isImg2Error) ?
+                                null :
+                                logic.CreateThumbnail(img2, parameter.ThumbnailSize, parameter.ImageSizeMode),
                             IsError = isImg2Error,
                         };
-
                         this.CheckCancel();
                     }
                     else
-                    {                        
+                    {
                         result.Image1 = new()
                         {
                             FilePath = currentFilePath,
+                            Thumbnail = (isImg1Error) ?
+                                null :
+                                logic.CreateThumbnail(img1, parameter.ThumbnailSize, parameter.ImageSizeMode),
                             Image = img1,
-                            Thumbnail = logic.CreateThumbnail(img1, parameter.ThumbnailSize, parameter.ImageSizeMode),
                             IsError = isImg1Error,
                         };
-
                         this.CheckCancel();
                     }
                 }
                 else
-                {                    
+                {
                     result.Image1 = new()
                     {
                         FilePath = currentFilePath,
+                        Thumbnail = (isImg1Error) ?
+                            null:
+                            logic.CreateThumbnail(img1, parameter.ThumbnailSize, parameter.ImageSizeMode),
                         Image = img1,
-                        Thumbnail = logic.CreateThumbnail(img1, parameter.ThumbnailSize, parameter.ImageSizeMode),
-                        IsError = isImg1Error
+                        IsError = isImg1Error,
                     };
-
                     this.CheckCancel();
                 }
             }
@@ -140,10 +145,9 @@ namespace PicSum.Task.Tasks
             }
             catch (ImageUtilException ex)
             {
-                const int size = 512;
                 WriteErrorLog(ex);
                 bmp?.Dispose();
-                bmp = ImageUtil.CreateErrorImage(size);
+                bmp = null;
                 return true;
             }
         }

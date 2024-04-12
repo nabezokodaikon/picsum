@@ -338,7 +338,8 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.leftImagePanel.Visible = false;
             this.rightImagePanel.Visible = false;
 
-            if (this.leftImagePanel.HasImage && this.rightImagePanel.HasImage)
+            if ((this.leftImagePanel.HasImage || this.leftImagePanel.IsError)
+                && (this.rightImagePanel.HasImage || this.rightImagePanel.IsError))
             {
                 var w = (int)(this.checkPatternPanel.Width / 2f);
                 var h = this.checkPatternPanel.Height;
@@ -355,7 +356,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 this.leftImagePanel.Visible = true;
                 this.rightImagePanel.Visible = true;
             }
-            else if (this.leftImagePanel.HasImage)
+            else if (this.leftImagePanel.HasImage || this.leftImagePanel.IsError)
             {
                 var w = this.checkPatternPanel.Width;
                 var h = this.checkPatternPanel.Height;
@@ -368,7 +369,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 this.leftImagePanel.Visible = true;
                 this.rightImagePanel.Visible = false;
             }
-            else if (this.rightImagePanel.HasImage)
+            else if (this.rightImagePanel.HasImage || this.rightImagePanel.IsError)
             {
                 var w = this.checkPatternPanel.Width;
                 var h = this.checkPatternPanel.Height;
@@ -656,60 +657,78 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             if (this.displayMode == ImageDisplayMode.Single)
             {
                 this.leftImageFilePath = e.Image1.FilePath;
-                this.leftImagePanel.SetImage(e.Image1.IsError, e.Image1.Image, e.Image1.Thumbnail);
-
-                var scale = GetImageScale(
-                    this.leftImagePanel.ImageSize, bgSize, this.sizeMode);
-                this.leftImagePanel.SetScale(scale);
+                if (e.Image1.IsError)
+                {
+                    this.leftImagePanel.SetError();
+                }
+                else
+                {
+                    this.leftImagePanel.SetImage(e.Image1.Image, e.Image1.Thumbnail);
+                    var scale = GetImageScale(
+                        this.leftImagePanel.ImageSize, bgSize, this.sizeMode);
+                    this.leftImagePanel.SetScale(scale);
+                }
             }
             else if (this.displayMode == ImageDisplayMode.LeftFacing)
             {
                 this.leftImageFilePath = e.Image1.FilePath;
-                this.leftImagePanel.SetImage(e.Image1.IsError, e.Image1.Image, e.Image1.Thumbnail);
-
-                if (e.Image2 != null)
+                if (e.Image1.IsError)
                 {
-                    var leftImageScale = GetImageScale(
-                        this.leftImagePanel.ImageSize, bgSize, this.sizeMode);
-                    this.leftImagePanel.SetScale(leftImageScale);
-
-                    this.rightImageFilePath = e.Image2.FilePath;
-                    this.rightImagePanel.SetImage(e.Image2.IsError, e.Image2.Image, e.Image2.Thumbnail);
-
-                    var rightImageScale = GetImageScale(
-                        this.rightImagePanel.ImageSize, bgSize, this.sizeMode);
-                    this.rightImagePanel.SetScale(rightImageScale);
+                    this.leftImagePanel.SetError();
                 }
                 else
                 {
+                    this.leftImagePanel.SetImage(e.Image1.Image, e.Image1.Thumbnail);
                     var leftImageScale = GetImageScale(
                         this.leftImagePanel.ImageSize, bgSize, this.sizeMode);
                     this.leftImagePanel.SetScale(leftImageScale);
+                }
+
+                if (e.Image2 != null)
+                {
+                    this.rightImageFilePath = e.Image2.FilePath;
+                    if (e.Image2.IsError)
+                    {
+                        this.rightImagePanel.SetError();
+                    }
+                    else
+                    {
+                        this.rightImagePanel.SetImage(e.Image2.Image, e.Image2.Thumbnail);
+                        var rightImageScale = GetImageScale(
+                            this.rightImagePanel.ImageSize, bgSize, this.sizeMode);
+                        this.rightImagePanel.SetScale(rightImageScale);
+                    }
                 }
             }
             else if (this.displayMode == ImageDisplayMode.RightFacing)
             {
                 this.rightImageFilePath = e.Image1.FilePath;
-                this.rightImagePanel.SetImage(e.Image1.IsError, e.Image1.Image, e.Image1.Thumbnail);
-
-                if (e.Image2 != null)
+                if (e.Image1.IsError)
                 {
-                    var rightImageScale = GetImageScale(
-                        this.rightImagePanel.ImageSize, bgSize, this.sizeMode);
-                    this.rightImagePanel.SetScale(rightImageScale);
-
-                    this.leftImageFilePath = e.Image2.FilePath;
-                    this.leftImagePanel.SetImage(e.Image2.IsError, e.Image2.Image, e.Image2.Thumbnail);
-
-                    var leftImageScale = GetImageScale(
-                        this.leftImagePanel.ImageSize, bgSize, this.sizeMode);
-                    this.leftImagePanel.SetScale(leftImageScale);
+                    this.rightImagePanel.SetError();
                 }
                 else
                 {
+                    this.rightImagePanel.SetImage(e.Image1.Image, e.Image1.Thumbnail);
                     var rightImageScale = GetImageScale(
                         this.rightImagePanel.ImageSize, bgSize, this.sizeMode);
                     this.rightImagePanel.SetScale(rightImageScale);
+                }
+
+                if (e.Image2 != null)
+                {
+                    this.leftImageFilePath = e.Image2.FilePath;
+                    if (e.Image2.IsError)
+                    {
+                        this.leftImagePanel.SetError();
+                    }
+                    else
+                    {
+                        this.leftImagePanel.SetImage(e.Image2.Image, e.Image2.Thumbnail);
+                        var leftImageScale = GetImageScale(
+                            this.leftImagePanel.ImageSize, bgSize, this.sizeMode);
+                        this.leftImagePanel.SetScale(leftImageScale);
+                    }
                 }
             }
 
