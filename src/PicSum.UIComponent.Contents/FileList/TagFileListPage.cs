@@ -149,7 +149,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 {
                     var imageFiles = e
                         .Where(fileInfo => fileInfo.IsImageFile);
-                    var sortImageFiles = this.GetSortFiles(imageFiles)
+                    var sortImageFiles = GetSortFiles(imageFiles, param.SortInfo)
                         .Select(fileInfo => fileInfo.FilePath)
                         .ToArray();
 

@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Runtime.Versioning;
 using System.Text;
 using System.Windows.Forms;
@@ -29,6 +30,56 @@ namespace PicSum.UIComponent.Contents.FileList
     internal abstract partial class AbstractFileListPage
         : BrowserPage
     {
+        protected static IEnumerable<FileShallowInfoEntity> GetSortFiles(
+            IEnumerable<FileShallowInfoEntity> files, SortInfo sortInfo)
+        {
+            ArgumentNullException.ThrowIfNull(files, nameof(files));
+            ArgumentNullException.ThrowIfNull(sortInfo, nameof(sortInfo));
+
+            var isAscending = sortInfo.IsAscending(sortInfo.ActiveSortType);
+            switch (sortInfo.ActiveSortType)
+            {
+                case SortTypeID.FileName:
+                    if (isAscending)
+                    {
+                        return files.OrderBy(file => file.FileName);
+                    }
+                    else
+                    {
+                        return files.OrderByDescending(file => file.FileName);
+                    }
+                case SortTypeID.FilePath:
+                    if (isAscending)
+                    {
+                        return files.OrderBy(file => file.FilePath);
+                    }
+                    else
+                    {
+                        return files.OrderByDescending(file => file.FilePath);
+                    }
+                case SortTypeID.UpdateDate:
+                    if (isAscending)
+                    {
+                        return files.OrderBy(file => file.UpdateDate.GetValueOrDefault(DateTime.MinValue));
+                    }
+                    else
+                    {
+                        return files.OrderByDescending(file => file.UpdateDate.GetValueOrDefault(DateTime.MinValue));
+                    }
+                case SortTypeID.RgistrationDate:
+                    if (isAscending)
+                    {
+                        return files.OrderBy(file => file.RgistrationDate.GetValueOrDefault(DateTime.MinValue));
+                    }
+                    else
+                    {
+                        return files.OrderByDescending(file => file.RgistrationDate.GetValueOrDefault(DateTime.MinValue));
+                    }
+                default:
+                    return files;
+            }
+        }
+
         #region インスタンス変数
 
         private Dictionary<string, FilePage> masterFileDictionary = null;
@@ -420,57 +471,8 @@ namespace PicSum.UIComponent.Contents.FileList
             {
                 this.SelectedFilePath = string.Empty;
             }
-
             this.SetFilter();
-        }
-
-        protected IEnumerable<FileShallowInfoEntity> GetSortFiles(IEnumerable<FileShallowInfoEntity> files)
-        {
-            ArgumentNullException.ThrowIfNull(files, nameof(files));
-
-            var isAscending = this.sortInfo.IsAscending(this.sortInfo.ActiveSortType);
-            switch (this.sortInfo.ActiveSortType)
-            {
-                case SortTypeID.FileName:
-                    if (isAscending)
-                    {
-                        return files.OrderBy(file => file.FileName);
-                    }
-                    else
-                    {
-                        return files.OrderByDescending(file => file.FileName);
-                    }
-                case SortTypeID.FilePath:
-                    if (isAscending)
-                    {
-                        return files.OrderBy(file => file.FilePath);
-                    }
-                    else
-                    {
-                        return files.OrderByDescending(file => file.FilePath);
-                    }
-                case SortTypeID.UpdateDate:
-                    if (isAscending)
-                    {
-                        return files.OrderBy(file => file.UpdateDate.GetValueOrDefault(DateTime.MinValue));
-                    }
-                    else
-                    {
-                        return files.OrderByDescending(file => file.UpdateDate.GetValueOrDefault(DateTime.MinValue));
-                    }
-                case SortTypeID.RgistrationDate:
-                    if (isAscending)
-                    {
-                        return files.OrderBy(file => file.RgistrationDate.GetValueOrDefault(DateTime.MinValue));
-                    }
-                    else
-                    {
-                        return files.OrderByDescending(file => file.RgistrationDate.GetValueOrDefault(DateTime.MinValue));
-                    }
-                default:
-                    return files;
-            }
-        }
+        }        
 
         protected abstract Action GetImageFilesAction(ImageViewerPageParameter paramter);
 
@@ -976,6 +978,7 @@ namespace PicSum.UIComponent.Contents.FileList
                     this.Parameter.SourcesKey,
                     this.GetImageFilesAction,
                     filePath,
+                    this.sortInfo,
                     this.Title,
                     this.Icon);
                 this.OnOpenPage(new BrowserPageEventArgs(PageOpenType.AddTab, param));
@@ -1003,6 +1006,7 @@ namespace PicSum.UIComponent.Contents.FileList
                     this.Parameter.SourcesKey,
                     this.GetImageFilesAction,
                     filePath,
+                    this.sortInfo,
                     this.Title,
                     this.Icon);
                 this.OnOpenPage(new BrowserPageEventArgs(PageOpenType.OverlapTab, param));
@@ -1034,6 +1038,7 @@ namespace PicSum.UIComponent.Contents.FileList
                     this.Parameter.SourcesKey,
                     this.GetImageFilesAction,
                     filePath,
+                    this.sortInfo,
                     this.Title,
                     this.Icon);
                 this.OnOpenPage(new BrowserPageEventArgs(PageOpenType.OverlapTab, param));
@@ -1133,6 +1138,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 this.Parameter.SourcesKey,
                 this.GetImageFilesAction,
                 e.FilePath,
+                this.sortInfo,
                 this.Title,
                 this.Icon);
             this.OnOpenPage(new BrowserPageEventArgs(PageOpenType.OverlapTab, param));
@@ -1145,6 +1151,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 this.Parameter.SourcesKey,
                 this.GetImageFilesAction,
                 e.FilePath,
+                this.sortInfo,
                 this.Title,
                 this.Icon);
             this.OnOpenPage(new BrowserPageEventArgs(PageOpenType.AddTab, param));
@@ -1157,6 +1164,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 this.Parameter.SourcesKey,
                 this.GetImageFilesAction,
                 e.FilePath,
+                this.sortInfo,
                 this.Title,
                 this.Icon);
             this.OnOpenPage(new BrowserPageEventArgs(PageOpenType.NewWindow, param));

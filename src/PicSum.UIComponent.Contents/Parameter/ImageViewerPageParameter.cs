@@ -1,4 +1,5 @@
 using PicSum.UIComponent.Contents.Common;
+using PicSum.UIComponent.Contents.FileList;
 using PicSum.UIComponent.Contents.ImageViewer;
 using SWF.UIComponent.TabOperation;
 using System;
@@ -23,12 +24,14 @@ namespace PicSum.UIComponent.Contents.Parameter
         public string PageTitle { get; private set; }
         public Image PageIcon { get; private set; }
         public string SelectedFilePath { get; set; }
+        public SortInfo SortInfo { get; private set; }
 
         public ImageViewerPageParameter(
             string pageSources,
             string sourcesKey,
             Func<ImageViewerPageParameter, Action> getImageFilesAction,
             string selectedFilePath,
+            SortInfo sortInfo,
             string pageTitle,
             Image pageIcon)
         {
@@ -38,6 +41,7 @@ namespace PicSum.UIComponent.Contents.Parameter
             this.GetImageFilesAction = getImageFilesAction ?? throw new ArgumentNullException(nameof(getImageFilesAction));
             this.PageTitle = pageTitle ?? throw new ArgumentNullException(nameof(pageTitle));
             this.PageIcon = pageIcon ?? throw new ArgumentNullException(nameof(pageIcon));
+            this.SortInfo = sortInfo ?? throw new ArgumentNullException(nameof (sortInfo));
             this.SelectedFilePath = selectedFilePath ?? throw new ArgumentNullException(nameof(selectedFilePath));
         }
 

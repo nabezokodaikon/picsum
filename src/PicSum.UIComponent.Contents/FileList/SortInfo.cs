@@ -4,7 +4,7 @@ using System.Drawing;
 
 namespace PicSum.UIComponent.Contents.FileList
 {
-    internal sealed class SortInfo
+    public sealed class SortInfo
     {
         private readonly Image sortAscendingImage = Resources.SmallArrowUp;
         private readonly Image sortDescendingImage = Resources.SmallArrowDown;

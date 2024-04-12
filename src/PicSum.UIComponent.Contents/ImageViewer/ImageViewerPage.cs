@@ -1028,6 +1028,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 this.Parameter.SourcesKey,
                 this.parameter.GetImageFilesAction,
                 e.FilePath,
+                this.parameter.SortInfo,
                 this.Title,
                 this.Icon);
             this.OnOpenPage(new BrowserPageEventArgs(PageOpenType.AddTab, param));
@@ -1040,6 +1041,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 this.Parameter.SourcesKey,
                 this.parameter.GetImageFilesAction,
                 e.FilePath,
+                this.parameter.SortInfo,
                 this.Title,
                 this.Icon);
             this.OnOpenPage(new BrowserPageEventArgs(PageOpenType.NewWindow, param));

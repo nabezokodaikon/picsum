@@ -5,6 +5,7 @@ using PicSum.Task.Paramters;
 using PicSum.Task.Results;
 using PicSum.Task.Tasks;
 using PicSum.UIComponent.Contents.Common;
+using PicSum.UIComponent.Contents.FileList;
 using PicSum.UIComponent.Contents.Parameter;
 using PicSum.UIComponent.InfoPanel;
 using SWF.Common;
@@ -338,6 +339,7 @@ namespace PicSum.Main.UIComponent
                     dragData.SourcesKey,
                     dragData.GetImageFilesAction,
                     dragData.CurrentFilePath,
+                    new SortInfo(),
                     dragData.PageTitle,
                     dragData.PageIcon);
                 this.OpenPage(parameter, PageOpenType.OverlapTab);
@@ -360,6 +362,7 @@ namespace PicSum.Main.UIComponent
                     dragData.SourcesKey,
                     dragData.GetImageFilesAction,
                     dragData.CurrentFilePath,
+                    new SortInfo(),
                     dragData.PageTitle,
                     dragData.PageIcon);
                 this.InsertPage(parameter, tabIndex);
