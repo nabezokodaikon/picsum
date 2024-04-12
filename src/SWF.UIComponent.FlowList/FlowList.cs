@@ -11,7 +11,7 @@ namespace SWF.UIComponent.FlowList
     /// </summary>
     [SupportedOSPlatform("windows")]
     public sealed partial class FlowList
-        : PictureBox
+        : UserControl
     {
         #region 定数・列挙
 
