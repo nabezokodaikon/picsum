@@ -459,6 +459,19 @@ namespace PicSum.UIComponent.InfoPanel
             }
         }
 
+        private void DrawErrorMessage(Graphics g, Rectangle rect)
+        {
+            using (var sb = new SolidBrush(this.ForeColor))
+            using (var sf = new StringFormat())
+            {
+                sf.Alignment = StringAlignment.Center;
+                sf.LineAlignment = StringAlignment.Center;
+                sf.Trimming = StringTrimming.EllipsisCharacter;
+                var text = $"Failed to load file";
+                g.DrawString(text, this.Font, sb, rect, sf);
+            }
+        }
+
         #endregion
 
         #region プロセスイベント
@@ -529,11 +542,16 @@ namespace PicSum.UIComponent.InfoPanel
                     DrawDirectoryThumbnail(e.Graphics, this.Thumbnail.ThumbnailImage, rect);
                 }
             }
-            else if (this.FileInfo != null)
+            else if (this.FileInfo != null && this.FileInfo.FileIcon != null)
             {
                 const int margin = 32;
                 var rect = new Rectangle(margin, margin, this.thumbnailPictureBox.Width - margin * 2, this.thumbnailPictureBox.Height - margin * 2);
                 this.DrawFileIcon(e.Graphics, this.FileInfo.FileIcon, rect);
+            }
+            else if (this.FileInfo != null && this.FileInfo.FileIcon == null)
+            {
+                var rect = new Rectangle(0, 0, this.thumbnailPictureBox.Width, this.thumbnailPictureBox.Height);
+                this.DrawErrorMessage(e.Graphics, rect);
             }
             else if (this.FilePathList != null)
             {

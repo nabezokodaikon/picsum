@@ -56,9 +56,13 @@ namespace PicSum.Task.Logics
                     {
                         info.FileIcon = FileIconCash.GetLargeDriveIcon(filePath);
                     }
-                    else
+                    else if (FileUtil.IsDirectory(filePath))
                     {
                         info.FileIcon = FileIconCash.JumboDirectoryIcon;
+                    }
+                    else
+                    {
+                        info.FileIcon = null;
                     }
                 }
 
