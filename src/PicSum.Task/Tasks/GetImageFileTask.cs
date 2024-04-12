@@ -20,22 +20,18 @@ namespace PicSum.Task.Tasks
     {
         private static void ExeptionHandler(GetImageFileResult result)
         {
-            bool isDisposed = false;
-
             if (result.Image1 != null)
             {
                 if (result.Image1.Image != null)
                 {
                     result.Image1.Image.Dispose();
                     result.Image1.Image = null;
-                    isDisposed = true;
                 }
 
                 if (result.Image1.Thumbnail != null)
                 {
                     result.Image1.Thumbnail.Dispose();
                     result.Image1.Thumbnail = null;
-                    isDisposed = true;
                 }
             }
 
@@ -45,20 +41,13 @@ namespace PicSum.Task.Tasks
                 {
                     result.Image2.Image.Dispose();
                     result.Image2.Image = null;
-                    isDisposed = true;
                 }
 
                 if (result.Image2.Thumbnail != null)
                 {
                     result.Image2.Thumbnail.Dispose();
                     result.Image2.Thumbnail = null;
-                    isDisposed = true;
                 }
-            }
-
-            if (isDisposed)
-            {
-                GC.Collect();
             }
         }
 
