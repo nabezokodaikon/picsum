@@ -256,7 +256,7 @@ namespace SWF.UIComponent.ImagePanel
 
         protected override void OnPaint(PaintEventArgs e)
         {
-            if (this.image != null)
+            if (!this.IsErrorImage && this.image != null)
             {
                 e.Graphics.SmoothingMode = this.GetSmoothingMode();
                 e.Graphics.InterpolationMode = this.GetInterpolationMode();
@@ -272,6 +272,17 @@ namespace SWF.UIComponent.ImagePanel
                     e.Graphics.CompositingQuality = CompositingQuality.HighSpeed;
 
                     this.DrawThumbnailPanel(e.Graphics);
+                }
+            }
+            else
+            {
+                using (var sf = new StringFormat())
+                {
+                    sf.Alignment = StringAlignment.Center;
+                    sf.LineAlignment = StringAlignment.Center;
+                    sf.Trimming = StringTrimming.EllipsisCharacter;
+                    var text = $"Failed to load file";
+                    e.Graphics.DrawString(text, this.Font, Brushes.White, new Rectangle(0, 0, this.Width, this.Height), sf);
                 }
             }
 
