@@ -24,7 +24,7 @@ namespace PicSum.UIComponent.Contents.FileList
     internal sealed class DirectoryFileListPage
         : AbstractFileListPage
     {
-        private static Action GetImageFilesAction(ImageViewerPageParameter param)
+        private static Action ImageFilesGetAction(ImageViewerPageParameter param)
         {
             return () =>
             {
@@ -244,7 +244,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
         protected override Action GetImageFilesGetAction(ImageViewerPageParameter param)
         {
-            return GetImageFilesAction(param);
+            return ImageFilesGetAction(param);
         }       
 
         protected override void FileContextMenu_Opening(object sender, CancelEventArgs e)

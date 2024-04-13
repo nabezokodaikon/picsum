@@ -21,7 +21,7 @@ namespace PicSum.UIComponent.Contents.FileList
     internal sealed class BookmarkFileListPage
         : AbstractFileListPage
     {
-        private static Action GetImageFilesAction(ImageViewerPageParameter param)
+        private static Action ImageFilesGetAction(ImageViewerPageParameter param)
         {
             return () =>
             {
@@ -120,7 +120,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 {
                     this.deleteTask.Dispose();
                     this.deleteTask = null;
-                }                
+                }
             }
 
             base.Dispose(disposing);
@@ -150,7 +150,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
         protected override Action GetImageFilesGetAction(ImageViewerPageParameter param)
         {
-            return GetImageFilesAction(param);
+            return ImageFilesGetAction(param);
         }
 
         protected override void OnMoveNextButtonClick(EventArgs e)

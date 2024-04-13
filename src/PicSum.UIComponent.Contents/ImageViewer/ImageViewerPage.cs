@@ -53,7 +53,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         private ImageSizeMode sizeMode = ImageSizeMode.FitOnlyBigImage;
         private IList<string> filePathList = null;
 
-        private TwoWayTask<ImageFileReadTask, ImageFileReadParameter, GetImageFileResult> getImageFileTask = null;
+        private TwoWayTask<ImageFileReadTask, ImageFileReadParameter, ImageFileGetResult> getImageFileTask = null;
         private OneWayTask<BookmarkAddTask, ValueParameter<string>> addBookmarkTask = null;
         private OneWayTask<FileExportTask, ExportFileParameter> exportFileTask = null;
 
@@ -104,7 +104,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             }
         }
 
-        private TwoWayTask<ImageFileReadTask, ImageFileReadParameter, GetImageFileResult> GetImageFileTask
+        private TwoWayTask<ImageFileReadTask, ImageFileReadParameter, ImageFileGetResult> GetImageFileTask
         {
             get
             {
@@ -611,7 +611,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             }
         }
 
-        private void GetImageFileTask_Callback(GetImageFileResult e)
+        private void GetImageFileTask_Callback(ImageFileGetResult e)
         {
             this.leftImageFilePath = string.Empty;
             this.leftImagePanel.ClearImage();

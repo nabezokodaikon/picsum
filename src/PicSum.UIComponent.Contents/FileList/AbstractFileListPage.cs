@@ -90,7 +90,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
         #region インスタンス変数
 
-        private Dictionary<string, FilePage> masterFileDictionary = null;
+        private Dictionary<string, FileEntity> masterFileDictionary = null;
         private List<string> filterFilePathList = null;
         private readonly SortInfo sortInfo = new();
         private TwoWayTask<ThumbnailsGetTask, ThumbnailsGetParameter, ThumbnailImageResult> getThumbnailsTask = null;
@@ -373,7 +373,7 @@ namespace PicSum.UIComponent.Contents.FileList
             this.masterFileDictionary = [];
             foreach (var srcFile in srcFiles)
             {
-                var destFile = new FilePage
+                var destFile = new FileEntity
                 {
                     FilePath = srcFile.FilePath,
                     FileName = srcFile.FileName,
@@ -535,7 +535,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 return;
             }
 
-            var filterList = new List<FilePage>();
+            var filterList = new List<FileEntity>();
             foreach (var file in this.masterFileDictionary.Values)
             {
                 if (file.IsFile)

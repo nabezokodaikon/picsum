@@ -16,9 +16,9 @@ namespace PicSum.Task.Tasks
     /// </summary>
     [SupportedOSPlatform("windows")]
     public sealed class ImageFileReadTask
-        : AbstractTwoWayTask<ImageFileReadParameter, GetImageFileResult>
+        : AbstractTwoWayTask<ImageFileReadParameter, ImageFileGetResult>
     {
-        private static void ExeptionHandler(GetImageFileResult result)
+        private static void ExeptionHandler(ImageFileGetResult result)
         {
             if (result.Image1 != null)
             {
@@ -53,7 +53,7 @@ namespace PicSum.Task.Tasks
 
         protected override void Execute(ImageFileReadParameter parameter)
         {
-            var result = new GetImageFileResult();
+            var result = new ImageFileGetResult();
             var logic = new ImageFileReadLogic(this);
             var currentFilePath = parameter.FilePathList[parameter.CurrentIndex];
 
