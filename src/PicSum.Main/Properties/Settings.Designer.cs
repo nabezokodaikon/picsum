@@ -155,12 +155,15 @@ namespace PicSum.Main.Properties {
             }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("21")]
         public int FileListPageFavoriteDirectoryCount {
             get {
                 return ((int)(this["FileListPageFavoriteDirectoryCount"]));
+            }
+            set {
+                this["FileListPageFavoriteDirectoryCount"] = value;
             }
         }
     }
