@@ -20,7 +20,7 @@ namespace PicSum.UIComponent.AddressBar
         private readonly Image mouseDownImage = Resources.SmallArrowDown;
         private bool isRead = false;
         private Font selectedSubDirectoryFont = null;
-        private TwoWayTask<GetSubDirectoryTask, ValueParameter<string>, ListResult<FileShallowInfoEntity>> getSubDirectoryTask = null;
+        private TwoWayTask<SubDirectoriesGetTask, ValueParameter<string>, ListResult<FileShallowInfoEntity>> getSubDirectoryTask = null;
 
         #endregion
 
@@ -29,7 +29,7 @@ namespace PicSum.UIComponent.AddressBar
         public DirectoryEntity Directory { get; set; }
         public string SelectedSubDirectoryPath { get; set; }
 
-        private TwoWayTask<GetSubDirectoryTask, ValueParameter<string>, ListResult<FileShallowInfoEntity>> GetSubDirectoryTask
+        private TwoWayTask<SubDirectoriesGetTask, ValueParameter<string>, ListResult<FileShallowInfoEntity>> GetSubDirectoryTask
         {
             get
             {

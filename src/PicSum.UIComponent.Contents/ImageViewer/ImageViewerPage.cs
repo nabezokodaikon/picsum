@@ -53,9 +53,9 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         private ImageSizeMode sizeMode = ImageSizeMode.FitOnlyBigImage;
         private IList<string> filePathList = null;
 
-        private TwoWayTask<GetImageFileTask, GetImageFileParameter, GetImageFileResult> getImageFileTask = null;
-        private OneWayTask<AddBookmarkTask, ValueParameter<string>> addBookmarkTask = null;
-        private OneWayTask<ExportFileTask, ExportFileParameter> exportFileTask = null;
+        private TwoWayTask<ImageFileReadTask, ImageFileReadParameter, GetImageFileResult> getImageFileTask = null;
+        private OneWayTask<BookmarkAddTask, ValueParameter<string>> addBookmarkTask = null;
+        private OneWayTask<FileExportTask, ExportFileParameter> exportFileTask = null;
 
         #endregion
 
@@ -104,7 +104,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             }
         }
 
-        private TwoWayTask<GetImageFileTask, GetImageFileParameter, GetImageFileResult> GetImageFileTask
+        private TwoWayTask<ImageFileReadTask, ImageFileReadParameter, GetImageFileResult> GetImageFileTask
         {
             get
             {
@@ -126,7 +126,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             }
         }
 
-        private OneWayTask<AddBookmarkTask, ValueParameter<string>> AddBookmarkTask
+        private OneWayTask<BookmarkAddTask, ValueParameter<string>> AddBookmarkTask
         {
             get
             {
@@ -141,7 +141,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             }
         }
 
-        private OneWayTask<ExportFileTask, ExportFileParameter> ExportFileTask
+        private OneWayTask<FileExportTask, ExportFileParameter> ExportFileTask
         {
             get
             {
@@ -495,7 +495,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         {
             this.Cursor = Cursors.WaitCursor;
 
-            var param = new GetImageFileParameter
+            var param = new ImageFileReadParameter
             {
                 CurrentIndex = this.FilePathListIndex,
                 FilePathList = this.filePathList,

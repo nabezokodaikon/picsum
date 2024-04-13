@@ -42,8 +42,8 @@ namespace PicSum.Main.UIComponent
 
         private Size previrewSize = Size.Empty;
         private Timer redrawTimer = null;
-        private TwoWayTask<GetTagListTask, ListResult<string>> getTagListTask = null;
-        private TwoWayTask<GetImageFileByDirectoryTask, GetImageFileByDirectoryParameter, GetImageFileByDirectoryResult> getFilesTask = null;
+        private TwoWayTask<TagsGetTask, ListResult<string>> getTagListTask = null;
+        private TwoWayTask<ImageFileGetByDirectoryTask, ImageFileGetByDirectoryParameter, ImageFileGetByDirectoryResult> getFilesTask = null;
 
         #endregion
 
@@ -65,7 +65,7 @@ namespace PicSum.Main.UIComponent
 
         #region プライベートプロパティ
 
-        private TwoWayTask<GetTagListTask, ListResult<string>> GetTagListTask
+        private TwoWayTask<TagsGetTask, ListResult<string>> GetTagListTask
         {
             get
             {
@@ -264,7 +264,7 @@ namespace PicSum.Main.UIComponent
             }
         }
 
-        private TwoWayTask<GetImageFileByDirectoryTask, GetImageFileByDirectoryParameter, GetImageFileByDirectoryResult> CreateNewGetFilesTask()
+        private TwoWayTask<ImageFileGetByDirectoryTask, ImageFileGetByDirectoryParameter, ImageFileGetByDirectoryResult> CreateNewGetFilesTask()
         {
             if (this.getFilesTask != null)
             {
@@ -397,7 +397,7 @@ namespace PicSum.Main.UIComponent
                     DirectoryFileListPageParameter.PAGE_SOURCES,
                     dirPath,
                     filePath,
-                    this.GetImageFilesAction(new GetImageFileByDirectoryParameter(dirPath)),
+                    this.GetImageFilesAction(new ImageFileGetByDirectoryParameter(dirPath)),
                     FileUtil.GetFileName(dirPath),
                     FileIconCash.SmallDirectoryIcon);
                 if (e.IsOverlap)
@@ -436,7 +436,7 @@ namespace PicSum.Main.UIComponent
         #region プロセスイベント
 
         private Func<ImageViewerPageParameter, Action> GetImageFilesAction(
-            GetImageFileByDirectoryParameter subParamter)
+            ImageFileGetByDirectoryParameter subParamter)
         {
             return (parameter) =>
             {

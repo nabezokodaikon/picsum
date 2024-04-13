@@ -39,13 +39,13 @@ namespace PicSum.UIComponent.InfoPanel
 
         #region インスタンス変数
 
-        private TwoWayTask<GetFileDeepInfoTask, GetFileDeepInfoParameter, GetFileDeepInfoResult> getFileInfoTask = null;
-        private OneWayTask<UpdateFileRatingTask, UpdateFileRatingParameter> updateFileRatingTask = null;
-        private TwoWayTask<GetTagListTask, ListResult<string>> getTagListTask = null;
-        private OneWayTask<AddFileTagTask, UpdateFileTagParameter> addFileTagTask = null;
-        private OneWayTask<DeleteFileTagTask, UpdateFileTagParameter> deleteFileTagTask = null;
+        private TwoWayTask<FileDeepInfoGetTask, FileDeepInfoGetParameter, FileDeepInfoGetResult> getFileInfoTask = null;
+        private OneWayTask<FileRatingUpdateTask, FileRatingUpdateParameter> updateFileRatingTask = null;
+        private TwoWayTask<TagsGetTask, ListResult<string>> getTagListTask = null;
+        private OneWayTask<FileTagAddTask, UpdateFileTagParameter> addFileTagTask = null;
+        private OneWayTask<FileTagDeleteTask, UpdateFileTagParameter> deleteFileTagTask = null;
 
-        private GetFileDeepInfoResult fileInfoSource = null;
+        private FileDeepInfoGetResult fileInfoSource = null;
         private Font allTagFont = null;
         private readonly Image tagIcon = Resources.TagIcon;
         private string contextMenuOperationTag = string.Empty;
@@ -54,7 +54,7 @@ namespace PicSum.UIComponent.InfoPanel
 
         #region プライベートプロパティ
 
-        private TwoWayTask<GetFileDeepInfoTask, GetFileDeepInfoParameter, GetFileDeepInfoResult> GetFileInfoTask
+        private TwoWayTask<FileDeepInfoGetTask, FileDeepInfoGetParameter, FileDeepInfoGetResult> GetFileInfoTask
         {
             get
             {
@@ -70,7 +70,7 @@ namespace PicSum.UIComponent.InfoPanel
             }
         }
 
-        private OneWayTask<UpdateFileRatingTask, UpdateFileRatingParameter> UpdateFileRatingTask
+        private OneWayTask<FileRatingUpdateTask, FileRatingUpdateParameter> UpdateFileRatingTask
         {
             get
             {
@@ -85,7 +85,7 @@ namespace PicSum.UIComponent.InfoPanel
             }
         }
 
-        private TwoWayTask<GetTagListTask, ListResult<string>> GetTagListTask
+        private TwoWayTask<TagsGetTask, ListResult<string>> GetTagListTask
         {
             get
             {
@@ -101,7 +101,7 @@ namespace PicSum.UIComponent.InfoPanel
             }
         }
 
-        private OneWayTask<AddFileTagTask, UpdateFileTagParameter> AddFileTagTask
+        private OneWayTask<FileTagAddTask, UpdateFileTagParameter> AddFileTagTask
         {
             get
             {
@@ -116,7 +116,7 @@ namespace PicSum.UIComponent.InfoPanel
             }
         }
 
-        private OneWayTask<DeleteFileTagTask, UpdateFileTagParameter> DeleteFileTagTask
+        private OneWayTask<FileTagDeleteTask, UpdateFileTagParameter> DeleteFileTagTask
         {
             get
             {
@@ -229,7 +229,7 @@ namespace PicSum.UIComponent.InfoPanel
                     return;
                 }
 
-                var param = new GetFileDeepInfoParameter
+                var param = new FileDeepInfoGetParameter
                 {
                     FilePathList = filePathList,
                     ThumbnailSize = new Size(
@@ -476,7 +476,7 @@ namespace PicSum.UIComponent.InfoPanel
 
         #region プロセスイベント
 
-        private void GetFileInfoTask_Callback(GetFileDeepInfoResult result)
+        private void GetFileInfoTask_Callback(FileDeepInfoGetResult result)
         {
             this.ClearInfo();
 
@@ -617,7 +617,7 @@ namespace PicSum.UIComponent.InfoPanel
                 return;
             }
 
-            var param = new UpdateFileRatingParameter
+            var param = new FileRatingUpdateParameter
             {
                 FilePathList = this.fileInfoSource.FilePathList,
                 RatingValue = this.ratingBar.Value

@@ -28,7 +28,7 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             return () =>
             {
-                var task = new TwoWayTask<GetFilesByDirectoryTask, ValueParameter<string>, GetDirectoryResult>();
+                var task = new TwoWayTask<FilesGetByDirectoryTask, ValueParameter<string>, DirectoryGetResult>();
                 task
                 .Callback(e =>
                 {
@@ -59,16 +59,16 @@ namespace PicSum.UIComponent.Contents.FileList
         #region インスタンス変数
 
         private readonly DirectoryFileListPageParameter parameter = null;
-        private TwoWayTask<GetFilesByDirectoryTask, ValueParameter<string>, GetDirectoryResult> searchTask = null;
-        private OneWayTask<UpdateDirectoryStateTask, DirectoryStateParameter> updateDirectoryStateTask = null;
-        private OneWayTask<AddDirectoryViewHistoryTask, ValueParameter<string>> addDirectoryHistoryTask = null;
-        private TwoWayTask<GetNextDirectoryTask, GetNextPageParameter<string>, ValueResult<string>> getNextDirectoryTask = null;
+        private TwoWayTask<FilesGetByDirectoryTask, ValueParameter<string>, DirectoryGetResult> searchTask = null;
+        private OneWayTask<DirectoryStateUpdateTask, DirectoryStateParameter> updateDirectoryStateTask = null;
+        private OneWayTask<DirectoryViewHistoryAddTask, ValueParameter<string>> addDirectoryHistoryTask = null;
+        private TwoWayTask<NextDirectoryGetTask, NextDirectoryGetParameter<string>, ValueResult<string>> getNextDirectoryTask = null;
 
         #endregion
 
         #region プライベートプロパティ
 
-        private TwoWayTask<GetFilesByDirectoryTask, ValueParameter<string>, GetDirectoryResult> SearchTask
+        private TwoWayTask<FilesGetByDirectoryTask, ValueParameter<string>, DirectoryGetResult> SearchTask
         {
             get
             {
@@ -88,7 +88,7 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
-        private OneWayTask<UpdateDirectoryStateTask, DirectoryStateParameter> UpdateDirectoryStateTask
+        private OneWayTask<DirectoryStateUpdateTask, DirectoryStateParameter> UpdateDirectoryStateTask
         {
             get
             {
@@ -102,7 +102,7 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
-        private OneWayTask<AddDirectoryViewHistoryTask, ValueParameter<string>> AddDirectoryHistoryTask
+        private OneWayTask<DirectoryViewHistoryAddTask, ValueParameter<string>> AddDirectoryHistoryTask
         {
             get
             {
@@ -116,7 +116,7 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
-        private TwoWayTask<GetNextDirectoryTask, GetNextPageParameter<string>, ValueResult<string>> GetNextDirectoryTask
+        private TwoWayTask<NextDirectoryGetTask, NextDirectoryGetParameter<string>, ValueResult<string>> GetNextDirectoryTask
         {
             get
             {
@@ -217,7 +217,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 return;
             }
 
-            var param = new GetNextPageParameter<string>
+            var param = new NextDirectoryGetParameter<string>
             {
                 CurrentParameter = new ValueEntity<string>(),
                 IsNext = false,
@@ -233,7 +233,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 return;
             }
 
-            var param = new GetNextPageParameter<string>
+            var param = new NextDirectoryGetParameter<string>
             {
                 IsNext = true,
                 CurrentParameter = new ValueEntity<string>()
@@ -319,7 +319,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
         #region プロセスイベント
 
-        private void SearchTask_Callback(GetDirectoryResult e)
+        private void SearchTask_Callback(DirectoryGetResult e)
         {
             if (!string.IsNullOrEmpty(this.parameter.SelectedFilePath))
             {

@@ -26,7 +26,7 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             return () =>
             {
-                var task = new TwoWayTask<GetFilesByRatingTask, ValueParameter<int>, ListResult<FileShallowInfoEntity>>();
+                var task = new TwoWayTask<FilesGetByRatingTask, ValueParameter<int>, ListResult<FileShallowInfoEntity>>();
                 task.Callback(e =>
                 {
                     var imageFiles = e
@@ -55,14 +55,14 @@ namespace PicSum.UIComponent.Contents.FileList
         #region インスタンス変数
 
         private readonly RatingFileListPageParameter parameter = null;
-        private TwoWayTask<GetFilesByRatingTask, ValueParameter<int>, ListResult<FileShallowInfoEntity>> searchTask = null;
-        private OneWayTask<UpdateFileRatingTask, UpdateFileRatingParameter> deleteTask = null;
+        private TwoWayTask<FilesGetByRatingTask, ValueParameter<int>, ListResult<FileShallowInfoEntity>> searchTask = null;
+        private OneWayTask<FileRatingUpdateTask, FileRatingUpdateParameter> deleteTask = null;
 
         #endregion
 
         #region プライベートプロパティ
 
-        private TwoWayTask<GetFilesByRatingTask, ValueParameter<int>, ListResult<FileShallowInfoEntity>> SearchTask
+        private TwoWayTask<FilesGetByRatingTask, ValueParameter<int>, ListResult<FileShallowInfoEntity>> SearchTask
         {
             get
             {
@@ -78,7 +78,7 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
-        private OneWayTask<UpdateFileRatingTask, UpdateFileRatingParameter> DeleteTask
+        private OneWayTask<FileRatingUpdateTask, FileRatingUpdateParameter> DeleteTask
         {
             get
             {
@@ -152,7 +152,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
         protected override void OnRemoveFile(System.Collections.Generic.IList<string> filePathList)
         {
-            var param = new UpdateFileRatingParameter
+            var param = new FileRatingUpdateParameter
             {
                 FilePathList = filePathList,
                 RatingValue = 0

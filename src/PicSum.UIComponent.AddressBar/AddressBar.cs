@@ -34,7 +34,7 @@ namespace PicSum.UIComponent.AddressBar
         private readonly Palette palette = new();
         private readonly OverflowDrawItem overflowItem = new();
         private readonly DirectoryHistoryDrawItem directoryHistoryItem = new();
-        private TwoWayTask<GetAddressInfoTask, ValueParameter<string>, GetAddressInfoResult> getAddressInfoTask = null;
+        private TwoWayTask<AddressInfoGetTask, ValueParameter<string>, AddressInfoGetResult> getAddressInfoTask = null;
         private string currentDirectoryPath = null;
         private readonly List<DrawItemBase> addressItems = [];
         private DrawItemBase mousePointItem = null;
@@ -136,7 +136,7 @@ namespace PicSum.UIComponent.AddressBar
 
         #region プライベートプロパティ
 
-        private TwoWayTask<GetAddressInfoTask, ValueParameter<string>, GetAddressInfoResult> GetAddressInfoProcess
+        private TwoWayTask<AddressInfoGetTask, ValueParameter<string>, AddressInfoGetResult> GetAddressInfoProcess
         {
             get
             {
@@ -433,7 +433,7 @@ namespace PicSum.UIComponent.AddressBar
             }
         }
 
-        private List<DrawItemBase> CreateAddressItems(GetAddressInfoResult addressInfo)
+        private List<DrawItemBase> CreateAddressItems(AddressInfoGetResult addressInfo)
         {
             var items = new List<DrawItemBase>();
 
@@ -642,7 +642,7 @@ namespace PicSum.UIComponent.AddressBar
             this.SelectedDirectory?.Invoke(this, e);
         }
 
-        private void GetAddressInfoProcess_Callback(GetAddressInfoResult e)
+        private void GetAddressInfoProcess_Callback(AddressInfoGetResult e)
         {
             this.ClearAddressItems();
 

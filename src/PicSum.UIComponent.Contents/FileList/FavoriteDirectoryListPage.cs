@@ -21,14 +21,14 @@ namespace PicSum.UIComponent.Contents.FileList
         #region インスタンス変数
 
         private readonly FavoriteDirectoryListPageParameter parameter = null;
-        private TwoWayTask<GetFavoriteDirectoryTask, GetFavoriteDirectoryParameter, ListResult<FileShallowInfoEntity>> searchTask = null;
-        private OneWayTask<DeleteDirectoryViewCounterTask, ListParameter<string>> deleteTask = null;
+        private TwoWayTask<FavoriteDirectoryGetTask, FavoriteDirectoriesGetParameter, ListResult<FileShallowInfoEntity>> searchTask = null;
+        private OneWayTask<DirectoryViewCounterDeleteTask, ListParameter<string>> deleteTask = null;
 
         #endregion
 
         #region プライベートプロパティ
 
-        private TwoWayTask<GetFavoriteDirectoryTask, GetFavoriteDirectoryParameter, ListResult<FileShallowInfoEntity>> SearchTask
+        private TwoWayTask<FavoriteDirectoryGetTask, FavoriteDirectoriesGetParameter, ListResult<FileShallowInfoEntity>> SearchTask
         {
             get
             {
@@ -44,7 +44,7 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
-        private OneWayTask<DeleteDirectoryViewCounterTask, ListParameter<string>> DeleteTask
+        private OneWayTask<DirectoryViewCounterDeleteTask, ListParameter<string>> DeleteTask
         {
             get
             {
@@ -99,7 +99,7 @@ namespace PicSum.UIComponent.Contents.FileList
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            var param = new GetFavoriteDirectoryParameter
+            var param = new FavoriteDirectoriesGetParameter
             {
                 IsOnlyDirectory = true,
                 Count = FileListPageConfig.FavoriteDirectoryCount

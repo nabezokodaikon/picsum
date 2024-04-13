@@ -17,13 +17,13 @@ namespace PicSum.UIComponent.AddressBar
         #region インスタンス変数
 
         private readonly Image drawImage = Resources.SmallArrowDown;
-        private TwoWayTask<GetDirectoryViewHistoryTask, ListResult<FileShallowInfoEntity>> getDirectoryHistoryTask = null;
+        private TwoWayTask<DirectoryViewHistoryGetTask, ListResult<FileShallowInfoEntity>> getDirectoryHistoryTask = null;
 
         #endregion
 
         #region プロパティ
 
-        private TwoWayTask<GetDirectoryViewHistoryTask, ListResult<FileShallowInfoEntity>> GetDirectoryHistoryTask
+        private TwoWayTask<DirectoryViewHistoryGetTask, ListResult<FileShallowInfoEntity>> GetDirectoryHistoryTask
         {
             get
             {

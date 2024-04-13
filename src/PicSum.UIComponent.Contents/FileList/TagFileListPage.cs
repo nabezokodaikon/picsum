@@ -28,7 +28,7 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             return () =>
             {
-                var task = new TwoWayTask<GetFilesByTagTask, ValueParameter<string>, ListResult<FileShallowInfoEntity>>();
+                var task = new TwoWayTask<FilesGetByTagTask, ValueParameter<string>, ListResult<FileShallowInfoEntity>>();
 
                 task
                 .Callback(e =>
@@ -59,14 +59,14 @@ namespace PicSum.UIComponent.Contents.FileList
         #region インスタンス変数
 
         private readonly TagFileListPageParameter parameter = null;
-        private TwoWayTask<GetFilesByTagTask, ValueParameter<string>, ListResult<FileShallowInfoEntity>> searchTask = null;
-        private OneWayTask<DeleteFileTagTask, UpdateFileTagParameter> deleteTask = null;
+        private TwoWayTask<FilesGetByTagTask, ValueParameter<string>, ListResult<FileShallowInfoEntity>> searchTask = null;
+        private OneWayTask<FileTagDeleteTask, UpdateFileTagParameter> deleteTask = null;
 
         #endregion
 
         #region プライベートプロパティ
 
-        private TwoWayTask<GetFilesByTagTask, ValueParameter<string>, ListResult<FileShallowInfoEntity>> SearchTask
+        private TwoWayTask<FilesGetByTagTask, ValueParameter<string>, ListResult<FileShallowInfoEntity>> SearchTask
         {
             get
             {
@@ -82,7 +82,7 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
-        private OneWayTask<DeleteFileTagTask, UpdateFileTagParameter> DeleteTask
+        private OneWayTask<FileTagDeleteTask, UpdateFileTagParameter> DeleteTask
         {
             get
             {

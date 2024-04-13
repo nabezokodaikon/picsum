@@ -25,7 +25,7 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             return () =>
             {
-                var task = new TwoWayTask<GetFilesByDirectoryTask, ValueParameter<string>, GetDirectoryResult>();
+                var task = new TwoWayTask<FilesGetByDirectoryTask, ValueParameter<string>, DirectoryGetResult>();
 
                 task
                 .Callback(e =>
@@ -57,10 +57,10 @@ namespace PicSum.UIComponent.Contents.FileList
         }
 
         private readonly BookmarkFileListPageParameter paramter = null;
-        private TwoWayTask<GetBookmarkTask, ListResult<FileShallowInfoEntity>> searchTask = null;
-        private OneWayTask<DeleteBookmarkTask, ListParameter<string>> deleteTask = null;
+        private TwoWayTask<BookmarksGetTask, ListResult<FileShallowInfoEntity>> searchTask = null;
+        private OneWayTask<BookmarkDeleteTask, ListParameter<string>> deleteTask = null;
 
-        private TwoWayTask<GetBookmarkTask, ListResult<FileShallowInfoEntity>> SearchTask
+        private TwoWayTask<BookmarksGetTask, ListResult<FileShallowInfoEntity>> SearchTask
         {
             get
             {
@@ -76,7 +76,7 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
-        private OneWayTask<DeleteBookmarkTask, ListParameter<string>> DeleteTask
+        private OneWayTask<BookmarkDeleteTask, ListParameter<string>> DeleteTask
         {
             get
             {

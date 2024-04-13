@@ -93,9 +93,9 @@ namespace PicSum.UIComponent.Contents.FileList
         private Dictionary<string, FilePage> masterFileDictionary = null;
         private List<string> filterFilePathList = null;
         private readonly SortInfo sortInfo = new();
-        private TwoWayTask<GetThumbnailsTask, GetThumbnailParameter, ThumbnailImageResult> getThumbnailsTask = null;
-        private OneWayTask<ExportFileTask, ExportFileParameter> exportFileTask = null;
-        private OneWayTask<AddBookmarkTask, ValueParameter<string>> addBookmarkTask = null;
+        private TwoWayTask<ThumbnailsGetTask, ThumbnailsGetParameter, ThumbnailImageResult> getThumbnailsTask = null;
+        private OneWayTask<FileExportTask, ExportFileParameter> exportFileTask = null;
+        private OneWayTask<BookmarkAddTask, ValueParameter<string>> addBookmarkTask = null;
 
         #endregion
 
@@ -236,7 +236,7 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
-        private TwoWayTask<GetThumbnailsTask, GetThumbnailParameter, ThumbnailImageResult> GetThumbnailsTask
+        private TwoWayTask<ThumbnailsGetTask, ThumbnailsGetParameter, ThumbnailImageResult> GetThumbnailsTask
         {
             get
             {
@@ -252,7 +252,7 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
-        private OneWayTask<ExportFileTask, ExportFileParameter> ExportFileTask
+        private OneWayTask<FileExportTask, ExportFileParameter> ExportFileTask
         {
             get
             {
@@ -267,7 +267,7 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
-        private OneWayTask<AddBookmarkTask, ValueParameter<string>> AddBookmarkTask
+        private OneWayTask<BookmarkAddTask, ValueParameter<string>> AddBookmarkTask
         {
             get
             {
@@ -969,7 +969,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 e.DrawLastItemIndex > -1 &&
                 e.DrawLastItemIndex < this.filterFilePathList.Count)
             {
-                var param = new GetThumbnailParameter
+                var param = new ThumbnailsGetParameter
                 {
                     FilePathList = this.filterFilePathList,
                     FirstIndex = e.DrawFirstItemIndex,

@@ -10,10 +10,10 @@ namespace PicSum.Task.Tasks
     {
         protected override void Execute()
         {
-            var fileInfoLogic = new CleanupFileInfoDBLogic(this);
+            var fileInfoLogic = new FileInfoDBCleanupLogic(this);
             fileInfoLogic.Execute();
 
-            var thumbnailLogic = new CleanupThumbnailDBLogic(this);
+            var thumbnailLogic = new ThumbnailDBCleanupLogic(this);
             thumbnailLogic.Execute();
         }
     }
