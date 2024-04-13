@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace PicSum.UIComponent.Contents.Common
@@ -10,25 +10,19 @@ namespace PicSum.UIComponent.Contents.Common
 
         public SelectedFileChangeEventArgs()
         {
-            this.FilePathList = new List<string>();
+            this.FilePathList = [];
         }
 
         public SelectedFileChangeEventArgs(string filePath)
         {
-            if (filePath == null)
-            {
-                throw new ArgumentNullException(nameof(filePath));
-            }
+            ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
-            this.FilePathList = new List<string>(new string[] { filePath });
+            this.FilePathList = [filePath];
         }
 
         public SelectedFileChangeEventArgs(IList<string> filePathList)
         {
-            if (filePathList == null)
-            {
-                throw new ArgumentNullException(nameof(filePathList));
-            }
+            ArgumentNullException.ThrowIfNull(filePathList, nameof(filePathList));
 
             this.FilePathList = filePathList;
         }

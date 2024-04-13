@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -9,7 +9,7 @@ namespace SWF.UIComponent.TabOperation
     /// </summary>
     internal sealed class PageHistoryManager
     {
-        private readonly List<IPageParameter> list = new List<IPageParameter>();
+        private readonly List<IPageParameter> list = [];
         private int index = -1;
 
         /// <summary>
@@ -41,10 +41,7 @@ namespace SWF.UIComponent.TabOperation
 
         public void Add(IPageParameter param)
         {
-            if (param == null)
-            {
-                throw new ArgumentNullException(nameof(param));
-            }
+            ArgumentNullException.ThrowIfNull(param, nameof(param));
 
             if (this.list.Count == 0)
             {
@@ -69,7 +66,7 @@ namespace SWF.UIComponent.TabOperation
                     // 最初の履歴の場合。
                     var first = this.list.First();
                     this.list.Clear();
-                    this.list.AddRange(new IPageParameter[] { first, param });
+                    this.list.AddRange([first, param]);
                     this.index = 1;
                 }
                 else if (this.list.Count - 1 == this.index)

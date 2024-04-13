@@ -12,14 +12,14 @@ namespace SWF.Common
     [SupportedOSPlatform("windows")]
     internal static class AVIFUtil
     {
-        private static readonly DecoderOptions AVIF_DECODER_OPTIONS = new DecoderOptions()
+        private static readonly DecoderOptions AVIF_DECODER_OPTIONS = new()
         {
             Configuration = new Configuration(
                 new AvifConfigurationModule(),
                 new HeifConfigurationModule())
         };
 
-        private static readonly BmpEncoder AVIF_ENCODER = new SixLabors.ImageSharp.Formats.Bmp.BmpEncoder();
+        private static readonly BmpEncoder AVIF_ENCODER = new();
 
         public static Bitmap ReadImageFile(string filePath)
         {
