@@ -1,3 +1,5 @@
+using SWF.Common;
+
 namespace SWF.UIComponent.TabOperation
 {
     /// <summary>
@@ -8,6 +10,7 @@ namespace SWF.UIComponent.TabOperation
         string Key { get; }
         string PageSources { get; }
         string SourcesKey { get; }
+        SortInfo SortInfo { get; set; }
         PagePanel CreatePage();
     }
 }

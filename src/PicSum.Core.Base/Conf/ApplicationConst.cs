@@ -17,18 +17,6 @@ namespace PicSum.Core.Base.Conf
     }
 
     /// <summary>
-    /// ソート種別ID
-    /// </summary>
-    public enum SortTypeID
-    {
-        Default = 0,
-        FileName = 1,
-        FilePath = 2,
-        UpdateDate = 3,
-        RgistrationDate = 5,
-    }
-
-    /// <summary>
     /// コンテンツ表示種別
     /// </summary>
     public enum PageOpenType

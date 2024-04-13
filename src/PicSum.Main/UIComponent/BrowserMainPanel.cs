@@ -5,7 +5,6 @@ using PicSum.Task.Paramters;
 using PicSum.Task.Results;
 using PicSum.Task.Tasks;
 using PicSum.UIComponent.Contents.Common;
-using PicSum.UIComponent.Contents.FileList;
 using PicSum.UIComponent.Contents.Parameter;
 using PicSum.UIComponent.InfoPanel;
 using SWF.Common;

@@ -1,6 +1,6 @@
 using PicSum.UIComponent.Contents.Common;
-using PicSum.UIComponent.Contents.FileList;
 using PicSum.UIComponent.Contents.ImageViewer;
+using SWF.Common;
 using SWF.UIComponent.TabOperation;
 using System;
 using System.Drawing;
@@ -24,7 +24,7 @@ namespace PicSum.UIComponent.Contents.Parameter
         public string PageTitle { get; private set; }
         public Image PageIcon { get; private set; }
         public string SelectedFilePath { get; set; }
-        public SortInfo SortInfo { get; private set; }
+        public SortInfo SortInfo { get; set; }
 
         public ImageViewerPageParameter(
             string pageSources,

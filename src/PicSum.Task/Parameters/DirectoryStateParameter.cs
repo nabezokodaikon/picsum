@@ -1,5 +1,5 @@
-using PicSum.Core.Base.Conf;
 using PicSum.Core.Task.AsyncTaskV2;
+using SWF.Common;
 
 namespace PicSum.Task.Parameters
 {

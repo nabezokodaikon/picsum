@@ -1,9 +1,9 @@
-using PicSum.Core.Base.Conf;
 using PicSum.Core.Data.DatabaseAccessor;
 using PicSum.Core.Task.AsyncTaskV2;
 using PicSum.Data.DatabaseAccessor.Connection;
 using PicSum.Data.DatabaseAccessor.Sql;
 using PicSum.Task.Parameters;
+using SWF.Common;
 using System;
 using System.Runtime.Versioning;
 

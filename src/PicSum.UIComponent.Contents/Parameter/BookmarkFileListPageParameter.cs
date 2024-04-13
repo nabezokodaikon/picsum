@@ -1,4 +1,5 @@
 using PicSum.UIComponent.Contents.FileList;
+using SWF.Common;
 using SWF.UIComponent.TabOperation;
 using System.Runtime.Versioning;
 
@@ -14,6 +15,7 @@ namespace PicSum.UIComponent.Contents.Parameter
         public string PageSources { get; private set; }
         public string SourcesKey { get; private set; }
         public string SelectedFilePath { get; set; }
+        public SortInfo SortInfo { get; set; }
 
         public BookmarkFileListPageParameter()
         {
@@ -21,6 +23,7 @@ namespace PicSum.UIComponent.Contents.Parameter
             this.SourcesKey = string.Empty;
             this.Key = $"{this.PageSources}ListPage";
             this.SelectedFilePath = string.Empty;
+            this.SortInfo = null;
         }
 
         public PagePanel CreatePage()

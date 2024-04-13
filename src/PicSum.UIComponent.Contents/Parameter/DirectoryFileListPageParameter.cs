@@ -1,4 +1,5 @@
 using PicSum.UIComponent.Contents.FileList;
+using SWF.Common;
 using SWF.UIComponent.TabOperation;
 using System;
 using System.Runtime.Versioning;
@@ -19,6 +20,7 @@ namespace PicSum.UIComponent.Contents.Parameter
         public string Key { get; private set; }
         public string DirectoryPath { get; private set; }
         public string SelectedFilePath { get; private set; }
+        public SortInfo SortInfo { get; set; }
 
         public DirectoryFileListPageParameter(string directoryPath, string selectedFilePath)
         {
@@ -27,6 +29,7 @@ namespace PicSum.UIComponent.Contents.Parameter
             this.Key = $"{this.PageSources}ListPage: {this.SourcesKey}";
             this.DirectoryPath = directoryPath ?? throw new ArgumentNullException(nameof(directoryPath));
             this.SelectedFilePath = selectedFilePath;
+            this.SortInfo = null;
         }
 
         public DirectoryFileListPageParameter(string directoryPath)
@@ -36,6 +39,7 @@ namespace PicSum.UIComponent.Contents.Parameter
             this.Key = $"{this.PageSources}ListPage: {this.SourcesKey}";
             this.DirectoryPath = directoryPath ?? throw new ArgumentNullException(nameof(directoryPath));
             this.SelectedFilePath = string.Empty;
+            this.SortInfo = null;
         }
 
         public PagePanel CreatePage()

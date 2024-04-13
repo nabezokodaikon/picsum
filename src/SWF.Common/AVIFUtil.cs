@@ -3,7 +3,6 @@ using HeyRed.ImageSharp.Heif.Formats.Heif;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats;
 using SixLabors.ImageSharp.Formats.Bmp;
-using SixLabors.ImageSharp.PixelFormats;
 using System.Drawing;
 using System.IO;
 using System.Runtime.Versioning;

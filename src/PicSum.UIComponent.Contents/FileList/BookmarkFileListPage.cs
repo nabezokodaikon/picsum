@@ -180,7 +180,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private void SearchTask_Callback(ListResult<FileShallowInfoEntity> result)
         {
-            base.SetFiles(result, this.paramter.SelectedFilePath, PicSum.Core.Base.Conf.SortTypeID.RgistrationDate, false);
+            base.SetFiles(result, this.paramter.SelectedFilePath, SortTypeID.RgistrationDate, false);
 
             if (string.IsNullOrEmpty(this.paramter.SelectedFilePath))
             {
