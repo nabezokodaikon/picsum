@@ -16,13 +16,21 @@ It has the following features.
 * This application is intended only for viewing image files and does not have file editing functions.
 
 ## How to build
-1. Install `.Net 4.8.1`.
+1. Install `.Net 8.0`.
 1. Install `Visual Studio 2022`.
 1. Run the `build_release.bat` file.
 
 ## How to start
 Run `picsum.exe` in the `bin_release` directory created by the build.
+### Command line arguments
+`--home`
+
+Open the home page at startup.
+
+`--cleanup`
+
+Clean up the database.
 
 ## Screenshot
-![Browsing View](./screenshot/screenshot-001.png)
-![Image display](./screenshot/screenshot-002.png)
+![File list page](./screenshot/screenshot-001.png)
+![Image view page](./screenshot/screenshot-002.png)
