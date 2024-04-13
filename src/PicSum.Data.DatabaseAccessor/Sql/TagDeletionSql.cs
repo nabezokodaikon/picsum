@@ -1,4 +1,4 @@
-﻿using PicSum.Core.Data.DatabaseAccessor;
+using PicSum.Core.Data.DatabaseAccessor;
 using System;
 using System.Data;
 
@@ -7,7 +7,7 @@ namespace PicSum.Data.DatabaseAccessor.Sql
     /// <summary>
     /// タグTを、ファイルパスとタグを指定して削除します。
     /// </summary>
-    public sealed class TagDeletionByFileAndTagSql
+    public sealed class TagDeletionSql
         : SqlBase
     {
         private const string SQL_TEXT =
@@ -20,7 +20,7 @@ DELETE FROM t_tag
    AND tag = :tag
 ";
 
-        public TagDeletionByFileAndTagSql(string filePath, string tag)
+        public TagDeletionSql(string filePath, string tag)
             : base(SQL_TEXT)
         {
             if (filePath == null)

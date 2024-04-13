@@ -21,7 +21,7 @@ namespace PicSum.Task.Logics
         {
             ArgumentException.ThrowIfNullOrEmpty(directoryPath, nameof(directoryPath));
 
-            var sql = new ReadDirectoryStateByDirectorySql(directoryPath);
+            var sql = new DirectoryStateReadSql(directoryPath);
             var dto = DatabaseManager<FileInfoConnection>.ReadLine<DirectoryStateDto>(sql);
             if (dto != null)
             {

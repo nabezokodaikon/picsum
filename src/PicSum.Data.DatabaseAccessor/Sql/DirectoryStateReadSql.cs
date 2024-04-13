@@ -7,7 +7,7 @@ namespace PicSum.Data.DatabaseAccessor.Sql
     /// <summary>
     /// フォルダを指定してフォルダ状態を取得します。
     /// </summary>
-    public sealed class ReadDirectoryStateByDirectorySql
+    public sealed class DirectoryStateReadSql
         : SqlBase<DirectoryStateDto>
     {
         const string SQL_TEXT =
@@ -22,7 +22,7 @@ SELECT mf1.file_path AS directory_path
  WHERE mf1.file_path = :directory_path
 ";
 
-        public ReadDirectoryStateByDirectorySql(string directoryPath)
+        public DirectoryStateReadSql(string directoryPath)
             : base(SQL_TEXT)
         {
             ArgumentException.ThrowIfNullOrEmpty(directoryPath, nameof(directoryPath));

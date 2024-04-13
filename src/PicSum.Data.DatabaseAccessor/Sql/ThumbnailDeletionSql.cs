@@ -6,7 +6,7 @@ namespace PicSum.Data.DatabaseAccessor.Sql
     /// <summary>
     /// サムネイルT削除
     /// </summary>
-    public sealed class ThumbnailDeletionByFileSql
+    public sealed class ThumbnailDeletionSql
         : SqlBase
     {
         private const string SQL_TEXT =
@@ -15,7 +15,7 @@ DELETE FROM t_thumbnail
  WHERE file_path = :file_path
 ";
 
-        public ThumbnailDeletionByFileSql(string filePath)
+        public ThumbnailDeletionSql(string filePath)
             : base(SQL_TEXT)
         {
             if (filePath == null)

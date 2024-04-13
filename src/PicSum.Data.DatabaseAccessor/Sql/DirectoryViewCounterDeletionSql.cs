@@ -3,7 +3,7 @@ using System;
 
 namespace PicSum.Data.DatabaseAccessor.Sql
 {
-    public sealed class DirectoryViewCounterDeletionByFileSql
+    public sealed class DirectoryViewCounterDeletionSql
         : SqlBase
     {
         private const string SQL_TEXT =
@@ -15,7 +15,7 @@ DELETE FROM t_directory_view_counter
                  )
 ";
 
-        public DirectoryViewCounterDeletionByFileSql(string directoryPath)
+        public DirectoryViewCounterDeletionSql(string directoryPath)
             : base(SQL_TEXT)
         {
             if (directoryPath == null)
