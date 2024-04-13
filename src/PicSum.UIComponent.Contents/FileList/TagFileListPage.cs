@@ -128,6 +128,7 @@ namespace PicSum.UIComponent.Contents.FileList
             if (disposing)
             {
                 this.parameter.SelectedFilePath = base.SelectedFilePath;
+                this.parameter.SortInfo = base.SortInfo;
 
                 if (this.searchTask != null)
                 {
@@ -202,7 +203,18 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private void SearchTask_Callback(ListResult<FileShallowInfoEntity> e)
         {
-            base.SetFiles(e, this.parameter.SelectedFilePath, SortTypeID.RgistrationDate, false);
+            if (this.parameter.SortInfo == null)
+            {
+                base.SetFiles(e, this.parameter.SelectedFilePath, SortTypeID.RgistrationDate, false);
+            }
+            else
+            {
+                base.SetFiles(
+                    e,
+                    this.parameter.SelectedFilePath,
+                    this.parameter.SortInfo.ActiveSortType,
+                    this.parameter.SortInfo.IsAscending(this.parameter.SortInfo.ActiveSortType));
+            }
         }
 
         #endregion

@@ -91,7 +91,6 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private Dictionary<string, FileEntity> masterFileDictionary = null;
         private List<string> filterFilePathList = null;
-        private readonly SortInfo sortInfo = new();
         private TwoWayTask<ThumbnailsGetTask, ThumbnailsGetParameter, ThumbnailImageResult> getThumbnailsTask = null;
         private OneWayTask<FileExportTask, ExportFileParameter> exportFileTask = null;
         private OneWayTask<BookmarkAddTask, ValueParameter<string>> addBookmarkTask = null;
@@ -106,11 +105,13 @@ namespace PicSum.UIComponent.Contents.FileList
 
         #region 継承プロパティ
 
+        protected SortInfo SortInfo { get; private set; } = new();
+
         protected bool IsAscending
         {
             get
             {
-                return this.sortInfo.IsAscending(this.sortInfo.ActiveSortType);
+                return this.SortInfo.IsAscending(this.SortInfo.ActiveSortType);
             }
         }
 
@@ -118,7 +119,7 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             get
             {
-                return this.sortInfo.ActiveSortType;
+                return this.SortInfo.ActiveSortType;
             }
         }
 
@@ -386,7 +387,7 @@ namespace PicSum.UIComponent.Contents.FileList
             }
 
             this.SelectedFilePath = selectedFilePath;
-            this.sortInfo.SetSortType(sortTypeID, isAscending);
+            this.SortInfo.SetSortType(sortTypeID, isAscending);
 
             this.SetSort();
             this.SetFilter();
@@ -515,11 +516,11 @@ namespace PicSum.UIComponent.Contents.FileList
             this.sortFileUpdateDateToolStripButton.Image = null;
             this.sortFileRgistrationDateToolStripButton.Image = null;
 
-            var sortButton = this.GetSortToolStripButton(this.sortInfo.ActiveSortType);
+            var sortButton = this.GetSortToolStripButton(this.SortInfo.ActiveSortType);
             if (sortButton != null)
             {
-                var isAscending = this.sortInfo.IsAscending(this.sortInfo.ActiveSortType);
-                sortButton.Image = this.sortInfo.GetSortDirectionImage(isAscending);
+                var isAscending = this.SortInfo.IsAscending(this.SortInfo.ActiveSortType);
+                sortButton.Image = this.SortInfo.GetSortDirectionImage(isAscending);
             }
         }
 
@@ -563,8 +564,8 @@ namespace PicSum.UIComponent.Contents.FileList
                 }
             }
 
-            var isAscending = this.sortInfo.IsAscending(this.sortInfo.ActiveSortType);
-            switch (this.sortInfo.ActiveSortType)
+            var isAscending = this.SortInfo.IsAscending(this.SortInfo.ActiveSortType);
+            switch (this.SortInfo.ActiveSortType)
             {
                 case SortTypeID.FileName:
                     filterList.Sort((x, y) =>
@@ -875,32 +876,32 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private void SortFileNameToolStripButton_Click(object sender, EventArgs e)
         {
-            this.sortInfo.ChangeSortDirection(SortTypeID.FileName);
-            this.sortInfo.ActiveSortType = SortTypeID.FileName;
+            this.SortInfo.ChangeSortDirection(SortTypeID.FileName);
+            this.SortInfo.ActiveSortType = SortTypeID.FileName;
             this.SetSort();
             this.SetFilter();
         }
 
         private void SortFilePathToolStripButton_Click(object sender, EventArgs e)
         {
-            this.sortInfo.ChangeSortDirection(SortTypeID.FilePath);
-            this.sortInfo.ActiveSortType = SortTypeID.FilePath;
+            this.SortInfo.ChangeSortDirection(SortTypeID.FilePath);
+            this.SortInfo.ActiveSortType = SortTypeID.FilePath;
             this.SetSort();
             this.SetFilter();
         }
 
         private void SortFileUpdateDateToolStripButton_Click(object sender, EventArgs e)
         {
-            this.sortInfo.ChangeSortDirection(SortTypeID.UpdateDate);
-            this.sortInfo.ActiveSortType = SortTypeID.UpdateDate;
+            this.SortInfo.ChangeSortDirection(SortTypeID.UpdateDate);
+            this.SortInfo.ActiveSortType = SortTypeID.UpdateDate;
             this.SetSort();
             this.SetFilter();
         }
 
         private void SortFilerRgistrationDateToolStripButton_Click(object sender, EventArgs e)
         {
-            this.sortInfo.ChangeSortDirection(SortTypeID.RgistrationDate);
-            this.sortInfo.ActiveSortType = SortTypeID.RgistrationDate;
+            this.SortInfo.ChangeSortDirection(SortTypeID.RgistrationDate);
+            this.SortInfo.ActiveSortType = SortTypeID.RgistrationDate;
             this.SetSort();
             this.SetFilter();
         }
@@ -1015,7 +1016,7 @@ namespace PicSum.UIComponent.Contents.FileList
                     this.Parameter.SourcesKey,
                     this.GetImageFilesGetAction,
                     filePath,
-                    this.sortInfo,
+                    this.SortInfo,
                     this.Title,
                     this.Icon);
                 this.OnOpenPage(new BrowserPageEventArgs(PageOpenType.AddTab, param));
@@ -1043,7 +1044,7 @@ namespace PicSum.UIComponent.Contents.FileList
                     this.Parameter.SourcesKey,
                     this.GetImageFilesGetAction,
                     filePath,
-                    this.sortInfo,
+                    this.SortInfo,
                     this.Title,
                     this.Icon);
                 this.OnOpenPage(new BrowserPageEventArgs(PageOpenType.OverlapTab, param));
@@ -1075,7 +1076,7 @@ namespace PicSum.UIComponent.Contents.FileList
                     this.Parameter.SourcesKey,
                     this.GetImageFilesGetAction,
                     filePath,
-                    this.sortInfo,
+                    this.SortInfo,
                     this.Title,
                     this.Icon);
                 this.OnOpenPage(new BrowserPageEventArgs(PageOpenType.OverlapTab, param));
@@ -1175,7 +1176,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 this.Parameter.SourcesKey,
                 this.GetImageFilesGetAction,
                 e.FilePath,
-                this.sortInfo,
+                this.SortInfo,
                 this.Title,
                 this.Icon);
             this.OnOpenPage(new BrowserPageEventArgs(PageOpenType.OverlapTab, param));
@@ -1188,7 +1189,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 this.Parameter.SourcesKey,
                 this.GetImageFilesGetAction,
                 e.FilePath,
-                this.sortInfo,
+                this.SortInfo,
                 this.Title,
                 this.Icon);
             this.OnOpenPage(new BrowserPageEventArgs(PageOpenType.AddTab, param));
@@ -1201,7 +1202,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 this.Parameter.SourcesKey,
                 this.GetImageFilesGetAction,
                 e.FilePath,
-                this.sortInfo,
+                this.SortInfo,
                 this.Title,
                 this.Icon);
             this.OnOpenPage(new BrowserPageEventArgs(PageOpenType.NewWindow, param));

@@ -56,7 +56,7 @@ namespace PicSum.UIComponent.Contents.FileList
             };
         }
 
-        private readonly BookmarkFileListPageParameter paramter = null;
+        private readonly BookmarkFileListPageParameter parameter = null;
         private TwoWayTask<BookmarksGetTask, ListResult<FileShallowInfoEntity>> searchTask = null;
         private OneWayTask<BookmarkDeleteTask, ListParameter<string>> deleteTask = null;
 
@@ -94,7 +94,7 @@ namespace PicSum.UIComponent.Contents.FileList
         public BookmarkFileListPage(BookmarkFileListPageParameter parameter)
             : base(parameter)
         {
-            this.paramter = parameter;
+            this.parameter = parameter;
             this.InitializeComponent();
         }
 
@@ -108,7 +108,8 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             if (disposing)
             {
-                this.paramter.SelectedFilePath = base.SelectedFilePath;
+                this.parameter.SelectedFilePath = base.SelectedFilePath;
+                this.parameter.SortInfo = base.SortInfo;
 
                 if (this.searchTask != null)
                 {
@@ -179,12 +180,18 @@ namespace PicSum.UIComponent.Contents.FileList
         }
 
         private void SearchTask_Callback(ListResult<FileShallowInfoEntity> result)
-        {
-            base.SetFiles(result, this.paramter.SelectedFilePath, SortTypeID.RgistrationDate, false);
-
-            if (string.IsNullOrEmpty(this.paramter.SelectedFilePath))
+        {           
+            if (this.parameter.SortInfo == null)
             {
-                base.OnSelectedFileChanged(new SelectedFileChangeEventArgs());
+                base.SetFiles(result, this.parameter.SelectedFilePath, SortTypeID.RgistrationDate, false);
+            }
+            else
+            {
+                base.SetFiles(
+                    result,
+                    this.parameter.SelectedFilePath,
+                    this.parameter.SortInfo.ActiveSortType,
+                    this.parameter.SortInfo.IsAscending(this.parameter.SortInfo.ActiveSortType));
             }
         }
     }
