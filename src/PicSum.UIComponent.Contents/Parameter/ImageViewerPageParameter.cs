@@ -20,7 +20,7 @@ namespace PicSum.UIComponent.Contents.Parameter
         public string PageSources { get; private set; }
         public string SourcesKey { get; private set; }
         public string Key { get; private set; }
-        public Func<ImageViewerPageParameter, Action> GetImageFilesAction { get; private set; }
+        public Func<ImageViewerPageParameter, Action> ImageFilesGetAction { get; private set; }
         public string PageTitle { get; private set; }
         public Image PageIcon { get; private set; }
         public string SelectedFilePath { get; set; }
@@ -29,7 +29,7 @@ namespace PicSum.UIComponent.Contents.Parameter
         public ImageViewerPageParameter(
             string pageSources,
             string sourcesKey,
-            Func<ImageViewerPageParameter, Action> getImageFilesAction,
+            Func<ImageViewerPageParameter, Action> imageFilesGetAction,
             string selectedFilePath,
             SortInfo sortInfo,
             string pageTitle,
@@ -38,10 +38,10 @@ namespace PicSum.UIComponent.Contents.Parameter
             this.PageSources = pageSources ?? throw new ArgumentNullException(nameof(pageSources));
             this.SourcesKey = sourcesKey ?? throw new ArgumentNullException(nameof(sourcesKey));
             this.Key = $"{this.PageSources}ImageViewerPage: {this.SourcesKey}";
-            this.GetImageFilesAction = getImageFilesAction ?? throw new ArgumentNullException(nameof(getImageFilesAction));
+            this.ImageFilesGetAction = imageFilesGetAction ?? throw new ArgumentNullException(nameof(imageFilesGetAction));
             this.PageTitle = pageTitle ?? throw new ArgumentNullException(nameof(pageTitle));
             this.PageIcon = pageIcon ?? throw new ArgumentNullException(nameof(pageIcon));
-            this.SortInfo = sortInfo ?? throw new ArgumentNullException(nameof (sortInfo));
+            this.SortInfo = sortInfo ?? throw new ArgumentNullException(nameof(sortInfo));
             this.SelectedFilePath = selectedFilePath ?? throw new ArgumentNullException(nameof(selectedFilePath));
         }
 

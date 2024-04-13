@@ -60,9 +60,9 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private readonly DirectoryFileListPageParameter parameter = null;
         private TwoWayTask<FilesGetByDirectoryTask, ValueParameter<string>, DirectoryGetResult> searchTask = null;
-        private OneWayTask<DirectoryStateUpdateTask, DirectoryStateParameter> updateDirectoryStateTask = null;
-        private OneWayTask<DirectoryViewHistoryAddTask, ValueParameter<string>> addDirectoryHistoryTask = null;
-        private TwoWayTask<NextDirectoryGetTask, NextDirectoryGetParameter<string>, ValueResult<string>> getNextDirectoryTask = null;
+        private OneWayTask<DirectoryStateUpdateTask, DirectoryStateParameter> directoryStateUpdateTask = null;
+        private OneWayTask<DirectoryViewHistoryAddTask, ValueParameter<string>> directoryHistoryaddTask = null;
+        private TwoWayTask<NextDirectoryGetTask, NextDirectoryGetParameter<string>, ValueResult<string>> nextDirectoryGetTask = null;
 
         #endregion
 
@@ -88,47 +88,47 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
-        private OneWayTask<DirectoryStateUpdateTask, DirectoryStateParameter> UpdateDirectoryStateTask
+        private OneWayTask<DirectoryStateUpdateTask, DirectoryStateParameter> DirectoryStateUpdateTask
         {
             get
             {
-                if (this.updateDirectoryStateTask == null)
+                if (this.directoryStateUpdateTask == null)
                 {
-                    this.updateDirectoryStateTask = new();
-                    this.updateDirectoryStateTask.StartThread();
+                    this.directoryStateUpdateTask = new();
+                    this.directoryStateUpdateTask.StartThread();
                 }
 
-                return this.updateDirectoryStateTask;
+                return this.directoryStateUpdateTask;
             }
         }
 
-        private OneWayTask<DirectoryViewHistoryAddTask, ValueParameter<string>> AddDirectoryHistoryTask
+        private OneWayTask<DirectoryViewHistoryAddTask, ValueParameter<string>> DirectoryHistoryAddTask
         {
             get
             {
-                if (this.addDirectoryHistoryTask == null)
+                if (this.directoryHistoryaddTask == null)
                 {
-                    this.addDirectoryHistoryTask = new();
-                    this.addDirectoryHistoryTask.StartThread();
+                    this.directoryHistoryaddTask = new();
+                    this.directoryHistoryaddTask.StartThread();
                 }
 
-                return this.addDirectoryHistoryTask;
+                return this.directoryHistoryaddTask;
             }
         }
 
-        private TwoWayTask<NextDirectoryGetTask, NextDirectoryGetParameter<string>, ValueResult<string>> GetNextDirectoryTask
+        private TwoWayTask<NextDirectoryGetTask, NextDirectoryGetParameter<string>, ValueResult<string>> NextDirectoryGetTask
         {
             get
             {
-                if (this.getNextDirectoryTask == null)
+                if (this.nextDirectoryGetTask == null)
                 {
-                    this.getNextDirectoryTask = new();
-                    this.getNextDirectoryTask
+                    this.nextDirectoryGetTask = new();
+                    this.nextDirectoryGetTask
                         .Callback(this.GetNextDirectoryProcess_Callback)
                         .StartThread();
                 }
 
-                return this.getNextDirectoryTask;
+                return this.nextDirectoryGetTask;
             }
         }
 
@@ -169,22 +169,22 @@ namespace PicSum.UIComponent.Contents.FileList
                     this.searchTask = null;
                 }
 
-                if (this.updateDirectoryStateTask != null)
+                if (this.directoryStateUpdateTask != null)
                 {
-                    this.updateDirectoryStateTask.Dispose();
-                    this.updateDirectoryStateTask = null;
+                    this.directoryStateUpdateTask.Dispose();
+                    this.directoryStateUpdateTask = null;
                 }
 
-                if (this.addDirectoryHistoryTask != null)
+                if (this.directoryHistoryaddTask != null)
                 {
-                    this.addDirectoryHistoryTask.Dispose();
-                    this.addDirectoryHistoryTask = null;
+                    this.directoryHistoryaddTask.Dispose();
+                    this.directoryHistoryaddTask = null;
                 }
 
-                if (this.getNextDirectoryTask != null)
+                if (this.nextDirectoryGetTask != null)
                 {
-                    this.getNextDirectoryTask.Dispose();
-                    this.getNextDirectoryTask = null;
+                    this.nextDirectoryGetTask.Dispose();
+                    this.nextDirectoryGetTask = null;
                 }
             }
 
@@ -223,7 +223,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 IsNext = false,
             };
             param.CurrentParameter.Value = this.parameter.DirectoryPath;
-            this.GetNextDirectoryTask.StartTask(param);
+            this.NextDirectoryGetTask.StartTask(param);
         }
 
         protected override void OnMoveNextButtonClick(EventArgs e)
@@ -239,7 +239,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 CurrentParameter = new ValueEntity<string>()
             };
             param.CurrentParameter.Value = this.parameter.DirectoryPath;
-            this.GetNextDirectoryTask.StartTask(param);
+            this.NextDirectoryGetTask.StartTask(param);
         }
 
         protected override Action GetImageFilesGetAction(ImageViewerPageParameter param)
@@ -312,7 +312,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
             param.SelectedFilePath = base.SelectedFilePath;
 
-            this.UpdateDirectoryStateTask.StartTask(param);
+            this.DirectoryStateUpdateTask.StartTask(param);
         }
 
         #endregion
@@ -352,7 +352,7 @@ namespace PicSum.UIComponent.Contents.FileList
             {
                 Value = e.DirectoryPath
             };
-            this.AddDirectoryHistoryTask.StartTask(param);
+            this.DirectoryHistoryAddTask.StartTask(param);
         }
 
         private void GetNextDirectoryProcess_Callback(ValueResult<string> e)
