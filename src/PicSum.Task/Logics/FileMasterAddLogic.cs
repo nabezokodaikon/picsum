@@ -22,7 +22,7 @@ namespace PicSum.Task.Logics
         {
             ArgumentNullException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
-            var sql = new CreationFileSql(filePath);
+            var sql = new FileCreationSql(filePath);
             DatabaseManager<FileInfoConnection>.Update(sql);
         }
     }

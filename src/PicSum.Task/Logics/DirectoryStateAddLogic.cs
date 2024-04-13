@@ -29,14 +29,14 @@ namespace PicSum.Task.Logics
                 throw new ArgumentException("選択ファイルパスがNULLです。", nameof(directoryState));
             }
 
-            CreationDirectoryStateSql sql;
+            DirectoryStateCreationSql sql;
             if (string.IsNullOrEmpty(directoryState.SelectedFilePath))
             {
-                sql = new CreationDirectoryStateSql(directoryState.DirectoryPath, (int)directoryState.SortTypeID, directoryState.IsAscending);
+                sql = new DirectoryStateCreationSql(directoryState.DirectoryPath, (int)directoryState.SortTypeID, directoryState.IsAscending);
             }
             else
             {
-                sql = new CreationDirectoryStateSql(directoryState.DirectoryPath, (int)directoryState.SortTypeID, directoryState.IsAscending, directoryState.SelectedFilePath);
+                sql = new DirectoryStateCreationSql(directoryState.DirectoryPath, (int)directoryState.SortTypeID, directoryState.IsAscending, directoryState.SelectedFilePath);
             }
 
             return DatabaseManager<FileInfoConnection>.Update(sql);

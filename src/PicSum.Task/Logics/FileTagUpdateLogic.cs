@@ -27,7 +27,7 @@ namespace PicSum.Task.Logics
                 throw new ArgumentNullException(nameof(tag));
             }
 
-            var sql = new UpdateTagSql(filePath, tag, registrationDate);
+            var sql = new TagUpdateSql(filePath, tag, registrationDate);
             return DatabaseManager<FileInfoConnection>.Update(sql);
         }
     }

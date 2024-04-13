@@ -24,14 +24,14 @@ namespace PicSum.Task.Logics
 
         private void Cleanup()
         {
-            var readSql = new ReadAllThumbnailSql();
+            var readSql = new AllThumbnailsReadSql();
             var fileList = DatabaseManager<ThumbnailConnection>
                 .ReadList(readSql);
             foreach (var file in fileList)
             {
                 if (!FileUtil.IsExists(file.FilePath))
                 {
-                    var cleanupSql = new CleanupThumbnailSql(file.FilePath);
+                    var cleanupSql = new ThumbnailDBCleanupSql(file.FilePath);
                     DatabaseManager<ThumbnailConnection>.Update(cleanupSql);
                 }
 
@@ -40,7 +40,7 @@ namespace PicSum.Task.Logics
 
         private void Vacuum()
         {
-            var cleanupSql = new VacuumThumbnailSql();
+            var cleanupSql = new ThumbnailDBVacuumSql();
             DatabaseManager<ThumbnailConnection>.ReadLine(cleanupSql);
         }
     }

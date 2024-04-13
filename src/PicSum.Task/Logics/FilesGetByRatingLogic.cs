@@ -18,7 +18,7 @@ namespace PicSum.Task.Logics
     {
         public IList<FileByRatingDto> Execute(int rating)
         {
-            var sql = new ReadFileByRatingSql(rating);
+            var sql = new FileReadByRatingSql(rating);
             var dtoList = DatabaseManager<FileInfoConnection>.ReadList<FileByRatingDto>(sql);
 
             var list = new List<FileByRatingDto>();

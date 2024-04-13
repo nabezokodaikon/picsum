@@ -18,7 +18,7 @@ namespace PicSum.Task.Logics
                 throw new ArgumentNullException(nameof(filePath));
             }
 
-            var sql = new DeletionBookmarkSql(filePath);
+            var sql = new BookmarkDeletionSql(filePath);
 
             return DatabaseManager<FileInfoConnection>.Update(sql);
         }

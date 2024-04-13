@@ -26,7 +26,7 @@ namespace PicSum.Task.Logics
                 throw new ArgumentNullException(nameof(tag));
             }
 
-            var sql = new DeletionTagByFileAndTagSql(filePath, tag);
+            var sql = new TagDeletionByFileAndTagSql(filePath, tag);
             DatabaseManager<FileInfoConnection>.Update(sql);
         }
     }

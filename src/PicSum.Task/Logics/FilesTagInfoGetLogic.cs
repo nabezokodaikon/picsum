@@ -21,7 +21,7 @@ namespace PicSum.Task.Logics
         {
             ArgumentNullException.ThrowIfNull(filePathList, nameof(filePathList));
 
-            var sql = new ReadFileTagSql(filePathList);
+            var sql = new FileTagReadSql(filePathList);
             var dtoList = DatabaseManager<FileInfoConnection>.ReadList<FileTagDto>(sql);
 
             var infoList = new ListEntity<FileTagInfoEntity>();

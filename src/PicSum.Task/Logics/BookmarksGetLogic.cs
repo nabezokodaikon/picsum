@@ -15,7 +15,7 @@ namespace PicSum.Task.Logics
     {
         public IList<BookmarkDto> Execute()
         {
-            var sql = new ReadBookmarkSql();
+            var sql = new BookmarksReadSql();
             var dtoList = DatabaseManager<FileInfoConnection>.ReadList<BookmarkDto>(sql);
 
             var list = new List<BookmarkDto>();

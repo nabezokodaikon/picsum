@@ -16,7 +16,7 @@ namespace PicSum.Task.Logics
     {
         public IList<string> Execute()
         {
-            var sql = new ReadFavoriteDirectorySql();
+            var sql = new FavoriteDirectoriesReadSql();
             var dtoList = DatabaseManager<FileInfoConnection>.ReadList<SingleValueDto<string>>(sql);
 
             var dirList = dtoList

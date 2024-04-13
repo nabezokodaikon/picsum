@@ -118,7 +118,7 @@ namespace PicSum.Task.Logics
 
             this.CheckCancel();
 
-            var sql = new ReadFileInfoSql(info.FilePath);
+            var sql = new FileInfoReadSql(info.FilePath);
             var dto = DatabaseManager<FileInfoConnection>.ReadLine<FileInfoDto>(sql);
             if (dto != null)
             {

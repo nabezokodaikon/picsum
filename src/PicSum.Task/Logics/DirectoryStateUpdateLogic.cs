@@ -35,14 +35,14 @@ namespace PicSum.Task.Logics
                 throw new ArgumentException("ソートIDがデフォルトです。", nameof(directoryState));
             }
 
-            UpdateDirectoryStateSql sql;
+            DirectoryStateUpdateSql sql;
             if (string.IsNullOrEmpty(directoryState.SelectedFilePath))
             {
-                sql = new UpdateDirectoryStateSql(directoryState.DirectoryPath, (int)directoryState.SortTypeID, directoryState.IsAscending);
+                sql = new DirectoryStateUpdateSql(directoryState.DirectoryPath, (int)directoryState.SortTypeID, directoryState.IsAscending);
             }
             else
             {
-                sql = new UpdateDirectoryStateSql(directoryState.DirectoryPath, (int)directoryState.SortTypeID, directoryState.IsAscending, directoryState.SelectedFilePath);
+                sql = new DirectoryStateUpdateSql(directoryState.DirectoryPath, (int)directoryState.SortTypeID, directoryState.IsAscending, directoryState.SelectedFilePath);
             }
 
             return DatabaseManager<FileInfoConnection>.Update(sql);

@@ -15,7 +15,7 @@ namespace PicSum.Task.Logics
         {
             ArgumentException.ThrowIfNullOrEmpty(directoryPath, nameof(directoryPath));
 
-            var sql = new IncrementDirectoryViewCounterSql(directoryPath);
+            var sql = new DirectoryViewCounterIncrementSql(directoryPath);
             return DatabaseManager<FileInfoConnection>.Update(sql);
         }
     }

@@ -25,7 +25,7 @@ namespace PicSum.Task.Logics
                 throw new ArgumentNullException(nameof(directoryPath));
             }
 
-            var sql = new DeletionDirectoryViewCounterByFileSql(directoryPath);
+            var sql = new DirectoryViewCounterDeletionByFileSql(directoryPath);
             DatabaseManager<FileInfoConnection>.Update(sql);
         }
     }

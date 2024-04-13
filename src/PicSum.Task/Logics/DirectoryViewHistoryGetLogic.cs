@@ -19,7 +19,7 @@ namespace PicSum.Task.Logics
     {
         public IList<string> Execute()
         {
-            var sql = new ReadDirectoryViewHistorySql(100);
+            var sql = new DirectoryViewHistoryReadSql(100);
             var dtoList = DatabaseManager<FileInfoConnection>.ReadList<DirectoryViewHistoryDto>(sql);
 
             var directoryPathList = new List<string>();

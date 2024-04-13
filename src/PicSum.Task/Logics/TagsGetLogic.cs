@@ -19,7 +19,7 @@ namespace PicSum.Task.Logics
     {
         public IList<string> Execute()
         {
-            var sql = new ReadAllTagSql();
+            var sql = new AllTagsReadSql();
             var dtoList = DatabaseManager<FileInfoConnection>.ReadList<TagInfoDto>(sql);
 
             var tagList = dtoList

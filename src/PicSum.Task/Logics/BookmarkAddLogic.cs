@@ -15,7 +15,7 @@ namespace PicSum.Tasks.Logics
         {
             ArgumentNullException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
-            var sql = new CreationBookmarkSql(filePath, registrationDate);
+            var sql = new BookmarkCreationSql(filePath, registrationDate);
             return DatabaseManager<FileInfoConnection>.Update(sql);
         }
     }

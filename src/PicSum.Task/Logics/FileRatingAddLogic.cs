@@ -23,7 +23,7 @@ namespace PicSum.Task.Logics
                 throw new ArgumentException("0未満は評価値として無効です。", nameof(ratingValue));
             }
 
-            var sql = new CreationRatingSql(filePath, ratingValue, registrationDate);
+            var sql = new RatingCreationSql(filePath, ratingValue, registrationDate);
             return DatabaseManager<FileInfoConnection>.Update(sql);
         }
     }

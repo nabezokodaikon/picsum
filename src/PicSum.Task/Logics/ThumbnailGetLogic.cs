@@ -344,7 +344,7 @@ namespace PicSum.Task.Logics
         {
             const int BUFFER_FILE_MAX_SIZE = 1000 * 1000 * 100;
 
-            var id = (int)DatabaseManager<ThumbnailConnection>.ReadValue<long>(new ReadThumbnailIDSql());
+            var id = (int)DatabaseManager<ThumbnailConnection>.ReadValue<long>(new ThumbnailIDReadSql());
             var thumbFile = this.GetThumbnailBufferFilePath(id);
             if (!File.Exists(thumbFile))
             {
@@ -360,8 +360,8 @@ namespace PicSum.Task.Logics
                 }
                 else
                 {
-                    DatabaseManager<ThumbnailConnection>.Update(new UpdateThumbnailIDSql());
-                    var newID = (int)DatabaseManager<ThumbnailConnection>.ReadValue<long>(new ReadThumbnailIDSql());
+                    DatabaseManager<ThumbnailConnection>.Update(new ThumbnailIDUpdateSql());
+                    var newID = (int)DatabaseManager<ThumbnailConnection>.ReadValue<long>(new ThumbnailIDReadSql());
                     return newID;
                 }
             }
@@ -392,7 +392,7 @@ namespace PicSum.Task.Logics
 
         private ThumbnailBufferEntity GetDBCash(string filePath)
         {
-            var sql = new ReadThumbnailByFileSql(filePath);
+            var sql = new ThumbnailReadByFileSql(filePath);
             var dto = DatabaseManager<ThumbnailConnection>.ReadLine<ThumbnailDto>(sql);
             if (dto != null)
             {
@@ -428,7 +428,7 @@ namespace PicSum.Task.Logics
                     var thumbID = this.GetCurrentThumbnailBufferID();
                     var thumbStartPoint = this.AddThumbnailBuffer(thumbID, thumbBin);
 
-                    var sql = new CreationThumbnailSql(
+                    var sql = new ThumbnailCreationSql(
                         filePath, thumbID, thumbStartPoint, thumbBin.Length, thumbWidth, thumbHeight, srcImg.Width, srcImg.Height, fileUpdateDate);
                     DatabaseManager<ThumbnailConnection>.Update(sql);
 
@@ -458,7 +458,7 @@ namespace PicSum.Task.Logics
                     var thumbID = this.GetCurrentThumbnailBufferID();
                     var thumbStartPoint = this.AddThumbnailBuffer(thumbID, thumbBin);
 
-                    var sql = new UpdateThumbnailSql(
+                    var sql = new ThumbnailUpdateSql(
                         filePath, thumbID, thumbStartPoint, thumbBin.Length, thumbWidth, thumbHeight, srcImg.Width, srcImg.Height, fileUpdateDate);
                     DatabaseManager<ThumbnailConnection>.Update(sql);
 
@@ -488,7 +488,7 @@ namespace PicSum.Task.Logics
                     var thumbID = this.GetCurrentThumbnailBufferID();
                     var thumbStartPoint = this.AddThumbnailBuffer(thumbID, thumbBin);
 
-                    var sql = new CreationThumbnailSql(
+                    var sql = new ThumbnailCreationSql(
                         directoryPath, thumbID, thumbStartPoint, thumbBin.Length, thumbWidth, thumbHeight, srcImg.Width, srcImg.Height, directoryUpdateDate);
                     DatabaseManager<ThumbnailConnection>.Update(sql);
 
@@ -517,7 +517,7 @@ namespace PicSum.Task.Logics
                     var thumbID = this.GetCurrentThumbnailBufferID();
                     var thumbStartPoint = this.AddThumbnailBuffer(thumbID, thumbBin);
 
-                    var sql = new UpdateThumbnailSql(
+                    var sql = new ThumbnailUpdateSql(
                         directoryPath, thumbID, thumbStartPoint, thumbBin.Length, thumbWidth, thumbHeight, srcImg.Width, srcImg.Height, directoryUpdateDate);
                     DatabaseManager<ThumbnailConnection>.Update(sql);
 
