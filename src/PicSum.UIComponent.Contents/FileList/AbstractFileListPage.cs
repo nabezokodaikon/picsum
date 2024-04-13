@@ -480,7 +480,7 @@ namespace PicSum.UIComponent.Contents.FileList
             this.SetFilter();
         }
 
-        protected abstract Action GetGetImageFilesAction(ImageViewerPageParameter paramter);
+        protected abstract Action GetImageFilesGetAction(ImageViewerPageParameter paramter);
 
         #endregion
 
@@ -1014,7 +1014,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 var param = new ImageViewerPageParameter(
                     this.Parameter.PageSources,
                     this.Parameter.SourcesKey,
-                    this.GetGetImageFilesAction,
+                    this.GetImageFilesGetAction,
                     filePath,
                     this.sortInfo,
                     this.Title,
@@ -1042,7 +1042,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 var param = new ImageViewerPageParameter(
                     this.Parameter.PageSources,
                     this.Parameter.SourcesKey,
-                    this.GetGetImageFilesAction,
+                    this.GetImageFilesGetAction,
                     filePath,
                     this.sortInfo,
                     this.Title,
@@ -1074,7 +1074,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 var param = new ImageViewerPageParameter(
                     this.Parameter.PageSources,
                     this.Parameter.SourcesKey,
-                    this.GetGetImageFilesAction,
+                    this.GetImageFilesGetAction,
                     filePath,
                     this.sortInfo,
                     this.Title,
@@ -1132,7 +1132,7 @@ namespace PicSum.UIComponent.Contents.FileList
                         this.Parameter.PageSources,
                         this.Parameter.SourcesKey,
                         currentFilePath,
-                        this.GetGetImageFilesAction,
+                        this.GetImageFilesGetAction,
                         this.Title,
                         this.Icon); ;
                     this.DoDragDrop(dragData, DragDropEffects.All);
@@ -1145,7 +1145,7 @@ namespace PicSum.UIComponent.Contents.FileList
                     this.Parameter.PageSources,
                     this.Parameter.SourcesKey,
                     currentFilePath,
-                    this.GetGetImageFilesAction,
+                    this.GetImageFilesGetAction,
                     this.Title,
                     this.Icon);
                 this.DoDragDrop(dragData, DragDropEffects.All);
@@ -1174,7 +1174,7 @@ namespace PicSum.UIComponent.Contents.FileList
             var param = new ImageViewerPageParameter(
                 this.Parameter.PageSources,
                 this.Parameter.SourcesKey,
-                this.GetGetImageFilesAction,
+                this.GetImageFilesGetAction,
                 e.FilePath,
                 this.sortInfo,
                 this.Title,
@@ -1187,7 +1187,7 @@ namespace PicSum.UIComponent.Contents.FileList
             var param = new ImageViewerPageParameter(
                 this.Parameter.PageSources,
                 this.Parameter.SourcesKey,
-                this.GetGetImageFilesAction,
+                this.GetImageFilesGetAction,
                 e.FilePath,
                 this.sortInfo,
                 this.Title,
@@ -1200,7 +1200,7 @@ namespace PicSum.UIComponent.Contents.FileList
             var param = new ImageViewerPageParameter(
                 this.Parameter.PageSources,
                 this.Parameter.SourcesKey,
-                this.GetGetImageFilesAction,
+                this.GetImageFilesGetAction,
                 e.FilePath,
                 this.sortInfo,
                 this.Title,

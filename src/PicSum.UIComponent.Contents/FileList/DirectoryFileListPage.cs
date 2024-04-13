@@ -242,7 +242,7 @@ namespace PicSum.UIComponent.Contents.FileList
             this.GetNextDirectoryTask.StartTask(param);
         }
 
-        protected override Action GetGetImageFilesAction(ImageViewerPageParameter param)
+        protected override Action GetImageFilesGetAction(ImageViewerPageParameter param)
         {
             return GetImageFilesAction(param);
         }       
