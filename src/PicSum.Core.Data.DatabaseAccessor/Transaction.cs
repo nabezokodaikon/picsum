@@ -1,28 +1,24 @@
-﻿using System;
+using System;
 
 namespace PicSum.Core.Data.DatabaseAccessor
 {
     /// <summary>
     /// DBトランザクション
     /// </summary>
-    public sealed class Transaction
+    /// <remarks>
+    /// コンストラクタ
+    /// </remarks>
+    public sealed class Transaction(ConnectionBase connection)
         : IDisposable
     {
         private bool disposed = false;
 
         // コネクション
-        private ConnectionBase conntenction = null;
+        private readonly ConnectionBase conntenction
+            = connection ?? throw new ArgumentNullException(nameof(connection));
 
         // コミットフラグ
         private bool isCommitted = false;
-
-        /// <summary>
-        /// コンストラクタ
-        /// </summary>
-        public Transaction(ConnectionBase connection)
-        {
-            this.conntenction = connection ?? throw new ArgumentNullException(nameof(connection));
-        }
 
         /// <summary>
         /// コミットします。

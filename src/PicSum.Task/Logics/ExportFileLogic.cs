@@ -14,15 +14,8 @@ namespace PicSum.Task.Logics
     {
         public void Execute(string srcFilePath, string exportFilePath)
         {
-            if (srcFilePath == null)
-            {
-                throw new ArgumentNullException(nameof(srcFilePath));
-            }
-
-            if (exportFilePath == null)
-            {
-                throw new ArgumentNullException(nameof(exportFilePath));
-            }
+            ArgumentException.ThrowIfNullOrEmpty(srcFilePath, nameof(srcFilePath));
+            ArgumentException.ThrowIfNullOrEmpty(exportFilePath, nameof(exportFilePath));
 
             File.Copy(srcFilePath, exportFilePath);
         }

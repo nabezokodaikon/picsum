@@ -15,12 +15,12 @@ namespace SWF.Common
     [SupportedOSPlatform("windows")]
     public static class FileIconCash
     {
-        private static readonly ReaderWriterLockSlim SMALL_ICON_CASH_LOCK = new ReaderWriterLockSlim();
-        private static readonly ReaderWriterLockSlim LARGE_ICON_CASH_LOCK = new ReaderWriterLockSlim();
-        private static readonly ReaderWriterLockSlim JUMBO_ICON_CASH_LOCK = new ReaderWriterLockSlim();
-        private static readonly Dictionary<string, Bitmap> SMALL_ICON_CASH = new Dictionary<string, Bitmap>();
-        private static readonly Dictionary<string, Bitmap> LARGE_ICON_CASH = new Dictionary<string, Bitmap>();
-        private static readonly Dictionary<string, Bitmap> JUMBO_ICON_CASH = new Dictionary<string, Bitmap>();
+        private static readonly ReaderWriterLockSlim SMALL_ICON_CASH_LOCK = new();
+        private static readonly ReaderWriterLockSlim LARGE_ICON_CASH_LOCK = new();
+        private static readonly ReaderWriterLockSlim JUMBO_ICON_CASH_LOCK = new();
+        private static readonly Dictionary<string, Bitmap> SMALL_ICON_CASH = [];
+        private static readonly Dictionary<string, Bitmap> LARGE_ICON_CASH = [];
+        private static readonly Dictionary<string, Bitmap> JUMBO_ICON_CASH = [];
         private static readonly Bitmap SMALL_PC_ICON =
             FileUtil.GetSmallSystemIcon(WinApiMembers.ShellSpecialFolder.CSIDL_DRIVES);
         private static readonly Bitmap LARGE_PC_ICON =
@@ -74,30 +74,21 @@ namespace SWF.Common
 
         public static Image GetSmallDriveIcon(string filePath)
         {
-            if (filePath == null)
-            {
-                throw new ArgumentNullException(nameof(filePath));
-            }
+            ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
             return FileUtil.GetSmallIconByFilePath(filePath);
         }
 
         public static Image GetLargeDriveIcon(string filePath)
         {
-            if (filePath == null)
-            {
-                throw new ArgumentNullException(nameof(filePath));
-            }
+            ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
             return FileUtil.GetExtraLargeIconByFilePath(filePath, SHIL.SHIL_JUMBO);
         }
 
         public static Image GetSmallFileIcon(string filePath)
         {
-            if (filePath == null)
-            {
-                throw new ArgumentNullException(nameof(filePath));
-            }
+            ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
             var ex = FileUtil.GetExtension(filePath);
 
@@ -133,10 +124,7 @@ namespace SWF.Common
 
         public static Image GetLargeFileIcon(string filePath)
         {
-            if (filePath == null)
-            {
-                throw new ArgumentNullException(nameof(filePath));
-            }
+            ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
             var ex = FileUtil.GetExtension(filePath);
 
@@ -172,10 +160,7 @@ namespace SWF.Common
 
         public static Bitmap GetJumboFileIcon(string filePath)
         {
-            if (filePath == null)
-            {
-                throw new ArgumentNullException(nameof(filePath));
-            }
+            ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
             var ex = FileUtil.GetExtension(filePath);
 
