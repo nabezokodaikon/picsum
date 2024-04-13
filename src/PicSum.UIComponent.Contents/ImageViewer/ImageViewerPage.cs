@@ -255,7 +255,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         protected override void OnLoad(EventArgs e)
         {
             this.parameter.GetImageFiles += this.Parameter_GetImageFiles;
-            this.parameter.GetImageFilesAction(this.parameter)();
+            this.parameter.ImageFilesGetAction(this.parameter)();
             base.OnLoad(e);
         }
 
@@ -513,7 +513,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 this.Parameter.PageSources,
                 this.Parameter.SourcesKey,
                 currentFilePath,
-                this.parameter.GetImageFilesAction,
+                this.parameter.ImageFilesGetAction,
                 this.parameter.PageTitle,
                 this.parameter.PageIcon);
             this.DoDragDrop(dragData, DragDropEffects.All);
@@ -1047,7 +1047,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             var param = new ImageViewerPageParameter(
                 this.Parameter.PageSources,
                 this.Parameter.SourcesKey,
-                this.parameter.GetImageFilesAction,
+                this.parameter.ImageFilesGetAction,
                 e.FilePath,
                 this.parameter.SortInfo,
                 this.Title,
@@ -1060,7 +1060,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             var param = new ImageViewerPageParameter(
                 this.Parameter.PageSources,
                 this.Parameter.SourcesKey,
-                this.parameter.GetImageFilesAction,
+                this.parameter.ImageFilesGetAction,
                 e.FilePath,
                 this.parameter.SortInfo,
                 this.Title,
