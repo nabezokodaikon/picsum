@@ -9,15 +9,15 @@ namespace SWF.UIComponent.WideDropDown
     public sealed class ArrowPictureBox
         : PictureBox
     {
-        private readonly SolidBrush defaultBrush = new SolidBrush(Color.White);
+        private readonly SolidBrush defaultBrush = new(Color.White);
 
-        private readonly SolidBrush enterBrush = new SolidBrush(Color.FromArgb(
+        private readonly SolidBrush enterBrush = new(Color.FromArgb(
             SystemColors.Highlight.A / 8,
             SystemColors.Highlight.R,
             SystemColors.Highlight.G,
             SystemColors.Highlight.B));
 
-        private readonly SolidBrush selectedBrush = new SolidBrush(Color.FromArgb(
+        private readonly SolidBrush selectedBrush = new(Color.FromArgb(
             SystemColors.Highlight.A / 4,
             SystemColors.Highlight.R,
             SystemColors.Highlight.G,
