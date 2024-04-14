@@ -1,0 +1,43 @@
+name: release
+
+run-name: ${{ github.actor }} is learning GitHub Actions
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+jobs:
+  release:
+    runs-on: windows-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+
+      - name: setup-msbuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: setup-nuget
+        uses: nuget/setup-nuget@v2
+
+      - name: dotnet restore 
+        run: dotnet restore src\PicSum.sln
+
+      - name: msbuild
+        run: >
+          msbuild
+          src\PicSum.sln
+          /t:Rebuild
+          /p:Configuration=Release
+          /p:Platform="Any CPU"
+          /p:OutputPath=$pwd\dist
+
+      - name: compress archive 
+        run: |
+          $tag_name = "${{ github.ref }}" -split '/' | Select-Object -Last 1
+          compress-archive dist\* picsum-$tag_name.zip
+
+      - name: action-gh-release 
+        uses: softprops/action-gh-release@v2 
+        with:
+          files: |
+            picsum-*.zip
