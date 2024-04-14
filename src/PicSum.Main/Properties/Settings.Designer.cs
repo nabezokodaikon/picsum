@@ -73,7 +73,7 @@ namespace PicSum.Main.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool FileListPageIsShowFileName {
             get {
                 return ((bool)(this["FileListPageIsShowFileName"]));
@@ -109,7 +109,7 @@ namespace PicSum.Main.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Single")]
+        [global::System.Configuration.DefaultSettingValueAttribute("LeftFacing")]
         public global::PicSum.Core.Base.Conf.ImageDisplayMode ImageViewerPageImageDisplayMode {
             get {
                 return ((global::PicSum.Core.Base.Conf.ImageDisplayMode)(this["ImageViewerPageImageDisplayMode"]));
@@ -121,7 +121,7 @@ namespace PicSum.Main.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("FitAllImage")]
+        [global::System.Configuration.DefaultSettingValueAttribute("FitOnlyBigImage")]
         public global::PicSum.Core.Base.Conf.ImageSizeMode ImageViewerPageImageSizeMode {
             get {
                 return ((global::PicSum.Core.Base.Conf.ImageSizeMode)(this["ImageViewerPageImageSizeMode"]));
