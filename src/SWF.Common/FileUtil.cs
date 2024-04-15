@@ -903,7 +903,7 @@ namespace SWF.Common
 
                 if (!FileUtil.IsExists(destFilePath))
                 {
-                    return destFilePath;
+                    return FileUtil.GetFileName(destFilePath);
                 }
 
                 count++;
