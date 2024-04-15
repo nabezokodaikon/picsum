@@ -94,7 +94,7 @@ namespace PicSum.Main
 
             Thread.CurrentThread.Name = "Main";
 
-            Logger.Info("アプリケーションを開始します。");
+            Logger.Debug("アプリケーションを開始します。");
 
             AppDomain.CurrentDomain.UnhandledException += new(CurrentDomain_UnhandledException);
 
@@ -110,7 +110,7 @@ namespace PicSum.Main
             ThumbnailGetLogic.DisposeStaticResouces();
             FileExportTask.DisposeStaticResouces();
 
-            Logger.Info("アプリケーションを終了します。");
+            Logger.Debug("アプリケーションを終了します。");
 
             return;
         }
