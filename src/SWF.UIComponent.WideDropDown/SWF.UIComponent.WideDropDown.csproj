@@ -22,9 +22,7 @@
     <Compile Update="WideDropDownList.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Update="WideDropToolButton.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Update="WideDropToolButton.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SWF.UIComponent.Common\SWF.UIComponent.Common.csproj" />

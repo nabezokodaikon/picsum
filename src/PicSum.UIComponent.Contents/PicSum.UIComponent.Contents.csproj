@@ -31,9 +31,7 @@
     <Compile Update="ContextMenu\FileContextMenu.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Update="FileList\BookmarkFileListPage.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Update="FileList\BookmarkFileListPage.cs" />
     <Compile Update="ToolBar\PageToolBar.cs">
       <SubType>Component</SubType>
     </Compile>
