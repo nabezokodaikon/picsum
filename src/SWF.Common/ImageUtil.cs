@@ -24,11 +24,6 @@ namespace SWF.Common
         private static readonly ImageCodecInfo PNG_CODEC_INFO = ImageCodecInfo.GetImageEncoders().Single(info => info.FormatID == ImageFormat.Png.Guid);
         private static readonly dynamic SHELL = Activator.CreateInstance(Type.GetTypeFromProgID("Shell.Application"));
 
-        public static string CreateFileAccessErrorMessage(string path)
-        {
-            return $"'{path}'を開けませんでした。";
-        }
-
         /// <summary>
         /// イメージオブジェクトを圧縮したバイナリに変換します。
         /// </summary>
@@ -102,7 +97,59 @@ namespace SWF.Common
         /// <exception cref="ArgumentNullException"></exception>
         public static Size GetImageSize(string filePath)
         {
-            ArgumentNullException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
+            ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
+
+            try
+            {
+                if (FileUtil.IsAVIFFile(filePath))
+                {
+                    return AVIFUtil.GetImageSize(filePath);
+                }
+                else if (FileUtil.IsWEBPFile(filePath))
+                {
+                    return WEBPUtil.GetImageSize(filePath);
+                }
+            }
+            catch (ArgumentException ex)
+            {
+                throw new ImageUtilException(ImageUtil.CreateFileAccessErrorMessage(filePath), ex);
+            }
+            catch (NotSupportedException ex)
+            {
+                throw new ImageUtilException(ImageUtil.CreateFileAccessErrorMessage(filePath), ex);
+            }
+            catch (FileNotFoundException ex)
+            {
+                throw new ImageUtilException(ImageUtil.CreateFileAccessErrorMessage(filePath), ex);
+            }
+            catch (SecurityException ex)
+            {
+                throw new ImageUtilException(ImageUtil.CreateFileAccessErrorMessage(filePath), ex);
+            }
+            catch (DirectoryNotFoundException ex)
+            {
+                throw new ImageUtilException(ImageUtil.CreateFileAccessErrorMessage(filePath), ex);
+            }
+            catch (PathTooLongException ex)
+            {
+                throw new ImageUtilException(ImageUtil.CreateFileAccessErrorMessage(filePath), ex);
+            }
+            catch (IOException ex)
+            {
+                throw new ImageUtilException(ImageUtil.CreateFileAccessErrorMessage(filePath), ex);
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                throw new ImageUtilException(ImageUtil.CreateFileAccessErrorMessage(filePath), ex);
+            }
+            catch (SixLabors.ImageSharp.InvalidImageContentException ex)
+            {
+                throw new ImageUtilException(ImageUtil.CreateFileAccessErrorMessage(filePath), ex);
+            }
+            catch (SixLabors.ImageSharp.UnknownImageFormatException ex)
+            {
+                throw new ImageUtilException(ImageUtil.CreateFileAccessErrorMessage(filePath), ex);
+            }
 
             var directory = ImageUtil.SHELL.NameSpace(Path.GetDirectoryName(filePath));
             var item = directory.ParseName(Path.GetFileName(filePath));
@@ -338,6 +385,11 @@ namespace SWF.Common
             exList.Add(ImageUtil.AVIF_FILE_EXTENSION);
 
             return exList;
+        }
+
+        public static string CreateFileAccessErrorMessage(string path)
+        {
+            return $"'{path}'を開けませんでした。";
         }
     }
 }
