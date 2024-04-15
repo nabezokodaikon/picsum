@@ -1,3 +1,4 @@
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -17,7 +18,9 @@ namespace SWF.Common
         internal const string WEBP_FILE_EXTENSION = ".WEBP";
         internal const string AVIF_FILE_EXTENSION = ".AVIF";
 
-        public static readonly Size EMPTY_SIZE = new(-1, -1);
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
+        public static readonly Size EMPTY_SIZE = Size.Empty;
         internal static readonly List<string> IMAGE_FILE_EXTENSION_LIST = ImageUtil.GetImageFileExtensionList();
 
         private static readonly EncoderParameter ENCORDER_PARAMETER = new(Encoder.Quality, 100L);
@@ -112,43 +115,53 @@ namespace SWF.Common
             }
             catch (ArgumentException ex)
             {
-                throw new ImageUtilException(ImageUtil.CreateFileAccessErrorMessage(filePath), ex);
+                Logger.Error(ex, CreateFileAccessErrorMessage(filePath));
+                return EMPTY_SIZE;
             }
             catch (NotSupportedException ex)
             {
-                throw new ImageUtilException(ImageUtil.CreateFileAccessErrorMessage(filePath), ex);
+                Logger.Error(ex, CreateFileAccessErrorMessage(filePath));
+                return EMPTY_SIZE;
             }
             catch (FileNotFoundException ex)
             {
-                throw new ImageUtilException(ImageUtil.CreateFileAccessErrorMessage(filePath), ex);
+                Logger.Error(ex, CreateFileAccessErrorMessage(filePath));
+                return EMPTY_SIZE;
             }
             catch (SecurityException ex)
             {
-                throw new ImageUtilException(ImageUtil.CreateFileAccessErrorMessage(filePath), ex);
+                Logger.Error(ex, CreateFileAccessErrorMessage(filePath));
+                return EMPTY_SIZE;
             }
             catch (DirectoryNotFoundException ex)
             {
-                throw new ImageUtilException(ImageUtil.CreateFileAccessErrorMessage(filePath), ex);
+                Logger.Error(ex, CreateFileAccessErrorMessage(filePath));
+                return EMPTY_SIZE;
             }
             catch (PathTooLongException ex)
             {
-                throw new ImageUtilException(ImageUtil.CreateFileAccessErrorMessage(filePath), ex);
+                Logger.Error(ex, CreateFileAccessErrorMessage(filePath));
+                return EMPTY_SIZE;
             }
             catch (IOException ex)
             {
-                throw new ImageUtilException(ImageUtil.CreateFileAccessErrorMessage(filePath), ex);
+                Logger.Error(ex, CreateFileAccessErrorMessage(filePath));
+                return EMPTY_SIZE;
             }
             catch (UnauthorizedAccessException ex)
             {
-                throw new ImageUtilException(ImageUtil.CreateFileAccessErrorMessage(filePath), ex);
+                Logger.Error(ex, CreateFileAccessErrorMessage(filePath));
+                return EMPTY_SIZE;
             }
             catch (SixLabors.ImageSharp.InvalidImageContentException ex)
             {
-                throw new ImageUtilException(ImageUtil.CreateFileAccessErrorMessage(filePath), ex);
+                Logger.Error(ex, CreateFileAccessErrorMessage(filePath));
+                return EMPTY_SIZE;
             }
             catch (SixLabors.ImageSharp.UnknownImageFormatException ex)
             {
-                throw new ImageUtilException(ImageUtil.CreateFileAccessErrorMessage(filePath), ex);
+                Logger.Error(ex, CreateFileAccessErrorMessage(filePath));
+                return EMPTY_SIZE;
             }
 
             var directory = ImageUtil.SHELL.NameSpace(Path.GetDirectoryName(filePath));

@@ -266,20 +266,13 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 return;
             }
 
-            try
+            if (e.Delta > 0)
             {
-                if (e.Delta > 0)
-                {
-                    this.FilePathListIndex = this.GetPreviewIndex(false);
-                }
-                else
-                {
-                    this.FilePathListIndex = this.GetNextIndex(false);
-                }
+                this.FilePathListIndex = this.GetPreviewIndex(false);
             }
-            catch (ImageUtilException ex)
+            else
             {
-                ExceptionUtil.ShowErrorDialog(ex);
+                this.FilePathListIndex = this.GetNextIndex(false);
             }
 
             base.OnMouseWheel(e);
@@ -868,14 +861,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 return;
             }
 
-            try
-            {
-                this.FilePathListIndex = this.GetPreviewIndex(false);
-            }
-            catch (ImageUtilException ex)
-            {
-                ExceptionUtil.ShowErrorDialog(ex);
-            }
+            this.FilePathListIndex = this.GetPreviewIndex(false);
         }
 
         private void DoubleNextIndexToolStripButton_Click(object sender, EventArgs e)
@@ -885,14 +871,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 return;
             }
 
-            try
-            {
-                this.FilePathListIndex = this.GetNextIndex(false);
-            }
-            catch (ImageUtilException ex)
-            {
-                ExceptionUtil.ShowErrorDialog(ex);
-            }
+            this.FilePathListIndex = this.GetNextIndex(false);
         }
 
         private void SinglePreviewIndexToolStripButton_Click(object sender, EventArgs e)
@@ -902,14 +881,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 return;
             }
 
-            try
-            {
-                this.FilePathListIndex = this.GetPreviewIndex(true);
-            }
-            catch (ImageUtilException ex)
-            {
-                ExceptionUtil.ShowErrorDialog(ex);
-            }
+            this.FilePathListIndex = this.GetPreviewIndex(true);
         }
 
         private void SingleNextIndexToolStripButton_Click(object sender, EventArgs e)
@@ -919,14 +891,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 return;
             }
 
-            try
-            {
-                this.FilePathListIndex = this.GetNextIndex(true);
-            }
-            catch (ImageUtilException ex)
-            {
-                ExceptionUtil.ShowErrorDialog(ex);
-            }
+            this.FilePathListIndex = this.GetNextIndex(true);
         }
 
         private void IndexSlider_ValueChanging(object sender, EventArgs e)
