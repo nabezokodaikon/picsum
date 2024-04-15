@@ -24,6 +24,11 @@ namespace SWF.Common
         private static readonly ImageCodecInfo PNG_CODEC_INFO = ImageCodecInfo.GetImageEncoders().Single(info => info.FormatID == ImageFormat.Png.Guid);
         private static readonly dynamic SHELL = Activator.CreateInstance(Type.GetTypeFromProgID("Shell.Application"));
 
+        public static string CreateFileAccessErrorMessage(string path)
+        {
+            return $"'{path}'を開けませんでした。";
+        }
+
         /// <summary>
         /// イメージオブジェクトを圧縮したバイナリに変換します。
         /// </summary>
@@ -333,11 +338,6 @@ namespace SWF.Common
             exList.Add(ImageUtil.AVIF_FILE_EXTENSION);
 
             return exList;
-        }
-
-        private static string CreateFileAccessErrorMessage(string path)
-        {
-            return $"'{path}'を開けませんでした。";
         }
     }
 }
