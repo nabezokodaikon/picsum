@@ -118,6 +118,7 @@ namespace PicSum.Main
         private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             var ex = (Exception)e.ExceptionObject;
+            Logger.Error(ex);
             ExceptionUtil.ShowErrorDialog("補足されない例外が発生しました。", ex);
         }
     }
