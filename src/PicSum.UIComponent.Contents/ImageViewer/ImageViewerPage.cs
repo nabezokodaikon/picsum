@@ -1,3 +1,4 @@
+using NLog;
 using PicSum.Core.Base.Conf;
 using PicSum.Core.Task.AsyncTaskV2;
 using PicSum.Task.Paramters;
@@ -26,6 +27,21 @@ namespace PicSum.UIComponent.Contents.ImageViewer
     public sealed partial class ImageViewerPage
         : BrowserPage
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
+        private static Size GetImageSize(string filePath)
+        {
+            try
+            {
+                return ImageUtil.GetImageSize(filePath);
+            }
+            catch (ImageUtilException ex)
+            {
+                Logger.Error(ex);
+                return ImageUtil.EMPTY_SIZE;
+            }
+        }
+
         private static float GetImageScale(Size imageSize, Size backgroudSize, ImageSizeMode mode)
         {
             if (mode == ImageSizeMode.Original ||
@@ -390,7 +406,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             {
                 var currentIndex = this.FilePathListIndex;
                 var currentFilePath = this.filePathList[currentIndex];
-                var currentImageSize = ImageUtil.GetImageSize(currentFilePath);
+                var currentImageSize = GetImageSize(currentFilePath);
                 if (currentImageSize.Width < currentImageSize.Height)
                 {
                     var nextIndex = currentIndex + 1;
@@ -400,7 +416,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                     }
 
                     var nextFilePath = this.filePathList[nextIndex];
-                    var nextImageSize = ImageUtil.GetImageSize(nextFilePath);
+                    var nextImageSize = GetImageSize(nextFilePath);
                     if (nextImageSize.Width < nextImageSize.Height)
                     {
                         if (nextIndex == this.MaximumIndex)
@@ -453,7 +469,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 }
 
                 var prevFilePath1 = this.filePathList[prevIndex1];
-                var prevImageSize1 = ImageUtil.GetImageSize(prevFilePath1);
+                var prevImageSize1 = GetImageSize(prevFilePath1);
                 if (prevImageSize1.Width < prevImageSize1.Height)
                 {
                     var prevIndex2 = prevIndex1 - 1;
@@ -463,7 +479,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                     }
 
                     var prevFilePath2 = this.filePathList[prevIndex2];
-                    var prevImageSize2 = ImageUtil.GetImageSize(prevFilePath2);
+                    var prevImageSize2 = GetImageSize(prevFilePath2);
                     if (prevImageSize2.Width < prevImageSize2.Height)
                     {
                         return prevIndex2;
