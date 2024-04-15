@@ -62,7 +62,13 @@ namespace PicSum.Core.Task.AsyncTaskV2
             {
                 Logger.Error($"{this.ID} {ex}");
                 this.CatchAction?.Invoke(ex);
-
+            }
+            catch (Exception ex)
+            {
+                Logger.Error($"{this.ID} {ex}");
+#pragma warning disable CS8604
+                this.CatchAction?.Invoke(new TaskException(this.ID, ex));
+#pragma warning restore CS8604
             }
         }
 

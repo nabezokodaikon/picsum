@@ -47,7 +47,6 @@ namespace PicSum.UIComponent.Contents.FileList
                         sortImageFiles, param.SelectedFilePath, param.PageTitle, param.PageIcon);
                     param.OnGetImageFiles(eventArgs);
                 })
-                .Catch(e => ExceptionUtil.ShowErrorDialog(e.InnerException))
                 .StartThread();
 
                 task.StartTask(new ValueParameter<string>() { Value = param.SourcesKey });
@@ -77,10 +76,6 @@ namespace PicSum.UIComponent.Contents.FileList
                     this.searchTask = new();
                     this.searchTask
                         .Callback(this.SearchTask_Callback)
-                        .Catch(e =>
-                        {
-                            ExceptionUtil.ShowErrorDialog(e.InnerException);
-                        })
                         .StartThread();
                 }
 

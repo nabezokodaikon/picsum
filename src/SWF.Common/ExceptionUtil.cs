@@ -10,16 +10,6 @@ namespace SWF.Common
     [SupportedOSPlatform("windows")]
     public static class ExceptionUtil
     {
-        public static void ShowErrorDialog(Exception ex)
-        {
-            if (ex == null)
-            {
-                throw new ArgumentNullException(nameof(ex));
-            }
-
-            MessageBox.Show(ex.Message, "PicSum", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        }
-
         public static void ShowErrorDialog(string message, Exception ex)
         {
             if (ex == null)

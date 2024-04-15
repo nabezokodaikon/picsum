@@ -453,7 +453,6 @@ namespace PicSum.Main.UIComponent
                             e.FilePathList, e.SelectedFilePath, title, FileIconCash.SmallDirectoryIcon);
                         parameter.OnGetImageFiles(eventArgs);
                     })
-                    .Catch(e => ExceptionUtil.ShowErrorDialog(e.InnerException))
                     .StartThread();
 
                     task.StartTask(subParamter);

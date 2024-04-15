@@ -315,7 +315,7 @@ namespace PicSum.Core.Task.AsyncTaskV2
             }
             catch (Exception ex)
             {
-                Logger.Debug($"タスク実行スレッドで補足されない例外が発生しました。: {ex.Message}");
+                Logger.Error(ex, "タスク実行スレッドで補足されない例外が発生しました。");
             }
             finally
             {

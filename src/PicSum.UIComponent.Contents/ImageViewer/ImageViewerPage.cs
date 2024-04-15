@@ -113,11 +113,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                     this.getImageFileTask = new();
                     this.getImageFileTask
                         .Callback(this.GetImageFileTask_Callback)
-                        .Catch(ex =>
-                        {
-                            this.Cursor = Cursors.Default;
-                            ExceptionUtil.ShowErrorDialog(ex.InnerException);
-                        })
+                        .Catch(_ => this.Cursor = Cursors.Default)
                         .Complete(() => this.Cursor = Cursors.Default)
                         .StartThread();
                 }
