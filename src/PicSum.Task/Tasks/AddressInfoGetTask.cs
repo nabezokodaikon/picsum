@@ -23,9 +23,7 @@ namespace PicSum.Task.Tasks
 
             if (string.IsNullOrEmpty(param.Value))
             {
-                // TODO; ファイルパスに空白が指定された場合。
-                //throw new ArgumentNullException("空白が指定されました。", nameof(param));
-                return;
+                throw new ArgumentNullException(param.Value, nameof(param.Value));
             }
 
             var addressInfo = new AddressInfoGetResult();
