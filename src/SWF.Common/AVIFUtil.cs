@@ -3,6 +3,7 @@ using HeyRed.ImageSharp.Heif.Formats.Heif;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats;
 using SixLabors.ImageSharp.Formats.Bmp;
+using System;
 using System.Drawing;
 using System.IO;
 using System.Runtime.Versioning;
@@ -23,6 +24,8 @@ namespace SWF.Common
 
         public static Bitmap ReadImageFile(string filePath)
         {
+            ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
+
             using (var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
             using (var image = SixLabors.ImageSharp.Image.Load(AVIF_DECODER_OPTIONS, fs))
             using (var mem = new MemoryStream())
