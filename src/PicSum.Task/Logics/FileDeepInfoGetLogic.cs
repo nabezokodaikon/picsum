@@ -4,7 +4,6 @@ using PicSum.Data.DatabaseAccessor.Connection;
 using PicSum.Data.DatabaseAccessor.Dto;
 using PicSum.Data.DatabaseAccessor.Sql;
 using PicSum.Task.Entities;
-using PicSum.Task.Results;
 using SWF.Common;
 using System;
 using System.Drawing;
@@ -68,8 +67,8 @@ namespace PicSum.Task.Logics
 
                 if (info.IsImageFile)
                 {
-                    var isImgError = this.ReadImageFile(filePath, out var srcImg);
-                    if (!isImgError)
+                    var isImgSuccess = this.ReadImageFile(filePath, out var srcImg);
+                    if (isImgSuccess)
                     {
                         using (srcImg)
                         {
@@ -93,8 +92,8 @@ namespace PicSum.Task.Logics
                     var firstImageFile = FileUtil.GetFirstImageFilePath(filePath);
                     if (!string.IsNullOrEmpty(firstImageFile))
                     {
-                        var isImgError = this.ReadImageFile(firstImageFile, out var srcImg);
-                        if (!isImgError)
+                        var isImgSuccess = this.ReadImageFile(firstImageFile, out var srcImg);
+                        if (isImgSuccess)
                         {
                             using (srcImg)
                             {
@@ -139,13 +138,13 @@ namespace PicSum.Task.Logics
             try
             {
                 bmp = ImageUtil.ReadImageFile(filePath);
-                return false;
+                return true;
             }
             catch (ImageUtilException ex)
             {
                 bmp = null;
-                this.WriteErrorLog(ex);
-                return true;
+                this.WriteErrorLog(new TaskException(this.ID, ex));
+                return false;
             }
         }
     }

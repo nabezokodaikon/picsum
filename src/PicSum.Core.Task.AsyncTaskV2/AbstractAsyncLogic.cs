@@ -8,7 +8,9 @@ namespace PicSum.Core.Task.AsyncTaskV2
         private readonly IAsyncTask task
             = task ?? throw new ArgumentNullException("task");
 
-        protected void WriteErrorLog(Exception ex)
+        protected TaskID? ID { get; private set; } = task.ID;
+
+        protected void WriteErrorLog(TaskException ex)
         {
             task.WriteErrorLog(ex);
         }

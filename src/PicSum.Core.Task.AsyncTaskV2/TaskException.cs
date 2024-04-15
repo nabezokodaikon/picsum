@@ -11,7 +11,7 @@ namespace PicSum.Core.Task.AsyncTaskV2
 
         }
 
-        public TaskException(string message)
+        internal TaskException(string message)
             : base(message)
         {
 

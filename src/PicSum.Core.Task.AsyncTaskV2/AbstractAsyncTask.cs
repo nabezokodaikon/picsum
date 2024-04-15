@@ -11,7 +11,7 @@ namespace PicSum.Core.Task.AsyncTaskV2
 
         private long isCancel = 0;
 
-        public TaskID? ID { get; internal set; }
+        public TaskID? ID { get; set; }
         internal TParameter? Parameter { get; set; }
         internal Action<TResult>? CallbackAction { get; set; }
         internal Action<TaskException>? CatchAction { get; set; }
@@ -34,7 +34,7 @@ namespace PicSum.Core.Task.AsyncTaskV2
 
         }
 
-        public void WriteErrorLog(Exception ex)
+        public void WriteErrorLog(TaskException ex)
         {
             Logger.Error($"{this.ID} {ex}");
         }

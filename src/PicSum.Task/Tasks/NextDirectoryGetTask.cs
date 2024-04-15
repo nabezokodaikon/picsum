@@ -41,8 +41,7 @@ namespace PicSum.Task.Tasks
             }
             catch (FileUtilException ex)
             {
-                this.WriteErrorLog(ex);
-                return;
+                throw new TaskException(this.ID, ex);
             }
 
             list.OrderBy(f => f).ToList();

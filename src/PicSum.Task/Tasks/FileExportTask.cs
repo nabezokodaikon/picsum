@@ -39,28 +39,23 @@ namespace PicSum.Task.Tasks
             }
             catch (PathTooLongException ex)
             {
-                this.WriteErrorLog(ex);
-                return;
+                throw new TaskException(this.ID, ex);
             }
             catch (DirectoryNotFoundException ex)
             {
-                this.WriteErrorLog(ex);
-                return;
+                throw new TaskException(this.ID, ex);
             }
             catch (FileNotFoundException ex)
             {
-                this.WriteErrorLog(ex);
-                return;
+                throw new TaskException(this.ID, ex);
             }
             catch (IOException ex)
             {
-                this.WriteErrorLog(ex);
-                return;
+                throw new TaskException(this.ID, ex);
             }
             catch (NotSupportedException ex)
             {
-                this.WriteErrorLog(ex);
-                return;
+                throw new TaskException(this.ID, ex);
             }
             finally
             {

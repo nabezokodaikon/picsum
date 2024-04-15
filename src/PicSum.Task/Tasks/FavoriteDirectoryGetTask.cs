@@ -49,7 +49,7 @@ namespace PicSum.Task.Tasks
                 }
                 catch (FileUtilException ex)
                 {
-                    this.WriteErrorLog(ex);
+                    this.WriteErrorLog(new TaskException(this.ID, ex));
                     continue;
                 }
             }
