@@ -401,7 +401,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             {
                 var currentIndex = this.FilePathListIndex;
                 var currentFilePath = this.filePathList[currentIndex];
-                var currentImageSize = ImageUtil.GetImageSize(currentFilePath); ;
+                var currentImageSize = ImageUtil.GetImageSize(currentFilePath);
                 if (currentImageSize.Width < currentImageSize.Height)
                 {
                     var nextIndex = currentIndex + 1;
