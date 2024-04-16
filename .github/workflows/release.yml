@@ -31,8 +31,17 @@ jobs:
           /p:Platform="Any CPU"
           /p:OutputPath=$pwd\dist
           /p:GenerateDependencyFile=false
+      
+      - name: cleanup
+        shell: pwsh
+        run: |
+          Remove-Item -Path "$pwd\dist\runtimes" -Recurse -Force
+          Rename-Item -Path "$pwd\dist\picsum.runtimeconfig.json" -NewName "temp"
+          Remove-Item -Path "$pwd\dist\*.runtimeconfig.json" -Force
+          Rename-Item -Path "$pwd\dist\temp" -NewName "picsum.runtimeconfig.json"
 
       - name: compress archive 
+        shell: pwsh
         run: |
           $tag_name = "${{ github.ref }}" -split '/' | Select-Object -Last 1
           compress-archive dist\* picsum-$tag_name.zip
