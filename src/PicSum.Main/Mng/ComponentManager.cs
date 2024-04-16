@@ -1,5 +1,4 @@
 using PicSum.Main.Conf;
-using PicSum.Main.Properties;
 using PicSum.Task.SyncTasks;
 using PicSum.UIComponent.Contents.Conf;
 using System;
@@ -19,25 +18,23 @@ namespace PicSum.Main.Mng
         /// </summary>
         public ComponentManager()
         {
-            // ブラウザの設定をセットします。
-            BrowserConfig.WindowState = Settings.Default.BrowserWindowState;
-            BrowserConfig.WindowLocaion = Settings.Default.BrowserLocation;
-            BrowserConfig.WindowSize = Settings.Default.BrowserSize;
+            Config.Values.Load();
 
-            // コンテンツ共通の設定をセットします。
-            CommonConfig.ExportDirectoryPath = Settings.Default.ExportDirectoryPath;
+            BrowserConfig.WindowState = Config.Values.WindowState;
+            BrowserConfig.WindowLocaion = Config.Values.WindowLocaion;
+            BrowserConfig.WindowSize = Config.Values.WindowSize;
 
-            // ファイルリストコンテンツの設定をセットします。
-            FileListPageConfig.ThumbnailSize = Settings.Default.FileListPageThumbnailSize;
-            FileListPageConfig.IsShowFileName = Settings.Default.FileListPageIsShowFileName;
-            FileListPageConfig.IsShowDirectory = Settings.Default.FileListPageIsShowDirectory;
-            FileListPageConfig.IsShowImageFile = Settings.Default.FileListPageIsShowImageFile;
-            FileListPageConfig.IsShowOtherFile = Settings.Default.FileListPageIsShowOthereFile;
-            FileListPageConfig.FavoriteDirectoryCount = Settings.Default.FileListPageFavoriteDirectoryCount;
+            CommonConfig.ExportDirectoryPath = Config.Values.ExportDirectoryPath;
 
-            // ビューアコンテンツの設定をセットします。
-            ImageViewerPageConfig.ImageDisplayMode = Settings.Default.ImageViewerPageImageDisplayMode;
-            ImageViewerPageConfig.ImageSizeMode = Settings.Default.ImageViewerPageImageSizeMode;
+            FileListPageConfig.ThumbnailSize = Config.Values.ThumbnailSize;
+            FileListPageConfig.IsShowFileName = Config.Values.IsShowFileName;
+            FileListPageConfig.IsShowDirectory = Config.Values.IsShowDirectory;
+            FileListPageConfig.IsShowImageFile = Config.Values.IsShowImageFile;
+            FileListPageConfig.IsShowOtherFile = Config.Values.IsShowOtherFile;
+            FileListPageConfig.FavoriteDirectoryCount = Config.Values.FavoriteDirectoryCount;
+
+            ImageViewerPageConfig.ImageDisplayMode = Config.Values.ImageDisplayMode;
+            ImageViewerPageConfig.ImageSizeMode = Config.Values.ImageSizeMode;
         }
 
         /// <summary>
@@ -45,30 +42,25 @@ namespace PicSum.Main.Mng
         /// </summary>
         public void Dispose()
         {
-            // 終了処理を行います。
             var closingTask = new ClosingSyncTask();
             closingTask.Execute();
 
-            // ブラウザの設定を保存します。
-            Settings.Default.BrowserWindowState = BrowserConfig.WindowState;
-            Settings.Default.BrowserLocation = BrowserConfig.WindowLocaion;
-            Settings.Default.BrowserSize = BrowserConfig.WindowSize;
+            Config.Values.WindowState = BrowserConfig.WindowState;
+            Config.Values.WindowLocaion = BrowserConfig.WindowLocaion;
+            Config.Values.WindowSize = BrowserConfig.WindowSize;
 
-            // コンテンツ共通の設定をセットします。
-            Settings.Default.ExportDirectoryPath = CommonConfig.ExportDirectoryPath;
+            Config.Values.ExportDirectoryPath = CommonConfig.ExportDirectoryPath;
 
-            // ファイルリストコンテンツの設定をセットします。
-            Settings.Default.FileListPageThumbnailSize = FileListPageConfig.ThumbnailSize;
-            Settings.Default.FileListPageIsShowFileName = FileListPageConfig.IsShowFileName;
-            Settings.Default.FileListPageIsShowDirectory = FileListPageConfig.IsShowDirectory;
-            Settings.Default.FileListPageIsShowImageFile = FileListPageConfig.IsShowImageFile;
-            Settings.Default.FileListPageIsShowOthereFile = FileListPageConfig.IsShowOtherFile;
+            Config.Values.ThumbnailSize = FileListPageConfig.ThumbnailSize;
+            Config.Values.IsShowFileName = FileListPageConfig.IsShowFileName;
+            Config.Values.IsShowDirectory = FileListPageConfig.IsShowDirectory;
+            Config.Values.IsShowImageFile = FileListPageConfig.IsShowImageFile;
+            Config.Values.IsShowOtherFile = FileListPageConfig.IsShowOtherFile;
 
-            // ビューアコンテンツの設定をセットします。
-            Settings.Default.ImageViewerPageImageDisplayMode = ImageViewerPageConfig.ImageDisplayMode;
-            Settings.Default.ImageViewerPageImageSizeMode = ImageViewerPageConfig.ImageSizeMode;
+            Config.Values.ImageDisplayMode = ImageViewerPageConfig.ImageDisplayMode;
+            Config.Values.ImageSizeMode = ImageViewerPageConfig.ImageSizeMode;
 
-            Settings.Default.Save();
+            Config.Values.Save();
         }
     }
 }
