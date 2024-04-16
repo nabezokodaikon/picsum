@@ -193,6 +193,10 @@ namespace PicSum.Main.UIComponent
                 BrowserConfig.WindowLocaion = this.Location;
                 BrowserConfig.WindowSize = this.Size;
             }
+            else if (this.WindowState == FormWindowState.Maximized)
+            {
+                BrowserConfig.WindowState = this.WindowState;
+            }
 
             base.OnClosing(e);
         }
