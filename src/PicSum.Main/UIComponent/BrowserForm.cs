@@ -1,4 +1,3 @@
-using NLog;
 using PicSum.Core.Base.Exception;
 using PicSum.Core.Task.AsyncTaskV2;
 using PicSum.Main.Conf;
@@ -22,8 +21,6 @@ namespace PicSum.Main.UIComponent
     public sealed class BrowserForm
         : GrassForm
     {
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
         private static bool isStartUp = true;
 
         private static bool IsCleanup()
@@ -137,7 +134,6 @@ namespace PicSum.Main.UIComponent
                     {
                         if (BrowserForm.IsCleanup())
                         {
-                            Logger.Debug("DBのクリーンアップ処理を実行します。");
                             this.dbCleanupTask = new();
                             this.dbCleanupTask
                                 .Catch(ex =>
@@ -326,7 +322,6 @@ namespace PicSum.Main.UIComponent
 
             if (BrowserForm.isStartUp && BrowserForm.IsHome())
             {
-                Logger.Debug("起動時にホームタブを追加します。");
                 browserMainPanel.AddFavoriteDirectoryListTab();
             }
 

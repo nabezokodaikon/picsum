@@ -22,8 +22,6 @@ namespace PicSum.Main.UIComponent
     [SupportedOSPlatform("windows")]
     public sealed partial class BrowserMainPanel : UserControl
     {
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
         #region 定数・列挙
 
         #endregion
@@ -484,8 +482,6 @@ namespace PicSum.Main.UIComponent
 
             this.infoPanel.SetFileInfo(e.FilePathList);
             this.tabSwitch.InvalidateHeader();
-
-            Logger.Debug("コンテンツ内の選択ファイルが変更されました。");
         }
 
         private void Page_OpenPage(object sender, BrowserPageEventArgs e)
@@ -530,8 +526,6 @@ namespace PicSum.Main.UIComponent
                     this.infoPanel.SetFileInfo(selectedFilePath);
                     page.RedrawPage();
                 }
-
-                Logger.Debug("アクティブなタブが変更されました。");
             }
         }
 
