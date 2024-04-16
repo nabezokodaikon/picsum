@@ -96,7 +96,7 @@ namespace PicSum.Main
             LogManager.Configuration = new XmlLoggingConfiguration("NLog.debug.config");
 #else
 // リリースビルドの場合には、NLog.configを使用
-            LogManager.Configuration = new XmlLoggingConfiguration("NLog.release.config");
+            LogManager.Configuration = new XmlLoggingConfiguration("NLog.config");
 #endif
 
 

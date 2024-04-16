@@ -7,10 +7,11 @@ MSBuild src\PicSum.sln /t:Rebuild ^
   /p:OutputPath="%OUTPUT_PATH%" ^
   /p:Configuration=Release ^
   /p:Platform="Any CPU" ^
-  /p:GenerateDependencyFile=false ^
-  /p:DebugType=None
+  /p:DebugType=None ^
+  /p:GenerateDependencyFile=false
 
-RMDIR /s /q "%OUTPUT_PATH%\runtimes"
+DEL "%OUTPUT_PATH%\NLog.debug.config"
+DEL "%OUTPUT_PATH%\*.pdb"
 
 RENAME "%OUTPUT_PATH%\picsum.runtimeconfig.json" "temp"
 DEL "%OUTPUT_PATH%\*.runtimeconfig.json"

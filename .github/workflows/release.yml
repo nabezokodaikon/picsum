@@ -35,8 +35,8 @@ jobs:
       - name: cleanup
         shell: pwsh
         run: |
+          Remove-Item -Path "$pwd\dist\NLog.debug.config" -Force
           Remove-Item -Path "$pwd\dist\*.pdb" -Force
-          Remove-Item -Path "$pwd\dist\runtimes" -Recurse -Force
           Rename-Item -Path "$pwd\dist\picsum.runtimeconfig.json" -NewName "temp"
           Remove-Item -Path "$pwd\dist\*.runtimeconfig.json" -Force
           Rename-Item -Path "$pwd\dist\temp" -NewName "picsum.runtimeconfig.json"
