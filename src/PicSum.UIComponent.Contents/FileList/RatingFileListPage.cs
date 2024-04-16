@@ -1,8 +1,8 @@
 using PicSum.Core.Base.Exception;
-using PicSum.Core.Task.AsyncTaskV2;
-using PicSum.Task.Entities;
-using PicSum.Task.Paramters;
-using PicSum.Task.Tasks;
+using PicSum.Core.Job.AsyncJob;
+using PicSum.Job.Entities;
+using PicSum.Job.Paramters;
+using PicSum.Job.Jobs;
 using PicSum.UIComponent.Contents.Common;
 using PicSum.UIComponent.Contents.Parameter;
 using PicSum.UIComponent.Contents.Properties;
@@ -25,8 +25,8 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             return () =>
             {
-                var task = new TwoWayTask<FilesGetByRatingTask, ValueParameter<int>, ListResult<FileShallowInfoEntity>>();
-                task.Callback(e =>
+                var job = new TwoWayJob<FilesGetByRatingJob, ValueParameter<int>, ListResult<FileShallowInfoEntity>>();
+                job.Callback(e =>
                 {
                     var imageFiles = e
                         .Where(fileInfo => fileInfo.IsImageFile);
@@ -45,49 +45,49 @@ namespace PicSum.UIComponent.Contents.FileList
                 })
                 .StartThread();
 
-                task.StartTask(new ValueParameter<int>() { Value = int.Parse(param.SourcesKey) });
-                task.Wait();
-                task.Dispose();
+                job.StartJob(new ValueParameter<int>(int.Parse(param.SourcesKey)));
+                job.Wait();
+                job.Dispose();
             };
         }
 
         #region インスタンス変数
 
         private readonly RatingFileListPageParameter parameter = null;
-        private TwoWayTask<FilesGetByRatingTask, ValueParameter<int>, ListResult<FileShallowInfoEntity>> searchTask = null;
-        private OneWayTask<FileRatingUpdateTask, FileRatingUpdateParameter> deleteTask = null;
+        private TwoWayJob<FilesGetByRatingJob, ValueParameter<int>, ListResult<FileShallowInfoEntity>> searchJob = null;
+        private OneWayJob<FileRatingUpdateJob, FileRatingUpdateParameter> deleteJob = null;
 
         #endregion
 
         #region プライベートプロパティ
 
-        private TwoWayTask<FilesGetByRatingTask, ValueParameter<int>, ListResult<FileShallowInfoEntity>> SearchTask
+        private TwoWayJob<FilesGetByRatingJob, ValueParameter<int>, ListResult<FileShallowInfoEntity>> SearchJob
         {
             get
             {
-                if (this.searchTask == null)
+                if (this.searchJob == null)
                 {
-                    this.searchTask = new();
-                    this.searchTask
-                        .Callback(this.SearchTask_Callback)
+                    this.searchJob = new();
+                    this.searchJob
+                        .Callback(this.SearchJob_Callback)
                         .StartThread();
                 }
 
-                return this.searchTask;
+                return this.searchJob;
             }
         }
 
-        private OneWayTask<FileRatingUpdateTask, FileRatingUpdateParameter> DeleteTask
+        private OneWayJob<FileRatingUpdateJob, FileRatingUpdateParameter> DeleteJob
         {
             get
             {
-                if (this.deleteTask == null)
+                if (this.deleteJob == null)
                 {
-                    this.deleteTask = new();
-                    this.deleteTask.StartThread();
+                    this.deleteJob = new();
+                    this.deleteJob.StartThread();
                 }
 
-                return this.deleteTask;
+                return this.deleteJob;
             }
         }
 
@@ -109,11 +109,8 @@ namespace PicSum.UIComponent.Contents.FileList
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            var param = new ValueParameter<int>
-            {
-                Value = this.parameter.RatingValue
-            };
-            this.SearchTask.StartTask(param);
+            var param = new ValueParameter<int>(this.parameter.RatingValue);
+            this.SearchJob.StartJob(param);
         }
 
         protected override void Dispose(bool disposing)
@@ -123,16 +120,16 @@ namespace PicSum.UIComponent.Contents.FileList
                 this.parameter.SelectedFilePath = base.SelectedFilePath;
                 this.parameter.SortInfo = base.SortInfo;
 
-                if (this.searchTask != null)
+                if (this.searchJob != null)
                 {
-                    this.searchTask.Dispose();
-                    this.searchTask = null;
+                    this.searchJob.Dispose();
+                    this.searchJob = null;
                 }
 
-                if (this.deleteTask != null)
+                if (this.deleteJob != null)
                 {
-                    this.deleteTask.Dispose();
-                    this.deleteTask = null;
+                    this.deleteJob.Dispose();
+                    this.deleteJob = null;
                 }
             }
 
@@ -157,7 +154,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 FilePathList = filePathList,
                 RatingValue = 0
             };
-            this.DeleteTask.StartTask(param);
+            this.DeleteJob.StartJob(param);
 
             this.RemoveFile(filePathList);
         }
@@ -194,7 +191,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
         #region プロセスイベント
 
-        private void SearchTask_Callback(ListResult<FileShallowInfoEntity> e)
+        private void SearchJob_Callback(ListResult<FileShallowInfoEntity> e)
         {
             if (this.parameter.SortInfo == null)
             {

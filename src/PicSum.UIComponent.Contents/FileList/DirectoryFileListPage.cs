@@ -1,11 +1,11 @@
 using PicSum.Core.Base.Conf;
 using PicSum.Core.Base.Exception;
-using PicSum.Core.Task.AsyncTaskV2;
-using PicSum.Task.Entities;
-using PicSum.Task.Parameters;
-using PicSum.Task.Paramters;
-using PicSum.Task.Results;
-using PicSum.Task.Tasks;
+using PicSum.Core.Job.AsyncJob;
+using PicSum.Job.Entities;
+using PicSum.Job.Parameters;
+using PicSum.Job.Paramters;
+using PicSum.Job.Results;
+using PicSum.Job.Jobs;
 using PicSum.UIComponent.Contents.Common;
 using PicSum.UIComponent.Contents.Parameter;
 using SWF.Common;
@@ -28,8 +28,8 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             return () =>
             {
-                var task = new TwoWayTask<FilesGetByDirectoryTask, ValueParameter<string>, DirectoryGetResult>();
-                task
+                var job = new TwoWayJob<FilesGetByDirectoryJob, ValueParameter<string>, DirectoryGetResult>();
+                job
                 .Callback(e =>
                 {
                     var imageFiles = e.FileInfoList
@@ -49,81 +49,81 @@ namespace PicSum.UIComponent.Contents.FileList
                 })
                 .StartThread();
 
-                task.StartTask(new ValueParameter<string>() { Value = param.SourcesKey });
-                task.Wait();
-                task.Dispose();
+                job.StartJob(new ValueParameter<string>(param.SourcesKey));
+                job.Wait();
+                job.Dispose();
             };
         }
 
         #region インスタンス変数
 
         private readonly DirectoryFileListPageParameter parameter = null;
-        private TwoWayTask<FilesGetByDirectoryTask, ValueParameter<string>, DirectoryGetResult> searchTask = null;
-        private OneWayTask<DirectoryStateUpdateTask, DirectoryStateParameter> directoryStateUpdateTask = null;
-        private OneWayTask<DirectoryViewHistoryAddTask, ValueParameter<string>> directoryHistoryaddTask = null;
-        private TwoWayTask<NextDirectoryGetTask, NextDirectoryGetParameter<string>, ValueResult<string>> nextDirectoryGetTask = null;
+        private TwoWayJob<FilesGetByDirectoryJob, ValueParameter<string>, DirectoryGetResult> searchJob = null;
+        private OneWayJob<DirectoryStateUpdateJob, DirectoryStateParameter> directoryStateUpdateJob = null;
+        private OneWayJob<DirectoryViewHistoryAddJob, ValueParameter<string>> directoryHistoryaddJob = null;
+        private TwoWayJob<NextDirectoryGetJob, NextDirectoryGetParameter<string>, ValueResult<string>> nextDirectoryGetJob = null;
 
         #endregion
 
         #region プライベートプロパティ
 
-        private TwoWayTask<FilesGetByDirectoryTask, ValueParameter<string>, DirectoryGetResult> SearchTask
+        private TwoWayJob<FilesGetByDirectoryJob, ValueParameter<string>, DirectoryGetResult> SearchJob
         {
             get
             {
-                if (this.searchTask == null)
+                if (this.searchJob == null)
                 {
-                    this.searchTask = new();
-                    this.searchTask
-                        .Callback(this.SearchTask_Callback)
+                    this.searchJob = new();
+                    this.searchJob
+                        .Callback(this.SearchJob_Callback)
                         .StartThread();
                 }
 
-                return this.searchTask;
+                return this.searchJob;
             }
         }
 
-        private OneWayTask<DirectoryStateUpdateTask, DirectoryStateParameter> DirectoryStateUpdateTask
+        private OneWayJob<DirectoryStateUpdateJob, DirectoryStateParameter> DirectoryStateUpdateJob
         {
             get
             {
-                if (this.directoryStateUpdateTask == null)
+                if (this.directoryStateUpdateJob == null)
                 {
-                    this.directoryStateUpdateTask = new();
-                    this.directoryStateUpdateTask.StartThread();
+                    this.directoryStateUpdateJob = new();
+                    this.directoryStateUpdateJob.StartThread();
                 }
 
-                return this.directoryStateUpdateTask;
+                return this.directoryStateUpdateJob;
             }
         }
 
-        private OneWayTask<DirectoryViewHistoryAddTask, ValueParameter<string>> DirectoryHistoryAddTask
+        private OneWayJob<DirectoryViewHistoryAddJob, ValueParameter<string>> DirectoryHistoryAddJob
         {
             get
             {
-                if (this.directoryHistoryaddTask == null)
+                if (this.directoryHistoryaddJob == null)
                 {
-                    this.directoryHistoryaddTask = new();
-                    this.directoryHistoryaddTask.StartThread();
+                    this.directoryHistoryaddJob = new();
+                    this.directoryHistoryaddJob.StartThread();
                 }
 
-                return this.directoryHistoryaddTask;
+                return this.directoryHistoryaddJob;
             }
         }
 
-        private TwoWayTask<NextDirectoryGetTask, NextDirectoryGetParameter<string>, ValueResult<string>> NextDirectoryGetTask
+        private TwoWayJob<NextDirectoryGetJob, NextDirectoryGetParameter<string>, ValueResult<string>> NextDirectoryGetJob
         {
             get
             {
-                if (this.nextDirectoryGetTask == null)
+                if (this.nextDirectoryGetJob == null)
                 {
-                    this.nextDirectoryGetTask = new();
-                    this.nextDirectoryGetTask
+                    this.nextDirectoryGetJob = new();
+                    this.nextDirectoryGetJob
                         .Callback(this.GetNextDirectoryProcess_Callback)
                         .StartThread();
                 }
 
-                return this.nextDirectoryGetTask;
+                return this.nextDirectoryGetJob;
             }
         }
 
@@ -145,11 +145,8 @@ namespace PicSum.UIComponent.Contents.FileList
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            var param = new ValueParameter<string>
-            {
-                Value = this.parameter.DirectoryPath
-            };
-            this.SearchTask.StartTask(param);
+            var param = new ValueParameter<string>(this.parameter.DirectoryPath);
+            this.SearchJob.StartJob(param);
         }
 
         protected override void Dispose(bool disposing)
@@ -158,28 +155,28 @@ namespace PicSum.UIComponent.Contents.FileList
             {
                 this.SaveCurrentDirectoryState();
 
-                if (this.searchTask != null)
+                if (this.searchJob != null)
                 {
-                    this.searchTask.Dispose();
-                    this.searchTask = null;
+                    this.searchJob.Dispose();
+                    this.searchJob = null;
                 }
 
-                if (this.directoryStateUpdateTask != null)
+                if (this.directoryStateUpdateJob != null)
                 {
-                    this.directoryStateUpdateTask.Dispose();
-                    this.directoryStateUpdateTask = null;
+                    this.directoryStateUpdateJob.Dispose();
+                    this.directoryStateUpdateJob = null;
                 }
 
-                if (this.directoryHistoryaddTask != null)
+                if (this.directoryHistoryaddJob != null)
                 {
-                    this.directoryHistoryaddTask.Dispose();
-                    this.directoryHistoryaddTask = null;
+                    this.directoryHistoryaddJob.Dispose();
+                    this.directoryHistoryaddJob = null;
                 }
 
-                if (this.nextDirectoryGetTask != null)
+                if (this.nextDirectoryGetJob != null)
                 {
-                    this.nextDirectoryGetTask.Dispose();
-                    this.nextDirectoryGetTask = null;
+                    this.nextDirectoryGetJob.Dispose();
+                    this.nextDirectoryGetJob = null;
                 }
             }
 
@@ -214,11 +211,10 @@ namespace PicSum.UIComponent.Contents.FileList
 
             var param = new NextDirectoryGetParameter<string>
             {
-                CurrentParameter = new ValueEntity<string>(),
+                CurrentParameter = new ValueEntity<string>(this.parameter.DirectoryPath),
                 IsNext = false,
             };
-            param.CurrentParameter.Value = this.parameter.DirectoryPath;
-            this.NextDirectoryGetTask.StartTask(param);
+            this.NextDirectoryGetJob.StartJob(param);
         }
 
         protected override void OnMoveNextButtonClick(EventArgs e)
@@ -231,10 +227,9 @@ namespace PicSum.UIComponent.Contents.FileList
             var param = new NextDirectoryGetParameter<string>
             {
                 IsNext = true,
-                CurrentParameter = new ValueEntity<string>()
+                CurrentParameter = new ValueEntity<string>(this.parameter.DirectoryPath)
             };
-            param.CurrentParameter.Value = this.parameter.DirectoryPath;
-            this.NextDirectoryGetTask.StartTask(param);
+            this.NextDirectoryGetJob.StartJob(param);
         }
 
         protected override Action GetImageFilesGetAction(ImageViewerPageParameter param)
@@ -307,14 +302,14 @@ namespace PicSum.UIComponent.Contents.FileList
 
             param.SelectedFilePath = base.SelectedFilePath;
 
-            this.DirectoryStateUpdateTask.StartTask(param);
+            this.DirectoryStateUpdateJob.StartJob(param);
         }
 
         #endregion
 
         #region プロセスイベント
 
-        private void SearchTask_Callback(DirectoryGetResult e)
+        private void SearchJob_Callback(DirectoryGetResult e)
         {
             if (!string.IsNullOrEmpty(this.parameter.SelectedFilePath))
             {
@@ -343,11 +338,8 @@ namespace PicSum.UIComponent.Contents.FileList
                 }
             }
 
-            var param = new ValueParameter<string>
-            {
-                Value = e.DirectoryPath
-            };
-            this.DirectoryHistoryAddTask.StartTask(param);
+            var param = new ValueParameter<string>(e.DirectoryPath);
+            this.DirectoryHistoryAddJob.StartJob(param);
         }
 
         private void GetNextDirectoryProcess_Callback(ValueResult<string> e)

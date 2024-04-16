@@ -1,9 +1,9 @@
 using PicSum.Core.Base.Conf;
-using PicSum.Core.Task.AsyncTaskV2;
-using PicSum.Task.Entities;
-using PicSum.Task.Paramters;
-using PicSum.Task.Results;
-using PicSum.Task.Tasks;
+using PicSum.Core.Job.AsyncJob;
+using PicSum.Job.Entities;
+using PicSum.Job.Paramters;
+using PicSum.Job.Results;
+using PicSum.Job.Jobs;
 using PicSum.UIComponent.Contents.Common;
 using PicSum.UIComponent.Contents.Conf;
 using PicSum.UIComponent.Contents.ContextMenu;
@@ -91,9 +91,9 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private Dictionary<string, FileEntity> masterFileDictionary = null;
         private List<string> filterFilePathList = null;
-        private TwoWayTask<ThumbnailsGetTask, ThumbnailsGetParameter, ThumbnailImageResult> getThumbnailsTask = null;
-        private OneWayTask<FileExportTask, ExportFileParameter> exportFileTask = null;
-        private OneWayTask<BookmarkAddTask, ValueParameter<string>> addBookmarkTask = null;
+        private TwoWayJob<ThumbnailsGetJob, ThumbnailsGetParameter, ThumbnailImageResult> getThumbnailsJob = null;
+        private OneWayJob<FileExportJob, ExportFileParameter> exportFileJob = null;
+        private OneWayJob<BookmarkAddJob, ValueParameter<string>> addBookmarkJob = null;
 
         #endregion
 
@@ -236,49 +236,49 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
-        private TwoWayTask<ThumbnailsGetTask, ThumbnailsGetParameter, ThumbnailImageResult> GetThumbnailsTask
+        private TwoWayJob<ThumbnailsGetJob, ThumbnailsGetParameter, ThumbnailImageResult> GetThumbnailsJob
         {
             get
             {
-                if (this.getThumbnailsTask == null)
+                if (this.getThumbnailsJob == null)
                 {
-                    this.getThumbnailsTask = new();
-                    this.getThumbnailsTask
-                        .Callback(this.GetThumbnailsTask_Callback)
+                    this.getThumbnailsJob = new();
+                    this.getThumbnailsJob
+                        .Callback(this.GetThumbnailsJob_Callback)
                         .StartThread();
                 }
 
-                return this.getThumbnailsTask;
+                return this.getThumbnailsJob;
             }
         }
 
-        private OneWayTask<FileExportTask, ExportFileParameter> ExportFileTask
+        private OneWayJob<FileExportJob, ExportFileParameter> ExportFileJob
         {
             get
             {
-                if (this.exportFileTask == null)
+                if (this.exportFileJob == null)
                 {
-                    this.exportFileTask = new();
-                    this.exportFileTask
+                    this.exportFileJob = new();
+                    this.exportFileJob
                         .StartThread();
                 }
 
-                return this.exportFileTask;
+                return this.exportFileJob;
             }
         }
 
-        private OneWayTask<BookmarkAddTask, ValueParameter<string>> AddBookmarkTask
+        private OneWayJob<BookmarkAddJob, ValueParameter<string>> AddBookmarkJob
         {
             get
             {
-                if (this.addBookmarkTask == null)
+                if (this.addBookmarkJob == null)
                 {
-                    this.addBookmarkTask = new();
-                    this.addBookmarkTask
+                    this.addBookmarkJob = new();
+                    this.addBookmarkJob
                         .StartThread();
                 }
 
-                return this.addBookmarkTask;
+                return this.addBookmarkJob;
             }
         }
 
@@ -318,22 +318,22 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             if (disposing && (components != null))
             {
-                if (this.getThumbnailsTask != null)
+                if (this.getThumbnailsJob != null)
                 {
-                    this.getThumbnailsTask.Dispose();
-                    this.getThumbnailsTask = null;
+                    this.getThumbnailsJob.Dispose();
+                    this.getThumbnailsJob = null;
                 }
 
-                if (this.exportFileTask != null)
+                if (this.exportFileJob != null)
                 {
-                    this.exportFileTask.Dispose();
-                    this.exportFileTask = null;
+                    this.exportFileJob.Dispose();
+                    this.exportFileJob = null;
                 }
 
-                if (this.addBookmarkTask != null)
+                if (this.addBookmarkJob != null)
                 {
-                    this.addBookmarkTask.Dispose();
-                    this.addBookmarkTask = null;
+                    this.addBookmarkJob.Dispose();
+                    this.addBookmarkJob = null;
                 }
 
                 components.Dispose();
@@ -349,7 +349,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
         protected override void OnInvalidated(InvalidateEventArgs e)
         {
-            this.GetThumbnailsTask.BeginCancel();
+            this.GetThumbnailsJob.BeginCancel();
             base.OnInvalidated(e);
         }
 
@@ -798,7 +798,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
         #region プロセスイベント
 
-        private void GetThumbnailsTask_Callback(ThumbnailImageResult e)
+        private void GetThumbnailsJob_Callback(ThumbnailImageResult e)
         {
             if (this.masterFileDictionary == null
                 || !this.masterFileDictionary.TryGetValue(e.FilePath, out var file))
@@ -985,7 +985,7 @@ namespace PicSum.UIComponent.Contents.FileList
                     param.ThumbnailHeight = this.flowList.ItemHeight - this.flowList.ItemSpace * 2;
                 }
 
-                this.GetThumbnailsTask.StartTask(param);
+                this.GetThumbnailsJob.StartJob(param);
             }
         }
 
@@ -1262,7 +1262,7 @@ namespace PicSum.UIComponent.Contents.FileList
                         SrcFilePath = srcFilePath,
                         ExportFilePath = ofd.FileName
                     };
-                    this.ExportFileTask.StartTask(param);
+                    this.ExportFileJob.StartJob(param);
 
                     CommonConfig.ExportDirectoryPath = dir;
                 }
@@ -1300,12 +1300,9 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private void FileContextMenu_Bookmark(object sender, ExecuteFileEventArgs e)
         {
-            var paramter = new ValueParameter<string>()
-            {
-                Value = e.FilePath,
-            };
+            var paramter = new ValueParameter<string>(e.FilePath);
 
-            this.AddBookmarkTask.StartTask(paramter);
+            this.AddBookmarkJob.StartJob(paramter);
         }
 
         #endregion

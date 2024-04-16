@@ -1,9 +1,9 @@
 using NLog;
 using PicSum.Core.Base.Conf;
-using PicSum.Core.Task.AsyncTaskV2;
-using PicSum.Task.Paramters;
-using PicSum.Task.Results;
-using PicSum.Task.Tasks;
+using PicSum.Core.Job.AsyncJob;
+using PicSum.Job.Paramters;
+using PicSum.Job.Results;
+using PicSum.Job.Jobs;
 using PicSum.UIComponent.Contents.Common;
 using PicSum.UIComponent.Contents.Parameter;
 using PicSum.UIComponent.InfoPanel;
@@ -39,8 +39,8 @@ namespace PicSum.Main.UIComponent
 
         private Size previrewSize = Size.Empty;
         private Timer redrawTimer = null;
-        private TwoWayTask<TagsGetTask, ListResult<string>> getTagListTask = null;
-        private TwoWayTask<ImageFileGetByDirectoryTask, ImageFileGetByDirectoryParameter, ImageFileGetByDirectoryResult> getFilesTask = null;
+        private TwoWayJob<TagsGetJob, ListResult<string>> getTagListJob = null;
+        private TwoWayJob<ImageFileGetByDirectoryJob, ImageFileGetByDirectoryParameter, ImageFileGetByDirectoryResult> getFilesJob = null;
 
         #endregion
 
@@ -62,19 +62,19 @@ namespace PicSum.Main.UIComponent
 
         #region プライベートプロパティ
 
-        private TwoWayTask<TagsGetTask, ListResult<string>> GetTagListTask
+        private TwoWayJob<TagsGetJob, ListResult<string>> GetTagListJob
         {
             get
             {
-                if (this.getTagListTask == null)
+                if (this.getTagListJob == null)
                 {
-                    this.getTagListTask = new();
-                    this.getTagListTask
-                        .Callback(this.GetTagListTask_Callback)
+                    this.getTagListJob = new();
+                    this.getTagListJob
+                        .Callback(this.GetTagListJob_Callback)
                         .StartThread();
                 }
 
-                return this.getTagListTask;
+                return this.getTagListJob;
             }
         }
 
@@ -170,16 +170,16 @@ namespace PicSum.Main.UIComponent
         {
             if (disposing && (components != null))
             {
-                if (this.getTagListTask != null)
+                if (this.getTagListJob != null)
                 {
-                    this.getTagListTask.Dispose();
-                    this.getTagListTask = null;
+                    this.getTagListJob.Dispose();
+                    this.getTagListJob = null;
                 }
 
-                if (this.getFilesTask != null)
+                if (this.getFilesJob != null)
                 {
-                    this.getFilesTask.Dispose();
-                    this.getFilesTask = null;
+                    this.getFilesJob.Dispose();
+                    this.getFilesJob = null;
                 }
 
                 components.Dispose();
@@ -261,16 +261,16 @@ namespace PicSum.Main.UIComponent
             }
         }
 
-        private TwoWayTask<ImageFileGetByDirectoryTask, ImageFileGetByDirectoryParameter, ImageFileGetByDirectoryResult> CreateNewGetFilesTask()
+        private TwoWayJob<ImageFileGetByDirectoryJob, ImageFileGetByDirectoryParameter, ImageFileGetByDirectoryResult> CreateNewGetFilesJob()
         {
-            if (this.getFilesTask != null)
+            if (this.getFilesJob != null)
             {
-                this.getFilesTask.Dispose();
-                this.getFilesTask = null;
+                this.getFilesJob.Dispose();
+                this.getFilesJob = null;
             }
 
-            this.getFilesTask = new();
-            return this.getFilesTask;
+            this.getFilesJob = new();
+            return this.getFilesJob;
         }
 
         private void RemovePageEventHandler(BrowserPage page)
@@ -439,8 +439,8 @@ namespace PicSum.Main.UIComponent
             {
                 return () =>
                 {
-                    var task = this.CreateNewGetFilesTask();
-                    task
+                    var job = this.CreateNewGetFilesJob();
+                    job
                     .Callback(e =>
                     {
                         var title = FileUtil.IsDirectory(subParamter.FilePath) ?
@@ -453,12 +453,12 @@ namespace PicSum.Main.UIComponent
                     })
                     .StartThread();
 
-                    task.StartTask(subParamter);
+                    job.StartJob(subParamter);
                 };
             };
         }
 
-        private void GetTagListTask_Callback(ListResult<string> e)
+        private void GetTagListJob_Callback(ListResult<string> e)
         {
             this.tagDropToolButton.SetItems(e);
 
@@ -722,7 +722,7 @@ namespace PicSum.Main.UIComponent
 
         private void TagDropToolButton_DropDownOpening(object sender, DropDownOpeningEventArgs e)
         {
-            this.GetTagListTask.StartTask();
+            this.GetTagListJob.StartJob();
         }
 
         private void TagDropToolButton_ItemMouseClick(object sender, ItemMouseClickEventArgs e)

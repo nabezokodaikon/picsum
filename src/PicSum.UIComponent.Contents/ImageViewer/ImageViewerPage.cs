@@ -1,9 +1,9 @@
 using NLog;
 using PicSum.Core.Base.Conf;
-using PicSum.Core.Task.AsyncTaskV2;
-using PicSum.Task.Paramters;
-using PicSum.Task.Results;
-using PicSum.Task.Tasks;
+using PicSum.Core.Job.AsyncJob;
+using PicSum.Job.Paramters;
+using PicSum.Job.Results;
+using PicSum.Job.Jobs;
 using PicSum.UIComponent.Contents.Common;
 using PicSum.UIComponent.Contents.Conf;
 using PicSum.UIComponent.Contents.ContextMenu;
@@ -69,9 +69,9 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         private ImageSizeMode sizeMode = ImageSizeMode.FitOnlyBigImage;
         private IList<string> filePathList = null;
 
-        private TwoWayTask<ImageFileReadTask, ImageFileReadParameter, ImageFileGetResult> getImageFileTask = null;
-        private OneWayTask<BookmarkAddTask, ValueParameter<string>> addBookmarkTask = null;
-        private OneWayTask<FileExportTask, ExportFileParameter> exportFileTask = null;
+        private TwoWayJob<ImageFileReadJob, ImageFileReadParameter, ImageFileGetResult> getImageFileJob = null;
+        private OneWayJob<BookmarkAddJob, ValueParameter<string>> addBookmarkJob = null;
+        private OneWayJob<FileExportJob, ExportFileParameter> exportFileJob = null;
 
         #endregion
 
@@ -120,51 +120,51 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             }
         }
 
-        private TwoWayTask<ImageFileReadTask, ImageFileReadParameter, ImageFileGetResult> GetImageFileTask
+        private TwoWayJob<ImageFileReadJob, ImageFileReadParameter, ImageFileGetResult> GetImageFileJob
         {
             get
             {
-                if (this.getImageFileTask == null)
+                if (this.getImageFileJob == null)
                 {
-                    this.getImageFileTask = new();
-                    this.getImageFileTask
-                        .Callback(this.GetImageFileTask_Callback)
+                    this.getImageFileJob = new();
+                    this.getImageFileJob
+                        .Callback(this.GetImageFileJob_Callback)
                         .Catch(_ => this.Cursor = Cursors.Default)
                         .Complete(() => this.Cursor = Cursors.Default)
                         .StartThread();
                 }
 
-                return this.getImageFileTask;
+                return this.getImageFileJob;
             }
         }
 
-        private OneWayTask<BookmarkAddTask, ValueParameter<string>> AddBookmarkTask
+        private OneWayJob<BookmarkAddJob, ValueParameter<string>> AddBookmarkJob
         {
             get
             {
-                if (this.addBookmarkTask == null)
+                if (this.addBookmarkJob == null)
                 {
-                    this.addBookmarkTask = new();
-                    this.addBookmarkTask
+                    this.addBookmarkJob = new();
+                    this.addBookmarkJob
                         .StartThread();
                 }
 
-                return this.addBookmarkTask;
+                return this.addBookmarkJob;
             }
         }
 
-        private OneWayTask<FileExportTask, ExportFileParameter> ExportFileTask
+        private OneWayJob<FileExportJob, ExportFileParameter> ExportFileJob
         {
             get
             {
-                if (this.exportFileTask == null)
+                if (this.exportFileJob == null)
                 {
-                    this.exportFileTask = new();
-                    this.exportFileTask
+                    this.exportFileJob = new();
+                    this.exportFileJob
                         .StartThread();
                 }
 
-                return this.exportFileTask;
+                return this.exportFileJob;
             }
         }
 
@@ -234,22 +234,22 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         {
             if (disposing)
             {
-                if (this.getImageFileTask != null)
+                if (this.getImageFileJob != null)
                 {
-                    this.getImageFileTask.Dispose();
-                    this.getImageFileTask = null;
+                    this.getImageFileJob.Dispose();
+                    this.getImageFileJob = null;
                 }
 
-                if (this.addBookmarkTask != null)
+                if (this.addBookmarkJob != null)
                 {
-                    this.addBookmarkTask.Dispose();
-                    this.addBookmarkTask = null;
+                    this.addBookmarkJob.Dispose();
+                    this.addBookmarkJob = null;
                 }
 
-                if (this.exportFileTask != null)
+                if (this.exportFileJob != null)
                 {
-                    this.exportFileTask.Dispose();
-                    this.exportFileTask = null;
+                    this.exportFileJob.Dispose();
+                    this.exportFileJob = null;
                 }
 
                 this.leftImagePanel.Dispose();
@@ -509,7 +509,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 ThumbnailSize = this.leftImagePanel.ThumbnailSize
             };
 
-            this.GetImageFileTask.StartTask(param);
+            this.GetImageFileJob.StartJob(param);
         }
 
         private void DoDragDrop(string currentFilePath)
@@ -616,7 +616,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             }
         }
 
-        private void GetImageFileTask_Callback(ImageFileGetResult e)
+        private void GetImageFileJob_Callback(ImageFileGetResult e)
         {
             this.leftImageFilePath = string.Empty;
             this.leftImagePanel.ClearImage();
@@ -1076,7 +1076,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                         SrcFilePath = srcFilePath,
                         ExportFilePath = ofd.FileName
                     };
-                    this.ExportFileTask.StartTask(param);
+                    this.ExportFileJob.StartJob(param);
 
                     CommonConfig.ExportDirectoryPath = dir;
                 }
@@ -1095,12 +1095,9 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
         private void FileContextMenu_Bookmark(object sender, ExecuteFileEventArgs e)
         {
-            var paramter = new ValueParameter<string>()
-            {
-                Value = e.FilePath,
-            };
+            var paramter = new ValueParameter<string>(e.FilePath);
 
-            this.AddBookmarkTask.StartTask(paramter);
+            this.AddBookmarkJob.StartJob(paramter);
         }
 
         #endregion

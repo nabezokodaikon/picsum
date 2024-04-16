@@ -21,6 +21,7 @@ namespace SWF.Common
 
         public const string ROOT_DIRECTORY_PATH =
             "1435810adf6f3080e21df9c3b666c7887883da42ad582d911a81931c38e720da1235036c60c69389e8c4fcc26be0c796626ef8ed3296bd9c65445ff12168fb22";
+        public static readonly DateTime ROOT_DIRECTORY_DATETIME = DateTime.MinValue;
 
         /// <summary>
         /// ファイル、フォルダの存在を確認します。
@@ -381,13 +382,13 @@ namespace SWF.Common
         /// </summary>
         /// <param name="filePath">ファイルパス</param>
         /// <returns>ファイル更新日時</returns>
-        public static DateTime? GetUpdateDate(string filePath)
+        public static DateTime GetUpdateDate(string filePath)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
             if (FileUtil.IsSystemRoot(filePath))
             {
-                return null;
+                return ROOT_DIRECTORY_DATETIME;
             }
 
             try

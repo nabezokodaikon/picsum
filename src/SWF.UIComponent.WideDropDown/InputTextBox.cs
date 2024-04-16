@@ -66,7 +66,7 @@ namespace SWF.UIComponent.WideDropDown
             try
             {
                 Marshal.StructureToPtr(rect, ptr, false);
-                WinApiMembers.SendMessage(this.Handle, WinApiMembers.EM_SETRECT, 0, ptr);
+                _ = WinApiMembers.SendMessage(this.Handle, WinApiMembers.EM_SETRECT, 0, ptr);
             }
             finally
             {

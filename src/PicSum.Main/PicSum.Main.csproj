@@ -63,7 +63,6 @@
     <ProjectReference Include="..\SWF.UIComponent.Common\SWF.UIComponent.Common.csproj" />
     <ProjectReference Include="..\SWF.UIComponent.Form\SWF.UIComponent.Form.csproj" />
     <ProjectReference Include="..\SWF.UIComponent.TabOperation\SWF.UIComponent.TabOperation.csproj" />
-    <ProjectReference Include="..\PicSum.Task\PicSum.Task.csproj" />
     <ProjectReference Include="..\PicSum.UIComponent.AddressBar\PicSum.UIComponent.AddressBar.csproj" />
     <ProjectReference Include="..\PicSum.UIComponent.InfoPanel\PicSum.UIComponent.InfoPanel.csproj" />
     <ProjectReference Include="..\SWF.UIComponent.WideDropDown\SWF.UIComponent.WideDropDown.csproj" />

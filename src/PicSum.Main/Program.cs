@@ -2,8 +2,8 @@ using NLog;
 using NLog.Config;
 using PicSum.Main.Mng;
 using PicSum.Main.UIComponent;
-using PicSum.Task.Logics;
-using PicSum.Task.Tasks;
+using PicSum.Job.Logics;
+using PicSum.Job.Jobs;
 using SWF.Common;
 using System;
 using System.Diagnostics;
@@ -118,7 +118,7 @@ namespace PicSum.Main
 
             FileIconCash.DisposeStaticResouces();
             ThumbnailGetLogic.DisposeStaticResouces();
-            FileExportTask.DisposeStaticResouces();
+            FileExportJob.DisposeStaticResouces();
 
             logger.Debug("アプリケーションを終了します。");
 

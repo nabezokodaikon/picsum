@@ -1,6 +1,6 @@
-using PicSum.Core.Task.AsyncTaskV2;
-using PicSum.Task.Results;
-using PicSum.Task.Tasks;
+using PicSum.Core.Job.AsyncJob;
+using PicSum.Job.Results;
+using PicSum.Job.Jobs;
 using PicSum.UIComponent.AddressBar.Properties;
 using SWF.Common;
 using System;
@@ -34,7 +34,7 @@ namespace PicSum.UIComponent.AddressBar
         private readonly Palette palette = new();
         private readonly OverflowDrawItem overflowItem = new();
         private readonly DirectoryHistoryDrawItem directoryHistoryItem = new();
-        private TwoWayTask<AddressInfoGetTask, ValueParameter<string>, AddressInfoGetResult> getAddressInfoTask = null;
+        private TwoWayJob<AddressInfoGetJob, ValueParameter<string>, AddressInfoGetResult> getAddressInfoJob = null;
         private string currentDirectoryPath = null;
         private readonly List<DrawItemBase> addressItems = [];
         private DrawItemBase mousePointItem = null;
@@ -136,14 +136,14 @@ namespace PicSum.UIComponent.AddressBar
 
         #region プライベートプロパティ
 
-        private TwoWayTask<AddressInfoGetTask, ValueParameter<string>, AddressInfoGetResult> GetAddressInfoProcess
+        private TwoWayJob<AddressInfoGetJob, ValueParameter<string>, AddressInfoGetResult> GetAddressInfoProcess
         {
             get
             {
-                if (this.getAddressInfoTask == null)
+                if (this.getAddressInfoJob == null)
                 {
-                    this.getAddressInfoTask = new();
-                    this.getAddressInfoTask
+                    this.getAddressInfoJob = new();
+                    this.getAddressInfoJob
                         .Callback(this.GetAddressInfoProcess_Callback)
                         .Catch(ex =>
                         {
@@ -154,7 +154,7 @@ namespace PicSum.UIComponent.AddressBar
                         .StartThread();
                 }
 
-                return this.getAddressInfoTask;
+                return this.getAddressInfoJob;
             }
         }
 
@@ -195,12 +195,9 @@ namespace PicSum.UIComponent.AddressBar
                 }
             }
 
-            var param = new ValueParameter<string>
-            {
-                Value = filePath
-            };
+            var param = new ValueParameter<string>(filePath);
 
-            this.GetAddressInfoProcess.StartTask(param);
+            this.GetAddressInfoProcess.StartJob(param);
         }
 
         #endregion
@@ -211,10 +208,10 @@ namespace PicSum.UIComponent.AddressBar
         {
             if (disposing)
             {
-                if (this.getAddressInfoTask != null)
+                if (this.getAddressInfoJob != null)
                 {
-                    this.getAddressInfoTask.Dispose();
-                    this.getAddressInfoTask = null;
+                    this.getAddressInfoJob.Dispose();
+                    this.getAddressInfoJob = null;
                 }
 
                 this.overflowItem.Dispose();

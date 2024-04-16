@@ -79,9 +79,9 @@ namespace PicSum.Main.Conf
                     (int)(primaryScreenBounds.Width * 0.3),
                     (int)(primaryScreenBounds.Height * 0.1));
 
-                this.WindowSize = new Size(800, 600);
+                this.WindowSize = new Size(1200, 800);
 
-                this.ThumbnailSize = 200;
+                this.ThumbnailSize = 144;
                 this.IsShowFileName = true;
                 this.IsShowImageFile = true;
                 this.IsShowDirectory = true;

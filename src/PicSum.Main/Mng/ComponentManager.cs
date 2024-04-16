@@ -1,5 +1,5 @@
 using PicSum.Main.Conf;
-using PicSum.Task.SyncTasks;
+using PicSum.Job.SyncJobs;
 using PicSum.UIComponent.Contents.Conf;
 using System;
 using System.Runtime.Versioning;
@@ -42,8 +42,8 @@ namespace PicSum.Main.Mng
         /// </summary>
         public void Dispose()
         {
-            var closingTask = new ClosingSyncTask();
-            closingTask.Execute();
+            var closingJob = new ClosingSyncJob();
+            closingJob.Execute();
 
             Config.Values.WindowState = BrowserConfig.WindowState;
             Config.Values.WindowLocaion = BrowserConfig.WindowLocaion;

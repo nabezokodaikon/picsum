@@ -1,6 +1,6 @@
-using PicSum.Core.Task.AsyncTaskV2;
-using PicSum.Task.Entities;
-using PicSum.Task.Tasks;
+using PicSum.Core.Job.AsyncJob;
+using PicSum.Job.Entities;
+using PicSum.Job.Jobs;
 using PicSum.UIComponent.AddressBar.Properties;
 using SWF.Common;
 using System;
@@ -17,25 +17,25 @@ namespace PicSum.UIComponent.AddressBar
         #region インスタンス変数
 
         private readonly Image drawImage = Resources.SmallArrowDown;
-        private TwoWayTask<DirectoryViewHistoryGetTask, ListResult<FileShallowInfoEntity>> getDirectoryHistoryTask = null;
+        private TwoWayJob<DirectoryViewHistoryGetJob, ListResult<FileShallowInfoEntity>> getDirectoryHistoryJob = null;
 
         #endregion
 
         #region プロパティ
 
-        private TwoWayTask<DirectoryViewHistoryGetTask, ListResult<FileShallowInfoEntity>> GetDirectoryHistoryTask
+        private TwoWayJob<DirectoryViewHistoryGetJob, ListResult<FileShallowInfoEntity>> GetDirectoryHistoryJob
         {
             get
             {
-                if (this.getDirectoryHistoryTask == null)
+                if (this.getDirectoryHistoryJob == null)
                 {
-                    this.getDirectoryHistoryTask = new();
-                    this.getDirectoryHistoryTask
-                        .Callback(r => this.GetDirectoryHistoryTask_Callback(r))
+                    this.getDirectoryHistoryJob = new();
+                    this.getDirectoryHistoryJob
+                        .Callback(r => this.GetDirectoryHistoryJob_Callback(r))
                         .StartThread();
                 }
 
-                return this.getDirectoryHistoryTask;
+                return this.getDirectoryHistoryJob;
             }
         }
 
@@ -54,10 +54,10 @@ namespace PicSum.UIComponent.AddressBar
 
         public new void Dispose()
         {
-            if (this.getDirectoryHistoryTask != null)
+            if (this.getDirectoryHistoryJob != null)
             {
-                this.getDirectoryHistoryTask.Dispose();
-                this.getDirectoryHistoryTask = null;
+                this.getDirectoryHistoryJob.Dispose();
+                this.getDirectoryHistoryJob = null;
             }
 
             base.Dispose();
@@ -65,10 +65,7 @@ namespace PicSum.UIComponent.AddressBar
 
         public override void Draw(Graphics g)
         {
-            if (g == null)
-            {
-                throw new ArgumentNullException(nameof(g));
-            }
+            ArgumentNullException.ThrowIfNull(g, nameof(g));
 
             var rect = this.GetRectangle();
 
@@ -86,10 +83,7 @@ namespace PicSum.UIComponent.AddressBar
 
         public override void OnMouseDown(MouseEventArgs e)
         {
-            if (e == null)
-            {
-                throw new ArgumentNullException("e");
-            }
+            ArgumentNullException.ThrowIfNull(e, nameof(e));
 
             if (e.Button == MouseButtons.Left)
             {
@@ -100,7 +94,7 @@ namespace PicSum.UIComponent.AddressBar
                 base.DropDownList.ClearSelectedItems();
                 base.DropDownList.ItemCount = 0;
                 base.DropDownList.Show(base.AddressBar, 0, base.AddressBar.Height);
-                this.GetDirectoryHistoryTask.StartTask();
+                this.GetDirectoryHistoryJob.StartJob();
             }
         }
 
@@ -160,7 +154,7 @@ namespace PicSum.UIComponent.AddressBar
 
         #region イベント
 
-        private void GetDirectoryHistoryTask_Callback(ListResult<FileShallowInfoEntity> e)
+        private void GetDirectoryHistoryJob_Callback(ListResult<FileShallowInfoEntity> e)
         {
             var width = 0;
 
@@ -168,10 +162,12 @@ namespace PicSum.UIComponent.AddressBar
             {
                 foreach (var info in e)
                 {
-                    var item = new DirectoryEntity();
-                    item.DirectoryPath = info.FilePath;
-                    item.DirectoryName = info.FileName;
-                    item.DirectoryIcon = info.SmallIcon;
+                    var item = new DirectoryEntity
+                    {
+                        DirectoryPath = info.FilePath,
+                        DirectoryName = info.FileName,
+                        DirectoryIcon = info.SmallIcon
+                    };
                     base.Items.Add(item);
 
                     width = Math.Max(width, (int)g.MeasureString(item.DirectoryPath + "________", base.Palette.TextFont).Width);

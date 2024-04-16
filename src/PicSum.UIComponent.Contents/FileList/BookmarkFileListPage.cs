@@ -1,8 +1,8 @@
 using PicSum.Core.Base.Exception;
-using PicSum.Core.Task.AsyncTaskV2;
-using PicSum.Task.Entities;
-using PicSum.Task.Results;
-using PicSum.Task.Tasks;
+using PicSum.Core.Job.AsyncJob;
+using PicSum.Job.Entities;
+using PicSum.Job.Results;
+using PicSum.Job.Jobs;
 using PicSum.UIComponent.Contents.Common;
 using PicSum.UIComponent.Contents.Parameter;
 using PicSum.UIComponent.Contents.Properties;
@@ -25,9 +25,9 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             return () =>
             {
-                var task = new TwoWayTask<FilesGetByDirectoryTask, ValueParameter<string>, DirectoryGetResult>();
+                var job = new TwoWayJob<FilesGetByDirectoryJob, ValueParameter<string>, DirectoryGetResult>();
 
-                task
+                job
                 .Callback(e =>
                 {
                     var imageFiles = e.FileInfoList
@@ -50,44 +50,44 @@ namespace PicSum.UIComponent.Contents.FileList
                 .StartThread();
 
                 var dir = FileUtil.GetParentDirectoryPath(param.SelectedFilePath);
-                task.StartTask(new ValueParameter<string>() { Value = dir });
-                task.Wait();
-                task.Dispose();
+                job.StartJob(new ValueParameter<string>(dir));
+                job.Wait();
+                job.Dispose();
             };
         }
 
         private readonly BookmarkFileListPageParameter parameter = null;
-        private TwoWayTask<BookmarksGetTask, ListResult<FileShallowInfoEntity>> searchTask = null;
-        private OneWayTask<BookmarkDeleteTask, ListParameter<string>> deleteTask = null;
+        private TwoWayJob<BookmarksGetJob, ListResult<FileShallowInfoEntity>> searchJob = null;
+        private OneWayJob<BookmarkDeleteJob, ListParameter<string>> deleteJob = null;
 
-        private TwoWayTask<BookmarksGetTask, ListResult<FileShallowInfoEntity>> SearchTask
+        private TwoWayJob<BookmarksGetJob, ListResult<FileShallowInfoEntity>> SearchJob
         {
             get
             {
-                if (this.searchTask == null)
+                if (this.searchJob == null)
                 {
-                    this.searchTask = new();
-                    this.searchTask
-                        .Callback(this.SearchTask_Callback)
+                    this.searchJob = new();
+                    this.searchJob
+                        .Callback(this.SearchJob_Callback)
                         .StartThread();
                 }
 
-                return this.searchTask;
+                return this.searchJob;
             }
         }
 
-        private OneWayTask<BookmarkDeleteTask, ListParameter<string>> DeleteTask
+        private OneWayJob<BookmarkDeleteJob, ListParameter<string>> DeleteJob
         {
             get
             {
-                if (this.deleteTask == null)
+                if (this.deleteJob == null)
                 {
-                    this.deleteTask = new();
-                    this.deleteTask
+                    this.deleteJob = new();
+                    this.deleteJob
                         .StartThread();
                 }
 
-                return this.deleteTask;
+                return this.deleteJob;
             }
         }
 
@@ -101,7 +101,7 @@ namespace PicSum.UIComponent.Contents.FileList
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            this.SearchTask.StartTask();
+            this.SearchJob.StartJob();
         }
 
         protected override void Dispose(bool disposing)
@@ -111,16 +111,16 @@ namespace PicSum.UIComponent.Contents.FileList
                 this.parameter.SelectedFilePath = base.SelectedFilePath;
                 this.parameter.SortInfo = base.SortInfo;
 
-                if (this.searchTask != null)
+                if (this.searchJob != null)
                 {
-                    this.searchTask.Dispose();
-                    this.searchTask = null;
+                    this.searchJob.Dispose();
+                    this.searchJob = null;
                 }
 
-                if (this.deleteTask != null)
+                if (this.deleteJob != null)
                 {
-                    this.deleteTask.Dispose();
-                    this.deleteTask = null;
+                    this.deleteJob.Dispose();
+                    this.deleteJob = null;
                 }
             }
 
@@ -142,7 +142,7 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             var parameter = new ListParameter<string>();
             parameter.AddRange(filePathList);
-            this.DeleteTask.StartTask(parameter);
+            this.DeleteJob.StartJob(parameter);
 
             base.RemoveFile(filePathList);
 
@@ -179,7 +179,7 @@ namespace PicSum.UIComponent.Contents.FileList
             base.sortFileRgistrationDateToolStripButton.Enabled = true;
         }
 
-        private void SearchTask_Callback(ListResult<FileShallowInfoEntity> result)
+        private void SearchJob_Callback(ListResult<FileShallowInfoEntity> result)
         {           
             if (this.parameter.SortInfo == null)
             {

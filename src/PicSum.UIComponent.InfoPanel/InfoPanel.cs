@@ -1,9 +1,9 @@
 using PicSum.Core.Base.Conf;
-using PicSum.Core.Task.AsyncTaskV2;
-using PicSum.Task.Entities;
-using PicSum.Task.Paramters;
-using PicSum.Task.Results;
-using PicSum.Task.Tasks;
+using PicSum.Core.Job.AsyncJob;
+using PicSum.Job.Entities;
+using PicSum.Job.Paramters;
+using PicSum.Job.Results;
+using PicSum.Job.Jobs;
 using PicSum.UIComponent.InfoPanel.Properties;
 using SWF.Common;
 using SWF.UIComponent.WideDropDown;
@@ -39,11 +39,11 @@ namespace PicSum.UIComponent.InfoPanel
 
         #region インスタンス変数
 
-        private TwoWayTask<FileDeepInfoGetTask, FileDeepInfoGetParameter, FileDeepInfoGetResult> getFileInfoTask = null;
-        private OneWayTask<FileRatingUpdateTask, FileRatingUpdateParameter> updateFileRatingTask = null;
-        private TwoWayTask<TagsGetTask, ListResult<string>> getTagListTask = null;
-        private OneWayTask<FileTagAddTask, UpdateFileTagParameter> addFileTagTask = null;
-        private OneWayTask<FileTagDeleteTask, UpdateFileTagParameter> deleteFileTagTask = null;
+        private TwoWayJob<FileDeepInfoGetJob, FileDeepInfoGetParameter, FileDeepInfoGetResult> getFileInfoJob = null;
+        private OneWayJob<FileRatingUpdateJob, FileRatingUpdateParameter> updateFileRatingJob = null;
+        private TwoWayJob<TagsGetJob, ListResult<string>> getTagListJob = null;
+        private OneWayJob<FileTagAddJob, UpdateFileTagParameter> addFileTagJob = null;
+        private OneWayJob<FileTagDeleteJob, UpdateFileTagParameter> deleteFileTagJob = null;
 
         private FileDeepInfoGetResult fileInfoSource = null;
         private Font allTagFont = null;
@@ -54,80 +54,80 @@ namespace PicSum.UIComponent.InfoPanel
 
         #region プライベートプロパティ
 
-        private TwoWayTask<FileDeepInfoGetTask, FileDeepInfoGetParameter, FileDeepInfoGetResult> GetFileInfoTask
+        private TwoWayJob<FileDeepInfoGetJob, FileDeepInfoGetParameter, FileDeepInfoGetResult> GetFileInfoJob
         {
             get
             {
-                if (this.getFileInfoTask == null)
+                if (this.getFileInfoJob == null)
                 {
-                    this.getFileInfoTask = new();
-                    this.getFileInfoTask
-                        .Callback(this.GetFileInfoTask_Callback)
+                    this.getFileInfoJob = new();
+                    this.getFileInfoJob
+                        .Callback(this.GetFileInfoJob_Callback)
                         .StartThread();
                 }
 
-                return this.getFileInfoTask;
+                return this.getFileInfoJob;
             }
         }
 
-        private OneWayTask<FileRatingUpdateTask, FileRatingUpdateParameter> UpdateFileRatingTask
+        private OneWayJob<FileRatingUpdateJob, FileRatingUpdateParameter> UpdateFileRatingJob
         {
             get
             {
-                if (this.updateFileRatingTask == null)
+                if (this.updateFileRatingJob == null)
                 {
-                    this.updateFileRatingTask = new();
-                    this.updateFileRatingTask
+                    this.updateFileRatingJob = new();
+                    this.updateFileRatingJob
                         .StartThread();
                 }
 
-                return this.updateFileRatingTask;
+                return this.updateFileRatingJob;
             }
         }
 
-        private TwoWayTask<TagsGetTask, ListResult<string>> GetTagListTask
+        private TwoWayJob<TagsGetJob, ListResult<string>> GetTagListJob
         {
             get
             {
-                if (this.getTagListTask == null)
+                if (this.getTagListJob == null)
                 {
-                    this.getTagListTask = new();
-                    this.getTagListTask
-                        .Callback(this.GetTagListTask_Callback)
+                    this.getTagListJob = new();
+                    this.getTagListJob
+                        .Callback(this.GetTagListJob_Callback)
                         .StartThread();
                 }
 
-                return this.getTagListTask;
+                return this.getTagListJob;
             }
         }
 
-        private OneWayTask<FileTagAddTask, UpdateFileTagParameter> AddFileTagTask
+        private OneWayJob<FileTagAddJob, UpdateFileTagParameter> AddFileTagJob
         {
             get
             {
-                if (this.addFileTagTask == null)
+                if (this.addFileTagJob == null)
                 {
-                    this.addFileTagTask = new();
-                    this.addFileTagTask
+                    this.addFileTagJob = new();
+                    this.addFileTagJob
                         .StartThread();
                 }
 
-                return this.addFileTagTask;
+                return this.addFileTagJob;
             }
         }
 
-        private OneWayTask<FileTagDeleteTask, UpdateFileTagParameter> DeleteFileTagTask
+        private OneWayJob<FileTagDeleteJob, UpdateFileTagParameter> DeleteFileTagJob
         {
             get
             {
-                if (this.deleteFileTagTask == null)
+                if (this.deleteFileTagJob == null)
                 {
-                    this.deleteFileTagTask = new();
-                    this.deleteFileTagTask
+                    this.deleteFileTagJob = new();
+                    this.deleteFileTagJob
                         .StartThread();
                 }
 
-                return this.deleteFileTagTask;
+                return this.deleteFileTagJob;
             }
         }
 
@@ -237,7 +237,7 @@ namespace PicSum.UIComponent.InfoPanel
                         ApplicationConst.INFOPANEL_WIDTH)
                 };
 
-                this.GetFileInfoTask.StartTask(param);
+                this.GetFileInfoJob.StartJob(param);
             }
             else
             {
@@ -253,34 +253,34 @@ namespace PicSum.UIComponent.InfoPanel
         {
             if (disposing && (components != null))
             {
-                if (this.getFileInfoTask != null)
+                if (this.getFileInfoJob != null)
                 {
-                    this.getFileInfoTask.Dispose();
-                    this.getFileInfoTask = null;
+                    this.getFileInfoJob.Dispose();
+                    this.getFileInfoJob = null;
                 }
 
-                if (this.updateFileRatingTask != null)
+                if (this.updateFileRatingJob != null)
                 {
-                    this.updateFileRatingTask.Dispose();
-                    this.updateFileRatingTask = null;
+                    this.updateFileRatingJob.Dispose();
+                    this.updateFileRatingJob = null;
                 }
 
-                if (this.getTagListTask != null)
+                if (this.getTagListJob != null)
                 {
-                    this.getTagListTask.Dispose();
-                    this.getTagListTask = null;
+                    this.getTagListJob.Dispose();
+                    this.getTagListJob = null;
                 }
 
-                if (this.addFileTagTask != null)
+                if (this.addFileTagJob != null)
                 {
-                    this.addFileTagTask.Dispose();
-                    this.addFileTagTask = null;
+                    this.addFileTagJob.Dispose();
+                    this.addFileTagJob = null;
                 }
 
-                if (this.deleteFileTagTask != null)
+                if (this.deleteFileTagJob != null)
                 {
-                    this.deleteFileTagTask.Dispose();
-                    this.deleteFileTagTask = null;
+                    this.deleteFileTagJob.Dispose();
+                    this.deleteFileTagJob = null;
                 }
 
                 components.Dispose();
@@ -372,7 +372,7 @@ namespace PicSum.UIComponent.InfoPanel
                 Tag = tag,
                 FilePathList = this.FilePathList
             };
-            this.AddFileTagTask.StartTask(param);
+            this.AddFileTagJob.StartJob(param);
 
             var tagInfo = this.TagList.Find(t => t.Tag.Equals(tag, StringComparison.Ordinal));
             if (tagInfo != null)
@@ -415,7 +415,7 @@ namespace PicSum.UIComponent.InfoPanel
                 Tag = tag,
                 FilePathList = this.FilePathList
             };
-            this.DeleteFileTagTask.StartTask(param);
+            this.DeleteFileTagJob.StartJob(param);
 
             var tagInfo = this.TagList.Find(t => t.Tag.Equals(tag, StringComparison.Ordinal));
             this.TagList.Remove(tagInfo);
@@ -476,7 +476,7 @@ namespace PicSum.UIComponent.InfoPanel
 
         #region プロセスイベント
 
-        private void GetFileInfoTask_Callback(FileDeepInfoGetResult result)
+        private void GetFileInfoJob_Callback(FileDeepInfoGetResult result)
         {
             this.ClearInfo();
 
@@ -497,12 +497,8 @@ namespace PicSum.UIComponent.InfoPanel
                     }
                 }
 
-                if (this.FileInfo.UpdateDate.HasValue)
-                {
-                    this.fileInfoLabel.Timestamp
-                        = $"{this.FileInfo.UpdateDate.Value:yyyy/MM/dd HH:mm:ss}";
-                }
-
+                this.fileInfoLabel.Timestamp
+                    = $"{this.FileInfo.UpdateDate:yyyy/MM/dd HH:mm:ss}";
                 this.ratingBar.SetValue(this.FileInfo.Rating);
             }
 
@@ -514,7 +510,7 @@ namespace PicSum.UIComponent.InfoPanel
             this.thumbnailPictureBox.Invalidate();
         }
 
-        private void GetTagListTask_Callback(ListResult<string> result)
+        private void GetTagListJob_Callback(ListResult<string> result)
         {
             this.wideComboBox.AddItems(result);
             this.wideComboBox.SelectItem();
@@ -622,7 +618,7 @@ namespace PicSum.UIComponent.InfoPanel
                 FilePathList = this.fileInfoSource.FilePathList,
                 RatingValue = this.ratingBar.Value
             };
-            this.UpdateFileRatingTask.StartTask(param);
+            this.UpdateFileRatingJob.StartJob(param);
         }
 
         #endregion
@@ -701,7 +697,7 @@ namespace PicSum.UIComponent.InfoPanel
 
         private void WideComboBox_DropDownOpening(object sender, DropDownOpeningEventArgs e)
         {
-            this.GetTagListTask.StartTask();
+            this.GetTagListJob.StartJob();
         }
 
         private void WideComboBox_AddItem(object sender, AddItemEventArgs e)

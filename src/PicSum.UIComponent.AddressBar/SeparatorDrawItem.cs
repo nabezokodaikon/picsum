@@ -1,6 +1,6 @@
-using PicSum.Core.Task.AsyncTaskV2;
-using PicSum.Task.Entities;
-using PicSum.Task.Tasks;
+using PicSum.Core.Job.AsyncJob;
+using PicSum.Job.Entities;
+using PicSum.Job.Jobs;
 using PicSum.UIComponent.AddressBar.Properties;
 using System;
 using System.Drawing;
@@ -20,7 +20,7 @@ namespace PicSum.UIComponent.AddressBar
         private readonly Image mouseDownImage = Resources.SmallArrowDown;
         private bool isRead = false;
         private Font selectedSubDirectoryFont = null;
-        private TwoWayTask<SubDirectoriesGetTask, ValueParameter<string>, ListResult<FileShallowInfoEntity>> getSubDirectoryTask = null;
+        private TwoWayJob<SubDirectoriesGetJob, ValueParameter<string>, ListResult<FileShallowInfoEntity>> getSubDirectoryJob = null;
 
         #endregion
 
@@ -29,19 +29,19 @@ namespace PicSum.UIComponent.AddressBar
         public DirectoryEntity Directory { get; set; }
         public string SelectedSubDirectoryPath { get; set; }
 
-        private TwoWayTask<SubDirectoriesGetTask, ValueParameter<string>, ListResult<FileShallowInfoEntity>> GetSubDirectoryTask
+        private TwoWayJob<SubDirectoriesGetJob, ValueParameter<string>, ListResult<FileShallowInfoEntity>> GetSubDirectoryJob
         {
             get
             {
-                if (this.getSubDirectoryTask == null)
+                if (this.getSubDirectoryJob == null)
                 {
-                    this.getSubDirectoryTask = new();
-                    this.getSubDirectoryTask
-                        .Callback(this.GetSubDirectoryTask_Callback)
+                    this.getSubDirectoryJob = new();
+                    this.getSubDirectoryJob
+                        .Callback(this.GetSubDirectoryJob_Callback)
                         .StartThread();
                 }
 
-                return this.getSubDirectoryTask;
+                return this.getSubDirectoryJob;
             }
         }
 
@@ -81,10 +81,10 @@ namespace PicSum.UIComponent.AddressBar
                 this.selectedSubDirectoryFont = null;
             }
 
-            if (this.getSubDirectoryTask != null)
+            if (this.getSubDirectoryJob != null)
             {
-                this.getSubDirectoryTask.Dispose();
-                this.getSubDirectoryTask = null;
+                this.getSubDirectoryJob.Dispose();
+                this.getSubDirectoryJob = null;
             }
 
             base.Dispose();
@@ -129,11 +129,8 @@ namespace PicSum.UIComponent.AddressBar
 
                 if (!this.isRead)
                 {
-                    var param = new ValueParameter<string>
-                    {
-                        Value = this.Directory.DirectoryPath
-                    };
-                    this.GetSubDirectoryTask.StartTask(param);
+                    var param = new ValueParameter<string>(this.Directory.DirectoryPath);
+                    this.GetSubDirectoryJob.StartJob(param);
                 }
             }
         }
@@ -208,7 +205,7 @@ namespace PicSum.UIComponent.AddressBar
 
         #region イベント
 
-        private void GetSubDirectoryTask_Callback(ListResult<FileShallowInfoEntity> e)
+        private void GetSubDirectoryJob_Callback(ListResult<FileShallowInfoEntity> e)
         {
             var width = MINIMUM_DROPDOWN_WIDHT;
 

@@ -1,8 +1,8 @@
 using PicSum.Core.Base.Exception;
-using PicSum.Core.Task.AsyncTaskV2;
+using PicSum.Core.Job.AsyncJob;
 using PicSum.Main.Conf;
-using PicSum.Task.Paramters;
-using PicSum.Task.Tasks;
+using PicSum.Job.Paramters;
+using PicSum.Job.Jobs;
 using PicSum.UIComponent.Contents.Common;
 using SWF.Common;
 using SWF.UIComponent.Form;
@@ -44,8 +44,8 @@ namespace PicSum.Main.UIComponent
 
         private BrowserMainPanel browserMainPanel = null;
         private bool isKeyDown = false;
-        private TwoWayTask<StartupTask, StartupPrameter, EmptyResult> startupTask = null;
-        private OneWayTask<DBCleanupTask> dbCleanupTask = null;
+        private TwoWayJob<StartupJob, StartupPrameter, EmptyResult> startupJob = null;
+        private OneWayJob<DBCleanupJob> dbCleanupJob = null;
 
         #endregion
 
@@ -126,16 +126,16 @@ namespace PicSum.Main.UIComponent
             {
                 this.Location = BrowserConfig.WindowLocaion;
 
-                this.startupTask = new();
-                this.startupTask
+                this.startupJob = new();
+                this.startupJob
                     .Catch(ex =>
                         ExceptionUtil.ShowErrorDialog("起動処理が失敗しました。", ex))
                     .Complete(() =>
                     {
                         if (BrowserForm.IsCleanup())
                         {
-                            this.dbCleanupTask = new();
-                            this.dbCleanupTask
+                            this.dbCleanupJob = new();
+                            this.dbCleanupJob
                                 .Catch(ex =>
                                     ExceptionUtil.ShowErrorDialog("DBクリーンアップ処理が失敗しました。", ex))
                                 .Complete(() =>
@@ -144,7 +144,7 @@ namespace PicSum.Main.UIComponent
                                     BrowserForm.isStartUp = false;
                                 })
                                     .StartThread();
-                            this.dbCleanupTask.StartTask();
+                            this.dbCleanupJob.StartJob();
                         }
                         else
                         {
@@ -166,7 +166,7 @@ namespace PicSum.Main.UIComponent
                     ThumbnailDBFilePath = Path.Combine(dbDir, @"thumbnail.sqlite")
                 };
 
-                this.startupTask.StartTask(param);
+                this.startupJob.StartJob(param);
             }
             else
             {
@@ -205,16 +205,16 @@ namespace PicSum.Main.UIComponent
         {
             if (disposing)
             {
-                if (this.startupTask != null)
+                if (this.startupJob != null)
                 {
-                    this.startupTask.Dispose();
-                    this.startupTask = null;
+                    this.startupJob.Dispose();
+                    this.startupJob = null;
                 }
 
-                if (this.dbCleanupTask != null)
+                if (this.dbCleanupJob != null)
                 {
-                    this.dbCleanupTask.Dispose();
-                    this.dbCleanupTask = null;
+                    this.dbCleanupJob.Dispose();
+                    this.dbCleanupJob = null;
                 }
             }
 
