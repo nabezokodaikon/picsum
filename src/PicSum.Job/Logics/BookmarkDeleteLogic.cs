@@ -8,15 +8,12 @@ using System.Runtime.Versioning;
 namespace PicSum.Job.Logics
 {
     [SupportedOSPlatform("windows")]
-    internal sealed class BookmarkDeleteLogic(IAsyncJob job)
+    internal sealed class BookmarkDeleteLogic(AbstractAsyncJob job)
         : AbstractAsyncLogic(job)
     {
         public bool Execute(string filePath)
         {
-            if (filePath == null)
-            {
-                throw new ArgumentNullException(nameof(filePath));
-            }
+            ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
             var sql = new BookmarkDeletionSql(filePath);
 

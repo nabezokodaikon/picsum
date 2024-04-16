@@ -10,7 +10,7 @@ namespace PicSum.Job.Logics
     /// ファイルの浅い情報を取得します。
     /// </summary>
     [SupportedOSPlatform("windows")]
-    internal sealed class FileShallowInfoGetLogic(IAsyncJob job)
+    internal sealed class FileShallowInfoGetLogic(AbstractAsyncJob job)
         : AbstractAsyncLogic(job)
     {
         public FileShallowInfoEntity Execute(string filePath)
@@ -64,7 +64,7 @@ namespace PicSum.Job.Logics
             }
             else
             {
-                return null;
+                throw new ArgumentException($"不正なファイルパスです。'{filePath}'", nameof(filePath));
             }
 
             return info;

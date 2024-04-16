@@ -11,7 +11,7 @@ namespace PicSum.Job.Logics
     /// タグTを、ファイルパスとタグを指定して削除します。
     /// </summary>
     [SupportedOSPlatform("windows")]
-    internal sealed class FileTagDeleteLogic(IAsyncJob job)
+    internal sealed class FileTagDeleteLogic(AbstractAsyncJob job)
         : AbstractAsyncLogic(job)
     {
         public void Execute(string filePath, string tag)

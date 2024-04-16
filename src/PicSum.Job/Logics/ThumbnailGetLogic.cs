@@ -17,7 +17,7 @@ namespace PicSum.Job.Logics
     /// サムネイルを読込みます。
     /// </summary>
     [SupportedOSPlatform("windows")]
-    public sealed class ThumbnailGetLogic(IAsyncJob job)
+    public sealed class ThumbnailGetLogic(AbstractAsyncJob job)
         : AbstractAsyncLogic(job)
     {
         private const int CASH_CAPACITY = 1000;

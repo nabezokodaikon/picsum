@@ -10,7 +10,7 @@ namespace PicSum.Job.Logics
     /// フォルダ内のファイルとサブフォルダ取得非同期ロジック
     /// </summary>
     [SupportedOSPlatform("windows")]
-    internal sealed class FilessAndSubDirectoriesGetLogic(IAsyncJob job)
+    internal sealed class FilessAndSubDirectoriesGetLogic(AbstractAsyncJob job)
         : AbstractAsyncLogic(job)
     {
         public IList<string> Execute(string directoryPath)

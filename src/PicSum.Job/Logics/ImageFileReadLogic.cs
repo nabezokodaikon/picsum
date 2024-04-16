@@ -11,7 +11,7 @@ namespace PicSum.Job.Logics
     /// 画像ファイル読込ロジック
     /// </summary>
     [SupportedOSPlatform("windows")]
-    internal sealed class ImageFileReadLogic(IAsyncJob job)
+    internal sealed class ImageFileReadLogic(AbstractAsyncJob job)
         : AbstractAsyncLogic(job)
     {
         public Bitmap CreateThumbnail(Image srcImg, int thumbSize, ImageSizeMode sizeMode)

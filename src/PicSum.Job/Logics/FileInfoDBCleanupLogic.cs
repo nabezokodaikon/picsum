@@ -8,7 +8,7 @@ using System.Runtime.Versioning;
 namespace PicSum.Job.Logics
 {
     [SupportedOSPlatform("windows")]
-    internal sealed class FileInfoDBCleanupLogic(IAsyncJob job)
+    internal sealed class FileInfoDBCleanupLogic(AbstractAsyncJob job)
         : AbstractAsyncLogic(job)
     {
         public void Execute()

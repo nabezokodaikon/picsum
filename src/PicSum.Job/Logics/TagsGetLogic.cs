@@ -14,7 +14,7 @@ namespace PicSum.Job.Logics
     /// タグの一覧を取得します。
     /// </summary>
     [SupportedOSPlatform("windows")]
-    internal sealed class TagsGetLogic(IAsyncJob job)
+    internal sealed class TagsGetLogic(AbstractAsyncJob job)
         : AbstractAsyncLogic(job)
     {
         public IList<string> Execute()

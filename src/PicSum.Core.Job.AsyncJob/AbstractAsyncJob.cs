@@ -2,20 +2,13 @@ using NLog;
 
 namespace PicSum.Core.Job.AsyncJob
 {
-    public abstract class AbstractTwoWayJob<TParameter, TResult>
-        : IAsyncJob
-        where TParameter : IJobParameter
-        where TResult : IJobResult
+    public abstract class AbstractAsyncJob
     {
-        protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         private long isCancel = 0;
 
-        public JobID? ID { get; set; }
-        internal TParameter? Parameter { get; set; }
-        internal Action<TResult>? CallbackAction { get; set; }
-        internal Action<JobException>? CatchAction { get; set; }
-        internal Action? CompleteAction { get; set; }
+        public JobID ID { get; private set; } = JobID.GetNew();
 
         private bool IsCancel
         {
@@ -29,14 +22,40 @@ namespace PicSum.Core.Job.AsyncJob
             }
         }
 
-        public AbstractTwoWayJob()
+        public void CheckCancel()
         {
-
+            if (this.IsCancel)
+            {
+                throw new JobCancelException(this.ID);
+            }
         }
 
         public void WriteErrorLog(JobException ex)
         {
             Logger.Error($"{this.ID} {ex}");
+        }
+
+        internal void BeginCancel()
+        {
+            this.IsCancel = true;
+        }
+    }
+
+    public abstract class AbstractTwoWayJob<TParameter, TResult>
+        : AbstractAsyncJob
+        where TParameter : IJobParameter
+        where TResult : IJobResult
+    {
+        protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        
+        internal TParameter? Parameter { get; set; }
+        internal Action<TResult>? CallbackAction { get; set; }
+        internal Action<JobException>? CatchAction { get; set; }
+        internal Action? CompleteAction { get; set; }
+
+        public AbstractTwoWayJob()
+        {
+
         }
 
         internal void ExecuteWrapper()
@@ -75,24 +94,6 @@ namespace PicSum.Core.Job.AsyncJob
             throw new NotImplementedException();
         }
 
-        internal void BeginCancel()
-        {
-            this.IsCancel = true;
-        }
-
-        public void CheckCancel()
-        {
-            if (this.IsCancel)
-            {
-                if (this.ID == null)
-                {
-                    throw new NullReferenceException("ジョブIDがNULLです。");
-                }
-
-                throw new JobCancelException(this.ID);
-            }
-        }
-
         protected void Callback(TResult result)
         {
             ArgumentNullException.ThrowIfNull(result, nameof(result));
@@ -102,24 +103,21 @@ namespace PicSum.Core.Job.AsyncJob
     }
 
     public abstract class AbstractTwoWayJob<TResult>
-        : AbstractTwoWayJob<EmptyParameter, TResult>,
-          IAsyncJob
+        : AbstractTwoWayJob<EmptyParameter, TResult>
         where TResult : IJobResult
     {
 
     }
 
     public abstract class AbstractOneWayJob<TParameter>
-        : AbstractTwoWayJob<TParameter, EmptyResult>,
-          IAsyncJob
+        : AbstractTwoWayJob<TParameter, EmptyResult>
         where TParameter : IJobParameter
     {
 
     }
 
     public abstract class AbstractOneWayJob
-        : AbstractTwoWayJob<EmptyParameter, EmptyResult>,
-          IAsyncJob
+        : AbstractTwoWayJob<EmptyParameter, EmptyResult>
     {
 
     }

@@ -11,7 +11,7 @@ namespace PicSum.Job.Logics
     /// ファイル指定評価T更新
     /// </summary>
     [SupportedOSPlatform("windows")]
-    internal sealed class FileRatingUpdateLogic(IAsyncJob job)
+    internal sealed class FileRatingUpdateLogic(AbstractAsyncJob job)
         : AbstractAsyncLogic(job)
     {
         public bool Execute(string filePath, int ratingValue, DateTime registrationDate)

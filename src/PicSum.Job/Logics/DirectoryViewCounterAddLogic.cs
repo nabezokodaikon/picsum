@@ -11,7 +11,7 @@ namespace PicSum.Job.Logics
     internal sealed class DirectoryViewCounterAddLogic
         : AbstractAsyncLogic
     {
-        public DirectoryViewCounterAddLogic(IAsyncJob job)
+        public DirectoryViewCounterAddLogic(AbstractAsyncJob job)
             : base(job)
         {
 

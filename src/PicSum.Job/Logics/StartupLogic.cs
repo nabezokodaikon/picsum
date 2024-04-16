@@ -11,7 +11,7 @@ namespace PicSum.Job.Logics
     /// スタートアップ非同期ロジック
     /// </summary>
     [SupportedOSPlatform("windows")]
-    internal sealed class StartupLogic(IAsyncJob job)
+    internal sealed class StartupLogic(AbstractAsyncJob job)
         : AbstractAsyncLogic(job)
     {
         public void Execute(StartupPrameter param)

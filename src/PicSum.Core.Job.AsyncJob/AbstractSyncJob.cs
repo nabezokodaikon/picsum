@@ -1,7 +1,7 @@
 namespace PicSum.Core.Job.AsyncJob
 {
     public class AbstractSyncJob
-        : ISyncJob
+        : AbstractSyncLogic
     {
         public AbstractSyncJob()
         {

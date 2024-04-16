@@ -149,7 +149,6 @@ namespace PicSum.Core.Job.AsyncJob
             this.ClearQueue();
             var job = new TJob
             {
-                ID = JobID.GetNew(),
                 Parameter = parameter
             };
             this.jobQueue.Enqueue(job);
@@ -159,10 +158,7 @@ namespace PicSum.Core.Job.AsyncJob
         {
             this.ClearQueue();
 
-            var job = new TJob
-            {
-                ID = JobID.GetNew()
-            };
+            var job = new TJob();
             this.jobQueue.Enqueue(job);
         }
 

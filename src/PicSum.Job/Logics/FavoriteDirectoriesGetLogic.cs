@@ -11,7 +11,7 @@ using System.Runtime.Versioning;
 namespace PicSum.Job.Logics
 {
     [SupportedOSPlatform("windows")]
-    internal sealed class FavoriteDirectoriesGetLogic(IAsyncJob job)
+    internal sealed class FavoriteDirectoriesGetLogic(AbstractAsyncJob job)
         : AbstractAsyncLogic(job)
     {
         public IList<string> Execute()

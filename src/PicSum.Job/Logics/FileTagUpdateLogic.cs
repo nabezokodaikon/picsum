@@ -12,7 +12,7 @@ namespace PicSum.Job.Logics
     /// </summary>
     /// <remarks>タグの存在確認として使用します。</remarks>
     [SupportedOSPlatform("windows")]
-    internal sealed class FileTagUpdateLogic(IAsyncJob job)
+    internal sealed class FileTagUpdateLogic(AbstractAsyncJob job)
         : AbstractAsyncLogic(job)
     {
         public bool Execute(string filePath, string tag, DateTime registrationDate)
