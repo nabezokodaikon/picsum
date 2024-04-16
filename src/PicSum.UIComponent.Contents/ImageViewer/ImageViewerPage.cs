@@ -1060,17 +1060,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             using (var ofd = new SaveFileDialog())
             {
                 var srcFilePath = e.FilePathList.First();
-
-                if (string.IsNullOrEmpty(CommonConfig.ExportDirectoryPath))
-                {
-                    ofd.InitialDirectory
-                        = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
-                }
-                else
-                {
-                    ofd.InitialDirectory = CommonConfig.ExportDirectoryPath;
-                }
-
+                ofd.InitialDirectory = CommonConfig.ExportDirectoryPath;
                 ofd.FileName = FileUtil.GetExportFileName(
                     ofd.InitialDirectory,
                     srcFilePath);
