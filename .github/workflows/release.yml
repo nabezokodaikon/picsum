@@ -30,6 +30,7 @@ jobs:
           /p:Configuration=Release
           /p:Platform="Any CPU"
           /p:OutputPath=$pwd\dist
+          /p:GenerateDependencyFile=false
 
       - name: compress archive 
         run: |
