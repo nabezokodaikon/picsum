@@ -320,7 +320,7 @@ namespace PicSum.Job.Logics
                 return id;
             }
 
-            using (var fs = new FileStream(thumbFile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+            using (var fs = new FileStream(thumbFile, FileMode.Open, FileAccess.Read, FileShare.Read))
             {
                 var size = fs.Length;
                 if (size < BUFFER_FILE_MAX_SIZE)
@@ -338,7 +338,7 @@ namespace PicSum.Job.Logics
 
         private byte[] GetThumbnailBuffer(string filePath, int startPoint, int size)
         {
-            using (var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+            using (var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
             {
                 var bf = new byte[size];
                 fs.Seek(startPoint, SeekOrigin.Begin);
