@@ -77,7 +77,7 @@ namespace PicSum.Job.Jobs
                     }
 
                     var nextFilePath = parameter.FilePathList[nextIndex];
-                    var srcImg2Size = ImageUtil.GetImageSize(nextFilePath);
+                    var srcImg2Size = this.GetImageSize(nextFilePath);
                     if (srcImg2Size.Width < srcImg2Size.Height)
                     {
                         result.Image1 = new()
@@ -148,6 +148,19 @@ namespace PicSum.Job.Jobs
             {
                 this.WriteErrorLog(new JobException(this.ID, ex));
                 return ImageUtil.EMPTY_IMAGE;
+            }
+        }
+
+        private Size GetImageSize(string filePath)
+        {
+            try
+            {
+                return ImageUtil.GetImageSize(filePath);
+            }
+            catch (ImageUtilException ex)
+            {
+                this.WriteErrorLog(new JobException(this.ID, ex));
+                return ImageUtil.EMPTY_SIZE;
             }
         }
     }
