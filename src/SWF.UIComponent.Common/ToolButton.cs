@@ -21,9 +21,9 @@ namespace SWF.UIComponent.Common
             VerticalCenter = 6
         }
 
-        private bool _isLeftClick = false;
-        private ToolButtonRegionType _regionType = ToolButtonRegionType.Default;
-        private Func<Rectangle> _getRectangleMethod = null;
+        private bool isLeftClick = false;
+        private ToolButtonRegionType regionType = ToolButtonRegionType.Default;
+        private Func<Rectangle> getRectangleMethod = null;
 
         public int RegionOffset
         {
@@ -37,50 +37,52 @@ namespace SWF.UIComponent.Common
         {
             get
             {
-                return this._regionType;
+                return this.regionType;
             }
             set
             {
-                this._regionType = value;
+                this.regionType = value;
 
                 switch (value)
                 {
                     case ToolButtonRegionType.Left:
-                        this._getRectangleMethod = new Func<Rectangle>(this.getLeftRectangle);
+                        this.getRectangleMethod = new Func<Rectangle>(this.GetLeftRectangle);
                         break;
                     case ToolButtonRegionType.Top:
-                        this._getRectangleMethod = new Func<Rectangle>(this.getTopRectangle);
+                        this.getRectangleMethod = new Func<Rectangle>(this.GetTopRectangle);
                         break;
                     case ToolButtonRegionType.Right:
-                        this._getRectangleMethod = new Func<Rectangle>(this.getRightRectangle);
+                        this.getRectangleMethod = new Func<Rectangle>(this.GetRightRectangle);
                         break;
                     case ToolButtonRegionType.Bottom:
-                        this._getRectangleMethod = new Func<Rectangle>(this.getBottomRectangle);
+                        this.getRectangleMethod = new Func<Rectangle>(this.GetBottomRectangle);
                         break;
                     case ToolButtonRegionType.HorizonCenter:
-                        this._getRectangleMethod = new Func<Rectangle>(this.getHorizonCenterRectangle);
+                        this.getRectangleMethod = new Func<Rectangle>(this.GetHorizonCenterRectangle);
                         break;
                     case ToolButtonRegionType.VerticalCenter:
-                        this._getRectangleMethod = new Func<Rectangle>(this.getVerticalCenterRectangle);
+                        this.getRectangleMethod = new Func<Rectangle>(this.GetVerticalCenterRectangle);
+                        break;
+                    case ToolButtonRegionType.Default:
                         break;
                     default:
-                        this._getRectangleMethod = new Func<Rectangle>(this.getDefaultRectangle);
+                        this.getRectangleMethod = new Func<Rectangle>(this.GetDefaultRectangle);
                         break;
                 }
 
-                this.Region = this.getRegion();
+                this.Region = this.GetRegion();
                 this.Refresh();
             }
         }
 
         public ToolButton()
         {
-            this.initializeComponent();
+            this.InitializeComponent();
         }
 
         public Rectangle GetRegionBounds()
         {
-            Rectangle rect = this._getRectangleMethod();
+            Rectangle rect = this.getRectangleMethod();
             int x = this.Bounds.Left + rect.Left;
             int y = this.Bounds.Top + rect.Top;
             int w = rect.Width;
@@ -90,7 +92,7 @@ namespace SWF.UIComponent.Common
 
         protected override void OnResize(EventArgs e)
         {
-            this.Region = this.getRegion();
+            this.Region = this.GetRegion();
             this.Invalidate();
             base.OnResize(e);
         }
@@ -99,8 +101,8 @@ namespace SWF.UIComponent.Common
         {
             if (e.Button == MouseButtons.Left)
             {
-                this._isLeftClick = !this._isLeftClick;
-                if (this._isLeftClick)
+                this.isLeftClick = !this.isLeftClick;
+                if (this.isLeftClick)
                 {
                     base.OnMouseClick(e);
                 }
@@ -111,7 +113,7 @@ namespace SWF.UIComponent.Common
             }
         }
 
-        private void initializeComponent()
+        private void InitializeComponent()
         {
             this.SetStyle(
                 ControlStyles.AllPaintingInWmPaint |
@@ -126,11 +128,11 @@ namespace SWF.UIComponent.Common
 
             this.UpdateStyles();
 
-            this._getRectangleMethod = new Func<Rectangle>(this.getDefaultRectangle);
-            this.Region = this.getRegion();
+            this.getRectangleMethod = new Func<Rectangle>(this.GetDefaultRectangle);
+            this.Region = this.GetRegion();
         }
 
-        private Rectangle getDefaultRectangle()
+        private Rectangle GetDefaultRectangle()
         {
             int l = 0;
             int t = 0;
@@ -139,7 +141,7 @@ namespace SWF.UIComponent.Common
             return Rectangle.FromLTRB(l, t, r, b);
         }
 
-        private Rectangle getLeftRectangle()
+        private Rectangle GetLeftRectangle()
         {
             int l = 0;
             int t = 0;
@@ -148,7 +150,7 @@ namespace SWF.UIComponent.Common
             return Rectangle.FromLTRB(l, t, r, b);
         }
 
-        private Rectangle getTopRectangle()
+        private Rectangle GetTopRectangle()
         {
             int l = 0;
             int t = 0;
@@ -157,7 +159,7 @@ namespace SWF.UIComponent.Common
             return Rectangle.FromLTRB(l, t, r, b);
         }
 
-        private Rectangle getRightRectangle()
+        private Rectangle GetRightRectangle()
         {
             int l = REGION_OFFSET;
             int t = 0;
@@ -166,7 +168,7 @@ namespace SWF.UIComponent.Common
             return Rectangle.FromLTRB(l, t, r, b);
         }
 
-        private Rectangle getBottomRectangle()
+        private Rectangle GetBottomRectangle()
         {
             int l = 0;
             int t = REGION_OFFSET;
@@ -175,7 +177,7 @@ namespace SWF.UIComponent.Common
             return Rectangle.FromLTRB(l, t, r, b);
         }
 
-        private Rectangle getHorizonCenterRectangle()
+        private Rectangle GetHorizonCenterRectangle()
         {
             int l = REGION_OFFSET;
             int t = 0;
@@ -184,7 +186,7 @@ namespace SWF.UIComponent.Common
             return Rectangle.FromLTRB(l, t, r, b);
         }
 
-        private Rectangle getVerticalCenterRectangle()
+        private Rectangle GetVerticalCenterRectangle()
         {
             int l = 0;
             int t = REGION_OFFSET;
@@ -193,9 +195,9 @@ namespace SWF.UIComponent.Common
             return Rectangle.FromLTRB(l, t, r, b);
         }
 
-        private Region getRegion()
+        private Region GetRegion()
         {
-            return new Region(this._getRectangleMethod());
+            return new Region(this.getRectangleMethod());
         }
     }
 }

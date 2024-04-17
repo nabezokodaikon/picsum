@@ -18,10 +18,7 @@ namespace PicSum.Job.Jobs
     {
         protected override void Execute(ImageFileGetByDirectoryParameter param)
         {
-            if (param == null)
-            {
-                throw new ArgumentNullException(nameof(param));
-            }
+            ArgumentNullException.ThrowIfNull(param, nameof(param));
 
             var result = new ImageFileGetByDirectoryResult();
 
@@ -43,7 +40,7 @@ namespace PicSum.Job.Jobs
                 var getFilesLogic = new FilessAndSubDirectoriesGetLogic(this);
                 var filePathList = getFilesLogic.Execute(result.DirectoryPath);
 
-                result.FilePathList = new List<string>();
+                result.FilePathList = [];
                 foreach (var filePath in filePathList)
                 {
                     if (FileUtil.IsImageFile(filePath))

@@ -26,12 +26,12 @@ UPDATE t_rating
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
-            base.ParameterList.AddRange(new IDbDataParameter[]
-                {
+            base.ParameterList.AddRange(
+                [
                     SqlParameterUtil.CreateParameter("file_path", filePath),
                     SqlParameterUtil.CreateParameter("rating", rating),
                     SqlParameterUtil.CreateParameter("registration_date", registrationDate)
-                });
+                ]);
         }
     }
 }

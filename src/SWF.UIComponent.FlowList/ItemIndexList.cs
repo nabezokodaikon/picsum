@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -11,7 +11,7 @@ namespace SWF.UIComponent.FlowList
     {
         public event EventHandler Change;
 
-        private readonly List<int> list = new List<int>();
+        private readonly List<int> list = [];
         private List<int> beforeList = null;
 
         public int Count
@@ -24,7 +24,7 @@ namespace SWF.UIComponent.FlowList
 
         public IList<int> GetList()
         {
-            var list = new List<int>(this.list.ToArray());
+            var list = new List<int>([.. this.list]);
             list.Sort();
             return list;
         }
@@ -118,7 +118,7 @@ namespace SWF.UIComponent.FlowList
                 throw new InvalidOperationException("既に更新中です。");
             }
 
-            this.beforeList = new List<int>(this.list.ToArray());
+            this.beforeList = new List<int>([.. this.list]);
         }
 
         public void EndUpdate()
@@ -149,10 +149,7 @@ namespace SWF.UIComponent.FlowList
 
         private void OnChange(EventArgs e)
         {
-            if (this.Change != null)
-            {
-                this.Change(this, e);
-            }
+            this.Change?.Invoke(this, e);
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using PicSum.Core.Base.Conf;
+using PicSum.Core.Base.Conf;
 using System;
 
 namespace PicSum.UIComponent.AddressBar
@@ -12,10 +12,7 @@ namespace PicSum.UIComponent.AddressBar
 
         public SelectedDirectoryEventArgs(PageOpenType openType, string directoryPath)
         {
-            if (directoryPath == null)
-            {
-                throw new ArgumentNullException(nameof(directoryPath));
-            }
+            ArgumentException.ThrowIfNullOrEmpty(directoryPath, nameof(directoryPath));
 
             this.OpenType = openType;
             this.DirectoryPath = directoryPath;
@@ -23,15 +20,8 @@ namespace PicSum.UIComponent.AddressBar
 
         public SelectedDirectoryEventArgs(PageOpenType openType, string directoryPath, string subDirectoryPath)
         {
-            if (directoryPath == null)
-            {
-                throw new ArgumentNullException(nameof(directoryPath));
-            }
-
-            if (subDirectoryPath == null)
-            {
-                throw new ArgumentNullException(nameof(subDirectoryPath));
-            }
+            ArgumentException.ThrowIfNullOrEmpty(directoryPath, nameof(directoryPath));
+            ArgumentException.ThrowIfNullOrEmpty(subDirectoryPath, nameof(subDirectoryPath));
 
             this.OpenType = openType;
             this.DirectoryPath = directoryPath;

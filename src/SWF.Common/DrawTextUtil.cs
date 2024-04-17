@@ -60,17 +60,19 @@ namespace SWF.Common
 
             // Draw glowing text
             var renderer = new VisualStyleRenderer(VisualStyleElement.Window.Caption.Active);
-            var dttOpts = new WinApiMembers.DTTOPTS();
-            dttOpts.dwSize = Marshal.SizeOf(typeof(WinApiMembers.DTTOPTS));
-            dttOpts.dwFlags = GetDwFlags(style);
+            var dttOpts = new WinApiMembers.DTTOPTS
+            {
+                dwSize = Marshal.SizeOf(typeof(WinApiMembers.DTTOPTS)),
+                dwFlags = GetDwFlags(style),
 
-            dttOpts.crText = ColorTranslator.ToWin32(color);
-            dttOpts.iGlowSize = 8; // This is about the size Microsoft Word 2007 uses
+                crText = ColorTranslator.ToWin32(color),
+                iGlowSize = 8 // This is about the size Microsoft Word 2007 uses
+            };
             var textBounds = new WinApiMembers.RECT(0, 0, bounds.Right - bounds.Left, bounds.Bottom - bounds.Top);
 
             WinApiMembers.BitBlt(memoryHdc, 0, 0, bounds.Width, bounds.Height, srcHdc, bounds.Left, bounds.Top, WinApiMembers.SRCCOPY);
 
-            WinApiMembers.DrawThemeTextEx(renderer.Handle, memoryHdc, 0, 0, text, -1, (int)flags, ref textBounds, ref dttOpts);
+            var _ =WinApiMembers.DrawThemeTextEx(renderer.Handle, memoryHdc, 0, 0, text, -1, (int)flags, ref textBounds, ref dttOpts);
 
             // Copy to foreground
             WinApiMembers.BitBlt(srcHdc, bounds.Left, bounds.Top, bounds.Width, bounds.Height, memoryHdc, 0, 0, WinApiMembers.SRCCOPY);

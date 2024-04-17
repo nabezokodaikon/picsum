@@ -24,7 +24,7 @@ namespace SWF.UIComponent.Common
             }
         }
 
-        private Image icon
+        private Image Icon
         {
             get
             {
@@ -41,12 +41,12 @@ namespace SWF.UIComponent.Common
 
         public RatingButton()
         {
-            this.initializeComponent();
+            this.InitializeComponent();
         }
 
         protected override void OnPaint(PaintEventArgs e)
         {
-            Image icon = this.icon;
+            Image icon = this.Icon;
             int w = Math.Min(icon.Width, this.Width);
             int h = Math.Min(icon.Height, this.Height);
             int x = (int)((this.Width - icon.Width) / 2f);
@@ -54,7 +54,7 @@ namespace SWF.UIComponent.Common
             e.Graphics.DrawImage(icon, x, y, w, h);
         }
 
-        private void initializeComponent()
+        private void InitializeComponent()
         {
             this.SetStyle(
                 ControlStyles.AllPaintingInWmPaint |

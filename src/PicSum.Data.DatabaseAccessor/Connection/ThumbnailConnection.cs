@@ -8,7 +8,7 @@ namespace PicSum.Data.DatabaseAccessor.Connection
     public sealed class ThumbnailConnection
         : ConnectionBase
     {
-        private static string tableCreateSql =
+        private static readonly string tableCreateSql =
         @"
 /* サムネイルIDM */
 CREATE TABLE 'm_thumbnail_id' (

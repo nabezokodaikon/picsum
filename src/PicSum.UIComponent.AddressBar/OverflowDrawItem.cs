@@ -12,8 +12,8 @@ namespace PicSum.UIComponent.AddressBar
     {
         #region インスタンス変数
 
-        private Image mousePointImage = Resources.SmallArrowLeft;
-        private Image mouseDownImage = Resources.SmallArrowDown;
+        private readonly Image mousePointImage = Resources.SmallArrowLeft;
+        private readonly Image mouseDownImage = Resources.SmallArrowDown;
 
         #endregion
 
@@ -35,10 +35,7 @@ namespace PicSum.UIComponent.AddressBar
 
         public override void Draw(Graphics g)
         {
-            if (g == null)
-            {
-                throw new ArgumentNullException(nameof(g));
-            }
+            ArgumentNullException.ThrowIfNull(g, nameof(g));   
 
             var rect = this.GetRectangle();
 
@@ -60,10 +57,7 @@ namespace PicSum.UIComponent.AddressBar
 
         public override void OnMouseDown(MouseEventArgs e)
         {
-            if (e == null)
-            {
-                throw new ArgumentNullException("e");
-            }
+            ArgumentNullException.ThrowIfNull(e, nameof(e));
 
             if (e.Button == MouseButtons.Left)
             {

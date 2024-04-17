@@ -28,12 +28,12 @@ UPDATE t_tag
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
             ArgumentException.ThrowIfNullOrEmpty(tag, nameof(tag));
-            base.ParameterList.AddRange(new IDbDataParameter[]
-            {
+            base.ParameterList.AddRange(
+            [
                 SqlParameterUtil.CreateParameter("file_path", filePath),
                 SqlParameterUtil.CreateParameter("tag", tag),
                 SqlParameterUtil.CreateParameter("registration_date", registrationDate)
-            });
+            ]);
         }
     }
 }

@@ -15,9 +15,9 @@ DELETE FROM t_thumbnail
         public ThumbnailDBCleanupSql(string filePath)
             : base(SQL_TEXT)
         {
-            base.ParameterList.AddRange(new IDbDataParameter[] {
+            base.ParameterList.AddRange([
                 SqlParameterUtil.CreateParameter("file_path", filePath),
-            });
+            ]);
         }
     }
 }

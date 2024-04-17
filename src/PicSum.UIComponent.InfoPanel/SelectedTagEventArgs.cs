@@ -1,4 +1,4 @@
-﻿using PicSum.Core.Base.Conf;
+using PicSum.Core.Base.Conf;
 using System;
 
 namespace PicSum.UIComponent.InfoPanel
@@ -11,10 +11,7 @@ namespace PicSum.UIComponent.InfoPanel
 
         public SelectedTagEventArgs(PageOpenType openType, string tag)
         {
-            if (tag == null)
-            {
-                throw new ArgumentNullException(nameof(tag));
-            }
+            ArgumentException.ThrowIfNullOrEmpty(tag, nameof(tag));
 
             this.OpenType = openType;
             this.Tag = tag;
