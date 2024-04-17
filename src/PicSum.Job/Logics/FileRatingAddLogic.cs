@@ -16,7 +16,7 @@ namespace PicSum.Job.Logics
     {
         public bool Execute(string filePath, int ratingValue, DateTime registrationDate)
         {
-            ArgumentNullException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
+            ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
             if (ratingValue < 0)
             {

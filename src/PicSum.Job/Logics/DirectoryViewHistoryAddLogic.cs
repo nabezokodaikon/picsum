@@ -21,7 +21,7 @@ namespace PicSum.Job.Logics
         /// <returns>表示履歴が追加されたらTrue、追加されなければFalseを返します。</returns>
         public bool Execute(string directoryPath)
         {
-            ArgumentNullException.ThrowIfNullOrEmpty(directoryPath, nameof(directoryPath));
+            ArgumentException.ThrowIfNullOrEmpty(directoryPath, nameof(directoryPath));
 
             var sql = new DirectoryViewHistoryCreationSql(directoryPath);
             return DatabaseManager<FileInfoConnection>.Update(sql);

@@ -398,7 +398,7 @@ namespace PicSum.UIComponent.Contents.FileList
         protected void SetFile(IList<FileShallowInfoEntity> srcFiles, string selectedFilePath)
         {
             ArgumentNullException.ThrowIfNull(srcFiles, nameof(srcFiles));
-            ArgumentNullException.ThrowIfNull(selectedFilePath, nameof(selectedFilePath));
+            ArgumentException.ThrowIfNullOrEmpty(selectedFilePath, nameof(selectedFilePath));
 
             this.SetFiles(srcFiles, selectedFilePath, SortTypeID.Default, false);
         }
@@ -432,7 +432,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
         protected void SetContextMenuFiles(string filePath)
         {
-            ArgumentNullException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
+            ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
             this.SetContextMenuFiles(new List<string>() { filePath });
         }

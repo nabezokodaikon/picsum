@@ -1,4 +1,4 @@
-﻿using PicSum.Core.Data.DatabaseAccessor;
+using PicSum.Core.Data.DatabaseAccessor;
 using System;
 
 namespace PicSum.Data.DatabaseAccessor.Sql
@@ -18,10 +18,7 @@ DELETE FROM t_directory_view_counter
         public DirectoryViewCounterDeletionSql(string directoryPath)
             : base(SQL_TEXT)
         {
-            if (directoryPath == null)
-            {
-                throw new ArgumentNullException(nameof(directoryPath));
-            }
+            ArgumentException.ThrowIfNullOrEmpty(directoryPath, nameof(directoryPath));
 
             base.ParameterList.Add(SqlParameterUtil.CreateParameter("file_path", directoryPath));
         }

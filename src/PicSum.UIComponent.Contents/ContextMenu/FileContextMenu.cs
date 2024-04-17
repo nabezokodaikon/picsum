@@ -171,7 +171,7 @@ namespace PicSum.UIComponent.Contents.ContextMenu
 
         public void SetFile(string filePath)
         {
-            ArgumentNullException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
+            ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
             this.SetFile(new List<string>() { filePath });
         }

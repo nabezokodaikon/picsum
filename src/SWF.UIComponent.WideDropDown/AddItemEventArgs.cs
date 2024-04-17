@@ -9,7 +9,7 @@ namespace SWF.UIComponent.WideDropDown
 
         public AddItemEventArgs(string item)
         {
-            ArgumentNullException.ThrowIfNull(item, nameof(item));
+            ArgumentException.ThrowIfNullOrEmpty(item, nameof(item));
             this.Item = item;
         }
     }

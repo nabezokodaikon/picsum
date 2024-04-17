@@ -1,4 +1,4 @@
-﻿using PicSum.Core.Data.DatabaseAccessor;
+using PicSum.Core.Data.DatabaseAccessor;
 using System;
 using System.Data;
 
@@ -25,15 +25,8 @@ UPDATE t_directory_state
         public DirectoryStateUpdateSql(string directoryPath, int sortTypeID, bool isAscending, string selectedFilePath)
             : base(SQL_TEXT)
         {
-            if (directoryPath == null)
-            {
-                throw new ArgumentNullException(nameof(directoryPath));
-            }
-
-            if (selectedFilePath == null)
-            {
-                throw new ArgumentNullException(nameof(selectedFilePath));
-            }
+            ArgumentException.ThrowIfNullOrEmpty(directoryPath, nameof(directoryPath));
+            ArgumentException.ThrowIfNullOrEmpty(selectedFilePath, nameof(selectedFilePath));
 
             base.ParameterList.AddRange(new IDbDataParameter[]
                 { SqlParameterUtil.CreateParameter("directory_path", directoryPath),
@@ -45,10 +38,7 @@ UPDATE t_directory_state
         public DirectoryStateUpdateSql(string directoryPath, int sortTypeID, bool isAscending)
             : base(SQL_TEXT)
         {
-            if (directoryPath == null)
-            {
-                throw new ArgumentNullException(nameof(directoryPath));
-            }
+            ArgumentException.ThrowIfNullOrEmpty(directoryPath, nameof(directoryPath));
 
             base.ParameterList.AddRange(new IDbDataParameter[]
                 { SqlParameterUtil.CreateParameter("directory_path", directoryPath),

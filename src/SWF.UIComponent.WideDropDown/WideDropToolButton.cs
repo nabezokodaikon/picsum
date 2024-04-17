@@ -45,7 +45,7 @@ namespace SWF.UIComponent.WideDropDown
 
         public void SelectItem(string item)
         {
-            ArgumentNullException.ThrowIfNullOrEmpty(item, nameof(item));
+            ArgumentException.ThrowIfNullOrEmpty(item, nameof(item));
 
             this.dropDownList.SelectItem(item);
         }

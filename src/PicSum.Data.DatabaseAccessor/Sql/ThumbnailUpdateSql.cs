@@ -36,10 +36,7 @@ UPDATE t_thumbnail
             DateTime fileUpdateDate)
             : base(SQL_TEXT)
         {
-            if (filePath == null)
-            {
-                throw new ArgumentNullException(nameof(filePath));
-            }
+            ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
             base.ParameterList.AddRange(new IDbDataParameter[]
             { SqlParameterUtil.CreateParameter("file_path", filePath),

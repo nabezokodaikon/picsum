@@ -20,7 +20,7 @@ namespace PicSum.Job.Logics
     {
         public FileDeepInfoEntity Execute(string filePath, Size thumbSize)
         {
-            ArgumentNullException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
+            ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
             var info = new FileDeepInfoEntity
             {

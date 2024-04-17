@@ -28,8 +28,8 @@ namespace PicSum.Core.Data.DatabaseAccessor
         /// <param name="tableCreateSql">テーブル作成SQL</param>
         protected ConnectionBase(string dbFilePath, string tableCreateSql)
         {
-            ArgumentNullException.ThrowIfNullOrEmpty(dbFilePath, nameof(dbFilePath));
-            ArgumentNullException.ThrowIfNullOrEmpty(tableCreateSql, nameof(tableCreateSql));
+            ArgumentException.ThrowIfNullOrEmpty(dbFilePath, nameof(dbFilePath));
+            ArgumentException.ThrowIfNullOrEmpty(tableCreateSql, nameof(tableCreateSql));
 
             if (!File.Exists(dbFilePath))
             {

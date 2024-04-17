@@ -35,7 +35,7 @@ namespace SWF.UIComponent.TabOperation
             }
             set
             {
-                ArgumentNullException.ThrowIfNullOrEmpty(value, nameof(value));
+                ArgumentException.ThrowIfNullOrEmpty(value, nameof(value));
 
                 this.title = value;
             }

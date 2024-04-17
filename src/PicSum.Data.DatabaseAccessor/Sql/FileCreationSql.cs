@@ -1,4 +1,4 @@
-﻿using PicSum.Core.Data.DatabaseAccessor;
+using PicSum.Core.Data.DatabaseAccessor;
 using System;
 
 namespace PicSum.Data.DatabaseAccessor.Sql
@@ -23,10 +23,7 @@ SELECT mfi.file_id
         public FileCreationSql(string filePath)
             : base(SQL_TEXT)
         {
-            if (filePath == null)
-            {
-                throw new ArgumentNullException(nameof(filePath));
-            }
+            ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
             base.ParameterList.Add(SqlParameterUtil.CreateParameter("file_path", filePath));
         }

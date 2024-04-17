@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Drawing;
 
 namespace SWF.UIComponent.FlowList
@@ -43,10 +43,7 @@ namespace SWF.UIComponent.FlowList
                                  int itemIndex, Rectangle itemRectangle,
                                  bool isSelected, bool isMousePoint, bool isFocus)
         {
-            if (graphics == null)
-            {
-                throw new ArgumentNullException(nameof(graphics));
-            }
+            ArgumentNullException.ThrowIfNull(graphics, nameof(graphics));
 
             if (itemIndex < 0)
             {

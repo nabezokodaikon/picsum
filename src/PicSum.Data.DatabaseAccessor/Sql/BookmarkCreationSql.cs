@@ -22,10 +22,7 @@ SELECT mf.file_id
         public BookmarkCreationSql(string filePath, DateTime registrationDate)
             : base(SQL_TEXT)
         {
-            if (filePath == null)
-            {
-                throw new ArgumentNullException(nameof(filePath));
-            }
+            ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
             base.ParameterList.AddRange(new IDbDataParameter[]
                 { SqlParameterUtil.CreateParameter("file_path", filePath),

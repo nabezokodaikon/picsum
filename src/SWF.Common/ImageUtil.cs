@@ -193,7 +193,7 @@ namespace SWF.Common
         /// <returns></returns>
         public static Bitmap ReadImageFile(string filePath)
         {
-            ArgumentNullException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
+            ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
             try
             {

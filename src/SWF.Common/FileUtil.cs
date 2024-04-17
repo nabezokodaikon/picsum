@@ -201,7 +201,7 @@ namespace SWF.Common
         /// <returns>隠しファイル、システムファイルならFalse。それ以外ならTrue。</returns>
         public static bool CanAccess(string filePath)
         {
-            ArgumentNullException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
+            ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
             if (IsSystemRoot(filePath))
             {

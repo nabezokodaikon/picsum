@@ -1,4 +1,4 @@
-﻿using PicSum.Core.Data.DatabaseAccessor;
+using PicSum.Core.Data.DatabaseAccessor;
 using System;
 using System.Data;
 
@@ -26,16 +26,8 @@ UPDATE t_tag
         public TagUpdateSql(string filePath, string tag, DateTime registrationDate)
             : base(SQL_TEXT)
         {
-            if (filePath == null)
-            {
-                throw new ArgumentNullException(nameof(filePath));
-            }
-
-            if (tag == null)
-            {
-                throw new ArgumentNullException(nameof(tag));
-            }
-
+            ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
+            ArgumentException.ThrowIfNullOrEmpty(tag, nameof(tag));
             base.ParameterList.AddRange(new IDbDataParameter[]
             {
                 SqlParameterUtil.CreateParameter("file_path", filePath),

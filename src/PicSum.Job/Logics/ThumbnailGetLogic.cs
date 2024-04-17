@@ -31,7 +31,7 @@ namespace PicSum.Job.Logics
 
         public ThumbnailBufferEntity Execute(string filePath, int thumbWidth, int thumbHeight)
         {
-            ArgumentNullException.ThrowIfNull(filePath, nameof(filePath));
+            ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
             if (string.IsNullOrEmpty(filePath))
             {

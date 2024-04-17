@@ -12,10 +12,8 @@ namespace SWF.Common
     {
         public static void ShowErrorDialog(string message, Exception ex)
         {
-            if (ex == null)
-            {
-                throw new ArgumentNullException(nameof(ex));
-            }
+            ArgumentException.ThrowIfNullOrEmpty(message, nameof(message));
+            ArgumentNullException.ThrowIfNull(ex, nameof(ex));
 
             MessageBox.Show(message, "PicSum", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }

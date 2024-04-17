@@ -173,7 +173,7 @@ namespace PicSum.UIComponent.AddressBar
 
         public void SetAddress(string filePath)
         {
-            ArgumentNullException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
+            ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
             if (string.IsNullOrEmpty(filePath))
             {

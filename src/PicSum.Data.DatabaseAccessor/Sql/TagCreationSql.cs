@@ -27,15 +27,8 @@ SELECT mf.file_id
         public TagCreationSql(string filePath, string tag, DateTime registrationDate)
             : base(SQL_TEXT)
         {
-            if (filePath == null)
-            {
-                throw new ArgumentNullException(nameof(filePath));
-            }
-
-            if (tag == null)
-            {
-                throw new ArgumentNullException(nameof(tag));
-            }
+            ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
+            ArgumentException.ThrowIfNullOrEmpty(tag, nameof(tag));
 
             base.ParameterList.AddRange(new IDbDataParameter[]
                 { SqlParameterUtil.CreateParameter("file_path", filePath),

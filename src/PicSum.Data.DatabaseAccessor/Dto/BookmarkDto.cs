@@ -1,4 +1,4 @@
-﻿using PicSum.Core.Data.DatabaseAccessor;
+using PicSum.Core.Data.DatabaseAccessor;
 using System;
 using System.Data;
 
@@ -12,10 +12,7 @@ namespace PicSum.Data.DatabaseAccessor.Dto
 
         public void Read(IDataReader reader)
         {
-            if (reader == null)
-            {
-                throw new ArgumentNullException(nameof(reader));
-            }
+            ArgumentNullException.ThrowIfNull(reader, nameof(reader));
 
             this.FilePath = (string)reader["file_path"];
             this.RegistrationDate = (DateTime)reader["registration_date"];

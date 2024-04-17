@@ -14,7 +14,7 @@ namespace PicSum.UIComponent.Contents.Common
 
         public ExecuteDirectoryEventArgs(PageOpenType openType, string directoryPath)
         {
-            ArgumentNullException.ThrowIfNullOrEmpty(directoryPath, nameof(directoryPath));
+            ArgumentException.ThrowIfNullOrEmpty(directoryPath, nameof(directoryPath));
 
             this.OpenType = openType;
             this.DirectoryPath = directoryPath;

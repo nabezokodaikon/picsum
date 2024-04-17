@@ -13,7 +13,7 @@ namespace PicSum.Job.Logics
     {
         public bool Execute(string filePath, DateTime registrationDate)
         {
-            ArgumentNullException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
+            ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
             var sql = new BookmarkCreationSql(filePath, registrationDate);
             return DatabaseManager<FileInfoConnection>.Update(sql);

@@ -1,4 +1,4 @@
-﻿using PicSum.Core.Data.DatabaseAccessor;
+using PicSum.Core.Data.DatabaseAccessor;
 using PicSum.Data.DatabaseAccessor.Dto;
 using System;
 
@@ -25,10 +25,7 @@ SELECT mf.file_path
         public FileReadByTagSql(string tag)
             : base(SQL_TEXT)
         {
-            if (tag == null)
-            {
-                throw new ArgumentNullException(nameof(tag));
-            }
+            ArgumentException.ThrowIfNullOrEmpty(tag, nameof(tag));
 
             base.ParameterList.Add(SqlParameterUtil.CreateParameter("tag", tag));
         }

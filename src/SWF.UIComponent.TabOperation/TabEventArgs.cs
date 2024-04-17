@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace SWF.UIComponent.TabOperation
 {
@@ -12,10 +12,7 @@ namespace SWF.UIComponent.TabOperation
 
         public TabEventArgs(TabInfo tab)
         {
-            if (tab == null)
-            {
-                throw new ArgumentNullException(nameof(tab));
-            }
+            ArgumentNullException.ThrowIfNull(tab, nameof(tab));
 
             this.Tab = tab;
         }

@@ -9,10 +9,7 @@ namespace PicSum.Data.DatabaseAccessor.Dto
     {
         public void Read(IDataReader reader)
         {
-            if (reader == null)
-            {
-                throw new ArgumentNullException(nameof(reader));
-            }
+            ArgumentNullException.ThrowIfNull(reader, nameof(reader));
         }
     }
 }

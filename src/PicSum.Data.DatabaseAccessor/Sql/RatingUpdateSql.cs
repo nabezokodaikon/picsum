@@ -1,4 +1,4 @@
-﻿using PicSum.Core.Data.DatabaseAccessor;
+using PicSum.Core.Data.DatabaseAccessor;
 using System;
 using System.Data;
 
@@ -24,10 +24,7 @@ UPDATE t_rating
         public RatingUpdateSql(string filePath, int rating, DateTime registrationDate)
             : base(SQL_TEXT)
         {
-            if (filePath == null)
-            {
-                throw new ArgumentNullException(nameof(filePath));
-            }
+            ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
             base.ParameterList.AddRange(new IDbDataParameter[]
                 {

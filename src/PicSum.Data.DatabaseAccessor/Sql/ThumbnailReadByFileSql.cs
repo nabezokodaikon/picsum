@@ -28,10 +28,7 @@ SELECT tt.file_path
         public ThumbnailReadByFileSql(string filePath)
             : base(SQL_TEXT)
         {
-            if (filePath == null)
-            {
-                throw new ArgumentNullException(nameof(filePath));
-            }
+            ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
             base.ParameterList.Add(SqlParameterUtil.CreateParameter("file_path", filePath));
         }

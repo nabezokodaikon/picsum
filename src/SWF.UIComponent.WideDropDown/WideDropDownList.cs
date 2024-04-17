@@ -283,7 +283,7 @@ namespace SWF.UIComponent.WideDropDown
 
         public void SelectItem(string item)
         {
-            ArgumentNullException.ThrowIfNullOrEmpty(item, nameof(item));
+            ArgumentException.ThrowIfNullOrEmpty(item, nameof(item));
 
             var index = this.itemList.IndexOf(item);
             if (index < 0)
