@@ -67,8 +67,8 @@ namespace PicSum.Job.Logics
 
                 if (info.IsImageFile)
                 {
-                    var isImgSuccess = this.ReadImageFile(filePath, out var srcImg);
-                    if (isImgSuccess)
+                    var srcImg = this.ReadImageFile(filePath);
+                    if (srcImg != ImageUtil.EMPTY_IMAGE)
                     {
                         using (srcImg)
                         {
@@ -92,8 +92,8 @@ namespace PicSum.Job.Logics
                     var firstImageFile = FileUtil.GetFirstImageFilePath(filePath);
                     if (!string.IsNullOrEmpty(firstImageFile))
                     {
-                        var isImgSuccess = this.ReadImageFile(firstImageFile, out var srcImg);
-                        if (isImgSuccess)
+                        var srcImg = this.ReadImageFile(firstImageFile);
+                        if (srcImg != ImageUtil.EMPTY_IMAGE)
                         {
                             using (srcImg)
                             {
@@ -133,18 +133,16 @@ namespace PicSum.Job.Logics
             return info;
         }
 
-        private bool ReadImageFile(string filePath, out Bitmap? bmp)
+        private Bitmap ReadImageFile(string filePath)
         {
             try
             {
-                bmp = ImageUtil.ReadImageFile(filePath);
-                return true;
+                return ImageUtil.ReadImageFile(filePath);
             }
             catch (ImageUtilException ex)
             {
-                bmp = null;
                 this.WriteErrorLog(new JobException(this.ID, ex));
-                return false;
+                return ImageUtil.EMPTY_IMAGE;
             }
         }
     }
