@@ -1,6 +1,7 @@
 using PicSum.Core.Data.DatabaseAccessor;
 using PicSum.Core.Job.AsyncJob;
 using PicSum.Data.DatabaseAccessor.Connection;
+using PicSum.Job.Entities;
 using PicSum.Job.Logics;
 using PicSum.Job.Paramters;
 using PicSum.Job.Results;
@@ -37,7 +38,7 @@ namespace PicSum.Job.Jobs
                     try
                     {
                         var bf = getLogic.Execute(param.FilePathList[index], param.ThumbnailWidth, param.ThumbnailHeight);
-                        if (bf == null)
+                        if (bf == ThumbnailBufferEntity.EMPTY)
                         {
                             continue;
                         }

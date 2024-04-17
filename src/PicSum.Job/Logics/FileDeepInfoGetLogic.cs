@@ -80,10 +80,8 @@ namespace PicSum.Job.Logics
                                 ThumbnailImage = thumb,
                                 ThumbnailWidth = thumbSize.Width,
                                 ThumbnailHeight = thumbSize.Height,
-#pragma warning disable CS8602
                                 SourceWidth = srcImg.Width,
                                 SourceHeight = srcImg.Height
-#pragma warning restore CS8602
                             };
                             info.ImageSize = new(srcImg.Width, srcImg.Height);
                         }
@@ -107,10 +105,8 @@ namespace PicSum.Job.Logics
                                     ThumbnailImage = thumb,
                                     ThumbnailWidth = thumbSize.Width,
                                     ThumbnailHeight = thumbSize.Height,
-#pragma warning disable CS8602
                                     SourceWidth = srcImg.Width,
                                     SourceHeight = srcImg.Height,
-#pragma warning restore CS8602
                                 };
                                 info.ImageSize = new(srcImg.Width, srcImg.Height);
                             }

@@ -98,11 +98,9 @@ namespace PicSum.Job.Jobs
                         {
                             FilePath = nextFilePath,
                             Image = img2,
-#pragma warning disable CS8604
                             Thumbnail = (isImg2Success) ?
                                 logic.CreateThumbnail(img2, parameter.ThumbnailSize, parameter.ImageSizeMode) :
                                 null,
-#pragma warning restore CS8604
                             IsError = !isImg2Success,
                         };
                         this.CheckCancel();
@@ -126,11 +124,9 @@ namespace PicSum.Job.Jobs
                     result.Image1 = new()
                     {
                         FilePath = currentFilePath,
-#pragma warning disable CS8604
                         Thumbnail = (isImg1Success) ?
                             logic.CreateThumbnail(img1, parameter.ThumbnailSize, parameter.ImageSizeMode) :
                             null,
-#pragma warning restore CS8604
                         Image = img1,
                         IsError = !isImg1Success,
                     };

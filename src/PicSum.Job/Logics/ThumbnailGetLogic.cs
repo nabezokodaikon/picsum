@@ -5,11 +5,7 @@ using PicSum.Data.DatabaseAccessor.Dto;
 using PicSum.Data.DatabaseAccessor.Sql;
 using PicSum.Job.Entities;
 using SWF.Common;
-using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Runtime.Versioning;
-using System.Threading;
 
 namespace PicSum.Job.Logics
 {
@@ -39,17 +35,17 @@ namespace PicSum.Job.Logics
 
             if (string.IsNullOrEmpty(filePath))
             {
-                return null;
+                return ThumbnailBufferEntity.EMPTY;
             }
             else if (FileUtil.IsFile(filePath))
             {
                 if (!FileUtil.IsImageFile(filePath))
                 {
-                    return null;
+                    return ThumbnailBufferEntity.EMPTY;
                 }
 
                 var cash = this.GetFileCash(filePath, thumbWidth, thumbHeight);
-                if (cash != null)
+                if (cash != ThumbnailBufferEntity.EMPTY)
                 {
                     if (cash.ThumbnailWidth > thumbWidth || cash.ThumbnailHeight > thumbHeight)
                     {
@@ -78,13 +74,13 @@ namespace PicSum.Job.Logics
                 }
                 else
                 {
-                    return null;
+                    return ThumbnailBufferEntity.EMPTY;
                 }
             }
             else
             {
                 var cash = this.GetDirectoryCash(filePath, thumbWidth, thumbHeight);
-                if (cash != null)
+                if (cash != ThumbnailBufferEntity.EMPTY)
                 {
                     if (cash.ThumbnailWidth > thumbWidth || cash.ThumbnailHeight > thumbHeight)
                     {
@@ -113,7 +109,7 @@ namespace PicSum.Job.Logics
                 }
                 else
                 {
-                    return null;
+                    return ThumbnailBufferEntity.EMPTY;
                 }
             }
         }
@@ -121,7 +117,7 @@ namespace PicSum.Job.Logics
         private ThumbnailBufferEntity GetFileCash(string filePath, int thumbWidth, int thumbHeight)
         {
             var memCash = GetMemoryCash(filePath);
-            if (memCash != null)
+            if (memCash != ThumbnailBufferEntity.EMPTY)
             {
                 var updateDate = FileUtil.GetUpdateDate(filePath);
                 if (memCash.ThumbnailWidth >= thumbWidth &&
@@ -134,7 +130,7 @@ namespace PicSum.Job.Logics
                 else
                 {
                     var dbCash = this.GetDBCash(filePath);
-                    if (dbCash != null)
+                    if (dbCash != ThumbnailBufferEntity.EMPTY)
                     {
                         if (dbCash.ThumbnailWidth >= thumbWidth &&
                             dbCash.ThumbnailHeight >= thumbHeight &&
@@ -164,7 +160,7 @@ namespace PicSum.Job.Logics
             else
             {
                 var dbCash = this.GetDBCash(filePath);
-                if (dbCash != null)
+                if (dbCash != ThumbnailBufferEntity.EMPTY)
                 {
                     var updateDate = FileUtil.GetUpdateDate(filePath);
 
@@ -198,7 +194,7 @@ namespace PicSum.Job.Logics
         private ThumbnailBufferEntity GetDirectoryCash(string filePath, int thumbWidth, int thumbHeight)
         {
             var memCash = GetMemoryCash(filePath);
-            if (memCash != null)
+            if (memCash != ThumbnailBufferEntity.EMPTY)
             {
                 var updateDate = FileUtil.GetUpdateDate(filePath);
 
@@ -212,7 +208,7 @@ namespace PicSum.Job.Logics
                 else
                 {
                     var dbCash = this.GetDBCash(filePath);
-                    if (dbCash != null)
+                    if (dbCash != ThumbnailBufferEntity.EMPTY)
                     {
                         if (dbCash.ThumbnailWidth >= thumbWidth &&
                             dbCash.ThumbnailHeight >= thumbHeight &&
@@ -234,7 +230,7 @@ namespace PicSum.Job.Logics
                             }
                             else
                             {
-                                return null;
+                                return ThumbnailBufferEntity.EMPTY;
                             }
                         }
                     }
@@ -250,7 +246,7 @@ namespace PicSum.Job.Logics
                         }
                         else
                         {
-                            return null;
+                            return ThumbnailBufferEntity.EMPTY;
                         }
                     }
                 }
@@ -258,7 +254,7 @@ namespace PicSum.Job.Logics
             else
             {
                 var dbCash = this.GetDBCash(filePath);
-                if (dbCash != null)
+                if (dbCash != ThumbnailBufferEntity.EMPTY)
                 {
                     var updateDate = FileUtil.GetUpdateDate(filePath);
 
@@ -282,7 +278,7 @@ namespace PicSum.Job.Logics
                         }
                         else
                         {
-                            return null;
+                            return ThumbnailBufferEntity.EMPTY;
                         }
                     }
                 }
@@ -299,7 +295,7 @@ namespace PicSum.Job.Logics
                     }
                     else
                     {
-                        return null;
+                        return ThumbnailBufferEntity.EMPTY;
                     }
                 }
             }
@@ -388,7 +384,7 @@ namespace PicSum.Job.Logics
             }
             else
             {
-                return null;
+                return ThumbnailBufferEntity.EMPTY;
             }
         }
 
@@ -528,7 +524,7 @@ namespace PicSum.Job.Logics
                 }
                 else
                 {
-                    return null;
+                    return ThumbnailBufferEntity.EMPTY;
                 }
             }
             finally

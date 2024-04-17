@@ -5,7 +5,6 @@ using PicSum.Data.DatabaseAccessor.Dto;
 using PicSum.Data.DatabaseAccessor.Sql;
 using PicSum.Job.Parameters;
 using SWF.Common;
-using System;
 using System.Runtime.Versioning;
 
 namespace PicSum.Job.Logics
@@ -36,7 +35,7 @@ namespace PicSum.Job.Logics
             }
             else
             {
-                return null;
+                return DirectoryStateParameter.EMPTY;
             }
         }
     }

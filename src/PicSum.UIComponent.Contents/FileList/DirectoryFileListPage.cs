@@ -313,7 +313,7 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             if (!string.IsNullOrEmpty(this.parameter.SelectedFilePath))
             {
-                if (e.DirectoryState != null)
+                if (e.DirectoryState != DirectoryStateParameter.EMPTY)
                 {
                     base.SetFiles(e.FileInfoList, this.parameter.SelectedFilePath, e.DirectoryState.SortTypeID, e.DirectoryState.IsAscending);
                 }
@@ -324,7 +324,7 @@ namespace PicSum.UIComponent.Contents.FileList
             }
             else
             {
-                if (e.DirectoryState != null)
+                if (e.DirectoryState != DirectoryStateParameter.EMPTY)
                 {
                     base.SetFiles(e.FileInfoList, e.DirectoryState.SelectedFilePath, e.DirectoryState.SortTypeID, e.DirectoryState.IsAscending);
                     if (e.FileInfoList.Count < 1)

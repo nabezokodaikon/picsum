@@ -30,18 +30,18 @@ namespace PicSum.UIComponent.Contents.FileList
                 job
                 .Callback(e =>
                 {
-                    var imageFiles = e.FileInfoList
-                        .Where(fileInfo => fileInfo.IsImageFile)
-                        .OrderBy(fileInfo => fileInfo.FilePath)
-                        .Select(fileInfo => fileInfo.FilePath)
-                        .ToArray();
-
                     if (!FileUtil.IsImageFile(param.SelectedFilePath))
                     {
                         throw new PicSumException($"画像ファイルが選択されていません。'{param.SelectedFilePath}'");
                     }
 
                     var title = FileUtil.GetFileName(FileUtil.GetParentDirectoryPath(param.SelectedFilePath));
+
+                    var imageFiles = e.FileInfoList
+                        .Where(fileInfo => fileInfo.IsImageFile)
+                        .OrderBy(fileInfo => fileInfo.FilePath)
+                        .Select(fileInfo => fileInfo.FilePath)
+                        .ToArray();
 
                     var eventArgs = new GetImageFilesEventArgs(
                         imageFiles, param.SelectedFilePath, title, FileIconCash.SmallDirectoryIcon);
