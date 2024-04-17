@@ -3,6 +3,8 @@
 
 RMDIR /s /q %OUTPUT_PATH%
 
+dotnet restore src\PicSum.sln
+
 MSBuild src\PicSum.sln /t:Rebuild ^
   /p:OutputPath="%OUTPUT_PATH%" ^
   /p:Configuration=Release ^
