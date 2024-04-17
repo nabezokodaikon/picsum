@@ -305,9 +305,7 @@ namespace PicSum.Job.Logics
 
         private string GetThumbnailBufferFilePath(int id)
         {
-#pragma warning disable CS8602
-            var dbDir = Directory.GetParent(DatabaseManager<ThumbnailConnection>.DBFilePath).FullName;
-#pragma warning restore CS8602
+            var dbDir = FileUtil.GetParentDirectoryPath(DatabaseManager<ThumbnailConnection>.DBFilePath);
             return Path.Combine(dbDir, $"{id}.thumbnail");
         }
 
