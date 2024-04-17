@@ -7,5 +7,3 @@ MSBuild src\PicSum.sln /t:Rebuild ^
   /p:OutputPath="%OUTPUT_PATH%" ^
   /p:Configuration=Debug ^
   /p:Platform="Any CPU"
-
-PAUSE
