@@ -1,4 +1,4 @@
-﻿using PicSum.Core.Data.DatabaseAccessor;
+using PicSum.Core.Data.DatabaseAccessor;
 using System;
 using System.Data;
 
@@ -19,7 +19,7 @@ SELECT mf.file_id
  WHERE mf.file_path = :file_path
 ";
 
-        public BookmarkCreationSql(string filePath, DateTime registration_date)
+        public BookmarkCreationSql(string filePath, DateTime registrationDate)
             : base(SQL_TEXT)
         {
             if (filePath == null)
@@ -29,7 +29,7 @@ SELECT mf.file_id
 
             base.ParameterList.AddRange(new IDbDataParameter[]
                 { SqlParameterUtil.CreateParameter("file_path", filePath),
-                  SqlParameterUtil.CreateParameter("registration_date", registration_date)
+                  SqlParameterUtil.CreateParameter("registration_date", registrationDate)
                 });
         }
     }

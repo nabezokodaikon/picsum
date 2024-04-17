@@ -1,4 +1,4 @@
-﻿using PicSum.Core.Data.DatabaseAccessor;
+using PicSum.Core.Data.DatabaseAccessor;
 using System;
 using System.Data;
 
@@ -24,7 +24,7 @@ SELECT mf.file_id
  WHERE mf.file_path = :file_path
 ";
 
-        public RatingCreationSql(string filePath, int rating, DateTime registration_date)
+        public RatingCreationSql(string filePath, int rating, DateTime registrationDate)
             : base(SQL_TEXT)
         {
             if (filePath == null)
@@ -35,7 +35,7 @@ SELECT mf.file_id
             base.ParameterList.AddRange(new IDbDataParameter[] {
                 SqlParameterUtil.CreateParameter("file_path", filePath),
                 SqlParameterUtil.CreateParameter("rating", rating),
-                SqlParameterUtil.CreateParameter("registration_date", registration_date)
+                SqlParameterUtil.CreateParameter("registration_date", registrationDate)
             });
         }
     }
