@@ -109,6 +109,19 @@ namespace SWF.Common
                 {
                     return WEBPUtil.GetImageSize(filePath);
                 }
+                else if (FileUtil.IsImageFile(filePath))
+                {
+                    using (var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                    using (var bmp = new Bitmap(fs))
+                    {
+                        return bmp.Size;
+                    }
+                }
+                else
+                {
+                    throw new ArgumentException(
+                        $"画像ファイル以外のファイルが指定されました。'{FileUtil.IsImageFile(filePath)}'", nameof(filePath));
+                }
             }
             catch (ArgumentException ex)
             {
@@ -150,40 +163,6 @@ namespace SWF.Common
             {
                 throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
             }
-
-            var directory = ImageUtil.SHELL.NameSpace(Path.GetDirectoryName(filePath));
-            var item = directory.ParseName(Path.GetFileName(filePath));
-            var deteils = directory.GetDetailsOf(item, 31);
-            if (string.IsNullOrWhiteSpace(deteils))
-            {
-                return ImageUtil.EMPTY_SIZE;
-            }
-
-            var v = deteils.Split(('x'));
-            if (v.Length != 2)
-            {
-                return ImageUtil.EMPTY_SIZE;
-            }
-
-            var wText = v[0];
-            var hText = v[1];
-
-            if (!int.TryParse(wText.Substring(1).Trim(), out int w))
-            {
-                return ImageUtil.EMPTY_SIZE;
-            }
-
-            if (!int.TryParse(hText.Substring(0, hText.Length - 1).Trim(), out int h))
-            {
-                return ImageUtil.EMPTY_SIZE;
-            }
-
-            if (w < 1 || h < 1)
-            {
-                return ImageUtil.EMPTY_SIZE;
-            }
-
-            return new Size(w, h);
         }
 
         /// <summary>
@@ -205,13 +184,18 @@ namespace SWF.Common
                 {
                     return AVIFUtil.ReadImageFile(filePath);
                 }
-                else
+                else if (FileUtil.IsImageFile(filePath))
                 {
                     using (var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
                     {
                         var destImg = new Bitmap(fs);
                         return destImg;
                     }
+                }
+                else
+                {
+                    throw new ArgumentException(
+                        $"画像ファイル以外のファイルが指定されました。'{FileUtil.IsImageFile(filePath)}'", nameof(filePath));
                 }
             }
             catch (ArgumentException ex)
