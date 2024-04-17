@@ -177,9 +177,14 @@ namespace PicSum.UIComponent.AddressBar
 
             if (FileUtil.IsFile(filePath))
             {
-                if (FileUtil.GetParentDirectoryPath(filePath) == this.currentDirectoryPath)
+                var dir = FileUtil.GetParentDirectoryPath(filePath);
+                if (dir == this.currentDirectoryPath)
                 {
                     return;
+                }
+                else
+                {
+                    this.currentDirectoryPath = dir;
                 }
             }
             else
@@ -187,6 +192,10 @@ namespace PicSum.UIComponent.AddressBar
                 if (filePath == this.currentDirectoryPath)
                 {
                     return;
+                }
+                else
+                {
+                    this.currentDirectoryPath = filePath;
                 }
             }
 
@@ -638,7 +647,6 @@ namespace PicSum.UIComponent.AddressBar
         {
             this.ClearAddressItems();
 
-            this.currentDirectoryPath = e.DirectoryPath;
             this.addressItems.AddRange(this.CreateAddressItems(e));
 
             this.Invalidate();
