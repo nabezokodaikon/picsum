@@ -398,7 +398,7 @@ namespace PicSum.UIComponent.Contents.FileList
         protected void SetFile(IList<FileShallowInfoEntity> srcFiles, string selectedFilePath)
         {
             ArgumentNullException.ThrowIfNull(srcFiles, nameof(srcFiles));
-            ArgumentException.ThrowIfNullOrEmpty(selectedFilePath, nameof(selectedFilePath));
+            ArgumentNullException.ThrowIfNull(selectedFilePath, nameof(selectedFilePath));
 
             this.SetFiles(srcFiles, selectedFilePath, SortTypeID.Default, false);
         }
