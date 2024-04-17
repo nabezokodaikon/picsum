@@ -120,7 +120,7 @@ namespace SWF.Common
                 else
                 {
                     throw new ArgumentException(
-                        $"画像ファイル以外のファイルが指定されました。'{FileUtil.IsImageFile(filePath)}'", nameof(filePath));
+                        $"画像ファイル以外のファイルが指定されました。'{filePath}'", nameof(filePath));
                 }
             }
             catch (ArgumentException ex)
@@ -195,7 +195,7 @@ namespace SWF.Common
                 else
                 {
                     throw new ArgumentException(
-                        $"画像ファイル以外のファイルが指定されました。'{FileUtil.IsImageFile(filePath)}'", nameof(filePath));
+                        $"画像ファイル以外のファイルが指定されました。'{filePath}'", nameof(filePath));
                 }
             }
             catch (ArgumentException ex)
