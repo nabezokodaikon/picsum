@@ -67,9 +67,9 @@ namespace PicSum.Job.Jobs
             try
             {
                 this.CheckCancel();
-                var isImg1Success = this.ReadImageFile(currentFilePath, out var img1);
+                var img1 = this.ReadImageFile(currentFilePath);
                 if (parameter.ImageDisplayMode != ImageDisplayMode.Single
-                    && img1 != null
+                    && img1 != ImageUtil.EMPTY_IMAGE
                     && img1.Width < img1.Height)
                 {
                     var nextIndex = parameter.CurrentIndex + 1;
@@ -85,15 +85,14 @@ namespace PicSum.Job.Jobs
                         result.Image1 = new()
                         {
                             FilePath = currentFilePath,
-                            Thumbnail = (isImg1Success) ?
-                                logic.CreateThumbnail(img1, parameter.ThumbnailSize, parameter.ImageSizeMode) :
-                                null,
+                            Thumbnail = logic.CreateThumbnail(img1, parameter.ThumbnailSize, parameter.ImageSizeMode),
                             Image = img1,
-                            IsError = !isImg1Success,
+                            IsError = false,
                         };
                         this.CheckCancel();
 
-                        var isImg2Success = this.ReadImageFile(nextFilePath, out var img2);
+                        var img2 = this.ReadImageFile(nextFilePath);
+                        var isImg2Success = img2 != ImageUtil.EMPTY_IMAGE;
                         result.Image2 = new()
                         {
                             FilePath = nextFilePath,
@@ -110,17 +109,16 @@ namespace PicSum.Job.Jobs
                         result.Image1 = new()
                         {
                             FilePath = currentFilePath,
-                            Thumbnail = (isImg1Success) ?
-                                logic.CreateThumbnail(img1, parameter.ThumbnailSize, parameter.ImageSizeMode) :
-                                null,
+                            Thumbnail = logic.CreateThumbnail(img1, parameter.ThumbnailSize, parameter.ImageSizeMode),
                             Image = img1,
-                            IsError = !isImg1Success,
+                            IsError = false,
                         };
                         this.CheckCancel();
                     }
                 }
                 else
                 {
+                    var isImg1Success = img1 != ImageUtil.EMPTY_IMAGE;
                     result.Image1 = new()
                     {
                         FilePath = currentFilePath,
@@ -142,20 +140,16 @@ namespace PicSum.Job.Jobs
             this.Callback(result);
         }
 
-        private bool ReadImageFile(string filePath, out Bitmap? bmp)
+        private Bitmap ReadImageFile(string filePath)
         {
-            bmp = null;
             try
             {
-                bmp = ImageUtil.ReadImageFile(filePath);
-                return true;
+                return ImageUtil.ReadImageFile(filePath);
             }
             catch (ImageUtilException ex)
             {
                 this.WriteErrorLog(new JobException(this.ID, ex));
-                bmp?.Dispose();
-                bmp = null;
-                return false;
+                return ImageUtil.EMPTY_IMAGE;
             }
         }
     }

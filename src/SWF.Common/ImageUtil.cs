@@ -17,6 +17,7 @@ namespace SWF.Common
         internal const string AVIF_FILE_EXTENSION = ".AVIF";
 
         public static readonly Size EMPTY_SIZE = Size.Empty;
+        public static readonly Bitmap EMPTY_IMAGE = new(1, 1);
         internal static readonly List<string> IMAGE_FILE_EXTENSION_LIST = ImageUtil.GetImageFileExtensionList();
 
         private static readonly EncoderParameter ENCORDER_PARAMETER = new(Encoder.Quality, 100L);
