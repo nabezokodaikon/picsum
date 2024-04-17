@@ -8,6 +8,10 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
+    <NoWarn>1701;1702; CA1016</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <NoWarn>1701;1702; CA1016</NoWarn>
   </PropertyGroup>
   <ItemGroup>
     <Compile Update="ArrowPictureBox.cs">
