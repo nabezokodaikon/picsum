@@ -175,11 +175,6 @@ namespace PicSum.UIComponent.AddressBar
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
-            if (string.IsNullOrEmpty(filePath))
-            {
-                throw new ArgumentException("アドレスバーに空白は設定できません。", nameof(filePath));
-            }
-
             if (FileUtil.IsFile(filePath))
             {
                 if (FileUtil.GetParentDirectoryPath(filePath) == this.currentDirectoryPath)
