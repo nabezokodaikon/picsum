@@ -136,7 +136,7 @@ namespace PicSum.UIComponent.AddressBar
 
         #region プライベートプロパティ
 
-        private TwoWayJob<AddressInfoGetJob, ValueParameter<string>, AddressInfoGetResult> GetAddressInfoProcess
+        private TwoWayJob<AddressInfoGetJob, ValueParameter<string>, AddressInfoGetResult> GetAddressInfoJob
         {
             get
             {
@@ -144,7 +144,7 @@ namespace PicSum.UIComponent.AddressBar
                 {
                     this.getAddressInfoJob = new();
                     this.getAddressInfoJob
-                        .Callback(this.GetAddressInfoProcess_Callback)
+                        .Callback(this.GetAddressInfoJob_Callback)
                         .Catch(ex =>
                         {
                             this.currentDirectoryPath = string.Empty;
@@ -201,7 +201,7 @@ namespace PicSum.UIComponent.AddressBar
 
             var param = new ValueParameter<string>(filePath);
 
-            this.GetAddressInfoProcess.StartJob(param);
+            this.GetAddressInfoJob.StartJob(param);
         }
 
         #endregion
@@ -643,7 +643,7 @@ namespace PicSum.UIComponent.AddressBar
             this.SelectedDirectory?.Invoke(this, e);
         }
 
-        private void GetAddressInfoProcess_Callback(AddressInfoGetResult e)
+        private void GetAddressInfoJob_Callback(AddressInfoGetResult e)
         {
             this.ClearAddressItems();
 
