@@ -35,7 +35,7 @@ namespace PicSum.UIComponent.AddressBar
 
         public override void Draw(Graphics g)
         {
-            ArgumentNullException.ThrowIfNull(g, nameof(g));   
+            ArgumentNullException.ThrowIfNull(g, nameof(g));
 
             var rect = this.GetRectangle();
 

@@ -1,5 +1,5 @@
-using PicSum.Main.Conf;
 using PicSum.Job.SyncJobs;
+using PicSum.Main.Conf;
 using PicSum.UIComponent.Contents.Conf;
 using System;
 using System.Runtime.Versioning;

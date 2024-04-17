@@ -1,7 +1,7 @@
 using PicSum.Core.Job.AsyncJob;
 using PicSum.Job.Entities;
-using PicSum.Job.Paramters;
 using PicSum.Job.Jobs;
+using PicSum.Job.Paramters;
 using PicSum.UIComponent.Contents.Common;
 using PicSum.UIComponent.Contents.Conf;
 using PicSum.UIComponent.Contents.Parameter;
@@ -161,7 +161,7 @@ namespace PicSum.UIComponent.Contents.FileList
         #region プロセスイベント
 
         private void SearchJob_Callback(ListResult<FileShallowInfoEntity> e)
-        {           
+        {
             if (this.parameter.SortInfo == null)
             {
                 base.SetFile(e, this.parameter.SelectedFilePath);

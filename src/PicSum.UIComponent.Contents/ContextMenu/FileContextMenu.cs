@@ -1,4 +1,3 @@
-using PicSum.UIComponent.Contents.Properties;
 using SWF.Common;
 using System;
 using System.Collections.Generic;
@@ -45,7 +44,7 @@ namespace PicSum.UIComponent.Contents.ContextMenu
         // 画像ファイルメニュー項目
         private readonly ToolStripMenuItem fileActiveTabOpenMenuItem = new("Open");
         private readonly ToolStripMenuItem fileNewTabOpenMenuItem = new("Open New Tab");
-        private readonly ToolStripMenuItem fileNewWindowOpenMenuItem = new ("Open New Window");
+        private readonly ToolStripMenuItem fileNewWindowOpenMenuItem = new("Open New Window");
         private readonly ToolStripMenuItem fileBookmarkMenuItem = new("Bookmark");
 
         // ファイルメニュー項目

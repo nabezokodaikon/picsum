@@ -4,7 +4,6 @@ using PicSum.Data.DatabaseAccessor.Connection;
 using PicSum.Data.DatabaseAccessor.Sql;
 using PicSum.Job.Parameters;
 using SWF.Common;
-using System;
 using System.Runtime.Versioning;
 
 namespace PicSum.Job.Logics

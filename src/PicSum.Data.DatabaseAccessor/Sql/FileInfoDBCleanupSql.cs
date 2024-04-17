@@ -1,5 +1,4 @@
 using PicSum.Core.Data.DatabaseAccessor;
-using System.Data;
 
 namespace PicSum.Data.DatabaseAccessor.Sql
 {

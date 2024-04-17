@@ -1,8 +1,7 @@
 using PicSum.Core.Job.AsyncJob;
-using PicSum.Job.Logics;
 using PicSum.Job.Entities;
+using PicSum.Job.Logics;
 using SWF.Common;
-using System;
 using System.Runtime.Versioning;
 
 namespace PicSum.Job.Jobs
@@ -38,7 +37,7 @@ namespace PicSum.Job.Jobs
                 {
                     this.WriteErrorLog(new JobException(this.ID, ex));
                     continue;
-                }                
+                }
             }
 
             this.Callback(result);

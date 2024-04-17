@@ -3,8 +3,6 @@ using PicSum.Job.Logics;
 using PicSum.Job.Paramters;
 using PicSum.Job.Results;
 using SWF.Common;
-using System;
-using System.Collections.Generic;
 using System.Runtime.Versioning;
 
 namespace PicSum.Job.Jobs

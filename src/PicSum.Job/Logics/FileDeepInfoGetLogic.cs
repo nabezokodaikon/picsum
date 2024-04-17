@@ -5,7 +5,6 @@ using PicSum.Data.DatabaseAccessor.Dto;
 using PicSum.Data.DatabaseAccessor.Sql;
 using PicSum.Job.Entities;
 using SWF.Common;
-using System;
 using System.Drawing;
 using System.Runtime.Versioning;
 

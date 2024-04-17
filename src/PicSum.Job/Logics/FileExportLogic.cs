@@ -1,6 +1,4 @@
 using PicSum.Core.Job.AsyncJob;
-using System;
-using System.IO;
 using System.Runtime.Versioning;
 
 namespace PicSum.Job.Logics

@@ -1,7 +1,6 @@
 using PicSum.Core.Job.AsyncJob;
 using PicSum.Job.Entities;
 using SWF.Common;
-using System;
 using System.Runtime.Versioning;
 
 namespace PicSum.Job.Logics

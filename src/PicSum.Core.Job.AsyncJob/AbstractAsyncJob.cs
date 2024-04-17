@@ -47,7 +47,7 @@ namespace PicSum.Core.Job.AsyncJob
         where TResult : IJobResult
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-        
+
         internal TParameter? Parameter { get; set; }
         internal Action<TResult>? CallbackAction { get; set; }
         internal Action<JobException>? CatchAction { get; set; }

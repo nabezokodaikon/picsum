@@ -1,8 +1,8 @@
 using PicSum.Core.Base.Exception;
 using PicSum.Core.Job.AsyncJob;
 using PicSum.Job.Entities;
-using PicSum.Job.Results;
 using PicSum.Job.Jobs;
+using PicSum.Job.Results;
 using PicSum.UIComponent.Contents.Common;
 using PicSum.UIComponent.Contents.Parameter;
 using PicSum.UIComponent.Contents.Properties;
@@ -180,7 +180,7 @@ namespace PicSum.UIComponent.Contents.FileList
         }
 
         private void SearchJob_Callback(ListResult<FileShallowInfoEntity> result)
-        {           
+        {
             if (this.parameter.SortInfo == null)
             {
                 base.SetFiles(result, this.parameter.SelectedFilePath, SortTypeID.RgistrationDate, false);

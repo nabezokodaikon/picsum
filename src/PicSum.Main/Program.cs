@@ -1,9 +1,9 @@
 using NLog;
 using NLog.Config;
+using PicSum.Job.Jobs;
+using PicSum.Job.Logics;
 using PicSum.Main.Mng;
 using PicSum.Main.UIComponent;
-using PicSum.Job.Logics;
-using PicSum.Job.Jobs;
 using SWF.Common;
 using System;
 using System.Diagnostics;

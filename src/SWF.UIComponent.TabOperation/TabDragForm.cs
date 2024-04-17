@@ -216,7 +216,7 @@ namespace SWF.UIComponent.TabOperation
                 ControlStyles.AllPaintingInWmPaint |
                 ControlStyles.DoubleBuffer |
                 ControlStyles.ResizeRedraw |
-                ControlStyles.UserPaint,             
+                ControlStyles.UserPaint,
                 true);
             this.UpdateStyles();
 

@@ -1,9 +1,8 @@
 using PicSum.Core.Job.AsyncJob;
-using PicSum.Job.Logics;
 using PicSum.Job.Entities;
+using PicSum.Job.Logics;
 using PicSum.Job.Paramters;
 using SWF.Common;
-using System;
 using System.Runtime.Versioning;
 
 namespace PicSum.Job.Jobs

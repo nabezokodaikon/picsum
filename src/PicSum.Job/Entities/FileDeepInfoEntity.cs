@@ -1,5 +1,4 @@
 using PicSum.Job.Results;
-using System;
 using System.Drawing;
 
 namespace PicSum.Job.Entities

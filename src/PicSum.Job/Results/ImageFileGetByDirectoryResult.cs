@@ -1,5 +1,4 @@
 using PicSum.Core.Job.AsyncJob;
-using System.Collections.Generic;
 
 namespace PicSum.Job.Results
 {

@@ -1,11 +1,7 @@
 using PicSum.Core.Job.AsyncJob;
 using PicSum.Job.Logics;
 using PicSum.Job.Paramters;
-using System;
-using System.IO;
 using System.Runtime.Versioning;
-using System.Threading;
-using static System.Windows.Forms.AxHost;
 
 namespace PicSum.Job.Jobs
 {

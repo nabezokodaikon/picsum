@@ -1,6 +1,3 @@
-using PicSum.Data.DatabaseAccessor.Dto;
-using System;
-
 namespace PicSum.Job.Entities
 {
     /// <summary>

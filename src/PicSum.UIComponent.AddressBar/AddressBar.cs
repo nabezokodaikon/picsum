@@ -1,6 +1,6 @@
 using PicSum.Core.Job.AsyncJob;
-using PicSum.Job.Results;
 using PicSum.Job.Jobs;
+using PicSum.Job.Results;
 using PicSum.UIComponent.AddressBar.Properties;
 using SWF.Common;
 using System;
