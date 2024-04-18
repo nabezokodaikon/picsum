@@ -39,7 +39,7 @@ namespace PicSum.Job.Jobs
             }
 
             var sortedList = list.OrderBy(f => f).ToList();
-            var index = list.IndexOf(param.CurrentParameter.Value);
+            var index = sortedList.IndexOf(param.CurrentParameter.Value);
             if (index < 0)
             {
                 return;
