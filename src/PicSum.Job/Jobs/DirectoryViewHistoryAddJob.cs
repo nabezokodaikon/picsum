@@ -12,10 +12,7 @@ namespace PicSum.Job.Jobs
     {
         protected override void Execute(ValueParameter<string> param)
         {
-            if (param == null)
-            {
-                throw new ArgumentNullException(nameof(param));
-            }
+            ArgumentNullException.ThrowIfNull(param, nameof(param));
 
             using (var tran = DatabaseManager<FileInfoConnection>.BeginTransaction())
             {

@@ -15,15 +15,8 @@ namespace PicSum.Job.Logics
     {
         public bool Execute(string filePath, string tag, DateTime registrationDate)
         {
-            if (filePath == null)
-            {
-                throw new ArgumentNullException(nameof(filePath));
-            }
-
-            if (tag == null)
-            {
-                throw new ArgumentNullException(nameof(tag));
-            }
+            ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
+            ArgumentException.ThrowIfNullOrEmpty(tag, nameof(tag));
 
             var sql = new TagCreationSql(filePath, tag, registrationDate);
             return DatabaseManager<FileInfoConnection>.Update(sql);

@@ -3,6 +3,7 @@ using PicSum.Core.Job.AsyncJob;
 using PicSum.Data.DatabaseAccessor.Connection;
 using PicSum.Job.Paramters;
 using System.Runtime.Versioning;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace PicSum.Job.Logics
 {
@@ -15,10 +16,7 @@ namespace PicSum.Job.Logics
     {
         public void Execute(StartupPrameter param)
         {
-            if (param == null)
-            {
-                throw new ArgumentNullException(nameof(param));
-            }
+            ArgumentNullException.ThrowIfNull(param, nameof(param));
 
             DatabaseManager<FileInfoConnection>.Connect(new FileInfoConnection(param.FileInfoDBFilePath));
             DatabaseManager<ThumbnailConnection>.Connect(new ThumbnailConnection(param.ThumbnailDBFilePath));

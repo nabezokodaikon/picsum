@@ -15,10 +15,7 @@ namespace PicSum.Job.Jobs
     {
         protected override void Execute(ValueParameter<string> param)
         {
-            if (param == null)
-            {
-                throw new ArgumentNullException(nameof(param));
-            }
+            ArgumentNullException.ThrowIfNull(param, nameof(param));
 
             var logic = new FilesGetByTagLogic(this);
             var dtoList = logic.Execute(param.Value);

@@ -19,10 +19,7 @@ namespace PicSum.Job.Logics
         /// <param name="directoryPath">フォルダパス</param>
         public void Execute(string directoryPath)
         {
-            if (directoryPath == null)
-            {
-                throw new ArgumentNullException(nameof(directoryPath));
-            }
+            ArgumentException.ThrowIfNullOrEmpty(directoryPath, nameof(directoryPath));
 
             var sql = new DirectoryViewCounterDeletionSql(directoryPath);
             DatabaseManager<FileInfoConnection>.Update(sql);

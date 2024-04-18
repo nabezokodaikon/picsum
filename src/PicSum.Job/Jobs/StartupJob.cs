@@ -14,10 +14,7 @@ namespace PicSum.Job.Jobs
     {
         protected override void Execute(StartupPrameter param)
         {
-            if (param == null)
-            {
-                throw new ArgumentNullException(nameof(param));
-            }
+            ArgumentNullException.ThrowIfNull(param, nameof(param));
 
             var logic = new StartupLogic(this);
             logic.Execute(param);

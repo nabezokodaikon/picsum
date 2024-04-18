@@ -16,10 +16,7 @@ namespace PicSum.Job.Logics
         /// <param name="filePath">ファイルパス</param>
         public bool Execute(string filePath)
         {
-            if (filePath == null)
-            {
-                throw new ArgumentNullException(nameof(filePath));
-            }
+            ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
             var sql = new FileUpdateSql(filePath);
             return DatabaseManager<FileInfoConnection>.Update(sql);
