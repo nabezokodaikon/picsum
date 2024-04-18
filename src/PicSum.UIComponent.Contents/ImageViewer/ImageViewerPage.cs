@@ -518,6 +518,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 this.Parameter.PageSources,
                 this.Parameter.SourcesKey,
                 currentFilePath,
+                this.parameter.SortInfo,
                 this.parameter.ImageFilesGetAction,
                 this.parameter.PageTitle,
                 this.parameter.PageIcon);

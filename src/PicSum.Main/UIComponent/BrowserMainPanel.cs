@@ -335,7 +335,7 @@ namespace PicSum.Main.UIComponent
                     dragData.SourcesKey,
                     dragData.GetImageFilesAction,
                     dragData.CurrentFilePath,
-                    new SortInfo(),
+                    dragData.SortInfo,
                     dragData.PageTitle,
                     dragData.PageIcon);
                 this.OpenPage(parameter, PageOpenType.OverlapTab);
@@ -358,7 +358,7 @@ namespace PicSum.Main.UIComponent
                     dragData.SourcesKey,
                     dragData.GetImageFilesAction,
                     dragData.CurrentFilePath,
-                    new SortInfo(),
+                    dragData.SortInfo,
                     dragData.PageTitle,
                     dragData.PageIcon);
                 this.InsertPage(parameter, tabIndex);
@@ -387,12 +387,18 @@ namespace PicSum.Main.UIComponent
                 }
 
                 var filePath = filePaths.First();
+
                 var dirPath = FileUtil.IsDirectory(filePath) ?
                     filePath : FileUtil.GetParentDirectoryPath(filePath);
+
+                var sortInfo = new SortInfo();
+                sortInfo.SetSortType(SortTypeID.FilePath, true);
+
                 var dragData = new DragEntity(
                     DirectoryFileListPageParameter.PAGE_SOURCES,
                     dirPath,
                     filePath,
+                    sortInfo,
                     this.GetImageFilesAction(new ImageFileGetByDirectoryParameter(dirPath)),
                     FileUtil.GetFileName(dirPath),
                     FileIconCash.SmallDirectoryIcon);

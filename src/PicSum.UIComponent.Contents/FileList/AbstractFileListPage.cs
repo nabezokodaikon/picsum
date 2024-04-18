@@ -1132,6 +1132,7 @@ namespace PicSum.UIComponent.Contents.FileList
                         this.Parameter.PageSources,
                         this.Parameter.SourcesKey,
                         currentFilePath,
+                        this.SortInfo,
                         this.GetImageFilesGetAction,
                         this.Title,
                         this.Icon); ;
@@ -1145,6 +1146,7 @@ namespace PicSum.UIComponent.Contents.FileList
                     this.Parameter.PageSources,
                     this.Parameter.SourcesKey,
                     currentFilePath,
+                    this.SortInfo,
                     this.GetImageFilesGetAction,
                     this.Title,
                     this.Icon);
