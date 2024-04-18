@@ -670,6 +670,10 @@ namespace PicSum.UIComponent.Contents.FileList
                 {
                     this.flowList.SelectItem(0);
                 }
+                else
+                {
+                    this.OnSelectedFileChanged(new SelectedFileChangeEventArgs(this.filterFilePathList));
+                }
             }
             finally
             {

@@ -478,6 +478,11 @@ namespace PicSum.Main.UIComponent
             {
                 this.addressBar.SetAddress(e.FilePathList[0]);
             }
+            else
+            {
+                this.addressBar.Clear();
+                this.addressBar.Invalidate();
+            }
 
             this.infoPanel.SetFileInfo(e.FilePathList);
             this.tabSwitch.InvalidateHeader();
