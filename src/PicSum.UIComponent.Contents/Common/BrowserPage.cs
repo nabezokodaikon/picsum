@@ -43,7 +43,6 @@ namespace PicSum.UIComponent.Contents.Common
                 true);
             this.UpdateStyles();
 
-            this.SubInitializeComponent();
             this.Parameter = parameter ?? throw new ArgumentNullException(nameof(parameter));
         }
 
@@ -83,15 +82,6 @@ namespace PicSum.UIComponent.Contents.Common
         }
 
         protected abstract void OnBackgroundMouseClick(MouseEventArgs e);
-
-        #endregion
-
-        #region プライベートメソッド
-
-        private void SubInitializeComponent()
-        {
-
-        }
 
         #endregion
     }
