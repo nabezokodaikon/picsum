@@ -204,11 +204,6 @@ namespace PicSum.UIComponent.AddressBar
             this.GetAddressInfoJob.StartJob(param);
         }
 
-        public void Clear()
-        {
-            this.ClearAddressItems();
-        }
-
         #endregion
 
         #region 継承メソッド
