@@ -139,7 +139,7 @@ namespace PicSum.Core.Job.AsyncJob
                 throw new InvalidOperationException($"{this.jobInfo} 既にジョブ実行スレッドが開始されています。");
             }
 
-            this.thread = System.Threading.Tasks.Task.Run(() => this.DoWork(this.source.Token));
+            this.thread = Task.Run(() => this.DoWork(this.source.Token));
         }
 
         public void StartJob(TJobParameter parameter)
