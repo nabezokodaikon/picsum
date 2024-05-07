@@ -19,7 +19,7 @@ namespace PicSum.Core.Job.AsyncJob
         private readonly SynchronizationContext context;
         private readonly CancellationTokenSource source = new();
         private readonly ConcurrentQueue<TJob> jobQueue = new();
-        private System.Threading.Tasks.Task? thread;
+        private Task? thread;
         private Action<TJobResult>? callbackAction;
         private Action<JobException>? catchAction;
         private Action? completeAction;
