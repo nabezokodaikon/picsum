@@ -353,12 +353,6 @@ namespace PicSum.UIComponent.Contents.FileList
             base.OnInvalidated(e);
         }
 
-        protected override void OnMouseWheel(MouseEventArgs e)
-        {
-            this.flowList.MouseWheelProcess(e);
-            base.OnMouseWheel(e);
-        }
-
         protected abstract void OnRemoveFile(IList<string> filePathList);
 
         protected abstract void OnMovePreviewButtonClick(EventArgs e);

@@ -547,34 +547,6 @@ namespace SWF.UIComponent.FlowList
             this.Invalidate(rect);
         }
 
-        /// <summary>
-        /// マウスホイール処理を実行します。
-        /// </summary>
-        /// <param name="e"></param>
-        public void MouseWheelProcess(MouseEventArgs e)
-        {
-            ArgumentNullException.ThrowIfNull(e, nameof(e));
-
-            if (e.Delta != 0)
-            {
-                var value = this.scrollBar.Value - (int)(this.itemHeight * 0.8 * (e.Delta / Math.Abs(e.Delta)));
-                if (value < this.scrollBar.Minimum)
-                {
-                    this.scrollBar.Value = this.scrollBar.Minimum;
-                }
-                else if (value > this.scrollBar.Maximum)
-                {
-                    this.scrollBar.Value = this.scrollBar.Maximum;
-                }
-                else
-                {
-                    this.scrollBar.Value = value;
-                }
-            }
-
-            base.OnMouseWheel(e);
-        }
-
         #endregion
 
         #region イベント発生メソッド
