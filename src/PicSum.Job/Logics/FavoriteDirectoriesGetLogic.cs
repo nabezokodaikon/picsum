@@ -18,7 +18,7 @@ namespace PicSum.Job.Logics
             var dtoList = DatabaseManager<FileInfoConnection>.ReadList<SingleValueDto<string>>(sql);
 
             var dirList = dtoList
-                .Where(dto => !FileUtil.IsSystemRoot(dto.Value) && FileUtil.CanAccess(dto.Value) && FileUtil.HasImageFile(dto.Value))
+                .Where(dto => !FileUtil.IsSystemRoot(dto.Value) && FileUtil.CanAccess(dto.Value) && FileUtil.HasImageFiles(dto.Value))
                 .Select(dto => dto.Value)
                 .ToList();
 
