@@ -8,6 +8,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 using System.Security;
+using System.Text;
 using WinApi;
 using static WinApi.WinApiMembers;
 
@@ -38,7 +39,9 @@ namespace SWF.Common
             }
             else
             {
-                return PathFileExists(filePath) == 1;
+                var utf8Bytes = Encoding.UTF8.GetBytes(filePath);
+                var utf8FilePath = Encoding.UTF8.GetString(utf8Bytes);
+                return File.Exists(utf8FilePath) || Directory.Exists(utf8FilePath);
             }
         }
 
