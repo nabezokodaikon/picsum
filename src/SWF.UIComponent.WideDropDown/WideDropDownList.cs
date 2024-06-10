@@ -214,7 +214,7 @@ namespace SWF.UIComponent.WideDropDown
 
             this.ToolStripItem.AutoSize = false;
             this.ToolStripItem.BackColor = this.BackColor;
-            this.ToolStripItem.Size = new Size(456, 224);
+            this.ToolStripItem.Size = new Size(600, 224);
 
             this.FlowList.BackColor = Color.White;
             this.FlowList.ItemTextTrimming = StringTrimming.EllipsisCharacter;
@@ -226,7 +226,7 @@ namespace SWF.UIComponent.WideDropDown
             this.FlowList.ItemSpace = 0;
             this.FlowList.IsMultiSelect = false;
             this.FlowList.Font = new Font("Yu Gothic UI", 10F, FontStyle.Regular, GraphicsUnit.Point, 128);
-            this.FlowList.SetItemSize(144, 32);
+            this.FlowList.SetItemSize(192, 32);
             this.FlowList.CanKeyDown = false;
 
             this.FlowList.ItemMouseClick += new(this.FlowList_ItemMouseClick);
