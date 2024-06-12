@@ -1004,6 +1004,12 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             {
                 if (!string.IsNullOrEmpty(this.leftImageFilePath))
                 {
+                    if (this.SelectedFilePath != this.leftImageFilePath)
+                    {
+                        this.SelectedFilePath = this.leftImageFilePath;
+                        this.OnSelectedFileChanged(new SelectedFileChangeEventArgs(this.leftImageFilePath));
+                    }
+
                     this.fileContextMenu.SetFile(this.leftImageFilePath);
                     return;
                 }
@@ -1012,6 +1018,12 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             {
                 if (!string.IsNullOrEmpty(this.rightImageFilePath))
                 {
+                    if (this.SelectedFilePath != this.rightImageFilePath)
+                    {
+                        this.SelectedFilePath = this.rightImageFilePath;
+                        this.OnSelectedFileChanged(new SelectedFileChangeEventArgs(this.rightImageFilePath));
+                    }
+
                     this.fileContextMenu.SetFile(this.rightImageFilePath);
                     return;
                 }
