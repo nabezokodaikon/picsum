@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Versioning;
 using System.Security;
+using System.IO.MemoryMappedFiles;
 
 namespace SWF.Common
 {
@@ -185,9 +186,10 @@ namespace SWF.Common
                 }
                 else if (FileUtil.IsImageFile(filePath))
                 {
-                    using (var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                    using (var mmf = MemoryMappedFile.CreateFromFile(filePath, FileMode.Open, null, 0, MemoryMappedFileAccess.Read))
+                    using (var accessor = mmf.CreateViewStream(0, 0, MemoryMappedFileAccess.Read))
                     {
-                        var destImg = new Bitmap(fs);
+                        var destImg = new Bitmap(accessor);
                         return destImg;
                     }
                 }
