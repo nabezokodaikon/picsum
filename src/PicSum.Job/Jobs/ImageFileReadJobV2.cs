@@ -4,6 +4,7 @@ using PicSum.Job.Logics;
 using PicSum.Job.Paramters;
 using PicSum.Job.Results;
 using SWF.Common;
+using System.Diagnostics;
 using System.Drawing;
 
 namespace PicSum.Job.Jobs
@@ -47,11 +48,14 @@ namespace PicSum.Job.Jobs
             try
             {
                 this.CheckCancel();
+                var sw = Stopwatch.StartNew();
                 var mainImage = this.ReadImageFile(mainFilePath, imageLogic);
                 if (parameter.ImageDisplayMode != ImageDisplayMode.Single
                     && mainImage != ImageUtil.EMPTY_IMAGE
                     && mainImage.Width < mainImage.Height)
                 {
+                    sw.Stop();
+                    Console.WriteLine(sw.ElapsedMilliseconds);
                     var subtIndex = parameter.CurrentIndex + 1;
                     if (subtIndex > parameter.FilePathList.Count - 1)
                     {
@@ -128,6 +132,8 @@ namespace PicSum.Job.Jobs
                 }
                 else
                 {
+                    sw.Stop();
+                    Console.WriteLine(sw.ElapsedMilliseconds);
                     try
                     {
                         this.CheckCancel();

@@ -131,15 +131,8 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                     this.getImageFileJob = new();
                     this.getImageFileJob
                         .Callback(this.GetImageFileJob_Callback)
-                        .Catch(_ =>
-                        {
-                            this.Cursor = Cursors.Default;
-                        })
-                        .Complete(() =>
-                        {
-                            this.Cursor = Cursors.Default;
-                            this.CreateImageCache();
-                        })
+                        .Catch(_ => this.Cursor = Cursors.Default)
+                        .Complete(() => this.Cursor = Cursors.Default)
                         .StartThread();
                 }
 
@@ -156,15 +149,8 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                     this.getImageFileJobV2 = new();
                     this.getImageFileJobV2
                         .Callback(this.GetImageFileJobV2_Callback)
-                        .Catch(_ =>
-                        {
-                            this.Cursor = Cursors.Default;
-                        })
-                        .Complete(() =>
-                        {
-                            this.Cursor = Cursors.Default;
-                            this.CreateImageCache();
-                        })
+                        .Catch(_ => this.Cursor = Cursors.Default)
+                        .Complete(() => this.Cursor = Cursors.Default)
                         .StartThread();
                 }
 
@@ -570,6 +556,8 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
         private void ReadImage()
         {
+            this.CreateImageCache();
+
             this.Cursor = Cursors.WaitCursor;
 
             var param = new ImageFileReadParameter
@@ -581,8 +569,8 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 ThumbnailSize = this.leftImagePanel.ThumbnailSize
             };
 
-            this.GetImageFileJob.StartJob(param);
-            //this.GetImageFileJobV2.StartJob(param);
+            //this.GetImageFileJob.StartJob(param);
+            this.GetImageFileJobV2.StartJob(param);
         }
 
         private void DoDragDrop(string currentFilePath)
