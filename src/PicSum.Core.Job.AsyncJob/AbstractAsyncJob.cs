@@ -50,6 +50,7 @@ namespace PicSum.Core.Job.AsyncJob
 
         internal TParameter? Parameter { get; set; }
         internal Action<TResult>? CallbackAction { get; set; }
+        internal Action? CancelAction { get; set; }
         internal Action<JobException>? CatchAction { get; set; }
         internal Action? CompleteAction { get; set; }
 
@@ -75,6 +76,7 @@ namespace PicSum.Core.Job.AsyncJob
             }
             catch (JobCancelException)
             {
+                this.CancelAction?.Invoke();
                 throw;
             }
             catch (JobException ex)

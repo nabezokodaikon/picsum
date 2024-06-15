@@ -21,6 +21,7 @@ namespace PicSum.Core.Job.AsyncJob
         private readonly ConcurrentQueue<TJob> jobQueue = new();
         private Task? thread;
         private Action<TJobResult>? callbackAction;
+        private Action? cancelAction;
         private Action<JobException>? catchAction;
         private Action? completeAction;
         private long waitUIThread = 0;
@@ -103,6 +104,19 @@ namespace PicSum.Core.Job.AsyncJob
             }
 
             this.callbackAction = action;
+            return this;
+        }
+
+        public TwoWayJob<TJob, TJobParameter, TJobResult> Cancel(Action action)
+        {
+            ArgumentNullException.ThrowIfNull(action, nameof(action));
+
+            if (this.cancelAction != null)
+            {
+                throw new InvalidOperationException($"{this.jobInfo} 既にキャンセルアクションが設定されています。");
+            }
+
+            this.cancelAction = action;
             return this;
         }
 
@@ -237,6 +251,23 @@ namespace PicSum.Core.Job.AsyncJob
                                         this.WaitUIThread = false;
                                     }
                                 }, r);
+                            };
+                        }
+
+                        if (this.cancelAction != null)
+                        {
+                            job.CancelAction = () =>
+                            {
+                                this.context.Post(state =>
+                                {
+                                    this.cancelAction();
+
+                                    if (this.WaitUIThread)
+                                    {
+                                        Logger.Debug($"{job.ID} UIスレッドの待機を解除します。");
+                                        this.WaitUIThread = false;
+                                    }
+                                }, null);
                             };
                         }
 

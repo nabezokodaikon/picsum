@@ -149,6 +149,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                     this.getImageFileJobV2 = new();
                     this.getImageFileJobV2
                         .Callback(this.GetImageFileJobV2_Callback)
+                        .Cancel(() => this.Cursor = Cursors.Default)
                         .Catch(_ => this.Cursor = Cursors.Default)
                         .Complete(() => this.Cursor = Cursors.Default)
                         .StartThread();
