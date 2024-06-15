@@ -143,6 +143,7 @@ namespace PicSum.Job.Jobs
                             Image = mainImage,
                             IsError = !isMainSuccess,
                         };
+                        this.CheckCancel();
                     }
                     catch (JobCancelException)
                     {
