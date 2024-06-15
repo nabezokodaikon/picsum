@@ -375,7 +375,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             }
 
             var parameter = new ListParameter<string>(nextFiles.Concat(prevFiles));
-            //this.CreateCacheJob.StartJob(parameter);
+            this.CreateCacheJob.StartJob(parameter);
         }
 
         private void ChangeImagePanelSize()
