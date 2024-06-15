@@ -59,7 +59,7 @@ namespace PicSum.Job.Jobs
             }
 
             var result = new ImageFileGetResult();
-            var logic = new ImageFileReadLogic(this);
+            var logic = new ThumbnailGetLogic(this);
             var currentFilePath = parameter.FilePathList[parameter.CurrentIndex];
 
             try
