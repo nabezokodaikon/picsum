@@ -70,6 +70,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         private IList<string> filePathList = null;
 
         private TwoWayJob<ImageFileReadJob, ImageFileReadParameter, ImageFileGetResult> getImageFileJob = null;
+        private TwoWayJob<ImageFileReadJobV2, ImageFileReadParameter, ImageFileGetResultV2> getImageFileJobV2 = null;
         private OneWayJob<BookmarkAddJob, ValueParameter<string>> addBookmarkJob = null;
         private OneWayJob<FileExportJob, ExportFileParameter> exportFileJob = null;
         private OneWayJob<CreateImageCacheJob, ListParameter<string>> createCacheJob = null;
@@ -130,12 +131,44 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                     this.getImageFileJob = new();
                     this.getImageFileJob
                         .Callback(this.GetImageFileJob_Callback)
-                        .Catch(_ => this.Cursor = Cursors.Default)
-                        .Complete(() => this.Cursor = Cursors.Default)
+                        .Catch(_ =>
+                        {
+                            this.Cursor = Cursors.Default;
+                        })
+                        .Complete(() =>
+                        {
+                            this.Cursor = Cursors.Default;
+                            this.CreateImageCache();
+                        })
                         .StartThread();
                 }
 
                 return this.getImageFileJob;
+            }
+        }
+
+        private TwoWayJob<ImageFileReadJobV2, ImageFileReadParameter, ImageFileGetResultV2> GetImageFileJobV2
+        {
+            get
+            {
+                if (this.getImageFileJobV2 == null)
+                {
+                    this.getImageFileJobV2 = new();
+                    this.getImageFileJobV2
+                        .Callback(this.GetImageFileJobV2_Callback)
+                        .Catch(_ =>
+                        {
+                            this.Cursor = Cursors.Default;
+                        })
+                        .Complete(() =>
+                        {
+                            this.Cursor = Cursors.Default;
+                            this.CreateImageCache();
+                        })
+                        .StartThread();
+                }
+
+                return this.getImageFileJobV2;
             }
         }
 
@@ -549,6 +582,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             };
 
             this.GetImageFileJob.StartJob(param);
+            //this.GetImageFileJobV2.StartJob(param);
         }
 
         private void DoDragDrop(string currentFilePath)
@@ -658,8 +692,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
         private void GetImageFileJob_Callback(ImageFileGetResult e)
         {
-            this.CreateImageCache();
-
             this.leftImageFilePath = string.Empty;
             this.leftImagePanel.ClearImage();
             this.rightImageFilePath = string.Empty;
@@ -780,10 +812,139 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             }
 
             this.ChangeImagePanelSize();
+            this.Focus();
+        }
 
-            this.leftImagePanel.Invalidate();
-            this.rightImagePanel.Invalidate();
+        private void GetImageFileJobV2_Callback(ImageFileGetResultV2 e)
+        {
+            //if (index != this.FilePathListIndex)
+            //{
+            //    this.leftImageFilePath = string.Empty;
+            //    this.leftImagePanel.ClearImage();
+            //    this.rightImageFilePath = string.Empty;
+            //    this.rightImagePanel.ClearImage();
+            //    return;
+            //}
 
+            Size bgSize;
+            if (e.HasSub)
+            {
+                bgSize = new Size(
+                    (int)(this.checkPatternPanel.Size.Width / 2f),
+                    this.checkPatternPanel.Size.Height);
+            }
+            else
+            {
+                bgSize = this.checkPatternPanel.Size;
+            }
+
+            if (e.IsMain)
+            {
+                if (this.SelectedFilePath != e.Image.FilePath)
+                {
+                    this.SelectedFilePath = e.Image.FilePath;
+                    this.OnSelectedFileChanged(new SelectedFileChangeEventArgs(e.Image.FilePath));
+                }
+            }
+
+            if (this.displayMode == ImageDisplayMode.Single)
+            {
+                this.leftImagePanel.ClearImage();
+                this.rightImagePanel.ClearImage();
+                this.leftImageFilePath = e.Image.FilePath;
+                this.rightImageFilePath = string.Empty;
+
+                if (e.Image.IsError)
+                {
+                    this.leftImagePanel.SetError();
+                }
+                else
+                {
+                    this.leftImagePanel.SetImage(e.Image.Image, e.Image.Thumbnail);
+                    var scale = GetImageScale(
+                        this.leftImagePanel.ImageSize, bgSize, this.sizeMode);
+                    this.leftImagePanel.SetScale(scale);
+                }
+            }
+            else if (this.displayMode == ImageDisplayMode.LeftFacing)
+            {
+                if (e.IsMain)
+                {
+                    this.leftImagePanel.ClearImage();
+                    this.leftImageFilePath = e.Image.FilePath;
+                    if (e.Image.IsError)
+                    {
+                        this.leftImagePanel.SetError();
+                    }
+                    else
+                    {
+                        this.leftImagePanel.SetImage(e.Image.Image, e.Image.Thumbnail);
+                        var leftImageScale = GetImageScale(
+                            this.leftImagePanel.ImageSize, bgSize, this.sizeMode);
+                        this.leftImagePanel.SetScale(leftImageScale);
+                    }
+                }
+                else
+                {
+                    this.rightImagePanel.ClearImage();
+                    this.rightImageFilePath = e.Image.FilePath;
+                    if (e.Image.IsError)
+                    {
+                        this.rightImagePanel.SetError();
+                    }
+                    else
+                    {
+                        this.rightImagePanel.SetImage(e.Image.Image, e.Image.Thumbnail);
+                        var rightImageScale = GetImageScale(
+                            this.rightImagePanel.ImageSize, bgSize, this.sizeMode);
+                        this.rightImagePanel.SetScale(rightImageScale);
+                    }
+                }
+            }
+            else if (this.displayMode == ImageDisplayMode.RightFacing)
+            {
+                if (e.IsMain)
+                {
+                    this.rightImagePanel.ClearImage();
+                    this.rightImageFilePath = e.Image.FilePath;
+                    if (e.Image.IsError)
+                    {
+                        this.rightImagePanel.SetError();
+                    }
+                    else
+                    {
+                        this.rightImagePanel.SetImage(e.Image.Image, e.Image.Thumbnail);
+                        var rightImageScale = GetImageScale(
+                            this.rightImagePanel.ImageSize, bgSize, this.sizeMode);
+                        this.rightImagePanel.SetScale(rightImageScale);
+                    }
+                }
+                else
+                {
+                    this.leftImagePanel.ClearImage();
+                    this.leftImageFilePath = e.Image.FilePath;
+                    if (e.Image.IsError)
+                    {
+                        this.leftImagePanel.SetError();
+                    }
+                    else
+                    {
+                        this.leftImagePanel.SetImage(e.Image.Image, e.Image.Thumbnail);
+                        var leftImageScale = GetImageScale(
+                            this.leftImagePanel.ImageSize, bgSize, this.sizeMode);
+                        this.leftImagePanel.SetScale(leftImageScale);
+                    }
+                }
+            }
+            else
+            {
+                this.leftImageFilePath = string.Empty;
+                this.leftImagePanel.ClearImage();
+                this.rightImageFilePath = string.Empty;
+                this.rightImagePanel.ClearImage();
+            }
+
+            this.ChangeImagePanelSize();
             this.Focus();
         }
 
