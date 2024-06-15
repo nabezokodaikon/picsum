@@ -817,14 +817,14 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
         private void GetImageFileJobV2_Callback(ImageFileGetResultV2 e)
         {
-            //if (index != this.FilePathListIndex)
-            //{
-            //    this.leftImageFilePath = string.Empty;
-            //    this.leftImagePanel.ClearImage();
-            //    this.rightImageFilePath = string.Empty;
-            //    this.rightImagePanel.ClearImage();
-            //    return;
-            //}
+            if (e.IsMain)
+            {
+                var index = this.filePathList.IndexOf(e.Image.FilePath);
+                if (index != this.FilePathListIndex)
+                {
+                    return;
+                }
+            }
 
             Size bgSize;
             if (e.HasSub)
@@ -850,8 +850,8 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             if (this.displayMode == ImageDisplayMode.Single)
             {
                 this.leftImagePanel.ClearImage();
-                this.rightImagePanel.ClearImage();
                 this.leftImageFilePath = e.Image.FilePath;
+                this.rightImagePanel.ClearImage();
                 this.rightImageFilePath = string.Empty;
 
                 if (e.Image.IsError)
@@ -872,6 +872,9 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 {
                     this.leftImagePanel.ClearImage();
                     this.leftImageFilePath = e.Image.FilePath;
+                    this.rightImagePanel.ClearImage();
+                    this.rightImageFilePath = string.Empty;
+
                     if (e.Image.IsError)
                     {
                         this.leftImagePanel.SetError();
@@ -905,6 +908,8 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             {
                 if (e.IsMain)
                 {
+                    this.leftImagePanel.ClearImage();
+                    this.leftImageFilePath = e.Image.FilePath;
                     this.rightImagePanel.ClearImage();
                     this.rightImageFilePath = e.Image.FilePath;
                     if (e.Image.IsError)
