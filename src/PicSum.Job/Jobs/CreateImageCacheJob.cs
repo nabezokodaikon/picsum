@@ -15,6 +15,8 @@ namespace PicSum.Job.Jobs
 
             foreach (var path in parameter)
             {
+                Thread.Sleep(10);
+
                 this.CheckCancel();
 
                 try
