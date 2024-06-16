@@ -207,7 +207,7 @@ namespace PicSum.Job.Jobs
         {
             try
             {
-                return ImageUtil.GetImageSize(filePath);
+                return ImageUtil.GetImageSizeFromCache(filePath);
             }
             catch (ImageUtilException ex)
             {

@@ -33,7 +33,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         {
             try
             {
-                return ImageUtil.GetImageSize(filePath);
+                return ImageUtil.GetImageSizeFromCache(filePath);
             }
             catch (ImageUtilException ex)
             {

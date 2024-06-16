@@ -92,13 +92,20 @@ namespace SWF.Common
             }
         }
 
+        public static Size GetImageSizeFromCache(string filePath)
+        {
+            ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
+
+            return ImageSizeCacheUtil.GetImageSize(filePath);
+        }
+
         /// <summary>
         /// 画像ファイルのサイズを取得します。
         /// </summary>
         /// <param name="filePath">取得するファイルのパス。</param>
         /// <returns>取得した画像サイズ。</returns>
         /// <exception cref="ArgumentNullException"></exception>
-        public static Size GetImageSize(string filePath)
+        internal static Size GetImageSize(string filePath)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
