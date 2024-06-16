@@ -13,7 +13,7 @@ namespace PicSum.Job.Logics
     public sealed class ImageFileReadLogic(AbstractAsyncJob job)
         : AbstractAsyncLogic(job)
     {
-        private const int CACHE_CAPACITY = 20;
+        private const int CACHE_CAPACITY = 10;
         private static readonly List<ImageCacheEntity> CACHE_LIST = new(CACHE_CAPACITY);
         private static readonly Dictionary<string, ImageCacheEntity> CACHE_DICTIONARY = new(CACHE_CAPACITY);
         private static readonly ReaderWriterLockSlim CACHE_LOCK = new();
