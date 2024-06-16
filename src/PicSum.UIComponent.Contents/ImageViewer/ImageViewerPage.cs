@@ -247,6 +247,12 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                     this.exportFileJob = null;
                 }
 
+                if (this.getImageFileJob != null)
+                {
+                    this.getImageFileJob.Dispose();
+                    this.getImageFileJob = null;
+                }
+
                 this.leftImagePanel.Dispose();
                 this.rightImagePanel.Dispose();
 
