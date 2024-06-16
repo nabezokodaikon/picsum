@@ -500,7 +500,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         {
             this.Cursor = Cursors.WaitCursor;
 
-            var nextFiles = new List<string>(3);
+            var nextFiles = new List<string>(4);
             var nextIndex = this.GetNextIndex(this.FilePathListIndex, true);
             nextFiles.Add(this.filePathList[nextIndex]);
             while (nextFiles.Count < nextFiles.Capacity)
