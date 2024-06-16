@@ -1,18 +1,21 @@
+using System;
 using System.Drawing;
+using System.Runtime.Versioning;
 
-namespace PicSum.Job.Entities
+namespace SWF.Common
 {
-    public sealed class ImageCacheEntity
+    [SupportedOSPlatform("windows")]
+    internal sealed class ImageFileCache
         : IDisposable
     {
         private bool disposed = false;
 
-        public static readonly ImageCacheEntity EMPTY = new();
-        public Bitmap? Image { get; private set; }
-        public string? FilePath { get; private set; }
+        public static readonly ImageFileCache EMPTY = new();
+        public Bitmap Image { get; private set; }
+        public string FilePath { get; private set; }
         public DateTime Timestamp { get; private set; }
 
-        private ImageCacheEntity()
+        private ImageFileCache()
         {
             this.FilePath = null;
             this.Image = null;
@@ -42,12 +45,12 @@ namespace PicSum.Job.Entities
             GC.SuppressFinalize(this);
         }
 
-        ~ImageCacheEntity()
+        ~ImageFileCache()
         {
             this.Dispose(false);
         }
 
-        public ImageCacheEntity(string filePath, Bitmap image, DateTime timestamp)
+        public ImageFileCache(string filePath, Bitmap image, DateTime timestamp)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
             ArgumentNullException.ThrowIfNull(image, nameof(image));
@@ -57,7 +60,7 @@ namespace PicSum.Job.Entities
             this.Timestamp = timestamp;
         }
 
-        public ImageCacheEntity Clone()
+        public ImageFileCache Clone()
         {
             if (this.FilePath == null)
             {
@@ -73,7 +76,7 @@ namespace PicSum.Job.Entities
                 new Rectangle(0, 0, this.Image.Width, this.Image.Height),
                 this.Image.PixelFormat);
 
-            return new ImageCacheEntity(this.FilePath, img, this.Timestamp);
+            return new ImageFileCache(this.FilePath, img, this.Timestamp);
         }
     }
 }

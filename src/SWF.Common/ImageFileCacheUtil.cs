@@ -1,21 +1,17 @@
-using PicSum.Core.Job.AsyncJob;
-using PicSum.Job.Entities;
-using SWF.Common;
+using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Runtime.Versioning;
+using System.Threading;
 
-namespace PicSum.Job.Logics
+namespace SWF.Common
 {
-    /// <summary>
-    /// 画像ファイル読込ロジック
-    /// </summary>
     [SupportedOSPlatform("windows")]
-    public sealed class ImageFileReadLogic(AbstractAsyncJob job)
-        : AbstractAsyncLogic(job)
+    public static class ImageFileCacheUtil
     {
         private const int CACHE_CAPACITY = 10;
-        private static readonly List<ImageCacheEntity> CACHE_LIST = new(CACHE_CAPACITY);
-        private static readonly Dictionary<string, ImageCacheEntity> CACHE_DICTIONARY = new(CACHE_CAPACITY);
+        private static readonly List<ImageFileCache> CACHE_LIST = new(CACHE_CAPACITY);
+        private static readonly Dictionary<string, ImageFileCache> CACHE_DICTIONARY = new(CACHE_CAPACITY);
         private static readonly ReaderWriterLockSlim CACHE_LOCK = new();
 
         public static void DisposeStaticResouces()
@@ -31,7 +27,7 @@ namespace PicSum.Job.Logics
             CACHE_DICTIONARY.Clear();
         }
 
-        public Bitmap Execute(string filePath)
+        public static Bitmap Read(string filePath)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
@@ -45,11 +41,6 @@ namespace PicSum.Job.Logics
                     if (timestamp == cache.Timestamp)
                     {
                         var clone = cache.Clone();
-                        if (clone.Image == null)
-                        {
-                            throw new NullReferenceException("キャッシュの複製に画像が設定されていません。");
-                        }
-
                         return clone.Image;
                     }
                 }
@@ -61,24 +52,15 @@ namespace PicSum.Job.Logics
                     {
                         var removeCache = CACHE_LIST[0];
                         CACHE_LIST.Remove(removeCache);
-                        if (removeCache.FilePath == null)
-                        {
-                            throw new NullReferenceException("キャッシュにファイルパスが設定されていません。");
-                        }
-
                         CACHE_DICTIONARY.Remove(removeCache.FilePath);
                         removeCache.Dispose();
                     }
 
-                    var newImage = new ImageCacheEntity(
+                    var newImage = new ImageFileCache(
                         filePath, ImageUtil.ReadImageFile(filePath), timestamp);
                     CACHE_LIST.Add(newImage);
                     CACHE_DICTIONARY.Add(filePath, newImage);
                     var clone = newImage.Clone();
-                    if (clone.Image == null)
-                    {
-                        throw new NullReferenceException("キャッシュの複製に画像が設定されていません。");
-                    }
                     return clone.Image;
                 }
                 finally
@@ -92,7 +74,7 @@ namespace PicSum.Job.Logics
             }
         }
 
-        public void Create(string filePath)
+        public static void Create(string filePath)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
@@ -113,16 +95,11 @@ namespace PicSum.Job.Logics
                     {
                         var removeCache = CACHE_LIST[0];
                         CACHE_LIST.Remove(removeCache);
-                        if (removeCache.FilePath == null)
-                        {
-                            throw new NullReferenceException("キャッシュにファイルパスが設定されていません。");
-                        }
-
                         CACHE_DICTIONARY.Remove(removeCache.FilePath);
                         removeCache.Dispose();
                     }
 
-                    var newImage = new ImageCacheEntity(
+                    var newImage = new ImageFileCache(
                         filePath, ImageUtil.ReadImageFile(filePath), timestamp);
                     CACHE_LIST.Add(newImage);
                     CACHE_DICTIONARY.Add(filePath, newImage);

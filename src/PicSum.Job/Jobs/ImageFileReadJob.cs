@@ -40,14 +40,13 @@ namespace PicSum.Job.Jobs
 
             var mainResult = new ImageFileGetResult();
             var subResult = new ImageFileGetResult();
-            var imageLogic = new ImageFileReadLogic(this);
             var thumbLogic = new ThumbnailGetLogic(this);
             var mainFilePath = parameter.FilePathList[parameter.CurrentIndex];
 
             try
             {
                 this.CheckCancel();
-                var mainImage = this.ReadImageFile(mainFilePath, imageLogic);
+                var mainImage = this.ReadImageFile(mainFilePath);
                 if (parameter.ImageDisplayMode != ImageDisplayMode.Single
                     && mainImage != ImageUtil.EMPTY_IMAGE
                     && mainImage.Width < mainImage.Height)
@@ -87,7 +86,7 @@ namespace PicSum.Job.Jobs
                         this.CheckCancel();
                         subResult.IsMain = false;
                         subResult.HasSub = true;
-                        var subImage = this.ReadImageFile(subFilePath, imageLogic);
+                        var subImage = this.ReadImageFile(subFilePath);
                         var isSubSuccess = subImage != ImageUtil.EMPTY_IMAGE;
                         subResult.Image = new()
                         {
@@ -160,19 +159,18 @@ namespace PicSum.Job.Jobs
                 throw;
             }
 
-            var cacheLogic = new ImageFileReadLogic(this);
             if (parameter.CacheList == null)
             {
                 throw new NullReferenceException("パラメータにキャッシュするファイルのリストが設定されていません。");
             }
-            
+
             foreach (var path in parameter.CacheList)
             {
                 this.CheckCancel();
 
                 try
                 {
-                    cacheLogic.Create(path);
+                    ImageFileCacheUtil.Create(path);
                     this.CheckCancel();
                     ImageSizeCacheUtil.Create(path);
                 }
@@ -187,11 +185,11 @@ namespace PicSum.Job.Jobs
             }
         }
 
-        private Bitmap ReadImageFile(string filePath, ImageFileReadLogic logic)
+        private Bitmap ReadImageFile(string filePath)
         {
             try
             {
-                return logic.Execute(filePath);
+                return ImageFileCacheUtil.Read(filePath);
             }
             catch (FileUtilException ex)
             {

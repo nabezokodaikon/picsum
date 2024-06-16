@@ -118,7 +118,7 @@ namespace PicSum.Main
 
             FileIconCash.DisposeStaticResouces();
             ThumbnailGetLogic.DisposeStaticResouces();
-            ImageFileReadLogic.DisposeStaticResouces();
+            ImageFileCacheUtil.DisposeStaticResouces();
             ImageSizeCacheUtil.DisposeStaticResouces();
             FileExportJob.DisposeStaticResouces();
 
