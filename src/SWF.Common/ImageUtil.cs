@@ -8,6 +8,7 @@ using System.Linq;
 using System.Runtime.Versioning;
 using System.Security;
 using System.IO.MemoryMappedFiles;
+using System.Diagnostics;
 
 namespace SWF.Common
 {
@@ -23,6 +24,7 @@ namespace SWF.Common
 
         private static readonly EncoderParameter ENCORDER_PARAMETER = new(Encoder.Quality, 100L);
         private static readonly ImageCodecInfo PNG_CODEC_INFO = ImageCodecInfo.GetImageEncoders().Single(info => info.FormatID == ImageFormat.Png.Guid);
+        private static readonly dynamic SHELL = Activator.CreateInstance(Type.GetTypeFromProgID("Shell.Application"));
 
         /// <summary>
         /// イメージオブジェクトを圧縮したバイナリに変換します。
@@ -109,19 +111,6 @@ namespace SWF.Common
                 {
                     return WEBPUtil.GetImageSize(filePath);
                 }
-                else if (FileUtil.IsImageFile(filePath))
-                {
-                    using (var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
-                    using (var bmp = new Bitmap(fs))
-                    {
-                        return bmp.Size;
-                    }
-                }
-                else
-                {
-                    throw new ArgumentException(
-                        $"画像ファイル以外のファイルが指定されました。'{filePath}'", nameof(filePath));
-                }
             }
             catch (ArgumentException ex)
             {
@@ -162,6 +151,48 @@ namespace SWF.Common
             catch (SixLabors.ImageSharp.UnknownImageFormatException ex)
             {
                 throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
+            }
+
+            if (FileUtil.IsImageFile(filePath))
+            {
+                var directory = ImageUtil.SHELL.NameSpace(Path.GetDirectoryName(filePath));
+                var item = directory.ParseName(Path.GetFileName(filePath));
+                var deteils = directory.GetDetailsOf(item, 31);
+                if (string.IsNullOrWhiteSpace(deteils))
+                {
+                    return ImageUtil.EMPTY_SIZE;
+                }
+
+                var v = deteils.Split(('x'));
+                if (v.Length != 2)
+                {
+                    return ImageUtil.EMPTY_SIZE;
+                }
+
+                var wText = v[0];
+                var hText = v[1];
+
+                if (!int.TryParse(wText.Substring(1).Trim(), out int w))
+                {
+                    return ImageUtil.EMPTY_SIZE;
+                }
+
+                if (!int.TryParse(hText.Substring(0, hText.Length - 1).Trim(), out int h))
+                {
+                    return ImageUtil.EMPTY_SIZE;
+                }
+
+                if (w < 1 || h < 1)
+                {
+                    return ImageUtil.EMPTY_SIZE;
+                }
+
+                return new Size(w, h);
+            }
+            else
+            {
+                throw new ArgumentException(
+                    $"画像ファイル以外のファイルが指定されました。'{filePath}'", nameof(filePath));
             }
         }
 
