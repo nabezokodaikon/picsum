@@ -19,17 +19,17 @@ namespace PicSum.Job.Logics
     public sealed class ThumbnailGetLogic(AbstractAsyncJob job)
         : AbstractAsyncLogic(job)
     {
-        private const int CASH_CAPACITY = 1000;
-        private static readonly List<ThumbnailBufferEntity> CASH_LIST = new(CASH_CAPACITY);
-        private static readonly Dictionary<string, ThumbnailBufferEntity> CASH_DICTIONARY = new(CASH_CAPACITY);
-        private static readonly ReaderWriterLockSlim CASH_LOCK = new();
+        private const int CACHE_CAPACITY = 1000;
+        private static readonly List<ThumbnailBufferEntity> CASH_LIST = new(CACHE_CAPACITY);
+        private static readonly Dictionary<string, ThumbnailBufferEntity> CACHE_DICTIONARY = new(CACHE_CAPACITY);
+        private static readonly ReaderWriterLockSlim CACHE_LOCK = new();
 
         /// <summary>
         /// 静的リソースを解放します。
         /// </summary>
         public static void DisposeStaticResouces()
         {
-            CASH_LOCK.Dispose();
+            CACHE_LOCK.Dispose();
         }
 
         public ThumbnailBufferEntity Execute(string filePath, int thumbWidth, int thumbHeight)
@@ -549,11 +549,11 @@ namespace PicSum.Job.Logics
 
         private static ThumbnailBufferEntity GetMemoryCash(string filePath)
         {
-            CASH_LOCK.EnterReadLock();
+            CACHE_LOCK.EnterReadLock();
 
             try
             {
-                if (CASH_DICTIONARY.TryGetValue(filePath, out var cach))
+                if (CACHE_DICTIONARY.TryGetValue(filePath, out var cach))
                 {
                     return cach;
                 }
@@ -564,7 +564,7 @@ namespace PicSum.Job.Logics
             }
             finally
             {
-                CASH_LOCK.ExitReadLock();
+                CACHE_LOCK.ExitReadLock();
             }
         }
 
@@ -575,15 +575,15 @@ namespace PicSum.Job.Logics
                 throw new ArgumentException("サムネイルのファイルパスがNULLです。", nameof(thumb));
             }
 
-            CASH_LOCK.EnterWriteLock();
+            CACHE_LOCK.EnterWriteLock();
 
             try
             {
-                if (CASH_DICTIONARY.TryGetValue(thumb.FilePath, out var dicCash))
+                if (CACHE_DICTIONARY.TryGetValue(thumb.FilePath, out var dicCash))
                 {
                     CASH_LIST.Remove(dicCash);
                     CASH_LIST.Add(thumb);
-                    CASH_DICTIONARY[thumb.FilePath] = thumb;
+                    CACHE_DICTIONARY[thumb.FilePath] = thumb;
                 }
                 else
                 {
@@ -591,16 +591,16 @@ namespace PicSum.Job.Logics
                     {
                         var cash = CASH_LIST[0];
                         CASH_LIST.Remove(cash);
-                        CASH_DICTIONARY.Remove(thumb.FilePath);
+                        CACHE_DICTIONARY.Remove(thumb.FilePath);
                     }
 
                     CASH_LIST.Add(thumb);
-                    CASH_DICTIONARY.Add(thumb.FilePath, thumb);
+                    CACHE_DICTIONARY.Add(thumb.FilePath, thumb);
                 }
             }
             finally
             {
-                CASH_LOCK.ExitWriteLock();
+                CACHE_LOCK.ExitWriteLock();
             }
         }
 
