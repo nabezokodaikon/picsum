@@ -5,7 +5,7 @@ namespace SWF.Common
 {
     internal class ImageSizeCache
     {
-        public string? FilePath { get; private set; }
+        public string FilePath { get; private set; }
         public Size Size { get; private set; }
         public DateTime Timestamp { get; private set; }
 

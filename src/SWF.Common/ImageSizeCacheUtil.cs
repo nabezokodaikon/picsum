@@ -45,11 +45,6 @@ namespace SWF.Common
                     {
                         var removeCache = CACHE_LIST[0];
                         CACHE_LIST.Remove(removeCache);
-                        if (removeCache.FilePath == null)
-                        {
-                            throw new NullReferenceException("キャッシュにファイルパスが設定されていません。");
-                        }
-
                         CACHE_DICTIONARY.Remove(removeCache.FilePath);
                     }
 
