@@ -17,6 +17,7 @@ namespace SWF.Common
     {
         internal const string WEBP_FILE_EXTENSION = ".WEBP";
         internal const string AVIF_FILE_EXTENSION = ".AVIF";
+        internal const string HEIC_FILE_EXTENSION = ".HEIC";
 
         public static readonly Size EMPTY_SIZE = Size.Empty;
         public static readonly Bitmap EMPTY_IMAGE = new(1, 1);
@@ -111,6 +112,10 @@ namespace SWF.Common
                 {
                     return WEBPUtil.GetImageSize(filePath);
                 }
+                else if (FileUtil.IsHEICFile(filePath))
+                {
+                    return HEICUtil.GetImageSize(filePath);
+                }
             }
             catch (ArgumentException ex)
             {
@@ -149,6 +154,10 @@ namespace SWF.Common
                 throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
             }
             catch (SixLabors.ImageSharp.UnknownImageFormatException ex)
+            {
+                throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
+            }
+            catch (ImageMagick.MagickException ex)
             {
                 throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
             }
@@ -215,6 +224,10 @@ namespace SWF.Common
                 {
                     return AVIFUtil.ReadImageFile(filePath);
                 }
+                else if (FileUtil.IsHEICFile(filePath))
+                {
+                    return HEICUtil.ReadImageFile(filePath);
+                }
                 else if (FileUtil.IsImageFile(filePath))
                 {
                     using (var mmf = MemoryMappedFile.CreateFromFile(filePath, FileMode.Open, null, 0, MemoryMappedFileAccess.Read))
@@ -267,6 +280,10 @@ namespace SWF.Common
                 throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
             }
             catch (SixLabors.ImageSharp.UnknownImageFormatException ex)
+            {
+                throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
+            }
+            catch (ImageMagick.MagickException ex)
             {
                 throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
             }
@@ -399,6 +416,7 @@ namespace SWF.Common
 
             exList.Add(ImageUtil.WEBP_FILE_EXTENSION);
             exList.Add(ImageUtil.AVIF_FILE_EXTENSION);
+            exList.Add(ImageUtil.HEIC_FILE_EXTENSION);
 
             return exList;
         }
