@@ -13,5 +13,11 @@ namespace SWF.Common
         {
 
         }
+
+        public ImageUtilException(string message)
+            : base(message)
+        {
+
+        }
     }
 }

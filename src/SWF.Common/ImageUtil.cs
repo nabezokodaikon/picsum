@@ -165,13 +165,13 @@ namespace SWF.Common
                 var deteils = directory.GetDetailsOf(item, 31);
                 if (string.IsNullOrWhiteSpace(deteils))
                 {
-                    return ImageUtil.EMPTY_SIZE;
+                    throw new ImageUtilException(CreateFileAccessErrorMessage(filePath));
                 }
 
                 var v = deteils.Split(('x'));
                 if (v.Length != 2)
                 {
-                    return ImageUtil.EMPTY_SIZE;
+                    throw new ImageUtilException(CreateFileAccessErrorMessage(filePath));
                 }
 
                 var wText = v[0];
@@ -179,17 +179,17 @@ namespace SWF.Common
 
                 if (!int.TryParse(wText.Substring(1).Trim(), out int w))
                 {
-                    return ImageUtil.EMPTY_SIZE;
+                    throw new ImageUtilException(CreateFileAccessErrorMessage(filePath));
                 }
 
                 if (!int.TryParse(hText.Substring(0, hText.Length - 1).Trim(), out int h))
                 {
-                    return ImageUtil.EMPTY_SIZE;
+                    throw new ImageUtilException(CreateFileAccessErrorMessage(filePath));
                 }
 
                 if (w < 1 || h < 1)
                 {
-                    return ImageUtil.EMPTY_SIZE;
+                    throw new ImageUtilException(CreateFileAccessErrorMessage(filePath));
                 }
 
                 return new Size(w, h);
