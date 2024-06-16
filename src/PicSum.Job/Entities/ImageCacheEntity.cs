@@ -7,7 +7,7 @@ namespace PicSum.Job.Entities
     {
         private bool disposed = false;
 
-        public static readonly ImageCacheEntity EMPTY = new ImageCacheEntity();
+        public static readonly ImageCacheEntity EMPTY = new();
         public Bitmap? Image { get; private set; }
         public string? FilePath { get; private set; }
         public DateTime Timestamp { get; private set; }

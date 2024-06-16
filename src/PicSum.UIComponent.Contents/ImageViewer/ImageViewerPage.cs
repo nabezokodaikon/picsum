@@ -73,7 +73,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         private TwoWayJob<ImageFileReadJobV2, ImageFileReadParameter, ImageFileGetResultV2> getImageFileJobV2 = null;
         private OneWayJob<BookmarkAddJob, ValueParameter<string>> addBookmarkJob = null;
         private OneWayJob<FileExportJob, ExportFileParameter> exportFileJob = null;
-        private OneWayJob<CreateImageCacheJob, ListParameter<string>> createCacheJob = null;
 
         #endregion
 
@@ -186,21 +185,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 }
 
                 return this.exportFileJob;
-            }
-        }
-
-        private OneWayJob<CreateImageCacheJob, ListParameter<string>> CreateCacheJob
-        {
-            get
-            {
-                if (this.createCacheJob == null)
-                {
-                    this.createCacheJob = new();
-                    this.createCacheJob
-                        .StartThread();
-                }
-
-                return this.createCacheJob;
             }
         }
 
@@ -374,30 +358,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.SetThumbnailPanelVisible();
         }
 
-        private void CreateImageCache()
-        {
-            var nextFiles = new List<string>(5);
-            var nextIndex = this.GetNextIndex(this.FilePathListIndex, true);
-            nextFiles.Add(this.filePathList[nextIndex]);
-            while (nextFiles.Count < nextFiles.Capacity)
-            {
-                nextIndex = this.GetNextIndex(nextIndex, true);
-                nextFiles.Add(this.filePathList[nextIndex]);
-            }
-
-            var prevFiles = new List<string>(5);
-            var prevIndex = this.GetPreviewIndex(this.FilePathListIndex, true);
-            prevFiles.Add(this.filePathList[prevIndex]);
-            while (prevFiles.Count < prevFiles.Capacity)
-            {
-                prevIndex = this.GetPreviewIndex(prevIndex, true);
-                prevFiles.Add(this.filePathList[prevIndex]);
-            }
-
-            var parameter = new ListParameter<string>(nextFiles.Concat(prevFiles));
-            this.CreateCacheJob.StartJob(parameter);
-        }
-
         private void ChangeImagePanelSize()
         {
             this.leftImagePanel.Visible = false;
@@ -557,9 +517,25 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
         private void ReadImage()
         {
-            this.CreateImageCache();
-
             this.Cursor = Cursors.WaitCursor;
+
+            var nextFiles = new List<string>(5);
+            var nextIndex = this.GetNextIndex(this.FilePathListIndex, true);
+            nextFiles.Add(this.filePathList[nextIndex]);
+            while (nextFiles.Count < nextFiles.Capacity)
+            {
+                nextIndex = this.GetNextIndex(nextIndex, true);
+                nextFiles.Add(this.filePathList[nextIndex]);
+            }
+
+            var prevFiles = new List<string>(5);
+            var prevIndex = this.GetPreviewIndex(this.FilePathListIndex, true);
+            prevFiles.Add(this.filePathList[prevIndex]);
+            while (prevFiles.Count < prevFiles.Capacity)
+            {
+                prevIndex = this.GetPreviewIndex(prevIndex, true);
+                prevFiles.Add(this.filePathList[prevIndex]);
+            }
 
             var param = new ImageFileReadParameter
             {
@@ -567,7 +543,8 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 FilePathList = this.filePathList,
                 ImageDisplayMode = this.displayMode,
                 ImageSizeMode = this.sizeMode,
-                ThumbnailSize = this.leftImagePanel.ThumbnailSize
+                ThumbnailSize = this.leftImagePanel.ThumbnailSize,
+                CacheList = [.. nextFiles, .. prevFiles],
             };
 
             //this.GetImageFileJob.StartJob(param);
@@ -806,6 +783,11 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
         private void GetImageFileJobV2_Callback(ImageFileGetResultV2 e)
         {
+            if (e.IsMain && !e.HasSub || !e.IsMain)
+            {
+                this.Cursor = Cursors.Default;
+            }
+
             if (e.IsMain)
             {
                 var index = this.filePathList.IndexOf(e.Image.FilePath);

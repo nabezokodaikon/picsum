@@ -159,6 +159,26 @@ namespace PicSum.Job.Jobs
                 ExeptionHandler(subResult);
                 throw;
             }
+
+            var cacheLogic = new ImageFileReadLogic(this);
+
+            foreach (var path in parameter.CacheList)
+            {
+                this.CheckCancel();
+
+                try
+                {
+                    cacheLogic.Create(path);
+                }
+                catch (FileUtilException ex)
+                {
+                    this.WriteErrorLog(new JobException(this.ID, ex));
+                }
+                catch (ImageUtilException ex)
+                {
+                    this.WriteErrorLog(new JobException(this.ID, ex));
+                }
+            }
         }
 
         private Bitmap ReadImageFile(string filePath, ImageFileReadLogic logic)
