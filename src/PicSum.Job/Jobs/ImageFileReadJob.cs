@@ -5,46 +5,26 @@ using PicSum.Job.Paramters;
 using PicSum.Job.Results;
 using SWF.Common;
 using System.Drawing;
-using System.Runtime.Versioning;
 
 namespace PicSum.Job.Jobs
 {
-    /// <summary>
-    /// 画像ファイルを読込みます。
-    /// </summary>
-    [SupportedOSPlatform("windows")]
     public sealed class ImageFileReadJob
         : AbstractTwoWayJob<ImageFileReadParameter, ImageFileGetResult>
     {
         private static void ExeptionHandler(ImageFileGetResult result)
         {
-            if (result.Image1 != null)
+            if (result.Image != null)
             {
-                if (result.Image1.Image != null)
+                if (result.Image.Image != null)
                 {
-                    result.Image1.Image.Dispose();
-                    result.Image1.Image = null;
+                    result.Image.Image.Dispose();
+                    result.Image.Image = null;
                 }
 
-                if (result.Image1.Thumbnail != null)
+                if (result.Image.Thumbnail != null)
                 {
-                    result.Image1.Thumbnail.Dispose();
-                    result.Image1.Thumbnail = null;
-                }
-            }
-
-            if (result.Image2 != null)
-            {
-                if (result.Image2.Image != null)
-                {
-                    result.Image2.Image.Dispose();
-                    result.Image2.Image = null;
-                }
-
-                if (result.Image2.Thumbnail != null)
-                {
-                    result.Image2.Thumbnail.Dispose();
-                    result.Image2.Thumbnail = null;
+                    result.Image.Thumbnail.Dispose();
+                    result.Image.Thumbnail = null;
                 }
             }
         }
@@ -58,85 +38,147 @@ namespace PicSum.Job.Jobs
                 throw new ArgumentException("ファイルパスリストがNULLです。", nameof(parameter));
             }
 
-            var result = new ImageFileGetResult();
+            var mainResult = new ImageFileGetResult();
+            var subResult = new ImageFileGetResult();
             var imageLogic = new ImageFileReadLogic(this);
             var thumbLogic = new ThumbnailGetLogic(this);
-            var currentFilePath = parameter.FilePathList[parameter.CurrentIndex];
+            var mainFilePath = parameter.FilePathList[parameter.CurrentIndex];
 
             try
             {
                 this.CheckCancel();
-                var img1 = this.ReadImageFile(currentFilePath, imageLogic);
+                var mainImage = this.ReadImageFile(mainFilePath, imageLogic);
                 if (parameter.ImageDisplayMode != ImageDisplayMode.Single
-                    && img1 != ImageUtil.EMPTY_IMAGE
-                    && img1.Width < img1.Height)
+                    && mainImage != ImageUtil.EMPTY_IMAGE
+                    && mainImage.Width < mainImage.Height)
                 {
-                    var nextIndex = parameter.CurrentIndex + 1;
-                    if (nextIndex > parameter.FilePathList.Count - 1)
+                    var subtIndex = parameter.CurrentIndex + 1;
+                    if (subtIndex > parameter.FilePathList.Count - 1)
                     {
-                        nextIndex = 0;
+                        subtIndex = 0;
                     }
 
-                    var nextFilePath = parameter.FilePathList[nextIndex];
-                    var srcImg2Size = this.GetImageSize(nextFilePath);
-                    if (srcImg2Size.Width < srcImg2Size.Height)
+                    var subFilePath = parameter.FilePathList[subtIndex];
+                    var subSrcImageSize = this.GetImageSize(subFilePath);
+                    if (subSrcImageSize.Width < subSrcImageSize.Height)
                     {
-                        result.Image1 = new()
+                        try
                         {
-                            FilePath = currentFilePath,
-                            Thumbnail = thumbLogic.CreateThumbnail(img1, parameter.ThumbnailSize, parameter.ImageSizeMode),
-                            Image = img1,
-                            IsError = false,
-                        };
-                        this.CheckCancel();
+                            this.CheckCancel();
+                            mainResult.IsMain = true;
+                            mainResult.HasSub = true;
+                            mainResult.Image = new()
+                            {
+                                FilePath = mainFilePath,
+                                Thumbnail = thumbLogic.CreateThumbnail(mainImage, parameter.ThumbnailSize, parameter.ImageSizeMode),
+                                Image = mainImage,
+                                IsError = false,
+                            };
+                            this.CheckCancel();
+                        }
+                        catch (JobCancelException)
+                        {
+                            ExeptionHandler(mainResult);
+                            throw;
+                        }
 
-                        var img2 = this.ReadImageFile(nextFilePath, imageLogic);
-                        var isImg2Success = img2 != ImageUtil.EMPTY_IMAGE;
-                        result.Image2 = new()
+                        this.Callback(mainResult);
+
+                        this.CheckCancel();
+                        subResult.IsMain = false;
+                        subResult.HasSub = true;
+                        var subImage = this.ReadImageFile(subFilePath, imageLogic);
+                        var isSubSuccess = subImage != ImageUtil.EMPTY_IMAGE;
+                        subResult.Image = new()
                         {
-                            FilePath = nextFilePath,
-                            Image = img2,
-                            Thumbnail = (isImg2Success) ?
-                                thumbLogic.CreateThumbnail(img2, parameter.ThumbnailSize, parameter.ImageSizeMode) :
+                            FilePath = subFilePath,
+                            Image = subImage,
+                            Thumbnail = (isSubSuccess) ?
+                                thumbLogic.CreateThumbnail(subImage, parameter.ThumbnailSize, parameter.ImageSizeMode) :
                                 null,
-                            IsError = !isImg2Success,
+                            IsError = !isSubSuccess,
                         };
                         this.CheckCancel();
+                        this.Callback(subResult);
                     }
                     else
                     {
-                        result.Image1 = new()
+                        try
                         {
-                            FilePath = currentFilePath,
-                            Thumbnail = thumbLogic.CreateThumbnail(img1, parameter.ThumbnailSize, parameter.ImageSizeMode),
-                            Image = img1,
-                            IsError = false,
-                        };
-                        this.CheckCancel();
+                            this.CheckCancel();
+                            mainResult.IsMain = true;
+                            mainResult.HasSub = false;
+                            mainResult.Image = new()
+                            {
+                                FilePath = mainFilePath,
+                                Thumbnail = thumbLogic.CreateThumbnail(mainImage, parameter.ThumbnailSize, parameter.ImageSizeMode),
+                                Image = mainImage,
+                                IsError = false,
+                            };
+                            this.CheckCancel();
+                        }
+                        catch (JobCancelException)
+                        {
+                            ExeptionHandler(mainResult);
+                            throw;
+                        }
+
+                        this.Callback(mainResult);
                     }
                 }
                 else
                 {
-                    var isImg1Success = img1 != ImageUtil.EMPTY_IMAGE;
-                    result.Image1 = new()
+                    try
                     {
-                        FilePath = currentFilePath,
-                        Thumbnail = (isImg1Success) ?
-                            thumbLogic.CreateThumbnail(img1, parameter.ThumbnailSize, parameter.ImageSizeMode) :
-                            null,
-                        Image = img1,
-                        IsError = !isImg1Success,
-                    };
-                    this.CheckCancel();
+                        this.CheckCancel();
+                        var isMainSuccess = mainImage != ImageUtil.EMPTY_IMAGE;
+                        mainResult.IsMain = true;
+                        mainResult.HasSub = false;
+                        mainResult.Image = new()
+                        {
+                            FilePath = mainFilePath,
+                            Thumbnail = (isMainSuccess) ?
+                                thumbLogic.CreateThumbnail(mainImage, parameter.ThumbnailSize, parameter.ImageSizeMode) :
+                                null,
+                            Image = mainImage,
+                            IsError = !isMainSuccess,
+                        };
+                        this.CheckCancel();
+                    }
+                    catch (JobCancelException)
+                    {
+                        ExeptionHandler(mainResult);
+                        throw;
+                    }
+
+                    this.Callback(mainResult);
                 }
             }
             catch (JobCancelException)
             {
-                ExeptionHandler(result);
+                ExeptionHandler(subResult);
                 throw;
             }
 
-            this.Callback(result);
+            var cacheLogic = new ImageFileReadLogic(this);
+
+            foreach (var path in parameter.CacheList)
+            {
+                this.CheckCancel();
+
+                try
+                {
+                    cacheLogic.Create(path);
+                }
+                catch (FileUtilException ex)
+                {
+                    this.WriteErrorLog(new JobException(this.ID, ex));
+                }
+                catch (ImageUtilException ex)
+                {
+                    this.WriteErrorLog(new JobException(this.ID, ex));
+                }
+            }
         }
 
         private Bitmap ReadImageFile(string filePath, ImageFileReadLogic logic)

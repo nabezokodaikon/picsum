@@ -70,7 +70,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         private IList<string> filePathList = null;
 
         private TwoWayJob<ImageFileReadJob, ImageFileReadParameter, ImageFileGetResult> getImageFileJob = null;
-        private TwoWayJob<ImageFileReadJobV2, ImageFileReadParameter, ImageFileGetResultV2> getImageFileJobV2 = null;
         private OneWayJob<BookmarkAddJob, ValueParameter<string>> addBookmarkJob = null;
         private OneWayJob<FileExportJob, ExportFileParameter> exportFileJob = null;
 
@@ -130,31 +129,13 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                     this.getImageFileJob = new();
                     this.getImageFileJob
                         .Callback(this.GetImageFileJob_Callback)
-                        .Catch(_ => this.Cursor = Cursors.Default)
-                        .Complete(() => this.Cursor = Cursors.Default)
-                        .StartThread();
-                }
-
-                return this.getImageFileJob;
-            }
-        }
-
-        private TwoWayJob<ImageFileReadJobV2, ImageFileReadParameter, ImageFileGetResultV2> GetImageFileJobV2
-        {
-            get
-            {
-                if (this.getImageFileJobV2 == null)
-                {
-                    this.getImageFileJobV2 = new();
-                    this.getImageFileJobV2
-                        .Callback(this.GetImageFileJobV2_Callback)
                         .Cancel(() => this.Cursor = Cursors.Default)
                         .Catch(_ => this.Cursor = Cursors.Default)
                         .Complete(() => this.Cursor = Cursors.Default)
                         .StartThread();
                 }
 
-                return this.getImageFileJobV2;
+                return this.getImageFileJob;
             }
         }
 
@@ -254,12 +235,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         {
             if (disposing)
             {
-                if (this.getImageFileJob != null)
-                {
-                    this.getImageFileJob.Dispose();
-                    this.getImageFileJob = null;
-                }
-
                 if (this.addBookmarkJob != null)
                 {
                     this.addBookmarkJob.Dispose();
@@ -519,7 +494,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         {
             this.Cursor = Cursors.WaitCursor;
 
-            var nextFiles = new List<string>(5);
+            var nextFiles = new List<string>(3);
             var nextIndex = this.GetNextIndex(this.FilePathListIndex, true);
             nextFiles.Add(this.filePathList[nextIndex]);
             while (nextFiles.Count < nextFiles.Capacity)
@@ -528,7 +503,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 nextFiles.Add(this.filePathList[nextIndex]);
             }
 
-            var prevFiles = new List<string>(5);
+            var prevFiles = new List<string>(3);
             var prevIndex = this.GetPreviewIndex(this.FilePathListIndex, true);
             prevFiles.Add(this.filePathList[prevIndex]);
             while (prevFiles.Count < prevFiles.Capacity)
@@ -547,8 +522,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 CacheList = [.. nextFiles, .. prevFiles],
             };
 
-            //this.GetImageFileJob.StartJob(param);
-            this.GetImageFileJobV2.StartJob(param);
+            this.GetImageFileJob.StartJob(param);
         }
 
         private void DoDragDrop(string currentFilePath)
@@ -657,131 +631,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         }
 
         private void GetImageFileJob_Callback(ImageFileGetResult e)
-        {
-            this.leftImageFilePath = string.Empty;
-            this.leftImagePanel.ClearImage();
-            this.rightImageFilePath = string.Empty;
-            this.rightImagePanel.ClearImage();
-
-            var index = this.filePathList.IndexOf(e.Image1.FilePath);
-            if (index != this.FilePathListIndex)
-            {
-                return;
-            }
-
-            Size bgSize;
-            if (e.Image1 != null && e.Image2 != null)
-            {
-                bgSize = new Size(
-                    (int)(this.checkPatternPanel.Size.Width / 2f),
-                    this.checkPatternPanel.Size.Height);
-            }
-            else
-            {
-                bgSize = this.checkPatternPanel.Size;
-            }
-
-            if (e.Image2 == null)
-            {
-                if (this.SelectedFilePath != e.Image1.FilePath)
-                {
-                    this.SelectedFilePath = e.Image1.FilePath;
-                    this.OnSelectedFileChanged(new SelectedFileChangeEventArgs(e.Image1.FilePath));
-                }
-            }
-            else
-            {
-                if (this.SelectedFilePath != e.Image1.FilePath
-                    && this.SelectedFilePath != e.Image2.FilePath)
-                {
-                    this.SelectedFilePath = e.Image1.FilePath;
-                    this.OnSelectedFileChanged(new SelectedFileChangeEventArgs(e.Image1.FilePath));
-                }
-            }
-
-            if (this.displayMode == ImageDisplayMode.Single)
-            {
-                this.leftImageFilePath = e.Image1.FilePath;
-                if (e.Image1.IsError)
-                {
-                    this.leftImagePanel.SetError();
-                }
-                else
-                {
-                    this.leftImagePanel.SetImage(e.Image1.Image, e.Image1.Thumbnail);
-                    var scale = GetImageScale(
-                        this.leftImagePanel.ImageSize, bgSize, this.sizeMode);
-                    this.leftImagePanel.SetScale(scale);
-                }
-            }
-            else if (this.displayMode == ImageDisplayMode.LeftFacing)
-            {
-                this.leftImageFilePath = e.Image1.FilePath;
-                if (e.Image1.IsError)
-                {
-                    this.leftImagePanel.SetError();
-                }
-                else
-                {
-                    this.leftImagePanel.SetImage(e.Image1.Image, e.Image1.Thumbnail);
-                    var leftImageScale = GetImageScale(
-                        this.leftImagePanel.ImageSize, bgSize, this.sizeMode);
-                    this.leftImagePanel.SetScale(leftImageScale);
-                }
-
-                if (e.Image2 != null)
-                {
-                    this.rightImageFilePath = e.Image2.FilePath;
-                    if (e.Image2.IsError)
-                    {
-                        this.rightImagePanel.SetError();
-                    }
-                    else
-                    {
-                        this.rightImagePanel.SetImage(e.Image2.Image, e.Image2.Thumbnail);
-                        var rightImageScale = GetImageScale(
-                            this.rightImagePanel.ImageSize, bgSize, this.sizeMode);
-                        this.rightImagePanel.SetScale(rightImageScale);
-                    }
-                }
-            }
-            else if (this.displayMode == ImageDisplayMode.RightFacing)
-            {
-                this.rightImageFilePath = e.Image1.FilePath;
-                if (e.Image1.IsError)
-                {
-                    this.rightImagePanel.SetError();
-                }
-                else
-                {
-                    this.rightImagePanel.SetImage(e.Image1.Image, e.Image1.Thumbnail);
-                    var rightImageScale = GetImageScale(
-                        this.rightImagePanel.ImageSize, bgSize, this.sizeMode);
-                    this.rightImagePanel.SetScale(rightImageScale);
-                }
-
-                if (e.Image2 != null)
-                {
-                    this.leftImageFilePath = e.Image2.FilePath;
-                    if (e.Image2.IsError)
-                    {
-                        this.leftImagePanel.SetError();
-                    }
-                    else
-                    {
-                        this.leftImagePanel.SetImage(e.Image2.Image, e.Image2.Thumbnail);
-                        var leftImageScale = GetImageScale(
-                            this.leftImagePanel.ImageSize, bgSize, this.sizeMode);
-                        this.leftImagePanel.SetScale(leftImageScale);
-                    }
-                }
-            }
-
-            this.ChangeImagePanelSize();
-            this.Focus();
-        }
-
-        private void GetImageFileJobV2_Callback(ImageFileGetResultV2 e)
         {
             if (e.IsMain && !e.HasSub || !e.IsMain)
             {

@@ -3,13 +3,11 @@ using PicSum.Job.Entities;
 
 namespace PicSum.Job.Results
 {
-    /// <summary>
-    /// 画像読込結果エンティティ
-    /// </summary>
-    public sealed class ImageFileGetResult
+    public class ImageFileGetResult
         : IJobResult
     {
-        public ImageFileEntity? Image1 { get; set; }
-        public ImageFileEntity? Image2 { get; set; }
+        public ImageFileEntity? Image { get; set; }
+        public bool IsMain { get; set; }
+        public bool HasSub { get; set; }
     }
 }
