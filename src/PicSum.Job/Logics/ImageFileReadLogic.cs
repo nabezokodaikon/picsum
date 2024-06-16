@@ -21,6 +21,14 @@ namespace PicSum.Job.Logics
         public static void DisposeStaticResouces()
         {
             CACHE_LOCK.Dispose();
+
+            foreach (var entity in CACHE_LIST)
+            {
+                entity.Dispose();
+            }
+
+            CACHE_LIST.Clear();
+            CACHE_DICTIONARY.Clear();
         }
 
         public Bitmap Execute(string filePath)
@@ -36,7 +44,13 @@ namespace PicSum.Job.Logics
                 {
                     if (timestamp == cache.Timestamp)
                     {
-                        return cache.Clone().Image;
+                        var clone = cache.Clone();
+                        if (clone.Image == null)
+                        {
+                            throw new NullReferenceException("キャッシュの複製に画像が設定されていません。");
+                        }
+
+                        return clone.Image;
                     }
                 }
 
@@ -47,6 +61,11 @@ namespace PicSum.Job.Logics
                     {
                         var removeCache = CACHE_LIST[0];
                         CACHE_LIST.Remove(removeCache);
+                        if (removeCache.FilePath == null)
+                        {
+                            throw new NullReferenceException("キャッシュにファイルパスが設定されていません。");
+                        }
+
                         CACHE_DICTIONARY.Remove(removeCache.FilePath);
                         removeCache.Dispose();
                     }
@@ -55,7 +74,12 @@ namespace PicSum.Job.Logics
                         filePath, ImageUtil.ReadImageFile(filePath), timestamp);
                     CACHE_LIST.Add(newImage);
                     CACHE_DICTIONARY.Add(filePath, newImage);
-                    return newImage.Clone().Image;
+                    var clone = newImage.Clone();
+                    if (clone.Image == null)
+                    {
+                        throw new NullReferenceException("キャッシュの複製に画像が設定されていません。");
+                    }
+                    return clone.Image;
                 }
                 finally
                 {
@@ -89,6 +113,11 @@ namespace PicSum.Job.Logics
                     {
                         var removeCache = CACHE_LIST[0];
                         CACHE_LIST.Remove(removeCache);
+                        if (removeCache.FilePath == null)
+                        {
+                            throw new NullReferenceException("キャッシュにファイルパスが設定されていません。");
+                        }
+
                         CACHE_DICTIONARY.Remove(removeCache.FilePath);
                         removeCache.Dispose();
                     }

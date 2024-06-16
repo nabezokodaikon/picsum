@@ -161,7 +161,11 @@ namespace PicSum.Job.Jobs
             }
 
             var cacheLogic = new ImageFileReadLogic(this);
-
+            if (parameter.CacheList == null)
+            {
+                throw new NullReferenceException("パラメータにキャッシュするファイルのリストが設定されていません。");
+            }
+            
             foreach (var path in parameter.CacheList)
             {
                 this.CheckCancel();
