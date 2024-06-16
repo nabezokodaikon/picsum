@@ -108,10 +108,6 @@ namespace SWF.Common
                 {
                     return AVIFUtil.GetImageSize(filePath);
                 }
-                else if (FileUtil.IsWEBPFile(filePath))
-                {
-                    return WEBPUtil.GetImageSize(filePath);
-                }
                 else if (FileUtil.IsHEICFile(filePath))
                 {
                     return HEICUtil.GetImageSize(filePath);
