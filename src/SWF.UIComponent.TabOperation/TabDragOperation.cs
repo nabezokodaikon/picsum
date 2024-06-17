@@ -85,11 +85,7 @@ namespace SWF.UIComponent.TabOperation
 
             if (isBegin)
             {
-                // TODO: ドラッグ中にスタートメニューを開くなどの操作を行ったときに
-                // 発生するエラーを一時回避。
-                // タブの無いウィンドウができるなどの不具合あり。
-                //throw new SystemException("既にドラッグ操作が開始されています。");
-                return;
+                throw new SystemException("既にドラッグ操作が開始されています。");
             }
 
             fromScreenPoint = Cursor.Position;
