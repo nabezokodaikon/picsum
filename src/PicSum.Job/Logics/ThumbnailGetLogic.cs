@@ -20,7 +20,7 @@ namespace PicSum.Job.Logics
         : AbstractAsyncLogic(job)
     {
         private const int CACHE_CAPACITY = 1000;
-        private static readonly List<ThumbnailBufferEntity> CASH_LIST = new(CACHE_CAPACITY);
+        private static readonly List<ThumbnailBufferEntity> CACHE_LIST = new(CACHE_CAPACITY);
         private static readonly Dictionary<string, ThumbnailBufferEntity> CACHE_DICTIONARY = new(CACHE_CAPACITY);
         private static readonly ReaderWriterLockSlim CACHE_LOCK = new();
 
@@ -47,24 +47,24 @@ namespace PicSum.Job.Logics
                     return ThumbnailBufferEntity.EMPTY;
                 }
 
-                var cash = this.GetFileCash(filePath, thumbWidth, thumbHeight);
-                if (cash != ThumbnailBufferEntity.EMPTY)
+                var cache = this.GetFileCache(filePath, thumbWidth, thumbHeight);
+                if (cache != ThumbnailBufferEntity.EMPTY)
                 {
-                    if (cash.ThumbnailWidth > thumbWidth || cash.ThumbnailHeight > thumbHeight)
+                    if (cache.ThumbnailWidth > thumbWidth || cache.ThumbnailHeight > thumbHeight)
                     {
-                        using (var cashThumb = ImageUtil.ToImage(cash.ThumbnailBuffer))
+                        using (var CacheThumb = ImageUtil.ToImage(cache.ThumbnailBuffer))
                         {
-                            using (var newThumb = ThumbnailUtil.CreateThumbnail(cashThumb, thumbWidth, thumbHeight))
+                            using (var newThumb = ThumbnailUtil.CreateThumbnail(CacheThumb, thumbWidth, thumbHeight))
                             {
                                 var thumb = new ThumbnailBufferEntity
                                 {
-                                    FilePath = cash.FilePath,
+                                    FilePath = cache.FilePath,
                                     ThumbnailBuffer = ImageUtil.ToCompressionBinary(newThumb),
                                     ThumbnailWidth = thumbWidth,
                                     ThumbnailHeight = thumbHeight,
-                                    SourceWidth = cash.SourceWidth,
-                                    SourceHeight = cash.SourceHeight,
-                                    FileUpdatedate = cash.FileUpdatedate
+                                    SourceWidth = cache.SourceWidth,
+                                    SourceHeight = cache.SourceHeight,
+                                    FileUpdatedate = cache.FileUpdatedate
                                 };
                                 return thumb;
                             }
@@ -72,7 +72,7 @@ namespace PicSum.Job.Logics
                     }
                     else
                     {
-                        return cash;
+                        return cache;
                     }
                 }
                 else
@@ -82,24 +82,24 @@ namespace PicSum.Job.Logics
             }
             else
             {
-                var cash = this.GetDirectoryCash(filePath, thumbWidth, thumbHeight);
-                if (cash != ThumbnailBufferEntity.EMPTY)
+                var cache = this.GetDirectoryCache(filePath, thumbWidth, thumbHeight);
+                if (cache != ThumbnailBufferEntity.EMPTY)
                 {
-                    if (cash.ThumbnailWidth > thumbWidth || cash.ThumbnailHeight > thumbHeight)
+                    if (cache.ThumbnailWidth > thumbWidth || cache.ThumbnailHeight > thumbHeight)
                     {
-                        using (var cashThumb = ImageUtil.ToImage(cash.ThumbnailBuffer))
+                        using (var CacheThumb = ImageUtil.ToImage(cache.ThumbnailBuffer))
                         {
-                            using (var newThumb = ThumbnailUtil.CreateThumbnail(cashThumb, thumbWidth, thumbHeight))
+                            using (var newThumb = ThumbnailUtil.CreateThumbnail(CacheThumb, thumbWidth, thumbHeight))
                             {
                                 var thumb = new ThumbnailBufferEntity
                                 {
-                                    FilePath = cash.FilePath,
+                                    FilePath = cache.FilePath,
                                     ThumbnailBuffer = ImageUtil.ToCompressionBinary(newThumb),
                                     ThumbnailWidth = thumbWidth,
                                     ThumbnailHeight = thumbHeight,
-                                    SourceWidth = cash.SourceWidth,
-                                    SourceHeight = cash.SourceHeight,
-                                    FileUpdatedate = cash.FileUpdatedate
+                                    SourceWidth = cache.SourceWidth,
+                                    SourceHeight = cache.SourceHeight,
+                                    FileUpdatedate = cache.FileUpdatedate
                                 };
                                 return thumb;
                             }
@@ -107,7 +107,7 @@ namespace PicSum.Job.Logics
                     }
                     else
                     {
-                        return cash;
+                        return cache;
                     }
                 }
                 else
@@ -151,69 +151,69 @@ namespace PicSum.Job.Logics
             return destImg;
         }
 
-        private ThumbnailBufferEntity GetFileCash(string filePath, int thumbWidth, int thumbHeight)
+        private ThumbnailBufferEntity GetFileCache(string filePath, int thumbWidth, int thumbHeight)
         {
-            var memCash = GetMemoryCash(filePath);
-            if (memCash != ThumbnailBufferEntity.EMPTY)
+            var memCache = GetMemoryCache(filePath);
+            if (memCache != ThumbnailBufferEntity.EMPTY)
             {
                 var updateDate = FileUtil.GetUpdateDate(filePath);
-                if (memCash.ThumbnailWidth >= thumbWidth &&
-                    memCash.ThumbnailHeight >= thumbHeight &&
-                    memCash.FileUpdatedate >= updateDate)
+                if (memCache.ThumbnailWidth >= thumbWidth &&
+                    memCache.ThumbnailHeight >= thumbHeight &&
+                    memCache.FileUpdatedate >= updateDate)
                 {
                     // メモリキャッシュを返します。
-                    return memCash;
+                    return memCache;
                 }
                 else
                 {
-                    var dbCash = this.GetDBCash(filePath);
-                    if (dbCash != ThumbnailBufferEntity.EMPTY)
+                    var dbCache = this.GetDBCache(filePath);
+                    if (dbCache != ThumbnailBufferEntity.EMPTY)
                     {
-                        if (dbCash.ThumbnailWidth >= thumbWidth &&
-                            dbCash.ThumbnailHeight >= thumbHeight &&
-                            dbCash.FileUpdatedate >= updateDate)
+                        if (dbCache.ThumbnailWidth >= thumbWidth &&
+                            dbCache.ThumbnailHeight >= thumbHeight &&
+                            dbCache.FileUpdatedate >= updateDate)
                         {
                             // DBキャッシュを返します。
-                            UpdateMemoryCash(dbCash);
-                            return dbCash;
+                            UpdateMemoryCache(dbCache);
+                            return dbCache;
                         }
                         else
                         {
                             // サムネイルを更新します。
-                            var thumb = this.UpdateDBFileCash(filePath, thumbWidth, thumbHeight, updateDate);
-                            UpdateMemoryCash(thumb);
+                            var thumb = this.UpdateDBFileCache(filePath, thumbWidth, thumbHeight, updateDate);
+                            UpdateMemoryCache(thumb);
                             return thumb;
                         }
                     }
                     else
                     {
                         // サムネイルを作成します。
-                        var thumb = this.CreateDBFileCash(filePath, thumbWidth, thumbHeight, updateDate);
-                        UpdateMemoryCash(thumb);
+                        var thumb = this.CreateDBFileCache(filePath, thumbWidth, thumbHeight, updateDate);
+                        UpdateMemoryCache(thumb);
                         return thumb;
                     }
                 }
             }
             else
             {
-                var dbCash = this.GetDBCash(filePath);
-                if (dbCash != ThumbnailBufferEntity.EMPTY)
+                var dbCache = this.GetDBCache(filePath);
+                if (dbCache != ThumbnailBufferEntity.EMPTY)
                 {
                     var updateDate = FileUtil.GetUpdateDate(filePath);
 
-                    if (dbCash.ThumbnailWidth >= thumbWidth &&
-                        dbCash.ThumbnailHeight >= thumbHeight &&
-                        dbCash.FileUpdatedate >= updateDate)
+                    if (dbCache.ThumbnailWidth >= thumbWidth &&
+                        dbCache.ThumbnailHeight >= thumbHeight &&
+                        dbCache.FileUpdatedate >= updateDate)
                     {
                         // DBキャッシュを返します。
-                        UpdateMemoryCash(dbCash);
-                        return dbCash;
+                        UpdateMemoryCache(dbCache);
+                        return dbCache;
                     }
                     else
                     {
                         // サムネイルを更新します。
-                        var thumb = this.UpdateDBFileCash(filePath, thumbWidth, thumbHeight, updateDate);
-                        UpdateMemoryCash(thumb);
+                        var thumb = this.UpdateDBFileCache(filePath, thumbWidth, thumbHeight, updateDate);
+                        UpdateMemoryCache(thumb);
                         return thumb;
                     }
                 }
@@ -221,39 +221,39 @@ namespace PicSum.Job.Logics
                 {
                     // サムネイルを作成します。
                     var updateDate = FileUtil.GetUpdateDate(filePath);
-                    var thumb = this.CreateDBFileCash(filePath, thumbWidth, thumbHeight, updateDate);
-                    UpdateMemoryCash(thumb);
+                    var thumb = this.CreateDBFileCache(filePath, thumbWidth, thumbHeight, updateDate);
+                    UpdateMemoryCache(thumb);
                     return thumb;
                 }
             }
         }
 
-        private ThumbnailBufferEntity GetDirectoryCash(string filePath, int thumbWidth, int thumbHeight)
+        private ThumbnailBufferEntity GetDirectoryCache(string filePath, int thumbWidth, int thumbHeight)
         {
-            var memCash = GetMemoryCash(filePath);
-            if (memCash != ThumbnailBufferEntity.EMPTY)
+            var memCache = GetMemoryCache(filePath);
+            if (memCache != ThumbnailBufferEntity.EMPTY)
             {
                 var updateDate = FileUtil.GetUpdateDate(filePath);
 
-                if (memCash.ThumbnailWidth >= thumbWidth &&
-                    memCash.ThumbnailHeight >= thumbHeight &&
-                    memCash.FileUpdatedate >= updateDate)
+                if (memCache.ThumbnailWidth >= thumbWidth &&
+                    memCache.ThumbnailHeight >= thumbHeight &&
+                    memCache.FileUpdatedate >= updateDate)
                 {
                     // メモリキャッシュを返します。
-                    return memCash;
+                    return memCache;
                 }
                 else
                 {
-                    var dbCash = this.GetDBCash(filePath);
-                    if (dbCash != ThumbnailBufferEntity.EMPTY)
+                    var dbCache = this.GetDBCache(filePath);
+                    if (dbCache != ThumbnailBufferEntity.EMPTY)
                     {
-                        if (dbCash.ThumbnailWidth >= thumbWidth &&
-                            dbCash.ThumbnailHeight >= thumbHeight &&
-                            dbCash.FileUpdatedate >= updateDate)
+                        if (dbCache.ThumbnailWidth >= thumbWidth &&
+                            dbCache.ThumbnailHeight >= thumbHeight &&
+                            dbCache.FileUpdatedate >= updateDate)
                         {
                             // DBキャッシュを返します。
-                            UpdateMemoryCash(dbCash);
-                            return dbCash;
+                            UpdateMemoryCache(dbCache);
+                            return dbCache;
                         }
                         else
                         {
@@ -261,8 +261,8 @@ namespace PicSum.Job.Logics
                             if (!string.IsNullOrEmpty(thumbFile))
                             {
                                 // サムネイルを更新します。
-                                var thumb = this.UpdateDBDirectoryCash(filePath, thumbFile, thumbWidth, thumbHeight, updateDate);
-                                UpdateMemoryCash(thumb);
+                                var thumb = this.UpdateDBDirectoryCache(filePath, thumbFile, thumbWidth, thumbHeight, updateDate);
+                                UpdateMemoryCache(thumb);
                                 return thumb;
                             }
                             else
@@ -277,8 +277,8 @@ namespace PicSum.Job.Logics
                         if (!string.IsNullOrEmpty(thumbFile))
                         {
                             // サムネイルを作成します。
-                            var thumb = this.CreateDBDirectoryCash(filePath, thumbFile, thumbWidth, thumbHeight, updateDate);
-                            UpdateMemoryCash(thumb);
+                            var thumb = this.CreateDBDirectoryCache(filePath, thumbFile, thumbWidth, thumbHeight, updateDate);
+                            UpdateMemoryCache(thumb);
                             return thumb;
                         }
                         else
@@ -290,18 +290,18 @@ namespace PicSum.Job.Logics
             }
             else
             {
-                var dbCash = this.GetDBCash(filePath);
-                if (dbCash != ThumbnailBufferEntity.EMPTY)
+                var dbCache = this.GetDBCache(filePath);
+                if (dbCache != ThumbnailBufferEntity.EMPTY)
                 {
                     var updateDate = FileUtil.GetUpdateDate(filePath);
 
-                    if (dbCash.ThumbnailWidth >= thumbWidth &&
-                        dbCash.ThumbnailHeight >= thumbHeight &&
-                        dbCash.FileUpdatedate >= updateDate)
+                    if (dbCache.ThumbnailWidth >= thumbWidth &&
+                        dbCache.ThumbnailHeight >= thumbHeight &&
+                        dbCache.FileUpdatedate >= updateDate)
                     {
                         // DBキャッシュを返します。
-                        UpdateMemoryCash(dbCash);
-                        return dbCash;
+                        UpdateMemoryCache(dbCache);
+                        return dbCache;
                     }
                     else
                     {
@@ -309,8 +309,8 @@ namespace PicSum.Job.Logics
                         if (!string.IsNullOrEmpty(thumbFile))
                         {
                             // サムネイルを更新します。                                
-                            var thumb = this.UpdateDBDirectoryCash(filePath, thumbFile, thumbWidth, thumbHeight, updateDate);
-                            UpdateMemoryCash(thumb);
+                            var thumb = this.UpdateDBDirectoryCache(filePath, thumbFile, thumbWidth, thumbHeight, updateDate);
+                            UpdateMemoryCache(thumb);
                             return thumb;
                         }
                         else
@@ -326,8 +326,8 @@ namespace PicSum.Job.Logics
                     if (!string.IsNullOrEmpty(thumbFile))
                     {
                         var updateDate = FileUtil.GetUpdateDate(filePath);
-                        var thumb = this.CreateDBDirectoryCash(filePath, thumbFile, thumbWidth, thumbHeight, updateDate);
-                        UpdateMemoryCash(thumb);
+                        var thumb = this.CreateDBDirectoryCache(filePath, thumbFile, thumbWidth, thumbHeight, updateDate);
+                        UpdateMemoryCache(thumb);
                         return thumb;
                     }
                     else
@@ -396,7 +396,7 @@ namespace PicSum.Job.Logics
             }
         }
 
-        private ThumbnailBufferEntity GetDBCash(string filePath)
+        private ThumbnailBufferEntity GetDBCache(string filePath)
         {
             var sql = new ThumbnailReadByFileSql(filePath);
             var dto = DatabaseManager<ThumbnailConnection>.ReadLine<ThumbnailDto>(sql);
@@ -423,7 +423,7 @@ namespace PicSum.Job.Logics
             }
         }
 
-        private ThumbnailBufferEntity CreateDBFileCash(
+        private ThumbnailBufferEntity CreateDBFileCache(
             string filePath, int thumbWidth, int thumbHeight, DateTime fileUpdateDate)
         {
             using (var srcImg = ImageUtil.ReadImageFile(filePath))
@@ -454,7 +454,7 @@ namespace PicSum.Job.Logics
             }
         }
 
-        private ThumbnailBufferEntity UpdateDBFileCash(string filePath, int thumbWidth, int thumbHeight, DateTime fileUpdateDate)
+        private ThumbnailBufferEntity UpdateDBFileCache(string filePath, int thumbWidth, int thumbHeight, DateTime fileUpdateDate)
         {
             using (var srcImg = ImageUtil.ReadImageFile(filePath))
             {
@@ -484,7 +484,7 @@ namespace PicSum.Job.Logics
             }
         }
 
-        private ThumbnailBufferEntity CreateDBDirectoryCash(string directoryPath, string thumbFilePath, int thumbWidth, int thumbHeight, DateTime directoryUpdateDate)
+        private ThumbnailBufferEntity CreateDBDirectoryCache(string directoryPath, string thumbFilePath, int thumbWidth, int thumbHeight, DateTime directoryUpdateDate)
         {
             using (var srcImg = ImageUtil.ReadImageFile(thumbFilePath))
             {
@@ -513,7 +513,7 @@ namespace PicSum.Job.Logics
             }
         }
 
-        private ThumbnailBufferEntity UpdateDBDirectoryCash(string directoryPath, string thumbFilePath, int thumbWidth, int thumbHeight, DateTime directoryUpdateDate)
+        private ThumbnailBufferEntity UpdateDBDirectoryCache(string directoryPath, string thumbFilePath, int thumbWidth, int thumbHeight, DateTime directoryUpdateDate)
         {
             using (var srcImg = ImageUtil.ReadImageFile(thumbFilePath))
             {
@@ -547,7 +547,7 @@ namespace PicSum.Job.Logics
 
         #region メモリーキャッシュ操作メソッド
 
-        private static ThumbnailBufferEntity GetMemoryCash(string filePath)
+        private static ThumbnailBufferEntity GetMemoryCache(string filePath)
         {
             CACHE_LOCK.EnterReadLock();
 
@@ -568,7 +568,7 @@ namespace PicSum.Job.Logics
             }
         }
 
-        private static void UpdateMemoryCash(ThumbnailBufferEntity thumb)
+        private static void UpdateMemoryCache(ThumbnailBufferEntity thumb)
         {
             if (thumb.FilePath == null)
             {
@@ -579,22 +579,22 @@ namespace PicSum.Job.Logics
 
             try
             {
-                if (CACHE_DICTIONARY.TryGetValue(thumb.FilePath, out var dicCash))
+                if (CACHE_DICTIONARY.TryGetValue(thumb.FilePath, out var dicCache))
                 {
-                    CASH_LIST.Remove(dicCash);
-                    CASH_LIST.Add(thumb);
+                    CACHE_LIST.Remove(dicCache);
+                    CACHE_LIST.Add(thumb);
                     CACHE_DICTIONARY[thumb.FilePath] = thumb;
                 }
                 else
                 {
-                    if (CASH_LIST.Count == CASH_LIST.Capacity)
+                    if (CACHE_LIST.Count == CACHE_LIST.Capacity)
                     {
-                        var cash = CASH_LIST[0];
-                        CASH_LIST.Remove(cash);
+                        var Cache = CACHE_LIST[0];
+                        CACHE_LIST.Remove(Cache);
                         CACHE_DICTIONARY.Remove(thumb.FilePath);
                     }
 
-                    CASH_LIST.Add(thumb);
+                    CACHE_LIST.Add(thumb);
                     CACHE_DICTIONARY.Add(thumb.FilePath, thumb);
                 }
             }
