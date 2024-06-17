@@ -262,6 +262,9 @@ namespace WinApi
         public const int SIZE_MAXSHOW = 3;// ある他のウィンドウが元のサイズに戻されたとき、すべてのポップアップウィンドウに送られます。
         public const int SIZE_MAXHIDE = 4;// ある他のウィンドウが最大化されたとき、すべてのポップアップウィンドウに送られます。
 
+        // マウスイベントの定数
+        public const uint MOUSEEVENTF_LEFTUP = 0x0004;
+
         public const UInt32 SWP_NOSIZE = 0x0001;
         public const UInt32 SWP_NOMOVE = 0x0002;
         public const UInt32 SWP_NOZORDER = 0x0004;
@@ -838,6 +841,9 @@ namespace WinApi
 
         [DllImport("user32.dll")]
         public static extern bool IsIconic(IntPtr hWnd);
+
+        [DllImport("user32.dll")]
+        public static extern void mouse_event(uint dwFlags, uint dx, uint dy, uint dwData, UIntPtr dwExtraInfo);
 
         #endregion
 

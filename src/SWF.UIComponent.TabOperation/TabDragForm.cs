@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Runtime.Versioning;
 using System.Windows.Forms;
+using WinApi;
 
 namespace SWF.UIComponent.TabOperation
 {
@@ -204,6 +205,17 @@ namespace SWF.UIComponent.TabOperation
 
             this.DrawTabEventArgs.Graphics = e.Graphics;
             this.drawTabPageMethod(this.DrawTabEventArgs);
+        }
+        
+        // TODO: ドラッグ中にスタートメニューを開くなどの操作を行ったときに
+        // 発生するエラーを一時回避。
+        // タブの無いウィンドウができるなどの不具合あり。
+        protected override void OnLostFocus(EventArgs e)
+        {
+            var cursorPos = Cursor.Position;
+            WinApiMembers.mouse_event(WinApiMembers.MOUSEEVENTF_LEFTUP, (uint)cursorPos.X, (uint)cursorPos.Y, 0, UIntPtr.Zero);
+
+            base.OnLostFocus(e);
         }
 
         #endregion
