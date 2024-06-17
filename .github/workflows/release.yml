@@ -29,17 +29,19 @@ jobs:
           /t:Rebuild
           /p:Configuration=Release
           /p:Platform="Any CPU"
-          /p:OutputPath=$pwd\dist
+          /p:OutputPath=$pwd\dist\picsum
           /p:GenerateDependencyFile=false
       
       - name: cleanup
         shell: pwsh
         run: |
-          Remove-Item -Path "$pwd\dist\NLog.debug.config" -Force
-          Remove-Item -Path "$pwd\dist\*.pdb" -Force
-          Rename-Item -Path "$pwd\dist\picsum.runtimeconfig.json" -NewName "temp"
-          Remove-Item -Path "$pwd\dist\*.runtimeconfig.json" -Force
-          Rename-Item -Path "$pwd\dist\temp" -NewName "picsum.runtimeconfig.json"
+          Remove-Item -Path "$pwd\dist\picsum\NLog.debug.config" -Force
+          Remove-Item -Path "$pwd\dist\picsum\*.pdb" -Force
+          Rename-Item -Path "$pwd\dist\picsum\picsum.runtimeconfig.json" -NewName "temp"
+          Remove-Item -Path "$pwd\dist\picsum\*.runtimeconfig.json" -Force
+          Rename-Item -Path "$pwd\dist\picsum\temp" -NewName "picsum.runtimeconfig.json"
+          Copy-Item -Path "$pwd\doc\MANUAL.md" -Destination "$pwd\dist\MANUAL.txt"
+          Copy-Item -Path "$pwd\doc\CHANGELOG.md" -Destination "$pwd\dist\CHANGELOG.txt"
 
       - name: compress archive 
         shell: pwsh
