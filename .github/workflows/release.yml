@@ -40,16 +40,22 @@ jobs:
           Rename-Item -Path "$pwd\dist\picsum\picsum.runtimeconfig.json" -NewName "temp"
           Remove-Item -Path "$pwd\dist\picsum\*.runtimeconfig.json" -Force
           Rename-Item -Path "$pwd\dist\picsum\temp" -NewName "picsum.runtimeconfig.json"
+
+      - name: set docs
+        shell: pwsh
+        run: |
           Copy-Item -Path "$pwd\doc\MANUAL.md" -Destination "$pwd\dist\MANUAL.txt"
           Copy-Item -Path "$pwd\doc\CHANGELOG.md" -Destination "$pwd\dist\CHANGELOG.txt"
 
       - name: compress archive 
         shell: pwsh
         run: |
-          compress-archive dist\* picsum.zip
+          $tag_name = "${{ github.ref }}" -split '/' | Select-Object -Last 1
+          compress-archive dist\* picsum-$tag_name.zip
 
       - name: action-gh-release 
         uses: softprops/action-gh-release@v2 
         with:
           files: |
-            picsum.zip
+            picsum-*.zip
+
