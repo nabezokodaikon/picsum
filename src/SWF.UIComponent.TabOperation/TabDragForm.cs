@@ -28,11 +28,19 @@ namespace SWF.UIComponent.TabOperation
         private TabDropForm tabDropForm = null;
         private TabDrawArea tabDrawArea = null;
         private DrawTabEventArgs drawTabEventArgs = null;
-
+        private TabSwitch tabSwitch = null;
         private Bitmap regionImage = null;
         private Action<DrawTabEventArgs> drawTabPageMethod = null;
 
         #endregion
+
+        public TabSwitch TabSwitch
+        {
+            get
+            {
+                return tabSwitch;
+            }
+        }
 
         #region プライベートプロパティ
 
@@ -173,6 +181,7 @@ namespace SWF.UIComponent.TabOperation
 
             this.Size = this.regionImage.Size;
             this.Region = ImageUtil.GetRegion(this.regionImage, Color.FromArgb(0, 0, 0, 0));
+            this.tabSwitch = tab.Owner;
         }
 
         public void Clear()
@@ -191,6 +200,16 @@ namespace SWF.UIComponent.TabOperation
         #endregion
 
         #region 継承メソッド
+
+        protected override void OnLostFocus(EventArgs e)
+        {
+            if (this.tabSwitch != null && this.Visible)
+            {
+                this.tabSwitch.CallEndTabDragOperation();
+            }
+
+            base.OnLostFocus(e);
+        }
 
         protected override void OnPaint(PaintEventArgs e)
         {

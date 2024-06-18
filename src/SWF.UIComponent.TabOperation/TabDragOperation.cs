@@ -22,12 +22,31 @@ namespace SWF.UIComponent.TabOperation
         private static bool isBegin = false;
         private static bool isMoving = false;
 
-        private static TabDragForm TabDragForm
+        public static TabDragForm TabDragForm
         {
             get
             {
                 tabDragForm ??= new TabDragForm();
                 return tabDragForm;
+            }
+        }
+
+        public static TabInfo Tab
+        {
+            get
+            {
+                return tab;
+            }
+        }
+
+        /// <summary>
+        /// 操作中か確認します。
+        /// </summary>
+        public static bool IsBegin
+        {
+            get
+            {
+                return isBegin;
             }
         }
 
@@ -57,17 +76,6 @@ namespace SWF.UIComponent.TabOperation
         public static bool ContainsForm(Form form)
         {
             return FORM_LIST.Contains(form);
-        }
-
-        /// <summary>
-        /// 操作中か確認します。
-        /// </summary>
-        public static bool IsBegin
-        {
-            get
-            {
-                return isBegin;
-            }
         }
 
         /// <summary>
@@ -151,6 +159,11 @@ namespace SWF.UIComponent.TabOperation
 
             TabDragForm.SetLocation(widthOffset, heightOffset);
 
+            if (tab == null)
+            {
+                return;
+            }
+
             if (tab.Owner != null)
             {
                 // タブが所有されている場合。
@@ -202,11 +215,11 @@ namespace SWF.UIComponent.TabOperation
                         TabSwitch owner = GetTabSwitchControl(form);
                         if (owner.GetTabsScreenRectangle().Contains(toScreenPoint))
                         {
-                            form.Activate();
                             var clientPoint = owner.PointToClient(toScreenPoint);
                             tab.DrawArea.X = clientPoint.X;
                             owner.AddTab(tab);
                             TabDragForm.Visible = false;
+                            form.Activate(); 
                             return;
                         }
                         else
