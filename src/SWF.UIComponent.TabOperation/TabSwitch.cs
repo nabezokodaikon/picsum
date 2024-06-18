@@ -552,6 +552,18 @@ namespace SWF.UIComponent.TabOperation
             return new Rectangle(x, y, w, h);
         }
 
+        protected override void OnLostFocus(EventArgs e)
+        {
+            if (TabDragOperation.IsBegin
+                && !TabDragOperation.TabDragForm.Visible
+                && TabDragOperation.Tab.Owner == this)
+            {
+                this.CallEndTabDragOperation();
+            }
+
+            base.OnLostFocus(e);
+        }
+
         public void CallEndTabDragOperation()
         {
             if (TabDragOperation.IsBegin)
@@ -684,18 +696,6 @@ namespace SWF.UIComponent.TabOperation
             this.DrawDropPoint(e.Graphics);
 
             base.OnPaint(e);
-        }
-
-        protected override void OnLostFocus(EventArgs e)
-        {
-            if (TabDragOperation.IsBegin
-                && !TabDragOperation.TabDragForm.Visible
-                && TabDragOperation.Tab.Owner == this)
-            {
-                this.CallEndTabDragOperation();
-            }
-
-            base.OnLostFocus(e);
         }
 
         protected override void OnMouseLeave(EventArgs e)
