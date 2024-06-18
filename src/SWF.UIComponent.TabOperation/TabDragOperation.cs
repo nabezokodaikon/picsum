@@ -31,6 +31,14 @@ namespace SWF.UIComponent.TabOperation
             }
         }
 
+        public static TabInfo Tab
+        {
+            get
+            {
+                return tab;
+            }
+        }
+
         /// <summary>
         /// フォームをリストに追加します。
         /// </summary>

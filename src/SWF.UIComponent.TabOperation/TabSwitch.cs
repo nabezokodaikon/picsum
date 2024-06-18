@@ -560,7 +560,11 @@ namespace SWF.UIComponent.TabOperation
                 if (tab.Owner != null)
                 {
                     this.InvalidateHeader();
-                    this.OnTabDropouted(new TabDropoutedEventArgs(tab));
+
+                    if (!tab.Owner.Equals(this))
+                    {
+                        this.OnTabDropouted(new TabDropoutedEventArgs(tab));
+                    }
                 }
                 else
                 {
@@ -686,8 +690,7 @@ namespace SWF.UIComponent.TabOperation
         {
             if (TabDragOperation.IsBegin
                 && !TabDragOperation.TabDragForm.Visible
-                && this.mouseDownTab != null
-                && this.mouseDownTab.Owner == this)
+                && TabDragOperation.Tab.Owner == this)
             {
                 this.CallEndTabDragOperation();
             }
@@ -782,7 +785,7 @@ namespace SWF.UIComponent.TabOperation
 
         protected override void OnMouseUp(MouseEventArgs e)
         {
-            this.CallEndTabDragOperation();
+            this.CallEndTabDragOperation();   
 
             base.OnMouseUp(e);
         }
