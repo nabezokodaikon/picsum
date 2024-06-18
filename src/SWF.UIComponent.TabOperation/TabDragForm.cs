@@ -3,9 +3,7 @@ using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Runtime.Versioning;
-using System.Windows.Controls.Ribbon;
 using System.Windows.Forms;
-using Windows.Devices.PointOfService;
 
 namespace SWF.UIComponent.TabOperation
 {
@@ -25,8 +23,6 @@ namespace SWF.UIComponent.TabOperation
         #endregion
 
         #region インスタンス変数
-
-        private TabSwitch tabSwitch = null;
 
         private TabPalette tabPalette = null;
         private TabDropForm tabDropForm = null;
@@ -177,7 +173,6 @@ namespace SWF.UIComponent.TabOperation
 
             this.Size = this.regionImage.Size;
             this.Region = ImageUtil.GetRegion(this.regionImage, Color.FromArgb(0, 0, 0, 0));
-            this.tabSwitch = tab.Owner;
         }
 
         public void Clear()
@@ -196,16 +191,6 @@ namespace SWF.UIComponent.TabOperation
         #endregion
 
         #region 継承メソッド
-
-        protected override void OnLostFocus(EventArgs e)
-        {
-            if (this.tabSwitch != null && this.Visible)
-            {
-                this.tabSwitch.CallEndTabDragOperation();
-            }
-
-            base.OnLostFocus(e);
-        }
 
         protected override void OnPaint(PaintEventArgs e)
         {
