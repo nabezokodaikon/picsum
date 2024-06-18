@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Runtime.Versioning;
 using System.Windows.Forms;
+using WinApi;
 
 namespace SWF.UIComponent.TabOperation
 {
@@ -107,7 +108,11 @@ namespace SWF.UIComponent.TabOperation
             {
                 this.TabDropForm.Location = new Point(topRect.X, topRect.Y);
                 this.TabDropForm.SetMaximumImage();
-                this.TabDropForm.Visible = true;
+                WinApiMembers.SetWindowPos(
+                    this.TabDropForm.Handle,
+                    WinApiMembers.HWND_TOP,
+                    topRect.X, topRect.Y, topRect.Width, topRect.Height,
+                    WinApiMembers.SWP_NOSIZE | WinApiMembers.SWP_NOACTIVATE | WinApiMembers.SWP_SHOWWINDOW);
                 return;
             }
 
@@ -116,7 +121,11 @@ namespace SWF.UIComponent.TabOperation
             {
                 this.TabDropForm.Location = new Point(leftRect.X, leftRect.Y);
                 this.TabDropForm.SetLeftImage();
-                this.TabDropForm.Visible = true;
+                WinApiMembers.SetWindowPos(
+                    this.TabDropForm.Handle,
+                    WinApiMembers.HWND_TOP,
+                    leftRect.X, leftRect.Y, leftRect.Width, leftRect.Height,
+                    WinApiMembers.SWP_NOSIZE | WinApiMembers.SWP_NOACTIVATE | WinApiMembers.SWP_SHOWWINDOW);
                 return;
             }
 
@@ -125,7 +134,11 @@ namespace SWF.UIComponent.TabOperation
             {
                 this.TabDropForm.Location = new Point(rightRect.X, rightRect.Y);
                 this.TabDropForm.SetRightImage();
-                this.TabDropForm.Visible = true;
+                WinApiMembers.SetWindowPos(
+                    this.TabDropForm.Handle,
+                    WinApiMembers.HWND_TOP,
+                    rightRect.X, rightRect.Y, rightRect.Width, rightRect.Height,
+                    WinApiMembers.SWP_NOSIZE | WinApiMembers.SWP_NOACTIVATE | WinApiMembers.SWP_SHOWWINDOW);
                 return;
             }
 

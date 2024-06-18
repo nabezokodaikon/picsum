@@ -265,6 +265,7 @@ namespace WinApi
         // マウスイベントの定数
         public const uint MOUSEEVENTF_LEFTUP = 0x0004;
 
+        public static readonly IntPtr HWND_TOP = IntPtr.Zero;
         public const UInt32 SWP_NOSIZE = 0x0001;
         public const UInt32 SWP_NOMOVE = 0x0002;
         public const UInt32 SWP_NOZORDER = 0x0004;
@@ -313,7 +314,7 @@ namespace WinApi
 
         public const int EM_SETRECT = 0xB3; // テキストを表示する領域を設定
         public const int EM_GETLINECOUNT = 0xBA; // テキストの行数を取得する定数
-
+       
         public enum FileAttributesFlags : uint
         {
             FILE_ATTRIBUTE_ARCHIVE = 0x00000020,
@@ -844,6 +845,9 @@ namespace WinApi
 
         [DllImport("user32.dll")]
         public static extern void mouse_event(uint dwFlags, uint dx, uint dy, uint dwData, UIntPtr dwExtraInfo);
+
+        [DllImport("user32.dll", SetLastError = true)]
+        public static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, uint uFlags);
 
         #endregion
 
