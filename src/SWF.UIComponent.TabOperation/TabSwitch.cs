@@ -552,26 +552,73 @@ namespace SWF.UIComponent.TabOperation
             return new Rectangle(x, y, w, h);
         }
 
+        protected override void OnLostFocus(EventArgs e)
+        {
+            if (TabDragOperation.IsBegin
+                && !TabDragOperation.TabDragForm.Visible
+                && TabDragOperation.Tab.Owner == this)
+            {
+                this.CallEndTabDragOperation();
+            }
+
+            base.OnLostFocus(e);
+        }
+
         public void CallEndTabDragOperation()
         {
             if (TabDragOperation.IsBegin)
             {
-                var form = this.GetForm();
-                var screenPoint = Cursor.Position;
                 var tab = TabDragOperation.EndTabDragOperation();
-                if (form.WindowState == FormWindowState.Normal)
+                if (tab.Owner != null)
                 {
-                    // マウスカーソルの位置にタブが来るようにずらします。
-                    this.OnTabDropouted(new TabDropoutedEventArgs(tab, new Point(screenPoint.X - 128, screenPoint.Y - 24), form.ClientSize, FormWindowState.Normal));
-                }
-                else if (form.WindowState == FormWindowState.Maximized)
-                {
-                    // マウスカーソルの位置にタブが来るようにずらします。
-                    this.OnTabDropouted(new TabDropoutedEventArgs(tab, new Point(screenPoint.X - 128, screenPoint.Y - 24), form.RestoreBounds.Size, FormWindowState.Normal));
+                    this.InvalidateHeader();
+
+                    if (!tab.Owner.Equals(this))
+                    {
+                        this.OnTabDropouted(new TabDropoutedEventArgs(tab));
+                    }
                 }
                 else
                 {
-                    throw new NotImplementedException("未定義のタブ操作です。");
+                    var screenPoint = Cursor.Position;
+                    var form = this.GetForm();
+
+                    if (ScreenUtil.GetTopRect(Resources.DropMaximum.Size).Contains(screenPoint))
+                    {
+                        this.OnTabDropouted(new TabDropoutedEventArgs(tab, screenPoint, form.ClientSize, FormWindowState.Maximized));
+                    }
+                    else if (ScreenUtil.GetLeftRect(Resources.DropMaximum.Size).Contains(screenPoint))
+                    {
+                        var screenRect = Screen.GetWorkingArea(screenPoint);
+                        var w = (int)(screenRect.Width / 2f);
+                        var h = screenRect.Height;
+                        var x = screenRect.Left;
+                        var y = screenRect.Top;
+                        this.OnTabDropouted(new TabDropoutedEventArgs(tab, new Point(x, y), new Size(w, h), FormWindowState.Normal));
+                    }
+                    else if (ScreenUtil.GetRightRect(Resources.DropMaximum.Size).Contains(screenPoint))
+                    {
+                        var screenRect = Screen.GetWorkingArea(screenPoint);
+                        var w = (int)(screenRect.Width / 2f);
+                        var h = screenRect.Height;
+                        var x = screenRect.Right - w;
+                        var y = screenRect.Top;
+                        this.OnTabDropouted(new TabDropoutedEventArgs(tab, new Point(x, y), new Size(w, h), FormWindowState.Normal));
+                    }
+                    else if (form.WindowState == FormWindowState.Normal)
+                    {
+                        // マウスカーソルの位置にタブが来るようにずらします。
+                        this.OnTabDropouted(new TabDropoutedEventArgs(tab, new Point(screenPoint.X - 128, screenPoint.Y - 24), form.ClientSize, FormWindowState.Normal));
+                    }
+                    else if (form.WindowState == FormWindowState.Maximized)
+                    {
+                        // マウスカーソルの位置にタブが来るようにずらします。
+                        this.OnTabDropouted(new TabDropoutedEventArgs(tab, new Point(screenPoint.X - 128, screenPoint.Y - 24), form.RestoreBounds.Size, FormWindowState.Normal));
+                    }
+                    else
+                    {
+                        throw new NotImplementedException("未定義のタブ操作です。");
+                    }
                 }
             }
 
@@ -738,63 +785,7 @@ namespace SWF.UIComponent.TabOperation
 
         protected override void OnMouseUp(MouseEventArgs e)
         {
-            if (TabDragOperation.IsBegin)
-            {
-                var tab = TabDragOperation.EndTabDragOperation();
-                if (tab.Owner != null)
-                {
-                    this.InvalidateHeader();
-
-                    if (!tab.Owner.Equals(this))
-                    {
-                        this.OnTabDropouted(new TabDropoutedEventArgs(tab));
-                    }
-                }
-                else
-                {
-                    var screenPoint = this.PointToScreen(new Point(e.X, e.Y));
-                    var form = this.GetForm();
-
-                    if (ScreenUtil.GetTopRect(Resources.DropMaximum.Size).Contains(screenPoint))
-                    {
-                        this.OnTabDropouted(new TabDropoutedEventArgs(tab, screenPoint, form.ClientSize, FormWindowState.Maximized));
-                    }
-                    else if (ScreenUtil.GetLeftRect(Resources.DropMaximum.Size).Contains(screenPoint))
-                    {
-                        var screenRect = Screen.GetWorkingArea(Cursor.Position);
-                        var w = (int)(screenRect.Width / 2f);
-                        var h = screenRect.Height;
-                        var x = screenRect.Left;
-                        var y = screenRect.Top;
-                        this.OnTabDropouted(new TabDropoutedEventArgs(tab, new Point(x, y), new Size(w, h), FormWindowState.Normal));
-                    }
-                    else if (ScreenUtil.GetRightRect(Resources.DropMaximum.Size).Contains(screenPoint))
-                    {
-                        var screenRect = Screen.GetWorkingArea(Cursor.Position);
-                        var w = (int)(screenRect.Width / 2f);
-                        var h = screenRect.Height;
-                        var x = screenRect.Right - w;
-                        var y = screenRect.Top;
-                        this.OnTabDropouted(new TabDropoutedEventArgs(tab, new Point(x, y), new Size(w, h), FormWindowState.Normal));
-                    }
-                    else if (form.WindowState == FormWindowState.Normal)
-                    {
-                        // マウスカーソルの位置にタブが来るようにずらします。
-                        this.OnTabDropouted(new TabDropoutedEventArgs(tab, new Point(screenPoint.X - 128, screenPoint.Y - 24), form.ClientSize, FormWindowState.Normal));
-                    }
-                    else if (form.WindowState == FormWindowState.Maximized)
-                    {
-                        // マウスカーソルの位置にタブが来るようにずらします。
-                        this.OnTabDropouted(new TabDropoutedEventArgs(tab, new Point(screenPoint.X - 128, screenPoint.Y - 24), form.RestoreBounds.Size, FormWindowState.Normal));
-                    }
-                    else
-                    {
-                        throw new NotImplementedException("未定義のタブ操作です。");
-                    }
-                }
-            }
-
-            this.mouseDownTab = null;
+            this.CallEndTabDragOperation();   
 
             base.OnMouseUp(e);
         }
