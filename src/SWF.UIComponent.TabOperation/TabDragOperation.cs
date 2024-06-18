@@ -159,6 +159,11 @@ namespace SWF.UIComponent.TabOperation
 
             TabDragForm.SetLocation(widthOffset, heightOffset);
 
+            if (tab == null)
+            {
+                return;
+            }
+
             if (tab.Owner != null)
             {
                 // タブが所有されている場合。
