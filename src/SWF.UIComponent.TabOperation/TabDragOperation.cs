@@ -22,20 +22,12 @@ namespace SWF.UIComponent.TabOperation
         private static bool isBegin = false;
         private static bool isMoving = false;
 
-        public static TabDragForm TabDragForm
+        private static TabDragForm TabDragForm
         {
             get
             {
                 tabDragForm ??= new TabDragForm();
                 return tabDragForm;
-            }
-        }
-
-        public static TabInfo Tab
-        {
-            get
-            {
-                return tab;
             }
         }
 
@@ -211,10 +203,10 @@ namespace SWF.UIComponent.TabOperation
                         if (owner.GetTabsScreenRectangle().Contains(toScreenPoint))
                         {
                             TabDragForm.Visible = false;
+                            form.Activate();
                             var clientPoint = owner.PointToClient(toScreenPoint);
                             tab.DrawArea.X = clientPoint.X;
                             owner.AddTab(tab);
-                            form.Activate();
                             return;
                         }
                         else
