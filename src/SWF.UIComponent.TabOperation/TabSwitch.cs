@@ -552,6 +552,32 @@ namespace SWF.UIComponent.TabOperation
             return new Rectangle(x, y, w, h);
         }
 
+        public void CallEndTabDragOperation()
+        {
+            if (TabDragOperation.IsBegin)
+            {
+                var form = this.GetForm();
+                var screenPoint = Cursor.Position;
+                var tab = TabDragOperation.EndTabDragOperation();
+                if (form.WindowState == FormWindowState.Normal)
+                {
+                    // マウスカーソルの位置にタブが来るようにずらします。
+                    this.OnTabDropouted(new TabDropoutedEventArgs(tab, new Point(screenPoint.X - 128, screenPoint.Y - 24), form.ClientSize, FormWindowState.Normal));
+                }
+                else if (form.WindowState == FormWindowState.Maximized)
+                {
+                    // マウスカーソルの位置にタブが来るようにずらします。
+                    this.OnTabDropouted(new TabDropoutedEventArgs(tab, new Point(screenPoint.X - 128, screenPoint.Y - 24), form.RestoreBounds.Size, FormWindowState.Normal));
+                }
+                else
+                {
+                    throw new NotImplementedException("未定義のタブ操作です。");
+                }
+            }
+
+            this.mouseDownTab = null;
+        }
+
         /// <summary>
         /// タブのクライアント領域を取得します。
         /// </summary>
@@ -708,33 +734,6 @@ namespace SWF.UIComponent.TabOperation
             }
 
             base.OnMouseDown(e);
-        }
-
-        public void CallEndTabDragOperation()
-        {
-            if (TabDragOperation.IsBegin)
-            {
-                var form = this.GetForm();
-                var screenPoint = Cursor.Position;
-                var tab = TabDragOperation.EndTabDragOperation();
-                if (form.WindowState == FormWindowState.Normal)
-                {
-                    Console.WriteLine("OnMouseUp");
-                    // マウスカーソルの位置にタブが来るようにずらします。
-                    this.OnTabDropouted(new TabDropoutedEventArgs(tab, new Point(screenPoint.X - 128, screenPoint.Y - 24), form.ClientSize, FormWindowState.Normal));
-                }
-                else if (form.WindowState == FormWindowState.Maximized)
-                {
-                    // マウスカーソルの位置にタブが来るようにずらします。
-                    this.OnTabDropouted(new TabDropoutedEventArgs(tab, new Point(screenPoint.X - 128, screenPoint.Y - 24), form.RestoreBounds.Size, FormWindowState.Normal));
-                }
-                else
-                {
-                    throw new NotImplementedException("未定義のタブ操作です。");
-                }
-            }
-
-            this.mouseDownTab = null;
         }
 
         protected override void OnMouseUp(MouseEventArgs e)
