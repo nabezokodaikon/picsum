@@ -116,7 +116,7 @@ namespace SWF.UIComponent.TabOperation
             isMoving = false;
             tab = null;
 
-            TabDragForm.Hide();
+            TabDragForm.Visible = false;
             TabDragForm.Clear();
 
             return targetTab;
@@ -188,7 +188,7 @@ namespace SWF.UIComponent.TabOperation
                 else
                 {
                     tab.Owner.RemoveTab(tab);
-                    TabDragForm.Show();
+                    TabDragForm.Visible = true;
                     return;
                 }
             }
@@ -202,11 +202,11 @@ namespace SWF.UIComponent.TabOperation
                         TabSwitch owner = GetTabSwitchControl(form);
                         if (owner.GetTabsScreenRectangle().Contains(toScreenPoint))
                         {
+                            TabDragForm.Visible = false;
                             form.Activate();
                             var clientPoint = owner.PointToClient(toScreenPoint);
                             tab.DrawArea.X = clientPoint.X;
                             owner.AddTab(tab);
-                            TabDragForm.Hide();
                             return;
                         }
                         else
