@@ -498,6 +498,11 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
         private void ReadImage()
         {
+            if (this.filePathList[this.FilePathListIndex] == this.SelectedFilePath)
+            {
+                return;
+            }
+
             this.Cursor = Cursors.WaitCursor;
 
             var nextFiles = new List<string>(4);
@@ -956,6 +961,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             var filePath = this.filePathList[index];
             var p = this.PointToClient(Cursor.Position);
             this.filePathToolTip.Show(filePath, this, p.X, -16, 5000);
+            this.ReadImage();
         }
 
         private void IndexSlider_ValueChanged(object sender, EventArgs e)
