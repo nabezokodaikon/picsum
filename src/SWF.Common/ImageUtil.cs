@@ -157,7 +157,7 @@ namespace SWF.Common
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
-            return ImageSizeCacheUtil.GetImageSize(filePath);
+            return ImageInfoCacheUtil.GetImageSize(filePath);
         }
 
         /// <summary>

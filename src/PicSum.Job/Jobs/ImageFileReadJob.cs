@@ -172,7 +172,7 @@ namespace PicSum.Job.Jobs
                 {
                     ImageFileCacheUtil.Create(path);
                     this.CheckCancel();
-                    ImageSizeCacheUtil.Create(path);
+                    ImageInfoCacheUtil.Create(path);
                 }
                 catch (FileUtilException ex)
                 {

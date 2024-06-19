@@ -3,18 +3,20 @@ using System.Drawing;
 
 namespace SWF.Common
 {
-    internal class ImageSizeCache
+    internal class ImageInfoCache
     {
         public string FilePath { get; private set; }
         public Size Size { get; private set; }
+        public bool IsAlpha { get; private set; }
         public DateTime Timestamp { get; private set; }
 
-        public ImageSizeCache(string filePath, Size size, DateTime timestamp)
+        public ImageInfoCache(string filePath, Size size, bool isAlpha, DateTime timestamp)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
             this.FilePath = filePath;
             this.Size = size;
+            this.IsAlpha = isAlpha;
             this.Timestamp = timestamp;
         }
     }

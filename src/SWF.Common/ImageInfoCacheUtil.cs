@@ -7,11 +7,11 @@ using System.Threading;
 namespace SWF.Common
 {
     [SupportedOSPlatform("windows")]
-    public static class ImageSizeCacheUtil
+    public static class ImageInfoCacheUtil
     {
         private const int CACHE_CAPACITY = 1000;
-        private static readonly List<ImageSizeCache> CACHE_LIST = new(CACHE_CAPACITY);
-        private static readonly Dictionary<string, ImageSizeCache> CACHE_DICTIONARY = new(CACHE_CAPACITY);
+        private static readonly List<ImageInfoCache> CACHE_LIST = new(CACHE_CAPACITY);
+        private static readonly Dictionary<string, ImageInfoCache> CACHE_DICTIONARY = new(CACHE_CAPACITY);
         private static readonly ReaderWriterLockSlim CACHE_LOCK = new();
 
         public static void DisposeStaticResouces()
@@ -48,8 +48,8 @@ namespace SWF.Common
                         CACHE_DICTIONARY.Remove(removeCache.FilePath);
                     }
 
-                    var newSize = new ImageSizeCache(
-                        filePath, ImageUtil.GetImageSize(filePath), timestamp);
+                    var newSize = new ImageInfoCache(
+                        filePath, ImageUtil.GetImageSize(filePath), PixelFormatUtil.IsAlpha(filePath), timestamp);
                     CACHE_LIST.Add(newSize);
                     CACHE_DICTIONARY.Add(filePath, newSize);
                     return newSize.Size;
@@ -89,8 +89,8 @@ namespace SWF.Common
                         CACHE_DICTIONARY.Remove(removeCache.FilePath);
                     }
 
-                    var newSize = new ImageSizeCache(
-                        filePath, ImageUtil.GetImageSize(filePath), timestamp);
+                    var newSize = new ImageInfoCache(
+                        filePath, ImageUtil.GetImageSize(filePath), PixelFormatUtil.IsAlpha(filePath), timestamp);
                     CACHE_LIST.Add(newSize);
                     CACHE_DICTIONARY.Add(filePath, newSize);
                 }
