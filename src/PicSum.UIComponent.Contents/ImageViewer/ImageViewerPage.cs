@@ -378,14 +378,11 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 var rx = this.checkPatternPanel.Width - w;
                 var y = 0;
 
-                this.leftImagePanel.SetBounds(lx, y, w, h, BoundsSpecified.All);
-                this.rightImagePanel.SetBounds(rx, y, w, h, BoundsSpecified.All);
-
-                this.leftImagePanel.ImageAlign = ImageAlign.Right;
-                this.rightImagePanel.ImageAlign = ImageAlign.Left;
-
                 if (this.displayMode == ImageDisplayMode.LeftFacing)
                 {
+                    this.leftImagePanel.SetBounds(lx, y, w, h, BoundsSpecified.All);
+                    this.leftImagePanel.ImageAlign = ImageAlign.Right;
+
                     if (this.leftImagePanel.Visible)
                     {
                         this.leftImagePanel.Invalidate();
@@ -399,6 +396,9 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 }
                 else
                 {
+                    this.rightImagePanel.SetBounds(rx, y, w, h, BoundsSpecified.All);
+                    this.rightImagePanel.ImageAlign = ImageAlign.Left;
+
                     if (this.rightImagePanel.Visible)
                     {
                         this.rightImagePanel.Invalidate();
@@ -419,14 +419,11 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 var rx = this.checkPatternPanel.Width - w;
                 var y = 0;
 
-                this.leftImagePanel.SetBounds(lx, y, w, h, BoundsSpecified.All);
-                this.rightImagePanel.SetBounds(rx, y, w, h, BoundsSpecified.All);
-
-                this.leftImagePanel.ImageAlign = ImageAlign.Right;
-                this.rightImagePanel.ImageAlign = ImageAlign.Left;
-
                 if (this.displayMode == ImageDisplayMode.LeftFacing)
                 {
+                    this.rightImagePanel.SetBounds(rx, y, w, h, BoundsSpecified.All);
+                    this.rightImagePanel.ImageAlign = ImageAlign.Left;
+
                     if (this.rightImagePanel.Visible)
                     {
                         this.rightImagePanel.Invalidate();
@@ -438,6 +435,9 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 }
                 else
                 {
+                    this.leftImagePanel.SetBounds(lx, y, w, h, BoundsSpecified.All);
+                    this.leftImagePanel.ImageAlign = ImageAlign.Right;
+
                     if (this.leftImagePanel.Visible)
                     {
                         this.leftImagePanel.Invalidate();
