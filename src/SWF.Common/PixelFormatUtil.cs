@@ -1,7 +1,7 @@
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Formats.Png;
 using System;
 using System.Runtime.Versioning;
-using SixLabors.ImageSharp.Formats.Png;
-using SixLabors.ImageSharp;
 
 namespace SWF.Common
 {
@@ -17,18 +17,18 @@ namespace SWF.Common
             {
                 try
                 {
-                    var info = SixLabors.ImageSharp.Image.Identify(filePath);
+                    var info = Image.Identify(filePath);
                     return IsAlphaByPng(info);
                 }
                 catch (NotSupportedException e)
                 {
                     throw new ImageUtilException(CreateErrorMessage(filePath), e);
                 }
-                catch (SixLabors.ImageSharp.InvalidImageContentException e)
+                catch (InvalidImageContentException e)
                 {
                     throw new ImageUtilException(CreateErrorMessage(filePath), e);
                 }
-                catch (SixLabors.ImageSharp.UnknownImageFormatException e)
+                catch (UnknownImageFormatException e)
                 {
                     throw new ImageUtilException(CreateErrorMessage(filePath), e);
                 }
@@ -37,17 +37,18 @@ namespace SWF.Common
             {
                 return false;
             }
+
         }
 
-        private static bool IsAlphaByPng(SixLabors.ImageSharp.ImageInfo info)
+        private static bool IsAlphaByPng(ImageInfo info)
         {
-            if (info.Metadata.TryGetPngMetadata(out SixLabors.ImageSharp.Formats.Png.PngMetadata metadata))
+            if (info.Metadata.TryGetPngMetadata(out PngMetadata metadata))
             {
-                if (metadata.ColorType == SixLabors.ImageSharp.Formats.Png.PngColorType.RgbWithAlpha)
+                if (metadata.ColorType == PngColorType.RgbWithAlpha)
                 {
                     return true;
                 }
-                else if (metadata.ColorType == SixLabors.ImageSharp.Formats.Png.PngColorType.GrayscaleWithAlpha)
+                else if (metadata.ColorType == PngColorType.GrayscaleWithAlpha)
                 {
                     return true;
                 }
@@ -60,7 +61,7 @@ namespace SWF.Common
             }
         }
 
-        public static string CreateErrorMessage(string path)
+        private static string CreateErrorMessage(string path)
         {
             return $"'{path}'のピクセル情報を取得できませんでした。";
         }
