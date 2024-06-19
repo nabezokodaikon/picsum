@@ -204,8 +204,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
         public override void RedrawPage()
         {
-            this.ChangeImagePanelSize();
-
             Size backgroudSize;
             if (this.leftImagePanel.HasImage && this.rightImagePanel.HasImage)
             {
@@ -232,8 +230,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 this.rightImagePanel.SetScale(rightImageScale);
             }
 
-            this.leftImagePanel.Invalidate();
-            this.rightImagePanel.Invalidate();
+            this.ChangeImagePanelSize();
         }
 
         #endregion
