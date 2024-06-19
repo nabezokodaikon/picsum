@@ -3,7 +3,7 @@ using System.Drawing;
 
 namespace SWF.Common
 {
-    internal class ImageInfoCache
+    public class ImageInfoCache
     {
         public string FilePath { get; private set; }
         public Size Size { get; private set; }

@@ -21,7 +21,7 @@ namespace SWF.Common
             CACHE_DICTIONARY.Clear();
         }
 
-        public static Size GetImageSize(string filePath)
+        public static ImageInfoCache GetImageInfo(string filePath)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
@@ -34,7 +34,7 @@ namespace SWF.Common
                 {
                     if (timestamp == cache.Timestamp)
                     {
-                        return cache.Size;
+                        return cache;
                     }
                 }
 
@@ -48,11 +48,11 @@ namespace SWF.Common
                         CACHE_DICTIONARY.Remove(removeCache.FilePath);
                     }
 
-                    var newSize = new ImageInfoCache(
+                    var newItem = new ImageInfoCache(
                         filePath, ImageUtil.GetImageSize(filePath), PixelFormatUtil.IsAlpha(filePath), timestamp);
-                    CACHE_LIST.Add(newSize);
-                    CACHE_DICTIONARY.Add(filePath, newSize);
-                    return newSize.Size;
+                    CACHE_LIST.Add(newItem);
+                    CACHE_DICTIONARY.Add(filePath, newItem);
+                    return newItem;
                 }
                 finally
                 {
@@ -89,10 +89,10 @@ namespace SWF.Common
                         CACHE_DICTIONARY.Remove(removeCache.FilePath);
                     }
 
-                    var newSize = new ImageInfoCache(
+                    var newItem = new ImageInfoCache(
                         filePath, ImageUtil.GetImageSize(filePath), PixelFormatUtil.IsAlpha(filePath), timestamp);
-                    CACHE_LIST.Add(newSize);
-                    CACHE_DICTIONARY.Add(filePath, newSize);
+                    CACHE_LIST.Add(newItem);
+                    CACHE_DICTIONARY.Add(filePath, newItem);
                 }
                 finally
                 {
