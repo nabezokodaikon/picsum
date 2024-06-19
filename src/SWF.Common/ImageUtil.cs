@@ -97,7 +97,7 @@ namespace SWF.Common
             var destImg = new Bitmap(width, height);
             using (var g = Graphics.FromImage(destImg))
             {
-                g.FillRectangle(Brushes.Gray, 0, 0, width, height);
+                g.FillRectangle(Brushes.LightGray, 0, 0, width, height);
                 return destImg;
             }
         }
