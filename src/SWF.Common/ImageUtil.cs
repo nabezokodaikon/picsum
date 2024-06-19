@@ -153,11 +153,11 @@ namespace SWF.Common
             }
         }
 
-        public static Size GetImageInfoFromCache(string filePath)
+        public static ImageInfoCache GetImageInfoFromCache(string filePath)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
-            return ImageInfoCacheUtil.GetImageInfo(filePath).Size;
+            return ImageInfoCacheUtil.GetImageInfo(filePath);
         }
 
         /// <summary>
