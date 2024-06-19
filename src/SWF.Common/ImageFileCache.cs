@@ -1,5 +1,6 @@
 using System;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Runtime.Versioning;
 
 namespace SWF.Common
@@ -10,15 +11,22 @@ namespace SWF.Common
     {
         private bool disposed = false;
 
+        private readonly int width;
+        private readonly int height;
+        private readonly PixelFormat pixelFormat;
+
         public static readonly ImageFileCache EMPTY = new();
-        public Bitmap Image { get; private set; }
+        public byte[] ImageBuffer { get; private set; }
         public string FilePath { get; private set; }
         public DateTime Timestamp { get; private set; }
 
         private ImageFileCache()
         {
+            this.width = 0;
+            this.height = 0;
+
             this.FilePath = null;
-            this.Image = null;
+            this.ImageBuffer = null;
             this.Timestamp = DateTime.MinValue;
         }
 
@@ -31,10 +39,10 @@ namespace SWF.Common
 
             if (disposing)
             {
-                this.Image?.Dispose();
+                
             }
 
-            this.Image = null;
+            this.ImageBuffer = null;
 
             this.disposed = true;
         }
@@ -55,28 +63,28 @@ namespace SWF.Common
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
             ArgumentNullException.ThrowIfNull(image, nameof(image));
 
+            this.width = image.Width;
+            this.height = image.Height;
+            this.pixelFormat = image.PixelFormat;
+
             this.FilePath = filePath;
-            this.Image = image;
+            this.ImageBuffer = ImageUtil.ToBinary(image);
             this.Timestamp = timestamp;
         }
 
-        public ImageFileCache Clone()
+        public Bitmap Clone()
         {
             if (this.FilePath == null)
             {
                 throw new NullReferenceException("ファイルパスが設定されていません。");
             }
 
-            if (this.Image == null)
+            if (this.ImageBuffer == null)
             {
                 throw new NullReferenceException("イメージが設定されていません。");
             }
 
-            var img = this.Image.Clone(
-                new Rectangle(0, 0, this.Image.Width, this.Image.Height),
-                this.Image.PixelFormat);
-
-            return new ImageFileCache(this.FilePath, img, this.Timestamp);
+            return (Bitmap)ImageUtil.ToImage(this.ImageBuffer, this.width, this.height, this.pixelFormat);
         }
     }
 }

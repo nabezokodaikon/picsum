@@ -40,8 +40,7 @@ namespace SWF.Common
                 {
                     if (timestamp == cache.Timestamp)
                     {
-                        var clone = cache.Clone();
-                        return clone.Image;
+                        return cache.Clone();
                     }
                 }
 
@@ -56,12 +55,14 @@ namespace SWF.Common
                         removeCache.Dispose();
                     }
 
-                    var newImage = new ImageFileCache(
-                        filePath, ImageUtil.ReadImageFile(filePath), timestamp);
-                    CACHE_LIST.Add(newImage);
-                    CACHE_DICTIONARY.Add(filePath, newImage);
-                    var clone = newImage.Clone();
-                    return clone.Image;
+                    using (var img = ImageUtil.ReadImageFile(filePath))
+                    {
+                        var newImage = new ImageFileCache(
+                            filePath, img, timestamp);
+                        CACHE_LIST.Add(newImage);
+                        CACHE_DICTIONARY.Add(filePath, newImage);
+                        return newImage.Clone();
+                    }
                 }
                 finally
                 {
@@ -99,10 +100,13 @@ namespace SWF.Common
                         removeCache.Dispose();
                     }
 
-                    var newImage = new ImageFileCache(
-                        filePath, ImageUtil.ReadImageFile(filePath), timestamp);
-                    CACHE_LIST.Add(newImage);
-                    CACHE_DICTIONARY.Add(filePath, newImage);
+                    using (var img = ImageUtil.ReadImageFile(filePath))
+                    {
+                        var newImage = new ImageFileCache(
+                            filePath, img, timestamp);
+                        CACHE_LIST.Add(newImage);
+                        CACHE_DICTIONARY.Add(filePath, newImage);
+                    }
                 }
                 finally
                 {

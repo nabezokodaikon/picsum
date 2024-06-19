@@ -4,11 +4,11 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
+using System.IO.MemoryMappedFiles;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 using System.Security;
-using System.IO.MemoryMappedFiles;
-using System.Diagnostics;
 
 namespace SWF.Common
 {
@@ -26,6 +26,31 @@ namespace SWF.Common
         private static readonly EncoderParameter ENCORDER_PARAMETER = new(Encoder.Quality, 100L);
         private static readonly ImageCodecInfo PNG_CODEC_INFO = ImageCodecInfo.GetImageEncoders().Single(info => info.FormatID == ImageFormat.Png.Guid);
         private static readonly dynamic SHELL = Activator.CreateInstance(Type.GetTypeFromProgID("Shell.Application"));
+
+        public static byte[] ToBinary(Bitmap img)
+        {
+            ArgumentNullException.ThrowIfNull(img, nameof(img));
+
+            BitmapData bmpData = null;
+
+            try
+            {
+                bmpData = img.LockBits(
+                    new Rectangle(0, 0, img.Width, img.Height),
+                    ImageLockMode.ReadOnly,
+                    img.PixelFormat);
+
+                var bytes = new byte[Math.Abs(bmpData.Stride) * img.Height];
+
+                Marshal.Copy(bmpData.Scan0, bytes, 0, bytes.Length);
+
+                return bytes;
+            }
+            finally
+            {
+                img.UnlockBits(bmpData);
+            }
+        }
 
         /// <summary>
         /// イメージオブジェクトを圧縮したバイナリに変換します。
@@ -45,6 +70,32 @@ namespace SWF.Common
                 mes.Position = 0;
                 mes.Read(buffer, 0, buffer.Length);
                 return buffer;
+            }
+        }
+
+        public static Bitmap ToImage(byte[] bf, int width, int height, PixelFormat format)
+        {
+            ArgumentNullException.ThrowIfNull(bf, nameof(bf));
+
+            Bitmap dst = null;
+            BitmapData bmpData = null;
+
+            try
+            {
+                dst = new Bitmap(width, height, format);
+
+                bmpData = dst.LockBits(
+                    new Rectangle(0, 0, dst.Width, dst.Height),
+                    ImageLockMode.ReadWrite,
+                    dst.PixelFormat);
+
+                Marshal.Copy(bf, 0, bmpData.Scan0, bf.Length);
+
+                return dst;
+            }
+            finally
+            {
+                dst.UnlockBits(bmpData);
             }
         }
 
