@@ -665,8 +665,8 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         {
             this.Cursor = Cursors.WaitCursor;
 
-            //this.leftImagePanel.ClearImage();
-            //this.rightImagePanel.ClearImage();
+            this.leftImagePanel.ClearImage();
+            this.rightImagePanel.ClearImage();
 
             var mainFilePath = this.filePathList[this.FilePathListIndex];
             var mainImageSize = ImageUtil.GetImageSizeFromCache(mainFilePath);
