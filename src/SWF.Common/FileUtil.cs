@@ -160,6 +160,14 @@ namespace SWF.Common
             return (ex == ImageUtil.HEIC_FILE_EXTENSION);
         }
 
+        public static bool IsHEIFFile(string filePath)
+        {
+            ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
+
+            var ex = FileUtil.GetExtension(filePath);
+            return (ex == ImageUtil.HEIF_FILE_EXTENSION);
+        }
+
         /// <summary>
         /// 指定したディレクトリ内に、画像ファイルが存在するか確認します。
         /// </summary>

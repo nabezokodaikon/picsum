@@ -3,6 +3,7 @@ using HeyRed.ImageSharp.Heif.Formats.Heif;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats;
 using SixLabors.ImageSharp.Formats.Bmp;
+using SixLabors.ImageSharp.Formats.Webp;
 using System;
 using System.Drawing;
 using System.IO;
@@ -17,7 +18,8 @@ namespace SWF.Common
         {
             Configuration = new Configuration(
                 new AvifConfigurationModule(),
-                new HeifConfigurationModule())
+                new HeifConfigurationModule(),
+                new WebpConfigurationModule())
         };
 
         private static readonly BmpEncoder AVIF_ENCODER = new();
