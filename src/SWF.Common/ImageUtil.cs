@@ -303,11 +303,9 @@ namespace SWF.Common
                 }
                 else if (FileUtil.IsImageFile(filePath))
                 {
-                    using (var mmf = MemoryMappedFile.CreateFromFile(filePath, FileMode.Open, null, 0, MemoryMappedFileAccess.Read))
-                    using (var accessor = mmf.CreateViewStream(0, 0, MemoryMappedFileAccess.Read))
+                    using (var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
                     {
-                        var destImg = new Bitmap(accessor);
-                        return destImg;
+                        return new Bitmap(fs);
                     }
                 }
                 else
