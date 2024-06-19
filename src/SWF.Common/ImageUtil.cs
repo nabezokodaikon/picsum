@@ -92,6 +92,16 @@ namespace SWF.Common
             }
         }
 
+        public static Bitmap CreateEmptyImage(int width, int height)
+        {
+            var destImg = new Bitmap(width, height);
+            using (var g = Graphics.FromImage(destImg))
+            {
+                g.FillRectangle(Brushes.Gray, 0, 0, width, height);
+                return destImg;
+            }
+        }
+
         public static Size GetImageSizeFromCache(string filePath)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
