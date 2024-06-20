@@ -35,21 +35,13 @@ namespace SWF.Common
         //        throw new ArgumentNullException("bmp");
         //    }
 
-        //    try
-        //    {
-        //        BitmapData dt = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly, bmp.PixelFormat);
-        //        IntPtr bitmapPtr = dt.Scan0;
-        //        byte[] bf = new byte[bmp.Width * bmp.Height * 3];
-        //        Marshal.Copy(bitmapPtr, bf, 0, bmp.Width * bmp.Height * 3);
-        //        bmp.UnlockBits(dt);
+        //    BitmapData dt = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadWrite, bmp.PixelFormat);
+        //    IntPtr bitmapPtr = dt.Scan0;
+        //    byte[] bf = new byte[bmp.Width * bmp.Height * 3];
+        //    Marshal.Copy(bitmapPtr, bf, 0, bmp.Width * bmp.Height * 3);
+        //    bmp.UnlockBits(dt);
 
-        //        return bf;
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        Console.WriteLine(e.ToString());
-        //        throw;
-        //    }
+        //    return bf;
         //}
 
         public static byte[] ToBinary(Bitmap img)
@@ -312,39 +304,7 @@ namespace SWF.Common
             }
         }
 
-        public static Bitmap ReadImageFileFast(string filePath)
-        {
-            var sw = Stopwatch.StartNew();
-            Bitmap img = null;
-            try
-            {
-                img = ReadImageFile(filePath, false, false);
-                if (img.Palette != null) { }
-                return img;
-            }
-            catch (ExternalException ex)
-            {
-                if (img != null)
-                {
-                    img.Dispose();
-                }
-
-                Console.WriteLine(ex.Message);
-                return ReadImageFile(filePath, false, true);
-            }
-            finally
-            {
-                sw.Stop();
-                Console.WriteLine(sw.ElapsedMilliseconds);
-            }
-        }
-
         public static Bitmap ReadImageFile(string filePath)
-        {
-            return ReadImageFile(filePath, false, true);
-        }
-
-        private static Bitmap ReadImageFile(string filePath, bool useEmbeddedColorManagement, bool validateImageData)
         {
             var sw = Stopwatch.StartNew();
 
@@ -428,7 +388,7 @@ namespace SWF.Common
             finally
             {
                 sw.Stop();
-                //Console.WriteLine(sw.ElapsedMilliseconds);
+                Console.WriteLine(sw.ElapsedMilliseconds);
             }
         }
 
