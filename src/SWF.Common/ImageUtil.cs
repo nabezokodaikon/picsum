@@ -319,7 +319,7 @@ namespace SWF.Common
             try
             {
                 img = ReadImageFile(filePath, false, false);
-                if (img.Palette != null) { }
+                img.Palette.GetType();
                 return img;
             }
             catch (ExternalException ex)
@@ -372,7 +372,7 @@ namespace SWF.Common
                 {
                     using (var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
                     {
-                        return (Bitmap)Bitmap.FromStream(fs, false, true);
+                        return (Bitmap)Bitmap.FromStream(fs, useEmbeddedColorManagement, validateImageData);
                     }
                 }
                 else
@@ -418,6 +418,10 @@ namespace SWF.Common
                 throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
             }
             catch (SixLabors.ImageSharp.UnknownImageFormatException ex)
+            {
+                throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
+            }
+            catch (LibHeifSharp.HeifException ex)
             {
                 throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
             }
