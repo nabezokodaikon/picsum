@@ -155,7 +155,8 @@ namespace PicSum.UIComponent.Contents.ContextMenu
             {
                 this.SetDirectoryMenuItemVisible(false);
                 this.SetFileMenuItemVisible(false);
-                this.SetImageFileMenuItemVisible(false);
+                this.SetImageFilesMenuItemVisible(
+                    filePathList.Where(file => FileUtil.IsImageFile(file)).Count() == filePathList.Count);
             }
             else
             {
@@ -229,11 +230,21 @@ namespace PicSum.UIComponent.Contents.ContextMenu
             this.fileNewWindowOpenMenuItem.Visible = isVisible;
             this.exportMenuItem.Visible = isVisible;
             this.fileBookmarkMenuItem.Visible = isVisible;
+            this.fileOpen.Visible = isVisible;
+        }
+
+        private void SetImageFilesMenuItemVisible(bool isVisible)
+        {
+            this.fileActiveTabOpenMenuItem.Visible = false;
+            this.fileNewTabOpenMenuItem.Visible = false;
+            this.fileNewWindowOpenMenuItem.Visible = false;
+            this.exportMenuItem.Visible = isVisible;
+            this.fileBookmarkMenuItem.Visible = false;
+            this.fileOpen.Visible = false;
         }
 
         private void SetFileMenuItemVisible(bool isVisible)
         {
-            this.fileOpen.Visible = isVisible;
             this.saveDirectoryOpen.Visible = isVisible;
         }
 
