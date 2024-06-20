@@ -4,7 +4,6 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
-using System.IO.MemoryMappedFiles;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
@@ -27,6 +26,22 @@ namespace SWF.Common
         private static readonly EncoderParameter ENCORDER_PARAMETER = new(Encoder.Quality, 100L);
         private static readonly ImageCodecInfo PNG_CODEC_INFO = ImageCodecInfo.GetImageEncoders().Single(info => info.FormatID == ImageFormat.Png.Guid);
         private static readonly dynamic SHELL = Activator.CreateInstance(Type.GetTypeFromProgID("Shell.Application"));
+
+        //public static byte[] ToBinary(Bitmap bmp)
+        //{
+        //    if (bmp == null)
+        //    {
+        //        throw new ArgumentNullException("bmp");
+        //    }
+
+        //    BitmapData dt = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadWrite, bmp.PixelFormat);
+        //    IntPtr bitmapPtr = dt.Scan0;
+        //    byte[] bf = new byte[bmp.Width * bmp.Height * 3];
+        //    Marshal.Copy(bitmapPtr, bf, 0, bmp.Width * bmp.Height * 3);
+        //    bmp.UnlockBits(dt);
+
+        //    return bf;
+        //}
 
         public static byte[] ToBinary(Bitmap img)
         {
@@ -73,6 +88,20 @@ namespace SWF.Common
                 return buffer;
             }
         }
+
+        //public static Bitmap ToImage(byte[] bf, int w, int h, PixelFormat pf)
+        //{
+        //    if (bf == null)
+        //    {
+        //        throw new ArgumentNullException("bf");
+        //    }
+
+        //    Bitmap bmp = new Bitmap(w, h, pf);
+        //    BitmapData bd = bmp.LockBits(new Rectangle(0, 0, w, h), ImageLockMode.WriteOnly, pf);
+        //    Marshal.Copy(bf, 0, bd.Scan0, bf.Length);
+        //    bmp.UnlockBits(bd);
+        //    return bmp;
+        //}
 
         public static Bitmap ToImage(byte[] bf, int width, int height, PixelFormat format)
         {
