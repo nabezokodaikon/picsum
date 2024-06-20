@@ -56,7 +56,7 @@ namespace SWF.Common
                     }
 
                     var newImage = new ImageFileCache(
-                        filePath, ImageUtil.ReadImageFile(filePath), timestamp);
+                        filePath, ImageUtil.ReadImageFileFast(filePath), timestamp);
                     CACHE_LIST.Add(newImage);
                     CACHE_DICTIONARY.Add(filePath, newImage);
                     return newImage;
@@ -99,7 +99,7 @@ namespace SWF.Common
                     }
 
                     var newImage = new ImageFileCache(
-                        filePath, ImageUtil.ReadImageFile(filePath), timestamp);
+                        filePath, ImageUtil.ReadImageFileFast(filePath), timestamp);
                     CACHE_LIST.Add(newImage);
                     CACHE_DICTIONARY.Add(filePath, newImage);
                 }
