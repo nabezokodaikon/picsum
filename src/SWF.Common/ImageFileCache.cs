@@ -11,7 +11,7 @@ namespace SWF.Common
         private bool disposed = false;
 
         public static readonly ImageFileCache EMPTY = new();
-        public Image Image { get; private set; }
+        public Bitmap Image { get; private set; }
         public string FilePath { get; private set; }
         public DateTime Timestamp { get; private set; }
 
@@ -50,7 +50,7 @@ namespace SWF.Common
             this.Dispose(false);
         }
 
-        public ImageFileCache(string filePath, Image image, DateTime timestamp)
+        public ImageFileCache(string filePath, Bitmap image, DateTime timestamp)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
             ArgumentNullException.ThrowIfNull(image, nameof(image));
@@ -72,7 +72,9 @@ namespace SWF.Common
                 throw new NullReferenceException("イメージが設定されていません。");
             }
 
-            return new ImageFileCache(this.FilePath, (Image)this.Image.Clone(), this.Timestamp);
+            var cloneImage = this.Image.Clone(
+                new Rectangle(0, 0, this.Image.Width, this.Image.Height), this.Image.PixelFormat);
+            return new ImageFileCache(this.FilePath, cloneImage, this.Timestamp);
         }
     }
 }
