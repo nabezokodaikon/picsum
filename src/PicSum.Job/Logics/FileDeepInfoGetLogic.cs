@@ -132,11 +132,11 @@ namespace PicSum.Job.Logics
             return info;
         }
 
-        private Bitmap ReadImageFile(string filePath)
+        private Image ReadImageFile(string filePath)
         {
             try
             {
-                return ImageUtil.ReadImageFile(filePath);
+                return ImageFileCacheUtil.Read(filePath).Clone().Image;
             }
             catch (ImageUtilException ex)
             {

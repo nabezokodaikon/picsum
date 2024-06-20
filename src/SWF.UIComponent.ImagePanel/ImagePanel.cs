@@ -52,7 +52,7 @@ namespace SWF.UIComponent.ImagePanel
         private bool isShowThumbnailPanel = false;
 
         private SizeF imageScaleSize = SizeF.Empty;
-        private Bitmap image = null;
+        private Image image = null;
         private Bitmap thumbnail = null;
 
         private int hMaximumScrollValue = 0;
@@ -169,7 +169,7 @@ namespace SWF.UIComponent.ImagePanel
 
         #region パブリックメソッド
 
-        public void SetImage(Bitmap img, Bitmap thumb)
+        public void SetImage(Image img, Bitmap thumb)
         {
             ArgumentNullException.ThrowIfNull(img, nameof(img));
             ArgumentNullException.ThrowIfNull(thumb, nameof(thumb));

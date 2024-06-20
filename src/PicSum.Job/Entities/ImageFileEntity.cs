@@ -8,7 +8,7 @@ namespace PicSum.Job.Entities
     public sealed class ImageFileEntity
     {
         public string? FilePath { get; set; }
-        public Bitmap? Image { get; set; }
+        public Image? Image { get; set; }
         public Bitmap? Thumbnail { get; set; }
         public bool IsError { get; set; }
     }

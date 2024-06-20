@@ -54,10 +54,7 @@ namespace SWF.Common
                         CACHE_LIST.Remove(removeCache);
                         CACHE_DICTIONARY.Remove(removeCache.FilePath);
                         removeCache.Dispose();
-                        var sw = Stopwatch.StartNew();
                         GC.Collect();
-                        sw.Stop();
-                        Console.WriteLine(sw.ElapsedMilliseconds);
                     }
 
                     var newImage = new ImageFileCache(
