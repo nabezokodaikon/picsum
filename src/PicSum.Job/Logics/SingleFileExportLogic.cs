@@ -7,7 +7,7 @@ namespace PicSum.Job.Logics
     /// 画像ファイルエクスポート非同期ロジック
     /// </summary>
     [SupportedOSPlatform("windows")]
-    internal sealed class FileExportLogic(AbstractAsyncJob job)
+    internal sealed class SingleFileExportLogic(AbstractAsyncJob job)
         : AbstractAsyncLogic(job)
     {
         public void Execute(string srcFilePath, string exportFilePath)
