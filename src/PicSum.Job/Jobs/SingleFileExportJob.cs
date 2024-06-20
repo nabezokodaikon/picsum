@@ -9,20 +9,20 @@ namespace PicSum.Job.Jobs
     /// 画像ファイルエクスポート非同期ジョブ
     /// </summary>
     [SupportedOSPlatform("windows")]
-    public sealed class FileExportJob
-        : AbstractOneWayJob<ExportFileParameter>
+    public sealed class SingleFileExportJob
+        : AbstractOneWayJob<SingleFileExportParameter>
     {
-        private static readonly ReaderWriterLockSlim jobLock = new();
+        internal static readonly ReaderWriterLockSlim FileExportLock = new();
 
         /// <summary>
         /// 静的リソースを解放します。
         /// </summary>
         public static void DisposeStaticResouces()
         {
-            FileExportJob.jobLock.Dispose();
+            SingleFileExportJob.FileExportLock.Dispose();
         }
 
-        protected override void Execute(ExportFileParameter param)
+        protected override void Execute(SingleFileExportParameter param)
         {
             ArgumentNullException.ThrowIfNull(param, nameof(param));
 
@@ -36,7 +36,7 @@ namespace PicSum.Job.Jobs
                 throw new ArgumentException("エクスポート先のファイルパスがNULLです。", nameof(param));
             }
 
-            FileExportJob.jobLock.EnterWriteLock();
+            SingleFileExportJob.FileExportLock.EnterWriteLock();
 
             try
             {
@@ -65,7 +65,7 @@ namespace PicSum.Job.Jobs
             }
             finally
             {
-                FileExportJob.jobLock.ExitWriteLock();
+                SingleFileExportJob.FileExportLock.ExitWriteLock();
             }
         }
     }

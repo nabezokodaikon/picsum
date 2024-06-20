@@ -73,7 +73,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
         private TwoWayJob<ImageFileReadJob, ImageFileReadParameter, ImageFileGetResult> getImageFileJob = null;
         private OneWayJob<BookmarkAddJob, ValueParameter<string>> addBookmarkJob = null;
-        private OneWayJob<FileExportJob, ExportFileParameter> exportFileJob = null;
+        private OneWayJob<SingleFileExportJob, SingleFileExportParameter> singleFileExportJob = null;
         private OneWayJob<ImageSizeCacheJob, ListParameter<string>> imageSizeCacheJob = null;
 
         #endregion
@@ -157,18 +157,18 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             }
         }
 
-        private OneWayJob<FileExportJob, ExportFileParameter> ExportFileJob
+        private OneWayJob<SingleFileExportJob, SingleFileExportParameter> SingleFileExportJob
         {
             get
             {
-                if (this.exportFileJob == null)
+                if (this.singleFileExportJob == null)
                 {
-                    this.exportFileJob = new();
-                    this.exportFileJob
+                    this.singleFileExportJob = new();
+                    this.singleFileExportJob
                         .StartThread();
                 }
 
-                return this.exportFileJob;
+                return this.singleFileExportJob;
             }
         }
 
@@ -259,10 +259,10 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                     this.addBookmarkJob = null;
                 }
 
-                if (this.exportFileJob != null)
+                if (this.singleFileExportJob != null)
                 {
-                    this.exportFileJob.Dispose();
-                    this.exportFileJob = null;
+                    this.singleFileExportJob.Dispose();
+                    this.singleFileExportJob = null;
                 }
 
                 if (this.getImageFileJob != null)
@@ -1415,12 +1415,12 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 if (ofd.ShowDialog() == DialogResult.OK)
                 {
                     var dir = FileUtil.GetParentDirectoryPath(ofd.FileName);
-                    var param = new ExportFileParameter
+                    var param = new SingleFileExportParameter
                     {
                         SrcFilePath = srcFilePath,
                         ExportFilePath = ofd.FileName
                     };
-                    this.ExportFileJob.StartJob(param);
+                    this.SingleFileExportJob.StartJob(param);
 
                     CommonConfig.ExportDirectoryPath = dir;
                 }

@@ -243,7 +243,6 @@ namespace PicSum.Core.Job.AsyncJob
                                     ArgumentNullException.ThrowIfNull(state, nameof(state));
                                     var result = (TJobResult)state;
                                     this.callbackAction(result);
-                                    this.WaitUIThread = false;
 
                                     if (this.WaitUIThread)
                                     {

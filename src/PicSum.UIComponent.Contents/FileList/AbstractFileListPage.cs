@@ -17,6 +17,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.Versioning;
+using System.Security.Cryptography;
 using System.Text;
 using System.Windows.Forms;
 
@@ -92,8 +93,9 @@ namespace PicSum.UIComponent.Contents.FileList
         private Dictionary<string, FileEntity> masterFileDictionary = null;
         private List<string> filterFilePathList = null;
         private TwoWayJob<ThumbnailsGetJob, ThumbnailsGetParameter, ThumbnailImageResult> getThumbnailsJob = null;
-        private OneWayJob<FileExportJob, ExportFileParameter> exportFileJob = null;
+        private OneWayJob<SingleFileExportJob, SingleFileExportParameter> singleFileExportJob = null;
         private OneWayJob<BookmarkAddJob, ValueParameter<string>> addBookmarkJob = null;
+        private TwoWayJob<MultiFilesExportJob, MultiFilesExportParameter, ValueResult<string>> multiFilesExportJob = null;
 
         #endregion
 
@@ -252,18 +254,18 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
-        private OneWayJob<FileExportJob, ExportFileParameter> ExportFileJob
+        private OneWayJob<SingleFileExportJob, SingleFileExportParameter> SingleFileExportJob
         {
             get
             {
-                if (this.exportFileJob == null)
+                if (this.singleFileExportJob == null)
                 {
-                    this.exportFileJob = new();
-                    this.exportFileJob
+                    this.singleFileExportJob = new();
+                    this.singleFileExportJob
                         .StartThread();
                 }
 
-                return this.exportFileJob;
+                return this.singleFileExportJob;
             }
         }
 
@@ -279,6 +281,22 @@ namespace PicSum.UIComponent.Contents.FileList
                 }
 
                 return this.addBookmarkJob;
+            }
+        }
+
+        private TwoWayJob<MultiFilesExportJob, MultiFilesExportParameter, ValueResult<string>> MultiFilesExportJob
+        {
+            get
+            {
+                if (this.multiFilesExportJob == null)
+                {
+                    this.multiFilesExportJob = new();
+                    this.multiFilesExportJob
+                        .Callback(this.MultiFilesExportJob_Callback)
+                        .StartThread();
+                }
+
+                return this.multiFilesExportJob;
             }
         }
 
@@ -324,16 +342,22 @@ namespace PicSum.UIComponent.Contents.FileList
                     this.getThumbnailsJob = null;
                 }
 
-                if (this.exportFileJob != null)
+                if (this.singleFileExportJob != null)
                 {
-                    this.exportFileJob.Dispose();
-                    this.exportFileJob = null;
+                    this.singleFileExportJob.Dispose();
+                    this.singleFileExportJob = null;
                 }
 
                 if (this.addBookmarkJob != null)
                 {
                     this.addBookmarkJob.Dispose();
                     this.addBookmarkJob = null;
+                }
+
+                if (this.multiFilesExportJob != null)
+                {
+                    this.multiFilesExportJob.Dispose();
+                    this.multiFilesExportJob = null;
                 }
 
                 components.Dispose();
@@ -840,6 +864,11 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
+        private void MultiFilesExportJob_Callback(ValueResult<string> result)
+        {
+            Console.WriteLine(result.Value);
+        }
+
         #endregion
 
         #region ツールバーイベント
@@ -1239,28 +1268,49 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private void FileContextMenu_Export(object sender, ExecuteFileListEventArgs e)
         {
-            using (var ofd = new SaveFileDialog())
+            if (e.FilePathList.Count > 1)
             {
-                var srcFilePath = e.FilePathList.First();
-                ofd.InitialDirectory = CommonConfig.ExportDirectoryPath;
-                ofd.FileName = FileUtil.GetExportFileName(
-                    ofd.InitialDirectory,
-                    srcFilePath);
-                ofd.CheckFileExists = false;
-                ofd.Filter = FileUtil.GetExportFilterText(srcFilePath);
-                ofd.FilterIndex = 0;
-
-                if (ofd.ShowDialog() == DialogResult.OK)
+                using (var fbd = new FolderBrowserDialog())
                 {
-                    var dir = FileUtil.GetParentDirectoryPath(ofd.FileName);
-                    var param = new ExportFileParameter
+                    fbd.SelectedPath = CommonConfig.ExportDirectoryPath;
+                    if (fbd.ShowDialog() == DialogResult.OK)
                     {
-                        SrcFilePath = srcFilePath,
-                        ExportFilePath = ofd.FileName
-                    };
-                    this.ExportFileJob.StartJob(param);
+                        var param = new MultiFilesExportParameter
+                        {
+                            SrcFiles = e.FilePathList.ToArray(),
+                            ExportDirecotry = fbd.SelectedPath,
+                        };
 
-                    CommonConfig.ExportDirectoryPath = dir;
+                        this.MultiFilesExportJob.StartJob(param);
+                        CommonConfig.ExportDirectoryPath = fbd.SelectedPath;
+                    }
+                }
+            }
+            else
+            {
+                using (var ofd = new SaveFileDialog())
+                {
+                    var srcFilePath = e.FilePathList.First();
+                    ofd.InitialDirectory = CommonConfig.ExportDirectoryPath;
+                    ofd.FileName = FileUtil.GetExportFileName(
+                        ofd.InitialDirectory,
+                        srcFilePath);
+                    ofd.CheckFileExists = false;
+                    ofd.Filter = FileUtil.GetExportFilterText(srcFilePath);
+                    ofd.FilterIndex = 0;
+
+                    if (ofd.ShowDialog() == DialogResult.OK)
+                    {
+                        var dir = FileUtil.GetParentDirectoryPath(ofd.FileName);
+                        var param = new SingleFileExportParameter
+                        {
+                            SrcFilePath = srcFilePath,
+                            ExportFilePath = ofd.FileName
+                        };
+                        this.SingleFileExportJob.StartJob(param);
+
+                        CommonConfig.ExportDirectoryPath = dir;
+                    }
                 }
             }
         }

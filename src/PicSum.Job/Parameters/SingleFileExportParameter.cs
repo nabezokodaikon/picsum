@@ -2,7 +2,7 @@ using PicSum.Core.Job.AsyncJob;
 
 namespace PicSum.Job.Paramters
 {
-    public sealed class ExportFileParameter
+    public sealed class SingleFileExportParameter
         : IJobParameter
     {
         public string? SrcFilePath { get; set; }
