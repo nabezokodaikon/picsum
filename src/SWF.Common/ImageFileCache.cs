@@ -5,7 +5,7 @@ using System.Runtime.Versioning;
 namespace SWF.Common
 {
     [SupportedOSPlatform("windows")]
-    internal sealed class ImageFileCache
+    public sealed class ImageFileCache
         : IDisposable
     {
         private bool disposed = false;
@@ -31,10 +31,7 @@ namespace SWF.Common
 
             if (disposing)
             {
-                if (this.Image != null)
-                {
-                    this.Image.Dispose();
-                }
+                this.Image?.Dispose();
             }
 
             this.Image = null;

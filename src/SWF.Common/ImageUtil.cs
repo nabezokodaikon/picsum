@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
@@ -204,19 +205,19 @@ namespace SWF.Common
             {
                 if (FileUtil.IsWEBPFile(filePath))
                 {
-                    return AVIFUtil.GetImageSize(filePath);
+                    return SixLaborsUtil.GetImageSize(filePath);
                 }
                 if (FileUtil.IsAVIFFile(filePath))
                 {
-                    return AVIFUtil.GetImageSize(filePath);
+                    return SixLaborsUtil.GetImageSize(filePath);
                 }
                 else if (FileUtil.IsHEICFile(filePath))
                 {
-                    return AVIFUtil.GetImageSize(filePath);
+                    return SixLaborsUtil.GetImageSize(filePath);
                 }
                 else if (FileUtil.IsHEIFFile(filePath))
                 {
-                    return AVIFUtil.GetImageSize(filePath);
+                    return SixLaborsUtil.GetImageSize(filePath);
                 }
             }
             catch (ArgumentException ex)
@@ -303,38 +304,35 @@ namespace SWF.Common
             }
         }
 
-        /// <summary>
-        /// 画像ファイルを読込みます。
-        /// </summary>
-        /// <param name="filePath"></param>
-        /// <returns></returns>
         public static Bitmap ReadImageFile(string filePath)
         {
+            var sw = Stopwatch.StartNew();
+
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
             try
             {
                 if (FileUtil.IsWEBPFile(filePath))
                 {
-                    return AVIFUtil.ReadImageFile(filePath);
+                    return SixLaborsUtil.ReadImageFileWithDecoder(filePath);
                 }
                 if (FileUtil.IsAVIFFile(filePath))
                 {
-                    return AVIFUtil.ReadImageFile(filePath);
+                    return SixLaborsUtil.ReadImageFileWithDecoder(filePath);
                 }
                 else if (FileUtil.IsHEICFile(filePath))
                 {
-                    return AVIFUtil.ReadImageFile(filePath);
+                    return SixLaborsUtil.ReadImageFileWithDecoder(filePath);
                 }
                 else if (FileUtil.IsHEIFFile(filePath))
                 {
-                    return AVIFUtil.ReadImageFile(filePath);
+                    return SixLaborsUtil.ReadImageFileWithDecoder(filePath);
                 }
                 else if (FileUtil.IsImageFile(filePath))
                 {
                     using (var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
                     {
-                        return new Bitmap(fs);
+                        return (Bitmap)Bitmap.FromStream(fs, false, true);
                     }
                 }
                 else
@@ -386,6 +384,11 @@ namespace SWF.Common
             catch (OutOfMemoryException ex)
             {
                 throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
+            }
+            finally
+            {
+                sw.Stop();
+                Console.WriteLine(sw.ElapsedMilliseconds);
             }
         }
 

@@ -27,7 +27,7 @@ namespace SWF.Common
             CACHE_DICTIONARY.Clear();
         }
 
-        public static Bitmap Read(string filePath)
+        public static ImageFileCache Read(string filePath)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
@@ -40,7 +40,7 @@ namespace SWF.Common
                 {
                     if (timestamp == cache.Timestamp)
                     {
-                        return cache.Clone().Image;
+                        return cache;
                     }
                 }
 
@@ -59,7 +59,7 @@ namespace SWF.Common
                         filePath, ImageUtil.ReadImageFile(filePath), timestamp);
                     CACHE_LIST.Add(newImage);
                     CACHE_DICTIONARY.Add(filePath, newImage);
-                    return newImage.Clone().Image;
+                    return newImage;
 
                 }
                 finally
@@ -98,9 +98,8 @@ namespace SWF.Common
                         removeCache.Dispose();
                     }
 
-                    var img = ImageUtil.ReadImageFile(filePath);
                     var newImage = new ImageFileCache(
-                        filePath, img, timestamp);
+                        filePath, ImageUtil.ReadImageFile(filePath), timestamp);
                     CACHE_LIST.Add(newImage);
                     CACHE_DICTIONARY.Add(filePath, newImage);
                 }
