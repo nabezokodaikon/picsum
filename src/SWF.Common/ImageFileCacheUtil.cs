@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Runtime.Versioning;
 using System.Threading;
@@ -9,7 +10,7 @@ namespace SWF.Common
     [SupportedOSPlatform("windows")]
     public static class ImageFileCacheUtil
     {
-        private const int CACHE_CAPACITY = 20;
+        private const int CACHE_CAPACITY = 30;
         private static readonly List<ImageFileCache> CACHE_LIST = new(CACHE_CAPACITY);
         private static readonly Dictionary<string, ImageFileCache> CACHE_DICTIONARY = new(CACHE_CAPACITY);
         private static readonly ReaderWriterLockSlim CACHE_LOCK = new();
@@ -53,6 +54,10 @@ namespace SWF.Common
                         CACHE_LIST.Remove(removeCache);
                         CACHE_DICTIONARY.Remove(removeCache.FilePath);
                         removeCache.Dispose();
+                        var sw = Stopwatch.StartNew();
+                        GC.Collect();
+                        sw.Stop();
+                        Console.WriteLine(sw.ElapsedMilliseconds);
                     }
 
                     var newImage = new ImageFileCache(

@@ -769,7 +769,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             //    mainImageDrawAction();
             //}
 
-            var nextFiles = new List<string>(15);
+            var nextFiles = new List<string>(25);
             var nextIndex = this.GetNextIndex(this.FilePathListIndex, true);
             nextFiles.Add(this.filePathList[nextIndex]);
             while (nextFiles.Count < nextFiles.Capacity)
