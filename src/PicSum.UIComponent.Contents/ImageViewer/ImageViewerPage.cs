@@ -75,7 +75,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         private TwoWayJob<ImageFileReadJob, ImageFileReadParameter, ImageFileGetResult> getImageFileJob = null;
         private OneWayJob<BookmarkAddJob, ValueParameter<string>> addBookmarkJob = null;
         private OneWayJob<SingleFileExportJob, SingleFileExportParameter> singleFileExportJob = null;
-        private OneWayJob<ImageInfoCacheJob, ListParameter<string>> imageInfoCacheJob = null;
 
         #endregion
 
@@ -173,21 +172,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             }
         }
 
-        private OneWayJob<ImageInfoCacheJob, ListParameter<string>> ImageInfoCacheJob
-        {
-            get
-            {
-                if (this.imageInfoCacheJob == null)
-                {
-                    this.imageInfoCacheJob = new();
-                    this.imageInfoCacheJob
-                        .StartThread();
-                }
-
-                return this.imageInfoCacheJob;
-            }
-        }
-
         #endregion
 
         #region コンストラクタ
@@ -270,12 +254,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 {
                     this.getImageFileJob.Dispose();
                     this.getImageFileJob = null;
-                }
-
-                if (this.imageInfoCacheJob != null)
-                {
-                    this.imageInfoCacheJob.Dispose();
-                    this.imageInfoCacheJob = null;
                 }
 
                 this.leftImagePanel.Dispose();
