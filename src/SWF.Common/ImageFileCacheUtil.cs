@@ -35,7 +35,8 @@ namespace SWF.Common
             CACHE_LOCK.EnterUpgradeableReadLock();
             try
             {
-                if (CACHE_DICTIONARY.TryGetValue(filePath, out var cache))
+                ImageFileCache cache = null;
+                if (CACHE_DICTIONARY.TryGetValue(filePath, out cache))
                 {
                     if (timestamp == cache.Timestamp)
                     {
@@ -46,6 +47,12 @@ namespace SWF.Common
                 CACHE_LOCK.EnterWriteLock();
                 try
                 {
+                    if (cache != null)
+                    {
+                        CACHE_LIST.Remove(cache);
+                        CACHE_DICTIONARY.Remove(cache.FilePath);
+                    }
+
                     if (CACHE_LIST.Count > CACHE_CAPACITY)
                     {
                         var removeCache = CACHE_LIST[0];
@@ -61,47 +68,6 @@ namespace SWF.Common
                     CACHE_DICTIONARY.Add(filePath, newImage);
                     return newImage;
 
-                }
-                finally
-                {
-                    CACHE_LOCK.ExitWriteLock();
-                }
-            }
-            finally
-            {
-                CACHE_LOCK.ExitUpgradeableReadLock();
-            }
-        }
-
-        public static void Create(string filePath)
-        {
-            ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
-
-            var timestamp = FileUtil.GetUpdateDate(filePath);
-
-            CACHE_LOCK.EnterUpgradeableReadLock();
-            try
-            {
-                if (CACHE_DICTIONARY.ContainsKey(filePath))
-                {
-                    return;
-                }
-
-                CACHE_LOCK.EnterWriteLock();
-                try
-                {
-                    if (CACHE_LIST.Count > CACHE_CAPACITY)
-                    {
-                        var removeCache = CACHE_LIST[0];
-                        CACHE_LIST.Remove(removeCache);
-                        CACHE_DICTIONARY.Remove(removeCache.FilePath);
-                        removeCache.Dispose();
-                    }
-
-                    var newImage = new ImageFileCache(
-                        filePath, ImageUtil.ReadImageFileFast(filePath), timestamp);
-                    CACHE_LIST.Add(newImage);
-                    CACHE_DICTIONARY.Add(filePath, newImage);
                 }
                 finally
                 {
