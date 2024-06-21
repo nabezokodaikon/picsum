@@ -7,16 +7,14 @@ namespace SWF.Common
     {
         public string FilePath { get; private set; }
         public Size Size { get; private set; }
-        public bool IsAlpha { get; private set; }
         public DateTime Timestamp { get; private set; }
 
-        public ImageInfoCache(string filePath, Size size, bool isAlpha, DateTime timestamp)
+        public ImageInfoCache(string filePath, Size size, DateTime timestamp)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
             this.FilePath = filePath;
             this.Size = size;
-            this.IsAlpha = isAlpha;
             this.Timestamp = timestamp;
         }
     }

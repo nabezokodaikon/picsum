@@ -49,7 +49,7 @@ namespace SWF.Common
                     }
 
                     var newItem = new ImageInfoCache(
-                        filePath, ImageUtil.GetImageSize(filePath), PixelFormatUtil.IsAlpha(filePath), timestamp);
+                        filePath, ImageUtil.GetImageSize(filePath), timestamp);
                     CACHE_LIST.Add(newItem);
                     CACHE_DICTIONARY.Add(filePath, newItem);
                     return newItem;
@@ -90,7 +90,7 @@ namespace SWF.Common
                     }
 
                     var newItem = new ImageInfoCache(
-                        filePath, ImageUtil.GetImageSize(filePath), PixelFormatUtil.IsAlpha(filePath), timestamp);
+                        filePath, ImageUtil.GetImageSize(filePath), timestamp);
                     CACHE_LIST.Add(newItem);
                     CACHE_DICTIONARY.Add(filePath, newItem);
                 }

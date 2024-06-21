@@ -1,6 +1,7 @@
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats.Png;
 using System;
+using System.Diagnostics;
 using System.Runtime.Versioning;
 
 namespace SWF.Common
@@ -10,34 +11,43 @@ namespace SWF.Common
     {
         public static bool IsAlpha(string filePath)
         {
+            var sw = Stopwatch.StartNew();
+
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
-            var ex = FileUtil.GetExtension(filePath);
-            if (ex == ".PNG")
+            try
             {
-                try
+                var ex = FileUtil.GetExtension(filePath);
+                if (ex == ".PNG")
                 {
-                    var info = Image.Identify(filePath);
-                    return IsAlphaByPng(info);
+                    try
+                    {
+                        var info = Image.Identify(filePath);
+                        return IsAlphaByPng(info);
+                    }
+                    catch (NotSupportedException e)
+                    {
+                        throw new ImageUtilException(CreateErrorMessage(filePath), e);
+                    }
+                    catch (InvalidImageContentException e)
+                    {
+                        throw new ImageUtilException(CreateErrorMessage(filePath), e);
+                    }
+                    catch (UnknownImageFormatException e)
+                    {
+                        throw new ImageUtilException(CreateErrorMessage(filePath), e);
+                    }
                 }
-                catch (NotSupportedException e)
+                else
                 {
-                    throw new ImageUtilException(CreateErrorMessage(filePath), e);
-                }
-                catch (InvalidImageContentException e)
-                {
-                    throw new ImageUtilException(CreateErrorMessage(filePath), e);
-                }
-                catch (UnknownImageFormatException e)
-                {
-                    throw new ImageUtilException(CreateErrorMessage(filePath), e);
+                    return false;
                 }
             }
-            else
+            finally
             {
-                return false;
+                sw.Stop();
+                Console.WriteLine($"IsAlpha: {sw.ElapsedMilliseconds} ms");
             }
-
         }
 
         private static bool IsAlphaByPng(ImageInfo info)

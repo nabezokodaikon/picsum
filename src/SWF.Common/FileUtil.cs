@@ -168,6 +168,14 @@ namespace SWF.Common
             return (ex == ImageUtil.HEIF_FILE_EXTENSION);
         }
 
+        public static bool IsJpegFile(string filePath)
+        {
+            ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
+
+            var ex = FileUtil.GetExtension(filePath);
+            return (ex == ".JPG");
+        }
+
         /// <summary>
         /// 指定したディレクトリ内に、画像ファイルが存在するか確認します。
         /// </summary>
@@ -480,6 +488,8 @@ namespace SWF.Common
         /// <returns></returns>
         public static long GetFileSize(string filePath)
         {
+            var sw = Stopwatch.StartNew();
+
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
             try
@@ -502,6 +512,11 @@ namespace SWF.Common
             catch (NotSupportedException ex)
             {
                 throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
+            }
+            finally
+            {
+                sw.Stop();
+                Console.WriteLine($"GetFileSize: {sw.ElapsedMilliseconds} ms");
             }
         }
 

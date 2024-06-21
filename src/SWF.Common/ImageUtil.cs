@@ -207,149 +207,178 @@ namespace SWF.Common
         /// <exception cref="ArgumentNullException"></exception>
         internal static Size GetImageSize(string filePath)
         {
+            var sw = Stopwatch.StartNew();
+
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
             try
             {
-                if (FileUtil.IsWEBPFile(filePath))
+                try
                 {
-                    return SixLaborsUtil.GetImageSize(filePath);
+                    if (FileUtil.IsWEBPFile(filePath))
+                    {
+                        return SixLaborsUtil.GetImageSize(filePath);
+                    }
+                    if (FileUtil.IsAVIFFile(filePath))
+                    {
+                        return SixLaborsUtil.GetImageSize(filePath);
+                    }
+                    else if (FileUtil.IsHEICFile(filePath))
+                    {
+                        return SixLaborsUtil.GetImageSize(filePath);
+                    }
+                    else if (FileUtil.IsHEIFFile(filePath))
+                    {
+                        return SixLaborsUtil.GetImageSize(filePath);
+                    }
                 }
-                if (FileUtil.IsAVIFFile(filePath))
+                catch (ArgumentException ex)
                 {
-                    return SixLaborsUtil.GetImageSize(filePath);
+                    throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
                 }
-                else if (FileUtil.IsHEICFile(filePath))
+                catch (NotSupportedException ex)
                 {
-                    return SixLaborsUtil.GetImageSize(filePath);
+                    throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
                 }
-                else if (FileUtil.IsHEIFFile(filePath))
+                catch (FileNotFoundException ex)
                 {
-                    return SixLaborsUtil.GetImageSize(filePath);
+                    throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
                 }
-            }
-            catch (ArgumentException ex)
-            {
-                throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
-            }
-            catch (NotSupportedException ex)
-            {
-                throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
-            }
-            catch (FileNotFoundException ex)
-            {
-                throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
-            }
-            catch (SecurityException ex)
-            {
-                throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
-            }
-            catch (DirectoryNotFoundException ex)
-            {
-                throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
-            }
-            catch (PathTooLongException ex)
-            {
-                throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
-            }
-            catch (IOException ex)
-            {
-                throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
-            }
-            catch (UnauthorizedAccessException ex)
-            {
-                throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
-            }
-            catch (SixLabors.ImageSharp.InvalidImageContentException ex)
-            {
-                throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
-            }
-            catch (SixLabors.ImageSharp.UnknownImageFormatException ex)
-            {
-                throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
-            }
-
-            if (FileUtil.IsImageFile(filePath))
-            {
-                var directory = ImageUtil.SHELL.NameSpace(Path.GetDirectoryName(filePath));
-                var item = directory.ParseName(Path.GetFileName(filePath));
-                var deteils = directory.GetDetailsOf(item, 31);
-                if (string.IsNullOrWhiteSpace(deteils))
+                catch (SecurityException ex)
                 {
-                    throw new ImageUtilException(CreateFileAccessErrorMessage(filePath));
+                    throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
+                }
+                catch (DirectoryNotFoundException ex)
+                {
+                    throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
+                }
+                catch (PathTooLongException ex)
+                {
+                    throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
+                }
+                catch (IOException ex)
+                {
+                    throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
+                }
+                catch (UnauthorizedAccessException ex)
+                {
+                    throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
+                }
+                catch (SixLabors.ImageSharp.InvalidImageContentException ex)
+                {
+                    throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
+                }
+                catch (SixLabors.ImageSharp.UnknownImageFormatException ex)
+                {
+                    throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
                 }
 
-                var v = deteils.Split(('x'));
-                if (v.Length != 2)
+                if (FileUtil.IsImageFile(filePath))
                 {
-                    throw new ImageUtilException(CreateFileAccessErrorMessage(filePath));
+                    var directory = ImageUtil.SHELL.NameSpace(Path.GetDirectoryName(filePath));
+                    var item = directory.ParseName(Path.GetFileName(filePath));
+                    var deteils = directory.GetDetailsOf(item, 31);
+                    if (string.IsNullOrWhiteSpace(deteils))
+                    {
+                        throw new ImageUtilException(CreateFileAccessErrorMessage(filePath));
+                    }
+
+                    var v = deteils.Split(('x'));
+                    if (v.Length != 2)
+                    {
+                        throw new ImageUtilException(CreateFileAccessErrorMessage(filePath));
+                    }
+
+                    var wText = v[0];
+                    var hText = v[1];
+
+                    if (!int.TryParse(wText.Substring(1).Trim(), out int w))
+                    {
+                        throw new ImageUtilException(CreateFileAccessErrorMessage(filePath));
+                    }
+
+                    if (!int.TryParse(hText.Substring(0, hText.Length - 1).Trim(), out int h))
+                    {
+                        throw new ImageUtilException(CreateFileAccessErrorMessage(filePath));
+                    }
+
+                    if (w < 1 || h < 1)
+                    {
+                        throw new ImageUtilException(CreateFileAccessErrorMessage(filePath));
+                    }
+
+                    return new Size(w, h);
                 }
-
-                var wText = v[0];
-                var hText = v[1];
-
-                if (!int.TryParse(wText.Substring(1).Trim(), out int w))
+                else
                 {
-                    throw new ImageUtilException(CreateFileAccessErrorMessage(filePath));
+                    throw new ArgumentException(
+                        $"画像ファイル以外のファイルが指定されました。'{filePath}'", nameof(filePath));
                 }
-
-                if (!int.TryParse(hText.Substring(0, hText.Length - 1).Trim(), out int h))
-                {
-                    throw new ImageUtilException(CreateFileAccessErrorMessage(filePath));
-                }
-
-                if (w < 1 || h < 1)
-                {
-                    throw new ImageUtilException(CreateFileAccessErrorMessage(filePath));
-                }
-
-                return new Size(w, h);
             }
-            else
+            finally
             {
-                throw new ArgumentException(
-                    $"画像ファイル以外のファイルが指定されました。'{filePath}'", nameof(filePath));
+                sw.Stop();
+                Console.WriteLine($"GetImageSize: {sw.ElapsedMilliseconds} ms");
             }
         }
 
         public static Bitmap ReadImageFileFast(string filePath)
         {
             var sw = Stopwatch.StartNew();
-            Bitmap img = null;
+
+            ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
+
             try
             {
-                img = ReadImageFile(filePath, false, false);
-                img.Palette.GetType();
-                return img;
-            }
-            catch (ExternalException ex)
-            {
-                if (img != null)
+                if (FileUtil.IsJpegFile(filePath))
                 {
-                    img.Dispose();
+                    return ReadImageFile(filePath, false, true);
                 }
 
-                Console.WriteLine(ex.Message);
-                return ReadImageFile(filePath, false, true);
+                Bitmap img = null;
+                try
+                {
+                    img = ReadImageFile(filePath, false, false);
+                    img.Palette.GetType();
+                    return img;
+                }
+                catch (ExternalException ex)
+                {
+                    if (img != null)
+                    {
+                        img.Dispose();
+                    }
+
+                    Console.WriteLine(ex.Message);
+                    return ReadImageFile(filePath, false, true);
+                }
             }
             finally
             {
                 sw.Stop();
-                Console.WriteLine(sw.ElapsedMilliseconds);
+                Console.WriteLine($"ReadImageFileFast: {sw.ElapsedMilliseconds} ms");
             }
         }
 
         public static Bitmap ReadImageFile(string filePath)
         {
-            return ReadImageFile(filePath, false, true);
-        }
-
-        private static Bitmap ReadImageFile(string filePath, bool useEmbeddedColorManagement, bool validateImageData)
-        {
             var sw = Stopwatch.StartNew();
 
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
+            try
+            {
+                return ReadImageFile(filePath, false, true);
+            }
+            finally
+            {
+                sw.Stop();
+                Console.WriteLine($"ReadImageFile: {sw.ElapsedMilliseconds} ms");
+            }
+        }
+
+        private static Bitmap ReadImageFile(string filePath, bool useEmbeddedColorManagement, bool validateImageData)
+        {
             try
             {
                 if (FileUtil.IsWEBPFile(filePath))
@@ -428,11 +457,6 @@ namespace SWF.Common
             catch (OutOfMemoryException ex)
             {
                 throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
-            }
-            finally
-            {
-                sw.Stop();
-                //Console.WriteLine(sw.ElapsedMilliseconds);
             }
         }
 
