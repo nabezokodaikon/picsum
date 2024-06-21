@@ -168,6 +168,8 @@ namespace PicSum.Job.Jobs
             {
                 this.CheckCancel();
 
+                Thread.Sleep(50);
+
                 try
                 {
                     ImageFileCacheUtil.Read(path);
