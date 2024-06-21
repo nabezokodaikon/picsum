@@ -3,7 +3,7 @@ using SWF.Common;
 
 namespace PicSum.Job.Jobs
 {
-    public sealed class ImageSizeCacheJob
+    public sealed class ImageInfoCacheJob
         : AbstractOneWayJob<ListParameter<string>>
     {
         protected override void Execute(ListParameter<string> parameter)

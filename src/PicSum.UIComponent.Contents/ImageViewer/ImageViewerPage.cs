@@ -75,7 +75,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         private TwoWayJob<ImageFileReadJob, ImageFileReadParameter, ImageFileGetResult> getImageFileJob = null;
         private OneWayJob<BookmarkAddJob, ValueParameter<string>> addBookmarkJob = null;
         private OneWayJob<SingleFileExportJob, SingleFileExportParameter> singleFileExportJob = null;
-        private OneWayJob<ImageSizeCacheJob, ListParameter<string>> imageSizeCacheJob = null;
+        private OneWayJob<ImageInfoCacheJob, ListParameter<string>> imageInfoCacheJob = null;
 
         #endregion
 
@@ -173,18 +173,18 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             }
         }
 
-        private OneWayJob<ImageSizeCacheJob, ListParameter<string>> ImageSizeCacheJob
+        private OneWayJob<ImageInfoCacheJob, ListParameter<string>> ImageInfoCacheJob
         {
             get
             {
-                if (this.imageSizeCacheJob == null)
+                if (this.imageInfoCacheJob == null)
                 {
-                    this.imageSizeCacheJob = new();
-                    this.imageSizeCacheJob
+                    this.imageInfoCacheJob = new();
+                    this.imageInfoCacheJob
                         .StartThread();
                 }
 
-                return this.imageSizeCacheJob;
+                return this.imageInfoCacheJob;
             }
         }
 
@@ -272,10 +272,10 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                     this.getImageFileJob = null;
                 }
 
-                if (this.imageSizeCacheJob != null)
+                if (this.imageInfoCacheJob != null)
                 {
-                    this.imageSizeCacheJob.Dispose();
-                    this.imageSizeCacheJob = null;
+                    this.imageInfoCacheJob.Dispose();
+                    this.imageInfoCacheJob = null;
                 }
 
                 this.leftImagePanel.Dispose();
@@ -898,7 +898,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
         private void Parameter_GetImageFiles(object sender, GetImageFilesEventArgs e)
         {
-            this.ImageSizeCacheJob.StartJob(new ListParameter<string>(e.FilePathList));
+            this.ImageInfoCacheJob.StartJob(new ListParameter<string>(e.FilePathList));
 
             this.filePathList = e.FilePathList;
 
