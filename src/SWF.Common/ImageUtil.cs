@@ -225,11 +225,11 @@ namespace SWF.Common
                     }
                     else if (FileUtil.IsHEICFile(filePath))
                     {
-                        //return SixLaborsUtil.GetImageSize(filePath);
+                        return LibHeifSharpUtil.GetImageSize(filePath);
                     }
                     else if (FileUtil.IsHEIFFile(filePath))
                     {
-                        //return SixLaborsUtil.GetImageSize(filePath);
+                        return LibHeifSharpUtil.GetImageSize(filePath);
                     }
                 }
                 catch (ArgumentException ex)
