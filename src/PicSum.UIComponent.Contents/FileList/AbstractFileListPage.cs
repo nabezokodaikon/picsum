@@ -410,9 +410,9 @@ namespace PicSum.UIComponent.Contents.FileList
             ArgumentNullException.ThrowIfNull(srcFiles, nameof(srcFiles));
             ArgumentNullException.ThrowIfNull(selectedFilePath, nameof(selectedFilePath));
 
-            this.ImageInfoCacheJob.StartJob(new ListParameter<string>(
-                srcFiles.Select(file => file.FilePath)
-                        .Where(FileUtil.IsImageFile)));
+            //this.ImageInfoCacheJob.StartJob(new ListParameter<string>(
+            //    srcFiles.Select(file => file.FilePath)
+            //            .Where(FileUtil.IsImageFile)));
 
             this.masterFileDictionary = [];
             foreach (var srcFile in srcFiles)
