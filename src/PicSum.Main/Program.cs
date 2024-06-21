@@ -1,6 +1,5 @@
 using NLog;
 using NLog.Config;
-using PicSum.Job.Jobs;
 using PicSum.Job.Logics;
 using PicSum.Main.Mng;
 using PicSum.Main.UIComponent;
@@ -120,7 +119,7 @@ namespace PicSum.Main
             ThumbnailGetLogic.DisposeStaticResouces();
             ImageFileCacheUtil.DisposeStaticResouces();
             ImageInfoCacheUtil.DisposeStaticResouces();
-            SingleFileExportJob.DisposeStaticResouces();
+            FileExportLogic.DisposeStaticResouces();
 
             logger.Debug("アプリケーションを終了します。");
 
