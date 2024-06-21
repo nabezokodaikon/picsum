@@ -664,11 +664,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
         private void DrawLoadingImage(string mainFilePath)
         {
-            if (!ImageFileReadedTimeCacheUtil.IsSlow(mainFilePath))
-            {
-                return;
-            }
-
             var mainImageInfo = ImageUtil.GetImageInfoFromCache(mainFilePath);
 
             var mainImageDrawAction = () =>
@@ -704,11 +699,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 }
 
                 var subFilePath = this.filePathList[subImageIndex];
-                if (!ImageFileReadedTimeCacheUtil.IsSlow(subFilePath))
-                {
-                    return;
-                }
-
                 var subImageInfo = ImageUtil.GetImageInfoFromCache(subFilePath);
                 if (subImageInfo.Size.Width < subImageInfo.Size.Height)
                 {
@@ -778,15 +768,18 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             var mainFilePath = this.filePathList[this.FilePathListIndex];
             this.SelectedFilePath = mainFilePath;
 
-            var sw = Stopwatch.StartNew();
-            try
+            if (ImageFileReadedTimeCacheUtil.IsSlow(mainFilePath))
             {
-                this.DrawLoadingImage(mainFilePath);
-            }
-            finally
-            {
-                sw.Stop();
-                Console.WriteLine($"DrawLoadingImage: {sw.ElapsedMilliseconds} ms");
+                var sw = Stopwatch.StartNew();
+                try
+                {
+                    this.DrawLoadingImage(mainFilePath);
+                }
+                finally
+                {
+                    sw.Stop();
+                    Console.WriteLine($"DrawLoadingImage: {sw.ElapsedMilliseconds} ms");
+                }
             }
 
             var nextFiles = new List<string>(10);
