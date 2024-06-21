@@ -34,7 +34,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         {
             try
             {
-                return ImageUtil.GetImageInfoFromCache(filePath).Size;
+                return ImageUtil.GetImageInfo(filePath).Size;
             }
             catch (ImageUtilException ex)
             {
@@ -642,7 +642,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
         private void DrawLoadingImage(string mainFilePath)
         {
-            var mainImageInfo = ImageUtil.GetImageInfoFromCache(mainFilePath);
+            var mainImageInfo = ImageUtil.GetImageInfo(mainFilePath);
 
             var mainImageDrawAction = () =>
             {
@@ -677,7 +677,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 }
 
                 var subFilePath = this.filePathList[subImageIndex];
-                var subImageInfo = ImageUtil.GetImageInfoFromCache(subFilePath);
+                var subImageInfo = ImageUtil.GetImageInfo(subFilePath);
                 if (subImageInfo.Size.Width < subImageInfo.Size.Height)
                 {
                     var bgSize = new Size(

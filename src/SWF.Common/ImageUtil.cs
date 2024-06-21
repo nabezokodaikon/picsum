@@ -192,7 +192,7 @@ namespace SWF.Common
             }
         }
 
-        public static ImageInfoCache GetImageInfoFromCache(string filePath)
+        public static ImageInfoCache GetImageInfo(string filePath)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
