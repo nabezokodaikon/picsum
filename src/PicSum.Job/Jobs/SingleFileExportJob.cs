@@ -1,6 +1,6 @@
 using PicSum.Core.Job.AsyncJob;
 using PicSum.Job.Logics;
-using PicSum.Job.Paramters;
+using PicSum.Job.Parameters;
 using System.Runtime.Versioning;
 
 namespace PicSum.Job.Jobs
@@ -12,16 +12,6 @@ namespace PicSum.Job.Jobs
     public sealed class SingleFileExportJob
         : AbstractOneWayJob<SingleFileExportParameter>
     {
-        internal static readonly ReaderWriterLockSlim FileExportLock = new();
-
-        /// <summary>
-        /// 静的リソースを解放します。
-        /// </summary>
-        public static void DisposeStaticResouces()
-        {
-            SingleFileExportJob.FileExportLock.Dispose();
-        }
-
         protected override void Execute(SingleFileExportParameter param)
         {
             ArgumentNullException.ThrowIfNull(param, nameof(param));
@@ -36,7 +26,7 @@ namespace PicSum.Job.Jobs
                 throw new ArgumentException("エクスポート先のファイルパスがNULLです。", nameof(param));
             }
 
-            SingleFileExportJob.FileExportLock.EnterWriteLock();
+            FileExportLogic.FileExportLock.EnterWriteLock();
 
             try
             {
@@ -65,7 +55,7 @@ namespace PicSum.Job.Jobs
             }
             finally
             {
-                SingleFileExportJob.FileExportLock.ExitWriteLock();
+                FileExportLogic.FileExportLock.ExitWriteLock();
             }
         }
     }

@@ -2,7 +2,7 @@ using PicSum.Core.Base.Exception;
 using PicSum.Core.Job.AsyncJob;
 using PicSum.Job.Entities;
 using PicSum.Job.Jobs;
-using PicSum.Job.Paramters;
+using PicSum.Job.Parameters;
 using PicSum.UIComponent.Contents.Common;
 using PicSum.UIComponent.Contents.Parameter;
 using PicSum.UIComponent.Contents.Properties;

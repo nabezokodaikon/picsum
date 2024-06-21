@@ -1,6 +1,6 @@
 using PicSum.Core.Job.AsyncJob;
 using PicSum.Job.Logics;
-using PicSum.Job.Paramters;
+using PicSum.Job.Parameters;
 using SWF.Common;
 
 namespace PicSum.Job.Jobs
@@ -24,7 +24,7 @@ namespace PicSum.Job.Jobs
 
             var logic = new FileExportLogic(this);
 
-            SingleFileExportJob.FileExportLock.EnterWriteLock();
+            FileExportLogic.FileExportLock.EnterWriteLock();
 
             try
             {
@@ -67,7 +67,7 @@ namespace PicSum.Job.Jobs
             }
             finally
             {
-                SingleFileExportJob.FileExportLock.ExitWriteLock();
+                FileExportLogic.FileExportLock.ExitWriteLock();
             }
         }
     }

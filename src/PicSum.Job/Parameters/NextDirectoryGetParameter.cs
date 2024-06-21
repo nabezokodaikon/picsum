@@ -1,7 +1,7 @@
 using PicSum.Core.Job.AsyncJob;
 using PicSum.Job.Entities;
 
-namespace PicSum.Job.Paramters
+namespace PicSum.Job.Parameters
 {
     /// <summary>
     /// 次のコンテンツのパラメータを取得するエンティティ

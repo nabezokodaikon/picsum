@@ -1,7 +1,7 @@
 using PicSum.Core.Job.AsyncJob;
 using System.Drawing;
 
-namespace PicSum.Job.Paramters
+namespace PicSum.Job.Parameters
 {
     /// <summary>
     /// ファイルの深い情報取得パラメータエンティティ

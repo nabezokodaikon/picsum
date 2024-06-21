@@ -1,6 +1,6 @@
 using PicSum.Core.Job.AsyncJob;
 
-namespace PicSum.Job.Paramters
+namespace PicSum.Job.Parameters
 {
     /// <summary>
     /// スタートアップパラメータエンティティ

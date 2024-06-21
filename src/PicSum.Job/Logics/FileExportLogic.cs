@@ -1,4 +1,5 @@
 using PicSum.Core.Job.AsyncJob;
+using PicSum.Job.Jobs;
 using System.Runtime.Versioning;
 
 namespace PicSum.Job.Logics
@@ -7,9 +8,19 @@ namespace PicSum.Job.Logics
     /// 画像ファイルエクスポート非同期ロジック
     /// </summary>
     [SupportedOSPlatform("windows")]
-    internal sealed class FileExportLogic(AbstractAsyncJob job)
+    public sealed class FileExportLogic(AbstractAsyncJob job)
         : AbstractAsyncLogic(job)
     {
+        internal static readonly ReaderWriterLockSlim FileExportLock = new();
+
+        /// <summary>
+        /// 静的リソースを解放します。
+        /// </summary>
+        public static void DisposeStaticResouces()
+        {
+            FileExportLock.Dispose();
+        }
+
         public void Execute(string srcFilePath, string exportFilePath)
         {
             ArgumentException.ThrowIfNullOrEmpty(srcFilePath, nameof(srcFilePath));

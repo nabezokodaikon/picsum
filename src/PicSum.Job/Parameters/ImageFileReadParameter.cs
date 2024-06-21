@@ -1,7 +1,7 @@
 using PicSum.Core.Base.Conf;
 using PicSum.Core.Job.AsyncJob;
 
-namespace PicSum.Job.Paramters
+namespace PicSum.Job.Parameters
 {
     /// <summary>
     /// 画像読込パラメータエンティティ

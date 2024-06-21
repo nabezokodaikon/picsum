@@ -2,7 +2,7 @@ using PicSum.Core.Data.DatabaseAccessor;
 using PicSum.Core.Job.AsyncJob;
 using PicSum.Data.DatabaseAccessor.Connection;
 using PicSum.Job.Logics;
-using PicSum.Job.Paramters;
+using PicSum.Job.Parameters;
 using System.Runtime.Versioning;
 
 namespace PicSum.Job.Jobs

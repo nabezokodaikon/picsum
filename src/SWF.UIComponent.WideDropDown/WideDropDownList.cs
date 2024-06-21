@@ -214,7 +214,7 @@ namespace SWF.UIComponent.WideDropDown
 
             this.ToolStripItem.AutoSize = false;
             this.ToolStripItem.BackColor = this.BackColor;
-            this.ToolStripItem.Size = new Size(600, 224);
+            this.ToolStripItem.Size = new Size(800, 250);
 
             this.FlowList.BackColor = Color.White;
             this.FlowList.ItemTextTrimming = StringTrimming.EllipsisCharacter;
