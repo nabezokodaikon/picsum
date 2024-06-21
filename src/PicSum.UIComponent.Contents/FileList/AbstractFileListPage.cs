@@ -1035,6 +1035,18 @@ namespace PicSum.UIComponent.Contents.FileList
                 }
 
                 this.GetThumbnailsJob.StartJob(param);
+
+                var cacheFileList = new List<string>();
+                for (var index = param.FirstIndex; index <= param.LastIndex; index++)
+                {
+                    var file = param.FilePathList[index];
+                    if (FileUtil.IsImageFile(file))
+                    {
+                        cacheFileList.Add(file);
+                    }
+                }
+
+                this.ImageInfoCacheJob.StartJob(new ListParameter<string>(cacheFileList));
             }
         }
 
