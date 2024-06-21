@@ -143,7 +143,7 @@ namespace SWF.Common
         /// </summary>
         /// <param name="bf">バイト配列</param>
         /// <returns>イメージオブジェクト</returns>
-        public static Image ToImage(byte[] bf)
+        public static Bitmap ToImage(byte[] bf)
         {
             ArgumentNullException.ThrowIfNull(bf, nameof(bf));
 
@@ -151,8 +151,8 @@ namespace SWF.Common
             {
                 try
                 {
-                    var img = Image.FromStream(mes, false, false);
-                    return img;
+                    var img = Bitmap.FromStream(mes, false, false);
+                    return (Bitmap)img;
                 }
                 catch (OutOfMemoryException ex)
                 {
@@ -168,7 +168,7 @@ namespace SWF.Common
         /// <param name="scale"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentNullException"></exception>
-        public static Image ResizeImage(Bitmap srcImg, double scale)
+        public static Bitmap ResizeImage(Bitmap srcImg, double scale)
         {
             ArgumentNullException.ThrowIfNull(srcImg, nameof(srcImg));
 

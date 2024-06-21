@@ -132,7 +132,7 @@ namespace PicSum.Job.Logics
             return info;
         }
 
-        private Image ReadImageFile(string filePath)
+        private Bitmap ReadImageFile(string filePath)
         {
             try
             {
