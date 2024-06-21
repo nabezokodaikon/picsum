@@ -1,7 +1,7 @@
 using PicSum.Core.Base.Exception;
 using PicSum.Core.Job.AsyncJob;
 using PicSum.Job.Jobs;
-using PicSum.Job.Paramters;
+using PicSum.Job.Parameters;
 using PicSum.Main.Conf;
 using PicSum.UIComponent.Contents.Common;
 using SWF.Common;

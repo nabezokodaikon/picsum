@@ -1,7 +1,7 @@
 using PicSum.Core.Data.DatabaseAccessor;
 using PicSum.Core.Job.AsyncJob;
 using PicSum.Data.DatabaseAccessor.Connection;
-using PicSum.Job.Paramters;
+using PicSum.Job.Parameters;
 using System.Runtime.Versioning;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
