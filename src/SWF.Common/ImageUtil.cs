@@ -217,7 +217,7 @@ namespace SWF.Common
                 {
                     if (FileUtil.IsWEBPFile(filePath))
                     {
-                        return SixLaborsUtil.GetImageSize(filePath);
+                        //return SixLaborsUtil.GetImageSize(filePath);
                     }
                     if (FileUtil.IsAVIFFile(filePath))
                     {
