@@ -21,6 +21,19 @@ namespace SWF.Common
             CACHE_DICTIONARY.Clear();
         }
 
+        public static bool Contains(string filePath)
+        {
+            CACHE_LOCK.EnterReadLock();
+            try
+            {
+                return CACHE_DICTIONARY.ContainsKey(filePath);
+            }
+            finally
+            {
+                CACHE_LOCK.ExitReadLock();
+            }
+        }
+
         public static ImageInfoCache GetImageInfo(string filePath)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
