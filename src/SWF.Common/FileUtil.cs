@@ -488,10 +488,6 @@ namespace SWF.Common
         /// <returns></returns>
         public static long GetFileSize(string filePath)
         {
-            var sw = Stopwatch.StartNew();
-
-            ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
-
             try
             {
                 var fi = new FileInfo(filePath);
@@ -512,11 +508,6 @@ namespace SWF.Common
             catch (NotSupportedException ex)
             {
                 throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
-            }
-            finally
-            {
-                sw.Stop();
-                Console.WriteLine($"GetFileSize: {sw.ElapsedMilliseconds} ms");
             }
         }
 
