@@ -664,15 +664,15 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
         private void DrawLoadingImage(string mainFilePath)
         {
+            if (!ImageFileReadedTimeCacheUtil.IsSlow(mainFilePath))
+            {
+                return;
+            }
+
             var mainImageInfo = ImageUtil.GetImageInfoFromCache(mainFilePath);
 
             var mainImageDrawAction = () =>
             {
-                if (!ImageFileReadedTimeCacheUtil.IsSlow(mainFilePath))
-                {
-                    return;
-                }
-
                 var bgSize = this.checkPatternPanel.Size;
 
                 var scale = GetImageScale(

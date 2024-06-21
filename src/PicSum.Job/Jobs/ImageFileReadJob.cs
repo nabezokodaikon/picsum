@@ -185,7 +185,7 @@ namespace PicSum.Job.Jobs
             }
         }
 
-        private Image ReadImageFile(string filePath)
+        private Bitmap ReadImageFile(string filePath)
         {
             try
             {
