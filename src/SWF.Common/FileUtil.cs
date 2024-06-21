@@ -173,7 +173,7 @@ namespace SWF.Common
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
             var ex = FileUtil.GetExtension(filePath);
-            return (ex == ".JPG");
+            return (ex == ".JPG" || ex == ".JPEG");
         }
 
         /// <summary>
