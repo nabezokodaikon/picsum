@@ -119,6 +119,7 @@ namespace PicSum.Main
             ThumbnailGetLogic.DisposeStaticResouces();
             ImageFileCacheUtil.DisposeStaticResouces();
             ImageInfoCacheUtil.DisposeStaticResouces();
+            ImageFileReadedTimeCacheUtil.DisposeStaticResouces();
             FileExportLogic.DisposeStaticResouces();
 
             logger.Debug("アプリケーションを終了します。");

@@ -668,6 +668,11 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
             var mainImageDrawAction = () =>
             {
+                if (!ImageFileReadedTimeCacheUtil.IsSlow(mainFilePath))
+                {
+                    return;
+                }
+
                 var bgSize = this.checkPatternPanel.Size;
 
                 var scale = GetImageScale(
@@ -699,6 +704,11 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 }
 
                 var subFilePath = this.filePathList[subImageIndex];
+                if (!ImageFileReadedTimeCacheUtil.IsSlow(subFilePath))
+                {
+                    return;
+                }
+
                 var subImageInfo = ImageUtil.GetImageInfoFromCache(subFilePath);
                 if (subImageInfo.Size.Width < subImageInfo.Size.Height)
                 {
