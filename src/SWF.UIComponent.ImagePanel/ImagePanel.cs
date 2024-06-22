@@ -211,27 +211,21 @@ namespace SWF.UIComponent.ImagePanel
             this.IsError = true;
         }
 
-        public bool ClearImage()
+        public void ClearImage()
         {
-            bool ret = false;
-
             if (this.thumbnail != null)
             {
                 this.thumbnail.Dispose();
                 this.thumbnail = null;
-                ret = true;
             }
 
             if (this.image != null)
             {
                 this.image.Dispose();
                 this.image = null;
-                ret = true;
             }
 
             this.imageScaleSize = SizeF.Empty;
-
-            return ret;
         }
 
         public bool IsImagePoint(int x, int y)

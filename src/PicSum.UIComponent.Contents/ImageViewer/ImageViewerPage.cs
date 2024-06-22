@@ -665,8 +665,8 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
         private void DrawLoadingImage(string mainFilePath)
         {
-            var clearedLeftImage = this.leftImagePanel.ClearImage();
-            var clearedRightImage = this.rightImagePanel.ClearImage();
+            this.leftImagePanel.ClearImage();
+            this.rightImagePanel.ClearImage();
 
             var mainImageInfo = ImageUtil.GetImageInfo(mainFilePath);
 
