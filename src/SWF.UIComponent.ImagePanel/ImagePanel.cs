@@ -243,13 +243,11 @@ namespace SWF.UIComponent.ImagePanel
         {
             if (this.Visible)
             {
-                this.BringToFront();
                 base.Invalidate();
             }
             else
             {
                 this.Visible = true;
-                this.BringToFront();
             }
         }
 

@@ -404,6 +404,11 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 this.leftImagePanel.Invalidate();
                 this.rightImagePanel.Visible = false;
             }
+            else
+            {
+                this.leftImagePanel.Visible = false;
+                this.rightImagePanel.Visible = false;
+            }
         }
 
         private void ChangeMainImagePanelSize()
@@ -460,6 +465,18 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                     this.leftImagePanel.Invalidate();
                 }
             }
+            else if (this.displayMode == ImageDisplayMode.RightFacing
+                && (this.leftImagePanel.HasImage || this.leftImagePanel.IsError))
+            {
+                var w = this.checkPatternPanel.Width;
+                var h = this.checkPatternPanel.Height;
+                var x = 0;
+                var y = 0;
+
+                this.leftImagePanel.SetBounds(x, y, w, h, BoundsSpecified.All);
+                this.leftImagePanel.ImageAlign = ImageAlign.Center;
+                this.leftImagePanel.Invalidate();
+            }
             else if (this.displayMode == ImageDisplayMode.Single
                 && (this.leftImagePanel.HasImage || this.leftImagePanel.IsError))
             {
@@ -474,15 +491,15 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             }
             else if (this.displayMode == ImageDisplayMode.LeftFacing)
             {
-                this.leftImagePanel.Visible = true;
+                this.leftImagePanel.Visible = false;
             }
             else if (this.displayMode == ImageDisplayMode.RightFacing)
             {
-                this.rightImagePanel.Visible = true;
+                this.rightImagePanel.Visible = false;
             }
             else if (this.displayMode == ImageDisplayMode.Single)
             {
-                this.leftImagePanel.Visible = true;
+                this.leftImagePanel.Visible = false;
             }
         }
 
@@ -528,15 +545,15 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             }
             else if (this.displayMode == ImageDisplayMode.LeftFacing)
             {
-                this.rightImagePanel.Visible = true;
+                this.rightImagePanel.Visible = false;
             }
             else if (this.displayMode == ImageDisplayMode.RightFacing)
             {
-                this.leftImagePanel.Visible = true;
+                this.leftImagePanel.Visible = false;
             }
             else if (this.displayMode == ImageDisplayMode.Single)
             {
-                this.rightImagePanel.Visible = true;
+                this.rightImagePanel.Visible = false;
             }
         }
 
@@ -1069,7 +1086,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 throw new InvalidOperationException($"不正な画像表示モードです。DisplayMode: '{this.displayMode}'");
             }
 
-            this.ChangeImagePanelSize(e);
+            this.ChangeImagePanelSize(e);                        
             this.Focus();
         }
 
