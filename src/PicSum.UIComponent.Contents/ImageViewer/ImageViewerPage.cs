@@ -1315,6 +1315,11 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
         private void LeftImagePanel_ImageMouseClick(object sender, MouseEventArgs e)
         {
+            if (string.IsNullOrEmpty(this.leftImageFilePath))
+            {
+                return;
+            }
+
             if (this.SelectedFilePath != this.leftImageFilePath)
             {
                 this.SelectedFilePath = this.leftImageFilePath;
@@ -1324,6 +1329,11 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
         private void RightImagePanel_ImageMouseClick(object sender, MouseEventArgs e)
         {
+            if (string.IsNullOrEmpty(this.rightImageFilePath))
+            {
+                return;
+            }
+
             if (this.SelectedFilePath != this.rightImageFilePath)
             {
                 this.SelectedFilePath = this.rightImageFilePath;
