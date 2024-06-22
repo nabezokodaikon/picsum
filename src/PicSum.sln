@@ -32,9 +32,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SWF.UIComponent.WideDropDow
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SWF.UIComponent.Form", "SWF.UIComponent.Form\SWF.UIComponent.Form.csproj", "{8B800DCF-12ED-4032-B45B-B9DC2265E098}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PicSum.Job", "PicSum.Job\PicSum.Job.csproj", "{4A62F894-9A5F-4EB4-8FD2-6B25D2720C5B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PicSum.Job", "PicSum.Job\PicSum.Job.csproj", "{4A62F894-9A5F-4EB4-8FD2-6B25D2720C5B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PicSum.Core.Job.AsyncJob", "PicSum.Core.Job.AsyncJob\PicSum.Core.Job.AsyncJob.csproj", "{BF6B2ED8-0A02-4603-90A5-76F0A7A00BE7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PicSum.Core.Job.AsyncJob", "PicSum.Core.Job.AsyncJob\PicSum.Core.Job.AsyncJob.csproj", "{BF6B2ED8-0A02-4603-90A5-76F0A7A00BE7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
