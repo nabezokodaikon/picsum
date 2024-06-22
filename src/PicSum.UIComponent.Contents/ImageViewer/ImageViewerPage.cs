@@ -132,7 +132,12 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                     this.getImageFileJob = new();
                     this.getImageFileJob
                         .Callback(this.GetImageFileJob_Callback)
-                        .Cancel(() => this.Cursor = Cursors.Default)
+                        .Cancel(() =>
+                        {
+                            this.leftImagePanel.ClearImage();
+                            this.rightImagePanel.ClearImage();
+                            this.Cursor = Cursors.Default;
+                        })
                         .Catch(_ => this.Cursor = Cursors.Default)
                         .Complete(() => this.Cursor = Cursors.Default)
                         .StartThread();
@@ -665,8 +670,8 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
         private void DrawLoadingImage(string mainFilePath)
         {
-            this.leftImagePanel.ClearImage();
-            this.rightImagePanel.ClearImage();
+            var isClearedMainPanel = this.leftImagePanel.ClearImage();
+            var isClearedSubPanel = this.rightImagePanel.ClearImage();
 
             var mainImageInfo = ImageUtil.GetImageInfo(mainFilePath);
 
@@ -687,7 +692,8 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 this.leftImagePanel.SetImage(image, thumbnail);
                 this.leftImagePanel.SetScale(1);
 
-                if (ImageFileReadedTimeCacheUtil.IsSlow(mainFilePath))
+                if (ImageFileReadedTimeCacheUtil.IsSlow(mainFilePath)
+                    || !isClearedMainPanel)
                 {
                     this.ChangeMainImagePanelSize();
                     this.ChangeSubImagePanelSize();
@@ -753,12 +759,14 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                         this.leftImagePanel.SetScale(1);
                     }
 
-                    if (ImageFileReadedTimeCacheUtil.IsSlow(mainFilePath))
+                    if (ImageFileReadedTimeCacheUtil.IsSlow(mainFilePath)
+                        || !isClearedMainPanel)
                     {
                         this.ChangeMainImagePanelSize();
                     }
 
-                    if (ImageFileReadedTimeCacheUtil.IsSlow(subFilePath))
+                    if (ImageFileReadedTimeCacheUtil.IsSlow(subFilePath)
+                        || !isClearedSubPanel)
                     {
                         this.ChangeSubImagePanelSize();
                     }
