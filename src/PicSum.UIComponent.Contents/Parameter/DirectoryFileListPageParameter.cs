@@ -1,5 +1,5 @@
 using PicSum.UIComponent.Contents.FileList;
-using SWF.Common;
+using SWF.Core.Base;
 using SWF.UIComponent.TabOperation;
 using System;
 using System.Runtime.Versioning;

@@ -4,7 +4,8 @@ using PicSum.Data.DatabaseAccessor.Connection;
 using PicSum.Data.DatabaseAccessor.Dto;
 using PicSum.Data.DatabaseAccessor.Sql;
 using PicSum.Job.Entities;
-using SWF.Common;
+using SWF.Core.FileAccessor;
+using SWF.Core.ImageAccessor;
 using System.Drawing;
 using System.Runtime.Versioning;
 

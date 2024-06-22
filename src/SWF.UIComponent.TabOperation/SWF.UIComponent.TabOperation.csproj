@@ -57,7 +57,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SWF.Common\SWF.Common.csproj" />
+    <ProjectReference Include="..\SWF.Core.Base\SWF.Core.Base.csproj" />
+    <ProjectReference Include="..\SWF.Core.ImageAccessor\SWF.Core.ImageAccessor.csproj" />
     <ProjectReference Include="..\WinApi\WinApi.csproj" />
   </ItemGroup>
   <ItemGroup>

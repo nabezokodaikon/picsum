@@ -4,7 +4,7 @@ using PicSum.Job.Jobs;
 using PicSum.Job.Parameters;
 using PicSum.Main.Conf;
 using PicSum.UIComponent.Contents.Common;
-using SWF.Common;
+using SWF.Core.Base;
 using SWF.UIComponent.Form;
 using SWF.UIComponent.TabOperation;
 using System;

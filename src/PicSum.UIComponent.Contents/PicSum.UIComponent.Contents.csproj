@@ -35,9 +35,7 @@
     <Compile Update="Common\BrowserPage.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Update="ContextMenu\FileContextMenu.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Update="ContextMenu\FileContextMenu.cs" />
     <Compile Update="FileList\BookmarkFileListPage.cs" />
     <Compile Update="ToolBar\PageToolBar.cs">
       <SubType>Component</SubType>
@@ -63,7 +61,9 @@
     <ProjectReference Include="..\PicSum.Core.Base\PicSum.Core.Base.csproj" />
     <ProjectReference Include="..\PicSum.Core.Job.AsyncJob\PicSum.Core.Job.AsyncJob.csproj" />
     <ProjectReference Include="..\PicSum.Job\PicSum.Job.csproj" />
-    <ProjectReference Include="..\SWF.Common\SWF.Common.csproj" />
+    <ProjectReference Include="..\SWF.Core.Base\SWF.Core.Base.csproj" />
+    <ProjectReference Include="..\SWF.Core.FileAccessor\SWF.Core.FileAccessor.csproj" />
+    <ProjectReference Include="..\SWF.Core.ImageAccessor\SWF.Core.ImageAccessor.csproj" />
     <ProjectReference Include="..\SWF.UIComponent.Common\SWF.UIComponent.Common.csproj" />
     <ProjectReference Include="..\SWF.UIComponent.FlowList\SWF.UIComponent.FlowList.csproj" />
     <ProjectReference Include="..\SWF.UIComponent.ImagePanel\SWF.UIComponent.ImagePanel.csproj" />

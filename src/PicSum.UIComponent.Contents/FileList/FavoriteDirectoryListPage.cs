@@ -6,7 +6,7 @@ using PicSum.UIComponent.Contents.Common;
 using PicSum.UIComponent.Contents.Conf;
 using PicSum.UIComponent.Contents.Parameter;
 using PicSum.UIComponent.Contents.Properties;
-using SWF.Common;
+using SWF.Core.ImageAccessor;
 using System;
 using System.Collections.Generic;
 using System.Runtime.Versioning;

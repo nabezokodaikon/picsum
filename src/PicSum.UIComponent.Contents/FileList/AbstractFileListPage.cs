@@ -8,7 +8,9 @@ using PicSum.UIComponent.Contents.Common;
 using PicSum.UIComponent.Contents.Conf;
 using PicSum.UIComponent.Contents.ContextMenu;
 using PicSum.UIComponent.Contents.Parameter;
-using SWF.Common;
+using SWF.Core.Base;
+using SWF.Core.FileAccessor;
+using SWF.Core.ImageAccessor;
 using SWF.UIComponent.FlowList;
 using SWF.UIComponent.TabOperation;
 using System;
@@ -17,7 +19,6 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.Versioning;
-using System.Security.Cryptography;
 using System.Text;
 using System.Windows.Forms;
 

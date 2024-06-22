@@ -1,6 +1,6 @@
 using PicSum.UIComponent.Contents.Common;
 using PicSum.UIComponent.Contents.ImageViewer;
-using SWF.Common;
+using SWF.Core.Base;
 using SWF.UIComponent.TabOperation;
 using System;
 using System.Drawing;

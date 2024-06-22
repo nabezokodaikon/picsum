@@ -5,7 +5,8 @@ using PicSum.Job.Entities;
 using PicSum.Job.Logics;
 using PicSum.Job.Parameters;
 using PicSum.Job.Results;
-using SWF.Common;
+using SWF.Core.FileAccessor;
+using SWF.Core.ImageAccessor;
 using System.Runtime.Versioning;
 
 namespace PicSum.Job.Jobs

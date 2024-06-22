@@ -30,7 +30,7 @@
     <NoWarn>1701;1702; CA1016; IDE0290</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SWF.Common\SWF.Common.csproj" />
+    <ProjectReference Include="..\SWF.Core.Base\SWF.Core.Base.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Reference Update="System.Core">

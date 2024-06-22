@@ -1,4 +1,4 @@
-using SWF.Common;
+using SWF.Core.ImageAccessor;
 using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;

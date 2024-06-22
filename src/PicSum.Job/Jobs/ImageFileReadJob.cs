@@ -3,7 +3,8 @@ using PicSum.Core.Job.AsyncJob;
 using PicSum.Job.Logics;
 using PicSum.Job.Parameters;
 using PicSum.Job.Results;
-using SWF.Common;
+using SWF.Core.FileAccessor;
+using SWF.Core.ImageAccessor;
 using System.Drawing;
 
 namespace PicSum.Job.Jobs

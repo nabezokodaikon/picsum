@@ -1,5 +1,5 @@
 using PicSum.Core.Job.AsyncJob;
-using SWF.Common;
+using SWF.Core.Base;
 
 namespace PicSum.Job.Parameters
 {

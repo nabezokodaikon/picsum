@@ -1,4 +1,4 @@
-using SWF.Common;
+using SWF.Core.Base;
 
 namespace SWF.UIComponent.TabOperation
 {

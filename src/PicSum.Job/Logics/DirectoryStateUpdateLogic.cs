@@ -3,7 +3,7 @@ using PicSum.Core.Job.AsyncJob;
 using PicSum.Data.DatabaseAccessor.Connection;
 using PicSum.Data.DatabaseAccessor.Sql;
 using PicSum.Job.Parameters;
-using SWF.Common;
+using SWF.Core.Base;
 using System.Runtime.Versioning;
 
 namespace PicSum.Job.Logics

@@ -1,4 +1,4 @@
-using SWF.Common;
+using SWF.Core.ImageAccessor;
 using SWF.UIComponent.TabOperation.Properties;
 using System;
 using System.Drawing;

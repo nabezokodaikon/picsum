@@ -1,5 +1,5 @@
 using PicSum.Core.Base.Conf;
-using SWF.Common;
+using SWF.Core.FileAccessor;
 using System;
 using System.Drawing;
 using System.IO;
