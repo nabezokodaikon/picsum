@@ -549,7 +549,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             }
             else if (this.displayMode == ImageDisplayMode.RightFacing)
             {
-                this.leftImagePanel.Visible = false;
+                this.rightImagePanel.Visible = false;
             }
             else if (this.displayMode == ImageDisplayMode.Single)
             {
