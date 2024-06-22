@@ -79,7 +79,7 @@ namespace SWF.Common
                         filePath, ImageUtil.ReadImageFileFast(filePath), timestamp);
                     CACHE_LIST.Add(newImage);
                     CACHE_DICTIONARY.Add(filePath, newImage);
-                    return newImage;
+                    return newImage.Clone();
 
                 }
                 finally

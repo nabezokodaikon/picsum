@@ -84,5 +84,55 @@ namespace SWF.Common
                 CACHE_LOCK.ExitUpgradeableReadLock();
             }
         }
+
+        public static void SetImageInfo(string filePath, Size size)
+        {
+            ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
+
+            var timestamp = FileUtil.GetUpdateDate(filePath);
+
+            CACHE_LOCK.EnterUpgradeableReadLock();
+            try
+            {
+                ImageInfoCache cache = null;
+                if (CACHE_DICTIONARY.TryGetValue(filePath, out cache))
+                {
+                    if (timestamp == cache.Timestamp)
+                    {
+                        return;
+                    }
+                }
+
+                CACHE_LOCK.EnterWriteLock();
+                try
+                {
+                    if (cache != null)
+                    {
+                        CACHE_LIST.Remove(cache);
+                        CACHE_DICTIONARY.Remove(cache.FilePath);
+                    }
+
+                    if (CACHE_LIST.Count > CACHE_CAPACITY)
+                    {
+                        var removeCache = CACHE_LIST[0];
+                        CACHE_LIST.Remove(removeCache);
+                        CACHE_DICTIONARY.Remove(removeCache.FilePath);
+                    }
+
+                    var newItem = new ImageInfoCache(
+                        filePath, size, timestamp);
+                    CACHE_LIST.Add(newItem);
+                    CACHE_DICTIONARY.Add(filePath, newItem);
+                }
+                finally
+                {
+                    CACHE_LOCK.ExitWriteLock();
+                }
+            }
+            finally
+            {
+                CACHE_LOCK.ExitUpgradeableReadLock();
+            }
+        }
     }
 }

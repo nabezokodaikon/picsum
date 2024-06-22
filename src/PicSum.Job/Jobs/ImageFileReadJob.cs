@@ -168,13 +168,14 @@ namespace PicSum.Job.Jobs
             {
                 this.CheckCancel();
 
-                Thread.Sleep(50);
+                Thread.Sleep(10);
 
                 try
                 {
-                    ImageFileCacheUtil.Read(path);
-                    this.CheckCancel();
-                    ImageInfoCacheUtil.GetImageInfo(path);
+                    using (var cache = ImageFileCacheUtil.Read(path))
+                    {
+                        ImageInfoCacheUtil.SetImageInfo(path, cache.Image.Size);
+                    }
                 }
                 catch (FileUtilException ex)
                 {

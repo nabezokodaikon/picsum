@@ -748,16 +748,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
             if (ImageFileReadedTimeCacheUtil.IsSlow(mainFilePath))
             {
-                var sw = Stopwatch.StartNew();
-                try
-                {
-                    this.DrawLoadingImage(mainFilePath);
-                }
-                finally
-                {
-                    sw.Stop();
-                    Console.WriteLine($"DrawLoadingImage: {sw.ElapsedMilliseconds} ms");
-                }
+                this.DrawLoadingImage(mainFilePath);
             }
 
             var nextFiles = new List<string>(10);
