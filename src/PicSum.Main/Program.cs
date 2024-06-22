@@ -91,10 +91,10 @@ namespace PicSum.Main
             }
 
 #if DEBUG
-            // デバッグビルドの場合には、NLog.config.debugを使用
+            LogManager.Configuration = new XmlLoggingConfiguration("NLog.debug.config");
+#elif DEVELOP
             LogManager.Configuration = new XmlLoggingConfiguration("NLog.debug.config");
 #else
-// リリースビルドの場合には、NLog.configを使用
             LogManager.Configuration = new XmlLoggingConfiguration("NLog.config");
 #endif
 

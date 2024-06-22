@@ -19,6 +19,8 @@ mono_crash.*
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/
+[De]velop/
+[De]velop/Public/
 [Rr]elease/
 [Rr]eleases/
 x64/
@@ -32,6 +34,7 @@ bld/
 [Ll]og/
 [Ll]ogs/
 bin_debug/
+bin_develop/
 bin_release/
 bin_vscode/
 
