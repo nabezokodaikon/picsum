@@ -60,7 +60,7 @@ namespace SWF.Common
             this.Timestamp = timestamp;
         }
 
-        public ImageFileCache Clone()
+        internal ImageFileCache Clone()
         {
             if (this.FilePath == null)
             {

@@ -53,7 +53,7 @@ namespace SWF.Common
                 {
                     if (timestamp == cache.Timestamp)
                     {
-                        return cache;
+                        return cache.Clone();
                     }
                 }
 

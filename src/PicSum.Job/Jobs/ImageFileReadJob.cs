@@ -191,7 +191,7 @@ namespace PicSum.Job.Jobs
         {
             try
             {
-                return ImageFileCacheUtil.Read(filePath).Clone().Image;
+                return ImageFileCacheUtil.Read(filePath).Image;
             }
             catch (FileUtilException ex)
             {
