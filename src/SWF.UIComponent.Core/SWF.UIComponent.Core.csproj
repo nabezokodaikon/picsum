@@ -14,35 +14,19 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="CheckPatternPanel.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="DoubleBufferedSplitContainer.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="HideForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Update="CheckPatternPanel.cs" />
+    <Compile Update="DoubleBufferedSplitContainer.cs" />
+    <Compile Update="HideForm.cs" />
     <Compile Update="Properties\Resources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Update="RatingBar.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="RatingButton.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="Slider.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="ToolButton.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="ToolStripSlider.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Update="RatingBar.cs" />
+    <Compile Update="RatingButton.cs" />
+    <Compile Update="Slider.cs" />
+    <Compile Update="ToolButton.cs" />
+    <Compile Update="ToolStripSlider.cs" />
   </ItemGroup>
 
   <ItemGroup>
