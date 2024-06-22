@@ -1,10 +1,7 @@
-using System;
-using System.Drawing;
 using System.Runtime.Versioning;
-using System.Windows.Forms;
 using System.Windows.Forms.Design;
 
-namespace SWF.UIComponent.Common
+namespace SWF.UIComponent.Core
 {
     /// <summary>
     /// ツールストリップスライダー

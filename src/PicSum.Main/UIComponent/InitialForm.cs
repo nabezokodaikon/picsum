@@ -1,5 +1,5 @@
 using PicSum.Main.Mng;
-using SWF.UIComponent.Common;
+using SWF.UIComponent.Core;
 using System;
 using System.Runtime.Versioning;
 

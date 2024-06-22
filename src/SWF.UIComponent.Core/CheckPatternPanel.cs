@@ -1,10 +1,7 @@
-using System.Collections.Generic;
-using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Runtime.Versioning;
-using System.Windows.Forms;
 
-namespace SWF.UIComponent.Common
+namespace SWF.UIComponent.Core
 {
     [SupportedOSPlatform("windows")]
     public class CheckPatternPanel : Panel

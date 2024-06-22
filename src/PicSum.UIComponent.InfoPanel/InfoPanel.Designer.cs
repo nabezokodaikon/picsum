@@ -20,7 +20,7 @@ namespace PicSum.UIComponent.InfoPanel
             this.tagContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tagDeleteMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tagToAllEntryMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.ratingBar = new SWF.UIComponent.Common.RatingBar();
+            this.ratingBar = new SWF.UIComponent.Core.RatingBar();
             this.tagFlowList = new SWF.UIComponent.FlowList.FlowList();
             this.wideComboBox = new SWF.UIComponent.WideDropDown.WideComboBox();
             this.fileInfoLabel = new FileInfoLabel();
@@ -147,7 +147,7 @@ namespace PicSum.UIComponent.InfoPanel
         #endregion
 
         private System.Windows.Forms.PictureBox thumbnailPictureBox;
-        private SWF.UIComponent.Common.RatingBar ratingBar;
+        private SWF.UIComponent.Core.RatingBar ratingBar;
         private SWF.UIComponent.FlowList.FlowList tagFlowList;
         private System.Windows.Forms.ContextMenuStrip tagContextMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem tagDeleteMenuItem;

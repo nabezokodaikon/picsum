@@ -1,10 +1,7 @@
-using SWF.UIComponent.Common.Properties;
-using System;
-using System.Drawing;
+using SWF.UIComponent.Core.Properties;
 using System.Runtime.Versioning;
-using System.Windows.Forms;
 
-namespace SWF.UIComponent.Common
+namespace SWF.UIComponent.Core
 {
     /// <summary>
     /// スライダーコントロール

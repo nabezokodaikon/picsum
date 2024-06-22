@@ -1,8 +1,7 @@
 using System.Runtime.Versioning;
-using System.Windows.Forms;
 using WinApi;
 
-namespace SWF.UIComponent.Common
+namespace SWF.UIComponent.Core
 {
     [SupportedOSPlatform("windows")]
     public class HideForm : Form

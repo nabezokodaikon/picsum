@@ -34,7 +34,7 @@ namespace PicSum.UIComponent.Contents.FileList
             this.sortFilePathToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.sortFileUpdateDateToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.sortFileRgistrationDateToolStripButton = new System.Windows.Forms.ToolStripButton();
-            this.thumbnailSizeToolStripSlider = new SWF.UIComponent.Common.ToolStripSlider();
+            this.thumbnailSizeToolStripSlider = new SWF.UIComponent.Core.ToolStripSlider();
             this.movePreviewToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.moveNextToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.viewContextMenuStrip.SuspendLayout();
@@ -263,7 +263,7 @@ namespace PicSum.UIComponent.Contents.FileList
         private System.Windows.Forms.ToolStripButton sortFilePathToolStripButton;
         private System.Windows.Forms.ToolStripButton sortFileUpdateDateToolStripButton;
         protected System.Windows.Forms.ToolStripButton sortFileRgistrationDateToolStripButton;
-        private SWF.UIComponent.Common.ToolStripSlider thumbnailSizeToolStripSlider;
+        private SWF.UIComponent.Core.ToolStripSlider thumbnailSizeToolStripSlider;
         private System.Windows.Forms.ToolStripButton movePreviewToolStripButton;
         private System.Windows.Forms.ToolStripButton moveNextToolStripButton;
         private System.Windows.Forms.ContextMenuStrip viewContextMenuStrip;

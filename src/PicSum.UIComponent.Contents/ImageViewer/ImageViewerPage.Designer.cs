@@ -23,7 +23,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.fileContextMenu = new PicSum.UIComponent.Contents.ContextMenu.FileContextMenu();
             this.rightImagePanel = new SWF.UIComponent.ImagePanel.ImagePanel();
             this.filePathToolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.checkPatternPanel = new SWF.UIComponent.Common.CheckPatternPanel();
+            this.checkPatternPanel = new SWF.UIComponent.Core.CheckPatternPanel();
             this.viewContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.singleViewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.leftFacingViewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -39,7 +39,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.doubleNextIndexToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.singlePreviewIndexToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.singleNextIndexToolStripButton = new System.Windows.Forms.ToolStripButton();
-            this.indexSlider = new SWF.UIComponent.Common.Slider();
+            this.indexSlider = new SWF.UIComponent.Core.Slider();
             this.checkPatternPanel.SuspendLayout();
             this.viewContextMenuStrip.SuspendLayout();
             this.sizeContextMenuStrip.SuspendLayout();
@@ -301,7 +301,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         private SWF.UIComponent.ImagePanel.ImagePanel rightImagePanel;
         private PicSum.UIComponent.Contents.ContextMenu.FileContextMenu fileContextMenu;
         private System.Windows.Forms.ToolTip filePathToolTip;
-        private SWF.UIComponent.Common.CheckPatternPanel checkPatternPanel;
+        private SWF.UIComponent.Core.CheckPatternPanel checkPatternPanel;
         private PicSum.UIComponent.Contents.ToolBar.PageToolBar toolBar;
         private System.Windows.Forms.ToolStripDropDownButton viewToolStripDropDownButton;
         private System.Windows.Forms.ToolStripDropDownButton sizeToolStripDropDownButton;
@@ -317,6 +317,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         private System.Windows.Forms.ToolStripMenuItem originalSizeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem allFitSizeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem onlyBigImageFitSizeToolStripMenuItem;
-        private SWF.UIComponent.Common.Slider indexSlider;
+        private SWF.UIComponent.Core.Slider indexSlider;
     }
 }

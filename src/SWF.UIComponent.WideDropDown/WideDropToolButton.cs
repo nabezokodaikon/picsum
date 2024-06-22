@@ -1,4 +1,4 @@
-using SWF.UIComponent.Common;
+using SWF.UIComponent.Core;
 using System;
 using System.Collections.Generic;
 using System.Drawing;

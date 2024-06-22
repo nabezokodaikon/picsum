@@ -21,14 +21,14 @@ namespace PicSum.Main.UIComponent
             this.infoPanel = new PicSum.UIComponent.InfoPanel.InfoPanel();
             this.tabSwitch = new SWF.UIComponent.TabOperation.TabSwitch();
             this.toolPanel = new System.Windows.Forms.Panel();
-            this.searchBookmarkToolButton = new SWF.UIComponent.Common.ToolButton();
-            this.reloadToolButton = new SWF.UIComponent.Common.ToolButton();
+            this.searchBookmarkToolButton = new SWF.UIComponent.Core.ToolButton();
+            this.reloadToolButton = new SWF.UIComponent.Core.ToolButton();
             this.tagDropToolButton = new SWF.UIComponent.WideDropDown.WideDropToolButton();
-            this.homeToolButton = new SWF.UIComponent.Common.ToolButton();
-            this.nextPageHistoryButton = new SWF.UIComponent.Common.ToolButton();
-            this.searchRatingToolButton = new SWF.UIComponent.Common.ToolButton();
-            this.previewPageHistoryButton = new SWF.UIComponent.Common.ToolButton();
-            this.showInfoToolButton = new SWF.UIComponent.Common.ToolButton();
+            this.homeToolButton = new SWF.UIComponent.Core.ToolButton();
+            this.nextPageHistoryButton = new SWF.UIComponent.Core.ToolButton();
+            this.searchRatingToolButton = new SWF.UIComponent.Core.ToolButton();
+            this.previewPageHistoryButton = new SWF.UIComponent.Core.ToolButton();
+            this.showInfoToolButton = new SWF.UIComponent.Core.ToolButton();
             this.addressBar = new PicSum.UIComponent.AddressBar.AddressBar();
             this.toolPanel.SuspendLayout();
             this.SuspendLayout();
@@ -105,7 +105,7 @@ namespace PicSum.Main.UIComponent
             this.searchBookmarkToolButton.Image = global::PicSum.Main.Properties.Resources.BookmarkIcon;
             this.searchBookmarkToolButton.Location = new System.Drawing.Point(670, 3);
             this.searchBookmarkToolButton.Name = "searchBookmarkToolButton";
-            this.searchBookmarkToolButton.RegionType = SWF.UIComponent.Common.ToolButton.ToolButtonRegionType.Default;
+            this.searchBookmarkToolButton.RegionType = SWF.UIComponent.Core.ToolButton.ToolButtonRegionType.Default;
             this.searchBookmarkToolButton.Size = new System.Drawing.Size(32, 28);
             this.searchBookmarkToolButton.TabIndex = 11;
             this.searchBookmarkToolButton.UseVisualStyleBackColor = true;
@@ -119,7 +119,7 @@ namespace PicSum.Main.UIComponent
             this.reloadToolButton.Image = global::PicSum.Main.Properties.Resources.ReloadIcon;
             this.reloadToolButton.Location = new System.Drawing.Point(76, 3);
             this.reloadToolButton.Name = "reloadToolButton";
-            this.reloadToolButton.RegionType = SWF.UIComponent.Common.ToolButton.ToolButtonRegionType.Default;
+            this.reloadToolButton.RegionType = SWF.UIComponent.Core.ToolButton.ToolButtonRegionType.Default;
             this.reloadToolButton.Size = new System.Drawing.Size(32, 28);
             this.reloadToolButton.TabIndex = 10;
             this.reloadToolButton.UseVisualStyleBackColor = true;
@@ -136,7 +136,7 @@ namespace PicSum.Main.UIComponent
             this.tagDropToolButton.Image = global::PicSum.Main.Properties.Resources.TagIcon;
             this.tagDropToolButton.Location = new System.Drawing.Point(594, 3);
             this.tagDropToolButton.Name = "tagDropToolButton";
-            this.tagDropToolButton.RegionType = SWF.UIComponent.Common.ToolButton.ToolButtonRegionType.Default;
+            this.tagDropToolButton.RegionType = SWF.UIComponent.Core.ToolButton.ToolButtonRegionType.Default;
             this.tagDropToolButton.SelectedItem = null;
             this.tagDropToolButton.Size = new System.Drawing.Size(32, 28);
             this.tagDropToolButton.TabIndex = 9;
@@ -152,7 +152,7 @@ namespace PicSum.Main.UIComponent
             this.homeToolButton.Image = global::PicSum.Main.Properties.Resources.HomeIcon;
             this.homeToolButton.Location = new System.Drawing.Point(114, 3);
             this.homeToolButton.Name = "homeToolButton";
-            this.homeToolButton.RegionType = SWF.UIComponent.Common.ToolButton.ToolButtonRegionType.Default;
+            this.homeToolButton.RegionType = SWF.UIComponent.Core.ToolButton.ToolButtonRegionType.Default;
             this.homeToolButton.Size = new System.Drawing.Size(32, 28);
             this.homeToolButton.TabIndex = 6;
             this.homeToolButton.UseVisualStyleBackColor = true;
@@ -168,7 +168,7 @@ namespace PicSum.Main.UIComponent
             this.nextPageHistoryButton.Location = new System.Drawing.Point(38, 3);
             this.nextPageHistoryButton.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
             this.nextPageHistoryButton.Name = "nextPageHistoryButton";
-            this.nextPageHistoryButton.RegionType = SWF.UIComponent.Common.ToolButton.ToolButtonRegionType.Right;
+            this.nextPageHistoryButton.RegionType = SWF.UIComponent.Core.ToolButton.ToolButtonRegionType.Right;
             this.nextPageHistoryButton.Size = new System.Drawing.Size(32, 28);
             this.nextPageHistoryButton.TabIndex = 5;
             this.nextPageHistoryButton.UseVisualStyleBackColor = true;
@@ -183,7 +183,7 @@ namespace PicSum.Main.UIComponent
             this.searchRatingToolButton.Image = global::PicSum.Main.Properties.Resources.ActiveRatingIcon;
             this.searchRatingToolButton.Location = new System.Drawing.Point(632, 3);
             this.searchRatingToolButton.Name = "searchRatingToolButton";
-            this.searchRatingToolButton.RegionType = SWF.UIComponent.Common.ToolButton.ToolButtonRegionType.Default;
+            this.searchRatingToolButton.RegionType = SWF.UIComponent.Core.ToolButton.ToolButtonRegionType.Default;
             this.searchRatingToolButton.Size = new System.Drawing.Size(32, 28);
             this.searchRatingToolButton.TabIndex = 8;
             this.searchRatingToolButton.UseVisualStyleBackColor = true;
@@ -199,7 +199,7 @@ namespace PicSum.Main.UIComponent
             this.previewPageHistoryButton.Location = new System.Drawing.Point(6, 3);
             this.previewPageHistoryButton.Margin = new System.Windows.Forms.Padding(6, 3, 0, 3);
             this.previewPageHistoryButton.Name = "previewPageHistoryButton";
-            this.previewPageHistoryButton.RegionType = SWF.UIComponent.Common.ToolButton.ToolButtonRegionType.Left;
+            this.previewPageHistoryButton.RegionType = SWF.UIComponent.Core.ToolButton.ToolButtonRegionType.Left;
             this.previewPageHistoryButton.Size = new System.Drawing.Size(32, 28);
             this.previewPageHistoryButton.TabIndex = 0;
             this.previewPageHistoryButton.UseVisualStyleBackColor = true;
@@ -215,7 +215,7 @@ namespace PicSum.Main.UIComponent
             this.showInfoToolButton.Location = new System.Drawing.Point(708, 3);
             this.showInfoToolButton.Margin = new System.Windows.Forms.Padding(3, 3, 6, 3);
             this.showInfoToolButton.Name = "showInfoToolButton";
-            this.showInfoToolButton.RegionType = SWF.UIComponent.Common.ToolButton.ToolButtonRegionType.Default;
+            this.showInfoToolButton.RegionType = SWF.UIComponent.Core.ToolButton.ToolButtonRegionType.Default;
             this.showInfoToolButton.Size = new System.Drawing.Size(32, 28);
             this.showInfoToolButton.TabIndex = 5;
             this.showInfoToolButton.UseVisualStyleBackColor = true;
@@ -255,14 +255,14 @@ namespace PicSum.Main.UIComponent
         private PicSum.UIComponent.InfoPanel.InfoPanel infoPanel;
         private SWF.UIComponent.TabOperation.TabSwitch tabSwitch;
         private System.Windows.Forms.Panel toolPanel;
-        private SWF.UIComponent.Common.ToolButton showInfoToolButton;
+        private SWF.UIComponent.Core.ToolButton showInfoToolButton;
         private PicSum.UIComponent.AddressBar.AddressBar addressBar;
-        private SWF.UIComponent.Common.ToolButton nextPageHistoryButton;
-        private SWF.UIComponent.Common.ToolButton previewPageHistoryButton;
-        private SWF.UIComponent.Common.ToolButton homeToolButton;
-        private SWF.UIComponent.Common.ToolButton searchRatingToolButton;
+        private SWF.UIComponent.Core.ToolButton nextPageHistoryButton;
+        private SWF.UIComponent.Core.ToolButton previewPageHistoryButton;
+        private SWF.UIComponent.Core.ToolButton homeToolButton;
+        private SWF.UIComponent.Core.ToolButton searchRatingToolButton;
         private SWF.UIComponent.WideDropDown.WideDropToolButton tagDropToolButton;
-        private SWF.UIComponent.Common.ToolButton reloadToolButton;
-        private SWF.UIComponent.Common.ToolButton searchBookmarkToolButton;
+        private SWF.UIComponent.Core.ToolButton reloadToolButton;
+        private SWF.UIComponent.Core.ToolButton searchBookmarkToolButton;
     }
 }
