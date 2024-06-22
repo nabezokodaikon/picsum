@@ -211,7 +211,7 @@ namespace SWF.Core.ImageAccessor
                     }
                     if (FileUtil.IsAVIFFile(filePath))
                     {
-                        return SixLaborsUtil.GetImageSize(filePath);
+                        return LibHeifSharpUtil.GetImageSize(filePath);
                     }
                     else if (FileUtil.IsHEICFile(filePath))
                     {
