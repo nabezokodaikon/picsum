@@ -33,12 +33,12 @@ namespace SWF.Core.ImageAccessor
 
         public static Size GetSize(string filePath)
         {
-            return Read(filePath, cache => cache.Size);
+            return Read(filePath, cache => cache.Image.Size);
         }
 
         public static Bitmap ReadImage(string filePath)
         {
-            return Read(filePath, cache => cache.ToImage());
+            return Read(filePath, cache => cache.Clone()).Image;
         }
 
         private static T Read<T>(string filePath, Func<ImageFileCache, T> resultFunc)
@@ -75,14 +75,11 @@ namespace SWF.Core.ImageAccessor
                         CACHE_DICTIONARY.Remove(removeCache.FilePath);
                     }
 
-                    using (var img = ImageUtil.ReadImageFileFast(filePath))
-                    {
-                        var newCache = new ImageFileCache(
-                            filePath, img, timestamp);
-                        CACHE_LIST.Add(newCache);
-                        CACHE_DICTIONARY.Add(filePath, newCache);
-                        return resultFunc(newCache);
-                    }
+                    var newCache = new ImageFileCache(
+                        filePath, ImageUtil.ReadImageFileFast(filePath), timestamp);
+                    CACHE_LIST.Add(newCache);
+                    CACHE_DICTIONARY.Add(filePath, newCache);
+                    return resultFunc(newCache);
                 }
                 finally
                 {

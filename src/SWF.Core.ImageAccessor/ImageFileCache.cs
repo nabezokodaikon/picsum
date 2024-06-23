@@ -1,19 +1,16 @@
-using System.Diagnostics;
-using System.Drawing.Imaging;
 using System.Runtime.Versioning;
 
 namespace SWF.Core.ImageAccessor
 {
     [SupportedOSPlatform("windows")]
     internal sealed class ImageFileCache
-        : IEquatable<ImageFileCache>
+        : IDisposable, IEquatable<ImageFileCache>
     {
-        private readonly byte[] buffer;
-        private readonly PixelFormat pixelFormat;
+        private bool disposed = false;
 
         public string FilePath { get; private set; }
+        public Bitmap Image { get; private set; }
         public DateTime Timestamp { get; private set; }
-        public Size Size { get; private set; }
 
         public ImageFileCache(string filePath, Bitmap image, DateTime timestamp)
         {
@@ -21,36 +18,51 @@ namespace SWF.Core.ImageAccessor
             ArgumentNullException.ThrowIfNull(image, nameof(image));
 
             this.FilePath = filePath;
+            this.Image = image;
             this.Timestamp = timestamp;
-
-            this.Size = image.Size;
-            this.pixelFormat = image.PixelFormat;
-
-            var sw = Stopwatch.StartNew();
-            try
-            {
-                this.buffer = ImageUtil.ToBinary(image);
-            }
-            finally
-            {
-                sw.Stop();
-                Console.WriteLine($"ToBinary: {sw.ElapsedMilliseconds}");
-            }
         }
 
-        public Bitmap ToImage()
+        private void Dispose(bool disposing)
         {
-            var sw = Stopwatch.StartNew();
-            try
+            if (this.disposed)
             {
-                return ImageUtil.ToImage(
-                    this.buffer, this.Size.Width, this.Size.Height, this.pixelFormat);
+                return;
             }
-            finally
+
+            if (disposing)
             {
-                sw.Stop();
-                Console.WriteLine($"ToImage: {sw.ElapsedMilliseconds}");
+                this.Image?.Dispose();
             }
+
+            this.disposed = true;
+        }
+
+        public void Dispose()
+        {
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        ~ImageFileCache()
+        {
+            this.Dispose(false);
+        }
+
+        public ImageFileCache Clone()
+        {
+            if (this.FilePath == null)
+            {
+                throw new NullReferenceException("ファイルパスが設定されていません。");
+            }
+
+            if (this.Image == null)
+            {
+                throw new NullReferenceException("イメージが設定されていません。");
+            }
+
+            var cloneImage = this.Image.Clone(
+                new Rectangle(0, 0, this.Image.Width, this.Image.Height), this.Image.PixelFormat);
+            return new ImageFileCache(this.FilePath, cloneImage, this.Timestamp);
         }
 
         public bool Equals(ImageFileCache? other)
