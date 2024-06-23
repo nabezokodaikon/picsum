@@ -24,8 +24,6 @@ namespace SWF.Core.ImageAccessor
                 this.Image?.Dispose();
             }
 
-            this.Image = null;
-
             this.disposed = true;
         }
 
