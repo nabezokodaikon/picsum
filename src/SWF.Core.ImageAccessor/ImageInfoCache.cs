@@ -1,6 +1,7 @@
 namespace SWF.Core.ImageAccessor
 {
     public class ImageInfoCache
+        : IEquatable<ImageInfoCache>
     {
         public string FilePath { get; private set; }
         public Size Size { get; private set; }
@@ -15,14 +16,8 @@ namespace SWF.Core.ImageAccessor
             this.Timestamp = timestamp;
         }
 
-        public override bool Equals(object? obj)
+        public bool Equals(ImageInfoCache? other)
         {
-            if (obj == null)
-            {
-                return false;
-            }
-
-            var other = obj as ImageInfoCache;
             if (other == null)
             {
                 return false;

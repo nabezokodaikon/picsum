@@ -4,7 +4,7 @@ namespace SWF.Core.ImageAccessor
 {
     [SupportedOSPlatform("windows")]
     public sealed class ImageFileCache
-        : IDisposable
+        : IDisposable, IEquatable<ImageFileCache>
     {
         private bool disposed = false;
 
@@ -67,14 +67,8 @@ namespace SWF.Core.ImageAccessor
             return new ImageFileCache(this.FilePath, cloneImage, this.Timestamp);
         }
 
-        public override bool Equals(object? obj)
+        public bool Equals(ImageFileCache? other)
         {
-            if (obj == null)
-            {
-                return false;
-            }
-
-            var other = obj as ImageFileCache;
             if (other == null)
             {
                 return false;

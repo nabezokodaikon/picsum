@@ -1,6 +1,7 @@
 namespace SWF.Core.ImageAccessor
 {
     internal class ImageFileReadedTimeCache
+        : IEquatable<ImageFileReadedTimeCache>
     {
         public string FilePath { get; private set; }
         public long ReadedMilliseconds { get; private set; }
@@ -13,14 +14,8 @@ namespace SWF.Core.ImageAccessor
             this.ReadedMilliseconds = readedMilliseconds;
         }
 
-        public override bool Equals(object? obj)
+        public bool Equals(ImageFileReadedTimeCache? other)
         {
-            if (obj == null)
-            {
-                return false;
-            }
-
-            var other = obj as ImageFileReadedTimeCache;
             if (other == null)
             {
                 return false;
