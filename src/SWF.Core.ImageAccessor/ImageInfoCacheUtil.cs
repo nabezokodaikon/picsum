@@ -65,11 +65,11 @@ namespace SWF.Core.ImageAccessor
                         CACHE_DICTIONARY.Remove(removeCache.FilePath);
                     }
 
-                    var newItem = new ImageInfoCache(
+                    var newCache = new ImageInfoCache(
                         filePath, ImageUtil.GetImageSize(filePath), timestamp);
-                    CACHE_LIST.Add(newItem);
-                    CACHE_DICTIONARY.Add(filePath, newItem);
-                    return newItem;
+                    CACHE_LIST.Add(newCache);
+                    CACHE_DICTIONARY.Add(filePath, newCache);
+                    return newCache;
                 }
                 finally
                 {
@@ -116,10 +116,10 @@ namespace SWF.Core.ImageAccessor
                         CACHE_DICTIONARY.Remove(removeCache.FilePath);
                     }
 
-                    var newItem = new ImageInfoCache(
+                    var newCache = new ImageInfoCache(
                         filePath, size, timestamp);
-                    CACHE_LIST.Add(newItem);
-                    CACHE_DICTIONARY.Add(filePath, newItem);
+                    CACHE_LIST.Add(newCache);
+                    CACHE_DICTIONARY.Add(filePath, newCache);
                 }
                 finally
                 {
