@@ -75,6 +75,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         private TwoWayJob<ImageFileReadJob, ImageFileReadParameter, ImageFileGetResult> getImageFileJob = null;
         private OneWayJob<BookmarkAddJob, ValueParameter<string>> addBookmarkJob = null;
         private OneWayJob<SingleFileExportJob, SingleFileExportParameter> singleFileExportJob = null;
+        private OneWayJob<ImageInfoCacheJob, ListParameter<string>> imageInfoCacheJob = null;
 
         #endregion
 
@@ -177,6 +178,21 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             }
         }
 
+        private OneWayJob<ImageInfoCacheJob, ListParameter<string>> ImageInfoCacheJob
+        {
+            get
+            {
+                if (this.imageInfoCacheJob == null)
+                {
+                    this.imageInfoCacheJob = new();
+                    this.imageInfoCacheJob
+                        .StartThread();
+                }
+
+                return this.imageInfoCacheJob;
+            }
+        }
+
         #endregion
 
         #region コンストラクタ
@@ -260,6 +276,12 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 {
                     this.getImageFileJob.Dispose();
                     this.getImageFileJob = null;
+                }
+
+                if (this.imageInfoCacheJob != null)
+                {
+                    this.imageInfoCacheJob.Dispose();
+                    this.imageInfoCacheJob = null;
                 }
 
                 this.leftImagePanel.Dispose();
@@ -809,6 +831,8 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 prevFiles.Add(this.filePathList[prevIndex]);
             }
 
+            this.ImageInfoCacheJob.StartJob([.. nextFiles, .. prevFiles]);
+
             var param = new ImageFileReadParameter
             {
                 CurrentIndex = this.FilePathListIndex,
@@ -816,7 +840,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 ImageDisplayMode = this.displayMode,
                 ImageSizeMode = this.sizeMode,
                 ThumbnailSize = this.leftImagePanel.ThumbnailSize,
-                CacheList = [.. nextFiles, .. prevFiles],
             };
 
             this.GetImageFileJob.StartJob(param);
@@ -1094,7 +1117,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 throw new InvalidOperationException($"不正な画像表示モードです。DisplayMode: '{this.displayMode}'");
             }
 
-            this.ChangeImagePanelSize(e);                        
+            this.ChangeImagePanelSize(e);
             this.Focus();
         }
 

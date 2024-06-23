@@ -159,34 +159,6 @@ namespace PicSum.Job.Jobs
                 ExeptionHandler(subResult);
                 throw;
             }
-
-            if (parameter.CacheList == null)
-            {
-                throw new NullReferenceException("パラメータにキャッシュするファイルのリストが設定されていません。");
-            }
-
-            foreach (var path in parameter.CacheList)
-            {
-                this.CheckCancel();
-
-                Thread.Sleep(10);
-
-                try
-                {
-                    using (var cache = ImageFileCacheUtil.Read(path))
-                    {
-                        ImageInfoCacheUtil.SetImageInfo(path, cache.Image.Size);
-                    }
-                }
-                catch (FileUtilException ex)
-                {
-                    this.WriteErrorLog(new JobException(this.ID, ex));
-                }
-                catch (ImageUtilException ex)
-                {
-                    this.WriteErrorLog(new JobException(this.ID, ex));
-                }
-            }
         }
 
         private Bitmap ReadImageFile(string filePath)

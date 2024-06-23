@@ -14,6 +14,5 @@ namespace PicSum.Job.Parameters
         public ImageDisplayMode ImageDisplayMode { get; set; }
         public ImageSizeMode ImageSizeMode { get; set; }
         public int ThumbnailSize { get; set; }
-        public IList<string>? CacheList { get; set; }
     }
 }
