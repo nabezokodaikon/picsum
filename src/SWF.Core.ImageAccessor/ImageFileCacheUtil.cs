@@ -37,7 +37,17 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
-        public static T Read<T>(string filePath, Func<ImageFileCache, T> resultFunc)
+        public static Size GetSize(string filePath)
+        {
+            return Read(filePath, cache => cache.Image.Size);
+        }
+
+        public static Bitmap ReadImage(string filePath)
+        {
+            return Read(filePath, cache => cache.Clone()).Image;
+        }
+
+        private static T Read<T>(string filePath, Func<ImageFileCache, T> resultFunc)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
