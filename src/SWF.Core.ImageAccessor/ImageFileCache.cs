@@ -8,17 +8,9 @@ namespace SWF.Core.ImageAccessor
     {
         private bool disposed = false;
 
-        public static readonly ImageFileCache EMPTY = new();
         public Bitmap Image { get; private set; }
         public string FilePath { get; private set; }
         public DateTime Timestamp { get; private set; }
-
-        private ImageFileCache()
-        {
-            this.FilePath = null;
-            this.Image = null;
-            this.Timestamp = DateTime.MinValue;
-        }
 
         private void Dispose(bool disposing)
         {
