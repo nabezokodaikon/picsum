@@ -14,12 +14,6 @@ namespace SWF.Core.ImageAccessor
         public static void DisposeStaticResouces()
         {
             CACHE_LOCK.Dispose();
-
-            foreach (var entity in CACHE_LIST)
-            {
-                entity.Dispose();
-            }
-
             CACHE_LIST.Clear();
             CACHE_DICTIONARY.Clear();
         }
@@ -39,12 +33,12 @@ namespace SWF.Core.ImageAccessor
 
         public static Size GetSize(string filePath)
         {
-            return Read(filePath, cache => cache.Image.Size);
+            return Read(filePath, cache => cache.Size);
         }
 
         public static Bitmap ReadImage(string filePath)
         {
-            return Read(filePath, cache => cache.Clone()).Image;
+            return Read(filePath, cache => cache.ToImage());
         }
 
         private static T Read<T>(string filePath, Func<ImageFileCache, T> resultFunc)
@@ -79,15 +73,16 @@ namespace SWF.Core.ImageAccessor
                         var removeCache = CACHE_LIST[0];
                         CACHE_LIST.Remove(removeCache);
                         CACHE_DICTIONARY.Remove(removeCache.FilePath);
-                        removeCache.Dispose();
                     }
 
-                    var newCache = new ImageFileCache(
-                        filePath, ImageUtil.ReadImageFileFast(filePath), timestamp);
-                    CACHE_LIST.Add(newCache);
-                    CACHE_DICTIONARY.Add(filePath, newCache);
-                    return resultFunc(newCache);
-
+                    using (var img = ImageUtil.ReadImageFileFast(filePath))
+                    {
+                        var newCache = new ImageFileCache(
+                            filePath, img, timestamp);
+                        CACHE_LIST.Add(newCache);
+                        CACHE_DICTIONARY.Add(filePath, newCache);
+                        return resultFunc(newCache);
+                    }
                 }
                 finally
                 {

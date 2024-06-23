@@ -18,30 +18,6 @@ namespace SWF.Core.ImageAccessor
         private static readonly ImageCodecInfo PNG_CODEC_INFO = ImageCodecInfo.GetImageEncoders().Single(info => info.FormatID == ImageFormat.Png.Guid);
         private static readonly dynamic SHELL = Activator.CreateInstance(Type.GetTypeFromProgID("Shell.Application"));
 
-        //public static byte[] ToBinary(Bitmap bmp)
-        //{
-        //    if (bmp == null)
-        //    {
-        //        throw new ArgumentNullException("bmp");
-        //    }
-
-        //    try
-        //    {
-        //        BitmapData dt = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly, bmp.PixelFormat);
-        //        IntPtr bitmapPtr = dt.Scan0;
-        //        byte[] bf = new byte[bmp.Width * bmp.Height * 3];
-        //        Marshal.Copy(bitmapPtr, bf, 0, bmp.Width * bmp.Height * 3);
-        //        bmp.UnlockBits(dt);
-
-        //        return bf;
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        Console.WriteLine(e.ToString());
-        //        throw;
-        //    }
-        //}
-
         public static byte[] ToBinary(Bitmap img)
         {
             ArgumentNullException.ThrowIfNull(img, nameof(img));
@@ -91,20 +67,6 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
-        //public static Bitmap ToImage(byte[] bf, int w, int h, PixelFormat pf)
-        //{
-        //    if (bf == null)
-        //    {
-        //        throw new ArgumentNullException("bf");
-        //    }
-
-        //    Bitmap bmp = new Bitmap(w, h, pf);
-        //    BitmapData bd = bmp.LockBits(new Rectangle(0, 0, w, h), ImageLockMode.WriteOnly, pf);
-        //    Marshal.Copy(bf, 0, bd.Scan0, bf.Length);
-        //    bmp.UnlockBits(bd);
-        //    return bmp;
-        //}
-
         public static Bitmap ToImage(byte[] bf, int width, int height, PixelFormat format)
         {
             ArgumentNullException.ThrowIfNull(bf, nameof(bf));
@@ -133,8 +95,6 @@ namespace SWF.Core.ImageAccessor
                     {
                         dst.UnlockBits(bmpData);
                     }
-
-                    dst.Dispose();
                 }
             }
         }

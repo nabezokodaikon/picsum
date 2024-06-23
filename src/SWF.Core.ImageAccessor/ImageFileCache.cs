@@ -1,42 +1,19 @@
+using System.Diagnostics;
+using System.Drawing.Imaging;
 using System.Runtime.Versioning;
 
 namespace SWF.Core.ImageAccessor
 {
     [SupportedOSPlatform("windows")]
     internal sealed class ImageFileCache
-        : IDisposable, IEquatable<ImageFileCache>
+        : IEquatable<ImageFileCache>
     {
-        private bool disposed = false;
+        private readonly byte[] buffer;
+        private readonly PixelFormat pixelFormat;
 
-        public Bitmap Image { get; private set; }
         public string FilePath { get; private set; }
         public DateTime Timestamp { get; private set; }
-
-        private void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-                this.Image?.Dispose();
-            }
-
-            this.disposed = true;
-        }
-
-        public void Dispose()
-        {
-            this.Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        ~ImageFileCache()
-        {
-            this.Dispose(false);
-        }
+        public Size Size { get; private set; }
 
         public ImageFileCache(string filePath, Bitmap image, DateTime timestamp)
         {
@@ -44,25 +21,36 @@ namespace SWF.Core.ImageAccessor
             ArgumentNullException.ThrowIfNull(image, nameof(image));
 
             this.FilePath = filePath;
-            this.Image = image;
             this.Timestamp = timestamp;
+
+            this.Size = image.Size;
+            this.pixelFormat = image.PixelFormat;
+
+            var sw = Stopwatch.StartNew();
+            try
+            {
+                this.buffer = ImageUtil.ToBinary(image);
+            }
+            finally
+            {
+                sw.Stop();
+                Console.WriteLine($"ToBinary: {sw.ElapsedMilliseconds}");
+            }
         }
 
-        public ImageFileCache Clone()
+        public Bitmap ToImage()
         {
-            if (this.FilePath == null)
+            var sw = Stopwatch.StartNew();
+            try
             {
-                throw new NullReferenceException("ファイルパスが設定されていません。");
+                return ImageUtil.ToImage(
+                    this.buffer, this.Size.Width, this.Size.Height, this.pixelFormat);
             }
-
-            if (this.Image == null)
+            finally
             {
-                throw new NullReferenceException("イメージが設定されていません。");
+                sw.Stop();
+                Console.WriteLine($"ToImage: {sw.ElapsedMilliseconds}");
             }
-
-            var cloneImage = this.Image.Clone(
-                new Rectangle(0, 0, this.Image.Width, this.Image.Height), this.Image.PixelFormat);
-            return new ImageFileCache(this.FilePath, cloneImage, this.Timestamp);
         }
 
         public bool Equals(ImageFileCache? other)
