@@ -44,7 +44,7 @@ namespace PicSum.Main
                     }
 
                     // プロセスのフルパス名を比較して同じアプリケーションか検証
-                    if (String.Compare(checkPath, currentPath, true) == 0)
+                    if (String.Compare(FileUtil.GetFileName(checkPath), FileUtil.GetFileName(currentPath), true) == 0)
                     {
                         return checkProcess;
                     }
