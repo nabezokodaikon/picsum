@@ -74,5 +74,31 @@ namespace SWF.Core.ImageAccessor
                 new Rectangle(0, 0, this.Image.Width, this.Image.Height), this.Image.PixelFormat);
             return new ImageFileCache(this.FilePath, cloneImage, this.Timestamp);
         }
+
+        public override bool Equals(object? obj)
+        {
+            if (obj == null)
+            {
+                return false;
+            }
+
+            var other = obj as ImageFileCache;
+            if (other == null)
+            {
+                return false;
+            }
+
+            if (other.FilePath != this.FilePath)
+            {
+                return false;
+            }
+
+            if (other.Timestamp != this.Timestamp)
+            {
+                return false;
+            }
+
+            return true;
+        }
     }
 }

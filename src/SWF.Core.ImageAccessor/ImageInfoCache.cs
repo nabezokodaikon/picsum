@@ -14,5 +14,31 @@ namespace SWF.Core.ImageAccessor
             this.Size = size;
             this.Timestamp = timestamp;
         }
+
+        public override bool Equals(object? obj)
+        {
+            if (obj == null)
+            {
+                return false;
+            }
+
+            var other = obj as ImageInfoCache;
+            if (other == null)
+            {
+                return false;
+            }
+
+            if (other.FilePath != this.FilePath)
+            {
+                return false;
+            }
+
+            if (other.Timestamp != this.Timestamp)
+            {
+                return false;
+            }
+
+            return true;
+        }
     }
 }
