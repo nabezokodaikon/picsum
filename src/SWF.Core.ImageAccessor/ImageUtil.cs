@@ -63,7 +63,10 @@ namespace SWF.Core.ImageAccessor
             }
             finally
             {
-                img.UnlockBits(bmpData);
+                if (bmpData != null)
+                {
+                    img.UnlockBits(bmpData);
+                }
             }
         }
 
