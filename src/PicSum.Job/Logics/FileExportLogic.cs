@@ -26,7 +26,7 @@ namespace PicSum.Job.Logics
             ArgumentException.ThrowIfNullOrEmpty(srcFilePath, nameof(srcFilePath));
             ArgumentException.ThrowIfNullOrEmpty(exportFilePath, nameof(exportFilePath));
 
-            File.Copy(srcFilePath, exportFilePath);
+            File.Copy(srcFilePath, exportFilePath, false);
         }
     }
 }

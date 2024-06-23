@@ -33,6 +33,10 @@ namespace PicSum.Job.Jobs
                 var logic = new FileExportLogic(this);
                 logic.Execute(param.SrcFilePath, param.ExportFilePath);
             }
+            catch (UnauthorizedAccessException ex)
+            {
+                throw new JobException(this.ID, ex);
+            }
             catch (PathTooLongException ex)
             {
                 throw new JobException(this.ID, ex);

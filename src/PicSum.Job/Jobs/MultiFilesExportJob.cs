@@ -43,6 +43,10 @@ namespace PicSum.Job.Jobs
                         };
                         this.Callback(result);
                     }
+                    catch (UnauthorizedAccessException ex)
+                    {
+                        throw new JobException(this.ID, ex);
+                    }
                     catch (PathTooLongException ex)
                     {
                         this.WriteErrorLog(new JobException(this.ID, ex));
