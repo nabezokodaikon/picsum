@@ -70,7 +70,6 @@ namespace SWF.Core.ImageAccessor
                         CACHE_LIST.Remove(removeCache);
                         CACHE_DICTIONARY.Remove(removeCache.FilePath);
                         removeCache.Dispose();
-                        GC.Collect();
                     }
 
                     var newImage = new ImageFileCache(
