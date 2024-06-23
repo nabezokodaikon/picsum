@@ -58,7 +58,7 @@ namespace SWF.Core.ImageAccessor
             this.Timestamp = timestamp;
         }
 
-        internal ImageFileCache Clone()
+        public ImageFileCache Clone()
         {
             if (this.FilePath == null)
             {
