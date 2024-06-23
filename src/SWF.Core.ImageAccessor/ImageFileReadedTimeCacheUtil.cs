@@ -43,7 +43,7 @@ namespace SWF.Core.ImageAccessor
             CACHE_LOCK.EnterUpgradeableReadLock();
             try
             {
-                ImageFileReadedTimeCache cache = null;
+                ImageFileReadedTimeCache cache;
                 if (CACHE_DICTIONARY.TryGetValue(filePath, out cache))
                 {
                     if (readedMilliseconds > cache.ReadedMilliseconds)
@@ -55,7 +55,7 @@ namespace SWF.Core.ImageAccessor
                 CACHE_LOCK.EnterWriteLock();
                 try
                 {
-                    if (cache != null)
+                    if (cache.FilePath != null)
                     {
                         CACHE_LIST.Remove(cache);
                         CACHE_DICTIONARY.Remove(cache.FilePath);

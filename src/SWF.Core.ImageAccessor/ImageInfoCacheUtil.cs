@@ -40,7 +40,7 @@ namespace SWF.Core.ImageAccessor
             CACHE_LOCK.EnterUpgradeableReadLock();
             try
             {
-                ImageInfoCache cache = null;
+                ImageInfoCache cache;
                 if (CACHE_DICTIONARY.TryGetValue(filePath, out cache))
                 {
                     if (timestamp == cache.Timestamp)
@@ -52,7 +52,7 @@ namespace SWF.Core.ImageAccessor
                 CACHE_LOCK.EnterWriteLock();
                 try
                 {
-                    if (cache != null)
+                    if (cache.FilePath != null)
                     {
                         CACHE_LIST.Remove(cache);
                         CACHE_DICTIONARY.Remove(cache.FilePath);
@@ -91,7 +91,7 @@ namespace SWF.Core.ImageAccessor
             CACHE_LOCK.EnterUpgradeableReadLock();
             try
             {
-                ImageInfoCache cache = null;
+                ImageInfoCache cache;
                 if (CACHE_DICTIONARY.TryGetValue(filePath, out cache))
                 {
                     if (timestamp == cache.Timestamp)
@@ -103,7 +103,7 @@ namespace SWF.Core.ImageAccessor
                 CACHE_LOCK.EnterWriteLock();
                 try
                 {
-                    if (cache != null)
+                    if (cache.FilePath != null)
                     {
                         CACHE_LIST.Remove(cache);
                         CACHE_DICTIONARY.Remove(cache.FilePath);
