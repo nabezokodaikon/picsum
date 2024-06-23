@@ -427,7 +427,7 @@ namespace PicSum.Job.Logics
         private ThumbnailBufferEntity CreateDBFileCache(
             string filePath, int thumbWidth, int thumbHeight, DateTime fileUpdateDate)
         {
-            using (var srcImg = ImageFileCacheUtil.ReadImage(filePath))
+            using (var srcImg = ImageUtil.ReadImageFileFast(filePath))
             {
                 using (var thumbImg = ThumbnailUtil.CreateThumbnail(srcImg, thumbWidth, thumbHeight))
                 {
@@ -457,7 +457,7 @@ namespace PicSum.Job.Logics
 
         private ThumbnailBufferEntity UpdateDBFileCache(string filePath, int thumbWidth, int thumbHeight, DateTime fileUpdateDate)
         {
-            using (var srcImg = ImageFileCacheUtil.ReadImage(filePath))
+            using (var srcImg = ImageUtil.ReadImageFileFast(filePath))
             {
                 using (var thumbImg = ThumbnailUtil.CreateThumbnail(srcImg, thumbWidth, thumbHeight))
                 {
@@ -487,7 +487,7 @@ namespace PicSum.Job.Logics
 
         private ThumbnailBufferEntity CreateDBDirectoryCache(string directoryPath, string thumbFilePath, int thumbWidth, int thumbHeight, DateTime directoryUpdateDate)
         {
-            using (var srcImg = ImageFileCacheUtil.ReadImage(thumbFilePath))
+            using (var srcImg = ImageUtil.ReadImageFileFast(thumbFilePath))
             {
                 using (var thumbImg = ThumbnailUtil.CreateThumbnail(srcImg, thumbWidth, thumbHeight))
                 {
@@ -516,7 +516,7 @@ namespace PicSum.Job.Logics
 
         private ThumbnailBufferEntity UpdateDBDirectoryCache(string directoryPath, string thumbFilePath, int thumbWidth, int thumbHeight, DateTime directoryUpdateDate)
         {
-            using (var srcImg = ImageFileCacheUtil.ReadImage(thumbFilePath))
+            using (var srcImg = ImageUtil.ReadImageFileFast(thumbFilePath))
             {
                 using (var thumbImg = ThumbnailUtil.CreateThumbnail(srcImg, thumbWidth, thumbHeight))
                 {
