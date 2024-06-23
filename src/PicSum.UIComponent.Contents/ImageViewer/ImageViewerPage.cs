@@ -714,8 +714,8 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 this.leftImagePanel.SetImage(image, thumbnail);
                 this.leftImagePanel.SetScale(1);
 
-                if (ImageFileReadedTimeCacheUtil.IsSlow(mainFilePath)
-                    || !isClearedMainPanel)
+                if (!isClearedMainPanel
+                    || ImageFileReadedTimeCacheUtil.IsSlow(mainFilePath))
                 {
                     this.ChangeMainImagePanelSize();
                     this.ChangeSubImagePanelSize();
@@ -781,14 +781,14 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                         this.leftImagePanel.SetScale(1);
                     }
 
-                    if (ImageFileReadedTimeCacheUtil.IsSlow(mainFilePath)
-                        || !isClearedMainPanel)
+                    if (!isClearedMainPanel
+                        || ImageFileReadedTimeCacheUtil.IsSlow(mainFilePath))
                     {
                         this.ChangeMainImagePanelSize();
                     }
 
-                    if (ImageFileReadedTimeCacheUtil.IsSlow(subFilePath)
-                        || !isClearedSubPanel)
+                    if (!isClearedSubPanel
+                        || ImageFileReadedTimeCacheUtil.IsSlow(subFilePath))
                     {
                         this.ChangeSubImagePanelSize();
                     }
