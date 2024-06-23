@@ -2,7 +2,7 @@ using PicSum.Core.Job.AsyncJob;
 
 namespace PicSum.Job.Parameters
 {
-    public sealed class ImageFileGetByDirectoryParameter
+    public struct ImageFileGetByDirectoryParameter
         : IJobParameter
     {
         public string FilePath { get; private set; }

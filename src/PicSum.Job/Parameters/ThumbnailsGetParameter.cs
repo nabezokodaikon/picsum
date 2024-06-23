@@ -2,7 +2,7 @@ using PicSum.Core.Job.AsyncJob;
 
 namespace PicSum.Job.Parameters
 {
-    public sealed class ThumbnailsGetParameter
+    public struct ThumbnailsGetParameter
         : IJobParameter
     {
         public IList<string>? FilePathList { get; set; }
