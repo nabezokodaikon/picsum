@@ -124,7 +124,15 @@ namespace SWF.Core.ImageAccessor
             }
             finally
             {
-                dst.UnlockBits(bmpData);
+                if (dst != null)
+                {
+                    if (bmpData != null)
+                    {
+                        dst.UnlockBits(bmpData);
+                    }
+
+                    dst.Dispose();
+                }
             }
         }
 
@@ -148,27 +156,6 @@ namespace SWF.Core.ImageAccessor
                 {
                     throw new ImageUtilException("メモリが不足しています。", ex);
                 }
-            }
-        }
-
-        /// <summary>
-        /// 画像をリサイズします。
-        /// </summary>
-        /// <param name="srcImg"></param>
-        /// <param name="scale"></param>
-        /// <returns></returns>
-        /// <exception cref="ArgumentNullException"></exception>
-        public static Bitmap ResizeImage(Bitmap srcImg, double scale)
-        {
-            ArgumentNullException.ThrowIfNull(srcImg, nameof(srcImg));
-
-            var w = (int)(srcImg.Width * scale);
-            var h = (int)(srcImg.Height * scale);
-            var destImg = new Bitmap(w, h);
-            using (var g = Graphics.FromImage(destImg))
-            {
-                g.DrawImage(srcImg, 0, 0, w, h);
-                return destImg;
             }
         }
 

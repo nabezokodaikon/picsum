@@ -3,7 +3,7 @@ using System.Runtime.Versioning;
 namespace SWF.Core.ImageAccessor
 {
     [SupportedOSPlatform("windows")]
-    public sealed class ImageFileCache
+    internal sealed class ImageFileCache
         : IDisposable, IEquatable<ImageFileCache>
     {
         private bool disposed = false;
