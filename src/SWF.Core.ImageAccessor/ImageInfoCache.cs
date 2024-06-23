@@ -40,5 +40,10 @@ namespace SWF.Core.ImageAccessor
 
             return true;
         }
+
+        public override int GetHashCode()
+        {
+            return (this.FilePath, this.Timestamp).GetHashCode();
+        }
     }
 }
