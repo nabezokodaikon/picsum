@@ -484,6 +484,8 @@ namespace SWF.UIComponent.ImagePanel
                 ControlStyles.UserPaint,
                 true);
             this.UpdateStyles();
+
+            this.Font = new Font(this.Font.FontFamily, this.Font.Size * 2);
         }
 
         private void OnImageMouseClick(MouseEventArgs e)

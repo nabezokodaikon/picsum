@@ -30,19 +30,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        private static Size GetImageSize(string filePath)
-        {
-            try
-            {
-                return ImageUtil.GetImageInfo(filePath).Size;
-            }
-            catch (ImageUtilException ex)
-            {
-                Logger.Error(ex);
-                return ImageUtil.EMPTY_SIZE;
-            }
-        }
-
         private static float GetImageScale(Size imageSize, Size backgroudSize, ImageSizeMode mode)
         {
             if (mode == ImageSizeMode.Original ||
@@ -375,6 +362,19 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.SetThumbnailPanelVisible();
         }
 
+        private Size GetImageSize(string filePath)
+        {
+            try
+            {
+                return ImageUtil.GetImageInfo(filePath).Size;
+            }
+            catch (ImageUtilException ex)
+            {
+                Logger.Error(ex);
+                return this.checkPatternPanel.Size;
+            }
+        }
+
         private void ChangeImagePanelSize(ImageFileGetResult e)
         {
             if (e.IsMain && e.HasSub)
@@ -695,17 +695,17 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             var isClearedMainPanel = this.leftImagePanel.ClearImage();
             var isClearedSubPanel = this.rightImagePanel.ClearImage();
 
-            var mainImageInfo = ImageUtil.GetImageInfo(mainFilePath);
+            var mainImageSize = GetImageSize(mainFilePath);
 
             var mainImageDrawAction = () =>
             {
                 var bgSize = this.checkPatternPanel.Size;
 
                 var scale = GetImageScale(
-                    mainImageInfo.Size, bgSize, this.sizeMode);
+                    mainImageSize, bgSize, this.sizeMode);
                 var image = ImageUtil.CreateEmptyImage(
-                    (int)(mainImageInfo.Size.Width * scale),
-                    (int)(mainImageInfo.Size.Height * scale));
+                    (int)(mainImageSize.Width * scale),
+                    (int)(mainImageSize.Height * scale));
                 var thumbnail = ImageUtil.CreateEmptyImage(
                     this.leftImagePanel.ThumbnailSize,
                     this.leftImagePanel.ThumbnailSize);
@@ -726,7 +726,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             {
                 mainImageDrawAction();
             }
-            else if (mainImageInfo.Size.Width < mainImageInfo.Size.Height)
+            else if (mainImageSize.Width < mainImageSize.Height)
             {
                 var subImageIndex = this.FilePathListIndex + 1;
                 if (subImageIndex > this.filePathList.Count - 1)
@@ -735,27 +735,27 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 }
 
                 var subFilePath = this.filePathList[subImageIndex];
-                var subImageInfo = ImageUtil.GetImageInfo(subFilePath);
-                if (subImageInfo.Size.Width < subImageInfo.Size.Height)
+                var subImageSize = GetImageSize(subFilePath);
+                if (subImageSize.Width < subImageSize.Height)
                 {
                     var bgSize = new Size(
                         (int)(this.checkPatternPanel.Size.Width / 2f),
                         this.checkPatternPanel.Size.Height);
 
                     var mainImageScale = GetImageScale(
-                        mainImageInfo.Size, bgSize, this.sizeMode);
+                        mainImageSize, bgSize, this.sizeMode);
                     var mainImage = ImageUtil.CreateEmptyImage(
-                        (int)(mainImageInfo.Size.Width * mainImageScale),
-                        (int)(mainImageInfo.Size.Height * mainImageScale));
+                        (int)(mainImageSize.Width * mainImageScale),
+                        (int)(mainImageSize.Height * mainImageScale));
                     var mainThumbnail = ImageUtil.CreateEmptyImage(
                         this.leftImagePanel.ThumbnailSize,
                         this.leftImagePanel.ThumbnailSize);
 
                     var subImageScale = GetImageScale(
-                        subImageInfo.Size, bgSize, this.sizeMode);
+                        subImageSize, bgSize, this.sizeMode);
                     var subImage = ImageUtil.CreateEmptyImage(
-                        (int)(subImageInfo.Size.Width * subImageScale),
-                        (int)(subImageInfo.Size.Height * subImageScale));
+                        (int)(subImageSize.Width * subImageScale),
+                        (int)(subImageSize.Height * subImageScale));
                     var subThumbnail = ImageUtil.CreateEmptyImage(
                         this.leftImagePanel.ThumbnailSize,
                         this.leftImagePanel.ThumbnailSize);
