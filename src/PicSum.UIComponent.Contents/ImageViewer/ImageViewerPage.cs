@@ -371,7 +371,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             catch (ImageUtilException ex)
             {
                 Logger.Error(ex);
-                return this.checkPatternPanel.Size;
+                return new Size(this.checkPatternPanel.Size.Width / 2, this.checkPatternPanel.Size.Height);
             }
         }
 
@@ -576,7 +576,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             }
             else if (this.displayMode == ImageDisplayMode.RightFacing)
             {
-                this.rightImagePanel.Visible = false;
+                this.leftImagePanel.Visible = false;
             }
             else if (this.displayMode == ImageDisplayMode.Single)
             {
