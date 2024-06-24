@@ -29,6 +29,39 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
+        public static Bitmap CreateEmptyImage(Size bgSize, Size leftSize, Size rightSize)
+        {
+            var halfSize = new SizeF(bgSize.Width / 2, bgSize.Height);
+
+            var leftScale = Math.Min(
+                halfSize.Width / leftSize.Width,
+                halfSize.Height / leftSize.Height);
+            var leftScaleSize = new SizeF(
+                leftSize.Width * leftScale, leftSize.Height * leftScale);
+            var leftX = halfSize.Width - leftScaleSize.Width;
+            var leftY = (halfSize.Height - leftScaleSize.Height) / 2;
+
+            var rightScale = Math.Min(
+                halfSize.Width / rightSize.Width,
+                halfSize.Height / rightSize.Height);
+            var rightScaleSize = new SizeF(
+                rightSize.Width * rightScale, rightSize.Height * rightScale);
+            var rightX = halfSize.Width;
+            var rightY = (halfSize.Height - rightScaleSize.Height) / 2;
+
+            var destImg = new Bitmap(bgSize.Width, bgSize.Height);
+            using (var g = Graphics.FromImage(destImg))
+            {
+                g.FillRectangle(EMPTY_BRUSH,
+                    leftX, leftY, leftScaleSize.Width, leftScaleSize.Height);
+
+                g.FillRectangle(EMPTY_BRUSH,
+                    rightX, rightY, rightScaleSize.Width, rightScaleSize.Height);
+
+                return destImg;
+            }
+        }
+
         public static byte[] ToBinary(Bitmap img)
         {
             ArgumentNullException.ThrowIfNull(img, nameof(img));
