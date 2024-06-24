@@ -27,7 +27,7 @@ namespace SWF.Core.ImageAccessor
                 }
                 else
                 {
-                    return true;
+                    return false;
                 }
             }
             finally
