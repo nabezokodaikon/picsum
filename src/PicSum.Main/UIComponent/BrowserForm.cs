@@ -103,6 +103,11 @@ namespace PicSum.Main.UIComponent
             this.BrowserMainPanel.AddFavoriteDirectoryListTab();
         }
 
+        public void Reload()
+        {
+            this.BrowserMainPanel.Reload();
+        }
+
         public void RemoveTabOrWindow()
         {
             if (this.BrowserMainPanel.TabCount > 1)
@@ -264,11 +269,22 @@ namespace PicSum.Main.UIComponent
                             this.isKeyDown = true;
                             break;
                         }
+                    case Keys.R:
+                        {
+                            this.Reload();
+                            this.isKeyDown = true;
+                            break;
+                        }
                 }
             }
             else if (e.KeyCode == Keys.Back)
             {
                 this.browserMainPanel.MovePreviewPage();
+                this.isKeyDown = true;
+            }
+            else if (e.KeyCode == Keys.F5)
+            {
+                this.Reload();
                 this.isKeyDown = true;
             }
 

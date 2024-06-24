@@ -125,6 +125,21 @@ namespace PicSum.Main.UIComponent
             this.OpenPage(new FavoriteDirectoryListPageParameter(), PageOpenType.AddTab);
         }
 
+        public void Reload()
+        {
+            if (this.tabSwitch.ActiveTab == null)
+            {
+                return;
+            }
+
+            if (!this.tabSwitch.ActiveTab.HasPage)
+            {
+                return;
+            }
+
+            this.AddPageEventHandler(this.tabSwitch.CloneCurrentPage<BrowserPage>());
+        }
+
         public void RemoveActiveTab()
         {
             this.tabSwitch.RemoveActiveTab();
@@ -701,17 +716,7 @@ namespace PicSum.Main.UIComponent
                 return;
             }
 
-            if (this.tabSwitch.ActiveTab == null)
-            {
-                return;
-            }
-
-            if (!this.tabSwitch.ActiveTab.HasPage)
-            {
-                return;
-            }
-
-            this.AddPageEventHandler(this.tabSwitch.CloneCurrentPage<BrowserPage>());
+            this.Reload();
         }
 
         private void HomeToolButton_MouseClick(object sender, MouseEventArgs e)
