@@ -19,8 +19,7 @@ namespace PicSum.Job.Jobs
 
                 try
                 {
-                    var size = ImageFileCacheUtil.GetSize(path);
-                    ImageInfoCacheUtil.SetImageInfo(path, size);
+                    var _ = ImageInfoCacheUtil.GetImageInfo(path);
                 }
                 catch (FileUtilException ex)
                 {
