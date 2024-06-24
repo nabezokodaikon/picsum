@@ -266,6 +266,11 @@ namespace PicSum.Main.UIComponent
                         }
                 }
             }
+            else if (e.KeyCode == Keys.Back)
+            {
+                this.browserMainPanel.MovePreviewPage();
+                this.isKeyDown = true;
+            }
 
             base.OnKeyDown(e);
         }
