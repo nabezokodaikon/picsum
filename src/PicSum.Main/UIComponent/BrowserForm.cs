@@ -277,11 +277,6 @@ namespace PicSum.Main.UIComponent
                         }
                 }
             }
-            else if (e.KeyCode == Keys.Back)
-            {
-                this.browserMainPanel.MovePreviewPage();
-                this.isKeyDown = true;
-            }
             else if (e.KeyCode == Keys.F5)
             {
                 this.Reload();
