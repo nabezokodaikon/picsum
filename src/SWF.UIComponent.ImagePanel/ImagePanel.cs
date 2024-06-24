@@ -341,7 +341,7 @@ namespace SWF.UIComponent.ImagePanel
                         if (this.SetHScrollValue(this.hScrollValue + (int)((e.X - thumbRect.X) * scale - centerPoint.X)) |
                             this.SetVScrollValue(this.vScrollValue + (int)((e.Y - thumbRect.Y) * scale - centerPoint.Y)))
                         {
-                            this.Invalidate();
+                            base.Invalidate();
                         }
 
                         this.isThumbnailMove = true;
@@ -380,7 +380,7 @@ namespace SWF.UIComponent.ImagePanel
                 if (this.SetHScrollValue(this.hScrollValue + (int)((e.X - this.moveFromPoint.X) * scale)) |
                     this.SetVScrollValue(this.vScrollValue + (int)((e.Y - this.moveFromPoint.Y) * scale)))
                 {
-                    this.Invalidate();
+                    base.Invalidate();
                 }
 
                 this.moveFromPoint.X = e.X;
@@ -391,7 +391,7 @@ namespace SWF.UIComponent.ImagePanel
                 if (this.SetHScrollValue(this.hScrollValue - (e.X - this.moveFromPoint.X)) |
                     this.SetVScrollValue(this.vScrollValue - (e.Y - this.moveFromPoint.Y)))
                 {
-                    this.Invalidate();
+                    base.Invalidate();
                 }
 
                 this.moveFromPoint.X = e.X;
@@ -426,7 +426,7 @@ namespace SWF.UIComponent.ImagePanel
             {
                 this.isImageMove = false;
                 this.isThumbnailMove = false;
-                this.Invalidate();
+                base.Invalidate();
             }
 
             this.isDrag = false;
