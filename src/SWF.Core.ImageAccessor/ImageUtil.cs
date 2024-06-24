@@ -125,9 +125,10 @@ namespace SWF.Core.ImageAccessor
         public static Bitmap CreateEmptyImage(int width, int height)
         {
             var destImg = new Bitmap(width, height);
+            using (SolidBrush brush = new(Color.FromArgb(128, Color.FromArgb(192, 192, 192))))
             using (var g = Graphics.FromImage(destImg))
             {
-                g.FillRectangle(Brushes.LightGray, 0, 0, width, height);
+                g.FillRectangle(brush, 0, 0, width, height);
                 return destImg;
             }
         }
