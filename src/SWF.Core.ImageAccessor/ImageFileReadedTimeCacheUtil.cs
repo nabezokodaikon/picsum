@@ -23,7 +23,7 @@ namespace SWF.Core.ImageAccessor
             {
                 if (CACHE_DICTIONARY.TryGetValue(filePath, out var cache))
                 {
-                    return cache.ReadedMilliseconds > 100;
+                    return cache.ReadedMilliseconds > 300;
                 }
                 else
                 {
