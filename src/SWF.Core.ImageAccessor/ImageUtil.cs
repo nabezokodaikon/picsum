@@ -14,7 +14,7 @@ namespace SWF.Core.ImageAccessor
         public static readonly Size EMPTY_SIZE = Size.Empty;
         public static readonly Bitmap EMPTY_IMAGE = new(1, 1);
 
-        private static readonly SolidBrush EMPTY_BRUSH = new(Color.FromArgb(128, Color.FromArgb(192, 192, 192)));
+        private static readonly SolidBrush EMPTY_BRUSH = new(Color.FromArgb(0, Color.FromArgb(192, 192, 192)));
         private static readonly EncoderParameter ENCORDER_PARAMETER = new(Encoder.Quality, 100L);
         private static readonly ImageCodecInfo PNG_CODEC_INFO = ImageCodecInfo.GetImageEncoders().Single(info => info.FormatID == ImageFormat.Png.Guid);
         private static readonly dynamic SHELL = Activator.CreateInstance(Type.GetTypeFromProgID("Shell.Application"));
