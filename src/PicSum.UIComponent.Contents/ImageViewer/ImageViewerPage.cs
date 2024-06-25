@@ -387,6 +387,11 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             {
                 return ImageUtil.GetImageInfo(filePath).Size;
             }
+            catch (FileUtilException ex)
+            {
+                Logger.Error(ex);
+                return new Size(this.checkPatternPanel.Size.Width / 2, this.checkPatternPanel.Size.Height);
+            }
             catch (ImageUtilException ex)
             {
                 Logger.Error(ex);

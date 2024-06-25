@@ -185,6 +185,11 @@ namespace PicSum.Job.Jobs
             {
                 return ImageUtil.GetImageInfo(filePath).Size;
             }
+            catch (FileUtilException ex)
+            {
+                this.WriteErrorLog(new JobException(this.ID, ex));
+                return ImageUtil.EMPTY_SIZE;
+            }
             catch (ImageUtilException ex)
             {
                 this.WriteErrorLog(new JobException(this.ID, ex));
