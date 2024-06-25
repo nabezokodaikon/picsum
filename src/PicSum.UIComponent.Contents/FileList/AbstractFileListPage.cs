@@ -97,7 +97,6 @@ namespace PicSum.UIComponent.Contents.FileList
         private OneWayJob<SingleFileExportJob, SingleFileExportParameter> singleFileExportJob = null;
         private OneWayJob<BookmarkAddJob, ValueParameter<string>> addBookmarkJob = null;
         private TwoWayJob<MultiFilesExportJob, MultiFilesExportParameter, ValueResult<string>> multiFilesExportJob = null;
-        private OneWayJob<ImageInfoCacheJob, ListParameter<string>> imageInfoCacheJob = null;
 
         #endregion
 
@@ -302,21 +301,6 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
-        private OneWayJob<ImageInfoCacheJob, ListParameter<string>> ImageInfoCacheJob
-        {
-            get
-            {
-                if (this.imageInfoCacheJob == null)
-                {
-                    this.imageInfoCacheJob = new();
-                    this.imageInfoCacheJob
-                        .StartThread();
-                }
-
-                return this.imageInfoCacheJob;
-            }
-        }
-
         private int ItemTextHeight
         {
             get
@@ -377,12 +361,6 @@ namespace PicSum.UIComponent.Contents.FileList
                     this.multiFilesExportJob = null;
                 }
 
-                if (this.imageInfoCacheJob != null)
-                {
-                    this.imageInfoCacheJob.Dispose();
-                    this.imageInfoCacheJob = null;
-                }
-
                 components.Dispose();
             }
 
@@ -410,10 +388,6 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             ArgumentNullException.ThrowIfNull(srcFiles, nameof(srcFiles));
             ArgumentNullException.ThrowIfNull(selectedFilePath, nameof(selectedFilePath));
-
-            //this.ImageInfoCacheJob.StartJob(new ListParameter<string>(
-            //    srcFiles.Select(file => file.FilePath)
-            //            .Where(FileUtil.IsImageFile)));
 
             this.masterFileDictionary = [];
             foreach (var srcFile in srcFiles)
@@ -1034,13 +1008,6 @@ namespace PicSum.UIComponent.Contents.FileList
                 {
                     param.ThumbnailHeight = this.flowList.ItemHeight - this.flowList.ItemSpace * 2;
                 }
-
-                this.ImageInfoCacheJob.StartJob(
-                    new ListParameter<string>(
-                        this.filterFilePathList
-                            .Skip(e.DrawFirstItemIndex)
-                            .Take(e.DrawLastItemIndex - e.DrawFirstItemIndex)
-                            .Where(FileUtil.IsImageFile)));
 
                 this.GetThumbnailsJob.StartJob(param);
             }

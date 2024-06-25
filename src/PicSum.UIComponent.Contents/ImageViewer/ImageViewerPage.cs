@@ -794,8 +794,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
         private void Parameter_GetImageFiles(object sender, GetImageFilesEventArgs e)
         {
-            //this.ImageInfoCacheJob.StartJob(new ListParameter<string>(e.FilePathList));
-
             this.filePathList = e.FilePathList;
 
             this.Title = e.PageTitle;
