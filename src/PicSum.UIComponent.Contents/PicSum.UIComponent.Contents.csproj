@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net8.0-windows10.0.17763.0</TargetFramework>
+    <TargetFramework>net8.0-windows10.0.22621.0</TargetFramework>
     <OutputType>Library</OutputType>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <UseWindowsForms>true</UseWindowsForms>
@@ -32,30 +32,18 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Update="Common\BrowserPage.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Update="Common\BrowserPage.cs" />
     <Compile Update="ContextMenu\FileContextMenu.cs" />
     <Compile Update="FileList\BookmarkFileListPage.cs" />
     <Compile Update="ToolBar\PageToolBar.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Update="FileList\FavoriteDirectoryListPage.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Update="FileList\AbstractFileListPage.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Update="FileList\FavoriteDirectoryListPage.cs" />
+    <Compile Update="FileList\AbstractFileListPage.cs" />
     <Compile Update="FileList\DirectoryFileListPage.cs" />
-    <Compile Update="ImageViewer\ImageViewerPage.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Update="FileList\RatingFileListPage.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Update="FileList\TagFileListPage.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Update="ImageViewer\ImageViewerPage.cs" />
+    <Compile Update="FileList\RatingFileListPage.cs" />
+    <Compile Update="FileList\TagFileListPage.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PicSum.Core.Base\PicSum.Core.Base.csproj" />
