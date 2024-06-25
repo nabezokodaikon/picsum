@@ -14,53 +14,9 @@ namespace SWF.Core.ImageAccessor
         public static readonly Size EMPTY_SIZE = Size.Empty;
         public static readonly Bitmap EMPTY_IMAGE = new(1, 1);
 
-        private static readonly SolidBrush EMPTY_BRUSH = new(Color.FromArgb(0, Color.FromArgb(192, 192, 192)));
         private static readonly EncoderParameter ENCORDER_PARAMETER = new(Encoder.Quality, 100L);
         private static readonly ImageCodecInfo PNG_CODEC_INFO = ImageCodecInfo.GetImageEncoders().Single(info => info.FormatID == ImageFormat.Png.Guid);
         private static readonly dynamic SHELL = Activator.CreateInstance(Type.GetTypeFromProgID("Shell.Application"));
-
-        public static Bitmap CreateEmptyImage(int width, int height)
-        {
-            var destImg = new Bitmap(width, height);
-            using (var g = Graphics.FromImage(destImg))
-            {
-                g.FillRectangle(EMPTY_BRUSH, 0, 0, width, height);
-                return destImg;
-            }
-        }
-
-        public static Bitmap CreateEmptyImage(Size bgSize, Size leftSize, Size rightSize)
-        {
-            var halfSize = new SizeF(bgSize.Width / 2, bgSize.Height);
-
-            var leftScale = Math.Min(
-                halfSize.Width / leftSize.Width,
-                halfSize.Height / leftSize.Height);
-            var leftScaleSize = new SizeF(
-                leftSize.Width * leftScale, leftSize.Height * leftScale);
-            var leftX = halfSize.Width - leftScaleSize.Width;
-            var leftY = (halfSize.Height - leftScaleSize.Height) / 2;
-
-            var rightScale = Math.Min(
-                halfSize.Width / rightSize.Width,
-                halfSize.Height / rightSize.Height);
-            var rightScaleSize = new SizeF(
-                rightSize.Width * rightScale, rightSize.Height * rightScale);
-            var rightX = halfSize.Width;
-            var rightY = (halfSize.Height - rightScaleSize.Height) / 2;
-
-            var destImg = new Bitmap(bgSize.Width, bgSize.Height);
-            using (var g = Graphics.FromImage(destImg))
-            {
-                g.FillRectangle(EMPTY_BRUSH,
-                    leftX, leftY, leftScaleSize.Width, leftScaleSize.Height);
-
-                g.FillRectangle(EMPTY_BRUSH,
-                    rightX, rightY, rightScaleSize.Width, rightScaleSize.Height);
-
-                return destImg;
-            }
-        }
 
         public static byte[] ToBinary(Bitmap img)
         {

@@ -121,7 +121,19 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 {
                     this.getImageFileJob = new();
                     this.getImageFileJob
-                        .Callback(this.GetImageFileJob_Callback)
+                        .Callback(r =>
+                        {
+                            var sw = Stopwatch.StartNew();
+                            try
+                            {
+                                this.GetImageFileJob_Callback(r);
+                            }
+                            finally
+                            {
+                                sw.Stop();
+                                Console.WriteLine($"GetImageFileJob_Callback: {sw.ElapsedMilliseconds} ms");
+                            }
+                        })
                         .Cancel(() =>
                         {
                             this.isReadImageCancel = true;
@@ -614,195 +626,81 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             }
         }
 
-        private void DrawLoadingImage(string mainFilePath)
+        private void ReadImage()
         {
             var sw = Stopwatch.StartNew();
 
-            var bgSize = this.checkPatternPanel.Size;
-
-            var mainImageSize = GetImageSize(mainFilePath);
-
-            var subImageIndex = this.FilePathListIndex + 1;
-            if (subImageIndex > this.filePathList.Count - 1)
+            try
             {
-                subImageIndex = 0;
-            }
+                this.Cursor = Cursors.WaitCursor;
 
-            var subFilePath = this.filePathList[subImageIndex];
-            var subImageSize = GetImageSize(subFilePath);
+                this.leftImagePanel.ClearImage();
+                this.rightImagePanel.ClearImage();
 
-            var mainImageDrawAction = () =>
-            {
-                this.leftImageFilePath = mainFilePath;
-                this.rightImageFilePath = string.Empty;
+                var mainFilePath = this.filePathList[this.FilePathListIndex];
+                this.SelectedFilePath = mainFilePath;
 
-                var scale = GetImageScale(
-                    mainImageSize, bgSize, this.sizeMode);
-                var image = ImageUtil.CreateEmptyImage(
-                    (int)(mainImageSize.Width * scale),
-                    (int)(mainImageSize.Height * scale));
-                var thumbnail = ImageUtil.CreateEmptyImage(
-                    this.leftImagePanel.ThumbnailSize,
-                    this.leftImagePanel.ThumbnailSize);
-                this.leftImageFilePath = mainFilePath;
-                this.leftImagePanel.SetImage(image, thumbnail);
-                this.leftImagePanel.SetScale(1);
-
-                var w = this.checkPatternPanel.Width;
-                var h = this.checkPatternPanel.Height;
-                var x = 0;
-                var y = 0;
-
-                this.leftImagePanel.SetBounds(x, y, w, h, BoundsSpecified.All);
-                this.leftImagePanel.ImageAlign = ImageAlign.Center;
-                this.leftImagePanel.Invalidate();
-                this.rightImagePanel.Visible = false;
-            };
-
-            var bothImageDrawAction = () =>
-            {
-                var mainThumbnail = ImageUtil.CreateEmptyImage(
-                    this.leftImagePanel.ThumbnailSize,
-                    this.leftImagePanel.ThumbnailSize);
-
-                var subThumbnail = ImageUtil.CreateEmptyImage(
-                    this.leftImagePanel.ThumbnailSize,
-                    this.leftImagePanel.ThumbnailSize);
-
-                var w = (int)(this.checkPatternPanel.Width / 2f);
-                var h = this.checkPatternPanel.Height;
-                var lx = 0;
-                var rx = this.checkPatternPanel.Width - w;
-                var y = 0;
-
-                this.leftImagePanel.SetBounds(lx, y, w, h, BoundsSpecified.All);
-                this.leftImagePanel.ImageAlign = ImageAlign.Right;
-
-                this.rightImagePanel.SetBounds(rx, y, w, h, BoundsSpecified.All);
-                this.rightImagePanel.ImageAlign = ImageAlign.Left;
-
-                if (this.displayMode == ImageDisplayMode.LeftFacing)
+                if (this.isReadImageCancel)
                 {
-                    this.leftImageFilePath = mainFilePath;
-                    this.rightImageFilePath = subFilePath;
-
-                    this.leftImagePanel.SetImage(
-                        ImageUtil.CreateEmptyImage(mainImageSize.Width, mainImageSize.Height),
-                        mainThumbnail);
-
-                    this.rightImagePanel.SetImage(
-                        ImageUtil.CreateEmptyImage(subImageSize.Width, subImageSize.Height),
-                        subThumbnail);
-
-                    this.leftImagePanel.SetScale(
-                        GetImageScale(mainImageSize, bgSize, this.sizeMode));
-                    this.rightImagePanel.SetScale(
-                        GetImageScale(subImageSize, bgSize, this.sizeMode));
+                    this.leftImagePanel.Visible = false;
+                    this.rightImagePanel.Visible = false;
                 }
-                else if (this.displayMode == ImageDisplayMode.RightFacing)
+                else if (ImageFileReadedTimeCacheUtil.IsSlow(mainFilePath))
                 {
-                    this.leftImageFilePath = subFilePath;
-                    this.rightImageFilePath = mainFilePath;
+                    this.leftImagePanel.Visible = false;
+                    this.rightImagePanel.Visible = false;
+                }
+                else
+                {
+                    var subImageIndex = this.FilePathListIndex + 1;
+                    if (subImageIndex > this.filePathList.Count - 1)
+                    {
+                        subImageIndex = 0;
+                    }
 
-                    this.leftImagePanel.SetImage(
-                        ImageUtil.CreateEmptyImage(subImageSize.Width, subImageSize.Height),
-                        mainThumbnail);
-
-                    this.rightImagePanel.SetImage(
-                        ImageUtil.CreateEmptyImage(mainImageSize.Width, mainImageSize.Height),
-                        subThumbnail);
-
-                    this.leftImagePanel.SetScale(
-                        GetImageScale(subImageSize, bgSize, this.sizeMode));
-                    this.rightImagePanel.SetScale(
-                        GetImageScale(mainImageSize, bgSize, this.sizeMode));
+                    var subFilePath = this.filePathList[subImageIndex];
+                    if (ImageFileReadedTimeCacheUtil.IsSlow(mainFilePath))
+                    {
+                        this.leftImagePanel.Visible = false;
+                        this.rightImagePanel.Visible = false;
+                    }
                 }
 
-                this.leftImagePanel.Invalidate();
-                this.rightImagePanel.Invalidate();
-            };
-
-            if (this.displayMode == ImageDisplayMode.Single)
-            {
-                mainImageDrawAction();
-            }
-            else if (mainImageSize.Width < mainImageSize.Height
-                && subImageSize.Width < subImageSize.Height)
-            {
-                bothImageDrawAction();
-            }
-            else
-            {
-                mainImageDrawAction();
-            }
-
-            sw.Stop();
-            Console.WriteLine($"DrawLoadingImage: {sw.ElapsedMilliseconds} ms");
-        }
-
-        private void ReadImage()
-        {
-            this.Cursor = Cursors.WaitCursor;
-
-            this.leftImagePanel.ClearImage();
-            this.rightImagePanel.ClearImage();
-
-            var mainFilePath = this.filePathList[this.FilePathListIndex];
-            this.SelectedFilePath = mainFilePath;
-
-            if (this.isReadImageCancel)
-            {
-                this.DrawLoadingImage(mainFilePath);
-            }
-            else if (ImageFileReadedTimeCacheUtil.IsSlow(mainFilePath))
-            {
-                this.DrawLoadingImage(mainFilePath);
-            }
-            else
-            {
-                var subImageIndex = this.FilePathListIndex + 1;
-                if (subImageIndex > this.filePathList.Count - 1)
-                {
-                    subImageIndex = 0;
-                }
-
-                var subFilePath = this.filePathList[subImageIndex];
-                if (ImageFileReadedTimeCacheUtil.IsSlow(mainFilePath))
-                {
-                    this.DrawLoadingImage(mainFilePath);
-                }
-            }
-
-            var nextFiles = new List<string>(10);
-            var nextIndex = this.GetNextIndex(this.FilePathListIndex, true);
-            nextFiles.Add(this.filePathList[nextIndex]);
-            while (nextFiles.Count < nextFiles.Capacity)
-            {
-                nextIndex = this.GetNextIndex(nextIndex, true);
+                var nextFiles = new List<string>(10);
+                var nextIndex = this.GetNextIndex(this.FilePathListIndex, true);
                 nextFiles.Add(this.filePathList[nextIndex]);
-            }
+                while (nextFiles.Count < nextFiles.Capacity)
+                {
+                    nextIndex = this.GetNextIndex(nextIndex, true);
+                    nextFiles.Add(this.filePathList[nextIndex]);
+                }
 
-            var prevFiles = new List<string>(4);
-            var prevIndex = this.GetPreviewIndex(this.FilePathListIndex, true);
-            prevFiles.Add(this.filePathList[prevIndex]);
-            while (prevFiles.Count < prevFiles.Capacity)
-            {
-                prevIndex = this.GetPreviewIndex(prevIndex, true);
+                var prevFiles = new List<string>(4);
+                var prevIndex = this.GetPreviewIndex(this.FilePathListIndex, true);
                 prevFiles.Add(this.filePathList[prevIndex]);
+                while (prevFiles.Count < prevFiles.Capacity)
+                {
+                    prevIndex = this.GetPreviewIndex(prevIndex, true);
+                    prevFiles.Add(this.filePathList[prevIndex]);
+                }
+
+                var param = new ImageFileReadParameter
+                {
+                    CurrentIndex = this.FilePathListIndex,
+                    FilePathList = this.filePathList,
+                    ImageDisplayMode = this.displayMode,
+                    ImageSizeMode = this.sizeMode,
+                    ThumbnailSize = this.leftImagePanel.ThumbnailSize,
+                };
+
+                this.ImageInfoCacheJob.StartJob([.. nextFiles, .. prevFiles]);
+                this.GetImageFileJob.StartJob(param);
             }
-
-            this.ImageInfoCacheJob.StartJob([.. nextFiles, .. prevFiles]);
-
-            var param = new ImageFileReadParameter
+            finally
             {
-                CurrentIndex = this.FilePathListIndex,
-                FilePathList = this.filePathList,
-                ImageDisplayMode = this.displayMode,
-                ImageSizeMode = this.sizeMode,
-                ThumbnailSize = this.leftImagePanel.ThumbnailSize,
-            };
-
-            this.GetImageFileJob.StartJob(param);
+                sw.Stop();
+                Console.WriteLine($"ReadImage: {sw.ElapsedMilliseconds} ms");
+            }
         }
 
         private void DoDragDrop(string currentFilePath)
