@@ -59,7 +59,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         private ImageDisplayMode displayMode = ImageDisplayMode.LeftFacing;
         private ImageSizeMode sizeMode = ImageSizeMode.FitOnlyBigImage;
         private IList<string> filePathList = null;
-        private bool isReadImageCancel = false;
 
         private TwoWayJob<ImageFileReadJob, ImageFileReadParameter, ImageFileGetResult> getImageFileJob = null;
         private OneWayJob<BookmarkAddJob, ValueParameter<string>> addBookmarkJob = null;
@@ -136,16 +135,14 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                         })
                         .Cancel(() =>
                         {
-                            this.isReadImageCancel = true;
+
                         })
                         .Catch(_ =>
                         {
-                            this.isReadImageCancel = false;
                             this.Cursor = Cursors.Default;
                         })
                         .Complete(() =>
                         {
-                            this.isReadImageCancel = false;
                             this.Cursor = Cursors.Default;
                         })
                         .StartThread();
@@ -651,32 +648,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 var mainFilePath = this.filePathList[this.FilePathListIndex];
                 this.SelectedFilePath = mainFilePath;
 
-                if (this.isReadImageCancel)
-                {
-                    this.leftImagePanel.Visible = false;
-                    this.rightImagePanel.Visible = false;
-                }
-                else if (ImageFileReadedTimeCacheUtil.IsSlow(mainFilePath))
-                {
-                    this.leftImagePanel.Visible = false;
-                    this.rightImagePanel.Visible = false;
-                }
-                else
-                {
-                    var subImageIndex = this.FilePathListIndex + 1;
-                    if (subImageIndex > this.filePathList.Count - 1)
-                    {
-                        subImageIndex = 0;
-                    }
-
-                    var subFilePath = this.filePathList[subImageIndex];
-                    if (ImageFileReadedTimeCacheUtil.IsSlow(mainFilePath))
-                    {
-                        this.leftImagePanel.Visible = false;
-                        this.rightImagePanel.Visible = false;
-                    }
-                }
-
                 var nextFiles = new List<string>(10);
                 var nextIndex = this.GetNextIndex(this.FilePathListIndex, true);
                 nextFiles.Add(this.filePathList[nextIndex]);
@@ -704,8 +675,8 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                     ThumbnailSize = this.leftImagePanel.ThumbnailSize,
                 };
 
-                this.ImageInfoCacheJob.StartJob([.. nextFiles, .. prevFiles]);
                 this.GetImageFileJob.StartJob(param);
+                this.ImageInfoCacheJob.StartJob([.. nextFiles, .. prevFiles]);
             }
             finally
             {

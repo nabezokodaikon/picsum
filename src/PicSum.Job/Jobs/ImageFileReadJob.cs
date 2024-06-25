@@ -52,6 +52,7 @@ namespace PicSum.Job.Jobs
                     && mainImage != ImageUtil.EMPTY_IMAGE
                     && mainImage.Width < mainImage.Height)
                 {
+                    this.CheckCancel();
                     var subtIndex = parameter.CurrentIndex + 1;
                     if (subtIndex > parameter.FilePathList.Count - 1)
                     {

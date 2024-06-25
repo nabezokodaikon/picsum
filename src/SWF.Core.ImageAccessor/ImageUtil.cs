@@ -287,7 +287,6 @@ namespace SWF.Core.ImageAccessor
             {
                 sw.Stop();
                 Console.WriteLine($"ReadImageFileFast: {sw.ElapsedMilliseconds} ms");
-                ImageFileReadedTimeCacheUtil.Create(filePath, sw.ElapsedMilliseconds);
             }
         }
 
