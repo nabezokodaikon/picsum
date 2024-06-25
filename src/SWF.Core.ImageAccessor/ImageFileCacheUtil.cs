@@ -76,7 +76,7 @@ namespace SWF.Core.ImageAccessor
                     }
 
                     var newCache = new ImageFileCache(
-                        filePath, ImageUtil.ReadImageFileFast(filePath), timestamp);
+                        filePath, ImageUtil.ReadImageFile(filePath), timestamp);
                     CACHE_LIST.Add(newCache);
                     CACHE_DICTIONARY.Add(filePath, newCache);
                     return resultFunc(newCache);
