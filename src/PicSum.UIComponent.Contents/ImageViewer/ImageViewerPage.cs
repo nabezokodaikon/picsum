@@ -383,6 +383,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
         private Size GetImageSize(string filePath)
         {
+            var sw = Stopwatch.StartNew();
             try
             {
                 return ImageUtil.GetImageInfo(filePath).Size;
@@ -396,6 +397,11 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             {
                 Logger.Error(ex);
                 return new Size(this.checkPatternPanel.Size.Width / 2, this.checkPatternPanel.Size.Height);
+            }
+            finally
+            {
+                sw.Stop();
+                Console.WriteLine($"GetImageSize From ImageViewerPage: {sw.ElapsedMilliseconds} ms");
             }
         }
 
