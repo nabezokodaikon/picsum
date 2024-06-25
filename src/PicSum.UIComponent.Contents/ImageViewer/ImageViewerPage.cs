@@ -665,6 +665,10 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                     this.leftImagePanel.ThumbnailSize,
                     this.leftImagePanel.ThumbnailSize);
 
+                var subThumbnail = ImageUtil.CreateEmptyImage(
+                    this.leftImagePanel.ThumbnailSize,
+                    this.leftImagePanel.ThumbnailSize);
+
                 var w = (int)(this.checkPatternPanel.Width / 2f);
                 var h = this.checkPatternPanel.Height;
                 var lx = 0;
@@ -688,7 +692,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
                     this.rightImagePanel.SetImage(
                         ImageUtil.CreateEmptyImage(subImageSize.Width, subImageSize.Height),
-                        mainThumbnail);
+                        subThumbnail);
 
                     this.leftImagePanel.SetScale(
                         GetImageScale(mainImageSize, bgSize, this.sizeMode));
@@ -706,7 +710,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
                     this.rightImagePanel.SetImage(
                         ImageUtil.CreateEmptyImage(mainImageSize.Width, mainImageSize.Height),
-                        mainThumbnail);
+                        subThumbnail);
 
                     this.leftImagePanel.SetScale(
                         GetImageScale(subImageSize, bgSize, this.sizeMode));
