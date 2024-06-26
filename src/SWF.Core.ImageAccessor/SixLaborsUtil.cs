@@ -52,7 +52,8 @@ namespace SWF.Core.ImageAccessor
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
-            using (var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+            using (var fs = new FileStream(filePath,
+                FileMode.Open, FileAccess.Read, FileShare.Read, 8192, FileOptions.SequentialScan))
             using (var image = SixLabors.ImageSharp.Image.Load(DECODER_OPTIONS, fs))
             using (var mem = new MemoryStream())
             {
