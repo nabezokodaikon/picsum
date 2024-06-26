@@ -135,7 +135,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                         })
                         .Cancel(() =>
                         {
-
+                            Console.WriteLine($"GetImageFileJob.Cancel");
                         })
                         .Catch(_ =>
                         {
