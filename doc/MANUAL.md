@@ -11,6 +11,7 @@
 * Jpeg
 * Heic
 * Png
+* Svg
 * Webp
 
 ### 機能

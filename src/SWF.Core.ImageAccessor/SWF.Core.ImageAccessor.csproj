@@ -15,6 +15,7 @@
     <PackageReference Include="LibHeif.Native" Version="1.15.1" />
     <PackageReference Include="LibHeif.Native.win-x64" Version="1.15.1" />
     <PackageReference Include="SixLabors.ImageSharp" Version="3.1.4" />
+    <PackageReference Include="Svg" Version="3.4.7" />
     <PackageReference Include="System.Drawing.Common" Version="8.0.6" />
   </ItemGroup>
 

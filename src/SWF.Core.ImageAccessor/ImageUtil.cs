@@ -274,6 +274,11 @@ namespace SWF.Core.ImageAccessor
                             return icon.ToBitmap();
                         }
                     }
+                    else if (FileUtil.IsSvgFile(filePath))
+                    {
+                        return SvgUtil.ReadImageFile(filePath);
+                    }
+
                     var formatName = $".{SixLaborsUtil.DetectFormat(fs).Name.ToUpperInvariant()}";
 
                     if (FileUtil.IsWebpFile(formatName))
