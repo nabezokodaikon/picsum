@@ -19,19 +19,6 @@ namespace SWF.Core.ImageAccessor
             CACHE_DICTIONARY.Clear();
         }
 
-        public static bool Contains(string filePath)
-        {
-            CACHE_LOCK.EnterReadLock();
-            try
-            {
-                return CACHE_DICTIONARY.ContainsKey(filePath);
-            }
-            finally
-            {
-                CACHE_LOCK.ExitReadLock();
-            }
-        }
-
         public static ImageInfoCache GetImageInfo(string filePath)
         {
             var sw = Stopwatch.StartNew();
@@ -91,7 +78,7 @@ namespace SWF.Core.ImageAccessor
                 CACHE_LOCK.ExitUpgradeableReadLock();
 
                 sw.Stop();
-                Console.WriteLine($"ImageInfoCacheUtil.GetImageInfo: {sw.ElapsedMilliseconds} ms");
+                //Console.WriteLine($"ImageInfoCacheUtil.GetImageInfo: {sw.ElapsedMilliseconds} ms");
             }
         }
 

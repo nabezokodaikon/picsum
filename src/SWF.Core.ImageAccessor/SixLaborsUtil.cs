@@ -5,7 +5,9 @@ using SixLabors.ImageSharp.Formats;
 using SixLabors.ImageSharp.Formats.Bmp;
 using SixLabors.ImageSharp.Formats.Gif;
 using SixLabors.ImageSharp.Formats.Jpeg;
+using SixLabors.ImageSharp.Formats.Pbm;
 using SixLabors.ImageSharp.Formats.Png;
+using SixLabors.ImageSharp.Formats.Qoi;
 using SixLabors.ImageSharp.Formats.Tga;
 using SixLabors.ImageSharp.Formats.Tiff;
 using SixLabors.ImageSharp.Formats.Webp;
@@ -23,17 +25,18 @@ namespace SWF.Core.ImageAccessor
         {
             Configuration = new Configuration(
                 new AvifConfigurationModule(),
-                new HeifConfigurationModule(),
-                new WebpConfigurationModule(),
-                new JpegConfigurationModule(),
-                new PngConfigurationModule(),
+                new BmpConfigurationModule(),
                 new GifConfigurationModule(),
+                new HeifConfigurationModule(),
+                new JpegConfigurationModule(),
+                new PbmConfigurationModule(),
+                new PngConfigurationModule(),
+                new QoiConfigurationModule(),
+                new TgaConfigurationModule(),
                 new TiffConfigurationModule(),
-                new TgaConfigurationModule()),
+                new WebpConfigurationModule()),
             SkipMetadata = true,
         };
-
-        private static readonly BmpEncoder ENCODER = new();
 
         public static IImageFormat DetectFormat(FileStream fs)
         {
@@ -49,22 +52,7 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
-        public static Bitmap ReadImageFile(string filePath)
-        {
-            ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
-
-            var imageData = File.ReadAllBytes(filePath);
-            using (var loadMS = new MemoryStream(imageData))
-            using (var image = SixLabors.ImageSharp.Image.Load<Rgba32>(loadMS))
-            using (var ms = new MemoryStream())
-            {
-                image.SaveAsBmp(ms);
-                ms.Seek(0, SeekOrigin.Begin);
-                return new Bitmap(ms);
-            }
-        }
-
-        public static Bitmap ReadImageFileWithDecoder(FileStream fs)
+        public static Bitmap ReadImageFile(FileStream fs)
         {
             ArgumentNullException.ThrowIfNull(fs, nameof(fs));
 
@@ -102,7 +90,6 @@ namespace SWF.Core.ImageAccessor
             var height = image.Height;
             var bitmap = new Bitmap(width, height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
 
-            // Bitmapをロックしてピクセルデータにアクセスする
             System.Drawing.Imaging.BitmapData bitmapData = null;
 
             try
@@ -112,12 +99,10 @@ namespace SWF.Core.ImageAccessor
                     System.Drawing.Imaging.ImageLockMode.WriteOnly,
                     bitmap.PixelFormat);
 
-                // ピクセルデータへのポインタを取得する
                 var ptr = bitmapData.Scan0;
                 var bytes = Math.Abs(bitmapData.Stride) * height;
                 var rgbValues = new byte[bytes];
 
-                // ImageSharpの画像データをピクセルごとにコピーする
                 for (var y = 0; y < height; y++)
                 {
                     for (var x = 0; x < width; x++)
@@ -132,14 +117,12 @@ namespace SWF.Core.ImageAccessor
                     }
                 }
 
-                // ピクセルデータをアンマネージメモリにコピーする
                 Marshal.Copy(rgbValues, 0, ptr, bytes);
 
                 return bitmap;
             }
             finally
             {
-                // ビットマップのロックを解除する
                 if (bitmapData != null)
                 {
                     bitmap.UnlockBits(bitmapData);

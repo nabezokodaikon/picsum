@@ -129,12 +129,28 @@ namespace SWF.Core.FileAccessor
             return IMAGE_FILE_EXTENSION_LIST.Contains(ex);
         }
 
+        public static bool IsBmpFile(string filePath)
+        {
+            ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
+
+            var ex = FileUtil.GetExtension(filePath);
+            return (ex == ".BMP");
+        }
+
+        public static bool IsJpegFile(string filePath)
+        {
+            ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
+
+            var ex = FileUtil.GetExtension(filePath);
+            return (ex == ".JPG" || ex == ".JPEG");
+        }
+
         /// <summary>
         /// 指定したファイルがWEBPファイルであるか確認します。
         /// </summary>
         /// <param name="filePath"></param>
         /// <returns></returns>
-        public static bool IsWEBPFile(string filePath)
+        public static bool IsWebpFile(string filePath)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
@@ -147,7 +163,7 @@ namespace SWF.Core.FileAccessor
         /// </summary>
         /// <param name="filePath"></param>
         /// <returns></returns>
-        public static bool IsAVIFFile(string filePath)
+        public static bool IsAvifFile(string filePath)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
@@ -155,7 +171,7 @@ namespace SWF.Core.FileAccessor
             return (ex == AVIF_FILE_EXTENSION);
         }
 
-        public static bool IsHEICFile(string filePath)
+        public static bool IsHeicFile(string filePath)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
@@ -163,7 +179,7 @@ namespace SWF.Core.FileAccessor
             return (ex == HEIC_FILE_EXTENSION);
         }
 
-        public static bool IsHEIFFile(string filePath)
+        public static bool IsHeifFile(string filePath)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 

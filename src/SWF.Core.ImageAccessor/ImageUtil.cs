@@ -145,21 +145,27 @@ namespace SWF.Core.ImageAccessor
             {
                 try
                 {
-                    if (FileUtil.IsWEBPFile(filePath))
+                    using (var fs = new FileStream(filePath,
+                        FileMode.Open, FileAccess.Read, FileShare.Read, 64, FileOptions.SequentialScan))
                     {
-                        //return SixLaborsUtil.GetImageSize(filePath);
-                    }
-                    if (FileUtil.IsAVIFFile(filePath))
-                    {
-                        return LibHeifSharpUtil.GetImageSize(filePath);
-                    }
-                    else if (FileUtil.IsHEICFile(filePath))
-                    {
-                        return LibHeifSharpUtil.GetImageSize(filePath);
-                    }
-                    else if (FileUtil.IsHEIFFile(filePath))
-                    {
-                        return LibHeifSharpUtil.GetImageSize(filePath);
+                        var formatName = $".{SixLaborsUtil.DetectFormat(fs).Name.ToUpperInvariant()}";
+
+                        if (FileUtil.IsWebpFile(formatName))
+                        {
+                            //return SixLaborsUtil.GetImageSize(filePath);
+                        }
+                        if (FileUtil.IsAvifFile(formatName))
+                        {
+                            return LibHeifSharpUtil.GetImageSize(filePath);
+                        }
+                        else if (FileUtil.IsHeicFile(formatName))
+                        {
+                            return LibHeifSharpUtil.GetImageSize(filePath);
+                        }
+                        else if (FileUtil.IsHeifFile(formatName))
+                        {
+                            return LibHeifSharpUtil.GetImageSize(filePath);
+                        }
                     }
                 }
                 catch (ArgumentException ex)
@@ -261,21 +267,25 @@ namespace SWF.Core.ImageAccessor
                 using (var fs = new FileStream(filePath,
                     FileMode.Open, FileAccess.Read, FileShare.Read, 8192, FileOptions.SequentialScan))
                 {
-                    var formatName = SixLaborsUtil.DetectFormat(fs).Name.ToUpperInvariant();
+                    var formatName = $".{SixLaborsUtil.DetectFormat(fs).Name.ToUpperInvariant()}";
 
-                    if (formatName == "WEBP")
+                    if (FileUtil.IsWebpFile(formatName))
                     {
-                        return SixLaborsUtil.ReadImageFileWithDecoder(fs);
+                        return SixLaborsUtil.ReadImageFile(fs);
                     }
-                    else if (formatName == "AVIF")
+                    else if (FileUtil.IsAvifFile(formatName))
                     {
-                        return SixLaborsUtil.ReadImageFileWithDecoder(fs);
+                        return SixLaborsUtil.ReadImageFile(fs);
                     }
-                    else if (formatName == "HEIF")
+                    else if (FileUtil.IsHeicFile(formatName))
                     {
-                        return SixLaborsUtil.ReadImageFileWithDecoder(fs);
+                        return SixLaborsUtil.ReadImageFile(fs);
                     }
-                    else if (formatName == "JPEG")
+                    else if (FileUtil.IsHeifFile(formatName))
+                    {
+                        return SixLaborsUtil.ReadImageFile(fs);
+                    }
+                    else if (FileUtil.IsJpegFile(formatName) || FileUtil.IsBmpFile(formatName))
                     {
                         var sw = Stopwatch.StartNew();
                         try
