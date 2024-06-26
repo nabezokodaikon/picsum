@@ -267,6 +267,13 @@ namespace SWF.Core.ImageAccessor
                 using (var fs = new FileStream(filePath,
                     FileMode.Open, FileAccess.Read, FileShare.Read, 8192, FileOptions.SequentialScan))
                 {
+                    if (FileUtil.IsIconFile(filePath))
+                    {
+                        using (var icon = new Icon(fs))
+                        {
+                            return icon.ToBitmap();
+                        }
+                    }
                     var formatName = $".{SixLaborsUtil.DetectFormat(fs).Name.ToUpperInvariant()}";
 
                     if (FileUtil.IsWebpFile(formatName))

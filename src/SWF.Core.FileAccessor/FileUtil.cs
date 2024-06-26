@@ -16,6 +16,7 @@ namespace SWF.Core.FileAccessor
         private const string ROOT_DIRECTORY_NAME = "PC";
         private const string ROOT_DIRECTORY_TYPE_NAME = "System root";
 
+        internal const string ICON_FILE_EXTENSION = ".ICO";
         internal const string WEBP_FILE_EXTENSION = ".WEBP";
         internal const string AVIF_FILE_EXTENSION = ".AVIF";
         internal const string HEIC_FILE_EXTENSION = ".HEIC";
@@ -129,6 +130,13 @@ namespace SWF.Core.FileAccessor
             return IMAGE_FILE_EXTENSION_LIST.Contains(ex);
         }
 
+        public static bool IsIconFile(string filePath)
+        {
+            ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
+
+            var ex = FileUtil.GetExtension(filePath);
+            return (ex == ICON_FILE_EXTENSION);
+        }
         public static bool IsBmpFile(string filePath)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
@@ -1048,6 +1056,7 @@ namespace SWF.Core.FileAccessor
                 exList.AddRange(exs);
             }
 
+            exList.Add(ICON_FILE_EXTENSION);
             exList.Add(WEBP_FILE_EXTENSION);
             exList.Add(AVIF_FILE_EXTENSION);
             exList.Add(HEIC_FILE_EXTENSION);

@@ -7,6 +7,7 @@
 * Avif
 * Bmp
 * Gif
+* Ico
 * Jpeg
 * Heic
 * Png
