@@ -253,10 +253,46 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
-        public static Bitmap ReadImageFile(string filePath)
+        public static Bitmap ReadImageFileFast(string filePath)
         {
             var sw = Stopwatch.StartNew();
 
+            ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
+
+            try
+            {
+                if (FileUtil.IsJpegFile(filePath))
+                {
+                    return ReadImageFile(filePath, false, true);
+                }
+
+                Bitmap img = null;
+                try
+                {
+                    img = ReadImageFile(filePath, false, false);
+                    img.Palette.GetType();
+                    return img;
+                }
+                catch (ExternalException ex)
+                {
+                    if (img != null)
+                    {
+                        img.Dispose();
+                    }
+
+                    Console.WriteLine(ex.Message);
+                    return ReadImageFile(filePath, false, true);
+                }
+            }
+            finally
+            {
+                sw.Stop();
+                Console.WriteLine($"ReadImageFileFast: {sw.ElapsedMilliseconds} ms");
+            }
+        }
+
+        private static Bitmap ReadImageFile(string filePath, bool useEmbeddedColorManagement, bool validateImageData)
+        {
             try
             {
                 if (FileUtil.IsWEBPFile(filePath))
@@ -277,13 +313,9 @@ namespace SWF.Core.ImageAccessor
                 }
                 else if (FileUtil.IsImageFile(filePath))
                 {
-                    using (var fs = new FileStream(filePath,
-                        FileMode.Open, FileAccess.Read, FileShare.Read, 4096, FileOptions.SequentialScan))
-                    using (var mmf = MemoryMappedFile.CreateFromFile(
-                        fs, null, fs.Length, MemoryMappedFileAccess.Read, HandleInheritability.None, false))
-                    using (var mmvs = mmf.CreateViewStream(0, fs.Length, MemoryMappedFileAccess.Read))
+                    using (var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
                     {
-                        return new Bitmap(mmvs);
+                        return (Bitmap)Bitmap.FromStream(fs, useEmbeddedColorManagement, validateImageData);
                     }
                 }
                 else
@@ -339,11 +371,6 @@ namespace SWF.Core.ImageAccessor
             catch (OutOfMemoryException ex)
             {
                 throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
-            }
-            finally
-            {
-                sw.Stop();
-                Console.WriteLine($"ReadImageFile: {sw.ElapsedMilliseconds} ms");
             }
         }
 

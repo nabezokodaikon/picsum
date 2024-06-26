@@ -63,7 +63,7 @@ namespace SWF.Core.ImageAccessor
                 }
 
                 var newCache = new ImageFileCache(
-                    filePath, ImageUtil.ReadImageFile(filePath), timestamp);
+                    filePath, ImageUtil.ReadImageFileFast(filePath), timestamp);
 
                 CACHE_LOCK.EnterWriteLock();
                 try
