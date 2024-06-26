@@ -2,7 +2,6 @@ using SWF.Core.FileAccessor;
 using System.Diagnostics;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
-using System.IO.MemoryMappedFiles;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 using System.Security;
@@ -255,69 +254,56 @@ namespace SWF.Core.ImageAccessor
 
         public static Bitmap ReadImageFile(string filePath)
         {
-            var sw = new Stopwatch();
-
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
-            if (FileUtil.IsJpegFile(filePath))
-            {
-                sw.Start();
-                try
-                {
-                    return ReadImageFile(filePath, false, true);
-                }
-                finally
-                {
-                    sw.Stop();
-                    Console.WriteLine($"ReadImageFile(false , true): {sw.ElapsedMilliseconds} ms");
-                }
-            }
-
-            sw.Start();
             try
             {
-                return ReadImageFile(filePath, false, false);
-            }
-            finally
-            {
-                sw.Stop();
-                Console.WriteLine($"ReadImageFile(false , false): {sw.ElapsedMilliseconds} ms");
-            }
-        }
+                using (var fs = new FileStream(filePath,
+                    FileMode.Open, FileAccess.Read, FileShare.Read, 8192, FileOptions.SequentialScan))
+                {
+                    var formatName = SixLaborsUtil.DetectFormat(fs).Name.ToUpperInvariant();
 
-        private static Bitmap ReadImageFile(
-            string filePath, bool useEmbeddedColorManagement, bool validateImageData)
-        {
-            try
-            {
-                if (FileUtil.IsWEBPFile(filePath))
-                {
-                    return SixLaborsUtil.ReadImageFileWithDecoder(filePath);
-                }
-                if (FileUtil.IsAVIFFile(filePath))
-                {
-                    return SixLaborsUtil.ReadImageFileWithDecoder(filePath);
-                }
-                else if (FileUtil.IsHEICFile(filePath))
-                {
-                    return SixLaborsUtil.ReadImageFileWithDecoder(filePath);
-                }
-                else if (FileUtil.IsHEIFFile(filePath))
-                {
-                    return SixLaborsUtil.ReadImageFileWithDecoder(filePath);
-                }
-                else if (FileUtil.IsImageFile(filePath))
-                {
-                    using (var fs = new FileStream(filePath,
-                        FileMode.Open, FileAccess.Read, FileShare.Read, 8192, FileOptions.SequentialScan))
+                    if (formatName == "WEBP")
                     {
-                        return (Bitmap)Bitmap.FromStream(fs, useEmbeddedColorManagement, validateImageData);
+                        return SixLaborsUtil.ReadImageFileWithDecoder(fs);
                     }
-                }
-                else
-                {
-                    throw new ArgumentException(
-                        $"画像ファイル以外のファイルが指定されました。'{filePath}'", nameof(filePath));
+                    else if (formatName == "AVIF")
+                    {
+                        return SixLaborsUtil.ReadImageFileWithDecoder(fs);
+                    }
+                    else if (formatName == "HEIF")
+                    {
+                        return SixLaborsUtil.ReadImageFileWithDecoder(fs);
+                    }
+                    else if (formatName == "JPEG")
+                    {
+                        var sw = Stopwatch.StartNew();
+                        try
+                        {
+                            return (Bitmap)Bitmap.FromStream(fs, false, true);
+                        }
+                        finally
+                        {
+                            Console.WriteLine($"ReadImageFile(false , true): {sw.ElapsedMilliseconds} ms");
+                        }
+                    }
+                    else if (FileUtil.IsImageFile(filePath))
+                    {
+                        var sw = Stopwatch.StartNew();
+                        try
+                        {
+                            return (Bitmap)Bitmap.FromStream(fs, false, false);
+                        }
+                        finally
+                        {
+                            Console.WriteLine($"ReadImageFile(false , false): {sw.ElapsedMilliseconds} ms");
+                        }
+                    }
+                    else
+                    {
+                        throw new ArgumentException(
+                            $"画像ファイル以外のファイルが指定されました。'{filePath}'", nameof(filePath));
+                    }
                 }
             }
             catch (ArgumentException ex)

@@ -10,6 +10,8 @@ using SixLabors.ImageSharp.Formats.Tga;
 using SixLabors.ImageSharp.Formats.Tiff;
 using SixLabors.ImageSharp.Formats.Webp;
 using SixLabors.ImageSharp.PixelFormats;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 
 namespace SWF.Core.ImageAccessor
@@ -33,6 +35,20 @@ namespace SWF.Core.ImageAccessor
 
         private static readonly BmpEncoder ENCODER = new();
 
+        public static IImageFormat DetectFormat(FileStream fs)
+        {
+            var sw = Stopwatch.StartNew();
+            try
+            {
+                return SixLabors.ImageSharp.Image.DetectFormat(DECODER_OPTIONS, fs);
+            }
+            finally
+            {
+                sw.Stop();
+                Console.WriteLine($"DetectFormat: {sw.ElapsedMilliseconds} ms");
+            }
+        }
+
         public static Bitmap ReadImageFile(string filePath)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
@@ -48,19 +64,23 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
-        public static Bitmap ReadImageFileWithDecoder(string filePath)
+        public static Bitmap ReadImageFileWithDecoder(FileStream fs)
         {
-            ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
+            ArgumentNullException.ThrowIfNull(fs, nameof(fs));
 
-            using (var fs = new FileStream(filePath,
-                FileMode.Open, FileAccess.Read, FileShare.Read, 8192, FileOptions.SequentialScan))
+            var sw = Stopwatch.StartNew();
             using (var image = SixLabors.ImageSharp.Image.Load(DECODER_OPTIONS, fs))
-            using (var mem = new MemoryStream())
             {
-                image.SaveAsBmp(mem, ENCODER);
-                mem.Position = 0;
-                var bitmap = (Bitmap)System.Drawing.Image.FromStream(mem, false);
-                return bitmap;
+                sw.Stop();
+                Console.WriteLine($"ReadImageFileWithDecoder Image.Load: {sw.ElapsedMilliseconds} ms");
+                using (var mem = new MemoryStream())
+                {
+                    sw.Restart();
+                    var img = ConvertImageSharpImageToBitmap((Image<Rgba32>)image);
+                    sw.Stop();
+                    Console.WriteLine($"ReadImageFileWithDecoder ConvertImageSharpImageToBitmap: {sw.ElapsedMilliseconds} ms");
+                    return img;
+                }
             }
         }
 
@@ -68,10 +88,62 @@ namespace SWF.Core.ImageAccessor
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
-            using (var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+            using (var fs = new FileStream(filePath,
+                FileMode.Open, FileAccess.Read, FileShare.Read, 8, FileOptions.SequentialScan))
             using (var image = SixLabors.ImageSharp.Image.Load(DECODER_OPTIONS, fs))
             {
                 return new System.Drawing.Size(image.Width, image.Height);
+            }
+        }
+
+        private static Bitmap ConvertImageSharpImageToBitmap(Image<Rgba32> image)
+        {
+            var width = image.Width;
+            var height = image.Height;
+            var bitmap = new Bitmap(width, height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+
+            // Bitmapをロックしてピクセルデータにアクセスする
+            System.Drawing.Imaging.BitmapData bitmapData = null;
+
+            try
+            {
+                bitmapData = bitmap.LockBits(
+                    new System.Drawing.Rectangle(0, 0, width, height),
+                    System.Drawing.Imaging.ImageLockMode.WriteOnly,
+                    bitmap.PixelFormat);
+
+                // ピクセルデータへのポインタを取得する
+                var ptr = bitmapData.Scan0;
+                var bytes = Math.Abs(bitmapData.Stride) * height;
+                var rgbValues = new byte[bytes];
+
+                // ImageSharpの画像データをピクセルごとにコピーする
+                for (var y = 0; y < height; y++)
+                {
+                    for (var x = 0; x < width; x++)
+                    {
+                        var pixel = image[x, y];
+                        var position = (y * bitmapData.Stride) + (x * 4);
+
+                        rgbValues[position] = pixel.B;
+                        rgbValues[position + 1] = pixel.G;
+                        rgbValues[position + 2] = pixel.R;
+                        rgbValues[position + 3] = pixel.A;
+                    }
+                }
+
+                // ピクセルデータをアンマネージメモリにコピーする
+                Marshal.Copy(rgbValues, 0, ptr, bytes);
+
+                return bitmap;
+            }
+            finally
+            {
+                // ビットマップのロックを解除する
+                if (bitmapData != null)
+                {
+                    bitmap.UnlockBits(bitmapData);
+                }
             }
         }
     }

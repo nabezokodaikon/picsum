@@ -171,14 +171,6 @@ namespace SWF.Core.FileAccessor
             return (ex == HEIF_FILE_EXTENSION);
         }
 
-        public static bool IsJpegFile(string filePath)
-        {
-            ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
-
-            var ex = FileUtil.GetExtension(filePath);
-            return (ex == ".JPG" || ex == ".JPEG");
-        }
-
         /// <summary>
         /// 指定したディレクトリ内に、画像ファイルが存在するか確認します。
         /// </summary>
