@@ -255,8 +255,39 @@ namespace SWF.Core.ImageAccessor
 
         public static Bitmap ReadImageFile(string filePath)
         {
-            var sw = Stopwatch.StartNew();
+            var sw = new Stopwatch();
 
+            ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
+
+            if (FileUtil.IsJpegFile(filePath))
+            {
+                sw.Start();
+                try
+                {
+                    return ReadImageFile(filePath, false, true);
+                }
+                finally
+                {
+                    sw.Stop();
+                    Console.WriteLine($"ReadImageFile(false , true): {sw.ElapsedMilliseconds} ms");
+                }
+            }
+
+            sw.Start();
+            try
+            {
+                return ReadImageFile(filePath, false, false);
+            }
+            finally
+            {
+                sw.Stop();
+                Console.WriteLine($"ReadImageFile(false , false): {sw.ElapsedMilliseconds} ms");
+            }
+        }
+
+        private static Bitmap ReadImageFile(
+            string filePath, bool useEmbeddedColorManagement, bool validateImageData)
+        {
             try
             {
                 if (FileUtil.IsWEBPFile(filePath))
@@ -279,11 +310,8 @@ namespace SWF.Core.ImageAccessor
                 {
                     using (var fs = new FileStream(filePath,
                         FileMode.Open, FileAccess.Read, FileShare.Read, 8192, FileOptions.SequentialScan))
-                    using (var mmf = MemoryMappedFile.CreateFromFile(
-                        fs, null, fs.Length, MemoryMappedFileAccess.Read, HandleInheritability.None, false))
-                    using (var mmvs = mmf.CreateViewStream(0, fs.Length, MemoryMappedFileAccess.Read))
                     {
-                        return new Bitmap(mmvs);
+                        return (Bitmap)Bitmap.FromStream(fs, useEmbeddedColorManagement, validateImageData);
                     }
                 }
                 else
@@ -339,11 +367,6 @@ namespace SWF.Core.ImageAccessor
             catch (OutOfMemoryException ex)
             {
                 throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
-            }
-            finally
-            {
-                sw.Stop();
-                //Console.WriteLine($"ReadImageFile: {sw.ElapsedMilliseconds} ms");
             }
         }
 
