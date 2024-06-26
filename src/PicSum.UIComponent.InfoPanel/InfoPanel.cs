@@ -307,7 +307,8 @@ namespace PicSum.UIComponent.InfoPanel
 
         private void ClearInfo()
         {
-            if (this.Thumbnail != null)
+            if (this.Thumbnail != null
+                && this.Thumbnail.ThumbnailImage != null)
             {
                 this.Thumbnail.ThumbnailImage.Dispose();
                 this.Thumbnail.ThumbnailImage = null;
