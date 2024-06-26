@@ -62,6 +62,9 @@ namespace SWF.Core.ImageAccessor
                     }
                 }
 
+                var newCache = new ImageFileCache(
+                    filePath, ImageUtil.ReadImageFile(filePath), timestamp);
+
                 CACHE_LOCK.EnterWriteLock();
                 try
                 {
@@ -78,11 +81,16 @@ namespace SWF.Core.ImageAccessor
                         CACHE_DICTIONARY.Remove(removeCache.FilePath);
                     }
 
-                    var newCache = new ImageFileCache(
-                        filePath, ImageUtil.ReadImageFile(filePath), timestamp);
-                    CACHE_LIST.Add(newCache);
-                    CACHE_DICTIONARY.Add(filePath, newCache);
-                    return resultFunc(newCache);
+                    if (CACHE_DICTIONARY.TryAdd(filePath, newCache))
+                    {
+                        CACHE_LIST.Add(newCache);
+                        return resultFunc(newCache);
+                    }
+                    else
+                    {
+                        newCache.Dispose();
+                        return resultFunc(CACHE_DICTIONARY[filePath]);
+                    }
                 }
                 finally
                 {
