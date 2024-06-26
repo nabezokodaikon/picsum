@@ -1,5 +1,6 @@
 using SWF.UIComponent.ImagePanel.Properties;
 using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Runtime.Versioning;
@@ -235,14 +236,23 @@ namespace SWF.UIComponent.ImagePanel
 
         public new void Invalidate()
         {
-            if (this.Visible)
+            var sw = Stopwatch.StartNew();
+            try
             {
-                base.Invalidate();
-                this.Update();
+                if (this.Visible)
+                {
+                    base.Invalidate();
+                    this.Update();
+                }
+                else
+                {
+                    this.Visible = true;
+                }
             }
-            else
+            finally
             {
-                this.Visible = true;
+                sw.Stop();
+                Console.WriteLine($"Invalidate: {sw.ElapsedMilliseconds} ms");
             }
         }
 
