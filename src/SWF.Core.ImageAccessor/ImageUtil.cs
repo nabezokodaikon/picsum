@@ -306,6 +306,7 @@ namespace SWF.Core.ImageAccessor
                         }
                         finally
                         {
+                            sw.Stop();
                             Console.WriteLine($"ReadImageFile(false , true): {sw.ElapsedMilliseconds} ms");
                         }
                     }
@@ -318,6 +319,7 @@ namespace SWF.Core.ImageAccessor
                         }
                         finally
                         {
+                            sw.Stop();
                             Console.WriteLine($"ReadImageFile(false , false): {sw.ElapsedMilliseconds} ms");
                         }
                     }
