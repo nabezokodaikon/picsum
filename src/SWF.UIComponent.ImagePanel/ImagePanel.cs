@@ -238,6 +238,7 @@ namespace SWF.UIComponent.ImagePanel
             if (this.Visible)
             {
                 base.Invalidate();
+                this.Update();
             }
             else
             {
