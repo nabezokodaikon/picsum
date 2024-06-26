@@ -1,4 +1,5 @@
 using SWF.Core.FileAccessor;
+using System.Diagnostics;
 using System.Runtime.Versioning;
 
 namespace SWF.Core.ImageAccessor
@@ -33,6 +34,8 @@ namespace SWF.Core.ImageAccessor
 
         public static ImageInfoCache GetImageInfo(string filePath)
         {
+            var sw = Stopwatch.StartNew();
+
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
             var timestamp = FileUtil.GetUpdateDate(filePath);
@@ -79,6 +82,9 @@ namespace SWF.Core.ImageAccessor
             finally
             {
                 CACHE_LOCK.ExitUpgradeableReadLock();
+
+                sw.Stop();
+                Console.WriteLine($"ImageInfoCacheUtil.GetImageInfo: {sw.ElapsedMilliseconds} ms");
             }
         }
 

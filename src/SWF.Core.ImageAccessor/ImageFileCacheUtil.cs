@@ -1,4 +1,5 @@
 using SWF.Core.FileAccessor;
+using System.Diagnostics;
 using System.Runtime.Versioning;
 
 namespace SWF.Core.ImageAccessor
@@ -43,6 +44,8 @@ namespace SWF.Core.ImageAccessor
 
         private static T Read<T>(string filePath, Func<ImageFileCache, T> resultFunc)
         {
+            var sw = Stopwatch.StartNew();
+
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
             var timestamp = FileUtil.GetUpdateDate(filePath);
@@ -89,6 +92,9 @@ namespace SWF.Core.ImageAccessor
             finally
             {
                 CACHE_LOCK.ExitUpgradeableReadLock();
+
+                sw.Stop();
+                Console.WriteLine($"ImageFileCacheUtil.Read: {sw.ElapsedMilliseconds} ms");
             }
         }
     }
