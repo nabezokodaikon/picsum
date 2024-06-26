@@ -59,7 +59,7 @@ namespace SWF.Core.ImageAccessor
             {
                 image.SaveAsBmp(mem, ENCODER);
                 mem.Position = 0;
-                var bitmap = (Bitmap)System.Drawing.Image.FromStream(mem);
+                var bitmap = (Bitmap)System.Drawing.Image.FromStream(mem, false);
                 return bitmap;
             }
         }
