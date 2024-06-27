@@ -712,7 +712,7 @@ namespace SWF.Core.FileAccessor
             }
             else if (fileSize < 1125899906842624)
             {
-                return (fileSize / 1099511627776).ToString() + "TB";
+                return (fileSize / 1099511627776).ToString() + " TB";
             }
             else
             {
