@@ -1,7 +1,4 @@
-using PicSum.Core.Data.DatabaseAccessor;
 using PicSum.Core.Job.AsyncJob;
-using PicSum.Data.DatabaseAccessor.Connection;
-using PicSum.Data.DatabaseAccessor.Sql;
 using SWF.Core.FileAccessor;
 using System.Runtime.Versioning;
 
@@ -11,37 +8,21 @@ namespace PicSum.Job.Logics
     internal sealed class ThumbnailDBCleanupLogic(AbstractAsyncJob job)
         : AbstractAsyncLogic(job)
     {
-        public void Execute()
+        public void Execute(string dbDir)
         {
-            using (var tran = DatabaseManager<ThumbnailConnection>.BeginTransaction())
+            ArgumentNullException.ThrowIfNullOrEmpty(dbDir, nameof(dbDir));
+
+            var dbFile = Path.Combine(dbDir, "thumbnail.sqlite");
+            if (FileUtil.CanAccess(dbFile))
             {
-                this.Cleanup();
-                tran.Commit();
+                File.Delete(dbFile);
             }
 
-            this.Vacuum();
-        }
-
-        private void Cleanup()
-        {
-            var readSql = new AllThumbnailsReadSql();
-            var fileList = DatabaseManager<ThumbnailConnection>
-                .ReadList(readSql);
-            foreach (var file in fileList)
+            foreach (var thumbnailFile in FileUtil.GetFiles(dbDir)
+                .Where(file => FileUtil.GetExtension(file) == ".THUMBNAIL"))
             {
-                if (!FileUtil.IsExists(file.FilePath))
-                {
-                    var cleanupSql = new ThumbnailDBCleanupSql(file.FilePath);
-                    DatabaseManager<ThumbnailConnection>.Update(cleanupSql);
-                }
-
+                File.Delete($"{thumbnailFile}");
             }
-        }
-
-        private void Vacuum()
-        {
-            var cleanupSql = new ThumbnailDBVacuumSql();
-            DatabaseManager<ThumbnailConnection>.ReadLine(cleanupSql);
         }
     }
 }

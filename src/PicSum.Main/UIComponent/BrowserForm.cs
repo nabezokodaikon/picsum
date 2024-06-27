@@ -45,7 +45,8 @@ namespace PicSum.Main.UIComponent
         private BrowserMainPanel browserMainPanel = null;
         private bool isKeyDown = false;
         private TwoWayJob<StartupJob, StartupPrameter, EmptyResult> startupJob = null;
-        private OneWayJob<DBCleanupJob> dbCleanupJob = null;
+        private OneWayJob<FileInfoDBCleanupJob> fileInfoDBCleanupJob = null;
+        private OneWayJob<ThumbnailDBCleanupJob, ValueParameter<string>> thumbnailDBCleanupJob = null;
 
         #endregion
 
@@ -131,47 +132,73 @@ namespace PicSum.Main.UIComponent
             {
                 this.Location = BrowserConfig.WindowLocaion;
 
-                this.startupJob = new();
-                this.startupJob
-                    .Catch(ex =>
-                        ExceptionUtil.ShowErrorDialog("起動処理が失敗しました。", ex))
-                    .Complete(() =>
-                    {
-                        if (BrowserForm.IsCleanup())
-                        {
-                            this.dbCleanupJob = new();
-                            this.dbCleanupJob
-                                .Catch(ex =>
-                                    ExceptionUtil.ShowErrorDialog("DBクリーンアップ処理が失敗しました。", ex))
-                                .Complete(() =>
-                                {
-                                    this.CreateBrowserMainPanel();
-                                    BrowserForm.isStartUp = false;
-                                })
-                                    .StartThread();
-                            this.dbCleanupJob.StartJob();
-                        }
-                        else
-                        {
-                            this.CreateBrowserMainPanel();
-                            BrowserForm.isStartUp = false;
-                        }
-                    })
-                    .StartThread();
-
                 var dbDir = Path.Combine(Directory.GetParent(Application.ExecutablePath).FullName, "db");
                 if (!Directory.Exists(dbDir))
                 {
                     Directory.CreateDirectory(dbDir);
                 }
 
-                var param = new StartupPrameter
+                var startupParameter = new StartupPrameter
                 {
                     FileInfoDBFilePath = Path.Combine(dbDir, @"fileinfo.sqlite"),
                     ThumbnailDBFilePath = Path.Combine(dbDir, @"thumbnail.sqlite")
                 };
 
-                this.startupJob.StartJob(param);
+                this.fileInfoDBCleanupJob = new();
+                this.fileInfoDBCleanupJob
+                    .Catch(ex =>
+                    {
+                        ExceptionUtil.ShowErrorDialog("ファイル情報データベースのクリーンアップ処理が失敗しました。", ex);
+                    })
+                    .Complete(() =>
+                    {
+                        this.CreateBrowserMainPanel();
+                        BrowserForm.isStartUp = false;
+                    });
+
+                this.thumbnailDBCleanupJob = new();
+                this.thumbnailDBCleanupJob
+                    .Catch(ex =>
+                    {
+                        ExceptionUtil.ShowErrorDialog("サムネイルデータベースのクリーンアップ処理が失敗しました。", ex);
+                    })
+                    .Complete(() =>
+                    {
+                        this.startupJob.StartThread();
+                        this.startupJob.StartJob(startupParameter);
+                    });
+
+                this.startupJob = new();
+                this.startupJob
+                    .Catch(ex =>
+                    {
+                        ExceptionUtil.ShowErrorDialog("起動に失敗しました。", ex);
+                    })
+                    .Complete(() =>
+                    {
+                        if (IsCleanup())
+                        {
+                            this.fileInfoDBCleanupJob.StartThread();
+                            this.fileInfoDBCleanupJob.StartJob();
+                        }
+                        else
+                        {
+                            this.CreateBrowserMainPanel();
+                            BrowserForm.isStartUp = false;
+                        }
+                    });
+
+                if (BrowserForm.IsCleanup())
+                {
+                    this.thumbnailDBCleanupJob.StartThread();
+                    this.thumbnailDBCleanupJob.StartJob(
+                        new ValueParameter<string>(dbDir));
+                }
+                else
+                {
+                    this.startupJob.StartThread();
+                    this.startupJob.StartJob(startupParameter);
+                }
             }
             else
             {
@@ -216,10 +243,16 @@ namespace PicSum.Main.UIComponent
                     this.startupJob = null;
                 }
 
-                if (this.dbCleanupJob != null)
+                if (this.fileInfoDBCleanupJob != null)
                 {
-                    this.dbCleanupJob.Dispose();
-                    this.dbCleanupJob = null;
+                    this.fileInfoDBCleanupJob.Dispose();
+                    this.fileInfoDBCleanupJob = null;
+                }
+
+                if (this.thumbnailDBCleanupJob != null)
+                {
+                    this.thumbnailDBCleanupJob.Dispose();
+                    this.thumbnailDBCleanupJob = null;
                 }
             }
 
