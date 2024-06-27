@@ -16,13 +16,17 @@ namespace SWF.Core.FileAccessor
         private const string ROOT_DIRECTORY_NAME = "PC";
         private const string ROOT_DIRECTORY_TYPE_NAME = "System root";
 
-        internal const string SVG_FILE_EXTENSION = ".SVG";
-        internal const string ICON_FILE_EXTENSION = ".ICO";
-        internal const string WEBP_FILE_EXTENSION = ".WEBP";
         internal const string AVIF_FILE_EXTENSION = ".AVIF";
+        internal const string BMP_FILE_EXTENSION = ".BMP";
+        internal const string GIF_FILE_EXTENSION = ".GIF";
+        internal const string ICON_FILE_EXTENSION = ".ICO";
+        internal const string JPEG_FILE_EXTENSION = ".JPEG";
+        internal const string JPG_FILE_EXTENSION = ".JPG";
         internal const string HEIC_FILE_EXTENSION = ".HEIC";
-        internal const string HEIF_FILE_EXTENSION = ".HEIF";
-
+        internal const string PNG_FILE_EXTENSION = ".PNG";
+        internal const string SVG_FILE_EXTENSION = ".SVG";
+        internal const string WEBP_FILE_EXTENSION = ".WEBP";
+        
         internal static readonly List<string> IMAGE_FILE_EXTENSION_LIST = GetImageFileExtensionList();
 
         public const string ROOT_DIRECTORY_PATH =
@@ -152,7 +156,7 @@ namespace SWF.Core.FileAccessor
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
             var ex = FileUtil.GetExtension(filePath);
-            return (ex == ".BMP");
+            return (ex == BMP_FILE_EXTENSION);
         }
 
         public static bool IsJpegFile(string filePath)
@@ -160,7 +164,7 @@ namespace SWF.Core.FileAccessor
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
             var ex = FileUtil.GetExtension(filePath);
-            return (ex == ".JPG" || ex == ".JPEG");
+            return (ex == JPG_FILE_EXTENSION || ex == JPEG_FILE_EXTENSION);
         }
 
         /// <summary>
@@ -195,14 +199,6 @@ namespace SWF.Core.FileAccessor
 
             var ex = FileUtil.GetExtension(filePath);
             return (ex == HEIC_FILE_EXTENSION);
-        }
-
-        public static bool IsHeifFile(string filePath)
-        {
-            ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
-
-            var ex = FileUtil.GetExtension(filePath);
-            return (ex == HEIF_FILE_EXTENSION);
         }
 
         /// <summary>
@@ -1059,19 +1055,16 @@ namespace SWF.Core.FileAccessor
         private static List<string> GetImageFileExtensionList()
         {
             var exList = new List<string>();
-            var encs = ImageCodecInfo.GetImageEncoders();
-            foreach (var enc in encs)
-            {
-                var exs = enc.FilenameExtension.Replace("*", string.Empty).Split(';');
-                exList.AddRange(exs);
-            }
-
-            exList.Add(SVG_FILE_EXTENSION);
-            exList.Add(ICON_FILE_EXTENSION);
-            exList.Add(WEBP_FILE_EXTENSION);
             exList.Add(AVIF_FILE_EXTENSION);
+            exList.Add(BMP_FILE_EXTENSION);
+            exList.Add(GIF_FILE_EXTENSION);
+            exList.Add(ICON_FILE_EXTENSION);
+            exList.Add(JPEG_FILE_EXTENSION);
+            exList.Add(JPG_FILE_EXTENSION);
             exList.Add(HEIC_FILE_EXTENSION);
-            exList.Add(HEIF_FILE_EXTENSION);
+            exList.Add(PNG_FILE_EXTENSION);
+            exList.Add(SVG_FILE_EXTENSION);
+            exList.Add(WEBP_FILE_EXTENSION);
 
             return exList;
         }

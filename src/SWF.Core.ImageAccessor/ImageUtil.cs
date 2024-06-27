@@ -162,10 +162,6 @@ namespace SWF.Core.ImageAccessor
                         {
                             return LibHeifSharpUtil.GetImageSize(filePath);
                         }
-                        else if (FileUtil.IsHeifFile(formatName))
-                        {
-                            return LibHeifSharpUtil.GetImageSize(filePath);
-                        }
                     }
                 }
                 catch (ArgumentException ex)
@@ -290,10 +286,6 @@ namespace SWF.Core.ImageAccessor
                         return SixLaborsUtil.ReadImageFile(fs);
                     }
                     else if (FileUtil.IsHeicFile(formatName))
-                    {
-                        return SixLaborsUtil.ReadImageFile(fs);
-                    }
-                    else if (FileUtil.IsHeifFile(formatName))
                     {
                         return SixLaborsUtil.ReadImageFile(fs);
                     }
