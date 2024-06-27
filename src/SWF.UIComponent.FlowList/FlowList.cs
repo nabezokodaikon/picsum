@@ -664,6 +664,7 @@ namespace SWF.UIComponent.FlowList
                 if (this.drawParameter.ScrollBarMaximum > 0)
                 {
                     this.scrollBar.LargeChange = (int)(this.Height / 2);
+                    this.scrollBar.SmallChange = this.scrollBar.LargeChange / 8;
                     this.scrollBar.Maximum = this.drawParameter.ScrollBarMaximum;
                     this.scrollBar.Visible = true;
                 }
@@ -671,6 +672,7 @@ namespace SWF.UIComponent.FlowList
                 {
                     this.scrollBar.Visible = false;
                     this.scrollBar.LargeChange = this.itemHeight;
+                    this.scrollBar.SmallChange = this.scrollBar.LargeChange / 8;
                     this.scrollBar.Value = this.scrollBar.Minimum;
                     this.scrollBar.Maximum = this.drawParameter.ScrollBarMaximum;
                 }
@@ -680,6 +682,7 @@ namespace SWF.UIComponent.FlowList
                 this.drawParameter = new DrawParameter();
                 this.scrollBar.Visible = false;
                 this.scrollBar.LargeChange = this.itemHeight;
+                this.scrollBar.SmallChange = this.scrollBar.LargeChange / 8;
                 this.scrollBar.Value = this.scrollBar.Minimum;
                 this.scrollBar.Maximum = this.drawParameter.ScrollBarMaximum;
             }
