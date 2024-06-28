@@ -241,13 +241,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
         #region 継承メソッド
 
-        protected override void OnResize(EventArgs e)
-        {
-            this.RedrawPage();
-
-            base.OnResize(e);
-        }
-
         protected override void Dispose(bool disposing)
         {
             if (disposing)
