@@ -72,18 +72,6 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
-        public static System.Drawing.Size GetImageSize(string filePath)
-        {
-            ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
-
-            using (var fs = new FileStream(filePath,
-                FileMode.Open, FileAccess.Read, FileShare.Read, 8, FileOptions.SequentialScan))
-            using (var image = SixLabors.ImageSharp.Image.Load(DECODER_OPTIONS, fs))
-            {
-                return new System.Drawing.Size(image.Width, image.Height);
-            }
-        }
-
         private static Bitmap ConvertImageSharpImageToBitmap(Image<Rgba32> image)
         {
             var width = image.Width;
