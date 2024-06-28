@@ -66,7 +66,7 @@ namespace SWF.Core.ImageAccessor
                     sw.Restart();
                     var img = ConvertImageSharpImageToBitmap((Image<Rgba32>)image);
                     sw.Stop();
-                    Console.WriteLine($"ReadImageFileWithDecoder ConvertImageSharpImageToBitmap: {sw.ElapsedMilliseconds} ms");
+                    Console.WriteLine($"ReadImageFile ConvertImageSharpImageToBitmap: {sw.ElapsedMilliseconds} ms");
                     return img;
                 }
             }
