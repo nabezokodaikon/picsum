@@ -60,7 +60,7 @@ namespace SWF.Core.ImageAccessor
             using (var image = SixLabors.ImageSharp.Image.Load(DECODER_OPTIONS, fs))
             {
                 sw.Stop();
-                Console.WriteLine($"ReadImageFileWithDecoder Image.Load: {sw.ElapsedMilliseconds} ms");
+                Console.WriteLine($"ReadImageFile Image.Load: {sw.ElapsedMilliseconds} ms");
                 using (var mem = new MemoryStream())
                 {
                     sw.Restart();
