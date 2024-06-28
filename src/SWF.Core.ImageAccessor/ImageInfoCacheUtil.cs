@@ -19,7 +19,7 @@ namespace SWF.Core.ImageAccessor
             CACHE_DICTIONARY.Clear();
         }
 
-        public static ImageInfoCache GetImageInfo(string filePath)
+        internal static ImageInfoCache GetImageInfo(string filePath)
         {
             var sw = Stopwatch.StartNew();
 

@@ -261,6 +261,11 @@ namespace SWF.Core.ImageAccessor
 
             try
             {
+                if (FileUtil.IsSvgFile(filePath))
+                {
+                    return SvgUtil.ReadImageFile(filePath);
+                }
+
                 using (var fs = new FileStream(filePath,
                     FileMode.Open, FileAccess.Read, FileShare.Read, 8192, FileOptions.SequentialScan))
                 {
@@ -270,10 +275,6 @@ namespace SWF.Core.ImageAccessor
                         {
                             return icon.ToBitmap();
                         }
-                    }
-                    else if (FileUtil.IsSvgFile(filePath))
-                    {
-                        return SvgUtil.ReadImageFile(filePath);
                     }
 
                     var formatName = $".{SixLaborsUtil.DetectFormat(fs).Name.ToUpperInvariant()}";
