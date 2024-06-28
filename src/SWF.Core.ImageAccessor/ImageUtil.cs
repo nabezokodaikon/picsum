@@ -158,7 +158,7 @@ namespace SWF.Core.ImageAccessor
                         {
                             return LibHeifSharpUtil.GetImageSize(filePath);
                         }
-                        else if (FileUtil.IsHeicFile(formatName))
+                        else if (FileUtil.IsHeifFile(formatName))
                         {
                             return LibHeifSharpUtil.GetImageSize(filePath);
                         }
@@ -285,7 +285,7 @@ namespace SWF.Core.ImageAccessor
                     {
                         return SixLaborsUtil.ReadImageFile(fs);
                     }
-                    else if (FileUtil.IsHeicFile(formatName))
+                    else if (FileUtil.IsHeifFile(formatName))
                     {
                         return SixLaborsUtil.ReadImageFile(fs);
                     }

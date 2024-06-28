@@ -10,6 +10,7 @@
 * Ico
 * Jpeg
 * Heic
+* Heif
 * Png
 * Svg
 * Webp

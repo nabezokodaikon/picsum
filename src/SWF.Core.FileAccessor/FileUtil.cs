@@ -22,6 +22,7 @@ namespace SWF.Core.FileAccessor
         internal const string JPEG_FILE_EXTENSION = ".JPEG";
         internal const string JPG_FILE_EXTENSION = ".JPG";
         internal const string HEIC_FILE_EXTENSION = ".HEIC";
+        internal const string HEIF_FILE_EXTENSION = ".HEIF";
         internal const string PNG_FILE_EXTENSION = ".PNG";
         internal const string SVG_FILE_EXTENSION = ".SVG";
         internal const string WEBP_FILE_EXTENSION = ".WEBP";
@@ -192,12 +193,12 @@ namespace SWF.Core.FileAccessor
             return (ex == AVIF_FILE_EXTENSION);
         }
 
-        public static bool IsHeicFile(string filePath)
+        public static bool IsHeifFile(string filePath)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
             var ex = FileUtil.GetExtension(filePath);
-            return (ex == HEIC_FILE_EXTENSION);
+            return (ex == HEIC_FILE_EXTENSION || ex == HEIF_FILE_EXTENSION);
         }
 
         /// <summary>
@@ -1061,6 +1062,7 @@ namespace SWF.Core.FileAccessor
             exList.Add(JPEG_FILE_EXTENSION);
             exList.Add(JPG_FILE_EXTENSION);
             exList.Add(HEIC_FILE_EXTENSION);
+            exList.Add(HEIF_FILE_EXTENSION);
             exList.Add(PNG_FILE_EXTENSION);
             exList.Add(SVG_FILE_EXTENSION);
             exList.Add(WEBP_FILE_EXTENSION);
