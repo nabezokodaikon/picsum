@@ -291,7 +291,7 @@ namespace SWF.Core.ImageAccessor
                     {
                         return SixLaborsUtil.ReadImageFile(fs);
                     }
-                    else if (FileUtil.IsJpegFile(formatName) || FileUtil.IsBmpFile(formatName))
+                    else if (FileUtil.IsImageFile(filePath))
                     {
                         var sw = Stopwatch.StartNew();
                         try
@@ -302,19 +302,6 @@ namespace SWF.Core.ImageAccessor
                         {
                             sw.Stop();
                             Console.WriteLine($"ReadImageFile(false , true): {sw.ElapsedMilliseconds} ms");
-                        }
-                    }
-                    else if (FileUtil.IsImageFile(filePath))
-                    {
-                        var sw = Stopwatch.StartNew();
-                        try
-                        {
-                            return (Bitmap)Bitmap.FromStream(fs, false, false);
-                        }
-                        finally
-                        {
-                            sw.Stop();
-                            Console.WriteLine($"ReadImageFile(false , false): {sw.ElapsedMilliseconds} ms");
                         }
                     }
                     else
