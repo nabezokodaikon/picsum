@@ -5,6 +5,7 @@ using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 using System.Security;
+using System.Xml;
 
 namespace SWF.Core.ImageAccessor
 {
@@ -351,6 +352,10 @@ namespace SWF.Core.ImageAccessor
                 throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
             }
             catch (UnauthorizedAccessException ex)
+            {
+                throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
+            }
+            catch (XmlException ex)
             {
                 throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
             }
