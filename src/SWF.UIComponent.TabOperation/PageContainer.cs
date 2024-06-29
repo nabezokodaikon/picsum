@@ -14,6 +14,7 @@ namespace SWF.UIComponent.TabOperation
         public PageContainer()
         {
             this.SetStyle(
+                ControlStyles.AllPaintingInWmPaint |
                 ControlStyles.OptimizedDoubleBuffer,
                 true);
             this.UpdateStyles();

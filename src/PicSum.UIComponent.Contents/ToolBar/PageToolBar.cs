@@ -15,6 +15,7 @@ namespace PicSum.UIComponent.Contents.ToolBar
         private void InitializeComponent()
         {
             this.SetStyle(
+                ControlStyles.AllPaintingInWmPaint |
                 ControlStyles.OptimizedDoubleBuffer,
                 true);
             this.UpdateStyles();
