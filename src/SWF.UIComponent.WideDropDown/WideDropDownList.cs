@@ -199,7 +199,7 @@ namespace SWF.UIComponent.WideDropDown
         {
             this.SetStyle(
                 ControlStyles.AllPaintingInWmPaint |
-                ControlStyles.DoubleBuffer |
+                ControlStyles.OptimizedDoubleBuffer |
                 ControlStyles.UserPaint,
                 true);
 

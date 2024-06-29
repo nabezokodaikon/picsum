@@ -193,7 +193,7 @@ namespace SWF.UIComponent.Form
             this.SetStyle(
                 ControlStyles.AllPaintingInWmPaint |
                 ControlStyles.ContainerControl |
-                ControlStyles.DoubleBuffer |
+                ControlStyles.OptimizedDoubleBuffer |
                 ControlStyles.ResizeRedraw |
                 ControlStyles.UserPaint,
                 true);

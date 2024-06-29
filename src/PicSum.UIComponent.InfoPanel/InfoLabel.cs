@@ -85,7 +85,7 @@ namespace PicSum.UIComponent.InfoPanel
         {
             this.SetStyle(
                 ControlStyles.AllPaintingInWmPaint |
-                ControlStyles.DoubleBuffer |
+                ControlStyles.OptimizedDoubleBuffer |
                 ControlStyles.ResizeRedraw |
                 ControlStyles.SupportsTransparentBackColor |
                 ControlStyles.UserPaint,

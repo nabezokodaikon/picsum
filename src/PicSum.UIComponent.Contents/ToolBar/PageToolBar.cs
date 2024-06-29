@@ -14,7 +14,11 @@ namespace PicSum.UIComponent.Contents.ToolBar
 
         private void InitializeComponent()
         {
-            this.DoubleBuffered = true;
+            this.SetStyle(
+                ControlStyles.OptimizedDoubleBuffer,
+                true);
+            this.UpdateStyles();
+
             this.CanOverflow = false;
             this.GripStyle = ToolStripGripStyle.Hidden;
             this.Renderer = this.GetRenderer();

@@ -246,7 +246,7 @@ namespace SWF.UIComponent.TabOperation
         {
             this.SetStyle(
                 ControlStyles.AllPaintingInWmPaint |
-                ControlStyles.DoubleBuffer |
+                ControlStyles.OptimizedDoubleBuffer |
                 ControlStyles.ResizeRedraw |
                 ControlStyles.UserPaint,
                 true);

@@ -485,8 +485,7 @@ namespace SWF.UIComponent.ImagePanel
         {
             this.SetStyle(
                 ControlStyles.AllPaintingInWmPaint |
-                ControlStyles.DoubleBuffer |
-                ControlStyles.ResizeRedraw |
+                ControlStyles.OptimizedDoubleBuffer |
                 ControlStyles.SupportsTransparentBackColor |
                 ControlStyles.UserPaint,
                 true);

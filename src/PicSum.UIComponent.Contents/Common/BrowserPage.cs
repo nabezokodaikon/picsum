@@ -38,7 +38,7 @@ namespace PicSum.UIComponent.Contents.Common
         {
             this.SetStyle(
                 ControlStyles.AllPaintingInWmPaint |
-                ControlStyles.DoubleBuffer |
+                ControlStyles.OptimizedDoubleBuffer |
                 ControlStyles.UserPaint,
                 true);
             this.UpdateStyles();

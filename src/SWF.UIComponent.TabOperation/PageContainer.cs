@@ -13,7 +13,10 @@ namespace SWF.UIComponent.TabOperation
     {
         public PageContainer()
         {
-            this.DoubleBuffered = true;
+            this.SetStyle(
+                ControlStyles.OptimizedDoubleBuffer,
+                true);
+            this.UpdateStyles();
         }
 
         /// <summary>
