@@ -35,11 +35,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PicSum.Core.Data.DatabaseAccessor\PicSum.Core.Data.DatabaseAccessor.csproj" />
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
-    <PackageReference Include="EntityFramework" Version="6.4.4" />
+    <PackageReference Include="EntityFramework" Version="6.5.1" />
     <PackageReference Include="System.ServiceModel.Primitives" Version="8.0.0" />
     <PackageReference Include="System.ServiceModel.Http" Version="8.0.0" />
     <PackageReference Include="System.ServiceModel.Duplex" Version="6.0.0" />
@@ -48,8 +45,11 @@
     <PackageReference Include="System.ServiceModel.Federation" Version="8.0.0" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="System.Data.SQLite" Version="1.0.117.0" />
-    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.117.0" />
-    <PackageReference Include="System.Data.SQLite.EF6" Version="1.0.117.0" />
+    <PackageReference Include="System.Data.SQLite" Version="1.0.118" />
+    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.118" />
+    <PackageReference Include="System.Data.SQLite.EF6" Version="1.0.118" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PicSum.Core.DatabaseAccessor\PicSum.Core.DatabaseAccessor.csproj" />
   </ItemGroup>
 </Project>

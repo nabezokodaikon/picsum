@@ -1,6 +1,6 @@
 ﻿using System.Data;
 
-namespace PicSum.Core.Data.DatabaseAccessor
+namespace PicSum.Core.DatabaseAccessor
 {
     /// <summary>
     /// Dtoインターフェース

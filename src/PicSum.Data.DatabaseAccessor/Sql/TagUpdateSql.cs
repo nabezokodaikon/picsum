@@ -1,5 +1,6 @@
-using PicSum.Core.Data.DatabaseAccessor;
+using PicSum.Core.DatabaseAccessor;
 using System;
+using System.Runtime.Versioning;
 
 namespace PicSum.Data.DatabaseAccessor.Sql
 {
@@ -7,6 +8,7 @@ namespace PicSum.Data.DatabaseAccessor.Sql
     /// タグT更新
     /// </summary>
     /// <remarks>タグの存在確認として使用します。</remarks>
+    [SupportedOSPlatform("windows")]
     public sealed class TagUpdateSql
         : SqlBase
     {

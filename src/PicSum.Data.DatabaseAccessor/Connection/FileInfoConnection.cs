@@ -1,10 +1,12 @@
-using PicSum.Core.Data.DatabaseAccessor;
+using PicSum.Core.DatabaseAccessor;
+using System.Runtime.Versioning;
 
 namespace PicSum.Data.DatabaseAccessor.Connection
 {
     /// <summary>
     /// fileinfo.sqlite コネクション
     /// </summary>
+    [SupportedOSPlatform("windows")]
     public sealed class FileInfoConnection
         : ConnectionBase
     {

@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace PicSum.Core.Data.DatabaseAccessor
+namespace PicSum.Core.DatabaseAccessor
 {
     /// <summary>
     /// SQLユーティリティ

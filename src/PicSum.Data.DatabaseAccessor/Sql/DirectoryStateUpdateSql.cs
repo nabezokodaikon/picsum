@@ -1,11 +1,13 @@
-using PicSum.Core.Data.DatabaseAccessor;
+using PicSum.Core.DatabaseAccessor;
 using System;
+using System.Runtime.Versioning;
 
 namespace PicSum.Data.DatabaseAccessor.Sql
 {
     /// <summary>
     /// フォルダ状態Tを更新します。
     /// </summary>
+    [SupportedOSPlatform("windows")]
     public sealed class DirectoryStateUpdateSql
         : SqlBase
     {

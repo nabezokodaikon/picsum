@@ -1,12 +1,14 @@
-using PicSum.Core.Data.DatabaseAccessor;
+using PicSum.Core.DatabaseAccessor;
 using PicSum.Data.DatabaseAccessor.Dto;
 using System;
+using System.Runtime.Versioning;
 
 namespace PicSum.Data.DatabaseAccessor.Sql
 {
     /// <summary>
     /// ファイルを指定してサムネイルを読込みます。
     /// </summary>
+    [SupportedOSPlatform("windows")]
     public sealed class ThumbnailReadByFileSql
         : SqlBase<ThumbnailDto>
     {

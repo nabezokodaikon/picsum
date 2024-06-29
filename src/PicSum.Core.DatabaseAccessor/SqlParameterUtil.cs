@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
 
-namespace PicSum.Core.Data.DatabaseAccessor
+namespace PicSum.Core.DatabaseAccessor
 {
     /// <summary>
     /// SQLパラメータユーティリティ

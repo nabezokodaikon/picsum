@@ -1,10 +1,12 @@
-using PicSum.Core.Data.DatabaseAccessor;
+using PicSum.Core.DatabaseAccessor;
+using System.Runtime.Versioning;
 
 namespace PicSum.Data.DatabaseAccessor.Sql
 {
     /// <summary>
     /// サムネイルIDを取得します。
     /// </summary>
+    [SupportedOSPlatform("windows")]
     public sealed class ThumbnailIDReadSql
         : SqlBase
     {

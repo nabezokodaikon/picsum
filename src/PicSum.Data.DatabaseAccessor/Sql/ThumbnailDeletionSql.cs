@@ -1,11 +1,13 @@
-using PicSum.Core.Data.DatabaseAccessor;
+using PicSum.Core.DatabaseAccessor;
 using System;
+using System.Runtime.Versioning;
 
 namespace PicSum.Data.DatabaseAccessor.Sql
 {
     /// <summary>
     /// サムネイルT削除
     /// </summary>
+    [SupportedOSPlatform("windows")]
     public sealed class ThumbnailDeletionSql
         : SqlBase
     {

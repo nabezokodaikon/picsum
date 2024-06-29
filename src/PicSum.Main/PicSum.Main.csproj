@@ -63,7 +63,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PicSum.Core.Base\PicSum.Core.Base.csproj" />
-    <ProjectReference Include="..\PicSum.Core.Data.DatabaseAccessor\PicSum.Core.Data.DatabaseAccessor.csproj" />
+    <ProjectReference Include="..\PicSum.Core.DatabaseAccessor\PicSum.Core.DatabaseAccessor.csproj" />
     <ProjectReference Include="..\PicSum.UIComponent.Contents\PicSum.UIComponent.Contents.csproj" />
     <ProjectReference Include="..\SWF.Core.Base\SWF.Core.Base.csproj" />
     <ProjectReference Include="..\SWF.Core.FileAccessor\SWF.Core.FileAccessor.csproj" />
@@ -110,9 +110,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="AppIcon.ico">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SQLite.Interop.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

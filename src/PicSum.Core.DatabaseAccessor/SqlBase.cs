@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 
-namespace PicSum.Core.Data.DatabaseAccessor
+namespace PicSum.Core.DatabaseAccessor
 {
     /// <summary>
     /// SQL基底クラス

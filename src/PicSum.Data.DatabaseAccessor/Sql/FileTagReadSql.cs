@@ -1,13 +1,15 @@
-using PicSum.Core.Data.DatabaseAccessor;
+using PicSum.Core.DatabaseAccessor;
 using PicSum.Data.DatabaseAccessor.Dto;
 using System;
 using System.Collections.Generic;
+using System.Runtime.Versioning;
 
 namespace PicSum.Data.DatabaseAccessor.Sql
 {
     /// <summary>
     /// 複数ファイルの情報を取得します。
     /// </summary>
+    [SupportedOSPlatform("windows")]
     public sealed class FileTagReadSql
         : SqlBase<FileTagDto>
     {

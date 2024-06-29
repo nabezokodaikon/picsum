@@ -1,12 +1,14 @@
-using PicSum.Core.Data.DatabaseAccessor;
+using PicSum.Core.DatabaseAccessor;
 using PicSum.Data.DatabaseAccessor.Dto;
 using System;
+using System.Runtime.Versioning;
 
 namespace PicSum.Data.DatabaseAccessor.Sql
 {
     /// <summary>
     /// タグを指定してファイルを読込みます。
     /// </summary>
+    [SupportedOSPlatform("windows")]
     public sealed class FileReadByTagSql
         : SqlBase<FileByTagDto>
     {

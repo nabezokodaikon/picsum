@@ -1,8 +1,10 @@
-using PicSum.Core.Data.DatabaseAccessor;
+using PicSum.Core.DatabaseAccessor;
 using System;
+using System.Runtime.Versioning;
 
 namespace PicSum.Data.DatabaseAccessor.Sql
 {
+    [SupportedOSPlatform("windows")]
     public sealed class BookmarkCreationSql
         : SqlBase
     {

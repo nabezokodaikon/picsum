@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace PicSum.Core.Data.DatabaseAccessor
+namespace PicSum.Core.DatabaseAccessor
 {
     /// <summary>
     /// DB管理

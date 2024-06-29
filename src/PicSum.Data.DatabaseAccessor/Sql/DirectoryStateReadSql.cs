@@ -1,12 +1,14 @@
-using PicSum.Core.Data.DatabaseAccessor;
+using PicSum.Core.DatabaseAccessor;
 using PicSum.Data.DatabaseAccessor.Dto;
 using System;
+using System.Runtime.Versioning;
 
 namespace PicSum.Data.DatabaseAccessor.Sql
 {
     /// <summary>
     /// フォルダを指定してフォルダ状態を取得します。
     /// </summary>
+    [SupportedOSPlatform("windows")]
     public sealed class DirectoryStateReadSql
         : SqlBase<DirectoryStateDto>
     {

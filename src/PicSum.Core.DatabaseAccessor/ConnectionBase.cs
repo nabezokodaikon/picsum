@@ -5,7 +5,7 @@ using System.Data.SQLite;
 using System.IO;
 using System.Threading;
 
-namespace PicSum.Core.Data.DatabaseAccessor
+namespace PicSum.Core.DatabaseAccessor
 {
     /// <summary>
     /// DBに接続するベースクラスです。

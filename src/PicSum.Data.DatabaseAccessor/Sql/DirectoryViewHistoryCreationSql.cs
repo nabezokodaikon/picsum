@@ -1,11 +1,13 @@
-using PicSum.Core.Data.DatabaseAccessor;
+using PicSum.Core.DatabaseAccessor;
 using System;
+using System.Runtime.Versioning;
 
 namespace PicSum.Data.DatabaseAccessor.Sql
 {
     /// <summary>
     /// フォルダ表示履歴T作成
     /// </summary>
+    [SupportedOSPlatform("windows")]
     public sealed class DirectoryViewHistoryCreationSql
         : SqlBase
     {

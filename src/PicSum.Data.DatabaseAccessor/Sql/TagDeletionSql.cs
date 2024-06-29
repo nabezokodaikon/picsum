@@ -1,11 +1,13 @@
-using PicSum.Core.Data.DatabaseAccessor;
+using PicSum.Core.DatabaseAccessor;
 using System;
+using System.Runtime.Versioning;
 
 namespace PicSum.Data.DatabaseAccessor.Sql
 {
     /// <summary>
     /// タグTを、ファイルパスとタグを指定して削除します。
     /// </summary>
+    [SupportedOSPlatform("windows")]
     public sealed class TagDeletionSql
         : SqlBase
     {

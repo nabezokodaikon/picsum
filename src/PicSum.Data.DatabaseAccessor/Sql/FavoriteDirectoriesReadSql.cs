@@ -1,5 +1,6 @@
-using PicSum.Core.Data.DatabaseAccessor;
+using PicSum.Core.DatabaseAccessor;
 using PicSum.Data.DatabaseAccessor.Dto;
+using System.Runtime.Versioning;
 
 namespace PicSum.Data.DatabaseAccessor.Sql
 {
@@ -7,6 +8,7 @@ namespace PicSum.Data.DatabaseAccessor.Sql
     /// マイコンピュータ、ドライブを除く、
     /// 表示回数の多いフォルダを取得します。
     /// </summary>
+    [SupportedOSPlatform("windows")]
     public sealed class FavoriteDirectoriesReadSql
         : SqlBase<SingleValueDto<string>>
     {
