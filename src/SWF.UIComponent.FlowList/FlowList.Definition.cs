@@ -363,10 +363,11 @@ namespace SWF.UIComponent.FlowList
             get
             {
                 this.selectedItemPen ??= new Pen(Color.FromArgb(
-                    this.selectedItemColor.A * 2,
+                    255,
                     this.selectedItemColor.R,
                     this.selectedItemColor.G,
-                    this.selectedItemColor.B));
+                    this.selectedItemColor.B),
+                    2);
                 return this.selectedItemPen;
             }
         }

@@ -732,7 +732,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
             if (e.IsFocus)
             {
-                e.Graphics.FillRectangle(this.flowList.FocusItemBrush, e.ItemRectangle);
+                e.Graphics.DrawRectangle(this.flowList.SelectedItemPen, e.ItemRectangle);
             }
 
             if (e.IsMousePoint)

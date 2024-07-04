@@ -147,11 +147,6 @@ namespace PicSum.UIComponent.AddressBar
                 e.Graphics.FillRectangle(base.DropDownList.SelectedItemBrush, e.ItemRectangle);
             }
 
-            if (e.IsSelected)
-            {
-                e.Graphics.DrawRectangle(base.DropDownList.SelectedItemPen, e.ItemRectangle);
-            }
-
             var item = base.Items[e.ItemIndex];
 
             if (item.DirectoryIcon != null)

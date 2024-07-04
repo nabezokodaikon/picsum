@@ -572,7 +572,6 @@ namespace PicSum.UIComponent.InfoPanel
             if (e.IsSelected)
             {
                 e.Graphics.FillRectangle(this.tagFlowList.SelectedItemBrush, e.ItemRectangle);
-                e.Graphics.DrawRectangle(this.tagFlowList.SelectedItemPen, e.ItemRectangle);
             }
             else if (e.IsMousePoint)
             {

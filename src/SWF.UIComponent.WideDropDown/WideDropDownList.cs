@@ -373,7 +373,6 @@ namespace SWF.UIComponent.WideDropDown
             if (e.IsSelected)
             {
                 e.Graphics.FillRectangle(this.FlowList.SelectedItemBrush, e.ItemRectangle);
-                e.Graphics.DrawRectangle(this.FlowList.SelectedItemPen, e.ItemRectangle);
             }
 
             if (e.IsFocus)
