@@ -735,11 +735,6 @@ namespace PicSum.UIComponent.Contents.FileList
                 e.Graphics.FillRectangle(this.flowList.FocusItemBrush, e.ItemRectangle);
             }
 
-            if (e.IsMousePoint)
-            {
-                e.Graphics.FillRectangle(this.flowList.MousePointItemBrush, e.ItemRectangle);
-            }
-
             var filePath = this.filterFilePathList[e.ItemIndex];
             var item = this.masterFileDictionary[filePath];
 
