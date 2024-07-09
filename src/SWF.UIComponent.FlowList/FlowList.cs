@@ -602,7 +602,7 @@ namespace SWF.UIComponent.FlowList
 
             if (this.itemCount > 0)
             {
-                var width = this.Width;
+                var width = (this.scrollBar.Visible) ? this.Width - this.scrollBar.Width: this.Width;
                 if (this.isLileList)
                 {
                     this.itemWidth = width;
