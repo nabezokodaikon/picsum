@@ -5,11 +5,6 @@ namespace SWF.Core.ImageAccessor
     [SupportedOSPlatform("windows")]
     public static class ThumbnailUtil
     {
-        private const int SHADOW_OFFSET = 2;
-        private const int FRAME_OFFSET = 1;
-        private static readonly Pen SHADOW_PEN = new(Color.FromArgb(32, Color.Black));
-        private static readonly Pen FRAME_PEN = new(Color.FromArgb(64, Color.White));
-
         /// <summary>
         /// サムネイルを作成します。
         /// </summary>
@@ -21,20 +16,15 @@ namespace SWF.Core.ImageAccessor
         {
             ArgumentNullException.ThrowIfNull(srcImg, nameof(srcImg));
 
-            var offset = (SHADOW_OFFSET + FRAME_OFFSET) * 2;
-
-            var tw = thumbWidth - offset;
-            var th = thumbHeight - offset;
-
             int w, h;
-            if (Math.Max(srcImg.Width, srcImg.Height) <= Math.Min(tw, th))
+            if (Math.Max(srcImg.Width, srcImg.Height) <= Math.Min(thumbWidth, thumbHeight))
             {
                 w = srcImg.Width;
                 h = srcImg.Height;
             }
             else
             {
-                var scale = Math.Min(tw / (double)srcImg.Width, th / (double)srcImg.Height);
+                var scale = Math.Min(thumbWidth / (double)srcImg.Width, thumbHeight / (double)srcImg.Height);
                 w = (int)(srcImg.Width * scale);
                 h = (int)(srcImg.Height * scale);
             }
@@ -68,18 +58,6 @@ namespace SWF.Core.ImageAccessor
             var x = rect.X + (rect.Width - w) / 2f;
             var y = rect.Y + (rect.Height - h) / 2f;
 
-            g.DrawRectangle(SHADOW_PEN,
-                            x - SHADOW_OFFSET,
-                            y - SHADOW_OFFSET,
-                            w + SHADOW_OFFSET * 2,
-                            h + SHADOW_OFFSET * 2);
-
-            g.DrawRectangle(FRAME_PEN,
-                            x - FRAME_OFFSET,
-                            y - FRAME_OFFSET,
-                            w + FRAME_OFFSET * 2,
-                            h + FRAME_OFFSET * 2);
-
             g.DrawImage(thumb, x, y, w, h);
         }
 
@@ -95,25 +73,10 @@ namespace SWF.Core.ImageAccessor
             ArgumentNullException.ThrowIfNull(thumb, nameof(thumb));
 
             var scale = Math.Min(rect.Width / thumb.Width, rect.Height / thumb.Height);
-            var w = thumb.Width * scale - (SHADOW_OFFSET + FRAME_OFFSET) * 2;
-            var h = thumb.Height * scale - (SHADOW_OFFSET + FRAME_OFFSET) * 2;
+            var w = thumb.Width * scale;
+            var h = thumb.Height * scale;
             var x = rect.X + (rect.Width - w) / 2f;
             var y = rect.Y + (rect.Height - h) / 2f;
-
-            var shadowOffset = SHADOW_OFFSET * scale;
-            var frameOffset = FRAME_OFFSET * scale;
-
-            g.DrawRectangle(SHADOW_PEN,
-                            x - shadowOffset,
-                            y - shadowOffset,
-                            w + shadowOffset * 2,
-                            h + shadowOffset * 2); ;
-
-            g.DrawRectangle(FRAME_PEN,
-                            x - frameOffset,
-                            y - frameOffset,
-                            w + frameOffset * 2,
-                            h + frameOffset * 2);
 
             g.DrawImage(thumb, x, y, w, h);
         }
