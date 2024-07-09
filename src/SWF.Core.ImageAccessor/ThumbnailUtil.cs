@@ -53,8 +53,8 @@ namespace SWF.Core.ImageAccessor
             ArgumentNullException.ThrowIfNull(g, nameof(g));
             ArgumentNullException.ThrowIfNull(thumb, nameof(thumb));
 
-            var w = thumb.Width;
-            var h = thumb.Height;
+            var w = thumb.Width - 16;
+            var h = thumb.Height - 16;
             var x = rect.X + (rect.Width - w) / 2f;
             var y = rect.Y + (rect.Height - h) / 2f;
 
@@ -73,8 +73,8 @@ namespace SWF.Core.ImageAccessor
             ArgumentNullException.ThrowIfNull(thumb, nameof(thumb));
 
             var scale = Math.Min(rect.Width / thumb.Width, rect.Height / thumb.Height);
-            var w = thumb.Width * scale;
-            var h = thumb.Height * scale;
+            var w = thumb.Width * scale - 16;
+            var h = thumb.Height * scale - 16;
             var x = rect.X + (rect.Width - w) / 2f;
             var y = rect.Y + (rect.Height - h) / 2f;
 
@@ -95,7 +95,7 @@ namespace SWF.Core.ImageAccessor
             ArgumentNullException.ThrowIfNull(icon, nameof(icon));
 
             DrawFileThumbnail(g, thumb, rect);
-            g.DrawImage(icon, new RectangleF(rect.X, rect.Bottom - icon.Height, icon.Width, icon.Height));
+            g.DrawImage(icon, new RectangleF(rect.X + 2, rect.Bottom - icon.Height, icon.Width, icon.Height));
         }
 
         /// <summary>
@@ -112,7 +112,7 @@ namespace SWF.Core.ImageAccessor
             ArgumentNullException.ThrowIfNull(icon, nameof(icon));
 
             AdjustDrawFileThumbnail(g, thumb, rect);
-            g.DrawImage(icon, new RectangleF(rect.X, rect.Bottom - icon.Height, icon.Width, icon.Height));
+            g.DrawImage(icon, new RectangleF(rect.X + 2, rect.Bottom - icon.Height, icon.Width, icon.Height));
         }
 
         /// <summary>
