@@ -514,7 +514,7 @@ namespace PicSum.UIComponent.InfoPanel
 
         private void GetTagListJob_Callback(ListResult<string> result)
         {
-            this.wideComboBox.AddItems(result);
+            this.wideComboBox.SetItems(result);
             this.wideComboBox.SelectItem();
         }
 
