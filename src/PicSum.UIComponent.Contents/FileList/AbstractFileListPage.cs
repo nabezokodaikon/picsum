@@ -43,45 +43,45 @@ namespace PicSum.UIComponent.Contents.FileList
                 case SortTypeID.FileName:
                     if (isAscending)
                     {
-                        return files.OrderBy(file => file.FileName);
+                        return files.OrderBy(file => file.FileName, NaturalStringComparer.Windows);
                     }
                     else
                     {
-                        return files.OrderByDescending(file => file.FileName);
+                        return files.OrderByDescending(file => file.FileName, NaturalStringComparer.Windows);
                     }
                 case SortTypeID.FilePath:
                     if (isAscending)
                     {
-                        return files.OrderBy(file => file.FilePath);
+                        return files.OrderBy(file => file.FilePath, NaturalStringComparer.Windows);
                     }
                     else
                     {
-                        return files.OrderByDescending(file => file.FilePath);
+                        return files.OrderByDescending(file => file.FilePath, NaturalStringComparer.Windows);
                     }
                 case SortTypeID.UpdateDate:
                     if (isAscending)
                     {
                         return files
-                            .OrderBy(file => file.FilePath)
+                            .OrderBy(file => file.FilePath, NaturalStringComparer.Windows)
                             .OrderBy(file => file.UpdateDate.GetValueOrDefault(DateTime.MinValue));
                     }
                     else
                     {
                         return files
-                            .OrderByDescending(file => file.FilePath)
+                            .OrderByDescending(file => file.FilePath, NaturalStringComparer.Windows)
                             .OrderByDescending(file => file.UpdateDate.GetValueOrDefault(DateTime.MinValue));
                     }
                 case SortTypeID.RgistrationDate:
                     if (isAscending)
                     {
                         return files
-                            .OrderBy(file => file.FilePath)
+                            .OrderBy(file => file.FilePath, NaturalStringComparer.Windows)
                             .OrderBy(file => file.RgistrationDate.GetValueOrDefault(DateTime.MinValue));
                     }
                     else
                     {
                         return files
-                            .OrderByDescending(file => file.FilePath)
+                            .OrderByDescending(file => file.FilePath, NaturalStringComparer.Windows)
                             .OrderByDescending(file => file.RgistrationDate.GetValueOrDefault(DateTime.MinValue));
                     }
                 default:
@@ -591,11 +591,11 @@ namespace PicSum.UIComponent.Contents.FileList
                     {
                         if (isAscending)
                         {
-                            return x.FileName.CompareTo(y.FileName);
+                            return NaturalStringComparer.Windows.Compare(x.FileName, y.FileName);
                         }
                         else
                         {
-                            return -x.FileName.CompareTo(y.FileName);
+                            return NaturalStringComparer.Windows.Compare(y.FileName, x.FileName);
                         }
                     });
                     break;
@@ -604,11 +604,11 @@ namespace PicSum.UIComponent.Contents.FileList
                     {
                         if (isAscending)
                         {
-                            return x.FilePath.CompareTo(y.FilePath);
+                            return NaturalStringComparer.Windows.Compare(x.FilePath, y.FilePath);
                         }
                         else
                         {
-                            return -x.FilePath.CompareTo(y.FilePath);
+                            return NaturalStringComparer.Windows.Compare(y.FilePath, x.FilePath);
                         }
                     });
                     break;
@@ -621,7 +621,7 @@ namespace PicSum.UIComponent.Contents.FileList
                         {
                             if (xDate == yDate)
                             {
-                                return x.FilePath.CompareTo(y.FilePath);
+                                return NaturalStringComparer.Windows.Compare(x.FilePath, y.FilePath);
                             }
                             else
                             {
@@ -632,7 +632,7 @@ namespace PicSum.UIComponent.Contents.FileList
                         {
                             if (xDate == yDate)
                             {
-                                return -x.FilePath.CompareTo(y.FilePath);
+                                return NaturalStringComparer.Windows.Compare(y.FilePath, x.FilePath);
                             }
                             else
                             {
@@ -650,7 +650,7 @@ namespace PicSum.UIComponent.Contents.FileList
                         {
                             if (xDate == yDate)
                             {
-                                return x.FilePath.CompareTo(y.FilePath);
+                                return NaturalStringComparer.Windows.Compare(x.FilePath, y.FilePath);
                             }
                             else
                             {
@@ -661,7 +661,7 @@ namespace PicSum.UIComponent.Contents.FileList
                         {
                             if (xDate == yDate)
                             {
-                                return -x.FilePath.CompareTo(y.FilePath);
+                                return NaturalStringComparer.Windows.Compare(y.FilePath, x.FilePath);
                             }
                             else
                             {
