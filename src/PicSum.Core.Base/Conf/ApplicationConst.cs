@@ -23,9 +23,10 @@ namespace PicSum.Core.Base.Conf
     {
         Default = 0,
         OverlapTab = 1,
-        AddTab = 2,
-        InsertTab = 3,
-        NewWindow = 4
+        AddHome = 2,
+        AddTab = 3,
+        InsertTab = 4,
+        NewWindow = 5
     }
 
     /// <summary>

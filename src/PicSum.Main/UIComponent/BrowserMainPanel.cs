@@ -14,6 +14,7 @@ using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Runtime.Versioning;
 using System.Windows.Forms;
 
@@ -316,9 +317,20 @@ namespace PicSum.Main.UIComponent
                 this.AddPageEventHandler(this.tabSwitch.OverwriteTab<BrowserPage>(param));
                 this.SetPageHistoryButtonEnabled();
             }
-            else if (openType == PageOpenType.AddTab)
+            else if (openType == PageOpenType.AddHome)
             {
                 this.AddPageEventHandler(this.tabSwitch.AddTab<BrowserPage>(param));
+            }
+            else if (openType == PageOpenType.AddTab)
+            {
+                if (this.tabSwitch.ActiveTabIndex < 0)
+                {
+                    this.AddPageEventHandler(this.tabSwitch.InsertTab<BrowserPage>(0, param));
+                }
+                else
+                {
+                    this.AddPageEventHandler(this.tabSwitch.InsertTab<BrowserPage>(this.tabSwitch.ActiveTabIndex + 1, param));
+                }
             }
             else if (openType == PageOpenType.NewWindow)
             {
@@ -530,7 +542,7 @@ namespace PicSum.Main.UIComponent
 
         private void TabSwitch_AddTabButtonMouseClick(object sender, MouseEventArgs e)
         {
-            this.OpenPage(new FavoriteDirectoryListPageParameter(), PageOpenType.AddTab);
+            this.OpenPage(new FavoriteDirectoryListPageParameter(), PageOpenType.AddHome);
         }
 
         private void TabSwitch_ActiveTabChanged(object sender, EventArgs e)
