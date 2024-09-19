@@ -314,7 +314,7 @@ namespace WinApi
 
         public const int EM_SETRECT = 0xB3; // テキストを表示する領域を設定
         public const int EM_GETLINECOUNT = 0xBA; // テキストの行数を取得する定数
-       
+
         public enum FileAttributesFlags : uint
         {
             FILE_ATTRIBUTE_ARCHIVE = 0x00000020,
@@ -851,6 +851,27 @@ namespace WinApi
 
         [DllImport("shlwapi.dll", CharSet = CharSet.Unicode, ExactSpelling = true)]
         public static extern int StrCmpLogicalW(string x, string y);
+
+        [DllImport("shell32.dll", CharSet = CharSet.Auto)]
+        public static extern int ShellExecute(IntPtr hwnd, string lpOperation, string lpFile, string lpParameters, string lpDirectory, int nShowCmd);
+
+        [DllImport("shell32.dll", CharSet = CharSet.Unicode, ExactSpelling = true)]
+        public static extern int SHOpenFolderAndSelectItems(
+            IntPtr pidlFolder,
+            uint cidl,
+            [MarshalAs(UnmanagedType.LPArray)] IntPtr[] apidl,
+            uint dwFlags);
+
+        [DllImport("shell32.dll", CharSet = CharSet.Unicode, ExactSpelling = true)]
+        public static extern int SHParseDisplayName(
+            [MarshalAs(UnmanagedType.LPWStr)] string pszName,
+            IntPtr pbc,
+            out IntPtr ppidl,
+            uint sfgaoIn,
+            out uint psfgaoOut);
+
+        [DllImport("ole32.dll", CharSet = CharSet.Unicode, ExactSpelling = true)]
+        public static extern void CoTaskMemFree(IntPtr pv);
 
         #endregion
 

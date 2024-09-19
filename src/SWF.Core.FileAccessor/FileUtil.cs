@@ -26,7 +26,7 @@ namespace SWF.Core.FileAccessor
         internal const string PNG_FILE_EXTENSION = ".PNG";
         internal const string SVG_FILE_EXTENSION = ".SVG";
         internal const string WEBP_FILE_EXTENSION = ".WEBP";
-        
+
         internal static readonly List<string> IMAGE_FILE_EXTENSION_LIST = GetImageFileExtensionList();
 
         public const string ROOT_DIRECTORY_PATH =
@@ -908,28 +908,13 @@ namespace SWF.Core.FileAccessor
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
-            try
+            if (FileUtil.IsSystemRoot(filePath))
             {
-                if (FileUtil.IsSystemRoot(filePath))
-                {
-                    Process.Start("EXPLORER.EXE", "::{20D04FE0-3AEA-1069-A2D8-08002B30309D}");
-                }
-                else
-                {
-                    Process.Start("EXPLORER.EXE", $"{filePath}");
-                }
+                var _ = ShellExecute(IntPtr.Zero, "open", "::{20D04FE0-3AEA-1069-A2D8-08002B30309D}", null, null, 1);
             }
-            catch (Win32Exception ex)
+            else
             {
-                throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
-            }
-            catch (ObjectDisposedException ex)
-            {
-                throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
-            }
-            catch (FileNotFoundException ex)
-            {
-                throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
+                var _ = ShellExecute(IntPtr.Zero, "open", $"\"{filePath}\"", null, null, 1);
             }
         }
 
@@ -937,21 +922,46 @@ namespace SWF.Core.FileAccessor
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
+            var pidlFolder = IntPtr.Zero;
+            var pidlFile = IntPtr.Zero;
+
             try
             {
-                Process.Start("EXPLORER.EXE", $"/select,{filePath}");
+                var dirPath = GetParentDirectoryPath(filePath);
+
+                // フォルダのPIDLを取得
+                uint psfgaoOut;
+                var hr = SHParseDisplayName(dirPath, IntPtr.Zero, out pidlFolder, 0, out psfgaoOut);
+
+                if (hr != 0)
+                {
+                    throw new FileUtilException($"'{dirPath}'のPIDLの取得に失敗しました。");
+                }
+
+                // ファイルのPIDLを取得
+                hr = SHParseDisplayName(filePath, IntPtr.Zero, out pidlFile, 0, out psfgaoOut);
+
+                if (hr != 0)
+                {
+                    CoTaskMemFree(pidlFolder);
+                    throw new FileUtilException($"'{filePath}'のPIDLの取得に失敗しました。");
+                }
+
+                // 特定のファイルを選択した状態でフォルダを開く
+                IntPtr[] fileArray = { pidlFile };
+                hr = SHOpenFolderAndSelectItems(pidlFolder, (uint)fileArray.Length, fileArray, 0);
+
+                if (hr != 0)
+                {
+                    var fileName = GetFileName(filePath);
+                    throw new FileUtilException($"'{dirPath}'を開いて'{fileName}'を選択する処理に失敗しました。");
+                }
             }
-            catch (Win32Exception ex)
+            finally
             {
-                throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
-            }
-            catch (ObjectDisposedException ex)
-            {
-                throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
-            }
-            catch (FileNotFoundException ex)
-            {
-                throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
+                // PIDLを解放
+                CoTaskMemFree(pidlFolder);
+                CoTaskMemFree(pidlFile);
             }
         }
 
