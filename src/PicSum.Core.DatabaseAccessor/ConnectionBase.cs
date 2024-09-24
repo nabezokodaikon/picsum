@@ -47,8 +47,13 @@ namespace PicSum.Core.DatabaseAccessor
             }
 
             var connectionString = $"Data Source={dbFilePath}";
-            this.connection = new SQLiteConnection(connectionString);
+            this.connection = new SQLiteConnection("Data Source=:memory:");
             this.connection.Open();
+            using (var fileConnection = new SQLiteConnection(connectionString))
+            {
+                fileConnection.Open();
+                fileConnection.BackupDatabase(this.connection, "main", "main", -1, null, 0);
+            }
 
             this.DBFilePath = dbFilePath;
         }
@@ -62,6 +67,13 @@ namespace PicSum.Core.DatabaseAccessor
 
             if (disposing)
             {
+                var connectionString = $"Data Source={this.DBFilePath}";
+                using (var fileConnection = new SQLiteConnection(connectionString))
+                {
+                    fileConnection.Open();
+                    this.connection.BackupDatabase(fileConnection, "main", "main", -1, null, 0);
+                }
+
                 this.connection.Close();
                 this.transaction?.Dispose();
                 this.transactionLock.Dispose();
