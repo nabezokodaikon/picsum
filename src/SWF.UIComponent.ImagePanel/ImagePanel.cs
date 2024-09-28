@@ -277,11 +277,6 @@ namespace SWF.UIComponent.ImagePanel
             base.OnInvalidated(e);
         }
 
-        protected override void OnPaintBackground(PaintEventArgs pevent)
-        {
-            base.OnPaintBackground(pevent);
-        }
-
         protected override void OnPaint(PaintEventArgs e)
         {
             if (this.IsError)
@@ -305,6 +300,8 @@ namespace SWF.UIComponent.ImagePanel
                 e.Graphics.SmoothingMode = this.GetSmoothingMode();
                 e.Graphics.InterpolationMode = this.GetInterpolationMode();
                 e.Graphics.CompositingQuality = this.GetCompositingQuality();
+                e.Graphics.PixelOffsetMode = PixelOffsetMode.HighSpeed;
+                e.Graphics.CompositingMode = CompositingMode.SourceOver;
 
                 this.DrawImage(e.Graphics);
 
@@ -739,11 +736,11 @@ namespace SWF.UIComponent.ImagePanel
         {
             if (this.isImageMove || this.isThumbnailMove)
             {
-                return SmoothingMode.HighSpeed;
+                return SmoothingMode.None;
             }
             else
             {
-                return SmoothingMode.HighSpeed;
+                return SmoothingMode.None;
             }
         }
 
