@@ -308,9 +308,11 @@ namespace SWF.UIComponent.ImagePanel
                 if (this.isShowThumbnailPanel &&
                     (this.hMaximumScrollValue > 0 || this.vMaximumScrollValue > 0))
                 {
-                    e.Graphics.SmoothingMode = SmoothingMode.HighSpeed;
+                    e.Graphics.SmoothingMode = SmoothingMode.None;
                     e.Graphics.InterpolationMode = InterpolationMode.Low;
                     e.Graphics.CompositingQuality = CompositingQuality.HighSpeed;
+                    e.Graphics.PixelOffsetMode = PixelOffsetMode.HighSpeed;
+                    e.Graphics.CompositingMode = CompositingMode.SourceOver;
 
                     this.DrawThumbnailPanel(e.Graphics);
                 }
