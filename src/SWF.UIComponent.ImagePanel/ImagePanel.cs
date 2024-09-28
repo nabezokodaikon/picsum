@@ -1,3 +1,4 @@
+using PicSum.Core.Base.Conf;
 using SWF.Core.ImageAccessor;
 using SWF.UIComponent.ImagePanel.Properties;
 using System;
@@ -50,6 +51,7 @@ namespace SWF.UIComponent.ImagePanel
         #region インスタンス変数
 
         private readonly Image thumbnailPanelImage = Resources.ThumbnailPanel;
+        private ImageSizeMode sizeMode = ImageSizeMode.FitOnlyBigImage;
         private ImageAlign imageAlign = ImageAlign.Center;
         private bool isShowThumbnailPanel = false;
 
@@ -171,7 +173,7 @@ namespace SWF.UIComponent.ImagePanel
 
         #region パブリックメソッド
 
-        public void SetImage(Bitmap img, Bitmap thumb)
+        public void SetImage(ImageSizeMode sizeMode, Bitmap img, Bitmap thumb)
         {
             ArgumentNullException.ThrowIfNull(img, nameof(img));
             ArgumentNullException.ThrowIfNull(thumb, nameof(thumb));
@@ -184,6 +186,7 @@ namespace SWF.UIComponent.ImagePanel
             this.IsError = false;
             this.image = img;
             this.thumbnail = thumb;
+            this.sizeMode = sizeMode;
         }
 
         public void SetScale(float scale)
@@ -298,10 +301,10 @@ namespace SWF.UIComponent.ImagePanel
             }
             else if (this.image != null)
             {
-                e.Graphics.SmoothingMode = SmoothingMode.None;
-                e.Graphics.InterpolationMode = InterpolationMode.Low;
-                e.Graphics.CompositingQuality = CompositingQuality.HighSpeed;
-                e.Graphics.PixelOffsetMode = PixelOffsetMode.HighSpeed;
+                e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+                e.Graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                e.Graphics.CompositingQuality = CompositingQuality.HighQuality;
+                e.Graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
                 e.Graphics.CompositingMode = CompositingMode.SourceOver;
 
                 this.DrawImage(e.Graphics);
@@ -663,16 +666,23 @@ namespace SWF.UIComponent.ImagePanel
             var sw = Stopwatch.StartNew();
 
             var destRect = this.GetImageDestRectangle();
-            if (this.image.Width > destRect.Width && this.image.Height > destRect.Height)
+            if (this.sizeMode == ImageSizeMode.Original)
             {
-                using (var drawImage = ImageUtil.Resize(this.image, (int)destRect.Width, (int)destRect.Height))
-                {
-                    g.DrawImage(drawImage, destRect, new Rectangle(0, 0, drawImage.Width, drawImage.Height), GraphicsUnit.Pixel);
-                }
+                g.DrawImage(this.image, destRect, this.GetImageSrcRectangle(), GraphicsUnit.Pixel);
             }
             else
             {
-                g.DrawImage(this.image, destRect, this.GetImageSrcRectangle(), GraphicsUnit.Pixel);
+                if (this.image.Width > destRect.Width || this.image.Height > destRect.Height)
+                {
+                    using (var drawImage = ImageUtil.Resize(this.image, (int)destRect.Width, (int)destRect.Height))
+                    {
+                        g.DrawImage(drawImage, destRect, new Rectangle(0, 0, drawImage.Width, drawImage.Height), GraphicsUnit.Pixel);
+                    }
+                }
+                else
+                {
+                    g.DrawImage(this.image, destRect, this.GetImageSrcRectangle(), GraphicsUnit.Pixel);
+                }
             }
 
             sw.Stop();
