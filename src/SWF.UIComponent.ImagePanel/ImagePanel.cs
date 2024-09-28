@@ -1,3 +1,5 @@
+using PicSum.Core.Base.Conf;
+using SWF.Core.ImageAccessor;
 using SWF.UIComponent.ImagePanel.Properties;
 using System;
 using System.Diagnostics;
@@ -50,6 +52,7 @@ namespace SWF.UIComponent.ImagePanel
 
         private readonly Image thumbnailPanelImage = Resources.ThumbnailPanel;
         private ImageAlign imageAlign = ImageAlign.Center;
+        private ImageSizeMode sizeMode = ImageSizeMode.Original;
         private bool isShowThumbnailPanel = false;
 
         private SizeF imageScaleSize = SizeF.Empty;
@@ -170,7 +173,7 @@ namespace SWF.UIComponent.ImagePanel
 
         #region パブリックメソッド
 
-        public void SetImage(Bitmap img, Bitmap thumb)
+        public void SetImage(ImageSizeMode sizeMode, Bitmap img, Bitmap thumb)
         {
             ArgumentNullException.ThrowIfNull(img, nameof(img));
             ArgumentNullException.ThrowIfNull(thumb, nameof(thumb));
@@ -180,6 +183,7 @@ namespace SWF.UIComponent.ImagePanel
                 throw new InvalidOperationException("既にイメージが存在しています。");
             }
 
+            this.sizeMode = sizeMode;
             this.IsError = false;
             this.image = img;
             this.thumbnail = thumb;
@@ -277,6 +281,11 @@ namespace SWF.UIComponent.ImagePanel
             base.OnInvalidated(e);
         }
 
+        protected override void OnPaintBackground(PaintEventArgs pevent)
+        {
+            //base.OnPaintBackground(pevent);
+        }
+
         protected override void OnPaint(PaintEventArgs e)
         {
             if (this.IsError)
@@ -297,9 +306,9 @@ namespace SWF.UIComponent.ImagePanel
             }
             else if (this.image != null)
             {
-                e.Graphics.SmoothingMode = this.GetSmoothingMode();
-                e.Graphics.InterpolationMode = this.GetInterpolationMode();
-                e.Graphics.CompositingQuality = this.GetCompositingQuality();
+                e.Graphics.SmoothingMode = SmoothingMode.None;
+                e.Graphics.InterpolationMode = InterpolationMode.Low;
+                e.Graphics.CompositingQuality = CompositingQuality.HighSpeed;
                 e.Graphics.PixelOffsetMode = PixelOffsetMode.HighSpeed;
                 e.Graphics.CompositingMode = CompositingMode.SourceOver;
 
@@ -660,7 +669,20 @@ namespace SWF.UIComponent.ImagePanel
         private void DrawImage(Graphics g)
         {
             var sw = Stopwatch.StartNew();
-            g.DrawImage(this.image, this.GetImageDestRectangle(), this.GetImageSrcRectangle(), GraphicsUnit.Pixel);
+
+            if (this.sizeMode == ImageSizeMode.Original)
+            {
+                g.DrawImage(this.image, this.GetImageDestRectangle(), this.GetImageSrcRectangle(), GraphicsUnit.Pixel);
+            }
+            else
+            {
+                var destRect = this.GetImageDestRectangle();
+                using (var drawImage = ImageUtil.Resize(this.image, (int)destRect.Width, (int)destRect.Height))
+                {
+                    g.DrawImage(drawImage, destRect, new Rectangle(0, 0, drawImage.Width, drawImage.Height), GraphicsUnit.Pixel);
+                }
+            }
+
             sw.Stop();
             Console.WriteLine($"DrawImage: {sw.ElapsedMilliseconds} ms");
         }
@@ -731,42 +753,6 @@ namespace SWF.UIComponent.ImagePanel
             else
             {
                 return false;
-            }
-        }
-
-        private SmoothingMode GetSmoothingMode()
-        {
-            if (this.isImageMove || this.isThumbnailMove)
-            {
-                return SmoothingMode.None;
-            }
-            else
-            {
-                return SmoothingMode.None;
-            }
-        }
-
-        private InterpolationMode GetInterpolationMode()
-        {
-            if (this.isImageMove || this.isThumbnailMove)
-            {
-                return InterpolationMode.Low;
-            }
-            else
-            {
-                return InterpolationMode.Low;
-            }
-        }
-
-        private CompositingQuality GetCompositingQuality()
-        {
-            if (this.isImageMove || this.isThumbnailMove)
-            {
-                return CompositingQuality.HighSpeed;
-            }
-            else
-            {
-                return CompositingQuality.HighSpeed;
             }
         }
 

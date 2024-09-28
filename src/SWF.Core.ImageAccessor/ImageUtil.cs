@@ -19,6 +19,20 @@ namespace SWF.Core.ImageAccessor
         private static readonly ImageCodecInfo PNG_CODEC_INFO = ImageCodecInfo.GetImageEncoders().Single(info => info.FormatID == ImageFormat.Png.Guid);
         private static readonly dynamic SHELL = Activator.CreateInstance(Type.GetTypeFromProgID("Shell.Application"));
 
+        public static Bitmap Resize(Bitmap src, int newWidth, int newHeight)
+        {
+            ArgumentNullException.ThrowIfNull(src, nameof(src));
+
+            return OpenCVUtil.Resize(src, newWidth, newHeight);
+        }
+
+        public static Bitmap Clone(Bitmap src)
+        {
+            ArgumentNullException.ThrowIfNull(src, nameof(src));
+
+            return OpenCVUtil.Clone(src);
+        }
+
         public static byte[] ToBinary(Bitmap img)
         {
             ArgumentNullException.ThrowIfNull(img, nameof(img));

@@ -60,9 +60,7 @@ namespace SWF.Core.ImageAccessor
                 throw new NullReferenceException("イメージが設定されていません。");
             }
 
-            var cloneImage = this.Image.Clone(
-                new Rectangle(0, 0, this.Image.Width, this.Image.Height), this.Image.PixelFormat);
-            return new ImageFileCache(this.FilePath, cloneImage, this.Timestamp);
+            return new ImageFileCache(this.FilePath, ImageUtil.Clone(this.Image), this.Timestamp);
         }
 
         public bool Equals(ImageFileCache? other)
