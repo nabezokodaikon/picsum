@@ -1,4 +1,3 @@
-using PicSum.Core.Base.Conf;
 using SWF.Core.ImageAccessor;
 using SWF.UIComponent.ImagePanel.Properties;
 using System;
@@ -52,7 +51,6 @@ namespace SWF.UIComponent.ImagePanel
 
         private readonly Image thumbnailPanelImage = Resources.ThumbnailPanel;
         private ImageAlign imageAlign = ImageAlign.Center;
-        private ImageSizeMode sizeMode = ImageSizeMode.Original;
         private bool isShowThumbnailPanel = false;
 
         private SizeF imageScaleSize = SizeF.Empty;
@@ -173,7 +171,7 @@ namespace SWF.UIComponent.ImagePanel
 
         #region パブリックメソッド
 
-        public void SetImage(ImageSizeMode sizeMode, Bitmap img, Bitmap thumb)
+        public void SetImage(Bitmap img, Bitmap thumb)
         {
             ArgumentNullException.ThrowIfNull(img, nameof(img));
             ArgumentNullException.ThrowIfNull(thumb, nameof(thumb));
@@ -183,7 +181,6 @@ namespace SWF.UIComponent.ImagePanel
                 throw new InvalidOperationException("既にイメージが存在しています。");
             }
 
-            this.sizeMode = sizeMode;
             this.IsError = false;
             this.image = img;
             this.thumbnail = thumb;
@@ -279,11 +276,6 @@ namespace SWF.UIComponent.ImagePanel
             this.SetDrawParameter();
 
             base.OnInvalidated(e);
-        }
-
-        protected override void OnPaintBackground(PaintEventArgs pevent)
-        {
-            //base.OnPaintBackground(pevent);
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -670,17 +662,17 @@ namespace SWF.UIComponent.ImagePanel
         {
             var sw = Stopwatch.StartNew();
 
-            if (this.sizeMode == ImageSizeMode.Original)
+            var destRect = this.GetImageDestRectangle();
+            if (this.image.Width > destRect.Width && this.image.Height > destRect.Height)
             {
-                g.DrawImage(this.image, this.GetImageDestRectangle(), this.GetImageSrcRectangle(), GraphicsUnit.Pixel);
-            }
-            else
-            {
-                var destRect = this.GetImageDestRectangle();
                 using (var drawImage = ImageUtil.Resize(this.image, (int)destRect.Width, (int)destRect.Height))
                 {
                     g.DrawImage(drawImage, destRect, new Rectangle(0, 0, drawImage.Width, drawImage.Height), GraphicsUnit.Pixel);
                 }
+            }
+            else
+            {
+                g.DrawImage(this.image, destRect, this.GetImageSrcRectangle(), GraphicsUnit.Pixel);
             }
 
             sw.Stop();

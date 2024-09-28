@@ -27,7 +27,6 @@
     <NoWarn>1701;1702; CA1016; CA1824</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PicSum.Core.Base\PicSum.Core.Base.csproj" />
     <ProjectReference Include="..\SWF.Core.ImageAccessor\SWF.Core.ImageAccessor.csproj" />
   </ItemGroup>
   <ItemGroup>
