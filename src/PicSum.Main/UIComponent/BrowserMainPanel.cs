@@ -254,7 +254,7 @@ namespace PicSum.Main.UIComponent
             this.redrawTimer = new Timer
             {
                 Enabled = true,
-                Interval = 250
+                Interval = 500,
             };
             this.redrawTimer.Tick += this.RedrawTimer_Tick;
         }
