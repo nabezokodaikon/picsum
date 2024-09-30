@@ -30,47 +30,52 @@ namespace SWF.Core.ImageAccessor
             CACHE_LOCK.EnterUpgradeableReadLock();
             try
             {
-                ImageInfoCache cache;
-                if (CACHE_DICTIONARY.TryGetValue(filePath, out cache))
+                if (CACHE_DICTIONARY.TryGetValue(filePath, out var cache))
                 {
                     if (timestamp == cache.Timestamp)
                     {
                         return cache;
                     }
-                }
 
-                var newCache = new ImageInfoCache(
-                    filePath, ImageUtil.GetImageSize(filePath), timestamp);
-
-                CACHE_LOCK.EnterWriteLock();
-                try
-                {
-                    if (cache.FilePath != null)
+                    CACHE_LOCK.EnterWriteLock();
+                    try
                     {
                         CACHE_LIST.Remove(cache);
                         CACHE_DICTIONARY.Remove(cache.FilePath);
-                    }
 
-                    if (CACHE_LIST.Count > CACHE_CAPACITY)
-                    {
-                        var removeCache = CACHE_LIST[0];
-                        CACHE_LIST.Remove(removeCache);
-                        CACHE_DICTIONARY.Remove(removeCache.FilePath);
-                    }
-
-                    if (CACHE_DICTIONARY.TryAdd(filePath, newCache))
-                    {
+                        var newCache = new ImageInfoCache(
+                            filePath, ImageUtil.GetImageSize(filePath), timestamp);
+                        CACHE_DICTIONARY.Add(newCache.FilePath, newCache);
                         CACHE_LIST.Add(newCache);
                         return newCache;
                     }
-                    else
+                    finally
                     {
-                        return CACHE_DICTIONARY[filePath];
+                        CACHE_LOCK.ExitWriteLock();
                     }
                 }
-                finally
+                else
                 {
-                    CACHE_LOCK.ExitWriteLock();
+                    CACHE_LOCK.EnterWriteLock();
+                    try
+                    {
+                        if (CACHE_LIST.Count > CACHE_CAPACITY)
+                        {
+                            var removeCache = CACHE_LIST[0];
+                            CACHE_LIST.Remove(removeCache);
+                            CACHE_DICTIONARY.Remove(removeCache.FilePath);
+                        }
+
+                        var newCache = new ImageInfoCache(
+                            filePath, ImageUtil.GetImageSize(filePath), timestamp);
+                        CACHE_DICTIONARY.Add(newCache.FilePath, newCache);
+                        CACHE_LIST.Add(newCache);
+                        return newCache;
+                    }
+                    finally
+                    {
+                        CACHE_LOCK.ExitWriteLock();
+                    }
                 }
             }
             finally
@@ -78,7 +83,7 @@ namespace SWF.Core.ImageAccessor
                 CACHE_LOCK.ExitUpgradeableReadLock();
 
                 sw.Stop();
-                //Console.WriteLine($"ImageInfoCacheUtil.GetImageInfo: {sw.ElapsedMilliseconds} ms");
+                Console.WriteLine($"ImageInfoCacheUtil.GetImageInfo: {sw.ElapsedMilliseconds} ms");
             }
         }
 
@@ -91,39 +96,50 @@ namespace SWF.Core.ImageAccessor
             CACHE_LOCK.EnterUpgradeableReadLock();
             try
             {
-                ImageInfoCache cache;
-                if (CACHE_DICTIONARY.TryGetValue(filePath, out cache))
+                if (CACHE_DICTIONARY.TryGetValue(filePath, out var cache))
                 {
                     if (timestamp == cache.Timestamp)
                     {
                         return;
                     }
-                }
 
-                CACHE_LOCK.EnterWriteLock();
-                try
-                {
-                    if (cache.FilePath != null)
+                    CACHE_LOCK.EnterWriteLock();
+                    try
                     {
                         CACHE_LIST.Remove(cache);
                         CACHE_DICTIONARY.Remove(cache.FilePath);
-                    }
 
-                    if (CACHE_LIST.Count > CACHE_CAPACITY)
+                        var newCache = new ImageInfoCache(
+                            filePath, size, timestamp);
+                        CACHE_DICTIONARY.Add(newCache.FilePath, newCache);
+                        CACHE_LIST.Add(newCache);
+                    }
+                    finally
                     {
-                        var removeCache = CACHE_LIST[0];
-                        CACHE_LIST.Remove(removeCache);
-                        CACHE_DICTIONARY.Remove(removeCache.FilePath);
+                        CACHE_LOCK.ExitWriteLock();
                     }
-
-                    var newCache = new ImageInfoCache(
-                        filePath, size, timestamp);
-                    CACHE_LIST.Add(newCache);
-                    CACHE_DICTIONARY.Add(filePath, newCache);
                 }
-                finally
+                else
                 {
-                    CACHE_LOCK.ExitWriteLock();
+                    CACHE_LOCK.EnterWriteLock();
+                    try
+                    {
+                        if (CACHE_LIST.Count > CACHE_CAPACITY)
+                        {
+                            var removeCache = CACHE_LIST[0];
+                            CACHE_LIST.Remove(removeCache);
+                            CACHE_DICTIONARY.Remove(removeCache.FilePath);
+                        }
+
+                        var newCache = new ImageInfoCache(
+                            filePath, size, timestamp);
+                        CACHE_DICTIONARY.Add(newCache.FilePath, newCache);
+                        CACHE_LIST.Add(newCache);
+                    }
+                    finally
+                    {
+                        CACHE_LOCK.ExitWriteLock();
+                    }
                 }
             }
             finally
