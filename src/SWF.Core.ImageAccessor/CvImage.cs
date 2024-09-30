@@ -92,7 +92,7 @@ namespace SWF.Core.ImageAccessor
             var sw = Stopwatch.StartNew();
             var clone = new CvImage(this.mat);
             sw.Stop();
-            Console.WriteLine($"Clone: {sw.ElapsedMilliseconds} ms");
+            Console.WriteLine($"CvImage.Clone: {sw.ElapsedMilliseconds} ms");
             return clone;
         }
     }

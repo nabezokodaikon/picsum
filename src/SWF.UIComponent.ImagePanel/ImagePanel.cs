@@ -256,7 +256,7 @@ namespace SWF.UIComponent.ImagePanel
             finally
             {
                 sw.Stop();
-                Console.WriteLine($"Invalidate: {sw.ElapsedMilliseconds} ms");
+                Console.WriteLine($"ImagePanel.Invalidate: {sw.ElapsedMilliseconds} ms");
             }
         }
 
@@ -686,7 +686,7 @@ namespace SWF.UIComponent.ImagePanel
             }
 
             sw.Stop();
-            Console.WriteLine($"DrawImage: {sw.ElapsedMilliseconds} ms");
+            Console.WriteLine($"ImagePanel.DrawImage: {sw.ElapsedMilliseconds} ms");
         }
 
         private void DrawThumbnailPanel(Graphics g)

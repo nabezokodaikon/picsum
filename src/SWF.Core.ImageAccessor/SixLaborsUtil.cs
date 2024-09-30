@@ -48,7 +48,7 @@ namespace SWF.Core.ImageAccessor
             finally
             {
                 sw.Stop();
-                //Console.WriteLine($"DetectFormat: {sw.ElapsedMilliseconds} ms");
+                //Console.WriteLine($"SixLaborsUtil.DetectFormat: {sw.ElapsedMilliseconds} ms");
             }
         }
 
@@ -66,7 +66,7 @@ namespace SWF.Core.ImageAccessor
                     sw.Restart();
                     var img = ImageSharpeToBitmap((Image<Rgba32>)image);
                     sw.Stop();
-                    Console.WriteLine($"SixLaborsUtil.ReadImageFile ConvertImageSharpImageToBitmap: {sw.ElapsedMilliseconds} ms");
+                    Console.WriteLine($"SixLaborsUtil.ReadImageFile ImageSharpeToBitmap: {sw.ElapsedMilliseconds} ms");
                     return img;
                 }
             }

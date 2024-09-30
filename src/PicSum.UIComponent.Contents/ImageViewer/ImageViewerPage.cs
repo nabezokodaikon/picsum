@@ -388,7 +388,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             finally
             {
                 sw.Stop();
-                Console.WriteLine($"GetImageSize From ImageViewerPage: {sw.ElapsedMilliseconds} ms");
+                Console.WriteLine($"ImageViewerPage.GetImageSize: {sw.ElapsedMilliseconds} ms");
             }
         }
 
@@ -668,7 +668,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             finally
             {
                 sw.Stop();
-                Console.WriteLine($"ReadImage: {sw.ElapsedMilliseconds} ms");
+                Console.WriteLine($"ImageViewerPage.ReadImage: {sw.ElapsedMilliseconds} ms");
             }
         }
 

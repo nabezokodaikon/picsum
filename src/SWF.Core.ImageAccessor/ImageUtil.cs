@@ -251,7 +251,7 @@ namespace SWF.Core.ImageAccessor
             finally
             {
                 sw.Stop();
-                Console.WriteLine($"GetImageSize: {sw.ElapsedMilliseconds} ms");
+                Console.WriteLine($"ImageUtil.GetImageSize: {sw.ElapsedMilliseconds} ms");
             }
         }
 
@@ -312,7 +312,7 @@ namespace SWF.Core.ImageAccessor
                         finally
                         {
                             sw.Stop();
-                            Console.WriteLine($"ReadImageFile(false , true): {sw.ElapsedMilliseconds} ms");
+                            Console.WriteLine($"ImageUtil.ReadImageFile(false , true): {sw.ElapsedMilliseconds} ms");
                         }
                     }
                     else
