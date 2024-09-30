@@ -294,25 +294,25 @@ namespace SWF.Core.ImageAccessor
                     else if (FileUtil.IsImageFile(filePath))
                     {
                         var sw = Stopwatch.StartNew();
-                        try
+                        var bmp = (Bitmap)Bitmap.FromStream(fs, false, true);
+                        sw.Stop();
+                        Console.WriteLine($"ImageUtil.ReadImageFile(false , true): {sw.ElapsedMilliseconds} ms");
+
+                        if (bmp.PixelFormat == PixelFormat.Format8bppIndexed)
                         {
-                            var bmp = (Bitmap)Bitmap.FromStream(fs, false, true);
-                            if (bmp.PixelFormat == PixelFormat.Format8bppIndexed)
+                            using (bmp)
                             {
-                                using (bmp)
-                                {
-                                    return Convert8bppIndexedToColor(bmp);
-                                }
-                            }
-                            else
-                            {
-                                return bmp;
+                                sw = Stopwatch.StartNew();
+                                var convBmp = Convert8bppIndexedToColor(bmp);
+                                sw.Stop();
+                                Console.WriteLine($"ImageUtil.Convert8bppIndexedToColor: {sw.ElapsedMilliseconds} ms");
+
+                                return convBmp;
                             }
                         }
-                        finally
+                        else
                         {
-                            sw.Stop();
-                            Console.WriteLine($"ImageUtil.ReadImageFile(false , true): {sw.ElapsedMilliseconds} ms");
+                            return bmp;
                         }
                     }
                     else

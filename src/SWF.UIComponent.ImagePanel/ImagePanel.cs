@@ -255,6 +255,8 @@ namespace SWF.UIComponent.ImagePanel
             }
             finally
             {
+                this.SetDrawParameter();
+
                 sw.Stop();
                 Console.WriteLine($"ImagePanel.Invalidate: {sw.ElapsedMilliseconds} ms");
             }
@@ -272,13 +274,6 @@ namespace SWF.UIComponent.ImagePanel
             }
 
             base.Dispose(disposing);
-        }
-
-        protected override void OnInvalidated(InvalidateEventArgs e)
-        {
-            this.SetDrawParameter();
-
-            base.OnInvalidated(e);
         }
 
         protected override void OnPaint(PaintEventArgs e)
