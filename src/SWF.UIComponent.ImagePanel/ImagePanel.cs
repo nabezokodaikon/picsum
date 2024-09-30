@@ -598,7 +598,7 @@ namespace SWF.UIComponent.ImagePanel
             var w = this.imageScaleSize.Width - this.hMaximumScrollValue;
             var h = this.imageScaleSize.Height - this.vMaximumScrollValue;
 
-            return new RectangleF(x, y, w, h);
+            return new RectangleF(x, y, Math.Abs(w), Math.Abs(h));
         }
 
         private RectangleF GetImageSrcRectangle()
