@@ -70,7 +70,7 @@ namespace SWF.Core.ImageAccessor
                 CACHE_LOCK.ExitUpgradeableReadLock();
 
                 sw.Stop();
-                //Console.WriteLine($"ImageInfoCacheUtil.GetImageInfo: {sw.ElapsedMilliseconds} ms");
+                //Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageInfoCacheUtil.GetImageInfo: {sw.ElapsedMilliseconds} ms");
             }
         }
 

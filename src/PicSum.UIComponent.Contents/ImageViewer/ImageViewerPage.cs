@@ -18,6 +18,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.Versioning;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace PicSum.UIComponent.Contents.ImageViewer
@@ -122,11 +123,14 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                     this.getImageFileJob
                         .Callback(r =>
                         {
+                            var sw = Stopwatch.StartNew();
                             this.GetImageFileJob_Callback(r);
+                            sw.Stop();
+                            Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageViewerPage.GetImageFileJob_Callback: {sw.ElapsedMilliseconds} ms");
                         })
                         .Cancel(() =>
                         {
-                            Console.WriteLine($"GetImageFileJob.Cancel");
+                            Console.WriteLine($"[{Thread.CurrentThread.Name}] GetImageFileJob.Cancel");
                         })
                         .Catch(_ =>
                         {
@@ -388,7 +392,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             finally
             {
                 sw.Stop();
-                Console.WriteLine($"ImageViewerPage.GetImageSize: {sw.ElapsedMilliseconds} ms");
+                Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageViewerPage.GetImageSize: {sw.ElapsedMilliseconds} ms");
             }
         }
 
@@ -668,7 +672,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             finally
             {
                 sw.Stop();
-                Console.WriteLine($"ImageViewerPage.ReadImage: {sw.ElapsedMilliseconds} ms");
+                Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageViewerPage.ReadImage: {sw.ElapsedMilliseconds} ms");
             }
         }
 

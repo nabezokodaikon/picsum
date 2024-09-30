@@ -251,7 +251,7 @@ namespace SWF.Core.ImageAccessor
             finally
             {
                 sw.Stop();
-                Console.WriteLine($"ImageUtil.GetImageSize: {sw.ElapsedMilliseconds} ms");
+                Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.GetImageSize: {sw.ElapsedMilliseconds} ms");
             }
         }
 
@@ -296,7 +296,7 @@ namespace SWF.Core.ImageAccessor
                         var sw = Stopwatch.StartNew();
                         var bmp = (Bitmap)Bitmap.FromStream(fs, false, true);
                         sw.Stop();
-                        Console.WriteLine($"ImageUtil.ReadImageFile(false , true): {sw.ElapsedMilliseconds} ms");
+                        Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.ReadImageFile(false , true): {sw.ElapsedMilliseconds} ms");
 
                         if (bmp.PixelFormat == PixelFormat.Format8bppIndexed)
                         {
@@ -305,7 +305,7 @@ namespace SWF.Core.ImageAccessor
                                 sw = Stopwatch.StartNew();
                                 var convBmp = Convert8bppIndexedToColor(bmp);
                                 sw.Stop();
-                                Console.WriteLine($"ImageUtil.Convert8bppIndexedToColor: {sw.ElapsedMilliseconds} ms");
+                                Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.Convert8bppIndexedToColor: {sw.ElapsedMilliseconds} ms");
 
                                 return convBmp;
                             }

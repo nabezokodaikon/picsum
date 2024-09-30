@@ -19,7 +19,7 @@ namespace SWF.Core.ImageAccessor
             finally
             {
                 sw.Stop();
-                Console.WriteLine($"SvgUtil.ReadImageFile: {sw.ElapsedMilliseconds} ms");
+                Console.WriteLine($"[{Thread.CurrentThread.Name}] SvgUtil.ReadImageFile: {sw.ElapsedMilliseconds} ms");
             }
 
         }

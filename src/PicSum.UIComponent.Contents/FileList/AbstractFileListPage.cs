@@ -20,6 +20,7 @@ using System.Drawing;
 using System.Linq;
 using System.Runtime.Versioning;
 using System.Text;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace PicSum.UIComponent.Contents.FileList
@@ -867,7 +868,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private void MultiFilesExportJob_Callback(ValueResult<string> result)
         {
-            Console.WriteLine(result.Value);
+            Console.WriteLine($"[{Thread.CurrentThread.Name}] {result.Value}");
         }
 
         #endregion

@@ -65,7 +65,7 @@ namespace SWF.Core.ImageAccessor
                 var sw = Stopwatch.StartNew();
                 GC.Collect();
                 sw.Stop();
-                Console.WriteLine($"GC.Collect: {sw.ElapsedMilliseconds} ms");
+                Console.WriteLine($"[{Thread.CurrentThread.Name}] GC.Collect: {sw.ElapsedMilliseconds} ms");
             }
 
             this.disposed = true;
@@ -92,7 +92,7 @@ namespace SWF.Core.ImageAccessor
             var sw = Stopwatch.StartNew();
             var clone = new CvImage(this.mat);
             sw.Stop();
-            Console.WriteLine($"CvImage.Clone: {sw.ElapsedMilliseconds} ms");
+            Console.WriteLine($"[{Thread.CurrentThread.Name}] CvImage.Clone: {sw.ElapsedMilliseconds} ms");
             return clone;
         }
     }

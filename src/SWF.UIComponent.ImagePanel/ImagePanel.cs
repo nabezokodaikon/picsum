@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Runtime.Versioning;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace SWF.UIComponent.ImagePanel
@@ -258,7 +259,7 @@ namespace SWF.UIComponent.ImagePanel
                 this.SetDrawParameter();
 
                 sw.Stop();
-                Console.WriteLine($"ImagePanel.Invalidate: {sw.ElapsedMilliseconds} ms");
+                Console.WriteLine($"[{Thread.CurrentThread.Name}] ImagePanel.Invalidate: {sw.ElapsedMilliseconds} ms");
             }
         }
 
@@ -675,7 +676,7 @@ namespace SWF.UIComponent.ImagePanel
             }
 
             sw.Stop();
-            Console.WriteLine($"ImagePanel.DrawImage: {sw.ElapsedMilliseconds} ms");
+            Console.WriteLine($"[{Thread.CurrentThread.Name}] ImagePanel.DrawImage: {sw.ElapsedMilliseconds} ms");
         }
 
         private void DrawThumbnailPanel(Graphics g)

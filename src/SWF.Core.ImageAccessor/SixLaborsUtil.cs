@@ -48,7 +48,7 @@ namespace SWF.Core.ImageAccessor
             finally
             {
                 sw.Stop();
-                //Console.WriteLine($"SixLaborsUtil.DetectFormat: {sw.ElapsedMilliseconds} ms");
+                //Console.WriteLine($"[{Thread.CurrentThread.Name}] SixLaborsUtil.DetectFormat: {sw.ElapsedMilliseconds} ms");
             }
         }
 
@@ -60,13 +60,13 @@ namespace SWF.Core.ImageAccessor
             using (var image = SixLabors.ImageSharp.Image.Load(DECODER_OPTIONS, fs))
             {
                 sw.Stop();
-                Console.WriteLine($"SixLaborsUtil.ReadImageFile Image.Load: {sw.ElapsedMilliseconds} ms");
+                Console.WriteLine($"[{Thread.CurrentThread.Name}] SixLaborsUtil.ReadImageFile Image.Load: {sw.ElapsedMilliseconds} ms");
                 using (var mem = new MemoryStream())
                 {
                     sw.Restart();
                     var img = ImageSharpeToBitmap((Image<Rgba32>)image);
                     sw.Stop();
-                    Console.WriteLine($"SixLaborsUtil.ReadImageFile ImageSharpeToBitmap: {sw.ElapsedMilliseconds} ms");
+                    Console.WriteLine($"[{Thread.CurrentThread.Name}] SixLaborsUtil.ReadImageFile ImageSharpeToBitmap: {sw.ElapsedMilliseconds} ms");
                     return img;
                 }
             }
