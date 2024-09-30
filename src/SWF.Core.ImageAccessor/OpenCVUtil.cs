@@ -1,5 +1,6 @@
 using OpenCvSharp;
 using OpenCvSharp.Extensions;
+using System.Diagnostics;
 
 namespace SWF.Core.ImageAccessor
 {
@@ -9,13 +10,23 @@ namespace SWF.Core.ImageAccessor
         {
             ArgumentNullException.ThrowIfNull(srcBMP, nameof(srcBMP));
 
-            var scale = newWidth / (float)srcBMP.Width;
-
             using (var srcMat = srcBMP.ToMat())
             using (var destMat = new Mat())
             {
                 Cv2.Resize(srcMat, destMat, new OpenCvSharp.Size(newWidth, newHeight), 0, 0, InterpolationFlags.Area);
                 return destMat.ToBitmap();
+            }
+        }
+
+        public static Bitmap Resize(Mat srcMat, int newWidth, int newHeight)
+        {
+            ArgumentNullException.ThrowIfNull(srcMat, nameof(srcMat));
+
+            using (var destMat = new Mat())
+            {
+                Cv2.Resize(srcMat, destMat, new OpenCvSharp.Size(newWidth, newHeight), 0, 0, InterpolationFlags.Area);
+                var destBMP = destMat.ToBitmap();
+                return destBMP;
             }
         }
 
