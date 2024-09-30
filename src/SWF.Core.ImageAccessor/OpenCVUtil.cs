@@ -5,7 +5,7 @@ namespace SWF.Core.ImageAccessor
 {
     internal static class OpenCVUtil
     {
-        public static System.Drawing.Bitmap Resize(System.Drawing.Bitmap srcBMP, int newWidth, int newHeight)
+        public static Bitmap Resize(Bitmap srcBMP, int newWidth, int newHeight)
         {
             ArgumentNullException.ThrowIfNull(srcBMP, nameof(srcBMP));
 
@@ -19,7 +19,7 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
-        public static System.Drawing.Bitmap Clone(System.Drawing.Bitmap src)
+        public static Bitmap Clone(Bitmap src)
         {
             ArgumentNullException.ThrowIfNull(src, nameof(src));
 
