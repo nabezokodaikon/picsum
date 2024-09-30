@@ -296,7 +296,7 @@ namespace SWF.Core.ImageAccessor
                         var sw = Stopwatch.StartNew();
                         var bmp = (Bitmap)Bitmap.FromStream(fs, false, true);
                         sw.Stop();
-                        Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.ReadImageFile(false , true): {sw.ElapsedMilliseconds} ms");
+                        Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.ReadImageFile: {sw.ElapsedMilliseconds} ms");
 
                         if (bmp.PixelFormat == PixelFormat.Format8bppIndexed)
                         {
