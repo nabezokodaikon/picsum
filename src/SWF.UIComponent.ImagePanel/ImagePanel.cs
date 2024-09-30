@@ -283,6 +283,12 @@ namespace SWF.UIComponent.ImagePanel
 
         protected override void OnPaint(PaintEventArgs e)
         {
+            e.Graphics.SmoothingMode = SmoothingMode.None;
+            e.Graphics.InterpolationMode = InterpolationMode.Low;
+            e.Graphics.CompositingQuality = CompositingQuality.HighSpeed;
+            e.Graphics.PixelOffsetMode = PixelOffsetMode.HighSpeed;
+            e.Graphics.CompositingMode = CompositingMode.SourceOver;
+
             if (this.IsError)
             {
                 using (var sf = new StringFormat())
@@ -301,23 +307,11 @@ namespace SWF.UIComponent.ImagePanel
             }
             else if (this.image != null)
             {
-                e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
-                e.Graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
-                e.Graphics.CompositingQuality = CompositingQuality.HighQuality;
-                e.Graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
-                e.Graphics.CompositingMode = CompositingMode.SourceOver;
-
                 this.DrawImage(e.Graphics);
 
                 if (this.isShowThumbnailPanel &&
                     (this.hMaximumScrollValue > 0 || this.vMaximumScrollValue > 0))
                 {
-                    e.Graphics.SmoothingMode = SmoothingMode.None;
-                    e.Graphics.InterpolationMode = InterpolationMode.Low;
-                    e.Graphics.CompositingQuality = CompositingQuality.HighSpeed;
-                    e.Graphics.PixelOffsetMode = PixelOffsetMode.HighSpeed;
-                    e.Graphics.CompositingMode = CompositingMode.SourceOver;
-
                     this.DrawThumbnailPanel(e.Graphics);
                 }
             }
