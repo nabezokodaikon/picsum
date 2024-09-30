@@ -39,8 +39,7 @@ namespace SWF.Core.ImageAccessor
             CACHE_LOCK.EnterUpgradeableReadLock();
             try
             {
-                ImageFileCache cache = null;
-                if (CACHE_DICTIONARY.TryGetValue(filePath, out cache))
+                if (CACHE_DICTIONARY.TryGetValue(filePath, out var cache))
                 {
                     if (timestamp == cache.Timestamp)
                     {
