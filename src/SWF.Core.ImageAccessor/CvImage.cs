@@ -6,6 +6,8 @@ namespace SWF.Core.ImageAccessor
     public sealed class CvImage
         : IDisposable
     {
+        public static readonly CvImage EMPTY = new CvImage(ImageUtil.EMPTY_IMAGE);
+
         private bool disposed = false;
 
         public Bitmap Bitmap { get; private set; }
@@ -54,6 +56,8 @@ namespace SWF.Core.ImageAccessor
             {
                 this.Bitmap.Dispose();
                 this.Mat.Dispose();
+                this.Bitmap = null;
+                this.Mat = null;
             }
 
             this.disposed = true;

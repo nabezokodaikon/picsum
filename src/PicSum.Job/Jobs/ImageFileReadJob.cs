@@ -49,7 +49,7 @@ namespace PicSum.Job.Jobs
                 this.CheckCancel();
                 var mainImage = this.ReadImageFile(mainFilePath);
                 if (parameter.ImageDisplayMode != ImageDisplayMode.Single
-                    && mainImage != ImageUtil.EMPTY_IMAGE
+                    && mainImage != CvImage.EMPTY
                     && mainImage.Width < mainImage.Height)
                 {
                     this.CheckCancel();
@@ -71,7 +71,7 @@ namespace PicSum.Job.Jobs
                             mainResult.Image = new()
                             {
                                 FilePath = mainFilePath,
-                                Thumbnail = thumbLogic.CreateThumbnail(mainImage, parameter.ThumbnailSize, parameter.ImageSizeMode),
+                                Thumbnail = thumbLogic.CreateThumbnail(mainImage.Bitmap, parameter.ThumbnailSize, parameter.ImageSizeMode),
                                 Image = mainImage,
                                 IsError = false,
                             };
@@ -89,13 +89,13 @@ namespace PicSum.Job.Jobs
                         subResult.IsMain = false;
                         subResult.HasSub = true;
                         var subImage = this.ReadImageFile(subFilePath);
-                        var isSubSuccess = subImage != ImageUtil.EMPTY_IMAGE;
+                        var isSubSuccess = subImage != CvImage.EMPTY;
                         subResult.Image = new()
                         {
                             FilePath = subFilePath,
                             Image = subImage,
                             Thumbnail = (isSubSuccess) ?
-                                thumbLogic.CreateThumbnail(subImage, parameter.ThumbnailSize, parameter.ImageSizeMode) :
+                                thumbLogic.CreateThumbnail(subImage.Bitmap, parameter.ThumbnailSize, parameter.ImageSizeMode) :
                                 null,
                             IsError = !isSubSuccess,
                         };
@@ -112,7 +112,7 @@ namespace PicSum.Job.Jobs
                             mainResult.Image = new()
                             {
                                 FilePath = mainFilePath,
-                                Thumbnail = thumbLogic.CreateThumbnail(mainImage, parameter.ThumbnailSize, parameter.ImageSizeMode),
+                                Thumbnail = thumbLogic.CreateThumbnail(mainImage.Bitmap, parameter.ThumbnailSize, parameter.ImageSizeMode),
                                 Image = mainImage,
                                 IsError = false,
                             };
@@ -132,14 +132,14 @@ namespace PicSum.Job.Jobs
                     try
                     {
                         this.CheckCancel();
-                        var isMainSuccess = mainImage != ImageUtil.EMPTY_IMAGE;
+                        var isMainSuccess = mainImage != CvImage.EMPTY;
                         mainResult.IsMain = true;
                         mainResult.HasSub = false;
                         mainResult.Image = new()
                         {
                             FilePath = mainFilePath,
                             Thumbnail = (isMainSuccess) ?
-                                thumbLogic.CreateThumbnail(mainImage, parameter.ThumbnailSize, parameter.ImageSizeMode) :
+                                thumbLogic.CreateThumbnail(mainImage.Bitmap, parameter.ThumbnailSize, parameter.ImageSizeMode) :
                                 null,
                             Image = mainImage,
                             IsError = !isMainSuccess,
@@ -162,7 +162,7 @@ namespace PicSum.Job.Jobs
             }
         }
 
-        private Bitmap ReadImageFile(string filePath)
+        private CvImage ReadImageFile(string filePath)
         {
             try
             {
@@ -171,12 +171,12 @@ namespace PicSum.Job.Jobs
             catch (FileUtilException ex)
             {
                 this.WriteErrorLog(new JobException(this.ID, ex));
-                return ImageUtil.EMPTY_IMAGE;
+                return CvImage.EMPTY;
             }
             catch (ImageUtilException ex)
             {
                 this.WriteErrorLog(new JobException(this.ID, ex));
-                return ImageUtil.EMPTY_IMAGE;
+                return CvImage.EMPTY;
             }
         }
 

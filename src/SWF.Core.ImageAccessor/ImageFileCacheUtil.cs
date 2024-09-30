@@ -16,7 +16,6 @@ namespace SWF.Core.ImageAccessor
         {
             CACHE_LOCK.Dispose();
             CACHE_LIST.Clear();
-            CACHE_DICTIONARY.Clear();
         }
 
         public static Size GetSize(string filePath)
@@ -24,7 +23,7 @@ namespace SWF.Core.ImageAccessor
             return Read(filePath, cache => cache.Image.Size);
         }
 
-        public static Bitmap ReadImage(string filePath)
+        public static CvImage ReadImage(string filePath)
         {
             return Read(filePath, cache => cache.Clone()).Image;
         }
@@ -50,7 +49,7 @@ namespace SWF.Core.ImageAccessor
                 }
 
                 var newCache = new ImageFileCache(
-                    filePath, ImageUtil.ReadImageFile(filePath), timestamp);
+                    filePath, new CvImage(ImageUtil.ReadImageFile(filePath)), timestamp);
 
                 CACHE_LOCK.EnterWriteLock();
                 try

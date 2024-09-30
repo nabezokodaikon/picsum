@@ -9,10 +9,10 @@ namespace SWF.Core.ImageAccessor
         private bool disposed = false;
 
         public string FilePath { get; private set; }
-        public Bitmap Image { get; private set; }
+        public CvImage Image { get; private set; }
         public DateTime Timestamp { get; private set; }
 
-        public ImageFileCache(string filePath, Bitmap image, DateTime timestamp)
+        public ImageFileCache(string filePath, CvImage image, DateTime timestamp)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
             ArgumentNullException.ThrowIfNull(image, nameof(image));
@@ -32,6 +32,7 @@ namespace SWF.Core.ImageAccessor
             if (disposing)
             {
                 this.Image?.Dispose();
+                this.Image = null;
             }
 
             this.disposed = true;
@@ -60,7 +61,7 @@ namespace SWF.Core.ImageAccessor
                 throw new NullReferenceException("イメージが設定されていません。");
             }
 
-            return new ImageFileCache(this.FilePath, ImageUtil.Clone(this.Image), this.Timestamp);
+            return new ImageFileCache(this.FilePath, this.Image.Clone(), this.Timestamp);
         }
 
         public bool Equals(ImageFileCache? other)

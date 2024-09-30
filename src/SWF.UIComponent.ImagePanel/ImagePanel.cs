@@ -173,7 +173,7 @@ namespace SWF.UIComponent.ImagePanel
 
         #region パブリックメソッド
 
-        public void SetImage(ImageSizeMode sizeMode, Bitmap img, Bitmap thumb)
+        public void SetImage(ImageSizeMode sizeMode, CvImage img, Bitmap thumb)
         {
             ArgumentNullException.ThrowIfNull(img, nameof(img));
             ArgumentNullException.ThrowIfNull(thumb, nameof(thumb));
@@ -184,7 +184,7 @@ namespace SWF.UIComponent.ImagePanel
             }
 
             this.IsError = false;
-            this.image = new CvImage(img);
+            this.image = img;
             this.thumbnail = thumb;
             this.sizeMode = sizeMode;
         }
