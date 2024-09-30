@@ -15,6 +15,7 @@ namespace SWF.Core.ImageAccessor
         public static readonly Size EMPTY_SIZE = Size.Empty;
         public static readonly Bitmap EMPTY_IMAGE = new(1, 1);
 
+        private static readonly int BUFFER_SIZE = 64 * 1024;
         private static readonly EncoderParameter ENCORDER_PARAMETER = new(Encoder.Quality, 100L);
         private static readonly ImageCodecInfo PNG_CODEC_INFO = ImageCodecInfo.GetImageEncoders().Single(info => info.FormatID == ImageFormat.Png.Guid);
         private static readonly dynamic SHELL = Activator.CreateInstance(Type.GetTypeFromProgID("Shell.Application"));
@@ -267,7 +268,7 @@ namespace SWF.Core.ImageAccessor
                 }
 
                 using (var fs = new FileStream(filePath,
-                    FileMode.Open, FileAccess.Read, FileShare.Read, 8192, FileOptions.SequentialScan))
+                    FileMode.Open, FileAccess.Read, FileShare.Read, BUFFER_SIZE, FileOptions.SequentialScan))
                 {
                     if (FileUtil.IsIconFile(filePath))
                     {
