@@ -58,6 +58,7 @@ namespace SWF.Core.ImageAccessor
                     {
                         CACHE_LIST.Remove(cache);
                         CACHE_DICTIONARY.Remove(cache.FilePath);
+                        cache.Dispose();
                     }
 
                     if (CACHE_LIST.Count > CACHE_CAPACITY)
@@ -65,6 +66,7 @@ namespace SWF.Core.ImageAccessor
                         var removeCache = CACHE_LIST[0];
                         CACHE_LIST.Remove(removeCache);
                         CACHE_DICTIONARY.Remove(removeCache.FilePath);
+                        removeCache.Dispose();
                     }
 
                     if (CACHE_DICTIONARY.TryAdd(filePath, newCache))
