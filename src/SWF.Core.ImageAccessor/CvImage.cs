@@ -1,5 +1,6 @@
 using OpenCvSharp;
 using OpenCvSharp.Extensions;
+using System.Diagnostics;
 
 namespace SWF.Core.ImageAccessor
 {
@@ -58,6 +59,11 @@ namespace SWF.Core.ImageAccessor
                 this.Mat.Dispose();
                 this.Bitmap = null;
                 this.Mat = null;
+
+                var sw = Stopwatch.StartNew();
+                GC.Collect();
+                sw.Stop();
+                Console.WriteLine($"GC.Collect: {sw.ElapsedMilliseconds} ms");
             }
 
             this.disposed = true;
