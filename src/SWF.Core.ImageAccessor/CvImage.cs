@@ -63,6 +63,7 @@ namespace SWF.Core.ImageAccessor
             if (disposing)
             {
                 this.Bitmap.Dispose();
+                this.mat.Dispose();
 
                 var sw = Stopwatch.StartNew();
                 GC.Collect();
@@ -92,7 +93,7 @@ namespace SWF.Core.ImageAccessor
         public CvImage Clone()
         {
             var sw = Stopwatch.StartNew();
-            var clone = new CvImage(this.mat);
+            var clone = new CvImage(this.mat.Clone());
             sw.Stop();
             Console.WriteLine($"[{Thread.CurrentThread.Name}] CvImage.Clone: {sw.ElapsedMilliseconds} ms");
             return clone;
