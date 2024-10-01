@@ -137,7 +137,7 @@ namespace PicSum.Job.Logics
         {
             try
             {
-                return ImageFileCacheUtil.ReadImage(filePath).Bitmap;
+                return ImageFileCacheUtil.ReadImage(filePath).CreateBitmap();
             }
             catch (ImageUtilException ex)
             {

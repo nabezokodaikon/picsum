@@ -47,8 +47,11 @@ namespace SWF.Core.ImageAccessor
                     }
                 }
 
-                var newCache = new ImageFileCache(
-                    filePath, new CvImage(ImageUtil.ReadImageFile(filePath)), timestamp);
+                ImageFileCache newCache;
+                using (var bmp = ImageUtil.ReadImageFile(filePath))
+                {
+                    newCache = new ImageFileCache(filePath, new CvImage(bmp), timestamp);
+                }
 
                 CACHE_LOCK.EnterWriteLock();
                 try

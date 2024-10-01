@@ -12,14 +12,11 @@ namespace SWF.Core.ImageAccessor
         private bool disposed = false;
         private readonly Mat mat;
 
-        public Bitmap Bitmap { get; private set; }
-
-
         public System.Drawing.Size Size
         {
             get
             {
-                return this.Bitmap.Size;
+                return new System.Drawing.Size(this.Width, this.Height);
             }
         }
 
@@ -27,7 +24,7 @@ namespace SWF.Core.ImageAccessor
         {
             get
             {
-                return this.Bitmap.Width;
+                return this.mat.Width;
             }
         }
 
@@ -35,7 +32,7 @@ namespace SWF.Core.ImageAccessor
         {
             get
             {
-                return this.Bitmap.Height;
+                return this.mat.Height;
             }
         }
 
@@ -43,14 +40,12 @@ namespace SWF.Core.ImageAccessor
         {
             ArgumentNullException.ThrowIfNull(bitmap, nameof(bitmap));
 
-            this.Bitmap = bitmap;
-            this.mat = this.Bitmap.ToMat();
+            this.mat = bitmap.ToMat();
         }
 
         private CvImage(Mat mat)
         {
             this.mat = mat;
-            this.Bitmap = this.mat.ToBitmap();
         }
 
         private void Dispose(bool disposing)
@@ -62,7 +57,6 @@ namespace SWF.Core.ImageAccessor
 
             if (disposing)
             {
-                this.Bitmap.Dispose();
                 this.mat.Dispose();
 
                 var sw = Stopwatch.StartNew();
@@ -97,6 +91,15 @@ namespace SWF.Core.ImageAccessor
             sw.Stop();
             Console.WriteLine($"[{Thread.CurrentThread.Name}] CvImage.Clone: {sw.ElapsedMilliseconds} ms");
             return clone;
+        }
+
+        public Bitmap CreateBitmap()
+        {
+            var sw = Stopwatch.StartNew();
+            var bmp = this.mat.ToBitmap();
+            sw.Stop();
+            Console.WriteLine($"[{Thread.CurrentThread.Name}] CvImage.CreateBitmap: {sw.ElapsedMilliseconds} ms");
+            return bmp;
         }
     }
 }

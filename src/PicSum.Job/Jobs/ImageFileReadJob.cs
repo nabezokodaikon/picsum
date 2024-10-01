@@ -66,15 +66,18 @@ namespace PicSum.Job.Jobs
                         try
                         {
                             this.CheckCancel();
-                            mainResult.IsMain = true;
-                            mainResult.HasSub = true;
-                            mainResult.Image = new()
+                            using (var bmp = mainImage.CreateBitmap())
                             {
-                                FilePath = mainFilePath,
-                                Thumbnail = thumbLogic.CreateThumbnail(mainImage.Bitmap, parameter.ThumbnailSize, parameter.ImageSizeMode),
-                                Image = mainImage,
-                                IsError = false,
-                            };
+                                mainResult.IsMain = true;
+                                mainResult.HasSub = true;
+                                mainResult.Image = new()
+                                {
+                                    FilePath = mainFilePath,
+                                    Thumbnail = thumbLogic.CreateThumbnail(bmp, parameter.ThumbnailSize, parameter.ImageSizeMode),
+                                    Image = mainImage,
+                                    IsError = false,
+                                };
+                            }
                             this.CheckCancel();
                         }
                         catch (JobCancelException)
@@ -90,15 +93,18 @@ namespace PicSum.Job.Jobs
                         subResult.HasSub = true;
                         var subImage = this.ReadImageFile(subFilePath);
                         var isSubSuccess = subImage != CvImage.EMPTY;
-                        subResult.Image = new()
+                        using (var bmp = subImage.CreateBitmap())
                         {
-                            FilePath = subFilePath,
-                            Image = subImage,
-                            Thumbnail = (isSubSuccess) ?
-                                thumbLogic.CreateThumbnail(subImage.Bitmap, parameter.ThumbnailSize, parameter.ImageSizeMode) :
-                                null,
-                            IsError = !isSubSuccess,
-                        };
+                            subResult.Image = new()
+                            {
+                                FilePath = subFilePath,
+                                Image = subImage,
+                                Thumbnail = (isSubSuccess) ?
+                                    thumbLogic.CreateThumbnail(bmp, parameter.ThumbnailSize, parameter.ImageSizeMode) :
+                                    null,
+                                IsError = !isSubSuccess,
+                            };
+                        }
                         this.CheckCancel();
                         this.Callback(subResult);
                     }
@@ -107,15 +113,19 @@ namespace PicSum.Job.Jobs
                         try
                         {
                             this.CheckCancel();
-                            mainResult.IsMain = true;
-                            mainResult.HasSub = false;
-                            mainResult.Image = new()
+                            using (var bmp = mainImage.CreateBitmap())
                             {
-                                FilePath = mainFilePath,
-                                Thumbnail = thumbLogic.CreateThumbnail(mainImage.Bitmap, parameter.ThumbnailSize, parameter.ImageSizeMode),
-                                Image = mainImage,
-                                IsError = false,
-                            };
+                                mainResult.IsMain = true;
+                                mainResult.HasSub = false;
+                                mainResult.Image = new()
+                                {
+                                    FilePath = mainFilePath,
+                                    Thumbnail = thumbLogic.CreateThumbnail(bmp, parameter.ThumbnailSize, parameter.ImageSizeMode),
+                                    Image = mainImage,
+                                    IsError = false,
+                                };
+                            }
+
                             this.CheckCancel();
                         }
                         catch (JobCancelException)
@@ -133,17 +143,20 @@ namespace PicSum.Job.Jobs
                     {
                         this.CheckCancel();
                         var isMainSuccess = mainImage != CvImage.EMPTY;
-                        mainResult.IsMain = true;
-                        mainResult.HasSub = false;
-                        mainResult.Image = new()
+                        using (var bmp = mainImage.CreateBitmap())
                         {
-                            FilePath = mainFilePath,
-                            Thumbnail = (isMainSuccess) ?
-                                thumbLogic.CreateThumbnail(mainImage.Bitmap, parameter.ThumbnailSize, parameter.ImageSizeMode) :
-                                null,
-                            Image = mainImage,
-                            IsError = !isMainSuccess,
-                        };
+                            mainResult.IsMain = true;
+                            mainResult.HasSub = false;
+                            mainResult.Image = new()
+                            {
+                                FilePath = mainFilePath,
+                                Thumbnail = (isMainSuccess) ?
+                                    thumbLogic.CreateThumbnail(bmp, parameter.ThumbnailSize, parameter.ImageSizeMode) :
+                                    null,
+                                Image = mainImage,
+                                IsError = !isMainSuccess,
+                            };
+                        }
                         this.CheckCancel();
                     }
                     catch (JobCancelException)

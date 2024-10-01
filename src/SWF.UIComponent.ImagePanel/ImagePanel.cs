@@ -58,6 +58,7 @@ namespace SWF.UIComponent.ImagePanel
 
         private SizeF imageScaleSize = SizeF.Empty;
         private CvImage image = null;
+        private Bitmap bitmap = null;
         private Bitmap thumbnail = null;
 
         private int hMaximumScrollValue = 0;
@@ -186,6 +187,7 @@ namespace SWF.UIComponent.ImagePanel
 
             this.IsError = false;
             this.image = img;
+            this.bitmap = this.image.CreateBitmap();
             this.thumbnail = thumb;
             this.sizeMode = sizeMode;
         }
@@ -229,6 +231,12 @@ namespace SWF.UIComponent.ImagePanel
             {
                 this.image.Dispose();
                 this.image = null;
+            }
+
+            if (this.bitmap != null)
+            {
+                this.bitmap.Dispose();
+                this.bitmap = null;
             }
 
             this.imageScaleSize = SizeF.Empty;
@@ -662,7 +670,7 @@ namespace SWF.UIComponent.ImagePanel
             if (this.sizeMode == ImageSizeMode.Original)
             {
                 var sw = Stopwatch.StartNew();
-                g.DrawImage(this.image.Bitmap, destRect, this.GetImageSrcRectangle(), GraphicsUnit.Pixel);
+                g.DrawImage(this.bitmap, destRect, this.GetImageSrcRectangle(), GraphicsUnit.Pixel);
                 sw.Stop();
                 Console.WriteLine($"[{Thread.CurrentThread.Name}] ImagePanel.DrawImage: {sw.ElapsedMilliseconds} ms");
             }
@@ -682,7 +690,7 @@ namespace SWF.UIComponent.ImagePanel
                 else
                 {
                     var sw = Stopwatch.StartNew();
-                    g.DrawImage(this.image.Bitmap, destRect,
+                    g.DrawImage(this.bitmap, destRect,
                         new Rectangle(0, 0, this.image.Width, this.image.Height), GraphicsUnit.Pixel);
                     sw.Stop();
                     Console.WriteLine($"[{Thread.CurrentThread.Name}] ImagePanel.DrawImage: {sw.ElapsedMilliseconds} ms");
