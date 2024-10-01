@@ -20,5 +20,20 @@ namespace SWF.Core.ImageAccessor
                 return destBMP;
             }
         }
+
+        public static Bitmap Convert(MemoryStream ms)
+        {
+            ArgumentNullException.ThrowIfNull(ms, nameof(ms));
+
+            var sw = Stopwatch.StartNew();
+            ms.Seek(0, SeekOrigin.Begin);
+            using (var mat = Mat.FromStream(ms, ImreadModes.Color))
+            {
+                var bmp = mat.ToBitmap();
+                sw.Stop();
+                Console.WriteLine($"[{Thread.CurrentThread.Name}] OpenCVUtil.Convert: {sw.ElapsedMilliseconds} ms");
+                return bmp;
+            }
+        }
     }
 }
