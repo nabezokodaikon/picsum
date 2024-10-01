@@ -62,6 +62,8 @@ namespace SWF.Core.ImageAccessor
 
             if (disposing)
             {
+                this.Bitmap.Dispose();
+
                 var sw = Stopwatch.StartNew();
                 GC.Collect();
                 sw.Stop();
