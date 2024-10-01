@@ -238,6 +238,8 @@ namespace SWF.UIComponent.ImagePanel
                 this.bitmap.Dispose();
                 this.bitmap = null;
             }
+
+            this.imageScaleSize = SizeF.Empty;
         }
 
         public bool IsImagePoint(int x, int y)
