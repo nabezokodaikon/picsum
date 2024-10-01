@@ -262,12 +262,18 @@ namespace SWF.Core.ImageAccessor
 
             try
             {
+                Stopwatch sw;
+
                 if (FileUtil.IsSvgFile(filePath))
                 {
-                    return SvgUtil.ReadImageFile(filePath);
+                    sw = Stopwatch.StartNew();
+                    var bmp = SvgUtil.ReadImageFile(filePath);
+                    sw.Stop();
+                    Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.ReadImageFile Svg file: {sw.ElapsedMilliseconds} ms");
+                    return bmp;
                 }
 
-                var sw = Stopwatch.StartNew();
+                sw = Stopwatch.StartNew();
                 using (var fs = new FileStream(filePath,
                     FileMode.Open, FileAccess.Read, FileShare.Read, BUFFER_SIZE, FileOptions.SequentialScan))
                 {
@@ -278,7 +284,11 @@ namespace SWF.Core.ImageAccessor
                     {
                         using (var icon = new Icon(fs))
                         {
-                            return icon.ToBitmap();
+                            sw = Stopwatch.StartNew();
+                            var bmp = icon.ToBitmap();
+                            sw.Stop();
+                            Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.ReadImageFile Ico file: {sw.ElapsedMilliseconds} ms");
+                            return bmp;
                         }
                     }
 
@@ -286,32 +296,56 @@ namespace SWF.Core.ImageAccessor
 
                     if (FileUtil.IsWebpFile(formatName))
                     {
-                        return SixLaborsUtil.ReadImageFile(fs);
+                        sw = Stopwatch.StartNew();
+                        var bmp = SixLaborsUtil.ReadImageFile(fs);
+                        sw.Stop();
+                        Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.ReadImageFile Webp file: {sw.ElapsedMilliseconds} ms");
+                        return bmp;
                     }
                     else if (FileUtil.IsAvifFile(formatName))
                     {
-                        return SixLaborsUtil.ReadImageFile(fs);
+                        sw = Stopwatch.StartNew();
+                        var bmp = SixLaborsUtil.ReadImageFile(fs);
+                        sw.Stop();
+                        Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.ReadImageFile Avif file: {sw.ElapsedMilliseconds} ms");
+                        return bmp;
                     }
                     else if (FileUtil.IsHeifFile(formatName))
                     {
-                        return SixLaborsUtil.ReadImageFile(fs);
+                        sw = Stopwatch.StartNew();
+                        var bmp = SixLaborsUtil.ReadImageFile(fs);
+                        sw.Stop();
+                        Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.ReadImageFile Heif file: {sw.ElapsedMilliseconds} ms");
+                        return bmp;
                     }
-                    else if (FileUtil.IsImageFile(filePath))
+                    else if (FileUtil.IsJpegFile(formatName))
                     {
                         sw = Stopwatch.StartNew();
                         var bmp = (Bitmap)Bitmap.FromStream(fs, false, true);
                         sw.Stop();
-                        Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.ReadImageFile Bitmap.FromStream: {sw.ElapsedMilliseconds} ms");
+                        Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.ReadImageFile Jpeg file: {sw.ElapsedMilliseconds} ms");
+                        return bmp;
+                    }
+                    else if (FileUtil.IsBmpFile(formatName))
+                    {
+                        sw = Stopwatch.StartNew();
+                        var bmp = (Bitmap)Bitmap.FromStream(fs, false, true);
+                        sw.Stop();
+                        Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.ReadImageFile Bmp file: {sw.ElapsedMilliseconds} ms");
+                        return bmp;
+                    }
+                    else if (FileUtil.IsImageFile(filePath))
+                    {
+                        sw = Stopwatch.StartNew();
+                        var bmp = (Bitmap)Bitmap.FromStream(fs, false, false);
+                        sw.Stop();
+                        Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.ReadImageFile Other file: {sw.ElapsedMilliseconds} ms");
 
                         if (bmp.PixelFormat == PixelFormat.Format8bppIndexed)
                         {
                             using (bmp)
                             {
-                                sw = Stopwatch.StartNew();
-                                var convBmp = Convert8bppIndexedToColor(bmp);
-                                sw.Stop();
-                                Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.Convert8bppIndexedToColor: {sw.ElapsedMilliseconds} ms");
-
+                                var convBmp = OpenCVUtil.Convert(fs);
                                 return convBmp;
                             }
                         }
