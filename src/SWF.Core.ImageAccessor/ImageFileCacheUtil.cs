@@ -47,12 +47,6 @@ namespace SWF.Core.ImageAccessor
                     }
                 }
 
-                ImageFileCache newCache;
-                using (var bmp = ImageUtil.ReadImageFile(filePath))
-                {
-                    newCache = new ImageFileCache(filePath, new CvImage(bmp), timestamp);
-                }
-
                 CACHE_LOCK.EnterWriteLock();
                 try
                 {
@@ -71,15 +65,11 @@ namespace SWF.Core.ImageAccessor
                         removeCache.Dispose();
                     }
 
-                    if (CACHE_DICTIONARY.TryAdd(filePath, newCache))
+                    using (var bmp = ImageUtil.ReadImageFile(filePath))
                     {
+                        var newCache = new ImageFileCache(filePath, new CvImage(bmp), timestamp);
                         CACHE_LIST.Add(newCache);
                         return resultFunc(newCache);
-                    }
-                    else
-                    {
-                        newCache.Dispose();
-                        return resultFunc(CACHE_DICTIONARY[filePath]);
                     }
                 }
                 finally
