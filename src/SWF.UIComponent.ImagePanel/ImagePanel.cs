@@ -238,8 +238,6 @@ namespace SWF.UIComponent.ImagePanel
                 this.bitmap.Dispose();
                 this.bitmap = null;
             }
-
-            this.imageScaleSize = SizeF.Empty;
         }
 
         public bool IsImagePoint(int x, int y)
@@ -601,7 +599,7 @@ namespace SWF.UIComponent.ImagePanel
             var w = this.imageScaleSize.Width - this.hMaximumScrollValue;
             var h = this.imageScaleSize.Height - this.vMaximumScrollValue;
 
-            return new RectangleF(x, y, Math.Abs(w), Math.Abs(h));
+            return new RectangleF(x, y, w, h);
         }
 
         private RectangleF GetImageSrcRectangle()
