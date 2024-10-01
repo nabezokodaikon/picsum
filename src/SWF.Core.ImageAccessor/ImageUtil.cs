@@ -267,9 +267,13 @@ namespace SWF.Core.ImageAccessor
                     return SvgUtil.ReadImageFile(filePath);
                 }
 
+                var sw = Stopwatch.StartNew();
                 using (var fs = new FileStream(filePath,
                     FileMode.Open, FileAccess.Read, FileShare.Read, BUFFER_SIZE, FileOptions.SequentialScan))
                 {
+                    sw.Stop();
+                    Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.ReadImageFile new FileStream: {sw.ElapsedMilliseconds} ms");
+
                     if (FileUtil.IsIconFile(filePath))
                     {
                         using (var icon = new Icon(fs))
@@ -294,10 +298,10 @@ namespace SWF.Core.ImageAccessor
                     }
                     else if (FileUtil.IsImageFile(filePath))
                     {
-                        var sw = Stopwatch.StartNew();
+                        sw = Stopwatch.StartNew();
                         var bmp = (Bitmap)Bitmap.FromStream(fs, false, true);
                         sw.Stop();
-                        Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.ReadImageFile: {sw.ElapsedMilliseconds} ms");
+                        Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.ReadImageFile Bitmap.FromStream: {sw.ElapsedMilliseconds} ms");
 
                         if (bmp.PixelFormat == PixelFormat.Format8bppIndexed)
                         {

@@ -279,6 +279,8 @@ namespace SWF.UIComponent.ImagePanel
 
         protected override void OnPaint(PaintEventArgs e)
         {
+            var sw = Stopwatch.StartNew();
+
             e.Graphics.SmoothingMode = SmoothingMode.None;
             e.Graphics.InterpolationMode = InterpolationMode.Low;
             e.Graphics.CompositingQuality = CompositingQuality.HighSpeed;
@@ -313,6 +315,9 @@ namespace SWF.UIComponent.ImagePanel
             }
 
             base.OnPaint(e);
+
+            sw.Stop();
+            Console.WriteLine($"[{Thread.CurrentThread.Name}] ImagePanel.OnPaint: {sw.ElapsedMilliseconds} ms");
         }
 
         protected override void OnMouseLeave(EventArgs e)
