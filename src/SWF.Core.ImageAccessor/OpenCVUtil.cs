@@ -21,13 +21,13 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
-        public static Bitmap Convert(MemoryStream ms)
+        public static Bitmap Convert(Stream stream)
         {
-            ArgumentNullException.ThrowIfNull(ms, nameof(ms));
+            ArgumentNullException.ThrowIfNull(stream, nameof(stream));
 
             var sw = Stopwatch.StartNew();
-            ms.Seek(0, SeekOrigin.Begin);
-            using (var mat = Mat.FromStream(ms, ImreadModes.Color))
+            stream.Seek(0, SeekOrigin.Begin);
+            using (var mat = Mat.FromStream(stream, ImreadModes.Color))
             {
                 var bmp = mat.ToBitmap();
                 sw.Stop();

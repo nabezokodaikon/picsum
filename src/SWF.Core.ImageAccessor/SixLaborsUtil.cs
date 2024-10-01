@@ -56,19 +56,9 @@ namespace SWF.Core.ImageAccessor
         {
             ArgumentNullException.ThrowIfNull(fs, nameof(fs));
 
-            var sw = Stopwatch.StartNew();
             using (var image = SixLabors.ImageSharp.Image.Load(DECODER_OPTIONS, fs))
             {
-                sw.Stop();
-                Console.WriteLine($"[{Thread.CurrentThread.Name}] SixLaborsUtil.ReadImageFile Image.Load: {sw.ElapsedMilliseconds} ms");
-                using (var mem = new MemoryStream())
-                {
-                    sw.Restart();
-                    var img = ImageSharpeToBitmap((Image<Rgba32>)image);
-                    sw.Stop();
-                    Console.WriteLine($"[{Thread.CurrentThread.Name}] SixLaborsUtil.ReadImageFile ImageSharpeToBitmap: {sw.ElapsedMilliseconds} ms");
-                    return img;
-                }
+                return ImageSharpeToBitmap((Image<Rgba32>)image);
             }
         }
 
@@ -78,7 +68,7 @@ namespace SWF.Core.ImageAccessor
             var height = image.Height;
             var bitmap = new Bitmap(width, height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
 
-            System.Drawing.Imaging.BitmapData bitmapData = null;
+            System.Drawing.Imaging.BitmapData? bitmapData = null;
 
             try
             {

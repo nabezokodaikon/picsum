@@ -1,5 +1,4 @@
 using Svg;
-using System.Diagnostics;
 
 namespace SWF.Core.ImageAccessor
 {
@@ -7,21 +6,10 @@ namespace SWF.Core.ImageAccessor
     {
         public static Bitmap ReadImageFile(string filePath)
         {
-            var sw = Stopwatch.StartNew();
-
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
-            try
-            {
-                var svgDocument = SvgDocument.Open(filePath);
-                return svgDocument.Draw();
-            }
-            finally
-            {
-                sw.Stop();
-                Console.WriteLine($"[{Thread.CurrentThread.Name}] SvgUtil.ReadImageFile: {sw.ElapsedMilliseconds} ms");
-            }
-
+            var svgDocument = SvgDocument.Open(filePath);
+            return svgDocument.Draw();
         }
     }
 }
