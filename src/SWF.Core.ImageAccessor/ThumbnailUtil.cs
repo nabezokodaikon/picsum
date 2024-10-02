@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Runtime.Versioning;
 
 namespace SWF.Core.ImageAccessor
@@ -14,6 +15,8 @@ namespace SWF.Core.ImageAccessor
         /// <returns>サムネイル</returns>
         public static Image CreateThumbnail(Image srcImg, int thumbWidth, int thumbHeight)
         {
+            var sw = Stopwatch.StartNew();
+
             ArgumentNullException.ThrowIfNull(srcImg, nameof(srcImg));
 
             int w, h;
@@ -39,7 +42,12 @@ namespace SWF.Core.ImageAccessor
                 h = 1;
             }
 
-            return srcImg.GetThumbnailImage(w, h, () => false, IntPtr.Zero);
+            var thumb = ImageUtil.Resize((Bitmap)srcImg, w, h);
+
+            sw.Stop();
+            Console.WriteLine($"[{Thread.CurrentThread.Name}] ThumbnailUtil.CreateThumbnail: {sw.ElapsedMilliseconds} ms");
+
+            return thumb;
         }
 
         /// <summary>
