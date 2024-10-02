@@ -216,6 +216,8 @@ namespace SWF.UIComponent.ImagePanel
 
         public void ClearImage()
         {
+            var sw = Stopwatch.StartNew();
+
             this.HasImage = false;
 
             if (this.thumbnail != null)
@@ -237,6 +239,9 @@ namespace SWF.UIComponent.ImagePanel
             }
 
             this.imageScaleSize = SizeF.Empty;
+
+            sw.Stop();
+            Console.WriteLine($"[{Thread.CurrentThread.Name}] ImagePanel.ClearImage: {sw.ElapsedMilliseconds} ms");
         }
 
         public bool IsImagePoint(int x, int y)
@@ -247,6 +252,7 @@ namespace SWF.UIComponent.ImagePanel
         public new void Update()
         {
             var sw = Stopwatch.StartNew();
+
             if (!this.Visible)
             {
                 this.Visible = true;
@@ -661,13 +667,12 @@ namespace SWF.UIComponent.ImagePanel
 
         private void DrawImage(Graphics g)
         {
+            var sw = Stopwatch.StartNew();
+
             var destRect = this.GetImageDestRectangle();
             if (this.sizeMode == ImageSizeMode.Original)
             {
-                var sw = Stopwatch.StartNew();
                 g.DrawImage(this.bitmap, destRect, this.GetImageSrcRectangle(), GraphicsUnit.Pixel);
-                sw.Stop();
-                Console.WriteLine($"[{Thread.CurrentThread.Name}] ImagePanel.DrawImage: {sw.ElapsedMilliseconds} ms");
             }
             else
             {
@@ -675,22 +680,19 @@ namespace SWF.UIComponent.ImagePanel
                 {
                     using (var drawImage = this.image.Resize((int)destRect.Width, (int)destRect.Height))
                     {
-                        var sw = Stopwatch.StartNew();
                         g.DrawImage(drawImage, destRect,
                             new Rectangle(0, 0, drawImage.Width, drawImage.Height), GraphicsUnit.Pixel);
-                        sw.Stop();
-                        Console.WriteLine($"[{Thread.CurrentThread.Name}] ImagePanel.DrawImage: {sw.ElapsedMilliseconds} ms");
                     }
                 }
                 else
                 {
-                    var sw = Stopwatch.StartNew();
                     g.DrawImage(this.bitmap, destRect,
                         new Rectangle(0, 0, this.image.Width, this.image.Height), GraphicsUnit.Pixel);
-                    sw.Stop();
-                    Console.WriteLine($"[{Thread.CurrentThread.Name}] ImagePanel.DrawImage: {sw.ElapsedMilliseconds} ms");
                 }
             }
+
+            sw.Stop();
+            Console.WriteLine($"[{Thread.CurrentThread.Name}] ImagePanel.DrawImage: {sw.ElapsedMilliseconds} ms");
         }
 
         private void DrawThumbnailPanel(Graphics g)

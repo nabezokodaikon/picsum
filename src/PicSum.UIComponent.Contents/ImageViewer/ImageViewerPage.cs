@@ -124,6 +124,8 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                         .Callback(r =>
                         {
                             var sw = Stopwatch.StartNew();
+                            Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageViewerPage.GetImageFileJob_Callback: Start");
+
                             this.GetImageFileJob_Callback(r);
                             sw.Stop();
                             Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageViewerPage.GetImageFileJob_Callback: {sw.ElapsedMilliseconds} ms");
