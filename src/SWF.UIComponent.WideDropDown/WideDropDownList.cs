@@ -316,6 +316,7 @@ namespace SWF.UIComponent.WideDropDown
         protected override void OnInvalidated(InvalidateEventArgs e)
         {
             this.FlowList.Invalidate();
+            this.FlowList.Update();
             base.OnInvalidated(e);
         }
 

@@ -322,6 +322,7 @@ namespace PicSum.UIComponent.InfoPanel
             this.fileInfoLabel.Timestamp = string.Empty;
             this.ratingBar.SetValue(0);
             this.thumbnailPictureBox.Invalidate();
+            this.thumbnailPictureBox.Update();
             this.tagFlowList.ItemCount = 0;
 
             this.contextMenuOperationTag = string.Empty;
@@ -381,6 +382,7 @@ namespace PicSum.UIComponent.InfoPanel
             {
                 tagInfo.IsAll = true;
                 this.tagFlowList.Invalidate();
+                this.tagFlowList.Update();
             }
             else
             {
@@ -510,6 +512,7 @@ namespace PicSum.UIComponent.InfoPanel
             }
 
             this.thumbnailPictureBox.Invalidate();
+            this.thumbnailPictureBox.Update();
         }
 
         private void GetTagListJob_Callback(ListResult<string> result)

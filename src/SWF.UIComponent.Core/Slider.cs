@@ -89,6 +89,7 @@ namespace SWF.UIComponent.Core
                 this.value = value;
                 this.SetButtonPointX(this.value);
                 this.Invalidate();
+                this.Update();
 
                 this.OnValueChanged(EventArgs.Empty);
             }

@@ -150,6 +150,7 @@ namespace PicSum.UIComponent.AddressBar
                             this.currentDirectoryPath = string.Empty;
                             this.ClearAddressItems();
                             this.Invalidate();
+                            this.Update();
                         })
                         .StartThread();
                 }
@@ -265,6 +266,7 @@ namespace PicSum.UIComponent.AddressBar
         {
             this.SetMouseDownItem(null);
             this.Invalidate();
+            this.Update();
             base.OnMouseLeave(e);
         }
 
@@ -287,6 +289,7 @@ namespace PicSum.UIComponent.AddressBar
             }
 
             this.Invalidate();
+            this.Update();
 
             this.mouseDownItem?.OnMouseDown(e);
 
@@ -297,6 +300,7 @@ namespace PicSum.UIComponent.AddressBar
         {
             this.SetMouseDownItem(null);
             this.Invalidate();
+            this.Update();
             base.OnMouseUp(e);
         }
 
@@ -306,6 +310,7 @@ namespace PicSum.UIComponent.AddressBar
             if (this.SetMousePointItem(drawItem))
             {
                 this.Invalidate();
+                this.Update();
             }
 
             base.OnMouseMove(e);
@@ -650,16 +655,19 @@ namespace PicSum.UIComponent.AddressBar
             this.addressItems.AddRange(this.CreateAddressItems(e));
 
             this.Invalidate();
+            this.Update();
         }
 
         private void DrawItem_DropDownOpened(object sender, EventArgs e)
         {
             this.Invalidate();
+            this.Update();
         }
 
         private void DrawItem_DropDownClosed(object sender, EventArgs e)
         {
             this.Invalidate();
+            this.Update();
         }
 
         private void DrawItem_SelectedDirectory(object sender, SelectedDirectoryEventArgs e)

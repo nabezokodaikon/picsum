@@ -18,6 +18,7 @@ namespace SWF.UIComponent.Core
             {
                 this._isActive = value;
                 this.Invalidate();
+                this.Update();
             }
         }
 
