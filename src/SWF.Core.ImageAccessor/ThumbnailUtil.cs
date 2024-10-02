@@ -45,7 +45,7 @@ namespace SWF.Core.ImageAccessor
             var thumb = ImageUtil.Resize((Bitmap)srcImg, w, h);
 
             sw.Stop();
-            Console.WriteLine($"[{Thread.CurrentThread.Name}] ThumbnailUtil.CreateThumbnail: {sw.ElapsedMilliseconds} ms");
+            //Console.WriteLine($"[{Thread.CurrentThread.Name}] ThumbnailUtil.CreateThumbnail: {sw.ElapsedMilliseconds} ms");
 
             return thumb;
         }
