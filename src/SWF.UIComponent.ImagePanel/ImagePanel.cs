@@ -70,6 +70,7 @@ namespace SWF.UIComponent.ImagePanel
         private bool isImageMove = false;
         private bool isThumbnailMove = false;
         private Point moveFromPoint = Point.Empty;
+        private bool isError = false;
 
         private readonly SolidBrush thumbnailFilterBrush = new(Color.FromArgb(128, 0, 0, 0));
 
@@ -138,8 +139,6 @@ namespace SWF.UIComponent.ImagePanel
 
         public bool HasImage { get; private set; } = false;
 
-        public bool IsError { get; private set; } = false;
-
         #endregion
 
         #region 継承プロパティ
@@ -179,7 +178,7 @@ namespace SWF.UIComponent.ImagePanel
                 throw new InvalidOperationException("既にイメージが存在しています。");
             }
 
-            this.IsError = false;
+            this.isError = false;
             this.image = img;
             this.bitmap = this.image.CreateBitmap();
             this.thumbnail = thumb;
@@ -196,7 +195,7 @@ namespace SWF.UIComponent.ImagePanel
                 throw new NullReferenceException("イメージが存在しません。");
             }
 
-            if (this.IsError)
+            if (this.isError)
             {
                 this.imageScaleSize = new SizeF(
                     this.image.Width * ERROR_IMAGE_SCALE,
@@ -212,7 +211,7 @@ namespace SWF.UIComponent.ImagePanel
 
         public void SetError()
         {
-            this.IsError = true;
+            this.isError = true;
         }
 
         public void ClearImage()
@@ -284,7 +283,7 @@ namespace SWF.UIComponent.ImagePanel
             e.Graphics.PixelOffsetMode = PixelOffsetMode.HighSpeed;
             e.Graphics.CompositingMode = CompositingMode.SourceOver;
 
-            if (this.IsError)
+            if (this.isError)
             {
                 using (var sf = new StringFormat())
                 {
