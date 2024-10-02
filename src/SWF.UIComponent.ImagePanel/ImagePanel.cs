@@ -274,7 +274,7 @@ namespace SWF.UIComponent.ImagePanel
 
         protected override void OnPaintBackground(PaintEventArgs pevent)
         {
-            //base.OnPaintBackground(pevent);
+            base.OnPaintBackground(pevent);
         }
 
         protected override void OnPaint(PaintEventArgs e)
