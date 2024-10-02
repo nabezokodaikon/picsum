@@ -310,8 +310,6 @@ namespace SWF.UIComponent.ImagePanel
                 }
             }
 
-            base.OnPaint(e);
-
             sw.Stop();
             Console.WriteLine($"[{Thread.CurrentThread.Name}] ImagePanel.OnPaint: {sw.ElapsedMilliseconds} ms");
         }
