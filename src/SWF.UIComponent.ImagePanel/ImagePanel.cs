@@ -248,23 +248,16 @@ namespace SWF.UIComponent.ImagePanel
         public new void Update()
         {
             var sw = Stopwatch.StartNew();
-            try
+            if (!this.Visible)
             {
-                if (!this.Visible)
-                {
-                    this.Visible = true;
-                }
-
-                this.Invalidate();
-                base.Update();
+                this.Visible = true;
             }
-            finally
-            {
-                this.SetDrawParameter();
 
-                sw.Stop();
-                Console.WriteLine($"[{Thread.CurrentThread.Name}] ImagePanel.Update: {sw.ElapsedMilliseconds} ms");
-            }
+            this.SetDrawParameter();
+            this.Invalidate();
+            base.Update();
+            sw.Stop();
+            Console.WriteLine($"[{Thread.CurrentThread.Name}] ImagePanel.Update: {sw.ElapsedMilliseconds} ms");
         }
 
         #endregion
