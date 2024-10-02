@@ -10,29 +10,22 @@ namespace SWF.Core.ImageAccessor
         public static readonly CvImage EMPTY = new CvImage(ImageUtil.EMPTY_IMAGE);
 
         private bool disposed = false;
-        private readonly Mat mat;
-        private readonly object matLockObj = new object();
+        private readonly object lockObject = new object();
+        private Mat? mat = null;
 
-        public System.Drawing.Size Size { get; private set; }
-        public int Width { get; private set; }
-        public int Height { get; private set; }
+        public readonly Bitmap Bitmap;
+        public readonly System.Drawing.Size Size;
+        public readonly int Width;
+        public readonly int Height;
 
         public CvImage(Bitmap bitmap)
         {
             ArgumentNullException.ThrowIfNull(bitmap, nameof(bitmap));
 
-            this.mat = bitmap.ToMat();
-            this.Width = mat.Width;
-            this.Height = mat.Height;
-            this.Size = new System.Drawing.Size(this.Width, this.Height);
-        }
-
-        private CvImage(Mat mat)
-        {
-            this.mat = mat;
-            this.Width = mat.Width;
-            this.Height = mat.Height;
-            this.Size = new System.Drawing.Size(this.Width, this.Height);
+            this.Bitmap = bitmap;
+            this.Width = bitmap.Width;
+            this.Height = bitmap.Height;
+            this.Size = bitmap.Size;
         }
 
         private void Dispose(bool disposing)
@@ -44,7 +37,13 @@ namespace SWF.Core.ImageAccessor
 
             if (disposing)
             {
-                this.mat.Dispose();
+                this.Bitmap.Dispose();
+
+                if (this.mat != null)
+                {
+                    this.mat.Dispose();
+                    this.mat = null;
+                }
 
                 var sw = Stopwatch.StartNew();
                 GC.Collect();
@@ -68,33 +67,34 @@ namespace SWF.Core.ImageAccessor
 
         public Bitmap Resize(int newWidth, int newHeight)
         {
-            lock (this.matLockObj)
+            lock (this.lockObject)
             {
+                if (this.mat == null)
+                {
+                    this.mat = this.Bitmap.ToMat();
+                }
+
                 return OpenCVUtil.Resize(this.mat, newWidth, newHeight);
             }
         }
 
         public CvImage Clone()
         {
-            lock (this.matLockObj)
+            lock (this.lockObject)
             {
                 var sw = Stopwatch.StartNew();
-                var clone = new CvImage(this.mat.Clone());
+
+                if (this.mat == null)
+                {
+                    this.mat = this.Bitmap.ToMat();
+                }
+
+                var bmp = this.mat.ToBitmap();
+                var clone = new CvImage(bmp);
+
                 sw.Stop();
                 Console.WriteLine($"[{Thread.CurrentThread.Name}] CvImage.Clone: {sw.ElapsedMilliseconds} ms");
                 return clone;
-            }
-        }
-
-        public Bitmap CreateBitmap()
-        {
-            lock (this.matLockObj)
-            {
-                var sw = Stopwatch.StartNew();
-                var bmp = this.mat.ToBitmap();
-                sw.Stop();
-                Console.WriteLine($"[{Thread.CurrentThread.Name}] CvImage.CreateBitmap: {sw.ElapsedMilliseconds} ms");
-                return bmp;
             }
         }
     }

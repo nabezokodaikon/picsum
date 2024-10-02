@@ -58,7 +58,6 @@ namespace SWF.UIComponent.ImagePanel
 
         private SizeF imageScaleSize = SizeF.Empty;
         private CvImage image = null;
-        private Bitmap bitmap = null;
         private Bitmap thumbnail = null;
 
         private int hMaximumScrollValue = 0;
@@ -180,7 +179,6 @@ namespace SWF.UIComponent.ImagePanel
 
             this.isError = false;
             this.image = img;
-            this.bitmap = this.image.CreateBitmap();
             this.thumbnail = thumb;
             this.sizeMode = sizeMode;
 
@@ -232,12 +230,6 @@ namespace SWF.UIComponent.ImagePanel
                 this.image = null;
             }
 
-            if (this.bitmap != null)
-            {
-                this.bitmap.Dispose();
-                this.bitmap = null;
-            }
-
             this.imageScaleSize = SizeF.Empty;
 
             sw.Stop();
@@ -251,6 +243,7 @@ namespace SWF.UIComponent.ImagePanel
 
         public new void Update()
         {
+            Console.WriteLine($"[{Thread.CurrentThread.Name}] ImagePanel.Update: Start");
             var sw = Stopwatch.StartNew();
 
             if (!this.Visible)
@@ -672,7 +665,7 @@ namespace SWF.UIComponent.ImagePanel
             var destRect = this.GetImageDestRectangle();
             if (this.sizeMode == ImageSizeMode.Original)
             {
-                g.DrawImage(this.bitmap, destRect, this.GetImageSrcRectangle(), GraphicsUnit.Pixel);
+                g.DrawImage(this.image.Bitmap, destRect, this.GetImageSrcRectangle(), GraphicsUnit.Pixel);
             }
             else
             {
@@ -686,7 +679,7 @@ namespace SWF.UIComponent.ImagePanel
                 }
                 else
                 {
-                    g.DrawImage(this.bitmap, destRect,
+                    g.DrawImage(this.image.Bitmap, destRect,
                         new Rectangle(0, 0, this.image.Width, this.image.Height), GraphicsUnit.Pixel);
                 }
             }

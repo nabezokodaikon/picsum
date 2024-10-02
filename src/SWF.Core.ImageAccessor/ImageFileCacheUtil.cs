@@ -65,13 +65,11 @@ namespace SWF.Core.ImageAccessor
                         removeCache.Dispose();
                     }
 
-                    using (var bmp = ImageUtil.ReadImageFile(filePath))
-                    {
-                        var newCache = new ImageFileCache(filePath, new CvImage(bmp), timestamp);
-                        CACHE_DICTIONARY.Add(filePath, newCache);
-                        CACHE_LIST.Add(newCache);
-                        return resultFunc(newCache);
-                    }
+                    var bmp = ImageUtil.ReadImageFile(filePath);
+                    var newCache = new ImageFileCache(filePath, new CvImage(bmp), timestamp);
+                    CACHE_DICTIONARY.Add(filePath, newCache);
+                    CACHE_LIST.Add(newCache);
+                    return resultFunc(newCache);
                 }
                 finally
                 {
