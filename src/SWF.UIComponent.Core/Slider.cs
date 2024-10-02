@@ -89,7 +89,6 @@ namespace SWF.UIComponent.Core
                 this.value = value;
                 this.SetButtonPointX(this.value);
                 this.Invalidate();
-                this.Update();
 
                 this.OnValueChanged(EventArgs.Empty);
             }
@@ -286,7 +285,6 @@ namespace SWF.UIComponent.Core
                 {
                     this.buttonPointX = pointX;
                     this.Invalidate();
-                    this.Update();
 
                     int value = this.GetValue(pointX);
                     if (value != this.value)
@@ -319,7 +317,6 @@ namespace SWF.UIComponent.Core
                 {
                     this.buttonPointX = pointX;
                     this.Invalidate();
-                    this.Update();
 
                     int value = this.GetValue(pointX);
                     if (value != this.value)

@@ -84,7 +84,6 @@ namespace SWF.UIComponent.FlowList
                 this.itemCount = value;
 
                 this.Invalidate();
-                this.Update();
             }
         }
 
@@ -113,7 +112,6 @@ namespace SWF.UIComponent.FlowList
                 this.itemWidth = value;
 
                 this.Invalidate();
-                this.Update();
             }
         }
 
@@ -142,7 +140,6 @@ namespace SWF.UIComponent.FlowList
                 this.itemHeight = value;
 
                 this.Invalidate();
-                this.Update();
             }
         }
 
@@ -167,7 +164,6 @@ namespace SWF.UIComponent.FlowList
 
                 this.itemSpace = value;
                 this.Invalidate();
-                this.Update();
             }
         }
 
@@ -190,7 +186,6 @@ namespace SWF.UIComponent.FlowList
 
                 this.isLileList = value;
                 this.Invalidate();
-                this.Update();
             }
         }
 
@@ -215,7 +210,6 @@ namespace SWF.UIComponent.FlowList
                 this.isMultiSelect = value;
                 this.rectangleSelection.IsUse = value;
                 this.Invalidate();
-                this.Update();
             }
         }
 
@@ -425,7 +419,6 @@ namespace SWF.UIComponent.FlowList
         {
             this.drawParameter = new DrawParameter();
             this.Invalidate();
-            this.Update();
         }
 
         /// <summary>
@@ -443,7 +436,6 @@ namespace SWF.UIComponent.FlowList
         {
             this.isDraw = true;
             this.Invalidate();
-            this.Update();
         }
 
         /// <summary>
@@ -472,7 +464,6 @@ namespace SWF.UIComponent.FlowList
             this.itemHeight = height;
 
             this.Invalidate();
-            this.Update();
         }
 
         /// <summary>
@@ -484,7 +475,6 @@ namespace SWF.UIComponent.FlowList
             this.foucusItemIndex = -1;
             this.mousePointItemIndex = -1;
             this.Invalidate();
-            this.Update();
         }
 
         /// <summary>
@@ -511,7 +501,6 @@ namespace SWF.UIComponent.FlowList
             this.EnsureVisible(itemIndex);
 
             this.Invalidate();
-            this.Update();
 
             this.OnSelectedItemChanged(EventArgs.Empty);
         }

@@ -281,7 +281,6 @@ namespace SWF.UIComponent.TabOperation
             }
 
             this.Invalidate();
-            this.Update();
         }
 
         /// <summary>
@@ -315,7 +314,6 @@ namespace SWF.UIComponent.TabOperation
                 }
 
                 this.Invalidate();
-                this.Update();
             }
         }
 
@@ -371,7 +369,6 @@ namespace SWF.UIComponent.TabOperation
                 container.SetPage(this.activeTab.Page);
 
                 this.Invalidate();
-                this.Update();
 
                 return (T)this.activeTab.Page;
             }
@@ -406,7 +403,6 @@ namespace SWF.UIComponent.TabOperation
             container.SetPage(this.activeTab.Page);
 
             this.Invalidate();
-            this.Update();
 
             return (T)this.activeTab.Page;
         }
@@ -436,7 +432,6 @@ namespace SWF.UIComponent.TabOperation
             container.SetPage(this.activeTab.Page);
 
             this.Invalidate();
-            this.Update();
 
             return (T)this.activeTab.Page;
         }
@@ -467,7 +462,6 @@ namespace SWF.UIComponent.TabOperation
             container.SetPage(this.activeTab.Page);
 
             this.Invalidate();
-            this.Update();
 
             return (T)this.activeTab.Page;
         }
@@ -502,7 +496,6 @@ namespace SWF.UIComponent.TabOperation
             this.tabList.Remove(tab);
 
             this.Invalidate();
-            this.Update();
         }
 
         /// <summary>
@@ -532,7 +525,6 @@ namespace SWF.UIComponent.TabOperation
             if (this.SetActiveTab(this.tabList[index]))
             {
                 this.Invalidate();
-                this.Update();
                 this.OnActiveTabChanged(EventArgs.Empty);
             }
         }
@@ -769,7 +761,6 @@ namespace SWF.UIComponent.TabOperation
                             if (this.SetActiveTab(tab))
                             {
                                 this.Invalidate();
-                                this.Update();
                                 this.OnActiveTabChanged(EventArgs.Empty);
                             }
                             TabDragOperation.BeginTabDragOperation(tab);
@@ -930,7 +921,6 @@ namespace SWF.UIComponent.TabOperation
         {
             this.dropPoint = null;
             this.Invalidate();
-            this.Update();
             base.OnDragLeave(e);
         }
 

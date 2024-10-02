@@ -236,66 +236,55 @@ namespace SWF.UIComponent.FlowList
                             if (this.LeftKeyDown())
                             {
                                 this.Invalidate();
-                                this.Update();
                             }
                             break;
                         case Keys.Right:
                             if (this.RightKeyDown())
                             {
                                 this.Invalidate();
-                                this.Update();
                             }
                             break;
                         case Keys.Up:
                             if (this.UpKeyDown())
                             {
                                 this.Invalidate();
-                                this.Update();
                             }
                             break;
                         case Keys.Down:
                             if (this.DownKeyDown())
                             {
                                 this.Invalidate();
-                                this.Update();
                             }
                             break;
                         case Keys.Space:
                             this.SpaceKeyDown();
                             this.Invalidate();
-                            this.Update();
                             break;
                         case Keys.ProcessKey:
                             this.SpaceKeyDown();
                             this.Invalidate();
-                            this.Update();
                             break;
                         case Keys.PageUp:
                             this.PageUpKeyDown();
                             this.Invalidate();
-                            this.Update();
                             break;
                         case Keys.PageDown:
                             this.PageDownKeyDown();
                             this.Invalidate();
-                            this.Update();
                             break;
                         case Keys.Home:
                             this.HomeKeyDown();
                             this.Invalidate();
-                            this.Update();
                             break;
                         case Keys.End:
                             this.EndKeyDown();
                             this.Invalidate();
-                            this.Update();
                             break;
                         case Keys.A:
                             if (this.isMultiSelect && (Control.ModifierKeys & Keys.Control) == Keys.Control)
                             {
                                 this.SelectAll();
                                 this.Invalidate();
-                                this.Update();
                             }
                             break;
                         case Keys.Enter:
@@ -361,7 +350,6 @@ namespace SWF.UIComponent.FlowList
             this.mouseDownHitTestInfo = new HitTestInfo();
 
             this.Invalidate();
-            this.Update();
 
             base.OnMouseLeave(e);
         }
@@ -381,7 +369,6 @@ namespace SWF.UIComponent.FlowList
                 finally
                 {
                     this.Invalidate();
-                    this.Update();
                     this.selectedItemIndexs.EndUpdate();
                 }
 
@@ -399,7 +386,6 @@ namespace SWF.UIComponent.FlowList
                 finally
                 {
                     this.Invalidate();
-                    this.Update();
                     this.selectedItemIndexs.EndUpdate();
                 }
             }
@@ -414,7 +400,6 @@ namespace SWF.UIComponent.FlowList
                 finally
                 {
                     this.Invalidate();
-                    this.Update();
                     this.selectedItemIndexs.EndUpdate();
                 }
             }
@@ -430,7 +415,6 @@ namespace SWF.UIComponent.FlowList
                 this.rectangleSelection.EndSelection();
                 this.selectedItemIndexs.Union(itemIndexs);
                 this.Invalidate();
-                this.Update();
             }
             else
             {
@@ -452,7 +436,6 @@ namespace SWF.UIComponent.FlowList
                             finally
                             {
                                 this.Invalidate();
-                                this.Update();
                                 this.selectedItemIndexs.EndUpdate();
                             }
                         }
@@ -495,7 +478,6 @@ namespace SWF.UIComponent.FlowList
                 else
                 {
                     this.Invalidate();
-                    this.Update();
                 }
             }
             else
@@ -1377,7 +1359,6 @@ namespace SWF.UIComponent.FlowList
         private void ScrollBar_ValueChanged(object sender, EventArgs e)
         {
             this.Invalidate();
-            this.Update();
         }
 
         #endregion

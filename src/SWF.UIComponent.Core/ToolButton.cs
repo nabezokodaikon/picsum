@@ -91,7 +91,6 @@ namespace SWF.UIComponent.Core
         {
             this.Region = this.GetRegion();
             this.Invalidate();
-            this.Update();
             base.OnResize(e);
         }
 

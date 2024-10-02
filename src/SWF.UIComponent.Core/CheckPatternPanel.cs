@@ -34,7 +34,6 @@ namespace SWF.UIComponent.Core
             {
                 this._rectangleSize = value;
                 this.Invalidate();
-                this.Update();
             }
         }
 
