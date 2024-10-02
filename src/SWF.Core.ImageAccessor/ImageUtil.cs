@@ -124,6 +124,13 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
+        public static Bitmap Resize(Bitmap bmp, int width, int height)
+        {
+            ArgumentNullException.ThrowIfNull(bmp, nameof(bmp));
+
+            return OpenCVUtil.Resize(bmp, width, height);
+        }
+
         public static ImageInfoCache GetImageInfo(string filePath)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
