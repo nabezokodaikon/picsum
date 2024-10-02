@@ -273,6 +273,11 @@ namespace SWF.UIComponent.ImagePanel
             base.Dispose(disposing);
         }
 
+        protected override void OnPaintBackground(PaintEventArgs pevent)
+        {
+            //base.OnPaintBackground(pevent);
+        }
+
         protected override void OnPaint(PaintEventArgs e)
         {
             var sw = Stopwatch.StartNew();
