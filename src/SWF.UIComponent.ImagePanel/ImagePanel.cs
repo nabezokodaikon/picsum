@@ -81,7 +81,7 @@ namespace SWF.UIComponent.ImagePanel
         {
             get
             {
-                if (this.image == null)
+                if (!this.HasImage)
                 {
                     throw new NullReferenceException("イメージが存在しません。");
                 }
@@ -136,13 +136,7 @@ namespace SWF.UIComponent.ImagePanel
             }
         }
 
-        public bool HasImage
-        {
-            get
-            {
-                return this.image != null;
-            }
-        }
+        public bool HasImage { get; private set; } = false;
 
         public bool IsError { get; private set; } = false;
 
@@ -180,7 +174,7 @@ namespace SWF.UIComponent.ImagePanel
             ArgumentNullException.ThrowIfNull(img, nameof(img));
             ArgumentNullException.ThrowIfNull(thumb, nameof(thumb));
 
-            if (this.image != null)
+            if (this.HasImage)
             {
                 throw new InvalidOperationException("既にイメージが存在しています。");
             }
@@ -190,12 +184,14 @@ namespace SWF.UIComponent.ImagePanel
             this.bitmap = this.image.CreateBitmap();
             this.thumbnail = thumb;
             this.sizeMode = sizeMode;
+
+            this.HasImage = true;
         }
 
         public void SetScale(float scale)
         {
             const float ERROR_IMAGE_SCALE = 1.0f;
-            if (this.image == null)
+            if (!this.HasImage)
             {
                 throw new NullReferenceException("イメージが存在しません。");
             }
@@ -221,6 +217,8 @@ namespace SWF.UIComponent.ImagePanel
 
         public void ClearImage()
         {
+            this.HasImage = false;
+
             if (this.thumbnail != null)
             {
                 this.thumbnail.Dispose();
@@ -247,27 +245,25 @@ namespace SWF.UIComponent.ImagePanel
             return this.GetImageDestRectangle().Contains(x, y);
         }
 
-        public new void Invalidate()
+        public new void Update()
         {
             var sw = Stopwatch.StartNew();
             try
             {
-                if (this.Visible)
-                {
-                    base.Invalidate();
-                    //this.Update();
-                }
-                else
+                if (!this.Visible)
                 {
                     this.Visible = true;
                 }
+
+                this.Invalidate();
+                base.Update();
             }
             finally
             {
                 this.SetDrawParameter();
 
                 sw.Stop();
-                Console.WriteLine($"[{Thread.CurrentThread.Name}] ImagePanel.Invalidate: {sw.ElapsedMilliseconds} ms");
+                Console.WriteLine($"[{Thread.CurrentThread.Name}] ImagePanel.Update: {sw.ElapsedMilliseconds} ms");
             }
         }
 
@@ -311,7 +307,7 @@ namespace SWF.UIComponent.ImagePanel
                         sf);
                 }
             }
-            else if (this.image != null)
+            else if (this.HasImage)
             {
                 this.DrawImage(e.Graphics);
 
@@ -517,7 +513,7 @@ namespace SWF.UIComponent.ImagePanel
 
         private void SetDrawParameter()
         {
-            if (this.image != null)
+            if (this.HasImage)
             {
                 this.hMaximumScrollValue = Math.Max(0, (int)this.imageScaleSize.Width - this.Width);
                 this.vMaximumScrollValue = Math.Max(0, (int)this.imageScaleSize.Height - this.Height);
@@ -535,7 +531,7 @@ namespace SWF.UIComponent.ImagePanel
 
         private bool IsMousePointImage(int x, int y)
         {
-            if (this.image != null)
+            if (this.HasImage)
             {
                 var rect = this.GetImageDestRectangle();
                 var imgX = x - (int)rect.X;

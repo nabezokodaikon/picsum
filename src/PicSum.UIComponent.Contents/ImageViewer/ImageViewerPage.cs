@@ -407,7 +407,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
                 this.leftImagePanel.SetBounds(x, y, w, h, BoundsSpecified.All);
                 this.leftImagePanel.ImageAlign = ImageAlign.Center;
-                this.leftImagePanel.Invalidate();
+                this.leftImagePanel.Update();
 
                 this.rightImagePanel.Visible = false;
             };
@@ -422,11 +422,11 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
                 this.leftImagePanel.SetBounds(lx, y, w, h, BoundsSpecified.All);
                 this.leftImagePanel.ImageAlign = ImageAlign.Right;
-                this.leftImagePanel.Invalidate();
+                this.leftImagePanel.Update();
 
                 this.rightImagePanel.SetBounds(rx, y, w, h, BoundsSpecified.All);
                 this.rightImagePanel.ImageAlign = ImageAlign.Left;
-                this.rightImagePanel.Invalidate();
+                this.rightImagePanel.Update();
             };
 
             if (this.displayMode == ImageDisplayMode.LeftFacing)
@@ -472,14 +472,14 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                     var x = 0;
                     this.leftImagePanel.SetBounds(x, y, w, h, BoundsSpecified.All);
                     this.leftImagePanel.ImageAlign = ImageAlign.Right;
-                    this.leftImagePanel.Invalidate();
+                    this.leftImagePanel.Update();
                 }
                 else
                 {
                     var x = this.checkPatternPanel.Width - w;
                     this.rightImagePanel.SetBounds(x, y, w, h, BoundsSpecified.All);
                     this.rightImagePanel.ImageAlign = ImageAlign.Left;
-                    this.rightImagePanel.Invalidate();
+                    this.rightImagePanel.Update();
                 }
             }
             else if (!e.IsMain)
@@ -493,14 +493,14 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                     var x = this.checkPatternPanel.Width - w;
                     this.rightImagePanel.SetBounds(x, y, w, h, BoundsSpecified.All);
                     this.rightImagePanel.ImageAlign = ImageAlign.Left;
-                    this.rightImagePanel.Invalidate();
+                    this.rightImagePanel.Update();
                 }
                 else
                 {
                     var x = 0;
                     this.leftImagePanel.SetBounds(x, y, w, h, BoundsSpecified.All);
                     this.leftImagePanel.ImageAlign = ImageAlign.Right;
-                    this.leftImagePanel.Invalidate();
+                    this.leftImagePanel.Update();
                 }
             }
             else if (e.IsMain && !e.HasSub)
@@ -512,7 +512,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
                 this.leftImagePanel.SetBounds(x, y, w, h, BoundsSpecified.All);
                 this.leftImagePanel.ImageAlign = ImageAlign.Center;
-                this.leftImagePanel.Invalidate();
+                this.leftImagePanel.Update();
                 this.rightImagePanel.Visible = false;
             }
             else
