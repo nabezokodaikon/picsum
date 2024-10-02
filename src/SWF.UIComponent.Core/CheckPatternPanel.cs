@@ -63,11 +63,18 @@ namespace SWF.UIComponent.Core
 
         #region 継承メソッド
 
+        protected override void OnPaintBackground(PaintEventArgs pevent)
+        {
+            //base.OnPaintBackground(pevent);
+        }
+
         protected override void OnPaint(PaintEventArgs e)
         {
             e.Graphics.SmoothingMode = SmoothingMode.None;
             e.Graphics.InterpolationMode = InterpolationMode.Low;
             e.Graphics.CompositingQuality = CompositingQuality.HighSpeed;
+            e.Graphics.PixelOffsetMode = PixelOffsetMode.HighSpeed;
+            e.Graphics.CompositingMode = CompositingMode.SourceOver;
 
             this.DrawCheckRectangle(e.Graphics);
         }
