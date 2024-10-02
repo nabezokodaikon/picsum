@@ -78,7 +78,22 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
-        public CvImage Clone()
+        public CvImage ShallowCopy()
+        {
+            var sw = Stopwatch.StartNew();
+
+            using (var mat = this.Bitmap.ToMat())
+            {
+                var bmp = mat.ToBitmap();
+                var clone = new CvImage(bmp);
+
+                sw.Stop();
+                Console.WriteLine($"[{Thread.CurrentThread.Name}] CvImage.ShallowCopy: {sw.ElapsedMilliseconds} ms");
+                return clone;
+            }
+        }
+
+        public CvImage DeepCopy()
         {
             lock (this.lockObject)
             {
@@ -93,7 +108,7 @@ namespace SWF.Core.ImageAccessor
                 var clone = new CvImage(bmp);
 
                 sw.Stop();
-                Console.WriteLine($"[{Thread.CurrentThread.Name}] CvImage.Clone: {sw.ElapsedMilliseconds} ms");
+                Console.WriteLine($"[{Thread.CurrentThread.Name}] CvImage.DeepCopy: {sw.ElapsedMilliseconds} ms");
                 return clone;
             }
         }

@@ -23,9 +23,14 @@ namespace SWF.Core.ImageAccessor
             return Read(filePath, cache => cache.Image.Size);
         }
 
-        public static CvImage ReadImage(string filePath)
+        public static CvImage ShallowCopy(string filePath)
         {
-            return Read(filePath, cache => cache.Clone()).Image;
+            return Read(filePath, cache => cache.ShallowCopy()).Image;
+        }
+
+        public static CvImage DeepCopy(string filePath)
+        {
+            return Read(filePath, cache => cache.DeepCopy()).Image;
         }
 
         private static T Read<T>(string filePath, Func<ImageFileCache, T> resultFunc)

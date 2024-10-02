@@ -49,7 +49,7 @@ namespace SWF.Core.ImageAccessor
             this.Dispose(false);
         }
 
-        public ImageFileCache Clone()
+        public ImageFileCache ShallowCopy()
         {
             if (this.FilePath == null)
             {
@@ -61,7 +61,22 @@ namespace SWF.Core.ImageAccessor
                 throw new NullReferenceException("イメージが設定されていません。");
             }
 
-            return new ImageFileCache(this.FilePath, this.Image.Clone(), this.Timestamp);
+            return new ImageFileCache(this.FilePath, this.Image.ShallowCopy(), this.Timestamp);
+        }
+
+        public ImageFileCache DeepCopy()
+        {
+            if (this.FilePath == null)
+            {
+                throw new NullReferenceException("ファイルパスが設定されていません。");
+            }
+
+            if (this.Image == null)
+            {
+                throw new NullReferenceException("イメージが設定されていません。");
+            }
+
+            return new ImageFileCache(this.FilePath, this.Image.DeepCopy(), this.Timestamp);
         }
 
         public bool Equals(ImageFileCache? other)

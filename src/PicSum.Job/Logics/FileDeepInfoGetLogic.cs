@@ -137,7 +137,7 @@ namespace PicSum.Job.Logics
         {
             try
             {
-                return ImageFileCacheUtil.ReadImage(filePath);
+                return ImageFileCacheUtil.ShallowCopy(filePath);
             }
             catch (ImageUtilException ex)
             {
