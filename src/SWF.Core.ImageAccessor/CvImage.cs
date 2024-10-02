@@ -11,41 +11,28 @@ namespace SWF.Core.ImageAccessor
 
         private bool disposed = false;
         private readonly Mat mat;
+        private readonly object matLockObj = new object();
 
-        public System.Drawing.Size Size
-        {
-            get
-            {
-                return new System.Drawing.Size(this.Width, this.Height);
-            }
-        }
-
-        public int Width
-        {
-            get
-            {
-                return this.mat.Width;
-            }
-        }
-
-        public int Height
-        {
-            get
-            {
-                return this.mat.Height;
-            }
-        }
+        public System.Drawing.Size Size { get; private set; }
+        public int Width { get; private set; }
+        public int Height { get; private set; }
 
         public CvImage(Bitmap bitmap)
         {
             ArgumentNullException.ThrowIfNull(bitmap, nameof(bitmap));
 
             this.mat = bitmap.ToMat();
+            this.Width = mat.Width;
+            this.Height = mat.Height;
+            this.Size = new System.Drawing.Size(this.Width, this.Height);
         }
 
         private CvImage(Mat mat)
         {
             this.mat = mat;
+            this.Width = mat.Width;
+            this.Height = mat.Height;
+            this.Size = new System.Drawing.Size(this.Width, this.Height);
         }
 
         private void Dispose(bool disposing)
@@ -81,25 +68,34 @@ namespace SWF.Core.ImageAccessor
 
         public Bitmap Resize(int newWidth, int newHeight)
         {
-            return OpenCVUtil.Resize(this.mat, newWidth, newHeight);
+            lock (this.matLockObj)
+            {
+                return OpenCVUtil.Resize(this.mat, newWidth, newHeight);
+            }
         }
 
         public CvImage Clone()
         {
-            var sw = Stopwatch.StartNew();
-            var clone = new CvImage(this.mat.Clone());
-            sw.Stop();
-            Console.WriteLine($"[{Thread.CurrentThread.Name}] CvImage.Clone: {sw.ElapsedMilliseconds} ms");
-            return clone;
+            lock (this.matLockObj)
+            {
+                var sw = Stopwatch.StartNew();
+                var clone = new CvImage(this.mat.Clone());
+                sw.Stop();
+                Console.WriteLine($"[{Thread.CurrentThread.Name}] CvImage.Clone: {sw.ElapsedMilliseconds} ms");
+                return clone;
+            }
         }
 
         public Bitmap CreateBitmap()
         {
-            var sw = Stopwatch.StartNew();
-            var bmp = this.mat.ToBitmap();
-            sw.Stop();
-            Console.WriteLine($"[{Thread.CurrentThread.Name}] CvImage.CreateBitmap: {sw.ElapsedMilliseconds} ms");
-            return bmp;
+            lock (this.matLockObj)
+            {
+                var sw = Stopwatch.StartNew();
+                var bmp = this.mat.ToBitmap();
+                sw.Stop();
+                Console.WriteLine($"[{Thread.CurrentThread.Name}] CvImage.CreateBitmap: {sw.ElapsedMilliseconds} ms");
+                return bmp;
+            }
         }
     }
 }
