@@ -337,7 +337,7 @@ namespace SWF.Core.ImageAccessor
                     else if (FileUtil.IsImageFile(filePath))
                     {
                         sw = Stopwatch.StartNew();
-                        var bmp = (Bitmap)Bitmap.FromStream(fs, false, false);
+                        var bmp = (Bitmap)Bitmap.FromStream(fs, false, true);
                         sw.Stop();
                         Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.ReadImageFile Other file: {sw.ElapsedMilliseconds} ms");
 
