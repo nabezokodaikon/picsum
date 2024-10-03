@@ -64,7 +64,7 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
-        public static Bitmap Resize(Bitmap bmp, int width, int height)
+        internal static Bitmap Resize(Bitmap bmp, int width, int height)
         {
             ArgumentNullException.ThrowIfNull(bmp, nameof(bmp));
 
@@ -468,7 +468,7 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
-        public static string CreateFileAccessErrorMessage(string path)
+        private static string CreateFileAccessErrorMessage(string path)
         {
             return $"'{path}'を開けませんでした。";
         }
