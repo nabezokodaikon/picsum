@@ -72,7 +72,7 @@ namespace PicSum.Job.Jobs
                             mainResult.Image = new()
                             {
                                 FilePath = mainFilePath,
-                                Thumbnail = thumbLogic.CreateThumbnail(mainImage.Bitmap, parameter.ThumbnailSize, parameter.ImageSizeMode),
+                                Thumbnail = thumbLogic.CreateThumbnail(mainImage, parameter.ThumbnailSize, parameter.ImageSizeMode),
                                 Image = mainImage,
                                 IsError = false,
                             };
@@ -97,7 +97,7 @@ namespace PicSum.Job.Jobs
                             FilePath = subFilePath,
                             Image = subImage,
                             Thumbnail = (isSubSuccess) ?
-                                thumbLogic.CreateThumbnail(subImage.Bitmap, parameter.ThumbnailSize, parameter.ImageSizeMode) :
+                                thumbLogic.CreateThumbnail(subImage, parameter.ThumbnailSize, parameter.ImageSizeMode) :
                                 null,
                             IsError = !isSubSuccess,
                         };
@@ -115,7 +115,7 @@ namespace PicSum.Job.Jobs
                             mainResult.Image = new()
                             {
                                 FilePath = mainFilePath,
-                                Thumbnail = thumbLogic.CreateThumbnail(mainImage.Bitmap, parameter.ThumbnailSize, parameter.ImageSizeMode),
+                                Thumbnail = thumbLogic.CreateThumbnail(mainImage, parameter.ThumbnailSize, parameter.ImageSizeMode),
                                 Image = mainImage,
                                 IsError = false,
                             };
@@ -143,7 +143,7 @@ namespace PicSum.Job.Jobs
                         {
                             FilePath = mainFilePath,
                             Thumbnail = (isMainSuccess) ?
-                                thumbLogic.CreateThumbnail(mainImage.Bitmap, parameter.ThumbnailSize, parameter.ImageSizeMode) :
+                                thumbLogic.CreateThumbnail(mainImage, parameter.ThumbnailSize, parameter.ImageSizeMode) :
                                 null,
                             Image = mainImage,
                             IsError = !isMainSuccess,

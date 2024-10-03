@@ -7,6 +7,7 @@ using PicSum.Data.DatabaseAccessor.Sql;
 using PicSum.Job.Entities;
 using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Runtime.Versioning;
@@ -118,7 +119,7 @@ namespace PicSum.Job.Logics
             }
         }
 
-        public Bitmap CreateThumbnail(Image srcImg, int thumbSize, ImageSizeMode sizeMode)
+        public Bitmap CreateThumbnail(CvImage srcImg, int thumbSize, ImageSizeMode sizeMode)
         {
             ArgumentNullException.ThrowIfNull(srcImg, nameof(srcImg));
 
@@ -142,9 +143,12 @@ namespace PicSum.Job.Logics
 
                 if (sizeMode == ImageSizeMode.Original)
                 {
-                    using (var thumb = srcImg.GetThumbnailImage(w, h, () => false, IntPtr.Zero))
+                    var sw = Stopwatch.StartNew();
+                    using (var thumb = srcImg.Resize(w, h))
                     {
                         g.DrawImage(thumb, 0, 0, w, h);
+                        sw.Stop();
+                        Console.WriteLine($"[{Thread.CurrentThread.Name}] ThumbnailGetLogic.CreateThumbnail: {sw.ElapsedMilliseconds} ms");
                     }
                 }
                 else
