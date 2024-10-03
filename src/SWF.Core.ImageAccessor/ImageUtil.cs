@@ -222,7 +222,7 @@ namespace SWF.Core.ImageAccessor
 
                 sw = Stopwatch.StartNew();
                 using (var fs = new FileStream(filePath,
-                    FileMode.Open, FileAccess.ReadWrite, FileShare.Read, BUFFER_SIZE, FileOptions.SequentialScan))
+                    FileMode.Open, FileAccess.Read, FileShare.Read, BUFFER_SIZE, FileOptions.SequentialScan))
                 {
                     sw.Stop();
                     Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.ReadImageFile new FileStream: {sw.ElapsedMilliseconds} ms");
@@ -284,26 +284,23 @@ namespace SWF.Core.ImageAccessor
                     else if (FileUtil.IsPngFile(formatName))
                     {
                         sw = Stopwatch.StartNew();
-                        var buffer = ReadBitmapBuffer(fs);
-                        using (var ms = new MemoryStream(buffer, 0, buffer.Length))
-                        {
-                            var bmp = (Bitmap)Bitmap.FromStream(ms, false, true);
-                            sw.Stop();
-                            Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.ReadImageFile Png file: {sw.ElapsedMilliseconds} ms");
+                        var bmp = (Bitmap)Bitmap.FromStream(fs, false, true);
+                        sw.Stop();
+                        Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.ReadImageFile Png file: {sw.ElapsedMilliseconds} ms");
 
-                            if (bmp.PixelFormat == PixelFormat.Format8bppIndexed)
+                        if (bmp.PixelFormat == PixelFormat.Format8bppIndexed)
+                        {
+                            using (bmp)
                             {
-                                using (bmp)
-                                {
-                                    var convBmp = OpenCVUtil.Convert(ms);
-                                    return convBmp;
-                                }
-                            }
-                            else
-                            {
-                                return bmp;
+                                var convBmp = OpenCVUtil.Convert(fs);
+                                return convBmp;
                             }
                         }
+                        else
+                        {
+                            return bmp;
+                        }
+
                     }
                     else if (FileUtil.IsImageFile(filePath))
                     {
@@ -477,17 +474,6 @@ namespace SWF.Core.ImageAccessor
                 }
 
                 return new Region(path);
-            }
-        }
-
-        private static byte[] ReadBitmapBuffer(FileStream fs)
-        {
-            using (var mmf = MemoryMappedFile.CreateFromFile(fs, null, fs.Length, MemoryMappedFileAccess.ReadWrite, HandleInheritability.None, false))
-            using (var accessor = mmf.CreateViewAccessor())
-            {
-                var buffer = new byte[accessor.Capacity];
-                accessor.ReadArray(0, buffer, 0, buffer.Length);
-                return buffer;
             }
         }
 
