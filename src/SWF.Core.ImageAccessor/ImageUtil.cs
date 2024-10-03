@@ -304,7 +304,7 @@ namespace SWF.Core.ImageAccessor
                     if (FileUtil.IsWebpFile(formatName))
                     {
                         sw = Stopwatch.StartNew();
-                        var bmp = SixLaborsUtil.ReadImageFile(fs);
+                        var bmp = SkiaSharpUtil.ReadImageFile(fs);
                         sw.Stop();
                         Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.ReadImageFile Webp file: {sw.ElapsedMilliseconds} ms");
                         return bmp;
