@@ -71,18 +71,18 @@ namespace SWF.UIComponent.Core
 
         protected override void OnPaint(PaintEventArgs e)
         {
-            var sw = Stopwatch.StartNew();
+            //var sw = Stopwatch.StartNew();
 
-            e.Graphics.SmoothingMode = SmoothingMode.None;
-            e.Graphics.InterpolationMode = InterpolationMode.Low;
-            e.Graphics.CompositingQuality = CompositingQuality.HighSpeed;
-            e.Graphics.PixelOffsetMode = PixelOffsetMode.HighSpeed;
-            e.Graphics.CompositingMode = CompositingMode.SourceOver;
+            //e.Graphics.SmoothingMode = SmoothingMode.None;
+            //e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
+            //e.Graphics.CompositingQuality = CompositingQuality.HighSpeed;
+            //e.Graphics.PixelOffsetMode = PixelOffsetMode.HighSpeed;
+            //e.Graphics.CompositingMode = CompositingMode.SourceOver;
 
-            this.DrawCheckRectangle(e.Graphics);
+            //this.DrawCheckRectangle(e.Graphics);
 
-            sw.Stop();
-            Console.WriteLine($"[{Thread.CurrentThread.Name}] CheckPatternPanel.OnPaint: {sw.ElapsedMilliseconds} ms");
+            //sw.Stop();
+            //Console.WriteLine($"[{Thread.CurrentThread.Name}] CheckPatternPanel.OnPaint: {sw.ElapsedMilliseconds} ms");
         }
 
         #endregion

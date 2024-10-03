@@ -282,7 +282,7 @@ namespace SWF.UIComponent.ImagePanel
             var sw = Stopwatch.StartNew();
 
             e.Graphics.SmoothingMode = SmoothingMode.None;
-            e.Graphics.InterpolationMode = InterpolationMode.Low;
+            e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
             e.Graphics.CompositingQuality = CompositingQuality.HighSpeed;
             e.Graphics.PixelOffsetMode = PixelOffsetMode.HighSpeed;
             e.Graphics.CompositingMode = CompositingMode.SourceOver;
