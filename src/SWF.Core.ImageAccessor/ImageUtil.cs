@@ -20,34 +20,6 @@ namespace SWF.Core.ImageAccessor
         private static readonly ImageCodecInfo PNG_CODEC_INFO = ImageCodecInfo.GetImageEncoders().Single(info => info.FormatID == ImageFormat.Png.Guid);
         private static readonly dynamic SHELL = Activator.CreateInstance(Type.GetTypeFromProgID("Shell.Application"));
 
-        public static byte[] ToBinary(Bitmap img)
-        {
-            ArgumentNullException.ThrowIfNull(img, nameof(img));
-
-            BitmapData bmpData = null;
-
-            try
-            {
-                bmpData = img.LockBits(
-                    new Rectangle(0, 0, img.Width, img.Height),
-                    ImageLockMode.ReadOnly,
-                    img.PixelFormat);
-
-                var bytes = new byte[Math.Abs(bmpData.Stride) * img.Height];
-
-                Marshal.Copy(bmpData.Scan0, bytes, 0, bytes.Length);
-
-                return bytes;
-            }
-            finally
-            {
-                if (bmpData != null)
-                {
-                    img.UnlockBits(bmpData);
-                }
-            }
-        }
-
         /// <summary>
         /// イメージオブジェクトを圧縮したバイナリに変換します。
         /// </summary>
@@ -66,38 +38,6 @@ namespace SWF.Core.ImageAccessor
                 mes.Position = 0;
                 mes.Read(buffer, 0, buffer.Length);
                 return buffer;
-            }
-        }
-
-        public static Bitmap ToImage(byte[] bf, int width, int height, PixelFormat format)
-        {
-            ArgumentNullException.ThrowIfNull(bf, nameof(bf));
-
-            Bitmap dst = null;
-            BitmapData bmpData = null;
-
-            try
-            {
-                dst = new Bitmap(width, height, format);
-
-                bmpData = dst.LockBits(
-                    new Rectangle(0, 0, dst.Width, dst.Height),
-                    ImageLockMode.ReadWrite,
-                    dst.PixelFormat);
-
-                Marshal.Copy(bf, 0, bmpData.Scan0, bf.Length);
-
-                return dst;
-            }
-            finally
-            {
-                if (dst != null)
-                {
-                    if (bmpData != null)
-                    {
-                        dst.UnlockBits(bmpData);
-                    }
-                }
             }
         }
 
