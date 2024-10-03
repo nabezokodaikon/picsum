@@ -234,7 +234,7 @@ namespace SWF.Core.ImageAccessor
                             sw = Stopwatch.StartNew();
                             var bmp = icon.ToBitmap();
                             sw.Stop();
-                            Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.ReadImageFile Ico file: {sw.ElapsedMilliseconds} ms");
+                            Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.ReadImageFile Icon file: {sw.ElapsedMilliseconds} ms");
                             return bmp;
                         }
                     }
@@ -278,15 +278,15 @@ namespace SWF.Core.ImageAccessor
                         sw = Stopwatch.StartNew();
                         var bmp = (Bitmap)Bitmap.FromStream(fs, false, true);
                         sw.Stop();
-                        Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.ReadImageFile Bmp file: {sw.ElapsedMilliseconds} ms");
+                        Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.ReadImageFile Bitmap file: {sw.ElapsedMilliseconds} ms");
                         return bmp;
                     }
-                    else if (FileUtil.IsImageFile(filePath))
+                    else if (FileUtil.IsPngFile(formatName))
                     {
                         sw = Stopwatch.StartNew();
                         var bmp = (Bitmap)Bitmap.FromStream(fs, false, true);
                         sw.Stop();
-                        Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.ReadImageFile Other file: {sw.ElapsedMilliseconds} ms");
+                        Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.ReadImageFile Png file: {sw.ElapsedMilliseconds} ms");
 
                         if (bmp.PixelFormat == PixelFormat.Format8bppIndexed)
                         {
@@ -300,6 +300,14 @@ namespace SWF.Core.ImageAccessor
                         {
                             return bmp;
                         }
+                    }
+                    else if (FileUtil.IsImageFile(filePath))
+                    {
+                        sw = Stopwatch.StartNew();
+                        var bmp = (Bitmap)Bitmap.FromStream(fs, false, true);
+                        sw.Stop();
+                        Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.ReadImageFile Other file: {sw.ElapsedMilliseconds} ms");
+                        return bmp;
                     }
                     else
                     {
