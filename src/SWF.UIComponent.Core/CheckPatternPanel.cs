@@ -18,7 +18,7 @@ namespace SWF.UIComponent.Core
         #region インスタンス変数
 
         private int _rectangleSize = 24;
-        private readonly SolidBrush brushA = new(Color.FromArgb(64, Color.FromArgb(48, 48, 48)));
+        private readonly SolidBrush brushA = new(Color.FromArgb(255, Color.FromArgb(64, 64, 64)));
         private readonly SolidBrush brushB = new(Color.FromArgb(64, Color.FromArgb(16, 16, 16)));
 
         #endregion
@@ -71,18 +71,18 @@ namespace SWF.UIComponent.Core
 
         protected override void OnPaint(PaintEventArgs e)
         {
-            //var sw = Stopwatch.StartNew();
+            var sw = Stopwatch.StartNew();
 
-            //e.Graphics.SmoothingMode = SmoothingMode.None;
-            //e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
-            //e.Graphics.CompositingQuality = CompositingQuality.HighSpeed;
-            //e.Graphics.PixelOffsetMode = PixelOffsetMode.HighSpeed;
-            //e.Graphics.CompositingMode = CompositingMode.SourceOver;
+            e.Graphics.SmoothingMode = SmoothingMode.None;
+            e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
+            e.Graphics.CompositingQuality = CompositingQuality.HighSpeed;
+            e.Graphics.PixelOffsetMode = PixelOffsetMode.HighSpeed;
+            e.Graphics.CompositingMode = CompositingMode.SourceCopy;
 
-            //this.DrawCheckRectangle(e.Graphics);
+            e.Graphics.FillRectangle(this.brushA, this.ClientRectangle);
 
-            //sw.Stop();
-            //Console.WriteLine($"[{Thread.CurrentThread.Name}] CheckPatternPanel.OnPaint: {sw.ElapsedMilliseconds} ms");
+            sw.Stop();
+            Console.WriteLine($"[{Thread.CurrentThread.Name}] CheckPatternPanel.OnPaint: {sw.ElapsedMilliseconds} ms");
         }
 
         #endregion
