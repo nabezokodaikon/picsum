@@ -44,11 +44,6 @@ namespace SWF.Core.ImageAccessor
                     this.mat.Dispose();
                     this.mat = null;
                 }
-
-                var sw = Stopwatch.StartNew();
-                GC.Collect();
-                sw.Stop();
-                Console.WriteLine($"[{Thread.CurrentThread.Name}] GC.Collect: {sw.ElapsedMilliseconds} ms");
             }
 
             this.disposed = true;
@@ -63,6 +58,17 @@ namespace SWF.Core.ImageAccessor
         ~CvImage()
         {
             this.Dispose(false);
+        }
+
+        public void CreateMat()
+        {
+            lock (this.lockObject)
+            {
+                if (this.mat == null)
+                {
+                    this.mat = this.Bitmap.ToMat();
+                }
+            }
         }
 
         public Bitmap Resize(int newWidth, int newHeight)

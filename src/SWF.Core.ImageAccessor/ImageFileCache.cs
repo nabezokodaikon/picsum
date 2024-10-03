@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Runtime.Versioning;
 
 namespace SWF.Core.ImageAccessor
@@ -33,6 +34,11 @@ namespace SWF.Core.ImageAccessor
             {
                 this.Image?.Dispose();
                 this.Image = null;
+
+                var sw = Stopwatch.StartNew();
+                GC.Collect();
+                sw.Stop();
+                Console.WriteLine($"[{Thread.CurrentThread.Name}] GC.Collect: {sw.ElapsedMilliseconds} ms");
             }
 
             this.disposed = true;

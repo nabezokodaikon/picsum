@@ -66,6 +66,7 @@ namespace PicSum.Job.Jobs
                         try
                         {
                             this.CheckCancel();
+                            mainImage.CreateMat();
                             mainResult.IsMain = true;
                             mainResult.HasSub = true;
                             mainResult.Image = new()
@@ -89,6 +90,7 @@ namespace PicSum.Job.Jobs
                         subResult.IsMain = false;
                         subResult.HasSub = true;
                         var subImage = this.ReadImageFile(subFilePath);
+                        subImage.CreateMat();
                         var isSubSuccess = subImage != CvImage.EMPTY;
                         subResult.Image = new()
                         {
@@ -107,6 +109,7 @@ namespace PicSum.Job.Jobs
                         try
                         {
                             this.CheckCancel();
+                            mainImage.CreateMat();
                             mainResult.IsMain = true;
                             mainResult.HasSub = false;
                             mainResult.Image = new()
@@ -133,6 +136,7 @@ namespace PicSum.Job.Jobs
                     {
                         this.CheckCancel();
                         var isMainSuccess = mainImage != CvImage.EMPTY;
+                        mainImage.CreateMat();
                         mainResult.IsMain = true;
                         mainResult.HasSub = false;
                         mainResult.Image = new()
