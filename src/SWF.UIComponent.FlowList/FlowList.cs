@@ -181,9 +181,11 @@ namespace SWF.UIComponent.FlowList
                 return;
             }
 
+            e.Graphics.SmoothingMode = SmoothingMode.None;
             e.Graphics.InterpolationMode = InterpolationMode.Low;
-            e.Graphics.SmoothingMode = SmoothingMode.HighSpeed;
             e.Graphics.CompositingQuality = CompositingQuality.HighSpeed;
+            e.Graphics.PixelOffsetMode = PixelOffsetMode.HighSpeed;
+            e.Graphics.CompositingMode = CompositingMode.SourceOver;
 
             if (this.rectangleSelection.IsBegun)
             {

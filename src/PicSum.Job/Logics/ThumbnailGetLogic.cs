@@ -134,8 +134,12 @@ namespace PicSum.Job.Logics
             var destImg = new Bitmap(w, h);
             using (var g = Graphics.FromImage(destImg))
             {
-                g.InterpolationMode = InterpolationMode.Low;
-                g.SmoothingMode = SmoothingMode.HighSpeed;
+                g.SmoothingMode = SmoothingMode.None;
+                g.InterpolationMode = InterpolationMode.NearestNeighbor;
+                g.CompositingQuality = CompositingQuality.HighSpeed;
+                g.PixelOffsetMode = PixelOffsetMode.HighSpeed;
+                g.CompositingMode = CompositingMode.SourceOver;
+
                 if (sizeMode == ImageSizeMode.Original)
                 {
                     using (var thumb = srcImg.GetThumbnailImage(w, h, () => false, IntPtr.Zero))

@@ -168,7 +168,10 @@ namespace SWF.UIComponent.TabOperation
                 using (var g = Graphics.FromImage(regionImage))
                 {
                     g.SmoothingMode = SmoothingMode.None;
-                    g.InterpolationMode = InterpolationMode.Low;
+                    g.InterpolationMode = InterpolationMode.NearestNeighbor;
+                    g.CompositingQuality = CompositingQuality.HighSpeed;
+                    g.PixelOffsetMode = PixelOffsetMode.HighSpeed;
+                    g.CompositingMode = CompositingMode.SourceOver;
 
                     var outlineRect = this.GetOutlineRectangle(pageSize);
                     g.FillRectangle(tab.Owner.OutlineBrush, outlineRect);
