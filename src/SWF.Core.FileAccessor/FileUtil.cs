@@ -167,6 +167,14 @@ namespace SWF.Core.FileAccessor
             return (ex == JPG_FILE_EXTENSION || ex == JPEG_FILE_EXTENSION);
         }
 
+        public static bool IsPngFile(string filePath)
+        {
+            ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
+
+            var ex = FileUtil.GetExtension(filePath);
+            return (ex == PNG_FILE_EXTENSION || ex == PNG_FILE_EXTENSION);
+        }
+
         /// <summary>
         /// 指定したファイルがWEBPファイルであるか確認します。
         /// </summary>
