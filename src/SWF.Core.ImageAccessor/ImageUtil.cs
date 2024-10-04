@@ -54,7 +54,7 @@ namespace SWF.Core.ImageAccessor
             {
                 try
                 {
-                    var img = Bitmap.FromStream(mes, false, false);
+                    var img = Bitmap.FromStream(mes, false, true);
                     return (Bitmap)img;
                 }
                 catch (OutOfMemoryException ex)
