@@ -805,19 +805,19 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
-        private Rectangle GetIconRectangle(SWF.UIComponent.FlowList.DrawItemEventArgs e)
+        private RectangleF GetIconRectangle(SWF.UIComponent.FlowList.DrawItemEventArgs e)
         {
-            return new Rectangle(e.ItemRectangle.X,
-                                 e.ItemRectangle.Y,
-                                 e.ItemRectangle.Width,
-                                 e.ItemRectangle.Height - this.ItemTextHeight);
+            return new RectangleF(e.ItemRectangle.X,
+                                  e.ItemRectangle.Y,
+                                  e.ItemRectangle.Width,
+                                  e.ItemRectangle.Height - this.ItemTextHeight);
         }
 
-        private Rectangle GetThumbnailRectangle(SWF.UIComponent.FlowList.DrawItemEventArgs e)
+        private RectangleF GetThumbnailRectangle(SWF.UIComponent.FlowList.DrawItemEventArgs e)
         {
             if (this.IsShowFileName)
             {
-                return new Rectangle(e.ItemRectangle.X,
+                return new RectangleF(e.ItemRectangle.X,
                                      e.ItemRectangle.Y,
                                      e.ItemRectangle.Width,
                                      e.ItemRectangle.Height - this.ItemTextHeight);
@@ -828,12 +828,12 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
-        private Rectangle GetTextRectangle(SWF.UIComponent.FlowList.DrawItemEventArgs e)
+        private RectangleF GetTextRectangle(SWF.UIComponent.FlowList.DrawItemEventArgs e)
         {
-            return new Rectangle(e.ItemRectangle.X,
-                                 e.ItemRectangle.Bottom - this.ItemTextHeight,
-                                 e.ItemRectangle.Width,
-                                 this.ItemTextHeight);
+            return new RectangleF(e.ItemRectangle.X,
+                                  e.ItemRectangle.Bottom - this.ItemTextHeight,
+                                  e.ItemRectangle.Width,
+                                  this.ItemTextHeight);
         }
 
         #endregion

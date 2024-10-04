@@ -22,12 +22,12 @@ namespace PicSum.UIComponent.InfoPanel
     public sealed partial class InfoPanel
         : UserControl
     {
-        private static void DrawImageFileThumbnail(Graphics g, Image thumb, Rectangle rect)
+        private static void DrawImageFileThumbnail(Graphics g, Image thumb, RectangleF rect)
         {
             ThumbnailUtil.DrawFileThumbnail(g, thumb, rect);
         }
 
-        private static void DrawDirectoryThumbnail(Graphics g, Image thumb, Rectangle rect)
+        private static void DrawDirectoryThumbnail(Graphics g, Image thumb, RectangleF rect)
         {
             ThumbnailUtil.DrawDirectoryThumbnail(g, thumb, rect, FileIconCash.LargeDirectoryIcon);
         }
@@ -528,9 +528,9 @@ namespace PicSum.UIComponent.InfoPanel
             if (this.Thumbnail != null)
             {
                 var size = Math.Min(this.thumbnailPictureBox.Width, this.thumbnailPictureBox.Height);
-                var x = (int)(0 + (this.thumbnailPictureBox.Width - size) / 2d);
-                var y = (int)(0 + (this.thumbnailPictureBox.Height - size) / 2d);
-                var rect = new Rectangle(x, y, size, size);
+                var x = 0 + (this.thumbnailPictureBox.Width - size) / 2f;
+                var y = 0 + (this.thumbnailPictureBox.Height - size) / 2f;
+                var rect = new RectangleF(x, y, size, size);
                 if (this.FileInfo.IsFile)
                 {
                     DrawImageFileThumbnail(e.Graphics, this.Thumbnail.ThumbnailImage, rect);

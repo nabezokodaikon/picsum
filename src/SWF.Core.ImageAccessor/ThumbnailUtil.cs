@@ -61,8 +61,23 @@ namespace SWF.Core.ImageAccessor
             ArgumentNullException.ThrowIfNull(g, nameof(g));
             ArgumentNullException.ThrowIfNull(thumb, nameof(thumb));
 
-            var w = thumb.Width - 16;
-            var h = thumb.Height - 16;
+            const int offset = 16;
+
+            float w;
+            float h;
+            if (thumb.Width > thumb.Height)
+            {
+                var scale = thumb.Height / (float)thumb.Width;
+                w = thumb.Width - offset;
+                h = thumb.Height - (offset * scale);
+            }
+            else
+            {
+                var scale = thumb.Width / (float)thumb.Height;
+                w = thumb.Width - (offset * scale);
+                h = thumb.Height - offset;
+            }
+
             var x = rect.X + (rect.Width - w) / 2f;
             var y = rect.Y + (rect.Height - h) / 2f;
 
@@ -80,9 +95,23 @@ namespace SWF.Core.ImageAccessor
             ArgumentNullException.ThrowIfNull(g, nameof(g));
             ArgumentNullException.ThrowIfNull(thumb, nameof(thumb));
 
+            const int offset = 16;
+
             var scale = Math.Min(rect.Width / thumb.Width, rect.Height / thumb.Height);
-            var w = thumb.Width * scale - 16;
-            var h = thumb.Height * scale - 16;
+
+            float w;
+            float h;
+            if (thumb.Width > thumb.Height)
+            {
+                w = thumb.Width * scale - offset;
+                h = thumb.Height * scale - (offset * (thumb.Height / (float)thumb.Width));
+            }
+            else
+            {
+                w = thumb.Width * scale - (offset * (thumb.Width / (float)thumb.Height));
+                h = thumb.Height * scale - offset;
+            }
+
             var x = rect.X + (rect.Width - w) / 2f;
             var y = rect.Y + (rect.Height - h) / 2f;
 
