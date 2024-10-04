@@ -667,20 +667,26 @@ namespace SWF.UIComponent.ImagePanel
             {
                 g.DrawImage(this.image.Bitmap, destRect, this.GetImageSrcRectangle(), GraphicsUnit.Pixel);
             }
-            else
+            else if (this.sizeMode == ImageSizeMode.FitAllImage)
+            {
+                using (var drawImage = this.image.Resize((int)destRect.Width, (int)destRect.Height))
+                {
+                    g.DrawImage(drawImage, destRect,
+                        new Rectangle(0, 0, drawImage.Width, drawImage.Height), GraphicsUnit.Pixel);
+                }
+            }
+            else if (this.sizeMode == ImageSizeMode.FitOnlyBigImage)
             {
                 if (this.image.Width > destRect.Width || this.image.Height > destRect.Height)
                 {
                     using (var drawImage = this.image.Resize((int)destRect.Width, (int)destRect.Height))
                     {
-                        g.InterpolationMode = InterpolationMode.NearestNeighbor;
                         g.DrawImage(drawImage, destRect,
                             new Rectangle(0, 0, drawImage.Width, drawImage.Height), GraphicsUnit.Pixel);
                     }
                 }
                 else
                 {
-                    g.InterpolationMode = InterpolationMode.HighQualityBicubic;
                     g.DrawImage(this.image.Bitmap, destRect,
                         new Rectangle(0, 0, this.image.Width, this.image.Height), GraphicsUnit.Pixel);
                 }
