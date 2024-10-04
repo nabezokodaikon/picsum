@@ -2,7 +2,7 @@ using SWF.Core.FileAccessor;
 using System.Diagnostics;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
-using System.IO.MemoryMappedFiles;
+using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 using System.Security;
 using System.Xml;
@@ -61,6 +61,76 @@ namespace SWF.Core.ImageAccessor
                 {
                     throw new ImageUtilException("メモリが不足しています。", ex);
                 }
+            }
+        }
+
+        internal static byte[] BitmapToBuffer(Bitmap bitmap)
+        {
+            ArgumentNullException.ThrowIfNull(bitmap, nameof(bitmap));
+
+            var sw = Stopwatch.StartNew();
+
+            BitmapData? bmpData = null;
+
+            try
+            {
+                var bytesPerPixel = Image.GetPixelFormatSize(bitmap.PixelFormat) / 8;
+                var rect = new Rectangle(0, 0, bitmap.Width, bitmap.Height);
+                bmpData = bitmap.LockBits(rect, ImageLockMode.ReadOnly, bitmap.PixelFormat);
+                var stride = bmpData.Stride; // 各スキャンラインの幅（パディングを含む）
+                var bufferSize = stride * bitmap.Height;
+                var pixelBuffer = new byte[bufferSize];
+                Marshal.Copy(bmpData.Scan0, pixelBuffer, 0, bufferSize);
+                return pixelBuffer;
+            }
+            finally
+            {
+                if (bmpData != null)
+                {
+                    bitmap.UnlockBits(bmpData);
+                }
+
+                sw.Stop();
+                Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.BitmapToBuffer: {sw.ElapsedMilliseconds} ms");
+            }
+        }
+
+        internal static Bitmap BufferToBitmap(byte[] rawBytes, int width, int height, PixelFormat pixelFormat)
+        {
+            ArgumentNullException.ThrowIfNull(rawBytes, nameof(rawBytes));
+
+            var sw = Stopwatch.StartNew();
+
+            BitmapData? bmpData = null;
+            var bitmap = new Bitmap(width, height, pixelFormat);
+
+            try
+            {
+                var rect = new Rectangle(0, 0, bitmap.Width, bitmap.Height);
+                bmpData = bitmap.LockBits(rect, ImageLockMode.WriteOnly, pixelFormat);
+                Marshal.Copy(rawBytes, 0, bmpData.Scan0, rawBytes.Length);
+                return bitmap;
+            }
+            finally
+            {
+                if (bmpData != null)
+                {
+                    bitmap.UnlockBits(bmpData);
+                }
+
+                sw.Stop();
+                Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.BufferToBitmap: {sw.ElapsedMilliseconds} ms");
+            }
+        }
+
+        internal static ImageFileBuffer ReadImageFileBuffer(string filePath)
+        {
+            ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
+
+            using (var bmp = ReadImageFile(filePath))
+            {
+                var buffer = new ImageFileBuffer(bmp);
+                return buffer;
             }
         }
 
