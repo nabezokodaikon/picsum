@@ -673,12 +673,14 @@ namespace SWF.UIComponent.ImagePanel
                 {
                     using (var drawImage = this.image.Resize((int)destRect.Width, (int)destRect.Height))
                     {
+                        g.InterpolationMode = InterpolationMode.NearestNeighbor;
                         g.DrawImage(drawImage, destRect,
                             new Rectangle(0, 0, drawImage.Width, drawImage.Height), GraphicsUnit.Pixel);
                     }
                 }
                 else
                 {
+                    g.InterpolationMode = InterpolationMode.HighQualityBicubic;
                     g.DrawImage(this.image.Bitmap, destRect,
                         new Rectangle(0, 0, this.image.Width, this.image.Height), GraphicsUnit.Pixel);
                 }
