@@ -7,6 +7,7 @@ namespace SWF.Core.ImageAccessor
         public byte[] Buffer { get; private set; }
         public int Width { get; private set; }
         public int Height { get; private set; }
+        public Size Size { get; private set; }
         public PixelFormat PixelFormat { get; private set; }
 
         public ImageFileBuffer(Bitmap bmp)
@@ -16,6 +17,7 @@ namespace SWF.Core.ImageAccessor
             this.Buffer = ImageUtil.BitmapToBuffer(bmp);
             this.Width = bmp.Width;
             this.Height = bmp.Height;
+            this.Size = bmp.Size;
             this.PixelFormat = bmp.PixelFormat;
         }
 

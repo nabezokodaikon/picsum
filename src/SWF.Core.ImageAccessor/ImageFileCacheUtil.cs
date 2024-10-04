@@ -20,17 +20,17 @@ namespace SWF.Core.ImageAccessor
 
         public static Size GetSize(string filePath)
         {
-            return Read(filePath, cache => cache.Image.Size);
+            return Read(filePath, cache => cache.Buffer.Size);
         }
 
-        public static CvImage ShallowCopy(string filePath)
+        public static Bitmap GetBitmap(string filePath)
         {
-            return Read(filePath, cache => cache.ShallowCopy()).Image;
+            return Read(filePath, cache => cache.Buffer.ToBitmap());
         }
 
-        public static CvImage DeepCopy(string filePath)
+        public static CvImage GetCvImage(string filePath)
         {
-            return Read(filePath, cache => cache.DeepCopy()).Image;
+            return Read(filePath, cache => new CvImage(cache.Buffer.ToBitmap()));
         }
 
         private static T Read<T>(string filePath, Func<ImageFileCache, T> resultFunc)
@@ -59,7 +59,6 @@ namespace SWF.Core.ImageAccessor
                     {
                         CACHE_LIST.Remove(cache);
                         CACHE_DICTIONARY.Remove(cache.FilePath);
-                        cache.Dispose();
                     }
 
                     if (CACHE_LIST.Count > CACHE_CAPACITY)
@@ -67,11 +66,10 @@ namespace SWF.Core.ImageAccessor
                         var removeCache = CACHE_LIST[0];
                         CACHE_LIST.Remove(removeCache);
                         CACHE_DICTIONARY.Remove(removeCache.FilePath);
-                        removeCache.Dispose();
                     }
 
-                    var bmp = ImageUtil.ReadImageFile(filePath);
-                    var newCache = new ImageFileCache(filePath, new CvImage(bmp), timestamp);
+                    var buffer = ImageUtil.ReadImageFileBuffer(filePath);
+                    var newCache = new ImageFileCache(filePath, buffer, timestamp);
                     CACHE_DICTIONARY.Add(filePath, newCache);
                     CACHE_LIST.Add(newCache);
                     return resultFunc(newCache);

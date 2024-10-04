@@ -68,11 +68,11 @@ namespace PicSum.Job.Logics
                 if (info.IsImageFile)
                 {
                     var srcImg = this.ReadImageFile(filePath);
-                    if (srcImg != CvImage.EMPTY)
+                    if (srcImg != ImageUtil.EMPTY_IMAGE)
                     {
                         using (srcImg)
                         {
-                            var thumb = ThumbnailUtil.CreateThumbnail(srcImg.Bitmap, thumbSize.Width, thumbSize.Height);
+                            var thumb = ThumbnailUtil.CreateThumbnail(srcImg, thumbSize.Width, thumbSize.Height);
                             info.Thumbnail = new()
                             {
                                 FilePath = info.FilePath,
@@ -93,11 +93,11 @@ namespace PicSum.Job.Logics
                     if (!string.IsNullOrEmpty(firstImageFile))
                     {
                         var srcImg = this.ReadImageFile(firstImageFile);
-                        if (srcImg != CvImage.EMPTY)
+                        if (srcImg != ImageUtil.EMPTY_IMAGE)
                         {
                             using (srcImg)
                             {
-                                var thumb = ThumbnailUtil.CreateThumbnail(srcImg.Bitmap, thumbSize.Width, thumbSize.Height);
+                                var thumb = ThumbnailUtil.CreateThumbnail(srcImg, thumbSize.Width, thumbSize.Height);
                                 info.Thumbnail = new()
                                 {
                                     FilePath = info.FilePath,
@@ -133,16 +133,16 @@ namespace PicSum.Job.Logics
             return info;
         }
 
-        private CvImage ReadImageFile(string filePath)
+        private Bitmap ReadImageFile(string filePath)
         {
             try
             {
-                return ImageFileCacheUtil.ShallowCopy(filePath);
+                return ImageFileCacheUtil.GetBitmap(filePath);
             }
             catch (ImageUtilException ex)
             {
                 this.WriteErrorLog(new JobException(this.ID, ex));
-                return CvImage.EMPTY;
+                return ImageUtil.EMPTY_IMAGE;
             }
         }
     }
