@@ -5,6 +5,7 @@ using PicSum.Job.Parameters;
 using PicSum.Job.Results;
 using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
+using System.Diagnostics;
 using System.Drawing;
 
 namespace PicSum.Job.Jobs
@@ -38,6 +39,9 @@ namespace PicSum.Job.Jobs
             {
                 throw new ArgumentException("ファイルパスリストがNULLです。", nameof(parameter));
             }
+
+            var sw = Stopwatch.StartNew();
+            Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageFileReadJob: Start");
 
             var mainResult = new ImageFileGetResult();
             var subResult = new ImageFileGetResult();
@@ -84,7 +88,12 @@ namespace PicSum.Job.Jobs
                             throw;
                         }
 
+                        sw.Stop();
+                        Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageFileReadJob Main Callback: {sw.ElapsedMilliseconds} ms");
                         this.Callback(mainResult);
+
+                        sw = Stopwatch.StartNew();
+                        Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageFileReadJob Sub Read: Start");
 
                         this.CheckCancel();
                         subResult.IsMain = false;
@@ -102,6 +111,10 @@ namespace PicSum.Job.Jobs
                             IsError = !isSubSuccess,
                         };
                         this.CheckCancel();
+
+                        sw.Stop();
+                        Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageFileReadJob Sub Callback: {sw.ElapsedMilliseconds} ms");
+
                         this.Callback(subResult);
                     }
                     else
@@ -127,6 +140,8 @@ namespace PicSum.Job.Jobs
                             throw;
                         }
 
+                        sw.Stop();
+                        Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageFileReadJob Main Callback: {sw.ElapsedMilliseconds} ms");
                         this.Callback(mainResult);
                     }
                 }
@@ -156,6 +171,8 @@ namespace PicSum.Job.Jobs
                         throw;
                     }
 
+                    sw.Stop();
+                    Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageFileReadJob Main Callback: {sw.ElapsedMilliseconds} ms");
                     this.Callback(mainResult);
                 }
             }
