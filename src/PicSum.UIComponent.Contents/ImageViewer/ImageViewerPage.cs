@@ -61,7 +61,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         private ImageSizeMode sizeMode = ImageSizeMode.FitOnlyBigImage;
         private IList<string> filePathList = null;
 
-        private TwoWayJob<ImageFileReadJob, ImageFileReadParameter, ImageFileGetResult> getImageFileJob = null;
+        private TwoWayJob<ImageFileReadJob, ImageFileReadParameter, ImageFileGetResult> imageFileReadJob = null;
         private OneWayJob<BookmarkAddJob, ValueParameter<string>> addBookmarkJob = null;
         private OneWayJob<SingleFileExportJob, SingleFileExportParameter> singleFileExportJob = null;
         private OneWayJob<ImageInfoCacheJob, ListParameter<string>> imageInfoCacheJob = null;
@@ -113,26 +113,26 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             }
         }
 
-        private TwoWayJob<ImageFileReadJob, ImageFileReadParameter, ImageFileGetResult> GetImageFileJob
+        private TwoWayJob<ImageFileReadJob, ImageFileReadParameter, ImageFileGetResult> ImageFileReadJob
         {
             get
             {
-                if (this.getImageFileJob == null)
+                if (this.imageFileReadJob == null)
                 {
-                    this.getImageFileJob = new();
-                    this.getImageFileJob
+                    this.imageFileReadJob = new();
+                    this.imageFileReadJob
                         .Callback(r =>
                         {
                             var sw = Stopwatch.StartNew();
-                            Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageViewerPage.GetImageFileJob_Callback: Start");
+                            Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageViewerPage.ImageFileReadJob_Callback: Start");
 
-                            this.GetImageFileJob_Callback(r);
+                            this.ImageFileReadJob_Callback(r);
                             sw.Stop();
-                            Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageViewerPage.GetImageFileJob_Callback: {sw.ElapsedMilliseconds} ms");
+                            Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageViewerPage.ImageFileReadJob_Callback: {sw.ElapsedMilliseconds} ms");
                         })
                         .Cancel(() =>
                         {
-                            Console.WriteLine($"[{Thread.CurrentThread.Name}] GetImageFileJob.Cancel");
+                            Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageViewerPage.ImageFileReadJob.Cancel");
                         })
                         .Catch(_ =>
                         {
@@ -145,7 +145,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                         .StartThread();
                 }
 
-                return this.getImageFileJob;
+                return this.imageFileReadJob;
             }
         }
 
@@ -265,10 +265,10 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                     this.singleFileExportJob = null;
                 }
 
-                if (this.getImageFileJob != null)
+                if (this.imageFileReadJob != null)
                 {
-                    this.getImageFileJob.Dispose();
-                    this.getImageFileJob = null;
+                    this.imageFileReadJob.Dispose();
+                    this.imageFileReadJob = null;
                 }
 
                 if (this.imageInfoCacheJob != null)
@@ -668,7 +668,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                     ThumbnailSize = this.leftImagePanel.ThumbnailSize,
                 };
 
-                this.GetImageFileJob.StartJob(param);
+                this.ImageFileReadJob.StartJob(param);
                 this.ImageInfoCacheJob.StartJob([.. nextFiles, .. prevFiles]);
             }
             finally
@@ -783,7 +783,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             }
         }
 
-        private void GetImageFileJob_Callback(ImageFileGetResult e)
+        private void ImageFileReadJob_Callback(ImageFileGetResult e)
         {
             if (e.IsMain)
             {
