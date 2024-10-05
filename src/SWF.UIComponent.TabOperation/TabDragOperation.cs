@@ -167,7 +167,13 @@ namespace SWF.UIComponent.TabOperation
             if (tab.Owner != null)
             {
                 // タブが所有されている場合。
-                if (tab.Owner.GetTabsScreenRectangle().Contains(toScreenPoint))
+                var tabsScreenRectangle = tab.Owner.GetTabsScreenRectangle();
+                if (new Rectangle(
+                        tabsScreenRectangle.X - 24,
+                        tabsScreenRectangle.Y - 24,
+                        tabsScreenRectangle.Width + 48,
+                        tabsScreenRectangle.Height + 48)
+                    .Contains(toScreenPoint))
                 {
                     var clientPoint = tab.Owner.PointToClient(toScreenPoint);
 
@@ -219,7 +225,7 @@ namespace SWF.UIComponent.TabOperation
                             tab.DrawArea.X = clientPoint.X;
                             owner.AddTab(tab);
                             TabDragForm.Visible = false;
-                            form.Activate(); 
+                            form.Activate();
                             return;
                         }
                         else
