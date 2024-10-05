@@ -62,6 +62,8 @@ namespace SWF.Core.ImageAccessor
 
         public void CreateMat()
         {
+            var sw = Stopwatch.StartNew();
+
             lock (this.lockObject)
             {
                 if (this.mat == null)
@@ -69,6 +71,9 @@ namespace SWF.Core.ImageAccessor
                     this.mat = this.Bitmap.ToMat();
                 }
             }
+
+            sw.Stop();
+            Console.WriteLine($"[{Thread.CurrentThread.Name}] CvImage.CreateMat: {sw.ElapsedMilliseconds} ms");
         }
 
         public Bitmap Resize(int newWidth, int newHeight)
