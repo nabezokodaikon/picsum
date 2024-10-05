@@ -369,10 +369,10 @@ namespace SWF.UIComponent.TabOperation
             {
                 g.FillRectangle(brush, destRect);
                 g.DrawLines(pen, [
-                    new PointF(destRect.Left, destRect.Bottom),
+                    new PointF(destRect.Left, destRect.Bottom - 1f),
                     new PointF(destRect.Left, destRect.Top + 0.5f),
                     new PointF(destRect.Right, destRect.Top + 0.5f),
-                    new PointF(destRect.Right, destRect.Bottom)]);
+                    new PointF(destRect.Right, destRect.Bottom - 1f)]);
             }
         }
 
