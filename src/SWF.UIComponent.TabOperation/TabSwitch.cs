@@ -27,10 +27,12 @@ namespace SWF.UIComponent.TabOperation
         private const int TAB_MAXIMUM_WIDTH = 256;
 
         // タブの最小幅
-        private const int TAB_MINIMUM_WIDTH = 64;
+        public const int TAB_MINIMUM_WIDTH = 1;
 
         // タブ領域の間隔
         internal const int TABS_MARGIN = 8;
+
+        internal const int TAB_CLOSE_BUTTON_CAN_DRAW_WIDTH = 64;
 
         // タブを移動するとみなす重なりの比率
         private const float TAB_DRAG_OVERLAP_RATE = 0.4f;
@@ -1403,6 +1405,11 @@ namespace SWF.UIComponent.TabOperation
 
         private Action<Graphics> GetDrawCloseButtonMethod(TabInfo tab)
         {
+            if (tab.DrawArea.Width < TAB_CLOSE_BUTTON_CAN_DRAW_WIDTH)
+            {
+                return tab.DrawArea.DrawNothingTabCloseButton;
+            }
+
             var p = this.PointToClient(Cursor.Position);
             var rect = tab.DrawArea.GetCloseButtonRectangle();
 

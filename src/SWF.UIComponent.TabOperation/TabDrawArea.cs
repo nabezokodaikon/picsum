@@ -225,7 +225,7 @@ namespace SWF.UIComponent.TabOperation
             }
             set
             {
-                ArgumentOutOfRangeException.ThrowIfLessThan(value, MINIMUM_WIDHT, nameof(value));
+                ArgumentOutOfRangeException.ThrowIfLessThan(value, TabSwitch.TAB_MINIMUM_WIDTH, nameof(value));
 
                 this.width = value;
             }
@@ -262,6 +262,11 @@ namespace SWF.UIComponent.TabOperation
             ArgumentNullException.ThrowIfNull(g, nameof(g));
 
             this.DrawTab(this.mousePointTabImage, g);
+        }
+
+        public void DrawNothingTabCloseButton(Graphics g)
+        {
+            ArgumentNullException.ThrowIfNull(g, nameof(g));
         }
 
         public void DrawActiveMousePointTabCloseButton(Graphics g)
@@ -333,7 +338,7 @@ namespace SWF.UIComponent.TabOperation
             return new Rectangle(x, y, w, h);
         }
 
-        public Rectangle GetIconRectangle()
+        private Rectangle GetIconRectangle()
         {
             var x = this.iconRectangle.X + this.drawPoint.X;
             var y = this.iconRectangle.Y + this.drawPoint.Y;
