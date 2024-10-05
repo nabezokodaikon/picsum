@@ -40,151 +40,94 @@ namespace PicSum.Job.Jobs
                 throw new ArgumentException("ファイルパスリストがNULLです。", nameof(parameter));
             }
 
-            var sw = Stopwatch.StartNew();
-            Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageFileReadJob: Start");
+            this.CheckCancel();
 
-            var mainResult = new ImageFileGetResult();
-            var subResult = new ImageFileGetResult();
-            var thumbLogic = new ThumbnailGetLogic(this);
             var mainFilePath = parameter.FilePathList[parameter.CurrentIndex];
-
-            try
+            var mainSize = this.GetImageSize(mainFilePath);
+            if (parameter.ImageDisplayMode != ImageDisplayMode.Single
+                && mainSize != ImageUtil.EMPTY_SIZE
+                && mainSize.Width < mainSize.Height)
             {
                 this.CheckCancel();
-                var mainImage = this.ReadImageFile(mainFilePath);
-                if (parameter.ImageDisplayMode != ImageDisplayMode.Single
-                    && mainImage != CvImage.EMPTY
-                    && mainImage.Width < mainImage.Height)
+
+                var subtIndex = parameter.CurrentIndex + 1;
+                if (subtIndex > parameter.FilePathList.Count - 1)
                 {
-                    this.CheckCancel();
-                    var subtIndex = parameter.CurrentIndex + 1;
-                    if (subtIndex > parameter.FilePathList.Count - 1)
-                    {
-                        subtIndex = 0;
-                    }
+                    subtIndex = 0;
+                }
 
-                    var subFilePath = parameter.FilePathList[subtIndex];
-                    var subSrcImageSize = this.GetImageSize(subFilePath);
-                    if (subSrcImageSize.Width < subSrcImageSize.Height)
-                    {
-                        try
-                        {
-                            this.CheckCancel();
-                            mainImage.CreateMat();
-                            this.CheckCancel();
-                            mainResult.IsMain = true;
-                            mainResult.HasSub = true;
-                            mainResult.Image = new()
-                            {
-                                FilePath = mainFilePath,
-                                Thumbnail = thumbLogic.CreateThumbnail(mainImage, parameter.ThumbnailSize, parameter.ImageSizeMode),
-                                Image = mainImage,
-                                IsError = false,
-                            };
-                            this.CheckCancel();
-                        }
-                        catch (JobCancelException)
-                        {
-                            ExeptionHandler(mainResult);
-                            throw;
-                        }
+                var subFilePath = parameter.FilePathList[subtIndex];
+                var subSize = this.GetImageSize(subFilePath);
+                if (subSize != ImageUtil.EMPTY_SIZE
+                    || subSize.Width < subSize.Height)
+                {
+                    var mainResult = this.CreateResult(
+                        mainFilePath, true, true, parameter.ThumbnailSize, parameter.ImageSizeMode);
+                    this.Callback(mainResult);
 
-                        sw.Stop();
-                        Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageFileReadJob Main Callback: {sw.ElapsedMilliseconds} ms");
-                        this.Callback(mainResult);
-
-                        sw = Stopwatch.StartNew();
-                        Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageFileReadJob Sub Read: Start");
-
-                        this.CheckCancel();
-                        subResult.IsMain = false;
-                        subResult.HasSub = true;
-                        var subImage = this.ReadImageFile(subFilePath);
-                        subImage.CreateMat();
-                        this.CheckCancel();
-                        var isSubSuccess = subImage != CvImage.EMPTY;
-                        subResult.Image = new()
-                        {
-                            FilePath = subFilePath,
-                            Image = subImage,
-                            Thumbnail = (isSubSuccess) ?
-                                thumbLogic.CreateThumbnail(subImage, parameter.ThumbnailSize, parameter.ImageSizeMode) :
-                                null,
-                            IsError = !isSubSuccess,
-                        };
-                        this.CheckCancel();
-
-                        sw.Stop();
-                        Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageFileReadJob Sub Callback: {sw.ElapsedMilliseconds} ms");
-
-                        this.Callback(subResult);
-                    }
-                    else
-                    {
-                        try
-                        {
-                            this.CheckCancel();
-                            mainImage.CreateMat();
-                            this.CheckCancel();
-                            mainResult.IsMain = true;
-                            mainResult.HasSub = false;
-                            mainResult.Image = new()
-                            {
-                                FilePath = mainFilePath,
-                                Thumbnail = thumbLogic.CreateThumbnail(mainImage, parameter.ThumbnailSize, parameter.ImageSizeMode),
-                                Image = mainImage,
-                                IsError = false,
-                            };
-                            this.CheckCancel();
-                        }
-                        catch (JobCancelException)
-                        {
-                            ExeptionHandler(mainResult);
-                            throw;
-                        }
-
-                        sw.Stop();
-                        Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageFileReadJob Main Callback: {sw.ElapsedMilliseconds} ms");
-                        this.Callback(mainResult);
-                    }
+                    var subResult = this.CreateResult(
+                        subFilePath, false, true, parameter.ThumbnailSize, parameter.ImageSizeMode);
+                    this.Callback(subResult);
                 }
                 else
                 {
-                    try
-                    {
-                        this.CheckCancel();
-                        var isMainSuccess = mainImage != CvImage.EMPTY;
-                        mainImage.CreateMat();
-                        this.CheckCancel();
-                        mainResult.IsMain = true;
-                        mainResult.HasSub = false;
-                        mainResult.Image = new()
-                        {
-                            FilePath = mainFilePath,
-                            Thumbnail = (isMainSuccess) ?
-                                thumbLogic.CreateThumbnail(mainImage, parameter.ThumbnailSize, parameter.ImageSizeMode) :
-                                null,
-                            Image = mainImage,
-                            IsError = !isMainSuccess,
-                        };
-                        this.CheckCancel();
-                    }
-                    catch (JobCancelException)
-                    {
-                        ExeptionHandler(mainResult);
-                        throw;
-                    }
-
-                    sw.Stop();
-                    Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageFileReadJob Main Callback: {sw.ElapsedMilliseconds} ms");
-                    this.Callback(mainResult);
+                    var result = this.CreateResult(
+                        mainFilePath, true, false, parameter.ThumbnailSize, parameter.ImageSizeMode);
+                    this.Callback(result);
                 }
+            }
+            else
+            {
+                var result = this.CreateResult(
+                    mainFilePath, true, false, parameter.ThumbnailSize, parameter.ImageSizeMode);
+                this.Callback(result);
+            }
+        }
+
+        private ImageFileGetResult CreateResult(
+            string filePath, bool isMain, bool hasSub, int thumbnailSize, ImageSizeMode imageSizeMode)
+        {
+            var sw = Stopwatch.StartNew();
+            Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageFileReadJob.CreateResult Start IsMain: {isMain}");
+
+            var result = new ImageFileGetResult();
+
+            try
+            {
+                var thumbLogic = new ThumbnailGetLogic(this);
+
+                var image = this.ReadImageFile(filePath);
+                var isSuccess = image != CvImage.EMPTY;
+                this.CheckCancel();
+
+                image.CreateMat();
+                this.CheckCancel();
+
+                result.IsMain = isMain;
+                result.HasSub = hasSub;
+                result.Image = new()
+                {
+                    FilePath = filePath,
+                    Thumbnail = (isSuccess) ?
+                        thumbLogic.CreateThumbnail(image, thumbnailSize, imageSizeMode) :
+                        null,
+                    Image = image,
+                    IsError = !isSuccess,
+                };
+                this.CheckCancel();
             }
             catch (JobCancelException)
             {
-                ExeptionHandler(subResult);
+                ExeptionHandler(result);
                 throw;
             }
+            finally
+            {
+                sw.Stop();
+                Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageFileReadJob.CreateResult: {sw.ElapsedMilliseconds} ms");
+            }
+
+            return result;
         }
 
         private CvImage ReadImageFile(string filePath)
