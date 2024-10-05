@@ -59,7 +59,7 @@ namespace PicSum.Job.Jobs
                 var subFilePath = parameter.FilePathList[subtIndex];
                 var subSize = this.GetImageSize(subFilePath);
                 if (subSize != ImageUtil.EMPTY_SIZE
-                    || subSize.Width < subSize.Height)
+                    && subSize.Width < subSize.Height)
                 {
                     var mainResult = this.CreateResult(
                         mainFilePath, true, true, parameter.ThumbnailSize, parameter.ImageSizeMode);
@@ -119,6 +119,11 @@ namespace PicSum.Job.Jobs
                 this.CheckCancel();
             }
             catch (JobCancelException)
+            {
+                ExeptionHandler(result);
+                throw;
+            }
+            catch (Exception)
             {
                 ExeptionHandler(result);
                 throw;
