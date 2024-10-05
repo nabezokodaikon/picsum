@@ -44,12 +44,12 @@ namespace PicSum.Job.Jobs
 
             var mainFilePath = parameter.FilePathList[parameter.CurrentIndex];
             var mainSize = this.GetImageSize(mainFilePath);
+            this.CheckCancel();
+
             if (parameter.ImageDisplayMode != ImageDisplayMode.Single
                 && mainSize != ImageUtil.EMPTY_SIZE
                 && mainSize.Width < mainSize.Height)
             {
-                this.CheckCancel();
-
                 var subtIndex = parameter.CurrentIndex + 1;
                 if (subtIndex > parameter.FilePathList.Count - 1)
                 {
@@ -58,6 +58,8 @@ namespace PicSum.Job.Jobs
 
                 var subFilePath = parameter.FilePathList[subtIndex];
                 var subSize = this.GetImageSize(subFilePath);
+                this.CheckCancel();
+
                 if (subSize != ImageUtil.EMPTY_SIZE
                     && subSize.Width < subSize.Height)
                 {
