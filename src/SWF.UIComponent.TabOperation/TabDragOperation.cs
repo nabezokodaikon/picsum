@@ -170,9 +170,9 @@ namespace SWF.UIComponent.TabOperation
                 var tabsScreenRectangle = tab.Owner.GetTabsScreenRectangle();
                 if (new Rectangle(
                         tabsScreenRectangle.X - 24,
-                        tabsScreenRectangle.Y - 24,
+                        tabsScreenRectangle.Y - 8,
                         tabsScreenRectangle.Width + 48,
-                        tabsScreenRectangle.Height + 48)
+                        tabsScreenRectangle.Height + 32)
                     .Contains(toScreenPoint))
                 {
                     var clientPoint = tab.Owner.PointToClient(toScreenPoint);
