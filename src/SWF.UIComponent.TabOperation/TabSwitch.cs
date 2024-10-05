@@ -543,6 +543,7 @@ namespace SWF.UIComponent.TabOperation
         public void InvalidateHeader()
         {
             this.Invalidate(this.GetHeaderRectangle());
+            this.Update();
         }
 
         public void CallEndTabDragOperation()
