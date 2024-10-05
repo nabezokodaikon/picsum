@@ -13,6 +13,22 @@ namespace SWF.Core.ImageAccessor
             return new Rectangle(x, y, rectSize.Width, rectSize.Height);
         }
 
+        public static Rectangle GetLeftBorderRect()
+        {
+            var screenRect = Screen.GetWorkingArea(Cursor.Position);
+            var x = screenRect.Left;
+            var y = screenRect.Top;
+            return new Rectangle(x, y, 48, screenRect.Height);
+        }
+
+        public static Rectangle GetRightBorderRect()
+        {
+            var screenRect = Screen.GetWorkingArea(Cursor.Position);
+            var x = screenRect.Right - 48;
+            var y = screenRect.Top;
+            return new Rectangle(x, y, 48, screenRect.Height);
+        }
+
         public static Rectangle GetLeftRect(Size rectSize)
         {
             var screenRect = Screen.GetWorkingArea(Cursor.Position);

@@ -103,22 +103,10 @@ namespace SWF.UIComponent.TabOperation
             var screenPoint = Cursor.Position;
             this.Location = new Point(screenPoint.X - DRAW_TAB_WIDHT_OFFSET - xOffset, screenPoint.Y - yOffset);
 
-            var topRect = ScreenUtil.GetTopRect(this.TabDropForm.Size);
-            if (topRect.Contains(screenPoint))
+            var leftBorderRect = ScreenUtil.GetLeftBorderRect();
+            if (leftBorderRect.Contains(screenPoint))
             {
-                this.TabDropForm.Location = new Point(topRect.X, topRect.Y);
-                this.TabDropForm.SetMaximumImage();
-                WinApiMembers.SetWindowPos(
-                    this.TabDropForm.Handle,
-                    WinApiMembers.HWND_TOP,
-                    topRect.X, topRect.Y, topRect.Width, topRect.Height,
-                    WinApiMembers.SWP_NOSIZE | WinApiMembers.SWP_NOACTIVATE | WinApiMembers.SWP_SHOWWINDOW);
-                return;
-            }
-
-            var leftRect = ScreenUtil.GetLeftRect(this.TabDropForm.Size);
-            if (leftRect.Contains(screenPoint))
-            {
+                var leftRect = ScreenUtil.GetLeftRect(this.TabDropForm.Size);
                 this.TabDropForm.Location = new Point(leftRect.X, leftRect.Y);
                 this.TabDropForm.SetLeftImage();
                 WinApiMembers.SetWindowPos(
@@ -129,9 +117,10 @@ namespace SWF.UIComponent.TabOperation
                 return;
             }
 
-            var rightRect = ScreenUtil.GetRightRect(this.TabDropForm.Size);
-            if (rightRect.Contains(screenPoint))
+            var rightBorderRect = ScreenUtil.GetRightBorderRect();
+            if (rightBorderRect.Contains(screenPoint))
             {
+                var rightRect = ScreenUtil.GetRightRect(this.TabDropForm.Size);
                 this.TabDropForm.Location = new Point(rightRect.X, rightRect.Y);
                 this.TabDropForm.SetRightImage();
                 WinApiMembers.SetWindowPos(

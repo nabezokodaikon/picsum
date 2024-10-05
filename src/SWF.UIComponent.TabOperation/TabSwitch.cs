@@ -561,11 +561,7 @@ namespace SWF.UIComponent.TabOperation
                     var screenPoint = Cursor.Position;
                     var form = this.GetForm();
 
-                    if (ScreenUtil.GetTopRect(Resources.DropMaximum.Size).Contains(screenPoint))
-                    {
-                        this.OnTabDropouted(new TabDropoutedEventArgs(tab, screenPoint, form.ClientSize, FormWindowState.Maximized));
-                    }
-                    else if (ScreenUtil.GetLeftRect(Resources.DropMaximum.Size).Contains(screenPoint))
+                    if (ScreenUtil.GetLeftBorderRect().Contains(screenPoint))
                     {
                         var screenRect = Screen.GetWorkingArea(screenPoint);
                         var w = (int)(screenRect.Width / 2f);
@@ -574,7 +570,7 @@ namespace SWF.UIComponent.TabOperation
                         var y = screenRect.Top;
                         this.OnTabDropouted(new TabDropoutedEventArgs(tab, new Point(x, y), new Size(w, h), FormWindowState.Normal));
                     }
-                    else if (ScreenUtil.GetRightRect(Resources.DropMaximum.Size).Contains(screenPoint))
+                    else if (ScreenUtil.GetRightBorderRect().Contains(screenPoint))
                     {
                         var screenRect = Screen.GetWorkingArea(screenPoint);
                         var w = (int)(screenRect.Width / 2f);
