@@ -63,16 +63,6 @@ namespace SWF.UIComponent.TabOperation.Properties {
         /// <summary>
         ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
         /// </summary>
-        internal static System.Drawing.Bitmap ActiveTab {
-            get {
-                object obj = ResourceManager.GetObject("ActiveTab", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
-        /// </summary>
         internal static System.Drawing.Bitmap DropArrow {
             get {
                 object obj = ResourceManager.GetObject("DropArrow", resourceCulture);
@@ -106,26 +96,6 @@ namespace SWF.UIComponent.TabOperation.Properties {
         internal static System.Drawing.Bitmap DropRight {
             get {
                 object obj = ResourceManager.GetObject("DropRight", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
-        /// </summary>
-        internal static System.Drawing.Bitmap InactiveTab {
-            get {
-                object obj = ResourceManager.GetObject("InactiveTab", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
-        /// </summary>
-        internal static System.Drawing.Bitmap MousePointTab {
-            get {
-                object obj = ResourceManager.GetObject("MousePointTab", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

@@ -81,7 +81,7 @@ namespace SWF.UIComponent.TabOperation
         #region インスタンス変数
 
         // タブの高さ
-        private readonly int tabHeight = Resources.ActiveTab.Height;
+        private readonly int tabHeight = 29;
 
         // タブ領域右側の差分
         private int tabsRightOffset = 0;

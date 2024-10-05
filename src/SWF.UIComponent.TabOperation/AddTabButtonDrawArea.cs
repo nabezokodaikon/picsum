@@ -11,6 +11,7 @@ namespace SWF.UIComponent.TabOperation
         #region 定数・列挙
 
         private const int PAGE_SIZE = 24;
+        private const int TAB_HEIGHT = 29;
 
         #endregion
 
@@ -20,9 +21,8 @@ namespace SWF.UIComponent.TabOperation
 
         private static Rectangle GetDefaultRectangle()
         {
-            var tabHeight = Resources.ActiveTab.Height;
             var x = 0;
-            var y = (int)((tabHeight - PAGE_SIZE) / 2d);
+            var y = (int)((TAB_HEIGHT - PAGE_SIZE) / 2d);
             var w = PAGE_SIZE;
             var h = PAGE_SIZE;
             return new Rectangle(x, y, w, h);

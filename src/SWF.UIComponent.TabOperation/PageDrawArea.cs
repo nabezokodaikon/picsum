@@ -19,18 +19,12 @@ namespace SWF.UIComponent.TabOperation
 
         private static Color GetOutlineColor()
         {
-            var bmp = Resources.ActiveTab;
-            var x = 0;
-            var y = bmp.Height - 1;
-            return ImageUtil.GetPixel(bmp, x, y);
+            return Color.FromArgb(255, 128, 128, 128);
         }
 
         private static Color GetInnerColor()
         {
-            var bmp = Resources.ActiveTab;
-            var x = bmp.Width / 2;
-            var y = bmp.Height - 1;
-            return ImageUtil.GetPixel(bmp, x, y);
+            return Color.FromArgb(255, 240, 240, 240);
         }
 
         #endregion
@@ -39,7 +33,7 @@ namespace SWF.UIComponent.TabOperation
 
         private readonly SolidBrush outlineBrush = new(GetOutlineColor());
         private readonly SolidBrush innerBrush = new(GetInnerColor());
-        private readonly int top = Resources.ActiveTab.Height - TAB_OVERLAP;
+        private readonly int top = 29 - TAB_OVERLAP;
 
         #endregion
 

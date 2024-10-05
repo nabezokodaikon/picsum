@@ -15,6 +15,7 @@ namespace SWF.UIComponent.TabOperation
     {
         #region 定数・列挙
 
+        private const int TAB_WIDTH = 256;
         private const int SIDE_WIDTH = 8;
         private const int PAGE_SIZE = 24;
         private const int PAGE_OFFSET = 2;
@@ -23,14 +24,11 @@ namespace SWF.UIComponent.TabOperation
 
         #region クラスメンバ
 
-        private readonly static IList<Point> LEFT_TRANSPARENT_POINTS
-            = GetLeftTransparentPoints(Resources.ActiveTab);
-        private readonly static IList<Point> RIGHT_TRANSPARENT_POINTS
-            = GetRightTransparentPoints(Resources.ActiveTab);
         private readonly static Rectangle ICON_RECTANGLE
             = new(SIDE_WIDTH, PAGE_OFFSET, PAGE_SIZE, PAGE_SIZE);
+
         private readonly static Rectangle CLOSE_BUTTON_RECTANGLE
-            = new(Resources.ActiveTab.Width - SIDE_WIDTH - PAGE_SIZE,
+            = new(TAB_WIDTH - SIDE_WIDTH - PAGE_SIZE,
                   PAGE_OFFSET,
                   PAGE_SIZE,
                   PAGE_SIZE);
@@ -121,28 +119,15 @@ namespace SWF.UIComponent.TabOperation
 
         #region インスタンス変数
 
-        private readonly IList<Point> leftTransparentPoints = LEFT_TRANSPARENT_POINTS;
-        private readonly IList<Point> rightTransparentPoints = RIGHT_TRANSPARENT_POINTS;
-        private readonly Bitmap activeTabImage = Resources.ActiveTab;
-        private readonly Bitmap inactiveTabImage = Resources.InactiveTab;
-        private readonly Bitmap mousePointTabImage = Resources.MousePointTab;
         private readonly Rectangle iconRectangle = ICON_RECTANGLE;
         private readonly Rectangle closeButtonRectangle = CLOSE_BUTTON_RECTANGLE;
         private Point drawPoint = new(0, 0);
-        private int width = Resources.ActiveTab.Width;
-        private readonly int height = Resources.ActiveTab.Height;
+        private int width = 256;
+        private readonly int height = 29;
 
         #endregion
 
         #region プロパティ
-
-        public Bitmap TabImage
-        {
-            get
-            {
-                return this.activeTabImage;
-            }
-        }
 
         public int X
         {
@@ -246,21 +231,30 @@ namespace SWF.UIComponent.TabOperation
         {
             ArgumentNullException.ThrowIfNull(g, nameof(g));
 
-            this.DrawTab(this.activeTabImage, g);
+            using (var brush = new SolidBrush(Color.FromArgb(255, 240, 240, 240)))
+            {
+                this.DrawTab(brush, g);
+            }
         }
 
         public void DrawInactiveTab(Graphics g)
         {
             ArgumentNullException.ThrowIfNull(g, nameof(g));
 
-            this.DrawTab(this.inactiveTabImage, g);
+            using (var brush = new SolidBrush(Color.FromArgb(255, 200, 200, 200)))
+            {
+                this.DrawTab(brush, g);
+            }
         }
 
         public void DrawMousePointTab(Graphics g)
         {
             ArgumentNullException.ThrowIfNull(g, nameof(g));
 
-            this.DrawTab(this.mousePointTabImage, g);
+            using (var brush = new SolidBrush(Color.FromArgb(255, 220, 220, 220)))
+            {
+                this.DrawTab(brush, g);
+            }
         }
 
         public void DrawNothingTabCloseButton(Graphics g)
@@ -301,23 +295,6 @@ namespace SWF.UIComponent.TabOperation
             if (x < this.Left || this.Right < x || y < this.Top || this.Bottom < y)
             {
                 return false;
-            }
-
-            foreach (var p in this.leftTransparentPoints)
-            {
-                if (p.X + this.drawPoint.X == x && p.Y + this.drawPoint.Y == y)
-                {
-                    return false;
-                }
-            }
-
-            var offset = this.activeTabImage.Width - this.width;
-            foreach (var p in this.rightTransparentPoints)
-            {
-                if ((p.X + this.drawPoint.X) - offset == x && p.Y + this.drawPoint.Y == y)
-                {
-                    return false;
-                }
             }
 
             return true;
@@ -371,7 +348,7 @@ namespace SWF.UIComponent.TabOperation
             }
             else
             {
-                var x = this.closeButtonRectangle.X - (this.activeTabImage.Width - this.width) + this.drawPoint.X;
+                var x = this.closeButtonRectangle.X - (TAB_WIDTH - this.width) + this.drawPoint.X;
                 var y = this.closeButtonRectangle.Y + this.drawPoint.Y;
                 return new Rectangle(x, y, w, h);
             }
@@ -381,12 +358,22 @@ namespace SWF.UIComponent.TabOperation
         {
             var x = this.iconRectangle.Right + PAGE_OFFSET + this.drawPoint.X;
             var y = this.iconRectangle.Y + this.drawPoint.Y;
-            return Rectangle.FromLTRB(x, y, this.closeButtonRectangle.X - (this.activeTabImage.Width - this.width) + this.drawPoint.X - PAGE_OFFSET, y + this.iconRectangle.Height);
+            return Rectangle.FromLTRB(x, y, this.closeButtonRectangle.X - (TAB_WIDTH - this.width) + this.drawPoint.X - PAGE_OFFSET, y + this.iconRectangle.Height);
         }
 
-        private void DrawTab(Bitmap bmp, Graphics g)
+        private void DrawTab(SolidBrush brush, Graphics g)
         {
-            g.DrawImage(bmp, this.GetDestCenterRectangle(), this.GetSourceCenterRectangle(), GraphicsUnit.Pixel);
+            var destRect = this.GetDestCenterRectangle();
+
+            using (var pen = new Pen(Color.FromArgb(255, 128, 128, 128), 0.5f))
+            {
+                g.FillRectangle(brush, destRect);
+                g.DrawLines(pen, [
+                    new PointF(destRect.Left, destRect.Bottom),
+                    new PointF(destRect.Left, destRect.Top + 0.5f),
+                    new PointF(destRect.Right, destRect.Top + 0.5f),
+                    new PointF(destRect.Right, destRect.Bottom)]);
+            }
         }
 
         private void DrawTabCloseButton(Graphics g, bool isMousePoint, bool isActiveTab)
@@ -428,15 +415,6 @@ namespace SWF.UIComponent.TabOperation
             var x = this.drawPoint.X;
             var y = this.drawPoint.Y;
             var w = this.width;
-            var h = this.height;
-            return new Rectangle(x, y, w, h);
-        }
-
-        private Rectangle GetSourceCenterRectangle()
-        {
-            var x = 0;
-            var y = 0;
-            var w = this.activeTabImage.Width;
             var h = this.height;
             return new Rectangle(x, y, w, h);
         }
