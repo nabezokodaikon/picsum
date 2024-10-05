@@ -154,6 +154,8 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             if (disposing)
             {
+                this.Disposed = true;
+
                 this.SaveCurrentDirectoryState();
 
                 if (this.searchJob != null)

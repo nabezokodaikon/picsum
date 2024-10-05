@@ -92,6 +92,8 @@ namespace PicSum.UIComponent.Contents.FileList
 
         #region インスタンス変数
 
+        public bool Disposed { get; protected set; } = false;
+
         private Dictionary<string, FileEntity> masterFileDictionary = null;
         private List<string> filterFilePathList = null;
         private TwoWayJob<ThumbnailsGetJob, ThumbnailsGetParameter, ThumbnailImageResult> getThumbnailsJob = null;

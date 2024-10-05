@@ -125,6 +125,8 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             if (disposing)
             {
+                this.Disposed = true;
+
                 this.parameter.SelectedFilePath = base.SelectedFilePath;
                 this.parameter.SortInfo = base.SortInfo;
 
