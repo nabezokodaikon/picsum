@@ -1348,9 +1348,13 @@ namespace SWF.UIComponent.TabOperation
                 TextRectangle = tab.DrawArea.GetPageRectangle(),
                 IconRectangle = tab.DrawArea.GetIconRectangle(tab.Icon),
                 CloseButtonRectangle = tab.DrawArea.GetCloseButtonRectangle(),
-                TextStyle = DrawTextUtil.TextStyle.Glowing
+                TextStyle = DrawTextUtil.TextStyle.Glowing,
             };
-            tab.DrawingTabPage(args);
+
+            if (tab.DrawArea.Width > TAB_CLOSE_BUTTON_CAN_DRAW_WIDTH)
+            {
+                tab.DrawingTabPage(args);
+            }
         }
 
         private void DrawDropPoint(Graphics g)
@@ -1405,11 +1409,6 @@ namespace SWF.UIComponent.TabOperation
 
         private Action<Graphics> GetDrawCloseButtonMethod(TabInfo tab)
         {
-            if (tab.DrawArea.Width < TAB_CLOSE_BUTTON_CAN_DRAW_WIDTH)
-            {
-                return tab.DrawArea.DrawNothingTabCloseButton;
-            }
-
             var p = this.PointToClient(Cursor.Position);
             var rect = tab.DrawArea.GetCloseButtonRectangle();
 

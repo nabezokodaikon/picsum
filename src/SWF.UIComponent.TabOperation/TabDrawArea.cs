@@ -15,7 +15,6 @@ namespace SWF.UIComponent.TabOperation
     {
         #region 定数・列挙
 
-        private const int MINIMUM_WIDHT = 64;
         private const int SIDE_WIDTH = 8;
         private const int PAGE_SIZE = 24;
         private const int PAGE_OFFSET = 2;
@@ -361,11 +360,21 @@ namespace SWF.UIComponent.TabOperation
 
         public Rectangle GetCloseButtonRectangle()
         {
-            var x = this.closeButtonRectangle.X - (this.activeTabImage.Width - this.width) + this.drawPoint.X;
-            var y = this.closeButtonRectangle.Y + this.drawPoint.Y;
             var w = this.closeButtonRectangle.Width;
             var h = this.closeButtonRectangle.Height;
-            return new Rectangle(x, y, w, h);
+
+            if (this.width < TabSwitch.TAB_CLOSE_BUTTON_CAN_DRAW_WIDTH)
+            {
+                var x = this.X + (this.Width - this.closeButtonRectangle.Width) / 2;
+                var y = this.closeButtonRectangle.Y + (this.closeButtonRectangle.Height - h) / 2;
+                return new Rectangle(x, y, w, h);
+            }
+            else
+            {
+                var x = this.closeButtonRectangle.X - (this.activeTabImage.Width - this.width) + this.drawPoint.X;
+                var y = this.closeButtonRectangle.Y + this.drawPoint.Y;
+                return new Rectangle(x, y, w, h);
+            }
         }
 
         public Rectangle GetPageRectangle()
