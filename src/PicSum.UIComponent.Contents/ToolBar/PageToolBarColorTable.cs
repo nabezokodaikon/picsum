@@ -6,7 +6,7 @@ namespace PicSum.UIComponent.Contents.ToolBar
     internal sealed class PageToolBarColorTable
         : ProfessionalColorTable
     {
-        private readonly Color gradientBeginColor = Color.FromArgb(240, 240, 240);
+        private readonly Color gradientBeginColor = Color.FromArgb(241, 244, 250);
 
         public override Color ToolStripGradientBegin
         {

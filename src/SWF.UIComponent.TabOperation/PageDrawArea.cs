@@ -24,7 +24,7 @@ namespace SWF.UIComponent.TabOperation
 
         private static Color GetInnerColor()
         {
-            return Color.FromArgb(240, 240, 240);
+            return Color.FromArgb(241, 244, 250);
         }
 
         #endregion
