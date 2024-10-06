@@ -19,12 +19,12 @@ namespace SWF.UIComponent.TabOperation
 
         private static Color GetOutlineColor()
         {
-            return Color.FromArgb(255, 128, 128, 128);
+            return Color.FromArgb(128, 128, 128);
         }
 
         private static Color GetInnerColor()
         {
-            return Color.FromArgb(255, 240, 240, 240);
+            return Color.FromArgb(240, 240, 240);
         }
 
         #endregion

@@ -231,7 +231,7 @@ namespace SWF.UIComponent.TabOperation
         {
             ArgumentNullException.ThrowIfNull(g, nameof(g));
 
-            using (var brush = new SolidBrush(Color.FromArgb(255, 240, 240, 240)))
+            using (var brush = new SolidBrush(Color.FromArgb(240, 240, 240)))
             {
                 this.DrawTab(brush, g);
             }
@@ -241,7 +241,7 @@ namespace SWF.UIComponent.TabOperation
         {
             ArgumentNullException.ThrowIfNull(g, nameof(g));
 
-            using (var brush = new SolidBrush(Color.FromArgb(255, 200, 200, 200)))
+            using (var brush = new SolidBrush(Color.FromArgb(200, 200, 200)))
             {
                 this.DrawTab(brush, g);
             }
@@ -251,7 +251,7 @@ namespace SWF.UIComponent.TabOperation
         {
             ArgumentNullException.ThrowIfNull(g, nameof(g));
 
-            using (var brush = new SolidBrush(Color.FromArgb(255, 220, 220, 220)))
+            using (var brush = new SolidBrush(Color.FromArgb(220, 220, 220)))
             {
                 this.DrawTab(brush, g);
             }
@@ -365,7 +365,7 @@ namespace SWF.UIComponent.TabOperation
         {
             var destRect = this.GetDestCenterRectangle();
 
-            using (var pen = new Pen(Color.FromArgb(255, 128, 128, 128), 0.5f))
+            using (var pen = new Pen(Color.FromArgb(128, 128, 128), 0.5f))
             {
                 g.FillRectangle(brush, destRect);
                 g.DrawLines(pen, [
