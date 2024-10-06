@@ -9,7 +9,9 @@ using PicSum.UIComponent.Contents.Properties;
 using SWF.Core.Base;
 using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
+using SWF.UIComponent.TabOperation;
 using System;
+using System.Drawing;
 using System.Linq;
 using System.Runtime.Versioning;
 using System.Windows.Forms;
@@ -140,10 +142,17 @@ namespace PicSum.UIComponent.Contents.FileList
             base.Dispose(disposing);
         }
 
-        protected override void OnDrawTabPage(SWF.UIComponent.TabOperation.DrawTabEventArgs e)
+        protected override void OnDrawTabPage(DrawTabEventArgs e)
         {
             e.Graphics.DrawImage(this.Icon, e.IconRectangle);
-            DrawTextUtil.DrawText(e.Graphics, this.Title, e.Font, e.TextRectangle, e.TitleColor, e.TitleFormatFlags, e.TextStyle);
+            DrawTextUtil.DrawText(
+                e.Graphics, this.Title, e.Font,
+                new Rectangle(
+                    (int)e.TextRectangle.X,
+                    (int)e.TextRectangle.Y,
+                    (int)e.TextRectangle.Width,
+                    (int)e.TextRectangle.Height),
+                e.TitleColor, e.TitleFormatFlags, e.TextStyle);
         }
 
         protected override void OnBackgroundMouseClick(MouseEventArgs e)

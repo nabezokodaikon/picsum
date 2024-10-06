@@ -7,8 +7,10 @@ using PicSum.UIComponent.Contents.Conf;
 using PicSum.UIComponent.Contents.Parameter;
 using PicSum.UIComponent.Contents.Properties;
 using SWF.Core.ImageAccessor;
+using SWF.UIComponent.TabOperation;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Runtime.Versioning;
 using System.Windows.Forms;
 
@@ -110,10 +112,17 @@ namespace PicSum.UIComponent.Contents.FileList
             this.SearchJob.StartJob(param);
         }
 
-        protected override void OnDrawTabPage(SWF.UIComponent.TabOperation.DrawTabEventArgs e)
+        protected override void OnDrawTabPage(DrawTabEventArgs e)
         {
             e.Graphics.DrawImage(this.Icon, e.IconRectangle);
-            DrawTextUtil.DrawText(e.Graphics, this.Title, e.Font, e.TextRectangle, e.TitleColor, e.TitleFormatFlags, e.TextStyle);
+            DrawTextUtil.DrawText(
+                e.Graphics, this.Title, e.Font,
+                new Rectangle(
+                    (int)e.TextRectangle.X,
+                    (int)e.TextRectangle.Y,
+                    (int)e.TextRectangle.Width,
+                    (int)e.TextRectangle.Height),
+                e.TitleColor, e.TitleFormatFlags, e.TextStyle);
         }
 
         protected override void OnBackgroundMouseClick(MouseEventArgs e)

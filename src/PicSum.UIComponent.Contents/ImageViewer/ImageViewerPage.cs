@@ -11,6 +11,7 @@ using PicSum.UIComponent.Contents.Parameter;
 using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
 using SWF.UIComponent.ImagePanel;
+using SWF.UIComponent.TabOperation;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -346,10 +347,17 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             return base.ProcessDialogKey(keyData);
         }
 
-        protected override void OnDrawTabPage(SWF.UIComponent.TabOperation.DrawTabEventArgs e)
+        protected override void OnDrawTabPage(DrawTabEventArgs e)
         {
             e.Graphics.DrawImage(this.Icon, e.IconRectangle);
-            DrawTextUtil.DrawText(e.Graphics, this.Title, e.Font, e.TextRectangle, e.TitleColor, e.TitleFormatFlags, e.TextStyle);
+            DrawTextUtil.DrawText(
+                e.Graphics, this.Title, e.Font,
+                new Rectangle(
+                    (int)e.TextRectangle.X,
+                    (int)e.TextRectangle.Y,
+                    (int)e.TextRectangle.Width,
+                    (int)e.TextRectangle.Height),
+                e.TitleColor, e.TitleFormatFlags, e.TextStyle);
         }
 
         protected override void OnResize(EventArgs e)

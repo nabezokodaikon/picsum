@@ -17,9 +17,9 @@ namespace SWF.UIComponent.TabOperation
     {
         #region 定数・列挙
 
-        private const int OUTLINE_OFFSET = 1;
-        private const int DRAW_TAB_WIDHT_OFFSET = 8;
-        private const int CAPTURE_WIDTH = 320;
+        private const float OUTLINE_OFFSET = 1;
+        private const float DRAW_TAB_WIDHT_OFFSET = 8;
+        private const float CAPTURE_WIDTH = 320;
 
         #endregion
 
@@ -98,10 +98,10 @@ namespace SWF.UIComponent.TabOperation
 
         #region パブリックメソッド
 
-        public void SetLocation(int xOffset, int yOffset)
+        public void SetLocation(float xOffset, float yOffset)
         {
             var screenPoint = Cursor.Position;
-            this.Location = new Point(screenPoint.X - DRAW_TAB_WIDHT_OFFSET - xOffset, screenPoint.Y - yOffset);
+            this.Location = new Point(screenPoint.X - (int)DRAW_TAB_WIDHT_OFFSET - (int)xOffset, screenPoint.Y - (int)yOffset);
 
             var leftBorderRect = ScreenUtil.GetLeftBorderRect();
             if (leftBorderRect.Contains(screenPoint))
@@ -152,7 +152,7 @@ namespace SWF.UIComponent.TabOperation
             {
                 var pageSize = this.GetPageSize(pageCap);
                 var regionSize = this.GetRegionSize(pageSize);
-                var regionImage = new Bitmap(regionSize.Width, regionSize.Height);
+                var regionImage = new Bitmap((int)regionSize.Width, (int)regionSize.Height);
 
                 using (var g = Graphics.FromImage(regionImage))
                 {
@@ -250,37 +250,37 @@ namespace SWF.UIComponent.TabOperation
             this.Opacity = 0.75d;
         }
 
-        private Size GetPageSize(Bitmap pageCap)
+        private SizeF GetPageSize(Bitmap pageCap)
         {
-            var scale = CAPTURE_WIDTH / (double)pageCap.Width;
-            var w = (int)(pageCap.Width * scale);
-            var h = (int)(pageCap.Height * scale);
-            return new Size(w, h);
+            var scale = CAPTURE_WIDTH / (float)pageCap.Width;
+            var w = pageCap.Width * scale;
+            var h = pageCap.Height * scale;
+            return new SizeF(w, h);
         }
 
-        private Size GetRegionSize(Size pageSize)
+        private SizeF GetRegionSize(SizeF pageSize)
         {
             var w = pageSize.Width + OUTLINE_OFFSET * 2;
             var h = this.TabDrawArea.Height + pageSize.Height + OUTLINE_OFFSET;
-            return new Size(w, h);
+            return new SizeF(w, h);
         }
 
-        private Rectangle GetOutlineRectangle(Size pageSize)
+        private RectangleF GetOutlineRectangle(SizeF pageSize)
         {
             var w = pageSize.Width + OUTLINE_OFFSET * 2;
             var h = pageSize.Height + OUTLINE_OFFSET * 2;
             var x = 0;
             var y = this.TabDrawArea.Height - OUTLINE_OFFSET;
-            return new Rectangle(x, y, w, h);
+            return new RectangleF(x, y, w, h);
         }
 
-        private Rectangle GetPageRectangle(Rectangle outlineRectangle)
+        private RectangleF GetPageRectangle(RectangleF outlineRectangle)
         {
             var l = outlineRectangle.Left + OUTLINE_OFFSET;
             var t = outlineRectangle.Top + OUTLINE_OFFSET;
             var r = outlineRectangle.Right - OUTLINE_OFFSET;
             var b = outlineRectangle.Bottom - OUTLINE_OFFSET;
-            return Rectangle.FromLTRB(l, t, r, b);
+            return RectangleF.FromLTRB(l, t, r, b);
         }
 
         #endregion

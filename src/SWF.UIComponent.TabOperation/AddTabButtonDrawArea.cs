@@ -17,15 +17,15 @@ namespace SWF.UIComponent.TabOperation
 
         #region クラスメンバ
 
-        private readonly static Rectangle DEFAULT_RECTANGLE = GetDefaultRectangle();
+        private readonly static RectangleF DEFAULT_RECTANGLE = GetDefaultRectangle();
 
-        private static Rectangle GetDefaultRectangle()
+        private static RectangleF GetDefaultRectangle()
         {
             var x = 0;
-            var y = (int)((TAB_HEIGHT - PAGE_SIZE) / 2d);
+            var y = (TAB_HEIGHT - PAGE_SIZE) / 2f;
             var w = PAGE_SIZE;
             var h = PAGE_SIZE;
-            return new Rectangle(x, y, w, h);
+            return new RectangleF(x, y, w, h);
         }
 
         private static readonly SolidBrush MOUSE_POINT_BRUSH = new(Color.FromArgb(128, 255, 255, 255));
@@ -41,15 +41,15 @@ namespace SWF.UIComponent.TabOperation
 
         #region インスタンス変数
 
-        private readonly int width = DEFAULT_RECTANGLE.Width;
-        private readonly int height = DEFAULT_RECTANGLE.Height;
-        private Point drawPoint = new(DEFAULT_RECTANGLE.X, DEFAULT_RECTANGLE.Y);
+        private readonly float width = DEFAULT_RECTANGLE.Width;
+        private readonly float height = DEFAULT_RECTANGLE.Height;
+        private PointF drawPoint = new(DEFAULT_RECTANGLE.X, DEFAULT_RECTANGLE.Y);
 
         #endregion
 
         #region プロパティ
 
-        public int X
+        public float X
         {
             get
             {
@@ -61,7 +61,7 @@ namespace SWF.UIComponent.TabOperation
             }
         }
 
-        public int Y
+        public float Y
         {
             get
             {
@@ -73,7 +73,7 @@ namespace SWF.UIComponent.TabOperation
             }
         }
 
-        public int Left
+        public float Left
         {
             get
             {
@@ -85,7 +85,7 @@ namespace SWF.UIComponent.TabOperation
             }
         }
 
-        public int Top
+        public float Top
         {
             get
             {
@@ -97,7 +97,7 @@ namespace SWF.UIComponent.TabOperation
             }
         }
 
-        public int Right
+        public float Right
         {
             get
             {
@@ -109,7 +109,7 @@ namespace SWF.UIComponent.TabOperation
             }
         }
 
-        public int Bottom
+        public float Bottom
         {
             get
             {
@@ -121,7 +121,7 @@ namespace SWF.UIComponent.TabOperation
             }
         }
 
-        public int Width
+        public float Width
         {
             get
             {
@@ -129,7 +129,7 @@ namespace SWF.UIComponent.TabOperation
             }
         }
 
-        public int Height
+        public float Height
         {
             get
             {
@@ -141,14 +141,14 @@ namespace SWF.UIComponent.TabOperation
 
         #region メソッド
 
-        public bool Page(Point p)
+        public bool Page(PointF p)
         {
             return this.Page(p.X, p.Y);
         }
 
-        public bool Page(int x, int y)
+        public bool Page(float x, float y)
         {
-            var rect = new Rectangle(this.drawPoint.X, this.drawPoint.Y, this.width, this.height);
+            var rect = new RectangleF(this.drawPoint.X, this.drawPoint.Y, this.width, this.height);
             return rect.Contains(x, y);
         }
 
@@ -169,7 +169,7 @@ namespace SWF.UIComponent.TabOperation
         private void Draw(Graphics g, bool isMousePoint)
         {
             const float OFFSET = 6f;
-            var rect = new Rectangle(this.drawPoint.X, this.drawPoint.Y, this.width, this.height);
+            var rect = new RectangleF(this.drawPoint.X, this.drawPoint.Y, this.width, this.height);
             var bgRect = new RectangleF(rect.Left + OFFSET / 2f, rect.Top + OFFSET / 2f, rect.Width - OFFSET, rect.Height - OFFSET);
             var vp1 = new PointF(rect.Left + OFFSET + rect.Width / 4f, rect.Top + OFFSET);
             var vp2 = new PointF(rect.Left + OFFSET + rect.Width / 4f, rect.Bottom - OFFSET);

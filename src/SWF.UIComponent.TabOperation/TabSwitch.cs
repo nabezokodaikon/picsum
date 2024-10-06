@@ -21,18 +21,18 @@ namespace SWF.UIComponent.TabOperation
         #region 定数・列挙
 
         // タブ同士のの間隔
-        private const int TAB_MARGIN = 2;
+        private const float TAB_MARGIN = 2;
 
         // タブの最大幅
-        private const int TAB_MAXIMUM_WIDTH = 256;
+        private const float TAB_MAXIMUM_WIDTH = 256;
 
         // タブの最小幅
-        public const int TAB_MINIMUM_WIDTH = 1;
+        public const float TAB_MINIMUM_WIDTH = 1;
 
         // タブ領域の間隔
-        internal const int TABS_MARGIN = 8;
+        internal const float TABS_MARGIN = 8;
 
-        internal const int TAB_CLOSE_BUTTON_CAN_DRAW_WIDTH = 64;
+        internal const float TAB_CLOSE_BUTTON_CAN_DRAW_WIDTH = 64;
 
         // タブを移動するとみなす重なりの比率
         private const float TAB_DRAG_OVERLAP_RATE = 0.4f;
@@ -605,22 +605,22 @@ namespace SWF.UIComponent.TabOperation
         /// タブのスクリーン領域を取得します。
         /// </summary>
         /// <returns></returns>
-        internal Rectangle GetTabsScreenRectangle()
+        internal RectangleF GetTabsScreenRectangle()
         {
             var rect = this.GetTabsRectangle();
-            var p = this.PointToScreen(new Point(rect.X, rect.Y));
+            var p = this.PointToScreen(new Point((int)rect.X, (int)rect.Y));
             var x = p.X;
             var y = p.Y;
             var w = rect.Width;
             var h = rect.Height;
-            return new Rectangle(x, y, w, h);
+            return new RectangleF(x, y, w, h);
         }
 
         /// <summary>
         /// タブのクライアント領域を取得します。
         /// </summary>
         /// <returns></returns>
-        internal Rectangle GetTabsClientRectangle()
+        internal RectangleF GetTabsClientRectangle()
         {
             return this.GetTabsRectangle();
         }
@@ -829,7 +829,7 @@ namespace SWF.UIComponent.TabOperation
             if (e.Button == MouseButtons.Left)
             {
                 var tab = this.GetTabFromPoint(e.X, e.Y);
-                var tabAddButtonRect = new Rectangle(
+                var tabAddButtonRect = new RectangleF(
                     this.addTabButtonDrawArea.X, this.addTabButtonDrawArea.Y, this.addTabButtonDrawArea.Width, this.addTabButtonDrawArea.Height);
                 if (tab == null
                     && this.GetHeaderRectangle().Contains(e.X, e.Y)
@@ -1195,14 +1195,14 @@ namespace SWF.UIComponent.TabOperation
             return new Rectangle(x, y, w, h);
         }
 
-        private Rectangle GetTabsRectangle()
+        private RectangleF GetTabsRectangle()
         {
             var rect = this.ClientRectangle;
             var x = rect.X + TABS_MARGIN;
             var y = rect.Y;
             var w = rect.Width - this.tabsRightOffset - TABS_MARGIN * 2 - TAB_MARGIN - this.addTabButtonDrawArea.Width;
             var h = this.tabHeight;
-            return new Rectangle(x, y, w, h);
+            return new RectangleF(x, y, w, h);
         }
 
         private void SetTabsDrawArea()
@@ -1271,7 +1271,7 @@ namespace SWF.UIComponent.TabOperation
             }
         }
 
-        private int GetTabWidth()
+        private float GetTabWidth()
         {
             var rect = this.GetTabsRectangle();
 
@@ -1282,14 +1282,14 @@ namespace SWF.UIComponent.TabOperation
                 float tabW;
                 if (this.tabList.Count > 0)
                 {
-                    tabW = (rect.Width - TAB_MARGIN * (this.tabList.Count - 1)) / this.tabList.Count;
+                    tabW = (rect.Width - TAB_MARGIN * (this.tabList.Count - 1)) / (float)this.tabList.Count;
                 }
                 else
                 {
                     tabW = rect.Width;
                 }
 
-                return (int)Math.Max(tabW, TAB_MINIMUM_WIDTH);
+                return Math.Max(tabW, TAB_MINIMUM_WIDTH);
             }
             else
             {

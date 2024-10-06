@@ -17,8 +17,8 @@ namespace SWF.UIComponent.TabOperation
         private static TabDragForm tabDragForm = null;
         private static TabInfo tab = null;
         private static Point fromScreenPoint = Point.Empty;
-        private static int widthOffset = 0;
-        private static int heightOffset = 0;
+        private static float widthOffset = 0;
+        private static float heightOffset = 0;
         private static bool isBegin = false;
         private static bool isMoving = false;
 
@@ -168,7 +168,7 @@ namespace SWF.UIComponent.TabOperation
             {
                 // タブが所有されている場合。
                 var tabsScreenRectangle = tab.Owner.GetTabsScreenRectangle();
-                if (new Rectangle(
+                if (new RectangleF(
                         tabsScreenRectangle.X - 24,
                         tabsScreenRectangle.Y - 8,
                         tabsScreenRectangle.Width + 48,
@@ -177,7 +177,7 @@ namespace SWF.UIComponent.TabOperation
                 {
                     var clientPoint = tab.Owner.PointToClient(toScreenPoint);
 
-                    int toX;
+                    float toX;
                     if (tab.DrawArea.Width > widthOffset)
                     {
                         toX = clientPoint.X - widthOffset;

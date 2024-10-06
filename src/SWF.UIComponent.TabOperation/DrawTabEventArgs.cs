@@ -12,9 +12,9 @@ namespace SWF.UIComponent.TabOperation
         public Font Font { get; set; }
         public Color TitleColor { get; set; }
         public TextFormatFlags TitleFormatFlags { get; set; }
-        public Rectangle TextRectangle { get; set; }
-        public Rectangle IconRectangle { get; set; }
-        public Rectangle CloseButtonRectangle { get; set; }
+        public RectangleF TextRectangle { get; set; }
+        public RectangleF IconRectangle { get; set; }
+        public RectangleF CloseButtonRectangle { get; set; }
         public DrawTextUtil.TextStyle TextStyle { get; set; }
     }
 }
