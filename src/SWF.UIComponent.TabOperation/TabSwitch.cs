@@ -662,7 +662,7 @@ namespace SWF.UIComponent.TabOperation
 
         protected override void OnPaintBackground(PaintEventArgs pevent)
         {
-            //base.OnPaintBackground(pevent);
+
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -688,8 +688,6 @@ namespace SWF.UIComponent.TabOperation
             }
 
             this.DrawDropPoint(e.Graphics);
-
-            base.OnPaint(e);
         }
 
         protected override void OnLostFocus(EventArgs e)
@@ -836,12 +834,6 @@ namespace SWF.UIComponent.TabOperation
                     && !tabAddButtonRect.Contains(e.X, e.Y))
                 {
                     this.OnBackgroundMouseLeftDoubleClick(EventArgs.Empty);
-                    //Form form = getForm();
-                    //Point p = form.PointToClient(Cursor.Position);
-                    //string x = p.X.ToString("X4");
-                    //string y = p.Y.ToString("X4");
-                    //int lParam = int.Parse(x + y, NumberStyles.AllowHexSpecifier);
-                    //WinApiMembers.SendMessage(form.Handle, WinApiMembers.WM_LBUTTONDBLCLK, 0, lParam);
                 }
             }
 

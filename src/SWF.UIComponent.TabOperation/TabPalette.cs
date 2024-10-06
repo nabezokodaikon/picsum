@@ -12,22 +12,19 @@ namespace SWF.UIComponent.TabOperation
     public sealed class TabPalette
         : Component
     {
-        private static Font titleFont = new("Yu Gothic UI", 10F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(128)));
-        private static Color titleColor = Color.FromArgb(0, 64, 64, 64);
-        private static TextFormatFlags titleFormatFlags = TextFormatFlags.Left |
-                                                          TextFormatFlags.VerticalCenter |
-                                                          TextFormatFlags.SingleLine |
-                                                          TextFormatFlags.EndEllipsis;
+        private static readonly Font TITLE_FONT = new("Yu Gothic UI", 10F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(128)));
+        private static readonly Color TITLE_COLOR = Color.FromArgb(0, 64, 64, 64);
+        private static readonly TextFormatFlags TITLE_FORMAT_FLAGS
+            = TextFormatFlags.Left |
+              TextFormatFlags.VerticalCenter |
+              TextFormatFlags.SingleLine |
+              TextFormatFlags.EndEllipsis;
 
         public Font TitleFont
         {
             get
             {
-                return titleFont;
-            }
-            set
-            {
-                titleFont = value;
+                return TITLE_FONT;
             }
         }
 
@@ -35,11 +32,7 @@ namespace SWF.UIComponent.TabOperation
         {
             get
             {
-                return titleColor;
-            }
-            set
-            {
-                titleColor = value;
+                return TITLE_COLOR;
             }
         }
 
@@ -47,11 +40,7 @@ namespace SWF.UIComponent.TabOperation
         {
             get
             {
-                return titleFormatFlags;
-            }
-            set
-            {
-                titleFormatFlags = value;
+                return TITLE_FORMAT_FLAGS;
             }
         }
     }

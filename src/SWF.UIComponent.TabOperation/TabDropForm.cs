@@ -55,7 +55,7 @@ namespace SWF.UIComponent.TabOperation
 
         protected override void OnPaintBackground(PaintEventArgs e)
         {
-            //base.OnPaintBackground(e);
+
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -64,8 +64,6 @@ namespace SWF.UIComponent.TabOperation
             {
                 e.Graphics.DrawImage(this.dropImage, 0, 0, this.dropImage.Width, this.dropImage.Height);
             }
-
-            base.OnPaint(e);
         }
 
         protected override void OnLoad(EventArgs e)

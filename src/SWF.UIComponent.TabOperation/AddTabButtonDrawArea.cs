@@ -1,4 +1,3 @@
-using SWF.UIComponent.TabOperation.Properties;
 using System;
 using System.Drawing;
 using System.Runtime.Versioning;
@@ -32,10 +31,6 @@ namespace SWF.UIComponent.TabOperation
         private static readonly SolidBrush NORMAL_BRUSH = new(Color.FromArgb(64, 0, 0, 0));
         private static readonly Pen MOUSE_POINT_PEN = new(Color.Black, 2f);
         private static readonly Pen NORMAL_PEN = new(Color.White, 2f);
-
-        #endregion
-
-        #region イベント・デリゲート
 
         #endregion
 
