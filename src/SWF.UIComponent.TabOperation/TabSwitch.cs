@@ -829,8 +829,11 @@ namespace SWF.UIComponent.TabOperation
             if (e.Button == MouseButtons.Left)
             {
                 var tab = this.GetTabFromPoint(e.X, e.Y);
-                if (tab == null &&
-                    this.GetHeaderRectangle().Contains(e.X, e.Y))
+                var tabAddButtonRect = new Rectangle(
+                    this.addTabButtonDrawArea.X, this.addTabButtonDrawArea.Y, this.addTabButtonDrawArea.Width, this.addTabButtonDrawArea.Height);
+                if (tab == null
+                    && this.GetHeaderRectangle().Contains(e.X, e.Y)
+                    && !tabAddButtonRect.Contains(e.X, e.Y))
                 {
                     this.OnBackgroundMouseLeftDoubleClick(EventArgs.Empty);
                     //Form form = getForm();
