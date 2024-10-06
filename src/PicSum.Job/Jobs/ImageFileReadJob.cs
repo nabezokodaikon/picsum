@@ -67,8 +67,6 @@ namespace PicSum.Job.Jobs
                         mainFilePath, true, true, parameter.ThumbnailSize, parameter.ImageSizeMode);
                     this.Callback(mainResult);
 
-                    this.CheckCancel();
-
                     var subResult = this.CreateResult(
                         subFilePath, false, true, parameter.ThumbnailSize, parameter.ImageSizeMode);
                     this.Callback(subResult);
