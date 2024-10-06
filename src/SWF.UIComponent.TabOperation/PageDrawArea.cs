@@ -1,5 +1,3 @@
-using SWF.Core.ImageAccessor;
-using SWF.UIComponent.TabOperation.Properties;
 using System;
 using System.Drawing;
 using System.Runtime.Versioning;
@@ -9,41 +7,15 @@ namespace SWF.UIComponent.TabOperation
     [SupportedOSPlatform("windows")]
     public sealed class PageDrawArea
     {
-        #region 定数・列挙
-
-        private const int TAB_OVERLAP = 1;
-
-        #endregion
-
-        #region クラスメンバ
-
-        private static Color GetOutlineColor()
-        {
-            return Color.FromArgb(128, 128, 128);
-        }
-
-        private static Color GetInnerColor()
-        {
-            return Color.FromArgb(241, 244, 250);
-        }
-
-        #endregion
-
-        #region インスタンス変数
-
-        private readonly SolidBrush outlineBrush = new(GetOutlineColor());
-        private readonly SolidBrush innerBrush = new(GetInnerColor());
-        private readonly int top = 29 - TAB_OVERLAP;
-
-        #endregion
-
-        #region プロパティ
+        private static readonly SolidBrush OUTLINE_BRUSH = new(Color.FromArgb(128, 128, 128));
+        private static readonly SolidBrush INNER_BRUSH = new(Color.FromArgb(241, 244, 250));
+        private static readonly int TOP = 28;
 
         public Color OutlineColor
         {
             get
             {
-                return this.outlineBrush.Color;
+                return OUTLINE_BRUSH.Color;
             }
         }
 
@@ -51,7 +23,7 @@ namespace SWF.UIComponent.TabOperation
         {
             get
             {
-                return this.outlineBrush;
+                return OUTLINE_BRUSH;
             }
         }
 
@@ -59,7 +31,7 @@ namespace SWF.UIComponent.TabOperation
         {
             get
             {
-                return this.innerBrush.Color;
+                return INNER_BRUSH.Color;
             }
         }
 
@@ -67,13 +39,9 @@ namespace SWF.UIComponent.TabOperation
         {
             get
             {
-                return this.innerBrush;
+                return INNER_BRUSH;
             }
         }
-
-        #endregion
-
-        #region メソッド
 
         public void Draw(Graphics g)
         {
@@ -85,22 +53,20 @@ namespace SWF.UIComponent.TabOperation
 
         private void DrawOutline(Graphics g)
         {
-            var x = (int)g.ClipBounds.X;
-            var y = this.top;
-            var w = (int)g.ClipBounds.Width;
+            var x = g.ClipBounds.X;
+            var y = TOP;
+            var w = g.ClipBounds.Width;
             var h = 1;
-            g.FillRectangle(this.outlineBrush, x, y, w, h);
+            g.FillRectangle(OUTLINE_BRUSH, x, y, w, h);
         }
 
         private void DrawInnerRectangle(Graphics g)
         {
-            var x = (int)g.ClipBounds.X;
-            var y = this.top + 1;
-            var w = (int)g.ClipBounds.Width;
-            var h = (int)g.ClipBounds.Height - y;
-            g.FillRectangle(this.innerBrush, x, y, w, h);
+            var x = g.ClipBounds.X;
+            var y = TOP + 1;
+            var w = g.ClipBounds.Width;
+            var h = g.ClipBounds.Height - y;
+            g.FillRectangle(INNER_BRUSH, x, y, w, h);
         }
-
-        #endregion
     }
 }
