@@ -1,6 +1,8 @@
 using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.Runtime.Versioning;
+using System.Threading;
 
 namespace SWF.UIComponent.TabOperation
 {
@@ -180,6 +182,11 @@ namespace SWF.UIComponent.TabOperation
             {
                 this.page.Dispose();
                 this.page = null;
+
+                var sw = Stopwatch.StartNew();
+                GC.Collect();
+                sw.Stop();
+                Console.WriteLine($"[{Thread.CurrentThread.Name}] GC.Collect: {sw.ElapsedMilliseconds} ms");
             }
         }
 
