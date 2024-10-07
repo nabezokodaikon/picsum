@@ -125,7 +125,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                         .Callback(r =>
                         {
                             var sw = Stopwatch.StartNew();
-                            Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageViewerPage.ImageFileReadJob_Callback: Start");
+                            Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageViewerPage.ImageFileReadJob_Callback: Start IsMain = {r.IsMain}");
 
                             this.ImageFileReadJob_Callback(r);
                             sw.Stop();
@@ -134,10 +134,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                         .Cancel(() =>
                         {
                             Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageViewerPage.ImageFileReadJob.Cancel");
-                        })
-                        .Catch(_ =>
-                        {
-                            this.Cursor = Cursors.Default;
                         })
                         .Complete(() =>
                         {
@@ -793,15 +789,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
         private void ImageFileReadJob_Callback(ImageFileGetResult e)
         {
-            if (e.IsMain)
-            {
-                var index = this.filePathList.IndexOf(e.Image.FilePath);
-                if (index != this.FilePathListIndex)
-                {
-                    return;
-                }
-            }
-
             Size bgSize;
             if (e.HasSub)
             {
