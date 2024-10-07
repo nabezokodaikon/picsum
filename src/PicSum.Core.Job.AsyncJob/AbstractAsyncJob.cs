@@ -71,8 +71,6 @@ namespace PicSum.Core.Job.AsyncJob
                 {
                     this.Execute();
                 }
-
-                this.CompleteAction?.Invoke();
             }
             catch (JobCancelException)
             {
@@ -83,6 +81,10 @@ namespace PicSum.Core.Job.AsyncJob
             {
                 Logger.Error($"{this.ID} {ex}");
                 this.CatchAction?.Invoke(ex);
+            }
+            finally
+            {
+                this.CompleteAction?.Invoke();
             }
         }
 

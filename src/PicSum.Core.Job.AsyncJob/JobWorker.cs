@@ -243,12 +243,6 @@ namespace PicSum.Core.Job.AsyncJob
                                     ArgumentNullException.ThrowIfNull(state, nameof(state));
                                     var result = (TJobResult)state;
                                     this.callbackAction(result);
-
-                                    if (this.WaitUIThread)
-                                    {
-                                        Logger.Debug($"{job.ID} UIスレッドの待機を解除します。");
-                                        this.WaitUIThread = false;
-                                    }
                                 }, r);
                             };
                         }
@@ -257,15 +251,9 @@ namespace PicSum.Core.Job.AsyncJob
                         {
                             job.CancelAction = () =>
                             {
-                                this.context.Post(state =>
+                                this.context.Post(_ =>
                                 {
                                     this.cancelAction();
-
-                                    if (this.WaitUIThread)
-                                    {
-                                        Logger.Debug($"{job.ID} UIスレッドの待機を解除します。");
-                                        this.WaitUIThread = false;
-                                    }
                                 }, null);
                             };
                         }
@@ -279,47 +267,30 @@ namespace PicSum.Core.Job.AsyncJob
                                     ArgumentNullException.ThrowIfNull(state, nameof(state));
                                     var ex = (JobException)state;
                                     this.catchAction(ex);
-
-                                    if (this.WaitUIThread)
-                                    {
-                                        Logger.Debug($"{job.ID} UIスレッドの待機を解除します。");
-                                        this.WaitUIThread = false;
-                                    }
                                 }, e);
                             };
                         }
 
-                        if (this.completeAction != null)
+                        job.CompleteAction = () =>
                         {
-                            job.CompleteAction = () =>
+                            this.context.Post(_ =>
                             {
-                                this.context.Post(state =>
+                                if (this.completeAction != null)
                                 {
                                     this.completeAction();
+                                }
 
-                                    if (this.WaitUIThread)
-                                    {
-                                        Logger.Debug($"{job.ID} UIスレッドの待機を解除します。");
-                                        this.WaitUIThread = false;
-                                    }
-                                }, null);
-                            };
-                        }
+                                if (this.WaitUIThread)
+                                {
+                                    Logger.Debug($"{job.ID} UIスレッドの待機を解除します。");
+                                    this.WaitUIThread = false;
+                                }
+                            }, null);
+                        };
 
                         try
                         {
                             job.ExecuteWrapper();
-
-                            if (this.WaitUIThread)
-                            {
-                                Logger.Debug($"{job.ID} が終了するまで待機します。");
-                                while (this.WaitUIThread)
-                                {
-                                    token.WaitHandle.WaitOne(1);
-                                }
-
-                                return;
-                            }
                         }
                         catch (JobCancelException)
                         {
@@ -327,6 +298,15 @@ namespace PicSum.Core.Job.AsyncJob
                         }
                         finally
                         {
+                            if (this.WaitUIThread)
+                            {
+                                Logger.Debug($"{job.ID} が終了するまで待機します。");
+                                while (this.WaitUIThread)
+                                {
+                                    token.WaitHandle.WaitOne(1);
+                                }
+                            }
+
                             Logger.Debug($"{job.ID} が終了しました。");
                         }
                     }
