@@ -31,6 +31,20 @@ namespace PicSum.Job.Jobs
             }
         }
 
+        private long isRead = 0;
+
+        private bool IsRead
+        {
+            get
+            {
+                return Interlocked.Read(ref this.isRead) == 1;
+            }
+            set
+            {
+                Interlocked.Exchange(ref this.isRead, Convert.ToInt64(value));
+            }
+        }
+
         protected override void Execute(ImageFileReadParameter parameter)
         {
             ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
@@ -40,11 +54,8 @@ namespace PicSum.Job.Jobs
                 throw new ArgumentException("ファイルパスリストがNULLです。", nameof(parameter));
             }
 
-            this.CheckCancel();
-
             var mainFilePath = parameter.FilePathList[parameter.CurrentIndex];
             var mainSize = this.GetImageSize(mainFilePath);
-            this.CheckCancel();
 
             if (parameter.ImageDisplayMode != ImageDisplayMode.Single
                 && mainSize != ImageUtil.EMPTY_SIZE
@@ -58,36 +69,127 @@ namespace PicSum.Job.Jobs
 
                 var subFilePath = parameter.FilePathList[subtIndex];
                 var subSize = this.GetImageSize(subFilePath);
-                this.CheckCancel();
 
                 if (subSize != ImageUtil.EMPTY_SIZE
                     && subSize.Width < subSize.Height)
                 {
-                    var mainResult = this.CreateResult(
-                        mainFilePath, true, true, parameter.ThumbnailSize, parameter.ImageSizeMode);
-                    this.Callback(mainResult);
+                    this.Callback(
+                        mainFilePath, true, true, parameter.ThumbnailSize, parameter.ImageSizeMode, mainSize);
 
-                    var subResult = this.CreateResult(
-                        subFilePath, false, true, parameter.ThumbnailSize, parameter.ImageSizeMode);
-                    this.Callback(subResult);
+                    this.Callback(
+                        subFilePath, false, true, parameter.ThumbnailSize, parameter.ImageSizeMode, subSize);
                 }
                 else
                 {
-                    var result = this.CreateResult(
-                        mainFilePath, true, false, parameter.ThumbnailSize, parameter.ImageSizeMode);
-                    this.Callback(result);
+                    this.Callback(
+                        mainFilePath, true, false, parameter.ThumbnailSize, parameter.ImageSizeMode, mainSize);
                 }
             }
             else
             {
-                var result = this.CreateResult(
-                    mainFilePath, true, false, parameter.ThumbnailSize, parameter.ImageSizeMode);
-                this.Callback(result);
+                this.Callback(
+                    mainFilePath, true, false, parameter.ThumbnailSize, parameter.ImageSizeMode, mainSize);
             }
         }
 
+        private async void Callback(
+            string filePath, bool isMain, bool hasSub, int thumbnailSize, ImageSizeMode imageSizeMode, Size imageSize)
+        {
+            var readTime = Stopwatch.StartNew();
+
+            this.IsRead = false;
+            Exception? exception = null;
+
+            var task = Task.Run(() =>
+            {
+                try
+                {
+                    return this.CreateResult(
+                        filePath, isMain, hasSub, thumbnailSize, imageSizeMode, imageSize);
+                }
+                catch (JobCancelException)
+                {
+                    return null;
+                }
+                catch (Exception ex)
+                {
+                    exception = ex;
+                    return null;
+                }
+                finally
+                {
+                    this.IsRead = true;
+                }
+            });
+
+            var isEmpryRead = false;
+            while (true)
+            {
+                if (this.IsRead)
+                {
+                    var result = await task;
+                    if (result != null)
+                    {
+                        this.Callback(result);
+                        break;
+                    }
+                    else if (exception != null)
+                    {
+                        throw exception;
+                    }
+                    else if (result == null)
+                    {
+                        break;
+                    }
+                }
+
+                if (!isEmpryRead && readTime.ElapsedMilliseconds > 20)
+                {
+                    var emptyResult = this.CreateEmptyResult(
+                        filePath, isMain, hasSub, thumbnailSize, imageSizeMode, imageSize);
+                    this.Callback(emptyResult);
+                    isEmpryRead = true;
+                }
+
+                Thread.Sleep(1);
+            }
+        }
+
+        private ImageFileGetResult CreateEmptyResult(
+            string filePath, bool isMain, bool hasSub, int thumbnailSize, ImageSizeMode imageSizeMode, Size imageSize)
+        {
+            var image = new CvImage(this.CreateEmptyImage(imageSize));
+            var thumbLogic = new ThumbnailGetLogic(this);
+            var thumbnail = thumbLogic.CreateThumbnail(image, thumbnailSize, imageSizeMode);
+
+            return new()
+            {
+                IsMain = isMain,
+                HasSub = hasSub,
+                Image = new()
+                {
+                    FilePath = filePath,
+                    Thumbnail = thumbnail,
+                    Image = image,
+                    Size = imageSize,
+                    IsEmpty = true,
+                    IsError = false,
+                }
+            };
+        }
+
+        private Bitmap CreateEmptyImage(Size imageSize)
+        {
+            var bmp = new Bitmap(imageSize.Width, imageSize.Height);
+            using (var g = Graphics.FromImage(bmp))
+            {
+                g.FillRectangle(Brushes.Gray, new Rectangle(0, 0, bmp.Width, bmp.Height));
+            }
+            return bmp;
+        }
+
         private ImageFileGetResult CreateResult(
-            string filePath, bool isMain, bool hasSub, int thumbnailSize, ImageSizeMode imageSizeMode)
+            string filePath, bool isMain, bool hasSub, int thumbnailSize, ImageSizeMode imageSizeMode, Size imageSize)
         {
             var sw = Stopwatch.StartNew();
             Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageFileReadJob.CreateResult Start IsMain: {isMain}");
@@ -116,6 +218,8 @@ namespace PicSum.Job.Jobs
                     FilePath = filePath,
                     Thumbnail = thumbnail,
                     Image = image,
+                    Size = imageSize,
+                    IsEmpty = false,
                     IsError = isError,
                 };
 

@@ -789,15 +789,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
         private void ImageFileReadJob_Callback(ImageFileGetResult e)
         {
-            if (e.IsMain)
-            {
-                var index = this.filePathList.IndexOf(e.Image.FilePath);
-                if (index != this.FilePathListIndex)
-                {
-                    return;
-                }
-            }
-
             Size bgSize;
             if (e.HasSub)
             {
@@ -829,7 +820,8 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 }
                 else
                 {
-                    this.leftImagePanel.SetImage(this.sizeMode, e.Image.Image, e.Image.Thumbnail);
+                    this.leftImagePanel.SetImage(
+                        this.sizeMode, e.Image.Image, e.Image.Thumbnail, e.Image.IsEmpty, e.Image.FilePath);
                     var scale = GetImageScale(e.Image.Image.Size, bgSize, this.sizeMode);
                     this.leftImagePanel.SetScale(scale);
                 }
@@ -848,7 +840,8 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                     }
                     else
                     {
-                        this.leftImagePanel.SetImage(this.sizeMode, e.Image.Image, e.Image.Thumbnail);
+                        this.leftImagePanel.SetImage(
+                            this.sizeMode, e.Image.Image, e.Image.Thumbnail, e.Image.IsEmpty, e.Image.FilePath);
                         var scale = GetImageScale(e.Image.Image.Size, bgSize, this.sizeMode);
                         this.leftImagePanel.SetScale(scale);
                     }
@@ -864,7 +857,8 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                     }
                     else
                     {
-                        this.rightImagePanel.SetImage(this.sizeMode, e.Image.Image, e.Image.Thumbnail);
+                        this.rightImagePanel.SetImage(
+                            this.sizeMode, e.Image.Image, e.Image.Thumbnail, e.Image.IsEmpty, e.Image.FilePath);
                         var scale = GetImageScale(e.Image.Image.Size, bgSize, this.sizeMode);
                         this.rightImagePanel.SetScale(scale);
                     }
@@ -882,7 +876,8 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                     }
                     else
                     {
-                        this.leftImagePanel.SetImage(this.sizeMode, e.Image.Image, e.Image.Thumbnail);
+                        this.leftImagePanel.SetImage(
+                            this.sizeMode, e.Image.Image, e.Image.Thumbnail, e.Image.IsEmpty, e.Image.FilePath);
                         var scale = GetImageScale(e.Image.Image.Size, bgSize, this.sizeMode);
                         this.leftImagePanel.SetScale(scale);
                     }
@@ -902,7 +897,8 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                     }
                     else
                     {
-                        this.rightImagePanel.SetImage(this.sizeMode, e.Image.Image, e.Image.Thumbnail);
+                        this.rightImagePanel.SetImage(
+                            this.sizeMode, e.Image.Image, e.Image.Thumbnail, e.Image.IsEmpty, e.Image.FilePath);
                         var scale = GetImageScale(e.Image.Image.Size, bgSize, this.sizeMode);
                         this.rightImagePanel.SetScale(scale);
                     }
@@ -918,7 +914,8 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                     }
                     else
                     {
-                        this.leftImagePanel.SetImage(this.sizeMode, e.Image.Image, e.Image.Thumbnail);
+                        this.leftImagePanel.SetImage(
+                            this.sizeMode, e.Image.Image, e.Image.Thumbnail, e.Image.IsEmpty, e.Image.FilePath);
                         var scale = GetImageScale(e.Image.Image.Size, bgSize, this.sizeMode);
                         this.leftImagePanel.SetScale(scale);
                     }
@@ -936,7 +933,8 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                     }
                     else
                     {
-                        this.leftImagePanel.SetImage(this.sizeMode, e.Image.Image, e.Image.Thumbnail);
+                        this.leftImagePanel.SetImage(
+                            this.sizeMode, e.Image.Image, e.Image.Thumbnail, e.Image.IsEmpty, e.Image.FilePath);
                         var scale = GetImageScale(e.Image.Image.Size, bgSize, this.sizeMode);
                         this.leftImagePanel.SetScale(scale);
                     }

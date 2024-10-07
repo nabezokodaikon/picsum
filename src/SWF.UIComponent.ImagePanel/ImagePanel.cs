@@ -1,4 +1,5 @@
 using PicSum.Core.Base.Conf;
+using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
 using SWF.UIComponent.ImagePanel.Properties;
 using System;
@@ -69,6 +70,8 @@ namespace SWF.UIComponent.ImagePanel
         private bool isImageMove = false;
         private bool isThumbnailMove = false;
         private Point moveFromPoint = Point.Empty;
+        private string filePath = null;
+        private bool isEmpty = false;
         private bool isError = false;
 
         private readonly SolidBrush thumbnailFilterBrush = new(Color.FromArgb(128, 0, 0, 0));
@@ -167,20 +170,24 @@ namespace SWF.UIComponent.ImagePanel
 
         #region パブリックメソッド
 
-        public void SetImage(ImageSizeMode sizeMode, CvImage img, Bitmap thumb)
+        public void SetImage(
+            ImageSizeMode sizeMode, CvImage img, Bitmap thumb, bool isEmpty, string filePath)
         {
             ArgumentNullException.ThrowIfNull(img, nameof(img));
             ArgumentNullException.ThrowIfNull(thumb, nameof(thumb));
+            ArgumentNullException.ThrowIfNull(filePath, nameof(filePath));
 
             if (this.HasImage)
             {
                 throw new InvalidOperationException("既にイメージが存在しています。");
             }
 
-            this.isError = false;
+            this.filePath = filePath;
+            this.sizeMode = sizeMode;
             this.image = img;
             this.thumbnail = thumb;
-            this.sizeMode = sizeMode;
+            this.isEmpty = isEmpty;
+            this.isError = false;
 
             this.HasImage = true;
         }
@@ -689,6 +696,23 @@ namespace SWF.UIComponent.ImagePanel
                 {
                     g.DrawImage(this.image.Bitmap, destRect,
                         new Rectangle(0, 0, this.image.Width, this.image.Height), GraphicsUnit.Pixel);
+                }
+            }
+
+            if (this.isEmpty)
+            {
+                using (var sf = new StringFormat())
+                {
+                    sf.Alignment = StringAlignment.Center;
+                    sf.LineAlignment = StringAlignment.Center;
+                    sf.Trimming = StringTrimming.EllipsisCharacter;
+                    var text = FileUtil.GetFileName(this.filePath);
+                    g.DrawString(
+                        text,
+                        this.Font,
+                        Brushes.White,
+                        destRect,
+                        sf);
                 }
             }
 
