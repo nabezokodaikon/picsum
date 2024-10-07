@@ -97,6 +97,29 @@ namespace PicSum.Job.Jobs
             return new CvImage(bmp);
         }
 
+        private ImageFileGetResult CreateEmptyResult(
+            string filePath, bool isMain, bool hasSub, int thumbnailSize, ImageSizeMode imageSizeMode, Size imageSize)
+        {
+            var image = this.CreateEmptyImage(imageSize);
+            image.CreateMat();
+
+            var thumbLogic = new ThumbnailGetLogic(this);
+            var thumbnail = thumbLogic.CreateThumbnail(image, thumbnailSize, imageSizeMode);
+
+            var result = new ImageFileGetResult();
+            result.IsMain = isMain;
+            result.HasSub = hasSub;
+            result.Image = new()
+            {
+                FilePath = filePath,
+                Thumbnail = thumbnail,
+                Image = image,
+                IsError = false,
+            };
+
+            return result;
+        }
+
         private ImageFileGetResult CreateResult(
             string filePath, bool isMain, bool hasSub, int thumbnailSize, ImageSizeMode imageSizeMode)
         {
