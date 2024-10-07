@@ -121,36 +121,39 @@ namespace PicSum.Job.Jobs
         }
 
         private ImageFileGetResult CreateResult(
-            string filePath, bool isMain, bool hasSub, int thumbnailSize, ImageSizeMode imageSizeMode)
+            string filePath, bool isMain, bool hasSub, int thumbnailSize, ImageSizeMode imageSizeMode, Size imageSize)
         {
             var sw = Stopwatch.StartNew();
             Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageFileReadJob.CreateResult Start IsMain: {isMain}");
 
             var result = new ImageFileGetResult();
+            result.IsMain = isMain;
+            result.HasSub = hasSub;
 
             try
             {
-                var thumbLogic = new ThumbnailGetLogic(this);
-
                 var image = this.ReadImageFile(filePath);
-                var isSuccess = image != CvImage.EMPTY;
+                var isError = image == CvImage.EMPTY;
                 this.CheckCancel();
 
                 image.CreateMat();
                 this.CheckCancel();
 
-                result.IsMain = isMain;
-                result.HasSub = hasSub;
+                var thumbLogic = new ThumbnailGetLogic(this);
+                var thumbnail = (isError) ?
+                        null :
+                        thumbLogic.CreateThumbnail(image, thumbnailSize, imageSizeMode);
+                this.CheckCancel();
+
                 result.Image = new()
                 {
                     FilePath = filePath,
-                    Thumbnail = (isSuccess) ?
-                        thumbLogic.CreateThumbnail(image, thumbnailSize, imageSizeMode) :
-                        null,
+                    Thumbnail = thumbnail,
                     Image = image,
-                    IsError = !isSuccess,
+                    IsError = isError,
                 };
-                this.CheckCancel();
+
+                return result;
             }
             catch (JobCancelException)
             {
@@ -167,8 +170,6 @@ namespace PicSum.Job.Jobs
                 sw.Stop();
                 Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageFileReadJob.CreateResult: {sw.ElapsedMilliseconds} ms");
             }
-
-            return result;
         }
 
         private CvImage ReadImageFile(string filePath)
