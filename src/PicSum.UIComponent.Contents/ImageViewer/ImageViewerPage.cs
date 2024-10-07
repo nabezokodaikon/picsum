@@ -789,6 +789,15 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
         private void ImageFileReadJob_Callback(ImageFileGetResult e)
         {
+            if (e.IsMain)
+            {
+                var index = this.filePathList.IndexOf(e.Image.FilePath);
+                if (index != this.FilePathListIndex)
+                {
+                    return;
+                }
+            }
+
             Size bgSize;
             if (e.HasSub)
             {

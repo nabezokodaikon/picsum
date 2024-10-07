@@ -86,42 +86,8 @@ namespace PicSum.Job.Jobs
             }
         }
 
-        private CvImage CreateEmptyImage(Size imageSize)
-        {
-            var bmp = new Bitmap(imageSize.Width, imageSize.Height);
-            using (var g = Graphics.FromImage(bmp))
-            {
-                g.FillRectangle(Brushes.Gray, new Rectangle(0, 0, bmp.Width, bmp.Height));
-            }
-
-            return new CvImage(bmp);
-        }
-
-        private ImageFileGetResult CreateEmptyResult(
-            string filePath, bool isMain, bool hasSub, int thumbnailSize, ImageSizeMode imageSizeMode, Size imageSize)
-        {
-            var image = this.CreateEmptyImage(imageSize);
-            image.CreateMat();
-
-            var thumbLogic = new ThumbnailGetLogic(this);
-            var thumbnail = thumbLogic.CreateThumbnail(image, thumbnailSize, imageSizeMode);
-
-            var result = new ImageFileGetResult();
-            result.IsMain = isMain;
-            result.HasSub = hasSub;
-            result.Image = new()
-            {
-                FilePath = filePath,
-                Thumbnail = thumbnail,
-                Image = image,
-                IsError = false,
-            };
-
-            return result;
-        }
-
         private ImageFileGetResult CreateResult(
-            string filePath, bool isMain, bool hasSub, int thumbnailSize, ImageSizeMode imageSizeMode, Size imageSize)
+            string filePath, bool isMain, bool hasSub, int thumbnailSize, ImageSizeMode imageSizeMode)
         {
             var sw = Stopwatch.StartNew();
             Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageFileReadJob.CreateResult Start IsMain: {isMain}");
