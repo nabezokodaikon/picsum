@@ -86,6 +86,17 @@ namespace PicSum.Job.Jobs
             }
         }
 
+        private CvImage CreateEmptyImage(Size imageSize)
+        {
+            var bmp = new Bitmap(imageSize.Width, imageSize.Height);
+            using (var g = Graphics.FromImage(bmp))
+            {
+                g.FillRectangle(Brushes.Gray, new Rectangle(0, 0, bmp.Width, bmp.Height));
+            }
+
+            return new CvImage(bmp);
+        }
+
         private ImageFileGetResult CreateResult(
             string filePath, bool isMain, bool hasSub, int thumbnailSize, ImageSizeMode imageSizeMode)
         {
