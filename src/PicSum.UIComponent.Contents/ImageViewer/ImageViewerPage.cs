@@ -128,6 +128,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                             Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageViewerPage.ImageFileReadJob_Callback: Start IsMain = {r.IsMain}");
 
                             this.ImageFileReadJob_Callback(r);
+                            this.Cursor = Cursors.Default;
 
                             sw.Stop();
                             Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageViewerPage.ImageFileReadJob_Callback: {sw.ElapsedMilliseconds} ms");
@@ -138,7 +139,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                         })
                         .Complete(() =>
                         {
-                            this.Cursor = Cursors.Default;
+                            Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageViewerPage.ImageFileReadJob.Complete");
                         })
                         .StartThread();
                 }
@@ -639,48 +640,43 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         {
             var sw = Stopwatch.StartNew();
 
-            try
+            this.Cursor = Cursors.WaitCursor;
+
+            var mainFilePath = this.filePathList[this.FilePathListIndex];
+            this.SelectedFilePath = mainFilePath;
+
+            var nextFiles = new List<string>(10);
+            var nextIndex = this.GetNextIndex(this.FilePathListIndex, true);
+            nextFiles.Add(this.filePathList[nextIndex]);
+            while (nextFiles.Count < nextFiles.Capacity)
             {
-                this.Cursor = Cursors.WaitCursor;
-
-                var mainFilePath = this.filePathList[this.FilePathListIndex];
-                this.SelectedFilePath = mainFilePath;
-
-                var nextFiles = new List<string>(10);
-                var nextIndex = this.GetNextIndex(this.FilePathListIndex, true);
+                nextIndex = this.GetNextIndex(nextIndex, true);
                 nextFiles.Add(this.filePathList[nextIndex]);
-                while (nextFiles.Count < nextFiles.Capacity)
-                {
-                    nextIndex = this.GetNextIndex(nextIndex, true);
-                    nextFiles.Add(this.filePathList[nextIndex]);
-                }
-
-                var prevFiles = new List<string>(4);
-                var prevIndex = this.GetPreviewIndex(this.FilePathListIndex, true);
-                prevFiles.Add(this.filePathList[prevIndex]);
-                while (prevFiles.Count < prevFiles.Capacity)
-                {
-                    prevIndex = this.GetPreviewIndex(prevIndex, true);
-                    prevFiles.Add(this.filePathList[prevIndex]);
-                }
-
-                var param = new ImageFileReadParameter
-                {
-                    CurrentIndex = this.FilePathListIndex,
-                    FilePathList = this.filePathList,
-                    ImageDisplayMode = this.displayMode,
-                    ImageSizeMode = this.sizeMode,
-                    ThumbnailSize = this.leftImagePanel.ThumbnailSize,
-                };
-
-                this.ImageFileReadJob.StartJob(param);
-                this.ImageInfoCacheJob.StartJob([.. nextFiles, .. prevFiles]);
             }
-            finally
+
+            var prevFiles = new List<string>(4);
+            var prevIndex = this.GetPreviewIndex(this.FilePathListIndex, true);
+            prevFiles.Add(this.filePathList[prevIndex]);
+            while (prevFiles.Count < prevFiles.Capacity)
             {
-                sw.Stop();
-                Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageViewerPage.ReadImage: {sw.ElapsedMilliseconds} ms");
+                prevIndex = this.GetPreviewIndex(prevIndex, true);
+                prevFiles.Add(this.filePathList[prevIndex]);
             }
+
+            var param = new ImageFileReadParameter
+            {
+                CurrentIndex = this.FilePathListIndex,
+                FilePathList = this.filePathList,
+                ImageDisplayMode = this.displayMode,
+                ImageSizeMode = this.sizeMode,
+                ThumbnailSize = this.leftImagePanel.ThumbnailSize,
+            };
+
+            this.ImageFileReadJob.StartJob(param);
+            this.ImageInfoCacheJob.StartJob([.. nextFiles, .. prevFiles]);
+
+            sw.Stop();
+            Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageViewerPage.ReadImage: {sw.ElapsedMilliseconds} ms");
         }
 
         private void DoDragDrop(string currentFilePath)
