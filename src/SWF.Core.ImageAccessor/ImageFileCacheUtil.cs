@@ -14,8 +14,7 @@ namespace SWF.Core.ImageAccessor
 
         public static void DisposeStaticResouces()
         {
-            CACHE_LOCK.Dispose();
-            CACHE_LIST.Clear();
+
         }
 
         public static Size GetSize(string filePath)
