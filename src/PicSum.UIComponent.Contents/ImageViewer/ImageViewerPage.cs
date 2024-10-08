@@ -125,15 +125,16 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                         .Callback(r =>
                         {
                             var sw = Stopwatch.StartNew();
-                            //Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageViewerPage.ImageFileReadJob_Callback: Start IsMain = {r.IsMain}");
+                            Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageViewerPage.ImageFileReadJob_Callback: Start IsMain = {r.IsMain}");
 
                             this.ImageFileReadJob_Callback(r);
+
                             sw.Stop();
-                            //Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageViewerPage.ImageFileReadJob_Callback: {sw.ElapsedMilliseconds} ms");
+                            Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageViewerPage.ImageFileReadJob_Callback: {sw.ElapsedMilliseconds} ms");
                         })
                         .Cancel(() =>
                         {
-                            //Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageViewerPage.ImageFileReadJob.Cancel");
+                            Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageViewerPage.ImageFileReadJob.Cancel");
                         })
                         .Complete(() =>
                         {
@@ -398,7 +399,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             finally
             {
                 sw.Stop();
-                //Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageViewerPage.GetImageSize: {sw.ElapsedMilliseconds} ms");
+                Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageViewerPage.GetImageSize: {sw.ElapsedMilliseconds} ms");
             }
         }
 
@@ -678,7 +679,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             finally
             {
                 sw.Stop();
-                //Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageViewerPage.ReadImage: {sw.ElapsedMilliseconds} ms");
+                Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageViewerPage.ReadImage: {sw.ElapsedMilliseconds} ms");
             }
         }
 
@@ -789,8 +790,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
         private void ImageFileReadJob_Callback(ImageFileGetResult e)
         {
-            Console.WriteLine($"IsMain: {e.IsMain}, HasSub: {e.HasSub}");
-
             Size bgSize;
             if (e.HasSub)
             {
@@ -909,11 +908,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 {
                     this.leftImagePanel.ClearImage();
                     this.leftImageFilePath = e.Image.FilePath;
-
-                    if (string.IsNullOrEmpty(this.leftImageFilePath))
-                    {
-                        Console.WriteLine("");
-                    }
 
                     if (e.Image.IsError)
                     {
