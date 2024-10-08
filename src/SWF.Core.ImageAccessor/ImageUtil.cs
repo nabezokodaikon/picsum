@@ -77,7 +77,7 @@ namespace SWF.Core.ImageAccessor
                 var bytesPerPixel = Image.GetPixelFormatSize(bitmap.PixelFormat) / 8;
                 var rect = new Rectangle(0, 0, bitmap.Width, bitmap.Height);
                 bmpData = bitmap.LockBits(rect, ImageLockMode.ReadOnly, bitmap.PixelFormat);
-                var stride = bmpData.Stride; // 各スキャンラインの幅（パディングを含む）
+                var stride = bmpData.Stride;
                 var bufferSize = stride * bitmap.Height;
                 var pixelBuffer = new byte[bufferSize];
                 Marshal.Copy(bmpData.Scan0, pixelBuffer, 0, bufferSize);
@@ -108,7 +108,13 @@ namespace SWF.Core.ImageAccessor
             {
                 var rect = new Rectangle(0, 0, bitmap.Width, bitmap.Height);
                 bmpData = bitmap.LockBits(rect, ImageLockMode.WriteOnly, pixelFormat);
-                Marshal.Copy(rawBytes, 0, bmpData.Scan0, rawBytes.Length);
+                var bytesPerPixel = Image.GetPixelFormatSize(pixelFormat) / 8;
+                var stride = bmpData.Stride;
+                for (int y = 0; y < height; y++)
+                {
+                    Marshal.Copy(rawBytes, y * width * bytesPerPixel, bmpData.Scan0 + y * stride, width * bytesPerPixel);
+                }
+
                 return bitmap;
             }
             finally
@@ -120,6 +126,82 @@ namespace SWF.Core.ImageAccessor
 
                 sw.Stop();
                 Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.BufferToBitmap: {sw.ElapsedMilliseconds} ms");
+            }
+        }
+
+        internal static byte[] BitmapToBufferFor8bpp(Bitmap bitmap)
+        {
+            ArgumentNullException.ThrowIfNull(bitmap, nameof(bitmap));
+
+            if (bitmap.PixelFormat != PixelFormat.Format8bppIndexed)
+            {
+                throw new ArgumentException("Pixel format must be 8bppIndexed.");
+            }
+
+            var sw = Stopwatch.StartNew();
+
+            BitmapData? bmpData = null;
+
+            try
+            {
+                var rect = new Rectangle(0, 0, bitmap.Width, bitmap.Height);
+                bmpData = bitmap.LockBits(rect, ImageLockMode.ReadOnly, bitmap.PixelFormat);
+                var stride = bmpData.Stride;
+                var bufferSize = stride * bitmap.Height;
+                var pixelBuffer = new byte[bufferSize];
+                Marshal.Copy(bmpData.Scan0, pixelBuffer, 0, bufferSize);
+                return pixelBuffer;
+            }
+            finally
+            {
+                if (bmpData != null)
+                {
+                    bitmap.UnlockBits(bmpData);
+                }
+
+                sw.Stop();
+                Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.BitmapToBufferFor8bpp: {sw.ElapsedMilliseconds} ms");
+            }
+        }
+
+        internal static Bitmap BufferToBitmapFor8bpp(byte[] rawBytes, int width, int height)
+        {
+            ArgumentNullException.ThrowIfNull(rawBytes, nameof(rawBytes));
+
+            var sw = Stopwatch.StartNew();
+
+            var bitmap = new Bitmap(width, height, PixelFormat.Format8bppIndexed);
+            BitmapData? bmpData = null;
+
+            try
+            {
+                var palette = bitmap.Palette;
+                for (int i = 0; i < 256; i++)
+                {
+                    palette.Entries[i] = Color.FromArgb(i, i, i);
+                }
+                bitmap.Palette = palette;
+
+                var rect = new Rectangle(0, 0, width, height);
+                bmpData = bitmap.LockBits(rect, ImageLockMode.WriteOnly, PixelFormat.Format8bppIndexed);
+
+                var stride = bmpData.Stride;
+                for (int y = 0; y < height; y++)
+                {
+                    Marshal.Copy(rawBytes, y * width, bmpData.Scan0 + y * stride, width);
+                }
+
+                return bitmap;
+            }
+            finally
+            {
+                if (bmpData != null)
+                {
+                    bitmap.UnlockBits(bmpData);
+                }
+
+                sw.Stop();
+                Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.BufferToBitmapFor8bpp: {sw.ElapsedMilliseconds} ms");
             }
         }
 
