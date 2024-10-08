@@ -91,7 +91,7 @@ namespace SWF.Core.ImageAccessor
                 }
 
                 sw.Stop();
-                Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.BitmapToBuffer: {sw.ElapsedMilliseconds} ms");
+                //Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.BitmapToBuffer: {sw.ElapsedMilliseconds} ms");
             }
         }
 
@@ -119,7 +119,7 @@ namespace SWF.Core.ImageAccessor
                 }
 
                 sw.Stop();
-                Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.BufferToBitmap: {sw.ElapsedMilliseconds} ms");
+                //Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.BufferToBitmap: {sw.ElapsedMilliseconds} ms");
             }
         }
 
@@ -154,7 +154,7 @@ namespace SWF.Core.ImageAccessor
                 }
 
                 sw.Stop();
-                Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.BitmapToBufferFor8bpp: {sw.ElapsedMilliseconds} ms");
+                //Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.BitmapToBufferFor8bpp: {sw.ElapsedMilliseconds} ms");
             }
         }
 
@@ -195,7 +195,7 @@ namespace SWF.Core.ImageAccessor
                 }
 
                 sw.Stop();
-                Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.BufferToBitmapFor8bpp: {sw.ElapsedMilliseconds} ms");
+                //Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.BufferToBitmapFor8bpp: {sw.ElapsedMilliseconds} ms");
             }
         }
 
@@ -215,7 +215,7 @@ namespace SWF.Core.ImageAccessor
                 var sw = Stopwatch.StartNew();
                 GC.Collect();
                 sw.Stop();
-                Console.WriteLine($"[{Thread.CurrentThread.Name}] GC.Collect: {sw.ElapsedMilliseconds} ms");
+                //Console.WriteLine($"[{Thread.CurrentThread.Name}] GC.Collect: {sw.ElapsedMilliseconds} ms");
             }
         }
 
@@ -523,56 +523,6 @@ namespace SWF.Core.ImageAccessor
             catch (OutOfMemoryException ex)
             {
                 throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
-            }
-        }
-
-        /// <summary>
-        /// ビットマップの指定座標の色を取得します。
-        /// </summary>
-        /// <param name="bmp"></param>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        /// <returns></returns>
-        public static Color GetPixel(Bitmap bmp, int x, int y)
-        {
-            ArgumentNullException.ThrowIfNull(bmp, nameof(bmp));
-
-            if (bmp.PixelFormat != PixelFormat.Format32bppArgb)
-            {
-                throw new ArgumentException($"ピクセルフォーマットが'{PixelFormat.Format32bppArgb}'ではありません。");
-            }
-
-            var w = bmp.Width;
-            var h = bmp.Height;
-
-            if (x < 0 || x > w - 1)
-            {
-                throw new ArgumentOutOfRangeException(nameof(x));
-            }
-
-            if (y < 0 || y > h - 1)
-            {
-                throw new ArgumentOutOfRangeException(nameof(y));
-            }
-
-            var bd = bmp.LockBits(new Rectangle(0, 0, w, h), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
-
-            try
-            {
-                unsafe
-                {
-                    byte* p = (byte*)(void*)bd.Scan0;
-                    p += (y * w + x) * 4;
-                    var a = p[3];
-                    var r = p[2];
-                    var g = p[1];
-                    var b = p[0];
-                    return Color.FromArgb(a, r, g, b);
-                }
-            }
-            finally
-            {
-                bmp.UnlockBits(bd);
             }
         }
 

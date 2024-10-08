@@ -11,6 +11,8 @@ namespace PicSum.Job.Entities
         public string? FilePath { get; set; }
         public CvImage? Image { get; set; }
         public Bitmap? Thumbnail { get; set; }
+        public Size Size { get; set; }
+        public bool IsEmpty { get; set; }
         public bool IsError { get; set; }
     }
 }

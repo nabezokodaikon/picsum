@@ -186,7 +186,7 @@ namespace SWF.UIComponent.TabOperation
                 var sw = Stopwatch.StartNew();
                 GC.Collect();
                 sw.Stop();
-                Console.WriteLine($"[{Thread.CurrentThread.Name}] GC.Collect: {sw.ElapsedMilliseconds} ms");
+                //Console.WriteLine($"[{Thread.CurrentThread.Name}] GC.Collect: {sw.ElapsedMilliseconds} ms");
             }
         }
 
