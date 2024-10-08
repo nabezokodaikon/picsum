@@ -61,30 +61,13 @@ namespace PicSum.Core.Job.AsyncJob
 
         internal void ExecuteWrapper()
         {
-            try
+            if (this.Parameter != null)
             {
-                if (this.Parameter != null)
-                {
-                    this.Execute(this.Parameter);
-                }
-                else
-                {
-                    this.Execute();
-                }
+                this.Execute(this.Parameter);
             }
-            catch (JobCancelException)
+            else
             {
-                this.CancelAction?.Invoke();
-                throw;
-            }
-            catch (JobException ex)
-            {
-                Logger.Error($"{this.ID} {ex}");
-                this.CatchAction?.Invoke(ex);
-            }
-            finally
-            {
-                this.CompleteAction?.Invoke();
+                this.Execute();
             }
         }
 
