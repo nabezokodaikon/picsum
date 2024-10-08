@@ -31,17 +31,17 @@ namespace PicSum.Job.Jobs
             }
         }
 
-        private long isRead = 0;
+        private long isReadCompleted = 0;
 
-        private bool IsRead
+        private bool IsReadCompleted
         {
             get
             {
-                return Interlocked.Read(ref this.isRead) == 1;
+                return Interlocked.Read(ref this.isReadCompleted) == 1;
             }
             set
             {
-                Interlocked.Exchange(ref this.isRead, Convert.ToInt64(value));
+                Interlocked.Exchange(ref this.isReadCompleted, Convert.ToInt64(value));
             }
         }
 
@@ -76,6 +76,8 @@ namespace PicSum.Job.Jobs
                     this.Callback(
                         mainFilePath, true, true, parameter.ThumbnailSize, parameter.ImageSizeMode, mainSize);
 
+                    this.CheckCancel();
+
                     this.Callback(
                         subFilePath, false, true, parameter.ThumbnailSize, parameter.ImageSizeMode, subSize);
                 }
@@ -92,42 +94,57 @@ namespace PicSum.Job.Jobs
             }
         }
 
-        private async void Callback(
+        private void Callback(
             string filePath, bool isMain, bool hasSub, int thumbnailSize, ImageSizeMode imageSizeMode, Size imageSize)
         {
+            var whileSw = Stopwatch.StartNew();
+            Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageFileReadJob.Callback Start IsMain: {isMain}, HasSub: {hasSub}");
+
+            this.IsReadCompleted = false;
+            ImageFileGetResult? result = null;
+            Exception? exception = null;
             var readTime = Stopwatch.StartNew();
 
-            this.IsRead = false;
-            Exception? exception = null;
-
-            var task = Task.Run(() =>
+            var thread = new Thread(() =>
             {
+                var sw = Stopwatch.StartNew();
                 try
                 {
-                    return this.CreateResult(
+                    result = this.CreateResult(
                         filePath, isMain, hasSub, thumbnailSize, imageSizeMode, imageSize);
                 }
                 catch (JobCancelException)
                 {
-                    return null;
+                    result = null;
                 }
                 catch (Exception ex)
                 {
                     exception = ex;
-                    return null;
+                    result = null;
                 }
                 finally
                 {
-                    this.IsRead = true;
+                    Console.WriteLine($"[{Thread.CurrentThread.Name}]: {sw.ElapsedMilliseconds} ms");
+                    this.IsReadCompleted = true;
                 }
             });
+            thread.Name = $"{Thread.CurrentThread.Name} Thread IsMain: {isMain}, HasSub: {hasSub}";
+            thread.Start();
 
-            var isEmpryRead = false;
             while (true)
             {
-                if (this.IsRead)
+                if (readTime.ElapsedMilliseconds > 20)
                 {
-                    var result = await task;
+                    var emptyResult = this.CreateEmptyResult(
+                        filePath, isMain, hasSub, thumbnailSize, imageSizeMode, imageSize);
+                    this.Callback(emptyResult);
+                    thread.Join();
+                }
+
+                if (this.IsReadCompleted)
+                {
+                    thread.Join();
+
                     if (result != null)
                     {
                         this.Callback(result);
@@ -143,16 +160,11 @@ namespace PicSum.Job.Jobs
                     }
                 }
 
-                if (!isEmpryRead && readTime.ElapsedMilliseconds > 20)
-                {
-                    var emptyResult = this.CreateEmptyResult(
-                        filePath, isMain, hasSub, thumbnailSize, imageSizeMode, imageSize);
-                    this.Callback(emptyResult);
-                    isEmpryRead = true;
-                }
-
                 Thread.Sleep(1);
             }
+
+            whileSw.Stop();
+            Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageFileReadJob.Callback IsMain: {isMain}, HasSub: {hasSub} {whileSw.ElapsedMilliseconds} ms");
         }
 
         private ImageFileGetResult CreateEmptyResult(
@@ -191,9 +203,6 @@ namespace PicSum.Job.Jobs
         private ImageFileGetResult CreateResult(
             string filePath, bool isMain, bool hasSub, int thumbnailSize, ImageSizeMode imageSizeMode, Size imageSize)
         {
-            var sw = Stopwatch.StartNew();
-            Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageFileReadJob.CreateResult Start IsMain: {isMain}");
-
             var result = new ImageFileGetResult();
             result.IsMain = isMain;
             result.HasSub = hasSub;
@@ -234,11 +243,6 @@ namespace PicSum.Job.Jobs
             {
                 ExeptionHandler(result);
                 throw;
-            }
-            finally
-            {
-                sw.Stop();
-                Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageFileReadJob.CreateResult: {sw.ElapsedMilliseconds} ms");
             }
         }
 

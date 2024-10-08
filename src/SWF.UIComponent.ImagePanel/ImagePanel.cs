@@ -240,7 +240,7 @@ namespace SWF.UIComponent.ImagePanel
             this.imageScaleSize = SizeF.Empty;
 
             sw.Stop();
-            Console.WriteLine($"[{Thread.CurrentThread.Name}] ImagePanel.ClearImage: {sw.ElapsedMilliseconds} ms");
+            //Console.WriteLine($"[{Thread.CurrentThread.Name}] ImagePanel.ClearImage: {sw.ElapsedMilliseconds} ms");
         }
 
         public bool IsImagePoint(int x, int y)
@@ -250,7 +250,7 @@ namespace SWF.UIComponent.ImagePanel
 
         public new void Update()
         {
-            Console.WriteLine($"[{Thread.CurrentThread.Name}] ImagePanel.Update: Start");
+            //Console.WriteLine($"[{Thread.CurrentThread.Name}] ImagePanel.Update: Start");
             var sw = Stopwatch.StartNew();
 
             if (!this.Visible)
@@ -262,7 +262,7 @@ namespace SWF.UIComponent.ImagePanel
             this.Invalidate();
             base.Update();
             sw.Stop();
-            Console.WriteLine($"[{Thread.CurrentThread.Name}] ImagePanel.Update: {sw.ElapsedMilliseconds} ms");
+            //Console.WriteLine($"[{Thread.CurrentThread.Name}] ImagePanelk.Update: {sw.ElapsedMilliseconds} ms");
         }
 
         #endregion
@@ -322,7 +322,7 @@ namespace SWF.UIComponent.ImagePanel
             }
 
             sw.Stop();
-            Console.WriteLine($"[{Thread.CurrentThread.Name}] ImagePanel.OnPaint: {sw.ElapsedMilliseconds} ms");
+            //Console.WriteLine($"[{Thread.CurrentThread.Name}] ImagePanel.OnPaint: {sw.ElapsedMilliseconds} ms");
         }
 
         protected override void OnMouseLeave(EventArgs e)
@@ -717,7 +717,7 @@ namespace SWF.UIComponent.ImagePanel
             }
 
             sw.Stop();
-            Console.WriteLine($"[{Thread.CurrentThread.Name}] ImagePanel.DrawImage: {sw.ElapsedMilliseconds} ms");
+            //Console.WriteLine($"[{Thread.CurrentThread.Name}] ImagePanel.DrawImage: {sw.ElapsedMilliseconds} ms");
         }
 
         private void DrawThumbnailPanel(Graphics g)
