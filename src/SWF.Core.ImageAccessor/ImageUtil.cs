@@ -91,7 +91,7 @@ namespace SWF.Core.ImageAccessor
                 }
 
                 sw.Stop();
-                //Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.BitmapToBuffer: {sw.ElapsedMilliseconds} ms");
+                Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.BitmapToBuffer: {sw.ElapsedMilliseconds} ms");
             }
         }
 
@@ -119,7 +119,7 @@ namespace SWF.Core.ImageAccessor
                 }
 
                 sw.Stop();
-                //Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.BufferToBitmap: {sw.ElapsedMilliseconds} ms");
+                Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.BufferToBitmap: {sw.ElapsedMilliseconds} ms");
             }
         }
 
@@ -154,7 +154,7 @@ namespace SWF.Core.ImageAccessor
                 }
 
                 sw.Stop();
-                //Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.BitmapToBufferFor8bpp: {sw.ElapsedMilliseconds} ms");
+                Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.BitmapToBufferFor8bpp: {sw.ElapsedMilliseconds} ms");
             }
         }
 
@@ -195,7 +195,7 @@ namespace SWF.Core.ImageAccessor
                 }
 
                 sw.Stop();
-                //Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.BufferToBitmapFor8bpp: {sw.ElapsedMilliseconds} ms");
+                Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.BufferToBitmapFor8bpp: {sw.ElapsedMilliseconds} ms");
             }
         }
 
