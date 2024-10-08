@@ -108,13 +108,7 @@ namespace SWF.Core.ImageAccessor
             {
                 var rect = new Rectangle(0, 0, bitmap.Width, bitmap.Height);
                 bmpData = bitmap.LockBits(rect, ImageLockMode.WriteOnly, pixelFormat);
-                var bytesPerPixel = Image.GetPixelFormatSize(pixelFormat) / 8;
-                var stride = bmpData.Stride;
-                for (int y = 0; y < height; y++)
-                {
-                    Marshal.Copy(rawBytes, y * width * bytesPerPixel, bmpData.Scan0 + y * stride, width * bytesPerPixel);
-                }
-
+                Marshal.Copy(rawBytes, 0, bmpData.Scan0, rawBytes.Length);
                 return bitmap;
             }
             finally
