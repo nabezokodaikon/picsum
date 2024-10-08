@@ -7,14 +7,6 @@ namespace SWF.UIComponent.Core
     [SupportedOSPlatform("windows")]
     public class CheckPatternPanel : Panel
     {
-        #region 定数・列挙
-
-        #endregion
-
-        #region イベント・デリゲート
-
-        #endregion
-
         #region インスタンス変数
 
         private int _rectangleSize = 24;
@@ -41,14 +33,6 @@ namespace SWF.UIComponent.Core
 
         #endregion
 
-        #region 継承プロパティ
-
-        #endregion
-
-        #region プライベートプロパティ
-
-        #endregion
-
         #region コンストラクタ
 
         public CheckPatternPanel()
@@ -58,15 +42,11 @@ namespace SWF.UIComponent.Core
 
         #endregion
 
-        #region パブリックメソッド
-
-        #endregion
-
         #region 継承メソッド
 
         protected override void OnPaintBackground(PaintEventArgs pevent)
         {
-            //base.OnPaintBackground(pevent);
+
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -82,7 +62,7 @@ namespace SWF.UIComponent.Core
             e.Graphics.FillRectangle(this.brushA, this.ClientRectangle);
 
             sw.Stop();
-            Console.WriteLine($"[{Thread.CurrentThread.Name}] CheckPatternPanel.OnPaint: {sw.ElapsedMilliseconds} ms");
+            //Console.WriteLine($"[{Thread.CurrentThread.Name}] CheckPatternPanel.OnPaint: {sw.ElapsedMilliseconds} ms");
         }
 
         #endregion
