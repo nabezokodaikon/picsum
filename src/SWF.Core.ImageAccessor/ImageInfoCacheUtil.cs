@@ -14,9 +14,9 @@ namespace SWF.Core.ImageAccessor
 
         public static void DisposeStaticResouces()
         {
-            CACHE_LOCK.Dispose();
-            CACHE_LIST.Clear();
-            CACHE_DICTIONARY.Clear();
+            //CACHE_LOCK.Dispose();
+            //CACHE_LIST.Clear();
+            //CACHE_DICTIONARY.Clear();
         }
 
         internal static ImageInfoCache GetImageInfo(string filePath)
