@@ -262,7 +262,7 @@ namespace SWF.UIComponent.ImagePanel
             this.Invalidate();
             base.Update();
             sw.Stop();
-            Console.WriteLine($"[{Thread.CurrentThread.Name}] ImagePanelk.Update: {sw.ElapsedMilliseconds} ms");
+            Console.WriteLine($"[{Thread.CurrentThread.Name}] ImagePanel.Update: {sw.ElapsedMilliseconds} ms");
         }
 
         #endregion
@@ -717,7 +717,7 @@ namespace SWF.UIComponent.ImagePanel
             }
 
             sw.Stop();
-            //Console.WriteLine($"[{Thread.CurrentThread.Name}] ImagePanel.DrawImage: {sw.ElapsedMilliseconds} ms");
+            Console.WriteLine($"[{Thread.CurrentThread.Name}] ImagePanel.DrawImage: {sw.ElapsedMilliseconds} ms");
         }
 
         private void DrawThumbnailPanel(Graphics g)
