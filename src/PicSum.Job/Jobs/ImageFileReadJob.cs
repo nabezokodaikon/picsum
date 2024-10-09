@@ -13,17 +13,17 @@ namespace PicSum.Job.Jobs
     public sealed class ImageFileReadJob
         : AbstractTwoWayJob<ImageFileReadParameter, ImageFileGetResult>
     {
-        private long isReadCompleted = 0;
+        private long isThreadCompleted = 0;
 
-        private bool IsReadCompleted
+        private bool IsThreadCompleted
         {
             get
             {
-                return Interlocked.Read(ref this.isReadCompleted) == 1;
+                return Interlocked.Read(ref this.isThreadCompleted) == 1;
             }
             set
             {
-                Interlocked.Exchange(ref this.isReadCompleted, Convert.ToInt64(value));
+                Interlocked.Exchange(ref this.isThreadCompleted, Convert.ToInt64(value));
             }
         }
 
@@ -163,54 +163,58 @@ namespace PicSum.Job.Jobs
         private void Callback(
             string filePath, bool isMain, bool hasSub, int thumbnailSize, ImageSizeMode imageSizeMode, Size imageSize)
         {
-            this.IsReadCompleted = false;
-            ImageFileGetResult? result = null;
+            this.IsThreadCompleted = false;
             Exception? exception = null;
-            var readTime = Stopwatch.StartNew();
+            var threadTime = Stopwatch.StartNew();
 
             var thread = Task.Run((() =>
             {
-                var sw = Stopwatch.StartNew();
                 try
                 {
-                    result = this.CreateResult(
+                    return this.CreateResult(
                         filePath, isMain, hasSub, thumbnailSize, imageSizeMode, imageSize);
                 }
                 catch (JobCancelException)
                 {
-                    result = null;
+                    return null;
+                }
+                catch (Exception ex)
+                {
+                    exception = ex;
+                    return null;
                 }
                 finally
                 {
-                    Console.WriteLine($"[{Thread.CurrentThread.Name}]: {sw.ElapsedMilliseconds} ms");
-                    this.IsReadCompleted = true;
+                    this.IsThreadCompleted = true;
                 }
             }));
 
             var isEmptyCallbacked = false;
             while (true)
             {
-                if (!isEmptyCallbacked && readTime.ElapsedMilliseconds >= 20)
+                if (!isEmptyCallbacked && threadTime.ElapsedMilliseconds >= 20)
                 {
-                    var emptyResult = this.CreateEmptyResult(
-                        filePath, isMain, hasSub, thumbnailSize, imageSizeMode, imageSize);
-                    this.Callback(emptyResult);
+                    this.Callback(this.CreateEmptyResult(
+                        filePath, isMain, hasSub, thumbnailSize, imageSizeMode, imageSize));
                     isEmptyCallbacked = true;
+                    this.CheckCancel();
                 }
 
-                if (this.IsReadCompleted)
+                if (isEmptyCallbacked || this.IsThreadCompleted)
                 {
-                    thread.Wait();
+                    var result = thread.Result;
+
+                    if (exception != null)
+                    {
+                        throw exception;
+                    }
+
                     if (result != null)
                     {
                         this.Callback(result);
                         return;
                     }
-                    else if (exception != null)
-                    {
-                        throw exception;
-                    }
-                    else if (result == null)
+                    else
                     {
                         return;
                     }
