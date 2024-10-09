@@ -34,6 +34,47 @@ namespace PicSum.Job.Logics
             CACHE_LOCK.Dispose();
         }
 
+        public static Bitmap CreateThumbnail(CvImage srcImg, int thumbSize, ImageSizeMode sizeMode)
+        {
+            ArgumentNullException.ThrowIfNull(srcImg, nameof(srcImg));
+
+            if (thumbSize < 0)
+            {
+                ArgumentOutOfRangeException.ThrowIfNegative(thumbSize, nameof(thumbSize));
+            }
+
+            var scale = Math.Min(thumbSize / (double)srcImg.Width, thumbSize / (double)srcImg.Height);
+            var w = (int)(srcImg.Width * scale);
+            var h = (int)(srcImg.Height * scale);
+
+            var destImg = new Bitmap(w, h);
+            using (var g = Graphics.FromImage(destImg))
+            {
+                g.SmoothingMode = SmoothingMode.None;
+                g.InterpolationMode = InterpolationMode.NearestNeighbor;
+                g.CompositingQuality = CompositingQuality.HighSpeed;
+                g.PixelOffsetMode = PixelOffsetMode.HighSpeed;
+                g.CompositingMode = CompositingMode.SourceOver;
+
+                if (sizeMode == ImageSizeMode.Original)
+                {
+                    var sw = Stopwatch.StartNew();
+                    using (var thumb = srcImg.Resize(w, h))
+                    {
+                        g.DrawImage(thumb, 0, 0, w, h);
+                        sw.Stop();
+                        Console.WriteLine($"[{Thread.CurrentThread.Name}] ThumbnailGetLogic.CreateThumbnail: {sw.ElapsedMilliseconds} ms");
+                    }
+                }
+                else
+                {
+                    g.FillRectangle(Brushes.Yellow, new Rectangle(0, 0, w, h));
+                }
+            }
+
+            return destImg;
+        }
+
         public ThumbnailBufferEntity Execute(string filePath, int thumbWidth, int thumbHeight)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
@@ -117,47 +158,6 @@ namespace PicSum.Job.Logics
                     return ThumbnailBufferEntity.EMPTY;
                 }
             }
-        }
-
-        public Bitmap CreateThumbnail(CvImage srcImg, int thumbSize, ImageSizeMode sizeMode)
-        {
-            ArgumentNullException.ThrowIfNull(srcImg, nameof(srcImg));
-
-            if (thumbSize < 0)
-            {
-                ArgumentOutOfRangeException.ThrowIfNegative(thumbSize, nameof(thumbSize));
-            }
-
-            var scale = Math.Min(thumbSize / (double)srcImg.Width, thumbSize / (double)srcImg.Height);
-            var w = (int)(srcImg.Width * scale);
-            var h = (int)(srcImg.Height * scale);
-
-            var destImg = new Bitmap(w, h);
-            using (var g = Graphics.FromImage(destImg))
-            {
-                g.SmoothingMode = SmoothingMode.None;
-                g.InterpolationMode = InterpolationMode.NearestNeighbor;
-                g.CompositingQuality = CompositingQuality.HighSpeed;
-                g.PixelOffsetMode = PixelOffsetMode.HighSpeed;
-                g.CompositingMode = CompositingMode.SourceOver;
-
-                if (sizeMode == ImageSizeMode.Original)
-                {
-                    var sw = Stopwatch.StartNew();
-                    using (var thumb = srcImg.Resize(w, h))
-                    {
-                        g.DrawImage(thumb, 0, 0, w, h);
-                        sw.Stop();
-                        Console.WriteLine($"[{Thread.CurrentThread.Name}] ThumbnailGetLogic.CreateThumbnail: {sw.ElapsedMilliseconds} ms");
-                    }
-                }
-                else
-                {
-                    g.FillRectangle(Brushes.Yellow, new Rectangle(0, 0, w, h));
-                }
-            }
-
-            return destImg;
         }
 
         private ThumbnailBufferEntity GetFileCache(string filePath, int thumbWidth, int thumbHeight)

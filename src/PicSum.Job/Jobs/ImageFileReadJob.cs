@@ -95,10 +95,9 @@ namespace PicSum.Job.Jobs
                 image.CreateMat();
                 this.CheckCancel();
 
-                var thumbLogic = new ThumbnailGetLogic(this);
                 thumbnail = (isError) ?
                         null :
-                        thumbLogic.CreateThumbnail(image, thumbnailSize, imageSizeMode);
+                        ThumbnailGetLogic.CreateThumbnail(image, thumbnailSize, imageSizeMode);
                 this.CheckCancel();
 
                 return new ImageFileGetResult()
@@ -228,8 +227,7 @@ namespace PicSum.Job.Jobs
             string filePath, bool isMain, bool hasSub, int thumbnailSize, ImageSizeMode imageSizeMode, Size imageSize)
         {
             var image = new CvImage(this.CreateEmptyImage(imageSize));
-            var thumbLogic = new ThumbnailGetLogic(this);
-            var thumbnail = thumbLogic.CreateThumbnail(image, thumbnailSize, imageSizeMode);
+            var thumbnail = ThumbnailGetLogic.CreateThumbnail(image, thumbnailSize, imageSizeMode);
 
             return new()
             {
