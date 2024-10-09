@@ -1,6 +1,5 @@
 using NLog;
 using System.Collections.Concurrent;
-using System.Windows.Forms;
 
 namespace PicSum.Core.Job.AsyncJob
 {
@@ -24,19 +23,6 @@ namespace PicSum.Core.Job.AsyncJob
         private Action? cancelAction;
         private Action<JobException>? catchAction;
         private Action? completeAction;
-        private long waitUIThread = 0;
-
-        private bool WaitUIThread
-        {
-            get
-            {
-                return Interlocked.Read(ref this.waitUIThread) == 1;
-            }
-            set
-            {
-                Interlocked.Exchange(ref this.waitUIThread, Convert.ToInt64(value));
-            }
-        }
 
         public TwoWayJob()
         {
@@ -82,7 +68,7 @@ namespace PicSum.Core.Job.AsyncJob
                     {
                         this.source.Cancel();
                         this.thread.Wait();
-                        Logger.Debug($"{this.threadName} ジョブ実行スレッドが終了しました。");
+                        Logger.Debug($"{this.threadName}: ジョブ実行スレッドが終了しました。");
                     }
 
                     this.source.Dispose();
@@ -100,7 +86,7 @@ namespace PicSum.Core.Job.AsyncJob
 
             if (this.callbackAction != null)
             {
-                throw new InvalidOperationException($"{this.threadName} 既にコールバックアクションが設定されています。");
+                throw new InvalidOperationException($"{this.threadName}: 既にコールバックアクションが設定されています。");
             }
 
             this.callbackAction = action;
@@ -113,7 +99,7 @@ namespace PicSum.Core.Job.AsyncJob
 
             if (this.cancelAction != null)
             {
-                throw new InvalidOperationException($"{this.threadName} 既にキャンセルアクションが設定されています。");
+                throw new InvalidOperationException($"{this.threadName}: 既にキャンセルアクションが設定されています。");
             }
 
             this.cancelAction = action;
@@ -126,7 +112,7 @@ namespace PicSum.Core.Job.AsyncJob
 
             if (this.catchAction != null)
             {
-                throw new InvalidOperationException($"{this.threadName} 既に例外アクションが設定されています。");
+                throw new InvalidOperationException($"{this.threadName}: 既に例外アクションが設定されています。");
             }
 
             this.catchAction = action;
@@ -139,7 +125,7 @@ namespace PicSum.Core.Job.AsyncJob
 
             if (this.completeAction != null)
             {
-                throw new InvalidOperationException($"{this.threadName} 既に完了アクションが設定されています。");
+                throw new InvalidOperationException($"{this.threadName}: 既に完了アクションが設定されています。");
             }
 
             this.completeAction = action;
@@ -150,7 +136,7 @@ namespace PicSum.Core.Job.AsyncJob
         {
             if (this.thread != null)
             {
-                throw new InvalidOperationException($"{this.threadName} 既にジョブ実行スレッドが開始されています。");
+                throw new InvalidOperationException($"{this.threadName}: 既にジョブ実行スレッドが開始されています。");
             }
 
             this.thread = Task.Run(() => this.DoWork(this.source.Token));
@@ -183,13 +169,16 @@ namespace PicSum.Core.Job.AsyncJob
 
         public void Wait()
         {
-            this.WaitUIThread = true;
+            if (this.thread == null)
+            {
+                throw new NullReferenceException($"{this.threadName}: ジョブ実行スレッドがNullです。");
+            }
+
+            Logger.Debug("ジョブ実行スレッドにキャンセルリクエストを送ります。");
+            this.source.Cancel();
 
             Logger.Debug("UIスレッドを待機します。");
-            while (this.WaitUIThread)
-            {
-                Application.DoEvents();
-            }
+            this.thread.Wait();
             Logger.Debug("UIスレッドの待機が解除されました。");
         }
 
@@ -213,17 +202,11 @@ namespace PicSum.Core.Job.AsyncJob
             {
                 while (true)
                 {
-                    if (token.IsCancellationRequested)
-                    {
-                        Logger.Debug("ジョブ実行スレッドにキャンセルリクエストがありました。");
-                        token.ThrowIfCancellationRequested();
-                    }
-
                     if (this.jobQueue.TryPeek(out var job))
                     {
                         if (job.ID == null)
                         {
-                            throw new NullReferenceException(nameof(job.ID));
+                            throw new NullReferenceException($"{this.threadName}: ジョブIDがNullです。");
                         }
 
                         if (previewJob == job)
@@ -273,19 +256,16 @@ namespace PicSum.Core.Job.AsyncJob
                             };
                         }
 
-                        job.CompleteAction = () =>
+                        if (this.completeAction != null)
                         {
-                            this.context.Post(_ =>
+                            job.CompleteAction = () =>
                             {
-                                this.completeAction?.Invoke();
-
-                                if (this.WaitUIThread)
+                                this.context.Post(_ =>
                                 {
-                                    Logger.Debug($"{job.ID} UIスレッドの待機を解除します。");
-                                    this.WaitUIThread = false;
-                                }
-                            }, null);
-                        };
+                                    this.completeAction?.Invoke();
+                                }, null);
+                            };
+                        }
 
                         try
                         {
@@ -308,19 +288,15 @@ namespace PicSum.Core.Job.AsyncJob
                         }
                         finally
                         {
-                            job.CompleteAction();
-
-                            if (this.WaitUIThread)
-                            {
-                                Logger.Debug($"{job.ID} が終了するまで待機します。");
-                                while (this.WaitUIThread)
-                                {
-                                    Thread.Sleep(1);
-                                }
-                            }
-
+                            job.CompleteAction?.Invoke();
                             Logger.Debug($"{job.ID} が終了しました。");
                         }
+                    }
+
+                    if (token.IsCancellationRequested)
+                    {
+                        Logger.Debug("ジョブ実行スレッドにキャンセルリクエストがありました。");
+                        token.ThrowIfCancellationRequested();
                     }
 
                     Thread.Sleep(1);
@@ -328,7 +304,7 @@ namespace PicSum.Core.Job.AsyncJob
             }
             catch (OperationCanceledException)
             {
-                Logger.Debug($"ジョブ実行スレッドをキャンセルします。");
+                Logger.Debug("ジョブ実行スレッドをキャンセルします。");
             }
             catch (Exception ex)
             {
@@ -336,7 +312,7 @@ namespace PicSum.Core.Job.AsyncJob
             }
             finally
             {
-                Logger.Debug($"ジョブ実行スレッドが終了します。");
+                Logger.Debug("ジョブ実行スレッドが終了します。");
             }
         }
     }
