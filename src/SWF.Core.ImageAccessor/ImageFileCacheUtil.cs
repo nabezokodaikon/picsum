@@ -17,6 +17,19 @@ namespace SWF.Core.ImageAccessor
 
         }
 
+        public static bool HasCache(string filePath)
+        {
+            CACHE_LOCK.EnterReadLock();
+            try
+            {
+                return CACHE_DICTIONARY.ContainsKey(filePath);
+            }
+            finally
+            {
+                CACHE_LOCK.ExitReadLock();
+            }
+        }
+
         public static Size GetSize(string filePath)
         {
             return Read(filePath, cache => cache.Buffer.Size);
