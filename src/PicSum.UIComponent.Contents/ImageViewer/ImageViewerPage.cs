@@ -69,7 +69,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             {
                 IsMain = isMain,
                 HasSub = hasSub,
-                IsUpdate = false,
                 Image = new()
                 {
                     FilePath = filePath,
@@ -533,14 +532,14 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                     var x = 0;
                     this.leftImagePanel.SetBounds(x, y, w, h, BoundsSpecified.All);
                     this.leftImagePanel.ImageAlign = ImageAlign.Right;
-                    this.leftImagePanel.Update(e.IsUpdate);
+                    this.leftImagePanel.Update(!e.Image.IsEmpty);
                 }
                 else
                 {
                     var x = this.checkPatternPanel.Width - w;
                     this.rightImagePanel.SetBounds(x, y, w, h, BoundsSpecified.All);
                     this.rightImagePanel.ImageAlign = ImageAlign.Left;
-                    this.rightImagePanel.Update(e.IsUpdate);
+                    this.rightImagePanel.Update(!e.Image.IsEmpty);
                 }
             }
             else if (!e.IsMain)
@@ -554,14 +553,14 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                     var x = this.checkPatternPanel.Width - w;
                     this.rightImagePanel.SetBounds(x, y, w, h, BoundsSpecified.All);
                     this.rightImagePanel.ImageAlign = ImageAlign.Left;
-                    this.rightImagePanel.Update(e.IsUpdate);
+                    this.rightImagePanel.Update(!e.Image.IsEmpty);
                 }
                 else
                 {
                     var x = 0;
                     this.leftImagePanel.SetBounds(x, y, w, h, BoundsSpecified.All);
                     this.leftImagePanel.ImageAlign = ImageAlign.Right;
-                    this.leftImagePanel.Update(e.IsUpdate);
+                    this.leftImagePanel.Update(!e.Image.IsEmpty);
                 }
             }
             else if (e.IsMain && !e.HasSub)
@@ -573,7 +572,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
                 this.leftImagePanel.SetBounds(x, y, w, h, BoundsSpecified.All);
                 this.leftImagePanel.ImageAlign = ImageAlign.Center;
-                this.leftImagePanel.Update(e.IsUpdate);
+                this.leftImagePanel.Update(!e.Image.IsEmpty);
                 this.rightImagePanel.Visible = false;
             }
             else

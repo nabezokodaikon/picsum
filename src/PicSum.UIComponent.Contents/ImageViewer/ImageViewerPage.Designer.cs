@@ -53,10 +53,10 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.leftImagePanel.ContextMenuStrip = this.fileContextMenu;
             this.leftImagePanel.ImageAlign = SWF.UIComponent.ImagePanel.ImageAlign.Center;
             this.leftImagePanel.IsShowThumbnailPanel = true;
-            this.leftImagePanel.Location = new System.Drawing.Point(316, 99);
+            this.leftImagePanel.Location = new System.Drawing.Point(0, 0);
             this.leftImagePanel.Margin = new System.Windows.Forms.Padding(4);
             this.leftImagePanel.Name = "leftImagePanel";
-            this.leftImagePanel.Size = new System.Drawing.Size(173, 161);
+            this.leftImagePanel.Size = new System.Drawing.Size(0, 0);
             this.leftImagePanel.TabIndex = 1;
             this.leftImagePanel.Text = "imagePanel1";
             this.leftImagePanel.Visible = false;
@@ -90,10 +90,10 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.rightImagePanel.ContextMenuStrip = this.fileContextMenu;
             this.rightImagePanel.ImageAlign = SWF.UIComponent.ImagePanel.ImageAlign.Center;
             this.rightImagePanel.IsShowThumbnailPanel = true;
-            this.rightImagePanel.Location = new System.Drawing.Point(459, 208);
+            this.rightImagePanel.Location = new System.Drawing.Point(0, 0);
             this.rightImagePanel.Margin = new System.Windows.Forms.Padding(4);
             this.rightImagePanel.Name = "rightImagePanel";
-            this.rightImagePanel.Size = new System.Drawing.Size(176, 180);
+            this.rightImagePanel.Size = new System.Drawing.Size(0, 0);
             this.rightImagePanel.TabIndex = 2;
             this.rightImagePanel.Text = "imagePanel2";
             this.rightImagePanel.Visible = false;

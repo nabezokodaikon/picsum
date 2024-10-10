@@ -9,6 +9,5 @@ namespace PicSum.Job.Results
         public ImageFileEntity? Image { get; set; }
         public bool IsMain { get; set; }
         public bool HasSub { get; set; }
-        public bool IsUpdate { get; set; }
     }
 }

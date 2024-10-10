@@ -265,7 +265,7 @@ namespace SWF.UIComponent.ImagePanel
 
             this.SetDrawParameter();
             this.Invalidate();
-            base.Update();
+            this.Update();
             sw.Stop();
             Console.WriteLine($"[{Thread.CurrentThread.Name}] ImagePanel.Update: {sw.ElapsedMilliseconds} ms");
         }

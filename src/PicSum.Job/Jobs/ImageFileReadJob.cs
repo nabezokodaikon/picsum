@@ -104,7 +104,6 @@ namespace PicSum.Job.Jobs
                 {
                     IsMain = isMain,
                     HasSub = hasSub,
-                    IsUpdate = true,
                     Image = new()
                     {
                         FilePath = filePath,
