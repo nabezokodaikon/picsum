@@ -35,7 +35,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        private static float GetImageScale(Size imageSize, Size backgroudSize, ImageSizeMode mode)
+        private static float GetImageScale(SizeF imageSize, SizeF backgroudSize, ImageSizeMode mode)
         {
             if (mode == ImageSizeMode.Original ||
                 mode == ImageSizeMode.FitOnlyBigImage
@@ -47,8 +47,8 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             else
             {
                 var scale = Math.Min(
-                    backgroudSize.Width / (float)imageSize.Width,
-                    backgroudSize.Height / (float)imageSize.Height);
+                    backgroudSize.Width / imageSize.Width,
+                    backgroudSize.Height / imageSize.Height);
                 return scale;
             }
         }
@@ -56,8 +56,14 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         private static ImageFileGetResult CreateEmptyResult(
             string filePath, bool isMain, bool hasSub, int thumbnailSize, ImageSizeMode imageSizeMode, Size imageSize)
         {
+            var sw = Stopwatch.StartNew();
+            Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageViewerPage.CreateEmptyResult: Start");
+
             var image = new CvImage(CreateEmptyImage(imageSize));
             var thumbnail = ThumbnailGetLogic.CreateThumbnail(image, thumbnailSize, imageSizeMode);
+
+            sw.Stop();
+            Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageViewerPage.CreateEmptyResult: {sw.ElapsedMilliseconds} ms");
 
             return new()
             {
@@ -247,11 +253,11 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
         public override void RedrawPage()
         {
-            Size backgroudSize;
+            SizeF backgroudSize;
             if (this.leftImagePanel.HasImage && this.rightImagePanel.HasImage)
             {
-                backgroudSize = new Size(
-                    (int)(this.checkPatternPanel.Size.Width / 2f),
+                backgroudSize = new SizeF(
+                    this.checkPatternPanel.Size.Width / 2f,
                     this.checkPatternPanel.Size.Height);
             }
             else
@@ -712,7 +718,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageViewerPage.ReadImage: {sw.ElapsedMilliseconds} ms");
         }
 
-        private async void DrawLoadingImage(ImageFileReadParameter parameter, string mainFilePath)
+        private void DrawLoadingImage(ImageFileReadParameter parameter, string mainFilePath)
         {
             var sw = Stopwatch.StartNew();
             Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageViewerPage.DrawLoadingImage: Start");
@@ -753,7 +759,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             }
 
             var context = SynchronizationContext.Current;
-            await Task.Run(() =>
+            Task.Run(() =>
             {
                 Thread.Sleep(100);
 
@@ -874,11 +880,11 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
         private void ImageFileReadJob_Callback(ImageFileGetResult e)
         {
-            Size bgSize;
+            SizeF bgSize;
             if (e.HasSub)
             {
-                bgSize = new Size(
-                    (int)(this.checkPatternPanel.Size.Width / 2f),
+                bgSize = new SizeF(
+                    this.checkPatternPanel.Size.Width / 2f,
                     this.checkPatternPanel.Size.Height);
             }
             else
