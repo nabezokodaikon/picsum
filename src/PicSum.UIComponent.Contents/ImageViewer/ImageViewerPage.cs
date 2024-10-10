@@ -745,20 +745,20 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                     && subSize.Width < subSize.Height)
                 {
                     this.ImageFileReadJob_Callback(ImageFileReadLogic.CreateEmptyResult(
-                        mainFilePath, true, true, parameter.ThumbnailSize, parameter.ImageSizeMode, mainSize));
+                        mainFilePath, true, true, parameter.ImageSizeMode, mainSize));
                     this.ImageFileReadJob_Callback(ImageFileReadLogic.CreateEmptyResult(
-                        subFilePath, false, true, parameter.ThumbnailSize, parameter.ImageSizeMode, subSize));
+                        subFilePath, false, true, parameter.ImageSizeMode, subSize));
                 }
                 else
                 {
                     this.ImageFileReadJob_Callback(ImageFileReadLogic.CreateEmptyResult(
-                        mainFilePath, true, false, parameter.ThumbnailSize, parameter.ImageSizeMode, mainSize));
+                        mainFilePath, true, false, parameter.ImageSizeMode, mainSize));
                 }
             }
             else
             {
                 this.ImageFileReadJob_Callback(ImageFileReadLogic.CreateEmptyResult(
-                    mainFilePath, true, false, parameter.ThumbnailSize, parameter.ImageSizeMode, mainSize));
+                    mainFilePath, true, false, parameter.ImageSizeMode, mainSize));
             }
 
             this.IsLoading = true;

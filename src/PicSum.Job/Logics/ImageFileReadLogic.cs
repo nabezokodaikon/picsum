@@ -12,7 +12,7 @@ namespace PicSum.Job.Logics
         : AbstractAsyncLogic(job)
     {
         public static ImageFileGetResult CreateEmptyResult(
-            string filePath, bool isMain, bool hasSub, int thumbnailSize, ImageSizeMode imageSizeMode, Size imageSize)
+            string filePath, bool isMain, bool hasSub, ImageSizeMode imageSizeMode, Size imageSize)
         {
             var sw = Stopwatch.StartNew();
 
