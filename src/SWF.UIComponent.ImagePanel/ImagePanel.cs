@@ -59,6 +59,7 @@ namespace SWF.UIComponent.ImagePanel
 
         private SizeF imageScaleSize = SizeF.Empty;
         private CvImage image = null;
+        private Size imageSize;
         private Bitmap thumbnail = null;
 
         private int hMaximumScrollValue = 0;
@@ -171,10 +172,15 @@ namespace SWF.UIComponent.ImagePanel
         #region パブリックメソッド
 
         public void SetImage(
-            ImageSizeMode sizeMode, CvImage img, Bitmap thumb, bool isEmpty, string filePath)
+            ImageSizeMode sizeMode, CvImage img, Size imgSize, Bitmap thumb, bool isEmpty, string filePath)
         {
             ArgumentNullException.ThrowIfNull(img, nameof(img));
-            ArgumentNullException.ThrowIfNull(thumb, nameof(thumb));
+
+            if (!isEmpty)
+            {
+                ArgumentNullException.ThrowIfNull(thumb, nameof(thumb));
+            }
+
             ArgumentNullException.ThrowIfNull(filePath, nameof(filePath));
 
             if (this.HasImage)
@@ -185,6 +191,7 @@ namespace SWF.UIComponent.ImagePanel
             this.filePath = filePath;
             this.sizeMode = sizeMode;
             this.image = img;
+            this.imageSize = imgSize;
             this.thumbnail = thumb;
             this.isEmpty = isEmpty;
             this.isError = false;
@@ -203,14 +210,14 @@ namespace SWF.UIComponent.ImagePanel
             if (this.isError)
             {
                 this.imageScaleSize = new SizeF(
-                    this.image.Width * ERROR_IMAGE_SCALE,
-                    this.image.Height * ERROR_IMAGE_SCALE);
+                    this.imageSize.Width * ERROR_IMAGE_SCALE,
+                    this.imageSize.Height * ERROR_IMAGE_SCALE);
             }
             else
             {
                 this.imageScaleSize = new SizeF(
-                    this.image.Width * scale,
-                    this.image.Height * scale);
+                    this.imageSize.Width * scale,
+                    this.imageSize.Height * scale);
             }
         }
 
@@ -221,8 +228,6 @@ namespace SWF.UIComponent.ImagePanel
 
         public void ClearImage()
         {
-            var sw = Stopwatch.StartNew();
-
             this.HasImage = false;
 
             if (this.thumbnail != null)
@@ -238,9 +243,6 @@ namespace SWF.UIComponent.ImagePanel
             }
 
             this.imageScaleSize = SizeF.Empty;
-
-            sw.Stop();
-            Console.WriteLine($"[{Thread.CurrentThread.Name}] ImagePanel.ClearImage: {sw.ElapsedMilliseconds} ms");
         }
 
         public bool IsImagePoint(int x, int y)
@@ -255,17 +257,18 @@ namespace SWF.UIComponent.ImagePanel
                 return;
             }
 
-            Console.WriteLine($"[{Thread.CurrentThread.Name}] ImagePanel.Update: Start");
             var sw = Stopwatch.StartNew();
+
+            this.SetDrawParameter();
 
             if (!this.Visible)
             {
                 this.Visible = true;
             }
 
-            this.SetDrawParameter();
             this.Invalidate();
             this.Update();
+
             sw.Stop();
             Console.WriteLine($"[{Thread.CurrentThread.Name}] ImagePanel.Update: {sw.ElapsedMilliseconds} ms");
         }
@@ -319,7 +322,7 @@ namespace SWF.UIComponent.ImagePanel
             {
                 this.DrawImage(e.Graphics);
 
-                if (this.isShowThumbnailPanel &&
+                if (!this.isEmpty && this.isShowThumbnailPanel &&
                     (this.hMaximumScrollValue > 0 || this.vMaximumScrollValue > 0))
                 {
                     this.DrawThumbnailPanel(e.Graphics);
@@ -327,7 +330,7 @@ namespace SWF.UIComponent.ImagePanel
             }
 
             sw.Stop();
-            //Console.WriteLine($"[{Thread.CurrentThread.Name}] ImagePanel.OnPaint: {sw.ElapsedMilliseconds} ms");
+            Console.WriteLine($"[{Thread.CurrentThread.Name}] ImagePanel.OnPaint: {sw.ElapsedMilliseconds} ms");
         }
 
         protected override void OnMouseLeave(EventArgs e)
@@ -338,6 +341,11 @@ namespace SWF.UIComponent.ImagePanel
 
         protected override void OnMouseDown(MouseEventArgs e)
         {
+            if (this.isEmpty)
+            {
+                return;
+            }
+
             if (e.Button == MouseButtons.Left)
             {
                 if (this.isShowThumbnailPanel &&
@@ -614,8 +622,8 @@ namespace SWF.UIComponent.ImagePanel
         {
             var x = this.hScrollValue;
             var y = this.vScrollValue;
-            var w = this.image.Width - this.hMaximumScrollValue;
-            var h = this.image.Height - this.vMaximumScrollValue;
+            var w = this.imageSize.Width - this.hMaximumScrollValue;
+            var h = this.imageSize.Height - this.vMaximumScrollValue;
 
             return new RectangleF(x, y, w, h);
         }
@@ -674,38 +682,10 @@ namespace SWF.UIComponent.ImagePanel
         {
             var sw = Stopwatch.StartNew();
 
-            var destRect = this.GetImageDestRectangle();
-            if (this.sizeMode == ImageSizeMode.Original)
-            {
-                g.DrawImage(this.image.Bitmap, destRect, this.GetImageSrcRectangle(), GraphicsUnit.Pixel);
-            }
-            else if (this.sizeMode == ImageSizeMode.FitAllImage)
-            {
-                using (var drawImage = this.image.Resize((int)destRect.Width, (int)destRect.Height))
-                {
-                    g.DrawImage(drawImage, destRect,
-                        new Rectangle(0, 0, drawImage.Width, drawImage.Height), GraphicsUnit.Pixel);
-                }
-            }
-            else if (this.sizeMode == ImageSizeMode.FitOnlyBigImage)
-            {
-                if (this.image.Width > destRect.Width || this.image.Height > destRect.Height)
-                {
-                    using (var drawImage = this.image.Resize((int)destRect.Width, (int)destRect.Height))
-                    {
-                        g.DrawImage(drawImage, destRect,
-                            new Rectangle(0, 0, drawImage.Width, drawImage.Height), GraphicsUnit.Pixel);
-                    }
-                }
-                else
-                {
-                    g.DrawImage(this.image.Bitmap, destRect,
-                        new Rectangle(0, 0, this.image.Width, this.image.Height), GraphicsUnit.Pixel);
-                }
-            }
-
             if (this.isEmpty)
             {
+                var destRect = this.GetImageDestRectangle();
+                g.DrawImage(this.image.Bitmap, destRect, new Rectangle(0, 0, this.image.Width, this.image.Height), GraphicsUnit.Pixel);
                 using (var sf = new StringFormat())
                 {
                     sf.Alignment = StringAlignment.Center;
@@ -718,6 +698,38 @@ namespace SWF.UIComponent.ImagePanel
                         Brushes.White,
                         destRect,
                         sf);
+                }
+            }
+            else
+            {
+                var destRect = this.GetImageDestRectangle();
+                if (this.sizeMode == ImageSizeMode.Original)
+                {
+                    g.DrawImage(this.image.Bitmap, destRect, this.GetImageSrcRectangle(), GraphicsUnit.Pixel);
+                }
+                else if (this.sizeMode == ImageSizeMode.FitAllImage)
+                {
+                    using (var drawImage = this.image.Resize((int)destRect.Width, (int)destRect.Height))
+                    {
+                        g.DrawImage(drawImage, destRect,
+                            new Rectangle(0, 0, drawImage.Width, drawImage.Height), GraphicsUnit.Pixel);
+                    }
+                }
+                else if (this.sizeMode == ImageSizeMode.FitOnlyBigImage)
+                {
+                    if (this.image.Width > destRect.Width || this.image.Height > destRect.Height)
+                    {
+                        using (var drawImage = this.image.Resize((int)destRect.Width, (int)destRect.Height))
+                        {
+                            g.DrawImage(drawImage, destRect,
+                                new Rectangle(0, 0, drawImage.Width, drawImage.Height), GraphicsUnit.Pixel);
+                        }
+                    }
+                    else
+                    {
+                        g.DrawImage(this.image.Bitmap, destRect,
+                            new Rectangle(0, 0, this.image.Width, this.image.Height), GraphicsUnit.Pixel);
+                    }
                 }
             }
 
