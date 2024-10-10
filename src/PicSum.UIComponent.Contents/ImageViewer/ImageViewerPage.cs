@@ -701,6 +701,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         private void DrawLoadingImage(ImageFileReadParameter parameter, string mainFilePath)
         {
             var sw = Stopwatch.StartNew();
+            Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageViewerPage.DrawLoadingImage: Start");
 
             var mainSize = this.GetImageSize(mainFilePath);
             if (parameter.ImageDisplayMode != ImageDisplayMode.Single

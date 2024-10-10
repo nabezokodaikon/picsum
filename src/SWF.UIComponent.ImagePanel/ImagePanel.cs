@@ -692,7 +692,7 @@ namespace SWF.UIComponent.ImagePanel
                     g.DrawString(
                         text,
                         this.Font,
-                        Brushes.DarkGray,
+                        Brushes.DimGray,
                         destRect,
                         sf);
                 }
