@@ -46,10 +46,10 @@ namespace PicSum.Job.Logics
             var sw = Stopwatch.StartNew();
 
             var scale = Math.Min(thumbSize / (float)srcImg.Width, thumbSize / (float)srcImg.Height);
-            var w = (int)(srcImg.Width * scale);
-            var h = (int)(srcImg.Height * scale);
+            var w = srcImg.Width * scale;
+            var h = srcImg.Height * scale;
 
-            var destImg = new Bitmap(w, h);
+            var destImg = new Bitmap((int)w, (int)h);
             using (var g = Graphics.FromImage(destImg))
             {
                 if (sizeMode == ImageSizeMode.Original)
@@ -60,7 +60,7 @@ namespace PicSum.Job.Logics
                     g.PixelOffsetMode = PixelOffsetMode.HighSpeed;
                     g.CompositingMode = CompositingMode.SourceOver;
 
-                    srcImg.DrawResizeImage(g, new Rectangle(0, 0, w, h), new Rectangle(0, 0, srcImg.Width, srcImg.Height));
+                    srcImg.DrawResizeImage(g, new RectangleF(0, 0, w, h), new RectangleF(0, 0, srcImg.Width, srcImg.Height));
                     sw.Stop();
                 }
             }

@@ -1,6 +1,7 @@
 using OpenCvSharp;
 using OpenCvSharp.Extensions;
 using System.Diagnostics;
+using System.Drawing.Drawing2D;
 
 namespace SWF.Core.ImageAccessor
 {
@@ -158,15 +159,16 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
-        public void DrawEmptyImage(Graphics g, Brush brushe, Rectangle destRect)
+        public void DrawEmptyImage(Graphics g, Brush brushe, RectangleF destRect)
         {
             ArgumentNullException.ThrowIfNull(g, nameof(g));
             ArgumentNullException.ThrowIfNull(brushe, nameof(brushe));
 
+            g.CompositingMode = CompositingMode.SourceCopy;
             g.FillRectangle(brushe, destRect);
         }
 
-        public void DrawSourceImage(Graphics g, Rectangle destRect, Rectangle srcRect)
+        public void DrawSourceImage(Graphics g, RectangleF destRect, RectangleF srcRect)
         {
             ArgumentNullException.ThrowIfNull(g, nameof(g));
 
@@ -175,10 +177,11 @@ namespace SWF.Core.ImageAccessor
                 throw new NullReferenceException("BitmapがNullです。");
             }
 
+            g.CompositingMode = CompositingMode.SourceOver;
             g.DrawImage(this.bitmap, destRect, srcRect, GraphicsUnit.Pixel);
         }
 
-        public void DrawResizeImage(Graphics g, Rectangle destRect, Rectangle srcRect)
+        public void DrawResizeImage(Graphics g, RectangleF destRect, RectangleF srcRect)
         {
             ArgumentNullException.ThrowIfNull(g, nameof(g));
 
@@ -187,10 +190,11 @@ namespace SWF.Core.ImageAccessor
                 throw new NullReferenceException("BitmapがNullです。");
             }
 
-            using (var resizeImage = this.Resize(destRect.Width, destRect.Height))
+            using (var resizeImage = this.Resize((int)destRect.Width, (int)destRect.Height))
             {
+                g.CompositingMode = CompositingMode.SourceOver;
                 g.DrawImage(resizeImage, destRect,
-                    new Rectangle(0, 0, destRect.Width, destRect.Height), GraphicsUnit.Pixel);
+                    new RectangleF(0, 0, destRect.Width, destRect.Height), GraphicsUnit.Pixel);
             }
         }
     }

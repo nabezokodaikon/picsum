@@ -241,11 +241,6 @@ namespace SWF.UIComponent.ImagePanel
             this.imageScaleSize = SizeF.Empty;
         }
 
-        public bool IsImagePoint(int x, int y)
-        {
-            return this.GetImageDestRectangle().Contains(x, y);
-        }
-
         public void Update(bool isUpdate)
         {
             if (!isUpdate)
@@ -296,7 +291,6 @@ namespace SWF.UIComponent.ImagePanel
             e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
             e.Graphics.CompositingQuality = CompositingQuality.HighSpeed;
             e.Graphics.PixelOffsetMode = PixelOffsetMode.HighSpeed;
-            e.Graphics.CompositingMode = CompositingMode.SourceOver;
 
             if (this.isError)
             {
@@ -553,8 +547,8 @@ namespace SWF.UIComponent.ImagePanel
             if (this.HasImage)
             {
                 var rect = this.GetImageDestRectangle();
-                var imgX = x - (int)rect.X;
-                var imgY = y - (int)rect.Y;
+                var imgX = x - rect.X;
+                var imgY = y - rect.Y;
                 if (imgX >= 0 && this.imageScaleSize.Width >= imgX && imgY >= 0 && this.imageScaleSize.Height >= imgY)
                 {
                     //Bitmap bmp = (Bitmap)_image;
@@ -573,7 +567,7 @@ namespace SWF.UIComponent.ImagePanel
             }
         }
 
-        private Rectangle GetImageDestRectangle()
+        private RectangleF GetImageDestRectangle()
         {
             float x;
             if (this.hMaximumScrollValue > 0)
@@ -616,29 +610,29 @@ namespace SWF.UIComponent.ImagePanel
             var w = this.imageScaleSize.Width - this.hMaximumScrollValue;
             var h = this.imageScaleSize.Height - this.vMaximumScrollValue;
 
-            return new Rectangle((int)x, (int)y, (int)w, (int)h);
+            return new RectangleF(x, y, w, h);
         }
 
-        private Rectangle GetImageSrcRectangle()
+        private RectangleF GetImageSrcRectangle()
         {
             var x = this.hScrollValue;
             var y = this.vScrollValue;
             var w = this.image.Width - this.hMaximumScrollValue;
             var h = this.image.Height - this.vMaximumScrollValue;
 
-            return new Rectangle(x, y, w, h);
+            return new RectangleF(x, y, w, h);
         }
 
-        private Rectangle GetThumbnailPanelRectangle()
+        private RectangleF GetThumbnailPanelRectangle()
         {
             var x = this.Width - THUMBNAIL_PANEL_OFFSET - this.ThumbnailPanelSize;
             var y = this.Height - THUMBNAIL_PANEL_OFFSET - this.ThumbnailPanelSize;
             var w = this.ThumbnailPanelSize;
             var h = this.ThumbnailPanelSize;
-            return new Rectangle(x, y, w, h);
+            return new RectangleF(x, y, w, h);
         }
 
-        private RectangleF GetThumbnailRectangle(Rectangle panelRect)
+        private RectangleF GetThumbnailRectangle(RectangleF panelRect)
         {
             var x = panelRect.X + (panelRect.Width - this.thumbnail.Width) / 2f;
             var y = panelRect.Y + (panelRect.Height - this.thumbnail.Height) / 2f;
@@ -687,6 +681,8 @@ namespace SWF.UIComponent.ImagePanel
             {
                 var destRect = this.GetImageDestRectangle();
                 this.image.DrawEmptyImage(g, Brushes.Gray, destRect);
+
+                g.CompositingMode = CompositingMode.SourceOver;
                 using (var sf = new StringFormat())
                 {
                     sf.Alignment = StringAlignment.Center;
@@ -703,24 +699,25 @@ namespace SWF.UIComponent.ImagePanel
             }
             else
             {
-                var destRect = this.GetImageDestRectangle();
                 if (this.sizeMode == ImageSizeMode.Original)
                 {
-                    this.image.DrawSourceImage(g, destRect, this.GetImageSrcRectangle());
+                    this.image.DrawSourceImage(g, this.GetImageDestRectangle(), this.GetImageSrcRectangle());
                 }
                 else if (this.sizeMode == ImageSizeMode.FitAllImage)
                 {
+                    var destRect = this.GetImageDestRectangle();
                     this.image.DrawResizeImage(g, destRect, destRect);
                 }
                 else if (this.sizeMode == ImageSizeMode.FitOnlyBigImage)
                 {
+                    var destRect = this.GetImageDestRectangle();
                     if (this.image.Width > destRect.Width || this.image.Height > destRect.Height)
                     {
                         this.image.DrawResizeImage(g, destRect, destRect);
                     }
                     else
                     {
-                        this.image.DrawResizeImage(g, destRect, new Rectangle(0, 0, this.image.Width, this.image.Height));
+                        this.image.DrawResizeImage(g, destRect, new RectangleF(0, 0, this.image.Width, this.image.Height));
                     }
                 }
             }
@@ -731,6 +728,8 @@ namespace SWF.UIComponent.ImagePanel
 
         private void DrawThumbnailPanel(Graphics g)
         {
+            g.CompositingMode = CompositingMode.SourceOver;
+
             var panelRect = this.GetThumbnailPanelRectangle();
             g.DrawImage(this.thumbnailPanelImage, panelRect);
 
