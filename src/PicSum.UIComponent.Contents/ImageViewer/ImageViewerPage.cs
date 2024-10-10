@@ -404,12 +404,12 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             catch (FileUtilException ex)
             {
                 Logger.Error(ex);
-                return new Size(this.checkPatternPanel.Size.Width / 2, this.checkPatternPanel.Size.Height);
+                return new Size((int)(this.checkPatternPanel.Size.Width / 2f), this.checkPatternPanel.Size.Height);
             }
             catch (ImageUtilException ex)
             {
                 Logger.Error(ex);
-                return new Size(this.checkPatternPanel.Size.Width / 2, this.checkPatternPanel.Size.Height);
+                return new Size((int)(this.checkPatternPanel.Size.Width / 2f), this.checkPatternPanel.Size.Height);
             }
             finally
             {
