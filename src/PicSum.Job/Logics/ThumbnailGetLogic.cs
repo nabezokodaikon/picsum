@@ -43,7 +43,9 @@ namespace PicSum.Job.Logics
                 ArgumentOutOfRangeException.ThrowIfNegative(thumbSize, nameof(thumbSize));
             }
 
-            var scale = Math.Min(thumbSize / (double)srcImg.Width, thumbSize / (double)srcImg.Height);
+            var sw = Stopwatch.StartNew();
+
+            var scale = Math.Min(thumbSize / (float)srcImg.Width, thumbSize / (float)srcImg.Height);
             var w = (int)(srcImg.Width * scale);
             var h = (int)(srcImg.Height * scale);
 
@@ -58,12 +60,10 @@ namespace PicSum.Job.Logics
 
                 if (sizeMode == ImageSizeMode.Original)
                 {
-                    var sw = Stopwatch.StartNew();
                     using (var thumb = srcImg.Resize(w, h))
                     {
                         g.DrawImage(thumb, 0, 0, w, h);
                         sw.Stop();
-                        Console.WriteLine($"[{Thread.CurrentThread.Name}] ThumbnailGetLogic.CreateThumbnail: {sw.ElapsedMilliseconds} ms");
                     }
                 }
                 else
@@ -71,6 +71,8 @@ namespace PicSum.Job.Logics
                     g.FillRectangle(Brushes.Yellow, new Rectangle(0, 0, w, h));
                 }
             }
+
+            Console.WriteLine($"[{Thread.CurrentThread.Name}] ThumbnailGetLogic.CreateThumbnail: {sw.ElapsedMilliseconds} ms");
 
             return destImg;
         }
