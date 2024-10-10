@@ -2,6 +2,7 @@ using NLog;
 using PicSum.Core.Base.Conf;
 using PicSum.Core.Job.AsyncJob;
 using PicSum.Job.Jobs;
+using PicSum.Job.Logics;
 using PicSum.Job.Parameters;
 using PicSum.Job.Results;
 using PicSum.UIComponent.Contents.Common;
@@ -20,6 +21,7 @@ using System.Drawing;
 using System.Linq;
 using System.Runtime.Versioning;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace PicSum.UIComponent.Contents.ImageViewer
@@ -49,6 +51,39 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                     backgroudSize.Height / (float)imageSize.Height);
                 return scale;
             }
+        }
+
+        private static ImageFileGetResult CreateEmptyResult(
+            string filePath, bool isMain, bool hasSub, int thumbnailSize, ImageSizeMode imageSizeMode, Size imageSize)
+        {
+            var image = new CvImage(CreateEmptyImage(imageSize));
+            var thumbnail = ThumbnailGetLogic.CreateThumbnail(image, thumbnailSize, imageSizeMode);
+
+            return new()
+            {
+                IsMain = isMain,
+                HasSub = hasSub,
+                IsUpdate = false,
+                Image = new()
+                {
+                    FilePath = filePath,
+                    Thumbnail = thumbnail,
+                    Image = image,
+                    Size = imageSize,
+                    IsEmpty = true,
+                    IsError = false,
+                }
+            };
+        }
+
+        private static Bitmap CreateEmptyImage(Size imageSize)
+        {
+            var bmp = new Bitmap(imageSize.Width, imageSize.Height);
+            using (var g = Graphics.FromImage(bmp))
+            {
+                g.FillRectangle(Brushes.Gray, new Rectangle(0, 0, bmp.Width, bmp.Height));
+            }
+            return bmp;
         }
 
         #region インスタンス変数
@@ -128,7 +163,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                             Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageViewerPage.ImageFileReadJob_Callback: Start IsMain = {r.IsMain}");
 
                             this.ImageFileReadJob_Callback(r);
-                            this.Cursor = Cursors.Default;
 
                             sw.Stop();
                             Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageViewerPage.ImageFileReadJob_Callback: {sw.ElapsedMilliseconds} ms");
@@ -415,7 +449,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
                 this.leftImagePanel.SetBounds(x, y, w, h, BoundsSpecified.All);
                 this.leftImagePanel.ImageAlign = ImageAlign.Center;
-                this.leftImagePanel.Update();
+                this.leftImagePanel.Update(true);
 
                 this.rightImagePanel.Visible = false;
             };
@@ -430,11 +464,11 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
                 this.leftImagePanel.SetBounds(lx, y, w, h, BoundsSpecified.All);
                 this.leftImagePanel.ImageAlign = ImageAlign.Right;
-                this.leftImagePanel.Update();
+                this.leftImagePanel.Update(true);
 
                 this.rightImagePanel.SetBounds(rx, y, w, h, BoundsSpecified.All);
                 this.rightImagePanel.ImageAlign = ImageAlign.Left;
-                this.rightImagePanel.Update();
+                this.rightImagePanel.Update(true);
             };
 
             if (this.displayMode == ImageDisplayMode.LeftFacing)
@@ -480,14 +514,14 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                     var x = 0;
                     this.leftImagePanel.SetBounds(x, y, w, h, BoundsSpecified.All);
                     this.leftImagePanel.ImageAlign = ImageAlign.Right;
-                    this.leftImagePanel.Update();
+                    this.leftImagePanel.Update(e.IsUpdate);
                 }
                 else
                 {
                     var x = this.checkPatternPanel.Width - w;
                     this.rightImagePanel.SetBounds(x, y, w, h, BoundsSpecified.All);
                     this.rightImagePanel.ImageAlign = ImageAlign.Left;
-                    this.rightImagePanel.Update();
+                    this.rightImagePanel.Update(e.IsUpdate);
                 }
             }
             else if (!e.IsMain)
@@ -501,14 +535,14 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                     var x = this.checkPatternPanel.Width - w;
                     this.rightImagePanel.SetBounds(x, y, w, h, BoundsSpecified.All);
                     this.rightImagePanel.ImageAlign = ImageAlign.Left;
-                    this.rightImagePanel.Update();
+                    this.rightImagePanel.Update(e.IsUpdate);
                 }
                 else
                 {
                     var x = 0;
                     this.leftImagePanel.SetBounds(x, y, w, h, BoundsSpecified.All);
                     this.leftImagePanel.ImageAlign = ImageAlign.Right;
-                    this.leftImagePanel.Update();
+                    this.leftImagePanel.Update(e.IsUpdate);
                 }
             }
             else if (e.IsMain && !e.HasSub)
@@ -520,7 +554,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
                 this.leftImagePanel.SetBounds(x, y, w, h, BoundsSpecified.All);
                 this.leftImagePanel.ImageAlign = ImageAlign.Center;
-                this.leftImagePanel.Update();
+                this.leftImagePanel.Update(e.IsUpdate);
                 this.rightImagePanel.Visible = false;
             }
             else
@@ -640,8 +674,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         {
             var sw = Stopwatch.StartNew();
 
-            this.Cursor = Cursors.WaitCursor;
-
             var mainFilePath = this.filePathList[this.FilePathListIndex];
             this.SelectedFilePath = mainFilePath;
 
@@ -672,11 +704,67 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 ThumbnailSize = this.leftImagePanel.ThumbnailSize,
             };
 
-            this.ImageFileReadJob.StartJob(param);
             this.ImageInfoCacheJob.StartJob([.. nextFiles, .. prevFiles]);
+            this.ImageFileReadJob.StartJob(param);
+            this.DrawLoadingImage(param, mainFilePath);
 
             sw.Stop();
             Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageViewerPage.ReadImage: {sw.ElapsedMilliseconds} ms");
+        }
+
+        private async void DrawLoadingImage(ImageFileReadParameter parameter, string mainFilePath)
+        {
+            var sw = Stopwatch.StartNew();
+            Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageViewerPage.DrawLoadingImage: Start");
+
+            var mainSize = this.GetImageSize(mainFilePath);
+
+            if (parameter.ImageDisplayMode != ImageDisplayMode.Single
+                && mainSize != ImageUtil.EMPTY_SIZE
+                && mainSize.Width < mainSize.Height)
+            {
+                var subtIndex = parameter.CurrentIndex + 1;
+                if (subtIndex > parameter.FilePathList.Count - 1)
+                {
+                    subtIndex = 0;
+                }
+
+                var subFilePath = parameter.FilePathList[subtIndex];
+                var subSize = this.GetImageSize(subFilePath);
+
+                if (subSize != ImageUtil.EMPTY_SIZE
+                    && subSize.Width < subSize.Height)
+                {
+                    this.ImageFileReadJob_Callback(CreateEmptyResult(
+                        mainFilePath, true, true, parameter.ThumbnailSize, parameter.ImageSizeMode, mainSize));
+                    this.ImageFileReadJob_Callback(CreateEmptyResult(
+                        subFilePath, false, true, parameter.ThumbnailSize, parameter.ImageSizeMode, mainSize));
+                }
+                else
+                {
+                    this.ImageFileReadJob_Callback(CreateEmptyResult(
+                        mainFilePath, true, false, parameter.ThumbnailSize, parameter.ImageSizeMode, mainSize));
+                }
+            }
+            else
+            {
+                this.ImageFileReadJob_Callback(CreateEmptyResult(
+                    mainFilePath, true, false, parameter.ThumbnailSize, parameter.ImageSizeMode, mainSize));
+            }
+
+            var context = SynchronizationContext.Current;
+            await Task.Run(() =>
+            {
+                Thread.Sleep(100);
+
+                context.Send(_ =>
+                {
+                    this.ChangeImagePanelSize();
+                }, null);
+            });
+
+            sw.Stop();
+            Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageViewerPage.DrawLoadingImage: {sw.ElapsedMilliseconds} ms");
         }
 
         private void DoDragDrop(string currentFilePath)

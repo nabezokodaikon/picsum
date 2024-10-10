@@ -248,8 +248,13 @@ namespace SWF.UIComponent.ImagePanel
             return this.GetImageDestRectangle().Contains(x, y);
         }
 
-        public new void Update()
+        public void Update(bool isUpdate)
         {
+            if (!isUpdate)
+            {
+                return;
+            }
+
             Console.WriteLine($"[{Thread.CurrentThread.Name}] ImagePanel.Update: Start");
             var sw = Stopwatch.StartNew();
 
