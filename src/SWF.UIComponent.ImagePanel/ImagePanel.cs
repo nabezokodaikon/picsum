@@ -680,7 +680,7 @@ namespace SWF.UIComponent.ImagePanel
             if (this.image.IsEmpty)
             {
                 var destRect = this.GetImageDestRectangle();
-                this.image.DrawEmptyImage(g, Brushes.Gray, destRect);
+                this.image.DrawEmptyImage(g, Brushes.LightGray, destRect);
 
                 g.CompositingMode = CompositingMode.SourceOver;
                 using (var sf = new StringFormat())
@@ -692,7 +692,7 @@ namespace SWF.UIComponent.ImagePanel
                     g.DrawString(
                         text,
                         this.Font,
-                        Brushes.White,
+                        Brushes.DarkGray,
                         destRect,
                         sf);
                 }
