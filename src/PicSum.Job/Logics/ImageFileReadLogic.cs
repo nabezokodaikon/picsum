@@ -19,7 +19,7 @@ namespace PicSum.Job.Logics
             var image = new CvImage(imageSize);
 
             sw.Stop();
-            Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageViewerPage.CreateEmptyResult: {sw.ElapsedMilliseconds} ms");
+            Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageFileReadLogic.CreateEmptyResult: {sw.ElapsedMilliseconds} ms");
 
             return new()
             {
