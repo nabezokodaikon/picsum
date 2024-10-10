@@ -2,6 +2,7 @@ using NLog;
 using PicSum.Core.Base.Conf;
 using PicSum.Core.Job.AsyncJob;
 using PicSum.Job.Jobs;
+using PicSum.Job.Logics;
 using PicSum.Job.Parameters;
 using PicSum.Job.Results;
 using PicSum.UIComponent.Contents.Common;
@@ -50,32 +51,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                     backgroudSize.Height / imageSize.Height);
                 return scale;
             }
-        }
-
-        private static ImageFileGetResult CreateEmptyResult(
-            string filePath, bool isMain, bool hasSub, int thumbnailSize, ImageSizeMode imageSizeMode, Size imageSize)
-        {
-            var sw = Stopwatch.StartNew();
-
-            var image = new CvImage(imageSize);
-
-            sw.Stop();
-            Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageViewerPage.CreateEmptyResult: {sw.ElapsedMilliseconds} ms");
-
-            return new()
-            {
-                IsMain = isMain,
-                HasSub = hasSub,
-                Image = new()
-                {
-                    FilePath = filePath,
-                    Thumbnail = null,
-                    Image = image,
-                    Size = imageSize,
-                    IsEmpty = true,
-                    IsError = false,
-                }
-            };
         }
 
         #region インスタンス変数
@@ -744,20 +719,20 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 if (subSize != ImageUtil.EMPTY_SIZE
                     && subSize.Width < subSize.Height)
                 {
-                    this.ImageFileReadJob_Callback(CreateEmptyResult(
+                    this.ImageFileReadJob_Callback(ImageFileReadLogic.CreateEmptyResult(
                         mainFilePath, true, true, parameter.ThumbnailSize, parameter.ImageSizeMode, mainSize));
-                    this.ImageFileReadJob_Callback(CreateEmptyResult(
+                    this.ImageFileReadJob_Callback(ImageFileReadLogic.CreateEmptyResult(
                         subFilePath, false, true, parameter.ThumbnailSize, parameter.ImageSizeMode, subSize));
                 }
                 else
                 {
-                    this.ImageFileReadJob_Callback(CreateEmptyResult(
+                    this.ImageFileReadJob_Callback(ImageFileReadLogic.CreateEmptyResult(
                         mainFilePath, true, false, parameter.ThumbnailSize, parameter.ImageSizeMode, mainSize));
                 }
             }
             else
             {
-                this.ImageFileReadJob_Callback(CreateEmptyResult(
+                this.ImageFileReadJob_Callback(ImageFileReadLogic.CreateEmptyResult(
                     mainFilePath, true, false, parameter.ThumbnailSize, parameter.ImageSizeMode, mainSize));
             }
 
