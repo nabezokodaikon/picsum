@@ -102,6 +102,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         private ImageDisplayMode displayMode = ImageDisplayMode.LeftFacing;
         private ImageSizeMode sizeMode = ImageSizeMode.FitOnlyBigImage;
         private IList<string> filePathList = null;
+        private long isLoading = 0;
 
         private TwoWayJob<ImageFileReadJob, ImageFileReadParameter, ImageFileGetResult> imageFileReadJob = null;
         private OneWayJob<BookmarkAddJob, ValueParameter<string>> addBookmarkJob = null;
@@ -121,6 +122,18 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         #endregion
 
         #region プライベートプロパティ
+
+        private bool IsLoading
+        {
+            get
+            {
+                return Interlocked.Read(ref this.isLoading) == 1;
+            }
+            set
+            {
+                Interlocked.Exchange(ref this.isLoading, Convert.ToInt64(value));
+            }
+        }
 
         private bool CanOperation
         {
@@ -710,9 +723,9 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 ThumbnailSize = this.leftImagePanel.ThumbnailSize,
             };
 
+            this.DrawLoadingImage(param, mainFilePath);
             this.ImageInfoCacheJob.StartJob([.. nextFiles, .. prevFiles]);
             this.ImageFileReadJob.StartJob(param);
-            this.DrawLoadingImage(param, mainFilePath);
 
             sw.Stop();
             Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageViewerPage.ReadImage: {sw.ElapsedMilliseconds} ms");
@@ -758,6 +771,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                     mainFilePath, true, false, parameter.ThumbnailSize, parameter.ImageSizeMode, mainSize));
             }
 
+            this.IsLoading = true;
             var context = SynchronizationContext.Current;
             Task.Run(() =>
             {
@@ -765,7 +779,10 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
                 context.Send(_ =>
                 {
-                    this.ChangeImagePanelSize();
+                    if (this.IsLoading)
+                    {
+                        this.ChangeImagePanelSize();
+                    }
                 }, null);
             });
 
@@ -880,6 +897,8 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
         private void ImageFileReadJob_Callback(ImageFileGetResult e)
         {
+            this.IsLoading = false;
+
             SizeF bgSize;
             if (e.HasSub)
             {
