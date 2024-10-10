@@ -52,23 +52,16 @@ namespace PicSum.Job.Logics
             var destImg = new Bitmap(w, h);
             using (var g = Graphics.FromImage(destImg))
             {
-                g.SmoothingMode = SmoothingMode.None;
-                g.InterpolationMode = InterpolationMode.NearestNeighbor;
-                g.CompositingQuality = CompositingQuality.HighSpeed;
-                g.PixelOffsetMode = PixelOffsetMode.HighSpeed;
-                g.CompositingMode = CompositingMode.SourceOver;
-
                 if (sizeMode == ImageSizeMode.Original)
                 {
-                    using (var thumb = srcImg.Resize(w, h))
-                    {
-                        g.DrawImage(thumb, 0, 0, w, h);
-                        sw.Stop();
-                    }
-                }
-                else
-                {
-                    g.FillRectangle(Brushes.Yellow, new Rectangle(0, 0, w, h));
+                    g.SmoothingMode = SmoothingMode.None;
+                    g.InterpolationMode = InterpolationMode.NearestNeighbor;
+                    g.CompositingQuality = CompositingQuality.HighSpeed;
+                    g.PixelOffsetMode = PixelOffsetMode.HighSpeed;
+                    g.CompositingMode = CompositingMode.SourceOver;
+
+                    srcImg.DrawResizeImage(g, new Rectangle(0, 0, w, h), new Rectangle(0, 0, srcImg.Width, srcImg.Height));
+                    sw.Stop();
                 }
             }
 

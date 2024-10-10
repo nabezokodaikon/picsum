@@ -5,7 +5,6 @@ using PicSum.Job.Parameters;
 using PicSum.Job.Results;
 using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
-using System.Diagnostics;
 using System.Drawing;
 
 namespace PicSum.Job.Jobs
@@ -157,102 +156,6 @@ namespace PicSum.Job.Jobs
                 this.WriteErrorLog(new JobException(this.ID, ex));
                 return ImageUtil.EMPTY_SIZE;
             }
-        }
-
-        private void Callback(
-            string filePath, bool isMain, bool hasSub, int thumbnailSize, ImageSizeMode imageSizeMode, Size imageSize)
-        {
-            this.IsThreadCompleted = false;
-            Exception? exception = null;
-            var threadTime = Stopwatch.StartNew();
-
-            var thread = Task.Run((() =>
-            {
-                try
-                {
-                    return this.CreateResult(
-                        filePath, isMain, hasSub, thumbnailSize, imageSizeMode, imageSize);
-                }
-                catch (JobCancelException)
-                {
-                    return null;
-                }
-                catch (Exception ex)
-                {
-                    exception = ex;
-                    return null;
-                }
-                finally
-                {
-                    this.IsThreadCompleted = true;
-                }
-            }));
-
-            var isEmptyCallbacked = false;
-            while (true)
-            {
-                if (!isEmptyCallbacked && threadTime.ElapsedMilliseconds >= 20)
-                {
-                    this.Callback(this.CreateEmptyResult(
-                        filePath, isMain, hasSub, thumbnailSize, imageSizeMode, imageSize));
-                    isEmptyCallbacked = true;
-                    this.CheckCancel();
-                }
-
-                if (isEmptyCallbacked || this.IsThreadCompleted)
-                {
-                    var result = thread.Result;
-
-                    if (exception != null)
-                    {
-                        throw exception;
-                    }
-
-                    if (result != null)
-                    {
-                        this.Callback(result);
-                        return;
-                    }
-                    else
-                    {
-                        return;
-                    }
-                }
-
-                Thread.Sleep(1);
-            }
-        }
-
-        private ImageFileGetResult CreateEmptyResult(
-            string filePath, bool isMain, bool hasSub, int thumbnailSize, ImageSizeMode imageSizeMode, Size imageSize)
-        {
-            var image = new CvImage(this.CreateEmptyImage(imageSize));
-            var thumbnail = ThumbnailGetLogic.CreateThumbnail(image, thumbnailSize, imageSizeMode);
-
-            return new()
-            {
-                IsMain = isMain,
-                HasSub = hasSub,
-                Image = new()
-                {
-                    FilePath = filePath,
-                    Thumbnail = thumbnail,
-                    Image = image,
-                    Size = imageSize,
-                    IsEmpty = true,
-                    IsError = false,
-                }
-            };
-        }
-
-        private Bitmap CreateEmptyImage(Size imageSize)
-        {
-            var bmp = new Bitmap(imageSize.Width, imageSize.Height);
-            using (var g = Graphics.FromImage(bmp))
-            {
-                g.FillRectangle(Brushes.Gray, new Rectangle(0, 0, bmp.Width, bmp.Height));
-            }
-            return bmp;
         }
     }
 }

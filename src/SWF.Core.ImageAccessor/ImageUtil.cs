@@ -20,31 +20,6 @@ namespace SWF.Core.ImageAccessor
         private static readonly ImageCodecInfo PNG_CODEC_INFO = ImageCodecInfo.GetImageEncoders().Single(info => info.FormatID == ImageFormat.Png.Guid);
         private static readonly dynamic SHELL = Activator.CreateInstance(Type.GetTypeFromProgID("Shell.Application"));
 
-
-        public static Bitmap CreateEmptyImage(Brush brushe, Size imageSize)
-        {
-            ArgumentNullException.ThrowIfNull(brushe, nameof(brushe));
-
-            var sw = Stopwatch.StartNew();
-
-            var bmp = new Bitmap(imageSize.Width, imageSize.Height);
-            using (var g = Graphics.FromImage(bmp))
-            {
-                g.SmoothingMode = SmoothingMode.None;
-                g.InterpolationMode = InterpolationMode.NearestNeighbor;
-                g.CompositingQuality = CompositingQuality.HighSpeed;
-                g.PixelOffsetMode = PixelOffsetMode.HighSpeed;
-                g.CompositingMode = CompositingMode.SourceCopy;
-
-                g.FillRectangle(brushe, new Rectangle(0, 0, bmp.Width, bmp.Height));
-            }
-
-            sw.Stop();
-            Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.CreateEmptyImage: {sw.ElapsedMilliseconds} ms");
-
-            return bmp;
-        }
-
         /// <summary>
         /// イメージオブジェクトを圧縮したバイナリに変換します。
         /// </summary>
