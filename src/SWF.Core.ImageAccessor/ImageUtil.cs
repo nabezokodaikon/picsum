@@ -226,11 +226,11 @@ namespace SWF.Core.ImageAccessor
             return OpenCVUtil.Resize(bmp, width, height);
         }
 
-        public static ImageInfoCache GetImageInfo(string filePath)
+        public static ImageFileInfoCache GetImageInfo(string filePath)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
-            return ImageInfoCacheUtil.GetImageInfo(filePath);
+            return ImageFileInfoCacheUtil.Get(filePath);
         }
 
         /// <summary>

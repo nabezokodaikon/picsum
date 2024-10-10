@@ -1,13 +1,13 @@
 namespace SWF.Core.ImageAccessor
 {
-    public class ImageInfoCache
-        : IEquatable<ImageInfoCache>
+    public class ImageFileInfoCache
+        : IEquatable<ImageFileInfoCache>
     {
         public readonly string FilePath;
         public readonly Size Size;
         public readonly DateTime Timestamp;
 
-        public ImageInfoCache(string filePath, Size size, DateTime timestamp)
+        public ImageFileInfoCache(string filePath, Size size, DateTime timestamp)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
@@ -16,7 +16,7 @@ namespace SWF.Core.ImageAccessor
             this.Timestamp = timestamp;
         }
 
-        public bool Equals(ImageInfoCache? other)
+        public bool Equals(ImageFileInfoCache? other)
         {
             ArgumentNullException.ThrowIfNull(other, nameof(other));
 

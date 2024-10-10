@@ -68,7 +68,8 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         private TwoWayJob<ImageFileReadJob, ImageFileReadParameter, ImageFileGetResult> imageFileReadJob = null;
         private OneWayJob<BookmarkAddJob, ValueParameter<string>> addBookmarkJob = null;
         private OneWayJob<SingleFileExportJob, SingleFileExportParameter> singleFileExportJob = null;
-        private OneWayJob<ImageInfoCacheJob, ListParameter<string>> imageInfoCacheJob = null;
+        private OneWayJob<ImageFileCacheJob, ListParameter<string>> imageFileCacheJob = null;
+        private OneWayJob<ImageFileInfoCacheJob, ListParameter<string>> imageFileInfoCacheJob = null;
 
         #endregion
 
@@ -192,18 +193,33 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             }
         }
 
-        private OneWayJob<ImageInfoCacheJob, ListParameter<string>> ImageInfoCacheJob
+        private OneWayJob<ImageFileInfoCacheJob, ListParameter<string>> ImageFileInfoCacheJob
         {
             get
             {
-                if (this.imageInfoCacheJob == null)
+                if (this.imageFileInfoCacheJob == null)
                 {
-                    this.imageInfoCacheJob = new();
-                    this.imageInfoCacheJob
+                    this.imageFileInfoCacheJob = new();
+                    this.imageFileInfoCacheJob
                         .StartThread();
                 }
 
-                return this.imageInfoCacheJob;
+                return this.imageFileInfoCacheJob;
+            }
+        }
+
+        private OneWayJob<ImageFileCacheJob, ListParameter<string>> ImageFileCacheJob
+        {
+            get
+            {
+                if (this.imageFileCacheJob == null)
+                {
+                    this.imageFileCacheJob = new();
+                    this.imageFileCacheJob
+                        .StartThread();
+                }
+
+                return this.imageFileCacheJob;
             }
         }
 
@@ -284,10 +300,16 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                     this.imageFileReadJob = null;
                 }
 
-                if (this.imageInfoCacheJob != null)
+                if (this.imageFileInfoCacheJob != null)
                 {
-                    this.imageInfoCacheJob.Dispose();
-                    this.imageInfoCacheJob = null;
+                    this.imageFileInfoCacheJob.Dispose();
+                    this.imageFileInfoCacheJob = null;
+                }
+
+                if (this.imageFileCacheJob != null)
+                {
+                    this.imageFileCacheJob.Dispose();
+                    this.imageFileCacheJob = null;
                 }
 
                 this.leftImagePanel.Dispose();
@@ -691,7 +713,9 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             };
 
             this.DrawLoadingImage(param, mainFilePath);
-            this.ImageInfoCacheJob.StartJob([.. nextFiles, .. prevFiles]);
+
+            this.ImageFileInfoCacheJob.StartJob([.. nextFiles, .. prevFiles]);
+            this.ImageFileCacheJob.StartJob([.. nextFiles, .. prevFiles]);
             this.ImageFileReadJob.StartJob(param);
 
             sw.Stop();

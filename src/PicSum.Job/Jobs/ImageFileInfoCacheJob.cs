@@ -4,7 +4,7 @@ using SWF.Core.ImageAccessor;
 
 namespace PicSum.Job.Jobs
 {
-    public sealed class ImageInfoCacheJob
+    public sealed class ImageFileInfoCacheJob
         : AbstractOneWayJob<ListParameter<string>>
     {
         protected override void Execute(ListParameter<string> parameter)
@@ -19,8 +19,7 @@ namespace PicSum.Job.Jobs
 
                 try
                 {
-                    var size = ImageFileCacheUtil.GetSize(path);
-                    ImageInfoCacheUtil.SetImageInfo(path, size);
+                    ImageFileInfoCacheUtil.Create(path);
                 }
                 catch (FileUtilException ex)
                 {

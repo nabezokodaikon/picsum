@@ -100,7 +100,7 @@ namespace PicSum.UIComponent.Contents.FileList
         private OneWayJob<SingleFileExportJob, SingleFileExportParameter> singleFileExportJob = null;
         private OneWayJob<BookmarkAddJob, ValueParameter<string>> addBookmarkJob = null;
         private TwoWayJob<MultiFilesExportJob, MultiFilesExportParameter, ValueResult<string>> multiFilesExportJob = null;
-        private OneWayJob<ImageInfoCacheJob, ListParameter<string>> imageInfoCacheJob = null;
+        private OneWayJob<ImageFileInfoCacheJob, ListParameter<string>> imageFileInfoCacheJob = null;
 
         #endregion
 
@@ -305,18 +305,18 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
-        private OneWayJob<ImageInfoCacheJob, ListParameter<string>> ImageInfoCacheJob
+        private OneWayJob<ImageFileInfoCacheJob, ListParameter<string>> ImageFileInfoCacheJob
         {
             get
             {
-                if (this.imageInfoCacheJob == null)
+                if (this.imageFileInfoCacheJob == null)
                 {
-                    this.imageInfoCacheJob = new();
-                    this.imageInfoCacheJob
+                    this.imageFileInfoCacheJob = new();
+                    this.imageFileInfoCacheJob
                         .StartThread();
                 }
 
-                return this.imageInfoCacheJob;
+                return this.imageFileInfoCacheJob;
             }
         }
 
@@ -380,10 +380,10 @@ namespace PicSum.UIComponent.Contents.FileList
                     this.multiFilesExportJob = null;
                 }
 
-                if (this.imageInfoCacheJob != null)
+                if (this.imageFileInfoCacheJob != null)
                 {
-                    this.imageInfoCacheJob.Dispose();
-                    this.imageInfoCacheJob = null;
+                    this.imageFileInfoCacheJob.Dispose();
+                    this.imageFileInfoCacheJob = null;
                 }
 
                 components.Dispose();
