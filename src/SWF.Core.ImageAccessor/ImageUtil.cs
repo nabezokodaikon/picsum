@@ -35,6 +35,7 @@ namespace SWF.Core.ImageAccessor
                 eps.Param[0] = ImageUtil.ENCORDER_PARAMETER;
                 img.Save(mes, ImageUtil.PNG_CODEC_INFO, eps);
                 var buffer = new byte[mes.Length];
+                mes.Position = 0;
                 mes.Read(buffer, 0, buffer.Length);
                 return buffer;
             }
