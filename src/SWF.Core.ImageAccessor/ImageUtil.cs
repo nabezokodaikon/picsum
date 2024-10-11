@@ -267,6 +267,30 @@ namespace SWF.Core.ImageAccessor
                         {
                             return LibHeifSharpUtil.GetImageSize(filePath);
                         }
+                        else if (FileUtil.IsJpegFile(formatName))
+                        {
+                            var size = GetJpegSize(filePath);
+                            if (size != EMPTY_SIZE)
+                            {
+                                return size;
+                            }
+                        }
+                        else if (FileUtil.IsPngFile(formatName))
+                        {
+                            var size = GetPngSize(filePath);
+                            if (size != EMPTY_SIZE)
+                            {
+                                return size;
+                            }
+                        }
+                        else if (FileUtil.IsBmpFile(formatName))
+                        {
+                            var size = GetBmpSize(filePath);
+                            if (size != EMPTY_SIZE)
+                            {
+                                return size;
+                            }
+                        }
                     }
                 }
                 catch (ArgumentException ex)
@@ -620,6 +644,108 @@ namespace SWF.Core.ImageAccessor
             }
 
             return bitmap;
+        }
+
+
+        private static Size GetJpegSize(string filePath)
+        {
+            using (var fs = new FileStream(filePath,
+                FileMode.Open, FileAccess.Read, FileShare.Read, 32, FileOptions.SequentialScan))
+            using (BinaryReader reader = new BinaryReader(fs))
+            {
+                if (reader.ReadByte() == 0xFF && reader.ReadByte() == 0xD8)
+                {
+                    while (fs.Position < fs.Length)
+                    {
+                        if (reader.ReadByte() == 0xFF)
+                        {
+                            var marker = reader.ReadByte();
+                            if (marker >= 0xC0 && marker <= 0xC3)
+                            {
+                                fs.Seek(3, SeekOrigin.Current);
+                                var height = reader.ReadUInt16();
+                                var width = reader.ReadUInt16();
+                                return new Size(width, height);
+                            }
+                            else
+                            {
+                                var length = reader.ReadUInt16();
+                                fs.Seek(length - 2, SeekOrigin.Current);
+                            }
+                        }
+                    }
+                }
+            }
+
+            return EMPTY_SIZE;
+        }
+
+        private static Size GetPngSize(string filePath)
+        {
+            using (var fs = new FileStream(filePath,
+                FileMode.Open, FileAccess.Read, FileShare.Read, 32, FileOptions.SequentialScan))
+            using (var reader = new BinaryReader(fs))
+            {
+                var pngSignature = reader.ReadBytes(8);
+                var expectedPngSignature = new byte[] { 137, 80, 78, 71, 13, 10, 26, 10 };
+                if (!CompareByteArrays(pngSignature, expectedPngSignature))
+                {
+                    return EMPTY_SIZE;
+                }
+
+                reader.ReadInt32();
+                var ihdrChunkType = reader.ReadBytes(4);
+                var ihdrChunkTypeStr = System.Text.Encoding.ASCII.GetString(ihdrChunkType);
+                if (ihdrChunkTypeStr != "IHDR")
+                {
+                    return EMPTY_SIZE;
+                }
+
+                var width = ReadBigEndianInt32(reader);
+                var height = ReadBigEndianInt32(reader);
+                return new Size(width, height);
+            }
+        }
+
+        private static bool CompareByteArrays(byte[] a, byte[] b)
+        {
+            if (a.Length != b.Length)
+            {
+                return false;
+            }
+
+            for (var i = 0; i < a.Length; i++)
+            {
+                if (a[i] != b[i]) return false;
+            }
+            return true;
+        }
+
+        private static int ReadBigEndianInt32(BinaryReader reader)
+        {
+            var bytes = reader.ReadBytes(4);
+            Array.Reverse(bytes);
+            return BitConverter.ToInt32(bytes, 0);
+        }
+
+        private static Size GetBmpSize(string filePath)
+        {
+            using (var fs = new FileStream(filePath,
+                FileMode.Open, FileAccess.Read, FileShare.Read, 32, FileOptions.SequentialScan))
+            using (var reader = new BinaryReader(fs))
+            {
+                var bmpSignature = reader.ReadBytes(2);
+                if (bmpSignature[0] != 'B' || bmpSignature[1] != 'M')
+                {
+                    return EMPTY_SIZE;
+                }
+
+                reader.BaseStream.Seek(18, SeekOrigin.Begin);
+
+                var width = reader.ReadInt32();
+                var height = reader.ReadInt32();
+                return new Size(width, Math.Abs(height));
+            }
         }
 
         private static string CreateFileAccessErrorMessage(string path)
