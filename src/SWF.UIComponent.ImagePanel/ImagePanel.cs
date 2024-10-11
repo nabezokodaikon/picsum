@@ -300,10 +300,11 @@ namespace SWF.UIComponent.ImagePanel
 
             if (this.isError)
             {
+                e.Graphics.CompositingMode = CompositingMode.SourceOver;
                 e.Graphics.DrawString(
                     $"Failed to load file",
                     this.Font,
-                    Brushes.White,
+                    Brushes.LightGray,
                     new Rectangle(0, 0, this.Width, this.Height),
                     this.stringFormat);
             }
