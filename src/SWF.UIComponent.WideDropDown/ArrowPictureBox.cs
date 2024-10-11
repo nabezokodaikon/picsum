@@ -78,7 +78,7 @@ namespace SWF.UIComponent.WideDropDown
             }
 
             var brush = this.GetBrush();
-            pe.Graphics.FillRectangle(brush, 0, 0, this.Width, this.Height);
+            pe.Graphics.FillRectangle(brush, 0, 1, this.Width, this.Height - 2);
 
             var x = (this.Width - this.Image.Width) / 2f;
             var y = (this.Height - this.Image.Height) / 2f;

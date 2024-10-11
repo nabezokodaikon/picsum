@@ -33,6 +33,14 @@ namespace SWF.UIComponent.WideDropDown
         {
             this.InitializeComponent();
 
+            this.SetStyle(
+                ControlStyles.AllPaintingInWmPaint |
+                ControlStyles.OptimizedDoubleBuffer |
+                ControlStyles.ResizeRedraw |
+                ControlStyles.UserPaint,
+                true);
+            this.UpdateStyles();
+
             this.dropDownList.IsClickAndClose = true;
             this.dropDownList.Closed += this.DropDownList_Closed;
             this.dropDownList.ItemMouseClick += this.DropDownList_ItemMouseClick;
@@ -61,6 +69,16 @@ namespace SWF.UIComponent.WideDropDown
             }
 
             this.dropDownList.SelectItem(item);
+        }
+
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            var w = this.Width - this.addButton.Width - 1f;
+            var h = this.Height - 1f;
+
+            e.Graphics.DrawRectangle(Pens.LightGray, 0, 0, w, h);
+
+            base.OnPaint(e);
         }
 
         private void InputTextBox_KeyDown(object sender, KeyEventArgs e)

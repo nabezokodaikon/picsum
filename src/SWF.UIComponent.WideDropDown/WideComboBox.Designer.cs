@@ -1,4 +1,4 @@
-﻿using System.Drawing;
+using System.Drawing;
 
 namespace SWF.UIComponent.WideDropDown
 {
@@ -57,11 +57,11 @@ namespace SWF.UIComponent.WideDropDown
             this.inputTextBox.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             this.inputTextBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.inputTextBox.Font = new Font("Yu Gothic UI", 10F, FontStyle.Regular, GraphicsUnit.Point, 128);
-            this.inputTextBox.Location = new Point(0, 0);
+            this.inputTextBox.Location = new Point(1, 1);
             this.inputTextBox.Margin = new System.Windows.Forms.Padding(0);
             this.inputTextBox.Multiline = true;
             this.inputTextBox.Name = "inputTextBox";
-            this.inputTextBox.Size = new Size(570, 38);
+            this.inputTextBox.Size = new Size(568, 36);
             this.inputTextBox.TabIndex = 3;
             this.inputTextBox.TabStop = false;
             this.inputTextBox.KeyDown += this.InputTextBox_KeyDown;
@@ -71,10 +71,10 @@ namespace SWF.UIComponent.WideDropDown
             this.arrowPictureBox.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
             this.arrowPictureBox.Image = Properties.Resources.SmallArrowDown;
             this.arrowPictureBox.IsSelected = false;
-            this.arrowPictureBox.Location = new Point(570, 0);
+            this.arrowPictureBox.Location = new Point(570, 1);
             this.arrowPictureBox.Margin = new System.Windows.Forms.Padding(0);
             this.arrowPictureBox.Name = "arrowPictureBox";
-            this.arrowPictureBox.Size = new Size(24, 38);
+            this.arrowPictureBox.Size = new Size(22, 36);
             this.arrowPictureBox.TabIndex = 2;
             this.arrowPictureBox.TabStop = false;
             this.arrowPictureBox.MouseClick += this.ArrowPictureBox_MouseClick;

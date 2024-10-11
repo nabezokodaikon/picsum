@@ -1,5 +1,6 @@
 using System;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 using System.Windows.Forms;
@@ -13,7 +14,7 @@ namespace SWF.UIComponent.WideDropDown
     {
         public InputTextBox()
         {
-            this.Multiline = true;
+            this.Multiline = false;
             this.AcceptsReturn = false;
             this.VerticalAlignment();
         }
