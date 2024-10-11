@@ -440,7 +440,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             var sw = Stopwatch.StartNew();
             try
             {
-                return ImageUtil.GetImageInfo(filePath).Size;
+                return ImageFileInfoCacheUtil.Get(filePath).Size;
             }
             catch (FileUtilException ex)
             {

@@ -227,13 +227,6 @@ namespace SWF.Core.ImageAccessor
             return OpenCVUtil.Resize(bmp, width, height);
         }
 
-        public static ImageFileInfoCache GetImageInfo(string filePath)
-        {
-            ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
-
-            return ImageFileInfoCacheUtil.Get(filePath);
-        }
-
         /// <summary>
         /// 画像ファイルのサイズを取得します。
         /// </summary>

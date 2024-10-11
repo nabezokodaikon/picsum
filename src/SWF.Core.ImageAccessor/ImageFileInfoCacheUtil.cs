@@ -71,7 +71,7 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
-        internal static ImageFileInfoCache Get(string filePath)
+        public static ImageFileInfoCache Get(string filePath)
         {
             var sw = Stopwatch.StartNew();
 
