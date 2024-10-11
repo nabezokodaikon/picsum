@@ -463,7 +463,7 @@ namespace SWF.UIComponent.ImagePanel
 
         protected override void OnMouseClick(MouseEventArgs e)
         {
-            if (this.image.IsEmpty)
+            if (this.image == null || this.image.IsEmpty)
             {
                 return;
             }
@@ -478,7 +478,7 @@ namespace SWF.UIComponent.ImagePanel
 
         protected override void OnMouseDoubleClick(MouseEventArgs e)
         {
-            if (this.image.IsEmpty)
+            if (this.image == null || this.image.IsEmpty)
             {
                 return;
             }
