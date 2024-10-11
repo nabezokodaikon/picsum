@@ -3,7 +3,7 @@ using PicSum.Job.Entities;
 
 namespace PicSum.Job.Results
 {
-    public class ImageFileGetResult
+    public class ImageFileReadResult
         : IJobResult
     {
         public ImageFileEntity? Image { get; set; }

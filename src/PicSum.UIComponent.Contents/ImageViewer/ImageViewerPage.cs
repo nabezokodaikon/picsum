@@ -64,7 +64,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         private IList<string> filePathList = null;
         private bool isLoading = false;
 
-        private TwoWayJob<ImageFileReadJob, ImageFileReadParameter, ImageFileGetResult> imageFileReadJob = null;
+        private TwoWayJob<ImageFileReadJob, ImageFileReadParameter, ImageFileReadResult> imageFileReadJob = null;
         private TwoWayJob<ImageFileLoadingJob, EmptyResult> imageFileLoadingJob = null;
         private OneWayJob<BookmarkAddJob, ValueParameter<string>> addBookmarkJob = null;
         private OneWayJob<SingleFileExportJob, SingleFileExportParameter> singleFileExportJob = null;
@@ -118,7 +118,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             }
         }
 
-        private TwoWayJob<ImageFileReadJob, ImageFileReadParameter, ImageFileGetResult> ImageFileReadJob
+        private TwoWayJob<ImageFileReadJob, ImageFileReadParameter, ImageFileReadResult> ImageFileReadJob
         {
             get
             {
@@ -527,7 +527,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageViewerPage.ChangeImagePanelSize: {sw.ElapsedMilliseconds} ms");
         }
 
-        private void ChangeImagePanelSize(ImageFileGetResult e)
+        private void ChangeImagePanelSize(ImageFileReadResult e)
         {
             if (e.IsMain && e.HasSub)
             {
@@ -903,7 +903,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.ChangeImagePanelSize();
         }
 
-        private void ImageFileReadJob_Callback(ImageFileGetResult e)
+        private void ImageFileReadJob_Callback(ImageFileReadResult e)
         {
             this.isLoading = false;
 

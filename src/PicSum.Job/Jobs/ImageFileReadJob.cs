@@ -8,7 +8,7 @@ using SWF.Core.ImageAccessor;
 namespace PicSum.Job.Jobs
 {
     public sealed class ImageFileReadJob
-        : AbstractTwoWayJob<ImageFileReadParameter, ImageFileGetResult>
+        : AbstractTwoWayJob<ImageFileReadParameter, ImageFileReadResult>
     {
         protected override void Execute(ImageFileReadParameter parameter)
         {
