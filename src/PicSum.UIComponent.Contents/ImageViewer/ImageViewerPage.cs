@@ -682,7 +682,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             var mainFilePath = this.filePathList[this.FilePathListIndex];
             this.SelectedFilePath = mainFilePath;
 
-            var nextFiles = new List<string>(18);
+            var nextFiles = new List<string>(10);
             var nextIndex = this.GetNextIndex(this.FilePathListIndex, true);
             nextFiles.Add(this.filePathList[nextIndex]);
             while (nextFiles.Count < nextFiles.Capacity)
