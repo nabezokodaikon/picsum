@@ -81,6 +81,7 @@ namespace SWF.Core.ImageAccessor
                     }
 
                     var buffer = ImageUtil.ReadImageFileBuffer(filePath);
+                    ImageFileSizeCacheUtil.Set(filePath, buffer.Size);
                     var newCache = new ImageFileCache(filePath, buffer, timestamp);
                     CACHE_DICTIONARY.Add(newCache.FilePath, newCache);
                     CACHE_LIST.Add(newCache);
@@ -135,6 +136,7 @@ namespace SWF.Core.ImageAccessor
                     }
 
                     var buffer = ImageUtil.ReadImageFileBuffer(filePath);
+                    ImageFileSizeCacheUtil.Set(filePath, buffer.Size);
                     var newCache = new ImageFileCache(filePath, buffer, timestamp);
                     CACHE_DICTIONARY.Add(filePath, newCache);
                     CACHE_LIST.Add(newCache);

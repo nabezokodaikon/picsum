@@ -5,11 +5,11 @@ using System.Runtime.Versioning;
 namespace SWF.Core.ImageAccessor
 {
     [SupportedOSPlatform("windows")]
-    public static class ImageFileInfoCacheUtil
+    public static class ImageFileSizeCacheUtil
     {
         private const int CACHE_CAPACITY = 1000;
-        private static readonly List<ImageFileInfoCache> CACHE_LIST = new(CACHE_CAPACITY);
-        private static readonly Dictionary<string, ImageFileInfoCache> CACHE_DICTIONARY = new(CACHE_CAPACITY);
+        private static readonly List<ImageFileSizeCache> CACHE_LIST = new(CACHE_CAPACITY);
+        private static readonly Dictionary<string, ImageFileSizeCache> CACHE_DICTIONARY = new(CACHE_CAPACITY);
         private static readonly ReaderWriterLockSlim CACHE_LOCK = new();
 
         public static void DisposeStaticResouces()
@@ -52,7 +52,7 @@ namespace SWF.Core.ImageAccessor
                         CACHE_DICTIONARY.Remove(removeCache.FilePath);
                     }
 
-                    var newCache = new ImageFileInfoCache(
+                    var newCache = new ImageFileSizeCache(
                         filePath, ImageUtil.GetImageSize(filePath), timestamp);
                     CACHE_DICTIONARY.Add(newCache.FilePath, newCache);
                     CACHE_LIST.Add(newCache);
@@ -71,7 +71,7 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
-        public static ImageFileInfoCache Get(string filePath)
+        public static ImageFileSizeCache Get(string filePath)
         {
             var sw = Stopwatch.StartNew();
 
@@ -106,7 +106,7 @@ namespace SWF.Core.ImageAccessor
                         CACHE_DICTIONARY.Remove(removeCache.FilePath);
                     }
 
-                    var newCache = new ImageFileInfoCache(
+                    var newCache = new ImageFileSizeCache(
                         filePath, ImageUtil.GetImageSize(filePath), timestamp);
                     CACHE_DICTIONARY.Add(newCache.FilePath, newCache);
                     CACHE_LIST.Add(newCache);
@@ -161,7 +161,7 @@ namespace SWF.Core.ImageAccessor
                         CACHE_DICTIONARY.Remove(removeCache.FilePath);
                     }
 
-                    var newCache = new ImageFileInfoCache(
+                    var newCache = new ImageFileSizeCache(
                         filePath, size, timestamp);
                     CACHE_DICTIONARY.Add(newCache.FilePath, newCache);
                     CACHE_LIST.Add(newCache);

@@ -100,7 +100,7 @@ namespace PicSum.UIComponent.Contents.FileList
         private OneWayJob<SingleFileExportJob, SingleFileExportParameter> singleFileExportJob = null;
         private OneWayJob<BookmarkAddJob, ValueParameter<string>> addBookmarkJob = null;
         private TwoWayJob<MultiFilesExportJob, MultiFilesExportParameter, ValueResult<string>> multiFilesExportJob = null;
-        private OneWayJob<ImageFileInfoCacheJob, ListParameter<string>> imageFileInfoCacheJob = null;
+        private OneWayJob<ImageFileSizeCacheJob, ListParameter<string>> imageFileSizeCacheJob = null;
 
         #endregion
 
@@ -305,18 +305,18 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
-        private OneWayJob<ImageFileInfoCacheJob, ListParameter<string>> ImageFileInfoCacheJob
+        private OneWayJob<ImageFileSizeCacheJob, ListParameter<string>> ImageFileSizeCacheJob
         {
             get
             {
-                if (this.imageFileInfoCacheJob == null)
+                if (this.imageFileSizeCacheJob == null)
                 {
-                    this.imageFileInfoCacheJob = new();
-                    this.imageFileInfoCacheJob
+                    this.imageFileSizeCacheJob = new();
+                    this.imageFileSizeCacheJob
                         .StartThread();
                 }
 
-                return this.imageFileInfoCacheJob;
+                return this.imageFileSizeCacheJob;
             }
         }
 
@@ -380,10 +380,10 @@ namespace PicSum.UIComponent.Contents.FileList
                     this.multiFilesExportJob = null;
                 }
 
-                if (this.imageFileInfoCacheJob != null)
+                if (this.imageFileSizeCacheJob != null)
                 {
-                    this.imageFileInfoCacheJob.Dispose();
-                    this.imageFileInfoCacheJob = null;
+                    this.imageFileSizeCacheJob.Dispose();
+                    this.imageFileSizeCacheJob = null;
                 }
 
                 components.Dispose();
@@ -1036,7 +1036,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
                 this.GetThumbnailsJob.StartJob(param);
 
-                this.ImageFileInfoCacheJob.StartJob(
+                this.ImageFileSizeCacheJob.StartJob(
                     new ListParameter<string>(
                         param.FilePathList
                             .Skip(e.DrawFirstItemIndex)
