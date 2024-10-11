@@ -21,7 +21,6 @@ using System.Drawing;
 using System.Linq;
 using System.Runtime.Versioning;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace PicSum.UIComponent.Contents.ImageViewer
@@ -63,9 +62,10 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         private ImageDisplayMode displayMode = ImageDisplayMode.LeftFacing;
         private ImageSizeMode sizeMode = ImageSizeMode.FitOnlyBigImage;
         private IList<string> filePathList = null;
-        private long isLoading = 0;
+        private bool isLoading = false;
 
         private TwoWayJob<ImageFileReadJob, ImageFileReadParameter, ImageFileGetResult> imageFileReadJob = null;
+        private TwoWayJob<ImageFileLoadingJob, EmptyResult> imageFileLoadingJob = null;
         private OneWayJob<BookmarkAddJob, ValueParameter<string>> addBookmarkJob = null;
         private OneWayJob<SingleFileExportJob, SingleFileExportParameter> singleFileExportJob = null;
         private OneWayJob<ImageFileCacheJob, ListParameter<string>> imageFileCacheJob = null;
@@ -84,18 +84,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         #endregion
 
         #region プライベートプロパティ
-
-        private bool IsLoading
-        {
-            get
-            {
-                return Interlocked.Read(ref this.isLoading) == 1;
-            }
-            set
-            {
-                Interlocked.Exchange(ref this.isLoading, Convert.ToInt64(value));
-            }
-        }
 
         private bool CanOperation
         {
@@ -141,7 +129,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                         .Callback(r =>
                         {
                             var sw = Stopwatch.StartNew();
-                            Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageViewerPage.ImageFileReadJob_Callback: Start IsMain = {r.IsMain}");
+                            Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageViewerPage.ImageFileReadJob_Callback: IsMain = {r.IsMain}");
 
                             this.ImageFileReadJob_Callback(r);
 
@@ -160,6 +148,31 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 }
 
                 return this.imageFileReadJob;
+            }
+        }
+
+        private TwoWayJob<ImageFileLoadingJob, EmptyResult> ImageFileLoadingJob
+        {
+            get
+            {
+                if (this.imageFileLoadingJob == null)
+                {
+                    this.imageFileLoadingJob = new();
+                    this.imageFileLoadingJob
+                        .Callback(r =>
+                        {
+                            var sw = Stopwatch.StartNew();
+                            Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageViewerPage.ImageFileLoadingJob_Callback: Start");
+
+                            this.ImageFileLoadingJob_Callback(r);
+
+                            sw.Stop();
+                            Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageViewerPage.ImageFileLoadingJob_Callback: {sw.ElapsedMilliseconds} ms");
+                        })
+                        .StartThread();
+                }
+
+                return this.imageFileLoadingJob;
             }
         }
 
@@ -310,6 +323,12 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 {
                     this.imageFileCacheJob.Dispose();
                     this.imageFileCacheJob = null;
+                }
+
+                if (this.imageFileLoadingJob != null)
+                {
+                    this.imageFileLoadingJob.Dispose();
+                    this.imageFileLoadingJob = null;
                 }
 
                 this.leftImagePanel.Dispose();
@@ -748,6 +767,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                         mainFilePath, true, true, parameter.ImageSizeMode, mainSize));
                     this.ImageFileReadJob_Callback(ImageFileReadLogic.CreateEmptyResult(
                         subFilePath, false, true, parameter.ImageSizeMode, subSize));
+
                 }
                 else
                 {
@@ -761,20 +781,8 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                     mainFilePath, true, false, parameter.ImageSizeMode, mainSize));
             }
 
-            this.IsLoading = true;
-            var context = SynchronizationContext.Current;
-            Task.Run(() =>
-            {
-                Thread.Sleep(100);
-
-                context.Send(_ =>
-                {
-                    if (this.IsLoading)
-                    {
-                        this.ChangeImagePanelSize();
-                    }
-                }, null);
-            });
+            this.isLoading = true;
+            this.ImageFileLoadingJob.StartJob();
 
             sw.Stop();
             Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageViewerPage.DrawLoadingImage: {sw.ElapsedMilliseconds} ms");
@@ -885,9 +893,19 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             }
         }
 
+        private void ImageFileLoadingJob_Callback(EmptyResult e)
+        {
+            if (!this.isLoading)
+            {
+                return;
+            }
+
+            this.ChangeImagePanelSize();
+        }
+
         private void ImageFileReadJob_Callback(ImageFileGetResult e)
         {
-            this.IsLoading = false;
+            this.isLoading = false;
 
             SizeF bgSize;
             if (e.HasSub)
