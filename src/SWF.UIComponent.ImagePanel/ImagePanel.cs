@@ -74,6 +74,12 @@ namespace SWF.UIComponent.ImagePanel
         private bool isError = false;
 
         private readonly SolidBrush thumbnailFilterBrush = new(Color.FromArgb(128, 0, 0, 0));
+        private readonly StringFormat stringFormat = new StringFormat()
+        {
+            Alignment = StringAlignment.Center,
+            LineAlignment = StringAlignment.Center,
+            Trimming = StringTrimming.EllipsisCharacter,
+        };
 
         #endregion
 
@@ -294,19 +300,12 @@ namespace SWF.UIComponent.ImagePanel
 
             if (this.isError)
             {
-                using (var sf = new StringFormat())
-                {
-                    sf.Alignment = StringAlignment.Center;
-                    sf.LineAlignment = StringAlignment.Center;
-                    sf.Trimming = StringTrimming.EllipsisCharacter;
-                    var text = $"Failed to load file";
-                    e.Graphics.DrawString(
-                        text,
-                        this.Font,
-                        Brushes.White,
-                        new Rectangle(0, 0, this.Width, this.Height),
-                        sf);
-                }
+                e.Graphics.DrawString(
+                    $"Failed to load file",
+                    this.Font,
+                    Brushes.White,
+                    new Rectangle(0, 0, this.Width, this.Height),
+                    this.stringFormat);
             }
             else if (this.HasImage)
             {
@@ -683,19 +682,12 @@ namespace SWF.UIComponent.ImagePanel
                 this.image.DrawEmptyImage(g, Brushes.LightGray, destRect);
 
                 g.CompositingMode = CompositingMode.SourceOver;
-                using (var sf = new StringFormat())
-                {
-                    sf.Alignment = StringAlignment.Center;
-                    sf.LineAlignment = StringAlignment.Center;
-                    sf.Trimming = StringTrimming.EllipsisCharacter;
-                    var text = FileUtil.GetFileName(this.filePath);
-                    g.DrawString(
-                        text,
-                        this.Font,
-                        Brushes.DimGray,
-                        destRect,
-                        sf);
-                }
+                g.DrawString(
+                    FileUtil.GetFileName(this.filePath),
+                    this.Font,
+                    Brushes.DarkGray,
+                    new Rectangle(0, 0, this.Width, this.Height),
+                    this.stringFormat);
             }
             else
             {
