@@ -15,8 +15,6 @@ namespace PicSum.Job.Jobs
             {
                 this.CheckCancel();
 
-                Thread.Sleep(10);
-
                 try
                 {
                     ImageFileInfoCacheUtil.Create(path);
@@ -29,6 +27,8 @@ namespace PicSum.Job.Jobs
                 {
                     this.WriteErrorLog(new JobException(this.ID, ex));
                 }
+
+                Thread.Sleep(1);
             }
         }
     }

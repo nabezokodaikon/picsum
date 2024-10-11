@@ -65,6 +65,8 @@ namespace PicSum.Job.Jobs
                         this.WriteErrorLog(new JobException(this.ID, ex));
                         continue;
                     }
+
+                    Thread.Sleep(1);
                 }
 
                 tran.Commit();

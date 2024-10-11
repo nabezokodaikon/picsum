@@ -7,7 +7,7 @@ namespace PicSum.Job.Jobs
     {
         protected override void Execute()
         {
-            Thread.Sleep(30);
+            Thread.Sleep(50);
 
             this.Callback(EmptyResult.Value);
         }
