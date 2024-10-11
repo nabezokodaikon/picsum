@@ -1036,12 +1036,12 @@ namespace PicSum.UIComponent.Contents.FileList
 
                 this.GetThumbnailsJob.StartJob(param);
 
-                //this.ImageInfoCacheJob.StartJob(
-                //    new ListParameter<string>(
-                //        param.FilePathList
-                //            .Skip(e.DrawFirstItemIndex)
-                //            .Take(e.DrawLastItemIndex - e.DrawFirstItemIndex)
-                //            .ToList()));
+                this.ImageFileInfoCacheJob.StartJob(
+                    new ListParameter<string>(
+                        param.FilePathList
+                            .Skip(e.DrawFirstItemIndex)
+                            .Take(e.DrawLastItemIndex - e.DrawFirstItemIndex)
+                            .ToList()));
             }
         }
 
