@@ -424,6 +424,7 @@ namespace SWF.Core.ImageAccessor
                     {
                         sw = Stopwatch.StartNew();
                         var bmp = (Bitmap)Bitmap.FromStream(fs, false, true);
+                        bmp = LoadBitmapCorrectOrientation(bmp);
                         sw.Stop();
                         Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.ReadImageFile Jpeg file: {sw.ElapsedMilliseconds} ms");
                         return bmp;
@@ -580,6 +581,44 @@ namespace SWF.Core.ImageAccessor
 
                 return new Region(path);
             }
+        }
+
+        public static Bitmap LoadBitmapCorrectOrientation(Bitmap bitmap)
+        {
+            ArgumentNullException.ThrowIfNull(bitmap, nameof(bitmap));
+
+            const int ExifOrientationID = 0x112;
+            if (bitmap.PropertyIdList.Contains(ExifOrientationID))
+            {
+                var prop = bitmap.GetPropertyItem(ExifOrientationID);
+                if (prop == null || prop.Value == null)
+                {
+                    return bitmap;
+                }
+
+                var orientationValue = BitConverter.ToUInt16(prop.Value, 0);
+
+                var rotateFlipType = RotateFlipType.RotateNoneFlipNone;
+                switch (orientationValue)
+                {
+                    case 3:
+                        rotateFlipType = RotateFlipType.Rotate180FlipNone;
+                        break;
+                    case 6:
+                        rotateFlipType = RotateFlipType.Rotate90FlipNone;
+                        break;
+                    case 8:
+                        rotateFlipType = RotateFlipType.Rotate270FlipNone;
+                        break;
+                }
+
+                if (rotateFlipType != RotateFlipType.RotateNoneFlipNone)
+                {
+                    bitmap.RotateFlip(rotateFlipType);
+                }
+            }
+
+            return bitmap;
         }
 
         private static string CreateFileAccessErrorMessage(string path)
