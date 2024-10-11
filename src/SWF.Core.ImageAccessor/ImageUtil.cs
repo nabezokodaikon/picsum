@@ -207,6 +207,7 @@ namespace SWF.Core.ImageAccessor
             {
                 using (var bmp = ReadImageFile(filePath))
                 {
+                    ImageFileInfoCacheUtil.Set(filePath, bmp.Size);
                     return new ImageFileBuffer(bmp);
                 }
             }
