@@ -686,7 +686,7 @@ namespace SWF.UIComponent.ImagePanel
                     FileUtil.GetFileName(this.filePath),
                     this.Font,
                     Brushes.DarkGray,
-                    new Rectangle(0, 0, this.Width, this.Height),
+                    destRect,
                     this.stringFormat);
             }
             else
