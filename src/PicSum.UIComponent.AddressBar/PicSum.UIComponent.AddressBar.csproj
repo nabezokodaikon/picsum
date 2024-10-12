@@ -40,7 +40,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PicSum.Core.Base\PicSum.Core.Base.csproj" />
     <ProjectReference Include="..\PicSum.Job\PicSum.Job.csproj" />
     <ProjectReference Include="..\SWF.Core.FileAccessor\SWF.Core.FileAccessor.csproj" />
     <ProjectReference Include="..\SWF.UIComponent.FlowList\SWF.UIComponent.FlowList.csproj" />

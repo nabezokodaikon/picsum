@@ -46,7 +46,6 @@
     <Compile Update="FileList\TagFileListPage.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PicSum.Core.Base\PicSum.Core.Base.csproj" />
     <ProjectReference Include="..\PicSum.Core.Job.AsyncJob\PicSum.Core.Job.AsyncJob.csproj" />
     <ProjectReference Include="..\PicSum.Job\PicSum.Job.csproj" />
     <ProjectReference Include="..\SWF.Core.Base\SWF.Core.Base.csproj" />
