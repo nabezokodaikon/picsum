@@ -11,22 +11,13 @@ namespace PicSum.UIComponent.AddressBar
         : DropDownDrawItemBase, IDisposable
     {
 
-
         private readonly Image mousePointImage = Resources.SmallArrowLeft;
         private readonly Image mouseDownImage = Resources.SmallArrowDown;
-
-
-
-
 
         public OverflowDrawItem()
         {
 
         }
-
-
-
-
 
         public new void Dispose()
         {
@@ -135,7 +126,6 @@ namespace PicSum.UIComponent.AddressBar
             var y = base.Y + (base.Height - img.Height) / 2f;
             return new RectangleF(x, y, w, h);
         }
-
 
     }
 }

@@ -16,30 +16,17 @@ namespace PicSum.Main.Mng
     public sealed class BrowserManager
     {
 
-
         /// <summary>
         /// ブラウザが無くなったに発生するイベント
         /// </summary>
         public event EventHandler BrowserNothing;
 
-
-
-
-
         private readonly List<BrowserForm> browserList = [];
-
-
-
-
 
         public BrowserManager()
         {
 
         }
-
-
-
-
 
         /// <summary>
         /// アクティブなブラウザを取得します。
@@ -127,7 +114,6 @@ namespace PicSum.Main.Mng
             browser.Show();
             browser.AddTab(e.PageParameter);
         }
-
 
     }
 }

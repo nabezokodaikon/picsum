@@ -58,16 +58,10 @@ namespace PicSum.UIComponent.Contents.FileList
             };
         }
 
-
-
         private bool disposing = false;
         private readonly TagFileListPageParameter parameter = null;
         private TwoWayJob<FilesGetByTagJob, ValueParameter<string>, ListResult<FileShallowInfoEntity>> searchJob = null;
         private OneWayJob<FileTagDeleteJob, UpdateFileTagParameter> deleteJob = null;
-
-
-
-
 
         private TwoWayJob<FilesGetByTagJob, ValueParameter<string>, ListResult<FileShallowInfoEntity>> SearchJob
         {
@@ -108,20 +102,12 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
-
-
-
-
         public TagFileListPage(TagFileListPageParameter param)
             : base(param)
         {
             this.parameter = param;
             this.InitializeComponent();
         }
-
-
-
-
 
         protected override void OnLoad(EventArgs e)
         {
@@ -201,10 +187,6 @@ namespace PicSum.UIComponent.Contents.FileList
             throw new NotImplementedException();
         }
 
-
-
-
-
         private void InitializeComponent()
         {
             this.Title = this.parameter.Tag;
@@ -213,10 +195,6 @@ namespace PicSum.UIComponent.Contents.FileList
             this.IsMoveControlVisible = false;
             base.sortFileRgistrationDateToolStripButton.Enabled = true;
         }
-
-
-
-
 
         private void SearchJob_Callback(ListResult<FileShallowInfoEntity> e)
         {
@@ -233,7 +211,6 @@ namespace PicSum.UIComponent.Contents.FileList
                     this.parameter.SortInfo.IsAscending(this.parameter.SortInfo.ActiveSortType));
             }
         }
-
 
     }
 }

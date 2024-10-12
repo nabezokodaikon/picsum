@@ -242,8 +242,6 @@ namespace WinApi
         public const int WM_REFLECT = 0x2000;
         public const int WM_APP = 0x8000;
 
-
-
         public const int SIZE_RESTORED = 0;// ウィンドウがサイズ変更されました。ただし最小化または最大化ではありません。
         public const int SIZE_MINIMIZED = 1;// ウィンドウが最小化されました。
         public const int SIZE_MAXIMIZED = 2;// ウィンドウが最大化されました。
@@ -841,10 +839,6 @@ namespace WinApi
         [DllImport("ole32.dll", CharSet = CharSet.Unicode, ExactSpelling = true)]
         public static extern void CoTaskMemFree(IntPtr pv);
 
-
-
-
-
         public static int RECTWIDTH(RECT rect)
         {
             return rect.right - rect.left;
@@ -864,7 +858,6 @@ namespace WinApi
         {
             return (dwValue >> 16) & 0xFFFF;
         }
-
 
     }
 }

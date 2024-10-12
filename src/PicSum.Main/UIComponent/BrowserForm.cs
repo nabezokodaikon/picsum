@@ -33,24 +33,14 @@ namespace PicSum.Main.UIComponent
             return Environment.GetCommandLineArgs().Contains("--home");
         }
 
-
-
         public event EventHandler<TabDropoutedEventArgs> TabDropouted;
         public event EventHandler<BrowserPageOpenEventArgs> NewWindowPageOpen;
-
-
-
-
 
         private BrowserMainPanel browserMainPanel = null;
         private bool isKeyDown = false;
         private TwoWayJob<StartupJob, StartupPrameter, EmptyResult> startupJob = null;
         private OneWayJob<FileInfoDBCleanupJob> fileInfoDBCleanupJob = null;
         private OneWayJob<ThumbnailDBCleanupJob, ValueParameter<string>> thumbnailDBCleanupJob = null;
-
-
-
-
 
         private BrowserMainPanel BrowserMainPanel
         {
@@ -65,18 +55,10 @@ namespace PicSum.Main.UIComponent
             }
         }
 
-
-
-
-
         public BrowserForm()
         {
             this.InitializeComponent();
         }
-
-
-
-
 
         public void AddPageEventHandler(BrowserPage page)
         {
@@ -121,10 +103,6 @@ namespace PicSum.Main.UIComponent
             }
 
         }
-
-
-
-
 
         protected override void OnHandleCreated(EventArgs e)
         {
@@ -325,10 +303,6 @@ namespace PicSum.Main.UIComponent
             base.OnKeyUp(e);
         }
 
-
-
-
-
         private void InitializeComponent()
         {
             this.SuspendLayout();
@@ -413,7 +387,6 @@ namespace PicSum.Main.UIComponent
         {
             this.OnTabDropouted(e);
         }
-
 
     }
 }

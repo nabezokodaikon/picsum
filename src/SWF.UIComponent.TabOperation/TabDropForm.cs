@@ -12,15 +12,10 @@ namespace SWF.UIComponent.TabOperation
         : Form
     {
 
-
         private readonly Bitmap dropMaximumImage = Resources.DropMaximum;
         private readonly Bitmap dropLeftImage = Resources.DropLeft;
         private readonly Bitmap dropRightImage = Resources.DropRight;
         private Bitmap dropImage = null;
-
-
-
-
 
         public TabDropForm()
         {
@@ -29,10 +24,6 @@ namespace SWF.UIComponent.TabOperation
                 this.InitializeComponent();
             }
         }
-
-
-
-
 
         public void SetMaximumImage()
         {
@@ -48,10 +39,6 @@ namespace SWF.UIComponent.TabOperation
         {
             this.dropImage = this.dropRightImage;
         }
-
-
-
-
 
         protected override void OnPaintBackground(PaintEventArgs e)
         {
@@ -72,10 +59,6 @@ namespace SWF.UIComponent.TabOperation
             base.OnLoad(e);
         }
 
-
-
-
-
         private void InitializeComponent()
         {
             this.FormBorderStyle = FormBorderStyle.None;
@@ -85,7 +68,6 @@ namespace SWF.UIComponent.TabOperation
             this.ShowInTaskbar = false;
             this.Opacity = 0.75;
         }
-
 
     }
 }

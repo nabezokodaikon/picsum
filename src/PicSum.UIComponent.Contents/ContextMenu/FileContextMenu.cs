@@ -15,7 +15,6 @@ namespace PicSum.UIComponent.Contents.ContextMenu
         : ContextMenuStrip
     {
 
-
         public event EventHandler<ExecuteFileEventArgs> FileActiveTabOpen;
         public event EventHandler<ExecuteFileEventArgs> FileNewTabOpen;
         public event EventHandler<ExecuteFileEventArgs> FileNewWindowOpen;
@@ -31,10 +30,6 @@ namespace PicSum.UIComponent.Contents.ContextMenu
         public event EventHandler<ExecuteFileListEventArgs> PathCopy;
         public event EventHandler<ExecuteFileListEventArgs> NameCopy;
         public event EventHandler<ExecuteFileListEventArgs> RemoveFromList;
-
-
-
-
 
         private IList<string> filePathList = null;
 
@@ -61,10 +56,6 @@ namespace PicSum.UIComponent.Contents.ContextMenu
         private readonly ToolStripMenuItem pathCopyMenuItem = new("Copy Path");
         private readonly ToolStripMenuItem nameCopyMenuItem = new("Copy Name");
         private readonly ToolStripMenuItem removeFromListMenuItem = new("Remove");
-
-
-
-
 
         public bool VisibleFileActiveTabOpenMenuItem
         {
@@ -126,10 +117,6 @@ namespace PicSum.UIComponent.Contents.ContextMenu
             }
         }
 
-
-
-
-
         public FileContextMenu()
         {
             if (!this.DesignMode)
@@ -137,10 +124,6 @@ namespace PicSum.UIComponent.Contents.ContextMenu
                 this.InitializeComponent();
             }
         }
-
-
-
-
 
         public void SetFile(IList<string> filePathList)
         {
@@ -175,10 +158,6 @@ namespace PicSum.UIComponent.Contents.ContextMenu
 
             this.SetFile(new List<string>() { filePath });
         }
-
-
-
-
 
         private void InitializeComponent()
         {
@@ -404,7 +383,6 @@ namespace PicSum.UIComponent.Contents.ContextMenu
         {
             this.OnRemoveFromList(new ExecuteFileListEventArgs(this.filePathList));
         }
-
 
     }
 }

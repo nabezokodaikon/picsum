@@ -52,8 +52,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             }
         }
 
-
-
         private bool disposing = false;
 
         private readonly ImageViewerPageParameter parameter = null;
@@ -70,19 +68,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         private OneWayJob<SingleFileExportJob, SingleFileExportParameter> singleFileExportJob = null;
         private OneWayJob<ImageFileCacheJob, ListParameter<string>> imageFileCacheJob = null;
 
-
-
-
-
         public override string SelectedFilePath { get; protected set; } = string.Empty;
-
-
-
-
-
-
-
-
 
         private bool CanOperation
         {
@@ -230,10 +216,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             }
         }
 
-
-
-
-
         public ImageViewerPage(ImageViewerPageParameter parameter)
             : base(parameter)
         {
@@ -246,10 +228,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.parameter = parameter;
             this.SelectedFilePath = parameter.SelectedFilePath;
         }
-
-
-
-
 
         public override void RedrawPage()
         {
@@ -281,10 +259,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
             this.ChangeImagePanelSize();
         }
-
-
-
-
 
         protected override void Dispose(bool disposing)
         {
@@ -414,10 +388,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         {
             // 処理無し。
         }
-
-
-
-
 
         private Size GetImageSize(string filePath)
         {
@@ -842,10 +812,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.leftImagePanel.IsShowThumbnailPanel = this.sizeMode == ImageSizeMode.Original;
             this.rightImagePanel.IsShowThumbnailPanel = this.leftImagePanel.IsShowThumbnailPanel;
         }
-
-
-
-
 
         private void Parameter_GetImageFiles(object sender, GetImageFilesEventArgs e)
         {
@@ -1415,7 +1381,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
             this.AddBookmarkJob.StartJob(paramter);
         }
-
 
     }
 }

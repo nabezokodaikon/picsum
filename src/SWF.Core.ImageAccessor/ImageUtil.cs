@@ -654,7 +654,6 @@ namespace SWF.Core.ImageAccessor
             return bitmap;
         }
 
-
         private static Size GetJpegSize(FileStream fs)
         {
             using (var reader = new BinaryReader(fs))

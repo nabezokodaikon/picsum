@@ -11,7 +11,6 @@ namespace PicSum.UIComponent.AddressBar
         : DrawItemBase, IDisposable
     {
 
-
         private DirectoryEntity directory = null;
 
         public DirectoryEntity Directory
@@ -26,18 +25,10 @@ namespace PicSum.UIComponent.AddressBar
             }
         }
 
-
-
-
-
         public DirectoryDrawItem()
         {
 
         }
-
-
-
-
 
         public new void Dispose()
         {
@@ -86,7 +77,6 @@ namespace PicSum.UIComponent.AddressBar
                 this.OnSelectedDirectory(new SelectedDirectoryEventArgs(PageOpenType.AddTab, this.directory.DirectoryPath));
             }
         }
-
 
     }
 }

@@ -58,18 +58,12 @@ namespace PicSum.UIComponent.Contents.FileList
             };
         }
 
-
-
         private bool disposing = false;
         private readonly DirectoryFileListPageParameter parameter = null;
         private TwoWayJob<FilesGetByDirectoryJob, ValueParameter<string>, DirectoryGetResult> searchJob = null;
         private OneWayJob<DirectoryStateUpdateJob, DirectoryStateParameter> directoryStateUpdateJob = null;
         private OneWayJob<DirectoryViewHistoryAddJob, ValueParameter<string>> directoryHistoryaddJob = null;
         private TwoWayJob<NextDirectoryGetJob, NextDirectoryGetParameter<string>, ValueResult<string>> nextDirectoryGetJob = null;
-
-
-
-
 
         private TwoWayJob<FilesGetByDirectoryJob, ValueParameter<string>, DirectoryGetResult> SearchJob
         {
@@ -147,20 +141,12 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
-
-
-
-
         public DirectoryFileListPage(DirectoryFileListPageParameter param)
             : base(param)
         {
             this.parameter = param;
             this.InitializeComponent();
         }
-
-
-
-
 
         protected override void OnLoad(EventArgs e)
         {
@@ -285,10 +271,6 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
-
-
-
-
         private void InitializeComponent()
         {
             this.Title = FileUtil.GetFileName(this.parameter.DirectoryPath);
@@ -334,10 +316,6 @@ namespace PicSum.UIComponent.Contents.FileList
             this.DirectoryStateUpdateJob.StartJob(param);
         }
 
-
-
-
-
         private void SearchJob_Callback(DirectoryGetResult e)
         {
             if (!string.IsNullOrEmpty(this.parameter.SelectedFilePath))
@@ -377,7 +355,6 @@ namespace PicSum.UIComponent.Contents.FileList
             var param = new DirectoryFileListPageParameter(e.Value);
             this.OnOpenPage(new BrowserPageEventArgs(PageOpenType.OverlapTab, param));
         }
-
 
     }
 }

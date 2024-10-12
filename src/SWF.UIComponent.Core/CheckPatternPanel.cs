@@ -8,14 +8,9 @@ namespace SWF.UIComponent.Core
     public class CheckPatternPanel : Panel
     {
 
-
         private int _rectangleSize = 24;
         private readonly SolidBrush brushA = new(Color.FromArgb(255, Color.FromArgb(64, 64, 64)));
         private readonly SolidBrush brushB = new(Color.FromArgb(64, Color.FromArgb(16, 16, 16)));
-
-
-
-
 
         public int RectangleSize
         {
@@ -31,18 +26,10 @@ namespace SWF.UIComponent.Core
             }
         }
 
-
-
-
-
         public CheckPatternPanel()
         {
             this.InitializeComponent();
         }
-
-
-
-
 
         protected override void OnPaintBackground(PaintEventArgs pevent)
         {
@@ -64,10 +51,6 @@ namespace SWF.UIComponent.Core
             sw.Stop();
             //Console.WriteLine($"[{Thread.CurrentThread.Name}] CheckPatternPanel.OnPaint: {sw.ElapsedMilliseconds} ms");
         }
-
-
-
-
 
         private void InitializeComponent()
         {
@@ -129,7 +112,6 @@ namespace SWF.UIComponent.Core
             g.FillRectangles(this.brushA, rectsA.ToArray());
             g.FillRectangles(this.brushB, rectsB.ToArray());
         }
-
 
     }
 }

@@ -13,15 +13,10 @@ namespace SWF.UIComponent.TabOperation
     public sealed class TabInfo
     {
 
-
         private readonly TabDrawArea drawArea = new();
         private readonly PageHistoryManager historyManager = new();
         private PagePanel page = null;
         private TabSwitch owner = null;
-
-
-
-
 
         public string Title
         {
@@ -106,10 +101,6 @@ namespace SWF.UIComponent.TabOperation
             }
         }
 
-
-
-
-
         internal TabInfo(IPageParameter param)
         {
             ArgumentNullException.ThrowIfNull(param, nameof(param));
@@ -117,10 +108,6 @@ namespace SWF.UIComponent.TabOperation
             this.historyManager.Add(param);
             this.page = param.CreatePage();
         }
-
-
-
-
 
         public T GetPage<T>() where T : PagePanel
         {
@@ -214,7 +201,6 @@ namespace SWF.UIComponent.TabOperation
 
             this.page = this.historyManager.CreateClone();
         }
-
 
     }
 }

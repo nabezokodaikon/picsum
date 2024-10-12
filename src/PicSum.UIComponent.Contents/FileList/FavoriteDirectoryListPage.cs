@@ -21,15 +21,10 @@ namespace PicSum.UIComponent.Contents.FileList
         : AbstractFileListPage
     {
 
-
         private bool disposing = false;
         private readonly FavoriteDirectoryListPageParameter parameter = null;
         private TwoWayJob<FavoriteDirectoryGetJob, FavoriteDirectoriesGetParameter, ListResult<FileShallowInfoEntity>> searchJob = null;
         private OneWayJob<DirectoryViewCounterDeleteJob, ListParameter<string>> deleteJob = null;
-
-
-
-
 
         private TwoWayJob<FavoriteDirectoryGetJob, FavoriteDirectoriesGetParameter, ListResult<FileShallowInfoEntity>> SearchJob
         {
@@ -70,20 +65,12 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
-
-
-
-
         public FavoriteDirectoryListPage(FavoriteDirectoryListPageParameter param)
             : base(param)
         {
             this.parameter = param;
             this.InitializeComponent();
         }
-
-
-
-
 
         protected override void Dispose(bool disposing)
         {
@@ -163,10 +150,6 @@ namespace PicSum.UIComponent.Contents.FileList
             throw new NotImplementedException();
         }
 
-
-
-
-
         private void InitializeComponent()
         {
             this.Title = "Home";
@@ -175,10 +158,6 @@ namespace PicSum.UIComponent.Contents.FileList
             this.IsMoveControlVisible = false;
             base.sortFileRgistrationDateToolStripButton.Enabled = false;
         }
-
-
-
-
 
         private void SearchJob_Callback(ListResult<FileShallowInfoEntity> e)
         {
@@ -195,7 +174,6 @@ namespace PicSum.UIComponent.Contents.FileList
                     this.parameter.SortInfo.IsAscending(this.parameter.SortInfo.ActiveSortType));
             }
         }
-
 
     }
 }

@@ -13,26 +13,13 @@ namespace PicSum.UIComponent.Contents.Common
         : PagePanel
     {
 
-
         public event EventHandler<SelectedFileChangeEventArgs> SelectedFileChanged;
         public event EventHandler<BrowserPageEventArgs> OpenPage;
         public new event EventHandler<MouseEventArgs> MouseClick;
 
-
-
-
-
         public abstract string SelectedFilePath { get; protected set; }
 
-
-
-
-
         protected IPageParameter Parameter { get; private set; }
-
-
-
-
 
         public BrowserPage(IPageParameter parameter)
         {
@@ -46,15 +33,7 @@ namespace PicSum.UIComponent.Contents.Common
             this.Parameter = parameter ?? throw new ArgumentNullException(nameof(parameter));
         }
 
-
-
-
-
         public abstract override void RedrawPage();
-
-
-
-
 
         protected override void Dispose(bool disposing)
         {
@@ -82,7 +61,6 @@ namespace PicSum.UIComponent.Contents.Common
         }
 
         protected abstract void OnBackgroundMouseClick(MouseEventArgs e);
-
 
     }
 }

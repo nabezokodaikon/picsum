@@ -15,13 +15,8 @@ namespace PicSum.UIComponent.AddressBar
         : DropDownDrawItemBase, IDisposable
     {
 
-
         private readonly Image drawImage = Resources.SmallArrowDown;
         private TwoWayJob<DirectoryViewHistoryGetJob, ListResult<FileShallowInfoEntity>> getDirectoryHistoryJob = null;
-
-
-
-
 
         private TwoWayJob<DirectoryViewHistoryGetJob, ListResult<FileShallowInfoEntity>> GetDirectoryHistoryJob
         {
@@ -39,18 +34,10 @@ namespace PicSum.UIComponent.AddressBar
             }
         }
 
-
-
-
-
         public DirectoryHistoryDrawItem()
         {
 
         }
-
-
-
-
 
         public new void Dispose()
         {
@@ -158,10 +145,6 @@ namespace PicSum.UIComponent.AddressBar
             return new RectangleF(x, y, w, h);
         }
 
-
-
-
-
         private void GetDirectoryHistoryJob_Callback(ListResult<FileShallowInfoEntity> e)
         {
             var width = 0;
@@ -195,7 +178,6 @@ namespace PicSum.UIComponent.AddressBar
             base.DropDownList.Size = new Size(width, height);
             base.DropDownList.ItemCount = base.Items.Count;
         }
-
 
     }
 }

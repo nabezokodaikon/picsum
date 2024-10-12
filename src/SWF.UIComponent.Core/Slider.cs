@@ -10,31 +10,18 @@ namespace SWF.UIComponent.Core
     public class Slider : Control
     {
 
-
         private const int BarHeight = 4;
         private const int BarShadowOffset = 1;
-
-
-
-
 
         public event EventHandler BeginValueChange;
         public event EventHandler ValueChanging;
         public event EventHandler ValueChanged;
-
-
-
-
 
         private readonly Image button = Resources.SliderButton;
         private float buttonPointX = Resources.SliderButton.Width / 2f;
         private int maximumValue = 100;
         private int minimumValue = 0;
         private int value = 0;
-
-
-
-
 
         public int MaximumValue
         {
@@ -95,24 +82,10 @@ namespace SWF.UIComponent.Core
             }
         }
 
-
-
-
-
         public Slider()
         {
             this.InitializeComponent();
         }
-
-
-
-
-
-
-
-
-
-
 
         private void InitializeComponent()
         {
@@ -251,12 +224,6 @@ namespace SWF.UIComponent.Core
             g.DrawImage(this.button, rect);
         }
 
-
-
-
-
-
-
         protected override void OnInvalidated(InvalidateEventArgs e)
         {
             if (this.SetButtonPointX(this.value))
@@ -345,7 +312,6 @@ namespace SWF.UIComponent.Core
         {
             ValueChanged?.Invoke(this, e);
         }
-
 
     }
 }

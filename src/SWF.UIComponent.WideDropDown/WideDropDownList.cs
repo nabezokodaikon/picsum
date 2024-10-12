@@ -13,14 +13,9 @@ namespace SWF.UIComponent.WideDropDown
         : ToolStripDropDown
     {
 
-
         public event EventHandler<ItemMouseClickEventArgs> ItemMouseClick;
 
-
-
         private readonly List<string> itemList = [];
-
-
 
         /// <summary>
         /// 項目テキスト色
@@ -163,10 +158,6 @@ namespace SWF.UIComponent.WideDropDown
 
         internal bool IsClickAndClose { get; set; }
 
-
-
-
-
         private ToolStripControlHost ToolStripItem
         {
             get
@@ -190,10 +181,6 @@ namespace SWF.UIComponent.WideDropDown
                 return this.FontHeight * 2;
             }
         }
-
-
-
-
 
         public WideDropDownList()
         {
@@ -232,10 +219,6 @@ namespace SWF.UIComponent.WideDropDown
             this.FlowList.ItemMouseClick += new(this.FlowList_ItemMouseClick);
             this.FlowList.DrawItem += new(this.FlowList_DrawItem);
         }
-
-
-
-
 
         public void SetItems(IList<string> itemList)
         {
@@ -303,10 +286,6 @@ namespace SWF.UIComponent.WideDropDown
             }
         }
 
-
-
-
-
         protected override void OnOpened(EventArgs e)
         {
             this.FlowList.Focus();
@@ -318,10 +297,6 @@ namespace SWF.UIComponent.WideDropDown
             this.FlowList.Invalidate();
             base.OnInvalidated(e);
         }
-
-
-
-
 
         private RectangleF GetIconRectangle(SWF.UIComponent.FlowList.DrawItemEventArgs e)
         {
@@ -420,7 +395,6 @@ namespace SWF.UIComponent.WideDropDown
                 this.ItemMouseClick(this, args);
             }
         }
-
 
     }
 }

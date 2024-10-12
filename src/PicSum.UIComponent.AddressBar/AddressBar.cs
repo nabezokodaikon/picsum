@@ -17,18 +17,9 @@ namespace PicSum.UIComponent.AddressBar
         : Control
     {
 
-
         private const int INNER_OFFSET = 1;
 
-
-
-
-
         public event EventHandler<SelectedDirectoryEventArgs> SelectedDirectory;
-
-
-
-
 
         private readonly int dropDownItemWidth = Resources.SmallArrowDown.Width;
         private readonly Palette palette = new();
@@ -39,10 +30,6 @@ namespace PicSum.UIComponent.AddressBar
         private readonly List<DrawItemBase> addressItems = [];
         private DrawItemBase mousePointItem = null;
         private DrawItemBase mouseDownItem = null;
-
-
-
-
 
         public Color TextColor
         {
@@ -132,10 +119,6 @@ namespace PicSum.UIComponent.AddressBar
             }
         }
 
-
-
-
-
         private TwoWayJob<AddressInfoGetJob, ValueParameter<string>, AddressInfoGetResult> GetAddressInfoJob
         {
             get
@@ -158,18 +141,10 @@ namespace PicSum.UIComponent.AddressBar
             }
         }
 
-
-
-
-
         public AddressBar()
         {
             this.InitializeComponent();
         }
-
-
-
-
 
         public void SetAddress(string filePath)
         {
@@ -203,10 +178,6 @@ namespace PicSum.UIComponent.AddressBar
 
             this.GetAddressInfoJob.StartJob(param);
         }
-
-
-
-
 
         protected override void Dispose(bool disposing)
         {
@@ -324,10 +295,6 @@ namespace PicSum.UIComponent.AddressBar
 
             base.OnMouseClick(e);
         }
-
-
-
-
 
         private void InitializeComponent()
         {
@@ -634,10 +601,6 @@ namespace PicSum.UIComponent.AddressBar
             return null;
         }
 
-
-
-
-
         private void OnSelectedDirectory(SelectedDirectoryEventArgs e)
         {
             this.SelectedDirectory?.Invoke(this, e);
@@ -666,7 +629,6 @@ namespace PicSum.UIComponent.AddressBar
         {
             this.OnSelectedDirectory(e);
         }
-
 
     }
 }

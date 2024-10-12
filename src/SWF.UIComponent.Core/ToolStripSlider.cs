@@ -11,22 +11,9 @@ namespace SWF.UIComponent.Core
     public class ToolStripSlider : ToolStripControlHost
     {
 
-
-
-
-
-
         public event EventHandler BeginValueChange;
         public event EventHandler ValueChanging;
         public event EventHandler ValueChanged;
-
-
-
-
-
-
-
-
 
         public int MaximumValue
         {
@@ -64,10 +51,6 @@ namespace SWF.UIComponent.Core
             }
         }
 
-
-
-
-
         private Slider Slider
         {
             get
@@ -76,33 +59,17 @@ namespace SWF.UIComponent.Core
             }
         }
 
-
-
-
-
         public ToolStripSlider()
             : base(new Slider())
         {
             this.InitializeComponent();
         }
 
-
-
-
-
-
-
-
-
         private void InitializeComponent()
         {
             this.Slider.Size = new(96, 24);
             this.Slider.BackColor = Color.Transparent;
         }
-
-
-
-
 
         protected override void OnSubscribeControlEvents(Control control)
         {
@@ -151,7 +118,6 @@ namespace SWF.UIComponent.Core
         {
             this.OnValueChanged(e);
         }
-
 
     }
 }

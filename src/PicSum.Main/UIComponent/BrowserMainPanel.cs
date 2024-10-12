@@ -24,28 +24,15 @@ namespace PicSum.Main.UIComponent
     public sealed partial class BrowserMainPanel : UserControl
     {
 
-
-
-
-
-
         public event EventHandler<TabDropoutedEventArgs> TabDropouted;
         public event EventHandler<BrowserPageOpenEventArgs> NewWindowPageOpen;
         public event EventHandler Close;
         public event EventHandler BackgroundMouseDoubleLeftClick;
 
-
-
-
-
         private Size previrewSize = Size.Empty;
         private Timer redrawTimer = null;
         private TwoWayJob<TagsGetJob, ListResult<string>> getTagListJob = null;
         private TwoWayJob<ImageFileGetByDirectoryJob, ImageFileGetByDirectoryParameter, ImageFileGetByDirectoryResult> getFilesJob = null;
-
-
-
-
 
         public int TabCount
         {
@@ -54,14 +41,6 @@ namespace PicSum.Main.UIComponent
                 return this.tabSwitch.TabCount;
             }
         }
-
-
-
-
-
-
-
-
 
         private TwoWayJob<TagsGetJob, ListResult<string>> GetTagListJob
         {
@@ -78,10 +57,6 @@ namespace PicSum.Main.UIComponent
                 return this.getTagListJob;
             }
         }
-
-
-
-
 
         public BrowserMainPanel()
         {
@@ -129,10 +104,6 @@ namespace PicSum.Main.UIComponent
                 this.redrawTimer.Tick += this.RedrawTimer_Tick;
             }
         }
-
-
-
-
 
         public void AddPageEventHandler(BrowserPage page)
         {
@@ -215,10 +186,6 @@ namespace PicSum.Main.UIComponent
             this.SetPageHistoryButtonEnabled();
         }
 
-
-
-
-
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -247,10 +214,6 @@ namespace PicSum.Main.UIComponent
             this.addressBar.SetAddress(FileUtil.ROOT_DIRECTORY_PATH);
             base.OnLoad(e);
         }
-
-
-
-
 
         private void RedrawPage()
         {
@@ -453,10 +416,6 @@ namespace PicSum.Main.UIComponent
         {
             this.BackgroundMouseDoubleLeftClick?.Invoke(this, e);
         }
-
-
-
-
 
         private Func<ImageViewerPageParameter, Action> GetImageFilesAction(
             ImageFileGetByDirectoryParameter subParamter)
@@ -744,7 +703,6 @@ namespace PicSum.Main.UIComponent
                 this.OpenPage(new BookmarkFileListPageParameter(), PageOpenType.AddTab);
             }
         }
-
 
     }
 }

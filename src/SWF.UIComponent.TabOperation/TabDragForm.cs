@@ -16,14 +16,9 @@ namespace SWF.UIComponent.TabOperation
         : Form
     {
 
-
         private const float OUTLINE_OFFSET = 0.5f;
         private const float DRAW_TAB_WIDHT_OFFSET = 8;
         private const float CAPTURE_WIDTH = 320;
-
-
-
-
 
         private TabPalette tabPalette = null;
         private TabDropForm tabDropForm = null;
@@ -33,8 +28,6 @@ namespace SWF.UIComponent.TabOperation
         private Bitmap regionImage = null;
         private Action<DrawTabEventArgs> drawTabPageMethod = null;
 
-
-
         public TabSwitch TabSwitch
         {
             get
@@ -42,8 +35,6 @@ namespace SWF.UIComponent.TabOperation
                 return tabSwitch;
             }
         }
-
-
 
         private TabPalette TabPalette
         {
@@ -85,18 +76,10 @@ namespace SWF.UIComponent.TabOperation
             }
         }
 
-
-
-
-
         public TabDragForm()
         {
             this.InitializeComponent();
         }
-
-
-
-
 
         public void SetLocation(float xOffset, float yOffset)
         {
@@ -202,10 +185,6 @@ namespace SWF.UIComponent.TabOperation
             }
         }
 
-
-
-
-
         protected override void OnLostFocus(EventArgs e)
         {
             if (this.tabSwitch != null && this.Visible)
@@ -229,10 +208,6 @@ namespace SWF.UIComponent.TabOperation
             this.DrawTabEventArgs.Graphics = e.Graphics;
             this.drawTabPageMethod(this.DrawTabEventArgs);
         }
-
-
-
-
 
         private void InitializeComponent()
         {
@@ -282,7 +257,6 @@ namespace SWF.UIComponent.TabOperation
             var h = outlineRectangle.Height - OUTLINE_OFFSET * 2f;
             return new RectangleF(x, y, w, h);
         }
-
 
     }
 }

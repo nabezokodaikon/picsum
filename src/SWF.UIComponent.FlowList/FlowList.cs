@@ -14,16 +14,11 @@ namespace SWF.UIComponent.FlowList
         : UserControl
     {
 
-
         // 項目最小サイズ
         public const int MINIMUM_ITEM_SIZE = 16;
 
         // 項目最大サイズ
         public const int MAXIMUM_ITEM_SIZE = 512;
-
-
-
-
 
         // 描画フラグ
         private bool isDraw = true;
@@ -114,12 +109,6 @@ namespace SWF.UIComponent.FlowList
         private Pen rectangleSelectionPen = null;
         private StringFormat itemTextFormat = null;
 
-
-
-
-
-
-
         private SolidBrush RectangleSelectionBrush
         {
             get
@@ -142,18 +131,10 @@ namespace SWF.UIComponent.FlowList
             }
         }
 
-
-
-
-
         public FlowList()
         {
             this.InitializeComponent();
         }
-
-
-
-
 
         protected override void OnInvalidated(InvalidateEventArgs e)
         {
@@ -574,10 +555,6 @@ namespace SWF.UIComponent.FlowList
 
             base.OnMouseWheel(e);
         }
-
-
-
-
 
         private void InitializeComponent()
         {

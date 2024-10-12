@@ -16,14 +16,9 @@ namespace PicSum.UIComponent.AddressBar
         : ToolStripDropDown
     {
 
-
         public event EventHandler<SWF.UIComponent.FlowList.DrawItemEventArgs> Drawitem;
         public event EventHandler<MouseEventArgs> ItemMouseClick;
         public event EventHandler ItemExecute;
-
-
-
-
 
         /// <summary>
         /// 項目数
@@ -267,10 +262,6 @@ namespace PicSum.UIComponent.AddressBar
             }
         }
 
-
-
-
-
         private ToolStripControlHost ToolStripItem
         {
             get
@@ -287,18 +278,10 @@ namespace PicSum.UIComponent.AddressBar
             }
         }
 
-
-
-
-
         public DropDownList()
         {
             this.InitializeComponent();
         }
-
-
-
-
 
         /// <summary>
         /// 描画を停止します。
@@ -352,10 +335,6 @@ namespace PicSum.UIComponent.AddressBar
             return this.FlowList.GetSelectedIndexs();
         }
 
-
-
-
-
         protected override void OnOpened(EventArgs e)
         {
             this.FlowList.Focus();
@@ -368,10 +347,6 @@ namespace PicSum.UIComponent.AddressBar
             this.FlowList.Invalidate();
             base.OnInvalidated(e);
         }
-
-
-
-
 
         private void InitializeComponent()
         {
@@ -433,7 +408,6 @@ namespace PicSum.UIComponent.AddressBar
         {
             this.OnItemExecute(e);
         }
-
 
     }
 }

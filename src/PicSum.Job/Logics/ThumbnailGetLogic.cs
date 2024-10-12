@@ -606,6 +606,5 @@ namespace PicSum.Job.Logics
             }
         }
 
-
     }
 }

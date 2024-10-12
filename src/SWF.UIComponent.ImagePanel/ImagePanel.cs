@@ -36,21 +36,12 @@ namespace SWF.UIComponent.ImagePanel
         : Control
     {
 
-
         private const int THUMBNAIL_PANEL_OFFSET = 16;
         private const int THUMBNAIL_OFFSET = 8;
-
-
-
-
 
         public event EventHandler<MouseEventArgs> ImageMouseClick;
         public event EventHandler<MouseEventArgs> ImageMouseDoubleClick;
         public event EventHandler DragStart;
-
-
-
-
 
         private readonly Image thumbnailPanelImage = Resources.ThumbnailPanel;
         private ImageSizeMode sizeMode = ImageSizeMode.FitOnlyBigImage;
@@ -80,10 +71,6 @@ namespace SWF.UIComponent.ImagePanel
             LineAlignment = StringAlignment.Center,
             Trimming = StringTrimming.EllipsisCharacter,
         };
-
-
-
-
 
         public Size ImageSize
         {
@@ -146,14 +133,6 @@ namespace SWF.UIComponent.ImagePanel
 
         public bool HasImage { get; private set; } = false;
 
-
-
-
-
-
-
-
-
         private int ThumbnailPanelSize
         {
             get
@@ -162,18 +141,10 @@ namespace SWF.UIComponent.ImagePanel
             }
         }
 
-
-
-
-
         public ImagePanel()
         {
             this.InitializeComponent();
         }
-
-
-
-
 
         public void SetImage(
             ImageSizeMode sizeMode, CvImage img, Bitmap thumb, string filePath)
@@ -269,10 +240,6 @@ namespace SWF.UIComponent.ImagePanel
             sw.Stop();
             Console.WriteLine($"[{Thread.CurrentThread.Name}] ImagePanel.Update: {sw.ElapsedMilliseconds} ms");
         }
-
-
-
-
 
         protected override void Dispose(bool disposing)
         {
@@ -491,10 +458,6 @@ namespace SWF.UIComponent.ImagePanel
 
             base.OnMouseDoubleClick(e);
         }
-
-
-
-
 
         private void InitializeComponent()
         {
@@ -789,7 +752,6 @@ namespace SWF.UIComponent.ImagePanel
                 return false;
             }
         }
-
 
     }
 }

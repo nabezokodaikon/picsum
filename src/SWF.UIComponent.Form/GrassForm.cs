@@ -13,21 +13,12 @@ namespace SWF.UIComponent.Form
         : System.Windows.Forms.Form
     {
 
-
         private const int TOP_OFFSET = 41;
-
-
-
-
 
         private WinApiMembers.MARGINS glassMargins = null;
         private bool isInit = true;
         private Size initSize = Size.Empty;
         private FormWindowState initWindowState = FormWindowState.Normal;
-
-
-
-
 
         public new Size Size
         {
@@ -81,18 +72,10 @@ namespace SWF.UIComponent.Form
             }
         }
 
-
-
-
-
         public GrassForm()
         {
             this.InitializeComponent();
         }
-
-
-
-
 
         public void MouseLeftDoubleClickProcess()
         {
@@ -105,10 +88,6 @@ namespace SWF.UIComponent.Form
                 this.WindowState = FormWindowState.Normal;
             }
         }
-
-
-
-
 
         protected override void WndProc(ref Message m)
         {
@@ -183,10 +162,6 @@ namespace SWF.UIComponent.Form
         {
             this.SettingtControlRegion();
         }
-
-
-
-
 
         private void InitializeComponent()
         {
@@ -320,7 +295,6 @@ namespace SWF.UIComponent.Form
 
             return new IntPtr(HTCLIENT);
         }
-
 
     }
 }

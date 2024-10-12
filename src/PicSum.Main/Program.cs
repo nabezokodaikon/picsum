@@ -100,7 +100,6 @@ namespace PicSum.Main
             LogManager.Configuration = new XmlLoggingConfiguration("NLog.config");
 #endif
 
-
             var logger = LogManager.GetCurrentClassLogger();
 
             Thread.CurrentThread.Name = "Main";

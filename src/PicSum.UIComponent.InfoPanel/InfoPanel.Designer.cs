@@ -144,8 +144,6 @@ namespace PicSum.UIComponent.InfoPanel
             this.ResumeLayout(false);
         }
 
-
-
         private System.Windows.Forms.PictureBox thumbnailPictureBox;
         private SWF.UIComponent.Core.RatingBar ratingBar;
         private SWF.UIComponent.FlowList.FlowList tagFlowList;

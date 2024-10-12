@@ -11,21 +11,12 @@ namespace SWF.UIComponent.TabOperation
         : UserControl
     {
 
-
         public event EventHandler Activated;
         public event EventHandler Inactivated;
         public event EventHandler<DrawTabEventArgs> DrawTabPage;
 
-
-
-
-
         private string title = string.Empty;
         private Image icon = null;
-
-
-
-
 
         public string Title
         {
@@ -52,10 +43,6 @@ namespace SWF.UIComponent.TabOperation
                 this.icon = value;
             }
         }
-
-
-
-
 
         /// <summary>
         /// コンテンツを再描画します。
@@ -88,10 +75,6 @@ namespace SWF.UIComponent.TabOperation
             this.OnDrawTabPage(e);
         }
 
-
-
-
-
         protected void OnActivated(EventArgs e)
         {
             this.Activated?.Invoke(this, e);
@@ -106,7 +89,6 @@ namespace SWF.UIComponent.TabOperation
         {
             this.DrawTabPage?.Invoke(this, e);
         }
-
 
     }
 }

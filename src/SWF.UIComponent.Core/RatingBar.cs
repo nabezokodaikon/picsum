@@ -6,20 +6,11 @@ namespace SWF.UIComponent.Core
     public class RatingBar : Control
     {
 
-
         public event EventHandler<MouseEventArgs> RatingButtonMouseClick;
-
-
-
-
 
         private int maximumValue = 5;
         private int value = 0;
         private readonly List<RatingButton> ratingButtonList = [];
-
-
-
-
 
         public int MaximumValue
         {
@@ -52,18 +43,10 @@ namespace SWF.UIComponent.Core
             }
         }
 
-
-
-
-
         public RatingBar()
         {
             this.InitializeComponent();
         }
-
-
-
-
 
         public void SetValue(int value)
         {
@@ -81,10 +64,6 @@ namespace SWF.UIComponent.Core
             this.value = value;
         }
 
-
-
-
-
         protected override void OnInvalidated(InvalidateEventArgs e)
         {
             this.SetRatingButtonsLocation();
@@ -95,10 +74,6 @@ namespace SWF.UIComponent.Core
         {
             this.RatingButtonMouseClick?.Invoke(this, e);
         }
-
-
-
-
 
         private void InitializeComponent()
         {
@@ -157,10 +132,6 @@ namespace SWF.UIComponent.Core
             }
         }
 
-
-
-
-
         private void RatingButton_MouseClick(object sender, MouseEventArgs e)
         {
             if (sender is not RatingButton)
@@ -186,7 +157,6 @@ namespace SWF.UIComponent.Core
 
             this.OnRatingButtonMouseClick(e);
         }
-
 
     }
 }

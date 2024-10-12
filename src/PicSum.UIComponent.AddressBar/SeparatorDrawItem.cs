@@ -15,16 +15,11 @@ namespace PicSum.UIComponent.AddressBar
         : DropDownDrawItemBase, IDisposable
     {
 
-
         private readonly Image mousePointImage = Resources.SmallArrowRight;
         private readonly Image mouseDownImage = Resources.SmallArrowDown;
         private bool isRead = false;
         private Font selectedSubDirectoryFont = null;
         private TwoWayJob<SubDirectoriesGetJob, ValueParameter<string>, ListResult<FileShallowInfoEntity>> getSubDirectoryJob = null;
-
-
-
-
 
         public DirectoryEntity Directory { get; set; }
         public string SelectedSubDirectoryPath { get; set; }
@@ -60,18 +55,10 @@ namespace PicSum.UIComponent.AddressBar
             }
         }
 
-
-
-
-
         public SeparatorDrawItem()
         {
 
         }
-
-
-
-
 
         public new void Dispose()
         {
@@ -196,10 +183,6 @@ namespace PicSum.UIComponent.AddressBar
             }
         }
 
-
-
-
-
         private void GetSubDirectoryJob_Callback(ListResult<FileShallowInfoEntity> e)
         {
             var width = MINIMUM_DROPDOWN_WIDHT;
@@ -230,7 +213,6 @@ namespace PicSum.UIComponent.AddressBar
             var height = Math.Min(MAXIMUM_SHOW_ITEM_COUNT * base.DropDownList.ItemHeight,
                                   base.Items.Count * base.DropDownList.ItemHeight);
 
-
             base.DropDownList.Size = new Size(width + base.DropDownList.ItemHeight, height);
             base.DropDownList.ItemCount = base.Items.Count;
 
@@ -242,7 +224,6 @@ namespace PicSum.UIComponent.AddressBar
 
             this.isRead = true;
         }
-
 
     }
 }

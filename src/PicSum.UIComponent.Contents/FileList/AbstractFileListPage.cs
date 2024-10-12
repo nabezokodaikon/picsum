@@ -90,8 +90,6 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
-
-
         private bool disposing = false;
         private Dictionary<string, FileEntity> masterFileDictionary = null;
         private List<string> filterFilePathList = null;
@@ -101,15 +99,7 @@ namespace PicSum.UIComponent.Contents.FileList
         private TwoWayJob<MultiFilesExportJob, MultiFilesExportParameter, ValueResult<string>> multiFilesExportJob = null;
         private OneWayJob<ImageFileSizeCacheJob, ListParameter<string>> imageFileSizeCacheJob = null;
 
-
-
-
-
         public override string SelectedFilePath { get; protected set; } = FileUtil.ROOT_DIRECTORY_PATH;
-
-
-
-
 
         protected SortInfo SortInfo { get; private set; } = new();
 
@@ -177,10 +167,6 @@ namespace PicSum.UIComponent.Contents.FileList
                 this.fileContextMenu.VisibleDirectoryActiveTabOpenMenuItem = value;
             }
         }
-
-
-
-
 
         private bool IsShowDirectory
         {
@@ -343,10 +329,6 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
-
-
-
-
         public AbstractFileListPage(IPageParameter param)
             : base(param)
         {
@@ -361,18 +343,10 @@ namespace PicSum.UIComponent.Contents.FileList
             this.SetFlowListItemSize();
         }
 
-
-
-
-
         public override void RedrawPage()
         {
             this.flowList.Refresh();
         }
-
-
-
-
 
         protected override void Dispose(bool disposing)
         {
@@ -549,10 +523,6 @@ namespace PicSum.UIComponent.Contents.FileList
         }
 
         protected abstract Action GetImageFilesGetAction(ImageViewerPageParameter paramter);
-
-
-
-
 
         private ToolStripButton GetSortToolStripButton(SortTypeID sortType)
         {
@@ -850,10 +820,6 @@ namespace PicSum.UIComponent.Contents.FileList
                                   e.ItemRectangle.Width,
                                   this.ItemTextHeight);
         }
-
-
-
-
 
         private void GetThumbnailsJob_Callback(ThumbnailImageResult e)
         {
@@ -1384,7 +1350,6 @@ namespace PicSum.UIComponent.Contents.FileList
 
             this.AddBookmarkJob.StartJob(paramter);
         }
-
 
     }
 }

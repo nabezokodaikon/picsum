@@ -8,13 +8,8 @@ namespace SWF.UIComponent.TabOperation
     internal sealed class AddTabButtonDrawArea
     {
 
-
         private const int PAGE_SIZE = 24;
         private const int TAB_HEIGHT = 29;
-
-
-
-
 
         private readonly static RectangleF DEFAULT_RECTANGLE = GetDefaultRectangle();
 
@@ -32,17 +27,9 @@ namespace SWF.UIComponent.TabOperation
         private static readonly Pen MOUSE_POINT_PEN = new(Color.Black, 2f);
         private static readonly Pen NORMAL_PEN = new(Color.White, 2f);
 
-
-
-
-
         private readonly float width = DEFAULT_RECTANGLE.Width;
         private readonly float height = DEFAULT_RECTANGLE.Height;
         private PointF drawPoint = new(DEFAULT_RECTANGLE.X, DEFAULT_RECTANGLE.Y);
-
-
-
-
 
         public float X
         {
@@ -132,10 +119,6 @@ namespace SWF.UIComponent.TabOperation
             }
         }
 
-
-
-
-
         public bool Page(PointF p)
         {
             return this.Page(p.X, p.Y);
@@ -184,7 +167,6 @@ namespace SWF.UIComponent.TabOperation
                 g.DrawLine(NORMAL_PEN, hp1, hp2);
             }
         }
-
 
     }
 }

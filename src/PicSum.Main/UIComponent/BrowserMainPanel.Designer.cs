@@ -250,8 +250,6 @@ namespace PicSum.Main.UIComponent
             this.ResumeLayout(false);
         }
 
-
-
         private SWF.UIComponent.TabOperation.PageContainer pageContainer;
         private PicSum.UIComponent.InfoPanel.InfoPanel infoPanel;
         private SWF.UIComponent.TabOperation.TabSwitch tabSwitch;
