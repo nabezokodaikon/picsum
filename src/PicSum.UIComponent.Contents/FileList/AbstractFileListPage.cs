@@ -351,7 +351,14 @@ namespace PicSum.UIComponent.Contents.FileList
             : base(param)
         {
             this.InitializeComponent();
-            this.SubInitializeComponent();
+
+            this.Font = new Font("Yu Gothic UI", 10F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(128)));
+            this.IsShowFileName = FileListPageConfig.IsShowFileName;
+            this.IsShowDirectory = FileListPageConfig.IsShowDirectory;
+            this.IsShowImageFile = FileListPageConfig.IsShowImageFile;
+            this.IsShowOtherFile = FileListPageConfig.IsShowOtherFile;
+            this.ThumbnailSize = FileListPageConfig.ThumbnailSize;
+            this.SetFlowListItemSize();
         }
 
         #endregion
@@ -369,7 +376,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
         protected override void Dispose(bool disposing)
         {
-            if (disposing && (components != null))
+            if (disposing)
             {
                 this.disposing = true;
 
@@ -403,7 +410,7 @@ namespace PicSum.UIComponent.Contents.FileList
                     this.imageFileSizeCacheJob = null;
                 }
 
-                components.Dispose();
+                components?.Dispose();
             }
 
             base.Dispose(disposing);
@@ -546,17 +553,6 @@ namespace PicSum.UIComponent.Contents.FileList
         #endregion
 
         #region プライベートメソッド
-
-        private void SubInitializeComponent()
-        {
-            this.Font = new Font("Yu Gothic UI", 10F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(128)));
-            this.IsShowFileName = FileListPageConfig.IsShowFileName;
-            this.IsShowDirectory = FileListPageConfig.IsShowDirectory;
-            this.IsShowImageFile = FileListPageConfig.IsShowImageFile;
-            this.IsShowOtherFile = FileListPageConfig.IsShowOtherFile;
-            this.ThumbnailSize = FileListPageConfig.ThumbnailSize;
-            this.SetFlowListItemSize();
-        }
 
         private ToolStripButton GetSortToolStripButton(SortTypeID sortType)
         {

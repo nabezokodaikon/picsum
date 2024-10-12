@@ -202,7 +202,7 @@ namespace PicSum.UIComponent.InfoPanel
 
             if (!this.DesignMode)
             {
-                this.SubInitializeComponent();
+                this.CreateHandle();
             }
         }
 
@@ -252,7 +252,7 @@ namespace PicSum.UIComponent.InfoPanel
 
         protected override void Dispose(bool disposing)
         {
-            if (disposing && (components != null))
+            if (disposing)
             {
                 if (this.getFileInfoJob != null)
                 {
@@ -284,7 +284,7 @@ namespace PicSum.UIComponent.InfoPanel
                     this.deleteFileTagJob = null;
                 }
 
-                components.Dispose();
+                components?.Dispose();
             }
 
             base.Dispose(disposing);
@@ -297,12 +297,6 @@ namespace PicSum.UIComponent.InfoPanel
         private void OnSelectedTag(SelectedTagEventArgs e)
         {
             this.SelectedTag?.Invoke(this, e);
-        }
-
-        private void SubInitializeComponent()
-        {
-            this.components ??= new Container();
-            this.CreateHandle();
         }
 
         private void ClearInfo()

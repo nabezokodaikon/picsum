@@ -17,6 +17,7 @@ namespace PicSum.Main.UIComponent
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.pageContainer = new SWF.UIComponent.TabOperation.PageContainer();
             this.infoPanel = new PicSum.UIComponent.InfoPanel.InfoPanel();
             this.tabSwitch = new SWF.UIComponent.TabOperation.TabSwitch();

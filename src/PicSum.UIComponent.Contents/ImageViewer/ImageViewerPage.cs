@@ -238,7 +238,10 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             : base(parameter)
         {
             this.InitializeComponent();
-            this.SubInitializeComponent();
+
+            this.SetDisplayMode(ImageViewerPageConfig.ImageDisplayMode);
+            this.SetSizeMode(ImageViewerPageConfig.ImageSizeMode);
+            this.SetThumbnailPanelVisible();
 
             this.parameter = parameter;
             this.SelectedFilePath = parameter.SelectedFilePath;
@@ -415,13 +418,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         #endregion
 
         #region プライベートメソッド
-
-        private void SubInitializeComponent()
-        {
-            this.SetDisplayMode(ImageViewerPageConfig.ImageDisplayMode);
-            this.SetSizeMode(ImageViewerPageConfig.ImageSizeMode);
-            this.SetThumbnailPanelVisible();
-        }
 
         private Size GetImageSize(string filePath)
         {

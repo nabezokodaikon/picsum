@@ -89,7 +89,44 @@ namespace PicSum.Main.UIComponent
 
             if (!this.DesignMode)
             {
-                this.SubInitializeComponent();
+                this.pageContainer.SetBounds(
+                    0,
+                    64,
+                    this.Width,
+                    402);
+
+                this.infoPanel.SetBounds(
+                    this.pageContainer.Width - ApplicationConst.INFOPANEL_WIDTH,
+                    this.pageContainer.Location.Y,
+                    ApplicationConst.INFOPANEL_WIDTH,
+                    402);
+
+                this.pageContainer.Anchor
+                    = AnchorStyles.Top
+                    | AnchorStyles.Bottom
+                    | AnchorStyles.Left
+                    | AnchorStyles.Right;
+
+                this.infoPanel.Anchor
+                    = AnchorStyles.Top
+                    | AnchorStyles.Bottom
+                    | AnchorStyles.Right;
+
+                this.Controls.AddRange(
+                    [
+                        this.pageContainer,
+                    this.infoPanel,
+                    ]);
+
+                this.infoPanel.BringToFront();
+                this.pageContainer.BringToFront();
+
+                this.redrawTimer = new Timer
+                {
+                    Enabled = true,
+                    Interval = 500,
+                };
+                this.redrawTimer.Tick += this.RedrawTimer_Tick;
             }
         }
 
@@ -184,7 +221,7 @@ namespace PicSum.Main.UIComponent
 
         protected override void Dispose(bool disposing)
         {
-            if (disposing && (components != null))
+            if (disposing)
             {
                 if (this.getTagListJob != null)
                 {
@@ -198,7 +235,7 @@ namespace PicSum.Main.UIComponent
                     this.getFilesJob = null;
                 }
 
-                components.Dispose();
+                components?.Dispose();
             }
             base.Dispose(disposing);
         }
@@ -214,50 +251,6 @@ namespace PicSum.Main.UIComponent
         #endregion
 
         #region プライベートメソッド
-
-        private void SubInitializeComponent()
-        {
-            this.components ??= new Container();
-
-            this.pageContainer.SetBounds(
-                0,
-                64,
-                this.Width,
-                402);
-
-            this.infoPanel.SetBounds(
-                this.pageContainer.Width - ApplicationConst.INFOPANEL_WIDTH,
-                this.pageContainer.Location.Y,
-                ApplicationConst.INFOPANEL_WIDTH,
-                402);
-
-            this.pageContainer.Anchor
-                = AnchorStyles.Top
-                | AnchorStyles.Bottom
-                | AnchorStyles.Left
-                | AnchorStyles.Right;
-
-            this.infoPanel.Anchor
-                = AnchorStyles.Top
-                | AnchorStyles.Bottom
-                | AnchorStyles.Right;
-
-            this.Controls.AddRange(
-            [
-                this.pageContainer,
-                this.infoPanel,
-            ]);
-
-            this.infoPanel.BringToFront();
-            this.pageContainer.BringToFront();
-
-            this.redrawTimer = new Timer
-            {
-                Enabled = true,
-                Interval = 500,
-            };
-            this.redrawTimer.Tick += this.RedrawTimer_Tick;
-        }
 
         private void RedrawPage()
         {
