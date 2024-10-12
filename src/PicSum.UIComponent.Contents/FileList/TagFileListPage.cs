@@ -151,7 +151,7 @@ namespace PicSum.UIComponent.Contents.FileList
                     (int)e.TextRectangle.Y,
                     (int)e.TextRectangle.Width,
                     (int)e.TextRectangle.Height),
-                e.TitleColor, e.TitleFormatFlags, e.TextStyle);
+                e.TitleColor, e.TitleFormatFlags);
         }
 
         protected override void OnBackgroundMouseClick(MouseEventArgs e)

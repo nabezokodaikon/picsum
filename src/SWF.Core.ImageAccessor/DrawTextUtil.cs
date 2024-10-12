@@ -8,32 +8,12 @@ namespace SWF.Core.ImageAccessor
     [SupportedOSPlatform("windows")]
     public static class DrawTextUtil
     {
-        public enum TextStyle
+        public static void DrawText(Graphics srcDc, string text, Font font, Rectangle bounds, Color color, TextFormatFlags flags)
         {
-            Normal,
-            Glowing
+            DrawGrassText(srcDc, text, font, bounds, color, flags);
         }
 
-        private readonly static bool IS_SUPPORTED_DRAW_THEME_TEXT_EX_WINDOWS_VERSION = (6 <= Environment.OSVersion.Version.Major);
-
-        public static void DrawText(Graphics srcDc, string text, Font font, Rectangle bounds, Color color, TextFormatFlags flags, TextStyle style)
-        {
-            if (IS_SUPPORTED_DRAW_THEME_TEXT_EX_WINDOWS_VERSION && IsSupportedTheme())
-            {
-                DrawGrassText(srcDc, text, font, bounds, color, flags, style);
-            }
-            else
-            {
-                DrawClassicText(srcDc, text, font, bounds, color, flags);
-            }
-        }
-
-        private static void DrawClassicText(Graphics srcDc, string text, Font font, Rectangle bounds, Color color, TextFormatFlags flags)
-        {
-            TextRenderer.DrawText(srcDc, text, font, bounds, color, flags);
-        }
-
-        private static void DrawGrassText(Graphics srcDc, string text, Font font, Rectangle bounds, Color color, TextFormatFlags flags, TextStyle style)
+        private static void DrawGrassText(Graphics srcDc, string text, Font font, Rectangle bounds, Color color, TextFormatFlags flags)
         {
             var srcHdc = srcDc.GetHdc();
 
@@ -60,7 +40,7 @@ namespace SWF.Core.ImageAccessor
             var dttOpts = new WinApiMembers.DTTOPTS
             {
                 dwSize = Marshal.SizeOf(typeof(WinApiMembers.DTTOPTS)),
-                dwFlags = GetDwFlags(style),
+                dwFlags = GetDwFlags(),
 
                 crText = ColorTranslator.ToWin32(color),
                 iGlowSize = 8 // This is about the size Microsoft Word 2007 uses
@@ -95,19 +75,11 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
-        private static int GetDwFlags(TextStyle style)
+        private static int GetDwFlags()
         {
-            if (style == TextStyle.Glowing)
-            {
-                return WinApiMembers.DTT_COMPOSITED |
-                       WinApiMembers.DTT_GLOWSIZE |
-                       WinApiMembers.DTT_TEXTCOLOR;
-            }
-            else
-            {
-                return WinApiMembers.DTT_COMPOSITED |
-                       WinApiMembers.DTT_TEXTCOLOR;
-            }
+            return WinApiMembers.DTT_COMPOSITED |
+                   WinApiMembers.DTT_GLOWSIZE |
+                   WinApiMembers.DTT_TEXTCOLOR;
         }
     }
 }

@@ -375,7 +375,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                     (int)e.TextRectangle.Y,
                     (int)e.TextRectangle.Width,
                     (int)e.TextRectangle.Height),
-                e.TitleColor, e.TitleFormatFlags, e.TextStyle);
+                e.TitleColor, e.TitleFormatFlags);
         }
 
         protected override void OnResize(EventArgs e)

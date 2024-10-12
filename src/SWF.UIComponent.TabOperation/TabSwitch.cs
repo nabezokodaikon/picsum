@@ -1313,7 +1313,6 @@ namespace SWF.UIComponent.TabOperation
                 TextRectangle = tab.DrawArea.GetPageRectangle(),
                 IconRectangle = tab.DrawArea.GetIconRectangle(tab.Icon),
                 CloseButtonRectangle = tab.DrawArea.GetCloseButtonRectangle(),
-                TextStyle = DrawTextUtil.TextStyle.Glowing,
             };
 
             if (tab.DrawArea.Width > TAB_CLOSE_BUTTON_CAN_DRAW_WIDTH)

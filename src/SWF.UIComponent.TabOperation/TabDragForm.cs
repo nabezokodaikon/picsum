@@ -163,7 +163,6 @@ namespace SWF.UIComponent.TabOperation
             this.DrawTabEventArgs.TextRectangle = this.TabDrawArea.GetPageRectangle();
             this.DrawTabEventArgs.IconRectangle = this.TabDrawArea.GetIconRectangle(tab.Icon);
             this.DrawTabEventArgs.CloseButtonRectangle = this.TabDrawArea.GetCloseButtonRectangle();
-            this.DrawTabEventArgs.TextStyle = DrawTextUtil.TextStyle.Glowing;
 
             this.drawTabPageMethod = tab.DrawingTabPage;
 
