@@ -1,8 +1,5 @@
-using PicSum.Core.Base.Conf;
-using System;
-using System.Collections.Generic;
+using SWF.Core.Base;
 using System.Data;
-using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -65,7 +62,7 @@ namespace PicSum.Core.DatabaseAccessor
                     foreach (var paramString in paramStringList)
                     {
                         var r = new Regex($"{paramString}\\s|{paramString}$");
-                        text = r.Replace(text, string.Format(ApplicationConst.NUMBERING_SQL_PARAMETER_FORMAT + " ", paramString, i.ToString()));
+                        text = r.Replace(text, string.Format(Constants.NUMBERING_SQL_PARAMETER_FORMAT + " ", paramString, i.ToString()));
                     }
 
                     newText.Append(text);

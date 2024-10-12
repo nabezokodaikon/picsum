@@ -1,4 +1,4 @@
-using PicSum.Core.Base.Conf;
+using SWF.Core.Base;
 using System;
 
 namespace PicSum.UIComponent.InfoPanel

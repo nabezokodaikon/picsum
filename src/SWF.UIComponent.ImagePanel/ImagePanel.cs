@@ -1,4 +1,4 @@
-using PicSum.Core.Base.Conf;
+using SWF.Core.Base;
 using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
 using SWF.UIComponent.ImagePanel.Properties;

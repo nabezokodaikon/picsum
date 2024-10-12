@@ -1,10 +1,10 @@
-using PicSum.Core.Base.Conf;
 using PicSum.Core.DatabaseAccessor;
 using PicSum.Core.Job.AsyncJob;
 using PicSum.Data.DatabaseAccessor.Connection;
 using PicSum.Data.DatabaseAccessor.Dto;
 using PicSum.Data.DatabaseAccessor.Sql;
 using PicSum.Job.Entities;
+using SWF.Core.Base;
 using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
 using System.Diagnostics;

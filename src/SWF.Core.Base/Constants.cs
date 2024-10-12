@@ -1,9 +1,6 @@
-namespace PicSum.Core.Base.Conf
+namespace SWF.Core.Base
 {
-    /// <summary>
-    /// アプリケーション定数クラス
-    /// </summary>
-    public static class ApplicationConst
+    public sealed class Constants
     {
         /// <summary>
         /// 番号付SQLパラメータの書式

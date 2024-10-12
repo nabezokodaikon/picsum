@@ -1,4 +1,3 @@
-using PicSum.Core.Base.Conf;
 using PicSum.Core.Job.AsyncJob;
 using PicSum.Job.Jobs;
 using PicSum.Job.Parameters;
@@ -11,10 +10,8 @@ using SWF.Core.FileAccessor;
 using SWF.UIComponent.TabOperation;
 using SWF.UIComponent.WideDropDown;
 using System;
-using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
-using System.Reflection.Metadata.Ecma335;
 using System.Runtime.Versioning;
 using System.Windows.Forms;
 
@@ -71,9 +68,9 @@ namespace PicSum.Main.UIComponent
                     402);
 
                 this.infoPanel.SetBounds(
-                    this.pageContainer.Width - ApplicationConst.INFOPANEL_WIDTH,
+                    this.pageContainer.Width - Constants.INFOPANEL_WIDTH,
                     this.pageContainer.Location.Y,
-                    ApplicationConst.INFOPANEL_WIDTH,
+                    Constants.INFOPANEL_WIDTH,
                     402);
 
                 this.pageContainer.Anchor
@@ -597,7 +594,7 @@ namespace PicSum.Main.UIComponent
         {
             if (this.pageContainer.Width == this.Width)
             {
-                this.pageContainer.Width = this.Width - ApplicationConst.INFOPANEL_WIDTH;
+                this.pageContainer.Width = this.Width - Constants.INFOPANEL_WIDTH;
             }
             else
             {

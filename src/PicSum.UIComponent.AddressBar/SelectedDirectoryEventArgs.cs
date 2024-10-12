@@ -1,8 +1,10 @@
-using PicSum.Core.Base.Conf;
+using SWF.Core.Base;
 using System;
+using System.Runtime.Versioning;
 
 namespace PicSum.UIComponent.AddressBar
 {
+    [SupportedOSPlatform("windows")]
     public sealed class SelectedDirectoryEventArgs
         : EventArgs
     {

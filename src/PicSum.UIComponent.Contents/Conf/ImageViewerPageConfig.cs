@@ -1,4 +1,4 @@
-using PicSum.Core.Base.Conf;
+using SWF.Core.Base;
 
 namespace PicSum.UIComponent.Contents.Conf
 {

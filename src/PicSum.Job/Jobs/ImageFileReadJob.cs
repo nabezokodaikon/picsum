@@ -1,8 +1,8 @@
-using PicSum.Core.Base.Conf;
 using PicSum.Core.Job.AsyncJob;
 using PicSum.Job.Logics;
 using PicSum.Job.Parameters;
 using PicSum.Job.Results;
+using SWF.Core.Base;
 using SWF.Core.ImageAccessor;
 
 namespace PicSum.Job.Jobs

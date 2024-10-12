@@ -1,5 +1,4 @@
 using NLog;
-using PicSum.Core.Base.Conf;
 using PicSum.Core.Job.AsyncJob;
 using PicSum.Job.Jobs;
 using PicSum.Job.Logics;
@@ -9,6 +8,7 @@ using PicSum.UIComponent.Contents.Common;
 using PicSum.UIComponent.Contents.Conf;
 using PicSum.UIComponent.Contents.ContextMenu;
 using PicSum.UIComponent.Contents.Parameter;
+using SWF.Core.Base;
 using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
 using SWF.UIComponent.ImagePanel;

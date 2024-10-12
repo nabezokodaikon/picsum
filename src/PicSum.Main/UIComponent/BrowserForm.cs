@@ -1,4 +1,3 @@
-using PicSum.Core.Base.Exception;
 using PicSum.Core.Job.AsyncJob;
 using PicSum.Job.Jobs;
 using PicSum.Job.Parameters;
@@ -327,7 +326,7 @@ namespace PicSum.Main.UIComponent
         {
             if (this.browserMainPanel != null)
             {
-                throw new PicSumException("メインコントロールは既に存在しています。");
+                throw new SWFException("メインコントロールは既に存在しています。");
             }
 
             var browserMainPanel = new BrowserMainPanel();

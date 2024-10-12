@@ -1,10 +1,10 @@
-using PicSum.Core.Base.Conf;
 using PicSum.Core.Job.AsyncJob;
 using PicSum.Job.Entities;
 using PicSum.Job.Jobs;
 using PicSum.Job.Parameters;
 using PicSum.Job.Results;
 using PicSum.UIComponent.InfoPanel.Properties;
+using SWF.Core.Base;
 using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
 using SWF.UIComponent.WideDropDown;
@@ -216,8 +216,8 @@ namespace PicSum.UIComponent.InfoPanel
                 {
                     FilePathList = filePathList,
                     ThumbnailSize = new Size(
-                        ApplicationConst.INFOPANEL_WIDTH,
-                        ApplicationConst.INFOPANEL_WIDTH)
+                        Constants.INFOPANEL_WIDTH,
+                        Constants.INFOPANEL_WIDTH)
                 };
 
                 this.GetFileInfoJob.StartJob(param);

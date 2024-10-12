@@ -1,6 +1,6 @@
-using PicSum.Core.Base.Conf;
 using PicSum.Core.Job.AsyncJob;
 using PicSum.Job.Results;
+using SWF.Core.Base;
 using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
 using System.Diagnostics;

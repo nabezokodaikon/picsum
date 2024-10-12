@@ -1,4 +1,3 @@
-using PicSum.Core.Base.Exception;
 using PicSum.Core.Job.AsyncJob;
 using PicSum.Job.Entities;
 using PicSum.Job.Jobs;
@@ -40,7 +39,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
                     if (!FileUtil.IsImageFile(param.SelectedFilePath))
                     {
-                        throw new PicSumException($"画像ファイルが選択されていません。'{param.SelectedFilePath}'");
+                        throw new SWFException($"画像ファイルが選択されていません。'{param.SelectedFilePath}'");
                     }
 
                     var eventArgs = new GetImageFilesEventArgs(

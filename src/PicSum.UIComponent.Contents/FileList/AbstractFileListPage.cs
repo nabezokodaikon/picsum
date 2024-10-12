@@ -1,4 +1,3 @@
-using PicSum.Core.Base.Conf;
 using PicSum.Core.Job.AsyncJob;
 using PicSum.Job.Entities;
 using PicSum.Job.Jobs;
