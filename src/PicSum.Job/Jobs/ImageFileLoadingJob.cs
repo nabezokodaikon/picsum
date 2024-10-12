@@ -1,4 +1,5 @@
 using PicSum.Core.Job.AsyncJob;
+using System.Diagnostics;
 
 namespace PicSum.Job.Jobs
 {
@@ -7,9 +8,30 @@ namespace PicSum.Job.Jobs
     {
         protected override void Execute()
         {
-            Thread.Sleep(50);
+            var sw = Stopwatch.StartNew();
 
-            this.Callback(EmptyResult.Value);
+            try
+            {
+                while (true)
+                {
+                    if (sw.ElapsedMilliseconds > 100)
+                    {
+                        return;
+                    }
+
+                    this.CheckCancel();
+
+                    Thread.Sleep(1);
+                }
+            }
+            catch (JobCancelException)
+            {
+
+            }
+            finally
+            {
+                this.Callback(EmptyResult.Value);
+            }
         }
     }
 }
