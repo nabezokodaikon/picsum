@@ -43,6 +43,11 @@ namespace PicSum.Job.Jobs
                             continue;
                         }
 
+                        if (bf.ThumbnailBuffer == null)
+                        {
+                            throw new NullReferenceException("サムネイルのバッファがNullです。");
+                        }
+
                         var img = new ThumbnailImageResult
                         {
                             FilePath = bf.FilePath,

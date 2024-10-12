@@ -90,22 +90,25 @@ namespace PicSum.Job.Logics
                 {
                     if (cache.ThumbnailWidth > thumbWidth || cache.ThumbnailHeight > thumbHeight)
                     {
-                        using (var CacheThumb = ImageUtil.ToImage(cache.ThumbnailBuffer))
+                        if (cache.ThumbnailBuffer == null)
                         {
-                            using (var newThumb = ThumbnailUtil.CreateThumbnail(CacheThumb, thumbWidth, thumbHeight))
+                            throw new NullReferenceException("サムネイルのバッファがNullです。");
+                        }
+
+                        using (var CacheThumb = ImageUtil.ToImage(cache.ThumbnailBuffer))
+                        using (var newThumb = ThumbnailUtil.CreateThumbnail(CacheThumb, thumbWidth, thumbHeight))
+                        {
+                            var thumb = new ThumbnailBufferEntity
                             {
-                                var thumb = new ThumbnailBufferEntity
-                                {
-                                    FilePath = cache.FilePath,
-                                    ThumbnailBuffer = ImageUtil.ToCompressionBinary(newThumb),
-                                    ThumbnailWidth = thumbWidth,
-                                    ThumbnailHeight = thumbHeight,
-                                    SourceWidth = cache.SourceWidth,
-                                    SourceHeight = cache.SourceHeight,
-                                    FileUpdatedate = cache.FileUpdatedate
-                                };
-                                return thumb;
-                            }
+                                FilePath = cache.FilePath,
+                                ThumbnailBuffer = ImageUtil.ToCompressionBinary(newThumb),
+                                ThumbnailWidth = thumbWidth,
+                                ThumbnailHeight = thumbHeight,
+                                SourceWidth = cache.SourceWidth,
+                                SourceHeight = cache.SourceHeight,
+                                FileUpdatedate = cache.FileUpdatedate
+                            };
+                            return thumb;
                         }
                     }
                     else
@@ -125,22 +128,25 @@ namespace PicSum.Job.Logics
                 {
                     if (cache.ThumbnailWidth > thumbWidth || cache.ThumbnailHeight > thumbHeight)
                     {
-                        using (var CacheThumb = ImageUtil.ToImage(cache.ThumbnailBuffer))
+                        if (cache.ThumbnailBuffer == null)
                         {
-                            using (var newThumb = ThumbnailUtil.CreateThumbnail(CacheThumb, thumbWidth, thumbHeight))
+                            throw new NullReferenceException("サムネイルのバッファがNullです。");
+                        }
+
+                        using (var CacheThumb = ImageUtil.ToImage(cache.ThumbnailBuffer))
+                        using (var newThumb = ThumbnailUtil.CreateThumbnail(CacheThumb, thumbWidth, thumbHeight))
+                        {
+                            var thumb = new ThumbnailBufferEntity
                             {
-                                var thumb = new ThumbnailBufferEntity
-                                {
-                                    FilePath = cache.FilePath,
-                                    ThumbnailBuffer = ImageUtil.ToCompressionBinary(newThumb),
-                                    ThumbnailWidth = thumbWidth,
-                                    ThumbnailHeight = thumbHeight,
-                                    SourceWidth = cache.SourceWidth,
-                                    SourceHeight = cache.SourceHeight,
-                                    FileUpdatedate = cache.FileUpdatedate
-                                };
-                                return thumb;
-                            }
+                                FilePath = cache.FilePath,
+                                ThumbnailBuffer = ImageUtil.ToCompressionBinary(newThumb),
+                                ThumbnailWidth = thumbWidth,
+                                ThumbnailHeight = thumbHeight,
+                                SourceWidth = cache.SourceWidth,
+                                SourceHeight = cache.SourceHeight,
+                                FileUpdatedate = cache.FileUpdatedate
+                            };
+                            return thumb;
                         }
                     }
                     else
@@ -605,6 +611,5 @@ namespace PicSum.Job.Logics
                 CACHE_LOCK.ExitWriteLock();
             }
         }
-
     }
 }
