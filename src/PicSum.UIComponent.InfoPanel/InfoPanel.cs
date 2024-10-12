@@ -576,19 +576,19 @@ namespace PicSum.UIComponent.InfoPanel
 
             var iconSize = Math.Min(this.tagFlowList.ItemHeight, this.tagIcon.Width);
 
-            var iconPoint = (int)((this.tagFlowList.ItemHeight - iconSize) / 2);
+            var iconPoint = (this.tagFlowList.ItemHeight - iconSize) / 2f;
 
-            var iconRect = new Rectangle(e.ItemRectangle.X + iconPoint,
-                                         e.ItemRectangle.Y + iconPoint,
-                                         iconSize,
-                                         iconSize);
+            var iconRect = new RectangleF(e.ItemRectangle.X + iconPoint,
+                                          e.ItemRectangle.Y + iconPoint,
+                                          iconSize,
+                                          iconSize);
 
             e.Graphics.DrawImage(this.tagIcon, iconRect);
 
-            var textRect = new Rectangle(e.ItemRectangle.X + this.tagFlowList.ItemHeight,
-                                         e.ItemRectangle.Y,
-                                         e.ItemRectangle.Width - this.tagFlowList.ItemHeight,
-                                         e.ItemRectangle.Height);
+            var textRect = new RectangleF(e.ItemRectangle.X + this.tagFlowList.ItemHeight,
+                                          e.ItemRectangle.Y,
+                                          e.ItemRectangle.Width - this.tagFlowList.ItemHeight,
+                                          e.ItemRectangle.Height);
 
             e.Graphics.DrawString(item.Tag,
                                   this.GetTagFont(item),

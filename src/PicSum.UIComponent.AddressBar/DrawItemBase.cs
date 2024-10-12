@@ -173,9 +173,9 @@ namespace PicSum.UIComponent.AddressBar
 
         public abstract void OnMouseClick(MouseEventArgs e);
 
-        public Rectangle GetRectangle()
+        public RectangleF GetRectangle()
         {
-            return new Rectangle(this.x, this.y, this.width, this.height);
+            return new RectangleF(this.x, this.y, this.width, this.height);
         }
 
         public void ClearRectangle()

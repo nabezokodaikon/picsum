@@ -323,36 +323,36 @@ namespace SWF.UIComponent.WideDropDown
 
         #region プライベートメソッド
 
-        private Rectangle GetIconRectangle(SWF.UIComponent.FlowList.DrawItemEventArgs e)
+        private RectangleF GetIconRectangle(SWF.UIComponent.FlowList.DrawItemEventArgs e)
         {
             if (this.Icon != null)
             {
-                return new Rectangle(e.ItemRectangle.X + this.Icon.Width / 4,
-                                     e.ItemRectangle.Y + this.Icon.Height / 2,
-                                     this.Icon.Width,
-                                     this.Icon.Height);
+                return new RectangleF(e.ItemRectangle.X + this.Icon.Width / 4f,
+                                      e.ItemRectangle.Y + this.Icon.Height / 2f,
+                                      this.Icon.Width,
+                                      this.Icon.Height);
             }
             else
             {
-                return new Rectangle(e.ItemRectangle.X, e.ItemRectangle.Y, 0, 0);
+                return new RectangleF(e.ItemRectangle.X, e.ItemRectangle.Y, 0, 0);
             }
         }
 
-        private Rectangle GetTextRectangle(SWF.UIComponent.FlowList.DrawItemEventArgs e)
+        private RectangleF GetTextRectangle(SWF.UIComponent.FlowList.DrawItemEventArgs e)
         {
             if (this.Icon != null)
             {
-                return new Rectangle(e.ItemRectangle.X + this.Icon.Width + this.Icon.Width / 2,
-                                     e.ItemRectangle.Bottom - this.ItemTextHeight,
-                                     e.ItemRectangle.Width,
-                                     this.ItemTextHeight);
+                return new RectangleF(e.ItemRectangle.X + this.Icon.Width + this.Icon.Width / 2f,
+                                      e.ItemRectangle.Bottom - this.ItemTextHeight,
+                                      e.ItemRectangle.Width,
+                                      this.ItemTextHeight);
             }
             else
             {
-                return new Rectangle(e.ItemRectangle.X,
-                                     e.ItemRectangle.Bottom - this.ItemTextHeight,
-                                     e.ItemRectangle.Width,
-                                     this.ItemTextHeight);
+                return new RectangleF(e.ItemRectangle.X,
+                                      e.ItemRectangle.Bottom - this.ItemTextHeight,
+                                      e.ItemRectangle.Width,
+                                      this.ItemTextHeight);
             }
 
         }

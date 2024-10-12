@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace SWF.UIComponent.FlowList
 {
@@ -9,7 +9,7 @@ namespace SWF.UIComponent.FlowList
         /// </summary>
         /// <param name="dValue"></param>
         /// <returns></returns>
-        public static int ToRoundDown(double dValue)
+        public static int ToRoundDown(float dValue)
         {
             var dCoef = Math.Pow(10, 0);
             var result = dValue > 0 ? Math.Floor(dValue * dCoef) / dCoef : Math.Ceiling(dValue * dCoef) / dCoef;
@@ -21,7 +21,7 @@ namespace SWF.UIComponent.FlowList
         /// </summary>
         /// <param name="dValue"></param>
         /// <returns></returns>
-        public static int ToRoundUp(double dValue)
+        public static int ToRoundUp(float dValue)
         {
             var dCoef = Math.Pow(10, 0);
             var result = dValue > 0 ? Math.Ceiling(dValue * dCoef) / dCoef : Math.Floor(dValue * dCoef) / dCoef;

@@ -604,16 +604,16 @@ namespace SWF.UIComponent.FlowList
 
             if (this.itemCount > 0)
             {
-                var width = (this.scrollBar.Visible) ? this.Width - this.scrollBar.Width: this.Width;
+                var width = (this.scrollBar.Visible) ? this.Width - this.scrollBar.Width : this.Width;
                 if (this.isLileList)
                 {
                     this.itemWidth = width;
                 }
 
-                var colCount = Math.Max(Utility.ToRoundDown(width / (double)this.itemWidth), 1);
-                var rowCount = Utility.ToRoundUp(this.itemCount / (double)colCount);
+                var colCount = Math.Max(Utility.ToRoundDown(width / (float)this.itemWidth), 1);
+                var rowCount = Utility.ToRoundUp(this.itemCount / (float)colCount);
                 var virtualHeight = this.itemHeight * rowCount;
-                var itemSideSpace = Math.Max((int)((width - this.ItemWidth * colCount) / (double)(colCount + 1)), 0);
+                var itemSideSpace = Math.Max((int)((width - this.ItemWidth * colCount) / (float)(colCount + 1)), 0);
                 int scrollBarMaximum;
                 if (virtualHeight <= this.Height)
                 {
@@ -629,8 +629,8 @@ namespace SWF.UIComponent.FlowList
                     }
                 }
 
-                var drawFirstRow = Utility.ToRoundDown(this.scrollBar.Value / (double)this.itemHeight);
-                var drawRowCount = Utility.ToRoundUp((this.Height - ((drawFirstRow + 1) * this.itemHeight - this.scrollBar.Value)) / (double)this.itemHeight);
+                var drawFirstRow = Utility.ToRoundDown(this.scrollBar.Value / (float)this.itemHeight);
+                var drawRowCount = Utility.ToRoundUp((this.Height - ((drawFirstRow + 1) * this.itemHeight - this.scrollBar.Value)) / (float)this.itemHeight);
                 var drawLastRow = drawFirstRow + drawRowCount + 1;
                 var drawFirstItemIndex = drawFirstRow * colCount;
                 var drawLastItemIndex = drawLastRow * colCount - 1;
@@ -665,8 +665,8 @@ namespace SWF.UIComponent.FlowList
 
                 if (this.drawParameter.ScrollBarMaximum > 0)
                 {
-                    this.scrollBar.LargeChange = (int)(this.Height / 2);
-                    this.scrollBar.SmallChange = this.scrollBar.LargeChange / 8;
+                    this.scrollBar.LargeChange = (int)(this.Height / 2f);
+                    this.scrollBar.SmallChange = (int)(this.scrollBar.LargeChange / 8f);
                     this.scrollBar.Maximum = this.drawParameter.ScrollBarMaximum;
                     this.scrollBar.Visible = true;
                 }
@@ -856,7 +856,7 @@ namespace SWF.UIComponent.FlowList
         private Rectangle GetItemVirtualRectangle(int itemIndex)
         {
             var col = itemIndex % this.drawParameter.ColCount;
-            var row = Utility.ToRoundDown(itemIndex / (double)this.drawParameter.ColCount);
+            var row = Utility.ToRoundDown(itemIndex / (float)this.drawParameter.ColCount);
             return this.GetItemVirtualRectangle(row, col);
         }
 
@@ -871,7 +871,7 @@ namespace SWF.UIComponent.FlowList
         private Rectangle GetItemDrawRectangle(int itemIndex)
         {
             var col = itemIndex % this.drawParameter.ColCount;
-            var row = Utility.ToRoundDown(itemIndex / (double)this.drawParameter.ColCount);
+            var row = Utility.ToRoundDown(itemIndex / (float)this.drawParameter.ColCount);
             return this.GetItemDrawRectangle(row, col);
         }
 
@@ -917,17 +917,17 @@ namespace SWF.UIComponent.FlowList
 
         private int GetRowFromVirtualY(int y)
         {
-            return Utility.ToRoundDown(y / (double)this.itemHeight);
+            return Utility.ToRoundDown(y / (float)this.itemHeight);
         }
 
         private int GetRowFromDrawY(int y)
         {
-            return Utility.ToRoundDown((y + this.scrollBar.Value) / (double)this.itemHeight);
+            return Utility.ToRoundDown((y + this.scrollBar.Value) / (float)this.itemHeight);
         }
 
         private int GetColFromX(int x)
         {
-            return Utility.ToRoundDown((x - this.drawParameter.ItemSideSpace - this.itemSpace) / (double)(this.itemWidth + this.drawParameter.ItemSideSpace));
+            return Utility.ToRoundDown((x - this.drawParameter.ItemSideSpace - this.itemSpace) / (float)(this.itemWidth + this.drawParameter.ItemSideSpace));
         }
 
         #endregion

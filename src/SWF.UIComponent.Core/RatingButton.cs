@@ -44,11 +44,11 @@ namespace SWF.UIComponent.Core
 
         protected override void OnPaint(PaintEventArgs e)
         {
-            Image icon = this.Icon;
-            int w = Math.Min(icon.Width, this.Width);
-            int h = Math.Min(icon.Height, this.Height);
-            int x = (int)((this.Width - icon.Width) / 2f);
-            int y = (int)((this.Height - icon.Height) / 2f);
+            var icon = this.Icon;
+            var w = Math.Min(icon.Width, this.Width);
+            var h = Math.Min(icon.Height, this.Height);
+            var x = (this.Width - icon.Width) / 2f;
+            var y = (this.Height - icon.Height) / 2f;
             e.Graphics.DrawImage(icon, x, y, w, h);
         }
 

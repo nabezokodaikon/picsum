@@ -27,7 +27,7 @@ namespace SWF.Core.ImageAccessor
             }
             else
             {
-                var scale = Math.Min(thumbWidth / (double)srcImg.Width, thumbHeight / (double)srcImg.Height);
+                var scale = Math.Min(thumbWidth / (float)srcImg.Width, thumbHeight / (float)srcImg.Height);
                 w = (int)(srcImg.Width * scale);
                 h = (int)(srcImg.Height * scale);
             }

@@ -78,7 +78,11 @@ namespace PicSum.UIComponent.AddressBar
                 g.FillRectangle(base.Palette.MousePointBrush, rect);
             }
 
-            g.DrawImage(this.drawImage, this.GetImageDrawRectangle(this.drawImage));
+            g.DrawImage(
+                this.drawImage,
+                this.GetImageDrawRectangle(this.drawImage),
+                new RectangleF(0, 0, this.drawImage.Width, this.drawImage.Height),
+                GraphicsUnit.Pixel);
         }
 
         public override void OnMouseDown(MouseEventArgs e)
@@ -116,20 +120,24 @@ namespace PicSum.UIComponent.AddressBar
             {
                 var iconSize = Math.Min(base.DropDownList.ItemHeight, item.DirectoryIcon.Width);
 
-                var iconPoint = (int)((base.DropDownList.ItemHeight - iconSize) / 2);
+                var iconPoint = (base.DropDownList.ItemHeight - iconSize) / 2f;
 
-                var iconRect = new Rectangle(e.ItemRectangle.X + iconPoint,
-                                             e.ItemRectangle.Y + iconPoint,
-                                             iconSize,
-                                             iconSize);
+                var iconRect = new RectangleF(e.ItemRectangle.X + iconPoint,
+                                              e.ItemRectangle.Y + iconPoint,
+                                              iconSize,
+                                              iconSize);
 
-                e.Graphics.DrawImage(item.DirectoryIcon, iconRect);
+                e.Graphics.DrawImage(
+                    item.DirectoryIcon,
+                    iconRect,
+                    new RectangleF(0, 0, item.DirectoryIcon.Width, item.DirectoryIcon.Height),
+                    GraphicsUnit.Pixel);
             }
 
-            var textRect = new Rectangle(e.ItemRectangle.X + base.DropDownList.ItemHeight,
-                                         e.ItemRectangle.Y,
-                                         e.ItemRectangle.Width - base.DropDownList.ItemHeight,
-                                         e.ItemRectangle.Height);
+            var textRect = new RectangleF(e.ItemRectangle.X + base.DropDownList.ItemHeight,
+                                          e.ItemRectangle.Y,
+                                          e.ItemRectangle.Width - base.DropDownList.ItemHeight,
+                                          e.ItemRectangle.Height);
 
             var dirPath = FileUtil.IsSystemRoot(item.DirectoryPath) ?
                 item.DirectoryName : item.DirectoryPath;
@@ -141,13 +149,13 @@ namespace PicSum.UIComponent.AddressBar
                                   base.DropDownList.ItemTextFormat);
         }
 
-        private Rectangle GetImageDrawRectangle(Image img)
+        private RectangleF GetImageDrawRectangle(Image img)
         {
             var w = img.Width;
             var h = img.Height;
-            var x = (int)(base.X + (base.Width - img.Width) / 2d);
-            var y = (int)(base.Y + (base.Height - img.Height) / 2d);
-            return new Rectangle(x, y, w, h);
+            var x = (base.X + (base.Width - img.Width) / 2f);
+            var y = (base.Y + (base.Height - img.Height) / 2f);
+            return new RectangleF(x, y, w, h);
         }
 
         #endregion

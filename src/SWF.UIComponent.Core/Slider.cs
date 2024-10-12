@@ -220,12 +220,12 @@ namespace SWF.UIComponent.Core
 
         private void DrawBar(Graphics g)
         {
-            PointF centerPoint = this.GetCenterPoint();
+            var centerPoint = this.GetCenterPoint();
 
-            RectangleF shadowRect = new RectangleF(0,
-                                                   centerPoint.Y - BarHeight / 2f,
-                                                   this.Width - BarShadowOffset,
-                                                   BarHeight);
+            var shadowRect = new RectangleF(0,
+                                            centerPoint.Y - BarHeight / 2f,
+                                            this.Width - BarShadowOffset,
+                                            BarHeight);
 
             g.FillRectangle(Brushes.DimGray, shadowRect);
 
@@ -233,22 +233,22 @@ namespace SWF.UIComponent.Core
 
             g.FillRectangle(Brushes.White, shadowRect);
 
-            RectangleF mainRect = new RectangleF(BarShadowOffset,
-                                                 centerPoint.Y - BarHeight / 2f + BarShadowOffset,
-                                                 this.Width - BarShadowOffset * 2,
-                                                 BarHeight - BarShadowOffset);
+            var mainRect = new RectangleF(BarShadowOffset,
+                                          centerPoint.Y - BarHeight / 2f + BarShadowOffset,
+                                          this.Width - BarShadowOffset * 2,
+                                          BarHeight - BarShadowOffset);
 
             g.FillRectangle(Brushes.LightGray, mainRect);
         }
 
         private void DrawButton(Graphics g)
         {
-            PointF centerPoint = this.GetCenterPoint();
+            var centerPoint = this.GetCenterPoint();
 
-            Rectangle rect = new Rectangle((int)(this.buttonPointX - this.button.Width / 2f),
-                                           (int)(centerPoint.Y - this.button.Height / 2f),
-                                           this.button.Width,
-                                           this.button.Height);
+            var rect = new RectangleF(this.buttonPointX - this.button.Width / 2f,
+                                      centerPoint.Y - this.button.Height / 2f,
+                                      this.button.Width,
+                                      this.button.Height);
 
             g.DrawImage(this.button, rect);
         }
