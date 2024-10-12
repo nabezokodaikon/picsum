@@ -5,11 +5,10 @@ namespace SWF.UIComponent.Core
     [SupportedOSPlatform("windows")]
     public class RatingBar : Control
     {
-
-        public event EventHandler<MouseEventArgs> RatingButtonMouseClick;
+        public event EventHandler<MouseEventArgs>? RatingButtonMouseClick;
 
         private int maximumValue = 5;
-        private int value = 0;
+        private int ratingValue = 0;
         private readonly List<RatingButton> ratingButtonList = [];
 
         public int MaximumValue
@@ -22,16 +21,16 @@ namespace SWF.UIComponent.Core
             {
                 ArgumentOutOfRangeException.ThrowIfLessThan(value, 1, nameof(value));
 
-                if (value < this.value)
+                if (value < this.ratingValue)
                 {
-                    this.value = value;
+                    this.ratingValue = value;
                 }
 
                 this.maximumValue = value;
 
                 this.CreateRatingButtons();
                 this.SetRatingButtonsLocation();
-                this.SetValue(this.value);
+                this.SetValue(this.ratingValue);
             }
         }
 
@@ -39,7 +38,7 @@ namespace SWF.UIComponent.Core
         {
             get
             {
-                return this.value;
+                return this.ratingValue;
             }
         }
 
@@ -50,7 +49,7 @@ namespace SWF.UIComponent.Core
 
         public void SetValue(int value)
         {
-            if (this.value < 0 || this.maximumValue < this.value)
+            if (this.ratingValue < 0 || this.maximumValue < this.ratingValue)
             {
                 throw new ArgumentOutOfRangeException(nameof(value));
             }
@@ -61,7 +60,7 @@ namespace SWF.UIComponent.Core
                 btn.IsActive = index < value;
             }
 
-            this.value = value;
+            this.ratingValue = value;
         }
 
         protected override void OnInvalidated(InvalidateEventArgs e)
@@ -132,7 +131,7 @@ namespace SWF.UIComponent.Core
             }
         }
 
-        private void RatingButton_MouseClick(object sender, MouseEventArgs e)
+        private void RatingButton_MouseClick(object? sender, MouseEventArgs e)
         {
             if (sender is not RatingButton)
             {
@@ -146,7 +145,7 @@ namespace SWF.UIComponent.Core
             }
 
             var btn = this.ratingButtonList[index];
-            if (btn.IsActive && index == this.value - 1)
+            if (btn.IsActive && index == this.ratingValue - 1)
             {
                 this.SetValue(index);
             }

@@ -11,9 +11,9 @@ namespace SWF.UIComponent.Core
     public class ToolStripSlider : ToolStripControlHost
     {
 
-        public event EventHandler BeginValueChange;
-        public event EventHandler ValueChanging;
-        public event EventHandler ValueChanged;
+        public event EventHandler? BeginValueChange;
+        public event EventHandler? ValueChanging;
+        public event EventHandler? ValueChanged;
 
         public int MaximumValue
         {
@@ -71,19 +71,23 @@ namespace SWF.UIComponent.Core
             this.Slider.BackColor = Color.Transparent;
         }
 
-        protected override void OnSubscribeControlEvents(Control control)
+        protected override void OnSubscribeControlEvents(Control? control)
         {
+            ArgumentNullException.ThrowIfNull(control, nameof(control));
+
             base.OnSubscribeControlEvents(control);
-            Slider slider = (Slider)control;
+            var slider = (Slider)control;
             slider.BeginValueChange += new(this.Slider_BeginValueChange);
             slider.ValueChanging += new(this.Slider_ValueChanging);
             slider.ValueChanged += new(this.Slider_ValueChanged);
         }
 
-        protected override void OnUnsubscribeControlEvents(Control control)
+        protected override void OnUnsubscribeControlEvents(Control? control)
         {
+            ArgumentNullException.ThrowIfNull(control, nameof(control));
+
             base.OnSubscribeControlEvents(control);
-            Slider slider = (Slider)control;
+            var slider = (Slider)control;
             slider.BeginValueChange -= new(this.Slider_BeginValueChange);
             slider.ValueChanging -= new(this.Slider_ValueChanging);
             slider.ValueChanged -= new(this.Slider_ValueChanged);
@@ -104,17 +108,17 @@ namespace SWF.UIComponent.Core
             ValueChanged?.Invoke(this, e);
         }
 
-        private void Slider_BeginValueChange(object sender, EventArgs e)
+        private void Slider_BeginValueChange(object? sender, EventArgs e)
         {
             this.OnBeginValueChange(e);
         }
 
-        private void Slider_ValueChanging(object sender, EventArgs e)
+        private void Slider_ValueChanging(object? sender, EventArgs e)
         {
             this.OnValueChanging(e);
         }
 
-        private void Slider_ValueChanged(object sender, EventArgs e)
+        private void Slider_ValueChanged(object? sender, EventArgs e)
         {
             this.OnValueChanged(e);
         }

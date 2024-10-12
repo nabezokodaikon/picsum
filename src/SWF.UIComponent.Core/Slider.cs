@@ -13,15 +13,15 @@ namespace SWF.UIComponent.Core
         private const int BarHeight = 4;
         private const int BarShadowOffset = 1;
 
-        public event EventHandler BeginValueChange;
-        public event EventHandler ValueChanging;
-        public event EventHandler ValueChanged;
+        public event EventHandler? BeginValueChange;
+        public event EventHandler? ValueChanging;
+        public event EventHandler? ValueChanged;
 
         private readonly Image button = Resources.SliderButton;
         private float buttonPointX = Resources.SliderButton.Width / 2f;
         private int maximumValue = 100;
         private int minimumValue = 0;
-        private int value = 0;
+        private int sliderValue = 0;
 
         public int MaximumValue
         {
@@ -35,9 +35,9 @@ namespace SWF.UIComponent.Core
 
                 this.maximumValue = value;
 
-                if (this.value > value)
+                if (this.sliderValue > value)
                 {
-                    this.value = value;
+                    this.sliderValue = value;
                 }
             }
         }
@@ -53,9 +53,9 @@ namespace SWF.UIComponent.Core
                 ArgumentOutOfRangeException.ThrowIfGreaterThan(value, this.maximumValue, nameof(value));
 
                 this.minimumValue = value;
-                if (this.value < value)
+                if (this.sliderValue < value)
                 {
-                    this.value = value;
+                    this.sliderValue = value;
                 }
             }
         }
@@ -64,7 +64,7 @@ namespace SWF.UIComponent.Core
         {
             get
             {
-                return this.value;
+                return this.sliderValue;
             }
             set
             {
@@ -73,8 +73,8 @@ namespace SWF.UIComponent.Core
                     throw new ArgumentOutOfRangeException(nameof(value));
                 }
 
-                this.value = value;
-                this.SetButtonPointX(this.value);
+                this.sliderValue = value;
+                this.SetButtonPointX(this.sliderValue);
                 this.Invalidate();
                 this.Update();
 
@@ -98,7 +98,7 @@ namespace SWF.UIComponent.Core
                 true);
             this.UpdateStyles();
 
-            this.value = this.minimumValue;
+            this.sliderValue = this.minimumValue;
         }
 
         private PointF GetCenterPoint()
@@ -226,7 +226,7 @@ namespace SWF.UIComponent.Core
 
         protected override void OnInvalidated(InvalidateEventArgs e)
         {
-            if (this.SetButtonPointX(this.value))
+            if (this.SetButtonPointX(this.sliderValue))
             {
                 base.OnInvalidated(e);
             }
@@ -254,9 +254,9 @@ namespace SWF.UIComponent.Core
                     this.Update();
 
                     int value = this.GetValue(pointX);
-                    if (value != this.value)
+                    if (value != this.sliderValue)
                     {
-                        this.value = value;
+                        this.sliderValue = value;
                         this.OnValueChanging(EventArgs.Empty);
                     }
                 }
@@ -269,7 +269,7 @@ namespace SWF.UIComponent.Core
         {
             if (e.Button == MouseButtons.Left)
             {
-                this.Value = this.value;
+                this.Value = this.sliderValue;
             }
 
             base.OnMouseUp(e);
@@ -287,9 +287,9 @@ namespace SWF.UIComponent.Core
                     this.Update();
 
                     int value = this.GetValue(pointX);
-                    if (value != this.value)
+                    if (value != this.sliderValue)
                     {
-                        this.value = value;
+                        this.sliderValue = value;
                         this.OnValueChanging(EventArgs.Empty);
                     }
                 }

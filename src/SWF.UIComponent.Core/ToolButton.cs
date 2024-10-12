@@ -20,7 +20,7 @@ namespace SWF.UIComponent.Core
 
         private bool isLeftClick = false;
         private ToolButtonRegionType regionType = ToolButtonRegionType.Default;
-        private Func<Rectangle> getRectangleMethod = null;
+        private Func<Rectangle>? getRectangleMethod;
 
         public int RegionOffset
         {
@@ -79,11 +79,16 @@ namespace SWF.UIComponent.Core
 
         public Rectangle GetRegionBounds()
         {
-            Rectangle rect = this.getRectangleMethod();
-            int x = this.Bounds.Left + rect.Left;
-            int y = this.Bounds.Top + rect.Top;
-            int w = rect.Width;
-            int h = rect.Height;
+            if (this.getRectangleMethod == null)
+            {
+                throw new NullReferenceException("描画領域取得メソッドがNullです。");
+            }
+
+            var rect = this.getRectangleMethod();
+            var x = this.Bounds.Left + rect.Left;
+            var y = this.Bounds.Top + rect.Top;
+            var w = rect.Width;
+            var h = rect.Height;
             return new Rectangle(x, y, w, h);
         }
 
@@ -195,6 +200,11 @@ namespace SWF.UIComponent.Core
 
         private Region GetRegion()
         {
+            if (this.getRectangleMethod == null)
+            {
+                throw new NullReferenceException("描画領域取得メソッドがNullです。");
+            }
+
             return new Region(this.getRectangleMethod());
         }
     }
