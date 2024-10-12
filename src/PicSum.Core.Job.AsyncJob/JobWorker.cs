@@ -1,5 +1,6 @@
 using NLog;
 using System.Collections.Concurrent;
+using System.Diagnostics;
 
 namespace PicSum.Core.Job.AsyncJob
 {
@@ -223,8 +224,6 @@ namespace PicSum.Core.Job.AsyncJob
 
                         previewJob = job;
 
-                        Logger.Debug($"{job.ID} を実行します。");
-
                         if (this.callbackAction != null)
                         {
                             job.CallbackAction = r =>
@@ -273,6 +272,8 @@ namespace PicSum.Core.Job.AsyncJob
                             };
                         }
 
+                        Logger.Debug($"{job.ID} を実行します。");
+                        var sw = Stopwatch.StartNew();
                         try
                         {
                             job.ExecuteWrapper();
@@ -295,7 +296,8 @@ namespace PicSum.Core.Job.AsyncJob
                         finally
                         {
                             job.CompleteAction?.Invoke();
-                            Logger.Debug($"{job.ID} が終了しました。");
+                            sw.Stop();
+                            Logger.Debug($"{job.ID} が終了しました。{sw.ElapsedMilliseconds} ms");
                         }
                     }
 
