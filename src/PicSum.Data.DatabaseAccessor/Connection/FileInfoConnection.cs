@@ -1,4 +1,4 @@
-using PicSum.Core.DatabaseAccessor;
+using SWF.Core.DatabaseAccessor;
 using System.Runtime.Versioning;
 
 namespace PicSum.Data.DatabaseAccessor.Connection
@@ -7,7 +7,7 @@ namespace PicSum.Data.DatabaseAccessor.Connection
     /// fileinfo.sqlite コネクション
     /// </summary>
     [SupportedOSPlatform("windows")]
-    public sealed class FileInfoConnection
+    public sealed partial class FileInfoConnection
         : ConnectionBase
     {
         private static readonly string tableCreateSql =

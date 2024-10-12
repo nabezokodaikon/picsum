@@ -49,6 +49,6 @@
     <PackageReference Include="System.Data.SQLite.EF6" Version="1.0.119" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PicSum.Core.DatabaseAccessor\PicSum.Core.DatabaseAccessor.csproj" />
+    <ProjectReference Include="..\SWF.Core.DatabaseAccessor\SWF.Core.DatabaseAccessor.csproj" />
   </ItemGroup>
 </Project>

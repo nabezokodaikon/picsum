@@ -62,7 +62,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PicSum.Core.DatabaseAccessor\PicSum.Core.DatabaseAccessor.csproj" />
     <ProjectReference Include="..\PicSum.UIComponent.Contents\PicSum.UIComponent.Contents.csproj" />
     <ProjectReference Include="..\SWF.Core.Base\SWF.Core.Base.csproj" />
     <ProjectReference Include="..\SWF.Core.FileAccessor\SWF.Core.FileAccessor.csproj" />
