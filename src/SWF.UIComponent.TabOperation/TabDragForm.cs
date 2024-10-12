@@ -157,7 +157,7 @@ namespace SWF.UIComponent.TabOperation
                 using (var g = Graphics.FromImage(regionImage))
                 {
                     g.SmoothingMode = SmoothingMode.None;
-                    g.InterpolationMode = InterpolationMode.NearestNeighbor;
+                    g.InterpolationMode = InterpolationMode.HighQualityBicubic;
                     g.CompositingQuality = CompositingQuality.HighSpeed;
                     g.PixelOffsetMode = PixelOffsetMode.HighSpeed;
                     g.CompositingMode = CompositingMode.SourceOver;
