@@ -51,7 +51,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.leftImagePanel.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.leftImagePanel.BackColor = System.Drawing.Color.Transparent;
             this.leftImagePanel.ContextMenuStrip = this.fileContextMenu;
-            this.leftImagePanel.ImageAlign = SWF.UIComponent.ImagePanel.ImageAlign.Center;
+            this.leftImagePanel.ImageAlign = SWF.Core.Base.ImageAlign.Center;
             this.leftImagePanel.IsShowThumbnailPanel = true;
             this.leftImagePanel.Location = new System.Drawing.Point(0, 0);
             this.leftImagePanel.Margin = new System.Windows.Forms.Padding(4);
@@ -88,7 +88,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.rightImagePanel.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.rightImagePanel.BackColor = System.Drawing.Color.Transparent;
             this.rightImagePanel.ContextMenuStrip = this.fileContextMenu;
-            this.rightImagePanel.ImageAlign = SWF.UIComponent.ImagePanel.ImageAlign.Center;
+            this.rightImagePanel.ImageAlign = SWF.Core.Base.ImageAlign.Center;
             this.rightImagePanel.IsShowThumbnailPanel = true;
             this.rightImagePanel.Location = new System.Drawing.Point(0, 0);
             this.rightImagePanel.Margin = new System.Windows.Forms.Padding(4);
@@ -110,8 +110,8 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             // 
             // checkPatternPanel
             // 
-            this.checkPatternPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.checkPatternPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.checkPatternPanel.Controls.Add(this.leftImagePanel);
             this.checkPatternPanel.Controls.Add(this.rightImagePanel);

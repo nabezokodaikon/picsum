@@ -2,18 +2,6 @@ using SWF.Core.Base.Properties;
 
 namespace SWF.Core.Base
 {
-    /// <summary>
-    /// ソート種別ID
-    /// </summary>
-    public enum SortTypeID
-    {
-        Default = 0,
-        FileName = 1,
-        FilePath = 2,
-        UpdateDate = 3,
-        RgistrationDate = 5,
-    }
-
     public sealed class SortInfo
     {
         private readonly Image sortAscendingImage = Resources.SmallArrowUp;

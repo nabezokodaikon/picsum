@@ -45,4 +45,32 @@ namespace SWF.Core.Base
         FitAllImage = 1,
         FitOnlyBigImage = 2
     }
+
+    /// <summary>
+    /// 画像表示位置
+    /// </summary>
+    public enum ImageAlign
+    {
+        Center = 0,
+        Left = 1,
+        LeftTop = 2,
+        Top = 3,
+        RightTop = 4,
+        Right = 5,
+        RightBottom = 6,
+        Bottom = 7,
+        LeftBottom = 8
+    }
+
+    /// <summary>
+    /// ソート種別ID
+    /// </summary>
+    public enum SortTypeID
+    {
+        Default = 0,
+        FileName = 1,
+        FilePath = 2,
+        UpdateDate = 3,
+        RgistrationDate = 5,
+    }
 }

@@ -13,29 +13,12 @@ using System.Windows.Forms;
 namespace SWF.UIComponent.ImagePanel
 {
     /// <summary>
-    /// 画像表示位置
-    /// </summary>
-    public enum ImageAlign
-    {
-        Center = 0,
-        Left = 1,
-        LeftTop = 2,
-        Top = 3,
-        RightTop = 4,
-        Right = 5,
-        RightBottom = 6,
-        Bottom = 7,
-        LeftBottom = 8
-    }
-
-    /// <summary>
     /// 画像パネルコントロール
     /// </summary>
     [SupportedOSPlatform("windows")]
     public sealed class ImagePanel
         : Control
     {
-
         private const int THUMBNAIL_PANEL_OFFSET = 16;
         private const int THUMBNAIL_OFFSET = 8;
 
