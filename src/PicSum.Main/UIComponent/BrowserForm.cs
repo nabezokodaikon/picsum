@@ -17,7 +17,7 @@ using System.Windows.Forms;
 namespace PicSum.Main.UIComponent
 {
     [SupportedOSPlatform("windows")]
-    public sealed class BrowserForm
+    public sealed partial class BrowserForm
         : GrassForm
     {
         private static bool isStartUp = true;
@@ -115,11 +115,9 @@ namespace PicSum.Main.UIComponent
                     Directory.CreateDirectory(dbDir);
                 }
 
-                var startupParameter = new StartupPrameter
-                {
-                    FileInfoDBFilePath = Path.Combine(dbDir, @"fileinfo.sqlite"),
-                    ThumbnailDBFilePath = Path.Combine(dbDir, @"thumbnail.sqlite")
-                };
+                var startupParameter = new StartupPrameter(
+                    Path.Combine(dbDir, @"fileinfo.sqlite"),
+                    Path.Combine(dbDir, @"thumbnail.sqlite"));
 
                 this.fileInfoDBCleanupJob = new();
                 this.fileInfoDBCleanupJob
