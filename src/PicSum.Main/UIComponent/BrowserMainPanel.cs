@@ -23,29 +23,29 @@ namespace PicSum.Main.UIComponent
     [SupportedOSPlatform("windows")]
     public sealed partial class BrowserMainPanel : UserControl
     {
-        #region 定数・列挙
 
-        #endregion
 
-        #region イベント
+
+
+
 
         public event EventHandler<TabDropoutedEventArgs> TabDropouted;
         public event EventHandler<BrowserPageOpenEventArgs> NewWindowPageOpen;
         public event EventHandler Close;
         public event EventHandler BackgroundMouseDoubleLeftClick;
 
-        #endregion
 
-        #region インスタンス変数
+
+
 
         private Size previrewSize = Size.Empty;
         private Timer redrawTimer = null;
         private TwoWayJob<TagsGetJob, ListResult<string>> getTagListJob = null;
         private TwoWayJob<ImageFileGetByDirectoryJob, ImageFileGetByDirectoryParameter, ImageFileGetByDirectoryResult> getFilesJob = null;
 
-        #endregion
 
-        #region パブリックプロパティ
+
+
 
         public int TabCount
         {
@@ -55,13 +55,13 @@ namespace PicSum.Main.UIComponent
             }
         }
 
-        #endregion
 
-        #region 継承プロパティ
 
-        #endregion
 
-        #region プライベートプロパティ
+
+
+
+
 
         private TwoWayJob<TagsGetJob, ListResult<string>> GetTagListJob
         {
@@ -79,9 +79,9 @@ namespace PicSum.Main.UIComponent
             }
         }
 
-        #endregion
 
-        #region コンストラクタ
+
+
 
         public BrowserMainPanel()
         {
@@ -130,9 +130,9 @@ namespace PicSum.Main.UIComponent
             }
         }
 
-        #endregion
 
-        #region パブリックメソッド
+
+
 
         public void AddPageEventHandler(BrowserPage page)
         {
@@ -215,9 +215,9 @@ namespace PicSum.Main.UIComponent
             this.SetPageHistoryButtonEnabled();
         }
 
-        #endregion
 
-        #region 継承メソッド
+
+
 
         protected override void Dispose(bool disposing)
         {
@@ -248,9 +248,9 @@ namespace PicSum.Main.UIComponent
             base.OnLoad(e);
         }
 
-        #endregion
 
-        #region プライベートメソッド
+
+
 
         private void RedrawPage()
         {
@@ -454,9 +454,9 @@ namespace PicSum.Main.UIComponent
             this.BackgroundMouseDoubleLeftClick?.Invoke(this, e);
         }
 
-        #endregion
 
-        #region プロセスイベント
+
+
 
         private Func<ImageViewerPageParameter, Action> GetImageFilesAction(
             ImageFileGetByDirectoryParameter subParamter)
@@ -494,10 +494,6 @@ namespace PicSum.Main.UIComponent
             }
         }
 
-        #endregion
-
-        #region コンテンツイベント
-
         // TODO: tabSwitch_ActiveTabChanged の直後に呼び出される場合がある。
         private void Page_SelectedFileChanged(object sender, SelectedFileChangeEventArgs e)
         {
@@ -528,10 +524,6 @@ namespace PicSum.Main.UIComponent
                 default: break;
             }
         }
-
-        #endregion
-
-        #region タブ切替コントロールイベント
 
         private void TabSwitch_AddTabButtonMouseClick(object sender, MouseEventArgs e)
         {
@@ -617,10 +609,6 @@ namespace PicSum.Main.UIComponent
             this.DragDrop(e);
         }
 
-        #endregion
-
-        #region コンテンツ履歴ボタンイベント
-
         private void PreviewPageHistoryButton_MouseClick(object sender, MouseEventArgs e)
         {
             if (e.Button != MouseButtons.Left)
@@ -641,18 +629,10 @@ namespace PicSum.Main.UIComponent
             this.MoveNextPage();
         }
 
-        #endregion
-
-        #region アドレスバーイベント
-
         private void AddressBar_SelectedDirectory(object sender, PicSum.UIComponent.AddressBar.SelectedDirectoryEventArgs e)
         {
             this.OpenPage(new DirectoryFileListPageParameter(e.DirectoryPath, e.SubDirectoryPath), e.OpenType);
         }
-
-        #endregion
-
-        #region 情報表示ボタンイベント
 
         private void ShowInfoToolButton_MouseClick(object sender, MouseEventArgs e)
         {
@@ -673,18 +653,10 @@ namespace PicSum.Main.UIComponent
             }
         }
 
-        #endregion
-
-        #region 情報パネルイベント
-
         private void InfoPanel_SelectedTag(object sender, SelectedTagEventArgs e)
         {
             this.OpenPage(new TagFileListPageParameter(e.Tag), e.OpenType);
         }
-
-        #endregion
-
-        #region コンテンツコンテナイベント
 
         private void PageContainer_DragEnter(object sender, DragEventArgs e)
         {
@@ -709,10 +681,6 @@ namespace PicSum.Main.UIComponent
                 this.DragDrop(new TabAreaDragEventArgs(true, this.tabSwitch.ActiveTabIndex, e));
             }
         }
-
-        #endregion
-
-        #region ツールボタンイベント
 
         private void ReloadToolButton_MouseClick(object sender, MouseEventArgs e)
         {
@@ -777,6 +745,6 @@ namespace PicSum.Main.UIComponent
             }
         }
 
-        #endregion
+
     }
 }

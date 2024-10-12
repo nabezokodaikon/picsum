@@ -10,13 +10,9 @@ namespace PicSum.UIComponent.AddressBar
     internal sealed class DirectoryDrawItem
         : DrawItemBase, IDisposable
     {
-        #region インスタンス変数
+
 
         private DirectoryEntity directory = null;
-
-        #endregion
-
-        #region プロパティ
 
         public DirectoryEntity Directory
         {
@@ -30,18 +26,18 @@ namespace PicSum.UIComponent.AddressBar
             }
         }
 
-        #endregion
 
-        #region コンストラクタ
+
+
 
         public DirectoryDrawItem()
         {
 
         }
 
-        #endregion
 
-        #region メソッド
+
+
 
         public new void Dispose()
         {
@@ -91,6 +87,6 @@ namespace PicSum.UIComponent.AddressBar
             }
         }
 
-        #endregion
+
     }
 }

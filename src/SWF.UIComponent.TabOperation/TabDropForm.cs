@@ -11,16 +11,16 @@ namespace SWF.UIComponent.TabOperation
     internal sealed class TabDropForm
         : Form
     {
-        #region インスタンス変数
+
 
         private readonly Bitmap dropMaximumImage = Resources.DropMaximum;
         private readonly Bitmap dropLeftImage = Resources.DropLeft;
         private readonly Bitmap dropRightImage = Resources.DropRight;
         private Bitmap dropImage = null;
 
-        #endregion
 
-        #region コンストラクタ
+
+
 
         public TabDropForm()
         {
@@ -30,9 +30,9 @@ namespace SWF.UIComponent.TabOperation
             }
         }
 
-        #endregion
 
-        #region パブリックメソッド
+
+
 
         public void SetMaximumImage()
         {
@@ -49,9 +49,9 @@ namespace SWF.UIComponent.TabOperation
             this.dropImage = this.dropRightImage;
         }
 
-        #endregion
 
-        #region 継承メソッド
+
+
 
         protected override void OnPaintBackground(PaintEventArgs e)
         {
@@ -72,9 +72,9 @@ namespace SWF.UIComponent.TabOperation
             base.OnLoad(e);
         }
 
-        #endregion
 
-        #region プライベートメソッド
+
+
 
         private void InitializeComponent()
         {
@@ -86,6 +86,6 @@ namespace SWF.UIComponent.TabOperation
             this.Opacity = 0.75;
         }
 
-        #endregion
+
     }
 }

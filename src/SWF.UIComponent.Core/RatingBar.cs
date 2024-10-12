@@ -5,21 +5,21 @@ namespace SWF.UIComponent.Core
     [SupportedOSPlatform("windows")]
     public class RatingBar : Control
     {
-        #region イベント・デリゲート
+
 
         public event EventHandler<MouseEventArgs> RatingButtonMouseClick;
 
-        #endregion
 
-        #region インスタンス変数
+
+
 
         private int maximumValue = 5;
         private int value = 0;
         private readonly List<RatingButton> ratingButtonList = [];
 
-        #endregion
 
-        #region パブリックプロパティ
+
+
 
         public int MaximumValue
         {
@@ -52,18 +52,18 @@ namespace SWF.UIComponent.Core
             }
         }
 
-        #endregion
 
-        #region コンストラクタ
+
+
 
         public RatingBar()
         {
             this.InitializeComponent();
         }
 
-        #endregion
 
-        #region パブリックメソッド
+
+
 
         public void SetValue(int value)
         {
@@ -81,9 +81,9 @@ namespace SWF.UIComponent.Core
             this.value = value;
         }
 
-        #endregion
 
-        #region 継承メソッド
+
+
 
         protected override void OnInvalidated(InvalidateEventArgs e)
         {
@@ -96,9 +96,9 @@ namespace SWF.UIComponent.Core
             this.RatingButtonMouseClick?.Invoke(this, e);
         }
 
-        #endregion
 
-        #region プライベートメソッド
+
+
 
         private void InitializeComponent()
         {
@@ -157,9 +157,9 @@ namespace SWF.UIComponent.Core
             }
         }
 
-        #endregion
 
-        #region イベント
+
+
 
         private void RatingButton_MouseClick(object sender, MouseEventArgs e)
         {
@@ -187,6 +187,6 @@ namespace SWF.UIComponent.Core
             this.OnRatingButtonMouseClick(e);
         }
 
-        #endregion
+
     }
 }

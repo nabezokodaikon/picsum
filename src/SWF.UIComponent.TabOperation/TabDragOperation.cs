@@ -295,8 +295,6 @@ namespace SWF.UIComponent.TabOperation
             form.FormClosing -= new(Form_FormClosing);
         }
 
-        #region フォームイベント
-
         private static void Form_Activated(object sender, EventArgs e)
         {
             if (sender != null && sender is Form form)
@@ -315,6 +313,6 @@ namespace SWF.UIComponent.TabOperation
             }
         }
 
-        #endregion
+
     }
 }

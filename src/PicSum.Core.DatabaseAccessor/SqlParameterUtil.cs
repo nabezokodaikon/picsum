@@ -11,8 +11,6 @@ namespace PicSum.Core.DatabaseAccessor
     /// </summary>
     public static class SqlParameterUtil
     {
-        #region パラメータ取得
-
         public static IDbDataParameter CreateParameter(string paramName, string value)
         {
             ArgumentException.ThrowIfNullOrEmpty(paramName, nameof(paramName));
@@ -205,6 +203,6 @@ namespace PicSum.Core.DatabaseAccessor
             return param;
         }
 
-        #endregion
+
     }
 }

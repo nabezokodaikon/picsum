@@ -253,7 +253,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
         }
 
-        #endregion
+
 
         private SWF.UIComponent.FlowList.FlowList flowList;
         private PicSum.UIComponent.Contents.ContextMenu.FileContextMenu fileContextMenu;
@@ -272,5 +272,7 @@ namespace PicSum.UIComponent.Contents.FileList
         private System.Windows.Forms.ToolStripMenuItem showOtherFileToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem showFileNameToolStripMenuItem;
+
+        #endregion
     }
 }

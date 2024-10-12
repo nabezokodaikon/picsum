@@ -32,13 +32,13 @@ namespace PicSum.UIComponent.InfoPanel
             ThumbnailUtil.DrawDirectoryThumbnail(g, thumb, rect, FileIconCash.LargeDirectoryIcon);
         }
 
-        #region イベント・デリゲート
+
 
         public event EventHandler<SelectedTagEventArgs> SelectedTag;
 
-        #endregion
 
-        #region インスタンス変数
+
+
 
         private TwoWayJob<FileDeepInfoGetJob, FileDeepInfoGetParameter, FileDeepInfoGetResult> getFileInfoJob = null;
         private OneWayJob<FileRatingUpdateJob, FileRatingUpdateParameter> updateFileRatingJob = null;
@@ -51,9 +51,9 @@ namespace PicSum.UIComponent.InfoPanel
         private readonly Image tagIcon = Resources.TagIcon;
         private string contextMenuOperationTag = string.Empty;
 
-        #endregion
 
-        #region プライベートプロパティ
+
+
 
         private TwoWayJob<FileDeepInfoGetJob, FileDeepInfoGetParameter, FileDeepInfoGetResult> GetFileInfoJob
         {
@@ -192,9 +192,9 @@ namespace PicSum.UIComponent.InfoPanel
             }
         }
 
-        #endregion
 
-        #region コンストラクタ
+
+
 
         public InfoPanel()
         {
@@ -206,9 +206,9 @@ namespace PicSum.UIComponent.InfoPanel
             }
         }
 
-        #endregion
 
-        #region パブリックメソッド
+
+
 
         public void SetFileInfo(string filePath)
         {
@@ -246,9 +246,9 @@ namespace PicSum.UIComponent.InfoPanel
             }
         }
 
-        #endregion
 
-        #region 継承メソッド
+
+
 
         protected override void Dispose(bool disposing)
         {
@@ -290,9 +290,9 @@ namespace PicSum.UIComponent.InfoPanel
             base.Dispose(disposing);
         }
 
-        #endregion
 
-        #region プライベートメソッド
+
+
 
         private void OnSelectedTag(SelectedTagEventArgs e)
         {
@@ -468,9 +468,9 @@ namespace PicSum.UIComponent.InfoPanel
             }
         }
 
-        #endregion
 
-        #region プロセスイベント
+
+
 
         private void GetFileInfoJob_Callback(FileDeepInfoGetResult result)
         {
@@ -512,9 +512,9 @@ namespace PicSum.UIComponent.InfoPanel
             this.wideComboBox.SelectItem();
         }
 
-        #endregion
 
-        #region サムネイルピクチャーボックスイベント
+
+
 
         private void ThumbnailPictureBox_Paint(object sender, PaintEventArgs e)
         {
@@ -551,10 +551,6 @@ namespace PicSum.UIComponent.InfoPanel
                 this.DrawSelectedFileCount(e.Graphics, rect);
             }
         }
-
-        #endregion
-
-        #region タグリストイベント
 
         private void TagFlowList_DrawItem(object sender, SWF.UIComponent.FlowList.DrawItemEventArgs e)
         {
@@ -597,10 +593,6 @@ namespace PicSum.UIComponent.InfoPanel
                                   this.tagFlowList.ItemTextFormat);
         }
 
-        #endregion
-
-        #region 評価値バーイベント
-
         private void RatingBar_RatingButtonMouseClick(object sender, MouseEventArgs e)
         {
             if (this.fileInfoSource == null)
@@ -615,10 +607,6 @@ namespace PicSum.UIComponent.InfoPanel
             };
             this.UpdateFileRatingJob.StartJob(param);
         }
-
-        #endregion
-
-        #region タグコンテキストメニューイベント
 
         private void TagContextMenuStrip_Opening(object sender, CancelEventArgs e)
         {
@@ -686,10 +674,6 @@ namespace PicSum.UIComponent.InfoPanel
             this.OnSelectedTag(new SelectedTagEventArgs(PageOpenType.AddTab, tagInfo.Tag));
         }
 
-        #endregion
-
-        #region ワイドコンボボックスイベント
-
         private void WideComboBox_DropDownOpening(object sender, DropDownOpeningEventArgs e)
         {
             this.GetTagListJob.StartJob();
@@ -715,6 +699,6 @@ namespace PicSum.UIComponent.InfoPanel
             this.AddTag(e.Item);
         }
 
-        #endregion
+
     }
 }

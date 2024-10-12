@@ -33,14 +33,14 @@ namespace PicSum.Main.UIComponent
             return Environment.GetCommandLineArgs().Contains("--home");
         }
 
-        #region イベント
+
 
         public event EventHandler<TabDropoutedEventArgs> TabDropouted;
         public event EventHandler<BrowserPageOpenEventArgs> NewWindowPageOpen;
 
-        #endregion
 
-        #region インスタンス変数
+
+
 
         private BrowserMainPanel browserMainPanel = null;
         private bool isKeyDown = false;
@@ -48,9 +48,9 @@ namespace PicSum.Main.UIComponent
         private OneWayJob<FileInfoDBCleanupJob> fileInfoDBCleanupJob = null;
         private OneWayJob<ThumbnailDBCleanupJob, ValueParameter<string>> thumbnailDBCleanupJob = null;
 
-        #endregion
 
-        #region プライベートプロパティ
+
+
 
         private BrowserMainPanel BrowserMainPanel
         {
@@ -65,18 +65,18 @@ namespace PicSum.Main.UIComponent
             }
         }
 
-        #endregion
 
-        #region コンストラクタ
+
+
 
         public BrowserForm()
         {
             this.InitializeComponent();
         }
 
-        #endregion
 
-        #region パブリックメソッド
+
+
 
         public void AddPageEventHandler(BrowserPage page)
         {
@@ -122,9 +122,9 @@ namespace PicSum.Main.UIComponent
 
         }
 
-        #endregion
 
-        #region 継承メソッド
+
+
 
         protected override void OnHandleCreated(EventArgs e)
         {
@@ -325,9 +325,9 @@ namespace PicSum.Main.UIComponent
             base.OnKeyUp(e);
         }
 
-        #endregion
 
-        #region プライベートメソッド
+
+
 
         private void InitializeComponent()
         {
@@ -394,10 +394,6 @@ namespace PicSum.Main.UIComponent
             this.NewWindowPageOpen?.Invoke(this, e);
         }
 
-        #endregion
-
-        #region ブラウザメインパネルイベント
-
         private void BrowserMainPanel_Close(object sender, EventArgs e)
         {
             this.Close();
@@ -418,6 +414,6 @@ namespace PicSum.Main.UIComponent
             this.OnTabDropouted(e);
         }
 
-        #endregion
+
     }
 }

@@ -250,7 +250,7 @@ namespace PicSum.Main.UIComponent
             this.ResumeLayout(false);
         }
 
-        #endregion
+
 
         private SWF.UIComponent.TabOperation.PageContainer pageContainer;
         private PicSum.UIComponent.InfoPanel.InfoPanel infoPanel;
@@ -265,5 +265,7 @@ namespace PicSum.Main.UIComponent
         private SWF.UIComponent.WideDropDown.WideDropToolButton tagDropToolButton;
         private SWF.UIComponent.Core.ToolButton reloadToolButton;
         private SWF.UIComponent.Core.ToolButton searchBookmarkToolButton;
+
+        #endregion
     }
 }

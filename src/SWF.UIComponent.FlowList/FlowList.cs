@@ -13,7 +13,7 @@ namespace SWF.UIComponent.FlowList
     public sealed partial class FlowList
         : UserControl
     {
-        #region 定数・列挙
+
 
         // 項目最小サイズ
         public const int MINIMUM_ITEM_SIZE = 16;
@@ -21,9 +21,9 @@ namespace SWF.UIComponent.FlowList
         // 項目最大サイズ
         public const int MAXIMUM_ITEM_SIZE = 512;
 
-        #endregion
 
-        #region インスタンス変数
+
+
 
         // 描画フラグ
         private bool isDraw = true;
@@ -70,8 +70,6 @@ namespace SWF.UIComponent.FlowList
         // ドラッグフラグ
         private bool isDrag = false;
 
-        #region 描画オブジェクト
-
         private readonly Color itemTextColor = Color.FromArgb(
             SystemColors.ControlText.A,
             SystemColors.ControlText.R,
@@ -116,11 +114,11 @@ namespace SWF.UIComponent.FlowList
         private Pen rectangleSelectionPen = null;
         private StringFormat itemTextFormat = null;
 
-        #endregion
 
-        #endregion
 
-        #region プライベートプロパティ
+
+
+
 
         private SolidBrush RectangleSelectionBrush
         {
@@ -144,18 +142,18 @@ namespace SWF.UIComponent.FlowList
             }
         }
 
-        #endregion
 
-        #region コンストラクタ
+
+
 
         public FlowList()
         {
             this.InitializeComponent();
         }
 
-        #endregion
 
-        #region 継承メソッド
+
+
 
         protected override void OnInvalidated(InvalidateEventArgs e)
         {
@@ -577,9 +575,9 @@ namespace SWF.UIComponent.FlowList
             base.OnMouseWheel(e);
         }
 
-        #endregion
 
-        #region プライベートメソッド
+
+
 
         private void InitializeComponent()
         {
@@ -843,8 +841,6 @@ namespace SWF.UIComponent.FlowList
             }
         }
 
-        #region 項目の描画領域を取得します。
-
         private Rectangle GetItemVirtualRectangle(int row, int col)
         {
             var x = col * (this.itemWidth + this.drawParameter.ItemSideSpace) + this.drawParameter.ItemSideSpace + this.itemSpace;
@@ -874,10 +870,6 @@ namespace SWF.UIComponent.FlowList
             var row = Utility.ToRoundDown(itemIndex / (float)this.drawParameter.ColCount);
             return this.GetItemDrawRectangle(row, col);
         }
-
-        #endregion
-
-        #region 描画メソッド
 
         private void DrawItems(Graphics g)
         {
@@ -911,10 +903,6 @@ namespace SWF.UIComponent.FlowList
             g.DrawRectangle(this.RectangleSelectionPen, this.rectangleSelection.GetDrawRectangle(this.scrollBar.Value));
         }
 
-        #endregion
-
-        #region 座標情報取得メソッド
-
         private int GetRowFromVirtualY(int y)
         {
             return Utility.ToRoundDown(y / (float)this.itemHeight);
@@ -929,10 +917,6 @@ namespace SWF.UIComponent.FlowList
         {
             return Utility.ToRoundDown((x - this.drawParameter.ItemSideSpace - this.itemSpace) / (float)(this.itemWidth + this.drawParameter.ItemSideSpace));
         }
-
-        #endregion
-
-        #region キーダウン操作
 
         private bool LeftKeyDown()
         {
@@ -1249,10 +1233,6 @@ namespace SWF.UIComponent.FlowList
             this.foucusItemIndex = newIndex;
         }
 
-        #endregion
-
-        #region マウスダウン操作
-
         private void LeftMouseDown(int x, int y)
         {
             var ht = this.GetHitTestFromDrawPoint(x, y);
@@ -1352,26 +1332,14 @@ namespace SWF.UIComponent.FlowList
             }
         }
 
-        #endregion
-
-        #endregion
-
-        #region スクロールバーイベント
-
         private void ScrollBar_ValueChanged(object sender, EventArgs e)
         {
             this.Invalidate();
         }
 
-        #endregion
-
-        #region 選択されている項目インデックスのリストイベント
-
         private void SelectedItemIndexs_Change(object sender, EventArgs e)
         {
             this.OnSelectedItemChanged(EventArgs.Empty);
         }
-
-        #endregion
     }
 }

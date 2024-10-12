@@ -12,16 +12,16 @@ namespace SWF.UIComponent.TabOperation
     [SupportedOSPlatform("windows")]
     public sealed class TabInfo
     {
-        #region インスタンス変数
+
 
         private readonly TabDrawArea drawArea = new();
         private readonly PageHistoryManager historyManager = new();
         private PagePanel page = null;
         private TabSwitch owner = null;
 
-        #endregion
 
-        #region プロパティ
+
+
 
         public string Title
         {
@@ -106,9 +106,9 @@ namespace SWF.UIComponent.TabOperation
             }
         }
 
-        #endregion
 
-        #region コンストラクタ
+
+
 
         internal TabInfo(IPageParameter param)
         {
@@ -118,9 +118,9 @@ namespace SWF.UIComponent.TabOperation
             this.page = param.CreatePage();
         }
 
-        #endregion
 
-        #region メソッド
+
+
 
         public T GetPage<T>() where T : PagePanel
         {
@@ -215,6 +215,6 @@ namespace SWF.UIComponent.TabOperation
             this.page = this.historyManager.CreateClone();
         }
 
-        #endregion
+
     }
 }

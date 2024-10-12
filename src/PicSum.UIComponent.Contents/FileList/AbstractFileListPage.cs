@@ -90,7 +90,7 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
-        #region インスタンス変数
+
 
         private bool disposing = false;
         private Dictionary<string, FileEntity> masterFileDictionary = null;
@@ -101,15 +101,15 @@ namespace PicSum.UIComponent.Contents.FileList
         private TwoWayJob<MultiFilesExportJob, MultiFilesExportParameter, ValueResult<string>> multiFilesExportJob = null;
         private OneWayJob<ImageFileSizeCacheJob, ListParameter<string>> imageFileSizeCacheJob = null;
 
-        #endregion
 
-        #region パブリックプロパティ
+
+
 
         public override string SelectedFilePath { get; protected set; } = FileUtil.ROOT_DIRECTORY_PATH;
 
-        #endregion
 
-        #region 継承プロパティ
+
+
 
         protected SortInfo SortInfo { get; private set; } = new();
 
@@ -178,9 +178,9 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
-        #endregion
 
-        #region プライベートプロパティ
+
+
 
         private bool IsShowDirectory
         {
@@ -343,9 +343,9 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
-        #endregion
 
-        #region コンストラクタ
+
+
 
         public AbstractFileListPage(IPageParameter param)
             : base(param)
@@ -361,18 +361,18 @@ namespace PicSum.UIComponent.Contents.FileList
             this.SetFlowListItemSize();
         }
 
-        #endregion
 
-        #region パブリックメソッド
+
+
 
         public override void RedrawPage()
         {
             this.flowList.Refresh();
         }
 
-        #endregion
 
-        #region 継承メソッド
+
+
 
         protected override void Dispose(bool disposing)
         {
@@ -550,9 +550,9 @@ namespace PicSum.UIComponent.Contents.FileList
 
         protected abstract Action GetImageFilesGetAction(ImageViewerPageParameter paramter);
 
-        #endregion
 
-        #region プライベートメソッド
+
+
 
         private ToolStripButton GetSortToolStripButton(SortTypeID sortType)
         {
@@ -851,9 +851,9 @@ namespace PicSum.UIComponent.Contents.FileList
                                   this.ItemTextHeight);
         }
 
-        #endregion
 
-        #region プロセスイベント
+
+
 
         private void GetThumbnailsJob_Callback(ThumbnailImageResult e)
         {
@@ -907,10 +907,6 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             Console.WriteLine($"[{Thread.CurrentThread.Name}] {result.Value}");
         }
-
-        #endregion
-
-        #region ツールバーイベント
 
         private void ShowDirectoryToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -994,10 +990,6 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             this.OnMoveNextButtonClick(e);
         }
-
-        #endregion
-
-        #region フローリストイベント
 
         private void FlowList_MouseDown(object sender, MouseEventArgs e)
         {
@@ -1223,10 +1215,6 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
-        #endregion
-
-        #region コンテキストメニューイベント
-
         protected virtual void FileContextMenu_Opening(object sender, CancelEventArgs e)
         {
             var filePathList = this.GetSelectedFiles();
@@ -1397,6 +1385,6 @@ namespace PicSum.UIComponent.Contents.FileList
             this.AddBookmarkJob.StartJob(paramter);
         }
 
-        #endregion
+
     }
 }

@@ -20,16 +20,16 @@ namespace PicSum.UIComponent.Contents.FileList
     internal sealed class FavoriteDirectoryListPage
         : AbstractFileListPage
     {
-        #region インスタンス変数
+
 
         private bool disposing = false;
         private readonly FavoriteDirectoryListPageParameter parameter = null;
         private TwoWayJob<FavoriteDirectoryGetJob, FavoriteDirectoriesGetParameter, ListResult<FileShallowInfoEntity>> searchJob = null;
         private OneWayJob<DirectoryViewCounterDeleteJob, ListParameter<string>> deleteJob = null;
 
-        #endregion
 
-        #region プライベートプロパティ
+
+
 
         private TwoWayJob<FavoriteDirectoryGetJob, FavoriteDirectoriesGetParameter, ListResult<FileShallowInfoEntity>> SearchJob
         {
@@ -70,9 +70,9 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
-        #endregion
 
-        #region コンストラクタ
+
+
 
         public FavoriteDirectoryListPage(FavoriteDirectoryListPageParameter param)
             : base(param)
@@ -81,9 +81,9 @@ namespace PicSum.UIComponent.Contents.FileList
             this.InitializeComponent();
         }
 
-        #endregion
 
-        #region 継承メソッド
+
+
 
         protected override void Dispose(bool disposing)
         {
@@ -163,9 +163,9 @@ namespace PicSum.UIComponent.Contents.FileList
             throw new NotImplementedException();
         }
 
-        #endregion
 
-        #region プライベートメソッド
+
+
 
         private void InitializeComponent()
         {
@@ -176,9 +176,9 @@ namespace PicSum.UIComponent.Contents.FileList
             base.sortFileRgistrationDateToolStripButton.Enabled = false;
         }
 
-        #endregion
 
-        #region プロセスイベント
+
+
 
         private void SearchJob_Callback(ListResult<FileShallowInfoEntity> e)
         {
@@ -196,6 +196,6 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
-        #endregion
+
     }
 }

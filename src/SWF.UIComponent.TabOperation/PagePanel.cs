@@ -10,22 +10,22 @@ namespace SWF.UIComponent.TabOperation
     public class PagePanel
         : UserControl
     {
-        #region イベント・デリゲート
+
 
         public event EventHandler Activated;
         public event EventHandler Inactivated;
         public event EventHandler<DrawTabEventArgs> DrawTabPage;
 
-        #endregion
 
-        #region インスタンス変数
+
+
 
         private string title = string.Empty;
         private Image icon = null;
 
-        #endregion
 
-        #region パブリックプロパティ
+
+
 
         public string Title
         {
@@ -53,9 +53,9 @@ namespace SWF.UIComponent.TabOperation
             }
         }
 
-        #endregion
 
-        #region パブリックメソッド
+
+
 
         /// <summary>
         /// コンテンツを再描画します。
@@ -88,9 +88,9 @@ namespace SWF.UIComponent.TabOperation
             this.OnDrawTabPage(e);
         }
 
-        #endregion
 
-        #region 継承メソッド
+
+
 
         protected void OnActivated(EventArgs e)
         {
@@ -107,6 +107,6 @@ namespace SWF.UIComponent.TabOperation
             this.DrawTabPage?.Invoke(this, e);
         }
 
-        #endregion
+
     }
 }

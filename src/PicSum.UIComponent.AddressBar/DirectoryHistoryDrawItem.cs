@@ -14,14 +14,14 @@ namespace PicSum.UIComponent.AddressBar
     internal sealed class DirectoryHistoryDrawItem
         : DropDownDrawItemBase, IDisposable
     {
-        #region インスタンス変数
+
 
         private readonly Image drawImage = Resources.SmallArrowDown;
         private TwoWayJob<DirectoryViewHistoryGetJob, ListResult<FileShallowInfoEntity>> getDirectoryHistoryJob = null;
 
-        #endregion
 
-        #region プロパティ
+
+
 
         private TwoWayJob<DirectoryViewHistoryGetJob, ListResult<FileShallowInfoEntity>> GetDirectoryHistoryJob
         {
@@ -39,18 +39,18 @@ namespace PicSum.UIComponent.AddressBar
             }
         }
 
-        #endregion
 
-        #region コンストラクタ
+
+
 
         public DirectoryHistoryDrawItem()
         {
 
         }
 
-        #endregion
 
-        #region メソッド
+
+
 
         public new void Dispose()
         {
@@ -158,9 +158,9 @@ namespace PicSum.UIComponent.AddressBar
             return new RectangleF(x, y, w, h);
         }
 
-        #endregion
 
-        #region イベント
+
+
 
         private void GetDirectoryHistoryJob_Callback(ListResult<FileShallowInfoEntity> e)
         {
@@ -196,6 +196,6 @@ namespace PicSum.UIComponent.AddressBar
             base.DropDownList.ItemCount = base.Items.Count;
         }
 
-        #endregion
+
     }
 }

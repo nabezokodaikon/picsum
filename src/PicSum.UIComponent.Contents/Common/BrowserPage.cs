@@ -12,27 +12,27 @@ namespace PicSum.UIComponent.Contents.Common
     public abstract class BrowserPage
         : PagePanel
     {
-        #region イベント・デリゲート
+
 
         public event EventHandler<SelectedFileChangeEventArgs> SelectedFileChanged;
         public event EventHandler<BrowserPageEventArgs> OpenPage;
         public new event EventHandler<MouseEventArgs> MouseClick;
 
-        #endregion
 
-        #region パブリックプロパティ
+
+
 
         public abstract string SelectedFilePath { get; protected set; }
 
-        #endregion
 
-        #region プライベートプロパティ
+
+
 
         protected IPageParameter Parameter { get; private set; }
 
-        #endregion
 
-        #region コンストラクタ
+
+
 
         public BrowserPage(IPageParameter parameter)
         {
@@ -46,15 +46,15 @@ namespace PicSum.UIComponent.Contents.Common
             this.Parameter = parameter ?? throw new ArgumentNullException(nameof(parameter));
         }
 
-        #endregion
 
-        #region パブリックメソッド
+
+
 
         public abstract override void RedrawPage();
 
-        #endregion
 
-        #region 継承メソッド
+
+
 
         protected override void Dispose(bool disposing)
         {
@@ -83,6 +83,6 @@ namespace PicSum.UIComponent.Contents.Common
 
         protected abstract void OnBackgroundMouseClick(MouseEventArgs e);
 
-        #endregion
+
     }
 }

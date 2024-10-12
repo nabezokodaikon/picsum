@@ -16,19 +16,19 @@ namespace PicSum.UIComponent.AddressBar
     public sealed class AddressBar
         : Control
     {
-        #region 定数・列挙
+
 
         private const int INNER_OFFSET = 1;
 
-        #endregion
 
-        #region イベント・デリゲート
+
+
 
         public event EventHandler<SelectedDirectoryEventArgs> SelectedDirectory;
 
-        #endregion
 
-        #region インスタンス変数
+
+
 
         private readonly int dropDownItemWidth = Resources.SmallArrowDown.Width;
         private readonly Palette palette = new();
@@ -40,9 +40,9 @@ namespace PicSum.UIComponent.AddressBar
         private DrawItemBase mousePointItem = null;
         private DrawItemBase mouseDownItem = null;
 
-        #endregion
 
-        #region パブリックプロパティ
+
+
 
         public Color TextColor
         {
@@ -132,9 +132,9 @@ namespace PicSum.UIComponent.AddressBar
             }
         }
 
-        #endregion
 
-        #region プライベートプロパティ
+
+
 
         private TwoWayJob<AddressInfoGetJob, ValueParameter<string>, AddressInfoGetResult> GetAddressInfoJob
         {
@@ -158,18 +158,18 @@ namespace PicSum.UIComponent.AddressBar
             }
         }
 
-        #endregion
 
-        #region コンストラクタ
+
+
 
         public AddressBar()
         {
             this.InitializeComponent();
         }
 
-        #endregion
 
-        #region パブリックメソッド
+
+
 
         public void SetAddress(string filePath)
         {
@@ -204,9 +204,9 @@ namespace PicSum.UIComponent.AddressBar
             this.GetAddressInfoJob.StartJob(param);
         }
 
-        #endregion
 
-        #region 継承メソッド
+
+
 
         protected override void Dispose(bool disposing)
         {
@@ -325,9 +325,9 @@ namespace PicSum.UIComponent.AddressBar
             base.OnMouseClick(e);
         }
 
-        #endregion
 
-        #region プライベートメソッド
+
+
 
         private void InitializeComponent()
         {
@@ -634,9 +634,9 @@ namespace PicSum.UIComponent.AddressBar
             return null;
         }
 
-        #endregion
 
-        #region イベント
+
+
 
         private void OnSelectedDirectory(SelectedDirectoryEventArgs e)
         {
@@ -667,6 +667,6 @@ namespace PicSum.UIComponent.AddressBar
             this.OnSelectedDirectory(e);
         }
 
-        #endregion
+
     }
 }

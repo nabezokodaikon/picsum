@@ -58,7 +58,7 @@ namespace PicSum.UIComponent.Contents.FileList
             };
         }
 
-        #region インスタンス変数
+
 
         private bool disposing = false;
         private readonly DirectoryFileListPageParameter parameter = null;
@@ -67,9 +67,9 @@ namespace PicSum.UIComponent.Contents.FileList
         private OneWayJob<DirectoryViewHistoryAddJob, ValueParameter<string>> directoryHistoryaddJob = null;
         private TwoWayJob<NextDirectoryGetJob, NextDirectoryGetParameter<string>, ValueResult<string>> nextDirectoryGetJob = null;
 
-        #endregion
 
-        #region プライベートプロパティ
+
+
 
         private TwoWayJob<FilesGetByDirectoryJob, ValueParameter<string>, DirectoryGetResult> SearchJob
         {
@@ -147,9 +147,9 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
-        #endregion
 
-        #region コンストラクタ
+
+
 
         public DirectoryFileListPage(DirectoryFileListPageParameter param)
             : base(param)
@@ -158,9 +158,9 @@ namespace PicSum.UIComponent.Contents.FileList
             this.InitializeComponent();
         }
 
-        #endregion
 
-        #region 継承メソッド
+
+
 
         protected override void OnLoad(EventArgs e)
         {
@@ -285,9 +285,9 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
-        #endregion
 
-        #region プライベートメソッド
+
+
 
         private void InitializeComponent()
         {
@@ -334,9 +334,9 @@ namespace PicSum.UIComponent.Contents.FileList
             this.DirectoryStateUpdateJob.StartJob(param);
         }
 
-        #endregion
 
-        #region プロセスイベント
+
+
 
         private void SearchJob_Callback(DirectoryGetResult e)
         {
@@ -378,6 +378,6 @@ namespace PicSum.UIComponent.Contents.FileList
             this.OnOpenPage(new BrowserPageEventArgs(PageOpenType.OverlapTab, param));
         }
 
-        #endregion
+
     }
 }

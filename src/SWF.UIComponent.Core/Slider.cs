@@ -9,22 +9,22 @@ namespace SWF.UIComponent.Core
     [SupportedOSPlatform("windows")]
     public class Slider : Control
     {
-        #region 定数・列挙
+
 
         private const int BarHeight = 4;
         private const int BarShadowOffset = 1;
 
-        #endregion
 
-        #region イベント
+
+
 
         public event EventHandler BeginValueChange;
         public event EventHandler ValueChanging;
         public event EventHandler ValueChanged;
 
-        #endregion
 
-        #region インスタンス変数
+
+
 
         private readonly Image button = Resources.SliderButton;
         private float buttonPointX = Resources.SliderButton.Width / 2f;
@@ -32,9 +32,9 @@ namespace SWF.UIComponent.Core
         private int minimumValue = 0;
         private int value = 0;
 
-        #endregion
 
-        #region パブリックプロパティ
+
+
 
         public int MaximumValue
         {
@@ -95,24 +95,24 @@ namespace SWF.UIComponent.Core
             }
         }
 
-        #endregion
 
-        #region コンストラクタ
+
+
 
         public Slider()
         {
             this.InitializeComponent();
         }
 
-        #endregion
-
-        #region パブリックメソッド
 
 
 
-        #endregion
 
-        #region プライベートメソッド
+
+
+
+
+
 
         private void InitializeComponent()
         {
@@ -216,8 +216,6 @@ namespace SWF.UIComponent.Core
             return this.button.Width / 2f;
         }
 
-        #region 描画メソッド
-
         private void DrawBar(Graphics g)
         {
             var centerPoint = this.GetCenterPoint();
@@ -253,11 +251,11 @@ namespace SWF.UIComponent.Core
             g.DrawImage(this.button, rect);
         }
 
-        #endregion
 
-        #endregion
 
-        #region 継承メソッド
+
+
+
 
         protected override void OnInvalidated(InvalidateEventArgs e)
         {
@@ -348,6 +346,6 @@ namespace SWF.UIComponent.Core
             ValueChanged?.Invoke(this, e);
         }
 
-        #endregion
+
     }
 }

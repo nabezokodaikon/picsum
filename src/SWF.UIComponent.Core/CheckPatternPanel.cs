@@ -7,15 +7,15 @@ namespace SWF.UIComponent.Core
     [SupportedOSPlatform("windows")]
     public class CheckPatternPanel : Panel
     {
-        #region インスタンス変数
+
 
         private int _rectangleSize = 24;
         private readonly SolidBrush brushA = new(Color.FromArgb(255, Color.FromArgb(64, 64, 64)));
         private readonly SolidBrush brushB = new(Color.FromArgb(64, Color.FromArgb(16, 16, 16)));
 
-        #endregion
 
-        #region パブリックプロパティ
+
+
 
         public int RectangleSize
         {
@@ -31,18 +31,18 @@ namespace SWF.UIComponent.Core
             }
         }
 
-        #endregion
 
-        #region コンストラクタ
+
+
 
         public CheckPatternPanel()
         {
             this.InitializeComponent();
         }
 
-        #endregion
 
-        #region 継承メソッド
+
+
 
         protected override void OnPaintBackground(PaintEventArgs pevent)
         {
@@ -65,9 +65,9 @@ namespace SWF.UIComponent.Core
             //Console.WriteLine($"[{Thread.CurrentThread.Name}] CheckPatternPanel.OnPaint: {sw.ElapsedMilliseconds} ms");
         }
 
-        #endregion
 
-        #region プライベートメソッド
+
+
 
         private void InitializeComponent()
         {
@@ -130,6 +130,6 @@ namespace SWF.UIComponent.Core
             g.FillRectangles(this.brushB, rectsB.ToArray());
         }
 
-        #endregion
+
     }
 }

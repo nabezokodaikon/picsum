@@ -52,7 +52,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             }
         }
 
-        #region インスタンス変数
+
 
         private bool disposing = false;
 
@@ -70,19 +70,19 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         private OneWayJob<SingleFileExportJob, SingleFileExportParameter> singleFileExportJob = null;
         private OneWayJob<ImageFileCacheJob, ListParameter<string>> imageFileCacheJob = null;
 
-        #endregion
 
-        #region パブリックプロパティ
+
+
 
         public override string SelectedFilePath { get; protected set; } = string.Empty;
 
-        #endregion
 
-        #region 継承プロパティ
 
-        #endregion
 
-        #region プライベートプロパティ
+
+
+
+
 
         private bool CanOperation
         {
@@ -230,9 +230,9 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             }
         }
 
-        #endregion
 
-        #region コンストラクタ
+
+
 
         public ImageViewerPage(ImageViewerPageParameter parameter)
             : base(parameter)
@@ -247,9 +247,9 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.SelectedFilePath = parameter.SelectedFilePath;
         }
 
-        #endregion
 
-        #region パブリックメソッド
+
+
 
         public override void RedrawPage()
         {
@@ -282,9 +282,9 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.ChangeImagePanelSize();
         }
 
-        #endregion
 
-        #region 継承メソッド
+
+
 
         protected override void Dispose(bool disposing)
         {
@@ -415,9 +415,9 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             // 処理無し。
         }
 
-        #endregion
 
-        #region プライベートメソッド
+
+
 
         private Size GetImageSize(string filePath)
         {
@@ -843,9 +843,9 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.rightImagePanel.IsShowThumbnailPanel = this.leftImagePanel.IsShowThumbnailPanel;
         }
 
-        #endregion
 
-        #region プロセスイベント
+
+
 
         private void Parameter_GetImageFiles(object sender, GetImageFilesEventArgs e)
         {
@@ -1050,10 +1050,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.Focus();
         }
 
-        #endregion
-
-        #region ツールバーイベント
-
         private void SingleViewToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (!this.IsHandleCreated)
@@ -1241,10 +1237,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.ReadImage();
         }
 
-        #endregion
-
-        #region 画像パネルイベント
-
         private void LeftImagePanel_MouseDown(object sender, MouseEventArgs e)
         {
             this.leftImagePanel.Focus();
@@ -1308,10 +1300,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 this.DoDragDrop(this.rightImageFilePath);
             }
         }
-
-        #endregion
-
-        #region ファイルコンテキストメニューイベント
 
         private void FileContextMenu_Opening(object sender, CancelEventArgs e)
         {
@@ -1428,6 +1416,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.AddBookmarkJob.StartJob(paramter);
         }
 
-        #endregion
+
     }
 }

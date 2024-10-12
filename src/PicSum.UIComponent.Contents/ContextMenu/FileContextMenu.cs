@@ -14,7 +14,7 @@ namespace PicSum.UIComponent.Contents.ContextMenu
     public sealed class FileContextMenu
         : ContextMenuStrip
     {
-        #region イベント・デリゲート
+
 
         public event EventHandler<ExecuteFileEventArgs> FileActiveTabOpen;
         public event EventHandler<ExecuteFileEventArgs> FileNewTabOpen;
@@ -32,9 +32,9 @@ namespace PicSum.UIComponent.Contents.ContextMenu
         public event EventHandler<ExecuteFileListEventArgs> NameCopy;
         public event EventHandler<ExecuteFileListEventArgs> RemoveFromList;
 
-        #endregion
 
-        #region インスタンス変数
+
+
 
         private IList<string> filePathList = null;
 
@@ -62,9 +62,9 @@ namespace PicSum.UIComponent.Contents.ContextMenu
         private readonly ToolStripMenuItem nameCopyMenuItem = new("Copy Name");
         private readonly ToolStripMenuItem removeFromListMenuItem = new("Remove");
 
-        #endregion
 
-        #region パブリックプロパティ
+
+
 
         public bool VisibleFileActiveTabOpenMenuItem
         {
@@ -126,9 +126,9 @@ namespace PicSum.UIComponent.Contents.ContextMenu
             }
         }
 
-        #endregion
 
-        #region コンストラクタ
+
+
 
         public FileContextMenu()
         {
@@ -138,9 +138,9 @@ namespace PicSum.UIComponent.Contents.ContextMenu
             }
         }
 
-        #endregion
 
-        #region パブリックメソッド
+
+
 
         public void SetFile(IList<string> filePathList)
         {
@@ -176,9 +176,9 @@ namespace PicSum.UIComponent.Contents.ContextMenu
             this.SetFile(new List<string>() { filePath });
         }
 
-        #endregion
 
-        #region プライベートメソッド
+
+
 
         private void InitializeComponent()
         {
@@ -264,10 +264,6 @@ namespace PicSum.UIComponent.Contents.ContextMenu
             this.explorerOpenMenuItem.Visible = isVisible;
             this.exportMenuItem.Visible = isVisible;
         }
-
-        #endregion
-
-        #region コンテキストメニューイベント
 
         private void OnFileActiveTabOpen(ExecuteFileEventArgs e)
         {
@@ -409,6 +405,6 @@ namespace PicSum.UIComponent.Contents.ContextMenu
             this.OnRemoveFromList(new ExecuteFileListEventArgs(this.filePathList));
         }
 
-        #endregion
+
     }
 }

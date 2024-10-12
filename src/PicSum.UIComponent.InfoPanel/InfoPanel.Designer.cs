@@ -144,7 +144,7 @@ namespace PicSum.UIComponent.InfoPanel
             this.ResumeLayout(false);
         }
 
-        #endregion
+
 
         private System.Windows.Forms.PictureBox thumbnailPictureBox;
         private SWF.UIComponent.Core.RatingBar ratingBar;
@@ -154,5 +154,7 @@ namespace PicSum.UIComponent.InfoPanel
         private System.Windows.Forms.ToolStripMenuItem tagToAllEntryMenuItem;
         private SWF.UIComponent.WideDropDown.WideComboBox wideComboBox;
         private FileInfoLabel fileInfoLabel;
+
+        #endregion
     }
 }

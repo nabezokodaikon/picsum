@@ -342,8 +342,6 @@ namespace PicSum.Job.Logics
             }
         }
 
-        #region DBキャッシュ操作メソッド
-
         private string GetThumbnailBufferFilePath(int id)
         {
             var dbDir = FileUtil.GetParentDirectoryPath(DatabaseManager<ThumbnailConnection>.DBFilePath);
@@ -551,10 +549,6 @@ namespace PicSum.Job.Logics
             }
         }
 
-        #endregion
-
-        #region メモリーキャッシュ操作メソッド
-
         private static ThumbnailBufferEntity GetMemoryCache(string filePath)
         {
             CACHE_LOCK.EnterReadLock();
@@ -612,6 +606,6 @@ namespace PicSum.Job.Logics
             }
         }
 
-        #endregion
+
     }
 }

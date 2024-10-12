@@ -13,16 +13,16 @@ namespace SWF.UIComponent.TabOperation
     [SupportedOSPlatform("windows")]
     internal sealed class TabDrawArea
     {
-        #region 定数・列挙
+
 
         private const float TAB_WIDTH = 256;
         private const float SIDE_WIDTH = 8;
         private const float PAGE_SIZE = 24;
         private const float PAGE_OFFSET = 2;
 
-        #endregion
 
-        #region クラスメンバ
+
+
 
         private readonly static RectangleF ICON_RECTANGLE
             = new(SIDE_WIDTH, PAGE_OFFSET, PAGE_SIZE, PAGE_SIZE);
@@ -42,9 +42,9 @@ namespace SWF.UIComponent.TabOperation
         private readonly static Pen TAB_CLOSE_BUTTON_SLASH_PEN
             = new(Color.Black, 2f);
 
-        #endregion
 
-        #region インスタンス変数
+
+
 
         private readonly RectangleF iconRectangle = ICON_RECTANGLE;
         private readonly RectangleF closeButtonRectangle = CLOSE_BUTTON_RECTANGLE;
@@ -52,9 +52,9 @@ namespace SWF.UIComponent.TabOperation
         private float width = 256;
         private readonly float height = 29;
 
-        #endregion
 
-        #region プロパティ
+
+
 
         public float X
         {
@@ -150,9 +150,9 @@ namespace SWF.UIComponent.TabOperation
             }
         }
 
-        #endregion
 
-        #region メソッド
+
+
 
         public void DrawActiveTab(Graphics g)
         {
@@ -346,6 +346,6 @@ namespace SWF.UIComponent.TabOperation
             return new RectangleF(x, y, w, h);
         }
 
-        #endregion
+
     }
 }

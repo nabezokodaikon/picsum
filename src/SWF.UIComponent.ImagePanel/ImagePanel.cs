@@ -35,22 +35,22 @@ namespace SWF.UIComponent.ImagePanel
     public sealed class ImagePanel
         : Control
     {
-        #region 定数・列挙
+
 
         private const int THUMBNAIL_PANEL_OFFSET = 16;
         private const int THUMBNAIL_OFFSET = 8;
 
-        #endregion
 
-        #region イベント・デリゲート
+
+
 
         public event EventHandler<MouseEventArgs> ImageMouseClick;
         public event EventHandler<MouseEventArgs> ImageMouseDoubleClick;
         public event EventHandler DragStart;
 
-        #endregion
 
-        #region インスタンス変数
+
+
 
         private readonly Image thumbnailPanelImage = Resources.ThumbnailPanel;
         private ImageSizeMode sizeMode = ImageSizeMode.FitOnlyBigImage;
@@ -81,9 +81,9 @@ namespace SWF.UIComponent.ImagePanel
             Trimming = StringTrimming.EllipsisCharacter,
         };
 
-        #endregion
 
-        #region パブリックプロパティ
+
+
 
         public Size ImageSize
         {
@@ -146,13 +146,13 @@ namespace SWF.UIComponent.ImagePanel
 
         public bool HasImage { get; private set; } = false;
 
-        #endregion
 
-        #region 継承プロパティ
 
-        #endregion
 
-        #region プライベートプロパティ
+
+
+
+
 
         private int ThumbnailPanelSize
         {
@@ -162,18 +162,18 @@ namespace SWF.UIComponent.ImagePanel
             }
         }
 
-        #endregion
 
-        #region コンストラクタ
+
+
 
         public ImagePanel()
         {
             this.InitializeComponent();
         }
 
-        #endregion
 
-        #region パブリックメソッド
+
+
 
         public void SetImage(
             ImageSizeMode sizeMode, CvImage img, Bitmap thumb, string filePath)
@@ -270,9 +270,9 @@ namespace SWF.UIComponent.ImagePanel
             Console.WriteLine($"[{Thread.CurrentThread.Name}] ImagePanel.Update: {sw.ElapsedMilliseconds} ms");
         }
 
-        #endregion
 
-        #region 継承メソッド
+
+
 
         protected override void Dispose(bool disposing)
         {
@@ -492,9 +492,9 @@ namespace SWF.UIComponent.ImagePanel
             base.OnMouseDoubleClick(e);
         }
 
-        #endregion
 
-        #region プライベートメソッド
+
+
 
         private void InitializeComponent()
         {
@@ -790,6 +790,6 @@ namespace SWF.UIComponent.ImagePanel
             }
         }
 
-        #endregion
+
     }
 }

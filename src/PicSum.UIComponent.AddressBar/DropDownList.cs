@@ -15,15 +15,15 @@ namespace PicSum.UIComponent.AddressBar
     public sealed class DropDownList
         : ToolStripDropDown
     {
-        #region イベント・デリゲート
+
 
         public event EventHandler<SWF.UIComponent.FlowList.DrawItemEventArgs> Drawitem;
         public event EventHandler<MouseEventArgs> ItemMouseClick;
         public event EventHandler ItemExecute;
 
-        #endregion
 
-        #region パブリックプロパティ
+
+
 
         /// <summary>
         /// 項目数
@@ -267,9 +267,9 @@ namespace PicSum.UIComponent.AddressBar
             }
         }
 
-        #endregion
 
-        #region プライベートプロパティ
+
+
 
         private ToolStripControlHost ToolStripItem
         {
@@ -287,18 +287,18 @@ namespace PicSum.UIComponent.AddressBar
             }
         }
 
-        #endregion
 
-        #region コンストラクタ
+
+
 
         public DropDownList()
         {
             this.InitializeComponent();
         }
 
-        #endregion
 
-        #region パブリックメソッド
+
+
 
         /// <summary>
         /// 描画を停止します。
@@ -352,9 +352,9 @@ namespace PicSum.UIComponent.AddressBar
             return this.FlowList.GetSelectedIndexs();
         }
 
-        #endregion
 
-        #region 継承メソッド
+
+
 
         protected override void OnOpened(EventArgs e)
         {
@@ -369,9 +369,9 @@ namespace PicSum.UIComponent.AddressBar
             base.OnInvalidated(e);
         }
 
-        #endregion
 
-        #region プライベートメソッド
+
+
 
         private void InitializeComponent()
         {
@@ -419,10 +419,6 @@ namespace PicSum.UIComponent.AddressBar
             this.ItemExecute?.Invoke(this, e);
         }
 
-        #endregion
-
-        #region フローリストイベント
-
         private void FlowList_Drawitem(object sender, SWF.UIComponent.FlowList.DrawItemEventArgs e)
         {
             this.OnDrawItem(e);
@@ -438,6 +434,6 @@ namespace PicSum.UIComponent.AddressBar
             this.OnItemExecute(e);
         }
 
-        #endregion
+
     }
 }

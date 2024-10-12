@@ -55,16 +55,16 @@ namespace PicSum.UIComponent.Contents.FileList
             };
         }
 
-        #region インスタンス変数
+
 
         private bool disposing = false;
         private readonly RatingFileListPageParameter parameter = null;
         private TwoWayJob<FilesGetByRatingJob, ValueParameter<int>, ListResult<FileShallowInfoEntity>> searchJob = null;
         private OneWayJob<FileRatingUpdateJob, FileRatingUpdateParameter> deleteJob = null;
 
-        #endregion
 
-        #region プライベートプロパティ
+
+
 
         private TwoWayJob<FilesGetByRatingJob, ValueParameter<int>, ListResult<FileShallowInfoEntity>> SearchJob
         {
@@ -104,9 +104,9 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
-        #endregion
 
-        #region コンストラクタ
+
+
 
         public RatingFileListPage(RatingFileListPageParameter param)
             : base(param)
@@ -115,9 +115,9 @@ namespace PicSum.UIComponent.Contents.FileList
             this.InitializeComponent();
         }
 
-        #endregion
 
-        #region 継承メソッド
+
+
 
         protected override void OnLoad(EventArgs e)
         {
@@ -196,9 +196,9 @@ namespace PicSum.UIComponent.Contents.FileList
             throw new NotImplementedException();
         }
 
-        #endregion
 
-        #region プライベートメソッド
+
+
 
         private void InitializeComponent()
         {
@@ -209,9 +209,9 @@ namespace PicSum.UIComponent.Contents.FileList
             base.sortFileRgistrationDateToolStripButton.Enabled = true;
         }
 
-        #endregion
 
-        #region プロセスイベント
+
+
 
         private void SearchJob_Callback(ListResult<FileShallowInfoEntity> e)
         {
@@ -229,6 +229,6 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
-        #endregion
+
     }
 }

@@ -12,22 +12,22 @@ namespace SWF.UIComponent.Form
     public class GrassForm
         : System.Windows.Forms.Form
     {
-        #region クラスメンバ
+
 
         private const int TOP_OFFSET = 41;
 
-        #endregion
 
-        #region インスタンス変数
+
+
 
         private WinApiMembers.MARGINS glassMargins = null;
         private bool isInit = true;
         private Size initSize = Size.Empty;
         private FormWindowState initWindowState = FormWindowState.Normal;
 
-        #endregion
 
-        #region パブリックプロパティ
+
+
 
         public new Size Size
         {
@@ -81,18 +81,18 @@ namespace SWF.UIComponent.Form
             }
         }
 
-        #endregion
 
-        #region コンストラクタ
+
+
 
         public GrassForm()
         {
             this.InitializeComponent();
         }
 
-        #endregion
 
-        #region パブリックメソッド
+
+
 
         public void MouseLeftDoubleClickProcess()
         {
@@ -106,9 +106,9 @@ namespace SWF.UIComponent.Form
             }
         }
 
-        #endregion
 
-        #region 継承メソッド
+
+
 
         protected override void WndProc(ref Message m)
         {
@@ -184,9 +184,9 @@ namespace SWF.UIComponent.Form
             this.SettingtControlRegion();
         }
 
-        #endregion
 
-        #region プライベートメソッド
+
+
 
         private void InitializeComponent()
         {
@@ -321,6 +321,6 @@ namespace SWF.UIComponent.Form
             return new IntPtr(HTCLIENT);
         }
 
-        #endregion
+
     }
 }

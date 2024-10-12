@@ -7,10 +7,6 @@ namespace WinApi
 {
     public static class WinApiMembers
     {
-        #region 定数・列挙
-
-        #region ウィンドウスタイル
-
         public const int WS_VISIBLE = 0x10000000;
         public const int WS_SYSMENU = 0x80000;
         public const int WS_MINIMIZEBOX = 0x00020000;
@@ -21,15 +17,7 @@ namespace WinApi
         public const int WS_CAPTION = 0x00C00000;
         public const long WS_POPUP = 0x80000000L;
 
-        #endregion
-
-        #region 拡張ウィンドウスタイル
-
         public const int WS_EX_TOOLWINDOW = 0x80;
-
-        #endregion
-
-        #region ウィンドウメッセージ
 
         public const int WM_NULL = 0x0000;
         public const int WM_CREATE = 0x0001;
@@ -254,7 +242,7 @@ namespace WinApi
         public const int WM_REFLECT = 0x2000;
         public const int WM_APP = 0x8000;
 
-        #endregion
+
 
         public const int SIZE_RESTORED = 0;// ウィンドウがサイズ変更されました。ただし最小化または最大化ではありません。
         public const int SIZE_MINIMIZED = 1;// ウィンドウが最小化されました。
@@ -449,16 +437,8 @@ namespace WinApi
             SHIL_EXTRALARGE = 0x0002
         }
 
-        #endregion
-
-        #region 静的変数
-
         public static readonly Guid IID_IImageList = new("46EB5926-582E-4017-9FDF-E8998DAA0950");
         //public static readonly Guid IID_IImageList2 = new("192B9D83-50FC-457B-90A0-2B82A8B5DAE1");
-
-        #endregion
-
-        #region 構造体
 
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
         public struct SHFILEINFOW
@@ -579,10 +559,6 @@ namespace WinApi
             public string szTypeName;
         }
 
-        #endregion
-
-        #region クラス
-
         [StructLayout(LayoutKind.Sequential)]
         public class BITMAPINFO
         {
@@ -650,10 +626,6 @@ namespace WinApi
             public const uint DWM_TNP_SOURCECLIENTAREAONLY = 0x00000010;
         }
 
-        #endregion
-
-        #region インターフェース
-
         // interface COM IImageList
         [ComImportAttribute()]
         [GuidAttribute("46EB5926-582E-4017-9FDF-E8998DAA0950")]
@@ -684,10 +656,6 @@ namespace WinApi
             [PreserveSig]
             int GetIcon(int i, int flags, ref IntPtr picon);
         };
-
-        #endregion
-
-        #region APIメソッド
 
         [DllImport("kernel32", CharSet = CharSet.Unicode, SetLastError = true)]
         public static extern IntPtr LoadLibrary(string lpFileName);
@@ -873,9 +841,9 @@ namespace WinApi
         [DllImport("ole32.dll", CharSet = CharSet.Unicode, ExactSpelling = true)]
         public static extern void CoTaskMemFree(IntPtr pv);
 
-        #endregion
 
-        #region メソッド
+
+
 
         public static int RECTWIDTH(RECT rect)
         {
@@ -897,6 +865,6 @@ namespace WinApi
             return (dwValue >> 16) & 0xFFFF;
         }
 
-        #endregion
+
     }
 }

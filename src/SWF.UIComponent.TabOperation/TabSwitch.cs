@@ -18,7 +18,7 @@ namespace SWF.UIComponent.TabOperation
     public sealed class TabSwitch
         : Control
     {
-        #region 定数・列挙
+
 
         // タブ同士のの間隔
         private const float TAB_MARGIN = 2;
@@ -37,9 +37,9 @@ namespace SWF.UIComponent.TabOperation
         // タブを移動するとみなす重なりの比率
         private const float TAB_DRAG_OVERLAP_RATE = 0.4f;
 
-        #endregion
 
-        #region イベント・デリゲート
+
+
 
         /// <summary>
         /// アクティブタブ変更イベント
@@ -76,9 +76,9 @@ namespace SWF.UIComponent.TabOperation
         /// </summary>
         public event EventHandler<MouseEventArgs> AddTabButtonMouseClick;
 
-        #endregion
 
-        #region インスタンス変数
+
+
 
         // タブの高さ
         private readonly int tabHeight = 29;
@@ -110,9 +110,9 @@ namespace SWF.UIComponent.TabOperation
         // コンテンツ描画クラス
         private readonly PageDrawArea pageDrawArea = new();
 
-        #endregion
 
-        #region パブリックプロパティ
+
+
 
         /// <summary>
         /// タブの高さ
@@ -237,18 +237,18 @@ namespace SWF.UIComponent.TabOperation
             }
         }
 
-        #endregion
 
-        #region コンストラクタ
+
+
 
         public TabSwitch()
         {
             this.InitializeComponent();
         }
 
-        #endregion
 
-        #region パブリックメソッド
+
+
 
         /// <summary>
         /// 格納されているフォームを取得します。
@@ -625,9 +625,9 @@ namespace SWF.UIComponent.TabOperation
             return this.GetTabsRectangle();
         }
 
-        #endregion
 
-        #region 継承メソッド
+
+
 
         protected override void OnHandleCreated(EventArgs e)
         {
@@ -978,9 +978,9 @@ namespace SWF.UIComponent.TabOperation
             base.OnDragDrop(drgevent);
         }
 
-        #endregion
 
-        #region プライベートメソッド
+
+
 
         private void InitializeComponent()
         {
@@ -1455,6 +1455,6 @@ namespace SWF.UIComponent.TabOperation
             return tab.DrawArea.Right > x && x > tab.DrawArea.Right - tab.DrawArea.Width / 3f;
         }
 
-        #endregion
+
     }
 }

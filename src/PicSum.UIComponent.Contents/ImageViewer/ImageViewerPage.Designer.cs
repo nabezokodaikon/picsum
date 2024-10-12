@@ -295,7 +295,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
         }
 
-        #endregion
+
 
         private SWF.UIComponent.ImagePanel.ImagePanel leftImagePanel;
         private SWF.UIComponent.ImagePanel.ImagePanel rightImagePanel;
@@ -318,5 +318,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         private System.Windows.Forms.ToolStripMenuItem allFitSizeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem onlyBigImageFitSizeToolStripMenuItem;
         private SWF.UIComponent.Core.Slider indexSlider;
+
+        #endregion
     }
 }

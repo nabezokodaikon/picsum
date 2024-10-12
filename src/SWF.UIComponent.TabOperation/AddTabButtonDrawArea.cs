@@ -7,14 +7,14 @@ namespace SWF.UIComponent.TabOperation
     [SupportedOSPlatform("windows")]
     internal sealed class AddTabButtonDrawArea
     {
-        #region 定数・列挙
+
 
         private const int PAGE_SIZE = 24;
         private const int TAB_HEIGHT = 29;
 
-        #endregion
 
-        #region クラスメンバ
+
+
 
         private readonly static RectangleF DEFAULT_RECTANGLE = GetDefaultRectangle();
 
@@ -32,17 +32,17 @@ namespace SWF.UIComponent.TabOperation
         private static readonly Pen MOUSE_POINT_PEN = new(Color.Black, 2f);
         private static readonly Pen NORMAL_PEN = new(Color.White, 2f);
 
-        #endregion
 
-        #region インスタンス変数
+
+
 
         private readonly float width = DEFAULT_RECTANGLE.Width;
         private readonly float height = DEFAULT_RECTANGLE.Height;
         private PointF drawPoint = new(DEFAULT_RECTANGLE.X, DEFAULT_RECTANGLE.Y);
 
-        #endregion
 
-        #region プロパティ
+
+
 
         public float X
         {
@@ -132,9 +132,9 @@ namespace SWF.UIComponent.TabOperation
             }
         }
 
-        #endregion
 
-        #region メソッド
+
+
 
         public bool Page(PointF p)
         {
@@ -185,6 +185,6 @@ namespace SWF.UIComponent.TabOperation
             }
         }
 
-        #endregion
+
     }
 }

@@ -12,15 +12,15 @@ namespace SWF.UIComponent.WideDropDown
     public sealed class WideDropDownList
         : ToolStripDropDown
     {
-        #region イベント・デリゲート
+
 
         public event EventHandler<ItemMouseClickEventArgs> ItemMouseClick;
 
-        #endregion
+
 
         private readonly List<string> itemList = [];
 
-        #region パブリックプロパティ
+
 
         /// <summary>
         /// 項目テキスト色
@@ -163,9 +163,9 @@ namespace SWF.UIComponent.WideDropDown
 
         internal bool IsClickAndClose { get; set; }
 
-        #endregion
 
-        #region プライベートプロパティ
+
+
 
         private ToolStripControlHost ToolStripItem
         {
@@ -191,9 +191,9 @@ namespace SWF.UIComponent.WideDropDown
             }
         }
 
-        #endregion
 
-        #region コンストラクタ
+
+
 
         public WideDropDownList()
         {
@@ -233,9 +233,9 @@ namespace SWF.UIComponent.WideDropDown
             this.FlowList.DrawItem += new(this.FlowList_DrawItem);
         }
 
-        #endregion
 
-        #region パブリックメソッド
+
+
 
         public void SetItems(IList<string> itemList)
         {
@@ -303,9 +303,9 @@ namespace SWF.UIComponent.WideDropDown
             }
         }
 
-        #endregion
 
-        #region 継承メソッド
+
+
 
         protected override void OnOpened(EventArgs e)
         {
@@ -319,9 +319,9 @@ namespace SWF.UIComponent.WideDropDown
             base.OnInvalidated(e);
         }
 
-        #endregion
 
-        #region プライベートメソッド
+
+
 
         private RectangleF GetIconRectangle(SWF.UIComponent.FlowList.DrawItemEventArgs e)
         {
@@ -421,6 +421,6 @@ namespace SWF.UIComponent.WideDropDown
             }
         }
 
-        #endregion
+
     }
 }

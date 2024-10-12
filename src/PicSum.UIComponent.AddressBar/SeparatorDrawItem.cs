@@ -14,7 +14,7 @@ namespace PicSum.UIComponent.AddressBar
     internal sealed class SeparatorDrawItem
         : DropDownDrawItemBase, IDisposable
     {
-        #region インスタンス変数
+
 
         private readonly Image mousePointImage = Resources.SmallArrowRight;
         private readonly Image mouseDownImage = Resources.SmallArrowDown;
@@ -22,9 +22,9 @@ namespace PicSum.UIComponent.AddressBar
         private Font selectedSubDirectoryFont = null;
         private TwoWayJob<SubDirectoriesGetJob, ValueParameter<string>, ListResult<FileShallowInfoEntity>> getSubDirectoryJob = null;
 
-        #endregion
 
-        #region プロパティ
+
+
 
         public DirectoryEntity Directory { get; set; }
         public string SelectedSubDirectoryPath { get; set; }
@@ -60,18 +60,18 @@ namespace PicSum.UIComponent.AddressBar
             }
         }
 
-        #endregion
 
-        #region コンストラクタ
+
+
 
         public SeparatorDrawItem()
         {
 
         }
 
-        #endregion
 
-        #region メソッド
+
+
 
         public new void Dispose()
         {
@@ -196,9 +196,9 @@ namespace PicSum.UIComponent.AddressBar
             }
         }
 
-        #endregion
 
-        #region イベント
+
+
 
         private void GetSubDirectoryJob_Callback(ListResult<FileShallowInfoEntity> e)
         {
@@ -243,6 +243,6 @@ namespace PicSum.UIComponent.AddressBar
             this.isRead = true;
         }
 
-        #endregion
+
     }
 }

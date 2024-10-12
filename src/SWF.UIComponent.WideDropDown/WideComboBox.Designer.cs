@@ -95,9 +95,11 @@ namespace SWF.UIComponent.WideDropDown
             this.PerformLayout();
         }
 
-        #endregion
+
         private System.Windows.Forms.Button addButton;
         private ArrowPictureBox arrowPictureBox;
         private InputTextBox inputTextBox;
+
+        #endregion
     }
 }

@@ -10,23 +10,23 @@ namespace PicSum.UIComponent.AddressBar
     internal sealed class OverflowDrawItem
         : DropDownDrawItemBase, IDisposable
     {
-        #region インスタンス変数
+
 
         private readonly Image mousePointImage = Resources.SmallArrowLeft;
         private readonly Image mouseDownImage = Resources.SmallArrowDown;
 
-        #endregion
 
-        #region コンストラクタ
+
+
 
         public OverflowDrawItem()
         {
 
         }
 
-        #endregion
 
-        #region メソッド
+
+
 
         public new void Dispose()
         {
@@ -136,6 +136,6 @@ namespace PicSum.UIComponent.AddressBar
             return new RectangleF(x, y, w, h);
         }
 
-        #endregion
+
     }
 }

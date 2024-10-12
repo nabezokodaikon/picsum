@@ -10,23 +10,23 @@ namespace SWF.UIComponent.Core
     [ToolStripItemDesignerAvailability(ToolStripItemDesignerAvailability.All)]
     public class ToolStripSlider : ToolStripControlHost
     {
-        #region 定数・列挙
 
-        #endregion
 
-        #region イベント・デリゲート
+
+
+
 
         public event EventHandler BeginValueChange;
         public event EventHandler ValueChanging;
         public event EventHandler ValueChanged;
 
-        #endregion
 
-        #region インスタンス変数
 
-        #endregion
 
-        #region パブリックプロパティ
+
+
+
+
 
         public int MaximumValue
         {
@@ -64,9 +64,9 @@ namespace SWF.UIComponent.Core
             }
         }
 
-        #endregion
 
-        #region プライベートプロパティ
+
+
 
         private Slider Slider
         {
@@ -76,9 +76,9 @@ namespace SWF.UIComponent.Core
             }
         }
 
-        #endregion
 
-        #region コンストラクタ
+
+
 
         public ToolStripSlider()
             : base(new Slider())
@@ -86,13 +86,13 @@ namespace SWF.UIComponent.Core
             this.InitializeComponent();
         }
 
-        #endregion
 
-        #region パブリックメソッド
 
-        #endregion
 
-        #region プライベートメソッド
+
+
+
+
 
         private void InitializeComponent()
         {
@@ -100,9 +100,9 @@ namespace SWF.UIComponent.Core
             this.Slider.BackColor = Color.Transparent;
         }
 
-        #endregion
 
-        #region 継承メソッド
+
+
 
         protected override void OnSubscribeControlEvents(Control control)
         {
@@ -137,10 +137,6 @@ namespace SWF.UIComponent.Core
             ValueChanged?.Invoke(this, e);
         }
 
-        #endregion
-
-        #region ホストしているコントロールのイベント
-
         private void Slider_BeginValueChange(object sender, EventArgs e)
         {
             this.OnBeginValueChange(e);
@@ -156,6 +152,6 @@ namespace SWF.UIComponent.Core
             this.OnValueChanged(e);
         }
 
-        #endregion
+
     }
 }

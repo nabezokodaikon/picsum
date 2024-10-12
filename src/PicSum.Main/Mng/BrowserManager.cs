@@ -15,31 +15,31 @@ namespace PicSum.Main.Mng
     [SupportedOSPlatform("windows")]
     public sealed class BrowserManager
     {
-        #region イベント
+
 
         /// <summary>
         /// ブラウザが無くなったに発生するイベント
         /// </summary>
         public event EventHandler BrowserNothing;
 
-        #endregion
 
-        #region インスタンス変数
+
+
 
         private readonly List<BrowserForm> browserList = [];
 
-        #endregion
 
-        #region コンストラクタ
+
+
 
         public BrowserManager()
         {
 
         }
 
-        #endregion
 
-        #region パブリックメソッド
+
+
 
         /// <summary>
         /// アクティブなブラウザを取得します。
@@ -59,18 +59,10 @@ namespace PicSum.Main.Mng
             }
         }
 
-        #endregion
-
-        #region イベント発生メソッド
-
         public void OnBrowserNothing(EventArgs e)
         {
             this.BrowserNothing?.Invoke(this, e);
         }
-
-        #endregion
-
-        #region ブラウザ作成メソッド
 
         private BrowserForm CreateBrowser()
         {
@@ -100,10 +92,6 @@ namespace PicSum.Main.Mng
             browser.TabDropouted += new(this.Browser_TabDropouted);
             browser.NewWindowPageOpen += new(this.Browser_NewWindowPageOpen);
         }
-
-        #endregion
-
-        #region ブラウザイベント
 
         private void Browser_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -140,6 +128,6 @@ namespace PicSum.Main.Mng
             browser.AddTab(e.PageParameter);
         }
 
-        #endregion
+
     }
 }

@@ -15,15 +15,15 @@ namespace SWF.UIComponent.TabOperation
     internal sealed class TabDragForm
         : Form
     {
-        #region 定数・列挙
+
 
         private const float OUTLINE_OFFSET = 0.5f;
         private const float DRAW_TAB_WIDHT_OFFSET = 8;
         private const float CAPTURE_WIDTH = 320;
 
-        #endregion
 
-        #region インスタンス変数
+
+
 
         private TabPalette tabPalette = null;
         private TabDropForm tabDropForm = null;
@@ -33,7 +33,7 @@ namespace SWF.UIComponent.TabOperation
         private Bitmap regionImage = null;
         private Action<DrawTabEventArgs> drawTabPageMethod = null;
 
-        #endregion
+
 
         public TabSwitch TabSwitch
         {
@@ -43,7 +43,7 @@ namespace SWF.UIComponent.TabOperation
             }
         }
 
-        #region プライベートプロパティ
+
 
         private TabPalette TabPalette
         {
@@ -85,18 +85,18 @@ namespace SWF.UIComponent.TabOperation
             }
         }
 
-        #endregion
 
-        #region コンストラクタ
+
+
 
         public TabDragForm()
         {
             this.InitializeComponent();
         }
 
-        #endregion
 
-        #region パブリックメソッド
+
+
 
         public void SetLocation(float xOffset, float yOffset)
         {
@@ -202,9 +202,9 @@ namespace SWF.UIComponent.TabOperation
             }
         }
 
-        #endregion
 
-        #region 継承メソッド
+
+
 
         protected override void OnLostFocus(EventArgs e)
         {
@@ -230,9 +230,9 @@ namespace SWF.UIComponent.TabOperation
             this.drawTabPageMethod(this.DrawTabEventArgs);
         }
 
-        #endregion
 
-        #region プライベートメソッド
+
+
 
         private void InitializeComponent()
         {
@@ -283,6 +283,6 @@ namespace SWF.UIComponent.TabOperation
             return new RectangleF(x, y, w, h);
         }
 
-        #endregion
+
     }
 }

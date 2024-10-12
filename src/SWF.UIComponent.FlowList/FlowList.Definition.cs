@@ -11,7 +11,7 @@ namespace SWF.UIComponent.FlowList
     /// </summary>
     public sealed partial class FlowList
     {
-        #region イベント・デリゲート
+
 
         public event EventHandler<DrawItemEventArgs> DrawItem;
         public event EventHandler<DrawItemChangedEventArgs> DrawItemChanged;
@@ -25,9 +25,9 @@ namespace SWF.UIComponent.FlowList
         public event EventHandler ItemCut;
         public event EventHandler DragStart;
 
-        #endregion
 
-        #region パブリックプロパティ
+
+
 
         public bool CanKeyDown { get; set; } = true;
 
@@ -408,9 +408,9 @@ namespace SWF.UIComponent.FlowList
             }
         }
 
-        #endregion
 
-        #region パブリックメソッド
+
+
 
         /// <summary>
         /// 描画領域をリフレッシュします。
@@ -546,10 +546,6 @@ namespace SWF.UIComponent.FlowList
             this.Invalidate(rect);
         }
 
-        #endregion
-
-        #region イベント発生メソッド
-
         private void OnDrawItem(DrawItemEventArgs e)
         {
             this.DrawItem?.Invoke(this, e);
@@ -605,6 +601,6 @@ namespace SWF.UIComponent.FlowList
             this.DragStart?.Invoke(this, e);
         }
 
-        #endregion
+
     }
 }
