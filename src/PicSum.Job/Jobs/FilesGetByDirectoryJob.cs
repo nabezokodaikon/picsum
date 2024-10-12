@@ -1,4 +1,4 @@
-using PicSum.Core.Job.AsyncJob;
+using SWF.Core.Job;
 using PicSum.Job.Entities;
 using PicSum.Job.Logics;
 using PicSum.Job.Results;

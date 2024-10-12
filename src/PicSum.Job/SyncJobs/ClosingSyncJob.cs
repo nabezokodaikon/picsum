@@ -1,4 +1,4 @@
-using PicSum.Core.Job.AsyncJob;
+using SWF.Core.Job;
 using PicSum.Job.SyncLogics;
 
 namespace PicSum.Job.SyncJobs

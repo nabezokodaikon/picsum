@@ -20,7 +20,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\PicSum.Core.Job.AsyncJob\PicSum.Core.Job.AsyncJob.csproj" />
+    <ProjectReference Include="..\SWF.Core.Job\SWF.Core.Job.csproj" />
     <ProjectReference Include="..\PicSum.DatabaseAccessor\PicSum.DatabaseAccessor.csproj" />
     <ProjectReference Include="..\SWF.Core.Base\SWF.Core.Base.csproj" />
     <ProjectReference Include="..\SWF.Core.FileAccessor\SWF.Core.FileAccessor.csproj" />

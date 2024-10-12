@@ -1,5 +1,5 @@
 using SWF.Core.DatabaseAccessor;
-using PicSum.Core.Job.AsyncJob;
+using SWF.Core.Job;
 using PicSum.DatabaseAccessor.Connection;
 using PicSum.DatabaseAccessor.Sql;
 using System.Runtime.Versioning;

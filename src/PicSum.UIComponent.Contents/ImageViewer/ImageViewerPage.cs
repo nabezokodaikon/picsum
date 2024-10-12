@@ -1,5 +1,5 @@
 using NLog;
-using PicSum.Core.Job.AsyncJob;
+using SWF.Core.Job;
 using PicSum.Job.Jobs;
 using PicSum.Job.Logics;
 using PicSum.Job.Parameters;

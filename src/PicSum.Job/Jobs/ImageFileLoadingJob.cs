@@ -1,4 +1,4 @@
-using PicSum.Core.Job.AsyncJob;
+using SWF.Core.Job;
 using System.Diagnostics;
 
 namespace PicSum.Job.Jobs
