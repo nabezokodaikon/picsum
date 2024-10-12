@@ -68,9 +68,9 @@ namespace PicSum.Main.UIComponent
                     402);
 
                 this.infoPanel.SetBounds(
-                    this.pageContainer.Width - Constants.INFOPANEL_WIDTH,
+                    this.pageContainer.Width - ApplicationConstants.INFOPANEL_WIDTH,
                     this.pageContainer.Location.Y,
-                    Constants.INFOPANEL_WIDTH,
+                    ApplicationConstants.INFOPANEL_WIDTH,
                     402);
 
                 this.pageContainer.Anchor
@@ -594,7 +594,7 @@ namespace PicSum.Main.UIComponent
         {
             if (this.pageContainer.Width == this.Width)
             {
-                this.pageContainer.Width = this.Width - Constants.INFOPANEL_WIDTH;
+                this.pageContainer.Width = this.Width - ApplicationConstants.INFOPANEL_WIDTH;
             }
             else
             {

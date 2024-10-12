@@ -77,7 +77,7 @@ namespace PicSum.Core.DatabaseAccessor
 
             for (var i = 0; i < valueList.Count; i++)
             {
-                var param = string.Format(Constants.NUMBERING_SQL_PARAMETER_FORMAT, paramName, i.ToString());
+                var param = string.Format(ApplicationConstants.NUMBERING_SQL_PARAMETER_FORMAT, paramName, i.ToString());
                 var value = valueList[i];
                 list.Add(SqlParameterUtil.CreateParameter(param, value, DbType.String));
             }
@@ -94,7 +94,7 @@ namespace PicSum.Core.DatabaseAccessor
 
             for (var i = 0; i < valueList.Count; i++)
             {
-                var param = string.Format(Constants.NUMBERING_SQL_PARAMETER_FORMAT, paramName, i.ToString());
+                var param = string.Format(ApplicationConstants.NUMBERING_SQL_PARAMETER_FORMAT, paramName, i.ToString());
                 var value = valueList[i];
                 list.Add(SqlParameterUtil.CreateParameter(param, value, size, DbType.String));
             }
@@ -111,7 +111,7 @@ namespace PicSum.Core.DatabaseAccessor
 
             for (var i = 0; i < valueList.Count; i++)
             {
-                var param = string.Format(Constants.NUMBERING_SQL_PARAMETER_FORMAT, paramName, i.ToString());
+                var param = string.Format(ApplicationConstants.NUMBERING_SQL_PARAMETER_FORMAT, paramName, i.ToString());
                 var value = valueList[i];
                 list.Add(SqlParameterUtil.CreateParameter(param, value, DbType.Int32));
             }
@@ -128,7 +128,7 @@ namespace PicSum.Core.DatabaseAccessor
 
             for (var i = 0; i < valueList.Count; i++)
             {
-                var param = string.Format(Constants.NUMBERING_SQL_PARAMETER_FORMAT, paramName, i.ToString());
+                var param = string.Format(ApplicationConstants.NUMBERING_SQL_PARAMETER_FORMAT, paramName, i.ToString());
                 var value = valueList[i];
                 list.Add(SqlParameterUtil.CreateParameter(param, value, DbType.Boolean));
             }
@@ -145,7 +145,7 @@ namespace PicSum.Core.DatabaseAccessor
 
             for (var i = 0; i < valueList.Count; i++)
             {
-                var param = string.Format(Constants.NUMBERING_SQL_PARAMETER_FORMAT, paramName, i.ToString());
+                var param = string.Format(ApplicationConstants.NUMBERING_SQL_PARAMETER_FORMAT, paramName, i.ToString());
                 var value = valueList[i];
                 list.Add(SqlParameterUtil.CreateParameter(param, value, DbType.DateTime));
             }
@@ -162,7 +162,7 @@ namespace PicSum.Core.DatabaseAccessor
 
             for (var i = 0; i < valueList.Count; i++)
             {
-                var param = string.Format(Constants.NUMBERING_SQL_PARAMETER_FORMAT, paramName, i.ToString());
+                var param = string.Format(ApplicationConstants.NUMBERING_SQL_PARAMETER_FORMAT, paramName, i.ToString());
                 var value = valueList[i];
                 list.Add(SqlParameterUtil.CreateParameter(param, value, DbType.Binary));
             }

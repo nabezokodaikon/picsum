@@ -1,6 +1,6 @@
 namespace SWF.Core.Base
 {
-    public sealed class Constants
+    public sealed class ApplicationConstants
     {
         /// <summary>
         /// 番号付SQLパラメータの書式
