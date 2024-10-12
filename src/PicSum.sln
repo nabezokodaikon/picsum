@@ -2,8 +2,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33516.290
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PicSum.Data.DatabaseAccessor", "PicSum.Data.DatabaseAccessor\PicSum.Data.DatabaseAccessor.csproj", "{B638D175-DF52-4A95-AAB6-D1099EFDE33A}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PicSum.Main", "PicSum.Main\PicSum.Main.csproj", "{0689D5BA-499C-45E8-87D3-04A4CD261CCC}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PicSum.UIComponent.AddressBar", "PicSum.UIComponent.AddressBar\PicSum.UIComponent.AddressBar.csproj", "{290188E5-55A5-40C7-A311-4E3474C23789}"
@@ -38,6 +36,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SWF.UIComponent.Core", "SWF
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SWF.Core.DatabaseAccessor", "SWF.Core.DatabaseAccessor\SWF.Core.DatabaseAccessor.csproj", "{6BAF7636-BDDD-48E8-B1A0-9B7347CB0274}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PicSum.DatabaseAccessor", "PicSum.DatabaseAccessor\PicSum.DatabaseAccessor.csproj", "{582176BE-AFFA-4783-B615-920161032725}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -48,18 +48,6 @@ Global
 		Release|x64 = Release|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{B638D175-DF52-4A95-AAB6-D1099EFDE33A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B638D175-DF52-4A95-AAB6-D1099EFDE33A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B638D175-DF52-4A95-AAB6-D1099EFDE33A}.Debug|x64.ActiveCfg = Debug|x64
-		{B638D175-DF52-4A95-AAB6-D1099EFDE33A}.Debug|x64.Build.0 = Debug|x64
-		{B638D175-DF52-4A95-AAB6-D1099EFDE33A}.Develop|Any CPU.ActiveCfg = Develop|Any CPU
-		{B638D175-DF52-4A95-AAB6-D1099EFDE33A}.Develop|Any CPU.Build.0 = Develop|Any CPU
-		{B638D175-DF52-4A95-AAB6-D1099EFDE33A}.Develop|x64.ActiveCfg = Develop|Any CPU
-		{B638D175-DF52-4A95-AAB6-D1099EFDE33A}.Develop|x64.Build.0 = Develop|Any CPU
-		{B638D175-DF52-4A95-AAB6-D1099EFDE33A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B638D175-DF52-4A95-AAB6-D1099EFDE33A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B638D175-DF52-4A95-AAB6-D1099EFDE33A}.Release|x64.ActiveCfg = Release|x64
-		{B638D175-DF52-4A95-AAB6-D1099EFDE33A}.Release|x64.Build.0 = Release|x64
 		{0689D5BA-499C-45E8-87D3-04A4CD261CCC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0689D5BA-499C-45E8-87D3-04A4CD261CCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0689D5BA-499C-45E8-87D3-04A4CD261CCC}.Debug|x64.ActiveCfg = Debug|x64
@@ -264,6 +252,18 @@ Global
 		{6BAF7636-BDDD-48E8-B1A0-9B7347CB0274}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6BAF7636-BDDD-48E8-B1A0-9B7347CB0274}.Release|x64.ActiveCfg = Release|Any CPU
 		{6BAF7636-BDDD-48E8-B1A0-9B7347CB0274}.Release|x64.Build.0 = Release|Any CPU
+		{582176BE-AFFA-4783-B615-920161032725}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{582176BE-AFFA-4783-B615-920161032725}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{582176BE-AFFA-4783-B615-920161032725}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{582176BE-AFFA-4783-B615-920161032725}.Debug|x64.Build.0 = Debug|Any CPU
+		{582176BE-AFFA-4783-B615-920161032725}.Develop|Any CPU.ActiveCfg = Debug|Any CPU
+		{582176BE-AFFA-4783-B615-920161032725}.Develop|Any CPU.Build.0 = Debug|Any CPU
+		{582176BE-AFFA-4783-B615-920161032725}.Develop|x64.ActiveCfg = Debug|Any CPU
+		{582176BE-AFFA-4783-B615-920161032725}.Develop|x64.Build.0 = Debug|Any CPU
+		{582176BE-AFFA-4783-B615-920161032725}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{582176BE-AFFA-4783-B615-920161032725}.Release|Any CPU.Build.0 = Release|Any CPU
+		{582176BE-AFFA-4783-B615-920161032725}.Release|x64.ActiveCfg = Release|Any CPU
+		{582176BE-AFFA-4783-B615-920161032725}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,8 +1,8 @@
 using SWF.Core.DatabaseAccessor;
 using PicSum.Core.Job.AsyncJob;
-using PicSum.Data.DatabaseAccessor.Connection;
-using PicSum.Data.DatabaseAccessor.Dto;
-using PicSum.Data.DatabaseAccessor.Sql;
+using PicSum.DatabaseAccessor.Connection;
+using PicSum.DatabaseAccessor.Dto;
+using PicSum.DatabaseAccessor.Sql;
 using PicSum.Job.Entities;
 using SWF.Core.Base;
 using SWF.Core.FileAccessor;
