@@ -17,7 +17,7 @@ namespace SWF.UIComponent.TabOperation
     {
         #region 定数・列挙
 
-        private const float OUTLINE_OFFSET = 1;
+        private const float OUTLINE_OFFSET = 0.5f;
         private const float DRAW_TAB_WIDHT_OFFSET = 8;
         private const float CAPTURE_WIDTH = 320;
 
@@ -163,7 +163,7 @@ namespace SWF.UIComponent.TabOperation
                     g.CompositingMode = CompositingMode.SourceOver;
 
                     var outlineRect = this.GetOutlineRectangle(pageSize);
-                    g.FillRectangle(tab.Owner.OutlineBrush, outlineRect);
+                    //g.FillRectangle(tab.Owner.OutlineBrush, outlineRect);
 
                     var pageRect = this.GetPageRectangle(outlineRect);
                     g.DrawImage(pageCap, pageRect);
@@ -276,11 +276,11 @@ namespace SWF.UIComponent.TabOperation
 
         private RectangleF GetPageRectangle(RectangleF outlineRectangle)
         {
-            var l = outlineRectangle.Left + OUTLINE_OFFSET;
-            var t = outlineRectangle.Top + OUTLINE_OFFSET;
-            var r = outlineRectangle.Right - OUTLINE_OFFSET;
-            var b = outlineRectangle.Bottom - OUTLINE_OFFSET;
-            return RectangleF.FromLTRB(l, t, r, b);
+            var x = outlineRectangle.X + OUTLINE_OFFSET;
+            var y = outlineRectangle.Y + OUTLINE_OFFSET;
+            var w = outlineRectangle.Width - OUTLINE_OFFSET * 2f;
+            var h = outlineRectangle.Height - OUTLINE_OFFSET * 2f;
+            return new RectangleF(x, y, w, h);
         }
 
         #endregion
