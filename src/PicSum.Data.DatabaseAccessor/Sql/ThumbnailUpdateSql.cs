@@ -40,15 +40,15 @@ UPDATE t_thumbnail
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
             base.ParameterList.AddRange(
-            [ SqlParameterUtil.CreateParameter("file_path", filePath),
-              SqlParameterUtil.CreateParameter("thumbnail_id", thumbnailID),
-              SqlParameterUtil.CreateParameter("thumbnail_start_point", thumbnailStartPoint),
-              SqlParameterUtil.CreateParameter("thumbnail_size", thumbnailSize),
-              SqlParameterUtil.CreateParameter("thumbnail_width", thumbnailWidth),
-              SqlParameterUtil.CreateParameter("thumbnail_height", thumbnailHeight),
-              SqlParameterUtil.CreateParameter("source_width", sourceWidth),
-              SqlParameterUtil.CreateParameter("source_height", sourceHeight),
-              SqlParameterUtil.CreateParameter("file_update_date", fileUpdateDate) ]);
+            [SqlParameterUtil.CreateParameter("file_path", filePath),
+                SqlParameterUtil.CreateParameter("thumbnail_id", thumbnailID),
+                SqlParameterUtil.CreateParameter("thumbnail_start_point", thumbnailStartPoint),
+                SqlParameterUtil.CreateParameter("thumbnail_size", thumbnailSize),
+                SqlParameterUtil.CreateParameter("thumbnail_width", thumbnailWidth),
+                SqlParameterUtil.CreateParameter("thumbnail_height", thumbnailHeight),
+                SqlParameterUtil.CreateParameter("source_width", sourceWidth),
+                SqlParameterUtil.CreateParameter("source_height", sourceHeight),
+                SqlParameterUtil.CreateParameter("file_update_date", fileUpdateDate)]);
         }
     }
 }

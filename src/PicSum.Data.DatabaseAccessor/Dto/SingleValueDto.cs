@@ -1,4 +1,4 @@
-﻿using PicSum.Core.DatabaseAccessor;
+using PicSum.Core.DatabaseAccessor;
 using System.Data;
 
 namespace PicSum.Data.DatabaseAccessor.Dto

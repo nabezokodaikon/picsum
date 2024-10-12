@@ -115,7 +115,7 @@ namespace PicSum.Main.UIComponent
                 this.Controls.AddRange(
                     [
                         this.pageContainer,
-                    this.infoPanel,
+                        this.infoPanel,
                     ]);
 
                 this.infoPanel.BringToFront();

@@ -1,4 +1,4 @@
-﻿using PicSum.Core.Base.Conf;
+using PicSum.Core.Base.Conf;
 
 namespace PicSum.UIComponent.Contents.Conf
 {

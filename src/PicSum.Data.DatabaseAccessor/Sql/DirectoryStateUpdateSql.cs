@@ -30,10 +30,10 @@ UPDATE t_directory_state
             ArgumentException.ThrowIfNullOrEmpty(selectedFilePath, nameof(selectedFilePath));
 
             base.ParameterList.AddRange(
-                [ SqlParameterUtil.CreateParameter("directory_path", directoryPath),
-                  SqlParameterUtil.CreateParameter("sort_type_id", sortTypeID),
-                  SqlParameterUtil.CreateParameter("is_ascending", isAscending),
-                  SqlParameterUtil.CreateParameter("selected_file_path", selectedFilePath) ]);
+                [SqlParameterUtil.CreateParameter("directory_path", directoryPath),
+                    SqlParameterUtil.CreateParameter("sort_type_id", sortTypeID),
+                    SqlParameterUtil.CreateParameter("is_ascending", isAscending),
+                    SqlParameterUtil.CreateParameter("selected_file_path", selectedFilePath)]);
         }
 
         public DirectoryStateUpdateSql(string directoryPath, int sortTypeID, bool isAscending)
@@ -42,10 +42,10 @@ UPDATE t_directory_state
             ArgumentException.ThrowIfNullOrEmpty(directoryPath, nameof(directoryPath));
 
             base.ParameterList.AddRange(
-                [ SqlParameterUtil.CreateParameter("directory_path", directoryPath),
-                  SqlParameterUtil.CreateParameter("sort_type_id", sortTypeID),
-                  SqlParameterUtil.CreateParameter("is_ascending", isAscending),
-                  SqlParameterUtil.CreateParameter("selected_file_path", DBNull.Value) ]);
+                [SqlParameterUtil.CreateParameter("directory_path", directoryPath),
+                    SqlParameterUtil.CreateParameter("sort_type_id", sortTypeID),
+                    SqlParameterUtil.CreateParameter("is_ascending", isAscending),
+                    SqlParameterUtil.CreateParameter("selected_file_path", DBNull.Value)]);
         }
     }
 }

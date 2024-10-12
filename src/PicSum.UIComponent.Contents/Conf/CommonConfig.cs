@@ -1,4 +1,4 @@
-﻿namespace PicSum.UIComponent.Contents.Conf
+namespace PicSum.UIComponent.Contents.Conf
 {
     /// <summary>
     /// コンテンツ共通設定クラス
