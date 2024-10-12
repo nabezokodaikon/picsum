@@ -261,7 +261,7 @@ namespace SWF.Core.ImageAccessor
                         }
                         else if (FileUtil.IsJpegFile(formatName))
                         {
-                            var size = GetJpegSize(filePath);
+                            var size = GetJpegSize(fs);
                             if (size != EMPTY_SIZE)
                             {
                                 return size;
@@ -269,7 +269,7 @@ namespace SWF.Core.ImageAccessor
                         }
                         else if (FileUtil.IsPngFile(formatName))
                         {
-                            var size = GetPngSize(filePath);
+                            var size = GetPngSize(fs);
                             if (size != EMPTY_SIZE)
                             {
                                 return size;
@@ -277,13 +277,17 @@ namespace SWF.Core.ImageAccessor
                         }
                         else if (FileUtil.IsBmpFile(formatName))
                         {
-                            var size = GetBmpSize(filePath);
+                            var size = GetBmpSize(fs);
                             if (size != EMPTY_SIZE)
                             {
                                 return size;
                             }
                         }
                     }
+                }
+                catch (ArgumentNullException ex)
+                {
+                    throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
                 }
                 catch (ArgumentException ex)
                 {
@@ -309,6 +313,14 @@ namespace SWF.Core.ImageAccessor
                 {
                     throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
                 }
+                catch (EndOfStreamException ex)
+                {
+                    throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
+                }
+                catch (ObjectDisposedException ex)
+                {
+                    throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
+                }
                 catch (IOException ex)
                 {
                     throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
@@ -322,6 +334,10 @@ namespace SWF.Core.ImageAccessor
                     throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
                 }
                 catch (SixLabors.ImageSharp.UnknownImageFormatException ex)
+                {
+                    throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
+                }
+                catch (LibHeifSharp.HeifException ex)
                 {
                     throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
                 }
@@ -639,11 +655,9 @@ namespace SWF.Core.ImageAccessor
         }
 
 
-        private static Size GetJpegSize(string filePath)
+        private static Size GetJpegSize(FileStream fs)
         {
-            using (var fs = new FileStream(filePath,
-                FileMode.Open, FileAccess.Read, FileShare.Read, 32, FileOptions.SequentialScan))
-            using (BinaryReader reader = new BinaryReader(fs))
+            using (var reader = new BinaryReader(fs))
             {
                 if (reader.ReadByte() == 0xFF && reader.ReadByte() == 0xD8)
                 {
@@ -672,10 +686,8 @@ namespace SWF.Core.ImageAccessor
             return EMPTY_SIZE;
         }
 
-        private static Size GetPngSize(string filePath)
+        private static Size GetPngSize(FileStream fs)
         {
-            using (var fs = new FileStream(filePath,
-                FileMode.Open, FileAccess.Read, FileShare.Read, 32, FileOptions.SequentialScan))
             using (var reader = new BinaryReader(fs))
             {
                 var pngSignature = reader.ReadBytes(8);
@@ -720,10 +732,8 @@ namespace SWF.Core.ImageAccessor
             return BitConverter.ToInt32(bytes, 0);
         }
 
-        private static Size GetBmpSize(string filePath)
+        private static Size GetBmpSize(FileStream fs)
         {
-            using (var fs = new FileStream(filePath,
-                FileMode.Open, FileAccess.Read, FileShare.Read, 32, FileOptions.SequentialScan))
             using (var reader = new BinaryReader(fs))
             {
                 var bmpSignature = reader.ReadBytes(2);
@@ -742,7 +752,7 @@ namespace SWF.Core.ImageAccessor
 
         private static string CreateFileAccessErrorMessage(string path)
         {
-            return $"'{path}'を開けませんでした。";
+            return $"'{path}'へのアクセスに失敗しました。";
         }
     }
 }
