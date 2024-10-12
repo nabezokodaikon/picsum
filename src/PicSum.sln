@@ -2,8 +2,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33516.290
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PicSum.Core.Base", "PicSum.Core.Base\PicSum.Core.Base.csproj", "{128C4631-F38E-4670-BC8F-E9E60910CE70}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PicSum.Data.DatabaseAccessor", "PicSum.Data.DatabaseAccessor\PicSum.Data.DatabaseAccessor.csproj", "{B638D175-DF52-4A95-AAB6-D1099EFDE33A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PicSum.Main", "PicSum.Main\PicSum.Main.csproj", "{0689D5BA-499C-45E8-87D3-04A4CD261CCC}"
@@ -50,18 +48,6 @@ Global
 		Release|x64 = Release|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{128C4631-F38E-4670-BC8F-E9E60910CE70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{128C4631-F38E-4670-BC8F-E9E60910CE70}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{128C4631-F38E-4670-BC8F-E9E60910CE70}.Debug|x64.ActiveCfg = Debug|x64
-		{128C4631-F38E-4670-BC8F-E9E60910CE70}.Debug|x64.Build.0 = Debug|x64
-		{128C4631-F38E-4670-BC8F-E9E60910CE70}.Develop|Any CPU.ActiveCfg = Develop|Any CPU
-		{128C4631-F38E-4670-BC8F-E9E60910CE70}.Develop|Any CPU.Build.0 = Develop|Any CPU
-		{128C4631-F38E-4670-BC8F-E9E60910CE70}.Develop|x64.ActiveCfg = Develop|Any CPU
-		{128C4631-F38E-4670-BC8F-E9E60910CE70}.Develop|x64.Build.0 = Develop|Any CPU
-		{128C4631-F38E-4670-BC8F-E9E60910CE70}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{128C4631-F38E-4670-BC8F-E9E60910CE70}.Release|Any CPU.Build.0 = Release|Any CPU
-		{128C4631-F38E-4670-BC8F-E9E60910CE70}.Release|x64.ActiveCfg = Release|Any CPU
-		{128C4631-F38E-4670-BC8F-E9E60910CE70}.Release|x64.Build.0 = Release|Any CPU
 		{B638D175-DF52-4A95-AAB6-D1099EFDE33A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B638D175-DF52-4A95-AAB6-D1099EFDE33A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B638D175-DF52-4A95-AAB6-D1099EFDE33A}.Debug|x64.ActiveCfg = Debug|x64
