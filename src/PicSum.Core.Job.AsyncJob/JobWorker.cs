@@ -211,6 +211,12 @@ namespace PicSum.Core.Job.AsyncJob
 
                         if (previewJob == job)
                         {
+                            if (token.IsCancellationRequested)
+                            {
+                                Logger.Debug("ジョブ実行スレッドにキャンセルリクエストがありました。");
+                                token.ThrowIfCancellationRequested();
+                            }
+
                             Thread.Sleep(1);
                             continue;
                         }
