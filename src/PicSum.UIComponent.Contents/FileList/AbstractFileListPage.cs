@@ -92,8 +92,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
         #region インスタンス変数
 
-        public bool Disposed { get; protected set; } = false;
-
+        private bool disposing = false;
         private Dictionary<string, FileEntity> masterFileDictionary = null;
         private List<string> filterFilePathList = null;
         private TwoWayJob<ThumbnailsGetJob, ThumbnailsGetParameter, ThumbnailImageResult> getThumbnailsJob = null;
@@ -251,7 +250,15 @@ namespace PicSum.UIComponent.Contents.FileList
                 {
                     this.getThumbnailsJob = new();
                     this.getThumbnailsJob
-                        .Callback(this.GetThumbnailsJob_Callback)
+                        .Callback(_ =>
+                        {
+                            if (this.disposing)
+                            {
+                                return;
+                            }
+
+                            this.GetThumbnailsJob_Callback(_);
+                        })
                         .StartThread();
                 }
 
@@ -297,7 +304,15 @@ namespace PicSum.UIComponent.Contents.FileList
                 {
                     this.multiFilesExportJob = new();
                     this.multiFilesExportJob
-                        .Callback(this.MultiFilesExportJob_Callback)
+                        .Callback(_ =>
+                        {
+                            if (this.disposing)
+                            {
+                                return;
+                            }
+
+                            this.MultiFilesExportJob_Callback(_);
+                        })
                         .StartThread();
                 }
 
@@ -356,6 +371,8 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             if (disposing && (components != null))
             {
+                this.disposing = true;
+
                 if (this.getThumbnailsJob != null)
                 {
                     this.getThumbnailsJob.Dispose();

@@ -60,6 +60,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
         #region インスタンス変数
 
+        private bool disposing = false;
         private readonly DirectoryFileListPageParameter parameter = null;
         private TwoWayJob<FilesGetByDirectoryJob, ValueParameter<string>, DirectoryGetResult> searchJob = null;
         private OneWayJob<DirectoryStateUpdateJob, DirectoryStateParameter> directoryStateUpdateJob = null;
@@ -78,7 +79,15 @@ namespace PicSum.UIComponent.Contents.FileList
                 {
                     this.searchJob = new();
                     this.searchJob
-                        .Callback(this.SearchJob_Callback)
+                        .Callback(_ =>
+                        {
+                            if (this.disposing)
+                            {
+                                return;
+                            }
+
+                            this.SearchJob_Callback(_);
+                        })
                         .StartThread();
                 }
 
@@ -122,7 +131,15 @@ namespace PicSum.UIComponent.Contents.FileList
                 {
                     this.nextDirectoryGetJob = new();
                     this.nextDirectoryGetJob
-                        .Callback(this.GetNextDirectoryProcess_Callback)
+                        .Callback(_ =>
+                        {
+                            if (this.disposing)
+                            {
+                                return;
+                            }
+
+                            this.GetNextDirectoryProcess_Callback(_);
+                        })
                         .StartThread();
                 }
 
@@ -156,7 +173,7 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             if (disposing)
             {
-                this.Disposed = true;
+                this.disposing = true;
 
                 this.SaveCurrentDirectoryState();
 

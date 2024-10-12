@@ -127,6 +127,11 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                     this.imageFileReadJob
                         .Callback(r =>
                         {
+                            if (this.disposing)
+                            {
+                                return;
+                            }
+
                             var sw = Stopwatch.StartNew();
                             Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageViewerPage.ImageFileReadJob_Callback: IsMain = {r.IsMain}");
 
@@ -160,6 +165,11 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                     this.imageFileLoadingJob
                         .Callback(r =>
                         {
+                            if (this.disposing)
+                            {
+                                return;
+                            }
+
                             var sw = Stopwatch.StartNew();
                             Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageViewerPage.ImageFileLoadingJob_Callback: Start");
 

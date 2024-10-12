@@ -60,6 +60,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
         #region インスタンス変数
 
+        private bool disposing = false;
         private readonly TagFileListPageParameter parameter = null;
         private TwoWayJob<FilesGetByTagJob, ValueParameter<string>, ListResult<FileShallowInfoEntity>> searchJob = null;
         private OneWayJob<FileTagDeleteJob, UpdateFileTagParameter> deleteJob = null;
@@ -76,7 +77,15 @@ namespace PicSum.UIComponent.Contents.FileList
                 {
                     this.searchJob = new();
                     this.searchJob
-                        .Callback(this.SearchJob_Callback)
+                        .Callback(_ =>
+                        {
+                            if (this.disposing)
+                            {
+                                return;
+                            }
+
+                            this.SearchJob_Callback(_);
+                        })
                         .StartThread();
                 }
 
@@ -126,7 +135,7 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             if (disposing)
             {
-                this.Disposed = true;
+                this.disposing = true;
 
                 this.parameter.SelectedFilePath = base.SelectedFilePath;
                 this.parameter.SortInfo = base.SortInfo;

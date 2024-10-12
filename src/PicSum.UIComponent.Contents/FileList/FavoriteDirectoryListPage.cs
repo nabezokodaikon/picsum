@@ -22,6 +22,7 @@ namespace PicSum.UIComponent.Contents.FileList
     {
         #region インスタンス変数
 
+        private bool disposing = false;
         private readonly FavoriteDirectoryListPageParameter parameter = null;
         private TwoWayJob<FavoriteDirectoryGetJob, FavoriteDirectoriesGetParameter, ListResult<FileShallowInfoEntity>> searchJob = null;
         private OneWayJob<DirectoryViewCounterDeleteJob, ListParameter<string>> deleteJob = null;
@@ -38,7 +39,15 @@ namespace PicSum.UIComponent.Contents.FileList
                 {
                     this.searchJob = new();
                     this.searchJob
-                        .Callback(this.SearchJob_Callback)
+                        .Callback(_ =>
+                        {
+                            if (this.disposing)
+                            {
+                                return;
+                            }
+
+                            this.SearchJob_Callback(_);
+                        })
                         .StartThread();
                 }
 
@@ -80,7 +89,7 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             if (disposing)
             {
-                this.Disposed = true;
+                this.disposing = true;
 
                 this.parameter.SelectedFilePath = base.SelectedFilePath;
                 this.parameter.SortInfo = base.SortInfo;
@@ -173,11 +182,6 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private void SearchJob_Callback(ListResult<FileShallowInfoEntity> e)
         {
-            if (this.Disposed)
-            {
-                return;
-            }
-
             if (this.parameter.SortInfo == null)
             {
                 base.SetFile(e, this.parameter.SelectedFilePath);

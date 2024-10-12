@@ -59,6 +59,7 @@ namespace PicSum.UIComponent.Contents.FileList
             };
         }
 
+        private bool disposing = false;
         private readonly BookmarkFileListPageParameter parameter = null;
         private TwoWayJob<BookmarksGetJob, ListResult<FileShallowInfoEntity>> searchJob = null;
         private OneWayJob<BookmarkDeleteJob, ListParameter<string>> deleteJob = null;
@@ -71,7 +72,15 @@ namespace PicSum.UIComponent.Contents.FileList
                 {
                     this.searchJob = new();
                     this.searchJob
-                        .Callback(this.SearchJob_Callback)
+                        .Callback(_ =>
+                        {
+                            if (this.disposing)
+                            {
+                                return;
+                            }
+
+                            this.SearchJob_Callback(_);
+                        })
                         .StartThread();
                 }
 
@@ -111,7 +120,7 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             if (disposing)
             {
-                this.Disposed = true;
+                this.disposing = true;
 
                 this.parameter.SelectedFilePath = base.SelectedFilePath;
                 this.parameter.SortInfo = base.SortInfo;
