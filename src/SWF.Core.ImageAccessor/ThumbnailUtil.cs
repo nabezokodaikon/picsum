@@ -1,3 +1,4 @@
+using Microsoft.WindowsAPICodePack.Shell;
 using System.Diagnostics;
 using System.Runtime.Versioning;
 
@@ -6,6 +7,47 @@ namespace SWF.Core.ImageAccessor
     [SupportedOSPlatform("windows")]
     public static class ThumbnailUtil
     {
+        public static Bitmap GetThumbnail(string filePath, Size srcSize, int thumbWidth, int thumbHeight)
+        {
+            var sw = Stopwatch.StartNew();
+            try
+            {
+                int w, h;
+                if (Math.Max(srcSize.Width, srcSize.Height) <= Math.Min(thumbWidth, thumbHeight))
+                {
+                    w = srcSize.Width;
+                    h = srcSize.Height;
+                }
+                else
+                {
+                    var scale = Math.Min(thumbWidth / (float)srcSize.Width, thumbHeight / (float)srcSize.Height);
+                    w = (int)(srcSize.Width * scale);
+                    h = (int)(srcSize.Height * scale);
+                }
+
+                if (w < 1)
+                {
+                    w = 1;
+                }
+
+                if (h < 1)
+                {
+                    h = 1;
+                }
+
+                using (var shellFile = ShellFile.FromFilePath(filePath))
+                using (var thumbnail = shellFile.Thumbnail.LargeBitmap)
+                {
+                    return new Bitmap(thumbnail, new Size(w, h));
+                }
+            }
+            finally
+            {
+                sw.Stop();
+                Console.WriteLine($"[{Thread.CurrentThread.Name}] ThumbnailUtil.GetThumbnail: {sw.ElapsedMilliseconds} ms");
+            }
+        }
+
         /// <summary>
         /// サムネイルを作成します。
         /// </summary>
