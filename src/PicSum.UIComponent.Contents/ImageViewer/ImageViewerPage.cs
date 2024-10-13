@@ -63,7 +63,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         private bool isLoading = false;
 
         private TwoWayJob<ImageFileReadJob, ImageFileReadParameter, ImageFileReadResult> imageFileReadJob = null;
-        private TwoWayJob<ImageFileLoadingJob, EmptyResult> imageFileLoadingJob = null;
+        private OneWayJob<ImageFileLoadingJob> imageFileLoadingJob = null;
         private OneWayJob<BookmarkAddJob, ValueParameter<string>> addBookmarkJob = null;
         private OneWayJob<SingleFileExportJob, SingleFileExportParameter> singleFileExportJob = null;
         private OneWayJob<ImageFileCacheJob, ListParameter<string>> imageFileCacheJob = null;
@@ -141,7 +141,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             }
         }
 
-        private TwoWayJob<ImageFileLoadingJob, EmptyResult> ImageFileLoadingJob
+        private OneWayJob<ImageFileLoadingJob> ImageFileLoadingJob
         {
             get
             {
@@ -149,20 +149,19 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 {
                     this.imageFileLoadingJob = new();
                     this.imageFileLoadingJob
-                        .Callback(r =>
+                        .Complete(() =>
                         {
                             if (this.disposing)
                             {
                                 return;
                             }
 
-                            var sw = Stopwatch.StartNew();
-                            Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageViewerPage.ImageFileLoadingJob_Callback: Start");
+                            if (!this.isLoading)
+                            {
+                                return;
+                            }
 
-                            this.ImageFileLoadingJob_Callback(r);
-
-                            sw.Stop();
-                            Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageViewerPage.ImageFileLoadingJob_Callback: {sw.ElapsedMilliseconds} ms");
+                            this.ChangeImagePanelSize();
                         })
                         .StartThread();
                 }
@@ -840,16 +839,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             {
                 this.FilePathListIndex = index;
             }
-        }
-
-        private void ImageFileLoadingJob_Callback(EmptyResult e)
-        {
-            if (!this.isLoading)
-            {
-                return;
-            }
-
-            this.ChangeImagePanelSize();
         }
 
         private void ImageFileReadJob_Callback(ImageFileReadResult e)

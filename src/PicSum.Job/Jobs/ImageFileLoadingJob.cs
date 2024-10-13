@@ -4,33 +4,21 @@ using System.Diagnostics;
 namespace PicSum.Job.Jobs
 {
     public sealed class ImageFileLoadingJob
-        : AbstractTwoWayJob<EmptyResult>
+        : AbstractOneWayJob
     {
         protected override void Execute()
         {
             var sw = Stopwatch.StartNew();
-
-            try
+            while (true)
             {
-                while (true)
+                if (sw.ElapsedMilliseconds > 100)
                 {
-                    if (sw.ElapsedMilliseconds > 100)
-                    {
-                        return;
-                    }
-
-                    this.CheckCancel();
-
-                    Thread.Sleep(1);
+                    return;
                 }
-            }
-            catch (JobCancelException)
-            {
 
-            }
-            finally
-            {
-                this.Callback(EmptyResult.Value);
+                this.CheckCancel();
+
+                Thread.Sleep(1);
             }
         }
     }
