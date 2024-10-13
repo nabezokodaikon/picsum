@@ -10,7 +10,7 @@ namespace PicSum.DatabaseAccessor.Dto
     public sealed class ThumbnailDto
         : IDto
     {
-        public string FilePath { get; private set; }
+        public string? FilePath { get; private set; }
         public int ThumbnailID { get; private set; }
         public int ThumbnailStartPoint { get; private set; }
         public int ThumbnailSize { get; private set; }

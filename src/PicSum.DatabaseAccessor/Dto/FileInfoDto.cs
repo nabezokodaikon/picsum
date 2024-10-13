@@ -10,7 +10,7 @@ namespace PicSum.DatabaseAccessor.Dto
     public sealed class FileInfoDto
         : IDto
     {
-        public string FilePath { get; private set; }
+        public string? FilePath { get; private set; }
         public int Rating { get; private set; }
 
         public void Read(IDataReader reader)

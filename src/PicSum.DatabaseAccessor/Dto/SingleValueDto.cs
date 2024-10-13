@@ -9,10 +9,11 @@ namespace PicSum.DatabaseAccessor.Dto
     public sealed class SingleValueDto<T>
         : IDto
     {
-        public T Value { get; private set; }
+        public T? Value { get; private set; }
 
         public void Read(IDataReader reader)
         {
+            ArgumentNullException.ThrowIfNull(reader, nameof(reader));
             this.Value = (T)reader[0];
         }
     }

@@ -10,10 +10,10 @@ namespace PicSum.DatabaseAccessor.Dto
     public sealed class DirectoryStateDto
         : IDto
     {
-        public string DirectoryPath { get; private set; }
+        public string? DirectoryPath { get; private set; }
         public int SortTypeId { get; private set; }
         public bool IsAscending { get; private set; }
-        public string SelectedFilePath { get; private set; }
+        public string? SelectedFilePath { get; private set; }
 
         public void Read(IDataReader reader)
         {

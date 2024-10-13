@@ -800,7 +800,7 @@ namespace SWF.Core.FileAccessor
         /// </summary>
         /// <param name="filePath">ファイルパス</param>
         /// <returns></returns>
-        public static Bitmap GetSmallIconByFilePath(string filePath)
+        public static Bitmap? GetSmallIconByFilePath(string filePath)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
@@ -833,7 +833,7 @@ namespace SWF.Core.FileAccessor
         /// </summary>
         /// <param name="filePath">ファイルパス</param>
         /// <returns></returns>
-        public static Bitmap GetExtraLargeIconByFilePath(string filePath, SHIL shil)
+        public static Bitmap? GetExtraLargeIconByFilePath(string filePath, SHIL shil)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
