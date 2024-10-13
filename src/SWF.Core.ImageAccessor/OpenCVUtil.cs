@@ -1,6 +1,7 @@
 using OpenCvSharp;
 using OpenCvSharp.Extensions;
 using System.Diagnostics;
+using System.IO;
 
 namespace SWF.Core.ImageAccessor
 {
