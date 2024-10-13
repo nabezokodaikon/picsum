@@ -61,10 +61,10 @@ namespace PicSum.Job.Logics
                     g.CompositingMode = CompositingMode.SourceOver;
 
                     srcImg.DrawResizeImage(g, new RectangleF(0, 0, w, h), new RectangleF(0, 0, srcImg.Width, srcImg.Height));
-                    sw.Stop();
                 }
             }
 
+            sw.Stop();
             Console.WriteLine($"[{Thread.CurrentThread.Name}] ThumbnailGetLogic.CreateThumbnail: {sw.ElapsedMilliseconds} ms");
 
             return destImg;
