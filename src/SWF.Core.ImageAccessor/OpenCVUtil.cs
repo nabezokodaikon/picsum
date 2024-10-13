@@ -38,7 +38,7 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
-        public static Bitmap Convert(Stream stream)
+        public static Bitmap ReadImageFile(Stream stream)
         {
             ArgumentNullException.ThrowIfNull(stream, nameof(stream));
 

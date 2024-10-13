@@ -432,7 +432,7 @@ namespace SWF.Core.ImageAccessor
                     if (FileUtil.IsWebpFile(formatName))
                     {
                         sw = Stopwatch.StartNew();
-                        var bmp = SkiaSharpUtil.ReadImageFile(fs);
+                        var bmp = OpenCVUtil.ReadImageFile(fs);
                         sw.Stop();
                         Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.ReadImageFile Webp file: {sw.ElapsedMilliseconds} ms");
                         return bmp;
@@ -481,7 +481,7 @@ namespace SWF.Core.ImageAccessor
                         {
                             using (bmp)
                             {
-                                var convBmp = OpenCVUtil.Convert(fs);
+                                var convBmp = OpenCVUtil.ReadImageFile(fs);
                                 return convBmp;
                             }
                         }
