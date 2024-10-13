@@ -47,8 +47,7 @@ namespace PicSum.Main.UIComponent
                 {
                     this.getTagListJob = new();
                     this.getTagListJob
-                        .Callback(this.GetTagListJob_Callback)
-                        .StartThread();
+                        .Callback(this.GetTagListJob_Callback);
                 }
 
                 return this.getTagListJob;
@@ -432,8 +431,7 @@ namespace PicSum.Main.UIComponent
                         var eventArgs = new GetImageFilesEventArgs(
                             e.FilePathList, e.SelectedFilePath, title, FileIconCash.SmallDirectoryIcon);
                         parameter.OnGetImageFiles(eventArgs);
-                    })
-                    .StartThread();
+                    });
 
                     job.StartJob(subParamter);
                 };

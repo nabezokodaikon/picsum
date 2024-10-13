@@ -7,8 +7,21 @@ namespace SWF.Core.Job
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         private long isCancel = 0;
+        private long isCompleted = 0;
 
         public JobID ID { get; private set; } = JobID.GetNew();
+
+        internal bool IsCompleted
+        {
+            get
+            {
+                return Interlocked.Read(ref this.isCompleted) == 1;
+            }
+            set
+            {
+                Interlocked.Exchange(ref this.isCompleted, Convert.ToInt64(value));
+            }
+        }
 
         private bool IsCancel
         {

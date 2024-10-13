@@ -42,8 +42,7 @@ namespace PicSum.UIComponent.Contents.FileList
                             }
 
                             this.SearchJob_Callback(_);
-                        })
-                        .StartThread();
+                        });
                 }
 
                 return this.searchJob;
@@ -57,8 +56,6 @@ namespace PicSum.UIComponent.Contents.FileList
                 if (this.deleteJob == null)
                 {
                     this.deleteJob = new();
-                    this.deleteJob
-                        .StartThread();
                 }
 
                 return this.deleteJob;

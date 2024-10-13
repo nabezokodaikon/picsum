@@ -48,8 +48,7 @@ namespace PicSum.UIComponent.Contents.FileList
                     var eventArgs = new GetImageFilesEventArgs(
                         sortImageFiles, param.SelectedFilePath, param.PageTitle, param.PageIcon);
                     param.OnGetImageFiles(eventArgs);
-                })
-                .StartThread();
+                });
 
                 job.StartJob(new ValueParameter<string>(param.SourcesKey));
                 job.Wait();
@@ -78,8 +77,7 @@ namespace PicSum.UIComponent.Contents.FileList
                             }
 
                             this.SearchJob_Callback(_);
-                        })
-                        .StartThread();
+                        });
                 }
 
                 return this.searchJob;
@@ -93,8 +91,6 @@ namespace PicSum.UIComponent.Contents.FileList
                 if (this.deleteJob == null)
                 {
                     this.deleteJob = new();
-                    this.deleteJob
-                        .StartThread();
                 }
 
                 return this.deleteJob;

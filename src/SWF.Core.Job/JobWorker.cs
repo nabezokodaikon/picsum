@@ -1,5 +1,4 @@
 using NLog;
-using System.Collections.Concurrent;
 using System.Diagnostics;
 
 namespace SWF.Core.Job
@@ -13,17 +12,27 @@ namespace SWF.Core.Job
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         private bool disposed = false;
-        private readonly ThreadID threadID;
-        private readonly Type jobType;
         private readonly string threadName;
         private readonly SynchronizationContext context;
         private readonly CancellationTokenSource source = new();
-        private readonly ConcurrentQueue<TJob> jobQueue = new();
-        private Task? thread;
+        private readonly Task thread;
+        private TJob? currentJob = null;
         private Action<TJobResult>? callbackAction;
         private Action? cancelAction;
         private Action<JobException>? catchAction;
         private Action? completeAction;
+
+        private TJob? CurrentJob
+        {
+            get
+            {
+                return Interlocked.CompareExchange(ref this.currentJob, null, null);
+            }
+            set
+            {
+                Interlocked.Exchange(ref this.currentJob, value);
+            }
+        }
 
         public TwoWayJob()
         {
@@ -41,9 +50,8 @@ namespace SWF.Core.Job
                 throw new NullReferenceException("コンテキストがNullです。");
             }
 
-            this.threadID = ThreadID.GetNew();
-            this.jobType = typeof(TJob);
-            this.threadName = $"{this.jobType.Name} {this.threadID}";
+            this.threadName = $"{typeof(TJob).Name} {ThreadID.GetNew()}";
+            this.thread = Task.Run(() => this.DoWork(this.source.Token));
         }
 
         ~TwoWayJob()
@@ -63,19 +71,18 @@ namespace SWF.Core.Job
             {
                 if (disposing)
                 {
-                    this.ClearQueue();
+                    this.BeginCancel();
 
-                    if (this.thread != null)
-                    {
-                        this.source.Cancel();
-                        this.thread.Wait();
-                        Logger.Debug($"{this.threadName}: ジョブ実行スレッドが終了しました。");
-                    }
+                    Logger.Debug("ジョブ実行スレッドにキャンセルリクエストを送ります。");
+                    this.source.Cancel();
+
+                    Logger.Debug("UIスレッドを待機します。");
+                    this.thread.Wait();
+
+                    Logger.Debug($"{this.threadName}: ジョブ実行スレッドが終了しました。");
 
                     this.source.Dispose();
                 }
-
-                this.thread = null;
 
                 this.disposed = true;
             }
@@ -133,62 +140,43 @@ namespace SWF.Core.Job
             return this;
         }
 
-        public void StartThread()
-        {
-            if (this.thread != null)
-            {
-                throw new InvalidOperationException($"{this.threadName}: 既にジョブ実行スレッドが開始されています。");
-            }
-
-            this.thread = Task.Run(() => this.DoWork(this.source.Token));
-        }
-
         public void StartJob(TJobParameter parameter)
         {
             ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
 
-            this.ClearQueue();
-            var job = new TJob
+            this.BeginCancel();
+
+            this.CurrentJob = new TJob
             {
                 Parameter = parameter
             };
-            this.jobQueue.Enqueue(job);
         }
 
         public void StartJob()
         {
-            this.ClearQueue();
+            this.BeginCancel();
 
-            var job = new TJob();
-            this.jobQueue.Enqueue(job);
+            this.CurrentJob = new TJob();
         }
 
         public void BeginCancel()
         {
-            this.ClearQueue();
+            var job = this.CurrentJob;
+            if (job != null)
+            {
+                job.BeginCancel();
+            }
         }
 
         public void Wait()
         {
-            if (this.thread == null)
-            {
-                throw new NullReferenceException($"{this.threadName}: ジョブ実行スレッドがNullです。");
-            }
-
             Logger.Debug("ジョブ実行スレッドにキャンセルリクエストを送ります。");
             this.source.Cancel();
 
             Logger.Debug("UIスレッドを待機します。");
             this.thread.Wait();
-            Logger.Debug("UIスレッドの待機が解除されました。");
-        }
 
-        private void ClearQueue()
-        {
-            while (this.jobQueue.TryDequeue(out var job))
-            {
-                job.BeginCancel();
-            }
+            Logger.Debug($"{this.threadName}: ジョブ実行スレッドが終了しました。");
         }
 
         private void DoWork(CancellationToken token)
@@ -203,102 +191,113 @@ namespace SWF.Core.Job
             {
                 while (true)
                 {
-                    if (this.jobQueue.TryPeek(out var job))
+                    var job = this.CurrentJob;
+                    if (job == null)
                     {
-                        if (job.ID == null)
+                        if (token.IsCancellationRequested)
                         {
-                            throw new NullReferenceException($"{this.threadName}: ジョブIDがNullです。");
+                            Logger.Debug("ジョブ実行スレッドにキャンセルリクエストがありました。");
+                            token.ThrowIfCancellationRequested();
                         }
 
-                        if (previewJob == job)
+                        Thread.Sleep(1);
+                        continue;
+                    }
+
+                    if (job.ID == null)
+                    {
+                        throw new NullReferenceException($"{this.threadName}: ジョブIDがNullです。");
+                    }
+
+                    if (previewJob == job)
+                    {
+                        if (token.IsCancellationRequested)
                         {
-                            if (token.IsCancellationRequested)
+                            Logger.Debug("ジョブ実行スレッドにキャンセルリクエストがありました。");
+                            token.ThrowIfCancellationRequested();
+                        }
+
+                        Thread.Sleep(1);
+                        continue;
+                    }
+
+                    previewJob = job;
+
+                    if (this.callbackAction != null)
+                    {
+                        job.CallbackAction = r =>
+                        {
+                            this.context.Post(state =>
                             {
-                                Logger.Debug("ジョブ実行スレッドにキャンセルリクエストがありました。");
-                                token.ThrowIfCancellationRequested();
-                            }
+                                ArgumentNullException.ThrowIfNull(state, nameof(state));
+                                var result = (TJobResult)state;
+                                this.callbackAction(result);
+                            }, r);
+                        };
+                    }
 
-                            Thread.Sleep(1);
-                            continue;
-                        }
-
-                        previewJob = job;
-
-                        if (this.callbackAction != null)
+                    if (this.cancelAction != null)
+                    {
+                        job.CancelAction = () =>
                         {
-                            job.CallbackAction = r =>
+                            this.context.Post(_ =>
                             {
-                                this.context.Post(state =>
-                                {
-                                    ArgumentNullException.ThrowIfNull(state, nameof(state));
-                                    var result = (TJobResult)state;
-                                    this.callbackAction(result);
-                                }, r);
-                            };
-                        }
+                                this.cancelAction();
+                            }, null);
+                        };
+                    }
 
-                        if (this.cancelAction != null)
+                    if (this.catchAction != null)
+                    {
+                        job.CatchAction = e =>
                         {
-                            job.CancelAction = () =>
+                            this.context.Post(state =>
                             {
-                                this.context.Post(_ =>
-                                {
-                                    this.cancelAction();
-                                }, null);
-                            };
-                        }
+                                ArgumentNullException.ThrowIfNull(state, nameof(state));
+                                var ex = (JobException)state;
+                                this.catchAction(ex);
+                            }, e);
+                        };
+                    }
 
-                        if (this.catchAction != null)
+                    if (this.completeAction != null)
+                    {
+                        job.CompleteAction = () =>
                         {
-                            job.CatchAction = e =>
+                            this.context.Post(_ =>
                             {
-                                this.context.Post(state =>
-                                {
-                                    ArgumentNullException.ThrowIfNull(state, nameof(state));
-                                    var ex = (JobException)state;
-                                    this.catchAction(ex);
-                                }, e);
-                            };
-                        }
+                                this.completeAction?.Invoke();
+                            }, null);
+                        };
+                    }
 
-                        if (this.completeAction != null)
-                        {
-                            job.CompleteAction = () =>
-                            {
-                                this.context.Post(_ =>
-                                {
-                                    this.completeAction?.Invoke();
-                                }, null);
-                            };
-                        }
-
-                        Logger.Debug($"{job.ID} を実行します。");
-                        var sw = Stopwatch.StartNew();
-                        try
-                        {
-                            job.ExecuteWrapper();
-                        }
-                        catch (JobCancelException)
-                        {
-                            job.CancelAction?.Invoke();
-                            Logger.Debug($"{job.ID} がキャンセルされました。");
-                        }
-                        catch (JobException ex)
-                        {
-                            Logger.Error($"{job.ID} {ex}");
-                            job.CatchAction?.Invoke(ex);
-                        }
-                        catch (Exception ex)
-                        {
-                            Logger.Error(ex, $"{job.ID} で予期しない例外が発生しました。");
-                            throw;
-                        }
-                        finally
-                        {
-                            job.CompleteAction?.Invoke();
-                            sw.Stop();
-                            Logger.Debug($"{job.ID} が終了しました。{sw.ElapsedMilliseconds} ms");
-                        }
+                    Logger.Debug($"{job.ID} を実行します。");
+                    var sw = Stopwatch.StartNew();
+                    try
+                    {
+                        job.ExecuteWrapper();
+                    }
+                    catch (JobCancelException)
+                    {
+                        job.CancelAction?.Invoke();
+                        Logger.Debug($"{job.ID} がキャンセルされました。");
+                    }
+                    catch (JobException ex)
+                    {
+                        Logger.Error($"{job.ID} {ex}");
+                        job.CatchAction?.Invoke(ex);
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.Error(ex, $"{job.ID} で予期しない例外が発生しました。");
+                        throw;
+                    }
+                    finally
+                    {
+                        job.CompleteAction?.Invoke();
+                        job.IsCompleted = true;
+                        sw.Stop();
+                        Logger.Debug($"{job.ID} が終了しました。{sw.ElapsedMilliseconds} ms");
                     }
 
                     if (token.IsCancellationRequested)

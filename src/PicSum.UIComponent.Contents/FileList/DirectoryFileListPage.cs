@@ -47,8 +47,7 @@ namespace PicSum.UIComponent.Contents.FileList
                     var eventArgs = new GetImageFilesEventArgs(
                         sortImageFiles, param.SelectedFilePath, param.PageTitle, param.PageIcon);
                     param.OnGetImageFiles(eventArgs);
-                })
-                .StartThread();
+                });
 
                 job.StartJob(new ValueParameter<string>(param.SourcesKey));
                 job.Wait();
@@ -79,8 +78,7 @@ namespace PicSum.UIComponent.Contents.FileList
                             }
 
                             this.SearchJob_Callback(_);
-                        })
-                        .StartThread();
+                        });
                 }
 
                 return this.searchJob;
@@ -94,7 +92,6 @@ namespace PicSum.UIComponent.Contents.FileList
                 if (this.directoryStateUpdateJob == null)
                 {
                     this.directoryStateUpdateJob = new();
-                    this.directoryStateUpdateJob.StartThread();
                 }
 
                 return this.directoryStateUpdateJob;
@@ -108,7 +105,6 @@ namespace PicSum.UIComponent.Contents.FileList
                 if (this.directoryHistoryaddJob == null)
                 {
                     this.directoryHistoryaddJob = new();
-                    this.directoryHistoryaddJob.StartThread();
                 }
 
                 return this.directoryHistoryaddJob;
@@ -131,8 +127,7 @@ namespace PicSum.UIComponent.Contents.FileList
                             }
 
                             this.GetNextDirectoryProcess_Callback(_);
-                        })
-                        .StartThread();
+                        });
                 }
 
                 return this.nextDirectoryGetJob;

@@ -243,8 +243,7 @@ namespace PicSum.UIComponent.Contents.FileList
                             }
 
                             this.GetThumbnailsJob_Callback(_);
-                        })
-                        .StartThread();
+                        });
                 }
 
                 return this.getThumbnailsJob;
@@ -258,8 +257,6 @@ namespace PicSum.UIComponent.Contents.FileList
                 if (this.singleFileExportJob == null)
                 {
                     this.singleFileExportJob = new();
-                    this.singleFileExportJob
-                        .StartThread();
                 }
 
                 return this.singleFileExportJob;
@@ -273,8 +270,6 @@ namespace PicSum.UIComponent.Contents.FileList
                 if (this.addBookmarkJob == null)
                 {
                     this.addBookmarkJob = new();
-                    this.addBookmarkJob
-                        .StartThread();
                 }
 
                 return this.addBookmarkJob;
@@ -297,8 +292,7 @@ namespace PicSum.UIComponent.Contents.FileList
                             }
 
                             this.MultiFilesExportJob_Callback(_);
-                        })
-                        .StartThread();
+                        });
                 }
 
                 return this.multiFilesExportJob;
@@ -312,8 +306,6 @@ namespace PicSum.UIComponent.Contents.FileList
                 if (this.imageFileSizeCacheJob == null)
                 {
                     this.imageFileSizeCacheJob = new();
-                    this.imageFileSizeCacheJob
-                        .StartThread();
                 }
 
                 return this.imageFileSizeCacheJob;

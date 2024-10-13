@@ -26,8 +26,7 @@ namespace PicSum.UIComponent.AddressBar
                 {
                     this.getDirectoryHistoryJob = new();
                     this.getDirectoryHistoryJob
-                        .Callback(r => this.GetDirectoryHistoryJob_Callback(r))
-                        .StartThread();
+                        .Callback(r => this.GetDirectoryHistoryJob_Callback(r));
                 }
 
                 return this.getDirectoryHistoryJob;

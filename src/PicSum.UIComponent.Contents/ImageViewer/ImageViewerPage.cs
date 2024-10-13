@@ -133,8 +133,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                         .Complete(() =>
                         {
                             Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageViewerPage.ImageFileReadJob.Complete");
-                        })
-                        .StartThread();
+                        });
                 }
 
                 return this.imageFileReadJob;
@@ -162,8 +161,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                             }
 
                             this.ChangeImagePanelSize();
-                        })
-                        .StartThread();
+                        });
                 }
 
                 return this.imageFileLoadingJob;
@@ -177,8 +175,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 if (this.addBookmarkJob == null)
                 {
                     this.addBookmarkJob = new();
-                    this.addBookmarkJob
-                        .StartThread();
                 }
 
                 return this.addBookmarkJob;
@@ -192,8 +188,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 if (this.singleFileExportJob == null)
                 {
                     this.singleFileExportJob = new();
-                    this.singleFileExportJob
-                        .StartThread();
                 }
 
                 return this.singleFileExportJob;
@@ -207,8 +201,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 if (this.imageFileCacheJob == null)
                 {
                     this.imageFileCacheJob = new();
-                    this.imageFileCacheJob
-                        .StartThread();
                 }
 
                 return this.imageFileCacheJob;

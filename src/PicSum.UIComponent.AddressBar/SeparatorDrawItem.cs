@@ -32,8 +32,7 @@ namespace PicSum.UIComponent.AddressBar
                 {
                     this.getSubDirectoryJob = new();
                     this.getSubDirectoryJob
-                        .Callback(this.GetSubDirectoryJob_Callback)
-                        .StartThread();
+                        .Callback(this.GetSubDirectoryJob_Callback);
                 }
 
                 return this.getSubDirectoryJob;

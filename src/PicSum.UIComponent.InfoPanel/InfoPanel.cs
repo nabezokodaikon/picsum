@@ -53,8 +53,7 @@ namespace PicSum.UIComponent.InfoPanel
                 {
                     this.getFileInfoJob = new();
                     this.getFileInfoJob
-                        .Callback(this.GetFileInfoJob_Callback)
-                        .StartThread();
+                        .Callback(this.GetFileInfoJob_Callback);
                 }
 
                 return this.getFileInfoJob;
@@ -68,8 +67,6 @@ namespace PicSum.UIComponent.InfoPanel
                 if (this.updateFileRatingJob == null)
                 {
                     this.updateFileRatingJob = new();
-                    this.updateFileRatingJob
-                        .StartThread();
                 }
 
                 return this.updateFileRatingJob;
@@ -84,8 +81,7 @@ namespace PicSum.UIComponent.InfoPanel
                 {
                     this.getTagListJob = new();
                     this.getTagListJob
-                        .Callback(this.GetTagListJob_Callback)
-                        .StartThread();
+                        .Callback(this.GetTagListJob_Callback);
                 }
 
                 return this.getTagListJob;
@@ -99,8 +95,6 @@ namespace PicSum.UIComponent.InfoPanel
                 if (this.addFileTagJob == null)
                 {
                     this.addFileTagJob = new();
-                    this.addFileTagJob
-                        .StartThread();
                 }
 
                 return this.addFileTagJob;
@@ -114,8 +108,6 @@ namespace PicSum.UIComponent.InfoPanel
                 if (this.deleteFileTagJob == null)
                 {
                     this.deleteFileTagJob = new();
-                    this.deleteFileTagJob
-                        .StartThread();
                 }
 
                 return this.deleteFileTagJob;

@@ -133,8 +133,7 @@ namespace PicSum.UIComponent.AddressBar
                             this.currentDirectoryPath = string.Empty;
                             this.ClearAddressItems();
                             this.Invalidate();
-                        })
-                        .StartThread();
+                        });
                 }
 
                 return this.getAddressInfoJob;
