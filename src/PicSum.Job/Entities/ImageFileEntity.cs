@@ -8,11 +8,11 @@ namespace PicSum.Job.Entities
     /// </summary>
     public sealed class ImageFileEntity
     {
-        public string? FilePath { get; set; }
-        public CvImage? Image { get; set; }
-        public Bitmap? Thumbnail { get; set; }
-        public Size Size { get; set; }
-        public bool IsEmpty { get; set; }
-        public bool IsError { get; set; }
+        public string? FilePath { get; internal set; }
+        public CvImage? Image { get; internal set; }
+        public Bitmap? Thumbnail { get; internal set; }
+        public Size Size { get; internal set; }
+        public bool IsEmpty { get; internal set; }
+        public bool IsError { get; internal set; }
     }
 }

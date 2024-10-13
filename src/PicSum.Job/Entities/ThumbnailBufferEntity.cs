@@ -16,12 +16,12 @@ namespace PicSum.Job.Entities
             ThumbnailBuffer = []
         };
 
-        public string? FilePath { get; set; }
-        public int ThumbnailWidth { get; set; }
-        public int ThumbnailHeight { get; set; }
-        public int SourceWidth { get; set; }
-        public int SourceHeight { get; set; }
-        public DateTime FileUpdatedate { get; set; }
-        public byte[]? ThumbnailBuffer { get; set; }
+        public string? FilePath { get; internal set; }
+        public int ThumbnailWidth { get; internal set; }
+        public int ThumbnailHeight { get; internal set; }
+        public int SourceWidth { get; internal set; }
+        public int SourceHeight { get; internal set; }
+        public DateTime FileUpdatedate { get; internal set; }
+        public byte[]? ThumbnailBuffer { get; internal set; }
     }
 }

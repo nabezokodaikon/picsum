@@ -7,13 +7,13 @@ namespace PicSum.Job.Entities
     /// </summary>
     public sealed class FileShallowInfoEntity
     {
-        public string? FilePath { get; set; }
-        public string? FileName { get; set; }
-        public Nullable<DateTime> UpdateDate { get; set; }
-        public Nullable<DateTime> RgistrationDate { get; set; }
-        public Image? LargeIcon { get; set; }
-        public Image? SmallIcon { get; set; }
-        public bool IsFile { get; set; }
-        public bool IsImageFile { get; set; }
+        public string? FilePath { get; internal set; }
+        public string? FileName { get; internal set; }
+        public Nullable<DateTime> UpdateDate { get; internal set; }
+        public Nullable<DateTime> RgistrationDate { get; internal set; }
+        public Image? LargeIcon { get; internal set; }
+        public Image? SmallIcon { get; internal set; }
+        public bool IsFile { get; internal set; }
+        public bool IsImageFile { get; internal set; }
     }
 }
