@@ -1,8 +1,6 @@
 using System;
-using System.Diagnostics;
 using System.Drawing;
 using System.Runtime.Versioning;
-using System.Threading;
 
 namespace SWF.UIComponent.TabOperation
 {

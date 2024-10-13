@@ -1,4 +1,3 @@
-using SWF.Core.Job;
 using PicSum.Job.Jobs;
 using PicSum.Job.Parameters;
 using PicSum.Job.Results;
@@ -7,6 +6,7 @@ using PicSum.UIComponent.Contents.Parameter;
 using PicSum.UIComponent.InfoPanel;
 using SWF.Core.Base;
 using SWF.Core.FileAccessor;
+using SWF.Core.Job;
 using SWF.UIComponent.TabOperation;
 using SWF.UIComponent.WideDropDown;
 using System;

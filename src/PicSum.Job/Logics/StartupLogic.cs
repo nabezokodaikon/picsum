@@ -1,9 +1,8 @@
-using SWF.Core.DatabaseAccessor;
-using SWF.Core.Job;
 using PicSum.DatabaseAccessor.Connection;
 using PicSum.Job.Parameters;
+using SWF.Core.DatabaseAccessor;
+using SWF.Core.Job;
 using System.Runtime.Versioning;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace PicSum.Job.Logics
 {

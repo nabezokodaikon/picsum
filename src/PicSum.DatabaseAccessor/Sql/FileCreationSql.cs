@@ -1,5 +1,4 @@
 using SWF.Core.DatabaseAccessor;
-using System;
 using System.Runtime.Versioning;
 
 namespace PicSum.DatabaseAccessor.Sql

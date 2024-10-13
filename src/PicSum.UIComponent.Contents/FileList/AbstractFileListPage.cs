@@ -1,4 +1,3 @@
-using SWF.Core.Job;
 using PicSum.Job.Entities;
 using PicSum.Job.Jobs;
 using PicSum.Job.Parameters;
@@ -10,6 +9,7 @@ using PicSum.UIComponent.Contents.Parameter;
 using SWF.Core.Base;
 using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
+using SWF.Core.Job;
 using SWF.UIComponent.FlowList;
 using SWF.UIComponent.TabOperation;
 using System;

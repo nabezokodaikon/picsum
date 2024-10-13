@@ -1,5 +1,4 @@
 using NLog;
-using SWF.Core.Job;
 using PicSum.Job.Jobs;
 using PicSum.Job.Logics;
 using PicSum.Job.Parameters;
@@ -11,7 +10,7 @@ using PicSum.UIComponent.Contents.Parameter;
 using SWF.Core.Base;
 using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
-using SWF.UIComponent.ImagePanel;
+using SWF.Core.Job;
 using SWF.UIComponent.TabOperation;
 using System;
 using System.Collections.Generic;

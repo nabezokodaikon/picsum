@@ -1,8 +1,5 @@
-using SWF.UIComponent.TabOperation.Properties;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.Runtime.Versioning;
 
 namespace SWF.UIComponent.TabOperation

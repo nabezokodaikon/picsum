@@ -1,6 +1,5 @@
 using Microsoft.WindowsAPICodePack.Shell;
 using System.Diagnostics;
-using System.IO;
 using System.Runtime.Versioning;
 
 namespace SWF.Core.ImageAccessor

@@ -1,5 +1,5 @@
-using SWF.Core.Job;
 using PicSum.Job.Entities;
+using SWF.Core.Job;
 
 namespace PicSum.Job.Results
 {

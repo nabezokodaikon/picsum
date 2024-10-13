@@ -1,6 +1,6 @@
-using SWF.Core.Job;
 using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
+using SWF.Core.Job;
 
 namespace PicSum.Job.Jobs
 {

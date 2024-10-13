@@ -1,6 +1,6 @@
-using SWF.Core.Job;
 using PicSum.Job.Entities;
 using PicSum.Job.Parameters;
+using SWF.Core.Job;
 
 namespace PicSum.Job.Results
 {

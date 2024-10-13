@@ -1,8 +1,8 @@
-using SWF.Core.Job;
 using PicSum.Job.Entities;
 using PicSum.Job.Jobs;
 using PicSum.UIComponent.AddressBar.Properties;
 using SWF.Core.FileAccessor;
+using SWF.Core.Job;
 using System;
 using System.Drawing;
 using System.Runtime.Versioning;

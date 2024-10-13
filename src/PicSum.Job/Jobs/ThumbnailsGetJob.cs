@@ -1,12 +1,12 @@
-using SWF.Core.DatabaseAccessor;
-using SWF.Core.Job;
 using PicSum.DatabaseAccessor.Connection;
 using PicSum.Job.Entities;
 using PicSum.Job.Logics;
 using PicSum.Job.Parameters;
 using PicSum.Job.Results;
+using SWF.Core.DatabaseAccessor;
 using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
+using SWF.Core.Job;
 using System.Runtime.Versioning;
 
 namespace PicSum.Job.Jobs

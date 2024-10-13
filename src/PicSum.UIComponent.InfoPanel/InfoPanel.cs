@@ -1,4 +1,3 @@
-using SWF.Core.Job;
 using PicSum.Job.Entities;
 using PicSum.Job.Jobs;
 using PicSum.Job.Parameters;
@@ -7,6 +6,7 @@ using PicSum.UIComponent.InfoPanel.Properties;
 using SWF.Core.Base;
 using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
+using SWF.Core.Job;
 using SWF.UIComponent.WideDropDown;
 using System;
 using System.Collections.Generic;

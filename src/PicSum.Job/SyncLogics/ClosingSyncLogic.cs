@@ -1,6 +1,6 @@
+using PicSum.DatabaseAccessor.Connection;
 using SWF.Core.DatabaseAccessor;
 using SWF.Core.Job;
-using PicSum.DatabaseAccessor.Connection;
 
 namespace PicSum.Job.SyncLogics
 {
