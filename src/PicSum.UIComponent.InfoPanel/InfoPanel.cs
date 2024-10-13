@@ -64,12 +64,7 @@ namespace PicSum.UIComponent.InfoPanel
         {
             get
             {
-                if (this.updateFileRatingJob == null)
-                {
-                    this.updateFileRatingJob = new();
-                }
-
-                return this.updateFileRatingJob;
+                return this.updateFileRatingJob ??= new();
             }
         }
 
@@ -92,12 +87,7 @@ namespace PicSum.UIComponent.InfoPanel
         {
             get
             {
-                if (this.addFileTagJob == null)
-                {
-                    this.addFileTagJob = new();
-                }
-
-                return this.addFileTagJob;
+                return this.addFileTagJob ??= new();
             }
         }
 
@@ -105,12 +95,7 @@ namespace PicSum.UIComponent.InfoPanel
         {
             get
             {
-                if (this.deleteFileTagJob == null)
-                {
-                    this.deleteFileTagJob = new();
-                }
-
-                return this.deleteFileTagJob;
+                return this.deleteFileTagJob ??= new();
             }
         }
 
