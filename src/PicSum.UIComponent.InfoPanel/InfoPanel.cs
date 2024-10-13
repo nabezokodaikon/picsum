@@ -271,7 +271,6 @@ namespace PicSum.UIComponent.InfoPanel
                 && this.Thumbnail.ThumbnailImage != null)
             {
                 this.Thumbnail.ThumbnailImage.Dispose();
-                this.Thumbnail.ThumbnailImage = null;
             }
 
             this.fileInfoSource = null;

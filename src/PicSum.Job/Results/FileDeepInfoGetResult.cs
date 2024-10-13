@@ -9,8 +9,8 @@ namespace PicSum.Job.Results
     public sealed class FileDeepInfoGetResult
         : IJobResult
     {
-        public IList<string>? FilePathList;
-        public FileDeepInfoEntity? FileInfo;
-        public ListEntity<FileTagInfoEntity>? TagInfoList;
+        public IList<string>? FilePathList { get; internal set; }
+        public FileDeepInfoEntity? FileInfo { get; internal set; }
+        public ListEntity<FileTagInfoEntity>? TagInfoList { get; internal set; }
     }
 }

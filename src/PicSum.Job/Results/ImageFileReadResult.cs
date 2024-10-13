@@ -6,8 +6,8 @@ namespace PicSum.Job.Results
     public class ImageFileReadResult
         : IJobResult
     {
-        public ImageFileEntity? Image { get; set; }
-        public bool IsMain { get; set; }
-        public bool HasSub { get; set; }
+        public ImageFileEntity? Image { get; internal set; }
+        public bool IsMain { get; internal set; }
+        public bool HasSub { get; internal set; }
     }
 }
