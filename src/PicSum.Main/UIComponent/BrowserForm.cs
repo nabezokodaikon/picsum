@@ -262,14 +262,12 @@ namespace PicSum.Main.UIComponent
                     case Keys.W:
                         {
                             this.RemoveTabOrWindow();
-                            this.Focus();
                             this.isKeyDown = true;
                             break;
                         }
                     case Keys.T:
                         {
                             this.AddFavoriteDirectoryListTab();
-                            this.Focus();
                             this.isKeyDown = true;
                             break;
                         }
