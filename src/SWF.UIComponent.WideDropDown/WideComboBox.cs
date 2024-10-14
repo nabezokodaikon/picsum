@@ -152,6 +152,8 @@ namespace SWF.UIComponent.WideDropDown
         private void DropDownList_ItemMouseClick(object sender, ItemMouseClickEventArgs e)
         {
             this.inputTextBox.Text = e.Item;
+            this.inputTextBox.SelectionStart = this.inputTextBox.Text.Length;
+            this.inputTextBox.Focus();
         }
     }
 }
