@@ -54,8 +54,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         private bool disposing = false;
 
         private readonly ImageViewerPageParameter parameter = null;
-        private string leftImageFilePath = string.Empty;
-        private string rightImageFilePath = string.Empty;
         private ImageDisplayMode displayMode = ImageDisplayMode.LeftFacing;
         private ImageSizeMode sizeMode = ImageSizeMode.FitOnlyBigImage;
         private IList<string> filePathList = null;
@@ -793,17 +791,13 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 this.isLoading = false;
             }
 
-            SizeF bgSize;
-            if (e.HasSub)
+            var bgSize = e.HasSub switch
             {
-                bgSize = new SizeF(
+                true => new SizeF(
                     this.checkPatternPanel.Size.Width / 2f,
-                    this.checkPatternPanel.Size.Height);
-            }
-            else
-            {
-                bgSize = this.checkPatternPanel.Size;
-            }
+                    this.checkPatternPanel.Size.Height),
+                false => this.checkPatternPanel.Size,
+            };
 
             if (e.IsMain)
             {
@@ -814,10 +808,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             if (this.displayMode == ImageDisplayMode.Single)
             {
                 this.leftImagePanel.ClearImage();
-                this.leftImageFilePath = e.Image.FilePath;
                 this.rightImagePanel.ClearImage();
-                this.rightImageFilePath = string.Empty;
-
                 if (e.Image.IsError)
                 {
                     this.leftImagePanel.SetError();
@@ -835,9 +826,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 if (e.IsMain && e.HasSub)
                 {
                     this.leftImagePanel.ClearImage();
-                    this.leftImageFilePath = e.Image.FilePath;
-                    this.rightImageFilePath = string.Empty;
-
+                    this.rightImagePanel.ClearImage();
                     if (e.Image.IsError)
                     {
                         this.leftImagePanel.SetError();
@@ -853,8 +842,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 else if (!e.IsMain)
                 {
                     this.rightImagePanel.ClearImage();
-                    this.rightImageFilePath = e.Image.FilePath;
-
                     if (e.Image.IsError)
                     {
                         this.rightImagePanel.SetError();
@@ -870,10 +857,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 else if (e.IsMain)
                 {
                     this.leftImagePanel.ClearImage();
-                    this.leftImageFilePath = e.Image.FilePath;
                     this.rightImagePanel.ClearImage();
-                    this.rightImageFilePath = string.Empty;
-
                     if (e.Image.IsError)
                     {
                         this.leftImagePanel.SetError();
@@ -892,9 +876,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 if (e.IsMain && e.HasSub)
                 {
                     this.rightImagePanel.ClearImage();
-                    this.rightImageFilePath = e.Image.FilePath;
-                    this.leftImageFilePath = string.Empty;
-
+                    this.leftImagePanel.ClearImage();
                     if (e.Image.IsError)
                     {
                         this.rightImagePanel.SetError();
@@ -910,8 +892,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 else if (!e.IsMain)
                 {
                     this.leftImagePanel.ClearImage();
-                    this.leftImageFilePath = e.Image.FilePath;
-
                     if (e.Image.IsError)
                     {
                         this.leftImagePanel.SetError();
@@ -927,10 +907,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 else if (e.IsMain)
                 {
                     this.leftImagePanel.ClearImage();
-                    this.leftImageFilePath = e.Image.FilePath;
                     this.rightImagePanel.ClearImage();
-                    this.rightImageFilePath = string.Empty;
-
                     if (e.Image.IsError)
                     {
                         this.leftImagePanel.SetError();
@@ -1162,45 +1139,45 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
         private void LeftImagePanel_ImageMouseClick(object sender, MouseEventArgs e)
         {
-            if (string.IsNullOrEmpty(this.leftImageFilePath))
+            if (string.IsNullOrEmpty(this.leftImagePanel.FilePath))
             {
                 return;
             }
 
-            if (this.SelectedFilePath != this.leftImageFilePath)
+            if (this.SelectedFilePath != this.leftImagePanel.FilePath)
             {
-                this.SelectedFilePath = this.leftImageFilePath;
-                this.OnSelectedFileChanged(new SelectedFileChangeEventArgs(this.leftImageFilePath));
+                this.SelectedFilePath = this.leftImagePanel.FilePath;
+                this.OnSelectedFileChanged(new SelectedFileChangeEventArgs(this.leftImagePanel.FilePath));
             }
         }
 
         private void RightImagePanel_ImageMouseClick(object sender, MouseEventArgs e)
         {
-            if (string.IsNullOrEmpty(this.rightImageFilePath))
+            if (string.IsNullOrEmpty(this.rightImagePanel.FilePath))
             {
                 return;
             }
 
-            if (this.SelectedFilePath != this.rightImageFilePath)
+            if (this.SelectedFilePath != this.rightImagePanel.FilePath)
             {
-                this.SelectedFilePath = this.rightImageFilePath;
-                this.OnSelectedFileChanged(new SelectedFileChangeEventArgs(this.rightImageFilePath));
+                this.SelectedFilePath = this.rightImagePanel.FilePath;
+                this.OnSelectedFileChanged(new SelectedFileChangeEventArgs(this.rightImagePanel.FilePath));
             }
         }
 
         private void LeftImagePanel_DragStart(object sender, EventArgs e)
         {
-            if (!string.IsNullOrEmpty(this.leftImageFilePath))
+            if (!string.IsNullOrEmpty(this.leftImagePanel.FilePath))
             {
-                this.DoDragDrop(this.leftImageFilePath);
+                this.DoDragDrop(this.leftImagePanel.FilePath);
             }
         }
 
         private void RightImagePanel_DragStart(object sender, EventArgs e)
         {
-            if (!string.IsNullOrEmpty(this.rightImageFilePath))
+            if (!string.IsNullOrEmpty(this.rightImagePanel.FilePath))
             {
-                this.DoDragDrop(this.rightImageFilePath);
+                this.DoDragDrop(this.rightImagePanel.FilePath);
             }
         }
 
@@ -1208,29 +1185,29 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         {
             if (this.fileContextMenu.SourceControl.Equals(this.leftImagePanel))
             {
-                if (!string.IsNullOrEmpty(this.leftImageFilePath))
+                if (!string.IsNullOrEmpty(this.leftImagePanel.FilePath))
                 {
-                    if (this.SelectedFilePath != this.leftImageFilePath)
+                    if (this.SelectedFilePath != this.leftImagePanel.FilePath)
                     {
-                        this.SelectedFilePath = this.leftImageFilePath;
-                        this.OnSelectedFileChanged(new SelectedFileChangeEventArgs(this.leftImageFilePath));
+                        this.SelectedFilePath = this.leftImagePanel.FilePath;
+                        this.OnSelectedFileChanged(new SelectedFileChangeEventArgs(this.leftImagePanel.FilePath));
                     }
 
-                    this.fileContextMenu.SetFile(this.leftImageFilePath);
+                    this.fileContextMenu.SetFile(this.leftImagePanel.FilePath);
                     return;
                 }
             }
             else if (this.fileContextMenu.SourceControl.Equals(this.rightImagePanel))
             {
-                if (!string.IsNullOrEmpty(this.rightImageFilePath))
+                if (!string.IsNullOrEmpty(this.rightImagePanel.FilePath))
                 {
-                    if (this.SelectedFilePath != this.rightImageFilePath)
+                    if (this.SelectedFilePath != this.rightImagePanel.FilePath)
                     {
-                        this.SelectedFilePath = this.rightImageFilePath;
-                        this.OnSelectedFileChanged(new SelectedFileChangeEventArgs(this.rightImageFilePath));
+                        this.SelectedFilePath = this.rightImagePanel.FilePath;
+                        this.OnSelectedFileChanged(new SelectedFileChangeEventArgs(this.rightImagePanel.FilePath));
                     }
 
-                    this.fileContextMenu.SetFile(this.rightImageFilePath);
+                    this.fileContextMenu.SetFile(this.rightImagePanel.FilePath);
                     return;
                 }
             }

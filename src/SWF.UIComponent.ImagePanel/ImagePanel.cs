@@ -44,7 +44,6 @@ namespace SWF.UIComponent.ImagePanel
         private bool isImageMove = false;
         private bool isThumbnailMove = false;
         private Point moveFromPoint = Point.Empty;
-        private string filePath = null;
         private bool isError = false;
 
         private readonly SolidBrush thumbnailFilterBrush = new(Color.FromArgb(128, 0, 0, 0));
@@ -54,6 +53,8 @@ namespace SWF.UIComponent.ImagePanel
             LineAlignment = StringAlignment.Center,
             Trimming = StringTrimming.EllipsisCharacter,
         };
+
+        public string FilePath { get; private set; } = string.Empty;
 
         public Size ImageSize
         {
@@ -146,7 +147,7 @@ namespace SWF.UIComponent.ImagePanel
                 throw new InvalidOperationException("既にイメージが存在しています。");
             }
 
-            this.filePath = filePath;
+            this.FilePath = filePath;
             this.sizeMode = sizeMode;
             this.image = img;
             this.thumbnail = thumb;
@@ -199,6 +200,7 @@ namespace SWF.UIComponent.ImagePanel
             }
 
             this.imageScaleSize = SizeF.Empty;
+            this.FilePath = string.Empty;
         }
 
         public new void Update()
@@ -625,7 +627,7 @@ namespace SWF.UIComponent.ImagePanel
 
                 g.CompositingMode = CompositingMode.SourceOver;
                 g.DrawString(
-                    FileUtil.GetFileName(this.filePath),
+                    FileUtil.GetFileName(this.FilePath),
                     this.Font,
                     Brushes.DarkGray,
                     destRect,
