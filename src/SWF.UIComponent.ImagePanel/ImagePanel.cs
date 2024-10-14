@@ -201,13 +201,8 @@ namespace SWF.UIComponent.ImagePanel
             this.imageScaleSize = SizeF.Empty;
         }
 
-        public void Update(bool isUpdate)
+        public new void Update()
         {
-            if (!isUpdate)
-            {
-                return;
-            }
-
             var sw = Stopwatch.StartNew();
 
             this.SetDrawParameter();
@@ -218,7 +213,7 @@ namespace SWF.UIComponent.ImagePanel
             }
 
             this.Invalidate();
-            this.Update();
+            base.Update();
 
             sw.Stop();
             Console.WriteLine($"[{Thread.CurrentThread.Name}] ImagePanel.Update: {sw.ElapsedMilliseconds} ms");

@@ -1,24 +1,84 @@
+using PicSum.Job.Logics;
+using PicSum.Job.Parameters;
+using PicSum.Job.Results;
+using SWF.Core.Base;
+using SWF.Core.ImageAccessor;
 using SWF.Core.Job;
 using System.Diagnostics;
 
 namespace PicSum.Job.Jobs
 {
     public sealed class ImageFileLoadingJob
-        : AbstractOneWayJob
+        : AbstractTwoWayJob<ImageFileReadParameter, ImageFileReadResult>
     {
-        protected override void Execute()
+        protected override void Execute(ImageFileReadParameter parameter)
         {
-            var sw = Stopwatch.StartNew();
-            while (true)
+            ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
+
+            if (parameter.FilePathList == null)
             {
-                if (sw.ElapsedMilliseconds > 100)
+                throw new ArgumentException("ファイルパスリストがNULLです。", nameof(parameter));
+            }
+
+            this.Wait();
+
+            var logic = new ImageFileReadLogic(this);
+
+            var mainFilePath = parameter.FilePathList[parameter.CurrentIndex];
+            var mainSize = logic.GetImageSize(mainFilePath);
+            if (parameter.ImageDisplayMode != ImageDisplayMode.Single
+                && mainSize != ImageUtil.EMPTY_SIZE
+                && mainSize.Width < mainSize.Height)
+            {
+                var subtIndex = parameter.CurrentIndex + 1;
+                if (subtIndex > parameter.FilePathList.Count - 1)
                 {
-                    return;
+                    subtIndex = 0;
                 }
 
-                this.CheckCancel();
+                var subFilePath = parameter.FilePathList[subtIndex];
+                var subSize = logic.GetImageSize(subFilePath);
+                if (subSize != ImageUtil.EMPTY_SIZE
+                    && subSize.Width < subSize.Height)
+                {
+                    this.Callback(logic.CreateEmptyResult(
+                        mainFilePath, true, true, parameter.ImageSizeMode, mainSize));
+                    this.Callback(logic.CreateEmptyResult(
+                        subFilePath, false, true, parameter.ImageSizeMode, subSize));
+                }
+                else
+                {
+                    this.Callback(logic.CreateEmptyResult(
+                        mainFilePath, true, false, parameter.ImageSizeMode, mainSize));
+                }
+            }
+            else
+            {
+                this.Callback(logic.CreateEmptyResult(
+                    mainFilePath, true, false, parameter.ImageSizeMode, mainSize));
+            }
+        }
 
-                Thread.Sleep(1);
+        private void Wait()
+        {
+            try
+            {
+                var sw = Stopwatch.StartNew();
+                while (true)
+                {
+                    if (sw.ElapsedMilliseconds > 100)
+                    {
+                        return;
+                    }
+
+                    this.CheckCancel();
+
+                    Thread.Sleep(1);
+                }
+            }
+            catch (JobCancelException)
+            {
+                return;
             }
         }
     }

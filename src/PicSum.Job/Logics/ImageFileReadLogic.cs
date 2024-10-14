@@ -11,32 +11,6 @@ namespace PicSum.Job.Logics
     public sealed class ImageFileReadLogic(AbstractAsyncJob job)
         : AbstractAsyncLogic(job)
     {
-        public static ImageFileReadResult CreateEmptyResult(
-            string filePath, bool isMain, bool hasSub, ImageSizeMode imageSizeMode, Size imageSize)
-        {
-            var sw = Stopwatch.StartNew();
-
-            var image = new CvImage(imageSize);
-
-            sw.Stop();
-            Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageFileReadLogic.CreateEmptyResult: {sw.ElapsedMilliseconds} ms");
-
-            return new()
-            {
-                IsMain = isMain,
-                HasSub = hasSub,
-                Image = new()
-                {
-                    FilePath = filePath,
-                    Thumbnail = null,
-                    Image = image,
-                    Size = imageSize,
-                    IsEmpty = true,
-                    IsError = false,
-                }
-            };
-        }
-
         internal ImageFileReadResult CreateResult(
             string filePath, bool isMain, bool hasSub, int thumbnailSize, ImageSizeMode imageSizeMode, Size imageSize)
         {
@@ -78,6 +52,25 @@ namespace PicSum.Job.Logics
                 thumbnail?.Dispose();
                 throw;
             }
+        }
+
+        internal ImageFileReadResult CreateEmptyResult(
+            string filePath, bool isMain, bool hasSub, ImageSizeMode imageSizeMode, Size imageSize)
+        {
+            return new()
+            {
+                IsMain = isMain,
+                HasSub = hasSub,
+                Image = new()
+                {
+                    FilePath = filePath,
+                    Thumbnail = null,
+                    Image = new CvImage(imageSize),
+                    Size = imageSize,
+                    IsEmpty = true,
+                    IsError = false,
+                }
+            };
         }
 
         internal CvImage ReadImageFile(string filePath)

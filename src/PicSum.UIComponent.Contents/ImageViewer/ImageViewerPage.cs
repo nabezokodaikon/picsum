@@ -62,7 +62,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         private bool isLoading = false;
 
         private TwoWayJob<ImageFileReadJob, ImageFileReadParameter, ImageFileReadResult> imageFileReadJob = null;
-        private OneWayJob<ImageFileLoadingJob> imageFileLoadingJob = null;
+        private TwoWayJob<ImageFileLoadingJob, ImageFileReadParameter, ImageFileReadResult> imageFileLoadingJob = null;
         private OneWayJob<BookmarkAddJob, ValueParameter<string>> addBookmarkJob = null;
         private OneWayJob<SingleFileExportJob, SingleFileExportParameter> singleFileExportJob = null;
         private OneWayJob<ImageFileCacheJob, ListParameter<string>> imageFileCacheJob = null;
@@ -139,7 +139,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             }
         }
 
-        private OneWayJob<ImageFileLoadingJob> ImageFileLoadingJob
+        private TwoWayJob<ImageFileLoadingJob, ImageFileReadParameter, ImageFileReadResult> ImageFileLoadingJob
         {
             get
             {
@@ -147,7 +147,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 {
                     this.imageFileLoadingJob = new();
                     this.imageFileLoadingJob
-                        .Complete(() =>
+                        .Callback(_ =>
                         {
                             if (this.disposing)
                             {
@@ -159,7 +159,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                                 return;
                             }
 
-                            this.ChangeImagePanelSize();
+                            this.ImageFileReadJob_Callback(_);
                         });
                 }
 
@@ -416,7 +416,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
                 this.leftImagePanel.SetBounds(x, y, w, h, BoundsSpecified.All);
                 this.leftImagePanel.ImageAlign = ImageAlign.Center;
-                this.leftImagePanel.Update(true);
+                this.leftImagePanel.Update();
 
                 this.rightImagePanel.Visible = false;
             };
@@ -431,11 +431,11 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
                 this.leftImagePanel.SetBounds(lx, y, w, h, BoundsSpecified.All);
                 this.leftImagePanel.ImageAlign = ImageAlign.Right;
-                this.leftImagePanel.Update(true);
+                this.leftImagePanel.Update();
 
                 this.rightImagePanel.SetBounds(rx, y, w, h, BoundsSpecified.All);
                 this.rightImagePanel.ImageAlign = ImageAlign.Left;
-                this.rightImagePanel.Update(true);
+                this.rightImagePanel.Update();
             };
 
             if (this.displayMode == ImageDisplayMode.LeftFacing)
@@ -484,14 +484,14 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                     var x = 0;
                     this.leftImagePanel.SetBounds(x, y, w, h, BoundsSpecified.All);
                     this.leftImagePanel.ImageAlign = ImageAlign.Right;
-                    this.leftImagePanel.Update(!e.Image.IsEmpty);
+                    this.leftImagePanel.Update();
                 }
                 else
                 {
                     var x = this.checkPatternPanel.Width - w;
                     this.rightImagePanel.SetBounds(x, y, w, h, BoundsSpecified.All);
                     this.rightImagePanel.ImageAlign = ImageAlign.Left;
-                    this.rightImagePanel.Update(!e.Image.IsEmpty);
+                    this.rightImagePanel.Update();
                 }
             }
             else if (!e.IsMain)
@@ -505,14 +505,14 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                     var x = this.checkPatternPanel.Width - w;
                     this.rightImagePanel.SetBounds(x, y, w, h, BoundsSpecified.All);
                     this.rightImagePanel.ImageAlign = ImageAlign.Left;
-                    this.rightImagePanel.Update(!e.Image.IsEmpty);
+                    this.rightImagePanel.Update();
                 }
                 else
                 {
                     var x = 0;
                     this.leftImagePanel.SetBounds(x, y, w, h, BoundsSpecified.All);
                     this.leftImagePanel.ImageAlign = ImageAlign.Right;
-                    this.leftImagePanel.Update(!e.Image.IsEmpty);
+                    this.leftImagePanel.Update();
                 }
             }
             else if (e.IsMain && !e.HasSub)
@@ -524,7 +524,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
                 this.leftImagePanel.SetBounds(x, y, w, h, BoundsSpecified.All);
                 this.leftImagePanel.ImageAlign = ImageAlign.Center;
-                this.leftImagePanel.Update(!e.Image.IsEmpty);
+                this.leftImagePanel.Update();
                 this.rightImagePanel.Visible = false;
             }
             else
@@ -675,60 +675,14 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 ThumbnailSize = this.leftImagePanel.ThumbnailSize,
             };
 
-            this.DrawLoadingImage(param, mainFilePath);
+            this.isLoading = true;
 
             this.ImageFileCacheJob.StartJob([.. nextFiles, .. prevFiles]);
+            this.ImageFileLoadingJob.StartJob(param);
             this.ImageFileReadJob.StartJob(param);
 
             sw.Stop();
             Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageViewerPage.ReadImage: {sw.ElapsedMilliseconds} ms");
-        }
-
-        private void DrawLoadingImage(ImageFileReadParameter parameter, string mainFilePath)
-        {
-            var sw = Stopwatch.StartNew();
-            Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageViewerPage.DrawLoadingImage: Start");
-
-            var mainSize = this.GetImageSize(mainFilePath);
-            if (parameter.ImageDisplayMode != ImageDisplayMode.Single
-                && mainSize != ImageUtil.EMPTY_SIZE
-                && mainSize.Width < mainSize.Height)
-            {
-                var subtIndex = parameter.CurrentIndex + 1;
-                if (subtIndex > parameter.FilePathList.Count - 1)
-                {
-                    subtIndex = 0;
-                }
-
-                var subFilePath = parameter.FilePathList[subtIndex];
-                var subSize = this.GetImageSize(subFilePath);
-
-                if (subSize != ImageUtil.EMPTY_SIZE
-                    && subSize.Width < subSize.Height)
-                {
-                    this.ImageFileReadJob_Callback(ImageFileReadLogic.CreateEmptyResult(
-                        mainFilePath, true, true, parameter.ImageSizeMode, mainSize));
-                    this.ImageFileReadJob_Callback(ImageFileReadLogic.CreateEmptyResult(
-                        subFilePath, false, true, parameter.ImageSizeMode, subSize));
-
-                }
-                else
-                {
-                    this.ImageFileReadJob_Callback(ImageFileReadLogic.CreateEmptyResult(
-                        mainFilePath, true, false, parameter.ImageSizeMode, mainSize));
-                }
-            }
-            else
-            {
-                this.ImageFileReadJob_Callback(ImageFileReadLogic.CreateEmptyResult(
-                    mainFilePath, true, false, parameter.ImageSizeMode, mainSize));
-            }
-
-            this.isLoading = true;
-            this.ImageFileLoadingJob.StartJob();
-
-            sw.Stop();
-            Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageViewerPage.DrawLoadingImage: {sw.ElapsedMilliseconds} ms");
         }
 
         private void DoDragDrop(string currentFilePath)
@@ -834,7 +788,10 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
         private void ImageFileReadJob_Callback(ImageFileReadResult e)
         {
-            this.isLoading = false;
+            if (!e.Image.IsEmpty)
+            {
+                this.isLoading = false;
+            }
 
             SizeF bgSize;
             if (e.HasSub)
