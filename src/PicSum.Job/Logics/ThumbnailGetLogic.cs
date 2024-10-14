@@ -408,7 +408,7 @@ namespace PicSum.Job.Logics
         {
             var sql = new ThumbnailReadByFileSql(filePath);
             var dto = DatabaseManager<ThumbnailConnection>.ReadLine<ThumbnailDto>(sql);
-            if (!string.IsNullOrEmpty(dto.FilePath))
+            if (!dto.Equals(default(ThumbnailDto)))
             {
                 var thumb = new ThumbnailBufferEntity
                 {
