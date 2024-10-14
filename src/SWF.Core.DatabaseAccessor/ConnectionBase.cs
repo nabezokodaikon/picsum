@@ -11,7 +11,7 @@ namespace SWF.Core.DatabaseAccessor
     {
         private bool disposed = false;
         private readonly ReaderWriterLockSlim lockObject
-            = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
+            = new(LockRecursionPolicy.SupportsRecursion);
         private readonly SQLiteConnection connection;
         private SQLiteTransaction? transaction = null;
 
