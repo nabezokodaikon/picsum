@@ -286,12 +286,6 @@ namespace SWF.UIComponent.WideDropDown
             }
         }
 
-        protected override void OnOpened(EventArgs e)
-        {
-            this.FlowList.Focus();
-            base.OnOpened(e);
-        }
-
         protected override void OnInvalidated(InvalidateEventArgs e)
         {
             this.FlowList.Invalidate();

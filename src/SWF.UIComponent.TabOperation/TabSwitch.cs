@@ -843,16 +843,8 @@ namespace SWF.UIComponent.TabOperation
 
                     this.InvalidateHeader();
                 }
-                else
-                {
-                    this.activeTab.Page.Focus();
-                }
 
                 this.OnActiveTabChanged(EventArgs.Empty);
-            }
-            else
-            {
-                this.activeTab?.Page.Focus();
             }
 
             base.OnMouseWheel(e);
