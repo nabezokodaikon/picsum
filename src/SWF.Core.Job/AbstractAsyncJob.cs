@@ -74,7 +74,7 @@ namespace SWF.Core.Job
 
         internal void ExecuteWrapper()
         {
-            if (this.Parameter != null)
+            if (this.Parameter != null && !this.Parameter.Equals(default(TParameter)))
             {
                 this.Execute(this.Parameter);
             }
