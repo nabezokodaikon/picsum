@@ -6,7 +6,7 @@ namespace PicSum.Job.Parameters
     /// <summary>
     /// フォルダ状態
     /// </summary>
-    public struct DirectoryStateParameter
+    public sealed class DirectoryStateParameter
         : IJobParameter, IEquatable<DirectoryStateParameter>
     {
         public static readonly DirectoryStateParameter EMPTY = new()

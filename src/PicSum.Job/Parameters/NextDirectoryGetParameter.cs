@@ -6,7 +6,7 @@ namespace PicSum.Job.Parameters
     /// <summary>
     /// 次のコンテンツのパラメータを取得するエンティティ
     /// </summary>
-    public struct NextDirectoryGetParameter<T>
+    public sealed class NextDirectoryGetParameter<T>
         : IJobParameter
     {
         public ValueEntity<T>? CurrentParameter { get; set; }

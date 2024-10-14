@@ -2,7 +2,7 @@ using SWF.Core.Job;
 
 namespace PicSum.Job.Parameters
 {
-    public struct ThumbnailsGetParameter
+    public sealed class ThumbnailsGetParameter
         : IJobParameter
     {
         public IList<string>? FilePathList { get; set; }

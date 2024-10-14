@@ -5,7 +5,7 @@ namespace PicSum.Job.Parameters
     /// <summary>
     /// スタートアップパラメータエンティティ
     /// </summary>
-    public struct StartupPrameter
+    public sealed class StartupPrameter
         : IJobParameter
     {
         public string FileInfoDBFilePath { get; private set; }

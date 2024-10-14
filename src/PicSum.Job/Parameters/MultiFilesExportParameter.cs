@@ -2,7 +2,7 @@ using SWF.Core.Job;
 
 namespace PicSum.Job.Parameters
 {
-    public struct MultiFilesExportParameter
+    public sealed class MultiFilesExportParameter
         : IJobParameter
     {
         public string[]? SrcFiles { get; set; }
