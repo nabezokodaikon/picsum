@@ -66,7 +66,6 @@ namespace PicSum.UIComponent.Contents.FileList
             this.flowList.DragStart += new System.EventHandler(this.FlowList_DragStart);
             this.flowList.SelectedItemChanged += new System.EventHandler(this.FlowList_SelectedItemChange);
             this.flowList.ItemExecute += new System.EventHandler(this.FlowList_ItemExecute);
-            this.flowList.MouseDown += new System.Windows.Forms.MouseEventHandler(this.FlowList_MouseDown);
             this.flowList.MouseClick += new System.Windows.Forms.MouseEventHandler(this.FlowList_MouseClick);
             this.flowList.ItemMouseClick += new System.EventHandler<System.Windows.Forms.MouseEventArgs>(this.FlowList_ItemMouseClick);
             this.flowList.ItemMouseDoubleClick += new System.EventHandler<System.Windows.Forms.MouseEventArgs>(this.FlowList_ItemMouseDoubleClick);

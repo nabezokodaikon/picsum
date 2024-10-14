@@ -948,11 +948,6 @@ namespace PicSum.UIComponent.Contents.FileList
             this.OnMoveNextButtonClick(e);
         }
 
-        private void FlowList_MouseDown(object sender, MouseEventArgs e)
-        {
-            this.Focus();
-        }
-
         private void FlowList_MouseClick(object sender, MouseEventArgs e)
         {
             base.OnMouseClick(e);
