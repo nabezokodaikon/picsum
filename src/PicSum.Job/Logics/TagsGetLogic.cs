@@ -20,7 +20,7 @@ namespace PicSum.Job.Logics
             var sql = new AllTagsReadSql();
             var dtoList = DatabaseManager<FileInfoConnection>.ReadList<TagInfoDto>(sql);
 
-            return [..dtoList
+            return [.. dtoList
                 .Where(dto => FileUtil.IsExists(dto.FilePath))
                 .GroupBy(file => file.Tag)
                 .Select(file => file.First().Tag)

@@ -1,5 +1,4 @@
 using PicSum.DatabaseAccessor.Connection;
-using PicSum.DatabaseAccessor.Dto;
 using PicSum.DatabaseAccessor.Sql;
 using SWF.Core.DatabaseAccessor;
 using SWF.Core.FileAccessor;
@@ -17,7 +16,7 @@ namespace PicSum.Job.Logics
             var sql = new FavoriteDirectoriesReadSql();
             var dtoList = DatabaseManager<FileInfoConnection>.ReadList<SingleValueDto<string>>(sql);
 
-            return [..dtoList
+            return [.. dtoList
                 .Where(dto => !FileUtil.IsSystemRoot(dto.Value) && FileUtil.CanAccess(dto.Value))
                 .Select(dto => dto.Value)];
         }
