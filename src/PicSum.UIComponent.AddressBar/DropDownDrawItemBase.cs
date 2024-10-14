@@ -170,11 +170,6 @@ namespace PicSum.UIComponent.AddressBar
             }
         }
 
-        private void ContextMenu_Closing(object sender, ToolStripDropDownClosingEventArgs e)
-        {
-            this.DropDownList.Focus();
-        }
-
         private void ContextMenu_ActiveTabOpen(object sender, EventArgs e)
         {
             this.DropDownList.Close();
