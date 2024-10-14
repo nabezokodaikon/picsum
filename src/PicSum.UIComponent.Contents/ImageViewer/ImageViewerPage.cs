@@ -403,51 +403,51 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             }
         }
 
+        private void DrawMainImage()
+        {
+            var w = this.checkPatternPanel.Width;
+            var h = this.checkPatternPanel.Height;
+            var x = 0;
+            var y = 0;
+
+            this.leftImagePanel.SetBounds(x, y, w, h, BoundsSpecified.All);
+            this.leftImagePanel.ImageAlign = ImageAlign.Center;
+            this.leftImagePanel.Update();
+
+            this.rightImagePanel.Visible = false;
+        }
+
+        private void DrawBothImage()
+        {
+            var w = (int)(this.checkPatternPanel.Width / 2f);
+            var h = this.checkPatternPanel.Height;
+            var lx = 0;
+            var rx = this.checkPatternPanel.Width - w;
+            var y = 0;
+
+            this.leftImagePanel.SetBounds(lx, y, w, h, BoundsSpecified.All);
+            this.leftImagePanel.ImageAlign = ImageAlign.Right;
+            this.leftImagePanel.Update();
+
+            this.rightImagePanel.SetBounds(rx, y, w, h, BoundsSpecified.All);
+            this.rightImagePanel.ImageAlign = ImageAlign.Left;
+            this.rightImagePanel.Update();
+        }
+
         private void ChangeImagePanelSize()
         {
             var sw = Stopwatch.StartNew();
-
-            var mainImageDrawAction = () =>
-            {
-                var w = this.checkPatternPanel.Width;
-                var h = this.checkPatternPanel.Height;
-                var x = 0;
-                var y = 0;
-
-                this.leftImagePanel.SetBounds(x, y, w, h, BoundsSpecified.All);
-                this.leftImagePanel.ImageAlign = ImageAlign.Center;
-                this.leftImagePanel.Update();
-
-                this.rightImagePanel.Visible = false;
-            };
-
-            var bothImageDrawAction = () =>
-            {
-                var w = (int)(this.checkPatternPanel.Width / 2f);
-                var h = this.checkPatternPanel.Height;
-                var lx = 0;
-                var rx = this.checkPatternPanel.Width - w;
-                var y = 0;
-
-                this.leftImagePanel.SetBounds(lx, y, w, h, BoundsSpecified.All);
-                this.leftImagePanel.ImageAlign = ImageAlign.Right;
-                this.leftImagePanel.Update();
-
-                this.rightImagePanel.SetBounds(rx, y, w, h, BoundsSpecified.All);
-                this.rightImagePanel.ImageAlign = ImageAlign.Left;
-                this.rightImagePanel.Update();
-            };
 
             if (this.displayMode == ImageDisplayMode.LeftFacing)
             {
                 if (this.leftImagePanel.HasImage
                     && this.rightImagePanel.HasImage)
                 {
-                    bothImageDrawAction();
+                    this.DrawBothImage();
                 }
                 else
                 {
-                    mainImageDrawAction();
+                    this.DrawMainImage();
                 }
             }
             else if (this.displayMode == ImageDisplayMode.RightFacing)
@@ -455,16 +455,16 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 if (this.leftImagePanel.HasImage
                     && this.rightImagePanel.HasImage)
                 {
-                    bothImageDrawAction();
+                    this.DrawBothImage();
                 }
                 else
                 {
-                    mainImageDrawAction();
+                    this.DrawMainImage();
                 }
             }
             else if (this.displayMode == ImageDisplayMode.Single)
             {
-                mainImageDrawAction();
+                this.DrawMainImage();
             }
 
             sw.Stop();
