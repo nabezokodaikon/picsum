@@ -335,19 +335,6 @@ namespace PicSum.UIComponent.AddressBar
             return this.FlowList.GetSelectedIndexs();
         }
 
-        protected override void OnOpened(EventArgs e)
-        {
-            this.FlowList.Focus();
-
-            base.OnOpened(e);
-        }
-
-        protected override void OnInvalidated(InvalidateEventArgs e)
-        {
-            this.FlowList.Invalidate();
-            base.OnInvalidated(e);
-        }
-
         private void InitializeComponent()
         {
             this.SetStyle(
