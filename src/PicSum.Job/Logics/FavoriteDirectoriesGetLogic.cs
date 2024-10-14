@@ -17,12 +17,9 @@ namespace PicSum.Job.Logics
             var sql = new FavoriteDirectoriesReadSql();
             var dtoList = DatabaseManager<FileInfoConnection>.ReadList<SingleValueDto<string>>(sql);
 
-            var dirList = dtoList
+            return [..dtoList
                 .Where(dto => !FileUtil.IsSystemRoot(dto.Value) && FileUtil.CanAccess(dto.Value))
-                .Select(dto => dto.Value)
-                .ToList();
-
-            return dirList;
+                .Select(dto => dto.Value)];
         }
     }
 }

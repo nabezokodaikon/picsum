@@ -119,7 +119,7 @@ namespace PicSum.Job.Logics
 
             var sql = new FileInfoReadSql(info.FilePath);
             var dto = DatabaseManager<FileInfoConnection>.ReadLine<FileInfoDto>(sql);
-            if (dto != null)
+            if (!string.IsNullOrEmpty(dto.FilePath))
             {
                 info.Rating = dto.Rating;
             }

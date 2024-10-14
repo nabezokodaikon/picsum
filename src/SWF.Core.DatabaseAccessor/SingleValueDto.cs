@@ -1,15 +1,14 @@
-using SWF.Core.DatabaseAccessor;
 using System.Data;
 
-namespace PicSum.DatabaseAccessor.Dto
+namespace SWF.Core.DatabaseAccessor
 {
     /// <summary>
     /// 単一値DTO
     /// </summary>
-    public sealed class SingleValueDto<T>
+    public struct SingleValueDto<T>
         : IDto
     {
-        public T? Value { get; private set; }
+        public T Value { get; private set; }
 
         public void Read(IDataReader reader)
         {

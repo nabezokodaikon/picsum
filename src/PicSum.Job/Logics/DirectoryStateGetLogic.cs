@@ -22,7 +22,7 @@ namespace PicSum.Job.Logics
 
             var sql = new DirectoryStateReadSql(directoryPath);
             var dto = DatabaseManager<FileInfoConnection>.ReadLine<DirectoryStateDto>(sql);
-            if (dto != null)
+            if (!string.IsNullOrEmpty(dto.DirectoryPath))
             {
                 var directoryState = new DirectoryStateParameter
                 {

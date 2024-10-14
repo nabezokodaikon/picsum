@@ -268,7 +268,7 @@ namespace SWF.Core.DatabaseAccessor
         /// <typeparam name="T">戻り値のDto型</typeparam>
         /// <param name="sql">データアクセサ</param>
         /// <returns>Dto</returns>
-        public TDto ReadLine<TDto>(SqlBase<TDto> sql) where TDto : IDto, new()
+        public TDto? ReadLine<TDto>(SqlBase<TDto> sql) where TDto : IDto, new()
         {
             ArgumentNullException.ThrowIfNull(sql, nameof(sql));
 
@@ -313,7 +313,7 @@ namespace SWF.Core.DatabaseAccessor
         /// <typeparam name="T">戻り値の型</typeparam>
         /// <param name="sql">データアクセサ</param>
         /// <returns>1オブジェクトの実行結果</returns>
-        public T ReadValue<T>(SqlBase sql)
+        public T? ReadValue<T>(SqlBase sql)
         {
             ArgumentNullException.ThrowIfNull(sql, nameof(sql));
 
