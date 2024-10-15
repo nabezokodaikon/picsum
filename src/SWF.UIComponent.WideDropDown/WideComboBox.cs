@@ -83,6 +83,13 @@ namespace SWF.UIComponent.WideDropDown
 
         private void InputTextBox_KeyDown(object sender, KeyEventArgs e)
         {
+            if (e.Control && e.KeyCode == Keys.W)
+            {
+                e.Handled = true;
+                e.SuppressKeyPress = true;
+                return;
+            }
+
             if (e.KeyCode != Keys.Enter)
             {
                 return;
