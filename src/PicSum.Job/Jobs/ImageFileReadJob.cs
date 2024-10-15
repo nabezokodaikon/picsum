@@ -41,7 +41,8 @@ namespace PicSum.Job.Jobs
                 var subSize = logic.GetImageSize(subFilePath);
                 this.CheckCancel();
 
-                if (subSize != ImageUtil.EMPTY_SIZE
+                if (subFilePath != mainFilePath
+                    && subSize != ImageUtil.EMPTY_SIZE
                     && subSize.Width < subSize.Height)
                 {
                     this.Callback(logic.CreateResult(
