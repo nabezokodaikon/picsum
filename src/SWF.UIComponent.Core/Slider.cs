@@ -224,14 +224,6 @@ namespace SWF.UIComponent.Core
             g.DrawImage(this.button, rect);
         }
 
-        protected override void OnInvalidated(InvalidateEventArgs e)
-        {
-            if (this.SetButtonPointX(this.sliderValue))
-            {
-                base.OnInvalidated(e);
-            }
-        }
-
         protected override void OnPaint(PaintEventArgs e)
         {
             this.DrawBar(e.Graphics);
@@ -263,16 +255,6 @@ namespace SWF.UIComponent.Core
             }
 
             base.OnMouseDown(e);
-        }
-
-        protected override void OnMouseUp(MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Left)
-            {
-                this.Value = this.sliderValue;
-            }
-
-            base.OnMouseUp(e);
         }
 
         protected override void OnMouseMove(MouseEventArgs e)
