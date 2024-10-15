@@ -257,6 +257,16 @@ namespace SWF.UIComponent.Core
             base.OnMouseDown(e);
         }
 
+        protected override void OnMouseUp(MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                this.OnValueChanged(EventArgs.Empty);
+            }
+
+            base.OnMouseUp(e);
+        }
+
         protected override void OnMouseMove(MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
