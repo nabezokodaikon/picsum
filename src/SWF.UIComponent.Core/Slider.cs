@@ -305,6 +305,14 @@ namespace SWF.UIComponent.Core
             base.OnMouseMove(e);
         }
 
+        protected override void OnResize(EventArgs e)
+        {
+            this.SetButtonPointX(this.sliderValue);
+            this.Invalidate();
+            this.Update();
+            base.OnResize(e);
+        }
+
         protected virtual void OnBeginValueChange(EventArgs e)
         {
             BeginValueChange?.Invoke(this, e);
@@ -319,6 +327,5 @@ namespace SWF.UIComponent.Core
         {
             ValueChanged?.Invoke(this, e);
         }
-
     }
 }
