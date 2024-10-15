@@ -129,18 +129,18 @@ namespace SWF.UIComponent.Core
                 throw new ArgumentOutOfRangeException(nameof(value));
             }
 
-            if (value == this.maximumValue)
+            if (value == this.minimumValue)
             {
-                var pointX = this.GetButtonPointX(this.GetMaximumButtonPointX());
+                var pointX = this.GetButtonPointX(this.GetMinimumButtonPointX());
                 if (pointX != this.buttonPointX)
                 {
                     this.buttonPointX = pointX;
                     return true;
                 }
             }
-            else if (value == this.minimumValue)
+            else if (value == this.maximumValue)
             {
-                var pointX = this.GetButtonPointX(this.GetMinimumButtonPointX());
+                var pointX = this.GetButtonPointX(this.GetMaximumButtonPointX());
                 if (pointX != this.buttonPointX)
                 {
                     this.buttonPointX = pointX;
