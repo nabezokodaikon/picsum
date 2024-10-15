@@ -35,9 +35,9 @@ namespace SWF.UIComponent.Core
 
                 this.maximumValue = value;
 
-                if (this.sliderValue > value)
+                if (this.sliderValue > this.maximumValue)
                 {
-                    this.sliderValue = value;
+                    this.sliderValue = this.maximumValue;
                 }
             }
         }
@@ -131,7 +131,7 @@ namespace SWF.UIComponent.Core
 
             if (value == this.maximumValue)
             {
-                float pointX = this.GetButtonPointX(this.GetMaximumButtonPointX());
+                var pointX = this.GetButtonPointX(this.GetMaximumButtonPointX());
                 if (pointX != this.buttonPointX)
                 {
                     this.buttonPointX = pointX;
@@ -140,7 +140,7 @@ namespace SWF.UIComponent.Core
             }
             else if (value == this.minimumValue)
             {
-                float pointX = this.GetButtonPointX(this.GetMinimumButtonPointX());
+                var pointX = this.GetButtonPointX(this.GetMinimumButtonPointX());
                 if (pointX != this.buttonPointX)
                 {
                     this.buttonPointX = pointX;
@@ -149,8 +149,8 @@ namespace SWF.UIComponent.Core
             }
             else
             {
-                float rate = (value - this.minimumValue) / (float)(this.maximumValue - this.minimumValue);
-                float pointX = this.GetButtonPointX(this.Width * rate);
+                var rate = (value - this.minimumValue) / (float)(this.maximumValue - this.minimumValue);
+                var pointX = this.GetButtonPointX(this.Width * rate);
                 if (pointX != this.buttonPointX)
                 {
                     this.buttonPointX = pointX;
@@ -173,8 +173,8 @@ namespace SWF.UIComponent.Core
             }
             else
             {
-                float rate = x / this.GetMaximumButtonPointX();
-                float value = this.minimumValue + ((this.maximumValue - this.minimumValue) * rate);
+                var rate = x / this.GetMaximumButtonPointX();
+                var value = this.minimumValue + ((this.maximumValue - this.minimumValue) * rate);
                 return (int)value;
             }
         }
@@ -243,7 +243,7 @@ namespace SWF.UIComponent.Core
             {
                 this.OnBeginValueChange(EventArgs.Empty);
 
-                float pointX = this.GetButtonPointX(e.X);
+                var pointX = this.GetButtonPointX(e.X);
                 if (pointX != this.buttonPointX)
                 {
                     this.buttonPointX = pointX;
@@ -286,7 +286,7 @@ namespace SWF.UIComponent.Core
 
             if (e.Button == MouseButtons.Left)
             {
-                float pointX = this.GetButtonPointX(e.X);
+                var pointX = this.GetButtonPointX(e.X);
                 if (pointX != this.buttonPointX)
                 {
                     this.buttonPointX = pointX;
