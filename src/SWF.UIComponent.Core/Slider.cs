@@ -234,6 +234,11 @@ namespace SWF.UIComponent.Core
 
         protected override void OnMouseDown(MouseEventArgs e)
         {
+            if (this.MaximumValue < 2)
+            {
+                return;
+            }
+
             if (e.Button == MouseButtons.Left)
             {
                 this.OnBeginValueChange(EventArgs.Empty);
@@ -259,6 +264,11 @@ namespace SWF.UIComponent.Core
 
         protected override void OnMouseUp(MouseEventArgs e)
         {
+            if (this.MaximumValue < 2)
+            {
+                return;
+            }
+
             if (e.Button == MouseButtons.Left)
             {
                 this.OnValueChanged(EventArgs.Empty);
@@ -269,6 +279,11 @@ namespace SWF.UIComponent.Core
 
         protected override void OnMouseMove(MouseEventArgs e)
         {
+            if (this.MaximumValue < 2)
+            {
+                return;
+            }
+
             if (e.Button == MouseButtons.Left)
             {
                 float pointX = this.GetButtonPointX(e.X);
