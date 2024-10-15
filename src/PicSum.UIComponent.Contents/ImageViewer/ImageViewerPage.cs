@@ -1,6 +1,5 @@
 using NLog;
 using PicSum.Job.Jobs;
-using PicSum.Job.Logics;
 using PicSum.Job.Parameters;
 using PicSum.Job.Results;
 using PicSum.UIComponent.Contents.Common;
