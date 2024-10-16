@@ -1,5 +1,7 @@
 using Microsoft.WindowsAPICodePack.Shell;
+using SWF.Core.Base;
 using System.Diagnostics;
+using System.Drawing.Drawing2D;
 using System.Runtime.Versioning;
 
 namespace SWF.Core.ImageAccessor
@@ -90,6 +92,42 @@ namespace SWF.Core.ImageAccessor
             //Console.WriteLine($"[{Thread.CurrentThread.Name}] ThumbnailUtil.CreateThumbnail: {sw.ElapsedMilliseconds} ms");
 
             return thumb;
+        }
+
+        public static Bitmap CreateThumbnail(CvImage srcImg, int thumbSize, ImageSizeMode sizeMode)
+        {
+            ArgumentNullException.ThrowIfNull(srcImg, nameof(srcImg));
+
+            if (thumbSize < 0)
+            {
+                ArgumentOutOfRangeException.ThrowIfNegative(thumbSize, nameof(thumbSize));
+            }
+
+            var sw = Stopwatch.StartNew();
+
+            var scale = Math.Min(thumbSize / (float)srcImg.Width, thumbSize / (float)srcImg.Height);
+            var w = srcImg.Width * scale;
+            var h = srcImg.Height * scale;
+
+            var destImg = new Bitmap((int)w, (int)h);
+            using (var g = Graphics.FromImage(destImg))
+            {
+                if (sizeMode == ImageSizeMode.Original)
+                {
+                    g.SmoothingMode = SmoothingMode.None;
+                    g.InterpolationMode = InterpolationMode.NearestNeighbor;
+                    g.CompositingQuality = CompositingQuality.HighSpeed;
+                    g.PixelOffsetMode = PixelOffsetMode.HighSpeed;
+                    g.CompositingMode = CompositingMode.SourceOver;
+
+                    srcImg.DrawResizeImage(g, new RectangleF(0, 0, w, h), new RectangleF(0, 0, srcImg.Width, srcImg.Height));
+                }
+            }
+
+            sw.Stop();
+            Console.WriteLine($"[{Thread.CurrentThread.Name}] ThumbnailGetLogic.CreateThumbnail: {sw.ElapsedMilliseconds} ms");
+
+            return destImg;
         }
 
         /// <summary>

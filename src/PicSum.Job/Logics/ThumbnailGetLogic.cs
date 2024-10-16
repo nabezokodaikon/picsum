@@ -2,14 +2,10 @@ using PicSum.DatabaseAccessor.Connection;
 using PicSum.DatabaseAccessor.Dto;
 using PicSum.DatabaseAccessor.Sql;
 using PicSum.Job.Entities;
-using SWF.Core.Base;
 using SWF.Core.DatabaseAccessor;
 using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
 using SWF.Core.Job;
-using System.Diagnostics;
-using System.Drawing;
-using System.Drawing.Drawing2D;
 using System.Runtime.Versioning;
 
 namespace PicSum.Job.Logics
@@ -34,42 +30,6 @@ namespace PicSum.Job.Logics
         public static void DisposeStaticResouces()
         {
             CACHE_LOCK.Dispose();
-        }
-
-        public static Bitmap CreateThumbnail(CvImage srcImg, int thumbSize, ImageSizeMode sizeMode)
-        {
-            ArgumentNullException.ThrowIfNull(srcImg, nameof(srcImg));
-
-            if (thumbSize < 0)
-            {
-                ArgumentOutOfRangeException.ThrowIfNegative(thumbSize, nameof(thumbSize));
-            }
-
-            var sw = Stopwatch.StartNew();
-
-            var scale = Math.Min(thumbSize / (float)srcImg.Width, thumbSize / (float)srcImg.Height);
-            var w = srcImg.Width * scale;
-            var h = srcImg.Height * scale;
-
-            var destImg = new Bitmap((int)w, (int)h);
-            using (var g = Graphics.FromImage(destImg))
-            {
-                if (sizeMode == ImageSizeMode.Original)
-                {
-                    g.SmoothingMode = SmoothingMode.None;
-                    g.InterpolationMode = InterpolationMode.NearestNeighbor;
-                    g.CompositingQuality = CompositingQuality.HighSpeed;
-                    g.PixelOffsetMode = PixelOffsetMode.HighSpeed;
-                    g.CompositingMode = CompositingMode.SourceOver;
-
-                    srcImg.DrawResizeImage(g, new RectangleF(0, 0, w, h), new RectangleF(0, 0, srcImg.Width, srcImg.Height));
-                }
-            }
-
-            sw.Stop();
-            Console.WriteLine($"[{Thread.CurrentThread.Name}] ThumbnailGetLogic.CreateThumbnail: {sw.ElapsedMilliseconds} ms");
-
-            return destImg;
         }
 
         public ThumbnailBufferEntity Execute(string filePath, int thumbWidth, int thumbHeight)

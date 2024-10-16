@@ -28,7 +28,7 @@ namespace PicSum.Job.Logics
 
                 thumbnail = (isError) ?
                         null :
-                        ThumbnailGetLogic.CreateThumbnail(image, thumbnailSize, imageSizeMode);
+                        ThumbnailUtil.CreateThumbnail(image, thumbnailSize, imageSizeMode);
                 this.CheckCancel();
 
                 return new ImageFileReadResult()
