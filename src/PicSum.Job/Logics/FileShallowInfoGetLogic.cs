@@ -1,5 +1,6 @@
 using PicSum.Job.Entities;
 using SWF.Core.FileAccessor;
+using SWF.Core.ImageAccessor;
 using SWF.Core.Job;
 using System.Runtime.Versioning;
 
@@ -43,6 +44,15 @@ namespace PicSum.Job.Logics
             }
             else if (FileUtil.IsFile(filePath))
             {
+                var thumbnailGetLogic = new ThumbnailGetLogic(job);
+                var thumbnailBuffer = thumbnailGetLogic.GetOnlyCache(filePath, 248, 248);
+                var thumbnailImage = thumbnailBuffer switch
+                {
+                    var t when t != ThumbnailBufferEntity.EMPTY && t.ThumbnailBuffer != null =>
+                        ImageUtil.ToImage(t.ThumbnailBuffer),
+                    _ => null,
+                };
+
                 info.FilePath = filePath;
                 info.FileName = FileUtil.GetFileName(filePath);
                 info.IsFile = true;
@@ -50,9 +60,19 @@ namespace PicSum.Job.Logics
                 info.UpdateDate = FileUtil.GetUpdateDate(filePath);
                 info.LargeIcon = FileIconCash.GetLargeFileIcon(info.FilePath);
                 info.SmallIcon = FileIconCash.GetSmallFileIcon(info.FilePath);
+                info.ThumbnailImage = thumbnailImage;
             }
             else if (FileUtil.IsDirectory(filePath))
             {
+                var thumbnailGetLogic = new ThumbnailGetLogic(job);
+                var thumbnailBuffer = thumbnailGetLogic.GetOnlyCache(filePath, 248, 248);
+                var thumbnailImage = thumbnailBuffer switch
+                {
+                    var t when t != ThumbnailBufferEntity.EMPTY && t.ThumbnailBuffer != null =>
+                        ImageUtil.ToImage(t.ThumbnailBuffer),
+                    _ => null,
+                };
+
                 info.FilePath = filePath;
                 info.FileName = FileUtil.GetFileName(filePath);
                 info.IsFile = false;
@@ -60,6 +80,7 @@ namespace PicSum.Job.Logics
                 info.UpdateDate = FileUtil.GetUpdateDate(filePath);
                 info.LargeIcon = FileIconCash.LargeDirectoryIcon;
                 info.SmallIcon = FileIconCash.SmallDirectoryIcon;
+                info.ThumbnailImage = thumbnailImage;
             }
             else
             {

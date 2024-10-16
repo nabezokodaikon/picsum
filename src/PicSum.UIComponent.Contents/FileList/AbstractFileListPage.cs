@@ -414,7 +414,8 @@ namespace PicSum.UIComponent.Contents.FileList
                     RgistrationDate = srcFile.RgistrationDate,
                     Icon = srcFile.LargeIcon,
                     IsFile = srcFile.IsFile,
-                    IsImageFile = srcFile.IsImageFile
+                    IsImageFile = srcFile.IsImageFile,
+                    ThumbnailImage = srcFile.ThumbnailImage,
                 };
                 this.masterFileDictionary.Add(destFile.FilePath, destFile);
             }

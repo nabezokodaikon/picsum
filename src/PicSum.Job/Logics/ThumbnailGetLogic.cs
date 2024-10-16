@@ -32,7 +32,25 @@ namespace PicSum.Job.Logics
             CACHE_LOCK.Dispose();
         }
 
-        public ThumbnailBufferEntity Execute(string filePath, int thumbWidth, int thumbHeight)
+        public ThumbnailBufferEntity GetOnlyCache(string filePath, int thumbWidth, int thumbHeight)
+        {
+            ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
+
+            if (FileUtil.IsFile(filePath) && FileUtil.IsImageFile(filePath))
+            {
+                return this.GetOnlyFileCache(filePath, thumbWidth, thumbHeight);
+            }
+            else if (FileUtil.IsDirectory(filePath))
+            {
+                return this.GetOnlyDirectoryCache(filePath, thumbWidth, thumbHeight);
+            }
+            else
+            {
+                return ThumbnailBufferEntity.EMPTY;
+            }
+        }
+
+        public ThumbnailBufferEntity GetOrCreateCache(string filePath, int thumbWidth, int thumbHeight)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
@@ -47,7 +65,7 @@ namespace PicSum.Job.Logics
                     return ThumbnailBufferEntity.EMPTY;
                 }
 
-                var cache = this.ReadCache(filePath, thumbWidth, thumbHeight);
+                var cache = this.GetOrCreateFileCache(filePath, thumbWidth, thumbHeight);
                 if (cache != ThumbnailBufferEntity.EMPTY)
                 {
                     if (cache.ThumbnailWidth > thumbWidth || cache.ThumbnailHeight > thumbHeight)
@@ -85,7 +103,7 @@ namespace PicSum.Job.Logics
             }
             else
             {
-                var cache = this.GetDirectoryCache(filePath, thumbWidth, thumbHeight);
+                var cache = this.GetOrCreateDirectoryCache(filePath, thumbWidth, thumbHeight);
                 if (cache != ThumbnailBufferEntity.EMPTY)
                 {
                     if (cache.ThumbnailWidth > thumbWidth || cache.ThumbnailHeight > thumbHeight)
@@ -123,7 +141,81 @@ namespace PicSum.Job.Logics
             }
         }
 
-        private ThumbnailBufferEntity ReadCache(string filePath, int thumbWidth, int thumbHeight)
+        private ThumbnailBufferEntity GetOnlyFileCache(string filePath, int thumbWidth, int thumbHeight)
+        {
+            var memCache = GetMemoryCache(filePath);
+            if (memCache != ThumbnailBufferEntity.EMPTY)
+            {
+                var updateDate = FileUtil.GetUpdateDate(filePath);
+                if (memCache.ThumbnailWidth >= thumbWidth &&
+                    memCache.ThumbnailHeight >= thumbHeight &&
+                    memCache.FileUpdatedate >= updateDate)
+                {
+                    // メモリキャッシュを返します。
+                    return memCache;
+                }
+            }
+            else
+            {
+                var dbCache = this.GetDBCache(filePath);
+                if (dbCache != ThumbnailBufferEntity.EMPTY)
+                {
+                    var updateDate = FileUtil.GetUpdateDate(filePath);
+                    if (dbCache.ThumbnailWidth >= thumbWidth &&
+                        dbCache.ThumbnailHeight >= thumbHeight &&
+                        dbCache.FileUpdatedate >= updateDate)
+                    {
+                        // DBキャッシュを返します。
+                        UpdateMemoryCache(dbCache);
+                        return dbCache;
+                    }
+                }
+            }
+
+            return ThumbnailBufferEntity.EMPTY;
+        }
+
+        private ThumbnailBufferEntity GetOnlyDirectoryCache(string filePath, int thumbWidth, int thumbHeight)
+        {
+            var thumbFile = FileUtil.GetFirstImageFilePath(filePath);
+            if (filePath != thumbFile)
+            {
+                return ThumbnailBufferEntity.EMPTY;
+            }
+
+            var memCache = GetMemoryCache(filePath);
+            if (memCache != ThumbnailBufferEntity.EMPTY)
+            {
+                var updateDate = FileUtil.GetUpdateDate(filePath);
+                if (memCache.ThumbnailWidth >= thumbWidth &&
+                    memCache.ThumbnailHeight >= thumbHeight &&
+                    memCache.FileUpdatedate >= updateDate)
+                {
+                    // メモリキャッシュを返します。
+                    return memCache;
+                }
+            }
+            else
+            {
+                var dbCache = this.GetDBCache(filePath);
+                if (dbCache != ThumbnailBufferEntity.EMPTY)
+                {
+                    var updateDate = FileUtil.GetUpdateDate(filePath);
+                    if (dbCache.ThumbnailWidth >= thumbWidth &&
+                        dbCache.ThumbnailHeight >= thumbHeight &&
+                        dbCache.FileUpdatedate >= updateDate)
+                    {
+                        // DBキャッシュを返します。
+                        UpdateMemoryCache(dbCache);
+                        return dbCache;
+                    }
+                }
+            }
+
+            return ThumbnailBufferEntity.EMPTY;
+        }
+
+        private ThumbnailBufferEntity GetOrCreateFileCache(string filePath, int thumbWidth, int thumbHeight)
         {
             var memCache = GetMemoryCache(filePath);
             if (memCache != ThumbnailBufferEntity.EMPTY)
@@ -200,7 +292,8 @@ namespace PicSum.Job.Logics
             }
         }
 
-        private ThumbnailBufferEntity GetDirectoryCache(string filePath, int thumbWidth, int thumbHeight)
+        // TODO: 先頭ファイルの名称を先に比較する。
+        private ThumbnailBufferEntity GetOrCreateDirectoryCache(string filePath, int thumbWidth, int thumbHeight)
         {
             var memCache = GetMemoryCache(filePath);
             if (memCache != ThumbnailBufferEntity.EMPTY)
@@ -339,7 +432,7 @@ namespace PicSum.Job.Logics
             }
         }
 
-        private byte[] GetThumbnailBuffer(string filePath, int startPoint, int size)
+        private byte[] ReadThumbnailBuffer(string filePath, int startPoint, int size)
         {
             using (var fs = new FileStream(
                 filePath, FileMode.Open, FileAccess.Read, FileShare.Read, FILE_READ_BUFFER_SIZE, FileOptions.RandomAccess))
@@ -381,7 +474,7 @@ namespace PicSum.Job.Logics
                 };
 
                 var thumbBufferFile = this.GetThumbnailBufferFilePath(dto.ThumbnailID);
-                thumb.ThumbnailBuffer = this.GetThumbnailBuffer(thumbBufferFile, dto.ThumbnailStartPoint, dto.ThumbnailSize);
+                thumb.ThumbnailBuffer = this.ReadThumbnailBuffer(thumbBufferFile, dto.ThumbnailStartPoint, dto.ThumbnailSize);
 
                 return thumb;
             }
