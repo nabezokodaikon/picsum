@@ -125,7 +125,7 @@ namespace SWF.Core.ImageAccessor
             }
 
             sw.Stop();
-            Console.WriteLine($"[{Thread.CurrentThread.Name}] ThumbnailGetLogic.CreateThumbnail: {sw.ElapsedMilliseconds} ms");
+            Console.WriteLine($"[{Thread.CurrentThread.Name}] ThumbnailUtil.CreateThumbnail: {sw.ElapsedMilliseconds} ms");
 
             return destImg;
         }
