@@ -535,6 +535,7 @@ namespace SWF.UIComponent.FlowList
 
             var rect = this.GetItemDrawRectangle(itemIndex);
             this.Invalidate(rect);
+            this.Update();
         }
 
         private void OnDrawItem(DrawItemEventArgs e)
