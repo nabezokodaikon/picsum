@@ -67,24 +67,32 @@ namespace PicSum.Job.Logics
 
                 if (info.IsImageFile)
                 {
-                    var srcImg = this.ReadImageFile(filePath);
-                    if (srcImg != ImageUtil.EMPTY_IMAGE)
+                    var srcSize = this.GetImageSize(filePath);
+                    if (srcSize != ImageUtil.EMPTY_SIZE)
                     {
-                        using (srcImg)
+                        using (var tran = DatabaseManager<ThumbnailConnection>.BeginTransaction())
                         {
-                            var thumb = ThumbnailUtil.CreateThumbnail(srcImg, thumbSize.Width, thumbSize.Height);
+                            var thumbnailGetLogic = new ThumbnailGetLogic(job);
+                            var thumbnailBuffer
+                                = thumbnailGetLogic.GetOrCreateCache(filePath, thumbSize.Width, thumbSize.Height);
+                            var thumbnailImage
+                                = ImageUtil.ToImage(thumbnailBuffer.ThumbnailBuffer);
+
                             info.Thumbnail = new()
                             {
                                 FilePath = info.FilePath,
                                 FileUpdatedate = info.UpdateDate,
-                                ThumbnailImage = thumb,
+                                ThumbnailImage = thumbnailImage,
                                 ThumbnailWidth = thumbSize.Width,
                                 ThumbnailHeight = thumbSize.Height,
-                                SourceWidth = srcImg.Width,
-                                SourceHeight = srcImg.Height
+                                SourceWidth = srcSize.Width,
+                                SourceHeight = srcSize.Height
                             };
-                            info.ImageSize = new(srcImg.Width, srcImg.Height);
+                            info.ImageSize = new(srcSize.Width, srcSize.Height);
+
+                            tran.Commit();
                         }
+
                     }
                 }
                 else if (!info.IsFile)
@@ -92,23 +100,30 @@ namespace PicSum.Job.Logics
                     var firstImageFile = FileUtil.GetFirstImageFilePath(filePath);
                     if (!string.IsNullOrEmpty(firstImageFile))
                     {
-                        var srcImg = this.ReadImageFile(firstImageFile);
-                        if (srcImg != ImageUtil.EMPTY_IMAGE)
+                        var srcSize = this.GetImageSize(firstImageFile);
+                        if (srcSize != ImageUtil.EMPTY_SIZE)
                         {
-                            using (srcImg)
+                            using (var tran = DatabaseManager<ThumbnailConnection>.BeginTransaction())
                             {
-                                var thumb = ThumbnailUtil.CreateThumbnail(srcImg, thumbSize.Width, thumbSize.Height);
+                                var thumbnailGetLogic = new ThumbnailGetLogic(job);
+                                var thumbnailBuffer
+                                    = thumbnailGetLogic.GetOrCreateCache(firstImageFile, thumbSize.Width, thumbSize.Height);
+                                var thumbnailImage
+                                    = ImageUtil.ToImage(thumbnailBuffer.ThumbnailBuffer);
+
                                 info.Thumbnail = new()
                                 {
                                     FilePath = info.FilePath,
                                     FileUpdatedate = info.UpdateDate,
-                                    ThumbnailImage = thumb,
+                                    ThumbnailImage = thumbnailImage,
                                     ThumbnailWidth = thumbSize.Width,
                                     ThumbnailHeight = thumbSize.Height,
-                                    SourceWidth = srcImg.Width,
-                                    SourceHeight = srcImg.Height,
+                                    SourceWidth = srcSize.Width,
+                                    SourceHeight = srcSize.Height,
                                 };
-                                info.ImageSize = new(srcImg.Width, srcImg.Height);
+                                info.ImageSize = new(srcSize.Width, srcSize.Height);
+
+                                tran.Commit();
                             }
                         }
                     }
@@ -133,16 +148,21 @@ namespace PicSum.Job.Logics
             return info;
         }
 
-        private Bitmap ReadImageFile(string filePath)
+        private Size GetImageSize(string filePath)
         {
             try
             {
-                return ImageFileCacheUtil.GetBitmap(filePath);
+                return ImageFileSizeCacheUtil.Get(filePath).Size;
+            }
+            catch (FileUtilException ex)
+            {
+                this.WriteErrorLog(new JobException(this.ID, ex));
+                return ImageUtil.EMPTY_SIZE;
             }
             catch (ImageUtilException ex)
             {
                 this.WriteErrorLog(new JobException(this.ID, ex));
-                return ImageUtil.EMPTY_IMAGE;
+                return ImageUtil.EMPTY_SIZE;
             }
         }
     }
