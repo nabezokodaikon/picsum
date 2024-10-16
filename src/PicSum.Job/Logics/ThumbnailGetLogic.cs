@@ -292,7 +292,6 @@ namespace PicSum.Job.Logics
             }
         }
 
-        // TODO: 先頭ファイルの名称を先に比較する。
         private ThumbnailBufferEntity GetOrCreateDirectoryCache(string filePath, int thumbWidth, int thumbHeight)
         {
             var memCache = GetMemoryCache(filePath);
