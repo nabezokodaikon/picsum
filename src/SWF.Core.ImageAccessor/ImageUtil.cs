@@ -420,7 +420,7 @@ namespace SWF.Core.ImageAccessor
                         using (var icon = new Icon(fs))
                         {
                             sw = Stopwatch.StartNew();
-                            var bmp = icon.ToBitmap();
+                            var bmp = ConvertIfGrayscale(icon.ToBitmap(), fs);
                             sw.Stop();
                             Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.ReadImageFile Icon file: {sw.ElapsedMilliseconds} ms");
                             return bmp;
@@ -432,7 +432,7 @@ namespace SWF.Core.ImageAccessor
                     if (FileUtil.IsWebpFile(formatName))
                     {
                         sw = Stopwatch.StartNew();
-                        var bmp = OpenCVUtil.ReadImageFile(fs);
+                        var bmp = ConvertIfGrayscale(OpenCVUtil.ReadImageFile(fs), fs);
                         sw.Stop();
                         Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.ReadImageFile Webp file: {sw.ElapsedMilliseconds} ms");
                         return bmp;
@@ -440,7 +440,7 @@ namespace SWF.Core.ImageAccessor
                     else if (FileUtil.IsAvifFile(formatName))
                     {
                         sw = Stopwatch.StartNew();
-                        var bmp = SixLaborsUtil.ReadImageFile(fs);
+                        var bmp = ConvertIfGrayscale(SixLaborsUtil.ReadImageFile(fs), fs);
                         sw.Stop();
                         Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.ReadImageFile Avif file: {sw.ElapsedMilliseconds} ms");
                         return bmp;
@@ -448,7 +448,7 @@ namespace SWF.Core.ImageAccessor
                     else if (FileUtil.IsHeifFile(formatName))
                     {
                         sw = Stopwatch.StartNew();
-                        var bmp = SixLaborsUtil.ReadImageFile(fs);
+                        var bmp = ConvertIfGrayscale(SixLaborsUtil.ReadImageFile(fs), fs);
                         sw.Stop();
                         Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.ReadImageFile Heif file: {sw.ElapsedMilliseconds} ms");
                         return bmp;
@@ -456,7 +456,7 @@ namespace SWF.Core.ImageAccessor
                     else if (FileUtil.IsJpegFile(formatName))
                     {
                         sw = Stopwatch.StartNew();
-                        var bmp = (Bitmap)Bitmap.FromStream(fs, false, true);
+                        var bmp = ConvertIfGrayscale((Bitmap)Bitmap.FromStream(fs, false, true), fs);
                         bmp = LoadBitmapCorrectOrientation(bmp);
                         sw.Stop();
                         Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.ReadImageFile Jpeg file: {sw.ElapsedMilliseconds} ms");
@@ -465,7 +465,7 @@ namespace SWF.Core.ImageAccessor
                     else if (FileUtil.IsBmpFile(formatName))
                     {
                         sw = Stopwatch.StartNew();
-                        var bmp = (Bitmap)Bitmap.FromStream(fs, false, true);
+                        var bmp = ConvertIfGrayscale((Bitmap)Bitmap.FromStream(fs, false, true), fs);
                         sw.Stop();
                         Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.ReadImageFile Bitmap file: {sw.ElapsedMilliseconds} ms");
                         return bmp;
@@ -473,28 +473,15 @@ namespace SWF.Core.ImageAccessor
                     else if (FileUtil.IsPngFile(formatName))
                     {
                         sw = Stopwatch.StartNew();
-                        var bmp = (Bitmap)Bitmap.FromStream(fs, false, true);
+                        var bmp = ConvertIfGrayscale((Bitmap)Bitmap.FromStream(fs, false, true), fs);
                         sw.Stop();
                         Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.ReadImageFile Png file: {sw.ElapsedMilliseconds} ms");
-
-                        if (bmp.PixelFormat == PixelFormat.Format8bppIndexed)
-                        {
-                            using (bmp)
-                            {
-                                var convBmp = OpenCVUtil.ReadImageFile(fs);
-                                return convBmp;
-                            }
-                        }
-                        else
-                        {
-                            return bmp;
-                        }
-
+                        return bmp;
                     }
                     else if (FileUtil.IsImageFile(filePath))
                     {
                         sw = Stopwatch.StartNew();
-                        var bmp = (Bitmap)Bitmap.FromStream(fs, false, true);
+                        var bmp = ConvertIfGrayscale((Bitmap)Bitmap.FromStream(fs, false, true), fs);
                         sw.Stop();
                         Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.ReadImageFile Other file: {sw.ElapsedMilliseconds} ms");
                         return bmp;
@@ -746,6 +733,22 @@ namespace SWF.Core.ImageAccessor
                 var width = reader.ReadInt32();
                 var height = reader.ReadInt32();
                 return new Size(width, Math.Abs(height));
+            }
+        }
+
+        private static Bitmap ConvertIfGrayscale(Bitmap bmp, FileStream fs)
+        {
+            if (bmp.PixelFormat == PixelFormat.Format8bppIndexed)
+            {
+                using (bmp)
+                {
+                    var convBmp = OpenCVUtil.ReadImageFile(fs);
+                    return convBmp;
+                }
+            }
+            else
+            {
+                return bmp;
             }
         }
 
