@@ -33,7 +33,7 @@ namespace SWF.Core.ImageAccessor
                 Cv2.Resize(srcMat, destMat, size, 0, 0, InterpolationFlags.Area);
                 var destBMP = destMat.ToBitmap();
                 sw.Stop();
-                Console.WriteLine($"[{Thread.CurrentThread.Name}] OpenCVUtil.Resize By Bitmap: {sw.ElapsedMilliseconds} ms");
+                //Console.WriteLine($"[{Thread.CurrentThread.Name}] OpenCVUtil.Resize By Bitmap: {sw.ElapsedMilliseconds} ms");
                 return destBMP;
             }
         }
