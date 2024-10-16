@@ -100,11 +100,6 @@ namespace SWF.Core.DatabaseAccessor
         /// <returns>トランザクションオブジェクト</returns>
         public Transaction BeginTransaction()
         {
-            if (this.transaction != null)
-            {
-                throw new InvalidOperationException("トランザクションが実行中です。");
-            }
-
             this.lockObject.EnterWriteLock();
             this.transaction = this.connection.BeginTransaction();
             return new Transaction(this);
