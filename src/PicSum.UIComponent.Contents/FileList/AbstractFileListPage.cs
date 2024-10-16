@@ -976,21 +976,47 @@ namespace PicSum.UIComponent.Contents.FileList
                 e.DrawLastItemIndex > -1 &&
                 e.DrawLastItemIndex < this.filterFilePathList.Count)
             {
+                var thumbnailWidth = this.flowList.ItemWidth - this.flowList.ItemSpace * 2;
+                var thumbnailHeight = this.IsShowFileName switch
+                {
+                    true => this.flowList.ItemHeight - this.flowList.ItemSpace * 2 - this.ItemTextHeight,
+                    _ => this.flowList.ItemHeight - this.flowList.ItemSpace * 2,
+                };
+
+                var fileList = this.filterFilePathList.Where((file, index) =>
+                {
+                    if (index < e.DrawFirstItemIndex || index > e.DrawLastItemIndex)
+                    {
+                        return false;
+                    }
+
+                    var info = this.masterFileDictionary[file];
+                    if (info.ThumbnailImage == null)
+                    {
+                        return true;
+                    }
+                    else if (info.ThumbnailWidth < thumbnailWidth
+                            || info.ThumbnailHeight < thumbnailHeight)
+                    {
+                        return true;
+                    }
+
+                    return false;
+                }).ToArray();
+
+                if (fileList.Length < 1)
+                {
+                    return;
+                }
+
                 var param = new ThumbnailsGetParameter
                 {
-                    FilePathList = this.filterFilePathList,
-                    FirstIndex = e.DrawFirstItemIndex,
-                    LastIndex = e.DrawLastItemIndex,
-                    ThumbnailWidth = this.flowList.ItemWidth - this.flowList.ItemSpace * 2
+                    FilePathList = fileList,
+                    FirstIndex = 0,
+                    LastIndex = fileList.Length - 1,
+                    ThumbnailWidth = thumbnailWidth,
+                    ThumbnailHeight = thumbnailHeight,
                 };
-                if (this.IsShowFileName)
-                {
-                    param.ThumbnailHeight = this.flowList.ItemHeight - this.flowList.ItemSpace * 2 - this.ItemTextHeight;
-                }
-                else
-                {
-                    param.ThumbnailHeight = this.flowList.ItemHeight - this.flowList.ItemSpace * 2;
-                }
 
                 this.ThumbnailsGetJob.StartJob(param);
 
