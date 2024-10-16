@@ -22,6 +22,8 @@ namespace PicSum.Job.Logics
         : AbstractAsyncLogic(job)
     {
         private const int CACHE_CAPACITY = 1000;
+        private static readonly int FILE_READ_BUFFER_SIZE = 1024 * 16;
+        private static readonly int BUFFER_FILE_MAX_SIZE = 1024 * 1024 * 100;
         private static readonly List<ThumbnailBufferEntity> CACHE_LIST = new(CACHE_CAPACITY);
         private static readonly Dictionary<string, ThumbnailBufferEntity> CACHE_DICTIONARY = new(CACHE_CAPACITY);
         private static readonly ReaderWriterLockSlim CACHE_LOCK = new();
@@ -356,8 +358,6 @@ namespace PicSum.Job.Logics
 
         private int GetCurrentThumbnailBufferID()
         {
-            const int BUFFER_FILE_MAX_SIZE = 1000 * 1000 * 100;
-
             var id = (int)DatabaseManager<ThumbnailConnection>.ReadValue<long>(new ThumbnailIDReadSql());
             var thumbFile = this.GetThumbnailBufferFilePath(id);
             if (!File.Exists(thumbFile))
@@ -365,25 +365,24 @@ namespace PicSum.Job.Logics
                 return id;
             }
 
-            using (var fs = new FileStream(thumbFile, FileMode.Open, FileAccess.Read, FileShare.Read))
+            var fi = new FileInfo(thumbFile);
+            var size = fi.Length;
+            if (size < BUFFER_FILE_MAX_SIZE)
             {
-                var size = fs.Length;
-                if (size < BUFFER_FILE_MAX_SIZE)
-                {
-                    return id;
-                }
-                else
-                {
-                    DatabaseManager<ThumbnailConnection>.Update(new ThumbnailIDUpdateSql());
-                    var newID = (int)DatabaseManager<ThumbnailConnection>.ReadValue<long>(new ThumbnailIDReadSql());
-                    return newID;
-                }
+                return id;
+            }
+            else
+            {
+                DatabaseManager<ThumbnailConnection>.Update(new ThumbnailIDUpdateSql());
+                var newID = (int)DatabaseManager<ThumbnailConnection>.ReadValue<long>(new ThumbnailIDReadSql());
+                return newID;
             }
         }
 
         private byte[] GetThumbnailBuffer(string filePath, int startPoint, int size)
         {
-            using (var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+            using (var fs = new FileStream(
+                filePath, FileMode.Open, FileAccess.Read, FileShare.Read, FILE_READ_BUFFER_SIZE, FileOptions.RandomAccess))
             {
                 var bf = new byte[size];
                 fs.Seek(startPoint, SeekOrigin.Begin);
@@ -395,11 +394,12 @@ namespace PicSum.Job.Logics
         private int AddThumbnailBuffer(int id, byte[] buffer)
         {
             var thumbFile = this.GetThumbnailBufferFilePath(id);
-            using (var fs = new FileStream(thumbFile, FileMode.Append, FileAccess.Write, FileShare.Read))
+            using (var fs = new FileStream(
+                thumbFile, FileMode.Append, FileAccess.Write, FileShare.None, FILE_READ_BUFFER_SIZE, FileOptions.None))
+            using (var bs = new BufferedStream(fs, FILE_READ_BUFFER_SIZE))
             {
                 var offset = (int)fs.Length;
-                fs.Seek(fs.Length, SeekOrigin.Begin);
-                fs.Write(buffer, 0, buffer.Length);
+                bs.Write(buffer, 0, buffer.Length);
                 return offset;
             }
         }
