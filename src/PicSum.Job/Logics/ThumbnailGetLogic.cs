@@ -177,12 +177,6 @@ namespace PicSum.Job.Logics
 
         private ThumbnailBufferEntity GetOnlyDirectoryCache(string filePath, int thumbWidth, int thumbHeight)
         {
-            var thumbFile = FileUtil.GetFirstImageFilePath(filePath);
-            if (filePath != thumbFile)
-            {
-                return ThumbnailBufferEntity.EMPTY;
-            }
-
             var memCache = GetMemoryCache(filePath);
             if (memCache != ThumbnailBufferEntity.EMPTY)
             {
