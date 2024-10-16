@@ -92,9 +92,9 @@ namespace PicSum.UIComponent.Contents.FileList
         private bool disposing = false;
         private Dictionary<string, FileEntity> masterFileDictionary = null;
         private List<string> filterFilePathList = null;
-        private TwoWayJob<ThumbnailsGetJob, ThumbnailsGetParameter, ThumbnailImageResult> getThumbnailsJob = null;
+        private TwoWayJob<ThumbnailsGetJob, ThumbnailsGetParameter, ThumbnailImageResult> thumbnailsGetJob = null;
         private OneWayJob<SingleFileExportJob, SingleFileExportParameter> singleFileExportJob = null;
-        private OneWayJob<BookmarkAddJob, ValueParameter<string>> addBookmarkJob = null;
+        private OneWayJob<BookmarkAddJob, ValueParameter<string>> bookmarkAddJob = null;
         private TwoWayJob<MultiFilesExportJob, MultiFilesExportParameter, ValueResult<string>> multiFilesExportJob = null;
         private OneWayJob<ImageFileSizeCacheJob, ListParameter<string>> imageFileSizeCacheJob = null;
 
@@ -227,14 +227,14 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
-        private TwoWayJob<ThumbnailsGetJob, ThumbnailsGetParameter, ThumbnailImageResult> GetThumbnailsJob
+        private TwoWayJob<ThumbnailsGetJob, ThumbnailsGetParameter, ThumbnailImageResult> ThumbnailsGetJob
         {
             get
             {
-                if (this.getThumbnailsJob == null)
+                if (this.thumbnailsGetJob == null)
                 {
-                    this.getThumbnailsJob = new();
-                    this.getThumbnailsJob
+                    this.thumbnailsGetJob = new();
+                    this.thumbnailsGetJob
                         .Callback(_ =>
                         {
                             if (this.disposing)
@@ -246,7 +246,7 @@ namespace PicSum.UIComponent.Contents.FileList
                         });
                 }
 
-                return this.getThumbnailsJob;
+                return this.thumbnailsGetJob;
             }
         }
 
@@ -263,16 +263,16 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
-        private OneWayJob<BookmarkAddJob, ValueParameter<string>> AddBookmarkJob
+        private OneWayJob<BookmarkAddJob, ValueParameter<string>> BookmarkAddJob
         {
             get
             {
-                if (this.addBookmarkJob == null)
+                if (this.bookmarkAddJob == null)
                 {
-                    this.addBookmarkJob = new();
+                    this.bookmarkAddJob = new();
                 }
 
-                return this.addBookmarkJob;
+                return this.bookmarkAddJob;
             }
         }
 
@@ -345,10 +345,10 @@ namespace PicSum.UIComponent.Contents.FileList
             {
                 this.disposing = true;
 
-                if (this.getThumbnailsJob != null)
+                if (this.thumbnailsGetJob != null)
                 {
-                    this.getThumbnailsJob.Dispose();
-                    this.getThumbnailsJob = null;
+                    this.thumbnailsGetJob.Dispose();
+                    this.thumbnailsGetJob = null;
                 }
 
                 if (this.singleFileExportJob != null)
@@ -357,10 +357,10 @@ namespace PicSum.UIComponent.Contents.FileList
                     this.singleFileExportJob = null;
                 }
 
-                if (this.addBookmarkJob != null)
+                if (this.bookmarkAddJob != null)
                 {
-                    this.addBookmarkJob.Dispose();
-                    this.addBookmarkJob = null;
+                    this.bookmarkAddJob.Dispose();
+                    this.bookmarkAddJob = null;
                 }
 
                 if (this.multiFilesExportJob != null)
@@ -388,7 +388,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
         protected override void OnInvalidated(InvalidateEventArgs e)
         {
-            this.GetThumbnailsJob.BeginCancel();
+            this.ThumbnailsGetJob.BeginCancel();
             base.OnInvalidated(e);
         }
 
@@ -991,7 +991,7 @@ namespace PicSum.UIComponent.Contents.FileList
                     param.ThumbnailHeight = this.flowList.ItemHeight - this.flowList.ItemSpace * 2;
                 }
 
-                this.GetThumbnailsJob.StartJob(param);
+                this.ThumbnailsGetJob.StartJob(param);
 
                 //this.ImageFileSizeCacheJob.StartJob(
                 //    new ListParameter<string>(
@@ -1334,7 +1334,7 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             var paramter = new ValueParameter<string>(e.FilePath);
 
-            this.AddBookmarkJob.StartJob(paramter);
+            this.BookmarkAddJob.StartJob(paramter);
         }
 
     }
