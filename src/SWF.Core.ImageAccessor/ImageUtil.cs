@@ -253,11 +253,11 @@ namespace SWF.Core.ImageAccessor
                         }
                         if (FileUtil.IsAvifFile(formatName))
                         {
-                            return LibHeifSharpUtil.GetImageSize(filePath);
+                            return LibHeifSharpUtil.GetImageSize(fs);
                         }
                         else if (FileUtil.IsHeifFile(formatName))
                         {
-                            return LibHeifSharpUtil.GetImageSize(filePath);
+                            return LibHeifSharpUtil.GetImageSize(fs);
                         }
                         else if (FileUtil.IsJpegFile(formatName))
                         {

@@ -38,11 +38,11 @@ namespace SWF.Core.ImageAccessor
             SkipMetadata = true,
         };
 
-        public static System.Drawing.Size GetImageSize(string filePath)
+        public static System.Drawing.Size GetImageSize(FileStream fs)
         {
-            ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
+            ArgumentNullException.ThrowIfNull(fs, nameof(fs));
 
-            var imageInfo = SixLabors.ImageSharp.Image.Identify(filePath);
+            var imageInfo = SixLabors.ImageSharp.Image.Identify(fs);
             return new System.Drawing.Size(imageInfo.Width, imageInfo.Height);
         }
 
