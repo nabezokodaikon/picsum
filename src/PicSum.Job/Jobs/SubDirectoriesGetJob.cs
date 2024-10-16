@@ -28,7 +28,7 @@ namespace PicSum.Job.Jobs
 
                 try
                 {
-                    result.Add(logic.Execute(subDirectory));
+                    result.Add(logic.Execute(subDirectory, false));
                 }
                 catch (FileUtilException ex)
                 {

@@ -35,7 +35,7 @@ namespace PicSum.Job.Jobs
                 if (FileUtil.IsSystemRoot(param.Value))
                 {
                     addressInfo.DirectoryPath = FileUtil.ROOT_DIRECTORY_PATH;
-                    addressInfo.DirectoryList.Add(logic.Execute(param.Value));
+                    addressInfo.DirectoryList.Add(logic.Execute(param.Value, false));
                     addressInfo.HasSubDirectory = true;
                 }
                 else
@@ -64,11 +64,11 @@ namespace PicSum.Job.Jobs
                     while (!FileUtil.IsSystemRoot(directory))
                     {
                         this.CheckCancel();
-                        addressInfo.DirectoryList.Insert(0, logic.Execute(directory));
+                        addressInfo.DirectoryList.Insert(0, logic.Execute(directory, false));
                         directory = FileUtil.GetParentDirectoryPath(directory);
                     }
 
-                    addressInfo.DirectoryList.Insert(0, logic.Execute(FileUtil.ROOT_DIRECTORY_PATH));
+                    addressInfo.DirectoryList.Insert(0, logic.Execute(FileUtil.ROOT_DIRECTORY_PATH, false));
                 }
 
                 this.Callback(addressInfo);

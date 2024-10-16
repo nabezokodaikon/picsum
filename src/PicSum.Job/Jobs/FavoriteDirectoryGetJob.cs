@@ -37,7 +37,7 @@ namespace PicSum.Job.Jobs
 
                 try
                 {
-                    var info = getInfoLogic.Execute(file);
+                    var info = getInfoLogic.Execute(file, true);
                     if (info != null)
                     {
                         infoList.Add(info);
