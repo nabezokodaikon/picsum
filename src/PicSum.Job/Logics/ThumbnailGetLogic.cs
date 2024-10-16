@@ -47,7 +47,7 @@ namespace PicSum.Job.Logics
                     return ThumbnailBufferEntity.EMPTY;
                 }
 
-                var cache = this.GetFileCache(filePath, thumbWidth, thumbHeight);
+                var cache = this.GetCache(filePath, thumbWidth, thumbHeight);
                 if (cache != ThumbnailBufferEntity.EMPTY)
                 {
                     if (cache.ThumbnailWidth > thumbWidth || cache.ThumbnailHeight > thumbHeight)
@@ -123,7 +123,7 @@ namespace PicSum.Job.Logics
             }
         }
 
-        private ThumbnailBufferEntity GetFileCache(string filePath, int thumbWidth, int thumbHeight)
+        private ThumbnailBufferEntity GetCache(string filePath, int thumbWidth, int thumbHeight)
         {
             var memCache = GetMemoryCache(filePath);
             if (memCache != ThumbnailBufferEntity.EMPTY)
