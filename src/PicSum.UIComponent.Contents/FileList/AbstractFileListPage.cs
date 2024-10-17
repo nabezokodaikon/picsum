@@ -1093,10 +1093,6 @@ namespace PicSum.UIComponent.Contents.FileList
                 var param = new DirectoryFileListPageParameter(file.FilePath);
                 this.OnOpenPage(new BrowserPageEventArgs(PageOpenType.OverlapTab, param));
             }
-            else
-            {
-                FileUtil.OpenFile(file.FilePath);
-            }
         }
 
         protected virtual void FlowLilst_BackgroundMouseClick(object sender, MouseEventArgs e)
@@ -1124,10 +1120,6 @@ namespace PicSum.UIComponent.Contents.FileList
             {
                 var param = new DirectoryFileListPageParameter(file.FilePath);
                 this.OnOpenPage(new BrowserPageEventArgs(PageOpenType.OverlapTab, param));
-            }
-            else
-            {
-                FileUtil.OpenFile(file.FilePath);
             }
         }
 
