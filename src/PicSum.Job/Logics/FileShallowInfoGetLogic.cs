@@ -59,14 +59,14 @@ namespace PicSum.Job.Logics
                 {
                     var thumbnailGetLogic = new ThumbnailGetLogic(job);
                     var thumbnailBuffer = thumbnailGetLogic.GetOnlyCache(filePath, THUMBNAIL_SIZE, THUMBNAIL_SIZE);
-                    info.ThumbnailImage = thumbnailBuffer switch
+                    if (thumbnailBuffer != ThumbnailBufferEntity.EMPTY)
                     {
-                        var t when t != ThumbnailBufferEntity.EMPTY && t.ThumbnailBuffer != null =>
-                            ImageUtil.ToImage(t.ThumbnailBuffer),
-                        _ => null,
-                    };
-                    info.ThumbnailWidth = THUMBNAIL_SIZE;
-                    info.ThumbnailHeight= THUMBNAIL_SIZE;
+                        info.ThumbnailImage = ImageUtil.ToImage(thumbnailBuffer.ThumbnailBuffer);
+                        info.ThumbnailWidth = THUMBNAIL_SIZE;
+                        info.ThumbnailHeight = THUMBNAIL_SIZE;
+                        info.SourceWidth = thumbnailBuffer.SourceWidth;
+                        info.SourceHeight = thumbnailBuffer.SourceHeight;
+                    }
                 }
             }
             else if (FileUtil.IsDirectory(filePath))
@@ -83,14 +83,14 @@ namespace PicSum.Job.Logics
                 {
                     var thumbnailGetLogic = new ThumbnailGetLogic(job);
                     var thumbnailBuffer = thumbnailGetLogic.GetOnlyCache(filePath, THUMBNAIL_SIZE, THUMBNAIL_SIZE);
-                    info.ThumbnailImage = thumbnailBuffer switch
+                    if (thumbnailBuffer != ThumbnailBufferEntity.EMPTY)
                     {
-                        var t when t != ThumbnailBufferEntity.EMPTY && t.ThumbnailBuffer != null =>
-                            ImageUtil.ToImage(t.ThumbnailBuffer),
-                        _ => null,
-                    };
-                    info.ThumbnailWidth = THUMBNAIL_SIZE;
-                    info.ThumbnailHeight = THUMBNAIL_SIZE;
+                        info.ThumbnailImage = ImageUtil.ToImage(thumbnailBuffer.ThumbnailBuffer);
+                        info.ThumbnailWidth = THUMBNAIL_SIZE;
+                        info.ThumbnailHeight = THUMBNAIL_SIZE;
+                        info.SourceWidth = thumbnailBuffer.SourceWidth;
+                        info.SourceHeight = thumbnailBuffer.SourceHeight;
+                    }
                 }
             }
             else

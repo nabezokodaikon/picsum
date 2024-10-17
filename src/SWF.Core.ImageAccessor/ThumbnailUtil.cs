@@ -173,15 +173,23 @@ namespace SWF.Core.ImageAccessor
         /// </summary>
         /// <param name="g"></param>
         /// <param name="thumb"></param>
-        /// <param name="rect"></param>
-        public static void AdjustDrawFileThumbnail(Graphics g, Image thumb, RectangleF rect)
+        /// <param name="destRect"></param>
+        public static void AdjustDrawFileThumbnail(Graphics g, Image thumb, RectangleF destRect, SizeF srcSize)
         {
             ArgumentNullException.ThrowIfNull(g, nameof(g));
             ArgumentNullException.ThrowIfNull(thumb, nameof(thumb));
 
             const int offset = 16;
 
-            var scale = Math.Min(rect.Width / thumb.Width, rect.Height / thumb.Height);
+            float scale;
+            if (destRect.Width > srcSize.Width || destRect.Height > srcSize.Height)
+            {
+                scale = Math.Min(1, Math.Min(destRect.Width / thumb.Width, destRect.Height / thumb.Height));
+            }
+            else
+            {
+                scale = Math.Min(destRect.Width / thumb.Width, destRect.Height / thumb.Height);
+            }
 
             float w;
             float h;
@@ -196,8 +204,8 @@ namespace SWF.Core.ImageAccessor
                 h = thumb.Height * scale - offset;
             }
 
-            var x = rect.X + (rect.Width - w) / 2f;
-            var y = rect.Y + (rect.Height - h) / 2f;
+            var x = destRect.X + (destRect.Width - w) / 2f;
+            var y = destRect.Y + (destRect.Height - h) / 2f;
 
             g.DrawImage(
                 thumb,
@@ -232,18 +240,18 @@ namespace SWF.Core.ImageAccessor
         /// </summary>
         /// <param name="g"></param>
         /// <param name="thumb"></param>
-        /// <param name="rect"></param>
+        /// <param name="destRect"></param>
         /// <param name="icon"></param>
-        public static void AdjustDrawDirectoryThumbnail(Graphics g, Image thumb, RectangleF rect, Image icon)
+        public static void AdjustDrawDirectoryThumbnail(Graphics g, Image thumb, RectangleF destRect, SizeF srcSize, Image icon)
         {
             ArgumentNullException.ThrowIfNull(g, nameof(g));
             ArgumentNullException.ThrowIfNull(thumb, nameof(thumb));
             ArgumentNullException.ThrowIfNull(icon, nameof(icon));
 
-            AdjustDrawFileThumbnail(g, thumb, rect);
+            AdjustDrawFileThumbnail(g, thumb, destRect, srcSize);
             g.DrawImage(
                 icon,
-                new RectangleF(rect.X + 2, rect.Bottom - icon.Height, icon.Width, icon.Height),
+                new RectangleF(destRect.X + 2, destRect.Bottom - icon.Height, icon.Width, icon.Height),
                 new RectangleF(0, 0, icon.Width, icon.Height),
                 GraphicsUnit.Pixel);
         }

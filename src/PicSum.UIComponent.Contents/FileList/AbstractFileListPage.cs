@@ -422,6 +422,8 @@ namespace PicSum.UIComponent.Contents.FileList
                     destFile.ThumbnailImage = srcFile.ThumbnailImage;
                     destFile.ThumbnailWidth = srcFile.ThumbnailWidth;
                     destFile.ThumbnailHeight = srcFile.ThumbnailHeight;
+                    destFile.SourceImageWidth = srcFile.SourceWidth;
+                    destFile.SourceImageHeight = srcFile.SourceHeight;
                 }
 
                 this.masterFileDictionary.Add(destFile.FilePath, destFile);
@@ -766,7 +768,8 @@ namespace PicSum.UIComponent.Contents.FileList
                     }
                     else
                     {
-                        ThumbnailUtil.AdjustDrawFileThumbnail(e.Graphics, item.ThumbnailImage, thumbRect);
+                        ThumbnailUtil.AdjustDrawFileThumbnail(
+                            e.Graphics, item.ThumbnailImage, thumbRect, new SizeF(item.SourceImageWidth, item.SourceImageHeight));
                     }
                 }
                 else
@@ -778,7 +781,8 @@ namespace PicSum.UIComponent.Contents.FileList
                     }
                     else
                     {
-                        ThumbnailUtil.AdjustDrawDirectoryThumbnail(e.Graphics, item.ThumbnailImage, thumbRect, item.Icon);
+                        ThumbnailUtil.AdjustDrawDirectoryThumbnail(
+                            e.Graphics, item.ThumbnailImage, thumbRect, new SizeF(item.SourceImageWidth, item.SourceImageHeight), item.Icon);
                     }
                 }
 
