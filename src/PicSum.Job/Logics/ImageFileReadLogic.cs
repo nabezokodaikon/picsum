@@ -76,7 +76,7 @@ namespace PicSum.Job.Logics
         {
             try
             {
-                return ImageFileCacheUtil.GetCvImage(filePath, this.CheckCancel);
+                return ImageFileCacheUtil.GetCvImage(filePath);
             }
             catch (FileUtilException ex)
             {

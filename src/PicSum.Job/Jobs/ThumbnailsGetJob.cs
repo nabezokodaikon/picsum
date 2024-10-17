@@ -29,7 +29,7 @@ namespace PicSum.Job.Jobs
 
             using (var tran = DatabaseManager<ThumbnailConnection>.BeginTransaction())
             {
-                var getLogic = new ThumbnailGetLogic(this, this.CheckCancel);
+                var getLogic = new ThumbnailGetLogic(this);
 
                 for (var index = param.FirstIndex; index <= param.LastIndex; index++)
                 {

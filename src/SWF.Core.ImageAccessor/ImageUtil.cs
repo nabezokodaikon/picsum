@@ -15,7 +15,7 @@ namespace SWF.Core.ImageAccessor
         public static readonly Size EMPTY_SIZE = Size.Empty;
         public static readonly Bitmap EMPTY_IMAGE = new(1, 1);
 
-        private static readonly int FILE_READ_BUFFER_SIZE = 64 * 1024;
+        private static readonly int FILE_READ_BUFFER_SIZE = 80 * 1024;
         private static readonly EncoderParameter ENCORDER_PARAMETER = new(Encoder.Quality, 100L);
         private static readonly ImageCodecInfo PNG_CODEC_INFO = ImageCodecInfo.GetImageEncoders().Single(info => info.FormatID == ImageFormat.Png.Guid);
         private static readonly dynamic SHELL = Activator.CreateInstance(Type.GetTypeFromProgID("Shell.Application"));
@@ -199,14 +199,13 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
-        internal static ImageFileBuffer ReadImageFileBuffer(string filePath, Action checkCancelAction)
+        internal static ImageFileBuffer ReadImageFileBuffer(string filePath)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
-            ArgumentNullException.ThrowIfNull(checkCancelAction, nameof(checkCancelAction));
 
             try
             {
-                using (var bmp = ReadImageFile(filePath, checkCancelAction))
+                using (var bmp = ReadImageFile(filePath))
                 {
                     return new ImageFileBuffer(bmp);
                 }
@@ -392,10 +391,9 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
-        public static Bitmap ReadImageFile(string filePath, Action checkCancelAction)
+        public static Bitmap ReadImageFile(string filePath)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
-            ArgumentNullException.ThrowIfNull(checkCancelAction, nameof(checkCancelAction));
 
             try
             {
@@ -411,8 +409,8 @@ namespace SWF.Core.ImageAccessor
                 }
 
                 sw = Stopwatch.StartNew();
-                using (var fs = new CancelableStream(new FileStream(filePath,
-                    FileMode.Open, FileAccess.Read, FileShare.Read, FILE_READ_BUFFER_SIZE, FileOptions.SequentialScan), checkCancelAction))
+                using (var fs = new FileStream(filePath,
+                    FileMode.Open, FileAccess.Read, FileShare.Read, FILE_READ_BUFFER_SIZE, FileOptions.SequentialScan))
                 {
                     sw.Stop();
                     Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.ReadImageFile new FileStream: {sw.ElapsedMilliseconds} ms");
@@ -463,6 +461,7 @@ namespace SWF.Core.ImageAccessor
                         sw.Stop();
                         Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.ReadImageFile Jpeg file: {sw.ElapsedMilliseconds} ms");
                         return bmp;
+
                     }
                     else if (FileUtil.IsBmpFile(formatName))
                     {
@@ -497,80 +496,54 @@ namespace SWF.Core.ImageAccessor
             }
             catch (ArgumentException ex)
             {
-                Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.ReadImageFile: 画像ファイルの見込みがキャンセルされました。");
-                checkCancelAction();
                 throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
             }
             catch (NotSupportedException ex)
             {
-                Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.ReadImageFile: 画像ファイルの見込みがキャンセルされました。");
-                checkCancelAction();
                 throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
             }
             catch (FileNotFoundException ex)
             {
-                Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.ReadImageFile: 画像ファイルの見込みがキャンセルされました。");
-                checkCancelAction();
                 throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
             }
             catch (SecurityException ex)
             {
-                Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.ReadImageFile: 画像ファイルの見込みがキャンセルされました。");
-                checkCancelAction();
                 throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
             }
             catch (DirectoryNotFoundException ex)
             {
-                Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.ReadImageFile: 画像ファイルの見込みがキャンセルされました。");
-                checkCancelAction();
                 throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
             }
             catch (PathTooLongException ex)
             {
-                Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.ReadImageFile: 画像ファイルの見込みがキャンセルされました。");
-                checkCancelAction();
                 throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
             }
             catch (IOException ex)
             {
-                Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.ReadImageFile: 画像ファイルの見込みがキャンセルされました。");
-                checkCancelAction();
                 throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
             }
             catch (UnauthorizedAccessException ex)
             {
-                Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.ReadImageFile: 画像ファイルの見込みがキャンセルされました。");
-                checkCancelAction();
                 throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
             }
             catch (XmlException ex)
             {
-                Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.ReadImageFile: 画像ファイルの見込みがキャンセルされました。");
-                checkCancelAction();
                 throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
             }
             catch (SixLabors.ImageSharp.InvalidImageContentException ex)
             {
-                Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.ReadImageFile: 画像ファイルの見込みがキャンセルされました。");
-                checkCancelAction();
                 throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
             }
             catch (SixLabors.ImageSharp.UnknownImageFormatException ex)
             {
-                Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.ReadImageFile: 画像ファイルの見込みがキャンセルされました。");
-                checkCancelAction();
                 throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
             }
             catch (LibHeifSharp.HeifException ex)
             {
-                Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.ReadImageFile: 画像ファイルの見込みがキャンセルされました。");
-                checkCancelAction();
                 throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
             }
             catch (OutOfMemoryException ex)
             {
-                Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.ReadImageFile: 画像ファイルの見込みがキャンセルされました。");
-                checkCancelAction();
                 throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
             }
         }

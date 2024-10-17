@@ -30,34 +30,30 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
-        public static Size GetSize(string filePath, Action checkCancelAction)
+        public static Size GetSize(string filePath)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
-            ArgumentNullException.ThrowIfNull(checkCancelAction, nameof(checkCancelAction));
 
-            return Read(filePath, cache => cache.Buffer.Size, checkCancelAction);
+            return Read(filePath, cache => cache.Buffer.Size);
         }
 
-        public static Bitmap GetBitmap(string filePath, Action checkCancelAction)
+        public static Bitmap GetBitmap(string filePath)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
-            ArgumentNullException.ThrowIfNull(checkCancelAction, nameof(checkCancelAction));
 
-            return Read(filePath, cache => cache.Buffer.ToBitmap(), checkCancelAction);
+            return Read(filePath, cache => cache.Buffer.ToBitmap());
         }
 
-        public static CvImage GetCvImage(string filePath, Action checkCancelAction)
+        public static CvImage GetCvImage(string filePath)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
-            ArgumentNullException.ThrowIfNull(checkCancelAction, nameof(checkCancelAction));
 
-            return Read(filePath, cache => new CvImage(cache.Buffer.ToBitmap()), checkCancelAction);
+            return Read(filePath, cache => new CvImage(cache.Buffer.ToBitmap()));
         }
 
-        public static void Create(string filePath, Action checkCancelAction)
+        public static void Create(string filePath)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
-            ArgumentNullException.ThrowIfNull(checkCancelAction, nameof(checkCancelAction));
 
             var sw = Stopwatch.StartNew();
 
@@ -90,7 +86,7 @@ namespace SWF.Core.ImageAccessor
                         CACHE_DICTIONARY.Remove(removeCache.FilePath);
                     }
 
-                    var buffer = ImageUtil.ReadImageFileBuffer(filePath, checkCancelAction);
+                    var buffer = ImageUtil.ReadImageFileBuffer(filePath);
                     ImageFileSizeCacheUtil.Set(filePath, buffer.Size);
                     var newCache = new ImageFileCache(filePath, buffer, timestamp);
                     CACHE_DICTIONARY.Add(newCache.FilePath, newCache);
@@ -110,10 +106,9 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
-        private static T Read<T>(string filePath, Func<ImageFileCache, T> resultFunc, Action checkCancelAction)
+        private static T Read<T>(string filePath, Func<ImageFileCache, T> resultFunc)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
-            ArgumentNullException.ThrowIfNull(checkCancelAction, nameof(checkCancelAction));
 
             var sw = Stopwatch.StartNew();
 
@@ -146,7 +141,7 @@ namespace SWF.Core.ImageAccessor
                         CACHE_DICTIONARY.Remove(removeCache.FilePath);
                     }
 
-                    var buffer = ImageUtil.ReadImageFileBuffer(filePath, checkCancelAction);
+                    var buffer = ImageUtil.ReadImageFileBuffer(filePath);
                     ImageFileSizeCacheUtil.Set(filePath, buffer.Size);
                     var newCache = new ImageFileCache(filePath, buffer, timestamp);
                     CACHE_DICTIONARY.Add(filePath, newCache);

@@ -32,14 +32,10 @@ namespace PicSum.Job.Logics
             CACHE_LOCK.Dispose();
         }
 
-        private readonly Action checkCancelAction;
-
-        public ThumbnailGetLogic(AbstractAsyncJob job, Action checkCancelAction)
+        public ThumbnailGetLogic(AbstractAsyncJob job)
             : base(job)
         {
-            ArgumentNullException.ThrowIfNull(checkCancelAction, nameof(checkCancelAction));
 
-            this.checkCancelAction = checkCancelAction;
         }
 
         public ThumbnailBufferEntity GetOnlyCache(string filePath, int thumbWidth, int thumbHeight)
@@ -490,7 +486,7 @@ namespace PicSum.Job.Logics
         private ThumbnailBufferEntity CreateDBFileCache(
             string filePath, int thumbWidth, int thumbHeight, DateTime fileUpdateDate)
         {
-            using (var srcImg = ImageUtil.ReadImageFile(filePath, this.checkCancelAction))
+            using (var srcImg = ImageUtil.ReadImageFile(filePath))
             {
                 ImageFileSizeCacheUtil.Set(filePath, srcImg.Size);
                 using (var thumbImg = ThumbnailUtil.CreateThumbnail(srcImg, thumbWidth, thumbHeight))
@@ -521,7 +517,7 @@ namespace PicSum.Job.Logics
 
         private ThumbnailBufferEntity UpdateDBFileCache(string filePath, int thumbWidth, int thumbHeight, DateTime fileUpdateDate)
         {
-            using (var srcImg = ImageUtil.ReadImageFile(filePath, this.checkCancelAction))
+            using (var srcImg = ImageUtil.ReadImageFile(filePath))
             {
                 ImageFileSizeCacheUtil.Set(filePath, srcImg.Size);
                 using (var thumbImg = ThumbnailUtil.CreateThumbnail(srcImg, thumbWidth, thumbHeight))
@@ -552,7 +548,7 @@ namespace PicSum.Job.Logics
 
         private ThumbnailBufferEntity CreateDBDirectoryCache(string directoryPath, string thumbFilePath, int thumbWidth, int thumbHeight, DateTime directoryUpdateDate)
         {
-            using (var srcImg = ImageUtil.ReadImageFile(thumbFilePath, this.checkCancelAction))
+            using (var srcImg = ImageUtil.ReadImageFile(thumbFilePath))
             {
                 ImageFileSizeCacheUtil.Set(thumbFilePath, srcImg.Size);
                 using (var thumbImg = ThumbnailUtil.CreateThumbnail(srcImg, thumbWidth, thumbHeight))
@@ -582,7 +578,7 @@ namespace PicSum.Job.Logics
 
         private ThumbnailBufferEntity UpdateDBDirectoryCache(string directoryPath, string thumbFilePath, int thumbWidth, int thumbHeight, DateTime directoryUpdateDate)
         {
-            using (var srcImg = ImageUtil.ReadImageFile(thumbFilePath, this.checkCancelAction))
+            using (var srcImg = ImageUtil.ReadImageFile(thumbFilePath))
             {
                 ImageFileSizeCacheUtil.Set(thumbFilePath, srcImg.Size);
                 using (var thumbImg = ThumbnailUtil.CreateThumbnail(srcImg, thumbWidth, thumbHeight))
