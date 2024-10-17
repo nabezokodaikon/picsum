@@ -19,7 +19,7 @@ namespace SWF.Core.Job
 
         protected void WriteErrorLog(JobException ex)
         {
-            job.WriteErrorLog(ex);
+            this.job.WriteErrorLog(ex);
         }
 
         protected void CheckCancel()

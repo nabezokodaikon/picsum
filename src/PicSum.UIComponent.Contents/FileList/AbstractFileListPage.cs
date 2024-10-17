@@ -375,7 +375,7 @@ namespace PicSum.UIComponent.Contents.FileList
                     this.imageFileSizeCacheJob = null;
                 }
 
-                components?.Dispose();
+                this.components?.Dispose();
             }
 
             base.Dispose(disposing);

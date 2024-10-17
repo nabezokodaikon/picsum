@@ -198,7 +198,7 @@ namespace PicSum.Main.UIComponent
                     this.getFilesJob = null;
                 }
 
-                components?.Dispose();
+                this.components?.Dispose();
             }
             base.Dispose(disposing);
         }

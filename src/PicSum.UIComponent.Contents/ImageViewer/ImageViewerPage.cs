@@ -547,7 +547,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             else
             {
                 var currentFilePath = this.filePathList[currentIndex];
-                var currentImageSize = GetImageSize(currentFilePath);
+                var currentImageSize = this.GetImageSize(currentFilePath);
                 if (currentImageSize.Width < currentImageSize.Height)
                 {
                     var nextIndex = currentIndex + 1;
@@ -557,7 +557,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                     }
 
                     var nextFilePath = this.filePathList[nextIndex];
-                    var nextImageSize = GetImageSize(nextFilePath);
+                    var nextImageSize = this.GetImageSize(nextFilePath);
                     if (nextImageSize.Width < nextImageSize.Height)
                     {
                         if (nextIndex == this.MaximumIndex)
@@ -610,7 +610,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 }
 
                 var prevFilePath1 = this.filePathList[prevIndex1];
-                var prevImageSize1 = GetImageSize(prevFilePath1);
+                var prevImageSize1 = this.GetImageSize(prevFilePath1);
                 if (prevImageSize1.Width < prevImageSize1.Height)
                 {
                     var prevIndex2 = prevIndex1 - 1;
@@ -620,7 +620,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                     }
 
                     var prevFilePath2 = this.filePathList[prevIndex2];
-                    var prevImageSize2 = GetImageSize(prevFilePath2);
+                    var prevImageSize2 = this.GetImageSize(prevFilePath2);
                     if (prevImageSize2.Width < prevImageSize2.Height)
                     {
                         return prevIndex2;

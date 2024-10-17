@@ -239,7 +239,7 @@ namespace PicSum.UIComponent.InfoPanel
                     this.deleteFileTagJob = null;
                 }
 
-                components?.Dispose();
+                this.components?.Dispose();
             }
 
             base.Dispose(disposing);

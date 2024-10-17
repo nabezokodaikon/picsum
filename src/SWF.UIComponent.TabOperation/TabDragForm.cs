@@ -32,7 +32,7 @@ namespace SWF.UIComponent.TabOperation
         {
             get
             {
-                return tabSwitch;
+                return this.tabSwitch;
             }
         }
 
