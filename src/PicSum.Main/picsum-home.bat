@@ -1,0 +1,1 @@
+"%cd%\picsum.exe" --home
