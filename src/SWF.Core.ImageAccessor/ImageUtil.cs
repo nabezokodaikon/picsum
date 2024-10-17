@@ -16,8 +16,8 @@ namespace SWF.Core.ImageAccessor
         public static readonly Bitmap EMPTY_IMAGE = new(1, 1);
 
         private static readonly int FILE_READ_BUFFER_SIZE = 80 * 1024;
-        private static readonly EncoderParameter ENCORDER_PARAMETER = new(Encoder.Quality, 100L);
-        private static readonly ImageCodecInfo PNG_CODEC_INFO = ImageCodecInfo.GetImageEncoders().Single(info => info.FormatID == ImageFormat.Png.Guid);
+        private static readonly EncoderParameter ENCORDER_PARAMETER = new(Encoder.Quality, 80L);
+        private static readonly ImageCodecInfo COMPRESS_CODEC_INFO = ImageCodecInfo.GetImageEncoders().Single(info => info.FormatID == ImageFormat.Jpeg.Guid);
         private static readonly dynamic SHELL = Activator.CreateInstance(Type.GetTypeFromProgID("Shell.Application"));
 
         /// <summary>
@@ -29,14 +29,20 @@ namespace SWF.Core.ImageAccessor
         {
             ArgumentNullException.ThrowIfNull(img, nameof(img));
 
+            var sw = Stopwatch.StartNew();
+
             using (var mes = new MemoryStream())
             {
                 var eps = new EncoderParameters(1);
                 eps.Param[0] = ImageUtil.ENCORDER_PARAMETER;
-                img.Save(mes, ImageUtil.PNG_CODEC_INFO, eps);
+                img.Save(mes, ImageUtil.COMPRESS_CODEC_INFO, eps);
                 var buffer = new byte[mes.Length];
                 mes.Position = 0;
                 mes.Read(buffer, 0, buffer.Length);
+
+                sw.Stop();
+                Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.ToCompressionBinary: {sw.ElapsedMilliseconds} ms");
+
                 return buffer;
             }
         }
@@ -50,11 +56,17 @@ namespace SWF.Core.ImageAccessor
         {
             ArgumentNullException.ThrowIfNull(bf, nameof(bf));
 
+            var sw = Stopwatch.StartNew();
+
             using (var mes = new MemoryStream(bf))
             {
                 try
                 {
                     var img = Bitmap.FromStream(mes, false, true);
+
+                    sw.Stop();
+                    Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.ToImage: {sw.ElapsedMilliseconds} ms");
+
                     return (Bitmap)img;
                 }
                 catch (OutOfMemoryException ex)

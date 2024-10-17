@@ -18,8 +18,8 @@ namespace PicSum.Job.Logics
         : AbstractAsyncLogic
     {
         private const int CACHE_CAPACITY = 1000;
-        private static readonly int FILE_READ_BUFFER_SIZE = 1024 * 16;
-        private static readonly int BUFFER_FILE_MAX_SIZE = 1024 * 1024 * 100;
+        private static readonly int FILE_READ_BUFFER_SIZE = 1024 * 4;
+        private static readonly int BUFFER_FILE_MAX_SIZE = 1024 * 1024 * 10;
         private static readonly List<ThumbnailBufferEntity> CACHE_LIST = new(CACHE_CAPACITY);
         private static readonly Dictionary<string, ThumbnailBufferEntity> CACHE_DICTIONARY = new(CACHE_CAPACITY);
         private static readonly ReaderWriterLockSlim CACHE_LOCK = new();
