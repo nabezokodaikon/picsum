@@ -700,9 +700,18 @@ namespace SWF.UIComponent.TabOperation
             else
             {
                 var form = this.GetForm();
+                if (form.Equals(Form.ActiveForm))
+                {
+                    if (this.GetHeaderRectangle().Contains(e.X, e.Y))
+                    {
+                        this.Focus();
+                    }
+                }
+
                 var tab = this.GetTabFromPoint(e.X, e.Y);
                 this.SetMousePointTab(tab);
                 this.InvalidateHeader();
+
                 if (tab == null && e.Button == MouseButtons.Left)
                 {
                     WinApiMembers.ReleaseCapture();
