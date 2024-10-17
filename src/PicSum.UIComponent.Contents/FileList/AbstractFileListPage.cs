@@ -1160,6 +1160,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 if (filePathList.Count > 0)
                 {
                     var dragData = new DragEntity(
+                        this,
                         this.Parameter.PageSources,
                         this.Parameter.SourcesKey,
                         currentFilePath,
@@ -1174,6 +1175,7 @@ namespace PicSum.UIComponent.Contents.FileList
             {
                 // 選択項目がフォルダの場合。
                 var dragData = new DragEntity(
+                    this,
                     this.Parameter.PageSources,
                     this.Parameter.SourcesKey,
                     currentFilePath,

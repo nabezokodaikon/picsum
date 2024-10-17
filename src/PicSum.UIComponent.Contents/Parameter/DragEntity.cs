@@ -5,6 +5,7 @@ using System.Drawing;
 namespace PicSum.UIComponent.Contents.Parameter
 {
     public class DragEntity(
+        object sender,
         string pageSources,
         string sourcesKey,
         string currentFilePath,
@@ -13,6 +14,9 @@ namespace PicSum.UIComponent.Contents.Parameter
         string pageTitle,
         Image pageIcon)
     {
+        public object Sender { get; private set; }
+            = sender ?? throw new ArgumentNullException(nameof(sender));
+
         public string PageSources { get; private set; }
             = pageSources ?? throw new ArgumentNullException(nameof(pageSources));
 

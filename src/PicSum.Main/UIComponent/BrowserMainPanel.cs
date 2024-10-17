@@ -375,6 +375,7 @@ namespace PicSum.Main.UIComponent
                 sortInfo.SetSortType(SortTypeID.FilePath, true);
 
                 var dragData = new DragEntity(
+                    this,
                     DirectoryFileListPageParameter.PAGE_SOURCES,
                     dirPath,
                     filePath,
@@ -614,14 +615,24 @@ namespace PicSum.Main.UIComponent
 
         private void PageContainer_DragEnter(object sender, DragEventArgs e)
         {
+            Console.WriteLine("PageContainer_DragEnter");
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {
                 e.Effect = DragDropEffects.Copy;
+                return;
             }
-            else
+
+            if (e.Data.GetDataPresent(typeof(DragEntity)))
             {
-                e.Effect = DragDropEffects.None;
+                var entity = (DragEntity)e.Data.GetData(typeof(DragEntity));
+                if (entity.Sender != this.ActiveControl)
+                {
+                    e.Effect = DragDropEffects.Copy;
+                    return;
+                }
             }
+
+            e.Effect = DragDropEffects.None;
         }
 
         private void PageContainer_DragDrop(object sender, DragEventArgs e)
