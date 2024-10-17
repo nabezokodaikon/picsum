@@ -415,8 +415,15 @@ namespace PicSum.UIComponent.Contents.FileList
                     Icon = srcFile.LargeIcon,
                     IsFile = srcFile.IsFile,
                     IsImageFile = srcFile.IsImageFile,
-                    ThumbnailImage = srcFile.ThumbnailImage,
                 };
+
+                if (srcFile.ThumbnailImage != null)
+                {
+                    destFile.ThumbnailImage = srcFile.ThumbnailImage;
+                    destFile.ThumbnailWidth = srcFile.ThumbnailWidth;
+                    destFile.ThumbnailHeight = srcFile.ThumbnailHeight;
+                }
+
                 this.masterFileDictionary.Add(destFile.FilePath, destFile);
             }
 

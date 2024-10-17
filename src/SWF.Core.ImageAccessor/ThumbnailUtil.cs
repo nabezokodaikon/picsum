@@ -223,7 +223,7 @@ namespace SWF.Core.ImageAccessor
             g.DrawImage(
                 icon,
                 new RectangleF(rect.X + 2, rect.Bottom - icon.Height, icon.Width, icon.Height),
-                new RectangleF(0, 0, thumb.Width, thumb.Height),
+                new RectangleF(0, 0, icon.Width, icon.Height),
                 GraphicsUnit.Pixel);
         }
 
@@ -244,7 +244,7 @@ namespace SWF.Core.ImageAccessor
             g.DrawImage(
                 icon,
                 new RectangleF(rect.X + 2, rect.Bottom - icon.Height, icon.Width, icon.Height),
-                new RectangleF(0, 0, thumb.Width, thumb.Height),
+                new RectangleF(0, 0, icon.Width, icon.Height),
                 GraphicsUnit.Pixel);
         }
 

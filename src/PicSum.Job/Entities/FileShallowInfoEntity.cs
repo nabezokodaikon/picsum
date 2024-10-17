@@ -14,6 +14,8 @@ namespace PicSum.Job.Entities
         public Image? LargeIcon { get; internal set; }
         public Image? SmallIcon { get; internal set; }
         public Bitmap? ThumbnailImage { get; internal set; }
+        public int ThumbnailWidth { get; internal set; }
+        public int ThumbnailHeight { get; internal set; }
         public bool IsFile { get; internal set; }
         public bool IsImageFile { get; internal set; }
     }

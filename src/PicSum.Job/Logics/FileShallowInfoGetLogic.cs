@@ -14,6 +14,8 @@ namespace PicSum.Job.Logics
     internal sealed class FileShallowInfoGetLogic(AbstractAsyncJob job)
         : AbstractAsyncLogic(job)
     {
+        private const int THUMBNAIL_SIZE = 248;
+
         public FileShallowInfoEntity Execute(string filePath, bool isGetThumbnail)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
@@ -45,19 +47,6 @@ namespace PicSum.Job.Logics
             }
             else if (FileUtil.IsFile(filePath))
             {
-                Bitmap? thumbnailImage = null;
-                if (isGetThumbnail)
-                {
-                    var thumbnailGetLogic = new ThumbnailGetLogic(job);
-                    var thumbnailBuffer = thumbnailGetLogic.GetOnlyCache(filePath, 248, 248);
-                    thumbnailImage = thumbnailBuffer switch
-                    {
-                        var t when t != ThumbnailBufferEntity.EMPTY && t.ThumbnailBuffer != null =>
-                            ImageUtil.ToImage(t.ThumbnailBuffer),
-                        _ => null,
-                    };
-                }
-
                 info.FilePath = filePath;
                 info.FileName = FileUtil.GetFileName(filePath);
                 info.IsFile = true;
@@ -65,23 +54,23 @@ namespace PicSum.Job.Logics
                 info.UpdateDate = FileUtil.GetUpdateDate(filePath);
                 info.LargeIcon = FileIconCash.GetLargeFileIcon(info.FilePath);
                 info.SmallIcon = FileIconCash.GetSmallFileIcon(info.FilePath);
-                info.ThumbnailImage = thumbnailImage;
-            }
-            else if (FileUtil.IsDirectory(filePath))
-            {
-                Bitmap? thumbnailImage = null;
+
                 if (isGetThumbnail)
                 {
                     var thumbnailGetLogic = new ThumbnailGetLogic(job);
-                    var thumbnailBuffer = thumbnailGetLogic.GetOnlyCache(filePath, 248, 248);
-                    thumbnailImage = thumbnailBuffer switch
+                    var thumbnailBuffer = thumbnailGetLogic.GetOnlyCache(filePath, THUMBNAIL_SIZE, THUMBNAIL_SIZE);
+                    info.ThumbnailImage = thumbnailBuffer switch
                     {
                         var t when t != ThumbnailBufferEntity.EMPTY && t.ThumbnailBuffer != null =>
                             ImageUtil.ToImage(t.ThumbnailBuffer),
                         _ => null,
                     };
+                    info.ThumbnailWidth = THUMBNAIL_SIZE;
+                    info.ThumbnailHeight= THUMBNAIL_SIZE;
                 }
-
+            }
+            else if (FileUtil.IsDirectory(filePath))
+            {
                 info.FilePath = filePath;
                 info.FileName = FileUtil.GetFileName(filePath);
                 info.IsFile = false;
@@ -89,7 +78,20 @@ namespace PicSum.Job.Logics
                 info.UpdateDate = FileUtil.GetUpdateDate(filePath);
                 info.LargeIcon = FileIconCash.LargeDirectoryIcon;
                 info.SmallIcon = FileIconCash.SmallDirectoryIcon;
-                info.ThumbnailImage = thumbnailImage;
+
+                if (isGetThumbnail)
+                {
+                    var thumbnailGetLogic = new ThumbnailGetLogic(job);
+                    var thumbnailBuffer = thumbnailGetLogic.GetOnlyCache(filePath, THUMBNAIL_SIZE, THUMBNAIL_SIZE);
+                    info.ThumbnailImage = thumbnailBuffer switch
+                    {
+                        var t when t != ThumbnailBufferEntity.EMPTY && t.ThumbnailBuffer != null =>
+                            ImageUtil.ToImage(t.ThumbnailBuffer),
+                        _ => null,
+                    };
+                    info.ThumbnailWidth = THUMBNAIL_SIZE;
+                    info.ThumbnailHeight = THUMBNAIL_SIZE;
+                }
             }
             else
             {
