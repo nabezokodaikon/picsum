@@ -163,20 +163,20 @@ namespace PicSum.UIComponent.Contents.ContextMenu
         {
             this.ShowImageMargin = false;
 
-            this.Items.AddRange([ this.fileActiveTabOpenMenuItem,
-                                  this.fileNewTabOpenMenuItem,
-                                  this.fileNewWindowOpenMenuItem,
-                                  this.fileOpen,
-                                  this.saveDirectoryOpen,
-                                  this.directoryActiveTabOpenMenuItem,
-                                  this.directoryNewTabOpenMenuItem,
-                                  this.directoryNewWindowOpenMenuItem,
-                                  this.explorerOpenMenuItem,
-                                  this.pathCopyMenuItem,
-                                  this.nameCopyMenuItem,
-                                  this.exportMenuItem,
-                                  this.fileBookmarkMenuItem,
-                                  this.removeFromListMenuItem
+            this.Items.AddRange([this.fileActiveTabOpenMenuItem,
+                this.fileNewTabOpenMenuItem,
+                this.fileNewWindowOpenMenuItem,
+                this.fileOpen,
+                this.saveDirectoryOpen,
+                this.directoryActiveTabOpenMenuItem,
+                this.directoryNewTabOpenMenuItem,
+                this.directoryNewWindowOpenMenuItem,
+                this.explorerOpenMenuItem,
+                this.pathCopyMenuItem,
+                this.nameCopyMenuItem,
+                this.exportMenuItem,
+                this.fileBookmarkMenuItem,
+                this.removeFromListMenuItem
                                 ]);
             this.fileActiveTabOpenMenuItem.Click += new(this.FileActiveTabOpenMenuItem_Click);
             this.fileNewTabOpenMenuItem.Click += new(this.FileNewTabOpenMenuItem_Click);

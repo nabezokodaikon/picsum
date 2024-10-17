@@ -1165,6 +1165,7 @@ namespace SWF.UIComponent.TabOperation
             {
                 this.tabList.Sort((a, b) => this.SortTabList(a, b));
                 var rect = this.GetTabsRectangle();
+                var w = this.GetTabWidth();
                 var x = rect.X;
                 foreach (var tab in this.tabList)
                 {
@@ -1173,6 +1174,7 @@ namespace SWF.UIComponent.TabOperation
                         tab.DrawArea.X = x;
                         tab.DrawArea.Y = rect.Y;
                     }
+                    tab.DrawArea.Width = w;
                     x += (tab.DrawArea.Width + TAB_MARGIN);
                 }
             }
