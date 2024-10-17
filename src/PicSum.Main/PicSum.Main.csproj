@@ -45,6 +45,7 @@
   <PropertyGroup>
 	<SatelliteResourceLanguages>_</SatelliteResourceLanguages>
 	<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+	<NeutralLanguage>ja-JP</NeutralLanguage>
   </PropertyGroup>  
   <ItemGroup>
     <Reference Update="System.Core">
