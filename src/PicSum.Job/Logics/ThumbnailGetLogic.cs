@@ -42,7 +42,15 @@ namespace PicSum.Job.Logics
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
-            if (FileUtil.IsFile(filePath) && FileUtil.IsImageFile(filePath))
+            if (FileUtil.IsSystemRoot(filePath))
+            {
+                return ThumbnailBufferEntity.EMPTY;
+            }
+            else if (FileUtil.IsDrive(filePath))
+            {
+                return ThumbnailBufferEntity.EMPTY;
+            }
+            else if (FileUtil.IsFile(filePath) && FileUtil.IsImageFile(filePath))
             {
                 return this.GetOnlyFileCache(filePath, thumbWidth, thumbHeight);
             }
@@ -60,7 +68,11 @@ namespace PicSum.Job.Logics
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
-            if (string.IsNullOrEmpty(filePath))
+            if (FileUtil.IsSystemRoot(filePath))
+            {
+                return ThumbnailBufferEntity.EMPTY;
+            }
+            else if (FileUtil.IsDrive(filePath))
             {
                 return ThumbnailBufferEntity.EMPTY;
             }
