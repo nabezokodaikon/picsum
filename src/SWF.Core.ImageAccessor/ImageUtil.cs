@@ -18,7 +18,18 @@ namespace SWF.Core.ImageAccessor
         private static readonly int FILE_READ_BUFFER_SIZE = 80 * 1024;
         private static readonly EncoderParameter ENCORDER_PARAMETER = new(Encoder.Quality, 80L);
         private static readonly ImageCodecInfo COMPRESS_CODEC_INFO = ImageCodecInfo.GetImageEncoders().Single(info => info.FormatID == ImageFormat.Jpeg.Guid);
-        private static readonly dynamic SHELL = Activator.CreateInstance(Type.GetTypeFromProgID("Shell.Application"));
+        private static readonly dynamic SHELL = GetSell();
+
+        private static object GetSell()
+        {
+            var type = Type.GetTypeFromProgID("Shell.Application")
+                ?? throw new NullReferenceException("Shell.Applicationを取得できませんでした。");
+
+            var obj = Activator.CreateInstance(type)
+                ?? throw new NullReferenceException("Shell.Applicationを取得できませんでした。");
+
+            return obj;
+        }
 
         /// <summary>
         /// イメージオブジェクトを圧縮したバイナリに変換します。

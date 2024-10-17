@@ -6,19 +6,20 @@
     <UseWindowsForms>true</UseWindowsForms>
     <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
     <Configurations>Debug;Release;Develop</Configurations>
+    <NeutralLanguage>ja-JP</NeutralLanguage>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <NoWarn>1701;1702; CA1016; CA1824; CA1822; IDE0290</NoWarn>
+    <NoWarn>1701;1702; CA1016; CA1824; CA1822; IDE0290; CS8785</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Develop|AnyCPU'">
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <NoWarn>1701;1702; CA1016; CA1824; CA1822; IDE0290</NoWarn>
+    <NoWarn>1701;1702; CA1016; CA1824; CA1822; IDE0290; CS8785</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <NoWarn>1701;1702; CA1016; CA1824; CA1822; IDE0290</NoWarn>
+    <NoWarn>1701;1702; CA1016; CA1824; CA1822; IDE0290; CS8785</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <OutputPath>bin\x64\Debug\</OutputPath>

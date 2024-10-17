@@ -8,15 +8,15 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <NoWarn>1701;1702; CA1016; CA1822; CS8604; IDE0290</NoWarn>
+    <NoWarn>1701;1702; CA1016; CA1822; CS8604; IDE0290; IDE0251</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Develop|AnyCPU'">
-    <NoWarn>1701;1702; CA1016; CA1822; CS8604; IDE0290</NoWarn>
+    <NoWarn>1701;1702; CA1016; CA1822; CS8604; IDE0290; IDE0251</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <NoWarn>1701;1702; CA1016; CA1822; CS8604; IDE0290</NoWarn>
+    <NoWarn>1701;1702; CA1016; CA1822; CS8604; IDE0290; IDE0251</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup>

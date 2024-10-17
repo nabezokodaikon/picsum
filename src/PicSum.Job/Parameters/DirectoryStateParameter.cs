@@ -22,7 +22,7 @@ namespace PicSum.Job.Parameters
         public bool IsAscending { get; set; }
         public string? SelectedFilePath { get; set; }
 
-        public bool Equals(DirectoryStateParameter other)
+        public readonly bool Equals(DirectoryStateParameter other)
         {
             if (other.DirectoryPath != this.DirectoryPath)
             {
@@ -45,6 +45,27 @@ namespace PicSum.Job.Parameters
             }
 
             return true;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(
+                this.DirectoryPath, this.SortTypeID, this.IsAscending, this.SelectedFilePath);
+        }
+
+        public override bool Equals(object? obj)
+        {
+            return obj is DirectoryStateParameter parameter && this.Equals(parameter);
+        }
+
+        public static bool operator ==(DirectoryStateParameter left, DirectoryStateParameter right)
+        {
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(DirectoryStateParameter left, DirectoryStateParameter right)
+        {
+            return !(left == right);
         }
     }
 }

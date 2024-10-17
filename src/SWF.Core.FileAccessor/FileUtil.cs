@@ -428,7 +428,8 @@ namespace SWF.Core.FileAccessor
             {
                 try
                 {
-                    return Path.GetDirectoryName(filePath);
+                    var parent = Path.GetDirectoryName(filePath);
+                    return parent ?? string.Empty;
                 }
                 catch (PathTooLongException ex)
                 {
@@ -549,7 +550,7 @@ namespace SWF.Core.FileAccessor
         /// </summary>
         /// <param name="directoryPath"></param>
         /// <returns></returns>
-        public static string GetFirstImageFilePath(string directoryPath)
+        public static string? GetFirstImageFilePath(string directoryPath)
         {
             ArgumentException.ThrowIfNullOrEmpty(directoryPath, nameof(directoryPath));
 
@@ -753,7 +754,7 @@ namespace SWF.Core.FileAccessor
                 }
                 else
                 {
-                    return null;
+                    throw new NullReferenceException("小システムアイコンを取得できませんでした。");
                 }
             }
             finally
@@ -786,7 +787,7 @@ namespace SWF.Core.FileAccessor
                 }
                 else
                 {
-                    return null;
+                    throw new NullReferenceException("大システムアイコンを取得できませんでした。");
                 }
             }
             finally
@@ -800,7 +801,7 @@ namespace SWF.Core.FileAccessor
         /// </summary>
         /// <param name="filePath">ファイルパス</param>
         /// <returns></returns>
-        public static Bitmap? GetSmallIconByFilePath(string filePath)
+        public static Bitmap GetSmallIconByFilePath(string filePath)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
@@ -819,7 +820,7 @@ namespace SWF.Core.FileAccessor
                 }
                 else
                 {
-                    return null;
+                    throw new NullReferenceException("SMALLICONアイコンを取得できませんでした。");
                 }
             }
             finally
@@ -833,7 +834,7 @@ namespace SWF.Core.FileAccessor
         /// </summary>
         /// <param name="filePath">ファイルパス</param>
         /// <returns></returns>
-        public static Bitmap? GetExtraLargeIconByFilePath(string filePath, SHIL shil)
+        public static Bitmap GetExtraLargeIconByFilePath(string filePath, SHIL shil)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
@@ -846,7 +847,7 @@ namespace SWF.Core.FileAccessor
                 (int)WinApiMembers.ShellFileInfoFlags.SHGFI_SYSICONINDEX);
             if (hSuccess.Equals(IntPtr.Zero))
             {
-                return null;
+                throw new NullReferenceException("EXTRALARGEアイコンを取得できませんでした。");
             }
 
             var result = WinApiMembers.SHGetImageList(
@@ -858,13 +859,13 @@ namespace SWF.Core.FileAccessor
             {
                 if (result != WinApiMembers.S_OK)
                 {
-                    return null;
+                    throw new NullReferenceException("EXTRALARGEアイコンを取得できませんでした。");
                 }
 
                 var hicon = WinApiMembers.ImageList_GetIcon(pimgList, shinfo.iIcon, 0);
                 if (hicon.Equals(IntPtr.Zero))
                 {
-                    return null;
+                    throw new NullReferenceException("EXTRALARGEアイコンを取得できませんでした。");
                 }
 
                 try

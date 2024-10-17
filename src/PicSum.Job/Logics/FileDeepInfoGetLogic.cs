@@ -15,9 +15,15 @@ namespace PicSum.Job.Logics
     /// ファイルの深い情報取得ロジック
     /// </summary>
     [SupportedOSPlatform("windows")]
-    internal sealed class FileDeepInfoGetLogic(AbstractAsyncJob job)
-        : AbstractAsyncLogic(job)
+    internal sealed class FileDeepInfoGetLogic
+        : AbstractAsyncLogic
     {
+        public FileDeepInfoGetLogic(AbstractAsyncJob job)
+            : base(job)
+        {
+
+        }
+
         public FileDeepInfoEntity Execute(string filePath, Size thumbSize)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
@@ -72,7 +78,7 @@ namespace PicSum.Job.Logics
                     {
                         using (var tran = DatabaseManager<ThumbnailConnection>.BeginTransaction())
                         {
-                            var thumbnailGetLogic = new ThumbnailGetLogic(job);
+                            var thumbnailGetLogic = new ThumbnailGetLogic(this.Job);
                             var thumbnailBuffer
                                 = thumbnailGetLogic.GetOrCreateCache(filePath, thumbSize.Width, thumbSize.Height);
                             var thumbnailImage
@@ -105,7 +111,7 @@ namespace PicSum.Job.Logics
                         {
                             using (var tran = DatabaseManager<ThumbnailConnection>.BeginTransaction())
                             {
-                                var thumbnailGetLogic = new ThumbnailGetLogic(job);
+                                var thumbnailGetLogic = new ThumbnailGetLogic(this.Job);
                                 var thumbnailBuffer
                                     = thumbnailGetLogic.GetOrCreateCache(firstImageFile, thumbSize.Width, thumbSize.Height);
                                 var thumbnailImage

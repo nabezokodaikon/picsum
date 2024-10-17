@@ -37,5 +37,10 @@ namespace SWF.Core.ImageAccessor
         {
             return HashCode.Combine(this.FilePath, this.Timestamp);
         }
+
+        public override bool Equals(object? obj)
+        {
+            return this.Equals(obj as ImageFileSizeCache);
+        }
     }
 }
