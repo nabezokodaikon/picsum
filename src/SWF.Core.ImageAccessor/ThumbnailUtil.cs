@@ -161,7 +161,11 @@ namespace SWF.Core.ImageAccessor
             var x = rect.X + (rect.Width - w) / 2f;
             var y = rect.Y + (rect.Height - h) / 2f;
 
-            g.DrawImage(thumb, x, y, w, h);
+            g.DrawImage(
+                thumb,
+                new RectangleF(x, y, w, h),
+                new RectangleF(0, 0, thumb.Width, thumb.Height),
+                GraphicsUnit.Pixel);
         }
 
         /// <summary>
@@ -195,7 +199,11 @@ namespace SWF.Core.ImageAccessor
             var x = rect.X + (rect.Width - w) / 2f;
             var y = rect.Y + (rect.Height - h) / 2f;
 
-            g.DrawImage(thumb, x, y, w, h);
+            g.DrawImage(
+                thumb,
+                new RectangleF(x, y, w, h),
+                new RectangleF(0, 0, thumb.Width, thumb.Height),
+                GraphicsUnit.Pixel);
         }
 
         /// <summary>
@@ -212,7 +220,11 @@ namespace SWF.Core.ImageAccessor
             ArgumentNullException.ThrowIfNull(icon, nameof(icon));
 
             DrawFileThumbnail(g, thumb, rect);
-            g.DrawImage(icon, new RectangleF(rect.X + 2, rect.Bottom - icon.Height, icon.Width, icon.Height));
+            g.DrawImage(
+                icon,
+                new RectangleF(rect.X + 2, rect.Bottom - icon.Height, icon.Width, icon.Height),
+                new RectangleF(0, 0, thumb.Width, thumb.Height),
+                GraphicsUnit.Pixel);
         }
 
         /// <summary>
@@ -229,7 +241,11 @@ namespace SWF.Core.ImageAccessor
             ArgumentNullException.ThrowIfNull(icon, nameof(icon));
 
             AdjustDrawFileThumbnail(g, thumb, rect);
-            g.DrawImage(icon, new RectangleF(rect.X + 2, rect.Bottom - icon.Height, icon.Width, icon.Height));
+            g.DrawImage(
+                icon,
+                new RectangleF(rect.X + 2, rect.Bottom - icon.Height, icon.Width, icon.Height),
+                new RectangleF(0, 0, thumb.Width, thumb.Height),
+                GraphicsUnit.Pixel);
         }
 
         /// <summary>
@@ -258,7 +274,11 @@ namespace SWF.Core.ImageAccessor
                 var h = icon.Width * scale;
                 var x = rect.X + (rect.Width - w) / 2f;
                 var y = rect.Y + (rect.Height - h) / 2f;
-                g.DrawImage(icon, new RectangleF(x, y, w, h));
+                g.DrawImage(
+                    icon,
+                    new RectangleF(x, y, w, h),
+                    new RectangleF(0, 0, icon.Width, icon.Height),
+                    GraphicsUnit.Pixel);
             }
         }
     }
