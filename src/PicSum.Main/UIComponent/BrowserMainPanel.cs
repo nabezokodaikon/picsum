@@ -497,7 +497,6 @@ namespace PicSum.Main.UIComponent
                     this.addressBar.SetAddress(selectedFilePath);
                     this.infoPanel.SetFileInfo(selectedFilePath);
                     page.RedrawPage();
-                    page.Focus();
                 }
             }
         }
