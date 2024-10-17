@@ -46,7 +46,7 @@ namespace SWF.Core.ImageAccessor
             return new System.Drawing.Size(imageInfo.Width, imageInfo.Height);
         }
 
-        public static IImageFormat DetectFormat(FileStream fs)
+        public static IImageFormat DetectFormat(Stream fs)
         {
             var sw = Stopwatch.StartNew();
             try
@@ -60,7 +60,7 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
-        public static Bitmap ReadImageFile(FileStream fs)
+        public static Bitmap ReadImageFile(Stream fs)
         {
             ArgumentNullException.ThrowIfNull(fs, nameof(fs));
 

@@ -48,7 +48,7 @@ namespace PicSum.Job.Logics
                 Bitmap? thumbnailImage = null;
                 if (isGetThumbnail)
                 {
-                    var thumbnailGetLogic = new ThumbnailGetLogic(job);
+                    var thumbnailGetLogic = new ThumbnailGetLogic(job, this.CheckCancel);
                     var thumbnailBuffer = thumbnailGetLogic.GetOnlyCache(filePath, 248, 248);
                     thumbnailImage = thumbnailBuffer switch
                     {
@@ -72,7 +72,7 @@ namespace PicSum.Job.Logics
                 Bitmap? thumbnailImage = null;
                 if (isGetThumbnail)
                 {
-                    var thumbnailGetLogic = new ThumbnailGetLogic(job);
+                    var thumbnailGetLogic = new ThumbnailGetLogic(job, this.CheckCancel);
                     var thumbnailBuffer = thumbnailGetLogic.GetOnlyCache(filePath, 248, 248);
                     thumbnailImage = thumbnailBuffer switch
                     {

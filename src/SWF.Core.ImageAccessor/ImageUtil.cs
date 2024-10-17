@@ -199,13 +199,14 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
-        internal static ImageFileBuffer ReadImageFileBuffer(string filePath)
+        internal static ImageFileBuffer ReadImageFileBuffer(string filePath, Action checkCancelAction)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
+            ArgumentNullException.ThrowIfNull(checkCancelAction, nameof(checkCancelAction));
 
             try
             {
-                using (var bmp = ReadImageFile(filePath))
+                using (var bmp = ReadImageFile(filePath, checkCancelAction))
                 {
                     return new ImageFileBuffer(bmp);
                 }
@@ -391,9 +392,10 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
-        public static Bitmap ReadImageFile(string filePath)
+        public static Bitmap ReadImageFile(string filePath, Action checkCancelAction)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
+            ArgumentNullException.ThrowIfNull(checkCancelAction, nameof(checkCancelAction));
 
             try
             {
@@ -409,8 +411,8 @@ namespace SWF.Core.ImageAccessor
                 }
 
                 sw = Stopwatch.StartNew();
-                using (var fs = new FileStream(filePath,
-                    FileMode.Open, FileAccess.Read, FileShare.Read, FILE_READ_BUFFER_SIZE, FileOptions.SequentialScan))
+                using (var fs = new CancelableStream(new FileStream(filePath,
+                    FileMode.Open, FileAccess.Read, FileShare.Read, FILE_READ_BUFFER_SIZE, FileOptions.SequentialScan), checkCancelAction))
                 {
                     sw.Stop();
                     Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.ReadImageFile new FileStream: {sw.ElapsedMilliseconds} ms");
@@ -495,54 +497,67 @@ namespace SWF.Core.ImageAccessor
             }
             catch (ArgumentException ex)
             {
+                checkCancelAction();
                 throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
             }
             catch (NotSupportedException ex)
             {
+                checkCancelAction();
                 throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
             }
             catch (FileNotFoundException ex)
             {
+                checkCancelAction();
                 throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
             }
             catch (SecurityException ex)
             {
+                checkCancelAction();
                 throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
             }
             catch (DirectoryNotFoundException ex)
             {
+                checkCancelAction();
                 throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
             }
             catch (PathTooLongException ex)
             {
+                checkCancelAction();
                 throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
             }
             catch (IOException ex)
             {
+                checkCancelAction();
                 throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
             }
             catch (UnauthorizedAccessException ex)
             {
+                checkCancelAction();
                 throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
             }
             catch (XmlException ex)
             {
+                checkCancelAction();
                 throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
             }
             catch (SixLabors.ImageSharp.InvalidImageContentException ex)
             {
+                checkCancelAction();
                 throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
             }
             catch (SixLabors.ImageSharp.UnknownImageFormatException ex)
             {
+                checkCancelAction();
                 throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
             }
             catch (LibHeifSharp.HeifException ex)
             {
+                checkCancelAction();
                 throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
             }
             catch (OutOfMemoryException ex)
             {
+                checkCancelAction();
                 throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
             }
         }
@@ -736,7 +751,7 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
-        private static Bitmap ConvertIfGrayscale(Bitmap bmp, FileStream fs)
+        private static Bitmap ConvertIfGrayscale(Bitmap bmp, Stream fs)
         {
             if (bmp.PixelFormat == PixelFormat.Format8bppIndexed)
             {

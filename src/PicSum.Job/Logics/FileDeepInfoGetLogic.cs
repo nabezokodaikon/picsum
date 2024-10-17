@@ -72,7 +72,7 @@ namespace PicSum.Job.Logics
                     {
                         using (var tran = DatabaseManager<ThumbnailConnection>.BeginTransaction())
                         {
-                            var thumbnailGetLogic = new ThumbnailGetLogic(job);
+                            var thumbnailGetLogic = new ThumbnailGetLogic(job, this.CheckCancel);
                             var thumbnailBuffer
                                 = thumbnailGetLogic.GetOrCreateCache(filePath, thumbSize.Width, thumbSize.Height);
                             var thumbnailImage
@@ -105,7 +105,7 @@ namespace PicSum.Job.Logics
                         {
                             using (var tran = DatabaseManager<ThumbnailConnection>.BeginTransaction())
                             {
-                                var thumbnailGetLogic = new ThumbnailGetLogic(job);
+                                var thumbnailGetLogic = new ThumbnailGetLogic(job, this.CheckCancel);
                                 var thumbnailBuffer
                                     = thumbnailGetLogic.GetOrCreateCache(firstImageFile, thumbSize.Width, thumbSize.Height);
                                 var thumbnailImage
