@@ -7,7 +7,7 @@ namespace SWF.UIComponent.Core
     /// スライダーコントロール
     /// </summary>
     [SupportedOSPlatform("windows")]
-    public class Slider : Control
+    public partial class Slider : Control
     {
 
         private const int BarHeight = 4;

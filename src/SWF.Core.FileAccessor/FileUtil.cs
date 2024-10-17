@@ -61,7 +61,7 @@ namespace SWF.Core.FileAccessor
         /// <returns></returns>
         public static bool IsSystemRoot(string filePath)
         {
-            return filePath.Trim() == FileUtil.ROOT_DIRECTORY_PATH;
+            return filePath.Trim() == ROOT_DIRECTORY_PATH;
         }
 
         /// <summary>
@@ -131,7 +131,7 @@ namespace SWF.Core.FileAccessor
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
-            var ex = FileUtil.GetExtension(filePath);
+            var ex = GetExtension(filePath);
             return IMAGE_FILE_EXTENSION_LIST.Contains(ex);
         }
 
@@ -139,7 +139,7 @@ namespace SWF.Core.FileAccessor
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
-            var ex = FileUtil.GetExtension(filePath);
+            var ex = GetExtension(filePath);
             return (ex == SVG_FILE_EXTENSION);
         }
 
@@ -147,7 +147,7 @@ namespace SWF.Core.FileAccessor
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
-            var ex = FileUtil.GetExtension(filePath);
+            var ex = GetExtension(filePath);
             return (ex == ICON_FILE_EXTENSION);
         }
 
@@ -155,7 +155,7 @@ namespace SWF.Core.FileAccessor
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
-            var ex = FileUtil.GetExtension(filePath);
+            var ex = GetExtension(filePath);
             return (ex == BMP_FILE_EXTENSION);
         }
 
@@ -163,7 +163,7 @@ namespace SWF.Core.FileAccessor
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
-            var ex = FileUtil.GetExtension(filePath);
+            var ex = GetExtension(filePath);
             return (ex == JPG_FILE_EXTENSION || ex == JPEG_FILE_EXTENSION);
         }
 
@@ -171,7 +171,7 @@ namespace SWF.Core.FileAccessor
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
-            var ex = FileUtil.GetExtension(filePath);
+            var ex = GetExtension(filePath);
             return (ex == PNG_FILE_EXTENSION || ex == PNG_FILE_EXTENSION);
         }
 
@@ -184,7 +184,7 @@ namespace SWF.Core.FileAccessor
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
-            var ex = FileUtil.GetExtension(filePath);
+            var ex = GetExtension(filePath);
             return (ex == WEBP_FILE_EXTENSION);
         }
 
@@ -197,7 +197,7 @@ namespace SWF.Core.FileAccessor
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
-            var ex = FileUtil.GetExtension(filePath);
+            var ex = GetExtension(filePath);
             return (ex == AVIF_FILE_EXTENSION);
         }
 
@@ -205,7 +205,7 @@ namespace SWF.Core.FileAccessor
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
-            var ex = FileUtil.GetExtension(filePath);
+            var ex = GetExtension(filePath);
             return (ex == HEIC_FILE_EXTENSION || ex == HEIF_FILE_EXTENSION);
         }
 
@@ -372,11 +372,11 @@ namespace SWF.Core.FileAccessor
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
-            if (FileUtil.IsSystemRoot(filePath))
+            if (IsSystemRoot(filePath))
             {
-                return FileUtil.ROOT_DIRECTORY_NAME;
+                return ROOT_DIRECTORY_NAME;
             }
-            else if (FileUtil.IsDrive(filePath))
+            else if (IsDrive(filePath))
             {
                 try
                 {
@@ -384,11 +384,11 @@ namespace SWF.Core.FileAccessor
                         .FirstOrDefault(di => di.Name == filePath || di.Name == $"{filePath}");
                     if (driveInfo != null)
                     {
-                        return $"{driveInfo.VolumeLabel}({FileUtil.ToRemoveLastPathSeparate(filePath)})";
+                        return $"{driveInfo.VolumeLabel}({ToRemoveLastPathSeparate(filePath)})";
                     }
                     else
                     {
-                        return FileUtil.ROOT_DIRECTORY_NAME;
+                        return ROOT_DIRECTORY_NAME;
                     }
                 }
                 catch (IOException ex)
@@ -415,14 +415,14 @@ namespace SWF.Core.FileAccessor
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
-            if (FileUtil.IsSystemRoot(filePath))
+            if (IsSystemRoot(filePath))
             {
                 throw new ArgumentException("システムルートが指定されました。", nameof(filePath));
             }
 
-            if (FileUtil.IsDrive(filePath))
+            if (IsDrive(filePath))
             {
-                return FileUtil.ROOT_DIRECTORY_PATH;
+                return ROOT_DIRECTORY_PATH;
             }
             else
             {
@@ -463,9 +463,9 @@ namespace SWF.Core.FileAccessor
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
-            if (FileUtil.IsSystemRoot(filePath))
+            if (IsSystemRoot(filePath))
             {
-                return FileUtil.ROOT_DIRECTORY_TYPE_NAME;
+                return ROOT_DIRECTORY_TYPE_NAME;
             }
             else
             {
@@ -491,7 +491,7 @@ namespace SWF.Core.FileAccessor
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
-            if (FileUtil.IsSystemRoot(filePath))
+            if (IsSystemRoot(filePath))
             {
                 return ROOT_DIRECTORY_DATETIME;
             }
@@ -553,9 +553,9 @@ namespace SWF.Core.FileAccessor
         {
             ArgumentException.ThrowIfNullOrEmpty(directoryPath, nameof(directoryPath));
 
-            return FileUtil.GetFiles(directoryPath)
+            return GetFiles(directoryPath)
                 .OrderBy(file => file)
-                .FirstOrDefault(file => FileUtil.IsImageFile(file));
+                .FirstOrDefault(file => IsImageFile(file));
         }
 
         /// <summary>
@@ -567,7 +567,7 @@ namespace SWF.Core.FileAccessor
         {
             ArgumentException.ThrowIfNullOrEmpty(directoryPath, nameof(directoryPath));
 
-            if (FileUtil.CanAccess(directoryPath))
+            if (CanAccess(directoryPath))
             {
                 try
                 {
@@ -608,12 +608,12 @@ namespace SWF.Core.FileAccessor
         {
             ArgumentException.ThrowIfNullOrEmpty(directoryPath, nameof(directoryPath));
 
-            if (FileUtil.IsSystemRoot(directoryPath))
+            if (IsSystemRoot(directoryPath))
             {
-                return FileUtil.GetDriveList();
+                return GetDriveList();
             }
 
-            if (FileUtil.CanAccess(directoryPath))
+            if (CanAccess(directoryPath))
             {
                 try
                 {
@@ -654,12 +654,12 @@ namespace SWF.Core.FileAccessor
         {
             ArgumentException.ThrowIfNullOrEmpty(directoryPath, nameof(directoryPath));
 
-            if (FileUtil.IsSystemRoot(directoryPath))
+            if (IsSystemRoot(directoryPath))
             {
-                return FileUtil.GetDriveList();
+                return GetDriveList();
             }
 
-            if (FileUtil.CanAccess(directoryPath))
+            if (CanAccess(directoryPath))
             {
                 try
                 {
@@ -916,7 +916,7 @@ namespace SWF.Core.FileAccessor
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
-            if (FileUtil.IsSystemRoot(filePath))
+            if (IsSystemRoot(filePath))
             {
                 var _ = ShellExecute(IntPtr.Zero, "open", "::{20D04FE0-3AEA-1069-A2D8-08002B30309D}", null, null, 1);
             }
@@ -938,8 +938,7 @@ namespace SWF.Core.FileAccessor
                 var dirPath = GetParentDirectoryPath(filePath);
 
                 // フォルダのPIDLを取得
-                uint psfgaoOut;
-                var hr = SHParseDisplayName(dirPath, IntPtr.Zero, out pidlFolder, 0, out psfgaoOut);
+                var hr = SHParseDisplayName(dirPath, IntPtr.Zero, out pidlFolder, 0, out var psfgaoOut);
 
                 if (hr != 0)
                 {
@@ -956,7 +955,7 @@ namespace SWF.Core.FileAccessor
                 }
 
                 // 特定のファイルを選択した状態でフォルダを開く
-                IntPtr[] fileArray = { pidlFile };
+                IntPtr[] fileArray = [pidlFile];
                 hr = SHOpenFolderAndSelectItems(pidlFolder, (uint)fileArray.Length, fileArray, 0);
 
                 if (hr != 0)
@@ -982,7 +981,7 @@ namespace SWF.Core.FileAccessor
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
-            var ex = FileUtil.GetExtension(filePath)[1..];
+            var ex = GetExtension(filePath)[1..];
             return $"{ex.ToUpper()} Files (*.{ex.ToLower()})|*.{ex.ToLower()}|All Files (*.*)|*.*";
         }
 
@@ -997,8 +996,8 @@ namespace SWF.Core.FileAccessor
             ArgumentException.ThrowIfNullOrEmpty(exportDirectoryPath, nameof(exportDirectoryPath));
             ArgumentException.ThrowIfNullOrEmpty(srcFilePath, nameof(srcFilePath));
 
-            var ex = FileUtil.GetExtension(srcFilePath).ToLower();
-            var name = FileUtil.GetFileName(srcFilePath);
+            var ex = GetExtension(srcFilePath).ToLower();
+            var name = GetFileName(srcFilePath);
             name = name[..^ex.Length];
 
             var count = 0;
@@ -1015,9 +1014,9 @@ namespace SWF.Core.FileAccessor
                     destFilePath = @$"{exportDirectoryPath}\{name} ({count + 1}){ex}";
                 }
 
-                if (!FileUtil.IsExists(destFilePath))
+                if (!IsExists(destFilePath))
                 {
-                    return FileUtil.GetFileName(destFilePath);
+                    return GetFileName(destFilePath);
                 }
 
                 count++;
@@ -1046,7 +1045,7 @@ namespace SWF.Core.FileAccessor
             try
             {
                 var drives = DriveInfo.GetDrives()
-                    .Select(drive => FileUtil.ToRemoveLastPathSeparate(@$"{drive.Name}\"))
+                    .Select(drive => ToRemoveLastPathSeparate(@$"{drive.Name}\"))
                     .ToArray();
                 return drives;
             }
@@ -1072,18 +1071,20 @@ namespace SWF.Core.FileAccessor
         /// <returns></returns>
         private static List<string> GetImageFileExtensionList()
         {
-            var exList = new List<string>();
-            exList.Add(AVIF_FILE_EXTENSION);
-            exList.Add(BMP_FILE_EXTENSION);
-            exList.Add(GIF_FILE_EXTENSION);
-            exList.Add(ICON_FILE_EXTENSION);
-            exList.Add(JPEG_FILE_EXTENSION);
-            exList.Add(JPG_FILE_EXTENSION);
-            exList.Add(HEIC_FILE_EXTENSION);
-            exList.Add(HEIF_FILE_EXTENSION);
-            exList.Add(PNG_FILE_EXTENSION);
-            exList.Add(SVG_FILE_EXTENSION);
-            exList.Add(WEBP_FILE_EXTENSION);
+            var exList = new List<string>
+            {
+                AVIF_FILE_EXTENSION,
+                BMP_FILE_EXTENSION,
+                GIF_FILE_EXTENSION,
+                ICON_FILE_EXTENSION,
+                JPEG_FILE_EXTENSION,
+                JPG_FILE_EXTENSION,
+                HEIC_FILE_EXTENSION,
+                HEIF_FILE_EXTENSION,
+                PNG_FILE_EXTENSION,
+                SVG_FILE_EXTENSION,
+                WEBP_FILE_EXTENSION
+            };
 
             return exList;
         }

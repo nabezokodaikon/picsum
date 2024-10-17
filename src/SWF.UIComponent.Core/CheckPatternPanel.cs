@@ -5,7 +5,7 @@ using System.Runtime.Versioning;
 namespace SWF.UIComponent.Core
 {
     [SupportedOSPlatform("windows")]
-    public class CheckPatternPanel : Panel
+    public partial class CheckPatternPanel : Panel
     {
 
         private int _rectangleSize = 24;

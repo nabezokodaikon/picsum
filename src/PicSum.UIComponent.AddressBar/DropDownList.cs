@@ -12,7 +12,7 @@ namespace PicSum.UIComponent.AddressBar
     /// ドロップダウンリスト
     /// </summary>
     [SupportedOSPlatform("windows")]
-    public sealed class DropDownList
+    public sealed partial class DropDownList
         : ToolStripDropDown
     {
 

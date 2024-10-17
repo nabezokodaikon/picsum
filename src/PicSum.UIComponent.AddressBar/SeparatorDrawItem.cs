@@ -11,7 +11,7 @@ using System.Windows.Forms;
 namespace PicSum.UIComponent.AddressBar
 {
     [SupportedOSPlatform("windows")]
-    internal sealed class SeparatorDrawItem
+    internal sealed partial class SeparatorDrawItem
         : DropDownDrawItemBase, IDisposable
     {
 

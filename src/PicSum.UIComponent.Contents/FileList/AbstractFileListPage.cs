@@ -254,11 +254,7 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             get
             {
-                if (this.singleFileExportJob == null)
-                {
-                    this.singleFileExportJob = new();
-                }
-
+                this.singleFileExportJob ??= new();
                 return this.singleFileExportJob;
             }
         }
@@ -267,11 +263,7 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             get
             {
-                if (this.bookmarkAddJob == null)
-                {
-                    this.bookmarkAddJob = new();
-                }
-
+                this.bookmarkAddJob ??= new();
                 return this.bookmarkAddJob;
             }
         }
@@ -303,11 +295,7 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             get
             {
-                if (this.imageFileSizeCacheJob == null)
-                {
-                    this.imageFileSizeCacheJob = new();
-                }
-
+                this.imageFileSizeCacheJob ??= new();
                 return this.imageFileSizeCacheJob;
             }
         }
@@ -477,7 +465,7 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
-            this.SetContextMenuFiles(new List<string>() { filePath });
+            this.SetContextMenuFiles([filePath]);
         }
 
         protected void RemoveFile(IList<string> filePathList)
@@ -1301,7 +1289,7 @@ namespace PicSum.UIComponent.Contents.FileList
                     {
                         var param = new MultiFilesExportParameter
                         {
-                            SrcFiles = e.FilePathList.ToArray(),
+                            SrcFiles = [.. e.FilePathList],
                             ExportDirecotry = fbd.SelectedPath,
                         };
 

@@ -1,6 +1,6 @@
 namespace SWF.Core.ImageAccessor
 {
-    public class ImageFileSizeCache
+    public sealed class ImageFileSizeCache
         : IEquatable<ImageFileSizeCache>
     {
         public readonly string FilePath;
@@ -35,7 +35,7 @@ namespace SWF.Core.ImageAccessor
 
         public override int GetHashCode()
         {
-            return (this.FilePath, this.Timestamp).GetHashCode();
+            return HashCode.Combine(this.FilePath, this.Timestamp);
         }
     }
 }

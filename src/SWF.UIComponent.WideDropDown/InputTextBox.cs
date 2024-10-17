@@ -8,7 +8,7 @@ using WinApi;
 namespace SWF.UIComponent.WideDropDown
 {
     [SupportedOSPlatform("windows")]
-    public sealed class InputTextBox
+    public sealed partial class InputTextBox
         : TextBox
     {
         public InputTextBox()

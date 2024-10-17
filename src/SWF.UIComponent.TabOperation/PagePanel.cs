@@ -7,7 +7,7 @@ namespace SWF.UIComponent.TabOperation
     /// <summary>
     /// コンテンツコントロール
     /// </summary>
-    public class PagePanel
+    public partial class PagePanel
         : UserControl
     {
 

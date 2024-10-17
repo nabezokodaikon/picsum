@@ -8,7 +8,7 @@ namespace SWF.UIComponent.Core
     /// </summary>
     [SupportedOSPlatform("windows")]
     [ToolStripItemDesignerAvailability(ToolStripItemDesignerAvailability.All)]
-    public class ToolStripSlider : ToolStripControlHost
+    public partial class ToolStripSlider : ToolStripControlHost
     {
 
         public event EventHandler? BeginValueChange;

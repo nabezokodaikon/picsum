@@ -27,7 +27,7 @@ namespace PicSum.Main.UIComponent
         public event EventHandler BackgroundMouseDoubleLeftClick;
 
         private Size previrewSize = Size.Empty;
-        private Timer redrawTimer = null;
+        private readonly Timer redrawTimer = null;
         private TwoWayJob<TagsGetJob, ListResult<string>> getTagListJob = null;
         private TwoWayJob<ImageFileGetByDirectoryJob, ImageFileGetByDirectoryParameter, ImageFileGetByDirectoryResult> getFilesJob = null;
 

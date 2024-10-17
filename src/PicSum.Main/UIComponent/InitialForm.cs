@@ -9,7 +9,7 @@ namespace PicSum.Main.UIComponent
     /// ダミーフォーム
     /// </summary>
     [SupportedOSPlatform("windows")]
-    internal sealed class InitialForm : HideForm
+    internal sealed partial class InitialForm : HideForm
     {
         private readonly BrowserManager browserManager = new();
 

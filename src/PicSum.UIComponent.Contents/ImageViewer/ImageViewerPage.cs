@@ -168,11 +168,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         {
             get
             {
-                if (this.addBookmarkJob == null)
-                {
-                    this.addBookmarkJob = new();
-                }
-
+                this.addBookmarkJob ??= new();
                 return this.addBookmarkJob;
             }
         }
@@ -181,11 +177,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         {
             get
             {
-                if (this.singleFileExportJob == null)
-                {
-                    this.singleFileExportJob = new();
-                }
-
+                this.singleFileExportJob ??= new();
                 return this.singleFileExportJob;
             }
         }
@@ -194,11 +186,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         {
             get
             {
-                if (this.imageFileCacheJob == null)
-                {
-                    this.imageFileCacheJob = new();
-                }
-
+                this.imageFileCacheJob ??= new();
                 return this.imageFileCacheJob;
             }
         }

@@ -62,19 +62,6 @@ namespace SWF.Core.ImageAccessor
             srcDc.ReleaseHdc(srcHdc);
         }
 
-        private static bool IsSupportedTheme()
-        {
-            if (VisualStyleInformation.IsSupportedByOS &&
-                VisualStyleInformation.IsEnabledByUser)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
         private static int GetDwFlags()
         {
             return WinApiMembers.DTT_COMPOSITED |

@@ -12,7 +12,7 @@ namespace SWF.UIComponent.TabOperation
     /// ドラッグ中のコンテンツを表示するフォーム
     /// </summary>
     [SupportedOSPlatform("windows")]
-    internal sealed class TabDragForm
+    internal sealed partial class TabDragForm
         : Form
     {
 

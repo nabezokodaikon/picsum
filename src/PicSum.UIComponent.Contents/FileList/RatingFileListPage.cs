@@ -21,7 +21,7 @@ namespace PicSum.UIComponent.Contents.FileList
     /// 評価値ファイルリストコンテンツ
     /// </summary>
     [SupportedOSPlatform("windows")]
-    internal sealed class RatingFileListPage
+    internal sealed partial class RatingFileListPage
         : AbstractFileListPage
     {
         private static Action ImageFilesGetAction(ImageViewerPageParameter param)
@@ -85,11 +85,7 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             get
             {
-                if (this.deleteJob == null)
-                {
-                    this.deleteJob = new();
-                }
-
+                this.deleteJob ??= new();
                 return this.deleteJob;
             }
         }

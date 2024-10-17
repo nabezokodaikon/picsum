@@ -9,7 +9,7 @@ namespace SWF.UIComponent.TabOperation
     /// タブパレットクラス
     /// </summary>
     [SupportedOSPlatform("windows")]
-    public sealed class TabPalette
+    public sealed partial class TabPalette
         : Component
     {
         private static readonly Font TITLE_FONT = new("Yu Gothic UI", 10F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(128)));

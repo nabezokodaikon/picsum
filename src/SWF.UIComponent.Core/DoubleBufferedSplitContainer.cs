@@ -3,7 +3,7 @@ using System.Runtime.Versioning;
 namespace SWF.UIComponent.Core
 {
     [SupportedOSPlatform("windows")]
-    public class DoubleBufferedSplitContainer
+    public partial class DoubleBufferedSplitContainer
         : SplitContainer
     {
         public DoubleBufferedSplitContainer()

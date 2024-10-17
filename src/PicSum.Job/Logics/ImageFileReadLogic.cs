@@ -54,7 +54,7 @@ namespace PicSum.Job.Logics
         }
 
         internal ImageFileReadResult CreateEmptyResult(
-            string filePath, bool isMain, bool hasSub, ImageSizeMode imageSizeMode, Size imageSize)
+            string filePath, bool isMain, bool hasSub, Size imageSize)
         {
             return new()
             {

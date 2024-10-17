@@ -20,7 +20,7 @@ using System.Windows.Forms;
 namespace PicSum.UIComponent.Contents.FileList
 {
     [SupportedOSPlatform("windows")]
-    internal sealed class BookmarkFileListPage
+    internal sealed partial class BookmarkFileListPage
         : AbstractFileListPage
     {
         private static Action ImageFilesGetAction(ImageViewerPageParameter param)
@@ -89,11 +89,7 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             get
             {
-                if (this.deleteJob == null)
-                {
-                    this.deleteJob = new();
-                }
-
+                this.deleteJob ??= new();
                 return this.deleteJob;
             }
         }

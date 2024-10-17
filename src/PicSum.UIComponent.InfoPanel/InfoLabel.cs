@@ -5,7 +5,7 @@ using System.Windows.Forms;
 namespace PicSum.UIComponent.InfoPanel
 {
     [SupportedOSPlatform("windows")]
-    internal class FileInfoLabel
+    internal partial class FileInfoLabel
         : Control
     {
         private readonly Color textColor = Color.FromArgb(

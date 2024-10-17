@@ -9,7 +9,7 @@ using System.Windows.Forms;
 namespace SWF.UIComponent.WideDropDown
 {
     [SupportedOSPlatform("windows")]
-    public sealed class WideDropDownList
+    public sealed partial class WideDropDownList
         : ToolStripDropDown
     {
 

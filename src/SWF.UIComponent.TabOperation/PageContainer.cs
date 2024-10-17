@@ -8,7 +8,7 @@ namespace SWF.UIComponent.TabOperation
     /// コンテンツコンテナ
     /// </summary>
     [SupportedOSPlatform("windows")]
-    public sealed class PageContainer
+    public sealed partial class PageContainer
         : Panel
     {
         public PageContainer()

@@ -16,7 +16,7 @@ namespace SWF.UIComponent.ImagePanel
     /// 画像パネルコントロール
     /// </summary>
     [SupportedOSPlatform("windows")]
-    public sealed class ImagePanel
+    public sealed partial class ImagePanel
         : Control
     {
         private const int THUMBNAIL_PANEL_OFFSET = 16;
@@ -47,7 +47,7 @@ namespace SWF.UIComponent.ImagePanel
         private bool isError = false;
 
         private readonly SolidBrush thumbnailFilterBrush = new(Color.FromArgb(128, 0, 0, 0));
-        private readonly StringFormat stringFormat = new StringFormat()
+        private readonly StringFormat stringFormat = new()
         {
             Alignment = StringAlignment.Center,
             LineAlignment = StringAlignment.Center,
@@ -642,18 +642,18 @@ namespace SWF.UIComponent.ImagePanel
                 else if (this.sizeMode == ImageSizeMode.FitAllImage)
                 {
                     var destRect = this.GetImageDestRectangle();
-                    this.image.DrawResizeImage(g, destRect, destRect);
+                    this.image.DrawResizeImage(g, destRect);
                 }
                 else if (this.sizeMode == ImageSizeMode.FitOnlyBigImage)
                 {
                     var destRect = this.GetImageDestRectangle();
                     if (this.image.Width > destRect.Width || this.image.Height > destRect.Height)
                     {
-                        this.image.DrawResizeImage(g, destRect, destRect);
+                        this.image.DrawResizeImage(g, destRect);
                     }
                     else
                     {
-                        this.image.DrawResizeImage(g, destRect, new RectangleF(0, 0, this.image.Width, this.image.Height));
+                        this.image.DrawResizeImage(g, destRect);
                     }
                 }
             }

@@ -7,7 +7,7 @@ using System.Windows.Forms;
 namespace PicSum.UIComponent.AddressBar
 {
     [SupportedOSPlatform("windows")]
-    internal sealed class OverflowDrawItem
+    internal sealed partial class OverflowDrawItem
         : DropDownDrawItemBase, IDisposable
     {
 

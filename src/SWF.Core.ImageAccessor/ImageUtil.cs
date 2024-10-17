@@ -41,7 +41,7 @@ namespace SWF.Core.ImageAccessor
                 mes.Read(buffer, 0, buffer.Length);
 
                 sw.Stop();
-                Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.ToCompressionBinary: {sw.ElapsedMilliseconds} ms");
+                //Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.ToCompressionBinary: {sw.ElapsedMilliseconds} ms");
 
                 return buffer;
             }
@@ -65,7 +65,7 @@ namespace SWF.Core.ImageAccessor
                     var img = Bitmap.FromStream(mes, false, true);
 
                     sw.Stop();
-                    Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.ToImage: {sw.ElapsedMilliseconds} ms");
+                    //Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.ToImage: {sw.ElapsedMilliseconds} ms");
 
                     return (Bitmap)img;
                 }

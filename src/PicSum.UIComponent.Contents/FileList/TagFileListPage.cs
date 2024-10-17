@@ -22,7 +22,7 @@ namespace PicSum.UIComponent.Contents.FileList
     /// タグファイルリストコンテンツ
     /// </summary>
     [SupportedOSPlatform("windows")]
-    internal sealed class TagFileListPage
+    internal sealed partial class TagFileListPage
         : AbstractFileListPage
     {
         private static Action ImageFilesGetAction(ImageViewerPageParameter param)
@@ -88,11 +88,7 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             get
             {
-                if (this.deleteJob == null)
-                {
-                    this.deleteJob = new();
-                }
-
+                this.deleteJob ??= new();
                 return this.deleteJob;
             }
         }

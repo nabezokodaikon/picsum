@@ -8,7 +8,7 @@ using System.Windows.Forms;
 namespace SWF.UIComponent.TabOperation
 {
     [SupportedOSPlatform("windows")]
-    internal sealed class TabDropForm
+    internal sealed partial class TabDropForm
         : Form
     {
 

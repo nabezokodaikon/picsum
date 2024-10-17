@@ -5,13 +5,13 @@ using System.Drawing.Drawing2D;
 
 namespace SWF.Core.ImageAccessor
 {
-    public sealed class CvImage
+    public sealed partial class CvImage
         : IDisposable
     {
-        public static readonly CvImage EMPTY = new CvImage(System.Drawing.Size.Empty);
+        public static readonly CvImage EMPTY = new(System.Drawing.Size.Empty);
 
         private bool disposed = false;
-        private readonly object lockObject = new object();
+        private readonly object lockObject = new();
         private Mat? mat = null;
         private readonly Bitmap? bitmap;
 
@@ -81,11 +81,7 @@ namespace SWF.Core.ImageAccessor
 
             lock (this.lockObject)
             {
-                if (this.mat == null)
-                {
-                    this.mat = this.bitmap.ToMat();
-                }
-
+                this.mat ??= this.bitmap.ToMat();
                 return OpenCVUtil.Resize(this.mat, newWidth, newHeight);
             }
         }
@@ -101,10 +97,7 @@ namespace SWF.Core.ImageAccessor
 
             lock (this.lockObject)
             {
-                if (this.mat == null)
-                {
-                    this.mat = this.bitmap.ToMat();
-                }
+                this.mat ??= this.bitmap.ToMat();
             }
 
             sw.Stop();
@@ -145,11 +138,7 @@ namespace SWF.Core.ImageAccessor
             {
                 var sw = Stopwatch.StartNew();
 
-                if (this.mat == null)
-                {
-                    this.mat = this.bitmap.ToMat();
-                }
-
+                this.mat ??= this.bitmap.ToMat();
                 var bmp = this.mat.ToBitmap();
                 var clone = new CvImage(bmp);
 
@@ -181,7 +170,7 @@ namespace SWF.Core.ImageAccessor
             g.DrawImage(this.bitmap, destRect, srcRect, GraphicsUnit.Pixel);
         }
 
-        public void DrawResizeImage(Graphics g, RectangleF destRect, RectangleF srcRect)
+        public void DrawResizeImage(Graphics g, RectangleF destRect)
         {
             ArgumentNullException.ThrowIfNull(g, nameof(g));
 

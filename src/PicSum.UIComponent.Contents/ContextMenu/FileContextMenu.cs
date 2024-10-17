@@ -11,7 +11,7 @@ namespace PicSum.UIComponent.Contents.ContextMenu
     /// ファイルコンテキストメニュー
     /// </summary>
     [SupportedOSPlatform("windows")]
-    public sealed class FileContextMenu
+    public sealed partial class FileContextMenu
         : ContextMenuStrip
     {
 
@@ -156,28 +156,28 @@ namespace PicSum.UIComponent.Contents.ContextMenu
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
-            this.SetFile(new List<string>() { filePath });
+            this.SetFile([filePath]);
         }
 
         private void InitializeComponent()
         {
             this.ShowImageMargin = false;
 
-            this.Items.AddRange(new ToolStripItem[] { this.fileActiveTabOpenMenuItem,
-                                                      this.fileNewTabOpenMenuItem,
-                                                      this.fileNewWindowOpenMenuItem,
-                                                      this.fileOpen,
-                                                      this.saveDirectoryOpen,
-                                                      this.directoryActiveTabOpenMenuItem,
-                                                      this.directoryNewTabOpenMenuItem,
-                                                      this.directoryNewWindowOpenMenuItem,
-                                                      this.explorerOpenMenuItem,
-                                                      this.pathCopyMenuItem,
-                                                      this.nameCopyMenuItem,
-                                                      this.exportMenuItem,
-                                                      this.fileBookmarkMenuItem,
-                                                      this.removeFromListMenuItem
-                                                    });
+            this.Items.AddRange([ this.fileActiveTabOpenMenuItem,
+                                  this.fileNewTabOpenMenuItem,
+                                  this.fileNewWindowOpenMenuItem,
+                                  this.fileOpen,
+                                  this.saveDirectoryOpen,
+                                  this.directoryActiveTabOpenMenuItem,
+                                  this.directoryNewTabOpenMenuItem,
+                                  this.directoryNewWindowOpenMenuItem,
+                                  this.explorerOpenMenuItem,
+                                  this.pathCopyMenuItem,
+                                  this.nameCopyMenuItem,
+                                  this.exportMenuItem,
+                                  this.fileBookmarkMenuItem,
+                                  this.removeFromListMenuItem
+                                ]);
             this.fileActiveTabOpenMenuItem.Click += new(this.FileActiveTabOpenMenuItem_Click);
             this.fileNewTabOpenMenuItem.Click += new(this.FileNewTabOpenMenuItem_Click);
             this.fileNewWindowOpenMenuItem.Click += new(this.FileNewWindowOpenMenuItem_Click);

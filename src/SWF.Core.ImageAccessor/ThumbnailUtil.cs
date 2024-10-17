@@ -120,7 +120,7 @@ namespace SWF.Core.ImageAccessor
                     g.PixelOffsetMode = PixelOffsetMode.HighSpeed;
                     g.CompositingMode = CompositingMode.SourceOver;
 
-                    srcImg.DrawResizeImage(g, new RectangleF(0, 0, w, h), new RectangleF(0, 0, srcImg.Width, srcImg.Height));
+                    srcImg.DrawResizeImage(g, new RectangleF(0, 0, w, h));
                 }
             }
 

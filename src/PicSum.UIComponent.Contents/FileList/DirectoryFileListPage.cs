@@ -22,7 +22,7 @@ namespace PicSum.UIComponent.Contents.FileList
     /// フォルダファイルリストコンテンツ
     /// </summary>
     [SupportedOSPlatform("windows")]
-    internal sealed class DirectoryFileListPage
+    internal sealed partial class DirectoryFileListPage
         : AbstractFileListPage
     {
         private static Action ImageFilesGetAction(ImageViewerPageParameter param)
@@ -89,11 +89,7 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             get
             {
-                if (this.directoryStateUpdateJob == null)
-                {
-                    this.directoryStateUpdateJob = new();
-                }
-
+                this.directoryStateUpdateJob ??= new();
                 return this.directoryStateUpdateJob;
             }
         }
@@ -102,11 +98,7 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             get
             {
-                if (this.directoryHistoryaddJob == null)
-                {
-                    this.directoryHistoryaddJob = new();
-                }
-
+                this.directoryHistoryaddJob ??= new();
                 return this.directoryHistoryaddJob;
             }
         }

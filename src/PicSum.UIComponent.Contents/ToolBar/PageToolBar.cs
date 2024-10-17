@@ -4,7 +4,7 @@ using System.Windows.Forms;
 namespace PicSum.UIComponent.Contents.ToolBar
 {
     [SupportedOSPlatform("windows")]
-    public sealed class PageToolBar
+    public sealed partial class PageToolBar
         : ToolStrip
     {
         public PageToolBar()

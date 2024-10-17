@@ -4,7 +4,7 @@ using WinApi;
 namespace SWF.UIComponent.Core
 {
     [SupportedOSPlatform("windows")]
-    public class HideForm : Form
+    public partial class HideForm : Form
     {
         protected override CreateParams CreateParams
         {

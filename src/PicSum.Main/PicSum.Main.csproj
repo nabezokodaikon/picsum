@@ -44,6 +44,7 @@
   </PropertyGroup>
   <PropertyGroup>
 	<SatelliteResourceLanguages>_</SatelliteResourceLanguages>
+	<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>  
   <ItemGroup>
     <Reference Update="System.Core">

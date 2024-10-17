@@ -7,7 +7,7 @@ using System.Windows.Forms;
 namespace PicSum.UIComponent.AddressBar
 {
     [SupportedOSPlatform("windows")]
-    internal sealed class DirectoryDrawItem
+    internal sealed partial class DirectoryDrawItem
         : DrawItemBase, IDisposable
     {
 

@@ -8,7 +8,7 @@ using System.Windows.Forms;
 namespace SWF.UIComponent.WideDropDown
 {
     [SupportedOSPlatform("windows")]
-    public class WideDropToolButton
+    public partial class WideDropToolButton
         : ToolButton
     {
         public event EventHandler<ItemMouseClickEventArgs> ItemMouseClick;

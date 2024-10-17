@@ -15,7 +15,7 @@ namespace SWF.UIComponent.TabOperation
     /// タブ切替コントロール
     /// </summary>
     [SupportedOSPlatform("windows")]
-    public sealed class TabSwitch
+    public sealed partial class TabSwitch
         : Control
     {
 

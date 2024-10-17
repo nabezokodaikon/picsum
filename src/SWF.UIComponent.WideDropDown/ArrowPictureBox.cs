@@ -6,7 +6,7 @@ using System.Windows.Forms;
 namespace SWF.UIComponent.WideDropDown
 {
     [SupportedOSPlatform("windows")]
-    public sealed class ArrowPictureBox
+    public sealed partial class ArrowPictureBox
         : PictureBox
     {
         private readonly SolidBrush defaultBrush = new(Color.White);

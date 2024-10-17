@@ -3,7 +3,7 @@ using System.Runtime.Versioning;
 namespace SWF.UIComponent.Core
 {
     [SupportedOSPlatform("windows")]
-    public class RatingBar : Control
+    public partial class RatingBar : Control
     {
         public event EventHandler<MouseEventArgs>? RatingButtonMouseClick;
 

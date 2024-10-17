@@ -173,7 +173,7 @@ namespace PicSum.UIComponent.InfoPanel
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
-            this.SetFileInfo(new List<string>() { filePath });
+            this.SetFileInfo([filePath]);
         }
 
         public void SetFileInfo(IList<string> filePathList)

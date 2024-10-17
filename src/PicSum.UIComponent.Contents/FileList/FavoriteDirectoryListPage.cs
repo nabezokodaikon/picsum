@@ -17,7 +17,7 @@ using System.Windows.Forms;
 namespace PicSum.UIComponent.Contents.FileList
 {
     [SupportedOSPlatform("windows")]
-    internal sealed class FavoriteDirectoryListPage
+    internal sealed partial class FavoriteDirectoryListPage
         : AbstractFileListPage
     {
 
@@ -53,11 +53,7 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             get
             {
-                if (this.deleteJob == null)
-                {
-                    this.deleteJob = new();
-                }
-
+                this.deleteJob ??= new();
                 return this.deleteJob;
             }
         }

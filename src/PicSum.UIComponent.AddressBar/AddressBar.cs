@@ -13,7 +13,7 @@ using System.Windows.Forms;
 namespace PicSum.UIComponent.AddressBar
 {
     [SupportedOSPlatform("windows")]
-    public sealed class AddressBar
+    public sealed partial class AddressBar
         : Control
     {
 

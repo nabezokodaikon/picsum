@@ -3,7 +3,7 @@ using System.Diagnostics;
 
 namespace SWF.Core.Job
 {
-    public class TwoWayJob<TJob, TJobParameter, TJobResult>
+    public partial class TwoWayJob<TJob, TJobParameter, TJobResult>
         : IDisposable
         where TJob : AbstractTwoWayJob<TJobParameter, TJobResult>, new()
         where TJobParameter : IJobParameter
@@ -162,10 +162,7 @@ namespace SWF.Core.Job
         public void BeginCancel()
         {
             var job = this.CurrentJob;
-            if (job != null)
-            {
-                job.BeginCancel();
-            }
+            job?.BeginCancel();
         }
 
         public void Wait()
@@ -324,7 +321,7 @@ namespace SWF.Core.Job
         }
     }
 
-    public sealed class TwoWayJob<TJob, TJobResult>
+    public sealed partial class TwoWayJob<TJob, TJobResult>
         : TwoWayJob<TJob, EmptyParameter, TJobResult>
         where TJob : AbstractTwoWayJob<TJobResult>, new()
         where TJobResult : IJobResult
@@ -336,7 +333,7 @@ namespace SWF.Core.Job
         }
     }
 
-    public sealed class OneWayJob<TJob>
+    public sealed partial class OneWayJob<TJob>
         : TwoWayJob<TJob, EmptyParameter, EmptyResult>
         where TJob : AbstractOneWayJob, new()
     {
@@ -347,7 +344,7 @@ namespace SWF.Core.Job
         }
     }
 
-    public sealed class OneWayJob<TJob, TJobParameter>
+    public sealed partial class OneWayJob<TJob, TJobParameter>
         : TwoWayJob<TJob, TJobParameter, EmptyResult>
         where TJob : AbstractOneWayJob<TJobParameter>, new()
         where TJobParameter : IJobParameter
