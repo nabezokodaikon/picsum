@@ -87,25 +87,24 @@ namespace SWF.Core.ImageAccessor
 
                 try
                 {
+                    var bytesPerPixel = Image.GetPixelFormatSize(bitmap.PixelFormat) / 8;
+                    var rect = new Rectangle(0, 0, bitmap.Width, bitmap.Height);
+                    bmpData = bitmap.LockBits(rect, ImageLockMode.ReadOnly, bitmap.PixelFormat);
+
+                    int stride = bmpData.Stride;
+                    int bufferSize = stride * bitmap.Height;
+                    byte[] pixelBuffer = new byte[bufferSize];
+
                     unsafe
                     {
-                        var bytesPerPixel = Image.GetPixelFormatSize(bitmap.PixelFormat) / 8;
-                        var rect = new Rectangle(0, 0, bitmap.Width, bitmap.Height);
-                        bmpData = bitmap.LockBits(rect, ImageLockMode.ReadOnly, bitmap.PixelFormat);
-
-                        int stride = bmpData.Stride;
-                        int bufferSize = stride * bitmap.Height;
-                        byte[] pixelBuffer = new byte[bufferSize];
-
                         byte* srcPtr = (byte*)bmpData.Scan0;
-
                         fixed (byte* destPtr = pixelBuffer)
                         {
                             Buffer.MemoryCopy(srcPtr, destPtr, bufferSize, bufferSize);
                         }
-
-                        return pixelBuffer;
                     }
+
+                    return pixelBuffer;
                 }
                 finally
                 {
@@ -123,14 +122,27 @@ namespace SWF.Core.ImageAccessor
 
             using (TimeMeasuring.Run(true, "ImageUtil.BufferToBitmap"))
             {
+                Bitmap bitmap = new Bitmap(width, height, pixelFormat);
                 BitmapData? bmpData = null;
-                var bitmap = new Bitmap(width, height, pixelFormat);
 
                 try
                 {
-                    var rect = new Rectangle(0, 0, bitmap.Width, bitmap.Height);
+                    var rect = new Rectangle(0, 0, width, height);
                     bmpData = bitmap.LockBits(rect, ImageLockMode.WriteOnly, pixelFormat);
-                    Marshal.Copy(rawBytes, 0, bmpData.Scan0, rawBytes.Length);
+
+                    int bytesPerPixel = Image.GetPixelFormatSize(pixelFormat) / 8;
+                    int stride = bmpData.Stride;
+                    int bufferSize = stride * height;
+
+                    unsafe
+                    {
+                        fixed (byte* srcPtr = rawBytes)
+                        {
+                            byte* destPtr = (byte*)bmpData.Scan0;
+                            Buffer.MemoryCopy(srcPtr, destPtr, bufferSize, rawBytes.Length);
+                        }
+                    }
+
                     return bitmap;
                 }
                 finally
