@@ -6,7 +6,7 @@ namespace SWF.Core.ImageAccessor
     [SupportedOSPlatform("windows")]
     public static class ImageFileCacheUtil
     {
-        private const int CACHE_CAPACITY = 16;
+        private const int CACHE_CAPACITY = 8;
         private static readonly List<ImageFileCache> CACHE_LIST = new(CACHE_CAPACITY);
         private static readonly Dictionary<string, ImageFileCache> CACHE_DICTIONARY = new(CACHE_CAPACITY);
         private static readonly ReaderWriterLockSlim CACHE_LOCK = new();
