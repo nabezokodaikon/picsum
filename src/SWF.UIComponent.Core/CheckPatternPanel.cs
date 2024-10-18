@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using System.Drawing.Drawing2D;
 using System.Runtime.Versioning;
 
@@ -38,8 +37,6 @@ namespace SWF.UIComponent.Core
 
         protected override void OnPaint(PaintEventArgs e)
         {
-            var sw = Stopwatch.StartNew();
-
             e.Graphics.SmoothingMode = SmoothingMode.None;
             e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
             e.Graphics.CompositingQuality = CompositingQuality.HighSpeed;
@@ -47,9 +44,6 @@ namespace SWF.UIComponent.Core
             e.Graphics.CompositingMode = CompositingMode.SourceCopy;
 
             e.Graphics.FillRectangle(this.brushA, this.ClientRectangle);
-
-            sw.Stop();
-            //ConsoleUtil.Write($"CheckPatternPanel.OnPaint: {sw.ElapsedMilliseconds} ms");
         }
 
         private void InitializeComponent()

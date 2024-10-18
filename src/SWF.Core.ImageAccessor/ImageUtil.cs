@@ -41,8 +41,7 @@ namespace SWF.Core.ImageAccessor
         {
             ArgumentNullException.ThrowIfNull(img, nameof(img));
 
-            var sw = Stopwatch.StartNew();
-
+            using (TimeMeasuring.Run(true, "ImageUtil.ToCompressionBinary"))
             using (var mes = new MemoryStream())
             {
                 var eps = new EncoderParameters(1);
@@ -51,10 +50,6 @@ namespace SWF.Core.ImageAccessor
                 var buffer = new byte[mes.Length];
                 mes.Position = 0;
                 mes.Read(buffer, 0, buffer.Length);
-
-                sw.Stop();
-                //ConsoleUtil.Write($"ImageUtil.ToCompressionBinary: {sw.ElapsedMilliseconds} ms");
-
                 return buffer;
             }
         }
@@ -68,18 +63,12 @@ namespace SWF.Core.ImageAccessor
         {
             ArgumentNullException.ThrowIfNull(bf, nameof(bf));
 
-            var sw = Stopwatch.StartNew();
-
+            using (TimeMeasuring.Run(true, "ImageUtil.ToImage"))
             using (var mes = new MemoryStream(bf))
             {
                 try
                 {
-                    var img = Bitmap.FromStream(mes, false, true);
-
-                    sw.Stop();
-                    //ConsoleUtil.Write($"ImageUtil.ToImage: {sw.ElapsedMilliseconds} ms");
-
-                    return (Bitmap)img;
+                    return (Bitmap)Bitmap.FromStream(mes, false, true);
                 }
                 catch (OutOfMemoryException ex)
                 {
@@ -92,30 +81,28 @@ namespace SWF.Core.ImageAccessor
         {
             ArgumentNullException.ThrowIfNull(bitmap, nameof(bitmap));
 
-            var sw = Stopwatch.StartNew();
-
-            BitmapData? bmpData = null;
-
-            try
+            using (TimeMeasuring.Run(true, "ImageUtil.BitmapToBuffer"))
             {
-                var bytesPerPixel = Image.GetPixelFormatSize(bitmap.PixelFormat) / 8;
-                var rect = new Rectangle(0, 0, bitmap.Width, bitmap.Height);
-                bmpData = bitmap.LockBits(rect, ImageLockMode.ReadOnly, bitmap.PixelFormat);
-                var stride = bmpData.Stride;
-                var bufferSize = stride * bitmap.Height;
-                var pixelBuffer = new byte[bufferSize];
-                Marshal.Copy(bmpData.Scan0, pixelBuffer, 0, bufferSize);
-                return pixelBuffer;
-            }
-            finally
-            {
-                if (bmpData != null)
+                BitmapData? bmpData = null;
+
+                try
                 {
-                    bitmap.UnlockBits(bmpData);
+                    var bytesPerPixel = Image.GetPixelFormatSize(bitmap.PixelFormat) / 8;
+                    var rect = new Rectangle(0, 0, bitmap.Width, bitmap.Height);
+                    bmpData = bitmap.LockBits(rect, ImageLockMode.ReadOnly, bitmap.PixelFormat);
+                    var stride = bmpData.Stride;
+                    var bufferSize = stride * bitmap.Height;
+                    var pixelBuffer = new byte[bufferSize];
+                    Marshal.Copy(bmpData.Scan0, pixelBuffer, 0, bufferSize);
+                    return pixelBuffer;
                 }
-
-                sw.Stop();
-                ConsoleUtil.Write($"ImageUtil.BitmapToBuffer: {sw.ElapsedMilliseconds} ms");
+                finally
+                {
+                    if (bmpData != null)
+                    {
+                        bitmap.UnlockBits(bmpData);
+                    }
+                }
             }
         }
 
@@ -123,27 +110,25 @@ namespace SWF.Core.ImageAccessor
         {
             ArgumentNullException.ThrowIfNull(rawBytes, nameof(rawBytes));
 
-            var sw = Stopwatch.StartNew();
-
-            BitmapData? bmpData = null;
-            var bitmap = new Bitmap(width, height, pixelFormat);
-
-            try
+            using (TimeMeasuring.Run(true, "ImageUtil.BufferToBitmap"))
             {
-                var rect = new Rectangle(0, 0, bitmap.Width, bitmap.Height);
-                bmpData = bitmap.LockBits(rect, ImageLockMode.WriteOnly, pixelFormat);
-                Marshal.Copy(rawBytes, 0, bmpData.Scan0, rawBytes.Length);
-                return bitmap;
-            }
-            finally
-            {
-                if (bmpData != null)
+                BitmapData? bmpData = null;
+                var bitmap = new Bitmap(width, height, pixelFormat);
+
+                try
                 {
-                    bitmap.UnlockBits(bmpData);
+                    var rect = new Rectangle(0, 0, bitmap.Width, bitmap.Height);
+                    bmpData = bitmap.LockBits(rect, ImageLockMode.WriteOnly, pixelFormat);
+                    Marshal.Copy(rawBytes, 0, bmpData.Scan0, rawBytes.Length);
+                    return bitmap;
                 }
-
-                sw.Stop();
-                ConsoleUtil.Write($"ImageUtil.BufferToBitmap: {sw.ElapsedMilliseconds} ms");
+                finally
+                {
+                    if (bmpData != null)
+                    {
+                        bitmap.UnlockBits(bmpData);
+                    }
+                }
             }
         }
 
@@ -156,29 +141,27 @@ namespace SWF.Core.ImageAccessor
                 throw new ArgumentException("Pixel format must be 8bppIndexed.");
             }
 
-            var sw = Stopwatch.StartNew();
-
-            BitmapData? bmpData = null;
-
-            try
+            using (TimeMeasuring.Run(true, "ImageUtil.BitmapToBufferFor8bpp"))
             {
-                var rect = new Rectangle(0, 0, bitmap.Width, bitmap.Height);
-                bmpData = bitmap.LockBits(rect, ImageLockMode.ReadOnly, bitmap.PixelFormat);
-                var stride = bmpData.Stride;
-                var bufferSize = stride * bitmap.Height;
-                var pixelBuffer = new byte[bufferSize];
-                Marshal.Copy(bmpData.Scan0, pixelBuffer, 0, bufferSize);
-                return pixelBuffer;
-            }
-            finally
-            {
-                if (bmpData != null)
+                BitmapData? bmpData = null;
+
+                try
                 {
-                    bitmap.UnlockBits(bmpData);
+                    var rect = new Rectangle(0, 0, bitmap.Width, bitmap.Height);
+                    bmpData = bitmap.LockBits(rect, ImageLockMode.ReadOnly, bitmap.PixelFormat);
+                    var stride = bmpData.Stride;
+                    var bufferSize = stride * bitmap.Height;
+                    var pixelBuffer = new byte[bufferSize];
+                    Marshal.Copy(bmpData.Scan0, pixelBuffer, 0, bufferSize);
+                    return pixelBuffer;
                 }
-
-                sw.Stop();
-                ConsoleUtil.Write($"ImageUtil.BitmapToBufferFor8bpp: {sw.ElapsedMilliseconds} ms");
+                finally
+                {
+                    if (bmpData != null)
+                    {
+                        bitmap.UnlockBits(bmpData);
+                    }
+                }
             }
         }
 
@@ -186,40 +169,38 @@ namespace SWF.Core.ImageAccessor
         {
             ArgumentNullException.ThrowIfNull(rawBytes, nameof(rawBytes));
 
-            var sw = Stopwatch.StartNew();
-
-            var bitmap = new Bitmap(width, height, PixelFormat.Format8bppIndexed);
-            BitmapData? bmpData = null;
-
-            try
+            using (TimeMeasuring.Run(true, "ImageUtil.BufferToBitmapFor8bpp"))
             {
-                var palette = bitmap.Palette;
-                for (int i = 0; i < 256; i++)
+                var bitmap = new Bitmap(width, height, PixelFormat.Format8bppIndexed);
+                BitmapData? bmpData = null;
+
+                try
                 {
-                    palette.Entries[i] = Color.FromArgb(i, i, i);
+                    var palette = bitmap.Palette;
+                    for (int i = 0; i < 256; i++)
+                    {
+                        palette.Entries[i] = Color.FromArgb(i, i, i);
+                    }
+                    bitmap.Palette = palette;
+
+                    var rect = new Rectangle(0, 0, width, height);
+                    bmpData = bitmap.LockBits(rect, ImageLockMode.WriteOnly, PixelFormat.Format8bppIndexed);
+
+                    var stride = bmpData.Stride;
+                    for (int y = 0; y < height; y++)
+                    {
+                        Marshal.Copy(rawBytes, y * width, bmpData.Scan0 + y * stride, width);
+                    }
+
+                    return bitmap;
                 }
-                bitmap.Palette = palette;
-
-                var rect = new Rectangle(0, 0, width, height);
-                bmpData = bitmap.LockBits(rect, ImageLockMode.WriteOnly, PixelFormat.Format8bppIndexed);
-
-                var stride = bmpData.Stride;
-                for (int y = 0; y < height; y++)
+                finally
                 {
-                    Marshal.Copy(rawBytes, y * width, bmpData.Scan0 + y * stride, width);
+                    if (bmpData != null)
+                    {
+                        bitmap.UnlockBits(bmpData);
+                    }
                 }
-
-                return bitmap;
-            }
-            finally
-            {
-                if (bmpData != null)
-                {
-                    bitmap.UnlockBits(bmpData);
-                }
-
-                sw.Stop();
-                ConsoleUtil.Write($"ImageUtil.BufferToBitmapFor8bpp: {sw.ElapsedMilliseconds} ms");
             }
         }
 
@@ -248,11 +229,9 @@ namespace SWF.Core.ImageAccessor
         /// <exception cref="ArgumentNullException"></exception>
         internal static Size GetImageSize(string filePath)
         {
-            var sw = Stopwatch.StartNew();
-
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
-            try
+            using (TimeMeasuring.Run(true, "ImageUtil.GetImageSize"))
             {
                 try
                 {
@@ -398,11 +377,6 @@ namespace SWF.Core.ImageAccessor
                         $"画像ファイル以外のファイルが指定されました。'{filePath}'", nameof(filePath));
                 }
             }
-            finally
-            {
-                sw.Stop();
-                ConsoleUtil.Write($"ImageUtil.GetImageSize: {sw.ElapsedMilliseconds} ms");
-            }
         }
 
         public static Bitmap ReadImageFile(string filePath)
@@ -411,18 +385,15 @@ namespace SWF.Core.ImageAccessor
 
             try
             {
-                Stopwatch sw;
-
                 if (FileUtil.IsSvgFile(filePath))
                 {
-                    sw = Stopwatch.StartNew();
-                    var bmp = SvgUtil.ReadImageFile(filePath);
-                    sw.Stop();
-                    ConsoleUtil.Write($"ImageUtil.ReadImageFile Svg file: {sw.ElapsedMilliseconds} ms");
-                    return bmp;
+                    using (TimeMeasuring.Run(true, "ImageUtil.ReadImageFile Svg"))
+                    {
+                        return SvgUtil.ReadImageFile(filePath);
+                    }
                 }
 
-                sw = Stopwatch.StartNew();
+                var sw = Stopwatch.StartNew();
                 using (var fs = new FileStream(filePath,
                     FileMode.Open, FileAccess.Read, FileShare.Read, FILE_READ_BUFFER_SIZE, FileOptions.SequentialScan))
                 {
@@ -431,13 +402,10 @@ namespace SWF.Core.ImageAccessor
 
                     if (FileUtil.IsIconFile(filePath))
                     {
+                        using (TimeMeasuring.Run(true, "ImageUtil.ReadImageFile Icon"))
                         using (var icon = new Icon(fs))
                         {
-                            sw = Stopwatch.StartNew();
-                            var bmp = ConvertIfGrayscale(icon.ToBitmap(), fs);
-                            sw.Stop();
-                            ConsoleUtil.Write($"ImageUtil.ReadImageFile Icon file: {sw.ElapsedMilliseconds} ms");
-                            return bmp;
+                            return ConvertIfGrayscale(icon.ToBitmap(), fs);
                         }
                     }
 
@@ -445,61 +413,53 @@ namespace SWF.Core.ImageAccessor
 
                     if (FileUtil.IsWebpFile(formatName))
                     {
-                        sw = Stopwatch.StartNew();
-                        var bmp = ConvertIfGrayscale(OpenCVUtil.ReadImageFile(fs), fs);
-                        sw.Stop();
-                        ConsoleUtil.Write($"ImageUtil.ReadImageFile Webp file: {sw.ElapsedMilliseconds} ms");
-                        return bmp;
+                        using (TimeMeasuring.Run(true, "ImageUtil.ReadImageFile Webp"))
+                        {
+                            return ConvertIfGrayscale(OpenCVUtil.ReadImageFile(fs), fs);
+                        }
                     }
                     else if (FileUtil.IsAvifFile(formatName))
                     {
-                        sw = Stopwatch.StartNew();
-                        var bmp = ConvertIfGrayscale(SixLaborsUtil.ReadImageFile(fs), fs);
-                        sw.Stop();
-                        ConsoleUtil.Write($"ImageUtil.ReadImageFile Avif file: {sw.ElapsedMilliseconds} ms");
-                        return bmp;
+                        using (TimeMeasuring.Run(true, "ImageUtil.ReadImageFile Avif"))
+                        {
+                            return ConvertIfGrayscale(SixLaborsUtil.ReadImageFile(fs), fs);
+                        }
                     }
                     else if (FileUtil.IsHeifFile(formatName))
                     {
-                        sw = Stopwatch.StartNew();
-                        var bmp = ConvertIfGrayscale(SixLaborsUtil.ReadImageFile(fs), fs);
-                        sw.Stop();
-                        ConsoleUtil.Write($"ImageUtil.ReadImageFile Heif file: {sw.ElapsedMilliseconds} ms");
-                        return bmp;
+                        using (TimeMeasuring.Run(true, "ImageUtil.ReadImageFile Heif"))
+                        {
+                            return ConvertIfGrayscale(SixLaborsUtil.ReadImageFile(fs), fs);
+                        }
                     }
                     else if (FileUtil.IsJpegFile(formatName))
                     {
-                        sw = Stopwatch.StartNew();
-                        var bmp = ConvertIfGrayscale((Bitmap)Bitmap.FromStream(fs, false, true), fs);
-                        bmp = LoadBitmapCorrectOrientation(bmp);
-                        sw.Stop();
-                        ConsoleUtil.Write($"ImageUtil.ReadImageFile Jpeg file: {sw.ElapsedMilliseconds} ms");
-                        return bmp;
-
+                        using (TimeMeasuring.Run(true, "ImageUtil.ReadImageFile Jpeg"))
+                        {
+                            var bmp = ConvertIfGrayscale((Bitmap)Bitmap.FromStream(fs, false, true), fs);
+                            return LoadBitmapCorrectOrientation(bmp);
+                        }
                     }
                     else if (FileUtil.IsBmpFile(formatName))
                     {
-                        sw = Stopwatch.StartNew();
-                        var bmp = ConvertIfGrayscale((Bitmap)Bitmap.FromStream(fs, false, true), fs);
-                        sw.Stop();
-                        ConsoleUtil.Write($"ImageUtil.ReadImageFile Bitmap file: {sw.ElapsedMilliseconds} ms");
-                        return bmp;
+                        using (TimeMeasuring.Run(true, "ImageUtil.ReadImageFile Bitmap"))
+                        {
+                            return ConvertIfGrayscale((Bitmap)Bitmap.FromStream(fs, false, true), fs);
+                        }
                     }
                     else if (FileUtil.IsPngFile(formatName))
                     {
-                        sw = Stopwatch.StartNew();
-                        var bmp = ConvertIfGrayscale((Bitmap)Bitmap.FromStream(fs, false, true), fs);
-                        sw.Stop();
-                        ConsoleUtil.Write($"ImageUtil.ReadImageFile Png file: {sw.ElapsedMilliseconds} ms");
-                        return bmp;
+                        using (TimeMeasuring.Run(true, "ImageUtil.ReadImageFile Png"))
+                        {
+                            return ConvertIfGrayscale((Bitmap)Bitmap.FromStream(fs, false, true), fs);
+                        }
                     }
                     else if (FileUtil.IsImageFile(filePath))
                     {
-                        sw = Stopwatch.StartNew();
-                        var bmp = ConvertIfGrayscale((Bitmap)Bitmap.FromStream(fs, false, true), fs);
-                        sw.Stop();
-                        ConsoleUtil.Write($"ImageUtil.ReadImageFile Other file: {sw.ElapsedMilliseconds} ms");
-                        return bmp;
+                        using (TimeMeasuring.Run(true, "ImageUtil.ReadImageFile Other"))
+                        {
+                            return ConvertIfGrayscale((Bitmap)Bitmap.FromStream(fs, false, true), fs);
+                        }
                     }
                     else
                     {

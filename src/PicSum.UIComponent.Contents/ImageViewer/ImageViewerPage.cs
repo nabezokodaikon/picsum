@@ -14,7 +14,6 @@ using SWF.UIComponent.TabOperation;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.Versioning;
@@ -113,13 +112,10 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                                 return;
                             }
 
-                            var sw = Stopwatch.StartNew();
-                            ConsoleUtil.Write($"ImageViewerPage.ImageFileReadJob_Callback: IsMain = {r.IsMain}");
-
-                            this.ImageFileReadJob_Callback(r);
-
-                            sw.Stop();
-                            ConsoleUtil.Write($"ImageViewerPage.ImageFileReadJob_Callback: {sw.ElapsedMilliseconds} ms");
+                            using (TimeMeasuring.Run(true, "ImageViewerPage.ImageFileReadJob_Callback"))
+                            {
+                                this.ImageFileReadJob_Callback(r);
+                            }
                         })
                         .Cancel(() =>
                         {
@@ -365,10 +361,12 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
         private Size GetImageSize(string filePath)
         {
-            var sw = Stopwatch.StartNew();
             try
             {
-                return ImageFileSizeCacheUtil.Get(filePath).Size;
+                using (TimeMeasuring.Run(true, "ImageViewerPage.GetImageSize"))
+                {
+                    return ImageFileSizeCacheUtil.Get(filePath).Size;
+                }
             }
             catch (FileUtilException ex)
             {
@@ -379,11 +377,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             {
                 Logger.Error(ex);
                 return new Size((int)(this.checkPatternPanel.Size.Width / 2f), this.checkPatternPanel.Size.Height);
-            }
-            finally
-            {
-                sw.Stop();
-                ConsoleUtil.Write($"ImageViewerPage.GetImageSize: {sw.ElapsedMilliseconds} ms");
             }
         }
 
@@ -420,39 +413,37 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
         private void ChangeImagePanelSize()
         {
-            var sw = Stopwatch.StartNew();
-
-            if (this.displayMode == ImageDisplayMode.LeftFacing)
+            using (TimeMeasuring.Run(true, "ImageViewerPage.ChangeImagePanelSize"))
             {
-                if (this.leftImagePanel.HasImage
-                    && this.rightImagePanel.HasImage)
+                if (this.displayMode == ImageDisplayMode.LeftFacing)
                 {
-                    this.DrawBothImage();
+                    if (this.leftImagePanel.HasImage
+                        && this.rightImagePanel.HasImage)
+                    {
+                        this.DrawBothImage();
+                    }
+                    else
+                    {
+                        this.DrawMainImage();
+                    }
                 }
-                else
+                else if (this.displayMode == ImageDisplayMode.RightFacing)
+                {
+                    if (this.leftImagePanel.HasImage
+                        && this.rightImagePanel.HasImage)
+                    {
+                        this.DrawBothImage();
+                    }
+                    else
+                    {
+                        this.DrawMainImage();
+                    }
+                }
+                else if (this.displayMode == ImageDisplayMode.Single)
                 {
                     this.DrawMainImage();
                 }
             }
-            else if (this.displayMode == ImageDisplayMode.RightFacing)
-            {
-                if (this.leftImagePanel.HasImage
-                    && this.rightImagePanel.HasImage)
-                {
-                    this.DrawBothImage();
-                }
-                else
-                {
-                    this.DrawMainImage();
-                }
-            }
-            else if (this.displayMode == ImageDisplayMode.Single)
-            {
-                this.DrawMainImage();
-            }
-
-            sw.Stop();
-            ConsoleUtil.Write($"ImageViewerPage.ChangeImagePanelSize: {sw.ElapsedMilliseconds} ms");
         }
 
         private void ChangeImagePanelSize(ImageFileReadResult e)
@@ -626,47 +617,44 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
         private void ReadImage()
         {
-            var sw = Stopwatch.StartNew();
-            ConsoleUtil.Write($"ImageViewerPage.ReadImage: Start");
-
-            var mainFilePath = this.filePathList[this.FilePathListIndex];
-            this.SelectedFilePath = mainFilePath;
-
-            var nextFiles = new List<string>(10);
-            var nextIndex = this.GetNextIndex(this.FilePathListIndex, true);
-            nextFiles.Add(this.filePathList[nextIndex]);
-            while (nextFiles.Count < nextFiles.Capacity)
+            using (TimeMeasuring.Run(true, "ImageViewerPage.ReadImage"))
             {
-                nextIndex = this.GetNextIndex(nextIndex, true);
+                var mainFilePath = this.filePathList[this.FilePathListIndex];
+                this.SelectedFilePath = mainFilePath;
+
+                var nextFiles = new List<string>(10);
+                var nextIndex = this.GetNextIndex(this.FilePathListIndex, true);
                 nextFiles.Add(this.filePathList[nextIndex]);
-            }
+                while (nextFiles.Count < nextFiles.Capacity)
+                {
+                    nextIndex = this.GetNextIndex(nextIndex, true);
+                    nextFiles.Add(this.filePathList[nextIndex]);
+                }
 
-            var prevFiles = new List<string>(6);
-            var prevIndex = this.GetPreviewIndex(this.FilePathListIndex, true);
-            prevFiles.Add(this.filePathList[prevIndex]);
-            while (prevFiles.Count < prevFiles.Capacity)
-            {
-                prevIndex = this.GetPreviewIndex(prevIndex, true);
+                var prevFiles = new List<string>(6);
+                var prevIndex = this.GetPreviewIndex(this.FilePathListIndex, true);
                 prevFiles.Add(this.filePathList[prevIndex]);
+                while (prevFiles.Count < prevFiles.Capacity)
+                {
+                    prevIndex = this.GetPreviewIndex(prevIndex, true);
+                    prevFiles.Add(this.filePathList[prevIndex]);
+                }
+
+                var param = new ImageFileReadParameter
+                {
+                    CurrentIndex = this.FilePathListIndex,
+                    FilePathList = this.filePathList,
+                    ImageDisplayMode = this.displayMode,
+                    ImageSizeMode = this.sizeMode,
+                    ThumbnailSize = this.leftImagePanel.ThumbnailSize,
+                };
+
+                this.isLoading = true;
+
+                this.ImageFileCacheJob.StartJob([.. nextFiles, .. prevFiles]);
+                this.ImageFileLoadingJob.StartJob(param);
+                this.ImageFileReadJob.StartJob(param);
             }
-
-            var param = new ImageFileReadParameter
-            {
-                CurrentIndex = this.FilePathListIndex,
-                FilePathList = this.filePathList,
-                ImageDisplayMode = this.displayMode,
-                ImageSizeMode = this.sizeMode,
-                ThumbnailSize = this.leftImagePanel.ThumbnailSize,
-            };
-
-            this.isLoading = true;
-
-            this.ImageFileCacheJob.StartJob([.. nextFiles, .. prevFiles]);
-            this.ImageFileLoadingJob.StartJob(param);
-            this.ImageFileReadJob.StartJob(param);
-
-            sw.Stop();
-            ConsoleUtil.Write($"ImageViewerPage.ReadImage: {sw.ElapsedMilliseconds} ms");
         }
 
         private void DoDragDrop(string currentFilePath)

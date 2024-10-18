@@ -1,5 +1,4 @@
 using SWF.Core.FileAccessor;
-using System.Diagnostics;
 using System.Runtime.Versioning;
 
 namespace SWF.Core.ImageAccessor
@@ -20,8 +19,6 @@ namespace SWF.Core.ImageAccessor
         public static void Create(string filePath)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
-
-            var sw = Stopwatch.StartNew();
 
             var timestamp = FileUtil.GetUpdateDate(filePath);
 
@@ -65,16 +62,11 @@ namespace SWF.Core.ImageAccessor
             finally
             {
                 CACHE_LOCK.ExitUpgradeableReadLock();
-
-                sw.Stop();
-                //ConsoleUtil.Write($"ImageFileInfoCacheUtil.Create: {sw.ElapsedMilliseconds} ms");
             }
         }
 
         public static ImageFileSizeCache Get(string filePath)
         {
-            var sw = Stopwatch.StartNew();
-
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
             var timestamp = FileUtil.GetUpdateDate(filePath);
@@ -120,17 +112,12 @@ namespace SWF.Core.ImageAccessor
             finally
             {
                 CACHE_LOCK.ExitUpgradeableReadLock();
-
-                sw.Stop();
-                //ConsoleUtil.Write($"ImageFileInfoCacheUtil.Get: {sw.ElapsedMilliseconds} ms");
             }
         }
 
         public static void Set(string filePath, Size size)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
-
-            var sw = Stopwatch.StartNew();
 
             var timestamp = FileUtil.GetUpdateDate(filePath);
 
@@ -174,9 +161,6 @@ namespace SWF.Core.ImageAccessor
             finally
             {
                 CACHE_LOCK.ExitUpgradeableReadLock();
-
-                sw.Stop();
-                //ConsoleUtil.Write($"ImageFileInfoCacheUtil.Create: {sw.ElapsedMilliseconds} ms");
             }
         }
     }

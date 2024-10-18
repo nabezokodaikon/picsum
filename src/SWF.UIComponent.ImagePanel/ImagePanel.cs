@@ -3,7 +3,6 @@ using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
 using SWF.UIComponent.ImagePanel.Properties;
 using System;
-using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Runtime.Versioning;
@@ -204,20 +203,18 @@ namespace SWF.UIComponent.ImagePanel
 
         public new void Update()
         {
-            var sw = Stopwatch.StartNew();
-
-            this.SetDrawParameter();
-
-            if (!this.Visible)
+            using (TimeMeasuring.Run(true, "ImagePanel.Update"))
             {
-                this.Visible = true;
+                this.SetDrawParameter();
+
+                if (!this.Visible)
+                {
+                    this.Visible = true;
+                }
+
+                this.Invalidate();
+                base.Update();
             }
-
-            this.Invalidate();
-            base.Update();
-
-            sw.Stop();
-            ConsoleUtil.Write($"ImagePanel.Update: {sw.ElapsedMilliseconds} ms");
         }
 
         protected override void Dispose(bool disposing)
@@ -237,36 +234,34 @@ namespace SWF.UIComponent.ImagePanel
 
         protected override void OnPaint(PaintEventArgs e)
         {
-            var sw = Stopwatch.StartNew();
-
-            e.Graphics.SmoothingMode = SmoothingMode.None;
-            e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
-            e.Graphics.CompositingQuality = CompositingQuality.HighSpeed;
-            e.Graphics.PixelOffsetMode = PixelOffsetMode.HighSpeed;
-
-            if (this.isError)
+            using (TimeMeasuring.Run(true, "ImagePanel.OnPaint"))
             {
-                e.Graphics.CompositingMode = CompositingMode.SourceOver;
-                e.Graphics.DrawString(
-                    $"Failed to load file",
-                    this.Font,
-                    Brushes.LightGray,
-                    new Rectangle(0, 0, this.Width, this.Height),
-                    this.stringFormat);
-            }
-            else if (this.HasImage)
-            {
-                this.DrawImage(e.Graphics);
+                e.Graphics.SmoothingMode = SmoothingMode.None;
+                e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
+                e.Graphics.CompositingQuality = CompositingQuality.HighSpeed;
+                e.Graphics.PixelOffsetMode = PixelOffsetMode.HighSpeed;
 
-                if (!this.image.IsEmpty && this.isShowThumbnailPanel &&
-                    (this.hMaximumScrollValue > 0 || this.vMaximumScrollValue > 0))
+                if (this.isError)
                 {
-                    this.DrawThumbnailPanel(e.Graphics);
+                    e.Graphics.CompositingMode = CompositingMode.SourceOver;
+                    e.Graphics.DrawString(
+                        $"Failed to load file",
+                        this.Font,
+                        Brushes.LightGray,
+                        new Rectangle(0, 0, this.Width, this.Height),
+                        this.stringFormat);
+                }
+                else if (this.HasImage)
+                {
+                    this.DrawImage(e.Graphics);
+
+                    if (!this.image.IsEmpty && this.isShowThumbnailPanel &&
+                        (this.hMaximumScrollValue > 0 || this.vMaximumScrollValue > 0))
+                    {
+                        this.DrawThumbnailPanel(e.Graphics);
+                    }
                 }
             }
-
-            sw.Stop();
-            ConsoleUtil.Write($"ImagePanel.OnPaint: {sw.ElapsedMilliseconds} ms");
         }
 
         protected override void OnMouseLeave(EventArgs e)
@@ -617,48 +612,46 @@ namespace SWF.UIComponent.ImagePanel
 
         private void DrawImage(Graphics g)
         {
-            var sw = Stopwatch.StartNew();
-
-            if (this.image.IsEmpty)
+            using (TimeMeasuring.Run(true, "ImagePanel.DrawImage"))
             {
-                var destRect = this.GetImageDestRectangle();
-                this.image.DrawEmptyImage(g, Brushes.LightGray, destRect);
-
-                g.CompositingMode = CompositingMode.SourceOver;
-                g.DrawString(
-                    FileUtil.GetFileName(this.FilePath),
-                    this.Font,
-                    Brushes.DarkGray,
-                    destRect,
-                    this.stringFormat);
-            }
-            else
-            {
-                if (this.sizeMode == ImageSizeMode.Original)
-                {
-                    this.image.DrawSourceImage(g, this.GetImageDestRectangle(), this.GetImageSrcRectangle());
-                }
-                else if (this.sizeMode == ImageSizeMode.FitAllImage)
+                if (this.image.IsEmpty)
                 {
                     var destRect = this.GetImageDestRectangle();
-                    this.image.DrawResizeImage(g, destRect);
+                    this.image.DrawEmptyImage(g, Brushes.LightGray, destRect);
+
+                    g.CompositingMode = CompositingMode.SourceOver;
+                    g.DrawString(
+                        FileUtil.GetFileName(this.FilePath),
+                        this.Font,
+                        Brushes.DarkGray,
+                        destRect,
+                        this.stringFormat);
                 }
-                else if (this.sizeMode == ImageSizeMode.FitOnlyBigImage)
+                else
                 {
-                    var destRect = this.GetImageDestRectangle();
-                    if (this.image.Width > destRect.Width || this.image.Height > destRect.Height)
+                    if (this.sizeMode == ImageSizeMode.Original)
                     {
+                        this.image.DrawSourceImage(g, this.GetImageDestRectangle(), this.GetImageSrcRectangle());
+                    }
+                    else if (this.sizeMode == ImageSizeMode.FitAllImage)
+                    {
+                        var destRect = this.GetImageDestRectangle();
                         this.image.DrawResizeImage(g, destRect);
                     }
-                    else
+                    else if (this.sizeMode == ImageSizeMode.FitOnlyBigImage)
                     {
-                        this.image.DrawResizeImage(g, destRect);
+                        var destRect = this.GetImageDestRectangle();
+                        if (this.image.Width > destRect.Width || this.image.Height > destRect.Height)
+                        {
+                            this.image.DrawResizeImage(g, destRect);
+                        }
+                        else
+                        {
+                            this.image.DrawResizeImage(g, destRect);
+                        }
                     }
                 }
             }
-
-            sw.Stop();
-            ConsoleUtil.Write($"ImagePanel.DrawImage: {sw.ElapsedMilliseconds} ms");
         }
 
         private void DrawThumbnailPanel(Graphics g)

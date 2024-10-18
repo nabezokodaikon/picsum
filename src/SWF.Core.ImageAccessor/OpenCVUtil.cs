@@ -1,7 +1,6 @@
 using OpenCvSharp;
 using OpenCvSharp.Extensions;
 using SWF.Core.Base;
-using System.Diagnostics;
 
 namespace SWF.Core.ImageAccessor
 {
@@ -11,14 +10,11 @@ namespace SWF.Core.ImageAccessor
         {
             ArgumentNullException.ThrowIfNull(srcMat, nameof(srcMat));
 
-            var sw = Stopwatch.StartNew();
+            using (TimeMeasuring.Run(true, "OpenCVUtil.Resize By Mat"))
             using (var destMat = new Mat())
             {
                 Cv2.Resize(srcMat, destMat, new OpenCvSharp.Size(newWidth, newHeight), 0, 0, InterpolationFlags.Area);
-                var destBMP = destMat.ToBitmap();
-                sw.Stop();
-                ConsoleUtil.Write($"OpenCVUtil.Resize By Mat: {sw.ElapsedMilliseconds} ms");
-                return destBMP;
+                return destMat.ToBitmap();
             }
         }
 
@@ -26,16 +22,15 @@ namespace SWF.Core.ImageAccessor
         {
             ArgumentNullException.ThrowIfNull(srcBmp, nameof(srcBmp));
 
-            var sw = Stopwatch.StartNew();
-            var size = new OpenCvSharp.Size(width, height);
-            using (var srcMat = srcBmp.ToMat())
-            using (var destMat = new Mat(size, srcMat.Type()))
+            using (TimeMeasuring.Run(true, "OpenCVUtil.Resize By Bitmap"))
             {
-                Cv2.Resize(srcMat, destMat, size, 0, 0, InterpolationFlags.Area);
-                var destBMP = destMat.ToBitmap();
-                sw.Stop();
-                //ConsoleUtil.Write($"OpenCVUtil.Resize By Bitmap: {sw.ElapsedMilliseconds} ms");
-                return destBMP;
+                var size = new OpenCvSharp.Size(width, height);
+                using (var srcMat = srcBmp.ToMat())
+                using (var destMat = new Mat(size, srcMat.Type()))
+                {
+                    Cv2.Resize(srcMat, destMat, size, 0, 0, InterpolationFlags.Area);
+                    return destMat.ToBitmap();
+                }
             }
         }
 
@@ -43,14 +38,13 @@ namespace SWF.Core.ImageAccessor
         {
             ArgumentNullException.ThrowIfNull(stream, nameof(stream));
 
-            var sw = Stopwatch.StartNew();
-            stream.Seek(0, SeekOrigin.Begin);
-            using (var mat = Mat.FromStream(stream, ImreadModes.Color))
+            using (TimeMeasuring.Run(true, "OpenCVUtil.Convert"))
             {
-                var bmp = mat.ToBitmap();
-                sw.Stop();
-                ConsoleUtil.Write($"OpenCVUtil.Convert: {sw.ElapsedMilliseconds} ms");
-                return bmp;
+                stream.Seek(0, SeekOrigin.Begin);
+                using (var mat = Mat.FromStream(stream, ImreadModes.Color))
+                {
+                    return mat.ToBitmap();
+                }
             }
         }
     }

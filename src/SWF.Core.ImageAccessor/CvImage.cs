@@ -1,7 +1,6 @@
 using OpenCvSharp;
 using OpenCvSharp.Extensions;
 using SWF.Core.Base;
-using System.Diagnostics;
 using System.Drawing.Drawing2D;
 
 namespace SWF.Core.ImageAccessor
@@ -89,8 +88,6 @@ namespace SWF.Core.ImageAccessor
 
         public void CreateMat()
         {
-            var sw = Stopwatch.StartNew();
-
             if (this.bitmap == null)
             {
                 return;
@@ -98,11 +95,11 @@ namespace SWF.Core.ImageAccessor
 
             lock (this.lockObject)
             {
-                this.mat ??= this.bitmap.ToMat();
+                using (TimeMeasuring.Run(true, "CvImage.CreateMat"))
+                {
+                    this.mat ??= this.bitmap.ToMat();
+                }
             }
-
-            sw.Stop();
-            ConsoleUtil.Write($"CvImage.CreateMat: {sw.ElapsedMilliseconds} ms");
         }
 
         public CvImage ShallowCopy()
@@ -114,16 +111,11 @@ namespace SWF.Core.ImageAccessor
 
             lock (this.lockObject)
             {
-                var sw = Stopwatch.StartNew();
-
+                using (TimeMeasuring.Run(true, "CvImage.ShallowCopy"))
                 using (var mat = this.bitmap.ToMat())
                 {
                     var bmp = mat.ToBitmap();
-                    var clone = new CvImage(bmp);
-
-                    sw.Stop();
-                    ConsoleUtil.Write($"CvImage.ShallowCopy: {sw.ElapsedMilliseconds} ms");
-                    return clone;
+                    return new CvImage(bmp);
                 }
             }
         }
@@ -137,15 +129,12 @@ namespace SWF.Core.ImageAccessor
 
             lock (this.lockObject)
             {
-                var sw = Stopwatch.StartNew();
-
-                this.mat ??= this.bitmap.ToMat();
-                var bmp = this.mat.ToBitmap();
-                var clone = new CvImage(bmp);
-
-                sw.Stop();
-                ConsoleUtil.Write($"CvImage.DeepCopy: {sw.ElapsedMilliseconds} ms");
-                return clone;
+                using (TimeMeasuring.Run(true, "CvImage.DeepCopy"))
+                {
+                    this.mat ??= this.bitmap.ToMat();
+                    var bmp = this.mat.ToBitmap();
+                    return new CvImage(bmp);
+                }
             }
         }
 

@@ -1,6 +1,5 @@
 using Microsoft.WindowsAPICodePack.Shell;
 using SWF.Core.Base;
-using System.Diagnostics;
 using System.Drawing.Drawing2D;
 using System.Runtime.Versioning;
 
@@ -11,8 +10,7 @@ namespace SWF.Core.ImageAccessor
     {
         public static Bitmap GetThumbnail(string filePath, Size srcSize, int thumbWidth, int thumbHeight)
         {
-            var sw = Stopwatch.StartNew();
-            try
+            using (TimeMeasuring.Run(true, "ThumbnailUtil.GetThumbnail"))
             {
                 int w, h;
                 if (Math.Max(srcSize.Width, srcSize.Height) <= Math.Min(thumbWidth, thumbHeight))
@@ -43,11 +41,6 @@ namespace SWF.Core.ImageAccessor
                     return new Bitmap(thumbnail, new Size(w, h));
                 }
             }
-            finally
-            {
-                sw.Stop();
-                ConsoleUtil.Write($"ThumbnailUtil.GetThumbnail: {sw.ElapsedMilliseconds} ms");
-            }
         }
 
         /// <summary>
@@ -59,39 +52,35 @@ namespace SWF.Core.ImageAccessor
         /// <returns>サムネイル</returns>
         public static Image CreateThumbnail(Image srcImg, int thumbWidth, int thumbHeight)
         {
-            var sw = Stopwatch.StartNew();
-
             ArgumentNullException.ThrowIfNull(srcImg, nameof(srcImg));
 
-            int w, h;
-            if (Math.Max(srcImg.Width, srcImg.Height) <= Math.Min(thumbWidth, thumbHeight))
+            using (TimeMeasuring.Run(true, "ThumbnailUtil.CreateThumbnail"))
             {
-                w = srcImg.Width;
-                h = srcImg.Height;
+                int w, h;
+                if (Math.Max(srcImg.Width, srcImg.Height) <= Math.Min(thumbWidth, thumbHeight))
+                {
+                    w = srcImg.Width;
+                    h = srcImg.Height;
+                }
+                else
+                {
+                    var scale = Math.Min(thumbWidth / (float)srcImg.Width, thumbHeight / (float)srcImg.Height);
+                    w = (int)(srcImg.Width * scale);
+                    h = (int)(srcImg.Height * scale);
+                }
+
+                if (w < 1)
+                {
+                    w = 1;
+                }
+
+                if (h < 1)
+                {
+                    h = 1;
+                }
+
+                return ImageUtil.Resize((Bitmap)srcImg, w, h);
             }
-            else
-            {
-                var scale = Math.Min(thumbWidth / (float)srcImg.Width, thumbHeight / (float)srcImg.Height);
-                w = (int)(srcImg.Width * scale);
-                h = (int)(srcImg.Height * scale);
-            }
-
-            if (w < 1)
-            {
-                w = 1;
-            }
-
-            if (h < 1)
-            {
-                h = 1;
-            }
-
-            var thumb = ImageUtil.Resize((Bitmap)srcImg, w, h);
-
-            sw.Stop();
-            //ConsoleUtil.Write($"ThumbnailUtil.CreateThumbnail: {sw.ElapsedMilliseconds} ms");
-
-            return thumb;
         }
 
         public static Bitmap CreateThumbnail(CvImage srcImg, int thumbSize, ImageSizeMode sizeMode)
@@ -103,31 +92,29 @@ namespace SWF.Core.ImageAccessor
                 ArgumentOutOfRangeException.ThrowIfNegative(thumbSize, nameof(thumbSize));
             }
 
-            var sw = Stopwatch.StartNew();
-
-            var scale = Math.Min(thumbSize / (float)srcImg.Width, thumbSize / (float)srcImg.Height);
-            var w = srcImg.Width * scale;
-            var h = srcImg.Height * scale;
-
-            var destImg = new Bitmap((int)w, (int)h);
-            using (var g = Graphics.FromImage(destImg))
+            using (TimeMeasuring.Run(true, "ThumbnailUtil.CreateThumbnail"))
             {
-                if (sizeMode == ImageSizeMode.Original)
+                var scale = Math.Min(thumbSize / (float)srcImg.Width, thumbSize / (float)srcImg.Height);
+                var w = srcImg.Width * scale;
+                var h = srcImg.Height * scale;
+
+                var destImg = new Bitmap((int)w, (int)h);
+                using (var g = Graphics.FromImage(destImg))
                 {
-                    g.SmoothingMode = SmoothingMode.None;
-                    g.InterpolationMode = InterpolationMode.NearestNeighbor;
-                    g.CompositingQuality = CompositingQuality.HighSpeed;
-                    g.PixelOffsetMode = PixelOffsetMode.HighSpeed;
-                    g.CompositingMode = CompositingMode.SourceOver;
+                    if (sizeMode == ImageSizeMode.Original)
+                    {
+                        g.SmoothingMode = SmoothingMode.None;
+                        g.InterpolationMode = InterpolationMode.NearestNeighbor;
+                        g.CompositingQuality = CompositingQuality.HighSpeed;
+                        g.PixelOffsetMode = PixelOffsetMode.HighSpeed;
+                        g.CompositingMode = CompositingMode.SourceOver;
 
-                    srcImg.DrawResizeImage(g, new RectangleF(0, 0, w, h));
+                        srcImg.DrawResizeImage(g, new RectangleF(0, 0, w, h));
+                    }
                 }
+
+                return destImg;
             }
-
-            sw.Stop();
-            ConsoleUtil.Write($"ThumbnailUtil.CreateThumbnail: {sw.ElapsedMilliseconds} ms");
-
-            return destImg;
         }
 
         /// <summary>

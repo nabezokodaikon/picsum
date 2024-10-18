@@ -12,7 +12,7 @@ using SixLabors.ImageSharp.Formats.Tga;
 using SixLabors.ImageSharp.Formats.Tiff;
 using SixLabors.ImageSharp.Formats.Webp;
 using SixLabors.ImageSharp.PixelFormats;
-using System.Diagnostics;
+using SWF.Core.Base;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 
@@ -48,15 +48,9 @@ namespace SWF.Core.ImageAccessor
 
         public static IImageFormat DetectFormat(Stream fs)
         {
-            var sw = Stopwatch.StartNew();
-            try
+            using (TimeMeasuring.Run(true, "SixLaborsUtil.DetectFormat"))
             {
                 return SixLabors.ImageSharp.Image.DetectFormat(DECODER_OPTIONS, fs);
-            }
-            finally
-            {
-                sw.Stop();
-                //ConsoleUtil.Write($"SixLaborsUtil.DetectFormat: {sw.ElapsedMilliseconds} ms");
             }
         }
 
