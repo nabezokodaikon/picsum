@@ -1,4 +1,6 @@
+using PicSum.Job.Jobs;
 using PicSum.Main.Mng;
+using SWF.Core.Job;
 using SWF.UIComponent.Core;
 using System;
 using System.Runtime.Versioning;
@@ -12,6 +14,16 @@ namespace PicSum.Main.UIComponent
     internal sealed partial class InitialForm : HideForm
     {
         private readonly BrowserManager browserManager = new();
+        private OneWayJob<GCCollectRunJob> gcCollectRunJob = null;
+
+        private OneWayJob<GCCollectRunJob> GCCollectRunJob
+        {
+            get
+            {
+                this.gcCollectRunJob ??= new();
+                return this.gcCollectRunJob;
+            }
+        }
 
         public InitialForm()
         {
@@ -25,6 +37,7 @@ namespace PicSum.Main.UIComponent
 
         private void BrowserManager_BrowserNothing(object sender, EventArgs e)
         {
+            this.gcCollectRunJob?.Dispose();
             this.Close();
         }
 

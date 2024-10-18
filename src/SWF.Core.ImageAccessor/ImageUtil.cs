@@ -226,19 +226,9 @@ namespace SWF.Core.ImageAccessor
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
-            try
+            using (var bmp = ReadImageFile(filePath))
             {
-                using (var bmp = ReadImageFile(filePath))
-                {
-                    return new ImageFileBuffer(bmp);
-                }
-            }
-            finally
-            {
-                var sw = Stopwatch.StartNew();
-                GC.Collect();
-                sw.Stop();
-                Console.WriteLine($"[{Thread.CurrentThread.Name}] GC.Collect: {sw.ElapsedMilliseconds} ms");
+                return new ImageFileBuffer(bmp);
             }
         }
 
