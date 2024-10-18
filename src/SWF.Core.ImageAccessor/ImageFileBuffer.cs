@@ -14,7 +14,11 @@ namespace SWF.Core.ImageAccessor
         {
             ArgumentNullException.ThrowIfNull(bmp, nameof(bmp));
 
-            if (bmp.PixelFormat == PixelFormat.Format8bppIndexed)
+            if (bmp.PixelFormat == PixelFormat.Format4bppIndexed)
+            {
+                this.Buffer = ImageUtil.BitmapToBufferFor4bpp(bmp);
+            }
+            else if (bmp.PixelFormat == PixelFormat.Format8bppIndexed)
             {
                 this.Buffer = ImageUtil.BitmapToBufferFor8bpp(bmp);
             }
@@ -31,7 +35,11 @@ namespace SWF.Core.ImageAccessor
 
         public Bitmap ToBitmap()
         {
-            if (this.PixelFormat == PixelFormat.Format8bppIndexed)
+            if (this.PixelFormat == PixelFormat.Format4bppIndexed)
+            {
+                return ImageUtil.BufferToBitmapFor4bpp(this.Buffer, this.Width, this.Height);
+            }
+            else if (this.PixelFormat == PixelFormat.Format8bppIndexed)
             {
                 return ImageUtil.BufferToBitmapFor8bpp(this.Buffer, this.Width, this.Height);
             }

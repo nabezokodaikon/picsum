@@ -35,23 +35,7 @@ namespace SWF.Core.ImageAccessor
         {
             ArgumentNullException.ThrowIfNull(srcBmp, nameof(srcBmp));
 
-            try
-            {
-                return OpenCVUtil.Resize(srcBmp, width, height);
-            }
-            catch (NotImplementedException)
-            {
-                var destBmp = new Bitmap(width, height);
-                using (var g = Graphics.FromImage(destBmp))
-                {
-                    g.DrawImage(
-                        srcBmp,
-                        new Rectangle(0, 0, width, height),
-                        new Rectangle(0, 0, srcBmp.Width, srcBmp.Height),
-                        GraphicsUnit.Pixel);
-                }
-                return destBmp;
-            }
+            return OpenCVUtil.Resize(srcBmp, width, height);
         }
 
         /// <summary>
@@ -216,6 +200,56 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
+        internal static byte[] BitmapToBufferFor4bpp(Bitmap bitmap)
+        {
+            ArgumentNullException.ThrowIfNull(bitmap, nameof(bitmap));
+
+            if (bitmap.PixelFormat != PixelFormat.Format4bppIndexed)
+            {
+                throw new ArgumentException("Pixel format must be 4bppIndexed.");
+            }
+
+            using (TimeMeasuring.Run(true, "ImageUtil.BitmapToBufferFor4bpp"))
+            {
+                BitmapData? bmpData = null;
+
+                try
+                {
+                    var bitmapData = bitmap.LockBits(
+                        new Rectangle(0, 0, bitmap.Width, bitmap.Height),
+                        ImageLockMode.ReadOnly,
+                        bitmap.PixelFormat);
+
+                    var widthInBytes = (bitmap.Width + 1) / 2;
+                    var stride = bitmapData.Stride;
+                    var pixelData = new byte[bitmap.Height * widthInBytes];
+
+                    unsafe
+                    {
+                        var ptr = (byte*)bitmapData.Scan0;
+
+                        for (var y = 0; y < bitmap.Height; y++)
+                        {
+                            var row = ptr + y * stride;
+                            for (var x = 0; x < widthInBytes; x++)
+                            {
+                                pixelData[y * widthInBytes + x] = row[x];
+                            }
+                        }
+                    }
+
+                    return pixelData;
+                }
+                finally
+                {
+                    if (bmpData != null)
+                    {
+                        bitmap.UnlockBits(bmpData);
+                    }
+                }
+            }
+        }
+
         internal static Bitmap BufferToBitmapFor8bpp(byte[] rawBytes, int width, int height)
         {
             ArgumentNullException.ThrowIfNull(rawBytes, nameof(rawBytes));
@@ -245,6 +279,56 @@ namespace SWF.Core.ImageAccessor
                         fixed (byte* srcPtr = rawBytes)
                         {
                             Buffer.MemoryCopy(srcPtr, (byte*)bmpData.Scan0, bufferSize, rawBytes.Length);
+                        }
+                    }
+
+                    return bitmap;
+                }
+                finally
+                {
+                    if (bmpData != null)
+                    {
+                        bitmap.UnlockBits(bmpData);
+                    }
+                }
+            }
+        }
+
+        internal static Bitmap BufferToBitmapFor4bpp(byte[] rawBytes, int width, int height)
+        {
+            ArgumentNullException.ThrowIfNull(rawBytes, nameof(rawBytes));
+
+            using (TimeMeasuring.Run(true, "ImageUtil.BufferToBitmapFor4bpp"))
+            {
+                var bitmap = new Bitmap(width, height, PixelFormat.Format4bppIndexed);
+                BitmapData? bmpData = null;
+
+                try
+                {
+                    var palette = bitmap.Palette;
+                    for (var i = 0; i < 16; i++)
+                    {
+                        palette.Entries[i] = Color.FromArgb(i * 17, i * 17, i * 17);
+                    }
+                    bitmap.Palette = palette;
+
+                    bmpData = bitmap.LockBits(
+                        new Rectangle(0, 0, width, height),
+                        ImageLockMode.WriteOnly,
+                        bitmap.PixelFormat);
+
+                    var stride = bmpData.Stride;
+
+                    unsafe
+                    {
+                        var ptr = (byte*)bmpData.Scan0;
+                        for (var y = 0; y < height; y++)
+                        {
+                            var row = ptr + y * stride;
+                            for (var x = 0; x < width / 2; x++)
+                            {
+                                row[x] = rawBytes[y * (width / 2) + x];
+                            }
                         }
                     }
 
@@ -762,7 +846,8 @@ namespace SWF.Core.ImageAccessor
 
         private static Bitmap ConvertIfGrayscale(Bitmap bmp, Stream fs)
         {
-            if (bmp.PixelFormat == PixelFormat.Format8bppIndexed)
+            if (bmp.PixelFormat == PixelFormat.Format4bppIndexed
+                || bmp.PixelFormat == PixelFormat.Format8bppIndexed)
             {
                 using (bmp)
                 {
