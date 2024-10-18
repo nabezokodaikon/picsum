@@ -41,7 +41,7 @@ namespace SWF.Core.ImageAccessor
         {
             ArgumentNullException.ThrowIfNull(img, nameof(img));
 
-            using (TimeMeasuring.Run(true, "ImageUtil.ToCompressionBinary"))
+            using (TimeMeasuring.Run(false, "ImageUtil.ToCompressionBinary"))
             using (var mes = new MemoryStream())
             {
                 var eps = new EncoderParameters(1);
@@ -63,7 +63,7 @@ namespace SWF.Core.ImageAccessor
         {
             ArgumentNullException.ThrowIfNull(bf, nameof(bf));
 
-            using (TimeMeasuring.Run(true, "ImageUtil.ToImage"))
+            using (TimeMeasuring.Run(false, "ImageUtil.ToImage"))
             using (var mes = new MemoryStream(bf))
             {
                 try
