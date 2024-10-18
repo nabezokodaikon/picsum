@@ -94,7 +94,12 @@ namespace PicSum.UIComponent.Contents.FileList
             : base(param)
         {
             this.parameter = param;
-            this.InitializeComponent();
+
+            this.Title = "Star";
+            this.Icon = Resources.ActiveRatingIcon;
+            this.IsMoveControlVisible = false;
+            this.IsRemoveFromListMenuItemVisible = true;
+            base.sortFileRgistrationDateToolStripButton.Enabled = true;
         }
 
         protected override void OnLoad(EventArgs e)
@@ -172,15 +177,6 @@ namespace PicSum.UIComponent.Contents.FileList
         protected override void OnMoveNextButtonClick(EventArgs e)
         {
             throw new NotImplementedException();
-        }
-
-        private void InitializeComponent()
-        {
-            this.Title = "Star";
-            this.Icon = Resources.ActiveRatingIcon;
-            this.IsMoveControlVisible = false;
-            this.IsRemoveFromListMenuItemVisible = true;
-            base.sortFileRgistrationDateToolStripButton.Enabled = true;
         }
 
         private void SearchJob_Callback(ListResult<FileShallowInfoEntity> e)

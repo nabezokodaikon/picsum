@@ -78,7 +78,18 @@ namespace SWF.UIComponent.TabOperation
 
         public TabDragForm()
         {
-            this.InitializeComponent();
+            this.SetStyle(
+                ControlStyles.AllPaintingInWmPaint |
+                ControlStyles.OptimizedDoubleBuffer |
+                ControlStyles.ResizeRedraw |
+                ControlStyles.UserPaint,
+                true);
+            this.UpdateStyles();
+
+            this.FormBorderStyle = FormBorderStyle.None;
+            this.ShowInTaskbar = false;
+            this.StartPosition = FormStartPosition.Manual;
+            this.Opacity = 0.75d;
         }
 
         public void SetLocation(float xOffset, float yOffset)
@@ -206,22 +217,6 @@ namespace SWF.UIComponent.TabOperation
 
             this.DrawTabEventArgs.Graphics = e.Graphics;
             this.drawTabPageMethod(this.DrawTabEventArgs);
-        }
-
-        private void InitializeComponent()
-        {
-            this.SetStyle(
-                ControlStyles.AllPaintingInWmPaint |
-                ControlStyles.OptimizedDoubleBuffer |
-                ControlStyles.ResizeRedraw |
-                ControlStyles.UserPaint,
-                true);
-            this.UpdateStyles();
-
-            this.FormBorderStyle = FormBorderStyle.None;
-            this.ShowInTaskbar = false;
-            this.StartPosition = FormStartPosition.Manual;
-            this.Opacity = 0.75d;
         }
 
         private SizeF GetPageSize(Bitmap pageCap)

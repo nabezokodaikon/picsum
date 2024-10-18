@@ -130,7 +130,25 @@ namespace PicSum.UIComponent.Contents.FileList
             : base(param)
         {
             this.parameter = param;
-            this.InitializeComponent();
+
+            this.Title = FileUtil.GetFileName(this.parameter.DirectoryPath);
+
+            if (FileUtil.IsSystemRoot(this.parameter.DirectoryPath))
+            {
+                this.Icon = FileIconCash.SmallMyComputerIcon;
+            }
+            else if (FileUtil.IsDrive(this.parameter.DirectoryPath))
+            {
+                this.Icon = FileIconCash.GetSmallDriveIcon(this.parameter.DirectoryPath);
+            }
+            else
+            {
+                this.Icon = FileIconCash.SmallDirectoryIcon;
+            }
+
+            this.IsRemoveFromListMenuItemVisible = false;
+            this.IsMoveControlVisible = !string.IsNullOrEmpty(this.parameter.DirectoryPath);
+            base.sortFileRgistrationDateToolStripButton.Enabled = false;
         }
 
         protected override void OnLoad(EventArgs e)
@@ -254,28 +272,6 @@ namespace PicSum.UIComponent.Contents.FileList
             {
                 e.Cancel = true;
             }
-        }
-
-        private void InitializeComponent()
-        {
-            this.Title = FileUtil.GetFileName(this.parameter.DirectoryPath);
-
-            if (FileUtil.IsSystemRoot(this.parameter.DirectoryPath))
-            {
-                this.Icon = FileIconCash.SmallMyComputerIcon;
-            }
-            else if (FileUtil.IsDrive(this.parameter.DirectoryPath))
-            {
-                this.Icon = FileIconCash.GetSmallDriveIcon(this.parameter.DirectoryPath);
-            }
-            else
-            {
-                this.Icon = FileIconCash.SmallDirectoryIcon;
-            }
-
-            this.IsRemoveFromListMenuItemVisible = false;
-            this.IsMoveControlVisible = !string.IsNullOrEmpty(this.parameter.DirectoryPath);
-            base.sortFileRgistrationDateToolStripButton.Enabled = false;
         }
 
         private void SaveCurrentDirectoryState()

@@ -280,7 +280,33 @@ namespace PicSum.UIComponent.AddressBar
 
         public DropDownList()
         {
-            this.InitializeComponent();
+            this.SetStyle(
+                ControlStyles.AllPaintingInWmPaint |
+                ControlStyles.OptimizedDoubleBuffer |
+                ControlStyles.UserPaint,
+                true);
+
+            this.SetStyle(
+                ControlStyles.Selectable,
+                false);
+
+            this.UpdateStyles();
+
+            this.Items.Add(new ToolStripControlHost(new FlowList()));
+            this.Padding = new Padding(2, 1, 2, 0);
+
+            this.ToolStripItem.AutoSize = false;
+            this.ToolStripItem.BackColor = this.BackColor;
+
+            this.FlowList.Dock = DockStyle.Fill;
+            this.FlowList.IsLileList = true;
+            this.FlowList.ItemSpace = 0;
+            this.FlowList.IsMultiSelect = false;
+            this.FlowList.BackColor = this.BackColor;
+
+            this.FlowList.DrawItem += new(this.FlowList_Drawitem);
+            this.FlowList.ItemExecute += new(this.FlowList_ItemExecute);
+            this.FlowList.ItemMouseClick += new(this.FlowList_ItemMouseClick);
         }
 
         /// <summary>
@@ -333,37 +359,6 @@ namespace PicSum.UIComponent.AddressBar
         public IList<int> GetSelectedIndexs()
         {
             return this.FlowList.GetSelectedIndexs();
-        }
-
-        private void InitializeComponent()
-        {
-            this.SetStyle(
-                ControlStyles.AllPaintingInWmPaint |
-                ControlStyles.OptimizedDoubleBuffer |
-                ControlStyles.UserPaint,
-                true);
-
-            this.SetStyle(
-                ControlStyles.Selectable,
-                false);
-
-            this.UpdateStyles();
-
-            this.Items.Add(new ToolStripControlHost(new FlowList()));
-            this.Padding = new Padding(2, 1, 2, 0);
-
-            this.ToolStripItem.AutoSize = false;
-            this.ToolStripItem.BackColor = this.BackColor;
-
-            this.FlowList.Dock = DockStyle.Fill;
-            this.FlowList.IsLileList = true;
-            this.FlowList.ItemSpace = 0;
-            this.FlowList.IsMultiSelect = false;
-            this.FlowList.BackColor = this.BackColor;
-
-            this.FlowList.DrawItem += new(this.FlowList_Drawitem);
-            this.FlowList.ItemExecute += new(this.FlowList_ItemExecute);
-            this.FlowList.ItemMouseClick += new(this.FlowList_ItemMouseClick);
         }
 
         private void OnDrawItem(SWF.UIComponent.FlowList.DrawItemEventArgs e)

@@ -9,11 +9,6 @@ namespace PicSum.UIComponent.Contents.ToolBar
     {
         public PageToolBar()
         {
-            this.InitializeComponent();
-        }
-
-        private void InitializeComponent()
-        {
             this.SetStyle(
                 ControlStyles.AllPaintingInWmPaint |
                 ControlStyles.OptimizedDoubleBuffer,

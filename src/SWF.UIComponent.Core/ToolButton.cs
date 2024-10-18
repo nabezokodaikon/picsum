@@ -74,7 +74,21 @@ namespace SWF.UIComponent.Core
 
         public ToolButton()
         {
-            this.InitializeComponent();
+            this.SetStyle(
+                ControlStyles.AllPaintingInWmPaint |
+                ControlStyles.OptimizedDoubleBuffer |
+                ControlStyles.StandardClick |
+                ControlStyles.UserPaint,
+                true);
+
+            this.SetStyle(
+                ControlStyles.Selectable,
+                false);
+
+            this.UpdateStyles();
+
+            this.getRectangleMethod = new Func<Rectangle>(this.GetDefaultRectangle);
+            this.Region = this.GetRegion();
         }
 
         public Rectangle GetRegionBounds()
@@ -114,25 +128,6 @@ namespace SWF.UIComponent.Core
             {
                 base.OnMouseClick(e);
             }
-        }
-
-        private void InitializeComponent()
-        {
-            this.SetStyle(
-                ControlStyles.AllPaintingInWmPaint |
-                ControlStyles.OptimizedDoubleBuffer |
-                ControlStyles.StandardClick |
-                ControlStyles.UserPaint,
-                true);
-
-            this.SetStyle(
-                ControlStyles.Selectable,
-                false);
-
-            this.UpdateStyles();
-
-            this.getRectangleMethod = new Func<Rectangle>(this.GetDefaultRectangle);
-            this.Region = this.GetRegion();
         }
 
         private Rectangle GetDefaultRectangle()

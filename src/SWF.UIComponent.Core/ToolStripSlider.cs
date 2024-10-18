@@ -62,11 +62,6 @@ namespace SWF.UIComponent.Core
         public ToolStripSlider()
             : base(new Slider())
         {
-            this.InitializeComponent();
-        }
-
-        private void InitializeComponent()
-        {
             this.Slider.Size = new(96, 24);
             this.Slider.BackColor = Color.Transparent;
         }

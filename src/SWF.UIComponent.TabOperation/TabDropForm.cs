@@ -19,10 +19,12 @@ namespace SWF.UIComponent.TabOperation
 
         public TabDropForm()
         {
-            if (!this.DesignMode)
-            {
-                this.InitializeComponent();
-            }
+            this.FormBorderStyle = FormBorderStyle.None;
+            this.MaximumSize = this.dropMaximumImage.Size;
+            this.MinimumSize = this.dropMaximumImage.Size;
+            this.Size = this.dropMaximumImage.Size;
+            this.ShowInTaskbar = false;
+            this.Opacity = 0.75;
         }
 
         public void SetMaximumImage()
@@ -58,16 +60,5 @@ namespace SWF.UIComponent.TabOperation
             this.Region = ImageUtil.GetRegion(this.dropMaximumImage, Color.FromArgb(0, 0, 0, 0));
             base.OnLoad(e);
         }
-
-        private void InitializeComponent()
-        {
-            this.FormBorderStyle = FormBorderStyle.None;
-            this.MaximumSize = this.dropMaximumImage.Size;
-            this.MinimumSize = this.dropMaximumImage.Size;
-            this.Size = this.dropMaximumImage.Size;
-            this.ShowInTaskbar = false;
-            this.Opacity = 0.75;
-        }
-
     }
 }

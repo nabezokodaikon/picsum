@@ -74,7 +74,14 @@ namespace SWF.UIComponent.Form
 
         public GrassForm()
         {
-            this.InitializeComponent();
+            this.SetStyle(
+                ControlStyles.AllPaintingInWmPaint |
+                ControlStyles.ContainerControl |
+                ControlStyles.OptimizedDoubleBuffer |
+                ControlStyles.ResizeRedraw |
+                ControlStyles.UserPaint,
+                true);
+            this.UpdateStyles();
         }
 
         public void MouseLeftDoubleClickProcess()
@@ -161,18 +168,6 @@ namespace SWF.UIComponent.Form
         protected void SetControlRegion()
         {
             this.SettingtControlRegion();
-        }
-
-        private void InitializeComponent()
-        {
-            this.SetStyle(
-                ControlStyles.AllPaintingInWmPaint |
-                ControlStyles.ContainerControl |
-                ControlStyles.OptimizedDoubleBuffer |
-                ControlStyles.ResizeRedraw |
-                ControlStyles.UserPaint,
-                true);
-            this.UpdateStyles();
         }
 
         private void SettingtControlRegion()

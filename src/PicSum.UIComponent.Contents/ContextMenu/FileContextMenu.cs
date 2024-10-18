@@ -121,7 +121,37 @@ namespace PicSum.UIComponent.Contents.ContextMenu
         {
             if (!this.DesignMode)
             {
-                this.InitializeComponent();
+                this.ShowImageMargin = false;
+
+                this.Items.AddRange([this.fileActiveTabOpenMenuItem,
+                    this.fileNewTabOpenMenuItem,
+                    this.fileNewWindowOpenMenuItem,
+                    this.fileOpen,
+                    this.saveDirectoryOpen,
+                    this.directoryActiveTabOpenMenuItem,
+                    this.directoryNewTabOpenMenuItem,
+                    this.directoryNewWindowOpenMenuItem,
+                    this.explorerOpenMenuItem,
+                    this.pathCopyMenuItem,
+                    this.nameCopyMenuItem,
+                    this.exportMenuItem,
+                    this.fileBookmarkMenuItem,
+                    this.removeFromListMenuItem
+                                    ]);
+                this.fileActiveTabOpenMenuItem.Click += new(this.FileActiveTabOpenMenuItem_Click);
+                this.fileNewTabOpenMenuItem.Click += new(this.FileNewTabOpenMenuItem_Click);
+                this.fileNewWindowOpenMenuItem.Click += new(this.FileNewWindowOpenMenuItem_Click);
+                this.fileOpen.Click += new(this.FileOpen_Click);
+                this.saveDirectoryOpen.Click += new(this.SaveDirectoryOpen_Click);
+                this.directoryActiveTabOpenMenuItem.Click += new(this.DirectoryActiveTabOpenMenuItem_Click);
+                this.directoryNewTabOpenMenuItem.Click += new(this.DirectoryNewTabOpenMenuItem_Click);
+                this.directoryNewWindowOpenMenuItem.Click += new(this.DirectoryNewWindowOpenMenuItem_Click);
+                this.explorerOpenMenuItem.Click += new(this.ExplorerOpenMenuItem_Click);
+                this.pathCopyMenuItem.Click += new(this.PathCopyMenuItem_Click);
+                this.nameCopyMenuItem.Click += new(this.NameCopyMenuItem_Click);
+                this.exportMenuItem.Click += new(this.ExportMenuItem_Click);
+                this.fileBookmarkMenuItem.Click += new(this.FileBookmarkMenuItem_Click);
+                this.removeFromListMenuItem.Click += new(this.RemoveFromListMenuItem_Click);
             }
         }
 
@@ -157,41 +187,6 @@ namespace PicSum.UIComponent.Contents.ContextMenu
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
             this.SetFile([filePath]);
-        }
-
-        private void InitializeComponent()
-        {
-            this.ShowImageMargin = false;
-
-            this.Items.AddRange([this.fileActiveTabOpenMenuItem,
-                this.fileNewTabOpenMenuItem,
-                this.fileNewWindowOpenMenuItem,
-                this.fileOpen,
-                this.saveDirectoryOpen,
-                this.directoryActiveTabOpenMenuItem,
-                this.directoryNewTabOpenMenuItem,
-                this.directoryNewWindowOpenMenuItem,
-                this.explorerOpenMenuItem,
-                this.pathCopyMenuItem,
-                this.nameCopyMenuItem,
-                this.exportMenuItem,
-                this.fileBookmarkMenuItem,
-                this.removeFromListMenuItem
-                                ]);
-            this.fileActiveTabOpenMenuItem.Click += new(this.FileActiveTabOpenMenuItem_Click);
-            this.fileNewTabOpenMenuItem.Click += new(this.FileNewTabOpenMenuItem_Click);
-            this.fileNewWindowOpenMenuItem.Click += new(this.FileNewWindowOpenMenuItem_Click);
-            this.fileOpen.Click += new(this.FileOpen_Click);
-            this.saveDirectoryOpen.Click += new(this.SaveDirectoryOpen_Click);
-            this.directoryActiveTabOpenMenuItem.Click += new(this.DirectoryActiveTabOpenMenuItem_Click);
-            this.directoryNewTabOpenMenuItem.Click += new(this.DirectoryNewTabOpenMenuItem_Click);
-            this.directoryNewWindowOpenMenuItem.Click += new(this.DirectoryNewWindowOpenMenuItem_Click);
-            this.explorerOpenMenuItem.Click += new(this.ExplorerOpenMenuItem_Click);
-            this.pathCopyMenuItem.Click += new(this.PathCopyMenuItem_Click);
-            this.nameCopyMenuItem.Click += new(this.NameCopyMenuItem_Click);
-            this.exportMenuItem.Click += new(this.ExportMenuItem_Click);
-            this.fileBookmarkMenuItem.Click += new(this.FileBookmarkMenuItem_Click);
-            this.removeFromListMenuItem.Click += new(this.RemoveFromListMenuItem_Click);
         }
 
         private void SetImageFileMenuItemVisible(bool isVisible)

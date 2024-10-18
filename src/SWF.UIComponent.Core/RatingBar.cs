@@ -44,7 +44,14 @@ namespace SWF.UIComponent.Core
 
         public RatingBar()
         {
-            this.InitializeComponent();
+            this.SetStyle(
+                ControlStyles.AllPaintingInWmPaint |
+                ControlStyles.OptimizedDoubleBuffer |
+                ControlStyles.ResizeRedraw |
+                ControlStyles.SupportsTransparentBackColor |
+                ControlStyles.UserPaint,
+                true);
+            this.UpdateStyles();
         }
 
         public void SetValue(int value)
@@ -72,18 +79,6 @@ namespace SWF.UIComponent.Core
         protected virtual void OnRatingButtonMouseClick(MouseEventArgs e)
         {
             this.RatingButtonMouseClick?.Invoke(this, e);
-        }
-
-        private void InitializeComponent()
-        {
-            this.SetStyle(
-                ControlStyles.AllPaintingInWmPaint |
-                ControlStyles.OptimizedDoubleBuffer |
-                ControlStyles.ResizeRedraw |
-                ControlStyles.SupportsTransparentBackColor |
-                ControlStyles.UserPaint,
-                true);
-            this.UpdateStyles();
         }
 
         private void CreateRatingButtons()

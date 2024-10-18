@@ -125,7 +125,15 @@ namespace SWF.UIComponent.ImagePanel
 
         public ImagePanel()
         {
-            this.InitializeComponent();
+            this.SetStyle(
+                ControlStyles.AllPaintingInWmPaint |
+                ControlStyles.OptimizedDoubleBuffer |
+                ControlStyles.SupportsTransparentBackColor |
+                ControlStyles.UserPaint,
+                true);
+            this.UpdateStyles();
+
+            this.Font = new Font(this.Font.FontFamily, this.Font.Size * 2);
         }
 
         public void SetImage(
@@ -431,19 +439,6 @@ namespace SWF.UIComponent.ImagePanel
             }
 
             base.OnMouseDoubleClick(e);
-        }
-
-        private void InitializeComponent()
-        {
-            this.SetStyle(
-                ControlStyles.AllPaintingInWmPaint |
-                ControlStyles.OptimizedDoubleBuffer |
-                ControlStyles.SupportsTransparentBackColor |
-                ControlStyles.UserPaint,
-                true);
-            this.UpdateStyles();
-
-            this.Font = new Font(this.Font.FontFamily, this.Font.Size * 2);
         }
 
         private void OnImageMouseClick(MouseEventArgs e)

@@ -84,11 +84,6 @@ namespace SWF.UIComponent.Core
 
         public Slider()
         {
-            this.InitializeComponent();
-        }
-
-        private void InitializeComponent()
-        {
             this.SetStyle(
                 ControlStyles.AllPaintingInWmPaint |
                 ControlStyles.OptimizedDoubleBuffer |

@@ -226,7 +226,15 @@ namespace SWF.UIComponent.TabOperation
 
         public TabSwitch()
         {
-            this.InitializeComponent();
+            this.SetStyle(
+                ControlStyles.AllPaintingInWmPaint |
+                ControlStyles.OptimizedDoubleBuffer |
+                ControlStyles.ResizeRedraw |
+                ControlStyles.UserPaint,
+                true);
+            this.UpdateStyles();
+
+            this.SetAddTabButtonDrawArea();
         }
 
         /// <summary>
@@ -943,19 +951,6 @@ namespace SWF.UIComponent.TabOperation
 
             this.dropPoint = null;
             base.OnDragDrop(drgevent);
-        }
-
-        private void InitializeComponent()
-        {
-            this.SetStyle(
-                ControlStyles.AllPaintingInWmPaint |
-                ControlStyles.OptimizedDoubleBuffer |
-                ControlStyles.ResizeRedraw |
-                ControlStyles.UserPaint,
-                true);
-            this.UpdateStyles();
-
-            this.SetAddTabButtonDrawArea();
         }
 
         private void OnActiveTabChanged(EventArgs e)

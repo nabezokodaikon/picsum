@@ -27,7 +27,13 @@ namespace SWF.UIComponent.Core
 
         public CheckPatternPanel()
         {
-            this.InitializeComponent();
+            this.SetStyle(
+                ControlStyles.AllPaintingInWmPaint |
+                ControlStyles.OptimizedDoubleBuffer |
+                ControlStyles.ResizeRedraw |
+                ControlStyles.UserPaint,
+                true);
+            this.UpdateStyles();
         }
 
         protected override void OnPaintBackground(PaintEventArgs pevent)
@@ -44,17 +50,6 @@ namespace SWF.UIComponent.Core
             e.Graphics.CompositingMode = CompositingMode.SourceCopy;
 
             e.Graphics.FillRectangle(this.brushA, this.ClientRectangle);
-        }
-
-        private void InitializeComponent()
-        {
-            this.SetStyle(
-                ControlStyles.AllPaintingInWmPaint |
-                ControlStyles.OptimizedDoubleBuffer |
-                ControlStyles.ResizeRedraw |
-                ControlStyles.UserPaint,
-                true);
-            this.UpdateStyles();
         }
 
         private void DrawCheckRectangle(Graphics g)

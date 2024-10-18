@@ -142,7 +142,27 @@ namespace PicSum.UIComponent.AddressBar
 
         public AddressBar()
         {
-            this.InitializeComponent();
+            this.overflowItem.AddressBar = this;
+            this.overflowItem.Palette = this.palette;
+
+            this.directoryHistoryItem.AddressBar = this;
+            this.directoryHistoryItem.Palette = this.palette;
+
+            this.SetStyle(
+                ControlStyles.AllPaintingInWmPaint |
+                ControlStyles.OptimizedDoubleBuffer |
+                ControlStyles.ResizeRedraw |
+                ControlStyles.UserPaint,
+                true);
+            this.UpdateStyles();
+
+            this.overflowItem.DropDownOpened += new(this.DrawItem_DropDownOpened);
+            this.overflowItem.DropDownClosed += new(this.DrawItem_DropDownClosed);
+            this.overflowItem.SelectedDirectory += new(this.DrawItem_SelectedDirectory);
+
+            this.directoryHistoryItem.DropDownOpened += new(this.DrawItem_DropDownOpened);
+            this.directoryHistoryItem.DropDownClosed += new(this.DrawItem_DropDownClosed);
+            this.directoryHistoryItem.SelectedDirectory += new(this.DrawItem_SelectedDirectory);
         }
 
         public void SetAddress(string filePath)
@@ -293,31 +313,6 @@ namespace PicSum.UIComponent.AddressBar
             }
 
             base.OnMouseClick(e);
-        }
-
-        private void InitializeComponent()
-        {
-            this.overflowItem.AddressBar = this;
-            this.overflowItem.Palette = this.palette;
-
-            this.directoryHistoryItem.AddressBar = this;
-            this.directoryHistoryItem.Palette = this.palette;
-
-            this.SetStyle(
-                ControlStyles.AllPaintingInWmPaint |
-                ControlStyles.OptimizedDoubleBuffer |
-                ControlStyles.ResizeRedraw |
-                ControlStyles.UserPaint,
-                true);
-            this.UpdateStyles();
-
-            this.overflowItem.DropDownOpened += new(this.DrawItem_DropDownOpened);
-            this.overflowItem.DropDownClosed += new(this.DrawItem_DropDownClosed);
-            this.overflowItem.SelectedDirectory += new(this.DrawItem_SelectedDirectory);
-
-            this.directoryHistoryItem.DropDownOpened += new(this.DrawItem_DropDownOpened);
-            this.directoryHistoryItem.DropDownClosed += new(this.DrawItem_DropDownClosed);
-            this.directoryHistoryItem.SelectedDirectory += new(this.DrawItem_SelectedDirectory);
         }
 
         private void SetItemsRectangle()

@@ -133,7 +133,19 @@ namespace SWF.UIComponent.FlowList
 
         public FlowList()
         {
-            this.InitializeComponent();
+            this.SetStyle(
+                ControlStyles.AllPaintingInWmPaint |
+                ControlStyles.OptimizedDoubleBuffer |
+                ControlStyles.ResizeRedraw |
+                ControlStyles.UserPaint,
+                true);
+            this.UpdateStyles();
+
+            this.scrollBar.Dock = DockStyle.Right;
+            this.scrollBar.ValueChanged += new(this.ScrollBar_ValueChanged);
+            this.selectedItemIndexs.Change += new(this.SelectedItemIndexs_Change);
+
+            this.Controls.Add(this.scrollBar);
         }
 
         protected override void OnInvalidated(InvalidateEventArgs e)
@@ -554,23 +566,6 @@ namespace SWF.UIComponent.FlowList
             }
 
             base.OnMouseWheel(e);
-        }
-
-        private void InitializeComponent()
-        {
-            this.SetStyle(
-                ControlStyles.AllPaintingInWmPaint |
-                ControlStyles.OptimizedDoubleBuffer |
-                ControlStyles.ResizeRedraw |
-                ControlStyles.UserPaint,
-                true);
-            this.UpdateStyles();
-
-            this.scrollBar.Dock = DockStyle.Right;
-            this.scrollBar.ValueChanged += new(this.ScrollBar_ValueChanged);
-            this.selectedItemIndexs.Change += new(this.SelectedItemIndexs_Change);
-
-            this.Controls.Add(this.scrollBar);
         }
 
         private void SetDrawParameter()
