@@ -2,7 +2,7 @@ using System.Diagnostics;
 
 namespace SWF.Core.Base
 {
-    public sealed class TimeMeasuring
+    public sealed partial class TimeMeasuring
         : IDisposable
     {
         public static TimeMeasuring Run(string message)
