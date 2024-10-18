@@ -43,6 +43,8 @@ namespace PicSum.Main.UIComponent
 
         protected override void OnLoad(EventArgs e)
         {
+            this.GCCollectRunJob.StartJob();
+
             var form = this.browserManager.GetActiveBrowser();
             form.Show();
 
