@@ -282,6 +282,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
             param.SelectedFilePath = base.SelectedFilePath;
 
+            // TODO: ジョブの完了を待つ。
             this.DirectoryStateUpdateJob.StartJob(param);
         }
 
