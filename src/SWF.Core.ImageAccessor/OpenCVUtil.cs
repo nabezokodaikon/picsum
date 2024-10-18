@@ -24,12 +24,28 @@ namespace SWF.Core.ImageAccessor
 
             using (TimeMeasuring.Run(true, "OpenCVUtil.Resize By Bitmap"))
             {
-                var size = new OpenCvSharp.Size(width, height);
-                using (var srcMat = srcBmp.ToMat())
-                using (var destMat = new Mat(size, srcMat.Type()))
+                try
                 {
-                    Cv2.Resize(srcMat, destMat, size, 0, 0, InterpolationFlags.Area);
-                    return destMat.ToBitmap();
+                    var size = new OpenCvSharp.Size(width, height);
+                    using (var srcMat = srcBmp.ToMat())
+                    using (var destMat = new Mat(size, srcMat.Type()))
+                    {
+                        Cv2.Resize(srcMat, destMat, size, 0, 0, InterpolationFlags.Area);
+                        return destMat.ToBitmap();
+                    }
+                }
+                catch (NotImplementedException)
+                {
+                    var destBmp = new Bitmap(width, height);
+                    using (var g = Graphics.FromImage(destBmp))
+                    {
+                        g.DrawImage(
+                            srcBmp,
+                            new Rectangle(0, 0, width, height),
+                            new Rectangle(0, 0, srcBmp.Width, srcBmp.Height),
+                            GraphicsUnit.Pixel);
+                    }
+                    return destBmp;
                 }
             }
         }
