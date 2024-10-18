@@ -12,7 +12,6 @@ namespace PicSum.UIComponent.Contents.Common
     public abstract class BrowserPage
         : PagePanel
     {
-
         public event EventHandler<SelectedFileChangeEventArgs> SelectedFileChanged;
         public event EventHandler<BrowserPageEventArgs> OpenPage;
         public new event EventHandler<MouseEventArgs> MouseClick;
@@ -39,7 +38,7 @@ namespace PicSum.UIComponent.Contents.Common
         {
             if (disposing)
             {
-
+                GC.Collect();
             }
 
             base.Dispose(disposing);
