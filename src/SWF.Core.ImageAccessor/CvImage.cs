@@ -50,12 +50,7 @@ namespace SWF.Core.ImageAccessor
             if (disposing)
             {
                 this.bitmap?.Dispose();
-
-                if (this.mat != null)
-                {
-                    this.mat.Dispose();
-                    this.mat = null;
-                }
+                this.mat?.Dispose();
             }
 
             this.disposed = true;
@@ -98,42 +93,6 @@ namespace SWF.Core.ImageAccessor
                 using (TimeMeasuring.Run(true, "CvImage.CreateMat"))
                 {
                     this.mat ??= this.bitmap.ToMat();
-                }
-            }
-        }
-
-        public CvImage ShallowCopy()
-        {
-            if (this.bitmap == null)
-            {
-                return new CvImage(this.Size);
-            }
-
-            lock (this.lockObject)
-            {
-                using (TimeMeasuring.Run(true, "CvImage.ShallowCopy"))
-                using (var mat = this.bitmap.ToMat())
-                {
-                    var bmp = mat.ToBitmap();
-                    return new CvImage(bmp);
-                }
-            }
-        }
-
-        public CvImage DeepCopy()
-        {
-            if (this.bitmap == null)
-            {
-                return new CvImage(this.Size);
-            }
-
-            lock (this.lockObject)
-            {
-                using (TimeMeasuring.Run(true, "CvImage.DeepCopy"))
-                {
-                    this.mat ??= this.bitmap.ToMat();
-                    var bmp = this.mat.ToBitmap();
-                    return new CvImage(bmp);
                 }
             }
         }
