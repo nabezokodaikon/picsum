@@ -49,7 +49,7 @@ namespace SWF.UIComponent.Core
             e.Graphics.FillRectangle(this.brushA, this.ClientRectangle);
 
             sw.Stop();
-            //Console.WriteLine($"[{Thread.CurrentThread.Name}] CheckPatternPanel.OnPaint: {sw.ElapsedMilliseconds} ms");
+            //ConsoleUtil.Write($"CheckPatternPanel.OnPaint: {sw.ElapsedMilliseconds} ms");
         }
 
         private void InitializeComponent()

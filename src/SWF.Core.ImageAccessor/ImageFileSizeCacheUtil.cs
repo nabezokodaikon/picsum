@@ -67,7 +67,7 @@ namespace SWF.Core.ImageAccessor
                 CACHE_LOCK.ExitUpgradeableReadLock();
 
                 sw.Stop();
-                //Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageFileInfoCacheUtil.Create: {sw.ElapsedMilliseconds} ms");
+                //ConsoleUtil.Write($"ImageFileInfoCacheUtil.Create: {sw.ElapsedMilliseconds} ms");
             }
         }
 
@@ -122,7 +122,7 @@ namespace SWF.Core.ImageAccessor
                 CACHE_LOCK.ExitUpgradeableReadLock();
 
                 sw.Stop();
-                //Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageFileInfoCacheUtil.Get: {sw.ElapsedMilliseconds} ms");
+                //ConsoleUtil.Write($"ImageFileInfoCacheUtil.Get: {sw.ElapsedMilliseconds} ms");
             }
         }
 
@@ -176,7 +176,7 @@ namespace SWF.Core.ImageAccessor
                 CACHE_LOCK.ExitUpgradeableReadLock();
 
                 sw.Stop();
-                //Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageFileInfoCacheUtil.Create: {sw.ElapsedMilliseconds} ms");
+                //ConsoleUtil.Write($"ImageFileInfoCacheUtil.Create: {sw.ElapsedMilliseconds} ms");
             }
         }
     }

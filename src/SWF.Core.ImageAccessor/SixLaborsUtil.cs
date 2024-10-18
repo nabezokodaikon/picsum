@@ -56,7 +56,7 @@ namespace SWF.Core.ImageAccessor
             finally
             {
                 sw.Stop();
-                //Console.WriteLine($"[{Thread.CurrentThread.Name}] SixLaborsUtil.DetectFormat: {sw.ElapsedMilliseconds} ms");
+                //ConsoleUtil.Write($"SixLaborsUtil.DetectFormat: {sw.ElapsedMilliseconds} ms");
             }
         }
 

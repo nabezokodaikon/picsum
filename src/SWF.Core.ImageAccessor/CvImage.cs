@@ -1,5 +1,6 @@
 using OpenCvSharp;
 using OpenCvSharp.Extensions;
+using SWF.Core.Base;
 using System.Diagnostics;
 using System.Drawing.Drawing2D;
 
@@ -101,7 +102,7 @@ namespace SWF.Core.ImageAccessor
             }
 
             sw.Stop();
-            Console.WriteLine($"[{Thread.CurrentThread.Name}] CvImage.CreateMat: {sw.ElapsedMilliseconds} ms");
+            ConsoleUtil.Write($"CvImage.CreateMat: {sw.ElapsedMilliseconds} ms");
         }
 
         public CvImage ShallowCopy()
@@ -121,7 +122,7 @@ namespace SWF.Core.ImageAccessor
                     var clone = new CvImage(bmp);
 
                     sw.Stop();
-                    Console.WriteLine($"[{Thread.CurrentThread.Name}] CvImage.ShallowCopy: {sw.ElapsedMilliseconds} ms");
+                    ConsoleUtil.Write($"CvImage.ShallowCopy: {sw.ElapsedMilliseconds} ms");
                     return clone;
                 }
             }
@@ -143,7 +144,7 @@ namespace SWF.Core.ImageAccessor
                 var clone = new CvImage(bmp);
 
                 sw.Stop();
-                Console.WriteLine($"[{Thread.CurrentThread.Name}] CvImage.DeepCopy: {sw.ElapsedMilliseconds} ms");
+                ConsoleUtil.Write($"CvImage.DeepCopy: {sw.ElapsedMilliseconds} ms");
                 return clone;
             }
         }

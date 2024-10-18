@@ -1,5 +1,6 @@
 using OpenCvSharp;
 using OpenCvSharp.Extensions;
+using SWF.Core.Base;
 using System.Diagnostics;
 
 namespace SWF.Core.ImageAccessor
@@ -16,7 +17,7 @@ namespace SWF.Core.ImageAccessor
                 Cv2.Resize(srcMat, destMat, new OpenCvSharp.Size(newWidth, newHeight), 0, 0, InterpolationFlags.Area);
                 var destBMP = destMat.ToBitmap();
                 sw.Stop();
-                Console.WriteLine($"[{Thread.CurrentThread.Name}] OpenCVUtil.Resize By Mat: {sw.ElapsedMilliseconds} ms");
+                ConsoleUtil.Write($"OpenCVUtil.Resize By Mat: {sw.ElapsedMilliseconds} ms");
                 return destBMP;
             }
         }
@@ -33,7 +34,7 @@ namespace SWF.Core.ImageAccessor
                 Cv2.Resize(srcMat, destMat, size, 0, 0, InterpolationFlags.Area);
                 var destBMP = destMat.ToBitmap();
                 sw.Stop();
-                //Console.WriteLine($"[{Thread.CurrentThread.Name}] OpenCVUtil.Resize By Bitmap: {sw.ElapsedMilliseconds} ms");
+                //ConsoleUtil.Write($"OpenCVUtil.Resize By Bitmap: {sw.ElapsedMilliseconds} ms");
                 return destBMP;
             }
         }
@@ -48,7 +49,7 @@ namespace SWF.Core.ImageAccessor
             {
                 var bmp = mat.ToBitmap();
                 sw.Stop();
-                Console.WriteLine($"[{Thread.CurrentThread.Name}] OpenCVUtil.Convert: {sw.ElapsedMilliseconds} ms");
+                ConsoleUtil.Write($"OpenCVUtil.Convert: {sw.ElapsedMilliseconds} ms");
                 return bmp;
             }
         }

@@ -18,7 +18,6 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.Versioning;
-using System.Threading;
 using System.Windows.Forms;
 
 namespace PicSum.UIComponent.Contents.ImageViewer
@@ -115,20 +114,20 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                             }
 
                             var sw = Stopwatch.StartNew();
-                            Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageViewerPage.ImageFileReadJob_Callback: IsMain = {r.IsMain}");
+                            ConsoleUtil.Write($"ImageViewerPage.ImageFileReadJob_Callback: IsMain = {r.IsMain}");
 
                             this.ImageFileReadJob_Callback(r);
 
                             sw.Stop();
-                            Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageViewerPage.ImageFileReadJob_Callback: {sw.ElapsedMilliseconds} ms");
+                            ConsoleUtil.Write($"ImageViewerPage.ImageFileReadJob_Callback: {sw.ElapsedMilliseconds} ms");
                         })
                         .Cancel(() =>
                         {
-                            Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageViewerPage.ImageFileReadJob.Cancel");
+                            ConsoleUtil.Write($"ImageViewerPage.ImageFileReadJob.Cancel");
                         })
                         .Complete(() =>
                         {
-                            Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageViewerPage.ImageFileReadJob.Complete");
+                            ConsoleUtil.Write($"ImageViewerPage.ImageFileReadJob.Complete");
                         });
                 }
 
@@ -384,7 +383,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             finally
             {
                 sw.Stop();
-                Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageViewerPage.GetImageSize: {sw.ElapsedMilliseconds} ms");
+                ConsoleUtil.Write($"ImageViewerPage.GetImageSize: {sw.ElapsedMilliseconds} ms");
             }
         }
 
@@ -453,7 +452,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             }
 
             sw.Stop();
-            Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageViewerPage.ChangeImagePanelSize: {sw.ElapsedMilliseconds} ms");
+            ConsoleUtil.Write($"ImageViewerPage.ChangeImagePanelSize: {sw.ElapsedMilliseconds} ms");
         }
 
         private void ChangeImagePanelSize(ImageFileReadResult e)
@@ -628,7 +627,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         private void ReadImage()
         {
             var sw = Stopwatch.StartNew();
-            Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageViewerPage.ReadImage: Start");
+            ConsoleUtil.Write($"ImageViewerPage.ReadImage: Start");
 
             var mainFilePath = this.filePathList[this.FilePathListIndex];
             this.SelectedFilePath = mainFilePath;
@@ -667,7 +666,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.ImageFileReadJob.StartJob(param);
 
             sw.Stop();
-            Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageViewerPage.ReadImage: {sw.ElapsedMilliseconds} ms");
+            ConsoleUtil.Write($"ImageViewerPage.ReadImage: {sw.ElapsedMilliseconds} ms");
         }
 
         private void DoDragDrop(string currentFilePath)

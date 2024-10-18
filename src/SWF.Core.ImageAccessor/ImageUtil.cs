@@ -1,3 +1,4 @@
+using SWF.Core.Base;
 using SWF.Core.FileAccessor;
 using System.Diagnostics;
 using System.Drawing.Drawing2D;
@@ -52,7 +53,7 @@ namespace SWF.Core.ImageAccessor
                 mes.Read(buffer, 0, buffer.Length);
 
                 sw.Stop();
-                //Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.ToCompressionBinary: {sw.ElapsedMilliseconds} ms");
+                //ConsoleUtil.Write($"ImageUtil.ToCompressionBinary: {sw.ElapsedMilliseconds} ms");
 
                 return buffer;
             }
@@ -76,7 +77,7 @@ namespace SWF.Core.ImageAccessor
                     var img = Bitmap.FromStream(mes, false, true);
 
                     sw.Stop();
-                    //Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.ToImage: {sw.ElapsedMilliseconds} ms");
+                    //ConsoleUtil.Write($"ImageUtil.ToImage: {sw.ElapsedMilliseconds} ms");
 
                     return (Bitmap)img;
                 }
@@ -114,7 +115,7 @@ namespace SWF.Core.ImageAccessor
                 }
 
                 sw.Stop();
-                Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.BitmapToBuffer: {sw.ElapsedMilliseconds} ms");
+                ConsoleUtil.Write($"ImageUtil.BitmapToBuffer: {sw.ElapsedMilliseconds} ms");
             }
         }
 
@@ -142,7 +143,7 @@ namespace SWF.Core.ImageAccessor
                 }
 
                 sw.Stop();
-                Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.BufferToBitmap: {sw.ElapsedMilliseconds} ms");
+                ConsoleUtil.Write($"ImageUtil.BufferToBitmap: {sw.ElapsedMilliseconds} ms");
             }
         }
 
@@ -177,7 +178,7 @@ namespace SWF.Core.ImageAccessor
                 }
 
                 sw.Stop();
-                Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.BitmapToBufferFor8bpp: {sw.ElapsedMilliseconds} ms");
+                ConsoleUtil.Write($"ImageUtil.BitmapToBufferFor8bpp: {sw.ElapsedMilliseconds} ms");
             }
         }
 
@@ -218,7 +219,7 @@ namespace SWF.Core.ImageAccessor
                 }
 
                 sw.Stop();
-                Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.BufferToBitmapFor8bpp: {sw.ElapsedMilliseconds} ms");
+                ConsoleUtil.Write($"ImageUtil.BufferToBitmapFor8bpp: {sw.ElapsedMilliseconds} ms");
             }
         }
 
@@ -400,7 +401,7 @@ namespace SWF.Core.ImageAccessor
             finally
             {
                 sw.Stop();
-                Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.GetImageSize: {sw.ElapsedMilliseconds} ms");
+                ConsoleUtil.Write($"ImageUtil.GetImageSize: {sw.ElapsedMilliseconds} ms");
             }
         }
 
@@ -417,7 +418,7 @@ namespace SWF.Core.ImageAccessor
                     sw = Stopwatch.StartNew();
                     var bmp = SvgUtil.ReadImageFile(filePath);
                     sw.Stop();
-                    Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.ReadImageFile Svg file: {sw.ElapsedMilliseconds} ms");
+                    ConsoleUtil.Write($"ImageUtil.ReadImageFile Svg file: {sw.ElapsedMilliseconds} ms");
                     return bmp;
                 }
 
@@ -426,7 +427,7 @@ namespace SWF.Core.ImageAccessor
                     FileMode.Open, FileAccess.Read, FileShare.Read, FILE_READ_BUFFER_SIZE, FileOptions.SequentialScan))
                 {
                     sw.Stop();
-                    Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.ReadImageFile new FileStream: {sw.ElapsedMilliseconds} ms");
+                    ConsoleUtil.Write($"ImageUtil.ReadImageFile new FileStream: {sw.ElapsedMilliseconds} ms");
 
                     if (FileUtil.IsIconFile(filePath))
                     {
@@ -435,7 +436,7 @@ namespace SWF.Core.ImageAccessor
                             sw = Stopwatch.StartNew();
                             var bmp = ConvertIfGrayscale(icon.ToBitmap(), fs);
                             sw.Stop();
-                            Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.ReadImageFile Icon file: {sw.ElapsedMilliseconds} ms");
+                            ConsoleUtil.Write($"ImageUtil.ReadImageFile Icon file: {sw.ElapsedMilliseconds} ms");
                             return bmp;
                         }
                     }
@@ -447,7 +448,7 @@ namespace SWF.Core.ImageAccessor
                         sw = Stopwatch.StartNew();
                         var bmp = ConvertIfGrayscale(OpenCVUtil.ReadImageFile(fs), fs);
                         sw.Stop();
-                        Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.ReadImageFile Webp file: {sw.ElapsedMilliseconds} ms");
+                        ConsoleUtil.Write($"ImageUtil.ReadImageFile Webp file: {sw.ElapsedMilliseconds} ms");
                         return bmp;
                     }
                     else if (FileUtil.IsAvifFile(formatName))
@@ -455,7 +456,7 @@ namespace SWF.Core.ImageAccessor
                         sw = Stopwatch.StartNew();
                         var bmp = ConvertIfGrayscale(SixLaborsUtil.ReadImageFile(fs), fs);
                         sw.Stop();
-                        Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.ReadImageFile Avif file: {sw.ElapsedMilliseconds} ms");
+                        ConsoleUtil.Write($"ImageUtil.ReadImageFile Avif file: {sw.ElapsedMilliseconds} ms");
                         return bmp;
                     }
                     else if (FileUtil.IsHeifFile(formatName))
@@ -463,7 +464,7 @@ namespace SWF.Core.ImageAccessor
                         sw = Stopwatch.StartNew();
                         var bmp = ConvertIfGrayscale(SixLaborsUtil.ReadImageFile(fs), fs);
                         sw.Stop();
-                        Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.ReadImageFile Heif file: {sw.ElapsedMilliseconds} ms");
+                        ConsoleUtil.Write($"ImageUtil.ReadImageFile Heif file: {sw.ElapsedMilliseconds} ms");
                         return bmp;
                     }
                     else if (FileUtil.IsJpegFile(formatName))
@@ -472,7 +473,7 @@ namespace SWF.Core.ImageAccessor
                         var bmp = ConvertIfGrayscale((Bitmap)Bitmap.FromStream(fs, false, true), fs);
                         bmp = LoadBitmapCorrectOrientation(bmp);
                         sw.Stop();
-                        Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.ReadImageFile Jpeg file: {sw.ElapsedMilliseconds} ms");
+                        ConsoleUtil.Write($"ImageUtil.ReadImageFile Jpeg file: {sw.ElapsedMilliseconds} ms");
                         return bmp;
 
                     }
@@ -481,7 +482,7 @@ namespace SWF.Core.ImageAccessor
                         sw = Stopwatch.StartNew();
                         var bmp = ConvertIfGrayscale((Bitmap)Bitmap.FromStream(fs, false, true), fs);
                         sw.Stop();
-                        Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.ReadImageFile Bitmap file: {sw.ElapsedMilliseconds} ms");
+                        ConsoleUtil.Write($"ImageUtil.ReadImageFile Bitmap file: {sw.ElapsedMilliseconds} ms");
                         return bmp;
                     }
                     else if (FileUtil.IsPngFile(formatName))
@@ -489,7 +490,7 @@ namespace SWF.Core.ImageAccessor
                         sw = Stopwatch.StartNew();
                         var bmp = ConvertIfGrayscale((Bitmap)Bitmap.FromStream(fs, false, true), fs);
                         sw.Stop();
-                        Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.ReadImageFile Png file: {sw.ElapsedMilliseconds} ms");
+                        ConsoleUtil.Write($"ImageUtil.ReadImageFile Png file: {sw.ElapsedMilliseconds} ms");
                         return bmp;
                     }
                     else if (FileUtil.IsImageFile(filePath))
@@ -497,7 +498,7 @@ namespace SWF.Core.ImageAccessor
                         sw = Stopwatch.StartNew();
                         var bmp = ConvertIfGrayscale((Bitmap)Bitmap.FromStream(fs, false, true), fs);
                         sw.Stop();
-                        Console.WriteLine($"[{Thread.CurrentThread.Name}] ImageUtil.ReadImageFile Other file: {sw.ElapsedMilliseconds} ms");
+                        ConsoleUtil.Write($"ImageUtil.ReadImageFile Other file: {sw.ElapsedMilliseconds} ms");
                         return bmp;
                     }
                     else

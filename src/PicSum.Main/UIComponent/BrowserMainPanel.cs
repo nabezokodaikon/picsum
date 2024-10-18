@@ -615,7 +615,6 @@ namespace PicSum.Main.UIComponent
 
         private void PageContainer_DragEnter(object sender, DragEventArgs e)
         {
-            Console.WriteLine("PageContainer_DragEnter");
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {
                 e.Effect = DragDropEffects.Copy;

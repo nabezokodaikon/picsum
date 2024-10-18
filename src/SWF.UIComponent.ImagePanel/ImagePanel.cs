@@ -7,7 +7,6 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Runtime.Versioning;
-using System.Threading;
 using System.Windows.Forms;
 
 namespace SWF.UIComponent.ImagePanel
@@ -218,7 +217,7 @@ namespace SWF.UIComponent.ImagePanel
             base.Update();
 
             sw.Stop();
-            Console.WriteLine($"[{Thread.CurrentThread.Name}] ImagePanel.Update: {sw.ElapsedMilliseconds} ms");
+            ConsoleUtil.Write($"ImagePanel.Update: {sw.ElapsedMilliseconds} ms");
         }
 
         protected override void Dispose(bool disposing)
@@ -267,7 +266,7 @@ namespace SWF.UIComponent.ImagePanel
             }
 
             sw.Stop();
-            Console.WriteLine($"[{Thread.CurrentThread.Name}] ImagePanel.OnPaint: {sw.ElapsedMilliseconds} ms");
+            ConsoleUtil.Write($"ImagePanel.OnPaint: {sw.ElapsedMilliseconds} ms");
         }
 
         protected override void OnMouseLeave(EventArgs e)
@@ -659,7 +658,7 @@ namespace SWF.UIComponent.ImagePanel
             }
 
             sw.Stop();
-            Console.WriteLine($"[{Thread.CurrentThread.Name}] ImagePanel.DrawImage: {sw.ElapsedMilliseconds} ms");
+            ConsoleUtil.Write($"ImagePanel.DrawImage: {sw.ElapsedMilliseconds} ms");
         }
 
         private void DrawThumbnailPanel(Graphics g)

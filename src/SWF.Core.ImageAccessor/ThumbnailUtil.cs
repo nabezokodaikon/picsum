@@ -46,7 +46,7 @@ namespace SWF.Core.ImageAccessor
             finally
             {
                 sw.Stop();
-                Console.WriteLine($"[{Thread.CurrentThread.Name}] ThumbnailUtil.GetThumbnail: {sw.ElapsedMilliseconds} ms");
+                ConsoleUtil.Write($"ThumbnailUtil.GetThumbnail: {sw.ElapsedMilliseconds} ms");
             }
         }
 
@@ -89,7 +89,7 @@ namespace SWF.Core.ImageAccessor
             var thumb = ImageUtil.Resize((Bitmap)srcImg, w, h);
 
             sw.Stop();
-            //Console.WriteLine($"[{Thread.CurrentThread.Name}] ThumbnailUtil.CreateThumbnail: {sw.ElapsedMilliseconds} ms");
+            //ConsoleUtil.Write($"ThumbnailUtil.CreateThumbnail: {sw.ElapsedMilliseconds} ms");
 
             return thumb;
         }
@@ -125,7 +125,7 @@ namespace SWF.Core.ImageAccessor
             }
 
             sw.Stop();
-            Console.WriteLine($"[{Thread.CurrentThread.Name}] ThumbnailUtil.CreateThumbnail: {sw.ElapsedMilliseconds} ms");
+            ConsoleUtil.Write($"ThumbnailUtil.CreateThumbnail: {sw.ElapsedMilliseconds} ms");
 
             return destImg;
         }
