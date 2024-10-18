@@ -50,7 +50,8 @@ namespace PicSum.UIComponent.Contents.FileList
                 });
 
                 job.StartJob(new ValueParameter<string>(param.SourcesKey));
-                job.Wait();
+                job.WaitJobComplete();
+                job.WaitThreadFinish();
                 job.Dispose();
             };
         }
@@ -282,8 +283,8 @@ namespace PicSum.UIComponent.Contents.FileList
 
             param.SelectedFilePath = base.SelectedFilePath;
 
-            // TODO: ジョブの完了を待つ。
             this.DirectoryStateUpdateJob.StartJob(param);
+            this.DirectoryStateUpdateJob.WaitJobComplete();
         }
 
         private void SearchJob_Callback(DirectoryGetResult e)

@@ -48,7 +48,8 @@ namespace PicSum.UIComponent.Contents.FileList
                 });
 
                 job.StartJob(new ValueParameter<int>(int.Parse(param.SourcesKey)));
-                job.Wait();
+                job.WaitJobComplete();
+                job.WaitThreadFinish();
                 job.Dispose();
             };
         }

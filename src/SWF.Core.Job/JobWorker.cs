@@ -165,7 +165,23 @@ namespace SWF.Core.Job
             job?.BeginCancel();
         }
 
-        public void Wait()
+        public void WaitJobComplete()
+        {
+            var job = this.CurrentJob;
+            if (job == null)
+            {
+                return;
+            }
+
+            Logger.Debug("ジョブの完了を待ちます。");
+            while (!job.IsCompleted)
+            {
+                Thread.Sleep(0);
+            }
+            Logger.Debug("ジョブが完了しました。");
+        }
+
+        public void WaitThreadFinish()
         {
             Logger.Debug("ジョブ実行スレッドにキャンセルリクエストを送ります。");
             this.source.Cancel();

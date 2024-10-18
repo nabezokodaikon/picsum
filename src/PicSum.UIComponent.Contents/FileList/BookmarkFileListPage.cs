@@ -52,7 +52,8 @@ namespace PicSum.UIComponent.Contents.FileList
 
                 var dir = FileUtil.GetParentDirectoryPath(param.SelectedFilePath);
                 job.StartJob(new ValueParameter<string>(dir));
-                job.Wait();
+                job.WaitJobComplete();
+                job.WaitThreadFinish();
                 job.Dispose();
             };
         }
