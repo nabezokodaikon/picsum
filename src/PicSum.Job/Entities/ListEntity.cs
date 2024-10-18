@@ -1,7 +1,5 @@
 namespace PicSum.Job.Entities
 {
-    // TODO: コンストラクタで値を設定できるようにする。
-
     /// <summary>
     /// リストエンティティ
     /// </summary>
