@@ -12,5 +12,22 @@ namespace SWF.Core.Base
             Console.WriteLine($"[{Thread.CurrentThread.Name}] {message}");
 #endif
         }
+
+        public static void Write(bool enable, string message)
+        {
+#if DEBUG
+            if (enable)
+            {
+                ArgumentNullException.ThrowIfNull(message, nameof(message));
+                Console.WriteLine(message);
+            }
+#elif DEVELOP
+            if (enable)
+            {
+                ArgumentNullException.ThrowIfNull(message, nameof(message));
+                Console.WriteLine(message);
+            }
+#endif
+        }
     }
 }
