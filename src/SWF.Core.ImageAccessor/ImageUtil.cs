@@ -87,14 +87,25 @@ namespace SWF.Core.ImageAccessor
 
                 try
                 {
-                    var bytesPerPixel = Image.GetPixelFormatSize(bitmap.PixelFormat) / 8;
-                    var rect = new Rectangle(0, 0, bitmap.Width, bitmap.Height);
-                    bmpData = bitmap.LockBits(rect, ImageLockMode.ReadOnly, bitmap.PixelFormat);
-                    var stride = bmpData.Stride;
-                    var bufferSize = stride * bitmap.Height;
-                    var pixelBuffer = new byte[bufferSize];
-                    Marshal.Copy(bmpData.Scan0, pixelBuffer, 0, bufferSize);
-                    return pixelBuffer;
+                    unsafe
+                    {
+                        var bytesPerPixel = Image.GetPixelFormatSize(bitmap.PixelFormat) / 8;
+                        var rect = new Rectangle(0, 0, bitmap.Width, bitmap.Height);
+                        bmpData = bitmap.LockBits(rect, ImageLockMode.ReadOnly, bitmap.PixelFormat);
+
+                        int stride = bmpData.Stride;
+                        int bufferSize = stride * bitmap.Height;
+                        byte[] pixelBuffer = new byte[bufferSize];
+
+                        byte* srcPtr = (byte*)bmpData.Scan0;
+
+                        fixed (byte* destPtr = pixelBuffer)
+                        {
+                            Buffer.MemoryCopy(srcPtr, destPtr, bufferSize, bufferSize);
+                        }
+
+                        return pixelBuffer;
+                    }
                 }
                 finally
                 {
