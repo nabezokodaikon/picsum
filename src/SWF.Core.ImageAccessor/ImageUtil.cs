@@ -3,7 +3,6 @@ using SWF.Core.FileAccessor;
 using System.Diagnostics;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
-using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 using System.Security;
 using System.Xml;
@@ -175,7 +174,16 @@ namespace SWF.Core.ImageAccessor
                     var stride = bmpData.Stride;
                     var bufferSize = stride * bitmap.Height;
                     var pixelBuffer = new byte[bufferSize];
-                    Marshal.Copy(bmpData.Scan0, pixelBuffer, 0, bufferSize);
+
+                    unsafe
+                    {
+                        var srcPtr = (byte*)bmpData.Scan0;
+                        fixed (byte* destPtr = pixelBuffer)
+                        {
+                            Buffer.MemoryCopy(srcPtr, destPtr, bufferSize, bufferSize);
+                        }
+                    }
+
                     return pixelBuffer;
                 }
                 finally
@@ -200,7 +208,7 @@ namespace SWF.Core.ImageAccessor
                 try
                 {
                     var palette = bitmap.Palette;
-                    for (int i = 0; i < 256; i++)
+                    for (var i = 0; i < 256; i++)
                     {
                         palette.Entries[i] = Color.FromArgb(i, i, i);
                     }
@@ -210,9 +218,14 @@ namespace SWF.Core.ImageAccessor
                     bmpData = bitmap.LockBits(rect, ImageLockMode.WriteOnly, PixelFormat.Format8bppIndexed);
 
                     var stride = bmpData.Stride;
-                    for (int y = 0; y < height; y++)
+                    var bufferSize = stride * height;
+
+                    unsafe
                     {
-                        Marshal.Copy(rawBytes, y * width, bmpData.Scan0 + y * stride, width);
+                        fixed (byte* srcPtr = rawBytes)
+                        {
+                            Buffer.MemoryCopy(srcPtr, (byte*)bmpData.Scan0, bufferSize, rawBytes.Length);
+                        }
                     }
 
                     return bitmap;

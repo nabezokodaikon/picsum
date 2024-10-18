@@ -13,7 +13,6 @@ using SixLabors.ImageSharp.Formats.Tiff;
 using SixLabors.ImageSharp.Formats.Webp;
 using SixLabors.ImageSharp.PixelFormats;
 using SWF.Core.Base;
-using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 
 namespace SWF.Core.ImageAccessor
@@ -60,11 +59,11 @@ namespace SWF.Core.ImageAccessor
 
             using (var image = SixLabors.ImageSharp.Image.Load(DECODER_OPTIONS, fs))
             {
-                return ImageSharpeToBitmap((Image<Rgba32>)image);
+                return ImageSharpToBitmap((Image<Rgba32>)image);
             }
         }
 
-        private static Bitmap ImageSharpeToBitmap(Image<Rgba32> image)
+        private static Bitmap ImageSharpToBitmap(Image<Rgba32> image)
         {
             var width = image.Width;
             var height = image.Height;
@@ -79,25 +78,26 @@ namespace SWF.Core.ImageAccessor
                     System.Drawing.Imaging.ImageLockMode.WriteOnly,
                     bitmap.PixelFormat);
 
-                var ptr = bitmapData.Scan0;
-                var bytes = Math.Abs(bitmapData.Stride) * height;
-                var rgbValues = new byte[bytes];
-
-                for (var y = 0; y < height; y++)
+                unsafe
                 {
-                    for (var x = 0; x < width; x++)
-                    {
-                        var pixel = image[x, y];
-                        var position = (y * bitmapData.Stride) + (x * 4);
+                    var ptr = (byte*)bitmapData.Scan0;
+                    var stride = bitmapData.Stride;
 
-                        rgbValues[position] = pixel.B;
-                        rgbValues[position + 1] = pixel.G;
-                        rgbValues[position + 2] = pixel.R;
-                        rgbValues[position + 3] = pixel.A;
+                    for (var y = 0; y < height; y++)
+                    {
+                        var row = ptr + (y * stride);
+                        for (var x = 0; x < width; x++)
+                        {
+                            var pixel = image[x, y];
+                            var pixelPtr = row + (x * 4);
+
+                            pixelPtr[0] = pixel.B; // Blue
+                            pixelPtr[1] = pixel.G; // Green
+                            pixelPtr[2] = pixel.R; // Red
+                            pixelPtr[3] = pixel.A; // Alpha
+                        }
                     }
                 }
-
-                Marshal.Copy(rgbValues, 0, ptr, bytes);
 
                 return bitmap;
             }
