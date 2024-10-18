@@ -19,13 +19,13 @@ namespace SWF.Core.Base
             if (enable)
             {
                 ArgumentNullException.ThrowIfNull(message, nameof(message));
-                Console.WriteLine(message);
+                Write(message);
             }
 #elif DEVELOP
             if (enable)
             {
                 ArgumentNullException.ThrowIfNull(message, nameof(message));
-                Console.WriteLine(message);
+                Write(message);
             }
 #endif
         }
