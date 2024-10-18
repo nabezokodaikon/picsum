@@ -31,6 +31,29 @@ namespace SWF.Core.ImageAccessor
             return obj;
         }
 
+        internal static Bitmap Resize(Bitmap srcBmp, int width, int height)
+        {
+            ArgumentNullException.ThrowIfNull(srcBmp, nameof(srcBmp));
+
+            try
+            {
+                return OpenCVUtil.Resize(srcBmp, width, height);
+            }
+            catch (NotImplementedException)
+            {
+                var destBmp = new Bitmap(width, height);
+                using (var g = Graphics.FromImage(destBmp))
+                {
+                    g.DrawImage(
+                        srcBmp,
+                        new Rectangle(0, 0, width, height),
+                        new Rectangle(0, 0, srcBmp.Width, srcBmp.Height),
+                        GraphicsUnit.Pixel);
+                }
+                return destBmp;
+            }
+        }
+
         /// <summary>
         /// イメージオブジェクトを圧縮したバイナリに変換します。
         /// </summary>
@@ -245,13 +268,6 @@ namespace SWF.Core.ImageAccessor
             {
                 return new ImageFileBuffer(bmp);
             }
-        }
-
-        internal static Bitmap Resize(Bitmap bmp, int width, int height)
-        {
-            ArgumentNullException.ThrowIfNull(bmp, nameof(bmp));
-
-            return OpenCVUtil.Resize(bmp, width, height);
         }
 
         /// <summary>
