@@ -236,35 +236,20 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             {
                 this.disposing = true;
 
-                if (this.addBookmarkJob != null)
-                {
-                    this.addBookmarkJob.Dispose();
-                    this.addBookmarkJob = null;
-                }
+                this.addBookmarkJob?.Dispose();
+                this.addBookmarkJob = null;
 
-                if (this.singleFileExportJob != null)
-                {
-                    this.singleFileExportJob.Dispose();
-                    this.singleFileExportJob = null;
-                }
+                this.singleFileExportJob?.Dispose();
+                this.singleFileExportJob = null;
 
-                if (this.imageFileReadJob != null)
-                {
-                    this.imageFileReadJob.Dispose();
-                    this.imageFileReadJob = null;
-                }
+                this.imageFileReadJob?.Dispose();
+                this.imageFileReadJob = null;
 
-                if (this.imageFileCacheJob != null)
-                {
-                    this.imageFileCacheJob.Dispose();
-                    this.imageFileCacheJob = null;
-                }
+                this.imageFileCacheJob?.Dispose();
+                this.imageFileCacheJob = null;
 
-                if (this.imageFileLoadingJob != null)
-                {
-                    this.imageFileLoadingJob.Dispose();
-                    this.imageFileLoadingJob = null;
-                }
+                this.imageFileLoadingJob?.Dispose();
+                this.imageFileLoadingJob = null;
 
                 this.leftImagePanel.Dispose();
                 this.rightImagePanel.Dispose();

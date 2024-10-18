@@ -332,35 +332,20 @@ namespace PicSum.UIComponent.Contents.FileList
             {
                 this.disposing = true;
 
-                if (this.thumbnailsGetJob != null)
-                {
-                    this.thumbnailsGetJob.Dispose();
-                    this.thumbnailsGetJob = null;
-                }
+                this.thumbnailsGetJob?.Dispose();
+                this.thumbnailsGetJob = null;
 
-                if (this.singleFileExportJob != null)
-                {
-                    this.singleFileExportJob.Dispose();
-                    this.singleFileExportJob = null;
-                }
+                this.singleFileExportJob?.Dispose();
+                this.singleFileExportJob = null;
 
-                if (this.bookmarkAddJob != null)
-                {
-                    this.bookmarkAddJob.Dispose();
-                    this.bookmarkAddJob = null;
-                }
+                this.bookmarkAddJob?.Dispose();
+                this.bookmarkAddJob = null;
 
-                if (this.multiFilesExportJob != null)
-                {
-                    this.multiFilesExportJob.Dispose();
-                    this.multiFilesExportJob = null;
-                }
+                this.multiFilesExportJob?.Dispose();
+                this.multiFilesExportJob = null;
 
-                if (this.imageFileSizeCacheJob != null)
-                {
-                    this.imageFileSizeCacheJob.Dispose();
-                    this.imageFileSizeCacheJob = null;
-                }
+                this.imageFileSizeCacheJob?.Dispose();
+                this.imageFileSizeCacheJob = null;
 
                 this.components?.Dispose();
             }

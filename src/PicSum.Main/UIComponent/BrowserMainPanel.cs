@@ -186,17 +186,11 @@ namespace PicSum.Main.UIComponent
         {
             if (disposing)
             {
-                if (this.getTagListJob != null)
-                {
-                    this.getTagListJob.Dispose();
-                    this.getTagListJob = null;
-                }
+                this.getTagListJob?.Dispose();
+                this.getTagListJob = null;
 
-                if (this.getFilesJob != null)
-                {
-                    this.getFilesJob.Dispose();
-                    this.getFilesJob = null;
-                }
+                this.getFilesJob?.Dispose();
+                this.getFilesJob = null;
 
                 this.components?.Dispose();
             }
@@ -231,11 +225,8 @@ namespace PicSum.Main.UIComponent
 
         private TwoWayJob<ImageFileGetByDirectoryJob, ImageFileGetByDirectoryParameter, ImageFileGetByDirectoryResult> CreateNewGetFilesJob()
         {
-            if (this.getFilesJob != null)
-            {
-                this.getFilesJob.Dispose();
-                this.getFilesJob = null;
-            }
+            this.getFilesJob?.Dispose();
+            this.getFilesJob = null;
 
             this.getFilesJob = new();
             return this.getFilesJob;

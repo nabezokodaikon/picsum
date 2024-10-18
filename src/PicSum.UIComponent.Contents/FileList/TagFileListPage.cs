@@ -122,17 +122,11 @@ namespace PicSum.UIComponent.Contents.FileList
                 this.parameter.SelectedFilePath = base.SelectedFilePath;
                 this.parameter.SortInfo = base.SortInfo;
 
-                if (this.searchJob != null)
-                {
-                    this.searchJob.Dispose();
-                    this.searchJob = null;
-                }
+                this.searchJob?.Dispose();
+                this.searchJob = null;
 
-                if (this.deleteJob != null)
-                {
-                    this.deleteJob.Dispose();
-                    this.deleteJob = null;
-                }
+                this.deleteJob?.Dispose();
+                this.deleteJob = null;
             }
 
             base.Dispose(disposing);

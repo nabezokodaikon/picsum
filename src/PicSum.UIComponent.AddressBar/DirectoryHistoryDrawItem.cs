@@ -40,11 +40,8 @@ namespace PicSum.UIComponent.AddressBar
 
         public new void Dispose()
         {
-            if (this.getDirectoryHistoryJob != null)
-            {
-                this.getDirectoryHistoryJob.Dispose();
-                this.getDirectoryHistoryJob = null;
-            }
+            this.getDirectoryHistoryJob?.Dispose();
+            this.getDirectoryHistoryJob = null;
 
             base.Dispose();
         }

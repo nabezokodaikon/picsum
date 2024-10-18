@@ -166,29 +166,17 @@ namespace PicSum.UIComponent.Contents.FileList
 
                 this.SaveCurrentDirectoryState();
 
-                if (this.searchJob != null)
-                {
-                    this.searchJob.Dispose();
-                    this.searchJob = null;
-                }
+                this.searchJob?.Dispose();
+                this.searchJob = null;
 
-                if (this.directoryStateUpdateJob != null)
-                {
-                    this.directoryStateUpdateJob.Dispose();
-                    this.directoryStateUpdateJob = null;
-                }
+                this.directoryStateUpdateJob?.Dispose();
+                this.directoryStateUpdateJob = null;
 
-                if (this.directoryHistoryaddJob != null)
-                {
-                    this.directoryHistoryaddJob.Dispose();
-                    this.directoryHistoryaddJob = null;
-                }
+                this.directoryHistoryaddJob?.Dispose();
+                this.directoryHistoryaddJob = null;
 
-                if (this.nextDirectoryGetJob != null)
-                {
-                    this.nextDirectoryGetJob.Dispose();
-                    this.nextDirectoryGetJob = null;
-                }
+                this.nextDirectoryGetJob?.Dispose();
+                this.nextDirectoryGetJob = null;
             }
 
             base.Dispose(disposing);

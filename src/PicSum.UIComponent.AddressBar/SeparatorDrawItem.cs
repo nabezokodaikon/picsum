@@ -61,17 +61,11 @@ namespace PicSum.UIComponent.AddressBar
 
         public new void Dispose()
         {
-            if (this.selectedSubDirectoryFont != null)
-            {
-                this.selectedSubDirectoryFont.Dispose();
-                this.selectedSubDirectoryFont = null;
-            }
+            this.selectedSubDirectoryFont?.Dispose();
+            this.selectedSubDirectoryFont = null;
 
-            if (this.getSubDirectoryJob != null)
-            {
-                this.getSubDirectoryJob.Dispose();
-                this.getSubDirectoryJob = null;
-            }
+            this.getSubDirectoryJob?.Dispose();
+            this.getSubDirectoryJob = null;
 
             base.Dispose();
         }

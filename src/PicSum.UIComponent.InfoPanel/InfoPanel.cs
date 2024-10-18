@@ -209,35 +209,20 @@ namespace PicSum.UIComponent.InfoPanel
         {
             if (disposing)
             {
-                if (this.getFileInfoJob != null)
-                {
-                    this.getFileInfoJob.Dispose();
-                    this.getFileInfoJob = null;
-                }
+                this.getFileInfoJob?.Dispose();
+                this.getFileInfoJob = null;
 
-                if (this.updateFileRatingJob != null)
-                {
-                    this.updateFileRatingJob.Dispose();
-                    this.updateFileRatingJob = null;
-                }
+                this.updateFileRatingJob?.Dispose();
+                this.updateFileRatingJob = null;
 
-                if (this.getTagListJob != null)
-                {
-                    this.getTagListJob.Dispose();
-                    this.getTagListJob = null;
-                }
+                this.getTagListJob?.Dispose();
+                this.getTagListJob = null;
 
-                if (this.addFileTagJob != null)
-                {
-                    this.addFileTagJob.Dispose();
-                    this.addFileTagJob = null;
-                }
+                this.addFileTagJob?.Dispose();
+                this.addFileTagJob = null;
 
-                if (this.deleteFileTagJob != null)
-                {
-                    this.deleteFileTagJob.Dispose();
-                    this.deleteFileTagJob = null;
-                }
+                this.deleteFileTagJob?.Dispose();
+                this.deleteFileTagJob = null;
 
                 this.components?.Dispose();
             }

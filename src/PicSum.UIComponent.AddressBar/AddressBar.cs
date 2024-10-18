@@ -202,11 +202,8 @@ namespace PicSum.UIComponent.AddressBar
         {
             if (disposing)
             {
-                if (this.getAddressInfoJob != null)
-                {
-                    this.getAddressInfoJob.Dispose();
-                    this.getAddressInfoJob = null;
-                }
+                this.getAddressInfoJob?.Dispose();
+                this.getAddressInfoJob = null;
 
                 this.overflowItem.Dispose();
                 this.directoryHistoryItem.Dispose();
