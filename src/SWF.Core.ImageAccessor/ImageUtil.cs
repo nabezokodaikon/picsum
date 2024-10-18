@@ -91,13 +91,13 @@ namespace SWF.Core.ImageAccessor
                     var rect = new Rectangle(0, 0, bitmap.Width, bitmap.Height);
                     bmpData = bitmap.LockBits(rect, ImageLockMode.ReadOnly, bitmap.PixelFormat);
 
-                    int stride = bmpData.Stride;
-                    int bufferSize = stride * bitmap.Height;
-                    byte[] pixelBuffer = new byte[bufferSize];
+                    var stride = bmpData.Stride;
+                    var bufferSize = stride * bitmap.Height;
+                    var pixelBuffer = new byte[bufferSize];
 
                     unsafe
                     {
-                        byte* srcPtr = (byte*)bmpData.Scan0;
+                        var srcPtr = (byte*)bmpData.Scan0;
                         fixed (byte* destPtr = pixelBuffer)
                         {
                             Buffer.MemoryCopy(srcPtr, destPtr, bufferSize, bufferSize);
@@ -122,7 +122,7 @@ namespace SWF.Core.ImageAccessor
 
             using (TimeMeasuring.Run(true, "ImageUtil.BufferToBitmap"))
             {
-                Bitmap bitmap = new Bitmap(width, height, pixelFormat);
+                var bitmap = new Bitmap(width, height, pixelFormat);
                 BitmapData? bmpData = null;
 
                 try
@@ -130,15 +130,15 @@ namespace SWF.Core.ImageAccessor
                     var rect = new Rectangle(0, 0, width, height);
                     bmpData = bitmap.LockBits(rect, ImageLockMode.WriteOnly, pixelFormat);
 
-                    int bytesPerPixel = Image.GetPixelFormatSize(pixelFormat) / 8;
-                    int stride = bmpData.Stride;
-                    int bufferSize = stride * height;
+                    var bytesPerPixel = Image.GetPixelFormatSize(pixelFormat) / 8;
+                    var stride = bmpData.Stride;
+                    var bufferSize = stride * height;
 
                     unsafe
                     {
                         fixed (byte* srcPtr = rawBytes)
                         {
-                            byte* destPtr = (byte*)bmpData.Scan0;
+                            var destPtr = (byte*)bmpData.Scan0;
                             Buffer.MemoryCopy(srcPtr, destPtr, bufferSize, rawBytes.Length);
                         }
                     }
