@@ -54,11 +54,11 @@ namespace SWF.UIComponent.Core
 
         private void DrawCheckRectangle(Graphics g)
         {
-            int w = this.ClientRectangle.Width;
-            int h = this.ClientRectangle.Height;
+            var w = this.ClientRectangle.Width;
+            var h = this.ClientRectangle.Height;
 
             // グラデーション描画            
-            using (LinearGradientBrush b = new LinearGradientBrush(this.ClientRectangle,
+            using (var b = new LinearGradientBrush(this.ClientRectangle,
                                                                    Color.FromArgb(80, 80, 80),
                                                                    Color.FromArgb(16, 16, 16),
                                                                    LinearGradientMode.ForwardDiagonal))
@@ -80,10 +80,10 @@ namespace SWF.UIComponent.Core
             // チェック描画領域取得
             var rectsA = new List<Rectangle>();
             var rectsB = new List<Rectangle>();
-            bool addA = true;
-            for (int x = 0; x <= w; x += this._rectangleSize)
+            var addA = true;
+            for (var x = 0; x <= w; x += this._rectangleSize)
             {
-                for (int y = 0; y <= h; y += this._rectangleSize)
+                for (var y = 0; y <= h; y += this._rectangleSize)
                 {
                     if (addA)
                     {

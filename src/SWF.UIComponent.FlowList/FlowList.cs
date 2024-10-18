@@ -195,7 +195,7 @@ namespace SWF.UIComponent.FlowList
         {
             if ((keyData & Keys.Alt) != Keys.Alt)
             {
-                Keys kcode = keyData & Keys.KeyCode;
+                var kcode = keyData & Keys.KeyCode;
 
                 if (kcode == Keys.Up ||
                     kcode == Keys.Down ||
@@ -550,7 +550,7 @@ namespace SWF.UIComponent.FlowList
         {
             if (e.Delta != 0)
             {
-                int value = this.scrollBar.Value - (int)(this.itemHeight * 0.8 * (e.Delta / Math.Abs(e.Delta)));
+                var value = this.scrollBar.Value - (int)(this.itemHeight * 0.8 * (e.Delta / Math.Abs(e.Delta)));
                 if (value < this.scrollBar.Minimum)
                 {
                     this.scrollBar.Value = this.scrollBar.Minimum;
@@ -604,7 +604,7 @@ namespace SWF.UIComponent.FlowList
                 var drawLastRow = drawFirstRow + drawRowCount + 1;
                 var drawFirstItemIndex = drawFirstRow * colCount;
                 var drawLastItemIndex = drawLastRow * colCount - 1;
-                for (int row = drawLastRow; row >= drawFirstRow; row--)
+                for (var row = drawLastRow; row >= drawFirstRow; row--)
                 {
                     if (drawLastItemIndex < this.itemCount)
                     {
@@ -806,7 +806,7 @@ namespace SWF.UIComponent.FlowList
             else
             {
                 this.selectedItemIndexs.Clear();
-                for (int i = 0; i < this.itemCount; i++)
+                for (var i = 0; i < this.itemCount; i++)
                 {
                     this.selectedItemIndexs.Add(i);
                 }

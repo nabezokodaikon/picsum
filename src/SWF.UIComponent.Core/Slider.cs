@@ -245,7 +245,7 @@ namespace SWF.UIComponent.Core
                     this.Invalidate();
                     this.Update();
 
-                    int value = this.GetValue(pointX);
+                    var value = this.GetValue(pointX);
                     if (value != this.sliderValue)
                     {
                         this.sliderValue = value;
@@ -288,7 +288,7 @@ namespace SWF.UIComponent.Core
                     this.Invalidate();
                     this.Update();
 
-                    int value = this.GetValue(pointX);
+                    var value = this.GetValue(pointX);
                     if (value != this.sliderValue)
                     {
                         this.sliderValue = value;

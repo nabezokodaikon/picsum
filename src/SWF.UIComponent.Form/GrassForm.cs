@@ -98,7 +98,7 @@ namespace SWF.UIComponent.Form
 
         protected override void WndProc(ref Message m)
         {
-            int dwmHandled = WinApiMembers.DwmDefWindowProc(m.HWnd, m.Msg, m.WParam, m.LParam, out var result);
+            var dwmHandled = WinApiMembers.DwmDefWindowProc(m.HWnd, m.Msg, m.WParam, m.LParam, out var result);
             if (dwmHandled == 1)
             {
                 m.Result = result;

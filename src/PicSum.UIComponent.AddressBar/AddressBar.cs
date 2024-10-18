@@ -482,7 +482,7 @@ namespace PicSum.UIComponent.AddressBar
 
         private void ClearAddressItems()
         {
-            foreach (IDisposable item in this.addressItems.Cast<IDisposable>())
+            foreach (var item in this.addressItems.Cast<IDisposable>())
             {
                 item.Dispose();
             }

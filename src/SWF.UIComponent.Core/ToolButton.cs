@@ -132,64 +132,64 @@ namespace SWF.UIComponent.Core
 
         private Rectangle GetDefaultRectangle()
         {
-            int l = 0;
-            int t = 0;
-            int r = this.Width;
-            int b = this.Height;
+            var l = 0;
+            var t = 0;
+            var r = this.Width;
+            var b = this.Height;
             return Rectangle.FromLTRB(l, t, r, b);
         }
 
         private Rectangle GetLeftRectangle()
         {
-            int l = 0;
-            int t = 0;
-            int r = this.Width - REGION_OFFSET;
-            int b = this.Height;
+            var l = 0;
+            var t = 0;
+            var r = this.Width - REGION_OFFSET;
+            var b = this.Height;
             return Rectangle.FromLTRB(l, t, r, b);
         }
 
         private Rectangle GetTopRectangle()
         {
-            int l = 0;
-            int t = 0;
-            int r = this.Width;
-            int b = this.Height - REGION_OFFSET;
+            var l = 0;
+            var t = 0;
+            var r = this.Width;
+            var b = this.Height - REGION_OFFSET;
             return Rectangle.FromLTRB(l, t, r, b);
         }
 
         private Rectangle GetRightRectangle()
         {
-            int l = REGION_OFFSET;
-            int t = 0;
-            int r = this.Width;
-            int b = this.Height;
+            var l = REGION_OFFSET;
+            var t = 0;
+            var r = this.Width;
+            var b = this.Height;
             return Rectangle.FromLTRB(l, t, r, b);
         }
 
         private Rectangle GetBottomRectangle()
         {
-            int l = 0;
-            int t = REGION_OFFSET;
-            int r = this.Width;
-            int b = this.Height;
+            var l = 0;
+            var t = REGION_OFFSET;
+            var r = this.Width;
+            var b = this.Height;
             return Rectangle.FromLTRB(l, t, r, b);
         }
 
         private Rectangle GetHorizonCenterRectangle()
         {
-            int l = REGION_OFFSET;
-            int t = 0;
-            int r = this.Width - REGION_OFFSET;
-            int b = this.Height;
+            var l = REGION_OFFSET;
+            var t = 0;
+            var r = this.Width - REGION_OFFSET;
+            var b = this.Height;
             return Rectangle.FromLTRB(l, t, r, b);
         }
 
         private Rectangle GetVerticalCenterRectangle()
         {
-            int l = 0;
-            int t = REGION_OFFSET;
-            int r = this.Width;
-            int b = this.Height - REGION_OFFSET;
+            var l = 0;
+            var t = REGION_OFFSET;
+            var r = this.Width;
+            var b = this.Height - REGION_OFFSET;
             return Rectangle.FromLTRB(l, t, r, b);
         }
 

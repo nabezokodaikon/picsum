@@ -218,7 +218,7 @@ namespace SWF.UIComponent.TabOperation
                 {
                     if (form.Bounds.Contains(toScreenPoint))
                     {
-                        TabSwitch owner = GetTabSwitchControl(form);
+                        var owner = GetTabSwitchControl(form);
                         if (owner.GetTabsScreenRectangle().Contains(toScreenPoint))
                         {
                             var clientPoint = owner.PointToClient(toScreenPoint);

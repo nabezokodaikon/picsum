@@ -67,7 +67,7 @@ namespace PicSum.UIComponent.AddressBar
                     width += base.DropDownList.ScrollBarWidth;
                 }
 
-                int height = Math.Min(MAXIMUM_SHOW_ITEM_COUNT * base.DropDownList.ItemHeight,
+                var height = Math.Min(MAXIMUM_SHOW_ITEM_COUNT * base.DropDownList.ItemHeight,
                                       base.Items.Count * base.DropDownList.ItemHeight);
 
                 base.DropDownList.Size = new Size(width + base.DropDownList.ItemHeight, height);

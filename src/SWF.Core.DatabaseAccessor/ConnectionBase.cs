@@ -266,7 +266,7 @@ namespace SWF.Core.DatabaseAccessor
                         if (reader.HasRows)
                         {
                             reader.Read();
-                            TDto dto = new TDto();
+                            var dto = new TDto();
                             dto.Read(reader);
                             return dto;
                         }

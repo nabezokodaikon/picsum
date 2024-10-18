@@ -573,7 +573,7 @@ namespace PicSum.UIComponent.InfoPanel
         private void TagFlowList_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             var p = this.tagFlowList.PointToClient(Cursor.Position);
-            int index = this.tagFlowList.IndexFromPoint(p.X, p.Y);
+            var index = this.tagFlowList.IndexFromPoint(p.X, p.Y);
             if (index < 0)
             {
                 return;

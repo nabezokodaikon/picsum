@@ -10,7 +10,7 @@ namespace SWF.UIComponent.Core
         {
             get
             {
-                CreateParams cp = base.CreateParams;
+                var cp = base.CreateParams;
                 cp.ExStyle = WinApiMembers.WS_EX_TOOLWINDOW;
                 cp.Style = unchecked((int)WinApiMembers.WS_POPUP) | WinApiMembers.WS_VISIBLE | WinApiMembers.WS_SYSMENU | WinApiMembers.WS_MAXIMIZEBOX;
                 cp.Width = 0;

@@ -918,7 +918,7 @@ namespace SWF.UIComponent.TabOperation
                 var dropX = this.dropPoint.Value.X;
                 var dropY = this.dropPoint.Value.Y;
                 var isExecuteEvent = false;
-                foreach (TabInfo tab in this.tabList)
+                foreach (var tab in this.tabList)
                 {
                     if (tab.DrawArea.Contains(dropX, dropY))
                     {
@@ -1197,7 +1197,7 @@ namespace SWF.UIComponent.TabOperation
                 {
                     if (this.tabList.Count > 1)
                     {
-                        int index = this.tabList.IndexOf(tab) - 1;
+                        var index = this.tabList.IndexOf(tab) - 1;
                         this.addTabButtonDrawArea.X = this.tabList[index].DrawArea.Right + TABS_MARGIN;
                     }
                     else

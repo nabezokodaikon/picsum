@@ -683,7 +683,7 @@ namespace SWF.Core.ImageAccessor
                 {
                     unsafe
                     {
-                        byte* p = (byte*)(void*)bd.Scan0;
+                        var p = (byte*)(void*)bd.Scan0;
 
                         for (var y = 0; y < h; ++y)
                         {

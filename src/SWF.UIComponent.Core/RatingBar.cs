@@ -61,7 +61,7 @@ namespace SWF.UIComponent.Core
                 throw new ArgumentOutOfRangeException(nameof(value));
             }
 
-            for (int index = 0; index < this.maximumValue; index++)
+            for (var index = 0; index < this.maximumValue; index++)
             {
                 var btn = this.ratingButtonList[index];
                 btn.IsActive = index < value;
