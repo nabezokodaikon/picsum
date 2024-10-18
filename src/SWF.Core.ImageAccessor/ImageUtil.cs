@@ -46,10 +46,7 @@ namespace SWF.Core.ImageAccessor
                 var eps = new EncoderParameters(1);
                 eps.Param[0] = ImageUtil.ENCORDER_PARAMETER;
                 img.Save(mes, ImageUtil.COMPRESS_CODEC_INFO, eps);
-                var buffer = new byte[mes.Length];
-                mes.Position = 0;
-                mes.Read(buffer, 0, buffer.Length);
-                return buffer;
+                return mes.ToArray();
             }
         }
 
@@ -63,7 +60,7 @@ namespace SWF.Core.ImageAccessor
             ArgumentNullException.ThrowIfNull(bf, nameof(bf));
 
             using (TimeMeasuring.Run(false, "ImageUtil.ToImage"))
-            using (var mes = new MemoryStream(bf))
+            using (var mes = new MemoryStream(bf, 0, bf.Length, false, true))
             {
                 try
                 {
