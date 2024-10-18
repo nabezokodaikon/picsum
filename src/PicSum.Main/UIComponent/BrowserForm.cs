@@ -56,7 +56,22 @@ namespace PicSum.Main.UIComponent
 
         public BrowserForm()
         {
-            this.InitializeComponent();
+            this.SuspendLayout();
+
+            this.Text = "PicSum";
+            this.Icon = new Icon("AppIcon.ico");
+            this.AutoScaleMode = AutoScaleMode.None;
+            this.StartPosition = FormStartPosition.Manual;
+            this.MinimumSize = new Size(320, 240);
+            this.KeyPreview = true;
+            this.Padding = new Padding(8, 12, 8, 8);
+
+            this.Size = BrowserConfig.WindowSize;
+            this.WindowState = BrowserConfig.WindowState;
+
+            this.SetGrass();
+
+            this.ResumeLayout(false);
         }
 
         public void AddPageEventHandler(BrowserPage page)
@@ -208,23 +223,14 @@ namespace PicSum.Main.UIComponent
         {
             if (disposing)
             {
-                if (this.startupJob != null)
-                {
-                    this.startupJob.Dispose();
-                    this.startupJob = null;
-                }
+                this.startupJob?.Dispose();
+                this.startupJob = null;
 
-                if (this.fileInfoDBCleanupJob != null)
-                {
-                    this.fileInfoDBCleanupJob.Dispose();
-                    this.fileInfoDBCleanupJob = null;
-                }
+                this.fileInfoDBCleanupJob?.Dispose();
+                this.fileInfoDBCleanupJob = null;
 
-                if (this.thumbnailDBCleanupJob != null)
-                {
-                    this.thumbnailDBCleanupJob.Dispose();
-                    this.thumbnailDBCleanupJob = null;
-                }
+                this.thumbnailDBCleanupJob?.Dispose();
+                this.thumbnailDBCleanupJob = null;
             }
 
             base.Dispose(disposing);
@@ -292,26 +298,6 @@ namespace PicSum.Main.UIComponent
         {
             this.isKeyDown = false;
             base.OnKeyUp(e);
-        }
-
-        private void InitializeComponent()
-        {
-            this.SuspendLayout();
-
-            this.Text = "PicSum";
-            this.Icon = new Icon("AppIcon.ico");
-            this.AutoScaleMode = AutoScaleMode.None;
-            this.StartPosition = FormStartPosition.Manual;
-            this.MinimumSize = new Size(320, 240);
-            this.KeyPreview = true;
-            this.Padding = new Padding(8, 12, 8, 8);
-
-            this.Size = BrowserConfig.WindowSize;
-            this.WindowState = BrowserConfig.WindowState;
-
-            this.SetGrass();
-
-            this.ResumeLayout(false);
         }
 
         private void CreateBrowserMainPanel()

@@ -27,11 +27,6 @@ namespace PicSum.Main.UIComponent
 
         public InitialForm()
         {
-            this.InitializeComponent();
-        }
-
-        private void InitializeComponent()
-        {
             this.browserManager.BrowserNothing += new(this.BrowserManager_BrowserNothing);
         }
 

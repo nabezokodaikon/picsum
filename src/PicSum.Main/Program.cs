@@ -112,8 +112,9 @@ namespace PicSum.Main
             Application.SetCompatibleTextRenderingDefault(false);
 
             using (var component = new ComponentManager())
+            using (var initialForm = new InitialForm())
             {
-                Application.Run(new InitialForm());
+                Application.Run(initialForm);
             }
 
             FileIconCash.DisposeStaticResouces();
