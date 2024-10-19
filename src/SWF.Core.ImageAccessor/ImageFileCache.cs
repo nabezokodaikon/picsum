@@ -3,11 +3,13 @@ using System.Runtime.Versioning;
 namespace SWF.Core.ImageAccessor
 {
     [SupportedOSPlatform("windows")]
-    internal sealed class ImageFileCache
-        : IEquatable<ImageFileCache>
+    internal sealed partial class ImageFileCache
+        : IDisposable, IEquatable<ImageFileCache>
     {
+        private bool disposed = false;
+
         public string FilePath { get; private set; }
-        public ImageFileBuffer Buffer { get; private set; }
+        public ImageFileBuffer? Buffer { get; private set; }
         public DateTime Timestamp { get; private set; }
 
         public ImageFileCache(string filePath, ImageFileBuffer buffer, DateTime timestamp)
@@ -18,6 +20,33 @@ namespace SWF.Core.ImageAccessor
             this.FilePath = filePath;
             this.Buffer = buffer;
             this.Timestamp = timestamp;
+        }
+
+        ~ImageFileCache()
+        {
+            this.Dispose(false);
+        }
+
+        public void Dispose()
+        {
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        private void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+                this.Buffer?.Dispose();
+                this.Buffer = null;
+            }
+
+            this.disposed = true;
         }
 
         public bool Equals(ImageFileCache? other)

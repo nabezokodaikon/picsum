@@ -33,21 +33,30 @@ namespace SWF.Core.ImageAccessor
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
-            return Read(filePath, cache => cache.Buffer.Size);
-        }
+            return Read(filePath, static cache =>
+            {
+                if (cache.Buffer == null)
+                {
+                    throw new NullReferenceException("キャッシュのバッファがNullです。");
+                }
 
-        public static Bitmap GetBitmap(string filePath)
-        {
-            ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
-
-            return Read(filePath, cache => cache.Buffer.ToBitmap());
+                return cache.Buffer.Size;
+            });
         }
 
         public static CvImage GetCvImage(string filePath)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
-            return Read(filePath, cache => new CvImage(cache.Buffer.ToBitmap()));
+            return Read(filePath, static cache =>
+            {
+                if (cache.Buffer == null)
+                {
+                    throw new NullReferenceException("キャッシュのバッファがNullです。");
+                }
+
+                return new CvImage(cache.Buffer.ToBitmap());
+            });
         }
 
         public static void Create(string filePath)
@@ -71,6 +80,7 @@ namespace SWF.Core.ImageAccessor
                 {
                     CACHE_LIST.Remove(cache);
                     CACHE_DICTIONARY.Remove(cache.FilePath);
+                    cache.Dispose();
                 }
 
                 if (CACHE_LIST.Count > CACHE_CAPACITY)
@@ -78,6 +88,7 @@ namespace SWF.Core.ImageAccessor
                     var removeCache = CACHE_LIST[0];
                     CACHE_LIST.Remove(removeCache);
                     CACHE_DICTIONARY.Remove(removeCache.FilePath);
+                    removeCache.Dispose();
                 }
 
                 var buffer = ImageUtil.ReadImageFileBuffer(filePath);
@@ -113,6 +124,7 @@ namespace SWF.Core.ImageAccessor
                 {
                     CACHE_LIST.Remove(cache);
                     CACHE_DICTIONARY.Remove(cache.FilePath);
+                    cache.Dispose();
                 }
 
                 if (CACHE_LIST.Count > CACHE_CAPACITY)
@@ -120,6 +132,7 @@ namespace SWF.Core.ImageAccessor
                     var removeCache = CACHE_LIST[0];
                     CACHE_LIST.Remove(removeCache);
                     CACHE_DICTIONARY.Remove(removeCache.FilePath);
+                    removeCache.Dispose();
                 }
 
                 var buffer = ImageUtil.ReadImageFileBuffer(filePath);

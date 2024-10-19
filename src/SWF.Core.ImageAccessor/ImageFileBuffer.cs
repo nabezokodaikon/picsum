@@ -2,9 +2,12 @@ using System.Drawing.Imaging;
 
 namespace SWF.Core.ImageAccessor
 {
-    public sealed class ImageFileBuffer
+    internal sealed partial class ImageFileBuffer
+        : IDisposable
     {
-        public byte[] Buffer { get; private set; }
+        private bool disposed = false;
+
+        public byte[]? Buffer { get; private set; }
         public int Width { get; private set; }
         public int Height { get; private set; }
         public Size Size { get; private set; }
@@ -33,8 +36,39 @@ namespace SWF.Core.ImageAccessor
             this.PixelFormat = bmp.PixelFormat;
         }
 
+        ~ImageFileBuffer()
+        {
+            this.Dispose(false);
+        }
+
+        public void Dispose()
+        {
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        private void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+                this.Buffer = null;
+            }
+
+            this.disposed = true;
+        }
+
         public Bitmap ToBitmap()
         {
+            if (this.Buffer == null)
+            {
+                throw new NullReferenceException("バッファがNullです。");
+            }
+
             if (this.PixelFormat == PixelFormat.Format4bppIndexed)
             {
                 return ImageUtil.BufferToBitmapFor4bpp(this.Buffer, this.Width, this.Height);
