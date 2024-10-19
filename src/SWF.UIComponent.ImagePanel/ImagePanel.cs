@@ -628,22 +628,10 @@ namespace SWF.UIComponent.ImagePanel
                     {
                         this.image.DrawSourceImage(g, this.GetImageDestRectangle(), this.GetImageSrcRectangle());
                     }
-                    else if (this.sizeMode == ImageSizeMode.FitAllImage)
+                    else
                     {
                         var destRect = this.GetImageDestRectangle();
                         this.image.DrawResizeImage(g, destRect);
-                    }
-                    else if (this.sizeMode == ImageSizeMode.FitOnlyBigImage)
-                    {
-                        var destRect = this.GetImageDestRectangle();
-                        if (this.image.Width > destRect.Width || this.image.Height > destRect.Height)
-                        {
-                            this.image.DrawResizeImage(g, destRect);
-                        }
-                        else
-                        {
-                            this.image.DrawResizeImage(g, destRect);
-                        }
                     }
                 }
             }
