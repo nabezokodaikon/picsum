@@ -11,10 +11,13 @@ namespace SWF.Core.ImageAccessor
             ArgumentNullException.ThrowIfNull(srcMat, nameof(srcMat));
 
             using (TimeMeasuring.Run(true, "OpenCVUtil.Resize By Mat"))
-            using (var destMat = new Mat())
             {
-                Cv2.Resize(srcMat, destMat, new OpenCvSharp.Size(newWidth, newHeight), 0, 0, InterpolationFlags.Area);
-                return destMat.ToBitmap();
+                var size = new OpenCvSharp.Size(newWidth, newHeight);
+                using (var destMat = new Mat(size, srcMat.Type()))
+                {
+                    Cv2.Resize(srcMat, destMat, new OpenCvSharp.Size(newWidth, newHeight), 0, 0, InterpolationFlags.Area);
+                    return destMat.ToBitmap();
+                }
             }
         }
 

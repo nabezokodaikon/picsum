@@ -2,12 +2,13 @@ using System.Drawing.Imaging;
 
 namespace SWF.Core.ImageAccessor
 {
-    internal sealed partial class ImageFileBuffer
+    public sealed partial class ImageFileBuffer
         : IDisposable
     {
         private bool disposed = false;
 
         public byte[]? Buffer { get; private set; }
+        public int Stride { get; private set; }
         public int Width { get; private set; }
         public int Height { get; private set; }
         public Size Size { get; private set; }
@@ -19,15 +20,15 @@ namespace SWF.Core.ImageAccessor
 
             if (bmp.PixelFormat == PixelFormat.Format4bppIndexed)
             {
-                this.Buffer = ImageUtil.BitmapToBufferFor4bpp(bmp);
+                (this.Buffer, this.Stride) = ImageUtil.BitmapToBufferFor4bpp(bmp);
             }
             else if (bmp.PixelFormat == PixelFormat.Format8bppIndexed)
             {
-                this.Buffer = ImageUtil.BitmapToBufferFor8bpp(bmp);
+                (this.Buffer, this.Stride) = ImageUtil.BitmapToBufferFor8bpp(bmp);
             }
             else
             {
-                this.Buffer = ImageUtil.BitmapToBuffer(bmp);
+                (this.Buffer, this.Stride) = ImageUtil.BitmapToBuffer(bmp);
             }
 
             this.Width = bmp.Width;

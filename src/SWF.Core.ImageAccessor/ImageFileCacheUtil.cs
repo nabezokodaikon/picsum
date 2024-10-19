@@ -55,7 +55,7 @@ namespace SWF.Core.ImageAccessor
                     throw new NullReferenceException("キャッシュのバッファがNullです。");
                 }
 
-                return new CvImage(cache.Buffer.ToBitmap());
+                return new CvImage(cache.Buffer);
             });
         }
 

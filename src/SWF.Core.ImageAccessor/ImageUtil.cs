@@ -36,7 +36,7 @@ namespace SWF.Core.ImageAccessor
             return OpenCVUtil.Resize(srcBmp, width, height);
         }
 
-        internal static byte[] BitmapToBuffer(Bitmap bitmap)
+        internal static (byte[], int) BitmapToBuffer(Bitmap bitmap)
         {
             ArgumentNullException.ThrowIfNull(bitmap, nameof(bitmap));
 
@@ -63,7 +63,7 @@ namespace SWF.Core.ImageAccessor
                         }
                     }
 
-                    return pixelBuffer;
+                    return (pixelBuffer, stride);
                 }
                 finally
                 {
@@ -116,7 +116,7 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
-        internal static byte[] BitmapToBufferFor8bpp(Bitmap bitmap)
+        internal static (byte[], int) BitmapToBufferFor8bpp(Bitmap bitmap)
         {
             ArgumentNullException.ThrowIfNull(bitmap, nameof(bitmap));
 
@@ -146,7 +146,7 @@ namespace SWF.Core.ImageAccessor
                         }
                     }
 
-                    return pixelBuffer;
+                    return (pixelBuffer, stride);
                 }
                 finally
                 {
@@ -159,7 +159,7 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
-        internal static byte[] BitmapToBufferFor4bpp(Bitmap bitmap)
+        internal static (byte[], int) BitmapToBufferFor4bpp(Bitmap bitmap)
         {
             ArgumentNullException.ThrowIfNull(bitmap, nameof(bitmap));
 
@@ -197,7 +197,7 @@ namespace SWF.Core.ImageAccessor
                         }
                     }
 
-                    return pixelData;
+                    return (pixelData, stride);
                 }
                 finally
                 {
@@ -310,6 +310,7 @@ namespace SWF.Core.ImageAccessor
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
+            using (TimeMeasuring.Run(true, "ImageUtil.ReadImageFileBuffer"))
             using (var bmp = ReadImageFile(filePath))
             {
                 return new ImageFileBuffer(bmp);

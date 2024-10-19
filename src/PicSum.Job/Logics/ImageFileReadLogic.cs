@@ -22,9 +22,6 @@ namespace PicSum.Job.Logics
                 var isError = image == CvImage.EMPTY;
                 this.CheckCancel();
 
-                image.CreateMat();
-                this.CheckCancel();
-
                 thumbnail = (isError) ?
                         null :
                         ThumbnailUtil.CreateThumbnail(image, thumbnailSize, imageSizeMode);

@@ -1,7 +1,7 @@
 using OpenCvSharp;
 using OpenCvSharp.Extensions;
-using SWF.Core.Base;
 using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
 
 namespace SWF.Core.ImageAccessor
 {
@@ -12,28 +12,50 @@ namespace SWF.Core.ImageAccessor
 
         private bool disposed = false;
         private readonly object lockObject = new();
-        private Mat? mat = null;
-        private Bitmap? bitmap;
+        private PixelFormat pixelFormat;
+        private Mat? mat;
 
         public readonly System.Drawing.Size Size;
         public readonly int Width;
         public readonly int Height;
         public readonly bool IsEmpty;
 
-        public CvImage(Bitmap bitmap)
+        public CvImage(ImageFileBuffer buffer)
         {
-            ArgumentNullException.ThrowIfNull(bitmap, nameof(bitmap));
+            ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
 
-            this.bitmap = bitmap;
-            this.Width = bitmap.Width;
-            this.Height = bitmap.Height;
-            this.Size = bitmap.Size;
+            if (buffer.Buffer == null)
+            {
+                throw new NullReferenceException("バッファがNullです。");
+            }
+
+            this.pixelFormat = buffer.PixelFormat;
+
+            var matType = this.pixelFormat switch
+            {
+                PixelFormat.Format8bppIndexed => MatType.CV_8UC1,
+                PixelFormat.Format16bppGrayScale => MatType.CV_16UC1,
+                PixelFormat.Format24bppRgb => MatType.CV_8UC3,
+                PixelFormat.Format32bppRgb => MatType.CV_8UC4,
+                PixelFormat.Format32bppArgb => MatType.CV_8UC4,
+                PixelFormat.Format32bppPArgb => MatType.CV_8UC4,
+                PixelFormat.Format48bppRgb => MatType.CV_16UC3,
+                PixelFormat.Format64bppArgb => MatType.CV_16UC4,
+                PixelFormat.Format1bppIndexed => MatType.CV_8UC1,
+                _ => throw new NotImplementedException($"対応していないピクセルフォーマットです。{this.pixelFormat}"),
+            };
+
+            this.mat = Mat.FromPixelData(buffer.Height, buffer.Width, matType, buffer.Buffer, buffer.Stride);
+            this.Width = buffer.Width;
+            this.Height = buffer.Height;
+            this.Size = buffer.Size;
             this.IsEmpty = false;
         }
 
         public CvImage(System.Drawing.Size size)
         {
-            this.bitmap = null;
+            this.pixelFormat = PixelFormat.DontCare;
+            this.mat = null;
             this.Width = size.Width;
             this.Height = size.Height;
             this.Size = size;
@@ -49,9 +71,6 @@ namespace SWF.Core.ImageAccessor
 
             if (disposing)
             {
-                this.bitmap?.Dispose();
-                this.bitmap = null;
-
                 this.mat?.Dispose();
                 this.mat = null;
             }
@@ -70,36 +89,6 @@ namespace SWF.Core.ImageAccessor
             this.Dispose(false);
         }
 
-        private Bitmap Resize(int newWidth, int newHeight)
-        {
-            if (this.bitmap == null)
-            {
-                throw new NullReferenceException("BitmapがNullです。");
-            }
-
-            lock (this.lockObject)
-            {
-                this.mat ??= this.bitmap.ToMat();
-                return OpenCVUtil.Resize(this.mat, newWidth, newHeight);
-            }
-        }
-
-        public void CreateMat()
-        {
-            if (this.bitmap == null)
-            {
-                return;
-            }
-
-            lock (this.lockObject)
-            {
-                using (TimeMeasuring.Run(true, "CvImage.CreateMat"))
-                {
-                    this.mat ??= this.bitmap.ToMat();
-                }
-            }
-        }
-
         public void DrawEmptyImage(Graphics g, Brush brushe, RectangleF destRect)
         {
             ArgumentNullException.ThrowIfNull(g, nameof(g));
@@ -113,29 +102,40 @@ namespace SWF.Core.ImageAccessor
         {
             ArgumentNullException.ThrowIfNull(g, nameof(g));
 
-            if (this.bitmap == null)
+            if (this.mat == null)
             {
                 throw new NullReferenceException("BitmapがNullです。");
             }
 
             g.CompositingMode = CompositingMode.SourceOver;
-            g.DrawImage(this.bitmap, destRect, srcRect, GraphicsUnit.Pixel);
+
+            lock (this.lockObject)
+            {
+                using (var bmp = this.mat.ToBitmap(this.pixelFormat))
+                {
+                    g.DrawImage(bmp, destRect, srcRect, GraphicsUnit.Pixel);
+                }
+            }
         }
 
         public void DrawResizeImage(Graphics g, RectangleF destRect)
         {
             ArgumentNullException.ThrowIfNull(g, nameof(g));
 
-            if (this.bitmap == null)
+            if (this.mat == null)
             {
-                throw new NullReferenceException("BitmapがNullです。");
+                throw new NullReferenceException("バッファがNullです。");
             }
 
-            using (var resizeImage = this.Resize((int)destRect.Width, (int)destRect.Height))
+            g.CompositingMode = CompositingMode.SourceOver;
+
+            lock (this.lockObject)
             {
-                g.CompositingMode = CompositingMode.SourceOver;
-                g.DrawImage(resizeImage, destRect,
-                    new RectangleF(0, 0, destRect.Width, destRect.Height), GraphicsUnit.Pixel);
+                using (var bmp = OpenCVUtil.Resize(this.mat, (int)destRect.Width, (int)destRect.Height))
+                {
+                    g.DrawImage(bmp, destRect,
+                        new RectangleF(0, 0, destRect.Width, destRect.Height), GraphicsUnit.Pixel);
+                }
             }
         }
     }
