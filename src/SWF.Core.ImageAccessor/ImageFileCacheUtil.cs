@@ -1,3 +1,4 @@
+using OpenCvSharp.Extensions;
 using SWF.Core.FileAccessor;
 using System.Runtime.Versioning;
 
@@ -35,12 +36,12 @@ namespace SWF.Core.ImageAccessor
 
             return Read(filePath, static cache =>
             {
-                if (cache.Buffer == null)
+                if (cache.Bitmap == null)
                 {
-                    throw new NullReferenceException("キャッシュのバッファがNullです。");
+                    throw new NullReferenceException("キャッシュのBitmapがNullです。");
                 }
 
-                return cache.Buffer.Size;
+                return cache.Bitmap.Size;
             });
         }
 
@@ -50,12 +51,12 @@ namespace SWF.Core.ImageAccessor
 
             return Read(filePath, static cache =>
             {
-                if (cache.Buffer == null)
+                if (cache.Bitmap == null)
                 {
-                    throw new NullReferenceException("キャッシュのバッファがNullです。");
+                    throw new NullReferenceException("キャッシュのBitmapがNullです。");
                 }
 
-                return new CvImage(cache.Buffer);
+                return new CvImage(cache.Bitmap.ToMat(), cache.Bitmap.PixelFormat);
             });
         }
 
@@ -91,9 +92,9 @@ namespace SWF.Core.ImageAccessor
                     removeCache.Dispose();
                 }
 
-                var buffer = ImageUtil.ReadImageFileBuffer(filePath);
-                ImageFileSizeCacheUtil.Set(filePath, buffer.Size);
-                var newCache = new ImageFileCache(filePath, buffer, timestamp);
+                var bitmap = ImageUtil.ReadImageFile(filePath);
+                ImageFileSizeCacheUtil.Set(filePath, bitmap.Size);
+                var newCache = new ImageFileCache(filePath, bitmap, timestamp);
                 CACHE_DICTIONARY.Add(newCache.FilePath, newCache);
                 CACHE_LIST.Add(newCache);
             }
@@ -135,9 +136,9 @@ namespace SWF.Core.ImageAccessor
                     removeCache.Dispose();
                 }
 
-                var buffer = ImageUtil.ReadImageFileBuffer(filePath);
-                ImageFileSizeCacheUtil.Set(filePath, buffer.Size);
-                var newCache = new ImageFileCache(filePath, buffer, timestamp);
+                var bitmap = ImageUtil.ReadImageFile(filePath);
+                ImageFileSizeCacheUtil.Set(filePath, bitmap.Size);
+                var newCache = new ImageFileCache(filePath, bitmap, timestamp);
                 CACHE_DICTIONARY.Add(filePath, newCache);
                 CACHE_LIST.Add(newCache);
                 return resultFunc(newCache);

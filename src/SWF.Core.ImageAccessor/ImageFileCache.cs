@@ -9,16 +9,16 @@ namespace SWF.Core.ImageAccessor
         private bool disposed = false;
 
         public string FilePath { get; private set; }
-        public ImageFileBuffer? Buffer { get; private set; }
+        public Bitmap Bitmap { get; private set; }
         public DateTime Timestamp { get; private set; }
 
-        public ImageFileCache(string filePath, ImageFileBuffer buffer, DateTime timestamp)
+        public ImageFileCache(string filePath, Bitmap bitmap, DateTime timestamp)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
-            ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
+            ArgumentNullException.ThrowIfNull(bitmap, nameof(bitmap));
 
             this.FilePath = filePath;
-            this.Buffer = buffer;
+            this.Bitmap = bitmap;
             this.Timestamp = timestamp;
         }
 
@@ -42,8 +42,7 @@ namespace SWF.Core.ImageAccessor
 
             if (disposing)
             {
-                this.Buffer?.Dispose();
-                this.Buffer = null;
+                this.Bitmap.Dispose();
             }
 
             this.disposed = true;

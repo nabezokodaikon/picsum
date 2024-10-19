@@ -36,7 +36,7 @@ namespace SWF.Core.ImageAccessor
             return OpenCVUtil.Resize(srcBmp, width, height);
         }
 
-        internal static (byte[], int) BitmapToBuffer(Bitmap bitmap)
+        internal static byte[] BitmapToBuffer(Bitmap bitmap)
         {
             ArgumentNullException.ThrowIfNull(bitmap, nameof(bitmap));
 
@@ -63,7 +63,7 @@ namespace SWF.Core.ImageAccessor
                         }
                     }
 
-                    return (pixelBuffer, stride);
+                    return pixelBuffer;
                 }
                 finally
                 {
@@ -116,7 +116,7 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
-        internal static (byte[], int) BitmapToBufferFor8bpp(Bitmap bitmap)
+        internal static byte[] BitmapToBufferFor8bpp(Bitmap bitmap)
         {
             ArgumentNullException.ThrowIfNull(bitmap, nameof(bitmap));
 
@@ -146,7 +146,7 @@ namespace SWF.Core.ImageAccessor
                         }
                     }
 
-                    return (pixelBuffer, stride);
+                    return pixelBuffer;
                 }
                 finally
                 {
@@ -159,7 +159,7 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
-        internal static (byte[], int) BitmapToBufferFor4bpp(Bitmap bitmap)
+        internal static byte[] BitmapToBufferFor4bpp(Bitmap bitmap)
         {
             ArgumentNullException.ThrowIfNull(bitmap, nameof(bitmap));
 
@@ -197,7 +197,7 @@ namespace SWF.Core.ImageAccessor
                         }
                     }
 
-                    return (pixelData, stride);
+                    return pixelData;
                 }
                 finally
                 {
@@ -303,17 +303,6 @@ namespace SWF.Core.ImageAccessor
                         bmpData = null;
                     }
                 }
-            }
-        }
-
-        internal static ImageFileBuffer ReadImageFileBuffer(string filePath)
-        {
-            ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
-
-            using (TimeMeasuring.Run(true, "ImageUtil.ReadImageFileBuffer"))
-            using (var bmp = ReadImageFile(filePath))
-            {
-                return new ImageFileBuffer(bmp);
             }
         }
 

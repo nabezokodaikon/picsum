@@ -12,7 +12,7 @@ namespace SWF.Core.ImageAccessor
 
         private bool disposed = false;
         private readonly object lockObject = new();
-        private PixelFormat pixelFormat;
+        private readonly PixelFormat pixelFormat;
         private Mat? mat;
 
         public readonly System.Drawing.Size Size;
@@ -20,35 +20,15 @@ namespace SWF.Core.ImageAccessor
         public readonly int Height;
         public readonly bool IsEmpty;
 
-        public CvImage(ImageFileBuffer buffer)
+        public CvImage(Mat mat, PixelFormat pixelFormat)
         {
-            ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
+            ArgumentNullException.ThrowIfNull(mat, nameof(mat));
 
-            if (buffer.Buffer == null)
-            {
-                throw new NullReferenceException("バッファがNullです。");
-            }
-
-            this.pixelFormat = buffer.PixelFormat;
-
-            var matType = this.pixelFormat switch
-            {
-                PixelFormat.Format8bppIndexed => MatType.CV_8UC1,
-                PixelFormat.Format16bppGrayScale => MatType.CV_16UC1,
-                PixelFormat.Format24bppRgb => MatType.CV_8UC3,
-                PixelFormat.Format32bppRgb => MatType.CV_8UC4,
-                PixelFormat.Format32bppArgb => MatType.CV_8UC4,
-                PixelFormat.Format32bppPArgb => MatType.CV_8UC4,
-                PixelFormat.Format48bppRgb => MatType.CV_16UC3,
-                PixelFormat.Format64bppArgb => MatType.CV_16UC4,
-                PixelFormat.Format1bppIndexed => MatType.CV_8UC1,
-                _ => throw new NotImplementedException($"対応していないピクセルフォーマットです。{this.pixelFormat}"),
-            };
-
-            this.mat = Mat.FromPixelData(buffer.Height, buffer.Width, matType, buffer.Buffer, buffer.Stride);
-            this.Width = buffer.Width;
-            this.Height = buffer.Height;
-            this.Size = buffer.Size;
+            this.pixelFormat = pixelFormat;
+            this.mat = mat;
+            this.Width = mat.Width;
+            this.Height = mat.Height;
+            this.Size = new System.Drawing.Size(this.Width, this.Height);
             this.IsEmpty = false;
         }
 
@@ -104,7 +84,7 @@ namespace SWF.Core.ImageAccessor
 
             if (this.mat == null)
             {
-                throw new NullReferenceException("BitmapがNullです。");
+                throw new NullReferenceException("MatがNullです。");
             }
 
             g.CompositingMode = CompositingMode.SourceOver;
@@ -124,7 +104,7 @@ namespace SWF.Core.ImageAccessor
 
             if (this.mat == null)
             {
-                throw new NullReferenceException("バッファがNullです。");
+                throw new NullReferenceException("MatがNullです。");
             }
 
             g.CompositingMode = CompositingMode.SourceOver;
