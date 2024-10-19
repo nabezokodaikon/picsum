@@ -13,7 +13,7 @@ namespace SWF.Core.ImageAccessor
         private bool disposed = false;
         private readonly object lockObject = new();
         private Mat? mat = null;
-        private readonly Bitmap? bitmap;
+        private Bitmap? bitmap;
 
         public readonly System.Drawing.Size Size;
         public readonly int Width;
@@ -50,7 +50,10 @@ namespace SWF.Core.ImageAccessor
             if (disposing)
             {
                 this.bitmap?.Dispose();
+                this.bitmap = null;
+
                 this.mat?.Dispose();
+                this.mat = null;
             }
 
             this.disposed = true;
