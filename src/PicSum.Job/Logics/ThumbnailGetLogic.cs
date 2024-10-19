@@ -93,13 +93,13 @@ namespace PicSum.Job.Logics
                             throw new NullReferenceException("サムネイルのバッファがNullです。");
                         }
 
-                        using (var CacheThumb = ImageUtil.ToImage(cache.ThumbnailBuffer))
+                        using (var CacheThumb = ThumbnailUtil.ToImage(cache.ThumbnailBuffer))
                         using (var newThumb = ThumbnailUtil.CreateThumbnail(CacheThumb, thumbWidth, thumbHeight))
                         {
                             var thumb = new ThumbnailBufferEntity
                             {
                                 FilePath = cache.FilePath,
-                                ThumbnailBuffer = ImageUtil.ToCompressionBinary(newThumb),
+                                ThumbnailBuffer = ThumbnailUtil.ToCompressionBinary(newThumb),
                                 ThumbnailWidth = thumbWidth,
                                 ThumbnailHeight = thumbHeight,
                                 SourceWidth = cache.SourceWidth,
@@ -131,13 +131,13 @@ namespace PicSum.Job.Logics
                             throw new NullReferenceException("サムネイルのバッファがNullです。");
                         }
 
-                        using (var CacheThumb = ImageUtil.ToImage(cache.ThumbnailBuffer))
+                        using (var CacheThumb = ThumbnailUtil.ToImage(cache.ThumbnailBuffer))
                         using (var newThumb = ThumbnailUtil.CreateThumbnail(CacheThumb, thumbWidth, thumbHeight))
                         {
                             var thumb = new ThumbnailBufferEntity
                             {
                                 FilePath = cache.FilePath,
-                                ThumbnailBuffer = ImageUtil.ToCompressionBinary(newThumb),
+                                ThumbnailBuffer = ThumbnailUtil.ToCompressionBinary(newThumb),
                                 ThumbnailWidth = thumbWidth,
                                 ThumbnailHeight = thumbHeight,
                                 SourceWidth = cache.SourceWidth,
@@ -503,7 +503,7 @@ namespace PicSum.Job.Logics
                 ImageFileSizeCacheUtil.Set(filePath, srcImg.Size);
                 using (var thumbImg = ThumbnailUtil.CreateThumbnail(srcImg, thumbWidth, thumbHeight))
                 {
-                    var thumbBin = ImageUtil.ToCompressionBinary(thumbImg);
+                    var thumbBin = ThumbnailUtil.ToCompressionBinary(thumbImg);
                     var thumbID = this.GetCurrentThumbnailBufferID();
                     var thumbStartPoint = this.AddThumbnailBuffer(thumbID, thumbBin);
 
@@ -534,7 +534,7 @@ namespace PicSum.Job.Logics
                 ImageFileSizeCacheUtil.Set(filePath, srcImg.Size);
                 using (var thumbImg = ThumbnailUtil.CreateThumbnail(srcImg, thumbWidth, thumbHeight))
                 {
-                    var thumbBin = ImageUtil.ToCompressionBinary(thumbImg);
+                    var thumbBin = ThumbnailUtil.ToCompressionBinary(thumbImg);
                     var thumbID = this.GetCurrentThumbnailBufferID();
                     var thumbStartPoint = this.AddThumbnailBuffer(thumbID, thumbBin);
 
@@ -565,7 +565,7 @@ namespace PicSum.Job.Logics
                 ImageFileSizeCacheUtil.Set(thumbFilePath, srcImg.Size);
                 using (var thumbImg = ThumbnailUtil.CreateThumbnail(srcImg, thumbWidth, thumbHeight))
                 {
-                    var thumbBin = ImageUtil.ToCompressionBinary(thumbImg);
+                    var thumbBin = ThumbnailUtil.ToCompressionBinary(thumbImg);
                     var thumbID = this.GetCurrentThumbnailBufferID();
                     var thumbStartPoint = this.AddThumbnailBuffer(thumbID, thumbBin);
 
@@ -595,7 +595,7 @@ namespace PicSum.Job.Logics
                 ImageFileSizeCacheUtil.Set(thumbFilePath, srcImg.Size);
                 using (var thumbImg = ThumbnailUtil.CreateThumbnail(srcImg, thumbWidth, thumbHeight))
                 {
-                    var thumbBin = ImageUtil.ToCompressionBinary(thumbImg);
+                    var thumbBin = ThumbnailUtil.ToCompressionBinary(thumbImg);
                     var thumbID = this.GetCurrentThumbnailBufferID();
                     var thumbStartPoint = this.AddThumbnailBuffer(thumbID, thumbBin);
 

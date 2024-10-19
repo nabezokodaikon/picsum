@@ -16,8 +16,6 @@ namespace SWF.Core.ImageAccessor
         public static readonly Bitmap EMPTY_IMAGE = new(1, 1);
 
         private static readonly int FILE_READ_BUFFER_SIZE = 80 * 1024;
-        private static readonly EncoderParameter ENCORDER_PARAMETER = new(Encoder.Quality, 80L);
-        private static readonly ImageCodecInfo COMPRESS_CODEC_INFO = ImageCodecInfo.GetImageEncoders().Single(info => info.FormatID == ImageFormat.Jpeg.Guid);
         private static readonly dynamic SHELL = GetSell();
 
         private static object GetSell()
@@ -36,48 +34,6 @@ namespace SWF.Core.ImageAccessor
             ArgumentNullException.ThrowIfNull(srcBmp, nameof(srcBmp));
 
             return OpenCVUtil.Resize(srcBmp, width, height);
-        }
-
-        /// <summary>
-        /// イメージオブジェクトを圧縮したバイナリに変換します。
-        /// </summary>
-        /// <param name="img">イメージオブジェクト</param>
-        /// <returns></returns>
-        public static byte[] ToCompressionBinary(Image img)
-        {
-            ArgumentNullException.ThrowIfNull(img, nameof(img));
-
-            using (TimeMeasuring.Run(false, "ImageUtil.ToCompressionBinary"))
-            using (var mes = new MemoryStream())
-            {
-                var eps = new EncoderParameters(1);
-                eps.Param[0] = ImageUtil.ENCORDER_PARAMETER;
-                img.Save(mes, ImageUtil.COMPRESS_CODEC_INFO, eps);
-                return mes.ToArray();
-            }
-        }
-
-        /// <summary>
-        /// バイト配列からイメージオブジェクトを取得します。
-        /// </summary>
-        /// <param name="bf">バイト配列</param>
-        /// <returns>イメージオブジェクト</returns>
-        public static Bitmap ToImage(byte[] bf)
-        {
-            ArgumentNullException.ThrowIfNull(bf, nameof(bf));
-
-            using (TimeMeasuring.Run(false, "ImageUtil.ToImage"))
-            using (var mes = new MemoryStream(bf, 0, bf.Length, false, true))
-            {
-                try
-                {
-                    return (Bitmap)Bitmap.FromStream(mes, false, true);
-                }
-                catch (OutOfMemoryException ex)
-                {
-                    throw new ImageUtilException("メモリが不足しています。", ex);
-                }
-            }
         }
 
         internal static byte[] BitmapToBuffer(Bitmap bitmap)

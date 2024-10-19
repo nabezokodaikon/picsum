@@ -51,7 +51,7 @@ namespace PicSum.Job.Jobs
                         var img = new ThumbnailImageResult
                         {
                             FilePath = bf.FilePath,
-                            ThumbnailImage = ImageUtil.ToImage(bf.ThumbnailBuffer),
+                            ThumbnailImage = ThumbnailUtil.ToImage(bf.ThumbnailBuffer),
                             ThumbnailWidth = bf.ThumbnailWidth,
                             ThumbnailHeight = bf.ThumbnailHeight,
                             SourceWidth = bf.SourceWidth,

@@ -82,7 +82,7 @@ namespace PicSum.Job.Logics
                             var thumbnailBuffer
                                 = thumbnailGetLogic.GetOrCreateCache(filePath, thumbSize.Width, thumbSize.Height);
                             var thumbnailImage
-                                = ImageUtil.ToImage(thumbnailBuffer.ThumbnailBuffer);
+                                = ThumbnailUtil.ToImage(thumbnailBuffer.ThumbnailBuffer);
 
                             info.Thumbnail = new()
                             {
@@ -115,7 +115,7 @@ namespace PicSum.Job.Logics
                                 var thumbnailBuffer
                                     = thumbnailGetLogic.GetOrCreateCache(firstImageFile, thumbSize.Width, thumbSize.Height);
                                 var thumbnailImage
-                                    = ImageUtil.ToImage(thumbnailBuffer.ThumbnailBuffer);
+                                    = ThumbnailUtil.ToImage(thumbnailBuffer.ThumbnailBuffer);
 
                                 info.Thumbnail = new()
                                 {

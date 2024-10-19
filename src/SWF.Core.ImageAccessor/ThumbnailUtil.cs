@@ -1,6 +1,7 @@
 using Microsoft.WindowsAPICodePack.Shell;
 using SWF.Core.Base;
 using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
 using System.Runtime.Versioning;
 
 namespace SWF.Core.ImageAccessor
@@ -8,6 +9,51 @@ namespace SWF.Core.ImageAccessor
     [SupportedOSPlatform("windows")]
     public static class ThumbnailUtil
     {
+        private static readonly EncoderParameter ENCORDER_PARAMETER = new(Encoder.Quality, 80L);
+        private static readonly ImageCodecInfo COMPRESS_CODEC_INFO = ImageCodecInfo.GetImageEncoders().Single(info => info.FormatID == ImageFormat.Jpeg.Guid);
+
+        /// <summary>
+        /// イメージオブジェクトを圧縮したバイナリに変換します。
+        /// </summary>
+        /// <param name="img">イメージオブジェクト</param>
+        /// <returns></returns>
+        public static byte[] ToCompressionBinary(Image img)
+        {
+            ArgumentNullException.ThrowIfNull(img, nameof(img));
+
+            using (TimeMeasuring.Run(false, "ThumbnailUtil.ToCompressionBinary"))
+            using (var mes = new MemoryStream())
+            {
+                var eps = new EncoderParameters(1);
+                eps.Param[0] = ENCORDER_PARAMETER;
+                img.Save(mes, COMPRESS_CODEC_INFO, eps);
+                return mes.ToArray();
+            }
+        }
+
+        /// <summary>
+        /// バイト配列からイメージオブジェクトを取得します。
+        /// </summary>
+        /// <param name="bf">バイト配列</param>
+        /// <returns>イメージオブジェクト</returns>
+        public static Bitmap ToImage(byte[] bf)
+        {
+            ArgumentNullException.ThrowIfNull(bf, nameof(bf));
+
+            using (TimeMeasuring.Run(false, "ThumbnailUtil.ToImage"))
+            using (var mes = new MemoryStream(bf, 0, bf.Length, false, true))
+            {
+                try
+                {
+                    return (Bitmap)Bitmap.FromStream(mes, false, true);
+                }
+                catch (OutOfMemoryException ex)
+                {
+                    throw new ImageUtilException("メモリが不足しています。", ex);
+                }
+            }
+        }
+
         public static Bitmap GetThumbnail(string filePath, Size srcSize, int thumbWidth, int thumbHeight)
         {
             using (TimeMeasuring.Run(true, "ThumbnailUtil.GetThumbnail"))
