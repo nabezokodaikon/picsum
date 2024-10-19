@@ -335,12 +335,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 e.TitleColor, e.TitleFormatFlags);
         }
 
-        protected override void OnResize(EventArgs e)
-        {
-            this.RedrawPage();
-            base.OnResize(e);
-        }
-
         protected override void OnBackgroundMouseClick(MouseEventArgs e)
         {
             // 処理無し。
