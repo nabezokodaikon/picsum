@@ -70,6 +70,7 @@ namespace SWF.Core.ImageAccessor
                     if (bmpData != null)
                     {
                         bitmap.UnlockBits(bmpData);
+                        bmpData = null;
                     }
                 }
             }
@@ -109,6 +110,7 @@ namespace SWF.Core.ImageAccessor
                     if (bmpData != null)
                     {
                         bitmap.UnlockBits(bmpData);
+                        bmpData = null;
                     }
                 }
             }
@@ -151,6 +153,7 @@ namespace SWF.Core.ImageAccessor
                     if (bmpData != null)
                     {
                         bitmap.UnlockBits(bmpData);
+                        bmpData = null;
                     }
                 }
             }
@@ -201,6 +204,7 @@ namespace SWF.Core.ImageAccessor
                     if (bmpData != null)
                     {
                         bitmap.UnlockBits(bmpData);
+                        bmpData = null;
                     }
                 }
             }
@@ -245,6 +249,7 @@ namespace SWF.Core.ImageAccessor
                     if (bmpData != null)
                     {
                         bitmap.UnlockBits(bmpData);
+                        bmpData = null;
                     }
                 }
             }
@@ -295,6 +300,7 @@ namespace SWF.Core.ImageAccessor
                     if (bmpData != null)
                     {
                         bitmap.UnlockBits(bmpData);
+                        bmpData = null;
                     }
                 }
             }
@@ -633,10 +639,12 @@ namespace SWF.Core.ImageAccessor
             {
                 var rect = new Rectangle(0, 0, bmp.Width, bmp.Height);
                 path.AddRectangle(rect);
-                var bd = bmp.LockBits(rect, ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
+                BitmapData? bd = null;
 
                 try
                 {
+                    bd = bmp.LockBits(rect, ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
+
                     unsafe
                     {
                         var p = (byte*)(void*)bd.Scan0;
@@ -660,7 +668,11 @@ namespace SWF.Core.ImageAccessor
                 }
                 finally
                 {
-                    bmp.UnlockBits(bd);
+                    if (bd != null)
+                    {
+                        bmp.UnlockBits(bd);
+                        bd = null;
+                    }
                 }
 
                 return new Region(path);

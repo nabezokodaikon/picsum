@@ -106,6 +106,7 @@ namespace SWF.Core.ImageAccessor
                 if (bitmapData != null)
                 {
                     bitmap.UnlockBits(bitmapData);
+                    bitmapData = null;
                 }
             }
         }
