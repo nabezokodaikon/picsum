@@ -333,7 +333,7 @@ namespace SWF.Core.ImageAccessor
                     using (var fs = new FileStream(filePath,
                         FileMode.Open, FileAccess.Read, FileShare.Read, 64, FileOptions.SequentialScan))
                     {
-                        var formatName = $".{SixLaborsUtil.DetectFormat(fs).Name.ToUpperInvariant()}";
+                        var formatName = SixLaborsUtil.DetectFormat(fs);
 
                         if (FileUtil.IsWebpFile(formatName))
                         {
@@ -504,7 +504,7 @@ namespace SWF.Core.ImageAccessor
                         }
                     }
 
-                    var formatName = $".{SixLaborsUtil.DetectFormat(fs).Name.ToUpperInvariant()}";
+                    var formatName = SixLaborsUtil.DetectFormat(fs);
 
                     if (FileUtil.IsWebpFile(formatName))
                     {

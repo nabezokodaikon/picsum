@@ -45,11 +45,12 @@ namespace SWF.Core.ImageAccessor
             return new System.Drawing.Size(imageInfo.Width, imageInfo.Height);
         }
 
-        public static IImageFormat DetectFormat(Stream fs)
+        public static string DetectFormat(Stream fs)
         {
             using (TimeMeasuring.Run(false, "SixLaborsUtil.DetectFormat"))
             {
-                return SixLabors.ImageSharp.Image.DetectFormat(DECODER_OPTIONS, fs);
+                var format = SixLabors.ImageSharp.Image.DetectFormat(DECODER_OPTIONS, fs);
+                return $".{format.Name.ToUpperInvariant()}";
             }
         }
 
