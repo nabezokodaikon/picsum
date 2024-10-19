@@ -1079,12 +1079,12 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
         private void LeftImagePanel_MouseDown(object sender, MouseEventArgs e)
         {
-            this.Focus();
+            this.leftImagePanel.Focus();
         }
 
         private void RightImagePanel_MouseDown(object sender, MouseEventArgs e)
         {
-            this.Focus();
+            this.rightImagePanel.Focus();
         }
 
         private void RightImagePanel_MouseUp(object sender, MouseEventArgs e)
