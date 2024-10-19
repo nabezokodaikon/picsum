@@ -26,8 +26,6 @@ namespace PicSum.Main.UIComponent
         public event EventHandler Close;
         public event EventHandler BackgroundMouseDoubleLeftClick;
 
-        private Size previrewSize = Size.Empty;
-        private readonly Timer redrawTimer = null;
         private TwoWayJob<TagsGetJob, ListResult<string>> getTagListJob = null;
         private TwoWayJob<ImageFileGetByDirectoryJob, ImageFileGetByDirectoryParameter, ImageFileGetByDirectoryResult> getFilesJob = null;
 
@@ -91,13 +89,6 @@ namespace PicSum.Main.UIComponent
 
                 this.infoPanel.BringToFront();
                 this.pageContainer.BringToFront();
-
-                this.redrawTimer = new Timer
-                {
-                    Enabled = true,
-                    Interval = 500,
-                };
-                this.redrawTimer.Tick += this.RedrawTimer_Tick;
             }
         }
 
@@ -199,28 +190,8 @@ namespace PicSum.Main.UIComponent
 
         protected override void OnLoad(EventArgs e)
         {
-            this.previrewSize = this.Size;
-            this.redrawTimer.Start();
             this.addressBar.SetAddress(FileUtil.ROOT_DIRECTORY_PATH);
             base.OnLoad(e);
-        }
-
-        private void RedrawPage()
-        {
-            if (this.tabSwitch.ActiveTab != null)
-            {
-                var page = this.tabSwitch.ActiveTab.GetPage<BrowserPage>();
-                page.RedrawPage();
-            }
-        }
-
-        private void RedrawTimer_Tick(object sender, EventArgs e)
-        {
-            if (this.Size != this.previrewSize)
-            {
-                this.previrewSize = this.Size;
-                this.RedrawPage();
-            }
         }
 
         private TwoWayJob<ImageFileGetByDirectoryJob, ImageFileGetByDirectoryParameter, ImageFileGetByDirectoryResult> CreateNewGetFilesJob()
@@ -501,8 +472,6 @@ namespace PicSum.Main.UIComponent
 
             if (!this.tabSwitch.HasTab)
             {
-                this.redrawTimer.Stop();
-                this.redrawTimer.Dispose();
                 this.OnClose(EventArgs.Empty);
             }
         }
@@ -523,8 +492,6 @@ namespace PicSum.Main.UIComponent
 
             if (!this.tabSwitch.HasTab)
             {
-                this.redrawTimer.Stop();
-                this.redrawTimer.Dispose();
                 this.OnClose(EventArgs.Empty);
             }
         }

@@ -191,6 +191,8 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         {
             this.InitializeComponent();
 
+            this.checkPatternPanel.Resize += this.CheckPatternPanel_Resize;
+
             this.SetDisplayMode(ImageViewerPageConfig.ImageDisplayMode);
             this.SetSizeMode(ImageViewerPageConfig.ImageSizeMode);
             this.SetThumbnailPanelVisible();
@@ -377,6 +379,11 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.leftImagePanel.Update();
 
             this.rightImagePanel.Visible = false;
+        }
+
+        private void CheckPatternPanel_Resize(object sender, EventArgs e)
+        {
+            this.RedrawPage();
         }
 
         private void DrawBothImage()
