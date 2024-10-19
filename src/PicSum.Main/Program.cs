@@ -94,8 +94,6 @@ namespace PicSum.Main
 
 #if DEBUG
             LogManager.Configuration = new XmlLoggingConfiguration("NLog.debug.config");
-#elif DEVELOP
-            LogManager.Configuration = new XmlLoggingConfiguration("NLog.debug.config");
 #else
             LogManager.Configuration = new XmlLoggingConfiguration("NLog.config");
 #endif

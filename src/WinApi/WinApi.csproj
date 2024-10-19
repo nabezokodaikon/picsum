@@ -8,13 +8,9 @@
     <Copyright>Copyright ©  2009</Copyright>
     <AssemblyVersion>1.0.0.0</AssemblyVersion>
     <FileVersion>1.0.0.0</FileVersion>
-    <Configurations>Debug;Release;Develop</Configurations>
+    <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <NoWarn>1701;1702;CA1401; CA2101; SYSLIB1054; SYSLIB1096; CA1016</NoWarn>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Develop|AnyCPU'">
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <NoWarn>1701;1702;CA1401; CA2101; SYSLIB1054; SYSLIB1096; CA1016</NoWarn>
   </PropertyGroup>
@@ -24,10 +20,6 @@
     <NoWarn>1701;1702;CA1401; CA2101; SYSLIB1054; SYSLIB1096; CA1016</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
-    <OutputPath>bin\x64\Debug\</OutputPath>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Develop|x64'">
     <OutputPath>bin\x64\Debug\</OutputPath>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>

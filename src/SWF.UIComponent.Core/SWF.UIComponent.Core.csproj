@@ -6,7 +6,7 @@
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
-    <Configurations>Debug;Release;Develop</Configurations>
+    <Configurations>Debug;Release</Configurations>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <NeutralLanguage>ja-JP</NeutralLanguage>
   </PropertyGroup>
@@ -16,10 +16,6 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <NoWarn>1701;1702; CA1822</NoWarn>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Develop|AnyCPU'">
     <NoWarn>1701;1702; CA1822</NoWarn>
   </PropertyGroup>
 

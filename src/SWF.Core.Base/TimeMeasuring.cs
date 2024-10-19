@@ -10,10 +10,7 @@ namespace SWF.Core.Base
 #if DEBUG
             ArgumentNullException.ThrowIfNull(message, nameof(message));
             return new TimeMeasuring(enable, message);
-#elif DEVELOP
-            ArgumentNullException.ThrowIfNull(message, nameof(message));
-            return new TimeMeasuring(enable, message);
-#elif RELEASE
+#else
             return default;
 #endif
         }
@@ -28,19 +25,12 @@ namespace SWF.Core.Base
             this.stopwatch = Stopwatch.StartNew();
             this.message = message;
             this.enable = enable;
-#elif DEVELOP
-            this.stopwatch = Stopwatch.StartNew();
-            this.message = message;
-            this.enable = enable;
 #endif
         }
 
         public void Dispose()
         {
 #if DEBUG
-            this.stopwatch?.Stop();
-            ConsoleUtil.Write(this.enable, $"{this.message}: {this.stopwatch?.ElapsedMilliseconds} ms");
-#elif DEVELOP
             this.stopwatch?.Stop();
             ConsoleUtil.Write(this.enable, $"{this.message}: {this.stopwatch?.ElapsedMilliseconds} ms");
 #endif
