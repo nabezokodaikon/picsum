@@ -1,3 +1,4 @@
+using SWF.Core.Base;
 using SWF.Core.Job;
 using System.Diagnostics;
 
@@ -17,7 +18,12 @@ namespace PicSum.Job.Jobs
                 Thread.Sleep(10);
                 if (sw.ElapsedMilliseconds > INTERVAL)
                 {
-                    GC.Collect();
+                    using (TimeMeasuring.Run(true, "GCCollectRunJob.Execute GC.Collect"))
+                    {
+                        GC.Collect();
+                        GC.WaitForPendingFinalizers();
+                    }
+
                     sw = Stopwatch.StartNew();
                 }
             }

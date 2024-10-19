@@ -1,3 +1,4 @@
+using SWF.Core.Base;
 using SWF.UIComponent.TabOperation;
 using System;
 using System.Runtime.Versioning;
@@ -45,7 +46,11 @@ namespace PicSum.UIComponent.Contents.Common
 
             if (disposing)
             {
-                GC.Collect();
+                using (TimeMeasuring.Run(true, "BrowserPage.Dispose GC.Collect"))
+                {
+                    GC.Collect();
+                    GC.WaitForPendingFinalizers();
+                }
             }
 
             this.disposed = true;
