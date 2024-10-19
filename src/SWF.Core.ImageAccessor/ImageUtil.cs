@@ -337,7 +337,7 @@ namespace SWF.Core.ImageAccessor
 
                         if (FileUtil.IsWebpFile(formatName))
                         {
-                            //return SixLaborsUtil.GetImageSize(filePath);
+                            //return SixLaborsUtil.GetImageSize(fs);
                         }
                         if (FileUtil.IsAvifFile(formatName))
                         {
