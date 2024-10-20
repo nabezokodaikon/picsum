@@ -707,7 +707,7 @@ namespace SWF.Core.FileAccessor
             }
             else if (fileSize < Math.Pow(1024f, 2))
             {
-                return Math.Round(fileSize / 1024f, 2).ToString() + " KB";
+                return Math.Round(fileSize / 1024f, 0).ToString() + " KB";
             }
             else if (fileSize < Math.Pow(1024f, 3))
             {
