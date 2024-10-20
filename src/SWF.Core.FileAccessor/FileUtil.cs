@@ -705,21 +705,21 @@ namespace SWF.Core.FileAccessor
             {
                 return fileSize.ToString() + " B";
             }
-            else if (fileSize < 1048576)
+            else if (fileSize < Math.Pow(1024f, 2))
             {
-                return (fileSize / 1024).ToString() + " KB";
+                return Math.Round(fileSize / 1024f, 2).ToString() + " KB";
             }
-            else if (fileSize < 1073741824)
+            else if (fileSize < Math.Pow(1024f, 3))
             {
-                return (fileSize / 1048576).ToString() + " MB";
+                return Math.Round(fileSize / Math.Pow(1024f, 2), 2).ToString() + " MB";
             }
-            else if (fileSize < 1099511627776)
+            else if (fileSize < Math.Pow(1024f, 4))
             {
-                return (fileSize / 1073741824).ToString() + " GB";
+                return Math.Round(fileSize / Math.Pow(1024f, 3), 2).ToString() + " GB";
             }
-            else if (fileSize < 1125899906842624)
+            else if (fileSize < Math.Pow(1024f, 5))
             {
-                return (fileSize / 1099511627776).ToString() + " TB";
+                return Math.Round(fileSize / Math.Pow(1024f, 4), 2).ToString() + " TB";
             }
             else
             {
