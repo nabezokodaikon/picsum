@@ -564,7 +564,7 @@ namespace SWF.Core.FileAccessor
         /// </summary>
         /// <param name="directoryPath">フォルダパス</param>
         /// <returns></returns>
-        public static IList<string> GetFiles(string directoryPath)
+        public static IEnumerable<string> GetFiles(string directoryPath)
         {
             ArgumentException.ThrowIfNullOrEmpty(directoryPath, nameof(directoryPath));
 
@@ -574,8 +574,7 @@ namespace SWF.Core.FileAccessor
                 {
                     return Directory
                         .GetFiles(directoryPath)
-                        .Where(file => CanAccess(file))
-                        .ToList();
+                        .Where(CanAccess);
                 }
                 catch (UnauthorizedAccessException ex)
                 {
