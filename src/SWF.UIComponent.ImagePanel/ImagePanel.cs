@@ -209,22 +209,6 @@ namespace SWF.UIComponent.ImagePanel
             this.FilePath = string.Empty;
         }
 
-        public new void Update()
-        {
-            using (TimeMeasuring.Run(true, "ImagePanel.Update"))
-            {
-                this.SetDrawParameter();
-
-                if (!this.Visible)
-                {
-                    this.Visible = true;
-                }
-
-                this.Invalidate();
-                base.Update();
-            }
-        }
-
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -332,6 +316,12 @@ namespace SWF.UIComponent.ImagePanel
             }
 
             base.OnMouseDown(e);
+        }
+
+        protected override void OnInvalidated(InvalidateEventArgs e)
+        {
+            this.SetDrawParameter();
+            base.OnInvalidated(e);
         }
 
         protected override void OnMouseMove(MouseEventArgs e)

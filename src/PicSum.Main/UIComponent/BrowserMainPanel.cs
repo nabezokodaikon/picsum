@@ -10,7 +10,6 @@ using SWF.Core.Job;
 using SWF.UIComponent.TabOperation;
 using SWF.UIComponent.WideDropDown;
 using System;
-using System.Drawing;
 using System.Linq;
 using System.Runtime.Versioning;
 using System.Windows.Forms;

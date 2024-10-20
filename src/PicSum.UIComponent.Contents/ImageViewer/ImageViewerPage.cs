@@ -203,33 +203,63 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
         public override void RedrawPage()
         {
-            SizeF backgroudSize;
-            if (this.leftImagePanel.HasImage && this.rightImagePanel.HasImage)
+            using (TimeMeasuring.Run(true, "ImageViewerPage.RedrawPage"))
             {
-                backgroudSize = new SizeF(
-                    this.checkPatternPanel.Size.Width / 2f,
-                    this.checkPatternPanel.Size.Height);
-            }
-            else
-            {
-                backgroudSize = this.checkPatternPanel.Size;
-            }
+                SizeF backgroudSize;
+                if (this.leftImagePanel.HasImage && this.rightImagePanel.HasImage)
+                {
+                    backgroudSize = new SizeF(
+                        this.checkPatternPanel.Size.Width / 2f,
+                        this.checkPatternPanel.Size.Height);
+                }
+                else
+                {
+                    backgroudSize = this.checkPatternPanel.Size;
+                }
 
-            if (this.leftImagePanel.HasImage)
-            {
-                var leftImageScale = GetImageScale(
-                    this.leftImagePanel.ImageSize, backgroudSize, this.sizeMode);
-                this.leftImagePanel.SetScale(leftImageScale);
-            }
+                if (this.leftImagePanel.HasImage)
+                {
+                    var leftImageScale = GetImageScale(
+                        this.leftImagePanel.ImageSize, backgroudSize, this.sizeMode);
+                    this.leftImagePanel.SetScale(leftImageScale);
+                }
 
-            if (this.rightImagePanel.HasImage)
-            {
-                var rightImageScale = GetImageScale(
-                    this.rightImagePanel.ImageSize, backgroudSize, this.sizeMode);
-                this.rightImagePanel.SetScale(rightImageScale);
-            }
+                if (this.rightImagePanel.HasImage)
+                {
+                    var rightImageScale = GetImageScale(
+                        this.rightImagePanel.ImageSize, backgroudSize, this.sizeMode);
+                    this.rightImagePanel.SetScale(rightImageScale);
+                }
 
-            this.ChangeImagePanelSize();
+                if (this.displayMode == ImageDisplayMode.LeftFacing)
+                {
+                    if (this.leftImagePanel.HasImage
+                        && this.rightImagePanel.HasImage)
+                    {
+                        this.SettingBothImagePanelsLayout();
+                    }
+                    else
+                    {
+                        this.SettingLeftImagePanelLayout();
+                    }
+                }
+                else if (this.displayMode == ImageDisplayMode.RightFacing)
+                {
+                    if (this.leftImagePanel.HasImage
+                        && this.rightImagePanel.HasImage)
+                    {
+                        this.SettingBothImagePanelsLayout();
+                    }
+                    else
+                    {
+                        this.SettingLeftImagePanelLayout();
+                    }
+                }
+                else if (this.displayMode == ImageDisplayMode.Single)
+                {
+                    this.SettingLeftImagePanelLayout();
+                }
+            }
         }
 
         protected override void Dispose(bool disposing)
@@ -361,78 +391,109 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             }
         }
 
-        private void DrawMainImage()
-        {
-            var w = this.checkPatternPanel.Width;
-            var h = this.checkPatternPanel.Height;
-            var x = 0;
-            var y = 0;
-
-            this.leftImagePanel.SetBounds(x, y, w, h, BoundsSpecified.All);
-            this.leftImagePanel.ImageAlign = ImageAlign.Center;
-            this.leftImagePanel.Update();
-
-            this.rightImagePanel.Visible = false;
-        }
-
         private void CheckPatternPanel_Resize(object sender, EventArgs e)
         {
             this.RedrawPage();
         }
 
-        private void DrawBothImage()
+        private void SettingImagePanelLayout(bool isLeft, bool isRight, Action action)
         {
-            var w = (int)(this.checkPatternPanel.Width / 2f);
-            var h = this.checkPatternPanel.Height;
-            var lx = 0;
-            var rx = this.checkPatternPanel.Width - w;
-            var y = 0;
-
-            this.leftImagePanel.SetBounds(lx, y, w, h, BoundsSpecified.All);
-            this.leftImagePanel.ImageAlign = ImageAlign.Right;
-            this.leftImagePanel.Update();
-
-            this.rightImagePanel.SetBounds(rx, y, w, h, BoundsSpecified.All);
-            this.rightImagePanel.ImageAlign = ImageAlign.Left;
-            this.rightImagePanel.Update();
-        }
-
-        private void ChangeImagePanelSize()
-        {
-            using (TimeMeasuring.Run(true, "ImageViewerPage.ChangeImagePanelSize"))
+            if (isLeft && isRight)
             {
-                if (this.displayMode == ImageDisplayMode.LeftFacing)
-                {
-                    if (this.leftImagePanel.HasImage
-                        && this.rightImagePanel.HasImage)
-                    {
-                        this.DrawBothImage();
-                    }
-                    else
-                    {
-                        this.DrawMainImage();
-                    }
-                }
-                else if (this.displayMode == ImageDisplayMode.RightFacing)
-                {
-                    if (this.leftImagePanel.HasImage
-                        && this.rightImagePanel.HasImage)
-                    {
-                        this.DrawBothImage();
-                    }
-                    else
-                    {
-                        this.DrawMainImage();
-                    }
-                }
-                else if (this.displayMode == ImageDisplayMode.Single)
-                {
-                    this.DrawMainImage();
-                }
+                this.leftImagePanel.SuspendLayout();
+                this.rightImagePanel.SuspendLayout();
+                this.checkPatternPanel.SuspendLayout();
+                this.SuspendLayout();
+
+                action();
+
+                this.leftImagePanel.ResumeLayout(false);
+                this.leftImagePanel.PerformLayout();
+                this.rightImagePanel.ResumeLayout(false);
+                this.rightImagePanel.PerformLayout();
+                this.checkPatternPanel.ResumeLayout(false);
+                this.checkPatternPanel.PerformLayout();
+                this.ResumeLayout(false);
+                this.PerformLayout();
+                this.leftImagePanel.Invalidate();
+                this.leftImagePanel.Update();
+                this.rightImagePanel.Invalidate();
+                this.rightImagePanel.Update();
+            }
+            else if (isLeft)
+            {
+                this.leftImagePanel.SuspendLayout();
+                this.checkPatternPanel.SuspendLayout();
+                this.SuspendLayout();
+
+                action();
+
+                this.leftImagePanel.ResumeLayout(false);
+                this.leftImagePanel.PerformLayout();
+                this.checkPatternPanel.ResumeLayout(false);
+                this.checkPatternPanel.PerformLayout();
+                this.ResumeLayout(false);
+                this.PerformLayout();
+                this.leftImagePanel.Invalidate();
+                this.leftImagePanel.Update();
+            }
+            else if (isRight)
+            {
+                this.rightImagePanel.SuspendLayout();
+                this.checkPatternPanel.SuspendLayout();
+                this.SuspendLayout();
+
+                action();
+
+                this.rightImagePanel.ResumeLayout(false);
+                this.rightImagePanel.PerformLayout();
+                this.checkPatternPanel.ResumeLayout(false);
+                this.checkPatternPanel.PerformLayout();
+                this.ResumeLayout(false);
+                this.PerformLayout();
+                this.rightImagePanel.Invalidate();
+                this.rightImagePanel.Update();
             }
         }
 
-        private void ChangeImagePanelSize(ImageFileReadResult e)
+        private void SettingLeftImagePanelLayout()
+        {
+            this.SettingImagePanelLayout(true, false, () =>
+            {
+                var w = this.checkPatternPanel.Width;
+                var h = this.checkPatternPanel.Height;
+                var x = 0;
+                var y = 0;
+
+                this.leftImagePanel.SetBounds(x, y, w, h, BoundsSpecified.All);
+                this.leftImagePanel.ImageAlign = ImageAlign.Center;
+                this.leftImagePanel.Visible = true;
+
+                this.rightImagePanel.Visible = false;
+            });
+        }
+
+        private void SettingBothImagePanelsLayout()
+        {
+            this.SettingImagePanelLayout(true, true, () =>
+            {
+                var w = (int)(this.checkPatternPanel.Width / 2f);
+                var h = this.checkPatternPanel.Height;
+                var lx = 0;
+                var rx = this.checkPatternPanel.Width - w;
+                var y = 0;
+
+                this.leftImagePanel.SetBounds(lx, y, w, h, BoundsSpecified.All);
+                this.leftImagePanel.ImageAlign = ImageAlign.Right;
+                this.leftImagePanel.Visible = true;
+
+                this.rightImagePanel.SetBounds(rx, y, w, h, BoundsSpecified.All);
+                this.rightImagePanel.ImageAlign = ImageAlign.Left;
+                this.rightImagePanel.Visible = true;
+            });
+        }
+
+        private void SettingImagePanelsLayout(ImageFileReadResult e)
         {
             if (e.IsMain && e.HasSub)
             {
@@ -442,17 +503,23 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
                 if (this.displayMode == ImageDisplayMode.LeftFacing)
                 {
-                    var x = 0;
-                    this.leftImagePanel.SetBounds(x, y, w, h, BoundsSpecified.All);
-                    this.leftImagePanel.ImageAlign = ImageAlign.Right;
-                    this.leftImagePanel.Update();
+                    this.SettingImagePanelLayout(true, false, () =>
+                    {
+                        var x = 0;
+                        this.leftImagePanel.SetBounds(x, y, w, h, BoundsSpecified.All);
+                        this.leftImagePanel.ImageAlign = ImageAlign.Right;
+                        this.leftImagePanel.Visible = true;
+                    });
                 }
                 else
                 {
-                    var x = this.checkPatternPanel.Width - w;
-                    this.rightImagePanel.SetBounds(x, y, w, h, BoundsSpecified.All);
-                    this.rightImagePanel.ImageAlign = ImageAlign.Left;
-                    this.rightImagePanel.Update();
+                    this.SettingImagePanelLayout(false, true, () =>
+                    {
+                        var x = this.checkPatternPanel.Width - w;
+                        this.rightImagePanel.SetBounds(x, y, w, h, BoundsSpecified.All);
+                        this.rightImagePanel.ImageAlign = ImageAlign.Left;
+                        this.rightImagePanel.Visible = true;
+                    });
                 }
             }
             else if (!e.IsMain)
@@ -463,30 +530,39 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
                 if (this.displayMode == ImageDisplayMode.LeftFacing)
                 {
-                    var x = this.checkPatternPanel.Width - w;
-                    this.rightImagePanel.SetBounds(x, y, w, h, BoundsSpecified.All);
-                    this.rightImagePanel.ImageAlign = ImageAlign.Left;
-                    this.rightImagePanel.Update();
+                    this.SettingImagePanelLayout(false, true, () =>
+                    {
+                        var x = this.checkPatternPanel.Width - w;
+                        this.rightImagePanel.SetBounds(x, y, w, h, BoundsSpecified.All);
+                        this.rightImagePanel.ImageAlign = ImageAlign.Left;
+                        this.rightImagePanel.Visible = true;
+                    });
                 }
                 else
                 {
-                    var x = 0;
-                    this.leftImagePanel.SetBounds(x, y, w, h, BoundsSpecified.All);
-                    this.leftImagePanel.ImageAlign = ImageAlign.Right;
-                    this.leftImagePanel.Update();
+                    this.SettingImagePanelLayout(true, false, () =>
+                    {
+                        var x = 0;
+                        this.leftImagePanel.SetBounds(x, y, w, h, BoundsSpecified.All);
+                        this.leftImagePanel.ImageAlign = ImageAlign.Right;
+                        this.leftImagePanel.Visible = true;
+                    });
                 }
             }
             else if (e.IsMain && !e.HasSub)
             {
-                var w = this.checkPatternPanel.Width;
-                var h = this.checkPatternPanel.Height;
-                var x = 0;
-                var y = 0;
+                this.SettingImagePanelLayout(true, false, () =>
+                {
+                    var w = this.checkPatternPanel.Width;
+                    var h = this.checkPatternPanel.Height;
+                    var x = 0;
+                    var y = 0;
 
-                this.leftImagePanel.SetBounds(x, y, w, h, BoundsSpecified.All);
-                this.leftImagePanel.ImageAlign = ImageAlign.Center;
-                this.leftImagePanel.Update();
-                this.rightImagePanel.Visible = false;
+                    this.leftImagePanel.SetBounds(x, y, w, h, BoundsSpecified.All);
+                    this.leftImagePanel.ImageAlign = ImageAlign.Center;
+                    this.leftImagePanel.Visible = true;
+                    this.rightImagePanel.Visible = false;
+                });
             }
             else
             {
@@ -887,7 +963,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 throw new InvalidOperationException($"不正な画像表示モードです。DisplayMode: '{this.displayMode}'");
             }
 
-            this.ChangeImagePanelSize(e);
+            this.SettingImagePanelsLayout(e);
             this.Focus();
         }
 
