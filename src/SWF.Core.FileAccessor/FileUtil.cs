@@ -255,51 +255,6 @@ namespace SWF.Core.FileAccessor
         }
 
         /// <summary>
-        /// 指定したディレクトリ内に、画像ファイルが複数存在するか確認します。
-        /// </summary>
-        /// <param name="directoryPath"></param>
-        /// <returns></returns>
-        /// <exception cref="ArgumentNullException"></exception>
-        public static bool HasImageFiles(string directoryPath)
-        {
-            ArgumentException.ThrowIfNullOrEmpty(directoryPath, nameof(directoryPath));
-
-            foreach (var ex in IMAGE_FILE_EXTENSION_LIST)
-            {
-                try
-                {
-                    var result = Directory.EnumerateFiles(directoryPath, $"*{ex}").Count() > 2;
-                    if (result)
-                    {
-                        return result;
-                    }
-                }
-                catch (DirectoryNotFoundException exception)
-                {
-                    throw new FileUtilException(CreateFileAccessErrorMessage(directoryPath), exception);
-                }
-                catch (PathTooLongException exception)
-                {
-                    throw new FileUtilException(CreateFileAccessErrorMessage(directoryPath), exception);
-                }
-                catch (IOException exception)
-                {
-                    throw new FileUtilException(CreateFileAccessErrorMessage(directoryPath), exception);
-                }
-                catch (UnauthorizedAccessException exception)
-                {
-                    throw new FileUtilException(CreateFileAccessErrorMessage(directoryPath), exception);
-                }
-                catch (SecurityException exception)
-                {
-                    throw new FileUtilException(CreateFileAccessErrorMessage(directoryPath), exception);
-                }
-            }
-
-            return false;
-        }
-
-        /// <summary>
         /// ファイルにアクセス可能か確認します。
         /// </summary>
         /// <param name="filePath">ファイルパス</param>
