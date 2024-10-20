@@ -605,7 +605,7 @@ namespace SWF.Core.FileAccessor
         /// </summary>
         /// <param name="directoryPath">フォルダパス</param>
         /// <returns></returns>
-        public static string[] GetSubDirectorys(string directoryPath)
+        public static IEnumerable<string> GetSubDirectorys(string directoryPath)
         {
             ArgumentException.ThrowIfNullOrEmpty(directoryPath, nameof(directoryPath));
 
@@ -620,8 +620,7 @@ namespace SWF.Core.FileAccessor
                 {
                     return Directory
                         .GetDirectories(directoryPath)
-                        .Where(file => CanAccess(file))
-                        .ToArray();
+                        .Where(CanAccess);
                 }
                 catch (UnauthorizedAccessException ex)
                 {
@@ -651,7 +650,7 @@ namespace SWF.Core.FileAccessor
         /// </summary>
         /// <param name="directoryPath">フォルダパス</param>
         /// <returns></returns>
-        public static IList<string> GetFilesAndSubDirectorys(string directoryPath)
+        public static IEnumerable<string> GetFilesAndSubDirectorys(string directoryPath)
         {
             ArgumentException.ThrowIfNullOrEmpty(directoryPath, nameof(directoryPath));
 
@@ -666,8 +665,7 @@ namespace SWF.Core.FileAccessor
                 {
                     return Directory
                         .GetFileSystemEntries(directoryPath)
-                        .Where(file => CanAccess(file))
-                        .ToList();
+                        .Where(CanAccess);
                 }
                 catch (UnauthorizedAccessException ex)
                 {
@@ -1041,13 +1039,12 @@ namespace SWF.Core.FileAccessor
         }
 
         // ドライブリストを取得します。
-        private static string[] GetDriveList()
+        private static IEnumerable<string> GetDriveList()
         {
             try
             {
                 var drives = DriveInfo.GetDrives()
-                    .Select(drive => ToRemoveLastPathSeparate(@$"{drive.Name}\"))
-                    .ToArray();
+                    .Select(drive => ToRemoveLastPathSeparate(@$"{drive.Name}\"));
                 return drives;
             }
             catch (IOException ex)
