@@ -16,7 +16,7 @@ namespace PicSum.Job.Logics
             ArgumentException.ThrowIfNullOrEmpty(directoryPath, nameof(directoryPath));
 
             var list = new List<string>();
-            foreach (var file in FileUtil.GetFilesAndSubDirectorys(directoryPath))
+            foreach (var file in FileUtil.GetFileSystemEntries(directoryPath))
             {
                 this.CheckCancel();
                 if (FileUtil.CanAccess(file))

@@ -649,7 +649,7 @@ namespace SWF.Core.FileAccessor
         /// </summary>
         /// <param name="directoryPath">フォルダパス</param>
         /// <returns></returns>
-        public static IEnumerable<string> GetFilesAndSubDirectorys(string directoryPath)
+        public static IEnumerable<string> GetFileSystemEntries(string directoryPath)
         {
             ArgumentException.ThrowIfNullOrEmpty(directoryPath, nameof(directoryPath));
 
