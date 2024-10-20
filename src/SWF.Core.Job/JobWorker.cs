@@ -176,7 +176,7 @@ namespace SWF.Core.Job
             Logger.Debug("ジョブの完了を待ちます。");
             while (!job.IsCompleted)
             {
-                Thread.Sleep(0);
+                Thread.Sleep(1);
             }
             Logger.Debug("ジョブが完了しました。");
         }
