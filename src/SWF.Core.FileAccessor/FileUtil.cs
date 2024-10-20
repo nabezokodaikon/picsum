@@ -573,7 +573,7 @@ namespace SWF.Core.FileAccessor
                 try
                 {
                     return Directory
-                        .GetFiles(directoryPath)
+                        .EnumerateFiles(directoryPath)
                         .Where(CanAccess);
                 }
                 catch (UnauthorizedAccessException ex)
@@ -618,7 +618,7 @@ namespace SWF.Core.FileAccessor
                 try
                 {
                     return Directory
-                        .GetDirectories(directoryPath)
+                        .EnumerateDirectories(directoryPath)
                         .Where(CanAccess);
                 }
                 catch (UnauthorizedAccessException ex)
@@ -663,7 +663,7 @@ namespace SWF.Core.FileAccessor
                 try
                 {
                     return Directory
-                        .GetFileSystemEntries(directoryPath)
+                        .EnumerateFileSystemEntries(directoryPath)
                         .Where(CanAccess);
                 }
                 catch (UnauthorizedAccessException ex)
