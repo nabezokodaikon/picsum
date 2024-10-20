@@ -240,30 +240,6 @@ namespace SWF.UIComponent.WideDropDown
             }
         }
 
-        public void AddItems(IList<string> itemList)
-        {
-            ArgumentNullException.ThrowIfNull(itemList, nameof(itemList));
-
-            this.FlowList.BeginUpdate();
-
-            try
-            {
-                this.itemList.AddRange(itemList);
-                var tempItemList = this.itemList
-                    .GroupBy(item => item)
-                    .Select(item => item.First())
-                    .OrderBy(item => item)
-                    .ToList();
-                this.itemList.Clear();
-                this.itemList.AddRange(tempItemList);
-                this.FlowList.ItemCount = this.itemList.Count;
-            }
-            finally
-            {
-                this.FlowList.EndUpdate();
-            }
-        }
-
         public void SelectItem(string item)
         {
             ArgumentException.ThrowIfNullOrEmpty(item, nameof(item));

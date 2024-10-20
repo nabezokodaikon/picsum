@@ -53,13 +53,6 @@ namespace SWF.UIComponent.WideDropDown
             this.dropDownList.SetItems(items);
         }
 
-        public void AddItems(IList<string> itemList)
-        {
-            ArgumentNullException.ThrowIfNull(itemList, nameof(itemList));
-
-            this.dropDownList.AddItems(itemList.Where(item => !string.IsNullOrEmpty(item)).ToList());
-        }
-
         public void SelectItem()
         {
             var item = this.inputTextBox.Text;
