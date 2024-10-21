@@ -1,4 +1,3 @@
-using SWF.Core.Base;
 using SWF.UIComponent.TabOperation;
 using System;
 using System.Runtime.Versioning;
