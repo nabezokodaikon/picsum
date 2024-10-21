@@ -9,8 +9,8 @@ namespace PicSum.Job.Entities
     {
         public string? FilePath { get; internal set; }
         public string? FileName { get; internal set; }
-        public Nullable<DateTime> UpdateDate { get; internal set; }
-        public Nullable<DateTime> RgistrationDate { get; internal set; }
+        public DateTime? UpdateDate { get; internal set; }
+        public DateTime? RgistrationDate { get; internal set; }
         public Image? LargeIcon { get; internal set; }
         public Image? SmallIcon { get; internal set; }
         public Bitmap? ThumbnailImage { get; internal set; }

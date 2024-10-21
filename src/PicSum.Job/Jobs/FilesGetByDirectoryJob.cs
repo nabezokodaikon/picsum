@@ -24,7 +24,7 @@ namespace PicSum.Job.Jobs
             };
 
             IList<string> fileList;
-            var getFilesLogic = new FilessAndSubDirectoriesGetLogic(this);
+            var getFilesLogic = new FilesAndSubDirectoriesGetLogic(this);
             try
             {
                 fileList = getFilesLogic.Execute(param.Value);

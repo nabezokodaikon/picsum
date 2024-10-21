@@ -26,7 +26,7 @@ namespace PicSum.Main.UIComponent
         public event EventHandler BackgroundMouseDoubleLeftClick;
 
         private TwoWayJob<TagsGetJob, ListResult<string>> getTagListJob = null;
-        private TwoWayJob<ImageFileGetByDirectoryJob, ImageFileGetByDirectoryParameter, ImageFileGetByDirectoryResult> getFilesJob = null;
+        private TwoWayJob<ImageFileGetByDirectoryJob, ImageFileGetByDirectoryParameter, ImageFilesGetByDirectoryResult> getFilesJob = null;
 
         public int TabCount
         {
@@ -193,7 +193,7 @@ namespace PicSum.Main.UIComponent
             base.OnLoad(e);
         }
 
-        private TwoWayJob<ImageFileGetByDirectoryJob, ImageFileGetByDirectoryParameter, ImageFileGetByDirectoryResult> CreateNewGetFilesJob()
+        private TwoWayJob<ImageFileGetByDirectoryJob, ImageFileGetByDirectoryParameter, ImageFilesGetByDirectoryResult> CreateNewGetFilesJob()
         {
             this.getFilesJob?.Dispose();
             this.getFilesJob = null;

@@ -12,13 +12,13 @@ namespace PicSum.Job.Jobs
     /// </summary>
     [SupportedOSPlatform("windows")]
     public sealed class ImageFileGetByDirectoryJob
-        : AbstractTwoWayJob<ImageFileGetByDirectoryParameter, ImageFileGetByDirectoryResult>
+        : AbstractTwoWayJob<ImageFileGetByDirectoryParameter, ImageFilesGetByDirectoryResult>
     {
         protected override void Execute(ImageFileGetByDirectoryParameter param)
         {
             ArgumentNullException.ThrowIfNull(param, nameof(param));
 
-            var result = new ImageFileGetByDirectoryResult();
+            var result = new ImageFilesGetByDirectoryResult();
 
             try
             {
@@ -35,7 +35,7 @@ namespace PicSum.Job.Jobs
                     throw new ArgumentException("ファイルまたはフォルダのパスではありません。", nameof(param));
                 }
 
-                var getFilesLogic = new FilessAndSubDirectoriesGetLogic(this);
+                var getFilesLogic = new FilesAndSubDirectoriesGetLogic(this);
                 var filePathList = getFilesLogic.Execute(result.DirectoryPath);
 
                 result.FilePathList = [];

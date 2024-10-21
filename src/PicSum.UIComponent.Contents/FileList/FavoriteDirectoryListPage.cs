@@ -23,10 +23,10 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private bool disposing = false;
         private readonly FavoriteDirectoryListPageParameter parameter = null;
-        private TwoWayJob<FavoriteDirectoryGetJob, FavoriteDirectoriesGetParameter, ListResult<FileShallowInfoEntity>> searchJob = null;
+        private TwoWayJob<FavoriteDirectoriesGetJob, FavoriteDirectoriesGetParameter, ListResult<FileShallowInfoEntity>> searchJob = null;
         private OneWayJob<DirectoryViewCounterDeleteJob, ListParameter<string>> deleteJob = null;
 
-        private TwoWayJob<FavoriteDirectoryGetJob, FavoriteDirectoriesGetParameter, ListResult<FileShallowInfoEntity>> SearchJob
+        private TwoWayJob<FavoriteDirectoriesGetJob, FavoriteDirectoriesGetParameter, ListResult<FileShallowInfoEntity>> SearchJob
         {
             get
             {

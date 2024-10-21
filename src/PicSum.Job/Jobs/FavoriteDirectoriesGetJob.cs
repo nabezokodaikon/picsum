@@ -8,7 +8,7 @@ using System.Runtime.Versioning;
 namespace PicSum.Job.Jobs
 {
     [SupportedOSPlatform("windows")]
-    public sealed class FavoriteDirectoryGetJob
+    public sealed class FavoriteDirectoriesGetJob
         : AbstractTwoWayJob<FavoriteDirectoriesGetParameter, ListResult<FileShallowInfoEntity>>
     {
         protected override void Execute(FavoriteDirectoriesGetParameter param)
