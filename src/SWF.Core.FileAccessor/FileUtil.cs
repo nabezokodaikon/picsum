@@ -16,6 +16,8 @@ namespace SWF.Core.FileAccessor
         private const string ROOT_DIRECTORY_NAME = "PC";
         private const string ROOT_DIRECTORY_TYPE_NAME = "System root";
 
+        public static readonly string EXECUTABLE_DIRECTORY = GetExecutableDirectory();
+
         internal const string AVIF_FILE_EXTENSION = ".AVIF";
         internal const string BMP_FILE_EXTENSION = ".BMP";
         internal const string GIF_FILE_EXTENSION = ".GIF";
@@ -33,6 +35,17 @@ namespace SWF.Core.FileAccessor
         public const string ROOT_DIRECTORY_PATH =
             "1435810adf6f3080e21df9c3b666c7887883da42ad582d911a81931c38e720da1235036c60c69389e8c4fcc26be0c796626ef8ed3296bd9c65445ff12168fb22";
         public static readonly DateTime ROOT_DIRECTORY_DATETIME = DateTime.MinValue;
+
+        private static string GetExecutableDirectory()
+        {
+            var executableDirectory = Directory.GetParent(Application.ExecutablePath);
+            if (executableDirectory == null)
+            {
+                throw new NullReferenceException("実行ディレクトリが取得できません。");
+            }
+
+            return executableDirectory.FullName;
+        }
 
         /// <summary>
         /// ファイル、フォルダの存在を確認します。

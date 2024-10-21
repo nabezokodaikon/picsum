@@ -3,6 +3,7 @@ using PicSum.Job.Parameters;
 using PicSum.Main.Conf;
 using PicSum.UIComponent.Contents.Common;
 using SWF.Core.Base;
+using SWF.Core.FileAccessor;
 using SWF.Core.Job;
 using SWF.UIComponent.Form;
 using SWF.UIComponent.TabOperation;
@@ -13,6 +14,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Versioning;
 using System.Windows.Forms;
+using Windows.Security.EnterpriseData;
 
 namespace PicSum.Main.UIComponent
 {
@@ -58,8 +60,7 @@ namespace PicSum.Main.UIComponent
         {
             this.SuspendLayout();
 
-            var exeDir = Directory.GetParent(Application.ExecutablePath).FullName;
-            this.Icon = new Icon(Path.Combine(exeDir, "AppIcon.ico"));
+            this.Icon = new Icon(Path.Combine(FileUtil.EXECUTABLE_DIRECTORY, "AppIcon.ico"));
             this.Text = "PicSum";
             this.AutoScaleMode = AutoScaleMode.None;
             this.StartPosition = FormStartPosition.Manual;
@@ -125,7 +126,7 @@ namespace PicSum.Main.UIComponent
             {
                 this.Location = BrowserConfig.WindowLocaion;
 
-                var dbDir = Path.Combine(Directory.GetParent(Application.ExecutablePath).FullName, "db");
+                var dbDir = Path.Combine(FileUtil.EXECUTABLE_DIRECTORY, "db");
                 if (!Directory.Exists(dbDir))
                 {
                     Directory.CreateDirectory(dbDir);

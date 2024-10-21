@@ -15,7 +15,7 @@ namespace PicSum.Main.Conf
         public static readonly Config Values = new();
 
         private static readonly string SAVE_FILE_PATH
-            = Path.Combine(Directory.GetParent(Application.ExecutablePath).FullName, "cnofig.xml");
+            = Path.Combine(FileUtil.EXECUTABLE_DIRECTORY, "cnofig.xml");
 
         public FormWindowState WindowState { get; set; }
         public Point WindowLocaion { get; set; }

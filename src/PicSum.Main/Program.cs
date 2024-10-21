@@ -93,11 +93,12 @@ namespace PicSum.Main
                 }
             }
 
-            var exeDir = Directory.GetParent(Application.ExecutablePath).FullName;
 #if DEBUG
-            LogManager.Configuration = new XmlLoggingConfiguration(Path.Combine(exeDir, "NLog.debug.config"));
+            LogManager.Configuration = new XmlLoggingConfiguration(
+                Path.Combine(FileUtil.EXECUTABLE_DIRECTORY, "NLog.debug.config"));
 #else
-            LogManager.Configuration = new XmlLoggingConfiguration(Path.Combine(exeDir, "NLog.config"));
+            LogManager.Configuration = new XmlLoggingConfiguration(
+                Path.Combine(FileUtil.EXECUTABLE_DIRECTORY, "NLog.config"));
 #endif
 
             var logger = LogManager.GetCurrentClassLogger();
