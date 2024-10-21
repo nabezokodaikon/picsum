@@ -14,7 +14,6 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Versioning;
 using System.Windows.Forms;
-using Windows.Security.EnterpriseData;
 
 namespace PicSum.Main.UIComponent
 {
