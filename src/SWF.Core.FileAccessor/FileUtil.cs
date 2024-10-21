@@ -1,3 +1,4 @@
+using SWF.Core.Base;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
@@ -465,8 +466,8 @@ namespace SWF.Core.FileAccessor
             ArgumentException.ThrowIfNullOrEmpty(directoryPath, nameof(directoryPath));
 
             return GetFiles(directoryPath)
-                .OrderBy(file => file)
-                .FirstOrDefault(file => IsImageFile(file));
+                .OrderBy(_ => _, NaturalStringComparer.Windows)
+                .FirstOrDefault(IsImageFile);
         }
 
         /// <summary>
