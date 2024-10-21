@@ -210,51 +210,6 @@ namespace SWF.Core.FileAccessor
         }
 
         /// <summary>
-        /// 指定したディレクトリ内に、画像ファイルが存在するか確認します。
-        /// </summary>
-        /// <param name="directoryPath"></param>
-        /// <returns></returns>
-        /// <exception cref="ArgumentNullException"></exception>
-        public static bool HasImageFile(string directoryPath)
-        {
-            ArgumentException.ThrowIfNullOrEmpty(directoryPath, nameof(directoryPath));
-
-            foreach (var ex in IMAGE_FILE_EXTENSION_LIST)
-            {
-                try
-                {
-                    var result = Directory.EnumerateFiles(directoryPath, $"*{ex}").Any();
-                    if (result)
-                    {
-                        return result;
-                    }
-                }
-                catch (DirectoryNotFoundException exception)
-                {
-                    throw new FileUtilException(CreateFileAccessErrorMessage(directoryPath), exception);
-                }
-                catch (PathTooLongException exception)
-                {
-                    throw new FileUtilException(CreateFileAccessErrorMessage(directoryPath), exception);
-                }
-                catch (IOException exception)
-                {
-                    throw new FileUtilException(CreateFileAccessErrorMessage(directoryPath), exception);
-                }
-                catch (UnauthorizedAccessException exception)
-                {
-                    throw new FileUtilException(CreateFileAccessErrorMessage(directoryPath), exception);
-                }
-                catch (SecurityException exception)
-                {
-                    throw new FileUtilException(CreateFileAccessErrorMessage(directoryPath), exception);
-                }
-            }
-
-            return false;
-        }
-
-        /// <summary>
         /// ファイルにアクセス可能か確認します。
         /// </summary>
         /// <param name="filePath">ファイルパス</param>
@@ -1023,8 +978,8 @@ namespace SWF.Core.FileAccessor
         /// <returns></returns>
         private static List<string> GetImageFileExtensionList()
         {
-            var exList = new List<string>
-            {
+            return
+            [
                 AVIF_FILE_EXTENSION,
                 BMP_FILE_EXTENSION,
                 GIF_FILE_EXTENSION,
@@ -1036,9 +991,7 @@ namespace SWF.Core.FileAccessor
                 PNG_FILE_EXTENSION,
                 SVG_FILE_EXTENSION,
                 WEBP_FILE_EXTENSION
-            };
-
-            return exList;
+            ];
         }
     }
 }
