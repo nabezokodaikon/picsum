@@ -70,7 +70,7 @@ namespace PicSum.UIComponent.Contents.FileList
                             .OrderByDescending(file => file.FilePath, NaturalStringComparer.Windows)
                             .OrderByDescending(file => file.UpdateDate.GetValueOrDefault(DateTime.MinValue));
                     }
-                case SortTypeID.RgistrationDate:
+                case SortTypeID.RegistrationDate:
                     if (isAscending)
                     {
                         return files
@@ -504,7 +504,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 SortTypeID.FileName => this.sortFileNameToolStripButton,
                 SortTypeID.FilePath => this.sortFilePathToolStripButton,
                 SortTypeID.UpdateDate => this.sortFileUpdateDateToolStripButton,
-                SortTypeID.RgistrationDate => this.sortFileRgistrationDateToolStripButton,
+                SortTypeID.RegistrationDate => this.sortFileRgistrationDateToolStripButton,
                 _ => null,
             };
         }
@@ -622,7 +622,7 @@ namespace PicSum.UIComponent.Contents.FileList
                         }
                     });
                     break;
-                case SortTypeID.RgistrationDate:
+                case SortTypeID.RegistrationDate:
                     filterList.Sort((x, y) =>
                     {
                         var xDate = x.RgistrationDate.GetValueOrDefault(DateTime.MinValue);
@@ -899,8 +899,8 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private void SortFilerRgistrationDateToolStripButton_Click(object sender, EventArgs e)
         {
-            this.SortInfo.ChangeSortDirection(SortTypeID.RgistrationDate);
-            this.SortInfo.ActiveSortType = SortTypeID.RgistrationDate;
+            this.SortInfo.ChangeSortDirection(SortTypeID.RegistrationDate);
+            this.SortInfo.ActiveSortType = SortTypeID.RegistrationDate;
             this.SetSort();
             this.SetFilter();
         }

@@ -12,7 +12,7 @@ namespace SWF.Core.ImageAccessor
         private static readonly Dictionary<string, ImageFileCache> CACHE_DICTIONARY = new(CACHE_CAPACITY);
         private static readonly ReaderWriterLockSlim CACHE_LOCK = new();
 
-        public static void DisposeStaticResouces()
+        public static void DisposeStaticResources()
         {
             CACHE_LOCK.Dispose();
         }

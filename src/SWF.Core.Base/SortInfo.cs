@@ -9,7 +9,7 @@ namespace SWF.Core.Base
         private bool isFileNameSortAscending = true;
         private bool isFilePathSortAscending = true;
         private bool isUpdateDateSortAscending = true;
-        private bool isRgistrationDateSortAscending = true;
+        private bool isRegistrationDateSortAscending = true;
 
         public SortTypeID ActiveSortType { get; set; }
 
@@ -20,7 +20,7 @@ namespace SWF.Core.Base
                 SortTypeID.FileName => this.isFileNameSortAscending,
                 SortTypeID.FilePath => this.isFilePathSortAscending,
                 SortTypeID.UpdateDate => this.isUpdateDateSortAscending,
-                SortTypeID.RgistrationDate => this.isRgistrationDateSortAscending,
+                SortTypeID.RegistrationDate => this.isRegistrationDateSortAscending,
                 _ => false,
             };
         }
@@ -40,17 +40,17 @@ namespace SWF.Core.Base
                 case SortTypeID.UpdateDate:
                     this.isUpdateDateSortAscending = isAscending;
                     break;
-                case SortTypeID.RgistrationDate:
-                    this.isRgistrationDateSortAscending = isAscending;
+                case SortTypeID.RegistrationDate:
+                    this.isRegistrationDateSortAscending = isAscending;
                     break;
                 default:
                     break;
             }
         }
 
-        public Image GetSortDirectionImage(bool isAcending)
+        public Image GetSortDirectionImage(bool isAscending)
         {
-            if (isAcending)
+            if (isAscending)
             {
                 return this.sortAscendingImage;
             }

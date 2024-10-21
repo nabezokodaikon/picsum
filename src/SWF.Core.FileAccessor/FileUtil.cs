@@ -515,7 +515,7 @@ namespace SWF.Core.FileAccessor
         /// </summary>
         /// <param name="directoryPath">フォルダパス</param>
         /// <returns></returns>
-        public static IEnumerable<string> GetSubDirectorys(string directoryPath)
+        public static IEnumerable<string> GetSubDirectories(string directoryPath)
         {
             ArgumentException.ThrowIfNullOrEmpty(directoryPath, nameof(directoryPath));
 
@@ -643,9 +643,9 @@ namespace SWF.Core.FileAccessor
         /// </summary>
         /// <param name="spesialDirectory">システムアイコンの種類</param>
         /// <returns></returns>
-        public static Bitmap GetSmallSystemIcon(WinApiMembers.ShellSpecialFolder spesialFolder)
+        public static Bitmap GetSmallSystemIcon(WinApiMembers.ShellSpecialFolder specialFolder)
         {
-            _ = WinApiMembers.SHGetSpecialFolderLocation(IntPtr.Zero, spesialFolder, out var idHandle);
+            _ = WinApiMembers.SHGetSpecialFolderLocation(IntPtr.Zero, specialFolder, out var idHandle);
             var sh = new WinApiMembers.SHFILEINFOW();
             var hSuccess = WinApiMembers.SHGetFileInfoW(idHandle, 0, ref sh, (uint)Marshal.SizeOf(sh),
                                                            WinApiMembers.ShellFileInfoFlags.SHGFI_ICON |
@@ -676,9 +676,9 @@ namespace SWF.Core.FileAccessor
         /// </summary>
         /// <param name="spesialDirectory">システムアイコンの種類</param>
         /// <returns></returns>
-        public static Bitmap GetLargeSystemIcon(WinApiMembers.ShellSpecialFolder spesialFolder)
+        public static Bitmap GetLargeSystemIcon(WinApiMembers.ShellSpecialFolder specialFolder)
         {
-            _ = WinApiMembers.SHGetSpecialFolderLocation(IntPtr.Zero, spesialFolder, out var idHandle);
+            _ = WinApiMembers.SHGetSpecialFolderLocation(IntPtr.Zero, specialFolder, out var idHandle);
             var sh = new WinApiMembers.SHFILEINFOW();
             var hSuccess = WinApiMembers.SHGetFileInfoW(idHandle, 0, ref sh, (uint)Marshal.SizeOf(sh),
                                                            WinApiMembers.ShellFileInfoFlags.SHGFI_ICON |

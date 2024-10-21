@@ -71,6 +71,6 @@ namespace SWF.Core.Base
         FileName = 1,
         FilePath = 2,
         UpdateDate = 3,
-        RgistrationDate = 5,
+        RegistrationDate = 5,
     }
 }

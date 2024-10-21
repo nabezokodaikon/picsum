@@ -186,7 +186,7 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             if (this.parameter.SortInfo == null)
             {
-                base.SetFiles(result, this.parameter.SelectedFilePath, SortTypeID.RgistrationDate, false);
+                base.SetFiles(result, this.parameter.SelectedFilePath, SortTypeID.RegistrationDate, false);
             }
             else
             {

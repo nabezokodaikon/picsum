@@ -193,7 +193,7 @@ namespace SWF.Core.FileAccessor
         /// <summary>
         /// 静的リソースを解放します。
         /// </summary>
-        public static void DisposeStaticResouces()
+        public static void DisposeStaticResources()
         {
             SMALL_ICON_CASH_LOCK.Dispose();
             LARGE_ICON_CASH_LOCK.Dispose();

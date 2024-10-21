@@ -424,13 +424,13 @@ namespace SWF.Core.ImageAccessor
                 {
                     var directory = ImageUtil.SHELL.NameSpace(Path.GetDirectoryName(filePath));
                     var item = directory.ParseName(Path.GetFileName(filePath));
-                    var deteils = directory.GetDetailsOf(item, 31);
-                    if (string.IsNullOrWhiteSpace(deteils))
+                    var details = directory.GetDetailsOf(item, 31);
+                    if (string.IsNullOrWhiteSpace(details))
                     {
                         throw new ImageUtilException(CreateFileAccessErrorMessage(filePath));
                     }
 
-                    var v = deteils.Split(('x'));
+                    var v = details.Split(('x'));
                     if (v.Length != 2)
                     {
                         throw new ImageUtilException(CreateFileAccessErrorMessage(filePath));
