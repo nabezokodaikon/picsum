@@ -46,11 +46,7 @@ namespace PicSum.UIComponent.Contents.Common
 
             if (disposing)
             {
-                using (TimeMeasuring.Run(true, "BrowserPage.Dispose GC.Collect"))
-                {
-                    GC.Collect();
-                    GC.WaitForPendingFinalizers();
-                }
+
             }
 
             this.disposed = true;
