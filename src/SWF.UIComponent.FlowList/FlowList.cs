@@ -838,7 +838,11 @@ namespace SWF.UIComponent.FlowList
 
         private Rectangle GetItemDrawRectangle(int itemIndex)
         {
-            var col = itemIndex % this.drawParameter.ColCount;
+            var col = this.drawParameter.ColCount switch
+            {
+                0 => 0,
+                _ => itemIndex % this.drawParameter.ColCount,
+            };
             var row = Utility.ToRoundDown(itemIndex / (float)this.drawParameter.ColCount);
             return this.GetItemDrawRectangle(row, col);
         }
