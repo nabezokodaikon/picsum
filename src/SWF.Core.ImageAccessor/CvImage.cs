@@ -69,13 +69,13 @@ namespace SWF.Core.ImageAccessor
             this.Dispose(false);
         }
 
-        public void DrawEmptyImage(Graphics g, Brush brushe, RectangleF destRect)
+        public void DrawEmptyImage(Graphics g, Brush brush, RectangleF destRect)
         {
             ArgumentNullException.ThrowIfNull(g, nameof(g));
-            ArgumentNullException.ThrowIfNull(brushe, nameof(brushe));
+            ArgumentNullException.ThrowIfNull(brush, nameof(brush));
 
             g.CompositingMode = CompositingMode.SourceCopy;
-            g.FillRectangle(brushe, destRect);
+            g.FillRectangle(brush, destRect);
         }
 
         public void DrawSourceImage(Graphics g, RectangleF destRect, RectangleF srcRect)
