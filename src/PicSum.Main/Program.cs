@@ -8,6 +8,7 @@ using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
 using System;
 using System.Diagnostics;
+using System.IO;
 using System.Runtime.Versioning;
 using System.Threading;
 using System.Windows.Forms;
@@ -92,10 +93,11 @@ namespace PicSum.Main
                 }
             }
 
+            var exeDir = Directory.GetParent(Application.ExecutablePath).FullName;
 #if DEBUG
-            LogManager.Configuration = new XmlLoggingConfiguration("NLog.debug.config");
+            LogManager.Configuration = new XmlLoggingConfiguration(Path.Combine(exeDir, "NLog.debug.config"));
 #else
-            LogManager.Configuration = new XmlLoggingConfiguration("NLog.config");
+            LogManager.Configuration = new XmlLoggingConfiguration(Path.Combine(exeDir, "NLog.config"));
 #endif
 
             var logger = LogManager.GetCurrentClassLogger();

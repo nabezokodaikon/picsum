@@ -58,8 +58,9 @@ namespace PicSum.Main.UIComponent
         {
             this.SuspendLayout();
 
+            var exeDir = Directory.GetParent(Application.ExecutablePath).FullName;
+            this.Icon = new Icon(Path.Combine(exeDir, "AppIcon.ico"));
             this.Text = "PicSum";
-            this.Icon = new Icon("AppIcon.ico");
             this.AutoScaleMode = AutoScaleMode.None;
             this.StartPosition = FormStartPosition.Manual;
             this.MinimumSize = new Size(320, 240);
