@@ -28,9 +28,10 @@ jobs:
           src\PicSum.sln
           /t:Rebuild
           /p:Configuration=Release
-          /p:Platform="Any CPU"
-          /p:OutputPath=$pwd\dist\picsum
+          /p:DebugType=None
           /p:GenerateDependencyFile=false
+          /p:OutputPath=$pwd\dist\picsum
+          /p:Platform="Any CPU"
       
       - name: cleanup
         shell: pwsh
