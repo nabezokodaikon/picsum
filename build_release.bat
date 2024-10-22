@@ -8,7 +8,6 @@ dotnet restore src\PicSum.sln
 MSBuild src\PicSum.sln /t:Rebuild ^
   /p:Configuration=Release ^
   /p:DebugType=None ^
-  /p:GenerateDependencyFile=false ^
   /p:OutputPath="%OUTPUT_PATH%" ^
   /p:Platform="Any CPU"
 

@@ -29,7 +29,6 @@ jobs:
           /t:Rebuild
           /p:Configuration=Release
           /p:DebugType=None
-          /p:GenerateDependencyFile=false
           /p:OutputPath=$pwd\dist\picsum
           /p:Platform="Any CPU"
       
