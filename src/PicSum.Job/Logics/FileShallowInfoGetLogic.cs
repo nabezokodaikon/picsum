@@ -60,6 +60,11 @@ namespace PicSum.Job.Logics
                     var thumbnailBuffer = thumbnailGetLogic.GetOnlyCache(filePath, THUMBNAIL_SIZE, THUMBNAIL_SIZE);
                     if (thumbnailBuffer != ThumbnailBufferEntity.EMPTY)
                     {
+                        if (thumbnailBuffer.ThumbnailBuffer == null)
+                        {
+                            throw new NullReferenceException("サムネイルのバッファがNullです。");
+                        }
+
                         info.ThumbnailImage = ThumbnailUtil.ToImage(thumbnailBuffer.ThumbnailBuffer);
                         info.ThumbnailWidth = THUMBNAIL_SIZE;
                         info.ThumbnailHeight = THUMBNAIL_SIZE;
@@ -84,6 +89,11 @@ namespace PicSum.Job.Logics
                     var thumbnailBuffer = thumbnailGetLogic.GetOnlyCache(filePath, THUMBNAIL_SIZE, THUMBNAIL_SIZE);
                     if (thumbnailBuffer != ThumbnailBufferEntity.EMPTY)
                     {
+                        if (thumbnailBuffer.ThumbnailBuffer == null)
+                        {
+                            throw new NullReferenceException("サムネイルのバッファがNullです。");
+                        }
+
                         info.ThumbnailImage = ThumbnailUtil.ToImage(thumbnailBuffer.ThumbnailBuffer);
                         info.ThumbnailWidth = THUMBNAIL_SIZE;
                         info.ThumbnailHeight = THUMBNAIL_SIZE;

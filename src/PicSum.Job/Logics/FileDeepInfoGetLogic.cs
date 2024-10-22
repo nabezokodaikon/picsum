@@ -81,14 +81,16 @@ namespace PicSum.Job.Logics
                             var thumbnailGetLogic = new ThumbnailGetLogic(this.Job);
                             var thumbnailBuffer
                                 = thumbnailGetLogic.GetOrCreateCache(filePath, thumbSize.Width, thumbSize.Height);
-                            var thumbnailImage
-                                = ThumbnailUtil.ToImage(thumbnailBuffer.ThumbnailBuffer);
+                            if (thumbnailBuffer.ThumbnailBuffer == null)
+                            {
+                                throw new NullReferenceException("サムネイルのバッファがNullです。");
+                            }
 
                             info.Thumbnail = new()
                             {
                                 FilePath = info.FilePath,
                                 FileUpdatedate = info.UpdateDate,
-                                ThumbnailImage = thumbnailImage,
+                                ThumbnailImage = ThumbnailUtil.ToImage(thumbnailBuffer.ThumbnailBuffer),
                                 ThumbnailWidth = thumbSize.Width,
                                 ThumbnailHeight = thumbSize.Height,
                                 SourceWidth = srcSize.Width,
@@ -114,14 +116,16 @@ namespace PicSum.Job.Logics
                                 var thumbnailGetLogic = new ThumbnailGetLogic(this.Job);
                                 var thumbnailBuffer
                                     = thumbnailGetLogic.GetOrCreateCache(firstImageFile, thumbSize.Width, thumbSize.Height);
-                                var thumbnailImage
-                                    = ThumbnailUtil.ToImage(thumbnailBuffer.ThumbnailBuffer);
+                                if (thumbnailBuffer.ThumbnailBuffer == null)
+                                {
+                                    throw new NullReferenceException("サムネイルのバッファがNullです。");
+                                }
 
                                 info.Thumbnail = new()
                                 {
                                     FilePath = info.FilePath,
                                     FileUpdatedate = info.UpdateDate,
-                                    ThumbnailImage = thumbnailImage,
+                                    ThumbnailImage = ThumbnailUtil.ToImage(thumbnailBuffer.ThumbnailBuffer),
                                     ThumbnailWidth = thumbSize.Width,
                                     ThumbnailHeight = thumbSize.Height,
                                     SourceWidth = srcSize.Width,
