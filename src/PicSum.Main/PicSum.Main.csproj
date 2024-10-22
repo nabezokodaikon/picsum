@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net8.0-windows10.0.22621.0</TargetFramework>
-    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
-    <OutputType>Exe</OutputType>
+	<TargetFramework>net8.0-windows10.0.26100.0</TargetFramework>
+	<RuntimeIdentifiers>win-x86;win-x64</RuntimeIdentifiers>
+    <OutputType>WinExe</OutputType>
     <AssemblyName>picsum</AssemblyName>
     <StartupObject>PicSum.Main.Program</StartupObject>
     <IsWebBootstrapper>false</IsWebBootstrapper>
@@ -24,25 +24,58 @@
     <UseWindowsForms>true</UseWindowsForms>
     <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
     <Configurations>Debug;Release</Configurations>
-	<Platforms>AnyCPU;x64</Platforms>
+	<Platforms>AnyCPU;x64;x86;ARM64;ARM32</Platforms>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>none</DebugType>
+    <DebugType>portable</DebugType>
     <NoWarn>1701;1702; CA1016; CA1824</NoWarn>
 	<OutputPath>bin\Release\</OutputPath>
 	<OutputType>WinExe</OutputType>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM32'">
+    <DebugType>portable</DebugType>
+    <NoWarn>1701;1702; CA1016; CA1824</NoWarn>
+    <OutputPath>bin\Release\</OutputPath>
+    <OutputType>WinExe</OutputType>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
+    <DebugType>portable</DebugType>
+    <NoWarn>1701;1702; CA1016; CA1824</NoWarn>
+    <OutputPath>bin\Release\</OutputPath>
+    <OutputType>WinExe</OutputType>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
+    <DebugType>portable</DebugType>
+    <NoWarn>1701;1702; CA1016; CA1824</NoWarn>
+    <OutputPath>bin\Release\</OutputPath>
+    <OutputType>WinExe</OutputType>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <OutputPath>bin\Debug\</OutputPath>
-	<OutputType>Exe</OutputType>
+	<OutputType>WinExe</OutputType>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM32'">
+    <OutputPath>bin\Debug\</OutputPath>
+    <OutputType>WinExe</OutputType>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
+    <OutputPath>bin\Debug\</OutputPath>
+    <OutputType>WinExe</OutputType>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
+    <OutputPath>bin\Debug\</OutputPath>
+    <OutputType>WinExe</OutputType>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>AppIcon.ico</ApplicationIcon>
+    <ApplicationIcon>appicon.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
 	<SatelliteResourceLanguages>_</SatelliteResourceLanguages>
 	<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 	<NeutralLanguage>ja-JP</NeutralLanguage>
+	<SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
+	<ApplicationManifest>app.manifest</ApplicationManifest>
+	<PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>  
   <ItemGroup>
     <Reference Update="System.Core">
@@ -106,7 +139,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="AppIcon.ico">
+    <Content Include="appicon.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="picsum-home.bat">
@@ -129,6 +162,18 @@
   </ItemGroup>
   
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <NoWarn>1701;1702; CA1016; CA1824</NoWarn>
+  </PropertyGroup>
+  
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM32'">
+    <NoWarn>1701;1702; CA1016; CA1824</NoWarn>
+  </PropertyGroup>
+  
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
+    <NoWarn>1701;1702; CA1016; CA1824</NoWarn>
+  </PropertyGroup>
+  
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
     <NoWarn>1701;1702; CA1016; CA1824</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
