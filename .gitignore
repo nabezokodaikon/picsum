@@ -36,6 +36,7 @@ bld/
 bin_debug/
 bin_develop/
 bin_release/
+bin_setup/
 bin_vscode/
 
 # Visual Studio 2015/2017 cache/options directory
