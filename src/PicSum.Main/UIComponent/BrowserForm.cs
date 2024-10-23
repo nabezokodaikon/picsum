@@ -2,6 +2,7 @@ using PicSum.Job.Jobs;
 using PicSum.Job.Parameters;
 using PicSum.Main.Conf;
 using PicSum.UIComponent.Contents.Common;
+using PicSum.UIComponent.Contents.Parameter;
 using SWF.Core.Base;
 using SWF.Core.FileAccessor;
 using SWF.Core.Job;
@@ -31,6 +32,18 @@ namespace PicSum.Main.UIComponent
         private static bool IsHome()
         {
             return Environment.GetCommandLineArgs().Contains("--home");
+        }
+
+        private static bool IsFilePath()
+        {
+            return Environment.GetCommandLineArgs()
+                .Any(_ => FileUtil.CanAccess(_) && FileUtil.IsImageFile(_));
+        }
+
+        private static string GetImageFilePatCommandLineArgs()
+        {
+            return Environment.GetCommandLineArgs()
+                .FirstOrDefault(_ => FileUtil.CanAccess(_) && FileUtil.IsImageFile(_));
         }
 
         public event EventHandler<TabDropoutedEventArgs> TabDropouted;
@@ -328,6 +341,28 @@ namespace PicSum.Main.UIComponent
             if (BrowserForm.isStartUp && BrowserForm.IsHome())
             {
                 browserMainPanel.AddFavoriteDirectoryListTab();
+            }
+            else if (BrowserForm.isStartUp && BrowserForm.IsFilePath())
+            {
+                var imageFilePath = BrowserForm.GetImageFilePatCommandLineArgs();
+                if (!string.IsNullOrEmpty(imageFilePath))
+                {
+                    var directoryPath = FileUtil.GetParentDirectoryPath(imageFilePath);
+
+                    var sortInfo = new SortInfo();
+                    sortInfo.SetSortType(SortTypeID.FilePath, true);
+
+                    var parameter = new ImageViewerPageParameter(
+                        DirectoryFileListPageParameter.PAGE_SOURCES,
+                        directoryPath,
+                        BrowserMainPanel.GetImageFilesAction(new ImageFileGetByDirectoryParameter(imageFilePath)),
+                        imageFilePath,
+                        sortInfo,
+                        FileUtil.GetFileName(directoryPath),
+                        FileIconCash.SmallDirectoryIcon);
+
+                    browserMainPanel.AddImageViewerPageTab(parameter);
+                }
             }
 
             this.SetControlRegion();

@@ -19,6 +19,33 @@ namespace PicSum.Main.UIComponent
     [SupportedOSPlatform("windows")]
     public sealed partial class BrowserMainPanel : UserControl
     {
+        public static Func<ImageViewerPageParameter, Action> GetImageFilesAction(
+            ImageFileGetByDirectoryParameter subParamter)
+        {
+            return (parameter) =>
+            {
+                return () =>
+                {
+                    using (var job = new TwoWayJob<ImageFileGetByDirectoryJob, ImageFileGetByDirectoryParameter, ImageFilesGetByDirectoryResult>())
+                    {
+                        job
+                        .Callback(e =>
+                        {
+                            var title = FileUtil.IsDirectory(subParamter.FilePath) ?
+                            FileUtil.GetFileName(subParamter.FilePath) :
+                            FileUtil.GetFileName(FileUtil.GetParentDirectoryPath(subParamter.FilePath));
+
+                            var eventArgs = new GetImageFilesEventArgs(
+                                e.FilePathList, e.SelectedFilePath, title, FileIconCash.SmallDirectoryIcon);
+                            parameter.OnGetImageFiles(eventArgs);
+                        });
+
+                        job.StartJob(subParamter);
+                        job.WaitJobComplete();
+                    }
+                };
+            };
+        }
 
         public event EventHandler<TabDropoutedEventArgs> TabDropouted;
         public event EventHandler<BrowserPageOpenEventArgs> NewWindowPageOpen;
@@ -26,7 +53,6 @@ namespace PicSum.Main.UIComponent
         public event EventHandler BackgroundMouseDoubleLeftClick;
 
         private TwoWayJob<TagsGetJob, ListResult<string>> getTagListJob = null;
-        private TwoWayJob<ImageFileGetByDirectoryJob, ImageFileGetByDirectoryParameter, ImageFilesGetByDirectoryResult> getFilesJob = null;
 
         public int TabCount
         {
@@ -120,6 +146,11 @@ namespace PicSum.Main.UIComponent
             this.OpenPage(new FavoriteDirectoryListPageParameter(), PageOpenType.AddTab);
         }
 
+        public void AddImageViewerPageTab(ImageViewerPageParameter parameter)
+        {
+            this.OpenPage(parameter, PageOpenType.AddTab);
+        }
+
         public void Reload()
         {
             if (this.tabSwitch.ActiveTab == null)
@@ -179,9 +210,6 @@ namespace PicSum.Main.UIComponent
                 this.getTagListJob?.Dispose();
                 this.getTagListJob = null;
 
-                this.getFilesJob?.Dispose();
-                this.getFilesJob = null;
-
                 this.components?.Dispose();
             }
             base.Dispose(disposing);
@@ -191,15 +219,6 @@ namespace PicSum.Main.UIComponent
         {
             this.addressBar.SetAddress(FileUtil.ROOT_DIRECTORY_PATH);
             base.OnLoad(e);
-        }
-
-        private TwoWayJob<ImageFileGetByDirectoryJob, ImageFileGetByDirectoryParameter, ImageFilesGetByDirectoryResult> CreateNewGetFilesJob()
-        {
-            this.getFilesJob?.Dispose();
-            this.getFilesJob = null;
-
-            this.getFilesJob = new();
-            return this.getFilesJob;
         }
 
         private void RemovePageEventHandler(BrowserPage page)
@@ -341,7 +360,7 @@ namespace PicSum.Main.UIComponent
                     dirPath,
                     filePath,
                     sortInfo,
-                    this.GetImageFilesAction(new ImageFileGetByDirectoryParameter(dirPath)),
+                    GetImageFilesAction(new ImageFileGetByDirectoryParameter(dirPath)),
                     FileUtil.GetFileName(dirPath),
                     FileIconCash.SmallDirectoryIcon);
                 if (e.IsOverlap)
@@ -373,31 +392,6 @@ namespace PicSum.Main.UIComponent
         private void OnBackgroundMouseLeftDoubleClick(EventArgs e)
         {
             this.BackgroundMouseDoubleLeftClick?.Invoke(this, e);
-        }
-
-        private Func<ImageViewerPageParameter, Action> GetImageFilesAction(
-            ImageFileGetByDirectoryParameter subParamter)
-        {
-            return (parameter) =>
-            {
-                return () =>
-                {
-                    var job = this.CreateNewGetFilesJob();
-                    job
-                    .Callback(e =>
-                    {
-                        var title = FileUtil.IsDirectory(subParamter.FilePath) ?
-                        FileUtil.GetFileName(subParamter.FilePath) :
-                        FileUtil.GetFileName(FileUtil.GetParentDirectoryPath(subParamter.FilePath));
-
-                        var eventArgs = new GetImageFilesEventArgs(
-                            e.FilePathList, e.SelectedFilePath, title, FileIconCash.SmallDirectoryIcon);
-                        parameter.OnGetImageFiles(eventArgs);
-                    });
-
-                    job.StartJob(subParamter);
-                };
-            };
         }
 
         private void GetTagListJob_Callback(ListResult<string> e)
