@@ -110,16 +110,12 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             // 
             // checkPatternPanel
             // 
-            this.checkPatternPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-            | System.Windows.Forms.AnchorStyles.Left)
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.checkPatternPanel.Controls.Add(this.leftImagePanel);
             this.checkPatternPanel.Controls.Add(this.rightImagePanel);
-            this.checkPatternPanel.Location = new System.Drawing.Point(0, 27);
             this.checkPatternPanel.Margin = new System.Windows.Forms.Padding(0);
             this.checkPatternPanel.Name = "checkPatternPanel";
             this.checkPatternPanel.RectangleSize = 24;
-            this.checkPatternPanel.Size = new System.Drawing.Size(925, 501);
+            this.checkPatternPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.checkPatternPanel.TabIndex = 3;
             this.checkPatternPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             // 

@@ -307,6 +307,13 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             base.OnLoad(e);
         }
 
+        protected override void OnResize(EventArgs e)
+        {
+            this.indexSlider.Width = this.ClientSize.Width - 390;
+
+            base.OnResize(e);
+        }
+
         protected override void OnMouseWheel(MouseEventArgs e)
         {
             if (!this.CanOperation)

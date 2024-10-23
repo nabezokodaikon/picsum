@@ -43,9 +43,6 @@ namespace PicSum.UIComponent.Contents.FileList
             // 
             // flowList
             // 
-            this.flowList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
             this.flowList.BackColor = System.Drawing.Color.White;
             this.flowList.ContextMenuStrip = this.fileContextMenu;
             this.flowList.IsMultiSelect = true;
@@ -53,10 +50,9 @@ namespace PicSum.UIComponent.Contents.FileList
             this.flowList.ItemTextAlignment = System.Drawing.StringAlignment.Center;
             this.flowList.ItemTextLineAlignment = System.Drawing.StringAlignment.Center;
             this.flowList.ItemTextTrimming = System.Drawing.StringTrimming.EllipsisCharacter;
-            this.flowList.Location = new System.Drawing.Point(0, 27);
+            this.flowList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowList.Margin = new System.Windows.Forms.Padding(0);
             this.flowList.Name = "flowList";
-            this.flowList.Size = new System.Drawing.Size(630, 366);
             this.flowList.TabIndex = 1;
             this.flowList.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.flowList.Text = "flowList1";
