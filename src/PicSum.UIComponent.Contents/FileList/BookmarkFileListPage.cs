@@ -27,34 +27,33 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             return () =>
             {
-                var job = new TwoWayJob<FilesGetByDirectoryJob, ValueParameter<string>, DirectoryGetResult>();
-
-                job
-                .Callback(e =>
+                using (var job = new TwoWayJob<FilesGetByDirectoryJob, ValueParameter<string>, DirectoryGetResult>())
                 {
-                    if (!FileUtil.IsImageFile(param.SelectedFilePath))
+                    job
+                    .Callback(e =>
                     {
-                        throw new SWFException($"画像ファイルが選択されていません。'{param.SelectedFilePath}'");
-                    }
+                        if (!FileUtil.IsImageFile(param.SelectedFilePath))
+                        {
+                            throw new SWFException($"画像ファイルが選択されていません。'{param.SelectedFilePath}'");
+                        }
 
-                    var title = FileUtil.GetFileName(FileUtil.GetParentDirectoryPath(param.SelectedFilePath));
+                        var title = FileUtil.GetFileName(FileUtil.GetParentDirectoryPath(param.SelectedFilePath));
 
-                    var imageFiles = e.FileInfoList
-                        .Where(fileInfo => fileInfo.IsImageFile)
-                        .OrderBy(fileInfo => fileInfo.FilePath)
-                        .Select(fileInfo => fileInfo.FilePath)
-                        .ToArray();
+                        var imageFiles = e.FileInfoList
+                            .Where(fileInfo => fileInfo.IsImageFile)
+                            .OrderBy(fileInfo => fileInfo.FilePath)
+                            .Select(fileInfo => fileInfo.FilePath)
+                            .ToArray();
 
-                    var eventArgs = new GetImageFilesEventArgs(
-                        imageFiles, param.SelectedFilePath, title, FileIconCash.SmallDirectoryIcon);
-                    param.OnGetImageFiles(eventArgs);
-                });
+                        var eventArgs = new GetImageFilesEventArgs(
+                            imageFiles, param.SelectedFilePath, title, FileIconCash.SmallDirectoryIcon);
+                        param.OnGetImageFiles(eventArgs);
+                    });
 
-                var dir = FileUtil.GetParentDirectoryPath(param.SelectedFilePath);
-                job.StartJob(new ValueParameter<string>(dir));
-                job.WaitJobComplete();
-                job.WaitThreadFinish();
-                job.Dispose();
+                    var dir = FileUtil.GetParentDirectoryPath(param.SelectedFilePath);
+                    job.StartJob(new ValueParameter<string>(dir));
+                    job.WaitJobComplete();
+                }
             };
         }
 

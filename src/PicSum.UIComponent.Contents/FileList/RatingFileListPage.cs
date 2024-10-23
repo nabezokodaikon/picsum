@@ -28,29 +28,29 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             return () =>
             {
-                var job = new TwoWayJob<FilesGetByRatingJob, ValueParameter<int>, ListResult<FileShallowInfoEntity>>();
-                job.Callback(e =>
+                using (var job = new TwoWayJob<FilesGetByRatingJob, ValueParameter<int>, ListResult<FileShallowInfoEntity>>())
                 {
-                    var imageFiles = e
-                        .Where(fileInfo => fileInfo.IsImageFile);
-                    var sortImageFiles = GetSortFiles(imageFiles, param.SortInfo)
-                        .Select(fileInfo => fileInfo.FilePath)
-                        .ToArray();
-
-                    if (!FileUtil.IsImageFile(param.SelectedFilePath))
+                    job.Callback(e =>
                     {
-                        throw new SWFException($"画像ファイルが選択されていません。'{param.SelectedFilePath}'");
-                    }
+                        var imageFiles = e
+                            .Where(fileInfo => fileInfo.IsImageFile);
+                        var sortImageFiles = GetSortFiles(imageFiles, param.SortInfo)
+                            .Select(fileInfo => fileInfo.FilePath)
+                            .ToArray();
 
-                    var eventArgs = new GetImageFilesEventArgs(
-                        sortImageFiles, param.SelectedFilePath, param.PageTitle, param.PageIcon);
-                    param.OnGetImageFiles(eventArgs);
-                });
+                        if (!FileUtil.IsImageFile(param.SelectedFilePath))
+                        {
+                            throw new SWFException($"画像ファイルが選択されていません。'{param.SelectedFilePath}'");
+                        }
 
-                job.StartJob(new ValueParameter<int>(int.Parse(param.SourcesKey)));
-                job.WaitJobComplete();
-                job.WaitThreadFinish();
-                job.Dispose();
+                        var eventArgs = new GetImageFilesEventArgs(
+                            sortImageFiles, param.SelectedFilePath, param.PageTitle, param.PageIcon);
+                        param.OnGetImageFiles(eventArgs);
+                    });
+
+                    job.StartJob(new ValueParameter<int>(int.Parse(param.SourcesKey)));
+                    job.WaitJobComplete();
+                }
             };
         }
 
