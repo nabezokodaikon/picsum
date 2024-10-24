@@ -19,6 +19,8 @@ namespace SWF.UIComponent.Form
         private bool isInit = true;
         private Size initSize = Size.Empty;
         private FormWindowState initWindowState = FormWindowState.Normal;
+        private FormWindowState currentWindowState = FormWindowState.Normal;
+        private Rectangle currentWindowBounds = Rectangle.Empty;
 
         public new Size Size
         {
@@ -96,6 +98,12 @@ namespace SWF.UIComponent.Form
             }
         }
 
+        public void RestoreWindowState()
+        {
+            this.Bounds = this.currentWindowBounds;
+            this.WindowState = this.currentWindowState;
+        }
+
         protected override void WndProc(ref Message m)
         {
             var dwmHandled = WinApiMembers.DwmDefWindowProc(m.HWnd, m.Msg, m.WParam, m.LParam, out var result);
@@ -138,9 +146,42 @@ namespace SWF.UIComponent.Form
 
         protected override void OnResize(EventArgs e)
         {
+            if (this.WindowState == FormWindowState.Minimized)
+            {
+
+            }
+            else if (this.WindowState == FormWindowState.Maximized)
+            {
+                this.currentWindowState = FormWindowState.Maximized;
+            }
+            else if (this.WindowState == FormWindowState.Normal)
+            {
+                this.currentWindowState = FormWindowState.Normal;
+                this.currentWindowBounds = this.Bounds;
+            }
+
             base.OnResize(e);
 
             this.SettingtControlRegion();
+        }
+
+        protected override void OnLocationChanged(EventArgs e)
+        {
+            if (this.WindowState == FormWindowState.Minimized)
+            {
+
+            }
+            else if (this.WindowState == FormWindowState.Maximized)
+            {
+                this.currentWindowState = FormWindowState.Maximized;
+            }
+            else if (this.WindowState == FormWindowState.Normal)
+            {
+                this.currentWindowState = FormWindowState.Normal;
+                this.currentWindowBounds = this.Bounds;
+            }
+
+            base.OnLocationChanged(e);
         }
 
         protected override void OnPaintBackground(PaintEventArgs e)

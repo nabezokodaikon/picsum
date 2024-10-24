@@ -63,7 +63,7 @@ namespace PicSum.Main.UIComponent
                         form.AddImageViewerPageTab(parameter);
                         if (form.WindowState == FormWindowState.Minimized)
                         {
-                            form.WindowState = FormWindowState.Normal;
+                            form.RestoreWindowState();
                         }
                         form.Activate();
                     });
