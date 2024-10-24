@@ -321,26 +321,26 @@ namespace PicSum.Main.UIComponent
                 throw new SWFException("メインコントロールは既に存在しています。");
             }
 
-            var browserMainPanel = new BrowserMainPanel();
+            this.browserMainPanel = new BrowserMainPanel();
 
             var x = this.Padding.Left;
             var y = this.Padding.Top;
             var w = this.Width - this.Padding.Left - this.Padding.Right;
             var h = this.Height - this.Padding.Top - this.Padding.Bottom;
-            browserMainPanel.SetBounds(x, y, w, h, BoundsSpecified.All);
-            browserMainPanel.Dock = DockStyle.Fill;
+            this.browserMainPanel.SetBounds(x, y, w, h, BoundsSpecified.All);
+            this.browserMainPanel.Dock = DockStyle.Fill;
 
-            browserMainPanel.Close += new(this.BrowserMainPanel_Close);
-            browserMainPanel.BackgroundMouseDoubleLeftClick += new(this.BrowserMainPanel_BackgroundMouseDoubleLeftClick);
-            browserMainPanel.NewWindowPageOpen += new(this.BrowserMainPanel_NewWindowPageOpen);
-            browserMainPanel.TabDropouted += new(this.BrowserMainPanel_TabDropouted);
+            this.browserMainPanel.Close += new(this.BrowserMainPanel_Close);
+            this.browserMainPanel.BackgroundMouseDoubleLeftClick += new(this.BrowserMainPanel_BackgroundMouseDoubleLeftClick);
+            this.browserMainPanel.NewWindowPageOpen += new(this.BrowserMainPanel_NewWindowPageOpen);
+            this.browserMainPanel.TabDropouted += new(this.BrowserMainPanel_TabDropouted);
 
             this.SuspendLayout();
-            this.Controls.Add(browserMainPanel);
+            this.Controls.Add(this.browserMainPanel);
 
             if (BrowserForm.isStartUp && BrowserForm.IsHome())
             {
-                browserMainPanel.AddFavoriteDirectoryListTab();
+                this.browserMainPanel.AddFavoriteDirectoryListTab();
             }
             else if (BrowserForm.isStartUp && BrowserForm.IsFilePath())
             {
@@ -361,14 +361,13 @@ namespace PicSum.Main.UIComponent
                         FileUtil.GetFileName(directoryPath),
                         FileIconCash.SmallDirectoryIcon);
 
-                    browserMainPanel.AddImageViewerPageTab(parameter);
+                    this.browserMainPanel.AddImageViewerPageTab(parameter);
                 }
             }
 
             this.SetControlRegion();
-            this.ResumeLayout();
-
-            this.browserMainPanel = browserMainPanel;
+            this.ResumeLayout(false);
+            this.PerformLayout();
         }
 
         private void OnTabDropouted(TabDropoutedEventArgs e)
