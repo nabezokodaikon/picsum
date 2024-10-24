@@ -8,6 +8,7 @@ using SWF.Core.Job;
 using SWF.UIComponent.Core;
 using System;
 using System.Runtime.Versioning;
+using System.Windows.Forms;
 
 namespace PicSum.Main.UIComponent
 {
@@ -60,9 +61,9 @@ namespace PicSum.Main.UIComponent
                             FileIconCash.SmallDirectoryIcon);
 
                         form.AddImageViewerPageTab(parameter);
-                        if (form.WindowState == System.Windows.Forms.FormWindowState.Minimized)
+                        if (form.WindowState == FormWindowState.Minimized)
                         {
-                            form.WindowState = System.Windows.Forms.FormWindowState.Normal;
+                            form.WindowState = FormWindowState.Normal;
                         }
                         form.Activate();
                     });
