@@ -71,7 +71,7 @@ namespace SWF.Core.FileAccessor
             {
                 return Path.Combine(
                     Windows.Storage.ApplicationData.Current.LocalFolder.Path,
-                    "picsum");
+                    "picsum.files");
             }
             else
             {
