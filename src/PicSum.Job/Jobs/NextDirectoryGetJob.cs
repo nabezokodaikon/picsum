@@ -1,5 +1,6 @@
 using PicSum.Job.Logics;
 using PicSum.Job.Parameters;
+using SWF.Core.Base;
 using SWF.Core.FileAccessor;
 using SWF.Core.Job;
 using System.Runtime.Versioning;
@@ -38,7 +39,7 @@ namespace PicSum.Job.Jobs
                 throw new JobException(this.ID, ex);
             }
 
-            var sortedList = list.OrderBy(f => f).ToList();
+            var sortedList = list.OrderBy(f => f, NaturalStringComparer.Windows).ToList();
             var index = sortedList.IndexOf(param.CurrentParameter.Value);
             if (index < 0)
             {
