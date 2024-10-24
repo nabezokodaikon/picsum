@@ -1,5 +1,9 @@
 using PicSum.Job.Jobs;
+using PicSum.Job.Parameters;
 using PicSum.Main.Mng;
+using PicSum.UIComponent.Contents.Parameter;
+using SWF.Core.Base;
+using SWF.Core.FileAccessor;
 using SWF.Core.Job;
 using SWF.UIComponent.Core;
 using System;
@@ -15,6 +19,7 @@ namespace PicSum.Main.UIComponent
     {
         private readonly BrowserManager browserManager = new();
         private OneWayJob<GCCollectRunJob> gcCollectRunJob = null;
+        private TwoWayJob<PipeServerJob, ValueResult<string>> pipeServerJob = null;
 
         private OneWayJob<GCCollectRunJob> GCCollectRunJob
         {
@@ -22,6 +27,48 @@ namespace PicSum.Main.UIComponent
             {
                 this.gcCollectRunJob ??= new();
                 return this.gcCollectRunJob;
+            }
+        }
+
+        private TwoWayJob<PipeServerJob, ValueResult<string>> PipeServerJob
+        {
+            get
+            {
+                if (this.pipeServerJob == null)
+                {
+                    this.pipeServerJob = new();
+                    this.pipeServerJob.Callback(_ =>
+                    {
+                        if (!FileUtil.CanAccess(_.Value) || !FileUtil.IsImageFile(_.Value))
+                        {
+                            return;
+                        }
+
+                        var form = this.browserManager.GetActiveBrowser();
+                        var directoryPath = FileUtil.GetParentDirectoryPath(_.Value);
+
+                        var sortInfo = new SortInfo();
+                        sortInfo.SetSortType(SortTypeID.FilePath, true);
+
+                        var parameter = new ImageViewerPageParameter(
+                            DirectoryFileListPageParameter.PAGE_SOURCES,
+                            directoryPath,
+                            BrowserMainPanel.GetImageFilesAction(new ImageFileGetByDirectoryParameter(_.Value)),
+                            _.Value,
+                            sortInfo,
+                            FileUtil.GetFileName(directoryPath),
+                            FileIconCash.SmallDirectoryIcon);
+
+                        form.AddImageViewerPageTab(parameter);
+                        if (form.WindowState == System.Windows.Forms.FormWindowState.Minimized)
+                        {
+                            form.WindowState = System.Windows.Forms.FormWindowState.Normal;
+                        }
+                        form.Activate();
+                    });
+                }
+
+                return this.pipeServerJob;
             }
         }
 
@@ -33,12 +80,14 @@ namespace PicSum.Main.UIComponent
         private void BrowserManager_BrowserNothing(object sender, EventArgs e)
         {
             this.gcCollectRunJob?.Dispose();
+            this.pipeServerJob?.Dispose();
             this.Close();
         }
 
         protected override void OnLoad(EventArgs e)
         {
             this.GCCollectRunJob.StartJob();
+            this.PipeServerJob.StartJob();
 
             var form = this.browserManager.GetActiveBrowser();
             form.Show();

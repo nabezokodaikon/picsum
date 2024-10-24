@@ -114,6 +114,11 @@ namespace PicSum.Main.UIComponent
             this.BrowserMainPanel.AddFavoriteDirectoryListTab();
         }
 
+        public void AddImageViewerPageTab(ImageViewerPageParameter parameter)
+        {
+            this.BrowserMainPanel.AddImageViewerPageTab(parameter);
+        }
+
         public void Reload()
         {
             this.BrowserMainPanel.Reload();

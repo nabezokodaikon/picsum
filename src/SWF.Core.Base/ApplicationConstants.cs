@@ -11,6 +11,9 @@ namespace SWF.Core.Base
         /// 情報パネルの幅
         /// </summary>
         public const int INFOPANEL_WIDTH = 240;
+
+        public const string MUTEX_NAME = "PicSumMutex";
+        public const string PIPE_NAME = "PicSumPipe";
     }
 
     /// <summary>
