@@ -1,5 +1,6 @@
 using NLog;
 using NLog.Config;
+using NLog.Targets;
 using PicSum.Job.Logics;
 using PicSum.Main.Mng;
 using PicSum.Main.UIComponent;
@@ -10,13 +11,11 @@ using System;
 using System.IO;
 using System.IO.Pipes;
 using System.Linq;
-using System.Runtime.Versioning;
 using System.Threading;
 using System.Windows.Forms;
 
 namespace PicSum.Main
 {
-    [SupportedOSPlatform("windows")]
     internal sealed class Program
         : MarshalByRefObject
     {
@@ -32,13 +31,8 @@ namespace PicSum.Main
             {
                 try
                 {
-#if DEBUG
-                    LogManager.Configuration = new XmlLoggingConfiguration(
-                        Path.Combine(FileUtil.EXECUTABLE_DIRECTORY, "NLog.debug.config"));
-#else
-                    LogManager.Configuration = new XmlLoggingConfiguration(
-                        Path.Combine(FileUtil.EXECUTABLE_DIRECTORY, "NLog.config"));
-#endif
+                    FileUtil.CreateApplicationDirectories();
+                    ConfigureLog();
 
                     var logger = LogManager.GetCurrentClassLogger();
 
@@ -88,6 +82,28 @@ namespace PicSum.Main
                     }
                 }
             }
+        }
+
+        private static void ConfigureLog()
+        {
+            var config = new LoggingConfiguration();
+
+            var logfile = new FileTarget("logfile")
+            {
+                FileName = Path.Combine(FileUtil.LOG_DIRECTORY, "app.log"),
+                Layout = "${longdate} | ${level:padding=-5} | ${threadname} | ${message:withexception=true}",
+                ArchiveFileName = string.Format("{0}/{1}", FileUtil.LOG_DIRECTORY, "${date:format=yyyyMMdd}/{########}.log"),
+                ArchiveAboveSize = 10 * 1024 * 1024,
+                ArchiveNumbering = ArchiveNumberingMode.Sequence,
+            };
+
+#if DEBUG
+            config.AddRule(LogLevel.Trace, LogLevel.Fatal, logfile);
+#else
+            config.AddRule(LogLevel.Info, LogLevel.Fatal, logfile);
+#endif
+
+            LogManager.Configuration = config;
         }
 
         private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)

@@ -143,15 +143,9 @@ namespace PicSum.Main.UIComponent
             {
                 this.Location = BrowserConfig.WindowLocaion;
 
-                var dbDir = Path.Combine(FileUtil.EXECUTABLE_DIRECTORY, "db");
-                if (!Directory.Exists(dbDir))
-                {
-                    Directory.CreateDirectory(dbDir);
-                }
-
                 var startupParameter = new StartupPrameter(
-                    Path.Combine(dbDir, @"fileinfo.sqlite"),
-                    Path.Combine(dbDir, @"thumbnail.sqlite"));
+                    Path.Combine(FileUtil.DATABASE_DIRECTORY, @"fileinfo.sqlite"),
+                    Path.Combine(FileUtil.DATABASE_DIRECTORY, @"thumbnail.sqlite"));
 
                 this.fileInfoDBCleanupJob = new();
                 this.fileInfoDBCleanupJob
@@ -198,7 +192,7 @@ namespace PicSum.Main.UIComponent
                 if (BrowserForm.IsCleanup())
                 {
                     this.thumbnailDBCleanupJob.StartJob(
-                        new ValueParameter<string>(dbDir));
+                        new ValueParameter<string>(FileUtil.DATABASE_DIRECTORY));
                 }
                 else
                 {

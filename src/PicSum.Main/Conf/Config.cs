@@ -14,8 +14,8 @@ namespace PicSum.Main.Conf
     {
         public static readonly Config Values = new();
 
-        private static readonly string SAVE_FILE_PATH
-            = Path.Combine(FileUtil.EXECUTABLE_DIRECTORY, "cnofig.xml");
+        private static readonly string CONFIG_FILE
+            = Path.Combine(FileUtil.CONFIG_DIRECTORY, "config.xml");
 
         public FormWindowState WindowState { get; set; }
         public Point WindowLocaion { get; set; }
@@ -38,7 +38,7 @@ namespace PicSum.Main.Conf
         public void Save()
         {
             var serializer = new XmlSerializer(typeof(Config));
-            using (var fs = new FileStream(SAVE_FILE_PATH, FileMode.Create, FileAccess.Write, FileShare.Read))
+            using (var fs = new FileStream(CONFIG_FILE, FileMode.Create, FileAccess.Write, FileShare.Read))
             using (var writer = new StreamWriter(fs))
             {
                 serializer.Serialize(writer, this);
@@ -47,11 +47,11 @@ namespace PicSum.Main.Conf
 
         public void Load()
         {
-            if (FileUtil.IsExists(SAVE_FILE_PATH))
+            if (FileUtil.IsExists(CONFIG_FILE))
             {
                 var serializer = new XmlSerializer(typeof(Config));
                 Config saveData = null;
-                using (var fs = new FileStream(SAVE_FILE_PATH, FileMode.Open, FileAccess.Read, FileShare.Read))
+                using (var fs = new FileStream(CONFIG_FILE, FileMode.Open, FileAccess.Read, FileShare.Read))
                 using (var reader = new StreamReader(fs))
                 {
                     saveData = (Config)serializer.Deserialize(reader);
