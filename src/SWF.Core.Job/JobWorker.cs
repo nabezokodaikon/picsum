@@ -216,12 +216,10 @@ namespace SWF.Core.Job
                     {
                         job.CallbackAction = r =>
                         {
-                            SynchronizationContextWrapper.Instance.Post(state =>
+                            SynchronizationContextWrapper.Instance.Post(() =>
                             {
-                                ArgumentNullException.ThrowIfNull(state, nameof(state));
-                                var result = (TJobResult)state;
-                                this.callbackAction(result);
-                            }, r);
+                                this.callbackAction(r);
+                            });
                         };
                     }
 
@@ -229,10 +227,10 @@ namespace SWF.Core.Job
                     {
                         job.CancelAction = () =>
                         {
-                            SynchronizationContextWrapper.Instance.Post(_ =>
+                            SynchronizationContextWrapper.Instance.Post(() =>
                             {
                                 this.cancelAction();
-                            }, null);
+                            });
                         };
                     }
 
@@ -240,12 +238,10 @@ namespace SWF.Core.Job
                     {
                         job.CatchAction = e =>
                         {
-                            SynchronizationContextWrapper.Instance.Post(state =>
+                            SynchronizationContextWrapper.Instance.Post(() =>
                             {
-                                ArgumentNullException.ThrowIfNull(state, nameof(state));
-                                var ex = (JobException)state;
-                                this.catchAction(ex);
-                            }, e);
+                                this.catchAction(e);
+                            });
                         };
                     }
 
@@ -253,10 +249,10 @@ namespace SWF.Core.Job
                     {
                         job.CompleteAction = () =>
                         {
-                            SynchronizationContextWrapper.Instance.Post(_ =>
+                            SynchronizationContextWrapper.Instance.Post(() =>
                             {
-                                this.completeAction?.Invoke();
-                            }, null);
+                                this.completeAction();
+                            });
                         };
                     }
 

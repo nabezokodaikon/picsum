@@ -1,10 +1,14 @@
+using NLog;
 using System.Collections.Concurrent;
+using System.Windows.Forms;
 
 namespace SWF.Core.Job
 {
     public sealed partial class SynchronizationContextWrapper
         : IDisposable
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
 #pragma warning disable CS8618
         private static SynchronizationContextWrapper innerInstance;
 #pragma warning restore CS8618
@@ -15,21 +19,23 @@ namespace SWF.Core.Job
             {
                 if (innerInstance == null)
                 {
-                    throw new NullReferenceException("同期コンテキストがNullです。");
+                    throw new NullReferenceException("同期コンテキストが設定されていません。");
                 }
 
                 return innerInstance;
             }
         }
 
-        public static void SetSynchronizationContext()
+        public static void SetSynchronizationContext(Control control)
         {
+            ArgumentNullException.ThrowIfNull(control, nameof(control));
+
             if (innerInstance != null)
             {
                 throw new InvalidOperationException("同期コンテキストは既に設定されています。");
             }
 
-            innerInstance = new SynchronizationContextWrapper();
+            innerInstance = new SynchronizationContextWrapper(control);
         }
 
         public static void DisposeStaticResources()
@@ -38,19 +44,14 @@ namespace SWF.Core.Job
         }
 
         private bool disposed = false;
-        private readonly SynchronizationContext context;
-        private readonly ConcurrentQueue<CallbackItem> callbackQueue;
+        private readonly Control control;
+        private readonly ConcurrentQueue<Action> callbackQueue;
         private readonly CancellationTokenSource source;
         private readonly Task thread;
 
-        private SynchronizationContextWrapper()
+        private SynchronizationContextWrapper(Control control)
         {
-            if (SynchronizationContext.Current == null)
-            {
-                throw new NullReferenceException("同期コンテキストがNullです。");
-            }
-
-            this.context = SynchronizationContext.Current;
+            this.control = control;
             this.callbackQueue = new();
             this.source = new();
             this.thread = Task.Run(() => this.DoWork(this.source.Token));
@@ -95,12 +96,44 @@ namespace SWF.Core.Job
                     return;
                 }
 
-                if (this.callbackQueue.TryDequeue(out var item))
+                if (this.callbackQueue.TryDequeue(out var callbackAction))
                 {
-                    this.context.Send(_ =>
+                    if (!this.control.IsHandleCreated)
                     {
-                        item.Callback(_);
-                    }, item.State);
+                        return;
+                    }
+
+                    if (this.control.IsDisposed)
+                    {
+                        return;
+                    }
+
+                    if (this.control.InvokeRequired)
+                    {
+                        try
+                        {
+                            this.control.Invoke((MethodInvoker)delegate
+                            {
+                                callbackAction();
+                            });
+                        }
+                        catch (ObjectDisposedException ex)
+                        {
+                            Logger.Error(ex, "同期コンテキストは破棄されています。");
+                        }
+                        catch (InvalidOperationException ex)
+                        {
+                            Logger.Error(ex, "UIスレッドにアクセスできませんでした。");
+                        }
+                        catch (ThreadInterruptedException ex)
+                        {
+                            Logger.Error(ex, "UIスレッドが中断されています。");
+                        }
+                    }
+                    else
+                    {
+                        callbackAction();
+                    }
                 }
                 else
                 {
@@ -109,21 +142,21 @@ namespace SWF.Core.Job
             }
         }
 
-        public void Post(SendOrPostCallback d, object? state)
+        public void Post(Action callbackAction)
         {
-            ArgumentNullException.ThrowIfNull(d, nameof(d));
+            ArgumentNullException.ThrowIfNull(callbackAction, nameof(callbackAction));
 
             if (this.disposed)
             {
                 throw new ObjectDisposedException("同期コンテキストは破棄されています。");
             }
 
-            if (this.context == null)
+            if (this.control == null)
             {
-                throw new NullReferenceException("同期コンテキストがNullです。");
+                throw new NullReferenceException("同期コンテキストが設定されていません。");
             }
 
-            this.callbackQueue.Enqueue(new CallbackItem(d, state));
+            this.callbackQueue.Enqueue(callbackAction);
         }
     }
 }
