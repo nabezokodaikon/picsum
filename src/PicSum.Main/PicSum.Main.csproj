@@ -50,21 +50,41 @@
     <OutputPath>bin\Release\</OutputPath>
     <OutputType>WinExe</OutputType>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+	<DebugType>portable</DebugType>
+	<NoWarn>1701;1702; CA1016; CA1824; WFAC010; CA1416</NoWarn>
+	<OutputPath>bin\Release\</OutputPath>
+	<OutputType>WinExe</OutputType>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+	<DebugType>portable</DebugType>
+	<NoWarn>1701;1702; CA1016; CA1824; WFAC010; CA1416</NoWarn>
     <OutputPath>bin\Debug\</OutputPath>
-	<OutputType>Exe</OutputType>
+	<OutputType>WinExe</OutputType>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM32'">
+	<DebugType>portable</DebugType>
+	<NoWarn>1701;1702; CA1016; CA1824; WFAC010; CA1416</NoWarn>
     <OutputPath>bin\Debug\</OutputPath>
     <OutputType>WinExe</OutputType>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
+	<DebugType>portable</DebugType>
+	<NoWarn>1701;1702; CA1016; CA1824; WFAC010; CA1416</NoWarn>
     <OutputPath>bin\Debug\</OutputPath>
     <OutputType>WinExe</OutputType>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
+	<DebugType>portable</DebugType>
+	<NoWarn>1701;1702; CA1016; CA1824; WFAC010; CA1416</NoWarn>
     <OutputPath>bin\Debug\</OutputPath>
     <OutputType>WinExe</OutputType>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+	<DebugType>portable</DebugType>
+	<NoWarn>1701;1702; CA1016; CA1824; WFAC010; CA1416</NoWarn>
+	<OutputPath>bin\Debug\</OutputPath>
+	<OutputType>Exe</OutputType>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>application.ico</ApplicationIcon>
