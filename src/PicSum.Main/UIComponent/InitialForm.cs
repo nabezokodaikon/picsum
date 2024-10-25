@@ -43,7 +43,7 @@ namespace PicSum.Main.UIComponent
                     {
                         if (this.disposed)
                         {
-                            throw new ObjectDisposedException(this.GetType().FullName);
+                            return;
                         }
 
                         if (!FileUtil.CanAccess(_.Value) || !FileUtil.IsImageFile(_.Value))

@@ -78,7 +78,7 @@ namespace PicSum.Main.UIComponent
                         {
                             if (this.disposed)
                             {
-                                throw new ObjectDisposedException(this.GetType().FullName);
+                                return;
                             }
 
                             this.GetTagListJob_Callback(_);

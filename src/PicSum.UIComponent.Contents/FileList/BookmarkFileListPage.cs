@@ -74,7 +74,7 @@ namespace PicSum.UIComponent.Contents.FileList
                         {
                             if (this.disposed)
                             {
-                                throw new ObjectDisposedException(this.GetType().FullName);
+                                return;
                             }
 
                             this.SearchJob_Callback(_);

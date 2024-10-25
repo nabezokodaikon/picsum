@@ -238,7 +238,7 @@ namespace PicSum.UIComponent.Contents.FileList
                         {
                             if (this.disposed)
                             {
-                                throw new ObjectDisposedException(this.GetType().FullName);
+                                return;
                             }
 
                             this.GetThumbnailsJob_Callback(_);
@@ -279,7 +279,7 @@ namespace PicSum.UIComponent.Contents.FileList
                         {
                             if (this.disposed)
                             {
-                                throw new ObjectDisposedException(this.GetType().FullName);
+                                return;
                             }
 
                             this.MultiFilesExportJob_Callback(_);

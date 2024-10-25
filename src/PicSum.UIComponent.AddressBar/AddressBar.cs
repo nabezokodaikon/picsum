@@ -132,7 +132,7 @@ namespace PicSum.UIComponent.AddressBar
                         {
                             if (this.disposed)
                             {
-                                throw new ObjectDisposedException(this.GetType().FullName);
+                                return;
                             }
 
                             this.GetAddressInfoJob_Callback(_);

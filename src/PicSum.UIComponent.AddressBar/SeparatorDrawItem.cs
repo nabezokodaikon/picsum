@@ -36,7 +36,7 @@ namespace PicSum.UIComponent.AddressBar
                         {
                             if (this.disposed)
                             {
-                                throw new ObjectDisposedException(this.GetType().FullName);
+                                return;
                             }
 
                             this.GetSubDirectoryJob_Callback(_);

@@ -58,7 +58,7 @@ namespace PicSum.UIComponent.InfoPanel
                         {
                             if (this.disposed)
                             {
-                                throw new ObjectDisposedException(this.GetType().FullName);
+                                return;
                             }
 
                             this.GetFileInfoJob_Callback(_);
@@ -89,7 +89,7 @@ namespace PicSum.UIComponent.InfoPanel
                         {
                             if (this.disposed)
                             {
-                                throw new ObjectDisposedException(this.GetType().FullName);
+                                return;
                             }
 
                             this.GetTagListJob_Callback(_);

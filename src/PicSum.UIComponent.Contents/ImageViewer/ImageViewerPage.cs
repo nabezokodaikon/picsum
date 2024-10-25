@@ -109,7 +109,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                         {
                             if (this.disposed)
                             {
-                                throw new ObjectDisposedException(this.GetType().FullName);
+                                return;
                             }
 
                             using (TimeMeasuring.Run(true, "ImageViewerPage.ImageFileReadJob_Callback"))
@@ -143,7 +143,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                         {
                             if (this.disposed)
                             {
-                                throw new ObjectDisposedException(this.GetType().FullName);
+                                return;
                             }
 
                             if (!this.isLoading)
@@ -806,6 +806,11 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
         private void Parameter_GetImageFiles(object sender, GetImageFilesEventArgs e)
         {
+            if (this.disposed)
+            {
+                return;
+            }
+
             this.filePathList = e.FilePathList;
 
             this.Title = e.PageTitle;

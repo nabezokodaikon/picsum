@@ -75,7 +75,7 @@ namespace PicSum.UIComponent.Contents.FileList
                         {
                             if (this.disposed)
                             {
-                                throw new ObjectDisposedException(this.GetType().FullName);
+                                return;
                             }
 
                             this.SearchJob_Callback(_);
@@ -116,7 +116,7 @@ namespace PicSum.UIComponent.Contents.FileList
                         {
                             if (this.disposed)
                             {
-                                throw new ObjectDisposedException(this.GetType().FullName);
+                                return;
                             }
 
                             this.GetNextDirectoryProcess_Callback(_);
