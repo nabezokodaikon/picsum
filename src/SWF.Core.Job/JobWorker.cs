@@ -168,17 +168,6 @@ namespace SWF.Core.Job
             Logger.Debug("ジョブが完了しました。");
         }
 
-        public void WaitThreadFinish()
-        {
-            Logger.Debug("ジョブ実行スレッドにキャンセルリクエストを送ります。");
-            this.source.Cancel();
-
-            Logger.Debug("UIスレッドを待機します。");
-            this.thread.Wait();
-
-            Logger.Debug($"{this.threadName}: ジョブ実行スレッドが終了しました。");
-        }
-
         private void DoWork(CancellationToken token)
         {
             Thread.CurrentThread.Name = this.threadName;
