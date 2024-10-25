@@ -10,6 +10,7 @@
 	<Platforms>AnyCPU;x64;x86;ARM64;ARM32</Platforms>
 	<SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
 	<RuntimeIdentifiers>win-x86;win-x64</RuntimeIdentifiers>
+	<PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
