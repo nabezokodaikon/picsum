@@ -30,7 +30,7 @@ jobs:
           /p:Configuration=Release
           /p:DebugType=None
           /p:OutputPath=$pwd\dist\picsum
-          /p:Platform="Any CPU"
+          /p:Platform="x64"
       
       - name: cleanup
         shell: pwsh
@@ -46,6 +46,7 @@ jobs:
           Copy-Item -Path "$pwd\doc\MANUAL.md" -Destination "$pwd\dist\MANUAL.txt"
           Copy-Item -Path "$pwd\doc\CHANGELOG.md" -Destination "$pwd\dist\CHANGELOG.txt"
           Copy-Item -Path "$pwd\LICENSE" -Destination "$pwd\dist\LICENSE.txt"
+          Copy-Item -Path "$pwd\PrivacyPolicy" -Destination "$pwd\dist\PrivacyPolicy.txt"
 
       - name: compress archive 
         shell: pwsh

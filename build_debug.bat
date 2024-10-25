@@ -9,4 +9,4 @@ dotnet restore src\PicSum.sln
 MSBuild src\PicSum.sln /t:Rebuild ^
   /p:Configuration=Debug ^
   /p:OutputPath="%OUTPUT_PATH%" ^
-  /p:Platform="Any CPU"
+  /p:Platform="x64"

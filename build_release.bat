@@ -9,7 +9,7 @@ MSBuild src\PicSum.sln /t:Rebuild ^
   /p:Configuration=Release ^
   /p:DebugType=None ^
   /p:OutputPath="%OUTPUT_PATH%" ^
-  /p:Platform="Any CPU"
+  /p:Platform="x64"
 
 DEL "%OUTPUT_PATH%\NLog.debug.config"
 DEL "%OUTPUT_PATH%\*.pdb"
