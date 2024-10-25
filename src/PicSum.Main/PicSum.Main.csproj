@@ -67,7 +67,7 @@
     <OutputType>WinExe</OutputType>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>appicon.ico</ApplicationIcon>
+    <ApplicationIcon>application.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
 	<SatelliteResourceLanguages>_</SatelliteResourceLanguages>
@@ -133,7 +133,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="AppIcon.ico">
+    <Content Include="application.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="picsum-home.bat">
@@ -151,7 +151,7 @@
     <Compile Remove="Settings.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Remove="AppIcon.ico" />
+    <None Remove="application.ico" />
     <None Remove="picsum-cleanup.bat" />
     <None Remove="picsum-home.bat" />
   </ItemGroup>
