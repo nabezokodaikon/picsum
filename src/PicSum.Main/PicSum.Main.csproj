@@ -92,6 +92,7 @@
     <ProjectReference Include="..\SWF.Core.Base\SWF.Core.Base.csproj" />
     <ProjectReference Include="..\SWF.Core.FileAccessor\SWF.Core.FileAccessor.csproj" />
     <ProjectReference Include="..\SWF.Core.ImageAccessor\SWF.Core.ImageAccessor.csproj" />
+    <ProjectReference Include="..\SWF.Core.Job\SWF.Core.Job.csproj" />
     <ProjectReference Include="..\SWF.UIComponent.Core\SWF.UIComponent.Core.csproj" />
     <ProjectReference Include="..\SWF.UIComponent.Form\SWF.UIComponent.Form.csproj" />
     <ProjectReference Include="..\SWF.UIComponent.TabOperation\SWF.UIComponent.TabOperation.csproj" />

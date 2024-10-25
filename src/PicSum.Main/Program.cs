@@ -7,6 +7,7 @@ using PicSum.Main.UIComponent;
 using SWF.Core.Base;
 using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
+using SWF.Core.Job;
 using System;
 using System.IO;
 using System.IO.Pipes;
@@ -51,6 +52,7 @@ namespace PicSum.Main
                         Application.Run(initialForm);
                     }
 
+                    SynchronizationContextWrapper.DisposeStaticResources();
                     FileIconCash.DisposeStaticResources();
                     ThumbnailGetLogic.DisposeStaticResouces();
                     ImageFileCacheUtil.DisposeStaticResources();

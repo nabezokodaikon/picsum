@@ -13,7 +13,6 @@ namespace SWF.Core.Job
 
         private bool disposed = false;
         private readonly string threadName;
-        private readonly SynchronizationContextWrapper context;
         private readonly CancellationTokenSource source = new();
         private readonly Task thread;
         private TJob? currentJob = null;
@@ -36,7 +35,6 @@ namespace SWF.Core.Job
 
         public TwoWayJob()
         {
-            this.context = new();
             this.threadName = $"{typeof(TJob).Name} {ThreadID.GetNew()}";
             this.thread = Task.Run(() => this.DoWork(this.source.Token));
         }
@@ -227,7 +225,7 @@ namespace SWF.Core.Job
                     {
                         job.CallbackAction = r =>
                         {
-                            this.context.Post(state =>
+                            SynchronizationContextWrapper.Instance.Post(state =>
                             {
                                 ArgumentNullException.ThrowIfNull(state, nameof(state));
                                 var result = (TJobResult)state;
@@ -240,7 +238,7 @@ namespace SWF.Core.Job
                     {
                         job.CancelAction = () =>
                         {
-                            this.context.Post(_ =>
+                            SynchronizationContextWrapper.Instance.Post(_ =>
                             {
                                 this.cancelAction();
                             }, null);
@@ -251,7 +249,7 @@ namespace SWF.Core.Job
                     {
                         job.CatchAction = e =>
                         {
-                            this.context.Post(state =>
+                            SynchronizationContextWrapper.Instance.Post(state =>
                             {
                                 ArgumentNullException.ThrowIfNull(state, nameof(state));
                                 var ex = (JobException)state;
@@ -264,7 +262,7 @@ namespace SWF.Core.Job
                     {
                         job.CompleteAction = () =>
                         {
-                            this.context.Post(_ =>
+                            SynchronizationContextWrapper.Instance.Post(_ =>
                             {
                                 this.completeAction?.Invoke();
                             }, null);
