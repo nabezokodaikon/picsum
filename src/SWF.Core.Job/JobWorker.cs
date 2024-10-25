@@ -13,7 +13,7 @@ namespace SWF.Core.Job
 
         private bool disposed = false;
         private readonly string threadName;
-        private readonly SynchronizationContext context;
+        private readonly SynchronizationContextWrapper context;
         private readonly CancellationTokenSource source = new();
         private readonly Task thread;
         private TJob? currentJob = null;
@@ -36,20 +36,7 @@ namespace SWF.Core.Job
 
         public TwoWayJob()
         {
-            if (SynchronizationContext.Current == null)
-            {
-                SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
-            }
-
-            if (SynchronizationContext.Current != null)
-            {
-                this.context = SynchronizationContext.Current;
-            }
-            else
-            {
-                throw new NullReferenceException("コンテキストがNullです。");
-            }
-
+            this.context = new();
             this.threadName = $"{typeof(TJob).Name} {ThreadID.GetNew()}";
             this.thread = Task.Run(() => this.DoWork(this.source.Token));
         }
