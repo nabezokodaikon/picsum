@@ -95,10 +95,10 @@ namespace SWF.Core.Job
 
                 if (this.callbackQueue.TryDequeue(out var item))
                 {
-                    this.context.Post(_ =>
+                    this.context.Send(_ =>
                     {
-                        item.Callback(item.State);
-                    }, null);
+                        item.Callback(_);
+                    }, item.State);
                 }
                 else
                 {
@@ -120,11 +120,6 @@ namespace SWF.Core.Job
             {
                 throw new NullReferenceException("同期コンテキストがNullです。");
             }
-
-            //this.context.Post(_ =>
-            //{
-            //    d(state);
-            //}, null);
 
             this.callbackQueue.Enqueue(new CallbackItem(d, state));
         }
