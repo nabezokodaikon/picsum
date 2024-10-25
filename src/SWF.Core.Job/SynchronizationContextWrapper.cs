@@ -69,19 +69,21 @@ namespace SWF.Core.Job
 
         private void Dispose(bool disposing)
         {
-            if (!this.disposed)
+            if (this.disposed)
             {
-                if (disposing)
-                {
-                    this.source.Cancel();
-                    this.thread.Wait();
-
-                    this.source.Dispose();
-                    this.thread.Dispose();
-                }
-
-                this.disposed = true;
+                return;
             }
+
+            if (disposing)
+            {
+                this.source.Cancel();
+                this.thread.Wait();
+
+                this.source.Dispose();
+                this.thread.Dispose();
+            }
+
+            this.disposed = true;
         }
 
         private void DoWork(CancellationToken token)

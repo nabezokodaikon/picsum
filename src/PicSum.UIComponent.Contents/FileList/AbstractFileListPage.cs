@@ -88,7 +88,7 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
-        private bool disposing = false;
+        private bool disposed = false;
         private Dictionary<string, FileEntity> masterFileDictionary = null;
         private List<string> filterFilePathList = null;
         private TwoWayJob<ThumbnailsGetJob, ThumbnailsGetParameter, ThumbnailImageResult> thumbnailsGetJob = null;
@@ -236,9 +236,9 @@ namespace PicSum.UIComponent.Contents.FileList
                     this.thumbnailsGetJob
                         .Callback(_ =>
                         {
-                            if (this.disposing)
+                            if (this.disposed)
                             {
-                                return;
+                                throw new ObjectDisposedException(this.GetType().FullName);
                             }
 
                             this.GetThumbnailsJob_Callback(_);
@@ -277,9 +277,9 @@ namespace PicSum.UIComponent.Contents.FileList
                     this.multiFilesExportJob
                         .Callback(_ =>
                         {
-                            if (this.disposing)
+                            if (this.disposed)
                             {
-                                return;
+                                throw new ObjectDisposedException(this.GetType().FullName);
                             }
 
                             this.MultiFilesExportJob_Callback(_);
@@ -328,10 +328,13 @@ namespace PicSum.UIComponent.Contents.FileList
 
         protected override void Dispose(bool disposing)
         {
+            if (this.disposed)
+            {
+                return;
+            }
+
             if (disposing)
             {
-                this.disposing = true;
-
                 this.thumbnailsGetJob?.Dispose();
                 this.thumbnailsGetJob = null;
 
@@ -349,6 +352,8 @@ namespace PicSum.UIComponent.Contents.FileList
 
                 this.components?.Dispose();
             }
+
+            this.disposed = true;
 
             base.Dispose(disposing);
         }

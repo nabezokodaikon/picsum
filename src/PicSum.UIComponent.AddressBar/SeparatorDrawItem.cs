@@ -14,7 +14,7 @@ namespace PicSum.UIComponent.AddressBar
     internal sealed partial class SeparatorDrawItem
         : DropDownDrawItemBase, IDisposable
     {
-
+        private bool disposed = false;
         private readonly Image mousePointImage = Resources.SmallArrowRight;
         private readonly Image mouseDownImage = Resources.SmallArrowDown;
         private bool isRead = false;
@@ -32,7 +32,15 @@ namespace PicSum.UIComponent.AddressBar
                 {
                     this.getSubDirectoryJob = new();
                     this.getSubDirectoryJob
-                        .Callback(this.GetSubDirectoryJob_Callback);
+                        .Callback(_ =>
+                        {
+                            if (this.disposed)
+                            {
+                                throw new ObjectDisposedException(this.GetType().FullName);
+                            }
+
+                            this.GetSubDirectoryJob_Callback(_);
+                        });
                 }
 
                 return this.getSubDirectoryJob;
@@ -61,11 +69,18 @@ namespace PicSum.UIComponent.AddressBar
 
         public new void Dispose()
         {
+            if (this.disposed)
+            {
+                return;
+            }
+
             this.selectedSubDirectoryFont?.Dispose();
             this.selectedSubDirectoryFont = null;
 
             this.getSubDirectoryJob?.Dispose();
             this.getSubDirectoryJob = null;
+
+            this.disposed = true;
 
             base.Dispose();
         }

@@ -52,25 +52,27 @@ namespace SWF.Core.Job
 
         private void Dispose(bool disposing)
         {
-            if (!this.disposed)
+            if (this.disposed)
             {
-                if (disposing)
-                {
-                    this.BeginCancel();
-
-                    Logger.Debug("ジョブ実行スレッドにキャンセルリクエストを送ります。");
-                    this.source.Cancel();
-
-                    Logger.Debug("UIスレッドを待機します。");
-                    this.thread.Wait();
-
-                    Logger.Debug($"{this.threadName}: ジョブ実行スレッドが終了しました。");
-
-                    this.source.Dispose();
-                }
-
-                this.disposed = true;
+                return;
             }
+
+            if (disposing)
+            {
+                this.BeginCancel();
+
+                Logger.Debug("ジョブ実行スレッドにキャンセルリクエストを送ります。");
+                this.source.Cancel();
+
+                Logger.Debug("UIスレッドを待機します。");
+                this.thread.Wait();
+
+                Logger.Debug($"{this.threadName}: ジョブ実行スレッドが終了しました。");
+
+                this.source.Dispose();
+            }
+
+            this.disposed = true;
         }
 
         public TwoWayJob<TJob, TJobParameter, TJobResult> Callback(Action<TJobResult> action)

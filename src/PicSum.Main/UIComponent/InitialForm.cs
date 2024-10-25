@@ -18,6 +18,7 @@ namespace PicSum.Main.UIComponent
     [SupportedOSPlatform("windows")]
     internal sealed partial class InitialForm : HideForm
     {
+        private bool disposed = false;
         private readonly BrowserManager browserManager = new();
         private OneWayJob<GCCollectRunJob> gcCollectRunJob = null;
         private TwoWayJob<PipeServerJob, ValueResult<string>> pipeServerJob = null;
@@ -40,6 +41,11 @@ namespace PicSum.Main.UIComponent
                     this.pipeServerJob = new();
                     this.pipeServerJob.Callback(_ =>
                     {
+                        if (this.disposed)
+                        {
+                            throw new ObjectDisposedException(this.GetType().FullName);
+                        }
+
                         if (!FileUtil.CanAccess(_.Value) || !FileUtil.IsImageFile(_.Value))
                         {
                             return;
@@ -82,6 +88,7 @@ namespace PicSum.Main.UIComponent
         {
             this.gcCollectRunJob?.Dispose();
             this.pipeServerJob?.Dispose();
+            this.disposed = true;
             this.Close();
         }
 

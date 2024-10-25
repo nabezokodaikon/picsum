@@ -14,7 +14,7 @@ namespace PicSum.UIComponent.AddressBar
     internal sealed partial class DirectoryHistoryDrawItem
         : DropDownDrawItemBase, IDisposable
     {
-
+        private bool disposed = false;
         private readonly Image drawImage = Resources.SmallArrowDown;
         private TwoWayJob<DirectoryViewHistoryGetJob, ListResult<FileShallowInfoEntity>> getDirectoryHistoryJob = null;
 
@@ -26,7 +26,15 @@ namespace PicSum.UIComponent.AddressBar
                 {
                     this.getDirectoryHistoryJob = new();
                     this.getDirectoryHistoryJob
-                        .Callback(r => this.GetDirectoryHistoryJob_Callback(r));
+                        .Callback(_ =>
+                        {
+                            if (this.disposed)
+                            {
+                                throw new ObjectDisposedException(this.GetType().FullName);
+                            }
+
+                            this.GetDirectoryHistoryJob_Callback(_);
+                        });
                 }
 
                 return this.getDirectoryHistoryJob;
@@ -40,8 +48,15 @@ namespace PicSum.UIComponent.AddressBar
 
         public new void Dispose()
         {
+            if (this.disposed)
+            {
+                return;
+            }
+
             this.getDirectoryHistoryJob?.Dispose();
             this.getDirectoryHistoryJob = null;
+
+            this.disposed = true;
 
             base.Dispose();
         }

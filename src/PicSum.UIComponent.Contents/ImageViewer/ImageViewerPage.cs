@@ -48,7 +48,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             }
         }
 
-        private bool disposing = false;
+        private bool disposed = false;
 
         private readonly ImageViewerPageParameter parameter = null;
         private ImageDisplayMode displayMode = ImageDisplayMode.LeftFacing;
@@ -107,9 +107,9 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                     this.imageFileReadJob
                         .Callback(r =>
                         {
-                            if (this.disposing)
+                            if (this.disposed)
                             {
-                                return;
+                                throw new ObjectDisposedException(this.GetType().FullName);
                             }
 
                             using (TimeMeasuring.Run(true, "ImageViewerPage.ImageFileReadJob_Callback"))
@@ -141,9 +141,9 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                     this.imageFileLoadingJob
                         .Callback(_ =>
                         {
-                            if (this.disposing)
+                            if (this.disposed)
                             {
-                                return;
+                                throw new ObjectDisposedException(this.GetType().FullName);
                             }
 
                             if (!this.isLoading)
@@ -264,10 +264,13 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
         protected override void Dispose(bool disposing)
         {
+            if (this.disposed)
+            {
+                return;
+            }
+
             if (disposing)
             {
-                this.disposing = true;
-
                 this.addBookmarkJob?.Dispose();
                 this.addBookmarkJob = null;
 
@@ -292,12 +295,14 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 this.components?.Dispose();
             }
 
+            this.disposed = true;
+
             base.Dispose(disposing);
         }
 
         protected override void OnLoad(EventArgs e)
         {
-            if (this.disposing)
+            if (this.disposed)
             {
                 return;
             }

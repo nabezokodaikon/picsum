@@ -49,6 +49,8 @@ namespace PicSum.Main.UIComponent
             };
         }
 
+        private bool disposed = false;
+
         public event EventHandler<TabDropoutedEventArgs> TabDropouted;
         public event EventHandler<BrowserPageOpenEventArgs> NewWindowPageOpen;
         public event EventHandler Close;
@@ -72,7 +74,16 @@ namespace PicSum.Main.UIComponent
                 {
                     this.getTagListJob = new();
                     this.getTagListJob
-                        .Callback(this.GetTagListJob_Callback);
+                        .Callback(_ =>
+                        {
+                            if (this.disposed)
+                            {
+                                throw new ObjectDisposedException(this.GetType().FullName);
+                            }
+
+                            this.GetTagListJob_Callback(_);
+                        }
+                    );
                 }
 
                 return this.getTagListJob;
@@ -207,6 +218,11 @@ namespace PicSum.Main.UIComponent
 
         protected override void Dispose(bool disposing)
         {
+            if (this.disposed)
+            {
+                return;
+            }
+
             if (disposing)
             {
                 this.getTagListJob?.Dispose();
@@ -214,6 +230,9 @@ namespace PicSum.Main.UIComponent
 
                 this.components?.Dispose();
             }
+
+            this.disposed = true;
+
             base.Dispose(disposing);
         }
 

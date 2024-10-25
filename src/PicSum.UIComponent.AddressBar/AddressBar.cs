@@ -21,6 +21,7 @@ namespace PicSum.UIComponent.AddressBar
 
         public event EventHandler<SelectedDirectoryEventArgs> SelectedDirectory;
 
+        private bool disposed = false;
         private readonly int dropDownItemWidth = Resources.SmallArrowDown.Width;
         private readonly Palette palette = new();
         private readonly OverflowDrawItem overflowItem = new();
@@ -127,7 +128,15 @@ namespace PicSum.UIComponent.AddressBar
                 {
                     this.getAddressInfoJob = new();
                     this.getAddressInfoJob
-                        .Callback(this.GetAddressInfoJob_Callback)
+                        .Callback(_ =>
+                        {
+                            if (this.disposed)
+                            {
+                                throw new ObjectDisposedException(this.GetType().FullName);
+                            }
+
+                            this.GetAddressInfoJob_Callback(_);
+                        })
                         .Catch(ex =>
                         {
                             this.currentDirectoryPath = string.Empty;
@@ -201,6 +210,11 @@ namespace PicSum.UIComponent.AddressBar
 
         protected override void Dispose(bool disposing)
         {
+            if (this.disposed)
+            {
+                return;
+            }
+
             if (disposing)
             {
                 this.getAddressInfoJob?.Dispose();
@@ -211,6 +225,8 @@ namespace PicSum.UIComponent.AddressBar
 
                 this.ClearAddressItems();
             }
+
+            this.disposed = true;
 
             base.Dispose(disposing);
         }

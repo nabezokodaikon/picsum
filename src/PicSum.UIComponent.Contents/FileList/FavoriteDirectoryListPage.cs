@@ -21,7 +21,7 @@ namespace PicSum.UIComponent.Contents.FileList
         : AbstractFileListPage
     {
 
-        private bool disposing = false;
+        private bool disposed = false;
         private readonly FavoriteDirectoryListPageParameter parameter = null;
         private TwoWayJob<FavoriteDirectoriesGetJob, FavoriteDirectoriesGetParameter, ListResult<FileShallowInfoEntity>> searchJob = null;
         private OneWayJob<DirectoryViewCounterDeleteJob, ListParameter<string>> deleteJob = null;
@@ -36,9 +36,9 @@ namespace PicSum.UIComponent.Contents.FileList
                     this.searchJob
                         .Callback(_ =>
                         {
-                            if (this.disposing)
+                            if (this.disposed)
                             {
-                                return;
+                                throw new ObjectDisposedException(this.GetType().FullName);
                             }
 
                             this.SearchJob_Callback(_);
@@ -72,10 +72,13 @@ namespace PicSum.UIComponent.Contents.FileList
 
         protected override void Dispose(bool disposing)
         {
+            if (this.disposed)
+            {
+                return;
+            }
+
             if (disposing)
             {
-                this.disposing = true;
-
                 this.parameter.SelectedFilePath = base.SelectedFilePath;
                 this.parameter.SortInfo = base.SortInfo;
 
@@ -85,6 +88,8 @@ namespace PicSum.UIComponent.Contents.FileList
                 this.deleteJob?.Dispose();
                 this.deleteJob = null;
             }
+
+            this.disposed = true;
 
             base.Dispose(disposing);
         }

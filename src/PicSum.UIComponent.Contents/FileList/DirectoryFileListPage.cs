@@ -56,7 +56,7 @@ namespace PicSum.UIComponent.Contents.FileList
             };
         }
 
-        private bool disposing = false;
+        private bool disposed = false;
         private readonly DirectoryFileListPageParameter parameter = null;
         private TwoWayJob<FilesGetByDirectoryJob, ValueParameter<string>, DirectoryGetResult> searchJob = null;
         private OneWayJob<DirectoryStateUpdateJob, DirectoryStateParameter> directoryStateUpdateJob = null;
@@ -73,9 +73,9 @@ namespace PicSum.UIComponent.Contents.FileList
                     this.searchJob
                         .Callback(_ =>
                         {
-                            if (this.disposing)
+                            if (this.disposed)
                             {
-                                return;
+                                throw new ObjectDisposedException(this.GetType().FullName);
                             }
 
                             this.SearchJob_Callback(_);
@@ -114,9 +114,9 @@ namespace PicSum.UIComponent.Contents.FileList
                     this.nextDirectoryGetJob
                         .Callback(_ =>
                         {
-                            if (this.disposing)
+                            if (this.disposed)
                             {
-                                return;
+                                throw new ObjectDisposedException(this.GetType().FullName);
                             }
 
                             this.GetNextDirectoryProcess_Callback(_);
@@ -161,10 +161,13 @@ namespace PicSum.UIComponent.Contents.FileList
 
         protected override void Dispose(bool disposing)
         {
+            if (this.disposed)
+            {
+                return;
+            }
+
             if (disposing)
             {
-                this.disposing = true;
-
                 this.SaveCurrentDirectoryState();
 
                 this.searchJob?.Dispose();
@@ -179,6 +182,8 @@ namespace PicSum.UIComponent.Contents.FileList
                 this.nextDirectoryGetJob?.Dispose();
                 this.nextDirectoryGetJob = null;
             }
+
+            this.disposed = true;
 
             base.Dispose(disposing);
         }

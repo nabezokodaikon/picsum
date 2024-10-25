@@ -34,6 +34,7 @@ namespace PicSum.UIComponent.InfoPanel
 
         public event EventHandler<SelectedTagEventArgs> SelectedTag;
 
+        private bool disposed = false;
         private TwoWayJob<FileDeepInfoGetJob, FileDeepInfoGetParameter, FileDeepInfoGetResult> getFileInfoJob = null;
         private OneWayJob<FileRatingUpdateJob, FileRatingUpdateParameter> updateFileRatingJob = null;
         private TwoWayJob<TagsGetJob, ListResult<string>> getTagListJob = null;
@@ -53,7 +54,15 @@ namespace PicSum.UIComponent.InfoPanel
                 {
                     this.getFileInfoJob = new();
                     this.getFileInfoJob
-                        .Callback(this.GetFileInfoJob_Callback);
+                        .Callback(_ =>
+                        {
+                            if (this.disposed)
+                            {
+                                throw new ObjectDisposedException(this.GetType().FullName);
+                            }
+
+                            this.GetFileInfoJob_Callback(_);
+                        });
                 }
 
                 return this.getFileInfoJob;
@@ -76,7 +85,15 @@ namespace PicSum.UIComponent.InfoPanel
                 {
                     this.getTagListJob = new();
                     this.getTagListJob
-                        .Callback(this.GetTagListJob_Callback);
+                        .Callback(_ =>
+                        {
+                            if (this.disposed)
+                            {
+                                throw new ObjectDisposedException(this.GetType().FullName);
+                            }
+
+                            this.GetTagListJob_Callback(_);
+                        });
                 }
 
                 return this.getTagListJob;
@@ -207,6 +224,11 @@ namespace PicSum.UIComponent.InfoPanel
 
         protected override void Dispose(bool disposing)
         {
+            if (this.disposed)
+            {
+                return;
+            }
+
             if (disposing)
             {
                 this.getFileInfoJob?.Dispose();
@@ -226,6 +248,8 @@ namespace PicSum.UIComponent.InfoPanel
 
                 this.components?.Dispose();
             }
+
+            this.disposed = true;
 
             base.Dispose(disposing);
         }
