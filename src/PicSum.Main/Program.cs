@@ -113,7 +113,7 @@ namespace PicSum.Main
             var ex = (Exception)e.ExceptionObject;
             var logger = LogManager.GetCurrentClassLogger();
             logger.Error(ex);
-            ExceptionUtil.ShowErrorDialog("予期しないエラーが発生しました。", ex);
+            ExceptionUtil.ShowErrorDialog("An uncaught exception occurred.", ex);
         }
     }
 }
