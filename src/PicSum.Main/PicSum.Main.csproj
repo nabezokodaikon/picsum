@@ -26,66 +26,19 @@
     <Configurations>Debug;Release</Configurations>
 	<Platforms>AnyCPU;x64;x86;ARM64;ARM32</Platforms>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>portable</DebugType>
-    <NoWarn>1701;1702; CA1016; CA1824; WFAC010; CA1416</NoWarn>
-	<OutputPath>bin\Release\</OutputPath>
-	<OutputType>WinExe</OutputType>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM32'">
-    <DebugType>portable</DebugType>
-    <NoWarn>1701;1702; CA1016; CA1824; WFAC010; CA1416</NoWarn>
-    <OutputPath>bin\Release\</OutputPath>
-    <OutputType>WinExe</OutputType>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
-    <DebugType>portable</DebugType>
-    <NoWarn>1701;1702; CA1016; CA1824; WFAC010; CA1416</NoWarn>
-    <OutputPath>bin\Release\</OutputPath>
-    <OutputType>WinExe</OutputType>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
-    <DebugType>portable</DebugType>
-    <NoWarn>1701;1702; CA1016; CA1824; WFAC010; CA1416</NoWarn>
-    <OutputPath>bin\Release\</OutputPath>
-    <OutputType>WinExe</OutputType>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-	<DebugType>portable</DebugType>
-	<NoWarn>1701;1702; CA1016; CA1824; WFAC010; CA1416</NoWarn>
-	<OutputPath>bin\Release\</OutputPath>
-	<OutputType>WinExe</OutputType>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
-	<DebugType>portable</DebugType>
-	<NoWarn>1701;1702; CA1016; CA1824; WFAC010; CA1416</NoWarn>
-    <OutputPath>bin\Debug\</OutputPath>
-	<OutputType>WinExe</OutputType>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM32'">
-	<DebugType>portable</DebugType>
-	<NoWarn>1701;1702; CA1016; CA1824; WFAC010; CA1416</NoWarn>
-    <OutputPath>bin\Debug\</OutputPath>
-    <OutputType>WinExe</OutputType>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
-	<DebugType>portable</DebugType>
-	<NoWarn>1701;1702; CA1016; CA1824; WFAC010; CA1416</NoWarn>
-    <OutputPath>bin\Debug\</OutputPath>
-    <OutputType>WinExe</OutputType>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
-	<DebugType>portable</DebugType>
-	<NoWarn>1701;1702; CA1016; CA1824; WFAC010; CA1416</NoWarn>
-    <OutputPath>bin\Debug\</OutputPath>
-    <OutputType>WinExe</OutputType>
-  </PropertyGroup>
+
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-	<DebugType>portable</DebugType>
+	<DebugType>full</DebugType>
 	<NoWarn>1701;1702; CA1016; CA1824; WFAC010; CA1416</NoWarn>
-	<OutputPath>bin\Debug\</OutputPath>
 	<OutputType>Exe</OutputType>
   </PropertyGroup>
+  
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+	<DebugType>none</DebugType>
+	<NoWarn>1701;1702; CA1016; CA1824; WFAC010; CA1416</NoWarn>
+	<OutputType>WinExe</OutputType>
+  </PropertyGroup>
+  
   <PropertyGroup>
     <ApplicationIcon>application.ico</ApplicationIcon>
   </PropertyGroup>

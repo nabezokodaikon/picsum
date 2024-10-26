@@ -9,6 +9,16 @@
 	<RuntimeIdentifiers>win-x86;win-x64</RuntimeIdentifiers>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+	<DebugType>full</DebugType>
+	<NoWarn>1701;1702; CA1016; CA1822; CA1824</NoWarn>
+  </PropertyGroup>
+  
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
+	<DebugType>none</DebugType>
+	<NoWarn>1701;1702; CA1016; CA1822; CA1824</NoWarn>
+  </PropertyGroup>
+  
   <ItemGroup>
 	<PackageReference Include="System.Data.SQLite.Core" Version="1.0.119" />
   </ItemGroup>
