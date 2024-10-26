@@ -94,7 +94,7 @@ namespace PicSum.Main.UIComponent
 
         protected override void OnLoad(EventArgs e)
         {
-            SynchronizationContextWrapper.SetSynchronizationContext(this);
+            UIThreadAccessor.SetSynchronizationContext(this);
 
             this.GCCollectRunJob.StartJob();
             this.PipeServerJob.StartJob();

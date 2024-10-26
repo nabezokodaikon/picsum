@@ -4,16 +4,16 @@ using System.Windows.Forms;
 
 namespace SWF.Core.Job
 {
-    public sealed partial class SynchronizationContextWrapper
+    public sealed partial class UIThreadAccessor
         : IDisposable
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
 #pragma warning disable CS8618
-        private static SynchronizationContextWrapper innerInstance;
+        private static UIThreadAccessor innerInstance;
 #pragma warning restore CS8618
 
-        public static SynchronizationContextWrapper Instance
+        public static UIThreadAccessor Instance
         {
             get
             {
@@ -35,7 +35,7 @@ namespace SWF.Core.Job
                 throw new InvalidOperationException("同期コンテキストは既に設定されています。");
             }
 
-            innerInstance = new SynchronizationContextWrapper(control);
+            innerInstance = new UIThreadAccessor(control);
         }
 
         public static void DisposeStaticResources()
@@ -49,7 +49,7 @@ namespace SWF.Core.Job
         private readonly CancellationTokenSource source;
         private readonly Task thread;
 
-        private SynchronizationContextWrapper(Control control)
+        private UIThreadAccessor(Control control)
         {
             this.control = control;
             this.callbackQueue = new();
@@ -57,7 +57,7 @@ namespace SWF.Core.Job
             this.thread = Task.Run(() => this.DoWork(this.source.Token));
         }
 
-        ~SynchronizationContextWrapper()
+        ~UIThreadAccessor()
         {
             this.Dispose(false);
         }
@@ -89,6 +89,8 @@ namespace SWF.Core.Job
 
         private void DoWork(CancellationToken token)
         {
+            Thread.CurrentThread.Name = "UIThreadAccessor";
+
             while (true)
             {
                 if (token.IsCancellationRequested)
