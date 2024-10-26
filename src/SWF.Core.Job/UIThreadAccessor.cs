@@ -1,5 +1,4 @@
 using NLog;
-using System.Collections.Concurrent;
 using System.Windows.Forms;
 
 namespace SWF.Core.Job
@@ -10,21 +9,12 @@ namespace SWF.Core.Job
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         public static UIThreadAccessor Instance = new UIThreadAccessor();
 
-        public static void DisposeStaticResources()
-        {
-            Instance.Dispose();
-        }
-
         private bool disposed = false;
-        private readonly ConcurrentQueue<CallbackActionItem> callbackQueue;
-        private readonly CancellationTokenSource source;
-        private readonly Task thread;
+        private SynchronizationContext? context;
 
         private UIThreadAccessor()
         {
-            this.callbackQueue = new();
-            this.source = new();
-            this.thread = Task.Run(() => this.DoWork(this.source.Token));
+
         }
 
         ~UIThreadAccessor()
@@ -47,75 +37,25 @@ namespace SWF.Core.Job
 
             if (disposing)
             {
-                this.source.Cancel();
-                this.thread.Wait();
 
-                this.source.Dispose();
-                this.thread.Dispose();
             }
 
             this.disposed = true;
         }
 
-        private void DoWork(CancellationToken token)
+        public void SetSynchronizationContext()
         {
-            Thread.CurrentThread.Name = "UIThreadAccessor";
-
-            while (true)
+            if (SynchronizationContext.Current == null)
             {
-                if (token.IsCancellationRequested)
-                {
-                    return;
-                }
-
-                if (this.callbackQueue.TryDequeue(out var item))
-                {
-                    if (!item.Sender.IsHandleCreated)
-                    {
-                        return;
-                    }
-
-                    if (item.Sender.IsDisposed)
-                    {
-                        return;
-                    }
-
-                    if (item.Sender.InvokeRequired)
-                    {
-                        try
-                        {
-                            item.Sender.Invoke((MethodInvoker)delegate
-                            {
-                                item.CallbackAction();
-                            });
-                        }
-                        catch (ObjectDisposedException)
-                        {
-                            Logger.Debug("同期コンテキストは破棄されています。");
-                        }
-                        catch (InvalidOperationException)
-                        {
-                            Logger.Debug("UIスレッドにアクセスできませんでした。");
-                        }
-                        catch (ThreadInterruptedException)
-                        {
-                            Logger.Debug("UIスレッドが中断されています。");
-                        }
-                        catch (Exception ex)
-                        {
-                            Logger.Error(ex, "UIスレッドへのアクセスに失敗しました。");
-                        }
-                    }
-                    else
-                    {
-                        item.CallbackAction();
-                    }
-                }
-                else
-                {
-                    Thread.Sleep(1);
-                }
+                throw new NullReferenceException("同期コンテキストがNUllです。");
             }
+
+            if (this.context != null)
+            {
+                throw new InvalidOperationException("同期コンテキストは既に設定されています。");
+            }
+
+            this.context = SynchronizationContext.Current;
         }
 
         public void Post(Control sender, Action callbackAction)
@@ -125,10 +65,28 @@ namespace SWF.Core.Job
 
             if (this.disposed)
             {
-                throw new ObjectDisposedException("同期コンテキストは破棄されています。");
+                throw new ObjectDisposedException(nameof(UIThreadAccessor));
             }
 
-            this.callbackQueue.Enqueue(new CallbackActionItem(sender, callbackAction));
+            if (this.context == null)
+            {
+                throw new InvalidOperationException("同期コンテキストが設定されていません。");
+            }
+
+            this.context.Post(_ =>
+            {
+                if (!sender.IsHandleCreated)
+                {
+                    return;
+                }
+
+                if (sender.IsDisposed)
+                {
+                    return;
+                }
+
+                callbackAction();
+            }, null);
         }
     }
 }

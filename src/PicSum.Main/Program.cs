@@ -52,7 +52,7 @@ namespace PicSum.Main
                         Application.Run(initialForm);
                     }
 
-                    UIThreadAccessor.DisposeStaticResources();
+                    UIThreadAccessor.Instance.Dispose();
                     FileIconCash.DisposeStaticResources();
                     ThumbnailGetLogic.DisposeStaticResouces();
                     ImageFileCacheUtil.DisposeStaticResources();
