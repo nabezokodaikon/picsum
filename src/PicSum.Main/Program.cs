@@ -37,7 +37,7 @@ namespace PicSum.Main
 
                     var logger = LogManager.GetCurrentClassLogger();
 
-                    Thread.CurrentThread.Name = "Main";
+                    Thread.CurrentThread.Name = ApplicationConstants.UI_THREAD_NAME;
 
                     logger.Debug("アプリケーションを開始します。");
 

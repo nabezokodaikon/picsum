@@ -1,4 +1,5 @@
 using NLog;
+using SWF.Core.Base;
 using System.Windows.Forms;
 
 namespace SWF.Core.Job
@@ -45,6 +46,11 @@ namespace SWF.Core.Job
 
         public void SetSynchronizationContext()
         {
+            if (Thread.CurrentThread.Name != ApplicationConstants.UI_THREAD_NAME)
+            {
+                throw new InvalidOperationException("同期コンテキストをUIスレッド以外から設定しようとしました。");
+            }
+
             if (SynchronizationContext.Current == null)
             {
                 throw new NullReferenceException("同期コンテキストがNUllです。");

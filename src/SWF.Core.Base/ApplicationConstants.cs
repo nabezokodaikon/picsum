@@ -2,6 +2,8 @@ namespace SWF.Core.Base
 {
     public sealed class ApplicationConstants
     {
+        public const string UI_THREAD_NAME = "Main";
+
         /// <summary>
         /// 番号付SQLパラメータの書式
         /// </summary>
