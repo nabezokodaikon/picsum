@@ -500,7 +500,7 @@ namespace PicSum.UIComponent.Contents.FileList
             this.SetFilter();
         }
 
-        protected abstract Action GetImageFilesGetAction(ImageViewerPageParameter paramter);
+        protected abstract Action<Control> GetImageFilesGetAction(ImageViewerPageParameter paramter);
 
         private ToolStripButton GetSortToolStripButton(SortTypeID sortType)
         {
@@ -1006,7 +1006,7 @@ namespace PicSum.UIComponent.Contents.FileList
                     ThumbnailHeight = thumbnailHeight,
                 };
 
-                this.ThumbnailsGetJob.StartJob(param);
+                this.ThumbnailsGetJob.StartJob(this, param);
 
                 //this.ImageFileSizeCacheJob.StartJob(
                 //    new ListParameter<string>(
@@ -1276,7 +1276,7 @@ namespace PicSum.UIComponent.Contents.FileList
                             ExportDirecotry = fbd.SelectedPath,
                         };
 
-                        this.MultiFilesExportJob.StartJob(param);
+                        this.MultiFilesExportJob.StartJob(this, param);
                         CommonConfig.ExportDirectoryPath = fbd.SelectedPath;
                     }
                 }
@@ -1302,7 +1302,7 @@ namespace PicSum.UIComponent.Contents.FileList
                             SrcFilePath = srcFilePath,
                             ExportFilePath = ofd.FileName
                         };
-                        this.SingleFileExportJob.StartJob(param);
+                        this.SingleFileExportJob.StartJob(this, param);
 
                         CommonConfig.ExportDirectoryPath = dir;
                     }
@@ -1343,7 +1343,7 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             var paramter = new ValueParameter<string>(e.FilePath);
 
-            this.BookmarkAddJob.StartJob(paramter);
+            this.BookmarkAddJob.StartJob(this, paramter);
         }
 
     }

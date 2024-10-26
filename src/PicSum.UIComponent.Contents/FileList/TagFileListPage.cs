@@ -25,9 +25,9 @@ namespace PicSum.UIComponent.Contents.FileList
     internal sealed partial class TagFileListPage
         : AbstractFileListPage
     {
-        private static Action ImageFilesGetAction(ImageViewerPageParameter param)
+        private static Action<Control> ImageFilesGetAction(ImageViewerPageParameter param)
         {
-            return () =>
+            return sender =>
             {
                 using (var job = new TwoWayJob<FilesGetByTagJob, ValueParameter<string>, ListResult<FileShallowInfoEntity>>())
                 {
@@ -50,7 +50,7 @@ namespace PicSum.UIComponent.Contents.FileList
                         param.OnGetImageFiles(eventArgs);
                     });
 
-                    job.StartJob(new ValueParameter<string>(param.SourcesKey));
+                    job.StartJob(sender, new ValueParameter<string>(param.SourcesKey));
                     job.WaitJobComplete();
                 }
             };
@@ -110,7 +110,7 @@ namespace PicSum.UIComponent.Contents.FileList
             base.OnLoad(e);
 
             var param = new ValueParameter<string>(this.parameter.Tag);
-            this.SearchJob.StartJob(param);
+            this.SearchJob.StartJob(this, param);
         }
 
         protected override void Dispose(bool disposing)
@@ -162,12 +162,12 @@ namespace PicSum.UIComponent.Contents.FileList
                 FilePathList = filePathList,
                 Tag = this.parameter.Tag
             };
-            this.DeleteJob.StartJob(param);
+            this.DeleteJob.StartJob(this, param);
 
             this.RemoveFile(filePathList);
         }
 
-        protected override Action GetImageFilesGetAction(ImageViewerPageParameter param)
+        protected override Action<Control> GetImageFilesGetAction(ImageViewerPageParameter param)
         {
             return ImageFilesGetAction(param);
         }

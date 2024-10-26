@@ -308,7 +308,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             }
 
             this.parameter.GetImageFiles += this.Parameter_GetImageFiles;
-            this.parameter.ImageFilesGetAction(this.parameter)();
+            this.parameter.ImageFilesGetAction(this.parameter)(this);
             base.OnLoad(e);
         }
 
@@ -725,9 +725,9 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
                 this.isLoading = true;
 
-                this.ImageFileCacheJob.StartJob([.. nextFiles, .. prevFiles]);
-                this.ImageFileLoadingJob.StartJob(param);
-                this.ImageFileReadJob.StartJob(param);
+                this.ImageFileCacheJob.StartJob(this, [.. nextFiles, .. prevFiles]);
+                this.ImageFileLoadingJob.StartJob(this, param);
+                this.ImageFileReadJob.StartJob(this, param);
             }
         }
 
@@ -1326,7 +1326,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                         SrcFilePath = srcFilePath,
                         ExportFilePath = ofd.FileName
                     };
-                    this.SingleFileExportJob.StartJob(param);
+                    this.SingleFileExportJob.StartJob(this, param);
 
                     CommonConfig.ExportDirectoryPath = dir;
                 }
@@ -1347,7 +1347,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         {
             var paramter = new ValueParameter<string>(e.FilePath);
 
-            this.AddBookmarkJob.StartJob(paramter);
+            this.AddBookmarkJob.StartJob(this, paramter);
         }
 
     }

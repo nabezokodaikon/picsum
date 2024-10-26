@@ -24,9 +24,9 @@ namespace PicSum.UIComponent.Contents.FileList
     internal sealed partial class RatingFileListPage
         : AbstractFileListPage
     {
-        private static Action ImageFilesGetAction(ImageViewerPageParameter param)
+        private static Action<Control> ImageFilesGetAction(ImageViewerPageParameter param)
         {
-            return () =>
+            return sender =>
             {
                 using (var job = new TwoWayJob<FilesGetByRatingJob, ValueParameter<int>, ListResult<FileShallowInfoEntity>>())
                 {
@@ -48,7 +48,7 @@ namespace PicSum.UIComponent.Contents.FileList
                         param.OnGetImageFiles(eventArgs);
                     });
 
-                    job.StartJob(new ValueParameter<int>(int.Parse(param.SourcesKey)));
+                    job.StartJob(sender, new ValueParameter<int>(int.Parse(param.SourcesKey)));
                     job.WaitJobComplete();
                 }
             };
@@ -107,7 +107,7 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             base.OnLoad(e);
             var param = new ValueParameter<int>(this.parameter.RatingValue);
-            this.SearchJob.StartJob(param);
+            this.SearchJob.StartJob(this, param);
         }
 
         protected override void Dispose(bool disposing)
@@ -159,12 +159,12 @@ namespace PicSum.UIComponent.Contents.FileList
                 FilePathList = filePathList,
                 RatingValue = 0
             };
-            this.DeleteJob.StartJob(param);
+            this.DeleteJob.StartJob(this, param);
 
             this.RemoveFile(filePathList);
         }
 
-        protected override Action GetImageFilesGetAction(ImageViewerPageParameter param)
+        protected override Action<Control> GetImageFilesGetAction(ImageViewerPageParameter param)
         {
             return ImageFilesGetAction(param);
         }

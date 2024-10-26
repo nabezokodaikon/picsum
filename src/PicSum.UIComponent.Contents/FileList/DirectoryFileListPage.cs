@@ -25,9 +25,9 @@ namespace PicSum.UIComponent.Contents.FileList
     internal sealed partial class DirectoryFileListPage
         : AbstractFileListPage
     {
-        private static Action ImageFilesGetAction(ImageViewerPageParameter param)
+        private static Action<Control> ImageFilesGetAction(ImageViewerPageParameter param)
         {
-            return () =>
+            return sender =>
             {
                 using (var job = new TwoWayJob<FilesGetByDirectoryJob, ValueParameter<string>, DirectoryGetResult>())
                 {
@@ -50,7 +50,7 @@ namespace PicSum.UIComponent.Contents.FileList
                         param.OnGetImageFiles(eventArgs);
                     });
 
-                    job.StartJob(new ValueParameter<string>(param.SourcesKey));
+                    job.StartJob(sender, new ValueParameter<string>(param.SourcesKey));
                     job.WaitJobComplete();
                 }
             };
@@ -156,7 +156,7 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             base.OnLoad(e);
             var param = new ValueParameter<string>(this.parameter.DirectoryPath);
-            this.SearchJob.StartJob(param);
+            this.SearchJob.StartJob(this, param);
         }
 
         protected override void Dispose(bool disposing)
@@ -226,7 +226,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 CurrentParameter = new ValueEntity<string>(this.parameter.DirectoryPath),
                 IsNext = false,
             };
-            this.NextDirectoryGetJob.StartJob(param);
+            this.NextDirectoryGetJob.StartJob(this, param);
         }
 
         protected override void OnMoveNextButtonClick(EventArgs e)
@@ -241,10 +241,10 @@ namespace PicSum.UIComponent.Contents.FileList
                 IsNext = true,
                 CurrentParameter = new ValueEntity<string>(this.parameter.DirectoryPath)
             };
-            this.NextDirectoryGetJob.StartJob(param);
+            this.NextDirectoryGetJob.StartJob(this, param);
         }
 
-        protected override Action GetImageFilesGetAction(ImageViewerPageParameter param)
+        protected override Action<Control> GetImageFilesGetAction(ImageViewerPageParameter param)
         {
             return ImageFilesGetAction(param);
         }
@@ -288,7 +288,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
             param.SelectedFilePath = base.SelectedFilePath;
 
-            this.DirectoryStateUpdateJob.StartJob(param);
+            this.DirectoryStateUpdateJob.StartJob(this, param);
             this.DirectoryStateUpdateJob.WaitJobComplete();
         }
 
@@ -323,7 +323,7 @@ namespace PicSum.UIComponent.Contents.FileList
             }
 
             var param = new ValueParameter<string>(e.DirectoryPath);
-            this.DirectoryHistoryAddJob.StartJob(param);
+            this.DirectoryHistoryAddJob.StartJob(this, param);
         }
 
         private void GetNextDirectoryProcess_Callback(ValueResult<string> e)

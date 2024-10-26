@@ -167,7 +167,7 @@ namespace PicSum.Main.UIComponent
                     })
                     .Complete(() =>
                     {
-                        this.startupJob.StartJob(startupParameter);
+                        this.startupJob.StartJob(this, startupParameter);
                     });
 
                 this.startupJob = new();
@@ -180,7 +180,7 @@ namespace PicSum.Main.UIComponent
                     {
                         if (IsCleanup())
                         {
-                            this.fileInfoDBCleanupJob.StartJob();
+                            this.fileInfoDBCleanupJob.StartJob(this);
                         }
                         else
                         {
@@ -192,11 +192,11 @@ namespace PicSum.Main.UIComponent
                 if (BrowserForm.IsCleanup())
                 {
                     this.thumbnailDBCleanupJob.StartJob(
-                        new ValueParameter<string>(FileUtil.DATABASE_DIRECTORY));
+                        this, new ValueParameter<string>(FileUtil.DATABASE_DIRECTORY));
                 }
                 else
                 {
-                    this.startupJob.StartJob(startupParameter);
+                    this.startupJob.StartJob(this, startupParameter);
                 }
             }
             else

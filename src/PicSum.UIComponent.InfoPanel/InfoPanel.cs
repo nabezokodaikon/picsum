@@ -214,7 +214,7 @@ namespace PicSum.UIComponent.InfoPanel
                         ApplicationConstants.INFOPANEL_WIDTH)
                 };
 
-                this.GetFileInfoJob.StartJob(param);
+                this.GetFileInfoJob.StartJob(this, param);
             }
             else
             {
@@ -328,7 +328,7 @@ namespace PicSum.UIComponent.InfoPanel
                 Tag = tag,
                 FilePathList = this.FilePathList
             };
-            this.AddFileTagJob.StartJob(param);
+            this.AddFileTagJob.StartJob(this, param);
 
             var tagInfo = this.TagList.Find(t => t.Tag.Equals(tag, StringComparison.Ordinal));
             if (tagInfo != null)
@@ -372,7 +372,7 @@ namespace PicSum.UIComponent.InfoPanel
                 Tag = tag,
                 FilePathList = this.FilePathList
             };
-            this.DeleteFileTagJob.StartJob(param);
+            this.DeleteFileTagJob.StartJob(this, param);
 
             var tagInfo = this.TagList.Find(t => t.Tag.Equals(tag, StringComparison.Ordinal));
             this.TagList.Remove(tagInfo);
@@ -559,7 +559,7 @@ namespace PicSum.UIComponent.InfoPanel
                 FilePathList = this.fileInfoSource.FilePathList,
                 RatingValue = this.ratingBar.Value
             };
-            this.UpdateFileRatingJob.StartJob(param);
+            this.UpdateFileRatingJob.StartJob(this, param);
         }
 
         private void TagContextMenuStrip_Opening(object sender, CancelEventArgs e)
@@ -630,7 +630,7 @@ namespace PicSum.UIComponent.InfoPanel
 
         private void WideComboBox_DropDownOpening(object sender, DropDownOpeningEventArgs e)
         {
-            this.GetTagListJob.StartJob();
+            this.GetTagListJob.StartJob(this);
         }
 
         private void WideComboBox_AddItem(object sender, AddItemEventArgs e)

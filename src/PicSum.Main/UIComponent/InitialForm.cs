@@ -94,10 +94,8 @@ namespace PicSum.Main.UIComponent
 
         protected override void OnLoad(EventArgs e)
         {
-            UIThreadAccessor.SetSynchronizationContext(this);
-
-            this.GCCollectRunJob.StartJob();
-            this.PipeServerJob.StartJob();
+            this.GCCollectRunJob.StartJob(this);
+            this.PipeServerJob.StartJob(this);
 
             var form = this.browserManager.GetActiveBrowser();
             form.Show();

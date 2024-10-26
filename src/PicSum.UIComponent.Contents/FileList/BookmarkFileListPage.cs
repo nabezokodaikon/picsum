@@ -23,9 +23,9 @@ namespace PicSum.UIComponent.Contents.FileList
     internal sealed partial class BookmarkFileListPage
         : AbstractFileListPage
     {
-        private static Action ImageFilesGetAction(ImageViewerPageParameter param)
+        private static Action<Control> ImageFilesGetAction(ImageViewerPageParameter param)
         {
-            return () =>
+            return sender =>
             {
                 using (var job = new TwoWayJob<FilesGetByDirectoryJob, ValueParameter<string>, DirectoryGetResult>())
                 {
@@ -51,7 +51,7 @@ namespace PicSum.UIComponent.Contents.FileList
                     });
 
                     var dir = FileUtil.GetParentDirectoryPath(param.SelectedFilePath);
-                    job.StartJob(new ValueParameter<string>(dir));
+                    job.StartJob(sender, new ValueParameter<string>(dir));
                     job.WaitJobComplete();
                 }
             };
@@ -109,7 +109,7 @@ namespace PicSum.UIComponent.Contents.FileList
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            this.SearchJob.StartJob();
+            this.SearchJob.StartJob(this);
         }
 
         protected override void Dispose(bool disposing)
@@ -158,14 +158,14 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             var parameter = new ListParameter<string>();
             parameter.AddRange(filePathList);
-            this.DeleteJob.StartJob(parameter);
+            this.DeleteJob.StartJob(this, parameter);
 
             base.RemoveFile(filePathList);
 
             this.OnSelectedFileChanged(new SelectedFileChangeEventArgs());
         }
 
-        protected override Action GetImageFilesGetAction(ImageViewerPageParameter param)
+        protected override Action<Control> GetImageFilesGetAction(ImageViewerPageParameter param)
         {
             return ImageFilesGetAction(param);
         }

@@ -1,6 +1,6 @@
 using SWF.Core.Base;
 using System;
-using System.Drawing;
+using System.Windows.Forms;
 
 namespace PicSum.UIComponent.Contents.Parameter
 {
@@ -10,9 +10,9 @@ namespace PicSum.UIComponent.Contents.Parameter
         string sourcesKey,
         string currentFilePath,
         SortInfo sortInfo,
-        Func<ImageViewerPageParameter, Action> getImageFilesAction,
+        Func<ImageViewerPageParameter, Action<Control>> getImageFilesAction,
         string pageTitle,
-        Image pageIcon)
+        System.Drawing.Image pageIcon)
     {
         public object Sender { get; private set; }
             = sender ?? throw new ArgumentNullException(nameof(sender));
@@ -29,13 +29,13 @@ namespace PicSum.UIComponent.Contents.Parameter
         public SortInfo SortInfo { get; private set; }
             = sortInfo ?? throw new ArgumentNullException(nameof(sortInfo));
 
-        public Func<ImageViewerPageParameter, Action> GetImageFilesAction { get; private set; }
+        public Func<ImageViewerPageParameter, Action<Control>> GetImageFilesAction { get; private set; }
             = getImageFilesAction ?? throw new ArgumentNullException(nameof(getImageFilesAction));
 
         public string PageTitle { get; private set; }
             = pageTitle ?? throw new ArgumentNullException(nameof(pageTitle));
 
-        public Image PageIcon { get; private set; }
+        public System.Drawing.Image PageIcon { get; private set; }
             = pageIcon ?? throw new ArgumentNullException(nameof(pageIcon));
     }
 }

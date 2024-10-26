@@ -96,7 +96,7 @@ namespace PicSum.UIComponent.AddressBar
                 base.DropDownList.ClearSelectedItems();
                 base.DropDownList.ItemCount = 0;
                 base.DropDownList.Show(base.AddressBar, 0, base.AddressBar.Height);
-                this.GetDirectoryHistoryJob.StartJob();
+                this.GetDirectoryHistoryJob.StartJob(this.AddressBar);
             }
         }
 

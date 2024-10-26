@@ -1,5 +1,6 @@
 using NLog;
 using System.Diagnostics;
+using System.Windows.Forms;
 
 namespace SWF.Core.Job
 {
@@ -127,7 +128,7 @@ namespace SWF.Core.Job
             return this;
         }
 
-        public void StartJob(TJobParameter parameter)
+        public void StartJob(Control sender, TJobParameter parameter)
         {
             ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
 
@@ -135,15 +136,19 @@ namespace SWF.Core.Job
 
             this.CurrentJob = new TJob
             {
-                Parameter = parameter
+                Sender = sender,
+                Parameter = parameter,
             };
         }
 
-        public void StartJob()
+        public void StartJob(Control sender)
         {
             this.BeginCancel();
 
-            this.CurrentJob = new TJob();
+            this.CurrentJob = new TJob
+            {
+                Sender = sender,
+            };
         }
 
         public void BeginCancel()
@@ -216,7 +221,7 @@ namespace SWF.Core.Job
                     {
                         job.CallbackAction = r =>
                         {
-                            UIThreadAccessor.Instance.Post(() =>
+                            UIThreadAccessor.Instance.Post(job.Sender, () =>
                             {
                                 this.callbackAction(r);
                             });
@@ -227,7 +232,7 @@ namespace SWF.Core.Job
                     {
                         job.CancelAction = () =>
                         {
-                            UIThreadAccessor.Instance.Post(() =>
+                            UIThreadAccessor.Instance.Post(job.Sender, () =>
                             {
                                 this.cancelAction();
                             });
@@ -238,7 +243,7 @@ namespace SWF.Core.Job
                     {
                         job.CatchAction = e =>
                         {
-                            UIThreadAccessor.Instance.Post(() =>
+                            UIThreadAccessor.Instance.Post(job.Sender, () =>
                             {
                                 this.catchAction(e);
                             });
@@ -249,7 +254,7 @@ namespace SWF.Core.Job
                     {
                         job.CompleteAction = () =>
                         {
-                            UIThreadAccessor.Instance.Post(() =>
+                            UIThreadAccessor.Instance.Post(job.Sender, () =>
                             {
                                 this.completeAction();
                             });

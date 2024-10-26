@@ -8,50 +8,20 @@ namespace SWF.Core.Job
         : IDisposable
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
-#pragma warning disable CS8618
-        private static UIThreadAccessor innerInstance;
-#pragma warning restore CS8618
-
-        public static UIThreadAccessor Instance
-        {
-            get
-            {
-                if (innerInstance == null)
-                {
-                    throw new NullReferenceException("同期コンテキストが設定されていません。");
-                }
-
-                return innerInstance;
-            }
-        }
-
-        public static void SetSynchronizationContext(Control control)
-        {
-            ArgumentNullException.ThrowIfNull(control, nameof(control));
-
-            if (innerInstance != null)
-            {
-                throw new InvalidOperationException("同期コンテキストは既に設定されています。");
-            }
-
-            innerInstance = new UIThreadAccessor(control);
-        }
+        public static UIThreadAccessor Instance = new UIThreadAccessor();
 
         public static void DisposeStaticResources()
         {
-            innerInstance.Dispose();
+            Instance.Dispose();
         }
 
         private bool disposed = false;
-        private readonly Control control;
-        private readonly ConcurrentQueue<Action> callbackQueue;
+        private readonly ConcurrentQueue<CallbackActionItem> callbackQueue;
         private readonly CancellationTokenSource source;
         private readonly Task thread;
 
-        private UIThreadAccessor(Control control)
+        private UIThreadAccessor()
         {
-            this.control = control;
             this.callbackQueue = new();
             this.source = new();
             this.thread = Task.Run(() => this.DoWork(this.source.Token));
@@ -98,43 +68,47 @@ namespace SWF.Core.Job
                     return;
                 }
 
-                if (this.callbackQueue.TryDequeue(out var callbackAction))
+                if (this.callbackQueue.TryDequeue(out var item))
                 {
-                    if (!this.control.IsHandleCreated)
+                    if (!item.Sender.IsHandleCreated)
                     {
                         return;
                     }
 
-                    if (this.control.IsDisposed)
+                    if (item.Sender.IsDisposed)
                     {
                         return;
                     }
 
-                    if (this.control.InvokeRequired)
+                    if (item.Sender.InvokeRequired)
                     {
                         try
                         {
-                            this.control.Invoke((MethodInvoker)delegate
+                            item.Sender.Invoke((MethodInvoker)delegate
                             {
-                                callbackAction();
+                                item.CallbackAction();
                             });
                         }
-                        catch (ObjectDisposedException ex)
+                        catch (ObjectDisposedException)
                         {
-                            Logger.Error(ex, "同期コンテキストは破棄されています。");
+                            Logger.Debug("同期コンテキストは破棄されています。");
                         }
-                        catch (InvalidOperationException ex)
+                        catch (InvalidOperationException)
                         {
-                            Logger.Error(ex, "UIスレッドにアクセスできませんでした。");
+                            Logger.Debug("UIスレッドにアクセスできませんでした。");
                         }
-                        catch (ThreadInterruptedException ex)
+                        catch (ThreadInterruptedException)
                         {
-                            Logger.Error(ex, "UIスレッドが中断されています。");
+                            Logger.Debug("UIスレッドが中断されています。");
+                        }
+                        catch (Exception ex)
+                        {
+                            Logger.Error(ex, "UIスレッドへのアクセスに失敗しました。");
                         }
                     }
                     else
                     {
-                        callbackAction();
+                        item.CallbackAction();
                     }
                 }
                 else
@@ -144,8 +118,9 @@ namespace SWF.Core.Job
             }
         }
 
-        public void Post(Action callbackAction)
+        public void Post(Control sender, Action callbackAction)
         {
+            ArgumentNullException.ThrowIfNull(sender, nameof(sender));
             ArgumentNullException.ThrowIfNull(callbackAction, nameof(callbackAction));
 
             if (this.disposed)
@@ -153,12 +128,7 @@ namespace SWF.Core.Job
                 throw new ObjectDisposedException("同期コンテキストは破棄されています。");
             }
 
-            if (this.control == null)
-            {
-                throw new NullReferenceException("同期コンテキストが設定されていません。");
-            }
-
-            this.callbackQueue.Enqueue(callbackAction);
+            this.callbackQueue.Enqueue(new CallbackActionItem(sender, callbackAction));
         }
     }
 }

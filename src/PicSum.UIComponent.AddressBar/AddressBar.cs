@@ -205,7 +205,7 @@ namespace PicSum.UIComponent.AddressBar
 
             var param = new ValueParameter<string>(filePath);
 
-            this.GetAddressInfoJob.StartJob(param);
+            this.GetAddressInfoJob.StartJob(this, param);
         }
 
         protected override void Dispose(bool disposing)

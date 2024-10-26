@@ -3,8 +3,8 @@ using PicSum.UIComponent.Contents.ImageViewer;
 using SWF.Core.Base;
 using SWF.UIComponent.TabOperation;
 using System;
-using System.Drawing;
 using System.Runtime.Versioning;
+using System.Windows.Forms;
 
 namespace PicSum.UIComponent.Contents.Parameter
 {
@@ -20,20 +20,20 @@ namespace PicSum.UIComponent.Contents.Parameter
         public string PageSources { get; private set; }
         public string SourcesKey { get; private set; }
         public string Key { get; private set; }
-        public Func<ImageViewerPageParameter, Action> ImageFilesGetAction { get; private set; }
+        public Func<ImageViewerPageParameter, Action<Control>> ImageFilesGetAction { get; private set; }
         public string PageTitle { get; private set; }
-        public Image PageIcon { get; private set; }
+        public System.Drawing.Image PageIcon { get; private set; }
         public string SelectedFilePath { get; set; }
         public SortInfo SortInfo { get; set; }
 
         public ImageViewerPageParameter(
             string pageSources,
             string sourcesKey,
-            Func<ImageViewerPageParameter, Action> imageFilesGetAction,
+            Func<ImageViewerPageParameter, Action<Control>> imageFilesGetAction,
             string selectedFilePath,
             SortInfo sortInfo,
             string pageTitle,
-            Image pageIcon)
+            System.Drawing.Image pageIcon)
         {
             this.PageSources = pageSources ?? throw new ArgumentNullException(nameof(pageSources));
             this.SourcesKey = sourcesKey ?? throw new ArgumentNullException(nameof(sourcesKey));

@@ -102,7 +102,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 IsOnlyDirectory = true,
                 Count = FileListPageConfig.FavoriteDirectoryCount
             };
-            this.SearchJob.StartJob(param);
+            this.SearchJob.StartJob(this, param);
         }
 
         protected override void OnDrawTabPage(DrawTabEventArgs e)
@@ -126,13 +126,13 @@ namespace PicSum.UIComponent.Contents.FileList
         protected override void OnRemoveFile(IList<string> directoryList)
         {
             var param = new ListParameter<string>(directoryList);
-            this.DeleteJob.StartJob(param);
+            this.DeleteJob.StartJob(this, param);
             this.RemoveFile(directoryList);
 
             this.OnSelectedFileChanged(new SelectedFileChangeEventArgs());
         }
 
-        protected override Action GetImageFilesGetAction(ImageViewerPageParameter paramter)
+        protected override Action<Control> GetImageFilesGetAction(ImageViewerPageParameter paramter)
         {
             throw new NotImplementedException();
         }

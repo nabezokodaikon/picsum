@@ -19,12 +19,12 @@ namespace PicSum.Main.UIComponent
     [SupportedOSPlatform("windows")]
     public sealed partial class BrowserMainPanel : UserControl
     {
-        public static Func<ImageViewerPageParameter, Action> GetImageFilesAction(
+        public static Func<ImageViewerPageParameter, Action<Control>> GetImageFilesAction(
             ImageFileGetByDirectoryParameter subParamter)
         {
             return (parameter) =>
             {
-                return () =>
+                return sender =>
                 {
                     using (var job = new TwoWayJob<ImageFileGetByDirectoryJob, ImageFileGetByDirectoryParameter, ImageFilesGetByDirectoryResult>())
                     {
@@ -42,7 +42,7 @@ namespace PicSum.Main.UIComponent
                             parameter.OnGetImageFiles(eventArgs);
                         });
 
-                        job.StartJob(subParamter);
+                        job.StartJob(sender, subParamter);
                         job.WaitJobComplete();
                     }
                 };
@@ -642,7 +642,7 @@ namespace PicSum.Main.UIComponent
 
         private void TagDropToolButton_DropDownOpening(object sender, DropDownOpeningEventArgs e)
         {
-            this.GetTagListJob.StartJob();
+            this.GetTagListJob.StartJob(this);
         }
 
         private void TagDropToolButton_ItemMouseClick(object sender, ItemMouseClickEventArgs e)

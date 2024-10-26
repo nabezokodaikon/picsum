@@ -125,7 +125,7 @@ namespace PicSum.UIComponent.AddressBar
                 if (!this.isRead)
                 {
                     var param = new ValueParameter<string>(this.Directory.DirectoryPath);
-                    this.GetSubDirectoryJob.StartJob(param);
+                    this.GetSubDirectoryJob.StartJob(this.AddressBar, param);
                 }
             }
         }
