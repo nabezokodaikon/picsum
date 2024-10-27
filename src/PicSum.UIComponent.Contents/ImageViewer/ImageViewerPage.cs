@@ -60,7 +60,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         private TwoWayJob<ImageFileLoadingJob, ImageFileReadParameter, ImageFileReadResult> imageFileLoadingJob = null;
         private OneWayJob<BookmarkAddJob, ValueParameter<string>> addBookmarkJob = null;
         private OneWayJob<SingleFileExportJob, SingleFileExportParameter> singleFileExportJob = null;
-        private OneWayJob<ImageFileCacheJob, ListParameter<string>> imageFileCacheJob = null;
 
         public override string SelectedFilePath { get; protected set; } = string.Empty;
 
@@ -177,15 +176,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             }
         }
 
-        private OneWayJob<ImageFileCacheJob, ListParameter<string>> ImageFileCacheJob
-        {
-            get
-            {
-                this.imageFileCacheJob ??= new();
-                return this.imageFileCacheJob;
-            }
-        }
-
         public ImageViewerPage(ImageViewerPageParameter parameter)
             : base(parameter)
         {
@@ -279,9 +269,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
                 this.imageFileReadJob?.Dispose();
                 this.imageFileReadJob = null;
-
-                this.imageFileCacheJob?.Dispose();
-                this.imageFileCacheJob = null;
 
                 this.imageFileLoadingJob?.Dispose();
                 this.imageFileLoadingJob = null;
@@ -725,7 +712,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
                 this.isLoading = true;
 
-                this.ImageFileCacheJob.StartJob(this, [.. nextFiles, .. prevFiles]);
+                CommonJobs.StartImageFileCacheJob(this, [.. nextFiles, .. prevFiles]);
                 this.ImageFileLoadingJob.StartJob(this, param);
                 this.ImageFileReadJob.StartJob(this, param);
             }

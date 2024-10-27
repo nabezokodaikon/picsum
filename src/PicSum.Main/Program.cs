@@ -4,6 +4,7 @@ using NLog.Targets;
 using PicSum.Job.Logics;
 using PicSum.Main.Mng;
 using PicSum.Main.UIComponent;
+using PicSum.UIComponent.Contents.Common;
 using SWF.Core.Base;
 using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
@@ -52,6 +53,7 @@ namespace PicSum.Main
                         Application.Run(initialForm);
                     }
 
+                    CommonJobs.DisposeStaticResources();
                     UIThreadAccessor.Instance.Dispose();
                     FileIconCash.DisposeStaticResources();
                     ThumbnailGetLogic.DisposeStaticResouces();
