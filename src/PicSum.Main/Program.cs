@@ -53,7 +53,7 @@ namespace PicSum.Main
                         Application.Run(initialForm);
                     }
 
-                    CommonJobs.DisposeStaticResources();
+                    CommonJobs.Instance.Dispose();
                     UIThreadAccessor.Instance.Dispose();
                     FileIconCash.DisposeStaticResources();
                     ThumbnailGetLogic.DisposeStaticResouces();
