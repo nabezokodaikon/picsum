@@ -59,30 +59,6 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private bool disposed = false;
         private readonly BookmarkFileListPageParameter parameter = null;
-        private TwoWayJob<BookmarksGetJob, ListResult<FileShallowInfoEntity>> searchJob = null;
-
-        private TwoWayJob<BookmarksGetJob, ListResult<FileShallowInfoEntity>> SearchJob
-        {
-            get
-            {
-                if (this.searchJob == null)
-                {
-                    this.searchJob = new();
-                    this.searchJob
-                        .Callback(_ =>
-                        {
-                            if (this.disposed)
-                            {
-                                return;
-                            }
-
-                            this.SearchJob_Callback(_);
-                        });
-                }
-
-                return this.searchJob;
-            }
-        }
 
         public BookmarkFileListPage(BookmarkFileListPageParameter parameter)
             : base(parameter)
@@ -98,8 +74,23 @@ namespace PicSum.UIComponent.Contents.FileList
 
         protected override void OnLoad(EventArgs e)
         {
+            using (var job = new TwoWayJob<BookmarksGetJob, ListResult<FileShallowInfoEntity>>())
+            {
+                job.Callback(_ =>
+                {
+                    if (this.disposed)
+                    {
+                        return;
+                    }
+
+                    this.SearchJob_Callback(_);
+                });
+
+                job.StartJob(this);
+                job.WaitJobComplete();
+            }
+
             base.OnLoad(e);
-            this.SearchJob.StartJob(this);
         }
 
         protected override void Dispose(bool disposing)
@@ -113,9 +104,6 @@ namespace PicSum.UIComponent.Contents.FileList
             {
                 this.parameter.SelectedFilePath = base.SelectedFilePath;
                 this.parameter.SortInfo = base.SortInfo;
-
-                this.searchJob?.Dispose();
-                this.searchJob = null;
             }
 
             this.disposed = true;

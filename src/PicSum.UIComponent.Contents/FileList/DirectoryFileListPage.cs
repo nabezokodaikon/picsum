@@ -58,31 +58,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private bool disposed = false;
         private readonly DirectoryFileListPageParameter parameter = null;
-        private TwoWayJob<FilesGetByDirectoryJob, ValueParameter<string>, DirectoryGetResult> searchJob = null;
         private TwoWayJob<NextDirectoryGetJob, NextDirectoryGetParameter<string>, ValueResult<string>> nextDirectoryGetJob = null;
-
-        private TwoWayJob<FilesGetByDirectoryJob, ValueParameter<string>, DirectoryGetResult> SearchJob
-        {
-            get
-            {
-                if (this.searchJob == null)
-                {
-                    this.searchJob = new();
-                    this.searchJob
-                        .Callback(_ =>
-                        {
-                            if (this.disposed)
-                            {
-                                return;
-                            }
-
-                            this.SearchJob_Callback(_);
-                        });
-                }
-
-                return this.searchJob;
-            }
-        }
 
         private TwoWayJob<NextDirectoryGetJob, NextDirectoryGetParameter<string>, ValueResult<string>> NextDirectoryGetJob
         {
@@ -134,9 +110,25 @@ namespace PicSum.UIComponent.Contents.FileList
 
         protected override void OnLoad(EventArgs e)
         {
+            using (var job = new TwoWayJob<FilesGetByDirectoryJob, ValueParameter<string>, DirectoryGetResult>())
+            {
+                var param = new ValueParameter<string>(this.parameter.DirectoryPath);
+
+                job.Callback(_ =>
+                {
+                    if (this.disposed)
+                    {
+                        return;
+                    }
+
+                    this.SearchJob_Callback(_);
+                });
+
+                job.StartJob(this, param);
+                job.WaitJobComplete();
+            }
+
             base.OnLoad(e);
-            var param = new ValueParameter<string>(this.parameter.DirectoryPath);
-            this.SearchJob.StartJob(this, param);
         }
 
         protected override void Dispose(bool disposing)
@@ -149,9 +141,6 @@ namespace PicSum.UIComponent.Contents.FileList
             if (disposing)
             {
                 this.SaveCurrentDirectoryState();
-
-                this.searchJob?.Dispose();
-                this.searchJob = null;
 
                 this.nextDirectoryGetJob?.Dispose();
                 this.nextDirectoryGetJob = null;

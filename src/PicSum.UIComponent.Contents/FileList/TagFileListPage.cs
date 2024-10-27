@@ -58,30 +58,6 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private bool disposed = false;
         private readonly TagFileListPageParameter parameter = null;
-        private TwoWayJob<FilesGetByTagJob, ValueParameter<string>, ListResult<FileShallowInfoEntity>> searchJob = null;
-
-        private TwoWayJob<FilesGetByTagJob, ValueParameter<string>, ListResult<FileShallowInfoEntity>> SearchJob
-        {
-            get
-            {
-                if (this.searchJob == null)
-                {
-                    this.searchJob = new();
-                    this.searchJob
-                        .Callback(_ =>
-                        {
-                            if (this.disposed)
-                            {
-                                return;
-                            }
-
-                            this.SearchJob_Callback(_);
-                        });
-                }
-
-                return this.searchJob;
-            }
-        }
 
         public TagFileListPage(TagFileListPageParameter param)
             : base(param)
@@ -97,10 +73,25 @@ namespace PicSum.UIComponent.Contents.FileList
 
         protected override void OnLoad(EventArgs e)
         {
-            base.OnLoad(e);
+            using (var job = new TwoWayJob<FilesGetByTagJob, ValueParameter<string>, ListResult<FileShallowInfoEntity>>())
+            {
+                var param = new ValueParameter<string>(this.parameter.Tag);
 
-            var param = new ValueParameter<string>(this.parameter.Tag);
-            this.SearchJob.StartJob(this, param);
+                job.Callback(_ =>
+                {
+                    if (this.disposed)
+                    {
+                        return;
+                    }
+
+                    this.SearchJob_Callback(_);
+                });
+
+                job.StartJob(this, param);
+                job.WaitJobComplete();
+            }
+
+            base.OnLoad(e);
         }
 
         protected override void Dispose(bool disposing)
@@ -114,9 +105,6 @@ namespace PicSum.UIComponent.Contents.FileList
             {
                 this.parameter.SelectedFilePath = base.SelectedFilePath;
                 this.parameter.SortInfo = base.SortInfo;
-
-                this.searchJob?.Dispose();
-                this.searchJob = null;
             }
 
             this.disposed = true;

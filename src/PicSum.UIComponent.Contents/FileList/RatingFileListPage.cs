@@ -56,30 +56,6 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private bool disposed = false;
         private readonly RatingFileListPageParameter parameter = null;
-        private TwoWayJob<FilesGetByRatingJob, ValueParameter<int>, ListResult<FileShallowInfoEntity>> searchJob = null;
-
-        private TwoWayJob<FilesGetByRatingJob, ValueParameter<int>, ListResult<FileShallowInfoEntity>> SearchJob
-        {
-            get
-            {
-                if (this.searchJob == null)
-                {
-                    this.searchJob = new();
-                    this.searchJob
-                        .Callback(_ =>
-                        {
-                            if (this.disposed)
-                            {
-                                return;
-                            }
-
-                            this.SearchJob_Callback(_);
-                        });
-                }
-
-                return this.searchJob;
-            }
-        }
 
         public RatingFileListPage(RatingFileListPageParameter param)
             : base(param)
@@ -95,9 +71,25 @@ namespace PicSum.UIComponent.Contents.FileList
 
         protected override void OnLoad(EventArgs e)
         {
+            using (var job = new TwoWayJob<FilesGetByRatingJob, ValueParameter<int>, ListResult<FileShallowInfoEntity>>())
+            {
+                var param = new ValueParameter<int>(this.parameter.RatingValue);
+
+                job.Callback(_ =>
+                {
+                    if (this.disposed)
+                    {
+                        return;
+                    }
+
+                    this.SearchJob_Callback(_);
+                });
+
+                job.StartJob(this, param);
+                job.WaitJobComplete();
+            }
+
             base.OnLoad(e);
-            var param = new ValueParameter<int>(this.parameter.RatingValue);
-            this.SearchJob.StartJob(this, param);
         }
 
         protected override void Dispose(bool disposing)
@@ -111,9 +103,6 @@ namespace PicSum.UIComponent.Contents.FileList
             {
                 this.parameter.SelectedFilePath = base.SelectedFilePath;
                 this.parameter.SortInfo = base.SortInfo;
-
-                this.searchJob?.Dispose();
-                this.searchJob = null;
             }
 
             this.disposed = true;

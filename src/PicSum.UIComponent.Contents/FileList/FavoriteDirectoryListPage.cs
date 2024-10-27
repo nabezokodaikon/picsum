@@ -23,30 +23,6 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private bool disposed = false;
         private readonly FavoriteDirectoryListPageParameter parameter = null;
-        private TwoWayJob<FavoriteDirectoriesGetJob, FavoriteDirectoriesGetParameter, ListResult<FileShallowInfoEntity>> searchJob = null;
-
-        private TwoWayJob<FavoriteDirectoriesGetJob, FavoriteDirectoriesGetParameter, ListResult<FileShallowInfoEntity>> SearchJob
-        {
-            get
-            {
-                if (this.searchJob == null)
-                {
-                    this.searchJob = new();
-                    this.searchJob
-                        .Callback(_ =>
-                        {
-                            if (this.disposed)
-                            {
-                                return;
-                            }
-
-                            this.SearchJob_Callback(_);
-                        });
-                }
-
-                return this.searchJob;
-            }
-        }
 
         public FavoriteDirectoryListPage(FavoriteDirectoryListPageParameter param)
             : base(param)
@@ -71,9 +47,6 @@ namespace PicSum.UIComponent.Contents.FileList
             {
                 this.parameter.SelectedFilePath = base.SelectedFilePath;
                 this.parameter.SortInfo = base.SortInfo;
-
-                this.searchJob?.Dispose();
-                this.searchJob = null;
             }
 
             this.disposed = true;
@@ -83,13 +56,29 @@ namespace PicSum.UIComponent.Contents.FileList
 
         protected override void OnLoad(EventArgs e)
         {
-            base.OnLoad(e);
-            var param = new FavoriteDirectoriesGetParameter
+            using (var job = new TwoWayJob<FavoriteDirectoriesGetJob, FavoriteDirectoriesGetParameter, ListResult<FileShallowInfoEntity>>())
             {
-                IsOnlyDirectory = true,
-                Count = FileListPageConfig.FavoriteDirectoryCount
-            };
-            this.SearchJob.StartJob(this, param);
+                var param = new FavoriteDirectoriesGetParameter
+                {
+                    IsOnlyDirectory = true,
+                    Count = FileListPageConfig.FavoriteDirectoryCount
+                };
+
+                job.Callback(_ =>
+                {
+                    if (this.disposed)
+                    {
+                        return;
+                    }
+
+                    this.SearchJob_Callback(_);
+                });
+
+                job.StartJob(this, param);
+                job.WaitJobComplete();
+            }
+
+            base.OnLoad(e);
         }
 
         protected override void OnDrawTabPage(DrawTabEventArgs e)
