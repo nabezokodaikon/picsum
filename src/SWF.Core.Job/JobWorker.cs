@@ -195,7 +195,7 @@ namespace SWF.Core.Job
                             token.ThrowIfCancellationRequested();
                         }
 
-                        Thread.Sleep(1);
+                        token.WaitHandle.WaitOne(1);
                         continue;
                     }
 
@@ -212,7 +212,7 @@ namespace SWF.Core.Job
                             token.ThrowIfCancellationRequested();
                         }
 
-                        Thread.Sleep(1);
+                        token.WaitHandle.WaitOne(1);
                         continue;
                     }
 
@@ -297,7 +297,7 @@ namespace SWF.Core.Job
                         token.ThrowIfCancellationRequested();
                     }
 
-                    Thread.Sleep(1);
+                    token.WaitHandle.WaitOne(1);
                 }
             }
             catch (OperationCanceledException)
