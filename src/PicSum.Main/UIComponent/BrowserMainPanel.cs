@@ -26,9 +26,10 @@ namespace PicSum.Main.UIComponent
             {
                 return sender =>
                 {
-                    using (var job = new TwoWayJob<ImageFileGetByDirectoryJob, ImageFileGetByDirectoryParameter, ImageFilesGetByDirectoryResult>())
+                    using (var searchJob = new TwoWayJob<ImageFileGetByDirectoryJob, ImageFileGetByDirectoryParameter, ImageFilesGetByDirectoryResult>())
+                    using (var historyJob = new OneWayJob<DirectoryViewHistoryAddJob, ValueParameter<string>>())
                     {
-                        job
+                        searchJob
                         .Callback(e =>
                         {
                             var title = FileUtil.IsDirectory(subParamter.FilePath) ?
@@ -42,8 +43,17 @@ namespace PicSum.Main.UIComponent
                             parameter.OnGetImageFiles(eventArgs);
                         });
 
-                        job.StartJob(sender, subParamter);
-                        job.WaitJobComplete();
+                        var dir = FileUtil.IsDirectory(subParamter.FilePath) switch
+                        {
+                            true => subParamter.FilePath,
+                            false => FileUtil.GetParentDirectoryPath(subParamter.FilePath),
+                        };
+
+                        searchJob.StartJob(sender, subParamter);
+                        searchJob.WaitJobComplete();
+
+                        historyJob.StartJob(sender, new ValueParameter<string>(dir));
+                        historyJob.WaitJobComplete();
                     }
                 };
             };
