@@ -28,7 +28,7 @@ namespace SWF.Core.Job
             }
         }
 
-        private bool IsCancel
+        public bool IsCancel
         {
             get
             {

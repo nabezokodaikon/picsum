@@ -222,7 +222,7 @@ namespace SWF.Core.Job
                     {
                         job.CallbackAction = r =>
                         {
-                            UIThreadAccessor.Instance.Post(job.Sender, () =>
+                            UIThreadAccessor.Instance.Post(job, () =>
                             {
                                 this.callbackAction(r);
                             });
@@ -233,7 +233,7 @@ namespace SWF.Core.Job
                     {
                         job.CancelAction = () =>
                         {
-                            UIThreadAccessor.Instance.Post(job.Sender, () =>
+                            UIThreadAccessor.Instance.Post(job, () =>
                             {
                                 this.cancelAction();
                             });
@@ -244,7 +244,7 @@ namespace SWF.Core.Job
                     {
                         job.CatchAction = e =>
                         {
-                            UIThreadAccessor.Instance.Post(job.Sender, () =>
+                            UIThreadAccessor.Instance.Post(job, () =>
                             {
                                 this.catchAction(e);
                             });
@@ -255,7 +255,7 @@ namespace SWF.Core.Job
                     {
                         job.CompleteAction = () =>
                         {
-                            UIThreadAccessor.Instance.Post(job.Sender, () =>
+                            UIThreadAccessor.Instance.Post(job, () =>
                             {
                                 this.completeAction();
                             });
