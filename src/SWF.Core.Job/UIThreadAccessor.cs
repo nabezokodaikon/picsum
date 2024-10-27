@@ -1,5 +1,5 @@
 using NLog;
-using SWF.Core.Base;
+using System.ComponentModel;
 using System.Windows.Forms;
 
 namespace SWF.Core.Job
@@ -8,10 +8,10 @@ namespace SWF.Core.Job
         : IDisposable
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-        public static UIThreadAccessor Instance = new UIThreadAccessor();
+        public static readonly UIThreadAccessor Instance = new();
 
         private bool disposed = false;
-        private SynchronizationContext? context;
+        private Control? sender = null;
 
         private UIThreadAccessor()
         {
@@ -44,24 +44,11 @@ namespace SWF.Core.Job
             this.disposed = true;
         }
 
-        public void SetSynchronizationContext()
+        public void SetSynchronizationContext(Control sender)
         {
-            if (Thread.CurrentThread.Name != ApplicationConstants.UI_THREAD_NAME)
-            {
-                throw new InvalidOperationException("同期コンテキストをUIスレッド以外から設定しようとしました。");
-            }
+            ArgumentNullException.ThrowIfNull(sender, nameof(sender));
 
-            if (SynchronizationContext.Current == null)
-            {
-                throw new NullReferenceException("同期コンテキストがNUllです。");
-            }
-
-            if (this.context != null)
-            {
-                throw new InvalidOperationException("同期コンテキストは既に設定されています。");
-            }
-
-            this.context = SynchronizationContext.Current;
+            this.sender = sender;
         }
 
         public void Post(Control sender, Action callbackAction)
@@ -74,25 +61,47 @@ namespace SWF.Core.Job
                 throw new ObjectDisposedException(nameof(UIThreadAccessor));
             }
 
-            if (this.context == null)
+            if (this.sender == null)
             {
-                throw new InvalidOperationException("同期コンテキストが設定されていません。");
+                throw new NullReferenceException("同期コンテキストが設定されていません。");
             }
 
-            this.context.Post(_ =>
+            try
             {
-                if (!sender.IsHandleCreated)
+                if (this.sender.InvokeRequired && sender.InvokeRequired
+                    && this.sender.IsHandleCreated && sender.IsHandleCreated
+                    && !this.sender.IsDisposed && !sender.IsDisposed)
                 {
-                    return;
+                    sender.BeginInvoke((MethodInvoker)delegate
+                    {
+                        if (this.sender.IsHandleCreated && sender.IsHandleCreated
+                            && !this.sender.IsDisposed && !sender.IsDisposed)
+                        {
+                            callbackAction();
+                        }
+                    });
                 }
-
-                if (sender.IsDisposed)
-                {
-                    return;
-                }
-
-                callbackAction();
-            }, null);
+            }
+            catch (ObjectDisposedException)
+            {
+                Logger.Debug("同期コンテキストは破棄されています。");
+            }
+            catch (InvalidOperationException)
+            {
+                Logger.Debug("UIスレッドにアクセスできませんでした。");
+            }
+            catch (ThreadInterruptedException)
+            {
+                Logger.Debug("UIスレッドが中断されています。");
+            }
+            catch (InvalidAsynchronousStateException)
+            {
+                Logger.Debug("UIスレッドへのアクセスに失敗しました。");
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "UIスレッドへのアクセスに失敗しました。");
+            }
         }
     }
 }
