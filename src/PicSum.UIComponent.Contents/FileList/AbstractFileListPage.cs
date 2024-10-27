@@ -92,10 +92,7 @@ namespace PicSum.UIComponent.Contents.FileList
         private Dictionary<string, FileEntity> masterFileDictionary = null;
         private List<string> filterFilePathList = null;
         private TwoWayJob<ThumbnailsGetJob, ThumbnailsGetParameter, ThumbnailImageResult> thumbnailsGetJob = null;
-        private OneWayJob<SingleFileExportJob, SingleFileExportParameter> singleFileExportJob = null;
-        private OneWayJob<BookmarkAddJob, ValueParameter<string>> bookmarkAddJob = null;
         private TwoWayJob<MultiFilesExportJob, MultiFilesExportParameter, ValueResult<string>> multiFilesExportJob = null;
-        private OneWayJob<ImageFileSizeCacheJob, ListParameter<string>> imageFileSizeCacheJob = null;
 
         public override string SelectedFilePath { get; protected set; } = FileUtil.ROOT_DIRECTORY_PATH;
 
@@ -249,24 +246,6 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
-        private OneWayJob<SingleFileExportJob, SingleFileExportParameter> SingleFileExportJob
-        {
-            get
-            {
-                this.singleFileExportJob ??= new();
-                return this.singleFileExportJob;
-            }
-        }
-
-        private OneWayJob<BookmarkAddJob, ValueParameter<string>> BookmarkAddJob
-        {
-            get
-            {
-                this.bookmarkAddJob ??= new();
-                return this.bookmarkAddJob;
-            }
-        }
-
         private TwoWayJob<MultiFilesExportJob, MultiFilesExportParameter, ValueResult<string>> MultiFilesExportJob
         {
             get
@@ -287,15 +266,6 @@ namespace PicSum.UIComponent.Contents.FileList
                 }
 
                 return this.multiFilesExportJob;
-            }
-        }
-
-        private OneWayJob<ImageFileSizeCacheJob, ListParameter<string>> ImageFileSizeCacheJob
-        {
-            get
-            {
-                this.imageFileSizeCacheJob ??= new();
-                return this.imageFileSizeCacheJob;
             }
         }
 
@@ -338,17 +308,8 @@ namespace PicSum.UIComponent.Contents.FileList
                 this.thumbnailsGetJob?.Dispose();
                 this.thumbnailsGetJob = null;
 
-                this.singleFileExportJob?.Dispose();
-                this.singleFileExportJob = null;
-
-                this.bookmarkAddJob?.Dispose();
-                this.bookmarkAddJob = null;
-
                 this.multiFilesExportJob?.Dispose();
                 this.multiFilesExportJob = null;
-
-                this.imageFileSizeCacheJob?.Dispose();
-                this.imageFileSizeCacheJob = null;
 
                 this.components?.Dispose();
             }
@@ -1007,13 +968,6 @@ namespace PicSum.UIComponent.Contents.FileList
                 };
 
                 this.ThumbnailsGetJob.StartJob(this, param);
-
-                //this.ImageFileSizeCacheJob.StartJob(
-                //    new ListParameter<string>(
-                //        param.FilePathList
-                //            .Skip(e.DrawFirstItemIndex)
-                //            .Take(e.DrawLastItemIndex - e.DrawFirstItemIndex)
-                //            .ToList()));
             }
         }
 
@@ -1302,7 +1256,7 @@ namespace PicSum.UIComponent.Contents.FileList
                             SrcFilePath = srcFilePath,
                             ExportFilePath = ofd.FileName
                         };
-                        this.SingleFileExportJob.StartJob(this, param);
+                        CommonJobs.Instance.StartSingleFileExportJob(this, param);
 
                         CommonConfig.ExportDirectoryPath = dir;
                     }
@@ -1343,7 +1297,7 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             var paramter = new ValueParameter<string>(e.FilePath);
 
-            this.BookmarkAddJob.StartJob(this, paramter);
+            CommonJobs.Instance.StartBookmarkAddJob(this, paramter);
         }
 
     }

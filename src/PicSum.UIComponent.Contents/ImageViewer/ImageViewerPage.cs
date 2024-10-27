@@ -1287,7 +1287,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                         SrcFilePath = srcFilePath,
                         ExportFilePath = ofd.FileName
                     };
-                    CommonJobs.Instance.SingleFileExportJob(this, param);
+                    CommonJobs.Instance.StartSingleFileExportJob(this, param);
 
                     CommonConfig.ExportDirectoryPath = dir;
                 }

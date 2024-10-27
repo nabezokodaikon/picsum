@@ -78,7 +78,7 @@ namespace PicSum.UIComponent.Contents.Common
             this.addBookmarkJob.StartJob(sender, parameter);
         }
 
-        public void SingleFileExportJob(Control sender, SingleFileExportParameter parameter)
+        public void StartSingleFileExportJob(Control sender, SingleFileExportParameter parameter)
         {
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
             ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
