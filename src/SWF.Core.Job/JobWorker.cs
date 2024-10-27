@@ -71,6 +71,7 @@ namespace SWF.Core.Job
                 Logger.Debug($"{this.threadName}: ジョブ実行スレッドが終了しました。");
 
                 this.source.Dispose();
+                this.thread.Dispose();
             }
 
             this.disposed = true;
