@@ -59,7 +59,6 @@ namespace PicSum.UIComponent.Contents.FileList
         private bool disposed = false;
         private readonly TagFileListPageParameter parameter = null;
         private TwoWayJob<FilesGetByTagJob, ValueParameter<string>, ListResult<FileShallowInfoEntity>> searchJob = null;
-        private OneWayJob<FileTagDeleteJob, UpdateFileTagParameter> deleteJob = null;
 
         private TwoWayJob<FilesGetByTagJob, ValueParameter<string>, ListResult<FileShallowInfoEntity>> SearchJob
         {
@@ -81,15 +80,6 @@ namespace PicSum.UIComponent.Contents.FileList
                 }
 
                 return this.searchJob;
-            }
-        }
-
-        private OneWayJob<FileTagDeleteJob, UpdateFileTagParameter> DeleteJob
-        {
-            get
-            {
-                this.deleteJob ??= new();
-                return this.deleteJob;
             }
         }
 
@@ -127,9 +117,6 @@ namespace PicSum.UIComponent.Contents.FileList
 
                 this.searchJob?.Dispose();
                 this.searchJob = null;
-
-                this.deleteJob?.Dispose();
-                this.deleteJob = null;
             }
 
             this.disposed = true;
@@ -162,7 +149,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 FilePathList = filePathList,
                 Tag = this.parameter.Tag
             };
-            this.DeleteJob.StartJob(this, param);
+            CommonJobs.Instance.StartFileTagDeleteJob(this, param);
 
             this.RemoveFile(filePathList);
         }

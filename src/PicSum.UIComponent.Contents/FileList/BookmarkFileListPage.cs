@@ -60,7 +60,6 @@ namespace PicSum.UIComponent.Contents.FileList
         private bool disposed = false;
         private readonly BookmarkFileListPageParameter parameter = null;
         private TwoWayJob<BookmarksGetJob, ListResult<FileShallowInfoEntity>> searchJob = null;
-        private OneWayJob<BookmarkDeleteJob, ListParameter<string>> deleteJob = null;
 
         private TwoWayJob<BookmarksGetJob, ListResult<FileShallowInfoEntity>> SearchJob
         {
@@ -82,15 +81,6 @@ namespace PicSum.UIComponent.Contents.FileList
                 }
 
                 return this.searchJob;
-            }
-        }
-
-        private OneWayJob<BookmarkDeleteJob, ListParameter<string>> DeleteJob
-        {
-            get
-            {
-                this.deleteJob ??= new();
-                return this.deleteJob;
             }
         }
 
@@ -126,9 +116,6 @@ namespace PicSum.UIComponent.Contents.FileList
 
                 this.searchJob?.Dispose();
                 this.searchJob = null;
-
-                this.deleteJob?.Dispose();
-                this.deleteJob = null;
             }
 
             this.disposed = true;
@@ -158,7 +145,7 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             var parameter = new ListParameter<string>();
             parameter.AddRange(filePathList);
-            this.DeleteJob.StartJob(this, parameter);
+            CommonJobs.Instance.StartBookmarkDeleteJob(this, parameter);
 
             base.RemoveFile(filePathList);
 

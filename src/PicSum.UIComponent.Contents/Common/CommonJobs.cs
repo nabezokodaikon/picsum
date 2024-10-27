@@ -19,6 +19,10 @@ namespace PicSum.UIComponent.Contents.Common
         private OneWayJob<SingleFileExportJob, SingleFileExportParameter> singleFileExportJob = null;
         private OneWayJob<DirectoryStateUpdateJob, DirectoryStateParameter> directoryStateUpdateJob = null;
         private OneWayJob<DirectoryViewHistoryAddJob, ValueParameter<string>> directoryHistoryaddJob = null;
+        private OneWayJob<BookmarkDeleteJob, ListParameter<string>> bookmarkDeleteJob = null;
+        private OneWayJob<DirectoryViewCounterDeleteJob, ListParameter<string>> directoryViewCounterDeleteJob = null;
+        private OneWayJob<FileRatingUpdateJob, FileRatingUpdateParameter> fileRatingUpdateJob = null;
+        private OneWayJob<FileTagDeleteJob, UpdateFileTagParameter> fileTagDeleteJob = null;
 
         private CommonJobs()
         {
@@ -50,6 +54,10 @@ namespace PicSum.UIComponent.Contents.Common
                 this.singleFileExportJob?.Dispose();
                 this.directoryStateUpdateJob?.Dispose();
                 this.directoryHistoryaddJob?.Dispose();
+                this.bookmarkDeleteJob?.Dispose();
+                this.directoryViewCounterDeleteJob?.Dispose();
+                this.fileRatingUpdateJob?.Dispose();
+                this.fileTagDeleteJob?.Dispose();
             }
 
             this.disposed = true;
@@ -123,6 +131,62 @@ namespace PicSum.UIComponent.Contents.Common
 
             this.directoryHistoryaddJob = new();
             this.directoryHistoryaddJob.StartJob(sender, parameter);
+        }
+
+        public void StartBookmarkDeleteJob(Control sender, ListParameter<string> parameter)
+        {
+            ArgumentNullException.ThrowIfNull(sender, nameof(sender));
+            ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
+
+            if (this.bookmarkDeleteJob != null)
+            {
+                this.bookmarkDeleteJob.Dispose();
+            }
+
+            this.bookmarkDeleteJob = new();
+            this.bookmarkDeleteJob.StartJob(sender, parameter);
+        }
+
+        public void StartDirectoryViewCounterDeleteJob(Control sender, ListParameter<string> parameter)
+        {
+            ArgumentNullException.ThrowIfNull(sender, nameof(sender));
+            ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
+
+            if (this.directoryViewCounterDeleteJob != null)
+            {
+                this.directoryViewCounterDeleteJob.Dispose();
+            }
+
+            this.directoryViewCounterDeleteJob = new();
+            this.directoryViewCounterDeleteJob.StartJob(sender, parameter);
+        }
+
+        public void StartFileRatingUpdateJob(Control sender, FileRatingUpdateParameter parameter)
+        {
+            ArgumentNullException.ThrowIfNull(sender, nameof(sender));
+            ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
+
+            if (this.fileRatingUpdateJob != null)
+            {
+                this.fileRatingUpdateJob.Dispose();
+            }
+
+            this.fileRatingUpdateJob = new();
+            this.fileRatingUpdateJob.StartJob(sender, parameter);
+        }
+
+        public void StartFileTagDeleteJob(Control sender, UpdateFileTagParameter parameter)
+        {
+            ArgumentNullException.ThrowIfNull(sender, nameof(sender));
+            ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
+
+            if (this.fileTagDeleteJob != null)
+            {
+                this.fileTagDeleteJob.Dispose();
+            }
+
+            this.fileTagDeleteJob = new();
+            this.fileTagDeleteJob.StartJob(sender, parameter);
         }
     }
 }

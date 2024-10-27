@@ -24,7 +24,6 @@ namespace PicSum.UIComponent.Contents.FileList
         private bool disposed = false;
         private readonly FavoriteDirectoryListPageParameter parameter = null;
         private TwoWayJob<FavoriteDirectoriesGetJob, FavoriteDirectoriesGetParameter, ListResult<FileShallowInfoEntity>> searchJob = null;
-        private OneWayJob<DirectoryViewCounterDeleteJob, ListParameter<string>> deleteJob = null;
 
         private TwoWayJob<FavoriteDirectoriesGetJob, FavoriteDirectoriesGetParameter, ListResult<FileShallowInfoEntity>> SearchJob
         {
@@ -46,15 +45,6 @@ namespace PicSum.UIComponent.Contents.FileList
                 }
 
                 return this.searchJob;
-            }
-        }
-
-        private OneWayJob<DirectoryViewCounterDeleteJob, ListParameter<string>> DeleteJob
-        {
-            get
-            {
-                this.deleteJob ??= new();
-                return this.deleteJob;
             }
         }
 
@@ -84,9 +74,6 @@ namespace PicSum.UIComponent.Contents.FileList
 
                 this.searchJob?.Dispose();
                 this.searchJob = null;
-
-                this.deleteJob?.Dispose();
-                this.deleteJob = null;
             }
 
             this.disposed = true;
@@ -126,7 +113,7 @@ namespace PicSum.UIComponent.Contents.FileList
         protected override void OnRemoveFile(IList<string> directoryList)
         {
             var param = new ListParameter<string>(directoryList);
-            this.DeleteJob.StartJob(this, param);
+            CommonJobs.Instance.StartDirectoryViewCounterDeleteJob(this, param);
             this.RemoveFile(directoryList);
 
             this.OnSelectedFileChanged(new SelectedFileChangeEventArgs());

@@ -57,7 +57,6 @@ namespace PicSum.UIComponent.Contents.FileList
         private bool disposed = false;
         private readonly RatingFileListPageParameter parameter = null;
         private TwoWayJob<FilesGetByRatingJob, ValueParameter<int>, ListResult<FileShallowInfoEntity>> searchJob = null;
-        private OneWayJob<FileRatingUpdateJob, FileRatingUpdateParameter> deleteJob = null;
 
         private TwoWayJob<FilesGetByRatingJob, ValueParameter<int>, ListResult<FileShallowInfoEntity>> SearchJob
         {
@@ -79,15 +78,6 @@ namespace PicSum.UIComponent.Contents.FileList
                 }
 
                 return this.searchJob;
-            }
-        }
-
-        private OneWayJob<FileRatingUpdateJob, FileRatingUpdateParameter> DeleteJob
-        {
-            get
-            {
-                this.deleteJob ??= new();
-                return this.deleteJob;
             }
         }
 
@@ -124,9 +114,6 @@ namespace PicSum.UIComponent.Contents.FileList
 
                 this.searchJob?.Dispose();
                 this.searchJob = null;
-
-                this.deleteJob?.Dispose();
-                this.deleteJob = null;
             }
 
             this.disposed = true;
@@ -159,7 +146,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 FilePathList = filePathList,
                 RatingValue = 0
             };
-            this.DeleteJob.StartJob(this, param);
+            CommonJobs.Instance.StartFileRatingUpdateJob(this, param);
 
             this.RemoveFile(filePathList);
         }
