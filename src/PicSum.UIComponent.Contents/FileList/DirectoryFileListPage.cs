@@ -59,8 +59,6 @@ namespace PicSum.UIComponent.Contents.FileList
         private bool disposed = false;
         private readonly DirectoryFileListPageParameter parameter = null;
         private TwoWayJob<FilesGetByDirectoryJob, ValueParameter<string>, DirectoryGetResult> searchJob = null;
-        private OneWayJob<DirectoryStateUpdateJob, DirectoryStateParameter> directoryStateUpdateJob = null;
-        private OneWayJob<DirectoryViewHistoryAddJob, ValueParameter<string>> directoryHistoryaddJob = null;
         private TwoWayJob<NextDirectoryGetJob, NextDirectoryGetParameter<string>, ValueResult<string>> nextDirectoryGetJob = null;
 
         private TwoWayJob<FilesGetByDirectoryJob, ValueParameter<string>, DirectoryGetResult> SearchJob
@@ -83,24 +81,6 @@ namespace PicSum.UIComponent.Contents.FileList
                 }
 
                 return this.searchJob;
-            }
-        }
-
-        private OneWayJob<DirectoryStateUpdateJob, DirectoryStateParameter> DirectoryStateUpdateJob
-        {
-            get
-            {
-                this.directoryStateUpdateJob ??= new();
-                return this.directoryStateUpdateJob;
-            }
-        }
-
-        private OneWayJob<DirectoryViewHistoryAddJob, ValueParameter<string>> DirectoryHistoryAddJob
-        {
-            get
-            {
-                this.directoryHistoryaddJob ??= new();
-                return this.directoryHistoryaddJob;
             }
         }
 
@@ -172,12 +152,6 @@ namespace PicSum.UIComponent.Contents.FileList
 
                 this.searchJob?.Dispose();
                 this.searchJob = null;
-
-                this.directoryStateUpdateJob?.Dispose();
-                this.directoryStateUpdateJob = null;
-
-                this.directoryHistoryaddJob?.Dispose();
-                this.directoryHistoryaddJob = null;
 
                 this.nextDirectoryGetJob?.Dispose();
                 this.nextDirectoryGetJob = null;
@@ -288,8 +262,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
             param.SelectedFilePath = base.SelectedFilePath;
 
-            this.DirectoryStateUpdateJob.StartJob(this, param);
-            this.DirectoryStateUpdateJob.WaitJobComplete();
+            CommonJobs.Instance.StartDirectoryStateUpdateJob(this, param);
         }
 
         private void SearchJob_Callback(DirectoryGetResult e)
@@ -323,7 +296,7 @@ namespace PicSum.UIComponent.Contents.FileList
             }
 
             var param = new ValueParameter<string>(e.DirectoryPath);
-            this.DirectoryHistoryAddJob.StartJob(this, param);
+            CommonJobs.Instance.StartDirectoryViewHistoryAddJob(this, param);
         }
 
         private void GetNextDirectoryProcess_Callback(ValueResult<string> e)

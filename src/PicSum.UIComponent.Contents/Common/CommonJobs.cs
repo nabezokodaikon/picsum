@@ -17,6 +17,8 @@ namespace PicSum.UIComponent.Contents.Common
         private OneWayJob<ImageFileCacheJob, ListParameter<string>> imageFileCacheJob = null;
         private OneWayJob<BookmarkAddJob, ValueParameter<string>> addBookmarkJob = null;
         private OneWayJob<SingleFileExportJob, SingleFileExportParameter> singleFileExportJob = null;
+        private OneWayJob<DirectoryStateUpdateJob, DirectoryStateParameter> directoryStateUpdateJob = null;
+        private OneWayJob<DirectoryViewHistoryAddJob, ValueParameter<string>> directoryHistoryaddJob = null;
 
         private CommonJobs()
         {
@@ -45,6 +47,9 @@ namespace PicSum.UIComponent.Contents.Common
             {
                 this.imageFileCacheJob?.Dispose();
                 this.addBookmarkJob?.Dispose();
+                this.singleFileExportJob?.Dispose();
+                this.directoryStateUpdateJob?.Dispose();
+                this.directoryHistoryaddJob?.Dispose();
             }
 
             this.disposed = true;
@@ -90,6 +95,34 @@ namespace PicSum.UIComponent.Contents.Common
 
             this.singleFileExportJob = new();
             this.singleFileExportJob.StartJob(sender, parameter);
+        }
+
+        public void StartDirectoryStateUpdateJob(Control sender, DirectoryStateParameter parameter)
+        {
+            ArgumentNullException.ThrowIfNull(sender, nameof(sender));
+            ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
+
+            if (this.directoryStateUpdateJob != null)
+            {
+                this.directoryStateUpdateJob.Dispose();
+            }
+
+            this.directoryStateUpdateJob = new();
+            this.directoryStateUpdateJob.StartJob(sender, parameter);
+        }
+
+        public void StartDirectoryViewHistoryAddJob(Control sender, ValueParameter<string> parameter)
+        {
+            ArgumentNullException.ThrowIfNull(sender, nameof(sender));
+            ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
+
+            if (this.directoryHistoryaddJob != null)
+            {
+                this.directoryHistoryaddJob.Dispose();
+            }
+
+            this.directoryHistoryaddJob = new();
+            this.directoryHistoryaddJob.StartJob(sender, parameter);
         }
     }
 }
