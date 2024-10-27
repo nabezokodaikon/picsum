@@ -58,30 +58,6 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private bool disposed = false;
         private readonly DirectoryFileListPageParameter parameter = null;
-        private TwoWayJob<NextDirectoryGetJob, NextDirectoryGetParameter<string>, ValueResult<string>> nextDirectoryGetJob = null;
-
-        private TwoWayJob<NextDirectoryGetJob, NextDirectoryGetParameter<string>, ValueResult<string>> NextDirectoryGetJob
-        {
-            get
-            {
-                if (this.nextDirectoryGetJob == null)
-                {
-                    this.nextDirectoryGetJob = new();
-                    this.nextDirectoryGetJob
-                        .Callback(_ =>
-                        {
-                            if (this.disposed)
-                            {
-                                return;
-                            }
-
-                            this.GetNextDirectoryProcess_Callback(_);
-                        });
-                }
-
-                return this.nextDirectoryGetJob;
-            }
-        }
 
         public DirectoryFileListPage(DirectoryFileListPageParameter param)
             : base(param)
@@ -141,9 +117,6 @@ namespace PicSum.UIComponent.Contents.FileList
             if (disposing)
             {
                 this.SaveCurrentDirectoryState();
-
-                this.nextDirectoryGetJob?.Dispose();
-                this.nextDirectoryGetJob = null;
             }
 
             this.disposed = true;
@@ -184,12 +157,27 @@ namespace PicSum.UIComponent.Contents.FileList
                 return;
             }
 
-            var param = new NextDirectoryGetParameter<string>
+            using (var job = new TwoWayJob<NextDirectoryGetJob, NextDirectoryGetParameter<string>, ValueResult<string>>())
             {
-                CurrentParameter = new ValueEntity<string>(this.parameter.DirectoryPath),
-                IsNext = false,
-            };
-            this.NextDirectoryGetJob.StartJob(this, param);
+                var param = new NextDirectoryGetParameter<string>
+                {
+                    CurrentParameter = new ValueEntity<string>(this.parameter.DirectoryPath),
+                    IsNext = false,
+                };
+
+                job.Callback(_ =>
+                {
+                    if (this.disposed)
+                    {
+                        return;
+                    }
+
+                    this.GetNextDirectoryProcess_Callback(_);
+                });
+
+                job.StartJob(this, param);
+                job.WaitJobComplete();
+            }
         }
 
         protected override void OnMoveNextButtonClick(EventArgs e)
@@ -199,12 +187,27 @@ namespace PicSum.UIComponent.Contents.FileList
                 return;
             }
 
-            var param = new NextDirectoryGetParameter<string>
+            using (var job = new TwoWayJob<NextDirectoryGetJob, NextDirectoryGetParameter<string>, ValueResult<string>>())
             {
-                IsNext = true,
-                CurrentParameter = new ValueEntity<string>(this.parameter.DirectoryPath)
-            };
-            this.NextDirectoryGetJob.StartJob(this, param);
+                var param = new NextDirectoryGetParameter<string>
+                {
+                    IsNext = true,
+                    CurrentParameter = new ValueEntity<string>(this.parameter.DirectoryPath)
+                };
+
+                job.Callback(_ =>
+                {
+                    if (this.disposed)
+                    {
+                        return;
+                    }
+
+                    this.GetNextDirectoryProcess_Callback(_);
+                });
+
+                job.StartJob(this, param);
+                job.WaitJobComplete();
+            }
         }
 
         protected override Action<Control> GetImageFilesGetAction(ImageViewerPageParameter param)
