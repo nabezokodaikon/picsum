@@ -1,5 +1,5 @@
+using PicSum.Job.Common;
 using PicSum.Job.Entities;
-using PicSum.Job.Jobs;
 using PicSum.UIComponent.AddressBar.Properties;
 using SWF.Core.FileAccessor;
 using SWF.Core.Job;
@@ -16,30 +16,6 @@ namespace PicSum.UIComponent.AddressBar
     {
         private bool disposed = false;
         private readonly Image drawImage = Resources.SmallArrowDown;
-        private TwoWayJob<DirectoryViewHistoryGetJob, ListResult<FileShallowInfoEntity>> getDirectoryHistoryJob = null;
-
-        private TwoWayJob<DirectoryViewHistoryGetJob, ListResult<FileShallowInfoEntity>> GetDirectoryHistoryJob
-        {
-            get
-            {
-                if (this.getDirectoryHistoryJob == null)
-                {
-                    this.getDirectoryHistoryJob = new();
-                    this.getDirectoryHistoryJob
-                        .Callback(_ =>
-                        {
-                            if (this.disposed)
-                            {
-                                return;
-                            }
-
-                            this.GetDirectoryHistoryJob_Callback(_);
-                        });
-                }
-
-                return this.getDirectoryHistoryJob;
-            }
-        }
 
         public DirectoryHistoryDrawItem()
         {
@@ -52,9 +28,6 @@ namespace PicSum.UIComponent.AddressBar
             {
                 return;
             }
-
-            this.getDirectoryHistoryJob?.Dispose();
-            this.getDirectoryHistoryJob = null;
 
             this.disposed = true;
 
@@ -96,7 +69,18 @@ namespace PicSum.UIComponent.AddressBar
                 base.DropDownList.ClearSelectedItems();
                 base.DropDownList.ItemCount = 0;
                 base.DropDownList.Show(base.AddressBar, 0, base.AddressBar.Height);
-                this.GetDirectoryHistoryJob.StartJob(this.AddressBar);
+
+                CommonJobs.Instance.DirectoryViewHistoryGetJob
+                    .Callback(_ =>
+                    {
+                        if (this.disposed)
+                        {
+                            return;
+                        }
+
+                        this.DirectoryViewHistoryGetJob_Callback(_);
+                    })
+                    .StartJob(this.AddressBar);
             }
         }
 
@@ -156,7 +140,7 @@ namespace PicSum.UIComponent.AddressBar
             return new RectangleF(x, y, w, h);
         }
 
-        private void GetDirectoryHistoryJob_Callback(ListResult<FileShallowInfoEntity> e)
+        private void DirectoryViewHistoryGetJob_Callback(ListResult<FileShallowInfoEntity> e)
         {
             var width = 0;
 

@@ -30,6 +30,7 @@ namespace PicSum.Job.Common
         public OneWayJob<ImageFileCacheJob, ListParameter<string>> ImageFileCacheJob { get; private set; } = new();
         public TwoWayJob<ThumbnailsGetJob, ThumbnailsGetParameter, ThumbnailImageResult> ThumbnailsGetJob { get; private set; } = new();
         public TwoWayJob<SubDirectoriesGetJob, ValueParameter<string>, ListResult<FileShallowInfoEntity>> SubDirectoriesGetJob { get; private set; } = new();
+        public TwoWayJob<DirectoryViewHistoryGetJob, ListResult<FileShallowInfoEntity>> DirectoryViewHistoryGetJob { get; private set; } = new();
 
         private CommonJobs()
         {
@@ -71,6 +72,7 @@ namespace PicSum.Job.Common
                 this.ImageFileCacheJob?.Dispose();
                 this.ThumbnailsGetJob?.Dispose();
                 this.SubDirectoriesGetJob?.Dispose();
+                this.DirectoryViewHistoryGetJob?.Dispose();
             }
 
             this.disposed = true;
