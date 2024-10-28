@@ -81,11 +81,6 @@ namespace SWF.Core.Job
         {
             ArgumentNullException.ThrowIfNull(action, nameof(action));
 
-            if (this.callbackAction != null)
-            {
-                throw new InvalidOperationException($"{this.threadName}: 既にコールバックアクションが設定されています。");
-            }
-
             this.callbackAction = action;
             return this;
         }
@@ -93,11 +88,6 @@ namespace SWF.Core.Job
         public TwoWayJob<TJob, TJobParameter, TJobResult> Cancel(Action action)
         {
             ArgumentNullException.ThrowIfNull(action, nameof(action));
-
-            if (this.cancelAction != null)
-            {
-                throw new InvalidOperationException($"{this.threadName}: 既にキャンセルアクションが設定されています。");
-            }
 
             this.cancelAction = action;
             return this;
@@ -107,11 +97,6 @@ namespace SWF.Core.Job
         {
             ArgumentNullException.ThrowIfNull(action, nameof(action));
 
-            if (this.catchAction != null)
-            {
-                throw new InvalidOperationException($"{this.threadName}: 既に例外アクションが設定されています。");
-            }
-
             this.catchAction = action;
             return this;
         }
@@ -119,11 +104,6 @@ namespace SWF.Core.Job
         public TwoWayJob<TJob, TJobParameter, TJobResult> Complete(Action action)
         {
             ArgumentNullException.ThrowIfNull(action, nameof(action));
-
-            if (this.completeAction != null)
-            {
-                throw new InvalidOperationException($"{this.threadName}: 既に完了アクションが設定されています。");
-            }
 
             this.completeAction = action;
             return this;

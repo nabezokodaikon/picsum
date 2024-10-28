@@ -1,5 +1,4 @@
 using NLog;
-using PicSum.Job.Jobs;
 using PicSum.Job.Parameters;
 using PicSum.Job.Results;
 using PicSum.UIComponent.Contents.Common;
@@ -56,10 +55,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         private IList<string> filePathList = null;
         private bool isLoading = false;
 
-        private TwoWayJob<ImageFileReadJob, ImageFileReadParameter, ImageFileReadResult> imageFileReadJob = null;
-        private TwoWayJob<ImageFileLoadingJob, ImageFileReadParameter, ImageFileReadResult> imageFileLoadingJob = null;
-        private OneWayJob<ImageFileCacheJob, ListParameter<string>> imageFileCacheJob = null;
-
         public override string SelectedFilePath { get; protected set; } = string.Empty;
 
         private bool CanOperation
@@ -92,77 +87,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             set
             {
                 this.indexSlider.Value = value;
-            }
-        }
-
-        private TwoWayJob<ImageFileReadJob, ImageFileReadParameter, ImageFileReadResult> ImageFileReadJob
-        {
-            get
-            {
-                if (this.imageFileReadJob == null)
-                {
-                    this.imageFileReadJob = new();
-                    this.imageFileReadJob
-                        .Callback(r =>
-                        {
-                            if (this.disposed)
-                            {
-                                return;
-                            }
-
-                            using (TimeMeasuring.Run(true, "ImageViewerPage.ImageFileReadJob_Callback"))
-                            {
-                                this.ImageFileReadJob_Callback(r);
-                            }
-                        })
-                        .Cancel(() =>
-                        {
-                            ConsoleUtil.Write($"ImageViewerPage.ImageFileReadJob.Cancel");
-                        })
-                        .Complete(() =>
-                        {
-                            ConsoleUtil.Write($"ImageViewerPage.ImageFileReadJob.Complete");
-                        });
-                }
-
-                return this.imageFileReadJob;
-            }
-        }
-
-        private TwoWayJob<ImageFileLoadingJob, ImageFileReadParameter, ImageFileReadResult> ImageFileLoadingJob
-        {
-            get
-            {
-                if (this.imageFileLoadingJob == null)
-                {
-                    this.imageFileLoadingJob = new();
-                    this.imageFileLoadingJob
-                        .Callback(_ =>
-                        {
-                            if (this.disposed)
-                            {
-                                return;
-                            }
-
-                            if (!this.isLoading)
-                            {
-                                return;
-                            }
-
-                            this.ImageFileReadJob_Callback(_);
-                        });
-                }
-
-                return this.imageFileLoadingJob;
-            }
-        }
-
-        private OneWayJob<ImageFileCacheJob, ListParameter<string>> ImageFileCacheJob
-        {
-            get
-            {
-                this.imageFileCacheJob ??= new();
-                return this.imageFileCacheJob;
             }
         }
 
@@ -251,15 +175,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
             if (disposing)
             {
-                this.imageFileReadJob?.Dispose();
-                this.imageFileReadJob = null;
-
-                this.imageFileLoadingJob?.Dispose();
-                this.imageFileLoadingJob = null;
-
-                this.imageFileCacheJob?.Dispose();
-                this.imageFileCacheJob = null;
-
                 this.leftImagePanel.Dispose();
                 this.rightImagePanel.Dispose();
 
@@ -699,9 +614,46 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
                 this.isLoading = true;
 
-                this.ImageFileCacheJob.StartJob(this, [.. nextFiles, .. prevFiles]);
-                this.ImageFileLoadingJob.StartJob(this, param);
-                this.ImageFileReadJob.StartJob(this, param);
+                CommonJobs.Instance.ImageFileCacheJob.StartJob(this);
+
+                CommonJobs.Instance.ImageFileLoadingJob
+                    .Callback(_ =>
+                    {
+                        if (this.disposed)
+                        {
+                            return;
+                        }
+
+                        if (!this.isLoading)
+                        {
+                            return;
+                        }
+
+                        this.ImageFileReadJob_Callback(_);
+                    });
+
+                CommonJobs.Instance.ImageFileReadJob
+                    .Callback(r =>
+                    {
+                        if (this.disposed)
+                        {
+                            return;
+                        }
+
+                        using (TimeMeasuring.Run(true, "ImageViewerPage.ImageFileReadJob_Callback"))
+                        {
+                            this.ImageFileReadJob_Callback(r);
+                        }
+                    })
+                     .Cancel(() =>
+                     {
+                         ConsoleUtil.Write($"ImageViewerPage.ImageFileReadJob.Cancel");
+                     })
+                     .Complete(() =>
+                     {
+                         ConsoleUtil.Write($"ImageViewerPage.ImageFileReadJob.Complete");
+                     })
+                     .StartJob(this, param);
             }
         }
 

@@ -1,5 +1,6 @@
 using PicSum.Job.Jobs;
 using PicSum.Job.Parameters;
+using PicSum.Job.Results;
 using SWF.Core.Job;
 using System;
 using System.Runtime.Versioning;
@@ -22,6 +23,10 @@ namespace PicSum.UIComponent.Contents.Common
         private OneWayJob<DirectoryViewCounterDeleteJob, ListParameter<string>> directoryViewCounterDeleteJob = null;
         private OneWayJob<FileRatingUpdateJob, FileRatingUpdateParameter> fileRatingUpdateJob = null;
         private OneWayJob<FileTagDeleteJob, UpdateFileTagParameter> fileTagDeleteJob = null;
+
+        public TwoWayJob<ImageFileReadJob, ImageFileReadParameter, ImageFileReadResult> ImageFileReadJob { get; private set; } = new();
+        public TwoWayJob<ImageFileLoadingJob, ImageFileReadParameter, ImageFileReadResult> ImageFileLoadingJob { get; private set; } = new();
+        public OneWayJob<ImageFileCacheJob, ListParameter<string>> ImageFileCacheJob { get; private set; } = new();
 
         private CommonJobs()
         {
@@ -56,6 +61,10 @@ namespace PicSum.UIComponent.Contents.Common
                 this.directoryViewCounterDeleteJob?.Dispose();
                 this.fileRatingUpdateJob?.Dispose();
                 this.fileTagDeleteJob?.Dispose();
+
+                this.ImageFileReadJob?.Dispose();
+                this.ImageFileLoadingJob?.Dispose();
+                this.ImageFileCacheJob?.Dispose();
             }
 
             this.disposed = true;
