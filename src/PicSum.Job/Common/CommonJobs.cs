@@ -32,6 +32,7 @@ namespace PicSum.Job.Common
         public TwoWayJob<SubDirectoriesGetJob, ValueParameter<string>, ListResult<FileShallowInfoEntity>> SubDirectoriesGetJob { get; private set; } = new();
         public TwoWayJob<DirectoryViewHistoryGetJob, ListResult<FileShallowInfoEntity>> DirectoryViewHistoryGetJob { get; private set; } = new();
         public TwoWayJob<AddressInfoGetJob, ValueParameter<string>, AddressInfoGetResult> AddressInfoGetJob { get; private set; } = new();
+        public TwoWayJob<TagsGetJob, ListResult<string>> TagsGetJob { get; private set; } = new();
 
         private CommonJobs()
         {
@@ -75,6 +76,7 @@ namespace PicSum.Job.Common
                 this.SubDirectoriesGetJob?.Dispose();
                 this.DirectoryViewHistoryGetJob?.Dispose();
                 this.AddressInfoGetJob?.Dispose();
+                this.TagsGetJob?.Dispose();
             }
 
             this.disposed = true;

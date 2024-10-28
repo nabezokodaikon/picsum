@@ -65,37 +65,11 @@ namespace PicSum.Main.UIComponent
         public event EventHandler Close;
         public event EventHandler BackgroundMouseDoubleLeftClick;
 
-        private TwoWayJob<TagsGetJob, ListResult<string>> getTagListJob = null;
-
         public int TabCount
         {
             get
             {
                 return this.tabSwitch.TabCount;
-            }
-        }
-
-        private TwoWayJob<TagsGetJob, ListResult<string>> GetTagListJob
-        {
-            get
-            {
-                if (this.getTagListJob == null)
-                {
-                    this.getTagListJob = new();
-                    this.getTagListJob
-                        .Callback(_ =>
-                        {
-                            if (this.disposed)
-                            {
-                                return;
-                            }
-
-                            this.GetTagListJob_Callback(_);
-                        }
-                    );
-                }
-
-                return this.getTagListJob;
             }
         }
 
@@ -243,9 +217,6 @@ namespace PicSum.Main.UIComponent
 
             if (disposing)
             {
-                this.getTagListJob?.Dispose();
-                this.getTagListJob = null;
-
                 this.components?.Dispose();
             }
 
@@ -660,7 +631,17 @@ namespace PicSum.Main.UIComponent
 
         private void TagDropToolButton_DropDownOpening(object sender, DropDownOpeningEventArgs e)
         {
-            this.GetTagListJob.StartJob(this);
+            CommonJobs.Instance.TagsGetJob
+                .Callback(_ =>
+                {
+                    if (this.disposed)
+                    {
+                        return;
+                    }
+
+                    this.GetTagListJob_Callback(_);
+                })
+                .StartJob(this);
         }
 
         private void TagDropToolButton_ItemMouseClick(object sender, ItemMouseClickEventArgs e)
