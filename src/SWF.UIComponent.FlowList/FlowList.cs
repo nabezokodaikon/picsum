@@ -150,7 +150,7 @@ namespace SWF.UIComponent.FlowList
 
         protected override void OnInvalidated(InvalidateEventArgs e)
         {
-            this.SetDrawParameter();
+            this.SetDrawParameter(false);
 
             base.OnInvalidated(e);
         }
@@ -568,7 +568,7 @@ namespace SWF.UIComponent.FlowList
             base.OnMouseWheel(e);
         }
 
-        private void SetDrawParameter()
+        public void SetDrawParameter(bool isForced)
         {
             var beforeDrawParameter = this.drawParameter;
 
@@ -659,11 +659,18 @@ namespace SWF.UIComponent.FlowList
                 this.scrollBar.Maximum = this.drawParameter.ScrollBarMaximum;
             }
 
-            if (this.drawParameter.DrawFirstItemIndex == 0 && this.drawParameter.DrawLastItemIndex == 0 ||
-                beforeDrawParameter.DrawFirstItemIndex != this.drawParameter.DrawFirstItemIndex ||
-                beforeDrawParameter.DrawLastItemIndex != this.drawParameter.DrawLastItemIndex)
+            if (isForced)
             {
                 this.OnDrawItemChanged(new DrawItemChangedEventArgs(this.drawParameter.DrawFirstItemIndex, this.drawParameter.DrawLastItemIndex));
+            }
+            else
+            {
+                if (this.drawParameter.DrawFirstItemIndex == 0 && this.drawParameter.DrawLastItemIndex == 0 ||
+                    beforeDrawParameter.DrawFirstItemIndex != this.drawParameter.DrawFirstItemIndex ||
+                    beforeDrawParameter.DrawLastItemIndex != this.drawParameter.DrawLastItemIndex)
+                {
+                    this.OnDrawItemChanged(new DrawItemChangedEventArgs(this.drawParameter.DrawFirstItemIndex, this.drawParameter.DrawLastItemIndex));
+                }
             }
         }
 

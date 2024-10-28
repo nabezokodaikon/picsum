@@ -269,7 +269,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
         public override void RedrawPage()
         {
-            this.flowList.Refresh();
+            this.flowList.SetDrawParameter(true);
         }
 
         protected override void Dispose(bool disposing)

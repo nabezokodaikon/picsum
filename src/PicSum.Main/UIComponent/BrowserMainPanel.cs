@@ -224,6 +224,15 @@ namespace PicSum.Main.UIComponent
             this.SetPageHistoryButtonEnabled();
         }
 
+        public void RedrawPage()
+        {
+            if (this.tabSwitch.ActiveTab != null)
+            {
+                var page = this.tabSwitch.ActiveTab.GetPage<BrowserPage>();
+                page.RedrawPage();
+            }
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (this.disposed)
