@@ -1,5 +1,5 @@
+using PicSum.Job.Common;
 using PicSum.Job.Entities;
-using PicSum.Job.Jobs;
 using PicSum.UIComponent.AddressBar.Properties;
 using SWF.Core.Job;
 using System;
@@ -19,33 +19,9 @@ namespace PicSum.UIComponent.AddressBar
         private readonly Image mouseDownImage = Resources.SmallArrowDown;
         private bool isRead = false;
         private Font selectedSubDirectoryFont = null;
-        private TwoWayJob<SubDirectoriesGetJob, ValueParameter<string>, ListResult<FileShallowInfoEntity>> getSubDirectoryJob = null;
 
         public DirectoryEntity Directory { get; set; }
         public string SelectedSubDirectoryPath { get; set; }
-
-        private TwoWayJob<SubDirectoriesGetJob, ValueParameter<string>, ListResult<FileShallowInfoEntity>> GetSubDirectoryJob
-        {
-            get
-            {
-                if (this.getSubDirectoryJob == null)
-                {
-                    this.getSubDirectoryJob = new();
-                    this.getSubDirectoryJob
-                        .Callback(_ =>
-                        {
-                            if (this.disposed)
-                            {
-                                return;
-                            }
-
-                            this.GetSubDirectoryJob_Callback(_);
-                        });
-                }
-
-                return this.getSubDirectoryJob;
-            }
-        }
 
         private Font SelectedSubDirectoryFont
         {
@@ -76,9 +52,6 @@ namespace PicSum.UIComponent.AddressBar
 
             this.selectedSubDirectoryFont?.Dispose();
             this.selectedSubDirectoryFont = null;
-
-            this.getSubDirectoryJob?.Dispose();
-            this.getSubDirectoryJob = null;
 
             this.disposed = true;
 
@@ -125,7 +98,17 @@ namespace PicSum.UIComponent.AddressBar
                 if (!this.isRead)
                 {
                     var param = new ValueParameter<string>(this.Directory.DirectoryPath);
-                    this.GetSubDirectoryJob.StartJob(this.AddressBar, param);
+                    CommonJobs.Instance.SubDirectoriesGetJob
+                        .Callback(_ =>
+                        {
+                            if (this.disposed)
+                            {
+                                return;
+                            }
+
+                            this.GetSubDirectoryJob_Callback(_);
+                        })
+                        .StartJob(this.AddressBar, param);
                 }
             }
         }

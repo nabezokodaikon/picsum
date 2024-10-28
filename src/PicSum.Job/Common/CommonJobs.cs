@@ -1,3 +1,4 @@
+using PicSum.Job.Entities;
 using PicSum.Job.Jobs;
 using PicSum.Job.Parameters;
 using PicSum.Job.Results;
@@ -11,7 +12,7 @@ namespace PicSum.Job.Common
     public sealed partial class CommonJobs
         : IDisposable
     {
-        public static CommonJobs Instance = new CommonJobs();
+        public static CommonJobs Instance = new();
 
         private bool disposed = false;
         private OneWayJob<BookmarkAddJob, ValueParameter<string>>? addBookmarkJob = null;
@@ -28,6 +29,7 @@ namespace PicSum.Job.Common
         public TwoWayJob<ImageFileLoadingJob, ImageFileReadParameter, ImageFileReadResult> ImageFileLoadingJob { get; private set; } = new();
         public OneWayJob<ImageFileCacheJob, ListParameter<string>> ImageFileCacheJob { get; private set; } = new();
         public TwoWayJob<ThumbnailsGetJob, ThumbnailsGetParameter, ThumbnailImageResult> ThumbnailsGetJob { get; private set; } = new();
+        public TwoWayJob<SubDirectoriesGetJob, ValueParameter<string>, ListResult<FileShallowInfoEntity>> SubDirectoriesGetJob { get; private set; } = new();
 
         private CommonJobs()
         {
@@ -68,6 +70,7 @@ namespace PicSum.Job.Common
                 this.ImageFileLoadingJob?.Dispose();
                 this.ImageFileCacheJob?.Dispose();
                 this.ThumbnailsGetJob?.Dispose();
+                this.SubDirectoriesGetJob?.Dispose();
             }
 
             this.disposed = true;
