@@ -1,3 +1,4 @@
+using PicSum.Job.Common;
 using PicSum.Job.Entities;
 using PicSum.Job.Jobs;
 using PicSum.Job.Parameters;
@@ -36,10 +37,7 @@ namespace PicSum.UIComponent.InfoPanel
 
         private bool disposed = false;
         private TwoWayJob<FileDeepInfoGetJob, FileDeepInfoGetParameter, FileDeepInfoGetResult> getFileInfoJob = null;
-        private OneWayJob<FileRatingUpdateJob, FileRatingUpdateParameter> updateFileRatingJob = null;
         private TwoWayJob<TagsGetJob, ListResult<string>> getTagListJob = null;
-        private OneWayJob<FileTagAddJob, UpdateFileTagParameter> addFileTagJob = null;
-        private OneWayJob<FileTagDeleteJob, UpdateFileTagParameter> deleteFileTagJob = null;
 
         private FileDeepInfoGetResult fileInfoSource = null;
         private Font allTagFont = null;
@@ -69,14 +67,6 @@ namespace PicSum.UIComponent.InfoPanel
             }
         }
 
-        private OneWayJob<FileRatingUpdateJob, FileRatingUpdateParameter> UpdateFileRatingJob
-        {
-            get
-            {
-                return this.updateFileRatingJob ??= new();
-            }
-        }
-
         private TwoWayJob<TagsGetJob, ListResult<string>> GetTagListJob
         {
             get
@@ -97,22 +87,6 @@ namespace PicSum.UIComponent.InfoPanel
                 }
 
                 return this.getTagListJob;
-            }
-        }
-
-        private OneWayJob<FileTagAddJob, UpdateFileTagParameter> AddFileTagJob
-        {
-            get
-            {
-                return this.addFileTagJob ??= new();
-            }
-        }
-
-        private OneWayJob<FileTagDeleteJob, UpdateFileTagParameter> DeleteFileTagJob
-        {
-            get
-            {
-                return this.deleteFileTagJob ??= new();
             }
         }
 
@@ -234,17 +208,8 @@ namespace PicSum.UIComponent.InfoPanel
                 this.getFileInfoJob?.Dispose();
                 this.getFileInfoJob = null;
 
-                this.updateFileRatingJob?.Dispose();
-                this.updateFileRatingJob = null;
-
                 this.getTagListJob?.Dispose();
                 this.getTagListJob = null;
-
-                this.addFileTagJob?.Dispose();
-                this.addFileTagJob = null;
-
-                this.deleteFileTagJob?.Dispose();
-                this.deleteFileTagJob = null;
 
                 this.components?.Dispose();
             }
@@ -328,7 +293,7 @@ namespace PicSum.UIComponent.InfoPanel
                 Tag = tag,
                 FilePathList = this.FilePathList
             };
-            this.AddFileTagJob.StartJob(this, param);
+            CommonJobs.Instance.StartFileTagAddJob(this, param);
 
             var tagInfo = this.TagList.Find(t => t.Tag.Equals(tag, StringComparison.Ordinal));
             if (tagInfo != null)
@@ -372,7 +337,7 @@ namespace PicSum.UIComponent.InfoPanel
                 Tag = tag,
                 FilePathList = this.FilePathList
             };
-            this.DeleteFileTagJob.StartJob(this, param);
+            CommonJobs.Instance.StartFileTagDeleteJob(this, param);
 
             var tagInfo = this.TagList.Find(t => t.Tag.Equals(tag, StringComparison.Ordinal));
             this.TagList.Remove(tagInfo);
@@ -559,7 +524,7 @@ namespace PicSum.UIComponent.InfoPanel
                 FilePathList = this.fileInfoSource.FilePathList,
                 RatingValue = this.ratingBar.Value
             };
-            this.UpdateFileRatingJob.StartJob(this, param);
+            CommonJobs.Instance.StartFileRatingUpdateJob(this, param);
         }
 
         private void TagContextMenuStrip_Opening(object sender, CancelEventArgs e)

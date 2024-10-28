@@ -22,6 +22,7 @@ namespace PicSum.Job.Common
         private OneWayJob<DirectoryViewCounterDeleteJob, ListParameter<string>>? directoryViewCounterDeleteJob = null;
         private OneWayJob<FileRatingUpdateJob, FileRatingUpdateParameter>? fileRatingUpdateJob = null;
         private OneWayJob<FileTagDeleteJob, UpdateFileTagParameter>? fileTagDeleteJob = null;
+        private OneWayJob<FileTagAddJob, UpdateFileTagParameter>? fileTagAddJob = null;
 
         public TwoWayJob<ImageFileReadJob, ImageFileReadParameter, ImageFileReadResult> ImageFileReadJob { get; private set; } = new();
         public TwoWayJob<ImageFileLoadingJob, ImageFileReadParameter, ImageFileReadResult> ImageFileLoadingJob { get; private set; } = new();
@@ -61,6 +62,7 @@ namespace PicSum.Job.Common
                 this.directoryViewCounterDeleteJob?.Dispose();
                 this.fileRatingUpdateJob?.Dispose();
                 this.fileTagDeleteJob?.Dispose();
+                this.fileTagAddJob?.Dispose();
 
                 this.ImageFileReadJob?.Dispose();
                 this.ImageFileLoadingJob?.Dispose();
@@ -189,6 +191,21 @@ namespace PicSum.Job.Common
 
             this.fileTagDeleteJob = new();
             this.fileTagDeleteJob.StartJob(sender, parameter);
+        }
+
+        public void StartFileTagAddJob(Control sender, UpdateFileTagParameter parameter)
+        {
+            ArgumentNullException.ThrowIfNull(sender, nameof(sender));
+            ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
+
+            if (this.fileTagAddJob != null)
+            {
+                this.fileTagAddJob.WaitJobComplete();
+                this.fileTagAddJob.Dispose();
+            }
+
+            this.fileTagAddJob = new();
+            this.fileTagAddJob.StartJob(sender, parameter);
         }
     }
 }
