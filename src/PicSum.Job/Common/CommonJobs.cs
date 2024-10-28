@@ -21,8 +21,8 @@ namespace PicSum.Job.Common
         private OneWayJob<BookmarkDeleteJob, ListParameter<string>>? bookmarkDeleteJob = null;
         private OneWayJob<DirectoryViewCounterDeleteJob, ListParameter<string>>? directoryViewCounterDeleteJob = null;
         private OneWayJob<FileRatingUpdateJob, FileRatingUpdateParameter>? fileRatingUpdateJob = null;
-        private OneWayJob<FileTagDeleteJob, UpdateFileTagParameter>? fileTagDeleteJob = null;
-        private OneWayJob<FileTagAddJob, UpdateFileTagParameter>? fileTagAddJob = null;
+        private OneWayJob<FileTagDeleteJob, FileTagUpdateParameter>? fileTagDeleteJob = null;
+        private OneWayJob<FileTagAddJob, FileTagUpdateParameter>? fileTagAddJob = null;
 
         public TwoWayJob<ImageFileReadJob, ImageFileReadParameter, ImageFileReadResult> ImageFileReadJob { get; private set; } = new();
         public TwoWayJob<ImageFileLoadingJob, ImageFileReadParameter, ImageFileReadResult> ImageFileLoadingJob { get; private set; } = new();
@@ -178,7 +178,7 @@ namespace PicSum.Job.Common
             this.fileRatingUpdateJob.StartJob(sender, parameter);
         }
 
-        public void StartFileTagDeleteJob(Control sender, UpdateFileTagParameter parameter)
+        public void StartFileTagDeleteJob(Control sender, FileTagUpdateParameter parameter)
         {
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
             ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
@@ -193,7 +193,7 @@ namespace PicSum.Job.Common
             this.fileTagDeleteJob.StartJob(sender, parameter);
         }
 
-        public void StartFileTagAddJob(Control sender, UpdateFileTagParameter parameter)
+        public void StartFileTagAddJob(Control sender, FileTagUpdateParameter parameter)
         {
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
             ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));

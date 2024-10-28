@@ -12,9 +12,9 @@ namespace PicSum.Job.Jobs
     /// </summary>
     [SupportedOSPlatform("windows")]
     public sealed class FileTagAddJob
-        : AbstractOneWayJob<UpdateFileTagParameter>
+        : AbstractOneWayJob<FileTagUpdateParameter>
     {
-        protected override void Execute(UpdateFileTagParameter param)
+        protected override void Execute(FileTagUpdateParameter param)
         {
             ArgumentNullException.ThrowIfNull(param, nameof(param));
 

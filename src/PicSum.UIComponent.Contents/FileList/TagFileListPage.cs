@@ -133,7 +133,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
         protected override void OnRemoveFile(IList<string> filePathList)
         {
-            var param = new UpdateFileTagParameter
+            var param = new FileTagUpdateParameter
             {
                 FilePathList = filePathList,
                 Tag = this.parameter.Tag

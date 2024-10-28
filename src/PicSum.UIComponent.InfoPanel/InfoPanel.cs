@@ -288,7 +288,7 @@ namespace PicSum.UIComponent.InfoPanel
                 throw new Exception("既に登録されているタグです。");
             }
 
-            var param = new UpdateFileTagParameter
+            var param = new FileTagUpdateParameter
             {
                 Tag = tag,
                 FilePathList = this.FilePathList
@@ -332,7 +332,7 @@ namespace PicSum.UIComponent.InfoPanel
                 throw new Exception("リストに存在しないタグを指定しました。");
             }
 
-            var param = new UpdateFileTagParameter
+            var param = new FileTagUpdateParameter
             {
                 Tag = tag,
                 FilePathList = this.FilePathList
