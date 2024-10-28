@@ -2,11 +2,10 @@ using PicSum.Job.Jobs;
 using PicSum.Job.Parameters;
 using PicSum.Job.Results;
 using SWF.Core.Job;
-using System;
 using System.Runtime.Versioning;
 using System.Windows.Forms;
 
-namespace PicSum.UIComponent.Contents.Common
+namespace PicSum.Job.Common
 {
     [SupportedOSPlatform("windows")]
     public sealed partial class CommonJobs
@@ -15,14 +14,14 @@ namespace PicSum.UIComponent.Contents.Common
         public static CommonJobs Instance = new CommonJobs();
 
         private bool disposed = false;
-        private OneWayJob<BookmarkAddJob, ValueParameter<string>> addBookmarkJob = null;
-        private OneWayJob<SingleFileExportJob, SingleFileExportParameter> singleFileExportJob = null;
-        private OneWayJob<DirectoryStateUpdateJob, DirectoryStateParameter> directoryStateUpdateJob = null;
-        private OneWayJob<DirectoryViewHistoryAddJob, ValueParameter<string>> directoryHistoryaddJob = null;
-        private OneWayJob<BookmarkDeleteJob, ListParameter<string>> bookmarkDeleteJob = null;
-        private OneWayJob<DirectoryViewCounterDeleteJob, ListParameter<string>> directoryViewCounterDeleteJob = null;
-        private OneWayJob<FileRatingUpdateJob, FileRatingUpdateParameter> fileRatingUpdateJob = null;
-        private OneWayJob<FileTagDeleteJob, UpdateFileTagParameter> fileTagDeleteJob = null;
+        private OneWayJob<BookmarkAddJob, ValueParameter<string>>? addBookmarkJob = null;
+        private OneWayJob<SingleFileExportJob, SingleFileExportParameter>? singleFileExportJob = null;
+        private OneWayJob<DirectoryStateUpdateJob, DirectoryStateParameter>? directoryStateUpdateJob = null;
+        private OneWayJob<DirectoryViewHistoryAddJob, ValueParameter<string>>? directoryHistoryaddJob = null;
+        private OneWayJob<BookmarkDeleteJob, ListParameter<string>>? bookmarkDeleteJob = null;
+        private OneWayJob<DirectoryViewCounterDeleteJob, ListParameter<string>>? directoryViewCounterDeleteJob = null;
+        private OneWayJob<FileRatingUpdateJob, FileRatingUpdateParameter>? fileRatingUpdateJob = null;
+        private OneWayJob<FileTagDeleteJob, UpdateFileTagParameter>? fileTagDeleteJob = null;
 
         public TwoWayJob<ImageFileReadJob, ImageFileReadParameter, ImageFileReadResult> ImageFileReadJob { get; private set; } = new();
         public TwoWayJob<ImageFileLoadingJob, ImageFileReadParameter, ImageFileReadResult> ImageFileLoadingJob { get; private set; } = new();

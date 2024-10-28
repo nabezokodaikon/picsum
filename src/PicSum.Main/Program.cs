@@ -1,10 +1,10 @@
 using NLog;
 using NLog.Config;
 using NLog.Targets;
+using PicSum.Job.Common;
 using PicSum.Job.Logics;
 using PicSum.Main.Mng;
 using PicSum.Main.UIComponent;
-using PicSum.UIComponent.Contents.Common;
 using SWF.Core.Base;
 using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;

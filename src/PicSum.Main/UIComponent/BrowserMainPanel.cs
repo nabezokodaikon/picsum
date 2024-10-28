@@ -1,3 +1,4 @@
+using PicSum.Job.Common;
 using PicSum.Job.Jobs;
 using PicSum.Job.Parameters;
 using PicSum.Job.Results;
