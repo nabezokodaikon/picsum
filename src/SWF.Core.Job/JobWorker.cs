@@ -218,49 +218,37 @@ namespace SWF.Core.Job
 
                     previewJob = job;
 
-                    if (this.callbackAction != null)
+                    job.CallbackAction = r =>
                     {
-                        job.CallbackAction = r =>
+                        UIThreadAccessor.Instance.Post(job, () =>
                         {
-                            UIThreadAccessor.Instance.Post(job, () =>
-                            {
-                                this.callbackAction(r);
-                            });
-                        };
-                    }
+                            this.callbackAction?.Invoke(r);
+                        });
+                    };
 
-                    if (this.cancelAction != null)
+                    job.CancelAction = () =>
                     {
-                        job.CancelAction = () =>
+                        UIThreadAccessor.Instance.Post(job, () =>
                         {
-                            UIThreadAccessor.Instance.Post(job, () =>
-                            {
-                                this.cancelAction();
-                            });
-                        };
-                    }
+                            this.cancelAction?.Invoke();
+                        });
+                    };
 
-                    if (this.catchAction != null)
+                    job.CatchAction = e =>
                     {
-                        job.CatchAction = e =>
+                        UIThreadAccessor.Instance.Post(job, () =>
                         {
-                            UIThreadAccessor.Instance.Post(job, () =>
-                            {
-                                this.catchAction(e);
-                            });
-                        };
-                    }
+                            this.catchAction?.Invoke(e);
+                        });
+                    };
 
-                    if (this.completeAction != null)
+                    job.CompleteAction = () =>
                     {
-                        job.CompleteAction = () =>
+                        UIThreadAccessor.Instance.Post(job, () =>
                         {
-                            UIThreadAccessor.Instance.Post(job, () =>
-                            {
-                                this.completeAction();
-                            });
-                        };
-                    }
+                            this.completeAction?.Invoke();
+                        });
+                    };
 
                     Logger.Debug($"{job.ID} を実行します。");
                     var sw = Stopwatch.StartNew();
