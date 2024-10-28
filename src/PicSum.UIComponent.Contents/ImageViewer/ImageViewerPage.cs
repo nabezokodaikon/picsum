@@ -615,7 +615,8 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
                 this.isLoading = true;
 
-                CommonJobs.Instance.ImageFileCacheJob.StartJob(this);
+                CommonJobs.Instance.ImageFileCacheJob
+                    .StartJob(this, [.. nextFiles, .. prevFiles]);
 
                 CommonJobs.Instance.ImageFileLoadingJob
                     .Callback(_ =>
