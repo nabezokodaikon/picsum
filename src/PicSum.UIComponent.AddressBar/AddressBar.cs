@@ -1,4 +1,4 @@
-using PicSum.Job.Jobs;
+using PicSum.Job.Common;
 using PicSum.Job.Results;
 using PicSum.UIComponent.AddressBar.Properties;
 using SWF.Core.FileAccessor;
@@ -26,7 +26,6 @@ namespace PicSum.UIComponent.AddressBar
         private readonly Palette palette = new();
         private readonly OverflowDrawItem overflowItem = new();
         private readonly DirectoryHistoryDrawItem directoryHistoryItem = new();
-        private TwoWayJob<AddressInfoGetJob, ValueParameter<string>, AddressInfoGetResult> getAddressInfoJob = null;
         private string currentDirectoryPath = null;
         private readonly List<DrawItemBase> addressItems = [];
         private DrawItemBase mousePointItem = null;
@@ -120,36 +119,6 @@ namespace PicSum.UIComponent.AddressBar
             }
         }
 
-        private TwoWayJob<AddressInfoGetJob, ValueParameter<string>, AddressInfoGetResult> GetAddressInfoJob
-        {
-            get
-            {
-                if (this.getAddressInfoJob == null)
-                {
-                    this.getAddressInfoJob = new();
-                    this.getAddressInfoJob
-                        .Callback(_ =>
-                        {
-                            if (this.disposed)
-                            {
-                                return;
-                            }
-
-                            this.GetAddressInfoJob_Callback(_);
-                        })
-                        .Catch(ex =>
-                        {
-                            this.currentDirectoryPath = string.Empty;
-                            this.ClearAddressItems();
-                            this.Invalidate();
-                            this.Update();
-                        });
-                }
-
-                return this.getAddressInfoJob;
-            }
-        }
-
         public AddressBar()
         {
             this.overflowItem.AddressBar = this;
@@ -205,7 +174,24 @@ namespace PicSum.UIComponent.AddressBar
 
             var param = new ValueParameter<string>(filePath);
 
-            this.GetAddressInfoJob.StartJob(this, param);
+            CommonJobs.Instance.AddressInfoGetJob
+                .Callback(_ =>
+                {
+                    if (this.disposed)
+                    {
+                        return;
+                    }
+
+                    this.GetAddressInfoJob_Callback(_);
+                })
+                .Catch(ex =>
+                {
+                    this.currentDirectoryPath = string.Empty;
+                    this.ClearAddressItems();
+                    this.Invalidate();
+                    this.Update();
+                })
+                .StartJob(this, param);
         }
 
         protected override void Dispose(bool disposing)
@@ -217,9 +203,6 @@ namespace PicSum.UIComponent.AddressBar
 
             if (disposing)
             {
-                this.getAddressInfoJob?.Dispose();
-                this.getAddressInfoJob = null;
-
                 this.overflowItem.Dispose();
                 this.directoryHistoryItem.Dispose();
 
