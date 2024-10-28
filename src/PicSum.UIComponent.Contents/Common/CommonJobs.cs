@@ -14,7 +14,6 @@ namespace PicSum.UIComponent.Contents.Common
         public static CommonJobs Instance = new CommonJobs();
 
         private bool disposed = false;
-        private OneWayJob<ImageFileCacheJob, ListParameter<string>> imageFileCacheJob = null;
         private OneWayJob<BookmarkAddJob, ValueParameter<string>> addBookmarkJob = null;
         private OneWayJob<SingleFileExportJob, SingleFileExportParameter> singleFileExportJob = null;
         private OneWayJob<DirectoryStateUpdateJob, DirectoryStateParameter> directoryStateUpdateJob = null;
@@ -49,7 +48,6 @@ namespace PicSum.UIComponent.Contents.Common
 
             if (disposing)
             {
-                this.imageFileCacheJob?.Dispose();
                 this.addBookmarkJob?.Dispose();
                 this.singleFileExportJob?.Dispose();
                 this.directoryStateUpdateJob?.Dispose();
@@ -63,20 +61,6 @@ namespace PicSum.UIComponent.Contents.Common
             this.disposed = true;
         }
 
-        public void StartImageFileCacheJob(Control sender, ListParameter<string> parameter)
-        {
-            ArgumentNullException.ThrowIfNull(sender, nameof(sender));
-            ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
-
-            if (this.imageFileCacheJob != null)
-            {
-                this.imageFileCacheJob.Dispose();
-            }
-
-            this.imageFileCacheJob = new();
-            this.imageFileCacheJob.StartJob(sender, parameter);
-        }
-
         public void StartBookmarkAddJob(Control sender, ValueParameter<string> parameter)
         {
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
@@ -84,6 +68,7 @@ namespace PicSum.UIComponent.Contents.Common
 
             if (this.addBookmarkJob != null)
             {
+                this.addBookmarkJob.WaitJobComplete();
                 this.addBookmarkJob.Dispose();
             }
 
@@ -98,6 +83,7 @@ namespace PicSum.UIComponent.Contents.Common
 
             if (this.singleFileExportJob != null)
             {
+                this.singleFileExportJob.WaitJobComplete();
                 this.singleFileExportJob.Dispose();
             }
 
@@ -112,6 +98,7 @@ namespace PicSum.UIComponent.Contents.Common
 
             if (this.directoryStateUpdateJob != null)
             {
+                this.directoryStateUpdateJob.WaitJobComplete();
                 this.directoryStateUpdateJob.Dispose();
             }
 
@@ -126,6 +113,7 @@ namespace PicSum.UIComponent.Contents.Common
 
             if (this.directoryHistoryaddJob != null)
             {
+                this.directoryHistoryaddJob.WaitJobComplete();
                 this.directoryHistoryaddJob.Dispose();
             }
 
@@ -140,6 +128,7 @@ namespace PicSum.UIComponent.Contents.Common
 
             if (this.bookmarkDeleteJob != null)
             {
+                this.bookmarkDeleteJob.WaitJobComplete();
                 this.bookmarkDeleteJob.Dispose();
             }
 
@@ -154,6 +143,7 @@ namespace PicSum.UIComponent.Contents.Common
 
             if (this.directoryViewCounterDeleteJob != null)
             {
+                this.directoryViewCounterDeleteJob.WaitJobComplete();
                 this.directoryViewCounterDeleteJob.Dispose();
             }
 
@@ -168,6 +158,7 @@ namespace PicSum.UIComponent.Contents.Common
 
             if (this.fileRatingUpdateJob != null)
             {
+                this.fileRatingUpdateJob.WaitJobComplete();
                 this.fileRatingUpdateJob.Dispose();
             }
 
@@ -182,6 +173,7 @@ namespace PicSum.UIComponent.Contents.Common
 
             if (this.fileTagDeleteJob != null)
             {
+                this.fileTagDeleteJob.WaitJobComplete();
                 this.fileTagDeleteJob.Dispose();
             }
 
