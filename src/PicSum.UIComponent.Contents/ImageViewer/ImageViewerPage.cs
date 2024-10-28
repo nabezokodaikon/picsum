@@ -630,7 +630,8 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                         }
 
                         this.ImageFileReadJob_Callback(_);
-                    });
+                    })
+                    .StartJob(this, param);
 
                 CommonJobs.Instance.ImageFileReadJob
                     .Callback(r =>
