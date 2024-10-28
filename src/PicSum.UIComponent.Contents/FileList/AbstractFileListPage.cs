@@ -91,7 +91,6 @@ namespace PicSum.UIComponent.Contents.FileList
         private bool disposed = false;
         private Dictionary<string, FileEntity> masterFileDictionary = null;
         private List<string> filterFilePathList = null;
-        private TwoWayJob<ThumbnailsGetJob, ThumbnailsGetParameter, ThumbnailImageResult> thumbnailsGetJob = null;
         private TwoWayJob<MultiFilesExportJob, MultiFilesExportParameter, ValueResult<string>> multiFilesExportJob = null;
 
         public override string SelectedFilePath { get; protected set; } = FileUtil.ROOT_DIRECTORY_PATH;
@@ -223,29 +222,6 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
-        private TwoWayJob<ThumbnailsGetJob, ThumbnailsGetParameter, ThumbnailImageResult> ThumbnailsGetJob
-        {
-            get
-            {
-                if (this.thumbnailsGetJob == null)
-                {
-                    this.thumbnailsGetJob = new();
-                    this.thumbnailsGetJob
-                        .Callback(_ =>
-                        {
-                            if (this.disposed)
-                            {
-                                return;
-                            }
-
-                            this.GetThumbnailsJob_Callback(_);
-                        });
-                }
-
-                return this.thumbnailsGetJob;
-            }
-        }
-
         private TwoWayJob<MultiFilesExportJob, MultiFilesExportParameter, ValueResult<string>> MultiFilesExportJob
         {
             get
@@ -305,8 +281,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
             if (disposing)
             {
-                this.thumbnailsGetJob?.Dispose();
-                this.thumbnailsGetJob = null;
+                CommonJobs.Instance.ThumbnailsGetJob.BeginCancel();
 
                 this.multiFilesExportJob?.Dispose();
                 this.multiFilesExportJob = null;
@@ -326,7 +301,8 @@ namespace PicSum.UIComponent.Contents.FileList
 
         protected override void OnInvalidated(InvalidateEventArgs e)
         {
-            this.ThumbnailsGetJob.BeginCancel();
+            CommonJobs.Instance.ThumbnailsGetJob.BeginCancel();
+
             base.OnInvalidated(e);
         }
 
@@ -967,7 +943,17 @@ namespace PicSum.UIComponent.Contents.FileList
                     ThumbnailHeight = thumbnailHeight,
                 };
 
-                this.ThumbnailsGetJob.StartJob(this, param);
+                CommonJobs.Instance.ThumbnailsGetJob
+                    .Callback(_ =>
+                    {
+                        if (this.disposed)
+                        {
+                            return;
+                        }
+
+                        this.GetThumbnailsJob_Callback(_);
+                    })
+                    .StartJob(this, param);
             }
         }
 

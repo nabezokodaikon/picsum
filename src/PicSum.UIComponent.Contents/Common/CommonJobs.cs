@@ -27,6 +27,7 @@ namespace PicSum.UIComponent.Contents.Common
         public TwoWayJob<ImageFileReadJob, ImageFileReadParameter, ImageFileReadResult> ImageFileReadJob { get; private set; } = new();
         public TwoWayJob<ImageFileLoadingJob, ImageFileReadParameter, ImageFileReadResult> ImageFileLoadingJob { get; private set; } = new();
         public OneWayJob<ImageFileCacheJob, ListParameter<string>> ImageFileCacheJob { get; private set; } = new();
+        public TwoWayJob<ThumbnailsGetJob, ThumbnailsGetParameter, ThumbnailImageResult> ThumbnailsGetJob { get; private set; } = new();
 
         private CommonJobs()
         {
@@ -65,6 +66,7 @@ namespace PicSum.UIComponent.Contents.Common
                 this.ImageFileReadJob?.Dispose();
                 this.ImageFileLoadingJob?.Dispose();
                 this.ImageFileCacheJob?.Dispose();
+                this.ThumbnailsGetJob?.Dispose();
             }
 
             this.disposed = true;
