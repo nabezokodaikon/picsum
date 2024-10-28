@@ -1,6 +1,5 @@
 using PicSum.Job.Common;
 using PicSum.Job.Entities;
-using PicSum.Job.Jobs;
 using PicSum.Job.Parameters;
 using PicSum.Job.Results;
 using PicSum.UIComponent.InfoPanel.Properties;
@@ -36,59 +35,11 @@ namespace PicSum.UIComponent.InfoPanel
         public event EventHandler<SelectedTagEventArgs> SelectedTag;
 
         private bool disposed = false;
-        private TwoWayJob<FileDeepInfoGetJob, FileDeepInfoGetParameter, FileDeepInfoGetResult> getFileInfoJob = null;
-        private TwoWayJob<TagsGetJob, ListResult<string>> getTagListJob = null;
 
         private FileDeepInfoGetResult fileInfoSource = null;
         private Font allTagFont = null;
         private readonly Image tagIcon = Resources.TagIcon;
         private string contextMenuOperationTag = string.Empty;
-
-        private TwoWayJob<FileDeepInfoGetJob, FileDeepInfoGetParameter, FileDeepInfoGetResult> GetFileInfoJob
-        {
-            get
-            {
-                if (this.getFileInfoJob == null)
-                {
-                    this.getFileInfoJob = new();
-                    this.getFileInfoJob
-                        .Callback(_ =>
-                        {
-                            if (this.disposed)
-                            {
-                                return;
-                            }
-
-                            this.GetFileInfoJob_Callback(_);
-                        });
-                }
-
-                return this.getFileInfoJob;
-            }
-        }
-
-        private TwoWayJob<TagsGetJob, ListResult<string>> GetTagListJob
-        {
-            get
-            {
-                if (this.getTagListJob == null)
-                {
-                    this.getTagListJob = new();
-                    this.getTagListJob
-                        .Callback(_ =>
-                        {
-                            if (this.disposed)
-                            {
-                                return;
-                            }
-
-                            this.GetTagListJob_Callback(_);
-                        });
-                }
-
-                return this.getTagListJob;
-            }
-        }
 
         private IList<string> FilePathList
         {
@@ -188,7 +139,17 @@ namespace PicSum.UIComponent.InfoPanel
                         ApplicationConstants.INFOPANEL_WIDTH)
                 };
 
-                this.GetFileInfoJob.StartJob(this, param);
+                CommonJobs.Instance.FileDeepInfoGetJob
+                    .Callback(_ =>
+                    {
+                        if (this.disposed)
+                        {
+                            return;
+                        }
+
+                        this.GetFileInfoJob_Callback(_);
+                    })
+                    .StartJob(this, param);
             }
             else
             {
@@ -205,12 +166,6 @@ namespace PicSum.UIComponent.InfoPanel
 
             if (disposing)
             {
-                this.getFileInfoJob?.Dispose();
-                this.getFileInfoJob = null;
-
-                this.getTagListJob?.Dispose();
-                this.getTagListJob = null;
-
                 this.components?.Dispose();
             }
 
@@ -595,7 +550,17 @@ namespace PicSum.UIComponent.InfoPanel
 
         private void WideComboBox_DropDownOpening(object sender, DropDownOpeningEventArgs e)
         {
-            this.GetTagListJob.StartJob(this);
+            CommonJobs.Instance.TagsGetJob
+                .Callback(_ =>
+                {
+                    if (this.disposed)
+                    {
+                        return;
+                    }
+
+                    this.GetTagListJob_Callback(_);
+                })
+                .StartJob(this);
         }
 
         private void WideComboBox_AddItem(object sender, AddItemEventArgs e)
