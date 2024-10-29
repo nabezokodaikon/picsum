@@ -1032,7 +1032,13 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private void FlowList_ItemExecute(object sender, EventArgs e)
         {
-            var filePath = this.filterFilePathList[this.flowList.GetSelectedIndexs()[0]];
+            var selectedIndexs = this.flowList.GetSelectedIndexs();
+            if (selectedIndexs.Count > 1)
+            {
+                return;
+            }
+
+            var filePath = this.filterFilePathList[selectedIndexs[0]];
             var file = this.masterFileDictionary[filePath];
             if (file.IsImageFile)
             {
