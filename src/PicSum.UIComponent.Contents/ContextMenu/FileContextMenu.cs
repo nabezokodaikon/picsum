@@ -204,7 +204,6 @@ namespace PicSum.UIComponent.Contents.ContextMenu
             this.fileNewWindowOpenMenuItem.Visible = isVisible;
             this.exportMenuItem.Visible = isVisible;
             this.fileBookmarkMenuItem.Visible = isVisible;
-            this.fileOpen.Visible = isVisible;
         }
 
         private void SetImageFilesMenuItemVisible(bool isVisible)
@@ -219,6 +218,7 @@ namespace PicSum.UIComponent.Contents.ContextMenu
 
         private void SetFileMenuItemVisible(bool isVisible)
         {
+            this.fileOpen.Visible = isVisible;
             this.saveDirectoryOpen.Visible = isVisible;
         }
 

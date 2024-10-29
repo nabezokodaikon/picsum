@@ -1018,6 +1018,10 @@ namespace PicSum.UIComponent.Contents.FileList
                     this.Icon);
                 this.OnOpenPage(new BrowserPageEventArgs(PageOpenType.OverlapTab, param));
             }
+            else if (file.IsFile)
+            {
+                FileUtil.OpenFile(filePath);
+            }
             else if (!file.IsFile)
             {
                 var param = new DirectoryFileListPageParameter(file.FilePath);
@@ -1051,6 +1055,10 @@ namespace PicSum.UIComponent.Contents.FileList
                     this.Title,
                     this.Icon);
                 this.OnOpenPage(new BrowserPageEventArgs(PageOpenType.OverlapTab, param));
+            }
+            else if (file.IsFile)
+            {
+                FileUtil.OpenFile(filePath);
             }
             else if (!file.IsFile)
             {
