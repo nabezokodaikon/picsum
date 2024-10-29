@@ -37,7 +37,7 @@ namespace PicSum.Main.UIComponent
 
                         CommonJobs.Instance.StartDirectoryViewHistoryAddJob(sender, new ValueParameter<string>(dir));
 
-                        searchJob.SetCurrentSender(sender)
+                        searchJob.Initialize(sender)
                             .Callback(e =>
                             {
                                 var title = FileUtil.IsDirectory(subParamter.FilePath) ?
@@ -630,7 +630,7 @@ namespace PicSum.Main.UIComponent
 
         private void TagDropToolButton_DropDownOpening(object sender, DropDownOpeningEventArgs e)
         {
-            CommonJobs.Instance.TagsGetJob.SetCurrentSender(this)
+            CommonJobs.Instance.TagsGetJob.Initialize(this)
                 .Callback(_ =>
                 {
                     if (this.disposed)

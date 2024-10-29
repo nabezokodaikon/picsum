@@ -79,9 +79,14 @@ namespace SWF.Core.Job
             this.disposed = true;
         }
 
-        public TwoWayJob<TJob, TJobParameter, TJobResult> SetCurrentSender(Control sender)
+        public TwoWayJob<TJob, TJobParameter, TJobResult> Initialize(Control sender)
         {
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
+
+            this.callbackAction = null;
+            this.cancelAction = null;
+            this.catchAction = null;
+            this.completeAction = null;
 
             this.CurrentSender = sender;
             return this;
@@ -91,6 +96,11 @@ namespace SWF.Core.Job
         {
             ArgumentNullException.ThrowIfNull(action, nameof(action));
 
+            if (this.callbackAction != null)
+            {
+                throw new InvalidOperationException("コールバックアクションが初期化されていません。");
+            }
+
             this.callbackAction = action;
             return this;
         }
@@ -98,6 +108,11 @@ namespace SWF.Core.Job
         public TwoWayJob<TJob, TJobParameter, TJobResult> Cancel(Action action)
         {
             ArgumentNullException.ThrowIfNull(action, nameof(action));
+
+            if (this.cancelAction != null)
+            {
+                throw new InvalidOperationException("キャンセルアクションが初期化されていません。");
+            }
 
             this.cancelAction = action;
             return this;
@@ -107,6 +122,11 @@ namespace SWF.Core.Job
         {
             ArgumentNullException.ThrowIfNull(action, nameof(action));
 
+            if (this.catchAction != null)
+            {
+                throw new InvalidOperationException("例外アクションが初期化されていません。");
+            }
+
             this.catchAction = action;
             return this;
         }
@@ -114,6 +134,11 @@ namespace SWF.Core.Job
         public TwoWayJob<TJob, TJobParameter, TJobResult> Complete(Action action)
         {
             ArgumentNullException.ThrowIfNull(action, nameof(action));
+
+            if (this.completeAction != null)
+            {
+                throw new InvalidOperationException("完了アクションが初期化されていません。");
+            }
 
             this.completeAction = action;
             return this;
@@ -130,11 +155,9 @@ namespace SWF.Core.Job
 
             this.BeginCancel();
 
-            var job = new TJob
-            {
-                Sender = sender,
-                Parameter = parameter,
-            };
+            var job = this.CreateJob();
+            job.Sender = sender;
+            job.Parameter = parameter;
 
             this.jobQueue.Enqueue(job);
 
@@ -150,10 +173,8 @@ namespace SWF.Core.Job
 
             this.BeginCancel();
 
-            var job = new TJob
-            {
-                Sender = sender,
-            };
+            var job = this.CreateJob();
+            job.Sender = sender;
 
             this.jobQueue.Enqueue(job);
 
@@ -190,6 +211,61 @@ namespace SWF.Core.Job
                 }
             }
             Logger.Debug("ジョブキューが完了しました。");
+        }
+
+        private TJob CreateJob()
+        {
+            var job = new TJob();
+
+            if (this.callbackAction != null)
+            {
+                var innerAction = this.callbackAction;
+                job.CallbackAction = _ =>
+                {
+                    UIThreadAccessor.Instance.Post(job, this.CurrentSender, () =>
+                    {
+                        innerAction.Invoke(_);
+                    });
+                };
+            }
+
+            if (this.cancelAction != null)
+            {
+                var innerAction = this.cancelAction;
+                job.CancelAction = () =>
+                {
+                    UIThreadAccessor.Instance.Post(job, this.CurrentSender, () =>
+                    {
+                        innerAction.Invoke();
+                    });
+                };
+            }
+
+            if (this.catchAction != null)
+            {
+                var innerAction = this.catchAction;
+                job.CatchAction = _ =>
+                {
+                    UIThreadAccessor.Instance.Post(job, this.CurrentSender, () =>
+                    {
+                        innerAction.Invoke(_);
+                    });
+                };
+            }
+
+            if (this.completeAction != null)
+            {
+                var innerAction = this.completeAction;
+                job.CompleteAction = () =>
+                {
+                    UIThreadAccessor.Instance.Post(job, this.CurrentSender, () =>
+                    {
+                        innerAction.Invoke();
+                    });
+                };
+            }
+
+            return job;
         }
 
         private void DoWork(CancellationToken token)
@@ -234,38 +310,6 @@ namespace SWF.Core.Job
                     }
 
                     previewJob = currentJob;
-
-                    currentJob.CallbackAction = r =>
-                    {
-                        UIThreadAccessor.Instance.Post(currentJob, this.CurrentSender, () =>
-                        {
-                            this.callbackAction?.Invoke(r);
-                        });
-                    };
-
-                    currentJob.CancelAction = () =>
-                    {
-                        UIThreadAccessor.Instance.Post(currentJob, this.CurrentSender, () =>
-                        {
-                            this.cancelAction?.Invoke();
-                        });
-                    };
-
-                    currentJob.CatchAction = e =>
-                    {
-                        UIThreadAccessor.Instance.Post(currentJob, this.CurrentSender, () =>
-                        {
-                            this.catchAction?.Invoke(e);
-                        });
-                    };
-
-                    currentJob.CompleteAction = () =>
-                    {
-                        UIThreadAccessor.Instance.Post(currentJob, this.CurrentSender, () =>
-                        {
-                            this.completeAction?.Invoke();
-                        });
-                    };
 
                     Logger.Debug($"{currentJob.ID} を実行します。");
                     var sw = Stopwatch.StartNew();

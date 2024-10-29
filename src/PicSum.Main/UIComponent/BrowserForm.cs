@@ -147,7 +147,7 @@ namespace PicSum.Main.UIComponent
                 {
                     using (var thumbnailDBCleanupJob = new OneWayJob<ThumbnailDBCleanupJob, ValueParameter<string>>())
                     {
-                        thumbnailDBCleanupJob.SetCurrentSender(this)
+                        thumbnailDBCleanupJob.Initialize(this)
                             .Catch(ex =>
                             {
                                 ExceptionUtil.ShowErrorDialog("The thumbnail database cleanup process failed.", ex);
@@ -156,7 +156,7 @@ namespace PicSum.Main.UIComponent
                             {
                                 using (var startupJob = new TwoWayJob<StartupJob, StartupPrameter, EmptyResult>())
                                 {
-                                    startupJob.SetCurrentSender(this)
+                                    startupJob.Initialize(this)
                                         .Catch(ex =>
                                         {
                                             ExceptionUtil.ShowErrorDialog("Failed to start.", ex);
@@ -165,7 +165,7 @@ namespace PicSum.Main.UIComponent
                                         {
                                             using (var fileInfoDBCleanupJob = new OneWayJob<FileInfoDBCleanupJob>())
                                             {
-                                                fileInfoDBCleanupJob.SetCurrentSender(this)
+                                                fileInfoDBCleanupJob.Initialize(this)
                                                     .Catch(ex =>
                                                     {
                                                         ExceptionUtil.ShowErrorDialog("The file information database cleanup process failed.", ex);
@@ -191,7 +191,7 @@ namespace PicSum.Main.UIComponent
                 {
                     using (var startupJob = new TwoWayJob<StartupJob, StartupPrameter, EmptyResult>())
                     {
-                        startupJob.SetCurrentSender(this)
+                        startupJob.Initialize(this)
                             .Catch(ex =>
                              {
                                  ExceptionUtil.ShowErrorDialog("Failed to start.", ex);

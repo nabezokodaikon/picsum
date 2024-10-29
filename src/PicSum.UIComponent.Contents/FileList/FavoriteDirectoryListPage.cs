@@ -65,7 +65,7 @@ namespace PicSum.UIComponent.Contents.FileList
                     Count = FileListPageConfig.FavoriteDirectoryCount
                 };
 
-                job.SetCurrentSender(this)
+                job.Initialize(this)
                     .Callback(_ =>
                     {
                         if (this.disposed)

@@ -32,7 +32,7 @@ namespace PicSum.UIComponent.Contents.FileList
             {
                 using (var job = new TwoWayJob<FilesGetByDirectoryJob, ValueParameter<string>, DirectoryGetResult>())
                 {
-                    job.SetCurrentSender(sender)
+                    job.Initialize(sender)
                         .Callback(e =>
                         {
                             var imageFiles = e.FileInfoList
@@ -90,7 +90,7 @@ namespace PicSum.UIComponent.Contents.FileList
             {
                 var param = new ValueParameter<string>(this.parameter.DirectoryPath);
 
-                job.SetCurrentSender(this)
+                job.Initialize(this)
                     .Callback(_ =>
                     {
                         if (this.disposed)
@@ -165,7 +165,7 @@ namespace PicSum.UIComponent.Contents.FileList
                     IsNext = false,
                 };
 
-                job.SetCurrentSender(this)
+                job.Initialize(this)
                     .Callback(_ =>
                     {
                         if (this.disposed)
@@ -195,7 +195,7 @@ namespace PicSum.UIComponent.Contents.FileList
                     CurrentParameter = new ValueEntity<string>(this.parameter.DirectoryPath)
                 };
 
-                job.SetCurrentSender(this)
+                job.Initialize(this)
                     .Callback(_ =>
                     {
                         if (this.disposed)
