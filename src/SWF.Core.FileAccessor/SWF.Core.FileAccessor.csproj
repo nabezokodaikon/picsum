@@ -25,6 +25,10 @@
 	<NoWarn>1701;1702; CA1416</NoWarn>
   </PropertyGroup>
 
+  <PropertyGroup>
+	<IsTrimmable>true</IsTrimmable>
+  </PropertyGroup>
+  
   <ItemGroup>
     <ProjectReference Include="..\SWF.Core.Base\SWF.Core.Base.csproj" />
     <ProjectReference Include="..\WinApi\WinApi.csproj" />

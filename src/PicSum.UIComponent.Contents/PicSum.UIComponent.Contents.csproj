@@ -24,6 +24,10 @@
     <DebugType>none</DebugType>
     <NoWarn>1701;1702; CA1016; IDE0290; CA1822; CA1824</NoWarn>
   </PropertyGroup>
+
+  <PropertyGroup>
+	<IsTrimmable>true</IsTrimmable>
+  </PropertyGroup>
   
   <ItemGroup>
     <Reference Update="System.Core">

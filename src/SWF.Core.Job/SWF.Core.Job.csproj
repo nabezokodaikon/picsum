@@ -21,6 +21,10 @@
 	<DebugType>none</DebugType>
 	<NoWarn>1701;1702; CA1016; CA1822; CA1824</NoWarn>
   </PropertyGroup>
+
+  <PropertyGroup>
+	<IsTrimmable>true</IsTrimmable>
+  </PropertyGroup>
   
   <ItemGroup>
     <PackageReference Include="NLog" Version="5.3.4" />

@@ -25,6 +25,10 @@
 	<DebugType>none</DebugType>
 	<NoWarn>1701;1702; CA1016; CA1822; CA1824</NoWarn>
   </PropertyGroup>
+
+  <PropertyGroup>
+	<IsTrimmable>true</IsTrimmable>
+  </PropertyGroup>
   
   <ItemGroup>
     <ProjectReference Include="..\WinApi\WinApi.csproj" />

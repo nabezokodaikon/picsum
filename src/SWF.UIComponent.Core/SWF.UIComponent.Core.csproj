@@ -26,6 +26,10 @@
 	<NoWarn>1701;1702; CA1822</NoWarn>
   </PropertyGroup>
 
+  <PropertyGroup>
+	<IsTrimmable>true</IsTrimmable>
+  </PropertyGroup>
+  
   <ItemGroup>
     <ProjectReference Include="..\WinApi\WinApi.csproj" />
   </ItemGroup>
