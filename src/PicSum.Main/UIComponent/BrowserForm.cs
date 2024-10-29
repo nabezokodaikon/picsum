@@ -175,14 +175,17 @@ namespace PicSum.Main.UIComponent
                                                         this.CreateBrowserMainPanel();
                                                         BrowserForm.isStartUp = false;
                                                     })
+                                                    .BeginCancel()
                                                     .StartJob(this)
                                                     .WaitJobComplete();
                                             }
                                         })
+                                        .BeginCancel()
                                         .StartJob(this, startupParameter)
                                         .WaitJobComplete();
                                 }
                             })
+                            .BeginCancel()
                             .StartJob(this, new ValueParameter<string>(FileUtil.DATABASE_DIRECTORY))
                             .WaitJobComplete();
                     }
@@ -201,6 +204,7 @@ namespace PicSum.Main.UIComponent
                                 this.CreateBrowserMainPanel();
                                 BrowserForm.isStartUp = false;
                             })
+                            .BeginCancel()
                             .StartJob(this, startupParameter)
                             .WaitJobComplete();
                     }

@@ -191,6 +191,7 @@ namespace PicSum.UIComponent.AddressBar
                     this.Invalidate();
                     this.Update();
                 })
+                .BeginCancel()
                 .StartJob(this, param);
         }
 

@@ -81,6 +81,7 @@ namespace PicSum.UIComponent.AddressBar
 
                         this.DirectoryViewHistoryGetJob_Callback(_);
                     })
+                    .BeginCancel()
                     .StartJob(this.AddressBar);
             }
         }

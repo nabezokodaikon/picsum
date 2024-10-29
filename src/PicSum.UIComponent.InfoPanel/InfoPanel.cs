@@ -149,6 +149,7 @@ namespace PicSum.UIComponent.InfoPanel
 
                         this.GetFileInfoJob_Callback(_);
                     })
+                    .BeginCancel()
                     .StartJob(this, param);
             }
             else
@@ -560,6 +561,7 @@ namespace PicSum.UIComponent.InfoPanel
 
                     this.GetTagListJob_Callback(_);
                 })
+                .BeginCancel()
                 .StartJob(this);
         }
 

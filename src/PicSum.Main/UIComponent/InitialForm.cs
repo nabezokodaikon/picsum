@@ -70,6 +70,7 @@ namespace PicSum.Main.UIComponent
                     }
                     form.Activate();
                 })
+                .BeginCancel()
                 .StartJob(this);
 
             var form = this.browserManager.GetActiveBrowser();

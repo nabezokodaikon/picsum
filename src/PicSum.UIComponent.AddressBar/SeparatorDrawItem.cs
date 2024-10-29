@@ -108,6 +108,7 @@ namespace PicSum.UIComponent.AddressBar
 
                             this.GetSubDirectoryJob_Callback(_);
                         })
+                        .BeginCancel()
                         .StartJob(this.AddressBar, param);
                 }
             }

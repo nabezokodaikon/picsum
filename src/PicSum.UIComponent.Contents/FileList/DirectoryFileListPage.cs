@@ -50,6 +50,7 @@ namespace PicSum.UIComponent.Contents.FileList
                                 sortImageFiles, param.SelectedFilePath, param.PageTitle, param.PageIcon);
                             param.OnGetImageFiles(eventArgs);
                         })
+                        .BeginCancel()
                         .StartJob(sender, new ValueParameter<string>(param.SourcesKey))
                         .WaitJobComplete();
                 }
@@ -100,6 +101,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
                         this.SearchJob_Callback(_);
                     })
+                    .BeginCancel()
                     .StartJob(this, param)
                     .WaitJobComplete();
             }
@@ -175,6 +177,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
                         this.GetNextDirectoryProcess_Callback(_);
                     })
+                    .BeginCancel()
                     .StartJob(this, param)
                     .WaitJobComplete();
             }
@@ -205,6 +208,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
                         this.GetNextDirectoryProcess_Callback(_);
                     })
+                    .BeginCancel()
                     .StartJob(this, param)
                     .WaitJobComplete();
             }

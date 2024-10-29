@@ -50,6 +50,7 @@ namespace PicSum.Main.UIComponent
                                     FileIconCash.SmallDirectoryIcon);
                                 parameter.OnGetImageFiles(eventArgs);
                             })
+                            .BeginCancel()
                             .StartJob(sender, subParamter)
                             .WaitJobComplete();
                     }
@@ -640,6 +641,7 @@ namespace PicSum.Main.UIComponent
 
                     this.GetTagListJob_Callback(_);
                 })
+                .BeginCancel()
                 .StartJob(this);
         }
 

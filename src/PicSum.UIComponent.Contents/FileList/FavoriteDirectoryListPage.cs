@@ -75,6 +75,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
                         this.SearchJob_Callback(_);
                     })
+                    .BeginCancel()
                     .StartJob(this, param)
                     .WaitJobComplete();
             }

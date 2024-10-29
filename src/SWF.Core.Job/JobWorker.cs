@@ -153,8 +153,6 @@ namespace SWF.Core.Job
                 throw new InvalidOperationException("コンテキストが一致しません。");
             }
 
-            this.BeginCancel();
-
             var job = this.CreateJob();
             job.Sender = sender;
             job.Parameter = parameter;
@@ -171,8 +169,6 @@ namespace SWF.Core.Job
                 throw new InvalidOperationException("コンテキストが一致しません。");
             }
 
-            this.BeginCancel();
-
             var job = this.CreateJob();
             job.Sender = sender;
 
@@ -181,12 +177,14 @@ namespace SWF.Core.Job
             return this;
         }
 
-        public void BeginCancel()
+        public TwoWayJob<TJob, TJobParameter, TJobResult> BeginCancel()
         {
             foreach (var job in this.jobQueue.ToArray())
             {
                 job.BeginCancel();
             }
+
+            return this;
         }
 
         public void WaitJobComplete()

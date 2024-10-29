@@ -954,6 +954,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
                         this.GetThumbnailsJob_Callback(_);
                     })
+                    .BeginCancel()
                     .StartJob(this, param);
             }
         }
@@ -1231,7 +1232,9 @@ namespace PicSum.UIComponent.Contents.FileList
                             ExportDirecotry = fbd.SelectedPath,
                         };
 
-                        this.MultiFilesExportJob.Initialize(this).StartJob(this, param);
+                        this.MultiFilesExportJob.Initialize(this)
+                            .BeginCancel()
+                            .StartJob(this, param);
                         CommonConfig.ExportDirectoryPath = fbd.SelectedPath;
                     }
                 }

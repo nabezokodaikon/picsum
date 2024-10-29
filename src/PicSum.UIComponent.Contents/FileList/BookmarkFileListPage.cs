@@ -52,6 +52,7 @@ namespace PicSum.UIComponent.Contents.FileList
                                 imageFiles, param.SelectedFilePath, title, FileIconCash.SmallDirectoryIcon);
                             param.OnGetImageFiles(eventArgs);
                         })
+                        .BeginCancel()
                         .StartJob(sender, new ValueParameter<string>(dir))
                         .WaitJobComplete();
                 }
@@ -87,6 +88,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
                         this.SearchJob_Callback(_);
                     })
+                    .BeginCancel()
                     .StartJob(this)
                     .WaitJobComplete();
             }
