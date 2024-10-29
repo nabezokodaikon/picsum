@@ -9,6 +9,7 @@
     <Platforms>AnyCPU;x64;x86;ARM64;ARM32</Platforms>
     <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
 	<RuntimeIdentifiers>win-x86;win-x64</RuntimeIdentifiers>
+	<PublishReadyToRun>true</PublishReadyToRun>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
