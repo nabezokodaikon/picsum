@@ -303,14 +303,6 @@ namespace SWF.Core.Job
                         token.ThrowIfCancellationRequested();
                     }
 
-                    if (!this.jobQueue.TryDequeue(out var completeJob))
-                    {
-                        if (completeJob != null && currentJob != completeJob)
-                        {
-                            throw new InvalidOperationException("実行したジョブと完了したジョブが一致しません。");
-                        }
-                    }
-
                     token.WaitHandle.WaitOne(1);
                 }
             }
