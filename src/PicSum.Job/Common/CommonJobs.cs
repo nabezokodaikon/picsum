@@ -15,6 +15,7 @@ namespace PicSum.Job.Common
         public static CommonJobs Instance = new();
 
         private bool disposed = false;
+
         private OneWayJob<BookmarkAddJob, ValueParameter<string>>? addBookmarkJob = null;
         private OneWayJob<SingleFileExportJob, SingleFileExportParameter>? singleFileExportJob = null;
         private OneWayJob<DirectoryStateUpdateJob, DirectoryStateParameter>? directoryStateUpdateJob = null;
@@ -26,16 +27,27 @@ namespace PicSum.Job.Common
         private OneWayJob<FileTagAddJob, FileTagUpdateParameter>? fileTagAddJob = null;
         private OneWayJob<GCCollectRunJob>? gcCollectRunJob = null;
 
-        public TwoWayJob<ImageFileReadJob, ImageFileReadParameter, ImageFileReadResult> ImageFileReadJob { get; private set; } = new();
-        public TwoWayJob<ImageFileLoadingJob, ImageFileReadParameter, ImageFileReadResult> ImageFileLoadingJob { get; private set; } = new();
-        public OneWayJob<ImageFileCacheJob, ListParameter<string>> ImageFileCacheJob { get; private set; } = new();
-        public TwoWayJob<ThumbnailsGetJob, ThumbnailsGetParameter, ThumbnailImageResult> ThumbnailsGetJob { get; private set; } = new();
-        public TwoWayJob<SubDirectoriesGetJob, ValueParameter<string>, ListResult<FileShallowInfoEntity>> SubDirectoriesGetJob { get; private set; } = new();
-        public TwoWayJob<DirectoryViewHistoryGetJob, ListResult<FileShallowInfoEntity>> DirectoryViewHistoryGetJob { get; private set; } = new();
-        public TwoWayJob<AddressInfoGetJob, ValueParameter<string>, AddressInfoGetResult> AddressInfoGetJob { get; private set; } = new();
-        public TwoWayJob<TagsGetJob, ListResult<string>> TagsGetJob { get; private set; } = new();
-        public TwoWayJob<FileDeepInfoGetJob, FileDeepInfoGetParameter, FileDeepInfoGetResult> FileDeepInfoGetJob { get; private set; } = new();
-        public TwoWayJob<PipeServerJob, ValueResult<string>> PipeServerJob { get; private set; } = new();
+        private TwoWayJob<ImageFileReadJob, ImageFileReadParameter, ImageFileReadResult>? imageFileReadJob = null;
+        private TwoWayJob<ImageFileLoadingJob, ImageFileReadParameter, ImageFileReadResult>? imageFileLoadingJob = null;
+        private OneWayJob<ImageFileCacheJob, ListParameter<string>>? imageFileCacheJob = null;
+        private TwoWayJob<ThumbnailsGetJob, ThumbnailsGetParameter, ThumbnailImageResult>? thumbnailsGetJob = null;
+        private TwoWayJob<SubDirectoriesGetJob, ValueParameter<string>, ListResult<FileShallowInfoEntity>>? subDirectoriesGetJob = null;
+        private TwoWayJob<DirectoryViewHistoryGetJob, ListResult<FileShallowInfoEntity>>? directoryViewHistoryGetJob = null;
+        private TwoWayJob<AddressInfoGetJob, ValueParameter<string>, AddressInfoGetResult>? addressInfoGetJob = null;
+        private TwoWayJob<TagsGetJob, ListResult<string>>? tagsGetJob = null;
+        private TwoWayJob<FileDeepInfoGetJob, FileDeepInfoGetParameter, FileDeepInfoGetResult>? fileDeepInfoGetJob = null;
+        private TwoWayJob<PipeServerJob, ValueResult<string>>? pipeServerJob = null;
+
+        public TwoWayJob<ImageFileReadJob, ImageFileReadParameter, ImageFileReadResult> ImageFileReadJob => this.imageFileReadJob ??= new();
+        public TwoWayJob<ImageFileLoadingJob, ImageFileReadParameter, ImageFileReadResult> ImageFileLoadingJob => this.imageFileLoadingJob ??= new();
+        public OneWayJob<ImageFileCacheJob, ListParameter<string>> ImageFileCacheJob => this.imageFileCacheJob ??= new();
+        public TwoWayJob<ThumbnailsGetJob, ThumbnailsGetParameter, ThumbnailImageResult> ThumbnailsGetJob => this.thumbnailsGetJob ??= new();
+        public TwoWayJob<SubDirectoriesGetJob, ValueParameter<string>, ListResult<FileShallowInfoEntity>> SubDirectoriesGetJob => this.subDirectoriesGetJob ??= new();
+        public TwoWayJob<DirectoryViewHistoryGetJob, ListResult<FileShallowInfoEntity>> DirectoryViewHistoryGetJob => this.directoryViewHistoryGetJob ??= new();
+        public TwoWayJob<AddressInfoGetJob, ValueParameter<string>, AddressInfoGetResult> AddressInfoGetJob => this.addressInfoGetJob ??= new();
+        public TwoWayJob<TagsGetJob, ListResult<string>> TagsGetJob => this.tagsGetJob ??= new();
+        public TwoWayJob<FileDeepInfoGetJob, FileDeepInfoGetParameter, FileDeepInfoGetResult> FileDeepInfoGetJob => this.fileDeepInfoGetJob ??= new();
+        public TwoWayJob<PipeServerJob, ValueResult<string>> PipeServerJob => this.pipeServerJob ??= new();
 
         private CommonJobs()
         {
@@ -73,16 +85,16 @@ namespace PicSum.Job.Common
                 this.fileTagAddJob?.Dispose();
                 this.gcCollectRunJob?.Dispose();
 
-                this.ImageFileReadJob?.Dispose();
-                this.ImageFileLoadingJob?.Dispose();
-                this.ImageFileCacheJob?.Dispose();
-                this.ThumbnailsGetJob?.Dispose();
-                this.SubDirectoriesGetJob?.Dispose();
-                this.DirectoryViewHistoryGetJob?.Dispose();
-                this.AddressInfoGetJob?.Dispose();
-                this.TagsGetJob?.Dispose();
-                this.FileDeepInfoGetJob?.Dispose();
-                this.PipeServerJob?.Dispose();
+                this.imageFileReadJob?.Dispose();
+                this.imageFileLoadingJob?.Dispose();
+                this.imageFileCacheJob?.Dispose();
+                this.thumbnailsGetJob?.Dispose();
+                this.subDirectoriesGetJob?.Dispose();
+                this.directoryViewHistoryGetJob?.Dispose();
+                this.addressInfoGetJob?.Dispose();
+                this.tagsGetJob?.Dispose();
+                this.fileDeepInfoGetJob?.Dispose();
+                this.pipeServerJob?.Dispose();
             }
 
             this.disposed = true;
