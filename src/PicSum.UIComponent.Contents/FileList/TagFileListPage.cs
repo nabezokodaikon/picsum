@@ -1,6 +1,5 @@
 using PicSum.Job.Common;
 using PicSum.Job.Entities;
-using PicSum.Job.Jobs;
 using PicSum.Job.Parameters;
 using PicSum.UIComponent.Contents.Common;
 using PicSum.UIComponent.Contents.Parameter;
@@ -30,30 +29,26 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             return sender =>
             {
-                using (var job = new TwoWayJob<FilesGetByTagJob, ValueParameter<string>, ListResult<FileShallowInfoEntity>>())
-                {
-                    job.Initialize()
-                        .Callback(e =>
+                CommonJobs.Instance.FilesGetByTagJob.Initialize()
+                    .Callback(e =>
+                    {
+                        var imageFiles = e
+                            .Where(fileInfo => fileInfo.IsImageFile);
+                        var sortImageFiles = GetSortFiles(imageFiles, param.SortInfo)
+                            .Select(fileInfo => fileInfo.FilePath)
+                            .ToArray();
+
+                        if (!FileUtil.IsImageFile(param.SelectedFilePath))
                         {
-                            var imageFiles = e
-                                .Where(fileInfo => fileInfo.IsImageFile);
-                            var sortImageFiles = GetSortFiles(imageFiles, param.SortInfo)
-                                .Select(fileInfo => fileInfo.FilePath)
-                                .ToArray();
+                            throw new SWFException($"画像ファイルが選択されていません。'{param.SelectedFilePath}'");
+                        }
 
-                            if (!FileUtil.IsImageFile(param.SelectedFilePath))
-                            {
-                                throw new SWFException($"画像ファイルが選択されていません。'{param.SelectedFilePath}'");
-                            }
-
-                            var eventArgs = new GetImageFilesEventArgs(
-                                sortImageFiles, param.SelectedFilePath, param.PageTitle, param.PageIcon);
-                            param.OnGetImageFiles(eventArgs);
-                        })
-                        .BeginCancel()
-                        .StartJob(sender, new ValueParameter<string>(param.SourcesKey))
-                        .WaitJobComplete();
-                }
+                        var eventArgs = new GetImageFilesEventArgs(
+                            sortImageFiles, param.SelectedFilePath, param.PageTitle, param.PageIcon);
+                        param.OnGetImageFiles(eventArgs);
+                    })
+                    .BeginCancel()
+                    .StartJob(sender, new ValueParameter<string>(param.SourcesKey));
             };
         }
 
@@ -74,24 +69,20 @@ namespace PicSum.UIComponent.Contents.FileList
 
         protected override void OnLoad(EventArgs e)
         {
-            using (var job = new TwoWayJob<FilesGetByTagJob, ValueParameter<string>, ListResult<FileShallowInfoEntity>>())
-            {
-                var param = new ValueParameter<string>(this.parameter.Tag);
+            var param = new ValueParameter<string>(this.parameter.Tag);
 
-                job.Initialize()
-                    .Callback(_ =>
+            CommonJobs.Instance.FilesGetByTagJob.Initialize()
+                .Callback(_ =>
+                {
+                    if (this.disposed)
                     {
-                        if (this.disposed)
-                        {
-                            return;
-                        }
+                        return;
+                    }
 
-                        this.SearchJob_Callback(_);
-                    })
-                    .BeginCancel()
-                    .StartJob(this, param)
-                    .WaitJobComplete();
-            }
+                    this.SearchJob_Callback(_);
+                })
+                .BeginCancel()
+                .StartJob(this, param);
 
             base.OnLoad(e);
         }

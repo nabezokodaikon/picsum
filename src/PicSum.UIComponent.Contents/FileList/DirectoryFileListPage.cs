@@ -1,6 +1,5 @@
 using PicSum.Job.Common;
 using PicSum.Job.Entities;
-using PicSum.Job.Jobs;
 using PicSum.Job.Parameters;
 using PicSum.Job.Results;
 using PicSum.UIComponent.Contents.Common;
@@ -30,30 +29,26 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             return sender =>
             {
-                using (var job = new TwoWayJob<FilesGetByDirectoryJob, ValueParameter<string>, DirectoryGetResult>())
-                {
-                    job.Initialize()
-                        .Callback(e =>
+                CommonJobs.Instance.FilesGetByDirectoryJob.Initialize()
+                    .Callback(e =>
+                    {
+                        var imageFiles = e.FileInfoList
+                            .Where(fileInfo => fileInfo.IsImageFile);
+                        var sortImageFiles = GetSortFiles(imageFiles, param.SortInfo)
+                            .Select(fileInfo => fileInfo.FilePath)
+                            .ToArray();
+
+                        if (!FileUtil.IsImageFile(param.SelectedFilePath))
                         {
-                            var imageFiles = e.FileInfoList
-                                .Where(fileInfo => fileInfo.IsImageFile);
-                            var sortImageFiles = GetSortFiles(imageFiles, param.SortInfo)
-                                .Select(fileInfo => fileInfo.FilePath)
-                                .ToArray();
+                            throw new SWFException($"画像ファイルが選択されていません。'{param.SelectedFilePath}'");
+                        }
 
-                            if (!FileUtil.IsImageFile(param.SelectedFilePath))
-                            {
-                                throw new SWFException($"画像ファイルが選択されていません。'{param.SelectedFilePath}'");
-                            }
-
-                            var eventArgs = new GetImageFilesEventArgs(
-                                sortImageFiles, param.SelectedFilePath, param.PageTitle, param.PageIcon);
-                            param.OnGetImageFiles(eventArgs);
-                        })
-                        .BeginCancel()
-                        .StartJob(sender, new ValueParameter<string>(param.SourcesKey))
-                        .WaitJobComplete();
-                }
+                        var eventArgs = new GetImageFilesEventArgs(
+                            sortImageFiles, param.SelectedFilePath, param.PageTitle, param.PageIcon);
+                        param.OnGetImageFiles(eventArgs);
+                    })
+                    .BeginCancel()
+                    .StartJob(sender, new ValueParameter<string>(param.SourcesKey));
             };
         }
 
@@ -87,24 +82,20 @@ namespace PicSum.UIComponent.Contents.FileList
 
         protected override void OnLoad(EventArgs e)
         {
-            using (var job = new TwoWayJob<FilesGetByDirectoryJob, ValueParameter<string>, DirectoryGetResult>())
-            {
-                var param = new ValueParameter<string>(this.parameter.DirectoryPath);
+            var param = new ValueParameter<string>(this.parameter.DirectoryPath);
 
-                job.Initialize()
-                    .Callback(_ =>
+            CommonJobs.Instance.FilesGetByDirectoryJob.Initialize()
+                .Callback(_ =>
+                {
+                    if (this.disposed)
                     {
-                        if (this.disposed)
-                        {
-                            return;
-                        }
+                        return;
+                    }
 
-                        this.SearchJob_Callback(_);
-                    })
-                    .BeginCancel()
-                    .StartJob(this, param)
-                    .WaitJobComplete();
-            }
+                    this.SearchJob_Callback(_);
+                })
+                .BeginCancel()
+                .StartJob(this, param);
 
             base.OnLoad(e);
         }
@@ -159,28 +150,24 @@ namespace PicSum.UIComponent.Contents.FileList
                 return;
             }
 
-            using (var job = new TwoWayJob<NextDirectoryGetJob, NextDirectoryGetParameter<string>, ValueResult<string>>())
+            var param = new NextDirectoryGetParameter<string>
             {
-                var param = new NextDirectoryGetParameter<string>
+                CurrentParameter = new ValueEntity<string>(this.parameter.DirectoryPath),
+                IsNext = false,
+            };
+
+            CommonJobs.Instance.NextDirectoryGetJob.Initialize()
+                .Callback(_ =>
                 {
-                    CurrentParameter = new ValueEntity<string>(this.parameter.DirectoryPath),
-                    IsNext = false,
-                };
-
-                job.Initialize()
-                    .Callback(_ =>
+                    if (this.disposed)
                     {
-                        if (this.disposed)
-                        {
-                            return;
-                        }
+                        return;
+                    }
 
-                        this.GetNextDirectoryProcess_Callback(_);
-                    })
-                    .BeginCancel()
-                    .StartJob(this, param)
-                    .WaitJobComplete();
-            }
+                    this.GetNextDirectoryProcess_Callback(_);
+                })
+                .BeginCancel()
+                .StartJob(this, param);
         }
 
         protected override void OnMoveNextButtonClick(EventArgs e)
@@ -190,28 +177,24 @@ namespace PicSum.UIComponent.Contents.FileList
                 return;
             }
 
-            using (var job = new TwoWayJob<NextDirectoryGetJob, NextDirectoryGetParameter<string>, ValueResult<string>>())
+            var param = new NextDirectoryGetParameter<string>
             {
-                var param = new NextDirectoryGetParameter<string>
+                IsNext = true,
+                CurrentParameter = new ValueEntity<string>(this.parameter.DirectoryPath)
+            };
+
+            CommonJobs.Instance.NextDirectoryGetJob.Initialize()
+                .Callback(_ =>
                 {
-                    IsNext = true,
-                    CurrentParameter = new ValueEntity<string>(this.parameter.DirectoryPath)
-                };
-
-                job.Initialize()
-                    .Callback(_ =>
+                    if (this.disposed)
                     {
-                        if (this.disposed)
-                        {
-                            return;
-                        }
+                        return;
+                    }
 
-                        this.GetNextDirectoryProcess_Callback(_);
-                    })
-                    .BeginCancel()
-                    .StartJob(this, param)
-                    .WaitJobComplete();
-            }
+                    this.GetNextDirectoryProcess_Callback(_);
+                })
+                .BeginCancel()
+                .StartJob(this, param);
         }
 
         protected override Action<Control> GetImageFilesGetAction(ImageViewerPageParameter param)

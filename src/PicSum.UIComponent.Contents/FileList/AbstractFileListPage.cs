@@ -1,6 +1,5 @@
 using PicSum.Job.Common;
 using PicSum.Job.Entities;
-using PicSum.Job.Jobs;
 using PicSum.Job.Parameters;
 using PicSum.Job.Results;
 using PicSum.UIComponent.Contents.Common;
@@ -92,7 +91,6 @@ namespace PicSum.UIComponent.Contents.FileList
         private bool disposed = false;
         private Dictionary<string, FileEntity> masterFileDictionary = null;
         private List<string> filterFilePathList = null;
-        private TwoWayJob<MultiFilesExportJob, MultiFilesExportParameter, ValueResult<string>> multiFilesExportJob = null;
 
         public override string SelectedFilePath { get; protected set; } = FileUtil.ROOT_DIRECTORY_PATH;
 
@@ -223,29 +221,6 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
-        private TwoWayJob<MultiFilesExportJob, MultiFilesExportParameter, ValueResult<string>> MultiFilesExportJob
-        {
-            get
-            {
-                if (this.multiFilesExportJob == null)
-                {
-                    this.multiFilesExportJob = new();
-                    this.multiFilesExportJob
-                        .Callback(_ =>
-                        {
-                            if (this.disposed)
-                            {
-                                return;
-                            }
-
-                            this.MultiFilesExportJob_Callback(_);
-                        });
-                }
-
-                return this.multiFilesExportJob;
-            }
-        }
-
         private int ItemTextHeight
         {
             get
@@ -283,9 +258,6 @@ namespace PicSum.UIComponent.Contents.FileList
             if (disposing)
             {
                 CommonJobs.Instance.ThumbnailsGetJob.BeginCancel();
-
-                this.multiFilesExportJob?.Dispose();
-                this.multiFilesExportJob = null;
 
                 this.components?.Dispose();
             }
@@ -1232,7 +1204,16 @@ namespace PicSum.UIComponent.Contents.FileList
                             ExportDirecotry = fbd.SelectedPath,
                         };
 
-                        this.MultiFilesExportJob.Initialize()
+                        CommonJobs.Instance.MultiFilesExportJob.Initialize()
+                            .Callback(_ =>
+                            {
+                                if (this.disposed)
+                                {
+                                    return;
+                                }
+
+                                this.MultiFilesExportJob_Callback(_);
+                            })
                             .BeginCancel()
                             .StartJob(this, param);
                         CommonConfig.ExportDirectoryPath = fbd.SelectedPath;

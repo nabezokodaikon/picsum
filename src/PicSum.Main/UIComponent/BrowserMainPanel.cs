@@ -1,7 +1,5 @@
 using PicSum.Job.Common;
-using PicSum.Job.Jobs;
 using PicSum.Job.Parameters;
-using PicSum.Job.Results;
 using PicSum.UIComponent.Contents.Common;
 using PicSum.UIComponent.Contents.Parameter;
 using PicSum.UIComponent.InfoPanel;
@@ -27,33 +25,29 @@ namespace PicSum.Main.UIComponent
             {
                 return sender =>
                 {
-                    using (var searchJob = new TwoWayJob<ImageFileGetByDirectoryJob, ImageFileGetByDirectoryParameter, ImageFilesGetByDirectoryResult>())
+                    var dir = FileUtil.IsDirectory(subParamter.FilePath) switch
                     {
-                        var dir = FileUtil.IsDirectory(subParamter.FilePath) switch
+                        true => subParamter.FilePath,
+                        false => FileUtil.GetParentDirectoryPath(subParamter.FilePath),
+                    };
+
+                    CommonJobs.Instance.StartDirectoryViewHistoryAddJob(sender, new ValueParameter<string>(dir));
+
+                    CommonJobs.Instance.ImageFilesGetByDirectoryJob.Initialize()
+                        .Callback(e =>
                         {
-                            true => subParamter.FilePath,
-                            false => FileUtil.GetParentDirectoryPath(subParamter.FilePath),
-                        };
+                            var title = FileUtil.IsDirectory(subParamter.FilePath) ?
+                            FileUtil.GetFileName(subParamter.FilePath) :
+                            FileUtil.GetFileName(FileUtil.GetParentDirectoryPath(subParamter.FilePath));
 
-                        CommonJobs.Instance.StartDirectoryViewHistoryAddJob(sender, new ValueParameter<string>(dir));
-
-                        searchJob.Initialize()
-                            .Callback(e =>
-                            {
-                                var title = FileUtil.IsDirectory(subParamter.FilePath) ?
-                                FileUtil.GetFileName(subParamter.FilePath) :
-                                FileUtil.GetFileName(FileUtil.GetParentDirectoryPath(subParamter.FilePath));
-
-                                var eventArgs = new GetImageFilesEventArgs(
-                                    [.. e.FilePathList.OrderBy(_ => _, NaturalStringComparer.Windows)],
-                                    e.SelectedFilePath, title,
-                                    FileIconCash.SmallDirectoryIcon);
-                                parameter.OnGetImageFiles(eventArgs);
-                            })
-                            .BeginCancel()
-                            .StartJob(sender, subParamter)
-                            .WaitJobComplete();
-                    }
+                            var eventArgs = new GetImageFilesEventArgs(
+                                [.. e.FilePathList.OrderBy(_ => _, NaturalStringComparer.Windows)],
+                                e.SelectedFilePath, title,
+                                FileIconCash.SmallDirectoryIcon);
+                            parameter.OnGetImageFiles(eventArgs);
+                        })
+                        .BeginCancel()
+                        .StartJob(sender, subParamter);
                 };
             };
         }

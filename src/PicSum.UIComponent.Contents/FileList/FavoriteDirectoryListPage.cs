@@ -1,6 +1,5 @@
 using PicSum.Job.Common;
 using PicSum.Job.Entities;
-using PicSum.Job.Jobs;
 using PicSum.Job.Parameters;
 using PicSum.UIComponent.Contents.Common;
 using PicSum.UIComponent.Contents.Conf;
@@ -57,28 +56,24 @@ namespace PicSum.UIComponent.Contents.FileList
 
         protected override void OnLoad(EventArgs e)
         {
-            using (var job = new TwoWayJob<FavoriteDirectoriesGetJob, FavoriteDirectoriesGetParameter, ListResult<FileShallowInfoEntity>>())
+            var param = new FavoriteDirectoriesGetParameter
             {
-                var param = new FavoriteDirectoriesGetParameter
+                IsOnlyDirectory = true,
+                Count = FileListPageConfig.FavoriteDirectoryCount
+            };
+
+            CommonJobs.Instance.FavoriteDirectoriesGetJob.Initialize()
+                .Callback(_ =>
                 {
-                    IsOnlyDirectory = true,
-                    Count = FileListPageConfig.FavoriteDirectoryCount
-                };
-
-                job.Initialize()
-                    .Callback(_ =>
+                    if (this.disposed)
                     {
-                        if (this.disposed)
-                        {
-                            return;
-                        }
+                        return;
+                    }
 
-                        this.SearchJob_Callback(_);
-                    })
-                    .BeginCancel()
-                    .StartJob(this, param)
-                    .WaitJobComplete();
-            }
+                    this.SearchJob_Callback(_);
+                })
+                .BeginCancel()
+                .StartJob(this, param);
 
             base.OnLoad(e);
         }

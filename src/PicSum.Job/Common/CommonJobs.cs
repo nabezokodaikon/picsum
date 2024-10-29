@@ -38,6 +38,15 @@ namespace PicSum.Job.Common
         private TwoWayJob<FileDeepInfoGetJob, FileDeepInfoGetParameter, FileDeepInfoGetResult>? fileDeepInfoGetJob = null;
         private TwoWayJob<PipeServerJob, ValueResult<string>>? pipeServerJob = null;
 
+        private TwoWayJob<FilesGetByDirectoryJob, ValueParameter<string>, DirectoryGetResult>? filesGetByDirectoryJob = null;
+        private TwoWayJob<FavoriteDirectoriesGetJob, FavoriteDirectoriesGetParameter, ListResult<FileShallowInfoEntity>>? favoriteDirectoriesGetJob = null;
+        private TwoWayJob<FilesGetByRatingJob, ValueParameter<int>, ListResult<FileShallowInfoEntity>>? filesGetByRatingJob = null;
+        private TwoWayJob<FilesGetByTagJob, ValueParameter<string>, ListResult<FileShallowInfoEntity>>? filesGetByTagJob = null;
+        private TwoWayJob<ImageFileGetByDirectoryJob, ImageFileGetByDirectoryParameter, ImageFilesGetByDirectoryResult>? imageFilesGetByDirectoryJob = null;
+        private TwoWayJob<NextDirectoryGetJob, NextDirectoryGetParameter<string>, ValueResult<string>>? nextDirectoryGetJob = null;
+        private TwoWayJob<MultiFilesExportJob, MultiFilesExportParameter, ValueResult<string>>? multiFilesExportJob = null;
+        private TwoWayJob<BookmarksGetJob, ListResult<FileShallowInfoEntity>>? bookmarksGetJob = null;
+
         public TwoWayJob<ImageFileReadJob, ImageFileReadParameter, ImageFileReadResult> ImageFileReadJob => this.imageFileReadJob ??= new();
         public TwoWayJob<ImageFileLoadingJob, ImageFileReadParameter, ImageFileReadResult> ImageFileLoadingJob => this.imageFileLoadingJob ??= new();
         public OneWayJob<ImageFileCacheJob, ListParameter<string>> ImageFileCacheJob => this.imageFileCacheJob ??= new();
@@ -48,6 +57,15 @@ namespace PicSum.Job.Common
         public TwoWayJob<TagsGetJob, ListResult<string>> TagsGetJob => this.tagsGetJob ??= new();
         public TwoWayJob<FileDeepInfoGetJob, FileDeepInfoGetParameter, FileDeepInfoGetResult> FileDeepInfoGetJob => this.fileDeepInfoGetJob ??= new();
         public TwoWayJob<PipeServerJob, ValueResult<string>> PipeServerJob => this.pipeServerJob ??= new();
+
+        public TwoWayJob<FilesGetByDirectoryJob, ValueParameter<string>, DirectoryGetResult>? FilesGetByDirectoryJob => this.filesGetByDirectoryJob ??= new();
+        public TwoWayJob<FavoriteDirectoriesGetJob, FavoriteDirectoriesGetParameter, ListResult<FileShallowInfoEntity>>? FavoriteDirectoriesGetJob => this.favoriteDirectoriesGetJob ??= new();
+        public TwoWayJob<FilesGetByRatingJob, ValueParameter<int>, ListResult<FileShallowInfoEntity>>? FilesGetByRatingJob => this.filesGetByRatingJob ??= new();
+        public TwoWayJob<FilesGetByTagJob, ValueParameter<string>, ListResult<FileShallowInfoEntity>>? FilesGetByTagJob => this.filesGetByTagJob ??= new();
+        public TwoWayJob<ImageFileGetByDirectoryJob, ImageFileGetByDirectoryParameter, ImageFilesGetByDirectoryResult>? ImageFilesGetByDirectoryJob => this.imageFilesGetByDirectoryJob ??= new();
+        public TwoWayJob<NextDirectoryGetJob, NextDirectoryGetParameter<string>, ValueResult<string>>? NextDirectoryGetJob => this.nextDirectoryGetJob ??= new();
+        public TwoWayJob<MultiFilesExportJob, MultiFilesExportParameter, ValueResult<string>>? MultiFilesExportJob => this.multiFilesExportJob ??= new();
+        public TwoWayJob<BookmarksGetJob, ListResult<FileShallowInfoEntity>>? BookmarksGetJob => this.bookmarksGetJob ??= new();
 
         private CommonJobs()
         {
@@ -95,6 +113,15 @@ namespace PicSum.Job.Common
                 this.tagsGetJob?.Dispose();
                 this.fileDeepInfoGetJob?.Dispose();
                 this.pipeServerJob?.Dispose();
+
+                this.filesGetByDirectoryJob?.Dispose();
+                this.favoriteDirectoriesGetJob?.Dispose();
+                this.filesGetByRatingJob?.Dispose();
+                this.filesGetByTagJob?.Dispose();
+                this.imageFilesGetByDirectoryJob?.Dispose();
+                this.nextDirectoryGetJob?.Dispose();
+                this.multiFilesExportJob?.Dispose();
+                this.bookmarksGetJob?.Dispose();
             }
 
             this.disposed = true;
