@@ -96,6 +96,10 @@ namespace SWF.Core.FileAccessor
                 {
                     return cashIcon;
                 }
+                else if (SMALL_ICON_CASH.TryGetValue(filePath, out cashIcon))
+                {
+                    return cashIcon;
+                }
                 else
                 {
                     SMALL_ICON_CASH_LOCK.EnterWriteLock();
@@ -103,7 +107,15 @@ namespace SWF.Core.FileAccessor
                     try
                     {
                         var icon = FileUtil.GetSmallIconByFilePath(filePath);
-                        SMALL_ICON_CASH.Add(ex, icon);
+                        if (ex == ".EXE")
+                        {
+                            SMALL_ICON_CASH.Add(filePath, icon);
+                        }
+                        else
+                        {
+                            SMALL_ICON_CASH.Add(ex, icon);
+                        }
+
                         return icon;
                     }
                     finally
@@ -132,6 +144,10 @@ namespace SWF.Core.FileAccessor
                 {
                     return cashIcon;
                 }
+                else if (LARGE_ICON_CASH.TryGetValue(filePath, out cashIcon))
+                {
+                    return cashIcon;
+                }
                 else
                 {
                     LARGE_ICON_CASH_LOCK.EnterWriteLock();
@@ -139,7 +155,15 @@ namespace SWF.Core.FileAccessor
                     try
                     {
                         var icon = FileUtil.GetExtraLargeIconByFilePath(filePath, SHIL.SHIL_EXTRALARGE);
-                        LARGE_ICON_CASH.Add(ex, icon);
+                        if (ex == ".EXE")
+                        {
+                            LARGE_ICON_CASH.Add(filePath, icon);
+                        }
+                        else
+                        {
+                            LARGE_ICON_CASH.Add(ex, icon);
+                        }
+
                         return icon;
                     }
                     finally
@@ -168,6 +192,10 @@ namespace SWF.Core.FileAccessor
                 {
                     return cashIcon;
                 }
+                else if (JUMBO_ICON_CASH.TryGetValue(filePath, out cashIcon))
+                {
+                    return cashIcon;
+                }
                 else
                 {
                     JUMBO_ICON_CASH_LOCK.EnterWriteLock();
@@ -175,7 +203,15 @@ namespace SWF.Core.FileAccessor
                     try
                     {
                         var icon = FileUtil.GetExtraLargeIconByFilePath(filePath, SHIL.SHIL_JUMBO);
-                        JUMBO_ICON_CASH.Add(ex, icon);
+                        if (ex == ".EXE")
+                        {
+                            JUMBO_ICON_CASH.Add(ex, icon);
+                        }
+                        else
+                        {
+                            JUMBO_ICON_CASH.Add(ex, icon);
+                        }
+
                         return icon;
                     }
                     finally
