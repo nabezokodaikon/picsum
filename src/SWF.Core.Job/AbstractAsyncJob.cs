@@ -80,10 +80,10 @@ namespace SWF.Core.Job
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         internal TParameter? Parameter { get; set; }
-        internal Action<TResult>? CallbackAction { get; set; }
-        internal Action? CancelAction { get; set; }
-        internal Action<JobException>? CatchAction { get; set; }
-        internal Action? CompleteAction { get; set; }
+        internal Action<TResult>? CallbackAction { get; set; } = null;
+        internal Action? CancelAction { get; set; } = null;
+        internal Action<JobException>? CatchAction { get; set; } = null;
+        internal Action? CompleteAction { get; set; } = null;
 
         public AbstractTwoWayJob()
         {
