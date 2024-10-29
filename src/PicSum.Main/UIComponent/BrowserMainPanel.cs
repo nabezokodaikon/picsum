@@ -29,20 +29,6 @@ namespace PicSum.Main.UIComponent
                 {
                     using (var searchJob = new TwoWayJob<ImageFileGetByDirectoryJob, ImageFileGetByDirectoryParameter, ImageFilesGetByDirectoryResult>())
                     {
-                        searchJob
-                        .Callback(e =>
-                        {
-                            var title = FileUtil.IsDirectory(subParamter.FilePath) ?
-                            FileUtil.GetFileName(subParamter.FilePath) :
-                            FileUtil.GetFileName(FileUtil.GetParentDirectoryPath(subParamter.FilePath));
-
-                            var eventArgs = new GetImageFilesEventArgs(
-                                [.. e.FilePathList.OrderBy(_ => _, NaturalStringComparer.Windows)],
-                                e.SelectedFilePath, title,
-                                FileIconCash.SmallDirectoryIcon);
-                            parameter.OnGetImageFiles(eventArgs);
-                        });
-
                         var dir = FileUtil.IsDirectory(subParamter.FilePath) switch
                         {
                             true => subParamter.FilePath,
@@ -51,8 +37,21 @@ namespace PicSum.Main.UIComponent
 
                         CommonJobs.Instance.StartDirectoryViewHistoryAddJob(sender, new ValueParameter<string>(dir));
 
-                        searchJob.StartJob(sender, subParamter);
-                        searchJob.WaitJobComplete();
+                        searchJob.SetCurrentSender(sender)
+                            .Callback(e =>
+                            {
+                                var title = FileUtil.IsDirectory(subParamter.FilePath) ?
+                                FileUtil.GetFileName(subParamter.FilePath) :
+                                FileUtil.GetFileName(FileUtil.GetParentDirectoryPath(subParamter.FilePath));
+
+                                var eventArgs = new GetImageFilesEventArgs(
+                                    [.. e.FilePathList.OrderBy(_ => _, NaturalStringComparer.Windows)],
+                                    e.SelectedFilePath, title,
+                                    FileIconCash.SmallDirectoryIcon);
+                                parameter.OnGetImageFiles(eventArgs);
+                            })
+                            .StartJob(sender, subParamter)
+                            .WaitJobComplete();
                     }
                 };
             };
@@ -631,7 +630,7 @@ namespace PicSum.Main.UIComponent
 
         private void TagDropToolButton_DropDownOpening(object sender, DropDownOpeningEventArgs e)
         {
-            CommonJobs.Instance.TagsGetJob
+            CommonJobs.Instance.TagsGetJob.SetCurrentSender(this)
                 .Callback(_ =>
                 {
                     if (this.disposed)

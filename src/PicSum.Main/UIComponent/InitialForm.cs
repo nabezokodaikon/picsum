@@ -35,42 +35,42 @@ namespace PicSum.Main.UIComponent
         {
             CommonJobs.Instance.StartGCCollectRunJob(this);
 
-            CommonJobs.Instance.PipeServerJob
-                 .Callback(_ =>
-                 {
-                     if (this.disposed)
-                     {
-                         return;
-                     }
+            CommonJobs.Instance.PipeServerJob.SetCurrentSender(this)
+                .Callback(_ =>
+                {
+                    if (this.disposed)
+                    {
+                        return;
+                    }
 
-                     if (!FileUtil.CanAccess(_.Value) || !FileUtil.IsImageFile(_.Value))
-                     {
-                         return;
-                     }
+                    if (!FileUtil.CanAccess(_.Value) || !FileUtil.IsImageFile(_.Value))
+                    {
+                        return;
+                    }
 
-                     var form = this.browserManager.GetActiveBrowser();
-                     var directoryPath = FileUtil.GetParentDirectoryPath(_.Value);
+                    var form = this.browserManager.GetActiveBrowser();
+                    var directoryPath = FileUtil.GetParentDirectoryPath(_.Value);
 
-                     var sortInfo = new SortInfo();
-                     sortInfo.SetSortType(SortTypeID.FilePath, true);
+                    var sortInfo = new SortInfo();
+                    sortInfo.SetSortType(SortTypeID.FilePath, true);
 
-                     var parameter = new ImageViewerPageParameter(
-                         DirectoryFileListPageParameter.PAGE_SOURCES,
-                         directoryPath,
-                         BrowserMainPanel.GetImageFilesAction(new ImageFileGetByDirectoryParameter(_.Value)),
-                         _.Value,
-                         sortInfo,
-                         FileUtil.GetFileName(directoryPath),
-                         FileIconCash.SmallDirectoryIcon);
+                    var parameter = new ImageViewerPageParameter(
+                        DirectoryFileListPageParameter.PAGE_SOURCES,
+                        directoryPath,
+                        BrowserMainPanel.GetImageFilesAction(new ImageFileGetByDirectoryParameter(_.Value)),
+                        _.Value,
+                        sortInfo,
+                        FileUtil.GetFileName(directoryPath),
+                        FileIconCash.SmallDirectoryIcon);
 
-                     form.AddImageViewerPageTab(parameter);
-                     if (form.WindowState == FormWindowState.Minimized)
-                     {
-                         form.RestoreWindowState();
-                     }
-                     form.Activate();
-                 })
-                 .StartJob(this);
+                    form.AddImageViewerPageTab(parameter);
+                    if (form.WindowState == FormWindowState.Minimized)
+                    {
+                        form.RestoreWindowState();
+                    }
+                    form.Activate();
+                })
+                .StartJob(this);
 
             var form = this.browserManager.GetActiveBrowser();
             form.Show();

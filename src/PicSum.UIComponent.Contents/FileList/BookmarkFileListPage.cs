@@ -30,30 +30,30 @@ namespace PicSum.UIComponent.Contents.FileList
             {
                 using (var job = new TwoWayJob<FilesGetByDirectoryJob, ValueParameter<string>, DirectoryGetResult>())
                 {
-                    job
-                    .Callback(e =>
-                    {
-                        if (!FileUtil.IsImageFile(param.SelectedFilePath))
-                        {
-                            throw new SWFException($"画像ファイルが選択されていません。'{param.SelectedFilePath}'");
-                        }
-
-                        var title = FileUtil.GetFileName(FileUtil.GetParentDirectoryPath(param.SelectedFilePath));
-
-                        var imageFiles = e.FileInfoList
-                            .Where(fileInfo => fileInfo.IsImageFile)
-                            .OrderBy(fileInfo => fileInfo.FilePath, NaturalStringComparer.Windows)
-                            .Select(fileInfo => fileInfo.FilePath)
-                            .ToArray();
-
-                        var eventArgs = new GetImageFilesEventArgs(
-                            imageFiles, param.SelectedFilePath, title, FileIconCash.SmallDirectoryIcon);
-                        param.OnGetImageFiles(eventArgs);
-                    });
-
                     var dir = FileUtil.GetParentDirectoryPath(param.SelectedFilePath);
-                    job.StartJob(sender, new ValueParameter<string>(dir));
-                    job.WaitJobComplete();
+
+                    job.SetCurrentSender(sender)
+                        .Callback(e =>
+                        {
+                            if (!FileUtil.IsImageFile(param.SelectedFilePath))
+                            {
+                                throw new SWFException($"画像ファイルが選択されていません。'{param.SelectedFilePath}'");
+                            }
+
+                            var title = FileUtil.GetFileName(FileUtil.GetParentDirectoryPath(param.SelectedFilePath));
+
+                            var imageFiles = e.FileInfoList
+                                .Where(fileInfo => fileInfo.IsImageFile)
+                                .OrderBy(fileInfo => fileInfo.FilePath, NaturalStringComparer.Windows)
+                                .Select(fileInfo => fileInfo.FilePath)
+                                .ToArray();
+
+                            var eventArgs = new GetImageFilesEventArgs(
+                                imageFiles, param.SelectedFilePath, title, FileIconCash.SmallDirectoryIcon);
+                            param.OnGetImageFiles(eventArgs);
+                        })
+                        .StartJob(sender, new ValueParameter<string>(dir))
+                        .WaitJobComplete();
                 }
             };
         }
@@ -77,18 +77,18 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             using (var job = new TwoWayJob<BookmarksGetJob, ListResult<FileShallowInfoEntity>>())
             {
-                job.Callback(_ =>
-                {
-                    if (this.disposed)
+                job.SetCurrentSender(this)
+                    .Callback(_ =>
                     {
-                        return;
-                    }
+                        if (this.disposed)
+                        {
+                            return;
+                        }
 
-                    this.SearchJob_Callback(_);
-                });
-
-                job.StartJob(this);
-                job.WaitJobComplete();
+                        this.SearchJob_Callback(_);
+                    })
+                    .StartJob(this)
+                    .WaitJobComplete();
             }
 
             base.OnLoad(e);

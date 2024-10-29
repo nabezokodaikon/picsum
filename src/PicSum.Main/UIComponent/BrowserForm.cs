@@ -147,7 +147,7 @@ namespace PicSum.Main.UIComponent
                 {
                     using (var thumbnailDBCleanupJob = new OneWayJob<ThumbnailDBCleanupJob, ValueParameter<string>>())
                     {
-                        thumbnailDBCleanupJob
+                        thumbnailDBCleanupJob.SetCurrentSender(this)
                             .Catch(ex =>
                             {
                                 ExceptionUtil.ShowErrorDialog("The thumbnail database cleanup process failed.", ex);
@@ -156,7 +156,7 @@ namespace PicSum.Main.UIComponent
                             {
                                 using (var startupJob = new TwoWayJob<StartupJob, StartupPrameter, EmptyResult>())
                                 {
-                                    startupJob
+                                    startupJob.SetCurrentSender(this)
                                         .Catch(ex =>
                                         {
                                             ExceptionUtil.ShowErrorDialog("Failed to start.", ex);
@@ -165,7 +165,7 @@ namespace PicSum.Main.UIComponent
                                         {
                                             using (var fileInfoDBCleanupJob = new OneWayJob<FileInfoDBCleanupJob>())
                                             {
-                                                fileInfoDBCleanupJob
+                                                fileInfoDBCleanupJob.SetCurrentSender(this)
                                                     .Catch(ex =>
                                                     {
                                                         ExceptionUtil.ShowErrorDialog("The file information database cleanup process failed.", ex);
@@ -175,23 +175,23 @@ namespace PicSum.Main.UIComponent
                                                         this.CreateBrowserMainPanel();
                                                         BrowserForm.isStartUp = false;
                                                     })
-                                                    .StartJob(this);
-                                                fileInfoDBCleanupJob.WaitJobComplete();
+                                                    .StartJob(this)
+                                                    .WaitJobComplete();
                                             }
                                         })
-                                        .StartJob(this, startupParameter);
-                                    startupJob.WaitJobComplete();
+                                        .StartJob(this, startupParameter)
+                                        .WaitJobComplete();
                                 }
                             })
-                            .StartJob(this, new ValueParameter<string>(FileUtil.DATABASE_DIRECTORY));
-                        thumbnailDBCleanupJob.WaitJobComplete();
+                            .StartJob(this, new ValueParameter<string>(FileUtil.DATABASE_DIRECTORY))
+                            .WaitJobComplete();
                     }
                 }
                 else
                 {
                     using (var startupJob = new TwoWayJob<StartupJob, StartupPrameter, EmptyResult>())
                     {
-                        startupJob
+                        startupJob.SetCurrentSender(this)
                             .Catch(ex =>
                              {
                                  ExceptionUtil.ShowErrorDialog("Failed to start.", ex);
@@ -201,8 +201,8 @@ namespace PicSum.Main.UIComponent
                                 this.CreateBrowserMainPanel();
                                 BrowserForm.isStartUp = false;
                             })
-                            .StartJob(this, startupParameter);
-                        startupJob.WaitJobComplete();
+                            .StartJob(this, startupParameter)
+                            .WaitJobComplete();
                     }
                 }
             }

@@ -98,7 +98,7 @@ namespace PicSum.UIComponent.AddressBar
                 if (!this.isRead)
                 {
                     var param = new ValueParameter<string>(this.Directory.DirectoryPath);
-                    CommonJobs.Instance.SubDirectoriesGetJob
+                    CommonJobs.Instance.SubDirectoriesGetJob.SetCurrentSender(this.AddressBar)
                         .Callback(_ =>
                         {
                             if (this.disposed)

@@ -16,11 +16,24 @@ namespace SWF.Core.Job
         private readonly string threadName;
         private readonly CancellationTokenSource source = new();
         private readonly Task thread;
+        private Control? currentSender = null;
         private TJob? currentJob = null;
         private Action<TJobResult>? callbackAction;
         private Action? cancelAction;
         private Action<JobException>? catchAction;
         private Action? completeAction;
+
+        private Control? CurrentSender
+        {
+            get
+            {
+                return Interlocked.CompareExchange(ref this.currentSender, null, null);
+            }
+            set
+            {
+                Interlocked.Exchange(ref this.currentSender, value);
+            }
+        }
 
         private TJob? CurrentJob
         {
@@ -77,6 +90,14 @@ namespace SWF.Core.Job
             this.disposed = true;
         }
 
+        public TwoWayJob<TJob, TJobParameter, TJobResult> SetCurrentSender(Control sender)
+        {
+            ArgumentNullException.ThrowIfNull(sender, nameof(sender));
+
+            this.CurrentSender = sender;
+            return this;
+        }
+
         public TwoWayJob<TJob, TJobParameter, TJobResult> Callback(Action<TJobResult> action)
         {
             ArgumentNullException.ThrowIfNull(action, nameof(action));
@@ -109,9 +130,14 @@ namespace SWF.Core.Job
             return this;
         }
 
-        public void StartJob(Control sender, TJobParameter parameter)
+        public TwoWayJob<TJob, TJobParameter, TJobResult> StartJob(Control sender, TJobParameter parameter)
         {
             ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
+
+            if (!sender.Equals(this.CurrentSender))
+            {
+                throw new InvalidOperationException("コンテキストが一致しません。");
+            }
 
             this.BeginCancel();
 
@@ -120,16 +146,25 @@ namespace SWF.Core.Job
                 Sender = sender,
                 Parameter = parameter,
             };
+
+            return this;
         }
 
-        public void StartJob(Control sender)
+        public TwoWayJob<TJob, TJobParameter, TJobResult> StartJob(Control sender)
         {
+            if (!sender.Equals(this.CurrentSender))
+            {
+                throw new InvalidOperationException("コンテキストが一致しません。");
+            }
+
             this.BeginCancel();
 
             this.CurrentJob = new TJob
             {
                 Sender = sender,
             };
+
+            return this;
         }
 
         public void BeginCancel()
@@ -200,7 +235,7 @@ namespace SWF.Core.Job
 
                     job.CallbackAction = r =>
                     {
-                        UIThreadAccessor.Instance.Post(job, () =>
+                        UIThreadAccessor.Instance.Post(job, this.CurrentSender, () =>
                         {
                             this.callbackAction?.Invoke(r);
                         });
@@ -208,7 +243,7 @@ namespace SWF.Core.Job
 
                     job.CancelAction = () =>
                     {
-                        UIThreadAccessor.Instance.Post(job, () =>
+                        UIThreadAccessor.Instance.Post(job, this.CurrentSender, () =>
                         {
                             this.cancelAction?.Invoke();
                         });
@@ -216,7 +251,7 @@ namespace SWF.Core.Job
 
                     job.CatchAction = e =>
                     {
-                        UIThreadAccessor.Instance.Post(job, () =>
+                        UIThreadAccessor.Instance.Post(job, this.CurrentSender, () =>
                         {
                             this.catchAction?.Invoke(e);
                         });
@@ -224,7 +259,7 @@ namespace SWF.Core.Job
 
                     job.CompleteAction = () =>
                     {
-                        UIThreadAccessor.Instance.Post(job, () =>
+                        UIThreadAccessor.Instance.Post(job, this.CurrentSender, () =>
                         {
                             this.completeAction?.Invoke();
                         });

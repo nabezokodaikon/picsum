@@ -100,7 +100,8 @@ namespace PicSum.Job.Common
             }
 
             this.addBookmarkJob = new();
-            this.addBookmarkJob.StartJob(sender, parameter);
+            this.addBookmarkJob.SetCurrentSender(sender)
+                .StartJob(sender, parameter);
         }
 
         public void StartSingleFileExportJob(Control sender, SingleFileExportParameter parameter)
@@ -115,7 +116,8 @@ namespace PicSum.Job.Common
             }
 
             this.singleFileExportJob = new();
-            this.singleFileExportJob.StartJob(sender, parameter);
+            this.singleFileExportJob.SetCurrentSender(sender)
+                .StartJob(sender, parameter);
         }
 
         public void StartDirectoryStateUpdateJob(Control sender, DirectoryStateParameter parameter)
@@ -130,7 +132,8 @@ namespace PicSum.Job.Common
             }
 
             this.directoryStateUpdateJob = new();
-            this.directoryStateUpdateJob.StartJob(sender, parameter);
+            this.directoryStateUpdateJob.SetCurrentSender(sender)
+                .StartJob(sender, parameter);
         }
 
         public void StartDirectoryViewHistoryAddJob(Control sender, ValueParameter<string> parameter)
@@ -145,7 +148,8 @@ namespace PicSum.Job.Common
             }
 
             this.directoryHistoryaddJob = new();
-            this.directoryHistoryaddJob.StartJob(sender, parameter);
+            this.directoryHistoryaddJob.SetCurrentSender(sender)
+                .StartJob(sender, parameter);
         }
 
         public void StartBookmarkDeleteJob(Control sender, ListParameter<string> parameter)
@@ -160,7 +164,8 @@ namespace PicSum.Job.Common
             }
 
             this.bookmarkDeleteJob = new();
-            this.bookmarkDeleteJob.StartJob(sender, parameter);
+            this.bookmarkDeleteJob.SetCurrentSender(sender)
+                .StartJob(sender, parameter);
         }
 
         public void StartDirectoryViewCounterDeleteJob(Control sender, ListParameter<string> parameter)
@@ -175,7 +180,8 @@ namespace PicSum.Job.Common
             }
 
             this.directoryViewCounterDeleteJob = new();
-            this.directoryViewCounterDeleteJob.StartJob(sender, parameter);
+            this.directoryViewCounterDeleteJob.SetCurrentSender(sender)
+                .StartJob(sender, parameter);
         }
 
         public void StartFileRatingUpdateJob(Control sender, FileRatingUpdateParameter parameter)
@@ -190,7 +196,8 @@ namespace PicSum.Job.Common
             }
 
             this.fileRatingUpdateJob = new();
-            this.fileRatingUpdateJob.StartJob(sender, parameter);
+            this.fileRatingUpdateJob.SetCurrentSender(sender)
+                .StartJob(sender, parameter);
         }
 
         public void StartFileTagDeleteJob(Control sender, FileTagUpdateParameter parameter)
@@ -205,7 +212,8 @@ namespace PicSum.Job.Common
             }
 
             this.fileTagDeleteJob = new();
-            this.fileTagDeleteJob.StartJob(sender, parameter);
+            this.fileTagDeleteJob.SetCurrentSender(sender)
+                .StartJob(sender, parameter);
         }
 
         public void StartFileTagAddJob(Control sender, FileTagUpdateParameter parameter)
@@ -220,7 +228,8 @@ namespace PicSum.Job.Common
             }
 
             this.fileTagAddJob = new();
-            this.fileTagAddJob.StartJob(sender, parameter);
+            this.fileTagAddJob.SetCurrentSender(sender)
+                .StartJob(sender, parameter);
         }
 
         public void StartGCCollectRunJob(Control sender)
@@ -234,7 +243,8 @@ namespace PicSum.Job.Common
             }
 
             this.gcCollectRunJob = new();
-            this.gcCollectRunJob.StartJob(sender);
+            this.gcCollectRunJob.SetCurrentSender(sender)
+                .StartJob(sender);
         }
     }
 }

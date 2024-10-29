@@ -615,10 +615,10 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
                 this.isLoading = true;
 
-                CommonJobs.Instance.ImageFileCacheJob
+                CommonJobs.Instance.ImageFileCacheJob.SetCurrentSender(this)
                     .StartJob(this, [.. nextFiles, .. prevFiles]);
 
-                CommonJobs.Instance.ImageFileLoadingJob
+                CommonJobs.Instance.ImageFileLoadingJob.SetCurrentSender(this)
                     .Callback(_ =>
                     {
                         if (this.disposed)
@@ -635,7 +635,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                     })
                     .StartJob(this, param);
 
-                CommonJobs.Instance.ImageFileReadJob
+                CommonJobs.Instance.ImageFileReadJob.SetCurrentSender(this)
                     .Callback(r =>
                     {
                         if (this.disposed)

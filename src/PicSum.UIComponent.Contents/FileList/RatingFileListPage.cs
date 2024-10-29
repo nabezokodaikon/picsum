@@ -31,26 +31,26 @@ namespace PicSum.UIComponent.Contents.FileList
             {
                 using (var job = new TwoWayJob<FilesGetByRatingJob, ValueParameter<int>, ListResult<FileShallowInfoEntity>>())
                 {
-                    job.Callback(e =>
-                    {
-                        var imageFiles = e
-                            .Where(fileInfo => fileInfo.IsImageFile);
-                        var sortImageFiles = GetSortFiles(imageFiles, param.SortInfo)
-                            .Select(fileInfo => fileInfo.FilePath)
-                            .ToArray();
-
-                        if (!FileUtil.IsImageFile(param.SelectedFilePath))
+                    job.SetCurrentSender(sender)
+                        .Callback(e =>
                         {
-                            throw new SWFException($"画像ファイルが選択されていません。'{param.SelectedFilePath}'");
-                        }
+                            var imageFiles = e
+                                .Where(fileInfo => fileInfo.IsImageFile);
+                            var sortImageFiles = GetSortFiles(imageFiles, param.SortInfo)
+                                .Select(fileInfo => fileInfo.FilePath)
+                                .ToArray();
 
-                        var eventArgs = new GetImageFilesEventArgs(
-                            sortImageFiles, param.SelectedFilePath, param.PageTitle, param.PageIcon);
-                        param.OnGetImageFiles(eventArgs);
-                    });
+                            if (!FileUtil.IsImageFile(param.SelectedFilePath))
+                            {
+                                throw new SWFException($"画像ファイルが選択されていません。'{param.SelectedFilePath}'");
+                            }
 
-                    job.StartJob(sender, new ValueParameter<int>(int.Parse(param.SourcesKey)));
-                    job.WaitJobComplete();
+                            var eventArgs = new GetImageFilesEventArgs(
+                                sortImageFiles, param.SelectedFilePath, param.PageTitle, param.PageIcon);
+                            param.OnGetImageFiles(eventArgs);
+                        })
+                        .StartJob(sender, new ValueParameter<int>(int.Parse(param.SourcesKey)))
+                        .WaitJobComplete();
                 }
             };
         }
@@ -76,18 +76,18 @@ namespace PicSum.UIComponent.Contents.FileList
             {
                 var param = new ValueParameter<int>(this.parameter.RatingValue);
 
-                job.Callback(_ =>
-                {
-                    if (this.disposed)
+                job.SetCurrentSender(this)
+                    .Callback(_ =>
                     {
-                        return;
-                    }
+                        if (this.disposed)
+                        {
+                            return;
+                        }
 
-                    this.SearchJob_Callback(_);
-                });
-
-                job.StartJob(this, param);
-                job.WaitJobComplete();
+                        this.SearchJob_Callback(_);
+                    })
+                    .StartJob(this, param)
+                    .WaitJobComplete();
             }
 
             base.OnLoad(e);
