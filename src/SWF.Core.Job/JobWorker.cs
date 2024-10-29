@@ -204,7 +204,7 @@ namespace SWF.Core.Job
             {
                 while (true)
                 {
-                    if (!jobQueue.TryPeek(out var currentJob))
+                    if (!this.jobQueue.TryPeek(out var currentJob))
                     {
                         if (token.IsCancellationRequested)
                         {
