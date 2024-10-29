@@ -17,6 +17,7 @@ namespace SWF.Core.FileAccessor
         private static readonly Dictionary<string, Bitmap> SMALL_ICON_CASH = [];
         private static readonly Dictionary<string, Bitmap> LARGE_ICON_CASH = [];
         private static readonly Dictionary<string, Bitmap> JUMBO_ICON_CASH = [];
+        private static readonly Bitmap OTHER_FILE_ICON = FileIconCash.GetOtherFileIcon();
         private static readonly Bitmap SMALL_PC_ICON =
             FileUtil.GetSmallSystemIcon(WinApiMembers.ShellSpecialFolder.CSIDL_DRIVES);
         private static readonly Bitmap LARGE_PC_ICON =
@@ -68,6 +69,12 @@ namespace SWF.Core.FileAccessor
             }
         }
 
+        public static Bitmap GetOtherFileIcon()
+        {
+            var filePath = Path.Combine(FileUtil.EXECUTABLE_DIRECTORY, "EmptyFile");
+            return (Bitmap)FileUtil.GetExtraLargeIconByFilePath(filePath, SHIL.SHIL_EXTRALARGE);
+        }
+
         public static Image GetSmallDriveIcon(string filePath)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
@@ -86,6 +93,11 @@ namespace SWF.Core.FileAccessor
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
+            if (!FileUtil.IsImageFile(filePath))
+            {
+                return OTHER_FILE_ICON;
+            }
+
             var ex = FileUtil.GetExtension(filePath);
 
             SMALL_ICON_CASH_LOCK.EnterUpgradeableReadLock();
@@ -96,10 +108,6 @@ namespace SWF.Core.FileAccessor
                 {
                     return cashIcon;
                 }
-                else if (SMALL_ICON_CASH.TryGetValue(filePath, out cashIcon))
-                {
-                    return cashIcon;
-                }
                 else
                 {
                     SMALL_ICON_CASH_LOCK.EnterWriteLock();
@@ -107,15 +115,7 @@ namespace SWF.Core.FileAccessor
                     try
                     {
                         var icon = FileUtil.GetSmallIconByFilePath(filePath);
-                        if (ex == ".EXE")
-                        {
-                            SMALL_ICON_CASH.Add(filePath, icon);
-                        }
-                        else
-                        {
-                            SMALL_ICON_CASH.Add(ex, icon);
-                        }
-
+                        SMALL_ICON_CASH.Add(ex, icon);
                         return icon;
                     }
                     finally
@@ -134,6 +134,11 @@ namespace SWF.Core.FileAccessor
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
+            if (!FileUtil.IsImageFile(filePath))
+            {
+                return OTHER_FILE_ICON;
+            }
+
             var ex = FileUtil.GetExtension(filePath);
 
             LARGE_ICON_CASH_LOCK.EnterUpgradeableReadLock();
@@ -144,10 +149,6 @@ namespace SWF.Core.FileAccessor
                 {
                     return cashIcon;
                 }
-                else if (LARGE_ICON_CASH.TryGetValue(filePath, out cashIcon))
-                {
-                    return cashIcon;
-                }
                 else
                 {
                     LARGE_ICON_CASH_LOCK.EnterWriteLock();
@@ -155,15 +156,7 @@ namespace SWF.Core.FileAccessor
                     try
                     {
                         var icon = FileUtil.GetExtraLargeIconByFilePath(filePath, SHIL.SHIL_EXTRALARGE);
-                        if (ex == ".EXE")
-                        {
-                            LARGE_ICON_CASH.Add(filePath, icon);
-                        }
-                        else
-                        {
-                            LARGE_ICON_CASH.Add(ex, icon);
-                        }
-
+                        LARGE_ICON_CASH.Add(ex, icon);
                         return icon;
                     }
                     finally
@@ -182,6 +175,11 @@ namespace SWF.Core.FileAccessor
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
+            if (!FileUtil.IsImageFile(filePath))
+            {
+                return OTHER_FILE_ICON;
+            }
+
             var ex = FileUtil.GetExtension(filePath);
 
             JUMBO_ICON_CASH_LOCK.EnterUpgradeableReadLock();
@@ -192,10 +190,6 @@ namespace SWF.Core.FileAccessor
                 {
                     return cashIcon;
                 }
-                else if (JUMBO_ICON_CASH.TryGetValue(filePath, out cashIcon))
-                {
-                    return cashIcon;
-                }
                 else
                 {
                     JUMBO_ICON_CASH_LOCK.EnterWriteLock();
@@ -203,15 +197,7 @@ namespace SWF.Core.FileAccessor
                     try
                     {
                         var icon = FileUtil.GetExtraLargeIconByFilePath(filePath, SHIL.SHIL_JUMBO);
-                        if (ex == ".EXE")
-                        {
-                            JUMBO_ICON_CASH.Add(ex, icon);
-                        }
-                        else
-                        {
-                            JUMBO_ICON_CASH.Add(ex, icon);
-                        }
-
+                        JUMBO_ICON_CASH.Add(ex, icon);
                         return icon;
                     }
                     finally

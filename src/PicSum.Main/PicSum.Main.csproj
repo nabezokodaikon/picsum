@@ -127,8 +127,14 @@
   </ItemGroup>
   <ItemGroup>
     <None Remove="application.ico" />
+    <None Remove="EmptyFile" />
     <None Remove="picsum-cleanup.bat" />
     <None Remove="picsum-home.bat" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="EmptyFile">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
