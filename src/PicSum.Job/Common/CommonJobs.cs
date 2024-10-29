@@ -24,6 +24,7 @@ namespace PicSum.Job.Common
         private OneWayJob<FileRatingUpdateJob, FileRatingUpdateParameter>? fileRatingUpdateJob = null;
         private OneWayJob<FileTagDeleteJob, FileTagUpdateParameter>? fileTagDeleteJob = null;
         private OneWayJob<FileTagAddJob, FileTagUpdateParameter>? fileTagAddJob = null;
+        private OneWayJob<GCCollectRunJob>? gcCollectRunJob = null;
 
         public TwoWayJob<ImageFileReadJob, ImageFileReadParameter, ImageFileReadResult> ImageFileReadJob { get; private set; } = new();
         public TwoWayJob<ImageFileLoadingJob, ImageFileReadParameter, ImageFileReadResult> ImageFileLoadingJob { get; private set; } = new();
@@ -34,6 +35,7 @@ namespace PicSum.Job.Common
         public TwoWayJob<AddressInfoGetJob, ValueParameter<string>, AddressInfoGetResult> AddressInfoGetJob { get; private set; } = new();
         public TwoWayJob<TagsGetJob, ListResult<string>> TagsGetJob { get; private set; } = new();
         public TwoWayJob<FileDeepInfoGetJob, FileDeepInfoGetParameter, FileDeepInfoGetResult> FileDeepInfoGetJob { get; private set; } = new();
+        public TwoWayJob<PipeServerJob, ValueResult<string>> PipeServerJob { get; private set; } = new();
 
         private CommonJobs()
         {
@@ -69,6 +71,7 @@ namespace PicSum.Job.Common
                 this.fileRatingUpdateJob?.Dispose();
                 this.fileTagDeleteJob?.Dispose();
                 this.fileTagAddJob?.Dispose();
+                this.gcCollectRunJob?.Dispose();
 
                 this.ImageFileReadJob?.Dispose();
                 this.ImageFileLoadingJob?.Dispose();
@@ -79,6 +82,7 @@ namespace PicSum.Job.Common
                 this.AddressInfoGetJob?.Dispose();
                 this.TagsGetJob?.Dispose();
                 this.FileDeepInfoGetJob?.Dispose();
+                this.PipeServerJob?.Dispose();
             }
 
             this.disposed = true;
@@ -217,6 +221,20 @@ namespace PicSum.Job.Common
 
             this.fileTagAddJob = new();
             this.fileTagAddJob.StartJob(sender, parameter);
+        }
+
+        public void StartGCCollectRunJob(Control sender)
+        {
+            ArgumentNullException.ThrowIfNull(sender, nameof(sender));
+
+            if (this.gcCollectRunJob != null)
+            {
+                this.gcCollectRunJob.WaitJobComplete();
+                this.gcCollectRunJob.Dispose();
+            }
+
+            this.gcCollectRunJob = new();
+            this.gcCollectRunJob.StartJob(sender);
         }
     }
 }
