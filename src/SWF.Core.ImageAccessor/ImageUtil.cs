@@ -337,14 +337,6 @@ namespace SWF.Core.ImageAccessor
                         {
                             return LibHeifSharpUtil.GetImageSize(fs);
                         }
-                        else if (FileUtil.IsJpegFile(formatName))
-                        {
-                            var size = GetJpegSize(fs);
-                            if (size != EMPTY_SIZE)
-                            {
-                                return size;
-                            }
-                        }
                         else if (FileUtil.IsPngFile(formatName))
                         {
                             var size = GetPngSize(fs);
