@@ -11,7 +11,7 @@ namespace PicSum.Job.Jobs
     /// ファイルの評価値を更新します。
     /// </summary>
     [SupportedOSPlatform("windows")]
-    public sealed class FileRatingUpdateJob
+    internal sealed class FileRatingUpdateJob
         : AbstractOneWayJob<FileRatingUpdateParameter>
     {
         protected override void Execute(FileRatingUpdateParameter param)

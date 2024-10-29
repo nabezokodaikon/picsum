@@ -9,7 +9,7 @@ namespace PicSum.Job.Jobs
     /// 画像ファイルエクスポート非同期ジョブ
     /// </summary>
     [SupportedOSPlatform("windows")]
-    public sealed class SingleFileExportJob
+    internal sealed class SingleFileExportJob
         : AbstractOneWayJob<SingleFileExportParameter>
     {
         protected override void Execute(SingleFileExportParameter param)

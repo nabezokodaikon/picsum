@@ -11,7 +11,7 @@ namespace PicSum.Job.Jobs
     /// ファイルにタグを追加します。
     /// </summary>
     [SupportedOSPlatform("windows")]
-    public sealed class FileTagAddJob
+    internal sealed class FileTagAddJob
         : AbstractOneWayJob<FileTagUpdateParameter>
     {
         protected override void Execute(FileTagUpdateParameter param)

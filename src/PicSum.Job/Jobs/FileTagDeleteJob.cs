@@ -11,7 +11,7 @@ namespace PicSum.Job.Jobs
     /// ファイルのタグを削除します。
     /// </summary>
     [SupportedOSPlatform("windows")]
-    public class FileTagDeleteJob
+    internal class FileTagDeleteJob
         : AbstractOneWayJob<FileTagUpdateParameter>
     {
         protected override void Execute(FileTagUpdateParameter param)

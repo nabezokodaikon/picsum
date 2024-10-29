@@ -11,7 +11,7 @@ namespace PicSum.Job.Jobs
     /// フォルダ状態更新ジョブ
     /// </summary>
     [SupportedOSPlatform("windows")]
-    public sealed class DirectoryStateUpdateJob
+    internal sealed class DirectoryStateUpdateJob
         : AbstractOneWayJob<DirectoryStateParameter>
     {
         protected override void Execute(DirectoryStateParameter param)

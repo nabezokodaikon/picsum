@@ -7,7 +7,7 @@ using System.Runtime.Versioning;
 namespace PicSum.Job.Jobs
 {
     [SupportedOSPlatform("windows")]
-    public sealed class DirectoryViewHistoryAddJob
+    internal sealed class DirectoryViewHistoryAddJob
         : AbstractOneWayJob<ValueParameter<string>>
     {
         protected override void Execute(ValueParameter<string> param)

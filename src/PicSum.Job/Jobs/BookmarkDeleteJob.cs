@@ -7,7 +7,7 @@ using System.Runtime.Versioning;
 namespace PicSum.Job.Jobs
 {
     [SupportedOSPlatform("windows")]
-    public sealed class BookmarkDeleteJob
+    internal sealed class BookmarkDeleteJob
         : AbstractOneWayJob<ListParameter<string>>
     {
         protected override void Execute(ListParameter<string> param)
