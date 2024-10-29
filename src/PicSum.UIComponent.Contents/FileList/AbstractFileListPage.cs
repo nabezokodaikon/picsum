@@ -944,7 +944,7 @@ namespace PicSum.UIComponent.Contents.FileList
                     ThumbnailHeight = thumbnailHeight,
                 };
 
-                CommonJobs.Instance.ThumbnailsGetJob.Initialize(this)
+                CommonJobs.Instance.ThumbnailsGetJob.Initialize()
                     .Callback(_ =>
                     {
                         if (this.disposed)
@@ -1232,7 +1232,7 @@ namespace PicSum.UIComponent.Contents.FileList
                             ExportDirecotry = fbd.SelectedPath,
                         };
 
-                        this.MultiFilesExportJob.Initialize(this)
+                        this.MultiFilesExportJob.Initialize()
                             .BeginCancel()
                             .StartJob(this, param);
                         CommonConfig.ExportDirectoryPath = fbd.SelectedPath;

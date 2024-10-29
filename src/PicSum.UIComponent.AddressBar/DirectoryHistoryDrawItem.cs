@@ -71,7 +71,7 @@ namespace PicSum.UIComponent.AddressBar
                 base.DropDownList.Show(base.AddressBar, 0, base.AddressBar.Height);
 
                 CommonJobs.Instance.DirectoryViewHistoryGetJob
-                    .Initialize(this.AddressBar)
+                    .Initialize()
                     .Callback(_ =>
                     {
                         if (this.disposed)

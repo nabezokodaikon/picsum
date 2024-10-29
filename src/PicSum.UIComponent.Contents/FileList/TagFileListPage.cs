@@ -32,7 +32,7 @@ namespace PicSum.UIComponent.Contents.FileList
             {
                 using (var job = new TwoWayJob<FilesGetByTagJob, ValueParameter<string>, ListResult<FileShallowInfoEntity>>())
                 {
-                    job.Initialize(sender)
+                    job.Initialize()
                         .Callback(e =>
                         {
                             var imageFiles = e
@@ -78,7 +78,7 @@ namespace PicSum.UIComponent.Contents.FileList
             {
                 var param = new ValueParameter<string>(this.parameter.Tag);
 
-                job.Initialize(this)
+                job.Initialize()
                     .Callback(_ =>
                     {
                         if (this.disposed)

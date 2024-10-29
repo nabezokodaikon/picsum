@@ -174,7 +174,7 @@ namespace PicSum.UIComponent.AddressBar
 
             var param = new ValueParameter<string>(filePath);
 
-            CommonJobs.Instance.AddressInfoGetJob.Initialize(this)
+            CommonJobs.Instance.AddressInfoGetJob.Initialize()
                 .Callback(_ =>
                 {
                     if (this.disposed)

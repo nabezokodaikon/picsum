@@ -106,7 +106,7 @@ namespace PicSum.Job.Common
             ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
 
             this.addBookmarkJob ??= new();
-            this.addBookmarkJob.Initialize(sender)
+            this.addBookmarkJob.Initialize()
                 .StartJob(sender, parameter);
         }
 
@@ -116,7 +116,7 @@ namespace PicSum.Job.Common
             ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
 
             this.singleFileExportJob ??= new();
-            this.singleFileExportJob.Initialize(sender)
+            this.singleFileExportJob.Initialize()
                 .StartJob(sender, parameter);
         }
 
@@ -126,7 +126,7 @@ namespace PicSum.Job.Common
             ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
 
             this.directoryStateUpdateJob ??= new();
-            this.directoryStateUpdateJob.Initialize(sender)
+            this.directoryStateUpdateJob.Initialize()
                 .StartJob(sender, parameter);
         }
 
@@ -136,7 +136,7 @@ namespace PicSum.Job.Common
             ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
 
             this.directoryViewHistoryAddJob ??= new();
-            this.directoryViewHistoryAddJob.Initialize(sender)
+            this.directoryViewHistoryAddJob.Initialize()
                 .StartJob(sender, parameter);
         }
 
@@ -146,7 +146,7 @@ namespace PicSum.Job.Common
             ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
 
             this.bookmarkDeleteJob ??= new();
-            this.bookmarkDeleteJob.Initialize(sender)
+            this.bookmarkDeleteJob.Initialize()
                 .StartJob(sender, parameter);
         }
 
@@ -156,7 +156,7 @@ namespace PicSum.Job.Common
             ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
 
             this.directoryViewCounterDeleteJob ??= new();
-            this.directoryViewCounterDeleteJob.Initialize(sender)
+            this.directoryViewCounterDeleteJob.Initialize()
                 .StartJob(sender, parameter);
         }
 
@@ -166,7 +166,7 @@ namespace PicSum.Job.Common
             ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
 
             this.fileRatingUpdateJob ??= new();
-            this.fileRatingUpdateJob.Initialize(sender)
+            this.fileRatingUpdateJob.Initialize()
                 .StartJob(sender, parameter);
         }
 
@@ -176,7 +176,7 @@ namespace PicSum.Job.Common
             ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
 
             this.fileTagDeleteJob ??= new();
-            this.fileTagDeleteJob.Initialize(sender)
+            this.fileTagDeleteJob.Initialize()
                 .StartJob(sender, parameter);
         }
 
@@ -186,7 +186,7 @@ namespace PicSum.Job.Common
             ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
 
             this.fileTagAddJob ??= new();
-            this.fileTagAddJob.Initialize(sender)
+            this.fileTagAddJob.Initialize()
                 .StartJob(sender, parameter);
         }
 
@@ -195,7 +195,7 @@ namespace PicSum.Job.Common
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
 
             this.gcCollectRunJob ??= new();
-            this.gcCollectRunJob.Initialize(sender)
+            this.gcCollectRunJob.Initialize()
                 .StartJob(sender);
         }
     }

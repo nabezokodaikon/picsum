@@ -51,10 +51,9 @@ namespace SWF.Core.Job
             this.disposed = true;
         }
 
-        public void Post(AbstractAsyncJob job, Control? comparandSender, Action callbackAction)
+        public void Post(AbstractAsyncJob job, Action callbackAction)
         {
             ArgumentNullException.ThrowIfNull(job, nameof(job));
-            ArgumentNullException.ThrowIfNull(comparandSender, nameof(comparandSender));
             ArgumentNullException.ThrowIfNull(callbackAction, nameof(callbackAction));
 
             if (this.disposed)
@@ -67,15 +66,13 @@ namespace SWF.Core.Job
 
             try
             {
-                if (job.Sender.Equals(comparandSender)
-                    && job.Sender.InvokeRequired
+                if (job.Sender.InvokeRequired
                     && job.Sender.IsHandleCreated
                     && !job.Sender.IsDisposed)
                 {
                     job.Sender.BeginInvoke(new MethodInvoker(() =>
                     {
-                        if (job.Sender.Equals(comparandSender)
-                            && job.Sender.IsHandleCreated
+                        if (job.Sender.IsHandleCreated
                             && !job.Sender.IsDisposed)
                         {
                             callbackAction();

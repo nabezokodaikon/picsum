@@ -147,7 +147,7 @@ namespace PicSum.Main.UIComponent
                 {
                     using (var thumbnailDBCleanupJob = new OneWayJob<ThumbnailDBCleanupJob, ValueParameter<string>>())
                     {
-                        thumbnailDBCleanupJob.Initialize(this)
+                        thumbnailDBCleanupJob.Initialize()
                             .Catch(ex =>
                             {
                                 ExceptionUtil.ShowErrorDialog("The thumbnail database cleanup process failed.", ex);
@@ -156,7 +156,7 @@ namespace PicSum.Main.UIComponent
                             {
                                 using (var startupJob = new TwoWayJob<StartupJob, StartupPrameter, EmptyResult>())
                                 {
-                                    startupJob.Initialize(this)
+                                    startupJob.Initialize()
                                         .Catch(ex =>
                                         {
                                             ExceptionUtil.ShowErrorDialog("Failed to start.", ex);
@@ -165,7 +165,7 @@ namespace PicSum.Main.UIComponent
                                         {
                                             using (var fileInfoDBCleanupJob = new OneWayJob<FileInfoDBCleanupJob>())
                                             {
-                                                fileInfoDBCleanupJob.Initialize(this)
+                                                fileInfoDBCleanupJob.Initialize()
                                                     .Catch(ex =>
                                                     {
                                                         ExceptionUtil.ShowErrorDialog("The file information database cleanup process failed.", ex);
@@ -194,7 +194,7 @@ namespace PicSum.Main.UIComponent
                 {
                     using (var startupJob = new TwoWayJob<StartupJob, StartupPrameter, EmptyResult>())
                     {
-                        startupJob.Initialize(this)
+                        startupJob.Initialize()
                             .Catch(ex =>
                              {
                                  ExceptionUtil.ShowErrorDialog("Failed to start.", ex);

@@ -32,7 +32,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 {
                     var dir = FileUtil.GetParentDirectoryPath(param.SelectedFilePath);
 
-                    job.Initialize(sender)
+                    job.Initialize()
                         .Callback(e =>
                         {
                             if (!FileUtil.IsImageFile(param.SelectedFilePath))
@@ -78,7 +78,7 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             using (var job = new TwoWayJob<BookmarksGetJob, ListResult<FileShallowInfoEntity>>())
             {
-                job.Initialize(this)
+                job.Initialize()
                     .Callback(_ =>
                     {
                         if (this.disposed)

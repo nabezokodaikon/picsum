@@ -18,23 +18,10 @@ namespace SWF.Core.Job
         private readonly CancellationTokenSource source = new();
         private readonly Task thread;
         private readonly ConcurrentQueue<TJob> jobQueue = new();
-        private Control? currentSender = null;
         private Action<TJobResult>? callbackAction;
         private Action? cancelAction;
         private Action<JobException>? catchAction;
         private Action? completeAction;
-
-        private Control? CurrentSender
-        {
-            get
-            {
-                return Interlocked.CompareExchange(ref this.currentSender, null, null);
-            }
-            set
-            {
-                Interlocked.Exchange(ref this.currentSender, value);
-            }
-        }
 
         public TwoWayJob()
         {
@@ -79,16 +66,13 @@ namespace SWF.Core.Job
             this.disposed = true;
         }
 
-        public TwoWayJob<TJob, TJobParameter, TJobResult> Initialize(Control sender)
+        public TwoWayJob<TJob, TJobParameter, TJobResult> Initialize()
         {
-            ArgumentNullException.ThrowIfNull(sender, nameof(sender));
-
             this.callbackAction = null;
             this.cancelAction = null;
             this.catchAction = null;
             this.completeAction = null;
 
-            this.CurrentSender = sender;
             return this;
         }
 
@@ -148,11 +132,6 @@ namespace SWF.Core.Job
         {
             ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
 
-            if (!sender.Equals(this.CurrentSender))
-            {
-                throw new InvalidOperationException("コンテキストが一致しません。");
-            }
-
             var job = this.CreateJob();
             job.Sender = sender;
             job.Parameter = parameter;
@@ -164,11 +143,6 @@ namespace SWF.Core.Job
 
         public TwoWayJob<TJob, TJobParameter, TJobResult> StartJob(Control sender)
         {
-            if (!sender.Equals(this.CurrentSender))
-            {
-                throw new InvalidOperationException("コンテキストが一致しません。");
-            }
-
             var job = this.CreateJob();
             job.Sender = sender;
 
@@ -211,7 +185,7 @@ namespace SWF.Core.Job
                 var innerAction = this.callbackAction;
                 job.CallbackAction = _ =>
                 {
-                    UIThreadAccessor.Instance.Post(job, this.CurrentSender, () =>
+                    UIThreadAccessor.Instance.Post(job, () =>
                     {
                         innerAction.Invoke(_);
                     });
@@ -223,7 +197,7 @@ namespace SWF.Core.Job
                 var innerAction = this.cancelAction;
                 job.CancelAction = () =>
                 {
-                    UIThreadAccessor.Instance.Post(job, this.CurrentSender, () =>
+                    UIThreadAccessor.Instance.Post(job, () =>
                     {
                         innerAction.Invoke();
                     });
@@ -235,7 +209,7 @@ namespace SWF.Core.Job
                 var innerAction = this.catchAction;
                 job.CatchAction = _ =>
                 {
-                    UIThreadAccessor.Instance.Post(job, this.CurrentSender, () =>
+                    UIThreadAccessor.Instance.Post(job, () =>
                     {
                         innerAction.Invoke(_);
                     });
@@ -247,7 +221,7 @@ namespace SWF.Core.Job
                 var innerAction = this.completeAction;
                 job.CompleteAction = () =>
                 {
-                    UIThreadAccessor.Instance.Post(job, this.CurrentSender, () =>
+                    UIThreadAccessor.Instance.Post(job, () =>
                     {
                         innerAction.Invoke();
                     });
