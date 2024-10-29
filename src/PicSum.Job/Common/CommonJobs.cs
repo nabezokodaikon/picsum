@@ -19,7 +19,7 @@ namespace PicSum.Job.Common
         private OneWayJob<BookmarkAddJob, ValueParameter<string>>? addBookmarkJob = null;
         private OneWayJob<SingleFileExportJob, SingleFileExportParameter>? singleFileExportJob = null;
         private OneWayJob<DirectoryStateUpdateJob, DirectoryStateParameter>? directoryStateUpdateJob = null;
-        private OneWayJob<DirectoryViewHistoryAddJob, ValueParameter<string>>? directoryHistoryaddJob = null;
+        private OneWayJob<DirectoryViewHistoryAddJob, ValueParameter<string>>? directoryViewHistoryAddJob = null;
         private OneWayJob<BookmarkDeleteJob, ListParameter<string>>? bookmarkDeleteJob = null;
         private OneWayJob<DirectoryViewCounterDeleteJob, ListParameter<string>>? directoryViewCounterDeleteJob = null;
         private OneWayJob<FileRatingUpdateJob, FileRatingUpdateParameter>? fileRatingUpdateJob = null;
@@ -77,7 +77,7 @@ namespace PicSum.Job.Common
                 this.addBookmarkJob?.Dispose();
                 this.singleFileExportJob?.Dispose();
                 this.directoryStateUpdateJob?.Dispose();
-                this.directoryHistoryaddJob?.Dispose();
+                this.directoryViewHistoryAddJob?.Dispose();
                 this.bookmarkDeleteJob?.Dispose();
                 this.directoryViewCounterDeleteJob?.Dispose();
                 this.fileRatingUpdateJob?.Dispose();
@@ -105,13 +105,7 @@ namespace PicSum.Job.Common
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
             ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
 
-            if (this.addBookmarkJob != null)
-            {
-                this.addBookmarkJob.WaitJobComplete();
-                this.addBookmarkJob.Dispose();
-            }
-
-            this.addBookmarkJob = new();
+            this.addBookmarkJob ??= new();
             this.addBookmarkJob.SetCurrentSender(sender)
                 .StartJob(sender, parameter);
         }
@@ -121,13 +115,7 @@ namespace PicSum.Job.Common
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
             ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
 
-            if (this.singleFileExportJob != null)
-            {
-                this.singleFileExportJob.WaitJobComplete();
-                this.singleFileExportJob.Dispose();
-            }
-
-            this.singleFileExportJob = new();
+            this.singleFileExportJob ??= new();
             this.singleFileExportJob.SetCurrentSender(sender)
                 .StartJob(sender, parameter);
         }
@@ -137,13 +125,7 @@ namespace PicSum.Job.Common
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
             ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
 
-            if (this.directoryStateUpdateJob != null)
-            {
-                this.directoryStateUpdateJob.WaitJobComplete();
-                this.directoryStateUpdateJob.Dispose();
-            }
-
-            this.directoryStateUpdateJob = new();
+            this.directoryStateUpdateJob ??= new();
             this.directoryStateUpdateJob.SetCurrentSender(sender)
                 .StartJob(sender, parameter);
         }
@@ -153,14 +135,8 @@ namespace PicSum.Job.Common
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
             ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
 
-            if (this.directoryHistoryaddJob != null)
-            {
-                this.directoryHistoryaddJob.WaitJobComplete();
-                this.directoryHistoryaddJob.Dispose();
-            }
-
-            this.directoryHistoryaddJob = new();
-            this.directoryHistoryaddJob.SetCurrentSender(sender)
+            this.directoryViewHistoryAddJob ??= new();
+            this.directoryViewHistoryAddJob.SetCurrentSender(sender)
                 .StartJob(sender, parameter);
         }
 
@@ -169,13 +145,7 @@ namespace PicSum.Job.Common
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
             ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
 
-            if (this.bookmarkDeleteJob != null)
-            {
-                this.bookmarkDeleteJob.WaitJobComplete();
-                this.bookmarkDeleteJob.Dispose();
-            }
-
-            this.bookmarkDeleteJob = new();
+            this.bookmarkDeleteJob ??= new();
             this.bookmarkDeleteJob.SetCurrentSender(sender)
                 .StartJob(sender, parameter);
         }
@@ -185,13 +155,7 @@ namespace PicSum.Job.Common
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
             ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
 
-            if (this.directoryViewCounterDeleteJob != null)
-            {
-                this.directoryViewCounterDeleteJob.WaitJobComplete();
-                this.directoryViewCounterDeleteJob.Dispose();
-            }
-
-            this.directoryViewCounterDeleteJob = new();
+            this.directoryViewCounterDeleteJob ??= new();
             this.directoryViewCounterDeleteJob.SetCurrentSender(sender)
                 .StartJob(sender, parameter);
         }
@@ -201,13 +165,7 @@ namespace PicSum.Job.Common
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
             ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
 
-            if (this.fileRatingUpdateJob != null)
-            {
-                this.fileRatingUpdateJob.WaitJobComplete();
-                this.fileRatingUpdateJob.Dispose();
-            }
-
-            this.fileRatingUpdateJob = new();
+            this.fileRatingUpdateJob ??= new();
             this.fileRatingUpdateJob.SetCurrentSender(sender)
                 .StartJob(sender, parameter);
         }
@@ -217,13 +175,7 @@ namespace PicSum.Job.Common
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
             ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
 
-            if (this.fileTagDeleteJob != null)
-            {
-                this.fileTagDeleteJob.WaitJobComplete();
-                this.fileTagDeleteJob.Dispose();
-            }
-
-            this.fileTagDeleteJob = new();
+            this.fileTagDeleteJob ??= new();
             this.fileTagDeleteJob.SetCurrentSender(sender)
                 .StartJob(sender, parameter);
         }
@@ -233,13 +185,7 @@ namespace PicSum.Job.Common
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
             ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
 
-            if (this.fileTagAddJob != null)
-            {
-                this.fileTagAddJob.WaitJobComplete();
-                this.fileTagAddJob.Dispose();
-            }
-
-            this.fileTagAddJob = new();
+            this.fileTagAddJob ??= new();
             this.fileTagAddJob.SetCurrentSender(sender)
                 .StartJob(sender, parameter);
         }
@@ -248,13 +194,7 @@ namespace PicSum.Job.Common
         {
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
 
-            if (this.gcCollectRunJob != null)
-            {
-                this.gcCollectRunJob.WaitJobComplete();
-                this.gcCollectRunJob.Dispose();
-            }
-
-            this.gcCollectRunJob = new();
+            this.gcCollectRunJob ??= new();
             this.gcCollectRunJob.SetCurrentSender(sender)
                 .StartJob(sender);
         }
