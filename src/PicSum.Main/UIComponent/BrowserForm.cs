@@ -51,9 +51,6 @@ namespace PicSum.Main.UIComponent
 
         private BrowserMainPanel browserMainPanel = null;
         private bool isKeyDown = false;
-        private TwoWayJob<StartupJob, StartupPrameter, EmptyResult> startupJob = null;
-        private OneWayJob<FileInfoDBCleanupJob> fileInfoDBCleanupJob = null;
-        private OneWayJob<ThumbnailDBCleanupJob, ValueParameter<string>> thumbnailDBCleanupJob = null;
 
         private BrowserMainPanel BrowserMainPanel
         {
@@ -134,7 +131,6 @@ namespace PicSum.Main.UIComponent
             {
                 this.Close();
             }
-
         }
 
         protected override void OnHandleCreated(EventArgs e)
@@ -147,56 +143,67 @@ namespace PicSum.Main.UIComponent
                     Path.Combine(FileUtil.DATABASE_DIRECTORY, @"fileinfo.sqlite"),
                     Path.Combine(FileUtil.DATABASE_DIRECTORY, @"thumbnail.sqlite"));
 
-                this.fileInfoDBCleanupJob = new();
-                this.fileInfoDBCleanupJob
-                    .Catch(ex =>
-                    {
-                        ExceptionUtil.ShowErrorDialog("ファイル情報データベースのクリーンアップ処理が失敗しました。", ex);
-                    })
-                    .Complete(() =>
-                    {
-                        this.CreateBrowserMainPanel();
-                        BrowserForm.isStartUp = false;
-                    });
-
-                this.thumbnailDBCleanupJob = new();
-                this.thumbnailDBCleanupJob
-                    .Catch(ex =>
-                    {
-                        ExceptionUtil.ShowErrorDialog("サムネイルデータベースのクリーンアップ処理が失敗しました。", ex);
-                    })
-                    .Complete(() =>
-                    {
-                        this.startupJob.StartJob(this, startupParameter);
-                    });
-
-                this.startupJob = new();
-                this.startupJob
-                    .Catch(ex =>
-                    {
-                        ExceptionUtil.ShowErrorDialog("起動に失敗しました。", ex);
-                    })
-                    .Complete(() =>
-                    {
-                        if (IsCleanup())
-                        {
-                            this.fileInfoDBCleanupJob.StartJob(this);
-                        }
-                        else
-                        {
-                            this.CreateBrowserMainPanel();
-                            BrowserForm.isStartUp = false;
-                        }
-                    });
-
                 if (BrowserForm.IsCleanup())
                 {
-                    this.thumbnailDBCleanupJob.StartJob(
-                        this, new ValueParameter<string>(FileUtil.DATABASE_DIRECTORY));
+                    using (var thumbnailDBCleanupJob = new OneWayJob<ThumbnailDBCleanupJob, ValueParameter<string>>())
+                    {
+                        thumbnailDBCleanupJob
+                            .Catch(ex =>
+                            {
+                                ExceptionUtil.ShowErrorDialog("The thumbnail database cleanup process failed.", ex);
+                            })
+                            .Complete(() =>
+                            {
+                                using (var startupJob = new TwoWayJob<StartupJob, StartupPrameter, EmptyResult>())
+                                {
+                                    startupJob
+                                        .Catch(ex =>
+                                        {
+                                            ExceptionUtil.ShowErrorDialog("Failed to start.", ex);
+                                        })
+                                        .Complete(() =>
+                                        {
+                                            using (var fileInfoDBCleanupJob = new OneWayJob<FileInfoDBCleanupJob>())
+                                            {
+                                                fileInfoDBCleanupJob
+                                                    .Catch(ex =>
+                                                    {
+                                                        ExceptionUtil.ShowErrorDialog("The file information database cleanup process failed.", ex);
+                                                    })
+                                                    .Complete(() =>
+                                                    {
+                                                        this.CreateBrowserMainPanel();
+                                                        BrowserForm.isStartUp = false;
+                                                    })
+                                                    .StartJob(this);
+                                                fileInfoDBCleanupJob.WaitJobComplete();
+                                            }
+                                        })
+                                        .StartJob(this, startupParameter);
+                                    startupJob.WaitJobComplete();
+                                }
+                            })
+                            .StartJob(this, new ValueParameter<string>(FileUtil.DATABASE_DIRECTORY));
+                        thumbnailDBCleanupJob.WaitJobComplete();
+                    }
                 }
                 else
                 {
-                    this.startupJob.StartJob(this, startupParameter);
+                    using (var startupJob = new TwoWayJob<StartupJob, StartupPrameter, EmptyResult>())
+                    {
+                        startupJob
+                            .Catch(ex =>
+                             {
+                                 ExceptionUtil.ShowErrorDialog("Failed to start.", ex);
+                             })
+                            .Complete(() =>
+                            {
+                                this.CreateBrowserMainPanel();
+                                BrowserForm.isStartUp = false;
+                            })
+                            .StartJob(this, startupParameter);
+                        startupJob.WaitJobComplete();
+                    }
                 }
             }
             else
@@ -236,14 +243,7 @@ namespace PicSum.Main.UIComponent
         {
             if (disposing)
             {
-                this.startupJob?.Dispose();
-                this.startupJob = null;
 
-                this.fileInfoDBCleanupJob?.Dispose();
-                this.fileInfoDBCleanupJob = null;
-
-                this.thumbnailDBCleanupJob?.Dispose();
-                this.thumbnailDBCleanupJob = null;
             }
 
             base.Dispose(disposing);
