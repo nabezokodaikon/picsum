@@ -183,7 +183,7 @@ namespace SWF.Core.Job
 
         public void BeginCancel()
         {
-            while (this.jobQueue.TryDequeue(out var job))
+            foreach (var job in this.jobQueue.ToArray())
             {
                 job.BeginCancel();
             }
@@ -192,24 +192,15 @@ namespace SWF.Core.Job
         public void WaitJobComplete()
         {
             Logger.Debug("ジョブキューの完了を待ちます。");
-            while (this.jobQueue.TryPeek(out var job))
-            {
-                if (job.IsStarted)
-                {
-                    if (this.jobQueue.TryDequeue(out var dequeueJob))
-                    {
-                        if (job != dequeueJob)
-                        {
-                            throw new InvalidOperationException("TryPeekしたジョブとDequeueしたジョブが一致しません。");
-                        }
 
-                        while (!job.IsCompleted)
-                        {
-                            Thread.Sleep(1);
-                        }
-                    }
+            foreach (var job in this.jobQueue.ToArray())
+            {
+                while (!job.IsCompleted)
+                {
+                    Thread.Sleep(1);
                 }
             }
+
             Logger.Debug("ジョブキューが完了しました。");
         }
 
@@ -274,8 +265,6 @@ namespace SWF.Core.Job
 
             Logger.Debug("ジョブ実行スレッドが開始されました。");
 
-            TJob? previewJob = null;
-
             try
             {
                 while (true)
@@ -297,25 +286,10 @@ namespace SWF.Core.Job
                         throw new NullReferenceException($"{this.threadName}: ジョブIDがNullです。");
                     }
 
-                    if (previewJob == currentJob)
-                    {
-                        if (token.IsCancellationRequested)
-                        {
-                            Logger.Debug("ジョブ実行スレッドにキャンセルリクエストがありました。");
-                            token.ThrowIfCancellationRequested();
-                        }
-
-                        token.WaitHandle.WaitOne(1);
-                        continue;
-                    }
-
-                    previewJob = currentJob;
-
                     Logger.Debug($"{currentJob.ID} を実行します。");
                     var sw = Stopwatch.StartNew();
                     try
                     {
-                        currentJob.IsStarted = true;
                         currentJob.ExecuteWrapper();
                     }
                     catch (JobCancelException)
@@ -337,6 +311,19 @@ namespace SWF.Core.Job
                     {
                         currentJob.CompleteAction?.Invoke();
                         currentJob.IsCompleted = true;
+
+                        if (this.jobQueue.TryDequeue(out var dequeueJob))
+                        {
+                            if (currentJob != dequeueJob)
+                            {
+                                throw new InvalidOperationException("キューからPeekしたジョブとDequeueしたジョブが一致しません。");
+                            }
+                        }
+                        else
+                        {
+                            throw new InvalidOperationException("他のスレッドでキューの操作が行われました。");
+                        }
+
                         sw.Stop();
                         Logger.Debug($"{currentJob.ID} が終了しました。{sw.ElapsedMilliseconds} ms");
                     }

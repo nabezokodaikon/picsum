@@ -7,7 +7,6 @@ namespace SWF.Core.Job
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        private long isStarted = 0;
         private long isCancel = 0;
         private long isCompleted = 0;
 
@@ -16,18 +15,6 @@ namespace SWF.Core.Job
 #pragma warning restore CS8618
 
         public JobID ID { get; private set; } = JobID.GetNew();
-
-        internal bool IsStarted
-        {
-            get
-            {
-                return Interlocked.Read(ref this.isStarted) == 1;
-            }
-            set
-            {
-                Interlocked.Exchange(ref this.isStarted, Convert.ToInt64(value));
-            }
-        }
 
         internal bool IsCompleted
         {
