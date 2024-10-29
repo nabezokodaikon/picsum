@@ -11,7 +11,7 @@ namespace PicSum.Job.Jobs
     /// フォルダ内の画像ファイルを検索します。
     /// </summary>
     [SupportedOSPlatform("windows")]
-    public sealed class ImageFileGetByDirectoryJob
+    public sealed class ImageFilesGetByDirectoryJob
         : AbstractTwoWayJob<ImageFileGetByDirectoryParameter, ImageFilesGetByDirectoryResult>
     {
         protected override void Execute(ImageFileGetByDirectoryParameter param)
