@@ -22,7 +22,7 @@ PicSumはタブ付きの画像ビューアです。
 * Gif
 * Ico
 * Jpeg
-* jpg
+* Jpg
 * Heic
 * Heif
 * Png

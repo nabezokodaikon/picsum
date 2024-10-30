@@ -22,7 +22,7 @@
 * Gif
 * Ico
 * Jpeg
-* jpg
+* Jpg
 * Heic
 * Heif
 * Png
