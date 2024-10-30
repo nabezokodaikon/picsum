@@ -1,7 +1,6 @@
 using SWF.Core.Base;
 using SWF.Core.FileAccessor;
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.IO;
 using System.Runtime.Versioning;
@@ -36,8 +35,6 @@ namespace PicSum.Main.Conf
 
         }
 
-        [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(Config))]
-        [RequiresUnreferencedCode("XML シリアライザーはトリミングによって影響を受ける可能性があります。")]
         public void Save()
         {
             var serializer = new XmlSerializer(typeof(Config));
@@ -48,8 +45,6 @@ namespace PicSum.Main.Conf
             }
         }
 
-        [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(Config))]
-        [RequiresUnreferencedCode("XML シリアライザーはトリミングによって影響を受ける可能性があります。")]
         public void Load()
         {
             if (FileUtil.IsExists(CONFIG_FILE))

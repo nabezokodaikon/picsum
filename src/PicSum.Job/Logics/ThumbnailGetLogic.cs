@@ -14,7 +14,7 @@ namespace PicSum.Job.Logics
     /// サムネイルを読込みます。
     /// </summary>
     [SupportedOSPlatform("windows")]
-    public sealed class ThumbnailGetLogic
+    internal sealed class ThumbnailGetLogic
         : AbstractAsyncLogic
     {
         private const int CACHE_CAPACITY = 1000;

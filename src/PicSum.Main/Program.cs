@@ -1,14 +1,10 @@
 using NLog;
 using NLog.Config;
 using NLog.Targets;
-using PicSum.Job.Common;
-using PicSum.Job.Logics;
 using PicSum.Main.Mng;
 using PicSum.Main.UIComponent;
 using SWF.Core.Base;
 using SWF.Core.FileAccessor;
-using SWF.Core.ImageAccessor;
-using SWF.Core.Job;
 using System;
 using System.IO;
 using System.IO.Pipes;
@@ -47,20 +43,10 @@ namespace PicSum.Main
                     Application.EnableVisualStyles();
                     Application.SetCompatibleTextRenderingDefault(false);
 
-                    using (var component = new ComponentManager())
+                    using (var resource = new ResourceManager())
+                    using (var initialForm = new InitialForm())
                     {
-                        using (var initialForm = new InitialForm())
-                        {
-                            Application.Run(initialForm);
-                        }
-
-                        CommonJobs.Instance.Dispose();
-                        UIThreadAccessor.Instance.Dispose();
-                        FileIconCash.DisposeStaticResources();
-                        ThumbnailGetLogic.DisposeStaticResouces();
-                        ImageFileCacheUtil.DisposeStaticResources();
-                        ImageFileSizeCacheUtil.DisposeStaticResources();
-                        FileExportLogic.DisposeStaticResouces();
+                        Application.Run(initialForm);
                     }
 
                     logger.Debug("アプリケーションを終了します。");

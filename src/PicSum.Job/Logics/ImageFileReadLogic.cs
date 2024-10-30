@@ -7,7 +7,7 @@ using System.Drawing;
 
 namespace PicSum.Job.Logics
 {
-    public sealed class ImageFileReadLogic(AbstractAsyncJob job)
+    internal sealed class ImageFileReadLogic(AbstractAsyncJob job)
         : AbstractAsyncLogic(job)
     {
         internal ImageFileReadResult CreateResult(

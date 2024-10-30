@@ -1,5 +1,9 @@
 using PicSum.DatabaseAccessor.Connection;
+using PicSum.Job.Common;
+using PicSum.Job.Logics;
 using SWF.Core.DatabaseAccessor;
+using SWF.Core.FileAccessor;
+using SWF.Core.ImageAccessor;
 using SWF.Core.Job;
 
 namespace PicSum.Job.SyncLogics
@@ -12,6 +16,14 @@ namespace PicSum.Job.SyncLogics
     {
         public void Execute()
         {
+            CommonJobs.Instance.Dispose();
+            UIThreadAccessor.Instance.Dispose();
+            FileIconCash.DisposeStaticResources();
+            ThumbnailGetLogic.DisposeStaticResouces();
+            ImageFileCacheUtil.DisposeStaticResources();
+            ImageFileSizeCacheUtil.DisposeStaticResources();
+            FileExportLogic.DisposeStaticResouces();
+
             DatabaseManager<FileInfoConnection>.Close();
             DatabaseManager<ThumbnailConnection>.Close();
         }
