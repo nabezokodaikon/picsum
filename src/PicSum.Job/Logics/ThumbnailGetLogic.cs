@@ -22,7 +22,7 @@ namespace PicSum.Job.Logics
         private static readonly int BUFFER_FILE_MAX_SIZE = 1024 * 1024 * 10;
         private static readonly List<ThumbnailBufferEntity> CACHE_LIST = new(CACHE_CAPACITY);
         private static readonly Dictionary<string, ThumbnailBufferEntity> CACHE_DICTIONARY = new(CACHE_CAPACITY);
-        private static readonly ReaderWriterLockSlim CACHE_LOCK = new();
+        private static readonly SemaphoreSlim CACHE_LOCK = new(1, 1);
 
         /// <summary>
         /// 静的リソースを解放します。
@@ -621,7 +621,7 @@ namespace PicSum.Job.Logics
 
         private static ThumbnailBufferEntity GetMemoryCache(string filePath)
         {
-            CACHE_LOCK.EnterWriteLock();
+            CACHE_LOCK.Wait();
 
             try
             {
@@ -636,7 +636,7 @@ namespace PicSum.Job.Logics
             }
             finally
             {
-                CACHE_LOCK.ExitWriteLock();
+                CACHE_LOCK.Release();
             }
         }
 
@@ -647,7 +647,7 @@ namespace PicSum.Job.Logics
                 throw new ArgumentException("サムネイルのファイルパスがNULLです。", nameof(thumb));
             }
 
-            CACHE_LOCK.EnterWriteLock();
+            CACHE_LOCK.Wait();
 
             try
             {
@@ -672,7 +672,7 @@ namespace PicSum.Job.Logics
             }
             finally
             {
-                CACHE_LOCK.ExitWriteLock();
+                CACHE_LOCK.Release();
             }
         }
     }
