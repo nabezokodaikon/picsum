@@ -21,7 +21,6 @@ namespace PicSum.Job.SyncLogics
             FileIconCash.DisposeStaticResources();
             ThumbnailGetLogic.DisposeStaticResouces();
             ImageFileCacheUtil.DisposeStaticResources();
-            ImageFileSizeCacheUtil.DisposeStaticResources();
             FileExportLogic.DisposeStaticResouces();
 
             DatabaseManager<FileInfoConnection>.Close();

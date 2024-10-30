@@ -10,11 +10,14 @@ namespace SWF.Core.ImageAccessor
         private const int CACHE_CAPACITY = 12;
         private static readonly List<ImageFileCache> CACHE_LIST = new(CACHE_CAPACITY);
         private static readonly Dictionary<string, ImageFileCache> CACHE_DICTIONARY = new(CACHE_CAPACITY);
-        private static readonly SemaphoreSlim CACHE_LOCK = new(1, 1);
+        private static readonly object CACHE_LOCK = new();
 
         public static void DisposeStaticResources()
         {
-            CACHE_LOCK.Dispose();
+            foreach (var cache in CACHE_LIST)
+            {
+                cache.Dispose();
+            }
         }
 
         public static Size GetSize(string filePath)
@@ -53,8 +56,7 @@ namespace SWF.Core.ImageAccessor
 
             var timestamp = FileUtil.GetUpdateDate(filePath);
 
-            CACHE_LOCK.Wait();
-            try
+            lock (CACHE_LOCK)
             {
                 if (CACHE_DICTIONARY.TryGetValue(filePath, out var cache))
                 {
@@ -85,10 +87,6 @@ namespace SWF.Core.ImageAccessor
                 CACHE_DICTIONARY.Add(newCache.FilePath, newCache);
                 CACHE_LIST.Add(newCache);
             }
-            finally
-            {
-                CACHE_LOCK.Release();
-            }
         }
 
         private static T Read<T>(string filePath, Func<ImageFileCache, T> resultFunc)
@@ -97,8 +95,7 @@ namespace SWF.Core.ImageAccessor
 
             var timestamp = FileUtil.GetUpdateDate(filePath);
 
-            CACHE_LOCK.Wait();
-            try
+            lock (CACHE_LOCK)
             {
                 if (CACHE_DICTIONARY.TryGetValue(filePath, out var cache))
                 {
@@ -129,10 +126,6 @@ namespace SWF.Core.ImageAccessor
                 CACHE_DICTIONARY.Add(filePath, newCache);
                 CACHE_LIST.Add(newCache);
                 return resultFunc(newCache);
-            }
-            finally
-            {
-                CACHE_LOCK.Release();
             }
         }
     }
