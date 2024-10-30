@@ -3,6 +3,7 @@ using SWF.Core.FileAccessor;
 using System.Diagnostics;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
+using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 using System.Security;
 using System.Xml;
@@ -12,13 +13,12 @@ namespace SWF.Core.ImageAccessor
     [SupportedOSPlatform("windows")]
     public static class ImageUtil
     {
-        public static readonly Size EMPTY_SIZE = Size.Empty;
+        public static readonly Size EMPTY_SIZE = System.Drawing.Size.Empty;
         public static readonly Bitmap EMPTY_IMAGE = new(1, 1);
 
         private static readonly int FILE_READ_BUFFER_SIZE = 80 * 1024;
-        private static readonly dynamic SHELL = GetSell();
 
-        private static object GetSell()
+        private static IShellApplication GetSell()
         {
             var type = Type.GetTypeFromProgID("Shell.Application")
                 ?? throw new NullReferenceException("Shell.Applicationを取得できませんでした。");
@@ -26,7 +26,7 @@ namespace SWF.Core.ImageAccessor
             var obj = Activator.CreateInstance(type)
                 ?? throw new NullReferenceException("Shell.Applicationを取得できませんでした。");
 
-            return obj;
+            return (IShellApplication)obj;
         }
 
         internal static Bitmap Resize(Bitmap srcBmp, int width, int height)
@@ -46,7 +46,7 @@ namespace SWF.Core.ImageAccessor
 
                 try
                 {
-                    var bytesPerPixel = Image.GetPixelFormatSize(bitmap.PixelFormat) / 8;
+                    var bytesPerPixel = System.Drawing.Image.GetPixelFormatSize(bitmap.PixelFormat) / 8;
                     var rect = new Rectangle(0, 0, bitmap.Width, bitmap.Height);
                     bmpData = bitmap.LockBits(rect, ImageLockMode.ReadOnly, bitmap.PixelFormat);
 
@@ -90,7 +90,7 @@ namespace SWF.Core.ImageAccessor
                     var rect = new Rectangle(0, 0, width, height);
                     bmpData = bitmap.LockBits(rect, ImageLockMode.WriteOnly, pixelFormat);
 
-                    var bytesPerPixel = Image.GetPixelFormatSize(pixelFormat) / 8;
+                    var bytesPerPixel = System.Drawing.Image.GetPixelFormatSize(pixelFormat) / 8;
                     var stride = bmpData.Stride;
                     var bufferSize = stride * height;
 
@@ -327,7 +327,7 @@ namespace SWF.Core.ImageAccessor
 
                         if (FileUtil.IsWebpFile(formatName))
                         {
-                            //return SixLaborsUtil.GetImageSize(fs);
+                            return SixLaborsUtil.GetImageSize(fs);
                         }
                         if (FileUtil.IsAvifFile(formatName))
                         {
@@ -414,39 +414,52 @@ namespace SWF.Core.ImageAccessor
 
                 if (FileUtil.IsImageFile(filePath))
                 {
-                    var directory = ImageUtil.SHELL.NameSpace(Path.GetDirectoryName(filePath));
-                    var item = directory.ParseName(Path.GetFileName(filePath));
-                    var details = directory.GetDetailsOf(item, 31);
-                    if (string.IsNullOrWhiteSpace(details))
+                    IShellApplication? shell = null;
+                    try
                     {
-                        throw new ImageUtilException(CreateFileAccessErrorMessage(filePath));
-                    }
+                        shell = GetSell();
+                        var directory = shell.NameSpace(FileUtil.GetParentDirectoryPath(filePath));
+                        var item = directory.ParseName(Path.GetFileName(filePath));
+                        var details = directory.GetDetailsOf(item, 31);
+                        if (string.IsNullOrWhiteSpace(details))
+                        {
+                            throw new ImageUtilException(CreateFileAccessErrorMessage(filePath));
+                        }
 
-                    var v = details.Split(('x'));
-                    if (v.Length != 2)
+                        var v = details.Split(('x'));
+                        if (v.Length != 2)
+                        {
+                            throw new ImageUtilException(CreateFileAccessErrorMessage(filePath));
+                        }
+
+                        var wText = v[0];
+                        var hText = v[1];
+
+                        if (!int.TryParse(wText.Substring(1).Trim(), out int w))
+                        {
+                            throw new ImageUtilException(CreateFileAccessErrorMessage(filePath));
+                        }
+
+                        if (!int.TryParse(hText.Substring(0, hText.Length - 1).Trim(), out int h))
+                        {
+                            throw new ImageUtilException(CreateFileAccessErrorMessage(filePath));
+                        }
+
+                        if (w < 1 || h < 1)
+                        {
+                            throw new ImageUtilException(CreateFileAccessErrorMessage(filePath));
+                        }
+
+                        return new Size(w, h);
+                    }
+                    finally
                     {
-                        throw new ImageUtilException(CreateFileAccessErrorMessage(filePath));
+                        if (shell != null)
+                        {
+                            Marshal.ReleaseComObject(shell);
+                            shell = null;
+                        }
                     }
-
-                    var wText = v[0];
-                    var hText = v[1];
-
-                    if (!int.TryParse(wText.Substring(1).Trim(), out int w))
-                    {
-                        throw new ImageUtilException(CreateFileAccessErrorMessage(filePath));
-                    }
-
-                    if (!int.TryParse(hText.Substring(0, hText.Length - 1).Trim(), out int h))
-                    {
-                        throw new ImageUtilException(CreateFileAccessErrorMessage(filePath));
-                    }
-
-                    if (w < 1 || h < 1)
-                    {
-                        throw new ImageUtilException(CreateFileAccessErrorMessage(filePath));
-                    }
-
-                    return new Size(w, h);
                 }
                 else
                 {

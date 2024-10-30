@@ -2,6 +2,7 @@ using PicSum.Job.SyncJobs;
 using PicSum.Main.Conf;
 using PicSum.UIComponent.Contents.Conf;
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.Versioning;
 
 namespace PicSum.Main.Mng
@@ -16,6 +17,7 @@ namespace PicSum.Main.Mng
         /// <summary>
         /// コンストラクタ
         /// </summary>
+        [RequiresUnreferencedCode("Calls PicSum.Main.Conf.Config.Load()")]
         public ComponentManager()
         {
             Config.Values.Load();
@@ -40,6 +42,7 @@ namespace PicSum.Main.Mng
         /// <summary>
         /// リソースを解放します。
         /// </summary>
+        [RequiresUnreferencedCode("Calls PicSum.Main.Conf.Config.Save()")]
         public void Dispose()
         {
             var closingJob = new ClosingSyncJob();
