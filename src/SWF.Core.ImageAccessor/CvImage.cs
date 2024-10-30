@@ -11,7 +11,6 @@ namespace SWF.Core.ImageAccessor
         public static readonly CvImage EMPTY = new(System.Drawing.Size.Empty);
 
         private bool disposed = false;
-        private readonly object lockObject = new();
         private readonly PixelFormat pixelFormat;
         private Mat? mat;
 
@@ -89,12 +88,9 @@ namespace SWF.Core.ImageAccessor
 
             g.CompositingMode = CompositingMode.SourceOver;
 
-            lock (this.lockObject)
+            using (var bmp = this.mat.ToBitmap(this.pixelFormat))
             {
-                using (var bmp = this.mat.ToBitmap(this.pixelFormat))
-                {
-                    g.DrawImage(bmp, destRect, srcRect, GraphicsUnit.Pixel);
-                }
+                g.DrawImage(bmp, destRect, srcRect, GraphicsUnit.Pixel);
             }
         }
 
@@ -109,13 +105,10 @@ namespace SWF.Core.ImageAccessor
 
             g.CompositingMode = CompositingMode.SourceOver;
 
-            lock (this.lockObject)
+            using (var bmp = OpenCVUtil.Resize(this.mat, (int)destRect.Width, (int)destRect.Height))
             {
-                using (var bmp = OpenCVUtil.Resize(this.mat, (int)destRect.Width, (int)destRect.Height))
-                {
-                    g.DrawImage(bmp, destRect,
-                        new RectangleF(0, 0, destRect.Width, destRect.Height), GraphicsUnit.Pixel);
-                }
+                g.DrawImage(bmp, destRect,
+                    new RectangleF(0, 0, destRect.Width, destRect.Height), GraphicsUnit.Pixel);
             }
         }
     }
