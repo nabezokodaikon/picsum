@@ -24,7 +24,7 @@ namespace PicSum.Job.Jobs
 
             var logic = new FileExportLogic(this);
 
-            FileExportLogic.FileExportLock.EnterWriteLock();
+            FileExportLogic.FileExportLock.Wait();
 
             try
             {
@@ -71,7 +71,7 @@ namespace PicSum.Job.Jobs
             }
             finally
             {
-                FileExportLogic.FileExportLock.ExitWriteLock();
+                FileExportLogic.FileExportLock.Release();
             }
         }
     }

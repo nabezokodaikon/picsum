@@ -26,7 +26,7 @@ namespace PicSum.Job.Jobs
                 throw new ArgumentException("エクスポート先のファイルパスがNULLです。", nameof(param));
             }
 
-            FileExportLogic.FileExportLock.EnterWriteLock();
+            FileExportLogic.FileExportLock.Wait();
 
             try
             {
@@ -59,7 +59,7 @@ namespace PicSum.Job.Jobs
             }
             finally
             {
-                FileExportLogic.FileExportLock.ExitWriteLock();
+                FileExportLogic.FileExportLock.Release();
             }
         }
     }

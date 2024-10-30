@@ -10,7 +10,7 @@ namespace PicSum.Job.Logics
     internal sealed class FileExportLogic(AbstractAsyncJob job)
         : AbstractAsyncLogic(job)
     {
-        internal static readonly ReaderWriterLockSlim FileExportLock = new();
+        internal static readonly SemaphoreSlim FileExportLock = new(1, 1);
 
         /// <summary>
         /// 静的リソースを解放します。
