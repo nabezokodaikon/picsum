@@ -7,7 +7,6 @@
 	<Configurations>Debug;Release</Configurations>
 	<Platforms>AnyCPU;x64;x86;ARM64;ARM32</Platforms>
 	<RuntimeIdentifiers>win-x86;win-x64</RuntimeIdentifiers>
-	<PublishReadyToRun>true</PublishReadyToRun>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
@@ -18,10 +17,6 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
 	<DebugType>none</DebugType>
 	<NoWarn>1701;1702; CA1016; CA1822; CA1824</NoWarn>
-  </PropertyGroup>
-
-  <PropertyGroup>
-	<IsTrimmable>true</IsTrimmable>
   </PropertyGroup>
   
   <ItemGroup>
