@@ -4,6 +4,7 @@ using PicSum.Main.Mng;
 using PicSum.UIComponent.Contents.Parameter;
 using SWF.Core.Base;
 using SWF.Core.FileAccessor;
+using SWF.Core.Job;
 using SWF.UIComponent.Core;
 using System;
 using System.Runtime.Versioning;
@@ -15,7 +16,8 @@ namespace PicSum.Main.UIComponent
     /// ダミーフォーム
     /// </summary>
     [SupportedOSPlatform("windows")]
-    internal sealed partial class InitialForm : HideForm
+    internal sealed partial class InitialForm
+        : HideForm, ISender
     {
         private bool disposed = false;
         private readonly BrowserManager browserManager = new();

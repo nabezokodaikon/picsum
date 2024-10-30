@@ -105,7 +105,7 @@ namespace PicSum.UIComponent.Contents.FileList
             this.OnSelectedFileChanged(new SelectedFileChangeEventArgs());
         }
 
-        protected override Action<Control> GetImageFilesGetAction(ImageViewerPageParameter paramter)
+        protected override Action<ISender> GetImageFilesGetAction(ImageViewerPageParameter paramter)
         {
             throw new NotImplementedException();
         }

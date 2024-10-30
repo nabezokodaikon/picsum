@@ -4,7 +4,6 @@ using PicSum.Job.Parameters;
 using PicSum.Job.Results;
 using SWF.Core.Job;
 using System.Runtime.Versioning;
-using System.Windows.Forms;
 
 namespace PicSum.Job.Common
 {
@@ -127,7 +126,7 @@ namespace PicSum.Job.Common
             this.disposed = true;
         }
 
-        public void StartBookmarkAddJob(Control sender, ValueParameter<string> parameter)
+        public void StartBookmarkAddJob(ISender sender, ValueParameter<string> parameter)
         {
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
             ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
@@ -137,7 +136,7 @@ namespace PicSum.Job.Common
                 .StartJob(sender, parameter);
         }
 
-        public void StartSingleFileExportJob(Control sender, SingleFileExportParameter parameter)
+        public void StartSingleFileExportJob(ISender sender, SingleFileExportParameter parameter)
         {
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
             ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
@@ -147,7 +146,7 @@ namespace PicSum.Job.Common
                 .StartJob(sender, parameter);
         }
 
-        public void StartDirectoryStateUpdateJob(Control sender, DirectoryStateParameter parameter)
+        public void StartDirectoryStateUpdateJob(ISender sender, DirectoryStateParameter parameter)
         {
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
             ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
@@ -157,7 +156,7 @@ namespace PicSum.Job.Common
                 .StartJob(sender, parameter);
         }
 
-        public void StartDirectoryViewHistoryAddJob(Control sender, ValueParameter<string> parameter)
+        public void StartDirectoryViewHistoryAddJob(ISender sender, ValueParameter<string> parameter)
         {
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
             ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
@@ -167,7 +166,7 @@ namespace PicSum.Job.Common
                 .StartJob(sender, parameter);
         }
 
-        public void StartBookmarkDeleteJob(Control sender, ListParameter<string> parameter)
+        public void StartBookmarkDeleteJob(ISender sender, ListParameter<string> parameter)
         {
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
             ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
@@ -177,7 +176,7 @@ namespace PicSum.Job.Common
                 .StartJob(sender, parameter);
         }
 
-        public void StartDirectoryViewCounterDeleteJob(Control sender, ListParameter<string> parameter)
+        public void StartDirectoryViewCounterDeleteJob(ISender sender, ListParameter<string> parameter)
         {
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
             ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
@@ -187,7 +186,7 @@ namespace PicSum.Job.Common
                 .StartJob(sender, parameter);
         }
 
-        public void StartFileRatingUpdateJob(Control sender, FileRatingUpdateParameter parameter)
+        public void StartFileRatingUpdateJob(ISender sender, FileRatingUpdateParameter parameter)
         {
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
             ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
@@ -197,7 +196,7 @@ namespace PicSum.Job.Common
                 .StartJob(sender, parameter);
         }
 
-        public void StartFileTagDeleteJob(Control sender, FileTagUpdateParameter parameter)
+        public void StartFileTagDeleteJob(ISender sender, FileTagUpdateParameter parameter)
         {
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
             ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
@@ -207,7 +206,7 @@ namespace PicSum.Job.Common
                 .StartJob(sender, parameter);
         }
 
-        public void StartFileTagAddJob(Control sender, FileTagUpdateParameter parameter)
+        public void StartFileTagAddJob(ISender sender, FileTagUpdateParameter parameter)
         {
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
             ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
@@ -217,7 +216,7 @@ namespace PicSum.Job.Common
                 .StartJob(sender, parameter);
         }
 
-        public void StartGCCollectRunJob(Control sender)
+        public void StartGCCollectRunJob(ISender sender)
         {
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
 

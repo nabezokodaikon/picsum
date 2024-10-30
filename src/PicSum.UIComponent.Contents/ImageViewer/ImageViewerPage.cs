@@ -26,7 +26,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
     /// </summary>
     [SupportedOSPlatform("windows")]
     public sealed partial class ImageViewerPage
-        : BrowserPage
+        : BrowserPage, ISender
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 

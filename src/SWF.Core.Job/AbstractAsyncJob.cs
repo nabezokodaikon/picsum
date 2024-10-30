@@ -1,5 +1,4 @@
 using NLog;
-using System.Windows.Forms;
 
 namespace SWF.Core.Job
 {
@@ -11,7 +10,7 @@ namespace SWF.Core.Job
         private long isCompleted = 0;
 
 #pragma warning disable CS8618
-        internal Control Sender { get; set; }
+        internal ISender Sender { get; set; }
 #pragma warning restore CS8618
 
         public JobID ID { get; private set; } = JobID.GetNew();

@@ -1,7 +1,6 @@
 using NLog;
 using System.Collections.Concurrent;
 using System.ComponentModel;
-using System.Windows.Forms;
 
 namespace SWF.Core.Job
 {
@@ -70,7 +69,7 @@ namespace SWF.Core.Job
                     && job.Sender.IsHandleCreated
                     && !job.Sender.IsDisposed)
                 {
-                    job.Sender.BeginInvoke(new MethodInvoker(() =>
+                    job.Sender.BeginInvoke((() =>
                     {
                         if (job.Sender.IsHandleCreated
                             && !job.Sender.IsDisposed)
@@ -120,14 +119,14 @@ namespace SWF.Core.Job
                         try
                         {
                             // TODO: 画像ビューアページでスライダーを動かしているとおかしな挙動になる。
-                            item.Job.Sender.Invoke(new MethodInvoker(() =>
-                            {
-                                if (item.Job.Sender.IsHandleCreated
-                                    && !item.Job.Sender.IsDisposed)
-                                {
-                                    item.CallbackAction();
-                                }
-                            }));
+                            //item.Job.Sender.Invoke(new MethodInvoker(() =>
+                            //{
+                            //    if (item.Job.Sender.IsHandleCreated
+                            //        && !item.Job.Sender.IsDisposed)
+                            //    {
+                            //        item.CallbackAction();
+                            //    }
+                            //}));
                         }
                         catch (ObjectDisposedException)
                         {

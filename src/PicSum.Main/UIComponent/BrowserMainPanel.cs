@@ -16,9 +16,10 @@ using System.Windows.Forms;
 namespace PicSum.Main.UIComponent
 {
     [SupportedOSPlatform("windows")]
-    public sealed partial class BrowserMainPanel : UserControl
+    public sealed partial class BrowserMainPanel
+        : UserControl, ISender
     {
-        public static Func<ImageViewerPageParameter, Action<Control>> GetImageFilesAction(
+        public static Func<ImageViewerPageParameter, Action<ISender>> GetImageFilesAction(
             ImageFileGetByDirectoryParameter subParamter)
         {
             return (parameter) =>

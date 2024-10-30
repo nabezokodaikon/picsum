@@ -1,7 +1,6 @@
 using NLog;
 using System.Collections.Concurrent;
 using System.Diagnostics;
-using System.Windows.Forms;
 
 namespace SWF.Core.Job
 {
@@ -128,7 +127,7 @@ namespace SWF.Core.Job
             return this;
         }
 
-        public TwoWayJob<TJob, TJobParameter, TJobResult> StartJob(Control sender, TJobParameter parameter)
+        public TwoWayJob<TJob, TJobParameter, TJobResult> StartJob(ISender sender, TJobParameter parameter)
         {
             ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
 
@@ -141,7 +140,7 @@ namespace SWF.Core.Job
             return this;
         }
 
-        public TwoWayJob<TJob, TJobParameter, TJobResult> StartJob(Control sender)
+        public TwoWayJob<TJob, TJobParameter, TJobResult> StartJob(ISender sender)
         {
             var job = this.CreateJob();
             job.Sender = sender;

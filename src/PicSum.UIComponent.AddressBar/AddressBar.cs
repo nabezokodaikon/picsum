@@ -14,7 +14,7 @@ namespace PicSum.UIComponent.AddressBar
 {
     [SupportedOSPlatform("windows")]
     public sealed partial class AddressBar
-        : Control
+        : Control, ISender
     {
 
         private const int INNER_OFFSET = 1;
@@ -628,6 +628,5 @@ namespace PicSum.UIComponent.AddressBar
         {
             this.OnSelectedDirectory(e);
         }
-
     }
 }

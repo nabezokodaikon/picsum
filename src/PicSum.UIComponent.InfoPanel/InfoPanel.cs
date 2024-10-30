@@ -20,7 +20,7 @@ namespace PicSum.UIComponent.InfoPanel
 {
     [SupportedOSPlatform("windows")]
     public sealed partial class InfoPanel
-        : UserControl
+        : UserControl, ISender
     {
         private static void DrawImageFileThumbnail(Graphics g, Image thumb, RectangleF rect)
         {
@@ -584,6 +584,5 @@ namespace PicSum.UIComponent.InfoPanel
 
             this.AddTag(e.Item);
         }
-
     }
 }

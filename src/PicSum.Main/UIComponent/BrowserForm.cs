@@ -20,7 +20,7 @@ namespace PicSum.Main.UIComponent
 {
     [SupportedOSPlatform("windows")]
     public sealed partial class BrowserForm
-        : GrassForm
+        : GrassForm, ISender
     {
         private static bool isStartUp = true;
 

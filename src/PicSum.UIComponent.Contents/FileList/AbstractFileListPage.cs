@@ -28,7 +28,7 @@ namespace PicSum.UIComponent.Contents.FileList
     /// </summary>
     [SupportedOSPlatform("windows")]
     internal abstract partial class AbstractFileListPage
-        : BrowserPage
+        : BrowserPage, ISender
     {
         protected static IEnumerable<FileShallowInfoEntity> GetSortFiles(
             IEnumerable<FileShallowInfoEntity> files, SortInfo sortInfo)
@@ -410,7 +410,7 @@ namespace PicSum.UIComponent.Contents.FileList
             this.SetFilter();
         }
 
-        protected abstract Action<Control> GetImageFilesGetAction(ImageViewerPageParameter paramter);
+        protected abstract Action<ISender> GetImageFilesGetAction(ImageViewerPageParameter paramter);
 
         private ToolStripButton GetSortToolStripButton(SortTypeID sortType)
         {
@@ -1284,6 +1284,5 @@ namespace PicSum.UIComponent.Contents.FileList
 
             CommonJobs.Instance.StartBookmarkAddJob(this, paramter);
         }
-
     }
 }
