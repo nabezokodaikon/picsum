@@ -100,19 +100,6 @@ namespace SWF.Core.FileAccessor
 
             var ex = FileUtil.GetExtension(filePath);
 
-            SMALL_ICON_CASH_LOCK.EnterReadLock();
-            try
-            {
-                if (SMALL_ICON_CASH.TryGetValue(ex, out var cashIcon))
-                {
-                    return cashIcon;
-                }
-            }
-            finally
-            {
-                SMALL_ICON_CASH_LOCK.ExitReadLock();
-            }
-
             SMALL_ICON_CASH_LOCK.EnterWriteLock();
             try
             {
@@ -144,19 +131,6 @@ namespace SWF.Core.FileAccessor
 
             var ex = FileUtil.GetExtension(filePath);
 
-            LARGE_ICON_CASH_LOCK.EnterReadLock();
-            try
-            {
-                if (LARGE_ICON_CASH.TryGetValue(ex, out var cashIcon))
-                {
-                    return cashIcon;
-                }
-            }
-            finally
-            {
-                LARGE_ICON_CASH_LOCK.ExitReadLock();
-            }
-
             LARGE_ICON_CASH_LOCK.EnterWriteLock();
             try
             {
@@ -187,19 +161,6 @@ namespace SWF.Core.FileAccessor
             }
 
             var ex = FileUtil.GetExtension(filePath);
-
-            JUMBO_ICON_CASH_LOCK.EnterReadLock();
-            try
-            {
-                if (JUMBO_ICON_CASH.TryGetValue(ex, out var cashIcon))
-                {
-                    return cashIcon;
-                }
-            }
-            finally
-            {
-                JUMBO_ICON_CASH_LOCK.ExitReadLock();
-            }
 
             JUMBO_ICON_CASH_LOCK.EnterWriteLock();
             try

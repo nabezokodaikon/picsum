@@ -621,7 +621,7 @@ namespace PicSum.Job.Logics
 
         private static ThumbnailBufferEntity GetMemoryCache(string filePath)
         {
-            CACHE_LOCK.EnterReadLock();
+            CACHE_LOCK.EnterWriteLock();
 
             try
             {
@@ -636,7 +636,7 @@ namespace PicSum.Job.Logics
             }
             finally
             {
-                CACHE_LOCK.ExitReadLock();
+                CACHE_LOCK.ExitWriteLock();
             }
         }
 
