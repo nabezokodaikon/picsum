@@ -11,9 +11,9 @@ namespace SWF.Core.FileAccessor
     [SupportedOSPlatform("windows")]
     public static class FileIconCash
     {
-        private static readonly ReaderWriterLockSlim SMALL_ICON_CASH_LOCK = new();
-        private static readonly ReaderWriterLockSlim LARGE_ICON_CASH_LOCK = new();
-        private static readonly ReaderWriterLockSlim JUMBO_ICON_CASH_LOCK = new();
+        private static readonly object SMALL_ICON_CASH_LOCK = new();
+        private static readonly object LARGE_ICON_CASH_LOCK = new();
+        private static readonly object JUMBO_ICON_CASH_LOCK = new();
         private static readonly Dictionary<string, Bitmap> SMALL_ICON_CASH = [];
         private static readonly Dictionary<string, Bitmap> LARGE_ICON_CASH = [];
         private static readonly Dictionary<string, Bitmap> JUMBO_ICON_CASH = [];
@@ -100,8 +100,7 @@ namespace SWF.Core.FileAccessor
 
             var ex = FileUtil.GetExtension(filePath);
 
-            SMALL_ICON_CASH_LOCK.EnterWriteLock();
-            try
+            lock (SMALL_ICON_CASH_LOCK)
             {
                 if (SMALL_ICON_CASH.TryGetValue(ex, out var cashIcon))
                 {
@@ -113,10 +112,6 @@ namespace SWF.Core.FileAccessor
                     SMALL_ICON_CASH.Add(ex, icon);
                     return icon;
                 }
-            }
-            finally
-            {
-                SMALL_ICON_CASH_LOCK.ExitWriteLock();
             }
         }
 
@@ -131,8 +126,7 @@ namespace SWF.Core.FileAccessor
 
             var ex = FileUtil.GetExtension(filePath);
 
-            LARGE_ICON_CASH_LOCK.EnterWriteLock();
-            try
+            lock (LARGE_ICON_CASH_LOCK)
             {
                 if (LARGE_ICON_CASH.TryGetValue(ex, out var cashIcon))
                 {
@@ -144,10 +138,6 @@ namespace SWF.Core.FileAccessor
                     LARGE_ICON_CASH.Add(ex, icon);
                     return icon;
                 }
-            }
-            finally
-            {
-                LARGE_ICON_CASH_LOCK.ExitWriteLock();
             }
         }
 
@@ -162,8 +152,7 @@ namespace SWF.Core.FileAccessor
 
             var ex = FileUtil.GetExtension(filePath);
 
-            JUMBO_ICON_CASH_LOCK.EnterWriteLock();
-            try
+            lock (JUMBO_ICON_CASH_LOCK)
             {
                 if (JUMBO_ICON_CASH.TryGetValue(ex, out var cashIcon))
                 {
@@ -176,10 +165,6 @@ namespace SWF.Core.FileAccessor
                     return icon;
                 }
             }
-            finally
-            {
-                JUMBO_ICON_CASH_LOCK.ExitWriteLock();
-            }
         }
 
         /// <summary>
@@ -187,9 +172,6 @@ namespace SWF.Core.FileAccessor
         /// </summary>
         public static void DisposeStaticResources()
         {
-            SMALL_ICON_CASH_LOCK.Dispose();
-            LARGE_ICON_CASH_LOCK.Dispose();
-            JUMBO_ICON_CASH_LOCK.Dispose();
             SMALL_PC_ICON.Dispose();
             LARGE_PC_ICON.Dispose();
             SMALL_DIRECTORY_ICON.Dispose();
