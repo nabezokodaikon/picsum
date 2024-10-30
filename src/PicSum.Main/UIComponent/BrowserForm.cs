@@ -358,11 +358,7 @@ namespace PicSum.Main.UIComponent
             this.SuspendLayout();
             this.Controls.Add(this.browserMainPanel);
 
-            if (BrowserForm.isStartUp && BrowserForm.IsHome())
-            {
-                this.browserMainPanel.AddFavoriteDirectoryListTab();
-            }
-            else if (BrowserForm.isStartUp && BrowserForm.IsFilePath())
+            if (BrowserForm.isStartUp && BrowserForm.IsFilePath())
             {
                 var imageFilePath = BrowserForm.GetImageFilePatCommandLineArgs();
                 if (!string.IsNullOrEmpty(imageFilePath))
@@ -383,6 +379,10 @@ namespace PicSum.Main.UIComponent
 
                     this.browserMainPanel.AddImageViewerPageTab(parameter);
                 }
+            }
+            else if (BrowserForm.isStartUp && BrowserForm.IsHome())
+            {
+                this.browserMainPanel.AddFavoriteDirectoryListTab();
             }
 
             this.SetControlRegion();
