@@ -17,19 +17,6 @@ namespace SWF.Core.ImageAccessor
             CACHE_LOCK.Dispose();
         }
 
-        public static bool HasCache(string filePath)
-        {
-            CACHE_LOCK.EnterReadLock();
-            try
-            {
-                return CACHE_DICTIONARY.ContainsKey(filePath);
-            }
-            finally
-            {
-                CACHE_LOCK.ExitReadLock();
-            }
-        }
-
         public static Size GetSize(string filePath)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
@@ -65,22 +52,6 @@ namespace SWF.Core.ImageAccessor
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
             var timestamp = FileUtil.GetUpdateDate(filePath);
-
-            CACHE_LOCK.EnterReadLock();
-            try
-            {
-                if (CACHE_DICTIONARY.TryGetValue(filePath, out var cache))
-                {
-                    if (timestamp == cache.Timestamp)
-                    {
-                        return;
-                    }
-                }
-            }
-            finally
-            {
-                CACHE_LOCK.ExitReadLock();
-            }
 
             CACHE_LOCK.EnterWriteLock();
             try
@@ -125,22 +96,6 @@ namespace SWF.Core.ImageAccessor
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
             var timestamp = FileUtil.GetUpdateDate(filePath);
-
-            CACHE_LOCK.EnterReadLock();
-            try
-            {
-                if (CACHE_DICTIONARY.TryGetValue(filePath, out var cache))
-                {
-                    if (timestamp == cache.Timestamp)
-                    {
-                        return resultFunc(cache);
-                    }
-                }
-            }
-            finally
-            {
-                CACHE_LOCK.ExitReadLock();
-            }
 
             CACHE_LOCK.EnterWriteLock();
             try
