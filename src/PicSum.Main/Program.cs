@@ -48,18 +48,20 @@ namespace PicSum.Main
                     Application.SetCompatibleTextRenderingDefault(false);
 
                     using (var component = new ComponentManager())
-                    using (var initialForm = new InitialForm())
                     {
-                        Application.Run(initialForm);
-                    }
+                        using (var initialForm = new InitialForm())
+                        {
+                            Application.Run(initialForm);
+                        }
 
-                    CommonJobs.Instance.Dispose();
-                    UIThreadAccessor.Instance.Dispose();
-                    FileIconCash.DisposeStaticResources();
-                    ThumbnailGetLogic.DisposeStaticResouces();
-                    ImageFileCacheUtil.DisposeStaticResources();
-                    ImageFileSizeCacheUtil.DisposeStaticResources();
-                    FileExportLogic.DisposeStaticResouces();
+                        CommonJobs.Instance.Dispose();
+                        UIThreadAccessor.Instance.Dispose();
+                        FileIconCash.DisposeStaticResources();
+                        ThumbnailGetLogic.DisposeStaticResouces();
+                        ImageFileCacheUtil.DisposeStaticResources();
+                        ImageFileSizeCacheUtil.DisposeStaticResources();
+                        FileExportLogic.DisposeStaticResouces();
+                    }
 
                     logger.Debug("アプリケーションを終了します。");
                 }
