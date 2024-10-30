@@ -119,14 +119,14 @@ namespace SWF.Core.Job
                         try
                         {
                             // TODO: 画像ビューアページでスライダーを動かしているとおかしな挙動になる。
-                            //item.Job.Sender.Invoke(new MethodInvoker(() =>
-                            //{
-                            //    if (item.Job.Sender.IsHandleCreated
-                            //        && !item.Job.Sender.IsDisposed)
-                            //    {
-                            //        item.CallbackAction();
-                            //    }
-                            //}));
+                            item.Job.Sender.Invoke(() =>
+                            {
+                                if (item.Job.Sender.IsHandleCreated
+                                    && !item.Job.Sender.IsDisposed)
+                                {
+                                    item.CallbackAction();
+                                }
+                            });
                         }
                         catch (ObjectDisposedException)
                         {

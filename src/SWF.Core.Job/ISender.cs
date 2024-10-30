@@ -6,5 +6,6 @@ namespace SWF.Core.Job
         bool IsHandleCreated { get; }
         bool IsDisposed { get; }
         IAsyncResult BeginInvoke(Delegate method);
+        void Invoke(Action method);
     }
 }
