@@ -31,7 +31,14 @@ namespace PicSum.Main.UIComponent
 
         private static bool IsHome()
         {
-            return Environment.GetCommandLineArgs().Contains("--home");
+            if (FileUtil.IsRunningAsUwp())
+            {
+                return true;
+            }
+            else
+            {
+                return Environment.GetCommandLineArgs().Contains("--home");
+            }
         }
 
         private static bool IsFilePath()
