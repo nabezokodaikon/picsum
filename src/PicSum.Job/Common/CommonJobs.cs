@@ -153,7 +153,8 @@ namespace PicSum.Job.Common
 
             this.directoryStateUpdateJob ??= new();
             this.directoryStateUpdateJob.Initialize()
-                .StartJob(sender, parameter);
+                .StartJob(sender, parameter)
+                .WaitJobComplete();
         }
 
         public void StartDirectoryViewHistoryAddJob(ISender sender, ValueParameter<string> parameter)
