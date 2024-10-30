@@ -10,7 +10,7 @@ namespace SWF.Core.ImageAccessor
         private const int CACHE_CAPACITY = 12;
         private static readonly List<ImageFileCache> CACHE_LIST = new(CACHE_CAPACITY);
         private static readonly Dictionary<string, ImageFileCache> CACHE_DICTIONARY = new(CACHE_CAPACITY);
-        private static readonly ReaderWriterLockSlim CACHE_LOCK = new();
+        private static readonly SemaphoreSlim CACHE_LOCK = new(1, 1);
 
         public static void DisposeStaticResources()
         {
@@ -53,7 +53,7 @@ namespace SWF.Core.ImageAccessor
 
             var timestamp = FileUtil.GetUpdateDate(filePath);
 
-            CACHE_LOCK.EnterWriteLock();
+            CACHE_LOCK.Wait();
             try
             {
                 if (CACHE_DICTIONARY.TryGetValue(filePath, out var cache))
@@ -87,7 +87,7 @@ namespace SWF.Core.ImageAccessor
             }
             finally
             {
-                CACHE_LOCK.ExitWriteLock();
+                CACHE_LOCK.Release();
             }
         }
 
@@ -97,7 +97,7 @@ namespace SWF.Core.ImageAccessor
 
             var timestamp = FileUtil.GetUpdateDate(filePath);
 
-            CACHE_LOCK.EnterWriteLock();
+            CACHE_LOCK.Wait();
             try
             {
                 if (CACHE_DICTIONARY.TryGetValue(filePath, out var cache))
@@ -132,7 +132,7 @@ namespace SWF.Core.ImageAccessor
             }
             finally
             {
-                CACHE_LOCK.ExitWriteLock();
+                CACHE_LOCK.Release();
             }
         }
     }
