@@ -36,6 +36,7 @@ bld/
 bin_debug/
 bin_develop/
 bin_release/
+bin_releasepublish/
 bin_setup/
 bin_vscode/
 
