@@ -416,8 +416,9 @@ namespace PicSum.Job.Logics
 
         private string GetThumbnailBufferFilePath(int id)
         {
-            var dbDir = FileUtil.GetParentDirectoryPath(DatabaseManager<ThumbnailConnection>.DBFilePath);
-            return Path.Combine(dbDir, $"{id}.thumbnail");
+            return Path.Combine(
+                FileUtil.DATABASE_DIRECTORY,
+                $"{id}{FileUtil.THUMBNAIL_BUFFER_FILE_EXTENSION}");
         }
 
         private int GetCurrentThumbnailBufferID()

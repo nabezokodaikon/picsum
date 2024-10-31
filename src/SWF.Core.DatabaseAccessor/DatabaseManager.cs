@@ -10,22 +10,6 @@ namespace SWF.Core.DatabaseAccessor
         private static TConnection? connection = null;
 
         /// <summary>
-        /// DBファイルパス。
-        /// </summary>
-        public static string DBFilePath
-        {
-            get
-            {
-                if (connection == null)
-                {
-                    throw new NullReferenceException("コネクションがNullです。");
-                }
-
-                return connection.DBFilePath;
-            }
-        }
-
-        /// <summary>
         /// DBに接続します。
         /// </summary>
         /// <param name="connection"></param>

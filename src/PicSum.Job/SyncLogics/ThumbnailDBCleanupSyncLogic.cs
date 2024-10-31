@@ -8,14 +8,13 @@ namespace PicSum.Job.SyncLogics
     {
         public void Execute()
         {
-            var dbFile = Path.Combine(FileUtil.DATABASE_DIRECTORY, "thumbnail.sqlite");
-            if (FileUtil.CanAccess(dbFile))
+            if (FileUtil.CanAccess(FileUtil.THUMBNAIL_DATABASE_FILE))
             {
-                File.Delete(dbFile);
+                File.Delete(FileUtil.THUMBNAIL_DATABASE_FILE);
             }
 
             foreach (var thumbnailFile in FileUtil.GetFiles(FileUtil.DATABASE_DIRECTORY)
-                .Where(file => FileUtil.GetExtension(file) == ".THUMBNAIL"))
+                .Where(file => FileUtil.GetExtension(file) == FileUtil.THUMBNAIL_BUFFER_FILE_EXTENSION.ToUpper()))
             {
                 File.Delete($"{thumbnailFile}");
             }

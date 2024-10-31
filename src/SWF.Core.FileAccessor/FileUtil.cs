@@ -16,11 +16,15 @@ namespace SWF.Core.FileAccessor
         private const string ROOT_DIRECTORY_NAME = "PC";
         private const string ROOT_DIRECTORY_TYPE_NAME = "System root";
 
+        public const string THUMBNAIL_BUFFER_FILE_EXTENSION = ".thumbnail";
+
         public static readonly string EXECUTABLE_DIRECTORY = GetExecutableDirectory();
         public static readonly string APPLICATION_DIRECTORY = GetApplicationDirectory();
         public static readonly string LOG_DIRECTORY = GetLogDirectory();
         public static readonly string CONFIG_DIRECTORY = GetConfigDirectory();
         public static readonly string DATABASE_DIRECTORY = GetDatabaseDirectory();
+        public static readonly string FILE_INFO_DATABASE_FILE = GetFileInfoDatabaseFile();
+        public static readonly string THUMBNAIL_DATABASE_FILE = GetThumbnailDatabaseFile();
 
         internal const string AVIF_FILE_EXTENSION = ".AVIF";
         internal const string BMP_FILE_EXTENSION = ".BMP";
@@ -52,6 +56,16 @@ namespace SWF.Core.FileAccessor
                 // 例外が発生した場合は UWP ではない
                 return false;
             }
+        }
+
+        private static string GetFileInfoDatabaseFile()
+        {
+            return Path.Combine(FileUtil.DATABASE_DIRECTORY, "fileinfo.sqlite");
+        }
+
+        private static string GetThumbnailDatabaseFile()
+        {
+            return Path.Combine(FileUtil.DATABASE_DIRECTORY, "thumbnail.sqlite");
         }
 
         private static string GetExecutableDirectory()

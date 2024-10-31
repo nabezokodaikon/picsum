@@ -11,10 +11,10 @@ namespace PicSum.Job.SyncLogics
         public void Execute()
         {
             DatabaseManager<FileInfoConnection>
-                .Connect(new FileInfoConnection(Path.Combine(FileUtil.DATABASE_DIRECTORY, @"fileinfo.sqlite")));
+                .Connect(new FileInfoConnection(FileUtil.FILE_INFO_DATABASE_FILE));
 
             DatabaseManager<ThumbnailConnection>
-                .Connect(new ThumbnailConnection(Path.Combine(FileUtil.DATABASE_DIRECTORY, @"thumbnail.sqlite")));
+                .Connect(new ThumbnailConnection(FileUtil.THUMBNAIL_DATABASE_FILE));
         }
     }
 }
