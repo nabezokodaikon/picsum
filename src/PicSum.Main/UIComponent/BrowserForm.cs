@@ -183,18 +183,18 @@ namespace PicSum.Main.UIComponent
                                                         BrowserForm.isStartUp = false;
                                                     })
                                                     .BeginCancel()
-                                                    .StartJob(this)
-                                                    .WaitJobComplete();
+                                                    .StartJob(this);
+                                                fileInfoDBCleanupJob.WaitJobComplete();
                                             }
                                         })
                                         .BeginCancel()
-                                        .StartJob(this, startupParameter)
-                                        .WaitJobComplete();
+                                        .StartJob(this, startupParameter);
+                                    startupJob.WaitJobComplete();
                                 }
                             })
                             .BeginCancel()
-                            .StartJob(this, new ValueParameter<string>(FileUtil.DATABASE_DIRECTORY))
-                            .WaitJobComplete();
+                            .StartJob(this, new ValueParameter<string>(FileUtil.DATABASE_DIRECTORY));
+                        thumbnailDBCleanupJob.WaitJobComplete();
                     }
                 }
                 else
@@ -212,8 +212,8 @@ namespace PicSum.Main.UIComponent
                                 BrowserForm.isStartUp = false;
                             })
                             .BeginCancel()
-                            .StartJob(this, startupParameter)
-                            .WaitJobComplete();
+                            .StartJob(this, startupParameter);
+                        startupJob.WaitJobComplete();
                     }
                 }
             }

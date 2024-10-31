@@ -127,7 +127,7 @@ namespace SWF.Core.Job
             return this;
         }
 
-        public TwoWayJob<TJob, TJobParameter, TJobResult> StartJob(ISender sender, TJobParameter parameter)
+        public void StartJob(ISender sender, TJobParameter parameter)
         {
             ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
 
@@ -136,18 +136,14 @@ namespace SWF.Core.Job
             job.Parameter = parameter;
 
             this.jobQueue.Enqueue(job);
-
-            return this;
         }
 
-        public TwoWayJob<TJob, TJobParameter, TJobResult> StartJob(ISender sender)
+        public void StartJob(ISender sender)
         {
             var job = this.CreateJob();
             job.Sender = sender;
 
             this.jobQueue.Enqueue(job);
-
-            return this;
         }
 
         public TwoWayJob<TJob, TJobParameter, TJobResult> BeginCancel()
