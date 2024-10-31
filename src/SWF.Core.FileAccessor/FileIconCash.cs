@@ -1,3 +1,4 @@
+using SWF.Core.Base;
 using System.Reflection;
 using System.Runtime.Versioning;
 using WinApi;
@@ -71,7 +72,7 @@ namespace SWF.Core.FileAccessor
 
         public static Bitmap GetOtherFileIcon()
         {
-            var filePath = Path.Combine(FileUtil.EXECUTABLE_DIRECTORY, "EmptyFile");
+            var filePath = ResourceFiles.EmptyFile;
             return (Bitmap)FileUtil.GetExtraLargeIconByFilePath(filePath, SHIL.SHIL_EXTRALARGE);
         }
 

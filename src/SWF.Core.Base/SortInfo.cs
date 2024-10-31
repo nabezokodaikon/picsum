@@ -1,11 +1,9 @@
-using SWF.Core.Base.Properties;
-
 namespace SWF.Core.Base
 {
     public sealed class SortInfo
     {
-        private readonly Image sortAscendingImage = Resources.SmallArrowUp;
-        private readonly Image sortDescendingImage = Resources.SmallArrowDown;
+        private readonly Image sortAscendingImage = ResourceFiles.SmallArrowUp.Value;
+        private readonly Image sortDescendingImage = ResourceFiles.SmallArrowDown.Value;
         private bool isFileNameSortAscending = true;
         private bool isFilePathSortAscending = true;
         private bool isUpdateDateSortAscending = true;

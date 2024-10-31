@@ -1,5 +1,5 @@
+using SWF.Core.Base;
 using SWF.Core.ImageAccessor;
-using SWF.UIComponent.TabOperation.Properties;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -1326,7 +1326,7 @@ namespace SWF.UIComponent.TabOperation
                 {
                     if (this.IsTabLeftDrop(dropX, tab))
                     {
-                        var img = Resources.DropArrow;
+                        var img = ResourceFiles.DropArrow.Value;
                         var x = (tab.DrawArea.Left - TAB_MARGIN / 2f) - img.Width / 2f;
                         var y = 0;
                         g.DrawImage(img, x, y, img.Width, img.Height);
@@ -1334,7 +1334,7 @@ namespace SWF.UIComponent.TabOperation
                     }
                     else if (this.IsTabRightDrop(dropX, tab))
                     {
-                        var img = Resources.DropArrow;
+                        var img = ResourceFiles.DropArrow.Value;
                         var x = (tab.DrawArea.Right - TAB_MARGIN / 2f) - img.Width / 2f;
                         var y = 0;
                         g.DrawImage(img, x, y, img.Width, img.Height);

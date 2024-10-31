@@ -3,7 +3,6 @@ using PicSum.Job.Entities;
 using PicSum.Job.Parameters;
 using PicSum.UIComponent.Contents.Common;
 using PicSum.UIComponent.Contents.Parameter;
-using PicSum.UIComponent.Contents.Properties;
 using SWF.Core.Base;
 using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
@@ -60,7 +59,7 @@ namespace PicSum.UIComponent.Contents.FileList
             this.parameter = param;
 
             this.Title = "Star";
-            this.Icon = Resources.ActiveRatingIcon;
+            this.Icon = ResourceFiles.ActiveRatingIcon.Value;
             this.IsMoveControlVisible = false;
             this.IsRemoveFromListMenuItemVisible = true;
             base.sortFileRgistrationDateToolStripButton.Enabled = true;

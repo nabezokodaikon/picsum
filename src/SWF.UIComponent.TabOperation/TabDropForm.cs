@@ -1,5 +1,5 @@
+using SWF.Core.Base;
 using SWF.Core.ImageAccessor;
-using SWF.UIComponent.TabOperation.Properties;
 using System;
 using System.Drawing;
 using System.Runtime.Versioning;
@@ -12,9 +12,9 @@ namespace SWF.UIComponent.TabOperation
         : Form
     {
 
-        private readonly Bitmap dropMaximumImage = Resources.DropMaximum;
-        private readonly Bitmap dropLeftImage = Resources.DropLeft;
-        private readonly Bitmap dropRightImage = Resources.DropRight;
+        private readonly Bitmap dropMaximumImage = ResourceFiles.DropMaximum.Value;
+        private readonly Bitmap dropLeftImage = ResourceFiles.DropLeft.Value;
+        private readonly Bitmap dropRightImage = ResourceFiles.DropRight.Value;
         private Bitmap dropImage = null;
 
         public TabDropForm()

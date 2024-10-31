@@ -1,4 +1,4 @@
-using SWF.UIComponent.Core.Properties;
+using SWF.Core.Base;
 using System.Runtime.Versioning;
 
 namespace SWF.UIComponent.Core
@@ -17,8 +17,8 @@ namespace SWF.UIComponent.Core
         public event EventHandler? ValueChanging;
         public event EventHandler? ValueChanged;
 
-        private readonly Image button = Resources.SliderButton;
-        private float buttonPointX = Resources.SliderButton.Width / 2f;
+        private readonly Image button = ResourceFiles.SliderButton.Value;
+        private float buttonPointX = ResourceFiles.SliderButton.Value.Width / 2f;
         private int maximumValue = 100;
         private int minimumValue = 0;
         private int sliderValue = 0;

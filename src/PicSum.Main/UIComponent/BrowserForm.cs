@@ -11,7 +11,6 @@ using SWF.UIComponent.TabOperation;
 using System;
 using System.ComponentModel;
 using System.Drawing;
-using System.IO;
 using System.Linq;
 using System.Runtime.Versioning;
 using System.Windows.Forms;
@@ -76,7 +75,7 @@ namespace PicSum.Main.UIComponent
         {
             this.SuspendLayout();
 
-            this.Icon = new Icon(Path.Combine(FileUtil.EXECUTABLE_DIRECTORY, "application.ico"));
+            this.Icon = ResourceFiles.ApplicationIcon.Value;
             this.Text = "PicSum";
             this.AutoScaleMode = AutoScaleMode.None;
             this.StartPosition = FormStartPosition.Manual;

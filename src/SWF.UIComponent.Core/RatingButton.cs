@@ -1,4 +1,4 @@
-using SWF.UIComponent.Core.Properties;
+using SWF.Core.Base;
 using System.Runtime.Versioning;
 
 namespace SWF.UIComponent.Core
@@ -28,11 +28,11 @@ namespace SWF.UIComponent.Core
             {
                 if (this._isActive)
                 {
-                    return Resources.ActiveRatingIcon;
+                    return ResourceFiles.ActiveRatingIcon.Value;
                 }
                 else
                 {
-                    return Resources.InactiveRatingIcon;
+                    return ResourceFiles.InactiveRatingIcon.Value;
                 }
             }
         }

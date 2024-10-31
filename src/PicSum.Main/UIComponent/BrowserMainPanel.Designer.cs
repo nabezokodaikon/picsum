@@ -103,7 +103,7 @@ namespace PicSum.Main.UIComponent
             this.searchBookmarkToolButton.FlatAppearance.BorderSize = 0;
             this.searchBookmarkToolButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
             this.searchBookmarkToolButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.searchBookmarkToolButton.Image = global::PicSum.Main.Properties.Resources.BookmarkIcon;
+            this.searchBookmarkToolButton.Image = SWF.Core.Base.ResourceFiles.BookmarkIcon.Value;
             this.searchBookmarkToolButton.Location = new System.Drawing.Point(670, 3);
             this.searchBookmarkToolButton.Name = "searchBookmarkToolButton";
             this.searchBookmarkToolButton.RegionType = SWF.UIComponent.Core.ToolButton.ToolButtonRegionType.Default;
@@ -117,7 +117,7 @@ namespace PicSum.Main.UIComponent
             this.reloadToolButton.FlatAppearance.BorderSize = 0;
             this.reloadToolButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
             this.reloadToolButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.reloadToolButton.Image = global::PicSum.Main.Properties.Resources.ReloadIcon;
+            this.reloadToolButton.Image = SWF.Core.Base.ResourceFiles.ReloadIcon.Value;
             this.reloadToolButton.Location = new System.Drawing.Point(76, 3);
             this.reloadToolButton.Name = "reloadToolButton";
             this.reloadToolButton.RegionType = SWF.UIComponent.Core.ToolButton.ToolButtonRegionType.Default;
@@ -133,8 +133,8 @@ namespace PicSum.Main.UIComponent
             this.tagDropToolButton.FlatAppearance.BorderSize = 0;
             this.tagDropToolButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
             this.tagDropToolButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.tagDropToolButton.Icon = global::PicSum.Main.Properties.Resources.TagIcon;
-            this.tagDropToolButton.Image = global::PicSum.Main.Properties.Resources.TagIcon;
+            this.tagDropToolButton.Icon = SWF.Core.Base.ResourceFiles.TagIcon.Value;
+            this.tagDropToolButton.Image = SWF.Core.Base.ResourceFiles.TagIcon.Value;
             this.tagDropToolButton.Location = new System.Drawing.Point(594, 3);
             this.tagDropToolButton.Name = "tagDropToolButton";
             this.tagDropToolButton.RegionType = SWF.UIComponent.Core.ToolButton.ToolButtonRegionType.Default;
@@ -150,7 +150,7 @@ namespace PicSum.Main.UIComponent
             this.homeToolButton.FlatAppearance.BorderSize = 0;
             this.homeToolButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
             this.homeToolButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.homeToolButton.Image = global::PicSum.Main.Properties.Resources.HomeIcon;
+            this.homeToolButton.Image = SWF.Core.Base.ResourceFiles.HomeIcon.Value;
             this.homeToolButton.Location = new System.Drawing.Point(114, 3);
             this.homeToolButton.Name = "homeToolButton";
             this.homeToolButton.RegionType = SWF.UIComponent.Core.ToolButton.ToolButtonRegionType.Default;
@@ -165,7 +165,7 @@ namespace PicSum.Main.UIComponent
             this.nextPageHistoryButton.FlatAppearance.BorderSize = 0;
             this.nextPageHistoryButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
             this.nextPageHistoryButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.nextPageHistoryButton.Image = global::PicSum.Main.Properties.Resources.GoNextIcon;
+            this.nextPageHistoryButton.Image = SWF.Core.Base.ResourceFiles.GoNextIcon.Value;
             this.nextPageHistoryButton.Location = new System.Drawing.Point(38, 3);
             this.nextPageHistoryButton.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
             this.nextPageHistoryButton.Name = "nextPageHistoryButton";
@@ -181,7 +181,7 @@ namespace PicSum.Main.UIComponent
             this.searchRatingToolButton.FlatAppearance.BorderSize = 0;
             this.searchRatingToolButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
             this.searchRatingToolButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.searchRatingToolButton.Image = global::PicSum.Main.Properties.Resources.ActiveRatingIcon;
+            this.searchRatingToolButton.Image = SWF.Core.Base.ResourceFiles.RatingIcon.Value;
             this.searchRatingToolButton.Location = new System.Drawing.Point(632, 3);
             this.searchRatingToolButton.Name = "searchRatingToolButton";
             this.searchRatingToolButton.RegionType = SWF.UIComponent.Core.ToolButton.ToolButtonRegionType.Default;
@@ -196,7 +196,7 @@ namespace PicSum.Main.UIComponent
             this.previewPageHistoryButton.FlatAppearance.BorderSize = 0;
             this.previewPageHistoryButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
             this.previewPageHistoryButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.previewPageHistoryButton.Image = global::PicSum.Main.Properties.Resources.GoBackIcon;
+            this.previewPageHistoryButton.Image = SWF.Core.Base.ResourceFiles.GoBackIcon.Value;
             this.previewPageHistoryButton.Location = new System.Drawing.Point(6, 3);
             this.previewPageHistoryButton.Margin = new System.Windows.Forms.Padding(6, 3, 0, 3);
             this.previewPageHistoryButton.Name = "previewPageHistoryButton";
@@ -212,7 +212,7 @@ namespace PicSum.Main.UIComponent
             this.showInfoToolButton.FlatAppearance.BorderSize = 0;
             this.showInfoToolButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
             this.showInfoToolButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.showInfoToolButton.Image = global::PicSum.Main.Properties.Resources.InfoIcon;
+            this.showInfoToolButton.Image = SWF.Core.Base.ResourceFiles.InfoIcon.Value;
             this.showInfoToolButton.Location = new System.Drawing.Point(708, 3);
             this.showInfoToolButton.Margin = new System.Windows.Forms.Padding(3, 3, 6, 3);
             this.showInfoToolButton.Name = "showInfoToolButton";

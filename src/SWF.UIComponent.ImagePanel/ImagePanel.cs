@@ -1,7 +1,6 @@
 using SWF.Core.Base;
 using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
-using SWF.UIComponent.ImagePanel.Properties;
 using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -24,7 +23,7 @@ namespace SWF.UIComponent.ImagePanel
         public event EventHandler<MouseEventArgs> ImageMouseDoubleClick;
         public event EventHandler DragStart;
 
-        private readonly Image thumbnailPanelImage = Resources.ThumbnailPanel;
+        private readonly Image thumbnailPanelImage = ResourceFiles.ThumbnailPanel.Value;
         private ImageSizeMode sizeMode = ImageSizeMode.FitOnlyBigImage;
         private ImageAlign imageAlign = ImageAlign.Center;
         private bool isShowThumbnailPanel = false;

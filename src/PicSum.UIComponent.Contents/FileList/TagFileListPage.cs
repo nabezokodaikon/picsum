@@ -3,7 +3,6 @@ using PicSum.Job.Entities;
 using PicSum.Job.Parameters;
 using PicSum.UIComponent.Contents.Common;
 using PicSum.UIComponent.Contents.Parameter;
-using PicSum.UIComponent.Contents.Properties;
 using SWF.Core.Base;
 using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
@@ -61,7 +60,7 @@ namespace PicSum.UIComponent.Contents.FileList
             this.parameter = param;
 
             this.Title = this.parameter.Tag;
-            this.Icon = Resources.TagIcon;
+            this.Icon = ResourceFiles.TagIcon.Value;
             this.IsRemoveFromListMenuItemVisible = true;
             this.IsMoveControlVisible = false;
             base.sortFileRgistrationDateToolStripButton.Enabled = true;

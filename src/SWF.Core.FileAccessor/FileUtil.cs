@@ -18,7 +18,6 @@ namespace SWF.Core.FileAccessor
 
         public const string THUMBNAIL_BUFFER_FILE_EXTENSION = ".thumbnail";
 
-        public static readonly string EXECUTABLE_DIRECTORY = GetExecutableDirectory();
         public static readonly string APPLICATION_DIRECTORY = GetApplicationDirectory();
         public static readonly string LOG_DIRECTORY = GetLogDirectory();
         public static readonly string CONFIG_DIRECTORY = GetConfigDirectory();
@@ -68,17 +67,6 @@ namespace SWF.Core.FileAccessor
             return Path.Combine(FileUtil.DATABASE_DIRECTORY, "thumbnail.sqlite");
         }
 
-        private static string GetExecutableDirectory()
-        {
-            var executableDirectory = Directory.GetParent(Application.ExecutablePath);
-            if (executableDirectory == null)
-            {
-                throw new NullReferenceException("実行ディレクトリが取得できません。");
-            }
-
-            return executableDirectory.FullName;
-        }
-
         private static string GetApplicationDirectory()
         {
             if (IsRunningAsUwp())
@@ -89,7 +77,7 @@ namespace SWF.Core.FileAccessor
             }
             else
             {
-                return EXECUTABLE_DIRECTORY;
+                return ResourceUtil.EXECUTABLE_DIRECTORY;
             }
         }
 

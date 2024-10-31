@@ -26,29 +26,18 @@
   </PropertyGroup>
   
   <ItemGroup>
+    <ProjectReference Include="..\SWF.Core.Base\SWF.Core.Base.csproj" />
     <ProjectReference Include="..\WinApi\WinApi.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Compile Update="CheckPatternPanel.cs" />
     <Compile Update="HideForm.cs" />
-    <Compile Update="Properties\Resources.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <Compile Update="RatingBar.cs" />
     <Compile Update="RatingButton.cs" />
     <Compile Update="Slider.cs" />
     <Compile Update="ToolButton.cs" />
     <Compile Update="ToolStripSlider.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Update="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
   </ItemGroup>
 
 </Project>

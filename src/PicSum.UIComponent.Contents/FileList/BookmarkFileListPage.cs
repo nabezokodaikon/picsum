@@ -2,7 +2,6 @@ using PicSum.Job.Common;
 using PicSum.Job.Entities;
 using PicSum.UIComponent.Contents.Common;
 using PicSum.UIComponent.Contents.Parameter;
-using PicSum.UIComponent.Contents.Properties;
 using SWF.Core.Base;
 using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
@@ -62,7 +61,7 @@ namespace PicSum.UIComponent.Contents.FileList
             this.parameter = parameter;
 
             this.Title = "Bookmark";
-            this.Icon = Resources.BookmarkIcon;
+            this.Icon = ResourceFiles.BookmarkIcon.Value;
             this.IsRemoveFromListMenuItemVisible = true;
             this.IsMoveControlVisible = false;
             base.sortFileRgistrationDateToolStripButton.Enabled = true;

@@ -4,7 +4,7 @@ using PicSum.Job.Parameters;
 using PicSum.UIComponent.Contents.Common;
 using PicSum.UIComponent.Contents.Conf;
 using PicSum.UIComponent.Contents.Parameter;
-using PicSum.UIComponent.Contents.Properties;
+using SWF.Core.Base;
 using SWF.Core.ImageAccessor;
 using SWF.Core.Job;
 using SWF.UIComponent.TabOperation;
@@ -30,7 +30,7 @@ namespace PicSum.UIComponent.Contents.FileList
             this.parameter = param;
 
             this.Title = "Home";
-            this.Icon = Resources.HomeIcon;
+            this.Icon = ResourceFiles.HomeIcon.Value;
             this.IsRemoveFromListMenuItemVisible = true;
             this.IsMoveControlVisible = false;
             base.sortFileRgistrationDateToolStripButton.Enabled = false;
