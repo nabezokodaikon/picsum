@@ -650,7 +650,7 @@ namespace SWF.UIComponent.TabOperation
 
         protected override void OnPaint(PaintEventArgs e)
         {
-            e.Graphics.SmoothingMode = SmoothingMode.None;
+            e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
             e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
             e.Graphics.CompositingQuality = CompositingQuality.HighSpeed;
             e.Graphics.PixelOffsetMode = PixelOffsetMode.HighSpeed;

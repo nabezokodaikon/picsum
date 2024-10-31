@@ -8,7 +8,7 @@ namespace SWF.UIComponent.TabOperation
     internal sealed class AddTabButtonDrawArea
     {
 
-        private const int PAGE_SIZE = 24;
+        private const int PAGE_SIZE = 29;
         private const int TAB_HEIGHT = 29;
 
         private readonly static RectangleF DEFAULT_RECTANGLE = GetDefaultRectangle();
@@ -25,7 +25,7 @@ namespace SWF.UIComponent.TabOperation
         private static readonly SolidBrush MOUSE_POINT_BRUSH = new(Color.FromArgb(128, 255, 255, 255));
         private static readonly SolidBrush NORMAL_BRUSH = new(Color.FromArgb(64, 0, 0, 0));
         private static readonly Pen MOUSE_POINT_PEN = new(Color.Black, 2f);
-        private static readonly Pen NORMAL_PEN = new(Color.White, 2f);
+        private static readonly Pen NORMAL_PEN = new(Color.LightGray, 2f);
 
         private readonly float width = DEFAULT_RECTANGLE.Width;
         private readonly float height = DEFAULT_RECTANGLE.Height;
@@ -146,13 +146,13 @@ namespace SWF.UIComponent.TabOperation
 
         private void Draw(Graphics g, bool isMousePoint)
         {
-            const float OFFSET = 6f;
+            const float OFFSET = 6.75f;
             var rect = new RectangleF(this.drawPoint.X, this.drawPoint.Y, this.width, this.height);
             var bgRect = new RectangleF(rect.Left + OFFSET / 2f, rect.Top + OFFSET / 2f, rect.Width - OFFSET, rect.Height - OFFSET);
-            var vp1 = new PointF(rect.Left + OFFSET + rect.Width / 4f, rect.Top + OFFSET);
-            var vp2 = new PointF(rect.Left + OFFSET + rect.Width / 4f, rect.Bottom - OFFSET);
-            var hp1 = new PointF(rect.Left + OFFSET, rect.Top + OFFSET + rect.Height / 4f);
-            var hp2 = new PointF(rect.Right - OFFSET, rect.Top + OFFSET + rect.Height / 4f);
+            var vp1 = new PointF(bgRect.Left + OFFSET + bgRect.Width / 6f + 0.75f, bgRect.Top + OFFSET);
+            var vp2 = new PointF(bgRect.Left + OFFSET + bgRect.Width / 6f + 0.75f, bgRect.Bottom - OFFSET);
+            var hp1 = new PointF(bgRect.Left + OFFSET, bgRect.Top + OFFSET + bgRect.Height / 6f + 0.75f);
+            var hp2 = new PointF(bgRect.Right - OFFSET, bgRect.Top + OFFSET + bgRect.Height / 6f + 0.75f);
 
             if (isMousePoint)
             {
