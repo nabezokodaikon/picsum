@@ -188,8 +188,12 @@ namespace SWF.Core.Job
                     {
                         this.context.Post(state =>
                         {
+#pragma warning disable CS8600
                             var objects = (object[])state;
+#pragma warning restore CS8600
+#pragma warning disable CS8602
                             var innerJob = (TJob)objects[0];
+#pragma warning restore CS8602
                             var innerAction = (Action<TJobResult>)objects[1];
                             if (innerJob.CanUIThreadAccess())
                             {
@@ -209,8 +213,12 @@ namespace SWF.Core.Job
                     {
                         this.context.Post(state =>
                         {
+#pragma warning disable CS8600
                             var objects = (object[])state;
+#pragma warning restore CS8600
+#pragma warning disable CS8602
                             var innerJob = (TJob)objects[0];
+#pragma warning restore CS8602
                             var innerAction = (Action)objects[1];
                             if (innerJob.CanUIThreadAccess())
                             {
@@ -230,8 +238,12 @@ namespace SWF.Core.Job
                     {
                         this.context.Post(state =>
                         {
+#pragma warning disable CS8600
                             var objects = (object[])state;
+#pragma warning restore CS8600
+#pragma warning disable CS8602
                             var innerJob = (TJob)objects[0];
+#pragma warning restore CS8602
                             var innerAction = (Action<JobException>)objects[1];
                             if (innerJob.CanUIThreadAccess())
                             {
@@ -251,8 +263,12 @@ namespace SWF.Core.Job
                     {
                         this.context.Post(state =>
                         {
+#pragma warning disable CS8600
                             var objects = (object[])state;
+#pragma warning restore CS8600
+#pragma warning disable CS8602
                             var innerJob = (TJob)objects[0];
+#pragma warning restore CS8602
                             var innerAction = (Action)objects[1];
                             if (innerJob.CanUIThreadAccess())
                             {
