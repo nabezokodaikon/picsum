@@ -2,10 +2,12 @@ using PicSum.DatabaseAccessor.Connection;
 using PicSum.DatabaseAccessor.Sql;
 using SWF.Core.DatabaseAccessor;
 using SWF.Core.FileAccessor;
+using SWF.Core.Job;
 
 namespace PicSum.Job.SyncLogics
 {
     internal sealed class FileInfoDBCleanupSyncLogic
+        : AbstractSyncLogic
     {
         public void Execute()
         {
