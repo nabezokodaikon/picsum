@@ -339,12 +339,16 @@ namespace SWF.Core.Job
                         {
                             if (currentJob != dequeueJob)
                             {
+#pragma warning disable CA2219
                                 throw new InvalidOperationException("キューからPeekしたジョブとDequeueしたジョブが一致しません。");
+#pragma warning restore CA2219
                             }
                         }
                         else
                         {
+#pragma warning disable CA2219
                             throw new InvalidOperationException("他のスレッドでキューの操作が行われました。");
+#pragma warning restore CA2219
                         }
 
                         sw.Stop();
