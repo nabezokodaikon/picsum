@@ -27,7 +27,7 @@ namespace SWF.Core.Job
             }
         }
 
-        public bool IsCancel
+        private bool IsCancel
         {
             get
             {
@@ -55,6 +55,19 @@ namespace SWF.Core.Job
         internal void BeginCancel()
         {
             this.IsCancel = true;
+        }
+
+        internal bool CanUIThreadAccess()
+        {
+            if (this.Sender.IsHandleCreated
+                && !this.Sender.IsDisposed)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 

@@ -17,7 +17,6 @@ namespace PicSum.Job.SyncLogics
         public void Execute()
         {
             CommonJobs.Instance.Dispose();
-            UIThreadAccessor.Instance.Dispose();
             FileIconCash.DisposeStaticResources();
             ThumbnailGetLogic.DisposeStaticResouces();
             ImageFileCacheUtil.DisposeStaticResources();

@@ -4,6 +4,7 @@ using System.ComponentModel;
 
 namespace SWF.Core.Job
 {
+    [Obsolete("削除予定", true)]
     public sealed partial class UIThreadAccessor
         : IDisposable
     {

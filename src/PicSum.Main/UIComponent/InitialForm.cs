@@ -33,6 +33,13 @@ namespace PicSum.Main.UIComponent
             this.Close();
         }
 
+        protected override void OnHandleCreated(EventArgs e)
+        {
+            CommonJobs.Initialize();
+
+            base.OnHandleCreated(e);
+        }
+
         protected override void OnLoad(EventArgs e)
         {
             CommonJobs.Instance.StartGCCollectRunJob(this);

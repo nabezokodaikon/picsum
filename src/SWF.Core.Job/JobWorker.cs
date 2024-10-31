@@ -14,6 +14,7 @@ namespace SWF.Core.Job
 
         private bool disposed = false;
         private readonly string threadName;
+        private readonly SynchronizationContext context;
         private readonly CancellationTokenSource source = new();
         private readonly Task thread;
         private readonly ConcurrentQueue<TJob> jobQueue = new();
@@ -22,8 +23,11 @@ namespace SWF.Core.Job
         private Action<JobException>? catchAction;
         private Action? completeAction;
 
-        public TwoWayJob()
+        public TwoWayJob(SynchronizationContext? context)
         {
+            ArgumentNullException.ThrowIfNull(context, nameof(context));
+
+            this.context = context;
             this.threadName = $"{typeof(TJob).Name} {ThreadID.GetNew()}";
             this.thread = Task.Run(() => this.DoWork(this.source.Token));
         }
@@ -177,49 +181,73 @@ namespace SWF.Core.Job
 
             if (this.callbackAction != null)
             {
-                var innerAction = this.callbackAction;
-                job.CallbackAction = _ =>
+                var action = this.callbackAction;
+                job.CallbackAction = result =>
                 {
-                    UIThreadAccessor.Instance.Post(job, () =>
+                    if (job.CanUIThreadAccess())
                     {
-                        innerAction.Invoke(_);
-                    });
+                        this.context.Post(state =>
+                        {
+                            if (job.CanUIThreadAccess())
+                            {
+                                action.Invoke(result);
+                            }
+                        }, null);
+                    }
                 };
             }
 
             if (this.cancelAction != null)
             {
-                var innerAction = this.cancelAction;
+                var action = this.cancelAction;
                 job.CancelAction = () =>
                 {
-                    UIThreadAccessor.Instance.Post(job, () =>
+                    if (job.CanUIThreadAccess())
                     {
-                        innerAction.Invoke();
-                    });
+                        this.context.Post(_ =>
+                        {
+                            if (job.CanUIThreadAccess())
+                            {
+                                action.Invoke();
+                            }
+                        }, null);
+                    }
                 };
             }
 
             if (this.catchAction != null)
             {
-                var innerAction = this.catchAction;
-                job.CatchAction = _ =>
+                var action = this.catchAction;
+                job.CatchAction = exception =>
                 {
-                    UIThreadAccessor.Instance.Post(job, () =>
+                    if (job.CanUIThreadAccess())
                     {
-                        innerAction.Invoke(_);
-                    });
+                        this.context.Post(_ =>
+                        {
+                            if (job.CanUIThreadAccess())
+                            {
+                                action.Invoke(exception);
+                            }
+                        }, null);
+                    }
                 };
             }
 
             if (this.completeAction != null)
             {
-                var innerAction = this.completeAction;
+                var action = this.completeAction;
                 job.CompleteAction = () =>
                 {
-                    UIThreadAccessor.Instance.Post(job, () =>
+                    if (job.CanUIThreadAccess())
                     {
-                        innerAction.Invoke();
-                    });
+                        this.context.Post(_ =>
+                        {
+                            if (job.CanUIThreadAccess())
+                            {
+                                action.Invoke();
+                            }
+                        }, null);
+                    }
                 };
             }
 
@@ -324,8 +352,8 @@ namespace SWF.Core.Job
         where TJob : AbstractTwoWayJob<TJobResult>, new()
         where TJobResult : IJobResult
     {
-        public TwoWayJob()
-            : base()
+        public TwoWayJob(SynchronizationContext? context)
+            : base(context)
         {
 
         }
@@ -335,8 +363,8 @@ namespace SWF.Core.Job
         : TwoWayJob<TJob, EmptyParameter, EmptyResult>
         where TJob : AbstractOneWayJob, new()
     {
-        public OneWayJob()
-            : base()
+        public OneWayJob(SynchronizationContext? context)
+            : base(context)
         {
 
         }
@@ -347,8 +375,8 @@ namespace SWF.Core.Job
         where TJob : AbstractOneWayJob<TJobParameter>, new()
         where TJobParameter : IJobParameter
     {
-        public OneWayJob()
-            : base()
+        public OneWayJob(SynchronizationContext? context)
+            : base(context)
         {
 
         }
