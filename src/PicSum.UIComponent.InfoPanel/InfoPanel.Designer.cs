@@ -103,7 +103,7 @@ namespace PicSum.UIComponent.InfoPanel
             // 
             this.wideComboBox.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             this.wideComboBox.Font = new System.Drawing.Font("Yu Gothic UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 128);
-            this.wideComboBox.Icon = Properties.Resources.TagIcon;
+            this.wideComboBox.Icon = SWF.Core.Base.ResourceFiles.TagIcon.Value;
             this.wideComboBox.Location = new System.Drawing.Point(4, 452);
             this.wideComboBox.Margin = new System.Windows.Forms.Padding(4, 0, 0, 0);
             this.wideComboBox.Name = "wideComboBox";

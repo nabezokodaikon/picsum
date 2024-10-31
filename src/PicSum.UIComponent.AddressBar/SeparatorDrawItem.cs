@@ -1,6 +1,6 @@
 using PicSum.Job.Common;
 using PicSum.Job.Entities;
-using PicSum.UIComponent.AddressBar.Properties;
+using SWF.Core.Base;
 using SWF.Core.Job;
 using System;
 using System.Drawing;
@@ -15,8 +15,8 @@ namespace PicSum.UIComponent.AddressBar
         : DropDownDrawItemBase, IDisposable
     {
         private bool disposed = false;
-        private readonly Image mousePointImage = Resources.SmallArrowRight;
-        private readonly Image mouseDownImage = Resources.SmallArrowDown;
+        private readonly Image mousePointImage = ResourceFiles.SmallArrowRight.Value;
+        private readonly Image mouseDownImage = ResourceFiles.SmallArrowDown.Value;
         private bool isRead = false;
         private Font selectedSubDirectoryFont = null;
 

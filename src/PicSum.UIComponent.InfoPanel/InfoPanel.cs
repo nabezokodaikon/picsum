@@ -2,7 +2,6 @@ using PicSum.Job.Common;
 using PicSum.Job.Entities;
 using PicSum.Job.Parameters;
 using PicSum.Job.Results;
-using PicSum.UIComponent.InfoPanel.Properties;
 using SWF.Core.Base;
 using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
@@ -38,7 +37,7 @@ namespace PicSum.UIComponent.InfoPanel
 
         private FileDeepInfoGetResult fileInfoSource = null;
         private Font allTagFont = null;
-        private readonly Image tagIcon = Resources.TagIcon;
+        private readonly Image tagIcon = ResourceFiles.TagIcon.Value;
         private string contextMenuOperationTag = string.Empty;
 
         private IList<string> FilePathList

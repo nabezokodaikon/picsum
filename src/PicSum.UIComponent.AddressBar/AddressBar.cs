@@ -1,6 +1,6 @@
 using PicSum.Job.Common;
 using PicSum.Job.Results;
-using PicSum.UIComponent.AddressBar.Properties;
+using SWF.Core.Base;
 using SWF.Core.FileAccessor;
 using SWF.Core.Job;
 using System;
@@ -22,7 +22,7 @@ namespace PicSum.UIComponent.AddressBar
         public event EventHandler<SelectedDirectoryEventArgs> SelectedDirectory;
 
         private bool disposed = false;
-        private readonly int dropDownItemWidth = Resources.SmallArrowDown.Width;
+        private readonly int dropDownItemWidth = ResourceFiles.SmallArrowDown.Value.Width;
         private readonly Palette palette = new();
         private readonly OverflowDrawItem overflowItem = new();
         private readonly DirectoryHistoryDrawItem directoryHistoryItem = new();

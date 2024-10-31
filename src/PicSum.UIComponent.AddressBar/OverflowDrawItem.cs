@@ -1,4 +1,4 @@
-using PicSum.UIComponent.AddressBar.Properties;
+using SWF.Core.Base;
 using System;
 using System.Drawing;
 using System.Runtime.Versioning;
@@ -11,8 +11,8 @@ namespace PicSum.UIComponent.AddressBar
         : DropDownDrawItemBase, IDisposable
     {
 
-        private readonly Image mousePointImage = Resources.SmallArrowLeft;
-        private readonly Image mouseDownImage = Resources.SmallArrowDown;
+        private readonly Image mousePointImage = ResourceFiles.SmallArrowLeft.Value;
+        private readonly Image mouseDownImage = ResourceFiles.SmallArrowDown.Value;
 
         public OverflowDrawItem()
         {
