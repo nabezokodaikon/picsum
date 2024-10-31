@@ -1,7 +1,8 @@
 {
   "profiles": {
     "PicSum.Main": {
-      "commandName": "Project"
+      "commandName": "Project",
+      "commandLineArgs": "--cleanup"
     }
   }
 }
