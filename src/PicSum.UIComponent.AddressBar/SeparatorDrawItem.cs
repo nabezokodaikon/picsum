@@ -15,8 +15,8 @@ namespace PicSum.UIComponent.AddressBar
         : DropDownDrawItemBase, IDisposable
     {
         private bool disposed = false;
-        private readonly Image mousePointImage = ResourceFiles.SmallArrowRight.Value;
-        private readonly Image mouseDownImage = ResourceFiles.SmallArrowDown.Value;
+        private readonly Image mousePointImage = ResourceFiles.SmallArrowRightIcon.Value;
+        private readonly Image mouseDownImage = ResourceFiles.SmallArrowDownIcon.Value;
         private bool isRead = false;
         private Font selectedSubDirectoryFont = null;
 

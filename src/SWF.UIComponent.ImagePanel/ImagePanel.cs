@@ -23,7 +23,7 @@ namespace SWF.UIComponent.ImagePanel
         public event EventHandler<MouseEventArgs> ImageMouseDoubleClick;
         public event EventHandler DragStart;
 
-        private readonly Image thumbnailPanelImage = ResourceFiles.ThumbnailPanel.Value;
+        private readonly Image thumbnailPanelImage = ResourceFiles.ThumbnailPanelIcon.Value;
         private ImageSizeMode sizeMode = ImageSizeMode.FitOnlyBigImage;
         private ImageAlign imageAlign = ImageAlign.Center;
         private bool isShowThumbnailPanel = false;

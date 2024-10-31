@@ -26,105 +26,32 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <None Remove="ResourceFiles\ActiveRatingIcon.png" />
-    <None Remove="ResourceFiles\application.ico" />
-    <None Remove="ResourceFiles\BookmarkIcon.png" />
-    <None Remove="ResourceFiles\DragTab.png" />
-    <None Remove="ResourceFiles\DropArrow.png" />
-    <None Remove="ResourceFiles\DropLeft.png" />
-    <None Remove="ResourceFiles\DropMaximum.png" />
-    <None Remove="ResourceFiles\DropRight.png" />
-    <None Remove="ResourceFiles\EmptyFile" />
-    <None Remove="ResourceFiles\GoBackIcon.png" />
-    <None Remove="ResourceFiles\GoNextIcon.png" />
-    <None Remove="ResourceFiles\HomeIcon.png" />
-    <None Remove="ResourceFiles\InactiveRatingIcon.png" />
-    <None Remove="ResourceFiles\InfoIcon.png" />
-    <None Remove="ResourceFiles\RatingIcon.png" />
-    <None Remove="ResourceFiles\ReloadIcon.png" />
-    <None Remove="ResourceFiles\SliderButton.png" />
-    <None Remove="ResourceFiles\SmallArrowDown.png" />
-    <None Remove="ResourceFiles\SmallArrowLeft.png" />
-    <None Remove="ResourceFiles\SmallArrowRight.png" />
-    <None Remove="ResourceFiles\SmallArrowUp.png" />
-    <None Remove="ResourceFiles\TagIcon.png" />
-    <None Remove="ResourceFiles\ThumbnailPanel.png" />
+    <None Remove="EmptyFile" />
   </ItemGroup>
   
   <ItemGroup>
-    <Content Include="ResourceFiles\ActiveRatingIcon.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ResourceFiles\application.ico">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ResourceFiles\BookmarkIcon.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ResourceFiles\DragTab.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ResourceFiles\DropArrow.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ResourceFiles\DropLeft.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ResourceFiles\DropMaximum.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ResourceFiles\DropRight.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ResourceFiles\EmptyFile">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ResourceFiles\GoBackIcon.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ResourceFiles\GoNextIcon.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ResourceFiles\HomeIcon.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ResourceFiles\InactiveRatingIcon.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ResourceFiles\InfoIcon.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ResourceFiles\RatingIcon.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ResourceFiles\ReloadIcon.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ResourceFiles\SliderButton.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ResourceFiles\SmallArrowDown.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ResourceFiles\SmallArrowLeft.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ResourceFiles\SmallArrowRight.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ResourceFiles\SmallArrowUp.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ResourceFiles\TagIcon.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ResourceFiles\ThumbnailPanel.png">
+    <Content Include="EmptyFile">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   
   <ItemGroup>
     <ProjectReference Include="..\WinApi\WinApi.csproj" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
 
 </Project>

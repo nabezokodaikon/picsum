@@ -12,9 +12,9 @@ namespace SWF.UIComponent.TabOperation
         : Form
     {
 
-        private readonly Bitmap dropMaximumImage = ResourceFiles.DropMaximum.Value;
-        private readonly Bitmap dropLeftImage = ResourceFiles.DropLeft.Value;
-        private readonly Bitmap dropRightImage = ResourceFiles.DropRight.Value;
+        private readonly Bitmap dropMaximumImage = ResourceFiles.DropMaximumIcon.Value;
+        private readonly Bitmap dropLeftImage = ResourceFiles.DropLeftIcon.Value;
+        private readonly Bitmap dropRightImage = ResourceFiles.DropRightIcon.Value;
         private Bitmap dropImage = null;
 
         public TabDropForm()

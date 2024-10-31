@@ -15,7 +15,7 @@ namespace PicSum.UIComponent.AddressBar
         : DropDownDrawItemBase, IDisposable
     {
         private bool disposed = false;
-        private readonly Image drawImage = ResourceFiles.SmallArrowDown.Value;
+        private readonly Image drawImage = ResourceFiles.SmallArrowDownIcon.Value;
 
         public DirectoryHistoryDrawItem()
         {

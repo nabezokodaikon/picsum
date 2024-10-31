@@ -104,5 +104,13 @@ namespace SWF.Core.Base
                 Directory.CreateDirectory(DATABASE_DIRECTORY);
             }
         }
+
+        internal static Bitmap CreateBitmapFromByteArray(byte[] byteArray)
+        {
+            using (var memoryStream = new MemoryStream(byteArray))
+            {
+                return new Bitmap(memoryStream);
+            }
+        }
     }
 }

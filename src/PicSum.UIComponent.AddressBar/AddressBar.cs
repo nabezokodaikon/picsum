@@ -22,7 +22,7 @@ namespace PicSum.UIComponent.AddressBar
         public event EventHandler<SelectedDirectoryEventArgs> SelectedDirectory;
 
         private bool disposed = false;
-        private readonly int dropDownItemWidth = ResourceFiles.SmallArrowDown.Value.Width;
+        private readonly int dropDownItemWidth = ResourceFiles.SmallArrowDownIcon.Value.Width;
         private readonly Palette palette = new();
         private readonly OverflowDrawItem overflowItem = new();
         private readonly DirectoryHistoryDrawItem directoryHistoryItem = new();
