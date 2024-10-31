@@ -188,11 +188,14 @@ namespace SWF.Core.Job
                     {
                         this.context.Post(state =>
                         {
-                            if (job.CanUIThreadAccess())
+                            var objects = (object[])state;
+                            var innerJob = (TJob)objects[0];
+                            var innerAction = (Action<TJobResult>)objects[1];
+                            if (innerJob.CanUIThreadAccess())
                             {
-                                action.Invoke(result);
+                                innerAction.Invoke(result);
                             }
-                        }, null);
+                        }, new object[] { job, action });
                     }
                 };
             }
@@ -204,13 +207,16 @@ namespace SWF.Core.Job
                 {
                     if (job.CanUIThreadAccess())
                     {
-                        this.context.Post(_ =>
+                        this.context.Post(state =>
                         {
-                            if (job.CanUIThreadAccess())
+                            var objects = (object[])state;
+                            var innerJob = (TJob)objects[0];
+                            var innerAction = (Action)objects[1];
+                            if (innerJob.CanUIThreadAccess())
                             {
-                                action.Invoke();
+                                innerAction.Invoke();
                             }
-                        }, null);
+                        }, new object[] { job, action });
                     }
                 };
             }
@@ -222,13 +228,16 @@ namespace SWF.Core.Job
                 {
                     if (job.CanUIThreadAccess())
                     {
-                        this.context.Post(_ =>
+                        this.context.Post(state =>
                         {
-                            if (job.CanUIThreadAccess())
+                            var objects = (object[])state;
+                            var innerJob = (TJob)objects[0];
+                            var innerAction = (Action<JobException>)objects[1];
+                            if (innerJob.CanUIThreadAccess())
                             {
-                                action.Invoke(exception);
+                                innerAction.Invoke(exception);
                             }
-                        }, null);
+                        }, new object[] { job, action });
                     }
                 };
             }
@@ -240,13 +249,16 @@ namespace SWF.Core.Job
                 {
                     if (job.CanUIThreadAccess())
                     {
-                        this.context.Post(_ =>
+                        this.context.Post(state =>
                         {
-                            if (job.CanUIThreadAccess())
+                            var objects = (object[])state;
+                            var innerJob = (TJob)objects[0];
+                            var innerAction = (Action)objects[1];
+                            if (innerJob.CanUIThreadAccess())
                             {
-                                action.Invoke();
+                                innerAction.Invoke();
                             }
-                        }, null);
+                        }, new object[] { job, action });
                     }
                 };
             }
