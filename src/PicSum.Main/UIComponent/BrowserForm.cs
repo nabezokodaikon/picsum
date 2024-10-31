@@ -160,22 +160,12 @@ namespace PicSum.Main.UIComponent
                             {
                                 var startupJob = new StartupSyncJob();
                                 startupJob.Execute();
-                                using (var fileInfoDBCleanupJob = new OneWayJob<FileInfoDBCleanupJob>())
-                                {
-                                    fileInfoDBCleanupJob.Initialize()
-                                        .Catch(ex =>
-                                        {
-                                            ExceptionUtil.ShowErrorDialog("The file information database cleanup process failed.", ex);
-                                        })
-                                        .Complete(() =>
-                                        {
-                                            this.CreateBrowserMainPanel();
-                                            BrowserForm.isStartUp = false;
-                                        })
-                                        .BeginCancel()
-                                        .StartJob(this);
-                                    fileInfoDBCleanupJob.WaitJobComplete();
-                                }
+
+                                var fileInfoDBCleanupJob = new FileInfoDBCleanupSyncJob();
+                                fileInfoDBCleanupJob.Execute();
+
+                                this.CreateBrowserMainPanel();
+                                BrowserForm.isStartUp = false;
                             })
                             .BeginCancel()
                             .StartJob(this, new ValueParameter<string>(FileUtil.DATABASE_DIRECTORY));
