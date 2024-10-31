@@ -26,11 +26,11 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <None Remove="EmptyFile" />
+    <None Remove="EmptyIcon" />
   </ItemGroup>
   
   <ItemGroup>
-    <Content Include="EmptyFile">
+    <Content Include="EmptyIcon">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

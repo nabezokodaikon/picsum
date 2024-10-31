@@ -4,8 +4,8 @@ namespace SWF.Core.Base
 {
     public static class ResourceFiles
     {
-        public static readonly string EmptyFile
-            = Path.Combine(ResourceUtil.EXECUTABLE_DIRECTORY, "EmptyFile");
+        public static readonly string EmptyIcon
+            = Path.Combine(ResourceUtil.EXECUTABLE_DIRECTORY, "EmptyIcon");
 
         public static readonly Lazy<Icon> ApplicationIcon = new(() =>
             Resources.ApplicationIcon);
