@@ -11,7 +11,7 @@ namespace PicSum.Job.Common
     public sealed partial class CommonJobs
         : IDisposable
     {
-        public static CommonJobs Instance = new();
+        public readonly static CommonJobs Instance = new();
 
         private bool disposed = false;
 
