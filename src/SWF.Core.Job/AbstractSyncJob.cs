@@ -1,8 +1,11 @@
+using NLog;
+
 namespace SWF.Core.Job
 {
-    public class AbstractSyncJob
-        : AbstractSyncLogic
+    public abstract class AbstractSyncJob
     {
+        protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         public AbstractSyncJob()
         {
 

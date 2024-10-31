@@ -1,4 +1,3 @@
-using PicSum.Job.Jobs;
 using PicSum.Job.Parameters;
 using PicSum.Job.SyncJobs;
 using PicSum.Main.Conf;
@@ -149,33 +148,23 @@ namespace PicSum.Main.UIComponent
 
                 if (BrowserForm.IsCleanup())
                 {
-                    using (var thumbnailDBCleanupJob = new OneWayJob<ThumbnailDBCleanupJob, ValueParameter<string>>())
-                    {
-                        thumbnailDBCleanupJob.Initialize()
-                            .Catch(ex =>
-                            {
-                                ExceptionUtil.ShowErrorDialog("The thumbnail database cleanup process failed.", ex);
-                            })
-                            .Complete(() =>
-                            {
-                                var startupJob = new StartupSyncJob();
-                                startupJob.Execute();
+                    var thumbnailDBCleanupJob = new ThumbnailDBCleanupSyncJob();
+                    thumbnailDBCleanupJob.Execute();
 
-                                var fileInfoDBCleanupJob = new FileInfoDBCleanupSyncJob();
-                                fileInfoDBCleanupJob.Execute();
+                    var startupJob = new StartupSyncJob();
+                    startupJob.Execute();
 
-                                this.CreateBrowserMainPanel();
-                                BrowserForm.isStartUp = false;
-                            })
-                            .BeginCancel()
-                            .StartJob(this, new ValueParameter<string>(FileUtil.DATABASE_DIRECTORY));
-                        thumbnailDBCleanupJob.WaitJobComplete();
-                    }
+                    var fileInfoDBCleanupJob = new FileInfoDBCleanupSyncJob();
+                    fileInfoDBCleanupJob.Execute();
+
+                    this.CreateBrowserMainPanel();
+                    BrowserForm.isStartUp = false;
                 }
                 else
                 {
                     var startupJob = new StartupSyncJob();
                     startupJob.Execute();
+
                     this.CreateBrowserMainPanel();
                     BrowserForm.isStartUp = false;
                 }
