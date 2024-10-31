@@ -2,28 +2,28 @@
   <PropertyGroup>
 	<TargetFramework>net8.0-windows10.0.22621.0</TargetFramework>
 	<RuntimeIdentifiers>win-x86;win-x64</RuntimeIdentifiers>
-    <OutputType>WinExe</OutputType>
-    <AssemblyName>picsum</AssemblyName>
-    <StartupObject>PicSum.Main.Program</StartupObject>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
-    <PublishUrl>publish\</PublishUrl>
-    <Install>true</Install>
-    <InstallFrom>Disk</InstallFrom>
-    <UpdateEnabled>false</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
-    <UpdateInterval>7</UpdateInterval>
-    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-    <UpdatePeriodically>false</UpdatePeriodically>
-    <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <UseApplicationTrust>false</UseApplicationTrust>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <UseWindowsForms>true</UseWindowsForms>
-    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
-    <Configurations>Debug;Release</Configurations>
+	<OutputType>WinExe</OutputType>
+	<AssemblyName>picsum</AssemblyName>
+	<StartupObject>PicSum.Main.Program</StartupObject>
+	<IsWebBootstrapper>false</IsWebBootstrapper>
+	<PublishUrl>publish\</PublishUrl>
+	<Install>true</Install>
+	<InstallFrom>Disk</InstallFrom>
+	<UpdateEnabled>false</UpdateEnabled>
+	<UpdateMode>Foreground</UpdateMode>
+	<UpdateInterval>7</UpdateInterval>
+	<UpdateIntervalUnits>Days</UpdateIntervalUnits>
+	<UpdatePeriodically>false</UpdatePeriodically>
+	<UpdateRequired>false</UpdateRequired>
+	<MapFileExtensions>true</MapFileExtensions>
+	<ApplicationRevision>0</ApplicationRevision>
+	<ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+	<UseApplicationTrust>false</UseApplicationTrust>
+	<BootstrapperEnabled>true</BootstrapperEnabled>
+	<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+	<UseWindowsForms>true</UseWindowsForms>
+	<ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
+	<Configurations>Debug;Release</Configurations>
 	<Platforms>AnyCPU;x64;x86;ARM64;ARM32</Platforms>
   </PropertyGroup>
 
@@ -32,15 +32,24 @@
 	<NoWarn>1701;1702; CA1016; CA1824; WFAC010; CA1416</NoWarn>
 	<OutputType>Exe</OutputType>
   </PropertyGroup>
-  
+
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
 	<DebugType>none</DebugType>
 	<NoWarn>1701;1702; CA1016; CA1824; WFAC010; CA1416</NoWarn>
 	<OutputType>WinExe</OutputType>
+	<PublishReadyToRun>true</PublishReadyToRun>
+	<Optimize>true</Optimize>
+	<TieredCompilation>true</TieredCompilation>
+	<TrimMode>link</TrimMode>
+	<ServerGarbageCollection>true</ServerGarbageCollection>
+	<PublishSingleFile>true</PublishSingleFile>
+	<SelfContained>true</SelfContained>
+	<IncludeAllContentForSelfExtract>true</IncludeAllContentForSelfExtract>
+	<RuntimeIdentifier>win-x64</RuntimeIdentifier>
   </PropertyGroup>
-  
+
   <PropertyGroup>
-    <ApplicationIcon>application.ico</ApplicationIcon>
+	<ApplicationIcon>application.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
 	<SatelliteResourceLanguages>_</SatelliteResourceLanguages>
@@ -49,104 +58,104 @@
 	<SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
 	<ApplicationManifest>app.manifest</ApplicationManifest>
 	<PlatformTarget>x64</PlatformTarget>
-  </PropertyGroup>  
+  </PropertyGroup>
   <ItemGroup>
-    <Reference Update="System.Core">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
+	<Reference Update="System.Core">
+	  <RequiredTargetFramework>3.5</RequiredTargetFramework>
+	</Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Update="UIComponent\BrowserMainPanel.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+	<Compile Update="UIComponent\BrowserMainPanel.cs">
+	  <SubType>UserControl</SubType>
+	</Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PicSum.UIComponent.Contents\PicSum.UIComponent.Contents.csproj" />
-    <ProjectReference Include="..\SWF.Core.Base\SWF.Core.Base.csproj" />
-    <ProjectReference Include="..\SWF.Core.FileAccessor\SWF.Core.FileAccessor.csproj" />
-    <ProjectReference Include="..\SWF.Core.ImageAccessor\SWF.Core.ImageAccessor.csproj" />
-    <ProjectReference Include="..\SWF.Core.Job\SWF.Core.Job.csproj" />
-    <ProjectReference Include="..\SWF.UIComponent.Core\SWF.UIComponent.Core.csproj" />
-    <ProjectReference Include="..\SWF.UIComponent.Form\SWF.UIComponent.Form.csproj" />
-    <ProjectReference Include="..\SWF.UIComponent.TabOperation\SWF.UIComponent.TabOperation.csproj" />
-    <ProjectReference Include="..\PicSum.UIComponent.AddressBar\PicSum.UIComponent.AddressBar.csproj" />
-    <ProjectReference Include="..\PicSum.UIComponent.InfoPanel\PicSum.UIComponent.InfoPanel.csproj" />
-    <ProjectReference Include="..\SWF.UIComponent.WideDropDown\SWF.UIComponent.WideDropDown.csproj" />
-    <ProjectReference Include="..\WinApi\WinApi.csproj" />
+	<ProjectReference Include="..\PicSum.UIComponent.Contents\PicSum.UIComponent.Contents.csproj" />
+	<ProjectReference Include="..\SWF.Core.Base\SWF.Core.Base.csproj" />
+	<ProjectReference Include="..\SWF.Core.FileAccessor\SWF.Core.FileAccessor.csproj" />
+	<ProjectReference Include="..\SWF.Core.ImageAccessor\SWF.Core.ImageAccessor.csproj" />
+	<ProjectReference Include="..\SWF.Core.Job\SWF.Core.Job.csproj" />
+	<ProjectReference Include="..\SWF.UIComponent.Core\SWF.UIComponent.Core.csproj" />
+	<ProjectReference Include="..\SWF.UIComponent.Form\SWF.UIComponent.Form.csproj" />
+	<ProjectReference Include="..\SWF.UIComponent.TabOperation\SWF.UIComponent.TabOperation.csproj" />
+	<ProjectReference Include="..\PicSum.UIComponent.AddressBar\PicSum.UIComponent.AddressBar.csproj" />
+	<ProjectReference Include="..\PicSum.UIComponent.InfoPanel\PicSum.UIComponent.InfoPanel.csproj" />
+	<ProjectReference Include="..\SWF.UIComponent.WideDropDown\SWF.UIComponent.WideDropDown.csproj" />
+	<ProjectReference Include="..\WinApi\WinApi.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework Client Profile</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.0 %28x86%29</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
-      <Visible>False</Visible>
-      <ProductName>Windows インストーラ 3.1</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
+	<BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+	  <Visible>False</Visible>
+	  <ProductName>.NET Framework Client Profile</ProductName>
+	  <Install>false</Install>
+	</BootstrapperPackage>
+	<BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+	  <Visible>False</Visible>
+	  <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
+	  <Install>false</Install>
+	</BootstrapperPackage>
+	<BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
+	  <Visible>False</Visible>
+	  <ProductName>.NET Framework 3.0 %28x86%29</ProductName>
+	  <Install>false</Install>
+	</BootstrapperPackage>
+	<BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
+	  <Visible>False</Visible>
+	  <ProductName>.NET Framework 3.5</ProductName>
+	  <Install>false</Install>
+	</BootstrapperPackage>
+	<BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+	  <Visible>False</Visible>
+	  <ProductName>.NET Framework 3.5 SP1</ProductName>
+	  <Install>true</Install>
+	</BootstrapperPackage>
+	<BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+	  <Visible>False</Visible>
+	  <ProductName>Windows インストーラ 3.1</ProductName>
+	  <Install>true</Install>
+	</BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="application.ico" />
-    <Content Include="picsum-home.bat">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="picsum-cleanup.bat">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+	<Content Include="application.ico" />
+	<Content Include="picsum-home.bat">
+	  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	</Content>
+	<Content Include="picsum-cleanup.bat">
+	  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	</Content>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="NLog" Version="5.3.4" />
-    <PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.1" />
+	<PackageReference Include="NLog" Version="5.3.4" />
+	<PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.1" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Remove="Settings.cs" />
+	<Compile Remove="Settings.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Remove="picsum-cleanup.bat" />
-    <None Remove="picsum-home.bat" />
+	<None Remove="picsum-cleanup.bat" />
+	<None Remove="picsum-home.bat" />
   </ItemGroup>
-  
+
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <NoWarn>1701;1702; CA1016; CA1824; WFAC010; CA1416</NoWarn>
+	<NoWarn>1701;1702; CA1016; CA1824; WFAC010; CA1416</NoWarn>
   </PropertyGroup>
-  
+
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM32'">
-    <NoWarn>1701;1702; CA1016; CA1824; WFAC010; CA1416</NoWarn>
+	<NoWarn>1701;1702; CA1016; CA1824; WFAC010; CA1416</NoWarn>
   </PropertyGroup>
-  
+
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
-    <NoWarn>1701;1702; CA1016; CA1824; WFAC010; CA1416</NoWarn>
+	<NoWarn>1701;1702; CA1016; CA1824; WFAC010; CA1416</NoWarn>
   </PropertyGroup>
-  
+
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
-    <NoWarn>1701;1702; CA1016; CA1824; WFAC010; CA1416</NoWarn>
+	<NoWarn>1701;1702; CA1016; CA1824; WFAC010; CA1416</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
 	<NoWarn>1701;1702; CA1016; CA1824; WFAC010; CA1416</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <NoWarn>1701;1702; CA1016; CA1824; WFAC010; CA1416</NoWarn>
+	<NoWarn>1701;1702; CA1016; CA1824; WFAC010; CA1416</NoWarn>
   </PropertyGroup>
-  
+
 </Project>
