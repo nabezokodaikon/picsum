@@ -13,48 +13,53 @@ jobs:
       - name: checkout
         uses: actions/checkout@v4
 
-      - name: setup-msbuild
+      - name: setup .net
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0'
+
+      - name: setup msbuil
         uses: microsoft/setup-msbuild@v2
         with:
-          dotnet-version: '8.0'         
           msbuild-architecture: 'x64'
 
-      - name: setup-nuget
+      - name: setup nuget
         uses: nuget/setup-nuget@v2
 
       - name: dotnet restore 
-        run: dotnet restore src\PicSum.sln
+        run: dotnet restore "$pwd\src\PicSum.Main\PicSum.Main.csproj" -p:PublishReadyToRun=true
 
       - name: msbuild
         run: >
           msbuild
-          src\PicSum.sln
+          "$pwd\src\PicSum.Main\PicSum.Main.csproj" 
           /t:Publish
           /p:Configuration=Release
           /p:OutputPath=$pwd\dist\picsum
           /p:Platform="x64"
-          /p:RuntimeIdentifier="win-x64"
+
+      - name: cleanup
+        shell: pwsh
+        run: |
+          Remove-Item "$pwd\dist\picsumpublish\*.dll" -Force 
+          Remove-Item "$pwd\dist\picsumpublish\*.json" -Force 
       
       - name: set docs
         shell: pwsh
         run: |
-          Remove-Item "$pwd\dist\picsum\*.dll" -Force 
-          Remove-Item "$pwd\dist\picsum\*.json" -Force 
-          Remove-Item "$pwd\dist\picsum\runtimes" -Recurse -Force
-          Copy-Item -Path "$pwd\doc\MANUAL.md" -Destination "$pwd\dist\MANUAL.txt"
-          Copy-Item -Path "$pwd\doc\CHANGELOG.md" -Destination "$pwd\dist\CHANGELOG.txt"
-          Copy-Item -Path "$pwd\LICENSE" -Destination "$pwd\dist\LICENSE.txt"
-          Copy-Item -Path "$pwd\PrivacyPolicy" -Destination "$pwd\dist\PrivacyPolicy.txt"
+          Copy-Item -Path "$pwd\doc\MANUAL.md" -Destination "$pwd\dist\picsumpublish\MANUAL.txt"
+          Copy-Item -Path "$pwd\doc\CHANGELOG.md" -Destination "$pwd\dist\picsumpublish\CHANGELOG.txt"
+          Copy-Item -Path "$pwd\LICENSE" -Destination "$pwd\dist\picsumpublish\LICENSE.txt"
+          Copy-Item -Path "$pwd\PrivacyPolicy" -Destination "$pwd\dist\picsumpublish\PrivacyPolicy.txt"
 
       - name: compress archive 
         shell: pwsh
         run: |
           $tag_name = "${{ github.ref }}" -split '/' | Select-Object -Last 1
-          compress-archive dist\* picsum-$tag_name.zip
+          compress-archive "$pwd\dist\picsumpublish\*" picsum-$tag_name.zip
 
       - name: action-gh-release 
         uses: softprops/action-gh-release@v2 
         with:
           files: |
             picsum-*.zip
-
