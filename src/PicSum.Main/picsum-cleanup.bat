@@ -1,1 +1,0 @@
-"%cd%\picsum.exe" --cleanup

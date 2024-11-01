@@ -116,12 +116,6 @@
   </ItemGroup>
   <ItemGroup>
 	<Content Include="application.ico" />
-	<Content Include="picsum-home.bat">
-	  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	</Content>
-	<Content Include="picsum-cleanup.bat">
-	  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	</Content>
   </ItemGroup>
   <ItemGroup>
 	<PackageReference Include="NLog" Version="5.3.4" />
@@ -129,10 +123,6 @@
   </ItemGroup>
   <ItemGroup>
 	<Compile Remove="Settings.cs" />
-  </ItemGroup>
-  <ItemGroup>
-	<None Remove="picsum-cleanup.bat" />
-	<None Remove="picsum-home.bat" />
   </ItemGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
