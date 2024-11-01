@@ -38,12 +38,6 @@ jobs:
           /p:OutputPath=$pwd\dist\picsum
           /p:Platform="x64"
 
-      - name: cleanup
-        shell: pwsh
-        run: |
-          Remove-Item "$pwd\dist\picsumpublish\*.dll" -Force 
-          Remove-Item "$pwd\dist\picsumpublish\*.json" -Force 
-      
       - name: set docs
         shell: pwsh
         run: |
