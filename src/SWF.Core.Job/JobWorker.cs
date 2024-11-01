@@ -292,76 +292,64 @@ namespace SWF.Core.Job
             {
                 while (true)
                 {
-                    if (!this.jobQueue.TryPeek(out var currentJob))
-                    {
-                        if (token.IsCancellationRequested)
-                        {
-                            Logger.Debug("ジョブ実行スレッドにキャンセルリクエストがありました。");
-                            token.ThrowIfCancellationRequested();
-                        }
-
-                        token.WaitHandle.WaitOne(1);
-                        continue;
-                    }
-
-                    if (currentJob.ID == null)
-                    {
-                        throw new NullReferenceException($"{this.threadName}: ジョブIDがNullです。");
-                    }
-
-                    Logger.Debug($"{currentJob.ID} を実行します。");
-                    var sw = Stopwatch.StartNew();
-                    try
-                    {
-                        currentJob.ExecuteWrapper();
-                    }
-                    catch (JobCancelException)
-                    {
-                        currentJob.CancelAction?.Invoke();
-                        Logger.Debug($"{currentJob.ID} がキャンセルされました。");
-                    }
-                    catch (JobException ex)
-                    {
-                        Logger.Error($"{currentJob.ID} {ex}");
-                        currentJob.CatchAction?.Invoke(ex);
-                    }
-                    catch (Exception ex)
-                    {
-                        Logger.Error(ex, $"{currentJob.ID} で予期しない例外が発生しました。");
-                        throw;
-                    }
-                    finally
-                    {
-                        currentJob.CompleteAction?.Invoke();
-                        currentJob.IsCompleted = true;
-
-                        if (this.jobQueue.TryDequeue(out var dequeueJob))
-                        {
-                            if (currentJob != dequeueJob)
-                            {
-#pragma warning disable CA2219
-                                throw new InvalidOperationException("キューからPeekしたジョブとDequeueしたジョブが一致しません。");
-#pragma warning restore CA2219
-                            }
-                        }
-                        else
-                        {
-#pragma warning disable CA2219
-                            throw new InvalidOperationException("他のスレッドでキューの操作が行われました。");
-#pragma warning restore CA2219
-                        }
-
-                        sw.Stop();
-                        Logger.Debug($"{currentJob.ID} が終了しました。{sw.ElapsedMilliseconds} ms");
-                    }
-
                     if (token.IsCancellationRequested)
                     {
                         Logger.Debug("ジョブ実行スレッドにキャンセルリクエストがありました。");
                         token.ThrowIfCancellationRequested();
                     }
 
-                    token.WaitHandle.WaitOne(1);
+                    if (this.jobQueue.TryPeek(out var currentJob))
+                    {
+                        Logger.Debug($"{currentJob.ID} を実行します。");
+                        var sw = Stopwatch.StartNew();
+                        try
+                        {
+                            currentJob.ExecuteWrapper();
+                        }
+                        catch (JobCancelException)
+                        {
+                            currentJob.CancelAction?.Invoke();
+                            Logger.Debug($"{currentJob.ID} がキャンセルされました。");
+                        }
+                        catch (JobException ex)
+                        {
+                            Logger.Error($"{currentJob.ID} {ex}");
+                            currentJob.CatchAction?.Invoke(ex);
+                        }
+                        catch (Exception ex)
+                        {
+                            Logger.Error(ex, $"{currentJob.ID} で補足されない例外が発生しました。");
+                            throw;
+                        }
+                        finally
+                        {
+                            currentJob.CompleteAction?.Invoke();
+                            currentJob.IsCompleted = true;
+
+                            if (this.jobQueue.TryDequeue(out var dequeueJob))
+                            {
+                                if (currentJob != dequeueJob)
+                                {
+#pragma warning disable CA2219
+                                    throw new InvalidOperationException("キューからPeekしたジョブとDequeueしたジョブが一致しません。");
+#pragma warning restore CA2219
+                                }
+                            }
+                            else
+                            {
+#pragma warning disable CA2219
+                                throw new InvalidOperationException("他のスレッドでキューの操作が行われました。");
+#pragma warning restore CA2219
+                            }
+
+                            sw.Stop();
+                            Logger.Debug($"{currentJob.ID} が終了しました。{sw.ElapsedMilliseconds} ms");
+                        }
+                    }
+                    else
+                    {
+                        token.WaitHandle.WaitOne(1);
+                    }
                 }
             }
             catch (OperationCanceledException)
