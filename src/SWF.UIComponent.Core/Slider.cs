@@ -73,6 +73,11 @@ namespace SWF.UIComponent.Core
                     throw new ArgumentOutOfRangeException(nameof(value));
                 }
 
+                if (this.sliderValue == value)
+                {
+                    return;
+                }
+
                 this.sliderValue = value;
                 this.SetButtonPointX(this.sliderValue);
                 this.Invalidate();

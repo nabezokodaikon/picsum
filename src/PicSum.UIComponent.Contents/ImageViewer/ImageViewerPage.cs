@@ -767,6 +767,8 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             {
                 this.FilePathListIndex = index;
             }
+
+            this.ReadImage();
         }
 
         private void ImageFileReadJob_Callback(ImageFileReadResult e)
