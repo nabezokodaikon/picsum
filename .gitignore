@@ -34,8 +34,6 @@ bld/
 [Ll]og/
 [Ll]ogs/
 bin_debug/
-bin_develop/
-bin_release/
 bin_publish/
 bin_setup/
 bin_vscode/

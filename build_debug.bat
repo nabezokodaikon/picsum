@@ -4,9 +4,13 @@
 DEL /Q "%OUTPUT_PATH%\*.*"
 RD /S /Q "%OUTPUT_PATH%\runtimes"
 
-dotnet restore src\PicSum.sln
+dotnet restore src\PicSum.Main\PicSum.Main.csproj 
 
-MSBuild src\PicSum.sln /t:Rebuild ^
-  /p:Configuration=Debug ^
-  /p:OutputPath="%OUTPUT_PATH%" ^
-  /p:Platform="x64"
+dotnet clean src\PicSum.Main\PicSum.Main.csproj ^
+  -c Debug ^
+  -p:Platform="x64"
+
+dotnet build src\PicSum.Main\PicSum.Main.csproj ^
+  -c Debug ^
+  -o "%OUTPUT_PATH%" ^
+  -p:Platform="x64"
