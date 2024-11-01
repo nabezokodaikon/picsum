@@ -4,9 +4,6 @@ namespace SWF.Core.Base
 {
     public static class ResourceFiles
     {
-        public static readonly string EmptyIcon
-            = Path.Combine(ResourceUtil.EXECUTABLE_DIRECTORY, "EmptyIcon");
-
         public static readonly Lazy<Icon> ApplicationIcon = new(() =>
             Resources.ApplicationIcon);
 
@@ -30,6 +27,9 @@ namespace SWF.Core.Base
 
         public static readonly Lazy<Bitmap> DropRightIcon = new(() =>
             ResourceUtil.CreateBitmapFromByteArray(Resources.DropRightIcon));
+
+        public static readonly Lazy<Bitmap> EmptyIcon = new(() =>
+            ResourceUtil.CreateBitmapFromByteArray(Resources.EmptyIcon));
 
         public static readonly Lazy<Bitmap> GoBackIcon = new(() =>
             ResourceUtil.CreateBitmapFromByteArray(Resources.GoBackIcon));

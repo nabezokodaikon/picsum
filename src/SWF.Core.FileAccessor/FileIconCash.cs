@@ -72,8 +72,7 @@ namespace SWF.Core.FileAccessor
 
         public static Bitmap GetOtherFileIcon()
         {
-            var filePath = ResourceFiles.EmptyIcon;
-            return (Bitmap)FileUtil.GetExtraLargeIconByFilePath(filePath, SHIL.SHIL_EXTRALARGE);
+            return (Bitmap)ResourceFiles.EmptyIcon.Value;
         }
 
         public static Image GetSmallDriveIcon(string filePath)

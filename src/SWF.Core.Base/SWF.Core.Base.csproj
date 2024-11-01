@@ -26,16 +26,6 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <None Remove="EmptyIcon" />
-  </ItemGroup>
-  
-  <ItemGroup>
-    <Content Include="EmptyIcon">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  
-  <ItemGroup>
     <ProjectReference Include="..\WinApi\WinApi.csproj" />
   </ItemGroup>
   
