@@ -42,8 +42,6 @@
 	<TieredCompilation>true</TieredCompilation>
 	<TrimMode>link</TrimMode>
 	<ServerGarbageCollection>true</ServerGarbageCollection>
-	<PublishSingleFile>true</PublishSingleFile>
-	<IncludeAllContentForSelfExtract>true</IncludeAllContentForSelfExtract>
 	<RuntimeIdentifier>win-x64</RuntimeIdentifier>
   </PropertyGroup>
 
