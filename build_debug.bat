@@ -1,4 +1,3 @@
-@SET PATH="C:\Program Files\Microsoft Visual Studio\2022\Community\Msbuild\Current\Bin";%PATH%
 @SET OUTPUT_PATH=%CD%\bin_debug
 
 DEL /Q "%OUTPUT_PATH%\*.*"
