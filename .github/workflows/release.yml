@@ -26,7 +26,7 @@ jobs:
         run: >
           msbuild
           src\PicSum.sln
-          /t:Rebuild
+          /t:Publish
           /p:Configuration=Release
           /p:OutputPath=$pwd\dist\picsum
           /p:Platform="x64"
@@ -34,6 +34,9 @@ jobs:
       - name: set docs
         shell: pwsh
         run: |
+          Remove-Item "$pwd\dist\picsum\*.dll" -Force 
+          Remove-Item "$pwd\dist\picsum\*.json" -Force 
+          Remove-Item "$pwd\dist\picsum\runtimes" -Recurse -Force
           Copy-Item -Path "$pwd\doc\MANUAL.md" -Destination "$pwd\dist\MANUAL.txt"
           Copy-Item -Path "$pwd\doc\CHANGELOG.md" -Destination "$pwd\dist\CHANGELOG.txt"
           Copy-Item -Path "$pwd\LICENSE" -Destination "$pwd\dist\LICENSE.txt"
