@@ -37,7 +37,6 @@ jobs:
           -c Release
           -o $pwd\dist\picsum 
           -p:Platform="x64"
-          --no-self-contained
 
       - name: set docs
         shell: pwsh
