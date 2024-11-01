@@ -17,6 +17,7 @@ jobs:
         uses: microsoft/setup-msbuild@v2
         with:
           dotnet-version: '8.0'         
+          msbuild-architecture: 'x64'
 
       - name: setup-nuget
         uses: nuget/setup-nuget@v2
