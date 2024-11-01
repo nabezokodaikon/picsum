@@ -271,6 +271,9 @@ namespace SWF.UIComponent.Core
 
             if (e.Button == MouseButtons.Left)
             {
+                this.SetButtonPointX(this.sliderValue);
+                this.Invalidate();
+                this.Update();
                 this.OnValueChanged(EventArgs.Empty);
             }
 
