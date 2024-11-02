@@ -3,7 +3,6 @@ using PicSum.Job.Entities;
 using PicSum.UIComponent.Contents.Common;
 using PicSum.UIComponent.Contents.Parameter;
 using SWF.Core.Base;
-using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
 using SWF.Core.Job;
 using SWF.UIComponent.TabOperation;
@@ -11,7 +10,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using System.Linq;
 using System.Runtime.Versioning;
 using System.Windows.Forms;
 
@@ -21,38 +19,6 @@ namespace PicSum.UIComponent.Contents.FileList
     internal sealed partial class BookmarkFileListPage
         : AbstractFileListPage
     {
-        private static Action<ISender> ImageFilesGetAction(ImageViewerPageParameter param)
-        {
-            return sender =>
-            {
-                var dir = FileUtil.GetParentDirectoryPath(param.SelectedFilePath);
-
-                CommonJobs.Instance.FilesGetByDirectoryJob.Value
-                    .Initialize()
-                    .Callback(e =>
-                    {
-                        if (!FileUtil.IsImageFile(param.SelectedFilePath))
-                        {
-                            throw new SWFException($"画像ファイルが選択されていません。'{param.SelectedFilePath}'");
-                        }
-
-                        var title = FileUtil.GetFileName(FileUtil.GetParentDirectoryPath(param.SelectedFilePath));
-
-                        var imageFiles = e.FileInfoList
-                            .Where(fileInfo => fileInfo.IsImageFile)
-                            .OrderBy(fileInfo => fileInfo.FilePath, NaturalStringComparer.Windows)
-                            .Select(fileInfo => fileInfo.FilePath)
-                            .ToArray();
-
-                        var eventArgs = new GetImageFilesEventArgs(
-                            imageFiles, param.SelectedFilePath, title, FileIconCash.SmallDirectoryIcon);
-                        param.OnGetImageFiles(eventArgs);
-                    })
-                    .BeginCancel()
-                    .StartJob(sender, new ValueParameter<string>(dir));
-            };
-        }
-
         private bool disposed = false;
         private readonly BookmarkFileListPageParameter parameter = null;
 
@@ -136,7 +102,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
         protected override Action<ISender> GetImageFilesGetAction(ImageViewerPageParameter param)
         {
-            return ImageFilesGetAction(param);
+            return FileListUtil.ImageFilesGetActionForBookmark(param);
         }
 
         protected override void OnMoveNextButtonClick(EventArgs e)

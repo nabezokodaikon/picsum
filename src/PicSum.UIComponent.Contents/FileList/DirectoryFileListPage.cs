@@ -12,7 +12,6 @@ using SWF.UIComponent.TabOperation;
 using System;
 using System.ComponentModel;
 using System.Drawing;
-using System.Linq;
 using System.Runtime.Versioning;
 using System.Windows.Forms;
 
@@ -25,34 +24,6 @@ namespace PicSum.UIComponent.Contents.FileList
     internal sealed partial class DirectoryFileListPage
         : AbstractFileListPage
     {
-        private static Action<ISender> ImageFilesGetAction(ImageViewerPageParameter param)
-        {
-            return sender =>
-            {
-                CommonJobs.Instance.FilesGetByDirectoryJob.Value
-                    .Initialize()
-                    .Callback(e =>
-                    {
-                        var imageFiles = e.FileInfoList
-                            .Where(fileInfo => fileInfo.IsImageFile);
-                        var sortImageFiles = GetSortFiles(imageFiles, param.SortInfo)
-                            .Select(fileInfo => fileInfo.FilePath)
-                            .ToArray();
-
-                        if (!FileUtil.IsImageFile(param.SelectedFilePath))
-                        {
-                            throw new SWFException($"画像ファイルが選択されていません。'{param.SelectedFilePath}'");
-                        }
-
-                        var eventArgs = new GetImageFilesEventArgs(
-                            sortImageFiles, param.SelectedFilePath, param.PageTitle, param.PageIcon);
-                        param.OnGetImageFiles(eventArgs);
-                    })
-                    .BeginCancel()
-                    .StartJob(sender, new ValueParameter<string>(param.SourcesKey));
-            };
-        }
-
         private bool disposed = false;
         private readonly DirectoryFileListPageParameter parameter = null;
 
@@ -203,7 +174,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
         protected override Action<ISender> GetImageFilesGetAction(ImageViewerPageParameter param)
         {
-            return ImageFilesGetAction(param);
+            return FileListUtil.ImageFilesGetActionForDirectory(param);
         }
 
         protected override void FileContextMenu_Opening(object sender, CancelEventArgs e)

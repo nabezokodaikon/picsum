@@ -30,64 +30,6 @@ namespace PicSum.UIComponent.Contents.FileList
     internal abstract partial class AbstractFileListPage
         : BrowserPage, ISender
     {
-        protected static IEnumerable<FileShallowInfoEntity> GetSortFiles(
-            IEnumerable<FileShallowInfoEntity> files, SortInfo sortInfo)
-        {
-            ArgumentNullException.ThrowIfNull(files, nameof(files));
-            ArgumentNullException.ThrowIfNull(sortInfo, nameof(sortInfo));
-
-            var isAscending = sortInfo.IsAscending(sortInfo.ActiveSortType);
-            switch (sortInfo.ActiveSortType)
-            {
-                case SortTypeID.FileName:
-                    if (isAscending)
-                    {
-                        return files.OrderBy(file => file.FileName, NaturalStringComparer.Windows);
-                    }
-                    else
-                    {
-                        return files.OrderByDescending(file => file.FileName, NaturalStringComparer.Windows);
-                    }
-                case SortTypeID.FilePath:
-                    if (isAscending)
-                    {
-                        return files.OrderBy(file => file.FilePath, NaturalStringComparer.Windows);
-                    }
-                    else
-                    {
-                        return files.OrderByDescending(file => file.FilePath, NaturalStringComparer.Windows);
-                    }
-                case SortTypeID.UpdateDate:
-                    if (isAscending)
-                    {
-                        return files
-                            .OrderBy(file => file.FilePath, NaturalStringComparer.Windows)
-                            .OrderBy(file => file.UpdateDate.GetValueOrDefault(DateTime.MinValue));
-                    }
-                    else
-                    {
-                        return files
-                            .OrderByDescending(file => file.FilePath, NaturalStringComparer.Windows)
-                            .OrderByDescending(file => file.UpdateDate.GetValueOrDefault(DateTime.MinValue));
-                    }
-                case SortTypeID.RegistrationDate:
-                    if (isAscending)
-                    {
-                        return files
-                            .OrderBy(file => file.FilePath, NaturalStringComparer.Windows)
-                            .OrderBy(file => file.RgistrationDate.GetValueOrDefault(DateTime.MinValue));
-                    }
-                    else
-                    {
-                        return files
-                            .OrderByDescending(file => file.FilePath, NaturalStringComparer.Windows)
-                            .OrderByDescending(file => file.RgistrationDate.GetValueOrDefault(DateTime.MinValue));
-                    }
-                default:
-                    return files;
-            }
-        }
-
         private bool disposed = false;
         private Dictionary<string, FileEntity> masterFileDictionary = null;
         private List<string> filterFilePathList = null;

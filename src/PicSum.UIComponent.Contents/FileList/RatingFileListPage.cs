@@ -1,16 +1,13 @@
 using PicSum.Job.Common;
 using PicSum.Job.Entities;
 using PicSum.Job.Parameters;
-using PicSum.UIComponent.Contents.Common;
 using PicSum.UIComponent.Contents.Parameter;
 using SWF.Core.Base;
-using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
 using SWF.Core.Job;
 using SWF.UIComponent.TabOperation;
 using System;
 using System.Drawing;
-using System.Linq;
 using System.Runtime.Versioning;
 using System.Windows.Forms;
 
@@ -23,34 +20,6 @@ namespace PicSum.UIComponent.Contents.FileList
     internal sealed partial class RatingFileListPage
         : AbstractFileListPage
     {
-        private static Action<ISender> ImageFilesGetAction(ImageViewerPageParameter param)
-        {
-            return sender =>
-            {
-                CommonJobs.Instance.FilesGetByRatingJob.Value
-                    .Initialize()
-                    .Callback(e =>
-                    {
-                        var imageFiles = e
-                            .Where(fileInfo => fileInfo.IsImageFile);
-                        var sortImageFiles = GetSortFiles(imageFiles, param.SortInfo)
-                            .Select(fileInfo => fileInfo.FilePath)
-                            .ToArray();
-
-                        if (!FileUtil.IsImageFile(param.SelectedFilePath))
-                        {
-                            throw new SWFException($"画像ファイルが選択されていません。'{param.SelectedFilePath}'");
-                        }
-
-                        var eventArgs = new GetImageFilesEventArgs(
-                            sortImageFiles, param.SelectedFilePath, param.PageTitle, param.PageIcon);
-                        param.OnGetImageFiles(eventArgs);
-                    })
-                    .BeginCancel()
-                    .StartJob(sender, new ValueParameter<int>(int.Parse(param.SourcesKey)));
-            };
-        }
-
         private bool disposed = false;
         private readonly RatingFileListPageParameter parameter = null;
 
@@ -137,7 +106,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
         protected override Action<ISender> GetImageFilesGetAction(ImageViewerPageParameter param)
         {
-            return ImageFilesGetAction(param);
+            return FileListUtil.ImageFilesGetActionForRating(param);
         }
 
         protected override void OnMovePreviewButtonClick(EventArgs e)
