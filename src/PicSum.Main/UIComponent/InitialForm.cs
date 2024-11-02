@@ -44,7 +44,8 @@ namespace PicSum.Main.UIComponent
         {
             CommonJobs.Instance.StartGCCollectRunJob(this);
 
-            CommonJobs.Instance.PipeServerJob.Initialize()
+            CommonJobs.Instance.PipeServerJob.Value
+                .Initialize()
                 .Callback(_ =>
                 {
                     if (this.disposed)

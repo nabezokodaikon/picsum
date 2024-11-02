@@ -27,7 +27,8 @@ namespace PicSum.UIComponent.Contents.FileList
             {
                 var dir = FileUtil.GetParentDirectoryPath(param.SelectedFilePath);
 
-                CommonJobs.Instance.FilesGetByDirectoryJob.Initialize()
+                CommonJobs.Instance.FilesGetByDirectoryJob.Value
+                    .Initialize()
                     .Callback(e =>
                     {
                         if (!FileUtil.IsImageFile(param.SelectedFilePath))
@@ -69,7 +70,8 @@ namespace PicSum.UIComponent.Contents.FileList
 
         protected override void OnLoad(EventArgs e)
         {
-            CommonJobs.Instance.BookmarksGetJob.Initialize()
+            CommonJobs.Instance.BookmarksGetJob.Value
+                .Initialize()
                 .Callback(_ =>
                 {
                     if (this.disposed)

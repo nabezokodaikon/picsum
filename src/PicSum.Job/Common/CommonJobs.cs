@@ -45,56 +45,36 @@ namespace PicSum.Job.Common
 
         private bool disposed = false;
 
-        private OneWayJob<BookmarkAddJob, ValueParameter<string>>? addBookmarkJob = null;
-        private OneWayJob<SingleFileExportJob, SingleFileExportParameter>? singleFileExportJob = null;
-        private OneWayJob<DirectoryStateUpdateJob, DirectoryStateParameter>? directoryStateUpdateJob = null;
-        private OneWayJob<DirectoryViewHistoryAddJob, ValueParameter<string>>? directoryViewHistoryAddJob = null;
-        private OneWayJob<BookmarkDeleteJob, ListParameter<string>>? bookmarkDeleteJob = null;
-        private OneWayJob<DirectoryViewCounterDeleteJob, ListParameter<string>>? directoryViewCounterDeleteJob = null;
-        private OneWayJob<FileRatingUpdateJob, FileRatingUpdateParameter>? fileRatingUpdateJob = null;
-        private OneWayJob<FileTagDeleteJob, FileTagUpdateParameter>? fileTagDeleteJob = null;
-        private OneWayJob<FileTagAddJob, FileTagUpdateParameter>? fileTagAddJob = null;
-        private OneWayJob<GCCollectRunJob>? gcCollectRunJob = null;
+        private readonly Lazy<OneWayJob<BookmarkAddJob, ValueParameter<string>>> addBookmarkJob = new(() => new(context));
+        private readonly Lazy<OneWayJob<SingleFileExportJob, SingleFileExportParameter>> singleFileExportJob = new(() => new(context));
+        private readonly Lazy<OneWayJob<DirectoryStateUpdateJob, DirectoryStateParameter>> directoryStateUpdateJob = new(() => new(context));
+        private readonly Lazy<OneWayJob<DirectoryViewHistoryAddJob, ValueParameter<string>>> directoryViewHistoryAddJob = new(() => new(context));
+        private readonly Lazy<OneWayJob<BookmarkDeleteJob, ListParameter<string>>> bookmarkDeleteJob = new(() => new(context));
+        private readonly Lazy<OneWayJob<DirectoryViewCounterDeleteJob, ListParameter<string>>> directoryViewCounterDeleteJob = new(() => new(context));
+        private readonly Lazy<OneWayJob<FileRatingUpdateJob, FileRatingUpdateParameter>> fileRatingUpdateJob = new(() => new(context));
+        private readonly Lazy<OneWayJob<FileTagDeleteJob, FileTagUpdateParameter>> fileTagDeleteJob = new(() => new(context));
+        private readonly Lazy<OneWayJob<FileTagAddJob, FileTagUpdateParameter>> fileTagAddJob = new(() => new(context));
+        private readonly Lazy<OneWayJob<GCCollectRunJob>> gcCollectRunJob = new(() => new(context));
 
-        private TwoWayJob<ImageFileReadJob, ImageFileReadParameter, ImageFileReadResult>? imageFileReadJob = null;
-        private TwoWayJob<ImageFileLoadingJob, ImageFileReadParameter, ImageFileReadResult>? imageFileLoadingJob = null;
-        private OneWayJob<ImageFileCacheJob, ListParameter<string>>? imageFileCacheJob = null;
-        private TwoWayJob<ThumbnailsGetJob, ThumbnailsGetParameter, ThumbnailImageResult>? thumbnailsGetJob = null;
-        private TwoWayJob<SubDirectoriesGetJob, ValueParameter<string>, ListResult<FileShallowInfoEntity>>? subDirectoriesGetJob = null;
-        private TwoWayJob<DirectoryViewHistoryGetJob, ListResult<FileShallowInfoEntity>>? directoryViewHistoryGetJob = null;
-        private TwoWayJob<AddressInfoGetJob, ValueParameter<string>, AddressInfoGetResult>? addressInfoGetJob = null;
-        private TwoWayJob<TagsGetJob, ListResult<string>>? tagsGetJob = null;
-        private TwoWayJob<FileDeepInfoGetJob, FileDeepInfoGetParameter, FileDeepInfoGetResult>? fileDeepInfoGetJob = null;
-        private TwoWayJob<PipeServerJob, ValueResult<string>>? pipeServerJob = null;
+        public readonly Lazy<TwoWayJob<ImageFileReadJob, ImageFileReadParameter, ImageFileReadResult>> ImageFileReadJob = new(() => new(context));
+        public readonly Lazy<TwoWayJob<ImageFileLoadingJob, ImageFileReadParameter, ImageFileReadResult>> ImageFileLoadingJob = new(() => new(context));
+        public readonly Lazy<OneWayJob<ImageFileCacheJob, ListParameter<string>>> ImageFileCacheJob = new(() => new(context));
+        public readonly Lazy<TwoWayJob<ThumbnailsGetJob, ThumbnailsGetParameter, ThumbnailImageResult>> ThumbnailsGetJob = new(() => new(context));
+        public readonly Lazy<TwoWayJob<SubDirectoriesGetJob, ValueParameter<string>, ListResult<FileShallowInfoEntity>>> SubDirectoriesGetJob = new(() => new(context));
+        public readonly Lazy<TwoWayJob<DirectoryViewHistoryGetJob, ListResult<FileShallowInfoEntity>>> DirectoryViewHistoryGetJob = new(() => new(context));
+        public readonly Lazy<TwoWayJob<AddressInfoGetJob, ValueParameter<string>, AddressInfoGetResult>> AddressInfoGetJob = new(() => new(context));
+        public readonly Lazy<TwoWayJob<TagsGetJob, ListResult<string>>> TagsGetJob = new(() => new(context));
+        public readonly Lazy<TwoWayJob<FileDeepInfoGetJob, FileDeepInfoGetParameter, FileDeepInfoGetResult>> FileDeepInfoGetJob = new(() => new(context));
+        public readonly Lazy<TwoWayJob<PipeServerJob, ValueResult<string>>> PipeServerJob = new(() => new(context));
 
-        private TwoWayJob<FilesGetByDirectoryJob, ValueParameter<string>, DirectoryGetResult>? filesGetByDirectoryJob = null;
-        private TwoWayJob<FavoriteDirectoriesGetJob, FavoriteDirectoriesGetParameter, ListResult<FileShallowInfoEntity>>? favoriteDirectoriesGetJob = null;
-        private TwoWayJob<FilesGetByRatingJob, ValueParameter<int>, ListResult<FileShallowInfoEntity>>? filesGetByRatingJob = null;
-        private TwoWayJob<FilesGetByTagJob, ValueParameter<string>, ListResult<FileShallowInfoEntity>>? filesGetByTagJob = null;
-        private TwoWayJob<ImageFilesGetByDirectoryJob, ImageFileGetByDirectoryParameter, ImageFilesGetByDirectoryResult>? imageFilesGetByDirectoryJob = null;
-        private TwoWayJob<NextDirectoryGetJob, NextDirectoryGetParameter<string>, ValueResult<string>>? nextDirectoryGetJob = null;
-        private TwoWayJob<MultiFilesExportJob, MultiFilesExportParameter, ValueResult<string>>? multiFilesExportJob = null;
-        private TwoWayJob<BookmarksGetJob, ListResult<FileShallowInfoEntity>>? bookmarksGetJob = null;
-
-        public TwoWayJob<ImageFileReadJob, ImageFileReadParameter, ImageFileReadResult> ImageFileReadJob => this.imageFileReadJob ??= new(context);
-        public TwoWayJob<ImageFileLoadingJob, ImageFileReadParameter, ImageFileReadResult> ImageFileLoadingJob => this.imageFileLoadingJob ??= new(context);
-        public OneWayJob<ImageFileCacheJob, ListParameter<string>> ImageFileCacheJob => this.imageFileCacheJob ??= new(context);
-        public TwoWayJob<ThumbnailsGetJob, ThumbnailsGetParameter, ThumbnailImageResult> ThumbnailsGetJob => this.thumbnailsGetJob ??= new(context);
-        public TwoWayJob<SubDirectoriesGetJob, ValueParameter<string>, ListResult<FileShallowInfoEntity>> SubDirectoriesGetJob => this.subDirectoriesGetJob ??= new(context);
-        public TwoWayJob<DirectoryViewHistoryGetJob, ListResult<FileShallowInfoEntity>> DirectoryViewHistoryGetJob => this.directoryViewHistoryGetJob ??= new(context);
-        public TwoWayJob<AddressInfoGetJob, ValueParameter<string>, AddressInfoGetResult> AddressInfoGetJob => this.addressInfoGetJob ??= new(context);
-        public TwoWayJob<TagsGetJob, ListResult<string>> TagsGetJob => this.tagsGetJob ??= new(context);
-        public TwoWayJob<FileDeepInfoGetJob, FileDeepInfoGetParameter, FileDeepInfoGetResult> FileDeepInfoGetJob => this.fileDeepInfoGetJob ??= new(context);
-        public TwoWayJob<PipeServerJob, ValueResult<string>> PipeServerJob => this.pipeServerJob ??= new(context);
-
-        public TwoWayJob<FilesGetByDirectoryJob, ValueParameter<string>, DirectoryGetResult>? FilesGetByDirectoryJob => this.filesGetByDirectoryJob ??= new(context);
-        public TwoWayJob<FavoriteDirectoriesGetJob, FavoriteDirectoriesGetParameter, ListResult<FileShallowInfoEntity>>? FavoriteDirectoriesGetJob => this.favoriteDirectoriesGetJob ??= new(context);
-        public TwoWayJob<FilesGetByRatingJob, ValueParameter<int>, ListResult<FileShallowInfoEntity>>? FilesGetByRatingJob => this.filesGetByRatingJob ??= new(context);
-        public TwoWayJob<FilesGetByTagJob, ValueParameter<string>, ListResult<FileShallowInfoEntity>>? FilesGetByTagJob => this.filesGetByTagJob ??= new(context);
-        public TwoWayJob<ImageFilesGetByDirectoryJob, ImageFileGetByDirectoryParameter, ImageFilesGetByDirectoryResult>? ImageFilesGetByDirectoryJob => this.imageFilesGetByDirectoryJob ??= new(context);
-        public TwoWayJob<NextDirectoryGetJob, NextDirectoryGetParameter<string>, ValueResult<string>>? NextDirectoryGetJob => this.nextDirectoryGetJob ??= new(context);
-        public TwoWayJob<MultiFilesExportJob, MultiFilesExportParameter, ValueResult<string>>? MultiFilesExportJob => this.multiFilesExportJob ??= new(context);
-        public TwoWayJob<BookmarksGetJob, ListResult<FileShallowInfoEntity>>? BookmarksGetJob => this.bookmarksGetJob ??= new(context);
+        public readonly Lazy<TwoWayJob<FilesGetByDirectoryJob, ValueParameter<string>, DirectoryGetResult>> FilesGetByDirectoryJob = new(() => new(context));
+        public readonly Lazy<TwoWayJob<FavoriteDirectoriesGetJob, FavoriteDirectoriesGetParameter, ListResult<FileShallowInfoEntity>>> FavoriteDirectoriesGetJob = new(() => new(context));
+        public readonly Lazy<TwoWayJob<FilesGetByRatingJob, ValueParameter<int>, ListResult<FileShallowInfoEntity>>> FilesGetByRatingJob = new(() => new(context));
+        public readonly Lazy<TwoWayJob<FilesGetByTagJob, ValueParameter<string>, ListResult<FileShallowInfoEntity>>> FilesGetByTagJob = new(() => new(context));
+        public readonly Lazy<TwoWayJob<ImageFilesGetByDirectoryJob, ImageFileGetByDirectoryParameter, ImageFilesGetByDirectoryResult>> ImageFilesGetByDirectoryJob = new(() => new(context));
+        public readonly Lazy<TwoWayJob<NextDirectoryGetJob, NextDirectoryGetParameter<string>, ValueResult<string>>> NextDirectoryGetJob = new(() => new(context));
+        public readonly Lazy<TwoWayJob<MultiFilesExportJob, MultiFilesExportParameter, ValueResult<string>>> MultiFilesExportJob = new(() => new(context));
+        public readonly Lazy<TwoWayJob<BookmarksGetJob, ListResult<FileShallowInfoEntity>>> BookmarksGetJob = new(() => new(context));
 
         private CommonJobs()
         {
@@ -121,36 +101,36 @@ namespace PicSum.Job.Common
 
             if (disposing)
             {
-                this.addBookmarkJob?.Dispose();
-                this.singleFileExportJob?.Dispose();
-                this.directoryStateUpdateJob?.Dispose();
-                this.directoryViewHistoryAddJob?.Dispose();
-                this.bookmarkDeleteJob?.Dispose();
-                this.directoryViewCounterDeleteJob?.Dispose();
-                this.fileRatingUpdateJob?.Dispose();
-                this.fileTagDeleteJob?.Dispose();
-                this.fileTagAddJob?.Dispose();
-                this.gcCollectRunJob?.Dispose();
+                this.addBookmarkJob.Value.Dispose();
+                this.singleFileExportJob.Value.Dispose();
+                this.directoryStateUpdateJob.Value.Dispose();
+                this.directoryViewHistoryAddJob.Value.Dispose();
+                this.bookmarkDeleteJob.Value.Dispose();
+                this.directoryViewCounterDeleteJob.Value.Dispose();
+                this.fileRatingUpdateJob.Value.Dispose();
+                this.fileTagDeleteJob.Value.Dispose();
+                this.fileTagAddJob.Value.Dispose();
+                this.gcCollectRunJob.Value.Dispose();
 
-                this.imageFileReadJob?.Dispose();
-                this.imageFileLoadingJob?.Dispose();
-                this.imageFileCacheJob?.Dispose();
-                this.thumbnailsGetJob?.Dispose();
-                this.subDirectoriesGetJob?.Dispose();
-                this.directoryViewHistoryGetJob?.Dispose();
-                this.addressInfoGetJob?.Dispose();
-                this.tagsGetJob?.Dispose();
-                this.fileDeepInfoGetJob?.Dispose();
-                this.pipeServerJob?.Dispose();
+                this.ImageFileReadJob.Value.Dispose();
+                this.ImageFileLoadingJob.Value.Dispose();
+                this.ImageFileCacheJob.Value.Dispose();
+                this.ThumbnailsGetJob.Value.Dispose();
+                this.SubDirectoriesGetJob.Value.Dispose();
+                this.DirectoryViewHistoryGetJob.Value.Dispose();
+                this.AddressInfoGetJob.Value.Dispose();
+                this.TagsGetJob.Value.Dispose();
+                this.FileDeepInfoGetJob.Value.Dispose();
+                this.PipeServerJob.Value.Dispose();
 
-                this.filesGetByDirectoryJob?.Dispose();
-                this.favoriteDirectoriesGetJob?.Dispose();
-                this.filesGetByRatingJob?.Dispose();
-                this.filesGetByTagJob?.Dispose();
-                this.imageFilesGetByDirectoryJob?.Dispose();
-                this.nextDirectoryGetJob?.Dispose();
-                this.multiFilesExportJob?.Dispose();
-                this.bookmarksGetJob?.Dispose();
+                this.FilesGetByDirectoryJob.Value.Dispose();
+                this.FavoriteDirectoriesGetJob.Value.Dispose();
+                this.FilesGetByRatingJob.Value.Dispose();
+                this.FilesGetByTagJob.Value.Dispose();
+                this.ImageFilesGetByDirectoryJob.Value.Dispose();
+                this.NextDirectoryGetJob.Value.Dispose();
+                this.MultiFilesExportJob.Value.Dispose();
+                this.BookmarksGetJob.Value.Dispose();
             }
 
             this.disposed = true;
@@ -161,8 +141,7 @@ namespace PicSum.Job.Common
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
             ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
 
-            this.addBookmarkJob ??= new(context);
-            this.addBookmarkJob.Initialize()
+            this.addBookmarkJob.Value.Initialize()
                 .StartJob(sender, parameter);
         }
 
@@ -171,8 +150,7 @@ namespace PicSum.Job.Common
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
             ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
 
-            this.singleFileExportJob ??= new(context);
-            this.singleFileExportJob.Initialize()
+            this.singleFileExportJob.Value.Initialize()
                 .StartJob(sender, parameter);
         }
 
@@ -181,8 +159,7 @@ namespace PicSum.Job.Common
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
             ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
 
-            this.directoryStateUpdateJob ??= new(context);
-            this.directoryStateUpdateJob.Initialize()
+            this.directoryStateUpdateJob.Value.Initialize()
                 .StartJob(sender, parameter);
         }
 
@@ -191,8 +168,7 @@ namespace PicSum.Job.Common
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
             ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
 
-            this.directoryViewHistoryAddJob ??= new(context);
-            this.directoryViewHistoryAddJob.Initialize()
+            this.directoryViewHistoryAddJob.Value.Initialize()
                 .StartJob(sender, parameter);
         }
 
@@ -201,8 +177,7 @@ namespace PicSum.Job.Common
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
             ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
 
-            this.bookmarkDeleteJob ??= new(context);
-            this.bookmarkDeleteJob.Initialize()
+            this.bookmarkDeleteJob.Value.Initialize()
                 .StartJob(sender, parameter);
         }
 
@@ -211,8 +186,7 @@ namespace PicSum.Job.Common
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
             ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
 
-            this.directoryViewCounterDeleteJob ??= new(context);
-            this.directoryViewCounterDeleteJob.Initialize()
+            this.directoryViewCounterDeleteJob.Value.Initialize()
                 .StartJob(sender, parameter);
         }
 
@@ -221,8 +195,7 @@ namespace PicSum.Job.Common
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
             ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
 
-            this.fileRatingUpdateJob ??= new(context);
-            this.fileRatingUpdateJob.Initialize()
+            this.fileRatingUpdateJob.Value.Initialize()
                 .StartJob(sender, parameter);
         }
 
@@ -231,8 +204,7 @@ namespace PicSum.Job.Common
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
             ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
 
-            this.fileTagDeleteJob ??= new(context);
-            this.fileTagDeleteJob.Initialize()
+            this.fileTagDeleteJob.Value.Initialize()
                 .StartJob(sender, parameter);
         }
 
@@ -241,8 +213,7 @@ namespace PicSum.Job.Common
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
             ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
 
-            this.fileTagAddJob ??= new(context);
-            this.fileTagAddJob.Initialize()
+            this.fileTagAddJob.Value.Initialize()
                 .StartJob(sender, parameter);
         }
 
@@ -250,8 +221,7 @@ namespace PicSum.Job.Common
         {
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
 
-            this.gcCollectRunJob ??= new(context);
-            this.gcCollectRunJob.Initialize()
+            this.gcCollectRunJob.Value.Initialize()
                 .StartJob(sender);
         }
     }

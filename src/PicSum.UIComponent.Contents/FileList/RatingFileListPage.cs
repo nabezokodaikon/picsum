@@ -27,7 +27,8 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             return sender =>
             {
-                CommonJobs.Instance.FilesGetByRatingJob.Initialize()
+                CommonJobs.Instance.FilesGetByRatingJob.Value
+                    .Initialize()
                     .Callback(e =>
                     {
                         var imageFiles = e
@@ -69,7 +70,8 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             var param = new ValueParameter<int>(this.parameter.RatingValue);
 
-            CommonJobs.Instance.FilesGetByRatingJob.Initialize()
+            CommonJobs.Instance.FilesGetByRatingJob.Value
+                .Initialize()
                 .Callback(_ =>
                 {
                     if (this.disposed)

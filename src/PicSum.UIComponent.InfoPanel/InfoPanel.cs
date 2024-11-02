@@ -138,7 +138,8 @@ namespace PicSum.UIComponent.InfoPanel
                         ApplicationConstants.INFOPANEL_WIDTH)
                 };
 
-                CommonJobs.Instance.FileDeepInfoGetJob.Initialize()
+                CommonJobs.Instance.FileDeepInfoGetJob.Value
+                    .Initialize()
                     .Callback(_ =>
                     {
                         if (this.disposed)
@@ -550,7 +551,8 @@ namespace PicSum.UIComponent.InfoPanel
 
         private void WideComboBox_DropDownOpening(object sender, DropDownOpeningEventArgs e)
         {
-            CommonJobs.Instance.TagsGetJob.Initialize()
+            CommonJobs.Instance.TagsGetJob.Value
+                .Initialize()
                 .Callback(_ =>
                 {
                     if (this.disposed)

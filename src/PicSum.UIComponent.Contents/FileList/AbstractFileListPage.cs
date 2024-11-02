@@ -257,7 +257,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
             if (disposing)
             {
-                CommonJobs.Instance.ThumbnailsGetJob.BeginCancel();
+                CommonJobs.Instance.ThumbnailsGetJob.Value.BeginCancel();
 
                 this.components?.Dispose();
             }
@@ -274,7 +274,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
         protected override void OnInvalidated(InvalidateEventArgs e)
         {
-            CommonJobs.Instance.ThumbnailsGetJob.BeginCancel();
+            CommonJobs.Instance.ThumbnailsGetJob.Value.BeginCancel();
 
             base.OnInvalidated(e);
         }
@@ -916,7 +916,8 @@ namespace PicSum.UIComponent.Contents.FileList
                     ThumbnailHeight = thumbnailHeight,
                 };
 
-                CommonJobs.Instance.ThumbnailsGetJob.Initialize()
+                CommonJobs.Instance.ThumbnailsGetJob.Value
+                    .Initialize()
                     .Callback(_ =>
                     {
                         if (this.disposed)
@@ -1204,7 +1205,8 @@ namespace PicSum.UIComponent.Contents.FileList
                             ExportDirecotry = fbd.SelectedPath,
                         };
 
-                        CommonJobs.Instance.MultiFilesExportJob.Initialize()
+                        CommonJobs.Instance.MultiFilesExportJob.Value
+                            .Initialize()
                             .Callback(_ =>
                             {
                                 if (this.disposed)

@@ -29,7 +29,8 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             return sender =>
             {
-                CommonJobs.Instance.FilesGetByDirectoryJob.Initialize()
+                CommonJobs.Instance.FilesGetByDirectoryJob.Value
+                    .Initialize()
                     .Callback(e =>
                     {
                         var imageFiles = e.FileInfoList
@@ -84,7 +85,8 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             var param = new ValueParameter<string>(this.parameter.DirectoryPath);
 
-            CommonJobs.Instance.FilesGetByDirectoryJob.Initialize()
+            CommonJobs.Instance.FilesGetByDirectoryJob.Value
+                .Initialize()
                 .Callback(_ =>
                 {
                     if (this.disposed)
@@ -156,7 +158,8 @@ namespace PicSum.UIComponent.Contents.FileList
                 IsNext = false,
             };
 
-            CommonJobs.Instance.NextDirectoryGetJob.Initialize()
+            CommonJobs.Instance.NextDirectoryGetJob.Value
+                .Initialize()
                 .Callback(_ =>
                 {
                     if (this.disposed)
@@ -183,7 +186,8 @@ namespace PicSum.UIComponent.Contents.FileList
                 CurrentParameter = new ValueEntity<string>(this.parameter.DirectoryPath)
             };
 
-            CommonJobs.Instance.NextDirectoryGetJob.Initialize()
+            CommonJobs.Instance.NextDirectoryGetJob.Value
+                .Initialize()
                 .Callback(_ =>
                 {
                     if (this.disposed)
