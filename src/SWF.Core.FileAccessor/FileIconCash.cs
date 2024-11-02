@@ -2,7 +2,6 @@ using SWF.Core.Base;
 using System.Reflection;
 using System.Runtime.Versioning;
 using WinApi;
-using static WinApi.WinApiMembers;
 
 namespace SWF.Core.FileAccessor
 {
@@ -26,9 +25,9 @@ namespace SWF.Core.FileAccessor
         private static readonly Bitmap SMALL_DIRECTORY_ICON =
             FileUtil.GetSmallIconByFilePath(FileUtil.GetParentDirectoryPath(Assembly.GetExecutingAssembly().Location));
         private static readonly Bitmap LARGE_DIRECTORY_ICON =
-            FileUtil.GetExtraLargeIconByFilePath(FileUtil.GetParentDirectoryPath(Assembly.GetExecutingAssembly().Location), SHIL.SHIL_EXTRALARGE);
+            FileUtil.GetExtraLargeIconByFilePath(FileUtil.GetParentDirectoryPath(Assembly.GetExecutingAssembly().Location), WinApiMembers.SHIL.SHIL_EXTRALARGE);
         private static readonly Bitmap JUMBO_DIRECTORY_ICON =
-            FileUtil.GetExtraLargeIconByFilePath(FileUtil.GetParentDirectoryPath(Assembly.GetExecutingAssembly().Location), SHIL.SHIL_JUMBO);
+            FileUtil.GetExtraLargeIconByFilePath(FileUtil.GetParentDirectoryPath(Assembly.GetExecutingAssembly().Location), WinApiMembers.SHIL.SHIL_JUMBO);
 
         public static Image SmallMyComputerIcon
         {
@@ -86,7 +85,7 @@ namespace SWF.Core.FileAccessor
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
-            return FileUtil.GetExtraLargeIconByFilePath(filePath, SHIL.SHIL_JUMBO);
+            return FileUtil.GetExtraLargeIconByFilePath(filePath, WinApiMembers.SHIL.SHIL_JUMBO);
         }
 
         public static Image GetSmallFileIcon(string filePath)
@@ -134,7 +133,7 @@ namespace SWF.Core.FileAccessor
                 }
                 else
                 {
-                    var icon = FileUtil.GetExtraLargeIconByFilePath(filePath, SHIL.SHIL_EXTRALARGE);
+                    var icon = FileUtil.GetExtraLargeIconByFilePath(filePath, WinApiMembers.SHIL.SHIL_EXTRALARGE);
                     LARGE_ICON_CASH.Add(ex, icon);
                     return icon;
                 }
@@ -160,7 +159,7 @@ namespace SWF.Core.FileAccessor
                 }
                 else
                 {
-                    var icon = FileUtil.GetExtraLargeIconByFilePath(filePath, SHIL.SHIL_JUMBO);
+                    var icon = FileUtil.GetExtraLargeIconByFilePath(filePath, WinApiMembers.SHIL.SHIL_JUMBO);
                     JUMBO_ICON_CASH.Add(ex, icon);
                     return icon;
                 }

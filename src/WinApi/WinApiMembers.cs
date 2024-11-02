@@ -1,7 +1,5 @@
 using System;
-using System.Drawing;
 using System.Runtime.InteropServices;
-using System.Text;
 
 namespace WinApi
 {
@@ -15,9 +13,8 @@ namespace WinApi
         public const int WS_DLGFRAME = 0x00400000;
         public const int WS_THICKFRAME = 0x00040000;
         public const int WS_CAPTION = 0x00C00000;
-        public const long WS_POPUP = 0x80000000L;
-
         public const int WS_EX_TOOLWINDOW = 0x80;
+        public const long WS_POPUP = 0x80000000L;
 
         public const int WM_NULL = 0x0000;
         public const int WM_CREATE = 0x0001;
@@ -242,15 +239,6 @@ namespace WinApi
         public const int WM_REFLECT = 0x2000;
         public const int WM_APP = 0x8000;
 
-        public const int SIZE_RESTORED = 0;// ウィンドウがサイズ変更されました。ただし最小化または最大化ではありません。
-        public const int SIZE_MINIMIZED = 1;// ウィンドウが最小化されました。
-        public const int SIZE_MAXIMIZED = 2;// ウィンドウが最大化されました。
-        public const int SIZE_MAXSHOW = 3;// ある他のウィンドウが元のサイズに戻されたとき、すべてのポップアップウィンドウに送られます。
-        public const int SIZE_MAXHIDE = 4;// ある他のウィンドウが最大化されたとき、すべてのポップアップウィンドウに送られます。
-
-        // マウスイベントの定数
-        public const uint MOUSEEVENTF_LEFTUP = 0x0004;
-
         public static readonly IntPtr HWND_TOP = IntPtr.Zero;
         public const UInt32 SWP_NOSIZE = 0x0001;
         public const UInt32 SWP_NOMOVE = 0x0002;
@@ -288,15 +276,9 @@ namespace WinApi
         public const int SRCPAINT = 0x00EE0086; // 転送先の画像とOR演算して転送
         public const int WHITENESS = 0x00FF0062; // 物理パレットのインデックス 1 に対応する色 (デフォルトは白) で、コピー先の長方形を塗りつぶします。
 
-        public const int WA_INACTIVE = 0;
-        public const int WA_ACTIVE = 1;
-        public const int WA_CLICKACTIVE = 2;
-
         public const int HTCAPTION = 2;
 
         public const int S_OK = 0;
-
-        public const int SW_RESTORE = 0x09;
 
         public const int EM_SETRECT = 0xB3; // テキストを表示する領域を設定
         public const int EM_GETLINECOUNT = 0xBA; // テキストの行数を取得する定数
@@ -371,30 +353,6 @@ namespace WinApi
             CSIDL_HISTORY = 0x0022
         }
 
-        public enum HWND
-        {
-            HWND_TOP = 0, // 最前列に表示する
-            HWND_BOTTOM = 1, // 最下層に表示する
-            HWND_TOPMOST = -1, // 常に最前面に表示する
-            HWND_NOTOPMOST = -2, // 常に最下層に表示する
-        }
-
-        public enum RDW : int
-        {
-            INVALIDATE = 0x1,
-            INTERNALPAINT = 0x2,
-            ERASE = 0x4,
-            VALIDATE = 0x8,
-            NOINTERNALPAINT = 0x10,
-            NOERASE = 0x20,
-            NOCHILDREN = 0x40,
-            ALLCHILDREN = 0x80,
-            UPDATENOW = 0x100,
-            ERASENOW = 0x200,
-            FRAME = 0x400,
-            NOFRAME = 0x800
-        }
-
         public enum SM
         {
             CXSCREEN = 0, // ディスプレイの幅
@@ -436,7 +394,6 @@ namespace WinApi
         }
 
         public static readonly Guid IID_IImageList = new("46EB5926-582E-4017-9FDF-E8998DAA0950");
-        //public static readonly Guid IID_IImageList2 = new("192B9D83-50FC-457B-90A0-2B82A8B5DAE1");
 
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
         public struct SHFILEINFOW
@@ -655,168 +612,23 @@ namespace WinApi
             int GetIcon(int i, int flags, ref IntPtr picon);
         };
 
-        [DllImport("kernel32", CharSet = CharSet.Unicode, SetLastError = true)]
-        public static extern IntPtr LoadLibrary(string lpFileName);
-
-        [DllImport("kernel32", SetLastError = true)]
-        public static extern bool FreeLibrary(IntPtr hModule);
-
-        [DllImport("kernel32", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = false)]
-        public static extern IntPtr GetProcAddress(IntPtr hModule, string lpProcName);
-
-        [DllImport("Shell32.dll", CharSet = CharSet.Unicode)]
-        public static extern IntPtr SHGetFileInfo(string pszPath, int dwFileAttributes, ref SHFILEINFO psfi, int cbFileInfo, int uFlags);
-
-        [DllImport("shell32.dll", CharSet = CharSet.Unicode, ExactSpelling = true)]
-        public static extern IntPtr SHGetFileInfoW(string pszPath, FileAttributesFlags dwFileAttributes, ref SHFILEINFOW psfi, uint cbSizeFileInfo, ShellFileInfoFlags uFlags);
-
-        [DllImport("shell32.dll", CharSet = CharSet.Unicode, ExactSpelling = true)]
-        public static extern IntPtr SHGetFileInfoW(IntPtr idl, FileAttributesFlags dwFileAttributes, ref SHFILEINFOW psfi, uint cbSizeFileInfo, ShellFileInfoFlags uFlags);
-
-        [DllImport("shlwapi.dll", EntryPoint = "PathFileExistsA")]
-        public static extern int PathFileExists(string lpszPath);
-
-        [DllImport("Shell32.dll", CharSet = CharSet.Auto)]
-        public static extern int SHGetSpecialFolderLocation(IntPtr hwndOwner, ShellSpecialFolder folder, out IntPtr idl);
-
-        [DllImport("user32.dll", CharSet = CharSet.Auto)]
-        public extern static bool DestroyIcon(IntPtr handle);
-
-        [DllImport("Comctl32.dll")]
-        public static extern bool ImageList_Destroy(IntPtr himl);
-
-        [DllImport("gdiplus.dll", CharSet = CharSet.Unicode)]
-        public static extern int GdipLoadImageFromFile(string strFileName, ref IntPtr ipImage);
-
-        [DllImport("user32.dll")]
-        public static extern int GetSystemMetrics(SM nIndex);
-
-        [DllImport("User32.dll")]
-        public static extern bool ReleaseCapture();
-
-        [DllImport("User32.dll")]
-        public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
-
-        [DllImport("User32.dll")]
-        public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, IntPtr lParam);
-
-        [DllImport("shell32.dll", EntryPoint = "ExtractIconEx", CharSet = CharSet.Auto)]
-        public static extern int ExtractIconEx([MarshalAs(UnmanagedType.LPTStr)] string file, int index, out IntPtr largeIconHandle, out IntPtr smallIconHandle, int icons);
-
-        [DllImport("user32.dll")]
-        public static extern IntPtr GetDC(IntPtr hWnd);
-
-        [DllImport("user32.dll")]
-        public static extern IntPtr ReleaseDC(IntPtr hWnd, IntPtr hDc);
-
-        [DllImport("gdi32.dll")]
-        public static extern bool BitBlt(IntPtr hdcDst, int xDst, int yDst, int width, int height, IntPtr hdcSrc, int xSrc, int ySrc, int rasterOp);
-
-        [DllImport("kernel32.dll", CharSet = CharSet.Auto)]
-        public static extern uint GetShortPathName([MarshalAs(UnmanagedType.LPTStr)] string lpszLongPath, [MarshalAs(UnmanagedType.LPTStr)] StringBuilder lpszShortPath, uint cchBuffer);
-
-        [DllImport("dwmapi.dll", PreserveSig = false)]
-        public static extern void DwmEnableBlurBehindWindow(IntPtr hWnd, DWM_BLURBEHIND pBlurBehind);
-
-        [DllImport("dwmapi.dll", PreserveSig = false)]
-        public static extern void DwmExtendFrameIntoClientArea(IntPtr hWnd, MARGINS pMargins);
-
-        [DllImport("dwmapi.dll", PreserveSig = false)]
-        public static extern bool DwmIsCompositionEnabled();
-
-        [DllImport("dwmapi.dll", PreserveSig = false)]
-        public static extern void DwmGetColorizationColor(out int pcrColorization, [MarshalAs(UnmanagedType.Bool)] out bool pfOpaqueBlend);
-
-        [DllImport("dwmapi.dll", PreserveSig = false)]
-        public static extern void DwmEnableComposition(bool bEnable);
-
-        [DllImport("dwmapi.dll", PreserveSig = false)]
-        public static extern IntPtr DwmRegisterThumbnail(IntPtr dest, IntPtr source);
-
-        [DllImport("dwmapi.dll", PreserveSig = false)]
-        public static extern void DwmUnregisterThumbnail(IntPtr hThumbnail);
-
-        [DllImport("dwmapi.dll", PreserveSig = false)]
-        public static extern void DwmUpdateThumbnailProperties(IntPtr hThumbnail, DWM_THUMBNAIL_PROPERTIES props);
-
-        [DllImport("dwmapi.dll", PreserveSig = false)]
-        public static extern void DwmQueryThumbnailSourceSize(IntPtr hThumbnail, out Size size);
-
-        [DllImport("User32.Dll")]
-        public static extern int GetWindowRect(IntPtr hWnd, out RECT rect);
-
-        [DllImport("User32.Dll")]
-        public static extern bool SetWindowPos(IntPtr hWnd, HWND hWndInsertAfter, int x, int y, int cx, int cy, uint uFlags);
-
-        [DllImport("gdi32.dll", ExactSpelling = true, SetLastError = true)]
-        public static extern IntPtr CreateCompatibleDC(IntPtr hDC);
-
-        [DllImport("gdi32.dll")]
-        public static extern IntPtr CreateDIBSection(IntPtr hdc, BITMAPINFO pbmi, uint iUsage, int ppvBits, IntPtr hSection, uint dwOffset);
-
-        [DllImport("gdi32.dll", ExactSpelling = true)]
-        public static extern IntPtr SelectObject(IntPtr hDC, IntPtr hObject);
-
-        [DllImport("UxTheme.dll", CharSet = CharSet.Unicode)]
-        public static extern int DrawThemeTextEx(IntPtr hTheme, IntPtr hdc, int iPartId, int iStateId, string text, int iCharCount, int dwFlags, ref RECT pRect, ref DTTOPTS pOptions);
-
-        [DllImport("gdi32.dll")]
-        public static extern bool BitBlt(IntPtr hdc, int nXDest, int nYDest, int nWidth, int nHeight, IntPtr hdcSrc, int nXSrc, int nYSrc, uint dwRop);
-
-        [DllImport("gdi32.dll", ExactSpelling = true, SetLastError = true)]
-        public static extern bool DeleteObject(IntPtr hObject);
-
-        [DllImport("gdi32.dll", ExactSpelling = true, SetLastError = true)]
-        public static extern bool DeleteDC(IntPtr hdc);
-
-        [DllImport("user32")]
-        public static extern int AdjustWindowRectEx(ref RECT lpRect, int dsStyle, int bMenu, int dwEsStyle);
+        [DllImport("shlwapi.dll", CharSet = CharSet.Unicode, ExactSpelling = true)]
+        public static extern int StrCmpLogicalW(string x, string y);
 
         [DllImport("dwmapi.dll")]
         public static extern int DwmDefWindowProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, out IntPtr result);
 
-        [DllImport("User32.Dll")]
-        public static extern int ShowWindow(IntPtr hWnd, int nCmdShow);
+        [DllImport("shell32.dll", CharSet = CharSet.Unicode, ExactSpelling = true)]
+        public static extern IntPtr SHGetFileInfoW(IntPtr idl, FileAttributesFlags dwFileAttributes, ref SHFILEINFOW psfi, uint cbSizeFileInfo, ShellFileInfoFlags uFlags);
 
-        [DllImport("user32.dll")]
-        public static extern IntPtr BeginPaint(IntPtr hWnd, out PAINTSTRUCT ps);
+        [DllImport("shell32.dll", CharSet = CharSet.Unicode, ExactSpelling = true)]
+        public static extern IntPtr SHGetFileInfoW(string pszPath, FileAttributesFlags dwFileAttributes, ref SHFILEINFOW psfi, uint cbSizeFileInfo, ShellFileInfoFlags uFlags);
 
-        [DllImport("user32.dll")]
-        public static extern IntPtr EndPaint(IntPtr hWnd, ref PAINTSTRUCT ps);
+        [DllImport("User32.dll")]
+        public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, IntPtr lParam);
 
-        [DllImport("user32.dll")]
-        public static extern bool UpdateWindow(IntPtr hWnd);
-
-        [DllImport("user32.dll")]
-        public static extern bool RedrawWindow(IntPtr hWnd, IntPtr lprcUpdate, IntPtr hrgnUpdate, uint flags);
-
-        [DllImport("shell32.dll", EntryPoint = "#727")]
-        public static extern int SHGetImageList(int iImageList, Guid riid, ref IImageList ppv);
-
-        [DllImport("shell32.dll", EntryPoint = "#727")]
-        public static extern int SHGetImageList(SHIL iImageList, Guid riid, out IImageList ppv);
-
-        //
-        [DllImport("shell32.dll", EntryPoint = "#727")]
-        public static extern int SHGetImageList(SHIL iImageList, Guid riid, out IntPtr ppv);
-
-        [DllImport("comctl32.dll", SetLastError = true)]
-        public static extern IntPtr ImageList_GetIcon(IntPtr himl, int i, int flags);
-
-        [DllImport("user32.dll")]
-        public static extern bool SetForegroundWindow(IntPtr hWnd);
-
-        [DllImport("user32.dll")]
-        public static extern bool IsIconic(IntPtr hWnd);
-
-        [DllImport("user32.dll")]
-        public static extern void mouse_event(uint dwFlags, uint dx, uint dy, uint dwData, UIntPtr dwExtraInfo);
-
-        [DllImport("user32.dll", SetLastError = true)]
-        public static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, uint uFlags);
-
-        [DllImport("shlwapi.dll", CharSet = CharSet.Unicode, ExactSpelling = true)]
-        public static extern int StrCmpLogicalW(string x, string y);
+        [DllImport("ole32.dll", CharSet = CharSet.Unicode, ExactSpelling = true)]
+        public static extern void CoTaskMemFree(IntPtr pv);
 
         [DllImport("shell32.dll", CharSet = CharSet.Auto)]
         public static extern int ShellExecute(IntPtr hwnd, string lpOperation, string lpFile, string lpParameters, string lpDirectory, int nShowCmd);
@@ -836,18 +648,56 @@ namespace WinApi
             uint sfgaoIn,
             out uint psfgaoOut);
 
-        [DllImport("ole32.dll", CharSet = CharSet.Unicode, ExactSpelling = true)]
-        public static extern void CoTaskMemFree(IntPtr pv);
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        public extern static bool DestroyIcon(IntPtr handle);
 
-        public static int RECTWIDTH(RECT rect)
-        {
-            return rect.right - rect.left;
-        }
+        [DllImport("dwmapi.dll", PreserveSig = false)]
+        public static extern void DwmExtendFrameIntoClientArea(IntPtr hWnd, MARGINS pMargins);
 
-        public static int RECTHEIGHT(RECT rect)
-        {
-            return rect.bottom - rect.top;
-        }
+        [DllImport("Shell32.dll", CharSet = CharSet.Unicode)]
+        public static extern IntPtr SHGetFileInfo(string pszPath, int dwFileAttributes, ref SHFILEINFO psfi, int cbFileInfo, int uFlags);
+
+        [DllImport("shell32.dll", EntryPoint = "#727")]
+        public static extern int SHGetImageList(SHIL iImageList, Guid riid, out IntPtr ppv);
+
+        [DllImport("user32.dll")]
+        public static extern int GetSystemMetrics(SM nIndex);
+
+        [DllImport("Comctl32.dll")]
+        public static extern bool ImageList_Destroy(IntPtr himl);
+
+        [DllImport("Shell32.dll", CharSet = CharSet.Auto)]
+        public static extern int SHGetSpecialFolderLocation(IntPtr hwndOwner, ShellSpecialFolder folder, out IntPtr idl);
+
+        [DllImport("comctl32.dll", SetLastError = true)]
+        public static extern IntPtr ImageList_GetIcon(IntPtr himl, int i, int flags);
+
+        [DllImport("gdi32.dll")]
+        public static extern bool BitBlt(IntPtr hdcDst, int xDst, int yDst, int width, int height, IntPtr hdcSrc, int xSrc, int ySrc, int rasterOp);
+
+        [DllImport("gdi32.dll", ExactSpelling = true, SetLastError = true)]
+        public static extern IntPtr CreateCompatibleDC(IntPtr hDC);
+
+        [DllImport("gdi32.dll")]
+        public static extern IntPtr CreateDIBSection(IntPtr hdc, BITMAPINFO pbmi, uint iUsage, int ppvBits, IntPtr hSection, uint dwOffset);
+
+        [DllImport("gdi32.dll", ExactSpelling = true, SetLastError = true)]
+        public static extern bool DeleteObject(IntPtr hObject);
+
+        [DllImport("gdi32.dll", ExactSpelling = true, SetLastError = true)]
+        public static extern bool DeleteDC(IntPtr hdc);
+
+        [DllImport("UxTheme.dll", CharSet = CharSet.Unicode)]
+        public static extern int DrawThemeTextEx(IntPtr hTheme, IntPtr hdc, int iPartId, int iStateId, string text, int iCharCount, int dwFlags, ref RECT pRect, ref DTTOPTS pOptions);
+
+        [DllImport("gdi32.dll", ExactSpelling = true)]
+        public static extern IntPtr SelectObject(IntPtr hDC, IntPtr hObject);
+
+        [DllImport("User32.dll")]
+        public static extern bool ReleaseCapture();
+
+        [DllImport("user32.dll", SetLastError = true)]
+        public static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, uint uFlags);
 
         public static int LoWord(int dwValue)
         {

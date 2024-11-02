@@ -6,7 +6,6 @@ using System.Runtime.Versioning;
 using System.Security;
 using System.Text;
 using WinApi;
-using static WinApi.WinApiMembers;
 
 namespace SWF.Core.FileAccessor
 {
@@ -827,7 +826,7 @@ namespace SWF.Core.FileAccessor
         /// </summary>
         /// <param name="filePath">ファイルパス</param>
         /// <returns></returns>
-        public static Bitmap GetExtraLargeIconByFilePath(string filePath, SHIL shil)
+        public static Bitmap GetExtraLargeIconByFilePath(string filePath, WinApiMembers.SHIL shil)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
@@ -912,11 +911,11 @@ namespace SWF.Core.FileAccessor
 
             if (IsSystemRoot(filePath))
             {
-                var _ = ShellExecute(IntPtr.Zero, "open", "::{20D04FE0-3AEA-1069-A2D8-08002B30309D}", null, null, 1);
+                var _ = WinApiMembers.ShellExecute(IntPtr.Zero, "open", "::{20D04FE0-3AEA-1069-A2D8-08002B30309D}", null, null, 1);
             }
             else
             {
-                var _ = ShellExecute(IntPtr.Zero, "open", $"\"{filePath}\"", null, null, 1);
+                var _ = WinApiMembers.ShellExecute(IntPtr.Zero, "open", $"\"{filePath}\"", null, null, 1);
             }
         }
 
@@ -932,7 +931,7 @@ namespace SWF.Core.FileAccessor
                 var dirPath = GetParentDirectoryPath(filePath);
 
                 // フォルダのPIDLを取得
-                var hr = SHParseDisplayName(dirPath, IntPtr.Zero, out pidlFolder, 0, out var psfgaoOut);
+                var hr = WinApiMembers.SHParseDisplayName(dirPath, IntPtr.Zero, out pidlFolder, 0, out var psfgaoOut);
 
                 if (hr != 0)
                 {
@@ -940,17 +939,17 @@ namespace SWF.Core.FileAccessor
                 }
 
                 // ファイルのPIDLを取得
-                hr = SHParseDisplayName(filePath, IntPtr.Zero, out pidlFile, 0, out psfgaoOut);
+                hr = WinApiMembers.SHParseDisplayName(filePath, IntPtr.Zero, out pidlFile, 0, out psfgaoOut);
 
                 if (hr != 0)
                 {
-                    CoTaskMemFree(pidlFolder);
+                    WinApiMembers.CoTaskMemFree(pidlFolder);
                     throw new FileUtilException($"'{filePath}'のPIDLの取得に失敗しました。");
                 }
 
                 // 特定のファイルを選択した状態でフォルダを開く
                 IntPtr[] fileArray = [pidlFile];
-                hr = SHOpenFolderAndSelectItems(pidlFolder, (uint)fileArray.Length, fileArray, 0);
+                hr = WinApiMembers.SHOpenFolderAndSelectItems(pidlFolder, (uint)fileArray.Length, fileArray, 0);
 
                 if (hr != 0)
                 {
@@ -961,8 +960,8 @@ namespace SWF.Core.FileAccessor
             finally
             {
                 // PIDLを解放
-                CoTaskMemFree(pidlFolder);
-                CoTaskMemFree(pidlFile);
+                WinApiMembers.CoTaskMemFree(pidlFolder);
+                WinApiMembers.CoTaskMemFree(pidlFile);
             }
         }
 
