@@ -15,7 +15,7 @@ namespace PicSum.Job.Logics
             ArgumentException.ThrowIfNullOrEmpty(directoryPath, nameof(directoryPath));
 
             var sql = new DirectoryViewCounterIncrementSql(directoryPath);
-            return DatabaseManager<FileInfoConnection>.Update(sql);
+            return Dao<FileInfoDB>.Instance.Update(sql);
         }
     }
 }

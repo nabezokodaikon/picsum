@@ -10,11 +10,11 @@ namespace PicSum.Job.SyncLogics
     {
         public void Execute()
         {
-            DatabaseManager<FileInfoConnection>
-                .Connect(new FileInfoConnection(ResourceUtil.FILE_INFO_DATABASE_FILE));
+            Dao<FileInfoDB>.Instance
+                .Connect(new FileInfoDB(ResourceUtil.FILE_INFO_DATABASE_FILE));
 
-            DatabaseManager<ThumbnailConnection>
-                .Connect(new ThumbnailConnection(ResourceUtil.THUMBNAIL_DATABASE_FILE));
+            Dao<ThumbnailDB>.Instance
+                .Connect(new ThumbnailDB(ResourceUtil.THUMBNAIL_DATABASE_FILE));
         }
     }
 }

@@ -7,8 +7,8 @@ namespace PicSum.DatabaseAccessor.Connection
     /// thumb.sqlite コネクション
     /// </summary>
     [SupportedOSPlatform("windows")]
-    public sealed partial class ThumbnailConnection
-        : ConnectionBase
+    public sealed partial class ThumbnailDB
+        : AbstractConnection
     {
         private static readonly string tableCreateSql =
         @"
@@ -74,7 +74,7 @@ INSERT INTO m_thumbnail_id (
 );
         ";
 
-        public ThumbnailConnection(string dbFilePath)
+        public ThumbnailDB(string dbFilePath)
             : base(dbFilePath, tableCreateSql) { }
     }
 }

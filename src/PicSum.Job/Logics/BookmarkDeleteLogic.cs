@@ -16,7 +16,7 @@ namespace PicSum.Job.Logics
 
             var sql = new BookmarkDeletionSql(filePath);
 
-            return DatabaseManager<FileInfoConnection>.Update(sql);
+            return Dao<FileInfoDB>.Instance.Update(sql);
         }
     }
 }

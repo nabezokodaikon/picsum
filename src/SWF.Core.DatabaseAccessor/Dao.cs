@@ -3,47 +3,71 @@ namespace SWF.Core.DatabaseAccessor
     /// <summary>
     /// DB管理
     /// </summary>
-    public static class DatabaseManager<TConnection>
-        where TConnection : ConnectionBase
+    public sealed partial class Dao<TConnection>
+        : IDisposable
+        where TConnection : AbstractConnection
     {
+        public readonly static Dao<TConnection> Instance = new();
+
+        private bool disposed = false;
+
+        private Dao()
+        {
+
+        }
+
+        ~Dao()
+        {
+            this.Dispose(false);
+        }
+
+        public void Dispose()
+        {
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        private void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+                this.connection?.Dispose();
+                this.connection = null;
+            }
+
+            this.disposed = true;
+        }
+
         // DBコネクション
-        private static TConnection? connection = null;
+        private TConnection? connection = null;
 
         /// <summary>
         /// DBに接続します。
         /// </summary>
         /// <param name="connection"></param>
-        public static void Connect(TConnection connection)
+        public void Connect(TConnection connection)
         {
-            DatabaseManager<TConnection>.connection =
-                connection ?? throw new ArgumentNullException(nameof(connection));
-        }
-
-        /// <summary>
-        /// DBをクローズします。
-        /// </summary>
-        public static void Close()
-        {
-            if (connection == null)
-            {
-                throw new NullReferenceException("コネクションがNullです。");
-            }
-
-            connection.Dispose();
+            ArgumentNullException.ThrowIfNull(connection, nameof(connection));
+            this.connection = connection;
         }
 
         /// <summary>
         /// トランザクションを開始します。
         /// </summary>
         /// <returns>トランザクションオブジェクト</returns>
-        public static Transaction BeginTransaction()
+        public Transaction BeginTransaction()
         {
-            if (connection == null)
+            if (this.connection == null)
             {
                 throw new NullReferenceException("コネクションがNullです。");
             }
 
-            return connection.BeginTransaction();
+            return this.connection.BeginTransaction();
         }
 
         /// <summary>
@@ -51,16 +75,16 @@ namespace SWF.Core.DatabaseAccessor
         /// </summary>
         /// <param name="sql">データアクセサ</param>
         /// <returns>更新されたレコードが存在するならTrue。存在しなければFalseを返します。</returns>
-        public static bool Update(SqlBase sql)
+        public bool Update(SqlBase sql)
         {
             ArgumentNullException.ThrowIfNull(sql, nameof(sql));
 
-            if (connection == null)
+            if (this.connection == null)
             {
                 throw new NullReferenceException("コネクションがNullです。");
             }
 
-            return connection.Update(sql);
+            return this.connection.Update(sql);
         }
 
         /// <summary>
@@ -69,16 +93,16 @@ namespace SWF.Core.DatabaseAccessor
         /// <typeparam name="TDto">戻り値のDto</typeparam>
         /// <param name="sql">データアクセサ</param>
         /// <returns>Dtoリスト</returns>
-        public static IList<TDto> ReadList<TDto>(SqlBase<TDto> sql) where TDto : IDto, new()
+        public IList<TDto> ReadList<TDto>(SqlBase<TDto> sql) where TDto : IDto, new()
         {
             ArgumentNullException.ThrowIfNull(sql, nameof(sql));
 
-            if (connection == null)
+            if (this.connection == null)
             {
                 throw new NullReferenceException("コネクションがNullです。");
             }
 
-            return connection.ReadList<TDto>(sql);
+            return this.connection.ReadList<TDto>(sql);
         }
 
         /// <summary>
@@ -87,16 +111,16 @@ namespace SWF.Core.DatabaseAccessor
         /// <typeparam name="TDto">戻り値のDto型</typeparam>
         /// <param name="sql">データアクセサ</param>
         /// <returns>Dto</returns>
-        public static TDto? ReadLine<TDto>(SqlBase<TDto> sql) where TDto : IDto, new()
+        public TDto? ReadLine<TDto>(SqlBase<TDto> sql) where TDto : IDto, new()
         {
             ArgumentNullException.ThrowIfNull(sql, nameof(sql));
 
-            if (connection == null)
+            if (this.connection == null)
             {
                 throw new NullReferenceException("コネクションがNullです。");
             }
 
-            return connection.ReadLine<TDto>(sql);
+            return this.connection.ReadLine<TDto>(sql);
         }
 
         /// <summary>
@@ -105,16 +129,16 @@ namespace SWF.Core.DatabaseAccessor
         /// <typeparam name="TDto">戻り値の型</typeparam>
         /// <param name="sql">データアクセサ</param>
         /// <returns>1オブジェクトの実行結果</returns>
-        public static T? ReadValue<T>(SqlBase sql)
+        public T? ReadValue<T>(SqlBase sql)
         {
             ArgumentNullException.ThrowIfNull(sql, nameof(sql));
 
-            if (connection == null)
+            if (this.connection == null)
             {
                 throw new NullReferenceException("コネクションがNullです。");
             }
 
-            return connection.ReadValue<T>(sql);
+            return this.connection.ReadValue<T>(sql);
         }
     }
 }

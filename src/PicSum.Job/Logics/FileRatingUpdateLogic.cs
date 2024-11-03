@@ -23,7 +23,7 @@ namespace PicSum.Job.Logics
             }
 
             var sql = new RatingUpdateSql(filePath, ratingValue, registrationDate);
-            return DatabaseManager<FileInfoConnection>.Update(sql);
+            return Dao<FileInfoDB>.Instance.Update(sql);
         }
     }
 }

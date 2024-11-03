@@ -19,7 +19,7 @@ namespace PicSum.Job.Logics
             ArgumentException.ThrowIfNullOrEmpty(tag, nameof(tag));
 
             var sql = new TagCreationSql(filePath, tag, registrationDate);
-            return DatabaseManager<FileInfoConnection>.Update(sql);
+            return Dao<FileInfoDB>.Instance.Update(sql);
         }
     }
 }

@@ -38,7 +38,7 @@ namespace PicSum.Job.Logics
                 sql = new DirectoryStateCreationSql(directoryState.DirectoryPath, (int)directoryState.SortTypeID, directoryState.IsAscending, directoryState.SelectedFilePath);
             }
 
-            return DatabaseManager<FileInfoConnection>.Update(sql);
+            return Dao<FileInfoDB>.Instance.Update(sql);
         }
     }
 }

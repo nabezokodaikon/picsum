@@ -28,7 +28,7 @@ namespace PicSum.Job.Jobs
                 throw new ArgumentException("タグがNULLです。", nameof(param));
             }
 
-            using (var tran = DatabaseManager<FileInfoConnection>.BeginTransaction())
+            using (var tran = Dao<FileInfoDB>.Instance.BeginTransaction())
             {
                 var updateTag = new FileTagUpdateLogic(this);
                 var addTag = new FileTagAddLogic(this);

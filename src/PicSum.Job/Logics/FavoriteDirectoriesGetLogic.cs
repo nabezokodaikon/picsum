@@ -14,7 +14,7 @@ namespace PicSum.Job.Logics
         public IList<string> Execute()
         {
             var sql = new FavoriteDirectoriesReadSql();
-            var dtoList = DatabaseManager<FileInfoConnection>.ReadList<SingleValueDto<string>>(sql);
+            var dtoList = Dao<FileInfoDB>.Instance.ReadList<SingleValueDto<string>>(sql);
 
             return [.. dtoList
                 .Where(dto => !FileUtil.IsSystemRoot(dto.Value) && FileUtil.CanAccess(dto.Value))

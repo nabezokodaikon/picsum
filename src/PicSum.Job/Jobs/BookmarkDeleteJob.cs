@@ -14,7 +14,7 @@ namespace PicSum.Job.Jobs
         {
             ArgumentNullException.ThrowIfNull(param, nameof(param));
 
-            using (var tran = DatabaseManager<FileInfoConnection>.BeginTransaction())
+            using (var tran = Dao<FileInfoDB>.Instance.BeginTransaction())
             {
                 var deleteLogic = new BookmarkDeleteLogic(this);
 

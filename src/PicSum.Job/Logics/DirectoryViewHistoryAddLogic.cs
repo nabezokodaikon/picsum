@@ -23,7 +23,7 @@ namespace PicSum.Job.Logics
             ArgumentException.ThrowIfNullOrEmpty(directoryPath, nameof(directoryPath));
 
             var sql = new DirectoryViewHistoryCreationSql(directoryPath);
-            return DatabaseManager<FileInfoConnection>.Update(sql);
+            return Dao<FileInfoDB>.Instance.Update(sql);
         }
     }
 }

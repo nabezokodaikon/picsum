@@ -18,7 +18,7 @@ namespace PicSum.Job.Logics
         public IList<FileByRatingDto> Execute(int rating)
         {
             var sql = new FileReadByRatingSql(rating);
-            var dtoList = DatabaseManager<FileInfoConnection>.ReadList<FileByRatingDto>(sql);
+            var dtoList = Dao<FileInfoDB>.Instance.ReadList<FileByRatingDto>(sql);
 
             var list = new List<FileByRatingDto>();
             foreach (var dto in dtoList)

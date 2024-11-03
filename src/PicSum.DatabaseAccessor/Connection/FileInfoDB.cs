@@ -7,8 +7,8 @@ namespace PicSum.DatabaseAccessor.Connection
     /// fileinfo.sqlite コネクション
     /// </summary>
     [SupportedOSPlatform("windows")]
-    public sealed partial class FileInfoConnection
-        : ConnectionBase
+    public sealed partial class FileInfoDB
+        : AbstractConnection
     {
         private static readonly string tableCreateSql =
         @"
@@ -267,7 +267,7 @@ INSERT INTO m_file_id (
 );
         ";
 
-        public FileInfoConnection(string dbFilePath)
+        public FileInfoDB(string dbFilePath)
             : base(dbFilePath, tableCreateSql) { }
     }
 }

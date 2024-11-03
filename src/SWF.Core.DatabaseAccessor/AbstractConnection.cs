@@ -6,7 +6,7 @@ namespace SWF.Core.DatabaseAccessor
     /// <summary>
     /// DBに接続するベースクラスです。
     /// </summary>
-    public abstract class ConnectionBase
+    public abstract class AbstractConnection
         : IDisposable
     {
         private bool disposed = false;
@@ -22,7 +22,7 @@ namespace SWF.Core.DatabaseAccessor
         /// </summary>
         /// <param name="dbFilePath">DBファイルパス</param>
         /// <param name="tableCreateSql">テーブル作成SQL</param>
-        protected ConnectionBase(string dbFilePath, string tableCreateSql)
+        protected AbstractConnection(string dbFilePath, string tableCreateSql)
         {
             ArgumentException.ThrowIfNullOrEmpty(dbFilePath, nameof(dbFilePath));
             ArgumentException.ThrowIfNullOrEmpty(tableCreateSql, nameof(tableCreateSql));
@@ -89,7 +89,7 @@ namespace SWF.Core.DatabaseAccessor
             GC.SuppressFinalize(this);
         }
 
-        ~ConnectionBase()
+        ~AbstractConnection()
         {
             this.Dispose(false);
         }

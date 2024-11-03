@@ -23,7 +23,7 @@ namespace PicSum.Job.Jobs
                 throw new ArgumentException("ファイルパスリストがNULLです。", nameof(param));
             }
 
-            using (var tran = DatabaseManager<FileInfoConnection>.BeginTransaction())
+            using (var tran = Dao<FileInfoDB>.Instance.BeginTransaction())
             {
                 var updateFileRating = new FileRatingUpdateLogic(this);
                 var addFileRating = new FileRatingAddLogic(this);

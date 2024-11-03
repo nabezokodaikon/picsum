@@ -6,13 +6,13 @@ namespace SWF.Core.DatabaseAccessor
     /// <remarks>
     /// コンストラクタ
     /// </remarks>
-    public sealed partial class Transaction(ConnectionBase connection)
+    public sealed partial class Transaction(AbstractConnection connection)
         : IDisposable
     {
         private bool disposed = false;
 
         // コネクション
-        private readonly ConnectionBase conntenction
+        private readonly AbstractConnection conntenction
             = connection ?? throw new ArgumentNullException(nameof(connection));
 
         // コミットフラグ
