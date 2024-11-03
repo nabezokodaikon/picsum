@@ -1,3 +1,4 @@
+using SWF.Core.Base;
 using System.Runtime.InteropServices;
 using WinApi;
 
@@ -95,7 +96,7 @@ namespace SWF.Core.FileAccessor
                 }
                 else
                 {
-                    throw new NullReferenceException("SMALLICONアイコンを取得できませんでした。");
+                    return ResourceFiles.EmptyIcon.Value;
                 }
             }
             finally
@@ -122,7 +123,7 @@ namespace SWF.Core.FileAccessor
                 (int)WinApiMembers.ShellFileInfoFlags.SHGFI_SYSICONINDEX);
             if (hSuccess.Equals(IntPtr.Zero))
             {
-                throw new NullReferenceException("EXTRALARGEアイコンを取得できませんでした。");
+                return ResourceFiles.EmptyIcon.Value;
             }
 
             var result = WinApiMembers.SHGetImageList(
@@ -134,13 +135,13 @@ namespace SWF.Core.FileAccessor
             {
                 if (result != WinApiMembers.S_OK)
                 {
-                    throw new NullReferenceException("EXTRALARGEアイコンを取得できませんでした。");
+                    return ResourceFiles.EmptyIcon.Value;
                 }
 
                 var hicon = WinApiMembers.ImageList_GetIcon(pimgList, shinfo.iIcon, 0);
                 if (hicon.Equals(IntPtr.Zero))
                 {
-                    throw new NullReferenceException("EXTRALARGEアイコンを取得できませんでした。");
+                    return ResourceFiles.EmptyIcon.Value;
                 }
 
                 try
