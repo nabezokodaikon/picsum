@@ -43,7 +43,7 @@ namespace PicSum.Job.Jobs
                         if (pipeServer == null)
                         {
                             pipeServer = new NamedPipeServerStream(
-                                ApplicationConstants.PIPE_NAME, PipeDirection.In);
+                                AppConstants.PIPE_NAME, PipeDirection.In);
                         }
 
                         cts.CancelAfter(100);

@@ -35,7 +35,7 @@ namespace PicSum.Main.Conf
         public void Save()
         {
             var serializer = new XmlSerializer(typeof(Config));
-            using (var fs = new FileStream(ResourceUtil.CONFIG_FILE, FileMode.Create, FileAccess.Write, FileShare.Read))
+            using (var fs = new FileStream(AppConstants.CONFIG_FILE, FileMode.Create, FileAccess.Write, FileShare.Read))
             using (var writer = new StreamWriter(fs))
             {
                 serializer.Serialize(writer, this);
@@ -44,11 +44,11 @@ namespace PicSum.Main.Conf
 
         public void Load()
         {
-            if (FileUtil.IsExists(ResourceUtil.CONFIG_FILE))
+            if (FileUtil.IsExists(AppConstants.CONFIG_FILE))
             {
                 var serializer = new XmlSerializer(typeof(Config));
                 Config saveData = null;
-                using (var fs = new FileStream(ResourceUtil.CONFIG_FILE, FileMode.Open, FileAccess.Read, FileShare.Read))
+                using (var fs = new FileStream(AppConstants.CONFIG_FILE, FileMode.Open, FileAccess.Read, FileShare.Read))
                 using (var reader = new StreamReader(fs))
                 {
                     saveData = (Config)serializer.Deserialize(reader);

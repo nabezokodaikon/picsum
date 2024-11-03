@@ -134,8 +134,8 @@ namespace PicSum.UIComponent.InfoPanel
                 {
                     FilePathList = filePathList,
                     ThumbnailSize = new Size(
-                        ApplicationConstants.INFOPANEL_WIDTH,
-                        ApplicationConstants.INFOPANEL_WIDTH)
+                        AppConstants.INFOPANEL_WIDTH,
+                        AppConstants.INFOPANEL_WIDTH)
                 };
 
                 CommonJobs.Instance.FileDeepInfoGetJob.Value

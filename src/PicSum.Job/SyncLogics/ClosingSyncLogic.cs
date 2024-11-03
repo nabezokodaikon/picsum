@@ -22,7 +22,7 @@ namespace PicSum.Job.SyncLogics
             ImageFileSizeCacher.Instance.Dispose();
             FileExporter.Instance.Dispose();
 
-            Dao<DatabaseAccessor.Connection.FileInfoDB>.Instance.Dispose();
+            Dao<FileInfoDB>.Instance.Dispose();
             Dao<ThumbnailDB>.Instance.Dispose();
         }
     }

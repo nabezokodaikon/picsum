@@ -17,7 +17,7 @@ namespace PicSum.Main
     internal sealed class Program
         : MarshalByRefObject
     {
-        private static readonly Mutex mutex = new(true, ApplicationConstants.MUTEX_NAME);
+        private static readonly Mutex mutex = new(true, AppConstants.MUTEX_NAME);
 
         /// <summary>
         /// アプリケーションのメイン エントリ ポイントです。
@@ -29,12 +29,12 @@ namespace PicSum.Main
             {
                 try
                 {
-                    ResourceUtil.CreateApplicationDirectories();
+                    AppConstants.CreateApplicationDirectories();
                     ConfigureLog();
 
                     var logger = LogManager.GetCurrentClassLogger();
 
-                    Thread.CurrentThread.Name = ApplicationConstants.UI_THREAD_NAME;
+                    Thread.CurrentThread.Name = AppConstants.UI_THREAD_NAME;
 
                     logger.Debug("アプリケーションを開始します。");
 
@@ -65,7 +65,7 @@ namespace PicSum.Main
                     return;
                 }
 
-                using (var pipeClient = new NamedPipeClientStream(".", ApplicationConstants.PIPE_NAME, PipeDirection.Out))
+                using (var pipeClient = new NamedPipeClientStream(".", AppConstants.PIPE_NAME, PipeDirection.Out))
                 {
                     pipeClient.Connect();
                     using (var writer = new StreamWriter(pipeClient))
@@ -82,9 +82,9 @@ namespace PicSum.Main
 
             var logfile = new FileTarget("logfile")
             {
-                FileName = Path.Combine(ResourceUtil.LOG_DIRECTORY, "app.log"),
+                FileName = Path.Combine(AppConstants.LOG_DIRECTORY, "app.log"),
                 Layout = "${longdate} | ${level:padding=-5} | ${threadname} | ${message:withexception=true}",
-                ArchiveFileName = string.Format("{0}/{1}", ResourceUtil.LOG_DIRECTORY, "${date:format=yyyyMMdd}/{########}.log"),
+                ArchiveFileName = string.Format("{0}/{1}", AppConstants.LOG_DIRECTORY, "${date:format=yyyyMMdd}/{########}.log"),
                 ArchiveAboveSize = 10 * 1024 * 1024,
                 ArchiveNumbering = ArchiveNumberingMode.Sequence,
             };

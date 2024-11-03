@@ -62,7 +62,7 @@ namespace SWF.Core.DatabaseAccessor
                     foreach (var paramString in paramStringList)
                     {
                         var r = new Regex($"{paramString}\\s|{paramString}$");
-                        text = r.Replace(text, string.Format(ApplicationConstants.NUMBERING_SQL_PARAMETER_FORMAT + " ", paramString, i.ToString()));
+                        text = r.Replace(text, string.Format(AppConstants.NUMBERING_SQL_PARAMETER_FORMAT + " ", paramString, i.ToString()));
                     }
 
                     newText.Append(text);
