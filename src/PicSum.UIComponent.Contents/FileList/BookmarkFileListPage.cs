@@ -36,7 +36,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
         protected override void OnLoad(EventArgs e)
         {
-            CommonJobs.Instance.BookmarksGetJob.Value
+            JobCaller.Instance.BookmarksGetJob.Value
                 .Initialize()
                 .Callback(_ =>
                 {
@@ -93,7 +93,7 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             var parameter = new ListParameter<string>();
             parameter.AddRange(filePathList);
-            CommonJobs.Instance.StartBookmarkDeleteJob(this, parameter);
+            JobCaller.Instance.StartBookmarkDeleteJob(this, parameter);
 
             base.RemoveFile(filePathList);
 

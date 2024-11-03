@@ -199,7 +199,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
             if (disposing)
             {
-                CommonJobs.Instance.ThumbnailsGetJob.Value.BeginCancel();
+                JobCaller.Instance.ThumbnailsGetJob.Value.BeginCancel();
 
                 this.components?.Dispose();
             }
@@ -216,7 +216,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
         protected override void OnInvalidated(InvalidateEventArgs e)
         {
-            CommonJobs.Instance.ThumbnailsGetJob.Value.BeginCancel();
+            JobCaller.Instance.ThumbnailsGetJob.Value.BeginCancel();
 
             base.OnInvalidated(e);
         }
@@ -858,7 +858,7 @@ namespace PicSum.UIComponent.Contents.FileList
                     ThumbnailHeight = thumbnailHeight,
                 };
 
-                CommonJobs.Instance.ThumbnailsGetJob.Value
+                JobCaller.Instance.ThumbnailsGetJob.Value
                     .Initialize()
                     .Callback(_ =>
                     {
@@ -1147,7 +1147,7 @@ namespace PicSum.UIComponent.Contents.FileList
                             ExportDirecotry = fbd.SelectedPath,
                         };
 
-                        CommonJobs.Instance.MultiFilesExportJob.Value
+                        JobCaller.Instance.MultiFilesExportJob.Value
                             .Initialize()
                             .Callback(_ =>
                             {
@@ -1185,7 +1185,7 @@ namespace PicSum.UIComponent.Contents.FileList
                             SrcFilePath = srcFilePath,
                             ExportFilePath = ofd.FileName
                         };
-                        CommonJobs.Instance.StartSingleFileExportJob(this, param);
+                        JobCaller.Instance.StartSingleFileExportJob(this, param);
 
                         CommonConfig.ExportDirectoryPath = dir;
                     }
@@ -1226,7 +1226,7 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             var paramter = new ValueParameter<string>(e.FilePath);
 
-            CommonJobs.Instance.StartBookmarkAddJob(this, paramter);
+            JobCaller.Instance.StartBookmarkAddJob(this, paramter);
         }
     }
 }

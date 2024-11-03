@@ -56,7 +56,7 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             var param = new ValueParameter<string>(this.parameter.DirectoryPath);
 
-            CommonJobs.Instance.FilesGetByDirectoryJob.Value
+            JobCaller.Instance.FilesGetByDirectoryJob.Value
                 .Initialize()
                 .Callback(_ =>
                 {
@@ -129,7 +129,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 IsNext = false,
             };
 
-            CommonJobs.Instance.NextDirectoryGetJob.Value
+            JobCaller.Instance.NextDirectoryGetJob.Value
                 .Initialize()
                 .Callback(_ =>
                 {
@@ -157,7 +157,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 CurrentParameter = new ValueEntity<string>(this.parameter.DirectoryPath)
             };
 
-            CommonJobs.Instance.NextDirectoryGetJob.Value
+            JobCaller.Instance.NextDirectoryGetJob.Value
                 .Initialize()
                 .Callback(_ =>
                 {
@@ -216,7 +216,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
             param.SelectedFilePath = base.SelectedFilePath;
 
-            CommonJobs.Instance.StartDirectoryStateUpdateJob(this, param);
+            JobCaller.Instance.StartDirectoryStateUpdateJob(this, param);
         }
 
         private void SearchJob_Callback(DirectoryGetResult e)
@@ -250,7 +250,7 @@ namespace PicSum.UIComponent.Contents.FileList
             }
 
             var param = new ValueParameter<string>(e.DirectoryPath);
-            CommonJobs.Instance.StartDirectoryViewHistoryAddJob(this, param);
+            JobCaller.Instance.StartDirectoryViewHistoryAddJob(this, param);
         }
 
         private void GetNextDirectoryProcess_Callback(ValueResult<string> e)

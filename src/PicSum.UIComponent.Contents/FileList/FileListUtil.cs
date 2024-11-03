@@ -79,7 +79,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
             return sender =>
             {
-                CommonJobs.Instance.FilesGetByDirectoryJob.Value
+                JobCaller.Instance.FilesGetByDirectoryJob.Value
                     .Initialize()
                     .Callback(e =>
                     {
@@ -111,7 +111,7 @@ namespace PicSum.UIComponent.Contents.FileList
             {
                 var dir = FileUtil.GetParentDirectoryPath(param.SelectedFilePath);
 
-                CommonJobs.Instance.FilesGetByDirectoryJob.Value
+                JobCaller.Instance.FilesGetByDirectoryJob.Value
                     .Initialize()
                     .Callback(e =>
                     {
@@ -143,7 +143,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
             return sender =>
             {
-                CommonJobs.Instance.FilesGetByRatingJob.Value
+                JobCaller.Instance.FilesGetByRatingJob.Value
                     .Initialize()
                     .Callback(e =>
                     {
@@ -173,7 +173,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
             return sender =>
             {
-                CommonJobs.Instance.FilesGetByTagJob.Value
+                JobCaller.Instance.FilesGetByTagJob.Value
                     .Initialize()
                     .Callback(e =>
                     {

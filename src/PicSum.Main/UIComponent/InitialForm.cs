@@ -35,16 +35,16 @@ namespace PicSum.Main.UIComponent
 
         protected override void OnHandleCreated(EventArgs e)
         {
-            CommonJobs.Initialize();
+            JobCaller.Initialize();
 
             base.OnHandleCreated(e);
         }
 
         protected override void OnLoad(EventArgs e)
         {
-            CommonJobs.Instance.StartGCCollectRunJob(this);
+            JobCaller.Instance.StartGCCollectRunJob(this);
 
-            CommonJobs.Instance.PipeServerJob.Value
+            JobCaller.Instance.PipeServerJob.Value
                 .Initialize()
                 .Callback(_ =>
                 {

@@ -620,12 +620,12 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
                 this.isLoading = true;
 
-                CommonJobs.Instance.ImageFileCacheJob.Value
+                JobCaller.Instance.ImageFileCacheJob.Value
                     .Initialize()
                     .BeginCancel()
                     .StartJob(this, [.. nextFiles, .. prevFiles]);
 
-                CommonJobs.Instance.ImageFileLoadingJob.Value
+                JobCaller.Instance.ImageFileLoadingJob.Value
                     .Initialize()
                     .Callback(_ =>
                     {
@@ -644,7 +644,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                     .BeginCancel()
                     .StartJob(this, param);
 
-                CommonJobs.Instance.ImageFileReadJob.Value
+                JobCaller.Instance.ImageFileReadJob.Value
                     .Initialize()
                     .Callback(r =>
                     {
@@ -1268,7 +1268,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                         SrcFilePath = srcFilePath,
                         ExportFilePath = ofd.FileName
                     };
-                    CommonJobs.Instance.StartSingleFileExportJob(this, param);
+                    JobCaller.Instance.StartSingleFileExportJob(this, param);
 
                     CommonConfig.ExportDirectoryPath = dir;
                 }
@@ -1289,7 +1289,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         {
             var paramter = new ValueParameter<string>(e.FilePath);
 
-            CommonJobs.Instance.StartBookmarkAddJob(this, paramter);
+            JobCaller.Instance.StartBookmarkAddJob(this, paramter);
         }
 
     }

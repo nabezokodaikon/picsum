@@ -8,13 +8,13 @@ using System.Runtime.Versioning;
 namespace PicSum.Job.Common
 {
     [SupportedOSPlatform("windows")]
-    public sealed partial class CommonJobs
+    public sealed partial class JobCaller
         : IDisposable
     {
         private static SynchronizationContext? context = null;
-        private static CommonJobs? instance = null;
+        private static JobCaller? instance = null;
 
-        public static CommonJobs Instance
+        public static JobCaller Instance
         {
             get
             {
@@ -40,7 +40,7 @@ namespace PicSum.Job.Common
             }
 
             context = SynchronizationContext.Current;
-            instance = new CommonJobs();
+            instance = new JobCaller();
         }
 
         private bool disposed = false;
@@ -76,12 +76,12 @@ namespace PicSum.Job.Common
         public readonly Lazy<TwoWayJob<MultiFilesExportJob, MultiFilesExportParameter, ValueResult<string>>> MultiFilesExportJob = new(() => new(context));
         public readonly Lazy<TwoWayJob<BookmarksGetJob, ListResult<FileShallowInfoEntity>>> BookmarksGetJob = new(() => new(context));
 
-        private CommonJobs()
+        private JobCaller()
         {
 
         }
 
-        ~CommonJobs()
+        ~JobCaller()
         {
             this.Dispose(false);
         }

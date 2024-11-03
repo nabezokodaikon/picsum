@@ -62,7 +62,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 Count = FileListPageConfig.FavoriteDirectoryCount
             };
 
-            CommonJobs.Instance.FavoriteDirectoriesGetJob.Value
+            JobCaller.Instance.FavoriteDirectoriesGetJob.Value
                 .Initialize()
                 .Callback(_ =>
                 {
@@ -100,7 +100,7 @@ namespace PicSum.UIComponent.Contents.FileList
         protected override void OnRemoveFile(IList<string> directoryList)
         {
             var param = new ListParameter<string>(directoryList);
-            CommonJobs.Instance.StartDirectoryViewCounterDeleteJob(this, param);
+            JobCaller.Instance.StartDirectoryViewCounterDeleteJob(this, param);
             this.RemoveFile(directoryList);
 
             this.OnSelectedFileChanged(new SelectedFileChangeEventArgs());

@@ -32,9 +32,9 @@ namespace PicSum.Main.UIComponent
                         false => FileUtil.GetParentDirectoryPath(subParamter.FilePath),
                     };
 
-                    CommonJobs.Instance.StartDirectoryViewHistoryAddJob(sender, new ValueParameter<string>(dir));
+                    JobCaller.Instance.StartDirectoryViewHistoryAddJob(sender, new ValueParameter<string>(dir));
 
-                    CommonJobs.Instance.ImageFilesGetByDirectoryJob.Value
+                    JobCaller.Instance.ImageFilesGetByDirectoryJob.Value
                         .Initialize()
                         .Callback(e =>
                         {
@@ -627,7 +627,7 @@ namespace PicSum.Main.UIComponent
 
         private void TagDropToolButton_DropDownOpening(object sender, DropDownOpeningEventArgs e)
         {
-            CommonJobs.Instance.TagsGetJob.Value
+            JobCaller.Instance.TagsGetJob.Value
                 .Initialize()
                 .Callback(_ =>
                 {
