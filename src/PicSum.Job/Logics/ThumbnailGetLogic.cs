@@ -419,7 +419,7 @@ namespace PicSum.Job.Logics
         {
             return Path.Combine(
                 ResourceUtil.DATABASE_DIRECTORY,
-                $"{id}{FileUtil.THUMBNAIL_BUFFER_FILE_EXTENSION}");
+                $"{id}{ResourceUtil.THUMBNAIL_BUFFER_FILE_EXTENSION}");
         }
 
         private int GetCurrentThumbnailBufferID()

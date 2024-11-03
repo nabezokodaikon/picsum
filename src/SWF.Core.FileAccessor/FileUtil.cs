@@ -15,8 +15,6 @@ namespace SWF.Core.FileAccessor
         private const string ROOT_DIRECTORY_NAME = "PC";
         private const string ROOT_DIRECTORY_TYPE_NAME = "System root";
 
-        public const string THUMBNAIL_BUFFER_FILE_EXTENSION = ".thumbnail";
-
         internal const string AVIF_FILE_EXTENSION = ".AVIF";
         internal const string BMP_FILE_EXTENSION = ".BMP";
         internal const string GIF_FILE_EXTENSION = ".GIF";
