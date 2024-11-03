@@ -581,6 +581,11 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
         private void ReadImage()
         {
+            if (this.filePathList.Count < 1)
+            {
+                return;
+            }
+
             using (TimeMeasuring.Run(true, "ImageViewerPage.ReadImage"))
             {
                 var mainFilePath = this.filePathList[this.FilePathListIndex];
