@@ -36,15 +36,15 @@ namespace PicSum.UIComponent.Contents.FileList
 
             if (FileUtil.IsSystemRoot(this.parameter.DirectoryPath))
             {
-                this.Icon = FileIconCash.SmallMyComputerIcon;
+                this.Icon = FileIconCacher.SmallMyComputerIcon;
             }
             else if (FileUtil.IsDrive(this.parameter.DirectoryPath))
             {
-                this.Icon = FileIconCash.GetSmallDriveIcon(this.parameter.DirectoryPath);
+                this.Icon = FileIconCacher.GetSmallDriveIcon(this.parameter.DirectoryPath);
             }
             else
             {
-                this.Icon = FileIconCash.SmallDirectoryIcon;
+                this.Icon = FileIconCacher.SmallDirectoryIcon;
             }
 
             this.IsRemoveFromListMenuItemVisible = false;

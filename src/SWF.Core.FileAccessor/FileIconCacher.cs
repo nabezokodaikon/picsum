@@ -9,7 +9,7 @@ namespace SWF.Core.FileAccessor
     /// ファイルアイコンキャッシュクラス
     /// </summary>
     [SupportedOSPlatform("windows")]
-    public static class FileIconCash
+    public static class FileIconCacher
     {
         private static readonly object SMALL_ICON_CASH_LOCK = new();
         private static readonly object LARGE_ICON_CASH_LOCK = new();
@@ -17,7 +17,7 @@ namespace SWF.Core.FileAccessor
         private static readonly Dictionary<string, Bitmap> SMALL_ICON_CASH = [];
         private static readonly Dictionary<string, Bitmap> LARGE_ICON_CASH = [];
         private static readonly Dictionary<string, Bitmap> JUMBO_ICON_CASH = [];
-        private static readonly Bitmap OTHER_FILE_ICON = FileIconCash.GetOtherFileIcon();
+        private static readonly Bitmap OTHER_FILE_ICON = FileIconCacher.GetOtherFileIcon();
         private static readonly Bitmap SMALL_PC_ICON =
             FileUtil.GetSmallSystemIcon(WinApiMembers.ShellSpecialFolder.CSIDL_DRIVES);
         private static readonly Bitmap LARGE_PC_ICON =

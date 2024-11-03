@@ -501,7 +501,7 @@ namespace PicSum.Job.Logics
         {
             using (var srcImg = ImageUtil.ReadImageFile(filePath))
             {
-                ImageFileSizeCacheUtil.Set(filePath, srcImg.Size);
+                ImageFileSizeCacher.Set(filePath, srcImg.Size);
                 using (var thumbImg = ThumbnailUtil.CreateThumbnail(srcImg, thumbWidth, thumbHeight))
                 {
                     var thumbBin = ThumbnailUtil.ToCompressionBinary(thumbImg);
@@ -532,7 +532,7 @@ namespace PicSum.Job.Logics
         {
             using (var srcImg = ImageUtil.ReadImageFile(filePath))
             {
-                ImageFileSizeCacheUtil.Set(filePath, srcImg.Size);
+                ImageFileSizeCacher.Set(filePath, srcImg.Size);
                 using (var thumbImg = ThumbnailUtil.CreateThumbnail(srcImg, thumbWidth, thumbHeight))
                 {
                     var thumbBin = ThumbnailUtil.ToCompressionBinary(thumbImg);
@@ -563,7 +563,7 @@ namespace PicSum.Job.Logics
         {
             using (var srcImg = ImageUtil.ReadImageFile(thumbFilePath))
             {
-                ImageFileSizeCacheUtil.Set(thumbFilePath, srcImg.Size);
+                ImageFileSizeCacher.Set(thumbFilePath, srcImg.Size);
                 using (var thumbImg = ThumbnailUtil.CreateThumbnail(srcImg, thumbWidth, thumbHeight))
                 {
                     var thumbBin = ThumbnailUtil.ToCompressionBinary(thumbImg);
@@ -593,7 +593,7 @@ namespace PicSum.Job.Logics
         {
             using (var srcImg = ImageUtil.ReadImageFile(thumbFilePath))
             {
-                ImageFileSizeCacheUtil.Set(thumbFilePath, srcImg.Size);
+                ImageFileSizeCacher.Set(thumbFilePath, srcImg.Size);
                 using (var thumbImg = ThumbnailUtil.CreateThumbnail(srcImg, thumbWidth, thumbHeight))
                 {
                     var thumbBin = ThumbnailUtil.ToCompressionBinary(thumbImg);

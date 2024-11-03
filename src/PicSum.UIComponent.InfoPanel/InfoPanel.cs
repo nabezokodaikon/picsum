@@ -28,7 +28,7 @@ namespace PicSum.UIComponent.InfoPanel
 
         private static void DrawDirectoryThumbnail(Graphics g, Image thumb, RectangleF rect)
         {
-            ThumbnailUtil.DrawDirectoryThumbnail(g, thumb, rect, FileIconCash.LargeDirectoryIcon);
+            ThumbnailUtil.DrawDirectoryThumbnail(g, thumb, rect, FileIconCacher.LargeDirectoryIcon);
         }
 
         public event EventHandler<SelectedTagEventArgs> SelectedTag;

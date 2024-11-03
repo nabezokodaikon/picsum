@@ -5,7 +5,7 @@ using System.Runtime.Versioning;
 namespace SWF.Core.ImageAccessor
 {
     [SupportedOSPlatform("windows")]
-    public static class ImageFileCacheUtil
+    public static class ImageFileCacher
     {
         private const int CACHE_CAPACITY = 12;
         private static readonly List<ImageFileCache> CACHE_LIST = new(CACHE_CAPACITY);
@@ -82,7 +82,7 @@ namespace SWF.Core.ImageAccessor
                 }
 
                 var bitmap = ImageUtil.ReadImageFile(filePath);
-                ImageFileSizeCacheUtil.Set(filePath, bitmap.Size);
+                ImageFileSizeCacher.Set(filePath, bitmap.Size);
                 var newCache = new ImageFileCache(filePath, bitmap, timestamp);
                 CACHE_DICTIONARY.Add(newCache.FilePath, newCache);
                 CACHE_LIST.Add(newCache);
@@ -121,7 +121,7 @@ namespace SWF.Core.ImageAccessor
                 }
 
                 var bitmap = ImageUtil.ReadImageFile(filePath);
-                ImageFileSizeCacheUtil.Set(filePath, bitmap.Size);
+                ImageFileSizeCacher.Set(filePath, bitmap.Size);
                 var newCache = new ImageFileCache(filePath, bitmap, timestamp);
                 CACHE_DICTIONARY.Add(filePath, newCache);
                 CACHE_LIST.Add(newCache);

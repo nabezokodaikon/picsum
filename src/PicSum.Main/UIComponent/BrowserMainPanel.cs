@@ -45,7 +45,7 @@ namespace PicSum.Main.UIComponent
                             var eventArgs = new GetImageFilesEventArgs(
                                 [.. e.FilePathList.OrderBy(_ => _, NaturalStringComparer.Windows)],
                                 e.SelectedFilePath, title,
-                                FileIconCash.SmallDirectoryIcon);
+                                FileIconCacher.SmallDirectoryIcon);
                             parameter.OnGetImageFiles(eventArgs);
                         })
                         .BeginCancel()
@@ -368,7 +368,7 @@ namespace PicSum.Main.UIComponent
                     sortInfo,
                     GetImageFilesAction(new ImageFileGetByDirectoryParameter(dirPath)),
                     FileUtil.GetFileName(dirPath),
-                    FileIconCash.SmallDirectoryIcon);
+                    FileIconCacher.SmallDirectoryIcon);
                 if (e.IsOverlap)
                 {
                     this.OverlapPage(dragData);
