@@ -4,14 +4,14 @@ namespace SWF.Core.Base
     {
         public const string THUMBNAIL_BUFFER_FILE_EXTENSION = ".thumbnail";
 
-        public static readonly string EXECUTABLE_DIRECTORY = GetExecutableDirectory();
-        public static readonly string APPLICATION_DIRECTORY = GetApplicationDirectory();
+        private static readonly string EXECUTABLE_DIRECTORY = GetExecutableDirectory();
+        private static readonly string APPLICATION_DIRECTORY = GetApplicationDirectory();
         public static readonly string LOG_DIRECTORY = GetLogDirectory();
-        public static readonly string CONFIG_DIRECTORY = GetConfigDirectory();
+        private static readonly string CONFIG_DIRECTORY = GetConfigDirectory();
+        public static readonly string CONFIG_FILE = GetConfigFile();
         public static readonly string DATABASE_DIRECTORY = GetDatabaseDirectory();
         public static readonly string FILE_INFO_DATABASE_FILE = GetFileInfoDatabaseFile();
         public static readonly string THUMBNAIL_DATABASE_FILE = GetThumbnailDatabaseFile();
-        public static readonly string RESOURCE_DIRECTORY = GetResourceDirectory();
 
         public static bool IsRunningAsUwp()
         {
@@ -27,9 +27,9 @@ namespace SWF.Core.Base
             }
         }
 
-        private static string GetResourceDirectory()
+        private static string GetConfigFile()
         {
-            return Path.Combine(EXECUTABLE_DIRECTORY, "ResourceFiles");
+            return Path.Combine(CONFIG_DIRECTORY, "config.xml");
         }
 
         private static string GetFileInfoDatabaseFile()
