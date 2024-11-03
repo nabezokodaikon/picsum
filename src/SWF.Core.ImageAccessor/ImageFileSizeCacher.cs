@@ -4,7 +4,7 @@ using System.Runtime.Versioning;
 namespace SWF.Core.ImageAccessor
 {
     [SupportedOSPlatform("windows")]
-    public partial class ImageFileSizeCacher
+    public sealed partial class ImageFileSizeCacher
         : IDisposable
     {
         private const int CACHE_CAPACITY = 1000;

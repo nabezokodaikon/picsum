@@ -129,7 +129,7 @@ namespace PicSum.UIComponent.Contents.FileList
                             .ToArray();
 
                         var eventArgs = new GetImageFilesEventArgs(
-                            imageFiles, param.SelectedFilePath, title, FileIconCacher.SmallDirectoryIcon);
+                            imageFiles, param.SelectedFilePath, title, FileIconCacher.Instance.SmallDirectoryIcon);
                         param.OnGetImageFiles(eventArgs);
                     })
                     .BeginCancel()

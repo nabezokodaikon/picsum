@@ -32,8 +32,8 @@ namespace PicSum.Job.Logics
                 info.IsFile = false;
                 info.IsImageFile = false;
                 info.UpdateDate = null;
-                info.LargeIcon = FileIconCacher.LargeMyComputerIcon;
-                info.SmallIcon = FileIconCacher.SmallMyComputerIcon;
+                info.LargeIcon = FileIconCacher.Instance.LargeMyComputerIcon;
+                info.SmallIcon = FileIconCacher.Instance.SmallMyComputerIcon;
             }
             else if (FileUtil.IsDrive(filePath))
             {
@@ -42,8 +42,8 @@ namespace PicSum.Job.Logics
                 info.IsFile = false;
                 info.IsImageFile = false;
                 info.UpdateDate = FileUtil.GetUpdateDate(filePath);
-                info.LargeIcon = FileIconCacher.GetLargeDriveIcon(info.FilePath);
-                info.SmallIcon = FileIconCacher.GetSmallDriveIcon(info.FilePath);
+                info.LargeIcon = FileIconCacher.Instance.GetLargeDriveIcon(info.FilePath);
+                info.SmallIcon = FileIconCacher.Instance.GetSmallDriveIcon(info.FilePath);
             }
             else if (FileUtil.IsFile(filePath))
             {
@@ -52,8 +52,8 @@ namespace PicSum.Job.Logics
                 info.IsFile = true;
                 info.IsImageFile = FileUtil.IsImageFile(filePath);
                 info.UpdateDate = FileUtil.GetUpdateDate(filePath);
-                info.LargeIcon = FileIconCacher.GetLargeFileIcon(info.FilePath);
-                info.SmallIcon = FileIconCacher.GetSmallFileIcon(info.FilePath);
+                info.LargeIcon = FileIconCacher.Instance.GetLargeFileIcon(info.FilePath);
+                info.SmallIcon = FileIconCacher.Instance.GetSmallFileIcon(info.FilePath);
 
                 if (isGetThumbnail)
                 {
@@ -80,8 +80,8 @@ namespace PicSum.Job.Logics
                 info.IsFile = false;
                 info.IsImageFile = false;
                 info.UpdateDate = FileUtil.GetUpdateDate(filePath);
-                info.LargeIcon = FileIconCacher.LargeDirectoryIcon;
-                info.SmallIcon = FileIconCacher.SmallDirectoryIcon;
+                info.LargeIcon = FileIconCacher.Instance.LargeDirectoryIcon;
+                info.SmallIcon = FileIconCacher.Instance.SmallDirectoryIcon;
 
                 if (isGetThumbnail)
                 {

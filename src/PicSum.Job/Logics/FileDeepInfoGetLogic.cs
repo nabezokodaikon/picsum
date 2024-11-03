@@ -42,7 +42,7 @@ namespace PicSum.Job.Logics
                 info.IsFile = false;
                 info.IsImageFile = false;
                 info.FileSize = null;
-                info.FileIcon = FileIconCacher.LargeMyComputerIcon;
+                info.FileIcon = FileIconCacher.Instance.LargeMyComputerIcon;
             }
             else
             {
@@ -52,7 +52,7 @@ namespace PicSum.Job.Logics
                 {
                     info.IsImageFile = FileUtil.IsImageFile(filePath);
                     info.FileSize = FileUtil.GetFileSize(filePath);
-                    info.FileIcon = FileIconCacher.GetLargeFileIcon(filePath);
+                    info.FileIcon = FileIconCacher.Instance.GetLargeFileIcon(filePath);
                 }
                 else
                 {
@@ -60,11 +60,11 @@ namespace PicSum.Job.Logics
                     info.FileSize = null;
                     if (FileUtil.IsDrive(filePath))
                     {
-                        info.FileIcon = FileIconCacher.GetLargeDriveIcon(filePath);
+                        info.FileIcon = FileIconCacher.Instance.GetLargeDriveIcon(filePath);
                     }
                     else if (FileUtil.IsDirectory(filePath))
                     {
-                        info.FileIcon = FileIconCacher.JumboDirectoryIcon;
+                        info.FileIcon = FileIconCacher.Instance.JumboDirectoryIcon;
                     }
                     else
                     {

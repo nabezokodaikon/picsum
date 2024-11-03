@@ -326,7 +326,7 @@ namespace PicSum.Main.UIComponent
                         imageFilePath,
                         sortInfo,
                         FileUtil.GetFileName(directoryPath),
-                        FileIconCacher.SmallDirectoryIcon);
+                        FileIconCacher.Instance.SmallDirectoryIcon);
 
                     this.browserMainPanel.AddImageViewerPageTab(parameter);
                 }
