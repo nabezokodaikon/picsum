@@ -1,3 +1,4 @@
+using PicSum.Job.Common;
 using PicSum.Job.Entities;
 using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
@@ -56,8 +57,7 @@ namespace PicSum.Job.Logics
 
                 if (isGetThumbnail)
                 {
-                    var thumbnailGetLogic = new ThumbnailGetLogic(this.Job);
-                    var thumbnailBuffer = thumbnailGetLogic.GetOnlyCache(filePath, THUMBNAIL_SIZE, THUMBNAIL_SIZE);
+                    var thumbnailBuffer = ThumbnailCacher.Instance.GetOnlyCache(filePath, THUMBNAIL_SIZE, THUMBNAIL_SIZE);
                     if (thumbnailBuffer != ThumbnailCacheEntity.EMPTY)
                     {
                         if (thumbnailBuffer.ThumbnailBuffer == null)
@@ -85,8 +85,7 @@ namespace PicSum.Job.Logics
 
                 if (isGetThumbnail)
                 {
-                    var thumbnailGetLogic = new ThumbnailGetLogic(this.Job);
-                    var thumbnailBuffer = thumbnailGetLogic.GetOnlyCache(filePath, THUMBNAIL_SIZE, THUMBNAIL_SIZE);
+                    var thumbnailBuffer = ThumbnailCacher.Instance.GetOnlyCache(filePath, THUMBNAIL_SIZE, THUMBNAIL_SIZE);
                     if (thumbnailBuffer != ThumbnailCacheEntity.EMPTY)
                     {
                         if (thumbnailBuffer.ThumbnailBuffer == null)

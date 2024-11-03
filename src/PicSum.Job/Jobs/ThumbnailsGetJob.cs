@@ -1,6 +1,6 @@
 using PicSum.DatabaseAccessor.Connection;
+using PicSum.Job.Common;
 using PicSum.Job.Entities;
-using PicSum.Job.Logics;
 using PicSum.Job.Parameters;
 using PicSum.Job.Results;
 using SWF.Core.DatabaseAccessor;
@@ -29,15 +29,13 @@ namespace PicSum.Job.Jobs
 
             using (var tran = DatabaseManager<ThumbnailConnection>.BeginTransaction())
             {
-                var getLogic = new ThumbnailGetLogic(this);
-
                 for (var index = param.FirstIndex; index <= param.LastIndex; index++)
                 {
                     this.CheckCancel();
 
                     try
                     {
-                        var bf = getLogic.GetOrCreateCache(param.FilePathList[index], param.ThumbnailWidth, param.ThumbnailHeight);
+                        var bf = ThumbnailCacher.Instance.GetOrCreateCache(param.FilePathList[index], param.ThumbnailWidth, param.ThumbnailHeight);
                         if (bf == ThumbnailCacheEntity.EMPTY)
                         {
                             continue;

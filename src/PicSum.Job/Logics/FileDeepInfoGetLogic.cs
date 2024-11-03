@@ -1,6 +1,7 @@
 using PicSum.DatabaseAccessor.Connection;
 using PicSum.DatabaseAccessor.Dto;
 using PicSum.DatabaseAccessor.Sql;
+using PicSum.Job.Common;
 using PicSum.Job.Entities;
 using SWF.Core.DatabaseAccessor;
 using SWF.Core.FileAccessor;
@@ -78,9 +79,8 @@ namespace PicSum.Job.Logics
                     {
                         using (var tran = DatabaseManager<ThumbnailConnection>.BeginTransaction())
                         {
-                            var thumbnailGetLogic = new ThumbnailGetLogic(this.Job);
                             var thumbnailBuffer
-                                = thumbnailGetLogic.GetOrCreateCache(filePath, thumbSize.Width, thumbSize.Height);
+                                = ThumbnailCacher.Instance.GetOrCreateCache(filePath, thumbSize.Width, thumbSize.Height);
                             if (thumbnailBuffer.ThumbnailBuffer == null)
                             {
                                 throw new NullReferenceException("サムネイルのバッファがNullです。");
@@ -113,9 +113,8 @@ namespace PicSum.Job.Logics
                         {
                             using (var tran = DatabaseManager<ThumbnailConnection>.BeginTransaction())
                             {
-                                var thumbnailGetLogic = new ThumbnailGetLogic(this.Job);
                                 var thumbnailBuffer
-                                    = thumbnailGetLogic.GetOrCreateCache(firstImageFile, thumbSize.Width, thumbSize.Height);
+                                    = ThumbnailCacher.Instance.GetOrCreateCache(firstImageFile, thumbSize.Width, thumbSize.Height);
                                 if (thumbnailBuffer.ThumbnailBuffer == null)
                                 {
                                     throw new NullReferenceException("サムネイルのバッファがNullです。");
