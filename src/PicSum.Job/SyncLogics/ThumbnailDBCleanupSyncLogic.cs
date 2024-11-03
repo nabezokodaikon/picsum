@@ -1,3 +1,4 @@
+using SWF.Core.Base;
 using SWF.Core.FileAccessor;
 using SWF.Core.Job;
 
@@ -8,13 +9,13 @@ namespace PicSum.Job.SyncLogics
     {
         public void Execute()
         {
-            if (FileUtil.CanAccess(FileUtil.THUMBNAIL_DATABASE_FILE))
+            if (FileUtil.CanAccess(ResourceUtil.THUMBNAIL_DATABASE_FILE))
             {
-                File.Delete(FileUtil.THUMBNAIL_DATABASE_FILE);
+                File.Delete(ResourceUtil.THUMBNAIL_DATABASE_FILE);
             }
 
-            foreach (var thumbnailFile in FileUtil.GetFiles(FileUtil.DATABASE_DIRECTORY)
-                .Where(file => FileUtil.GetExtension(file) == FileUtil.THUMBNAIL_BUFFER_FILE_EXTENSION.ToUpper()))
+            foreach (var thumbnailFile in FileUtil.GetFiles(ResourceUtil.DATABASE_DIRECTORY)
+                .Where(file => FileUtil.GetExtension(file) == ResourceUtil.THUMBNAIL_BUFFER_FILE_EXTENSION.ToUpper()))
             {
                 File.Delete($"{thumbnailFile}");
             }

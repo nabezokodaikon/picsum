@@ -15,7 +15,7 @@ namespace PicSum.Main.Conf
         public static readonly Config Values = new();
 
         private static readonly string CONFIG_FILE
-            = Path.Combine(FileUtil.CONFIG_DIRECTORY, "config.xml");
+            = Path.Combine(ResourceUtil.CONFIG_DIRECTORY, "config.xml");
 
         public FormWindowState WindowState { get; set; }
         public Point WindowLocaion { get; set; }

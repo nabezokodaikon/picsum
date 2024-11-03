@@ -17,13 +17,6 @@ namespace SWF.Core.FileAccessor
 
         public const string THUMBNAIL_BUFFER_FILE_EXTENSION = ".thumbnail";
 
-        public static readonly string APPLICATION_DIRECTORY = GetApplicationDirectory();
-        public static readonly string LOG_DIRECTORY = GetLogDirectory();
-        public static readonly string CONFIG_DIRECTORY = GetConfigDirectory();
-        public static readonly string DATABASE_DIRECTORY = GetDatabaseDirectory();
-        public static readonly string FILE_INFO_DATABASE_FILE = GetFileInfoDatabaseFile();
-        public static readonly string THUMBNAIL_DATABASE_FILE = GetThumbnailDatabaseFile();
-
         internal const string AVIF_FILE_EXTENSION = ".AVIF";
         internal const string BMP_FILE_EXTENSION = ".BMP";
         internal const string GIF_FILE_EXTENSION = ".GIF";
@@ -41,82 +34,6 @@ namespace SWF.Core.FileAccessor
         public const string ROOT_DIRECTORY_PATH =
             "1435810adf6f3080e21df9c3b666c7887883da42ad582d911a81931c38e720da1235036c60c69389e8c4fcc26be0c796626ef8ed3296bd9c65445ff12168fb22";
         public static readonly DateTime ROOT_DIRECTORY_DATETIME = DateTime.MinValue;
-
-        public static bool IsRunningAsUwp()
-        {
-            try
-            {
-                // UWP の場合は Package.Current.Id が利用可能
-                return Windows.ApplicationModel.Package.Current.Id != null;
-            }
-            catch
-            {
-                // 例外が発生した場合は UWP ではない
-                return false;
-            }
-        }
-
-        private static string GetFileInfoDatabaseFile()
-        {
-            return Path.Combine(FileUtil.DATABASE_DIRECTORY, "fileinfo.sqlite");
-        }
-
-        private static string GetThumbnailDatabaseFile()
-        {
-            return Path.Combine(FileUtil.DATABASE_DIRECTORY, "thumbnail.sqlite");
-        }
-
-        private static string GetApplicationDirectory()
-        {
-            if (IsRunningAsUwp())
-            {
-                return Path.Combine(
-                    Windows.Storage.ApplicationData.Current.LocalFolder.Path,
-                    "picsum.files");
-            }
-            else
-            {
-                return ResourceUtil.EXECUTABLE_DIRECTORY;
-            }
-        }
-
-        private static string GetLogDirectory()
-        {
-            return Path.Combine(APPLICATION_DIRECTORY, "log");
-        }
-
-        private static string GetConfigDirectory()
-        {
-            return Path.Combine(APPLICATION_DIRECTORY, "config");
-        }
-
-        private static string GetDatabaseDirectory()
-        {
-            return Path.Combine(APPLICATION_DIRECTORY, "db");
-        }
-
-        public static void CreateApplicationDirectories()
-        {
-            if (!Directory.Exists(APPLICATION_DIRECTORY))
-            {
-                Directory.CreateDirectory(APPLICATION_DIRECTORY);
-            }
-
-            if (!Directory.Exists(LOG_DIRECTORY))
-            {
-                Directory.CreateDirectory(LOG_DIRECTORY);
-            }
-
-            if (!Directory.Exists(CONFIG_DIRECTORY))
-            {
-                Directory.CreateDirectory(CONFIG_DIRECTORY);
-            }
-
-            if (!Directory.Exists(DATABASE_DIRECTORY))
-            {
-                Directory.CreateDirectory(DATABASE_DIRECTORY);
-            }
-        }
 
         /// <summary>
         /// ファイル、フォルダの存在を確認します。

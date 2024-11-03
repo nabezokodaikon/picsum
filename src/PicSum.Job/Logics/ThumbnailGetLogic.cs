@@ -2,6 +2,7 @@ using PicSum.DatabaseAccessor.Connection;
 using PicSum.DatabaseAccessor.Dto;
 using PicSum.DatabaseAccessor.Sql;
 using PicSum.Job.Entities;
+using SWF.Core.Base;
 using SWF.Core.DatabaseAccessor;
 using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
@@ -417,7 +418,7 @@ namespace PicSum.Job.Logics
         private string GetThumbnailBufferFilePath(int id)
         {
             return Path.Combine(
-                FileUtil.DATABASE_DIRECTORY,
+                ResourceUtil.DATABASE_DIRECTORY,
                 $"{id}{FileUtil.THUMBNAIL_BUFFER_FILE_EXTENSION}");
         }
 

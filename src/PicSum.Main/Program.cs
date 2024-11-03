@@ -29,7 +29,7 @@ namespace PicSum.Main
             {
                 try
                 {
-                    FileUtil.CreateApplicationDirectories();
+                    ResourceUtil.CreateApplicationDirectories();
                     ConfigureLog();
 
                     var logger = LogManager.GetCurrentClassLogger();
@@ -82,9 +82,9 @@ namespace PicSum.Main
 
             var logfile = new FileTarget("logfile")
             {
-                FileName = Path.Combine(FileUtil.LOG_DIRECTORY, "app.log"),
+                FileName = Path.Combine(ResourceUtil.LOG_DIRECTORY, "app.log"),
                 Layout = "${longdate} | ${level:padding=-5} | ${threadname} | ${message:withexception=true}",
-                ArchiveFileName = string.Format("{0}/{1}", FileUtil.LOG_DIRECTORY, "${date:format=yyyyMMdd}/{########}.log"),
+                ArchiveFileName = string.Format("{0}/{1}", ResourceUtil.LOG_DIRECTORY, "${date:format=yyyyMMdd}/{########}.log"),
                 ArchiveAboveSize = 10 * 1024 * 1024,
                 ArchiveNumbering = ArchiveNumberingMode.Sequence,
             };
