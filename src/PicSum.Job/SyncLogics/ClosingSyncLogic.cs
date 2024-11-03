@@ -1,6 +1,5 @@
 using PicSum.DatabaseAccessor.Connection;
 using PicSum.Job.Common;
-using PicSum.Job.Logics;
 using SWF.Core.DatabaseAccessor;
 using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
@@ -21,7 +20,7 @@ namespace PicSum.Job.SyncLogics
             ThumbnailCacher.Instance.Dispose();
             ImageFileCacher.Instance.Dispose();
             ImageFileSizeCacher.Instance.Dispose();
-            FileExportLogic.DisposeStaticResouces();
+            FileExporter.Instance.Dispose();
 
             DatabaseManager<FileInfoConnection>.Close();
             DatabaseManager<ThumbnailConnection>.Close();

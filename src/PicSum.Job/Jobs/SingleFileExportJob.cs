@@ -1,5 +1,5 @@
-using PicSum.Job.Logics;
 using PicSum.Job.Parameters;
+using SWF.Core.FileAccessor;
 using SWF.Core.Job;
 using System.Runtime.Versioning;
 
@@ -26,12 +26,11 @@ namespace PicSum.Job.Jobs
                 throw new ArgumentException("エクスポート先のファイルパスがNULLです。", nameof(param));
             }
 
-            FileExportLogic.FileExportLock.Wait();
+            FileExporter.Instance.Lock.Wait();
 
             try
             {
-                var logic = new FileExportLogic(this);
-                logic.Execute(param.SrcFilePath, param.ExportFilePath);
+                FileExporter.Instance.Execute(param.SrcFilePath, param.ExportFilePath);
             }
             catch (UnauthorizedAccessException ex)
             {
@@ -59,7 +58,7 @@ namespace PicSum.Job.Jobs
             }
             finally
             {
-                FileExportLogic.FileExportLock.Release();
+                FileExporter.Instance.Lock.Release();
             }
         }
     }
