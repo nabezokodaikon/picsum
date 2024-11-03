@@ -16,6 +16,20 @@ namespace SWF.Core.Base
 
         public const string MUTEX_NAME = "PicSumMutex";
         public const string PIPE_NAME = "PicSumPipe";
+
+        public static bool IsRunningAsUwp()
+        {
+            try
+            {
+                // UWP の場合は Package.Current.Id が利用可能
+                return Windows.ApplicationModel.Package.Current.Id != null;
+            }
+            catch
+            {
+                // 例外が発生した場合は UWP ではない
+                return false;
+            }
+        }
     }
 
     /// <summary>

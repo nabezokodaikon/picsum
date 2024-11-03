@@ -30,7 +30,7 @@ namespace PicSum.Main.UIComponent
 
         private static bool IsHome()
         {
-            if (ResourceUtil.IsRunningAsUwp())
+            if (ApplicationConstants.IsRunningAsUwp())
             {
                 return true;
             }

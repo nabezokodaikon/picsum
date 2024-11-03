@@ -13,20 +13,6 @@ namespace SWF.Core.Base
         public static readonly string FILE_INFO_DATABASE_FILE = GetFileInfoDatabaseFile();
         public static readonly string THUMBNAIL_DATABASE_FILE = GetThumbnailDatabaseFile();
 
-        public static bool IsRunningAsUwp()
-        {
-            try
-            {
-                // UWP の場合は Package.Current.Id が利用可能
-                return Windows.ApplicationModel.Package.Current.Id != null;
-            }
-            catch
-            {
-                // 例外が発生した場合は UWP ではない
-                return false;
-            }
-        }
-
         private static string GetConfigFile()
         {
             return Path.Combine(CONFIG_DIRECTORY, "config.xml");
@@ -55,7 +41,7 @@ namespace SWF.Core.Base
 
         private static string GetApplicationDirectory()
         {
-            if (IsRunningAsUwp())
+            if (ApplicationConstants.IsRunningAsUwp())
             {
                 return Path.Combine(
                     Windows.Storage.ApplicationData.Current.LocalFolder.Path,
