@@ -8,8 +8,8 @@ namespace SWF.Core.ImageAccessor
     public static class ImageFileCacher
     {
         private const int CACHE_CAPACITY = 12;
-        private static readonly List<ImageFileCache> CACHE_LIST = new(CACHE_CAPACITY);
-        private static readonly Dictionary<string, ImageFileCache> CACHE_DICTIONARY = new(CACHE_CAPACITY);
+        private static readonly List<ImageFileCacheEntity> CACHE_LIST = new(CACHE_CAPACITY);
+        private static readonly Dictionary<string, ImageFileCacheEntity> CACHE_DICTIONARY = new(CACHE_CAPACITY);
         private static readonly object CACHE_LOCK = new();
 
         public static void DisposeStaticResources()
@@ -83,13 +83,13 @@ namespace SWF.Core.ImageAccessor
 
                 var bitmap = ImageUtil.ReadImageFile(filePath);
                 ImageFileSizeCacher.Set(filePath, bitmap.Size);
-                var newCache = new ImageFileCache(filePath, bitmap, timestamp);
+                var newCache = new ImageFileCacheEntity(filePath, bitmap, timestamp);
                 CACHE_DICTIONARY.Add(newCache.FilePath, newCache);
                 CACHE_LIST.Add(newCache);
             }
         }
 
-        private static T Read<T>(string filePath, Func<ImageFileCache, T> resultFunc)
+        private static T Read<T>(string filePath, Func<ImageFileCacheEntity, T> resultFunc)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
@@ -122,7 +122,7 @@ namespace SWF.Core.ImageAccessor
 
                 var bitmap = ImageUtil.ReadImageFile(filePath);
                 ImageFileSizeCacher.Set(filePath, bitmap.Size);
-                var newCache = new ImageFileCache(filePath, bitmap, timestamp);
+                var newCache = new ImageFileCacheEntity(filePath, bitmap, timestamp);
                 CACHE_DICTIONARY.Add(filePath, newCache);
                 CACHE_LIST.Add(newCache);
                 return resultFunc(newCache);

@@ -3,9 +3,9 @@ namespace PicSum.Job.Entities
     /// <summary>
     /// サムネイルバッファエンティティ
     /// </summary>
-    public sealed class ThumbnailBufferEntity
+    public sealed class ThumbnailCacheEntity
     {
-        public static readonly ThumbnailBufferEntity EMPTY = new()
+        public static readonly ThumbnailCacheEntity EMPTY = new()
         {
             FilePath = string.Empty,
             ThumbnailWidth = 0,

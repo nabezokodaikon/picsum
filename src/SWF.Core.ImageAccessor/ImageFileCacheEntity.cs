@@ -3,8 +3,8 @@ using System.Runtime.Versioning;
 namespace SWF.Core.ImageAccessor
 {
     [SupportedOSPlatform("windows")]
-    internal sealed partial class ImageFileCache
-        : IDisposable, IEquatable<ImageFileCache>
+    internal sealed partial class ImageFileCacheEntity
+        : IDisposable, IEquatable<ImageFileCacheEntity>
     {
         private bool disposed = false;
 
@@ -12,7 +12,7 @@ namespace SWF.Core.ImageAccessor
         public Bitmap Bitmap { get; private set; }
         public DateTime Timestamp { get; private set; }
 
-        public ImageFileCache(string filePath, Bitmap bitmap, DateTime timestamp)
+        public ImageFileCacheEntity(string filePath, Bitmap bitmap, DateTime timestamp)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
             ArgumentNullException.ThrowIfNull(bitmap, nameof(bitmap));
@@ -22,7 +22,7 @@ namespace SWF.Core.ImageAccessor
             this.Timestamp = timestamp;
         }
 
-        ~ImageFileCache()
+        ~ImageFileCacheEntity()
         {
             this.Dispose(false);
         }
@@ -48,7 +48,7 @@ namespace SWF.Core.ImageAccessor
             this.disposed = true;
         }
 
-        public bool Equals(ImageFileCache? other)
+        public bool Equals(ImageFileCacheEntity? other)
         {
             if (other == null)
             {
@@ -75,7 +75,7 @@ namespace SWF.Core.ImageAccessor
 
         public override bool Equals(object? obj)
         {
-            return this.Equals(obj as ImageFileCache);
+            return this.Equals(obj as ImageFileCacheEntity);
         }
     }
 }

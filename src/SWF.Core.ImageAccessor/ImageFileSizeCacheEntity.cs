@@ -1,13 +1,13 @@
 namespace SWF.Core.ImageAccessor
 {
-    public sealed class ImageFileSizeCache
-        : IEquatable<ImageFileSizeCache>
+    public sealed class ImageFileSizeCacheEntity
+        : IEquatable<ImageFileSizeCacheEntity>
     {
         public readonly string FilePath;
         public readonly Size Size;
         public readonly DateTime Timestamp;
 
-        public ImageFileSizeCache(string filePath, Size size, DateTime timestamp)
+        public ImageFileSizeCacheEntity(string filePath, Size size, DateTime timestamp)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
@@ -16,7 +16,7 @@ namespace SWF.Core.ImageAccessor
             this.Timestamp = timestamp;
         }
 
-        public bool Equals(ImageFileSizeCache? other)
+        public bool Equals(ImageFileSizeCacheEntity? other)
         {
             ArgumentNullException.ThrowIfNull(other, nameof(other));
 
@@ -40,7 +40,7 @@ namespace SWF.Core.ImageAccessor
 
         public override bool Equals(object? obj)
         {
-            return this.Equals(obj as ImageFileSizeCache);
+            return this.Equals(obj as ImageFileSizeCacheEntity);
         }
     }
 }

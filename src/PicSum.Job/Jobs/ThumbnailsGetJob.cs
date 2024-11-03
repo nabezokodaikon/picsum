@@ -38,7 +38,7 @@ namespace PicSum.Job.Jobs
                     try
                     {
                         var bf = getLogic.GetOrCreateCache(param.FilePathList[index], param.ThumbnailWidth, param.ThumbnailHeight);
-                        if (bf == ThumbnailBufferEntity.EMPTY)
+                        if (bf == ThumbnailCacheEntity.EMPTY)
                         {
                             continue;
                         }
