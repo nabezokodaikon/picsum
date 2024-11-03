@@ -19,15 +19,15 @@ namespace SWF.Core.FileAccessor
         private static readonly Dictionary<string, Bitmap> JUMBO_ICON_CASH = [];
         private static readonly Bitmap OTHER_FILE_ICON = FileIconCacher.GetOtherFileIcon();
         private static readonly Bitmap SMALL_PC_ICON =
-            FileUtil.GetSmallSystemIcon(WinApiMembers.ShellSpecialFolder.CSIDL_DRIVES);
+            FileIconUtil.GetSmallSystemIcon(WinApiMembers.ShellSpecialFolder.CSIDL_DRIVES);
         private static readonly Bitmap LARGE_PC_ICON =
-            FileUtil.GetLargeSystemIcon(WinApiMembers.ShellSpecialFolder.CSIDL_DRIVES);
+            FileIconUtil.GetLargeSystemIcon(WinApiMembers.ShellSpecialFolder.CSIDL_DRIVES);
         private static readonly Bitmap SMALL_DIRECTORY_ICON =
-            FileUtil.GetSmallIconByFilePath(FileUtil.GetParentDirectoryPath(Assembly.GetExecutingAssembly().Location));
+            FileIconUtil.GetSmallIconByFilePath(FileUtil.GetParentDirectoryPath(Assembly.GetExecutingAssembly().Location));
         private static readonly Bitmap LARGE_DIRECTORY_ICON =
-            FileUtil.GetExtraLargeIconByFilePath(FileUtil.GetParentDirectoryPath(Assembly.GetExecutingAssembly().Location), WinApiMembers.SHIL.SHIL_EXTRALARGE);
+            FileIconUtil.GetExtraLargeIconByFilePath(FileUtil.GetParentDirectoryPath(Assembly.GetExecutingAssembly().Location), WinApiMembers.SHIL.SHIL_EXTRALARGE);
         private static readonly Bitmap JUMBO_DIRECTORY_ICON =
-            FileUtil.GetExtraLargeIconByFilePath(FileUtil.GetParentDirectoryPath(Assembly.GetExecutingAssembly().Location), WinApiMembers.SHIL.SHIL_JUMBO);
+            FileIconUtil.GetExtraLargeIconByFilePath(FileUtil.GetParentDirectoryPath(Assembly.GetExecutingAssembly().Location), WinApiMembers.SHIL.SHIL_JUMBO);
 
         public static Image SmallMyComputerIcon
         {
@@ -78,14 +78,14 @@ namespace SWF.Core.FileAccessor
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
-            return FileUtil.GetSmallIconByFilePath(filePath);
+            return FileIconUtil.GetSmallIconByFilePath(filePath);
         }
 
         public static Image GetLargeDriveIcon(string filePath)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
-            return FileUtil.GetExtraLargeIconByFilePath(filePath, WinApiMembers.SHIL.SHIL_JUMBO);
+            return FileIconUtil.GetExtraLargeIconByFilePath(filePath, WinApiMembers.SHIL.SHIL_JUMBO);
         }
 
         public static Image GetSmallFileIcon(string filePath)
@@ -107,7 +107,7 @@ namespace SWF.Core.FileAccessor
                 }
                 else
                 {
-                    var icon = FileUtil.GetSmallIconByFilePath(filePath);
+                    var icon = FileIconUtil.GetSmallIconByFilePath(filePath);
                     SMALL_ICON_CASH.Add(ex, icon);
                     return icon;
                 }
@@ -133,7 +133,7 @@ namespace SWF.Core.FileAccessor
                 }
                 else
                 {
-                    var icon = FileUtil.GetExtraLargeIconByFilePath(filePath, WinApiMembers.SHIL.SHIL_EXTRALARGE);
+                    var icon = FileIconUtil.GetExtraLargeIconByFilePath(filePath, WinApiMembers.SHIL.SHIL_EXTRALARGE);
                     LARGE_ICON_CASH.Add(ex, icon);
                     return icon;
                 }
@@ -159,7 +159,7 @@ namespace SWF.Core.FileAccessor
                 }
                 else
                 {
-                    var icon = FileUtil.GetExtraLargeIconByFilePath(filePath, WinApiMembers.SHIL.SHIL_JUMBO);
+                    var icon = FileIconUtil.GetExtraLargeIconByFilePath(filePath, WinApiMembers.SHIL.SHIL_JUMBO);
                     JUMBO_ICON_CASH.Add(ex, icon);
                     return icon;
                 }
