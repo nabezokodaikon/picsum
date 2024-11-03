@@ -5,26 +5,57 @@ using System.Runtime.Versioning;
 namespace SWF.Core.ImageAccessor
 {
     [SupportedOSPlatform("windows")]
-    public static class ImageFileCacher
+    public sealed partial class ImageFileCacher
+        : IDisposable
     {
         private const int CACHE_CAPACITY = 12;
-        private static readonly List<ImageFileCacheEntity> CACHE_LIST = new(CACHE_CAPACITY);
-        private static readonly Dictionary<string, ImageFileCacheEntity> CACHE_DICTIONARY = new(CACHE_CAPACITY);
-        private static readonly object CACHE_LOCK = new();
 
-        public static void DisposeStaticResources()
+        public readonly static ImageFileCacher Instance = new();
+
+        private bool disposed = false;
+        private readonly List<ImageFileCacheEntity> CACHE_LIST = new(CACHE_CAPACITY);
+        private readonly Dictionary<string, ImageFileCacheEntity> CACHE_DICTIONARY = new(CACHE_CAPACITY);
+        private readonly object CACHE_LOCK = new();
+
+        private ImageFileCacher()
         {
-            foreach (var cache in CACHE_LIST)
-            {
-                cache.Dispose();
-            }
+
         }
 
-        public static Size GetSize(string filePath)
+        ~ImageFileCacher()
+        {
+            this.Dispose(false);
+        }
+
+        public void Dispose()
+        {
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        private void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+                foreach (var cache in this.CACHE_LIST)
+                {
+                    cache.Dispose();
+                }
+            }
+
+            this.disposed = true;
+        }
+
+        public Size GetSize(string filePath)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
-            return Read(filePath, static cache =>
+            return this.Read(filePath, cache =>
             {
                 if (cache.Bitmap == null)
                 {
@@ -35,11 +66,11 @@ namespace SWF.Core.ImageAccessor
             });
         }
 
-        public static CvImage GetCvImage(string filePath)
+        public CvImage GetCvImage(string filePath)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
-            return Read(filePath, static cache =>
+            return this.Read(filePath, cache =>
             {
                 if (cache.Bitmap == null)
                 {
@@ -50,15 +81,15 @@ namespace SWF.Core.ImageAccessor
             });
         }
 
-        public static void Create(string filePath)
+        public void Create(string filePath)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
             var timestamp = FileUtil.GetUpdateDate(filePath);
 
-            lock (CACHE_LOCK)
+            lock (this.CACHE_LOCK)
             {
-                if (CACHE_DICTIONARY.TryGetValue(filePath, out var cache))
+                if (this.CACHE_DICTIONARY.TryGetValue(filePath, out var cache))
                 {
                     if (timestamp == cache.Timestamp)
                     {
@@ -68,36 +99,36 @@ namespace SWF.Core.ImageAccessor
 
                 if (cache != null)
                 {
-                    CACHE_LIST.Remove(cache);
-                    CACHE_DICTIONARY.Remove(cache.FilePath);
+                    this.CACHE_LIST.Remove(cache);
+                    this.CACHE_DICTIONARY.Remove(cache.FilePath);
                     cache.Dispose();
                 }
 
-                if (CACHE_LIST.Count > CACHE_CAPACITY)
+                if (this.CACHE_LIST.Count > CACHE_CAPACITY)
                 {
-                    var removeCache = CACHE_LIST[0];
-                    CACHE_LIST.Remove(removeCache);
-                    CACHE_DICTIONARY.Remove(removeCache.FilePath);
+                    var removeCache = this.CACHE_LIST[0];
+                    this.CACHE_LIST.Remove(removeCache);
+                    this.CACHE_DICTIONARY.Remove(removeCache.FilePath);
                     removeCache.Dispose();
                 }
 
                 var bitmap = ImageUtil.ReadImageFile(filePath);
                 ImageFileSizeCacher.Set(filePath, bitmap.Size);
                 var newCache = new ImageFileCacheEntity(filePath, bitmap, timestamp);
-                CACHE_DICTIONARY.Add(newCache.FilePath, newCache);
-                CACHE_LIST.Add(newCache);
+                this.CACHE_DICTIONARY.Add(newCache.FilePath, newCache);
+                this.CACHE_LIST.Add(newCache);
             }
         }
 
-        private static T Read<T>(string filePath, Func<ImageFileCacheEntity, T> resultFunc)
+        private T Read<T>(string filePath, Func<ImageFileCacheEntity, T> resultFunc)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
             var timestamp = FileUtil.GetUpdateDate(filePath);
 
-            lock (CACHE_LOCK)
+            lock (this.CACHE_LOCK)
             {
-                if (CACHE_DICTIONARY.TryGetValue(filePath, out var cache))
+                if (this.CACHE_DICTIONARY.TryGetValue(filePath, out var cache))
                 {
                     if (timestamp == cache.Timestamp)
                     {
@@ -107,24 +138,24 @@ namespace SWF.Core.ImageAccessor
 
                 if (cache != null)
                 {
-                    CACHE_LIST.Remove(cache);
-                    CACHE_DICTIONARY.Remove(cache.FilePath);
+                    this.CACHE_LIST.Remove(cache);
+                    this.CACHE_DICTIONARY.Remove(cache.FilePath);
                     cache.Dispose();
                 }
 
-                if (CACHE_LIST.Count > CACHE_CAPACITY)
+                if (this.CACHE_LIST.Count > CACHE_CAPACITY)
                 {
-                    var removeCache = CACHE_LIST[0];
-                    CACHE_LIST.Remove(removeCache);
-                    CACHE_DICTIONARY.Remove(removeCache.FilePath);
+                    var removeCache = this.CACHE_LIST[0];
+                    this.CACHE_LIST.Remove(removeCache);
+                    this.CACHE_DICTIONARY.Remove(removeCache.FilePath);
                     removeCache.Dispose();
                 }
 
                 var bitmap = ImageUtil.ReadImageFile(filePath);
                 ImageFileSizeCacher.Set(filePath, bitmap.Size);
                 var newCache = new ImageFileCacheEntity(filePath, bitmap, timestamp);
-                CACHE_DICTIONARY.Add(filePath, newCache);
-                CACHE_LIST.Add(newCache);
+                this.CACHE_DICTIONARY.Add(filePath, newCache);
+                this.CACHE_LIST.Add(newCache);
                 return resultFunc(newCache);
             }
         }
