@@ -113,7 +113,7 @@ namespace SWF.Core.ImageAccessor
                 }
 
                 var bitmap = ImageUtil.ReadImageFile(filePath);
-                ImageFileSizeCacher.Set(filePath, bitmap.Size);
+                ImageFileSizeCacher.Instance.Set(filePath, bitmap.Size);
                 var newCache = new ImageFileCacheEntity(filePath, bitmap, timestamp);
                 this.CACHE_DICTIONARY.Add(newCache.FilePath, newCache);
                 this.CACHE_LIST.Add(newCache);
@@ -152,7 +152,7 @@ namespace SWF.Core.ImageAccessor
                 }
 
                 var bitmap = ImageUtil.ReadImageFile(filePath);
-                ImageFileSizeCacher.Set(filePath, bitmap.Size);
+                ImageFileSizeCacher.Instance.Set(filePath, bitmap.Size);
                 var newCache = new ImageFileCacheEntity(filePath, bitmap, timestamp);
                 this.CACHE_DICTIONARY.Add(filePath, newCache);
                 this.CACHE_LIST.Add(newCache);
