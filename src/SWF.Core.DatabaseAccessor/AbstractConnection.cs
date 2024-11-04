@@ -54,7 +54,7 @@ namespace SWF.Core.DatabaseAccessor
             this.DBFilePath = dbFilePath;
         }
 
-        protected virtual void Dispose(bool disposing)
+        private void Dispose(bool disposing)
         {
             if (this.disposed)
             {
