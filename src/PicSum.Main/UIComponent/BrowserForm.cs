@@ -10,7 +10,6 @@ using SWF.UIComponent.TabOperation;
 using System;
 using System.ComponentModel;
 using System.Drawing;
-using System.Linq;
 using System.Runtime.Versioning;
 using System.Windows.Forms;
 
@@ -21,35 +20,6 @@ namespace PicSum.Main.UIComponent
         : GrassForm, ISender
     {
         private static bool isStartUp = true;
-
-        private static bool IsCleanup()
-        {
-            return Environment.GetCommandLineArgs().Contains("--cleanup");
-        }
-
-        private static bool IsHome()
-        {
-            if (AppConstants.IsRunningAsUwp())
-            {
-                return true;
-            }
-            else
-            {
-                return Environment.GetCommandLineArgs().Contains("--home");
-            }
-        }
-
-        private static bool IsFilePath()
-        {
-            return Environment.GetCommandLineArgs()
-                .Any(_ => FileUtil.CanAccess(_) && FileUtil.IsImageFile(_));
-        }
-
-        private static string GetImageFilePatCommandLineArgs()
-        {
-            return Environment.GetCommandLineArgs()
-                .FirstOrDefault(_ => FileUtil.CanAccess(_) && FileUtil.IsImageFile(_));
-        }
 
         public event EventHandler<TabDropoutedEventArgs> TabDropouted;
         public event EventHandler<BrowserPageOpenEventArgs> NewWindowPageOpen;
@@ -287,9 +257,9 @@ namespace PicSum.Main.UIComponent
             this.SuspendLayout();
             this.Controls.Add(this.browserMainPanel);
 
-            if (BrowserForm.isStartUp && BrowserForm.IsFilePath())
+            if (BrowserForm.isStartUp && CommandLineArgs.IsFilePath())
             {
-                var imageFilePath = BrowserForm.GetImageFilePatCommandLineArgs();
+                var imageFilePath = CommandLineArgs.GetImageFilePatCommandLineArgs();
                 if (!string.IsNullOrEmpty(imageFilePath))
                 {
                     var directoryPath = FileUtil.GetParentDirectoryPath(imageFilePath);
@@ -309,7 +279,7 @@ namespace PicSum.Main.UIComponent
                     this.browserMainPanel.AddImageViewerPageTab(parameter);
                 }
             }
-            else if (BrowserForm.isStartUp && BrowserForm.IsHome())
+            else if (BrowserForm.isStartUp && CommandLineArgs.IsHome())
             {
                 this.browserMainPanel.AddFavoriteDirectoryListTab();
             }
