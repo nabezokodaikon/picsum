@@ -11,8 +11,9 @@ namespace PicSum.Job.Entities
         public string? FileName { get; internal set; }
         public DateTime? UpdateDate { get; internal set; }
         public DateTime? RgistrationDate { get; internal set; }
-        public Image? LargeIcon { get; internal set; }
+        public Image? ExtraLargeIcon { get; internal set; }
         public Image? SmallIcon { get; internal set; }
+        public Image? JumboIcon { get; internal set; }
         public Bitmap? ThumbnailImage { get; internal set; }
         public int ThumbnailWidth { get; internal set; }
         public int ThumbnailHeight { get; internal set; }

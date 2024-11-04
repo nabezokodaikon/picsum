@@ -36,7 +36,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
             if (FileUtil.IsSystemRoot(this.parameter.DirectoryPath))
             {
-                this.Icon = FileIconCacher.Instance.SmallMyComputerIcon;
+                this.Icon = FileIconCacher.Instance.SmallPCIcon;
             }
             else if (FileUtil.IsDrive(this.parameter.DirectoryPath))
             {

@@ -16,24 +16,26 @@ namespace SWF.Core.FileAccessor
 
         private bool disposed = false;
         private readonly object SMALL_ICON_CASH_LOCK = new();
-        private readonly object LARGE_ICON_CASH_LOCK = new();
+        private readonly object EXTRALARGE_ICON_CASH_LOCK = new();
         private readonly object JUMBO_ICON_CASH_LOCK = new();
         private readonly Dictionary<string, Bitmap> SMALL_ICON_CASH = [];
-        private readonly Dictionary<string, Bitmap> LARGE_ICON_CASH = [];
+        private readonly Dictionary<string, Bitmap> EXTRALARGE_ICON_CASH = [];
         private readonly Dictionary<string, Bitmap> JUMBO_ICON_CASH = [];
-        private readonly Bitmap OTHER_FILE_ICON = (Bitmap)ResourceFiles.EmptyIcon.Value;
+        private readonly Bitmap SMALL_EMPTY_FILE_ICON = (Bitmap)ResourceFiles.SmallEmptyIcon.Value;
+        private readonly Bitmap EXTRALARGE_EMPTY_FILE_ICON = (Bitmap)ResourceFiles.ExtraLargeEmptyIcon.Value;
+        private readonly Bitmap JUMBO_EMPTY_FILE_ICON = (Bitmap)ResourceFiles.JumboEmptyIcon.Value;
         private readonly Bitmap SMALL_PC_ICON =
-            FileIconUtil.GetSmallSystemIcon(WinApiMembers.ShellSpecialFolder.CSIDL_DRIVES);
+            FileIconUtil.GetSystemIcon(WinApiMembers.ShellSpecialFolder.CSIDL_DRIVES, WinApiMembers.ShellFileInfoFlags.SHGFI_SMALLICON);
         private readonly Bitmap LARGE_PC_ICON =
-            FileIconUtil.GetLargeSystemIcon(WinApiMembers.ShellSpecialFolder.CSIDL_DRIVES);
+            FileIconUtil.GetSystemIcon(WinApiMembers.ShellSpecialFolder.CSIDL_DRIVES, WinApiMembers.ShellFileInfoFlags.SHGFI_LARGEICON);
         private readonly Bitmap SMALL_DIRECTORY_ICON =
             FileIconUtil.GetSmallIconByFilePath(FileUtil.GetParentDirectoryPath(Assembly.GetExecutingAssembly().Location));
-        private readonly Bitmap LARGE_DIRECTORY_ICON =
-            FileIconUtil.GetExtraLargeIconByFilePath(FileUtil.GetParentDirectoryPath(Assembly.GetExecutingAssembly().Location), WinApiMembers.SHIL.SHIL_EXTRALARGE);
+        private readonly Bitmap EXTRALARGE_DIRECTORY_ICON =
+            FileIconUtil.GetLargeIconByFilePath(FileUtil.GetParentDirectoryPath(Assembly.GetExecutingAssembly().Location), WinApiMembers.SHIL.SHIL_EXTRALARGE);
         private readonly Bitmap JUMBO_DIRECTORY_ICON =
-            FileIconUtil.GetExtraLargeIconByFilePath(FileUtil.GetParentDirectoryPath(Assembly.GetExecutingAssembly().Location), WinApiMembers.SHIL.SHIL_JUMBO);
+            FileIconUtil.GetLargeIconByFilePath(FileUtil.GetParentDirectoryPath(Assembly.GetExecutingAssembly().Location), WinApiMembers.SHIL.SHIL_JUMBO);
 
-        public Image SmallMyComputerIcon
+        public Image SmallPCIcon
         {
             get
             {
@@ -41,7 +43,7 @@ namespace SWF.Core.FileAccessor
             }
         }
 
-        public Image LargeMyComputerIcon
+        public Image LargePCIcon
         {
             get
             {
@@ -57,11 +59,11 @@ namespace SWF.Core.FileAccessor
             }
         }
 
-        public Image LargeDirectoryIcon
+        public Image ExtraLargeDirectoryIcon
         {
             get
             {
-                return this.LARGE_DIRECTORY_ICON;
+                return this.EXTRALARGE_DIRECTORY_ICON;
             }
         }
 
@@ -101,7 +103,7 @@ namespace SWF.Core.FileAccessor
                 this.SMALL_PC_ICON.Dispose();
                 this.LARGE_PC_ICON.Dispose();
                 this.SMALL_DIRECTORY_ICON.Dispose();
-                this.LARGE_DIRECTORY_ICON.Dispose();
+                this.EXTRALARGE_DIRECTORY_ICON.Dispose();
                 this.JUMBO_DIRECTORY_ICON.Dispose();
 
                 foreach (var cache in this.SMALL_ICON_CASH)
@@ -109,7 +111,7 @@ namespace SWF.Core.FileAccessor
                     cache.Value.Dispose();
                 }
 
-                foreach (var cache in this.LARGE_ICON_CASH)
+                foreach (var cache in this.EXTRALARGE_ICON_CASH)
                 {
                     cache.Value.Dispose();
                 }
@@ -130,11 +132,18 @@ namespace SWF.Core.FileAccessor
             return FileIconUtil.GetSmallIconByFilePath(filePath);
         }
 
-        public Image GetLargeDriveIcon(string filePath)
+        public Image GetExtraLargeDriveIcon(string filePath)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
-            return FileIconUtil.GetExtraLargeIconByFilePath(filePath, WinApiMembers.SHIL.SHIL_JUMBO);
+            return FileIconUtil.GetLargeIconByFilePath(filePath, WinApiMembers.SHIL.SHIL_EXTRALARGE);
+        }
+
+        public Image GetJumboDriveIcon(string filePath)
+        {
+            ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
+
+            return FileIconUtil.GetLargeIconByFilePath(filePath, WinApiMembers.SHIL.SHIL_JUMBO);
         }
 
         public Image GetSmallFileIcon(string filePath)
@@ -143,7 +152,7 @@ namespace SWF.Core.FileAccessor
 
             if (!FileUtil.IsImageFile(filePath))
             {
-                return this.OTHER_FILE_ICON;
+                return this.SMALL_EMPTY_FILE_ICON;
             }
 
             var ex = FileUtil.GetExtension(filePath);
@@ -163,27 +172,27 @@ namespace SWF.Core.FileAccessor
             }
         }
 
-        public Image GetLargeFileIcon(string filePath)
+        public Image GetExtraLargeFileIcon(string filePath)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
             if (!FileUtil.IsImageFile(filePath))
             {
-                return this.OTHER_FILE_ICON;
+                return this.EXTRALARGE_EMPTY_FILE_ICON;
             }
 
             var ex = FileUtil.GetExtension(filePath);
 
-            lock (this.LARGE_ICON_CASH_LOCK)
+            lock (this.EXTRALARGE_ICON_CASH_LOCK)
             {
-                if (this.LARGE_ICON_CASH.TryGetValue(ex, out var cashIcon))
+                if (this.EXTRALARGE_ICON_CASH.TryGetValue(ex, out var cashIcon))
                 {
                     return cashIcon;
                 }
                 else
                 {
-                    var icon = FileIconUtil.GetExtraLargeIconByFilePath(filePath, WinApiMembers.SHIL.SHIL_EXTRALARGE);
-                    this.LARGE_ICON_CASH.Add(ex, icon);
+                    var icon = FileIconUtil.GetLargeIconByFilePath(filePath, WinApiMembers.SHIL.SHIL_EXTRALARGE);
+                    this.EXTRALARGE_ICON_CASH.Add(ex, icon);
                     return icon;
                 }
             }
@@ -195,7 +204,7 @@ namespace SWF.Core.FileAccessor
 
             if (!FileUtil.IsImageFile(filePath))
             {
-                return this.OTHER_FILE_ICON;
+                return this.JUMBO_EMPTY_FILE_ICON;
             }
 
             var ex = FileUtil.GetExtension(filePath);
@@ -208,7 +217,7 @@ namespace SWF.Core.FileAccessor
                 }
                 else
                 {
-                    var icon = FileIconUtil.GetExtraLargeIconByFilePath(filePath, WinApiMembers.SHIL.SHIL_JUMBO);
+                    var icon = FileIconUtil.GetLargeIconByFilePath(filePath, WinApiMembers.SHIL.SHIL_JUMBO);
                     this.JUMBO_ICON_CASH.Add(ex, icon);
                     return icon;
                 }

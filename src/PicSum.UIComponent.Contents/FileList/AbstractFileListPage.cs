@@ -241,7 +241,9 @@ namespace PicSum.UIComponent.Contents.FileList
                     FileName = srcFile.FileName,
                     UpdateDate = srcFile.UpdateDate,
                     RgistrationDate = srcFile.RgistrationDate,
-                    Icon = srcFile.LargeIcon,
+                    SmallIcon = srcFile.SmallIcon,
+                    ExtraLargeIcon = srcFile.ExtraLargeIcon,
+                    JumboIcon = srcFile.JumboIcon,
                     IsFile = srcFile.IsFile,
                     IsImageFile = srcFile.IsImageFile,
                 };
@@ -583,7 +585,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
             if (item.ThumbnailImage == null)
             {
-                ThumbnailUtil.DrawIcon(e.Graphics, item.Icon, this.GetIconRectangle(e));
+                ThumbnailUtil.DrawIcon(e.Graphics, item.JumboIcon, this.GetIconRectangle(e));
                 e.Graphics.DrawString(item.FileName, this.Font, this.flowList.ItemTextBrush, this.GetTextRectangle(e), this.flowList.ItemTextFormat);
             }
             else
@@ -606,12 +608,12 @@ namespace PicSum.UIComponent.Contents.FileList
                     var thumbRect = this.GetThumbnailRectangle(e);
                     if (item.ThumbnailWidth == thumbRect.Width && item.ThumbnailHeight == thumbRect.Height)
                     {
-                        ThumbnailUtil.DrawDirectoryThumbnail(e.Graphics, item.ThumbnailImage, thumbRect, item.Icon);
+                        ThumbnailUtil.DrawDirectoryThumbnail(e.Graphics, item.ThumbnailImage, thumbRect, item.ExtraLargeIcon);
                     }
                     else
                     {
                         ThumbnailUtil.AdjustDrawDirectoryThumbnail(
-                            e.Graphics, item.ThumbnailImage, thumbRect, new SizeF(item.SourceImageWidth, item.SourceImageHeight), item.Icon);
+                            e.Graphics, item.ThumbnailImage, thumbRect, new SizeF(item.SourceImageWidth, item.SourceImageHeight), item.ExtraLargeIcon);
                     }
                 }
 

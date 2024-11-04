@@ -28,8 +28,8 @@ namespace SWF.Core.Base
         public static readonly Lazy<Bitmap> DropRightIcon = new(() =>
             CreateBitmapFromByteArray(Resources.DropRightIcon));
 
-        public static readonly Lazy<Bitmap> EmptyIcon = new(() =>
-            CreateBitmapFromByteArray(Resources.EmptyIcon));
+        public static readonly Lazy<Bitmap> ExtraLargeEmptyIcon = new(() =>
+            CreateBitmapFromByteArray(Resources.ExtraLargeEmptyIcon));
 
         public static readonly Lazy<Bitmap> GoBackIcon = new(() =>
             CreateBitmapFromByteArray(Resources.GoBackIcon));
@@ -45,6 +45,9 @@ namespace SWF.Core.Base
 
         public static readonly Lazy<Bitmap> InfoIcon = new(() =>
             CreateBitmapFromByteArray(Resources.InfoIcon));
+
+        public static readonly Lazy<Bitmap> JumboEmptyIcon = new(() =>
+            CreateBitmapFromByteArray(Resources.JumboEmptyIcon));
 
         public static readonly Lazy<Bitmap> RatingIcon = new(() =>
             CreateBitmapFromByteArray(Resources.RatingIcon));
@@ -66,6 +69,9 @@ namespace SWF.Core.Base
 
         public static readonly Lazy<Bitmap> SmallArrowUpIcon = new(() =>
             CreateBitmapFromByteArray(Resources.SmallArrowUpIcon));
+
+        public static readonly Lazy<Bitmap> SmallEmptyIcon = new(() =>
+            CreateBitmapFromByteArray(Resources.SmallEmptyIcon));
 
         public static readonly Lazy<Bitmap> TagIcon = new(() =>
             CreateBitmapFromByteArray(Resources.TagIcon));

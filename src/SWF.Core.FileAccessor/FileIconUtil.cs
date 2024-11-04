@@ -6,19 +6,14 @@ namespace SWF.Core.FileAccessor
 {
     internal static class FileIconUtil
     {
-        /// <summary>
-        /// 小システムアイコンを取得します。
-        /// </summary>
-        /// <param name="spesialDirectory">システムアイコンの種類</param>
-        /// <returns></returns>
-        public static Bitmap GetSmallSystemIcon(WinApiMembers.ShellSpecialFolder specialFolder)
+        public static Bitmap GetSystemIcon(WinApiMembers.ShellSpecialFolder specialFolder, WinApiMembers.ShellFileInfoFlags shil)
         {
             _ = WinApiMembers.SHGetSpecialFolderLocation(IntPtr.Zero, specialFolder, out var idHandle);
             var sh = new WinApiMembers.SHFILEINFOW();
             var hSuccess = WinApiMembers.SHGetFileInfoW(idHandle, 0, ref sh, (uint)Marshal.SizeOf(sh),
                                                            WinApiMembers.ShellFileInfoFlags.SHGFI_ICON |
                                                            WinApiMembers.ShellFileInfoFlags.SHGFI_PIDL |
-                                                           WinApiMembers.ShellFileInfoFlags.SHGFI_SMALLICON);
+                                                           shil);
             try
             {
                 if (!hSuccess.Equals(IntPtr.Zero))
@@ -30,40 +25,7 @@ namespace SWF.Core.FileAccessor
                 }
                 else
                 {
-                    throw new NullReferenceException("小システムアイコンを取得できませんでした。");
-                }
-            }
-            finally
-            {
-                WinApiMembers.DestroyIcon(sh.hIcon);
-            }
-        }
-
-        /// <summary>
-        /// 大システムアイコンを取得します。
-        /// </summary>
-        /// <param name="spesialDirectory">システムアイコンの種類</param>
-        /// <returns></returns>
-        public static Bitmap GetLargeSystemIcon(WinApiMembers.ShellSpecialFolder specialFolder)
-        {
-            _ = WinApiMembers.SHGetSpecialFolderLocation(IntPtr.Zero, specialFolder, out var idHandle);
-            var sh = new WinApiMembers.SHFILEINFOW();
-            var hSuccess = WinApiMembers.SHGetFileInfoW(idHandle, 0, ref sh, (uint)Marshal.SizeOf(sh),
-                                                           WinApiMembers.ShellFileInfoFlags.SHGFI_ICON |
-                                                           WinApiMembers.ShellFileInfoFlags.SHGFI_PIDL |
-                                                           WinApiMembers.ShellFileInfoFlags.SHGFI_LARGEICON);
-            try
-            {
-                if (!hSuccess.Equals(IntPtr.Zero))
-                {
-                    using (var icon = Icon.FromHandle(sh.hIcon))
-                    {
-                        return icon.ToBitmap();
-                    }
-                }
-                else
-                {
-                    throw new NullReferenceException("大システムアイコンを取得できませんでした。");
+                    throw new NullReferenceException("システムアイコンを取得できませんでした。");
                 }
             }
             finally
@@ -96,7 +58,7 @@ namespace SWF.Core.FileAccessor
                 }
                 else
                 {
-                    return ResourceFiles.EmptyIcon.Value;
+                    return ResourceFiles.ExtraLargeEmptyIcon.Value;
                 }
             }
             finally
@@ -110,7 +72,7 @@ namespace SWF.Core.FileAccessor
         /// </summary>
         /// <param name="filePath">ファイルパス</param>
         /// <returns></returns>
-        public static Bitmap GetExtraLargeIconByFilePath(string filePath, WinApiMembers.SHIL shil)
+        public static Bitmap GetLargeIconByFilePath(string filePath, WinApiMembers.SHIL shil)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
@@ -123,7 +85,7 @@ namespace SWF.Core.FileAccessor
                 (int)WinApiMembers.ShellFileInfoFlags.SHGFI_SYSICONINDEX);
             if (hSuccess.Equals(IntPtr.Zero))
             {
-                return ResourceFiles.EmptyIcon.Value;
+                return ResourceFiles.ExtraLargeEmptyIcon.Value;
             }
 
             var result = WinApiMembers.SHGetImageList(
@@ -135,13 +97,13 @@ namespace SWF.Core.FileAccessor
             {
                 if (result != WinApiMembers.S_OK)
                 {
-                    return ResourceFiles.EmptyIcon.Value;
+                    return ResourceFiles.ExtraLargeEmptyIcon.Value;
                 }
 
                 var hicon = WinApiMembers.ImageList_GetIcon(pimgList, shinfo.iIcon, 0);
                 if (hicon.Equals(IntPtr.Zero))
                 {
-                    return ResourceFiles.EmptyIcon.Value;
+                    return ResourceFiles.ExtraLargeEmptyIcon.Value;
                 }
 
                 try
