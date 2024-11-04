@@ -26,11 +26,12 @@ namespace PicSum.Job.Common
         private readonly int BUFFER_FILE_MAX_SIZE = 1024 * 1024 * 10;
         private readonly List<ThumbnailCacheEntity> CACHE_LIST = new(CACHE_CAPACITY);
         private readonly Dictionary<string, ThumbnailCacheEntity> CACHE_DICTIONARY = new(CACHE_CAPACITY);
+        private readonly FileAppender fileAppender;
         private readonly object CACHE_LOCK = new();
 
         private ThumbnailCacher()
         {
-
+            this.fileAppender = new(this.FILE_READ_BUFFER_SIZE);
         }
 
         ~ThumbnailCacher()
@@ -466,27 +467,13 @@ namespace PicSum.Job.Common
 
         private byte[] ReadThumbnailBuffer(string filePath, int startPoint, int size)
         {
-            using (var fs = new FileStream(
-                filePath, FileMode.Open, FileAccess.Read, FileShare.Read, this.FILE_READ_BUFFER_SIZE, FileOptions.RandomAccess))
-            {
-                var bf = new byte[size];
-                fs.Seek(startPoint, SeekOrigin.Begin);
-                fs.Read(bf, 0, size);
-                return bf;
-            }
+            return this.fileAppender.Read(filePath, startPoint, size);
         }
 
         private int AddThumbnailBuffer(int id, byte[] buffer)
         {
             var thumbFile = this.GetThumbnailBufferFilePath(id);
-            using (var fs = new FileStream(
-                thumbFile, FileMode.Append, FileAccess.Write, FileShare.None, this.FILE_READ_BUFFER_SIZE, FileOptions.None))
-            using (var bs = new BufferedStream(fs, this.FILE_READ_BUFFER_SIZE))
-            {
-                var offset = (int)fs.Length;
-                bs.Write(buffer, 0, buffer.Length);
-                return offset;
-            }
+            return this.fileAppender.Append(thumbFile, buffer);
         }
 
         private ThumbnailCacheEntity GetDBCache(string filePath)
