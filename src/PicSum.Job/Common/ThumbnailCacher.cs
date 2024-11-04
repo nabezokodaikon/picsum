@@ -26,7 +26,7 @@ namespace PicSum.Job.Common
         private readonly int BUFFER_FILE_MAX_SIZE = 1024 * 1024 * 10;
         private readonly List<ThumbnailCacheEntity> CACHE_LIST = new(CACHE_CAPACITY);
         private readonly Dictionary<string, ThumbnailCacheEntity> CACHE_DICTIONARY = new(CACHE_CAPACITY);
-        private readonly SemaphoreSlim CACHE_LOCK = new(1, 1);
+        private readonly object CACHE_LOCK = new();
 
         private ThumbnailCacher()
         {
@@ -53,7 +53,7 @@ namespace PicSum.Job.Common
 
             if (disposing)
             {
-                this.CACHE_LOCK.Dispose();
+
             }
 
             this.disposed = true;
@@ -642,9 +642,7 @@ namespace PicSum.Job.Common
 
         private ThumbnailCacheEntity GetMemoryCache(string filePath)
         {
-            this.CACHE_LOCK.Wait();
-
-            try
+            lock (this.CACHE_LOCK)
             {
                 if (this.CACHE_DICTIONARY.TryGetValue(filePath, out var cach))
                 {
@@ -655,10 +653,6 @@ namespace PicSum.Job.Common
                     return ThumbnailCacheEntity.EMPTY;
                 }
             }
-            finally
-            {
-                this.CACHE_LOCK.Release();
-            }
         }
 
         private void UpdateMemoryCache(ThumbnailCacheEntity thumb)
@@ -668,9 +662,7 @@ namespace PicSum.Job.Common
                 throw new ArgumentException("サムネイルのファイルパスがNULLです。", nameof(thumb));
             }
 
-            this.CACHE_LOCK.Wait();
-
-            try
+            lock (this.CACHE_LOCK)
             {
                 if (this.CACHE_DICTIONARY.TryGetValue(thumb.FilePath, out var dicCache))
                 {
@@ -690,10 +682,6 @@ namespace PicSum.Job.Common
                     this.CACHE_LIST.Add(thumb);
                     this.CACHE_DICTIONARY.Add(thumb.FilePath, thumb);
                 }
-            }
-            finally
-            {
-                this.CACHE_LOCK.Release();
             }
         }
     }
