@@ -20,9 +20,9 @@ namespace PicSum.Main.Mng
         {
             Config.Instance.Load();
 
-            BrowserSettings.Instance.WindowState = Config.Instance.WindowState;
-            BrowserSettings.Instance.WindowLocaion = Config.Instance.WindowLocaion;
-            BrowserSettings.Instance.WindowSize = Config.Instance.WindowSize;
+            BrowserConfig.Instance.WindowState = Config.Instance.WindowState;
+            BrowserConfig.Instance.WindowLocaion = Config.Instance.WindowLocaion;
+            BrowserConfig.Instance.WindowSize = Config.Instance.WindowSize;
 
             CommonConfig.Instance.ExportDirectoryPath = Config.Instance.ExportDirectoryPath;
 
@@ -45,9 +45,9 @@ namespace PicSum.Main.Mng
             var closingJob = new ClosingSyncJob();
             closingJob.Execute();
 
-            Config.Instance.WindowState = BrowserSettings.Instance.WindowState;
-            Config.Instance.WindowLocaion = BrowserSettings.Instance.WindowLocaion;
-            Config.Instance.WindowSize = BrowserSettings.Instance.WindowSize;
+            Config.Instance.WindowState = BrowserConfig.Instance.WindowState;
+            Config.Instance.WindowLocaion = BrowserConfig.Instance.WindowLocaion;
+            Config.Instance.WindowSize = BrowserConfig.Instance.WindowSize;
 
             Config.Instance.ExportDirectoryPath = CommonConfig.Instance.ExportDirectoryPath;
 

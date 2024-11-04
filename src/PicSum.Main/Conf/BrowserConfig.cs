@@ -6,14 +6,14 @@ namespace PicSum.Main.Conf
     /// <summary>
     /// ブラウザ設定
     /// </summary>
-    internal sealed class BrowserSettings
+    internal sealed class BrowserConfig
     {
-        public static readonly BrowserSettings Instance = new();
+        public static readonly BrowserConfig Instance = new();
 
         public FormWindowState WindowState { get; set; }
         public Point WindowLocaion { get; set; }
         public Size WindowSize { get; set; }
 
-        private BrowserSettings() { }
+        private BrowserConfig() { }
     }
 }
