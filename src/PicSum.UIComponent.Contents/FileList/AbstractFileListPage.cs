@@ -177,11 +177,11 @@ namespace PicSum.UIComponent.Contents.FileList
             this.InitializeComponent();
 
             this.Font = new Font("Yu Gothic UI", 10F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(128)));
-            this.IsShowFileName = FileListPageConfig.IsShowFileName;
-            this.IsShowDirectory = FileListPageConfig.IsShowDirectory;
-            this.IsShowImageFile = FileListPageConfig.IsShowImageFile;
-            this.IsShowOtherFile = FileListPageConfig.IsShowOtherFile;
-            this.ThumbnailSize = FileListPageConfig.ThumbnailSize;
+            this.IsShowFileName = FileListPageConfig.Instance.IsShowFileName;
+            this.IsShowDirectory = FileListPageConfig.Instance.IsShowDirectory;
+            this.IsShowImageFile = FileListPageConfig.Instance.IsShowImageFile;
+            this.IsShowOtherFile = FileListPageConfig.Instance.IsShowOtherFile;
+            this.ThumbnailSize = FileListPageConfig.Instance.ThumbnailSize;
             this.SetFlowListItemSize();
         }
 
@@ -383,9 +383,9 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private void SetFilter()
         {
-            FileListPageConfig.IsShowDirectory = this.IsShowDirectory;
-            FileListPageConfig.IsShowImageFile = this.IsShowImageFile;
-            FileListPageConfig.IsShowOtherFile = this.IsShowOtherFile;
+            FileListPageConfig.Instance.IsShowDirectory = this.IsShowDirectory;
+            FileListPageConfig.Instance.IsShowImageFile = this.IsShowImageFile;
+            FileListPageConfig.Instance.IsShowOtherFile = this.IsShowOtherFile;
 
             if (this.masterFileDictionary == null)
             {
@@ -536,7 +536,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private void ChangeFileNameVisible()
         {
-            FileListPageConfig.IsShowFileName = this.IsShowFileName;
+            FileListPageConfig.Instance.IsShowFileName = this.IsShowFileName;
             this.flowList.BeginUpdate();
             try
             {
@@ -774,7 +774,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private void ThumbnailSizeToolStripSlider_ValueChanging(object sender, EventArgs e)
         {
-            FileListPageConfig.ThumbnailSize = this.ThumbnailSize;
+            FileListPageConfig.Instance.ThumbnailSize = this.ThumbnailSize;
             this.SetFlowListItemSize();
             this.flowList.Refresh();
         }
@@ -1138,7 +1138,7 @@ namespace PicSum.UIComponent.Contents.FileList
             {
                 using (var fbd = new FolderBrowserDialog())
                 {
-                    fbd.SelectedPath = CommonConfig.ExportDirectoryPath;
+                    fbd.SelectedPath = CommonConfig.Instance.ExportDirectoryPath;
                     if (fbd.ShowDialog() == DialogResult.OK)
                     {
                         var param = new MultiFilesExportParameter
@@ -1160,7 +1160,7 @@ namespace PicSum.UIComponent.Contents.FileList
                             })
                             .BeginCancel()
                             .StartJob(this, param);
-                        CommonConfig.ExportDirectoryPath = fbd.SelectedPath;
+                        CommonConfig.Instance.ExportDirectoryPath = fbd.SelectedPath;
                     }
                 }
             }
@@ -1169,7 +1169,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 using (var ofd = new SaveFileDialog())
                 {
                     var srcFilePath = e.FilePathList.First();
-                    ofd.InitialDirectory = CommonConfig.ExportDirectoryPath;
+                    ofd.InitialDirectory = CommonConfig.Instance.ExportDirectoryPath;
                     ofd.FileName = FileUtil.GetExportFileName(
                         ofd.InitialDirectory,
                         srcFilePath);
@@ -1187,7 +1187,7 @@ namespace PicSum.UIComponent.Contents.FileList
                         };
                         JobCaller.Instance.StartSingleFileExportJob(this, param);
 
-                        CommonConfig.ExportDirectoryPath = dir;
+                        CommonConfig.Instance.ExportDirectoryPath = dir;
                     }
                 }
             }

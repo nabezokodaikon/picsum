@@ -12,7 +12,7 @@ namespace PicSum.Main.Conf
     [SupportedOSPlatform("windows")]
     public sealed class Config
     {
-        public static readonly Config Values = new();
+        public static readonly Config Instance = new();
 
         public FormWindowState WindowState { get; set; }
         public Point WindowLocaion { get; set; }

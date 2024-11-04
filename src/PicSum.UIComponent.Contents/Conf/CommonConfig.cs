@@ -3,8 +3,15 @@ namespace PicSum.UIComponent.Contents.Conf
     /// <summary>
     /// コンテンツ共通設定クラス
     /// </summary>
-    public static class CommonConfig
+    public sealed class CommonConfig
     {
-        public static string ExportDirectoryPath { get; set; }
+        public static readonly CommonConfig Instance = new();
+
+        public string ExportDirectoryPath { get; set; }
+
+        private CommonConfig()
+        {
+
+        }
     }
 }

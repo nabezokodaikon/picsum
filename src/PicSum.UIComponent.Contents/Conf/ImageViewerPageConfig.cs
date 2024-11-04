@@ -7,7 +7,14 @@ namespace PicSum.UIComponent.Contents.Conf
     /// </summary>
     public sealed class ImageViewerPageConfig
     {
-        public static ImageDisplayMode ImageDisplayMode { get; set; }
-        public static ImageSizeMode ImageSizeMode { get; set; }
+        public static readonly ImageViewerPageConfig Instance = new();
+
+        public ImageDisplayMode ImageDisplayMode { get; set; }
+        public ImageSizeMode ImageSizeMode { get; set; }
+
+        private ImageViewerPageConfig()
+        {
+
+        }
     }
 }

@@ -18,23 +18,23 @@ namespace PicSum.Main.Mng
         /// </summary>
         public ResourceManager()
         {
-            Config.Values.Load();
+            Config.Instance.Load();
 
-            BrowserConfig.WindowState = Config.Values.WindowState;
-            BrowserConfig.WindowLocaion = Config.Values.WindowLocaion;
-            BrowserConfig.WindowSize = Config.Values.WindowSize;
+            BrowserSettings.Instance.WindowState = Config.Instance.WindowState;
+            BrowserSettings.Instance.WindowLocaion = Config.Instance.WindowLocaion;
+            BrowserSettings.Instance.WindowSize = Config.Instance.WindowSize;
 
-            CommonConfig.ExportDirectoryPath = Config.Values.ExportDirectoryPath;
+            CommonConfig.Instance.ExportDirectoryPath = Config.Instance.ExportDirectoryPath;
 
-            FileListPageConfig.ThumbnailSize = Config.Values.ThumbnailSize;
-            FileListPageConfig.IsShowFileName = Config.Values.IsShowFileName;
-            FileListPageConfig.IsShowDirectory = Config.Values.IsShowDirectory;
-            FileListPageConfig.IsShowImageFile = Config.Values.IsShowImageFile;
-            FileListPageConfig.IsShowOtherFile = Config.Values.IsShowOtherFile;
-            FileListPageConfig.FavoriteDirectoryCount = Config.Values.FavoriteDirectoryCount;
+            FileListPageConfig.Instance.ThumbnailSize = Config.Instance.ThumbnailSize;
+            FileListPageConfig.Instance.IsShowFileName = Config.Instance.IsShowFileName;
+            FileListPageConfig.Instance.IsShowDirectory = Config.Instance.IsShowDirectory;
+            FileListPageConfig.Instance.IsShowImageFile = Config.Instance.IsShowImageFile;
+            FileListPageConfig.Instance.IsShowOtherFile = Config.Instance.IsShowOtherFile;
+            FileListPageConfig.Instance.FavoriteDirectoryCount = Config.Instance.FavoriteDirectoryCount;
 
-            ImageViewerPageConfig.ImageDisplayMode = Config.Values.ImageDisplayMode;
-            ImageViewerPageConfig.ImageSizeMode = Config.Values.ImageSizeMode;
+            ImageViewerPageConfig.Instance.ImageDisplayMode = Config.Instance.ImageDisplayMode;
+            ImageViewerPageConfig.Instance.ImageSizeMode = Config.Instance.ImageSizeMode;
         }
 
         /// <summary>
@@ -45,22 +45,22 @@ namespace PicSum.Main.Mng
             var closingJob = new ClosingSyncJob();
             closingJob.Execute();
 
-            Config.Values.WindowState = BrowserConfig.WindowState;
-            Config.Values.WindowLocaion = BrowserConfig.WindowLocaion;
-            Config.Values.WindowSize = BrowserConfig.WindowSize;
+            Config.Instance.WindowState = BrowserSettings.Instance.WindowState;
+            Config.Instance.WindowLocaion = BrowserSettings.Instance.WindowLocaion;
+            Config.Instance.WindowSize = BrowserSettings.Instance.WindowSize;
 
-            Config.Values.ExportDirectoryPath = CommonConfig.ExportDirectoryPath;
+            Config.Instance.ExportDirectoryPath = CommonConfig.Instance.ExportDirectoryPath;
 
-            Config.Values.ThumbnailSize = FileListPageConfig.ThumbnailSize;
-            Config.Values.IsShowFileName = FileListPageConfig.IsShowFileName;
-            Config.Values.IsShowDirectory = FileListPageConfig.IsShowDirectory;
-            Config.Values.IsShowImageFile = FileListPageConfig.IsShowImageFile;
-            Config.Values.IsShowOtherFile = FileListPageConfig.IsShowOtherFile;
+            Config.Instance.ThumbnailSize = FileListPageConfig.Instance.ThumbnailSize;
+            Config.Instance.IsShowFileName = FileListPageConfig.Instance.IsShowFileName;
+            Config.Instance.IsShowDirectory = FileListPageConfig.Instance.IsShowDirectory;
+            Config.Instance.IsShowImageFile = FileListPageConfig.Instance.IsShowImageFile;
+            Config.Instance.IsShowOtherFile = FileListPageConfig.Instance.IsShowOtherFile;
 
-            Config.Values.ImageDisplayMode = ImageViewerPageConfig.ImageDisplayMode;
-            Config.Values.ImageSizeMode = ImageViewerPageConfig.ImageSizeMode;
+            Config.Instance.ImageDisplayMode = ImageViewerPageConfig.Instance.ImageDisplayMode;
+            Config.Instance.ImageSizeMode = ImageViewerPageConfig.Instance.ImageSizeMode;
 
-            Config.Values.Save();
+            Config.Instance.Save();
         }
     }
 }

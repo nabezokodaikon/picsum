@@ -3,13 +3,20 @@ namespace PicSum.UIComponent.Contents.Conf
     /// <summary>
     /// ファイルリストコンテンツ設定
     /// </summary>
-    public static class FileListPageConfig
+    public sealed class FileListPageConfig
     {
-        public static int ThumbnailSize { get; set; }
-        public static bool IsShowFileName { get; set; }
-        public static bool IsShowDirectory { get; set; }
-        public static bool IsShowImageFile { get; set; }
-        public static bool IsShowOtherFile { get; set; }
-        public static int FavoriteDirectoryCount { get; set; }
+        public static readonly FileListPageConfig Instance = new();
+
+        public int ThumbnailSize { get; set; }
+        public bool IsShowFileName { get; set; }
+        public bool IsShowDirectory { get; set; }
+        public bool IsShowImageFile { get; set; }
+        public bool IsShowOtherFile { get; set; }
+        public int FavoriteDirectoryCount { get; set; }
+
+        private FileListPageConfig()
+        {
+
+        }
     }
 }

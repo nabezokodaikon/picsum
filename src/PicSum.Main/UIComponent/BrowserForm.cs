@@ -83,8 +83,8 @@ namespace PicSum.Main.UIComponent
             this.KeyPreview = true;
             this.Padding = new Padding(8, 12, 8, 8);
 
-            this.Size = BrowserConfig.WindowSize;
-            this.WindowState = BrowserConfig.WindowState;
+            this.Size = BrowserSettings.Instance.WindowSize;
+            this.WindowState = BrowserSettings.Instance.WindowState;
 
             this.SetGrass();
 
@@ -143,7 +143,7 @@ namespace PicSum.Main.UIComponent
         {
             if (BrowserForm.isStartUp)
             {
-                this.Location = BrowserConfig.WindowLocaion;
+                this.Location = BrowserSettings.Instance.WindowLocaion;
 
                 if (BrowserForm.IsCleanup())
                 {
@@ -171,8 +171,8 @@ namespace PicSum.Main.UIComponent
             else
             {
                 this.Location = new Point(
-                    BrowserConfig.WindowLocaion.X + 16,
-                    BrowserConfig.WindowLocaion.Y + 16);
+                    BrowserSettings.Instance.WindowLocaion.X + 16,
+                    BrowserSettings.Instance.WindowLocaion.Y + 16);
             }
 
             base.OnHandleCreated(e);
@@ -189,13 +189,13 @@ namespace PicSum.Main.UIComponent
         {
             if (this.WindowState == FormWindowState.Normal)
             {
-                BrowserConfig.WindowState = this.WindowState;
-                BrowserConfig.WindowLocaion = this.Location;
-                BrowserConfig.WindowSize = this.Size;
+                BrowserSettings.Instance.WindowState = this.WindowState;
+                BrowserSettings.Instance.WindowLocaion = this.Location;
+                BrowserSettings.Instance.WindowSize = this.Size;
             }
             else if (this.WindowState == FormWindowState.Maximized)
             {
-                BrowserConfig.WindowState = this.WindowState;
+                BrowserSettings.Instance.WindowState = this.WindowState;
             }
 
             base.OnClosing(e);
