@@ -2,6 +2,7 @@ using PicSum.Job.SyncJobs;
 using PicSum.Main.Conf;
 using PicSum.UIComponent.Contents.Conf;
 using System;
+using System.Linq;
 using System.Runtime.Versioning;
 
 namespace PicSum.Main.Mng
@@ -13,6 +14,11 @@ namespace PicSum.Main.Mng
     internal sealed partial class ResourceManager
         : IDisposable
     {
+        private bool IsCleanup()
+        {
+            return Environment.GetCommandLineArgs().Contains("--cleanup");
+        }
+
         /// <summary>
         /// コンストラクタ
         /// </summary>
@@ -35,6 +41,23 @@ namespace PicSum.Main.Mng
 
             ImageViewerPageConfig.Instance.ImageDisplayMode = Config.Instance.ImageDisplayMode;
             ImageViewerPageConfig.Instance.ImageSizeMode = Config.Instance.ImageSizeMode;
+
+            if (this.IsCleanup())
+            {
+                var thumbnailDBCleanupJob = new ThumbnailDBCleanupSyncJob();
+                thumbnailDBCleanupJob.Execute();
+
+                var startupJob = new StartupSyncJob();
+                startupJob.Execute();
+
+                var fileInfoDBCleanupJob = new FileInfoDBCleanupSyncJob();
+                fileInfoDBCleanupJob.Execute();
+            }
+            else
+            {
+                var startupJob = new StartupSyncJob();
+                startupJob.Execute();
+            }
         }
 
         /// <summary>

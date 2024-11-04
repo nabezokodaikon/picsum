@@ -1,5 +1,4 @@
 using PicSum.Job.Parameters;
-using PicSum.Job.SyncJobs;
 using PicSum.Main.Conf;
 using PicSum.UIComponent.Contents.Common;
 using PicSum.UIComponent.Contents.Parameter;
@@ -144,29 +143,8 @@ namespace PicSum.Main.UIComponent
             if (BrowserForm.isStartUp)
             {
                 this.Location = BrowserConfig.Instance.WindowLocaion;
-
-                if (BrowserForm.IsCleanup())
-                {
-                    var thumbnailDBCleanupJob = new ThumbnailDBCleanupSyncJob();
-                    thumbnailDBCleanupJob.Execute();
-
-                    var startupJob = new StartupSyncJob();
-                    startupJob.Execute();
-
-                    var fileInfoDBCleanupJob = new FileInfoDBCleanupSyncJob();
-                    fileInfoDBCleanupJob.Execute();
-
-                    this.CreateBrowserMainPanel();
-                    BrowserForm.isStartUp = false;
-                }
-                else
-                {
-                    var startupJob = new StartupSyncJob();
-                    startupJob.Execute();
-
-                    this.CreateBrowserMainPanel();
-                    BrowserForm.isStartUp = false;
-                }
+                this.CreateBrowserMainPanel();
+                BrowserForm.isStartUp = false;
             }
             else
             {
