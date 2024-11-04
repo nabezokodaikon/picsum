@@ -10,9 +10,7 @@ namespace SWF.Core.Job
         private long isCancel = 0;
         private long isCompleted = 0;
 
-#pragma warning disable CS8618
-        internal ISender Sender { get; set; }
-#pragma warning restore CS8618
+        internal ISender? Sender { get; set; } = null;
 
         public JobID ID { get; private set; } = JobID.GetNew();
 
@@ -60,6 +58,11 @@ namespace SWF.Core.Job
 
         internal bool CanUIThreadAccess()
         {
+            if (this.Sender == null)
+            {
+                throw new InvalidOperationException("呼び出し元のコントロールが設定されていません。");
+            }
+
             if (this.Sender.IsHandleCreated
                 && !this.Sender.IsDisposed)
             {
