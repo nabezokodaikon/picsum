@@ -15,7 +15,7 @@ namespace PicSum.Job.Logics
         public IList<BookmarkDto> Execute()
         {
             var sql = new BookmarksReadSql();
-            var dtoList = Dao<FileInfoDB>.Instance.ReadList<BookmarkDto>(sql);
+            var dtoList = Dao<IFileInfoDB>.Instance.ReadList<BookmarkDto>(sql);
 
             var list = new List<BookmarkDto>();
             foreach (var dto in dtoList)

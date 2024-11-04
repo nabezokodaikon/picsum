@@ -444,7 +444,7 @@ namespace PicSum.Job.Common
 
         private int GetCurrentThumbnailBufferID()
         {
-            var id = (int)Dao<ThumbnailDB>.Instance.ReadValue<long>(new ThumbnailIDReadSql());
+            var id = (int)Dao<IThumbnailDB>.Instance.ReadValue<long>(new ThumbnailIDReadSql());
             var thumbFile = this.GetThumbnailBufferFilePath(id);
             if (!File.Exists(thumbFile))
             {
@@ -458,8 +458,8 @@ namespace PicSum.Job.Common
             }
             else
             {
-                Dao<ThumbnailDB>.Instance.Update(new ThumbnailIDUpdateSql());
-                var newID = (int)Dao<ThumbnailDB>.Instance.ReadValue<long>(new ThumbnailIDReadSql());
+                Dao<IThumbnailDB>.Instance.Update(new ThumbnailIDUpdateSql());
+                var newID = (int)Dao<IThumbnailDB>.Instance.ReadValue<long>(new ThumbnailIDReadSql());
                 return newID;
             }
         }
@@ -492,7 +492,7 @@ namespace PicSum.Job.Common
         private ThumbnailCacheEntity GetDBCache(string filePath)
         {
             var sql = new ThumbnailReadByFileSql(filePath);
-            var dto = Dao<ThumbnailDB>.Instance.ReadLine(sql);
+            var dto = Dao<IThumbnailDB>.Instance.ReadLine(sql);
             if (!dto.Equals(default(ThumbnailDto)))
             {
                 var thumb = new ThumbnailCacheEntity
@@ -530,7 +530,7 @@ namespace PicSum.Job.Common
 
                     var sql = new ThumbnailCreationSql(
                         filePath, thumbID, thumbStartPoint, thumbBin.Length, thumbWidth, thumbHeight, srcImg.Width, srcImg.Height, fileUpdateDate);
-                    Dao<ThumbnailDB>.Instance.Update(sql);
+                    Dao<IThumbnailDB>.Instance.Update(sql);
 
                     var thumb = new ThumbnailCacheEntity
                     {
@@ -561,7 +561,7 @@ namespace PicSum.Job.Common
 
                     var sql = new ThumbnailUpdateSql(
                         filePath, thumbID, thumbStartPoint, thumbBin.Length, thumbWidth, thumbHeight, srcImg.Width, srcImg.Height, fileUpdateDate);
-                    Dao<ThumbnailDB>.Instance.Update(sql);
+                    Dao<IThumbnailDB>.Instance.Update(sql);
 
                     var thumb = new ThumbnailCacheEntity
                     {
@@ -592,7 +592,7 @@ namespace PicSum.Job.Common
 
                     var sql = new ThumbnailCreationSql(
                         directoryPath, thumbID, thumbStartPoint, thumbBin.Length, thumbWidth, thumbHeight, srcImg.Width, srcImg.Height, directoryUpdateDate);
-                    Dao<ThumbnailDB>.Instance.Update(sql);
+                    Dao<IThumbnailDB>.Instance.Update(sql);
 
                     var thumb = new ThumbnailCacheEntity
                     {
@@ -622,7 +622,7 @@ namespace PicSum.Job.Common
 
                     var sql = new ThumbnailUpdateSql(
                         directoryPath, thumbID, thumbStartPoint, thumbBin.Length, thumbWidth, thumbHeight, srcImg.Width, srcImg.Height, directoryUpdateDate);
-                    Dao<ThumbnailDB>.Instance.Update(sql);
+                    Dao<IThumbnailDB>.Instance.Update(sql);
 
                     var thumb = new ThumbnailCacheEntity
                     {

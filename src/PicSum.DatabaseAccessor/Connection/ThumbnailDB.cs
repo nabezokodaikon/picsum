@@ -8,7 +8,7 @@ namespace PicSum.DatabaseAccessor.Connection
     /// </summary>
     [SupportedOSPlatform("windows")]
     public sealed partial class ThumbnailDB
-        : AbstractConnection
+        : AbstractConnection, IThumbnailDB
     {
         private static readonly string tableCreateSql =
         @"

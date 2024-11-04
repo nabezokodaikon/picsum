@@ -19,7 +19,7 @@ namespace PicSum.Job.Logics
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
             var sql = new FileUpdateSql(filePath);
-            return Dao<FileInfoDB>.Instance.Update(sql);
+            return Dao<IFileInfoDB>.Instance.Update(sql);
         }
     }
 }

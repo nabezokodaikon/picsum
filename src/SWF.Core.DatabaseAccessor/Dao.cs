@@ -5,7 +5,7 @@ namespace SWF.Core.DatabaseAccessor
     /// </summary>
     public sealed partial class Dao<TConnection>
         : IDisposable
-        where TConnection : AbstractConnection
+        where TConnection : IConnection
     {
         public readonly static Dao<TConnection> Instance = new();
 
@@ -37,14 +37,14 @@ namespace SWF.Core.DatabaseAccessor
             if (disposing)
             {
                 this.connection?.Dispose();
-                this.connection = null;
+                this.connection = default;
             }
 
             this.disposed = true;
         }
 
         // DBコネクション
-        private TConnection? connection = null;
+        private TConnection? connection = default;
 
         /// <summary>
         /// DBに接続します。
@@ -60,7 +60,7 @@ namespace SWF.Core.DatabaseAccessor
         /// トランザクションを開始します。
         /// </summary>
         /// <returns>トランザクションオブジェクト</returns>
-        public Transaction BeginTransaction()
+        public ITransaction BeginTransaction()
         {
             if (this.connection == null)
             {

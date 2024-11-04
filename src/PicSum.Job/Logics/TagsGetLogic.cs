@@ -18,7 +18,7 @@ namespace PicSum.Job.Logics
         public IList<string> Execute()
         {
             var sql = new AllTagsReadSql();
-            var dtoList = Dao<FileInfoDB>.Instance.ReadList<TagInfoDto>(sql);
+            var dtoList = Dao<IFileInfoDB>.Instance.ReadList<TagInfoDto>(sql);
 
             return [.. dtoList
                 .Where(dto => FileUtil.IsExists(dto.FilePath))

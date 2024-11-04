@@ -18,7 +18,7 @@ namespace PicSum.Job.Logics
         public IList<string> Execute()
         {
             var sql = new DirectoryViewHistoryReadSql(100);
-            var dtoList = Dao<FileInfoDB>.Instance.ReadList<DirectoryViewHistoryDto>(sql);
+            var dtoList = Dao<IFileInfoDB>.Instance.ReadList<DirectoryViewHistoryDto>(sql);
 
             var directoryPathList = new List<string>();
             foreach (var dto in dtoList

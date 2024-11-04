@@ -22,7 +22,7 @@ namespace PicSum.Job.Logics
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
             var sql = new FileCreationSql(filePath);
-            Dao<FileInfoDB>.Instance.Update(sql);
+            Dao<IFileInfoDB>.Instance.Update(sql);
         }
     }
 }

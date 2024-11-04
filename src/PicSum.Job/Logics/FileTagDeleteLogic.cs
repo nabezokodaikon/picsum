@@ -19,7 +19,7 @@ namespace PicSum.Job.Logics
             ArgumentException.ThrowIfNullOrEmpty(tag, nameof(tag));
 
             var sql = new TagDeletionSql(filePath, tag);
-            Dao<FileInfoDB>.Instance.Update(sql);
+            Dao<IFileInfoDB>.Instance.Update(sql);
         }
     }
 }

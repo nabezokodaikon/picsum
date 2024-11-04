@@ -7,7 +7,7 @@ namespace SWF.Core.DatabaseAccessor
     /// コンストラクタ
     /// </remarks>
     public sealed partial class Transaction(AbstractConnection connection)
-        : IDisposable
+        : ITransaction
     {
         private bool disposed = false;
 

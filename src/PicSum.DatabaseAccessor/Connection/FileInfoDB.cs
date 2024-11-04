@@ -8,7 +8,7 @@ namespace PicSum.DatabaseAccessor.Connection
     /// </summary>
     [SupportedOSPlatform("windows")]
     public sealed partial class FileInfoDB
-        : AbstractConnection
+        : AbstractConnection, IFileInfoDB
     {
         private static readonly string tableCreateSql =
         @"

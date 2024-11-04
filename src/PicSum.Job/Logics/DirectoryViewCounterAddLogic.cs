@@ -21,7 +21,7 @@ namespace PicSum.Job.Logics
             ArgumentException.ThrowIfNullOrEmpty(nameof(directoryPath));
 
             var sql = new DirectoryViewCounterCreationSql(directoryPath);
-            return Dao<FileInfoDB>.Instance.Update(sql);
+            return Dao<IFileInfoDB>.Instance.Update(sql);
         }
     }
 }

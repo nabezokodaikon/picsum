@@ -77,7 +77,7 @@ namespace PicSum.Job.Logics
                     var srcSize = this.GetImageSize(filePath);
                     if (srcSize != ImageUtil.EMPTY_SIZE)
                     {
-                        using (var tran = Dao<ThumbnailDB>.Instance.BeginTransaction())
+                        using (var tran = Dao<IThumbnailDB>.Instance.BeginTransaction())
                         {
                             var thumbnailBuffer
                                 = ThumbnailCacher.Instance.GetOrCreateCache(filePath, thumbSize.Width, thumbSize.Height);
@@ -111,7 +111,7 @@ namespace PicSum.Job.Logics
                         var srcSize = this.GetImageSize(firstImageFile);
                         if (srcSize != ImageUtil.EMPTY_SIZE)
                         {
-                            using (var tran = Dao<ThumbnailDB>.Instance.BeginTransaction())
+                            using (var tran = Dao<IThumbnailDB>.Instance.BeginTransaction())
                             {
                                 var thumbnailBuffer
                                     = ThumbnailCacher.Instance.GetOrCreateCache(firstImageFile, thumbSize.Width, thumbSize.Height);
@@ -142,7 +142,7 @@ namespace PicSum.Job.Logics
             this.CheckCancel();
 
             var sql = new FileInfoReadSql(info.FilePath);
-            var dto = Dao<FileInfoDB>.Instance.ReadLine<FileInfoDto>(sql);
+            var dto = Dao<IFileInfoDB>.Instance.ReadLine<FileInfoDto>(sql);
             if (!dto.Equals(default(FileInfoDto)))
             {
                 info.Rating = dto.Rating;

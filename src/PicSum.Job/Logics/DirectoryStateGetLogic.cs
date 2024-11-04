@@ -21,7 +21,7 @@ namespace PicSum.Job.Logics
             ArgumentException.ThrowIfNullOrEmpty(directoryPath, nameof(directoryPath));
 
             var sql = new DirectoryStateReadSql(directoryPath);
-            var dto = Dao<FileInfoDB>.Instance.ReadLine<DirectoryStateDto>(sql);
+            var dto = Dao<IFileInfoDB>.Instance.ReadLine<DirectoryStateDto>(sql);
             if (!dto.Equals(default(DirectoryStateDto)))
             {
                 var directoryState = new DirectoryStateParameter

@@ -7,7 +7,7 @@ namespace SWF.Core.DatabaseAccessor
     /// DBに接続するベースクラスです。
     /// </summary>
     public abstract class AbstractConnection
-        : IDisposable
+        : IConnection
     {
         private bool disposed = false;
         private readonly ReaderWriterLockSlim lockObject
@@ -98,7 +98,7 @@ namespace SWF.Core.DatabaseAccessor
         /// トランザクションを開始します。
         /// </summary>
         /// <returns>トランザクションオブジェクト</returns>
-        public Transaction BeginTransaction()
+        public ITransaction BeginTransaction()
         {
             this.lockObject.EnterWriteLock();
             this.transaction = this.connection.BeginTransaction();

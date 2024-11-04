@@ -14,7 +14,7 @@ namespace PicSum.Job.Jobs
         {
             ArgumentNullException.ThrowIfNull(param, nameof(param));
 
-            using (var tran = Dao<FileInfoDB>.Instance.BeginTransaction())
+            using (var tran = Dao<IFileInfoDB>.Instance.BeginTransaction())
             {
                 var addDirectoryViewHistory = new DirectoryViewHistoryAddLogic(this);
                 if (!addDirectoryViewHistory.Execute(param.Value))

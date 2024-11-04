@@ -27,7 +27,7 @@ namespace PicSum.Job.Jobs
                 throw new ArgumentException("ファイルパスリストがNULLです。", nameof(param));
             }
 
-            using (var tran = Dao<ThumbnailDB>.Instance.BeginTransaction())
+            using (var tran = Dao<IThumbnailDB>.Instance.BeginTransaction())
             {
                 for (var index = param.FirstIndex; index <= param.LastIndex; index++)
                 {

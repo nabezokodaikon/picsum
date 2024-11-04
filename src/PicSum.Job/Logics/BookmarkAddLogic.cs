@@ -15,7 +15,7 @@ namespace PicSum.Job.Logics
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
             var sql = new BookmarkCreationSql(filePath, registrationDate);
-            return Dao<FileInfoDB>.Instance.Update(sql);
+            return Dao<IFileInfoDB>.Instance.Update(sql);
         }
     }
 }

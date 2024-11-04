@@ -20,7 +20,7 @@ namespace PicSum.Job.Logics
             ArgumentNullException.ThrowIfNull(filePathList, nameof(filePathList));
 
             var sql = new FileTagReadSql(filePathList);
-            var dtoList = Dao<FileInfoDB>.Instance.ReadList<FileTagDto>(sql);
+            var dtoList = Dao<IFileInfoDB>.Instance.ReadList<FileTagDto>(sql);
 
             var infoList = new ListEntity<FileTagInfoEntity>();
             foreach (var dto in dtoList)

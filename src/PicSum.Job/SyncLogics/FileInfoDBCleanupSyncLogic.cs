@@ -11,7 +11,7 @@ namespace PicSum.Job.SyncLogics
     {
         public void Execute()
         {
-            using (var tran = Dao<FileInfoDB>.Instance.BeginTransaction())
+            using (var tran = Dao<IFileInfoDB>.Instance.BeginTransaction())
             {
                 this.Cleanup();
                 tran.Commit();
@@ -23,14 +23,14 @@ namespace PicSum.Job.SyncLogics
         private void Cleanup()
         {
             var readSql = new AllFilesReadSql();
-            var fileList = Dao<FileInfoDB>.Instance
+            var fileList = Dao<IFileInfoDB>.Instance
                 .ReadList(readSql);
             foreach (var file in fileList)
             {
                 if (!FileUtil.IsExists(file.FilePath))
                 {
                     var cleanupSql = new FileInfoDBCleanupSql(file.FileID);
-                    Dao<FileInfoDB>.Instance.Update(cleanupSql);
+                    Dao<IFileInfoDB>.Instance.Update(cleanupSql);
                 }
             }
         }
@@ -38,7 +38,7 @@ namespace PicSum.Job.SyncLogics
         private void Vacuum()
         {
             var cleanupSql = new FileInfoDBVacuumSql();
-            Dao<FileInfoDB>.Instance.ReadLine(cleanupSql);
+            Dao<IFileInfoDB>.Instance.ReadLine(cleanupSql);
         }
     }
 }

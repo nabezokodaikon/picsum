@@ -23,7 +23,7 @@ namespace PicSum.Job.Jobs
                 throw new ArgumentException("ディレクトリパスがNULLです。", nameof(param));
             }
 
-            using (var tran = Dao<FileInfoDB>.Instance.BeginTransaction())
+            using (var tran = Dao<IFileInfoDB>.Instance.BeginTransaction())
             {
                 var updateDirectoryState = new DirectoryStateUpdateLogic(this);
                 if (!updateDirectoryState.Execute(param))
