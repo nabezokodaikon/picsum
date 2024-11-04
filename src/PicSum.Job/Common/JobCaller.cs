@@ -45,36 +45,64 @@ namespace PicSum.Job.Common
 
         private bool disposed = false;
 
-        private readonly Lazy<OneWayJob<BookmarkAddJob, ValueParameter<string>>> addBookmarkJob = new(() => new(context));
-        private readonly Lazy<OneWayJob<SingleFileExportJob, SingleFileExportParameter>> singleFileExportJob = new(() => new(context));
-        private readonly Lazy<OneWayJob<DirectoryStateUpdateJob, DirectoryStateParameter>> directoryStateUpdateJob = new(() => new(context));
-        private readonly Lazy<OneWayJob<DirectoryViewHistoryAddJob, ValueParameter<string>>> directoryViewHistoryAddJob = new(() => new(context));
-        private readonly Lazy<OneWayJob<BookmarkDeleteJob, ListParameter<string>>> bookmarkDeleteJob = new(() => new(context));
-        private readonly Lazy<OneWayJob<DirectoryViewCounterDeleteJob, ListParameter<string>>> directoryViewCounterDeleteJob = new(() => new(context));
-        private readonly Lazy<OneWayJob<FileRatingUpdateJob, FileRatingUpdateParameter>> fileRatingUpdateJob = new(() => new(context));
-        private readonly Lazy<OneWayJob<FileTagDeleteJob, FileTagUpdateParameter>> fileTagDeleteJob = new(() => new(context));
-        private readonly Lazy<OneWayJob<FileTagAddJob, FileTagUpdateParameter>> fileTagAddJob = new(() => new(context));
-        private readonly Lazy<OneWayJob<GCCollectRunJob>> gcCollectRunJob = new(() => new(context));
+        private readonly Lazy<IOneWayJob<BookmarkAddJob, ValueParameter<string>>> addBookmarkJob
+            = new(() => new OneWayJob<BookmarkAddJob, ValueParameter<string>>(context));
+        private readonly Lazy<IOneWayJob<SingleFileExportJob, SingleFileExportParameter>> singleFileExportJob
+            = new(() => new OneWayJob<SingleFileExportJob, SingleFileExportParameter>(context));
+        private readonly Lazy<IOneWayJob<DirectoryStateUpdateJob, DirectoryStateParameter>> directoryStateUpdateJob
+            = new(() => new OneWayJob<DirectoryStateUpdateJob, DirectoryStateParameter>(context));
+        private readonly Lazy<IOneWayJob<DirectoryViewHistoryAddJob, ValueParameter<string>>> directoryViewHistoryAddJob
+            = new(() => new OneWayJob<DirectoryViewHistoryAddJob, ValueParameter<string>>(context));
+        private readonly Lazy<IOneWayJob<BookmarkDeleteJob, ListParameter<string>>> bookmarkDeleteJob
+            = new(() => new OneWayJob<BookmarkDeleteJob, ListParameter<string>>(context));
+        private readonly Lazy<IOneWayJob<DirectoryViewCounterDeleteJob, ListParameter<string>>> directoryViewCounterDeleteJob
+            = new(() => new OneWayJob<DirectoryViewCounterDeleteJob, ListParameter<string>>(context));
+        private readonly Lazy<IOneWayJob<FileRatingUpdateJob, FileRatingUpdateParameter>> fileRatingUpdateJob
+            = new(() => new OneWayJob<FileRatingUpdateJob, FileRatingUpdateParameter>(context));
+        private readonly Lazy<IOneWayJob<FileTagDeleteJob, FileTagUpdateParameter>> fileTagDeleteJob
+            = new(() => new OneWayJob<FileTagDeleteJob, FileTagUpdateParameter>(context));
+        private readonly Lazy<IOneWayJob<FileTagAddJob, FileTagUpdateParameter>> fileTagAddJob
+            = new(() => new OneWayJob<FileTagAddJob, FileTagUpdateParameter>(context));
+        private readonly Lazy<IOneWayJob<GCCollectRunJob>> gcCollectRunJob
+            = new(() => new OneWayJob<GCCollectRunJob>(context));
 
-        public readonly Lazy<TwoWayJob<ImageFileReadJob, ImageFileReadParameter, ImageFileReadResult>> ImageFileReadJob = new(() => new(context));
-        public readonly Lazy<TwoWayJob<ImageFileLoadingJob, ImageFileReadParameter, ImageFileReadResult>> ImageFileLoadingJob = new(() => new(context));
-        public readonly Lazy<OneWayJob<ImageFileCacheJob, ListParameter<string>>> ImageFileCacheJob = new(() => new(context));
-        public readonly Lazy<TwoWayJob<ThumbnailsGetJob, ThumbnailsGetParameter, ThumbnailImageResult>> ThumbnailsGetJob = new(() => new(context));
-        public readonly Lazy<TwoWayJob<SubDirectoriesGetJob, ValueParameter<string>, ListResult<FileShallowInfoEntity>>> SubDirectoriesGetJob = new(() => new(context));
-        public readonly Lazy<TwoWayJob<DirectoryViewHistoryGetJob, ListResult<FileShallowInfoEntity>>> DirectoryViewHistoryGetJob = new(() => new(context));
-        public readonly Lazy<TwoWayJob<AddressInfoGetJob, ValueParameter<string>, AddressInfoGetResult>> AddressInfoGetJob = new(() => new(context));
-        public readonly Lazy<TwoWayJob<TagsGetJob, ListResult<string>>> TagsGetJob = new(() => new(context));
-        public readonly Lazy<TwoWayJob<FileDeepInfoGetJob, FileDeepInfoGetParameter, FileDeepInfoGetResult>> FileDeepInfoGetJob = new(() => new(context));
-        public readonly Lazy<TwoWayJob<PipeServerJob, ValueResult<string>>> PipeServerJob = new(() => new(context));
+        public readonly Lazy<ITwoWayJob<ImageFileReadJob, ImageFileReadParameter, ImageFileReadResult>> ImageFileReadJob
+            = new(() => new TwoWayJob<ImageFileReadJob, ImageFileReadParameter, ImageFileReadResult>(context));
+        public readonly Lazy<ITwoWayJob<ImageFileLoadingJob, ImageFileReadParameter, ImageFileReadResult>> ImageFileLoadingJob
+            = new(() => new TwoWayJob<ImageFileLoadingJob, ImageFileReadParameter, ImageFileReadResult>(context));
+        public readonly Lazy<IOneWayJob<ImageFileCacheJob, ListParameter<string>>> ImageFileCacheJob
+            = new(() => new OneWayJob<ImageFileCacheJob, ListParameter<string>>(context));
+        public readonly Lazy<ITwoWayJob<ThumbnailsGetJob, ThumbnailsGetParameter, ThumbnailImageResult>> ThumbnailsGetJob
+            = new(() => new TwoWayJob<ThumbnailsGetJob, ThumbnailsGetParameter, ThumbnailImageResult>(context));
+        public readonly Lazy<ITwoWayJob<SubDirectoriesGetJob, ValueParameter<string>, ListResult<FileShallowInfoEntity>>> SubDirectoriesGetJob
+            = new(() => new TwoWayJob<SubDirectoriesGetJob, ValueParameter<string>, ListResult<FileShallowInfoEntity>>(context));
+        public readonly Lazy<ITwoWayJob<DirectoryViewHistoryGetJob, ListResult<FileShallowInfoEntity>>> DirectoryViewHistoryGetJob
+            = new(() => new TwoWayJob<DirectoryViewHistoryGetJob, ListResult<FileShallowInfoEntity>>(context));
+        public readonly Lazy<ITwoWayJob<AddressInfoGetJob, ValueParameter<string>, AddressInfoGetResult>> AddressInfoGetJob
+            = new(() => new TwoWayJob<AddressInfoGetJob, ValueParameter<string>, AddressInfoGetResult>(context));
+        public readonly Lazy<ITwoWayJob<TagsGetJob, ListResult<string>>> TagsGetJob
+            = new(() => new TwoWayJob<TagsGetJob, ListResult<string>>(context));
+        public readonly Lazy<ITwoWayJob<FileDeepInfoGetJob, FileDeepInfoGetParameter, FileDeepInfoGetResult>> FileDeepInfoGetJob
+            = new(() => new TwoWayJob<FileDeepInfoGetJob, FileDeepInfoGetParameter, FileDeepInfoGetResult>(context));
+        public readonly Lazy<ITwoWayJob<PipeServerJob, ValueResult<string>>> PipeServerJob
+            = new(() => new TwoWayJob<PipeServerJob, ValueResult<string>>(context));
 
-        public readonly Lazy<TwoWayJob<FilesGetByDirectoryJob, ValueParameter<string>, DirectoryGetResult>> FilesGetByDirectoryJob = new(() => new(context));
-        public readonly Lazy<TwoWayJob<FavoriteDirectoriesGetJob, FavoriteDirectoriesGetParameter, ListResult<FileShallowInfoEntity>>> FavoriteDirectoriesGetJob = new(() => new(context));
-        public readonly Lazy<TwoWayJob<FilesGetByRatingJob, ValueParameter<int>, ListResult<FileShallowInfoEntity>>> FilesGetByRatingJob = new(() => new(context));
-        public readonly Lazy<TwoWayJob<FilesGetByTagJob, ValueParameter<string>, ListResult<FileShallowInfoEntity>>> FilesGetByTagJob = new(() => new(context));
-        public readonly Lazy<TwoWayJob<ImageFilesGetByDirectoryJob, ImageFileGetByDirectoryParameter, ImageFilesGetByDirectoryResult>> ImageFilesGetByDirectoryJob = new(() => new(context));
-        public readonly Lazy<TwoWayJob<NextDirectoryGetJob, NextDirectoryGetParameter<string>, ValueResult<string>>> NextDirectoryGetJob = new(() => new(context));
-        public readonly Lazy<TwoWayJob<MultiFilesExportJob, MultiFilesExportParameter, ValueResult<string>>> MultiFilesExportJob = new(() => new(context));
-        public readonly Lazy<TwoWayJob<BookmarksGetJob, ListResult<FileShallowInfoEntity>>> BookmarksGetJob = new(() => new(context));
+        public readonly Lazy<ITwoWayJob<FilesGetByDirectoryJob, ValueParameter<string>, DirectoryGetResult>> FilesGetByDirectoryJob
+            = new(() => new TwoWayJob<FilesGetByDirectoryJob, ValueParameter<string>, DirectoryGetResult>(context));
+        public readonly Lazy<ITwoWayJob<FavoriteDirectoriesGetJob, FavoriteDirectoriesGetParameter, ListResult<FileShallowInfoEntity>>> FavoriteDirectoriesGetJob
+            = new(() => new TwoWayJob<FavoriteDirectoriesGetJob, FavoriteDirectoriesGetParameter, ListResult<FileShallowInfoEntity>>(context));
+        public readonly Lazy<ITwoWayJob<FilesGetByRatingJob, ValueParameter<int>, ListResult<FileShallowInfoEntity>>> FilesGetByRatingJob
+            = new(() => new TwoWayJob<FilesGetByRatingJob, ValueParameter<int>, ListResult<FileShallowInfoEntity>>(context));
+        public readonly Lazy<ITwoWayJob<FilesGetByTagJob, ValueParameter<string>, ListResult<FileShallowInfoEntity>>> FilesGetByTagJob
+            = new(() => new TwoWayJob<FilesGetByTagJob, ValueParameter<string>, ListResult<FileShallowInfoEntity>>(context));
+        public readonly Lazy<ITwoWayJob<ImageFilesGetByDirectoryJob, ImageFileGetByDirectoryParameter, ImageFilesGetByDirectoryResult>> ImageFilesGetByDirectoryJob
+            = new(() => new TwoWayJob<ImageFilesGetByDirectoryJob, ImageFileGetByDirectoryParameter, ImageFilesGetByDirectoryResult>(context));
+        public readonly Lazy<ITwoWayJob<NextDirectoryGetJob, NextDirectoryGetParameter<string>, ValueResult<string>>> NextDirectoryGetJob
+            = new(() => new TwoWayJob<NextDirectoryGetJob, NextDirectoryGetParameter<string>, ValueResult<string>>(context));
+        public readonly Lazy<ITwoWayJob<MultiFilesExportJob, MultiFilesExportParameter, ValueResult<string>>> MultiFilesExportJob
+            = new(() => new TwoWayJob<MultiFilesExportJob, MultiFilesExportParameter, ValueResult<string>>(context));
+        public readonly Lazy<ITwoWayJob<BookmarksGetJob, ListResult<FileShallowInfoEntity>>> BookmarksGetJob
+            = new(() => new TwoWayJob<BookmarksGetJob, ListResult<FileShallowInfoEntity>>(context));
 
         private JobCaller()
         {
