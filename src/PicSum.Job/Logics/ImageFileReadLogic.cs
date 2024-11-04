@@ -7,7 +7,7 @@ using System.Drawing;
 
 namespace PicSum.Job.Logics
 {
-    internal sealed class ImageFileReadLogic(AbstractAsyncJob job)
+    internal sealed class ImageFileReadLogic(IAsyncJob job)
         : AbstractAsyncLogic(job)
     {
         internal ImageFileReadResult CreateResult(
@@ -77,12 +77,12 @@ namespace PicSum.Job.Logics
             }
             catch (FileUtilException ex)
             {
-                this.WriteErrorLog(new JobException(this.ID, ex));
+                this.WriteErrorLog(new JobException(this.Job.ID, ex));
                 return CvImage.EMPTY;
             }
             catch (ImageUtilException ex)
             {
-                this.WriteErrorLog(new JobException(this.ID, ex));
+                this.WriteErrorLog(new JobException(this.Job.ID, ex));
                 return CvImage.EMPTY;
             }
         }
@@ -95,12 +95,12 @@ namespace PicSum.Job.Logics
             }
             catch (FileUtilException ex)
             {
-                this.WriteErrorLog(new JobException(this.ID, ex));
+                this.WriteErrorLog(new JobException(this.Job.ID, ex));
                 return ImageUtil.EMPTY_SIZE;
             }
             catch (ImageUtilException ex)
             {
-                this.WriteErrorLog(new JobException(this.ID, ex));
+                this.WriteErrorLog(new JobException(this.Job.ID, ex));
                 return ImageUtil.EMPTY_SIZE;
             }
         }

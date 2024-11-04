@@ -10,7 +10,7 @@ namespace PicSum.Job.Logics
     /// フォルダの表示回数を削除します。
     /// </summary>
     [SupportedOSPlatform("windows")]
-    internal class DirectoryViewCounterDeleteLogic(AbstractAsyncJob job)
+    internal class DirectoryViewCounterDeleteLogic(IAsyncJob job)
         : AbstractAsyncLogic(job)
     {
         /// <summary>

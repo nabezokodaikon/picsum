@@ -5,16 +5,13 @@ namespace SWF.Core.Job
     /// </summary>
     public abstract class AbstractAsyncLogic
     {
-        protected readonly AbstractAsyncJob Job;
+        protected readonly IAsyncJob Job;
 
-        protected JobID ID { get; private set; }
-
-        public AbstractAsyncLogic(AbstractAsyncJob job)
+        public AbstractAsyncLogic(IAsyncJob job)
         {
             ArgumentNullException.ThrowIfNull(job, nameof(job));
 
             this.Job = job;
-            this.ID = job.ID;
         }
 
         protected void WriteErrorLog(JobException ex)

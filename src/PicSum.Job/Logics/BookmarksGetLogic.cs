@@ -9,7 +9,7 @@ using System.Runtime.Versioning;
 namespace PicSum.Job.Logics
 {
     [SupportedOSPlatform("windows")]
-    internal sealed class BookmarksGetLogic(AbstractAsyncJob job)
+    internal sealed class BookmarksGetLogic(IAsyncJob job)
         : AbstractAsyncLogic(job)
     {
         public IList<BookmarkDto> Execute()

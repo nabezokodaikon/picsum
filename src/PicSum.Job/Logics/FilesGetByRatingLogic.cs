@@ -12,7 +12,7 @@ namespace PicSum.Job.Logics
     /// ファイルを評価値で検索します。
     /// </summary>
     [SupportedOSPlatform("windows")]
-    internal sealed class FilesGetByRatingLogic(AbstractAsyncJob job)
+    internal sealed class FilesGetByRatingLogic(IAsyncJob job)
         : AbstractAsyncLogic(job)
     {
         public IList<FileByRatingDto> Execute(int rating)

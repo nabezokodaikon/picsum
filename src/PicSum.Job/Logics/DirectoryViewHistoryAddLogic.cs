@@ -10,7 +10,7 @@ namespace PicSum.Job.Logics
     /// フォルダの表示履歴を追加します。
     /// </summary>
     [SupportedOSPlatform("windows")]
-    internal sealed class DirectoryViewHistoryAddLogic(AbstractAsyncJob job)
+    internal sealed class DirectoryViewHistoryAddLogic(IAsyncJob job)
         : AbstractAsyncLogic(job)
     {
         /// <summary>

@@ -3,6 +3,7 @@ using NLog;
 namespace SWF.Core.Job
 {
     public abstract class AbstractAsyncJob
+        : IAsyncJob
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 

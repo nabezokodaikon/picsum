@@ -13,7 +13,7 @@ namespace PicSum.Job.Logics
     /// フォルダ状態を取得します。
     /// </summary>
     [SupportedOSPlatform("windows")]
-    internal sealed class DirectoryStateGetLogic(AbstractAsyncJob job)
+    internal sealed class DirectoryStateGetLogic(IAsyncJob job)
         : AbstractAsyncLogic(job)
     {
         public DirectoryStateParameter Execute(string directoryPath)

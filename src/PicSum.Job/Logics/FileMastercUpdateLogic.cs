@@ -7,7 +7,7 @@ using System.Runtime.Versioning;
 namespace PicSum.Job.Logics
 {
     [SupportedOSPlatform("windows")]
-    internal sealed class FileMastercUpdateLogic(AbstractAsyncJob job)
+    internal sealed class FileMastercUpdateLogic(IAsyncJob job)
         : AbstractAsyncLogic(job)
     {
         /// <summary>

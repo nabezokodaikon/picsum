@@ -7,7 +7,7 @@ using System.Runtime.Versioning;
 namespace PicSum.Job.Logics
 {
     [SupportedOSPlatform("windows")]
-    internal sealed class BookmarkDeleteLogic(AbstractAsyncJob job)
+    internal sealed class BookmarkDeleteLogic(IAsyncJob job)
         : AbstractAsyncLogic(job)
     {
         public bool Execute(string filePath)

@@ -10,7 +10,7 @@ namespace PicSum.Job.Logics
     /// ファイルマスタに登録します。
     /// </summary>
     [SupportedOSPlatform("windows")]
-    internal sealed class FileMasterAddLogic(AbstractAsyncJob job)
+    internal sealed class FileMasterAddLogic(IAsyncJob job)
         : AbstractAsyncLogic(job)
     {
         /// <summary>

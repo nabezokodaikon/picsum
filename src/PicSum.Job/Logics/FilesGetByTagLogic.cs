@@ -12,7 +12,7 @@ namespace PicSum.Job.Logics
     /// ファイルをタグで検索します。
     /// </summary>
     [SupportedOSPlatform("windows")]
-    internal sealed class FilesGetByTagLogic(AbstractAsyncJob job)
+    internal sealed class FilesGetByTagLogic(IAsyncJob job)
         : AbstractAsyncLogic(job)
     {
         public IList<FileByTagDto> Execute(string tag)

@@ -11,7 +11,7 @@ namespace PicSum.Job.Logics
     /// ファイルの浅い情報を取得します。
     /// </summary>
     [SupportedOSPlatform("windows")]
-    internal sealed class FileShallowInfoGetLogic(AbstractAsyncJob job)
+    internal sealed class FileShallowInfoGetLogic(IAsyncJob job)
         : AbstractAsyncLogic(job)
     {
         private const int THUMBNAIL_SIZE = 248;

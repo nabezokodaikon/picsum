@@ -19,7 +19,7 @@ namespace PicSum.Job.Logics
     internal sealed class FileDeepInfoGetLogic
         : AbstractAsyncLogic
     {
-        public FileDeepInfoGetLogic(AbstractAsyncJob job)
+        public FileDeepInfoGetLogic(IAsyncJob job)
             : base(job)
         {
 
@@ -165,12 +165,12 @@ namespace PicSum.Job.Logics
             }
             catch (FileUtilException ex)
             {
-                this.WriteErrorLog(new JobException(this.ID, ex));
+                this.WriteErrorLog(new JobException(this.Job.ID, ex));
                 return ImageUtil.EMPTY_SIZE;
             }
             catch (ImageUtilException ex)
             {
-                this.WriteErrorLog(new JobException(this.ID, ex));
+                this.WriteErrorLog(new JobException(this.Job.ID, ex));
                 return ImageUtil.EMPTY_SIZE;
             }
         }

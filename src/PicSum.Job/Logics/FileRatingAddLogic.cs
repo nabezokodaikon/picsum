@@ -10,7 +10,7 @@ namespace PicSum.Job.Logics
     /// ファイルの評価値を登録します。
     /// </summary>
     [SupportedOSPlatform("windows")]
-    internal sealed class FileRatingAddLogic(AbstractAsyncJob job)
+    internal sealed class FileRatingAddLogic(IAsyncJob job)
         : AbstractAsyncLogic(job)
     {
         public bool Execute(string filePath, int ratingValue, DateTime registrationDate)
