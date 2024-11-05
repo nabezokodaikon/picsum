@@ -15,9 +15,9 @@ namespace SWF.Core.Job
         private bool disposed = false;
         private readonly string threadName;
         private readonly SynchronizationContext context;
-        private readonly CancellationTokenSource source = new();
-        private readonly Task thread;
         private readonly ConcurrentQueue<TJob> jobQueue = new();
+        private Task? thread = null;
+        private CancellationTokenSource? source = new();
         private Action<TJobResult>? callbackAction;
         private Action? cancelAction;
         private Action<JobException>? catchAction;
@@ -29,7 +29,6 @@ namespace SWF.Core.Job
 
             this.context = context;
             this.threadName = $"{typeof(TJob).Name} {ThreadID.GetNew()}";
-            this.thread = Task.Run(() => this.DoWork(this.source.Token));
         }
 
         ~TwoWayJob()
@@ -52,18 +51,22 @@ namespace SWF.Core.Job
 
             if (disposing)
             {
-                this.BeginCancel();
 
-                Logger.Debug("ジョブ実行スレッドにキャンセルリクエストを送ります。");
-                this.source.Cancel();
+                if (this.thread != null)
+                {
+                    this.BeginCancel();
 
-                Logger.Debug("UIスレッドを待機します。");
-                this.thread.Wait();
+                    Logger.Debug("ジョブ実行タスクにキャンセルリクエストを送ります。");
+                    this.source?.Cancel();
 
-                Logger.Debug($"{this.threadName}: ジョブ実行スレッドが終了しました。");
+                    Logger.Debug("タスクの終了を待機します。");
+                    this.thread.Wait();
 
-                this.source.Dispose();
-                this.thread.Dispose();
+                    Logger.Debug($"{this.threadName}: ジョブ実行タスクが終了しました。");
+                }
+
+                this.source?.Dispose();
+                this.thread?.Dispose();
             }
 
             this.disposed = true;
@@ -139,6 +142,8 @@ namespace SWF.Core.Job
             job.Sender = sender;
             job.Parameter = parameter;
 
+            this.source ??= new();
+            this.thread ??= Task.Run(() => this.DoWork(this.source.Token));
             this.jobQueue.Enqueue(job);
         }
 
@@ -147,6 +152,8 @@ namespace SWF.Core.Job
             var job = this.CreateJob();
             job.Sender = sender;
 
+            this.source ??= new();
+            this.thread ??= Task.Run(() => this.DoWork(this.source.Token));
             this.jobQueue.Enqueue(job);
         }
 
@@ -286,7 +293,7 @@ namespace SWF.Core.Job
         {
             Thread.CurrentThread.Name = this.threadName;
 
-            Logger.Debug("ジョブ実行スレッドが開始されました。");
+            Logger.Debug("ジョブ実行タスクが開始されました。");
 
             try
             {
@@ -294,7 +301,7 @@ namespace SWF.Core.Job
                 {
                     if (token.IsCancellationRequested)
                     {
-                        Logger.Debug("ジョブ実行スレッドにキャンセルリクエストがありました。");
+                        Logger.Debug("ジョブ実行タスクにキャンセルリクエストがありました。");
                         token.ThrowIfCancellationRequested();
                     }
 
@@ -338,7 +345,7 @@ namespace SWF.Core.Job
                             else
                             {
 #pragma warning disable CA2219
-                                throw new InvalidOperationException("他のスレッドでキューの操作が行われました。");
+                                throw new InvalidOperationException("他のタスクでキューの操作が行われました。");
 #pragma warning restore CA2219
                             }
 
@@ -354,15 +361,15 @@ namespace SWF.Core.Job
             }
             catch (OperationCanceledException)
             {
-                Logger.Debug("ジョブ実行スレッドをキャンセルします。");
+                Logger.Debug("ジョブ実行タスクをキャンセルします。");
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "ジョブ実行スレッドで補足されない例外が発生しました。");
+                Logger.Error(ex, "ジョブ実行タスクで補足されない例外が発生しました。");
             }
             finally
             {
-                Logger.Debug("ジョブ実行スレッドが終了します。");
+                Logger.Debug("ジョブ実行タスクが終了します。");
             }
         }
     }
