@@ -37,6 +37,8 @@ bin_debug/
 bin_publish/
 bin_setup/
 bin_vscode/
+CoverletReport/
+TestResults/
 
 # Visual Studio 2015/2017 cache/options directory
 .vs/
