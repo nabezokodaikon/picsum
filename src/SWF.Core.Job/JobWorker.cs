@@ -69,7 +69,7 @@ namespace SWF.Core.Job
             this.disposed = true;
         }
 
-        public TwoWayJob<TJob, TJobParameter, TJobResult> Initialize()
+        public TwoWayJob<TJob, TJobParameter, TJobResult> Reset()
         {
             this.callbackAction = null;
             this.cancelAction = null;

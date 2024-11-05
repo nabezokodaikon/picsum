@@ -6,7 +6,7 @@ namespace SWF.Core.Job
         where TJobParameter : IJobParameter
         where TJobResult : IJobResult
     {
-        public TwoWayJob<TJob, TJobParameter, TJobResult> Initialize();
+        public TwoWayJob<TJob, TJobParameter, TJobResult> Reset();
         public TwoWayJob<TJob, TJobParameter, TJobResult> Callback(Action<TJobResult> action);
         public TwoWayJob<TJob, TJobParameter, TJobResult> Cancel(Action action);
         public TwoWayJob<TJob, TJobParameter, TJobResult> Catch(Action<JobException> action);

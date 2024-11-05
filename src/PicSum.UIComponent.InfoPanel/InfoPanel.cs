@@ -139,7 +139,7 @@ namespace PicSum.UIComponent.InfoPanel
                 };
 
                 Instance<JobCaller>.Value.FileDeepInfoGetJob.Value
-                    .Initialize()
+                    .Reset()
                     .Callback(_ =>
                     {
                         if (this.disposed)
@@ -552,7 +552,7 @@ namespace PicSum.UIComponent.InfoPanel
         private void WideComboBox_DropDownOpening(object sender, DropDownOpeningEventArgs e)
         {
             Instance<JobCaller>.Value.TagsGetJob.Value
-                .Initialize()
+                .Reset()
                 .Callback(_ =>
                 {
                     if (this.disposed)

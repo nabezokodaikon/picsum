@@ -46,7 +46,7 @@ namespace PicSum.Main.UIComponent
             Instance<JobCaller>.Value.StartGCCollectRunJob(this);
 
             Instance<JobCaller>.Value.PipeServerJob.Value
-                .Initialize()
+                .Reset()
                 .Callback(_ =>
                 {
                     if (this.disposed)

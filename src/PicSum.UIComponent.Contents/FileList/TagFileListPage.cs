@@ -41,7 +41,7 @@ namespace PicSum.UIComponent.Contents.FileList
             var param = new ValueParameter<string>(this.parameter.Tag);
 
             Instance<JobCaller>.Value.FilesGetByTagJob.Value
-                .Initialize()
+                .Reset()
                 .Callback(_ =>
                 {
                     if (this.disposed)

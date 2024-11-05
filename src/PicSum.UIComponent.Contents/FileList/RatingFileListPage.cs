@@ -40,7 +40,7 @@ namespace PicSum.UIComponent.Contents.FileList
             var param = new ValueParameter<int>(this.parameter.RatingValue);
 
             Instance<JobCaller>.Value.FilesGetByRatingJob.Value
-                .Initialize()
+                .Reset()
                 .Callback(_ =>
                 {
                     if (this.disposed)

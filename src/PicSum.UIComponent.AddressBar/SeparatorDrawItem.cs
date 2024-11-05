@@ -99,7 +99,7 @@ namespace PicSum.UIComponent.AddressBar
                 {
                     var param = new ValueParameter<string>(this.Directory.DirectoryPath);
                     Instance<JobCaller>.Value.SubDirectoriesGetJob.Value
-                        .Initialize()
+                        .Reset()
                         .Callback(_ =>
                         {
                             if (this.disposed)

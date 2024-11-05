@@ -861,7 +861,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 };
 
                 Instance<JobCaller>.Value.ThumbnailsGetJob.Value
-                    .Initialize()
+                    .Reset()
                     .Callback(_ =>
                     {
                         if (this.disposed)
@@ -1150,7 +1150,7 @@ namespace PicSum.UIComponent.Contents.FileList
                         };
 
                         Instance<JobCaller>.Value.MultiFilesExportJob.Value
-                            .Initialize()
+                            .Reset()
                             .Callback(_ =>
                             {
                                 if (this.disposed)

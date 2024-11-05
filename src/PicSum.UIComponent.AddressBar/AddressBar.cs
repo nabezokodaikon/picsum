@@ -175,7 +175,7 @@ namespace PicSum.UIComponent.AddressBar
             var param = new ValueParameter<string>(filePath);
 
             Instance<JobCaller>.Value.AddressInfoGetJob.Value
-                .Initialize()
+                .Reset()
                 .Callback(_ =>
                 {
                     if (this.disposed)

@@ -63,7 +63,7 @@ namespace PicSum.UIComponent.Contents.FileList
             };
 
             Instance<JobCaller>.Value.FavoriteDirectoriesGetJob.Value
-                .Initialize()
+                .Reset()
                 .Callback(_ =>
                 {
                     if (this.disposed)

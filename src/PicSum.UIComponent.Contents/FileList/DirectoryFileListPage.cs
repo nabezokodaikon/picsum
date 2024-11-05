@@ -57,7 +57,7 @@ namespace PicSum.UIComponent.Contents.FileList
             var param = new ValueParameter<string>(this.parameter.DirectoryPath);
 
             Instance<JobCaller>.Value.FilesGetByDirectoryJob.Value
-                .Initialize()
+                .Reset()
                 .Callback(_ =>
                 {
                     if (this.disposed)
@@ -130,7 +130,7 @@ namespace PicSum.UIComponent.Contents.FileList
             };
 
             Instance<JobCaller>.Value.NextDirectoryGetJob.Value
-                .Initialize()
+                .Reset()
                 .Callback(_ =>
                 {
                     if (this.disposed)
@@ -158,7 +158,7 @@ namespace PicSum.UIComponent.Contents.FileList
             };
 
             Instance<JobCaller>.Value.NextDirectoryGetJob.Value
-                .Initialize()
+                .Reset()
                 .Callback(_ =>
                 {
                     if (this.disposed)
