@@ -7,7 +7,7 @@ namespace SWF.UIComponent.TabOperation
     /// <summary>
     /// タブ描画領域
     /// </summary>
-    [SupportedOSPlatform("windows")]
+    [SupportedOSPlatform("windows10.0.17763.0")]
     internal sealed class TabDrawArea
     {
 

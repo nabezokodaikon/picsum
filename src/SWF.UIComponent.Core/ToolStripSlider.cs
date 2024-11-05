@@ -6,7 +6,7 @@ namespace SWF.UIComponent.Core
     /// <summary>
     /// ツールストリップスライダー
     /// </summary>
-    [SupportedOSPlatform("windows")]
+    [SupportedOSPlatform("windows10.0.17763.0")]
     [ToolStripItemDesignerAvailability(ToolStripItemDesignerAvailability.All)]
     public partial class ToolStripSlider : ToolStripControlHost
     {

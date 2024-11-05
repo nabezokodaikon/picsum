@@ -11,7 +11,7 @@ namespace PicSum.Job.Logics
     /// <summary>
     /// フォルダの表示履歴を取得します。
     /// </summary>
-    [SupportedOSPlatform("windows")]
+    [SupportedOSPlatform("windows10.0.17763.0")]
     internal sealed class DirectoryViewHistoryGetLogic(IAsyncJob job)
         : AbstractAsyncLogic(job)
     {

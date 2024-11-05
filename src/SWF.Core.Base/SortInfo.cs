@@ -1,5 +1,8 @@
+using System.Runtime.Versioning;
+
 namespace SWF.Core.Base
 {
+    [SupportedOSPlatform("windows10.0.17763.0")]
     public sealed class SortInfo
     {
         private readonly Image sortAscendingImage = ResourceFiles.SmallArrowUpIcon.Value;

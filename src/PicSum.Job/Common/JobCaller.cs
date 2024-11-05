@@ -7,7 +7,7 @@ using System.Runtime.Versioning;
 
 namespace PicSum.Job.Common
 {
-    [SupportedOSPlatform("windows")]
+    [SupportedOSPlatform("windows10.0.17763.0")]
     public sealed partial class JobCaller(SynchronizationContext context)
         : IDisposable
     {

@@ -7,7 +7,7 @@ namespace PicSum.Job.Logics
     /// <summary>
     /// フォルダ内のファイルとサブフォルダ取得非同期ロジック
     /// </summary>
-    [SupportedOSPlatform("windows")]
+    [SupportedOSPlatform("windows10.0.17763.0")]
     internal sealed class FilesAndSubDirectoriesGetLogic(IAsyncJob job)
         : AbstractAsyncLogic(job)
     {

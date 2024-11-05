@@ -17,7 +17,7 @@ using System.Runtime.Versioning;
 
 namespace SWF.Core.ImageAccessor
 {
-    [SupportedOSPlatform("windows")]
+    [SupportedOSPlatform("windows10.0.17763.0")]
     internal static class SixLaborsUtil
     {
         private static readonly DecoderOptions DECODER_OPTIONS = new()

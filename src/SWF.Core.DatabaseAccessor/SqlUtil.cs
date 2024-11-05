@@ -1,13 +1,12 @@
 using SWF.Core.Base;
 using System.Data;
+using System.Runtime.Versioning;
 using System.Text;
 using System.Text.RegularExpressions;
 
 namespace SWF.Core.DatabaseAccessor
 {
-    /// <summary>
-    /// SQLユーティリティ
-    /// </summary>
+    [SupportedOSPlatform("windows10.0.17763.0")]
     internal static partial class SqlUtil
     {
         // 番号付パラメータ名正規表現

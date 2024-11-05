@@ -10,7 +10,7 @@ namespace PicSum.Job.Jobs
     /// <summary>
     /// ファイルをフォルダで検索します。
     /// </summary>
-    [SupportedOSPlatform("windows")]
+    [SupportedOSPlatform("windows10.0.17763.0")]
     public sealed class FilesGetByDirectoryJob
         : AbstractTwoWayJob<ValueParameter<string>, DirectoryGetResult>
     {

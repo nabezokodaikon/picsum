@@ -10,7 +10,7 @@ using System.Xml;
 
 namespace SWF.Core.ImageAccessor
 {
-    [SupportedOSPlatform("windows")]
+    [SupportedOSPlatform("windows10.0.17763.0")]
     public static class ImageUtil
     {
         public static readonly Size EMPTY_SIZE = System.Drawing.Size.Empty;

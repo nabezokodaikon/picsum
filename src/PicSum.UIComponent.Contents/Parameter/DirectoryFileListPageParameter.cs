@@ -9,7 +9,7 @@ namespace PicSum.UIComponent.Contents.Parameter
     /// <summary>
     /// フォルダファイルリストコンテンツパラメータ
     /// </summary>
-    [SupportedOSPlatform("windows")]
+    [SupportedOSPlatform("windows10.0.17763.0")]
     public sealed class DirectoryFileListPageParameter
         : IPageParameter
     {

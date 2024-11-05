@@ -5,7 +5,7 @@ using System.Runtime.Versioning;
 
 namespace SWF.Core.ImageAccessor
 {
-    [SupportedOSPlatform("windows")]
+    [SupportedOSPlatform("windows10.0.17763.0")]
     public sealed partial class ImageFileCacher
         : IImageFileCacher
     {

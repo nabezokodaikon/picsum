@@ -6,7 +6,7 @@ namespace PicSum.DatabaseAccessor.Connection
     /// <summary>
     /// fileinfo.sqlite コネクション
     /// </summary>
-    [SupportedOSPlatform("windows")]
+    [SupportedOSPlatform("windows10.0.17763.0")]
     public sealed partial class FileInfoDB
         : AbstractConnection, IFileInfoDB
     {

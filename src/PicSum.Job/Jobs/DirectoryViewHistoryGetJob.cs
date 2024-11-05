@@ -9,7 +9,7 @@ namespace PicSum.Job.Jobs
     /// <summary>
     /// フォルダの表示履歴を取得します。
     /// </summary>
-    [SupportedOSPlatform("windows")]
+    [SupportedOSPlatform("windows10.0.17763.0")]
     public sealed class DirectoryViewHistoryGetJob
         : AbstractTwoWayJob<ListResult<FileShallowInfoEntity>>
     {

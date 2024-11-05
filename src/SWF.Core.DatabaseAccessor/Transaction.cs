@@ -1,11 +1,8 @@
+using System.Runtime.Versioning;
+
 namespace SWF.Core.DatabaseAccessor
 {
-    /// <summary>
-    /// DBトランザクション
-    /// </summary>
-    /// <remarks>
-    /// コンストラクタ
-    /// </remarks>
+    [SupportedOSPlatform("windows10.0.17763.0")]
     public sealed partial class Transaction(AbstractConnection connection)
         : ITransaction
     {

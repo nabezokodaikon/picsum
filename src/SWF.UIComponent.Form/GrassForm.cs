@@ -8,7 +8,7 @@ using WinApi;
 
 namespace SWF.UIComponent.Form
 {
-    [SupportedOSPlatform("windows")]
+    [SupportedOSPlatform("windows10.0.17763.0")]
     public partial class GrassForm
         : System.Windows.Forms.Form
     {

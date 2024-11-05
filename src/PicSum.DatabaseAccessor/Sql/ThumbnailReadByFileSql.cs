@@ -7,7 +7,7 @@ namespace PicSum.DatabaseAccessor.Sql
     /// <summary>
     /// ファイルを指定してサムネイルを読込みます。
     /// </summary>
-    [SupportedOSPlatform("windows")]
+    [SupportedOSPlatform("windows10.0.17763.0")]
     public sealed class ThumbnailReadByFileSql
         : SqlBase<ThumbnailDto>
     {

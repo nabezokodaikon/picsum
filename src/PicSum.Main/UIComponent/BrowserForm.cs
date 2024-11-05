@@ -15,7 +15,7 @@ using System.Windows.Forms;
 
 namespace PicSum.Main.UIComponent
 {
-    [SupportedOSPlatform("windows")]
+    [SupportedOSPlatform("windows10.0.17763.0")]
     public sealed partial class BrowserForm
         : GrassForm, ISender
     {

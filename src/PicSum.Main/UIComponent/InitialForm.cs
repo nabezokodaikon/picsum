@@ -16,7 +16,7 @@ namespace PicSum.Main.UIComponent
     /// <summary>
     /// ダミーフォーム
     /// </summary>
-    [SupportedOSPlatform("windows")]
+    [SupportedOSPlatform("windows10.0.17763.0")]
     internal sealed partial class InitialForm
         : HideForm, ISender
     {

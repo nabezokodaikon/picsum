@@ -24,7 +24,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
     /// <summary>
     /// 画像ビューアコンテンツ
     /// </summary>
-    [SupportedOSPlatform("windows")]
+    [SupportedOSPlatform("windows10.0.17763.0")]
     public sealed partial class ImageViewerPage
         : BrowserPage, ISender
     {

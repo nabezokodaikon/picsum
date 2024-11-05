@@ -6,7 +6,7 @@ namespace PicSum.DatabaseAccessor.Sql
     /// <summary>
     /// 評価T更新
     /// </summary>
-    [SupportedOSPlatform("windows")]
+    [SupportedOSPlatform("windows10.0.17763.0")]
     public sealed class RatingUpdateSql
         : SqlBase
     {

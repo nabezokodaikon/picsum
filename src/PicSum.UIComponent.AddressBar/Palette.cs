@@ -3,7 +3,7 @@ using System.Runtime.Versioning;
 
 namespace PicSum.UIComponent.AddressBar
 {
-    [SupportedOSPlatform("windows")]
+    [SupportedOSPlatform("windows10.0.17763.0")]
     internal sealed class Palette
     {
         private Font textFont = new("Yu Gothic UI", 10F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(128)));

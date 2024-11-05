@@ -4,7 +4,7 @@ using System.Windows.Forms;
 
 namespace PicSum.UIComponent.InfoPanel
 {
-    [SupportedOSPlatform("windows")]
+    [SupportedOSPlatform("windows10.0.17763.0")]
     internal partial class FileInfoLabel
         : Control
     {

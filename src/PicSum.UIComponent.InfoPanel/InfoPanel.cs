@@ -17,7 +17,7 @@ using System.Windows.Forms;
 
 namespace PicSum.UIComponent.InfoPanel
 {
-    [SupportedOSPlatform("windows")]
+    [SupportedOSPlatform("windows10.0.17763.0")]
     public sealed partial class InfoPanel
         : UserControl, ISender
     {

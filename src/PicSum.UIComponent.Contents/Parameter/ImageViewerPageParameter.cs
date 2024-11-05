@@ -11,7 +11,7 @@ namespace PicSum.UIComponent.Contents.Parameter
     /// <summary>
     /// 画像表示コンテンツパラメータ
     /// </summary>
-    [SupportedOSPlatform("windows")]
+    [SupportedOSPlatform("windows10.0.17763.0")]
     public sealed class ImageViewerPageParameter
         : IPageParameter
     {

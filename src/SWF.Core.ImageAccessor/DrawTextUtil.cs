@@ -5,7 +5,7 @@ using WinApi;
 
 namespace SWF.Core.ImageAccessor
 {
-    [SupportedOSPlatform("windows")]
+    [SupportedOSPlatform("windows10.0.17763.0")]
     public static class DrawTextUtil
     {
         public static void DrawText(Graphics srcDc, string text, Font font, Rectangle bounds, Color color, TextFormatFlags flags)

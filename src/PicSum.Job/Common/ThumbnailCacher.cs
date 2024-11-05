@@ -12,7 +12,7 @@ namespace PicSum.Job.Common
     /// <summary>
     /// サムネイルを読込みます。
     /// </summary>
-    [SupportedOSPlatform("windows")]
+    [SupportedOSPlatform("windows10.0.17763.0")]
     internal sealed partial class ThumbnailCacher
         : IThumbnailCacher
     {

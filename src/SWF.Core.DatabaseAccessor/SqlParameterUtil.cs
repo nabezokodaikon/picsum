@@ -1,12 +1,11 @@
 using SWF.Core.Base;
 using System.Data;
 using System.Data.SQLite;
+using System.Runtime.Versioning;
 
 namespace SWF.Core.DatabaseAccessor
 {
-    /// <summary>
-    /// SQLパラメータユーティリティ
-    /// </summary>
+    [SupportedOSPlatform("windows10.0.17763.0")]
     public static class SqlParameterUtil
     {
         public static IDbDataParameter CreateParameter(string paramName, string value)

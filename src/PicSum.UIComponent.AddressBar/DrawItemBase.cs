@@ -5,7 +5,7 @@ using System.Windows.Forms;
 
 namespace PicSum.UIComponent.AddressBar
 {
-    [SupportedOSPlatform("windows")]
+    [SupportedOSPlatform("windows10.0.17763.0")]
     abstract class DrawItemBase
     {
         protected const int DROPDOWN_ITEM_HEIGHT = 32;

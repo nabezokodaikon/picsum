@@ -7,7 +7,7 @@ namespace PicSum.DatabaseAccessor.Sql
     /// マイコンピュータ、ドライブを除く、
     /// 表示回数の多いフォルダを取得します。
     /// </summary>
-    [SupportedOSPlatform("windows")]
+    [SupportedOSPlatform("windows10.0.17763.0")]
     public sealed class FavoriteDirectoriesReadSql
         : SqlBase<SingleValueDto<string>>
     {

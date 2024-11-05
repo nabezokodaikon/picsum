@@ -6,7 +6,7 @@ namespace SWF.UIComponent.FlowList
     /// <summary>
     /// 垂直スクロールバー拡張
     /// </summary>
-    [SupportedOSPlatform("windows")]
+    [SupportedOSPlatform("windows10.0.17763.0")]
     internal sealed partial class VScrollBarEx
         : VScrollBar
     {

@@ -2,7 +2,7 @@ using System.Runtime.Versioning;
 
 namespace SWF.UIComponent.Core
 {
-    [SupportedOSPlatform("windows")]
+    [SupportedOSPlatform("windows10.0.17763.0")]
     public partial class ToolButton : Button
     {
         private const int REGION_OFFSET = 4;

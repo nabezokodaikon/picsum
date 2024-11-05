@@ -8,7 +8,7 @@ namespace PicSum.UIComponent.Contents.Common
     /// <summary>
     /// コンテンツ基底クラス
     /// </summary>
-    [SupportedOSPlatform("windows")]
+    [SupportedOSPlatform("windows10.0.17763.0")]
     public abstract class BrowserPage
         : PagePanel
     {

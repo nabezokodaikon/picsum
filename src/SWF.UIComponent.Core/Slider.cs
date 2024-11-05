@@ -6,7 +6,7 @@ namespace SWF.UIComponent.Core
     /// <summary>
     /// スライダーコントロール
     /// </summary>
-    [SupportedOSPlatform("windows")]
+    [SupportedOSPlatform("windows10.0.17763.0")]
     public partial class Slider : Control
     {
 

@@ -6,7 +6,7 @@ using System.Runtime.Versioning;
 
 namespace SWF.Core.ImageAccessor
 {
-    [SupportedOSPlatform("windows")]
+    [SupportedOSPlatform("windows10.0.17763.0")]
     public static class ThumbnailUtil
     {
         private static readonly EncoderParameter ENCORDER_PARAMETER = new(Encoder.Quality, 80L);

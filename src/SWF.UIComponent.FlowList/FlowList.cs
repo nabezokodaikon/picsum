@@ -9,7 +9,7 @@ namespace SWF.UIComponent.FlowList
     /// <summary>
     /// フローリストコントロール
     /// </summary>
-    [SupportedOSPlatform("windows")]
+    [SupportedOSPlatform("windows10.0.17763.0")]
     public sealed partial class FlowList
         : UserControl
     {

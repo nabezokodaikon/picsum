@@ -16,7 +16,7 @@ using System.Windows.Forms;
 
 namespace PicSum.UIComponent.Contents.FileList
 {
-    [SupportedOSPlatform("windows")]
+    [SupportedOSPlatform("windows10.0.17763.0")]
     internal sealed partial class FavoriteDirectoryListPage
         : AbstractFileListPage
     {

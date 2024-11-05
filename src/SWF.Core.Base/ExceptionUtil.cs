@@ -5,7 +5,7 @@ namespace SWF.Core.Base
     /// <summary>
     /// 例外ユーティリティクラス。
     /// </summary>
-    [SupportedOSPlatform("windows")]
+    [SupportedOSPlatform("windows10.0.17763.0")]
     public static class ExceptionUtil
     {
         public static void ShowErrorDialog(string message, Exception ex)

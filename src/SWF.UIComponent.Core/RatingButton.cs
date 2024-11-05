@@ -3,7 +3,7 @@ using System.Runtime.Versioning;
 
 namespace SWF.UIComponent.Core
 {
-    [SupportedOSPlatform("windows")]
+    [SupportedOSPlatform("windows10.0.17763.0")]
     internal partial class RatingButton : Control
     {
         private bool _isActive = false;

@@ -12,7 +12,7 @@ namespace PicSum.Main.Mng
     /// <summary>
     /// ブラウザ管理クラス
     /// </summary>
-    [SupportedOSPlatform("windows")]
+    [SupportedOSPlatform("windows10.0.17763.0")]
     public sealed class BrowserManager
     {
 

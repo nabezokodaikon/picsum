@@ -6,7 +6,7 @@ using System.Runtime.Versioning;
 
 namespace PicSum.Job.Logics
 {
-    [SupportedOSPlatform("windows")]
+    [SupportedOSPlatform("windows10.0.17763.0")]
     internal sealed class DirectoryViewCounterIncrementLogic(IAsyncJob job)
         : AbstractAsyncLogic(job)
     {

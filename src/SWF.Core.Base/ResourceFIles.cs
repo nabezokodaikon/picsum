@@ -1,7 +1,9 @@
 using SWF.Core.Base.Properties;
+using System.Runtime.Versioning;
 
 namespace SWF.Core.Base
 {
+    [SupportedOSPlatform("windows10.0.17763.0")]
     public static class ResourceFiles
     {
         public static readonly Lazy<Icon> ApplicationIcon = new(() =>

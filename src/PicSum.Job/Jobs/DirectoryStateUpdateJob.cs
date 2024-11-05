@@ -10,7 +10,7 @@ namespace PicSum.Job.Jobs
     /// <summary>
     /// フォルダ状態更新ジョブ
     /// </summary>
-    [SupportedOSPlatform("windows")]
+    [SupportedOSPlatform("windows10.0.17763.0")]
     internal sealed class DirectoryStateUpdateJob
         : AbstractOneWayJob<DirectoryStateParameter>
     {

@@ -9,7 +9,7 @@ namespace PicSum.Main.Mng
     /// <summary>
     /// コンポーネント管理クラス
     /// </summary>
-    [SupportedOSPlatform("windows")]
+    [SupportedOSPlatform("windows10.0.17763.0")]
     internal sealed partial class ResourceManager
         : IDisposable
     {

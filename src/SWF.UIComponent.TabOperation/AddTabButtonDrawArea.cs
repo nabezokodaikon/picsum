@@ -4,7 +4,7 @@ using System.Runtime.Versioning;
 
 namespace SWF.UIComponent.TabOperation
 {
-    [SupportedOSPlatform("windows")]
+    [SupportedOSPlatform("windows10.0.17763.0")]
     internal sealed class AddTabButtonDrawArea
     {
 

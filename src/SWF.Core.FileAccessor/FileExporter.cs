@@ -5,7 +5,7 @@ namespace SWF.Core.FileAccessor
     /// <summary>
     /// 画像ファイルエクスポート非同期ロジック
     /// </summary>
-    [SupportedOSPlatform("windows")]
+    [SupportedOSPlatform("windows10.0.17763.0")]
     public sealed partial class FileExporter
         : IFileExporter
     {

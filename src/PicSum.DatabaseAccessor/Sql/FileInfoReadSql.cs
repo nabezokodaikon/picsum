@@ -7,7 +7,7 @@ namespace PicSum.DatabaseAccessor.Sql
     /// <summary>
     /// 単一ファイル情報を読込みます。
     /// </summary>
-    [SupportedOSPlatform("windows")]
+    [SupportedOSPlatform("windows10.0.17763.0")]
     public sealed class FileInfoReadSql
         : SqlBase<FileInfoDto>
     {

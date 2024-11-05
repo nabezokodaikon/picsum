@@ -10,7 +10,7 @@ namespace PicSum.UIComponent.Contents.ContextMenu
     /// <summary>
     /// ファイルコンテキストメニュー
     /// </summary>
-    [SupportedOSPlatform("windows")]
+    [SupportedOSPlatform("windows10.0.17763.0")]
     public sealed partial class FileContextMenu
         : ContextMenuStrip
     {

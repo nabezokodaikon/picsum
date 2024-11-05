@@ -6,7 +6,7 @@ namespace PicSum.DatabaseAccessor.Sql
     /// <summary>
     /// サムネイルT作成
     /// </summary>
-    [SupportedOSPlatform("windows")]
+    [SupportedOSPlatform("windows10.0.17763.0")]
     public sealed class ThumbnailCreationSql
         : SqlBase
     {

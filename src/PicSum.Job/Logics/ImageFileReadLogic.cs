@@ -4,9 +4,11 @@ using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
 using SWF.Core.Job;
 using System.Drawing;
+using System.Runtime.Versioning;
 
 namespace PicSum.Job.Logics
 {
+    [SupportedOSPlatform("windows10.0.17763.0")]
     internal sealed class ImageFileReadLogic(IAsyncJob job)
         : AbstractAsyncLogic(job)
     {

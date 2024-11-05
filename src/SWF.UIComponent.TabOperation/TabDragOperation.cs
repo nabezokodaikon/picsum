@@ -9,7 +9,7 @@ namespace SWF.UIComponent.TabOperation
     /// <summary>
     /// タブのドラッグ操作を制御するクラスです。
     /// </summary>
-    [SupportedOSPlatform("windows")]
+    [SupportedOSPlatform("windows10.0.17763.0")]
     internal static class TabDragOperation
     {
         private const int DEFAULT_WIDTH_OFFSET = 8;

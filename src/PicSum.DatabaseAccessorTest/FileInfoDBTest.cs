@@ -1,10 +1,11 @@
-using Microsoft.VisualStudio.TestPlatform.ObjectModel;
 using PicSum.DatabaseAccessor.Connection;
 using PicSum.DatabaseAccessor.Sql;
 using SWF.Core.Base;
+using System.Runtime.Versioning;
 
 namespace PicSum.DatabaseAccessorTest
 {
+    [SupportedOSPlatform("windows10.0.17763.0")]
     public class FileInfoDBTest
         : IDisposable
     {

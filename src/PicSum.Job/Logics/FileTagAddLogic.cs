@@ -9,7 +9,7 @@ namespace PicSum.Job.Logics
     /// <summary>
     /// タグ追加ロジック
     /// </summary>
-    [SupportedOSPlatform("windows")]
+    [SupportedOSPlatform("windows10.0.17763.0")]
     internal sealed class FileTagAddLogic(IAsyncJob job)
         : AbstractAsyncLogic(job)
     {

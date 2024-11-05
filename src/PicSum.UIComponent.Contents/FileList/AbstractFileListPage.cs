@@ -26,7 +26,7 @@ namespace PicSum.UIComponent.Contents.FileList
     /// <summary>
     /// ファイルリストコンテンツ基底クラス
     /// </summary>
-    [SupportedOSPlatform("windows")]
+    [SupportedOSPlatform("windows10.0.17763.0")]
     internal abstract partial class AbstractFileListPage
         : BrowserPage, ISender
     {

@@ -1,11 +1,10 @@
 using System.Data;
 using System.Data.SQLite;
+using System.Runtime.Versioning;
 
 namespace SWF.Core.DatabaseAccessor
 {
-    /// <summary>
-    /// DBに接続するベースクラスです。
-    /// </summary>
+    [SupportedOSPlatform("windows10.0.17763.0")]
     public abstract class AbstractConnection
         : IConnection
     {

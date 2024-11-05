@@ -7,7 +7,7 @@ namespace SWF.UIComponent.TabOperation
     /// <summary>
     /// タブ情報クラス
     /// </summary>
-    [SupportedOSPlatform("windows")]
+    [SupportedOSPlatform("windows10.0.17763.0")]
     public sealed class TabInfo
     {
 

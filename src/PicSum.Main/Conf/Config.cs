@@ -9,7 +9,7 @@ using System.Xml.Serialization;
 
 namespace PicSum.Main.Conf
 {
-    [SupportedOSPlatform("windows")]
+    [SupportedOSPlatform("windows10.0.17763.0")]
     public sealed class Config
     {
         public static readonly Config Instance = new();

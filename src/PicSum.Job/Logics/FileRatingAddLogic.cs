@@ -9,7 +9,7 @@ namespace PicSum.Job.Logics
     /// <summary>
     /// ファイルの評価値を登録します。
     /// </summary>
-    [SupportedOSPlatform("windows")]
+    [SupportedOSPlatform("windows10.0.17763.0")]
     internal sealed class FileRatingAddLogic(IAsyncJob job)
         : AbstractAsyncLogic(job)
     {

@@ -3,7 +3,7 @@ using System.Windows.Forms;
 
 namespace PicSum.UIComponent.Contents.ToolBar
 {
-    [SupportedOSPlatform("windows")]
+    [SupportedOSPlatform("windows10.0.17763.0")]
     public sealed partial class PageToolBar
         : ToolStrip
     {

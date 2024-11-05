@@ -9,7 +9,7 @@ using WinApi;
 
 namespace SWF.Core.FileAccessor
 {
-    [SupportedOSPlatform("windows")]
+    [SupportedOSPlatform("windows10.0.17763.0")]
     public static class FileUtil
     {
         private const string ROOT_DIRECTORY_NAME = "PC";

@@ -11,7 +11,7 @@ namespace PicSum.Job.Jobs
     /// <summary>
     /// ファイルの深い情報取得非同期ジョブ
     /// </summary>
-    [SupportedOSPlatform("windows")]
+    [SupportedOSPlatform("windows10.0.17763.0")]
     public sealed class FileDeepInfoGetJob
         : AbstractTwoWayJob<FileDeepInfoGetParameter, FileDeepInfoGetResult>
     {

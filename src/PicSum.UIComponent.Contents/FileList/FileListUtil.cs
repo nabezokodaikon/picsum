@@ -12,7 +12,7 @@ using System.Runtime.Versioning;
 
 namespace PicSum.UIComponent.Contents.FileList
 {
-    [SupportedOSPlatform("windows")]
+    [SupportedOSPlatform("windows10.0.17763.0")]
     internal static class FileListUtil
     {
         private static IEnumerable<FileShallowInfoEntity> GetSortFiles(

@@ -3,7 +3,7 @@ using System.Runtime.Versioning;
 
 namespace PicSum.DatabaseAccessor.Sql
 {
-    [SupportedOSPlatform("windows")]
+    [SupportedOSPlatform("windows10.0.17763.0")]
     public sealed class BookmarkDeletionSql
         : SqlBase
     {

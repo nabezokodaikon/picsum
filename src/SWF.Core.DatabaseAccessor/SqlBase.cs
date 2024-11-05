@@ -1,10 +1,9 @@
 using System.Data;
+using System.Runtime.Versioning;
 
 namespace SWF.Core.DatabaseAccessor
 {
-    /// <summary>
-    /// SQL基底クラス
-    /// </summary>
+    [SupportedOSPlatform("windows10.0.17763.0")]
     public abstract class SqlBase(string sqlText)
     {
         private readonly string sqlText = sqlText ?? throw new ArgumentNullException(nameof(sqlText));
@@ -21,9 +20,7 @@ namespace SWF.Core.DatabaseAccessor
         }
     }
 
-    /// <summary>
-    /// データアクセサ
-    /// </summary>
+    [SupportedOSPlatform("windows10.0.17763.0")]
     public abstract class SqlBase<TDto>(string sqlText)
         where TDto : IDto
     {

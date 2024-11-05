@@ -11,7 +11,7 @@ namespace PicSum.Job.Logics
     /// <summary>
     /// ファイルの浅い情報を取得します。
     /// </summary>
-    [SupportedOSPlatform("windows")]
+    [SupportedOSPlatform("windows10.0.17763.0")]
     internal sealed class FileShallowInfoGetLogic(IAsyncJob job)
         : AbstractAsyncLogic(job)
     {

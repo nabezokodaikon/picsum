@@ -6,7 +6,7 @@ using System.Runtime.Versioning;
 
 namespace PicSum.Job.Jobs
 {
-    [SupportedOSPlatform("windows")]
+    [SupportedOSPlatform("windows10.0.17763.0")]
     internal sealed class DirectoryViewHistoryAddJob
         : AbstractOneWayJob<ValueParameter<string>>
     {

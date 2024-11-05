@@ -10,7 +10,7 @@ namespace PicSum.Job.Logics
     /// タグを更新します。
     /// </summary>
     /// <remarks>タグの存在確認として使用します。</remarks>
-    [SupportedOSPlatform("windows")]
+    [SupportedOSPlatform("windows10.0.17763.0")]
     internal sealed class FileTagUpdateLogic(IAsyncJob job)
         : AbstractAsyncLogic(job)
     {

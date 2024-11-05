@@ -8,7 +8,7 @@ namespace SWF.Core.FileAccessor
     /// <summary>
     /// ファイルアイコンキャッシュクラス
     /// </summary>
-    [SupportedOSPlatform("windows")]
+    [SupportedOSPlatform("windows10.0.17763.0")]
     public sealed partial class FileIconCacher
         : IFileIconCacher
     {

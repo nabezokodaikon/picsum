@@ -10,7 +10,7 @@ namespace PicSum.Job.Logics
     /// <summary>
     /// フォルダ状態テーブルを更新します。
     /// </summary>
-    [SupportedOSPlatform("windows")]
+    [SupportedOSPlatform("windows10.0.17763.0")]
     internal sealed class DirectoryStateUpdateLogic(IAsyncJob job)
         : AbstractAsyncLogic(job)
     {

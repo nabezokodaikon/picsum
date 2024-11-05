@@ -3,9 +3,11 @@ using PicSum.DatabaseAccessor.Sql;
 using SWF.Core.Base;
 using SWF.Core.FileAccessor;
 using SWF.Core.Job;
+using System.Runtime.Versioning;
 
 namespace PicSum.Job.SyncLogics
 {
+    [SupportedOSPlatform("windows10.0.17763.0")]
     internal sealed class FileInfoDBCleanupSyncLogic
         : AbstractSyncLogic
     {

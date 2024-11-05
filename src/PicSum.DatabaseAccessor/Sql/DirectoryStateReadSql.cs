@@ -7,7 +7,7 @@ namespace PicSum.DatabaseAccessor.Sql
     /// <summary>
     /// フォルダを指定してフォルダ状態を取得します。
     /// </summary>
-    [SupportedOSPlatform("windows")]
+    [SupportedOSPlatform("windows10.0.17763.0")]
     public sealed class DirectoryStateReadSql
         : SqlBase<DirectoryStateDto>
     {

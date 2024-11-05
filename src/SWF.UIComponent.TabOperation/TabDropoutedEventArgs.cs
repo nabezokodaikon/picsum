@@ -7,7 +7,7 @@ namespace SWF.UIComponent.TabOperation
     /// <summary>
     /// タブをドロップアウトしたイベント
     /// </summary>
-    [SupportedOSPlatform("windows")]
+    [SupportedOSPlatform("windows10.0.17763.0")]
     public sealed class TabDropoutedEventArgs
         : TabEventArgs
     {

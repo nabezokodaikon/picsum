@@ -9,7 +9,7 @@ namespace PicSum.Job.Jobs
     /// <summary>
     /// ファイルを評価値で検索します。
     /// </summary>
-    [SupportedOSPlatform("windows")]
+    [SupportedOSPlatform("windows10.0.17763.0")]
     public sealed class FilesGetByRatingJob
         : AbstractTwoWayJob<ValueParameter<int>, ListResult<FileShallowInfoEntity>>
     {

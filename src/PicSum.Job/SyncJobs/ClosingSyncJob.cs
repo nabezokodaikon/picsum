@@ -1,11 +1,10 @@
 using PicSum.Job.SyncLogics;
 using SWF.Core.Job;
+using System.Runtime.Versioning;
 
 namespace PicSum.Job.SyncJobs
 {
-    /// <summary>
-    /// 終了同期ジョブ
-    /// </summary>
+    [SupportedOSPlatform("windows10.0.17763.0")]
     public sealed class ClosingSyncJob
         : AbstractSyncJob
     {

@@ -2,9 +2,11 @@ using OpenCvSharp;
 using OpenCvSharp.Extensions;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
+using System.Runtime.Versioning;
 
 namespace SWF.Core.ImageAccessor
 {
+    [SupportedOSPlatform("windows10.0.17763.0")]
     public sealed partial class CvImage
         : IDisposable
     {

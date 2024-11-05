@@ -15,7 +15,7 @@ namespace PicSum.Job.Logics
     /// <summary>
     /// ファイルの深い情報取得ロジック
     /// </summary>
-    [SupportedOSPlatform("windows")]
+    [SupportedOSPlatform("windows10.0.17763.0")]
     internal sealed class FileDeepInfoGetLogic
         : AbstractAsyncLogic
     {
