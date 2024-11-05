@@ -1,6 +1,6 @@
 using PicSum.DatabaseAccessor.Connection;
 using PicSum.DatabaseAccessor.Sql;
-using SWF.Core.DatabaseAccessor;
+using SWF.Core.Base;
 using SWF.Core.Job;
 using System.Runtime.Versioning;
 
@@ -23,7 +23,7 @@ namespace PicSum.Job.Logics
             ArgumentException.ThrowIfNullOrEmpty(directoryPath, nameof(directoryPath));
 
             var sql = new DirectoryViewHistoryCreationSql(directoryPath);
-            return Dao<IFileInfoDB>.Instance.Update(sql);
+            return Instance<IFileInfoDB>.Value.Update(sql);
         }
     }
 }

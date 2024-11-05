@@ -3,7 +3,6 @@ using PicSum.DatabaseAccessor.Dto;
 using PicSum.DatabaseAccessor.Sql;
 using PicSum.Job.Entities;
 using SWF.Core.Base;
-using SWF.Core.DatabaseAccessor;
 using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
 using System.Runtime.Versioning;
@@ -15,11 +14,9 @@ namespace PicSum.Job.Common
     /// </summary>
     [SupportedOSPlatform("windows")]
     internal sealed partial class ThumbnailCacher
-        : IDisposable
+        : IThumbnailCacher
     {
         private const int CACHE_CAPACITY = 1000;
-
-        public readonly static ThumbnailCacher Instance = new();
 
         private bool disposed = false;
         private readonly int BUFFER_FILE_MAX_SIZE = 1024 * 1024 * 10;
@@ -28,7 +25,7 @@ namespace PicSum.Job.Common
         private readonly FileAppender fileAppender = new();
         private readonly object CACHE_LOCK = new();
 
-        private ThumbnailCacher()
+        public ThumbnailCacher()
         {
 
         }
@@ -59,7 +56,7 @@ namespace PicSum.Job.Common
             this.disposed = true;
         }
 
-        internal ThumbnailCacheEntity GetOnlyCache(string filePath, int thumbWidth, int thumbHeight)
+        public ThumbnailCacheEntity GetOnlyCache(string filePath, int thumbWidth, int thumbHeight)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
@@ -85,7 +82,7 @@ namespace PicSum.Job.Common
             }
         }
 
-        internal ThumbnailCacheEntity GetOrCreateCache(string filePath, int thumbWidth, int thumbHeight)
+        public ThumbnailCacheEntity GetOrCreateCache(string filePath, int thumbWidth, int thumbHeight)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
@@ -444,7 +441,7 @@ namespace PicSum.Job.Common
 
         private int GetCurrentThumbnailBufferID()
         {
-            var id = (int)Dao<IThumbnailDB>.Instance.ReadValue<long>(new ThumbnailIDReadSql());
+            var id = (int)Instance<IThumbnailDB>.Value.ReadValue<long>(new ThumbnailIDReadSql());
             var thumbFile = this.GetThumbnailBufferFilePath(id);
             if (!File.Exists(thumbFile))
             {
@@ -458,8 +455,8 @@ namespace PicSum.Job.Common
             }
             else
             {
-                Dao<IThumbnailDB>.Instance.Update(new ThumbnailIDUpdateSql());
-                var newID = (int)Dao<IThumbnailDB>.Instance.ReadValue<long>(new ThumbnailIDReadSql());
+                Instance<IThumbnailDB>.Value.Update(new ThumbnailIDUpdateSql());
+                var newID = (int)Instance<IThumbnailDB>.Value.ReadValue<long>(new ThumbnailIDReadSql());
                 return newID;
             }
         }
@@ -478,7 +475,7 @@ namespace PicSum.Job.Common
         private ThumbnailCacheEntity GetDBCache(string filePath)
         {
             var sql = new ThumbnailReadByFileSql(filePath);
-            var dto = Dao<IThumbnailDB>.Instance.ReadLine(sql);
+            var dto = Instance<IThumbnailDB>.Value.ReadLine(sql);
             if (!dto.Equals(default(ThumbnailDto)))
             {
                 var thumb = new ThumbnailCacheEntity
@@ -507,7 +504,7 @@ namespace PicSum.Job.Common
         {
             using (var srcImg = ImageUtil.ReadImageFile(filePath))
             {
-                ImageFileSizeCacher.Instance.Set(filePath, srcImg.Size);
+                Instance<IImageFileSizeCacher>.Value.Set(filePath, srcImg.Size);
                 using (var thumbImg = ThumbnailUtil.CreateThumbnail(srcImg, thumbWidth, thumbHeight))
                 {
                     var thumbBin = ThumbnailUtil.ToCompressionBinary(thumbImg);
@@ -516,7 +513,7 @@ namespace PicSum.Job.Common
 
                     var sql = new ThumbnailCreationSql(
                         filePath, thumbID, thumbStartPoint, thumbBin.Length, thumbWidth, thumbHeight, srcImg.Width, srcImg.Height, fileUpdateDate);
-                    Dao<IThumbnailDB>.Instance.Update(sql);
+                    Instance<IThumbnailDB>.Value.Update(sql);
 
                     var thumb = new ThumbnailCacheEntity
                     {
@@ -538,7 +535,7 @@ namespace PicSum.Job.Common
         {
             using (var srcImg = ImageUtil.ReadImageFile(filePath))
             {
-                ImageFileSizeCacher.Instance.Set(filePath, srcImg.Size);
+                Instance<IImageFileSizeCacher>.Value.Set(filePath, srcImg.Size);
                 using (var thumbImg = ThumbnailUtil.CreateThumbnail(srcImg, thumbWidth, thumbHeight))
                 {
                     var thumbBin = ThumbnailUtil.ToCompressionBinary(thumbImg);
@@ -547,7 +544,7 @@ namespace PicSum.Job.Common
 
                     var sql = new ThumbnailUpdateSql(
                         filePath, thumbID, thumbStartPoint, thumbBin.Length, thumbWidth, thumbHeight, srcImg.Width, srcImg.Height, fileUpdateDate);
-                    Dao<IThumbnailDB>.Instance.Update(sql);
+                    Instance<IThumbnailDB>.Value.Update(sql);
 
                     var thumb = new ThumbnailCacheEntity
                     {
@@ -569,7 +566,7 @@ namespace PicSum.Job.Common
         {
             using (var srcImg = ImageUtil.ReadImageFile(thumbFilePath))
             {
-                ImageFileSizeCacher.Instance.Set(thumbFilePath, srcImg.Size);
+                Instance<IImageFileSizeCacher>.Value.Set(thumbFilePath, srcImg.Size);
                 using (var thumbImg = ThumbnailUtil.CreateThumbnail(srcImg, thumbWidth, thumbHeight))
                 {
                     var thumbBin = ThumbnailUtil.ToCompressionBinary(thumbImg);
@@ -578,7 +575,7 @@ namespace PicSum.Job.Common
 
                     var sql = new ThumbnailCreationSql(
                         directoryPath, thumbID, thumbStartPoint, thumbBin.Length, thumbWidth, thumbHeight, srcImg.Width, srcImg.Height, directoryUpdateDate);
-                    Dao<IThumbnailDB>.Instance.Update(sql);
+                    Instance<IThumbnailDB>.Value.Update(sql);
 
                     var thumb = new ThumbnailCacheEntity
                     {
@@ -599,7 +596,7 @@ namespace PicSum.Job.Common
         {
             using (var srcImg = ImageUtil.ReadImageFile(thumbFilePath))
             {
-                ImageFileSizeCacher.Instance.Set(thumbFilePath, srcImg.Size);
+                Instance<IImageFileSizeCacher>.Value.Set(thumbFilePath, srcImg.Size);
                 using (var thumbImg = ThumbnailUtil.CreateThumbnail(srcImg, thumbWidth, thumbHeight))
                 {
                     var thumbBin = ThumbnailUtil.ToCompressionBinary(thumbImg);
@@ -608,7 +605,7 @@ namespace PicSum.Job.Common
 
                     var sql = new ThumbnailUpdateSql(
                         directoryPath, thumbID, thumbStartPoint, thumbBin.Length, thumbWidth, thumbHeight, srcImg.Width, srcImg.Height, directoryUpdateDate);
-                    Dao<IThumbnailDB>.Instance.Update(sql);
+                    Instance<IThumbnailDB>.Value.Update(sql);
 
                     var thumb = new ThumbnailCacheEntity
                     {

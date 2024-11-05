@@ -40,7 +40,7 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             var param = new ValueParameter<string>(this.parameter.Tag);
 
-            JobCaller.Instance.FilesGetByTagJob.Value
+            Instance<JobCaller>.Value.FilesGetByTagJob.Value
                 .Initialize()
                 .Callback(_ =>
                 {
@@ -100,7 +100,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 FilePathList = filePathList,
                 Tag = this.parameter.Tag
             };
-            JobCaller.Instance.StartFileTagDeleteJob(this, param);
+            Instance<JobCaller>.Value.StartFileTagDeleteJob(this, param);
 
             this.RemoveFile(filePathList);
         }

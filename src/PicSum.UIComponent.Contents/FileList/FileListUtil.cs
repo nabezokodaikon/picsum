@@ -79,7 +79,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
             return sender =>
             {
-                JobCaller.Instance.FilesGetByDirectoryJob.Value
+                Instance<JobCaller>.Value.FilesGetByDirectoryJob.Value
                     .Initialize()
                     .Callback(e =>
                     {
@@ -111,7 +111,7 @@ namespace PicSum.UIComponent.Contents.FileList
             {
                 var dir = FileUtil.GetParentDirectoryPath(param.SelectedFilePath);
 
-                JobCaller.Instance.FilesGetByDirectoryJob.Value
+                Instance<JobCaller>.Value.FilesGetByDirectoryJob.Value
                     .Initialize()
                     .Callback(e =>
                     {
@@ -129,7 +129,7 @@ namespace PicSum.UIComponent.Contents.FileList
                             .ToArray();
 
                         var eventArgs = new GetImageFilesEventArgs(
-                            imageFiles, param.SelectedFilePath, title, FileIconCacher.Instance.SmallDirectoryIcon);
+                            imageFiles, param.SelectedFilePath, title, Instance<IFileIconCacher>.Value.SmallDirectoryIcon);
                         param.OnGetImageFiles(eventArgs);
                     })
                     .BeginCancel()
@@ -143,7 +143,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
             return sender =>
             {
-                JobCaller.Instance.FilesGetByRatingJob.Value
+                Instance<JobCaller>.Value.FilesGetByRatingJob.Value
                     .Initialize()
                     .Callback(e =>
                     {
@@ -173,7 +173,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
             return sender =>
             {
-                JobCaller.Instance.FilesGetByTagJob.Value
+                Instance<JobCaller>.Value.FilesGetByTagJob.Value
                     .Initialize()
                     .Callback(e =>
                     {

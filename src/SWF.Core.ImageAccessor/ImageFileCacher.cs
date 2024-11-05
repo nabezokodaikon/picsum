@@ -1,4 +1,5 @@
 using OpenCvSharp.Extensions;
+using SWF.Core.Base;
 using SWF.Core.FileAccessor;
 using System.Runtime.Versioning;
 
@@ -6,18 +7,16 @@ namespace SWF.Core.ImageAccessor
 {
     [SupportedOSPlatform("windows")]
     public sealed partial class ImageFileCacher
-        : IDisposable
+        : IImageFileCacher
     {
         private const int CACHE_CAPACITY = 12;
-
-        public readonly static ImageFileCacher Instance = new();
 
         private bool disposed = false;
         private readonly List<ImageFileCacheEntity> CACHE_LIST = new(CACHE_CAPACITY);
         private readonly Dictionary<string, ImageFileCacheEntity> CACHE_DICTIONARY = new(CACHE_CAPACITY);
         private readonly object CACHE_LOCK = new();
 
-        private ImageFileCacher()
+        public ImageFileCacher()
         {
 
         }
@@ -113,7 +112,7 @@ namespace SWF.Core.ImageAccessor
                 }
 
                 var bitmap = ImageUtil.ReadImageFile(filePath);
-                ImageFileSizeCacher.Instance.Set(filePath, bitmap.Size);
+                Instance<IImageFileSizeCacher>.Value.Set(filePath, bitmap.Size);
                 var newCache = new ImageFileCacheEntity(filePath, bitmap, timestamp);
                 this.CACHE_DICTIONARY.Add(newCache.FilePath, newCache);
                 this.CACHE_LIST.Add(newCache);
@@ -152,7 +151,7 @@ namespace SWF.Core.ImageAccessor
                 }
 
                 var bitmap = ImageUtil.ReadImageFile(filePath);
-                ImageFileSizeCacher.Instance.Set(filePath, bitmap.Size);
+                Instance<IImageFileSizeCacher>.Value.Set(filePath, bitmap.Size);
                 var newCache = new ImageFileCacheEntity(filePath, bitmap, timestamp);
                 this.CACHE_DICTIONARY.Add(filePath, newCache);
                 this.CACHE_LIST.Add(newCache);

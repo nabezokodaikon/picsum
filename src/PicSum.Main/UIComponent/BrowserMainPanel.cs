@@ -32,9 +32,9 @@ namespace PicSum.Main.UIComponent
                         false => FileUtil.GetParentDirectoryPath(subParamter.FilePath),
                     };
 
-                    JobCaller.Instance.StartDirectoryViewHistoryAddJob(sender, new ValueParameter<string>(dir));
+                    Instance<JobCaller>.Value.StartDirectoryViewHistoryAddJob(sender, new ValueParameter<string>(dir));
 
-                    JobCaller.Instance.ImageFilesGetByDirectoryJob.Value
+                    Instance<JobCaller>.Value.ImageFilesGetByDirectoryJob.Value
                         .Initialize()
                         .Callback(e =>
                         {
@@ -45,7 +45,7 @@ namespace PicSum.Main.UIComponent
                             var eventArgs = new GetImageFilesEventArgs(
                                 [.. e.FilePathList.OrderBy(_ => _, NaturalStringComparer.Windows)],
                                 e.SelectedFilePath, title,
-                                FileIconCacher.Instance.SmallDirectoryIcon);
+                                Instance<IFileIconCacher>.Value.SmallDirectoryIcon);
                             parameter.OnGetImageFiles(eventArgs);
                         })
                         .BeginCancel()
@@ -368,7 +368,7 @@ namespace PicSum.Main.UIComponent
                     sortInfo,
                     GetImageFilesAction(new ImageFileGetByDirectoryParameter(dirPath)),
                     FileUtil.GetFileName(dirPath),
-                    FileIconCacher.Instance.SmallDirectoryIcon);
+                    Instance<IFileIconCacher>.Value.SmallDirectoryIcon);
                 if (e.IsOverlap)
                 {
                     this.OverlapPage(dragData);
@@ -627,7 +627,7 @@ namespace PicSum.Main.UIComponent
 
         private void TagDropToolButton_DropDownOpening(object sender, DropDownOpeningEventArgs e)
         {
-            JobCaller.Instance.TagsGetJob.Value
+            Instance<JobCaller>.Value.TagsGetJob.Value
                 .Initialize()
                 .Callback(_ =>
                 {

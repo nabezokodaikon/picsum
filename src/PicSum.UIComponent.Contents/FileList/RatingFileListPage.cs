@@ -39,7 +39,7 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             var param = new ValueParameter<int>(this.parameter.RatingValue);
 
-            JobCaller.Instance.FilesGetByRatingJob.Value
+            Instance<JobCaller>.Value.FilesGetByRatingJob.Value
                 .Initialize()
                 .Callback(_ =>
                 {
@@ -99,7 +99,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 FilePathList = filePathList,
                 RatingValue = 0
             };
-            JobCaller.Instance.StartFileRatingUpdateJob(this, param);
+            Instance<JobCaller>.Value.StartFileRatingUpdateJob(this, param);
 
             this.RemoveFile(filePathList);
         }

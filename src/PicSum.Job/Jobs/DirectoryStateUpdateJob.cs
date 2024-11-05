@@ -1,7 +1,7 @@
 using PicSum.DatabaseAccessor.Connection;
 using PicSum.Job.Logics;
 using PicSum.Job.Parameters;
-using SWF.Core.DatabaseAccessor;
+using SWF.Core.Base;
 using SWF.Core.Job;
 using System.Runtime.Versioning;
 
@@ -23,7 +23,7 @@ namespace PicSum.Job.Jobs
                 throw new ArgumentException("ディレクトリパスがNULLです。", nameof(param));
             }
 
-            using (var tran = Dao<IFileInfoDB>.Instance.BeginTransaction())
+            using (var tran = Instance<IFileInfoDB>.Value.BeginTransaction())
             {
                 var updateDirectoryState = new DirectoryStateUpdateLogic(this);
                 if (!updateDirectoryState.Execute(param))

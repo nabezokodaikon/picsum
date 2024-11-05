@@ -8,6 +8,7 @@ using SWF.Core.Job;
 using SWF.UIComponent.Core;
 using System;
 using System.Runtime.Versioning;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace PicSum.Main.UIComponent
@@ -35,16 +36,16 @@ namespace PicSum.Main.UIComponent
 
         protected override void OnHandleCreated(EventArgs e)
         {
-            JobCaller.Initialize();
+            Instance<JobCaller>.Initialize(new JobCaller(SynchronizationContext.Current));
 
             base.OnHandleCreated(e);
         }
 
         protected override void OnLoad(EventArgs e)
         {
-            JobCaller.Instance.StartGCCollectRunJob(this);
+            Instance<JobCaller>.Value.StartGCCollectRunJob(this);
 
-            JobCaller.Instance.PipeServerJob.Value
+            Instance<JobCaller>.Value.PipeServerJob.Value
                 .Initialize()
                 .Callback(_ =>
                 {
@@ -71,7 +72,7 @@ namespace PicSum.Main.UIComponent
                         _.Value,
                         sortInfo,
                         FileUtil.GetFileName(directoryPath),
-                        FileIconCacher.Instance.SmallDirectoryIcon);
+                        Instance<IFileIconCacher>.Value.SmallDirectoryIcon);
 
                     form.AddImageViewerPageTab(parameter);
                     if (form.WindowState == FormWindowState.Minimized)

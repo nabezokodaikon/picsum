@@ -1,7 +1,7 @@
 using PicSum.DatabaseAccessor.Connection;
 using PicSum.DatabaseAccessor.Dto;
 using PicSum.DatabaseAccessor.Sql;
-using SWF.Core.DatabaseAccessor;
+using SWF.Core.Base;
 using SWF.Core.FileAccessor;
 using SWF.Core.Job;
 using System.Runtime.Versioning;
@@ -18,7 +18,7 @@ namespace PicSum.Job.Logics
         public IList<string> Execute()
         {
             var sql = new AllTagsReadSql();
-            var dtoList = Dao<IFileInfoDB>.Instance.ReadList<TagInfoDto>(sql);
+            var dtoList = Instance<IFileInfoDB>.Value.ReadList<TagInfoDto>(sql);
 
             return [.. dtoList
                 .Where(dto => FileUtil.IsExists(dto.FilePath))

@@ -7,16 +7,14 @@ namespace SWF.Core.FileAccessor
     /// </summary>
     [SupportedOSPlatform("windows")]
     public sealed partial class FileExporter
-        : IDisposable
+        : IFileExporter
     {
-        public readonly static FileExporter Instance = new();
-
         private bool disposed = false;
-        public readonly SemaphoreSlim Lock = new(1, 1);
+        public SemaphoreSlim Lock { get; private set; }
 
-        private FileExporter()
+        public FileExporter()
         {
-
+            this.Lock = new(1, 1);
         }
 
         ~FileExporter()

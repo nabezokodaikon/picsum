@@ -1,5 +1,6 @@
 using PicSum.Job.Common;
 using PicSum.Job.Entities;
+using SWF.Core.Base;
 using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
 using SWF.Core.Job;
@@ -32,9 +33,9 @@ namespace PicSum.Job.Logics
                 info.IsFile = false;
                 info.IsImageFile = false;
                 info.UpdateDate = null;
-                info.SmallIcon = FileIconCacher.Instance.SmallPCIcon;
-                info.ExtraLargeIcon = FileIconCacher.Instance.LargePCIcon;
-                info.JumboIcon = FileIconCacher.Instance.LargePCIcon;
+                info.SmallIcon = Instance<IFileIconCacher>.Value.SmallPCIcon;
+                info.ExtraLargeIcon = Instance<IFileIconCacher>.Value.LargePCIcon;
+                info.JumboIcon = Instance<IFileIconCacher>.Value.LargePCIcon;
             }
             else if (FileUtil.IsDrive(filePath))
             {
@@ -43,9 +44,9 @@ namespace PicSum.Job.Logics
                 info.IsFile = false;
                 info.IsImageFile = false;
                 info.UpdateDate = FileUtil.GetUpdateDate(filePath);
-                info.SmallIcon = FileIconCacher.Instance.GetSmallDriveIcon(info.FilePath);
-                info.ExtraLargeIcon = FileIconCacher.Instance.GetExtraLargeDriveIcon(info.FilePath);
-                info.JumboIcon = FileIconCacher.Instance.GetJumboDriveIcon(info.FilePath);
+                info.SmallIcon = Instance<IFileIconCacher>.Value.GetSmallDriveIcon(info.FilePath);
+                info.ExtraLargeIcon = Instance<IFileIconCacher>.Value.GetExtraLargeDriveIcon(info.FilePath);
+                info.JumboIcon = Instance<IFileIconCacher>.Value.GetJumboDriveIcon(info.FilePath);
             }
             else if (FileUtil.IsFile(filePath))
             {
@@ -54,13 +55,13 @@ namespace PicSum.Job.Logics
                 info.IsFile = true;
                 info.IsImageFile = FileUtil.IsImageFile(filePath);
                 info.UpdateDate = FileUtil.GetUpdateDate(filePath);
-                info.SmallIcon = FileIconCacher.Instance.GetSmallFileIcon(info.FilePath);
-                info.ExtraLargeIcon = FileIconCacher.Instance.GetExtraLargeFileIcon(info.FilePath);
-                info.JumboIcon = FileIconCacher.Instance.GetJumboFileIcon(info.FilePath);
+                info.SmallIcon = Instance<IFileIconCacher>.Value.GetSmallFileIcon(info.FilePath);
+                info.ExtraLargeIcon = Instance<IFileIconCacher>.Value.GetExtraLargeFileIcon(info.FilePath);
+                info.JumboIcon = Instance<IFileIconCacher>.Value.GetJumboFileIcon(info.FilePath);
 
                 if (isGetThumbnail)
                 {
-                    var thumbnailBuffer = ThumbnailCacher.Instance.GetOnlyCache(filePath, THUMBNAIL_SIZE, THUMBNAIL_SIZE);
+                    var thumbnailBuffer = Instance<IThumbnailCacher>.Value.GetOnlyCache(filePath, THUMBNAIL_SIZE, THUMBNAIL_SIZE);
                     if (thumbnailBuffer != ThumbnailCacheEntity.EMPTY)
                     {
                         if (thumbnailBuffer.ThumbnailBuffer == null)
@@ -83,13 +84,13 @@ namespace PicSum.Job.Logics
                 info.IsFile = false;
                 info.IsImageFile = false;
                 info.UpdateDate = FileUtil.GetUpdateDate(filePath);
-                info.SmallIcon = FileIconCacher.Instance.SmallDirectoryIcon;
-                info.ExtraLargeIcon = FileIconCacher.Instance.ExtraLargeDirectoryIcon;
-                info.JumboIcon = FileIconCacher.Instance.JumboDirectoryIcon;
+                info.SmallIcon = Instance<IFileIconCacher>.Value.SmallDirectoryIcon;
+                info.ExtraLargeIcon = Instance<IFileIconCacher>.Value.ExtraLargeDirectoryIcon;
+                info.JumboIcon = Instance<IFileIconCacher>.Value.JumboDirectoryIcon;
 
                 if (isGetThumbnail)
                 {
-                    var thumbnailBuffer = ThumbnailCacher.Instance.GetOnlyCache(filePath, THUMBNAIL_SIZE, THUMBNAIL_SIZE);
+                    var thumbnailBuffer = Instance<IThumbnailCacher>.Value.GetOnlyCache(filePath, THUMBNAIL_SIZE, THUMBNAIL_SIZE);
                     if (thumbnailBuffer != ThumbnailCacheEntity.EMPTY)
                     {
                         if (thumbnailBuffer.ThumbnailBuffer == null)

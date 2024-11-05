@@ -1,6 +1,6 @@
 using PicSum.DatabaseAccessor.Connection;
 using PicSum.Job.Common;
-using SWF.Core.DatabaseAccessor;
+using SWF.Core.Base;
 using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
 using SWF.Core.Job;
@@ -15,15 +15,14 @@ namespace PicSum.Job.SyncLogics
     {
         public void Execute()
         {
-            JobCaller.Instance.Dispose();
-            FileIconCacher.Instance.Dispose();
-            ThumbnailCacher.Instance.Dispose();
-            ImageFileCacher.Instance.Dispose();
-            ImageFileSizeCacher.Instance.Dispose();
-            FileExporter.Instance.Dispose();
-
-            Dao<IFileInfoDB>.Instance.Dispose();
-            Dao<IThumbnailDB>.Instance.Dispose();
+            Instance<JobCaller>.Value.Dispose();
+            Instance<IFileIconCacher>.Value.Dispose();
+            Instance<IThumbnailCacher>.Value.Dispose();
+            Instance<IImageFileCacher>.Value.Dispose();
+            Instance<IImageFileSizeCacher>.Value.Dispose();
+            Instance<IFileExporter>.Value.Dispose();
+            Instance<IFileInfoDB>.Value.Dispose();
+            Instance<IThumbnailDB>.Value.Dispose();
         }
     }
 }

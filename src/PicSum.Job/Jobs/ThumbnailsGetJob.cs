@@ -3,7 +3,7 @@ using PicSum.Job.Common;
 using PicSum.Job.Entities;
 using PicSum.Job.Parameters;
 using PicSum.Job.Results;
-using SWF.Core.DatabaseAccessor;
+using SWF.Core.Base;
 using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
 using SWF.Core.Job;
@@ -27,7 +27,7 @@ namespace PicSum.Job.Jobs
                 throw new ArgumentException("ファイルパスリストがNULLです。", nameof(param));
             }
 
-            using (var tran = Dao<IThumbnailDB>.Instance.BeginTransaction())
+            using (var tran = Instance<IThumbnailDB>.Value.BeginTransaction())
             {
                 for (var index = param.FirstIndex; index <= param.LastIndex; index++)
                 {
@@ -35,7 +35,7 @@ namespace PicSum.Job.Jobs
 
                     try
                     {
-                        var bf = ThumbnailCacher.Instance.GetOrCreateCache(param.FilePathList[index], param.ThumbnailWidth, param.ThumbnailHeight);
+                        var bf = Instance<IThumbnailCacher>.Value.GetOrCreateCache(param.FilePathList[index], param.ThumbnailWidth, param.ThumbnailHeight);
                         if (bf == ThumbnailCacheEntity.EMPTY)
                         {
                             continue;

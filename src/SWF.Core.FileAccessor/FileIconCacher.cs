@@ -10,10 +10,8 @@ namespace SWF.Core.FileAccessor
     /// </summary>
     [SupportedOSPlatform("windows")]
     public sealed partial class FileIconCacher
-        : IDisposable
+        : IFileIconCacher
     {
-        public readonly static FileIconCacher Instance = new();
-
         private bool disposed = false;
         private readonly object SMALL_ICON_CASH_LOCK = new();
         private readonly object EXTRALARGE_ICON_CASH_LOCK = new();
@@ -75,7 +73,7 @@ namespace SWF.Core.FileAccessor
             }
         }
 
-        private FileIconCacher()
+        public FileIconCacher()
         {
 
         }

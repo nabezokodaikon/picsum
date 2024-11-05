@@ -98,7 +98,7 @@ namespace PicSum.UIComponent.AddressBar
                 if (!this.isRead)
                 {
                     var param = new ValueParameter<string>(this.Directory.DirectoryPath);
-                    JobCaller.Instance.SubDirectoriesGetJob.Value
+                    Instance<JobCaller>.Value.SubDirectoriesGetJob.Value
                         .Initialize()
                         .Callback(_ =>
                         {

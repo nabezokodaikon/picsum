@@ -1,7 +1,7 @@
 using PicSum.DatabaseAccessor.Connection;
 using PicSum.DatabaseAccessor.Sql;
 using PicSum.Job.Parameters;
-using SWF.Core.DatabaseAccessor;
+using SWF.Core.Base;
 using SWF.Core.Job;
 using System.Runtime.Versioning;
 
@@ -38,7 +38,7 @@ namespace PicSum.Job.Logics
                 sql = new DirectoryStateCreationSql(directoryState.DirectoryPath, (int)directoryState.SortTypeID, directoryState.IsAscending, directoryState.SelectedFilePath);
             }
 
-            return Dao<IFileInfoDB>.Instance.Update(sql);
+            return Instance<IFileInfoDB>.Value.Update(sql);
         }
     }
 }

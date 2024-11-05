@@ -199,7 +199,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
             if (disposing)
             {
-                JobCaller.Instance.ThumbnailsGetJob.Value.BeginCancel();
+                Instance<JobCaller>.Value.ThumbnailsGetJob.Value.BeginCancel();
 
                 this.components?.Dispose();
             }
@@ -216,7 +216,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
         protected override void OnInvalidated(InvalidateEventArgs e)
         {
-            JobCaller.Instance.ThumbnailsGetJob.Value.BeginCancel();
+            Instance<JobCaller>.Value.ThumbnailsGetJob.Value.BeginCancel();
 
             base.OnInvalidated(e);
         }
@@ -860,7 +860,7 @@ namespace PicSum.UIComponent.Contents.FileList
                     ThumbnailHeight = thumbnailHeight,
                 };
 
-                JobCaller.Instance.ThumbnailsGetJob.Value
+                Instance<JobCaller>.Value.ThumbnailsGetJob.Value
                     .Initialize()
                     .Callback(_ =>
                     {
@@ -1149,7 +1149,7 @@ namespace PicSum.UIComponent.Contents.FileList
                             ExportDirecotry = fbd.SelectedPath,
                         };
 
-                        JobCaller.Instance.MultiFilesExportJob.Value
+                        Instance<JobCaller>.Value.MultiFilesExportJob.Value
                             .Initialize()
                             .Callback(_ =>
                             {
@@ -1187,7 +1187,7 @@ namespace PicSum.UIComponent.Contents.FileList
                             SrcFilePath = srcFilePath,
                             ExportFilePath = ofd.FileName
                         };
-                        JobCaller.Instance.StartSingleFileExportJob(this, param);
+                        Instance<JobCaller>.Value.StartSingleFileExportJob(this, param);
 
                         CommonConfig.Instance.ExportDirectoryPath = dir;
                     }
@@ -1228,7 +1228,7 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             var paramter = new ValueParameter<string>(e.FilePath);
 
-            JobCaller.Instance.StartBookmarkAddJob(this, paramter);
+            Instance<JobCaller>.Value.StartBookmarkAddJob(this, paramter);
         }
     }
 }

@@ -73,7 +73,7 @@ namespace PicSum.Job.Logics
         {
             try
             {
-                return ImageFileCacher.Instance.GetCvImage(filePath);
+                return Instance<IImageFileCacher>.Value.GetCvImage(filePath);
             }
             catch (FileUtilException ex)
             {
@@ -91,7 +91,7 @@ namespace PicSum.Job.Logics
         {
             try
             {
-                return ImageFileSizeCacher.Instance.Get(filePath).Size;
+                return Instance<IImageFileSizeCacher>.Value.Get(filePath).Size;
             }
             catch (FileUtilException ex)
             {

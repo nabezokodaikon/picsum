@@ -5,18 +5,16 @@ namespace SWF.Core.ImageAccessor
 {
     [SupportedOSPlatform("windows")]
     public sealed partial class ImageFileSizeCacher
-        : IDisposable
+        : IImageFileSizeCacher
     {
         private const int CACHE_CAPACITY = 1000;
-
-        public readonly static ImageFileSizeCacher Instance = new();
 
         private bool disposed = false;
         private readonly List<ImageFileSizeCacheEntity> CACHE_LIST = new(CACHE_CAPACITY);
         private readonly Dictionary<string, ImageFileSizeCacheEntity> CACHE_DICTIONARY = new(CACHE_CAPACITY);
         private readonly object CACHE_LOCK = new();
 
-        private ImageFileSizeCacher()
+        public ImageFileSizeCacher()
         {
 
         }

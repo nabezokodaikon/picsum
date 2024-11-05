@@ -28,7 +28,7 @@ namespace PicSum.UIComponent.InfoPanel
 
         private static void DrawDirectoryThumbnail(Graphics g, Image thumb, RectangleF rect)
         {
-            ThumbnailUtil.DrawDirectoryThumbnail(g, thumb, rect, FileIconCacher.Instance.ExtraLargeDirectoryIcon);
+            ThumbnailUtil.DrawDirectoryThumbnail(g, thumb, rect, Instance<IFileIconCacher>.Value.ExtraLargeDirectoryIcon);
         }
 
         public event EventHandler<SelectedTagEventArgs> SelectedTag;
@@ -138,7 +138,7 @@ namespace PicSum.UIComponent.InfoPanel
                         AppConstants.INFOPANEL_WIDTH)
                 };
 
-                JobCaller.Instance.FileDeepInfoGetJob.Value
+                Instance<JobCaller>.Value.FileDeepInfoGetJob.Value
                     .Initialize()
                     .Callback(_ =>
                     {
@@ -249,7 +249,7 @@ namespace PicSum.UIComponent.InfoPanel
                 Tag = tag,
                 FilePathList = this.FilePathList
             };
-            JobCaller.Instance.StartFileTagAddJob(this, param);
+            Instance<JobCaller>.Value.StartFileTagAddJob(this, param);
 
             var tagInfo = this.TagList.Find(t => t.Tag.Equals(tag, StringComparison.Ordinal));
             if (tagInfo != null)
@@ -293,7 +293,7 @@ namespace PicSum.UIComponent.InfoPanel
                 Tag = tag,
                 FilePathList = this.FilePathList
             };
-            JobCaller.Instance.StartFileTagDeleteJob(this, param);
+            Instance<JobCaller>.Value.StartFileTagDeleteJob(this, param);
 
             var tagInfo = this.TagList.Find(t => t.Tag.Equals(tag, StringComparison.Ordinal));
             this.TagList.Remove(tagInfo);
@@ -480,7 +480,7 @@ namespace PicSum.UIComponent.InfoPanel
                 FilePathList = this.fileInfoSource.FilePathList,
                 RatingValue = this.ratingBar.Value
             };
-            JobCaller.Instance.StartFileRatingUpdateJob(this, param);
+            Instance<JobCaller>.Value.StartFileRatingUpdateJob(this, param);
         }
 
         private void TagContextMenuStrip_Opening(object sender, CancelEventArgs e)
@@ -551,7 +551,7 @@ namespace PicSum.UIComponent.InfoPanel
 
         private void WideComboBox_DropDownOpening(object sender, DropDownOpeningEventArgs e)
         {
-            JobCaller.Instance.TagsGetJob.Value
+            Instance<JobCaller>.Value.TagsGetJob.Value
                 .Initialize()
                 .Callback(_ =>
                 {

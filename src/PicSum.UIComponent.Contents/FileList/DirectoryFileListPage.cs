@@ -36,15 +36,15 @@ namespace PicSum.UIComponent.Contents.FileList
 
             if (FileUtil.IsSystemRoot(this.parameter.DirectoryPath))
             {
-                this.Icon = FileIconCacher.Instance.SmallPCIcon;
+                this.Icon = Instance<IFileIconCacher>.Value.SmallPCIcon;
             }
             else if (FileUtil.IsDrive(this.parameter.DirectoryPath))
             {
-                this.Icon = FileIconCacher.Instance.GetSmallDriveIcon(this.parameter.DirectoryPath);
+                this.Icon = Instance<IFileIconCacher>.Value.GetSmallDriveIcon(this.parameter.DirectoryPath);
             }
             else
             {
-                this.Icon = FileIconCacher.Instance.SmallDirectoryIcon;
+                this.Icon = Instance<IFileIconCacher>.Value.SmallDirectoryIcon;
             }
 
             this.IsRemoveFromListMenuItemVisible = false;
@@ -56,7 +56,7 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             var param = new ValueParameter<string>(this.parameter.DirectoryPath);
 
-            JobCaller.Instance.FilesGetByDirectoryJob.Value
+            Instance<JobCaller>.Value.FilesGetByDirectoryJob.Value
                 .Initialize()
                 .Callback(_ =>
                 {
@@ -129,7 +129,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 IsNext = false,
             };
 
-            JobCaller.Instance.NextDirectoryGetJob.Value
+            Instance<JobCaller>.Value.NextDirectoryGetJob.Value
                 .Initialize()
                 .Callback(_ =>
                 {
@@ -157,7 +157,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 CurrentParameter = new ValueEntity<string>(this.parameter.DirectoryPath)
             };
 
-            JobCaller.Instance.NextDirectoryGetJob.Value
+            Instance<JobCaller>.Value.NextDirectoryGetJob.Value
                 .Initialize()
                 .Callback(_ =>
                 {
@@ -216,7 +216,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
             param.SelectedFilePath = base.SelectedFilePath;
 
-            JobCaller.Instance.StartDirectoryStateUpdateJob(this, param);
+            Instance<JobCaller>.Value.StartDirectoryStateUpdateJob(this, param);
         }
 
         private void SearchJob_Callback(DirectoryGetResult e)
@@ -250,7 +250,7 @@ namespace PicSum.UIComponent.Contents.FileList
             }
 
             var param = new ValueParameter<string>(e.DirectoryPath);
-            JobCaller.Instance.StartDirectoryViewHistoryAddJob(this, param);
+            Instance<JobCaller>.Value.StartDirectoryViewHistoryAddJob(this, param);
         }
 
         private void GetNextDirectoryProcess_Callback(ValueResult<string> e)

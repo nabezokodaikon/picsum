@@ -1,4 +1,5 @@
 using PicSum.Job.Parameters;
+using SWF.Core.Base;
 using SWF.Core.FileAccessor;
 using SWF.Core.Job;
 
@@ -21,7 +22,7 @@ namespace PicSum.Job.Jobs
                 throw new ArgumentException("エクスポート先のファイルパスがNULLです。", nameof(param));
             }
 
-            FileExporter.Instance.Lock.Wait();
+            Instance<IFileExporter>.Value.Lock.Wait();
 
             try
             {
@@ -33,7 +34,7 @@ namespace PicSum.Job.Jobs
                     {
                         var exportFileName = FileUtil.GetExportFileName(param.ExportDirecotry, srcFile);
                         var exportFilePath = Path.Combine(param.ExportDirecotry, exportFileName);
-                        FileExporter.Instance.Execute(srcFile, exportFilePath);
+                        Instance<IFileExporter>.Value.Execute(srcFile, exportFilePath);
                         var result = new ValueResult<string>
                         {
                             Value = exportFileName,
@@ -68,7 +69,7 @@ namespace PicSum.Job.Jobs
             }
             finally
             {
-                FileExporter.Instance.Lock.Release();
+                Instance<IFileExporter>.Value.Lock.Release();
             }
         }
     }

@@ -3,7 +3,6 @@ using PicSum.DatabaseAccessor.Dto;
 using PicSum.DatabaseAccessor.Sql;
 using PicSum.Job.Parameters;
 using SWF.Core.Base;
-using SWF.Core.DatabaseAccessor;
 using SWF.Core.Job;
 using System.Runtime.Versioning;
 
@@ -21,7 +20,7 @@ namespace PicSum.Job.Logics
             ArgumentException.ThrowIfNullOrEmpty(directoryPath, nameof(directoryPath));
 
             var sql = new DirectoryStateReadSql(directoryPath);
-            var dto = Dao<IFileInfoDB>.Instance.ReadLine<DirectoryStateDto>(sql);
+            var dto = Instance<IFileInfoDB>.Value.ReadLine<DirectoryStateDto>(sql);
             if (!dto.Equals(default(DirectoryStateDto)))
             {
                 var directoryState = new DirectoryStateParameter

@@ -1,6 +1,6 @@
 using PicSum.DatabaseAccessor.Connection;
 using PicSum.DatabaseAccessor.Sql;
-using SWF.Core.DatabaseAccessor;
+using SWF.Core.Base;
 using SWF.Core.Job;
 using System.Runtime.Versioning;
 
@@ -19,7 +19,7 @@ namespace PicSum.Job.Logics
             ArgumentException.ThrowIfNullOrEmpty(tag, nameof(tag));
 
             var sql = new TagDeletionSql(filePath, tag);
-            Dao<IFileInfoDB>.Instance.Update(sql);
+            Instance<IFileInfoDB>.Value.Update(sql);
         }
     }
 }

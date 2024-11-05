@@ -1,3 +1,4 @@
+using SWF.Core.Base;
 using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
 using SWF.Core.Job;
@@ -19,8 +20,8 @@ namespace PicSum.Job.Jobs
 
                 try
                 {
-                    var size = ImageFileCacher.Instance.GetSize(path);
-                    ImageFileSizeCacher.Instance.Set(path, size);
+                    var size = Instance<IImageFileCacher>.Value.GetSize(path);
+                    Instance<IImageFileSizeCacher>.Value.Set(path, size);
 
                 }
                 catch (FileUtilException ex)

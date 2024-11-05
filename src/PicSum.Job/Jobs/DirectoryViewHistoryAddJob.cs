@@ -1,6 +1,6 @@
 using PicSum.DatabaseAccessor.Connection;
 using PicSum.Job.Logics;
-using SWF.Core.DatabaseAccessor;
+using SWF.Core.Base;
 using SWF.Core.Job;
 using System.Runtime.Versioning;
 
@@ -14,7 +14,7 @@ namespace PicSum.Job.Jobs
         {
             ArgumentNullException.ThrowIfNull(param, nameof(param));
 
-            using (var tran = Dao<IFileInfoDB>.Instance.BeginTransaction())
+            using (var tran = Instance<IFileInfoDB>.Value.BeginTransaction())
             {
                 var addDirectoryViewHistory = new DirectoryViewHistoryAddLogic(this);
                 if (!addDirectoryViewHistory.Execute(param.Value))

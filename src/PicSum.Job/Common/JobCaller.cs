@@ -8,41 +8,9 @@ using System.Runtime.Versioning;
 namespace PicSum.Job.Common
 {
     [SupportedOSPlatform("windows")]
-    public sealed partial class JobCaller
+    public sealed partial class JobCaller(SynchronizationContext context)
         : IDisposable
     {
-        private static SynchronizationContext? context = null;
-        private static JobCaller? instance = null;
-
-        public static JobCaller Instance
-        {
-            get
-            {
-                if (instance == null)
-                {
-                    throw new InvalidOperationException("CommonJobsのインスタンスが設定されていません。");
-                }
-
-                return instance;
-            }
-        }
-
-        public static void Initialize()
-        {
-            if (context != null)
-            {
-                throw new InvalidOperationException("同期コンテキストは既に設定されています。");
-            }
-
-            if (SynchronizationContext.Current == null)
-            {
-                throw new InvalidOperationException("同期コンテキストが存在しません。");
-            }
-
-            context = SynchronizationContext.Current;
-            instance = new JobCaller();
-        }
-
         private bool disposed = false;
 
         private readonly Lazy<IOneWayJob<BookmarkAddJob, ValueParameter<string>>> addBookmarkJob
@@ -103,11 +71,6 @@ namespace PicSum.Job.Common
             = new(() => new TwoWayJob<MultiFilesExportJob, MultiFilesExportParameter, ValueResult<string>>(context));
         public readonly Lazy<ITwoWayJob<BookmarksGetJob, ListResult<FileShallowInfoEntity>>> BookmarksGetJob
             = new(() => new TwoWayJob<BookmarksGetJob, ListResult<FileShallowInfoEntity>>(context));
-
-        private JobCaller()
-        {
-
-        }
 
         ~JobCaller()
         {

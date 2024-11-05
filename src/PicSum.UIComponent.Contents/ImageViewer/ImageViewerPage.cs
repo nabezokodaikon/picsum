@@ -278,7 +278,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             {
                 using (TimeMeasuring.Run(true, "ImageViewerPage.GetImageSize"))
                 {
-                    return ImageFileSizeCacher.Instance.Get(filePath).Size;
+                    return Instance<IImageFileSizeCacher>.Value.Get(filePath).Size;
                 }
             }
             catch (FileUtilException ex)
@@ -620,12 +620,12 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
                 this.isLoading = true;
 
-                JobCaller.Instance.ImageFileCacheJob.Value
+                Instance<JobCaller>.Value.ImageFileCacheJob.Value
                     .Initialize()
                     .BeginCancel()
                     .StartJob(this, [.. nextFiles, .. prevFiles]);
 
-                JobCaller.Instance.ImageFileLoadingJob.Value
+                Instance<JobCaller>.Value.ImageFileLoadingJob.Value
                     .Initialize()
                     .Callback(_ =>
                     {
@@ -644,7 +644,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                     .BeginCancel()
                     .StartJob(this, param);
 
-                JobCaller.Instance.ImageFileReadJob.Value
+                Instance<JobCaller>.Value.ImageFileReadJob.Value
                     .Initialize()
                     .Callback(r =>
                     {
@@ -1268,7 +1268,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                         SrcFilePath = srcFilePath,
                         ExportFilePath = ofd.FileName
                     };
-                    JobCaller.Instance.StartSingleFileExportJob(this, param);
+                    Instance<JobCaller>.Value.StartSingleFileExportJob(this, param);
 
                     CommonConfig.Instance.ExportDirectoryPath = dir;
                 }
@@ -1289,7 +1289,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         {
             var paramter = new ValueParameter<string>(e.FilePath);
 
-            JobCaller.Instance.StartBookmarkAddJob(this, paramter);
+            Instance<JobCaller>.Value.StartBookmarkAddJob(this, paramter);
         }
 
     }

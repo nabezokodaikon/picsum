@@ -3,7 +3,7 @@ using PicSum.DatabaseAccessor.Dto;
 using PicSum.DatabaseAccessor.Sql;
 using PicSum.Job.Common;
 using PicSum.Job.Entities;
-using SWF.Core.DatabaseAccessor;
+using SWF.Core.Base;
 using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
 using SWF.Core.Job;
@@ -42,7 +42,7 @@ namespace PicSum.Job.Logics
                 info.IsFile = false;
                 info.IsImageFile = false;
                 info.FileSize = null;
-                info.FileIcon = FileIconCacher.Instance.LargePCIcon;
+                info.FileIcon = Instance<IFileIconCacher>.Value.LargePCIcon;
             }
             else
             {
@@ -52,7 +52,7 @@ namespace PicSum.Job.Logics
                 {
                     info.IsImageFile = FileUtil.IsImageFile(filePath);
                     info.FileSize = FileUtil.GetFileSize(filePath);
-                    info.FileIcon = FileIconCacher.Instance.GetJumboFileIcon(filePath);
+                    info.FileIcon = Instance<IFileIconCacher>.Value.GetJumboFileIcon(filePath);
                 }
                 else
                 {
@@ -60,11 +60,11 @@ namespace PicSum.Job.Logics
                     info.FileSize = null;
                     if (FileUtil.IsDrive(filePath))
                     {
-                        info.FileIcon = FileIconCacher.Instance.GetJumboDriveIcon(filePath);
+                        info.FileIcon = Instance<IFileIconCacher>.Value.GetJumboDriveIcon(filePath);
                     }
                     else if (FileUtil.IsDirectory(filePath))
                     {
-                        info.FileIcon = FileIconCacher.Instance.JumboDirectoryIcon;
+                        info.FileIcon = Instance<IFileIconCacher>.Value.JumboDirectoryIcon;
                     }
                     else
                     {
@@ -77,10 +77,10 @@ namespace PicSum.Job.Logics
                     var srcSize = this.GetImageSize(filePath);
                     if (srcSize != ImageUtil.EMPTY_SIZE)
                     {
-                        using (var tran = Dao<IThumbnailDB>.Instance.BeginTransaction())
+                        using (var tran = Instance<IThumbnailDB>.Value.BeginTransaction())
                         {
                             var thumbnailBuffer
-                                = ThumbnailCacher.Instance.GetOrCreateCache(filePath, thumbSize.Width, thumbSize.Height);
+                                = Instance<IThumbnailCacher>.Value.GetOrCreateCache(filePath, thumbSize.Width, thumbSize.Height);
                             if (thumbnailBuffer.ThumbnailBuffer == null)
                             {
                                 throw new NullReferenceException("サムネイルのバッファがNullです。");
@@ -111,10 +111,10 @@ namespace PicSum.Job.Logics
                         var srcSize = this.GetImageSize(firstImageFile);
                         if (srcSize != ImageUtil.EMPTY_SIZE)
                         {
-                            using (var tran = Dao<IThumbnailDB>.Instance.BeginTransaction())
+                            using (var tran = Instance<IThumbnailDB>.Value.BeginTransaction())
                             {
                                 var thumbnailBuffer
-                                    = ThumbnailCacher.Instance.GetOrCreateCache(firstImageFile, thumbSize.Width, thumbSize.Height);
+                                    = Instance<IThumbnailCacher>.Value.GetOrCreateCache(firstImageFile, thumbSize.Width, thumbSize.Height);
                                 if (thumbnailBuffer.ThumbnailBuffer == null)
                                 {
                                     throw new NullReferenceException("サムネイルのバッファがNullです。");
@@ -142,7 +142,7 @@ namespace PicSum.Job.Logics
             this.CheckCancel();
 
             var sql = new FileInfoReadSql(info.FilePath);
-            var dto = Dao<IFileInfoDB>.Instance.ReadLine<FileInfoDto>(sql);
+            var dto = Instance<IFileInfoDB>.Value.ReadLine<FileInfoDto>(sql);
             if (!dto.Equals(default(FileInfoDto)))
             {
                 info.Rating = dto.Rating;
@@ -161,7 +161,7 @@ namespace PicSum.Job.Logics
         {
             try
             {
-                return ImageFileSizeCacher.Instance.Get(filePath).Size;
+                return Instance<IImageFileSizeCacher>.Value.Get(filePath).Size;
             }
             catch (FileUtilException ex)
             {
