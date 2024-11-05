@@ -6,15 +6,15 @@ namespace SWF.Core.Job
         where TJobParameter : IJobParameter
         where TJobResult : IJobResult
     {
-        public TwoWayTask<TJob, TJobParameter, TJobResult> Reset();
-        public TwoWayTask<TJob, TJobParameter, TJobResult> Callback(Action<TJobResult> action);
-        public TwoWayTask<TJob, TJobParameter, TJobResult> Cancel(Action action);
-        public TwoWayTask<TJob, TJobParameter, TJobResult> Catch(Action<JobException> action);
-        public TwoWayTask<TJob, TJobParameter, TJobResult> Complete(Action action);
+        public AbstractBackgroudProcess<TJob, TJobParameter, TJobResult> Reset();
+        public AbstractBackgroudProcess<TJob, TJobParameter, TJobResult> Callback(Action<TJobResult> action);
+        public AbstractBackgroudProcess<TJob, TJobParameter, TJobResult> Cancel(Action action);
+        public AbstractBackgroudProcess<TJob, TJobParameter, TJobResult> Catch(Action<JobException> action);
+        public AbstractBackgroudProcess<TJob, TJobParameter, TJobResult> Complete(Action action);
         public void StartJob(ISender sender, TJobParameter parameter);
         public void StartJob(ISender sender);
-        public TwoWayTask<TJob, TJobParameter, TJobResult> BeginCancel();
-        public void WaitJobComplete();
+        public AbstractBackgroudProcess<TJob, TJobParameter, TJobResult> BeginCancel();
+        public AbstractBackgroudProcess<TJob, TJobParameter, TJobResult> WaitJobComplete();
     }
 
     public interface ITwoWayJob<TJob, TJobResult>
