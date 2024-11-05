@@ -4,7 +4,7 @@ using System.Diagnostics;
 
 namespace SWF.Core.Job
 {
-    public partial class TwoWayJob<TJob, TJobParameter, TJobResult>
+    public partial class TwoWayTask<TJob, TJobParameter, TJobResult>
         : IDisposable, ITwoWayJob<TJob, TJobParameter, TJobResult>
         where TJob : AbstractTwoWayJob<TJobParameter, TJobResult>, new()
         where TJobParameter : IJobParameter
@@ -23,7 +23,7 @@ namespace SWF.Core.Job
         private Action<JobException>? catchAction;
         private Action? completeAction;
 
-        public TwoWayJob(SynchronizationContext? context)
+        public TwoWayTask(SynchronizationContext? context)
         {
             ArgumentNullException.ThrowIfNull(context, nameof(context));
 
@@ -31,7 +31,7 @@ namespace SWF.Core.Job
             this.threadName = $"{typeof(TJob).Name} {ThreadID.GetNew()}";
         }
 
-        ~TwoWayJob()
+        ~TwoWayTask()
         {
             this.Dispose(false);
         }
@@ -72,7 +72,7 @@ namespace SWF.Core.Job
             this.disposed = true;
         }
 
-        public TwoWayJob<TJob, TJobParameter, TJobResult> Reset()
+        public TwoWayTask<TJob, TJobParameter, TJobResult> Reset()
         {
             this.callbackAction = null;
             this.cancelAction = null;
@@ -82,7 +82,7 @@ namespace SWF.Core.Job
             return this;
         }
 
-        public TwoWayJob<TJob, TJobParameter, TJobResult> Callback(Action<TJobResult> action)
+        public TwoWayTask<TJob, TJobParameter, TJobResult> Callback(Action<TJobResult> action)
         {
             ArgumentNullException.ThrowIfNull(action, nameof(action));
 
@@ -95,7 +95,7 @@ namespace SWF.Core.Job
             return this;
         }
 
-        public TwoWayJob<TJob, TJobParameter, TJobResult> Cancel(Action action)
+        public TwoWayTask<TJob, TJobParameter, TJobResult> Cancel(Action action)
         {
             ArgumentNullException.ThrowIfNull(action, nameof(action));
 
@@ -108,7 +108,7 @@ namespace SWF.Core.Job
             return this;
         }
 
-        public TwoWayJob<TJob, TJobParameter, TJobResult> Catch(Action<JobException> action)
+        public TwoWayTask<TJob, TJobParameter, TJobResult> Catch(Action<JobException> action)
         {
             ArgumentNullException.ThrowIfNull(action, nameof(action));
 
@@ -121,7 +121,7 @@ namespace SWF.Core.Job
             return this;
         }
 
-        public TwoWayJob<TJob, TJobParameter, TJobResult> Complete(Action action)
+        public TwoWayTask<TJob, TJobParameter, TJobResult> Complete(Action action)
         {
             ArgumentNullException.ThrowIfNull(action, nameof(action));
 
@@ -157,7 +157,7 @@ namespace SWF.Core.Job
             this.jobQueue.Enqueue(job);
         }
 
-        public TwoWayJob<TJob, TJobParameter, TJobResult> BeginCancel()
+        public TwoWayTask<TJob, TJobParameter, TJobResult> BeginCancel()
         {
             foreach (var job in this.jobQueue.ToArray())
             {
@@ -374,35 +374,35 @@ namespace SWF.Core.Job
         }
     }
 
-    public sealed partial class TwoWayJob<TJob, TJobResult>
-        : TwoWayJob<TJob, EmptyParameter, TJobResult>, ITwoWayJob<TJob, TJobResult>
+    public sealed partial class TwoWayTask<TJob, TJobResult>
+        : TwoWayTask<TJob, EmptyParameter, TJobResult>, ITwoWayJob<TJob, TJobResult>
         where TJob : AbstractTwoWayJob<TJobResult>, new()
         where TJobResult : IJobResult
     {
-        public TwoWayJob(SynchronizationContext? context)
+        public TwoWayTask(SynchronizationContext? context)
             : base(context)
         {
 
         }
     }
 
-    public sealed partial class OneWayJob<TJob>
-        : TwoWayJob<TJob, EmptyParameter, EmptyResult>, IOneWayJob<TJob>
+    public sealed partial class OneWayTask<TJob>
+        : TwoWayTask<TJob, EmptyParameter, EmptyResult>, IOneWayJob<TJob>
         where TJob : AbstractOneWayJob, new()
     {
-        public OneWayJob(SynchronizationContext? context)
+        public OneWayTask(SynchronizationContext? context)
             : base(context)
         {
 
         }
     }
 
-    public sealed partial class OneWayJob<TJob, TJobParameter>
-        : TwoWayJob<TJob, TJobParameter, EmptyResult>, IOneWayJob<TJob, TJobParameter>
+    public sealed partial class OneWayTask<TJob, TJobParameter>
+        : TwoWayTask<TJob, TJobParameter, EmptyResult>, IOneWayJob<TJob, TJobParameter>
         where TJob : AbstractOneWayJob<TJobParameter>, new()
         where TJobParameter : IJobParameter
     {
-        public OneWayJob(SynchronizationContext? context)
+        public OneWayTask(SynchronizationContext? context)
             : base(context)
         {
 
