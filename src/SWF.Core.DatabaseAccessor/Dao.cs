@@ -4,7 +4,7 @@ namespace SWF.Core.DatabaseAccessor
     /// DB管理
     /// </summary>
     public sealed partial class Dao<TConnection>
-        : IDisposable
+        : IDao
         where TConnection : IConnection
     {
         public readonly static Dao<TConnection> Instance = new();
@@ -44,13 +44,13 @@ namespace SWF.Core.DatabaseAccessor
         }
 
         // DBコネクション
-        private TConnection? connection = default;
+        private IConnection? connection = default;
 
         /// <summary>
         /// DBに接続します。
         /// </summary>
         /// <param name="connection"></param>
-        public void Connect(TConnection connection)
+        public void Connect(IConnection connection)
         {
             ArgumentNullException.ThrowIfNull(connection, nameof(connection));
             this.connection = connection;
