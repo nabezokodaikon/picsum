@@ -22,16 +22,15 @@ namespace PicSum.Job.Common
         public readonly static ThumbnailCacher Instance = new();
 
         private bool disposed = false;
-        private readonly int FILE_READ_BUFFER_SIZE = 1024 * 4;
         private readonly int BUFFER_FILE_MAX_SIZE = 1024 * 1024 * 10;
         private readonly List<ThumbnailCacheEntity> CACHE_LIST = new(CACHE_CAPACITY);
         private readonly Dictionary<string, ThumbnailCacheEntity> CACHE_DICTIONARY = new(CACHE_CAPACITY);
-        private readonly FileAppender fileAppender;
+        private readonly FileAppender fileAppender = new();
         private readonly object CACHE_LOCK = new();
 
         private ThumbnailCacher()
         {
-            this.fileAppender = new(this.FILE_READ_BUFFER_SIZE);
+
         }
 
         ~ThumbnailCacher()
