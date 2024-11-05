@@ -1,6 +1,6 @@
 namespace SWF.Core.Base
 {
-    public sealed class AppConstants
+    public static class AppConstants
     {
         public const string UI_THREAD_NAME = "Main";
 
