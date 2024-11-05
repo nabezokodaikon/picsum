@@ -29,7 +29,7 @@ namespace PicSum.UIComponent.Contents.FileList
             this.parameter = param;
 
             this.Title = "Star";
-            this.Icon = ResourceFiles.ActiveRatingIcon.Value;
+            this.Icon = ResourceFiles.RatingIcon.Value;
             this.IsMoveControlVisible = false;
             this.IsRemoveFromListMenuItemVisible = true;
             base.sortFileRgistrationDateToolStripButton.Enabled = true;
