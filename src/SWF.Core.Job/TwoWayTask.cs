@@ -52,7 +52,7 @@ namespace SWF.Core.Job
                     Logger.Debug("タスクの終了を待機します。");
                     this.task.Wait();
 
-                    Logger.Debug($"{this.ThreadName}: ジョブ実行タスクが終了しました。");
+                    Logger.Debug($"{this.BackgroudProcessName}: ジョブ実行タスクが終了しました。");
                 }
 
                 this.source?.Dispose();
@@ -87,7 +87,7 @@ namespace SWF.Core.Job
 
         private void DoWork(CancellationToken token)
         {
-            Thread.CurrentThread.Name = this.ThreadName;
+            Thread.CurrentThread.Name = this.BackgroudProcessName;
 
             Logger.Debug("ジョブ実行タスクが開始されました。");
 

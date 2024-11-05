@@ -10,7 +10,7 @@ namespace SWF.Core.Job
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        protected readonly string ThreadName;
+        protected readonly string BackgroudProcessName;
         protected readonly SynchronizationContext Context;
         protected readonly ConcurrentQueue<TJob> JobQueue = new();
 
@@ -24,7 +24,7 @@ namespace SWF.Core.Job
             ArgumentNullException.ThrowIfNull(context, nameof(context));
 
             this.Context = context;
-            this.ThreadName = $"{typeof(TJob).Name} {ThreadID.GetNew()}";
+            this.BackgroudProcessName = $"{typeof(TJob).Name} {ThreadID.GetNew()}";
         }
 
         public abstract void StartJob(ISender sender, TJobParameter parameter);
