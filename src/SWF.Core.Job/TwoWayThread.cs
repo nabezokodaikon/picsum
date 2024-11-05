@@ -100,6 +100,7 @@ namespace SWF.Core.Job
             if (this.thread == null)
             {
                 this.thread = new Thread(() => this.DoWork());
+                this.thread.Priority = ThreadPriority.Highest;
                 this.thread.Start();
             }
 
