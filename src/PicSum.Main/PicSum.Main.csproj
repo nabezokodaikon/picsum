@@ -20,7 +20,7 @@
 	<ApplicationVersion>1.0.0.%2a</ApplicationVersion>
 	<UseApplicationTrust>false</UseApplicationTrust>
 	<BootstrapperEnabled>true</BootstrapperEnabled>
-	<GenerateAssemblyInfo>True</GenerateAssemblyInfo>
+	<GenerateAssemblyInfo>False</GenerateAssemblyInfo>
 	<UseWindowsForms>true</UseWindowsForms>
 	<ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
 	<Configurations>Debug;Release</Configurations>
@@ -50,7 +50,7 @@
   </PropertyGroup>
   <PropertyGroup>
 	<SatelliteResourceLanguages>_</SatelliteResourceLanguages>
-	<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+	<AllowUnsafeBlocks>False</AllowUnsafeBlocks>
 	<NeutralLanguage>ja-JP</NeutralLanguage>
 	<SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
 	<ApplicationManifest>app.manifest</ApplicationManifest>
