@@ -1,3 +1,4 @@
+using Svg;
 using SWF.Core.Base;
 using System;
 using System.Drawing;
@@ -56,7 +57,15 @@ namespace PicSum.UIComponent.AddressBar
                 g.DrawRectangle(base.Palette.MousePointPen, rect);
             }
 
-            g.DrawString(this.directory.DirectoryName, base.Palette.TextFont, base.Palette.TextBrush, rect, base.Palette.TextFormat);
+            var text = this.directory.DirectoryName;
+            var textSize = TextRenderer.MeasureText(text, base.Palette.TextFont);
+            TextRenderer.DrawText(
+                g,
+                text,
+                base.Palette.TextFont,
+                new Point((int)rect.Location.X, (int)(rect.Location.Y + (rect.Height - textSize.Height) / 2f)),
+                base.Palette.TextBrush.Color,
+                TextFormatFlags.Top);
         }
 
         public override void OnMouseDown(MouseEventArgs e)
