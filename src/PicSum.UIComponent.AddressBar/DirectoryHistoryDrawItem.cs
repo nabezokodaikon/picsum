@@ -63,12 +63,8 @@ namespace PicSum.UIComponent.AddressBar
             if (e.Button == MouseButtons.Left)
             {
                 base.Items.Clear();
-                var width = Math.Max(MINIMUM_DROPDOWN_WIDHT, base.AddressBar.Width);
-                var height = MAXIMUM_SHOW_ITEM_COUNT * base.DropDownList.ItemHeight;
-                base.DropDownList.Size = new Size(width, height);
                 base.DropDownList.ClearSelectedItems();
                 base.DropDownList.ItemCount = 0;
-                base.DropDownList.Show(base.AddressBar, 0, base.AddressBar.Height);
 
                 Instance<JobCaller>.Value.DirectoryViewHistoryGetJob.Value
                     .Reset()
@@ -174,6 +170,7 @@ namespace PicSum.UIComponent.AddressBar
 
             base.DropDownList.Size = new Size(width, height);
             base.DropDownList.ItemCount = base.Items.Count;
+            base.DropDownList.Show(base.AddressBar, 0, base.AddressBar.Height);
         }
 
     }
