@@ -16,7 +16,7 @@ namespace PicSum.Main
         {
             if (AppConstants.IsRunningAsUwp())
             {
-                return false;
+                return true;
             }
             else
             {
