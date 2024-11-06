@@ -55,7 +55,7 @@ namespace PicSum.UIComponent.Contents.ContextMenu
         private readonly ToolStripMenuItem exportMenuItem = new("Export");
         private readonly ToolStripMenuItem pathCopyMenuItem = new("Copy Path");
         private readonly ToolStripMenuItem nameCopyMenuItem = new("Copy Name");
-        private readonly ToolStripMenuItem removeFromListMenuItem = new("Remove");
+        private readonly ToolStripMenuItem removeFromListMenuItem = new("Remove From List");
 
         public bool VisibleFileActiveTabOpenMenuItem
         {
