@@ -110,19 +110,33 @@ namespace PicSum.UIComponent.AddressBar
                     GraphicsUnit.Pixel);
             }
 
-            var textRect = new RectangleF(e.ItemRectangle.X + base.DropDownList.ItemHeight,
-                                          e.ItemRectangle.Y,
-                                          e.ItemRectangle.Width - base.DropDownList.ItemHeight,
-                                          e.ItemRectangle.Height);
-
-            var dirPath = FileUtil.IsSystemRoot(item.DirectoryPath) ?
+            var srcText = FileUtil.IsSystemRoot(item.DirectoryPath) ?
                 item.DirectoryName : item.DirectoryPath;
 
-            e.Graphics.DrawString(dirPath,
-                                  base.Palette.TextFont,
-                                  base.DropDownList.ItemTextBrush,
-                                  textRect,
-                                  base.DropDownList.ItemTextFormat);
+            var srcTextSize = TextRenderer.MeasureText(srcText, base.Palette.TextFont);
+
+            var destText = srcText;
+            var destTextSize = srcTextSize;
+            var itemWidth = e.ItemRectangle.Width - base.DropDownList.ItemHeight;
+            while (destTextSize.Width > itemWidth)
+            {
+                destText = destText.Substring(0, destText.Length - 1);
+                destTextSize = TextRenderer.MeasureText($"{destText}...", base.Palette.TextFont);
+            }
+            destText = srcText == destText ? srcText : $"{destText}...";
+
+            var textRect = new Rectangle(e.ItemRectangle.X + base.DropDownList.ItemHeight,
+                                         e.ItemRectangle.Y + (int)((e.ItemRectangle.Height - destTextSize.Height) / 2f),
+                                         e.ItemRectangle.Width - base.DropDownList.ItemHeight,
+                                         e.ItemRectangle.Height);
+
+            TextRenderer.DrawText(
+                e.Graphics,
+                destText,
+                base.Palette.TextFont,
+                textRect.Location,
+                base.DropDownList.ItemTextBrush.Color,
+                TextFormatFlags.Top);
         }
 
         private RectangleF GetImageDrawRectangle(Image img)
