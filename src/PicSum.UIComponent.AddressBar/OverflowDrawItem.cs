@@ -106,16 +106,20 @@ namespace PicSum.UIComponent.AddressBar
                 e.Graphics.DrawImage(item.DirectoryIcon, iconRect);
             }
 
+            var text = item.DirectoryName;
+            var textSize = TextRenderer.MeasureText(text, base.Palette.TextFont);
             var textRect = new RectangleF(e.ItemRectangle.X + this.DropDownList.ItemHeight,
                                           e.ItemRectangle.Y,
                                           e.ItemRectangle.Width - this.DropDownList.ItemHeight,
                                           e.ItemRectangle.Height);
 
-            e.Graphics.DrawString(item.DirectoryName,
-                                  base.Palette.TextFont,
-                                  base.DropDownList.ItemTextBrush,
-                                  textRect,
-                                  base.DropDownList.ItemTextFormat);
+            TextRenderer.DrawText(
+                e.Graphics,
+                text,
+                base.Palette.TextFont,
+                new Point((int)textRect.Location.X, (int)(textRect.Location.Y + (textRect.Height - textSize.Height) / 2f)),
+                base.Palette.TextBrush.Color,
+                TextFormatFlags.Top);
         }
 
         private RectangleF GetImageDrawRectangle(Image img)
