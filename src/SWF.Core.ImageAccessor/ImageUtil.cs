@@ -29,6 +29,50 @@ namespace SWF.Core.ImageAccessor
             return (IShellApplication)obj;
         }
 
+        public static bool HasTransparentPixels(Bitmap bitmap)
+        {
+            ArgumentNullException.ThrowIfNull(bitmap, nameof(bitmap));
+
+            if (bitmap.PixelFormat == PixelFormat.Format32bppArgb)
+            {
+                BitmapData? bitmapData = null;
+
+                try
+                {
+                    bitmapData = bitmap.LockBits(
+                        new Rectangle(0, 0, bitmap.Width, bitmap.Height),
+                        ImageLockMode.ReadOnly,
+                        PixelFormat.Format32bppArgb);
+
+                    var ptr = bitmapData.Scan0;
+                    var byteCount = bitmapData.Stride * bitmap.Height;
+
+                    unsafe
+                    {
+                        var pixelPtr = (byte*)ptr.ToPointer();
+
+                        for (var i = 0; i < byteCount; i += 4)
+                        {
+                            var alpha = pixelPtr[i + 3];
+                            if (alpha == 0)
+                            {
+                                return true;
+                            }
+                        }
+                    }
+                }
+                finally
+                {
+                    if (bitmapData != null)
+                    {
+                        bitmap.UnlockBits(bitmapData);
+                    }
+                }
+            }
+
+            return false;
+        }
+
         internal static Bitmap Resize(Bitmap srcBmp, int width, int height)
         {
             ArgumentNullException.ThrowIfNull(srcBmp, nameof(srcBmp));

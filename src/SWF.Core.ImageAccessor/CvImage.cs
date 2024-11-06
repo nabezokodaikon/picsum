@@ -1,8 +1,10 @@
 using OpenCvSharp;
 using OpenCvSharp.Extensions;
+using SWF.Core.Base;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Runtime.Versioning;
+using WinApi;
 
 namespace SWF.Core.ImageAccessor
 {
@@ -79,6 +81,7 @@ namespace SWF.Core.ImageAccessor
             g.FillRectangle(brush, destRect);
         }
 
+        // TODO: BitBltを使う。
         public void DrawSourceImage(Graphics g, RectangleF destRect, RectangleF srcRect)
         {
             ArgumentNullException.ThrowIfNull(g, nameof(g));
@@ -109,8 +112,35 @@ namespace SWF.Core.ImageAccessor
 
             using (var bmp = OpenCVUtil.Resize(this.mat, (int)destRect.Width, (int)destRect.Height))
             {
-                g.DrawImage(bmp, destRect,
-                    new RectangleF(0, 0, destRect.Width, destRect.Height), GraphicsUnit.Pixel);
+                if (ImageUtil.HasTransparentPixels(bmp))
+                {
+                    using (TimeMeasuring.Run(true, "CvImage.DrawResizeImage: DrawImage"))
+                    {
+
+                        g.DrawImage(bmp, destRect,
+                            new RectangleF(0, 0, destRect.Width, destRect.Height),
+                            GraphicsUnit.Pixel);
+                    }
+                }
+                else
+                {
+                    var hdcDest = g.GetHdc();
+                    var hdcSrc = WinApiMembers.CreateCompatibleDC(hdcDest);
+                    var porg = WinApiMembers.SelectObject(hdcSrc, bmp.GetHbitmap());
+                    try
+                    {
+                        WinApiMembers.BitBlt(
+                            hdcDest, (int)destRect.X, (int)destRect.Y, bmp.Width, bmp.Height,
+                            hdcSrc, 0, 0,
+                            WinApiMembers.SRCCOPY);
+                    }
+                    finally
+                    {
+                        WinApiMembers.DeleteObject(hdcSrc);
+                        WinApiMembers.DeleteObject(porg);
+                        g.ReleaseHdc(hdcDest);
+                    }
+                }
             }
         }
     }
