@@ -1,5 +1,6 @@
 using PicSum.Job.Entities;
 using PicSum.Job.Logics;
+using PicSum.Job.Parameters;
 using PicSum.Job.Results;
 using SWF.Core.FileAccessor;
 using SWF.Core.Job;
@@ -12,22 +13,27 @@ namespace PicSum.Job.Jobs
     /// </summary>
     [SupportedOSPlatform("windows10.0.17763.0")]
     public sealed class FilesGetByDirectoryJob
-        : AbstractTwoWayJob<ValueParameter<string>, DirectoryGetResult>
+        : AbstractTwoWayJob<FilesGetByDirectoryParameter, DirectoryGetResult>
     {
-        protected override void Execute(ValueParameter<string> param)
+        protected override void Execute(FilesGetByDirectoryParameter param)
         {
             ArgumentNullException.ThrowIfNull(param, nameof(param));
 
+            if (param.DirectoryPath == null)
+            {
+                throw new InvalidOperationException("ディレクトリパスが指定されていません。");
+            }
+
             var result = new DirectoryGetResult
             {
-                DirectoryPath = param.Value
+                DirectoryPath = param.DirectoryPath
             };
 
             IList<string> fileList;
             var getFilesLogic = new FilesAndSubDirectoriesGetLogic(this);
             try
             {
-                fileList = getFilesLogic.Execute(param.Value);
+                fileList = getFilesLogic.Execute(param.DirectoryPath);
             }
             catch (FileUtilException ex)
             {
@@ -42,7 +48,7 @@ namespace PicSum.Job.Jobs
 
                 try
                 {
-                    var info = getInfoLogic.Execute(file, true);
+                    var info = getInfoLogic.Execute(file, param.IsGetThumbnail);
                     if (info != null)
                     {
                         infoList.Add(info);
@@ -56,7 +62,7 @@ namespace PicSum.Job.Jobs
             }
 
             var getDirectoryStateLogic = new DirectoryStateGetLogic(this);
-            var directoryState = getDirectoryStateLogic.Execute(param.Value);
+            var directoryState = getDirectoryStateLogic.Execute(param.DirectoryPath);
 
             result.FileInfoList = infoList;
             result.DirectoryState = directoryState;

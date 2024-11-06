@@ -54,7 +54,11 @@ namespace PicSum.UIComponent.Contents.FileList
 
         protected override void OnLoad(EventArgs e)
         {
-            var param = new ValueParameter<string>(this.parameter.DirectoryPath);
+            var param = new FilesGetByDirectoryParameter()
+            {
+                DirectoryPath = this.parameter.DirectoryPath,
+                IsGetThumbnail = true,
+            };
 
             Instance<JobCaller>.Value.FilesGetByDirectoryJob.Value
                 .Reset()

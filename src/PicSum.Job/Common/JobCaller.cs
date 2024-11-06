@@ -55,8 +55,8 @@ namespace PicSum.Job.Common
         public readonly Lazy<ITwoWayJob<PipeServerJob, ValueResult<string>>> PipeServerJob
             = new(() => new TwoWayTask<PipeServerJob, ValueResult<string>>(context));
 
-        public readonly Lazy<ITwoWayJob<FilesGetByDirectoryJob, ValueParameter<string>, DirectoryGetResult>> FilesGetByDirectoryJob
-            = new(() => new TwoWayTask<FilesGetByDirectoryJob, ValueParameter<string>, DirectoryGetResult>(context));
+        public readonly Lazy<ITwoWayJob<FilesGetByDirectoryJob, FilesGetByDirectoryParameter, DirectoryGetResult>> FilesGetByDirectoryJob
+            = new(() => new TwoWayTask<FilesGetByDirectoryJob, FilesGetByDirectoryParameter, DirectoryGetResult>(context));
         public readonly Lazy<ITwoWayJob<FavoriteDirectoriesGetJob, FavoriteDirectoriesGetParameter, ListResult<FileShallowInfoEntity>>> FavoriteDirectoriesGetJob
             = new(() => new TwoWayTask<FavoriteDirectoriesGetJob, FavoriteDirectoriesGetParameter, ListResult<FileShallowInfoEntity>>(context));
         public readonly Lazy<ITwoWayJob<FilesGetByRatingJob, ValueParameter<int>, ListResult<FileShallowInfoEntity>>> FilesGetByRatingJob

@@ -1,5 +1,6 @@
 using PicSum.Job.Common;
 using PicSum.Job.Entities;
+using PicSum.Job.Parameters;
 using PicSum.UIComponent.Contents.Common;
 using PicSum.UIComponent.Contents.Parameter;
 using SWF.Core.Base;
@@ -79,6 +80,12 @@ namespace PicSum.UIComponent.Contents.FileList
 
             return sender =>
             {
+                var jobParameter = new FilesGetByDirectoryParameter()
+                {
+                    DirectoryPath = param.SourcesKey,
+                    IsGetThumbnail = false,
+                };
+
                 Instance<JobCaller>.Value.FilesGetByDirectoryJob.Value
                     .Reset()
                     .Callback(e =>
@@ -99,7 +106,7 @@ namespace PicSum.UIComponent.Contents.FileList
                         param.OnGetImageFiles(eventArgs);
                     })
                     .BeginCancel()
-                    .StartJob(sender, new ValueParameter<string>(param.SourcesKey));
+                    .StartJob(sender, jobParameter);
             };
         }
 
@@ -109,7 +116,11 @@ namespace PicSum.UIComponent.Contents.FileList
 
             return sender =>
             {
-                var dir = FileUtil.GetParentDirectoryPath(param.SelectedFilePath);
+                var jobParameter = new FilesGetByDirectoryParameter()
+                {
+                    DirectoryPath = FileUtil.GetParentDirectoryPath(param.SelectedFilePath),
+                    IsGetThumbnail = false,
+                };
 
                 Instance<JobCaller>.Value.FilesGetByDirectoryJob.Value
                     .Reset()
@@ -133,7 +144,7 @@ namespace PicSum.UIComponent.Contents.FileList
                         param.OnGetImageFiles(eventArgs);
                     })
                     .BeginCancel()
-                    .StartJob(sender, new ValueParameter<string>(dir));
+                    .StartJob(sender, jobParameter);
             };
         }
 
