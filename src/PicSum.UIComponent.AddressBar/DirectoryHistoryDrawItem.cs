@@ -62,10 +62,6 @@ namespace PicSum.UIComponent.AddressBar
 
             if (e.Button == MouseButtons.Left)
             {
-                base.Items.Clear();
-                base.DropDownList.ClearSelectedItems();
-                base.DropDownList.ItemCount = 0;
-
                 Instance<JobCaller>.Value.DirectoryViewHistoryGetJob.Value
                     .Reset()
                     .Callback(_ =>
@@ -140,6 +136,11 @@ namespace PicSum.UIComponent.AddressBar
 
         private void DirectoryViewHistoryGetJob_Callback(ListResult<FileShallowInfoEntity> e)
         {
+            base.DropDownList.BeginUpdate();
+            base.Items.Clear();
+            base.DropDownList.ClearSelectedItems();
+            base.DropDownList.ItemCount = 0;
+
             var width = 0;
 
             using (var g = base.DropDownList.CreateGraphics())
@@ -171,6 +172,7 @@ namespace PicSum.UIComponent.AddressBar
             base.DropDownList.Size = new Size(width, height);
             base.DropDownList.ItemCount = base.Items.Count;
             base.DropDownList.Show(base.AddressBar, 0, base.AddressBar.Height);
+            base.DropDownList.EndUpdate();
         }
 
     }

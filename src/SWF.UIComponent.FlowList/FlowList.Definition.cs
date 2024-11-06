@@ -427,6 +427,7 @@ namespace SWF.UIComponent.FlowList
         {
             this.isDraw = true;
             this.Invalidate();
+            this.Update();
         }
 
         /// <summary>
