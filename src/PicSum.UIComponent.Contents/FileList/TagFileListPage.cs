@@ -38,7 +38,11 @@ namespace PicSum.UIComponent.Contents.FileList
 
         protected override void OnLoad(EventArgs e)
         {
-            var param = new ValueParameter<string>(this.parameter.Tag);
+            var param = new FilesGetByTagParameter()
+            {
+                Tag = this.parameter.Tag,
+                IsGetThumbnail = true,
+            };
 
             Instance<JobCaller>.Value.FilesGetByTagJob.Value
                 .Reset()

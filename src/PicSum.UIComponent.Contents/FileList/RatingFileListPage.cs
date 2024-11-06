@@ -37,7 +37,11 @@ namespace PicSum.UIComponent.Contents.FileList
 
         protected override void OnLoad(EventArgs e)
         {
-            var param = new ValueParameter<int>(this.parameter.RatingValue);
+            var param = new FilesGetByRatingParameter()
+            {
+                RatingValue = this.parameter.RatingValue,
+                IsGetThumbnail = true,
+            };
 
             Instance<JobCaller>.Value.FilesGetByRatingJob.Value
                 .Reset()

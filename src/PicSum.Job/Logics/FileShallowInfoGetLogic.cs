@@ -114,11 +114,12 @@ namespace PicSum.Job.Logics
             return info;
         }
 
-        public FileShallowInfoEntity Execute(string filePath, DateTime registrationDate)
+        public FileShallowInfoEntity Execute(
+            string filePath, DateTime registrationDate, bool isGetThumbnail)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
-            var info = this.Execute(filePath, true);
+            var info = this.Execute(filePath, isGetThumbnail);
             info.RgistrationDate = registrationDate;
 
             return info;

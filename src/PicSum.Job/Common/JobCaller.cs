@@ -59,10 +59,10 @@ namespace PicSum.Job.Common
             = new(() => new TwoWayTask<FilesGetByDirectoryJob, FilesGetByDirectoryParameter, DirectoryGetResult>(context));
         public readonly Lazy<ITwoWayJob<FavoriteDirectoriesGetJob, FavoriteDirectoriesGetParameter, ListResult<FileShallowInfoEntity>>> FavoriteDirectoriesGetJob
             = new(() => new TwoWayTask<FavoriteDirectoriesGetJob, FavoriteDirectoriesGetParameter, ListResult<FileShallowInfoEntity>>(context));
-        public readonly Lazy<ITwoWayJob<FilesGetByRatingJob, ValueParameter<int>, ListResult<FileShallowInfoEntity>>> FilesGetByRatingJob
-            = new(() => new TwoWayTask<FilesGetByRatingJob, ValueParameter<int>, ListResult<FileShallowInfoEntity>>(context));
-        public readonly Lazy<ITwoWayJob<FilesGetByTagJob, ValueParameter<string>, ListResult<FileShallowInfoEntity>>> FilesGetByTagJob
-            = new(() => new TwoWayTask<FilesGetByTagJob, ValueParameter<string>, ListResult<FileShallowInfoEntity>>(context));
+        public readonly Lazy<ITwoWayJob<FilesGetByRatingJob, FilesGetByRatingParameter, ListResult<FileShallowInfoEntity>>> FilesGetByRatingJob
+            = new(() => new TwoWayTask<FilesGetByRatingJob, FilesGetByRatingParameter, ListResult<FileShallowInfoEntity>>(context));
+        public readonly Lazy<ITwoWayJob<FilesGetByTagJob, FilesGetByTagParameter, ListResult<FileShallowInfoEntity>>> FilesGetByTagJob
+            = new(() => new TwoWayTask<FilesGetByTagJob, FilesGetByTagParameter, ListResult<FileShallowInfoEntity>>(context));
         public readonly Lazy<ITwoWayJob<ImageFilesGetByDirectoryJob, ImageFileGetByDirectoryParameter, ImageFilesGetByDirectoryResult>> ImageFilesGetByDirectoryJob
             = new(() => new TwoWayTask<ImageFilesGetByDirectoryJob, ImageFileGetByDirectoryParameter, ImageFilesGetByDirectoryResult>(context));
         public readonly Lazy<ITwoWayJob<NextDirectoryGetJob, NextDirectoryGetParameter<string>, ValueResult<string>>> NextDirectoryGetJob

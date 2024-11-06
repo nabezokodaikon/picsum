@@ -154,6 +154,12 @@ namespace PicSum.UIComponent.Contents.FileList
 
             return sender =>
             {
+                var jobParameter = new FilesGetByRatingParameter()
+                {
+                    RatingValue = int.Parse(param.SourcesKey),
+                    IsGetThumbnail = false,
+                };
+
                 Instance<JobCaller>.Value.FilesGetByRatingJob.Value
                     .Reset()
                     .Callback(e =>
@@ -174,7 +180,7 @@ namespace PicSum.UIComponent.Contents.FileList
                         param.OnGetImageFiles(eventArgs);
                     })
                     .BeginCancel()
-                    .StartJob(sender, new ValueParameter<int>(int.Parse(param.SourcesKey)));
+                    .StartJob(sender, jobParameter);
             };
         }
 
@@ -184,6 +190,12 @@ namespace PicSum.UIComponent.Contents.FileList
 
             return sender =>
             {
+                var jobParameter = new FilesGetByTagParameter()
+                {
+                    Tag = param.SourcesKey,
+                    IsGetThumbnail = false,
+                };
+
                 Instance<JobCaller>.Value.FilesGetByTagJob.Value
                     .Reset()
                     .Callback(e =>
@@ -204,7 +216,7 @@ namespace PicSum.UIComponent.Contents.FileList
                         param.OnGetImageFiles(eventArgs);
                     })
                     .BeginCancel()
-                    .StartJob(sender, new ValueParameter<string>(param.SourcesKey));
+                    .StartJob(sender, jobParameter);
             };
         }
     }

@@ -23,7 +23,7 @@ namespace PicSum.Job.Jobs
 
                 try
                 {
-                    var info = getInfoLogic.Execute(dto.FilePath, dto.RegistrationDate);
+                    var info = getInfoLogic.Execute(dto.FilePath, dto.RegistrationDate, true);
                     if (info != null)
                     {
                         infoList.Add(info);

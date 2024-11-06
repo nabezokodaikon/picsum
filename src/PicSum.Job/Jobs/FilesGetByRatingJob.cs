@@ -1,5 +1,6 @@
 using PicSum.Job.Entities;
 using PicSum.Job.Logics;
+using PicSum.Job.Parameters;
 using SWF.Core.FileAccessor;
 using SWF.Core.Job;
 using System.Runtime.Versioning;
@@ -11,14 +12,14 @@ namespace PicSum.Job.Jobs
     /// </summary>
     [SupportedOSPlatform("windows10.0.17763.0")]
     public sealed class FilesGetByRatingJob
-        : AbstractTwoWayJob<ValueParameter<int>, ListResult<FileShallowInfoEntity>>
+        : AbstractTwoWayJob<FilesGetByRatingParameter, ListResult<FileShallowInfoEntity>>
     {
-        protected override void Execute(ValueParameter<int> param)
+        protected override void Execute(FilesGetByRatingParameter param)
         {
             ArgumentNullException.ThrowIfNull(param, nameof(param));
 
             var logic = new FilesGetByRatingLogic(this);
-            var fileList = logic.Execute(param.Value);
+            var fileList = logic.Execute(param.RatingValue);
 
             var getInfoLogic = new FileShallowInfoGetLogic(this);
             var infoList = new ListResult<FileShallowInfoEntity>();
@@ -28,7 +29,8 @@ namespace PicSum.Job.Jobs
 
                 try
                 {
-                    var info = getInfoLogic.Execute(dto.FilePath, dto.RegistrationDate);
+                    var info = getInfoLogic.Execute(
+                        dto.FilePath, dto.RegistrationDate, param.IsGetThumbnail);
                     if (info != null)
                     {
                         infoList.Add(info);
