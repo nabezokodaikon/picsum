@@ -168,8 +168,8 @@ namespace SWF.Core.ImageAccessor
         /// </summary>
         /// <param name="g"></param>
         /// <param name="thumb"></param>
-        /// <param name="rect"></param>
-        public static void DrawFileThumbnail(Graphics g, Image thumb, RectangleF rect)
+        /// <param name="destRect"></param>
+        public static void DrawFileThumbnail(Graphics g, Image thumb, RectangleF destRect)
         {
             ArgumentNullException.ThrowIfNull(g, nameof(g));
             ArgumentNullException.ThrowIfNull(thumb, nameof(thumb));
@@ -191,8 +191,8 @@ namespace SWF.Core.ImageAccessor
                 h = thumb.Height - offset;
             }
 
-            var x = rect.X + (rect.Width - w) / 2f;
-            var y = rect.Y + (rect.Height - h) / 2f;
+            var x = destRect.X + (destRect.Width - w) / 2f;
+            var y = destRect.Y + (destRect.Height - h) / 2f;
 
             g.DrawImage(
                 thumb,
@@ -254,16 +254,22 @@ namespace SWF.Core.ImageAccessor
         /// <param name="thumb"></param>
         /// <param name="rect"></param>
         /// <param name="icon"></param>
-        public static void DrawDirectoryThumbnail(Graphics g, Image thumb, RectangleF rect, Image icon)
+        public static void DrawDirectoryThumbnail(Graphics g, Image thumb, RectangleF destRect, Image icon)
         {
             ArgumentNullException.ThrowIfNull(g, nameof(g));
             ArgumentNullException.ThrowIfNull(thumb, nameof(thumb));
             ArgumentNullException.ThrowIfNull(icon, nameof(icon));
 
-            DrawFileThumbnail(g, thumb, rect);
+            DrawFileThumbnail(g, thumb, destRect);
+
+            var destIconSize = new SizeF(destRect.Width * 0.5f, destRect.Height * 0.5f);
+            var destIconRect = new RectangleF(
+                destRect.X + 2, destRect.Bottom - destIconSize.Height,
+                destIconSize.Width, destIconSize.Height);
+
             g.DrawImage(
                 icon,
-                new RectangleF(rect.X + 2, rect.Bottom - icon.Height, icon.Width, icon.Height),
+                destIconRect,
                 new RectangleF(0, 0, icon.Width, icon.Height),
                 GraphicsUnit.Pixel);
         }
@@ -282,9 +288,15 @@ namespace SWF.Core.ImageAccessor
             ArgumentNullException.ThrowIfNull(icon, nameof(icon));
 
             AdjustDrawFileThumbnail(g, thumb, destRect, srcSize);
+
+            var destIconSize = new SizeF(destRect.Width * 0.5f, destRect.Height * 0.5f);
+            var destIconRect = new RectangleF(
+                destRect.X + 2, destRect.Bottom - destIconSize.Height,
+                destIconSize.Width, destIconSize.Height);
+
             g.DrawImage(
                 icon,
-                new RectangleF(destRect.X + 2, destRect.Bottom - icon.Height, icon.Width, icon.Height),
+                destIconRect,
                 new RectangleF(0, 0, icon.Width, icon.Height),
                 GraphicsUnit.Pixel);
         }

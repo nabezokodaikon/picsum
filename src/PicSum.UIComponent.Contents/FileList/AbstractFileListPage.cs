@@ -608,12 +608,12 @@ namespace PicSum.UIComponent.Contents.FileList
                     var thumbRect = this.GetThumbnailRectangle(e);
                     if (item.ThumbnailWidth == thumbRect.Width && item.ThumbnailHeight == thumbRect.Height)
                     {
-                        ThumbnailUtil.DrawDirectoryThumbnail(e.Graphics, item.ThumbnailImage, thumbRect, item.ExtraLargeIcon);
+                        ThumbnailUtil.DrawDirectoryThumbnail(e.Graphics, item.ThumbnailImage, thumbRect, item.JumboIcon);
                     }
                     else
                     {
                         ThumbnailUtil.AdjustDrawDirectoryThumbnail(
-                            e.Graphics, item.ThumbnailImage, thumbRect, new SizeF(item.SourceImageWidth, item.SourceImageHeight), item.ExtraLargeIcon);
+                            e.Graphics, item.ThumbnailImage, thumbRect, new SizeF(item.SourceImageWidth, item.SourceImageHeight), item.JumboIcon);
                     }
                 }
 
