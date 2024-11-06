@@ -1,4 +1,3 @@
-using Svg;
 using SWF.Core.Base;
 using System;
 using System.Drawing;
