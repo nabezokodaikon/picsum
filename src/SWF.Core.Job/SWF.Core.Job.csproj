@@ -4,7 +4,7 @@
 	<TargetFramework>net8.0-windows10.0.22621.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <Configurations>Debug;Release</Configurations>
+    <Configurations>Debug;Release;Develop</Configurations>
     <PlatformTarget>x64</PlatformTarget>
     <Platforms>AnyCPU;x64;x86;ARM64;ARM32</Platforms>
     <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
@@ -18,6 +18,13 @@
 	<NoWarn>1701;1702; IDE0290</NoWarn>
 	<GenerateAssemblyInfo>False</GenerateAssemblyInfo>
   </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Develop|x64'">
+    <DebugType>full</DebugType>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <NoWarn>1701;1702; IDE0290</NoWarn>
+    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+  </PropertyGroup>
   
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
 	<DebugType>none</DebugType>
@@ -30,7 +37,17 @@
     <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
   </PropertyGroup>
   
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Develop|AnyCPU'">
+    <NoWarn>1701;1702; IDE0290</NoWarn>
+    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+  </PropertyGroup>
+  
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
+    <NoWarn>1701;1702; IDE0290</NoWarn>
+    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+  </PropertyGroup>
+  
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Develop|x86'">
     <NoWarn>1701;1702; IDE0290</NoWarn>
     <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
   </PropertyGroup>
@@ -40,7 +57,17 @@
     <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
   </PropertyGroup>
   
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Develop|ARM64'">
+    <NoWarn>1701;1702; IDE0290</NoWarn>
+    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+  </PropertyGroup>
+  
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM32'">
+    <NoWarn>1701;1702; IDE0290</NoWarn>
+    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+  </PropertyGroup>
+  
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Develop|ARM32'">
     <NoWarn>1701;1702; IDE0290</NoWarn>
     <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
   </PropertyGroup>

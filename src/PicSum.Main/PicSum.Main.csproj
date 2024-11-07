@@ -23,7 +23,7 @@
 	<GenerateAssemblyInfo>False</GenerateAssemblyInfo>
 	<UseWindowsForms>true</UseWindowsForms>
 	<ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
-	<Configurations>Debug;Release</Configurations>
+	<Configurations>Debug;Release;Develop</Configurations>
 	<Platforms>AnyCPU;x64;x86;ARM64;ARM32</Platforms>
   </PropertyGroup>
 
@@ -31,6 +31,12 @@
 	<DebugType>full</DebugType>
 	<NoWarn>1701;1702; CA1016; CA1824; WFAC010; CA1416</NoWarn>
 	<OutputType>Exe</OutputType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Develop|x64'">
+    <DebugType>full</DebugType>
+    <NoWarn>1701;1702; CA1016; CA1824; WFAC010; CA1416</NoWarn>
+    <OutputType>WinExe</OutputType>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -127,22 +133,41 @@
 	<NoWarn>1701;1702; CA1016; CA1824; WFAC010; CA1416</NoWarn>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Develop|AnyCPU'">
+    <NoWarn>1701;1702; CA1016; CA1824; WFAC010; CA1416</NoWarn>
+  </PropertyGroup>
+
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM32'">
 	<NoWarn>1701;1702; CA1016; CA1824; WFAC010; CA1416</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Develop|ARM32'">
+    <NoWarn>1701;1702; CA1016; CA1824; WFAC010; CA1416</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
 	<NoWarn>1701;1702; CA1016; CA1824; WFAC010; CA1416</NoWarn>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Develop|ARM64'">
+    <NoWarn>1701;1702; CA1016; CA1824; WFAC010; CA1416</NoWarn>
+  </PropertyGroup>
+
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
 	<NoWarn>1701;1702; CA1016; CA1824; WFAC010; CA1416</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Develop|x86'">
+    <NoWarn>1701;1702; CA1016; CA1824; WFAC010; CA1416</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
 	<NoWarn>1701;1702; CA1016; CA1824; WFAC010; CA1416</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
 	<NoWarn>1701;1702; CA1016; CA1824; WFAC010; CA1416</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Develop|x64'">
+    <NoWarn>1701;1702; CA1016; CA1824; WFAC010; CA1416</NoWarn>
   </PropertyGroup>
 
 </Project>

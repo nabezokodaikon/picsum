@@ -91,6 +91,8 @@ namespace PicSum.Main
 
 #if DEBUG
             config.AddRule(LogLevel.Trace, LogLevel.Fatal, logfile);
+#elif DEVELOP
+            config.AddRule(LogLevel.Trace, LogLevel.Fatal, logfile);
 #else
             config.AddRule(LogLevel.Info, LogLevel.Fatal, logfile);
 #endif
