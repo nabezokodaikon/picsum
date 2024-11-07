@@ -7,6 +7,7 @@ using SWF.Core.ImageAccessor;
 using SWF.Core.Job;
 using SWF.UIComponent.TabOperation;
 using System;
+using System.ComponentModel;
 using System.Drawing;
 using System.Runtime.Versioning;
 using System.Windows.Forms;
@@ -31,7 +32,7 @@ namespace PicSum.UIComponent.Contents.FileList
             this.Title = "Star";
             this.Icon = ResourceFiles.RatingIcon.Value;
             this.IsMoveControlVisible = false;
-            this.IsRemoveFromListMenuItemVisible = true;
+            this.fileContextMenu.VisibleRemoveFromListMenuItem = true;
             base.sortFileRgistrationDateToolStripButton.Enabled = true;
         }
 
@@ -139,5 +140,18 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
+        protected override void FileContextMenu_Opening(object sender, CancelEventArgs e)
+        {
+            var filePathList = this.GetSelectedFiles();
+            if (filePathList.Count > 0)
+            {
+                this.fileContextMenu.SetFile(filePathList);
+                this.fileContextMenu.VisibleBookmarkMenuItem = false;
+            }
+            else
+            {
+                e.Cancel = true;
+            }
+        }
     }
 }

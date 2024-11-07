@@ -29,8 +29,8 @@ namespace PicSum.UIComponent.Contents.FileList
 
             this.Title = "Bookmark";
             this.Icon = ResourceFiles.BookmarkIcon.Value;
-            this.IsRemoveFromListMenuItemVisible = true;
             this.IsMoveControlVisible = false;
+            this.fileContextMenu.VisibleRemoveFromListMenuItem = true;
             base.sortFileRgistrationDateToolStripButton.Enabled = true;
         }
 
@@ -117,8 +117,16 @@ namespace PicSum.UIComponent.Contents.FileList
 
         protected override void FileContextMenu_Opening(object sender, CancelEventArgs e)
         {
-            base.FileContextMenu_Opening(sender, e);
-            this.IsBookmarkMenuItem = false;
+            var filePathList = this.GetSelectedFiles();
+            if (filePathList.Count > 0)
+            {
+                this.fileContextMenu.SetFile(filePathList);
+                this.fileContextMenu.VisibleBookmarkMenuItem = false;
+            }
+            else
+            {
+                e.Cancel = true;
+            }
         }
 
         private void SearchJob_Callback(ListResult<FileShallowInfoEntity> result)

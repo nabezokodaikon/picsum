@@ -7,6 +7,7 @@ using SWF.Core.Job;
 using SWF.UIComponent.TabOperation;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using System.Runtime.Versioning;
 using System.Windows.Forms;
@@ -14,7 +15,7 @@ using System.Windows.Forms;
 namespace PicSum.UIComponent.Contents.FileList
 {
     [SupportedOSPlatform("windows10.0.17763.0")]
-    internal sealed class ClipFileListPage
+    internal sealed partial class ClipFileListPage
         : AbstractFileListPage
     {
         private bool disposed = false;
@@ -28,8 +29,7 @@ namespace PicSum.UIComponent.Contents.FileList
             this.Title = "Clip";
             this.Icon = ResourceFiles.ClipIcon.Value;
             this.IsMoveControlVisible = false;
-            this.IsRemoveFromListMenuItemVisible = true;
-            this.IsClipMenuItem = false;
+            this.fileContextMenu.VisibleRemoveFromListMenuItem = true;
 
             base.sortFileRgistrationDateToolStripButton.Enabled = true;
         }
@@ -125,6 +125,21 @@ namespace PicSum.UIComponent.Contents.FileList
                     this.parameter.SelectedFilePath,
                     this.parameter.SortInfo.ActiveSortType,
                     this.parameter.SortInfo.IsAscending(this.parameter.SortInfo.ActiveSortType));
+            }
+        }
+
+        protected override void FileContextMenu_Opening(object sender, CancelEventArgs e)
+        {
+            var filePathList = this.GetSelectedFiles();
+            if (filePathList.Count > 0)
+            {
+                this.fileContextMenu.SetFile(filePathList);
+                this.fileContextMenu.VisibleBookmarkMenuItem = false;
+                this.fileContextMenu.VisibleClipMenuItem = false;
+            }
+            else
+            {
+                e.Cancel = true;
             }
         }
     }

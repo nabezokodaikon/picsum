@@ -47,8 +47,8 @@ namespace PicSum.UIComponent.Contents.FileList
                 this.Icon = Instance<IFileIconCacher>.Value.SmallDirectoryIcon;
             }
 
-            this.IsRemoveFromListMenuItemVisible = false;
             this.IsMoveControlVisible = !string.IsNullOrEmpty(this.parameter.DirectoryPath);
+            this.fileContextMenu.VisibleRemoveFromListMenuItem = false;
             base.sortFileRgistrationDateToolStripButton.Enabled = false;
         }
 
@@ -186,13 +186,12 @@ namespace PicSum.UIComponent.Contents.FileList
             var filePathList = this.GetSelectedFiles();
             if (filePathList.Count > 0)
             {
-                this.IsDirectoryActiveTabOpenMenuItemVisible = true;
                 this.SetContextMenuFiles(filePathList);
             }
             else if (!FileUtil.IsSystemRoot(this.parameter.DirectoryPath))
             {
-                this.IsDirectoryActiveTabOpenMenuItemVisible = false;
                 this.SetContextMenuFiles(this.parameter.DirectoryPath);
+                this.fileContextMenu.VisibleDirectoryActiveTabOpenMenuItem = false;
             }
             else
             {

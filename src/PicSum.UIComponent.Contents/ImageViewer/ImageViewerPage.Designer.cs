@@ -69,8 +69,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             // fileContextMenu
             // 
             this.fileContextMenu.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.fileContextMenu.VisibleFileActiveTabOpenMenuItem = false;
-            this.fileContextMenu.VisibleDirectoryActiveTabOpenMenuItem = true;
             this.fileContextMenu.VisibleRemoveFromListMenuItem = false;
             this.fileContextMenu.Name = "fileContextMenu";
             this.fileContextMenu.Size = new System.Drawing.Size(205, 292);

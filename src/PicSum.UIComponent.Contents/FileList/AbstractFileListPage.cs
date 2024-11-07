@@ -54,18 +54,6 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
-        protected bool IsRemoveFromListMenuItemVisible
-        {
-            get
-            {
-                return this.fileContextMenu.VisibleRemoveFromListMenuItem;
-            }
-            set
-            {
-                this.fileContextMenu.VisibleRemoveFromListMenuItem = value;
-            }
-        }
-
         protected bool IsMoveControlVisible
         {
             get
@@ -76,42 +64,6 @@ namespace PicSum.UIComponent.Contents.FileList
             {
                 this.movePreviewToolStripButton.Visible = value;
                 this.moveNextToolStripButton.Visible = value;
-            }
-        }
-
-        protected bool IsBookmarkMenuItem
-        {
-            get
-            {
-                return this.fileContextMenu.VisibleBookmarkMenuItem;
-            }
-            set
-            {
-                this.fileContextMenu.VisibleBookmarkMenuItem = value;
-            }
-        }
-
-        protected bool IsClipMenuItem
-        {
-            get
-            {
-                return this.fileContextMenu.VisibleClipMenuItem;
-            }
-            set
-            {
-                this.fileContextMenu.VisibleClipMenuItem = value;
-            }
-        }
-
-        protected bool IsDirectoryActiveTabOpenMenuItemVisible
-        {
-            get
-            {
-                return this.fileContextMenu.VisibleDirectoryActiveTabOpenMenuItem;
-            }
-            set
-            {
-                this.fileContextMenu.VisibleDirectoryActiveTabOpenMenuItem = value;
             }
         }
 

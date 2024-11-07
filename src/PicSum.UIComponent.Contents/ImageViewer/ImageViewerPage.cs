@@ -1206,6 +1206,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                     }
 
                     this.fileContextMenu.SetFile(this.leftImagePanel.FilePath);
+                    this.fileContextMenu.VisibleFileActiveTabOpenMenuItem = false;
                     return;
                 }
             }
@@ -1220,6 +1221,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                     }
 
                     this.fileContextMenu.SetFile(this.rightImagePanel.FilePath);
+                    this.fileContextMenu.VisibleFileActiveTabOpenMenuItem = false;
                     return;
                 }
             }

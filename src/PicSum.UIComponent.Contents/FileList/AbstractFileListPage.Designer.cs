@@ -69,9 +69,6 @@ namespace PicSum.UIComponent.Contents.FileList
             // 
             // fileContextMenu
             // 
-            this.fileContextMenu.VisibleFileActiveTabOpenMenuItem = true;
-            this.fileContextMenu.VisibleDirectoryActiveTabOpenMenuItem = true;
-            this.fileContextMenu.VisibleRemoveFromListMenuItem = false;
             this.fileContextMenu.Name = "fileContextMenu";
             this.fileContextMenu.Size = new System.Drawing.Size(209, 312);
             this.fileContextMenu.DirectoryActiveTabOpen += new System.EventHandler<PicSum.UIComponent.Contents.ContextMenu.ExecuteFileEventArgs>(this.FileContextMenu_DirectoryActiveTabOpen);
@@ -252,7 +249,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
 
         private SWF.UIComponent.FlowList.FlowList flowList;
-        private PicSum.UIComponent.Contents.ContextMenu.FileContextMenu fileContextMenu;
+        protected PicSum.UIComponent.Contents.ContextMenu.FileContextMenu fileContextMenu;
         private PicSum.UIComponent.Contents.ToolBar.PageToolBar toolBar;
         private System.Windows.Forms.ToolStripDropDownButton viewToolStripDropDownButton;
         private System.Windows.Forms.ToolStripButton sortFileNameToolStripButton;
