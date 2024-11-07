@@ -16,6 +16,8 @@ namespace PicSum.UIComponent.Contents.Parameter
         public string SourcesKey { get; private set; }
         public string SelectedFilePath { get; set; }
         public SortInfo SortInfo { get; set; }
+        public bool VisibleBookmarkMenuItem { get; private set; }
+        public bool VisibleClipMenuItem { get; private set; }
 
         public BookmarkFileListPageParameter()
         {
@@ -24,6 +26,8 @@ namespace PicSum.UIComponent.Contents.Parameter
             this.Key = $"{this.PageSources}ListPage";
             this.SelectedFilePath = string.Empty;
             this.SortInfo = null;
+            this.VisibleBookmarkMenuItem = false;
+            this.VisibleClipMenuItem = true;
         }
 
         public PagePanel CreatePage()

@@ -25,6 +25,8 @@ namespace PicSum.UIComponent.Contents.Parameter
         public System.Drawing.Image PageIcon { get; private set; }
         public string SelectedFilePath { get; set; }
         public SortInfo SortInfo { get; set; }
+        public bool VisibleBookmarkMenuItem { get; private set; }
+        public bool VisibleClipMenuItem { get; private set; }
 
         public ImageViewerPageParameter(
             string pageSources,
@@ -33,7 +35,9 @@ namespace PicSum.UIComponent.Contents.Parameter
             string selectedFilePath,
             SortInfo sortInfo,
             string pageTitle,
-            System.Drawing.Image pageIcon)
+            System.Drawing.Image pageIcon,
+            bool visibleBookmarkMenuItem,
+            bool visibleClipMenuItem)
         {
             this.PageSources = pageSources ?? throw new ArgumentNullException(nameof(pageSources));
             this.SourcesKey = sourcesKey ?? throw new ArgumentNullException(nameof(sourcesKey));
@@ -43,6 +47,8 @@ namespace PicSum.UIComponent.Contents.Parameter
             this.PageIcon = pageIcon ?? throw new ArgumentNullException(nameof(pageIcon));
             this.SortInfo = sortInfo ?? throw new ArgumentNullException(nameof(sortInfo));
             this.SelectedFilePath = selectedFilePath ?? throw new ArgumentNullException(nameof(selectedFilePath));
+            this.VisibleBookmarkMenuItem = visibleBookmarkMenuItem;
+            this.VisibleClipMenuItem = visibleClipMenuItem;
         }
 
         public PagePanel CreatePage()

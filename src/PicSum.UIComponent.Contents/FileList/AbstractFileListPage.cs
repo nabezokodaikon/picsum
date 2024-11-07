@@ -869,7 +869,9 @@ namespace PicSum.UIComponent.Contents.FileList
                     filePath,
                     this.SortInfo,
                     this.Title,
-                    this.Icon);
+                    this.Icon,
+                    this.Parameter.VisibleBookmarkMenuItem,
+                    this.Parameter.VisibleClipMenuItem);
                 this.OnOpenPage(new BrowserPageEventArgs(PageOpenType.AddTab, param));
             }
             else if (!file.IsFile)
@@ -897,7 +899,9 @@ namespace PicSum.UIComponent.Contents.FileList
                     filePath,
                     this.SortInfo,
                     this.Title,
-                    this.Icon);
+                    this.Icon,
+                    this.Parameter.VisibleBookmarkMenuItem,
+                    this.Parameter.VisibleClipMenuItem);
                 this.OnOpenPage(new BrowserPageEventArgs(PageOpenType.OverlapTab, param));
             }
             else if (file.IsFile)
@@ -935,7 +939,9 @@ namespace PicSum.UIComponent.Contents.FileList
                     filePath,
                     this.SortInfo,
                     this.Title,
-                    this.Icon);
+                    this.Icon,
+                    this.Parameter.VisibleBookmarkMenuItem,
+                    this.Parameter.VisibleClipMenuItem);
                 this.OnOpenPage(new BrowserPageEventArgs(PageOpenType.OverlapTab, param));
             }
             else if (file.IsFile)
@@ -993,7 +999,9 @@ namespace PicSum.UIComponent.Contents.FileList
                         this.SortInfo,
                         this.GetImageFilesGetAction,
                         this.Title,
-                        this.Icon); ;
+                        this.Icon,
+                        this.Parameter.VisibleBookmarkMenuItem,
+                        this.Parameter.VisibleClipMenuItem);
                     this.DoDragDrop(dragData, DragDropEffects.All);
                 }
             }
@@ -1008,7 +1016,9 @@ namespace PicSum.UIComponent.Contents.FileList
                     this.SortInfo,
                     this.GetImageFilesGetAction,
                     this.Title,
-                    this.Icon);
+                    this.Icon,
+                    this.Parameter.VisibleBookmarkMenuItem,
+                    this.Parameter.VisibleClipMenuItem);
                 this.DoDragDrop(dragData, DragDropEffects.All);
             }
         }
@@ -1035,7 +1045,9 @@ namespace PicSum.UIComponent.Contents.FileList
                 e.FilePath,
                 this.SortInfo,
                 this.Title,
-                this.Icon);
+                this.Icon,
+                this.Parameter.VisibleBookmarkMenuItem,
+                this.Parameter.VisibleClipMenuItem);
             this.OnOpenPage(new BrowserPageEventArgs(PageOpenType.OverlapTab, param));
         }
 
@@ -1048,7 +1060,9 @@ namespace PicSum.UIComponent.Contents.FileList
                 e.FilePath,
                 this.SortInfo,
                 this.Title,
-                this.Icon);
+                this.Icon,
+                this.Parameter.VisibleBookmarkMenuItem,
+                this.Parameter.VisibleClipMenuItem);
             this.OnOpenPage(new BrowserPageEventArgs(PageOpenType.AddTab, param));
         }
 
@@ -1061,7 +1075,9 @@ namespace PicSum.UIComponent.Contents.FileList
                 e.FilePath,
                 this.SortInfo,
                 this.Title,
-                this.Icon);
+                this.Icon,
+                this.Parameter.VisibleBookmarkMenuItem,
+                this.Parameter.VisibleClipMenuItem);
             this.OnOpenPage(new BrowserPageEventArgs(PageOpenType.NewWindow, param));
         }
 

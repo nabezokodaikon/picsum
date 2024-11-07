@@ -303,7 +303,9 @@ namespace PicSum.Main.UIComponent
                     dragData.CurrentFilePath,
                     dragData.SortInfo,
                     dragData.PageTitle,
-                    dragData.PageIcon);
+                    dragData.PageIcon,
+                    dragData.VisibleBookmarkMenuItem,
+                    dragData.VisibleClipMenuItem);
                 this.OpenPage(parameter, PageOpenType.OverlapTab);
             }
         }
@@ -326,7 +328,9 @@ namespace PicSum.Main.UIComponent
                     dragData.CurrentFilePath,
                     dragData.SortInfo,
                     dragData.PageTitle,
-                    dragData.PageIcon);
+                    dragData.PageIcon,
+                    dragData.VisibleBookmarkMenuItem,
+                    dragData.VisibleClipMenuItem);
                 this.InsertPage(parameter, tabIndex);
             }
         }
@@ -368,7 +372,9 @@ namespace PicSum.Main.UIComponent
                     sortInfo,
                     GetImageFilesAction(new ImageFileGetByDirectoryParameter(dirPath)),
                     FileUtil.GetFileName(dirPath),
-                    Instance<IFileIconCacher>.Value.SmallDirectoryIcon);
+                    Instance<IFileIconCacher>.Value.SmallDirectoryIcon,
+                    true,
+                    true);
                 if (e.IsOverlap)
                 {
                     this.OverlapPage(dragData);

@@ -12,7 +12,9 @@ namespace PicSum.UIComponent.Contents.Parameter
         SortInfo sortInfo,
         Func<ImageViewerPageParameter, Action<ISender>> getImageFilesAction,
         string pageTitle,
-        System.Drawing.Image pageIcon)
+        System.Drawing.Image pageIcon,
+        bool visibleBookmarkMenuItem,
+        bool visibleClipMenuItem)
     {
         public object Sender { get; private set; }
             = sender ?? throw new ArgumentNullException(nameof(sender));
@@ -37,5 +39,8 @@ namespace PicSum.UIComponent.Contents.Parameter
 
         public System.Drawing.Image PageIcon { get; private set; }
             = pageIcon ?? throw new ArgumentNullException(nameof(pageIcon));
+
+        public bool VisibleBookmarkMenuItem { get; private set; } = visibleBookmarkMenuItem;
+        public bool VisibleClipMenuItem { get; private set; } = visibleClipMenuItem;
     }
 }

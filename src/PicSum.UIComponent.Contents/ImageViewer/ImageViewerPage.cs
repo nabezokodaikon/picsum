@@ -681,7 +681,9 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 this.parameter.SortInfo,
                 this.parameter.ImageFilesGetAction,
                 this.parameter.PageTitle,
-                this.parameter.PageIcon);
+                this.parameter.PageIcon,
+                this.parameter.VisibleBookmarkMenuItem,
+                this.parameter.VisibleClipMenuItem);
             this.DoDragDrop(dragData, DragDropEffects.All);
         }
 
@@ -1207,6 +1209,8 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
                     this.fileContextMenu.SetFile(this.leftImagePanel.FilePath);
                     this.fileContextMenu.VisibleFileActiveTabOpenMenuItem = false;
+                    this.fileContextMenu.VisibleBookmarkMenuItem = this.parameter.VisibleBookmarkMenuItem;
+                    this.fileContextMenu.VisibleClipMenuItem = this.parameter.VisibleClipMenuItem;
                     return;
                 }
             }
@@ -1222,6 +1226,8 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
                     this.fileContextMenu.SetFile(this.rightImagePanel.FilePath);
                     this.fileContextMenu.VisibleFileActiveTabOpenMenuItem = false;
+                    this.fileContextMenu.VisibleBookmarkMenuItem = this.parameter.VisibleBookmarkMenuItem;
+                    this.fileContextMenu.VisibleClipMenuItem = this.parameter.VisibleClipMenuItem;
                     return;
                 }
             }
@@ -1238,7 +1244,9 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 e.FilePath,
                 this.parameter.SortInfo,
                 this.Title,
-                this.Icon);
+                this.Icon,
+                this.Parameter.VisibleBookmarkMenuItem,
+                this.Parameter.VisibleClipMenuItem);
             this.OnOpenPage(new BrowserPageEventArgs(PageOpenType.AddTab, param));
         }
 
@@ -1251,7 +1259,9 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 e.FilePath,
                 this.parameter.SortInfo,
                 this.Title,
-                this.Icon);
+                this.Icon,
+                this.Parameter.VisibleBookmarkMenuItem,
+                this.Parameter.VisibleClipMenuItem);
             this.OnOpenPage(new BrowserPageEventArgs(PageOpenType.NewWindow, param));
         }
 
