@@ -93,6 +93,16 @@ namespace SWF.Core.Base.Properties {
         /// <summary>
         ///   型 System.Byte[] のローカライズされたリソースを検索します。
         /// </summary>
+        internal static byte[] ClipIcon {
+            get {
+                object obj = ResourceManager.GetObject("ClipIcon", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   型 System.Byte[] のローカライズされたリソースを検索します。
+        /// </summary>
         internal static byte[] DragTabIcon {
             get {
                 object obj = ResourceManager.GetObject("DragTabIcon", resourceCulture);

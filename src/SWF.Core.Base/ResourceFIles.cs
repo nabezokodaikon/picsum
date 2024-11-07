@@ -15,6 +15,9 @@ namespace SWF.Core.Base
         public static readonly Lazy<Bitmap> BookmarkIcon = new(() =>
             CreateBitmapFromByteArray(Resources.BookmarkIcon));
 
+        public static readonly Lazy<Bitmap> ClipIcon = new(() =>
+            CreateBitmapFromByteArray(Resources.ClipIcon));
+
         public static readonly Lazy<Bitmap> DragTabIcon = new(() =>
             CreateBitmapFromByteArray(Resources.DragTabIcon));
 
