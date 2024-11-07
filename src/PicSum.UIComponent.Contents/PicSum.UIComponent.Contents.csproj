@@ -6,7 +6,7 @@
     <UseWindowsForms>true</UseWindowsForms>
     <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
     <Configurations>Debug;Release;Develop</Configurations>
-    <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <NeutralLanguage>ja-JP</NeutralLanguage>
 	<Platforms>AnyCPU;x64;x86;ARM64;ARM32</Platforms>
 	<SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
