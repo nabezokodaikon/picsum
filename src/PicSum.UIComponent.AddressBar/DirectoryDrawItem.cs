@@ -62,7 +62,9 @@ namespace PicSum.UIComponent.AddressBar
                 g,
                 text,
                 base.Palette.TextFont,
-                new Point((int)rect.Location.X, (int)(rect.Location.Y + (rect.Height - textSize.Height) / 2f)),
+                new Point(
+                    (int)(rect.Location.X + (rect.Width - textSize.Width) / 2f),
+                    (int)(rect.Location.Y + (rect.Height - textSize.Height) / 2f)),
                 base.Palette.TextBrush.Color,
                 TextFormatFlags.Top);
         }
