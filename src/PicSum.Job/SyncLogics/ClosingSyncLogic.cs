@@ -17,6 +17,7 @@ namespace PicSum.Job.SyncLogics
             Instance<JobCaller>.Value.Dispose();
             Instance<IFileIconCacher>.Value.Dispose();
             Instance<IThumbnailCacher>.Value.Dispose();
+            Instance<IClipFiles>.Value.Dispose();
             Instance<IImageFileCacher>.Value.Dispose();
             Instance<IImageFileSizeCacher>.Value.Dispose();
             Instance<IFileExporter>.Value.Dispose();
