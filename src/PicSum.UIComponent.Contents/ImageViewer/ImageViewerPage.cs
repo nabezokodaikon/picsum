@@ -1140,10 +1140,18 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 return;
             }
 
-            if (this.SelectedFilePath != this.leftImagePanel.FilePath)
+            if (e.Button == MouseButtons.Left)
             {
-                this.SelectedFilePath = this.leftImagePanel.FilePath;
-                this.OnSelectedFileChanged(new SelectedFileChangeEventArgs(this.leftImagePanel.FilePath));
+                if (this.SelectedFilePath != this.leftImagePanel.FilePath)
+                {
+                    this.SelectedFilePath = this.leftImagePanel.FilePath;
+                    this.OnSelectedFileChanged(new SelectedFileChangeEventArgs(this.leftImagePanel.FilePath));
+                }
+            }
+            else if (e.Button == MouseButtons.Middle)
+            {
+                Instance<JobCaller>.Value.StartClipFilesAddJob(
+                    this, [this.leftImagePanel.FilePath]);
             }
         }
 
@@ -1154,10 +1162,18 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 return;
             }
 
-            if (this.SelectedFilePath != this.rightImagePanel.FilePath)
+            if (e.Button == MouseButtons.Left)
             {
-                this.SelectedFilePath = this.rightImagePanel.FilePath;
-                this.OnSelectedFileChanged(new SelectedFileChangeEventArgs(this.rightImagePanel.FilePath));
+                if (this.SelectedFilePath != this.rightImagePanel.FilePath)
+                {
+                    this.SelectedFilePath = this.rightImagePanel.FilePath;
+                    this.OnSelectedFileChanged(new SelectedFileChangeEventArgs(this.rightImagePanel.FilePath));
+                }
+            }
+            else if (e.Button == MouseButtons.Middle)
+            {
+                Instance<JobCaller>.Value.StartClipFilesAddJob(
+                    this, [this.rightImagePanel.FilePath]);
             }
         }
 
@@ -1292,5 +1308,11 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             Instance<JobCaller>.Value.StartBookmarkAddJob(this, paramter);
         }
 
+        private void FileContextMenu_Clip(object sender, ExecuteFileListEventArgs e)
+        {
+            var paramter = new ListParameter<string>(e.FilePathList);
+
+            Instance<JobCaller>.Value.StartClipFilesAddJob(this, paramter);
+        }
     }
 }

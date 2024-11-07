@@ -1,3 +1,4 @@
+using PicSum.UIComponent.Contents.ContextMenu;
 using System;
 
 namespace PicSum.UIComponent.Contents.ImageViewer
@@ -81,6 +82,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.fileContextMenu.PathCopy += new System.EventHandler<PicSum.UIComponent.Contents.ContextMenu.ExecuteFileListEventArgs>(this.FileContextMenu_PathCopy);
             this.fileContextMenu.NameCopy += new System.EventHandler<PicSum.UIComponent.Contents.ContextMenu.ExecuteFileListEventArgs>(this.FileContextMenu_NameCopy);
             this.fileContextMenu.Bookmark += new System.EventHandler<PicSum.UIComponent.Contents.ContextMenu.ExecuteFileEventArgs>(this.FileContextMenu_Bookmark);
+            this.fileContextMenu.Clip += new System.EventHandler<PicSum.UIComponent.Contents.ContextMenu.ExecuteFileListEventArgs>(this.FileContextMenu_Clip);
             this.fileContextMenu.Opening += new System.ComponentModel.CancelEventHandler(this.FileContextMenu_Opening);
             // 
             // rightImagePanel
@@ -290,8 +292,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.PerformLayout();
 
         }
-
-
 
         private SWF.UIComponent.ImagePanel.ImagePanel leftImagePanel;
         private SWF.UIComponent.ImagePanel.ImagePanel rightImagePanel;

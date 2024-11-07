@@ -1,4 +1,4 @@
-namespace PicSum.Job.Common
+namespace PicSum.Job.Entities
 {
     public struct ClipFileEntity
     {

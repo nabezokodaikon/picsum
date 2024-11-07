@@ -33,6 +33,10 @@ namespace PicSum.Job.Common
             = new(() => new OneWayTask<FileTagAddJob, FileTagUpdateParameter>(context));
         private readonly Lazy<IOneWayJob<GCCollectRunJob>> gcCollectRunJob
             = new(() => new OneWayTask<GCCollectRunJob>(context));
+        private readonly Lazy<IOneWayJob<ClipFilesAddJob, ListParameter<string>>> clipFilesAddJob
+            = new(() => new OneWayTask<ClipFilesAddJob, ListParameter<string>>(context));
+        private readonly Lazy<IOneWayJob<ClipFilesDeleteJob, ListParameter<string>>> clipFilesDeleteJob
+            = new(() => new OneWayTask<ClipFilesDeleteJob, ListParameter<string>>(context));
 
         public readonly Lazy<ITwoWayJob<ImageFileReadJob, ImageFileReadParameter, ImageFileReadResult>> ImageFileReadJob
             = new(() => new TwoWayThread<ImageFileReadJob, ImageFileReadParameter, ImageFileReadResult>(context));
@@ -61,6 +65,8 @@ namespace PicSum.Job.Common
             = new(() => new TwoWayTask<FavoriteDirectoriesGetJob, FavoriteDirectoriesGetParameter, ListResult<FileShallowInfoEntity>>(context));
         public readonly Lazy<ITwoWayJob<FilesGetByRatingJob, FilesGetByRatingParameter, ListResult<FileShallowInfoEntity>>> FilesGetByRatingJob
             = new(() => new TwoWayTask<FilesGetByRatingJob, FilesGetByRatingParameter, ListResult<FileShallowInfoEntity>>(context));
+        public readonly Lazy<ITwoWayJob<ClipFilesGetJob, ListResult<FileShallowInfoEntity>>> FilesGetByClipJob
+            = new(() => new TwoWayTask<ClipFilesGetJob, ListResult<FileShallowInfoEntity>>(context));
         public readonly Lazy<ITwoWayJob<FilesGetByTagJob, FilesGetByTagParameter, ListResult<FileShallowInfoEntity>>> FilesGetByTagJob
             = new(() => new TwoWayTask<FilesGetByTagJob, FilesGetByTagParameter, ListResult<FileShallowInfoEntity>>(context));
         public readonly Lazy<ITwoWayJob<ImageFilesGetByDirectoryJob, ImageFileGetByDirectoryParameter, ImageFilesGetByDirectoryResult>> ImageFilesGetByDirectoryJob
@@ -101,6 +107,8 @@ namespace PicSum.Job.Common
                 this.fileRatingUpdateJob.Value.Dispose();
                 this.fileTagDeleteJob.Value.Dispose();
                 this.fileTagAddJob.Value.Dispose();
+                this.clipFilesAddJob.Value.Dispose();
+                this.clipFilesDeleteJob.Value.Dispose();
                 this.gcCollectRunJob.Value.Dispose();
 
                 this.ImageFileReadJob.Value.Dispose();
@@ -117,6 +125,7 @@ namespace PicSum.Job.Common
                 this.FilesGetByDirectoryJob.Value.Dispose();
                 this.FavoriteDirectoriesGetJob.Value.Dispose();
                 this.FilesGetByRatingJob.Value.Dispose();
+                this.FilesGetByClipJob.Value.Dispose();
                 this.FilesGetByTagJob.Value.Dispose();
                 this.ImageFilesGetByDirectoryJob.Value.Dispose();
                 this.NextDirectoryGetJob.Value.Dispose();
@@ -205,6 +214,24 @@ namespace PicSum.Job.Common
             ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
 
             this.fileTagAddJob.Value.Reset()
+                .StartJob(sender, parameter);
+        }
+
+        public void StartClipFilesAddJob(ISender sender, ListParameter<string> parameter)
+        {
+            ArgumentNullException.ThrowIfNull(sender, nameof(sender));
+            ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
+
+            this.clipFilesAddJob.Value.Reset()
+                .StartJob(sender, parameter);
+        }
+
+        public void StartClipFilesDeleteJob(ISender sender, ListParameter<string> parameter)
+        {
+            ArgumentNullException.ThrowIfNull(sender, nameof(sender));
+            ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
+
+            this.clipFilesDeleteJob.Value.Reset()
                 .StartJob(sender, parameter);
         }
 

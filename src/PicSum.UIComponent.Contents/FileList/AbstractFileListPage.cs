@@ -91,6 +91,18 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
+        protected bool IsClipMenuItem
+        {
+            get
+            {
+                return this.fileContextMenu.VisibleClipMenuItem;
+            }
+            set
+            {
+                this.fileContextMenu.VisibleClipMenuItem = value;
+            }
+        }
+
         protected bool IsDirectoryActiveTabOpenMenuItemVisible
         {
             get
@@ -1222,6 +1234,12 @@ namespace PicSum.UIComponent.Contents.FileList
         private void FileContextMenu_RemoveFromList(object sender, ExecuteFileListEventArgs e)
         {
             this.OnRemoveFile(e.FilePathList);
+        }
+
+        private void FileContextMenu_Clip(object sender, ExecuteFileListEventArgs e)
+        {
+            Instance<JobCaller>.Value.StartClipFilesAddJob(
+                this, new ListParameter<string>(e.FilePathList));
         }
 
         private void FileContextMenu_Bookmark(object sender, ExecuteFileEventArgs e)

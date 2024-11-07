@@ -678,5 +678,16 @@ namespace PicSum.Main.UIComponent
             }
         }
 
+        private void SearchClipToolButton_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                this.OpenPage(new ClipFileListPageParameter(), PageOpenType.OverlapTab);
+            }
+            else if (e.Button == MouseButtons.Middle)
+            {
+                this.OpenPage(new ClipFileListPageParameter(), PageOpenType.AddTab);
+            }
+        }
     }
 }

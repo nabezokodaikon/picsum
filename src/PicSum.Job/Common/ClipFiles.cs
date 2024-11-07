@@ -1,3 +1,5 @@
+using PicSum.Job.Entities;
+
 namespace PicSum.Job.Common
 {
     public sealed partial class ClipFiles
