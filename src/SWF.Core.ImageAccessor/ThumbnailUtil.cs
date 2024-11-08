@@ -217,24 +217,24 @@ namespace SWF.Core.ImageAccessor
             float scale;
             if (destRect.Width > srcSize.Width || destRect.Height > srcSize.Height)
             {
-                scale = Math.Min(1, Math.Min(destRect.Width / thumb.Width, destRect.Height / thumb.Height));
+                scale = Math.Min(1, Math.Min(destRect.Width / srcSize.Width, destRect.Height / srcSize.Height));
             }
             else
             {
-                scale = Math.Min(destRect.Width / thumb.Width, destRect.Height / thumb.Height);
+                scale = Math.Min(destRect.Width / srcSize.Width, destRect.Height / srcSize.Height);
             }
 
             float w;
             float h;
-            if (thumb.Width > thumb.Height)
+            if (srcSize.Width > srcSize.Height)
             {
-                w = thumb.Width * scale - offset;
-                h = thumb.Height * scale - (offset * (thumb.Height / (float)thumb.Width));
+                w = srcSize.Width * scale - offset;
+                h = srcSize.Height * scale - (offset * (srcSize.Height / (float)srcSize.Width));
             }
             else
             {
-                w = thumb.Width * scale - (offset * (thumb.Width / (float)thumb.Height));
-                h = thumb.Height * scale - offset;
+                w = srcSize.Width * scale - (offset * (srcSize.Width / (float)srcSize.Height));
+                h = srcSize.Height * scale - offset;
             }
 
             var x = destRect.X + (destRect.Width - w) / 2f;
@@ -289,7 +289,7 @@ namespace SWF.Core.ImageAccessor
 
             AdjustDrawFileThumbnail(g, thumb, destRect, srcSize);
 
-            var destIconSize = new SizeF(destRect.Width * 0.5f, destRect.Height * 0.5f);
+            var destIconSize = new SizeF(icon.Width * 0.5f, icon.Height * 0.5f);
             var destIconRect = new RectangleF(
                 destRect.X + 2, destRect.Bottom - destIconSize.Height,
                 destIconSize.Width, destIconSize.Height);

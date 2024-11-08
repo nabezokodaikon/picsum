@@ -21,16 +21,6 @@ namespace PicSum.UIComponent.InfoPanel
     public sealed partial class InfoPanel
         : UserControl, ISender
     {
-        private static void DrawImageFileThumbnail(Graphics g, Image thumb, RectangleF rect)
-        {
-            ThumbnailUtil.DrawFileThumbnail(g, thumb, rect);
-        }
-
-        private static void DrawDirectoryThumbnail(Graphics g, Image thumb, RectangleF rect)
-        {
-            ThumbnailUtil.DrawDirectoryThumbnail(g, thumb, rect, Instance<IFileIconCacher>.Value.ExtraLargeDirectoryIcon);
-        }
-
         public event EventHandler<SelectedTagEventArgs> SelectedTag;
 
         private bool disposed = false;
@@ -402,11 +392,20 @@ namespace PicSum.UIComponent.InfoPanel
                 var rect = new RectangleF(x, y, size, size);
                 if (this.FileInfo.IsFile)
                 {
-                    DrawImageFileThumbnail(e.Graphics, this.Thumbnail.ThumbnailImage, rect);
+                    ThumbnailUtil.AdjustDrawFileThumbnail(
+                        e.Graphics,
+                        this.Thumbnail.ThumbnailImage,
+                        rect,
+                        new Size(this.Thumbnail.SourceWidth, this.Thumbnail.SourceHeight));
                 }
                 else
                 {
-                    DrawDirectoryThumbnail(e.Graphics, this.Thumbnail.ThumbnailImage, rect);
+                    ThumbnailUtil.AdjustDrawDirectoryThumbnail(
+                        e.Graphics,
+                        this.Thumbnail.ThumbnailImage,
+                        rect,
+                        new Size(this.Thumbnail.SourceWidth, this.Thumbnail.SourceHeight),
+                        Instance<IFileIconCacher>.Value.JumboDirectoryIcon);
                 }
             }
             else if (this.FileInfo != null && this.FileInfo.FileIcon != null)

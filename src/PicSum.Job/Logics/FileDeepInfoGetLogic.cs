@@ -1,7 +1,6 @@
 using PicSum.DatabaseAccessor.Connection;
 using PicSum.DatabaseAccessor.Dto;
 using PicSum.DatabaseAccessor.Sql;
-using PicSum.Job.Common;
 using PicSum.Job.Entities;
 using SWF.Core.Base;
 using SWF.Core.FileAccessor;
@@ -77,30 +76,25 @@ namespace PicSum.Job.Logics
                     var srcSize = this.GetImageSize(filePath);
                     if (srcSize != ImageUtil.EMPTY_SIZE)
                     {
-                        using (var tran = Instance<IThumbnailDB>.Value.BeginTransaction())
+                        using (var cvImage = this.ReadImageFile(filePath))
                         {
-                            var thumbnailBuffer
-                                = Instance<IThumbnailCacher>.Value.GetOrCreateCache(filePath, thumbSize.Width, thumbSize.Height);
-                            if (thumbnailBuffer.ThumbnailBuffer == null)
-                            {
-                                throw new NullReferenceException("サムネイルのバッファがNullです。");
-                            }
+                            var thumbnail = ThumbnailUtil.CreateThumbnail(
+                                cvImage,
+                                Math.Max(thumbSize.Width, thumbSize.Height),
+                                ImageSizeMode.Original);
 
                             info.Thumbnail = new()
                             {
                                 FilePath = info.FilePath,
                                 FileUpdatedate = info.UpdateDate,
-                                ThumbnailImage = ThumbnailUtil.ToImage(thumbnailBuffer.ThumbnailBuffer),
+                                ThumbnailImage = thumbnail,
                                 ThumbnailWidth = thumbSize.Width,
                                 ThumbnailHeight = thumbSize.Height,
                                 SourceWidth = srcSize.Width,
                                 SourceHeight = srcSize.Height
                             };
                             info.ImageSize = new(srcSize.Width, srcSize.Height);
-
-                            tran.Commit();
                         }
-
                     }
                 }
                 else if (!info.IsFile)
@@ -111,28 +105,24 @@ namespace PicSum.Job.Logics
                         var srcSize = this.GetImageSize(firstImageFile);
                         if (srcSize != ImageUtil.EMPTY_SIZE)
                         {
-                            using (var tran = Instance<IThumbnailDB>.Value.BeginTransaction())
+                            using (var cvImage = this.ReadImageFile(firstImageFile))
                             {
-                                var thumbnailBuffer
-                                    = Instance<IThumbnailCacher>.Value.GetOrCreateCache(firstImageFile, thumbSize.Width, thumbSize.Height);
-                                if (thumbnailBuffer.ThumbnailBuffer == null)
-                                {
-                                    throw new NullReferenceException("サムネイルのバッファがNullです。");
-                                }
+                                var thumbnail = ThumbnailUtil.CreateThumbnail(
+                                    cvImage,
+                                    Math.Max(cvImage.Width, cvImage.Height),
+                                    ImageSizeMode.Original);
 
                                 info.Thumbnail = new()
                                 {
                                     FilePath = info.FilePath,
                                     FileUpdatedate = info.UpdateDate,
-                                    ThumbnailImage = ThumbnailUtil.ToImage(thumbnailBuffer.ThumbnailBuffer),
+                                    ThumbnailImage = thumbnail,
                                     ThumbnailWidth = thumbSize.Width,
                                     ThumbnailHeight = thumbSize.Height,
                                     SourceWidth = srcSize.Width,
                                     SourceHeight = srcSize.Height,
                                 };
                                 info.ImageSize = new(srcSize.Width, srcSize.Height);
-
-                                tran.Commit();
                             }
                         }
                     }
@@ -172,6 +162,24 @@ namespace PicSum.Job.Logics
             {
                 this.WriteErrorLog(new JobException(this.Job.ID, ex));
                 return ImageUtil.EMPTY_SIZE;
+            }
+        }
+
+        internal CvImage ReadImageFile(string filePath)
+        {
+            try
+            {
+                return Instance<IImageFileCacher>.Value.GetCvImage(filePath);
+            }
+            catch (FileUtilException ex)
+            {
+                this.WriteErrorLog(new JobException(this.Job.ID, ex));
+                return CvImage.EMPTY;
+            }
+            catch (ImageUtilException ex)
+            {
+                this.WriteErrorLog(new JobException(this.Job.ID, ex));
+                return CvImage.EMPTY;
             }
         }
     }
