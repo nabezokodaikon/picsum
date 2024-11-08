@@ -44,6 +44,8 @@ namespace PicSum.UIComponent.Contents.Parameter
             this.DirectoryPath = directoryPath ?? throw new ArgumentNullException(nameof(directoryPath));
             this.SelectedFilePath = string.Empty;
             this.SortInfo = null;
+            this.VisibleBookmarkMenuItem = true;
+            this.VisibleClipMenuItem = true;
         }
 
         public PagePanel CreatePage()

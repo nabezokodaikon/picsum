@@ -26,7 +26,7 @@ namespace PicSum.UIComponent.Contents.Parameter
             this.Key = $"{this.PageSources}ListPage";
             this.SelectedFilePath = string.Empty;
             this.SortInfo = null;
-            this.VisibleBookmarkMenuItem = false;
+            this.VisibleBookmarkMenuItem = true;
             this.VisibleClipMenuItem = true;
         }
 
