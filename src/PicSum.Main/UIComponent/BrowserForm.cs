@@ -281,7 +281,11 @@ namespace PicSum.Main.UIComponent
                     this.browserMainPanel.AddImageViewerPageTab(parameter);
                 }
             }
-            else if (BrowserForm.isStartUp && CommandLineArgs.IsHome())
+            else if (BrowserForm.isStartUp && CommandLineArgs.IsEmpty())
+            {
+
+            }
+            else if (BrowserForm.isStartUp)
             {
                 this.browserMainPanel.AddFavoriteDirectoryListTab();
             }

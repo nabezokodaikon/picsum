@@ -1,4 +1,3 @@
-using SWF.Core.Base;
 using SWF.Core.FileAccessor;
 using System;
 using System.Linq;
@@ -12,16 +11,9 @@ namespace PicSum.Main
             return Environment.GetCommandLineArgs().Contains("--cleanup");
         }
 
-        public static bool IsHome()
+        public static bool IsEmpty()
         {
-            if (AppConstants.IsRunningAsUwp())
-            {
-                return true;
-            }
-            else
-            {
-                return Environment.GetCommandLineArgs().Contains("--home");
-            }
+            return Environment.GetCommandLineArgs().Contains("--empty");
         }
 
         public static bool IsFilePath()
