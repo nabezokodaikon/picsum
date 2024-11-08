@@ -176,6 +176,8 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
             if (disposing)
             {
+                this.fileContextMenu.Close();
+
                 this.leftImagePanel.Dispose();
                 this.rightImagePanel.Dispose();
 
@@ -581,6 +583,8 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
         private void ReadImage()
         {
+            this.fileContextMenu.Close();
+
             if (this.filePathList.Count < 1)
             {
                 return;

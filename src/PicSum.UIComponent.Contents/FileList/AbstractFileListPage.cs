@@ -163,6 +163,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
             if (disposing)
             {
+                this.fileContextMenu.Close();
                 Instance<JobCaller>.Value.ThumbnailsGetJob.Value.BeginCancel();
 
                 this.components?.Dispose();
