@@ -177,10 +177,6 @@ namespace SWF.Core.Job
                     }
                 }
             }
-            catch (Exception ex)
-            {
-                Logger.Error(ex, "ジョブ実行スレッドで補足されない例外が発生しました。");
-            }
             finally
             {
                 Logger.Debug("ジョブ実行スレッドが終了します。");

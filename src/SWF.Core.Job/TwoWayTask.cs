@@ -159,10 +159,6 @@ namespace SWF.Core.Job
             {
                 Logger.Debug("ジョブ実行タスクをキャンセルします。");
             }
-            catch (Exception ex)
-            {
-                Logger.Error(ex, "ジョブ実行タスクで補足されない例外が発生しました。");
-            }
             finally
             {
                 Logger.Debug("ジョブ実行タスクが終了します。");

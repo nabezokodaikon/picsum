@@ -38,10 +38,12 @@ namespace PicSum.Main
 
                     logger.Debug("アプリケーションを開始します。");
 
-                    AppDomain.CurrentDomain.UnhandledException += new(CurrentDomain_UnhandledException);
+                    Application.ThreadException += new ThreadExceptionEventHandler(Application_ThreadException);
+                    AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
 
+                    Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
                     Application.EnableVisualStyles();
-                    Application.SetCompatibleTextRenderingDefault(false);
+                    Application.SetCompatibleTextRenderingDefault(true);
 
                     using (var resource = new ResourceManager())
                     using (var initialForm = new InitialForm())
@@ -100,12 +102,19 @@ namespace PicSum.Main
             LogManager.Configuration = config;
         }
 
+        private static void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
+        {
+            var logger = LogManager.GetCurrentClassLogger();
+            logger.Error(e.Exception);
+            ExceptionUtil.ShowErrorDialog("Unhandled UI Exception.", e.Exception);
+        }
+
         private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             var ex = (Exception)e.ExceptionObject;
             var logger = LogManager.GetCurrentClassLogger();
             logger.Error(ex);
-            ExceptionUtil.ShowErrorDialog("An uncaught exception occurred.", ex);
+            ExceptionUtil.ShowErrorDialog("Unhandled Non-UI Exception.", ex);
         }
     }
 }
