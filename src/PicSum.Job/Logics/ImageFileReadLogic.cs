@@ -13,20 +13,14 @@ namespace PicSum.Job.Logics
         : AbstractAsyncLogic(job)
     {
         internal ImageFileReadResult CreateResult(
-            string filePath, bool isMain, bool hasSub, int thumbnailSize, ImageSizeMode imageSizeMode, Size imageSize)
+            string filePath, bool isMain, bool hasSub, Size imageSize)
         {
             CvImage? image = null;
-            Bitmap? thumbnail = null;
 
             try
             {
                 image = this.ReadImageFile(filePath);
-                var isError = image == CvImage.EMPTY;
-                this.CheckCancel();
 
-                thumbnail = (isError) ?
-                        null :
-                        ThumbnailUtil.CreateThumbnail(image, thumbnailSize, imageSizeMode);
                 this.CheckCancel();
 
                 return new ImageFileReadResult()
@@ -36,18 +30,16 @@ namespace PicSum.Job.Logics
                     Image = new()
                     {
                         FilePath = filePath,
-                        Thumbnail = thumbnail,
                         Image = image,
                         Size = imageSize,
                         IsEmpty = false,
-                        IsError = isError,
+                        IsError = image == CvImage.EMPTY,
                     },
                 };
             }
             catch (JobCancelException)
             {
                 image?.Dispose();
-                thumbnail?.Dispose();
                 throw;
             }
         }
@@ -62,7 +54,6 @@ namespace PicSum.Job.Logics
                 Image = new()
                 {
                     FilePath = filePath,
-                    Thumbnail = null,
                     Image = new CvImage(imageSize),
                     Size = imageSize,
                     IsEmpty = true,

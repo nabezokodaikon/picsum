@@ -48,23 +48,23 @@ namespace PicSum.Job.Jobs
                     && subSize.Width < subSize.Height)
                 {
                     this.Callback(logic.CreateResult(
-                        mainFilePath, true, true, parameter.ThumbnailSize, parameter.ImageSizeMode, mainSize));
+                        mainFilePath, true, true, mainSize));
 
                     this.CheckCancel();
 
                     this.Callback(logic.CreateResult(
-                        subFilePath, false, true, parameter.ThumbnailSize, parameter.ImageSizeMode, subSize));
+                        subFilePath, false, true, subSize));
                 }
                 else
                 {
                     this.Callback(logic.CreateResult(
-                        mainFilePath, true, false, parameter.ThumbnailSize, parameter.ImageSizeMode, mainSize));
+                        mainFilePath, true, false, mainSize));
                 }
             }
             else
             {
                 this.Callback(logic.CreateResult(
-                    mainFilePath, true, false, parameter.ThumbnailSize, parameter.ImageSizeMode, mainSize));
+                    mainFilePath, true, false, mainSize));
             }
         }
     }

@@ -79,6 +79,16 @@ namespace SWF.Core.ImageAccessor
             g.FillRectangle(brush, destRect);
         }
 
+        public Bitmap GetResizeImage(System.Drawing.Size size)
+        {
+            if (this.mat == null)
+            {
+                throw new NullReferenceException("MatがNullです。");
+            }
+
+            return OpenCVUtil.Resize(this.mat, size.Width, size.Height);
+        }
+
         public void DrawSourceImage(Graphics g, RectangleF destRect, RectangleF srcRect)
         {
             ArgumentNullException.ThrowIfNull(g, nameof(g));

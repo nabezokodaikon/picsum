@@ -618,8 +618,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                     CurrentIndex = this.FilePathListIndex,
                     FilePathList = this.filePathList,
                     ImageDisplayMode = this.displayMode,
-                    ImageSizeMode = this.sizeMode,
-                    ThumbnailSize = this.leftImagePanel.ThumbnailSize,
                 };
 
                 this.isLoading = true;
@@ -818,7 +816,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 else
                 {
                     this.leftImagePanel.SetImage(
-                        this.sizeMode, e.Image.Image, e.Image.Thumbnail, e.Image.FilePath);
+                        this.sizeMode, e.Image.Image, e.Image.FilePath);
                     var scale = GetImageScale(e.Image.Size, bgSize, this.sizeMode);
                     this.leftImagePanel.SetScale(scale);
                 }
@@ -836,7 +834,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                     else
                     {
                         this.leftImagePanel.SetImage(
-                            this.sizeMode, e.Image.Image, e.Image.Thumbnail, e.Image.FilePath);
+                            this.sizeMode, e.Image.Image, e.Image.FilePath);
                         var scale = GetImageScale(e.Image.Size, bgSize, this.sizeMode);
                         this.leftImagePanel.SetScale(scale);
                     }
@@ -851,7 +849,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                     else
                     {
                         this.rightImagePanel.SetImage(
-                            this.sizeMode, e.Image.Image, e.Image.Thumbnail, e.Image.FilePath);
+                            this.sizeMode, e.Image.Image, e.Image.FilePath);
                         var scale = GetImageScale(e.Image.Size, bgSize, this.sizeMode);
                         this.rightImagePanel.SetScale(scale);
                     }
@@ -867,7 +865,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                     else
                     {
                         this.leftImagePanel.SetImage(
-                            this.sizeMode, e.Image.Image, e.Image.Thumbnail, e.Image.FilePath);
+                            this.sizeMode, e.Image.Image, e.Image.FilePath);
                         var scale = GetImageScale(e.Image.Size, bgSize, this.sizeMode);
                         this.leftImagePanel.SetScale(scale);
                     }
@@ -886,7 +884,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                     else
                     {
                         this.rightImagePanel.SetImage(
-                            this.sizeMode, e.Image.Image, e.Image.Thumbnail, e.Image.FilePath);
+                            this.sizeMode, e.Image.Image, e.Image.FilePath);
                         var scale = GetImageScale(e.Image.Size, bgSize, this.sizeMode);
                         this.rightImagePanel.SetScale(scale);
                     }
@@ -901,7 +899,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                     else
                     {
                         this.leftImagePanel.SetImage(
-                            this.sizeMode, e.Image.Image, e.Image.Thumbnail, e.Image.FilePath);
+                            this.sizeMode, e.Image.Image, e.Image.FilePath);
                         var scale = GetImageScale(e.Image.Size, bgSize, this.sizeMode);
                         this.leftImagePanel.SetScale(scale);
                     }
@@ -917,7 +915,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                     else
                     {
                         this.leftImagePanel.SetImage(
-                            this.sizeMode, e.Image.Image, e.Image.Thumbnail, e.Image.FilePath);
+                            this.sizeMode, e.Image.Image, e.Image.FilePath);
                         var scale = GetImageScale(e.Image.Size, bgSize, this.sizeMode);
                         this.leftImagePanel.SetScale(scale);
                     }

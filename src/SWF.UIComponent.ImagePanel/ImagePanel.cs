@@ -30,7 +30,6 @@ namespace SWF.UIComponent.ImagePanel
 
         private SizeF imageScaleSize = SizeF.Empty;
         private CvImage image = null;
-        private Bitmap thumbnail = null;
 
         private int hMaximumScrollValue = 0;
         private int vMaximumScrollValue = 0;
@@ -63,14 +62,6 @@ namespace SWF.UIComponent.ImagePanel
                 }
 
                 return this.image.Size;
-            }
-        }
-
-        public int ThumbnailSize
-        {
-            get
-            {
-                return this.thumbnailPanelImage.Width - THUMBNAIL_OFFSET;
             }
         }
 
@@ -122,6 +113,14 @@ namespace SWF.UIComponent.ImagePanel
             }
         }
 
+        private int ThumbnailSize
+        {
+            get
+            {
+                return this.thumbnailPanelImage.Width - THUMBNAIL_OFFSET;
+            }
+        }
+
         public ImagePanel()
         {
             this.SetStyle(
@@ -135,16 +134,9 @@ namespace SWF.UIComponent.ImagePanel
             this.Font = new Font(this.Font.FontFamily, this.Font.Size * 2);
         }
 
-        public void SetImage(
-            ImageSizeMode sizeMode, CvImage img, Bitmap thumb, string filePath)
+        public void SetImage(ImageSizeMode sizeMode, CvImage img, string filePath)
         {
             ArgumentNullException.ThrowIfNull(img, nameof(img));
-
-            if (!img.IsEmpty)
-            {
-                ArgumentNullException.ThrowIfNull(thumb, nameof(thumb));
-            }
-
             ArgumentNullException.ThrowIfNull(filePath, nameof(filePath));
 
             if (this.HasImage)
@@ -155,7 +147,6 @@ namespace SWF.UIComponent.ImagePanel
             this.FilePath = filePath;
             this.sizeMode = sizeMode;
             this.image = img;
-            this.thumbnail = thumb;
             this.isError = false;
 
             this.HasImage = true;
@@ -191,12 +182,6 @@ namespace SWF.UIComponent.ImagePanel
         public void ClearImage()
         {
             this.HasImage = false;
-
-            if (this.thumbnail != null)
-            {
-                this.thumbnail.Dispose();
-                this.thumbnail = null;
-            }
 
             if (this.image != null)
             {
@@ -278,7 +263,7 @@ namespace SWF.UIComponent.ImagePanel
                     else if (this.GetThumbnailRectangle().Contains(e.X, e.Y))
                     {
                         // サムネイル
-                        var scale = this.imageScaleSize.Width / (float)this.thumbnail.Width;
+                        var scale = this.GetThumbnailToScaleImageScale();
                         var thumbRect = this.GetThumbnailRectangle();
                         var srcRect = this.GetImageSrcRectangle();
                         var centerPoint = new PointF(srcRect.X + srcRect.Width / 2f, srcRect.Y + srcRect.Height / 2f);
@@ -327,7 +312,7 @@ namespace SWF.UIComponent.ImagePanel
         {
             if (this.isThumbnailMove)
             {
-                var scale = this.imageScaleSize.Width / (float)this.thumbnail.Width;
+                var scale = this.GetThumbnailToScaleImageScale();
                 if (this.SetHScrollValue(this.hScrollValue + (int)((e.X - this.moveFromPoint.X) * scale)) |
                     this.SetVScrollValue(this.vScrollValue + (int)((e.Y - this.moveFromPoint.Y) * scale)))
                 {
@@ -428,6 +413,20 @@ namespace SWF.UIComponent.ImagePanel
             }
 
             base.OnMouseDoubleClick(e);
+        }
+
+        private float GetThumbnailToScaleImageScale()
+        {
+            return Math.Min(
+                this.imageScaleSize.Width / (float)this.ThumbnailSize,
+                this.imageScaleSize.Height / (float)this.ThumbnailSize);
+        }
+
+        private float GetImageToThumbnailScale()
+        {
+            return Math.Min(
+                this.ThumbnailSize / (float)this.image.Width,
+                this.ThumbnailSize / (float)this.image.Height);
         }
 
         private void OnImageMouseClick(MouseEventArgs e)
@@ -555,10 +554,12 @@ namespace SWF.UIComponent.ImagePanel
 
         private RectangleF GetThumbnailRectangle(RectangleF panelRect)
         {
-            var x = panelRect.X + (panelRect.Width - this.thumbnail.Width) / 2f;
-            var y = panelRect.Y + (panelRect.Height - this.thumbnail.Height) / 2f;
-            var w = this.thumbnail.Width;
-            var h = this.thumbnail.Height;
+            var scale = this.GetImageToThumbnailScale();
+            var thumbSize = new SizeF(this.image.Width * scale, this.image.Height * scale);
+            var x = panelRect.X + (panelRect.Width - thumbSize.Width) / 2f;
+            var y = panelRect.Y + (panelRect.Height - thumbSize.Height) / 2f;
+            var w = thumbSize.Width;
+            var h = thumbSize.Height;
             return new RectangleF(x, y, w, h);
         }
 
@@ -569,7 +570,7 @@ namespace SWF.UIComponent.ImagePanel
 
         private RectangleF GetThumbnailViewRectangle(RectangleF thumbRect, RectangleF srcRect)
         {
-            var scale = this.thumbnail.Width / this.imageScaleSize.Width;
+            var scale = this.GetImageToThumbnailScale();
             var x = thumbRect.X + srcRect.X * scale;
             var y = thumbRect.Y + srcRect.Y * scale;
             var w = srcRect.Width * scale;
@@ -580,7 +581,7 @@ namespace SWF.UIComponent.ImagePanel
 
         private RectangleF GetThumbnailViewDestRectangle(RectangleF srcRect)
         {
-            var scale = this.thumbnail.Width / this.imageScaleSize.Width;
+            var scale = this.GetImageToThumbnailScale();
             var x = srcRect.X * scale;
             var y = srcRect.Y * scale;
             var w = srcRect.Width * scale;
@@ -634,13 +635,17 @@ namespace SWF.UIComponent.ImagePanel
             g.DrawImage(this.thumbnailPanelImage, panelRect);
 
             var thumbRect = this.GetThumbnailRectangle(panelRect);
-            g.DrawImage(this.thumbnail, thumbRect);
-            g.FillRectangle(this.thumbnailFilterBrush, thumbRect);
+            using (var thumbnail = this.image.GetResizeImage(
+                new Size((int)thumbRect.Size.Width, (int)thumbRect.Height)))
+            {
+                g.DrawImage(thumbnail, thumbRect);
+                g.FillRectangle(this.thumbnailFilterBrush, thumbRect);
 
-            var srcRect = this.GetImageSrcRectangle();
-            var viewRect = this.GetThumbnailViewRectangle(thumbRect, srcRect);
-            var viewDestRect = this.GetThumbnailViewDestRectangle(srcRect);
-            g.DrawImage(this.thumbnail, viewRect, viewDestRect, GraphicsUnit.Pixel);
+                var srcRect = this.GetImageSrcRectangle();
+                var viewRect = this.GetThumbnailViewRectangle(thumbRect, srcRect);
+                var viewDestRect = this.GetThumbnailViewDestRectangle(srcRect);
+                g.DrawImage(thumbnail, viewRect, viewDestRect, GraphicsUnit.Pixel);
+            }
         }
 
         private bool SetHScrollValue(int value)
