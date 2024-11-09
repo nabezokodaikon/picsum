@@ -817,7 +817,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 {
                     this.leftImagePanel.SetImage(
                         this.sizeMode, e.Image.Image, e.Image.FilePath);
-                    var scale = GetImageScale(e.Image.Size, bgSize, this.sizeMode);
+                    var scale = GetImageScale(e.Image.Image.Size, bgSize, this.sizeMode);
                     this.leftImagePanel.SetScale(scale);
                 }
             }
@@ -835,7 +835,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                     {
                         this.leftImagePanel.SetImage(
                             this.sizeMode, e.Image.Image, e.Image.FilePath);
-                        var scale = GetImageScale(e.Image.Size, bgSize, this.sizeMode);
+                        var scale = GetImageScale(e.Image.Image.Size, bgSize, this.sizeMode);
                         this.leftImagePanel.SetScale(scale);
                     }
                 }
@@ -850,7 +850,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                     {
                         this.rightImagePanel.SetImage(
                             this.sizeMode, e.Image.Image, e.Image.FilePath);
-                        var scale = GetImageScale(e.Image.Size, bgSize, this.sizeMode);
+                        var scale = GetImageScale(e.Image.Image.Size, bgSize, this.sizeMode);
                         this.rightImagePanel.SetScale(scale);
                     }
                 }
@@ -866,7 +866,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                     {
                         this.leftImagePanel.SetImage(
                             this.sizeMode, e.Image.Image, e.Image.FilePath);
-                        var scale = GetImageScale(e.Image.Size, bgSize, this.sizeMode);
+                        var scale = GetImageScale(e.Image.Image.Size, bgSize, this.sizeMode);
                         this.leftImagePanel.SetScale(scale);
                     }
                 }
@@ -885,7 +885,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                     {
                         this.rightImagePanel.SetImage(
                             this.sizeMode, e.Image.Image, e.Image.FilePath);
-                        var scale = GetImageScale(e.Image.Size, bgSize, this.sizeMode);
+                        var scale = GetImageScale(e.Image.Image.Size, bgSize, this.sizeMode);
                         this.rightImagePanel.SetScale(scale);
                     }
                 }
@@ -900,7 +900,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                     {
                         this.leftImagePanel.SetImage(
                             this.sizeMode, e.Image.Image, e.Image.FilePath);
-                        var scale = GetImageScale(e.Image.Size, bgSize, this.sizeMode);
+                        var scale = GetImageScale(e.Image.Image.Size, bgSize, this.sizeMode);
                         this.leftImagePanel.SetScale(scale);
                     }
                 }
@@ -916,7 +916,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                     {
                         this.leftImagePanel.SetImage(
                             this.sizeMode, e.Image.Image, e.Image.FilePath);
-                        var scale = GetImageScale(e.Image.Size, bgSize, this.sizeMode);
+                        var scale = GetImageScale(e.Image.Image.Size, bgSize, this.sizeMode);
                         this.leftImagePanel.SetScale(scale);
                     }
                 }

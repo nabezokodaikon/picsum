@@ -13,7 +13,7 @@ namespace PicSum.Job.Logics
         : AbstractAsyncLogic(job)
     {
         internal ImageFileReadResult CreateResult(
-            string filePath, bool isMain, bool hasSub, Size imageSize)
+            string filePath, bool isMain, bool hasSub)
         {
             CvImage? image = null;
 
@@ -31,7 +31,6 @@ namespace PicSum.Job.Logics
                     {
                         FilePath = filePath,
                         Image = image,
-                        Size = imageSize,
                         IsEmpty = false,
                         IsError = image == CvImage.EMPTY,
                     },
@@ -55,7 +54,6 @@ namespace PicSum.Job.Logics
                 {
                     FilePath = filePath,
                     Image = new CvImage(imageSize),
-                    Size = imageSize,
                     IsEmpty = true,
                     IsError = false,
                 }
