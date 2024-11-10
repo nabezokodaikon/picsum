@@ -1,36 +1,56 @@
 ![AppIcon](./resource/appicon.png) 
 
 # PicSum
-This is an application for viewing image files.
-It has the following features.
-* Two image files can be displayed in two-page spread.
-* The list display of image files can be browsed like Explorer.
-* Tab operations and window operations can be operated like a general web browser.
-* The address bar can be operated like explorer.
-* Image files can be displayed using the following methods.
-    * Frequently opened folders are displayed on the home page.
-    * Image files can be starred.
-    * Add arbitrary tags to image files.
-### Supplement
-* Browsing history, star, tag and bookmark features are only stored in this application's database.
-* This application is intended only for viewing image files and does not have file editing functions.
+
+## Software Overview
+* PicSum is a tabbed image viewer.
+* Images can be displayed in a double-page spread.
+* Various functions are provided for organizing image files.
+
+## Functions
+### Tabs
+* Tabs can be added, deleted, and windows can be combined or separated.
+### Home Page
+* Displays a list of frequently accessed folders.
+### Stars
+* Files and folders can be starred.
+### Tags
+* Files and folders can be tagged.
+### Bookmarks
+* Image files within a folder can be bookmarked.
+### Clips
+* Files and folders are remembered only while the application is running.
+* Images can also be clipped by middle-clicking on the image page.
+### Export
+* Image files can be exported to any folder.
+
+## Supported image formats
+* `Avif`
+* `Bmp`
+* `Gif`
+* `Ico`
+* `Jpeg`
+* `Jpg`
+* `Heic`
+* `Heif`
+* `Png`
+* `Svg`
+* `Webp`
+
+## Startup options
+* If you run picsum with the `--empty` option, no page will be displayed at startup.
+* If you run picsum with the `--cleanup` option, it will optimize the picsum database and delete the thumbnail cache before starting.
 
 ## How to build
 1. Install `.Net 8.0`.
 1. Install `Visual Studio 2022`.
 1. Run the `build_release.bat` file.
 
-## How to start
-Run `picsum.exe` in the `bin_release` directory created by the build.
-### Command line arguments
-`--home`
-
-Open the home page at startup.
-
-`--cleanup`
-
-Clean up the database.
+## Operating environment
+* Windows 10 (64bit)
+* Windows 11 (64bit)
 
 ## Screenshot
-![File list page](./screenshot/screenshot-001.png)
-![Image view page](./screenshot/screenshot-002.png)
+![Home page](./screenshot/screenshot_001.png)
+![Image view page](./screenshot/screenshot_002.png)
+![Multiple Windows](./screenshot/screenshot_003.png)
