@@ -122,7 +122,6 @@ namespace SWF.Core.Job
                         catch (Exception ex)
                         {
                             Logger.Error(ex, $"{currentJob.ID} で補足されない例外が発生しました。");
-                            throw;
                         }
                         finally
                         {
@@ -158,6 +157,10 @@ namespace SWF.Core.Job
             catch (OperationCanceledException)
             {
                 Logger.Debug("ジョブ実行タスクをキャンセルします。");
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, $"ジョブ実行タスクで補足されない例外が発生しました。");
             }
             finally
             {
