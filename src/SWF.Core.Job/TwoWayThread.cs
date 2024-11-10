@@ -1,8 +1,10 @@
 using NLog;
 using System.Diagnostics;
+using System.Runtime.Versioning;
 
 namespace SWF.Core.Job
 {
+    [SupportedOSPlatform("windows10.0.17763.0")]
     public partial class TwoWayThread<TJob, TJobParameter, TJobResult>
         : AbstractBackgroudProcess<TJob, TJobParameter, TJobResult>, IDisposable, ITwoWayJob<TJob, TJobParameter, TJobResult>
         where TJob : AbstractTwoWayJob<TJobParameter, TJobResult>, new()
@@ -187,6 +189,7 @@ namespace SWF.Core.Job
         }
     }
 
+    [SupportedOSPlatform("windows10.0.17763.0")]
     public sealed partial class TwoWayThread<TJob, TJobResult>
         : TwoWayThread<TJob, EmptyParameter, TJobResult>, ITwoWayJob<TJob, TJobResult>
         where TJob : AbstractTwoWayJob<TJobResult>, new()
@@ -199,6 +202,7 @@ namespace SWF.Core.Job
         }
     }
 
+    [SupportedOSPlatform("windows10.0.17763.0")]
     public sealed partial class OneWayThread<TJob, TJobParameter>
         : TwoWayThread<TJob, TJobParameter, EmptyResult>, IOneWayJob<TJob, TJobParameter>
         where TJob : AbstractOneWayJob<TJobParameter>, new()
@@ -211,6 +215,7 @@ namespace SWF.Core.Job
         }
     }
 
+    [SupportedOSPlatform("windows10.0.17763.0")]
     public sealed partial class OneWayThread<TJob>
         : TwoWayThread<TJob, EmptyParameter, EmptyResult>, IOneWayJob<TJob>
         where TJob : AbstractOneWayJob, new()

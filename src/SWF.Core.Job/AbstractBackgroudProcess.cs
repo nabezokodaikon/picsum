@@ -1,8 +1,11 @@
 using NLog;
+using SWF.Core.Base;
 using System.Collections.Concurrent;
+using System.Runtime.Versioning;
 
 namespace SWF.Core.Job
 {
+    [SupportedOSPlatform("windows10.0.17763.0")]
     public abstract class AbstractBackgroudProcess<TJob, TJobParameter, TJobResult>
         where TJob : AbstractTwoWayJob<TJobParameter, TJobResult>, new()
         where TJobParameter : IJobParameter
@@ -141,7 +144,15 @@ namespace SWF.Core.Job
                             var innerAction = (Action<TJobResult>)objects[1];
                             if (innerJob.CanUIThreadAccess())
                             {
-                                innerAction.Invoke(result);
+                                try
+                                {
+                                    innerAction.Invoke(result);
+                                }
+                                catch (Exception ex)
+                                {
+                                    Logger.Error(ex, $"{job.ID} で補足されない例外が発生しました。");
+                                    ExceptionUtil.ShowErrorDialog("Unhandled UI Exception.", ex);
+                                }
                             }
                         }, new object[] { job, action });
                     }
@@ -166,7 +177,15 @@ namespace SWF.Core.Job
                             var innerAction = (Action)objects[1];
                             if (innerJob.CanUIThreadAccess())
                             {
-                                innerAction.Invoke();
+                                try
+                                {
+                                    innerAction.Invoke();
+                                }
+                                catch (Exception ex)
+                                {
+                                    Logger.Error(ex, $"{job.ID} で補足されない例外が発生しました。");
+                                    ExceptionUtil.ShowErrorDialog("Unhandled UI Exception.", ex);
+                                }
                             }
                         }, new object[] { job, action });
                     }
@@ -191,7 +210,15 @@ namespace SWF.Core.Job
                             var innerAction = (Action<JobException>)objects[1];
                             if (innerJob.CanUIThreadAccess())
                             {
-                                innerAction.Invoke(exception);
+                                try
+                                {
+                                    innerAction.Invoke(exception);
+                                }
+                                catch (Exception ex)
+                                {
+                                    Logger.Error(ex, $"{job.ID} で補足されない例外が発生しました。");
+                                    ExceptionUtil.ShowErrorDialog("Unhandled UI Exception.", ex);
+                                }
                             }
                         }, new object[] { job, action });
                     }
@@ -216,7 +243,15 @@ namespace SWF.Core.Job
                             var innerAction = (Action)objects[1];
                             if (innerJob.CanUIThreadAccess())
                             {
-                                innerAction.Invoke();
+                                try
+                                {
+                                    innerAction.Invoke();
+                                }
+                                catch (Exception ex)
+                                {
+                                    Logger.Error(ex, $"{job.ID} で補足されない例外が発生しました。");
+                                    ExceptionUtil.ShowErrorDialog("Unhandled UI Exception.", ex);
+                                }
                             }
                         }, new object[] { job, action });
                     }
