@@ -37,26 +37,26 @@ namespace PicSum.UIComponent.Contents.ContextMenu
 
         // 画像ファイルメニュー項目
         private readonly ToolStripMenuItem fileActiveTabOpenMenuItem = new("Open");
-        private readonly ToolStripMenuItem fileNewTabOpenMenuItem = new("Open New Tab");
-        private readonly ToolStripMenuItem fileNewWindowOpenMenuItem = new("Open New Window");
-        private readonly ToolStripMenuItem fileBookmarkMenuItem = new("Bookmark");
+        private readonly ToolStripMenuItem fileNewTabOpenMenuItem = new("Open in new tab");
+        private readonly ToolStripMenuItem fileNewWindowOpenMenuItem = new("Open in new window");
+        private readonly ToolStripMenuItem fileBookmarkMenuItem = new("Make a bookmark");
 
         // ファイルメニュー項目
-        private readonly ToolStripMenuItem fileOpenMenuItem = new("Open In Association");
+        private readonly ToolStripMenuItem fileOpenMenuItem = new("Open in association");
         private readonly ToolStripMenuItem selectApplicationMenuItem = new("Select and open the application");
-        private readonly ToolStripMenuItem saveDirectoryOpenMenuItem = new("Open Save Folder");
+        private readonly ToolStripMenuItem saveDirectoryOpenMenuItem = new("Open save folder");
 
         // フォルダメニュー項目
         private readonly ToolStripMenuItem directoryActiveTabOpenMenuItem = new("Open");
-        private readonly ToolStripMenuItem directoryNewTabOpenMenuItem = new("Open New Tab");
-        private readonly ToolStripMenuItem directoryNewWindowOpenMenuItem = new("Open New Window");
-        private readonly ToolStripMenuItem explorerOpenMenuItem = new("Open In Explorer");
+        private readonly ToolStripMenuItem directoryNewTabOpenMenuItem = new("Open in new tab");
+        private readonly ToolStripMenuItem directoryNewWindowOpenMenuItem = new("Open in new window");
+        private readonly ToolStripMenuItem explorerOpenMenuItem = new("Open in explorer");
 
         private readonly ToolStripMenuItem exportMenuItem = new("Export");
-        private readonly ToolStripMenuItem pathCopyMenuItem = new("Copy Path");
-        private readonly ToolStripMenuItem nameCopyMenuItem = new("Copy Name");
-        private readonly ToolStripMenuItem removeFromListMenuItem = new("Remove From List");
-        private readonly ToolStripMenuItem clipMenuItem = new("Clip");
+        private readonly ToolStripMenuItem pathCopyMenuItem = new("Copy the file path");
+        private readonly ToolStripMenuItem nameCopyMenuItem = new("Copy the file name");
+        private readonly ToolStripMenuItem removeFromListMenuItem = new("Remove from list");
+        private readonly ToolStripMenuItem clipMenuItem = new("Add to clip");
 
         public bool VisibleFileActiveTabOpenMenuItem
         {
