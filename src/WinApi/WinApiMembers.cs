@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Runtime.InteropServices;
 
 namespace WinApi
@@ -393,6 +394,18 @@ namespace WinApi
             SHIL_EXTRALARGE = 0x0002
         }
 
+        [Flags]
+        public enum TagOAIF
+        {
+            OAIF_ALLOW_REGISTRATION = 0x00000001,
+            OAIF_REGISTER_EXT = 0x00000002,
+            OAIF_EXEC = 0x00000004,
+            OAIF_FORCE_REGISTRATION = 0x00000008,
+            OAIF_HIDE_REGISTRATION = 0x00000020,
+            OAIF_URL_PROTOCOL = 0x00000040,
+            OAIF_FILE_IS_URI = 0x00000080,
+        }
+
         public static readonly Guid IID_IImageList = new("46EB5926-582E-4017-9FDF-E8998DAA0950");
 
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
@@ -512,6 +525,16 @@ namespace WinApi
             public string szDisplayName;
             [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 80)]
             public string szTypeName;
+        }
+
+        public struct TagOpenAsInfo
+        {
+            [MarshalAs(UnmanagedType.LPWStr)]
+            public string cszFile;
+            [MarshalAs(UnmanagedType.LPWStr)]
+            public string cszClass;
+            [MarshalAs(UnmanagedType.I4)]
+            public TagOAIF oaifInFlags;
         }
 
         [StructLayout(LayoutKind.Sequential)]
@@ -699,6 +722,9 @@ namespace WinApi
         [DllImport("user32.dll", SetLastError = true)]
         public static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, uint uFlags);
 
+        [DllImport("shell32.dll", EntryPoint = "SHOpenWithDialog", CharSet = CharSet.Unicode)]
+        public static extern int SHOpenWithDialog(IntPtr hwndParent, ref TagOpenAsInfo oainfo);
+
         public static int LoWord(int dwValue)
         {
             return dwValue & 0xFFFF;
@@ -709,5 +735,17 @@ namespace WinApi
             return (dwValue >> 16) & 0xFFFF;
         }
 
+        public static int OpenFileWith(IntPtr hwndParent, string filePath)
+        {
+            var fullPath = Path.GetFullPath(filePath);
+            var info = new TagOpenAsInfo()
+            {
+                cszFile = fullPath,
+                cszClass = "",
+                oaifInFlags = TagOAIF.OAIF_EXEC,
+            };
+
+            return SHOpenWithDialog(hwndParent, ref info);
+        }
     }
 }

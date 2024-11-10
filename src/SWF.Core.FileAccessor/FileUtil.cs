@@ -637,6 +637,22 @@ namespace SWF.Core.FileAccessor
             }
         }
 
+        public static void SelectApplication(string filePath)
+        {
+            ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
+
+            var hresult = WinApiMembers.OpenFileWith(IntPtr.Zero, filePath);
+            switch (hresult)
+            {
+                case 0:
+                    return;
+                case -2147023673:
+                    return;
+                default:
+                    throw new Win32Exception(hresult);
+            }
+        }
+
         public static void OpenFile(string filePath)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));

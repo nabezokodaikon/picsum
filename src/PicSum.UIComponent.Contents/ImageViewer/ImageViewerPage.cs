@@ -1272,6 +1272,11 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             FileUtil.OpenFile(e.FilePath);
         }
 
+        private void FileContextMenu_SelectApplication(object sender, ExecuteFileEventArgs e)
+        {
+            FileUtil.SelectApplication(e.FilePath);
+        }
+
         private void FileContextMenu_SaveDirectoryOpen(object sender, ExecuteFileEventArgs e)
         {
             FileUtil.OpenExplorerSelect(e.FilePath);
