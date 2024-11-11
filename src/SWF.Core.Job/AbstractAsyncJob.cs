@@ -2,24 +2,18 @@ using NLog;
 
 namespace SWF.Core.Job
 {
-    public abstract class AbstractTwoWayJob<TParameter, TResult>
+    public abstract class AbstractAsyncJob
         : IAsyncJob
-        where TParameter : IJobParameter
-        where TResult : IJobResult
     {
-        protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         private long isCancel = 0;
         private long isCompleted = 0;
 
+        internal ISender? Sender { get; set; } = null;
+
         public JobID ID { get; private set; } = JobID.GetNew();
 
-        internal ISender? Sender { get; set; } = null;
-        internal TParameter? Parameter { get; set; }
-        internal Action<TResult>? CallbackAction { get; set; } = null;
-        internal Action? CancelAction { get; set; } = null;
-        internal Action<JobException>? CatchAction { get; set; } = null;
-        internal Action? CompleteAction { get; set; } = null;
         internal bool IsCompleted
         {
             get
@@ -44,11 +38,6 @@ namespace SWF.Core.Job
             }
         }
 
-        public AbstractTwoWayJob()
-        {
-
-        }
-
         public void CheckCancel()
         {
             if (this.IsCancel)
@@ -62,21 +51,11 @@ namespace SWF.Core.Job
             Logger.Error($"{this.ID} {ex}");
         }
 
+        internal abstract void ExecuteWrapper();
+
         internal void BeginCancel()
         {
             this.IsCancel = true;
-        }
-
-        internal void ExecuteWrapper()
-        {
-            if (this.Parameter != null && !this.Parameter.Equals(default(TParameter)))
-            {
-                this.Execute(this.Parameter);
-            }
-            else
-            {
-                this.Execute();
-            }
         }
 
         internal bool CanUIThreadAccess()
@@ -94,6 +73,37 @@ namespace SWF.Core.Job
             else
             {
                 return false;
+            }
+        }
+    }
+
+    public abstract class AbstractTwoWayJob<TParameter, TResult>
+        : AbstractAsyncJob
+        where TParameter : IJobParameter
+        where TResult : IJobResult
+    {
+        protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
+        internal TParameter? Parameter { get; set; }
+        internal Action<TResult>? CallbackAction { get; set; } = null;
+        internal Action? CancelAction { get; set; } = null;
+        internal Action<JobException>? CatchAction { get; set; } = null;
+        internal Action? CompleteAction { get; set; } = null;
+
+        public AbstractTwoWayJob()
+        {
+
+        }
+
+        internal override void ExecuteWrapper()
+        {
+            if (this.Parameter != null && !this.Parameter.Equals(default(TParameter)))
+            {
+                this.Execute(this.Parameter);
+            }
+            else
+            {
+                this.Execute();
             }
         }
 

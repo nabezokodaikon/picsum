@@ -4,7 +4,7 @@ using System.Diagnostics;
 
 namespace PicSum.Job.Jobs
 {
-    internal sealed class GCCollectRunJob
+    public sealed class GCCollectRunJob
         : AbstractOneWayJob
     {
         private static readonly long INTERVAL = 1000 * 10;

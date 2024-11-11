@@ -43,7 +43,10 @@ namespace PicSum.Main.UIComponent
 
         protected override void OnLoad(EventArgs e)
         {
-            Instance<JobCaller>.Value.StartGCCollectRunJob(this);
+            Instance<JobCaller>.Value.GCCollectRunJob.Value
+                .Reset()
+                .BeginCancel()
+                .StartJob(this);
 
             Instance<JobCaller>.Value.PipeServerJob.Value
                 .Reset()

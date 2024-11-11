@@ -13,30 +13,7 @@ namespace PicSum.Job.Common
     {
         private bool disposed = false;
 
-        private readonly Lazy<IOneWayJob<BookmarkAddJob, ValueParameter<string>>> addBookmarkJob
-            = new(() => new OneWayTask<BookmarkAddJob, ValueParameter<string>>(context));
-        private readonly Lazy<IOneWayJob<SingleFileExportJob, SingleFileExportParameter>> singleFileExportJob
-            = new(() => new OneWayTask<SingleFileExportJob, SingleFileExportParameter>(context));
-        private readonly Lazy<IOneWayJob<DirectoryStateUpdateJob, DirectoryStateParameter>> directoryStateUpdateJob
-            = new(() => new OneWayTask<DirectoryStateUpdateJob, DirectoryStateParameter>(context));
-        private readonly Lazy<IOneWayJob<DirectoryViewHistoryAddJob, ValueParameter<string>>> directoryViewHistoryAddJob
-            = new(() => new OneWayTask<DirectoryViewHistoryAddJob, ValueParameter<string>>(context));
-        private readonly Lazy<IOneWayJob<BookmarkDeleteJob, ListParameter<string>>> bookmarkDeleteJob
-            = new(() => new OneWayTask<BookmarkDeleteJob, ListParameter<string>>(context));
-        private readonly Lazy<IOneWayJob<DirectoryViewCounterDeleteJob, ListParameter<string>>> directoryViewCounterDeleteJob
-            = new(() => new OneWayTask<DirectoryViewCounterDeleteJob, ListParameter<string>>(context));
-        private readonly Lazy<IOneWayJob<FileRatingUpdateJob, FileRatingUpdateParameter>> fileRatingUpdateJob
-            = new(() => new OneWayTask<FileRatingUpdateJob, FileRatingUpdateParameter>(context));
-        private readonly Lazy<IOneWayJob<FileTagDeleteJob, FileTagUpdateParameter>> fileTagDeleteJob
-            = new(() => new OneWayTask<FileTagDeleteJob, FileTagUpdateParameter>(context));
-        private readonly Lazy<IOneWayJob<FileTagAddJob, FileTagUpdateParameter>> fileTagAddJob
-            = new(() => new OneWayTask<FileTagAddJob, FileTagUpdateParameter>(context));
-        private readonly Lazy<IOneWayJob<GCCollectRunJob>> gcCollectRunJob
-            = new(() => new OneWayTask<GCCollectRunJob>(context));
-        private readonly Lazy<IOneWayJob<ClipFilesAddJob, ListParameter<string>>> clipFilesAddJob
-            = new(() => new OneWayTask<ClipFilesAddJob, ListParameter<string>>(context));
-        private readonly Lazy<IOneWayJob<ClipFilesDeleteJob, ListParameter<string>>> clipFilesDeleteJob
-            = new(() => new OneWayTask<ClipFilesDeleteJob, ListParameter<string>>(context));
+        private readonly Lazy<JobQueue> jobQueue = new(() => new JobQueue(context));
 
         public readonly Lazy<ITwoWayJob<ImageFileReadJob, ImageFileReadParameter, ImageFileReadResult>> ImageFileReadJob
             = new(() => new TwoWayThread<ImageFileReadJob, ImageFileReadParameter, ImageFileReadResult>(context));
@@ -58,6 +35,8 @@ namespace PicSum.Job.Common
             = new(() => new TwoWayTask<FileDeepInfoGetJob, FileDeepInfoGetParameter, FileDeepInfoGetResult>(context));
         public readonly Lazy<ITwoWayJob<PipeServerJob, ValueResult<string>>> PipeServerJob
             = new(() => new TwoWayTask<PipeServerJob, ValueResult<string>>(context));
+        public readonly Lazy<IOneWayJob<GCCollectRunJob>> GCCollectRunJob
+            = new(() => new OneWayTask<GCCollectRunJob>(context));
 
         public readonly Lazy<ITwoWayJob<FilesGetByDirectoryJob, FilesGetByDirectoryParameter, DirectoryGetResult>> FilesGetByDirectoryJob
             = new(() => new TwoWayTask<FilesGetByDirectoryJob, FilesGetByDirectoryParameter, DirectoryGetResult>(context));
@@ -98,18 +77,7 @@ namespace PicSum.Job.Common
 
             if (disposing)
             {
-                this.addBookmarkJob.Value.Dispose();
-                this.singleFileExportJob.Value.Dispose();
-                this.directoryStateUpdateJob.Value.Dispose();
-                this.directoryViewHistoryAddJob.Value.Dispose();
-                this.bookmarkDeleteJob.Value.Dispose();
-                this.directoryViewCounterDeleteJob.Value.Dispose();
-                this.fileRatingUpdateJob.Value.Dispose();
-                this.fileTagDeleteJob.Value.Dispose();
-                this.fileTagAddJob.Value.Dispose();
-                this.clipFilesAddJob.Value.Dispose();
-                this.clipFilesDeleteJob.Value.Dispose();
-                this.gcCollectRunJob.Value.Dispose();
+                this.jobQueue.Value.Dispose();
 
                 this.ImageFileReadJob.Value.Dispose();
                 this.ImageFileLoadingJob.Value.Dispose();
@@ -121,6 +89,7 @@ namespace PicSum.Job.Common
                 this.TagsGetJob.Value.Dispose();
                 this.FileDeepInfoGetJob.Value.Dispose();
                 this.PipeServerJob.Value.Dispose();
+                this.GCCollectRunJob.Value.Dispose();
 
                 this.FilesGetByDirectoryJob.Value.Dispose();
                 this.FavoriteDirectoriesGetJob.Value.Dispose();
@@ -141,8 +110,7 @@ namespace PicSum.Job.Common
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
             ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
 
-            this.addBookmarkJob.Value.Reset()
-                .StartJob(sender, parameter);
+            this.jobQueue.Value.Enqueue<BookmarkAddJob, ValueParameter<string>>(sender, parameter);
         }
 
         public void StartSingleFileExportJob(ISender sender, SingleFileExportParameter parameter)
@@ -150,8 +118,7 @@ namespace PicSum.Job.Common
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
             ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
 
-            this.singleFileExportJob.Value.Reset()
-                .StartJob(sender, parameter);
+            this.jobQueue.Value.Enqueue<SingleFileExportJob, SingleFileExportParameter>(sender, parameter);
         }
 
         public void StartDirectoryStateUpdateJob(ISender sender, DirectoryStateParameter parameter)
@@ -159,8 +126,7 @@ namespace PicSum.Job.Common
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
             ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
 
-            this.directoryStateUpdateJob.Value.Reset()
-                .StartJob(sender, parameter);
+            this.jobQueue.Value.Enqueue<DirectoryStateUpdateJob, DirectoryStateParameter>(sender, parameter);
         }
 
         public void StartDirectoryViewHistoryAddJob(ISender sender, ValueParameter<string> parameter)
@@ -168,8 +134,7 @@ namespace PicSum.Job.Common
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
             ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
 
-            this.directoryViewHistoryAddJob.Value.Reset()
-                .StartJob(sender, parameter);
+            this.jobQueue.Value.Enqueue<DirectoryViewHistoryAddJob, ValueParameter<string>>(sender, parameter);
         }
 
         public void StartBookmarkDeleteJob(ISender sender, ListParameter<string> parameter)
@@ -177,8 +142,7 @@ namespace PicSum.Job.Common
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
             ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
 
-            this.bookmarkDeleteJob.Value.Reset()
-                .StartJob(sender, parameter);
+            this.jobQueue.Value.Enqueue<BookmarkDeleteJob, ListParameter<string>>(sender, parameter);
         }
 
         public void StartDirectoryViewCounterDeleteJob(ISender sender, ListParameter<string> parameter)
@@ -186,8 +150,7 @@ namespace PicSum.Job.Common
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
             ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
 
-            this.directoryViewCounterDeleteJob.Value.Reset()
-                .StartJob(sender, parameter);
+            this.jobQueue.Value.Enqueue<DirectoryViewCounterDeleteJob, ListParameter<string>>(sender, parameter);
         }
 
         public void StartFileRatingUpdateJob(ISender sender, FileRatingUpdateParameter parameter)
@@ -195,8 +158,7 @@ namespace PicSum.Job.Common
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
             ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
 
-            this.fileRatingUpdateJob.Value.Reset()
-                .StartJob(sender, parameter);
+            this.jobQueue.Value.Enqueue<FileRatingUpdateJob, FileRatingUpdateParameter>(sender, parameter);
         }
 
         public void StartFileTagDeleteJob(ISender sender, FileTagUpdateParameter parameter)
@@ -204,8 +166,7 @@ namespace PicSum.Job.Common
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
             ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
 
-            this.fileTagDeleteJob.Value.Reset()
-                .StartJob(sender, parameter);
+            this.jobQueue.Value.Enqueue<FileTagDeleteJob, FileTagUpdateParameter>(sender, parameter);
         }
 
         public void StartFileTagAddJob(ISender sender, FileTagUpdateParameter parameter)
@@ -213,8 +174,7 @@ namespace PicSum.Job.Common
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
             ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
 
-            this.fileTagAddJob.Value.Reset()
-                .StartJob(sender, parameter);
+            this.jobQueue.Value.Enqueue<FileTagAddJob, FileTagUpdateParameter>(sender, parameter);
         }
 
         public void StartClipFilesAddJob(ISender sender, ListParameter<string> parameter)
@@ -222,8 +182,7 @@ namespace PicSum.Job.Common
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
             ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
 
-            this.clipFilesAddJob.Value.Reset()
-                .StartJob(sender, parameter);
+            this.jobQueue.Value.Enqueue<ClipFilesAddJob, ListParameter<string>>(sender, parameter);
         }
 
         public void StartClipFilesDeleteJob(ISender sender, ListParameter<string> parameter)
@@ -231,16 +190,7 @@ namespace PicSum.Job.Common
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
             ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
 
-            this.clipFilesDeleteJob.Value.Reset()
-                .StartJob(sender, parameter);
-        }
-
-        public void StartGCCollectRunJob(ISender sender)
-        {
-            ArgumentNullException.ThrowIfNull(sender, nameof(sender));
-
-            this.gcCollectRunJob.Value.Reset()
-                .StartJob(sender);
+            this.jobQueue.Value.Enqueue<ClipFilesDeleteJob, ListParameter<string>>(sender, parameter);
         }
     }
 }
