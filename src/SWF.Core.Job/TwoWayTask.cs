@@ -51,7 +51,7 @@ namespace SWF.Core.Job
                     Logger.Debug("ジョブ実行タスクにキャンセルリクエストを送ります。");
                     this.source?.Cancel();
 
-                    Logger.Debug("タスクの終了を待機します。");
+                    Logger.Debug("ジョブ実行タスクの終了を待機します。");
                     this.task.Wait();
 
                     Logger.Debug($"{this.BackgroudProcessName}: ジョブ実行タスクが終了しました。");

@@ -63,7 +63,7 @@ namespace SWF.Core.Job
                     Logger.Debug("ジョブ実行スレッドにキャンセルリクエストを送ります。");
                     this.IsThreadCancel = true;
 
-                    Logger.Debug("スレッドの終了を待機します。");
+                    Logger.Debug("ジョブ実行スレッドの終了を待機します。");
                     this.thread.Join();
 
                     Logger.Debug($"{this.BackgroudProcessName}: ジョブ実行スレッドが終了しました。");
