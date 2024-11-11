@@ -10,6 +10,21 @@ namespace SWF.Core.Base
     {
         public static void ShowErrorDialog(string message, Exception ex)
         {
+#if DEBUG
+            ArgumentException.ThrowIfNullOrEmpty(message, nameof(message));
+            ArgumentNullException.ThrowIfNull(ex, nameof(ex));
+
+            MessageBox.Show(message, "PicSum", MessageBoxButtons.OK, MessageBoxIcon.Error);
+#elif DEVELOP
+            ArgumentException.ThrowIfNullOrEmpty(message, nameof(message));
+            ArgumentNullException.ThrowIfNull(ex, nameof(ex));
+
+            MessageBox.Show(message, "PicSum", MessageBoxButtons.OK, MessageBoxIcon.Error);
+#endif
+        }
+
+        public static void ShowFatalDialog(string message, Exception ex)
+        {
             ArgumentException.ThrowIfNullOrEmpty(message, nameof(message));
             ArgumentNullException.ThrowIfNull(ex, nameof(ex));
 

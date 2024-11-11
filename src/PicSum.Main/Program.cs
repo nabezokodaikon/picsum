@@ -106,7 +106,7 @@ namespace PicSum.Main
         {
             var logger = LogManager.GetCurrentClassLogger();
             logger.Error(e.Exception);
-            ExceptionUtil.ShowErrorDialog("Unhandled UI Exception.", e.Exception);
+            ExceptionUtil.ShowFatalDialog("Unhandled UI Exception.", e.Exception);
         }
 
         private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
@@ -114,7 +114,7 @@ namespace PicSum.Main
             var ex = (Exception)e.ExceptionObject;
             var logger = LogManager.GetCurrentClassLogger();
             logger.Error(ex);
-            ExceptionUtil.ShowErrorDialog("Unhandled Non-UI Exception.", ex);
+            ExceptionUtil.ShowFatalDialog("Unhandled Non-UI Exception.", ex);
         }
     }
 }
