@@ -38,18 +38,6 @@ namespace PicSum.Job.Jobs
                     result.FileInfo = getInfoLogic.Execute(filePath, param.ThumbnailSize);
 
                     this.CheckCancel();
-
-                    if (param.FilePathList.Count <= 997)
-                    {
-                        var logic = new FilesTagInfoGetLogic(this);
-                        result.TagInfoList = logic.Execute(result.FilePathList);
-                    }
-                    else
-                    {
-                        result.TagInfoList = [];
-                    }
-
-                    this.CheckCancel();
                 }
                 catch (JobCancelException)
                 {
@@ -64,6 +52,26 @@ namespace PicSum.Job.Jobs
                 {
                     throw new JobException(this.ID, ex);
                 }
+            }
+
+            if (param.FilePathList.Count <= 997)
+            {
+                try
+                {
+                    var logic = new FilesTagInfoGetLogic(this);
+                    result.TagInfoList = logic.Execute(result.FilePathList);
+
+                    this.CheckCancel();
+                }
+                catch (JobCancelException)
+                {
+                    result.FileInfo?.Thumbnail?.ThumbnailImage?.Dispose();
+                    throw;
+                }
+            }
+            else
+            {
+                result.TagInfoList = [];
             }
 
             this.Callback(result);
