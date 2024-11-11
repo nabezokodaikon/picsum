@@ -6,14 +6,14 @@ using System.Runtime.Versioning;
 namespace SWF.Core.Job
 {
     [SupportedOSPlatform("windows10.0.17763.0")]
-    public abstract class AbstractBackgroudProcess<TJob, TJobParameter, TJobResult>
+    public abstract class AbstractBackgroundProcess<TJob, TJobParameter, TJobResult>
         where TJob : AbstractTwoWayJob<TJobParameter, TJobResult>, new()
         where TJobParameter : IJobParameter
         where TJobResult : IJobResult
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        protected readonly string BackgroudProcessName;
+        protected readonly string BackgroundProcessName;
         protected readonly SynchronizationContext Context;
         protected readonly ConcurrentQueue<TJob> JobQueue = new();
 
@@ -22,18 +22,18 @@ namespace SWF.Core.Job
         protected Action<JobException>? CatchAction;
         protected Action? CompleteAction;
 
-        protected AbstractBackgroudProcess(SynchronizationContext? context)
+        protected AbstractBackgroundProcess(SynchronizationContext? context)
         {
             ArgumentNullException.ThrowIfNull(context, nameof(context));
 
             this.Context = context;
-            this.BackgroudProcessName = $"{typeof(TJob).Name} {ThreadID.GetNew()}";
+            this.BackgroundProcessName = $"{typeof(TJob).Name} {ThreadID.GetNew()}";
         }
 
         public abstract void StartJob(ISender sender, TJobParameter parameter);
         public abstract void StartJob(ISender sender);
 
-        public AbstractBackgroudProcess<TJob, TJobParameter, TJobResult> Reset()
+        public AbstractBackgroundProcess<TJob, TJobParameter, TJobResult> Reset()
         {
             this.CallbackAction = null;
             this.CancelAction = null;
@@ -43,7 +43,7 @@ namespace SWF.Core.Job
             return this;
         }
 
-        public AbstractBackgroudProcess<TJob, TJobParameter, TJobResult> Callback(Action<TJobResult> action)
+        public AbstractBackgroundProcess<TJob, TJobParameter, TJobResult> Callback(Action<TJobResult> action)
         {
             ArgumentNullException.ThrowIfNull(action, nameof(action));
 
@@ -56,7 +56,7 @@ namespace SWF.Core.Job
             return this;
         }
 
-        public AbstractBackgroudProcess<TJob, TJobParameter, TJobResult> Cancel(Action action)
+        public AbstractBackgroundProcess<TJob, TJobParameter, TJobResult> Cancel(Action action)
         {
             ArgumentNullException.ThrowIfNull(action, nameof(action));
 
@@ -69,7 +69,7 @@ namespace SWF.Core.Job
             return this;
         }
 
-        public AbstractBackgroudProcess<TJob, TJobParameter, TJobResult> Catch(Action<JobException> action)
+        public AbstractBackgroundProcess<TJob, TJobParameter, TJobResult> Catch(Action<JobException> action)
         {
             ArgumentNullException.ThrowIfNull(action, nameof(action));
 
@@ -82,7 +82,7 @@ namespace SWF.Core.Job
             return this;
         }
 
-        public AbstractBackgroudProcess<TJob, TJobParameter, TJobResult> Complete(Action action)
+        public AbstractBackgroundProcess<TJob, TJobParameter, TJobResult> Complete(Action action)
         {
             ArgumentNullException.ThrowIfNull(action, nameof(action));
 
@@ -95,7 +95,7 @@ namespace SWF.Core.Job
             return this;
         }
 
-        public AbstractBackgroudProcess<TJob, TJobParameter, TJobResult> BeginCancel()
+        public AbstractBackgroundProcess<TJob, TJobParameter, TJobResult> BeginCancel()
         {
             foreach (var job in this.JobQueue.ToArray())
             {
@@ -105,7 +105,7 @@ namespace SWF.Core.Job
             return this;
         }
 
-        public AbstractBackgroudProcess<TJob, TJobParameter, TJobResult> WaitJobComplete()
+        public AbstractBackgroundProcess<TJob, TJobParameter, TJobResult> WaitJobComplete()
         {
             Logger.Debug("ジョブキューの完了を待ちます。");
 
@@ -150,7 +150,7 @@ namespace SWF.Core.Job
                                 }
                                 catch (Exception ex)
                                 {
-                                    Logger.Error(ex, $"{job.ID} で補足されない例外が発生しました。");
+                                    Logger.Error(ex, $"{job.ID} がUIスレッド上で補足されない例外が発生しました。");
                                     ExceptionUtil.ShowErrorDialog("Unhandled UI Exception.", ex);
                                 }
                             }
@@ -183,7 +183,7 @@ namespace SWF.Core.Job
                                 }
                                 catch (Exception ex)
                                 {
-                                    Logger.Error(ex, $"{job.ID} で補足されない例外が発生しました。");
+                                    Logger.Error(ex, $"{job.ID} がUIスレッド上で補足されない例外が発生しました。");
                                     ExceptionUtil.ShowErrorDialog("Unhandled UI Exception.", ex);
                                 }
                             }
@@ -216,7 +216,7 @@ namespace SWF.Core.Job
                                 }
                                 catch (Exception ex)
                                 {
-                                    Logger.Error(ex, $"{job.ID} で補足されない例外が発生しました。");
+                                    Logger.Error(ex, $"{job.ID} がUIスレッド上で補足されない例外が発生しました。");
                                     ExceptionUtil.ShowErrorDialog("Unhandled UI Exception.", ex);
                                 }
                             }
@@ -249,7 +249,7 @@ namespace SWF.Core.Job
                                 }
                                 catch (Exception ex)
                                 {
-                                    Logger.Error(ex, $"{job.ID} で補足されない例外が発生しました。");
+                                    Logger.Error(ex, $"{job.ID} がUIスレッド上で補足されない例外が発生しました。");
                                     ExceptionUtil.ShowErrorDialog("Unhandled UI Exception.", ex);
                                 }
                             }

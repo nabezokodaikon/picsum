@@ -6,7 +6,7 @@ namespace SWF.Core.Job
 {
     [SupportedOSPlatform("windows10.0.17763.0")]
     public partial class TwoWayThread<TJob, TJobParameter, TJobResult>
-        : AbstractBackgroudProcess<TJob, TJobParameter, TJobResult>, IDisposable, ITwoWayJob<TJob, TJobParameter, TJobResult>
+        : AbstractBackgroundProcess<TJob, TJobParameter, TJobResult>, IDisposable, ITwoWayJob<TJob, TJobParameter, TJobResult>
         where TJob : AbstractTwoWayJob<TJobParameter, TJobResult>, new()
         where TJobParameter : IJobParameter
         where TJobResult : IJobResult
@@ -66,7 +66,7 @@ namespace SWF.Core.Job
                     Logger.Debug("ジョブ実行スレッドの終了を待機します。");
                     this.thread.Join();
 
-                    Logger.Debug($"{this.BackgroudProcessName}: ジョブ実行スレッドが終了しました。");
+                    Logger.Debug($"{this.BackgroundProcessName}: ジョブ実行スレッドが終了しました。");
                 }
             }
 
@@ -111,7 +111,7 @@ namespace SWF.Core.Job
 
         private void DoWork()
         {
-            Thread.CurrentThread.Name = this.BackgroudProcessName;
+            Thread.CurrentThread.Name = this.BackgroundProcessName;
 
             Logger.Debug("ジョブ実行スレッドが開始されました。");
 
