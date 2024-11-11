@@ -660,16 +660,8 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                             this.ImageFileReadJob_Callback(r);
                         }
                     })
-                     .Cancel(() =>
-                     {
-                         ConsoleUtil.Write($"ImageViewerPage.ImageFileReadJob.Cancel");
-                     })
-                     .Complete(() =>
-                     {
-                         ConsoleUtil.Write($"ImageViewerPage.ImageFileReadJob.Complete");
-                     })
-                     .BeginCancel()
-                     .StartJob(this, param);
+                    .BeginCancel()
+                    .StartJob(this, param);
             }
         }
 
