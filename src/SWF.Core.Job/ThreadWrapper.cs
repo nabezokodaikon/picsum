@@ -1,18 +1,17 @@
 namespace SWF.Core.Job
 {
-    internal interface IThreadWrapper
+    public interface IThreadWrapper
         : IDisposable
     {
         public void Start(Action dowork);
-        public void Wait(Action dowork);
+        public void Wait();
     }
 
-    internal sealed partial class JobThread
+    public sealed partial class JobThread
         : IThreadWrapper
     {
         private bool disposed = false;
         private Thread? thread = null;
-        private Action? dowork;
 
         public JobThread()
         {
@@ -57,13 +56,13 @@ namespace SWF.Core.Job
             }
         }
 
-        public void Wait(Action dowork)
+        public void Wait()
         {
             this.thread?.Join();
         }
     }
 
-    internal sealed partial class JobTask
+    public sealed partial class JobTask
         : IThreadWrapper
     {
         private bool disposed = false;
@@ -108,10 +107,9 @@ namespace SWF.Core.Job
             this.task ??= Task.Run(dowork);
         }
 
-        public void Wait(Action dowork)
+        public void Wait()
         {
             this.task?.Wait();
         }
     }
-
 }

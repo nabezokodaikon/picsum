@@ -10,17 +10,14 @@ namespace SWF.Core.Job
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         private bool disposed = false;
-        private readonly SynchronizationContext context;
         private readonly string taskName = "JobQueue";
         private Task? task = null;
         private CancellationTokenSource? source = null;
         private readonly ConcurrentQueue<AbstractAsyncJob> jobQueue = new();
 
-        public JobQueue(SynchronizationContext context)
+        public JobQueue()
         {
-            ArgumentNullException.ThrowIfNull(context, nameof(context));
 
-            this.context = context;
         }
 
         ~JobQueue()
