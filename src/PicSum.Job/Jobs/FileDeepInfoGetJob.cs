@@ -36,6 +36,8 @@ namespace PicSum.Job.Jobs
                     var getInfoLogic = new FileDeepInfoGetLogic(this);
                     var filePath = param.FilePathList[0];
                     result.FileInfo = getInfoLogic.Execute(filePath, param.ThumbnailSize);
+
+                    this.CheckCancel();
                 }
                 catch (FileUtilException ex)
                 {

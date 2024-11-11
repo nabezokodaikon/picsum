@@ -76,24 +76,39 @@ namespace PicSum.Job.Logics
                     var srcSize = this.GetImageSize(filePath);
                     if (srcSize != ImageUtil.EMPTY_SIZE)
                     {
+                        this.CheckCancel();
+
                         using (var cvImage = this.ReadImageFile(filePath))
                         {
-                            var thumbnail = ThumbnailUtil.CreateThumbnail(
-                                cvImage,
-                                Math.Max(thumbSize.Width, thumbSize.Height),
-                                ImageSizeMode.Original);
+                            this.CheckCancel();
 
-                            info.Thumbnail = new()
+                            Bitmap? thumbnail = null;
+                            try
                             {
-                                FilePath = info.FilePath,
-                                FileUpdatedate = info.UpdateDate,
-                                ThumbnailImage = thumbnail,
-                                ThumbnailWidth = thumbSize.Width,
-                                ThumbnailHeight = thumbSize.Height,
-                                SourceWidth = srcSize.Width,
-                                SourceHeight = srcSize.Height
-                            };
-                            info.ImageSize = new(srcSize.Width, srcSize.Height);
+                                thumbnail = ThumbnailUtil.CreateThumbnail(
+                                    cvImage,
+                                    Math.Max(thumbSize.Width, thumbSize.Height),
+                                    ImageSizeMode.Original);
+
+                                this.CheckCancel();
+
+                                info.Thumbnail = new()
+                                {
+                                    FilePath = info.FilePath,
+                                    FileUpdatedate = info.UpdateDate,
+                                    ThumbnailImage = thumbnail,
+                                    ThumbnailWidth = thumbSize.Width,
+                                    ThumbnailHeight = thumbSize.Height,
+                                    SourceWidth = srcSize.Width,
+                                    SourceHeight = srcSize.Height
+                                };
+                                info.ImageSize = new(srcSize.Width, srcSize.Height);
+                            }
+                            catch (JobCancelException)
+                            {
+                                thumbnail?.Dispose();
+                                throw;
+                            }
                         }
                     }
                 }
@@ -105,24 +120,39 @@ namespace PicSum.Job.Logics
                         var srcSize = this.GetImageSize(firstImageFile);
                         if (srcSize != ImageUtil.EMPTY_SIZE)
                         {
+                            this.CheckCancel();
+
                             using (var cvImage = this.ReadImageFile(firstImageFile))
                             {
-                                var thumbnail = ThumbnailUtil.CreateThumbnail(
-                                    cvImage,
-                                    Math.Max(cvImage.Width, cvImage.Height),
-                                    ImageSizeMode.Original);
+                                this.CheckCancel();
 
-                                info.Thumbnail = new()
+                                Bitmap? thumbnail = null;
+                                try
                                 {
-                                    FilePath = info.FilePath,
-                                    FileUpdatedate = info.UpdateDate,
-                                    ThumbnailImage = thumbnail,
-                                    ThumbnailWidth = thumbSize.Width,
-                                    ThumbnailHeight = thumbSize.Height,
-                                    SourceWidth = srcSize.Width,
-                                    SourceHeight = srcSize.Height,
-                                };
-                                info.ImageSize = new(srcSize.Width, srcSize.Height);
+                                    thumbnail = ThumbnailUtil.CreateThumbnail(
+                                        cvImage,
+                                        Math.Max(cvImage.Width, cvImage.Height),
+                                        ImageSizeMode.Original);
+
+                                    this.CheckCancel();
+
+                                    info.Thumbnail = new()
+                                    {
+                                        FilePath = info.FilePath,
+                                        FileUpdatedate = info.UpdateDate,
+                                        ThumbnailImage = thumbnail,
+                                        ThumbnailWidth = thumbSize.Width,
+                                        ThumbnailHeight = thumbSize.Height,
+                                        SourceWidth = srcSize.Width,
+                                        SourceHeight = srcSize.Height,
+                                    };
+                                    info.ImageSize = new(srcSize.Width, srcSize.Height);
+                                }
+                                catch (JobCancelException)
+                                {
+                                    thumbnail?.Dispose();
+                                    throw;
+                                }
                             }
                         }
                     }
