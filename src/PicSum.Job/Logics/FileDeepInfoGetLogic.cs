@@ -159,20 +159,28 @@ namespace PicSum.Job.Logics
                 }
             }
 
-            this.CheckCancel();
-
-            var sql = new FileInfoReadSql(info.FilePath);
-            var dto = Instance<IFileInfoDB>.Value.ReadLine<FileInfoDto>(sql);
-            if (!dto.Equals(default(FileInfoDto)))
+            try
             {
-                info.Rating = dto.Rating;
-            }
-            else
-            {
-                info.Rating = 0;
-            }
+                this.CheckCancel();
 
-            this.CheckCancel();
+                var sql = new FileInfoReadSql(info.FilePath);
+                var dto = Instance<IFileInfoDB>.Value.ReadLine<FileInfoDto>(sql);
+                if (!dto.Equals(default(FileInfoDto)))
+                {
+                    info.Rating = dto.Rating;
+                }
+                else
+                {
+                    info.Rating = 0;
+                }
+
+                this.CheckCancel();
+            }
+            catch (JobCancelException)
+            {
+                info.Thumbnail?.ThumbnailImage?.Dispose();
+                throw;
+            }
 
             return info;
         }
