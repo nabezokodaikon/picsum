@@ -9,6 +9,7 @@ using System;
 using System.IO;
 using System.IO.Pipes;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -23,6 +24,7 @@ namespace PicSum.Main
         /// アプリケーションのメイン エントリ ポイントです。
         /// </summary>
         [STAThread]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         static void Main()
         {
             if (mutex.WaitOne(TimeSpan.Zero, true))
