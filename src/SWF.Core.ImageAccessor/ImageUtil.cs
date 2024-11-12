@@ -16,7 +16,7 @@ namespace SWF.Core.ImageAccessor
         public static readonly Size EMPTY_SIZE = System.Drawing.Size.Empty;
         public static readonly Bitmap EMPTY_IMAGE = new(1, 1);
 
-        private static readonly int FILE_READ_BUFFER_SIZE = 80 * 1024;
+        private static readonly int FILE_READ_BUFFER_SIZE = 16384;
 
         private static IShellApplication GetSell()
         {
