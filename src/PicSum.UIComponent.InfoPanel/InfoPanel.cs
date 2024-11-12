@@ -29,6 +29,7 @@ namespace PicSum.UIComponent.InfoPanel
         private Font allTagFont = null;
         private readonly Image tagIcon = ResourceFiles.TagIcon.Value;
         private string contextMenuOperationTag = string.Empty;
+        private bool isLoading = false;
 
         private IList<string> FilePathList
         {
@@ -128,6 +129,27 @@ namespace PicSum.UIComponent.InfoPanel
                         AppConstants.INFOPANEL_WIDTH)
                 };
 
+                this.isLoading = true;
+
+                Instance<JobCaller>.Value.FileDeepInfoLoadingJob.Value
+                    .Reset()
+                    .Callback(_ =>
+                    {
+                        if (this.disposed)
+                        {
+                            return;
+                        }
+
+                        if (!this.isLoading)
+                        {
+                            return;
+                        }
+
+                        this.GetFileInfoJob_Callback(_);
+                    })
+                    .BeginCancel()
+                    .StartJob(this, param);
+
                 Instance<JobCaller>.Value.FileDeepInfoGetJob.Value
                     .Reset()
                     .Callback(_ =>
@@ -136,6 +158,8 @@ namespace PicSum.UIComponent.InfoPanel
                         {
                             return;
                         }
+
+                        this.isLoading = false;
 
                         this.GetFileInfoJob_Callback(_);
                     })
@@ -185,8 +209,6 @@ namespace PicSum.UIComponent.InfoPanel
             this.fileInfoLabel.FileSize = string.Empty;
             this.fileInfoLabel.Timestamp = string.Empty;
             this.ratingBar.SetValue(0);
-            this.thumbnailPictureBox.Invalidate();
-            this.thumbnailPictureBox.Update();
             this.tagFlowList.ItemCount = 0;
 
             this.contextMenuOperationTag = string.Empty;
@@ -361,8 +383,16 @@ namespace PicSum.UIComponent.InfoPanel
                     }
                 }
 
-                this.fileInfoLabel.Timestamp
-                    = $"{this.FileInfo.UpdateDate:yyyy/MM/dd HH:mm:ss}";
+                if (this.FileInfo.UpdateDate == FileUtil.EMPTY_DATETIME)
+                {
+                    this.fileInfoLabel.Timestamp = string.Empty;
+                }
+                else
+                {
+                    this.fileInfoLabel.Timestamp
+                        = $"{this.FileInfo.UpdateDate:yyyy/MM/dd HH:mm:ss}";
+                }
+
                 this.ratingBar.SetValue(this.FileInfo.Rating);
             }
 

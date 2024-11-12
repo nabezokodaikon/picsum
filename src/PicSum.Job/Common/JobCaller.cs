@@ -33,6 +33,8 @@ namespace PicSum.Job.Common
             = new(() => new TwoWayThread<TagsGetJob, ListResult<string>>(context, new JobTask()));
         public readonly Lazy<ITwoWayJob<FileDeepInfoGetJob, FileDeepInfoGetParameter, FileDeepInfoGetResult>> FileDeepInfoGetJob
             = new(() => new TwoWayThread<FileDeepInfoGetJob, FileDeepInfoGetParameter, FileDeepInfoGetResult>(context, new JobTask()));
+        public readonly Lazy<ITwoWayJob<FileDeepInfoLoadingJob, FileDeepInfoGetParameter, FileDeepInfoGetResult>> FileDeepInfoLoadingJob
+            = new(() => new TwoWayThread<FileDeepInfoLoadingJob, FileDeepInfoGetParameter, FileDeepInfoGetResult>(context, new JobTask()));
         public readonly Lazy<ITwoWayJob<PipeServerJob, ValueResult<string>>> PipeServerJob
             = new(() => new TwoWayThread<PipeServerJob, ValueResult<string>>(context, new JobTask()));
         public readonly Lazy<IOneWayJob<GCCollectRunJob>> GCCollectRunJob
@@ -88,6 +90,7 @@ namespace PicSum.Job.Common
                 this.AddressInfoGetJob.Value.Dispose();
                 this.TagsGetJob.Value.Dispose();
                 this.FileDeepInfoGetJob.Value.Dispose();
+                this.FileDeepInfoLoadingJob.Value?.Dispose();
                 this.PipeServerJob.Value.Dispose();
                 this.GCCollectRunJob.Value.Dispose();
 

@@ -24,7 +24,7 @@ namespace PicSum.Job.Logics
 
         }
 
-        public FileDeepInfoEntity Execute(string filePath, Size thumbSize)
+        public FileDeepInfoEntity Execute(string filePath, Size thumbSize, bool isReadThumbnail)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
@@ -71,7 +71,7 @@ namespace PicSum.Job.Logics
                     }
                 }
 
-                if (info.IsImageFile)
+                if (info.IsImageFile && isReadThumbnail)
                 {
                     var srcSize = this.GetImageSize(filePath);
                     if (srcSize != ImageUtil.EMPTY_SIZE)
@@ -112,7 +112,7 @@ namespace PicSum.Job.Logics
                         }
                     }
                 }
-                else if (!info.IsFile)
+                else if (!info.IsFile && isReadThumbnail)
                 {
                     var firstImageFile = FileUtil.GetFirstImageFilePath(filePath);
                     if (!string.IsNullOrEmpty(firstImageFile))

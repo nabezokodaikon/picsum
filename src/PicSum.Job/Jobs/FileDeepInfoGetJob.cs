@@ -26,7 +26,7 @@ namespace PicSum.Job.Jobs
 
             var result = new FileDeepInfoGetResult
             {
-                FilePathList = param.FilePathList
+                FilePathList = param.FilePathList,
             };
 
             if (param.FilePathList.Count == 1)
@@ -35,7 +35,7 @@ namespace PicSum.Job.Jobs
                 {
                     var getInfoLogic = new FileDeepInfoGetLogic(this);
                     var filePath = param.FilePathList[0];
-                    result.FileInfo = getInfoLogic.Execute(filePath, param.ThumbnailSize);
+                    result.FileInfo = getInfoLogic.Execute(filePath, param.ThumbnailSize, true);
 
                     this.CheckCancel();
                 }
