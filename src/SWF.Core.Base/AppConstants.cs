@@ -23,7 +23,7 @@ namespace SWF.Core.Base
         public const string THUMBNAIL_BUFFER_FILE_EXTENSION = ".thumbnail";
 
         private static readonly string EXECUTABLE_DIRECTORY = GetExecutableDirectory();
-        private static readonly string APPLICATION_DIRECTORY = GetApplicationDirectory();
+        public static readonly string APPLICATION_DIRECTORY = GetApplicationDirectory();
         public static readonly string LOG_DIRECTORY = GetLogDirectory();
         private static readonly string CONFIG_DIRECTORY = GetConfigDirectory();
         public static readonly string CONFIG_FILE = GetConfigFile();

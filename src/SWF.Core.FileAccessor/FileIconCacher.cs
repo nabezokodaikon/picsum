@@ -1,5 +1,4 @@
 using SWF.Core.Base;
-using System.Reflection;
 using System.Runtime.Versioning;
 using WinApi;
 
@@ -27,11 +26,11 @@ namespace SWF.Core.FileAccessor
         private readonly Bitmap LARGE_PC_ICON =
             FileIconUtil.GetSystemIcon(WinApiMembers.ShellSpecialFolder.CSIDL_DRIVES, WinApiMembers.ShellFileInfoFlags.SHGFI_LARGEICON);
         private readonly Bitmap SMALL_DIRECTORY_ICON =
-            FileIconUtil.GetSmallIconByFilePath(FileUtil.GetParentDirectoryPath(Assembly.GetExecutingAssembly().Location));
+            FileIconUtil.GetSmallIconByFilePath(AppConstants.APPLICATION_DIRECTORY);
         private readonly Bitmap EXTRALARGE_DIRECTORY_ICON =
-            FileIconUtil.GetLargeIconByFilePath(FileUtil.GetParentDirectoryPath(Assembly.GetExecutingAssembly().Location), WinApiMembers.SHIL.SHIL_EXTRALARGE);
+            FileIconUtil.GetLargeIconByFilePath(AppConstants.APPLICATION_DIRECTORY, WinApiMembers.SHIL.SHIL_EXTRALARGE);
         private readonly Bitmap JUMBO_DIRECTORY_ICON =
-            FileIconUtil.GetLargeIconByFilePath(FileUtil.GetParentDirectoryPath(Assembly.GetExecutingAssembly().Location), WinApiMembers.SHIL.SHIL_JUMBO);
+            FileIconUtil.GetLargeIconByFilePath(AppConstants.APPLICATION_DIRECTORY, WinApiMembers.SHIL.SHIL_JUMBO);
 
         public Image SmallPCIcon
         {
