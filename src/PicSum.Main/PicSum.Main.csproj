@@ -127,8 +127,9 @@
 	<Content Include="application.ico" />
   </ItemGroup>
   <ItemGroup>
-	<PackageReference Include="NLog" Version="5.3.4" />
-	<PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.1" />
+	<PackageReference Include="NLog" Version="5.3.4">
+	  <TreatAsUsed>true</TreatAsUsed>
+	</PackageReference>
   </ItemGroup>
   <ItemGroup>
 	<Compile Remove="Settings.cs" />
