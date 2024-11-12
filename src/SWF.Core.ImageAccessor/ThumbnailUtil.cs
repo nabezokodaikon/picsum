@@ -289,7 +289,7 @@ namespace SWF.Core.ImageAccessor
 
             AdjustDrawFileThumbnail(g, thumb, destRect, srcSize);
 
-            var destIconSize = new SizeF(icon.Width * 0.5f, icon.Height * 0.5f);
+            var destIconSize = new SizeF(destRect.Width * 0.5f, destRect.Height * 0.5f);
             var destIconRect = new RectangleF(
                 destRect.X + 2, destRect.Bottom - destIconSize.Height,
                 destIconSize.Width, destIconSize.Height);
