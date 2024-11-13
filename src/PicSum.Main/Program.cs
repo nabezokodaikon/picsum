@@ -45,7 +45,7 @@ namespace PicSum.Main
 
                     Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
                     Application.EnableVisualStyles();
-                    Application.SetCompatibleTextRenderingDefault(true);
+                    Application.SetCompatibleTextRenderingDefault(false);
 
                     using (var resource = new ResourceManager())
                     using (var initialForm = new InitialForm())
