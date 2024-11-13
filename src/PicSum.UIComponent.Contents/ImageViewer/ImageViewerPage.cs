@@ -656,6 +656,8 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                             return;
                         }
 
+                        this.isLoading = false;
+
                         using (TimeMeasuring.Run(true, "ImageViewerPage.ImageFileReadJob_Callback"))
                         {
                             this.ImageFileReadJob_Callback(r);
@@ -779,11 +781,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
         private void ImageFileReadJob_Callback(ImageFileReadResult e)
         {
-            if (!e.Image.IsEmpty)
-            {
-                this.isLoading = false;
-            }
-
             var bgSize = e.HasSub switch
             {
                 true => new SizeF(
