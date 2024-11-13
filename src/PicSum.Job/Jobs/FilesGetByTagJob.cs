@@ -16,7 +16,6 @@ namespace PicSum.Job.Jobs
     {
         protected override void Execute(FilesGetByTagParameter param)
         {
-            ArgumentNullException.ThrowIfNull(param, nameof(param));
 
             if (param.Tag == null)
             {

@@ -16,7 +16,6 @@ namespace PicSum.Job.Logics
     {
         public bool Execute(DirectoryStateParameter directoryState)
         {
-            ArgumentNullException.ThrowIfNull(directoryState, nameof(directoryState));
 
             if (directoryState.DirectoryPath == null)
             {

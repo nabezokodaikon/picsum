@@ -16,7 +16,6 @@ namespace PicSum.Job.Jobs
     {
         protected override void Execute(FilesGetByRatingParameter param)
         {
-            ArgumentNullException.ThrowIfNull(param, nameof(param));
 
             var logic = new FilesGetByRatingLogic(this);
             var fileList = logic.Execute(param.RatingValue);

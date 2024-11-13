@@ -119,7 +119,6 @@ namespace PicSum.Job.Common
         public void StartSingleFileExportJob(ISender sender, SingleFileExportParameter parameter)
         {
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
-            ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
 
             this.jobQueue.Value.Enqueue<SingleFileExportJob, SingleFileExportParameter>(sender, parameter);
         }
@@ -127,7 +126,6 @@ namespace PicSum.Job.Common
         public void StartDirectoryStateUpdateJob(ISender sender, DirectoryStateParameter parameter)
         {
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
-            ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
 
             this.jobQueue.Value.Enqueue<DirectoryStateUpdateJob, DirectoryStateParameter>(sender, parameter);
         }

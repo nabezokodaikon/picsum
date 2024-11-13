@@ -15,7 +15,6 @@ namespace PicSum.Job.Jobs
     {
         protected override void Execute(FavoriteDirectoriesGetParameter param)
         {
-            ArgumentNullException.ThrowIfNull(param, nameof(param));
 
             var fileList = this.GetOrCreateFileList();
 

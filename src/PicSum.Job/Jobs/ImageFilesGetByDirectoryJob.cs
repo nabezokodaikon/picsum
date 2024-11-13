@@ -16,7 +16,6 @@ namespace PicSum.Job.Jobs
     {
         protected override void Execute(ImageFileGetByDirectoryParameter param)
         {
-            ArgumentNullException.ThrowIfNull(param, nameof(param));
 
             var result = new ImageFilesGetByDirectoryResult();
 

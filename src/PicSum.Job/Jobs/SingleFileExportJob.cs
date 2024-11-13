@@ -15,7 +15,6 @@ namespace PicSum.Job.Jobs
     {
         protected override void Execute(SingleFileExportParameter param)
         {
-            ArgumentNullException.ThrowIfNull(param, nameof(param));
 
             if (param.SrcFilePath == null)
             {
