@@ -45,7 +45,6 @@ namespace SWF.UIComponent.TabOperation
 
         public void Draw(Graphics g)
         {
-            ArgumentNullException.ThrowIfNull(nameof(g));
 
             this.DrawOutline(g);
             this.DrawInnerRectangle(g);
