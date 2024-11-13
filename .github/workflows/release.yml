@@ -16,7 +16,7 @@ jobs:
       - name: setup .net
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '8.0'
+          dotnet-version: '9.0'
 
       - name: setup msbuil
         uses: microsoft/setup-msbuild@v2
