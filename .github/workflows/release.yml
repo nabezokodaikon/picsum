@@ -29,7 +29,6 @@ jobs:
       - name: dotnet restore 
         run: >
           dotnet restore "$pwd\src\PicSum.Main\PicSum.Main.csproj"
-          -p:PublishReadyToRun=true
 
       - name: dotnet publish
         run: >
