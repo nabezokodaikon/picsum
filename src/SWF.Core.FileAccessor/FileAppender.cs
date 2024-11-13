@@ -18,7 +18,7 @@ namespace SWF.Core.FileAccessor
             {
                 var bf = new byte[size];
                 fs.Seek(startPoint, SeekOrigin.Begin);
-                fs.Read(bf, 0, size);
+                fs.ReadExactly(bf, 0, size);
                 return bf;
             }
         }
