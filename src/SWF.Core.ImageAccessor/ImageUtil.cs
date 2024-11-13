@@ -375,6 +375,14 @@ namespace SWF.Core.ImageAccessor
                         {
                             return LibHeifSharpUtil.GetImageSize(fs);
                         }
+                        else if (FileUtil.IsGifFile(formatName))
+                        {
+                            return SixLaborsUtil.GetImageSize(fs);
+                        }
+                        else if (FileUtil.IsJpegFile(formatName))
+                        {
+                            return SixLaborsUtil.GetImageSize(fs);
+                        }
                         else if (FileUtil.IsPngFile(formatName))
                         {
                             var size = GetPngSize(fs);
@@ -489,6 +497,13 @@ namespace SWF.Core.ImageAccessor
                         }
 
                         return new Size(w, h);
+                    }
+                    catch (COMException)
+                    {
+                        using (var bmp = ReadImageFile(filePath))
+                        {
+                            return bmp.Size;
+                        }
                     }
                     finally
                     {
