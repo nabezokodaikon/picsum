@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.Drawing;
 using System.Runtime.Versioning;
 using System.Windows.Forms;
@@ -20,6 +21,7 @@ namespace PicSum.UIComponent.InfoPanel
         private string fileType = string.Empty;
         private string fileSize = string.Empty;
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public string FileName
         {
             get
@@ -34,6 +36,7 @@ namespace PicSum.UIComponent.InfoPanel
             }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public string Timestamp
         {
             get
@@ -48,6 +51,7 @@ namespace PicSum.UIComponent.InfoPanel
             }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public string FileType
         {
             get
@@ -62,6 +66,7 @@ namespace PicSum.UIComponent.InfoPanel
             }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public string FileSize
         {
             get

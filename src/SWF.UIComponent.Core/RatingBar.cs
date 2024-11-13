@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.Runtime.Versioning;
 
 namespace SWF.UIComponent.Core
@@ -11,6 +12,7 @@ namespace SWF.UIComponent.Core
         private int ratingValue = 0;
         private readonly List<RatingButton> ratingButtonList = [];
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public int MaximumValue
         {
             get

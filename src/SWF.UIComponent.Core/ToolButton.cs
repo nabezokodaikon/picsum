@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.Runtime.Versioning;
 
 namespace SWF.UIComponent.Core
@@ -30,6 +31,7 @@ namespace SWF.UIComponent.Core
             }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public ToolButtonRegionType RegionType
         {
             get

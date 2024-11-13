@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using System.Drawing;
 using System.Runtime.Versioning;
 using System.Windows.Forms;
@@ -26,6 +27,7 @@ namespace SWF.UIComponent.WideDropDown
         private bool isMouseEnter = false;
         private bool isSelected = false;
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool IsSelected
         {
             get

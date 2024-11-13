@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.Runtime.Versioning;
 using System.Windows.Forms;
 
@@ -10,6 +11,10 @@ namespace SWF.UIComponent.FlowList
     internal sealed partial class VScrollBarEx
         : VScrollBar
     {
+        /// <summary>
+        /// 最大値
+        /// </summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         /// <summary>
         /// 最大値
         /// </summary>

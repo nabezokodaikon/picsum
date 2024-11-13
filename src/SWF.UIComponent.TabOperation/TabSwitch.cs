@@ -2,6 +2,7 @@ using SWF.Core.Base;
 using SWF.Core.ImageAccessor;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
@@ -112,6 +113,10 @@ namespace SWF.UIComponent.TabOperation
             }
         }
 
+        /// <summary>
+        /// タブ領域右側の差分
+        /// </summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         /// <summary>
         /// タブ領域右側の差分
         /// </summary>

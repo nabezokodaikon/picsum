@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.Drawing.Drawing2D;
 using System.Runtime.Versioning;
 
@@ -11,6 +12,7 @@ namespace SWF.UIComponent.Core
         private readonly SolidBrush brushA = new(Color.FromArgb(255, Color.FromArgb(64, 64, 64)));
         private readonly SolidBrush brushB = new(Color.FromArgb(64, Color.FromArgb(16, 16, 16)));
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public int RectangleSize
         {
             get

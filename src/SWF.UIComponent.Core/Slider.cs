@@ -1,4 +1,5 @@
 using SWF.Core.Base;
+using System.ComponentModel;
 using System.Runtime.Versioning;
 
 namespace SWF.UIComponent.Core
@@ -23,6 +24,7 @@ namespace SWF.UIComponent.Core
         private int minimumValue = 0;
         private int sliderValue = 0;
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public int MaximumValue
         {
             get
@@ -42,6 +44,7 @@ namespace SWF.UIComponent.Core
             }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public int MinimumValue
         {
             get
@@ -60,6 +63,7 @@ namespace SWF.UIComponent.Core
             }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public int Value
         {
             get

@@ -5,6 +5,7 @@ using SWF.Core.FileAccessor;
 using SWF.Core.Job;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.Versioning;
@@ -71,6 +72,7 @@ namespace PicSum.UIComponent.AddressBar
             }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public StringTrimming TextTrimming
         {
             get
@@ -83,6 +85,7 @@ namespace PicSum.UIComponent.AddressBar
             }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public StringAlignment TextAlignment
         {
             get
@@ -95,6 +98,7 @@ namespace PicSum.UIComponent.AddressBar
             }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public StringAlignment TextLineAlignment
         {
             get
@@ -107,6 +111,7 @@ namespace PicSum.UIComponent.AddressBar
             }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public StringFormatFlags TextFormatFlags
         {
             get

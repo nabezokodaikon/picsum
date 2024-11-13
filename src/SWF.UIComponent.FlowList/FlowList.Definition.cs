@@ -24,6 +24,7 @@ namespace SWF.UIComponent.FlowList
         public event EventHandler ItemCut;
         public event EventHandler DragStart;
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool CanKeyDown { get; set; } = true;
 
         /// <summary>
@@ -272,6 +273,7 @@ namespace SWF.UIComponent.FlowList
         /// 項目テキストフォーマット
         /// </summary>
         [Category("項目描画")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public StringTrimming ItemTextTrimming
         {
             get
@@ -288,6 +290,7 @@ namespace SWF.UIComponent.FlowList
         /// 項目テキストフォーマット
         /// </summary>
         [Category("項目描画")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public StringAlignment ItemTextAlignment
         {
             get
@@ -304,6 +307,7 @@ namespace SWF.UIComponent.FlowList
         /// 項目テキストフォーマット
         /// </summary>
         [Category("項目描画")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public StringAlignment ItemTextLineAlignment
         {
             get
@@ -320,6 +324,7 @@ namespace SWF.UIComponent.FlowList
         /// 項目テキストフォーマット
         /// </summary>
         [Category("項目描画")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public StringFormatFlags ItemTextFormatFlags
         {
             get

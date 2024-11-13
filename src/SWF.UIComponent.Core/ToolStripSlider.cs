@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.Runtime.Versioning;
 using System.Windows.Forms.Design;
 
@@ -15,6 +16,7 @@ namespace SWF.UIComponent.Core
         public event EventHandler? ValueChanging;
         public event EventHandler? ValueChanged;
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public int MaximumValue
         {
             get
@@ -27,6 +29,7 @@ namespace SWF.UIComponent.Core
             }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public int MinimumValue
         {
             get
@@ -39,6 +42,7 @@ namespace SWF.UIComponent.Core
             }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public int Value
         {
             get

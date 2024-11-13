@@ -40,6 +40,7 @@ namespace PicSum.UIComponent.AddressBar
         /// 項目高さ
         /// </summary>
         [Category("項目表示")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public int ItemHeight
         {
             get
@@ -104,6 +105,7 @@ namespace PicSum.UIComponent.AddressBar
         /// 項目テキストフォーマット
         /// </summary>
         [Category("項目描画")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public StringTrimming ItemTextTrimming
         {
             get
@@ -120,6 +122,7 @@ namespace PicSum.UIComponent.AddressBar
         /// 項目テキストフォーマット
         /// </summary>
         [Category("項目描画")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public StringAlignment ItemTextAlignment
         {
             get
@@ -136,6 +139,7 @@ namespace PicSum.UIComponent.AddressBar
         /// 項目テキストフォーマット
         /// </summary>
         [Category("項目描画")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public StringAlignment ItemTextLineAlignment
         {
             get
@@ -152,6 +156,7 @@ namespace PicSum.UIComponent.AddressBar
         /// 項目テキストフォーマット
         /// </summary>
         [Category("項目描画")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public StringFormatFlags ItemTextFormatFlags
         {
             get
@@ -221,6 +226,10 @@ namespace PicSum.UIComponent.AddressBar
         /// <summary>
         /// 背景色
         /// </summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        /// <summary>
+        /// 背景色
+        /// </summary>
         public new Color BackColor
         {
             get
@@ -235,6 +244,10 @@ namespace PicSum.UIComponent.AddressBar
             }
         }
 
+        /// <summary>
+        /// サイズ
+        /// </summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         /// <summary>
         /// サイズ
         /// </summary>

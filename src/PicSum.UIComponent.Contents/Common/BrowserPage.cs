@@ -1,5 +1,6 @@
 using SWF.UIComponent.TabOperation;
 using System;
+using System.ComponentModel;
 using System.Runtime.Versioning;
 using System.Windows.Forms;
 
@@ -18,6 +19,7 @@ namespace PicSum.UIComponent.Contents.Common
         public event EventHandler<BrowserPageEventArgs> OpenPage;
         public new event EventHandler<MouseEventArgs> MouseClick;
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public abstract string SelectedFilePath { get; protected set; }
 
         protected IPageParameter Parameter { get; private set; }

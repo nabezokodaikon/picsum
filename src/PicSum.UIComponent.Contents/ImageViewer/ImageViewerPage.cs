@@ -56,6 +56,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         private IList<string> filePathList = null;
         private bool isLoading = false;
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public override string SelectedFilePath { get; protected set; } = string.Empty;
 
         private bool CanOperation

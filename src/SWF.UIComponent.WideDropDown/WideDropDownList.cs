@@ -57,6 +57,7 @@ namespace SWF.UIComponent.WideDropDown
         /// 項目テキストフォーマット
         /// </summary>
         [Category("項目描画")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public StringTrimming ItemTextTrimming
         {
             get
@@ -73,6 +74,7 @@ namespace SWF.UIComponent.WideDropDown
         /// 項目テキストフォーマット
         /// </summary>
         [Category("項目描画")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public StringAlignment ItemTextAlignment
         {
             get
@@ -89,6 +91,7 @@ namespace SWF.UIComponent.WideDropDown
         /// 項目テキストフォーマット
         /// </summary>
         [Category("項目描画")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public StringAlignment ItemTextLineAlignment
         {
             get
@@ -105,6 +108,7 @@ namespace SWF.UIComponent.WideDropDown
         /// 項目テキストフォーマット
         /// </summary>
         [Category("項目描画")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public StringFormatFlags ItemTextFormatFlags
         {
             get
@@ -126,6 +130,10 @@ namespace SWF.UIComponent.WideDropDown
             }
         }
 
+        /// <summary>
+        /// 背景色
+        /// </summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         /// <summary>
         /// 背景色
         /// </summary>
@@ -154,8 +162,10 @@ namespace SWF.UIComponent.WideDropDown
             }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Image Icon { get; set; }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         internal bool IsClickAndClose { get; set; }
 
         private ToolStripControlHost ToolStripItem

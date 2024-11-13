@@ -2,6 +2,7 @@ using SWF.Core.Base;
 using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
 using System;
+using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Runtime.Versioning;
@@ -50,6 +51,7 @@ namespace SWF.UIComponent.ImagePanel
             Trimming = StringTrimming.EllipsisCharacter,
         };
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public string FilePath { get; private set; } = string.Empty;
 
         public Size ImageSize
@@ -65,6 +67,7 @@ namespace SWF.UIComponent.ImagePanel
             }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public ImageAlign ImageAlign
         {
             get
@@ -80,6 +83,7 @@ namespace SWF.UIComponent.ImagePanel
             }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool IsShowThumbnailPanel
         {
             get
@@ -103,6 +107,7 @@ namespace SWF.UIComponent.ImagePanel
             }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool HasImage { get; private set; } = false;
 
         private int ThumbnailPanelSize

@@ -1,6 +1,7 @@
 using SWF.UIComponent.Core;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using System.Runtime.Versioning;
 using System.Windows.Forms;
@@ -16,6 +17,7 @@ namespace SWF.UIComponent.WideDropDown
 
         private readonly WideDropDownList dropDownList = new();
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Image Icon
         {
             get
@@ -28,6 +30,7 @@ namespace SWF.UIComponent.WideDropDown
             }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public string SelectedItem { get; set; }
 
         public WideDropToolButton()

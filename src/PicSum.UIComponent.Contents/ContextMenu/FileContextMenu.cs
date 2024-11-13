@@ -1,6 +1,7 @@
 using SWF.Core.FileAccessor;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Runtime.Versioning;
 using System.Windows.Forms;
@@ -58,6 +59,7 @@ namespace PicSum.UIComponent.Contents.ContextMenu
         private readonly ToolStripMenuItem removeFromListMenuItem = new("Remove from list");
         private readonly ToolStripMenuItem clipMenuItem = new("Add to clip");
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool VisibleFileActiveTabOpenMenuItem
         {
             get
@@ -70,6 +72,7 @@ namespace PicSum.UIComponent.Contents.ContextMenu
             }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool VisibleFileNewTabOpenMenuItem
         {
             get
@@ -82,6 +85,7 @@ namespace PicSum.UIComponent.Contents.ContextMenu
             }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool VisibleFileNewWindowOpenMenuItem
         {
             get
@@ -94,6 +98,7 @@ namespace PicSum.UIComponent.Contents.ContextMenu
             }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool VisibleBookmarkMenuItem
         {
             get
@@ -106,6 +111,7 @@ namespace PicSum.UIComponent.Contents.ContextMenu
             }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool VisibleFileOpenMenuItem
         {
             get
@@ -118,6 +124,7 @@ namespace PicSum.UIComponent.Contents.ContextMenu
             }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool VisibleSelectApplicationMenuItem
         {
             get
@@ -130,6 +137,7 @@ namespace PicSum.UIComponent.Contents.ContextMenu
             }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool VisibleSaveDirectoryOpenMenuItem
         {
             get
@@ -142,6 +150,7 @@ namespace PicSum.UIComponent.Contents.ContextMenu
             }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool VisibleDirectoryActiveTabOpenMenuItem
         {
             get
@@ -154,6 +163,7 @@ namespace PicSum.UIComponent.Contents.ContextMenu
             }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool VisibleDirectoryNewTabOpenMenuItem
         {
             get
@@ -166,6 +176,7 @@ namespace PicSum.UIComponent.Contents.ContextMenu
             }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool VisibleDirectoryNewWindowOpenMenuItem
         {
             get
@@ -178,6 +189,7 @@ namespace PicSum.UIComponent.Contents.ContextMenu
             }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool VisibleExplorerOpenMenuItem
         {
             get
@@ -190,6 +202,7 @@ namespace PicSum.UIComponent.Contents.ContextMenu
             }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool VisibleExportMenuItem
         {
             get
@@ -202,6 +215,7 @@ namespace PicSum.UIComponent.Contents.ContextMenu
             }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool VisiblePathCopyMenuItem
         {
             get
@@ -214,6 +228,7 @@ namespace PicSum.UIComponent.Contents.ContextMenu
             }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool VisibleNameCopyMenuItem
         {
             get
@@ -226,6 +241,7 @@ namespace PicSum.UIComponent.Contents.ContextMenu
             }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool VisibleRemoveFromListMenuItem
         {
             get
@@ -238,6 +254,7 @@ namespace PicSum.UIComponent.Contents.ContextMenu
             }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool VisibleClipMenuItem
         {
             get

@@ -1,4 +1,5 @@
 using SWF.Core.Base;
+using System.ComponentModel;
 using System.Runtime.Versioning;
 
 namespace SWF.UIComponent.Core
@@ -8,6 +9,7 @@ namespace SWF.UIComponent.Core
     {
         private bool _isActive = false;
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool IsActive
         {
             get

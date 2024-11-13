@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Runtime.InteropServices;
@@ -22,6 +23,7 @@ namespace SWF.UIComponent.Form
         private FormWindowState currentWindowState = FormWindowState.Normal;
         private Rectangle currentWindowBounds = Rectangle.Empty;
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public new Size Size
         {
             get
@@ -48,6 +50,7 @@ namespace SWF.UIComponent.Form
             }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public new FormWindowState WindowState
         {
             get
