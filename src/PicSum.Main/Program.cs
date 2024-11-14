@@ -44,6 +44,7 @@ namespace PicSum.Main
                     AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
 
                     Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
+                    Application.SetHighDpiMode(HighDpiMode.PerMonitorV2);
                     Application.EnableVisualStyles();
                     Application.SetCompatibleTextRenderingDefault(false);
 
