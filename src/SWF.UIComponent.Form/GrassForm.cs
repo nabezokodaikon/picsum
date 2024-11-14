@@ -1,3 +1,4 @@
+using SWF.Core.Base;
 using System;
 using System.ComponentModel;
 using System.Drawing;
@@ -216,14 +217,8 @@ namespace SWF.UIComponent.Form
 
         private void SettingtControlRegion()
         {
-            var buttonWidth = WinApiMembers.GetSystemMetrics(WinApiMembers.SM.CXSIZE);
-            var titleBarHeight = WinApiMembers.GetSystemMetrics(WinApiMembers.SM.CYCAPTION);
-            var frameWidth = WinApiMembers.GetSystemMetrics(WinApiMembers.SM.CXSIZEFRAME);
-            var paddingWidth = WinApiMembers.GetSystemMetrics(WinApiMembers.SM.CXPADDEDBORDER);
-
-            var w = (buttonWidth * 4) + paddingWidth + frameWidth;
-            var h = titleBarHeight;
-
+            var w = AppConstants.GetControlBoxWidth();
+            var h = AppConstants.GetControlBoxHeight();
             var p = new Point(this.Right - w, this.Top);
             var captionButtonRect = new Rectangle(p.X, p.Y, w, h);
             foreach (Control ctl in this.Controls)
