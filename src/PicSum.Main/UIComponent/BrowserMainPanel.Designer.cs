@@ -69,7 +69,6 @@ namespace PicSum.Main.UIComponent
             this.tabSwitch.Name = "tabSwitch";
             this.tabSwitch.Size = new Size(746, 466);
             this.tabSwitch.TabIndex = 4;
-            this.tabSwitch.TabsRightOffset = 144;
             this.tabSwitch.Text = "tabSwitch1";
             this.tabSwitch.ActiveTabChanged += this.TabSwitch_ActiveTabChanged;
             this.tabSwitch.TabCloseButtonClick += this.TabSwitch_TabCloseButtonClick;

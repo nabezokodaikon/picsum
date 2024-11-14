@@ -384,7 +384,8 @@ namespace WinApi
             CYMAXTRACK = 60, // 同、高さ
             CXMAXIMIZED = 61, // ディスプレイの最大幅
             CYMAXIMIZED = 62, // 同、高さ
-            CLEANBOOT = 67 // Windowsを起動した方法 戻り値(0=通常起動、1=セーフモード、2=ネットワークのセーフモード)
+            CLEANBOOT = 67, // Windowsを起動した方法 戻り値(0=通常起動、1=セーフモード、2=ネットワークのセーフモード)
+            CXPADDEDBORDER = 92,
         }
 
         [Flags]
@@ -724,6 +725,12 @@ namespace WinApi
 
         [DllImport("shell32.dll", EntryPoint = "SHOpenWithDialog", CharSet = CharSet.Unicode)]
         public static extern int SHOpenWithDialog(IntPtr hwndParent, ref TagOpenAsInfo oainfo);
+
+        [DllImport("user32.dll")]
+        public static extern bool GetWindowRect(IntPtr hWnd, out RECT lpRect);
+
+        [DllImport("user32.dll")]
+        public static extern bool GetClientRect(IntPtr hWnd, out RECT lpRect);
 
         public static int LoWord(int dwValue)
         {

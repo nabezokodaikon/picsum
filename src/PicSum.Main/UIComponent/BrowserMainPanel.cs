@@ -12,6 +12,7 @@ using System;
 using System.Linq;
 using System.Runtime.Versioning;
 using System.Windows.Forms;
+using WinApi;
 
 namespace PicSum.Main.UIComponent
 {
@@ -106,6 +107,11 @@ namespace PicSum.Main.UIComponent
 
                 this.infoPanel.BringToFront();
                 this.pageContainer.BringToFront();
+
+                var buttonWidth = WinApiMembers.GetSystemMetrics(WinApiMembers.SM.CXSIZE);
+                var frameWidth = WinApiMembers.GetSystemMetrics(WinApiMembers.SM.CXSIZEFRAME);
+                var paddingWidth = WinApiMembers.GetSystemMetrics(WinApiMembers.SM.CXPADDEDBORDER);
+                this.tabSwitch.TabsRightOffset = (buttonWidth * 4) + paddingWidth + frameWidth;
             }
         }
 

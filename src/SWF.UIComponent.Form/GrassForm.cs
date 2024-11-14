@@ -216,20 +216,13 @@ namespace SWF.UIComponent.Form
 
         private void SettingtControlRegion()
         {
+            var buttonWidth = WinApiMembers.GetSystemMetrics(WinApiMembers.SM.CXSIZE);
+            var titleBarHeight = WinApiMembers.GetSystemMetrics(WinApiMembers.SM.CYCAPTION);
             var frameWidth = WinApiMembers.GetSystemMetrics(WinApiMembers.SM.CXSIZEFRAME);
-            var buttonWidth = WinApiMembers.GetSystemMetrics(WinApiMembers.SM.CXSIZE) * 3;
+            var paddingWidth = WinApiMembers.GetSystemMetrics(WinApiMembers.SM.CXPADDEDBORDER);
 
-            // TODO: コントロールボックスのサイズ。
-            // ハードコーディングでなく、WinApiで取得できるようにする。
-            var w = frameWidth + buttonWidth + 40;
-            var h = WinApiMembers.GetSystemMetrics(WinApiMembers.SM.CYCAPTION) + 16;
-
-            if (this.WindowState == FormWindowState.Maximized)
-            {
-                var screen = Screen.FromControl(this);
-                w -= (screen.Bounds.X - this.Location.X);
-                h -= (screen.Bounds.Y - this.Location.Y);
-            }
+            var w = (buttonWidth * 4) + paddingWidth + frameWidth;
+            var h = titleBarHeight;
 
             var p = new Point(this.Right - w, this.Top);
             var captionButtonRect = new Rectangle(p.X, p.Y, w, h);
