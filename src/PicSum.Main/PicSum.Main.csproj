@@ -51,8 +51,9 @@
 	<RuntimeIdentifier>win-x64</RuntimeIdentifier>
 	<PublishSingleFile>true</PublishSingleFile>
 	<SelfContained>true</SelfContained>
+	<OptimizationPreference>Speed</OptimizationPreference>
   </PropertyGroup>
-
+  
   <PropertyGroup>
 	<ApplicationIcon>application.ico</ApplicationIcon>
   </PropertyGroup>
