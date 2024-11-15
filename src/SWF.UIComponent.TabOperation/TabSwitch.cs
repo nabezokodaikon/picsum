@@ -1026,7 +1026,10 @@ namespace SWF.UIComponent.TabOperation
                     container.SuspendLayout();
                     container.ClearPage();
                     container.SetPage(tab.Page);
-                    container.ResumeLayout();
+                    container.ResumeLayout(false);
+                    container.PerformLayout();
+                    container.Invalidate();
+                    container.Update();
                     this.activeTab = tab;
                     return true;
                 }
@@ -1040,7 +1043,10 @@ namespace SWF.UIComponent.TabOperation
                 var container = this.GetContainer();
                 container.SuspendLayout();
                 container.ClearPage();
-                container.ResumeLayout();
+                container.ResumeLayout(false);
+                container.PerformLayout();
+                container.Invalidate();
+                container.Update();
                 if (this.activeTab != null)
                 {
                     this.activeTab = null;

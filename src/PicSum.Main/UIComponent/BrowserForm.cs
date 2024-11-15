@@ -58,6 +58,9 @@ namespace PicSum.Main.UIComponent
             this.SetGrass();
 
             this.ResumeLayout(false);
+            this.PerformLayout();
+            this.Invalidate();
+            this.Update();
         }
 
         public void AddPageEventHandler(BrowserPage page)
@@ -293,6 +296,8 @@ namespace PicSum.Main.UIComponent
             this.SetControlRegion();
             this.ResumeLayout(false);
             this.PerformLayout();
+            this.Invalidate();
+            this.Update();
         }
 
         private void OnTabDropouted(TabDropoutedEventArgs e)
