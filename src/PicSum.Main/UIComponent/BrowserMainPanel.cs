@@ -410,7 +410,7 @@ namespace PicSum.Main.UIComponent
 
         private void GetTagListJob_Callback(ListResult<string> e)
         {
-            this.tagDropToolButton.SetItems(e);
+            this.tagDropToolButton.SetItems([.. e]);
 
             if (!string.IsNullOrEmpty(this.tagDropToolButton.SelectedItem))
             {
@@ -421,7 +421,7 @@ namespace PicSum.Main.UIComponent
         // TODO: tabSwitch_ActiveTabChanged の直後に呼び出される場合がある。
         private void Page_SelectedFileChanged(object sender, SelectedFileChangeEventArgs e)
         {
-            if (e.FilePathList.Count > 0)
+            if (e.FilePathList.Length > 0)
             {
                 this.addressBar.SetAddress(e.FilePathList[0]);
             }

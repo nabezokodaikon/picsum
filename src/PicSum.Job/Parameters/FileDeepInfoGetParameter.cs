@@ -9,7 +9,7 @@ namespace PicSum.Job.Parameters
     public sealed class FileDeepInfoGetParameter
         : IJobParameter
     {
-        public IList<string>? FilePathList { get; set; }
+        public string[]? FilePathList { get; set; }
         public Size ThumbnailSize { get; set; }
     }
 }

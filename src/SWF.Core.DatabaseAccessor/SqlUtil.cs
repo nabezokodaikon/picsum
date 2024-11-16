@@ -27,7 +27,7 @@ namespace SWF.Core.DatabaseAccessor
         /// <param name="sqlText">SQL文字列</param>
         /// <param name="paramList">パラメータリスト</param>
         /// <returns>SQL</returns>
-        public static string GetExecuteSql(string sqlText, IList<IDbDataParameter> paramList)
+        public static string GetExecuteSql(string sqlText, IDbDataParameter[] paramList)
         {
             ArgumentException.ThrowIfNullOrEmpty(sqlText, nameof(sqlText));
             ArgumentNullException.ThrowIfNull(paramList, nameof(paramList));
@@ -81,7 +81,7 @@ namespace SWF.Core.DatabaseAccessor
         }
 
         // パラメータリスト内の、番号付パラメータの個数を取得します。
-        private static int GetNumberingParameterCount(IList<IDbDataParameter> paramList)
+        private static int GetNumberingParameterCount(IDbDataParameter[] paramList)
         {
             var dic = new Dictionary<string, int>();
 
@@ -121,7 +121,7 @@ namespace SWF.Core.DatabaseAccessor
         }
 
         // 置換文字列内のパラメータ名リストを取得します。
-        private static List<string> GetParameterNameList(string replaceText)
+        private static string[] GetParameterNameList(string replaceText)
         {
             var list = new List<string>();
 
@@ -133,7 +133,7 @@ namespace SWF.Core.DatabaseAccessor
                 m = m.NextMatch();
             }
 
-            return list;
+            return [.. list];
         }
     }
 }

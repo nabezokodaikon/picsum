@@ -53,7 +53,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         private readonly ImageViewerPageParameter parameter = null;
         private ImageDisplayMode displayMode = ImageDisplayMode.LeftFacing;
         private ImageSizeMode sizeMode = ImageSizeMode.FitOnlyBigImage;
-        private IList<string> filePathList = null;
+        private string[] filePathList = null;
         private bool isInitializing = true;
         private bool isLoading = false;
 
@@ -65,7 +65,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             get
             {
                 return this.filePathList != null &&
-                    this.filePathList.Count > 0;
+                    this.filePathList.Length > 0;
             }
         }
 
@@ -579,7 +579,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         {
             this.fileContextMenu.Close();
 
-            if (this.filePathList.Count < 1)
+            if (this.filePathList.Length < 1)
             {
                 return;
             }
@@ -757,9 +757,9 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.Title = e.PageTitle;
             this.Icon = e.PageIcon;
 
-            if (this.filePathList.Count > 0)
+            if (this.filePathList.Length > 0)
             {
-                this.MaximumIndex = this.filePathList.Count - 1;
+                this.MaximumIndex = this.filePathList.Length - 1;
             }
             else
             {
@@ -768,7 +768,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
             var selectedFilePath = this.parameter.SelectedFilePath != string.Empty ?
                 this.parameter.SelectedFilePath : e.SelectedFilePath;
-            var index = this.filePathList.IndexOf(selectedFilePath);
+            var index = Array.IndexOf(this.filePathList, selectedFilePath);
             if (index < 0)
             {
                 this.FilePathListIndex = 0;
@@ -1087,7 +1087,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             }
 
             var index = this.FilePathListIndex;
-            if (index < 0 || this.filePathList.Count - 1 < index)
+            if (index < 0 || this.filePathList.Length - 1 < index)
             {
                 return;
             }

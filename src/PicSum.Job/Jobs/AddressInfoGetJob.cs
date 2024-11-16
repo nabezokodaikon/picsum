@@ -26,8 +26,6 @@ namespace PicSum.Job.Jobs
 
             try
             {
-                var l = new List<string>();
-
                 var logic = new FileShallowInfoGetLogic(this);
 
                 addressInfo.DirectoryList = [];

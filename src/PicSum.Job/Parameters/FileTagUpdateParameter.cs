@@ -8,7 +8,7 @@ namespace PicSum.Job.Parameters
     public sealed class FileTagUpdateParameter
         : IJobParameter
     {
-        public IList<string>? FilePathList { get; set; }
+        public string[]? FilePathList { get; set; }
         public string? Tag { get; set; }
     }
 }

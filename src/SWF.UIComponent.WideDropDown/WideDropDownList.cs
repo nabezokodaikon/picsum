@@ -230,7 +230,7 @@ namespace SWF.UIComponent.WideDropDown
             this.FlowList.DrawItem += new(this.FlowList_DrawItem);
         }
 
-        public void SetItems(IList<string> itemList)
+        public void SetItems(string[] itemList)
         {
             ArgumentNullException.ThrowIfNull(itemList, nameof(itemList));
 
@@ -357,7 +357,7 @@ namespace SWF.UIComponent.WideDropDown
             }
 
             var indexs = this.FlowList.GetSelectedIndexs();
-            if (indexs.Count < 1)
+            if (indexs.Length < 1)
             {
                 return;
             }

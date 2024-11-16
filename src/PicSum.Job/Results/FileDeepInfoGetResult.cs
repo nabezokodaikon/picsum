@@ -9,7 +9,7 @@ namespace PicSum.Job.Results
     public sealed class FileDeepInfoGetResult
         : IJobResult
     {
-        public IList<string>? FilePathList { get; internal set; } = null;
+        public string[]? FilePathList { get; internal set; } = null;
         public FileDeepInfoEntity? FileInfo { get; internal set; } = null;
         public ListEntity<FileTagInfoEntity>? TagInfoList { get; internal set; } = null;
     }

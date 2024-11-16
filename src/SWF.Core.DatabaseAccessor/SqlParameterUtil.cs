@@ -67,106 +67,106 @@ namespace SWF.Core.DatabaseAccessor
             return new SQLiteParameter(paramName, value);
         }
 
-        public static IList<IDbDataParameter> CreateParameter(string paramName, IList<string> valueList)
+        public static IDbDataParameter[] CreateParameter(string paramName, string[] valueList)
         {
             ArgumentException.ThrowIfNullOrEmpty(paramName, nameof(paramName));
             ArgumentNullException.ThrowIfNull(valueList, nameof(valueList));
 
             var list = new List<IDbDataParameter>();
 
-            for (var i = 0; i < valueList.Count; i++)
+            for (var i = 0; i < valueList.Length; i++)
             {
                 var param = string.Format(AppConstants.NUMBERING_SQL_PARAMETER_FORMAT, paramName, i.ToString());
                 var value = valueList[i];
                 list.Add(SqlParameterUtil.CreateParameter(param, value, DbType.String));
             }
 
-            return list;
+            return [.. list];
         }
 
-        public static IList<IDbDataParameter> CreateParameter(string paramName, IList<string> valueList, int size)
+        public static IDbDataParameter[] CreateParameter(string paramName, string[] valueList, int size)
         {
             ArgumentException.ThrowIfNullOrEmpty(paramName, nameof(paramName));
             ArgumentNullException.ThrowIfNull(valueList, nameof(valueList));
 
             var list = new List<IDbDataParameter>();
 
-            for (var i = 0; i < valueList.Count; i++)
+            for (var i = 0; i < valueList.Length; i++)
             {
                 var param = string.Format(AppConstants.NUMBERING_SQL_PARAMETER_FORMAT, paramName, i.ToString());
                 var value = valueList[i];
                 list.Add(SqlParameterUtil.CreateParameter(param, value, size, DbType.String));
             }
 
-            return list;
+            return [.. list];
         }
 
-        public static IList<IDbDataParameter> CreateParameter(string paramName, IList<int> valueList)
+        public static IDbDataParameter[] CreateParameter(string paramName, int[] valueList)
         {
             ArgumentException.ThrowIfNullOrEmpty(paramName, nameof(paramName));
             ArgumentNullException.ThrowIfNull(valueList, nameof(valueList));
 
             var list = new List<IDbDataParameter>();
 
-            for (var i = 0; i < valueList.Count; i++)
+            for (var i = 0; i < valueList.Length; i++)
             {
                 var param = string.Format(AppConstants.NUMBERING_SQL_PARAMETER_FORMAT, paramName, i.ToString());
                 var value = valueList[i];
                 list.Add(SqlParameterUtil.CreateParameter(param, value, DbType.Int32));
             }
 
-            return list;
+            return [.. list];
         }
 
-        public static IList<IDbDataParameter> CreateParameter(string paramName, IList<bool> valueList)
+        public static IDbDataParameter[] CreateParameter(string paramName, bool[] valueList)
         {
             ArgumentException.ThrowIfNullOrEmpty(paramName, nameof(paramName));
             ArgumentNullException.ThrowIfNull(valueList, nameof(valueList));
 
             var list = new List<IDbDataParameter>();
 
-            for (var i = 0; i < valueList.Count; i++)
+            for (var i = 0; i < valueList.Length; i++)
             {
                 var param = string.Format(AppConstants.NUMBERING_SQL_PARAMETER_FORMAT, paramName, i.ToString());
                 var value = valueList[i];
                 list.Add(SqlParameterUtil.CreateParameter(param, value, DbType.Boolean));
             }
 
-            return list;
+            return [.. list];
         }
 
-        public static IList<IDbDataParameter> CreateParameter(string paramName, IList<DateTime> valueList)
+        public static IDbDataParameter[] CreateParameter(string paramName, DateTime[] valueList)
         {
             ArgumentException.ThrowIfNullOrEmpty(paramName, nameof(paramName));
             ArgumentNullException.ThrowIfNull(valueList, nameof(valueList));
 
             var list = new List<IDbDataParameter>();
 
-            for (var i = 0; i < valueList.Count; i++)
+            for (var i = 0; i < valueList.Length; i++)
             {
                 var param = string.Format(AppConstants.NUMBERING_SQL_PARAMETER_FORMAT, paramName, i.ToString());
                 var value = valueList[i];
                 list.Add(SqlParameterUtil.CreateParameter(param, value, DbType.DateTime));
             }
 
-            return list;
+            return [.. list];
         }
 
-        public static IList<IDbDataParameter> CreateParameter(string paramName, IList<byte[]> valueList)
+        public static IDbDataParameter[] CreateParameter(string paramName, byte[][] valueList)
         {
             ArgumentException.ThrowIfNullOrEmpty(paramName, nameof(paramName));
             ArgumentNullException.ThrowIfNull(valueList, nameof(valueList));
 
             var list = new List<IDbDataParameter>();
 
-            for (var i = 0; i < valueList.Count; i++)
+            for (var i = 0; i < valueList.Length; i++)
             {
                 var param = string.Format(AppConstants.NUMBERING_SQL_PARAMETER_FORMAT, paramName, i.ToString());
                 var value = valueList[i];
                 list.Add(SqlParameterUtil.CreateParameter(param, value, DbType.Binary));
             }
 
-            return list;
+            return [.. list];
         }
 
         private static SQLiteParameter CreateParameter(string paramName, object value, DbType dbType)

@@ -1,6 +1,5 @@
 using SWF.UIComponent.FlowList;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Runtime.Versioning;
@@ -369,7 +368,7 @@ namespace PicSum.UIComponent.AddressBar
         /// 選択している項目のインデックスを取得します。
         /// </summary>
         /// <returns></returns>
-        public IList<int> GetSelectedIndexs()
+        public int[] GetSelectedIndexs()
         {
             return this.FlowList.GetSelectedIndexs();
         }

@@ -28,7 +28,7 @@ namespace PicSum.Job.Jobs
                 DirectoryPath = param.DirectoryPath
             };
 
-            IList<string> fileList;
+            string[] fileList;
             var getFilesLogic = new FilesAndSubDirectoriesGetLogic(this);
             try
             {
@@ -63,7 +63,7 @@ namespace PicSum.Job.Jobs
             var getDirectoryStateLogic = new DirectoryStateGetLogic(this);
             var directoryState = getDirectoryStateLogic.Execute(param.DirectoryPath);
 
-            result.FileInfoList = infoList;
+            result.FileInfoList = [.. infoList];
             result.DirectoryState = directoryState;
 
             this.Callback(result);

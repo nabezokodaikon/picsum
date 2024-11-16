@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
@@ -506,7 +505,7 @@ namespace SWF.UIComponent.FlowList
         /// 選択している項目のインデックスを取得します。
         /// </summary>
         /// <returns></returns>
-        public IList<int> GetSelectedIndexs()
+        public int[] GetSelectedIndexs()
         {
             if (this.rectangleSelection.IsBegun)
             {

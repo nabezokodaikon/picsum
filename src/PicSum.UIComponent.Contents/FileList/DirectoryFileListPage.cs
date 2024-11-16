@@ -115,7 +115,7 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
-        protected override void OnRemoveFile(System.Collections.Generic.IList<string> filePathList)
+        protected override void OnRemoveFile(string[] filePathList)
         {
             // 処理無し。
         }
@@ -184,7 +184,7 @@ namespace PicSum.UIComponent.Contents.FileList
         protected override void FileContextMenu_Opening(object sender, CancelEventArgs e)
         {
             var filePathList = this.GetSelectedFiles();
-            if (filePathList.Count > 0)
+            if (filePathList.Length > 0)
             {
                 this.SetContextMenuFiles(filePathList);
             }
@@ -245,7 +245,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 else
                 {
                     base.SetFiles(e.FileInfoList, e.DirectoryState.SelectedFilePath, e.DirectoryState.SortTypeID, e.DirectoryState.IsAscending);
-                    if (e.FileInfoList.Count < 1)
+                    if (e.FileInfoList.Length < 1)
                     {
                         base.OnSelectedFileChanged(new SelectedFileChangeEventArgs(e.DirectoryState.DirectoryPath));
                     }

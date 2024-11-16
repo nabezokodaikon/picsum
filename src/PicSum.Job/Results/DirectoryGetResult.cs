@@ -12,6 +12,6 @@ namespace PicSum.Job.Results
     {
         public string? DirectoryPath { get; internal set; }
         public DirectoryStateParameter DirectoryState { get; internal set; }
-        public IList<FileShallowInfoEntity>? FileInfoList { get; internal set; }
+        public FileShallowInfoEntity[]? FileInfoList { get; internal set; }
     }
 }

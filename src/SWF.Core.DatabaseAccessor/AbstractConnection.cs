@@ -191,7 +191,7 @@ namespace SWF.Core.DatabaseAccessor
         /// <typeparam name="T">戻り値のDto</typeparam>
         /// <param name="sql">データアクセサ</param>
         /// <returns>Dtoリスト</returns>
-        public IList<TDto> ReadList<TDto>(SqlBase<TDto> sql)
+        public TDto[] ReadList<TDto>(SqlBase<TDto> sql)
             where TDto : IDto, new()
         {
             ArgumentNullException.ThrowIfNull(sql, nameof(sql));
@@ -221,7 +221,7 @@ namespace SWF.Core.DatabaseAccessor
                                 list.Add(dto);
                             }
 
-                            return list;
+                            return [.. list];
                         }
                         else
                         {

@@ -40,7 +40,7 @@ namespace PicSum.Job.Common
             this.disposed = true;
         }
 
-        public void AddFiles(IList<string> files)
+        public void AddFiles(string[] files)
         {
             ArgumentNullException.ThrowIfNull(files, nameof(files));
 
@@ -54,7 +54,7 @@ namespace PicSum.Job.Common
             }
         }
 
-        public void RemoveFiles(IList<string> files)
+        public void RemoveFiles(string[] files)
         {
             ArgumentNullException.ThrowIfNull(files, nameof(files));
 
@@ -67,7 +67,7 @@ namespace PicSum.Job.Common
             }
         }
 
-        public IList<ClipFileEntity> GetFiles()
+        public ClipFileEntity[] GetFiles()
         {
             lock (this.LOCK)
             {

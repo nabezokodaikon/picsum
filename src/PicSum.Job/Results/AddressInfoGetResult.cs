@@ -7,7 +7,7 @@ namespace PicSum.Job.Results
         : IJobResult
     {
         public string? DirectoryPath { get; internal set; }
-        public IList<FileShallowInfoEntity>? DirectoryList { get; internal set; }
+        public List<FileShallowInfoEntity>? DirectoryList { get; internal set; }
         public bool HasSubDirectory { get; internal set; }
     }
 }

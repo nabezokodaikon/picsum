@@ -32,7 +32,7 @@ namespace PicSum.Job.Jobs
 
             using (TimeMeasuring.Run(true, "FileDeepInfoGetJob"))
             {
-                if (param.FilePathList.Count == 1)
+                if (param.FilePathList.Length == 1)
                 {
                     try
                     {

@@ -11,7 +11,7 @@ namespace PicSum.Job.Jobs
         {
             ArgumentNullException.ThrowIfNull(param, nameof(param));
 
-            Instance<IClipFiles>.Value.AddFiles(param);
+            Instance<IClipFiles>.Value.AddFiles([.. param]);
         }
     }
 }

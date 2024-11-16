@@ -27,7 +27,7 @@ namespace PicSum.Job.Jobs
                 throw new ArgumentException("カレントパラメータが空文字です。", nameof(param));
             }
 
-            IList<string> list;
+            string[] list;
             try
             {
                 var parentDirectory = FileUtil.GetParentDirectoryPath(param.CurrentParameter.Value);

@@ -6,7 +6,7 @@ namespace PicSum.Job.Results
         : IJobResult
     {
         public string? DirectoryPath { get; internal set; }
-        public IList<string>? FilePathList { get; internal set; }
+        public List<string>? FilePathList { get; internal set; }
         public string? SelectedFilePath { get; internal set; }
     }
 }

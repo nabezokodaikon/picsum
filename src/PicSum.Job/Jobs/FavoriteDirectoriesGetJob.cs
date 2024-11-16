@@ -53,7 +53,7 @@ namespace PicSum.Job.Jobs
             this.Callback(infoList);
         }
 
-        private IList<string> GetOrCreateFileList()
+        private string[] GetOrCreateFileList()
         {
             var logic = new FavoriteDirectoriesGetLogic(this);
             var fileList = logic.Execute()

@@ -15,7 +15,7 @@ namespace PicSum.Job.Logics
     internal sealed class FilesGetByTagLogic(IAsyncJob job)
         : AbstractAsyncLogic(job)
     {
-        public IList<FileByTagDto> Execute(string tag)
+        public FileByTagDto[] Execute(string tag)
         {
             ArgumentException.ThrowIfNullOrEmpty(tag, nameof(tag));
 
@@ -32,7 +32,7 @@ namespace PicSum.Job.Logics
                 }
             }
 
-            return list;
+            return [.. list];
         }
     }
 }

@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 
 namespace PicSum.UIComponent.Contents.ContextMenu
 {
@@ -9,9 +8,9 @@ namespace PicSum.UIComponent.Contents.ContextMenu
     public sealed class ExecuteFileListEventArgs
         : EventArgs
     {
-        public IList<string> FilePathList { get; private set; }
+        public string[] FilePathList { get; private set; }
 
-        public ExecuteFileListEventArgs(IList<string> filePathList)
+        public ExecuteFileListEventArgs(string[] filePathList)
         {
             this.FilePathList = filePathList ?? throw new ArgumentNullException(nameof(filePathList));
         }

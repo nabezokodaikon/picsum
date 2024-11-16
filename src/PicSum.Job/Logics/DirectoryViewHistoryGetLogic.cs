@@ -15,7 +15,7 @@ namespace PicSum.Job.Logics
     internal sealed class DirectoryViewHistoryGetLogic(IAsyncJob job)
         : AbstractAsyncLogic(job)
     {
-        public IList<string> Execute()
+        public string[] Execute()
         {
             var sql = new DirectoryViewHistoryReadSql(100);
             var dtoList = Instance<IFileInfoDB>.Value.ReadList<DirectoryViewHistoryDto>(sql);
@@ -35,7 +35,7 @@ namespace PicSum.Job.Logics
                 }
             }
 
-            return directoryPathList;
+            return [.. directoryPathList];
         }
     }
 }

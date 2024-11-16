@@ -1,12 +1,11 @@
 using System;
-using System.Collections.Generic;
 
 namespace PicSum.UIComponent.Contents.Common
 {
     public sealed class SelectedFileChangeEventArgs
         : EventArgs
     {
-        public IList<string> FilePathList { get; private set; }
+        public string[] FilePathList { get; private set; }
 
         public SelectedFileChangeEventArgs()
         {
@@ -20,7 +19,7 @@ namespace PicSum.UIComponent.Contents.Common
             this.FilePathList = [filePath];
         }
 
-        public SelectedFileChangeEventArgs(IList<string> filePathList)
+        public SelectedFileChangeEventArgs(string[] filePathList)
         {
             ArgumentNullException.ThrowIfNull(filePathList, nameof(filePathList));
 

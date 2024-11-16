@@ -10,7 +10,7 @@ namespace PicSum.Job.Parameters
         : IJobParameter
     {
         public int CurrentIndex { get; set; }
-        public IList<string>? FilePathList { get; set; }
+        public string[]? FilePathList { get; set; }
         public ImageDisplayMode ImageDisplayMode { get; set; }
     }
 }

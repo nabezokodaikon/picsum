@@ -1,6 +1,5 @@
 using SWF.Core.FileAccessor;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.Versioning;
@@ -34,7 +33,7 @@ namespace PicSum.UIComponent.Contents.ContextMenu
         public event EventHandler<ExecuteFileListEventArgs> RemoveFromList;
         public event EventHandler<ExecuteFileListEventArgs> Clip;
 
-        private IList<string> filePathList = null;
+        private string[] filePathList = null;
 
         // 画像ファイルメニュー項目
         private readonly ToolStripMenuItem fileActiveTabOpenMenuItem = new("Open");
@@ -309,16 +308,16 @@ namespace PicSum.UIComponent.Contents.ContextMenu
             }
         }
 
-        public void SetFile(IList<string> filePathList)
+        public void SetFile(string[] filePathList)
         {
             ArgumentNullException.ThrowIfNull(filePathList, nameof(filePathList));
 
-            if (filePathList.Count == 0)
+            if (filePathList.Length == 0)
             {
                 throw new ArgumentException("0件のファイルリストはセットできません。", nameof(filePathList));
             }
 
-            if (filePathList.Count > 1)
+            if (filePathList.Length > 1)
             {
                 this.pathCopyMenuItem.Visible = true;
                 this.nameCopyMenuItem.Visible = true;
@@ -339,7 +338,7 @@ namespace PicSum.UIComponent.Contents.ContextMenu
 
                 var isAllImageFiles = filePathList
                     .Where(_ => FileUtil.IsImageFile(_))
-                    .Count() == filePathList.Count;
+                    .Count() == filePathList.Length;
                 this.exportMenuItem.Visible = isAllImageFiles;
             }
             else

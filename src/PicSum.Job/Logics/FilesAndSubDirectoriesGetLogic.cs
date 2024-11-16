@@ -11,7 +11,7 @@ namespace PicSum.Job.Logics
     internal sealed class FilesAndSubDirectoriesGetLogic(IAsyncJob job)
         : AbstractAsyncLogic(job)
     {
-        public IList<string> Execute(string directoryPath)
+        public string[] Execute(string directoryPath)
         {
             ArgumentException.ThrowIfNullOrEmpty(directoryPath, nameof(directoryPath));
 
@@ -25,7 +25,7 @@ namespace PicSum.Job.Logics
                 }
             }
 
-            return list;
+            return [.. list];
         }
     }
 }

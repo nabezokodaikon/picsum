@@ -29,7 +29,7 @@ namespace PicSum.Job.Jobs
                 FilePathList = param.FilePathList,
             };
 
-            if (param.FilePathList.Count == 1)
+            if (param.FilePathList.Length == 1)
             {
                 try
                 {
@@ -54,7 +54,7 @@ namespace PicSum.Job.Jobs
                 }
             }
 
-            if (param.FilePathList.Count <= 997)
+            if (param.FilePathList.Length <= 997)
             {
                 try
                 {

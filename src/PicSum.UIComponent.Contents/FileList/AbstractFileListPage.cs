@@ -32,7 +32,7 @@ namespace PicSum.UIComponent.Contents.FileList
     {
         private bool disposed = false;
         private Dictionary<string, FileEntity> masterFileDictionary = null;
-        private List<string> filterFilePathList = null;
+        private string[] filterFilePathList = null;
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public override string SelectedFilePath { get; protected set; } = FileUtil.ROOT_DIRECTORY_PATH;
@@ -187,13 +187,13 @@ namespace PicSum.UIComponent.Contents.FileList
             base.OnInvalidated(e);
         }
 
-        protected abstract void OnRemoveFile(IList<string> filePathList);
+        protected abstract void OnRemoveFile(string[] filePathList);
 
         protected abstract void OnMovePreviewButtonClick(EventArgs e);
 
         protected abstract void OnMoveNextButtonClick(EventArgs e);
 
-        protected void SetFiles(IList<FileShallowInfoEntity> srcFiles, string selectedFilePath, SortTypeID sortTypeID, bool isAscending)
+        protected void SetFiles(FileShallowInfoEntity[] srcFiles, string selectedFilePath, SortTypeID sortTypeID, bool isAscending)
         {
             ArgumentNullException.ThrowIfNull(srcFiles, nameof(srcFiles));
             ArgumentNullException.ThrowIfNull(selectedFilePath, nameof(selectedFilePath));
@@ -235,7 +235,7 @@ namespace PicSum.UIComponent.Contents.FileList
             this.flowList.Focus();
         }
 
-        protected void SetFile(IList<FileShallowInfoEntity> srcFiles, string selectedFilePath)
+        protected void SetFile(FileShallowInfoEntity[] srcFiles, string selectedFilePath)
         {
             ArgumentNullException.ThrowIfNull(srcFiles, nameof(srcFiles));
             ArgumentNullException.ThrowIfNull(selectedFilePath, nameof(selectedFilePath));
@@ -243,11 +243,11 @@ namespace PicSum.UIComponent.Contents.FileList
             this.SetFiles(srcFiles, selectedFilePath, SortTypeID.Default, false);
         }
 
-        protected IList<string> GetSelectedFiles()
+        protected string[] GetSelectedFiles()
         {
             var filePathList = new List<string>();
             var selectedIndexs = this.flowList.GetSelectedIndexs();
-            if (selectedIndexs.Count > 0)
+            if (selectedIndexs.Length > 0)
             {
                 foreach (var index in selectedIndexs)
                 {
@@ -255,14 +255,14 @@ namespace PicSum.UIComponent.Contents.FileList
                 }
             }
 
-            return filePathList;
+            return [.. filePathList];
         }
 
-        protected void SetContextMenuFiles(IList<string> filePathList)
+        protected void SetContextMenuFiles(string[] filePathList)
         {
             ArgumentNullException.ThrowIfNull(filePathList, nameof(filePathList));
 
-            if (filePathList.Count == 0)
+            if (filePathList.Length == 0)
             {
                 throw new ArgumentException("0件のファイルリストはセットできません。", nameof(filePathList));
             }
@@ -277,11 +277,11 @@ namespace PicSum.UIComponent.Contents.FileList
             this.SetContextMenuFiles([filePath]);
         }
 
-        protected void RemoveFile(IList<string> filePathList)
+        protected void RemoveFile(string[] filePathList)
         {
             ArgumentNullException.ThrowIfNull(filePathList, nameof(filePathList));
 
-            if (filePathList.Count == 0)
+            if (filePathList.Length == 0)
             {
                 throw new ArgumentException("削除するファイルパスが0件です。", nameof(filePathList));
             }
@@ -290,13 +290,13 @@ namespace PicSum.UIComponent.Contents.FileList
             foreach (var filePath in filePathList)
             {
                 this.masterFileDictionary.Remove(filePath);
-                indexList.Add(this.filterFilePathList.IndexOf(filePath));
+                indexList.Add(Array.IndexOf(this.filterFilePathList, filePath));
             }
 
             if (indexList.Count > 0)
             {
                 var maximumIndex = indexList.Max();
-                if (maximumIndex + 1 < this.filterFilePathList.Count)
+                if (maximumIndex + 1 < this.filterFilePathList.Length)
                 {
                     this.SelectedFilePath = this.filterFilePathList[maximumIndex + 1];
                 }
@@ -484,7 +484,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
             try
             {
-                this.filterFilePathList = new List<string>(filterList.ConvertAll(f => f.FilePath));
+                this.filterFilePathList = [.. filterList.ConvertAll(f => f.FilePath)];
                 this.flowList.ItemCount = filterList.Count;
                 var selectedFile = filterList.FirstOrDefault(f => f.FilePath.Equals(this.SelectedFilePath, StringComparison.Ordinal));
                 if (selectedFile != null)
@@ -661,7 +661,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
             if (this.filterFilePathList != null)
             {
-                var index = this.filterFilePathList.IndexOf(file.FilePath);
+                var index = Array.IndexOf(this.filterFilePathList, file.FilePath);
                 if (index > -1)
                 {
                     this.flowList.InvalidateFromItemIndex(index);
@@ -779,10 +779,10 @@ namespace PicSum.UIComponent.Contents.FileList
                 return;
             }
 
-            if (this.filterFilePathList.Count > 0 &&
+            if (this.filterFilePathList.Length > 0 &&
                 e.DrawFirstItemIndex > -1 &&
                 e.DrawLastItemIndex > -1 &&
-                e.DrawLastItemIndex < this.filterFilePathList.Count)
+                e.DrawLastItemIndex < this.filterFilePathList.Length)
             {
                 var thumbnailWidth = this.flowList.ItemWidth - this.flowList.ItemSpace * 2;
                 var thumbnailHeight = this.IsShowFileName switch
@@ -845,7 +845,7 @@ namespace PicSum.UIComponent.Contents.FileList
         private void FlowList_SelectedItemChange(object sender, EventArgs e)
         {
             var filePathList = this.GetSelectedFiles();
-            if (filePathList.Count > 0)
+            if (filePathList.Length > 0)
             {
                 this.SelectedFilePath = filePathList.First();
             }
@@ -925,7 +925,7 @@ namespace PicSum.UIComponent.Contents.FileList
         private void FlowList_ItemExecute(object sender, EventArgs e)
         {
             var selectedIndexs = this.flowList.GetSelectedIndexs();
-            if (selectedIndexs.Count > 1)
+            if (selectedIndexs.Length > 1)
             {
                 return;
             }
@@ -965,13 +965,13 @@ namespace PicSum.UIComponent.Contents.FileList
                 filePathList.Add(this.filterFilePathList[index]);
             }
 
-            this.OnRemoveFile(filePathList);
+            this.OnRemoveFile([.. filePathList]);
         }
 
         private void FlowList_DragStart(object sender, EventArgs e)
         {
             var selectedIndexList = this.flowList.GetSelectedIndexs();
-            if (selectedIndexList.Count < 1)
+            if (selectedIndexList.Length < 1)
             {
                 return;
             }
@@ -1028,7 +1028,7 @@ namespace PicSum.UIComponent.Contents.FileList
         protected virtual void FileContextMenu_Opening(object sender, CancelEventArgs e)
         {
             var filePathList = this.GetSelectedFiles();
-            if (filePathList.Count > 0)
+            if (filePathList.Length > 0)
             {
                 this.fileContextMenu.SetFile(filePathList);
             }
@@ -1123,7 +1123,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private void FileContextMenu_Export(object sender, ExecuteFileListEventArgs e)
         {
-            if (e.FilePathList.Count > 1)
+            if (e.FilePathList.Length > 1)
             {
                 using (var fbd = new FolderBrowserDialog())
                 {

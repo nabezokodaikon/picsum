@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Runtime.Versioning;
@@ -46,7 +45,7 @@ namespace SWF.UIComponent.WideDropDown
             this.dropDownList.ItemMouseClick += this.DropDownList_ItemMouseClick;
         }
 
-        public void SetItems(List<string> items)
+        public void SetItems(string[] items)
         {
             ArgumentNullException.ThrowIfNull(items, nameof(items));
 

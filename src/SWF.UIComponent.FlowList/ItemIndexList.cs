@@ -12,7 +12,7 @@ namespace SWF.UIComponent.FlowList
         public event EventHandler Change;
 
         private readonly List<int> list = [];
-        private List<int> beforeList = null;
+        private int[] beforeList = null;
 
         public int Count
         {
@@ -22,11 +22,11 @@ namespace SWF.UIComponent.FlowList
             }
         }
 
-        public IList<int> GetList()
+        public int[] GetList()
         {
             var list = new List<int>([.. this.list]);
             list.Sort();
-            return list;
+            return [.. list];
         }
 
         public bool Contains(int itemIndex)
@@ -118,7 +118,7 @@ namespace SWF.UIComponent.FlowList
                 throw new InvalidOperationException("既に更新中です。");
             }
 
-            this.beforeList = new List<int>([.. this.list]);
+            this.beforeList = [.. this.list];
         }
 
         public void EndUpdate()
@@ -128,7 +128,7 @@ namespace SWF.UIComponent.FlowList
                 throw new InvalidOperationException("更新中ではありません。");
             }
 
-            if (this.beforeList.Count != this.list.Count)
+            if (this.beforeList.Length != this.list.Count)
             {
                 this.OnChange(EventArgs.Empty);
             }

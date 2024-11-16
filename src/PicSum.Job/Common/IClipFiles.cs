@@ -5,8 +5,8 @@ namespace PicSum.Job.Common
     public interface IClipFiles
         : IDisposable
     {
-        public void AddFiles(IList<string> files);
-        public void RemoveFiles(IList<string> files);
-        public IList<ClipFileEntity> GetFiles();
+        public void AddFiles(string[] files);
+        public void RemoveFiles(string[] files);
+        public ClipFileEntity[] GetFiles();
     }
 }

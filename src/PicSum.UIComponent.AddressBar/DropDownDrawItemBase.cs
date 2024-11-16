@@ -16,7 +16,7 @@ namespace PicSum.UIComponent.AddressBar
         private DirectoryEntity mousePointItem = null;
         private readonly List<DirectoryEntity> items = [];
 
-        public IList<DirectoryEntity> Items
+        public List<DirectoryEntity> Items
         {
             get
             {

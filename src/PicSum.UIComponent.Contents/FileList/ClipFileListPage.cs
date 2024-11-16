@@ -6,7 +6,6 @@ using SWF.Core.ImageAccessor;
 using SWF.Core.Job;
 using SWF.UIComponent.TabOperation;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Runtime.Versioning;
@@ -89,7 +88,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
         }
 
-        protected override void OnRemoveFile(IList<string> filePathList)
+        protected override void OnRemoveFile(string[] filePathList)
         {
             Instance<JobCaller>.Value.StartClipFilesDeleteJob(
                 this, new ListParameter<string>(filePathList));
@@ -116,12 +115,12 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             if (this.parameter.SortInfo == null)
             {
-                base.SetFiles(e, this.parameter.SelectedFilePath, SortTypeID.RegistrationDate, false);
+                base.SetFiles([.. e], this.parameter.SelectedFilePath, SortTypeID.RegistrationDate, false);
             }
             else
             {
                 base.SetFiles(
-                    e,
+                    [.. e],
                     this.parameter.SelectedFilePath,
                     this.parameter.SortInfo.ActiveSortType,
                     this.parameter.SortInfo.IsAscending(this.parameter.SortInfo.ActiveSortType));
@@ -131,7 +130,7 @@ namespace PicSum.UIComponent.Contents.FileList
         protected override void FileContextMenu_Opening(object sender, CancelEventArgs e)
         {
             var filePathList = this.GetSelectedFiles();
-            if (filePathList.Count > 0)
+            if (filePathList.Length > 0)
             {
                 this.fileContextMenu.SetFile(filePathList);
                 this.fileContextMenu.VisibleBookmarkMenuItem = false;

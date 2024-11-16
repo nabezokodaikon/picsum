@@ -8,7 +8,6 @@ using SWF.Core.ImageAccessor;
 using SWF.Core.Job;
 using SWF.UIComponent.WideDropDown;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
@@ -31,7 +30,7 @@ namespace PicSum.UIComponent.InfoPanel
         private string contextMenuOperationTag = string.Empty;
         private bool isLoading = false;
 
-        private IList<string> FilePathList
+        private string[] FilePathList
         {
             get
             {
@@ -108,11 +107,11 @@ namespace PicSum.UIComponent.InfoPanel
             this.SetFileInfo([filePath]);
         }
 
-        public void SetFileInfo(IList<string> filePathList)
+        public void SetFileInfo(string[] filePathList)
         {
             ArgumentNullException.ThrowIfNull(filePathList, nameof(filePathList));
 
-            if (filePathList.Count > 0)
+            if (filePathList.Length > 0)
             {
                 // コンピュータの場合は情報を表示しない。
                 if (FileUtil.IsSystemRoot(filePathList.First()))
@@ -344,7 +343,7 @@ namespace PicSum.UIComponent.InfoPanel
                 sf.Alignment = StringAlignment.Center;
                 sf.LineAlignment = StringAlignment.Center;
                 sf.Trimming = StringTrimming.EllipsisCharacter;
-                var text = $"{this.FilePathList.Count} files selected";
+                var text = $"{this.FilePathList.Length} files selected";
                 g.DrawString(text, this.Font, sb, rect, sf);
             }
         }
@@ -407,7 +406,7 @@ namespace PicSum.UIComponent.InfoPanel
 
         private void GetTagListJob_Callback(ListResult<string> result)
         {
-            this.wideComboBox.SetItems(result);
+            this.wideComboBox.SetItems([.. result]);
             this.wideComboBox.SelectItem();
         }
 

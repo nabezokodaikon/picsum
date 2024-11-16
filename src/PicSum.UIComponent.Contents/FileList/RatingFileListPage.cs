@@ -97,7 +97,7 @@ namespace PicSum.UIComponent.Contents.FileList
             // 処理無し。
         }
 
-        protected override void OnRemoveFile(System.Collections.Generic.IList<string> filePathList)
+        protected override void OnRemoveFile(string[] filePathList)
         {
             var param = new FileRatingUpdateParameter
             {
@@ -128,12 +128,12 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             if (this.parameter.SortInfo == null)
             {
-                base.SetFiles(e, this.parameter.SelectedFilePath, SortTypeID.RegistrationDate, false);
+                base.SetFiles([.. e], this.parameter.SelectedFilePath, SortTypeID.RegistrationDate, false);
             }
             else
             {
                 base.SetFiles(
-                    e,
+                    [.. e],
                     this.parameter.SelectedFilePath,
                     this.parameter.SortInfo.ActiveSortType,
                     this.parameter.SortInfo.IsAscending(this.parameter.SortInfo.ActiveSortType));
@@ -143,7 +143,7 @@ namespace PicSum.UIComponent.Contents.FileList
         protected override void FileContextMenu_Opening(object sender, CancelEventArgs e)
         {
             var filePathList = this.GetSelectedFiles();
-            if (filePathList.Count > 0)
+            if (filePathList.Length > 0)
             {
                 this.fileContextMenu.SetFile(filePathList);
                 this.fileContextMenu.VisibleBookmarkMenuItem = false;

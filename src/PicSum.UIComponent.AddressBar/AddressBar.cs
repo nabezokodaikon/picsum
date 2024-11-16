@@ -403,7 +403,7 @@ namespace PicSum.UIComponent.AddressBar
             }
         }
 
-        private List<DrawItemBase> CreateAddressItems(AddressInfoGetResult addressInfo)
+        private DrawItemBase[] CreateAddressItems(AddressInfoGetResult addressInfo)
         {
             var items = new List<DrawItemBase>();
 
@@ -488,7 +488,7 @@ namespace PicSum.UIComponent.AddressBar
                 items.Add(directoryDraw);
             }
 
-            return items;
+            return [.. items];
         }
 
         private void ClearAddressItems()

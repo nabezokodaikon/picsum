@@ -24,12 +24,12 @@ SELECT tt.tag
  GROUP BY tt.tag
 ";
 
-        public FileTagReadSql(IList<string> filePathList)
+        public FileTagReadSql(string[] filePathList)
             : base(SQL_TEXT)
         {
             ArgumentNullException.ThrowIfNull(filePathList, nameof(filePathList));
 
-            base.ParameterList.Add(SqlParameterUtil.CreateParameter("file_count", filePathList.Count));
+            base.ParameterList.Add(SqlParameterUtil.CreateParameter("file_count", filePathList.Length));
             base.ParameterList.AddRange(SqlParameterUtil.CreateParameter("file_path", filePathList));
         }
     }

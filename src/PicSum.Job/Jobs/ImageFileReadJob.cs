@@ -34,7 +34,7 @@ namespace PicSum.Job.Jobs
                 && mainSize.Width < mainSize.Height)
             {
                 var subtIndex = parameter.CurrentIndex + 1;
-                if (subtIndex > parameter.FilePathList.Count - 1)
+                if (subtIndex > parameter.FilePathList.Length - 1)
                 {
                     subtIndex = 0;
                 }

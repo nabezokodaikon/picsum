@@ -27,7 +27,7 @@ namespace SWF.Core.FileAccessor
         internal const string SVG_FILE_EXTENSION = ".SVG";
         internal const string WEBP_FILE_EXTENSION = ".WEBP";
 
-        internal static readonly List<string> IMAGE_FILE_EXTENSION_LIST = GetImageFileExtensionList();
+        internal static readonly string[] IMAGE_FILE_EXTENSION_LIST = GetImageFileExtensionList();
 
         public const string ROOT_DIRECTORY_PATH =
             "1435810adf6f3080e21df9c3b666c7887883da42ad582d911a81931c38e720da1235036c60c69389e8c4fcc26be0c796626ef8ed3296bd9c65445ff12168fb22";
@@ -852,7 +852,7 @@ namespace SWF.Core.FileAccessor
         /// </summary>
         /// <remarks>リスト内の各項目には、ピリオド + 英大文字 * n の文字列(.XXX)が格納されます。</remarks>
         /// <returns></returns>
-        private static List<string> GetImageFileExtensionList()
+        private static string[] GetImageFileExtensionList()
         {
             return
             [

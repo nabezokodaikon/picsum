@@ -16,7 +16,7 @@ namespace SWF.Core.DatabaseAccessor
         /// <returns>SQL文</returns>
         public string GetExecuteSql()
         {
-            return SqlUtil.GetExecuteSql(this.sqlText, this.ParameterList);
+            return SqlUtil.GetExecuteSql(this.sqlText, [.. this.ParameterList]);
         }
     }
 
@@ -34,7 +34,7 @@ namespace SWF.Core.DatabaseAccessor
         /// <returns>SQL文</returns>
         public string GetExecuteSql()
         {
-            return SqlUtil.GetExecuteSql(this.sqlText, this.ParameterList);
+            return SqlUtil.GetExecuteSql(this.sqlText, [.. this.ParameterList]);
         }
     }
 }
