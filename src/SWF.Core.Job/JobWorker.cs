@@ -268,7 +268,7 @@ namespace SWF.Core.Job
                                 catch (Exception ex)
                                 {
                                     Logger.Error(ex, $"{job.ID} がUIスレッド上で補足されない例外が発生しました。");
-                                    ExceptionUtil.ShowErrorDialog("Unhandled UI Exception.", ex);
+                                    ExceptionUtil.ShowFatalDialog("Unhandled UI Exception.", ex);
                                 }
                             }
                         }, new object[] { job, action });
@@ -301,7 +301,7 @@ namespace SWF.Core.Job
                                 catch (Exception ex)
                                 {
                                     Logger.Error(ex, $"{job.ID} がUIスレッド上で補足されない例外が発生しました。");
-                                    ExceptionUtil.ShowErrorDialog("Unhandled UI Exception.", ex);
+                                    ExceptionUtil.ShowFatalDialog("Unhandled UI Exception.", ex);
                                 }
                             }
                         }, new object[] { job, action });
@@ -334,7 +334,7 @@ namespace SWF.Core.Job
                                 catch (Exception ex)
                                 {
                                     Logger.Error(ex, $"{job.ID} がUIスレッド上で補足されない例外が発生しました。");
-                                    ExceptionUtil.ShowErrorDialog("Unhandled UI Exception.", ex);
+                                    ExceptionUtil.ShowFatalDialog("Unhandled UI Exception.", ex);
                                 }
                             }
                         }, new object[] { job, action });
@@ -367,7 +367,7 @@ namespace SWF.Core.Job
                                 catch (Exception ex)
                                 {
                                     Logger.Error(ex, $"{job.ID} がUIスレッド上で補足されない例外が発生しました。");
-                                    ExceptionUtil.ShowErrorDialog("Unhandled UI Exception.", ex);
+                                    ExceptionUtil.ShowFatalDialog("Unhandled UI Exception.", ex);
                                 }
                             }
                         }, new object[] { job, action });
