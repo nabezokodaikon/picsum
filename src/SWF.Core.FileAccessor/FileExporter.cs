@@ -10,11 +10,11 @@ namespace SWF.Core.FileAccessor
         : IFileExporter
     {
         private bool disposed = false;
-        public SemaphoreSlim Lock { get; private set; }
+        public Lock Lock { get; private set; } = new Lock();
 
         public FileExporter()
         {
-            this.Lock = new(1, 1);
+
         }
 
         ~FileExporter()
@@ -37,7 +37,7 @@ namespace SWF.Core.FileAccessor
 
             if (disposing)
             {
-                this.Lock.Dispose();
+
             }
 
             this.disposed = true;

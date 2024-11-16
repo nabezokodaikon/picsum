@@ -23,7 +23,7 @@ namespace PicSum.Job.Common
         private readonly List<ThumbnailCacheEntity> CACHE_LIST = new(CACHE_CAPACITY);
         private readonly Dictionary<string, ThumbnailCacheEntity> CACHE_DICTIONARY = new(CACHE_CAPACITY);
         private readonly FileAppender fileAppender = new();
-        private readonly object CACHE_LOCK = new();
+        private readonly Lock CACHE_LOCK = new();
 
         public ThumbnailCacher()
         {

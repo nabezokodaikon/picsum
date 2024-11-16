@@ -9,8 +9,7 @@ namespace SWF.Core.DatabaseAccessor
         : IConnection
     {
         private bool disposed = false;
-        private readonly ReaderWriterLockSlim lockObject
-            = new(LockRecursionPolicy.SupportsRecursion);
+        private readonly Lock lockObject = new();
         private readonly SQLiteConnection connection;
         private SQLiteTransaction? transaction = null;
 
@@ -71,7 +70,6 @@ namespace SWF.Core.DatabaseAccessor
 
                 this.connection.Close();
                 this.transaction?.Dispose();
-                this.lockObject.Dispose();
             }
 
             this.transaction = null;
@@ -99,7 +97,7 @@ namespace SWF.Core.DatabaseAccessor
         /// <returns>トランザクションオブジェクト</returns>
         public ITransaction BeginTransaction()
         {
-            this.lockObject.EnterWriteLock();
+            this.lockObject.Enter();
             this.transaction = this.connection.BeginTransaction();
             return new Transaction(this);
         }
@@ -119,7 +117,7 @@ namespace SWF.Core.DatabaseAccessor
             {
                 this.transaction.Dispose();
                 this.transaction = null;
-                this.lockObject.ExitWriteLock();
+                this.lockObject.Exit();
             }
         }
 
@@ -138,7 +136,7 @@ namespace SWF.Core.DatabaseAccessor
             {
                 this.transaction.Dispose();
                 this.transaction = null;
-                this.lockObject.ExitWriteLock();
+                this.lockObject.Exit();
             }
         }
 
@@ -156,7 +154,7 @@ namespace SWF.Core.DatabaseAccessor
                 throw new InvalidOperationException("トランザクションが開始されていません。");
             }
 
-            this.lockObject.EnterWriteLock();
+            this.lockObject.Enter();
             try
             {
                 using (var cmd = this.connection.CreateCommand())
@@ -183,7 +181,7 @@ namespace SWF.Core.DatabaseAccessor
             }
             finally
             {
-                this.lockObject.ExitWriteLock();
+                this.lockObject.Exit();
             }
         }
 
@@ -198,7 +196,7 @@ namespace SWF.Core.DatabaseAccessor
         {
             ArgumentNullException.ThrowIfNull(sql, nameof(sql));
 
-            this.lockObject.EnterWriteLock();
+            this.lockObject.Enter();
             try
             {
                 using (var cmd = this.connection.CreateCommand())
@@ -234,7 +232,7 @@ namespace SWF.Core.DatabaseAccessor
             }
             finally
             {
-                this.lockObject.ExitWriteLock();
+                this.lockObject.Exit();
             }
         }
 
@@ -248,7 +246,7 @@ namespace SWF.Core.DatabaseAccessor
         {
             ArgumentNullException.ThrowIfNull(sql, nameof(sql));
 
-            this.lockObject.EnterWriteLock();
+            this.lockObject.Enter();
             try
             {
                 using (var cmd = this.connection.CreateCommand())
@@ -278,7 +276,7 @@ namespace SWF.Core.DatabaseAccessor
             }
             finally
             {
-                this.lockObject.ExitWriteLock();
+                this.lockObject.Exit();
             }
         }
 
@@ -292,7 +290,7 @@ namespace SWF.Core.DatabaseAccessor
         {
             ArgumentNullException.ThrowIfNull(sql, nameof(sql));
 
-            this.lockObject.EnterWriteLock();
+            this.lockObject.Enter();
             try
             {
                 using (var cmd = this.connection.CreateCommand())
@@ -317,7 +315,7 @@ namespace SWF.Core.DatabaseAccessor
             }
             finally
             {
-                this.lockObject.ExitWriteLock();
+                this.lockObject.Exit();
             }
         }
     }

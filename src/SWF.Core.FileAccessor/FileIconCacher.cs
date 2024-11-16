@@ -12,9 +12,9 @@ namespace SWF.Core.FileAccessor
         : IFileIconCacher
     {
         private bool disposed = false;
-        private readonly object SMALL_ICON_CASH_LOCK = new();
-        private readonly object EXTRALARGE_ICON_CASH_LOCK = new();
-        private readonly object JUMBO_ICON_CASH_LOCK = new();
+        private readonly Lock SMALL_ICON_CASH_LOCK = new();
+        private readonly Lock EXTRALARGE_ICON_CASH_LOCK = new();
+        private readonly Lock JUMBO_ICON_CASH_LOCK = new();
         private readonly Dictionary<string, Bitmap> SMALL_ICON_CASH = [];
         private readonly Dictionary<string, Bitmap> EXTRALARGE_ICON_CASH = [];
         private readonly Dictionary<string, Bitmap> JUMBO_ICON_CASH = [];

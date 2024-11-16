@@ -14,7 +14,7 @@ namespace SWF.Core.ImageAccessor
         private bool disposed = false;
         private readonly List<ImageFileCacheEntity> CACHE_LIST = new(CACHE_CAPACITY);
         private readonly Dictionary<string, ImageFileCacheEntity> CACHE_DICTIONARY = new(CACHE_CAPACITY);
-        private readonly object CACHE_LOCK = new();
+        private readonly Lock CACHE_LOCK = new();
 
         public ImageFileCacher()
         {

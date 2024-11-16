@@ -6,7 +6,7 @@ namespace PicSum.Job.Common
         : IClipFiles
     {
         private bool disposed = false;
-        private readonly object LOCK = new();
+        private readonly Lock LOCK = new();
         private readonly Dictionary<string, ClipFileEntity> dic = [];
 
         public ClipFiles()
