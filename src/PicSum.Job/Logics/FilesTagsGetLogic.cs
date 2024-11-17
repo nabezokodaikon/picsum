@@ -12,7 +12,7 @@ namespace PicSum.Job.Logics
     /// ファイルタグ取得非同期ロジック
     /// </summary>
     [SupportedOSPlatform("windows10.0.17763.0")]
-    internal sealed class FilesTagInfoGetLogic(IAsyncJob job)
+    internal sealed class FilesTagsGetLogic(IAsyncJob job)
         : AbstractAsyncLogic(job)
     {
         public ListEntity<FileTagInfoEntity> Execute(string[] filePathList)

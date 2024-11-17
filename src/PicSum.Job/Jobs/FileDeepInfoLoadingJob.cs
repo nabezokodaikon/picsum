@@ -1,7 +1,6 @@
 using PicSum.Job.Logics;
 using PicSum.Job.Parameters;
 using PicSum.Job.Results;
-using SWF.Core.Base;
 using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
 using SWF.Core.Job;
@@ -30,35 +29,32 @@ namespace PicSum.Job.Jobs
                 FilePathList = param.FilePathList,
             };
 
-            using (TimeMeasuring.Run(true, "FileDeepInfoGetJob"))
+            if (param.FilePathList.Length == 1)
             {
-                if (param.FilePathList.Length == 1)
+                try
                 {
-                    try
-                    {
-                        var getInfoLogic = new FileDeepInfoGetLogic(this);
-                        var filePath = param.FilePathList[0];
-                        result.FileInfo = getInfoLogic.Execute(filePath, param.ThumbnailSize, false);
+                    var deepInfoGetLogic = new FileDeepInfoGetLogic(this);
+                    var filePath = param.FilePathList[0];
+                    result.FileInfo = deepInfoGetLogic.Execute(filePath, param.ThumbnailSize, false);
 
-                        this.CheckCancel();
-                    }
-                    catch (JobCancelException)
-                    {
-                        result.FileInfo?.Thumbnail?.ThumbnailImage?.Dispose();
-                        throw;
-                    }
-                    catch (FileUtilException ex)
-                    {
-                        throw new JobException(this.ID, ex);
-                    }
-                    catch (ImageUtilException ex)
-                    {
-                        throw new JobException(this.ID, ex);
-                    }
+                    this.CheckCancel();
                 }
-
-                result.TagInfoList = [];
+                catch (JobCancelException)
+                {
+                    result.FileInfo?.Thumbnail?.ThumbnailImage?.Dispose();
+                    throw;
+                }
+                catch (FileUtilException ex)
+                {
+                    throw new JobException(this.ID, ex);
+                }
+                catch (ImageUtilException ex)
+                {
+                    throw new JobException(this.ID, ex);
+                }
             }
+
+            result.TagInfoList = [];
 
             this.Callback(result);
         }

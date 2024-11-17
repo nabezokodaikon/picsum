@@ -1,6 +1,3 @@
-using PicSum.DatabaseAccessor.Connection;
-using PicSum.DatabaseAccessor.Dto;
-using PicSum.DatabaseAccessor.Sql;
 using PicSum.Job.Entities;
 using SWF.Core.Base;
 using SWF.Core.FileAccessor;
@@ -157,29 +154,6 @@ namespace PicSum.Job.Logics
                         }
                     }
                 }
-            }
-
-            try
-            {
-                this.CheckCancel();
-
-                var sql = new FileInfoReadSql(info.FilePath);
-                var dto = Instance<IFileInfoDB>.Value.ReadLine<FileInfoDto>(sql);
-                if (!dto.Equals(default(FileInfoDto)))
-                {
-                    info.Rating = dto.Rating;
-                }
-                else
-                {
-                    info.Rating = 0;
-                }
-
-                this.CheckCancel();
-            }
-            catch (JobCancelException)
-            {
-                info.Thumbnail?.ThumbnailImage?.Dispose();
-                throw;
             }
 
             return info;

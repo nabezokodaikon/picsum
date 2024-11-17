@@ -24,6 +24,8 @@ namespace PicSum.Job.Jobs
                 throw new ArgumentException("ファイルパスリストがNULLです。", nameof(param));
             }
 
+            this.CheckCancel();
+
             var result = new FileDeepInfoGetResult
             {
                 FilePathList = param.FilePathList,
@@ -33,9 +35,14 @@ namespace PicSum.Job.Jobs
             {
                 try
                 {
-                    var getInfoLogic = new FileDeepInfoGetLogic(this);
+                    var deepInfoGetLogic = new FileDeepInfoGetLogic(this);
                     var filePath = param.FilePathList[0];
-                    result.FileInfo = getInfoLogic.Execute(filePath, param.ThumbnailSize, true);
+                    result.FileInfo = deepInfoGetLogic.Execute(filePath, param.ThumbnailSize, true);
+
+                    this.CheckCancel();
+
+                    var ratingGetLogic = new FileRatingGetLogic(this);
+                    result.FileInfo.Rating = ratingGetLogic.Execute(filePath);
 
                     this.CheckCancel();
                 }
@@ -58,8 +65,8 @@ namespace PicSum.Job.Jobs
             {
                 try
                 {
-                    var logic = new FilesTagInfoGetLogic(this);
-                    result.TagInfoList = logic.Execute(result.FilePathList);
+                    var tagsGetLogic = new FilesTagsGetLogic(this);
+                    result.TagInfoList = tagsGetLogic.Execute(result.FilePathList);
 
                     this.CheckCancel();
                 }
