@@ -63,8 +63,7 @@ namespace PicSum.UIComponent.Contents.FileList
             };
 
             Instance<JobCaller>.Value.FavoriteDirectoriesGetJob.Value
-                .Reset()
-                .Callback(_ =>
+                .StartJob(this, param, _ =>
                 {
                     if (this.disposed)
                     {
@@ -72,9 +71,7 @@ namespace PicSum.UIComponent.Contents.FileList
                     }
 
                     this.SearchJob_Callback(_);
-                })
-                .BeginCancel()
-                .StartJob(this, param);
+                });
 
             base.OnLoad(e);
         }

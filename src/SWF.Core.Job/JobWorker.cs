@@ -12,15 +12,11 @@ namespace SWF.Core.Job
         where TJobParameter : IJobParameter
         where TJobResult : IJobResult
     {
-        public ITwoWayJob<TJob, TJobParameter, TJobResult> Reset();
-        public ITwoWayJob<TJob, TJobParameter, TJobResult> Callback(Action<TJobResult> action);
-        public ITwoWayJob<TJob, TJobParameter, TJobResult> Cancel(Action action);
-        public ITwoWayJob<TJob, TJobParameter, TJobResult> Catch(Action<JobException> action);
-        public ITwoWayJob<TJob, TJobParameter, TJobResult> Complete(Action action);
+        public void StartJob(ISender sender, TJobParameter? parameter, Action<TJobResult>? callback);
+        public void StartJob(ISender sender, Action<TJobResult> callback);
         public void StartJob(ISender sender, TJobParameter parameter);
         public void StartJob(ISender sender);
-        public ITwoWayJob<TJob, TJobParameter, TJobResult> BeginCancel();
-        public ITwoWayJob<TJob, TJobParameter, TJobResult> WaitJobComplete();
+        public void BeginCancel();
     }
 
     public interface ITwoWayJob<TJob, TJobResult>
@@ -63,11 +59,6 @@ namespace SWF.Core.Job
         private readonly ConcurrentQueue<TJob> jobQueue = new();
         private readonly CancellationTokenSource source = new();
 
-        private Action<TJobResult>? callbackAction;
-        private Action? cancelAction;
-        private Action<JobException>? catchAction;
-        private Action? completeAction;
-
         public TwoWayThread(SynchronizationContext? context, IThreadWrapper thread)
         {
             ArgumentNullException.ThrowIfNull(context, nameof(context));
@@ -105,102 +96,70 @@ namespace SWF.Core.Job
 
                 Logger.Debug("ジョブ実行スレッドの終了を待機します。");
                 this.thread.Wait();
-                this.thread.Dispose();
-                this.source.Dispose();
 
                 Logger.Debug($"{this.threadName}: ジョブ実行スレッドが終了しました。");
+                this.thread.Dispose();
+                this.source.Dispose();
             }
 
             this.disposed = true;
         }
 
-        public ITwoWayJob<TJob, TJobParameter, TJobResult> Callback(Action<TJobResult> action)
-        {
-            ArgumentNullException.ThrowIfNull(action, nameof(action));
-
-            if (this.callbackAction != null)
-            {
-                throw new InvalidOperationException("コールバックアクションが初期化されていません。");
-            }
-
-            this.callbackAction = action;
-            return this;
-        }
-
-        public ITwoWayJob<TJob, TJobParameter, TJobResult> Reset()
-        {
-            this.callbackAction = null;
-            this.cancelAction = null;
-            this.catchAction = null;
-            this.completeAction = null;
-
-            return this;
-        }
-
-        public ITwoWayJob<TJob, TJobParameter, TJobResult> Cancel(Action action)
-        {
-            ArgumentNullException.ThrowIfNull(action, nameof(action));
-
-            if (this.cancelAction != null)
-            {
-                throw new InvalidOperationException("キャンセルアクションが初期化されていません。");
-            }
-
-            this.cancelAction = action;
-            return this;
-        }
-
-        public ITwoWayJob<TJob, TJobParameter, TJobResult> Catch(Action<JobException> action)
-        {
-            ArgumentNullException.ThrowIfNull(action, nameof(action));
-
-            if (this.catchAction != null)
-            {
-                throw new InvalidOperationException("例外アクションが初期化されていません。");
-            }
-
-            this.catchAction = action;
-            return this;
-        }
-
-        public ITwoWayJob<TJob, TJobParameter, TJobResult> Complete(Action action)
-        {
-            ArgumentNullException.ThrowIfNull(action, nameof(action));
-
-            if (this.completeAction != null)
-            {
-                throw new InvalidOperationException("完了アクションが初期化されていません。");
-            }
-
-            this.completeAction = action;
-            return this;
-        }
-
-        public ITwoWayJob<TJob, TJobParameter, TJobResult> BeginCancel()
+        public void BeginCancel()
         {
             foreach (var job in this.jobQueue.ToArray())
             {
                 job.BeginCancel();
             }
-
-            return this;
         }
 
-        public ITwoWayJob<TJob, TJobParameter, TJobResult> WaitJobComplete()
+        public void StartJob(ISender sender, TJobParameter? parameter, Action<TJobResult>? callback)
         {
-            Logger.Debug("ジョブキューの完了を待ちます。");
+            ArgumentNullException.ThrowIfNull(sender, nameof(sender));
 
-            foreach (var job in this.jobQueue.ToArray())
+            this.BeginCancel();
+            this.thread.Start(() => this.DoWork(this.source.Token));
+
+            var job = new TJob
             {
-                while (!job.IsCompleted)
+                Sender = sender,
+                Parameter = parameter
+            };
+
+            if (callback != null)
+            {
+                job.CallbackAction = result =>
                 {
-                    Thread.Sleep(1);
-                }
+                    if (job.CanUIThreadAccess())
+                    {
+                        this.context.Post(_ =>
+                        {
+                            if (job.CanUIThreadAccess())
+                            {
+                                try
+                                {
+                                    callback.Invoke(result);
+                                }
+                                catch (Exception ex)
+                                {
+                                    Logger.Error(ex, $"{job.ID} がUIスレッド上で補足されない例外が発生しました。");
+                                    ExceptionUtil.ShowFatalDialog("Unhandled UI Exception.", ex);
+                                }
+                            }
+                        }, null);
+                    }
+                };
             }
 
-            Logger.Debug("ジョブキューが完了しました。");
+            this.jobQueue.Enqueue(job);
+        }
 
-            return this;
+        public void StartJob(ISender sender, Action<TJobResult> callback)
+        {
+            ArgumentNullException.ThrowIfNull(sender, nameof(sender));
+            ArgumentNullException.ThrowIfNull(callback, nameof(callback));
+
+            this.StartJob(sender, default, callback);
         }
 
         public void StartJob(ISender sender, TJobParameter parameter)
@@ -208,162 +167,14 @@ namespace SWF.Core.Job
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
             ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
 
-            this.thread.Start(() => this.DoWork(this.source.Token));
-
-            var job = this.CreateJob();
-            job.Sender = sender;
-            job.Parameter = parameter;
-            this.jobQueue.Enqueue(job);
+            this.StartJob(sender, parameter, null);
         }
 
         public void StartJob(ISender sender)
         {
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
 
-            this.thread.Start(() => this.DoWork(this.source.Token));
-
-            var job = this.CreateJob();
-            job.Sender = sender;
-            this.jobQueue.Enqueue(job);
-        }
-
-        protected TJob CreateJob()
-        {
-            var job = new TJob();
-
-            if (this.callbackAction != null)
-            {
-                var action = this.callbackAction;
-                job.CallbackAction = result =>
-                {
-                    if (job.CanUIThreadAccess())
-                    {
-                        this.context.Post(state =>
-                        {
-#pragma warning disable CS8600
-                            var objects = (object[])state;
-#pragma warning restore CS8600
-#pragma warning disable CS8602
-                            var innerJob = (TJob)objects[0];
-#pragma warning restore CS8602
-                            var innerAction = (Action<TJobResult>)objects[1];
-                            if (innerJob.CanUIThreadAccess())
-                            {
-                                try
-                                {
-                                    innerAction.Invoke(result);
-                                }
-                                catch (Exception ex)
-                                {
-                                    Logger.Error(ex, $"{job.ID} がUIスレッド上で補足されない例外が発生しました。");
-                                    ExceptionUtil.ShowFatalDialog("Unhandled UI Exception.", ex);
-                                }
-                            }
-                        }, new object[] { job, action });
-                    }
-                };
-            }
-
-            if (this.cancelAction != null)
-            {
-                var action = this.cancelAction;
-                job.CancelAction = () =>
-                {
-                    if (job.CanUIThreadAccess())
-                    {
-                        this.context.Post(state =>
-                        {
-#pragma warning disable CS8600
-                            var objects = (object[])state;
-#pragma warning restore CS8600
-#pragma warning disable CS8602
-                            var innerJob = (TJob)objects[0];
-#pragma warning restore CS8602
-                            var innerAction = (Action)objects[1];
-                            if (innerJob.CanUIThreadAccess())
-                            {
-                                try
-                                {
-                                    innerAction.Invoke();
-                                }
-                                catch (Exception ex)
-                                {
-                                    Logger.Error(ex, $"{job.ID} がUIスレッド上で補足されない例外が発生しました。");
-                                    ExceptionUtil.ShowFatalDialog("Unhandled UI Exception.", ex);
-                                }
-                            }
-                        }, new object[] { job, action });
-                    }
-                };
-            }
-
-            if (this.catchAction != null)
-            {
-                var action = this.catchAction;
-                job.CatchAction = exception =>
-                {
-                    if (job.CanUIThreadAccess())
-                    {
-                        this.context.Post(state =>
-                        {
-#pragma warning disable CS8600
-                            var objects = (object[])state;
-#pragma warning restore CS8600
-#pragma warning disable CS8602
-                            var innerJob = (TJob)objects[0];
-#pragma warning restore CS8602
-                            var innerAction = (Action<JobException>)objects[1];
-                            if (innerJob.CanUIThreadAccess())
-                            {
-                                try
-                                {
-                                    innerAction.Invoke(exception);
-                                }
-                                catch (Exception ex)
-                                {
-                                    Logger.Error(ex, $"{job.ID} がUIスレッド上で補足されない例外が発生しました。");
-                                    ExceptionUtil.ShowFatalDialog("Unhandled UI Exception.", ex);
-                                }
-                            }
-                        }, new object[] { job, action });
-                    }
-                };
-            }
-
-            if (this.completeAction != null)
-            {
-                var action = this.completeAction;
-                job.CompleteAction = () =>
-                {
-                    if (job.CanUIThreadAccess())
-                    {
-                        this.context.Post(state =>
-                        {
-#pragma warning disable CS8600
-                            var objects = (object[])state;
-#pragma warning restore CS8600
-#pragma warning disable CS8602
-                            var innerJob = (TJob)objects[0];
-#pragma warning restore CS8602
-                            var innerAction = (Action)objects[1];
-                            if (innerJob.CanUIThreadAccess())
-                            {
-                                try
-                                {
-                                    innerAction.Invoke();
-                                }
-                                catch (Exception ex)
-                                {
-                                    Logger.Error(ex, $"{job.ID} がUIスレッド上で補足されない例外が発生しました。");
-                                    ExceptionUtil.ShowFatalDialog("Unhandled UI Exception.", ex);
-                                }
-                            }
-                        }, new object[] { job, action });
-                    }
-                };
-            }
-
-            return job;
+            this.StartJob(sender, default, null);
         }
 
         private void DoWork(CancellationToken token)
@@ -392,13 +203,11 @@ namespace SWF.Core.Job
                         }
                         catch (JobCancelException)
                         {
-                            currentJob.CancelAction?.Invoke();
                             Logger.Debug($"{currentJob.ID} がキャンセルされました。");
                         }
                         catch (JobException ex)
                         {
                             Logger.Error($"{currentJob.ID} {ex}");
-                            currentJob.CatchAction?.Invoke(ex);
                         }
                         catch (Exception ex)
                         {
@@ -406,9 +215,6 @@ namespace SWF.Core.Job
                         }
                         finally
                         {
-                            currentJob.CompleteAction?.Invoke();
-                            currentJob.IsCompleted = true;
-
                             if (this.jobQueue.TryDequeue(out var dequeueJob))
                             {
                                 if (currentJob != dequeueJob)

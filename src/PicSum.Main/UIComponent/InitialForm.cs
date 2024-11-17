@@ -44,13 +44,10 @@ namespace PicSum.Main.UIComponent
         protected override void OnLoad(EventArgs e)
         {
             Instance<JobCaller>.Value.GCCollectRunJob.Value
-                .Reset()
-                .BeginCancel()
                 .StartJob(this);
 
             Instance<JobCaller>.Value.PipeServerJob.Value
-                .Reset()
-                .Callback(_ =>
+                .StartJob(this, _ =>
                 {
                     if (this.disposed)
                     {
@@ -85,9 +82,7 @@ namespace PicSum.Main.UIComponent
                         form.RestoreWindowState();
                     }
                     form.Activate();
-                })
-                .BeginCancel()
-                .StartJob(this);
+                });
 
             var form = this.browserManager.GetActiveBrowser();
             form.Show();

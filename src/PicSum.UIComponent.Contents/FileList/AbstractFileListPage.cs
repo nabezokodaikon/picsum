@@ -827,8 +827,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 };
 
                 Instance<JobCaller>.Value.ThumbnailsGetJob.Value
-                    .Reset()
-                    .Callback(_ =>
+                    .StartJob(this, param, _ =>
                     {
                         if (this.disposed)
                         {
@@ -836,9 +835,7 @@ namespace PicSum.UIComponent.Contents.FileList
                         }
 
                         this.GetThumbnailsJob_Callback(_);
-                    })
-                    .BeginCancel()
-                    .StartJob(this, param);
+                    });
             }
         }
 
@@ -1137,8 +1134,7 @@ namespace PicSum.UIComponent.Contents.FileList
                         };
 
                         Instance<JobCaller>.Value.MultiFilesExportJob.Value
-                            .Reset()
-                            .Callback(_ =>
+                            .StartJob(this, param, _ =>
                             {
                                 if (this.disposed)
                                 {
@@ -1146,9 +1142,7 @@ namespace PicSum.UIComponent.Contents.FileList
                                 }
 
                                 this.MultiFilesExportJob_Callback(_);
-                            })
-                            .BeginCancel()
-                            .StartJob(this, param);
+                            });
                         CommonConfig.Instance.ExportDirectoryPath = fbd.SelectedPath;
                     }
                 }

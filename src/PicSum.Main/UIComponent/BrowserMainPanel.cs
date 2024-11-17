@@ -35,8 +35,7 @@ namespace PicSum.Main.UIComponent
                     Instance<JobCaller>.Value.StartDirectoryViewHistoryAddJob(sender, new ValueParameter<string>(dir));
 
                     Instance<JobCaller>.Value.ImageFilesGetByDirectoryJob.Value
-                        .Reset()
-                        .Callback(e =>
+                        .StartJob(sender, subParamter, e =>
                         {
                             var title = FileUtil.IsDirectory(subParamter.FilePath) ?
                             FileUtil.GetFileName(subParamter.FilePath) :
@@ -47,9 +46,7 @@ namespace PicSum.Main.UIComponent
                                 e.SelectedFilePath, title,
                                 Instance<IFileIconCacher>.Value.SmallDirectoryIcon);
                             parameter.OnGetImageFiles(eventArgs);
-                        })
-                        .BeginCancel()
-                        .StartJob(sender, subParamter);
+                        });
                 };
             };
         }
@@ -636,8 +633,7 @@ namespace PicSum.Main.UIComponent
         private void TagDropToolButton_DropDownOpening(object sender, DropDownOpeningEventArgs e)
         {
             Instance<JobCaller>.Value.TagsGetJob.Value
-                .Reset()
-                .Callback(_ =>
+                .StartJob(this, _ =>
                 {
                     if (this.disposed)
                     {
@@ -645,9 +641,7 @@ namespace PicSum.Main.UIComponent
                     }
 
                     this.GetTagListJob_Callback(_);
-                })
-                .BeginCancel()
-                .StartJob(this);
+                });
         }
 
         private void TagDropToolButton_ItemMouseClick(object sender, ItemMouseClickEventArgs e)

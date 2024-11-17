@@ -180,8 +180,7 @@ namespace PicSum.UIComponent.AddressBar
             var param = new ValueParameter<string>(filePath);
 
             Instance<JobCaller>.Value.AddressInfoGetJob.Value
-                .Reset()
-                .Callback(_ =>
+                .StartJob(this, param, _ =>
                 {
                     if (this.disposed)
                     {
@@ -189,16 +188,7 @@ namespace PicSum.UIComponent.AddressBar
                     }
 
                     this.GetAddressInfoJob_Callback(_);
-                })
-                .Catch(ex =>
-                {
-                    this.currentDirectoryPath = string.Empty;
-                    this.ClearAddressItems();
-                    this.Invalidate();
-                    this.Update();
-                })
-                .BeginCancel()
-                .StartJob(this, param);
+                });
         }
 
         protected override void Dispose(bool disposing)

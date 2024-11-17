@@ -8,23 +8,10 @@ namespace SWF.Core.Job
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         private long isCancel = 0;
-        private long isCompleted = 0;
 
         internal ISender? Sender { get; set; } = null;
 
         public JobID ID { get; private set; } = JobID.GetNew();
-
-        internal bool IsCompleted
-        {
-            get
-            {
-                return Interlocked.Read(ref this.isCompleted) == 1;
-            }
-            set
-            {
-                Interlocked.Exchange(ref this.isCompleted, Convert.ToInt64(value));
-            }
-        }
 
         private bool IsCancel
         {
@@ -82,13 +69,8 @@ namespace SWF.Core.Job
         where TParameter : IJobParameter
         where TResult : IJobResult
     {
-        protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
-        internal TParameter? Parameter { get; set; }
+        internal TParameter? Parameter { get; set; } = default(TParameter);
         internal Action<TResult>? CallbackAction { get; set; } = null;
-        internal Action? CancelAction { get; set; } = null;
-        internal Action<JobException>? CatchAction { get; set; } = null;
-        internal Action? CompleteAction { get; set; } = null;
 
         public AbstractTwoWayJob()
         {

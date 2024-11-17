@@ -36,8 +36,7 @@ namespace PicSum.UIComponent.Contents.FileList
         protected override void OnLoad(EventArgs e)
         {
             Instance<JobCaller>.Value.BookmarksGetJob.Value
-                .Reset()
-                .Callback(_ =>
+                .StartJob(this, _ =>
                 {
                     if (this.disposed)
                     {
@@ -45,9 +44,7 @@ namespace PicSum.UIComponent.Contents.FileList
                     }
 
                     this.SearchJob_Callback(_);
-                })
-                .BeginCancel()
-                .StartJob(this);
+                });
 
             base.OnLoad(e);
         }

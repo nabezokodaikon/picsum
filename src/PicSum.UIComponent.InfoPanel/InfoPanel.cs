@@ -131,8 +131,7 @@ namespace PicSum.UIComponent.InfoPanel
                 this.isLoading = true;
 
                 Instance<JobCaller>.Value.FileDeepInfoLoadingJob.Value
-                    .Reset()
-                    .Callback(_ =>
+                    .StartJob(this, param, _ =>
                     {
                         if (this.disposed)
                         {
@@ -145,13 +144,10 @@ namespace PicSum.UIComponent.InfoPanel
                         }
 
                         this.GetFileInfoJob_Callback(_);
-                    })
-                    .BeginCancel()
-                    .StartJob(this, param);
+                    });
 
                 Instance<JobCaller>.Value.FileDeepInfoGetJob.Value
-                    .Reset()
-                    .Callback(_ =>
+                    .StartJob(this, param, _ =>
                     {
                         if (this.disposed)
                         {
@@ -161,9 +157,7 @@ namespace PicSum.UIComponent.InfoPanel
                         this.isLoading = false;
 
                         this.GetFileInfoJob_Callback(_);
-                    })
-                    .BeginCancel()
-                    .StartJob(this, param);
+                    });
             }
             else
             {
@@ -580,8 +574,7 @@ namespace PicSum.UIComponent.InfoPanel
         private void WideComboBox_DropDownOpening(object sender, DropDownOpeningEventArgs e)
         {
             Instance<JobCaller>.Value.TagsGetJob.Value
-                .Reset()
-                .Callback(_ =>
+                .StartJob(this, _ =>
                 {
                     if (this.disposed)
                     {
@@ -589,9 +582,7 @@ namespace PicSum.UIComponent.InfoPanel
                     }
 
                     this.GetTagListJob_Callback(_);
-                })
-                .BeginCancel()
-                .StartJob(this);
+                });
         }
 
         private void WideComboBox_AddItem(object sender, AddItemEventArgs e)

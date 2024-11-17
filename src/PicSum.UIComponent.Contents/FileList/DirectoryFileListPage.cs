@@ -61,8 +61,7 @@ namespace PicSum.UIComponent.Contents.FileList
             };
 
             Instance<JobCaller>.Value.FilesGetByDirectoryJob.Value
-                .Reset()
-                .Callback(_ =>
+                .StartJob(this, param, _ =>
                 {
                     if (this.disposed)
                     {
@@ -70,9 +69,7 @@ namespace PicSum.UIComponent.Contents.FileList
                     }
 
                     this.SearchJob_Callback(_);
-                })
-                .BeginCancel()
-                .StartJob(this, param);
+                });
 
             base.OnLoad(e);
         }
@@ -134,8 +131,7 @@ namespace PicSum.UIComponent.Contents.FileList
             };
 
             Instance<JobCaller>.Value.NextDirectoryGetJob.Value
-                .Reset()
-                .Callback(_ =>
+                .StartJob(this, param, _ =>
                 {
                     if (this.disposed)
                     {
@@ -143,9 +139,7 @@ namespace PicSum.UIComponent.Contents.FileList
                     }
 
                     this.GetNextDirectoryProcess_Callback(_);
-                })
-                .BeginCancel()
-                .StartJob(this, param);
+                });
         }
 
         protected override void OnMoveNextButtonClick(EventArgs e)
@@ -162,8 +156,7 @@ namespace PicSum.UIComponent.Contents.FileList
             };
 
             Instance<JobCaller>.Value.NextDirectoryGetJob.Value
-                .Reset()
-                .Callback(_ =>
+                .StartJob(this, param, _ =>
                 {
                     if (this.disposed)
                     {
@@ -171,9 +164,7 @@ namespace PicSum.UIComponent.Contents.FileList
                     }
 
                     this.GetNextDirectoryProcess_Callback(_);
-                })
-                .BeginCancel()
-                .StartJob(this, param);
+                });
         }
 
         protected override Action<ISender> GetImageFilesGetAction(ImageViewerPageParameter param)

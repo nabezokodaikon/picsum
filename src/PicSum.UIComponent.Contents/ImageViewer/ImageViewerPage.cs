@@ -617,13 +617,10 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 this.isLoading = true;
 
                 Instance<JobCaller>.Value.ImageFileCacheJob.Value
-                    .Reset()
-                    .BeginCancel()
                     .StartJob(this, [.. nextFiles, .. prevFiles]);
 
                 Instance<JobCaller>.Value.ImageFileLoadingJob.Value
-                    .Reset()
-                    .Callback(_ =>
+                    .StartJob(this, param, _ =>
                     {
                         if (this.disposed)
                         {
@@ -636,13 +633,10 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                         }
 
                         this.ImageFileReadJob_Callback(_);
-                    })
-                    .BeginCancel()
-                    .StartJob(this, param);
+                    });
 
                 Instance<JobCaller>.Value.ImageFileReadJob.Value
-                    .Reset()
-                    .Callback(r =>
+                    .StartJob(this, param, r =>
                     {
                         if (this.disposed)
                         {
@@ -664,9 +658,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                         {
                             this.ImageFileReadJob_Callback(r);
                         }
-                    })
-                    .BeginCancel()
-                    .StartJob(this, param);
+                    });
             }
         }
 

@@ -87,8 +87,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 };
 
                 Instance<JobCaller>.Value.FilesGetByDirectoryJob.Value
-                    .Reset()
-                    .Callback(e =>
+                    .StartJob(sender, jobParameter, e =>
                     {
                         var imageFiles = e.FileInfoList
                             .Where(fileInfo => fileInfo.IsImageFile);
@@ -104,9 +103,7 @@ namespace PicSum.UIComponent.Contents.FileList
                         var eventArgs = new GetImageFilesEventArgs(
                             sortImageFiles, param.SelectedFilePath, param.PageTitle, param.PageIcon);
                         param.OnGetImageFiles(eventArgs);
-                    })
-                    .BeginCancel()
-                    .StartJob(sender, jobParameter);
+                    });
             };
         }
 
@@ -123,8 +120,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 };
 
                 Instance<JobCaller>.Value.FilesGetByDirectoryJob.Value
-                    .Reset()
-                    .Callback(e =>
+                    .StartJob(sender, jobParameter, e =>
                     {
                         if (!FileUtil.IsImageFile(param.SelectedFilePath))
                         {
@@ -142,9 +138,7 @@ namespace PicSum.UIComponent.Contents.FileList
                         var eventArgs = new GetImageFilesEventArgs(
                             imageFiles, param.SelectedFilePath, title, Instance<IFileIconCacher>.Value.SmallDirectoryIcon);
                         param.OnGetImageFiles(eventArgs);
-                    })
-                    .BeginCancel()
-                    .StartJob(sender, jobParameter);
+                    });
             };
         }
 
@@ -161,8 +155,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 };
 
                 Instance<JobCaller>.Value.FilesGetByRatingJob.Value
-                    .Reset()
-                    .Callback(e =>
+                    .StartJob(sender, jobParameter, e =>
                     {
                         var imageFiles = e
                             .Where(fileInfo => fileInfo.IsImageFile);
@@ -178,9 +171,7 @@ namespace PicSum.UIComponent.Contents.FileList
                         var eventArgs = new GetImageFilesEventArgs(
                             sortImageFiles, param.SelectedFilePath, param.PageTitle, param.PageIcon);
                         param.OnGetImageFiles(eventArgs);
-                    })
-                    .BeginCancel()
-                    .StartJob(sender, jobParameter);
+                    });
             };
         }
 
@@ -191,8 +182,7 @@ namespace PicSum.UIComponent.Contents.FileList
             return sender =>
             {
                 Instance<JobCaller>.Value.FilesGetByClipJob.Value
-                    .Reset()
-                    .Callback(e =>
+                    .StartJob(sender, e =>
                     {
                         var sortImageFiles = e
                             .Where(_ => _.IsImageFile)
@@ -207,9 +197,7 @@ namespace PicSum.UIComponent.Contents.FileList
                         var eventArgs = new GetImageFilesEventArgs(
                             sortImageFiles, param.SelectedFilePath, param.PageTitle, param.PageIcon);
                         param.OnGetImageFiles(eventArgs);
-                    })
-                    .BeginCancel()
-                    .StartJob(sender);
+                    });
             };
         }
 
@@ -226,8 +214,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 };
 
                 Instance<JobCaller>.Value.FilesGetByTagJob.Value
-                    .Reset()
-                    .Callback(e =>
+                    .StartJob(sender, jobParameter, e =>
                     {
                         var imageFiles = e
                             .Where(fileInfo => fileInfo.IsImageFile);
@@ -243,9 +230,7 @@ namespace PicSum.UIComponent.Contents.FileList
                         var eventArgs = new GetImageFilesEventArgs(
                             sortImageFiles, param.SelectedFilePath, param.PageTitle, param.PageIcon);
                         param.OnGetImageFiles(eventArgs);
-                    })
-                    .BeginCancel()
-                    .StartJob(sender, jobParameter);
+                    });
             };
         }
     }

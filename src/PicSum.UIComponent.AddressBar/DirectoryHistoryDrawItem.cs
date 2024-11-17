@@ -63,8 +63,7 @@ namespace PicSum.UIComponent.AddressBar
             if (e.Button == MouseButtons.Left)
             {
                 Instance<JobCaller>.Value.DirectoryViewHistoryGetJob.Value
-                    .Reset()
-                    .Callback(_ =>
+                    .StartJob(this.AddressBar, _ =>
                     {
                         if (this.disposed)
                         {
@@ -72,9 +71,7 @@ namespace PicSum.UIComponent.AddressBar
                         }
 
                         this.DirectoryViewHistoryGetJob_Callback(_);
-                    })
-                    .BeginCancel()
-                    .StartJob(this.AddressBar);
+                    });
             }
         }
 
