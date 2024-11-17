@@ -1,6 +1,5 @@
 using NLog;
 using SWF.Core.Base;
-using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Runtime.Versioning;
 
@@ -56,8 +55,20 @@ namespace SWF.Core.Job
         private readonly string threadName;
         private readonly IThreadWrapper thread;
         private readonly SynchronizationContext context;
-        private readonly ConcurrentQueue<TJob> jobQueue = new();
         private readonly CancellationTokenSource source = new();
+        private TJob? currentJob = null;
+
+        private TJob? CurrentJob
+        {
+            get
+            {
+                return Interlocked.CompareExchange(ref this.currentJob, null, null);
+            }
+            set
+            {
+                Interlocked.Exchange(ref this.currentJob, value);
+            }
+        }
 
         public TwoWayThread(SynchronizationContext? context, IThreadWrapper thread)
         {
@@ -107,10 +118,8 @@ namespace SWF.Core.Job
 
         public void BeginCancel()
         {
-            foreach (var job in this.jobQueue.ToArray())
-            {
-                job.BeginCancel();
-            }
+            var job = this.CurrentJob;
+            job?.BeginCancel();
         }
 
         public void StartJob(ISender sender, TJobParameter? parameter, Action<TJobResult>? callback)
@@ -151,7 +160,7 @@ namespace SWF.Core.Job
                 };
             }
 
-            this.jobQueue.Enqueue(job);
+            this.CurrentJob = job;
         }
 
         public void StartJob(ISender sender, Action<TJobResult> callback)
@@ -183,6 +192,8 @@ namespace SWF.Core.Job
 
             Logger.Debug("ジョブ実行スレッドが開始されました。");
 
+            TJob? previewJob = null;
+
             try
             {
                 while (true)
@@ -193,52 +204,40 @@ namespace SWF.Core.Job
                         token.ThrowIfCancellationRequested();
                     }
 
-                    if (this.jobQueue.TryPeek(out var currentJob))
-                    {
-                        Logger.Debug($"{currentJob.ID} を実行します。");
-                        var sw = Stopwatch.StartNew();
-                        try
-                        {
-                            currentJob.ExecuteWrapper();
-                        }
-                        catch (JobCancelException)
-                        {
-                            Logger.Debug($"{currentJob.ID} がキャンセルされました。");
-                        }
-                        catch (JobException ex)
-                        {
-                            Logger.Error($"{currentJob.ID} {ex}");
-                        }
-                        catch (Exception ex)
-                        {
-                            Logger.Error(ex, $"{currentJob.ID} で補足されない例外が発生しました。");
-                        }
-                        finally
-                        {
-                            if (this.jobQueue.TryDequeue(out var dequeueJob))
-                            {
-                                if (currentJob != dequeueJob)
-                                {
-#pragma warning disable CA2219
-                                    throw new InvalidOperationException("キューからPeekしたジョブとDequeueしたジョブが一致しません。");
-#pragma warning restore CA2219
-                                }
-                            }
-                            else
-                            {
-#pragma warning disable CA2219
-                                throw new InvalidOperationException("他のスレッドでキューの操作が行われました。");
-#pragma warning restore CA2219
-                            }
-
-                            sw.Stop();
-                            Logger.Debug($"{currentJob.ID} が終了しました。{sw.ElapsedMilliseconds} ms");
-                        }
-                    }
-                    else
+                    var job = this.CurrentJob;
+                    if (job == null || job == previewJob)
                     {
                         token.WaitHandle.WaitOne(1);
+                        continue;
                     }
+
+                    previewJob = job;
+
+                    Logger.Debug($"{job.ID} を実行します。");
+                    var sw = Stopwatch.StartNew();
+                    try
+                    {
+                        job.ExecuteWrapper();
+                    }
+                    catch (JobCancelException)
+                    {
+                        Logger.Debug($"{job.ID} がキャンセルされました。");
+                    }
+                    catch (JobException ex)
+                    {
+                        Logger.Error($"{job.ID} {ex}");
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.Error(ex, $"{job.ID} で補足されない例外が発生しました。");
+                    }
+                    finally
+                    {
+                        sw.Stop();
+                        Logger.Debug($"{job.ID} が終了しました。{sw.ElapsedMilliseconds} ms");
+                    }
+
+                    token.WaitHandle.WaitOne(1);
                 }
             }
             catch (OperationCanceledException)
