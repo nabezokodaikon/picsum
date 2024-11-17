@@ -57,29 +57,16 @@ namespace SWF.Core.Job
 
         private bool disposed = false;
 
-        private long isThreadCancel = 0;
-
         private readonly string threadName;
         private readonly IThreadWrapper thread;
         private readonly SynchronizationContext context;
         private readonly ConcurrentQueue<TJob> jobQueue = new();
+        private readonly CancellationTokenSource source = new();
 
         private Action<TJobResult>? callbackAction;
         private Action? cancelAction;
         private Action<JobException>? catchAction;
         private Action? completeAction;
-
-        private bool IsThreadCancel
-        {
-            get
-            {
-                return Interlocked.Read(ref this.isThreadCancel) == 1;
-            }
-            set
-            {
-                Interlocked.Exchange(ref this.isThreadCancel, Convert.ToInt64(value));
-            }
-        }
 
         public TwoWayThread(SynchronizationContext? context, IThreadWrapper thread)
         {
@@ -114,11 +101,12 @@ namespace SWF.Core.Job
                 this.BeginCancel();
 
                 Logger.Debug("ジョブ実行スレッドにキャンセルリクエストを送ります。");
-                this.IsThreadCancel = true;
+                this.source.Cancel();
 
                 Logger.Debug("ジョブ実行スレッドの終了を待機します。");
                 this.thread.Wait();
                 this.thread.Dispose();
+                this.source.Dispose();
 
                 Logger.Debug($"{this.threadName}: ジョブ実行スレッドが終了しました。");
             }
@@ -220,7 +208,7 @@ namespace SWF.Core.Job
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
             ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
 
-            this.thread.Start(this.DoWork);
+            this.thread.Start(() => this.DoWork(this.source.Token));
 
             var job = this.CreateJob();
             job.Sender = sender;
@@ -232,7 +220,7 @@ namespace SWF.Core.Job
         {
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
 
-            this.thread.Start(this.DoWork);
+            this.thread.Start(() => this.DoWork(this.source.Token));
 
             var job = this.CreateJob();
             job.Sender = sender;
@@ -378,7 +366,7 @@ namespace SWF.Core.Job
             return job;
         }
 
-        private void DoWork()
+        private void DoWork(CancellationToken token)
         {
             Thread.CurrentThread.Name = this.threadName;
 
@@ -388,10 +376,10 @@ namespace SWF.Core.Job
             {
                 while (true)
                 {
-                    if (this.IsThreadCancel)
+                    if (token.IsCancellationRequested)
                     {
                         Logger.Debug("ジョブ実行スレッドにキャンセルリクエストがありました。");
-                        return;
+                        token.ThrowIfCancellationRequested();
                     }
 
                     if (this.jobQueue.TryPeek(out var currentJob))
@@ -443,9 +431,13 @@ namespace SWF.Core.Job
                     }
                     else
                     {
-                        Thread.Sleep(1);
+                        token.WaitHandle.WaitOne(1);
                     }
                 }
+            }
+            catch (OperationCanceledException)
+            {
+                Logger.Debug("ジョブ実行スレッドをキャンセルします。");
             }
             catch (Exception ex)
             {
