@@ -522,6 +522,7 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
+        // TODO: キャンセルチェック処理を追加。
         public static Bitmap ReadImageFile(string filePath)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
@@ -572,7 +573,7 @@ namespace SWF.Core.ImageAccessor
                     {
                         using (TimeMeasuring.Run(true, "ImageUtil.ReadImageFile Heif"))
                         {
-                            return ConvertIfGrayscale(MagicScalerUtil.ReadImageFile(fs), fs);
+                            return ConvertIfGrayscale(LibHeifSharpUtil.ReadImageFile(fs), fs);
                         }
                     }
                     else if (FileUtil.IsJpegFile(formatName))
