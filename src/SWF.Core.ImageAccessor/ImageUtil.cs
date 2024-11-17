@@ -572,7 +572,7 @@ namespace SWF.Core.ImageAccessor
                     {
                         using (TimeMeasuring.Run(true, "ImageUtil.ReadImageFile Heif"))
                         {
-                            return ConvertIfGrayscale(SixLaborsUtil.ReadImageFile(fs), fs);
+                            return ConvertIfGrayscale(MagicScalerUtil.ReadImageFile(fs), fs);
                         }
                     }
                     else if (FileUtil.IsJpegFile(formatName))
