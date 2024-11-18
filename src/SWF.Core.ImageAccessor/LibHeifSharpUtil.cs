@@ -7,6 +7,11 @@ namespace SWF.Core.ImageAccessor
     [SupportedOSPlatform("windows10.0.17763.0")]
     internal static class LibHeifSharpUtil
     {
+        private static readonly HeifDecodingOptions decodingOptions = new()
+        {
+
+        };
+
         public static Size GetImageSize(FileStream fs)
         {
             ArgumentNullException.ThrowIfNull(fs, nameof(fs));
@@ -20,56 +25,64 @@ namespace SWF.Core.ImageAccessor
 
         public static unsafe Bitmap ReadImageFile(Stream fs)
         {
-            try
+            using (var context = new HeifContext(fs))
+            using (var handle = context.GetPrimaryImageHandle())
+            using (var heifImage = handle.Decode(HeifColorspace.Undefined, HeifChroma.InterleavedRgba32, decodingOptions))
             {
-                using (var context = new HeifContext(fs))
-                using (var handle = context.GetPrimaryImageHandle())
-                using (var heifImage = handle.Decode(HeifColorspace.Undefined, HeifChroma.InterleavedRgba32))
+                var width = heifImage.Width;
+                var height = heifImage.Height;
+                var stride = width * 4;
+
+                var bitmap = new Bitmap(width, height, PixelFormat.Format32bppArgb);
+                var bitmapData = bitmap.LockBits(
+                    new Rectangle(0, 0, width, height),
+                    ImageLockMode.WriteOnly,
+                    PixelFormat.Format32bppArgb);
+
+                try
                 {
-                    var width = heifImage.Width;
-                    var height = heifImage.Height;
-                    var stride = width * 4;
+                    var plane = heifImage.GetPlane(HeifChannel.Interleaved);
+                    var srcPtr = (byte*)plane.Scan0;
+                    var dstPtr = (byte*)bitmapData.Scan0;
 
-                    var bitmap = new Bitmap(width, height, PixelFormat.Format32bppArgb);
-                    var bitmapData = bitmap.LockBits(
-                        new Rectangle(0, 0, width, height),
-                        ImageLockMode.WriteOnly,
-                        PixelFormat.Format32bppArgb);
+                    //for (int y = 0; y < height; y++)
+                    //{
+                    //    var srcRow = srcPtr + y * stride;
+                    //    var dstRow = dstPtr + y * bitmapData.Stride;
+                    //    for (int x = 0; x < width; x++)
+                    //    {
+                    //        dstRow[0] = srcRow[2]; // B
+                    //        dstRow[1] = srcRow[1]; // G
+                    //        dstRow[2] = srcRow[0]; // R
+                    //        dstRow[3] = srcRow[3]; // A
+                    //        srcRow += 4;
+                    //        dstRow += 4;
+                    //    }
+                    //}
 
-                    try
+                    Parallel.For(0, height, y =>
                     {
-                        var plane = heifImage.GetPlane(HeifChannel.Interleaved);
-                        var srcPtr = (byte*)plane.Scan0;
-                        var dstPtr = (byte*)bitmapData.Scan0;
+                        var srcRow = srcPtr + y * stride;
+                        var dstRow = dstPtr + y * bitmapData.Stride;
 
-                        Parallel.For(0, height, y =>
+                        for (int x = 0; x < width; x++)
                         {
-                            var srcRow = srcPtr + y * stride;
-                            var dstRow = dstPtr + y * bitmapData.Stride;
+                            dstRow[0] = srcRow[2]; // B
+                            dstRow[1] = srcRow[1]; // G
+                            dstRow[2] = srcRow[0]; // R
+                            dstRow[3] = srcRow[3]; // A
 
-                            for (int x = 0; x < width; x++)
-                            {
-                                dstRow[0] = srcRow[2]; // B
-                                dstRow[1] = srcRow[1]; // G
-                                dstRow[2] = srcRow[0]; // R
-                                dstRow[3] = srcRow[3]; // A
+                            srcRow += 4;
+                            dstRow += 4;
+                        }
+                    });
 
-                                srcRow += 4;
-                                dstRow += 4;
-                            }
-                        });
-
-                        return bitmap;
-                    }
-                    finally
-                    {
-                        bitmap.UnlockBits(bitmapData);
-                    }
+                    return bitmap;
                 }
-            }
-            catch (HeifException ex)
-            {
-                throw new Exception($"HEIFデコードエラー: {ex.Message}", ex);
+                finally
+                {
+                    bitmap.UnlockBits(bitmapData);
+                }
             }
         }
     }
