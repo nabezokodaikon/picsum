@@ -9,9 +9,9 @@ namespace SWF.Core.ImageAccessor
     [SupportedOSPlatform("windows10.0.17763.0")]
     internal static class MagickUtil
     {
-        private static readonly bool useAvx2 = Avx.X64.IsSupported;
+        private static readonly bool USE_AVX2 = Avx.X64.IsSupported;
 
-        private static readonly Vector256<byte> shuffle = Vector256.Create(
+        private static readonly Vector256<byte> SHUFFLE = Vector256.Create(
             2, 1, 0, 3,  // First pixel
             6, 5, 4, 7,  // Second pixel
             10, 9, 8, 11,  // Third pixel
@@ -61,7 +61,7 @@ namespace SWF.Core.ImageAccessor
                                 var stride = bitmapData.Stride;
 
                                 // SIMD操作が可能な場合は利用
-                                if (useAvx2 && width >= 8)
+                                if (USE_AVX2 && width >= 8)
                                 {
                                     // AVX2を使用した高速変換
                                     ConvertRgbaToBgraAvx2(src, dst, pixelsBytes.Length);
@@ -99,7 +99,7 @@ namespace SWF.Core.ImageAccessor
             for (; i <= length - vectorSize; i += vectorSize)
             {
                 var rgba = Avx.LoadVector256(src + i);
-                var bgra = Avx2.Shuffle(rgba, shuffle);
+                var bgra = Avx2.Shuffle(rgba, SHUFFLE);
                 Avx.Store(dst + i, bgra);
             }
 
