@@ -572,7 +572,7 @@ namespace SWF.Core.ImageAccessor
                     {
                         using (TimeMeasuring.Run(true, "ImageUtil.ReadImageFile Heif"))
                         {
-                            return ConvertIfGrayscale(LibHeifSharpUtil.ReadImageFile(fs), fs);
+                            return ConvertIfGrayscale(MagickUtil.ReadImageFile(fs), fs);
                         }
                     }
                     else if (FileUtil.IsJpegFile(formatName))
@@ -660,6 +660,10 @@ namespace SWF.Core.ImageAccessor
                 throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
             }
             catch (OutOfMemoryException ex)
+            {
+                throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
+            }
+            catch (InvalidOperationException ex)
             {
                 throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
             }
