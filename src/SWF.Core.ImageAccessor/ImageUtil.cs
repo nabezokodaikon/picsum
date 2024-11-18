@@ -522,7 +522,6 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
-        // TODO: キャンセルチェック処理を追加。
         public static Bitmap ReadImageFile(string filePath)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
