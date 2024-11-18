@@ -49,7 +49,7 @@
 	<TrimMode>link</TrimMode>
 	<ServerGarbageCollection>true</ServerGarbageCollection>
 	<RuntimeIdentifier>win-x64</RuntimeIdentifier>
-	<PublishSingleFile>false</PublishSingleFile>
+	<PublishSingleFile>true</PublishSingleFile>
 	<SelfContained>true</SelfContained>
 	<OptimizationPreference>Speed</OptimizationPreference>
   </PropertyGroup>
