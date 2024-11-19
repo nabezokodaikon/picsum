@@ -36,13 +36,10 @@ namespace PicSum.Main.UIComponent
 
         protected override void OnHandleCreated(EventArgs e)
         {
+            base.OnHandleCreated(e);
+
             Instance<JobCaller>.Initialize(new JobCaller(SynchronizationContext.Current));
 
-            base.OnHandleCreated(e);
-        }
-
-        protected override void OnLoad(EventArgs e)
-        {
             Instance<JobCaller>.Value.GCCollectRunJob.Value
                 .StartJob(this);
 
@@ -86,8 +83,6 @@ namespace PicSum.Main.UIComponent
 
             var form = this.browserManager.GetActiveBrowser();
             form.Show();
-
-            base.OnLoad(e);
         }
     }
 }
