@@ -127,46 +127,31 @@ namespace PicSum.Main.UIComponent
                     if (AppConstants.IsRunningAsUwp())
                     {
                         MicrosoftStorePreloader.OptimizeStartup(
-                            typeof(PicSum.UIComponent.InfoPanel.InfoPanel),
                             typeof(PicSum.UIComponent.AddressBar.AddressBar),
-                            typeof(SWF.UIComponent.TabOperation.PageContainer),
+                            typeof(PicSum.UIComponent.Contents.Common.BrowserPage),
+                            typeof(PicSum.UIComponent.InfoPanel.InfoPanel),
                             typeof(SWF.UIComponent.TabOperation.TabSwitch),
-                            typeof(PicSum.UIComponent.Contents.FileList.BookmarkFileListPage),
-                            typeof(PicSum.UIComponent.Contents.FileList.ClipFileListPage),
-                            typeof(PicSum.UIComponent.Contents.FileList.DirectoryFileListPage),
-                            typeof(PicSum.UIComponent.Contents.FileList.FavoriteDirectoryListPage),
-                            typeof(PicSum.UIComponent.Contents.FileList.RatingFileListPage),
-                            typeof(PicSum.UIComponent.Contents.FileList.TagFileListPage),
-                            typeof(PicSum.UIComponent.Contents.ImageViewer.ImageViewerPage),
                             typeof(SWF.UIComponent.WideDropDown.WideDropToolButton),
                             typeof(SWF.UIComponent.Core.ToolButton),
-                            typeof(System.Windows.Forms.Panel),
-                            typeof(PicSum.Main.UIComponent.BrowserMainPanel)
+                            typeof(SWF.UIComponent.FlowList.FlowList),
+                            typeof(System.Threading.ThreadPool)
                         );
                     }
                     else
                     {
-                        //var binPath = Path.Combine(AppContext.BaseDirectory);
-                        //AssemblyPreloader.PreloadAssemblies(binPath);
-
-                        SingleFilePreloader.PreloadAssemblies(
-                            typeof(PicSum.UIComponent.InfoPanel.InfoPanel),
+                        MicrosoftStorePreloader.OptimizeStartup(
                             typeof(PicSum.UIComponent.AddressBar.AddressBar),
-                            typeof(SWF.UIComponent.TabOperation.PageContainer),
+                            typeof(PicSum.UIComponent.Contents.Common.BrowserPage),
+                            typeof(PicSum.UIComponent.InfoPanel.InfoPanel),
                             typeof(SWF.UIComponent.TabOperation.TabSwitch),
-                            typeof(PicSum.UIComponent.Contents.FileList.BookmarkFileListPage),
-                            typeof(PicSum.UIComponent.Contents.FileList.ClipFileListPage),
-                            typeof(PicSum.UIComponent.Contents.FileList.DirectoryFileListPage),
-                            typeof(PicSum.UIComponent.Contents.FileList.FavoriteDirectoryListPage),
-                            typeof(PicSum.UIComponent.Contents.FileList.RatingFileListPage),
-                            typeof(PicSum.UIComponent.Contents.FileList.TagFileListPage),
-                            typeof(PicSum.UIComponent.Contents.ImageViewer.ImageViewerPage),
                             typeof(SWF.UIComponent.WideDropDown.WideDropToolButton),
-                            typeof(SWF.UIComponent.Core.ToolButton)
+                            typeof(SWF.UIComponent.Core.ToolButton),
+                            typeof(SWF.UIComponent.FlowList.FlowList),
+                            typeof(System.Threading.ThreadPool)
                         );
                     }
 
-                    context.Send(_ =>
+                    context.Post(_ =>
                     {
                         this.CreateBrowserMainPanel();
                         BrowserForm.isStartUp = false;

@@ -6,8 +6,7 @@ namespace SWF.Core.Base
 {
     public static class MicrosoftStorePreloader
     {
-        private static readonly ConcurrentDictionary<string, bool> PreloadedAssemblies
-            = new ConcurrentDictionary<string, bool>();
+        private static readonly ConcurrentDictionary<string, bool> PreloadedAssemblies = new();
 
         public static void PreloadCriticalAssemblies(params Type[] criticalTypes)
         {
@@ -25,6 +24,10 @@ namespace SWF.Core.Base
                 try
                 {
                     var assemblyName = criticalType.Assembly.GetName().Name;
+                    if (assemblyName == null)
+                    {
+                        return;
+                    }
 
                     if (PreloadedAssemblies.TryAdd(assemblyName, true))
                     {
@@ -36,15 +39,14 @@ namespace SWF.Core.Base
                         // 依存アセンブリの読み込み（最小限）
                         LoadCriticalReferences(assembly);
 
-                        Console.WriteLine($"アセンブリ読み込み完了: {assemblyName}");
+                        ConsoleUtil.Write($"アセンブリ読み込み完了: {assemblyName}");
                     }
                 }
                 catch (Exception ex)
                 {
                     // Microsoft Storeアプリでのロギング
-                    System.Diagnostics.Debug.WriteLine(
-                        $"アセンブリ読み込みエラー: {criticalType.Assembly.GetName().Name}. " +
-                        $"Error: {ex.Message}"
+                    ConsoleUtil.Write(
+                        $"アセンブリ読み込みエラー: {criticalType.Assembly.GetName().Name}. Error: {ex.Message}"
                     );
                 }
             });
@@ -60,16 +62,21 @@ namespace SWF.Core.Base
             {
                 try
                 {
-                    if (PreloadedAssemblies.TryAdd(refAssembly.Name, true))
+                    var assemblyName = refAssembly.Name;
+                    if (assemblyName == null)
+                    {
+                        return;
+                    }
+
+                    if (PreloadedAssemblies.TryAdd(assemblyName, true))
                     {
                         Assembly.Load(refAssembly);
                     }
                 }
                 catch (Exception ex)
                 {
-                    System.Diagnostics.Debug.WriteLine(
-                        $"依存アセンブリ読み込みエラー: {refAssembly.Name}. " +
-                        $"Error: {ex.Message}"
+                    ConsoleUtil.Write(
+                        $"依存アセンブリ読み込みエラー: {refAssembly.Name}. Error: {ex.Message}"
                     );
                 }
             }
@@ -77,15 +84,21 @@ namespace SWF.Core.Base
 
         private static bool IsCriticalAssembly(AssemblyName assemblyName)
         {
-            // 重要なアセンブリを判定（カスタマイズ可能）
-            string[] criticalPrefixes = new[]
+            var name = assemblyName.Name;
+            if (name == null)
             {
-            "System",
-            "Microsoft",
-        };
+                return false;
+            }
+
+            // 重要なアセンブリを判定（カスタマイズ可能）
+            string[] criticalPrefixes =
+            [
+                "System",
+                "Microsoft",
+            ];
 
             return criticalPrefixes.Any(prefix =>
-                assemblyName.Name.StartsWith(prefix, StringComparison.OrdinalIgnoreCase));
+                name.StartsWith(prefix, StringComparison.OrdinalIgnoreCase));
         }
 
         // アプリケーション起動時の最適化メソッド
@@ -104,7 +117,7 @@ namespace SWF.Core.Base
             AppDomain.CurrentDomain.AssemblyLoad += (sender, args) =>
             {
                 // アセンブリ読み込み時のカスタムロジック
-                System.Diagnostics.Debug.WriteLine(
+                ConsoleUtil.Write(
                     $"アセンブリ動的読み込み: {args.LoadedAssembly.GetName().Name}"
                 );
             };
