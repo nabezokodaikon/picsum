@@ -85,6 +85,7 @@
     <PackageReference Include="LibHeif.Native" Version="1.15.1" />
     <PackageReference Include="LibHeif.Native.win-x64" Version="1.15.1" />
     <PackageReference Include="Magick.NET-Q16-x64" Version="14.2.0" />
+    <PackageReference Include="Magick.NET.SystemDrawing" Version="8.0.2" />
     <PackageReference Include="Microsoft-WindowsAPICodePack-Shell" Version="1.1.5" />
     <PackageReference Include="OpenCvSharp4" Version="4.10.0.20241108" />
     <PackageReference Include="OpenCvSharp4.Extensions" Version="4.10.0.20241108" />
