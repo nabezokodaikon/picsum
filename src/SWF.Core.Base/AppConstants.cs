@@ -18,8 +18,8 @@ namespace SWF.Core.Base
         /// </summary>
         public const int INFOPANEL_WIDTH = 240;
 
-        public const string MUTEX_NAME = "PicSumMutex";
-        public const string PIPE_NAME = "PicSumPipe";
+        public const string MUTEX_NAME = "11d9bca92011a234e6e876e28f39bd6a550b2ab6b6167e124f6af1c4930344f1c335681485de59028fdadfc3318108ea0e7d0bfe28cf276c34a89b9a8ac8e955";
+        public const string PIPE_NAME = "be752c4335f762ea8b304f90c84b6488fca7a2d0e69442716a62daf16f6e25595a6506307ac24871e346b841d828418dc1ef817a697dd9adec28748059898e48";
 
         public const string THUMBNAIL_BUFFER_FILE_EXTENSION = ".thumbnail";
 
