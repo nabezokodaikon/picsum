@@ -14,21 +14,18 @@ namespace PicSum.Job.SyncLogics
     {
         public void Execute()
         {
-            using (TimeMeasuring.Run(true, "StartupSyncLogic"))
-            {
-                Instance<IFileInfoDB>.Initialize(
-                    new FileInfoDB(AppConstants.FILE_INFO_DATABASE_FILE));
+            Instance<IFileInfoDB>.Initialize(
+                new FileInfoDB(AppConstants.FILE_INFO_DATABASE_FILE));
 
-                Instance<IThumbnailDB>.Initialize(
-                    new ThumbnailDB(AppConstants.THUMBNAIL_DATABASE_FILE));
+            Instance<IThumbnailDB>.Initialize(
+                new ThumbnailDB(AppConstants.THUMBNAIL_DATABASE_FILE));
 
-                Instance<IFileIconCacher>.Initialize(new FileIconCacher());
-                Instance<IThumbnailCacher>.Initialize(new ThumbnailCacher());
-                Instance<IClipFiles>.Initialize(new ClipFiles());
-                Instance<IImageFileCacher>.Initialize(new ImageFileCacher());
-                Instance<IImageFileSizeCacher>.Initialize(new ImageFileSizeCacher());
-                Instance<IFileExporter>.Initialize(new FileExporter());
-            }
+            Instance<IFileIconCacher>.Initialize(new FileIconCacher());
+            Instance<IThumbnailCacher>.Initialize(new ThumbnailCacher());
+            Instance<IClipFiles>.Initialize(new ClipFiles());
+            Instance<IImageFileCacher>.Initialize(new ImageFileCacher());
+            Instance<IImageFileSizeCacher>.Initialize(new ImageFileSizeCacher());
+            Instance<IFileExporter>.Initialize(new FileExporter());
         }
     }
 }
