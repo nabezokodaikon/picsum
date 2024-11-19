@@ -19,23 +19,34 @@ namespace SWF.Core.ImageAccessor
             2, 1, 0, 3, 6, 5, 4, 7, 10, 9, 8, 11, 14, 13, 12, 15
         ).AsByte();
 
+        // 1MB画像に最適化されたパラメータ
+        private const int OPTIMAL_CHUNK_SIZE = 131072; // 128KB (32K pixels) per chunk
+        private const int MIN_PARALLEL_CHUNK_SIZE = 32768; // 32KB threshold for parallelization
+        private static readonly int OPTIMAL_THREAD_COUNT = Math.Min(4, Environment.ProcessorCount);
+
+        // L1/L2キャッシュに合わせたプリフェッチ距離
+        private const int PREFETCH_DISTANCE = 128; // bytes
+
         public static Bitmap ReadImageFile(Stream stream)
         {
-            using var image = new MagickImage(stream);
-            // 画質設定を一括で行う
-            ConfigureImage(image);
-
-            using var pixels = image.GetPixelsUnsafe();
-            var width = (int)image.Width;
-            var height = (int)image.Height;
-            var pixelsBytes = pixels.ToByteArray(PixelMapping.RGBA);
-
-            if (pixelsBytes == null)
+            using (var image = new MagickImage(stream))
             {
-                throw new InvalidOperationException("Failed to get pixel data");
-            }            
+                ConfigureImage(image);
 
-            return CreateBitmapFromPixels(pixelsBytes, width, height);
+                using (var pixels = image.GetPixelsUnsafe())
+                {
+                    var width = (int)image.Width;
+                    var height = (int)image.Height;
+                    var pixelsBytes = pixels.ToByteArray(PixelMapping.RGBA);
+
+                    if (pixelsBytes == null)
+                    {
+                        throw new InvalidOperationException("Failed to get pixel data");
+                    }
+
+                    return CreateBitmapFromPixels(pixelsBytes, width, height);
+                }
+            }
         }
 
         private static void ConfigureImage(MagickImage image)
@@ -58,7 +69,15 @@ namespace SWF.Core.ImageAccessor
                     fixed (byte* src = pixelsBytes)
                     {
                         var dst = (byte*)bitmapData.Scan0;
-                        ConvertPixelFormat(src, dst, pixelsBytes.Length);
+                        // 1MB未満の場合は並列処理を使用しない
+                        if (pixelsBytes.Length < MIN_PARALLEL_CHUNK_SIZE * 2)
+                        {
+                            ConvertPixelFormat(src, dst, pixelsBytes.Length);
+                        }
+                        else
+                        {
+                            ConvertPixelFormatParallel(src, dst, pixelsBytes.Length);
+                        }
                     }
                 }
                 return bitmap;
@@ -67,6 +86,28 @@ namespace SWF.Core.ImageAccessor
             {
                 bitmap.UnlockBits(bitmapData);
             }
+        }
+
+        private static unsafe void ConvertPixelFormatParallel(byte* src, byte* dst, int totalLength)
+        {
+            // チャンク数の計算（最適なチャンクサイズを基に）
+            var chunksCount = Math.Min(OPTIMAL_THREAD_COUNT,
+                (totalLength + OPTIMAL_CHUNK_SIZE - 1) / OPTIMAL_CHUNK_SIZE);
+
+            // 実際のチャンクサイズを計算（32バイトアライメント）
+            var chunkSize = ((totalLength / chunksCount + 31) & ~31);
+
+            var options = new ParallelOptions
+            {
+                MaxDegreeOfParallelism = chunksCount
+            };
+
+            Parallel.For(0, chunksCount, options, i =>
+            {
+                var start = i * chunkSize;
+                var length = (i == chunksCount - 1) ? totalLength - start : chunkSize;
+                ConvertPixelFormat(src + start, dst + start, length);
+            });
         }
 
         private static unsafe void ConvertPixelFormat(byte* src, byte* dst, int length)
@@ -87,8 +128,33 @@ namespace SWF.Core.ImageAccessor
 
         private static unsafe void ConvertRgbaToBgraAvx2(byte* src, byte* dst, int length)
         {
-            int i = 0;
-            // Process 32 bytes (8 pixels) at a time
+            var i = 0;
+
+            // 32バイトアライメント
+            var alignOffset = (int)((nint)dst & 31);
+            if (alignOffset > 0)
+            {
+                alignOffset = 32 - alignOffset;
+                ConvertRgbaToBgraScalar(src, dst, alignOffset);
+                i = alignOffset;
+            }
+
+            // メインループ with プリフェッチ
+            for (; i <= length - 128; i += 128)
+            {
+                // L1キャッシュへのプリフェッチ
+                Sse.Prefetch0(src + i + PREFETCH_DISTANCE);
+
+                // 4回のAVX2処理をまとめて実行（32バイト * 4 = 128バイト）
+                for (var j = 0; j < 128; j += 32)
+                {
+                    var rgba = Avx.LoadVector256(src + i + j);
+                    var bgra = Avx2.Shuffle(rgba, SHUFFLE_AVX2);
+                    Avx.Store(dst + i + j, bgra);
+                }
+            }
+
+            // 残りの32バイトブロックを処理
             for (; i <= length - 32; i += 32)
             {
                 var rgba = Avx.LoadVector256(src + i);
@@ -96,25 +162,47 @@ namespace SWF.Core.ImageAccessor
                 Avx.Store(dst + i, bgra);
             }
 
-            // Handle remaining bytes with SSE2 if possible
-            if (USE_SSE2)
+            // 残りのピクセルをSSE2で処理
+            if (USE_SSE2 && i <= length - 16)
             {
-                for (; i <= length - 16; i += 16)
-                {
-                    var rgba = Sse2.LoadVector128(src + i);
-                    var bgra = Ssse3.Shuffle(rgba, SHUFFLE_SSE2);
-                    Sse2.Store(dst + i, bgra);
-                }
+                var rgba = Sse2.LoadVector128(src + i);
+                var bgra = Ssse3.Shuffle(rgba, SHUFFLE_SSE2);
+                Sse2.Store(dst + i, bgra);
+                i += 16;
             }
 
-            // Handle remaining pixels
+            // 最後の数ピクセルをスカラー処理
             ConvertRgbaToBgraScalar(src + i, dst + i, length - i);
         }
 
         private static unsafe void ConvertRgbaToBgraSse2(byte* src, byte* dst, int length)
         {
-            int i = 0;
-            // Process 16 bytes (4 pixels) at a time
+            var i = 0;
+
+            // 16バイトアライメント
+            var alignOffset = (int)((nint)dst & 15);
+            if (alignOffset > 0)
+            {
+                alignOffset = 16 - alignOffset;
+                ConvertRgbaToBgraScalar(src, dst, alignOffset);
+                i = alignOffset;
+            }
+
+            // メインループ with プリフェッチ（64バイト = キャッシュライン）
+            for (; i <= length - 64; i += 64)
+            {
+                Sse.Prefetch0(src + i + PREFETCH_DISTANCE);
+
+                // 4回のSSE2処理をまとめて実行
+                for (int j = 0; j < 64; j += 16)
+                {
+                    var rgba = Sse2.LoadVector128(src + i + j);
+                    var bgra = Ssse3.Shuffle(rgba, SHUFFLE_SSE2);
+                    Sse2.Store(dst + i + j, bgra);
+                }
+            }
+
+            // 残りの16バイトブロックを処理
             for (; i <= length - 16; i += 16)
             {
                 var rgba = Sse2.LoadVector128(src + i);
@@ -122,39 +210,27 @@ namespace SWF.Core.ImageAccessor
                 Sse2.Store(dst + i, bgra);
             }
 
-            // Handle remaining pixels
             ConvertRgbaToBgraScalar(src + i, dst + i, length - i);
         }
 
         private static unsafe void ConvertRgbaToBgraScalar(byte* src, byte* dst, int length)
         {
-            // Unrolled loop for better performance
-            int i = 0;
-            for (; i <= length - 16; i += 16)
+            var i = 0;
+
+            // キャッシュライン（64バイト）に合わせたループアンローリング
+            for (; i <= length - 64; i += 64)
             {
-                // Process 4 pixels at once
-                dst[i + 0] = src[i + 2];
-                dst[i + 1] = src[i + 1];
-                dst[i + 2] = src[i + 0];
-                dst[i + 3] = src[i + 3];
-
-                dst[i + 4] = src[i + 6];
-                dst[i + 5] = src[i + 5];
-                dst[i + 6] = src[i + 4];
-                dst[i + 7] = src[i + 7];
-
-                dst[i + 8] = src[i + 10];
-                dst[i + 9] = src[i + 9];
-                dst[i + 10] = src[i + 8];
-                dst[i + 11] = src[i + 11];
-
-                dst[i + 12] = src[i + 14];
-                dst[i + 13] = src[i + 13];
-                dst[i + 14] = src[i + 12];
-                dst[i + 15] = src[i + 15];
+                // 16ピクセル（64バイト）を一度に処理
+                for (var j = 0; j < 64; j += 4)
+                {
+                    dst[i + j + 0] = src[i + j + 2];
+                    dst[i + j + 1] = src[i + j + 1];
+                    dst[i + j + 2] = src[i + j + 0];
+                    dst[i + j + 3] = src[i + j + 3];
+                }
             }
 
-            // Handle remaining pixels
+            // 残りのピクセル処理
             for (; i < length; i += 4)
             {
                 dst[i + 0] = src[i + 2];
