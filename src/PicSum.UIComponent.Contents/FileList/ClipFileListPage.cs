@@ -14,7 +14,7 @@ using System.Windows.Forms;
 namespace PicSum.UIComponent.Contents.FileList
 {
     [SupportedOSPlatform("windows10.0.17763.0")]
-    internal sealed partial class ClipFileListPage
+    public sealed partial class ClipFileListPage
         : AbstractFileListPage
     {
         private bool disposed = false;

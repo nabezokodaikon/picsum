@@ -11,6 +11,8 @@ using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Runtime.Versioning;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace PicSum.Main.UIComponent
@@ -113,11 +115,63 @@ namespace PicSum.Main.UIComponent
 
         protected override void OnHandleCreated(EventArgs e)
         {
+            base.OnHandleCreated(e);
+
             if (BrowserForm.isStartUp)
             {
                 this.Location = BrowserConfig.Instance.WindowLocaion;
-                this.CreateBrowserMainPanel();
-                BrowserForm.isStartUp = false;
+
+                var context = SynchronizationContext.Current;
+                Task.Run(() =>
+                {
+                    if (AppConstants.IsRunningAsUwp())
+                    {
+                        MicrosoftStorePreloader.OptimizeStartup(
+                            typeof(PicSum.UIComponent.InfoPanel.InfoPanel),
+                            typeof(PicSum.UIComponent.AddressBar.AddressBar),
+                            typeof(SWF.UIComponent.TabOperation.PageContainer),
+                            typeof(SWF.UIComponent.TabOperation.TabSwitch),
+                            typeof(PicSum.UIComponent.Contents.FileList.BookmarkFileListPage),
+                            typeof(PicSum.UIComponent.Contents.FileList.ClipFileListPage),
+                            typeof(PicSum.UIComponent.Contents.FileList.DirectoryFileListPage),
+                            typeof(PicSum.UIComponent.Contents.FileList.FavoriteDirectoryListPage),
+                            typeof(PicSum.UIComponent.Contents.FileList.RatingFileListPage),
+                            typeof(PicSum.UIComponent.Contents.FileList.TagFileListPage),
+                            typeof(PicSum.UIComponent.Contents.ImageViewer.ImageViewerPage),
+                            typeof(SWF.UIComponent.WideDropDown.WideDropToolButton),
+                            typeof(SWF.UIComponent.Core.ToolButton),
+                            typeof(System.Windows.Forms.Panel),
+                            typeof(PicSum.Main.UIComponent.BrowserMainPanel)
+                        );
+                    }
+                    else
+                    {
+                        //var binPath = Path.Combine(AppContext.BaseDirectory);
+                        //AssemblyPreloader.PreloadAssemblies(binPath);
+
+                        SingleFilePreloader.PreloadAssemblies(
+                            typeof(PicSum.UIComponent.InfoPanel.InfoPanel),
+                            typeof(PicSum.UIComponent.AddressBar.AddressBar),
+                            typeof(SWF.UIComponent.TabOperation.PageContainer),
+                            typeof(SWF.UIComponent.TabOperation.TabSwitch),
+                            typeof(PicSum.UIComponent.Contents.FileList.BookmarkFileListPage),
+                            typeof(PicSum.UIComponent.Contents.FileList.ClipFileListPage),
+                            typeof(PicSum.UIComponent.Contents.FileList.DirectoryFileListPage),
+                            typeof(PicSum.UIComponent.Contents.FileList.FavoriteDirectoryListPage),
+                            typeof(PicSum.UIComponent.Contents.FileList.RatingFileListPage),
+                            typeof(PicSum.UIComponent.Contents.FileList.TagFileListPage),
+                            typeof(PicSum.UIComponent.Contents.ImageViewer.ImageViewerPage),
+                            typeof(SWF.UIComponent.WideDropDown.WideDropToolButton),
+                            typeof(SWF.UIComponent.Core.ToolButton)
+                        );
+                    }
+
+                    context.Send(_ =>
+                    {
+                        this.CreateBrowserMainPanel();
+                        BrowserForm.isStartUp = false;
+                    }, null);
+                });
             }
             else
             {
@@ -125,8 +179,6 @@ namespace PicSum.Main.UIComponent
                     BrowserConfig.Instance.WindowLocaion.X + 16,
                     BrowserConfig.Instance.WindowLocaion.Y + 16);
             }
-
-            base.OnHandleCreated(e);
         }
 
         protected override void OnShown(EventArgs e)
@@ -238,66 +290,69 @@ namespace PicSum.Main.UIComponent
 
         private void CreateBrowserMainPanel()
         {
-            if (this.browserMainPanel != null)
+            using (TimeMeasuring.Run(true, "BrowserForm.CreateBrowserMainPanel"))
             {
-                throw new SWFException("メインコントロールは既に存在しています。");
-            }
-
-            this.browserMainPanel = new BrowserMainPanel();
-
-            var x = this.Padding.Left;
-            var y = this.Padding.Top;
-            var w = this.Width - this.Padding.Left - this.Padding.Right;
-            var h = this.Height - this.Padding.Top - this.Padding.Bottom;
-            this.browserMainPanel.SetBounds(x, y, w, h, BoundsSpecified.All);
-            this.browserMainPanel.Dock = DockStyle.Fill;
-
-            this.browserMainPanel.Close += new(this.BrowserMainPanel_Close);
-            this.browserMainPanel.BackgroundMouseDoubleLeftClick += new(this.BrowserMainPanel_BackgroundMouseDoubleLeftClick);
-            this.browserMainPanel.NewWindowPageOpen += new(this.BrowserMainPanel_NewWindowPageOpen);
-            this.browserMainPanel.TabDropouted += new(this.BrowserMainPanel_TabDropouted);
-
-            this.SuspendLayout();
-            this.Controls.Add(this.browserMainPanel);
-
-            if (BrowserForm.isStartUp && CommandLineArgs.IsFilePath())
-            {
-                var imageFilePath = CommandLineArgs.GetImageFilePatCommandLineArgs();
-                if (!string.IsNullOrEmpty(imageFilePath))
+                if (this.browserMainPanel != null)
                 {
-                    var directoryPath = FileUtil.GetParentDirectoryPath(imageFilePath);
-
-                    var sortInfo = new SortInfo();
-                    sortInfo.SetSortType(SortTypeID.FilePath, true);
-
-                    var parameter = new ImageViewerPageParameter(
-                        DirectoryFileListPageParameter.PAGE_SOURCES,
-                        directoryPath,
-                        BrowserMainPanel.GetImageFilesAction(new ImageFileGetByDirectoryParameter(imageFilePath)),
-                        imageFilePath,
-                        sortInfo,
-                        FileUtil.GetFileName(directoryPath),
-                        Instance<IFileIconCacher>.Value.SmallDirectoryIcon,
-                        true,
-                        true);
-
-                    this.browserMainPanel.AddImageViewerPageTab(parameter);
+                    throw new SWFException("メインコントロールは既に存在しています。");
                 }
-            }
-            else if (BrowserForm.isStartUp && CommandLineArgs.IsEmpty())
-            {
 
-            }
-            else if (BrowserForm.isStartUp)
-            {
-                this.browserMainPanel.AddFavoriteDirectoryListTab();
-            }
+                this.browserMainPanel = new BrowserMainPanel();
 
-            this.SetControlRegion();
-            this.ResumeLayout(false);
-            this.PerformLayout();
-            this.Invalidate();
-            this.Update();
+                var x = this.Padding.Left;
+                var y = this.Padding.Top;
+                var w = this.Width - this.Padding.Left - this.Padding.Right;
+                var h = this.Height - this.Padding.Top - this.Padding.Bottom;
+                this.browserMainPanel.SetBounds(x, y, w, h, BoundsSpecified.All);
+                this.browserMainPanel.Dock = DockStyle.Fill;
+
+                this.browserMainPanel.Close += new(this.BrowserMainPanel_Close);
+                this.browserMainPanel.BackgroundMouseDoubleLeftClick += new(this.BrowserMainPanel_BackgroundMouseDoubleLeftClick);
+                this.browserMainPanel.NewWindowPageOpen += new(this.BrowserMainPanel_NewWindowPageOpen);
+                this.browserMainPanel.TabDropouted += new(this.BrowserMainPanel_TabDropouted);
+
+                this.SuspendLayout();
+                this.Controls.Add(this.browserMainPanel);
+
+                if (BrowserForm.isStartUp && CommandLineArgs.IsFilePath())
+                {
+                    var imageFilePath = CommandLineArgs.GetImageFilePatCommandLineArgs();
+                    if (!string.IsNullOrEmpty(imageFilePath))
+                    {
+                        var directoryPath = FileUtil.GetParentDirectoryPath(imageFilePath);
+
+                        var sortInfo = new SortInfo();
+                        sortInfo.SetSortType(SortTypeID.FilePath, true);
+
+                        var parameter = new ImageViewerPageParameter(
+                            DirectoryFileListPageParameter.PAGE_SOURCES,
+                            directoryPath,
+                            BrowserMainPanel.GetImageFilesAction(new ImageFileGetByDirectoryParameter(imageFilePath)),
+                            imageFilePath,
+                            sortInfo,
+                            FileUtil.GetFileName(directoryPath),
+                            Instance<IFileIconCacher>.Value.SmallDirectoryIcon,
+                            true,
+                            true);
+
+                        this.browserMainPanel.AddImageViewerPageTab(parameter);
+                    }
+                }
+                else if (BrowserForm.isStartUp && CommandLineArgs.IsEmpty())
+                {
+
+                }
+                else if (BrowserForm.isStartUp)
+                {
+                    this.browserMainPanel.AddFavoriteDirectoryListTab();
+                }
+
+                this.SetControlRegion();
+                this.ResumeLayout(false);
+                this.PerformLayout();
+                this.Invalidate();
+                this.Update();
+            }
         }
 
         private void OnTabDropouted(TabDropoutedEventArgs e)

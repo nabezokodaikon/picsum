@@ -21,7 +21,7 @@ namespace PicSum.UIComponent.Contents.FileList
     /// フォルダファイルリストコンテンツ
     /// </summary>
     [SupportedOSPlatform("windows10.0.17763.0")]
-    internal sealed partial class DirectoryFileListPage
+    public sealed partial class DirectoryFileListPage
         : AbstractFileListPage
     {
         private bool disposed = false;

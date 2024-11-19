@@ -34,9 +34,9 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Develop|x64'">
-    <DebugType>full</DebugType>
-    <NoWarn>1701;1702; CA1016; CA1824; WFAC010; CA1416</NoWarn>
-    <OutputType>WinExe</OutputType>
+	<DebugType>full</DebugType>
+	<NoWarn>1701;1702; CA1016; CA1824; WFAC010; CA1416</NoWarn>
+	<OutputType>WinExe</OutputType>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -49,17 +49,18 @@
 	<TrimMode>link</TrimMode>
 	<ServerGarbageCollection>true</ServerGarbageCollection>
 	<RuntimeIdentifier>win-x64</RuntimeIdentifier>
-	<PublishSingleFile>true</PublishSingleFile>
+	<!--<PublishSingleFile>true</PublishSingleFile>-->
 	<SelfContained>true</SelfContained>
 	<OptimizationPreference>Speed</OptimizationPreference>
+	<EnableTrimAnalyzer>true</EnableTrimAnalyzer>
   </PropertyGroup>
-  
+
   <PropertyGroup>
 	<ApplicationIcon>application.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
 	<SatelliteResourceLanguages>_</SatelliteResourceLanguages>
-	<AllowUnsafeBlocks>False</AllowUnsafeBlocks>
+	<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 	<NeutralLanguage>ja-JP</NeutralLanguage>
 	<SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
 	<ApplicationManifest>app.manifest</ApplicationManifest>
@@ -138,10 +139,10 @@
 	<Compile Remove="Settings.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Update="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
+	<EmbeddedResource Update="Properties\Resources.resx">
+	  <Generator>ResXFileCodeGenerator</Generator>
+	  <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+	</EmbeddedResource>
   </ItemGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -149,7 +150,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Develop|AnyCPU'">
-    <NoWarn>1701;1702; CA1016; CA1824; WFAC010; CA1416</NoWarn>
+	<NoWarn>1701;1702; CA1016; CA1824; WFAC010; CA1416</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM32'">
@@ -157,7 +158,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Develop|ARM32'">
-    <NoWarn>1701;1702; CA1016; CA1824; WFAC010; CA1416</NoWarn>
+	<NoWarn>1701;1702; CA1016; CA1824; WFAC010; CA1416</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
@@ -165,7 +166,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Develop|ARM64'">
-    <NoWarn>1701;1702; CA1016; CA1824; WFAC010; CA1416</NoWarn>
+	<NoWarn>1701;1702; CA1016; CA1824; WFAC010; CA1416</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
@@ -173,7 +174,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Develop|x86'">
-    <NoWarn>1701;1702; CA1016; CA1824; WFAC010; CA1416</NoWarn>
+	<NoWarn>1701;1702; CA1016; CA1824; WFAC010; CA1416</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
 	<NoWarn>1701;1702; CA1016; CA1824; WFAC010; CA1416</NoWarn>
@@ -182,7 +183,7 @@
 	<NoWarn>1701;1702; CA1016; CA1824; WFAC010; CA1416</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Develop|x64'">
-    <NoWarn>1701;1702; CA1016; CA1824; WFAC010; CA1416</NoWarn>
+	<NoWarn>1701;1702; CA1016; CA1824; WFAC010; CA1416</NoWarn>
   </PropertyGroup>
 
 </Project>
