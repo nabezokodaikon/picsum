@@ -10,10 +10,9 @@ namespace SWF.Core.DatabaseAccessor
     {
         private bool disposed = false;
         private readonly Lock lockObject = new();
-        private readonly SQLiteConnection connection;
+        private readonly string dbFilePath;
+        private SQLiteConnection? connection = null;
         private SQLiteTransaction? transaction = null;
-
-        public string DBFilePath { get; private set; }
 
         /// <summary>
         /// コンストラクタ
@@ -40,16 +39,7 @@ namespace SWF.Core.DatabaseAccessor
                 }
             }
 
-            var connectionString = $"Data Source={dbFilePath}";
-            this.connection = new SQLiteConnection("Data Source=:memory:");
-            this.connection.Open();
-            using (var fileConnection = new SQLiteConnection(connectionString))
-            {
-                fileConnection.Open();
-                fileConnection.BackupDatabase(this.connection, "main", "main", -1, null, 0);
-            }
-
-            this.DBFilePath = dbFilePath;
+            this.dbFilePath = dbFilePath;
         }
 
         private void Dispose(bool disposing)
@@ -61,18 +51,22 @@ namespace SWF.Core.DatabaseAccessor
 
             if (disposing)
             {
-                var connectionString = $"Data Source={this.DBFilePath}";
-                using (var fileConnection = new SQLiteConnection(connectionString))
+                if (this.connection != null)
                 {
-                    fileConnection.Open();
-                    this.connection.BackupDatabase(fileConnection, "main", "main", -1, null, 0);
-                }
+                    var connectionString = $"Data Source={this.dbFilePath}";
+                    using (var fileConnection = new SQLiteConnection(connectionString))
+                    {
+                        fileConnection.Open();
+                        this.connection.BackupDatabase(fileConnection, "main", "main", -1, null, 0);
+                    }
 
-                this.connection.Close();
-                this.transaction?.Dispose();
+                    this.connection.Close();
+                    this.transaction?.Dispose();
+                }
             }
 
             this.transaction = null;
+            this.connection = null;
 
             this.disposed = true;
         }
@@ -91,6 +85,23 @@ namespace SWF.Core.DatabaseAccessor
             this.Dispose(false);
         }
 
+        private SQLiteConnection GetConnection()
+        {
+            if (this.connection == null)
+            {
+                var connectionString = $"Data Source={this.dbFilePath}";
+                this.connection = new SQLiteConnection("Data Source=:memory:");
+                this.connection.Open();
+                using (var fileConnection = new SQLiteConnection(connectionString))
+                {
+                    fileConnection.Open();
+                    fileConnection.BackupDatabase(this.connection, "main", "main", -1, null, 0);
+                }
+            }
+
+            return this.connection;
+        }
+
         /// <summary>
         /// トランザクションを開始します。
         /// </summary>
@@ -98,7 +109,7 @@ namespace SWF.Core.DatabaseAccessor
         public ITransaction BeginTransaction()
         {
             this.lockObject.Enter();
-            this.transaction = this.connection.BeginTransaction();
+            this.transaction = this.GetConnection().BeginTransaction();
             return new Transaction(this);
         }
 
@@ -157,7 +168,7 @@ namespace SWF.Core.DatabaseAccessor
             this.lockObject.Enter();
             try
             {
-                using (var cmd = this.connection.CreateCommand())
+                using (var cmd = this.GetConnection().CreateCommand())
                 {
                     cmd.CommandText = sql.GetExecuteSql();
 
@@ -199,7 +210,7 @@ namespace SWF.Core.DatabaseAccessor
             this.lockObject.Enter();
             try
             {
-                using (var cmd = this.connection.CreateCommand())
+                using (var cmd = this.GetConnection().CreateCommand())
                 {
                     cmd.CommandText = sql.GetExecuteSql();
 
@@ -249,7 +260,7 @@ namespace SWF.Core.DatabaseAccessor
             this.lockObject.Enter();
             try
             {
-                using (var cmd = this.connection.CreateCommand())
+                using (var cmd = this.GetConnection().CreateCommand())
                 {
                     cmd.CommandText = sql.GetExecuteSql();
 
@@ -293,7 +304,7 @@ namespace SWF.Core.DatabaseAccessor
             this.lockObject.Enter();
             try
             {
-                using (var cmd = this.connection.CreateCommand())
+                using (var cmd = this.GetConnection().CreateCommand())
                 {
                     cmd.CommandText = sql.GetExecuteSql();
 

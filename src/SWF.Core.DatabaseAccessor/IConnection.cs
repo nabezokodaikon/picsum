@@ -3,8 +3,6 @@ namespace SWF.Core.DatabaseAccessor
     public interface IConnection
         : IDisposable
     {
-        public string DBFilePath { get; }
-
         public ITransaction BeginTransaction();
         public void Commit();
         public void Roolback();
