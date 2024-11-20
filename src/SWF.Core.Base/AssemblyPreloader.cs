@@ -1,60 +1,114 @@
+using System.Collections.Concurrent;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 
 namespace SWF.Core.Base
 {
     public static class AssemblyPreloader
     {
-        private static readonly HashSet<string> LoadedAssemblies = new HashSet<string>();
+        private static readonly ConcurrentDictionary<string, bool> PreloadedAssemblies = new();
 
-        public static void PreloadAssemblies(string directoryPath)
+        public static void PreloadCriticalAssemblies(params Type[] criticalTypes)
         {
-            // 指定されたディレクトリ内のすべてのDLLファイルを取得
-            var assemblyFiles = Directory.GetFiles(directoryPath, "*.dll", SearchOption.AllDirectories);
+            var tasks = criticalTypes
+                .Select(PreloadAssemblyForType)
+                .ToArray();
 
-            // 並列でアセンブリを読み込み
-            Parallel.ForEach(assemblyFiles, assemblyPath =>
+            Task.WaitAll(tasks);
+        }
+
+        private static Task PreloadAssemblyForType(Type criticalType)
+        {
+            return Task.Run(() =>
             {
                 try
                 {
-                    if (!LoadedAssemblies.Contains(assemblyPath))
+                    var assemblyName = criticalType.Assembly.GetName().Name;
+                    if (assemblyName == null)
                     {
-                        Assembly.LoadFile(assemblyPath);
-                        LoadedAssemblies.Add(assemblyPath);
+                        return;
                     }
-                }
-                catch (BadImageFormatException)
-                {
-                    // マネージアセンブリでない場合は無視
+
+                    if (PreloadedAssemblies.TryAdd(assemblyName, true))
+                    {
+                        var assembly = criticalType.Assembly;
+
+                        // モジュールコンストラクターの実行
+                        RuntimeHelpers.RunModuleConstructor(assembly.GetType().Module.ModuleHandle);
+
+                        // 依存アセンブリの読み込み（最小限）
+                        LoadCriticalReferences(assembly);
+
+                        ConsoleUtil.Write($"アセンブリ読み込み完了: {assemblyName}");
+                    }
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"アセンブリの読み込みに失敗しました: {assemblyPath}. Error: {ex.Message}");
+                    // Microsoft Storeアプリでのロギング
+                    ConsoleUtil.Write(
+                        $"アセンブリ読み込みエラー: {criticalType.Assembly.GetName().Name}. Error: {ex.Message}"
+                    );
                 }
             });
         }
 
-        public static void PreloadSpecificAssemblies(params string[] assemblyNames)
+        private static void LoadCriticalReferences(Assembly assembly)
         {
-            foreach (var assemblyName in assemblyNames)
+            var criticalReferences = assembly.GetReferencedAssemblies()
+                .Where(IsCriticalAssembly)
+                .ToList();
+
+            foreach (var refAssembly in criticalReferences)
             {
                 try
                 {
-                    if (!IsAssemblyLoaded(assemblyName))
+                    var assemblyName = refAssembly.Name;
+                    if (assemblyName == null)
                     {
-                        Assembly.Load(assemblyName);
+                        return;
+                    }
+
+                    if (PreloadedAssemblies.TryAdd(assemblyName, true))
+                    {
+                        Assembly.Load(refAssembly);
                     }
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"アセンブリの読み込みに失敗しました: {assemblyName}. Error: {ex.Message}");
+                    ConsoleUtil.Write(
+                        $"依存アセンブリ読み込みエラー: {refAssembly.Name}. Error: {ex.Message}"
+                    );
                 }
             }
         }
 
-        private static bool IsAssemblyLoaded(string assemblyName)
+        private static bool IsCriticalAssembly(AssemblyName assemblyName)
         {
-            return AppDomain.CurrentDomain.GetAssemblies()
-                .Any(a => a.GetName().Name.Equals(assemblyName, StringComparison.OrdinalIgnoreCase));
+            var name = assemblyName.Name;
+            if (name == null)
+            {
+                return false;
+            }
+
+            // 重要なアセンブリを判定（カスタマイズ可能）
+            string[] criticalPrefixes =
+            [
+                "System",
+                "Microsoft",
+            ];
+
+            return criticalPrefixes.Any(prefix =>
+                name.StartsWith(prefix, StringComparison.OrdinalIgnoreCase));
+        }
+
+        // アプリケーション起動時の最適化メソッド
+        public static void OptimizeStartup(params Type[] criticalTypes)
+        {
+            using (TimeMeasuring.Run(true, "MicrosoftStorePreloader.OptimizeStartup"))
+            {
+                // プリロード
+                PreloadCriticalAssemblies(criticalTypes);
+            }
         }
     }
 }

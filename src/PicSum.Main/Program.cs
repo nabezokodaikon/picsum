@@ -47,7 +47,7 @@ namespace PicSum.Main
 
                     ThreadPool.GetMaxThreads(out int workerThreads, out int completionPortThreads);
 
-                    MicrosoftStorePreloader.OptimizeStartup(
+                    AssemblyPreloader.OptimizeStartup(
                         typeof(Accessibility.AnnoScope),
                         typeof(System.Data.SQLite.SQLiteConnection),
                         typeof(System.Drawing.Bitmap),

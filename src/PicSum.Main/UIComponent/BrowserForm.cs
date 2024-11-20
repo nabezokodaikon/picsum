@@ -135,7 +135,7 @@ namespace PicSum.Main.UIComponent
             var context = SynchronizationContext.Current;
             Task.Run(() =>
             {
-                MicrosoftStorePreloader.OptimizeStartup(
+                AssemblyPreloader.OptimizeStartup(
                     typeof(PicSum.UIComponent.AddressBar.AddressBar),
                     typeof(PicSum.UIComponent.InfoPanel.InfoPanel),
                     typeof(SWF.UIComponent.TabOperation.TabSwitch),
