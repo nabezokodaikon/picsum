@@ -11,8 +11,6 @@ using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Runtime.Versioning;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace PicSum.Main.UIComponent
@@ -132,45 +130,38 @@ namespace PicSum.Main.UIComponent
                 return;
             }
 
-            var context = SynchronizationContext.Current;
-            Task.Run(() =>
+            if (AppConstants.IsRunningAsUwp())
             {
-                if (AppConstants.IsRunningAsUwp())
-                {
-                    MicrosoftStorePreloader.OptimizeStartup(
-                        typeof(PicSum.UIComponent.AddressBar.AddressBar),
-                        typeof(PicSum.UIComponent.Contents.Common.BrowserPage),
-                        typeof(PicSum.UIComponent.InfoPanel.InfoPanel),
-                        typeof(SWF.UIComponent.TabOperation.TabSwitch),
-                        typeof(SWF.UIComponent.WideDropDown.WideDropToolButton),
-                        typeof(SWF.UIComponent.Core.ToolButton),
-                        typeof(SWF.UIComponent.FlowList.FlowList),
-                        typeof(System.Threading.ThreadPool),
-                        typeof(System.Drawing.Bitmap)
-                    );
-                }
-                else
-                {
-                    MicrosoftStorePreloader.OptimizeStartup(
-                        typeof(PicSum.UIComponent.AddressBar.AddressBar),
-                        typeof(PicSum.UIComponent.Contents.Common.BrowserPage),
-                        typeof(PicSum.UIComponent.InfoPanel.InfoPanel),
-                        typeof(SWF.UIComponent.TabOperation.TabSwitch),
-                        typeof(SWF.UIComponent.WideDropDown.WideDropToolButton),
-                        typeof(SWF.UIComponent.Core.ToolButton),
-                        typeof(SWF.UIComponent.FlowList.FlowList),
-                        typeof(System.Threading.ThreadPool),
-                        typeof(System.Drawing.Bitmap)
-                    );
-                }
+                MicrosoftStorePreloader.OptimizeStartup(
+                    typeof(PicSum.UIComponent.AddressBar.AddressBar),
+                    typeof(PicSum.UIComponent.Contents.Common.BrowserPage),
+                    typeof(PicSum.UIComponent.InfoPanel.InfoPanel),
+                    typeof(SWF.UIComponent.TabOperation.TabSwitch),
+                    typeof(SWF.UIComponent.WideDropDown.WideDropToolButton),
+                    typeof(SWF.UIComponent.Core.ToolButton),
+                    typeof(SWF.UIComponent.FlowList.FlowList),
+                    typeof(System.Threading.ThreadPool),
+                    typeof(System.Drawing.Bitmap)
+                );
+            }
+            else
+            {
+                MicrosoftStorePreloader.OptimizeStartup(
+                    typeof(PicSum.UIComponent.AddressBar.AddressBar),
+                    typeof(PicSum.UIComponent.Contents.Common.BrowserPage),
+                    typeof(PicSum.UIComponent.InfoPanel.InfoPanel),
+                    typeof(SWF.UIComponent.TabOperation.TabSwitch),
+                    typeof(SWF.UIComponent.WideDropDown.WideDropToolButton),
+                    typeof(SWF.UIComponent.Core.ToolButton),
+                    typeof(SWF.UIComponent.FlowList.FlowList),
+                    typeof(System.Threading.ThreadPool),
+                    typeof(System.Drawing.Bitmap)
+                );
+            }
 
-                context.Post(_ =>
-                {
-                    this.SetGrass();
-                    this.CreateBrowserMainPanel();
-                    BrowserForm.isStartUp = false;
-                }, null);
-            });
+            this.SetGrass();
+            this.CreateBrowserMainPanel();
+            BrowserForm.isStartUp = false;
         }
 
         protected override void OnClosing(CancelEventArgs e)
