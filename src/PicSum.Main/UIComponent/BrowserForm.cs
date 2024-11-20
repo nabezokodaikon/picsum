@@ -254,14 +254,24 @@ namespace PicSum.Main.UIComponent
             base.OnKeyUp(e);
         }
 
-        protected override void OnActivated(EventArgs e)
+        protected override void OnResize(EventArgs e)
         {
+            base.OnResize(e);
+
             if (this.browserMainPanel != null)
             {
                 this.browserMainPanel.RedrawPage();
             }
+        }
 
+        protected override void OnActivated(EventArgs e)
+        {
             base.OnActivated(e);
+
+            if (this.browserMainPanel != null)
+            {
+                this.browserMainPanel.RedrawPage();
+            }
         }
 
         private void CreateBrowserMainPanel()

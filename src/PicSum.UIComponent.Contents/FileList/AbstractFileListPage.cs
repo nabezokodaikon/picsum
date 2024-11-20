@@ -153,6 +153,8 @@ namespace PicSum.UIComponent.Contents.FileList
         public override void RedrawPage()
         {
             this.flowList.SetDrawParameter(true);
+            this.Invalidate();
+            this.Update();
         }
 
         protected override void Dispose(bool disposing)
