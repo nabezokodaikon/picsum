@@ -209,6 +209,13 @@ namespace SWF.UIComponent.FlowList
             return base.IsInputKey(keyData);
         }
 
+        protected override void OnResize(EventArgs e)
+        {
+            this.Invalidate();
+
+            base.OnResize(e);
+        }
+
         protected override void OnKeyDown(KeyEventArgs e)
         {
             if (!this.CanKeyDown)
