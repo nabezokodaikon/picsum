@@ -135,41 +135,24 @@ namespace PicSum.Main.UIComponent
             var context = SynchronizationContext.Current;
             Task.Run(() =>
             {
-
-                if (AppConstants.IsRunningAsUwp())
-                {
-                    MicrosoftStorePreloader.OptimizeStartup(
-                        typeof(PicSum.UIComponent.AddressBar.AddressBar),
-                        typeof(PicSum.UIComponent.Contents.Common.BrowserPage),
-                        typeof(PicSum.UIComponent.InfoPanel.InfoPanel),
-                        typeof(SWF.UIComponent.TabOperation.TabSwitch),
-                        typeof(SWF.UIComponent.WideDropDown.WideDropToolButton),
-                        typeof(SWF.UIComponent.Core.ToolButton),
-                        typeof(SWF.UIComponent.FlowList.FlowList),
-                        typeof(System.Drawing.Bitmap)
-                    );
-                }
-                else
-                {
-                    MicrosoftStorePreloader.OptimizeStartup(
-                        typeof(PicSum.UIComponent.AddressBar.AddressBar),
-                        typeof(PicSum.UIComponent.Contents.Common.BrowserPage),
-                        typeof(PicSum.UIComponent.InfoPanel.InfoPanel),
-                        typeof(SWF.UIComponent.TabOperation.TabSwitch),
-                        typeof(SWF.UIComponent.WideDropDown.WideDropToolButton),
-                        typeof(SWF.UIComponent.Core.ToolButton),
-                        typeof(SWF.UIComponent.FlowList.FlowList),
-                        typeof(System.Drawing.Bitmap)
-                    );
-                }
+                MicrosoftStorePreloader.OptimizeStartup(
+                    typeof(PicSum.UIComponent.AddressBar.AddressBar),
+                    typeof(PicSum.UIComponent.InfoPanel.InfoPanel),
+                    typeof(SWF.UIComponent.TabOperation.TabSwitch),
+                    typeof(SWF.UIComponent.WideDropDown.WideDropToolButton),
+                    typeof(SWF.UIComponent.Core.ToolButton),
+                    typeof(SWF.UIComponent.FlowList.FlowList)
+                );
 
                 context.Post(_ =>
                 {
-                    this.SetGrass();
-                    this.CreateBrowserMainPanel();
-                    BrowserForm.isStartUp = false;
+                    using (TimeMeasuring.Run(true, "BrowserForm.OnShown"))
+                    {
+                        this.SetGrass();
+                        this.CreateBrowserMainPanel();
+                        BrowserForm.isStartUp = false;
+                    }
                 }, null);
-
             });
         }
 
@@ -275,69 +258,66 @@ namespace PicSum.Main.UIComponent
 
         private void CreateBrowserMainPanel()
         {
-            using (TimeMeasuring.Run(true, "BrowserForm.CreateBrowserMainPanel"))
+            if (this.browserMainPanel != null)
             {
-                if (this.browserMainPanel != null)
-                {
-                    throw new SWFException("メインコントロールは既に存在しています。");
-                }
-
-                this.browserMainPanel = new BrowserMainPanel();
-
-                var x = this.Padding.Left;
-                var y = this.Padding.Top;
-                var w = this.Width - this.Padding.Left - this.Padding.Right;
-                var h = this.Height - this.Padding.Top - this.Padding.Bottom;
-                this.browserMainPanel.SetBounds(x, y, w, h, BoundsSpecified.All);
-                this.browserMainPanel.Dock = DockStyle.Fill;
-
-                this.browserMainPanel.Close += new(this.BrowserMainPanel_Close);
-                this.browserMainPanel.BackgroundMouseDoubleLeftClick += new(this.BrowserMainPanel_BackgroundMouseDoubleLeftClick);
-                this.browserMainPanel.NewWindowPageOpen += new(this.BrowserMainPanel_NewWindowPageOpen);
-                this.browserMainPanel.TabDropouted += new(this.BrowserMainPanel_TabDropouted);
-
-                this.SuspendLayout();
-                this.Controls.Add(this.browserMainPanel);
-
-                if (BrowserForm.isStartUp && CommandLineArgs.IsFilePath())
-                {
-                    var imageFilePath = CommandLineArgs.GetImageFilePatCommandLineArgs();
-                    if (!string.IsNullOrEmpty(imageFilePath))
-                    {
-                        var directoryPath = FileUtil.GetParentDirectoryPath(imageFilePath);
-
-                        var sortInfo = new SortInfo();
-                        sortInfo.SetSortType(SortTypeID.FilePath, true);
-
-                        var parameter = new ImageViewerPageParameter(
-                            DirectoryFileListPageParameter.PAGE_SOURCES,
-                            directoryPath,
-                            BrowserMainPanel.GetImageFilesAction(new ImageFileGetByDirectoryParameter(imageFilePath)),
-                            imageFilePath,
-                            sortInfo,
-                            FileUtil.GetFileName(directoryPath),
-                            Instance<IFileIconCacher>.Value.SmallDirectoryIcon,
-                            true,
-                            true);
-
-                        this.browserMainPanel.AddImageViewerPageTab(parameter);
-                    }
-                }
-                else if (BrowserForm.isStartUp && CommandLineArgs.IsEmpty())
-                {
-
-                }
-                else if (BrowserForm.isStartUp)
-                {
-                    this.browserMainPanel.AddFavoriteDirectoryListTab();
-                }
-
-                this.SetControlRegion();
-                this.ResumeLayout(false);
-                this.PerformLayout();
-                this.Invalidate();
-                this.Update();
+                throw new SWFException("メインコントロールは既に存在しています。");
             }
+
+            this.browserMainPanel = new BrowserMainPanel();
+
+            var x = this.Padding.Left;
+            var y = this.Padding.Top;
+            var w = this.Width - this.Padding.Left - this.Padding.Right;
+            var h = this.Height - this.Padding.Top - this.Padding.Bottom;
+            this.browserMainPanel.SetBounds(x, y, w, h, BoundsSpecified.All);
+            this.browserMainPanel.Dock = DockStyle.Fill;
+
+            this.browserMainPanel.Close += new(this.BrowserMainPanel_Close);
+            this.browserMainPanel.BackgroundMouseDoubleLeftClick += new(this.BrowserMainPanel_BackgroundMouseDoubleLeftClick);
+            this.browserMainPanel.NewWindowPageOpen += new(this.BrowserMainPanel_NewWindowPageOpen);
+            this.browserMainPanel.TabDropouted += new(this.BrowserMainPanel_TabDropouted);
+
+            this.SuspendLayout();
+            this.Controls.Add(this.browserMainPanel);
+
+            if (BrowserForm.isStartUp && CommandLineArgs.IsFilePath())
+            {
+                var imageFilePath = CommandLineArgs.GetImageFilePatCommandLineArgs();
+                if (!string.IsNullOrEmpty(imageFilePath))
+                {
+                    var directoryPath = FileUtil.GetParentDirectoryPath(imageFilePath);
+
+                    var sortInfo = new SortInfo();
+                    sortInfo.SetSortType(SortTypeID.FilePath, true);
+
+                    var parameter = new ImageViewerPageParameter(
+                        DirectoryFileListPageParameter.PAGE_SOURCES,
+                        directoryPath,
+                        BrowserMainPanel.GetImageFilesAction(new ImageFileGetByDirectoryParameter(imageFilePath)),
+                        imageFilePath,
+                        sortInfo,
+                        FileUtil.GetFileName(directoryPath),
+                        Instance<IFileIconCacher>.Value.SmallDirectoryIcon,
+                        true,
+                        true);
+
+                    this.browserMainPanel.AddImageViewerPageTab(parameter);
+                }
+            }
+            else if (BrowserForm.isStartUp && CommandLineArgs.IsEmpty())
+            {
+
+            }
+            else if (BrowserForm.isStartUp)
+            {
+                this.browserMainPanel.AddFavoriteDirectoryListTab();
+            }
+
+            this.SetControlRegion();
+            this.ResumeLayout(false);
+            this.PerformLayout();
+            this.Invalidate();
+            this.Update();
         }
 
         private void OnTabDropouted(TabDropoutedEventArgs e)

@@ -104,23 +104,11 @@ namespace SWF.Core.Base
         // アプリケーション起動時の最適化メソッド
         public static void OptimizeStartup(params Type[] criticalTypes)
         {
-            // プリロード
-            PreloadCriticalAssemblies(criticalTypes);
-
-            // その他の起動最適化
-            ConfigureAppDomainOptimizations();
-        }
-
-        private static void ConfigureAppDomainOptimizations()
-        {
-            // アプリドメインの最適化設定
-            AppDomain.CurrentDomain.AssemblyLoad += (sender, args) =>
+            using (TimeMeasuring.Run(true, "MicrosoftStorePreloader.OptimizeStartup"))
             {
-                // アセンブリ読み込み時のカスタムロジック
-                ConsoleUtil.Write(
-                    $"アセンブリ動的読み込み: {args.LoadedAssembly.GetName().Name}"
-                );
-            };
+                // プリロード
+                PreloadCriticalAssemblies(criticalTypes);
+            }
         }
     }
 }

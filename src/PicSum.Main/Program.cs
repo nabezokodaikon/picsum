@@ -40,9 +40,29 @@ namespace PicSum.Main
 
                     logger.Debug("アプリケーションを開始します。");
 
-                    Application.ThreadException += new ThreadExceptionEventHandler(Application_ThreadException);
+                    AppDomain.CurrentDomain.AssemblyLoad += CurrentDomain_OnAssemblyLoad;
                     AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
 
+                    ThreadPool.SetMinThreads(50, 50);
+
+                    ThreadPool.GetMaxThreads(out int workerThreads, out int completionPortThreads);
+
+                    MicrosoftStorePreloader.OptimizeStartup(
+                        typeof(Accessibility.AnnoScope),
+                        typeof(System.Data.SQLite.SQLiteConnection),
+                        typeof(System.Drawing.Bitmap),
+                        typeof(System.Resources.Extensions.DeserializingResourceReader),
+                        typeof(System.Xml.Serialization.XmlSerializer),
+                        typeof(PicSum.DatabaseAccessor.Connection.FileInfoDB),
+                        typeof(PicSum.Job.Common.JobCaller),
+                        typeof(PicSum.UIComponent.Contents.Common.BrowserPage),
+                        typeof(SWF.Core.FileAccessor.FileUtil),
+                        typeof(SWF.Core.ImageAccessor.ImageUtil),
+                        typeof(SWF.UIComponent.Form.GrassForm),
+                        typeof(WinApi.WinApiMembers)
+                    );
+
+                    Application.ThreadException += new ThreadExceptionEventHandler(Application_ThreadException);
                     Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
                     Application.SetHighDpiMode(HighDpiMode.PerMonitorV2);
                     Application.EnableVisualStyles();
@@ -108,7 +128,7 @@ namespace PicSum.Main
         private static void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
         {
             var logger = LogManager.GetCurrentClassLogger();
-            logger.Error(e.Exception);
+            logger.Fatal(e.Exception);
             ExceptionUtil.ShowFatalDialog("Unhandled UI Exception.", e.Exception);
         }
 
@@ -116,8 +136,19 @@ namespace PicSum.Main
         {
             var ex = (Exception)e.ExceptionObject;
             var logger = LogManager.GetCurrentClassLogger();
-            logger.Error(ex);
+            logger.Fatal(ex);
             ExceptionUtil.ShowFatalDialog("Unhandled Non-UI Exception.", ex);
+        }
+
+        private static void CurrentDomain_OnAssemblyLoad(object sender, AssemblyLoadEventArgs args)
+        {
+#if DEBUG
+            var logger = LogManager.GetCurrentClassLogger();
+            logger.Trace($"アセンブリが読み込まれました: {args.LoadedAssembly.FullName}");
+#elif DEVELOP
+            var logger = LogManager.GetCurrentClassLogger();
+            logger.Trace($"アセンブリが読み込まれました: {args.LoadedAssembly.FullName}");
+#endif
         }
     }
 }
