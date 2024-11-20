@@ -1,3 +1,4 @@
+using NLog;
 using PicSum.Job.Parameters;
 using PicSum.Main.Conf;
 using PicSum.UIComponent.Contents.Common;
@@ -21,6 +22,8 @@ namespace PicSum.Main.UIComponent
     public sealed partial class BrowserForm
         : GrassForm, ISender
     {
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
+
         private static bool isStartUp = true;
 
         public event EventHandler<TabDropoutedEventArgs> TabDropouted;
@@ -151,6 +154,7 @@ namespace PicSum.Main.UIComponent
                         this.SetGrass();
                         this.CreateBrowserMainPanel();
                         BrowserForm.isStartUp = false;
+                        logger.Trace("画面が表示されました。");
                     }
                 }, null);
             });

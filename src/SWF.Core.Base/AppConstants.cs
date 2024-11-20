@@ -103,24 +103,39 @@ namespace SWF.Core.Base
 
         public static void CreateApplicationDirectories()
         {
-            if (!Directory.Exists(APPLICATION_DIRECTORY))
+            using (TimeMeasuring.Run(true, "AppConstants.CreateApplicationDirectories"))
             {
-                Directory.CreateDirectory(APPLICATION_DIRECTORY);
-            }
+                if (!Directory.Exists(APPLICATION_DIRECTORY))
+                {
+                    Directory.CreateDirectory(APPLICATION_DIRECTORY);
+                }
 
-            if (!Directory.Exists(LOG_DIRECTORY))
-            {
-                Directory.CreateDirectory(LOG_DIRECTORY);
-            }
+                var taskList = new List<Task>
+                {
+                    Task.Run(() =>
+                    {
+                        if (!Directory.Exists(LOG_DIRECTORY))
+                        {
+                            Directory.CreateDirectory(LOG_DIRECTORY);
+                        }
+                    }),
+                    Task.Run(() =>
+                    {
+                        if (!Directory.Exists(CONFIG_DIRECTORY))
+                        {
+                            Directory.CreateDirectory(CONFIG_DIRECTORY);
+                        }
+                    }),
+                    Task.Run(() =>
+                    {
+                        if (!Directory.Exists(DATABASE_DIRECTORY))
+                        {
+                            Directory.CreateDirectory(DATABASE_DIRECTORY);
+                        }
+                    })
+                };
 
-            if (!Directory.Exists(CONFIG_DIRECTORY))
-            {
-                Directory.CreateDirectory(CONFIG_DIRECTORY);
-            }
-
-            if (!Directory.Exists(DATABASE_DIRECTORY))
-            {
-                Directory.CreateDirectory(DATABASE_DIRECTORY);
+                Task.WaitAll(taskList);
             }
         }
 

@@ -31,21 +31,16 @@ namespace PicSum.Main
             {
                 try
                 {
-                    AppConstants.CreateApplicationDirectories();
-                    ConfigureLog();
-
-                    var logger = LogManager.GetCurrentClassLogger();
-
                     Thread.CurrentThread.Name = AppConstants.UI_THREAD_NAME;
+                    ThreadPool.SetMinThreads(50, 50);
 
-                    logger.Debug("アプリケーションを開始します。");
+                    AppConstants.CreateApplicationDirectories();
+
+                    ConfigureLog();
+                    LogManager.GetCurrentClassLogger().Debug("アプリケーションを開始します。");
 
                     AppDomain.CurrentDomain.AssemblyLoad += CurrentDomain_OnAssemblyLoad;
                     AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
-
-                    ThreadPool.SetMinThreads(50, 50);
-
-                    ThreadPool.GetMaxThreads(out int workerThreads, out int completionPortThreads);
 
                     AssemblyPreloader.OptimizeStartup(
                         typeof(Accessibility.AnnoScope),
@@ -74,7 +69,7 @@ namespace PicSum.Main
                         Application.Run(initialForm);
                     }
 
-                    logger.Debug("アプリケーションを終了します。");
+                    LogManager.GetCurrentClassLogger().Debug("アプリケーションを終了します。");
                 }
                 finally
                 {
@@ -103,26 +98,27 @@ namespace PicSum.Main
 
         private static void ConfigureLog()
         {
-            var config = new LoggingConfiguration();
-
-            var logfile = new FileTarget("logfile")
+            using (TimeMeasuring.Run(true, "Program.ConfigureLog"))
             {
-                FileName = Path.Combine(AppConstants.LOG_DIRECTORY, "app.log"),
-                Layout = "${longdate} | ${level:padding=-5} | ${threadname} | ${message:withexception=true}",
-                ArchiveFileName = string.Format("{0}/{1}", AppConstants.LOG_DIRECTORY, "${date:format=yyyyMMdd}/{########}.log"),
-                ArchiveAboveSize = 10 * 1024 * 1024,
-                ArchiveNumbering = ArchiveNumberingMode.Sequence,
-            };
+                var config = new LoggingConfiguration();
 
+                var logfile = new FileTarget("logfile")
+                {
+                    FileName = Path.Combine(AppConstants.LOG_DIRECTORY, "app.log"),
+                    Layout = "${longdate} | ${level:padding=-5} | ${threadname} | ${message:withexception=true}",
+                    ArchiveFileName = string.Format("{0}/{1}", AppConstants.LOG_DIRECTORY, "${date:format=yyyyMMdd}/{########}.log"),
+                    ArchiveAboveSize = 10 * 1024 * 1024,
+                    ArchiveNumbering = ArchiveNumberingMode.Sequence,
+                };
 #if DEBUG
-            config.AddRule(LogLevel.Trace, LogLevel.Fatal, logfile);
+                config.AddRule(LogLevel.Trace, LogLevel.Fatal, logfile);
 #elif DEVELOP
-            config.AddRule(LogLevel.Trace, LogLevel.Fatal, logfile);
+                config.AddRule(LogLevel.Trace, LogLevel.Fatal, logfile);
 #else
-            config.AddRule(LogLevel.Info, LogLevel.Fatal, logfile);
+                config.AddRule(LogLevel.Info, LogLevel.Fatal, logfile);
 #endif
-
-            LogManager.Configuration = config;
+                LogManager.Configuration = config;
+            }
         }
 
         private static void Application_ThreadException(object sender, ThreadExceptionEventArgs e)

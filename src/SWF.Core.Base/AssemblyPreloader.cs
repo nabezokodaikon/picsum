@@ -8,15 +8,6 @@ namespace SWF.Core.Base
     {
         private static readonly ConcurrentDictionary<string, bool> PreloadedAssemblies = new();
 
-        public static void PreloadCriticalAssemblies(params Type[] criticalTypes)
-        {
-            var tasks = criticalTypes
-                .Select(PreloadAssemblyForType)
-                .ToArray();
-
-            Task.WaitAll(tasks);
-        }
-
         private static Task PreloadAssemblyForType(Type criticalType)
         {
             return Task.Run(() =>
@@ -34,12 +25,11 @@ namespace SWF.Core.Base
                         var assembly = criticalType.Assembly;
 
                         // モジュールコンストラクターの実行
+                        //Assembly.Load(assemblyName);
                         RuntimeHelpers.RunModuleConstructor(assembly.GetType().Module.ModuleHandle);
 
                         // 依存アセンブリの読み込み（最小限）
                         LoadCriticalReferences(assembly);
-
-                        ConsoleUtil.Write($"アセンブリ読み込み完了: {assemblyName}");
                     }
                 }
                 catch (Exception ex)
@@ -54,11 +44,9 @@ namespace SWF.Core.Base
 
         private static void LoadCriticalReferences(Assembly assembly)
         {
-            var criticalReferences = assembly.GetReferencedAssemblies()
-                .Where(IsCriticalAssembly)
-                .ToList();
-
-            foreach (var refAssembly in criticalReferences)
+            foreach (var refAssembly in assembly
+                .GetReferencedAssemblies()
+                .Where(IsCriticalAssembly))
             {
                 try
                 {
@@ -70,7 +58,8 @@ namespace SWF.Core.Base
 
                     if (PreloadedAssemblies.TryAdd(assemblyName, true))
                     {
-                        Assembly.Load(refAssembly);
+                        //Assembly.Load(refAssembly);
+                        RuntimeHelpers.RunModuleConstructor(refAssembly.GetType().Module.ModuleHandle);
                     }
                 }
                 catch (Exception ex)
@@ -106,8 +95,11 @@ namespace SWF.Core.Base
         {
             using (TimeMeasuring.Run(true, "MicrosoftStorePreloader.OptimizeStartup"))
             {
-                // プリロード
-                PreloadCriticalAssemblies(criticalTypes);
+                var tasks = criticalTypes
+                    .Select(PreloadAssemblyForType)
+                    .ToArray();
+
+                Task.WaitAll(tasks);
             }
         }
     }
