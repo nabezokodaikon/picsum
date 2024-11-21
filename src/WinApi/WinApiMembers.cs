@@ -732,6 +732,9 @@ namespace WinApi
         [DllImport("user32.dll")]
         public static extern bool GetClientRect(IntPtr hWnd, out RECT lpRect);
 
+        [DllImport("user32.dll")]
+        public static extern bool SetForegroundWindow(IntPtr hWnd);
+
         public static int LoWord(int dwValue)
         {
             return dwValue & 0xFFFF;

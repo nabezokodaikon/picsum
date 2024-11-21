@@ -85,8 +85,11 @@ namespace PicSum.Main.UIComponent
                     {
                         form.RestoreWindowState();
                     }
-                    form.Activate();
+
+                    WinApi.WinApiMembers.SetForegroundWindow(form.Handle);
                     form.BringToFront();
+                    form.Focus();
+                    form.Activate();
                 });
 
             this.stopwatch.Stop();
