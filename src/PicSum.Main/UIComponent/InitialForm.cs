@@ -86,6 +86,7 @@ namespace PicSum.Main.UIComponent
                         form.RestoreWindowState();
                     }
                     form.Activate();
+                    form.BringToFront();
                 });
 
             this.stopwatch.Stop();
