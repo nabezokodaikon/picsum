@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Text;
 
 namespace WinApi
 {
@@ -284,6 +285,11 @@ namespace WinApi
         public const int EM_SETRECT = 0xB3; // テキストを表示する領域を設定
         public const int EM_GETLINECOUNT = 0xBA; // テキストの行数を取得する定数
 
+        public const uint GA_ROOT = 2;
+
+        public static readonly Guid FOLDERID_Desktop =
+            new Guid("{B4BFCC3A-DB2C-424C-B029-7FE99A87C641}");
+
         public enum FileAttributesFlags : uint
         {
             FILE_ATTRIBUTE_ARCHIVE = 0x00000020,
@@ -539,6 +545,31 @@ namespace WinApi
         }
 
         [StructLayout(LayoutKind.Sequential)]
+        public struct FOLDERSETTINGS
+        {
+            public uint ViewMode;
+            public uint fFlags;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct OLEMENUGROUPWIDTHS
+        {
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 6)]
+            public int[] widths;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct MSG
+        {
+            public IntPtr hwnd;
+            public uint message;
+            public IntPtr wParam;
+            public IntPtr lParam;
+            public uint time;
+            public POINT pt;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
         public class BITMAPINFO
         {
             public int biSize;
@@ -734,6 +765,34 @@ namespace WinApi
 
         [DllImport("user32.dll")]
         public static extern bool SetForegroundWindow(IntPtr hWnd);
+
+        [DllImport("user32.dll")]
+        public static extern IntPtr WindowFromPoint(POINT point);
+
+        [DllImport("user32.dll", SetLastError = true)]
+        public static extern IntPtr GetAncestor(IntPtr hwnd, uint flags);
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        public static extern int GetClassName(IntPtr hWnd, StringBuilder lpClassName, int nMaxCount);
+
+        [DllImport("shell32.dll")]
+        public static extern IntPtr ILCreateFromPath([MarshalAs(UnmanagedType.LPTStr)] string pszPath);
+
+        [DllImport("shell32.dll")]
+        public static extern void ILFree(IntPtr pidl);
+
+        [DllImport("shell32.dll")]
+        public static extern bool SHGetPathFromIDList(IntPtr pidl, StringBuilder pszPath);
+
+        [DllImport("shell32.dll")]
+        public static extern int SHGetInstanceExplorer(ref IServiceProvider ppunk);
+
+        [DllImport("shell32.dll")]
+        public static extern int SHGetKnownFolderPath(
+            [MarshalAs(UnmanagedType.LPStruct)] Guid rfid,
+            uint dwFlags,
+            IntPtr hToken,
+            out IntPtr pszPath);
 
         public static int LoWord(int dwValue)
         {

@@ -18,6 +18,7 @@ using System.Drawing;
 using System.Linq;
 using System.Runtime.Versioning;
 using System.Windows.Forms;
+using WinApi;
 
 namespace PicSum.UIComponent.Contents.ImageViewer
 {
@@ -676,6 +677,10 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 this.parameter.VisibleBookmarkMenuItem,
                 this.parameter.VisibleClipMenuItem);
             this.DoDragDrop(dragData, DragDropEffects.All);
+
+            var cursorPosition = Cursor.Position;
+            var explorerPath = DragDropUtil.GetExplorerPathAtCursor(cursorPosition.X, cursorPosition.Y);
+            Console.WriteLine(explorerPath);
         }
 
         private bool SetDisplayMode(ImageDisplayMode mode)
