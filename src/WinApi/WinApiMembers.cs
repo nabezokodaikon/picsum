@@ -287,6 +287,19 @@ namespace WinApi
 
         public const uint GA_ROOT = 2;
 
+        public const int TVM_GETNEXTITEM = 0x110A;
+        public const int TVM_GETITEM = 0x110C;
+        public const int TVGN_CARET = 0x0009;
+        public const int TVIF_TEXT = 0x0001;
+        public const int TVGN_PARENT = 0x0003;
+        public const int TVM_HITTEST = 0x1111;
+
+        public const uint MEM_COMMIT = 0x00001000;
+        public const uint MEM_DECOMMIT = 0x4000;
+        public const uint MEM_RESERVE = 0x00002000;
+        public const uint PAGE_READWRITE = 4;
+        public const uint MEM_RELEASE = 0x8000;
+
         public static readonly Guid FOLDERID_Desktop =
             new Guid("{B4BFCC3A-DB2C-424C-B029-7FE99A87C641}");
 
@@ -569,6 +582,49 @@ namespace WinApi
             public POINT pt;
         }
 
+        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+        public struct TVITEM
+        {
+            public uint mask;
+            public IntPtr hItem;
+            public uint state;
+            public uint stateMask;
+            public IntPtr pszText;
+            public int cchTextMax;
+            public int iImage;
+            public int iSelectedImage;
+            public int cChildren;
+            public IntPtr lParam;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct TVITEMEX
+        {
+            public uint mask;
+            public IntPtr hItem;
+            public uint state;
+            public uint stateMask;
+            public IntPtr pszText;
+            public int cchTextMax;
+            public int iImage;
+            public int iSelectedImage;
+            public int cChildren;
+            public IntPtr lParam;
+            public int iIntegral;
+            public uint uStateEx;
+            public IntPtr hwnd;
+            public int iExpandedImage;
+            public int iReserved;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct TVHITTESTINFO
+        {
+            public POINT pt;
+            public IntPtr hItem;
+            public uint flags;
+        }
+
         [StructLayout(LayoutKind.Sequential)]
         public class BITMAPINFO
         {
@@ -679,8 +735,23 @@ namespace WinApi
         [DllImport("shell32.dll", CharSet = CharSet.Unicode, ExactSpelling = true)]
         public static extern IntPtr SHGetFileInfoW(string pszPath, FileAttributesFlags dwFileAttributes, ref SHFILEINFOW psfi, uint cbSizeFileInfo, ShellFileInfoFlags uFlags);
 
+        [DllImport("user32.dll")]
+        public static extern bool ScreenToClient(IntPtr hWnd, ref POINT lpPoint);
+
         [DllImport("User32.dll")]
         public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, IntPtr lParam);
+
+        [DllImport("user32.dll")]
+        public static extern IntPtr SendMessage(IntPtr hWnd, uint Msg, IntPtr wParam, ref TVITEM lParam);
+
+        [DllImport("user32.dll")]
+        public static extern IntPtr SendMessage(IntPtr hWnd, uint Msg, IntPtr wParam, ref TVITEMEX lParam);
+
+        [DllImport("user32.dll")]
+        public static extern IntPtr SendMessage(IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
+
+        [DllImport("user32.dll")]
+        public static extern IntPtr SendMessage(IntPtr hWnd, uint Msg, IntPtr wParam, ref TVHITTESTINFO lParam);
 
         [DllImport("ole32.dll", CharSet = CharSet.Unicode, ExactSpelling = true)]
         public static extern void CoTaskMemFree(IntPtr pv);
@@ -793,6 +864,30 @@ namespace WinApi
             uint dwFlags,
             IntPtr hToken,
             out IntPtr pszPath);
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        public static extern int GetWindowText(IntPtr hWnd, StringBuilder lpString, int nMaxCount);
+
+        [DllImport("user32.dll", SetLastError = true)]
+        public static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint processId);
+
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool EnumChildWindows(IntPtr hwndParent, EnumWindowsProc lpEnumFunc, IntPtr lParam);
+
+        [DllImport("kernel32.dll")]
+        public static extern bool WriteProcessMemory(IntPtr hProcess, IntPtr lpBaseAddress, IntPtr lpBuffer, int nSize, ref uint lpNumberOfBytesWritten);
+
+        [DllImport("kernel32.dll")]
+        public static extern bool ReadProcessMemory(IntPtr hProcess, IntPtr lpBaseAddress, IntPtr lpBuffer, int nSize, ref uint lpNumberOfBytesRead);
+
+        [DllImport("kernel32.dll", SetLastError = true, ExactSpelling = true)]
+        public static extern IntPtr VirtualAllocEx(IntPtr hProcess, IntPtr lpAddress, uint dwSize, uint flAllocationType, uint flProtect);
+
+        [DllImport("kernel32.dll")]
+        public static extern bool VirtualFreeEx(IntPtr hProcess, IntPtr lpAddress, uint dwSize, uint dwFreeType);
+
+        public delegate bool EnumWindowsProc(IntPtr hwnd, IntPtr lParam);
 
         public static int LoWord(int dwValue)
         {

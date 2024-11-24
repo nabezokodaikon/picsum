@@ -679,8 +679,8 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.DoDragDrop(dragData, DragDropEffects.All);
 
             var cursorPosition = Cursor.Position;
-            var explorerPath = DragDropUtil.GetExplorerPathAtCursor(cursorPosition.X, cursorPosition.Y);
-            Console.WriteLine(explorerPath);
+            var explorerPath = DragDropUtil.GetExplorerTreePathAtCursor(cursorPosition.X, cursorPosition.Y);
+            ConsoleUtil.Write(explorerPath);
         }
 
         private bool SetDisplayMode(ImageDisplayMode mode)
@@ -1175,6 +1175,21 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             if (!string.IsNullOrEmpty(this.leftImagePanel.FilePath))
             {
                 this.DoDragDrop(this.leftImagePanel.FilePath);
+            }
+        }
+
+        private void ImageViewerPage_GiveFeedback(object sender, GiveFeedbackEventArgs e)
+        {
+            var cursorPosition = Cursor.Position;
+            var explorerPath = DragDropUtil.GetExplorerPathAtCursor(cursorPosition.X, cursorPosition.Y);
+            if (!string.IsNullOrEmpty(explorerPath))
+            {
+                e.UseDefaultCursors = false;
+                Cursor.Current = DragDropUtil.DRAG_CURSOR;
+            }
+            else
+            {
+                e.UseDefaultCursors = true;
             }
         }
 
