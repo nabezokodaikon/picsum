@@ -1,0 +1,131 @@
+using System;
+using System.Drawing;
+using System.Runtime.InteropServices;
+using System.Runtime.Versioning;
+using System.Text;
+using System.Windows.Forms;
+
+namespace WinApi
+{
+    [SupportedOSPlatform("windows10.0.17763.0")]
+    public static class ExplorerWindowDragDrop
+    {
+        public static readonly Cursor DRAG_CURSOR = new(CreateDragImage().GetHicon());
+
+        public static string GetExplorerPathAtCursor(int x, int y)
+        {
+            try
+            {
+                var windowHandle = WinApiMembers.WindowFromPoint(new WinApiMembers.POINT(x, y));
+                if (IsDesktopWindow(windowHandle))
+                {
+                    return GetDesktopPath();
+                }
+
+                var rootWindow = WinApiMembers.GetAncestor(windowHandle, WinApiMembers.GA_ROOT);
+                var className = new StringBuilder(256);
+                WinApiMembers.GetClassName(rootWindow, className, className.Capacity);
+                if (className.ToString() == "CabinetWClass") // エクスプローラーウィンドウの場合
+                {
+                    return GetShellFolderPath(rootWindow);
+                }
+
+                return string.Empty;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"エラー: {ex.Message}");
+                return string.Empty;
+            }
+        }
+
+        private static string GetShellFolderPath(IntPtr hwnd)
+        {
+            try
+            {
+                var shellWindowType = Type.GetTypeFromProgID("Shell.Application");
+                if (shellWindowType == null)
+                {
+                    return string.Empty;
+                }
+
+                dynamic shell = Activator.CreateInstance(shellWindowType);
+                if (shell == null)
+                {
+                    return string.Empty;
+                }
+
+                dynamic windows = shell.Windows();
+
+                try
+                {
+                    foreach (dynamic window in windows)
+                    {
+                        try
+                        {
+                            if (window != null && window.HWND == (int)hwnd)
+                            {
+                                var path = window.Document.Folder.Self.Path;
+                                Marshal.ReleaseComObject(window);
+                                return path;
+                            }
+                        }
+                        catch
+                        {
+                            continue;
+                        }
+                    }
+                }
+                finally
+                {
+                    Marshal.ReleaseComObject(windows);
+                    Marshal.ReleaseComObject(shell);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"COM操作エラー: {ex.Message}");
+            }
+
+            return string.Empty;
+        }
+
+        private static bool IsDesktopWindow(IntPtr hwnd)
+        {
+            var className = new StringBuilder(256);
+            WinApiMembers.GetClassName(hwnd, className, className.Capacity);
+            return className.ToString() == "SysListView32";
+        }
+
+        private static string GetDesktopPath()
+        {
+            if (WinApiMembers.SHGetKnownFolderPath(WinApiMembers.FOLDERID_Desktop, 0, IntPtr.Zero, out var pszPath) == 0)
+            {
+                try
+                {
+                    return Marshal.PtrToStringUni(pszPath);
+                }
+                finally
+                {
+                    Marshal.FreeCoTaskMem(pszPath);
+                }
+            }
+            else
+            {
+                return Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            }
+        }
+
+        private static Bitmap CreateDragImage()
+        {
+            const int w = 64;
+            const int h = 64;
+            var bmp = new Bitmap(w, h);
+            using (var g = Graphics.FromImage(bmp))
+            {
+                g.FillRectangle(Brushes.White, 0, 0, w, h);
+            }
+            return bmp;
+        }
+    }
+}

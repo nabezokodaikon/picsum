@@ -287,19 +287,6 @@ namespace WinApi
 
         public const uint GA_ROOT = 2;
 
-        public const int TVM_GETNEXTITEM = 0x110A;
-        public const int TVM_GETITEM = 0x110C;
-        public const int TVGN_CARET = 0x0009;
-        public const int TVIF_TEXT = 0x0001;
-        public const int TVGN_PARENT = 0x0003;
-        public const int TVM_HITTEST = 0x1111;
-
-        public const uint MEM_COMMIT = 0x00001000;
-        public const uint MEM_DECOMMIT = 0x4000;
-        public const uint MEM_RESERVE = 0x00002000;
-        public const uint PAGE_READWRITE = 4;
-        public const uint MEM_RELEASE = 0x8000;
-
         public static readonly Guid FOLDERID_Desktop =
             new Guid("{B4BFCC3A-DB2C-424C-B029-7FE99A87C641}");
 
@@ -487,54 +474,6 @@ namespace WinApi
             public IntPtr lParam;
         }
 
-        [StructLayout(LayoutKind.Sequential)]
-        unsafe public struct PAINTSTRUCT
-        {
-            public IntPtr hdc;
-            public bool fErase;
-            public RECT rcPaint;
-            public bool fRestore;
-            public bool fIncUpdate;
-            public fixed byte rgbReserved[32];
-        }
-
-        public struct POINTAPI
-        {
-            public int x;
-            public int y;
-        }
-
-        public struct MINMAXINFO
-        {
-            public POINTAPI ptReserved;
-            public POINTAPI ptMaxSize;
-            public POINTAPI ptMaxPosition;
-            public POINTAPI ptMinTrackSize;
-            public POINTAPI ptMaxTrackSize;
-        }
-
-        [StructLayout(LayoutKind.Sequential)]
-        public struct IMAGELISTDRAWPARAMS
-        {
-            public int cbSize;
-            public IntPtr himl;
-            public int i;
-            public IntPtr hdcDst;
-            public int x;
-            public int y;
-            public int cx;
-            public int cy;
-            public int xBitmap;    // x offest from the upperleft of bitmap
-            public int yBitmap;    // y offset from the upperleft of bitmap
-            public int rgbBk;
-            public int rgbFg;
-            public int fStyle;
-            public int dwRop;
-            public int fState;
-            public int Frame;
-            public int crEffect;
-        }
-
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
         public struct SHFILEINFO
         {
@@ -555,74 +494,6 @@ namespace WinApi
             public string cszClass;
             [MarshalAs(UnmanagedType.I4)]
             public TagOAIF oaifInFlags;
-        }
-
-        [StructLayout(LayoutKind.Sequential)]
-        public struct FOLDERSETTINGS
-        {
-            public uint ViewMode;
-            public uint fFlags;
-        }
-
-        [StructLayout(LayoutKind.Sequential)]
-        public struct OLEMENUGROUPWIDTHS
-        {
-            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 6)]
-            public int[] widths;
-        }
-
-        [StructLayout(LayoutKind.Sequential)]
-        public struct MSG
-        {
-            public IntPtr hwnd;
-            public uint message;
-            public IntPtr wParam;
-            public IntPtr lParam;
-            public uint time;
-            public POINT pt;
-        }
-
-        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-        public struct TVITEM
-        {
-            public uint mask;
-            public IntPtr hItem;
-            public uint state;
-            public uint stateMask;
-            public IntPtr pszText;
-            public int cchTextMax;
-            public int iImage;
-            public int iSelectedImage;
-            public int cChildren;
-            public IntPtr lParam;
-        }
-
-        [StructLayout(LayoutKind.Sequential)]
-        public struct TVITEMEX
-        {
-            public uint mask;
-            public IntPtr hItem;
-            public uint state;
-            public uint stateMask;
-            public IntPtr pszText;
-            public int cchTextMax;
-            public int iImage;
-            public int iSelectedImage;
-            public int cChildren;
-            public IntPtr lParam;
-            public int iIntegral;
-            public uint uStateEx;
-            public IntPtr hwnd;
-            public int iExpandedImage;
-            public int iReserved;
-        }
-
-        [StructLayout(LayoutKind.Sequential)]
-        public struct TVHITTESTINFO
-        {
-            public POINT pt;
-            public IntPtr hItem;
-            public uint flags;
         }
 
         [StructLayout(LayoutKind.Sequential)]
@@ -659,70 +530,6 @@ namespace WinApi
             public MARGINS() { }
         }
 
-        [StructLayout(LayoutKind.Sequential)]
-        public class DWM_BLURBEHIND
-        {
-            public uint dwFlags;
-            [MarshalAs(UnmanagedType.Bool)]
-            public bool fEnable;
-            public IntPtr hRegionBlur;
-            [MarshalAs(UnmanagedType.Bool)]
-            public bool fTransitionOnMaximized;
-            public const uint DWM_BB_ENABLE = 0x00000001;
-            public const uint DWM_BB_BLURREGION = 0x00000002;
-            public const uint DWM_BB_TRANSITIONONMAXIMIZED = 0x00000004;
-        }
-
-        [StructLayout(LayoutKind.Sequential)]
-        public class DWM_THUMBNAIL_PROPERTIES
-        {
-            public uint dwFlags;
-            public RECT rcDestination;
-            public RECT rcSource;
-            public byte opacity;
-            [MarshalAs(UnmanagedType.Bool)]
-            public bool fVisible;
-            [MarshalAs(UnmanagedType.Bool)]
-            public bool fSourceClientAreaOnly;
-
-            public const uint DWM_TNP_RECTDESTINATION = 0x00000001;
-            public const uint DWM_TNP_RECTSOURCE = 0x00000002;
-            public const uint DWM_TNP_OPACITY = 0x00000004;
-            public const uint DWM_TNP_VISIBLE = 0x00000008;
-            public const uint DWM_TNP_SOURCECLIENTAREAONLY = 0x00000010;
-        }
-
-        // interface COM IImageList
-        [ComImportAttribute()]
-        [GuidAttribute("46EB5926-582E-4017-9FDF-E8998DAA0950")]
-        [InterfaceTypeAttribute(ComInterfaceType.InterfaceIsIUnknown)]
-        public interface IImageList
-        {
-            [PreserveSig]
-            int Add(IntPtr hbmImage, IntPtr hbmMask, ref int pi);
-
-            [PreserveSig]
-            int ReplaceIcon(int i, IntPtr hicon, ref int pi);
-
-            [PreserveSig]
-            int SetOverlayImage(int iImage, int iOverlay);
-
-            [PreserveSig]
-            int Replace(int i, IntPtr hbmImage, IntPtr hbmMask);
-
-            [PreserveSig]
-            int AddMasked(IntPtr hbmImage, int crMask, ref int pi);
-
-            [PreserveSig]
-            int Draw(ref IMAGELISTDRAWPARAMS pimldp);
-
-            [PreserveSig]
-            int Remove(int i);
-
-            [PreserveSig]
-            int GetIcon(int i, int flags, ref IntPtr picon);
-        };
-
         [DllImport("shlwapi.dll", CharSet = CharSet.Unicode, ExactSpelling = true)]
         public static extern int StrCmpLogicalW(string x, string y);
 
@@ -735,23 +542,8 @@ namespace WinApi
         [DllImport("shell32.dll", CharSet = CharSet.Unicode, ExactSpelling = true)]
         public static extern IntPtr SHGetFileInfoW(string pszPath, FileAttributesFlags dwFileAttributes, ref SHFILEINFOW psfi, uint cbSizeFileInfo, ShellFileInfoFlags uFlags);
 
-        [DllImport("user32.dll")]
-        public static extern bool ScreenToClient(IntPtr hWnd, ref POINT lpPoint);
-
         [DllImport("User32.dll")]
         public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, IntPtr lParam);
-
-        [DllImport("user32.dll")]
-        public static extern IntPtr SendMessage(IntPtr hWnd, uint Msg, IntPtr wParam, ref TVITEM lParam);
-
-        [DllImport("user32.dll")]
-        public static extern IntPtr SendMessage(IntPtr hWnd, uint Msg, IntPtr wParam, ref TVITEMEX lParam);
-
-        [DllImport("user32.dll")]
-        public static extern IntPtr SendMessage(IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
-
-        [DllImport("user32.dll")]
-        public static extern IntPtr SendMessage(IntPtr hWnd, uint Msg, IntPtr wParam, ref TVHITTESTINFO lParam);
 
         [DllImport("ole32.dll", CharSet = CharSet.Unicode, ExactSpelling = true)]
         public static extern void CoTaskMemFree(IntPtr pv);
@@ -829,12 +621,6 @@ namespace WinApi
         public static extern int SHOpenWithDialog(IntPtr hwndParent, ref TagOpenAsInfo oainfo);
 
         [DllImport("user32.dll")]
-        public static extern bool GetWindowRect(IntPtr hWnd, out RECT lpRect);
-
-        [DllImport("user32.dll")]
-        public static extern bool GetClientRect(IntPtr hWnd, out RECT lpRect);
-
-        [DllImport("user32.dll")]
         public static extern bool SetForegroundWindow(IntPtr hWnd);
 
         [DllImport("user32.dll")]
@@ -847,47 +633,11 @@ namespace WinApi
         public static extern int GetClassName(IntPtr hWnd, StringBuilder lpClassName, int nMaxCount);
 
         [DllImport("shell32.dll")]
-        public static extern IntPtr ILCreateFromPath([MarshalAs(UnmanagedType.LPTStr)] string pszPath);
-
-        [DllImport("shell32.dll")]
-        public static extern void ILFree(IntPtr pidl);
-
-        [DllImport("shell32.dll")]
-        public static extern bool SHGetPathFromIDList(IntPtr pidl, StringBuilder pszPath);
-
-        [DllImport("shell32.dll")]
-        public static extern int SHGetInstanceExplorer(ref IServiceProvider ppunk);
-
-        [DllImport("shell32.dll")]
         public static extern int SHGetKnownFolderPath(
             [MarshalAs(UnmanagedType.LPStruct)] Guid rfid,
             uint dwFlags,
             IntPtr hToken,
             out IntPtr pszPath);
-
-        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-        public static extern int GetWindowText(IntPtr hWnd, StringBuilder lpString, int nMaxCount);
-
-        [DllImport("user32.dll", SetLastError = true)]
-        public static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint processId);
-
-        [DllImport("user32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool EnumChildWindows(IntPtr hwndParent, EnumWindowsProc lpEnumFunc, IntPtr lParam);
-
-        [DllImport("kernel32.dll")]
-        public static extern bool WriteProcessMemory(IntPtr hProcess, IntPtr lpBaseAddress, IntPtr lpBuffer, int nSize, ref uint lpNumberOfBytesWritten);
-
-        [DllImport("kernel32.dll")]
-        public static extern bool ReadProcessMemory(IntPtr hProcess, IntPtr lpBaseAddress, IntPtr lpBuffer, int nSize, ref uint lpNumberOfBytesRead);
-
-        [DllImport("kernel32.dll", SetLastError = true, ExactSpelling = true)]
-        public static extern IntPtr VirtualAllocEx(IntPtr hProcess, IntPtr lpAddress, uint dwSize, uint flAllocationType, uint flProtect);
-
-        [DllImport("kernel32.dll")]
-        public static extern bool VirtualFreeEx(IntPtr hProcess, IntPtr lpAddress, uint dwSize, uint dwFreeType);
-
-        public delegate bool EnumWindowsProc(IntPtr hwnd, IntPtr lParam);
 
         public static int LoWord(int dwValue)
         {
