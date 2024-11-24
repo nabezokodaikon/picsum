@@ -13,11 +13,6 @@ namespace WinApi
             try
             {
                 var windowHandle = WinApiMembers.WindowFromPoint(new WinApiMembers.POINT(x, y));
-                if (IsDesktopWindow(windowHandle))
-                {
-                    return GetDesktopPath();
-                }
-
                 var rootWindow = WinApiMembers.GetAncestor(windowHandle, WinApiMembers.GA_ROOT);
                 var className = new StringBuilder(256);
                 WinApiMembers.GetClassName(rootWindow, className, className.Capacity);
@@ -84,32 +79,6 @@ namespace WinApi
             }
 
             return string.Empty;
-        }
-
-        private static bool IsDesktopWindow(IntPtr hwnd)
-        {
-            var className = new StringBuilder(256);
-            WinApiMembers.GetClassName(hwnd, className, className.Capacity);
-            return className.ToString() == "SysListView32";
-        }
-
-        private static string GetDesktopPath()
-        {
-            if (WinApiMembers.SHGetKnownFolderPath(WinApiMembers.FOLDERID_Desktop, 0, IntPtr.Zero, out var pszPath) == 0)
-            {
-                try
-                {
-                    return Marshal.PtrToStringUni(pszPath);
-                }
-                finally
-                {
-                    Marshal.FreeCoTaskMem(pszPath);
-                }
-            }
-            else
-            {
-                return Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-            }
         }
     }
 }

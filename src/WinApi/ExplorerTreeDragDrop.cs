@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -51,11 +50,6 @@ namespace WinApi
             if (directoryNameList.Count < 1)
             {
                 return string.Empty;
-            }
-
-            foreach (var name in directoryNameList)
-            {
-                Console.WriteLine(name);
             }
 
             while (directoryNameList.Count > 0)
