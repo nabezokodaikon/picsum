@@ -15,6 +15,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Runtime.Versioning;
 using System.Windows.Forms;
@@ -679,8 +680,33 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.DoDragDrop(dragData, DragDropEffects.All);
 
             var cursorPosition = Cursor.Position;
-            var explorerPath = DragDropUtil.GetExplorerTreePathAtCursor(cursorPosition.X, cursorPosition.Y);
-            ConsoleUtil.Write(explorerPath);
+            var treePath = ExplorerTreeDragDrop.GetExplorerPathAtCursor(
+                cursorPosition.X, cursorPosition.Y);
+            if (FileUtil.CanAccess(treePath))
+            {
+                var exportFileName = FileUtil.GetExportFileName(treePath, currentFilePath);
+                Instance<JobCaller>.Value.StartSingleFileExportJob(
+                    this, new SingleFileExportParameter()
+                    {
+                        SrcFilePath = currentFilePath,
+                        ExportFilePath = Path.Combine(treePath, exportFileName),
+                    });
+            }
+            else
+            {
+                var windowPath = ExplorerWindowDragDrop.GetExplorerPathAtCursor(
+                    cursorPosition.X, cursorPosition.Y);
+                if (FileUtil.CanAccess(windowPath))
+                {
+                    var exportFileName = FileUtil.GetExportFileName(windowPath, currentFilePath);
+                    Instance<JobCaller>.Value.StartSingleFileExportJob(
+                        this, new SingleFileExportParameter()
+                        {
+                            SrcFilePath = currentFilePath,
+                            ExportFilePath = Path.Combine(windowPath, exportFileName),
+                        });
+                }
+            }
         }
 
         private bool SetDisplayMode(ImageDisplayMode mode)
@@ -1181,15 +1207,26 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         private void ImageViewerPage_GiveFeedback(object sender, GiveFeedbackEventArgs e)
         {
             var cursorPosition = Cursor.Position;
-            var explorerPath = DragDropUtil.GetExplorerPathAtCursor(cursorPosition.X, cursorPosition.Y);
-            if (!string.IsNullOrEmpty(explorerPath))
+            var treePath = ExplorerTreeDragDrop.GetExplorerPathAtCursor(
+                cursorPosition.X, cursorPosition.Y);
+            if (FileUtil.CanAccess(treePath))
             {
                 e.UseDefaultCursors = false;
-                Cursor.Current = DragDropUtil.DRAG_CURSOR;
+                Cursor.Current = ResourceFiles.DragAndDropCursor.Value;
             }
             else
             {
-                e.UseDefaultCursors = true;
+                var windowPath = ExplorerWindowDragDrop.GetExplorerPathAtCursor(
+                    cursorPosition.X, cursorPosition.Y);
+                if (FileUtil.CanAccess(windowPath))
+                {
+                    e.UseDefaultCursors = false;
+                    Cursor.Current = ResourceFiles.DragAndDropCursor.Value;
+                }
+                else
+                {
+                    e.UseDefaultCursors = true;
+                }
             }
         }
 

@@ -18,6 +18,9 @@ namespace SWF.Core.Base
         public static readonly Lazy<Bitmap> ClipIcon = new(() =>
             CreateBitmapFromByteArray(Resources.ClipIcon));
 
+        public static readonly Lazy<Bitmap> DragAndDropIcon = new(() =>
+            CreateBitmapFromByteArray(Resources.DragAndDropIcon));
+
         public static readonly Lazy<Bitmap> DragTabIcon = new(() =>
             CreateBitmapFromByteArray(Resources.DragTabIcon));
 
@@ -83,6 +86,9 @@ namespace SWF.Core.Base
 
         public static readonly Lazy<Bitmap> ThumbnailPanelIcon = new(() =>
             CreateBitmapFromByteArray(Resources.ThumbnailPanelIcon));
+
+        public static readonly Lazy<Cursor> DragAndDropCursor
+            = new(() => new Cursor(ResourceFiles.DragAndDropIcon.Value.GetHicon()));
 
         private static Bitmap CreateBitmapFromByteArray(byte[] byteArray)
         {

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -47,22 +48,30 @@ namespace WinApi
                 temp = parent;
             }
 
-            if (directoryNameList.Count < 3)
+            if (directoryNameList.Count < 1)
             {
                 return string.Empty;
             }
 
-            var drive = directoryNameList.Skip(2).First();
-            var match = DriveLetterRegex.Match(drive);
-            if (match.Success)
+            foreach (var name in directoryNameList)
             {
-                var driveLetter = match.Groups[1].Value;
-                directoryNameList = directoryNameList.Skip(3).ToList();
-                directoryNameList.Insert(0, driveLetter);
+                Console.WriteLine(name);
             }
-            else
+
+            while (directoryNameList.Count > 0)
             {
-                return string.Empty;
+                var item = directoryNameList.First();
+                var match = DriveLetterRegex.Match(item);
+                if (match.Success)
+                {
+                    var driveLetter = match.Groups[1].Value;
+                    directoryNameList[0] = driveLetter;
+                    break;
+                }
+                else
+                {
+                    directoryNameList.RemoveAt(0);
+                }
             }
 
             var fullPath = string.Empty;

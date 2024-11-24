@@ -225,9 +225,11 @@ namespace SWF.Core.FileAccessor
         /// <returns>隠しファイル、システムファイルならFalse。それ以外ならTrue。</returns>
         public static bool CanAccess(string filePath)
         {
-            ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
-
-            if (IsSystemRoot(filePath))
+            if (string.IsNullOrEmpty(filePath))
+            {
+                return false;
+            }
+            else if (IsSystemRoot(filePath))
             {
                 return true;
             }

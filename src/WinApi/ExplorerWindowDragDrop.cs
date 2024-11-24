@@ -1,17 +1,13 @@
 using System;
-using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 using System.Text;
-using System.Windows.Forms;
 
 namespace WinApi
 {
     [SupportedOSPlatform("windows10.0.17763.0")]
     public static class ExplorerWindowDragDrop
     {
-        public static readonly Cursor DRAG_CURSOR = new(CreateDragImage().GetHicon());
-
         public static string GetExplorerPathAtCursor(int x, int y)
         {
             try
@@ -114,18 +110,6 @@ namespace WinApi
             {
                 return Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
             }
-        }
-
-        private static Bitmap CreateDragImage()
-        {
-            const int w = 64;
-            const int h = 64;
-            var bmp = new Bitmap(w, h);
-            using (var g = Graphics.FromImage(bmp))
-            {
-                g.FillRectangle(Brushes.White, 0, 0, w, h);
-            }
-            return bmp;
         }
     }
 }
