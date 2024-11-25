@@ -16,6 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Runtime.Versioning;
 using System.Text;
@@ -187,6 +188,32 @@ namespace PicSum.UIComponent.Contents.FileList
             Instance<JobCaller>.Value.ThumbnailsGetJob.Value.BeginCancel();
 
             base.OnInvalidated(e);
+        }
+
+        protected override void OnGiveFeedback(GiveFeedbackEventArgs gfbevent)
+        {
+            var selectedFiles = this.GetSelectedFiles();
+            if (selectedFiles.Length < 1)
+            {
+                gfbevent.UseDefaultCursors = true;
+                return;
+            }
+
+            var cursorPosition = Cursor.Position;
+            var directoryPath = ExplorerDragDrop.GetExplorerPathAtCursor(
+                cursorPosition.X, cursorPosition.Y);
+            if (FileUtil.CanAccess(directoryPath)
+                && (FileUtil.IsDrive(directoryPath) || FileUtil.IsDirectory(directoryPath)))
+            {
+                gfbevent.UseDefaultCursors = false;
+                Cursor.Current = ResourceFiles.DragAndDropCursor.Value;
+            }
+            else
+            {
+                gfbevent.UseDefaultCursors = true;
+            }
+
+            base.OnGiveFeedback(gfbevent);
         }
 
         protected abstract void OnRemoveFile(string[] filePathList);
@@ -1004,6 +1031,44 @@ namespace PicSum.UIComponent.Contents.FileList
                         this.Parameter.VisibleBookmarkMenuItem,
                         this.Parameter.VisibleClipMenuItem);
                     this.DoDragDrop(dragData, DragDropEffects.All);
+
+                    var cursorPosition = Cursor.Position;
+                    var directoryPath = ExplorerDragDrop.GetExplorerPathAtCursor(
+                        cursorPosition.X, cursorPosition.Y);
+                    if (FileUtil.CanAccess(directoryPath)
+                        && (FileUtil.IsDrive(directoryPath) || FileUtil.IsDirectory(directoryPath)))
+                    {
+                        var selectedFiles = this.GetSelectedFiles();
+                        if (selectedFiles.Length == 1)
+                        {
+                            var exportFileName = FileUtil.GetExportFileName(directoryPath, currentFilePath);
+                            Instance<JobCaller>.Value.StartSingleFileExportJob(
+                                this, new SingleFileExportParameter()
+                                {
+                                    SrcFilePath = currentFilePath,
+                                    ExportFilePath = Path.Combine(directoryPath, exportFileName),
+                                });
+                        }
+                        else if (selectedFiles.Length > 1)
+                        {
+                            var param = new MultiFilesExportParameter
+                            {
+                                SrcFiles = selectedFiles,
+                                ExportDirecotry = directoryPath,
+                            };
+
+                            Instance<JobCaller>.Value.MultiFilesExportJob.Value
+                                .StartJob(this, param, _ =>
+                                {
+                                    if (this.disposed)
+                                    {
+                                        return;
+                                    }
+
+                                    this.MultiFilesExportJob_Callback(_);
+                                });
+                        }
+                    }
                 }
             }
             else if (!currentFileInfo.IsFile)
