@@ -23,10 +23,9 @@ namespace SWF.Core.FileAccessor
 
                 return string.Empty;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw new FileUtilException(
-                    "エクスプローラーのウィンドウからディレクトリパスを取得できませんでした。", ex);
+                return string.Empty;
             }
         }
 

@@ -1,3 +1,5 @@
+using System.IO;
+
 namespace SWF.Core.FileAccessor
 {
     public static class ExplorerDragDrop
@@ -17,7 +19,12 @@ namespace SWF.Core.FileAccessor
             }
 
             var windowPath = ExplorerWindowDragDrop.GetExplorerPathAtCursor(x, y);
-            if (!string.IsNullOrEmpty(windowPath))
+            var windowItemPath = ExplorerWindowItemDragDrop.GetExplorerPathAtCursor(x, y);
+            if (!string.IsNullOrEmpty(windowPath) && !string.IsNullOrEmpty(windowItemPath))
+            {
+                return Path.Combine(windowPath, windowItemPath);
+            }
+            else if (!string.IsNullOrEmpty(windowPath))
             {
                 return windowPath;
             }
