@@ -193,7 +193,11 @@ namespace PicSum.UIComponent.Contents.FileList
         protected override void OnGiveFeedback(GiveFeedbackEventArgs gfbevent)
         {
             var selectedFiles = this.GetSelectedFiles();
-            if (selectedFiles.Length < 1)
+            var selectedImageFiles = selectedFiles
+                .Where(FileUtil.IsImageFile)
+                .ToArray();
+            if (selectedFiles.Length != selectedImageFiles.Length
+                || selectedImageFiles.Length < 1)
             {
                 gfbevent.UseDefaultCursors = true;
                 return;
@@ -1039,7 +1043,11 @@ namespace PicSum.UIComponent.Contents.FileList
                         && (FileUtil.IsDrive(directoryPath) || FileUtil.IsDirectory(directoryPath)))
                     {
                         var selectedFiles = this.GetSelectedFiles();
-                        if (selectedFiles.Length == 1)
+                        var selectedImageFiles = selectedFiles
+                            .Where(FileUtil.IsImageFile)
+                            .ToArray();
+                        if (selectedFiles.Length == selectedImageFiles.Length
+                            && selectedImageFiles.Length == 1)
                         {
                             var exportFileName = FileUtil.GetExportFileName(directoryPath, currentFilePath);
                             Instance<JobCaller>.Value.StartSingleFileExportJob(
@@ -1049,7 +1057,8 @@ namespace PicSum.UIComponent.Contents.FileList
                                     ExportFilePath = Path.Combine(directoryPath, exportFileName),
                                 });
                         }
-                        else if (selectedFiles.Length > 1)
+                        else if (selectedFiles.Length == selectedImageFiles.Length
+                            && selectedImageFiles.Length > 1)
                         {
                             var param = new MultiFilesExportParameter
                             {
