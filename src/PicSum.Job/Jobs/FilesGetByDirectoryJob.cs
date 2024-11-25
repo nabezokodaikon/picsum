@@ -17,10 +17,16 @@ namespace PicSum.Job.Jobs
     {
         protected override void Execute(FilesGetByDirectoryParameter param)
         {
-
-            if (param.DirectoryPath == null)
+            if (string.IsNullOrEmpty(param.DirectoryPath))
             {
-                throw new InvalidOperationException("ディレクトリパスが指定されていません。");
+                this.Callback(new DirectoryGetResult()
+                {
+                    DirectoryPath = string.Empty,
+                    DirectoryState = DirectoryStateParameter.EMPTY,
+                    FileInfoList = [],
+                });
+
+                return;
             }
 
             var result = new DirectoryGetResult
