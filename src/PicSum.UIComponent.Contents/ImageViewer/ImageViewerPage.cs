@@ -19,7 +19,6 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Versioning;
 using System.Windows.Forms;
-using WinApi;
 
 namespace PicSum.UIComponent.Contents.ImageViewer
 {
@@ -680,46 +679,18 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.DoDragDrop(dragData, DragDropEffects.All);
 
             var cursorPosition = Cursor.Position;
-
-            var desktopPath = ExplorerDesktopDragDrop.GetExplorerPathAtCursor(
+            var directoryPath = ExplorerDragDrop.GetExplorerPathAtCursor(
                 cursorPosition.X, cursorPosition.Y);
-            if (FileUtil.CanAccess(desktopPath))
+            if (FileUtil.CanAccess(directoryPath)
+                && (FileUtil.IsDrive(directoryPath) || FileUtil.IsDirectory(directoryPath)))
             {
-                var exportFileName = FileUtil.GetExportFileName(desktopPath, currentFilePath);
+                var exportFileName = FileUtil.GetExportFileName(directoryPath, currentFilePath);
                 Instance<JobCaller>.Value.StartSingleFileExportJob(
                     this, new SingleFileExportParameter()
                     {
                         SrcFilePath = currentFilePath,
-                        ExportFilePath = Path.Combine(desktopPath, exportFileName),
+                        ExportFilePath = Path.Combine(directoryPath, exportFileName),
                     });
-                return;
-            }
-
-            var treePath = ExplorerTreeDragDrop.GetExplorerPathAtCursor(
-                 cursorPosition.X, cursorPosition.Y);
-            if (FileUtil.CanAccess(treePath))
-            {
-                var exportFileName = FileUtil.GetExportFileName(treePath, currentFilePath);
-                Instance<JobCaller>.Value.StartSingleFileExportJob(
-                    this, new SingleFileExportParameter()
-                    {
-                        SrcFilePath = currentFilePath,
-                        ExportFilePath = Path.Combine(treePath, exportFileName),
-                    });
-                return;
-            }
-
-            var windowPath = ExplorerWindowDragDrop.GetExplorerPathAtCursor(cursorPosition.X, cursorPosition.Y);
-            if (FileUtil.CanAccess(windowPath))
-            {
-                var exportFileName = FileUtil.GetExportFileName(windowPath, currentFilePath);
-                Instance<JobCaller>.Value.StartSingleFileExportJob(
-                    this, new SingleFileExportParameter()
-                    {
-                        SrcFilePath = currentFilePath,
-                        ExportFilePath = Path.Combine(windowPath, exportFileName),
-                    });
-                return;
             }
         }
 
@@ -1221,35 +1192,18 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         private void ImageViewerPage_GiveFeedback(object sender, GiveFeedbackEventArgs e)
         {
             var cursorPosition = Cursor.Position;
-
-            var desktopPath = ExplorerDesktopDragDrop.GetExplorerPathAtCursor(
+            var directoryPath = ExplorerDragDrop.GetExplorerPathAtCursor(
                 cursorPosition.X, cursorPosition.Y);
-            if (FileUtil.CanAccess(desktopPath))
+            if (FileUtil.CanAccess(directoryPath)
+                && (FileUtil.IsDrive(directoryPath) || FileUtil.IsDirectory(directoryPath)))
             {
                 e.UseDefaultCursors = false;
                 Cursor.Current = ResourceFiles.DragAndDropCursor.Value;
-                return;
             }
-
-            var treePath = ExplorerTreeDragDrop.GetExplorerPathAtCursor(
-                cursorPosition.X, cursorPosition.Y);
-            if (FileUtil.CanAccess(treePath))
+            else
             {
-                e.UseDefaultCursors = false;
-                Cursor.Current = ResourceFiles.DragAndDropCursor.Value;
-                return;
+                e.UseDefaultCursors = true;
             }
-
-            var windowPath = ExplorerWindowDragDrop.GetExplorerPathAtCursor(
-                cursorPosition.X, cursorPosition.Y);
-            if (FileUtil.CanAccess(windowPath))
-            {
-                e.UseDefaultCursors = false;
-                Cursor.Current = ResourceFiles.DragAndDropCursor.Value;
-                return;
-            }
-
-            e.UseDefaultCursors = true;
         }
 
         private void RightImagePanel_DragStart(object sender, EventArgs e)

@@ -1,12 +1,10 @@
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Automation;
 
-namespace WinApi
+namespace SWF.Core.FileAccessor
 {
-    public partial class ExplorerTreeDragDrop
+    internal static class ExplorerTreeDragDrop
     {
         private static readonly Regex DriveLetterRegex = new Regex(@"\((\w:)\)");
 
@@ -72,6 +70,11 @@ namespace WinApi
             foreach (var name in directoryNameList)
             {
                 fullPath = Path.Combine(fullPath, name);
+            }
+
+            if (string.IsNullOrEmpty(fullPath))
+            {
+                return string.Empty;
             }
 
             return fullPath;

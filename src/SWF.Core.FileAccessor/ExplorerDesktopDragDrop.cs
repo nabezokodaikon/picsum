@@ -1,10 +1,10 @@
-using System;
 using System.Runtime.InteropServices;
 using System.Text;
+using WinApi;
 
-namespace WinApi
+namespace SWF.Core.FileAccessor
 {
-    public static class ExplorerDesktopDragDrop
+    internal static class ExplorerDesktopDragDrop
     {
         public static string GetExplorerPathAtCursor(int x, int y)
         {

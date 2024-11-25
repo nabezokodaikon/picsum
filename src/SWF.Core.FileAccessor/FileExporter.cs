@@ -1,3 +1,4 @@
+using System.IO;
 using System.Runtime.Versioning;
 
 namespace SWF.Core.FileAccessor
