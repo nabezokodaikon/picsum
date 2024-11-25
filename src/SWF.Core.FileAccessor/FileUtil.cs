@@ -42,7 +42,10 @@ namespace SWF.Core.FileAccessor
         /// <returns>ファイルまたはフォルダが存在するならTrue。存在しなければFalse。</returns>
         public static bool IsExists(string filePath)
         {
-            ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
+            if (string.IsNullOrEmpty(filePath))
+            {
+                return false;
+            }
 
             if (IsSystemRoot(filePath))
             {
@@ -63,6 +66,11 @@ namespace SWF.Core.FileAccessor
         /// <returns></returns>
         public static bool IsSystemRoot(string filePath)
         {
+            if (string.IsNullOrEmpty(filePath))
+            {
+                return false;
+            }
+
             return filePath.Trim() == ROOT_DIRECTORY_PATH;
         }
 
@@ -73,7 +81,10 @@ namespace SWF.Core.FileAccessor
         /// <returns>ファイルパスがドライブならTrue。ドライブでなければFalse。</returns>
         public static bool IsDrive(string filePath)
         {
-            ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
+            if (string.IsNullOrEmpty(filePath))
+            {
+                return false;
+            }
 
             if (IsSystemRoot(filePath))
             {
@@ -100,7 +111,10 @@ namespace SWF.Core.FileAccessor
         /// <returns>ファイルパスがフォルダならTrue。フォルダでなければFalse。</returns>
         public static bool IsDirectory(string filePath)
         {
-            ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
+            if (string.IsNullOrEmpty(filePath))
+            {
+                return false;
+            }
 
             if (IsSystemRoot(filePath))
             {
@@ -119,7 +133,10 @@ namespace SWF.Core.FileAccessor
         /// <returns>ファイルパスがファイルならTrue。ファイルでなければFalse。</returns>
         public static bool IsFile(string filePath)
         {
-            ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
+            if (string.IsNullOrEmpty(filePath))
+            {
+                return false;
+            }
 
             return File.Exists(filePath);
         }
@@ -131,7 +148,10 @@ namespace SWF.Core.FileAccessor
         /// <returns></returns>
         public static bool IsImageFile(string filePath)
         {
-            ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
+            if (string.IsNullOrEmpty(filePath))
+            {
+                return false;
+            }
 
             var ex = GetExtension(filePath);
             return IMAGE_FILE_EXTENSION_LIST.Contains(ex);
@@ -139,7 +159,10 @@ namespace SWF.Core.FileAccessor
 
         public static bool IsSvgFile(string filePath)
         {
-            ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
+            if (string.IsNullOrEmpty(filePath))
+            {
+                return false;
+            }
 
             var ex = GetExtension(filePath);
             return (ex == SVG_FILE_EXTENSION);
@@ -147,7 +170,10 @@ namespace SWF.Core.FileAccessor
 
         public static bool IsIconFile(string filePath)
         {
-            ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
+            if (string.IsNullOrEmpty(filePath))
+            {
+                return false;
+            }
 
             var ex = GetExtension(filePath);
             return (ex == ICON_FILE_EXTENSION);
@@ -155,7 +181,10 @@ namespace SWF.Core.FileAccessor
 
         public static bool IsBmpFile(string filePath)
         {
-            ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
+            if (string.IsNullOrEmpty(filePath))
+            {
+                return false;
+            }
 
             var ex = GetExtension(filePath);
             return (ex == BMP_FILE_EXTENSION);
@@ -163,7 +192,10 @@ namespace SWF.Core.FileAccessor
 
         public static bool IsJpegFile(string filePath)
         {
-            ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
+            if (string.IsNullOrEmpty(filePath))
+            {
+                return false;
+            }
 
             var ex = GetExtension(filePath);
             return (ex == JPG_FILE_EXTENSION || ex == JPEG_FILE_EXTENSION);
@@ -171,7 +203,10 @@ namespace SWF.Core.FileAccessor
 
         public static bool IsPngFile(string filePath)
         {
-            ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
+            if (string.IsNullOrEmpty(filePath))
+            {
+                return false;
+            }
 
             var ex = GetExtension(filePath);
             return (ex == PNG_FILE_EXTENSION || ex == PNG_FILE_EXTENSION);
@@ -179,7 +214,10 @@ namespace SWF.Core.FileAccessor
 
         public static bool IsGifFile(string filePath)
         {
-            ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
+            if (string.IsNullOrEmpty(filePath))
+            {
+                return false;
+            }
 
             var ex = GetExtension(filePath);
             return (ex == GIF_FILE_EXTENSION);
@@ -192,7 +230,10 @@ namespace SWF.Core.FileAccessor
         /// <returns></returns>
         public static bool IsWebpFile(string filePath)
         {
-            ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
+            if (string.IsNullOrEmpty(filePath))
+            {
+                return false;
+            }
 
             var ex = GetExtension(filePath);
             return (ex == WEBP_FILE_EXTENSION);
@@ -205,7 +246,10 @@ namespace SWF.Core.FileAccessor
         /// <returns></returns>
         public static bool IsAvifFile(string filePath)
         {
-            ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
+            if (string.IsNullOrEmpty(filePath))
+            {
+                return false;
+            }
 
             var ex = GetExtension(filePath);
             return (ex == AVIF_FILE_EXTENSION);
@@ -213,7 +257,10 @@ namespace SWF.Core.FileAccessor
 
         public static bool IsHeifFile(string filePath)
         {
-            ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
+            if (string.IsNullOrEmpty(filePath))
+            {
+                return false;
+            }
 
             var ex = GetExtension(filePath);
             return (ex == HEIC_FILE_EXTENSION || ex == HEIF_FILE_EXTENSION);
@@ -292,7 +339,10 @@ namespace SWF.Core.FileAccessor
         /// <returns>ファイルパス</returns>
         public static string GetFileName(string filePath)
         {
-            ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
+            if (string.IsNullOrEmpty(filePath))
+            {
+                return string.Empty;
+            }
 
             if (IsSystemRoot(filePath))
             {
@@ -335,7 +385,10 @@ namespace SWF.Core.FileAccessor
         /// <returns>親フォルダパス</returns>
         public static string GetParentDirectoryPath(string filePath)
         {
-            ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
+            if (string.IsNullOrEmpty(filePath))
+            {
+                return string.Empty;
+            }
 
             if (IsSystemRoot(filePath))
             {
@@ -372,7 +425,10 @@ namespace SWF.Core.FileAccessor
         /// <returns>ファイルの拡張子をピリオド + 大文字(.XXX)で返します。</returns>
         public static string GetExtension(string filePath)
         {
-            ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
+            if (string.IsNullOrEmpty(filePath))
+            {
+                return string.Empty;
+            }
 
             return Path.GetExtension(filePath).ToUpper();
         }
@@ -384,7 +440,10 @@ namespace SWF.Core.FileAccessor
         /// <returns>ファイル種類名称</returns>
         public static string GetTypeName(string filePath)
         {
-            ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
+            if (string.IsNullOrEmpty(filePath))
+            {
+                return string.Empty;
+            }
 
             if (IsSystemRoot(filePath))
             {
@@ -412,7 +471,10 @@ namespace SWF.Core.FileAccessor
         /// <returns>ファイル更新日時</returns>
         public static DateTime GetUpdateDate(string filePath)
         {
-            ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
+            if (string.IsNullOrEmpty(filePath))
+            {
+                return EMPTY_DATETIME;
+            }
 
             if (IsSystemRoot(filePath))
             {
@@ -481,11 +543,21 @@ namespace SWF.Core.FileAccessor
         /// <returns></returns>
         public static string? GetFirstImageFilePath(string directoryPath)
         {
-            ArgumentException.ThrowIfNullOrEmpty(directoryPath, nameof(directoryPath));
+            if (string.IsNullOrEmpty(directoryPath))
+            {
+                return string.Empty;
+            }
 
-            return GetFiles(directoryPath)
+            var imageFilePath = GetFiles(directoryPath)
                 .OrderBy(_ => _, NaturalStringComparer.Windows)
                 .FirstOrDefault(IsImageFile);
+
+            if (string.IsNullOrEmpty(imageFilePath))
+            {
+                return string.Empty;
+            }
+
+            return imageFilePath;
         }
 
         /// <summary>
@@ -495,7 +567,10 @@ namespace SWF.Core.FileAccessor
         /// <returns></returns>
         public static IEnumerable<string> GetFiles(string directoryPath)
         {
-            ArgumentException.ThrowIfNullOrEmpty(directoryPath, nameof(directoryPath));
+            if (string.IsNullOrEmpty(directoryPath))
+            {
+                return [];
+            }
 
             if (CanAccess(directoryPath))
             {
@@ -535,7 +610,10 @@ namespace SWF.Core.FileAccessor
         /// <returns></returns>
         public static IEnumerable<string> GetSubDirectories(string directoryPath)
         {
-            ArgumentException.ThrowIfNullOrEmpty(directoryPath, nameof(directoryPath));
+            if (string.IsNullOrEmpty(directoryPath))
+            {
+                return [];
+            }
 
             if (IsSystemRoot(directoryPath))
             {
@@ -580,7 +658,10 @@ namespace SWF.Core.FileAccessor
         /// <returns></returns>
         public static IEnumerable<string> GetFileSystemEntries(string directoryPath)
         {
-            ArgumentException.ThrowIfNullOrEmpty(directoryPath, nameof(directoryPath));
+            if (string.IsNullOrEmpty(directoryPath))
+            {
+                return [];
+            }
 
             if (IsSystemRoot(directoryPath))
             {
@@ -814,6 +895,11 @@ namespace SWF.Core.FileAccessor
         // ファイルパスの末尾が"\"の場合取り除きます。
         private static string ToRemoveLastPathSeparate(string filePath)
         {
+            if (string.IsNullOrEmpty(filePath))
+            {
+                return string.Empty;
+            }
+
             var length = filePath.Length;
             var lastChar = filePath.Substring(length - 1, 1);
             if (lastChar.Equals(@"\", StringComparison.Ordinal))
