@@ -13,6 +13,17 @@ namespace SWF.Core.FileAccessor
     [SupportedOSPlatform("windows10.0.17763.0")]
     public static class FileUtil
     {
+        public enum ImageFileFormat
+        {
+            Avif,
+            Bitmap,
+            Icon,
+            Jpeg,
+            Png,
+            Svg,
+            Webp,
+        }
+
         private const string ROOT_DIRECTORY_NAME = "PC";
         private const string ROOT_DIRECTORY_TYPE_NAME = "System root";
 
@@ -375,6 +386,47 @@ namespace SWF.Core.FileAccessor
             else
             {
                 return Path.GetFileName(filePath);
+            }
+        }
+
+        public static string GetFileNameWithoutExtension(string filePath)
+        {
+            if (string.IsNullOrEmpty(filePath))
+            {
+                return string.Empty;
+            }
+
+            if (IsSystemRoot(filePath))
+            {
+                return ROOT_DIRECTORY_NAME;
+            }
+            else if (IsDrive(filePath))
+            {
+                try
+                {
+                    var driveInfo = DriveInfo.GetDrives()
+                        .FirstOrDefault(di => di.Name == filePath || di.Name == $"{filePath}");
+                    if (driveInfo != null)
+                    {
+                        return $"{driveInfo.VolumeLabel}({ToRemoveLastPathSeparate(filePath)})";
+                    }
+                    else
+                    {
+                        return ROOT_DIRECTORY_NAME;
+                    }
+                }
+                catch (IOException ex)
+                {
+                    throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
+                }
+                catch (UnauthorizedAccessException ex)
+                {
+                    throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
+                }
+            }
+            else
+            {
+                return Path.GetFileNameWithoutExtension(filePath);
             }
         }
 
@@ -851,6 +903,29 @@ namespace SWF.Core.FileAccessor
 
             var ex = GetExtension(filePath)[1..];
             return $"{ex.ToUpper()} Files (*.{ex.ToLower()})|*.{ex.ToLower()}|All Files (*.*)|*.*";
+        }
+
+        public static string GetImageFileExtension(ImageFileFormat imageFileFormat)
+        {
+            return imageFileFormat switch
+            {
+                ImageFileFormat.Avif => AVIF_FILE_EXTENSION,
+                ImageFileFormat.Bitmap => BMP_FILE_EXTENSION,
+                ImageFileFormat.Icon => ICON_FILE_EXTENSION,
+                ImageFileFormat.Jpeg => JPG_FILE_EXTENSION,
+                ImageFileFormat.Png => PNG_FILE_EXTENSION,
+                ImageFileFormat.Svg => SVG_FILE_EXTENSION,
+                ImageFileFormat.Webp => WEBP_FILE_EXTENSION,
+                _ => throw new NotImplementedException("未定義の画像ファイルフォーマットです。")
+            };
+        }
+
+        public static string GetConvertFilterText(string filePath, ImageFileFormat imageFileFormat)
+        {
+            ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
+
+            var extensionText = GetImageFileExtension(imageFileFormat)[1..];
+            return $"{extensionText.ToUpper()} Files (*.{extensionText.ToLower()})|*.{extensionText.ToLower()}";
         }
 
         /// <summary>

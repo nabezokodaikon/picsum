@@ -123,6 +123,13 @@ namespace PicSum.Job.Common
             this.jobQueue.Value.Enqueue<SingleFileExportJob, SingleFileExportParameter>(sender, parameter);
         }
 
+        public void StartSilgeFileConvertJob(ISender sender, SingleFileConvertParameter parameter)
+        {
+            ArgumentNullException.ThrowIfNull(sender, nameof(sender));
+
+            this.jobQueue.Value.Enqueue<SingleFileConvertJob, SingleFileConvertParameter>(sender, parameter);
+        }
+
         public void StartDirectoryStateUpdateJob(ISender sender, DirectoryStateParameter parameter)
         {
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));

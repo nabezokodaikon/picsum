@@ -26,6 +26,7 @@ namespace PicSum.Job.SyncLogics
             Instance<IImageFileCacher>.Initialize(new ImageFileCacher());
             Instance<IImageFileSizeCacher>.Initialize(new ImageFileSizeCacher());
             Instance<IFileExporter>.Initialize(new FileExporter());
+            Instance<IFileConverter>.Initialize(new FileConverter());
         }
     }
 }

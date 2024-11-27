@@ -33,6 +33,15 @@ namespace PicSum.UIComponent.Contents.ContextMenu
         public event EventHandler<ExecuteFileListEventArgs> RemoveFromList;
         public event EventHandler<ExecuteFileListEventArgs> Clip;
 
+        public event EventHandler<ExecuteFileListEventArgs> ConvertToAvif;
+        public event EventHandler<ExecuteFileListEventArgs> ConvertToBitmap;
+        public event EventHandler<ExecuteFileListEventArgs> ConvertToIcon;
+        public event EventHandler<ExecuteFileListEventArgs> ConvertToJpeg;
+        public event EventHandler<ExecuteFileListEventArgs> ConvertToPng;
+        public event EventHandler<ExecuteFileListEventArgs> ConvertToSvg;
+        public event EventHandler<ExecuteFileListEventArgs> ConvertToWebp;
+
+
         private string[] filePathList = null;
 
         // 画像ファイルメニュー項目
@@ -57,6 +66,15 @@ namespace PicSum.UIComponent.Contents.ContextMenu
         private readonly ToolStripMenuItem nameCopyMenuItem = new("Copy the file name");
         private readonly ToolStripMenuItem removeFromListMenuItem = new("Remove from list");
         private readonly ToolStripMenuItem clipMenuItem = new("Add to clip");
+        private readonly ToolStripMenuItem convertMenuItem = new("Convert and export");
+
+        private readonly ToolStripMenuItem convertToAvifMenuItem = new("To Avif");
+        private readonly ToolStripMenuItem convertToBitmapMenuItem = new("To Bitmap");
+        private readonly ToolStripMenuItem convertToIconMenuItem = new("To Icon");
+        private readonly ToolStripMenuItem convertToJpegMenuItem = new("To Jpeg");
+        private readonly ToolStripMenuItem convertToPngMenuItem = new("To Png");
+        private readonly ToolStripMenuItem convertToSvgMenuItem = new("To Svg");
+        private readonly ToolStripMenuItem convertToWebpMenuItem = new("To Webp");
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool VisibleFileActiveTabOpenMenuItem
@@ -215,6 +233,19 @@ namespace PicSum.UIComponent.Contents.ContextMenu
         }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public bool VisibleConvertMenuItem
+        {
+            get
+            {
+                return this.convertMenuItem.Visible;
+            }
+            set
+            {
+                this.convertMenuItem.Visible = value;
+            }
+        }
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool VisiblePathCopyMenuItem
         {
             get
@@ -271,6 +302,17 @@ namespace PicSum.UIComponent.Contents.ContextMenu
             if (!this.DesignMode)
             {
                 this.ShowImageMargin = false;
+                ((ToolStripDropDownMenu)this.convertMenuItem.DropDown).ShowImageMargin = false;
+
+                this.convertMenuItem.DropDownItems.AddRange([
+                    this.convertToAvifMenuItem,
+                    this.convertToBitmapMenuItem,
+                    this.convertToIconMenuItem,
+                    this.convertToJpegMenuItem,
+                    this.convertToPngMenuItem,
+                    this.convertToSvgMenuItem,
+                    this.convertToWebpMenuItem
+                    ]);
 
                 this.Items.AddRange([this.fileActiveTabOpenMenuItem,
                     this.fileNewTabOpenMenuItem,
@@ -285,6 +327,7 @@ namespace PicSum.UIComponent.Contents.ContextMenu
                     this.pathCopyMenuItem,
                     this.nameCopyMenuItem,
                     this.exportMenuItem,
+                    this.convertMenuItem,
                     this.fileBookmarkMenuItem,
                     this.clipMenuItem,
                     this.removeFromListMenuItem
@@ -305,6 +348,13 @@ namespace PicSum.UIComponent.Contents.ContextMenu
                 this.fileBookmarkMenuItem.Click += new(this.FileBookmarkMenuItem_Click);
                 this.removeFromListMenuItem.Click += new(this.RemoveFromListMenuItem_Click);
                 this.clipMenuItem.Click += new(this.ClipMenuItem_Click);
+                this.convertToAvifMenuItem.Click += new(this.ConvertToAvifMenuItem_Click);
+                this.convertToBitmapMenuItem.Click += new(this.ConvertToBitmapMenuItem_Click);
+                this.convertToIconMenuItem.Click += new(this.ConvertToIconMenuItem_Click);
+                this.convertToJpegMenuItem.Click += new(this.ConvertToJpegMenuItem_Click);
+                this.convertToPngMenuItem.Click += new(this.ConvertToPngMenuItem_Click);
+                this.convertToSvgMenuItem.Click += new(this.ConvertToSvgMenuItem_Click);
+                this.convertToWebpMenuItem.Click += new(this.ConvertToWebpMenuItem_Click);
             }
         }
 
@@ -340,6 +390,7 @@ namespace PicSum.UIComponent.Contents.ContextMenu
                     .Where(_ => FileUtil.IsImageFile(_))
                     .Count() == filePathList.Length;
                 this.exportMenuItem.Visible = isAllImageFiles;
+                this.convertMenuItem.Visible = isAllImageFiles;
             }
             else
             {
@@ -366,6 +417,7 @@ namespace PicSum.UIComponent.Contents.ContextMenu
                 this.fileNewWindowOpenMenuItem.Visible = isImageFile;
                 this.fileBookmarkMenuItem.Visible = isImageFile;
                 this.exportMenuItem.Visible = isImageFile;
+                this.convertMenuItem.Visible = isImageFile;
             }
 
             this.filePathList = filePathList;
@@ -458,6 +510,41 @@ namespace PicSum.UIComponent.Contents.ContextMenu
             this.Clip?.Invoke(this, e);
         }
 
+        private void OnConvertToAvif(ExecuteFileListEventArgs e)
+        {
+            this.ConvertToAvif?.Invoke(this, e);
+        }
+
+        private void OnConvertToBitmap(ExecuteFileListEventArgs e)
+        {
+            this.ConvertToBitmap?.Invoke(this, e);
+        }
+
+        private void OnConvertToIcon(ExecuteFileListEventArgs e)
+        {
+            this.ConvertToIcon?.Invoke(this, e);
+        }
+
+        private void OnConvertToJpeg(ExecuteFileListEventArgs e)
+        {
+            this.ConvertToJpeg?.Invoke(this, e);
+        }
+
+        private void OnConvertToPng(ExecuteFileListEventArgs e)
+        {
+            this.ConvertToPng?.Invoke(this, e);
+        }
+
+        private void OnConvertToSvg(ExecuteFileListEventArgs e)
+        {
+            this.ConvertToSvg?.Invoke(this, e);
+        }
+
+        private void OnConvertToWebp(ExecuteFileListEventArgs e)
+        {
+            this.ConvertToWebp?.Invoke(this, e);
+        }
+
         private void FileActiveTabOpenMenuItem_Click(object sender, EventArgs e)
         {
             this.OnFileActiveTabOpen(new ExecuteFileEventArgs(this.filePathList.First()));
@@ -536,6 +623,41 @@ namespace PicSum.UIComponent.Contents.ContextMenu
         private void ClipMenuItem_Click(object sender, EventArgs e)
         {
             this.OnClip(new ExecuteFileListEventArgs(this.filePathList));
+        }
+
+        private void ConvertToAvifMenuItem_Click(object sender, EventArgs e)
+        {
+            this.OnConvertToAvif(new ExecuteFileListEventArgs(this.filePathList));
+        }
+
+        private void ConvertToBitmapMenuItem_Click(object sender, EventArgs e)
+        {
+            this.OnConvertToBitmap(new ExecuteFileListEventArgs(this.filePathList));
+        }
+
+        private void ConvertToIconMenuItem_Click(object sender, EventArgs e)
+        {
+            this.OnConvertToIcon(new ExecuteFileListEventArgs(this.filePathList));
+        }
+
+        private void ConvertToJpegMenuItem_Click(object sender, EventArgs e)
+        {
+            this.OnConvertToJpeg(new ExecuteFileListEventArgs(this.filePathList));
+        }
+
+        private void ConvertToPngMenuItem_Click(object sender, EventArgs e)
+        {
+            this.OnConvertToPng(new ExecuteFileListEventArgs(this.filePathList));
+        }
+
+        private void ConvertToSvgMenuItem_Click(object sender, EventArgs e)
+        {
+            this.OnConvertToSvg(new ExecuteFileListEventArgs(this.filePathList));
+        }
+
+        private void ConvertToWebpMenuItem_Click(object sender, EventArgs e)
+        {
+            this.OnConvertToWebp(new ExecuteFileListEventArgs(this.filePathList));
         }
     }
 }
