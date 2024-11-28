@@ -34,7 +34,7 @@ namespace PicSum.Job.Jobs
             }
             finally
             {
-                Instance<IFileExporter>.Value.Lock.Exit();
+                Instance<IFileConverter>.Value.Lock.Exit();
             }
         }
     }
