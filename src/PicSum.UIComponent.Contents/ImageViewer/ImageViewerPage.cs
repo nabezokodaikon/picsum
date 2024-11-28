@@ -772,7 +772,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                     var param = new SingleFileConvertParameter
                     {
                         SrcFilePath = srcFilePath,
-                        ExportFilePath = Path.Combine(ofd.InitialDirectory, destFileName),
+                        ExportFilePath = Path.Combine(dir, destFileName),
                         ImageFileFormat = imageFileFormat,
                     };
                     Instance<JobCaller>.Value.StartSilgeFileConvertJob(this, param);
