@@ -56,6 +56,8 @@ namespace PicSum.Job.Common
             = new(() => new TwoWayThread<NextDirectoryGetJob, NextDirectoryGetParameter<string>, ValueResult<string>>(context, new JobTask()));
         public readonly Lazy<ITwoWayJob<MultiFilesExportJob, MultiFilesExportParameter, ValueResult<string>>> MultiFilesExportJob
             = new(() => new TwoWayThread<MultiFilesExportJob, MultiFilesExportParameter, ValueResult<string>>(context, new JobTask()));
+        public readonly Lazy<ITwoWayJob<MultiFilesConvertJob, MultiFilesConvertParameter, ValueResult<string>>> MultiFilesConvertJob
+            = new(() => new TwoWayThread<MultiFilesConvertJob, MultiFilesConvertParameter, ValueResult<string>>(context, new JobTask()));
         public readonly Lazy<ITwoWayJob<BookmarksGetJob, ListResult<FileShallowInfoEntity>>> BookmarksGetJob
             = new(() => new TwoWayThread<BookmarksGetJob, ListResult<FileShallowInfoEntity>>(context, new JobTask()));
 
@@ -102,6 +104,7 @@ namespace PicSum.Job.Common
                 this.ImageFilesGetByDirectoryJob.Value.Dispose();
                 this.NextDirectoryGetJob.Value.Dispose();
                 this.MultiFilesExportJob.Value.Dispose();
+                this.MultiFilesConvertJob.Value.Dispose();
                 this.BookmarksGetJob.Value.Dispose();
             }
 

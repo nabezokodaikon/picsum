@@ -702,13 +702,14 @@ namespace PicSum.UIComponent.Contents.FileList
                 fbd.SelectedPath = CommonConfig.Instance.ExportDirectoryPath;
                 if (fbd.ShowDialog() == DialogResult.OK)
                 {
-                    var param = new MultiFilesExportParameter
+                    var param = new MultiFilesConvertParameter
                     {
                         SrcFiles = files,
                         ExportDirecotry = fbd.SelectedPath,
+                        ImageFileFormat = imageFileFormat,
                     };
 
-                    Instance<JobCaller>.Value.MultiFilesExportJob.Value
+                    Instance<JobCaller>.Value.MultiFilesConvertJob.Value
                         .StartJob(this, param, _ =>
                         {
                             if (this.disposed)
@@ -716,7 +717,7 @@ namespace PicSum.UIComponent.Contents.FileList
                                 return;
                             }
 
-                            this.MultiFilesExportJob_Callback(_);
+                            this.MultiFilesConvertJob_Callback(_);
                         });
                     CommonConfig.Instance.ExportDirectoryPath = fbd.SelectedPath;
                 }
@@ -772,6 +773,11 @@ namespace PicSum.UIComponent.Contents.FileList
         }
 
         private void MultiFilesExportJob_Callback(ValueResult<string> result)
+        {
+            ConsoleUtil.Write(result.Value);
+        }
+
+        private void MultiFilesConvertJob_Callback(ValueResult<string> result)
         {
             ConsoleUtil.Write(result.Value);
         }
