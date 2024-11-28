@@ -522,6 +522,74 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
+        public static void ConvertImageFile(
+            string srcFilePath, string destFilePath, FileUtil.ImageFileFormat imageFileFormat)
+        {
+            ArgumentException.ThrowIfNullOrEmpty(srcFilePath, nameof(srcFilePath));
+            ArgumentException.ThrowIfNullOrEmpty(destFilePath, nameof(destFilePath));
+
+            try
+            {
+                switch (imageFileFormat)
+                {
+                    case FileUtil.ImageFileFormat.Avif:
+                        {
+                            MagickUtil.SaveFile(
+                                srcFilePath, destFilePath, ImageMagick.MagickFormat.Avif, 75);
+                            break;
+                        }
+                    case FileUtil.ImageFileFormat.Bitmap:
+                        {
+                            MagickUtil.SaveFile(
+                                srcFilePath, destFilePath, ImageMagick.MagickFormat.Bmp, 75);
+                            break;
+                        }
+                    //case FileUtil.ImageFileFormat.Heif:
+                    //    {
+                    //        MagickUtil.SaveFile(
+                    //            srcFilePath, destFilePath, ImageMagick.MagickFormat.Heif, 75);
+                    //        break;
+                    //    }
+                    //case FileUtil.ImageFileFormat.Icon:
+                    //    {
+                    //        MagickUtil.SaveFile(
+                    //            srcFilePath, destFilePath, ImageMagick.MagickFormat.Icon, 75);
+                    //        break;
+                    //    }
+                    case FileUtil.ImageFileFormat.Jpeg:
+                        {
+                            MagickUtil.SaveFile(
+                                srcFilePath, destFilePath, ImageMagick.MagickFormat.Jpg, 75);
+                            break;
+                        }
+                    case FileUtil.ImageFileFormat.Png:
+                        {
+                            MagickUtil.SaveFile(
+                                srcFilePath, destFilePath, ImageMagick.MagickFormat.Png, 75);
+                            break;
+                        }
+                    case FileUtil.ImageFileFormat.Svg:
+                        {
+                            MagickUtil.SaveFile(
+                                srcFilePath, destFilePath, ImageMagick.MagickFormat.Svg, 75);
+                            break;
+                        }
+                    case FileUtil.ImageFileFormat.Webp:
+                        {
+                            MagickUtil.SaveFile(
+                                srcFilePath, destFilePath, ImageMagick.MagickFormat.WebP, 75);
+                            break;
+                        }
+                    default:
+                        throw new InvalidOperationException("未定義の画像ファイルフォーマットです。");
+                }
+            }
+            catch (ImageMagick.MagickException ex)
+            {
+                throw new ImageUtilException($"{srcFilePath}の変換に失敗しました。", ex);
+            }
+        }
+
         public static Bitmap ReadImageFile(string filePath)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));

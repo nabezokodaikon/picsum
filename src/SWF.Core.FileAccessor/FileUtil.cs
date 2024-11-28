@@ -17,6 +17,7 @@ namespace SWF.Core.FileAccessor
         {
             Avif,
             Bitmap,
+            Heif,
             Icon,
             Jpeg,
             Png,
@@ -911,6 +912,7 @@ namespace SWF.Core.FileAccessor
             {
                 ImageFileFormat.Avif => AVIF_FILE_EXTENSION,
                 ImageFileFormat.Bitmap => BMP_FILE_EXTENSION,
+                ImageFileFormat.Heif => HEIF_FILE_EXTENSION,
                 ImageFileFormat.Icon => ICON_FILE_EXTENSION,
                 ImageFileFormat.Jpeg => JPG_FILE_EXTENSION,
                 ImageFileFormat.Png => PNG_FILE_EXTENSION,

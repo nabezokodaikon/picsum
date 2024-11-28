@@ -35,6 +35,7 @@ namespace PicSum.UIComponent.Contents.ContextMenu
 
         public event EventHandler<ExecuteFileListEventArgs> ConvertToAvif;
         public event EventHandler<ExecuteFileListEventArgs> ConvertToBitmap;
+        public event EventHandler<ExecuteFileListEventArgs> ConvertToHeif;
         public event EventHandler<ExecuteFileListEventArgs> ConvertToIcon;
         public event EventHandler<ExecuteFileListEventArgs> ConvertToJpeg;
         public event EventHandler<ExecuteFileListEventArgs> ConvertToPng;
@@ -70,6 +71,7 @@ namespace PicSum.UIComponent.Contents.ContextMenu
 
         private readonly ToolStripMenuItem convertToAvifMenuItem = new("To Avif");
         private readonly ToolStripMenuItem convertToBitmapMenuItem = new("To Bitmap");
+        private readonly ToolStripMenuItem convertToHeifMenuItem = new("To Heif");
         private readonly ToolStripMenuItem convertToIconMenuItem = new("To Icon");
         private readonly ToolStripMenuItem convertToJpegMenuItem = new("To Jpeg");
         private readonly ToolStripMenuItem convertToPngMenuItem = new("To Png");
@@ -304,9 +306,13 @@ namespace PicSum.UIComponent.Contents.ContextMenu
                 this.ShowImageMargin = false;
                 ((ToolStripDropDownMenu)this.convertMenuItem.DropDown).ShowImageMargin = false;
 
+                this.convertToHeifMenuItem.Visible = false;
+                this.convertToIconMenuItem.Visible = false;
+
                 this.convertMenuItem.DropDownItems.AddRange([
                     this.convertToAvifMenuItem,
                     this.convertToBitmapMenuItem,
+                    this.convertToHeifMenuItem,
                     this.convertToIconMenuItem,
                     this.convertToJpegMenuItem,
                     this.convertToPngMenuItem,
@@ -350,6 +356,7 @@ namespace PicSum.UIComponent.Contents.ContextMenu
                 this.clipMenuItem.Click += new(this.ClipMenuItem_Click);
                 this.convertToAvifMenuItem.Click += new(this.ConvertToAvifMenuItem_Click);
                 this.convertToBitmapMenuItem.Click += new(this.ConvertToBitmapMenuItem_Click);
+                this.convertToHeifMenuItem.Click += new(this.ConvertToHeifMenuItem_Click);
                 this.convertToIconMenuItem.Click += new(this.ConvertToIconMenuItem_Click);
                 this.convertToJpegMenuItem.Click += new(this.ConvertToJpegMenuItem_Click);
                 this.convertToPngMenuItem.Click += new(this.ConvertToPngMenuItem_Click);
@@ -520,6 +527,11 @@ namespace PicSum.UIComponent.Contents.ContextMenu
             this.ConvertToBitmap?.Invoke(this, e);
         }
 
+        private void OnConvertToHeif(ExecuteFileListEventArgs e)
+        {
+            this.ConvertToHeif?.Invoke(this, e);
+        }
+
         private void OnConvertToIcon(ExecuteFileListEventArgs e)
         {
             this.ConvertToIcon?.Invoke(this, e);
@@ -633,6 +645,11 @@ namespace PicSum.UIComponent.Contents.ContextMenu
         private void ConvertToBitmapMenuItem_Click(object sender, EventArgs e)
         {
             this.OnConvertToBitmap(new ExecuteFileListEventArgs(this.filePathList));
+        }
+
+        private void ConvertToHeifMenuItem_Click(object sender, EventArgs e)
+        {
+            this.OnConvertToHeif(new ExecuteFileListEventArgs(this.filePathList));
         }
 
         private void ConvertToIconMenuItem_Click(object sender, EventArgs e)

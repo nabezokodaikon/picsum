@@ -1,4 +1,6 @@
-namespace SWF.Core.FileAccessor
+using SWF.Core.FileAccessor;
+
+namespace SWF.Core.ImageAccessor
 {
     public interface IFileConverter
         : IDisposable

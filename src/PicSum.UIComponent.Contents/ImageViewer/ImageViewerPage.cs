@@ -1390,6 +1390,11 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.ConvertSingleFile(e.FilePathList.First(), FileUtil.ImageFileFormat.Bitmap);
         }
 
+        private void FileContextMenu_ConvertToHeif(object sender, ExecuteFileListEventArgs e)
+        {
+            this.ConvertSingleFile(e.FilePathList.First(), FileUtil.ImageFileFormat.Heif);
+        }
+
         private void FileContextMenu_ConvertToIcon(object sender, ExecuteFileListEventArgs e)
         {
             this.ConvertSingleFile(e.FilePathList.First(), FileUtil.ImageFileFormat.Icon);

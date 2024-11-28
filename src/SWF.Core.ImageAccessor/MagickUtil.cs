@@ -13,5 +13,16 @@ namespace SWF.Core.ImageAccessor
                 return image.ToBitmap();
             }
         }
+
+        public static void SaveFile(
+            string srcFilePath, string destFilePath, MagickFormat format, uint quality)
+        {
+            using (var srcImage = new MagickImage(srcFilePath))
+            {
+                srcImage.Format = format;
+                srcImage.Quality = quality;
+                srcImage.Write(destFilePath);
+            }
+        }
     }
 }

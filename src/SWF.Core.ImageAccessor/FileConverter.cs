@@ -1,5 +1,9 @@
-namespace SWF.Core.FileAccessor
+using SWF.Core.FileAccessor;
+using System.Runtime.Versioning;
+
+namespace SWF.Core.ImageAccessor
 {
+    [SupportedOSPlatform("windows10.0.17763.0")]
     public sealed class FileConverter
         : IFileConverter
     {
@@ -45,7 +49,8 @@ namespace SWF.Core.FileAccessor
             ArgumentException.ThrowIfNullOrEmpty(srcFilePath, nameof(srcFilePath));
             ArgumentException.ThrowIfNullOrEmpty(exportFilePath, nameof(exportFilePath));
 
-            //File.Copy(srcFilePath, exportFilePath, false);
+            ImageUtil.ConvertImageFile(
+                srcFilePath, exportFilePath, imageFileFormat);
         }
     }
 }

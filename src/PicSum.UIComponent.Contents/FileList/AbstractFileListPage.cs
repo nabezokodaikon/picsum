@@ -1373,6 +1373,11 @@ namespace PicSum.UIComponent.Contents.FileList
             this.ConvertFiles(e.FilePathList, FileUtil.ImageFileFormat.Bitmap);
         }
 
+        private void FileContextMenu_ConvertToHeif(object sender, ExecuteFileListEventArgs e)
+        {
+            this.ConvertFiles(e.FilePathList, FileUtil.ImageFileFormat.Heif);
+        }
+
         private void FileContextMenu_ConvertToIcon(object sender, ExecuteFileListEventArgs e)
         {
             this.ConvertFiles(e.FilePathList, FileUtil.ImageFileFormat.Icon);
