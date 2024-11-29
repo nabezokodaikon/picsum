@@ -1,6 +1,7 @@
 using SWF.Core.FileAccessor;
 using System;
 using System.ComponentModel;
+using System.Drawing;
 using System.Linq;
 using System.Runtime.Versioning;
 using System.Windows.Forms;
@@ -303,6 +304,8 @@ namespace PicSum.UIComponent.Contents.ContextMenu
         {
             if (!this.DesignMode)
             {
+                this.Font = new Font(this.Font.FontFamily, 10f);
+
                 this.ShowImageMargin = false;
                 ((ToolStripDropDownMenu)this.convertMenuItem.DropDown).ShowImageMargin = false;
 
