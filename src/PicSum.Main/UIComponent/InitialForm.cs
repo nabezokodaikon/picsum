@@ -86,10 +86,12 @@ namespace PicSum.Main.UIComponent
                         form.RestoreWindowState();
                     }
 
-                    WinApi.WinApiMembers.SetForegroundWindow(form.Handle);
+                    form.Show();
+                    form.TopMost = true;
+                    form.TopMost = false;
                     form.BringToFront();
-                    form.Focus();
                     form.Activate();
+                    form.Focus();
                 });
 
             this.stopwatch.Stop();

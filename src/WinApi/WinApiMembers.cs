@@ -621,9 +621,6 @@ namespace WinApi
         public static extern int SHOpenWithDialog(IntPtr hwndParent, ref TagOpenAsInfo oainfo);
 
         [DllImport("user32.dll")]
-        public static extern bool SetForegroundWindow(IntPtr hWnd);
-
-        [DllImport("user32.dll")]
         public static extern IntPtr WindowFromPoint(POINT point);
 
         [DllImport("user32.dll", SetLastError = true)]
