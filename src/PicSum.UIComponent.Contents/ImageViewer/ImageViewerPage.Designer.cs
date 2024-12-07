@@ -281,7 +281,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             // 
             // ImageViewerPage
             //
-            this.GiveFeedback += new System.Windows.Forms.GiveFeedbackEventHandler(this.ImageViewerPage_GiveFeedback);
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(241)))), ((int)(((byte)(244)))), ((int)(((byte)(250)))));

@@ -891,7 +891,7 @@ namespace SWF.UIComponent.TabOperation
                     }
                 }
 
-                drgevent.Effect = DragDropEffects.All;
+                drgevent.Effect = DragDropEffects.Copy;
                 this.OnTabAreaDragOver(drgevent);
             }
             else

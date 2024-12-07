@@ -190,36 +190,6 @@ namespace PicSum.UIComponent.Contents.FileList
             base.OnInvalidated(e);
         }
 
-        protected override void OnGiveFeedback(GiveFeedbackEventArgs gfbevent)
-        {
-            var selectedFiles = this.GetSelectedFiles();
-            var selectedImageFiles = selectedFiles
-                .Where(FileUtil.IsImageFile)
-                .ToArray();
-            if (selectedFiles.Length != selectedImageFiles.Length
-                || selectedImageFiles.Length < 1)
-            {
-                gfbevent.UseDefaultCursors = true;
-                return;
-            }
-
-            var cursorPosition = Cursor.Position;
-            var directoryPath = ExplorerDragDrop.GetExplorerPathAtCursor(
-                cursorPosition.X, cursorPosition.Y);
-            if (FileUtil.CanAccess(directoryPath)
-                && (FileUtil.IsDrive(directoryPath) || FileUtil.IsDirectory(directoryPath)))
-            {
-                gfbevent.UseDefaultCursors = false;
-                Cursor.Current = ResourceFiles.DragAndDropCursor.Value;
-            }
-            else
-            {
-                gfbevent.UseDefaultCursors = true;
-            }
-
-            base.OnGiveFeedback(gfbevent);
-        }
-
         protected abstract void OnRemoveFile(string[] filePathList);
 
         protected abstract void OnMovePreviewButtonClick(EventArgs e);
@@ -1122,7 +1092,7 @@ namespace PicSum.UIComponent.Contents.FileList
                     this.Icon,
                     this.Parameter.VisibleBookmarkMenuItem,
                     this.Parameter.VisibleClipMenuItem);
-                this.DoDragDrop(dragData, DragDropEffects.All);
+                this.DoDragDrop(dragData, DragDropEffects.Copy);
             }
         }
 

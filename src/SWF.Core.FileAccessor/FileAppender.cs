@@ -1,5 +1,3 @@
-using System.IO;
-
 namespace SWF.Core.FileAccessor
 {
     public sealed class FileAppender

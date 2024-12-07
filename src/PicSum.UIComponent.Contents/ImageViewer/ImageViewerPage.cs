@@ -1207,23 +1207,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             }
         }
 
-        private void ImageViewerPage_GiveFeedback(object sender, GiveFeedbackEventArgs e)
-        {
-            var cursorPosition = Cursor.Position;
-            var directoryPath = ExplorerDragDrop.GetExplorerPathAtCursor(
-                cursorPosition.X, cursorPosition.Y);
-            if (FileUtil.CanAccess(directoryPath)
-                && (FileUtil.IsDrive(directoryPath) || FileUtil.IsDirectory(directoryPath)))
-            {
-                e.UseDefaultCursors = false;
-                Cursor.Current = ResourceFiles.DragAndDropCursor.Value;
-            }
-            else
-            {
-                e.UseDefaultCursors = true;
-            }
-        }
-
         private void RightImagePanel_DragStart(object sender, EventArgs e)
         {
             if (!string.IsNullOrEmpty(this.rightImagePanel.FilePath))
