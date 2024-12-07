@@ -6,6 +6,12 @@ namespace SWF.Core.FileAccessor
     {
         public static string GetExplorerPathAtCursor(int x, int y)
         {
+            var desktopItemPath = ExplorerDesktopItemDragDrop.GetExplorerPathAtCursor(x, y);
+            if (!string.IsNullOrEmpty(desktopItemPath))
+            {
+                return desktopItemPath;
+            }
+
             var desktopPath = ExplorerDesktopDragDrop.GetExplorerPathAtCursor(x, y);
             if (!string.IsNullOrEmpty(desktopPath))
             {
