@@ -38,9 +38,10 @@ namespace PicSum.Main
                     ConfigureLog();
                     LogManager.GetCurrentClassLogger().Debug("アプリケーションを開始します。");
 
-                    AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
+                    AppDomain.CurrentDomain.AssemblyLoad += CurrentDomain_OnAssemblyLoad;
+                    AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
-                    Application.ThreadException += new ThreadExceptionEventHandler(Application_ThreadException);
+                    Application.ThreadException += Application_ThreadException;
                     Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
                     Application.SetHighDpiMode(HighDpiMode.PerMonitorV2);
                     Application.EnableVisualStyles();
@@ -114,6 +115,17 @@ namespace PicSum.Main
             var logger = LogManager.GetCurrentClassLogger();
             logger.Fatal(ex);
             ExceptionUtil.ShowFatalDialog("Unhandled Non-UI Exception.", ex);
+        }
+
+        private static void CurrentDomain_OnAssemblyLoad(object sender, AssemblyLoadEventArgs args)
+        {
+#if DEBUG
+            var logger = LogManager.GetCurrentClassLogger();
+            logger.Trace($"アセンブリが読み込まれました: {args.LoadedAssembly.FullName}");
+#elif DEVELOP
+            var logger = LogManager.GetCurrentClassLogger();
+            logger.Trace($"アセンブリが読み込まれました: {args.LoadedAssembly.FullName}");
+#endif
         }
     }
 }
