@@ -32,30 +32,13 @@ namespace PicSum.Main
                 try
                 {
                     Thread.CurrentThread.Name = AppConstants.UI_THREAD_NAME;
-                    ThreadPool.SetMinThreads(50, 50);
 
                     AppConstants.CreateApplicationDirectories();
 
                     ConfigureLog();
                     LogManager.GetCurrentClassLogger().Debug("アプリケーションを開始します。");
 
-                    AppDomain.CurrentDomain.AssemblyLoad += CurrentDomain_OnAssemblyLoad;
                     AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
-
-                    AssemblyPreloader.OptimizeStartup(
-                        typeof(Accessibility.AnnoScope),
-                        typeof(System.Data.SQLite.SQLiteConnection),
-                        typeof(System.Drawing.Bitmap),
-                        typeof(System.Resources.Extensions.DeserializingResourceReader),
-                        typeof(System.Xml.Serialization.XmlSerializer),
-                        typeof(PicSum.DatabaseAccessor.Connection.FileInfoDB),
-                        typeof(PicSum.Job.Common.JobCaller),
-                        typeof(PicSum.UIComponent.Contents.Common.BrowserPage),
-                        typeof(SWF.Core.FileAccessor.FileUtil),
-                        typeof(SWF.Core.ImageAccessor.ImageUtil),
-                        typeof(SWF.UIComponent.Form.GrassForm),
-                        typeof(WinApi.WinApiMembers)
-                    );
 
                     Application.ThreadException += new ThreadExceptionEventHandler(Application_ThreadException);
                     Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
@@ -134,17 +117,6 @@ namespace PicSum.Main
             var logger = LogManager.GetCurrentClassLogger();
             logger.Fatal(ex);
             ExceptionUtil.ShowFatalDialog("Unhandled Non-UI Exception.", ex);
-        }
-
-        private static void CurrentDomain_OnAssemblyLoad(object sender, AssemblyLoadEventArgs args)
-        {
-#if DEBUG
-            var logger = LogManager.GetCurrentClassLogger();
-            logger.Trace($"アセンブリが読み込まれました: {args.LoadedAssembly.FullName}");
-#elif DEVELOP
-            var logger = LogManager.GetCurrentClassLogger();
-            logger.Trace($"アセンブリが読み込まれました: {args.LoadedAssembly.FullName}");
-#endif
         }
     }
 }
