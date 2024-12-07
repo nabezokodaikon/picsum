@@ -1,7 +1,6 @@
 using PicSum.Job.SyncJobs;
 using PicSum.Main.Conf;
 using PicSum.UIComponent.Contents.Conf;
-using SWF.Core.Base;
 using System;
 using System.Runtime.Versioning;
 
@@ -19,42 +18,39 @@ namespace PicSum.Main.Mng
         /// </summary>
         public ResourceManager()
         {
-            using (TimeMeasuring.Run(true, "new ResourceManager"))
+            Config.Instance.Load();
+
+            BrowserConfig.Instance.WindowState = Config.Instance.WindowState;
+            BrowserConfig.Instance.WindowLocaion = Config.Instance.WindowLocaion;
+            BrowserConfig.Instance.WindowSize = Config.Instance.WindowSize;
+
+            CommonConfig.Instance.ExportDirectoryPath = Config.Instance.ExportDirectoryPath;
+
+            FileListPageConfig.Instance.ThumbnailSize = Config.Instance.ThumbnailSize;
+            FileListPageConfig.Instance.IsShowFileName = Config.Instance.IsShowFileName;
+            FileListPageConfig.Instance.IsShowDirectory = Config.Instance.IsShowDirectory;
+            FileListPageConfig.Instance.IsShowImageFile = Config.Instance.IsShowImageFile;
+            FileListPageConfig.Instance.IsShowOtherFile = Config.Instance.IsShowOtherFile;
+            FileListPageConfig.Instance.FavoriteDirectoryCount = Config.Instance.FavoriteDirectoryCount;
+
+            ImageViewerPageConfig.Instance.ImageDisplayMode = Config.Instance.ImageDisplayMode;
+            ImageViewerPageConfig.Instance.ImageSizeMode = Config.Instance.ImageSizeMode;
+
+            if (CommandLineArgs.IsCleanup())
             {
-                Config.Instance.Load();
+                var thumbnailDBCleanupJob = new ThumbnailDBCleanupSyncJob();
+                thumbnailDBCleanupJob.Execute();
 
-                BrowserConfig.Instance.WindowState = Config.Instance.WindowState;
-                BrowserConfig.Instance.WindowLocaion = Config.Instance.WindowLocaion;
-                BrowserConfig.Instance.WindowSize = Config.Instance.WindowSize;
+                var startupJob = new StartupSyncJob();
+                startupJob.Execute();
 
-                CommonConfig.Instance.ExportDirectoryPath = Config.Instance.ExportDirectoryPath;
-
-                FileListPageConfig.Instance.ThumbnailSize = Config.Instance.ThumbnailSize;
-                FileListPageConfig.Instance.IsShowFileName = Config.Instance.IsShowFileName;
-                FileListPageConfig.Instance.IsShowDirectory = Config.Instance.IsShowDirectory;
-                FileListPageConfig.Instance.IsShowImageFile = Config.Instance.IsShowImageFile;
-                FileListPageConfig.Instance.IsShowOtherFile = Config.Instance.IsShowOtherFile;
-                FileListPageConfig.Instance.FavoriteDirectoryCount = Config.Instance.FavoriteDirectoryCount;
-
-                ImageViewerPageConfig.Instance.ImageDisplayMode = Config.Instance.ImageDisplayMode;
-                ImageViewerPageConfig.Instance.ImageSizeMode = Config.Instance.ImageSizeMode;
-
-                if (CommandLineArgs.IsCleanup())
-                {
-                    var thumbnailDBCleanupJob = new ThumbnailDBCleanupSyncJob();
-                    thumbnailDBCleanupJob.Execute();
-
-                    var startupJob = new StartupSyncJob();
-                    startupJob.Execute();
-
-                    var fileInfoDBCleanupJob = new FileInfoDBCleanupSyncJob();
-                    fileInfoDBCleanupJob.Execute();
-                }
-                else
-                {
-                    var startupJob = new StartupSyncJob();
-                    startupJob.Execute();
-                }
+                var fileInfoDBCleanupJob = new FileInfoDBCleanupSyncJob();
+                fileInfoDBCleanupJob.Execute();
+            }
+            else
+            {
+                var startupJob = new StartupSyncJob();
+                startupJob.Execute();
             }
         }
 

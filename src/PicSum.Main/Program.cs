@@ -81,27 +81,24 @@ namespace PicSum.Main
 
         private static void ConfigureLog()
         {
-            using (TimeMeasuring.Run(true, "Program.ConfigureLog"))
-            {
-                var config = new LoggingConfiguration();
+            var config = new LoggingConfiguration();
 
-                var logfile = new FileTarget("logfile")
-                {
-                    FileName = Path.Combine(AppConstants.LOG_DIRECTORY, "app.log"),
-                    Layout = "${longdate} | ${level:padding=-5} | ${threadname} | ${message:withexception=true}",
-                    ArchiveFileName = string.Format("{0}/{1}", AppConstants.LOG_DIRECTORY, "${date:format=yyyyMMdd}/{########}.log"),
-                    ArchiveAboveSize = 10 * 1024 * 1024,
-                    ArchiveNumbering = ArchiveNumberingMode.Sequence,
-                };
+            var logfile = new FileTarget("logfile")
+            {
+                FileName = Path.Combine(AppConstants.LOG_DIRECTORY, "app.log"),
+                Layout = "${longdate} | ${level:padding=-5} | ${threadname} | ${message:withexception=true}",
+                ArchiveFileName = string.Format("{0}/{1}", AppConstants.LOG_DIRECTORY, "${date:format=yyyyMMdd}/{########}.log"),
+                ArchiveAboveSize = 10 * 1024 * 1024,
+                ArchiveNumbering = ArchiveNumberingMode.Sequence,
+            };
 #if DEBUG
-                config.AddRule(LogLevel.Trace, LogLevel.Fatal, logfile);
+            config.AddRule(LogLevel.Trace, LogLevel.Fatal, logfile);
 #elif DEVELOP
-                config.AddRule(LogLevel.Trace, LogLevel.Fatal, logfile);
+            config.AddRule(LogLevel.Trace, LogLevel.Fatal, logfile);
 #else
-                config.AddRule(LogLevel.Info, LogLevel.Fatal, logfile);
+            config.AddRule(LogLevel.Info, LogLevel.Fatal, logfile);
 #endif
-                LogManager.Configuration = config;
-            }
+            LogManager.Configuration = config;
         }
 
         private static void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
