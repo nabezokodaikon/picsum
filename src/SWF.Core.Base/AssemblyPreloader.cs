@@ -22,17 +22,12 @@ namespace SWF.Core.Base
                     if (PreloadedAssemblies.TryAdd(assemblyName, true))
                     {
                         var assembly = criticalType.Assembly;
-
-                        // モジュールコンストラクターの実行
                         Assembly.Load(assemblyName);
-
-                        // 依存アセンブリの読み込み（最小限）
                         LoadCriticalReferences(assembly);
                     }
                 }
                 catch (Exception ex)
                 {
-                    // Microsoft Storeアプリでのロギング
                     ConsoleUtil.Write(
                         $"アセンブリ読み込みエラー: {criticalType.Assembly.GetName().Name}. Error: {ex.Message}"
                     );

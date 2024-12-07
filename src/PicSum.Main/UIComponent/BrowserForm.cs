@@ -140,12 +140,11 @@ namespace PicSum.Main.UIComponent
             {
                 AssemblyPreloader.OptimizeStartup(
                     typeof(Microsoft.Win32.SystemEvents),
+                    typeof(PicSum.UIComponent.AddressBar.AddressBar),
+                    typeof(PicSum.UIComponent.InfoPanel.InfoPanel),
                     typeof(System.ComponentModel.TypeConverter),
                     typeof(System.Drawing.Bitmap),
                     typeof(System.Threading.ThreadPool),
-                    typeof(System.Windows.Forms.Form),
-                    typeof(PicSum.UIComponent.AddressBar.AddressBar),
-                    typeof(PicSum.UIComponent.InfoPanel.InfoPanel),
                     typeof(SWF.UIComponent.TabOperation.TabSwitch),
                     typeof(SWF.UIComponent.WideDropDown.WideDropToolButton),
                     typeof(SWF.UIComponent.Core.ToolButton),
