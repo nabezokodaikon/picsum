@@ -1086,74 +1086,27 @@ namespace PicSum.UIComponent.Contents.FileList
             if (currentFileInfo.IsFile && currentFileInfo.IsImageFile)
             {
                 // 選択項目が画像ファイルの場合。
-                var filePathList = new List<string>();
-                foreach (var filePath in this.filterFilePathList)
-                {
-                    var fileInfo = this.masterFileDictionary[filePath];
-                    if (fileInfo.IsFile && fileInfo.IsImageFile)
-                    {
-                        filePathList.Add(filePath);
-                    }
-                }
+                var selectedFiles = this.GetSelectedFiles();
+                var selectedImageFiles = selectedFiles
+                    .Where(FileUtil.IsImageFile)
+                    .ToArray();
 
-                if (filePathList.Count > 0)
-                {
-                    var dragData = new DragEntity(
-                        this,
-                        this.Parameter.PageSources,
-                        this.Parameter.SourcesKey,
-                        currentFilePath,
-                        this.SortInfo,
-                        this.GetImageFilesGetAction,
-                        this.Title,
-                        this.Icon,
-                        this.Parameter.VisibleBookmarkMenuItem,
-                        this.Parameter.VisibleClipMenuItem);
-                    this.DoDragDrop(dragData, DragDropEffects.All);
+                var dragData = new DragEntity(
+                    this,
+                    this.Parameter.PageSources,
+                    this.Parameter.SourcesKey,
+                    currentFilePath,
+                    this.SortInfo,
+                    this.GetImageFilesGetAction,
+                    this.Title,
+                    this.Icon,
+                    this.Parameter.VisibleBookmarkMenuItem,
+                    this.Parameter.VisibleClipMenuItem);
 
-                    var cursorPosition = Cursor.Position;
-                    var directoryPath = ExplorerDragDrop.GetExplorerPathAtCursor(
-                        cursorPosition.X, cursorPosition.Y);
-                    if (FileUtil.CanAccess(directoryPath)
-                        && (FileUtil.IsDrive(directoryPath) || FileUtil.IsDirectory(directoryPath)))
-                    {
-                        var selectedFiles = this.GetSelectedFiles();
-                        var selectedImageFiles = selectedFiles
-                            .Where(FileUtil.IsImageFile)
-                            .ToArray();
-                        if (selectedFiles.Length == selectedImageFiles.Length
-                            && selectedImageFiles.Length == 1)
-                        {
-                            var exportFileName = FileUtil.GetExportFileName(directoryPath, currentFilePath);
-                            Instance<JobCaller>.Value.StartSingleFileExportJob(
-                                this, new SingleFileExportParameter()
-                                {
-                                    SrcFilePath = currentFilePath,
-                                    ExportFilePath = Path.Combine(directoryPath, exportFileName),
-                                });
-                        }
-                        else if (selectedFiles.Length == selectedImageFiles.Length
-                            && selectedImageFiles.Length > 1)
-                        {
-                            var param = new MultiFilesExportParameter
-                            {
-                                SrcFiles = selectedFiles,
-                                ExportDirecotry = directoryPath,
-                            };
-
-                            Instance<JobCaller>.Value.MultiFilesExportJob.Value
-                                .StartJob(this, param, _ =>
-                                {
-                                    if (this.disposed)
-                                    {
-                                        return;
-                                    }
-
-                                    this.MultiFilesExportJob_Callback(_);
-                                });
-                        }
-                    }
-                }
+                var dataObject = new DataObject();
+                dataObject.SetData(DataFormats.FileDrop, selectedImageFiles);
+                dataObject.SetData(typeof(DragEntity), dragData);
+                this.DoDragDrop(dataObject, DragDropEffects.Copy);
             }
             else if (!currentFileInfo.IsFile)
             {

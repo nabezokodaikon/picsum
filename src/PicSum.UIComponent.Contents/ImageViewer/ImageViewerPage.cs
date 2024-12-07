@@ -676,22 +676,11 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 this.parameter.PageIcon,
                 this.parameter.VisibleBookmarkMenuItem,
                 this.parameter.VisibleClipMenuItem);
-            this.DoDragDrop(dragData, DragDropEffects.All);
 
-            var cursorPosition = Cursor.Position;
-            var directoryPath = ExplorerDragDrop.GetExplorerPathAtCursor(
-                cursorPosition.X, cursorPosition.Y);
-            if (FileUtil.CanAccess(directoryPath)
-                && (FileUtil.IsDrive(directoryPath) || FileUtil.IsDirectory(directoryPath)))
-            {
-                var exportFileName = FileUtil.GetExportFileName(directoryPath, currentFilePath);
-                Instance<JobCaller>.Value.StartSingleFileExportJob(
-                    this, new SingleFileExportParameter()
-                    {
-                        SrcFilePath = currentFilePath,
-                        ExportFilePath = Path.Combine(directoryPath, exportFileName),
-                    });
-            }
+            var dataObject = new DataObject();
+            dataObject.SetData(DataFormats.FileDrop, new string[] { currentFilePath });
+            dataObject.SetData(typeof(DragEntity), dragData);
+            this.DoDragDrop(dataObject, DragDropEffects.Copy);
         }
 
         private bool SetDisplayMode(ImageDisplayMode mode)

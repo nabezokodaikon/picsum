@@ -511,7 +511,8 @@ namespace PicSum.Main.UIComponent
             {
                 e.Effect = DragDropEffects.Copy;
             }
-            else if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            else if (e.Data.GetDataPresent("Shell IDList Array")
+                && e.Data.GetDataPresent(DataFormats.FileDrop))
             {
                 e.Effect = DragDropEffects.Copy;
             }
@@ -577,7 +578,8 @@ namespace PicSum.Main.UIComponent
 
         private void PageContainer_DragEnter(object sender, DragEventArgs e)
         {
-            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            if (e.Data.GetDataPresent("Shell IDList Array")
+                && e.Data.GetDataPresent(DataFormats.FileDrop))
             {
                 e.Effect = DragDropEffects.Copy;
                 return;
