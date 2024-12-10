@@ -1192,64 +1192,6 @@ namespace PicSum.UIComponent.Contents.FileList
             FileUtil.OpenExplorer(e.FilePath);
         }
 
-        private void FileContextMenu_Export(object sender, ExecuteFileListEventArgs e)
-        {
-            if (e.FilePathList.Length > 1)
-            {
-                using (var fbd = new FolderBrowserDialog())
-                {
-                    fbd.SelectedPath = CommonConfig.Instance.ExportDirectoryPath;
-                    if (fbd.ShowDialog() == DialogResult.OK)
-                    {
-                        var param = new MultiFilesExportParameter
-                        {
-                            SrcFiles = [.. e.FilePathList],
-                            ExportDirecotry = fbd.SelectedPath,
-                        };
-
-                        Instance<JobCaller>.Value.MultiFilesExportJob.Value
-                            .StartJob(this, param, _ =>
-                            {
-                                if (this.disposed)
-                                {
-                                    return;
-                                }
-
-                                this.MultiFilesExportJob_Callback(_);
-                            });
-                        CommonConfig.Instance.ExportDirectoryPath = fbd.SelectedPath;
-                    }
-                }
-            }
-            else
-            {
-                using (var ofd = new SaveFileDialog())
-                {
-                    var srcFilePath = e.FilePathList.First();
-                    ofd.InitialDirectory = CommonConfig.Instance.ExportDirectoryPath;
-                    ofd.FileName = FileUtil.GetExportFileName(
-                        ofd.InitialDirectory,
-                        srcFilePath);
-                    ofd.CheckFileExists = false;
-                    ofd.Filter = FileUtil.GetExportFilterText(srcFilePath);
-                    ofd.FilterIndex = 0;
-
-                    if (ofd.ShowDialog() == DialogResult.OK)
-                    {
-                        var dir = FileUtil.GetParentDirectoryPath(ofd.FileName);
-                        var param = new SingleFileExportParameter
-                        {
-                            SrcFilePath = srcFilePath,
-                            ExportFilePath = ofd.FileName
-                        };
-                        Instance<JobCaller>.Value.StartSingleFileExportJob(this, param);
-
-                        CommonConfig.Instance.ExportDirectoryPath = dir;
-                    }
-                }
-            }
-        }
-
         private void FileContextMenu_PathCopy(object sender, ExecuteFileListEventArgs e)
         {
             var sb = new StringBuilder();

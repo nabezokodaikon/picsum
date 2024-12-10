@@ -54,8 +54,6 @@ namespace PicSum.Job.Common
             = new(() => new TwoWayThread<ImageFilesGetByDirectoryJob, ImageFileGetByDirectoryParameter, ImageFilesGetByDirectoryResult>(context, new JobTask()));
         public readonly Lazy<ITwoWayJob<NextDirectoryGetJob, NextDirectoryGetParameter<string>, ValueResult<string>>> NextDirectoryGetJob
             = new(() => new TwoWayThread<NextDirectoryGetJob, NextDirectoryGetParameter<string>, ValueResult<string>>(context, new JobTask()));
-        public readonly Lazy<ITwoWayJob<MultiFilesExportJob, MultiFilesExportParameter, ValueResult<string>>> MultiFilesExportJob
-            = new(() => new TwoWayThread<MultiFilesExportJob, MultiFilesExportParameter, ValueResult<string>>(context, new JobTask()));
         public readonly Lazy<ITwoWayJob<MultiFilesConvertJob, MultiFilesConvertParameter, ValueResult<string>>> MultiFilesConvertJob
             = new(() => new TwoWayThread<MultiFilesConvertJob, MultiFilesConvertParameter, ValueResult<string>>(context, new JobTask()));
         public readonly Lazy<ITwoWayJob<BookmarksGetJob, ListResult<FileShallowInfoEntity>>> BookmarksGetJob
@@ -103,7 +101,6 @@ namespace PicSum.Job.Common
                 this.FilesGetByTagJob.Value.Dispose();
                 this.ImageFilesGetByDirectoryJob.Value.Dispose();
                 this.NextDirectoryGetJob.Value.Dispose();
-                this.MultiFilesExportJob.Value.Dispose();
                 this.MultiFilesConvertJob.Value.Dispose();
                 this.BookmarksGetJob.Value.Dispose();
             }
@@ -117,13 +114,6 @@ namespace PicSum.Job.Common
             ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
 
             this.jobQueue.Value.Enqueue<BookmarkAddJob, ValueParameter<string>>(sender, parameter);
-        }
-
-        public void StartSingleFileExportJob(ISender sender, SingleFileExportParameter parameter)
-        {
-            ArgumentNullException.ThrowIfNull(sender, nameof(sender));
-
-            this.jobQueue.Value.Enqueue<SingleFileExportJob, SingleFileExportParameter>(sender, parameter);
         }
 
         public void StartSilgeFileConvertJob(ISender sender, SingleFileConvertParameter parameter)

@@ -1300,34 +1300,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             FileUtil.OpenExplorerSelect(e.FilePath);
         }
 
-        private void FileContextMenu_Export(object sender, ExecuteFileListEventArgs e)
-        {
-            using (var ofd = new SaveFileDialog())
-            {
-                var srcFilePath = e.FilePathList.First();
-                ofd.InitialDirectory = CommonConfig.Instance.ExportDirectoryPath;
-                ofd.FileName = FileUtil.GetExportFileName(
-                    ofd.InitialDirectory,
-                    srcFilePath);
-                ofd.CheckFileExists = false;
-                ofd.Filter = FileUtil.GetExportFilterText(srcFilePath);
-                ofd.FilterIndex = 0;
-
-                if (ofd.ShowDialog() == DialogResult.OK)
-                {
-                    var dir = FileUtil.GetParentDirectoryPath(ofd.FileName);
-                    var param = new SingleFileExportParameter
-                    {
-                        SrcFilePath = srcFilePath,
-                        ExportFilePath = ofd.FileName
-                    };
-                    Instance<JobCaller>.Value.StartSingleFileExportJob(this, param);
-
-                    CommonConfig.Instance.ExportDirectoryPath = dir;
-                }
-            }
-        }
-
         private void FileContextMenu_PathCopy(object sender, ExecuteFileListEventArgs e)
         {
             Clipboard.SetText(e.FilePathList[0]);

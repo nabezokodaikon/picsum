@@ -28,7 +28,6 @@ namespace PicSum.UIComponent.Contents.ContextMenu
         public event EventHandler<ExecuteFileEventArgs> ExplorerOpen;
         public event EventHandler<ExecuteFileEventArgs> Bookmark;
 
-        public event EventHandler<ExecuteFileListEventArgs> Export;
         public event EventHandler<ExecuteFileListEventArgs> PathCopy;
         public event EventHandler<ExecuteFileListEventArgs> NameCopy;
         public event EventHandler<ExecuteFileListEventArgs> RemoveFromList;
@@ -63,7 +62,6 @@ namespace PicSum.UIComponent.Contents.ContextMenu
         private readonly ToolStripMenuItem directoryNewWindowOpenMenuItem = new("Open in new window");
         private readonly ToolStripMenuItem explorerOpenMenuItem = new("Open in explorer");
 
-        private readonly ToolStripMenuItem exportMenuItem = new("Export");
         private readonly ToolStripMenuItem pathCopyMenuItem = new("Copy the file path");
         private readonly ToolStripMenuItem nameCopyMenuItem = new("Copy the file name");
         private readonly ToolStripMenuItem removeFromListMenuItem = new("Remove from list");
@@ -223,19 +221,6 @@ namespace PicSum.UIComponent.Contents.ContextMenu
         }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public bool VisibleExportMenuItem
-        {
-            get
-            {
-                return this.exportMenuItem.Visible;
-            }
-            set
-            {
-                this.exportMenuItem.Visible = value;
-            }
-        }
-
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool VisibleConvertMenuItem
         {
             get
@@ -335,7 +320,6 @@ namespace PicSum.UIComponent.Contents.ContextMenu
                     this.explorerOpenMenuItem,
                     this.pathCopyMenuItem,
                     this.nameCopyMenuItem,
-                    this.exportMenuItem,
                     this.convertMenuItem,
                     this.fileBookmarkMenuItem,
                     this.clipMenuItem,
@@ -353,7 +337,6 @@ namespace PicSum.UIComponent.Contents.ContextMenu
                 this.explorerOpenMenuItem.Click += new(this.ExplorerOpenMenuItem_Click);
                 this.pathCopyMenuItem.Click += new(this.PathCopyMenuItem_Click);
                 this.nameCopyMenuItem.Click += new(this.NameCopyMenuItem_Click);
-                this.exportMenuItem.Click += new(this.ExportMenuItem_Click);
                 this.fileBookmarkMenuItem.Click += new(this.FileBookmarkMenuItem_Click);
                 this.removeFromListMenuItem.Click += new(this.RemoveFromListMenuItem_Click);
                 this.clipMenuItem.Click += new(this.ClipMenuItem_Click);
@@ -399,7 +382,6 @@ namespace PicSum.UIComponent.Contents.ContextMenu
                 var isAllImageFiles = filePathList
                     .Where(_ => FileUtil.IsImageFile(_))
                     .Count() == filePathList.Length;
-                this.exportMenuItem.Visible = isAllImageFiles;
                 this.convertMenuItem.Visible = isAllImageFiles;
             }
             else
@@ -426,7 +408,6 @@ namespace PicSum.UIComponent.Contents.ContextMenu
                 this.fileNewTabOpenMenuItem.Visible = isImageFile;
                 this.fileNewWindowOpenMenuItem.Visible = isImageFile;
                 this.fileBookmarkMenuItem.Visible = isImageFile;
-                this.exportMenuItem.Visible = isImageFile;
                 this.convertMenuItem.Visible = isImageFile;
             }
 
@@ -488,11 +469,6 @@ namespace PicSum.UIComponent.Contents.ContextMenu
         private void OnExplorerOpen(ExecuteFileEventArgs e)
         {
             this.ExplorerOpen?.Invoke(this, e);
-        }
-
-        private void OnExport(ExecuteFileListEventArgs e)
-        {
-            this.Export?.Invoke(this, e);
         }
 
         private void OnPathCopy(ExecuteFileListEventArgs e)
@@ -618,11 +594,6 @@ namespace PicSum.UIComponent.Contents.ContextMenu
         private void NameCopyMenuItem_Click(object sender, EventArgs e)
         {
             this.OnNameCopy(new ExecuteFileListEventArgs(this.filePathList));
-        }
-
-        private void ExportMenuItem_Click(object sender, EventArgs e)
-        {
-            this.OnExport(new ExecuteFileListEventArgs(this.filePathList));
         }
 
         private void FileBookmarkMenuItem_Click(object sender, EventArgs e)
