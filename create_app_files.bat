@@ -5,3 +5,4 @@ MKDIR %PICSUM_FILES%
 
 MKLINK /D %PICSUM_FILES%\db %CD%\bin_publish\db
 MKLINK /D %PICSUM_FILES%\config %CD%\bin_publish\config
+MKLINK /D %PICSUM_FILES%\log %CD%\bin_publish\log
