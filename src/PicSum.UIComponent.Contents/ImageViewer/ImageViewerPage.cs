@@ -237,6 +237,8 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 this.FilePathListIndex = this.GetNextIndex(this.FilePathListIndex, false);
             }
 
+            this.Focus();
+
             base.OnMouseWheel(e);
         }
 
