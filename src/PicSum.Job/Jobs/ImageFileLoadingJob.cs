@@ -30,7 +30,7 @@ namespace PicSum.Job.Jobs
             var mainSize = logic.GetImageSize(mainFilePath);
             if (parameter.ImageDisplayMode != ImageDisplayMode.Single
                 && mainSize != ImageUtil.EMPTY_SIZE
-                && mainSize.Width < mainSize.Height)
+                && mainSize.Width <= mainSize.Height)
             {
                 var subtIndex = parameter.CurrentIndex + 1;
                 if (subtIndex > parameter.FilePathList.Length - 1)
@@ -42,7 +42,7 @@ namespace PicSum.Job.Jobs
                 var subSize = logic.GetImageSize(subFilePath);
                 if (subFilePath != mainFilePath
                     && subSize != ImageUtil.EMPTY_SIZE
-                    && subSize.Width < subSize.Height)
+                    && subSize.Width <= subSize.Height)
                 {
                     this.Callback(logic.CreateEmptyResult(
                         mainFilePath, true, true, mainSize));
