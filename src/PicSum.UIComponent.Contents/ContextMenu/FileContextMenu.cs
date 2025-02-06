@@ -320,7 +320,7 @@ namespace PicSum.UIComponent.Contents.ContextMenu
                     this.explorerOpenMenuItem,
                     this.pathCopyMenuItem,
                     this.nameCopyMenuItem,
-                    this.convertMenuItem,
+                    //this.convertMenuItem,
                     this.fileBookmarkMenuItem,
                     this.clipMenuItem,
                     this.removeFromListMenuItem
