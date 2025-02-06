@@ -12,8 +12,6 @@ using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Runtime.Versioning;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace PicSum.Main.UIComponent
@@ -135,32 +133,12 @@ namespace PicSum.Main.UIComponent
                 return;
             }
 
-            var context = SynchronizationContext.Current;
-            Task.Run(() =>
+            using (TimeMeasuring.Run(true, "BrowserForm.OnShown"))
             {
-                AssemblyPreloader.OptimizeStartup(
-                    typeof(Microsoft.Win32.SystemEvents),
-                    typeof(PicSum.UIComponent.AddressBar.AddressBar),
-                    typeof(PicSum.UIComponent.InfoPanel.InfoPanel),
-                    typeof(System.ComponentModel.TypeConverter),
-                    typeof(System.Drawing.Bitmap),
-                    typeof(System.Threading.ThreadPool),
-                    typeof(SWF.UIComponent.TabOperation.TabSwitch),
-                    typeof(SWF.UIComponent.WideDropDown.WideDropToolButton),
-                    typeof(SWF.UIComponent.Core.ToolButton),
-                    typeof(SWF.UIComponent.FlowList.FlowList)
-                );
-                context.Post(_ =>
-                {
-                    using (TimeMeasuring.Run(true, "BrowserForm.OnShown"))
-                    {
-                        this.SetGrass();
-                        this.CreateBrowserMainPanel();
-                        BrowserForm.isStartUp = false;
-                        logger.Trace("画面が表示されました。");
-                    }
-                }, null);
-            });
+                this.SetGrass();
+                this.CreateBrowserMainPanel();
+                BrowserForm.isStartUp = false;
+            }
         }
 
         protected override void OnClosing(CancelEventArgs e)
