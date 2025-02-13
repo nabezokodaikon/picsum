@@ -21,8 +21,8 @@ namespace PicSum.Job.Logics
             var dtoList = Instance<IFileInfoDB>.Value.ReadList<TagInfoDto>(sql);
 
             return [.. dtoList
-                .Where(dto => FileUtil.IsExists(dto.FilePath))
                 .GroupBy(file => file.Tag)
+                .Where(file => file.Any(f => FileUtil.IsExists(f.FilePath)))
                 .Select(file => file.First().Tag)
                 .OrderBy(tag => tag)];
         }
