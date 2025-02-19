@@ -38,6 +38,8 @@ namespace PicSum.UIComponent.Contents.Common
 
         public abstract override void RedrawPage();
 
+        public abstract override void StopPageDraw();
+
         protected override void Dispose(bool disposing)
         {
             if (this.disposed)

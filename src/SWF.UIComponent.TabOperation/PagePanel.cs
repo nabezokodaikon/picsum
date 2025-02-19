@@ -55,6 +55,11 @@ namespace SWF.UIComponent.TabOperation
 
         }
 
+        public virtual void StopPageDraw()
+        {
+
+        }
+
         /// <summary>
         /// アクティブにします。
         /// </summary>

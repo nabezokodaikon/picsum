@@ -175,6 +175,11 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             }
         }
 
+        public override void StopPageDraw()
+        {
+            //throw new NotImplementedException();
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (this.disposed)

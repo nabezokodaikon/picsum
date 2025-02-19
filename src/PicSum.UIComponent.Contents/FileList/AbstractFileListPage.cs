@@ -158,6 +158,11 @@ namespace PicSum.UIComponent.Contents.FileList
             this.Update();
         }
 
+        public override void StopPageDraw()
+        {
+            Instance<JobCaller>.Value.ThumbnailsGetJob.Value.BeginCancel();
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (this.disposed)
@@ -181,13 +186,6 @@ namespace PicSum.UIComponent.Contents.FileList
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-        }
-
-        protected override void OnInvalidated(InvalidateEventArgs e)
-        {
-            Instance<JobCaller>.Value.ThumbnailsGetJob.Value.BeginCancel();
-
-            base.OnInvalidated(e);
         }
 
         protected abstract void OnRemoveFile(string[] filePathList);

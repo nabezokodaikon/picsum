@@ -242,6 +242,14 @@ namespace SWF.UIComponent.TabOperation
             this.SetAddTabButtonDrawArea();
         }
 
+        public TabInfo[] GetInactiveTabs()
+        {
+            var tabs = this.tabList
+                    .Where(tab => tab != this.activeTab)
+                    .ToArray();
+            return tabs;
+        }
+
         /// <summary>
         /// 格納されているフォームを取得します。
         /// </summary>

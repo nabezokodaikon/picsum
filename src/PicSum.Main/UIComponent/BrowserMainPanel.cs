@@ -457,6 +457,12 @@ namespace PicSum.Main.UIComponent
 
             if (this.tabSwitch.ActiveTab != null)
             {
+                foreach (var tab in this.tabSwitch.GetInactiveTabs())
+                {
+                    var p = tab.GetPage<BrowserPage>();
+                    p.StopPageDraw();
+                }
+
                 var page = this.tabSwitch.ActiveTab.GetPage<BrowserPage>();
                 var selectedFilePath = page.SelectedFilePath;
                 if (!string.IsNullOrEmpty(selectedFilePath))
