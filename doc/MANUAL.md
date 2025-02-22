@@ -3,6 +3,15 @@
 * 画像を見開きで表示できます。
 * 画像ファイルを整理するための様々な機能が備わっています。
 
+## 動作環境
+### OS
+* Windows10 64bit
+* Windows11 64bit
+### .NET
+* .NET 9.0
+
+https://builds.dotnet.microsoft.com/dotnet/Sdk/9.0.200/dotnet-sdk-9.0.200-win-x64.exe
+
 ## 機能
 ### タブ
 * タブを追加、削除、ウィンドウの結合、分離ができます。
