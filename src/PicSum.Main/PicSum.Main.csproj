@@ -40,20 +40,22 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-	<DebugType>none</DebugType>
-	<NoWarn>1701;1702; CA1016; CA1824; WFAC010; CA1416</NoWarn>
 	<OutputType>WinExe</OutputType>
-	<PublishReadyToRun>true</PublishReadyToRun>
-	<Optimize>true</Optimize>
-	<TieredCompilation>true</TieredCompilation>
-	<TrimMode>link</TrimMode>
-	<ServerGarbageCollection>true</ServerGarbageCollection>
 	<RuntimeIdentifier>win-x64</RuntimeIdentifier>
-	<PublishSingleFile>true</PublishSingleFile>
 	<SelfContained>true</SelfContained>
+	<PublishSingleFile>true</PublishSingleFile>
+	<IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+	<PublishReadyToRun>true</PublishReadyToRun>
+	<PublishReadyToRunShowWarnings>false</PublishReadyToRunShowWarnings>
+	<PublishReadyToRunUseCrossgen2>true</PublishReadyToRunUseCrossgen2>
+	<EnableCompressionInSingleFile>false</EnableCompressionInSingleFile>
+	<TieredCompilation>false</TieredCompilation>
+	<TrimMode>partial</TrimMode>
+	<Optimize>true</Optimize>
 	<OptimizationPreference>Speed</OptimizationPreference>
+	<DebugType>none</DebugType>
 	<EnableTrimAnalyzer>true</EnableTrimAnalyzer>
-	<IncludeNativeLibrariesForSelfExtract>false</IncludeNativeLibrariesForSelfExtract >
+	<NoWarn>1701;1702; CA1016; CA1824; WFAC010; CA1416</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup>
