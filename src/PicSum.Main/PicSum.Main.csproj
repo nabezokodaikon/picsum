@@ -42,15 +42,15 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
 	<OutputType>WinExe</OutputType>
 	<RuntimeIdentifier>win-x64</RuntimeIdentifier>
-	<SelfContained>true</SelfContained>
-	<PublishSingleFile>true</PublishSingleFile>
+	<SelfContained>false</SelfContained>
+	<PublishSingleFile>false</PublishSingleFile>
 	<IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
 	<PublishReadyToRun>true</PublishReadyToRun>
 	<PublishReadyToRunShowWarnings>false</PublishReadyToRunShowWarnings>
 	<PublishReadyToRunUseCrossgen2>true</PublishReadyToRunUseCrossgen2>
 	<EnableCompressionInSingleFile>false</EnableCompressionInSingleFile>
 	<TieredCompilation>false</TieredCompilation>
-	<TrimMode>partial</TrimMode>
+	<TrimMode>link</TrimMode>
 	<Optimize>true</Optimize>
 	<OptimizationPreference>Speed</OptimizationPreference>
 	<DebugType>none</DebugType>
