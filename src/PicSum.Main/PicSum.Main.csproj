@@ -44,7 +44,7 @@
 	<RuntimeIdentifier>win-x64</RuntimeIdentifier>
 	<SelfContained>false</SelfContained>
 	<PublishSingleFile>false</PublishSingleFile>
-	<IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+	<IncludeNativeLibrariesForSelfExtract>false</IncludeNativeLibrariesForSelfExtract>
 	<PublishReadyToRun>true</PublishReadyToRun>
 	<PublishReadyToRunShowWarnings>false</PublishReadyToRunShowWarnings>
 	<PublishReadyToRunUseCrossgen2>true</PublishReadyToRunUseCrossgen2>

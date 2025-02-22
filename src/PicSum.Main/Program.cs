@@ -32,7 +32,7 @@ namespace PicSum.Main
                 try
                 {
                     Thread.CurrentThread.Name = AppConstants.UI_THREAD_NAME;
-                    //ThreadPool.SetMinThreads(50, 50);
+                    ThreadPool.SetMinThreads(50, 50);
 
                     AppConstants.CreateApplicationDirectories();
 
@@ -42,27 +42,26 @@ namespace PicSum.Main
                     AppDomain.CurrentDomain.AssemblyLoad += CurrentDomain_OnAssemblyLoad;
                     AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
-                    //AssemblyPreloader.OptimizeStartup(
-                    //    typeof(Accessibility.AnnoScope),
-                    //    typeof(Microsoft.Win32.SystemEvents),
-                    //    typeof(PicSum.DatabaseAccessor.Connection.FileInfoDB),
-                    //    typeof(PicSum.Job.Common.ClipFiles),
-                    //    typeof(PicSum.UIComponent.Contents.Common.BrowserPage),
-                    //    typeof(SWF.Core.DatabaseAccessor.AbstractConnection),
-                    //    typeof(SWF.Core.FileAccessor.FileAppender),
-                    //    typeof(SWF.Core.ImageAccessor.CvImage),
-                    //    typeof(SWF.UIComponent.Form.GrassForm),
-                    //    typeof(System.Data.Common.CatalogLocation),
-                    //    typeof(System.Data.SQLite.AssemblySourceIdAttribute),
-                    //    typeof(System.Diagnostics.TraceSource),
-                    //    typeof(System.Drawing.Bitmap),
-                    //    typeof(System.Reflection.Emit.AssemblyBuilder),
-                    //    typeof(System.Resources.Extensions.DeserializingResourceReader),
-                    //    typeof(System.Text.Encoding),
-                    //    typeof(System.Text.RegularExpressions.Capture),
-                    //    typeof(System.Windows.Forms.Form),
-                    //    typeof(WinApi.WinApiMembers)
-                    //);
+                    AssemblyPreloader.OptimizeStartup(
+                        typeof(System.ComponentModel.TypeConverter),
+                        typeof(System.Data.SQLite.AssemblySourceIdAttribute),
+
+                        typeof(PicSum.DatabaseAccessor.Connection.FileInfoDB),
+                        typeof(PicSum.Job.Common.ClipFiles),
+                        typeof(PicSum.UIComponent.AddressBar.AddressBar),
+                        typeof(PicSum.UIComponent.Contents.Common.BrowserPage),
+                        typeof(PicSum.UIComponent.InfoPanel.InfoPanel),
+                        typeof(SWF.Core.DatabaseAccessor.AbstractConnection),
+                        typeof(SWF.Core.FileAccessor.FileAppender),
+                        typeof(SWF.Core.ImageAccessor.CvImage),
+
+                        typeof(SWF.UIComponent.Form.GrassForm),
+                        typeof(SWF.UIComponent.FlowList.DrawItemChangedEventArgs),
+                        typeof(SWF.UIComponent.TabOperation.DrawTabEventArgs),
+                        typeof(SWF.UIComponent.WideDropDown.AddItemEventArgs),
+
+                        typeof(WinApi.WinApiMembers)
+                    );
 
                     Application.ThreadException += Application_ThreadException;
                     Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);

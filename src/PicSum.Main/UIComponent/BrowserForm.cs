@@ -296,6 +296,8 @@ namespace PicSum.Main.UIComponent
             else if (BrowserForm.isStartUp)
             {
                 this.browserMainPanel.AddFavoriteDirectoryListTab();
+
+                LogManager.GetCurrentClassLogger().Debug("初期回表示されました。");
             }
 
             this.SetControlRegion();
