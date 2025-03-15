@@ -135,7 +135,7 @@
 	<Content Include="application.ico" />
   </ItemGroup>
   <ItemGroup>
-	<PackageReference Include="NLog" Version="5.3.4">
+	<PackageReference Include="NLog" Version="5.4.0">
 	  <TreatAsUsed>true</TreatAsUsed>
 	</PackageReference>
   </ItemGroup>
