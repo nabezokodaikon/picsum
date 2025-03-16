@@ -214,8 +214,10 @@ namespace SWF.UIComponent.TabOperation
             else
             {
                 // タブが所有されていない場合。
-                foreach (var form in FORM_LIST)
+                for (var i = 0; i < FORM_LIST.Count; i++)
                 {
+                    var form = FORM_LIST[i];
+
                     if (form.Bounds.Contains(toScreenPoint))
                     {
                         var owner = GetTabSwitchControl(form);
@@ -223,9 +225,9 @@ namespace SWF.UIComponent.TabOperation
                         {
                             var clientPoint = owner.PointToClient(toScreenPoint);
                             tab.DrawArea.X = clientPoint.X;
-                            owner.AddTab(tab);
                             TabDragForm.Visible = false;
                             form.Activate();
+                            owner.AddTab(tab);
                             return;
                         }
                         else
