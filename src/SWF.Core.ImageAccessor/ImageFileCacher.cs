@@ -146,10 +146,7 @@ namespace SWF.Core.ImageAccessor
                         newCache.Dispose();
                         return;
                     }
-                }
 
-                if (cache != null)
-                {
                     this.CACHE_LIST.Remove(cache);
                     this.CACHE_DICTIONARY.Remove(cache.FilePath);
                     cache.Dispose();
