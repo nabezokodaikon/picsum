@@ -44,21 +44,34 @@ namespace PicSum.Job.Jobs
                     && subSize != ImageUtil.EMPTY_SIZE
                     && subSize.Width <= subSize.Height)
                 {
-                    this.Callback(logic.CreateEmptyResult(
-                        mainFilePath, true, true, mainSize));
-                    this.Callback(logic.CreateEmptyResult(
-                        subFilePath, false, true, subSize));
+                    if (!Instance<IImageFileCacher>.Value.Has(mainFilePath))
+                    {
+                        this.Callback(logic.CreateEmptyResult(
+                            mainFilePath, true, true, mainSize));
+                    }
+
+                    if (!Instance<IImageFileCacher>.Value.Has(subFilePath))
+                    {
+                        this.Callback(logic.CreateEmptyResult(
+                            subFilePath, false, true, subSize));
+                    }
                 }
                 else
                 {
-                    this.Callback(logic.CreateEmptyResult(
-                        mainFilePath, true, false, mainSize));
+                    if (!Instance<IImageFileCacher>.Value.Has(mainFilePath))
+                    {
+                        this.Callback(logic.CreateEmptyResult(
+                            mainFilePath, true, false, mainSize));
+                    }
                 }
             }
             else
             {
-                this.Callback(logic.CreateEmptyResult(
-                    mainFilePath, true, false, mainSize));
+                if (!Instance<IImageFileCacher>.Value.Has(mainFilePath))
+                {
+                    this.Callback(logic.CreateEmptyResult(
+                        mainFilePath, true, false, mainSize));
+                }
             }
         }
 
