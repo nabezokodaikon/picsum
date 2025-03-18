@@ -1,3 +1,5 @@
+using System.Buffers;
+using System.Drawing.Imaging;
 using System.Runtime.Versioning;
 
 namespace SWF.Core.ImageAccessor
@@ -8,18 +10,26 @@ namespace SWF.Core.ImageAccessor
     {
         private bool disposed = false;
 
-        public string FilePath { get; private set; }
-        public Bitmap Bitmap { get; private set; }
-        public DateTime Timestamp { get; private set; }
+        private readonly byte[] buffer;
+        private readonly int bufferSize;
 
-        public ImageFileCacheEntity(string filePath, Bitmap bitmap, DateTime timestamp)
+        public string FilePath { get; private set; }
+        public DateTime Timestamp { get; private set; }
+        public Size Size { get; private set; }
+        public PixelFormat PixelFormat { get; private set; }
+
+        public ImageFileCacheEntity(string filePath, DateTime timestamp)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
-            ArgumentNullException.ThrowIfNull(bitmap, nameof(bitmap));
 
-            this.FilePath = filePath;
-            this.Bitmap = bitmap;
-            this.Timestamp = timestamp;
+            using (var bmp = ImageUtil.ReadImageFile(filePath))
+            {
+                this.FilePath = filePath;
+                this.Timestamp = timestamp;
+                this.Size = bmp.Size;
+                this.PixelFormat = bmp.PixelFormat;
+                (this.buffer, this.bufferSize) = ImageUtil.BitmapToByteArray(bmp);
+            }
         }
 
         ~ImageFileCacheEntity()
@@ -42,7 +52,7 @@ namespace SWF.Core.ImageAccessor
 
             if (disposing)
             {
-                this.Bitmap.Dispose();
+                ArrayPool<byte>.Shared.Return(this.buffer);
             }
 
             this.disposed = true;
@@ -76,6 +86,12 @@ namespace SWF.Core.ImageAccessor
         public override bool Equals(object? obj)
         {
             return this.Equals(obj as ImageFileCacheEntity);
+        }
+
+        public Bitmap CreateBitmap()
+        {
+            return ImageUtil.ByteArrayToBitmap(
+                this.buffer, this.bufferSize, this.Size.Width, this.Size.Height, this.PixelFormat);
         }
     }
 }

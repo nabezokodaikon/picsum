@@ -1,5 +1,6 @@
 using SWF.Core.Base;
 using SWF.Core.FileAccessor;
+using System.Buffers;
 using System.Diagnostics;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
@@ -78,38 +79,35 @@ namespace SWF.Core.ImageAccessor
         {
             ArgumentNullException.ThrowIfNull(bitmap, nameof(bitmap));
 
-            using (TimeMeasuring.Run(true, "ImageUtil.BitmapToBuffer"))
+            BitmapData? bmpData = null;
+
+            try
             {
-                BitmapData? bmpData = null;
+                var bytesPerPixel = System.Drawing.Image.GetPixelFormatSize(bitmap.PixelFormat) / 8;
+                var rect = new Rectangle(0, 0, bitmap.Width, bitmap.Height);
+                bmpData = bitmap.LockBits(rect, ImageLockMode.ReadOnly, bitmap.PixelFormat);
 
-                try
+                var stride = bmpData.Stride;
+                var bufferSize = stride * bitmap.Height;
+                var pixelBuffer = new byte[bufferSize];
+
+                unsafe
                 {
-                    var bytesPerPixel = System.Drawing.Image.GetPixelFormatSize(bitmap.PixelFormat) / 8;
-                    var rect = new Rectangle(0, 0, bitmap.Width, bitmap.Height);
-                    bmpData = bitmap.LockBits(rect, ImageLockMode.ReadOnly, bitmap.PixelFormat);
-
-                    var stride = bmpData.Stride;
-                    var bufferSize = stride * bitmap.Height;
-                    var pixelBuffer = new byte[bufferSize];
-
-                    unsafe
+                    var srcPtr = (byte*)bmpData.Scan0;
+                    fixed (byte* destPtr = pixelBuffer)
                     {
-                        var srcPtr = (byte*)bmpData.Scan0;
-                        fixed (byte* destPtr = pixelBuffer)
-                        {
-                            Buffer.MemoryCopy(srcPtr, destPtr, bufferSize, bufferSize);
-                        }
+                        Buffer.MemoryCopy(srcPtr, destPtr, bufferSize, bufferSize);
                     }
-
-                    return pixelBuffer;
                 }
-                finally
+
+                return pixelBuffer;
+            }
+            finally
+            {
+                if (bmpData != null)
                 {
-                    if (bmpData != null)
-                    {
-                        bitmap.UnlockBits(bmpData);
-                        bmpData = null;
-                    }
+                    bitmap.UnlockBits(bmpData);
+                    bmpData = null;
                 }
             }
         }
@@ -118,38 +116,35 @@ namespace SWF.Core.ImageAccessor
         {
             ArgumentNullException.ThrowIfNull(rawBytes, nameof(rawBytes));
 
-            using (TimeMeasuring.Run(true, "ImageUtil.BufferToBitmap"))
+            var bitmap = new Bitmap(width, height, pixelFormat);
+            BitmapData? bmpData = null;
+
+            try
             {
-                var bitmap = new Bitmap(width, height, pixelFormat);
-                BitmapData? bmpData = null;
+                var rect = new Rectangle(0, 0, width, height);
+                bmpData = bitmap.LockBits(rect, ImageLockMode.WriteOnly, pixelFormat);
 
-                try
+                var bytesPerPixel = System.Drawing.Image.GetPixelFormatSize(pixelFormat) / 8;
+                var stride = bmpData.Stride;
+                var bufferSize = stride * height;
+
+                unsafe
                 {
-                    var rect = new Rectangle(0, 0, width, height);
-                    bmpData = bitmap.LockBits(rect, ImageLockMode.WriteOnly, pixelFormat);
-
-                    var bytesPerPixel = System.Drawing.Image.GetPixelFormatSize(pixelFormat) / 8;
-                    var stride = bmpData.Stride;
-                    var bufferSize = stride * height;
-
-                    unsafe
+                    fixed (byte* srcPtr = rawBytes)
                     {
-                        fixed (byte* srcPtr = rawBytes)
-                        {
-                            var destPtr = (byte*)bmpData.Scan0;
-                            Buffer.MemoryCopy(srcPtr, destPtr, bufferSize, rawBytes.Length);
-                        }
+                        var destPtr = (byte*)bmpData.Scan0;
+                        Buffer.MemoryCopy(srcPtr, destPtr, bufferSize, rawBytes.Length);
                     }
-
-                    return bitmap;
                 }
-                finally
+
+                return bitmap;
+            }
+            finally
+            {
+                if (bmpData != null)
                 {
-                    if (bmpData != null)
-                    {
-                        bitmap.UnlockBits(bmpData);
-                        bmpData = null;
-                    }
+                    bitmap.UnlockBits(bmpData);
+                    bmpData = null;
                 }
             }
         }
@@ -734,6 +729,51 @@ namespace SWF.Core.ImageAccessor
             catch (InvalidOperationException ex)
             {
                 throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
+            }
+        }
+
+        public static (byte[], int) BitmapToByteArray(Bitmap bitmap)
+        {
+            ArgumentNullException.ThrowIfNull(bitmap, nameof(bitmap));
+
+            var bmpData = bitmap.LockBits(
+                new Rectangle(0, 0, bitmap.Width, bitmap.Height),
+                ImageLockMode.ReadOnly,
+                bitmap.PixelFormat);
+            try
+            {
+                var stride = bmpData.Stride;
+                var height = bitmap.Height;
+                var rawSize = stride * height;
+
+                var rawData = ArrayPool<byte>.Shared.Rent(rawSize);
+                Marshal.Copy(bmpData.Scan0, rawData, 0, rawSize);
+
+                return (rawData, rawSize);
+            }
+            finally
+            {
+                bitmap.UnlockBits(bmpData);
+            }
+        }
+
+        public static Bitmap ByteArrayToBitmap(
+            byte[] rawData, int rawSize, int width, int height, PixelFormat format)
+        {
+            ArgumentNullException.ThrowIfNull(rawData, nameof(rawData));
+
+            var bmp = new Bitmap(width, height, format);
+            var rect = new Rectangle(0, 0, width, height);
+            var bmpData = bmp.LockBits(rect, ImageLockMode.WriteOnly, format);
+
+            try
+            {
+                Marshal.Copy(rawData, 0, bmpData.Scan0, rawSize);
+                return bmp;
+            }
+            finally
+            {
+                bmp.UnlockBits(bmpData);
             }
         }
 

@@ -77,7 +77,7 @@ namespace SWF.Core.ImageAccessor
             {
                 if (cache != null)
                 {
-                    return cache.Bitmap.Size;
+                    return cache.Size;
                 }
                 else
                 {
@@ -101,7 +101,10 @@ namespace SWF.Core.ImageAccessor
             {
                 if (cache != null)
                 {
-                    return new CvImage(cache.Bitmap.ToMat(), cache.Bitmap.PixelFormat);
+                    using (var bmp = cache.CreateBitmap())
+                    {
+                        return new CvImage(bmp.ToMat(), cache.PixelFormat);
+                    }
                 }
                 else
                 {
@@ -137,8 +140,7 @@ namespace SWF.Core.ImageAccessor
                 }
             }
 
-            var bitmap = ImageUtil.ReadImageFile(filePath);
-            var newCache = new ImageFileCacheEntity(filePath, bitmap, timestamp);
+            var newCache = new ImageFileCacheEntity(filePath, timestamp);
 
             lock (this.CACHE_LOCK)
             {
