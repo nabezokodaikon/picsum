@@ -1,6 +1,4 @@
 using SWF.Core.Base;
-using SWF.Core.FileAccessor;
-using SWF.Core.ImageAccessor;
 using SWF.Core.Job;
 
 namespace PicSum.Job.Jobs
@@ -12,26 +10,20 @@ namespace PicSum.Job.Jobs
         {
             ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
 
-            foreach (var path in parameter)
+            Instance<IImageFileCacheThreads>.Value.DoCache([.. parameter]);
+
+            while (true)
             {
-                this.CheckCancel();
-
-                Thread.Sleep(10);
-
                 try
                 {
-                    Instance<IImageFileCacher>.Value.Create(path);
-                    var size = Instance<IImageFileCacher>.Value.GetSize(path);
-                    Instance<IImageFileSizeCacher>.Value.Set(path, size);
+                    this.CheckCancel();
                 }
-                catch (FileUtilException ex)
+                catch (JobCancelException)
                 {
-                    this.WriteErrorLog(new JobException(this.ID, ex));
+                    return;
                 }
-                catch (ImageUtilException ex)
-                {
-                    this.WriteErrorLog(new JobException(this.ID, ex));
-                }
+
+                Thread.Sleep(10);
             }
         }
     }
