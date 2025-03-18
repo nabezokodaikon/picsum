@@ -14,15 +14,18 @@ namespace PicSum.Job.SyncLogics
     {
         public void Execute()
         {
-            Instance<JobCaller>.Value.Dispose();
-            Instance<IImageFileCacheThreads>.Value.Dispose();
-            Instance<IFileIconCacher>.Value.Dispose();
-            Instance<IThumbnailCacher>.Value.Dispose();
-            Instance<IClipFiles>.Value.Dispose();
-            Instance<IImageFileCacher>.Value.Dispose();
-            Instance<IImageFileSizeCacher>.Value.Dispose();
-            Instance<IFileInfoDB>.Value.Dispose();
-            Instance<IThumbnailDB>.Value.Dispose();
+            using (TimeMeasuring.Run(true, "ClosingSyncLogic.Execute"))
+            {
+                Instance<JobCaller>.Value.Dispose();
+                Instance<IImageFileCacheThreads>.Value.Dispose();
+                Instance<IFileIconCacher>.Value.Dispose();
+                Instance<IThumbnailCacher>.Value.Dispose();
+                Instance<IClipFiles>.Value.Dispose();
+                Instance<IImageFileCacher>.Value.Dispose();
+                Instance<IImageFileSizeCacher>.Value.Dispose();
+                Instance<IFileInfoDB>.Value.Dispose();
+                Instance<IThumbnailDB>.Value.Dispose();
+            }
         }
     }
 }
