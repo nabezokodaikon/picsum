@@ -266,16 +266,16 @@ namespace SWF.Core.ImageAccessor
                     }
                 }
 
-                var sw = Stopwatch.StartNew();
+                //var sw = Stopwatch.StartNew();
                 using (var fs = new FileStream(filePath,
                     FileMode.Open, FileAccess.Read, FileShare.Read, FILE_READ_BUFFER_SIZE, FileOptions.SequentialScan))
                 {
-                    sw.Stop();
-                    ConsoleUtil.Write($"ImageUtil.ReadImageFile new FileStream: {sw.ElapsedMilliseconds} ms");
+                    //sw.Stop();
+                    //ConsoleUtil.Write($"ImageUtil.ReadImageFile new FileStream: {sw.ElapsedMilliseconds} ms");
 
                     if (FileUtil.IsIconFile(filePath))
                     {
-                        using (TimeMeasuring.Run(true, "ImageUtil.ReadImageFile Icon"))
+                        using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFile Icon"))
                         using (var icon = new Icon(fs))
                         {
                             return ConvertIfGrayscale(icon.ToBitmap(), fs);
@@ -286,28 +286,28 @@ namespace SWF.Core.ImageAccessor
 
                     if (FileUtil.IsWebpFile(formatName))
                     {
-                        using (TimeMeasuring.Run(true, "ImageUtil.ReadImageFile Webp"))
+                        using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFile Webp"))
                         {
                             return ConvertIfGrayscale(OpenCVUtil.ReadImageFile(fs), fs);
                         }
                     }
                     else if (FileUtil.IsAvifFile(formatName))
                     {
-                        using (TimeMeasuring.Run(true, "ImageUtil.ReadImageFile Avif"))
+                        using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFile Avif"))
                         {
                             return ConvertIfGrayscale(SixLaborsUtil.ReadImageFile(fs), fs);
                         }
                     }
                     else if (FileUtil.IsHeifFile(formatName))
                     {
-                        using (TimeMeasuring.Run(true, "ImageUtil.ReadImageFile Heif"))
+                        using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFile Heif"))
                         {
                             return ConvertIfGrayscale(MagickUtil.ReadImageFile(fs), fs);
                         }
                     }
                     else if (FileUtil.IsJpegFile(formatName))
                     {
-                        using (TimeMeasuring.Run(true, "ImageUtil.ReadImageFile Jpeg"))
+                        using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFile Jpeg"))
                         {
                             var bmp = ConvertIfGrayscale(OpenCVUtil.ReadImageFile(fs), fs);
                             return LoadBitmapCorrectOrientation(bmp);
@@ -315,21 +315,21 @@ namespace SWF.Core.ImageAccessor
                     }
                     else if (FileUtil.IsBmpFile(formatName))
                     {
-                        using (TimeMeasuring.Run(true, "ImageUtil.ReadImageFile Bitmap"))
+                        using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFile Bitmap"))
                         {
                             return ConvertIfGrayscale((Bitmap)Bitmap.FromStream(fs, false, true), fs);
                         }
                     }
                     else if (FileUtil.IsPngFile(formatName))
                     {
-                        using (TimeMeasuring.Run(true, "ImageUtil.ReadImageFile Png"))
+                        using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFile Png"))
                         {
                             return ConvertIfGrayscale((Bitmap)Bitmap.FromStream(fs, false, true), fs);
                         }
                     }
                     else if (FileUtil.IsImageFile(filePath))
                     {
-                        using (TimeMeasuring.Run(true, "ImageUtil.ReadImageFile Other"))
+                        using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFile Other"))
                         {
                             return ConvertIfGrayscale((Bitmap)Bitmap.FromStream(fs, false, true), fs);
                         }

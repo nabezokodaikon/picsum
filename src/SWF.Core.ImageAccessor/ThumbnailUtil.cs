@@ -56,7 +56,7 @@ namespace SWF.Core.ImageAccessor
 
         public static Bitmap GetThumbnail(string filePath, Size srcSize, int thumbWidth, int thumbHeight)
         {
-            using (TimeMeasuring.Run(true, "ThumbnailUtil.GetThumbnail"))
+            using (TimeMeasuring.Run(false, "ThumbnailUtil.GetThumbnail"))
             {
                 int w, h;
                 if (Math.Max(srcSize.Width, srcSize.Height) <= Math.Min(thumbWidth, thumbHeight))
@@ -100,7 +100,7 @@ namespace SWF.Core.ImageAccessor
         {
             ArgumentNullException.ThrowIfNull(srcImg, nameof(srcImg));
 
-            using (TimeMeasuring.Run(true, "ThumbnailUtil.CreateThumbnail"))
+            using (TimeMeasuring.Run(false, "ThumbnailUtil.CreateThumbnail"))
             {
                 int w, h;
                 if (Math.Max(srcImg.Width, srcImg.Height) <= Math.Min(thumbWidth, thumbHeight))
@@ -138,7 +138,7 @@ namespace SWF.Core.ImageAccessor
                 ArgumentOutOfRangeException.ThrowIfNegative(thumbSize, nameof(thumbSize));
             }
 
-            using (TimeMeasuring.Run(true, "ThumbnailUtil.CreateThumbnail"))
+            using (TimeMeasuring.Run(false, "ThumbnailUtil.CreateThumbnail"))
             {
                 var scale = Math.Min(thumbSize / (float)srcImg.Width, thumbSize / (float)srcImg.Height);
                 var w = srcImg.Width * scale;
