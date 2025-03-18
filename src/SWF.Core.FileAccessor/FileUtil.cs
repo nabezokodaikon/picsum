@@ -892,19 +892,6 @@ namespace SWF.Core.FileAccessor
             }
         }
 
-        /// <summary>
-        /// エクスポート時のダイアログのフィルター文字列を取得します。
-        /// </summary>
-        /// <param name="filePath">エクスポートするファイルパス。</param>
-        /// <returns></returns>
-        public static string GetExportFilterText(string filePath)
-        {
-            ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
-
-            var ex = GetExtension(filePath)[1..];
-            return $"{ex.ToUpper()} Files (*.{ex.ToLower()})|*.{ex.ToLower()}|All Files (*.*)|*.*";
-        }
-
         public static string GetImageFileExtension(ImageFileFormat imageFileFormat)
         {
             return imageFileFormat switch
@@ -927,45 +914,6 @@ namespace SWF.Core.FileAccessor
 
             var extensionText = GetImageFileExtension(imageFileFormat)[1..];
             return $"{extensionText.ToUpper()} Files (*.{extensionText.ToLower()})|*.{extensionText.ToLower()}";
-        }
-
-        /// <summary>
-        /// エクスポート可能なファイルパスを取得します。
-        /// </summary>
-        /// <param name="exportDirectoryPath">エクスポートディレクトリパス</param>
-        /// <param name="srcFilePath">エクスポートファイル名</param>
-        /// <returns></returns>
-        public static string GetExportFileName(string exportDirectoryPath, string srcFilePath)
-        {
-            ArgumentException.ThrowIfNullOrEmpty(exportDirectoryPath, nameof(exportDirectoryPath));
-            ArgumentException.ThrowIfNullOrEmpty(srcFilePath, nameof(srcFilePath));
-
-            var ex = GetExtension(srcFilePath).ToLower();
-            var name = GetFileName(srcFilePath);
-            name = name[..^ex.Length];
-
-            var count = 0;
-
-            do
-            {
-                string destFilePath;
-                if (count == 0)
-                {
-                    destFilePath = @$"{exportDirectoryPath}\{name}{ex}";
-                }
-                else
-                {
-                    destFilePath = @$"{exportDirectoryPath}\{name} ({count + 1}){ex}";
-                }
-
-                if (!IsExists(destFilePath))
-                {
-                    return GetFileName(destFilePath);
-                }
-
-                count++;
-
-            } while (true);
         }
 
         // ファイルパスの末尾が"\"の場合取り除きます。

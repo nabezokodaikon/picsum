@@ -82,14 +82,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.fileContextMenu.Bookmark += new System.EventHandler<PicSum.UIComponent.Contents.ContextMenu.ExecuteFileEventArgs>(this.FileContextMenu_Bookmark);
             this.fileContextMenu.Clip += new System.EventHandler<PicSum.UIComponent.Contents.ContextMenu.ExecuteFileListEventArgs>(this.FileContextMenu_Clip);
             this.fileContextMenu.Opening += new System.ComponentModel.CancelEventHandler(this.FileContextMenu_Opening);
-            this.fileContextMenu.ConvertToAvif += new System.EventHandler<PicSum.UIComponent.Contents.ContextMenu.ExecuteFileListEventArgs>(this.FileContextMenu_ConvertToAvif);
-            this.fileContextMenu.ConvertToBitmap += new System.EventHandler<PicSum.UIComponent.Contents.ContextMenu.ExecuteFileListEventArgs>(this.FileContextMenu_ConvertToBitmap);
-            this.fileContextMenu.ConvertToHeif += new System.EventHandler<PicSum.UIComponent.Contents.ContextMenu.ExecuteFileListEventArgs>(this.FileContextMenu_ConvertToHeif);
-            this.fileContextMenu.ConvertToIcon += new System.EventHandler<PicSum.UIComponent.Contents.ContextMenu.ExecuteFileListEventArgs>(this.FileContextMenu_ConvertToIcon);
-            this.fileContextMenu.ConvertToJpeg += new System.EventHandler<PicSum.UIComponent.Contents.ContextMenu.ExecuteFileListEventArgs>(this.FileContextMenu_ConvertToJpeg);
-            this.fileContextMenu.ConvertToPng += new System.EventHandler<PicSum.UIComponent.Contents.ContextMenu.ExecuteFileListEventArgs>(this.FileContextMenu_ConvertToPng);
-            this.fileContextMenu.ConvertToSvg += new System.EventHandler<PicSum.UIComponent.Contents.ContextMenu.ExecuteFileListEventArgs>(this.FileContextMenu_ConvertToSvg);
-            this.fileContextMenu.ConvertToWebp += new System.EventHandler<PicSum.UIComponent.Contents.ContextMenu.ExecuteFileListEventArgs>(this.FileContextMenu_ConvertToWebp);
             // 
             // rightImagePanel
             // 

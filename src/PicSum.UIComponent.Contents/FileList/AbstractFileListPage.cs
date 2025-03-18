@@ -16,7 +16,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using System.IO;
 using System.Linq;
 using System.Runtime.Versioning;
 using System.Text;
@@ -622,76 +621,6 @@ namespace PicSum.UIComponent.Contents.FileList
                                   this.ItemTextHeight);
         }
 
-        private void ConvertFiles(string[] files, FileUtil.ImageFileFormat imageFileFormat)
-        {
-            if (files.Length == 1)
-            {
-                this.ConvertSingleFile(files.First(), imageFileFormat);
-            }
-            else if (files.Length > 1)
-            {
-                this.ConvertMultipleFile(files, imageFileFormat);
-            }
-        }
-
-        private void ConvertSingleFile(string file, FileUtil.ImageFileFormat imageFileFormat)
-        {
-            using (var ofd = new SaveFileDialog())
-            {
-                var destFileName =
-                    $"{FileUtil.GetFileNameWithoutExtension(file)}{FileUtil.GetImageFileExtension(imageFileFormat).ToLower()}";
-                var srcFilePath = file;
-                ofd.InitialDirectory = CommonConfig.Instance.ExportDirectoryPath;
-                ofd.FileName = destFileName;
-                ofd.CheckPathExists = true;
-                ofd.Filter = FileUtil.GetConvertFilterText(srcFilePath, imageFileFormat);
-                ofd.FilterIndex = 0;
-
-                if (ofd.ShowDialog() == DialogResult.OK)
-                {
-                    var dir = FileUtil.GetParentDirectoryPath(ofd.FileName);
-                    var param = new SingleFileConvertParameter
-                    {
-                        SrcFilePath = srcFilePath,
-                        ExportFilePath = Path.Combine(dir, destFileName),
-                        ImageFileFormat = imageFileFormat,
-                    };
-                    Instance<JobCaller>.Value.StartSilgeFileConvertJob(this, param);
-
-                    CommonConfig.Instance.ExportDirectoryPath = dir;
-                }
-            }
-        }
-
-        private void ConvertMultipleFile(string[] files, FileUtil.ImageFileFormat imageFileFormat)
-        {
-            using (var fbd = new FolderBrowserDialog())
-            {
-                fbd.SelectedPath = CommonConfig.Instance.ExportDirectoryPath;
-                if (fbd.ShowDialog() == DialogResult.OK)
-                {
-                    var param = new MultiFilesConvertParameter
-                    {
-                        SrcFiles = files,
-                        ExportDirecotry = fbd.SelectedPath,
-                        ImageFileFormat = imageFileFormat,
-                    };
-
-                    Instance<JobCaller>.Value.MultiFilesConvertJob.Value
-                        .StartJob(this, param, _ =>
-                        {
-                            if (this.disposed)
-                            {
-                                return;
-                            }
-
-                            this.MultiFilesConvertJob_Callback(_);
-                        });
-                    CommonConfig.Instance.ExportDirectoryPath = fbd.SelectedPath;
-                }
-            }
-        }
-
         private void GetThumbnailsJob_Callback(ThumbnailImageResult e)
         {
             if (this.masterFileDictionary == null
@@ -738,16 +667,6 @@ namespace PicSum.UIComponent.Contents.FileList
                     this.flowList.InvalidateFromItemIndex(index);
                 }
             }
-        }
-
-        private void MultiFilesExportJob_Callback(ValueResult<string> result)
-        {
-            ConsoleUtil.Write(result.Value);
-        }
-
-        private void MultiFilesConvertJob_Callback(ValueResult<string> result)
-        {
-            ConsoleUtil.Write(result.Value);
         }
 
         private void ShowDirectoryToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1230,46 +1149,6 @@ namespace PicSum.UIComponent.Contents.FileList
             var paramter = new ValueParameter<string>(e.FilePath);
 
             Instance<JobCaller>.Value.StartBookmarkAddJob(this, paramter);
-        }
-
-        private void FileContextMenu_ConvertToAvif(object sender, ExecuteFileListEventArgs e)
-        {
-            this.ConvertFiles(e.FilePathList, FileUtil.ImageFileFormat.Avif);
-        }
-
-        private void FileContextMenu_ConvertToBitmap(object sender, ExecuteFileListEventArgs e)
-        {
-            this.ConvertFiles(e.FilePathList, FileUtil.ImageFileFormat.Bitmap);
-        }
-
-        private void FileContextMenu_ConvertToHeif(object sender, ExecuteFileListEventArgs e)
-        {
-            this.ConvertFiles(e.FilePathList, FileUtil.ImageFileFormat.Heif);
-        }
-
-        private void FileContextMenu_ConvertToIcon(object sender, ExecuteFileListEventArgs e)
-        {
-            this.ConvertFiles(e.FilePathList, FileUtil.ImageFileFormat.Icon);
-        }
-
-        private void FileContextMenu_ConvertToJpeg(object sender, ExecuteFileListEventArgs e)
-        {
-            this.ConvertFiles(e.FilePathList, FileUtil.ImageFileFormat.Jpeg);
-        }
-
-        private void FileContextMenu_ConvertToPng(object sender, ExecuteFileListEventArgs e)
-        {
-            this.ConvertFiles(e.FilePathList, FileUtil.ImageFileFormat.Png);
-        }
-
-        private void FileContextMenu_ConvertToSvg(object sender, ExecuteFileListEventArgs e)
-        {
-            this.ConvertFiles(e.FilePathList, FileUtil.ImageFileFormat.Svg);
-        }
-
-        private void FileContextMenu_ConvertToWebp(object sender, ExecuteFileListEventArgs e)
-        {
-            this.ConvertFiles(e.FilePathList, FileUtil.ImageFileFormat.Webp);
         }
     }
 }

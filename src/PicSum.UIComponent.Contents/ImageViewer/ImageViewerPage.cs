@@ -15,8 +15,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using System.IO;
-using System.Linq;
 using System.Runtime.Versioning;
 using System.Windows.Forms;
 
@@ -749,35 +747,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.rightImagePanel.IsShowThumbnailPanel = this.leftImagePanel.IsShowThumbnailPanel;
         }
 
-        private void ConvertSingleFile(string file, FileUtil.ImageFileFormat imageFileFormat)
-        {
-            using (var ofd = new SaveFileDialog())
-            {
-                var destFileName =
-                    $"{FileUtil.GetFileNameWithoutExtension(file)}{FileUtil.GetImageFileExtension(imageFileFormat).ToLower()}";
-                var srcFilePath = file;
-                ofd.InitialDirectory = CommonConfig.Instance.ExportDirectoryPath;
-                ofd.FileName = destFileName;
-                ofd.CheckPathExists = true;
-                ofd.Filter = FileUtil.GetConvertFilterText(srcFilePath, imageFileFormat);
-                ofd.FilterIndex = 0;
-
-                if (ofd.ShowDialog() == DialogResult.OK)
-                {
-                    var dir = FileUtil.GetParentDirectoryPath(ofd.FileName);
-                    var param = new SingleFileConvertParameter
-                    {
-                        SrcFilePath = srcFilePath,
-                        ExportFilePath = Path.Combine(dir, destFileName),
-                        ImageFileFormat = imageFileFormat,
-                    };
-                    Instance<JobCaller>.Value.StartSilgeFileConvertJob(this, param);
-
-                    CommonConfig.Instance.ExportDirectoryPath = dir;
-                }
-            }
-        }
-
         private void Parameter_GetImageFiles(object sender, GetImageFilesEventArgs e)
         {
             if (this.disposed)
@@ -1329,46 +1298,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             var paramter = new ListParameter<string>(e.FilePathList);
 
             Instance<JobCaller>.Value.StartClipFilesAddJob(this, paramter);
-        }
-
-        private void FileContextMenu_ConvertToAvif(object sender, ExecuteFileListEventArgs e)
-        {
-            this.ConvertSingleFile(e.FilePathList.First(), FileUtil.ImageFileFormat.Avif);
-        }
-
-        private void FileContextMenu_ConvertToBitmap(object sender, ExecuteFileListEventArgs e)
-        {
-            this.ConvertSingleFile(e.FilePathList.First(), FileUtil.ImageFileFormat.Bitmap);
-        }
-
-        private void FileContextMenu_ConvertToHeif(object sender, ExecuteFileListEventArgs e)
-        {
-            this.ConvertSingleFile(e.FilePathList.First(), FileUtil.ImageFileFormat.Heif);
-        }
-
-        private void FileContextMenu_ConvertToIcon(object sender, ExecuteFileListEventArgs e)
-        {
-            this.ConvertSingleFile(e.FilePathList.First(), FileUtil.ImageFileFormat.Icon);
-        }
-
-        private void FileContextMenu_ConvertToJpeg(object sender, ExecuteFileListEventArgs e)
-        {
-            this.ConvertSingleFile(e.FilePathList.First(), FileUtil.ImageFileFormat.Jpeg);
-        }
-
-        private void FileContextMenu_ConvertToPng(object sender, ExecuteFileListEventArgs e)
-        {
-            this.ConvertSingleFile(e.FilePathList.First(), FileUtil.ImageFileFormat.Png);
-        }
-
-        private void FileContextMenu_ConvertToSvg(object sender, ExecuteFileListEventArgs e)
-        {
-            this.ConvertSingleFile(e.FilePathList.First(), FileUtil.ImageFileFormat.Svg);
-        }
-
-        private void FileContextMenu_ConvertToWebp(object sender, ExecuteFileListEventArgs e)
-        {
-            this.ConvertSingleFile(e.FilePathList.First(), FileUtil.ImageFileFormat.Webp);
         }
     }
 }

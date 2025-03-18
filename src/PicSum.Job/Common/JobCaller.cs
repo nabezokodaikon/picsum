@@ -54,8 +54,6 @@ namespace PicSum.Job.Common
             = new(() => new TwoWayThread<ImageFilesGetByDirectoryJob, ImageFileGetByDirectoryParameter, ImageFilesGetByDirectoryResult>(context, new JobTask()));
         public readonly Lazy<ITwoWayJob<NextDirectoryGetJob, NextDirectoryGetParameter<string>, ValueResult<string>>> NextDirectoryGetJob
             = new(() => new TwoWayThread<NextDirectoryGetJob, NextDirectoryGetParameter<string>, ValueResult<string>>(context, new JobTask()));
-        public readonly Lazy<ITwoWayJob<MultiFilesConvertJob, MultiFilesConvertParameter, ValueResult<string>>> MultiFilesConvertJob
-            = new(() => new TwoWayThread<MultiFilesConvertJob, MultiFilesConvertParameter, ValueResult<string>>(context, new JobTask()));
         public readonly Lazy<ITwoWayJob<BookmarksGetJob, ListResult<FileShallowInfoEntity>>> BookmarksGetJob
             = new(() => new TwoWayThread<BookmarksGetJob, ListResult<FileShallowInfoEntity>>(context, new JobTask()));
 
@@ -101,7 +99,6 @@ namespace PicSum.Job.Common
                 this.FilesGetByTagJob.Value.Dispose();
                 this.ImageFilesGetByDirectoryJob.Value.Dispose();
                 this.NextDirectoryGetJob.Value.Dispose();
-                this.MultiFilesConvertJob.Value.Dispose();
                 this.BookmarksGetJob.Value.Dispose();
             }
 
@@ -114,13 +111,6 @@ namespace PicSum.Job.Common
             ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
 
             this.jobQueue.Value.Enqueue<BookmarkAddJob, ValueParameter<string>>(sender, parameter);
-        }
-
-        public void StartSilgeFileConvertJob(ISender sender, SingleFileConvertParameter parameter)
-        {
-            ArgumentNullException.ThrowIfNull(sender, nameof(sender));
-
-            this.jobQueue.Value.Enqueue<SingleFileConvertJob, SingleFileConvertParameter>(sender, parameter);
         }
 
         public void StartDirectoryStateUpdateJob(ISender sender, DirectoryStateParameter parameter)
