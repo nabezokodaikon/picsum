@@ -1,3 +1,4 @@
+using NLog;
 using OpenCvSharp.Extensions;
 using SWF.Core.FileAccessor;
 using System.Runtime.Versioning;
@@ -8,6 +9,8 @@ namespace SWF.Core.ImageAccessor
     public sealed partial class ImageFileCacher
         : IImageFileCacher
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         private const int CACHE_CAPACITY = 32;
 
         private bool disposed = false;
@@ -158,10 +161,12 @@ namespace SWF.Core.ImageAccessor
                     this.CACHE_LIST.Remove(removeCache);
                     this.CACHE_DICTIONARY.Remove(removeCache.FilePath);
                     removeCache.Dispose();
+                    Logger.Debug($"画像ファイルキャッシュ削除しました。: {removeCache.FilePath}");
                 }
 
                 this.CACHE_DICTIONARY.Add(newCache.FilePath, newCache);
                 this.CACHE_LIST.Add(newCache);
+                Logger.Debug($"画像ファイルをキャッシュしました。: {newCache.FilePath}");
             }
         }
 
