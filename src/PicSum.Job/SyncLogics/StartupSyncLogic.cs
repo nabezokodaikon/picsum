@@ -22,6 +22,7 @@ namespace PicSum.Job.SyncLogics
 
             Instance<IFileIconCacher>.Initialize(new FileIconCacher());
             Instance<IThumbnailCacher>.Initialize(new ThumbnailCacher());
+            Instance<IImageFileCacheThreads>.Initialize(new ImageFileCacheThreads());
             Instance<IClipFiles>.Initialize(new ClipFiles());
             Instance<IImageFileCacher>.Initialize(new ImageFileCacher());
             Instance<IImageFileSizeCacher>.Initialize(new ImageFileSizeCacher());
