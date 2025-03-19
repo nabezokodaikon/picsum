@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!--
-    Microsoft ResX Schema 
+    Microsoft ResX Schema
 
     Version 2.0
 
@@ -48,7 +48,7 @@
     value   : The object must be serialized with
             : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
             : and then encoded with base64 encoding.
-    
+
     mimetype: application/x-microsoft.net.object.soap.base64
     value   : The object must be serialized with
             : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
@@ -117,4 +117,31 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="addButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABgmlDQ1BJQ0MgcHJvZmlsZQAAKM+VkTlI
+        A0EYhT+jEpGIhQFFLLZQKwPihaVEUQSFkETwKtzdmBjIrmE3YmMp2AoWHo1XYWOtrYWtIAgeILY2Voo2
+        EtZ/kkCCEMGBYT7ezHvMvAHfUca03LpesOycE50Ia7Nz85r/lToCtDLIsG662enYeJyq4+ueGrXehVQW
+        /xtNiWXXhBpNeMTMOjnhJeGh9VxW8Z5w0FzRE8Lnwj2OXFD4UelGkd8UpwrsU5lBJx4dFQ4Ka6kKNirY
+        XHEs4QHhzoRlS75vtsgJxRuKrcyaWbqnemFg2Z6JKV1mBxNMMk0EDYM10mTIEZLVFsUlKvvhKv72gj8i
+        LkNcaUxxjLGKhV7wo/7gd7dusr+vmBQIQ/2L5310gX8H8tue933sefkTqH2GK7vsXz2C4U/Rt8ta5yE0
+        b8LFdVkzduFyC9qesrqjF6Ramb5kEt7P5JvmoOUWGheKvZX2OX2AuHQ1dQP7B9CdkuzFKu9uqOztzzOl
+        /n4AA0Zy4Qgey68AAAAJcEhZcwAACwwAAAsMAT9AIsgAAAAHdElNRQfnBA0DGjBUzYupAAABAElEQVQ4
+        T52SsUrEQBRFA1aWdn6BWK34E0nmnUu6fIHsfoU/sv6GNrY2Vi5uLwiCIBbigiwsLCgTh5CMk6x64TXD
+        O+/eNzNZNqC6rvfM7MjMzs3sGrgBHoBHSU/Am3NuGnONPFxV1UTSPbAFPhPlz+9itgsvI3gj6dYn6Jy/
+        DMEp51fn3ClwIOkC+OglGHHuDTCzQ0kLn6gdsMO5t7ek59CzMbPL3zgP1feAf8K+1sA8A67CPnHDWG3N
+        bFmW5SQLF/IX9wYuiuLEr+9XwP+qRGOqWucGDi+wD8yAVQL4AbfOXXWGvCfAtHOskSTDzrESSXY7xwpD
+        zsLrzPM8Px6DvwCuzlCY3XIJdAAAAABJRU5ErkJggg==
+</value>
+  </data>
+  <data name="arrowPictureBox.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAL
+        DAAACwwBP0AiyAAAAAd0SU1FB9kLEQ4EKUrQls4AAAAZdEVYdENvbW1lbnQAQ3JlYXRlZCB3aXRoIEdJ
+        TVBXgQ4XAAAAY0lEQVQ4T2NgGAU0AbwMDAz5DAwMBViwBLpiXGALAwPDfzR8koGBgRFdIS6gysDA8BNJ
+        8z8GBgZTdEWEQCeSAXPQJYkBoLB4zsDA8IGBgUEUXZJYEA8NULIBKNCY0QVHASoAACg+EnwGb/zfAAAA
+        AElFTkSuQmCC
+</value>
+  </data>
 </root>

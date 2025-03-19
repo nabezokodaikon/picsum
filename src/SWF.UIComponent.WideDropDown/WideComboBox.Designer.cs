@@ -30,7 +30,8 @@ namespace SWF.UIComponent.WideDropDown
         /// </summary>
         private void InitializeComponent()
         {
-            this.addButton = new System.Windows.Forms.Button();
+            var resources = new System.ComponentModel.ComponentResourceManager(typeof(WideComboBox));
+            this.addButton = new SWF.UIComponent.Core.ToolButton();
             this.inputTextBox = new InputTextBox();
             this.arrowPictureBox = new ArrowPictureBox();
             ((System.ComponentModel.ISupportInitialize)this.arrowPictureBox).BeginInit();
@@ -39,8 +40,10 @@ namespace SWF.UIComponent.WideDropDown
             // addButton
             // 
             this.addButton.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
+            this.addButton.FlatAppearance.BorderSize = 0;
+            this.addButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.addButton.Font = new Font("Yu Gothic UI", 7.8F, FontStyle.Regular, GraphicsUnit.Point, 128);
-            this.addButton.Image = SWF.Core.Base.ResourceFiles.TagIcon.Value;
+            this.addButton.Image = (Image)resources.GetObject("addButton.Image");
             this.addButton.Location = new Point(594, 0);
             this.addButton.Margin = new System.Windows.Forms.Padding(0);
             this.addButton.Name = "addButton";
@@ -57,11 +60,11 @@ namespace SWF.UIComponent.WideDropDown
             this.inputTextBox.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             this.inputTextBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.inputTextBox.Font = new Font("Yu Gothic UI", 10F, FontStyle.Regular, GraphicsUnit.Point, 128);
-            this.inputTextBox.Location = new Point(1, 1);
+            this.inputTextBox.Location = new Point(0, 1);
             this.inputTextBox.Margin = new System.Windows.Forms.Padding(0);
             this.inputTextBox.Multiline = true;
             this.inputTextBox.Name = "inputTextBox";
-            this.inputTextBox.Size = new Size(568, 36);
+            this.inputTextBox.Size = new Size(569, 36);
             this.inputTextBox.TabIndex = 3;
             this.inputTextBox.TabStop = false;
             this.inputTextBox.KeyDown += this.InputTextBox_KeyDown;
@@ -69,8 +72,7 @@ namespace SWF.UIComponent.WideDropDown
             // arrowPictureBox
             // 
             this.arrowPictureBox.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
-            this.arrowPictureBox.Image = SWF.Core.Base.ResourceFiles.SmallArrowDownIcon.Value;
-            this.arrowPictureBox.IsSelected = false;
+            this.arrowPictureBox.Image = (Image)resources.GetObject("arrowPictureBox.Image");
             this.arrowPictureBox.Location = new Point(570, 1);
             this.arrowPictureBox.Margin = new System.Windows.Forms.Padding(0);
             this.arrowPictureBox.Name = "arrowPictureBox";
@@ -96,7 +98,7 @@ namespace SWF.UIComponent.WideDropDown
         }
 
 
-        private System.Windows.Forms.Button addButton;
+        private SWF.UIComponent.Core.ToolButton addButton;
         private ArrowPictureBox arrowPictureBox;
         private InputTextBox inputTextBox;
 
