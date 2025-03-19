@@ -1,13 +1,7 @@
-using SWF.Core.Base;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
 using System.Runtime.Versioning;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace PicSum.UIComponent.Contents.ImageViewer
@@ -15,8 +9,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
     [SupportedOSPlatform("windows10.0.17763.0")]
     public partial class ImageViewerToolBar : UserControl
     {
-        public event EventHandler ViewButtonClick;
-        public event EventHandler SizeButtonClick;
         public event EventHandler DoubleNextButtonClick;
         public event EventHandler DoublePreviewButtonClick;
         public event EventHandler SinglePreviewButtonClick;
@@ -204,7 +196,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
         public ImageViewerToolBar()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
 
         public void ShowToolTip(string filePath)
