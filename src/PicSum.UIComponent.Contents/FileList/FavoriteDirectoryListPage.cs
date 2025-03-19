@@ -33,7 +33,7 @@ namespace PicSum.UIComponent.Contents.FileList
             this.Icon = ResourceFiles.HomeIcon.Value;
             this.IsMoveControlVisible = false;
             this.fileContextMenu.VisibleRemoveFromListMenuItem = true;
-            base.sortFileRgistrationDateToolStripButton.Enabled = false;
+            base.toolBar.RegistrationSortButtonEnabled = false;
         }
 
         protected override void Dispose(bool disposing)

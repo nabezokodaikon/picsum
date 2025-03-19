@@ -23,22 +23,7 @@ namespace PicSum.UIComponent.Contents.FileList
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AbstractFileListPage));
             this.flowList = new SWF.UIComponent.FlowList.FlowList();
             this.fileContextMenu = new PicSum.UIComponent.Contents.ContextMenu.FileContextMenu();
-            this.viewContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.showDirectoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.showImageFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.showOtherFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.showFileNameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.viewToolStripDropDownButton = new System.Windows.Forms.ToolStripDropDownButton();
-            this.toolBar = new PicSum.UIComponent.Contents.ToolBar.PageToolBar();
-            this.sortFileNameToolStripButton = new System.Windows.Forms.ToolStripButton();
-            this.sortFilePathToolStripButton = new System.Windows.Forms.ToolStripButton();
-            this.sortFileUpdateDateToolStripButton = new System.Windows.Forms.ToolStripButton();
-            this.sortFileRgistrationDateToolStripButton = new System.Windows.Forms.ToolStripButton();
-            this.thumbnailSizeToolStripSlider = new SWF.UIComponent.Core.ToolStripSlider();
-            this.movePreviewToolStripButton = new System.Windows.Forms.ToolStripButton();
-            this.moveNextToolStripButton = new System.Windows.Forms.ToolStripButton();
-            this.viewContextMenuStrip.SuspendLayout();
+            this.toolBar = new PicSum.UIComponent.Contents.FileList.FileListToolBar();
             this.toolBar.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -89,148 +74,26 @@ namespace PicSum.UIComponent.Contents.FileList
             this.fileContextMenu.RemoveFromList += new System.EventHandler<PicSum.UIComponent.Contents.ContextMenu.ExecuteFileListEventArgs>(this.FileContextMenu_RemoveFromList);
             this.fileContextMenu.Clip += new System.EventHandler<PicSum.UIComponent.Contents.ContextMenu.ExecuteFileListEventArgs>(this.FileContextMenu_Clip);
             // 
-            // viewContextMenuStrip
-            // 
-            this.viewContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.showDirectoryToolStripMenuItem,
-            this.showImageFileToolStripMenuItem,
-            this.showOtherFileToolStripMenuItem,
-            this.toolStripSeparator1,
-            this.showFileNameToolStripMenuItem});
-            this.viewContextMenuStrip.Name = "viewContextMenuStrip";
-            this.viewContextMenuStrip.OwnerItem = this.viewToolStripDropDownButton;
-            this.viewContextMenuStrip.Size = new System.Drawing.Size(173, 98);
-            // 
-            // showDirectoryToolStripMenuItem
-            // 
-            this.showDirectoryToolStripMenuItem.Name = "showDirectoryToolStripMenuItem";
-            this.showDirectoryToolStripMenuItem.Text = "Folder";
-            this.showDirectoryToolStripMenuItem.Click += new System.EventHandler(this.ShowDirectoryToolStripMenuItem_Click);
-            // 
-            // showImageFileToolStripMenuItem
-            // 
-            this.showImageFileToolStripMenuItem.Name = "showImageFileToolStripMenuItem";
-            this.showImageFileToolStripMenuItem.Text = "Image File";
-            this.showImageFileToolStripMenuItem.Click += new System.EventHandler(this.ShowImageFileToolStripMenuItem_Click);
-            // 
-            // showOtherFileToolStripMenuItem
-            // 
-            this.showOtherFileToolStripMenuItem.Name = "showOtherFileToolStripMenuItem";
-            this.showOtherFileToolStripMenuItem.Text = "Other File";
-            this.showOtherFileToolStripMenuItem.Click += new System.EventHandler(this.ShowOtherFileToolStripMenuItem_Click);
-            // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            // 
-            // showFileNameToolStripMenuItem
-            // 
-            this.showFileNameToolStripMenuItem.Name = "showFileNameToolStripMenuItem";
-            this.showFileNameToolStripMenuItem.Text = "File Name";
-            this.showFileNameToolStripMenuItem.Click += new System.EventHandler(this.ShowFileNameToolStripMenuItem_Click);
-            // 
-            // viewToolStripDropDownButton
-            // 
-            this.viewToolStripDropDownButton.AutoToolTip = false;
-            this.viewToolStripDropDownButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.viewToolStripDropDownButton.DropDown = this.viewContextMenuStrip;
-            this.viewToolStripDropDownButton.Margin = new System.Windows.Forms.Padding(6, 1, 0, 2);
-            this.viewToolStripDropDownButton.Name = "viewToolStripDropDownButton";
-            this.viewToolStripDropDownButton.Text = "View";
-            // 
             // toolBar
             // 
-            this.toolBar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.viewToolStripDropDownButton,
-            this.sortFileNameToolStripButton,
-            this.sortFilePathToolStripButton,
-            this.sortFileUpdateDateToolStripButton,
-            this.sortFileRgistrationDateToolStripButton,
-            this.thumbnailSizeToolStripSlider,
-            this.movePreviewToolStripButton,
-            this.moveNextToolStripButton});
-            this.toolBar.Location = new System.Drawing.Point(0, 0);
-            this.toolBar.Name = "toolBar";
-            this.toolBar.Size = new System.Drawing.Size(630, 27);
-            this.toolBar.TabIndex = 2;
-            this.toolBar.Text = "toolStrip1";
-            // 
-            // sortFileNameToolStripButton
-            // 
-            this.sortFileNameToolStripButton.AutoSize = false;
-            this.sortFileNameToolStripButton.AutoToolTip = false;
-            this.sortFileNameToolStripButton.Margin = new System.Windows.Forms.Padding(3, 1, 0, 2);
-            this.sortFileNameToolStripButton.Name = "sortFileNameToolStripButton";
-            this.sortFileNameToolStripButton.Size = new System.Drawing.Size(120, 24);
-            this.sortFileNameToolStripButton.Text = "Name";
-            this.sortFileNameToolStripButton.Click += new System.EventHandler(this.SortFileNameToolStripButton_Click);
-            // 
-            // sortFilePathToolStripButton
-            // 
-            this.sortFilePathToolStripButton.AutoSize = false;
-            this.sortFilePathToolStripButton.AutoToolTip = false;
-            this.sortFilePathToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.sortFilePathToolStripButton.Margin = new System.Windows.Forms.Padding(3, 1, 0, 2);
-            this.sortFilePathToolStripButton.Name = "sortFilePathToolStripButton";
-            this.sortFilePathToolStripButton.Size = new System.Drawing.Size(120, 24);
-            this.sortFilePathToolStripButton.Text = "Path";
-            this.sortFilePathToolStripButton.Click += new System.EventHandler(this.SortFilePathToolStripButton_Click);
-            // 
-            // sortFileUpdateDateToolStripButton
-            // 
-            this.sortFileUpdateDateToolStripButton.AutoSize = false;
-            this.sortFileUpdateDateToolStripButton.AutoToolTip = false;
-            this.sortFileUpdateDateToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.sortFileUpdateDateToolStripButton.Margin = new System.Windows.Forms.Padding(3, 1, 0, 2);
-            this.sortFileUpdateDateToolStripButton.Name = "sortFileUpdateDateToolStripButton";
-            this.sortFileUpdateDateToolStripButton.Size = new System.Drawing.Size(120, 24);
-            this.sortFileUpdateDateToolStripButton.Text = "Time stamp";
-            this.sortFileUpdateDateToolStripButton.Click += new System.EventHandler(this.SortFileUpdateDateToolStripButton_Click);
-            // 
-            // sortFilerRgistrationDateToolStripButton
-            // 
-            this.sortFileRgistrationDateToolStripButton.AutoSize = false;
-            this.sortFileRgistrationDateToolStripButton.AutoToolTip = false;
-            this.sortFileRgistrationDateToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.sortFileRgistrationDateToolStripButton.Margin = new System.Windows.Forms.Padding(3, 1, 0, 2);
-            this.sortFileRgistrationDateToolStripButton.Name = "sortFilerRgistrationDateToolStripButton";
-            this.sortFileRgistrationDateToolStripButton.Size = new System.Drawing.Size(120, 24);
-            this.sortFileRgistrationDateToolStripButton.Text = "Registration Date";
-            this.sortFileRgistrationDateToolStripButton.Click += new System.EventHandler(this.SortFilerRgistrationDateToolStripButton_Click);
-            // 
-            // thumbnailSizeToolStripSlider
-            // 
-            this.thumbnailSizeToolStripSlider.BackColor = System.Drawing.Color.Transparent;
-            this.thumbnailSizeToolStripSlider.Margin = new System.Windows.Forms.Padding(3, 1, 0, 2);
-            this.thumbnailSizeToolStripSlider.MaximumValue = 256;
-            this.thumbnailSizeToolStripSlider.MinimumValue = 96;
-            this.thumbnailSizeToolStripSlider.Name = "thumbnailSizeToolStripSlider";
-            this.thumbnailSizeToolStripSlider.Size = new System.Drawing.Size(96, 24);
-            this.thumbnailSizeToolStripSlider.Text = "toolStripSlider1";
-            this.thumbnailSizeToolStripSlider.Value = 96;
-            this.thumbnailSizeToolStripSlider.ValueChanging += new System.EventHandler(this.ThumbnailSizeToolStripSlider_ValueChanging);
-            this.thumbnailSizeToolStripSlider.BeginValueChange += new System.EventHandler(this.ThumbnailSizeToolStripSlider_BeginValueChange);
-            this.thumbnailSizeToolStripSlider.ValueChanged += new System.EventHandler(this.ThumbnailSizeToolStripSlider_ValueChanged);
-            // 
-            // movePreviewToolStripButton
-            //
-            this.movePreviewToolStripButton.AutoSize = false;
-            this.movePreviewToolStripButton.AutoToolTip = false;
-            this.movePreviewToolStripButton.Margin = new System.Windows.Forms.Padding(3, 1, 0, 2);
-            this.movePreviewToolStripButton.Name = "movePreviewToolStripButton";
-            this.movePreviewToolStripButton.Size = new System.Drawing.Size(64, 24);
-            this.movePreviewToolStripButton.Text = "<-";
-            this.movePreviewToolStripButton.Click += new System.EventHandler(this.MovePreviewToolStripButton_Click);
-            // 
-            // moveNextToolStripButton
-            //
-            this.moveNextToolStripButton.AutoSize = false;
-            this.moveNextToolStripButton.AutoToolTip = false;
-            this.moveNextToolStripButton.Margin = new System.Windows.Forms.Padding(3, 1, 0, 2);
-            this.moveNextToolStripButton.Name = "moveNextToolStripButton";
-            this.moveNextToolStripButton.Size = new System.Drawing.Size(64, 24);
-            this.moveNextToolStripButton.Text = "->";
-            this.moveNextToolStripButton.Click += new System.EventHandler(this.MoveNextToolStripButton_Click);
+            this.toolBar.Dock = System.Windows.Forms.DockStyle.Top;
+            this.toolBar.TabStop = false;
+            this.toolBar.ThumbnailSizeSliderMaximumValue = 256;
+            this.toolBar.ThumbnailSizeSliderMinimumValue = 96;
+            this.toolBar.ThumbnailSizeSliderValue = 96;
+            this.toolBar.NameSortButtonClick += new System.EventHandler(this.SortFileNameToolStripButton_Click);
+            this.toolBar.PathSortButtonClick += new System.EventHandler(this.SortFilePathToolStripButton_Click);
+            this.toolBar.TimestampSortButtonClick += new System.EventHandler(this.SortFileUpdateDateToolStripButton_Click);
+            this.toolBar.RegistrationSortButtonClick += new System.EventHandler(this.SortFilerRgistrationDateToolStripButton_Click);
+            this.toolBar.ThumbnailSizeSliderBeginValueChange += new System.EventHandler(this.ThumbnailSizeToolStripSlider_BeginValueChange);
+            this.toolBar.ThumbnailSizeSliderValueChanging += new System.EventHandler(this.ThumbnailSizeToolStripSlider_ValueChanging);
+            this.toolBar.ThumbnailSizeSliderValueChanged += new System.EventHandler(this.ThumbnailSizeToolStripSlider_ValueChanged);
+            this.toolBar.MovePreviewButtonClick += new System.EventHandler(this.MovePreviewToolStripButton_Click);
+            this.toolBar.MoveNextButtonClick += new System.EventHandler(this.MoveNextToolStripButton_Click);
+            this.toolBar.FolderMenuItemClick += new System.EventHandler(this.ShowDirectoryToolStripMenuItem_Click);
+            this.toolBar.ImageFileMenuItemClick += new System.EventHandler(this.ShowImageFileToolStripMenuItem_Click);
+            this.toolBar.OtherFileMenuItemClick += new System.EventHandler(this.ShowOtherFileToolStripMenuItem_Click);
+            this.toolBar.FileNameMenuItemClick += new System.EventHandler(this.ShowFileNameToolStripMenuItem_Click);
             // 
             // FileListPageBase
             // 
@@ -239,31 +102,15 @@ namespace PicSum.UIComponent.Contents.FileList
             this.Controls.Add(this.toolBar);
             this.Name = "FileListPageBase";
             this.Size = new System.Drawing.Size(630, 393);
-            this.viewContextMenuStrip.ResumeLayout(false);
             this.toolBar.ResumeLayout(false);
             this.toolBar.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
-
         }
 
         private SWF.UIComponent.FlowList.FlowList flowList;
         protected PicSum.UIComponent.Contents.ContextMenu.FileContextMenu fileContextMenu;
-        private PicSum.UIComponent.Contents.ToolBar.PageToolBar toolBar;
-        private System.Windows.Forms.ToolStripDropDownButton viewToolStripDropDownButton;
-        private System.Windows.Forms.ToolStripButton sortFileNameToolStripButton;
-        private System.Windows.Forms.ToolStripButton sortFilePathToolStripButton;
-        private System.Windows.Forms.ToolStripButton sortFileUpdateDateToolStripButton;
-        protected System.Windows.Forms.ToolStripButton sortFileRgistrationDateToolStripButton;
-        private SWF.UIComponent.Core.ToolStripSlider thumbnailSizeToolStripSlider;
-        private System.Windows.Forms.ToolStripButton movePreviewToolStripButton;
-        private System.Windows.Forms.ToolStripButton moveNextToolStripButton;
-        private System.Windows.Forms.ContextMenuStrip viewContextMenuStrip;
-        private System.Windows.Forms.ToolStripMenuItem showDirectoryToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem showImageFileToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem showOtherFileToolStripMenuItem;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-        private System.Windows.Forms.ToolStripMenuItem showFileNameToolStripMenuItem;
+        protected PicSum.UIComponent.Contents.FileList.FileListToolBar toolBar;
 
         #endregion
     }

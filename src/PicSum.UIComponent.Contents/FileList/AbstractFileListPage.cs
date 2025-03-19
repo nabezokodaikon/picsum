@@ -10,6 +10,7 @@ using SWF.Core.Base;
 using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
 using SWF.Core.Job;
+using SWF.UIComponent.Core;
 using SWF.UIComponent.FlowList;
 using SWF.UIComponent.TabOperation;
 using System;
@@ -59,12 +60,12 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             get
             {
-                return this.movePreviewToolStripButton.Visible;
+                return this.toolBar.MovePreviewButtonVisible;
             }
             set
             {
-                this.movePreviewToolStripButton.Visible = value;
-                this.moveNextToolStripButton.Visible = value;
+                this.toolBar.MovePreviewButtonVisible = value;
+                this.toolBar.MoveNextButtonVisible = value;
             }
         }
 
@@ -72,11 +73,11 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             get
             {
-                return this.showDirectoryToolStripMenuItem.Checked;
+                return this.toolBar.FolderMenuItemChecked;
             }
             set
             {
-                this.showDirectoryToolStripMenuItem.Checked = value;
+                this.toolBar.FolderMenuItemChecked = value;
             }
         }
 
@@ -84,11 +85,11 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             get
             {
-                return this.showImageFileToolStripMenuItem.Checked;
+                return this.toolBar.ImageFileMenuItemChecked;
             }
             set
             {
-                this.showImageFileToolStripMenuItem.Checked = value;
+                this.toolBar.ImageFileMenuItemChecked = value;
             }
         }
 
@@ -96,11 +97,11 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             get
             {
-                return this.showOtherFileToolStripMenuItem.Checked;
+                return this.toolBar.OtherFileMenuItemChecked;
             }
             set
             {
-                this.showOtherFileToolStripMenuItem.Checked = value;
+                this.toolBar.OtherFileMenuItemChecked = value;
             }
         }
 
@@ -108,11 +109,11 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             get
             {
-                return this.showFileNameToolStripMenuItem.Checked;
+                return this.toolBar.FileNameMenuItemChecked;
             }
             set
             {
-                this.showFileNameToolStripMenuItem.Checked = value;
+                this.toolBar.FileNameMenuItemChecked = value;
             }
         }
 
@@ -120,11 +121,11 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             get
             {
-                return this.thumbnailSizeToolStripSlider.Value;
+                return this.toolBar.ThumbnailSizeSliderValue;
             }
             set
             {
-                this.thumbnailSizeToolStripSlider.Value = value;
+                this.toolBar.ThumbnailSizeSliderValue = value;
             }
         }
 
@@ -322,24 +323,24 @@ namespace PicSum.UIComponent.Contents.FileList
 
         protected abstract Action<ISender> GetImageFilesGetAction(ImageViewerPageParameter paramter);
 
-        private ToolStripButton GetSortToolStripButton(SortTypeID sortType)
+        private ToolButton GetSortToolStripButton(SortTypeID sortType)
         {
             return sortType switch
             {
-                SortTypeID.FileName => this.sortFileNameToolStripButton,
-                SortTypeID.FilePath => this.sortFilePathToolStripButton,
-                SortTypeID.UpdateDate => this.sortFileUpdateDateToolStripButton,
-                SortTypeID.RegistrationDate => this.sortFileRgistrationDateToolStripButton,
+                SortTypeID.FileName => this.toolBar.nameSortButton,
+                SortTypeID.FilePath => this.toolBar.pathSortButton,
+                SortTypeID.UpdateDate => this.toolBar.timestampSortButton,
+                SortTypeID.RegistrationDate => this.toolBar.registrationSortButton,
                 _ => null,
             };
         }
 
         private void SetSort()
         {
-            this.sortFileNameToolStripButton.Image = null;
-            this.sortFilePathToolStripButton.Image = null;
-            this.sortFileUpdateDateToolStripButton.Image = null;
-            this.sortFileRgistrationDateToolStripButton.Image = null;
+            this.toolBar.nameSortButton.Image = null;
+            this.toolBar.pathSortButton.Image = null;
+            this.toolBar.timestampSortButton.Image = null;
+            this.toolBar.registrationSortButton.Image = null;
 
             var sortButton = this.GetSortToolStripButton(this.SortInfo.ActiveSortType);
             if (sortButton != null)

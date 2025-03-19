@@ -49,7 +49,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
             this.IsMoveControlVisible = !string.IsNullOrEmpty(this.parameter.DirectoryPath);
             this.fileContextMenu.VisibleRemoveFromListMenuItem = false;
-            base.sortFileRgistrationDateToolStripButton.Enabled = false;
+            base.toolBar.RegistrationSortButtonEnabled = false;
         }
 
         protected override void OnLoad(EventArgs e)

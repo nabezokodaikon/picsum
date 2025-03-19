@@ -30,7 +30,7 @@ namespace PicSum.UIComponent.Contents.FileList
             this.Icon = ResourceFiles.BookmarkIcon.Value;
             this.IsMoveControlVisible = false;
             this.fileContextMenu.VisibleRemoveFromListMenuItem = true;
-            base.sortFileRgistrationDateToolStripButton.Enabled = true;
+            base.toolBar.RegistrationSortButtonEnabled = true;
         }
 
         protected override void OnLoad(EventArgs e)
