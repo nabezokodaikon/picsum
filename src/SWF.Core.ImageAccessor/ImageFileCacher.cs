@@ -1,5 +1,6 @@
 using NLog;
 using OpenCvSharp.Extensions;
+using SWF.Core.Base;
 using SWF.Core.FileAccessor;
 using System.Runtime.Versioning;
 
@@ -128,11 +129,14 @@ namespace SWF.Core.ImageAccessor
 
             lock (this.CACHE_LOCK)
             {
-                if (this.CACHE_DICTIONARY.TryGetValue(filePath, out var cache))
+                using (TimeMeasuring.Run(true, $"ImageFileCacher.Create 1"))
                 {
-                    if (timestamp == cache.Timestamp)
+                    if (this.CACHE_DICTIONARY.TryGetValue(filePath, out var cache))
                     {
-                        return;
+                        if (timestamp == cache.Timestamp)
+                        {
+                            return;
+                        }
                     }
                 }
             }
@@ -142,31 +146,34 @@ namespace SWF.Core.ImageAccessor
 
             lock (this.CACHE_LOCK)
             {
-                if (this.CACHE_DICTIONARY.TryGetValue(newCache.FilePath, out var cache))
+                using (TimeMeasuring.Run(true, $"ImageFileCacher.Create 2"))
                 {
-                    if (newCache.Timestamp == cache.Timestamp)
+                    if (this.CACHE_DICTIONARY.TryGetValue(newCache.FilePath, out var cache))
                     {
-                        newCache.Dispose();
-                        return;
+                        if (newCache.Timestamp == cache.Timestamp)
+                        {
+                            newCache.Dispose();
+                            return;
+                        }
+
+                        this.CACHE_LIST.Remove(cache);
+                        this.CACHE_DICTIONARY.Remove(cache.FilePath);
+                        cache.Dispose();
                     }
 
-                    this.CACHE_LIST.Remove(cache);
-                    this.CACHE_DICTIONARY.Remove(cache.FilePath);
-                    cache.Dispose();
-                }
+                    if (this.CACHE_LIST.Count > CACHE_CAPACITY)
+                    {
+                        var removeCache = this.CACHE_LIST[0];
+                        this.CACHE_LIST.Remove(removeCache);
+                        this.CACHE_DICTIONARY.Remove(removeCache.FilePath);
+                        removeCache.Dispose();
+                        Logger.Debug($"画像ファイルキャッシュ削除しました。: {removeCache.FilePath}");
+                    }
 
-                if (this.CACHE_LIST.Count > CACHE_CAPACITY)
-                {
-                    var removeCache = this.CACHE_LIST[0];
-                    this.CACHE_LIST.Remove(removeCache);
-                    this.CACHE_DICTIONARY.Remove(removeCache.FilePath);
-                    removeCache.Dispose();
-                    Logger.Debug($"画像ファイルキャッシュ削除しました。: {removeCache.FilePath}");
+                    this.CACHE_DICTIONARY.Add(newCache.FilePath, newCache);
+                    this.CACHE_LIST.Add(newCache);
+                    Logger.Debug($"画像ファイルをキャッシュしました。: {newCache.FilePath}");
                 }
-
-                this.CACHE_DICTIONARY.Add(newCache.FilePath, newCache);
-                this.CACHE_LIST.Add(newCache);
-                Logger.Debug($"画像ファイルをキャッシュしました。: {newCache.FilePath}");
             }
         }
 
@@ -178,15 +185,18 @@ namespace SWF.Core.ImageAccessor
 
             lock (this.CACHE_LOCK)
             {
-                if (this.CACHE_DICTIONARY.TryGetValue(filePath, out var cache))
+                using (TimeMeasuring.Run(true, $"ImageFileCacher.Get {typeof(T)}"))
                 {
-                    if (timestamp == cache.Timestamp)
+                    if (this.CACHE_DICTIONARY.TryGetValue(filePath, out var cache))
                     {
-                        return resultFunc(cache);
+                        if (timestamp == cache.Timestamp)
+                        {
+                            return resultFunc(cache);
+                        }
                     }
-                }
 
-                return resultFunc(null);
+                    return resultFunc(null);
+                }
             }
         }
     }
