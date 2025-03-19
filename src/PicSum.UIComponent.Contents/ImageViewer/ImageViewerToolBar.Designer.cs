@@ -81,9 +81,9 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.doublePreviewButton.BackColor = System.Drawing.Color.FromArgb(241, 244, 250);
             this.doublePreviewButton.FlatAppearance.BorderSize = 0;
             this.doublePreviewButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.doublePreviewButton.Location = new System.Drawing.Point(165, 3);
+            this.doublePreviewButton.Location = new System.Drawing.Point(143, 3);
             this.doublePreviewButton.Name = "doublePreviewButton";
-            this.doublePreviewButton.Size = new System.Drawing.Size(75, 23);
+            this.doublePreviewButton.Size = new System.Drawing.Size(64, 23);
             this.doublePreviewButton.TabIndex = 1;
             this.doublePreviewButton.TabStop = false;
             this.doublePreviewButton.Text = "<<-";
@@ -95,9 +95,9 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.singlePreviewButton.BackColor = System.Drawing.Color.FromArgb(241, 244, 250);
             this.singlePreviewButton.FlatAppearance.BorderSize = 0;
             this.singlePreviewButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.singlePreviewButton.Location = new System.Drawing.Point(246, 3);
+            this.singlePreviewButton.Location = new System.Drawing.Point(213, 3);
             this.singlePreviewButton.Name = "singlePreviewButton";
-            this.singlePreviewButton.Size = new System.Drawing.Size(75, 23);
+            this.singlePreviewButton.Size = new System.Drawing.Size(64, 23);
             this.singlePreviewButton.TabIndex = 2;
             this.singlePreviewButton.TabStop = false;
             this.singlePreviewButton.Text = "<-";
@@ -109,9 +109,9 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.doubleNextButton.BackColor = System.Drawing.Color.FromArgb(241, 244, 250);
             this.doubleNextButton.FlatAppearance.BorderSize = 0;
             this.doubleNextButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.doubleNextButton.Location = new System.Drawing.Point(408, 3);
+            this.doubleNextButton.Location = new System.Drawing.Point(353, 3);
             this.doubleNextButton.Name = "doubleNextButton";
-            this.doubleNextButton.Size = new System.Drawing.Size(75, 23);
+            this.doubleNextButton.Size = new System.Drawing.Size(64, 23);
             this.doubleNextButton.TabIndex = 3;
             this.doubleNextButton.TabStop = false;
             this.doubleNextButton.Text = "->>";
@@ -123,9 +123,9 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.singleNextButton.BackColor = System.Drawing.Color.FromArgb(241, 244, 250);
             this.singleNextButton.FlatAppearance.BorderSize = 0;
             this.singleNextButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.singleNextButton.Location = new System.Drawing.Point(327, 3);
+            this.singleNextButton.Location = new System.Drawing.Point(283, 3);
             this.singleNextButton.Name = "singleNextButton";
-            this.singleNextButton.Size = new System.Drawing.Size(75, 23);
+            this.singleNextButton.Size = new System.Drawing.Size(64, 23);
             this.singleNextButton.TabIndex = 4;
             this.singleNextButton.TabStop = false;
             this.singleNextButton.Text = "->";
@@ -135,10 +135,10 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             // indexSlider
             // 
             this.indexSlider.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
-            this.indexSlider.Location = new System.Drawing.Point(489, 3);
+            this.indexSlider.Location = new System.Drawing.Point(423, 3);
             this.indexSlider.Margin = new System.Windows.Forms.Padding(3, 3, 16, 3);
             this.indexSlider.Name = "indexSlider";
-            this.indexSlider.Size = new System.Drawing.Size(186, 23);
+            this.indexSlider.Size = new System.Drawing.Size(252, 23);
             this.indexSlider.TabIndex = 5;
             this.indexSlider.TabStop = false;
             this.indexSlider.BeginValueChange += this.IndexSlider_BeginValueChange;
@@ -152,7 +152,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.viewButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.viewButton.Location = new System.Drawing.Point(3, 3);
             this.viewButton.Name = "viewButton";
-            this.viewButton.Size = new System.Drawing.Size(75, 23);
+            this.viewButton.Size = new System.Drawing.Size(64, 23);
             this.viewButton.TabIndex = 6;
             this.viewButton.TabStop = false;
             this.viewButton.Text = "View";
@@ -164,9 +164,9 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.sizeButton.BackColor = System.Drawing.Color.FromArgb(241, 244, 250);
             this.sizeButton.FlatAppearance.BorderSize = 0;
             this.sizeButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.sizeButton.Location = new System.Drawing.Point(84, 3);
+            this.sizeButton.Location = new System.Drawing.Point(73, 3);
             this.sizeButton.Name = "sizeButton";
-            this.sizeButton.Size = new System.Drawing.Size(75, 23);
+            this.sizeButton.Size = new System.Drawing.Size(64, 23);
             this.sizeButton.TabIndex = 7;
             this.sizeButton.TabStop = false;
             this.sizeButton.Text = "Size";
