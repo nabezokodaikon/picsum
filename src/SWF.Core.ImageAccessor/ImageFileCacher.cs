@@ -129,7 +129,7 @@ namespace SWF.Core.ImageAccessor
 
             lock (this.CACHE_LOCK)
             {
-                using (TimeMeasuring.Run(true, $"ImageFileCacher.Create 1"))
+                using (TimeMeasuring.Run(false, $"ImageFileCacher.Create 1"))
                 {
                     if (this.CACHE_DICTIONARY.TryGetValue(filePath, out var cache))
                     {
@@ -146,7 +146,7 @@ namespace SWF.Core.ImageAccessor
 
             lock (this.CACHE_LOCK)
             {
-                using (TimeMeasuring.Run(true, $"ImageFileCacher.Create 2"))
+                using (TimeMeasuring.Run(false, $"ImageFileCacher.Create 2"))
                 {
                     if (this.CACHE_DICTIONARY.TryGetValue(newCache.FilePath, out var cache))
                     {
@@ -185,7 +185,7 @@ namespace SWF.Core.ImageAccessor
 
             lock (this.CACHE_LOCK)
             {
-                using (TimeMeasuring.Run(true, $"ImageFileCacher.Get {typeof(T)}"))
+                using (TimeMeasuring.Run(false, $"ImageFileCacher.Get {typeof(T)}"))
                 {
                     if (this.CACHE_DICTIONARY.TryGetValue(filePath, out var cache))
                     {
