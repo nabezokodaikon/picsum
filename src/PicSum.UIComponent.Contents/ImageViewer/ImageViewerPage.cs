@@ -595,19 +595,27 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 var mainFilePath = this.filePathList[this.FilePathListIndex];
                 this.SelectedFilePath = mainFilePath;
 
-                var nextFiles = new List<string>(8);
+                const int NEXT_COUNT = 8;
+                var nextFiles = new List<string>(NEXT_COUNT);
                 var nextIndex = this.GetNextIndex(this.FilePathListIndex, true);
-                nextFiles.Add(this.filePathList[nextIndex]);
-                while (nextFiles.Count < nextFiles.Capacity)
+                if (NEXT_COUNT > 0)
+                {
+                    nextFiles.Add(this.filePathList[nextIndex]);
+                }
+                while (nextFiles.Count < NEXT_COUNT)
                 {
                     nextIndex = this.GetNextIndex(nextIndex, true);
                     nextFiles.Add(this.filePathList[nextIndex]);
                 }
 
-                var prevFiles = new List<string>(8);
+                const int PREV_COUNT = 8;
+                var prevFiles = new List<string>(PREV_COUNT);
                 var prevIndex = this.GetPreviewIndex(this.FilePathListIndex, true);
-                prevFiles.Add(this.filePathList[prevIndex]);
-                while (prevFiles.Count < prevFiles.Capacity)
+                if (PREV_COUNT > 0)
+                {
+                    prevFiles.Add(this.filePathList[prevIndex]);
+                }
+                while (prevFiles.Count < PREV_COUNT)
                 {
                     prevIndex = this.GetPreviewIndex(prevIndex, true);
                     prevFiles.Add(this.filePathList[prevIndex]);
