@@ -109,7 +109,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
         public override void RedrawPage()
         {
-            using (TimeMeasuring.Run(true, "ImageViewerPage.RedrawPage"))
+            using (TimeMeasuring.Run(false, "ImageViewerPage.RedrawPage"))
             {
                 SizeF backgroudSize;
                 if (this.leftImagePanel.HasImage && this.rightImagePanel.HasImage)
@@ -293,7 +293,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         {
             try
             {
-                using (TimeMeasuring.Run(true, "ImageViewerPage.GetImageSize"))
+                using (TimeMeasuring.Run(false, "ImageViewerPage.GetImageSize"))
                 {
                     return Instance<IImageFileSizeCacher>.Value.Get(filePath).Size;
                 }
@@ -590,7 +590,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 return;
             }
 
-            using (TimeMeasuring.Run(true, "ImageViewerPage.ReadImage"))
+            using (TimeMeasuring.Run(false, "ImageViewerPage.ReadImage"))
             {
                 var mainFilePath = this.filePathList[this.FilePathListIndex];
                 this.SelectedFilePath = mainFilePath;
@@ -660,7 +660,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
                         this.isLoading = false;
 
-                        using (TimeMeasuring.Run(true, "ImageViewerPage.ImageFileReadJob_Callback"))
+                        using (TimeMeasuring.Run(false, "ImageViewerPage.ImageFileReadJob_Callback"))
                         {
                             this.ImageFileReadJob_Callback(r);
                         }

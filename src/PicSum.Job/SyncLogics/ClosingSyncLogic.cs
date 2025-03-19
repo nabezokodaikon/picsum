@@ -14,7 +14,7 @@ namespace PicSum.Job.SyncLogics
     {
         public void Execute()
         {
-            using (TimeMeasuring.Run(true, "ClosingSyncLogic.Execute"))
+            using (TimeMeasuring.Run(false, "ClosingSyncLogic.Execute"))
             {
                 Instance<JobCaller>.Value.Dispose();
                 Instance<IImageFileCacheThreads>.Value.Dispose();

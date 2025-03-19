@@ -14,7 +14,7 @@ namespace PicSum.Job.SyncLogics
     {
         public void Execute()
         {
-            using (TimeMeasuring.Run(true, "StartupSyncLogic.Execute"))
+            using (TimeMeasuring.Run(false, "StartupSyncLogic.Execute"))
             {
                 Instance<IFileInfoDB>.Initialize(
                     new FileInfoDB(AppConstants.FILE_INFO_DATABASE_FILE));

@@ -12,7 +12,7 @@ namespace SWF.Core.ImageAccessor
         {
             ArgumentNullException.ThrowIfNull(srcMat, nameof(srcMat));
 
-            using (TimeMeasuring.Run(true, "OpenCVUtil.Resize By Mat"))
+            using (TimeMeasuring.Run(false, "OpenCVUtil.Resize By Mat"))
             {
                 var size = new OpenCvSharp.Size(newWidth, newHeight);
                 using (var destMat = new Mat(size, srcMat.Type()))
@@ -27,7 +27,7 @@ namespace SWF.Core.ImageAccessor
         {
             ArgumentNullException.ThrowIfNull(srcBmp, nameof(srcBmp));
 
-            using (TimeMeasuring.Run(true, "OpenCVUtil.Resize By Bitmap"))
+            using (TimeMeasuring.Run(false, "OpenCVUtil.Resize By Bitmap"))
             {
                 var size = new OpenCvSharp.Size(width, height);
                 using (var srcMat = srcBmp.ToMat())
@@ -43,7 +43,7 @@ namespace SWF.Core.ImageAccessor
         {
             ArgumentNullException.ThrowIfNull(stream, nameof(stream));
 
-            using (TimeMeasuring.Run(true, "OpenCVUtil.Convert"))
+            using (TimeMeasuring.Run(false, "OpenCVUtil.Convert"))
             {
                 stream.Seek(0, SeekOrigin.Begin);
                 using (var mat = Mat.FromStream(stream, ImreadModes.Color))

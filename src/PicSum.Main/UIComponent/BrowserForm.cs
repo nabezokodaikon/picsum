@@ -133,7 +133,7 @@ namespace PicSum.Main.UIComponent
                 return;
             }
 
-            using (TimeMeasuring.Run(true, "BrowserForm.OnShown"))
+            using (TimeMeasuring.Run(false, "BrowserForm.OnShown"))
             {
                 this.SetGrass();
                 this.CreateBrowserMainPanel();

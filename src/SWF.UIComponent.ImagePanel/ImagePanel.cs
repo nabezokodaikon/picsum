@@ -215,7 +215,7 @@ namespace SWF.UIComponent.ImagePanel
 
         protected override void OnPaint(PaintEventArgs e)
         {
-            using (TimeMeasuring.Run(true, "ImagePanel.OnPaint"))
+            using (TimeMeasuring.Run(false, "ImagePanel.OnPaint"))
             {
                 e.Graphics.SmoothingMode = SmoothingMode.None;
                 e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
@@ -602,7 +602,7 @@ namespace SWF.UIComponent.ImagePanel
 
         private void DrawImage(Graphics g)
         {
-            using (TimeMeasuring.Run(true, "ImagePanel.DrawImage"))
+            using (TimeMeasuring.Run(false, "ImagePanel.DrawImage"))
             {
                 if (this.image.IsEmpty)
                 {

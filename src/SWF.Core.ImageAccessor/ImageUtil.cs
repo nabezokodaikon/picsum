@@ -1,6 +1,5 @@
 using SWF.Core.Base;
 using SWF.Core.FileAccessor;
-using System.Diagnostics;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
@@ -84,7 +83,7 @@ namespace SWF.Core.ImageAccessor
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
-            using (TimeMeasuring.Run(true, "ImageUtil.GetImageSize"))
+            using (TimeMeasuring.Run(false, "ImageUtil.GetImageSize"))
             {
                 try
                 {
@@ -260,7 +259,7 @@ namespace SWF.Core.ImageAccessor
             {
                 if (FileUtil.IsSvgFile(filePath))
                 {
-                    using (TimeMeasuring.Run(true, "ImageUtil.ReadImageFile Svg"))
+                    using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFile Svg"))
                     {
                         return SvgUtil.ReadImageFile(filePath);
                     }
