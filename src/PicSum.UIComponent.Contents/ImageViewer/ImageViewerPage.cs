@@ -72,11 +72,11 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         {
             get
             {
-                return this.indexSlider.MaximumValue;
+                return this.toolBar.IndexSliderMaximumValue;
             }
             set
             {
-                this.indexSlider.MaximumValue = value;
+                this.toolBar.IndexSliderMaximumValue = value;
             }
         }
 
@@ -84,11 +84,11 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         {
             get
             {
-                return this.indexSlider.Value;
+                return this.toolBar.IndexSliderValue;
             }
             set
             {
-                this.indexSlider.Value = value;
+                this.toolBar.IndexSliderValue = value;
             }
         }
 
@@ -215,13 +215,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.parameter.GetImageFiles += this.Parameter_GetImageFiles;
             this.parameter.ImageFilesGetAction(this.parameter)(this);
             base.OnLoad(e);
-        }
-
-        protected override void OnResize(EventArgs e)
-        {
-            this.indexSlider.Width = this.ClientSize.Width - 390;
-
-            base.OnResize(e);
         }
 
         protected override void OnMouseWheel(MouseEventArgs e)
@@ -698,26 +691,26 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
         private bool SetDisplayMode(ImageDisplayMode mode)
         {
-            this.singleViewToolStripMenuItem.Checked = false;
-            this.leftFacingViewToolStripMenuItem.Checked = false;
-            this.rightFacingViewToolStripMenuItem.Checked = false;
+            this.toolBar.SingleViewMenuItemChecked = false;
+            this.toolBar.SpreadLeftFeedMenuItemChecked = false;
+            this.toolBar.SpreadRightFeedMenuItemChecked = false;
 
             switch (mode)
             {
                 case ImageDisplayMode.Single:
-                    this.singleViewToolStripMenuItem.Checked = true;
-                    this.doublePreviewIndexToolStripButton.Enabled = false;
-                    this.doubleNextIndexToolStripButton.Enabled = false;
+                    this.toolBar.SingleViewMenuItemChecked = true;
+                    this.toolBar.DoublePreviewButtonEnabled = false;
+                    this.toolBar.DoubleNextButtonEnabled = false;
                     break;
                 case ImageDisplayMode.LeftFacing:
-                    this.leftFacingViewToolStripMenuItem.Checked = true;
-                    this.doublePreviewIndexToolStripButton.Enabled = true;
-                    this.doubleNextIndexToolStripButton.Enabled = true;
+                    this.toolBar.SpreadLeftFeedMenuItemChecked = true;
+                    this.toolBar.DoublePreviewButtonEnabled = true;
+                    this.toolBar.DoubleNextButtonEnabled = true;
                     break;
                 case ImageDisplayMode.RightFacing:
-                    this.rightFacingViewToolStripMenuItem.Checked = true;
-                    this.doublePreviewIndexToolStripButton.Enabled = true;
-                    this.doubleNextIndexToolStripButton.Enabled = true;
+                    this.toolBar.SpreadRightFeedMenuItemChecked = true;
+                    this.toolBar.DoublePreviewButtonEnabled = true;
+                    this.toolBar.DoubleNextButtonEnabled = true;
                     break;
             }
 
@@ -734,9 +727,9 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
         private bool SetSizeMode(ImageSizeMode mode)
         {
-            this.originalSizeToolStripMenuItem.Checked = mode == ImageSizeMode.Original;
-            this.allFitSizeToolStripMenuItem.Checked = mode == ImageSizeMode.FitAllImage;
-            this.onlyBigImageFitSizeToolStripMenuItem.Checked = mode == ImageSizeMode.FitOnlyBigImage;
+            this.toolBar.OriginalSizeMenuItemChecked = mode == ImageSizeMode.Original;
+            this.toolBar.FitWindowMenuItemChecked = mode == ImageSizeMode.FitAllImage;
+            this.toolBar.FitWindowLargeOnlyMenuItemChecked = mode == ImageSizeMode.FitOnlyBigImage;
 
             if (this.sizeMode != mode)
             {
@@ -1104,7 +1097,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
             var filePath = this.filePathList[index];
             var p = this.PointToClient(Cursor.Position);
-            this.filePathToolTip.Show(filePath, this, p.X, -16, 5000);
+            this.toolBar.ShowToolTip(filePath);
             this.ReadImage();
         }
 
@@ -1115,7 +1108,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 return;
             }
 
-            this.filePathToolTip.Hide(this);
+            this.toolBar.HideToolTip();
             this.ReadImage();
         }
 
