@@ -8,7 +8,7 @@
 * Windows10 64bit
 * Windows11 64bit
 ### .NET
-* [.NET 9.0](https://builds.dotnet.microsoft.com/dotnet/Sdk/9.0.200/dotnet-sdk-9.0.200-win-x64.exe)
+* [.NET 9.0](https://dotnet.microsoft.com/ja-jp/download/dotnet/9.0)
 
 ## 機能
 ### タブ
