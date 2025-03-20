@@ -50,12 +50,12 @@ namespace PicSum.UIComponent.Contents.FileList
             // 
             // viewButton
             // 
-            this.viewButton.BackColor = System.Drawing.Color.FromArgb(241, 244, 250);
+            this.viewButton.BackColor = Color.FromArgb(241, 244, 250);
             this.viewButton.FlatAppearance.BorderSize = 0;
             this.viewButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.viewButton.Location = new System.Drawing.Point(3, 3);
+            this.viewButton.Location = new Point(3, 3);
             this.viewButton.Name = "viewButton";
-            this.viewButton.Size = new System.Drawing.Size(64, 23);
+            this.viewButton.Size = new Size(64, 23);
             this.viewButton.TabIndex = 0;
             this.viewButton.Text = "View";
             this.viewButton.UseVisualStyleBackColor = false;
@@ -63,12 +63,12 @@ namespace PicSum.UIComponent.Contents.FileList
             // 
             // nameSortButton
             // 
-            this.nameSortButton.BackColor = System.Drawing.Color.FromArgb(241, 244, 250);
+            this.nameSortButton.BackColor = Color.FromArgb(241, 244, 250);
             this.nameSortButton.FlatAppearance.BorderSize = 0;
             this.nameSortButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.nameSortButton.Location = new System.Drawing.Point(73, 3);
+            this.nameSortButton.Location = new Point(73, 3);
             this.nameSortButton.Name = "nameSortButton";
-            this.nameSortButton.Size = new System.Drawing.Size(96, 23);
+            this.nameSortButton.Size = new Size(96, 23);
             this.nameSortButton.TabIndex = 1;
             this.nameSortButton.Text = "Name";
             this.nameSortButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
@@ -77,12 +77,12 @@ namespace PicSum.UIComponent.Contents.FileList
             // 
             // pathSortButton
             // 
-            this.pathSortButton.BackColor = System.Drawing.Color.FromArgb(241, 244, 250);
+            this.pathSortButton.BackColor = Color.FromArgb(241, 244, 250);
             this.pathSortButton.FlatAppearance.BorderSize = 0;
             this.pathSortButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.pathSortButton.Location = new System.Drawing.Point(175, 3);
+            this.pathSortButton.Location = new Point(175, 3);
             this.pathSortButton.Name = "pathSortButton";
-            this.pathSortButton.Size = new System.Drawing.Size(96, 23);
+            this.pathSortButton.Size = new Size(96, 23);
             this.pathSortButton.TabIndex = 2;
             this.pathSortButton.Text = "Path";
             this.pathSortButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
@@ -91,12 +91,12 @@ namespace PicSum.UIComponent.Contents.FileList
             // 
             // timestampSortButton
             // 
-            this.timestampSortButton.BackColor = System.Drawing.Color.FromArgb(241, 244, 250);
+            this.timestampSortButton.BackColor = Color.FromArgb(241, 244, 250);
             this.timestampSortButton.FlatAppearance.BorderSize = 0;
             this.timestampSortButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.timestampSortButton.Location = new System.Drawing.Point(277, 3);
+            this.timestampSortButton.Location = new Point(277, 3);
             this.timestampSortButton.Name = "timestampSortButton";
-            this.timestampSortButton.Size = new System.Drawing.Size(96, 23);
+            this.timestampSortButton.Size = new Size(96, 23);
             this.timestampSortButton.TabIndex = 3;
             this.timestampSortButton.Text = "Time stamp";
             this.timestampSortButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
@@ -105,12 +105,12 @@ namespace PicSum.UIComponent.Contents.FileList
             // 
             // registrationSortButton
             // 
-            this.registrationSortButton.BackColor = System.Drawing.Color.FromArgb(241, 244, 250);
+            this.registrationSortButton.BackColor = Color.FromArgb(241, 244, 250);
             this.registrationSortButton.FlatAppearance.BorderSize = 0;
             this.registrationSortButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.registrationSortButton.Location = new System.Drawing.Point(379, 3);
+            this.registrationSortButton.Location = new Point(379, 3);
             this.registrationSortButton.Name = "registrationSortButton";
-            this.registrationSortButton.Size = new System.Drawing.Size(96, 23);
+            this.registrationSortButton.Size = new Size(96, 23);
             this.registrationSortButton.TabIndex = 4;
             this.registrationSortButton.Text = "Registration";
             this.registrationSortButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
@@ -119,9 +119,9 @@ namespace PicSum.UIComponent.Contents.FileList
             // 
             // thumbnailSizeSlider
             // 
-            this.thumbnailSizeSlider.Location = new System.Drawing.Point(481, 3);
+            this.thumbnailSizeSlider.Location = new Point(481, 3);
             this.thumbnailSizeSlider.Name = "thumbnailSizeSlider";
-            this.thumbnailSizeSlider.Size = new System.Drawing.Size(108, 23);
+            this.thumbnailSizeSlider.Size = new Size(108, 23);
             this.thumbnailSizeSlider.TabIndex = 5;
             this.thumbnailSizeSlider.Text = "slider1";
             this.thumbnailSizeSlider.BeginValueChange += this.ThumbnailSizeSlider_BeginValueChange;
@@ -130,51 +130,52 @@ namespace PicSum.UIComponent.Contents.FileList
             // 
             // viewMenu
             // 
+            this.viewMenu.Font = new Font("Yu Gothic UI", 10F);
             this.viewMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { this.folderMenuItem, this.imageFileMenuItem, this.otherFileMenuItem, this.toolStripSeparator1, this.fileNameMenuItem });
             this.viewMenu.Name = "viewMenu";
-            this.viewMenu.Size = new System.Drawing.Size(128, 98);
+            this.viewMenu.Size = new Size(181, 128);
             // 
             // folderMenuItem
             // 
             this.folderMenuItem.Name = "folderMenuItem";
-            this.folderMenuItem.Size = new System.Drawing.Size(127, 22);
+            this.folderMenuItem.Size = new Size(180, 24);
             this.folderMenuItem.Text = "Folder";
             this.folderMenuItem.Click += this.FolderMenuItem_Click;
             // 
             // imageFileMenuItem
             // 
             this.imageFileMenuItem.Name = "imageFileMenuItem";
-            this.imageFileMenuItem.Size = new System.Drawing.Size(127, 22);
+            this.imageFileMenuItem.Size = new Size(180, 24);
             this.imageFileMenuItem.Text = "Image File";
             this.imageFileMenuItem.Click += this.ImageFileMenuItem_Click;
             // 
             // otherFileMenuItem
             // 
             this.otherFileMenuItem.Name = "otherFileMenuItem";
-            this.otherFileMenuItem.Size = new System.Drawing.Size(127, 22);
+            this.otherFileMenuItem.Size = new Size(180, 24);
             this.otherFileMenuItem.Text = "Other File";
             this.otherFileMenuItem.Click += this.OtherFileMenuItem_Click;
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(124, 6);
+            this.toolStripSeparator1.Size = new Size(177, 6);
             // 
             // fileNameMenuItem
             // 
             this.fileNameMenuItem.Name = "fileNameMenuItem";
-            this.fileNameMenuItem.Size = new System.Drawing.Size(127, 22);
+            this.fileNameMenuItem.Size = new Size(180, 24);
             this.fileNameMenuItem.Text = "FileName";
             this.fileNameMenuItem.Click += this.FileNameMenuItem_Click;
             // 
             // movePreviewButton
             // 
-            this.movePreviewButton.BackColor = System.Drawing.Color.FromArgb(241, 244, 250);
+            this.movePreviewButton.BackColor = Color.FromArgb(241, 244, 250);
             this.movePreviewButton.FlatAppearance.BorderSize = 0;
             this.movePreviewButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.movePreviewButton.Location = new System.Drawing.Point(595, 3);
+            this.movePreviewButton.Location = new Point(595, 3);
             this.movePreviewButton.Name = "movePreviewButton";
-            this.movePreviewButton.Size = new System.Drawing.Size(64, 23);
+            this.movePreviewButton.Size = new Size(64, 23);
             this.movePreviewButton.TabIndex = 6;
             this.movePreviewButton.Text = "<-";
             this.movePreviewButton.UseVisualStyleBackColor = false;
@@ -182,12 +183,12 @@ namespace PicSum.UIComponent.Contents.FileList
             // 
             // moveNextButton
             // 
-            this.moveNextButton.BackColor = System.Drawing.Color.FromArgb(241, 244, 250);
+            this.moveNextButton.BackColor = Color.FromArgb(241, 244, 250);
             this.moveNextButton.FlatAppearance.BorderSize = 0;
             this.moveNextButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.moveNextButton.Location = new System.Drawing.Point(665, 3);
+            this.moveNextButton.Location = new Point(665, 3);
             this.moveNextButton.Name = "moveNextButton";
-            this.moveNextButton.Size = new System.Drawing.Size(64, 23);
+            this.moveNextButton.Size = new Size(64, 23);
             this.moveNextButton.TabIndex = 7;
             this.moveNextButton.Text = "->";
             this.moveNextButton.UseVisualStyleBackColor = false;
@@ -205,7 +206,7 @@ namespace PicSum.UIComponent.Contents.FileList
             this.Controls.Add(this.viewButton);
             this.DoubleBuffered = true;
             this.Name = "FileListToolBar";
-            this.Size = new System.Drawing.Size(767, 29);
+            this.Size = new Size(767, 29);
             this.viewMenu.ResumeLayout(false);
             this.ResumeLayout(false);
         }
