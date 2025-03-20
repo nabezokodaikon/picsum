@@ -321,11 +321,12 @@ namespace SWF.UIComponent.WideDropDown
                 e.Graphics.FillRectangle(this.FlowList.MousePointItemBrush, e.ItemRectangle);
             }
 
+            var iconWidth = this.Icon.Width + 4;
             var itemText = this.itemList[e.ItemIndex];
             var itemTextSize = TextRenderer.MeasureText(itemText, this.FlowList.Font);
             var destText = itemText;
             var destTextSize = itemTextSize;
-            var itemWidth = e.ItemRectangle.Width - e.ItemRectangle.Height;
+            var itemWidth = e.ItemRectangle.Width - iconWidth;
             while (destTextSize.Width > itemWidth)
             {
                 destText = destText.Substring(0, destText.Length - 1);
@@ -333,9 +334,9 @@ namespace SWF.UIComponent.WideDropDown
             }
             destText = itemText == destText ? itemText : $"{destText}...";
 
-            var textRect = new Rectangle(e.ItemRectangle.X + e.ItemRectangle.Height,
+            var textRect = new Rectangle(e.ItemRectangle.X + iconWidth,
                                          e.ItemRectangle.Y + (int)((e.ItemRectangle.Height - destTextSize.Height) / 2f),
-                                         e.ItemRectangle.Width - e.ItemRectangle.Height,
+                                         e.ItemRectangle.Width - iconWidth,
                                          e.ItemRectangle.Height);
 
             TextRenderer.DrawText(
