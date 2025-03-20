@@ -203,6 +203,7 @@ namespace PicSum.UIComponent.Contents.FileList
             this.Controls.Add(this.pathSortButton);
             this.Controls.Add(this.nameSortButton);
             this.Controls.Add(this.viewButton);
+            this.DoubleBuffered = true;
             this.Name = "FileListToolBar";
             this.Size = new System.Drawing.Size(767, 29);
             this.viewMenu.ResumeLayout(false);

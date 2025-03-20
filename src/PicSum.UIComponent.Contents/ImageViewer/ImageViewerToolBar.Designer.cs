@@ -215,6 +215,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.Controls.Add(this.doubleNextButton);
             this.Controls.Add(this.singlePreviewButton);
             this.Controls.Add(this.doublePreviewButton);
+            this.DoubleBuffered = true;
             this.Name = "ImageViewerToolBar";
             this.Size = new System.Drawing.Size(691, 29);
             this.viewMenu.ResumeLayout(false);
