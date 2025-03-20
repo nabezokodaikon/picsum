@@ -33,12 +33,12 @@ namespace PicSum.UIComponent.InfoPanel
             // thumbnailPictureBox
             // 
             this.thumbnailPictureBox.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
-            this.thumbnailPictureBox.BackColor = System.Drawing.Color.Transparent;
-            this.thumbnailPictureBox.Location = new System.Drawing.Point(4, 0);
+            this.thumbnailPictureBox.BackColor = Color.Transparent;
+            this.thumbnailPictureBox.Location = new Point(4, 0);
             this.thumbnailPictureBox.Margin = new System.Windows.Forms.Padding(4, 0, 0, 0);
-            this.thumbnailPictureBox.MinimumSize = new System.Drawing.Size(128, 128);
+            this.thumbnailPictureBox.MinimumSize = new Size(128, 128);
             this.thumbnailPictureBox.Name = "thumbnailPictureBox";
-            this.thumbnailPictureBox.Size = new System.Drawing.Size(508, 256);
+            this.thumbnailPictureBox.Size = new Size(508, 256);
             this.thumbnailPictureBox.TabIndex = 0;
             this.thumbnailPictureBox.TabStop = false;
             this.thumbnailPictureBox.Text = "thumbnailPictureBox1";
@@ -46,58 +46,53 @@ namespace PicSum.UIComponent.InfoPanel
             // 
             // tagContextMenuStrip
             // 
-            this.tagContextMenuStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.tagContextMenuStrip.Font = new Font("Yu Gothic UI", 10F);
+            this.tagContextMenuStrip.ImageScalingSize = new Size(20, 20);
             this.tagContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { this.tagDeleteMenuItem, this.tagToAllEntryMenuItem });
             this.tagContextMenuStrip.Name = "tagContextMenuStrip";
-            this.tagContextMenuStrip.Size = new System.Drawing.Size(158, 48);
+            this.tagContextMenuStrip.Size = new Size(175, 52);
             this.tagContextMenuStrip.Opening += this.TagContextMenuStrip_Opening;
             // 
             // tagDeleteMenuItem
             // 
             this.tagDeleteMenuItem.Name = "tagDeleteMenuItem";
-            this.tagDeleteMenuItem.Size = new System.Drawing.Size(157, 22);
+            this.tagDeleteMenuItem.Size = new Size(174, 24);
             this.tagDeleteMenuItem.Text = "Remove Tag";
             this.tagDeleteMenuItem.Click += this.TagDeleteMenuItem_Click;
             // 
             // tagToAllEntryMenuItem
             // 
             this.tagToAllEntryMenuItem.Name = "tagToAllEntryMenuItem";
-            this.tagToAllEntryMenuItem.Size = new System.Drawing.Size(157, 22);
+            this.tagToAllEntryMenuItem.Size = new Size(174, 24);
             this.tagToAllEntryMenuItem.Text = "Apply Tag to All";
             this.tagToAllEntryMenuItem.Click += this.TagToAllEntryMenuItem_Click;
             // 
             // ratingBar
             // 
             this.ratingBar.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
-            this.ratingBar.BackColor = System.Drawing.Color.Transparent;
-            this.ratingBar.Location = new System.Drawing.Point(4, 390);
+            this.ratingBar.BackColor = Color.Transparent;
+            this.ratingBar.Location = new Point(4, 390);
             this.ratingBar.Margin = new System.Windows.Forms.Padding(4, 0, 0, 0);
-            this.ratingBar.MaximumValue = 1;
             this.ratingBar.Name = "ratingBar";
-            this.ratingBar.Size = new System.Drawing.Size(508, 56);
+            this.ratingBar.Size = new Size(508, 56);
             this.ratingBar.TabIndex = 15;
+            this.ratingBar.MaximumValue = 1;
             this.ratingBar.RatingButtonMouseClick += this.RatingBar_RatingButtonMouseClick;
             // 
             // tagFlowList
             // 
             this.tagFlowList.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
-            this.tagFlowList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(241)))), ((int)(((byte)(244)))), ((int)(((byte)(250)))));
-            this.tagFlowList.CanKeyDown = true;
+            this.tagFlowList.BackColor = Color.FromArgb(241, 244, 250);
             this.tagFlowList.ContextMenuStrip = this.tagContextMenuStrip;
+            this.tagFlowList.Font = new Font("Yu Gothic UI", 10F);
             this.tagFlowList.IsLileList = true;
             this.tagFlowList.ItemHeight = 32;
-            this.tagFlowList.ItemTextAlignment = System.Drawing.StringAlignment.Near;
-            this.tagFlowList.ItemTextFormatFlags = System.Drawing.StringFormatFlags.NoWrap;
-            this.tagFlowList.ItemTextLineAlignment = System.Drawing.StringAlignment.Center;
-            this.tagFlowList.ItemTextTrimming = System.Drawing.StringTrimming.EllipsisCharacter;
-            this.tagFlowList.Location = new System.Drawing.Point(4, 484);
+            this.tagFlowList.Location = new Point(4, 484);
             this.tagFlowList.Margin = new System.Windows.Forms.Padding(4, 0, 0, 0);
             this.tagFlowList.Name = "tagFlowList";
-            this.tagFlowList.Size = new System.Drawing.Size(508, 231);
+            this.tagFlowList.Size = new Size(508, 231);
             this.tagFlowList.TabIndex = 16;
             this.tagFlowList.TabStop = false;
-            this.tagFlowList.Text = "flowList1";
-            this.tagFlowList.Font = new Font("Yu Gothic UI", 10F);
             this.tagFlowList.DrawItem += this.TagFlowList_DrawItem;
             this.tagFlowList.MouseClick += this.TagFlowList_MouseClick;
             this.tagFlowList.MouseDoubleClick += this.TagFlowList_MouseDoubleClick;
@@ -105,43 +100,39 @@ namespace PicSum.UIComponent.InfoPanel
             // wideComboBox
             // 
             this.wideComboBox.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
-            this.wideComboBox.Font = new System.Drawing.Font("Yu Gothic UI", 10F);
-            this.wideComboBox.Icon = SWF.Core.Base.ResourceFiles.TagIcon.Value;
-            this.wideComboBox.Location = new System.Drawing.Point(4, 452);
+            this.wideComboBox.Font = new Font("Yu Gothic UI", 10F);
+            this.wideComboBox.Location = new Point(4, 452);
             this.wideComboBox.Margin = new System.Windows.Forms.Padding(4, 0, 0, 0);
             this.wideComboBox.Name = "wideComboBox";
-            this.wideComboBox.Size = new System.Drawing.Size(508, 32);
+            this.wideComboBox.Size = new Size(508, 32);
             this.wideComboBox.TabIndex = 27;
+            this.wideComboBox.Icon = SWF.Core.Base.ResourceFiles.TagIcon.Value;
             this.wideComboBox.DropDownOpening += this.WideComboBox_DropDownOpening;
             this.wideComboBox.AddItem += this.WideComboBox_AddItem;
             // 
             // fileInfoLabel
             // 
             this.fileInfoLabel.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
-            this.fileInfoLabel.BackColor = System.Drawing.Color.Transparent;
-            this.fileInfoLabel.FileName = "";
-            this.fileInfoLabel.FileSize = "";
-            this.fileInfoLabel.FileType = "";
-            this.fileInfoLabel.Location = new System.Drawing.Point(4, 256);
+            this.fileInfoLabel.BackColor = Color.Transparent;
+            this.fileInfoLabel.Font = new Font("Yu Gothic UI", 10F);
+            this.fileInfoLabel.Location = new Point(4, 256);
             this.fileInfoLabel.Margin = new System.Windows.Forms.Padding(4, 0, 0, 0);
             this.fileInfoLabel.Name = "fileInfoLabel";
-            this.fileInfoLabel.Size = new System.Drawing.Size(508, 134);
+            this.fileInfoLabel.Size = new Size(508, 134);
             this.fileInfoLabel.TabIndex = 0;
             this.fileInfoLabel.Text = "fileInfoLabel1";
-            this.fileInfoLabel.Timestamp = "";
-            this.fileInfoLabel.Font = new System.Drawing.Font("Yu Gothic UI", 10F);
             // 
             // InfoPanel
             // 
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(241)))), ((int)(((byte)(244)))), ((int)(((byte)(250)))));
+            this.BackColor = Color.FromArgb(241, 244, 250);
             this.Controls.Add(this.wideComboBox);
             this.Controls.Add(this.thumbnailPictureBox);
             this.Controls.Add(this.ratingBar);
             this.Controls.Add(this.tagFlowList);
             this.Controls.Add(this.fileInfoLabel);
-            this.Font = new System.Drawing.Font("Yu Gothic UI", 9F);
+            this.Font = new Font("Yu Gothic UI", 9F);
             this.Name = "InfoPanel";
-            this.Size = new System.Drawing.Size(512, 715);
+            this.Size = new Size(512, 715);
             ((System.ComponentModel.ISupportInitialize)this.thumbnailPictureBox).EndInit();
             this.tagContextMenuStrip.ResumeLayout(false);
             this.ResumeLayout(false);
