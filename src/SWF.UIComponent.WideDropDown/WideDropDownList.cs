@@ -293,25 +293,6 @@ namespace SWF.UIComponent.WideDropDown
             }
         }
 
-        private RectangleF GetTextRectangle(SWF.UIComponent.FlowList.DrawItemEventArgs e)
-        {
-            if (this.Icon != null)
-            {
-                return new RectangleF(e.ItemRectangle.X + this.Icon.Width + this.Icon.Width / 2f,
-                                      e.ItemRectangle.Bottom - this.ItemTextHeight,
-                                      e.ItemRectangle.Width,
-                                      this.ItemTextHeight);
-            }
-            else
-            {
-                return new RectangleF(e.ItemRectangle.X,
-                                      e.ItemRectangle.Bottom - this.ItemTextHeight,
-                                      e.ItemRectangle.Width,
-                                      this.ItemTextHeight);
-            }
-
-        }
-
         private void FlowList_DrawItem(object sender, UIComponent.FlowList.DrawItemEventArgs e)
         {
             if (this.itemList.Count < 1)
@@ -340,8 +321,30 @@ namespace SWF.UIComponent.WideDropDown
                 e.Graphics.FillRectangle(this.FlowList.MousePointItemBrush, e.ItemRectangle);
             }
 
-            var item = this.itemList[e.ItemIndex];
-            e.Graphics.DrawString(item, this.FlowList.Font, this.FlowList.ItemTextBrush, this.GetTextRectangle(e), this.FlowList.ItemTextFormat);
+            var itemText = this.itemList[e.ItemIndex];
+            var itemTextSize = TextRenderer.MeasureText(itemText, this.FlowList.Font);
+            var destText = itemText;
+            var destTextSize = itemTextSize;
+            var itemWidth = e.ItemRectangle.Width - e.ItemRectangle.Height;
+            while (destTextSize.Width > itemWidth)
+            {
+                destText = destText.Substring(0, destText.Length - 1);
+                destTextSize = TextRenderer.MeasureText($"{destText}...", this.FlowList.Font);
+            }
+            destText = itemText == destText ? itemText : $"{destText}...";
+
+            var textRect = new Rectangle(e.ItemRectangle.X + e.ItemRectangle.Height,
+                                         e.ItemRectangle.Y + (int)((e.ItemRectangle.Height - destTextSize.Height) / 2f),
+                                         e.ItemRectangle.Width - e.ItemRectangle.Height,
+                                         e.ItemRectangle.Height);
+
+            TextRenderer.DrawText(
+                e.Graphics,
+                destText,
+                this.FlowList.Font,
+                textRect.Location,
+                this.FlowList.ItemTextBrush.Color,
+                TextFormatFlags.Top);
         }
 
         private void FlowList_ItemMouseClick(object sender, MouseEventArgs e)
