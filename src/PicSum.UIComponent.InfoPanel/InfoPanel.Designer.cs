@@ -128,6 +128,7 @@ namespace PicSum.UIComponent.InfoPanel
             this.fileInfoLabel.TabIndex = 0;
             this.fileInfoLabel.Text = "fileInfoLabel1";
             this.fileInfoLabel.Timestamp = "";
+            this.fileInfoLabel.Font = new System.Drawing.Font("Yu Gothic UI", 10F);
             // 
             // InfoPanel
             // 
