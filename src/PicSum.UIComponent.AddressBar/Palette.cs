@@ -6,7 +6,7 @@ namespace PicSum.UIComponent.AddressBar
     [SupportedOSPlatform("windows10.0.17763.0")]
     internal sealed class Palette
     {
-        private Font textFont = new("Yu Gothic UI", 10F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(128)));
+        private Font textFont = new("Yu Gothic UI", 10F);
 
         private Color textColor = Color.FromArgb(
             SystemColors.ControlText.A,

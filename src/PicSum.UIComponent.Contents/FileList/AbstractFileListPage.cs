@@ -142,7 +142,6 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             this.InitializeComponent();
 
-            this.Font = new Font("Yu Gothic UI", 10F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(128)));
             this.IsShowFileName = FileListPageConfig.Instance.IsShowFileName;
             this.IsShowDirectory = FileListPageConfig.Instance.IsShowDirectory;
             this.IsShowImageFile = FileListPageConfig.Instance.IsShowImageFile;

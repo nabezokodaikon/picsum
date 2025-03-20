@@ -97,7 +97,6 @@ namespace PicSum.UIComponent.Contents.FileList
             // 
             // FileListPageBase
             // 
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.flowList);
             this.Controls.Add(this.toolBar);
             this.Name = "FileListPageBase";

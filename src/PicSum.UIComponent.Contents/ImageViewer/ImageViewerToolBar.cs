@@ -199,6 +199,12 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.InitializeComponent();
         }
 
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+            this.Font = new Font(this.Font.FontFamily, 9F);
+        }
+
         public void ShowToolTip(string filePath)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));

@@ -53,7 +53,6 @@ namespace PicSum.Main.UIComponent
             // 
             this.infoPanel.BackColor = Color.FromArgb(241, 244, 250);
             this.infoPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.infoPanel.Font = new Font("Yu Gothic UI", 10F, FontStyle.Regular, GraphicsUnit.Point, 128);
             this.infoPanel.Location = new Point(0, 0);
             this.infoPanel.Name = "infoPanel";
             this.infoPanel.Size = new Size(96, 100);
@@ -261,7 +260,6 @@ namespace PicSum.Main.UIComponent
             // 
             // BrowserMainPanel
             // 
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = Color.FromArgb(241, 244, 250);
             this.Controls.Add(this.toolPanel);
             this.Controls.Add(this.tabSwitch);

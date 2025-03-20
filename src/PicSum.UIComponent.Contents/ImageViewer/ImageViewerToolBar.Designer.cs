@@ -208,8 +208,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             // 
             // ImageViewerToolBar
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.sizeButton);
             this.Controls.Add(this.viewButton);
             this.Controls.Add(this.indexSlider);

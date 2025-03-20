@@ -249,6 +249,12 @@ namespace PicSum.UIComponent.Contents.FileList
             this.InitializeComponent();
         }
 
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+            this.Font = new Font(this.Font.FontFamily, 9F);
+        }
+
         private void ViewButton_MouseClick(object sender, MouseEventArgs e)
         {
             this.viewMenu.Show(

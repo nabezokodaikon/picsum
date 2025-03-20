@@ -42,7 +42,7 @@ namespace SWF.UIComponent.WideDropDown
             this.addButton.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
             this.addButton.FlatAppearance.BorderSize = 0;
             this.addButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.addButton.Font = new Font("Yu Gothic UI", 7.8F, FontStyle.Regular, GraphicsUnit.Point, 128);
+            this.addButton.Font = new Font("Yu Gothic UI", 7.8F);
             this.addButton.Image = (Image)resources.GetObject("addButton.Image");
             this.addButton.Location = new Point(594, 0);
             this.addButton.Margin = new System.Windows.Forms.Padding(0);
@@ -59,7 +59,7 @@ namespace SWF.UIComponent.WideDropDown
             // 
             this.inputTextBox.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             this.inputTextBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.inputTextBox.Font = new Font("Yu Gothic UI", 10F, FontStyle.Regular, GraphicsUnit.Point, 128);
+            this.inputTextBox.Font = new Font("Yu Gothic UI", 10F);
             this.inputTextBox.Location = new Point(0, 1);
             this.inputTextBox.Margin = new System.Windows.Forms.Padding(0);
             this.inputTextBox.Multiline = true;
@@ -83,12 +83,10 @@ namespace SWF.UIComponent.WideDropDown
             // 
             // WideComboBox
             // 
-            this.AutoScaleDimensions = new SizeF(7F, 17F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.inputTextBox);
             this.Controls.Add(this.arrowPictureBox);
             this.Controls.Add(this.addButton);
-            this.Font = new Font("Yu Gothic UI", 10F, FontStyle.Regular, GraphicsUnit.Point, 128);
+            this.Font = new Font("Yu Gothic UI", 9F);
             this.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.Name = "WideComboBox";
             this.Size = new Size(646, 38);

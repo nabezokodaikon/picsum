@@ -1,3 +1,5 @@
+using System.Drawing;
+
 namespace PicSum.UIComponent.Contents.FileList
 {
     partial class FileListToolBar
@@ -51,7 +53,6 @@ namespace PicSum.UIComponent.Contents.FileList
             this.viewButton.BackColor = System.Drawing.Color.FromArgb(241, 244, 250);
             this.viewButton.FlatAppearance.BorderSize = 0;
             this.viewButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.viewButton.Font = new System.Drawing.Font("Yu Gothic UI", 9F);
             this.viewButton.Location = new System.Drawing.Point(3, 3);
             this.viewButton.Name = "viewButton";
             this.viewButton.Size = new System.Drawing.Size(64, 23);
@@ -65,7 +66,6 @@ namespace PicSum.UIComponent.Contents.FileList
             this.nameSortButton.BackColor = System.Drawing.Color.FromArgb(241, 244, 250);
             this.nameSortButton.FlatAppearance.BorderSize = 0;
             this.nameSortButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.nameSortButton.Font = new System.Drawing.Font("Yu Gothic UI", 9F);
             this.nameSortButton.Location = new System.Drawing.Point(73, 3);
             this.nameSortButton.Name = "nameSortButton";
             this.nameSortButton.Size = new System.Drawing.Size(96, 23);
@@ -80,7 +80,6 @@ namespace PicSum.UIComponent.Contents.FileList
             this.pathSortButton.BackColor = System.Drawing.Color.FromArgb(241, 244, 250);
             this.pathSortButton.FlatAppearance.BorderSize = 0;
             this.pathSortButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.pathSortButton.Font = new System.Drawing.Font("Yu Gothic UI", 9F);
             this.pathSortButton.Location = new System.Drawing.Point(175, 3);
             this.pathSortButton.Name = "pathSortButton";
             this.pathSortButton.Size = new System.Drawing.Size(96, 23);
@@ -95,7 +94,6 @@ namespace PicSum.UIComponent.Contents.FileList
             this.timestampSortButton.BackColor = System.Drawing.Color.FromArgb(241, 244, 250);
             this.timestampSortButton.FlatAppearance.BorderSize = 0;
             this.timestampSortButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.timestampSortButton.Font = new System.Drawing.Font("Yu Gothic UI", 9F);
             this.timestampSortButton.Location = new System.Drawing.Point(277, 3);
             this.timestampSortButton.Name = "timestampSortButton";
             this.timestampSortButton.Size = new System.Drawing.Size(96, 23);
@@ -110,7 +108,6 @@ namespace PicSum.UIComponent.Contents.FileList
             this.registrationSortButton.BackColor = System.Drawing.Color.FromArgb(241, 244, 250);
             this.registrationSortButton.FlatAppearance.BorderSize = 0;
             this.registrationSortButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.registrationSortButton.Font = new System.Drawing.Font("Yu Gothic UI", 9F);
             this.registrationSortButton.Location = new System.Drawing.Point(379, 3);
             this.registrationSortButton.Name = "registrationSortButton";
             this.registrationSortButton.Size = new System.Drawing.Size(96, 23);
@@ -175,7 +172,6 @@ namespace PicSum.UIComponent.Contents.FileList
             this.movePreviewButton.BackColor = System.Drawing.Color.FromArgb(241, 244, 250);
             this.movePreviewButton.FlatAppearance.BorderSize = 0;
             this.movePreviewButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.movePreviewButton.Font = new System.Drawing.Font("Yu Gothic UI", 9F);
             this.movePreviewButton.Location = new System.Drawing.Point(595, 3);
             this.movePreviewButton.Name = "movePreviewButton";
             this.movePreviewButton.Size = new System.Drawing.Size(64, 23);
@@ -189,7 +185,6 @@ namespace PicSum.UIComponent.Contents.FileList
             this.moveNextButton.BackColor = System.Drawing.Color.FromArgb(241, 244, 250);
             this.moveNextButton.FlatAppearance.BorderSize = 0;
             this.moveNextButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.moveNextButton.Font = new System.Drawing.Font("Yu Gothic UI", 9F);
             this.moveNextButton.Location = new System.Drawing.Point(665, 3);
             this.moveNextButton.Name = "moveNextButton";
             this.moveNextButton.Size = new System.Drawing.Size(64, 23);
@@ -200,8 +195,6 @@ namespace PicSum.UIComponent.Contents.FileList
             // 
             // FileListToolBar
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.moveNextButton);
             this.Controls.Add(this.movePreviewButton);
             this.Controls.Add(this.thumbnailSizeSlider);

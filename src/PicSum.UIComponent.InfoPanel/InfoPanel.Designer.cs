@@ -1,3 +1,5 @@
+using System.Drawing;
+
 namespace PicSum.UIComponent.InfoPanel
 {
     partial class InfoPanel
@@ -102,7 +104,7 @@ namespace PicSum.UIComponent.InfoPanel
             // wideComboBox
             // 
             this.wideComboBox.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
-            this.wideComboBox.Font = new System.Drawing.Font("Yu Gothic UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 128);
+            this.wideComboBox.Font = new System.Drawing.Font("Yu Gothic UI", 10F);
             this.wideComboBox.Icon = SWF.Core.Base.ResourceFiles.TagIcon.Value;
             this.wideComboBox.Location = new System.Drawing.Point(4, 452);
             this.wideComboBox.Margin = new System.Windows.Forms.Padding(4, 0, 0, 0);
@@ -129,14 +131,13 @@ namespace PicSum.UIComponent.InfoPanel
             // 
             // InfoPanel
             // 
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(241)))), ((int)(((byte)(244)))), ((int)(((byte)(250)))));
             this.Controls.Add(this.wideComboBox);
             this.Controls.Add(this.thumbnailPictureBox);
             this.Controls.Add(this.ratingBar);
             this.Controls.Add(this.tagFlowList);
             this.Controls.Add(this.fileInfoLabel);
-            this.Font = new System.Drawing.Font("Yu Gothic UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 128);
+            this.Font = new System.Drawing.Font("Yu Gothic UI", 9F);
             this.Name = "InfoPanel";
             this.Size = new System.Drawing.Size(512, 715);
             ((System.ComponentModel.ISupportInitialize)this.thumbnailPictureBox).EndInit();

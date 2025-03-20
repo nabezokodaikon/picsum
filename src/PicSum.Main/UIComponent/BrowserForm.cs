@@ -49,7 +49,6 @@ namespace PicSum.Main.UIComponent
 
             this.Icon = ResourceFiles.ApplicationIcon.Value;
             this.Text = "PicSum";
-            this.AutoScaleMode = AutoScaleMode.None;
             this.StartPosition = FormStartPosition.Manual;
             this.MinimumSize = new Size(320, 240);
             this.KeyPreview = true;

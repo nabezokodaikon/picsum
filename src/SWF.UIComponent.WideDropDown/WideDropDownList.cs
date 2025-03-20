@@ -222,7 +222,7 @@ namespace SWF.UIComponent.WideDropDown
             this.FlowList.IsLileList = false;
             this.FlowList.ItemSpace = 0;
             this.FlowList.IsMultiSelect = false;
-            this.FlowList.Font = new Font("Yu Gothic UI", 10F, FontStyle.Regular, GraphicsUnit.Point, 128);
+            this.FlowList.Font = new Font("Yu Gothic UI", 10F);
             this.FlowList.SetItemSize(192, 32);
             this.FlowList.CanKeyDown = false;
 

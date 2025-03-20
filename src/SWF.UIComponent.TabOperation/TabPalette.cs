@@ -12,7 +12,7 @@ namespace SWF.UIComponent.TabOperation
     public sealed partial class TabPalette
         : Component
     {
-        private static readonly Font TITLE_FONT = new("Yu Gothic UI", 10F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(128)));
+        private static readonly Font TITLE_FONT = new("Yu Gothic UI", 10F);
         private static readonly Color TITLE_COLOR = Color.FromArgb(0, 64, 64, 64);
         private static readonly TextFormatFlags TITLE_FORMAT_FLAGS
             = TextFormatFlags.Left |
