@@ -223,9 +223,9 @@ namespace PicSum.UIComponent.Contents.FileList
         private System.Windows.Forms.ToolStripMenuItem fileNameMenuItem;
         private SWF.UIComponent.Core.ToolButton movePreviewButton;
         private SWF.UIComponent.Core.ToolButton moveNextButton;
-        public SWF.UIComponent.Core.ToolButton nameSortButton;
-        public SWF.UIComponent.Core.ToolButton pathSortButton;
-        public SWF.UIComponent.Core.ToolButton timestampSortButton;
-        public SWF.UIComponent.Core.ToolButton registrationSortButton;
+        private SWF.UIComponent.Core.ToolButton nameSortButton;
+        private SWF.UIComponent.Core.ToolButton pathSortButton;
+        private SWF.UIComponent.Core.ToolButton timestampSortButton;
+        private SWF.UIComponent.Core.ToolButton registrationSortButton;
     }
 }

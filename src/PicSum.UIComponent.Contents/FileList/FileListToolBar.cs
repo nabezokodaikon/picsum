@@ -1,3 +1,5 @@
+using SWF.Core.Base;
+using SWF.UIComponent.Core;
 using System;
 using System.ComponentModel;
 using System.Drawing;
@@ -128,58 +130,6 @@ namespace PicSum.UIComponent.Contents.FileList
         }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public Image NameSortButtonImage
-        {
-            get
-            {
-                return this.nameSortButton.Image;
-            }
-            set
-            {
-                this.nameSortButton.Image = value;
-            }
-        }
-
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public Image PathSortButtonImage
-        {
-            get
-            {
-                return this.pathSortButton.Image;
-            }
-            set
-            {
-                this.pathSortButton.Image = value;
-            }
-        }
-
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public Image TimestampSortButtonImage
-        {
-            get
-            {
-                return this.timestampSortButton.Image;
-            }
-            set
-            {
-                this.timestampSortButton.Image = value;
-            }
-        }
-
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public Image RegistrationDateSortButtonImage
-        {
-            get
-            {
-                return this.registrationSortButton.Image;
-            }
-            set
-            {
-                this.registrationSortButton.Image = value;
-            }
-        }
-
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public int ThumbnailSizeSliderValue
         {
             get
@@ -247,6 +197,26 @@ namespace PicSum.UIComponent.Contents.FileList
         public FileListToolBar()
         {
             this.InitializeComponent();
+        }
+
+        public ToolButton GetSortToolStripButton(SortTypeID sortType)
+        {
+            return sortType switch
+            {
+                SortTypeID.FileName => this.nameSortButton,
+                SortTypeID.FilePath => this.pathSortButton,
+                SortTypeID.UpdateDate => this.timestampSortButton,
+                SortTypeID.RegistrationDate => this.registrationSortButton,
+                _ => null,
+            };
+        }
+
+        public void ClearSortImage()
+        {
+            this.nameSortButton.Image = null;
+            this.pathSortButton.Image = null;
+            this.timestampSortButton.Image = null;
+            this.registrationSortButton.Image = null;
         }
 
         protected override void OnLoad(EventArgs e)

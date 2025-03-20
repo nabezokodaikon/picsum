@@ -10,7 +10,6 @@ using SWF.Core.Base;
 using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
 using SWF.Core.Job;
-using SWF.UIComponent.Core;
 using SWF.UIComponent.FlowList;
 using SWF.UIComponent.TabOperation;
 using System;
@@ -322,26 +321,11 @@ namespace PicSum.UIComponent.Contents.FileList
 
         protected abstract Action<ISender> GetImageFilesGetAction(ImageViewerPageParameter paramter);
 
-        private ToolButton GetSortToolStripButton(SortTypeID sortType)
-        {
-            return sortType switch
-            {
-                SortTypeID.FileName => this.toolBar.nameSortButton,
-                SortTypeID.FilePath => this.toolBar.pathSortButton,
-                SortTypeID.UpdateDate => this.toolBar.timestampSortButton,
-                SortTypeID.RegistrationDate => this.toolBar.registrationSortButton,
-                _ => null,
-            };
-        }
-
         private void SetSort()
         {
-            this.toolBar.nameSortButton.Image = null;
-            this.toolBar.pathSortButton.Image = null;
-            this.toolBar.timestampSortButton.Image = null;
-            this.toolBar.registrationSortButton.Image = null;
+            this.toolBar.ClearSortImage();
 
-            var sortButton = this.GetSortToolStripButton(this.SortInfo.ActiveSortType);
+            var sortButton = this.toolBar.GetSortToolStripButton(this.SortInfo.ActiveSortType);
             if (sortButton != null)
             {
                 var isAscending = this.SortInfo.IsAscending(this.SortInfo.ActiveSortType);
