@@ -212,11 +212,11 @@ namespace PicSum.UIComponent.InfoPanel
         {
             this.allTagFont ??=
                 new Font(
-                    this.Font.FontFamily,
-                    this.Font.Size,
+                    this.tagFlowList.Font.FontFamily,
+                    this.tagFlowList.Font.Size,
                     FontStyle.Bold,
-                    this.Font.Unit,
-                    this.Font.GdiCharSet);
+                    this.tagFlowList.Font.Unit,
+                    this.tagFlowList.Font.GdiCharSet);
             return this.allTagFont;
         }
 
@@ -228,7 +228,7 @@ namespace PicSum.UIComponent.InfoPanel
             }
             else
             {
-                return this.Font;
+                return this.tagFlowList.Font;
             }
         }
 
@@ -478,16 +478,32 @@ namespace PicSum.UIComponent.InfoPanel
 
             e.Graphics.DrawImage(this.tagIcon, iconRect);
 
-            var textRect = new RectangleF(e.ItemRectangle.X + this.tagFlowList.ItemHeight,
-                                          e.ItemRectangle.Y,
-                                          e.ItemRectangle.Width - this.tagFlowList.ItemHeight,
-                                          e.ItemRectangle.Height);
+            var iconWidth = this.tagIcon.Width + 8;
+            var itemFont = this.GetTagFont(item);
+            var itemText = item.Tag;
+            var itemTextSize = TextRenderer.MeasureText(itemText, itemFont);
+            var itemWidth = e.ItemRectangle.Width - iconWidth;
+            var destText = itemText;
+            var destTextSize = itemTextSize;
+            while (destTextSize.Width > itemWidth)
+            {
+                destText = destText.Substring(0, destText.Length - 1);
+                destTextSize = TextRenderer.MeasureText($"{destText}...", itemFont);
+            }
+            destText = itemText == destText ? itemText : $"{destText}...";
 
-            e.Graphics.DrawString(item.Tag,
-                                  this.GetTagFont(item),
-                                  this.tagFlowList.ItemTextBrush,
-                                  textRect,
-                                  this.tagFlowList.ItemTextFormat);
+            var textRect = new Rectangle(e.ItemRectangle.X + iconWidth,
+                                         e.ItemRectangle.Y + (int)((e.ItemRectangle.Height - destTextSize.Height) / 2f),
+                                         e.ItemRectangle.Width - iconWidth,
+                                         e.ItemRectangle.Height);
+
+            TextRenderer.DrawText(
+                e.Graphics,
+                destText,
+                itemFont,
+                textRect.Location,
+                this.tagFlowList.ItemTextBrush.Color,
+                TextFormatFlags.Top);
         }
 
         private void RatingBar_RatingButtonMouseClick(object sender, MouseEventArgs e)

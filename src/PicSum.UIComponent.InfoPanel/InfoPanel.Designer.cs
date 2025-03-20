@@ -85,7 +85,7 @@ namespace PicSum.UIComponent.InfoPanel
             this.tagFlowList.CanKeyDown = true;
             this.tagFlowList.ContextMenuStrip = this.tagContextMenuStrip;
             this.tagFlowList.IsLileList = true;
-            this.tagFlowList.ItemHeight = 24;
+            this.tagFlowList.ItemHeight = 32;
             this.tagFlowList.ItemTextAlignment = System.Drawing.StringAlignment.Near;
             this.tagFlowList.ItemTextFormatFlags = System.Drawing.StringFormatFlags.NoWrap;
             this.tagFlowList.ItemTextLineAlignment = System.Drawing.StringAlignment.Center;
@@ -97,6 +97,7 @@ namespace PicSum.UIComponent.InfoPanel
             this.tagFlowList.TabIndex = 16;
             this.tagFlowList.TabStop = false;
             this.tagFlowList.Text = "flowList1";
+            this.tagFlowList.Font = new Font("Yu Gothic UI", 10F);
             this.tagFlowList.DrawItem += this.TagFlowList_DrawItem;
             this.tagFlowList.MouseClick += this.TagFlowList_MouseClick;
             this.tagFlowList.MouseDoubleClick += this.TagFlowList_MouseDoubleClick;
