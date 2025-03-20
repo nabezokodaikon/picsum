@@ -135,6 +135,8 @@ namespace SWF.UIComponent.ImagePanel
                 ControlStyles.UserPaint,
                 true);
             this.UpdateStyles();
+
+            this.Font = new Font(this.Font.FontFamily, this.Font.Size * 2);
         }
 
         public void SetImage(ImageSizeMode sizeMode, CvImage img, string filePath)
