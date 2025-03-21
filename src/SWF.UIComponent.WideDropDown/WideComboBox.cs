@@ -140,7 +140,7 @@ namespace SWF.UIComponent.WideDropDown
             }
 
             this.dropDownList.Show(
-                this, new Point(this.Width - this.dropDownList.Size.Width, this.Height));
+                this, new Point(this.arrowPictureBox.Right - this.dropDownList.Size.Width, this.arrowPictureBox.Bottom));
         }
 
         private void DropDownList_Closed(object sender, ToolStripDropDownClosedEventArgs e)
