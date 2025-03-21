@@ -287,6 +287,9 @@ namespace WinApi
 
         public const uint GA_ROOT = 2;
 
+        public const int DWMWA_CAPTION_COLOR = 35;
+        public const int DWMWA_BORDER_COLOR = 34;
+
         public static readonly Guid FOLDERID_Desktop =
             new Guid("{B4BFCC3A-DB2C-424C-B029-7FE99A87C641}");
 
@@ -529,6 +532,24 @@ namespace WinApi
             }
             public MARGINS() { }
         }
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct OSVERSIONINFOEX
+        {
+            public int dwOSVersionInfoSize;
+            public int dwMajorVersion;
+            public int dwMinorVersion;
+            public int dwBuildNumber;
+            public int dwPlatformId;
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
+            public string szCSDVersion;
+        }
+
+        [DllImport("ntdll.dll", SetLastError = true)]
+        public static extern int RtlGetVersion(ref OSVERSIONINFOEX versionInfo);
+
+        [DllImport("dwmapi.dll")]
+        public static extern int DwmSetWindowAttribute(IntPtr hwnd, int attr, ref int attrValue, int attrSize);
 
         [DllImport("shlwapi.dll", CharSet = CharSet.Unicode, ExactSpelling = true)]
         public static extern int StrCmpLogicalW(string x, string y);

@@ -14,8 +14,15 @@ namespace SWF.UIComponent.Form
     public partial class GrassForm
         : System.Windows.Forms.Form
     {
-
         private const int TOP_OFFSET = 41;
+
+        private static Version GetWindowsVersion()
+        {
+            var osVersionInfo = new WinApiMembers.OSVERSIONINFOEX();
+            osVersionInfo.dwOSVersionInfoSize = Marshal.SizeOf(typeof(WinApiMembers.OSVERSIONINFOEX));
+            var _ = WinApiMembers.RtlGetVersion(ref osVersionInfo);
+            return new Version(osVersionInfo.dwMajorVersion, osVersionInfo.dwMinorVersion, osVersionInfo.dwBuildNumber);
+        }
 
         private WinApiMembers.MARGINS glassMargins = null;
         private bool isInit = true;
@@ -23,6 +30,10 @@ namespace SWF.UIComponent.Form
         private FormWindowState initWindowState = FormWindowState.Normal;
         private FormWindowState currentWindowState = FormWindowState.Normal;
         private Rectangle currentWindowBounds = Rectangle.Empty;
+        private readonly Version osVersion = GetWindowsVersion();
+        private readonly Color activeWindowColor = Color.FromArgb(34, 38, 41);
+        private readonly Color deactivateWindowColor = Color.FromArgb(97, 99, 101);
+
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public new Size Size
@@ -88,6 +99,8 @@ namespace SWF.UIComponent.Form
                 ControlStyles.UserPaint,
                 true);
             this.UpdateStyles();
+
+            this.SetWindowColor(this.activeWindowColor);
         }
 
         public void MouseLeftDoubleClickProcess()
@@ -146,6 +159,18 @@ namespace SWF.UIComponent.Form
             {
                 base.WndProc(ref m);
             }
+        }
+
+        protected override void OnActivated(EventArgs e)
+        {
+            this.SetWindowColor(this.activeWindowColor);
+            base.OnActivated(e);
+        }
+
+        protected override void OnDeactivate(EventArgs e)
+        {
+            this.SetWindowColor(this.deactivateWindowColor);
+            base.OnDeactivate(e);
         }
 
         protected override void OnResize(EventArgs e)
@@ -213,6 +238,18 @@ namespace SWF.UIComponent.Form
         protected void SetControlRegion()
         {
             this.SettingtControlRegion();
+        }
+
+        private void SetWindowColor(Color color)
+        {
+            if (this.osVersion.Major >= 10 && this.osVersion.Build >= 22000)
+            {
+                var colorValue = color.R | (color.G << 8) | (color.B << 16);
+                var _ = WinApiMembers.DwmSetWindowAttribute(
+                    this.Handle, WinApiMembers.DWMWA_CAPTION_COLOR, ref colorValue, sizeof(int));
+                _ = WinApiMembers.DwmSetWindowAttribute(
+                    this.Handle, WinApiMembers.DWMWA_BORDER_COLOR, ref colorValue, Marshal.SizeOf<int>());
+            }
         }
 
         private void SettingtControlRegion()
