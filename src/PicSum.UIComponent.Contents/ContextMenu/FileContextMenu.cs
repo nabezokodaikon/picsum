@@ -18,7 +18,6 @@ namespace PicSum.UIComponent.Contents.ContextMenu
         public event EventHandler<ExecuteFileEventArgs> FileActiveTabOpen;
         public event EventHandler<ExecuteFileEventArgs> FileNewTabOpen;
         public event EventHandler<ExecuteFileEventArgs> FileNewWindowOpen;
-        public event EventHandler<ExecuteFileEventArgs> FileOpen;
         public event EventHandler<ExecuteFileEventArgs> SelectApplication;
         public event EventHandler<ExecuteFileEventArgs> SaveDirectoryOpen;
         public event EventHandler<ExecuteFileEventArgs> DirectoryActiveTabOpen;
@@ -40,7 +39,6 @@ namespace PicSum.UIComponent.Contents.ContextMenu
         private readonly ToolStripMenuItem fileBookmarkMenuItem = new("Make a bookmark");
 
         // ファイルメニュー項目
-        private readonly ToolStripMenuItem fileOpenMenuItem = new("Open in association");
         private readonly ToolStripMenuItem selectApplicationMenuItem = new("Select and open the application");
         private readonly ToolStripMenuItem saveDirectoryOpenMenuItem = new("Open save folder");
 
@@ -103,19 +101,6 @@ namespace PicSum.UIComponent.Contents.ContextMenu
             set
             {
                 this.fileBookmarkMenuItem.Visible = value;
-            }
-        }
-
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public bool VisibleFileOpenMenuItem
-        {
-            get
-            {
-                return this.fileOpenMenuItem.Visible;
-            }
-            set
-            {
-                this.fileOpenMenuItem.Visible = value;
             }
         }
 
@@ -247,7 +232,6 @@ namespace PicSum.UIComponent.Contents.ContextMenu
                 this.Items.AddRange([this.fileActiveTabOpenMenuItem,
                     this.fileNewTabOpenMenuItem,
                     this.fileNewWindowOpenMenuItem,
-                    this.fileOpenMenuItem,
                     this.selectApplicationMenuItem,
                     this.saveDirectoryOpenMenuItem,
                     this.directoryActiveTabOpenMenuItem,
@@ -262,7 +246,6 @@ namespace PicSum.UIComponent.Contents.ContextMenu
                 this.fileActiveTabOpenMenuItem.Click += new(this.FileActiveTabOpenMenuItem_Click);
                 this.fileNewTabOpenMenuItem.Click += new(this.FileNewTabOpenMenuItem_Click);
                 this.fileNewWindowOpenMenuItem.Click += new(this.FileNewWindowOpenMenuItem_Click);
-                this.fileOpenMenuItem.Click += new(this.FileOpen_Click);
                 this.selectApplicationMenuItem.Click += new(this.SelectApplication_Click);
                 this.saveDirectoryOpenMenuItem.Click += new(this.SaveDirectoryOpen_Click);
                 this.directoryActiveTabOpenMenuItem.Click += new(this.DirectoryActiveTabOpenMenuItem_Click);
@@ -293,7 +276,6 @@ namespace PicSum.UIComponent.Contents.ContextMenu
                 this.fileActiveTabOpenMenuItem.Visible = false;
                 this.fileNewTabOpenMenuItem.Visible = false;
                 this.fileNewWindowOpenMenuItem.Visible = false;
-                this.fileOpenMenuItem.Visible = false;
                 this.selectApplicationMenuItem.Visible = false;
                 this.saveDirectoryOpenMenuItem.Visible = false;
 
@@ -312,7 +294,6 @@ namespace PicSum.UIComponent.Contents.ContextMenu
                 this.nameCopyMenuItem.Visible = true;
 
                 var isFile = FileUtil.IsFile(filePath);
-                this.fileOpenMenuItem.Visible = isFile;
                 this.selectApplicationMenuItem.Visible = isFile;
                 this.saveDirectoryOpenMenuItem.Visible = isFile;
 
@@ -352,11 +333,6 @@ namespace PicSum.UIComponent.Contents.ContextMenu
         private void OnFileNewWindowOpen(ExecuteFileEventArgs e)
         {
             this.FileNewWindowOpen?.Invoke(this, e);
-        }
-
-        private void OnFileOpen(ExecuteFileEventArgs e)
-        {
-            this.FileOpen?.Invoke(this, e);
         }
 
         private void OnSelectApplicationOpen(ExecuteFileEventArgs e)
@@ -422,11 +398,6 @@ namespace PicSum.UIComponent.Contents.ContextMenu
         private void FileNewWindowOpenMenuItem_Click(object sender, EventArgs e)
         {
             this.OnFileNewWindowOpen(new ExecuteFileEventArgs(this.filePathList.First()));
-        }
-
-        private void FileOpen_Click(object sender, EventArgs e)
-        {
-            this.OnFileOpen(new ExecuteFileEventArgs(this.filePathList.First()));
         }
 
         private void SelectApplication_Click(object sender, EventArgs e)
