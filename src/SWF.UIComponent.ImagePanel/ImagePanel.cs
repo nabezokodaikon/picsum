@@ -1,3 +1,4 @@
+using NLog;
 using SWF.Core.Base;
 using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
@@ -19,6 +20,8 @@ namespace SWF.UIComponent.ImagePanel
     {
         private const int THUMBNAIL_PANEL_OFFSET = 16;
         private const int THUMBNAIL_OFFSET = 8;
+
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         public event EventHandler<MouseEventArgs> ImageMouseClick;
         public event EventHandler<MouseEventArgs> ImageMouseDoubleClick;
@@ -222,13 +225,7 @@ namespace SWF.UIComponent.ImagePanel
 
                 if (this.isError)
                 {
-                    e.Graphics.CompositingMode = CompositingMode.SourceOver;
-                    e.Graphics.DrawString(
-                        $"Failed to load file",
-                        this.Font,
-                        Brushes.LightGray,
-                        new Rectangle(0, 0, this.Width, this.Height),
-                        this.stringFormat);
+                    this.DrawErrorImage(e.Graphics);
                 }
                 else if (this.HasImage)
                 {
@@ -598,6 +595,17 @@ namespace SWF.UIComponent.ImagePanel
             return this.GetThumbnailViewRectangle(this.GetThumbnailRectangle(), this.GetImageSrcRectangle());
         }
 
+        private void DrawErrorImage(Graphics g)
+        {
+            g.CompositingMode = CompositingMode.SourceOver;
+            g.DrawString(
+                $"Failed to load file",
+                this.Font,
+                Brushes.LightGray,
+                new Rectangle(0, 0, this.Width, this.Height),
+                this.stringFormat);
+        }
+
         private void DrawImage(Graphics g)
         {
             using (TimeMeasuring.Run(false, "ImagePanel.DrawImage"))
@@ -617,14 +625,22 @@ namespace SWF.UIComponent.ImagePanel
                 }
                 else
                 {
-                    if (this.sizeMode == ImageSizeMode.Original)
+                    try
                     {
-                        this.image.DrawSourceImage(g, this.GetImageDestRectangle(), this.GetImageSrcRectangle());
+                        if (this.sizeMode == ImageSizeMode.Original)
+                        {
+                            this.image.DrawSourceImage(g, this.GetImageDestRectangle(), this.GetImageSrcRectangle());
+                        }
+                        else
+                        {
+                            var destRect = this.GetImageDestRectangle();
+                            this.image.DrawResizeImage(g, destRect);
+                        }
                     }
-                    else
+                    catch (ImageUtilException ex)
                     {
-                        var destRect = this.GetImageDestRectangle();
-                        this.image.DrawResizeImage(g, destRect);
+                        Logger.Error($"{ex}");
+                        this.DrawErrorImage(g);
                     }
                 }
             }

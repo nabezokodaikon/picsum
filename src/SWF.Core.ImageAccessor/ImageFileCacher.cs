@@ -102,7 +102,8 @@ namespace SWF.Core.ImageAccessor
             {
                 if (cache != null)
                 {
-                    return new CvImage(cache.Bitmap.ToMat(), cache.Bitmap.PixelFormat);
+                    return new CvImage(
+                        filePath, cache.Bitmap.ToMat(), cache.Bitmap.PixelFormat);
                 }
                 else
                 {
@@ -117,7 +118,8 @@ namespace SWF.Core.ImageAccessor
 
             using (var bmp = ImageUtil.ReadImageFile(filePath))
             {
-                return new CvImage(bmp.ToMat(), bmp.PixelFormat);
+                return new CvImage(
+                    filePath, bmp.ToMat(), bmp.PixelFormat);
             }
         }
 

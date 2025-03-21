@@ -12,7 +12,20 @@ namespace SWF.Core.ImageAccessor
     {
         public static readonly CvImage EMPTY = new(System.Drawing.Size.Empty);
 
+        private static string CreateErrorMessage(string filePath)
+        {
+            if (string.IsNullOrEmpty(filePath))
+            {
+                return $"描画に失敗しました。";
+            }
+            else
+            {
+                return $"'{filePath}'の描画に失敗しました。";
+            }
+        }
+
         private bool disposed = false;
+        private readonly string filePath;
         private readonly PixelFormat pixelFormat;
         private Mat? mat;
 
@@ -21,10 +34,12 @@ namespace SWF.Core.ImageAccessor
         public readonly int Height;
         public readonly bool IsEmpty;
 
-        public CvImage(Mat mat, PixelFormat pixelFormat)
+        public CvImage(string filePath, Mat mat, PixelFormat pixelFormat)
         {
+            ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
             ArgumentNullException.ThrowIfNull(mat, nameof(mat));
 
+            this.filePath = filePath;
             this.pixelFormat = pixelFormat;
             this.mat = mat;
             this.Width = mat.Width;
@@ -33,8 +48,22 @@ namespace SWF.Core.ImageAccessor
             this.IsEmpty = false;
         }
 
-        public CvImage(System.Drawing.Size size)
+        public CvImage(string filePath, System.Drawing.Size size)
         {
+            ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
+
+            this.filePath = filePath;
+            this.pixelFormat = PixelFormat.DontCare;
+            this.mat = null;
+            this.Width = size.Width;
+            this.Height = size.Height;
+            this.Size = size;
+            this.IsEmpty = true;
+        }
+
+        private CvImage(System.Drawing.Size size)
+        {
+            this.filePath = string.Empty;
             this.pixelFormat = PixelFormat.DontCare;
             this.mat = null;
             this.Width = size.Width;
@@ -86,7 +115,30 @@ namespace SWF.Core.ImageAccessor
                 throw new NullReferenceException("MatがNullです。");
             }
 
-            return OpenCVUtil.Resize(this.mat, size.Width, size.Height);
+            try
+            {
+                return OpenCVUtil.Resize(this.mat, size.Width, size.Height);
+            }
+            catch (NotSupportedException ex)
+            {
+                throw new ImageUtilException(CreateErrorMessage(this.filePath), ex);
+            }
+            catch (ArgumentNullException ex)
+            {
+                throw new ImageUtilException(CreateErrorMessage(this.filePath), ex);
+            }
+            catch (ArgumentException ex)
+            {
+                throw new ImageUtilException(CreateErrorMessage(this.filePath), ex);
+            }
+            catch (ObjectDisposedException ex)
+            {
+                throw new ImageUtilException(CreateErrorMessage(this.filePath), ex);
+            }
+            catch (NotImplementedException ex)
+            {
+                throw new ImageUtilException(CreateErrorMessage(this.filePath), ex);
+            }
         }
 
         public void DrawSourceImage(Graphics g, RectangleF destRect, RectangleF srcRect)
@@ -100,9 +152,32 @@ namespace SWF.Core.ImageAccessor
 
             g.CompositingMode = CompositingMode.SourceOver;
 
-            using (var bmp = this.mat.ToBitmap(this.pixelFormat))
+            try
             {
-                g.DrawImage(bmp, destRect, srcRect, GraphicsUnit.Pixel);
+                using (var bmp = this.mat.ToBitmap(this.pixelFormat))
+                {
+                    g.DrawImage(bmp, destRect, srcRect, GraphicsUnit.Pixel);
+                }
+            }
+            catch (NotSupportedException ex)
+            {
+                throw new ImageUtilException(CreateErrorMessage(this.filePath), ex);
+            }
+            catch (ArgumentNullException ex)
+            {
+                throw new ImageUtilException(CreateErrorMessage(this.filePath), ex);
+            }
+            catch (ArgumentException ex)
+            {
+                throw new ImageUtilException(CreateErrorMessage(this.filePath), ex);
+            }
+            catch (ObjectDisposedException ex)
+            {
+                throw new ImageUtilException(CreateErrorMessage(this.filePath), ex);
+            }
+            catch (NotImplementedException ex)
+            {
+                throw new ImageUtilException(CreateErrorMessage(this.filePath), ex);
             }
         }
 
@@ -117,10 +192,33 @@ namespace SWF.Core.ImageAccessor
 
             g.CompositingMode = CompositingMode.SourceOver;
 
-            using (var bmp = OpenCVUtil.Resize(this.mat, (int)destRect.Width, (int)destRect.Height))
+            try
             {
-                g.DrawImage(bmp, destRect,
-                    new RectangleF(0, 0, destRect.Width, destRect.Height), GraphicsUnit.Pixel);
+                using (var bmp = OpenCVUtil.Resize(this.mat, (int)destRect.Width, (int)destRect.Height))
+                {
+                    g.DrawImage(bmp, destRect,
+                        new RectangleF(0, 0, destRect.Width, destRect.Height), GraphicsUnit.Pixel);
+                }
+            }
+            catch (NotSupportedException ex)
+            {
+                throw new ImageUtilException(CreateErrorMessage(this.filePath), ex);
+            }
+            catch (ArgumentNullException ex)
+            {
+                throw new ImageUtilException(CreateErrorMessage(this.filePath), ex);
+            }
+            catch (ArgumentException ex)
+            {
+                throw new ImageUtilException(CreateErrorMessage(this.filePath), ex);
+            }
+            catch (ObjectDisposedException ex)
+            {
+                throw new ImageUtilException(CreateErrorMessage(this.filePath), ex);
+            }
+            catch (NotImplementedException ex)
+            {
+                throw new ImageUtilException(CreateErrorMessage(this.filePath), ex);
             }
         }
     }

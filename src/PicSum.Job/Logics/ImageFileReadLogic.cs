@@ -53,7 +53,7 @@ namespace PicSum.Job.Logics
                 Image = new()
                 {
                     FilePath = filePath,
-                    Image = new CvImage(imageSize),
+                    Image = new CvImage(filePath, imageSize),
                     IsEmpty = true,
                     IsError = false,
                 }
