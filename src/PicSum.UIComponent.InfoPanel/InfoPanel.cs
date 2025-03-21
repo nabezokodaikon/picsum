@@ -338,7 +338,7 @@ namespace PicSum.UIComponent.InfoPanel
                 sf.LineAlignment = StringAlignment.Center;
                 sf.Trimming = StringTrimming.EllipsisCharacter;
                 var text = $"{this.FilePathList.Length} files selected";
-                g.DrawString(text, this.Font, sb, rect, sf);
+                g.DrawString(text, new Font(this.Font.FontFamily, (int)(this.Font.Size * 1.5)), sb, rect, sf);
             }
         }
 
@@ -351,7 +351,7 @@ namespace PicSum.UIComponent.InfoPanel
                 sf.LineAlignment = StringAlignment.Center;
                 sf.Trimming = StringTrimming.EllipsisCharacter;
                 var text = $"Failed to load file";
-                g.DrawString(text, this.Font, sb, rect, sf);
+                g.DrawString(text, new Font(this.Font.FontFamily, (int)(this.Font.Size * 1.5)), sb, rect, sf);
             }
         }
 
