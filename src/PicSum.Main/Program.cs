@@ -47,7 +47,6 @@ namespace PicSum.Main
                         typeof(System.Data.SQLite.AssemblySourceIdAttribute),
 
                         typeof(PicSum.DatabaseAccessor.Connection.FileInfoDB),
-                        typeof(PicSum.Job.Common.ClipFiles),
                         typeof(PicSum.UIComponent.AddressBar.AddressBar),
                         typeof(PicSum.UIComponent.Contents.Common.BrowserPage),
                         typeof(PicSum.UIComponent.InfoPanel.InfoPanel),

@@ -77,7 +77,6 @@ namespace PicSum.Main.UIComponent
                         sortInfo,
                         FileUtil.GetFileName(directoryPath),
                         Instance<IFileIconCacher>.Value.SmallDirectoryIcon,
-                        true,
                         true);
 
                     form.AddImageViewerPageTab(parameter);

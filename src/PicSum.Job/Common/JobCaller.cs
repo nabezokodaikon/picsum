@@ -46,8 +46,6 @@ namespace PicSum.Job.Common
             = new(() => new TwoWayThread<FavoriteDirectoriesGetJob, FavoriteDirectoriesGetParameter, ListResult<FileShallowInfoEntity>>(context, new JobTask()));
         public readonly Lazy<ITwoWayJob<FilesGetByRatingJob, FilesGetByRatingParameter, ListResult<FileShallowInfoEntity>>> FilesGetByRatingJob
             = new(() => new TwoWayThread<FilesGetByRatingJob, FilesGetByRatingParameter, ListResult<FileShallowInfoEntity>>(context, new JobTask()));
-        public readonly Lazy<ITwoWayJob<ClipFilesGetJob, ListResult<FileShallowInfoEntity>>> FilesGetByClipJob
-            = new(() => new TwoWayThread<ClipFilesGetJob, ListResult<FileShallowInfoEntity>>(context, new JobTask()));
         public readonly Lazy<ITwoWayJob<FilesGetByTagJob, FilesGetByTagParameter, ListResult<FileShallowInfoEntity>>> FilesGetByTagJob
             = new(() => new TwoWayThread<FilesGetByTagJob, FilesGetByTagParameter, ListResult<FileShallowInfoEntity>>(context, new JobTask()));
         public readonly Lazy<ITwoWayJob<ImageFilesGetByDirectoryJob, ImageFileGetByDirectoryParameter, ImageFilesGetByDirectoryResult>> ImageFilesGetByDirectoryJob
@@ -95,7 +93,6 @@ namespace PicSum.Job.Common
                 this.FilesGetByDirectoryJob.Value.Dispose();
                 this.FavoriteDirectoriesGetJob.Value.Dispose();
                 this.FilesGetByRatingJob.Value.Dispose();
-                this.FilesGetByClipJob.Value.Dispose();
                 this.FilesGetByTagJob.Value.Dispose();
                 this.ImageFilesGetByDirectoryJob.Value.Dispose();
                 this.NextDirectoryGetJob.Value.Dispose();
@@ -166,22 +163,6 @@ namespace PicSum.Job.Common
             ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
 
             this.jobQueue.Value.Enqueue<FileTagAddJob, FileTagUpdateParameter>(sender, parameter);
-        }
-
-        public void StartClipFilesAddJob(ISender sender, ListParameter<string> parameter)
-        {
-            ArgumentNullException.ThrowIfNull(sender, nameof(sender));
-            ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
-
-            this.jobQueue.Value.Enqueue<ClipFilesAddJob, ListParameter<string>>(sender, parameter);
-        }
-
-        public void StartClipFilesDeleteJob(ISender sender, ListParameter<string> parameter)
-        {
-            ArgumentNullException.ThrowIfNull(sender, nameof(sender));
-            ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
-
-            this.jobQueue.Value.Enqueue<ClipFilesDeleteJob, ListParameter<string>>(sender, parameter);
         }
     }
 }

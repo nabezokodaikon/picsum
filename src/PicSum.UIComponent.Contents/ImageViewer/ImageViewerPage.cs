@@ -680,8 +680,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 this.parameter.ImageFilesGetAction,
                 this.parameter.PageTitle,
                 this.parameter.PageIcon,
-                this.parameter.VisibleBookmarkMenuItem,
-                this.parameter.VisibleClipMenuItem);
+                this.parameter.VisibleBookmarkMenuItem);
 
             var dataObject = new DataObject();
             dataObject.SetData(DataFormats.FileDrop, new string[] { currentFilePath });
@@ -1147,11 +1146,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                     this.OnSelectedFileChanged(new SelectedFileChangeEventArgs(this.leftImagePanel.FilePath));
                 }
             }
-            else if (e.Button == MouseButtons.Middle)
-            {
-                Instance<JobCaller>.Value.StartClipFilesAddJob(
-                    this, [this.leftImagePanel.FilePath]);
-            }
         }
 
         private void RightImagePanel_ImageMouseClick(object sender, MouseEventArgs e)
@@ -1168,11 +1162,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                     this.SelectedFilePath = this.rightImagePanel.FilePath;
                     this.OnSelectedFileChanged(new SelectedFileChangeEventArgs(this.rightImagePanel.FilePath));
                 }
-            }
-            else if (e.Button == MouseButtons.Middle)
-            {
-                Instance<JobCaller>.Value.StartClipFilesAddJob(
-                    this, [this.rightImagePanel.FilePath]);
             }
         }
 
@@ -1207,7 +1196,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                     this.fileContextMenu.SetFile(this.leftImagePanel.FilePath);
                     this.fileContextMenu.VisibleFileActiveTabOpenMenuItem = false;
                     this.fileContextMenu.VisibleBookmarkMenuItem = this.parameter.VisibleBookmarkMenuItem;
-                    this.fileContextMenu.VisibleClipMenuItem = this.parameter.VisibleClipMenuItem;
                     return;
                 }
             }
@@ -1224,7 +1212,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                     this.fileContextMenu.SetFile(this.rightImagePanel.FilePath);
                     this.fileContextMenu.VisibleFileActiveTabOpenMenuItem = false;
                     this.fileContextMenu.VisibleBookmarkMenuItem = this.parameter.VisibleBookmarkMenuItem;
-                    this.fileContextMenu.VisibleClipMenuItem = this.parameter.VisibleClipMenuItem;
                     return;
                 }
             }
@@ -1242,8 +1229,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 this.parameter.SortInfo,
                 this.Title,
                 this.Icon,
-                this.Parameter.VisibleBookmarkMenuItem,
-                this.Parameter.VisibleClipMenuItem);
+                this.Parameter.VisibleBookmarkMenuItem);
             this.OnOpenPage(new BrowserPageEventArgs(PageOpenType.AddTab, param));
         }
 
@@ -1257,8 +1243,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 this.parameter.SortInfo,
                 this.Title,
                 this.Icon,
-                this.Parameter.VisibleBookmarkMenuItem,
-                this.Parameter.VisibleClipMenuItem);
+                this.Parameter.VisibleBookmarkMenuItem);
             this.OnOpenPage(new BrowserPageEventArgs(PageOpenType.NewWindow, param));
         }
 
@@ -1292,13 +1277,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             var paramter = new ValueParameter<string>(e.FilePath);
 
             Instance<JobCaller>.Value.StartBookmarkAddJob(this, paramter);
-        }
-
-        private void FileContextMenu_Clip(object sender, ExecuteFileListEventArgs e)
-        {
-            var paramter = new ListParameter<string>(e.FilePathList);
-
-            Instance<JobCaller>.Value.StartClipFilesAddJob(this, paramter);
         }
     }
 }

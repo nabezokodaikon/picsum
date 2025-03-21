@@ -30,7 +30,6 @@ namespace PicSum.UIComponent.Contents.ContextMenu
         public event EventHandler<ExecuteFileListEventArgs> PathCopy;
         public event EventHandler<ExecuteFileListEventArgs> NameCopy;
         public event EventHandler<ExecuteFileListEventArgs> RemoveFromList;
-        public event EventHandler<ExecuteFileListEventArgs> Clip;
 
         private string[] filePathList = null;
 
@@ -54,7 +53,6 @@ namespace PicSum.UIComponent.Contents.ContextMenu
         private readonly ToolStripMenuItem pathCopyMenuItem = new("Copy the file path");
         private readonly ToolStripMenuItem nameCopyMenuItem = new("Copy the file name");
         private readonly ToolStripMenuItem removeFromListMenuItem = new("Remove from list");
-        private readonly ToolStripMenuItem clipMenuItem = new("Add to clip");
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool VisibleFileActiveTabOpenMenuItem
@@ -238,19 +236,6 @@ namespace PicSum.UIComponent.Contents.ContextMenu
             }
         }
 
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public bool VisibleClipMenuItem
-        {
-            get
-            {
-                return this.clipMenuItem.Visible;
-            }
-            set
-            {
-                this.clipMenuItem.Visible = value;
-            }
-        }
-
         public FileContextMenu()
         {
             if (!this.DesignMode)
@@ -272,7 +257,6 @@ namespace PicSum.UIComponent.Contents.ContextMenu
                     this.pathCopyMenuItem,
                     this.nameCopyMenuItem,
                     this.fileBookmarkMenuItem,
-                    this.clipMenuItem,
                     this.removeFromListMenuItem
                                     ]);
                 this.fileActiveTabOpenMenuItem.Click += new(this.FileActiveTabOpenMenuItem_Click);
@@ -289,7 +273,6 @@ namespace PicSum.UIComponent.Contents.ContextMenu
                 this.nameCopyMenuItem.Click += new(this.NameCopyMenuItem_Click);
                 this.fileBookmarkMenuItem.Click += new(this.FileBookmarkMenuItem_Click);
                 this.removeFromListMenuItem.Click += new(this.RemoveFromListMenuItem_Click);
-                this.clipMenuItem.Click += new(this.ClipMenuItem_Click);
             }
         }
 
@@ -327,7 +310,6 @@ namespace PicSum.UIComponent.Contents.ContextMenu
 
                 this.pathCopyMenuItem.Visible = true;
                 this.nameCopyMenuItem.Visible = true;
-                this.clipMenuItem.Visible = true;
 
                 var isFile = FileUtil.IsFile(filePath);
                 this.fileOpenMenuItem.Visible = isFile;
@@ -427,11 +409,6 @@ namespace PicSum.UIComponent.Contents.ContextMenu
             this.RemoveFromList?.Invoke(this, e);
         }
 
-        private void OnClip(ExecuteFileListEventArgs e)
-        {
-            this.Clip?.Invoke(this, e);
-        }
-
         private void FileActiveTabOpenMenuItem_Click(object sender, EventArgs e)
         {
             this.OnFileActiveTabOpen(new ExecuteFileEventArgs(this.filePathList.First()));
@@ -500,11 +477,6 @@ namespace PicSum.UIComponent.Contents.ContextMenu
         private void RemoveFromListMenuItem_Click(object sender, EventArgs e)
         {
             this.OnRemoveFromList(new ExecuteFileListEventArgs(this.filePathList));
-        }
-
-        private void ClipMenuItem_Click(object sender, EventArgs e)
-        {
-            this.OnClip(new ExecuteFileListEventArgs(this.filePathList));
         }
     }
 }

@@ -303,8 +303,7 @@ namespace PicSum.Main.UIComponent
                     dragData.SortInfo,
                     dragData.PageTitle,
                     dragData.PageIcon,
-                    dragData.VisibleBookmarkMenuItem,
-                    dragData.VisibleClipMenuItem);
+                    dragData.VisibleBookmarkMenuItem);
                 this.OpenPage(parameter, PageOpenType.OverlapTab);
             }
         }
@@ -328,8 +327,7 @@ namespace PicSum.Main.UIComponent
                     dragData.SortInfo,
                     dragData.PageTitle,
                     dragData.PageIcon,
-                    dragData.VisibleBookmarkMenuItem,
-                    dragData.VisibleClipMenuItem);
+                    dragData.VisibleBookmarkMenuItem);
                 this.InsertPage(parameter, tabIndex);
             }
         }
@@ -372,7 +370,6 @@ namespace PicSum.Main.UIComponent
                     GetImageFilesAction(new ImageFileGetByDirectoryParameter(dirPath)),
                     FileUtil.GetFileName(dirPath),
                     Instance<IFileIconCacher>.Value.SmallDirectoryIcon,
-                    true,
                     true);
                 if (e.IsOverlap)
                 {
@@ -685,18 +682,6 @@ namespace PicSum.Main.UIComponent
             else if (e.Button == MouseButtons.Middle)
             {
                 this.OpenPage(new BookmarkFileListPageParameter(), PageOpenType.AddTab);
-            }
-        }
-
-        private void SearchClipToolButton_MouseClick(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Left)
-            {
-                this.OpenPage(new ClipFileListPageParameter(), PageOpenType.OverlapTab);
-            }
-            else if (e.Button == MouseButtons.Middle)
-            {
-                this.OpenPage(new ClipFileListPageParameter(), PageOpenType.AddTab);
             }
         }
     }

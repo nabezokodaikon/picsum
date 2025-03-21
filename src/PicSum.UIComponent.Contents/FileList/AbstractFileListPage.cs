@@ -848,8 +848,7 @@ namespace PicSum.UIComponent.Contents.FileList
                     this.SortInfo,
                     this.Title,
                     this.Icon,
-                    this.Parameter.VisibleBookmarkMenuItem,
-                    this.Parameter.VisibleClipMenuItem);
+                    this.Parameter.VisibleBookmarkMenuItem);
                 this.OnOpenPage(new BrowserPageEventArgs(PageOpenType.AddTab, param));
             }
             else if (!file.IsFile)
@@ -878,8 +877,7 @@ namespace PicSum.UIComponent.Contents.FileList
                     this.SortInfo,
                     this.Title,
                     this.Icon,
-                    this.Parameter.VisibleBookmarkMenuItem,
-                    this.Parameter.VisibleClipMenuItem);
+                    this.Parameter.VisibleBookmarkMenuItem);
                 this.OnOpenPage(new BrowserPageEventArgs(PageOpenType.OverlapTab, param));
             }
             else if (file.IsFile)
@@ -918,8 +916,7 @@ namespace PicSum.UIComponent.Contents.FileList
                     this.SortInfo,
                     this.Title,
                     this.Icon,
-                    this.Parameter.VisibleBookmarkMenuItem,
-                    this.Parameter.VisibleClipMenuItem);
+                    this.Parameter.VisibleBookmarkMenuItem);
                 this.OnOpenPage(new BrowserPageEventArgs(PageOpenType.OverlapTab, param));
             }
             else if (file.IsFile)
@@ -971,8 +968,7 @@ namespace PicSum.UIComponent.Contents.FileList
                     this.GetImageFilesGetAction,
                     this.Title,
                     this.Icon,
-                    this.Parameter.VisibleBookmarkMenuItem,
-                    this.Parameter.VisibleClipMenuItem);
+                    this.Parameter.VisibleBookmarkMenuItem);
 
                 var dataObject = new DataObject();
                 dataObject.SetData(DataFormats.FileDrop, selectedImageFiles);
@@ -991,8 +987,7 @@ namespace PicSum.UIComponent.Contents.FileList
                     this.GetImageFilesGetAction,
                     this.Title,
                     this.Icon,
-                    this.Parameter.VisibleBookmarkMenuItem,
-                    this.Parameter.VisibleClipMenuItem);
+                    this.Parameter.VisibleBookmarkMenuItem);
                 this.DoDragDrop(dragData, DragDropEffects.Copy);
             }
         }
@@ -1020,8 +1015,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 this.SortInfo,
                 this.Title,
                 this.Icon,
-                this.Parameter.VisibleBookmarkMenuItem,
-                this.Parameter.VisibleClipMenuItem);
+                this.Parameter.VisibleBookmarkMenuItem);
             this.OnOpenPage(new BrowserPageEventArgs(PageOpenType.OverlapTab, param));
         }
 
@@ -1035,8 +1029,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 this.SortInfo,
                 this.Title,
                 this.Icon,
-                this.Parameter.VisibleBookmarkMenuItem,
-                this.Parameter.VisibleClipMenuItem);
+                this.Parameter.VisibleBookmarkMenuItem);
             this.OnOpenPage(new BrowserPageEventArgs(PageOpenType.AddTab, param));
         }
 
@@ -1050,8 +1043,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 this.SortInfo,
                 this.Title,
                 this.Icon,
-                this.Parameter.VisibleBookmarkMenuItem,
-                this.Parameter.VisibleClipMenuItem);
+                this.Parameter.VisibleBookmarkMenuItem);
             this.OnOpenPage(new BrowserPageEventArgs(PageOpenType.NewWindow, param));
         }
 
@@ -1120,12 +1112,6 @@ namespace PicSum.UIComponent.Contents.FileList
         private void FileContextMenu_RemoveFromList(object sender, ExecuteFileListEventArgs e)
         {
             this.OnRemoveFile(e.FilePathList);
-        }
-
-        private void FileContextMenu_Clip(object sender, ExecuteFileListEventArgs e)
-        {
-            Instance<JobCaller>.Value.StartClipFilesAddJob(
-                this, new ListParameter<string>(e.FilePathList));
         }
 
         private void FileContextMenu_Bookmark(object sender, ExecuteFileEventArgs e)

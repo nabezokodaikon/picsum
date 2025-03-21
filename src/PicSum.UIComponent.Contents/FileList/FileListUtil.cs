@@ -175,32 +175,6 @@ namespace PicSum.UIComponent.Contents.FileList
             };
         }
 
-        public static Action<ISender> ImageFilesGetActionForClip(ImageViewerPageParameter param)
-        {
-            ArgumentNullException.ThrowIfNull(param, nameof(param));
-
-            return sender =>
-            {
-                Instance<JobCaller>.Value.FilesGetByClipJob.Value
-                    .StartJob(sender, e =>
-                    {
-                        var sortImageFiles = e
-                            .Where(_ => _.IsImageFile)
-                            .Select(_ => _.FilePath)
-                            .ToArray();
-
-                        if (!FileUtil.IsImageFile(param.SelectedFilePath))
-                        {
-                            throw new SWFException($"画像ファイルが選択されていません。'{param.SelectedFilePath}'");
-                        }
-
-                        var eventArgs = new GetImageFilesEventArgs(
-                            sortImageFiles, param.SelectedFilePath, param.PageTitle, param.PageIcon);
-                        param.OnGetImageFiles(eventArgs);
-                    });
-            };
-        }
-
         public static Action<ISender> ImageFilesGetActionForTag(ImageViewerPageParameter param)
         {
             ArgumentNullException.ThrowIfNull(param, nameof(param));

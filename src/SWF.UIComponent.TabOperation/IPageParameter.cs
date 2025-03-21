@@ -13,7 +13,6 @@ namespace SWF.UIComponent.TabOperation
         string SelectedFilePath { get; set; }
         SortInfo SortInfo { get; set; }
         public bool VisibleBookmarkMenuItem { get; }
-        public bool VisibleClipMenuItem { get; }
         PagePanel CreatePage();
     }
 }

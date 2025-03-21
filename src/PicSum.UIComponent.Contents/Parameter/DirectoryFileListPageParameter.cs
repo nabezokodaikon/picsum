@@ -22,7 +22,6 @@ namespace PicSum.UIComponent.Contents.Parameter
         public string SelectedFilePath { get; set; }
         public SortInfo SortInfo { get; set; }
         public bool VisibleBookmarkMenuItem { get; private set; }
-        public bool VisibleClipMenuItem { get; private set; }
 
         public DirectoryFileListPageParameter(string directoryPath, string selectedFilePath)
         {
@@ -33,7 +32,6 @@ namespace PicSum.UIComponent.Contents.Parameter
             this.SelectedFilePath = selectedFilePath;
             this.SortInfo = null;
             this.VisibleBookmarkMenuItem = true;
-            this.VisibleClipMenuItem = true;
         }
 
         public DirectoryFileListPageParameter(string directoryPath)
@@ -45,7 +43,6 @@ namespace PicSum.UIComponent.Contents.Parameter
             this.SelectedFilePath = string.Empty;
             this.SortInfo = null;
             this.VisibleBookmarkMenuItem = true;
-            this.VisibleClipMenuItem = true;
         }
 
         public PagePanel CreatePage()
