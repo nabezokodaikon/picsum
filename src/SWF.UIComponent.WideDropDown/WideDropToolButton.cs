@@ -66,7 +66,7 @@ namespace SWF.UIComponent.WideDropDown
             }
 
             this.dropDownList.Show(
-                this, new Point(this.Width - this.dropDownList.Size.Width, this.Height));
+                this, new Point(this.Width, 0));
 
             if (!string.IsNullOrEmpty(this.SelectedItem))
             {

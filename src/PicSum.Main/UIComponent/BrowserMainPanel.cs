@@ -73,16 +73,16 @@ namespace PicSum.Main.UIComponent
             if (!this.DesignMode)
             {
                 this.pageContainer.SetBounds(
-                    0,
-                    64,
-                    this.Width,
-                    402);
+                    this.toolPanel2.Right,
+                    this.toolPanel.Bottom,
+                    this.Width - this.toolPanel2.Width,
+                    this.Height - this.toolPanel.Height);
 
                 this.infoPanel.SetBounds(
-                    this.pageContainer.Width - AppConstants.INFOPANEL_WIDTH,
-                    this.pageContainer.Location.Y,
-                    AppConstants.INFOPANEL_WIDTH,
-                    402);
+                    this.pageContainer.Right,
+                    this.toolPanel.Bottom,
+                    0,
+                    this.Height - this.toolPanel.Height);
 
                 this.pageContainer.Anchor
                     = AnchorStyles.Top
@@ -557,13 +557,33 @@ namespace PicSum.Main.UIComponent
 
         private void ShowInfoToolButton_MouseClick(object sender, MouseEventArgs e)
         {
-            if (this.pageContainer.Width == this.Width)
+            if (this.infoPanel.Width == 0)
             {
-                this.pageContainer.Width = this.Width - AppConstants.INFOPANEL_WIDTH;
+                this.pageContainer.SetBounds(
+                    this.toolPanel2.Right,
+                    this.toolPanel.Bottom,
+                    this.Width - this.toolPanel2.Width - AppConstants.INFOPANEL_WIDTH,
+                    this.Height - this.toolPanel.Height);
+
+                this.infoPanel.SetBounds(
+                    this.pageContainer.Right,
+                    this.toolPanel.Bottom,
+                    AppConstants.INFOPANEL_WIDTH,
+                    this.Height - this.toolPanel.Height);
             }
             else
             {
-                this.pageContainer.Width = this.Width;
+                this.pageContainer.SetBounds(
+                    this.toolPanel2.Right,
+                    this.toolPanel.Bottom,
+                    this.Width - this.toolPanel2.Width,
+                    this.Height - this.toolPanel.Height);
+
+                this.infoPanel.SetBounds(
+                    this.pageContainer.Right,
+                    this.toolPanel.Bottom,
+                    0,
+                    this.Height - this.toolPanel.Height);
             }
 
             var activeTab = this.tabSwitch.ActiveTab;

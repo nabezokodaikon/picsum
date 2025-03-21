@@ -25,23 +25,25 @@ namespace PicSum.Main.UIComponent
             this.infoPanel = new PicSum.UIComponent.InfoPanel.InfoPanel();
             this.tabSwitch = new SWF.UIComponent.TabOperation.TabSwitch();
             this.toolPanel = new Panel();
-            this.searchBookmarkToolButton = new SWF.UIComponent.Core.ToolButton();
             this.reloadToolButton = new SWF.UIComponent.Core.ToolButton();
-            this.tagDropToolButton = new SWF.UIComponent.WideDropDown.WideDropToolButton();
-            this.homeToolButton = new SWF.UIComponent.Core.ToolButton();
             this.nextPageHistoryButton = new SWF.UIComponent.Core.ToolButton();
-            this.searchRatingToolButton = new SWF.UIComponent.Core.ToolButton();
             this.previewPageHistoryButton = new SWF.UIComponent.Core.ToolButton();
             this.showInfoToolButton = new SWF.UIComponent.Core.ToolButton();
             this.addressBar = new PicSum.UIComponent.AddressBar.AddressBar();
+            this.searchBookmarkToolButton = new SWF.UIComponent.Core.ToolButton();
+            this.tagDropToolButton = new SWF.UIComponent.WideDropDown.WideDropToolButton();
+            this.homeToolButton = new SWF.UIComponent.Core.ToolButton();
+            this.searchRatingToolButton = new SWF.UIComponent.Core.ToolButton();
+            this.toolPanel2 = new Panel();
             this.toolPanel.SuspendLayout();
+            this.toolPanel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // pageContainer
             // 
             this.pageContainer.AllowDrop = true;
-            this.pageContainer.Dock = DockStyle.Fill;
-            this.pageContainer.Location = new Point(0, 0);
+            this.pageContainer.BackColor = Color.Transparent;
+            this.pageContainer.Location = new Point(500, 0);
             this.pageContainer.Name = "pageContainer";
             this.pageContainer.Size = new Size(746, 402);
             this.pageContainer.TabIndex = 1;
@@ -63,10 +65,10 @@ namespace PicSum.Main.UIComponent
             // 
             this.tabSwitch.AllowDrop = true;
             this.tabSwitch.BackColor = Color.Black;
-            this.tabSwitch.Dock = DockStyle.Fill;
+            this.tabSwitch.Dock = DockStyle.Top;
             this.tabSwitch.Location = new Point(0, 0);
             this.tabSwitch.Name = "tabSwitch";
-            this.tabSwitch.Size = new Size(746, 466);
+            this.tabSwitch.Size = new Size(746, 29);
             this.tabSwitch.TabIndex = 4;
             this.tabSwitch.Text = "tabSwitch1";
             this.tabSwitch.ActiveTabChanged += this.TabSwitch_ActiveTabChanged;
@@ -82,12 +84,8 @@ namespace PicSum.Main.UIComponent
             this.toolPanel.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             this.toolPanel.BackColor = Color.FromArgb(241, 244, 250);
             this.toolPanel.BackgroundImageLayout = ImageLayout.Stretch;
-            this.toolPanel.Controls.Add(this.searchBookmarkToolButton);
             this.toolPanel.Controls.Add(this.reloadToolButton);
-            this.toolPanel.Controls.Add(this.tagDropToolButton);
-            this.toolPanel.Controls.Add(this.homeToolButton);
             this.toolPanel.Controls.Add(this.nextPageHistoryButton);
-            this.toolPanel.Controls.Add(this.searchRatingToolButton);
             this.toolPanel.Controls.Add(this.previewPageHistoryButton);
             this.toolPanel.Controls.Add(this.showInfoToolButton);
             this.toolPanel.Controls.Add(this.addressBar);
@@ -99,64 +97,19 @@ namespace PicSum.Main.UIComponent
             this.toolPanel.Size = new Size(746, 34);
             this.toolPanel.TabIndex = 5;
             // 
-            // searchBookmarkToolButton
-            // 
-            this.searchBookmarkToolButton.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            this.searchBookmarkToolButton.FlatAppearance.BorderSize = 0;
-            this.searchBookmarkToolButton.FlatAppearance.MouseDownBackColor = Color.Transparent;
-            this.searchBookmarkToolButton.FlatStyle = FlatStyle.Flat;
-            this.searchBookmarkToolButton.Image = (Image)resources.GetObject("searchBookmarkToolButton.Image");
-            this.searchBookmarkToolButton.Location = new Point(678, 4);
-            this.searchBookmarkToolButton.Margin = new Padding(0, 2, 2, 2);
-            this.searchBookmarkToolButton.Name = "searchBookmarkToolButton";
-            this.searchBookmarkToolButton.Size = new Size(32, 28);
-            this.searchBookmarkToolButton.TabIndex = 11;
-            this.searchBookmarkToolButton.UseVisualStyleBackColor = true;
-            this.searchBookmarkToolButton.MouseClick += this.SearchBookmarkToolButton_MouseClick;
-            // 
             // reloadToolButton
             // 
             this.reloadToolButton.FlatAppearance.BorderSize = 0;
             this.reloadToolButton.FlatAppearance.MouseDownBackColor = Color.Transparent;
             this.reloadToolButton.FlatStyle = FlatStyle.Flat;
             this.reloadToolButton.Image = (Image)resources.GetObject("reloadToolButton.Image");
-            this.reloadToolButton.Location = new Point(76, 3);
+            this.reloadToolButton.Location = new Point(73, 3);
+            this.reloadToolButton.Margin = new Padding(0, 3, 3, 3);
             this.reloadToolButton.Name = "reloadToolButton";
             this.reloadToolButton.Size = new Size(32, 28);
             this.reloadToolButton.TabIndex = 10;
             this.reloadToolButton.UseVisualStyleBackColor = true;
             this.reloadToolButton.MouseClick += this.ReloadToolButton_MouseClick;
-            // 
-            // tagDropToolButton
-            // 
-            this.tagDropToolButton.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            this.tagDropToolButton.BackColor = Color.FromArgb(241, 244, 250);
-            this.tagDropToolButton.FlatAppearance.BorderSize = 0;
-            this.tagDropToolButton.FlatAppearance.MouseDownBackColor = Color.Transparent;
-            this.tagDropToolButton.FlatStyle = FlatStyle.Flat;
-            this.tagDropToolButton.Image = (Image)resources.GetObject("tagDropToolButton.Image");
-            this.tagDropToolButton.Icon = (Image)resources.GetObject("tagDropToolButton.Icon");
-            this.tagDropToolButton.Location = new Point(610, 3);
-            this.tagDropToolButton.Margin = new Padding(2);
-            this.tagDropToolButton.Name = "tagDropToolButton";
-            this.tagDropToolButton.Size = new Size(32, 28);
-            this.tagDropToolButton.TabIndex = 9;
-            this.tagDropToolButton.UseVisualStyleBackColor = true;
-            this.tagDropToolButton.ItemMouseClick += this.TagDropToolButton_ItemMouseClick;
-            this.tagDropToolButton.DropDownOpening += this.TagDropToolButton_DropDownOpening;
-            // 
-            // homeToolButton
-            // 
-            this.homeToolButton.FlatAppearance.BorderSize = 0;
-            this.homeToolButton.FlatAppearance.MouseDownBackColor = Color.Transparent;
-            this.homeToolButton.FlatStyle = FlatStyle.Flat;
-            this.homeToolButton.Image = (Image)resources.GetObject("homeToolButton.Image");
-            this.homeToolButton.Location = new Point(114, 3);
-            this.homeToolButton.Name = "homeToolButton";
-            this.homeToolButton.Size = new Size(32, 28);
-            this.homeToolButton.TabIndex = 6;
-            this.homeToolButton.UseVisualStyleBackColor = true;
-            this.homeToolButton.MouseClick += this.HomeToolButton_MouseClick;
             // 
             // nextPageHistoryButton
             // 
@@ -173,21 +126,6 @@ namespace PicSum.Main.UIComponent
             this.nextPageHistoryButton.UseVisualStyleBackColor = true;
             this.nextPageHistoryButton.MouseClick += this.NextPageHistoryButton_MouseClick;
             // 
-            // searchRatingToolButton
-            // 
-            this.searchRatingToolButton.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            this.searchRatingToolButton.FlatAppearance.BorderSize = 0;
-            this.searchRatingToolButton.FlatAppearance.MouseDownBackColor = Color.Transparent;
-            this.searchRatingToolButton.FlatStyle = FlatStyle.Flat;
-            this.searchRatingToolButton.Image = (Image)resources.GetObject("searchRatingToolButton.Image");
-            this.searchRatingToolButton.Location = new Point(644, 4);
-            this.searchRatingToolButton.Margin = new Padding(0, 2, 2, 2);
-            this.searchRatingToolButton.Name = "searchRatingToolButton";
-            this.searchRatingToolButton.Size = new Size(32, 28);
-            this.searchRatingToolButton.TabIndex = 8;
-            this.searchRatingToolButton.UseVisualStyleBackColor = true;
-            this.searchRatingToolButton.MouseClick += this.SearchRatingToolButton_MouseClick;
-            // 
             // previewPageHistoryButton
             // 
             this.previewPageHistoryButton.Enabled = false;
@@ -195,8 +133,7 @@ namespace PicSum.Main.UIComponent
             this.previewPageHistoryButton.FlatAppearance.MouseDownBackColor = Color.Transparent;
             this.previewPageHistoryButton.FlatStyle = FlatStyle.Flat;
             this.previewPageHistoryButton.Image = (Image)resources.GetObject("previewPageHistoryButton.Image");
-            this.previewPageHistoryButton.Location = new Point(6, 3);
-            this.previewPageHistoryButton.Margin = new Padding(6, 3, 0, 3);
+            this.previewPageHistoryButton.Location = new Point(3, 3);
             this.previewPageHistoryButton.Name = "previewPageHistoryButton";
             this.previewPageHistoryButton.Size = new Size(32, 28);
             this.previewPageHistoryButton.TabIndex = 0;
@@ -211,7 +148,7 @@ namespace PicSum.Main.UIComponent
             this.showInfoToolButton.FlatStyle = FlatStyle.Flat;
             this.showInfoToolButton.Image = (Image)resources.GetObject("showInfoToolButton.Image");
             this.showInfoToolButton.Location = new Point(712, 3);
-            this.showInfoToolButton.Margin = new Padding(0, 2, 2, 2);
+            this.showInfoToolButton.Margin = new Padding(0, 3, 3, 3);
             this.showInfoToolButton.Name = "showInfoToolButton";
             this.showInfoToolButton.Size = new Size(32, 28);
             this.showInfoToolButton.TabIndex = 5;
@@ -222,21 +159,95 @@ namespace PicSum.Main.UIComponent
             // 
             this.addressBar.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             this.addressBar.BackColor = Color.FromArgb(124, 138, 153);
-            this.addressBar.Location = new Point(152, 4);
-            this.addressBar.Margin = new Padding(3, 4, 3, 4);
+            this.addressBar.Location = new Point(108, 4);
+            this.addressBar.Margin = new Padding(0, 4, 3, 4);
             this.addressBar.Name = "addressBar";
-            this.addressBar.Size = new Size(453, 26);
+            this.addressBar.Size = new Size(601, 26);
             this.addressBar.TabIndex = 0;
             this.addressBar.SelectedDirectory += this.AddressBar_SelectedDirectory;
+            // 
+            // searchBookmarkToolButton
+            // 
+            this.searchBookmarkToolButton.FlatAppearance.BorderSize = 0;
+            this.searchBookmarkToolButton.FlatAppearance.MouseDownBackColor = Color.Transparent;
+            this.searchBookmarkToolButton.FlatStyle = FlatStyle.Flat;
+            this.searchBookmarkToolButton.Image = (Image)resources.GetObject("searchBookmarkToolButton.Image");
+            this.searchBookmarkToolButton.Location = new Point(3, 98);
+            this.searchBookmarkToolButton.Margin = new Padding(3, 0, 3, 3);
+            this.searchBookmarkToolButton.Name = "searchBookmarkToolButton";
+            this.searchBookmarkToolButton.Size = new Size(32, 28);
+            this.searchBookmarkToolButton.TabIndex = 11;
+            this.searchBookmarkToolButton.UseVisualStyleBackColor = true;
+            this.searchBookmarkToolButton.MouseClick += this.SearchBookmarkToolButton_MouseClick;
+            // 
+            // tagDropToolButton
+            // 
+            this.tagDropToolButton.BackColor = Color.FromArgb(241, 244, 250);
+            this.tagDropToolButton.FlatAppearance.BorderSize = 0;
+            this.tagDropToolButton.FlatAppearance.MouseDownBackColor = Color.Transparent;
+            this.tagDropToolButton.FlatStyle = FlatStyle.Flat;
+            this.tagDropToolButton.Image = (Image)resources.GetObject("tagDropToolButton.Image");
+            this.tagDropToolButton.Icon = (Image)resources.GetObject("tagDropToolButton.Icon");
+            this.tagDropToolButton.Location = new Point(3, 36);
+            this.tagDropToolButton.Margin = new Padding(3, 0, 3, 3);
+            this.tagDropToolButton.Name = "tagDropToolButton";
+            this.tagDropToolButton.Size = new Size(32, 28);
+            this.tagDropToolButton.TabIndex = 9;
+            this.tagDropToolButton.UseVisualStyleBackColor = true;
+            this.tagDropToolButton.ItemMouseClick += this.TagDropToolButton_ItemMouseClick;
+            this.tagDropToolButton.DropDownOpening += this.TagDropToolButton_DropDownOpening;
+            // 
+            // homeToolButton
+            // 
+            this.homeToolButton.FlatAppearance.BorderSize = 0;
+            this.homeToolButton.FlatAppearance.MouseDownBackColor = Color.Transparent;
+            this.homeToolButton.FlatStyle = FlatStyle.Flat;
+            this.homeToolButton.Image = (Image)resources.GetObject("homeToolButton.Image");
+            this.homeToolButton.Location = new Point(3, 5);
+            this.homeToolButton.Name = "homeToolButton";
+            this.homeToolButton.Size = new Size(32, 28);
+            this.homeToolButton.TabIndex = 6;
+            this.homeToolButton.UseVisualStyleBackColor = true;
+            this.homeToolButton.MouseClick += this.HomeToolButton_MouseClick;
+            // 
+            // searchRatingToolButton
+            // 
+            this.searchRatingToolButton.FlatAppearance.BorderSize = 0;
+            this.searchRatingToolButton.FlatAppearance.MouseDownBackColor = Color.Transparent;
+            this.searchRatingToolButton.FlatStyle = FlatStyle.Flat;
+            this.searchRatingToolButton.Image = (Image)resources.GetObject("searchRatingToolButton.Image");
+            this.searchRatingToolButton.Location = new Point(3, 67);
+            this.searchRatingToolButton.Margin = new Padding(3, 0, 3, 3);
+            this.searchRatingToolButton.Name = "searchRatingToolButton";
+            this.searchRatingToolButton.Size = new Size(32, 28);
+            this.searchRatingToolButton.TabIndex = 8;
+            this.searchRatingToolButton.UseVisualStyleBackColor = true;
+            this.searchRatingToolButton.MouseClick += this.SearchRatingToolButton_MouseClick;
+            // 
+            // toolPanel2
+            // 
+            this.toolPanel2.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
+            this.toolPanel2.BackColor = Color.Transparent;
+            this.toolPanel2.Controls.Add(this.searchBookmarkToolButton);
+            this.toolPanel2.Controls.Add(this.homeToolButton);
+            this.toolPanel2.Controls.Add(this.tagDropToolButton);
+            this.toolPanel2.Controls.Add(this.searchRatingToolButton);
+            this.toolPanel2.Location = new Point(0, 63);
+            this.toolPanel2.Margin = new Padding(0);
+            this.toolPanel2.Name = "toolPanel2";
+            this.toolPanel2.Size = new Size(38, 403);
+            this.toolPanel2.TabIndex = 6;
             // 
             // BrowserMainPanel
             // 
             this.BackColor = Color.FromArgb(241, 244, 250);
+            this.Controls.Add(this.toolPanel2);
             this.Controls.Add(this.toolPanel);
             this.Controls.Add(this.tabSwitch);
             this.Name = "BrowserMainPanel";
             this.Size = new Size(746, 466);
             this.toolPanel.ResumeLayout(false);
+            this.toolPanel2.ResumeLayout(false);
             this.ResumeLayout(false);
         }
 
@@ -255,5 +266,7 @@ namespace PicSum.Main.UIComponent
         private SWF.UIComponent.Core.ToolButton searchBookmarkToolButton;
 
         #endregion
+
+        private Panel toolPanel2;
     }
 }
