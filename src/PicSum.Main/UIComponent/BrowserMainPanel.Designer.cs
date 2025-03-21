@@ -182,7 +182,7 @@ namespace PicSum.Main.UIComponent
             // 
             // tagDropToolButton
             // 
-            this.tagDropToolButton.BackColor = Color.FromArgb(241, 244, 250);
+            this.tagDropToolButton.BackColor = Color.Transparent;
             this.tagDropToolButton.FlatAppearance.BorderSize = 0;
             this.tagDropToolButton.FlatAppearance.MouseDownBackColor = Color.Transparent;
             this.tagDropToolButton.FlatStyle = FlatStyle.Flat;
