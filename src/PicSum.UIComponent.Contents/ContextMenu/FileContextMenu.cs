@@ -36,10 +36,10 @@ namespace PicSum.UIComponent.Contents.ContextMenu
         private readonly ToolStripMenuItem fileActiveTabOpenMenuItem = new("Open");
         private readonly ToolStripMenuItem fileNewTabOpenMenuItem = new("Open in new tab");
         private readonly ToolStripMenuItem fileNewWindowOpenMenuItem = new("Open in new window");
-        private readonly ToolStripMenuItem fileBookmarkMenuItem = new("Make a bookmark");
+        private readonly ToolStripMenuItem fileBookmarkMenuItem = new("Bookmark");
 
         // ファイルメニュー項目
-        private readonly ToolStripMenuItem selectApplicationMenuItem = new("Select and open the application");
+        private readonly ToolStripMenuItem selectApplicationMenuItem = new("Open in other application");
         private readonly ToolStripMenuItem saveDirectoryOpenMenuItem = new("Open save folder");
 
         // フォルダメニュー項目
@@ -48,8 +48,8 @@ namespace PicSum.UIComponent.Contents.ContextMenu
         private readonly ToolStripMenuItem directoryNewWindowOpenMenuItem = new("Open in new window");
         private readonly ToolStripMenuItem explorerOpenMenuItem = new("Open in explorer");
 
-        private readonly ToolStripMenuItem pathCopyMenuItem = new("Copy the file path");
-        private readonly ToolStripMenuItem nameCopyMenuItem = new("Copy the file name");
+        private readonly ToolStripMenuItem pathCopyMenuItem = new("Copy path");
+        private readonly ToolStripMenuItem nameCopyMenuItem = new("Copy name");
         private readonly ToolStripMenuItem removeFromListMenuItem = new("Remove from list");
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
