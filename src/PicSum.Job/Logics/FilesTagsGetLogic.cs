@@ -23,7 +23,7 @@ namespace PicSum.Job.Logics
             var dtoList = Instance<IFileInfoDB>.Value.ReadList<FileTagDto>(sql);
 
             var infoList = new ListEntity<FileTagInfoEntity>();
-            foreach (var dto in dtoList)
+            foreach (var dto in dtoList.OrderBy(dto => dto.Tag))
             {
                 this.CheckCancel();
 
