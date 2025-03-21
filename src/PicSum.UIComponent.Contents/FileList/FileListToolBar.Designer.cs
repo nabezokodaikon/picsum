@@ -50,7 +50,7 @@ namespace PicSum.UIComponent.Contents.FileList
             // 
             // viewButton
             // 
-            this.viewButton.BackColor = Color.FromArgb(241, 244, 250);
+            this.viewButton.BackColor = Color.Transparent;
             this.viewButton.FlatAppearance.BorderSize = 0;
             this.viewButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.viewButton.Location = new Point(3, 3);
@@ -63,7 +63,7 @@ namespace PicSum.UIComponent.Contents.FileList
             // 
             // nameSortButton
             // 
-            this.nameSortButton.BackColor = Color.FromArgb(241, 244, 250);
+            this.nameSortButton.BackColor = Color.Transparent;
             this.nameSortButton.FlatAppearance.BorderSize = 0;
             this.nameSortButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.nameSortButton.Location = new Point(73, 3);
@@ -77,7 +77,7 @@ namespace PicSum.UIComponent.Contents.FileList
             // 
             // pathSortButton
             // 
-            this.pathSortButton.BackColor = Color.FromArgb(241, 244, 250);
+            this.pathSortButton.BackColor = Color.Transparent;
             this.pathSortButton.FlatAppearance.BorderSize = 0;
             this.pathSortButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.pathSortButton.Location = new Point(175, 3);
@@ -91,7 +91,7 @@ namespace PicSum.UIComponent.Contents.FileList
             // 
             // timestampSortButton
             // 
-            this.timestampSortButton.BackColor = Color.FromArgb(241, 244, 250);
+            this.timestampSortButton.BackColor = Color.Transparent;
             this.timestampSortButton.FlatAppearance.BorderSize = 0;
             this.timestampSortButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.timestampSortButton.Location = new Point(277, 3);
@@ -105,7 +105,7 @@ namespace PicSum.UIComponent.Contents.FileList
             // 
             // registrationSortButton
             // 
-            this.registrationSortButton.BackColor = Color.FromArgb(241, 244, 250);
+            this.registrationSortButton.BackColor = Color.Transparent;
             this.registrationSortButton.FlatAppearance.BorderSize = 0;
             this.registrationSortButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.registrationSortButton.Location = new Point(379, 3);
@@ -170,7 +170,7 @@ namespace PicSum.UIComponent.Contents.FileList
             // 
             // movePreviewButton
             // 
-            this.movePreviewButton.BackColor = Color.FromArgb(241, 244, 250);
+            this.movePreviewButton.BackColor = Color.Transparent;
             this.movePreviewButton.FlatAppearance.BorderSize = 0;
             this.movePreviewButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.movePreviewButton.Location = new Point(595, 3);
@@ -183,7 +183,7 @@ namespace PicSum.UIComponent.Contents.FileList
             // 
             // moveNextButton
             // 
-            this.moveNextButton.BackColor = Color.FromArgb(241, 244, 250);
+            this.moveNextButton.BackColor = Color.Transparent;
             this.moveNextButton.FlatAppearance.BorderSize = 0;
             this.moveNextButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.moveNextButton.Location = new Point(665, 3);

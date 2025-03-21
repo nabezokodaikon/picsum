@@ -79,7 +79,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             // 
             // doublePreviewButton
             // 
-            this.doublePreviewButton.BackColor = System.Drawing.Color.FromArgb(241, 244, 250);
+            this.doublePreviewButton.BackColor = System.Drawing.Color.Transparent;
             this.doublePreviewButton.FlatAppearance.BorderSize = 0;
             this.doublePreviewButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.doublePreviewButton.Location = new System.Drawing.Point(143, 3);
@@ -93,7 +93,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             // 
             // singlePreviewButton
             // 
-            this.singlePreviewButton.BackColor = System.Drawing.Color.FromArgb(241, 244, 250);
+            this.singlePreviewButton.BackColor = System.Drawing.Color.Transparent;
             this.singlePreviewButton.FlatAppearance.BorderSize = 0;
             this.singlePreviewButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.singlePreviewButton.Location = new System.Drawing.Point(213, 3);
@@ -107,7 +107,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             // 
             // doubleNextButton
             // 
-            this.doubleNextButton.BackColor = System.Drawing.Color.FromArgb(241, 244, 250);
+            this.doubleNextButton.BackColor = System.Drawing.Color.Transparent;
             this.doubleNextButton.FlatAppearance.BorderSize = 0;
             this.doubleNextButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.doubleNextButton.Location = new System.Drawing.Point(353, 3);
@@ -121,7 +121,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             // 
             // singleNextButton
             // 
-            this.singleNextButton.BackColor = System.Drawing.Color.FromArgb(241, 244, 250);
+            this.singleNextButton.BackColor = System.Drawing.Color.Transparent;
             this.singleNextButton.FlatAppearance.BorderSize = 0;
             this.singleNextButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.singleNextButton.Location = new System.Drawing.Point(283, 3);
@@ -148,7 +148,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             // 
             // viewButton
             // 
-            this.viewButton.BackColor = System.Drawing.Color.FromArgb(241, 244, 250);
+            this.viewButton.BackColor = System.Drawing.Color.Transparent;
             this.viewButton.FlatAppearance.BorderSize = 0;
             this.viewButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.viewButton.Location = new System.Drawing.Point(3, 3);
@@ -162,7 +162,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             // 
             // sizeButton
             // 
-            this.sizeButton.BackColor = System.Drawing.Color.FromArgb(241, 244, 250);
+            this.sizeButton.BackColor = System.Drawing.Color.Transparent;
             this.sizeButton.FlatAppearance.BorderSize = 0;
             this.sizeButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.sizeButton.Location = new System.Drawing.Point(73, 3);

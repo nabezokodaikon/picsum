@@ -82,7 +82,7 @@ namespace PicSum.UIComponent.InfoPanel
             // tagFlowList
             // 
             this.tagFlowList.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
-            this.tagFlowList.BackColor = Color.FromArgb(241, 244, 250);
+            this.tagFlowList.BackColor = Color.Transparent;
             this.tagFlowList.ContextMenuStrip = this.tagContextMenuStrip;
             this.tagFlowList.Font = new Font("Yu Gothic UI", 10F);
             this.tagFlowList.IsLileList = true;
@@ -106,6 +106,7 @@ namespace PicSum.UIComponent.InfoPanel
             this.wideComboBox.Name = "wideComboBox";
             this.wideComboBox.Size = new Size(508, 32);
             this.wideComboBox.TabIndex = 27;
+            this.wideComboBox.BackColor = Color.Transparent;
             this.wideComboBox.Icon = SWF.Core.Base.ResourceFiles.TagIcon.Value;
             this.wideComboBox.DropDownOpening += this.WideComboBox_DropDownOpening;
             this.wideComboBox.AddItem += this.WideComboBox_AddItem;
@@ -124,7 +125,7 @@ namespace PicSum.UIComponent.InfoPanel
             // 
             // InfoPanel
             // 
-            this.BackColor = Color.FromArgb(241, 244, 250);
+            this.BackColor = Color.Transparent;
             this.Controls.Add(this.wideComboBox);
             this.Controls.Add(this.thumbnailPictureBox);
             this.Controls.Add(this.ratingBar);

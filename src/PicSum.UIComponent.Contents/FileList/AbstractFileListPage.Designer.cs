@@ -94,7 +94,8 @@ namespace PicSum.UIComponent.Contents.FileList
             this.toolBar.FileNameMenuItemClick += new System.EventHandler(this.ShowFileNameToolStripMenuItem_Click);
             // 
             // FileListPageBase
-            // 
+            //
+            this.BackColor = System.Drawing.Color.Transparent;
             this.Controls.Add(this.flowList);
             this.Controls.Add(this.toolBar);
             this.Name = "FileListPageBase";

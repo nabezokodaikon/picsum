@@ -52,7 +52,7 @@ namespace PicSum.Main.UIComponent
             // 
             // infoPanel
             // 
-            this.infoPanel.BackColor = Color.FromArgb(241, 244, 250);
+            this.infoPanel.BackColor = Color.Transparent;
             this.infoPanel.Dock = DockStyle.Fill;
             this.infoPanel.Font = new Font("Yu Gothic UI", 9F);
             this.infoPanel.Location = new Point(0, 0);
@@ -82,7 +82,7 @@ namespace PicSum.Main.UIComponent
             // toolPanel
             // 
             this.toolPanel.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            this.toolPanel.BackColor = Color.FromArgb(241, 244, 250);
+            this.toolPanel.BackColor = Color.Transparent;
             this.toolPanel.BackgroundImageLayout = ImageLayout.Stretch;
             this.toolPanel.Controls.Add(this.reloadToolButton);
             this.toolPanel.Controls.Add(this.nextPageHistoryButton);
@@ -240,7 +240,7 @@ namespace PicSum.Main.UIComponent
             // 
             // BrowserMainPanel
             // 
-            this.BackColor = Color.FromArgb(241, 244, 250);
+            this.BackColor = Color.White;
             this.Controls.Add(this.toolPanel2);
             this.Controls.Add(this.toolPanel);
             this.Controls.Add(this.tabSwitch);
