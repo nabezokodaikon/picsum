@@ -76,13 +76,13 @@ namespace PicSum.Main.UIComponent
                     this.toolPanel2.Right,
                     this.toolPanel.Bottom,
                     this.Width - this.toolPanel2.Width,
-                    this.Height - this.toolPanel.Height);
+                    this.Height - this.toolPanel.Bottom);
 
                 this.infoPanel.SetBounds(
                     this.pageContainer.Right,
                     this.toolPanel.Bottom,
                     0,
-                    this.Height - this.toolPanel.Height);
+                    this.Height - this.toolPanel.Bottom);
 
                 this.pageContainer.Anchor
                     = AnchorStyles.Top
@@ -563,13 +563,13 @@ namespace PicSum.Main.UIComponent
                     this.toolPanel2.Right,
                     this.toolPanel.Bottom,
                     this.Width - this.toolPanel2.Width - AppConstants.INFOPANEL_WIDTH,
-                    this.Height - this.toolPanel.Height);
+                    this.Height - this.toolPanel.Bottom);
 
                 this.infoPanel.SetBounds(
                     this.pageContainer.Right,
                     this.toolPanel.Bottom,
                     AppConstants.INFOPANEL_WIDTH,
-                    this.Height - this.toolPanel.Height);
+                    this.Height - this.toolPanel.Bottom);
             }
             else
             {
@@ -577,13 +577,13 @@ namespace PicSum.Main.UIComponent
                     this.toolPanel2.Right,
                     this.toolPanel.Bottom,
                     this.Width - this.toolPanel2.Width,
-                    this.Height - this.toolPanel.Height);
+                    this.Height - this.toolPanel.Bottom);
 
                 this.infoPanel.SetBounds(
                     this.pageContainer.Right,
                     this.toolPanel.Bottom,
                     0,
-                    this.Height - this.toolPanel.Height);
+                    this.Height - this.toolPanel.Bottom);
             }
 
             var activeTab = this.tabSwitch.ActiveTab;
