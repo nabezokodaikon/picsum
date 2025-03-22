@@ -41,7 +41,6 @@ namespace SWF.UIComponent.ImagePanel
         private int vScrollValue = 0;
 
         private bool isDrag = false;
-        private bool isImageMove = false;
         private bool isThumbnailMove = false;
         private Point moveFromPoint = Point.Empty;
         private bool isError = false;
@@ -56,6 +55,9 @@ namespace SWF.UIComponent.ImagePanel
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public string FilePath { get; private set; } = string.Empty;
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public bool IsImageMove { get; private set; } = false;
 
         public Size ImageSize
         {
@@ -106,7 +108,7 @@ namespace SWF.UIComponent.ImagePanel
         {
             get
             {
-                return this.isImageMove || this.isThumbnailMove;
+                return this.IsImageMove || this.isThumbnailMove;
             }
         }
 
@@ -285,7 +287,7 @@ namespace SWF.UIComponent.ImagePanel
                     else if (this.IsMousePointImage(e.X, e.Y))
                     {
                         // 画像
-                        this.isImageMove = true;
+                        this.IsImageMove = true;
                         this.moveFromPoint.X = e.X;
                         this.moveFromPoint.Y = e.Y;
                         this.Cursor = Cursors.NoMove2D;
@@ -323,7 +325,7 @@ namespace SWF.UIComponent.ImagePanel
                 this.moveFromPoint.X = e.X;
                 this.moveFromPoint.Y = e.Y;
             }
-            else if (this.isImageMove)
+            else if (this.IsImageMove)
             {
                 if (this.SetHScrollValue(this.hScrollValue - (e.X - this.moveFromPoint.X)) |
                     this.SetVScrollValue(this.vScrollValue - (e.Y - this.moveFromPoint.Y)))
@@ -360,9 +362,9 @@ namespace SWF.UIComponent.ImagePanel
                 this.Cursor = Cursors.Default;
             }
 
-            if (this.isImageMove || this.isThumbnailMove)
+            if (this.IsImageMove || this.isThumbnailMove)
             {
-                this.isImageMove = false;
+                this.IsImageMove = false;
                 this.isThumbnailMove = false;
                 this.Invalidate();
                 this.Update();
@@ -379,7 +381,7 @@ namespace SWF.UIComponent.ImagePanel
                 this.Cursor = Cursors.Default;
             }
 
-            this.isImageMove = false;
+            this.IsImageMove = false;
             this.isThumbnailMove = false;
 
             base.OnLostFocus(e);

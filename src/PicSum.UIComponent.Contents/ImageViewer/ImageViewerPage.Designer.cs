@@ -91,7 +91,8 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.checkPatternPanel.Margin = new System.Windows.Forms.Padding(0);
             this.checkPatternPanel.Name = "checkPatternPanel";
             this.checkPatternPanel.RectangleSize = 24;
-            this.checkPatternPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.checkPatternPanel.Size = new System.Drawing.Size(925, 528);
+            this.checkPatternPanel.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             this.checkPatternPanel.TabIndex = 3;
             this.checkPatternPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             // 
@@ -99,6 +100,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             // 
             this.toolBar.Dock = System.Windows.Forms.DockStyle.Top;
             this.toolBar.TabStop = false;
+            this.toolBar.Visible = false;
             this.toolBar.DoublePreviewButtonClick += new System.EventHandler(this.DoublePreviewIndexToolStripButton_Click);
             this.toolBar.DoubleNextButtonClick += new System.EventHandler(this.DoubleNextIndexToolStripButton_Click);
             this.toolBar.SinglePreviewButtonClick += new System.EventHandler(this.SinglePreviewIndexToolStripButton_Click);
