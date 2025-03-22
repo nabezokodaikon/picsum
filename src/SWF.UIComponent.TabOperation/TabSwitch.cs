@@ -1282,6 +1282,10 @@ namespace SWF.UIComponent.TabOperation
                     {
                         return (int)((a.DrawArea.X + margin) - b.DrawArea.X);
                     }
+                    else
+                    {
+                        return -1;
+                    }
                 }
             }
             else if (TabDragOperation.IsTarget(b))
@@ -1296,6 +1300,10 @@ namespace SWF.UIComponent.TabOperation
                     else if (a.DrawArea.X < b.DrawArea.X)
                     {
                         return (int)(a.DrawArea.X - (b.DrawArea.X - margin));
+                    }
+                    else
+                    {
+                        return 1;
                     }
                 }
             }
