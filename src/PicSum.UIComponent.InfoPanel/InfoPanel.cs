@@ -162,6 +162,8 @@ namespace PicSum.UIComponent.InfoPanel
             else
             {
                 this.ClearInfo();
+                this.thumbnailPictureBox.Invalidate();
+                this.thumbnailPictureBox.Update();
             }
         }
 
@@ -406,7 +408,6 @@ namespace PicSum.UIComponent.InfoPanel
 
         private void ThumbnailPictureBox_Paint(object sender, PaintEventArgs e)
         {
-
             if (this.Thumbnail != null)
             {
                 var size = Math.Min(this.thumbnailPictureBox.Width, this.thumbnailPictureBox.Height);
