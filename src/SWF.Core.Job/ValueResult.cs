@@ -1,6 +1,6 @@
 namespace SWF.Core.Job
 {
-    public sealed class ValueResult<T>
+    public struct ValueResult<T>
         : IJobResult
     {
         public T? Value { get; set; }

@@ -1,11 +1,8 @@
 namespace SWF.Core.Job
 {
-    public sealed class EmptyParameter
+    public readonly struct EmptyParameter
         : IJobParameter
     {
-        private EmptyParameter()
-        {
-
-        }
+        public static readonly EmptyResult Value = new();
     }
 }
