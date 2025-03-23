@@ -64,13 +64,13 @@ namespace PicSum.UIComponent.InfoPanel
         {
             get
             {
-                if (this.FileInfo != null && this.FileInfo.Thumbnail != null)
+                if (this.FileInfo != null && !this.FileInfo.Thumbnail.Equals(ThumbnailImageResult.EMPTY))
                 {
                     return this.FileInfo.Thumbnail;
                 }
                 else
                 {
-                    return null;
+                    return ThumbnailImageResult.EMPTY;
                 }
             }
         }
@@ -191,7 +191,7 @@ namespace PicSum.UIComponent.InfoPanel
 
         private void ClearInfo()
         {
-            if (this.Thumbnail != null
+            if (!this.Thumbnail.Equals(ThumbnailImageResult.EMPTY)
                 && this.Thumbnail.ThumbnailImage != null)
             {
                 this.Thumbnail.ThumbnailImage.Dispose();
@@ -408,7 +408,7 @@ namespace PicSum.UIComponent.InfoPanel
 
         private void ThumbnailPictureBox_Paint(object sender, PaintEventArgs e)
         {
-            if (this.Thumbnail != null)
+            if (!this.Thumbnail.Equals(ThumbnailImageResult.EMPTY))
             {
                 var size = Math.Min(this.thumbnailPictureBox.Width, this.thumbnailPictureBox.Height);
                 var x = 0 + (this.thumbnailPictureBox.Width - size) / 2f;
