@@ -6,11 +6,18 @@ namespace PicSum.Job.Results
     /// <summary>
     /// ファイルの深い情報取得結果エンティティ
     /// </summary>
-    public sealed class FileDeepInfoGetResult
+    public struct FileDeepInfoGetResult
         : IJobResult
     {
-        public string[]? FilePathList { get; internal set; } = null;
-        public FileDeepInfoEntity? FileInfo { get; internal set; } = null;
-        public ListEntity<FileTagInfoEntity>? TagInfoList { get; internal set; } = null;
+        public static readonly FileDeepInfoGetResult EMPTY = new()
+        {
+            FilePathList = [],
+            FileInfo = null,
+            TagInfoList = [],
+        };
+
+        public string[]? FilePathList { get; internal set; }
+        public FileDeepInfoEntity? FileInfo { get; internal set; }
+        public ListEntity<FileTagInfoEntity>? TagInfoList { get; internal set; }
     }
 }

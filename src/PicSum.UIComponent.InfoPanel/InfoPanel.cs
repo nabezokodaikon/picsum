@@ -24,7 +24,7 @@ namespace PicSum.UIComponent.InfoPanel
 
         private bool disposed = false;
 
-        private FileDeepInfoGetResult fileInfoSource = null;
+        private FileDeepInfoGetResult fileInfoSource = FileDeepInfoGetResult.EMPTY;
         private Font allTagFont = null;
         private readonly Image tagIcon = ResourceFiles.TagIcon.Value;
         private string contextMenuOperationTag = string.Empty;
@@ -34,7 +34,7 @@ namespace PicSum.UIComponent.InfoPanel
         {
             get
             {
-                if (this.fileInfoSource != null && this.fileInfoSource.FilePathList != null)
+                if (!this.fileInfoSource.Equals(FileDeepInfoGetResult.EMPTY) && this.fileInfoSource.FilePathList != null)
                 {
                     return this.fileInfoSource.FilePathList;
                 }
@@ -49,7 +49,7 @@ namespace PicSum.UIComponent.InfoPanel
         {
             get
             {
-                if (this.fileInfoSource != null && this.fileInfoSource.FileInfo != null)
+                if (!this.fileInfoSource.Equals(FileDeepInfoGetResult.EMPTY) && this.fileInfoSource.FileInfo != null)
                 {
                     return this.fileInfoSource.FileInfo;
                 }
@@ -79,7 +79,7 @@ namespace PicSum.UIComponent.InfoPanel
         {
             get
             {
-                if (this.fileInfoSource != null && this.fileInfoSource.TagInfoList != null)
+                if (!this.fileInfoSource.Equals(FileDeepInfoGetResult.EMPTY) && this.fileInfoSource.TagInfoList != null)
                 {
                     return this.fileInfoSource.TagInfoList;
                 }
@@ -197,7 +197,7 @@ namespace PicSum.UIComponent.InfoPanel
                 this.Thumbnail.ThumbnailImage.Dispose();
             }
 
-            this.fileInfoSource = null;
+            this.fileInfoSource = FileDeepInfoGetResult.EMPTY;
 
             this.fileInfoLabel.FileName = string.Empty;
             this.fileInfoLabel.FileType = string.Empty;
@@ -509,7 +509,7 @@ namespace PicSum.UIComponent.InfoPanel
 
         private void RatingBar_RatingButtonMouseClick(object sender, MouseEventArgs e)
         {
-            if (this.fileInfoSource == null)
+            if (this.fileInfoSource.Equals(FileDeepInfoGetResult.EMPTY))
             {
                 return;
             }
