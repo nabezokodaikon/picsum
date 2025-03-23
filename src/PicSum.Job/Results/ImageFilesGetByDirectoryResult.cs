@@ -2,7 +2,7 @@ using SWF.Core.Job;
 
 namespace PicSum.Job.Results
 {
-    public sealed class ImageFilesGetByDirectoryResult
+    public struct ImageFilesGetByDirectoryResult
         : IJobResult
     {
         public string? DirectoryPath { get; internal set; }
