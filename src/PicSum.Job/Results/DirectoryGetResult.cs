@@ -7,7 +7,7 @@ namespace PicSum.Job.Results
     /// <summary>
     /// フォルダ内検索結果
     /// </summary>
-    public sealed class DirectoryGetResult
+    public struct DirectoryGetResult
         : IJobResult
     {
         public string? DirectoryPath { get; internal set; }
