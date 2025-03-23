@@ -12,9 +12,9 @@ namespace PicSum.Job.Jobs
     /// </summary>
     [SupportedOSPlatform("windows10.0.17763.0")]
     public sealed class NextDirectoryGetJob
-        : AbstractTwoWayJob<NextDirectoryGetParameter<string>, ValueResult<string>>
+        : AbstractTwoWayJob<NextDirectoryGetParameter, ValueResult<string>>
     {
-        protected override void Execute(NextDirectoryGetParameter<string> param)
+        protected override void Execute(NextDirectoryGetParameter param)
         {
 
             if (param.CurrentParameter == null)
@@ -22,7 +22,7 @@ namespace PicSum.Job.Jobs
                 throw new ArgumentException("カレントパラメータがNULLです。", nameof(param));
             }
 
-            if (string.IsNullOrEmpty(param.CurrentParameter.Value))
+            if (string.IsNullOrEmpty(param.CurrentParameter))
             {
                 throw new ArgumentException("カレントパラメータが空文字です。", nameof(param));
             }
@@ -30,7 +30,7 @@ namespace PicSum.Job.Jobs
             string[] list;
             try
             {
-                var parentDirectory = FileUtil.GetParentDirectoryPath(param.CurrentParameter.Value);
+                var parentDirectory = FileUtil.GetParentDirectoryPath(param.CurrentParameter);
                 list = (new SubDirectoriesGetLogic(this)).Execute(parentDirectory);
             }
             catch (FileUtilException ex)
@@ -39,7 +39,7 @@ namespace PicSum.Job.Jobs
             }
 
             var sortedList = list.OrderBy(f => f, NaturalStringComparer.Windows).ToList();
-            var index = sortedList.IndexOf(param.CurrentParameter.Value);
+            var index = sortedList.IndexOf(param.CurrentParameter);
             if (index < 0)
             {
                 return;

@@ -1,5 +1,4 @@
 using PicSum.Job.Common;
-using PicSum.Job.Entities;
 using PicSum.Job.Parameters;
 using PicSum.Job.Results;
 using PicSum.UIComponent.Contents.Common;
@@ -124,9 +123,9 @@ namespace PicSum.UIComponent.Contents.FileList
                 return;
             }
 
-            var param = new NextDirectoryGetParameter<string>
+            var param = new NextDirectoryGetParameter
             {
-                CurrentParameter = new ValueEntity<string>(this.parameter.DirectoryPath),
+                CurrentParameter = this.parameter.DirectoryPath,
                 IsNext = false,
             };
 
@@ -149,10 +148,10 @@ namespace PicSum.UIComponent.Contents.FileList
                 return;
             }
 
-            var param = new NextDirectoryGetParameter<string>
+            var param = new NextDirectoryGetParameter
             {
                 IsNext = true,
-                CurrentParameter = new ValueEntity<string>(this.parameter.DirectoryPath)
+                CurrentParameter = this.parameter.DirectoryPath,
             };
 
             Instance<JobCaller>.Value.NextDirectoryGetJob.Value
