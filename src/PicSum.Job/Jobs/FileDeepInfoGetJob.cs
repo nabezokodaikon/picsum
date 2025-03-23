@@ -35,18 +35,20 @@ namespace PicSum.Job.Jobs
                 {
                     var deepInfoGetLogic = new FileDeepInfoGetLogic(this);
                     var filePath = param.FilePathList[0];
-                    result.FileInfo = deepInfoGetLogic.Execute(filePath, param.ThumbnailSize, true);
+                    var fileInfo = deepInfoGetLogic.Execute(filePath, param.ThumbnailSize, true);
 
                     this.CheckCancel();
 
                     var ratingGetLogic = new FileRatingGetLogic(this);
-                    result.FileInfo.Rating = ratingGetLogic.Execute(filePath);
+                    fileInfo.Rating = ratingGetLogic.Execute(filePath);
+
+                    result.FileInfo = fileInfo;
 
                     this.CheckCancel();
                 }
                 catch (JobCancelException)
                 {
-                    result.FileInfo?.Thumbnail.ThumbnailImage?.Dispose();
+                    result.FileInfo.Thumbnail.ThumbnailImage?.Dispose();
                     throw;
                 }
                 catch (FileUtilException ex)
@@ -70,7 +72,7 @@ namespace PicSum.Job.Jobs
                 }
                 catch (JobCancelException)
                 {
-                    result.FileInfo?.Thumbnail.ThumbnailImage?.Dispose();
+                    result.FileInfo.Thumbnail.ThumbnailImage?.Dispose();
                     throw;
                 }
             }

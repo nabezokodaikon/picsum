@@ -39,7 +39,7 @@ namespace PicSum.Job.Jobs
                 }
                 catch (JobCancelException)
                 {
-                    result.FileInfo?.Thumbnail.ThumbnailImage?.Dispose();
+                    result.FileInfo.Thumbnail.ThumbnailImage?.Dispose();
                     throw;
                 }
                 catch (FileUtilException ex)

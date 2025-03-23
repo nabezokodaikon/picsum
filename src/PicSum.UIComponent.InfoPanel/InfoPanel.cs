@@ -49,13 +49,13 @@ namespace PicSum.UIComponent.InfoPanel
         {
             get
             {
-                if (!this.fileInfoSource.Equals(FileDeepInfoGetResult.EMPTY) && this.fileInfoSource.FileInfo != null)
+                if (!this.fileInfoSource.Equals(FileDeepInfoGetResult.EMPTY) && !this.fileInfoSource.FileInfo.Equals(FileDeepInfoEntity.EMPTY))
                 {
                     return this.fileInfoSource.FileInfo;
                 }
                 else
                 {
-                    return null;
+                    return FileDeepInfoEntity.EMPTY;
                 }
             }
         }
@@ -64,7 +64,9 @@ namespace PicSum.UIComponent.InfoPanel
         {
             get
             {
-                if (this.FileInfo != null && !this.FileInfo.Thumbnail.Equals(ThumbnailImageResult.EMPTY))
+                if (!this.FileInfo.Equals(FileDeepInfoEntity.EMPTY)
+                    && !this.FileInfo.Thumbnail.Equals(ThumbnailImageResult.EMPTY)
+                    && this.FileInfo.Thumbnail.ThumbnailImage != null)
                 {
                     return this.FileInfo.Thumbnail;
                 }
@@ -363,7 +365,7 @@ namespace PicSum.UIComponent.InfoPanel
 
             this.fileInfoSource = result;
 
-            if (this.FileInfo != null)
+            if (!this.FileInfo.Equals(FileDeepInfoEntity.EMPTY))
             {
                 this.fileInfoLabel.FileName = this.FileInfo.FileName;
                 this.fileInfoLabel.FileType = this.FileInfo.FileType;
@@ -432,13 +434,13 @@ namespace PicSum.UIComponent.InfoPanel
                         Instance<IFileIconCacher>.Value.JumboDirectoryIcon);
                 }
             }
-            else if (this.FileInfo != null && this.FileInfo.FileIcon != null)
+            else if (!this.FileInfo.Equals(FileDeepInfoEntity.EMPTY) && this.FileInfo.FileIcon != null)
             {
                 const int margin = 32;
                 var rect = new Rectangle(margin, margin, this.thumbnailPictureBox.Width - margin * 2, this.thumbnailPictureBox.Height - margin * 2);
                 this.DrawFileIcon(e.Graphics, this.FileInfo.FileIcon, rect);
             }
-            else if (this.FileInfo != null && this.FileInfo.FileIcon == null)
+            else if (!this.FileInfo.Equals(FileDeepInfoEntity.EMPTY) && this.FileInfo.FileIcon == null)
             {
                 var rect = new Rectangle(0, 0, this.thumbnailPictureBox.Width, this.thumbnailPictureBox.Height);
                 this.DrawErrorMessage(e.Graphics, rect);
