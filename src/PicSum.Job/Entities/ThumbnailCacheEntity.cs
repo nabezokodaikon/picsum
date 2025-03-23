@@ -3,7 +3,7 @@ namespace PicSum.Job.Entities
     /// <summary>
     /// サムネイルバッファエンティティ
     /// </summary>
-    public sealed class ThumbnailCacheEntity
+    public struct ThumbnailCacheEntity
     {
         public static readonly ThumbnailCacheEntity EMPTY = new()
         {

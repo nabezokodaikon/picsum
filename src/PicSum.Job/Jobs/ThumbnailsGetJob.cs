@@ -34,7 +34,7 @@ namespace PicSum.Job.Jobs
                     try
                     {
                         var bf = Instance<IThumbnailCacher>.Value.GetOrCreateCache(param.FilePathList[index], param.ThumbnailWidth, param.ThumbnailHeight);
-                        if (bf == ThumbnailCacheEntity.EMPTY)
+                        if (bf.Equals(ThumbnailCacheEntity.EMPTY))
                         {
                             continue;
                         }

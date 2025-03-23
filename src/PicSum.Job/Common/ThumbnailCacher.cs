@@ -102,7 +102,7 @@ namespace PicSum.Job.Common
                 }
 
                 var cache = this.GetOrCreateFileCache(filePath, thumbWidth, thumbHeight);
-                if (cache != ThumbnailCacheEntity.EMPTY)
+                if (!cache.Equals(ThumbnailCacheEntity.EMPTY))
                 {
                     if (cache.ThumbnailWidth > thumbWidth || cache.ThumbnailHeight > thumbHeight)
                     {
@@ -140,7 +140,7 @@ namespace PicSum.Job.Common
             else
             {
                 var cache = this.GetOrCreateDirectoryCache(filePath, thumbWidth, thumbHeight);
-                if (cache != ThumbnailCacheEntity.EMPTY)
+                if (!(cache.Equals(ThumbnailCacheEntity.EMPTY)))
                 {
                     if (cache.ThumbnailWidth > thumbWidth || cache.ThumbnailHeight > thumbHeight)
                     {
@@ -180,7 +180,7 @@ namespace PicSum.Job.Common
         private ThumbnailCacheEntity GetOnlyFileCache(string filePath, int thumbWidth, int thumbHeight)
         {
             var memCache = this.GetMemoryCache(filePath);
-            if (memCache != ThumbnailCacheEntity.EMPTY)
+            if (!memCache.Equals(ThumbnailCacheEntity.EMPTY))
             {
                 var updateDate = FileUtil.GetUpdateDate(filePath);
                 if (memCache.ThumbnailWidth >= thumbWidth &&
@@ -194,7 +194,7 @@ namespace PicSum.Job.Common
             else
             {
                 var dbCache = this.GetDBCache(filePath);
-                if (dbCache != ThumbnailCacheEntity.EMPTY)
+                if (!dbCache.Equals(ThumbnailCacheEntity.EMPTY))
                 {
                     var updateDate = FileUtil.GetUpdateDate(filePath);
                     if (dbCache.ThumbnailWidth >= thumbWidth &&
@@ -214,7 +214,7 @@ namespace PicSum.Job.Common
         private ThumbnailCacheEntity GetOnlyDirectoryCache(string filePath, int thumbWidth, int thumbHeight)
         {
             var memCache = this.GetMemoryCache(filePath);
-            if (memCache != ThumbnailCacheEntity.EMPTY)
+            if (!memCache.Equals(ThumbnailCacheEntity.EMPTY))
             {
                 var updateDate = FileUtil.GetUpdateDate(filePath);
                 if (memCache.ThumbnailWidth >= thumbWidth &&
@@ -228,7 +228,7 @@ namespace PicSum.Job.Common
             else
             {
                 var dbCache = this.GetDBCache(filePath);
-                if (dbCache != ThumbnailCacheEntity.EMPTY)
+                if (!dbCache.Equals(ThumbnailCacheEntity.EMPTY))
                 {
                     var updateDate = FileUtil.GetUpdateDate(filePath);
                     if (dbCache.ThumbnailWidth >= thumbWidth &&
@@ -248,7 +248,7 @@ namespace PicSum.Job.Common
         private ThumbnailCacheEntity GetOrCreateFileCache(string filePath, int thumbWidth, int thumbHeight)
         {
             var memCache = this.GetMemoryCache(filePath);
-            if (memCache != ThumbnailCacheEntity.EMPTY)
+            if (!memCache.Equals(ThumbnailCacheEntity.EMPTY))
             {
                 var updateDate = FileUtil.GetUpdateDate(filePath);
                 if (memCache.ThumbnailWidth >= thumbWidth &&
@@ -261,7 +261,7 @@ namespace PicSum.Job.Common
                 else
                 {
                     var dbCache = this.GetDBCache(filePath);
-                    if (dbCache != ThumbnailCacheEntity.EMPTY)
+                    if (!dbCache.Equals(ThumbnailCacheEntity.EMPTY))
                     {
                         if (dbCache.ThumbnailWidth >= thumbWidth &&
                             dbCache.ThumbnailHeight >= thumbHeight &&
@@ -291,7 +291,7 @@ namespace PicSum.Job.Common
             else
             {
                 var dbCache = this.GetDBCache(filePath);
-                if (dbCache != ThumbnailCacheEntity.EMPTY)
+                if (!dbCache.Equals(ThumbnailCacheEntity.EMPTY))
                 {
                     var updateDate = FileUtil.GetUpdateDate(filePath);
 
@@ -325,7 +325,7 @@ namespace PicSum.Job.Common
         private ThumbnailCacheEntity GetOrCreateDirectoryCache(string filePath, int thumbWidth, int thumbHeight)
         {
             var memCache = this.GetMemoryCache(filePath);
-            if (memCache != ThumbnailCacheEntity.EMPTY)
+            if (!memCache.Equals(ThumbnailCacheEntity.EMPTY))
             {
                 var updateDate = FileUtil.GetUpdateDate(filePath);
 
@@ -339,7 +339,7 @@ namespace PicSum.Job.Common
                 else
                 {
                     var dbCache = this.GetDBCache(filePath);
-                    if (dbCache != ThumbnailCacheEntity.EMPTY)
+                    if (!dbCache.Equals(ThumbnailCacheEntity.EMPTY))
                     {
                         if (dbCache.ThumbnailWidth >= thumbWidth &&
                             dbCache.ThumbnailHeight >= thumbHeight &&
@@ -385,7 +385,7 @@ namespace PicSum.Job.Common
             else
             {
                 var dbCache = this.GetDBCache(filePath);
-                if (dbCache != ThumbnailCacheEntity.EMPTY)
+                if (!dbCache.Equals(ThumbnailCacheEntity.EMPTY))
                 {
                     var updateDate = FileUtil.GetUpdateDate(filePath);
 

@@ -62,7 +62,7 @@ namespace PicSum.Job.Logics
                 if (isGetThumbnail)
                 {
                     var thumbnailBuffer = Instance<IThumbnailCacher>.Value.GetOnlyCache(filePath, THUMBNAIL_SIZE, THUMBNAIL_SIZE);
-                    if (thumbnailBuffer != ThumbnailCacheEntity.EMPTY)
+                    if (!thumbnailBuffer.Equals(ThumbnailCacheEntity.EMPTY))
                     {
                         if (thumbnailBuffer.ThumbnailBuffer == null)
                         {
@@ -91,7 +91,7 @@ namespace PicSum.Job.Logics
                 if (isGetThumbnail)
                 {
                     var thumbnailBuffer = Instance<IThumbnailCacher>.Value.GetOnlyCache(filePath, THUMBNAIL_SIZE, THUMBNAIL_SIZE);
-                    if (thumbnailBuffer != ThumbnailCacheEntity.EMPTY)
+                    if (!thumbnailBuffer.Equals(ThumbnailCacheEntity.EMPTY))
                     {
                         if (thumbnailBuffer.ThumbnailBuffer == null)
                         {
