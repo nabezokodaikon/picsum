@@ -505,7 +505,7 @@ namespace SWF.Core.FileAccessor
             {
                 var sh = new WinApiMembers.SHFILEINFOW();
                 var hSuccess = WinApiMembers.SHGetFileInfoW(filePath, 0, ref sh, (uint)Marshal.SizeOf(sh), WinApiMembers.ShellFileInfoFlags.SHGFI_TYPENAME);
-                if (!hSuccess.Equals(IntPtr.Zero))
+                if (hSuccess != IntPtr.Zero)
                 {
                     return sh.szTypeName;
                 }

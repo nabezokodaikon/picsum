@@ -69,7 +69,7 @@ namespace SWF.Core.Job
         where TParameter : IJobParameter
         where TResult : IJobResult
     {
-        internal TParameter? Parameter { get; set; } = default(TParameter);
+        internal TParameter? Parameter { get; set; } = default;
         internal Action<TResult>? CallbackAction { get; set; } = null;
 
         public AbstractTwoWayJob()

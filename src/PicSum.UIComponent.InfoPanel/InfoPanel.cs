@@ -34,7 +34,7 @@ namespace PicSum.UIComponent.InfoPanel
         {
             get
             {
-                if (!this.fileInfoSource.Equals(FileDeepInfoGetResult.EMPTY) && this.fileInfoSource.FilePathList != null)
+                if (this.fileInfoSource != FileDeepInfoGetResult.EMPTY && this.fileInfoSource.FilePathList != null)
                 {
                     return this.fileInfoSource.FilePathList;
                 }
@@ -49,19 +49,19 @@ namespace PicSum.UIComponent.InfoPanel
         {
             get
             {
-                if (this.fileInfoSource.Equals(FileDeepInfoGetResult.EMPTY))
+                if (this.fileInfoSource == FileDeepInfoGetResult.EMPTY)
                 {
                     return FileDeepInfoEntity.EMPTY;
                 }
-                else if (this.fileInfoSource.Equals(FileDeepInfoGetResult.ERROR))
+                else if (this.fileInfoSource == FileDeepInfoGetResult.ERROR)
                 {
                     return FileDeepInfoEntity.ERROR;
                 }
-                else if (this.fileInfoSource.FileInfo.Equals(FileDeepInfoEntity.EMPTY))
+                else if (this.fileInfoSource.FileInfo == FileDeepInfoEntity.EMPTY)
                 {
                     return FileDeepInfoEntity.EMPTY;
                 }
-                else if (this.fileInfoSource.FileInfo.Equals(FileDeepInfoEntity.ERROR))
+                else if (this.fileInfoSource.FileInfo == FileDeepInfoEntity.ERROR)
                 {
                     return FileDeepInfoEntity.ERROR;
                 }
@@ -89,7 +89,7 @@ namespace PicSum.UIComponent.InfoPanel
         {
             get
             {
-                if (!this.fileInfoSource.Equals(FileDeepInfoGetResult.EMPTY) && this.fileInfoSource.TagInfoList != null)
+                if (this.fileInfoSource != FileDeepInfoGetResult.EMPTY && this.fileInfoSource.TagInfoList != null)
                 {
                     return this.fileInfoSource.TagInfoList;
                 }
@@ -201,7 +201,7 @@ namespace PicSum.UIComponent.InfoPanel
 
         private void ClearInfo()
         {
-            if (!this.Thumbnail.Equals(ThumbnailImageResult.EMPTY)
+            if (this.Thumbnail != ThumbnailImageResult.EMPTY
                 && this.Thumbnail.ThumbnailImage != null)
             {
                 this.Thumbnail.ThumbnailImage.Dispose();
@@ -376,8 +376,8 @@ namespace PicSum.UIComponent.InfoPanel
 
             this.fileInfoSource = result;
 
-            if (!this.FileInfo.Equals(FileDeepInfoEntity.EMPTY)
-                && !this.FileInfo.Equals(FileDeepInfoEntity.ERROR))
+            if (this.FileInfo != FileDeepInfoEntity.EMPTY
+                && this.FileInfo != FileDeepInfoEntity.ERROR)
             {
                 this.fileInfoLabel.FileName = this.FileInfo.FileName;
                 this.fileInfoLabel.FileType = this.FileInfo.FileType;
@@ -418,7 +418,7 @@ namespace PicSum.UIComponent.InfoPanel
 
         private void ThumbnailPictureBox_Paint(object sender, PaintEventArgs e)
         {
-            if (!this.Thumbnail.Equals(ThumbnailImageResult.EMPTY))
+            if (this.Thumbnail != ThumbnailImageResult.EMPTY)
             {
                 var size = Math.Min(this.thumbnailPictureBox.Width, this.thumbnailPictureBox.Height);
                 var x = 0 + (this.thumbnailPictureBox.Width - size) / 2f;
@@ -453,7 +453,7 @@ namespace PicSum.UIComponent.InfoPanel
                 var rect = new Rectangle(0, 0, this.thumbnailPictureBox.Width, this.thumbnailPictureBox.Height);
                 this.DrawSelectedFileCount(e.Graphics, rect);
             }
-            else if (this.FileInfo.Equals(FileDeepInfoEntity.ERROR))
+            else if (this.FileInfo == FileDeepInfoEntity.ERROR)
             {
                 var rect = new Rectangle(0, 0, this.thumbnailPictureBox.Width, this.thumbnailPictureBox.Height);
                 this.DrawErrorMessage(e.Graphics, rect);
@@ -519,7 +519,7 @@ namespace PicSum.UIComponent.InfoPanel
 
         private void RatingBar_RatingButtonMouseClick(object sender, MouseEventArgs e)
         {
-            if (this.fileInfoSource.Equals(FileDeepInfoGetResult.EMPTY))
+            if (this.fileInfoSource == FileDeepInfoGetResult.EMPTY)
             {
                 return;
             }

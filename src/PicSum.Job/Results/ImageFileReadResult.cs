@@ -14,7 +14,7 @@ namespace PicSum.Job.Results
 
         public readonly bool Equals(ImageFileReadResult other)
         {
-            if (!this.Image.Equals(other.Image)) { return false; }
+            if (this.Image != other.Image) { return false; }
             if (this.IsMain != other.IsMain) { return false; }
             if (this.HasSub != other.HasSub) { return false; }
 

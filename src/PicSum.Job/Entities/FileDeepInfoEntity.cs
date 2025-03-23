@@ -70,7 +70,7 @@ namespace PicSum.Job.Entities
             if (this.ImageSize != other.ImageSize) { return false; }
             if (this.FileIcon != other.FileIcon) { return false; }
             if (this.Rating != other.Rating) { return false; }
-            if (!this.Thumbnail.Equals(other.Thumbnail)) { return false; }
+            if (this.Thumbnail != other.Thumbnail) { return false; }
             if (this.IsError != other.IsError) { return false; }
 
             return true;

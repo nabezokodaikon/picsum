@@ -17,7 +17,7 @@ namespace PicSum.Job.Logics
 
             var sql = new FileInfoReadSql(filePath);
             var dto = Instance<IFileInfoDB>.Value.ReadLine<FileInfoDto>(sql);
-            if (!dto.Equals(default(FileInfoDto)))
+            if (dto != default(FileInfoDto))
             {
                 return dto.Rating;
             }

@@ -248,7 +248,7 @@ namespace SWF.UIComponent.TabOperation
         {
             ArgumentNullException.ThrowIfNull(tab, nameof(tab));
 
-            return tab.Equals(TabDragOperation.tab);
+            return tab == TabDragOperation.tab;
         }
 
         private static TabSwitch GetTabSwitchControl(Form form)

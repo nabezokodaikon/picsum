@@ -229,10 +229,10 @@ namespace PicSum.UIComponent.AddressBar
                         FormatFlags = this.textFormatFlags
                     };
                 }
-                else if (!this.textFormat.Trimming.Equals(this.textTrimming) ||
-                         !this.textFormat.Alignment.Equals(this.textAlignment) ||
-                         !this.textFormat.LineAlignment.Equals(this.textLineAlignment) ||
-                         !this.textFormat.FormatFlags.Equals(this.textFormatFlags))
+                else if (this.textFormat.Trimming != this.textTrimming ||
+                         this.textFormat.Alignment != this.textAlignment ||
+                         this.textFormat.LineAlignment != this.textLineAlignment ||
+                         this.textFormat.FormatFlags != this.textFormatFlags)
                 {
                     this.textFormat.Dispose();
                     this.textFormat = null;

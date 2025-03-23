@@ -304,7 +304,7 @@ namespace PicSum.UIComponent.AddressBar
             if (this.mouseDownItem != null)
             {
                 var drawItem = this.GetItemFromPoint(e.X, e.Y);
-                if (this.mouseDownItem.Equals(drawItem))
+                if (this.mouseDownItem == drawItem)
                 {
                     this.mouseDownItem.OnMouseClick(e);
                 }
@@ -514,7 +514,7 @@ namespace PicSum.UIComponent.AddressBar
             var ret = false;
             if (newDrawItem != null)
             {
-                if (!newDrawItem.Equals(this.mousePointItem))
+                if (newDrawItem != this.mousePointItem)
                 {
                     this.mousePointItem = newDrawItem;
                     ret = true;
@@ -529,11 +529,11 @@ namespace PicSum.UIComponent.AddressBar
                 }
             }
 
-            this.directoryHistoryItem.IsMousePoint = this.directoryHistoryItem.Equals(this.mousePointItem);
-            this.overflowItem.IsMousePoint = this.overflowItem.Equals(this.mousePointItem);
+            this.directoryHistoryItem.IsMousePoint = this.directoryHistoryItem == this.mousePointItem;
+            this.overflowItem.IsMousePoint = this.overflowItem == this.mousePointItem;
             foreach (var drawItem in this.addressItems)
             {
-                drawItem.IsMousePoint = drawItem.Equals(this.mousePointItem);
+                drawItem.IsMousePoint = drawItem == this.mousePointItem;
             }
 
             return ret;
@@ -544,7 +544,7 @@ namespace PicSum.UIComponent.AddressBar
             var ret = false;
             if (newDrawItem != null)
             {
-                if (!newDrawItem.Equals(this.mouseDownItem))
+                if (newDrawItem != this.mouseDownItem)
                 {
                     this.mouseDownItem = newDrawItem;
                     ret = true;
@@ -559,11 +559,11 @@ namespace PicSum.UIComponent.AddressBar
                 }
             }
 
-            this.directoryHistoryItem.IsMouseDown = this.directoryHistoryItem.Equals(this.mouseDownItem);
-            this.overflowItem.IsMouseDown = this.overflowItem.Equals(this.mouseDownItem);
+            this.directoryHistoryItem.IsMouseDown = this.directoryHistoryItem == this.mouseDownItem;
+            this.overflowItem.IsMouseDown = this.overflowItem == this.mouseDownItem;
             foreach (var drawItem in this.addressItems)
             {
-                drawItem.IsMouseDown = drawItem.Equals(this.mouseDownItem);
+                drawItem.IsMouseDown = drawItem == this.mouseDownItem;
             }
 
             return ret;

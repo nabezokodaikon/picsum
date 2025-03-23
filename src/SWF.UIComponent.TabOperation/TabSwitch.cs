@@ -494,7 +494,7 @@ namespace SWF.UIComponent.TabOperation
                 this.OnActiveTabChanged(EventArgs.Empty);
             }
 
-            if (tab.Equals(this.mousePointTab))
+            if (tab == this.mousePointTab)
             {
                 this.mousePointTab = null;
             }
@@ -669,7 +669,7 @@ namespace SWF.UIComponent.TabOperation
             e.Graphics.PixelOffsetMode = PixelOffsetMode.HighSpeed;
             e.Graphics.CompositingMode = CompositingMode.SourceOver;
 
-            foreach (var tab in this.tabList.FindAll((t) => !t.Equals(this.activeTab)))
+            foreach (var tab in this.tabList.FindAll((t) => t != this.activeTab))
             {
                 this.DrawTab(tab, e.Graphics);
             }
@@ -721,7 +721,7 @@ namespace SWF.UIComponent.TabOperation
             else
             {
                 var form = this.GetForm();
-                if (form.Equals(Form.ActiveForm))
+                if (form == Form.ActiveForm)
                 {
                     if (this.GetHeaderRectangle().Contains(e.X, e.Y))
                     {
@@ -795,7 +795,7 @@ namespace SWF.UIComponent.TabOperation
         protected override void OnMouseClick(MouseEventArgs e)
         {
             var tab = this.GetTabFromPoint(e.X, e.Y);
-            if (tab != null && tab.Equals(this.mouseDownTab))
+            if (tab != null && tab == this.mouseDownTab)
             {
                 if (e.Button == MouseButtons.Middle)
                 {
@@ -1006,7 +1006,7 @@ namespace SWF.UIComponent.TabOperation
         {
             if (tab != null)
             {
-                if (!tab.Equals(this.mousePointTab))
+                if (tab != this.mousePointTab)
                 {
                     this.mousePointTab = tab;
                     return true;
@@ -1028,7 +1028,7 @@ namespace SWF.UIComponent.TabOperation
         {
             if (tab != null)
             {
-                if (!tab.Equals(this.activeTab))
+                if (tab != this.activeTab)
                 {
                     var container = this.GetContainer();
                     container.SuspendLayout();
@@ -1373,11 +1373,11 @@ namespace SWF.UIComponent.TabOperation
 
         private Action<Graphics> GetDrawTabMethod(TabInfo tab)
         {
-            if (tab.Equals(this.activeTab))
+            if (tab == this.activeTab)
             {
                 return tab.DrawArea.DrawActiveTab;
             }
-            else if (tab.Equals(this.mousePointTab))
+            else if (tab == this.mousePointTab)
             {
                 return tab.DrawArea.DrawMousePointTab;
             }
@@ -1394,7 +1394,7 @@ namespace SWF.UIComponent.TabOperation
 
             if (rect.Contains(p))
             {
-                if (tab.Equals(this.activeTab))
+                if (tab == this.activeTab)
                 {
                     return tab.DrawArea.DrawActiveMousePointTabCloseButton;
                 }
@@ -1406,7 +1406,7 @@ namespace SWF.UIComponent.TabOperation
             }
             else
             {
-                if (tab.Equals(this.activeTab))
+                if (tab == this.activeTab)
                 {
                     return tab.DrawArea.DrawActiveTabCloseButton;
                 }

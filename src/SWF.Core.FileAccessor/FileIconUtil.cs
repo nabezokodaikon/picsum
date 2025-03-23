@@ -16,7 +16,7 @@ namespace SWF.Core.FileAccessor
                                                            shil);
             try
             {
-                if (!hSuccess.Equals(IntPtr.Zero))
+                if (hSuccess != IntPtr.Zero)
                 {
                     using (var icon = Icon.FromHandle(sh.hIcon))
                     {
@@ -49,7 +49,7 @@ namespace SWF.Core.FileAccessor
                                                            WinApiMembers.ShellFileInfoFlags.SHGFI_SMALLICON);
             try
             {
-                if (!hSuccess.Equals(IntPtr.Zero))
+                if (hSuccess != IntPtr.Zero)
                 {
                     using (var icon = Icon.FromHandle(sh.hIcon))
                     {
@@ -83,7 +83,7 @@ namespace SWF.Core.FileAccessor
                 ref shinfo,
                 (int)Marshal.SizeOf(typeof(WinApiMembers.SHFILEINFO)),
                 (int)WinApiMembers.ShellFileInfoFlags.SHGFI_SYSICONINDEX);
-            if (hSuccess.Equals(IntPtr.Zero))
+            if (hSuccess == IntPtr.Zero)
             {
                 return ResourceFiles.ExtraLargeEmptyIcon.Value;
             }
@@ -101,7 +101,7 @@ namespace SWF.Core.FileAccessor
                 }
 
                 var hicon = WinApiMembers.ImageList_GetIcon(pimgList, shinfo.iIcon, 0);
-                if (hicon.Equals(IntPtr.Zero))
+                if (hicon == IntPtr.Zero)
                 {
                     return ResourceFiles.ExtraLargeEmptyIcon.Value;
                 }

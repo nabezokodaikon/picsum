@@ -1201,7 +1201,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
         private void FileContextMenu_Opening(object sender, CancelEventArgs e)
         {
-            if (this.fileContextMenu.SourceControl.Equals(this.leftImagePanel))
+            if (this.fileContextMenu.SourceControl == this.leftImagePanel)
             {
                 if (!string.IsNullOrEmpty(this.leftImagePanel.FilePath))
                 {
@@ -1217,7 +1217,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                     return;
                 }
             }
-            else if (this.fileContextMenu.SourceControl.Equals(this.rightImagePanel))
+            else if (this.fileContextMenu.SourceControl == this.rightImagePanel)
             {
                 if (!string.IsNullOrEmpty(this.rightImagePanel.FilePath))
                 {

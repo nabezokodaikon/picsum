@@ -35,7 +35,7 @@ namespace PicSum.Job.Results
         public readonly bool Equals(FileDeepInfoGetResult other)
         {
             if (this.FilePathList != other.FilePathList) { return false; }
-            if (!this.FileInfo.Equals(other.FileInfo)) { return false; }
+            if (this.FileInfo != other.FileInfo) { return false; }
             if (this.TagInfoList != other.TagInfoList) { return false; }
             if (this.IsError != other.IsError) { return false; }
 
