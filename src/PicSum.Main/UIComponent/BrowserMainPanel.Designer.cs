@@ -99,60 +99,40 @@ namespace PicSum.Main.UIComponent
             // 
             // reloadToolButton
             // 
-            this.reloadToolButton.FlatAppearance.BorderSize = 0;
-            this.reloadToolButton.FlatAppearance.MouseDownBackColor = Color.Transparent;
-            this.reloadToolButton.FlatStyle = FlatStyle.Flat;
             this.reloadToolButton.Image = (Image)resources.GetObject("reloadToolButton.Image");
             this.reloadToolButton.Location = new Point(73, 3);
             this.reloadToolButton.Margin = new Padding(0, 3, 3, 3);
             this.reloadToolButton.Name = "reloadToolButton";
             this.reloadToolButton.Size = new Size(32, 28);
-            this.reloadToolButton.TabIndex = 10;
-            this.reloadToolButton.UseVisualStyleBackColor = true;
             this.reloadToolButton.MouseClick += this.ReloadToolButton_MouseClick;
             // 
             // nextPageHistoryButton
             // 
             this.nextPageHistoryButton.Enabled = false;
-            this.nextPageHistoryButton.FlatAppearance.BorderSize = 0;
-            this.nextPageHistoryButton.FlatAppearance.MouseDownBackColor = Color.Transparent;
-            this.nextPageHistoryButton.FlatStyle = FlatStyle.Flat;
             this.nextPageHistoryButton.Image = (Image)resources.GetObject("nextPageHistoryButton.Image");
             this.nextPageHistoryButton.Location = new Point(38, 3);
             this.nextPageHistoryButton.Margin = new Padding(0, 3, 3, 3);
             this.nextPageHistoryButton.Name = "nextPageHistoryButton";
             this.nextPageHistoryButton.Size = new Size(32, 28);
-            this.nextPageHistoryButton.TabIndex = 5;
-            this.nextPageHistoryButton.UseVisualStyleBackColor = true;
             this.nextPageHistoryButton.MouseClick += this.NextPageHistoryButton_MouseClick;
             // 
             // previewPageHistoryButton
             // 
             this.previewPageHistoryButton.Enabled = false;
-            this.previewPageHistoryButton.FlatAppearance.BorderSize = 0;
-            this.previewPageHistoryButton.FlatAppearance.MouseDownBackColor = Color.Transparent;
-            this.previewPageHistoryButton.FlatStyle = FlatStyle.Flat;
             this.previewPageHistoryButton.Image = (Image)resources.GetObject("previewPageHistoryButton.Image");
             this.previewPageHistoryButton.Location = new Point(3, 3);
             this.previewPageHistoryButton.Name = "previewPageHistoryButton";
             this.previewPageHistoryButton.Size = new Size(32, 28);
-            this.previewPageHistoryButton.TabIndex = 0;
-            this.previewPageHistoryButton.UseVisualStyleBackColor = true;
             this.previewPageHistoryButton.MouseClick += this.PreviewPageHistoryButton_MouseClick;
             // 
             // showInfoToolButton
             // 
             this.showInfoToolButton.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            this.showInfoToolButton.FlatAppearance.BorderSize = 0;
-            this.showInfoToolButton.FlatAppearance.MouseDownBackColor = Color.Transparent;
-            this.showInfoToolButton.FlatStyle = FlatStyle.Flat;
             this.showInfoToolButton.Image = (Image)resources.GetObject("showInfoToolButton.Image");
             this.showInfoToolButton.Location = new Point(712, 3);
             this.showInfoToolButton.Margin = new Padding(0, 3, 3, 3);
             this.showInfoToolButton.Name = "showInfoToolButton";
             this.showInfoToolButton.Size = new Size(32, 28);
-            this.showInfoToolButton.TabIndex = 5;
-            this.showInfoToolButton.UseVisualStyleBackColor = true;
             this.showInfoToolButton.MouseClick += this.ShowInfoToolButton_MouseClick;
             // 
             // addressBar
@@ -168,60 +148,39 @@ namespace PicSum.Main.UIComponent
             // 
             // searchBookmarkToolButton
             // 
-            this.searchBookmarkToolButton.FlatAppearance.BorderSize = 0;
-            this.searchBookmarkToolButton.FlatAppearance.MouseDownBackColor = Color.Transparent;
-            this.searchBookmarkToolButton.FlatStyle = FlatStyle.Flat;
             this.searchBookmarkToolButton.Image = (Image)resources.GetObject("searchBookmarkToolButton.Image");
             this.searchBookmarkToolButton.Location = new Point(3, 98);
             this.searchBookmarkToolButton.Margin = new Padding(3, 0, 3, 3);
             this.searchBookmarkToolButton.Name = "searchBookmarkToolButton";
             this.searchBookmarkToolButton.Size = new Size(32, 28);
-            this.searchBookmarkToolButton.TabIndex = 11;
-            this.searchBookmarkToolButton.UseVisualStyleBackColor = true;
             this.searchBookmarkToolButton.MouseClick += this.SearchBookmarkToolButton_MouseClick;
             // 
             // tagDropToolButton
             // 
-            this.tagDropToolButton.BackColor = Color.Transparent;
-            this.tagDropToolButton.FlatAppearance.BorderSize = 0;
-            this.tagDropToolButton.FlatAppearance.MouseDownBackColor = Color.Transparent;
-            this.tagDropToolButton.FlatStyle = FlatStyle.Flat;
             this.tagDropToolButton.Image = (Image)resources.GetObject("tagDropToolButton.Image");
             this.tagDropToolButton.Icon = (Image)resources.GetObject("tagDropToolButton.Icon");
             this.tagDropToolButton.Location = new Point(3, 36);
             this.tagDropToolButton.Margin = new Padding(3, 0, 3, 3);
             this.tagDropToolButton.Name = "tagDropToolButton";
             this.tagDropToolButton.Size = new Size(32, 28);
-            this.tagDropToolButton.TabIndex = 9;
-            this.tagDropToolButton.UseVisualStyleBackColor = true;
             this.tagDropToolButton.ItemMouseClick += this.TagDropToolButton_ItemMouseClick;
             this.tagDropToolButton.DropDownOpening += this.TagDropToolButton_DropDownOpening;
             // 
             // homeToolButton
             // 
-            this.homeToolButton.FlatAppearance.BorderSize = 0;
-            this.homeToolButton.FlatAppearance.MouseDownBackColor = Color.Transparent;
-            this.homeToolButton.FlatStyle = FlatStyle.Flat;
             this.homeToolButton.Image = (Image)resources.GetObject("homeToolButton.Image");
             this.homeToolButton.Location = new Point(3, 5);
             this.homeToolButton.Name = "homeToolButton";
             this.homeToolButton.Size = new Size(32, 28);
-            this.homeToolButton.TabIndex = 6;
-            this.homeToolButton.UseVisualStyleBackColor = true;
             this.homeToolButton.MouseClick += this.HomeToolButton_MouseClick;
             // 
             // searchRatingToolButton
             // 
-            this.searchRatingToolButton.FlatAppearance.BorderSize = 0;
-            this.searchRatingToolButton.FlatAppearance.MouseDownBackColor = Color.Transparent;
-            this.searchRatingToolButton.FlatStyle = FlatStyle.Flat;
             this.searchRatingToolButton.Image = (Image)resources.GetObject("searchRatingToolButton.Image");
             this.searchRatingToolButton.Location = new Point(3, 67);
             this.searchRatingToolButton.Margin = new Padding(3, 0, 3, 3);
             this.searchRatingToolButton.Name = "searchRatingToolButton";
             this.searchRatingToolButton.Size = new Size(32, 28);
-            this.searchRatingToolButton.TabIndex = 8;
-            this.searchRatingToolButton.UseVisualStyleBackColor = true;
             this.searchRatingToolButton.MouseClick += this.SearchRatingToolButton_MouseClick;
             // 
             // toolPanel2

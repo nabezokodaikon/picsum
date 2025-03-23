@@ -79,58 +79,34 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             // 
             // doublePreviewButton
             // 
-            this.doublePreviewButton.BackColor = System.Drawing.Color.Transparent;
-            this.doublePreviewButton.FlatAppearance.BorderSize = 0;
-            this.doublePreviewButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.doublePreviewButton.Location = new System.Drawing.Point(143, 3);
             this.doublePreviewButton.Name = "doublePreviewButton";
             this.doublePreviewButton.Size = new System.Drawing.Size(64, 23);
-            this.doublePreviewButton.TabIndex = 1;
-            this.doublePreviewButton.TabStop = false;
             this.doublePreviewButton.Text = "<<-";
-            this.doublePreviewButton.UseVisualStyleBackColor = false;
             this.doublePreviewButton.MouseClick += this.DoublePreviewButton_MouseClick;
             // 
             // singlePreviewButton
             // 
-            this.singlePreviewButton.BackColor = System.Drawing.Color.Transparent;
-            this.singlePreviewButton.FlatAppearance.BorderSize = 0;
-            this.singlePreviewButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.singlePreviewButton.Location = new System.Drawing.Point(213, 3);
             this.singlePreviewButton.Name = "singlePreviewButton";
             this.singlePreviewButton.Size = new System.Drawing.Size(64, 23);
-            this.singlePreviewButton.TabIndex = 2;
-            this.singlePreviewButton.TabStop = false;
             this.singlePreviewButton.Text = "<-";
-            this.singlePreviewButton.UseVisualStyleBackColor = false;
             this.singlePreviewButton.MouseClick += this.SinglePreviewButton_MouseClick;
             // 
             // doubleNextButton
             // 
-            this.doubleNextButton.BackColor = System.Drawing.Color.Transparent;
-            this.doubleNextButton.FlatAppearance.BorderSize = 0;
-            this.doubleNextButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.doubleNextButton.Location = new System.Drawing.Point(353, 3);
             this.doubleNextButton.Name = "doubleNextButton";
             this.doubleNextButton.Size = new System.Drawing.Size(64, 23);
-            this.doubleNextButton.TabIndex = 3;
-            this.doubleNextButton.TabStop = false;
             this.doubleNextButton.Text = "->>";
-            this.doubleNextButton.UseVisualStyleBackColor = false;
             this.doubleNextButton.MouseClick += this.DoubleNextButton_MouseClick;
             // 
             // singleNextButton
             // 
-            this.singleNextButton.BackColor = System.Drawing.Color.Transparent;
-            this.singleNextButton.FlatAppearance.BorderSize = 0;
-            this.singleNextButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.singleNextButton.Location = new System.Drawing.Point(283, 3);
             this.singleNextButton.Name = "singleNextButton";
             this.singleNextButton.Size = new System.Drawing.Size(64, 23);
-            this.singleNextButton.TabIndex = 4;
-            this.singleNextButton.TabStop = false;
             this.singleNextButton.Text = "->";
-            this.singleNextButton.UseVisualStyleBackColor = false;
             this.singleNextButton.MouseClick += this.SingleNextButton_MouseClick;
             // 
             // indexSlider
@@ -148,30 +124,18 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             // 
             // viewButton
             // 
-            this.viewButton.BackColor = System.Drawing.Color.Transparent;
-            this.viewButton.FlatAppearance.BorderSize = 0;
-            this.viewButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.viewButton.Location = new System.Drawing.Point(3, 3);
             this.viewButton.Name = "viewButton";
             this.viewButton.Size = new System.Drawing.Size(64, 23);
-            this.viewButton.TabIndex = 6;
-            this.viewButton.TabStop = false;
             this.viewButton.Text = "View";
-            this.viewButton.UseVisualStyleBackColor = false;
             this.viewButton.MouseClick += this.ViewButton_MouseClick;
             // 
             // sizeButton
             // 
-            this.sizeButton.BackColor = System.Drawing.Color.Transparent;
-            this.sizeButton.FlatAppearance.BorderSize = 0;
-            this.sizeButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.sizeButton.Location = new System.Drawing.Point(73, 3);
             this.sizeButton.Name = "sizeButton";
             this.sizeButton.Size = new System.Drawing.Size(64, 23);
-            this.sizeButton.TabIndex = 7;
-            this.sizeButton.TabStop = false;
             this.sizeButton.Text = "Size";
-            this.sizeButton.UseVisualStyleBackColor = false;
             this.sizeButton.MouseClick += this.SizeButton_MouseClick;
             // 
             // sizeMenu

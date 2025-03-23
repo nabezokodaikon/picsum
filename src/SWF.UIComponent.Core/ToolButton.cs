@@ -23,6 +23,71 @@ namespace SWF.UIComponent.Core
         private ToolButtonRegionType regionType = ToolButtonRegionType.Default;
         private Func<Rectangle>? getRectangleMethod;
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public new FlatStyle FlatStyle
+        {
+            get
+            {
+                return base.FlatStyle;
+            }
+            private set
+            {
+                base.FlatStyle = value;
+            }
+        }
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public new Color BackColor
+        {
+            get
+            {
+                return base.BackColor;
+            }
+            private set
+            {
+                base.BackColor = value;
+            }
+        }
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public new int TabIndex
+        {
+            get
+            {
+                return base.TabIndex;
+            }
+            private set
+            {
+                base.TabIndex = value;
+            }
+        }
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public new bool TabStop
+        {
+            get
+            {
+                return base.TabStop;
+            }
+            private set
+            {
+                base.TabStop = value;
+            }
+        }
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public new bool UseVisualStyleBackColor
+        {
+            get
+            {
+                return base.UseVisualStyleBackColor;
+            }
+            private set
+            {
+                base.UseVisualStyleBackColor = value;
+            }
+        }
+
         public int RegionOffset
         {
             get
@@ -91,6 +156,14 @@ namespace SWF.UIComponent.Core
 
             this.getRectangleMethod = new Func<Rectangle>(this.GetDefaultRectangle);
             this.Region = this.GetRegion();
+
+            this.UseVisualStyleBackColor = false;
+            this.TabIndex = 0;
+            this.TabStop = false;
+            this.BackColor = Color.Transparent;
+            this.FlatStyle = FlatStyle.Flat;
+            this.FlatAppearance.BorderSize = 0;
+            this.FlatAppearance.MouseDownBackColor = Color.Transparent;
         }
 
         public Rectangle GetRegionBounds()

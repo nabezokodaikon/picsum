@@ -50,71 +50,46 @@ namespace PicSum.UIComponent.Contents.FileList
             // 
             // viewButton
             // 
-            this.viewButton.BackColor = Color.Transparent;
-            this.viewButton.FlatAppearance.BorderSize = 0;
-            this.viewButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.viewButton.Location = new Point(3, 3);
             this.viewButton.Name = "viewButton";
             this.viewButton.Size = new Size(64, 23);
-            this.viewButton.TabIndex = 0;
             this.viewButton.Text = "View";
-            this.viewButton.UseVisualStyleBackColor = false;
             this.viewButton.MouseClick += this.ViewButton_MouseClick;
             // 
             // nameSortButton
             // 
-            this.nameSortButton.BackColor = Color.Transparent;
-            this.nameSortButton.FlatAppearance.BorderSize = 0;
-            this.nameSortButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.nameSortButton.Location = new Point(73, 3);
             this.nameSortButton.Name = "nameSortButton";
             this.nameSortButton.Size = new Size(96, 23);
-            this.nameSortButton.TabIndex = 1;
             this.nameSortButton.Text = "Name";
             this.nameSortButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.nameSortButton.UseVisualStyleBackColor = false;
             this.nameSortButton.MouseClick += this.NameSortButton_MouseClick;
             // 
             // pathSortButton
             // 
-            this.pathSortButton.BackColor = Color.Transparent;
-            this.pathSortButton.FlatAppearance.BorderSize = 0;
-            this.pathSortButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.pathSortButton.Location = new Point(175, 3);
             this.pathSortButton.Name = "pathSortButton";
             this.pathSortButton.Size = new Size(96, 23);
-            this.pathSortButton.TabIndex = 2;
             this.pathSortButton.Text = "Path";
             this.pathSortButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.pathSortButton.UseVisualStyleBackColor = false;
             this.pathSortButton.MouseClick += this.PathSortButton_MouseClick;
             // 
             // timestampSortButton
             // 
-            this.timestampSortButton.BackColor = Color.Transparent;
-            this.timestampSortButton.FlatAppearance.BorderSize = 0;
-            this.timestampSortButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.timestampSortButton.Location = new Point(277, 3);
             this.timestampSortButton.Name = "timestampSortButton";
             this.timestampSortButton.Size = new Size(96, 23);
-            this.timestampSortButton.TabIndex = 3;
             this.timestampSortButton.Text = "Time stamp";
             this.timestampSortButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.timestampSortButton.UseVisualStyleBackColor = false;
             this.timestampSortButton.MouseClick += this.TimestampSortButton_MouseClick;
             // 
             // registrationSortButton
             // 
-            this.registrationSortButton.BackColor = Color.Transparent;
-            this.registrationSortButton.FlatAppearance.BorderSize = 0;
-            this.registrationSortButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.registrationSortButton.Location = new Point(379, 3);
             this.registrationSortButton.Name = "registrationSortButton";
             this.registrationSortButton.Size = new Size(96, 23);
-            this.registrationSortButton.TabIndex = 4;
             this.registrationSortButton.Text = "Registration";
             this.registrationSortButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.registrationSortButton.UseVisualStyleBackColor = false;
             this.registrationSortButton.MouseClick += this.RegistrationSortButton_MouseClick;
             // 
             // thumbnailSizeSlider
@@ -170,28 +145,18 @@ namespace PicSum.UIComponent.Contents.FileList
             // 
             // movePreviewButton
             // 
-            this.movePreviewButton.BackColor = Color.Transparent;
-            this.movePreviewButton.FlatAppearance.BorderSize = 0;
-            this.movePreviewButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.movePreviewButton.Location = new Point(595, 3);
             this.movePreviewButton.Name = "movePreviewButton";
             this.movePreviewButton.Size = new Size(64, 23);
-            this.movePreviewButton.TabIndex = 6;
             this.movePreviewButton.Text = "<-";
-            this.movePreviewButton.UseVisualStyleBackColor = false;
             this.movePreviewButton.MouseClick += this.MovePreviewButton_MouseClick;
             // 
             // moveNextButton
             // 
-            this.moveNextButton.BackColor = Color.Transparent;
-            this.moveNextButton.FlatAppearance.BorderSize = 0;
-            this.moveNextButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.moveNextButton.Location = new Point(665, 3);
             this.moveNextButton.Name = "moveNextButton";
             this.moveNextButton.Size = new Size(64, 23);
-            this.moveNextButton.TabIndex = 7;
             this.moveNextButton.Text = "->";
-            this.moveNextButton.UseVisualStyleBackColor = false;
             this.moveNextButton.MouseClick += this.MoveNextButton_MouseClick;
             // 
             // FileListToolBar

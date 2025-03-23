@@ -40,19 +40,14 @@ namespace SWF.UIComponent.WideDropDown
             // addButton
             // 
             this.addButton.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
-            this.addButton.FlatAppearance.BorderSize = 0;
-            this.addButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.addButton.Font = new Font("Yu Gothic UI", 7.8F);
             this.addButton.Image = (Image)resources.GetObject("addButton.Image");
             this.addButton.Location = new Point(594, 0);
             this.addButton.Margin = new System.Windows.Forms.Padding(0);
             this.addButton.Name = "addButton";
             this.addButton.Size = new Size(52, 38);
-            this.addButton.TabIndex = 1;
-            this.addButton.TabStop = false;
             this.addButton.Text = "+";
             this.addButton.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
-            this.addButton.UseVisualStyleBackColor = true;
             this.addButton.MouseClick += this.AddButton_MouseClick;
             // 
             // inputTextBox
