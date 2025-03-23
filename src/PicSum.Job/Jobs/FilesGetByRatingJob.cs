@@ -30,7 +30,7 @@ namespace PicSum.Job.Jobs
                 {
                     var info = getInfoLogic.Execute(
                         dto.FilePath, dto.RegistrationDate, param.IsGetThumbnail);
-                    if (info != null)
+                    if (!info.Equals(FileShallowInfoEntity.EMPTY))
                     {
                         infoList.Add(info);
                     }
