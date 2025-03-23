@@ -248,7 +248,7 @@ namespace PicSum.UIComponent.InfoPanel
                 throw new Exception("NULLまたは長さ0の文字列は、タグに登録できません。");
             }
 
-            if (this.TagList.Find(t => t.Tag.Equals(tag, StringComparison.Ordinal) && t.IsAll) != null)
+            if (this.TagList.Any(t => t.Tag.Equals(tag, StringComparison.Ordinal) && t.IsAll))
             {
                 throw new Exception("既に登録されているタグです。");
             }
@@ -260,16 +260,19 @@ namespace PicSum.UIComponent.InfoPanel
             };
             Instance<JobCaller>.Value.StartFileTagAddJob(this, param);
 
-            var tagInfo = this.TagList.Find(t => t.Tag.Equals(tag, StringComparison.Ordinal));
-            if (tagInfo != null)
+            var tagIndex = Array.FindIndex(
+                this.TagList.ToArray(), t => t.Tag.Equals(tag, StringComparison.Ordinal));
+            if (tagIndex > -1)
             {
+                var tagInfo = this.TagList[tagIndex];
                 tagInfo.IsAll = true;
+                this.TagList[tagIndex] = tagInfo;
                 this.tagFlowList.Invalidate();
                 this.tagFlowList.Update();
             }
             else
             {
-                tagInfo = new FileTagInfoEntity
+                var tagInfo = new FileTagInfoEntity
                 {
                     Tag = tag,
                     IsAll = true
@@ -292,7 +295,7 @@ namespace PicSum.UIComponent.InfoPanel
                 throw new Exception("タグがNULLまたは長さ0の文字列です。");
             }
 
-            if (this.TagList.Find(t => t.Tag.Equals(tag, StringComparison.Ordinal)) == null)
+            if (!this.TagList.Any(t => t.Tag.Equals(tag, StringComparison.Ordinal)))
             {
                 throw new Exception("リストに存在しないタグを指定しました。");
             }
@@ -616,7 +619,7 @@ namespace PicSum.UIComponent.InfoPanel
                 return;
             }
 
-            if (this.TagList.FirstOrDefault(t => t.Tag.Equals(e.Item, StringComparison.Ordinal) && t.IsAll) != null)
+            if (this.TagList.Any(t => t.Tag.Equals(e.Item, StringComparison.Ordinal) && t.IsAll))
             {
                 return;
             }
