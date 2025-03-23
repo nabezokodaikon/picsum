@@ -44,7 +44,7 @@ namespace PicSum.Job.Entities
         public bool IsFile { get; internal set; }
         public bool IsImageFile { get; internal set; }
 
-        public bool Equals(FileShallowInfoEntity other)
+        public readonly bool Equals(FileShallowInfoEntity other)
         {
             if (this.FilePath != other.FilePath) { return false; }
             if (this.FileName != other.FileName) { return false; }
@@ -62,6 +62,51 @@ namespace PicSum.Job.Entities
             if (this.IsImageFile != other.IsImageFile) { return false; }
 
             return true;
+        }
+
+        public override readonly bool Equals(object? obj)
+        {
+            if (obj == null)
+            {
+                return false;
+            }
+
+            if (obj.GetType() != typeof(FileShallowInfoEntity))
+            {
+                return false;
+            }
+
+            return this.Equals((FileShallowInfoEntity)obj);
+        }
+
+        public override readonly int GetHashCode()
+        {
+            var hash = new HashCode();
+            hash.Add(this.FilePath);
+            hash.Add(this.FileName);
+            hash.Add(this.UpdateDate);
+            hash.Add(this.RgistrationDate);
+            hash.Add(this.ExtraLargeIcon);
+            hash.Add(this.SmallIcon);
+            hash.Add(this.JumboIcon);
+            hash.Add(this.ThumbnailImage);
+            hash.Add(this.ThumbnailWidth);
+            hash.Add(this.ThumbnailHeight);
+            hash.Add(this.SourceWidth);
+            hash.Add(this.SourceHeight);
+            hash.Add(this.IsFile);
+            hash.Add(this.IsImageFile);
+            return hash.ToHashCode();
+        }
+
+        public static bool operator ==(FileShallowInfoEntity left, FileShallowInfoEntity right)
+        {
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(FileShallowInfoEntity left, FileShallowInfoEntity right)
+        {
+            return !(left == right);
         }
     }
 }

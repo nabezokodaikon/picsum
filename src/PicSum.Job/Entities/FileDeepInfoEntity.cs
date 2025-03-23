@@ -75,5 +75,48 @@ namespace PicSum.Job.Entities
 
             return true;
         }
+
+        public override readonly bool Equals(object? obj)
+        {
+            if (obj == null)
+            {
+                return false;
+            }
+
+            if (obj.GetType() != typeof(FileDeepInfoEntity))
+            {
+                return false;
+            }
+
+            return this.Equals((FileDeepInfoEntity)obj);
+        }
+
+        public override readonly int GetHashCode()
+        {
+            var hash = new HashCode();
+            hash.Add(this.FilePath);
+            hash.Add(this.FileName);
+            hash.Add(this.UpdateDate);
+            hash.Add(this.IsFile);
+            hash.Add(this.IsImageFile);
+            hash.Add(this.FileType);
+            hash.Add(this.FileSize);
+            hash.Add(this.ImageSize);
+            hash.Add(this.FileIcon);
+            hash.Add(this.Rating);
+            hash.Add(this.Thumbnail);
+            hash.Add(this.IsError);
+            return hash.ToHashCode();
+        }
+
+        public static bool operator ==(FileDeepInfoEntity left, FileDeepInfoEntity right)
+        {
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(FileDeepInfoEntity left, FileDeepInfoEntity right)
+        {
+            return !(left == right);
+        }
     }
 }

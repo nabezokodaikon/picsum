@@ -32,7 +32,7 @@ namespace PicSum.Job.Results
         public ListEntity<FileTagInfoEntity>? TagInfoList { get; internal set; }
         public bool IsError { get; private set; }
 
-        public bool Equals(FileDeepInfoGetResult other)
+        public readonly bool Equals(FileDeepInfoGetResult other)
         {
             if (this.FilePathList != other.FilePathList) { return false; }
             if (!this.FileInfo.Equals(other.FileInfo)) { return false; }
@@ -40,6 +40,36 @@ namespace PicSum.Job.Results
             if (this.IsError != other.IsError) { return false; }
 
             return true;
+        }
+
+        public override readonly bool Equals(object? obj)
+        {
+            if (obj == null)
+            {
+                return false;
+            }
+
+            if (obj.GetType() != typeof(FileDeepInfoGetResult))
+            {
+                return false;
+            }
+
+            return this.Equals((FileDeepInfoGetResult)obj);
+        }
+
+        public override readonly int GetHashCode()
+        {
+            return HashCode.Combine(this.FilePathList, this.FileInfo, this.TagInfoList, this.IsError);
+        }
+
+        public static bool operator ==(FileDeepInfoGetResult left, FileDeepInfoGetResult right)
+        {
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(FileDeepInfoGetResult left, FileDeepInfoGetResult right)
+        {
+            return !(left == right);
         }
     }
 }

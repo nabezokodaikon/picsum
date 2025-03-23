@@ -43,5 +43,35 @@ namespace PicSum.Job.Results
 
             return true;
         }
+
+        public override readonly bool Equals(object? obj)
+        {
+            if (obj == null)
+            {
+                return false;
+            }
+
+            if (obj.GetType() != typeof(ThumbnailImageResult))
+            {
+                return false;
+            }
+
+            return this.Equals((ThumbnailImageResult)obj);
+        }
+
+        public override readonly int GetHashCode()
+        {
+            return HashCode.Combine(this.FilePath, this.ThumbnailImage, this.ThumbnailWidth, this.ThumbnailHeight, this.SourceWidth, this.SourceHeight, this.FileUpdatedate);
+        }
+
+        public static bool operator ==(ThumbnailImageResult left, ThumbnailImageResult right)
+        {
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(ThumbnailImageResult left, ThumbnailImageResult right)
+        {
+            return !(left == right);
+        }
     }
 }

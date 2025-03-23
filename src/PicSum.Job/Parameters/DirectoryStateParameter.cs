@@ -47,13 +47,13 @@ namespace PicSum.Job.Parameters
             return true;
         }
 
-        public override int GetHashCode()
+        public override readonly int GetHashCode()
         {
             return HashCode.Combine(
                 this.DirectoryPath, this.SortTypeID, this.IsAscending, this.SelectedFilePath);
         }
 
-        public override bool Equals(object? obj)
+        public override readonly bool Equals(object? obj)
         {
             return obj is DirectoryStateParameter parameter && this.Equals(parameter);
         }

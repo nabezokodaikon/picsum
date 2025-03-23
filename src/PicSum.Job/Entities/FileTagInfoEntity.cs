@@ -22,5 +22,35 @@ namespace PicSum.Job.Entities
 
             return true;
         }
+
+        public override readonly bool Equals(object? obj)
+        {
+            if (obj == null)
+            {
+                return false;
+            }
+
+            if (obj.GetType() != typeof(FileTagInfoEntity))
+            {
+                return false;
+            }
+
+            return this.Equals((FileTagInfoEntity)obj);
+        }
+
+        public override readonly int GetHashCode()
+        {
+            return HashCode.Combine(this.Tag, this.IsAll);
+        }
+
+        public static bool operator ==(FileTagInfoEntity left, FileTagInfoEntity right)
+        {
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(FileTagInfoEntity left, FileTagInfoEntity right)
+        {
+            return !(left == right);
+        }
     }
 }
