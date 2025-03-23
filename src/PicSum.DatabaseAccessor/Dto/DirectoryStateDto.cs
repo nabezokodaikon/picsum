@@ -6,13 +6,13 @@ namespace PicSum.DatabaseAccessor.Dto
     /// <summary>
     /// フォルダ状態DTO
     /// </summary>
-    public struct DirectoryStateDto
+    public sealed class DirectoryStateDto
         : IDto
     {
-        public string DirectoryPath { get; private set; }
+        public string DirectoryPath { get; private set; } = string.Empty;
         public int SortTypeId { get; private set; }
         public bool IsAscending { get; private set; }
-        public string SelectedFilePath { get; private set; }
+        public string SelectedFilePath { get; private set; } = string.Empty;
 
         public void Read(IDataReader reader)
         {

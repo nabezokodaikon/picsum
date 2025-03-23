@@ -6,10 +6,10 @@ namespace PicSum.DatabaseAccessor.Dto
     /// <summary>
     /// 単一ファイル情報DTO
     /// </summary>
-    public struct FileInfoDto
+    public sealed class FileInfoDto
         : IDto
     {
-        public string FilePath { get; private set; }
+        public string FilePath { get; private set; } = string.Empty;
         public int Rating { get; private set; }
 
         public void Read(IDataReader reader)

@@ -6,10 +6,10 @@ namespace PicSum.DatabaseAccessor.Dto
     /// <summary>
     /// フォルダ表示履歴DTO
     /// </summary>
-    public struct DirectoryViewHistoryDto
+    public sealed class DirectoryViewHistoryDto
         : IDto
     {
-        public string DirectoryPath { get; private set; }
+        public string DirectoryPath { get; private set; } = string.Empty;
         public DateTime ViewDate { get; private set; }
 
         public void Read(IDataReader reader)

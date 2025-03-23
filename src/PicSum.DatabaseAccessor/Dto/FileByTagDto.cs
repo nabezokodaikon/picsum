@@ -3,11 +3,11 @@ using System.Data;
 
 namespace PicSum.DatabaseAccessor.Dto
 {
-    public struct FileByTagDto
+    public sealed class FileByTagDto
         : IDto
     {
-        public string FilePath { get; private set; }
-        public string Tag { get; private set; }
+        public string FilePath { get; private set; } = string.Empty;
+        public string Tag { get; private set; } = string.Empty;
         public DateTime RegistrationDate { get; private set; }
 
         public void Read(IDataReader reader)

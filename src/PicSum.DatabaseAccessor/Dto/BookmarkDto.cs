@@ -3,10 +3,10 @@ using System.Data;
 
 namespace PicSum.DatabaseAccessor.Dto
 {
-    public struct BookmarkDto
+    public sealed class BookmarkDto
         : IDto
     {
-        public string FilePath { get; private set; }
+        public string FilePath { get; private set; } = string.Empty;
         public DateTime RegistrationDate { get; private set; }
 
         public void Read(IDataReader reader)
