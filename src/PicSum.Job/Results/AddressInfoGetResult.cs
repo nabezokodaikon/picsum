@@ -3,7 +3,7 @@ using SWF.Core.Job;
 
 namespace PicSum.Job.Results
 {
-    public sealed class AddressInfoGetResult
+    public struct AddressInfoGetResult
         : IJobResult
     {
         public string? DirectoryPath { get; internal set; }
