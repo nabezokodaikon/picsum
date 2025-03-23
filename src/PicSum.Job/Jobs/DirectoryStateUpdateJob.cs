@@ -16,8 +16,7 @@ namespace PicSum.Job.Jobs
     {
         protected override void Execute(DirectoryStateParameter param)
         {
-
-            if (param.DirectoryPath == null)
+            if (string.IsNullOrEmpty(param.DirectoryPath))
             {
                 throw new ArgumentException("ディレクトリパスがNULLです。", nameof(param));
             }

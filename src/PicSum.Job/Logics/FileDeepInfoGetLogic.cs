@@ -25,6 +25,11 @@ namespace PicSum.Job.Logics
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
+            if (!FileUtil.IsExists(filePath))
+            {
+                return FileDeepInfoEntity.ERROR;
+            }
+
             var info = new FileDeepInfoEntity
             {
                 FilePath = filePath,
@@ -34,10 +39,10 @@ namespace PicSum.Job.Logics
 
             if (FileUtil.IsSystemRoot(filePath))
             {
-                info.UpdateDate = DateTime.MinValue;
+                info.UpdateDate = FileUtil.EMPTY_DATETIME;
                 info.IsFile = false;
                 info.IsImageFile = false;
-                info.FileSize = null;
+                info.FileSize = 0;
                 info.FileIcon = Instance<IFileIconCacher>.Value.LargePCIcon;
             }
             else
@@ -53,7 +58,7 @@ namespace PicSum.Job.Logics
                 else
                 {
                     info.IsImageFile = false;
-                    info.FileSize = null;
+                    info.FileSize = 0;
                     if (FileUtil.IsDrive(filePath))
                     {
                         info.FileIcon = Instance<IFileIconCacher>.Value.GetJumboDriveIcon(filePath);

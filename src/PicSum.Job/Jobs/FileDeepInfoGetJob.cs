@@ -1,3 +1,4 @@
+using PicSum.Job.Entities;
 using PicSum.Job.Logics;
 using PicSum.Job.Parameters;
 using PicSum.Job.Results;
@@ -36,6 +37,11 @@ namespace PicSum.Job.Jobs
                     var deepInfoGetLogic = new FileDeepInfoGetLogic(this);
                     var filePath = param.FilePathList[0];
                     var fileInfo = deepInfoGetLogic.Execute(filePath, param.ThumbnailSize, true);
+                    if (fileInfo.Equals(FileDeepInfoEntity.ERROR))
+                    {
+                        this.Callback(FileDeepInfoGetResult.ERROR);
+                        return;
+                    }
 
                     this.CheckCancel();
 

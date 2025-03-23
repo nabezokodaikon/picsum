@@ -1,10 +1,13 @@
+using SWF.Core.FileAccessor;
 using System.Drawing;
+using System.Runtime.Versioning;
 
 namespace PicSum.Job.Entities
 {
     /// <summary>
     /// ファイルの浅い情報エンティティ
     /// </summary>
+    [SupportedOSPlatform("windows10.0.17763.0")]
     public struct FileShallowInfoEntity
         : IEquatable<FileShallowInfoEntity>
     {
@@ -12,8 +15,8 @@ namespace PicSum.Job.Entities
         {
             FilePath = string.Empty,
             FileName = string.Empty,
-            UpdateDate = null,
-            RgistrationDate = null,
+            UpdateDate = FileUtil.EMPTY_DATETIME,
+            RgistrationDate = FileUtil.EMPTY_DATETIME,
             ExtraLargeIcon = null,
             SmallIcon = null,
             JumboIcon = null,
@@ -26,10 +29,10 @@ namespace PicSum.Job.Entities
             IsImageFile = false,
         };
 
-        public string? FilePath { get; internal set; }
-        public string? FileName { get; internal set; }
-        public DateTime? UpdateDate { get; internal set; }
-        public DateTime? RgistrationDate { get; internal set; }
+        public string FilePath { get; internal set; }
+        public string FileName { get; internal set; }
+        public DateTime UpdateDate { get; internal set; }
+        public DateTime RgistrationDate { get; internal set; }
         public Image? ExtraLargeIcon { get; internal set; }
         public Image? SmallIcon { get; internal set; }
         public Image? JumboIcon { get; internal set; }
@@ -53,10 +56,10 @@ namespace PicSum.Job.Entities
             if (this.ThumbnailImage != other.ThumbnailImage) { return false; }
             if (this.ThumbnailWidth != other.ThumbnailWidth) { return false; }
             if (this.ThumbnailHeight != other.ThumbnailHeight) { return false; }
-            if (this.SourceWidth.Equals(other.SourceWidth)) { return false; }
-            if (this.SourceHeight.Equals(other.SourceHeight)) { return false; }
-            if (this.IsFile.Equals(other.IsFile)) { return false; }
-            if (this.IsImageFile.Equals(other.IsImageFile)) { return false; }
+            if (this.SourceWidth != other.SourceWidth) { return false; }
+            if (this.SourceHeight != other.SourceHeight) { return false; }
+            if (this.IsFile != other.IsFile) { return false; }
+            if (this.IsImageFile != other.IsImageFile) { return false; }
 
             return true;
         }

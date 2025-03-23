@@ -48,26 +48,26 @@ namespace PicSum.UIComponent.Contents.FileList
                     {
                         return files
                             .OrderBy(file => file.FilePath, NaturalStringComparer.Windows)
-                            .OrderBy(file => file.UpdateDate.GetValueOrDefault(DateTime.MinValue));
+                            .OrderBy(file => file.UpdateDate);
                     }
                     else
                     {
                         return files
                             .OrderByDescending(file => file.FilePath, NaturalStringComparer.Windows)
-                            .OrderByDescending(file => file.UpdateDate.GetValueOrDefault(DateTime.MinValue));
+                            .OrderByDescending(file => file.UpdateDate);
                     }
                 case SortTypeID.RegistrationDate:
                     if (isAscending)
                     {
                         return files
                             .OrderBy(file => file.FilePath, NaturalStringComparer.Windows)
-                            .OrderBy(file => file.RgistrationDate.GetValueOrDefault(DateTime.MinValue));
+                            .OrderBy(file => file.RgistrationDate);
                     }
                     else
                     {
                         return files
                             .OrderByDescending(file => file.FilePath, NaturalStringComparer.Windows)
-                            .OrderByDescending(file => file.RgistrationDate.GetValueOrDefault(DateTime.MinValue));
+                            .OrderByDescending(file => file.RgistrationDate);
                     }
                 default:
                     return files;

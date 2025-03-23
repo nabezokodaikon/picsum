@@ -23,7 +23,7 @@ namespace PicSum.Job.Logics
 
             var info = new FileShallowInfoEntity
             {
-                RgistrationDate = null
+                RgistrationDate = FileUtil.EMPTY_DATETIME,
             };
 
             if (FileUtil.IsSystemRoot(filePath))
@@ -32,7 +32,7 @@ namespace PicSum.Job.Logics
                 info.FileName = FileUtil.GetFileName(filePath);
                 info.IsFile = false;
                 info.IsImageFile = false;
-                info.UpdateDate = null;
+                info.UpdateDate = FileUtil.EMPTY_DATETIME;
                 info.SmallIcon = Instance<IFileIconCacher>.Value.SmallPCIcon;
                 info.ExtraLargeIcon = Instance<IFileIconCacher>.Value.LargePCIcon;
                 info.JumboIcon = Instance<IFileIconCacher>.Value.LargePCIcon;

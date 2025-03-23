@@ -13,10 +13,10 @@ namespace PicSum.Job.Entities
             SourceWidth = 0,
             SourceHeight = 0,
             FileUpdatedate = DateTime.MinValue,
-            ThumbnailBuffer = []
+            ThumbnailBuffer = null,
         };
 
-        public string? FilePath { get; internal set; }
+        public string FilePath { get; internal set; }
         public int ThumbnailWidth { get; internal set; }
         public int ThumbnailHeight { get; internal set; }
         public int SourceWidth { get; internal set; }

@@ -23,7 +23,7 @@ namespace PicSum.Job.Results
             FileUpdatedate = FileUtil.EMPTY_DATETIME,
         };
 
-        public string? FilePath { get; internal set; }
+        public string FilePath { get; internal set; }
         public Image? ThumbnailImage { get; internal set; }
         public int ThumbnailWidth { get; internal set; }
         public int ThumbnailHeight { get; internal set; }
@@ -36,6 +36,7 @@ namespace PicSum.Job.Results
             if (this.FilePath != other.FilePath) { return false; }
             if (this.ThumbnailImage != other.ThumbnailImage) { return false; }
             if (this.ThumbnailWidth != other.ThumbnailWidth) { return false; }
+            if (this.ThumbnailHeight != other.ThumbnailHeight) { return false; }
             if (this.SourceWidth != other.SourceWidth) { return false; }
             if (this.SourceHeight != other.SourceHeight) { return false; }
             if (this.FileUpdatedate != other.FileUpdatedate) { return false; }

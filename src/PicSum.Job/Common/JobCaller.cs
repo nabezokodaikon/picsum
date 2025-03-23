@@ -105,7 +105,6 @@ namespace PicSum.Job.Common
         public void StartBookmarkAddJob(ISender sender, ValueParameter<string> parameter)
         {
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
-            ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
 
             this.jobQueue.Value.Enqueue<BookmarkAddJob, ValueParameter<string>>(sender, parameter);
         }
@@ -120,7 +119,6 @@ namespace PicSum.Job.Common
         public void StartDirectoryViewHistoryAddJob(ISender sender, ValueParameter<string> parameter)
         {
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
-            ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
 
             this.jobQueue.Value.Enqueue<DirectoryViewHistoryAddJob, ValueParameter<string>>(sender, parameter);
         }

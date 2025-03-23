@@ -13,20 +13,31 @@ namespace PicSum.Job.Results
     {
         public static readonly FileDeepInfoGetResult EMPTY = new()
         {
-            FilePathList = [],
+            FilePathList = null,
             FileInfo = FileDeepInfoEntity.EMPTY,
-            TagInfoList = [],
+            TagInfoList = null,
+            IsError = false,
+        };
+
+        public static readonly FileDeepInfoGetResult ERROR = new()
+        {
+            FilePathList = null,
+            FileInfo = FileDeepInfoEntity.ERROR,
+            TagInfoList = null,
+            IsError = true,
         };
 
         public string[]? FilePathList { get; internal set; }
         public FileDeepInfoEntity FileInfo { get; internal set; }
         public ListEntity<FileTagInfoEntity>? TagInfoList { get; internal set; }
+        public bool IsError { get; private set; }
 
         public bool Equals(FileDeepInfoGetResult other)
         {
             if (this.FilePathList != other.FilePathList) { return false; }
             if (!this.FileInfo.Equals(other.FileInfo)) { return false; }
             if (this.TagInfoList != other.TagInfoList) { return false; }
+            if (this.IsError != other.IsError) { return false; }
 
             return true;
         }

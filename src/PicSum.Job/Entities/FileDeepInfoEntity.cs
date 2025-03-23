@@ -26,19 +26,37 @@ namespace PicSum.Job.Entities
             FileIcon = null,
             Rating = 0,
             Thumbnail = ThumbnailImageResult.EMPTY,
+            IsError = false,
         };
 
-        public string? FilePath { get; internal set; }
-        public string? FileName { get; internal set; }
+        public static readonly FileDeepInfoEntity ERROR = new()
+        {
+            FilePath = string.Empty,
+            FileName = string.Empty,
+            UpdateDate = FileUtil.EMPTY_DATETIME,
+            IsFile = false,
+            IsImageFile = false,
+            FileType = string.Empty,
+            FileSize = 0,
+            ImageSize = ImageUtil.EMPTY_SIZE,
+            FileIcon = null,
+            Rating = 0,
+            Thumbnail = ThumbnailImageResult.EMPTY,
+            IsError = true,
+        };
+
+        public string FilePath { get; internal set; }
+        public string FileName { get; internal set; }
         public DateTime UpdateDate { get; internal set; }
         public bool IsFile { get; internal set; }
         public bool IsImageFile { get; internal set; }
-        public string? FileType { get; internal set; }
-        public long? FileSize { get; internal set; }
-        public Size? ImageSize { get; internal set; }
+        public string FileType { get; internal set; }
+        public long FileSize { get; internal set; }
+        public Size ImageSize { get; internal set; }
         public Image? FileIcon { get; internal set; }
         public int Rating { get; internal set; }
         public ThumbnailImageResult Thumbnail { get; internal set; }
+        public bool IsError { get; private set; }
 
         public readonly bool Equals(FileDeepInfoEntity other)
         {
@@ -52,7 +70,8 @@ namespace PicSum.Job.Entities
             if (this.ImageSize != other.ImageSize) { return false; }
             if (this.FileIcon != other.FileIcon) { return false; }
             if (this.Rating != other.Rating) { return false; }
-            if (this.Thumbnail.Equals(other.Thumbnail)) { return false; }
+            if (!this.Thumbnail.Equals(other.Thumbnail)) { return false; }
+            if (this.IsError != other.IsError) { return false; }
 
             return true;
         }

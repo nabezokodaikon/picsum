@@ -17,10 +17,10 @@ namespace PicSum.Job.Parameters
             SelectedFilePath = string.Empty,
         };
 
-        public string? DirectoryPath { get; set; }
+        public string DirectoryPath { get; set; }
         public SortTypeID SortTypeID { get; set; }
         public bool IsAscending { get; set; }
-        public string? SelectedFilePath { get; set; }
+        public string SelectedFilePath { get; set; }
 
         public readonly bool Equals(DirectoryStateParameter other)
         {

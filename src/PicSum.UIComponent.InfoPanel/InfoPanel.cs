@@ -49,14 +49,24 @@ namespace PicSum.UIComponent.InfoPanel
         {
             get
             {
-                if (!this.fileInfoSource.Equals(FileDeepInfoGetResult.EMPTY) && !this.fileInfoSource.FileInfo.Equals(FileDeepInfoEntity.EMPTY))
-                {
-                    return this.fileInfoSource.FileInfo;
-                }
-                else
+                if (this.fileInfoSource.Equals(FileDeepInfoGetResult.EMPTY))
                 {
                     return FileDeepInfoEntity.EMPTY;
                 }
+                else if (this.fileInfoSource.Equals(FileDeepInfoGetResult.ERROR))
+                {
+                    return FileDeepInfoEntity.ERROR;
+                }
+                else if (this.fileInfoSource.FileInfo.Equals(FileDeepInfoEntity.EMPTY))
+                {
+                    return FileDeepInfoEntity.EMPTY;
+                }
+                else if (this.fileInfoSource.FileInfo.Equals(FileDeepInfoEntity.ERROR))
+                {
+                    return FileDeepInfoEntity.ERROR;
+                }
+
+                return this.fileInfoSource.FileInfo;
             }
         }
 
@@ -64,9 +74,7 @@ namespace PicSum.UIComponent.InfoPanel
         {
             get
             {
-                if (!this.FileInfo.Equals(FileDeepInfoEntity.EMPTY)
-                    && !this.FileInfo.Thumbnail.Equals(ThumbnailImageResult.EMPTY)
-                    && this.FileInfo.Thumbnail.ThumbnailImage != null)
+                if (this.FileInfo.Thumbnail.ThumbnailImage != null)
                 {
                     return this.FileInfo.Thumbnail;
                 }
@@ -368,26 +376,23 @@ namespace PicSum.UIComponent.InfoPanel
 
             this.fileInfoSource = result;
 
-            if (!this.FileInfo.Equals(FileDeepInfoEntity.EMPTY))
+            if (!this.FileInfo.Equals(FileDeepInfoEntity.EMPTY)
+                && !this.FileInfo.Equals(FileDeepInfoEntity.ERROR))
             {
                 this.fileInfoLabel.FileName = this.FileInfo.FileName;
                 this.fileInfoLabel.FileType = this.FileInfo.FileType;
 
-                if (this.FileInfo.FileSize.HasValue)
+                if (this.FileInfo.IsFile)
                 {
-                    this.fileInfoLabel.FileSize = FileUtil.ToSizeUnitString(this.FileInfo.FileSize.Value);
-                    if (this.FileInfo.ImageSize.HasValue)
+                    this.fileInfoLabel.FileSize = FileUtil.ToSizeUnitString(this.FileInfo.FileSize);
+                    if (this.FileInfo.ImageSize != ImageUtil.EMPTY_SIZE)
                     {
                         this.fileInfoLabel.FileSize
-                            += $" ({this.FileInfo.ImageSize.Value.Width} x {this.FileInfo.ImageSize.Value.Height})";
+                            += $" ({this.FileInfo.ImageSize.Width} x {this.FileInfo.ImageSize.Height})";
                     }
                 }
 
-                if (this.FileInfo.UpdateDate == FileUtil.EMPTY_DATETIME)
-                {
-                    this.fileInfoLabel.Timestamp = string.Empty;
-                }
-                else
+                if (this.FileInfo.UpdateDate != FileUtil.EMPTY_DATETIME)
                 {
                     this.fileInfoLabel.Timestamp
                         = $"{this.FileInfo.UpdateDate:yyyy/MM/dd HH:mm:ss}";
@@ -437,21 +442,21 @@ namespace PicSum.UIComponent.InfoPanel
                         Instance<IFileIconCacher>.Value.JumboDirectoryIcon);
                 }
             }
-            else if (!this.FileInfo.Equals(FileDeepInfoEntity.EMPTY) && this.FileInfo.FileIcon != null)
+            else if (this.FileInfo.FileIcon != null)
             {
                 const int margin = 32;
                 var rect = new Rectangle(margin, margin, this.thumbnailPictureBox.Width - margin * 2, this.thumbnailPictureBox.Height - margin * 2);
                 this.DrawFileIcon(e.Graphics, this.FileInfo.FileIcon, rect);
             }
-            else if (!this.FileInfo.Equals(FileDeepInfoEntity.EMPTY) && this.FileInfo.FileIcon == null)
-            {
-                var rect = new Rectangle(0, 0, this.thumbnailPictureBox.Width, this.thumbnailPictureBox.Height);
-                this.DrawErrorMessage(e.Graphics, rect);
-            }
             else if (this.FilePathList != null)
             {
                 var rect = new Rectangle(0, 0, this.thumbnailPictureBox.Width, this.thumbnailPictureBox.Height);
                 this.DrawSelectedFileCount(e.Graphics, rect);
+            }
+            else if (this.FileInfo.Equals(FileDeepInfoEntity.ERROR))
+            {
+                var rect = new Rectangle(0, 0, this.thumbnailPictureBox.Width, this.thumbnailPictureBox.Height);
+                this.DrawErrorMessage(e.Graphics, rect);
             }
         }
 

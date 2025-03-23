@@ -16,8 +16,7 @@ namespace PicSum.Job.Jobs
     {
         protected override void Execute(FilesGetByTagParameter param)
         {
-
-            if (param.Tag == null)
+            if (string.IsNullOrEmpty(param.Tag))
             {
                 throw new InvalidOperationException("タグが設定されていません。");
             }

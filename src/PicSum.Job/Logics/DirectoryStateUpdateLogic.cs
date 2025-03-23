@@ -17,12 +17,12 @@ namespace PicSum.Job.Logics
         public bool Execute(DirectoryStateParameter directoryState)
         {
 
-            if (directoryState.DirectoryPath == null)
+            if (string.IsNullOrEmpty(directoryState.DirectoryPath))
             {
                 throw new ArgumentException("フォルダパスがNULLです。", nameof(directoryState));
             }
 
-            if (directoryState.SelectedFilePath == null)
+            if (string.IsNullOrEmpty(directoryState.SelectedFilePath))
             {
                 throw new ArgumentException("選択ファイルパスがNULLです。", nameof(directoryState));
             }
