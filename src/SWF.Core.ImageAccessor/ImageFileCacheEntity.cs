@@ -1,15 +1,23 @@
+using SWF.Core.FileAccessor;
 using System.Runtime.Versioning;
 
 namespace SWF.Core.ImageAccessor
 {
     [SupportedOSPlatform("windows10.0.17763.0")]
-    internal sealed partial class ImageFileCacheEntity
+    internal struct ImageFileCacheEntity
         : IDisposable, IEquatable<ImageFileCacheEntity>
     {
+        public static readonly ImageFileCacheEntity EMPTY = new()
+        {
+            FilePath = string.Empty,
+            Bitmap = null,
+            Timestamp = FileUtil.EMPTY_DATETIME,
+        };
+
         private bool disposed = false;
 
         public string FilePath { get; private set; }
-        public Bitmap Bitmap { get; private set; }
+        public Bitmap? Bitmap { get; private set; }
         public DateTime Timestamp { get; private set; }
 
         public ImageFileCacheEntity(string filePath, Bitmap bitmap, DateTime timestamp)
@@ -20,11 +28,6 @@ namespace SWF.Core.ImageAccessor
             this.FilePath = filePath;
             this.Bitmap = bitmap;
             this.Timestamp = timestamp;
-        }
-
-        ~ImageFileCacheEntity()
-        {
-            this.Dispose(false);
         }
 
         public void Dispose()
@@ -42,19 +45,14 @@ namespace SWF.Core.ImageAccessor
 
             if (disposing)
             {
-                this.Bitmap.Dispose();
+                this.Bitmap?.Dispose();
             }
 
             this.disposed = true;
         }
 
-        public bool Equals(ImageFileCacheEntity? other)
+        public readonly bool Equals(ImageFileCacheEntity other)
         {
-            if (other == null)
-            {
-                return false;
-            }
-
             if (other.FilePath != this.FilePath)
             {
                 return false;
@@ -68,14 +66,33 @@ namespace SWF.Core.ImageAccessor
             return true;
         }
 
-        public override int GetHashCode()
+        public override readonly int GetHashCode()
         {
             return HashCode.Combine(this.FilePath, this.Timestamp);
         }
 
-        public override bool Equals(object? obj)
+        public override readonly bool Equals(object? obj)
         {
-            return this.Equals(obj as ImageFileCacheEntity);
+            if (obj == null)
+            {
+                return false;
+            }
+
+            if (obj.GetType() != typeof(ImageFileCacheEntity))
+            {
+                return false;
+            }
+
+            return this.Equals((ImageFileCacheEntity)obj);
+        }
+        public static bool operator ==(ImageFileCacheEntity left, ImageFileCacheEntity right)
+        {
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(ImageFileCacheEntity left, ImageFileCacheEntity right)
+        {
+            return !(left == right);
         }
     }
 }

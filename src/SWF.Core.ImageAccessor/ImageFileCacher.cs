@@ -59,7 +59,7 @@ namespace SWF.Core.ImageAccessor
 
             return this.Get(filePath, cache =>
             {
-                if (cache != null)
+                if (cache != ImageFileCacheEntity.EMPTY)
                 {
                     return true;
                 }
@@ -76,7 +76,7 @@ namespace SWF.Core.ImageAccessor
 
             var size = this.Get(filePath, cache =>
             {
-                if (cache != null)
+                if (cache != ImageFileCacheEntity.EMPTY && cache.Bitmap != null)
                 {
                     return cache.Bitmap.Size;
                 }
@@ -100,7 +100,7 @@ namespace SWF.Core.ImageAccessor
 
             var cvImage = this.Get(filePath, cache =>
             {
-                if (cache != null)
+                if (cache != ImageFileCacheEntity.EMPTY && cache.Bitmap != null)
                 {
                     return new CvImage(
                         filePath, cache.Bitmap.ToMat(), cache.Bitmap.PixelFormat);
@@ -179,7 +179,7 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
-        private T Get<T>(string filePath, Func<ImageFileCacheEntity?, T> resultFunc)
+        private T Get<T>(string filePath, Func<ImageFileCacheEntity, T> resultFunc)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
@@ -197,7 +197,7 @@ namespace SWF.Core.ImageAccessor
                         }
                     }
 
-                    return resultFunc(null);
+                    return resultFunc(ImageFileCacheEntity.EMPTY);
                 }
             }
         }
