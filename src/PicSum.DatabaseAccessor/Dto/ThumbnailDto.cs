@@ -6,7 +6,7 @@ namespace PicSum.DatabaseAccessor.Dto
     /// <summary>
     /// サムネイルDTO
     /// </summary>
-    public class ThumbnailDto
+    public sealed class ThumbnailDto
         : IDto
     {
         public string FilePath { get; private set; } = string.Empty;
