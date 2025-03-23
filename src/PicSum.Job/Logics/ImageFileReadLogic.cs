@@ -15,7 +15,7 @@ namespace PicSum.Job.Logics
         internal ImageFileReadResult CreateResult(
             string filePath, bool isMain, bool hasSub)
         {
-            CvImage? image = null;
+            var image = CvImage.EMPTY;
 
             try
             {
@@ -38,7 +38,7 @@ namespace PicSum.Job.Logics
             }
             catch (JobCancelException)
             {
-                image?.Dispose();
+                image.Dispose();
                 throw;
             }
         }

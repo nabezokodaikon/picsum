@@ -107,11 +107,11 @@ namespace SWF.Core.ImageAccessor
                 }
                 else
                 {
-                    return null;
+                    return CvImage.EMPTY;
                 }
             });
 
-            if (cvImage != null)
+            if (cvImage != CvImage.EMPTY)
             {
                 return cvImage;
             }

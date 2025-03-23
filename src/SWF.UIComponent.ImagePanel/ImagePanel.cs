@@ -33,7 +33,7 @@ namespace SWF.UIComponent.ImagePanel
         private bool isShowThumbnailPanel = false;
 
         private SizeF imageScaleSize = SizeF.Empty;
-        private CvImage image = null;
+        private CvImage image = CvImage.EMPTY;
 
         private int hMaximumScrollValue = 0;
         private int vMaximumScrollValue = 0;
@@ -144,7 +144,6 @@ namespace SWF.UIComponent.ImagePanel
 
         public void SetImage(ImageSizeMode sizeMode, CvImage img, string filePath)
         {
-            ArgumentNullException.ThrowIfNull(img, nameof(img));
             ArgumentNullException.ThrowIfNull(filePath, nameof(filePath));
 
             if (this.HasImage)
@@ -191,11 +190,7 @@ namespace SWF.UIComponent.ImagePanel
         {
             this.HasImage = false;
 
-            if (this.image != null)
-            {
-                this.image.Dispose();
-                this.image = null;
-            }
+            this.image.Dispose();
 
             this.imageScaleSize = SizeF.Empty;
             this.FilePath = string.Empty;
@@ -389,7 +384,7 @@ namespace SWF.UIComponent.ImagePanel
 
         protected override void OnMouseClick(MouseEventArgs e)
         {
-            if (this.image == null || this.image.IsEmpty)
+            if (this.image.IsEmpty)
             {
                 return;
             }
@@ -404,7 +399,7 @@ namespace SWF.UIComponent.ImagePanel
 
         protected override void OnMouseDoubleClick(MouseEventArgs e)
         {
-            if (this.image == null || this.image.IsEmpty)
+            if (this.image.IsEmpty)
             {
                 return;
             }

@@ -131,8 +131,6 @@ namespace SWF.Core.ImageAccessor
 
         public static Bitmap CreateThumbnail(CvImage srcImg, int thumbSize, ImageSizeMode sizeMode)
         {
-            ArgumentNullException.ThrowIfNull(srcImg, nameof(srcImg));
-
             if (thumbSize < 0)
             {
                 ArgumentOutOfRangeException.ThrowIfNegative(thumbSize, nameof(thumbSize));
