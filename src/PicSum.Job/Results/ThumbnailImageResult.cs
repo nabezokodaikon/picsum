@@ -10,7 +10,7 @@ namespace PicSum.Job.Results
     /// </summary>
     [SupportedOSPlatform("windows10.0.17763.0")]
     public struct ThumbnailImageResult
-        : IJobResult
+        : IJobResult, IEquatable<ThumbnailImageResult>
     {
         public static readonly ThumbnailImageResult EMPTY = new()
         {
@@ -30,5 +30,17 @@ namespace PicSum.Job.Results
         public int SourceWidth { get; internal set; }
         public int SourceHeight { get; internal set; }
         public DateTime FileUpdatedate { get; internal set; }
+
+        public readonly bool Equals(ThumbnailImageResult other)
+        {
+            if (this.FilePath != other.FilePath) { return false; }
+            if (this.ThumbnailImage != other.ThumbnailImage) { return false; }
+            if (this.ThumbnailWidth != other.ThumbnailWidth) { return false; }
+            if (this.SourceWidth != other.SourceWidth) { return false; }
+            if (this.SourceHeight != other.SourceHeight) { return false; }
+            if (this.FileUpdatedate != other.FileUpdatedate) { return false; }
+
+            return true;
+        }
     }
 }
