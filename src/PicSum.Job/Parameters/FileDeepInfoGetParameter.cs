@@ -6,7 +6,7 @@ namespace PicSum.Job.Parameters
     /// <summary>
     /// ファイルの深い情報取得パラメータエンティティ
     /// </summary>
-    public sealed class FileDeepInfoGetParameter
+    public struct FileDeepInfoGetParameter
         : IJobParameter
     {
         public string[]? FilePathList { get; set; }

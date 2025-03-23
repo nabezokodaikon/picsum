@@ -144,7 +144,6 @@ namespace PicSum.Job.Common
         public void StartFileRatingUpdateJob(ISender sender, FileRatingUpdateParameter parameter)
         {
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
-            ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
 
             this.jobQueue.Value.Enqueue<FileRatingUpdateJob, FileRatingUpdateParameter>(sender, parameter);
         }
@@ -152,7 +151,6 @@ namespace PicSum.Job.Common
         public void StartFileTagDeleteJob(ISender sender, FileTagUpdateParameter parameter)
         {
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
-            ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
 
             this.jobQueue.Value.Enqueue<FileTagDeleteJob, FileTagUpdateParameter>(sender, parameter);
         }
@@ -160,7 +158,6 @@ namespace PicSum.Job.Common
         public void StartFileTagAddJob(ISender sender, FileTagUpdateParameter parameter)
         {
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
-            ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
 
             this.jobQueue.Value.Enqueue<FileTagAddJob, FileTagUpdateParameter>(sender, parameter);
         }

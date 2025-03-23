@@ -20,8 +20,6 @@ namespace PicSum.Job.Jobs
     {
         protected override void Execute(ThumbnailsGetParameter param)
         {
-            ArgumentNullException.ThrowIfNull(param, nameof(param));
-
             if (param.FilePathList == null)
             {
                 throw new ArgumentException("ファイルパスリストがNULLです。", nameof(param));

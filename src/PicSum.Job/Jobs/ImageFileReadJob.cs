@@ -14,8 +14,6 @@ namespace PicSum.Job.Jobs
     {
         protected override void Execute(ImageFileReadParameter parameter)
         {
-            ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
-
             if (parameter.FilePathList == null)
             {
                 throw new ArgumentException("ファイルパスリストがNULLです。", nameof(parameter));

@@ -5,7 +5,7 @@ namespace PicSum.Job.Parameters
     /// <summary>
     /// ファイルの評価値を更新するパラメータエンティティ
     /// </summary>
-    public sealed class FileRatingUpdateParameter
+    public struct FileRatingUpdateParameter
         : IJobParameter
     {
         public string[]? FilePathList { get; set; }
