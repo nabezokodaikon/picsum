@@ -3,7 +3,7 @@ using SWF.Core.Job;
 
 namespace PicSum.Job.Results
 {
-    public sealed class ImageFileReadResult
+    public struct ImageFileReadResult
         : IJobResult
     {
         public ImageFileEntity? Image { get; internal set; }
