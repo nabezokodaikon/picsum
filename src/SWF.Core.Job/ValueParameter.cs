@@ -1,6 +1,6 @@
 namespace SWF.Core.Job
 {
-    public struct ValueParameter<T>
+    public sealed class ValueParameter<T>
         : IJobParameter
     {
         public T Value { get; private set; }

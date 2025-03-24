@@ -9,8 +9,8 @@ namespace PicSum.Job.Results
     /// サムネイルイメージエンティティ
     /// </summary>
     [SupportedOSPlatform("windows10.0.17763.0")]
-    public struct ThumbnailImageResult
-        : IJobResult, IEquatable<ThumbnailImageResult>
+    public sealed class ThumbnailImageResult
+        : IJobResult
     {
         public static readonly ThumbnailImageResult EMPTY = new()
         {
@@ -23,55 +23,12 @@ namespace PicSum.Job.Results
             FileUpdatedate = FileUtil.EMPTY_DATETIME,
         };
 
-        public string FilePath { get; internal set; }
+        public string FilePath { get; internal set; } = string.Empty;
         public Image? ThumbnailImage { get; internal set; }
         public int ThumbnailWidth { get; internal set; }
         public int ThumbnailHeight { get; internal set; }
         public int SourceWidth { get; internal set; }
         public int SourceHeight { get; internal set; }
         public DateTime FileUpdatedate { get; internal set; }
-
-        public readonly bool Equals(ThumbnailImageResult other)
-        {
-            if (this.FilePath != other.FilePath) { return false; }
-            if (this.ThumbnailImage != other.ThumbnailImage) { return false; }
-            if (this.ThumbnailWidth != other.ThumbnailWidth) { return false; }
-            if (this.ThumbnailHeight != other.ThumbnailHeight) { return false; }
-            if (this.SourceWidth != other.SourceWidth) { return false; }
-            if (this.SourceHeight != other.SourceHeight) { return false; }
-            if (this.FileUpdatedate != other.FileUpdatedate) { return false; }
-
-            return true;
-        }
-
-        public override readonly bool Equals(object? obj)
-        {
-            if (obj == null)
-            {
-                return false;
-            }
-
-            if (obj.GetType() != typeof(ThumbnailImageResult))
-            {
-                return false;
-            }
-
-            return this.Equals((ThumbnailImageResult)obj);
-        }
-
-        public override readonly int GetHashCode()
-        {
-            return HashCode.Combine(this.FilePath, this.ThumbnailImage, this.ThumbnailWidth, this.ThumbnailHeight, this.SourceWidth, this.SourceHeight, this.FileUpdatedate);
-        }
-
-        public static bool operator ==(ThumbnailImageResult left, ThumbnailImageResult right)
-        {
-            return left.Equals(right);
-        }
-
-        public static bool operator !=(ThumbnailImageResult left, ThumbnailImageResult right)
-        {
-            return !(left == right);
-        }
     }
 }

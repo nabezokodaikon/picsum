@@ -6,7 +6,7 @@ namespace PicSum.Job.Parameters
     /// <summary>
     /// 画像読込パラメータエンティティ
     /// </summary>
-    public struct ImageFileReadParameter
+    public sealed class ImageFileReadParameter
         : IJobParameter
     {
         public int CurrentIndex { get; set; }

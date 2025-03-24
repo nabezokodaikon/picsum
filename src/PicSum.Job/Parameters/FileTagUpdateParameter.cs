@@ -5,10 +5,10 @@ namespace PicSum.Job.Parameters
     /// <summary>
     /// タグを更新するパラメータエンティティ
     /// </summary>
-    public struct FileTagUpdateParameter
+    public sealed class FileTagUpdateParameter
         : IJobParameter
     {
         public string[]? FilePathList { get; set; }
-        public string? Tag { get; set; }
+        public string Tag { get; set; } = string.Empty;
     }
 }

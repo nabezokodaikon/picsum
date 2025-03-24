@@ -1,6 +1,6 @@
 namespace SWF.Core.Job
 {
-    public readonly struct EmptyResult
+    public sealed class EmptyResult
         : IJobResult
     {
         public static readonly EmptyResult Value = new();

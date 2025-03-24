@@ -2,10 +2,10 @@ using System.Data;
 
 namespace SWF.Core.DatabaseAccessor
 {
-    public struct EmptyDto
+    public sealed class EmptyDto
         : IDto
     {
-        public readonly void Read(IDataReader reader) =>
+        public void Read(IDataReader reader) =>
             ArgumentNullException.ThrowIfNull(reader, nameof(reader));
     }
 }

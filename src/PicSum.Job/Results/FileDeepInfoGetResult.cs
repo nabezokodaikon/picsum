@@ -8,8 +8,8 @@ namespace PicSum.Job.Results
     /// ファイルの深い情報取得結果エンティティ
     /// </summary>
     [SupportedOSPlatform("windows10.0.17763.0")]
-    public struct FileDeepInfoGetResult
-        : IJobResult, IEquatable<FileDeepInfoGetResult>
+    public sealed class FileDeepInfoGetResult
+        : IJobResult
     {
         public static readonly FileDeepInfoGetResult EMPTY = new()
         {
@@ -28,48 +28,8 @@ namespace PicSum.Job.Results
         };
 
         public string[]? FilePathList { get; internal set; }
-        public FileDeepInfoEntity FileInfo { get; internal set; }
+        public FileDeepInfoEntity FileInfo { get; internal set; } = FileDeepInfoEntity.EMPTY;
         public ListEntity<FileTagInfoEntity>? TagInfoList { get; internal set; }
         public bool IsError { get; private set; }
-
-        public readonly bool Equals(FileDeepInfoGetResult other)
-        {
-            if (this.FilePathList != other.FilePathList) { return false; }
-            if (this.FileInfo != other.FileInfo) { return false; }
-            if (this.TagInfoList != other.TagInfoList) { return false; }
-            if (this.IsError != other.IsError) { return false; }
-
-            return true;
-        }
-
-        public override readonly bool Equals(object? obj)
-        {
-            if (obj == null)
-            {
-                return false;
-            }
-
-            if (obj.GetType() != typeof(FileDeepInfoGetResult))
-            {
-                return false;
-            }
-
-            return this.Equals((FileDeepInfoGetResult)obj);
-        }
-
-        public override readonly int GetHashCode()
-        {
-            return HashCode.Combine(this.FilePathList, this.FileInfo, this.TagInfoList, this.IsError);
-        }
-
-        public static bool operator ==(FileDeepInfoGetResult left, FileDeepInfoGetResult right)
-        {
-            return left.Equals(right);
-        }
-
-        public static bool operator !=(FileDeepInfoGetResult left, FileDeepInfoGetResult right)
-        {
-            return !(left == right);
-        }
     }
 }

@@ -7,7 +7,7 @@ namespace PicSum.DatabaseAccessor.Dto
         : IDto
     {
         public string FilePath { get; private set; } = string.Empty;
-        public string Tag { get; private set; }
+        public string Tag { get; private set; } = string.Empty;
 
         public void Read(IDataReader reader)
         {

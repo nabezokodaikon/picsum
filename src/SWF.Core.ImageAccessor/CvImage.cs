@@ -7,8 +7,8 @@ using System.Runtime.Versioning;
 namespace SWF.Core.ImageAccessor
 {
     [SupportedOSPlatform("windows10.0.17763.0")]
-    public struct CvImage
-        : IDisposable, IEquatable<CvImage>
+    public sealed class CvImage
+        : IDisposable
     {
         public static readonly CvImage EMPTY = new(System.Drawing.Size.Empty);
 
@@ -94,7 +94,7 @@ namespace SWF.Core.ImageAccessor
             GC.SuppressFinalize(this);
         }
 
-        public readonly void DrawEmptyImage(Graphics g, Brush brush, RectangleF destRect)
+        public void DrawEmptyImage(Graphics g, Brush brush, RectangleF destRect)
         {
             ArgumentNullException.ThrowIfNull(g, nameof(g));
             ArgumentNullException.ThrowIfNull(brush, nameof(brush));
@@ -103,7 +103,7 @@ namespace SWF.Core.ImageAccessor
             g.FillRectangle(brush, destRect);
         }
 
-        public readonly Bitmap GetResizeImage(System.Drawing.Size size)
+        public Bitmap GetResizeImage(System.Drawing.Size size)
         {
             if (this.mat == null)
             {
@@ -136,7 +136,7 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
-        public readonly void DrawSourceImage(Graphics g, RectangleF destRect, RectangleF srcRect)
+        public void DrawSourceImage(Graphics g, RectangleF destRect, RectangleF srcRect)
         {
             ArgumentNullException.ThrowIfNull(g, nameof(g));
 
@@ -176,7 +176,7 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
-        public readonly void DrawResizeImage(Graphics g, RectangleF destRect)
+        public void DrawResizeImage(Graphics g, RectangleF destRect)
         {
             ArgumentNullException.ThrowIfNull(g, nameof(g));
 
@@ -215,55 +215,6 @@ namespace SWF.Core.ImageAccessor
             {
                 throw new ImageUtilException(CreateErrorMessage(this.filePath), ex);
             }
-        }
-
-        public readonly bool Equals(CvImage other)
-        {
-            if (this.filePath != other.filePath) { return false; }
-            if (this.pixelFormat != other.pixelFormat) { return false; }
-            if (this.mat != other.mat) { return false; }
-            if (this.Width != other.Width) { return false; }
-            if (this.Height != other.Height) { return false; }
-            if (this.Size != other.Size) { return false; }
-            if (this.IsEmpty != other.IsEmpty) { return false; }
-
-            return true;
-        }
-
-        public override readonly bool Equals(object? obj)
-        {
-            if (obj == null)
-            {
-                return false;
-            }
-
-            if (obj.GetType() != typeof(CvImage))
-            {
-                return false;
-            }
-
-            return this.Equals((CvImage)obj);
-        }
-        public static bool operator ==(CvImage left, CvImage right)
-        {
-            return left.Equals(right);
-        }
-
-        public static bool operator !=(CvImage left, CvImage right)
-        {
-            return !(left == right);
-        }
-
-        public override readonly int GetHashCode()
-        {
-            return HashCode.Combine(
-                this.filePath,
-                this.pixelFormat,
-                this.mat,
-                this.Width,
-                this.Height,
-                this.Size,
-                this.IsEmpty);
         }
     }
 }

@@ -2,10 +2,10 @@ using SWF.Core.Job;
 
 namespace PicSum.Job.Parameters
 {
-    public struct FilesGetByTagParameter
+    public sealed class FilesGetByTagParameter
         : IJobParameter
     {
-        public string Tag { get; set; }
+        public string Tag { get; set; } = string.Empty;
         public bool IsGetThumbnail { get; set; }
     }
 }

@@ -6,66 +6,20 @@ namespace PicSum.Job.Parameters
     /// <summary>
     /// フォルダ状態
     /// </summary>
-    public struct DirectoryStateParameter
-        : IJobParameter, IEquatable<DirectoryStateParameter>
+    public sealed class DirectoryStateParameter
+        : IJobParameter
     {
         public static readonly DirectoryStateParameter EMPTY = new()
         {
             DirectoryPath = string.Empty,
             SortTypeID = SortTypeID.FilePath,
-            IsAscending = true,
+            IsAscending = false,
             SelectedFilePath = string.Empty,
         };
 
-        public string DirectoryPath { get; set; }
-        public SortTypeID SortTypeID { get; set; }
-        public bool IsAscending { get; set; }
-        public string SelectedFilePath { get; set; }
-
-        public readonly bool Equals(DirectoryStateParameter other)
-        {
-            if (other.DirectoryPath != this.DirectoryPath)
-            {
-                return false;
-            }
-
-            if (other.SortTypeID != this.SortTypeID)
-            {
-                return false;
-            }
-
-            if (other.IsAscending != this.IsAscending)
-            {
-                return false;
-            }
-
-            if (other.SelectedFilePath != this.SelectedFilePath)
-            {
-                return false;
-            }
-
-            return true;
-        }
-
-        public override readonly int GetHashCode()
-        {
-            return HashCode.Combine(
-                this.DirectoryPath, this.SortTypeID, this.IsAscending, this.SelectedFilePath);
-        }
-
-        public override readonly bool Equals(object? obj)
-        {
-            return obj is DirectoryStateParameter parameter && this.Equals(parameter);
-        }
-
-        public static bool operator ==(DirectoryStateParameter left, DirectoryStateParameter right)
-        {
-            return left.Equals(right);
-        }
-
-        public static bool operator !=(DirectoryStateParameter left, DirectoryStateParameter right)
-        {
-            return !(left == right);
-        }
+        public string DirectoryPath { get; set; } = string.Empty;
+        public SortTypeID SortTypeID { get; set; } = SortTypeID.FilePath;
+        public bool IsAscending { get; set; } = false;
+        public string SelectedFilePath { get; set; } = string.Empty;
     }
 }

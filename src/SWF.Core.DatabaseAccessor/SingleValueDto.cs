@@ -5,10 +5,10 @@ namespace SWF.Core.DatabaseAccessor
     /// <summary>
     /// 単一値DTO
     /// </summary>
-    public struct SingleValueDto<T>
+    public sealed class SingleValueDto<T>
         : IDto
     {
-        public T Value { get; private set; }
+        public T? Value { get; private set; }
 
         public void Read(IDataReader reader)
         {

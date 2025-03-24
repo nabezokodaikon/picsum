@@ -1,6 +1,6 @@
 namespace SWF.Core.ImageAccessor
 {
-    public readonly struct ImageFileSizeCacheEntity
+    public sealed class ImageFileSizeCacheEntity
         : IEquatable<ImageFileSizeCacheEntity>
     {
         public readonly string FilePath;
@@ -16,8 +16,13 @@ namespace SWF.Core.ImageAccessor
             this.Timestamp = timestamp;
         }
 
-        public readonly bool Equals(ImageFileSizeCacheEntity other)
+        public bool Equals(ImageFileSizeCacheEntity? other)
         {
+            if (other is null)
+            {
+                return false;
+            }
+
             if (other.FilePath != this.FilePath)
             {
                 return false;
@@ -31,12 +36,12 @@ namespace SWF.Core.ImageAccessor
             return true;
         }
 
-        public override readonly int GetHashCode()
+        public override int GetHashCode()
         {
             return HashCode.Combine(this.FilePath, this.Timestamp);
         }
 
-        public override readonly bool Equals(object? obj)
+        public override bool Equals(object? obj)
         {
             if (obj == null)
             {
@@ -52,6 +57,11 @@ namespace SWF.Core.ImageAccessor
         }
         public static bool operator ==(ImageFileSizeCacheEntity left, ImageFileSizeCacheEntity right)
         {
+            if (left is null)
+            {
+                return right is null;
+            }
+
             return left.Equals(right);
         }
 

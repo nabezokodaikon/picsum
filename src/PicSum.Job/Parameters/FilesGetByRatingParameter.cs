@@ -2,7 +2,7 @@ using SWF.Core.Job;
 
 namespace PicSum.Job.Parameters
 {
-    public struct FilesGetByRatingParameter
+    public sealed class FilesGetByRatingParameter
         : IJobParameter
     {
         public int RatingValue { get; set; }

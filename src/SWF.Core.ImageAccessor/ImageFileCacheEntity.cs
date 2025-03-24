@@ -4,7 +4,7 @@ using System.Runtime.Versioning;
 namespace SWF.Core.ImageAccessor
 {
     [SupportedOSPlatform("windows10.0.17763.0")]
-    internal struct ImageFileCacheEntity
+    internal sealed class ImageFileCacheEntity
         : IDisposable, IEquatable<ImageFileCacheEntity>
     {
         public static readonly ImageFileCacheEntity EMPTY = new()
@@ -16,7 +16,7 @@ namespace SWF.Core.ImageAccessor
 
         private bool disposed = false;
 
-        public string FilePath { get; private set; }
+        public string FilePath { get; private set; } = string.Empty;
         public Bitmap? Bitmap { get; private set; }
         public DateTime Timestamp { get; private set; }
 
@@ -28,6 +28,11 @@ namespace SWF.Core.ImageAccessor
             this.FilePath = filePath;
             this.Bitmap = bitmap;
             this.Timestamp = timestamp;
+        }
+
+        private ImageFileCacheEntity()
+        {
+
         }
 
         public void Dispose()
@@ -51,8 +56,13 @@ namespace SWF.Core.ImageAccessor
             this.disposed = true;
         }
 
-        public readonly bool Equals(ImageFileCacheEntity other)
+        public bool Equals(ImageFileCacheEntity? other)
         {
+            if (other is null)
+            {
+                return false;
+            }
+
             if (other.FilePath != this.FilePath)
             {
                 return false;
@@ -66,12 +76,12 @@ namespace SWF.Core.ImageAccessor
             return true;
         }
 
-        public override readonly int GetHashCode()
+        public override int GetHashCode()
         {
             return HashCode.Combine(this.FilePath, this.Timestamp);
         }
 
-        public override readonly bool Equals(object? obj)
+        public override bool Equals(object? obj)
         {
             if (obj == null)
             {
@@ -87,6 +97,11 @@ namespace SWF.Core.ImageAccessor
         }
         public static bool operator ==(ImageFileCacheEntity left, ImageFileCacheEntity right)
         {
+            if (left is null)
+            {
+                return right is null;
+            }
+
             return left.Equals(right);
         }
 
