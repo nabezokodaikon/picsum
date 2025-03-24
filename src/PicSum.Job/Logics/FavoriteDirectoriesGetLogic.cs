@@ -18,8 +18,8 @@ namespace PicSum.Job.Logics
             var dtoList = Instance<IFileInfoDB>.Value.ReadList<SingleValueDto<string>>(sql);
 
             return [.. dtoList
-                .Where(dto => !FileUtil.IsSystemRoot(dto.Value) && FileUtil.CanAccess(dto.Value))
-                .Select(dto => dto.Value)];
+                .Select(dto => dto.GetValueOrDefault(string.Empty))
+                .Where(value => !FileUtil.IsSystemRoot(value) && FileUtil.CanAccess(value))];
         }
     }
 }

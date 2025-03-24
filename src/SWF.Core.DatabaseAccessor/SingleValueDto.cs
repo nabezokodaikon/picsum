@@ -15,5 +15,19 @@ namespace SWF.Core.DatabaseAccessor
             ArgumentNullException.ThrowIfNull(reader, nameof(reader));
             this.Value = (T)reader[0];
         }
+
+        public T GetValueOrDefault(T defaultValue)
+        {
+            ArgumentNullException.ThrowIfNull((T)defaultValue, nameof(defaultValue));
+
+            if (this.Value != null)
+            {
+                return this.Value;
+            }
+            else
+            {
+                return defaultValue;
+            }
+        }
     }
 }
