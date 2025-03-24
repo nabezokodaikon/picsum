@@ -19,7 +19,9 @@ namespace PicSum.Job.Logics
 
             return [.. dtoList
                 .Select(dto => dto.GetValueOrDefault(string.Empty))
-                .Where(value => !FileUtil.IsSystemRoot(value) && FileUtil.CanAccess(value))];
+                .Where(_ => !FileUtil.IsSystemRoot(_)
+                            && !FileUtil.IsDrive(_)
+                            && FileUtil.IsDirectory(_))];
         }
     }
 }

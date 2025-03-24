@@ -56,9 +56,7 @@ namespace PicSum.Job.Jobs
         private string[] GetOrCreateFileList()
         {
             var logic = new FavoriteDirectoriesGetLogic(this);
-            var fileList = logic.Execute()
-                .Where(_ => FileUtil.CanAccess(_) && FileUtil.IsDirectory(_))
-                .ToArray();
+            var fileList = logic.Execute();
             if (fileList.Length > 0)
             {
                 return fileList;
