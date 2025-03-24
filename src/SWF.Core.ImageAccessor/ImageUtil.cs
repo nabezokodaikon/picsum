@@ -257,14 +257,6 @@ namespace SWF.Core.ImageAccessor
 
             try
             {
-                if (FileUtil.IsSvgFile(filePath))
-                {
-                    using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFile Svg"))
-                    {
-                        return SvgUtil.ReadImageFile(filePath);
-                    }
-                }
-
                 //var sw = Stopwatch.StartNew();
                 using (var fs = new FileStream(filePath,
                     FileMode.Open, FileAccess.Read, FileShare.Read, FILE_READ_BUFFER_SIZE, FileOptions.SequentialScan))
@@ -278,6 +270,14 @@ namespace SWF.Core.ImageAccessor
                         using (var icon = new Icon(fs))
                         {
                             return ConvertIfGrayscale(icon.ToBitmap(), fs);
+                        }
+                    }
+
+                    if (FileUtil.IsSvgFile(filePath))
+                    {
+                        using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFile Svg"))
+                        {
+                            return ConvertIfGrayscale(MagickUtil.ReadImageFile(fs), fs);
                         }
                     }
 
@@ -385,6 +385,10 @@ namespace SWF.Core.ImageAccessor
                 throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
             }
             catch (LibHeifSharp.HeifException ex)
+            {
+                throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
+            }
+            catch (ImageMagick.MagickCorruptImageErrorException ex)
             {
                 throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
             }
