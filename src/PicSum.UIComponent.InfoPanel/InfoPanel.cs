@@ -268,19 +268,18 @@ namespace PicSum.UIComponent.InfoPanel
             };
             Instance<JobCaller>.Value.StartFileTagAddJob(this, param);
 
-            var tagIndex = Array.FindIndex(
-                this.TagList.ToArray(), t => t.Tag.Equals(tag, StringComparison.Ordinal));
-            if (tagIndex > -1)
+            var tagInfo = this.TagList.FirstOrDefault(
+                t => t.Tag.Equals(tag, StringComparison.Ordinal),
+                FileTagInfoEntity.EMPTY);
+            if (tagInfo != FileTagInfoEntity.EMPTY)
             {
-                var tagInfo = this.TagList[tagIndex];
                 tagInfo.IsAll = true;
-                this.TagList[tagIndex] = tagInfo;
                 this.tagFlowList.Invalidate();
                 this.tagFlowList.Update();
             }
             else
             {
-                var tagInfo = new FileTagInfoEntity
+                tagInfo = new FileTagInfoEntity
                 {
                     Tag = tag,
                     IsAll = true
