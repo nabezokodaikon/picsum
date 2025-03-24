@@ -52,7 +52,7 @@ namespace PicSum.Main.UIComponent
             this.StartPosition = FormStartPosition.Manual;
             this.MinimumSize = new Size(320, 240);
             this.KeyPreview = true;
-            this.Padding = new Padding(4, 8, 4, 4);
+            this.Padding = new Padding(8, 8, 8, 8);
 
             this.Size = BrowserConfig.Instance.WindowSize;
             this.WindowState = BrowserConfig.Instance.WindowState;
