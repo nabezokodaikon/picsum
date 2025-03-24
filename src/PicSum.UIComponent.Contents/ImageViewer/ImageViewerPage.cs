@@ -105,24 +105,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
             this.parameter = parameter;
             this.SelectedFilePath = parameter.SelectedFilePath;
-
-            void switchingToolBar(object _, MouseEventArgs e)
-            {
-                if (this.leftImagePanel.IsMoving || this.rightImagePanel.IsMoving)
-                {
-                    return;
-                }
-
-                this.toolBar.Visible = e.Y <= this.toolBar.Bottom;
-                if (this.toolBar.Visible)
-                {
-                    this.toolBar.BringToFront();
-                }
-            }
-
-            this.checkPatternPanel.MouseMove += switchingToolBar;
-            this.leftImagePanel.MouseMove += switchingToolBar;
-            this.rightImagePanel.MouseMove += switchingToolBar;
         }
 
         public override void RedrawPage()
