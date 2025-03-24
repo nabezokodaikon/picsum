@@ -260,6 +260,8 @@ namespace PicSum.Main.UIComponent
             this.browserMainPanel.BackgroundMouseDoubleLeftClick += new(this.BrowserMainPanel_BackgroundMouseDoubleLeftClick);
             this.browserMainPanel.NewWindowPageOpen += new(this.BrowserMainPanel_NewWindowPageOpen);
             this.browserMainPanel.TabDropouted += new(this.BrowserMainPanel_TabDropouted);
+            this.browserMainPanel.BeginSetPage += this.BrowserMainPanel_BeginSetPage;
+            this.browserMainPanel.EndSetPage += this.BrowserMainPanel_EndSetPage;
 
             this.SuspendLayout();
             this.Controls.Add(this.browserMainPanel);
@@ -335,5 +337,14 @@ namespace PicSum.Main.UIComponent
             this.OnTabDropouted(e);
         }
 
+        private void BrowserMainPanel_BeginSetPage(object sender, EventArgs e)
+        {
+            //this.DetachResizeEvents(this);
+        }
+
+        private void BrowserMainPanel_EndSetPage(object sender, EventArgs e)
+        {
+            //this.AttachResizeEvents(this);
+        }
     }
 }

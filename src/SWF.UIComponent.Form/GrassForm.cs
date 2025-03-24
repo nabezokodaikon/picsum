@@ -15,6 +15,7 @@ namespace SWF.UIComponent.Form
         : System.Windows.Forms.Form
     {
         private const int TOP_OFFSET = 41;
+        private const int RESIZE_MARGIN = 8;
 
         private static Version GetWindowsVersion()
         {
@@ -240,6 +241,28 @@ namespace SWF.UIComponent.Form
             this.SettingtControlRegion();
         }
 
+        protected void AttachResizeEvents(Control current)
+        {
+            current.MouseMove += this.ChildMouseMoveHandler;
+            current.MouseDown += this.ChildMouseDownHandler;
+
+            foreach (Control child in current.Controls)
+            {
+                this.AttachResizeEvents(child);
+            }
+        }
+
+        protected void DetachResizeEvents(Control current)
+        {
+            current.MouseMove -= this.ChildMouseMoveHandler;
+            current.MouseDown -= this.ChildMouseDownHandler;
+
+            foreach (Control child in current.Controls)
+            {
+                this.DetachResizeEvents(child);
+            }
+        }
+
         private void SetWindowColor(Color color)
         {
             if (this.osVersion.Major >= 10 && this.osVersion.Build >= 22000)
@@ -281,6 +304,141 @@ namespace SWF.UIComponent.Form
             else
             {
                 return new Region(new Rectangle(0, 0, ctl.Width, ctl.Height));
+            }
+        }
+
+        private void ChildMouseMoveHandler(object sender, MouseEventArgs e)
+        {
+            var control = sender as Control;
+            this.Cursor = Cursors.Default;
+            control.Cursor = Cursors.Default;
+            if (control is Button)
+            {
+                return;
+            }
+
+            var point = this.PointToClient(control.PointToScreen(e.Location));
+
+            if (point.X <= RESIZE_MARGIN
+                && point.Y <= RESIZE_MARGIN)
+            {
+                // 左上
+                control.Cursor = Cursors.SizeNWSE;
+            }
+            else if (point.X <= RESIZE_MARGIN &&
+                 point.Y >= this.ClientSize.Height - RESIZE_MARGIN)
+            {
+                // 左下
+                control.Cursor = Cursors.SizeNESW;
+            }
+            else if (point.X >= this.ClientSize.Width - RESIZE_MARGIN
+                && point.Y <= RESIZE_MARGIN)
+            {
+                // 右上
+                control.Cursor = Cursors.SizeNESW;
+            }
+            else if (point.X >= this.ClientSize.Width - RESIZE_MARGIN
+                && point.Y >= this.ClientSize.Height - RESIZE_MARGIN)
+            {
+                // 右下
+                control.Cursor = Cursors.SizeNWSE;
+            }
+            else if (point.X <= RESIZE_MARGIN)
+            {
+                // 左
+                control.Cursor = Cursors.SizeWE;
+            }
+            else if (point.Y <= RESIZE_MARGIN)
+            {
+                // 上
+                control.Cursor = Cursors.SizeNS;
+            }
+            else if (point.X >= this.ClientSize.Width - RESIZE_MARGIN)
+            {
+                // 右
+                control.Cursor = Cursors.SizeWE;
+            }
+            else if (point.Y >= this.ClientSize.Height - RESIZE_MARGIN)
+            {
+                // 下
+                control.Cursor = Cursors.SizeNS;
+            }
+        }
+
+        private void ChildMouseDownHandler(object sender, MouseEventArgs e)
+        {
+            if (e.Button != MouseButtons.Left)
+            {
+                return;
+            }
+
+            var control = sender as Control;
+            if (control is Button)
+            {
+                return;
+            }
+
+            const int HTLEFT = 10;
+            const int HTRIGHT = 11;
+            const int HTTOP = 12;
+            const int HTTOPLEFT = 13;
+            const int HTTOPRIGHT = 14;
+            const int HTBOTTOM = 15;
+            const int HTBOTTOMLEFT = 16;
+            const int HTBOTTOMRIGHT = 17;
+
+            var point = this.PointToClient(control.PointToScreen(e.Location));
+            var hitTest = 0;
+
+            if (point.X <= RESIZE_MARGIN
+                && point.Y <= RESIZE_MARGIN)
+            {
+                // 左上
+                hitTest = HTTOPLEFT;
+            }
+            else if (point.X <= RESIZE_MARGIN &&
+                 point.Y >= this.ClientSize.Height - RESIZE_MARGIN)
+            {
+                // 左下
+                hitTest = HTBOTTOMLEFT;
+            }
+            else if (point.X >= this.ClientSize.Width - RESIZE_MARGIN
+                && point.Y <= RESIZE_MARGIN)
+            {
+                // 右上
+                hitTest = HTTOPRIGHT;
+            }
+            else if (point.X >= this.ClientSize.Width - RESIZE_MARGIN
+                && point.Y >= this.ClientSize.Height - RESIZE_MARGIN)
+            {
+                // 右下
+                hitTest = HTBOTTOMRIGHT;
+            }
+            else if (point.X <= RESIZE_MARGIN)
+            {
+                // 左
+                hitTest = HTLEFT;
+            }
+            else if (point.Y <= RESIZE_MARGIN)
+            {
+                // 上
+                hitTest = HTTOP;
+            }
+            else if (point.X >= this.ClientSize.Width - RESIZE_MARGIN)
+            {
+                // 右
+                hitTest = HTRIGHT;
+            }
+            else if (point.Y >= this.ClientSize.Height - RESIZE_MARGIN)
+            {
+                // 下
+                hitTest = HTBOTTOM;
+            }
+
+            if (hitTest != 0)
+            {
+                WinApi.WinApiMembers.ReleaseCapture();
+                WinApi.WinApiMembers.SendMessage(this.Handle, 0xA1, hitTest, 0);
             }
         }
 

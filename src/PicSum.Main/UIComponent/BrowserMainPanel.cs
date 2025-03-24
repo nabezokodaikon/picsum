@@ -57,6 +57,8 @@ namespace PicSum.Main.UIComponent
         public event EventHandler<BrowserPageOpenEventArgs> NewWindowPageOpen;
         public event EventHandler Close;
         public event EventHandler BackgroundMouseDoubleLeftClick;
+        public event EventHandler BeginSetPage;
+        public event EventHandler EndSetPage;
 
         public int TabCount
         {
@@ -105,7 +107,20 @@ namespace PicSum.Main.UIComponent
                 this.pageContainer.BringToFront();
 
                 this.tabSwitch.TabsRightOffset = AppConstants.GetControlBoxWidth();
+
+                this.tabSwitch.BeginSetPage += this.TabSwitch_BeginSetPage;
+                this.tabSwitch.EndSetPage += this.TabSwitch_EndSetPage;
             }
+        }
+
+        private void TabSwitch_BeginSetPage(object sender, EventArgs e)
+        {
+            this.BeginSetPage.Invoke(this, e);
+        }
+
+        private void TabSwitch_EndSetPage(object sender, EventArgs e)
+        {
+            this.EndSetPage.Invoke(this, e);
         }
 
         public void AddPageEventHandler(BrowserPage page)
