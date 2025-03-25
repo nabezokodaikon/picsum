@@ -290,6 +290,15 @@ namespace WinApi
         public const int DWMWA_CAPTION_COLOR = 35;
         public const int DWMWA_BORDER_COLOR = 34;
 
+        public const int HTLEFT = 10;
+        public const int HTRIGHT = 11;
+        public const int HTTOP = 12;
+        public const int HTTOPLEFT = 13;
+        public const int HTTOPRIGHT = 14;
+        public const int HTBOTTOM = 15;
+        public const int HTBOTTOMLEFT = 16;
+        public const int HTBOTTOMRIGHT = 17;
+
         public static readonly Guid FOLDERID_Desktop =
             new Guid("{B4BFCC3A-DB2C-424C-B029-7FE99A87C641}");
 

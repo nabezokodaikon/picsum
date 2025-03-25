@@ -52,7 +52,7 @@ namespace PicSum.Main.UIComponent
             this.StartPosition = FormStartPosition.Manual;
             this.MinimumSize = new Size(320, 240);
             this.KeyPreview = true;
-            this.Padding = new Padding(8, 8, 8, 8);
+            this.Padding = new Padding(0, 8, 0, 0);
 
             this.Size = BrowserConfig.Instance.WindowSize;
             this.WindowState = BrowserConfig.Instance.WindowState;
@@ -339,12 +339,12 @@ namespace PicSum.Main.UIComponent
 
         private void BrowserMainPanel_BeginSetPage(object sender, EventArgs e)
         {
-            //this.DetachResizeEvents(this);
+            this.DetachResizeEvents(this);
         }
 
         private void BrowserMainPanel_EndSetPage(object sender, EventArgs e)
         {
-            //this.AttachResizeEvents(this);
+            this.AttachResizeEvents(this);
         }
     }
 }

@@ -35,7 +35,6 @@ namespace SWF.UIComponent.Form
         private readonly Color activeWindowColor = Color.FromArgb(34, 38, 41);
         private readonly Color deactivateWindowColor = Color.FromArgb(97, 99, 101);
 
-
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public new Size Size
         {
@@ -92,6 +91,14 @@ namespace SWF.UIComponent.Form
 
         public GrassForm()
         {
+            this.glassMargins = new()
+            {
+                cyTopHeight = TOP_OFFSET,
+                cxLeftWidth = 0,
+                cxRightWidth = 0,
+                cyBottomHeight = 0,
+            };
+
             this.SetStyle(
                 ControlStyles.AllPaintingInWmPaint |
                 ControlStyles.ContainerControl |
@@ -124,40 +131,25 @@ namespace SWF.UIComponent.Form
 
         protected override void WndProc(ref Message m)
         {
-            var dwmHandled = WinApiMembers.DwmDefWindowProc(m.HWnd, m.Msg, m.WParam, m.LParam, out var result);
-            if (dwmHandled == 1)
+            if (m.Msg == WinApiMembers.WM_NCCALCSIZE)
             {
-                m.Result = result;
-                return;
-            }
-
-            if (m.Msg == WinApiMembers.WM_NCCALCSIZE && (int)m.WParam == 1)
-            {
-                if (this.glassMargins == null)
-                {
-                    var nccsp = (WinApiMembers.NCCALCSIZE_PARAMS)Marshal.PtrToStructure(m.LParam, typeof(WinApiMembers.NCCALCSIZE_PARAMS));
-
-                    this.glassMargins = new()
-                    {
-                        cyTopHeight = TOP_OFFSET,
-                        cxLeftWidth = nccsp.rgrc2.left - nccsp.rgrc1.left,
-                        cxRightWidth = nccsp.rgrc1.right - nccsp.rgrc2.right,
-                        cyBottomHeight = nccsp.rgrc1.bottom - nccsp.rgrc2.bottom
-                    };
-
-                    nccsp.rgrc0.top -= 1;
-
-                    Marshal.StructureToPtr(nccsp, m.LParam, true);
-                }
-
-                m.Result = IntPtr.Zero;
-            }
-            else if (m.Msg == WinApiMembers.WM_NCHITTEST && (int)m.Result == 0)
-            {
-                m.Result = this.HitTestNCA(m.LParam);
+                var nccsp = (WinApiMembers.NCCALCSIZE_PARAMS)Marshal.PtrToStructure(
+                    m.LParam, typeof(WinApiMembers.NCCALCSIZE_PARAMS));
+                nccsp.rgrc0.left += 8;
+                //nccsp.rgrc0.top += 8;
+                nccsp.rgrc0.right -= 8;
+                nccsp.rgrc0.bottom -= 8;
+                Marshal.StructureToPtr(nccsp, m.LParam, false);
             }
             else
             {
+                var dwmHandled = WinApiMembers.DwmDefWindowProc(m.HWnd, m.Msg, m.WParam, m.LParam, out var result);
+                if (dwmHandled == 1)
+                {
+                    m.Result = result;
+                    return;
+                }
+
                 base.WndProc(ref m);
             }
         }
@@ -192,7 +184,7 @@ namespace SWF.UIComponent.Form
 
             base.OnResize(e);
 
-            this.SettingtControlRegion();
+            this.SetControlRegion();
         }
 
         protected override void OnLocationChanged(EventArgs e)
@@ -238,7 +230,14 @@ namespace SWF.UIComponent.Form
 
         protected void SetControlRegion()
         {
-            this.SettingtControlRegion();
+            var w = AppConstants.GetControlBoxWidth();
+            var h = AppConstants.GetControlBoxHeight();
+            var p = new Point(this.Right - w, this.Top);
+            var captionButtonRect = new Rectangle(p.X, p.Y, w, h);
+            foreach (Control ctl in this.Controls)
+            {
+                ctl.Region = this.GetControlRegion(ctl, captionButtonRect);
+            }
         }
 
         protected void AttachResizeEvents(Control current)
@@ -275,18 +274,6 @@ namespace SWF.UIComponent.Form
             }
         }
 
-        private void SettingtControlRegion()
-        {
-            var w = AppConstants.GetControlBoxWidth();
-            var h = AppConstants.GetControlBoxHeight();
-            var p = new Point(this.Right - w, this.Top);
-            var captionButtonRect = new Rectangle(p.X, p.Y, w, h);
-            foreach (Control ctl in this.Controls)
-            {
-                ctl.Region = this.GetControlRegion(ctl, captionButtonRect);
-            }
-        }
-
         private Region GetControlRegion(Control ctl, Rectangle captionButtonRect)
         {
             var ctlScreenRect = new Rectangle(this.PointToScreen(ctl.Location), ctl.Size);
@@ -312,10 +299,6 @@ namespace SWF.UIComponent.Form
             var control = sender as Control;
             this.Cursor = Cursors.Default;
             control.Cursor = Cursors.Default;
-            if (control is Button)
-            {
-                return;
-            }
 
             var point = this.PointToClient(control.PointToScreen(e.Location));
 
@@ -325,44 +308,44 @@ namespace SWF.UIComponent.Form
                 // 左上
                 control.Cursor = Cursors.SizeNWSE;
             }
-            else if (point.X <= RESIZE_MARGIN &&
-                 point.Y >= this.ClientSize.Height - RESIZE_MARGIN)
-            {
-                // 左下
-                control.Cursor = Cursors.SizeNESW;
-            }
+            //else if (point.X <= RESIZE_MARGIN &&
+            //     point.Y >= this.ClientSize.Height - RESIZE_MARGIN)
+            //{
+            //    // 左下
+            //    control.Cursor = Cursors.SizeNESW;
+            //}
             else if (point.X >= this.ClientSize.Width - RESIZE_MARGIN
                 && point.Y <= RESIZE_MARGIN)
             {
                 // 右上
                 control.Cursor = Cursors.SizeNESW;
             }
-            else if (point.X >= this.ClientSize.Width - RESIZE_MARGIN
-                && point.Y >= this.ClientSize.Height - RESIZE_MARGIN)
-            {
-                // 右下
-                control.Cursor = Cursors.SizeNWSE;
-            }
-            else if (point.X <= RESIZE_MARGIN)
-            {
-                // 左
-                control.Cursor = Cursors.SizeWE;
-            }
+            //else if (point.X >= this.ClientSize.Width - RESIZE_MARGIN
+            //    && point.Y >= this.ClientSize.Height - RESIZE_MARGIN)
+            //{
+            //    // 右下
+            //    control.Cursor = Cursors.SizeNWSE;
+            //}
+            //else if (point.X <= RESIZE_MARGIN)
+            //{
+            //    // 左
+            //    control.Cursor = Cursors.SizeWE;
+            //}
             else if (point.Y <= RESIZE_MARGIN)
             {
                 // 上
                 control.Cursor = Cursors.SizeNS;
             }
-            else if (point.X >= this.ClientSize.Width - RESIZE_MARGIN)
-            {
-                // 右
-                control.Cursor = Cursors.SizeWE;
-            }
-            else if (point.Y >= this.ClientSize.Height - RESIZE_MARGIN)
-            {
-                // 下
-                control.Cursor = Cursors.SizeNS;
-            }
+            //else if (point.X >= this.ClientSize.Width - RESIZE_MARGIN)
+            //{
+            //    // 右
+            //    control.Cursor = Cursors.SizeWE;
+            //}
+            //else if (point.Y >= this.ClientSize.Height - RESIZE_MARGIN)
+            //{
+            //    // 下
+            //    control.Cursor = Cursors.SizeNS;
+            //}
         }
 
         private void ChildMouseDownHandler(object sender, MouseEventArgs e)
@@ -373,20 +356,6 @@ namespace SWF.UIComponent.Form
             }
 
             var control = sender as Control;
-            if (control is Button)
-            {
-                return;
-            }
-
-            const int HTLEFT = 10;
-            const int HTRIGHT = 11;
-            const int HTTOP = 12;
-            const int HTTOPLEFT = 13;
-            const int HTTOPRIGHT = 14;
-            const int HTBOTTOM = 15;
-            const int HTBOTTOMLEFT = 16;
-            const int HTBOTTOMRIGHT = 17;
-
             var point = this.PointToClient(control.PointToScreen(e.Location));
             var hitTest = 0;
 
@@ -394,46 +363,46 @@ namespace SWF.UIComponent.Form
                 && point.Y <= RESIZE_MARGIN)
             {
                 // 左上
-                hitTest = HTTOPLEFT;
+                hitTest = WinApiMembers.HTTOPLEFT;
             }
-            else if (point.X <= RESIZE_MARGIN &&
-                 point.Y >= this.ClientSize.Height - RESIZE_MARGIN)
-            {
-                // 左下
-                hitTest = HTBOTTOMLEFT;
-            }
+            //else if (point.X <= RESIZE_MARGIN &&
+            //     point.Y >= this.ClientSize.Height - RESIZE_MARGIN)
+            //{
+            //    // 左下
+            //    hitTest = HTBOTTOMLEFT;
+            //}
             else if (point.X >= this.ClientSize.Width - RESIZE_MARGIN
                 && point.Y <= RESIZE_MARGIN)
             {
                 // 右上
-                hitTest = HTTOPRIGHT;
+                hitTest = WinApiMembers.HTTOPRIGHT;
             }
-            else if (point.X >= this.ClientSize.Width - RESIZE_MARGIN
-                && point.Y >= this.ClientSize.Height - RESIZE_MARGIN)
-            {
-                // 右下
-                hitTest = HTBOTTOMRIGHT;
-            }
-            else if (point.X <= RESIZE_MARGIN)
-            {
-                // 左
-                hitTest = HTLEFT;
-            }
+            //else if (point.X >= this.ClientSize.Width - RESIZE_MARGIN
+            //    && point.Y >= this.ClientSize.Height - RESIZE_MARGIN)
+            //{
+            //    // 右下
+            //    hitTest = HTBOTTOMRIGHT;
+            //}
+            //else if (point.X <= RESIZE_MARGIN)
+            //{
+            //    // 左
+            //    hitTest = HTLEFT;
+            //}
             else if (point.Y <= RESIZE_MARGIN)
             {
                 // 上
-                hitTest = HTTOP;
+                hitTest = WinApiMembers.HTTOP;
             }
-            else if (point.X >= this.ClientSize.Width - RESIZE_MARGIN)
-            {
-                // 右
-                hitTest = HTRIGHT;
-            }
-            else if (point.Y >= this.ClientSize.Height - RESIZE_MARGIN)
-            {
-                // 下
-                hitTest = HTBOTTOM;
-            }
+            //else if (point.X >= this.ClientSize.Width - RESIZE_MARGIN)
+            //{
+            //    // 右
+            //    hitTest = HTRIGHT;
+            //}
+            //else if (point.Y >= this.ClientSize.Height - RESIZE_MARGIN)
+            //{
+            //    // 下
+            //    hitTest = HTBOTTOM;
+            //}
 
             if (hitTest != 0)
             {
@@ -441,82 +410,5 @@ namespace SWF.UIComponent.Form
                 WinApi.WinApiMembers.SendMessage(this.Handle, 0xA1, hitTest, 0);
             }
         }
-
-        private IntPtr HitTestNCA(IntPtr lparam)
-        {
-            const int HTCLIENT = 1;
-            const int HTCAPTION = 2;
-            const int HTLEFT = 10;
-            const int HTRIGHT = 11;
-            const int HTTOP = 12;
-            const int HTTOPLEFT = 13;
-            const int HTTOPRIGHT = 14;
-            const int HTBOTTOM = 15;
-            const int HTBOTTOMLEFT = 16;
-            const int HTBOTTOMRIGHT = 17;
-
-            Point p;
-            checked
-            {
-                p = new Point(WinApiMembers.LoWord((int)lparam), WinApiMembers.HiWord((int)lparam));
-            }
-
-            var topleft = this.RectangleToScreen(new Rectangle(0, 0, this.glassMargins.cxLeftWidth, this.glassMargins.cxLeftWidth));
-            if (topleft.Contains(p))
-            {
-                return new IntPtr(HTTOPLEFT);
-            }
-
-            var topright = this.RectangleToScreen(new Rectangle(this.Width - this.glassMargins.cxRightWidth, 0, this.glassMargins.cxRightWidth, this.glassMargins.cxRightWidth));
-            if (topright.Contains(p))
-            {
-                return new IntPtr(HTTOPRIGHT);
-            }
-
-            var botleft = this.RectangleToScreen(new Rectangle(0, this.Height - this.glassMargins.cyBottomHeight, this.glassMargins.cxLeftWidth, this.glassMargins.cyBottomHeight));
-            if (botleft.Contains(p))
-            {
-                return new IntPtr(HTBOTTOMLEFT);
-            }
-
-            var botright = this.RectangleToScreen(new Rectangle(this.Width - this.glassMargins.cxRightWidth, this.Height - this.glassMargins.cyBottomHeight, this.glassMargins.cxRightWidth, this.glassMargins.cyBottomHeight));
-            if (botright.Contains(p))
-            {
-                return new IntPtr(HTBOTTOMRIGHT);
-            }
-
-            var top = this.RectangleToScreen(new Rectangle(0, 0, this.Width, this.glassMargins.cxLeftWidth));
-            if (top.Contains(p))
-            {
-                return new IntPtr(HTTOP);
-            }
-
-            var left = this.RectangleToScreen(new Rectangle(0, 0, this.glassMargins.cxLeftWidth, this.Height));
-            if (left.Contains(p))
-            {
-                return new IntPtr(HTLEFT);
-            }
-
-            var right = this.RectangleToScreen(new Rectangle(this.Width - this.glassMargins.cxRightWidth, 0, this.glassMargins.cxRightWidth, this.Height));
-            if (right.Contains(p))
-            {
-                return new IntPtr(HTRIGHT);
-            }
-
-            var bottom = this.RectangleToScreen(new Rectangle(0, this.Height - this.glassMargins.cyBottomHeight, this.Width, this.glassMargins.cyBottomHeight));
-            if (bottom.Contains(p))
-            {
-                return new IntPtr(HTBOTTOM);
-            }
-
-            var cap = this.RectangleToScreen(new Rectangle(0, this.glassMargins.cxLeftWidth, this.Width, this.glassMargins.cyTopHeight - this.glassMargins.cxLeftWidth));
-            if (cap.Contains(p))
-            {
-                return new IntPtr(HTCAPTION);
-            }
-
-            return new IntPtr(HTCLIENT);
-        }
-
     }
 }
