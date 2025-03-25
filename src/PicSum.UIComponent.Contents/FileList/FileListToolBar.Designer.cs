@@ -50,7 +50,7 @@ namespace PicSum.UIComponent.Contents.FileList
             // 
             // viewButton
             // 
-            this.viewButton.Location = new Point(3, 3);
+            this.viewButton.Location = new Point(3, 1);
             this.viewButton.Name = "viewButton";
             this.viewButton.Size = new Size(64, 23);
             this.viewButton.Text = "View";
@@ -58,7 +58,7 @@ namespace PicSum.UIComponent.Contents.FileList
             // 
             // nameSortButton
             // 
-            this.nameSortButton.Location = new Point(73, 3);
+            this.nameSortButton.Location = new Point(73, 1);
             this.nameSortButton.Name = "nameSortButton";
             this.nameSortButton.Size = new Size(96, 23);
             this.nameSortButton.Text = "Name";
@@ -67,7 +67,7 @@ namespace PicSum.UIComponent.Contents.FileList
             // 
             // pathSortButton
             // 
-            this.pathSortButton.Location = new Point(175, 3);
+            this.pathSortButton.Location = new Point(175, 1);
             this.pathSortButton.Name = "pathSortButton";
             this.pathSortButton.Size = new Size(96, 23);
             this.pathSortButton.Text = "Path";
@@ -76,7 +76,7 @@ namespace PicSum.UIComponent.Contents.FileList
             // 
             // timestampSortButton
             // 
-            this.timestampSortButton.Location = new Point(277, 3);
+            this.timestampSortButton.Location = new Point(277, 1);
             this.timestampSortButton.Name = "timestampSortButton";
             this.timestampSortButton.Size = new Size(96, 23);
             this.timestampSortButton.Text = "Time stamp";
@@ -85,7 +85,7 @@ namespace PicSum.UIComponent.Contents.FileList
             // 
             // registrationSortButton
             // 
-            this.registrationSortButton.Location = new Point(379, 3);
+            this.registrationSortButton.Location = new Point(379, 1);
             this.registrationSortButton.Name = "registrationSortButton";
             this.registrationSortButton.Size = new Size(96, 23);
             this.registrationSortButton.Text = "Registration";
@@ -94,7 +94,7 @@ namespace PicSum.UIComponent.Contents.FileList
             // 
             // thumbnailSizeSlider
             // 
-            this.thumbnailSizeSlider.Location = new Point(481, 3);
+            this.thumbnailSizeSlider.Location = new Point(481, 1);
             this.thumbnailSizeSlider.Name = "thumbnailSizeSlider";
             this.thumbnailSizeSlider.Size = new Size(108, 23);
             this.thumbnailSizeSlider.TabIndex = 5;
@@ -145,7 +145,7 @@ namespace PicSum.UIComponent.Contents.FileList
             // 
             // movePreviewButton
             // 
-            this.movePreviewButton.Location = new Point(595, 3);
+            this.movePreviewButton.Location = new Point(595, 1);
             this.movePreviewButton.Name = "movePreviewButton";
             this.movePreviewButton.Size = new Size(64, 23);
             this.movePreviewButton.Text = "<-";
@@ -153,7 +153,7 @@ namespace PicSum.UIComponent.Contents.FileList
             // 
             // moveNextButton
             // 
-            this.moveNextButton.Location = new Point(665, 3);
+            this.moveNextButton.Location = new Point(665, 1);
             this.moveNextButton.Name = "moveNextButton";
             this.moveNextButton.Size = new Size(64, 23);
             this.moveNextButton.Text = "->";

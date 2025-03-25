@@ -79,7 +79,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             // 
             // doublePreviewButton
             // 
-            this.doublePreviewButton.Location = new System.Drawing.Point(143, 3);
+            this.doublePreviewButton.Location = new System.Drawing.Point(143, 1);
             this.doublePreviewButton.Name = "doublePreviewButton";
             this.doublePreviewButton.Size = new System.Drawing.Size(64, 23);
             this.doublePreviewButton.Text = "<<-";
@@ -87,7 +87,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             // 
             // singlePreviewButton
             // 
-            this.singlePreviewButton.Location = new System.Drawing.Point(213, 3);
+            this.singlePreviewButton.Location = new System.Drawing.Point(213, 1);
             this.singlePreviewButton.Name = "singlePreviewButton";
             this.singlePreviewButton.Size = new System.Drawing.Size(64, 23);
             this.singlePreviewButton.Text = "<-";
@@ -95,7 +95,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             // 
             // doubleNextButton
             // 
-            this.doubleNextButton.Location = new System.Drawing.Point(353, 3);
+            this.doubleNextButton.Location = new System.Drawing.Point(353, 1);
             this.doubleNextButton.Name = "doubleNextButton";
             this.doubleNextButton.Size = new System.Drawing.Size(64, 23);
             this.doubleNextButton.Text = "->>";
@@ -103,7 +103,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             // 
             // singleNextButton
             // 
-            this.singleNextButton.Location = new System.Drawing.Point(283, 3);
+            this.singleNextButton.Location = new System.Drawing.Point(283, 1);
             this.singleNextButton.Name = "singleNextButton";
             this.singleNextButton.Size = new System.Drawing.Size(64, 23);
             this.singleNextButton.Text = "->";
@@ -112,7 +112,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             // indexSlider
             // 
             this.indexSlider.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
-            this.indexSlider.Location = new System.Drawing.Point(423, 3);
+            this.indexSlider.Location = new System.Drawing.Point(423, 1);
             this.indexSlider.Margin = new System.Windows.Forms.Padding(3, 3, 16, 3);
             this.indexSlider.Name = "indexSlider";
             this.indexSlider.Size = new System.Drawing.Size(252, 23);
@@ -124,7 +124,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             // 
             // viewButton
             // 
-            this.viewButton.Location = new System.Drawing.Point(3, 3);
+            this.viewButton.Location = new System.Drawing.Point(3, 1);
             this.viewButton.Name = "viewButton";
             this.viewButton.Size = new System.Drawing.Size(64, 23);
             this.viewButton.Text = "View";
@@ -132,7 +132,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             // 
             // sizeButton
             // 
-            this.sizeButton.Location = new System.Drawing.Point(73, 3);
+            this.sizeButton.Location = new System.Drawing.Point(73, 1);
             this.sizeButton.Name = "sizeButton";
             this.sizeButton.Size = new System.Drawing.Size(64, 23);
             this.sizeButton.Text = "Size";
