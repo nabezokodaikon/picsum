@@ -25,6 +25,17 @@ namespace SWF.UIComponent.Form
             return new Version(osVersionInfo.dwMajorVersion, osVersionInfo.dwMinorVersion, osVersionInfo.dwBuildNumber);
         }
 
+        private static void SetDefaultCrusor(Control control)
+        {
+            if (control.Cursor == Cursors.SizeNS
+                || control.Cursor == Cursors.SizeWE
+                || control.Cursor == Cursors.SizeNWSE
+                || control.Cursor == Cursors.SizeNESW)
+            {
+                control.Cursor = Cursors.Default;
+            }
+        }
+
         private WinApiMembers.MARGINS glassMargins = null;
         private bool isInit = true;
         private Size initSize = Size.Empty;
@@ -302,8 +313,8 @@ namespace SWF.UIComponent.Form
         private void ChildMouseMoveHandler(object sender, MouseEventArgs e)
         {
             var control = sender as Control;
-            this.Cursor = Cursors.Default;
-            control.Cursor = Cursors.Default;
+            SetDefaultCrusor(this);
+            SetDefaultCrusor(control);
 
             if (!this.CanDragOperation())
             {
