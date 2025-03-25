@@ -48,24 +48,24 @@ namespace PicSum.UIComponent.AddressBar
 
             if (base.IsMouseDown)
             {
-                g.FillRectangle(base.Palette.MouseDownBrush, rect);
+                g.FillRectangle(Palette.MOUSE_DOWN_BRUSH, rect);
             }
             else if (base.IsMousePoint)
             {
-                g.FillRectangle(base.Palette.MousePointBrush, rect);
-                g.DrawRectangle(base.Palette.MousePointPen, rect);
+                g.FillRectangle(Palette.MOUSE_POINT_BRUSH, rect);
+                g.DrawRectangle(Palette.MOUSE_POINT_PEN, rect);
             }
 
             var text = this.directory.DirectoryName;
-            var textSize = TextRenderer.MeasureText(text, base.Palette.TextFont);
+            var textSize = TextRenderer.MeasureText(text, Palette.TEXT_FONT);
             TextRenderer.DrawText(
                 g,
                 text,
-                base.Palette.TextFont,
+                Palette.TEXT_FONT,
                 new Point(
                     (int)(rect.Location.X + (rect.Width - textSize.Width) / 2f),
                     (int)(rect.Location.Y + (rect.Height - textSize.Height) / 2f)),
-                base.Palette.TextBrush.Color,
+                Palette.TEXT_BRUSH.Color,
                 TextFormatFlags.Top);
         }
 

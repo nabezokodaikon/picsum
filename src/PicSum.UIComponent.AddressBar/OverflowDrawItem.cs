@@ -32,12 +32,12 @@ namespace PicSum.UIComponent.AddressBar
 
             if (base.IsMouseDown || this.IsDropDown)
             {
-                g.FillRectangle(base.Palette.MouseDownBrush, rect);
+                g.FillRectangle(Palette.MOUSE_DOWN_BRUSH, rect);
                 g.DrawImage(this.mouseDownImage, this.GetImageDrawRectangle(this.mouseDownImage));
             }
             else if (base.IsMousePoint)
             {
-                g.FillRectangle(base.Palette.MousePointBrush, rect);
+                g.FillRectangle(Palette.MOUSE_POINT_BRUSH, rect);
                 g.DrawImage(this.mousePointImage, this.GetImageDrawRectangle(this.mousePointImage));
             }
             else
@@ -58,7 +58,7 @@ namespace PicSum.UIComponent.AddressBar
                 {
                     foreach (var directory in base.Items)
                     {
-                        width = Math.Max(width, (int)g.MeasureString(directory.DirectoryName + "________", base.Palette.TextFont).Width);
+                        width = Math.Max(width, (int)g.MeasureString(directory.DirectoryName + "________", Palette.TEXT_FONT).Width);
                     }
                 }
 
@@ -109,7 +109,7 @@ namespace PicSum.UIComponent.AddressBar
             }
 
             var text = item.DirectoryName;
-            var textSize = TextRenderer.MeasureText(text, base.Palette.TextFont);
+            var textSize = TextRenderer.MeasureText(text, Palette.TEXT_FONT);
             var textRect = new RectangleF(e.ItemRectangle.X + this.DropDownList.ItemHeight,
                                           e.ItemRectangle.Y,
                                           e.ItemRectangle.Width - this.DropDownList.ItemHeight,
@@ -118,9 +118,9 @@ namespace PicSum.UIComponent.AddressBar
             TextRenderer.DrawText(
                 e.Graphics,
                 text,
-                base.Palette.TextFont,
+                Palette.TEXT_FONT,
                 new Point((int)textRect.Location.X, (int)(textRect.Location.Y + (textRect.Height - textSize.Height) / 2f)),
-                base.Palette.TextBrush.Color,
+                Palette.TEXT_BRUSH.Color,
                 TextFormatFlags.Top);
         }
 

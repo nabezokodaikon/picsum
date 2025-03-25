@@ -28,11 +28,11 @@ namespace PicSum.UIComponent.AddressBar
             get
             {
                 this.selectedSubDirectoryFont
-                    ??= new Font(base.Palette.TextFont.FontFamily,
-                                 base.Palette.TextFont.Size,
+                    ??= new Font(Palette.TEXT_FONT.FontFamily,
+                                 Palette.TEXT_FONT.Size,
                                  FontStyle.Bold,
-                                 base.Palette.TextFont.Unit,
-                                 base.Palette.TextFont.GdiCharSet);
+                                 Palette.TEXT_FONT.Unit,
+                                 Palette.TEXT_FONT.GdiCharSet);
 
                 return this.selectedSubDirectoryFont;
             }
@@ -62,23 +62,18 @@ namespace PicSum.UIComponent.AddressBar
         {
             ArgumentNullException.ThrowIfNull(g, nameof(g));
 
-            if (base.Palette == null)
-            {
-                return;
-            }
-
             var rect = this.GetRectangle();
 
             if (base.IsMouseDown || base.IsDropDown)
             {
-                g.FillRectangle(base.Palette.MouseDownBrush, rect);
-                g.DrawRectangle(base.Palette.MousePointPen, rect);
+                g.FillRectangle(Palette.MOUSE_DOWN_BRUSH, rect);
+                g.DrawRectangle(Palette.MOUSE_POINT_PEN, rect);
                 g.DrawImage(this.mouseDownImage, this.GetImageDrawRectangle(this.mousePointImage));
             }
             else if (base.IsMousePoint)
             {
-                g.FillRectangle(base.Palette.MousePointBrush, rect);
-                g.DrawRectangle(base.Palette.MousePointPen, rect);
+                g.FillRectangle(Palette.MOUSE_POINT_BRUSH, rect);
+                g.DrawRectangle(Palette.MOUSE_POINT_PEN, rect);
                 g.DrawImage(this.mousePointImage, this.GetImageDrawRectangle(this.mousePointImage));
             }
             else
@@ -174,7 +169,7 @@ namespace PicSum.UIComponent.AddressBar
             }
             else
             {
-                return base.Palette.TextFont;
+                return Palette.TEXT_FONT;
             }
         }
 

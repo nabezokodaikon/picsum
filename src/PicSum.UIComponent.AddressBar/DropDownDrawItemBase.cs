@@ -78,7 +78,7 @@ namespace PicSum.UIComponent.AddressBar
         {
             this.dropDownList = new()
             {
-                BackColor = base.Palette.InnerColor,
+                BackColor = Palette.INNER_COLOR,
                 ItemHeight = DROPDOWN_ITEM_HEIGHT,
                 ItemTextTrimming = StringTrimming.EllipsisCharacter,
                 ItemTextAlignment = StringAlignment.Near,

@@ -42,11 +42,11 @@ namespace PicSum.UIComponent.AddressBar
 
             if (base.IsMouseDown || base.IsDropDown)
             {
-                g.FillRectangle(base.Palette.MouseDownBrush, rect);
+                g.FillRectangle(Palette.MOUSE_DOWN_BRUSH, rect);
             }
             else if (base.IsMousePoint)
             {
-                g.FillRectangle(base.Palette.MousePointBrush, rect);
+                g.FillRectangle(Palette.MOUSE_POINT_BRUSH, rect);
             }
 
             g.DrawImage(
@@ -110,7 +110,7 @@ namespace PicSum.UIComponent.AddressBar
             var srcText = FileUtil.IsSystemRoot(item.DirectoryPath) ?
                 item.DirectoryName : item.DirectoryPath;
 
-            var srcTextSize = TextRenderer.MeasureText(srcText, base.Palette.TextFont);
+            var srcTextSize = TextRenderer.MeasureText(srcText, Palette.TEXT_FONT);
 
             var destText = srcText;
             var destTextSize = srcTextSize;
@@ -118,7 +118,7 @@ namespace PicSum.UIComponent.AddressBar
             while (destTextSize.Width > itemWidth)
             {
                 destText = destText.Substring(0, destText.Length - 1);
-                destTextSize = TextRenderer.MeasureText($"{destText}...", base.Palette.TextFont);
+                destTextSize = TextRenderer.MeasureText($"{destText}...", Palette.TEXT_FONT);
             }
             destText = srcText == destText ? srcText : $"{destText}...";
 
@@ -130,7 +130,7 @@ namespace PicSum.UIComponent.AddressBar
             TextRenderer.DrawText(
                 e.Graphics,
                 destText,
-                base.Palette.TextFont,
+                Palette.TEXT_FONT,
                 textRect.Location,
                 base.DropDownList.ItemTextBrush.Color,
                 TextFormatFlags.Top);
@@ -166,7 +166,7 @@ namespace PicSum.UIComponent.AddressBar
                     };
                     base.Items.Add(item);
 
-                    width = Math.Max(width, (int)g.MeasureString(item.DirectoryPath + "________", base.Palette.TextFont).Width);
+                    width = Math.Max(width, (int)g.MeasureString(item.DirectoryPath + "________", Palette.TEXT_FONT).Width);
                 }
             }
 

@@ -17,7 +17,6 @@ namespace PicSum.UIComponent.AddressBar
         public event EventHandler<SelectedDirectoryEventArgs> SelectedDirectory;
 
         private AddressBar addressBar = null;
-        private Palette palette = null;
         private bool isMousePoint = false;
         private bool isMouseDown = false;
         private int x = 0;
@@ -34,18 +33,6 @@ namespace PicSum.UIComponent.AddressBar
             set
             {
                 this.addressBar = value;
-            }
-        }
-
-        public Palette Palette
-        {
-            get
-            {
-                return this.palette;
-            }
-            set
-            {
-                this.palette = value;
             }
         }
 
@@ -194,7 +181,6 @@ namespace PicSum.UIComponent.AddressBar
             this.DropDownClosed = null;
             this.SelectedDirectory = null;
             this.addressBar = null;
-            this.palette = null;
         }
 
         protected virtual void OnDropDownOpened(EventArgs e)

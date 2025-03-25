@@ -5,7 +5,6 @@ using SWF.Core.FileAccessor;
 using SWF.Core.Job;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.Versioning;
@@ -24,7 +23,6 @@ namespace PicSum.UIComponent.AddressBar
 
         private bool disposed = false;
         private readonly int dropDownItemWidth = ResourceFiles.SmallArrowDownIcon.Value.Width;
-        private readonly Palette palette = new();
         private readonly OverflowDrawItem overflowItem = new();
         private readonly DirectoryHistoryDrawItem directoryHistoryItem = new();
         private string currentDirectoryPath = null;
@@ -32,105 +30,10 @@ namespace PicSum.UIComponent.AddressBar
         private DrawItemBase mousePointItem = null;
         private DrawItemBase mouseDownItem = null;
 
-        public Color TextColor
-        {
-            get
-            {
-                return this.palette.TextColor;
-            }
-        }
-
-        public Color MousePointColor
-        {
-            get
-            {
-                return this.palette.MousePointColor;
-            }
-        }
-
-        public Color MouseDownColor
-        {
-            get
-            {
-                return this.palette.MouseDownColor;
-            }
-        }
-
-        public Color OutlineColor
-        {
-            get
-            {
-                return this.palette.OutlineColor;
-            }
-        }
-
-        public Color InnerColor
-        {
-            get
-            {
-                return this.palette.InnerColor;
-            }
-        }
-
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public StringTrimming TextTrimming
-        {
-            get
-            {
-                return this.palette.TextTrimming;
-            }
-            set
-            {
-                this.palette.TextTrimming = value;
-            }
-        }
-
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public StringAlignment TextAlignment
-        {
-            get
-            {
-                return this.palette.TextAlignment;
-            }
-            set
-            {
-                this.palette.TextAlignment = value;
-            }
-        }
-
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public StringAlignment TextLineAlignment
-        {
-            get
-            {
-                return this.palette.TextLineAlignment;
-            }
-            set
-            {
-                this.palette.TextLineAlignment = value;
-            }
-        }
-
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public StringFormatFlags TextFormatFlags
-        {
-            get
-            {
-                return this.palette.TextFormatFlags;
-            }
-            set
-            {
-                this.palette.TextFormatFlags = value;
-            }
-        }
-
         public AddressBar()
         {
             this.overflowItem.AddressBar = this;
-            this.overflowItem.Palette = this.palette;
-
             this.directoryHistoryItem.AddressBar = this;
-            this.directoryHistoryItem.Palette = this.palette;
 
             this.SetStyle(
                 ControlStyles.AllPaintingInWmPaint |
@@ -224,8 +127,8 @@ namespace PicSum.UIComponent.AddressBar
 
         protected override void OnPaint(PaintEventArgs e)
         {
-            e.Graphics.FillRectangle(this.palette.OutLineBrush, this.ClientRectangle);
-            e.Graphics.FillRectangle(this.palette.InnerBrush, this.GetInnerRectangle());
+            e.Graphics.FillRectangle(Palette.OUT_LINE_BRUSH, this.ClientRectangle);
+            e.Graphics.FillRectangle(Palette.INNER_BRUSH, this.GetInnerRectangle());
 
             this.directoryHistoryItem.Draw(e.Graphics);
 
@@ -338,7 +241,7 @@ namespace PicSum.UIComponent.AddressBar
 
                         if (drawItem.GetType() == typeof(DirectoryDrawItem))
                         {
-                            drawItem.Width = (int)(g.MeasureString((drawItem as DirectoryDrawItem).Directory.DirectoryName + "__", this.palette.TextFont).Width);
+                            drawItem.Width = (int)(g.MeasureString((drawItem as DirectoryDrawItem).Directory.DirectoryName + "__", Palette.TEXT_FONT).Width);
                         }
                         else if (drawItem.GetType() == typeof(SeparatorDrawItem))
                         {
@@ -411,7 +314,6 @@ namespace PicSum.UIComponent.AddressBar
                 {
                     AddressBar = this,
                     Directory = directory,
-                    Palette = this.palette
                 };
                 directoryDraw.SelectedDirectory += new(this.DrawItem_SelectedDirectory);
                 items.Add(directoryDraw);
@@ -420,7 +322,6 @@ namespace PicSum.UIComponent.AddressBar
                 {
                     AddressBar = this,
                     Directory = directory,
-                    Palette = this.palette
                 };
                 if (i + 1 < addressInfo.DirectoryList.Count)
                 {
@@ -444,7 +345,6 @@ namespace PicSum.UIComponent.AddressBar
                 {
                     AddressBar = this,
                     Directory = directory,
-                    Palette = this.palette
                 };
                 directoryDraw.SelectedDirectory += new(this.DrawItem_SelectedDirectory);
                 items.Add(directoryDraw);
@@ -453,7 +353,6 @@ namespace PicSum.UIComponent.AddressBar
                 {
                     AddressBar = this,
                     Directory = directory,
-                    Palette = this.palette
                 };
                 sepDraw.SelectedDirectory += new(this.DrawItem_SelectedDirectory);
                 items.Add(sepDraw);
@@ -472,7 +371,6 @@ namespace PicSum.UIComponent.AddressBar
                 {
                     AddressBar = this,
                     Directory = directory,
-                    Palette = this.palette,
                 };
                 directoryDraw.SelectedDirectory += new(this.DrawItem_SelectedDirectory);
                 items.Add(directoryDraw);
