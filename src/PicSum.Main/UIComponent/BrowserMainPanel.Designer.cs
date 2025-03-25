@@ -34,7 +34,7 @@ namespace PicSum.Main.UIComponent
             this.tagDropToolButton = new SWF.UIComponent.WideDropDown.WideDropToolButton();
             this.homeToolButton = new SWF.UIComponent.Core.ToolButton();
             this.searchRatingToolButton = new SWF.UIComponent.Core.ToolButton();
-            this.toolPanel2 = new Panel();
+            this.toolPanel2 = new SWF.UIComponent.Core.ToolPanel();
             this.toolPanel.SuspendLayout();
             this.toolPanel2.SuspendLayout();
             this.SuspendLayout();
@@ -196,6 +196,8 @@ namespace PicSum.Main.UIComponent
             this.toolPanel2.Name = "toolPanel2";
             this.toolPanel2.Size = new Size(38, 403);
             this.toolPanel2.TabIndex = 6;
+            this.toolPanel2.IsDrawRightBorderLine = true;
+            this.toolPanel2.VerticalTopMargin = 28;
             // 
             // BrowserMainPanel
             // 
@@ -214,6 +216,7 @@ namespace PicSum.Main.UIComponent
         private PicSum.UIComponent.InfoPanel.InfoPanel infoPanel;
         private SWF.UIComponent.TabOperation.TabSwitch tabSwitch;
         private System.Windows.Forms.Panel toolPanel;
+        private SWF.UIComponent.Core.ToolPanel toolPanel2;
         private SWF.UIComponent.Core.ToolButton showInfoToolButton;
         private PicSum.UIComponent.AddressBar.AddressBar addressBar;
         private SWF.UIComponent.Core.ToolButton nextPageHistoryButton;
@@ -225,7 +228,5 @@ namespace PicSum.Main.UIComponent
         private SWF.UIComponent.Core.ToolButton searchBookmarkToolButton;
 
         #endregion
-
-        private Panel toolPanel2;
     }
 }

@@ -134,6 +134,8 @@ namespace PicSum.UIComponent.InfoPanel
             this.Font = new Font("Yu Gothic UI", 9F);
             this.Name = "InfoPanel";
             this.Size = new Size(512, 715);
+            this.IsDrawLeftBorderLine = true;
+            this.VerticalTopMargin = 28;
             ((System.ComponentModel.ISupportInitialize)this.thumbnailPictureBox).EndInit();
             this.tagContextMenuStrip.ResumeLayout(false);
             this.ResumeLayout(false);

@@ -172,6 +172,7 @@ namespace PicSum.UIComponent.Contents.FileList
             this.DoubleBuffered = true;
             this.Name = "FileListToolBar";
             this.Size = new Size(767, 29);
+            this.IsDrawBottomBorderLine = true;
             this.viewMenu.ResumeLayout(false);
             this.ResumeLayout(false);
         }

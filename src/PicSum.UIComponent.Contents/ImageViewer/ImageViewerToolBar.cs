@@ -1,3 +1,4 @@
+using SWF.UIComponent.Core;
 using System;
 using System.ComponentModel;
 using System.Drawing;
@@ -7,7 +8,7 @@ using System.Windows.Forms;
 namespace PicSum.UIComponent.Contents.ImageViewer
 {
     [SupportedOSPlatform("windows10.0.17763.0")]
-    public partial class ImageViewerToolBar : UserControl
+    public partial class ImageViewerToolBar : ToolPanel
     {
         public event EventHandler DoubleNextButtonClick;
         public event EventHandler DoublePreviewButtonClick;

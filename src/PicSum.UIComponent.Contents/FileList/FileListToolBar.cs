@@ -9,7 +9,7 @@ using System.Windows.Forms;
 namespace PicSum.UIComponent.Contents.FileList
 {
     [SupportedOSPlatform("windows10.0.17763.0")]
-    public partial class FileListToolBar : UserControl
+    public partial class FileListToolBar : ToolPanel
     {
         public event EventHandler NameSortButtonClick;
         public event EventHandler PathSortButtonClick;

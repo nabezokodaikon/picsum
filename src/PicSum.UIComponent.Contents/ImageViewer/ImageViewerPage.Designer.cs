@@ -99,6 +99,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             // 
             this.toolBar.Dock = System.Windows.Forms.DockStyle.Top;
             this.toolBar.TabStop = false;
+            this.toolBar.IsDrawBottomBorderLine = true;
             this.toolBar.DoublePreviewButtonClick += new System.EventHandler(this.DoublePreviewIndexToolStripButton_Click);
             this.toolBar.DoubleNextButtonClick += new System.EventHandler(this.DoubleNextIndexToolStripButton_Click);
             this.toolBar.SinglePreviewButtonClick += new System.EventHandler(this.SinglePreviewIndexToolStripButton_Click);

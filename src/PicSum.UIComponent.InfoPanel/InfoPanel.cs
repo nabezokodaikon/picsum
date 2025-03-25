@@ -6,6 +6,7 @@ using SWF.Core.Base;
 using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
 using SWF.Core.Job;
+using SWF.UIComponent.Core;
 using SWF.UIComponent.WideDropDown;
 using System;
 using System.ComponentModel;
@@ -18,7 +19,7 @@ namespace PicSum.UIComponent.InfoPanel
 {
     [SupportedOSPlatform("windows10.0.17763.0")]
     public sealed partial class InfoPanel
-        : UserControl, ISender
+        : ToolPanel, ISender
     {
         public event EventHandler<SelectedTagEventArgs> SelectedTag;
 
