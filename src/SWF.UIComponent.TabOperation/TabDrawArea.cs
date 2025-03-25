@@ -138,7 +138,7 @@ namespace SWF.UIComponent.TabOperation
         {
             ArgumentNullException.ThrowIfNull(g, nameof(g));
 
-            using (var brush = new SolidBrush(Color.White))
+            using (var brush = new SolidBrush(Color.FromArgb(250, 250, 250)))
             {
                 this.DrawTab(brush, g);
             }
