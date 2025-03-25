@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Runtime.Versioning;
@@ -131,6 +132,19 @@ namespace SWF.UIComponent.FlowList
             }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public new BorderStyle BorderStyle
+        {
+            get
+            {
+                return base.BorderStyle;
+            }
+            private set
+            {
+                base.BorderStyle = value;
+            }
+        }
+
         public FlowList()
         {
             this.SetStyle(
@@ -145,6 +159,7 @@ namespace SWF.UIComponent.FlowList
             this.scrollBar.ValueChanged += new(this.ScrollBar_ValueChanged);
             this.selectedItemIndexs.Change += new(this.SelectedItemIndexs_Change);
 
+            base.BorderStyle = BorderStyle.None;
             this.Controls.Add(this.scrollBar);
         }
 

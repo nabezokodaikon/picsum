@@ -40,7 +40,6 @@ namespace PicSum.UIComponent.Contents.FileList
             this.flowList.Margin = new System.Windows.Forms.Padding(0);
             this.flowList.Name = "flowList";
             this.flowList.TabIndex = 1;
-            this.flowList.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.flowList.Text = "flowList1";
             this.flowList.ItemDelete += new System.EventHandler(this.FlowList_ItemDelete);
             this.flowList.DrawItem += new System.EventHandler<SWF.UIComponent.FlowList.DrawItemEventArgs>(this.FlowList_Drawitem);
