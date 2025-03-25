@@ -296,6 +296,11 @@ namespace SWF.UIComponent.Form
 
         private void ChildMouseMoveHandler(object sender, MouseEventArgs e)
         {
+            if (this.WindowState != FormWindowState.Normal)
+            {
+                return;
+            }
+
             var control = sender as Control;
             this.Cursor = Cursors.Default;
             control.Cursor = Cursors.Default;
@@ -350,6 +355,11 @@ namespace SWF.UIComponent.Form
 
         private void ChildMouseDownHandler(object sender, MouseEventArgs e)
         {
+            if (this.WindowState != FormWindowState.Normal)
+            {
+                return;
+            }
+
             if (e.Button != MouseButtons.Left)
             {
                 return;
