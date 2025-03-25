@@ -123,6 +123,11 @@ namespace PicSum.Main.UIComponent
             }
         }
 
+        protected override bool CanDragOperation()
+        {
+            return !this.BrowserMainPanel.IsBeginTabDragOperation;
+        }
+
         protected override void OnShown(EventArgs e)
         {
             base.OnShown(e);
@@ -260,12 +265,10 @@ namespace PicSum.Main.UIComponent
             this.browserMainPanel.BackgroundMouseDoubleLeftClick += new(this.BrowserMainPanel_BackgroundMouseDoubleLeftClick);
             this.browserMainPanel.NewWindowPageOpen += new(this.BrowserMainPanel_NewWindowPageOpen);
             this.browserMainPanel.TabDropouted += new(this.BrowserMainPanel_TabDropouted);
-            this.browserMainPanel.BeginSetPage += this.BrowserMainPanel_BeginSetPage;
-            this.browserMainPanel.EndSetPage += this.BrowserMainPanel_EndSetPage;
 
             this.SuspendLayout();
             this.Controls.Add(this.browserMainPanel);
-
+            this.AttachResizeEvents(this);
             if (BrowserForm.isStartUp && CommandLineArgs.IsFilePath())
             {
                 var imageFilePath = CommandLineArgs.GetImageFilePatCommandLineArgs();
@@ -335,16 +338,6 @@ namespace PicSum.Main.UIComponent
         private void BrowserMainPanel_TabDropouted(object sender, TabDropoutedEventArgs e)
         {
             this.OnTabDropouted(e);
-        }
-
-        private void BrowserMainPanel_BeginSetPage(object sender, EventArgs e)
-        {
-            this.DetachResizeEvents(this);
-        }
-
-        private void BrowserMainPanel_EndSetPage(object sender, EventArgs e)
-        {
-            this.AttachResizeEvents(this);
         }
     }
 }

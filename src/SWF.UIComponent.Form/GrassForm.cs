@@ -262,6 +262,11 @@ namespace SWF.UIComponent.Form
             }
         }
 
+        protected virtual bool CanDragOperation()
+        {
+            throw new NotImplementedException();
+        }
+
         private void SetWindowColor(Color color)
         {
             if (this.osVersion.Major >= 10 && this.osVersion.Build >= 22000)
@@ -296,14 +301,19 @@ namespace SWF.UIComponent.Form
 
         private void ChildMouseMoveHandler(object sender, MouseEventArgs e)
         {
-            if (this.WindowState != FormWindowState.Normal)
+            var control = sender as Control;
+            this.Cursor = Cursors.Default;
+            control.Cursor = Cursors.Default;
+
+            if (!this.CanDragOperation())
             {
                 return;
             }
 
-            var control = sender as Control;
-            this.Cursor = Cursors.Default;
-            control.Cursor = Cursors.Default;
+            if (this.WindowState != FormWindowState.Normal)
+            {
+                return;
+            }
 
             var point = this.PointToClient(control.PointToScreen(e.Location));
 
@@ -355,6 +365,11 @@ namespace SWF.UIComponent.Form
 
         private void ChildMouseDownHandler(object sender, MouseEventArgs e)
         {
+            if (!this.CanDragOperation())
+            {
+                return;
+            }
+
             if (this.WindowState != FormWindowState.Normal)
             {
                 return;

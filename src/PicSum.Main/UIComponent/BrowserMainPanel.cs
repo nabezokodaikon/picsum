@@ -68,6 +68,14 @@ namespace PicSum.Main.UIComponent
             }
         }
 
+        public bool IsBeginTabDragOperation
+        {
+            get
+            {
+                return this.tabSwitch.IsBeginTabDragOperation;
+            }
+        }
+
         public BrowserMainPanel()
         {
             this.InitializeComponent();
@@ -107,9 +115,6 @@ namespace PicSum.Main.UIComponent
                 this.pageContainer.BringToFront();
 
                 this.tabSwitch.TabsRightOffset = AppConstants.GetControlBoxWidth();
-
-                this.tabSwitch.BeginSetPage += this.TabSwitch_BeginSetPage;
-                this.tabSwitch.EndSetPage += this.TabSwitch_EndSetPage;
             }
         }
 

@@ -72,9 +72,6 @@ namespace SWF.UIComponent.TabOperation
         /// </summary>
         public event EventHandler<MouseEventArgs> AddTabButtonMouseClick;
 
-        public event EventHandler BeginSetPage;
-        public event EventHandler EndSetPage;
-
         // タブの高さ
         private readonly int tabHeight = 29;
 
@@ -232,6 +229,14 @@ namespace SWF.UIComponent.TabOperation
             }
         }
 
+        public bool IsBeginTabDragOperation
+        {
+            get
+            {
+                return TabDragOperation.IsBegin;
+            }
+        }
+
         public TabSwitch()
         {
             this.SetStyle(
@@ -368,26 +373,17 @@ namespace SWF.UIComponent.TabOperation
 
             if (this.activeTab != null)
             {
-                this.BeginSetPage?.Invoke(this, EventArgs.Empty);
+                this.activeTab.ClearPage();
+                this.activeTab.OverwritePage(param);
 
-                try
-                {
-                    this.activeTab.ClearPage();
-                    this.activeTab.OverwritePage(param);
+                var container = this.GetContainer();
+                container.ClearPage();
+                container.SetPage(this.activeTab.Page);
 
-                    var container = this.GetContainer();
-                    container.ClearPage();
-                    container.SetPage(this.activeTab.Page);
+                this.Invalidate();
+                this.Update();
 
-                    this.Invalidate();
-                    this.Update();
-
-                    return (T)this.activeTab.Page;
-                }
-                finally
-                {
-                    this.EndSetPage?.Invoke(this, EventArgs.Empty);
-                }
+                return (T)this.activeTab.Page;
             }
             else
             {
@@ -412,26 +408,17 @@ namespace SWF.UIComponent.TabOperation
                 throw new InvalidOperationException("コンテンツの前の履歴が存在しません。");
             }
 
-            this.BeginSetPage?.Invoke(this, EventArgs.Empty);
+            this.activeTab.ClearPage();
+            this.activeTab.CreatePreviewPage();
 
-            try
-            {
-                this.activeTab.ClearPage();
-                this.activeTab.CreatePreviewPage();
+            var container = this.GetContainer();
+            container.ClearPage();
+            container.SetPage(this.activeTab.Page);
 
-                var container = this.GetContainer();
-                container.ClearPage();
-                container.SetPage(this.activeTab.Page);
+            this.Invalidate();
+            this.Update();
 
-                this.Invalidate();
-                this.Update();
-
-                return (T)this.activeTab.Page;
-            }
-            finally
-            {
-                this.EndSetPage?.Invoke(this, EventArgs.Empty);
-            }
+            return (T)this.activeTab.Page;
         }
 
         /// <summary>
@@ -451,26 +438,17 @@ namespace SWF.UIComponent.TabOperation
                 throw new InvalidOperationException("ページの次の履歴が存在しません。");
             }
 
-            this.BeginSetPage?.Invoke(this, EventArgs.Empty);
+            this.activeTab.ClearPage();
+            this.activeTab.CreateNextPage();
 
-            try
-            {
-                this.activeTab.ClearPage();
-                this.activeTab.CreateNextPage();
+            var container = this.GetContainer();
+            container.ClearPage();
+            container.SetPage(this.activeTab.Page);
 
-                var container = this.GetContainer();
-                container.ClearPage();
-                container.SetPage(this.activeTab.Page);
+            this.Invalidate();
+            this.Update();
 
-                this.Invalidate();
-                this.Update();
-
-                return (T)this.activeTab.Page;
-            }
-            finally
-            {
-                this.EndSetPage?.Invoke(this, EventArgs.Empty);
-            }
+            return (T)this.activeTab.Page;
         }
 
         /// <summary>
@@ -491,26 +469,17 @@ namespace SWF.UIComponent.TabOperation
                 throw new InvalidOperationException("ページが存在しません。");
             }
 
-            this.BeginSetPage?.Invoke(this, EventArgs.Empty);
+            this.activeTab.ClearPage();
+            this.activeTab.CloneCurrentPage();
 
-            try
-            {
-                this.activeTab.ClearPage();
-                this.activeTab.CloneCurrentPage();
+            var container = this.GetContainer();
+            container.ClearPage();
+            container.SetPage(this.activeTab.Page);
 
-                var container = this.GetContainer();
-                container.ClearPage();
-                container.SetPage(this.activeTab.Page);
+            this.Invalidate();
+            this.Update();
 
-                this.Invalidate();
-                this.Update();
-
-                return (T)this.activeTab.Page;
-            }
-            finally
-            {
-                this.EndSetPage?.Invoke(this, EventArgs.Empty);
-            }
+            return (T)this.activeTab.Page;
         }
 
         /// <summary>
@@ -1069,25 +1038,16 @@ namespace SWF.UIComponent.TabOperation
             {
                 if (tab != this.activeTab)
                 {
-                    this.BeginSetPage?.Invoke(this, EventArgs.Empty);
-
-                    try
-                    {
-                        var container = this.GetContainer();
-                        container.SuspendLayout();
-                        container.ClearPage();
-                        container.SetPage(tab.Page);
-                        container.ResumeLayout(false);
-                        container.PerformLayout();
-                        container.Invalidate();
-                        container.Update();
-                        this.activeTab = tab;
-                        return true;
-                    }
-                    finally
-                    {
-                        this.EndSetPage?.Invoke(this, EventArgs.Empty);
-                    }
+                    var container = this.GetContainer();
+                    container.SuspendLayout();
+                    container.ClearPage();
+                    container.SetPage(tab.Page);
+                    container.ResumeLayout(false);
+                    container.PerformLayout();
+                    container.Invalidate();
+                    container.Update();
+                    this.activeTab = tab;
+                    return true;
                 }
                 else
                 {
@@ -1096,30 +1056,21 @@ namespace SWF.UIComponent.TabOperation
             }
             else
             {
-                this.BeginSetPage?.Invoke(this, EventArgs.Empty);
-
-                try
+                var container = this.GetContainer();
+                container.SuspendLayout();
+                container.ClearPage();
+                container.ResumeLayout(false);
+                container.PerformLayout();
+                container.Invalidate();
+                container.Update();
+                if (this.activeTab != null)
                 {
-                    var container = this.GetContainer();
-                    container.SuspendLayout();
-                    container.ClearPage();
-                    container.ResumeLayout(false);
-                    container.PerformLayout();
-                    container.Invalidate();
-                    container.Update();
-                    if (this.activeTab != null)
-                    {
-                        this.activeTab = null;
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
+                    this.activeTab = null;
+                    return true;
                 }
-                finally
+                else
                 {
-                    this.EndSetPage?.Invoke(this, EventArgs.Empty);
+                    return false;
                 }
             }
         }
