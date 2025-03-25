@@ -607,22 +607,22 @@ namespace SWF.UIComponent.ImagePanel
         {
             using (TimeMeasuring.Run(false, "ImagePanel.DrawImage"))
             {
-                if (this.image.IsEmpty)
+                try
                 {
-                    var destRect = this.GetImageDestRectangle();
-                    this.image.DrawEmptyImage(g, Brushes.LightGray, destRect);
+                    if (this.image.IsEmpty)
+                    {
+                        var destRect = this.GetImageDestRectangle();
+                        this.image.DrawEmptyImage(g, Brushes.LightGray, destRect);
 
-                    g.CompositingMode = CompositingMode.SourceOver;
-                    g.DrawString(
-                        FileUtil.GetFileName(this.FilePath),
-                        this.Font,
-                        Brushes.DarkGray,
-                        destRect,
-                        this.stringFormat);
-                }
-                else
-                {
-                    try
+                        g.CompositingMode = CompositingMode.SourceOver;
+                        g.DrawString(
+                            FileUtil.GetFileName(this.FilePath),
+                            this.Font,
+                            Brushes.DarkGray,
+                            destRect,
+                            this.stringFormat);
+                    }
+                    else
                     {
                         if (this.sizeMode == ImageSizeMode.Original)
                         {
@@ -634,11 +634,16 @@ namespace SWF.UIComponent.ImagePanel
                             this.image.DrawResizeImage(g, destRect);
                         }
                     }
-                    catch (ImageUtilException ex)
-                    {
-                        Logger.Error($"{ex}");
-                        this.DrawErrorImage(g);
-                    }
+                }
+                catch (ImageUtilException ex)
+                {
+                    Logger.Error($"{ex}");
+                    this.DrawErrorImage(g);
+                }
+                catch (OverflowException ex)
+                {
+                    Logger.Error($"{ex}");
+                    this.DrawErrorImage(g);
                 }
             }
         }
