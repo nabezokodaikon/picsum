@@ -17,6 +17,18 @@ namespace SWF.UIComponent.Form
         private const int TOP_OFFSET = 37;
         private const int RESIZE_MARGIN = 8;
 
+        private static readonly Version OS_VERSION = GetWindowsVersion();
+        private static readonly Color ACTIVE_WINDOW_COLOR = Color.FromArgb(34, 38, 41);
+        private static readonly Color DEACTIVATE_WINDOWCOLOR = Color.FromArgb(97, 99, 101);
+
+        private static readonly WinApiMembers.MARGINS GLASS_MARGINS = new()
+        {
+            cyTopHeight = TOP_OFFSET,
+            cxLeftWidth = 0,
+            cxRightWidth = 0,
+            cyBottomHeight = 0,
+        };
+
         private static Version GetWindowsVersion()
         {
             var osVersionInfo = new WinApiMembers.OSVERSIONINFOEX();
@@ -36,15 +48,11 @@ namespace SWF.UIComponent.Form
             }
         }
 
-        private WinApiMembers.MARGINS glassMargins = null;
         private bool isInit = true;
         private Size initSize = Size.Empty;
         private FormWindowState initWindowState = FormWindowState.Normal;
         private FormWindowState currentWindowState = FormWindowState.Normal;
         private Rectangle currentWindowBounds = Rectangle.Empty;
-        private readonly Version osVersion = GetWindowsVersion();
-        private readonly Color activeWindowColor = Color.FromArgb(34, 38, 41);
-        private readonly Color deactivateWindowColor = Color.FromArgb(97, 99, 101);
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public new Size Size
@@ -102,14 +110,6 @@ namespace SWF.UIComponent.Form
 
         public GrassForm()
         {
-            this.glassMargins = new()
-            {
-                cyTopHeight = TOP_OFFSET,
-                cxLeftWidth = 0,
-                cxRightWidth = 0,
-                cyBottomHeight = 0,
-            };
-
             this.SetStyle(
                 ControlStyles.AllPaintingInWmPaint |
                 ControlStyles.ContainerControl |
@@ -119,7 +119,7 @@ namespace SWF.UIComponent.Form
                 true);
             this.UpdateStyles();
 
-            this.SetWindowColor(this.activeWindowColor);
+            this.SetWindowColor(ACTIVE_WINDOW_COLOR);
         }
 
         public void MouseLeftDoubleClickProcess()
@@ -167,13 +167,13 @@ namespace SWF.UIComponent.Form
 
         protected override void OnActivated(EventArgs e)
         {
-            this.SetWindowColor(this.activeWindowColor);
+            this.SetWindowColor(ACTIVE_WINDOW_COLOR);
             base.OnActivated(e);
         }
 
         protected override void OnDeactivate(EventArgs e)
         {
-            this.SetWindowColor(this.deactivateWindowColor);
+            this.SetWindowColor(DEACTIVATE_WINDOWCOLOR);
             base.OnDeactivate(e);
         }
 
@@ -236,7 +236,7 @@ namespace SWF.UIComponent.Form
 
         protected void SetGrass()
         {
-            WinApiMembers.DwmExtendFrameIntoClientArea(this.Handle, this.glassMargins);
+            WinApiMembers.DwmExtendFrameIntoClientArea(this.Handle, GLASS_MARGINS);
         }
 
         protected void SetControlRegion()
@@ -280,7 +280,7 @@ namespace SWF.UIComponent.Form
 
         private void SetWindowColor(Color color)
         {
-            if (this.osVersion.Major >= 10 && this.osVersion.Build >= 22000)
+            if (OS_VERSION.Major >= 10 && OS_VERSION.Build >= 22000)
             {
                 var colorValue = color.R | (color.G << 8) | (color.B << 16);
                 var _ = WinApiMembers.DwmSetWindowAttribute(
