@@ -14,7 +14,7 @@ namespace SWF.UIComponent.Form
     public partial class GrassForm
         : System.Windows.Forms.Form
     {
-        private const int TOP_OFFSET = 41;
+        private const int TOP_OFFSET = 37;
         private const int RESIZE_MARGIN = 8;
 
         private static Version GetWindowsVersion()
