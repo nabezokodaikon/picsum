@@ -1,4 +1,3 @@
-using System.ComponentModel;
 using System.Drawing.Drawing2D;
 using System.Runtime.Versioning;
 
@@ -7,25 +6,9 @@ namespace SWF.UIComponent.Core
     [SupportedOSPlatform("windows10.0.17763.0")]
     public partial class CheckPatternPanel : Panel
     {
-
-        private int _rectangleSize = 24;
-        private readonly SolidBrush brushA = new(Color.FromArgb(255, Color.FromArgb(64, 64, 64)));
-        private readonly SolidBrush brushB = new(Color.FromArgb(64, Color.FromArgb(16, 16, 16)));
-
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public int RectangleSize
-        {
-            get
-            {
-                return this._rectangleSize;
-            }
-            set
-            {
-                this._rectangleSize = value;
-                this.Invalidate();
-                this.Update();
-            }
-        }
+        private const int RECTANGLE_SIZE = 24;
+        private static readonly SolidBrush BRUSH_A = new(Color.FromArgb(32, 32, 32));
+        private static readonly SolidBrush BRUSH_B = new(Color.FromArgb(24, 24, 24));
 
         public CheckPatternPanel()
         {
@@ -51,7 +34,8 @@ namespace SWF.UIComponent.Core
             e.Graphics.PixelOffsetMode = PixelOffsetMode.HighSpeed;
             e.Graphics.CompositingMode = CompositingMode.SourceCopy;
 
-            e.Graphics.FillRectangle(this.brushA, this.ClientRectangle);
+            //e.Graphics.FillRectangle(BRUSH_A, this.ClientRectangle);
+            this.DrawCheckRectangle(e.Graphics);
         }
 
         private void DrawCheckRectangle(Graphics g)
@@ -59,50 +43,40 @@ namespace SWF.UIComponent.Core
             var w = this.ClientRectangle.Width;
             var h = this.ClientRectangle.Height;
 
-            // グラデーション描画            
-            using (var b = new LinearGradientBrush(this.ClientRectangle,
-                                                                   Color.FromArgb(80, 80, 80),
-                                                                   Color.FromArgb(16, 16, 16),
-                                                                   LinearGradientMode.ForwardDiagonal))
-            {
-                g.FillRectangle(b, this.ClientRectangle);
-            }
-
             // チェック描画サイズ取得
-            if ((int)(w / this._rectangleSize) % 2 == 1)
+            if ((int)(w / RECTANGLE_SIZE) % 2 == 1)
             {
-                w += this._rectangleSize;
+                w += RECTANGLE_SIZE;
             }
 
-            if ((int)(h / this._rectangleSize) % 2 == 1)
+            if ((int)(h / RECTANGLE_SIZE) % 2 == 1)
             {
-                h += this._rectangleSize;
+                h += RECTANGLE_SIZE;
             }
 
             // チェック描画領域取得
             var rectsA = new List<Rectangle>();
             var rectsB = new List<Rectangle>();
             var addA = true;
-            for (var x = 0; x <= w; x += this._rectangleSize)
+            for (var x = 0; x <= w; x += RECTANGLE_SIZE)
             {
-                for (var y = 0; y <= h; y += this._rectangleSize)
+                for (var y = 0; y <= h; y += RECTANGLE_SIZE)
                 {
                     if (addA)
                     {
-                        rectsA.Add(new Rectangle(x, y, this._rectangleSize, this._rectangleSize));
+                        rectsA.Add(new Rectangle(x, y, RECTANGLE_SIZE, RECTANGLE_SIZE));
                     }
                     else
                     {
-                        rectsB.Add(new Rectangle(x, y, this._rectangleSize, this._rectangleSize));
+                        rectsB.Add(new Rectangle(x, y, RECTANGLE_SIZE, RECTANGLE_SIZE));
                     }
                     addA = !addA;
                 }
             }
 
             // チェック描画
-            g.FillRectangles(this.brushA, rectsA.ToArray());
-            g.FillRectangles(this.brushB, rectsB.ToArray());
+            g.FillRectangles(BRUSH_A, rectsA.ToArray());
+            g.FillRectangles(BRUSH_B, rectsB.ToArray());
         }
-
     }
 }

@@ -90,7 +90,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.checkPatternPanel.Controls.Add(this.rightImagePanel);
             this.checkPatternPanel.Margin = new System.Windows.Forms.Padding(0);
             this.checkPatternPanel.Name = "checkPatternPanel";
-            this.checkPatternPanel.RectangleSize = 24;
             this.checkPatternPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.checkPatternPanel.TabIndex = 3;
             this.checkPatternPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
