@@ -15,10 +15,11 @@ namespace SWF.UIComponent.TabOperation
     internal sealed partial class TabDragForm
         : Form
     {
-
         private const float OUTLINE_OFFSET = 0.5f;
         private const float DRAW_TAB_WIDHT_OFFSET = 8;
         private const float CAPTURE_WIDTH = 320;
+
+        private static readonly Color TRANSPARENT_COLOR = Color.FromArgb(0, 0, 0, 0);
 
         private TabPalette tabPalette = null;
         private TabDropForm tabDropForm = null;
@@ -178,7 +179,7 @@ namespace SWF.UIComponent.TabOperation
             this.drawTabPageMethod = tab.DrawingTabPage;
 
             this.Size = this.regionImage.Size;
-            this.Region = ImageUtil.GetRegion(this.regionImage, Color.FromArgb(0, 0, 0, 0));
+            this.Region = ImageUtil.GetRegion(this.regionImage, TRANSPARENT_COLOR);
             this.tabSwitch = tab.Owner;
         }
 

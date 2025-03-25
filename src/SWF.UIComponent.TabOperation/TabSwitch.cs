@@ -94,7 +94,7 @@ namespace SWF.UIComponent.TabOperation
         private TabInfo activeTab = null;
 
         // ドロップされている座標
-        private Nullable<Point> dropPoint = null;
+        private Point? dropPoint = null;
 
         // タブ追加ボタン病が暮らす
         private readonly AddTabButtonDrawArea addTabButtonDrawArea = new();
@@ -182,50 +182,6 @@ namespace SWF.UIComponent.TabOperation
             get
             {
                 return this.tabList.Count;
-            }
-        }
-
-        /// <summary>
-        /// 輪郭色
-        /// </summary>
-        public Color OutlineColor
-        {
-            get
-            {
-                return this.pageDrawArea.OutlineColor;
-            }
-        }
-
-        /// <summary>
-        /// 輪郭ブラシ
-        /// </summary>
-        public SolidBrush OutlineBrush
-        {
-            get
-            {
-                return this.pageDrawArea.OutlineBrush;
-            }
-        }
-
-        /// <summary>
-        /// コンテンツ色
-        /// </summary>
-        public Color PageColor
-        {
-            get
-            {
-                return this.pageDrawArea.PageColor;
-            }
-        }
-
-        /// <summary>
-        /// コンテンツブラシ
-        /// </summary>
-        public SolidBrush PageBrush
-        {
-            get
-            {
-                return this.pageDrawArea.PageBrush;
             }
         }
 

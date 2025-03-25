@@ -10,32 +10,41 @@ namespace SWF.UIComponent.TabOperation
     [SupportedOSPlatform("windows10.0.17763.0")]
     internal sealed class TabDrawArea
     {
-
         private const float TAB_WIDTH = 256;
         private const float SIDE_WIDTH = 8;
         private const float PAGE_SIZE = 24;
         private const float PAGE_OFFSET = 2;
 
-        private readonly static RectangleF ICON_RECTANGLE
+        private static readonly RectangleF ICON_RECTANGLE
             = new(SIDE_WIDTH, PAGE_OFFSET, PAGE_SIZE, PAGE_SIZE);
 
-        private readonly static RectangleF CLOSE_BUTTON_RECTANGLE
+        private static readonly RectangleF CLOSE_BUTTON_RECTANGLE
             = new(TAB_WIDTH - SIDE_WIDTH - PAGE_SIZE,
                   PAGE_OFFSET,
                   PAGE_SIZE,
                   PAGE_SIZE);
 
-        private readonly static SolidBrush TAB_CLOSE_ACTIVE_BUTTON_BRUSH
+        private static readonly SolidBrush TAB_CLOSE_ACTIVE_BUTTON_BRUSH
             = new(Color.FromArgb(64, 0, 0, 0));
 
-        private readonly static SolidBrush TAB_CLOSE_INACTIVE_BUTTON_BRUSH
+        private static readonly SolidBrush TAB_CLOSE_INACTIVE_BUTTON_BRUSH
             = new(Color.FromArgb(64, 0, 0, 0));
 
-        private readonly static Pen TAB_CLOSE_BUTTON_SLASH_PEN
+        private static readonly Pen TAB_CLOSE_BUTTON_SLASH_PEN
             = new(Color.Black, 2f);
 
-        private readonly RectangleF iconRectangle = ICON_RECTANGLE;
-        private readonly RectangleF closeButtonRectangle = CLOSE_BUTTON_RECTANGLE;
+        private static readonly SolidBrush ACTIVE_TAB_BRUSH
+            = new(Color.FromArgb(250, 250, 250));
+
+        private static readonly SolidBrush INACTIVE_TAB_BRUSH
+            = new(Color.FromArgb(200, 200, 200));
+
+        private static readonly SolidBrush MOUSE_POINT_TAB_BRUSH
+            = new(Color.FromArgb(220, 220, 220));
+
+        private static readonly Pen TAB_OUTLINE_PEN
+            = new(Color.FromArgb(128, 128, 128), 0.5f);
+
         private PointF drawPoint = new(0, 0);
         private float width = 256;
         private readonly float height = 29;
@@ -138,30 +147,21 @@ namespace SWF.UIComponent.TabOperation
         {
             ArgumentNullException.ThrowIfNull(g, nameof(g));
 
-            using (var brush = new SolidBrush(Color.FromArgb(250, 250, 250)))
-            {
-                this.DrawTab(brush, g);
-            }
+            this.DrawTab(ACTIVE_TAB_BRUSH, g);
         }
 
         public void DrawInactiveTab(Graphics g)
         {
             ArgumentNullException.ThrowIfNull(g, nameof(g));
 
-            using (var brush = new SolidBrush(Color.FromArgb(200, 200, 200)))
-            {
-                this.DrawTab(brush, g);
-            }
+            this.DrawTab(INACTIVE_TAB_BRUSH, g);
         }
 
         public void DrawMousePointTab(Graphics g)
         {
             ArgumentNullException.ThrowIfNull(g, nameof(g));
 
-            using (var brush = new SolidBrush(Color.FromArgb(220, 220, 220)))
-            {
-                this.DrawTab(brush, g);
-            }
+            this.DrawTab(MOUSE_POINT_TAB_BRUSH, g);
         }
 
         public void DrawNothingTabCloseButton(Graphics g)
@@ -223,10 +223,10 @@ namespace SWF.UIComponent.TabOperation
 
         private RectangleF GetIconRectangle()
         {
-            var x = this.iconRectangle.X + this.drawPoint.X;
-            var y = this.iconRectangle.Y + this.drawPoint.Y;
-            var w = this.iconRectangle.Width;
-            var h = this.iconRectangle.Height;
+            var x = ICON_RECTANGLE.X + this.drawPoint.X;
+            var y = ICON_RECTANGLE.Y + this.drawPoint.Y;
+            var w = ICON_RECTANGLE.Width;
+            var h = ICON_RECTANGLE.Height;
             return new RectangleF(x, y, w, h);
         }
 
@@ -244,43 +244,40 @@ namespace SWF.UIComponent.TabOperation
 
         public RectangleF GetCloseButtonRectangle()
         {
-            var w = this.closeButtonRectangle.Width;
-            var h = this.closeButtonRectangle.Height;
+            var w = CLOSE_BUTTON_RECTANGLE.Width;
+            var h = CLOSE_BUTTON_RECTANGLE.Height;
 
             if (this.width < TabSwitch.TAB_CLOSE_BUTTON_CAN_DRAW_WIDTH)
             {
-                var x = this.X + (this.Width - this.closeButtonRectangle.Width) / 2f;
-                var y = this.closeButtonRectangle.Y + (this.closeButtonRectangle.Height - h) / 2f;
+                var x = this.X + (this.Width - CLOSE_BUTTON_RECTANGLE.Width) / 2f;
+                var y = CLOSE_BUTTON_RECTANGLE.Y + (CLOSE_BUTTON_RECTANGLE.Height - h) / 2f;
                 return new RectangleF(x, y, w, h);
             }
             else
             {
-                var x = this.closeButtonRectangle.X - (TAB_WIDTH - this.width) + this.drawPoint.X;
-                var y = this.closeButtonRectangle.Y + this.drawPoint.Y;
+                var x = CLOSE_BUTTON_RECTANGLE.X - (TAB_WIDTH - this.width) + this.drawPoint.X;
+                var y = CLOSE_BUTTON_RECTANGLE.Y + this.drawPoint.Y;
                 return new RectangleF(x, y, w, h);
             }
         }
 
         public RectangleF GetPageRectangle()
         {
-            var x = this.iconRectangle.Right + PAGE_OFFSET + this.drawPoint.X;
-            var y = this.iconRectangle.Y + this.drawPoint.Y;
-            return RectangleF.FromLTRB(x, y, this.closeButtonRectangle.X - (TAB_WIDTH - this.width) + this.drawPoint.X - PAGE_OFFSET, y + this.iconRectangle.Height);
+            var x = ICON_RECTANGLE.Right + PAGE_OFFSET + this.drawPoint.X;
+            var y = ICON_RECTANGLE.Y + this.drawPoint.Y;
+            return RectangleF.FromLTRB(x, y, CLOSE_BUTTON_RECTANGLE.X - (TAB_WIDTH - this.width) + this.drawPoint.X - PAGE_OFFSET, y + ICON_RECTANGLE.Height);
         }
 
         private void DrawTab(SolidBrush brush, Graphics g)
         {
             var destRect = this.GetDestCenterRectangle();
 
-            using (var pen = new Pen(Color.FromArgb(128, 128, 128), 0.5f))
-            {
-                g.FillRectangle(brush, destRect);
-                g.DrawLines(pen, [
-                    new PointF(destRect.Left, destRect.Bottom - 1f),
-                    new PointF(destRect.Left, destRect.Top + 0.5f),
-                    new PointF(destRect.Right, destRect.Top + 0.5f),
-                    new PointF(destRect.Right, destRect.Bottom - 1f)]);
-            }
+            g.FillRectangle(brush, destRect);
+            g.DrawLines(TAB_OUTLINE_PEN, [
+                new PointF(destRect.Left, destRect.Bottom - 1f),
+                new PointF(destRect.Left, destRect.Top + 0.5f),
+                new PointF(destRect.Right, destRect.Top + 0.5f),
+                new PointF(destRect.Right, destRect.Bottom - 1f)]);
         }
 
         private void DrawTabCloseButton(Graphics g, bool isMousePoint, bool isActiveTab)

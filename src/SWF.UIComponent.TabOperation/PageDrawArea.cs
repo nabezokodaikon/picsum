@@ -10,41 +10,8 @@ namespace SWF.UIComponent.TabOperation
         private static readonly SolidBrush INNER_BRUSH = new(Color.FromArgb(241, 244, 250));
         private static readonly int TOP = 28;
 
-        public Color OutlineColor
-        {
-            get
-            {
-                return OUTLINE_BRUSH.Color;
-            }
-        }
-
-        public SolidBrush OutlineBrush
-        {
-            get
-            {
-                return OUTLINE_BRUSH;
-            }
-        }
-
-        public Color PageColor
-        {
-            get
-            {
-                return INNER_BRUSH.Color;
-            }
-        }
-
-        public SolidBrush PageBrush
-        {
-            get
-            {
-                return INNER_BRUSH;
-            }
-        }
-
         public void Draw(Graphics g)
         {
-
             this.DrawOutline(g);
             this.DrawInnerRectangle(g);
         }

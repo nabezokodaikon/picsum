@@ -11,6 +11,7 @@ namespace SWF.UIComponent.TabOperation
     internal sealed partial class TabDropForm
         : Form
     {
+        private static readonly Color TRANSPARENT_COLOR = Color.FromArgb(0, 0, 0, 0);
 
         private readonly Bitmap dropMaximumImage = ResourceFiles.DropMaximumIcon.Value;
         private readonly Bitmap dropLeftImage = ResourceFiles.DropLeftIcon.Value;
@@ -57,7 +58,7 @@ namespace SWF.UIComponent.TabOperation
 
         protected override void OnLoad(EventArgs e)
         {
-            this.Region = ImageUtil.GetRegion(this.dropMaximumImage, Color.FromArgb(0, 0, 0, 0));
+            this.Region = ImageUtil.GetRegion(this.dropMaximumImage, TRANSPARENT_COLOR);
             base.OnLoad(e);
         }
     }
