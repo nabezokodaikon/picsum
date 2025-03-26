@@ -35,11 +35,11 @@ https://dotnet.microsoft.com/ja-jp/download/dotnet/9.0
 * Avif
 * Bmp
 * Gif
+* Heic
+* Heif
 * Ico
 * Jpeg
 * Jpg
-* Heic
-* Heif
 * Png
 * Svg
 * Webp
