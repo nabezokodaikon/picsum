@@ -52,9 +52,10 @@
        
        アプリケーションを長いパス対応にします。https://docs.microsoft.com/windows/win32/fileio/maximum-file-path-limitation をご覧ください -->
 
-  <application xmlns="urn:schemas-microsoft-com:asm.v3">
-    <windowsSettings>
-    </windowsSettings>
+  <application xmlns:asmv3="urn:schemas-microsoft-com:asm.v3">
+	<windowsSettings xmlns="http://schemas.microsoft.com/SMI/2005/WindowsSettings">
+	  <dpiAware>true/PerMonitor</dpiAware>
+	</windowsSettings>
   </application>
 
   <!-- Windows のコモン コントロールとダイアログのテーマを有効にします (Windows XP 以降) -->
