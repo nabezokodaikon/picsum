@@ -122,7 +122,7 @@ namespace SWF.Core.ImageAccessor
 
         private static Size GetImageSizeFromStream(string filePath)
         {
-            using (TimeMeasuring.Run(true, "ImageUtil.GetImageSizeFromStream"))
+            using (TimeMeasuring.Run(false, "ImageUtil.GetImageSizeFromStream"))
             {
                 try
                 {
@@ -232,7 +232,7 @@ namespace SWF.Core.ImageAccessor
 
         private static Size GetImageSizeFromShell(string filePath)
         {
-            using (TimeMeasuring.Run(true, "ImageUtil.GetImageSizeFromShell"))
+            using (TimeMeasuring.Run(false, "ImageUtil.GetImageSizeFromShell"))
             {
                 IShellApplication? shell = null;
                 try
@@ -297,7 +297,7 @@ namespace SWF.Core.ImageAccessor
                     $"未対応の画像ファイルが指定されました。'{filePath}'", nameof(filePath));
             }
 
-            using (TimeMeasuring.Run(true, "ImageUtil.ReadImageFile"))
+            using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFile"))
             {
                 try
                 {
