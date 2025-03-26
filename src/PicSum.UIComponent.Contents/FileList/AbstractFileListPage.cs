@@ -149,6 +149,21 @@ namespace PicSum.UIComponent.Contents.FileList
             this.SetFlowListItemSize();
         }
 
+        public override string[] GetSelectedFiles()
+        {
+            var filePathList = new List<string>();
+            var selectedIndexs = this.flowList.GetSelectedIndexs();
+            if (selectedIndexs.Length > 0)
+            {
+                foreach (var index in selectedIndexs)
+                {
+                    filePathList.Add(this.filterFilePathList[index]);
+                }
+            }
+
+            return [.. filePathList];
+        }
+
         public override void RedrawPage()
         {
             this.flowList.SetDrawParameter(true);
@@ -240,21 +255,6 @@ namespace PicSum.UIComponent.Contents.FileList
             ArgumentNullException.ThrowIfNull(selectedFilePath, nameof(selectedFilePath));
 
             this.SetFiles(srcFiles, selectedFilePath, SortTypeID.Default, false);
-        }
-
-        protected string[] GetSelectedFiles()
-        {
-            var filePathList = new List<string>();
-            var selectedIndexs = this.flowList.GetSelectedIndexs();
-            if (selectedIndexs.Length > 0)
-            {
-                foreach (var index in selectedIndexs)
-                {
-                    filePathList.Add(this.filterFilePathList[index]);
-                }
-            }
-
-            return [.. filePathList];
         }
 
         protected void SetContextMenuFiles(string[] filePathList)

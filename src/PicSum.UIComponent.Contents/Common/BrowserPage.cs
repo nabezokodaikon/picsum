@@ -40,6 +40,8 @@ namespace PicSum.UIComponent.Contents.Common
 
         public abstract override void StopPageDraw();
 
+        public abstract string[] GetSelectedFiles();
+
         protected override void Dispose(bool disposing)
         {
             if (this.disposed)

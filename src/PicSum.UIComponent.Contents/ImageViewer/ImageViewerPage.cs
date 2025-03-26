@@ -178,6 +178,11 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             //throw new NotImplementedException();
         }
 
+        public override string[] GetSelectedFiles()
+        {
+            return [this.SelectedFilePath];
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (this.disposed)

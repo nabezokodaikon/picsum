@@ -496,7 +496,7 @@ namespace PicSum.Main.UIComponent
                 if (!string.IsNullOrEmpty(selectedFilePath))
                 {
                     this.addressBar.SetAddress(selectedFilePath);
-                    this.infoPanel.SetFileInfo(selectedFilePath);
+                    this.infoPanel.SetFileInfo(page.GetSelectedFiles());
                     page.RedrawPage();
                 }
             }
