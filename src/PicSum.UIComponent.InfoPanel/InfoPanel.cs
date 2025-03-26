@@ -30,6 +30,8 @@ namespace PicSum.UIComponent.InfoPanel
         private readonly Image tagIcon = ResourceFiles.TagIcon.Value;
         private string contextMenuOperationTag = string.Empty;
         private bool isLoading = false;
+        private readonly SolidBrush foreColorBrush;
+        private readonly StringFormat stringFormat;
 
         private string[] FilePathList
         {
@@ -109,6 +111,14 @@ namespace PicSum.UIComponent.InfoPanel
             {
                 this.CreateHandle();
             }
+
+            this.foreColorBrush = new SolidBrush(this.ForeColor);
+            this.stringFormat = new StringFormat()
+            {
+                Alignment = StringAlignment.Center,
+                LineAlignment = StringAlignment.Center,
+                Trimming = StringTrimming.EllipsisCharacter,
+            };
         }
 
         public void SetFileInfo(string filePath)
@@ -346,28 +356,16 @@ namespace PicSum.UIComponent.InfoPanel
 
         private void DrawSelectedFileCount(Graphics g, Rectangle rect)
         {
-            using (var sb = new SolidBrush(this.ForeColor))
-            using (var sf = new StringFormat())
-            {
-                sf.Alignment = StringAlignment.Center;
-                sf.LineAlignment = StringAlignment.Center;
-                sf.Trimming = StringTrimming.EllipsisCharacter;
-                var text = $"{this.FilePathList.Length} files selected";
-                g.DrawString(text, new Font(this.Font.FontFamily, (int)(this.Font.Size * 1.5)), sb, rect, sf);
-            }
+            var text = $"{this.FilePathList.Length} files selected";
+            g.DrawString(text, new Font(
+                this.Font.FontFamily, (int)(this.Font.Size * 1.5)), this.foreColorBrush, rect, this.stringFormat);
         }
 
         private void DrawErrorMessage(Graphics g, Rectangle rect)
         {
-            using (var sb = new SolidBrush(this.ForeColor))
-            using (var sf = new StringFormat())
-            {
-                sf.Alignment = StringAlignment.Center;
-                sf.LineAlignment = StringAlignment.Center;
-                sf.Trimming = StringTrimming.EllipsisCharacter;
-                var text = $"Failed to load file";
-                g.DrawString(text, new Font(this.Font.FontFamily, (int)(this.Font.Size * 1.5)), sb, rect, sf);
-            }
+            var text = $"Failed to load file";
+            g.DrawString(text, new Font(
+                this.Font.FontFamily, (int)(this.Font.Size * 1.5)), this.foreColorBrush, rect, this.stringFormat);
         }
 
         private void GetFileInfoJob_Callback(FileDeepInfoGetResult result)
