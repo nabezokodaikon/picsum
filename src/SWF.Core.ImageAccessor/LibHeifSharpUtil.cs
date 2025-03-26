@@ -34,7 +34,7 @@ namespace SWF.Core.ImageAccessor
             IgnoreTransformations = false,
         };
 
-        public static Size GetImageSize(FileStream fs)
+        public static Size GetImageSize(Stream fs)
         {
             ArgumentNullException.ThrowIfNull(fs, nameof(fs));
 

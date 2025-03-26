@@ -37,7 +37,7 @@ namespace SWF.Core.ImageAccessor
             SkipMetadata = true,
         };
 
-        public static System.Drawing.Size GetImageSize(FileStream fs)
+        public static System.Drawing.Size GetImageSize(Stream fs)
         {
             ArgumentNullException.ThrowIfNull(fs, nameof(fs));
 
