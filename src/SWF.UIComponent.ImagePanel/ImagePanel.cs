@@ -23,6 +23,9 @@ namespace SWF.UIComponent.ImagePanel
 
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
+        private static readonly SolidBrush THUMBNAIL_FILTER_BRUSH
+            = new(Color.FromArgb(128, 0, 0, 0));
+
         public event EventHandler<MouseEventArgs> ImageMouseClick;
         public event EventHandler<MouseEventArgs> ImageMouseDoubleClick;
         public event EventHandler DragStart;
@@ -45,7 +48,6 @@ namespace SWF.UIComponent.ImagePanel
         private Point moveFromPoint = Point.Empty;
         private bool isError = false;
 
-        private readonly SolidBrush thumbnailFilterBrush = new(Color.FromArgb(128, 0, 0, 0));
         private readonly StringFormat stringFormat = new()
         {
             Alignment = StringAlignment.Center,
@@ -660,7 +662,7 @@ namespace SWF.UIComponent.ImagePanel
                 new Size((int)thumbRect.Size.Width, (int)thumbRect.Height)))
             {
                 g.DrawImage(thumbnail, thumbRect);
-                g.FillRectangle(this.thumbnailFilterBrush, thumbRect);
+                g.FillRectangle(THUMBNAIL_FILTER_BRUSH, thumbRect);
 
                 var srcRect = this.GetImageSrcRectangle();
                 var viewRect = this.GetThumbnailViewRectangle(thumbRect, srcRect);
