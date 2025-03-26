@@ -23,6 +23,7 @@ namespace SWF.UIComponent.Core
         private int maximumValue = 100;
         private int minimumValue = 0;
         private int sliderValue = 0;
+        private bool isValueChanging = false;
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public int MaximumValue
@@ -258,6 +259,7 @@ namespace SWF.UIComponent.Core
                     if (value != this.sliderValue)
                     {
                         this.sliderValue = value;
+                        this.isValueChanging = true;
                         this.OnValueChanging(EventArgs.Empty);
                     }
                 }
@@ -278,7 +280,14 @@ namespace SWF.UIComponent.Core
                 this.SetButtonPointX(this.sliderValue);
                 this.Invalidate();
                 this.Update();
-                this.OnValueChanged(EventArgs.Empty);
+                if (this.isValueChanging)
+                {
+                    this.isValueChanging = false;
+                }
+                else
+                {
+                    this.OnValueChanged(EventArgs.Empty);
+                }
             }
 
             base.OnMouseUp(e);
@@ -304,6 +313,7 @@ namespace SWF.UIComponent.Core
                     if (value != this.sliderValue)
                     {
                         this.sliderValue = value;
+                        this.isValueChanging = true;
                         this.OnValueChanging(EventArgs.Empty);
                     }
                 }
