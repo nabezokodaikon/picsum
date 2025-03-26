@@ -45,10 +45,9 @@ namespace PicSum.Main.UIComponent
 
         public BrowserForm()
         {
-            this.AutoScaleMode = AutoScaleMode.Dpi;
-
             this.SuspendLayout();
 
+            this.AutoScaleMode = AutoScaleMode.Dpi;
             this.Icon = ResourceFiles.ApplicationIcon.Value;
             this.Text = "PicSum";
             this.StartPosition = FormStartPosition.Manual;

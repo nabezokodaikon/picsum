@@ -28,8 +28,6 @@ namespace PicSum.Main.UIComponent
 
         public InitialForm()
         {
-            this.AutoScaleMode = AutoScaleMode.Dpi;
-
             this.browserManager.BrowserNothing += new(this.BrowserManager_BrowserNothing);
         }
 
