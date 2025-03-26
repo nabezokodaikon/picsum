@@ -36,7 +36,7 @@ namespace SWF.Core.ImageAccessor
 
         public static MagickFormat DetectFormat(string filePath)
         {
-            using (TimeMeasuring.Run(true, "MagickUtil.DetectFormatFromFilePath"))
+            using (TimeMeasuring.Run(false, "MagickUtil.DetectFormatFromFilePath"))
             {
                 var info = new MagickImageInfo(filePath);
                 return info.Format;
@@ -45,7 +45,7 @@ namespace SWF.Core.ImageAccessor
 
         public static MagickFormat DetectFormat(Stream fs)
         {
-            using (TimeMeasuring.Run(true, "MagickUtil.DetectFormatFromStream"))
+            using (TimeMeasuring.Run(false, "MagickUtil.DetectFormatFromStream"))
             {
                 var info = new MagickImageInfo(fs);
                 return info.Format;

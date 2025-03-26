@@ -258,7 +258,7 @@ namespace SWF.Core.ImageAccessor
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
-            using (TimeMeasuring.Run(true, "ImageUtil.ReadImageFile"))
+            using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFile"))
             {
                 try
                 {
@@ -283,7 +283,7 @@ namespace SWF.Core.ImageAccessor
                 {
                     if (FileUtil.IsIconFile(filePath))
                     {
-                        using (TimeMeasuring.Run(true, "ImageUtil.ReadImageFileFromFileStream: Icon"))
+                        using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFileFromFileStream: Icon"))
                         using (var icon = new Icon(fs))
                         {
                             return ConvertIfGrayscale(icon.ToBitmap(), fs);
@@ -291,7 +291,7 @@ namespace SWF.Core.ImageAccessor
                     }
                     else if (FileUtil.IsSvgFile(filePath))
                     {
-                        using (TimeMeasuring.Run(true, "ImageUtil.ReadImageFileFromFileStream: Svg"))
+                        using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFileFromFileStream: Svg"))
                         {
                             return MagickUtil.ReadImageFile(fs);
                         }
@@ -300,35 +300,35 @@ namespace SWF.Core.ImageAccessor
                     var formatName = SixLaborsUtil.DetectFormat(fs);
                     if (FileUtil.IsAvifFile(formatName))
                     {
-                        using (TimeMeasuring.Run(true, "ImageUtil.ReadImageFileFromFileStream: Avif"))
+                        using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFileFromFileStream: Avif"))
                         {
                             return ConvertIfGrayscale(SixLaborsUtil.ReadImageFile(fs), fs);
                         }
                     }
                     else if (FileUtil.IsBmpFile(formatName))
                     {
-                        using (TimeMeasuring.Run(true, "ImageUtil.ReadImageFileFromFileStream: Bmp"))
+                        using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFileFromFileStream: Bmp"))
                         {
                             return ConvertIfGrayscale((Bitmap)Bitmap.FromStream(fs, false, true), fs);
                         }
                     }
                     else if (FileUtil.IsGifFile(formatName))
                     {
-                        using (TimeMeasuring.Run(true, "ImageUtil.ReadImageFileFromFileStream: Gif"))
+                        using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFileFromFileStream: Gif"))
                         {
                             return ConvertIfGrayscale((Bitmap)Bitmap.FromStream(fs, false, true), fs);
                         }
                     }
                     else if (FileUtil.IsHeifFile(formatName))
                     {
-                        using (TimeMeasuring.Run(true, "ImageUtil.ReadImageFileFromFileStream: Heif"))
+                        using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFileFromFileStream: Heif"))
                         {
                             return ConvertIfGrayscale(MagickUtil.ReadImageFile(fs), fs);
                         }
                     }
                     else if (FileUtil.IsJpegFile(formatName))
                     {
-                        using (TimeMeasuring.Run(true, "ImageUtil.ReadImageFileFromFileStream: Jpeg"))
+                        using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFileFromFileStream: Jpeg"))
                         {
                             var bmp = ConvertIfGrayscale(OpenCVUtil.ReadImageFile(fs), fs);
                             return LoadBitmapCorrectOrientation(bmp);
@@ -336,14 +336,14 @@ namespace SWF.Core.ImageAccessor
                     }
                     else if (FileUtil.IsPngFile(formatName))
                     {
-                        using (TimeMeasuring.Run(true, "ImageUtil.ReadImageFileFromFileStream: Png"))
+                        using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFileFromFileStream: Png"))
                         {
                             return ConvertIfGrayscale((Bitmap)Bitmap.FromStream(fs, false, true), fs);
                         }
                     }
                     else if (FileUtil.IsWebpFile(formatName))
                     {
-                        using (TimeMeasuring.Run(true, "ImageUtil.ReadImageFileFromFileStream: Webp"))
+                        using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFileFromFileStream: Webp"))
                         {
                             return ConvertIfGrayscale(OpenCVUtil.ReadImageFile(fs), fs);
                         }
@@ -426,52 +426,52 @@ namespace SWF.Core.ImageAccessor
                 switch (format)
                 {
                     case ImageMagick.MagickFormat.Avif:
-                        using (TimeMeasuring.Run(true, "ImageUtil.ReadImageFileFromFilePath: Avif"))
+                        using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFileFromFilePath: Avif"))
                         {
                             return MagickUtil.ReadImageFile(filePath);
                         }
                     case ImageMagick.MagickFormat.Bmp:
-                        using (TimeMeasuring.Run(true, "ImageUtil.ReadImageFileFromFilePath: Bmp"))
+                        using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFileFromFilePath: Bmp"))
                         {
                             return MagickUtil.ReadImageFile(filePath);
                         }
                     case ImageMagick.MagickFormat.Gif:
-                        using (TimeMeasuring.Run(true, "ImageUtil.ReadImageFileFromFilePath: Gif"))
+                        using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFileFromFilePath: Gif"))
                         {
                             return MagickUtil.ReadImageFile(filePath);
                         }
                     case ImageMagick.MagickFormat.Heic:
-                        using (TimeMeasuring.Run(true, "ImageUtil.ReadImageFileFromFilePath: Heic"))
+                        using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFileFromFilePath: Heic"))
                         {
                             return MagickUtil.ReadImageFile(filePath);
                         }
                     case ImageMagick.MagickFormat.Heif:
-                        using (TimeMeasuring.Run(true, "ImageUtil.ReadImageFileFromFilePath: Heif"))
+                        using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFileFromFilePath: Heif"))
                         {
                             return MagickUtil.ReadImageFile(filePath);
                         }
                     case ImageMagick.MagickFormat.Icon:
-                        using (TimeMeasuring.Run(true, "ImageUtil.ReadImageFileFromFilePath: Icon"))
+                        using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFileFromFilePath: Icon"))
                         {
                             return MagickUtil.ReadImageFile(filePath);
                         }
                     case ImageMagick.MagickFormat.Jpeg:
-                        using (TimeMeasuring.Run(true, "ImageUtil.ReadImageFileFromFilePath: Jpeg"))
+                        using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFileFromFilePath: Jpeg"))
                         {
                             return MagickUtil.ReadImageFile(filePath);
                         }
                     case ImageMagick.MagickFormat.Png:
-                        using (TimeMeasuring.Run(true, "ImageUtil.ReadImageFileFromFilePath: Png"))
+                        using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFileFromFilePath: Png"))
                         {
                             return MagickUtil.ReadImageFile(filePath);
                         }
                     case ImageMagick.MagickFormat.Svg:
-                        using (TimeMeasuring.Run(true, "ImageUtil.ReadImageFileFromFilePath: Svg"))
+                        using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFileFromFilePath: Svg"))
                         {
                             return MagickUtil.ReadImageFile(filePath);
                         }
                     case ImageMagick.MagickFormat.WebP:
-                        using (TimeMeasuring.Run(true, "ImageUtil.ReadImageFileFromFilePath: WebP"))
+                        using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFileFromFilePath: WebP"))
                         {
                             return MagickUtil.ReadImageFile(filePath);
                         }

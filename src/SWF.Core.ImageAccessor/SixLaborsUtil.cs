@@ -47,7 +47,7 @@ namespace SWF.Core.ImageAccessor
 
         public static string DetectFormat(Stream fs)
         {
-            using (TimeMeasuring.Run(true, "SixLaborsUtil.DetectFormat"))
+            using (TimeMeasuring.Run(false, "SixLaborsUtil.DetectFormat"))
             {
                 var format = SixLabors.ImageSharp.Image.DetectFormat(DECODER_OPTIONS, fs);
                 return $".{format.Name.ToUpperInvariant()}";
