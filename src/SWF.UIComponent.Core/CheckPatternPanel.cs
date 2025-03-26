@@ -7,7 +7,7 @@ namespace SWF.UIComponent.Core
     public partial class CheckPatternPanel : Panel
     {
         private const int RECTANGLE_SIZE = 24;
-        private static readonly SolidBrush BRUSH_A = new(Color.FromArgb(32, 32, 32));
+        private static readonly SolidBrush BRUSH_A = new(Color.FromArgb(48, 48, 48));
         private static readonly SolidBrush BRUSH_B = new(Color.FromArgb(24, 24, 24));
 
         public CheckPatternPanel()
