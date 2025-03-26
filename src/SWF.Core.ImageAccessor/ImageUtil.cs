@@ -86,22 +86,62 @@ namespace SWF.Core.ImageAccessor
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
+            if (!FileUtil.IsImageFile(filePath))
+            {
+                throw new ArgumentException(
+                    $"未対応の画像ファイルが指定されました。'{filePath}'", nameof(filePath));
+            }
+
             using (TimeMeasuring.Run(false, "ImageUtil.GetImageSize"))
             {
                 try
                 {
+                    if (FileUtil.IsIconFile(filePath))
+                    {
+                        return GetImageSizeFromShell(filePath);
+                    }
+                    else if (FileUtil.IsSvgFile(filePath))
+                    {
+                        return GetImageSizeFromShell(filePath);
+                    }
+                    else
+                    {
+                        return GetImageSizeFromStream(filePath);
+                    }
+                }
+                catch (ImageUtilException ex)
+                {
+                    Logger.Error(ex);
+                    using (var bmp = ReadImageFile(filePath))
+                    {
+                        return bmp.Size;
+                    }
+                }
+            }
+        }
+
+        private static Size GetImageSizeFromStream(string filePath)
+        {
+            using (TimeMeasuring.Run(true, "ImageUtil.GetImageSizeFromStream"))
+            {
+                try
+                {
                     using (var fs = new FileStream(filePath,
-                        FileMode.Open, FileAccess.Read, FileShare.Read, 64, FileOptions.SequentialScan))
+                         FileMode.Open, FileAccess.Read, FileShare.Read, 64, FileOptions.SequentialScan))
                     {
                         var formatName = SixLaborsUtil.DetectFormat(fs);
 
-                        if (FileUtil.IsWebpFile(formatName))
-                        {
-                            return SixLaborsUtil.GetImageSize(fs);
-                        }
                         if (FileUtil.IsAvifFile(formatName))
                         {
                             return LibHeifSharpUtil.GetImageSize(fs);
+                        }
+                        else if (FileUtil.IsBmpFile(formatName))
+                        {
+                            var size = GetBmpSize(fs);
+                            if (size != EMPTY_SIZE)
+                            {
+                                return size;
+                            }
                         }
                         else if (FileUtil.IsHeifFile(formatName))
                         {
@@ -123,14 +163,12 @@ namespace SWF.Core.ImageAccessor
                                 return size;
                             }
                         }
-                        else if (FileUtil.IsBmpFile(formatName))
+                        else if (FileUtil.IsWebpFile(formatName))
                         {
-                            var size = GetBmpSize(fs);
-                            if (size != EMPTY_SIZE)
-                            {
-                                return size;
-                            }
+                            return SixLaborsUtil.GetImageSize(fs);
                         }
+
+                        return EMPTY_SIZE;
                     }
                 }
                 catch (ArgumentNullException ex)
@@ -189,67 +227,62 @@ namespace SWF.Core.ImageAccessor
                 {
                     throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
                 }
+            }
+        }
 
-                if (FileUtil.IsImageFile(filePath))
+        private static Size GetImageSizeFromShell(string filePath)
+        {
+            using (TimeMeasuring.Run(true, "ImageUtil.GetImageSizeFromShell"))
+            {
+                IShellApplication? shell = null;
+                try
                 {
-                    IShellApplication? shell = null;
-                    try
+                    shell = GetSell();
+                    var directory = shell.NameSpace(FileUtil.GetParentDirectoryPath(filePath));
+                    var item = directory.ParseName(Path.GetFileName(filePath));
+                    var details = directory.GetDetailsOf(item, 31);
+                    if (string.IsNullOrWhiteSpace(details))
                     {
-                        shell = GetSell();
-                        var directory = shell.NameSpace(FileUtil.GetParentDirectoryPath(filePath));
-                        var item = directory.ParseName(Path.GetFileName(filePath));
-                        var details = directory.GetDetailsOf(item, 31);
-                        if (string.IsNullOrWhiteSpace(details))
-                        {
-                            throw new ImageUtilException(CreateFileAccessErrorMessage(filePath));
-                        }
-
-                        var v = details.Split(('x'));
-                        if (v.Length != 2)
-                        {
-                            throw new ImageUtilException(CreateFileAccessErrorMessage(filePath));
-                        }
-
-                        var wText = v[0];
-                        var hText = v[1];
-
-                        if (!int.TryParse(wText.Substring(1).Trim(), out int w))
-                        {
-                            throw new ImageUtilException(CreateFileAccessErrorMessage(filePath));
-                        }
-
-                        if (!int.TryParse(hText.Substring(0, hText.Length - 1).Trim(), out int h))
-                        {
-                            throw new ImageUtilException(CreateFileAccessErrorMessage(filePath));
-                        }
-
-                        if (w < 1 || h < 1)
-                        {
-                            throw new ImageUtilException(CreateFileAccessErrorMessage(filePath));
-                        }
-
-                        return new Size(w, h);
+                        throw new ImageUtilException(CreateFileAccessErrorMessage(filePath));
                     }
-                    catch (COMException)
+
+                    var v = details.Split(('x'));
+                    if (v.Length != 2)
                     {
-                        using (var bmp = ReadImageFile(filePath))
-                        {
-                            return bmp.Size;
-                        }
+                        throw new ImageUtilException(CreateFileAccessErrorMessage(filePath));
                     }
-                    finally
+
+                    var wText = v[0];
+                    var hText = v[1];
+
+                    if (!int.TryParse(wText.Substring(1).Trim(), out int w))
                     {
-                        if (shell != null)
-                        {
-                            Marshal.ReleaseComObject(shell);
-                            shell = null;
-                        }
+                        throw new ImageUtilException(CreateFileAccessErrorMessage(filePath));
                     }
+
+                    if (!int.TryParse(hText.Substring(0, hText.Length - 1).Trim(), out int h))
+                    {
+                        throw new ImageUtilException(CreateFileAccessErrorMessage(filePath));
+                    }
+
+                    if (w < 1 || h < 1)
+                    {
+                        throw new ImageUtilException(CreateFileAccessErrorMessage(filePath));
+                    }
+
+                    return new Size(w, h);
                 }
-                else
+                catch (COMException ex)
                 {
-                    throw new ArgumentException(
-                        $"画像ファイル以外のファイルが指定されました。'{filePath}'", nameof(filePath));
+                    throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
+                }
+                finally
+                {
+                    if (shell != null)
+                    {
+                        Marshal.ReleaseComObject(shell);
+                        shell = null;
+                    }
                 }
             }
         }
@@ -258,7 +291,13 @@ namespace SWF.Core.ImageAccessor
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
-            using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFile"))
+            if (!FileUtil.IsImageFile(filePath))
+            {
+                throw new ArgumentException(
+                    $"未対応の画像ファイルが指定されました。'{filePath}'", nameof(filePath));
+            }
+
+            using (TimeMeasuring.Run(true, "ImageUtil.ReadImageFile"))
             {
                 try
                 {
@@ -274,8 +313,6 @@ namespace SWF.Core.ImageAccessor
 
         private static Bitmap ReadImageFileFromFileStream(string filePath)
         {
-            ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
-
             try
             {
                 using (var fs = new FileStream(filePath,
@@ -350,7 +387,8 @@ namespace SWF.Core.ImageAccessor
                     }
                     else
                     {
-                        throw new ImageUtilException(CreateFileAccessErrorMessage(filePath));
+                        throw new ArgumentException(
+                            $"未対応の画像ファイルが指定されました。'{filePath}'", nameof(filePath));
                     }
                 }
             }
@@ -418,8 +456,6 @@ namespace SWF.Core.ImageAccessor
 
         private static Bitmap ReadImageFileFromFilePath(string filePath)
         {
-            ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
-
             try
             {
                 var format = MagickUtil.DetectFormat(filePath);
@@ -476,10 +512,15 @@ namespace SWF.Core.ImageAccessor
                             return MagickUtil.ReadImageFile(filePath);
                         }
                     default:
-                        throw new ImageUtilException(CreateFileAccessErrorMessage(filePath));
+                        throw new ArgumentException(
+                            $"未対応の画像ファイルが指定されました。'{filePath}'", nameof(filePath));
                 }
             }
             catch (ImageMagick.MagickException ex)
+            {
+                throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
+            }
+            catch (ArgumentException ex)
             {
                 throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
             }
@@ -616,7 +657,7 @@ namespace SWF.Core.ImageAccessor
             return EMPTY_SIZE;
         }
 
-        private static Size GetPngSize(FileStream fs)
+        private static Size GetPngSize(Stream fs)
         {
             using (var reader = new BinaryReader(fs))
             {
@@ -662,7 +703,7 @@ namespace SWF.Core.ImageAccessor
             return BitConverter.ToInt32(bytes, 0);
         }
 
-        private static Size GetBmpSize(FileStream fs)
+        private static Size GetBmpSize(Stream fs)
         {
             using (var reader = new BinaryReader(fs))
             {
