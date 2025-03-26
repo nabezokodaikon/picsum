@@ -10,15 +10,15 @@ namespace SWF.UIComponent.WideDropDown
     public sealed partial class ArrowPictureBox
         : PictureBox
     {
-        private readonly SolidBrush defaultBrush = new(Color.White);
+        private static readonly SolidBrush DEFAULT_BRUSH = new(Color.White);
 
-        private readonly SolidBrush enterBrush = new(Color.FromArgb(
+        private static readonly SolidBrush ENTER_BRUSH = new(Color.FromArgb(
             SystemColors.Highlight.A / 8,
             SystemColors.Highlight.R,
             SystemColors.Highlight.G,
             SystemColors.Highlight.B));
 
-        private readonly SolidBrush selectedBrush = new(Color.FromArgb(
+        private static readonly SolidBrush SELECTED_BRUSH = new(Color.FromArgb(
             SystemColors.Highlight.A / 4,
             SystemColors.Highlight.R,
             SystemColors.Highlight.G,
@@ -93,15 +93,15 @@ namespace SWF.UIComponent.WideDropDown
         {
             if (this.isSelected)
             {
-                return this.selectedBrush;
+                return SELECTED_BRUSH;
             }
             else if (this.isMouseEnter)
             {
-                return this.enterBrush;
+                return ENTER_BRUSH;
             }
             else
             {
-                return this.defaultBrush;
+                return DEFAULT_BRUSH;
             }
         }
     }
