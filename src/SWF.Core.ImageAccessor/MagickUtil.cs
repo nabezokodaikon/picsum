@@ -15,6 +15,14 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
+        public static Bitmap ReadImageFile(string filePath)
+        {
+            using (var image = new MagickImage(filePath))
+            {
+                return image.ToBitmap();
+            }
+        }
+
         public static void SaveFile(
             string srcFilePath, string destFilePath, MagickFormat format, uint quality)
         {
@@ -26,9 +34,18 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
+        public static MagickFormat DetectFormat(string filePath)
+        {
+            using (TimeMeasuring.Run(true, "MagickUtil.DetectFormatFromFilePath"))
+            {
+                var info = new MagickImageInfo(filePath);
+                return info.Format;
+            }
+        }
+
         public static MagickFormat DetectFormat(Stream fs)
         {
-            using (TimeMeasuring.Run(false, "MagickUtil.DetectFormat"))
+            using (TimeMeasuring.Run(true, "MagickUtil.DetectFormatFromStream"))
             {
                 var info = new MagickImageInfo(fs);
                 return info.Format;
