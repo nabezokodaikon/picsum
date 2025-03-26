@@ -82,6 +82,17 @@ namespace PicSum.Main.UIComponent
 
             if (!this.DesignMode)
             {
+                this.previewPageHistoryButton.Image = ResourceFiles.GoBackIcon.Value;
+                this.nextPageHistoryButton.Image = ResourceFiles.GoNextIcon.Value;
+                this.reloadToolButton.Image = ResourceFiles.ReloadIcon.Value;
+                this.showInfoToolButton.Image = ResourceFiles.InfoIcon.Value;
+
+                this.homeToolButton.Image = ResourceFiles.HomeIcon.Value;
+                this.tagDropToolButton.Image = ResourceFiles.TagIcon.Value;
+                this.tagDropToolButton.Icon = ResourceFiles.TagIcon.Value;
+                this.searchRatingToolButton.Image = ResourceFiles.RatingIcon.Value;
+                this.searchBookmarkToolButton.Image = ResourceFiles.BookmarkIcon.Value;
+
                 this.pageContainer.SetBounds(
                     this.toolPanel2.Right,
                     this.toolPanel.Bottom,

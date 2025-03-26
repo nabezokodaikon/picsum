@@ -99,7 +99,6 @@ namespace PicSum.Main.UIComponent
             // 
             // reloadToolButton
             // 
-            this.reloadToolButton.Image = (Image)resources.GetObject("reloadToolButton.Image");
             this.reloadToolButton.Location = new Point(73, 3);
             this.reloadToolButton.Margin = new Padding(0, 3, 3, 3);
             this.reloadToolButton.Name = "reloadToolButton";
@@ -109,7 +108,6 @@ namespace PicSum.Main.UIComponent
             // nextPageHistoryButton
             // 
             this.nextPageHistoryButton.Enabled = false;
-            this.nextPageHistoryButton.Image = (Image)resources.GetObject("nextPageHistoryButton.Image");
             this.nextPageHistoryButton.Location = new Point(38, 3);
             this.nextPageHistoryButton.Margin = new Padding(0, 3, 3, 3);
             this.nextPageHistoryButton.Name = "nextPageHistoryButton";
@@ -119,7 +117,6 @@ namespace PicSum.Main.UIComponent
             // previewPageHistoryButton
             // 
             this.previewPageHistoryButton.Enabled = false;
-            this.previewPageHistoryButton.Image = (Image)resources.GetObject("previewPageHistoryButton.Image");
             this.previewPageHistoryButton.Location = new Point(3, 3);
             this.previewPageHistoryButton.Name = "previewPageHistoryButton";
             this.previewPageHistoryButton.Size = new Size(32, 28);
@@ -128,7 +125,6 @@ namespace PicSum.Main.UIComponent
             // showInfoToolButton
             // 
             this.showInfoToolButton.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            this.showInfoToolButton.Image = (Image)resources.GetObject("showInfoToolButton.Image");
             this.showInfoToolButton.Location = new Point(712, 3);
             this.showInfoToolButton.Margin = new Padding(0, 3, 3, 3);
             this.showInfoToolButton.Name = "showInfoToolButton";
@@ -148,7 +144,6 @@ namespace PicSum.Main.UIComponent
             // 
             // searchBookmarkToolButton
             // 
-            this.searchBookmarkToolButton.Image = (Image)resources.GetObject("searchBookmarkToolButton.Image");
             this.searchBookmarkToolButton.Location = new Point(3, 98);
             this.searchBookmarkToolButton.Margin = new Padding(3, 0, 3, 3);
             this.searchBookmarkToolButton.Name = "searchBookmarkToolButton";
@@ -157,8 +152,6 @@ namespace PicSum.Main.UIComponent
             // 
             // tagDropToolButton
             // 
-            this.tagDropToolButton.Image = (Image)resources.GetObject("tagDropToolButton.Image");
-            this.tagDropToolButton.Icon = (Image)resources.GetObject("tagDropToolButton.Icon");
             this.tagDropToolButton.Location = new Point(3, 36);
             this.tagDropToolButton.Margin = new Padding(3, 0, 3, 3);
             this.tagDropToolButton.Name = "tagDropToolButton";
@@ -168,7 +161,6 @@ namespace PicSum.Main.UIComponent
             // 
             // homeToolButton
             // 
-            this.homeToolButton.Image = (Image)resources.GetObject("homeToolButton.Image");
             this.homeToolButton.Location = new Point(3, 5);
             this.homeToolButton.Name = "homeToolButton";
             this.homeToolButton.Size = new Size(32, 28);
@@ -176,7 +168,6 @@ namespace PicSum.Main.UIComponent
             // 
             // searchRatingToolButton
             // 
-            this.searchRatingToolButton.Image = (Image)resources.GetObject("searchRatingToolButton.Image");
             this.searchRatingToolButton.Location = new Point(3, 67);
             this.searchRatingToolButton.Margin = new Padding(3, 0, 3, 3);
             this.searchRatingToolButton.Name = "searchRatingToolButton";
