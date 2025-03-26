@@ -216,7 +216,7 @@ namespace SWF.UIComponent.FlowList
         {
             get
             {
-                return this.itemTextColor;
+                return ITEM_TEXT_COLOR;
             }
         }
 
@@ -228,7 +228,7 @@ namespace SWF.UIComponent.FlowList
         {
             get
             {
-                return this.selectedItemColor;
+                return SELECTED_ITEM_COLOR;
             }
         }
 
@@ -240,7 +240,7 @@ namespace SWF.UIComponent.FlowList
         {
             get
             {
-                return this.focusItemColor;
+                return FOCUS_ITEM_COLOR;
             }
         }
 
@@ -252,7 +252,7 @@ namespace SWF.UIComponent.FlowList
         {
             get
             {
-                return this.mousePointItemColor;
+                return MOUSE_POINT_ITEM_COLOR;
             }
         }
 
@@ -264,7 +264,7 @@ namespace SWF.UIComponent.FlowList
         {
             get
             {
-                return this.rectangleSelectionColor;
+                return RECTANGLE_SELECTION_COLOR;
             }
         }
 
@@ -341,8 +341,7 @@ namespace SWF.UIComponent.FlowList
         {
             get
             {
-                this.itemTextBrush ??= new SolidBrush(this.itemTextColor);
-                return this.itemTextBrush;
+                return ITEM_TEXT_BRUSH;
             }
         }
 
@@ -351,8 +350,7 @@ namespace SWF.UIComponent.FlowList
         {
             get
             {
-                this.selectedItemBrush ??= new SolidBrush(this.selectedItemColor);
-                return this.selectedItemBrush;
+                return SELECTED_ITEM_BRUSH;
             }
         }
 
@@ -361,13 +359,7 @@ namespace SWF.UIComponent.FlowList
         {
             get
             {
-                this.selectedItemPen ??= new Pen(Color.FromArgb(
-                    255,
-                    this.selectedItemColor.R,
-                    this.selectedItemColor.G,
-                    this.selectedItemColor.B),
-                    2);
-                return this.selectedItemPen;
+                return SELECTED_ITEM_PEN;
             }
         }
 
@@ -376,8 +368,7 @@ namespace SWF.UIComponent.FlowList
         {
             get
             {
-                this.foucusItemBrush ??= new SolidBrush(this.focusItemColor);
-                return this.foucusItemBrush;
+                return FOUCUS_ITEM_BRUSH;
             }
         }
 
@@ -386,12 +377,12 @@ namespace SWF.UIComponent.FlowList
         {
             get
             {
-                this.mousePointItemBrush ??= new SolidBrush(this.mousePointItemColor);
-                return this.mousePointItemBrush;
+                return MOUSE_POINT_ITEM_BRUSH;
             }
         }
 
         [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public StringFormat ItemTextFormat
         {
             get
@@ -404,6 +395,10 @@ namespace SWF.UIComponent.FlowList
                     FormatFlags = this.itemTextFormatFlags
                 };
                 return this.itemTextFormat;
+            }
+            set
+            {
+                this.itemTextFormat = value;
             }
         }
 

@@ -14,12 +14,64 @@ namespace SWF.UIComponent.FlowList
     public sealed partial class FlowList
         : UserControl
     {
-
         // 項目最小サイズ
         public const int MINIMUM_ITEM_SIZE = 16;
 
         // 項目最大サイズ
         public const int MAXIMUM_ITEM_SIZE = 512;
+
+        private static readonly Color ITEM_TEXT_COLOR = Color.FromArgb(
+            SystemColors.ControlText.A,
+            SystemColors.ControlText.R,
+            SystemColors.ControlText.G,
+            SystemColors.ControlText.B);
+
+        private static readonly Color SELECTED_ITEM_COLOR = Color.FromArgb(
+            SystemColors.Highlight.A / 8,
+            SystemColors.Highlight.R,
+            SystemColors.Highlight.G,
+            SystemColors.Highlight.B);
+
+        private static readonly Color FOCUS_ITEM_COLOR = Color.FromArgb(
+            SystemColors.Highlight.A / 8,
+            SystemColors.Highlight.R,
+            SystemColors.Highlight.G,
+            SystemColors.Highlight.B);
+
+        private static readonly Color MOUSE_POINT_ITEM_COLOR = Color.FromArgb(
+            SystemColors.Highlight.A / 8,
+            SystemColors.Highlight.R,
+            SystemColors.Highlight.G,
+            SystemColors.Highlight.B);
+
+        private static readonly Color RECTANGLE_SELECTION_COLOR = Color.FromArgb(
+            SystemColors.Highlight.A / 4,
+            SystemColors.Highlight.R,
+            SystemColors.Highlight.G,
+            SystemColors.Highlight.B);
+
+        private static readonly SolidBrush ITEM_TEXT_BRUSH = new SolidBrush(ITEM_TEXT_COLOR);
+        private static readonly SolidBrush SELECTED_ITEM_BRUSH = new SolidBrush(SELECTED_ITEM_COLOR);
+        private static readonly Pen SELECTED_ITEM_PEN = new(Color.FromArgb(
+            255,
+            SELECTED_ITEM_COLOR.R,
+            SELECTED_ITEM_COLOR.G,
+            SELECTED_ITEM_COLOR.B),
+            2);
+        private static readonly SolidBrush FOUCUS_ITEM_BRUSH = new SolidBrush(FOCUS_ITEM_COLOR);
+        private static readonly SolidBrush MOUSE_POINT_ITEM_BRUSH = new SolidBrush(MOUSE_POINT_ITEM_COLOR);
+        private static readonly SolidBrush RECTANGLE_SELECTION_BRUSH = new(RECTANGLE_SELECTION_COLOR);
+        private static readonly Pen RECTANGLE_SELECTION_PEN = new(Color.FromArgb(
+            RECTANGLE_SELECTION_COLOR.A * 2,
+            RECTANGLE_SELECTION_COLOR.R,
+            RECTANGLE_SELECTION_COLOR.G,
+            RECTANGLE_SELECTION_COLOR.B));
+
+        private StringTrimming itemTextTrimming = StringTrimming.EllipsisCharacter;
+        private StringAlignment itemTextAlignment = StringAlignment.Center;
+        private StringAlignment itemTextLineAlignment = StringAlignment.Center;
+        private StringFormatFlags itemTextFormatFlags = 0;
+        private StringFormat itemTextFormat = null;
 
         // 描画フラグ
         private bool isDraw = true;
@@ -66,56 +118,11 @@ namespace SWF.UIComponent.FlowList
         // ドラッグフラグ
         private bool isDrag = false;
 
-        private readonly Color itemTextColor = Color.FromArgb(
-            SystemColors.ControlText.A,
-            SystemColors.ControlText.R,
-            SystemColors.ControlText.G,
-            SystemColors.ControlText.B);
-
-        private readonly Color selectedItemColor = Color.FromArgb(
-            SystemColors.Highlight.A / 8,
-            SystemColors.Highlight.R,
-            SystemColors.Highlight.G,
-            SystemColors.Highlight.B);
-
-        private readonly Color focusItemColor = Color.FromArgb(
-            SystemColors.Highlight.A / 8,
-            SystemColors.Highlight.R,
-            SystemColors.Highlight.G,
-            SystemColors.Highlight.B);
-
-        private readonly Color mousePointItemColor = Color.FromArgb(
-            SystemColors.Highlight.A / 8,
-            SystemColors.Highlight.R,
-            SystemColors.Highlight.G,
-            SystemColors.Highlight.B);
-
-        private readonly Color rectangleSelectionColor = Color.FromArgb(
-            SystemColors.Highlight.A / 4,
-            SystemColors.Highlight.R,
-            SystemColors.Highlight.G,
-            SystemColors.Highlight.B);
-
-        private StringTrimming itemTextTrimming = StringTrimming.EllipsisCharacter;
-        private StringAlignment itemTextAlignment = StringAlignment.Center;
-        private StringAlignment itemTextLineAlignment = StringAlignment.Center;
-        private StringFormatFlags itemTextFormatFlags = 0;
-
-        private SolidBrush itemTextBrush = null;
-        private SolidBrush selectedItemBrush = null;
-        private Pen selectedItemPen = null;
-        private SolidBrush foucusItemBrush = null;
-        private SolidBrush mousePointItemBrush = null;
-        private SolidBrush rectangleSelectionBrush = null;
-        private Pen rectangleSelectionPen = null;
-        private StringFormat itemTextFormat = null;
-
         private SolidBrush RectangleSelectionBrush
         {
             get
             {
-                this.rectangleSelectionBrush ??= new(this.rectangleSelectionColor);
-                return this.rectangleSelectionBrush;
+                return RECTANGLE_SELECTION_BRUSH;
             }
         }
 
@@ -123,12 +130,7 @@ namespace SWF.UIComponent.FlowList
         {
             get
             {
-                this.rectangleSelectionPen ??= new(Color.FromArgb(
-                    this.rectangleSelectionColor.A * 2,
-                    this.rectangleSelectionColor.R,
-                    this.rectangleSelectionColor.G,
-                    this.rectangleSelectionColor.B));
-                return this.rectangleSelectionPen;
+                return RECTANGLE_SELECTION_PEN;
             }
         }
 
