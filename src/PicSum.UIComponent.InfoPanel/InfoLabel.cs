@@ -9,12 +9,18 @@ namespace PicSum.UIComponent.InfoPanel
     internal partial class FileInfoLabel
         : Control
     {
-        private readonly Color textColor = Color.FromArgb(
+        private static readonly Color TEXT_COLOR = Color.FromArgb(
             SystemColors.ControlText.A,
             SystemColors.ControlText.R,
             SystemColors.ControlText.G,
             SystemColors.ControlText.B);
-        private SolidBrush textBrush = null;
+        private static readonly SolidBrush TEXT_BRUSH = new SolidBrush(TEXT_COLOR);
+        private static readonly StringFormat STRING_FORMAT = new()
+        {
+            Alignment = StringAlignment.Near,
+            LineAlignment = StringAlignment.Near,
+            Trimming = StringTrimming.EllipsisCharacter,
+        };
 
         private string fileName = string.Empty;
         private string timestamp = string.Empty;
@@ -85,8 +91,7 @@ namespace PicSum.UIComponent.InfoPanel
         {
             get
             {
-                this.textBrush ??= new SolidBrush(this.textColor);
-                return this.textBrush;
+                return TEXT_BRUSH;
             }
         }
 
@@ -106,11 +111,7 @@ namespace PicSum.UIComponent.InfoPanel
         {
             if (disposing)
             {
-                if (this.textBrush != null)
-                {
-                    this.textBrush.Dispose();
-                    this.textBrush = null;
-                }
+
             }
 
             base.Dispose(disposing);
@@ -129,15 +130,8 @@ namespace PicSum.UIComponent.InfoPanel
 
             if (!string.IsNullOrEmpty(this.FileName))
             {
-                using (var sf = new StringFormat())
-                {
-                    sf.Alignment = StringAlignment.Near;
-                    sf.LineAlignment = StringAlignment.Near;
-                    sf.Trimming = StringTrimming.EllipsisCharacter;
-                    e.Graphics.DrawString(
-                        this.FileName, this.Font, this.TextBrush, fileNameRect, sf);
-                }
-
+                e.Graphics.DrawString(
+                    this.FileName, this.Font, this.TextBrush, fileNameRect, STRING_FORMAT);
             }
 
             if (!string.IsNullOrEmpty(this.FileType))
