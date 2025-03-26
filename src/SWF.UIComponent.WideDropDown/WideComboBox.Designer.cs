@@ -41,7 +41,6 @@ namespace SWF.UIComponent.WideDropDown
             // 
             this.addButton.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
             this.addButton.Font = new Font("Yu Gothic UI", 7.8F);
-            this.addButton.Image = (Image)resources.GetObject("addButton.Image");
             this.addButton.Location = new Point(594, 0);
             this.addButton.Margin = new System.Windows.Forms.Padding(0);
             this.addButton.Name = "addButton";
@@ -67,7 +66,6 @@ namespace SWF.UIComponent.WideDropDown
             // arrowPictureBox
             // 
             this.arrowPictureBox.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
-            this.arrowPictureBox.Image = (Image)resources.GetObject("arrowPictureBox.Image");
             this.arrowPictureBox.Location = new Point(570, 1);
             this.arrowPictureBox.Margin = new System.Windows.Forms.Padding(0);
             this.arrowPictureBox.Name = "arrowPictureBox";

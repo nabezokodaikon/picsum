@@ -1,6 +1,8 @@
+using SWF.Core.Base;
 using System;
 using System.ComponentModel;
 using System.Drawing;
+using System.Resources;
 using System.Runtime.Versioning;
 using System.Windows.Forms;
 
@@ -39,6 +41,9 @@ namespace SWF.UIComponent.WideDropDown
                 ControlStyles.UserPaint,
                 true);
             this.UpdateStyles();
+
+            this.addButton.Image = ResourceFiles.TagIcon.Value;
+            this.arrowPictureBox.Image = ResourceFiles.SmallArrowDownIcon.Value;
 
             this.dropDownList.IsClickAndClose = true;
             this.dropDownList.Closed += this.DropDownList_Closed;
