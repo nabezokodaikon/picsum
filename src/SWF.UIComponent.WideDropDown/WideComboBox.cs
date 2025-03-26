@@ -2,7 +2,6 @@ using SWF.Core.Base;
 using System;
 using System.ComponentModel;
 using System.Drawing;
-using System.Resources;
 using System.Runtime.Versioning;
 using System.Windows.Forms;
 
