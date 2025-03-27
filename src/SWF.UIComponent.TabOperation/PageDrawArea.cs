@@ -7,7 +7,7 @@ namespace SWF.UIComponent.TabOperation
     public sealed class PageDrawArea
     {
         private static readonly SolidBrush OUTLINE_BRUSH = new(Color.FromArgb(128, 128, 128));
-        private static readonly SolidBrush INNER_BRUSH = new(Color.FromArgb(241, 244, 250));
+        private static readonly SolidBrush INNER_BRUSH = new(Color.FromArgb(250, 250, 250));
         private static readonly int TOP = 28;
 
         public void Draw(Graphics g)
