@@ -628,7 +628,7 @@ namespace SWF.UIComponent.TabOperation
 
             this.GetAddTabButtonDrawMethod()(e.Graphics);
 
-            this.pageDrawArea.Draw(e.Graphics);
+            this.pageDrawArea.Draw(e.Graphics, this.Handle);
 
             if (this.activeTab != null)
             {
