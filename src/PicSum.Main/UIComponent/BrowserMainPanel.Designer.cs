@@ -65,7 +65,6 @@ namespace PicSum.Main.UIComponent
             // 
             this.tabSwitch.AllowDrop = true;
             this.tabSwitch.BackColor = Color.Black;
-            this.tabSwitch.Dock = DockStyle.Fill;
             this.tabSwitch.Location = new Point(0, 0);
             this.tabSwitch.Name = "tabSwitch";
             this.tabSwitch.Size = new Size(746, 29);

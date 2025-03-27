@@ -141,6 +141,12 @@ namespace PicSum.Main.UIComponent
                 baseWidth,
                 this.Height);
 
+            this.tabSwitch.Anchor
+                = AnchorStyles.Top
+                | AnchorStyles.Bottom
+                | AnchorStyles.Left
+                | AnchorStyles.Right;
+
             this.toolPanel.SetBounds(
                 0,
                 (int)(TOOL_PANEL_DEFAULT_BOUNDS.Y * scale),
