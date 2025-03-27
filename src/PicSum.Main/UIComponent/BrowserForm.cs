@@ -47,7 +47,6 @@ namespace PicSum.Main.UIComponent
         {
             this.SuspendLayout();
 
-            this.AutoScaleMode = AutoScaleMode.Dpi;
             this.Icon = ResourceFiles.ApplicationIcon.Value;
             this.Text = "PicSum";
             this.StartPosition = FormStartPosition.Manual;
@@ -57,6 +56,7 @@ namespace PicSum.Main.UIComponent
 
             this.Size = BrowserConfig.Instance.WindowSize;
             this.WindowState = BrowserConfig.Instance.WindowState;
+            this.ScaleChanged += this.Form_ScaleChanged;
 
             if (BrowserForm.isStartUp)
             {
@@ -319,6 +319,11 @@ namespace PicSum.Main.UIComponent
         private void OnNewWindowPageOpen(BrowserPageOpenEventArgs e)
         {
             this.NewWindowPageOpen?.Invoke(this, e);
+        }
+
+        private void Form_ScaleChanged(object sender, ScaleChangedEventArgs e)
+        {
+
         }
 
         private void BrowserMainPanel_Close(object sender, EventArgs e)

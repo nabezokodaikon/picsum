@@ -240,6 +240,7 @@ namespace WinApi
         public const int WM_USER = 0x0400;
         public const int WM_REFLECT = 0x2000;
         public const int WM_APP = 0x8000;
+        public const int WM_DPICHANGED = 0x02E0;
 
         public static readonly IntPtr HWND_TOP = IntPtr.Zero;
         public const UInt32 SWP_NOSIZE = 0x0001;
@@ -665,6 +666,9 @@ namespace WinApi
             uint dwFlags,
             IntPtr hToken,
             out IntPtr pszPath);
+
+        [DllImport("User32.dll")]
+        public static extern uint GetDpiForWindow(IntPtr hWnd);
 
         public static int LoWord(int dwValue)
         {

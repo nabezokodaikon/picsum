@@ -21,14 +21,6 @@ namespace SWF.UIComponent.Form
         private static readonly Color ACTIVE_WINDOW_COLOR = Color.FromArgb(34, 38, 41);
         private static readonly Color DEACTIVATE_WINDOWCOLOR = Color.FromArgb(97, 99, 101);
 
-        private static readonly WinApiMembers.MARGINS GLASS_MARGINS = new()
-        {
-            cyTopHeight = TOP_OFFSET,
-            cxLeftWidth = 0,
-            cxRightWidth = 0,
-            cyBottomHeight = 0,
-        };
-
         private static Version GetWindowsVersion()
         {
             var osVersionInfo = new WinApiMembers.OSVERSIONINFOEX();
@@ -48,6 +40,17 @@ namespace SWF.UIComponent.Form
             }
         }
 
+        public event EventHandler<ScaleChangedEventArgs> ScaleChanged;
+
+        private readonly WinApiMembers.MARGINS glassMargins = new()
+        {
+            cyTopHeight = TOP_OFFSET,
+            cxLeftWidth = 0,
+            cxRightWidth = 0,
+            cyBottomHeight = 0,
+        };
+
+        private uint currentDpi = 0;
         private bool isInit = true;
         private Size initSize = Size.Empty;
         private FormWindowState initWindowState = FormWindowState.Normal;
@@ -110,6 +113,8 @@ namespace SWF.UIComponent.Form
 
         public GrassForm()
         {
+            this.AutoScaleMode = AutoScaleMode.Dpi;
+
             this.SetStyle(
                 ControlStyles.AllPaintingInWmPaint |
                 ControlStyles.ContainerControl |
@@ -151,6 +156,20 @@ namespace SWF.UIComponent.Form
                 nccsp.rgrc0.right -= 8;
                 nccsp.rgrc0.bottom -= 8;
                 Marshal.StructureToPtr(nccsp, m.LParam, false);
+            }
+            else if (m.Msg == WinApiMembers.WM_DPICHANGED)
+            {
+                var newDpi = WinApiMembers.GetDpiForWindow(this.Handle);
+                if (this.currentDpi == 0 || this.currentDpi != newDpi)
+                {
+                    this.currentDpi = newDpi;
+                    var scale = this.currentDpi / AppConstants.BASE_DPI;
+                    this.glassMargins.cyTopHeight = (int)(TOP_OFFSET * scale);
+                    WinApiMembers.DwmExtendFrameIntoClientArea(this.Handle, this.glassMargins);
+                    this.ScaleChanged?.Invoke(this, new ScaleChangedEventArgs(scale));
+                }
+
+                Console.WriteLine(this.currentDpi);
             }
             else
             {
@@ -236,7 +255,10 @@ namespace SWF.UIComponent.Form
 
         protected void SetGrass()
         {
-            WinApiMembers.DwmExtendFrameIntoClientArea(this.Handle, GLASS_MARGINS);
+            var dpi = WinApiMembers.GetDpiForWindow(this.Handle);
+            var scale = dpi / AppConstants.BASE_DPI;
+            this.glassMargins.cyTopHeight = (int)(TOP_OFFSET * scale);
+            WinApiMembers.DwmExtendFrameIntoClientArea(this.Handle, this.glassMargins);
         }
 
         protected void SetControlRegion()

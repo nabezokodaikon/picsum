@@ -13,6 +13,8 @@ namespace SWF.Core.Base
         /// </summary>
         public const string NUMBERING_SQL_PARAMETER_FORMAT = "{0}_{1}";
 
+        public const float BASE_DPI = 96f;
+
         /// <summary>
         /// 情報パネルの幅
         /// </summary>
