@@ -253,7 +253,10 @@ namespace PicSum.Main.UIComponent
                 throw new SWFException("メインコントロールは既に存在しています。");
             }
 
+            this.SuspendLayout();
+
             this.browserMainPanel = new BrowserMainPanel();
+            this.Controls.Add(this.browserMainPanel);
 
             var scale = AppConstants.GetCurrentWindowScale(this.Handle);
             var rect = this.CreateBrowserMainPanelBounds(scale);
@@ -270,8 +273,6 @@ namespace PicSum.Main.UIComponent
             this.browserMainPanel.NewWindowPageOpen += new(this.BrowserMainPanel_NewWindowPageOpen);
             this.browserMainPanel.TabDropouted += new(this.BrowserMainPanel_TabDropouted);
 
-            this.SuspendLayout();
-            this.Controls.Add(this.browserMainPanel);
             this.AttachResizeEvents(this);
             if (BrowserForm.isStartUp && CommandLineArgs.IsFilePath())
             {

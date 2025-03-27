@@ -122,8 +122,6 @@ namespace PicSum.Main.UIComponent
 
                 this.infoPanel.BringToFront();
                 this.pageContainer.BringToFront();
-
-                this.tabSwitch.TabsRightOffset = AppConstants.GetControlBoxWidth();
             }
         }
 
@@ -135,15 +133,14 @@ namespace PicSum.Main.UIComponent
 
             var baseWidth = this.Width - 16;
 
+            this.tabSwitch.TabsRightOffset = AppConstants.GetControlBoxWidth(this.Handle);
             this.tabSwitch.SetBounds(
                 TAB_SWITCH_DEFAULT_BOUNDS.X,
                 TAB_SWITCH_DEFAULT_BOUNDS.Y,
                 baseWidth,
-                this.Height);
-
+                (int)(TAB_SWITCH_DEFAULT_BOUNDS.Height * scale));
             this.tabSwitch.Anchor
                 = AnchorStyles.Top
-                | AnchorStyles.Bottom
                 | AnchorStyles.Left
                 | AnchorStyles.Right;
 
