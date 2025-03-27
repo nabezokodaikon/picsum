@@ -133,7 +133,7 @@ namespace SWF.UIComponent.TabOperation
         private Point? dropPoint = null;
 
         // タブ追加ボタン病が暮らす
-        private readonly AddTabButtonDrawArea addTabButtonDrawArea = new();
+        private readonly AddTabButtonDrawArea addTabButtonDrawArea;
 
         // コンテンツ描画クラス
         private readonly PageDrawArea pageDrawArea;
@@ -228,6 +228,7 @@ namespace SWF.UIComponent.TabOperation
                 true);
             this.UpdateStyles();
 
+            this.addTabButtonDrawArea = new(this);
             this.pageDrawArea = new(this);
         }
 

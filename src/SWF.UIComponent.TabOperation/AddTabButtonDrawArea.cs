@@ -1,3 +1,4 @@
+using SWF.Core.Base;
 using System;
 using System.Drawing;
 using System.Runtime.Versioning;
@@ -7,18 +8,23 @@ namespace SWF.UIComponent.TabOperation
     [SupportedOSPlatform("windows10.0.17763.0")]
     internal sealed class AddTabButtonDrawArea
     {
-
-        private const int PAGE_SIZE = 29;
-        private const int TAB_HEIGHT = 29;
-
-        private readonly static RectangleF DEFAULT_RECTANGLE = GetDefaultRectangle();
-
-        private static RectangleF GetDefaultRectangle()
+        private static float GetScale(TabSwitch tabSwitch)
         {
+            var scale = AppConstants.GetCurrentWindowScale(tabSwitch.Handle);
+            return scale;
+        }
+
+        private static RectangleF GetDefaultRectangle(TabSwitch tabSwitch)
+        {
+            const int PAGE_SIZE = 29;
+            const int TAB_HEIGHT = 29;
+
+            var scale = AppConstants.GetCurrentWindowScale(tabSwitch.Handle);
+
             var x = 0;
-            var y = (TAB_HEIGHT - PAGE_SIZE) / 2f;
-            var w = PAGE_SIZE;
-            var h = PAGE_SIZE;
+            var y = (TAB_HEIGHT * scale - PAGE_SIZE * scale) / 2f;
+            var w = PAGE_SIZE * scale;
+            var h = PAGE_SIZE * scale;
             return new RectangleF(x, y, w, h);
         }
 
@@ -27,9 +33,10 @@ namespace SWF.UIComponent.TabOperation
         private static readonly Pen MOUSE_POINT_PEN = new(Color.Black, 2f);
         private static readonly Pen NORMAL_PEN = new(Color.LightGray, 2f);
 
-        private readonly float width = DEFAULT_RECTANGLE.Width;
-        private readonly float height = DEFAULT_RECTANGLE.Height;
-        private PointF drawPoint = new(DEFAULT_RECTANGLE.X, DEFAULT_RECTANGLE.Y);
+        private float width;
+        private float height;
+        private PointF drawPoint;
+        private readonly TabSwitch tabSwitch;
 
         public float X
         {
@@ -119,6 +126,13 @@ namespace SWF.UIComponent.TabOperation
             }
         }
 
+        public AddTabButtonDrawArea(TabSwitch tabSwitch)
+        {
+            ArgumentNullException.ThrowIfNull(tabSwitch, nameof(tabSwitch));
+
+            this.tabSwitch = tabSwitch;
+        }
+
         public bool Page(PointF p)
         {
             return this.Page(p.X, p.Y);
@@ -126,6 +140,9 @@ namespace SWF.UIComponent.TabOperation
 
         public bool Page(float x, float y)
         {
+            var defaultRect = GetDefaultRectangle(this.tabSwitch);
+            this.width = defaultRect.Width;
+            this.height = defaultRect.Height;
             var rect = new RectangleF(this.drawPoint.X, this.drawPoint.Y, this.width, this.height);
             return rect.Contains(x, y);
         }
@@ -146,7 +163,9 @@ namespace SWF.UIComponent.TabOperation
 
         private void Draw(Graphics g, bool isMousePoint)
         {
-            const float OFFSET = 6.75f;
+            var scale = GetScale(this.tabSwitch);
+            var OFFSET = 6.75f * scale;
+
             var rect = new RectangleF(this.drawPoint.X, this.drawPoint.Y, this.width, this.height);
             var bgRect = new RectangleF(rect.Left + OFFSET / 2f, rect.Top + OFFSET / 2f, rect.Width - OFFSET, rect.Height - OFFSET);
             var vp1 = new PointF(bgRect.Left + OFFSET + bgRect.Width / 6f + 0.75f, bgRect.Top + OFFSET);
