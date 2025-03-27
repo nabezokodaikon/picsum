@@ -295,7 +295,8 @@ namespace SWF.UIComponent.TabOperation
 
         private void DrawTabCloseButton(Graphics g, bool isMousePoint, bool isActiveTab)
         {
-            const float OFFSET = 8;
+            float OFFSET = 8 * this.parameter.Scale;
+
             var rect = this.GetCloseButtonRectangle();
             var bgRect = new RectangleF(rect.Left + OFFSET / 2f, rect.Top + OFFSET / 2f, rect.Width - OFFSET, rect.Height - OFFSET);
             var slashP1 = new PointF(rect.Left + OFFSET, rect.Top + OFFSET);

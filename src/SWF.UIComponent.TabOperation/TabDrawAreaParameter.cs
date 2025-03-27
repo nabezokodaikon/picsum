@@ -15,6 +15,7 @@ namespace SWF.UIComponent.TabOperation
         private const float PAGE_SIZE = 24;
         private const float PAGE_OFFSET = 2;
 
+        public float Scale { get; private set; }
         public float Height { get; private set; }
         public float TabWidth { get; private set; }
         public float SideWidth { get; private set; }
@@ -41,6 +42,7 @@ namespace SWF.UIComponent.TabOperation
 
         private void SetPrameters(float scale)
         {
+            this.Scale = scale;
             this.Height = HEIGHT * scale;
             this.TabWidth = TAB_WIDTH * scale;
             this.SideWidth = SIDE_WIDTH * scale;
