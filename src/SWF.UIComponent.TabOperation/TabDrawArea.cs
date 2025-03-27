@@ -1,6 +1,8 @@
+using SWF.Core.Base;
 using System;
 using System.Drawing;
 using System.Runtime.Versioning;
+using System.Windows.Forms;
 
 namespace SWF.UIComponent.TabOperation
 {
@@ -223,10 +225,11 @@ namespace SWF.UIComponent.TabOperation
 
         private RectangleF GetIconRectangle()
         {
-            var x = ICON_RECTANGLE.X + this.drawPoint.X;
-            var y = ICON_RECTANGLE.Y + this.drawPoint.Y;
-            var w = ICON_RECTANGLE.Width;
-            var h = ICON_RECTANGLE.Height;
+            var scale = AppConstants.GetCurrentWindowScale(this.Owner.Handle);
+            var x = ICON_RECTANGLE.X * scale + this.drawPoint.X;
+            var y = ICON_RECTANGLE.Y * scale + this.drawPoint.Y;
+            var w = ICON_RECTANGLE.Width * scale;
+            var h = ICON_RECTANGLE.Height * scale;
             return new RectangleF(x, y, w, h);
         }
 
