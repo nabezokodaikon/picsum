@@ -20,21 +20,58 @@ namespace SWF.UIComponent.TabOperation
         : Control
     {
         // タブの高さ
-        private const int TAB_DEFAULT_HEIGHT = 29;
+        private int GetTabHeight()
+        {
+            const int TAB_DEFAULT_HEIGHT = 29;
+            var form = this.GetForm();
+            var scale = AppConstants.GetCurrentWindowScale(form.Handle);
+            return (int)(TAB_DEFAULT_HEIGHT * scale);
+        }
 
         // タブ同士のの間隔
-        private const float TAB_MARGIN = 2;
+        private int GetTabMargin()
+        {
+            const float TAB_MARGIN = 2;
+            var form = this.GetForm();
+            var scale = AppConstants.GetCurrentWindowScale(form.Handle);
+            return (int)(TAB_MARGIN * scale);
+        }
 
         // タブの最大幅
-        private const float TAB_MAXIMUM_WIDTH = 256;
+        private int GetTabMaximumWidth()
+        {
+            const float TAB_MAXIMUM_WIDTH = 256;
+            var form = this.GetForm();
+            var scale = AppConstants.GetCurrentWindowScale(form.Handle);
+            return (int)(TAB_MAXIMUM_WIDTH * scale);
+        }
 
         // タブの最小幅
-        public const float TAB_MINIMUM_WIDTH = 1;
+        private int GetTabMinimumWidth()
+        {
+            const float TAB_MINIMUM_WIDTH = 1;
+            var form = this.GetForm();
+            var scale = AppConstants.GetCurrentWindowScale(form.Handle);
+            return (int)(TAB_MINIMUM_WIDTH * scale);
+        }
 
         // タブ領域の間隔
-        internal const float TABS_MARGIN = 8;
+        private int GetTabsMargin()
+        {
+            const float TABS_MARGIN = 8;
+            var form = this.GetForm();
+            var scale = AppConstants.GetCurrentWindowScale(form.Handle);
+            return (int)(TABS_MARGIN * scale);
+        }
 
+        // TODO: スケールを適用する。
         internal const float TAB_CLOSE_BUTTON_CAN_DRAW_WIDTH = 64;
+        private int GetTabCloseButtonCanDrawWidth()
+        {
+            var form = this.GetForm();
+            var scale = AppConstants.GetCurrentWindowScale(form.Handle);
+            return (int)(TAB_CLOSE_BUTTON_CAN_DRAW_WIDTH * scale);
+        }
 
         // タブを移動するとみなす重なりの比率
         private const float TAB_DRAG_OVERLAP_RATE = 0.4f;
@@ -190,8 +227,6 @@ namespace SWF.UIComponent.TabOperation
                 ControlStyles.UserPaint,
                 true);
             this.UpdateStyles();
-
-            this.SetAddTabButtonDrawArea();
         }
 
         public TabInfo[] GetInactiveTabs()
@@ -1112,17 +1147,19 @@ namespace SWF.UIComponent.TabOperation
             var x = rect.X;
             var y = rect.Y;
             var w = rect.Width;
-            var h = TAB_DEFAULT_HEIGHT;
+            var h = this.GetTabHeight();
             return new Rectangle(x, y, w, h);
         }
 
         private RectangleF GetTabsRectangle()
         {
+            var tabMargin = this.GetTabMargin();
+            var tabsMargin = this.GetTabsMargin();
             var rect = this.ClientRectangle;
-            var x = rect.X + TABS_MARGIN;
+            var x = rect.X + tabsMargin;
             var y = rect.Y;
-            var w = rect.Width - this.tabsRightOffset - TABS_MARGIN * 2 - TAB_MARGIN - this.addTabButtonDrawArea.Width;
-            var h = TAB_DEFAULT_HEIGHT;
+            var w = rect.Width - this.tabsRightOffset - tabsMargin * 2 - tabMargin - this.addTabButtonDrawArea.Width;
+            var h = this.GetTabHeight();
             return new RectangleF(x, y, w, h);
         }
 
@@ -1134,6 +1171,7 @@ namespace SWF.UIComponent.TabOperation
                 var rect = this.GetTabsRectangle();
                 var w = this.GetTabWidth();
                 var x = rect.X;
+                var tabMargin = this.GetTabMargin();
                 foreach (var tab in this.tabList)
                 {
                     if (!TabDragOperation.IsTarget(tab))
@@ -1142,7 +1180,7 @@ namespace SWF.UIComponent.TabOperation
                         tab.DrawArea.Y = rect.Y;
                     }
                     tab.DrawArea.Width = w;
-                    x += (tab.DrawArea.Width + TAB_MARGIN);
+                    x += (tab.DrawArea.Width + tabMargin);
                 }
             }
             else
@@ -1150,18 +1188,21 @@ namespace SWF.UIComponent.TabOperation
                 var rect = this.GetTabsRectangle();
                 var w = this.GetTabWidth();
                 var x = rect.X;
+                var tabMargin = this.GetTabMargin();
                 foreach (var tab in this.tabList)
                 {
                     tab.DrawArea.X = x;
                     tab.DrawArea.Y = rect.Y;
                     tab.DrawArea.Width = w;
-                    x += (w + TAB_MARGIN);
+                    x += (w + tabMargin);
                 }
             }
         }
 
         private void SetAddTabButtonDrawArea()
         {
+            var tabsMargin = this.GetTabsMargin();
+
             if (this.tabList.Count > 0)
             {
                 var tab = this.tabList.Last();
@@ -1170,53 +1211,57 @@ namespace SWF.UIComponent.TabOperation
                     if (this.tabList.Count > 1)
                     {
                         var index = this.tabList.IndexOf(tab) - 1;
-                        this.addTabButtonDrawArea.X = this.tabList[index].DrawArea.Right + TABS_MARGIN;
+                        this.addTabButtonDrawArea.X = this.tabList[index].DrawArea.Right + tabsMargin;
                     }
                     else
                     {
-                        this.addTabButtonDrawArea.X = this.ClientRectangle.X + TABS_MARGIN;
+                        this.addTabButtonDrawArea.X = this.ClientRectangle.X + tabsMargin;
                     }
                 }
                 else
                 {
-                    this.addTabButtonDrawArea.X = tab.DrawArea.Right + TABS_MARGIN;
+                    this.addTabButtonDrawArea.X = tab.DrawArea.Right + tabsMargin;
                 }
 
                 var rect = this.GetTabsRectangle();
                 if (this.addTabButtonDrawArea.Right > rect.Right)
                 {
-                    this.addTabButtonDrawArea.X = rect.Right + TAB_MARGIN;
+                    var tabMargin = this.GetTabMargin();
+                    this.addTabButtonDrawArea.X = rect.Right + tabMargin;
                 }
             }
             else
             {
-                this.addTabButtonDrawArea.X = this.ClientRectangle.X + TABS_MARGIN;
+                this.addTabButtonDrawArea.X = this.ClientRectangle.X + tabsMargin;
             }
         }
 
         private float GetTabWidth()
         {
+            var tabMargin = this.GetTabMargin();
+            var tabMaximumWidth = this.GetTabMaximumWidth();
             var rect = this.GetTabsRectangle();
 
-            var defAllTabW = TAB_MAXIMUM_WIDTH * this.tabList.Count + TAB_MARGIN * (this.tabList.Count - 1);
+            var defAllTabW = tabMaximumWidth * this.tabList.Count + tabMargin * (this.tabList.Count - 1);
 
             if (defAllTabW > rect.Width)
             {
                 float tabW;
                 if (this.tabList.Count > 0)
                 {
-                    tabW = (rect.Width - TAB_MARGIN * (this.tabList.Count - 1)) / (float)this.tabList.Count;
+                    tabW = (rect.Width - tabMargin * (this.tabList.Count - 1)) / (float)this.tabList.Count;
                 }
                 else
                 {
                     tabW = rect.Width;
                 }
 
-                return Math.Max(tabW, TAB_MINIMUM_WIDTH);
+                var tabMinimumWidth = this.GetTabMinimumWidth();
+                return Math.Max(tabW, tabMinimumWidth);
             }
             else
             {
-                return TAB_MAXIMUM_WIDTH;
+                return tabMaximumWidth;
             }
         }
 
@@ -1284,7 +1329,8 @@ namespace SWF.UIComponent.TabOperation
                 CloseButtonRectangle = tab.DrawArea.GetCloseButtonRectangle(),
             };
 
-            if (tab.DrawArea.Width > TAB_CLOSE_BUTTON_CAN_DRAW_WIDTH)
+            var tabCloseButtonCanDrawWidth = this.GetTabCloseButtonCanDrawWidth();
+            if (tab.DrawArea.Width > tabCloseButtonCanDrawWidth)
             {
                 tab.DrawingTabPage(args);
             }
@@ -1300,6 +1346,7 @@ namespace SWF.UIComponent.TabOperation
             var dropX = this.dropPoint.Value.X;
             var dropY = this.dropPoint.Value.Y;
 
+            var tabMargin = this.GetTabMargin();
             foreach (var tab in this.tabList)
             {
                 if (tab.DrawArea.Contains(dropX, dropY))
@@ -1307,7 +1354,7 @@ namespace SWF.UIComponent.TabOperation
                     if (this.IsTabLeftDrop(dropX, tab))
                     {
                         var img = ResourceFiles.DropArrowIcon.Value;
-                        var x = (tab.DrawArea.Left - TAB_MARGIN / 2f) - img.Width / 2f;
+                        var x = (tab.DrawArea.Left - tabMargin / 2f) - img.Width / 2f;
                         var y = 0;
                         g.DrawImage(img, x, y, img.Width, img.Height);
                         return;
@@ -1315,7 +1362,7 @@ namespace SWF.UIComponent.TabOperation
                     else if (this.IsTabRightDrop(dropX, tab))
                     {
                         var img = ResourceFiles.DropArrowIcon.Value;
-                        var x = (tab.DrawArea.Right - TAB_MARGIN / 2f) - img.Width / 2f;
+                        var x = (tab.DrawArea.Right - tabMargin / 2f) - img.Width / 2f;
                         var y = 0;
                         g.DrawImage(img, x, y, img.Width, img.Height);
                         return;
