@@ -148,6 +148,26 @@ namespace SWF.Core.Base
             var paddingWidth = WinApiMembers.GetSystemMetrics(WinApiMembers.SM.CXPADDEDBORDER);
             return titleBarHeight + frameHeight + paddingWidth; ;
         }
+
+        public static int GetControlBoxWidth(IntPtr window)
+        {
+            var monitor = WinApiMembers.MonitorFromWindow(window, WinApiMembers.MONITOR_DEFAULTTONEAREST);
+            WinApiMembers.GetDpiForMonitor(monitor, WinApiMembers.MDT_EFFECTIVE_DPI, out uint dpiX, out _);
+            var buttonWidth = WinApiMembers.GetSystemMetricsForDpi(WinApiMembers.SM.CXSIZE, dpiX);
+            var frameWidth = WinApiMembers.GetSystemMetricsForDpi(WinApiMembers.SM.CXSIZEFRAME, dpiX);
+            var paddingWidth = WinApiMembers.GetSystemMetricsForDpi(WinApiMembers.SM.CXPADDEDBORDER, dpiX);
+            return (buttonWidth * 4) + paddingWidth + frameWidth;
+        }
+
+        public static int GetControlBoxHeight(IntPtr window)
+        {
+            var monitor = WinApiMembers.MonitorFromWindow(window, WinApiMembers.MONITOR_DEFAULTTONEAREST);
+            WinApiMembers.GetDpiForMonitor(monitor, WinApiMembers.MDT_EFFECTIVE_DPI, out uint dpiX, out _);
+            var titleBarHeight = WinApiMembers.GetSystemMetricsForDpi(WinApiMembers.SM.CYCAPTION, dpiX);
+            var frameHeight = WinApiMembers.GetSystemMetricsForDpi(WinApiMembers.SM.CYSIZEFRAME, dpiX);
+            var paddingWidth = WinApiMembers.GetSystemMetricsForDpi(WinApiMembers.SM.CXPADDEDBORDER, dpiX);
+            return titleBarHeight + frameHeight + paddingWidth; ;
+        }
     }
 
     /// <summary>

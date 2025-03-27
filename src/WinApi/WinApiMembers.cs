@@ -300,6 +300,9 @@ namespace WinApi
         public const int HTBOTTOMLEFT = 16;
         public const int HTBOTTOMRIGHT = 17;
 
+        public const uint MDT_EFFECTIVE_DPI = 0;
+        public const uint MONITOR_DEFAULTTONEAREST = 2;
+
         public static readonly Guid FOLDERID_Desktop =
             new Guid("{B4BFCC3A-DB2C-424C-B029-7FE99A87C641}");
 
@@ -669,6 +672,16 @@ namespace WinApi
 
         [DllImport("User32.dll")]
         public static extern uint GetDpiForWindow(IntPtr hWnd);
+
+        [DllImport("user32.dll")]
+        public static extern int GetSystemMetricsForDpi(SM nIndex, uint dpi);
+
+        [DllImport("user32.dll")]
+        public static extern IntPtr MonitorFromWindow(IntPtr hwnd, uint dwFlags);
+
+        [DllImport("shcore.dll")]
+        public static extern int GetDpiForMonitor(IntPtr hmonitor, uint dpiType, out uint dpiX, out uint dpiY);
+
 
         public static int LoWord(int dwValue)
         {
