@@ -19,6 +19,8 @@ namespace SWF.UIComponent.TabOperation
     public sealed partial class TabSwitch
         : Control
     {
+        // タブの高さ
+        private const int TAB_DEFAULT_HEIGHT = 29;
 
         // タブ同士のの間隔
         private const float TAB_MARGIN = 2;
@@ -72,9 +74,6 @@ namespace SWF.UIComponent.TabOperation
         /// </summary>
         public event EventHandler<MouseEventArgs> AddTabButtonMouseClick;
 
-        // タブの高さ
-        private readonly int tabHeight = 29;
-
         // タブ領域右側の差分
         private int tabsRightOffset = 0;
 
@@ -101,17 +100,6 @@ namespace SWF.UIComponent.TabOperation
 
         // コンテンツ描画クラス
         private readonly PageDrawArea pageDrawArea = new();
-
-        /// <summary>
-        /// タブの高さ
-        /// </summary>
-        public int TabHeight
-        {
-            get
-            {
-                return this.tabHeight;
-            }
-        }
 
         /// <summary>
         /// タブ領域右側の差分
@@ -1123,7 +1111,7 @@ namespace SWF.UIComponent.TabOperation
             var x = rect.X;
             var y = rect.Y;
             var w = rect.Width;
-            var h = this.tabHeight;
+            var h = TAB_DEFAULT_HEIGHT;
             return new Rectangle(x, y, w, h);
         }
 
@@ -1133,7 +1121,7 @@ namespace SWF.UIComponent.TabOperation
             var x = rect.X + TABS_MARGIN;
             var y = rect.Y;
             var w = rect.Width - this.tabsRightOffset - TABS_MARGIN * 2 - TAB_MARGIN - this.addTabButtonDrawArea.Width;
-            var h = this.tabHeight;
+            var h = TAB_DEFAULT_HEIGHT;
             return new RectangleF(x, y, w, h);
         }
 
