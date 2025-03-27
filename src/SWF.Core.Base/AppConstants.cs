@@ -133,22 +133,6 @@ namespace SWF.Core.Base
             }
         }
 
-        public static int GetControlBoxWidth()
-        {
-            var buttonWidth = WinApiMembers.GetSystemMetrics(WinApiMembers.SM.CXSIZE);
-            var frameWidth = WinApiMembers.GetSystemMetrics(WinApiMembers.SM.CXSIZEFRAME);
-            var paddingWidth = WinApiMembers.GetSystemMetrics(WinApiMembers.SM.CXPADDEDBORDER);
-            return (buttonWidth * 4) + paddingWidth + frameWidth;
-        }
-
-        public static int GetControlBoxHeight()
-        {
-            var titleBarHeight = WinApiMembers.GetSystemMetrics(WinApiMembers.SM.CYCAPTION);
-            var frameHeight = WinApiMembers.GetSystemMetrics(WinApiMembers.SM.CYSIZEFRAME);
-            var paddingWidth = WinApiMembers.GetSystemMetrics(WinApiMembers.SM.CXPADDEDBORDER);
-            return titleBarHeight + frameHeight + paddingWidth; ;
-        }
-
         public static int GetControlBoxWidth(IntPtr window)
         {
             var monitor = WinApiMembers.MonitorFromWindow(window, WinApiMembers.MONITOR_DEFAULTTONEAREST);
