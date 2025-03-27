@@ -133,7 +133,6 @@ namespace PicSum.Main.UIComponent
 
             var baseWidth = this.Width - 16;
 
-            this.tabSwitch.TabsRightOffset = AppConstants.GetControlBoxWidth(this.Handle);
             this.tabSwitch.SetBounds(
                 TAB_SWITCH_DEFAULT_BOUNDS.X,
                 TAB_SWITCH_DEFAULT_BOUNDS.Y,

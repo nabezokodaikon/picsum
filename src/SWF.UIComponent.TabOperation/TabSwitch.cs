@@ -2,7 +2,6 @@ using SWF.Core.Base;
 using SWF.Core.ImageAccessor;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
@@ -111,9 +110,6 @@ namespace SWF.UIComponent.TabOperation
         /// </summary>
         public event EventHandler<MouseEventArgs> AddTabButtonMouseClick;
 
-        // タブ領域右側の差分
-        private int tabsRightOffset = 0;
-
         // タブ描画パレット
         private readonly TabPalette tabPalette = new();
 
@@ -138,25 +134,10 @@ namespace SWF.UIComponent.TabOperation
         // コンテンツ描画クラス
         private readonly PageDrawArea pageDrawArea;
 
-        /// <summary>
-        /// タブ領域右側の差分
-        /// </summary>
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        /// <summary>
-        /// タブ領域右側の差分
-        /// </summary>
-        public int TabsRightOffset
+        private int GetTabsRightOffset()
         {
-            get
-            {
-                return this.tabsRightOffset;
-            }
-            set
-            {
-                ArgumentOutOfRangeException.ThrowIfLessThan(value, 0, nameof(value));
-
-                this.tabsRightOffset = value;
-            }
+            var value = AppConstants.GetControlBoxWidth(this.Handle);
+            return value;
         }
 
         /// <summary>
@@ -1158,10 +1139,11 @@ namespace SWF.UIComponent.TabOperation
         {
             var tabMargin = this.GetTabMargin();
             var tabsMargin = this.GetTabsMargin();
+            var tabsRightOffset = this.GetTabsRightOffset();
             var rect = this.ClientRectangle;
             var x = rect.X + tabsMargin;
             var y = rect.Y;
-            var w = rect.Width - this.tabsRightOffset - tabsMargin * 2 - tabMargin - this.addTabButtonDrawArea.Width;
+            var w = rect.Width - tabsRightOffset - tabsMargin * 2 - tabMargin - this.addTabButtonDrawArea.Width;
             var h = this.GetTabHeight();
             return new RectangleF(x, y, w, h);
         }
