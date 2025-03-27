@@ -15,6 +15,8 @@ namespace SWF.UIComponent.TabOperation
         private const float PAGE_SIZE = 24;
         private const float PAGE_OFFSET = 2;
 
+        private Control owner = null;
+
         public float Scale { get; private set; }
         public float Height { get; private set; }
         public float TabWidth { get; private set; }
@@ -28,14 +30,21 @@ namespace SWF.UIComponent.TabOperation
         {
             ArgumentNullException.ThrowIfNull(owner, nameof(owner));
 
+            this.owner = owner;
             var scale = AppConstants.GetCurrentWindowScale(owner.Handle);
             this.SetPrameters(scale);
+        }
+
+        public Control GetOwner()
+        {
+            return this.owner;
         }
 
         public void Update(Control owner)
         {
             ArgumentNullException.ThrowIfNull(owner, nameof(owner));
 
+            this.owner = owner;
             var scale = AppConstants.GetCurrentWindowScale(owner.Handle);
             this.SetPrameters(scale);
         }

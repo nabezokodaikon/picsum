@@ -247,7 +247,7 @@ namespace SWF.UIComponent.TabOperation
             var w = this.parameter.CloseButtonRectangle.Width;
             var h = this.parameter.CloseButtonRectangle.Height;
 
-            if (this.width < TabSwitch.TAB_CLOSE_BUTTON_CAN_DRAW_WIDTH)
+            if (this.width < TabSwitch.GetTabCloseButtonCanDrawWidth(this.parameter.GetOwner()))
             {
                 var x = this.X + (this.Width - this.parameter.CloseButtonRectangle.Width) / 2f;
                 var y = this.parameter.CloseButtonRectangle.Y + (this.parameter.CloseButtonRectangle.Height - h) / 2f;

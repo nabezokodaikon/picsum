@@ -64,12 +64,12 @@ namespace SWF.UIComponent.TabOperation
             return (int)(TABS_MARGIN * scale);
         }
 
-        // TODO: スケールを適用する。
-        internal const float TAB_CLOSE_BUTTON_CAN_DRAW_WIDTH = 64;
-        private int GetTabCloseButtonCanDrawWidth()
+        public static int GetTabCloseButtonCanDrawWidth(Control owner)
         {
-            var form = this.GetForm();
-            var scale = AppConstants.GetCurrentWindowScale(form.Handle);
+            ArgumentNullException.ThrowIfNull(owner, nameof(owner));
+
+            const float TAB_CLOSE_BUTTON_CAN_DRAW_WIDTH = 64;
+            var scale = AppConstants.GetCurrentWindowScale(owner.Handle);
             return (int)(TAB_CLOSE_BUTTON_CAN_DRAW_WIDTH * scale);
         }
 
@@ -1332,7 +1332,8 @@ namespace SWF.UIComponent.TabOperation
                 CloseButtonRectangle = tab.DrawArea.GetCloseButtonRectangle(),
             };
 
-            var tabCloseButtonCanDrawWidth = this.GetTabCloseButtonCanDrawWidth();
+            var form = this.GetForm();
+            var tabCloseButtonCanDrawWidth = GetTabCloseButtonCanDrawWidth(form);
             if (tab.DrawArea.Width > tabCloseButtonCanDrawWidth)
             {
                 tab.DrawingTabPage(args);
