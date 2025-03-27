@@ -255,12 +255,15 @@ namespace PicSum.Main.UIComponent
 
             this.browserMainPanel = new BrowserMainPanel();
 
-            var x = this.Padding.Left;
-            var y = this.Padding.Top;
-            var w = this.Width - this.Padding.Left - this.Padding.Right;
-            var h = this.Height - this.Padding.Top - this.Padding.Bottom;
-            this.browserMainPanel.SetBounds(x, y, w, h, BoundsSpecified.All);
-            this.browserMainPanel.Dock = DockStyle.Fill;
+            var scale = AppConstants.GetCurrentWindowScale(this.Handle);
+            var rect = this.CreateBrowserMainPanelBounds(scale);
+            this.browserMainPanel.SetBounds(rect.X, rect.Y, rect.Width, rect.Height);
+            this.browserMainPanel.SetControlsBounds(scale);
+            this.browserMainPanel.Anchor
+                = AnchorStyles.Top
+                | AnchorStyles.Bottom
+                | AnchorStyles.Left
+                | AnchorStyles.Right;
 
             this.browserMainPanel.Close += new(this.BrowserMainPanel_Close);
             this.browserMainPanel.BackgroundMouseDoubleLeftClick += new(this.BrowserMainPanel_BackgroundMouseDoubleLeftClick);
@@ -321,9 +324,32 @@ namespace PicSum.Main.UIComponent
             this.NewWindowPageOpen?.Invoke(this, e);
         }
 
+        private Rectangle CreateBrowserMainPanelBounds(float scale)
+        {
+            var x = 0;
+            var y = (int)(this.Padding.Top * scale);
+            var w = this.Width;
+            var h = this.Height - y;
+            return new Rectangle(x, y, w, h);
+        }
+
         private void Form_ScaleChanged(object sender, ScaleChangedEventArgs e)
         {
+            if (this.browserMainPanel == null)
+            {
+                return;
+            }
 
+            this.SuspendLayout();
+
+            var rect = this.CreateBrowserMainPanelBounds(e.Scale);
+            this.browserMainPanel.SetBounds(rect.X, rect.Y, rect.Width, rect.Height);
+            this.browserMainPanel.SetControlsBounds(e.Scale);
+
+            this.ResumeLayout(false);
+            this.PerformLayout();
+            this.Invalidate();
+            this.Update();
         }
 
         private void BrowserMainPanel_Close(object sender, EventArgs e)

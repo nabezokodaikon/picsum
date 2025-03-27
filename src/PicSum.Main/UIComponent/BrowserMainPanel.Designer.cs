@@ -91,8 +91,6 @@ namespace PicSum.Main.UIComponent
             this.toolPanel.Controls.Add(this.addressBar);
             this.toolPanel.Location = new Point(0, 29);
             this.toolPanel.Margin = new Padding(0);
-            this.toolPanel.MaximumSize = new Size(0, 34);
-            this.toolPanel.MinimumSize = new Size(0, 34);
             this.toolPanel.Name = "toolPanel";
             this.toolPanel.Size = new Size(746, 34);
             this.toolPanel.TabIndex = 5;
@@ -100,7 +98,7 @@ namespace PicSum.Main.UIComponent
             // reloadToolButton
             // 
             this.reloadToolButton.Location = new Point(73, 3);
-            this.reloadToolButton.Margin = new Padding(0, 3, 3, 3);
+            this.reloadToolButton.Margin = new Padding(0);
             this.reloadToolButton.Name = "reloadToolButton";
             this.reloadToolButton.Size = new Size(32, 28);
             this.reloadToolButton.MouseClick += this.ReloadToolButton_MouseClick;
@@ -109,7 +107,7 @@ namespace PicSum.Main.UIComponent
             // 
             this.nextPageHistoryButton.Enabled = false;
             this.nextPageHistoryButton.Location = new Point(38, 3);
-            this.nextPageHistoryButton.Margin = new Padding(0, 3, 3, 3);
+            this.nextPageHistoryButton.Margin = new Padding(0);
             this.nextPageHistoryButton.Name = "nextPageHistoryButton";
             this.nextPageHistoryButton.Size = new Size(32, 28);
             this.nextPageHistoryButton.MouseClick += this.NextPageHistoryButton_MouseClick;
@@ -118,6 +116,7 @@ namespace PicSum.Main.UIComponent
             // 
             this.previewPageHistoryButton.Enabled = false;
             this.previewPageHistoryButton.Location = new Point(3, 3);
+            this.previewPageHistoryButton.Margin = new Padding(0);
             this.previewPageHistoryButton.Name = "previewPageHistoryButton";
             this.previewPageHistoryButton.Size = new Size(32, 28);
             this.previewPageHistoryButton.MouseClick += this.PreviewPageHistoryButton_MouseClick;
@@ -126,7 +125,7 @@ namespace PicSum.Main.UIComponent
             // 
             this.showInfoToolButton.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             this.showInfoToolButton.Location = new Point(712, 3);
-            this.showInfoToolButton.Margin = new Padding(0, 3, 3, 3);
+            this.showInfoToolButton.Margin = new Padding(0);
             this.showInfoToolButton.Name = "showInfoToolButton";
             this.showInfoToolButton.Size = new Size(32, 28);
             this.showInfoToolButton.MouseClick += this.ShowInfoToolButton_MouseClick;
@@ -136,7 +135,7 @@ namespace PicSum.Main.UIComponent
             this.addressBar.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             this.addressBar.BackColor = Color.FromArgb(124, 138, 153);
             this.addressBar.Location = new Point(108, 4);
-            this.addressBar.Margin = new Padding(0, 4, 3, 4);
+            this.addressBar.Margin = new Padding(0);
             this.addressBar.Name = "addressBar";
             this.addressBar.Size = new Size(601, 26);
             this.addressBar.TabIndex = 0;
