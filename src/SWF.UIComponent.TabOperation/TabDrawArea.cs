@@ -129,8 +129,6 @@ namespace SWF.UIComponent.TabOperation
             }
             set
             {
-                ArgumentOutOfRangeException.ThrowIfLessThan(value, TabSwitch.TAB_MINIMUM_WIDTH, nameof(value));
-
                 this.width = value;
             }
         }
