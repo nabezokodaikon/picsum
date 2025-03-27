@@ -136,7 +136,7 @@ namespace SWF.UIComponent.TabOperation
         private readonly AddTabButtonDrawArea addTabButtonDrawArea = new();
 
         // コンテンツ描画クラス
-        private readonly PageDrawArea pageDrawArea = new();
+        private readonly PageDrawArea pageDrawArea;
 
         /// <summary>
         /// タブ領域右側の差分
@@ -227,6 +227,8 @@ namespace SWF.UIComponent.TabOperation
                 ControlStyles.UserPaint,
                 true);
             this.UpdateStyles();
+
+            this.pageDrawArea = new(this);
         }
 
         public TabInfo[] GetInactiveTabs()
