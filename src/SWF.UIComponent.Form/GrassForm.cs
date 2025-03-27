@@ -255,8 +255,7 @@ namespace SWF.UIComponent.Form
 
         protected void SetGrass()
         {
-            var dpi = WinApiMembers.GetDpiForWindow(this.Handle);
-            var scale = dpi / AppConstants.BASE_DPI;
+            var scale = AppConstants.GetCurrentWindowScale(this.Handle);
             this.glassMargins.cyTopHeight = (int)(TOP_OFFSET * scale);
             WinApiMembers.DwmExtendFrameIntoClientArea(this.Handle, this.glassMargins);
         }

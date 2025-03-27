@@ -48,6 +48,13 @@ namespace SWF.Core.Base
             }
         }
 
+        public static float GetCurrentWindowScale(IntPtr handle)
+        {
+            var dpi = WinApiMembers.GetDpiForWindow(handle);
+            var scale = dpi / AppConstants.BASE_DPI;
+            return scale;
+        }
+
         private static string GetConfigFile()
         {
             return Path.Combine(CONFIG_DIRECTORY, "config.xml");
