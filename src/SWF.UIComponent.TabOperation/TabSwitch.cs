@@ -611,6 +611,7 @@ namespace SWF.UIComponent.TabOperation
         protected override void OnPaintBackground(PaintEventArgs pevent)
         {
 
+            base.OnPaintBackground(pevent);
         }
 
         protected override void OnPaint(PaintEventArgs e)
