@@ -1,5 +1,3 @@
-using SWF.Core.Base;
-using System;
 using System.Drawing;
 using System.Runtime.Versioning;
 
@@ -12,26 +10,25 @@ namespace SWF.UIComponent.TabOperation
         private static readonly SolidBrush INNER_BRUSH = new(Color.FromArgb(250, 250, 250));
         private static readonly int TOP = 28;
 
-        public void Draw(Graphics g, IntPtr handle)
+        public void Draw(Graphics g)
         {
-            var scale = AppConstants.GetCurrentWindowScale(handle);
-            this.DrawOutline(g, scale);
-            this.DrawInnerRectangle(g, scale);
+            this.DrawOutline(g);
+            this.DrawInnerRectangle(g);
         }
 
-        private void DrawOutline(Graphics g, float scale)
+        private void DrawOutline(Graphics g)
         {
             var x = g.ClipBounds.X;
-            var y = TOP * scale;
+            var y = TOP;
             var w = g.ClipBounds.Width;
-            var h = 1 * scale;
+            var h = 1;
             g.FillRectangle(OUTLINE_BRUSH, x, y, w, h);
         }
 
-        private void DrawInnerRectangle(Graphics g, float scale)
+        private void DrawInnerRectangle(Graphics g)
         {
             var x = g.ClipBounds.X;
-            var y = (TOP + 1) * scale;
+            var y = TOP + 1;
             var w = g.ClipBounds.Width;
             var h = g.ClipBounds.Height - y;
             g.FillRectangle(INNER_BRUSH, x, y, w, h);
