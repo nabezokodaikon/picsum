@@ -59,7 +59,7 @@ namespace SWF.UIComponent.TabOperation
         {
             get
             {
-                this.tabDrawArea ??= new()
+                this.tabDrawArea ??= new(this)
                 {
                     X = DRAW_TAB_WIDHT_OFFSET,
                     Y = 0

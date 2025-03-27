@@ -1,6 +1,7 @@
 using System;
 using System.Drawing;
 using System.Runtime.Versioning;
+using System.Windows.Forms;
 
 namespace SWF.UIComponent.TabOperation
 {
@@ -10,20 +11,6 @@ namespace SWF.UIComponent.TabOperation
     [SupportedOSPlatform("windows10.0.17763.0")]
     internal sealed class TabDrawArea
     {
-        private const float TAB_WIDTH = 256;
-        private const float SIDE_WIDTH = 8;
-        private const float PAGE_SIZE = 24;
-        private const float PAGE_OFFSET = 2;
-
-        private static readonly RectangleF ICON_RECTANGLE
-            = new(SIDE_WIDTH, PAGE_OFFSET, PAGE_SIZE, PAGE_SIZE);
-
-        private static readonly RectangleF CLOSE_BUTTON_RECTANGLE
-            = new(TAB_WIDTH - SIDE_WIDTH - PAGE_SIZE,
-                  PAGE_OFFSET,
-                  PAGE_SIZE,
-                  PAGE_SIZE);
-
         private static readonly SolidBrush TAB_CLOSE_ACTIVE_BUTTON_BRUSH
             = new(Color.FromArgb(64, 0, 0, 0));
 
@@ -47,7 +34,7 @@ namespace SWF.UIComponent.TabOperation
 
         private PointF drawPoint = new(0, 0);
         private float width = 256;
-        private readonly float height = 29;
+        private readonly TabDrawAreaParameter parameter;
 
         public float X
         {
@@ -113,11 +100,11 @@ namespace SWF.UIComponent.TabOperation
         {
             get
             {
-                return this.drawPoint.Y + this.height;
+                return this.drawPoint.Y + this.parameter.Height;
             }
             set
             {
-                this.drawPoint.Y = value - this.height;
+                this.drawPoint.Y = value - this.parameter.Height;
             }
         }
 
@@ -137,8 +124,15 @@ namespace SWF.UIComponent.TabOperation
         {
             get
             {
-                return this.height;
+                return this.parameter.Height;
             }
+        }
+
+        public TabDrawArea(Control owner)
+        {
+            ArgumentNullException.ThrowIfNull(owner, nameof(owner));
+
+            this.parameter = new(owner);
         }
 
         public void DrawActiveTab(Graphics g)
@@ -148,17 +142,30 @@ namespace SWF.UIComponent.TabOperation
             this.DrawTab(ACTIVE_TAB_BRUSH, g);
         }
 
-        public void DrawInactiveTab(Graphics g)
+        public void DrawActiveTab(TabSwitch tabSwitch, Graphics g)
         {
+            ArgumentNullException.ThrowIfNull(tabSwitch, nameof(tabSwitch));
             ArgumentNullException.ThrowIfNull(g, nameof(g));
 
+            this.parameter.Update(tabSwitch);
+            this.DrawTab(ACTIVE_TAB_BRUSH, g);
+        }
+
+        public void DrawInactiveTab(TabSwitch tabSwitch, Graphics g)
+        {
+            ArgumentNullException.ThrowIfNull(g, nameof(g));
+            ArgumentNullException.ThrowIfNull(tabSwitch, nameof(tabSwitch));
+
+            this.parameter.Update(tabSwitch);
             this.DrawTab(INACTIVE_TAB_BRUSH, g);
         }
 
-        public void DrawMousePointTab(Graphics g)
+        public void DrawMousePointTab(TabSwitch tabSwitch, Graphics g)
         {
+            ArgumentNullException.ThrowIfNull(tabSwitch, nameof(tabSwitch));
             ArgumentNullException.ThrowIfNull(g, nameof(g));
 
+            this.parameter.Update(tabSwitch);
             this.DrawTab(MOUSE_POINT_TAB_BRUSH, g);
         }
 
@@ -167,31 +174,35 @@ namespace SWF.UIComponent.TabOperation
             ArgumentNullException.ThrowIfNull(g, nameof(g));
         }
 
-        public void DrawActiveMousePointTabCloseButton(Graphics g)
+        public void DrawActiveMousePointTabCloseButton(TabSwitch tabSwitch, Graphics g)
         {
             ArgumentNullException.ThrowIfNull(g, nameof(g));
 
+            this.parameter.Update(tabSwitch);
             this.DrawTabCloseButton(g, true, true);
         }
 
-        public void DrawInactiveMousePointTabCloseButton(Graphics g)
+        public void DrawInactiveMousePointTabCloseButton(TabSwitch tabSwitch, Graphics g)
         {
             ArgumentNullException.ThrowIfNull(g, nameof(g));
 
+            this.parameter.Update(tabSwitch);
             this.DrawTabCloseButton(g, true, false);
         }
 
-        public void DrawInactiveTabCloseButton(Graphics g)
+        public void DrawInactiveTabCloseButton(TabSwitch tabSwitch, Graphics g)
         {
             ArgumentNullException.ThrowIfNull(g, nameof(g));
 
+            this.parameter.Update(tabSwitch);
             this.DrawTabCloseButton(g, false, false);
         }
 
-        public void DrawActiveTabCloseButton(Graphics g)
+        public void DrawActiveTabCloseButton(TabSwitch tabSwitch, Graphics g)
         {
             ArgumentNullException.ThrowIfNull(g, nameof(g));
 
+            this.parameter.Update(tabSwitch);
             this.DrawTabCloseButton(g, false, true);
         }
 
@@ -215,16 +226,7 @@ namespace SWF.UIComponent.TabOperation
             var x = this.drawPoint.X;
             var y = this.drawPoint.Y;
             var w = this.width;
-            var h = this.height;
-            return new RectangleF(x, y, w, h);
-        }
-
-        private RectangleF GetIconRectangle()
-        {
-            var x = ICON_RECTANGLE.X + this.drawPoint.X;
-            var y = ICON_RECTANGLE.Y + this.drawPoint.Y;
-            var w = ICON_RECTANGLE.Width;
-            var h = ICON_RECTANGLE.Height;
+            var h = this.parameter.Height;
             return new RectangleF(x, y, w, h);
         }
 
@@ -242,28 +244,41 @@ namespace SWF.UIComponent.TabOperation
 
         public RectangleF GetCloseButtonRectangle()
         {
-            var w = CLOSE_BUTTON_RECTANGLE.Width;
-            var h = CLOSE_BUTTON_RECTANGLE.Height;
+            var w = this.parameter.CloseButtonRectangle.Width;
+            var h = this.parameter.CloseButtonRectangle.Height;
 
             if (this.width < TabSwitch.TAB_CLOSE_BUTTON_CAN_DRAW_WIDTH)
             {
-                var x = this.X + (this.Width - CLOSE_BUTTON_RECTANGLE.Width) / 2f;
-                var y = CLOSE_BUTTON_RECTANGLE.Y + (CLOSE_BUTTON_RECTANGLE.Height - h) / 2f;
+                var x = this.X + (this.Width - this.parameter.CloseButtonRectangle.Width) / 2f;
+                var y = this.parameter.CloseButtonRectangle.Y + (this.parameter.CloseButtonRectangle.Height - h) / 2f;
                 return new RectangleF(x, y, w, h);
             }
             else
             {
-                var x = CLOSE_BUTTON_RECTANGLE.X - (TAB_WIDTH - this.width) + this.drawPoint.X;
-                var y = CLOSE_BUTTON_RECTANGLE.Y + this.drawPoint.Y;
+                var x = this.parameter.CloseButtonRectangle.X - (this.parameter.TabWidth - this.width) + this.drawPoint.X;
+                var y = this.parameter.CloseButtonRectangle.Y + this.drawPoint.Y;
                 return new RectangleF(x, y, w, h);
             }
         }
 
         public RectangleF GetPageRectangle()
         {
-            var x = ICON_RECTANGLE.Right + PAGE_OFFSET + this.drawPoint.X;
-            var y = ICON_RECTANGLE.Y + this.drawPoint.Y;
-            return RectangleF.FromLTRB(x, y, CLOSE_BUTTON_RECTANGLE.X - (TAB_WIDTH - this.width) + this.drawPoint.X - PAGE_OFFSET, y + ICON_RECTANGLE.Height);
+            var x = this.parameter.IconRectangle.Right + this.parameter.PageOffset + this.drawPoint.X;
+            var y = this.parameter.IconRectangle.Y + this.drawPoint.Y;
+            return RectangleF.FromLTRB(
+                x,
+                y,
+                this.parameter.CloseButtonRectangle.X - (this.parameter.TabWidth - this.width) + this.drawPoint.X - this.parameter.PageOffset,
+                y + this.parameter.IconRectangle.Height);
+        }
+
+        private RectangleF GetIconRectangle()
+        {
+            var x = this.parameter.IconRectangle.X + this.drawPoint.X;
+            var y = this.parameter.IconRectangle.Y + this.drawPoint.Y;
+            var w = this.parameter.IconRectangle.Width;
+            var h = this.parameter.IconRectangle.Height;
+            return new RectangleF(x, y, w, h);
         }
 
         private void DrawTab(SolidBrush brush, Graphics g)
@@ -317,7 +332,7 @@ namespace SWF.UIComponent.TabOperation
             var x = this.drawPoint.X;
             var y = this.drawPoint.Y;
             var w = this.width;
-            var h = this.height;
+            var h = this.parameter.Height;
             return new RectangleF(x, y, w, h);
         }
 

@@ -320,7 +320,7 @@ namespace SWF.UIComponent.TabOperation
         {
             ArgumentNullException.ThrowIfNull(param, nameof(param));
 
-            var tab = new TabInfo(param);
+            var tab = new TabInfo(this, param);
             this.AddTab(tab);
             return (T)tab.Page;
         }
@@ -337,7 +337,7 @@ namespace SWF.UIComponent.TabOperation
         {
             ArgumentNullException.ThrowIfNull(param, nameof(param));
 
-            var tab = new TabInfo(param);
+            var tab = new TabInfo(this, param);
             this.InsertTab(index, tab);
             return (T)tab.Page;
         }
@@ -1313,8 +1313,8 @@ namespace SWF.UIComponent.TabOperation
 
         private void DrawTab(TabInfo tab, Graphics g)
         {
-            this.GetDrawTabMethod(tab)(g);
-            this.GetDrawCloseButtonMethod(tab)(g);
+            this.GetDrawTabMethod(tab)(this, g);
+            this.GetDrawCloseButtonMethod(tab)(this, g);
             if (tab.Icon == null)
             {
                 return;
@@ -1373,7 +1373,7 @@ namespace SWF.UIComponent.TabOperation
             }
         }
 
-        private Action<Graphics> GetDrawTabMethod(TabInfo tab)
+        private Action<TabSwitch, Graphics> GetDrawTabMethod(TabInfo tab)
         {
             if (tab == this.activeTab)
             {
@@ -1389,7 +1389,7 @@ namespace SWF.UIComponent.TabOperation
             }
         }
 
-        private Action<Graphics> GetDrawCloseButtonMethod(TabInfo tab)
+        private Action<TabSwitch, Graphics> GetDrawCloseButtonMethod(TabInfo tab)
         {
             var p = this.PointToClient(Cursor.Position);
             var rect = tab.DrawArea.GetCloseButtonRectangle();
