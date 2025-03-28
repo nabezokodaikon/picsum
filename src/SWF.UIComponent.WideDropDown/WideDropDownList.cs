@@ -1,3 +1,4 @@
+using SWF.Core.Base;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -12,6 +13,8 @@ namespace SWF.UIComponent.WideDropDown
     public sealed partial class WideDropDownList
         : ToolStripDropDown
     {
+        private static readonly Size BACKGROUND_DEFAULT_SIZE = new(800, 250);
+        private static readonly Size ITEM_DEFAULT_SIZE = new(192, 32);
 
         public event EventHandler<ItemMouseClickEventArgs> ItemMouseClick;
 
@@ -211,7 +214,7 @@ namespace SWF.UIComponent.WideDropDown
 
             this.ToolStripItem.AutoSize = false;
             this.ToolStripItem.BackColor = this.BackColor;
-            this.ToolStripItem.Size = new Size(800, 250);
+            this.ToolStripItem.Size = new Size(BACKGROUND_DEFAULT_SIZE.Width, BACKGROUND_DEFAULT_SIZE.Height);
 
             this.FlowList.BackColor = Color.White;
             this.FlowList.ItemTextTrimming = StringTrimming.EllipsisCharacter;
@@ -223,7 +226,7 @@ namespace SWF.UIComponent.WideDropDown
             this.FlowList.ItemSpace = 0;
             this.FlowList.IsMultiSelect = false;
             this.FlowList.Font = new Font("Yu Gothic UI", 10F);
-            this.FlowList.SetItemSize(192, 32);
+            this.FlowList.SetItemSize(ITEM_DEFAULT_SIZE.Width, ITEM_DEFAULT_SIZE.Height);
             this.FlowList.CanKeyDown = false;
 
             this.FlowList.ItemMouseClick += new(this.FlowList_ItemMouseClick);
@@ -270,6 +273,19 @@ namespace SWF.UIComponent.WideDropDown
             {
                 this.FlowList.EndUpdate();
             }
+        }
+
+        protected override void OnOpening(CancelEventArgs e)
+        {
+            var scale = AppConstants.GetCurrentWindowScale(this.Handle);
+            this.ToolStripItem.Size = new(
+                (int)(BACKGROUND_DEFAULT_SIZE.Width * scale),
+                (int)(BACKGROUND_DEFAULT_SIZE.Height * scale));
+            this.FlowList.SetItemSize(
+                (int)(ITEM_DEFAULT_SIZE.Width * scale),
+                (int)(ITEM_DEFAULT_SIZE.Height * scale));
+
+            base.OnOpening(e);
         }
 
         protected override void OnInvalidated(InvalidateEventArgs e)
