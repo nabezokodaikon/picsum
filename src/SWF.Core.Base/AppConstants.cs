@@ -50,8 +50,9 @@ namespace SWF.Core.Base
 
         public static float GetCurrentWindowScale(IntPtr handle)
         {
-            var dpi = WinApiMembers.GetDpiForWindow(handle);
-            var scale = dpi / AppConstants.BASE_DPI;
+            var monitor = WinApiMembers.MonitorFromWindow(handle, WinApiMembers.MONITOR_DEFAULTTONEAREST);
+            WinApiMembers.GetDpiForMonitor(monitor, WinApiMembers.MDT_EFFECTIVE_DPI, out uint dpiX, out _);
+            var scale = dpiX / AppConstants.BASE_DPI;
             return scale;
         }
 
