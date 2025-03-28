@@ -91,9 +91,7 @@
     <Compile Update="PageContainer.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Update="TabPalette.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Update="TabPalette.cs" />
     <Compile Update="TabSwitch.cs">
       <SubType>Component</SubType>
     </Compile>

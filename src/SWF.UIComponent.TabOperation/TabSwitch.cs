@@ -110,9 +110,6 @@ namespace SWF.UIComponent.TabOperation
         /// </summary>
         public event EventHandler<MouseEventArgs> AddTabButtonMouseClick;
 
-        // タブ描画パレット
-        private readonly TabPalette tabPalette = new();
-
         // タブ情報リスト
         private readonly List<TabInfo> tabList = [];
 
@@ -1311,9 +1308,6 @@ namespace SWF.UIComponent.TabOperation
             }
 
             var scale = AppConstants.GetCurrentWindowScale(this.Handle);
-            using (var font = new Font(
-                this.tabPalette.TitleFont.FontFamily,
-                this.tabPalette.TitleFont.Size * scale))
             using (var icon = new Bitmap((int)(tab.Icon.Width * scale), (int)(tab.Icon.Height * scale)))
             {
                 using (var gr = Graphics.FromImage(icon))
@@ -1321,12 +1315,13 @@ namespace SWF.UIComponent.TabOperation
                     gr.DrawImage(tab.Icon, 0, 0, icon.Width, icon.Height);
                 }
 
+                var font = TabPalette.GetFont(scale);
                 var args = new DrawTabEventArgs
                 {
                     Graphics = g,
                     Font = font,
-                    TitleColor = this.tabPalette.TitleColor,
-                    TitleFormatFlags = this.tabPalette.TitleFormatFlags,
+                    TitleColor = TabPalette.TITLE_COLOR,
+                    TitleFormatFlags = TabPalette.TITLE_FORMAT_FLAGS,
                     TextRectangle = tab.DrawArea.GetPageRectangle(),
                     IconRectangle = tab.DrawArea.GetIconRectangle(icon),
                     CloseButtonRectangle = tab.DrawArea.GetCloseButtonRectangle(),

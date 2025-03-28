@@ -18,7 +18,6 @@ namespace SWF.UIComponent.TabOperation
     {
         private static readonly Color TRANSPARENT_COLOR = Color.FromArgb(0, 0, 0, 0);
 
-        private TabPalette tabPalette = null;
         private TabDropForm tabDropForm = null;
         private TabDrawArea tabDrawArea = null;
         private DrawTabEventArgs drawTabEventArgs = null;
@@ -58,15 +57,6 @@ namespace SWF.UIComponent.TabOperation
             get
             {
                 return this.tabSwitch;
-            }
-        }
-
-        private TabPalette TabPalette
-        {
-            get
-            {
-                this.tabPalette ??= new TabPalette();
-                return this.tabPalette;
             }
         }
 
@@ -169,6 +159,10 @@ namespace SWF.UIComponent.TabOperation
                 throw new Exception("領域のイメージが初期化されていません。");
             }
 
+            var hwnd = WinApiMembers.WindowFromPoint(
+                new WinApiMembers.POINT(Cursor.Position.X, Cursor.Position.Y));
+            var scale = AppConstants.GetCurrentWindowScale(hwnd);
+
             using (var pageCap = tab.GetPageCapture())
             {
                 var pageSize = this.GetPageSize(pageCap);
@@ -187,19 +181,15 @@ namespace SWF.UIComponent.TabOperation
                     var pageRect = this.GetPageRectangle(outlineRect);
                     g.DrawImage(pageCap, pageRect);
 
-                    var hwnd = WinApiMembers.WindowFromPoint(
-                        new WinApiMembers.POINT(Cursor.Position.X, Cursor.Position.Y));
-                    var scale = AppConstants.GetCurrentWindowScale(hwnd);
-
                     this.TabDrawArea.DrawActiveTab(g, scale);
                 }
 
                 this.regionImage = regionImage;
             }
 
-            this.DrawTabEventArgs.Font = this.TabPalette.TitleFont;
-            this.DrawTabEventArgs.TitleColor = this.TabPalette.TitleColor;
-            this.DrawTabEventArgs.TitleFormatFlags = this.TabPalette.TitleFormatFlags;
+            this.DrawTabEventArgs.Font = TabPalette.GetFont(scale);
+            this.DrawTabEventArgs.TitleColor = TabPalette.TITLE_COLOR;
+            this.DrawTabEventArgs.TitleFormatFlags = TabPalette.TITLE_FORMAT_FLAGS;
             this.DrawTabEventArgs.TextRectangle = this.TabDrawArea.GetPageRectangle();
             this.DrawTabEventArgs.IconRectangle = this.TabDrawArea.GetIconRectangle(tab.Icon);
             this.DrawTabEventArgs.CloseButtonRectangle = this.TabDrawArea.GetCloseButtonRectangle();
