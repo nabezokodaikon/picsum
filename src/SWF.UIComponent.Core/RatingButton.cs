@@ -7,6 +7,9 @@ namespace SWF.UIComponent.Core
     [SupportedOSPlatform("windows10.0.17763.0")]
     internal partial class RatingButton : Control
     {
+        private static readonly Size DEFAULT_SIZE = new(48, 48);
+
+        private float scale = 1;
         private bool _isActive = false;
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -50,18 +53,26 @@ namespace SWF.UIComponent.Core
                 true);
             this.UpdateStyles();
 
-            this.Size = new Size(48, 48);
-            this.MaximumSize = this.Size;
-            this.MinimumSize = this.Size;
+            this.Size = DEFAULT_SIZE;
+        }
+
+        public void SetControlsBounds(float scale)
+        {
+            this.scale = scale;
+            this.Size = new(
+                (int)(DEFAULT_SIZE.Width * scale),
+                (int)(DEFAULT_SIZE.Height * scale));
+            this.Invalidate();
+            this.Update();
         }
 
         protected override void OnPaint(PaintEventArgs e)
         {
             var icon = this.Icon;
-            var w = Math.Min(icon.Width, this.Width);
-            var h = Math.Min(icon.Height, this.Height);
-            var x = (this.Width - icon.Width) / 2f;
-            var y = (this.Height - icon.Height) / 2f;
+            var w = Math.Min(icon.Width * this.scale, this.Width);
+            var h = Math.Min(icon.Height * this.scale, this.Height);
+            var x = (this.Width - icon.Width * this.scale) / 2f;
+            var y = (this.Height - icon.Height * this.scale) / 2f;
             e.Graphics.DrawImage(icon, x, y, w, h);
         }
     }

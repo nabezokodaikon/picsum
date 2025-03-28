@@ -56,6 +56,14 @@ namespace SWF.UIComponent.Core
             this.UpdateStyles();
         }
 
+        public void SetControlsBounds(float scale)
+        {
+            foreach (var button in this.ratingButtonList)
+            {
+                button.SetControlsBounds(scale);
+            }
+        }
+
         public void SetValue(int value)
         {
             if (this.ratingValue < 0 || this.maximumValue < this.ratingValue)
