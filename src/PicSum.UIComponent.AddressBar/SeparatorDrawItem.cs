@@ -17,25 +17,9 @@ namespace PicSum.UIComponent.AddressBar
         private bool disposed = false;
         private readonly Image mousePointImage = ResourceFiles.SmallArrowRightIcon.Value;
         private readonly Image mouseDownImage = ResourceFiles.SmallArrowDownIcon.Value;
-        private Font selectedSubDirectoryFont = null;
 
         public DirectoryEntity Directory { get; set; }
         public string SelectedSubDirectoryPath { get; set; }
-
-        private Font SelectedSubDirectoryFont
-        {
-            get
-            {
-                this.selectedSubDirectoryFont
-                    ??= new Font(Palette.TEXT_FONT.FontFamily,
-                                 Palette.TEXT_FONT.Size,
-                                 FontStyle.Bold,
-                                 Palette.TEXT_FONT.Unit,
-                                 Palette.TEXT_FONT.GdiCharSet);
-
-                return this.selectedSubDirectoryFont;
-            }
-        }
 
         public SeparatorDrawItem()
         {
@@ -48,9 +32,6 @@ namespace PicSum.UIComponent.AddressBar
             {
                 return;
             }
-
-            this.selectedSubDirectoryFont?.Dispose();
-            this.selectedSubDirectoryFont = null;
 
             this.disposed = true;
 
@@ -133,23 +114,21 @@ namespace PicSum.UIComponent.AddressBar
                 e.Graphics.DrawImage(item.DirectoryIcon, iconRect);
             }
 
-            using (var textFont = this.GetFont(item.DirectoryPath, scale))
-            {
-                var text = item.DirectoryName;
-                var textSize = TextRenderer.MeasureText(text, textFont);
-                var textRect = new RectangleF(e.ItemRectangle.X + base.DropDownList.ItemHeight,
-                                              e.ItemRectangle.Y,
-                                              e.ItemRectangle.Width - base.DropDownList.ItemHeight,
-                                              e.ItemRectangle.Height);
+            var textFont = this.GetFont(item.DirectoryPath, scale);
+            var text = item.DirectoryName;
+            var textSize = TextRenderer.MeasureText(text, textFont);
+            var textRect = new RectangleF(e.ItemRectangle.X + base.DropDownList.ItemHeight,
+                                          e.ItemRectangle.Y,
+                                          e.ItemRectangle.Width - base.DropDownList.ItemHeight,
+                                          e.ItemRectangle.Height);
 
-                TextRenderer.DrawText(
-                    e.Graphics,
-                    text,
-                    textFont,
-                    new Point((int)textRect.Location.X, (int)(textRect.Location.Y + (textRect.Height - textSize.Height) / 2f)),
-                    base.DropDownList.ItemTextBrush.Color,
-                    TextFormatFlags.Top);
-            }
+            TextRenderer.DrawText(
+                e.Graphics,
+                text,
+                textFont,
+                new Point((int)textRect.Location.X, (int)(textRect.Location.Y + (textRect.Height - textSize.Height) / 2f)),
+                base.DropDownList.ItemTextBrush.Color,
+                TextFormatFlags.Top);
         }
 
         private RectangleF GetImageDrawRectangle(Image img)
@@ -166,17 +145,11 @@ namespace PicSum.UIComponent.AddressBar
         {
             if (directoryPath.Equals(this.SelectedSubDirectoryPath, StringComparison.Ordinal))
             {
-                return new Font(
-                    this.SelectedSubDirectoryFont.FontFamily,
-                    this.SelectedSubDirectoryFont.Size * scale,
-                    this.SelectedSubDirectoryFont.Style);
+                return Palette.GetBoldFont(scale);
             }
             else
             {
-                return new Font(
-                    Palette.TEXT_FONT.FontFamily,
-                    Palette.TEXT_FONT.Size * scale,
-                    Palette.TEXT_FONT.Style);
+                return Palette.GetRegularFont(scale);
             }
         }
 
@@ -187,9 +160,9 @@ namespace PicSum.UIComponent.AddressBar
 
             var width = this.GetMinimumDropDownWidth();
             var scale = AppConstants.GetCurrentWindowScale(base.DropDownList.Handle);
-            using (var font = new Font(this.SelectedSubDirectoryFont.FontFamily, this.SelectedSubDirectoryFont.Size * scale))
             using (var g = base.DropDownList.CreateGraphics())
             {
+                var font = Palette.GetBoldFont(scale);
                 var srcItems = e.ToList();
                 srcItems.Sort((x, y) => x.FilePath.CompareTo(y.FilePath));
                 foreach (var info in srcItems)

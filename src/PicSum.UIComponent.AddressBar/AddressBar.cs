@@ -243,20 +243,17 @@ namespace PicSum.UIComponent.AddressBar
             if (this.addressItems != null)
             {
                 var right = addressRect.Right;
-
+                var scale = AppConstants.GetCurrentWindowScale(this.Handle);
                 using (var g = this.CreateGraphics())
                 {
+                    var font = Palette.GetRegularFont(scale);
                     for (var i = this.addressItems.Count - 1; i > -1; i--)
                     {
                         var drawItem = this.addressItems[i];
 
                         if (drawItem.GetType() == typeof(DirectoryDrawItem))
                         {
-                            var scale = AppConstants.GetCurrentWindowScale(this.Handle);
-                            using (var font = new Font(Palette.TEXT_FONT.FontFamily, Palette.TEXT_FONT.Size * scale))
-                            {
-                                drawItem.Width = (int)(g.MeasureString((drawItem as DirectoryDrawItem).Directory.DirectoryName + "__", font).Width);
-                            }
+                            drawItem.Width = (int)(g.MeasureString((drawItem as DirectoryDrawItem).Directory.DirectoryName + "__", font).Width);
                         }
                         else if (drawItem.GetType() == typeof(SeparatorDrawItem))
                         {

@@ -59,8 +59,8 @@ namespace PicSum.UIComponent.AddressBar
 
                 var scale = AppConstants.GetCurrentWindowScale(base.DropDownList.Handle);
                 using (var g = this.DropDownList.CreateGraphics())
-                using (var font = new Font(Palette.TEXT_FONT.FontFamily, Palette.TEXT_FONT.Size * scale))
                 {
+                    var font = Palette.GetRegularFont(scale);
                     foreach (var directory in base.Items)
                     {
                         width = Math.Max(width, (int)g.MeasureString(directory.DirectoryName + "________", font).Width);
@@ -92,44 +92,43 @@ namespace PicSum.UIComponent.AddressBar
         protected override void DrawDropDownItem(SWF.UIComponent.FlowList.DrawItemEventArgs e)
         {
             var scale = AppConstants.GetCurrentWindowScale(this.AddressBar.Handle);
-            using (var font = new Font(Palette.TEXT_FONT.FontFamily, Palette.TEXT_FONT.Size * scale))
+            var font = Palette.GetRegularFont(scale);
+
+            if (e.IsFocus || e.IsMousePoint || e.IsSelected)
             {
-                if (e.IsFocus || e.IsMousePoint || e.IsSelected)
-                {
-                    e.Graphics.FillRectangle(this.DropDownList.SelectedItemBrush, e.ItemRectangle);
-                }
-
-                var item = base.Items[e.ItemIndex];
-
-                if (item.DirectoryIcon != null)
-                {
-                    var iconSize = Math.Min(base.DropDownList.ItemHeight, item.DirectoryIcon.Width * scale);
-
-                    var iconPoint = (base.DropDownList.ItemHeight - iconSize) / 2f;
-
-                    var iconRect = new RectangleF(e.ItemRectangle.X + iconPoint,
-                                                  e.ItemRectangle.Y + iconPoint,
-                                                  iconSize,
-                                                  iconSize);
-
-                    e.Graphics.DrawImage(item.DirectoryIcon, iconRect);
-                }
-
-                var text = item.DirectoryName;
-                var textSize = TextRenderer.MeasureText(text, font);
-                var textRect = new RectangleF(e.ItemRectangle.X + this.DropDownList.ItemHeight,
-                                              e.ItemRectangle.Y,
-                                              e.ItemRectangle.Width - this.DropDownList.ItemHeight,
-                                              e.ItemRectangle.Height);
-
-                TextRenderer.DrawText(
-                    e.Graphics,
-                    text,
-                    font,
-                    new Point((int)textRect.Location.X, (int)(textRect.Location.Y + (textRect.Height - textSize.Height) / 2f)),
-                    Palette.TEXT_BRUSH.Color,
-                    TextFormatFlags.Top);
+                e.Graphics.FillRectangle(this.DropDownList.SelectedItemBrush, e.ItemRectangle);
             }
+
+            var item = base.Items[e.ItemIndex];
+
+            if (item.DirectoryIcon != null)
+            {
+                var iconSize = Math.Min(base.DropDownList.ItemHeight, item.DirectoryIcon.Width * scale);
+
+                var iconPoint = (base.DropDownList.ItemHeight - iconSize) / 2f;
+
+                var iconRect = new RectangleF(e.ItemRectangle.X + iconPoint,
+                                              e.ItemRectangle.Y + iconPoint,
+                                              iconSize,
+                                              iconSize);
+
+                e.Graphics.DrawImage(item.DirectoryIcon, iconRect);
+            }
+
+            var text = item.DirectoryName;
+            var textSize = TextRenderer.MeasureText(text, font);
+            var textRect = new RectangleF(e.ItemRectangle.X + this.DropDownList.ItemHeight,
+                                          e.ItemRectangle.Y,
+                                          e.ItemRectangle.Width - this.DropDownList.ItemHeight,
+                                          e.ItemRectangle.Height);
+
+            TextRenderer.DrawText(
+                e.Graphics,
+                text,
+                font,
+                new Point((int)textRect.Location.X, (int)(textRect.Location.Y + (textRect.Height - textSize.Height) / 2f)),
+                Palette.TEXT_BRUSH.Color,
+                TextFormatFlags.Top);
         }
 
         private RectangleF GetImageDrawRectangle(Image img)
