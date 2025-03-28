@@ -56,17 +56,21 @@ namespace PicSum.UIComponent.AddressBar
                 g.DrawRectangle(Palette.MOUSE_POINT_PEN, rect);
             }
 
-            var text = this.directory.DirectoryName;
-            var textSize = TextRenderer.MeasureText(text, Palette.TEXT_FONT);
-            TextRenderer.DrawText(
-                g,
-                text,
-                Palette.TEXT_FONT,
-                new Point(
-                    (int)(rect.Location.X + (rect.Width - textSize.Width) / 2f),
-                    (int)(rect.Location.Y + (rect.Height - textSize.Height) / 2f)),
-                Palette.TEXT_BRUSH.Color,
-                TextFormatFlags.Top);
+            var scale = AppConstants.GetCurrentWindowScale(this.AddressBar.Handle);
+            using (var font = new Font(Palette.TEXT_FONT.FontFamily, Palette.TEXT_FONT.Size * scale))
+            {
+                var text = this.directory.DirectoryName;
+                var textSize = TextRenderer.MeasureText(text, font);
+                TextRenderer.DrawText(
+                    g,
+                    text,
+                    font,
+                    new Point(
+                        (int)(rect.Location.X + (rect.Width - textSize.Width) / 2f),
+                        (int)(rect.Location.Y + (rect.Height - textSize.Height) / 2f)),
+                    Palette.TEXT_BRUSH.Color,
+                    TextFormatFlags.Top);
+            }
         }
 
         public override void OnMouseDown(MouseEventArgs e)

@@ -1,3 +1,4 @@
+using SWF.Core.Base;
 using System;
 using System.Drawing;
 using System.Runtime.Versioning;
@@ -8,8 +9,6 @@ namespace PicSum.UIComponent.AddressBar
     [SupportedOSPlatform("windows10.0.17763.0")]
     abstract class DrawItemBase
     {
-        protected const int DROPDOWN_ITEM_HEIGHT = 32;
-        protected const int MINIMUM_DROPDOWN_WIDHT = 128;
         protected const int MAXIMUM_SHOW_ITEM_COUNT = 16;
 
         public event EventHandler DropDownOpened;
@@ -181,6 +180,20 @@ namespace PicSum.UIComponent.AddressBar
             this.DropDownClosed = null;
             this.SelectedDirectory = null;
             this.addressBar = null;
+        }
+
+        protected int GetDropDownItemHeight()
+        {
+            const int DROPDOWN_ITEM_HEIGHT = 32;
+            var scale = AppConstants.GetCurrentWindowScale(this.addressBar.Handle);
+            return (int)(DROPDOWN_ITEM_HEIGHT * scale);
+        }
+
+        protected int GetMinimumDropDownWidth()
+        {
+            const int MINIMUM_DROPDOWN_WIDHT = 128;
+            var scale = AppConstants.GetCurrentWindowScale(this.addressBar.Handle);
+            return (int)(MINIMUM_DROPDOWN_WIDHT * scale);
         }
 
         protected virtual void OnDropDownOpened(EventArgs e)

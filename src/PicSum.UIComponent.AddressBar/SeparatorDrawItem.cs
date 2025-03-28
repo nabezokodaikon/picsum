@@ -68,7 +68,7 @@ namespace PicSum.UIComponent.AddressBar
             {
                 g.FillRectangle(Palette.MOUSE_DOWN_BRUSH, rect);
                 g.DrawRectangle(Palette.MOUSE_POINT_PEN, rect);
-                g.DrawImage(this.mouseDownImage, this.GetImageDrawRectangle(this.mousePointImage));
+                g.DrawImage(this.mouseDownImage, this.GetImageDrawRectangle(this.mouseDownImage));
             }
             else if (base.IsMousePoint)
             {
@@ -114,6 +114,8 @@ namespace PicSum.UIComponent.AddressBar
 
         protected override void DrawDropDownItem(SWF.UIComponent.FlowList.DrawItemEventArgs e)
         {
+            var scale = AppConstants.GetCurrentWindowScale(this.AddressBar.Handle);
+
             if (e.IsFocus || e.IsMousePoint)
             {
                 e.Graphics.FillRectangle(base.DropDownList.SelectedItemBrush, e.ItemRectangle);
@@ -123,7 +125,7 @@ namespace PicSum.UIComponent.AddressBar
 
             if (item.DirectoryIcon != null)
             {
-                var iconSize = Math.Min(base.DropDownList.ItemHeight, item.DirectoryIcon.Width);
+                var iconSize = Math.Min(base.DropDownList.ItemHeight, item.DirectoryIcon.Width * scale);
 
                 var iconPoint = (base.DropDownList.ItemHeight - iconSize) / 2f;
 
@@ -135,48 +137,60 @@ namespace PicSum.UIComponent.AddressBar
                 e.Graphics.DrawImage(item.DirectoryIcon, iconRect);
             }
 
-            var text = item.DirectoryName;
-            var textFont = this.GetFont(item.DirectoryPath);
-            var textSize = TextRenderer.MeasureText(text, textFont);
-            var textRect = new RectangleF(e.ItemRectangle.X + base.DropDownList.ItemHeight,
-                                          e.ItemRectangle.Y,
-                                          e.ItemRectangle.Width - base.DropDownList.ItemHeight,
-                                          e.ItemRectangle.Height);
+            using (var textFont = this.GetFont(item.DirectoryPath, scale))
+            {
+                var text = item.DirectoryName;
+                var textSize = TextRenderer.MeasureText(text, textFont);
+                var textRect = new RectangleF(e.ItemRectangle.X + base.DropDownList.ItemHeight,
+                                              e.ItemRectangle.Y,
+                                              e.ItemRectangle.Width - base.DropDownList.ItemHeight,
+                                              e.ItemRectangle.Height);
 
-            TextRenderer.DrawText(
-                e.Graphics,
-                text,
-                textFont,
-                new Point((int)textRect.Location.X, (int)(textRect.Location.Y + (textRect.Height - textSize.Height) / 2f)),
-                base.DropDownList.ItemTextBrush.Color,
-                TextFormatFlags.Top);
+                TextRenderer.DrawText(
+                    e.Graphics,
+                    text,
+                    textFont,
+                    new Point((int)textRect.Location.X, (int)(textRect.Location.Y + (textRect.Height - textSize.Height) / 2f)),
+                    base.DropDownList.ItemTextBrush.Color,
+                    TextFormatFlags.Top);
+            }
         }
 
         private RectangleF GetImageDrawRectangle(Image img)
         {
-            var w = img.Width;
-            var h = img.Height;
-            var x = base.X + (base.Width - img.Width) / 2f;
-            var y = base.Y + (base.Height - img.Height) / 2f;
+            var scale = AppConstants.GetCurrentWindowScale(this.AddressBar.Handle);
+            var w = img.Width * scale;
+            var h = img.Height * scale;
+            var x = base.X + (base.Width - w) / 2f;
+            var y = base.Y + (base.Height - w) / 2f;
             return new RectangleF(x, y, w, h);
         }
 
-        private Font GetFont(string directoryPath)
+        private Font GetFont(string directoryPath, float scale)
         {
             if (directoryPath.Equals(this.SelectedSubDirectoryPath, StringComparison.Ordinal))
             {
-                return this.SelectedSubDirectoryFont;
+                return new Font(
+                    this.SelectedSubDirectoryFont.FontFamily,
+                    this.SelectedSubDirectoryFont.Size * scale,
+                    this.SelectedSubDirectoryFont.Style);
             }
             else
             {
-                return Palette.TEXT_FONT;
+                return new Font(
+                    Palette.TEXT_FONT.FontFamily,
+                    Palette.TEXT_FONT.Size * scale,
+                    Palette.TEXT_FONT.Style);
             }
         }
 
         private void GetSubDirectoryJob_Callback(ListResult<FileShallowInfoEntity> e)
         {
-            var width = MINIMUM_DROPDOWN_WIDHT;
+            var width = this.GetMinimumDropDownWidth(); ;
 
+
+            var scale = AppConstants.GetCurrentWindowScale(base.DropDownList.Handle);
+            using (var font = new Font(this.SelectedSubDirectoryFont.FontFamily, this.SelectedSubDirectoryFont.Size * scale))
             using (var g = base.DropDownList.CreateGraphics())
             {
                 var srcItems = e.ToList();
@@ -191,7 +205,7 @@ namespace PicSum.UIComponent.AddressBar
                     };
                     base.Items.Add(item);
 
-                    width = Math.Max(width, (int)g.MeasureString(item.DirectoryName + "________", this.SelectedSubDirectoryFont).Width);
+                    width = Math.Max(width, (int)g.MeasureString(item.DirectoryName + "________", font).Width);
                 }
             }
 

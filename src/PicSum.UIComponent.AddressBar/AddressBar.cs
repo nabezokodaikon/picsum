@@ -16,13 +16,9 @@ namespace PicSum.UIComponent.AddressBar
     public sealed partial class AddressBar
         : Control, ISender
     {
-
-        private const int INNER_OFFSET = 1;
-
         public event EventHandler<SelectedDirectoryEventArgs> SelectedDirectory;
 
         private bool disposed = false;
-        private readonly int dropDownItemWidth = ResourceFiles.SmallArrowDownIcon.Value.Width;
         private readonly OverflowDrawItem overflowItem = new();
         private readonly DirectoryHistoryDrawItem directoryHistoryItem = new();
         private string currentDirectoryPath = null;
@@ -216,15 +212,30 @@ namespace PicSum.UIComponent.AddressBar
             base.OnMouseClick(e);
         }
 
+        private int GetInnerOffset()
+        {
+            const int INNER_OFFSET = 1;
+            var scale = AppConstants.GetCurrentWindowScale(this.Handle);
+            return (int)(INNER_OFFSET * scale);
+        }
+
+        private int GetDropDownItemWidth()
+        {
+            var dropDownItemWidth = ResourceFiles.SmallArrowDownIcon.Value.Width;
+            var scale = AppConstants.GetCurrentWindowScale(this.Handle);
+            return (int)(dropDownItemWidth * scale);
+        }
+
         private void SetItemsRectangle()
         {
             this.overflowItem.ClearRectangle();
             this.overflowItem.Items.Clear();
 
             var innerRect = this.GetInnerRectangle();
-            this.directoryHistoryItem.Left = innerRect.Right - this.dropDownItemWidth;
+            var dropDownItemWidth = this.GetDropDownItemWidth();
+            this.directoryHistoryItem.Left = innerRect.Right - dropDownItemWidth;
             this.directoryHistoryItem.Top = innerRect.Y;
-            this.directoryHistoryItem.Width = this.dropDownItemWidth;
+            this.directoryHistoryItem.Width = dropDownItemWidth;
             this.directoryHistoryItem.Height = innerRect.Height;
 
             var addressRect = this.GetAddressRect();
@@ -241,11 +252,15 @@ namespace PicSum.UIComponent.AddressBar
 
                         if (drawItem.GetType() == typeof(DirectoryDrawItem))
                         {
-                            drawItem.Width = (int)(g.MeasureString((drawItem as DirectoryDrawItem).Directory.DirectoryName + "__", Palette.TEXT_FONT).Width);
+                            var scale = AppConstants.GetCurrentWindowScale(this.Handle);
+                            using (var font = new Font(Palette.TEXT_FONT.FontFamily, Palette.TEXT_FONT.Size * scale))
+                            {
+                                drawItem.Width = (int)(g.MeasureString((drawItem as DirectoryDrawItem).Directory.DirectoryName + "__", font).Width);
+                            }
                         }
                         else if (drawItem.GetType() == typeof(SeparatorDrawItem))
                         {
-                            drawItem.Width = this.dropDownItemWidth;
+                            drawItem.Width = dropDownItemWidth;
                         }
 
                         drawItem.Left = right - drawItem.Width;
@@ -269,7 +284,7 @@ namespace PicSum.UIComponent.AddressBar
                             {
                                 this.overflowItem.Left = left;
                                 this.overflowItem.Top = addressRect.Y;
-                                this.overflowItem.Width = this.dropDownItemWidth;
+                                this.overflowItem.Width = dropDownItemWidth;
                                 this.overflowItem.Height = addressRect.Height;
                                 left = this.overflowItem.Right;
                             }
@@ -391,19 +406,22 @@ namespace PicSum.UIComponent.AddressBar
 
         private Rectangle GetInnerRectangle()
         {
-            var x = INNER_OFFSET;
-            var y = INNER_OFFSET;
-            var w = this.ClientRectangle.Width - INNER_OFFSET * 2;
-            var h = this.ClientRectangle.Height - INNER_OFFSET * 2;
+            var innerOffset = this.GetInnerOffset();
+            var x = innerOffset;
+            var y = innerOffset;
+            var w = this.ClientRectangle.Width - innerOffset * 2;
+            var h = this.ClientRectangle.Height - innerOffset * 2;
             return new Rectangle(x, y, w, h);
         }
 
         private Rectangle GetAddressRect()
         {
-            var x = INNER_OFFSET;
-            var y = INNER_OFFSET;
-            var w = this.ClientRectangle.Width - INNER_OFFSET * 2 - this.dropDownItemWidth;
-            var h = this.ClientRectangle.Height - INNER_OFFSET * 2;
+            var innerOffset = this.GetInnerOffset();
+            var dropDownItemWidth = this.GetDropDownItemWidth();
+            var x = innerOffset;
+            var y = innerOffset;
+            var w = this.ClientRectangle.Width - innerOffset * 2 - dropDownItemWidth;
+            var h = this.ClientRectangle.Height - innerOffset * 2;
             return new Rectangle(x, y, w, h);
         }
 
