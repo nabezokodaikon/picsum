@@ -1303,23 +1303,37 @@ namespace SWF.UIComponent.TabOperation
                 return;
             }
 
-            var args = new DrawTabEventArgs
-            {
-                Graphics = g,
-                Font = this.tabPalette.TitleFont,
-                TitleColor = this.tabPalette.TitleColor,
-                TitleFormatFlags = this.tabPalette.TitleFormatFlags,
-                TextRectangle = tab.DrawArea.GetPageRectangle(),
-                IconRectangle = tab.DrawArea.GetIconRectangle(tab.Icon),
-                CloseButtonRectangle = tab.DrawArea.GetCloseButtonRectangle(),
-            };
-
             var form = this.GetForm();
             var tabCloseButtonCanDrawWidth = GetTabCloseButtonCanDrawWidth(form);
-            if (tab.DrawArea.Width > tabCloseButtonCanDrawWidth)
+            if (tab.DrawArea.Width <= tabCloseButtonCanDrawWidth)
             {
+                return;
+            }
+
+            var scale = AppConstants.GetCurrentWindowScale(this.Handle);
+            using (var font = new Font(
+                this.tabPalette.TitleFont.FontFamily,
+                this.tabPalette.TitleFont.Size * scale))
+            using (var icon = new Bitmap((int)(tab.Icon.Width * scale), (int)(tab.Icon.Height * scale)))
+            {
+                using (var gr = Graphics.FromImage(icon))
+                {
+                    gr.DrawImage(tab.Icon, 0, 0, icon.Width, icon.Height);
+                }
+
+                var args = new DrawTabEventArgs
+                {
+                    Graphics = g,
+                    Font = font,
+                    TitleColor = this.tabPalette.TitleColor,
+                    TitleFormatFlags = this.tabPalette.TitleFormatFlags,
+                    TextRectangle = tab.DrawArea.GetPageRectangle(),
+                    IconRectangle = tab.DrawArea.GetIconRectangle(icon),
+                    CloseButtonRectangle = tab.DrawArea.GetCloseButtonRectangle(),
+                };
                 tab.DrawingTabPage(args);
             }
+
         }
 
         private void DrawDropPoint(Graphics g)
