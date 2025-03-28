@@ -440,15 +440,21 @@ namespace PicSum.UIComponent.InfoPanel
         private void DrawSelectedFileCount(Graphics g, Rectangle rect)
         {
             var text = $"{this.FilePathList.Length} files selected";
-            g.DrawString(text, new Font(
-                this.Font.FontFamily, (int)(this.Font.Size * 1.5)), this.foreColorBrush, rect, this.stringFormat);
+            using (var font = new Font(
+                this.Font.FontFamily, (int)(this.Font.Size * 1.5)))
+            {
+                g.DrawString(text, font, this.foreColorBrush, rect, this.stringFormat);
+            }
         }
 
         private void DrawErrorMessage(Graphics g, Rectangle rect)
         {
             var text = $"Failed to load file";
-            g.DrawString(text, new Font(
-                this.Font.FontFamily, (int)(this.Font.Size * 1.5)), this.foreColorBrush, rect, this.stringFormat);
+            using (var font = new Font(
+                this.Font.FontFamily, (int)(this.Font.Size * 1.5)))
+            {
+                g.DrawString(text, font, this.foreColorBrush, rect, this.stringFormat);
+            }
         }
 
         private void GetFileInfoJob_Callback(FileDeepInfoGetResult result)
