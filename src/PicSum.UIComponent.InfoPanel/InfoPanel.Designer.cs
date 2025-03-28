@@ -18,7 +18,7 @@ namespace PicSum.UIComponent.InfoPanel
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.thumbnailPictureBox = new System.Windows.Forms.PictureBox();
+            this.thumbnailPictureBox = new SWF.UIComponent.Core.PictureBoxEx();
             this.tagContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tagDeleteMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tagToAllEntryMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -26,7 +26,6 @@ namespace PicSum.UIComponent.InfoPanel
             this.tagFlowList = new SWF.UIComponent.FlowList.FlowList();
             this.wideComboBox = new SWF.UIComponent.WideDropDown.WideComboBox();
             this.fileInfoLabel = new FileInfoLabel();
-            ((System.ComponentModel.ISupportInitialize)this.thumbnailPictureBox).BeginInit();
             this.tagContextMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -41,6 +40,7 @@ namespace PicSum.UIComponent.InfoPanel
             this.thumbnailPictureBox.Size = new Size(508, 256);
             this.thumbnailPictureBox.TabIndex = 0;
             this.thumbnailPictureBox.TabStop = false;
+            this.thumbnailPictureBox.Font = new Font("Yu Gothic UI", 14F);
             this.thumbnailPictureBox.Text = "thumbnailPictureBox1";
             this.thumbnailPictureBox.Paint += this.ThumbnailPictureBox_Paint;
             // 
@@ -136,12 +136,11 @@ namespace PicSum.UIComponent.InfoPanel
             this.Size = new Size(512, 715);
             this.IsDrawLeftBorderLine = true;
             this.VerticalTopMargin = 28;
-            ((System.ComponentModel.ISupportInitialize)this.thumbnailPictureBox).EndInit();
             this.tagContextMenuStrip.ResumeLayout(false);
             this.ResumeLayout(false);
         }
 
-        private System.Windows.Forms.PictureBox thumbnailPictureBox;
+        private SWF.UIComponent.Core.PictureBoxEx thumbnailPictureBox;
         private SWF.UIComponent.Core.RatingBar ratingBar;
         private SWF.UIComponent.FlowList.FlowList tagFlowList;
         private System.Windows.Forms.ContextMenuStrip tagContextMenuStrip;
