@@ -156,6 +156,7 @@ namespace PicSum.UIComponent.AddressBar
             base.Items.Clear();
             base.DropDownList.ClearSelectedItems();
             base.DropDownList.ItemCount = 0;
+            base.DropDownList.ItemHeight = this.GetDropDownItemHeight();
 
             var width = 0;
 

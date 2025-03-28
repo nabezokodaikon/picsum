@@ -17,7 +17,6 @@ namespace PicSum.UIComponent.AddressBar
         private bool disposed = false;
         private readonly Image mousePointImage = ResourceFiles.SmallArrowRightIcon.Value;
         private readonly Image mouseDownImage = ResourceFiles.SmallArrowDownIcon.Value;
-        private bool isRead = false;
         private Font selectedSubDirectoryFont = null;
 
         public DirectoryEntity Directory { get; set; }
@@ -90,20 +89,17 @@ namespace PicSum.UIComponent.AddressBar
             {
                 base.DropDownList.Show(base.AddressBar, this.Left, this.Bottom);
 
-                if (!this.isRead)
-                {
-                    var param = new ValueParameter<string>(this.Directory.DirectoryPath);
-                    Instance<JobCaller>.Value.SubDirectoriesGetJob.Value
-                        .StartJob(this.AddressBar, param, _ =>
+                var param = new ValueParameter<string>(this.Directory.DirectoryPath);
+                Instance<JobCaller>.Value.SubDirectoriesGetJob.Value
+                    .StartJob(this.AddressBar, param, _ =>
+                    {
+                        if (this.disposed)
                         {
-                            if (this.disposed)
-                            {
-                                return;
-                            }
+                            return;
+                        }
 
-                            this.GetSubDirectoryJob_Callback(_);
-                        });
-                }
+                        this.GetSubDirectoryJob_Callback(_);
+                    });
             }
         }
 
@@ -186,9 +182,10 @@ namespace PicSum.UIComponent.AddressBar
 
         private void GetSubDirectoryJob_Callback(ListResult<FileShallowInfoEntity> e)
         {
-            var width = this.GetMinimumDropDownWidth(); ;
+            base.DropDownList.BeginUpdate();
+            base.DropDownList.ItemHeight = this.GetDropDownItemHeight();
 
-
+            var width = this.GetMinimumDropDownWidth();
             var scale = AppConstants.GetCurrentWindowScale(base.DropDownList.Handle);
             using (var font = new Font(this.SelectedSubDirectoryFont.FontFamily, this.SelectedSubDirectoryFont.Size * scale))
             using (var g = base.DropDownList.CreateGraphics())
@@ -220,14 +217,13 @@ namespace PicSum.UIComponent.AddressBar
             base.DropDownList.Size = new Size(width + base.DropDownList.ItemHeight, height);
             base.DropDownList.ItemCount = base.Items.Count;
 
-            var selectedItem = base.Items.SingleOrDefault(item => item.DirectoryPath.Equals(this.SelectedSubDirectoryPath, StringComparison.Ordinal));
+            var selectedItem = base.Items.FirstOrDefault(item => item.DirectoryPath.Equals(this.SelectedSubDirectoryPath, StringComparison.Ordinal));
             if (selectedItem != null)
             {
                 base.DropDownList.SelectItem(base.Items.IndexOf(selectedItem));
             }
 
-            this.isRead = true;
+            base.DropDownList.EndUpdate();
         }
-
     }
 }

@@ -52,6 +52,9 @@ namespace PicSum.UIComponent.AddressBar
 
             if (e.Button == MouseButtons.Left)
             {
+                base.DropDownList.BeginUpdate();
+                base.DropDownList.ItemHeight = this.GetDropDownItemHeight();
+
                 var width = this.GetMinimumDropDownWidth();
 
                 var scale = AppConstants.GetCurrentWindowScale(base.DropDownList.Handle);
@@ -72,7 +75,6 @@ namespace PicSum.UIComponent.AddressBar
                 var height = Math.Min(MAXIMUM_SHOW_ITEM_COUNT * base.DropDownList.ItemHeight,
                                       base.Items.Count * base.DropDownList.ItemHeight);
 
-                base.DropDownList.BeginUpdate();
                 base.DropDownList.Size = new Size(width + base.DropDownList.ItemHeight, height);
                 base.DropDownList.ClearSelectedItems();
                 base.DropDownList.ItemCount = 0;
