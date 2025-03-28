@@ -135,11 +135,12 @@ namespace SWF.UIComponent.TabOperation
             this.parameter = new(owner);
         }
 
-        public void DrawActiveTab(Graphics g)
+        public void DrawActiveTab(Graphics g, float scale)
         {
             ArgumentNullException.ThrowIfNull(g, nameof(g));
 
-            this.DrawTab(ACTIVE_TAB_BRUSH, g);
+            this.parameter.Update(scale);
+            this.DrawTab(ACTIVE_TAB_BRUSH, g, scale);
         }
 
         public void DrawActiveTab(TabSwitch tabSwitch, Graphics g)
@@ -283,7 +284,12 @@ namespace SWF.UIComponent.TabOperation
 
         private void DrawTab(SolidBrush brush, Graphics g)
         {
-            var destRect = this.GetDestCenterRectangle();
+            this.DrawTab(brush, g, 1f);
+        }
+
+        private void DrawTab(SolidBrush brush, Graphics g, float scale)
+        {
+            var destRect = this.GetDestCenterRectangle(scale);
 
             g.FillRectangle(brush, destRect);
             g.DrawLines(TAB_OUTLINE_PEN, [
@@ -328,14 +334,13 @@ namespace SWF.UIComponent.TabOperation
             }
         }
 
-        private RectangleF GetDestCenterRectangle()
+        private RectangleF GetDestCenterRectangle(float scale)
         {
             var x = this.drawPoint.X;
             var y = this.drawPoint.Y;
-            var w = this.width;
+            var w = this.width * scale;
             var h = this.parameter.Height;
             return new RectangleF(x, y, w, h);
         }
-
     }
 }

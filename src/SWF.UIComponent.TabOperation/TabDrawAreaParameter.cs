@@ -49,6 +49,11 @@ namespace SWF.UIComponent.TabOperation
             this.SetPrameters(scale);
         }
 
+        public void Update(float scale)
+        {
+            this.SetPrameters(scale);
+        }
+
         private void SetPrameters(float scale)
         {
             this.Scale = scale;

@@ -1,3 +1,4 @@
+using SWF.Core.Base;
 using SWF.Core.ImageAccessor;
 using System;
 using System.Drawing;
@@ -15,10 +16,6 @@ namespace SWF.UIComponent.TabOperation
     internal sealed partial class TabDragForm
         : Form
     {
-        private const float OUTLINE_OFFSET = 0.5f;
-        private const float DRAW_TAB_WIDHT_OFFSET = 8;
-        private const float CAPTURE_WIDTH = 320;
-
         private static readonly Color TRANSPARENT_COLOR = Color.FromArgb(0, 0, 0, 0);
 
         private TabPalette tabPalette = null;
@@ -28,6 +25,33 @@ namespace SWF.UIComponent.TabOperation
         private TabSwitch tabSwitch = null;
         private Bitmap regionImage = null;
         private Action<DrawTabEventArgs> drawTabPageMethod = null;
+
+        private float GetOutlineOffset()
+        {
+            const float OUTLINE_OFFSET = 0.5f;
+            var hwnd = WinApiMembers.WindowFromPoint(
+                new WinApiMembers.POINT(Cursor.Position.X, Cursor.Position.Y));
+            var scale = AppConstants.GetCurrentWindowScale(hwnd);
+            return OUTLINE_OFFSET * scale;
+        }
+
+        private float GetDrawTabWidthOffset()
+        {
+            const float DRAW_TAB_WIDHT_OFFSET = 8;
+            var hwnd = WinApiMembers.WindowFromPoint(
+                new WinApiMembers.POINT(Cursor.Position.X, Cursor.Position.Y));
+            var scale = AppConstants.GetCurrentWindowScale(hwnd);
+            return DRAW_TAB_WIDHT_OFFSET * scale;
+        }
+
+        private float GetCaptureWidth()
+        {
+            const float CAPTURE_WIDTH = 320;
+            var hwnd = WinApiMembers.WindowFromPoint(
+                new WinApiMembers.POINT(Cursor.Position.X, Cursor.Position.Y));
+            var scale = AppConstants.GetCurrentWindowScale(hwnd);
+            return CAPTURE_WIDTH * scale;
+        }
 
         public TabSwitch TabSwitch
         {
@@ -61,7 +85,7 @@ namespace SWF.UIComponent.TabOperation
             {
                 this.tabDrawArea ??= new(this)
                 {
-                    X = DRAW_TAB_WIDHT_OFFSET,
+                    X = this.GetDrawTabWidthOffset(),
                     Y = 0
                 };
                 return this.tabDrawArea;
@@ -79,6 +103,8 @@ namespace SWF.UIComponent.TabOperation
 
         public TabDragForm()
         {
+            this.AutoScaleMode = AutoScaleMode.Dpi;
+
             this.SetStyle(
                 ControlStyles.AllPaintingInWmPaint |
                 ControlStyles.OptimizedDoubleBuffer |
@@ -96,7 +122,7 @@ namespace SWF.UIComponent.TabOperation
         public void SetLocation(float xOffset, float yOffset)
         {
             var screenPoint = Cursor.Position;
-            this.Location = new Point(screenPoint.X - (int)DRAW_TAB_WIDHT_OFFSET - (int)xOffset, screenPoint.Y - (int)yOffset);
+            this.Location = new Point(screenPoint.X - (int)this.GetDrawTabWidthOffset() - (int)xOffset, screenPoint.Y - (int)yOffset);
 
             var leftBorderRect = ScreenUtil.GetLeftBorderRect();
             if (leftBorderRect.Contains(screenPoint))
@@ -158,12 +184,14 @@ namespace SWF.UIComponent.TabOperation
                     g.CompositingMode = CompositingMode.SourceOver;
 
                     var outlineRect = this.GetOutlineRectangle(pageSize);
-                    //g.FillRectangle(tab.Owner.OutlineBrush, outlineRect);
-
                     var pageRect = this.GetPageRectangle(outlineRect);
                     g.DrawImage(pageCap, pageRect);
 
-                    this.TabDrawArea.DrawActiveTab(g);
+                    var hwnd = WinApiMembers.WindowFromPoint(
+                        new WinApiMembers.POINT(Cursor.Position.X, Cursor.Position.Y));
+                    var scale = AppConstants.GetCurrentWindowScale(hwnd);
+
+                    this.TabDrawArea.DrawActiveTab(g, scale);
                 }
 
                 this.regionImage = regionImage;
@@ -177,7 +205,6 @@ namespace SWF.UIComponent.TabOperation
             this.DrawTabEventArgs.CloseButtonRectangle = this.TabDrawArea.GetCloseButtonRectangle();
 
             this.drawTabPageMethod = tab.DrawingTabPage;
-
             this.Size = this.regionImage.Size;
             this.Region = ImageUtil.GetRegion(this.regionImage, TRANSPARENT_COLOR);
             this.tabSwitch = tab.Owner;
@@ -194,6 +221,12 @@ namespace SWF.UIComponent.TabOperation
                 this.regionImage.Dispose();
                 this.regionImage = null;
             }
+        }
+
+        protected override void OnLocationChanged(EventArgs e)
+        {
+            this.Size = this.regionImage.Size;
+            base.OnLocationChanged(e);
         }
 
         protected override void OnLostFocus(EventArgs e)
@@ -222,7 +255,7 @@ namespace SWF.UIComponent.TabOperation
 
         private SizeF GetPageSize(Bitmap pageCap)
         {
-            var scale = CAPTURE_WIDTH / (float)pageCap.Width;
+            var scale = this.GetCaptureWidth() / (float)pageCap.Width;
             var w = pageCap.Width * scale;
             var h = pageCap.Height * scale;
             return new SizeF(w, h);
@@ -230,26 +263,29 @@ namespace SWF.UIComponent.TabOperation
 
         private SizeF GetRegionSize(SizeF pageSize)
         {
-            var w = pageSize.Width + OUTLINE_OFFSET * 2;
-            var h = this.TabDrawArea.Height + pageSize.Height + OUTLINE_OFFSET;
+            var outlineOffset = this.GetOutlineOffset();
+            var w = pageSize.Width + outlineOffset * 2;
+            var h = this.TabDrawArea.Height + pageSize.Height + outlineOffset;
             return new SizeF(w, h);
         }
 
         private RectangleF GetOutlineRectangle(SizeF pageSize)
         {
-            var w = pageSize.Width + OUTLINE_OFFSET * 2;
-            var h = pageSize.Height + OUTLINE_OFFSET * 2;
+            var outlineOffset = this.GetOutlineOffset();
+            var w = pageSize.Width + outlineOffset * 2;
+            var h = pageSize.Height + outlineOffset * 2;
             var x = 0;
-            var y = this.TabDrawArea.Height - OUTLINE_OFFSET;
+            var y = this.TabDrawArea.Height - outlineOffset;
             return new RectangleF(x, y, w, h);
         }
 
         private RectangleF GetPageRectangle(RectangleF outlineRectangle)
         {
-            var x = outlineRectangle.X + OUTLINE_OFFSET;
-            var y = outlineRectangle.Y + OUTLINE_OFFSET;
-            var w = outlineRectangle.Width - OUTLINE_OFFSET * 2f;
-            var h = outlineRectangle.Height - OUTLINE_OFFSET * 2f;
+            var outlineOffset = this.GetOutlineOffset();
+            var x = outlineRectangle.X + outlineOffset;
+            var y = outlineRectangle.Y + outlineOffset;
+            var w = outlineRectangle.Width - outlineOffset * 2f;
+            var h = outlineRectangle.Height - outlineOffset * 2f;
             return new RectangleF(x, y, w, h);
         }
 
