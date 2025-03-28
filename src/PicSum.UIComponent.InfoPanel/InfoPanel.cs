@@ -21,6 +21,9 @@ namespace PicSum.UIComponent.InfoPanel
     public sealed partial class InfoPanel
         : ToolPanel, ISender
     {
+        private const int TAG_FLOW_LIST_DEFAULT_ITEM_HEIGHT = 32;
+        private const float TAG_FLOW_LIST_DEFAULT_FONT_SIZE = 10f;
+
         private static readonly Rectangle THUMBNAIL_PICTURE_BOX_DEFAULT_BOUNDS
             = new(4, 0, 508, 256);
         private static readonly Rectangle FILE_INFO_LABEL_DEFAULT_BOUNDS
@@ -38,7 +41,7 @@ namespace PicSum.UIComponent.InfoPanel
 
         private FileDeepInfoGetResult fileInfoSource = FileDeepInfoGetResult.EMPTY;
         private Font allTagFont = null;
-        private readonly Image tagIcon = ResourceFiles.TagIcon.Value;
+        private Image tagIcon = null;
         private string contextMenuOperationTag = string.Empty;
         private bool isLoading = false;
         private readonly SolidBrush foreColorBrush;
@@ -167,6 +170,32 @@ namespace PicSum.UIComponent.InfoPanel
                 this.thumbnailPictureBox.Top * 5 + this.wideComboBox.Bottom,
                 this.thumbnailPictureBox.Width,
                 (int)(this.Height - (this.thumbnailPictureBox.Top * 5 + this.wideComboBox.Bottom) - 9 * scale));
+
+            this.tagFlowList.ItemHeight = (int)(TAG_FLOW_LIST_DEFAULT_ITEM_HEIGHT * scale);
+            var oldFont = this.tagFlowList.Font;
+            this.tagFlowList.Font = new Font(oldFont.FontFamily, TAG_FLOW_LIST_DEFAULT_FONT_SIZE * scale);
+            oldFont.Dispose();
+
+            if (this.allTagFont != null)
+            {
+                this.allTagFont.Dispose();
+                this.allTagFont = null;
+            }
+
+            if (this.tagIcon != null)
+            {
+                this.tagIcon.Dispose();
+                this.tagIcon = null;
+            }
+
+            var tagIcon = new Bitmap(
+                (int)(ResourceFiles.TagIcon.Value.Width * scale),
+                (int)(ResourceFiles.TagIcon.Value.Height * scale));
+            using (var g = Graphics.FromImage(tagIcon))
+            {
+                g.DrawImage(ResourceFiles.TagIcon.Value, 0, 0, tagIcon.Width, tagIcon.Height);
+            }
+            this.tagIcon = tagIcon;
 
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -519,6 +548,11 @@ namespace PicSum.UIComponent.InfoPanel
                 return;
             }
 
+            if (this.tagIcon == null)
+            {
+                return;
+            }
+
             if (e.IsSelected)
             {
                 e.Graphics.FillRectangle(this.tagFlowList.SelectedItemBrush, e.ItemRectangle);
@@ -541,7 +575,7 @@ namespace PicSum.UIComponent.InfoPanel
 
             e.Graphics.DrawImage(this.tagIcon, iconRect);
 
-            var iconWidth = this.tagIcon.Width + 8;
+            var iconWidth = (int)(this.tagIcon.Width * 1.75);
             var itemFont = this.GetTagFont(item);
             var itemText = item.Tag;
             var itemTextSize = TextRenderer.MeasureText(itemText, itemFont);
