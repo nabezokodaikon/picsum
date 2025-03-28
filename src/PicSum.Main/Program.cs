@@ -64,7 +64,7 @@ namespace PicSum.Main
 
                     Application.ThreadException += Application_ThreadException;
                     Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
-                    Application.SetHighDpiMode(HighDpiMode.PerMonitor);
+                    Application.SetHighDpiMode(HighDpiMode.PerMonitorV2);
                     Application.EnableVisualStyles();
                     Application.SetCompatibleTextRenderingDefault(false);
 
