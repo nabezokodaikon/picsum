@@ -232,6 +232,8 @@ namespace PicSum.Main.UIComponent
                 this.homeToolButton.Width,
                 this.homeToolButton.Height);
 
+            this.infoPanel.SetControlsBounds(scale);
+
             this.toolPanel.ResumeLayout(false);
             this.toolPanel2.ResumeLayout(false);
             this.ResumeLayout(false);

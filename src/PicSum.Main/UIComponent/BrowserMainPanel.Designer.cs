@@ -53,7 +53,6 @@ namespace PicSum.Main.UIComponent
             // infoPanel
             // 
             this.infoPanel.BackColor = Color.Transparent;
-            this.infoPanel.Dock = DockStyle.Fill;
             this.infoPanel.Font = new Font("Yu Gothic UI", 9F);
             this.infoPanel.Location = new Point(0, 0);
             this.infoPanel.Name = "infoPanel";

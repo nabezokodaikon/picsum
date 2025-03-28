@@ -21,6 +21,17 @@ namespace PicSum.UIComponent.InfoPanel
     public sealed partial class InfoPanel
         : ToolPanel, ISender
     {
+        private static readonly Rectangle THUMBNAIL_PICTURE_BOX_DEFAULT_BOUNDS
+            = new(4, 0, 508, 256);
+        private static readonly Rectangle FILE_INFO_LABEL_DEFAULT_BOUNDS
+            = new(4, 256, 508, 96);
+        private static readonly Rectangle RATING_BAR_DEFAULT_BOUNDS
+            = new(4, 390, 508, 56);
+        private static readonly Rectangle WIDE_COMBO_BOX_DEFAULT_BOUNDS
+            = new(4, 446, 508, 32);
+        private static readonly Rectangle TAG_FLOW_LIST_DEFAULT_BOUNDS
+            = new(4, 478, 508, 231);
+
         public event EventHandler<SelectedTagEventArgs> SelectedTag;
 
         private bool disposed = false;
@@ -121,6 +132,46 @@ namespace PicSum.UIComponent.InfoPanel
             };
         }
 
+        public void SetControlsBounds(float scale)
+        {
+            this.SuspendLayout();
+
+            this.thumbnailPictureBox.SetBounds(
+                THUMBNAIL_PICTURE_BOX_DEFAULT_BOUNDS.X,
+                THUMBNAIL_PICTURE_BOX_DEFAULT_BOUNDS.Y,
+                this.Width - THUMBNAIL_PICTURE_BOX_DEFAULT_BOUNDS.X * 2,
+                (int)(THUMBNAIL_PICTURE_BOX_DEFAULT_BOUNDS.Height * scale));
+
+            this.fileInfoLabel.SetBounds(
+                this.thumbnailPictureBox.Left,
+                this.thumbnailPictureBox.Top * 2 + this.thumbnailPictureBox.Bottom,
+                this.thumbnailPictureBox.Width,
+                (int)(FILE_INFO_LABEL_DEFAULT_BOUNDS.Height * scale));
+
+            this.ratingBar.SetBounds(
+                this.thumbnailPictureBox.Left,
+                this.thumbnailPictureBox.Top * 3 + this.fileInfoLabel.Bottom,
+                this.thumbnailPictureBox.Width,
+                (int)(RATING_BAR_DEFAULT_BOUNDS.Height * scale));
+
+            this.wideComboBox.SetBounds(
+                this.thumbnailPictureBox.Left,
+                this.thumbnailPictureBox.Top * 4 + this.ratingBar.Bottom,
+                this.thumbnailPictureBox.Width,
+                (int)(WIDE_COMBO_BOX_DEFAULT_BOUNDS.Height * scale));
+
+            this.tagFlowList.SetBounds(
+                this.thumbnailPictureBox.Left,
+                this.thumbnailPictureBox.Top * 5 + this.wideComboBox.Bottom,
+                this.thumbnailPictureBox.Width,
+                (int)(this.Height - (this.thumbnailPictureBox.Top * 5 + this.wideComboBox.Bottom) - 9 * scale));
+
+            this.ResumeLayout(false);
+            this.PerformLayout();
+            this.Invalidate();
+            this.Update();
+        }
+
         public void SetFileInfo(string filePath)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
@@ -141,12 +192,13 @@ namespace PicSum.UIComponent.InfoPanel
                     return;
                 }
 
+                var scale = AppConstants.GetCurrentWindowScale(this.Handle);
                 var param = new FileDeepInfoGetParameter
                 {
                     FilePathList = filePathList,
                     ThumbnailSize = new Size(
-                        AppConstants.INFOPANEL_WIDTH,
-                        AppConstants.INFOPANEL_WIDTH)
+                        (int)(AppConstants.INFOPANEL_WIDTH * scale),
+                        (int)(AppConstants.INFOPANEL_WIDTH * scale))
                 };
 
                 this.isLoading = true;
