@@ -49,10 +49,10 @@ namespace PicSum.UIComponent.Contents.FileList
         }
 
         private bool disposed = false;
+        private bool isLoaded = false;
         private float scale = 0f;
         private Dictionary<string, FileEntity> masterFileDictionary = null;
         private string[] filterFilePathList = null;
-        private int itemTextHeight = 0;
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public override string SelectedFilePath { get; protected set; } = FileUtil.ROOT_DIRECTORY_PATH;
@@ -158,7 +158,6 @@ namespace PicSum.UIComponent.Contents.FileList
             this.IsShowImageFile = FileListPageConfig.Instance.IsShowImageFile;
             this.IsShowOtherFile = FileListPageConfig.Instance.IsShowOtherFile;
             this.ThumbnailSize = FileListPageConfig.Instance.ThumbnailSize;
-            this.SetFlowListItemSize();
         }
 
         public override string[] GetSelectedFiles()
@@ -216,11 +215,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
             this.toolBar.SetControlsBounds(scale);
 
-            using (var bmp = new Bitmap(1, 1))
-            using (var g = Graphics.FromImage(bmp))
-            {
-                this.itemTextHeight = (int)(g.MeasureString("A", GetFont(scale)).Height * 2);
-            }
+            this.SetFlowListItemSize();
 
             this.toolBar.ResumeLayout(false);
             this.toolBar.PerformLayout();
@@ -255,6 +250,8 @@ namespace PicSum.UIComponent.Contents.FileList
 
         protected override void OnLoad(EventArgs e)
         {
+            this.isLoaded = true;
+
             var scale = AppConstants.GetCurrentWindowScale(this.Handle);
             this.RedrawPage(scale);
 
@@ -564,11 +561,30 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
+        private int GetItemTextHeight()
+        {
+            using (var bmp = new Bitmap(1, 1))
+            using (var g = Graphics.FromImage(bmp))
+            {
+                return this.GetItemTextHeight(g);
+            }
+        }
+
+        private int GetItemTextHeight(Graphics g)
+        {
+            return (int)(g.MeasureString("A", GetFont(this.scale)).Height * 2);
+        }
+
         private void SetFlowListItemSize()
         {
+            if (!this.isLoaded)
+            {
+                return;
+            }
+
             if (this.IsShowFileName)
             {
-                this.flowList.SetItemSize(this.ThumbnailSize, this.ThumbnailSize + this.itemTextHeight);
+                this.flowList.SetItemSize(this.ThumbnailSize, this.ThumbnailSize + this.GetItemTextHeight());
             }
             else
             {
@@ -599,64 +615,50 @@ namespace PicSum.UIComponent.Contents.FileList
 
             var scale = AppConstants.GetCurrentWindowScale(this.Handle);
             var font = GetFont(scale);
+            var itemTextHeight = this.GetItemTextHeight(e.Graphics);
 
             if (item.ThumbnailImage == null)
             {
-                ThumbnailUtil.DrawIcon(e.Graphics, item.JumboIcon, this.GetIconRectangle(e));
-                e.Graphics.DrawString(item.FileName, font, this.flowList.ItemTextBrush, this.GetTextRectangle(e), this.flowList.ItemTextFormat);
+                ThumbnailUtil.DrawIcon(e.Graphics, item.JumboIcon, this.GetIconRectangle(e, itemTextHeight));
+                e.Graphics.DrawString(item.FileName, font, this.flowList.ItemTextBrush, this.GetTextRectangle(e, itemTextHeight), this.flowList.ItemTextFormat);
             }
             else
             {
+                var thumbRect = this.GetThumbnailRectangle(e, itemTextHeight);
                 if (item.IsFile)
                 {
-                    var thumbRect = this.GetThumbnailRectangle(e);
-                    if (item.ThumbnailWidth == thumbRect.Width && item.ThumbnailHeight == thumbRect.Height)
-                    {
-                        ThumbnailUtil.DrawFileThumbnail(e.Graphics, item.ThumbnailImage, thumbRect);
-                    }
-                    else
-                    {
-                        ThumbnailUtil.AdjustDrawFileThumbnail(
-                            e.Graphics, item.ThumbnailImage, thumbRect, new SizeF(item.SourceImageWidth, item.SourceImageHeight));
-                    }
+                    ThumbnailUtil.AdjustDrawFileThumbnail(
+                        e.Graphics, item.ThumbnailImage, thumbRect, new SizeF(item.SourceImageWidth, item.SourceImageHeight));
                 }
                 else
                 {
-                    var thumbRect = this.GetThumbnailRectangle(e);
-                    if (item.ThumbnailWidth == thumbRect.Width && item.ThumbnailHeight == thumbRect.Height)
-                    {
-                        ThumbnailUtil.DrawDirectoryThumbnail(e.Graphics, item.ThumbnailImage, thumbRect, item.JumboIcon);
-                    }
-                    else
-                    {
-                        ThumbnailUtil.AdjustDrawDirectoryThumbnail(
-                            e.Graphics, item.ThumbnailImage, thumbRect, new SizeF(item.SourceImageWidth, item.SourceImageHeight), item.JumboIcon);
-                    }
+                    ThumbnailUtil.AdjustDrawDirectoryThumbnail(
+                        e.Graphics, item.ThumbnailImage, thumbRect, new SizeF(item.SourceImageWidth, item.SourceImageHeight), item.JumboIcon);
                 }
 
                 if (this.IsShowFileName)
                 {
-                    e.Graphics.DrawString(item.FileName, font, this.flowList.ItemTextBrush, this.GetTextRectangle(e), this.flowList.ItemTextFormat);
+                    e.Graphics.DrawString(item.FileName, font, this.flowList.ItemTextBrush, this.GetTextRectangle(e, itemTextHeight), this.flowList.ItemTextFormat);
                 }
             }
         }
 
-        private RectangleF GetIconRectangle(SWF.UIComponent.FlowList.DrawItemEventArgs e)
+        private RectangleF GetIconRectangle(SWF.UIComponent.FlowList.DrawItemEventArgs e, int itemTextHeight)
         {
             return new RectangleF(e.ItemRectangle.X,
                                   e.ItemRectangle.Y,
                                   e.ItemRectangle.Width,
-                                  e.ItemRectangle.Height - this.itemTextHeight);
+                                  e.ItemRectangle.Height - itemTextHeight);
         }
 
-        private RectangleF GetThumbnailRectangle(SWF.UIComponent.FlowList.DrawItemEventArgs e)
+        private RectangleF GetThumbnailRectangle(SWF.UIComponent.FlowList.DrawItemEventArgs e, int itemTextHeight)
         {
             if (this.IsShowFileName)
             {
                 return new RectangleF(e.ItemRectangle.X,
                                      e.ItemRectangle.Y,
                                      e.ItemRectangle.Width,
-                                     e.ItemRectangle.Height - this.itemTextHeight);
+                                     e.ItemRectangle.Height - itemTextHeight);
             }
             else
             {
@@ -664,12 +666,12 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
-        private RectangleF GetTextRectangle(SWF.UIComponent.FlowList.DrawItemEventArgs e)
+        private RectangleF GetTextRectangle(SWF.UIComponent.FlowList.DrawItemEventArgs e, int itemTextHeight)
         {
             return new RectangleF(e.ItemRectangle.X,
-                                  e.ItemRectangle.Bottom - this.itemTextHeight,
+                                  e.ItemRectangle.Bottom - itemTextHeight,
                                   e.ItemRectangle.Width,
-                                  this.itemTextHeight);
+                                  itemTextHeight);
         }
 
         private void GetThumbnailsJob_Callback(ThumbnailImageResult e)
@@ -834,7 +836,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 var thumbnailWidth = this.flowList.ItemWidth - this.flowList.ItemSpace * 2;
                 var thumbnailHeight = this.IsShowFileName switch
                 {
-                    true => this.flowList.ItemHeight - this.flowList.ItemSpace * 2 - this.itemTextHeight,
+                    true => this.flowList.ItemHeight - this.flowList.ItemSpace * 2 - this.GetItemTextHeight(),
                     _ => this.flowList.ItemHeight - this.flowList.ItemSpace * 2,
                 };
 
