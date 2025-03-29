@@ -255,6 +255,9 @@ namespace PicSum.UIComponent.Contents.FileList
 
         protected override void OnLoad(EventArgs e)
         {
+            var scale = AppConstants.GetCurrentWindowScale(this.Handle);
+            this.RedrawPage(scale);
+
             base.OnLoad(e);
         }
 
