@@ -1,5 +1,6 @@
 using SWF.Core.Base;
 using System.ComponentModel;
+using System.Drawing.Drawing2D;
 using System.Runtime.Versioning;
 
 namespace SWF.UIComponent.Core
@@ -68,6 +69,11 @@ namespace SWF.UIComponent.Core
 
         protected override void OnPaint(PaintEventArgs e)
         {
+            e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+            e.Graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
+            e.Graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
+            e.Graphics.CompositingQuality = CompositingQuality.HighQuality;
+
             var icon = this.Icon;
             var w = Math.Min(icon.Width * this.scale, this.Width);
             var h = Math.Min(icon.Height * this.scale, this.Height);
