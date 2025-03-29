@@ -165,6 +165,8 @@ namespace PicSum.UIComponent.InfoPanel
                 this.thumbnailPictureBox.Width,
                 (int)(WIDE_COMBO_BOX_DEFAULT_BOUNDS.Height * scale));
 
+            this.wideComboBox.SetControlsBounds(scale);
+
             this.tagFlowList.SetBounds(
                 this.thumbnailPictureBox.Left,
                 this.thumbnailPictureBox.Top * 5 + this.wideComboBox.Bottom,

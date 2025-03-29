@@ -11,6 +11,13 @@ namespace SWF.UIComponent.WideDropDown
     public partial class WideComboBox
         : UserControl
     {
+        private static readonly Rectangle INPUT_TEXT_BOX_DEFAULT_BOUNDS
+            = new(0, 1, 569, 36);
+        private static readonly Rectangle ARROW_PICTURE_BOX_DEFAULT_BOUNDS
+            = new(570, 1, 22, 36);
+        private static readonly Rectangle ADD_BUTTON_DEFAULT_BOUNDS
+            = new(601, 0, 38, 38);
+
         public event EventHandler<DropDownOpeningEventArgs> DropDownOpening;
         public event EventHandler<AddItemEventArgs> AddItem;
 
@@ -49,6 +56,48 @@ namespace SWF.UIComponent.WideDropDown
             this.dropDownList.ItemMouseClick += this.DropDownList_ItemMouseClick;
         }
 
+        public void SetControlsBounds(float scale)
+        {
+            this.SuspendLayout();
+
+            this.inputTextBox.SetBounds(
+                INPUT_TEXT_BOX_DEFAULT_BOUNDS.X,
+                INPUT_TEXT_BOX_DEFAULT_BOUNDS.Y,
+                (int)(this.Width - (ARROW_PICTURE_BOX_DEFAULT_BOUNDS.Width + ADD_BUTTON_DEFAULT_BOUNDS.Width + 1) * scale),
+                this.Height - INPUT_TEXT_BOX_DEFAULT_BOUNDS.Y * 2);
+
+            this.arrowPictureBox.SetBounds(
+                (int)(this.inputTextBox.Right),
+                this.inputTextBox.Top,
+                (int)(ARROW_PICTURE_BOX_DEFAULT_BOUNDS.Width * scale),
+                this.inputTextBox.Height);
+
+            this.addButton.SetBounds(
+                this.arrowPictureBox.Right + (int)(1 * scale),
+                ADD_BUTTON_DEFAULT_BOUNDS.Top,
+                (int)(ADD_BUTTON_DEFAULT_BOUNDS.Width * scale),
+                this.Height);
+
+            this.inputTextBox.Anchor
+                = AnchorStyles.Top
+                | AnchorStyles.Bottom
+                | AnchorStyles.Left
+                | AnchorStyles.Right;
+
+            this.arrowPictureBox.Anchor
+                = AnchorStyles.Top
+                | AnchorStyles.Bottom
+                | AnchorStyles.Right;
+
+            this.addButton.Anchor
+                = AnchorStyles.Top
+                | AnchorStyles.Bottom
+                | AnchorStyles.Right;
+
+            this.ResumeLayout(false);
+            this.PerformLayout();
+        }
+
         public void SetItems(string[] items)
         {
             ArgumentNullException.ThrowIfNull(items, nameof(items));
@@ -69,7 +118,7 @@ namespace SWF.UIComponent.WideDropDown
 
         protected override void OnPaint(PaintEventArgs e)
         {
-            var w = this.Width - this.addButton.Width - 1f;
+            var w = this.arrowPictureBox.Right;
             var h = this.Height - 1f;
 
             e.Graphics.DrawRectangle(Pens.LightGray, 0, 0, w, h);
