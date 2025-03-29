@@ -36,7 +36,6 @@ namespace PicSum.UIComponent.Contents.FileList
             this.flowList.ItemTextAlignment = System.Drawing.StringAlignment.Center;
             this.flowList.ItemTextLineAlignment = System.Drawing.StringAlignment.Center;
             this.flowList.ItemTextTrimming = System.Drawing.StringTrimming.EllipsisCharacter;
-            this.flowList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowList.Margin = new System.Windows.Forms.Padding(0);
             this.flowList.Name = "flowList";
             this.flowList.TabIndex = 1;
@@ -73,7 +72,6 @@ namespace PicSum.UIComponent.Contents.FileList
             // 
             // toolBar
             // 
-            this.toolBar.Dock = System.Windows.Forms.DockStyle.Top;
             this.toolBar.TabStop = false;
             this.toolBar.ThumbnailSizeSliderMaximumValue = 256;
             this.toolBar.ThumbnailSizeSliderMinimumValue = 96;

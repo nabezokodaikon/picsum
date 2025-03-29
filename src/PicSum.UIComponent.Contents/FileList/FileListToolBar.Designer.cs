@@ -50,54 +50,36 @@ namespace PicSum.UIComponent.Contents.FileList
             // 
             // viewButton
             // 
-            this.viewButton.Location = new Point(3, 1);
             this.viewButton.Name = "viewButton";
-            this.viewButton.Size = new Size(64, 23);
-            this.viewButton.Text = "View";
             this.viewButton.MouseClick += this.ViewButton_MouseClick;
             // 
             // nameSortButton
             // 
-            this.nameSortButton.Location = new Point(73, 1);
             this.nameSortButton.Name = "nameSortButton";
-            this.nameSortButton.Size = new Size(96, 23);
-            this.nameSortButton.Text = "Name";
             this.nameSortButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.nameSortButton.MouseClick += this.NameSortButton_MouseClick;
             // 
             // pathSortButton
             // 
-            this.pathSortButton.Location = new Point(175, 1);
             this.pathSortButton.Name = "pathSortButton";
-            this.pathSortButton.Size = new Size(96, 23);
-            this.pathSortButton.Text = "Path";
             this.pathSortButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.pathSortButton.MouseClick += this.PathSortButton_MouseClick;
             // 
             // timestampSortButton
             // 
-            this.timestampSortButton.Location = new Point(277, 1);
             this.timestampSortButton.Name = "timestampSortButton";
-            this.timestampSortButton.Size = new Size(96, 23);
-            this.timestampSortButton.Text = "Time stamp";
             this.timestampSortButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.timestampSortButton.MouseClick += this.TimestampSortButton_MouseClick;
             // 
             // registrationSortButton
             // 
-            this.registrationSortButton.Location = new Point(379, 1);
             this.registrationSortButton.Name = "registrationSortButton";
-            this.registrationSortButton.Size = new Size(96, 23);
-            this.registrationSortButton.Text = "Registration";
             this.registrationSortButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.registrationSortButton.MouseClick += this.RegistrationSortButton_MouseClick;
             // 
             // thumbnailSizeSlider
             // 
-            this.thumbnailSizeSlider.Location = new Point(481, 1);
             this.thumbnailSizeSlider.Name = "thumbnailSizeSlider";
-            this.thumbnailSizeSlider.Size = new Size(108, 23);
-            this.thumbnailSizeSlider.TabIndex = 5;
             this.thumbnailSizeSlider.Text = "slider1";
             this.thumbnailSizeSlider.BeginValueChange += this.ThumbnailSizeSlider_BeginValueChange;
             this.thumbnailSizeSlider.ValueChanging += this.ThumbnailSizeSlider_ValueChanging;
@@ -105,7 +87,6 @@ namespace PicSum.UIComponent.Contents.FileList
             // 
             // viewMenu
             // 
-            this.viewMenu.Font = new Font("Yu Gothic UI", 10F);
             this.viewMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { this.folderMenuItem, this.imageFileMenuItem, this.otherFileMenuItem, this.toolStripSeparator1, this.fileNameMenuItem });
             this.viewMenu.Name = "viewMenu";
             this.viewMenu.Size = new Size(181, 128);
@@ -145,18 +126,12 @@ namespace PicSum.UIComponent.Contents.FileList
             // 
             // movePreviewButton
             // 
-            this.movePreviewButton.Location = new Point(595, 1);
             this.movePreviewButton.Name = "movePreviewButton";
-            this.movePreviewButton.Size = new Size(64, 23);
-            this.movePreviewButton.Text = "<-";
             this.movePreviewButton.MouseClick += this.MovePreviewButton_MouseClick;
             // 
             // moveNextButton
             // 
-            this.moveNextButton.Location = new Point(665, 1);
             this.moveNextButton.Name = "moveNextButton";
-            this.moveNextButton.Size = new Size(64, 23);
-            this.moveNextButton.Text = "->";
             this.moveNextButton.MouseClick += this.MoveNextButton_MouseClick;
             // 
             // FileListToolBar

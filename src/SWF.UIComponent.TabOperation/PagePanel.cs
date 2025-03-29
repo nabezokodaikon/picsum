@@ -50,7 +50,7 @@ namespace SWF.UIComponent.TabOperation
         /// <summary>
         /// コンテンツを再描画します。
         /// </summary>
-        public virtual void RedrawPage()
+        public virtual void RedrawPage(float scale)
         {
 
         }

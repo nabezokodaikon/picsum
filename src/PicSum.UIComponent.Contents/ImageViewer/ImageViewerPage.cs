@@ -107,7 +107,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.SelectedFilePath = parameter.SelectedFilePath;
         }
 
-        public override void RedrawPage()
+        public override void RedrawPage(float scale)
         {
             using (TimeMeasuring.Run(false, "ImageViewerPage.RedrawPage"))
             {
@@ -310,7 +310,8 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
         private void CheckPatternPanel_Resize(object sender, EventArgs e)
         {
-            this.RedrawPage();
+            var scale = AppConstants.GetCurrentWindowScale(this.Handle);
+            this.RedrawPage(scale);
         }
 
         private void BeginResumeLayout(bool isLeft, bool isRight, Action action)

@@ -11,6 +11,17 @@ namespace PicSum.UIComponent.Contents.FileList
     [SupportedOSPlatform("windows10.0.17763.0")]
     public partial class FileListToolBar : ToolPanel
     {
+        private static readonly Font DEFAULT_FONT = new Font("Yu Gothic UI", 12F);
+
+        private static readonly Rectangle VIEW_BUTTON_DEFAULT_BOUNDS
+            = new(3, 1, 64, 23);
+        private static readonly Rectangle NAME_SORT_BUTTON_DEFAULT_BOUNDS
+            = new(73, 1, 96, 23);
+        private static readonly Rectangle THUMBNAIL_SIZE_SLIDER_DEFAULT_BOUNDS
+            = new(481, 1, 108, 23);
+        private static readonly Rectangle MOVE_PREVIEW_BUTTON_DEFAULT_BOUNDS
+            = new(595, 1, 64, 23);
+
         public event EventHandler NameSortButtonClick;
         public event EventHandler PathSortButtonClick;
         public event EventHandler TimestampSortButtonClick;
@@ -197,6 +208,85 @@ namespace PicSum.UIComponent.Contents.FileList
         public FileListToolBar()
         {
             this.InitializeComponent();
+        }
+
+        public void SetControlsBounds(float scale)
+        {
+            this.SuspendLayout();
+
+            this.viewButton.SetBounds(
+                (int)(VIEW_BUTTON_DEFAULT_BOUNDS.X * scale),
+                (int)(VIEW_BUTTON_DEFAULT_BOUNDS.Y * scale),
+                (int)(VIEW_BUTTON_DEFAULT_BOUNDS.Width * scale),
+                (int)(VIEW_BUTTON_DEFAULT_BOUNDS.Height * scale));
+
+            this.nameSortButton.SetBounds(
+                this.viewButton.Location.X * 2 + this.viewButton.Width,
+                this.viewButton.Location.Y,
+                (int)(NAME_SORT_BUTTON_DEFAULT_BOUNDS.Width * scale),
+                (int)(NAME_SORT_BUTTON_DEFAULT_BOUNDS.Height * scale));
+
+            this.pathSortButton.SetBounds(
+                this.viewButton.Location.X * 3 + this.viewButton.Width + this.nameSortButton.Width,
+                this.viewButton.Location.Y,
+                (int)(NAME_SORT_BUTTON_DEFAULT_BOUNDS.Width * scale),
+                (int)(NAME_SORT_BUTTON_DEFAULT_BOUNDS.Height * scale));
+
+            this.timestampSortButton.SetBounds(
+                this.viewButton.Location.X * 4 + this.viewButton.Width + this.nameSortButton.Width * 2,
+                this.viewButton.Location.Y,
+                (int)(NAME_SORT_BUTTON_DEFAULT_BOUNDS.Width * scale),
+                (int)(NAME_SORT_BUTTON_DEFAULT_BOUNDS.Height * scale));
+
+            this.registrationSortButton.SetBounds(
+                this.viewButton.Location.X * 5 + this.viewButton.Width + this.nameSortButton.Width * 3,
+                this.viewButton.Location.Y,
+                (int)(NAME_SORT_BUTTON_DEFAULT_BOUNDS.Width * scale),
+                (int)(NAME_SORT_BUTTON_DEFAULT_BOUNDS.Height * scale));
+
+            this.thumbnailSizeSlider.SetBounds(
+                this.viewButton.Location.X * 6 + this.viewButton.Width + this.nameSortButton.Width * 4,
+                this.viewButton.Location.Y,
+                (int)(THUMBNAIL_SIZE_SLIDER_DEFAULT_BOUNDS.Width * scale),
+                (int)(THUMBNAIL_SIZE_SLIDER_DEFAULT_BOUNDS.Height * scale));
+
+            this.movePreviewButton.SetBounds(
+                this.viewButton.Location.X * 7 + this.viewButton.Width + this.nameSortButton.Width * 4 + this.thumbnailSizeSlider.Width,
+                this.viewButton.Location.Y,
+                (int)(MOVE_PREVIEW_BUTTON_DEFAULT_BOUNDS.Width * scale),
+                (int)(MOVE_PREVIEW_BUTTON_DEFAULT_BOUNDS.Height * scale));
+
+            this.moveNextButton.SetBounds(
+                this.viewButton.Location.X * 8 + this.viewButton.Width + this.nameSortButton.Width * 4 + this.thumbnailSizeSlider.Width + this.movePreviewButton.Width,
+                this.viewButton.Location.Y,
+                (int)(MOVE_PREVIEW_BUTTON_DEFAULT_BOUNDS.Width * scale),
+                (int)(MOVE_PREVIEW_BUTTON_DEFAULT_BOUNDS.Height * scale));
+
+            if (this.viewButton.Font != null)
+            {
+                this.viewButton.Font.Dispose();
+                this.viewButton.Font = null;
+            }
+
+            this.viewButton.Font = new Font(
+                DEFAULT_FONT.FontFamily, DEFAULT_FONT.Size * scale, GraphicsUnit.Pixel);
+            this.nameSortButton.Font = this.viewButton.Font;
+            this.pathSortButton.Font = this.viewButton.Font;
+            this.timestampSortButton.Font = this.viewButton.Font;
+            this.registrationSortButton.Font = this.viewButton.Font;
+            this.movePreviewButton.Font = this.viewButton.Font;
+            this.moveNextButton.Font = this.viewButton.Font;
+
+            this.viewButton.Text = "View";
+            this.nameSortButton.Text = "Name";
+            this.pathSortButton.Text = "Path";
+            this.timestampSortButton.Text = "Time stamp";
+            this.registrationSortButton.Text = "Registration";
+            this.movePreviewButton.Text = "<-";
+            this.moveNextButton.Text = "->";
+
+            this.ResumeLayout(false);
+            this.PerformLayout();
         }
 
         public ToolButton GetSortToolStripButton(SortTypeID sortType)

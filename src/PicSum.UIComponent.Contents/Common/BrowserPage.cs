@@ -36,7 +36,7 @@ namespace PicSum.UIComponent.Contents.Common
             this.Parameter = parameter ?? throw new ArgumentNullException(nameof(parameter));
         }
 
-        public abstract override void RedrawPage();
+        public abstract override void RedrawPage(float scale);
 
         public abstract override void StopPageDraw();
 

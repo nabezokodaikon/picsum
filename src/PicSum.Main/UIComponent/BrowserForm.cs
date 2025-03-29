@@ -242,7 +242,8 @@ namespace PicSum.Main.UIComponent
 
             if (this.browserMainPanel != null)
             {
-                this.browserMainPanel.RedrawPage();
+                var scale = AppConstants.GetCurrentWindowScale(this.Handle);
+                this.browserMainPanel.RedrawPage(scale);
             }
         }
 

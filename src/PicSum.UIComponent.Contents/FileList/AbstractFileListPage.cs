@@ -30,9 +30,29 @@ namespace PicSum.UIComponent.Contents.FileList
     public abstract partial class AbstractFileListPage
         : BrowserPage, ISender
     {
+        private static readonly Rectangle TOOL_BAR_DEFAULT_BOUNDS = new(0, 0, 767, 29);
+        private static readonly Rectangle FLOW_LIST_DEFAULT_BOUNDS = new(0, 29, 767, 0);
+
+        private static readonly Font DEFAULT_FONT = new("Yu Gothic UI", 9);
+        private static readonly Dictionary<float, Font> FONT_CACHE = [];
+
+        private static Font GetFont(float scale)
+        {
+            if (FONT_CACHE.TryGetValue(scale, out var font))
+            {
+                return font;
+            }
+
+            var newFont = new Font(DEFAULT_FONT.FontFamily, DEFAULT_FONT.Size * scale);
+            FONT_CACHE.Add(scale, newFont);
+            return newFont;
+        }
+
         private bool disposed = false;
+        private float scale = 0f;
         private Dictionary<string, FileEntity> masterFileDictionary = null;
         private string[] filterFilePathList = null;
+        private int itemTextHeight = 0;
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public override string SelectedFilePath { get; protected set; } = FileUtil.ROOT_DIRECTORY_PATH;
@@ -128,14 +148,6 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
-        private int ItemTextHeight
-        {
-            get
-            {
-                return base.FontHeight * 2;
-            }
-        }
-
         public AbstractFileListPage(IPageParameter param)
             : base(param)
         {
@@ -164,11 +176,56 @@ namespace PicSum.UIComponent.Contents.FileList
             return [.. filePathList];
         }
 
-        public override void RedrawPage()
+        public override void RedrawPage(float scale)
         {
+            if (this.scale == scale)
+            {
+                return;
+            }
+
+            this.scale = scale;
+            var baseHeigth = this.Height - 8;
+
+            this.toolBar.SuspendLayout();
+            this.SuspendLayout();
+
+            this.toolBar.Anchor
+                = AnchorStyles.Top
+                | AnchorStyles.Left
+                | AnchorStyles.Right;
+
+            this.flowList.Anchor
+                = AnchorStyles.Top
+                | AnchorStyles.Left
+                | AnchorStyles.Right
+                | AnchorStyles.Bottom;
+
+            this.toolBar.SetBounds(
+                0,
+                0,
+                this.Width,
+                (int)(TOOL_BAR_DEFAULT_BOUNDS.Height * this.scale));
+
+            this.flowList.SetBounds(
+                0,
+                this.toolBar.Bottom,
+                this.Width,
+                baseHeigth - this.toolBar.Bottom);
+
             this.flowList.SetDrawParameter(true);
-            this.Invalidate();
-            this.Update();
+
+            this.toolBar.SetControlsBounds(scale);
+
+            using (var bmp = new Bitmap(1, 1))
+            using (var g = Graphics.FromImage(bmp))
+            {
+                this.itemTextHeight = (int)(g.MeasureString("A", GetFont(scale)).Height * 2);
+            }
+
+            this.toolBar.ResumeLayout(false);
+            this.toolBar.PerformLayout();
+            this.ResumeLayout(false);
+            this.PerformLayout();
         }
 
         public override void StopPageDraw()
@@ -239,6 +296,9 @@ namespace PicSum.UIComponent.Contents.FileList
 
                 this.masterFileDictionary.Add(destFile.FilePath, destFile);
             }
+
+            var scale = AppConstants.GetCurrentWindowScale(this.Handle);
+            this.RedrawPage(scale);
 
             this.SelectedFilePath = selectedFilePath;
             this.SortInfo.SetSortType(sortTypeID, isAscending);
@@ -504,7 +564,7 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             if (this.IsShowFileName)
             {
-                this.flowList.SetItemSize(this.ThumbnailSize, this.ThumbnailSize + this.ItemTextHeight);
+                this.flowList.SetItemSize(this.ThumbnailSize, this.ThumbnailSize + this.itemTextHeight);
             }
             else
             {
@@ -533,10 +593,13 @@ namespace PicSum.UIComponent.Contents.FileList
             var filePath = this.filterFilePathList[e.ItemIndex];
             var item = this.masterFileDictionary[filePath];
 
+            var scale = AppConstants.GetCurrentWindowScale(this.Handle);
+            var font = GetFont(scale);
+
             if (item.ThumbnailImage == null)
             {
                 ThumbnailUtil.DrawIcon(e.Graphics, item.JumboIcon, this.GetIconRectangle(e));
-                e.Graphics.DrawString(item.FileName, this.Font, this.flowList.ItemTextBrush, this.GetTextRectangle(e), this.flowList.ItemTextFormat);
+                e.Graphics.DrawString(item.FileName, font, this.flowList.ItemTextBrush, this.GetTextRectangle(e), this.flowList.ItemTextFormat);
             }
             else
             {
@@ -569,7 +632,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
                 if (this.IsShowFileName)
                 {
-                    e.Graphics.DrawString(item.FileName, this.Font, this.flowList.ItemTextBrush, this.GetTextRectangle(e), this.flowList.ItemTextFormat);
+                    e.Graphics.DrawString(item.FileName, font, this.flowList.ItemTextBrush, this.GetTextRectangle(e), this.flowList.ItemTextFormat);
                 }
             }
         }
@@ -579,7 +642,7 @@ namespace PicSum.UIComponent.Contents.FileList
             return new RectangleF(e.ItemRectangle.X,
                                   e.ItemRectangle.Y,
                                   e.ItemRectangle.Width,
-                                  e.ItemRectangle.Height - this.ItemTextHeight);
+                                  e.ItemRectangle.Height - this.itemTextHeight);
         }
 
         private RectangleF GetThumbnailRectangle(SWF.UIComponent.FlowList.DrawItemEventArgs e)
@@ -589,7 +652,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 return new RectangleF(e.ItemRectangle.X,
                                      e.ItemRectangle.Y,
                                      e.ItemRectangle.Width,
-                                     e.ItemRectangle.Height - this.ItemTextHeight);
+                                     e.ItemRectangle.Height - this.itemTextHeight);
             }
             else
             {
@@ -600,9 +663,9 @@ namespace PicSum.UIComponent.Contents.FileList
         private RectangleF GetTextRectangle(SWF.UIComponent.FlowList.DrawItemEventArgs e)
         {
             return new RectangleF(e.ItemRectangle.X,
-                                  e.ItemRectangle.Bottom - this.ItemTextHeight,
+                                  e.ItemRectangle.Bottom - this.itemTextHeight,
                                   e.ItemRectangle.Width,
-                                  this.ItemTextHeight);
+                                  this.itemTextHeight);
         }
 
         private void GetThumbnailsJob_Callback(ThumbnailImageResult e)
@@ -723,7 +786,8 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             FileListPageConfig.Instance.ThumbnailSize = this.ThumbnailSize;
             this.SetFlowListItemSize();
-            this.flowList.Refresh();
+            this.flowList.Invalidate();
+            this.flowList.Update();
         }
 
         private void MovePreviewToolStripButton_Click(object sender, EventArgs e)
@@ -766,7 +830,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 var thumbnailWidth = this.flowList.ItemWidth - this.flowList.ItemSpace * 2;
                 var thumbnailHeight = this.IsShowFileName switch
                 {
-                    true => this.flowList.ItemHeight - this.flowList.ItemSpace * 2 - this.ItemTextHeight,
+                    true => this.flowList.ItemHeight - this.flowList.ItemSpace * 2 - this.itemTextHeight,
                     _ => this.flowList.ItemHeight - this.flowList.ItemSpace * 2,
                 };
 

@@ -234,12 +234,16 @@ namespace PicSum.Main.UIComponent
 
             this.infoPanel.SetControlsBounds(scale);
 
+            if (this.tabSwitch.ActiveTab != null)
+            {
+                var page = this.tabSwitch.ActiveTab.GetPage<BrowserPage>();
+                page.RedrawPage(scale);
+            }
+
             this.toolPanel.ResumeLayout(false);
             this.toolPanel2.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
-            this.Invalidate();
-            this.Update();
         }
 
         private void TabSwitch_BeginSetPage(object sender, EventArgs e)
@@ -338,12 +342,12 @@ namespace PicSum.Main.UIComponent
             this.SetPageHistoryButtonEnabled();
         }
 
-        public void RedrawPage()
+        public void RedrawPage(float scale)
         {
             if (this.tabSwitch.ActiveTab != null)
             {
                 var page = this.tabSwitch.ActiveTab.GetPage<BrowserPage>();
-                page.RedrawPage();
+                page.RedrawPage(scale);
             }
         }
 
@@ -614,7 +618,8 @@ namespace PicSum.Main.UIComponent
                 {
                     this.addressBar.SetAddress(selectedFilePath);
                     this.infoPanel.SetFileInfo(page.GetSelectedFiles());
-                    page.RedrawPage();
+                    var scale = AppConstants.GetCurrentWindowScale(this.Handle);
+                    page.RedrawPage(scale);
                 }
             }
         }
@@ -705,42 +710,17 @@ namespace PicSum.Main.UIComponent
 
         private void ShowInfoToolButton_MouseClick(object sender, MouseEventArgs e)
         {
-            this.SuspendLayout();
-
-            var baseWidth = this.Width - 16;
-
             if (this.infoPanel.Visible)
             {
-                this.pageContainer.SetBounds(
-                    this.toolPanel2.Right,
-                    this.toolPanel.Bottom,
-                    baseWidth - this.toolPanel2.Right,
-                    this.Height - this.toolPanel.Bottom);
-
                 this.infoPanel.Visible = false;
             }
             else
             {
-                this.pageContainer.SetBounds(
-                    this.toolPanel2.Right,
-                    this.toolPanel.Bottom,
-                    baseWidth - this.toolPanel2.Right - this.infoPanel.Width,
-                    this.Height - this.toolPanel.Bottom);
-
                 this.infoPanel.Visible = true;
             }
 
-            this.ResumeLayout(false);
-            this.PerformLayout();
-            this.Invalidate();
-            this.Update();
-
-            var activeTab = this.tabSwitch.ActiveTab;
-            if (activeTab != null)
-            {
-                var page = activeTab.GetPage<BrowserPage>();
-                page.RedrawPage();
-            }
+            var scale = AppConstants.GetCurrentWindowScale(this.Handle);
+            this.SetControlsBounds(scale);
         }
 
         private void InfoPanel_SelectedTag(object sender, SelectedTagEventArgs e)

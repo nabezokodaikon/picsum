@@ -199,8 +199,6 @@ namespace PicSum.UIComponent.InfoPanel
 
             this.ResumeLayout(false);
             this.PerformLayout();
-            this.Invalidate();
-            this.Update();
         }
 
         public void SetFileInfo(string filePath)
