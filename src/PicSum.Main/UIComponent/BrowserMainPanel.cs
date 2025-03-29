@@ -23,6 +23,7 @@ namespace PicSum.Main.UIComponent
         private static readonly Rectangle TAB_SWITCH_DEFAULT_BOUNDS = new(0, 0, 746, 29);
         private static readonly Rectangle TOOL_PANEL_DEFAULT_BOUNDS = new(0, 29, 746, 34);
         private static readonly Rectangle TOOL_PANEL2_DEFAULT_BOUNDS = new(0, 63, 38, 403);
+        private static readonly int TOOLPANEL2_VERTICAL_DEFAULT_TOP_MARGIN = 28;
         private static readonly Rectangle INFO_PANEL_DEFAULT_BOUNDS = new(0, 0, AppConstants.INFOPANEL_WIDTH, 100);
         private static readonly Rectangle PREVIEW_BUTTON_DEFAULT_BOUNDS = new(3, 3, 32, 28);
         private static readonly Rectangle HOME_BUTTON_DEFAULT_BOUNDS = new(3, 5, 32, 28);
@@ -154,6 +155,7 @@ namespace PicSum.Main.UIComponent
                 this.toolPanel.Bottom,
                 (int)(TOOL_PANEL2_DEFAULT_BOUNDS.Width * scale),
                 this.Height - this.toolPanel.Bottom);
+            this.toolPanel2.VerticalTopMargin = (int)(TOOLPANEL2_VERTICAL_DEFAULT_TOP_MARGIN * scale);
 
             this.infoPanel.SetBounds(
                 (int)(baseWidth - INFO_PANEL_DEFAULT_BOUNDS.Width * scale),

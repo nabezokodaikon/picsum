@@ -34,6 +34,7 @@ namespace PicSum.UIComponent.InfoPanel
             = new(4, 446, 508, 32);
         private static readonly Rectangle TAG_FLOW_LIST_DEFAULT_BOUNDS
             = new(4, 478, 508, 231);
+        private static readonly int VERTICAL_DEFAULT_TOP_MARGIN = 28;
 
         public event EventHandler<SelectedTagEventArgs> SelectedTag;
 
@@ -172,6 +173,8 @@ namespace PicSum.UIComponent.InfoPanel
                 this.thumbnailPictureBox.Top * 5 + this.wideComboBox.Bottom,
                 this.thumbnailPictureBox.Width,
                 (int)(this.Height - (this.thumbnailPictureBox.Top * 5 + this.wideComboBox.Bottom) - 9 * scale));
+
+            this.VerticalTopMargin = (int)(VERTICAL_DEFAULT_TOP_MARGIN * scale);
 
             this.tagFlowList.ItemHeight = (int)(TAG_FLOW_LIST_DEFAULT_ITEM_HEIGHT * scale);
             var oldFont = this.tagFlowList.Font;
