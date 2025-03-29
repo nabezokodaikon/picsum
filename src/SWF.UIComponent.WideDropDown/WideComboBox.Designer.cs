@@ -45,7 +45,6 @@ namespace SWF.UIComponent.WideDropDown
             this.addButton.Margin = new System.Windows.Forms.Padding(0);
             this.addButton.Name = "addButton";
             this.addButton.Size = new Size(52, 38);
-            this.addButton.Text = "+";
             this.addButton.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
             this.addButton.MouseClick += this.AddButton_MouseClick;
             // 
