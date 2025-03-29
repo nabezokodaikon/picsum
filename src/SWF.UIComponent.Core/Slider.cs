@@ -106,6 +106,12 @@ namespace SWF.UIComponent.Core
             this.sliderValue = this.minimumValue;
         }
 
+        private float GetBarHeight()
+        {
+            var scale = AppConstants.GetCurrentWindowScale(this.Handle);
+            return BarHeight * scale;
+        }
+
         private PointF GetCenterPoint()
         {
             return new PointF(this.Width / 2f, this.Height / 2f);
@@ -186,22 +192,28 @@ namespace SWF.UIComponent.Core
 
         private float GetMaximumButtonPointX()
         {
-            return this.Width - this.button.Width / 2f;
+            var scale = AppConstants.GetCurrentWindowScale(this.Handle);
+            var scaleButtonWidth = (this.button.Width) * scale;
+            return this.Width - scaleButtonWidth / 2f;
         }
 
         private float GetMinimumButtonPointX()
         {
-            return this.button.Width / 2f;
+            var scale = AppConstants.GetCurrentWindowScale(this.Handle);
+            var scaleButtonWidth = (this.button.Width) * scale;
+            return scaleButtonWidth / 2f;
         }
 
         private void DrawBar(Graphics g)
         {
             var centerPoint = this.GetCenterPoint();
 
+            var barHeight = this.GetBarHeight();
+
             var shadowRect = new RectangleF(0,
-                                            centerPoint.Y - BarHeight / 2f,
+                                            centerPoint.Y - barHeight / 2f,
                                             this.Width - BarShadowOffset,
-                                            BarHeight);
+                                            barHeight);
 
             g.FillRectangle(Brushes.DimGray, shadowRect);
 
@@ -210,21 +222,23 @@ namespace SWF.UIComponent.Core
             g.FillRectangle(Brushes.White, shadowRect);
 
             var mainRect = new RectangleF(BarShadowOffset,
-                                          centerPoint.Y - BarHeight / 2f + BarShadowOffset,
+                                          centerPoint.Y - barHeight / 2f + BarShadowOffset,
                                           this.Width - BarShadowOffset * 2,
-                                          BarHeight - BarShadowOffset);
+                                          barHeight - BarShadowOffset);
 
             g.FillRectangle(Brushes.LightGray, mainRect);
         }
 
         private void DrawButton(Graphics g)
         {
+            var scale = AppConstants.GetCurrentWindowScale(this.Handle);
+            var scaleButtonSize = new SizeF(this.button.Width * scale, this.button.Height * scale);
             var centerPoint = this.GetCenterPoint();
 
-            var rect = new RectangleF(this.buttonPointX - this.button.Width / 2f,
-                                      centerPoint.Y - this.button.Height / 2f,
-                                      this.button.Width,
-                                      this.button.Height);
+            var rect = new RectangleF(this.buttonPointX - scaleButtonSize.Width / 2f,
+                                      centerPoint.Y - scaleButtonSize.Height / 2f,
+                                      scaleButtonSize.Width,
+                                      scaleButtonSize.Height);
 
             g.DrawImage(this.button, rect);
         }
