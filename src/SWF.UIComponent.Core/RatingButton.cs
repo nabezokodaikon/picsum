@@ -77,8 +77,8 @@ namespace SWF.UIComponent.Core
             var icon = this.Icon;
             var w = Math.Min(icon.Width * this.scale, this.Width);
             var h = Math.Min(icon.Height * this.scale, this.Height);
-            var x = (this.Width - icon.Width * this.scale) / 2f;
-            var y = (this.Height - icon.Height * this.scale) / 2f;
+            var x = (this.Width - w) / 2f;
+            var y = (this.Height - h) / 2f;
             e.Graphics.DrawImage(icon, x, y, w, h);
         }
     }
