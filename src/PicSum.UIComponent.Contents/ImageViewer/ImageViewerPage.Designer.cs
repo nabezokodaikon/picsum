@@ -90,13 +90,11 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.checkPatternPanel.Controls.Add(this.rightImagePanel);
             this.checkPatternPanel.Margin = new System.Windows.Forms.Padding(0);
             this.checkPatternPanel.Name = "checkPatternPanel";
-            this.checkPatternPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.checkPatternPanel.TabIndex = 3;
             this.checkPatternPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             // 
             // toolBar
             // 
-            this.toolBar.Dock = System.Windows.Forms.DockStyle.Top;
             this.toolBar.TabStop = false;
             this.toolBar.IsDrawBottomBorderLine = true;
             this.toolBar.DoublePreviewButtonClick += new System.EventHandler(this.DoublePreviewIndexToolStripButton_Click);

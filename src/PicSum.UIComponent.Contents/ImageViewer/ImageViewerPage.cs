@@ -29,6 +29,9 @@ namespace PicSum.UIComponent.Contents.ImageViewer
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
+        private static readonly Rectangle TOOL_BAR_DEFAULT_BOUNDS = new(0, 0, 767, 29);
+        private static readonly Rectangle CHECK_PATTERN_PANEL_DEFAULT_BOUNDS = new(0, 29, 767, 0);
+
         private static float GetImageScale(SizeF imageSize, SizeF backgroudSize, ImageSizeMode mode)
         {
             if (mode == ImageSizeMode.Original ||
@@ -48,7 +51,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         }
 
         private bool disposed = false;
-
+        private float scale = 0f;
         private readonly ImageViewerPageParameter parameter = null;
         private ImageDisplayMode displayMode = ImageDisplayMode.LeftFacing;
         private ImageSizeMode sizeMode = ImageSizeMode.FitOnlyBigImage;
@@ -111,6 +114,45 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         {
             using (TimeMeasuring.Run(false, "ImageViewerPage.RedrawPage"))
             {
+                if (this.scale != scale)
+                {
+                    this.scale = scale;
+                    var baseHeigth = this.Height - 8;
+
+                    this.toolBar.SuspendLayout();
+                    this.SuspendLayout();
+
+                    this.toolBar.Anchor
+                        = AnchorStyles.Top
+                        | AnchorStyles.Left
+                        | AnchorStyles.Right;
+
+                    this.checkPatternPanel.Anchor
+                        = AnchorStyles.Top
+                        | AnchorStyles.Left
+                        | AnchorStyles.Right
+                        | AnchorStyles.Bottom;
+
+                    this.toolBar.SetBounds(
+                        0,
+                        0,
+                        this.Width,
+                        (int)(TOOL_BAR_DEFAULT_BOUNDS.Height * this.scale));
+
+                    this.checkPatternPanel.SetBounds(
+                        0,
+                        this.toolBar.Bottom,
+                        this.Width,
+                        baseHeigth - this.toolBar.Bottom);
+
+                    this.toolBar.SetControlsBounds(scale);
+
+                    this.toolBar.ResumeLayout(false);
+                    this.toolBar.PerformLayout();
+                    this.ResumeLayout(false);
+                    this.PerformLayout();
+                }
+
                 SizeF backgroudSize;
                 if (this.leftImagePanel.HasImage && this.rightImagePanel.HasImage)
                 {
@@ -219,6 +261,10 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
             this.parameter.GetImageFiles += this.Parameter_GetImageFiles;
             this.parameter.ImageFilesGetAction(this.parameter)(this);
+
+            var scale = AppConstants.GetCurrentWindowScale(this.Handle);
+            this.RedrawPage(scale);
+
             base.OnLoad(e);
         }
 
@@ -310,8 +356,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
         private void CheckPatternPanel_Resize(object sender, EventArgs e)
         {
-            var scale = AppConstants.GetCurrentWindowScale(this.Handle);
-            this.RedrawPage(scale);
+            this.RedrawPage(this.scale);
         }
 
         private void BeginResumeLayout(bool isLeft, bool isRight, Action action)
