@@ -11,6 +11,7 @@ using SWF.UIComponent.WideDropDown;
 using System;
 using System.ComponentModel;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Runtime.Versioning;
 using System.Windows.Forms;
@@ -554,6 +555,11 @@ namespace PicSum.UIComponent.InfoPanel
                 return;
             }
 
+            e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+            e.Graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
+            e.Graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
+            e.Graphics.CompositingQuality = CompositingQuality.HighQuality;
+
             if (e.IsSelected)
             {
                 e.Graphics.FillRectangle(this.tagFlowList.SelectedItemBrush, e.ItemRectangle);
@@ -565,7 +571,9 @@ namespace PicSum.UIComponent.InfoPanel
 
             var item = this.TagList[e.ItemIndex];
 
-            var iconSize = Math.Min(this.tagFlowList.ItemHeight, this.tagIcon.Width);
+            var scale = AppConstants.GetCurrentWindowScale(this.Handle);
+            var iconSizeMargin = 8 * scale;
+            var iconSize = Math.Min(this.tagIcon.Width, e.ItemRectangle.Height) - iconSizeMargin * 2;
 
             var iconPoint = (this.tagFlowList.ItemHeight - iconSize) / 2f;
 
@@ -576,7 +584,7 @@ namespace PicSum.UIComponent.InfoPanel
 
             e.Graphics.DrawImage(this.tagIcon, iconRect);
 
-            var iconWidth = (int)(this.tagIcon.Width * 1.75);
+            var iconWidth = (int)(iconSize * 1.75);
             var itemFont = this.GetTagFont(item);
             var itemText = item.Tag;
             var itemTextSize = TextRenderer.MeasureText(itemText, itemFont);

@@ -134,8 +134,9 @@ namespace PicSum.UIComponent.AddressBar
         private RectangleF GetImageDrawRectangle(Image img)
         {
             var scale = AppConstants.GetCurrentWindowScale(this.AddressBar.Handle);
-            var w = img.Width * scale;
-            var h = img.Height * scale;
+            var margin = 16 * scale;
+            var w = Math.Min(img.Width * scale, this.Height) - margin;
+            var h = Math.Min(img.Height * scale, this.Height) - margin;
             var x = base.X + (base.Width - w) / 2f;
             var y = base.Y + (base.Height - w) / 2f;
             return new RectangleF(x, y, w, h);

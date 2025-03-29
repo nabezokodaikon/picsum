@@ -223,7 +223,7 @@ namespace PicSum.UIComponent.AddressBar
         {
             var dropDownItemWidth = ResourceFiles.SmallArrowDownIcon.Value.Width;
             var scale = AppConstants.GetCurrentWindowScale(this.Handle);
-            return (int)(dropDownItemWidth * scale);
+            return Math.Min((int)(dropDownItemWidth * scale), this.Height);
         }
 
         private void SetItemsRectangle()

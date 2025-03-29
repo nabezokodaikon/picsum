@@ -1,3 +1,4 @@
+using SWF.Core.Base;
 using System;
 using System.ComponentModel;
 using System.Drawing;
@@ -82,10 +83,14 @@ namespace SWF.UIComponent.WideDropDown
             var brush = this.GetBrush();
             pe.Graphics.FillRectangle(brush, 0, 1, this.Width, this.Height - 2);
 
-            var x = (this.Width - this.Image.Width) / 2f;
-            var y = (this.Height - this.Image.Height) / 2f;
-            var w = this.Image.Width;
-            var h = this.Image.Height;
+            var scale = AppConstants.GetCurrentWindowScale(this.Handle);
+            var margin = 12 * scale;
+            var size = Math.Min(this.Width, this.Height);
+            var w = Math.Min(this.Image.Width * scale, size) - margin;
+            var h = Math.Min(this.Image.Height * scale, size) - margin;
+            var x = (this.Width - w) / 2f;
+            var y = (this.Height - h) / 2f;
+
             pe.Graphics.DrawImage(this.Image, new RectangleF(x, y, w, h));
         }
 

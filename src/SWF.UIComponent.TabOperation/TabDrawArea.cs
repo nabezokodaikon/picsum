@@ -1,7 +1,9 @@
+using SWF.Core.Base;
 using System;
 using System.Drawing;
 using System.Runtime.Versioning;
 using System.Windows.Forms;
+using WinApi;
 
 namespace SWF.UIComponent.TabOperation
 {
@@ -235,9 +237,14 @@ namespace SWF.UIComponent.TabOperation
         {
             ArgumentNullException.ThrowIfNull(icon, nameof(icon));
 
+            var hwnd = WinApiMembers.WindowFromPoint(
+                new WinApiMembers.POINT(Cursor.Position.X, Cursor.Position.Y));
+            var scale = AppConstants.GetCurrentWindowScale(hwnd);
+            var margin = 8 * scale;
+
             var rect = this.GetIconRectangle();
-            var w = Math.Min(icon.Width, rect.Width);
-            var h = Math.Min(icon.Height, rect.Height);
+            var w = Math.Min(icon.Width, rect.Width) - margin;
+            var h = Math.Min(icon.Height, rect.Height) - margin;
             var x = rect.X + (rect.Width - w) / 2f;
             var y = rect.Y + (rect.Height - h) / 2f;
             return new RectangleF(x, y, w, h);

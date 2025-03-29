@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Runtime.Versioning;
 using System.Windows.Forms;
@@ -298,10 +299,13 @@ namespace SWF.UIComponent.WideDropDown
         {
             if (this.Icon != null)
             {
-                return new RectangleF(e.ItemRectangle.X + this.Icon.Width / 4f,
-                                      e.ItemRectangle.Y + this.Icon.Height / 2f,
-                                      this.Icon.Width,
-                                      this.Icon.Height);
+                var scale = AppConstants.GetCurrentWindowScale(this.Handle);
+                var margin = 8 * scale;
+                var size = Math.Min(this.Icon.Width, e.ItemRectangle.Height) - margin * 2;
+                return new RectangleF(e.ItemRectangle.X + margin,
+                                      e.ItemRectangle.Y + margin,
+                                      size,
+                                      size);
             }
             else
             {
@@ -315,6 +319,11 @@ namespace SWF.UIComponent.WideDropDown
             {
                 return;
             }
+
+            e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+            e.Graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
+            e.Graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
+            e.Graphics.CompositingQuality = CompositingQuality.HighQuality;
 
             if (this.Icon != null)
             {
@@ -337,7 +346,7 @@ namespace SWF.UIComponent.WideDropDown
                 e.Graphics.FillRectangle(this.FlowList.MousePointItemBrush, e.ItemRectangle);
             }
 
-            var iconWidth = this.Icon.Width + 4;
+            var iconWidth = Math.Min(this.Icon.Width, e.ItemRectangle.Height);
             var itemText = this.itemList[e.ItemIndex];
             var itemTextSize = TextRenderer.MeasureText(itemText, this.FlowList.Font);
             var destText = itemText;
