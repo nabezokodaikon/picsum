@@ -31,7 +31,7 @@ namespace SWF.UIComponent.WideDropDown
         private void InitializeComponent()
         {
             var resources = new System.ComponentModel.ComponentResourceManager(typeof(WideComboBox));
-            this.addButton = new SWF.UIComponent.Core.ToolButton();
+            this.addButton = new SWF.UIComponent.Core.ToolIconButton();
             this.inputTextBox = new InputTextBox();
             this.arrowPictureBox = new ArrowPictureBox();
             ((System.ComponentModel.ISupportInitialize)this.arrowPictureBox).BeginInit();
@@ -73,7 +73,7 @@ namespace SWF.UIComponent.WideDropDown
         }
 
 
-        private SWF.UIComponent.Core.ToolButton addButton;
+        private SWF.UIComponent.Core.ToolIconButton addButton;
         private ArrowPictureBox arrowPictureBox;
         private InputTextBox inputTextBox;
 

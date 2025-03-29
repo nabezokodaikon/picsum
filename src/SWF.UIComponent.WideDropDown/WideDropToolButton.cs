@@ -9,7 +9,7 @@ namespace SWF.UIComponent.WideDropDown
 {
     [SupportedOSPlatform("windows10.0.17763.0")]
     public partial class WideDropToolButton
-        : ToolButton
+        : ToolIconButton
     {
         public event EventHandler<ItemMouseClickEventArgs> ItemMouseClick;
         public event EventHandler<DropDownOpeningEventArgs> DropDownOpening;

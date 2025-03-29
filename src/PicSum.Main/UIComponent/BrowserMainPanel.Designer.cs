@@ -25,15 +25,15 @@ namespace PicSum.Main.UIComponent
             this.infoPanel = new PicSum.UIComponent.InfoPanel.InfoPanel();
             this.tabSwitch = new SWF.UIComponent.TabOperation.TabSwitch();
             this.toolPanel = new Panel();
-            this.reloadToolButton = new SWF.UIComponent.Core.ToolButton();
-            this.nextPageHistoryButton = new SWF.UIComponent.Core.ToolButton();
-            this.previewPageHistoryButton = new SWF.UIComponent.Core.ToolButton();
-            this.showInfoToolButton = new SWF.UIComponent.Core.ToolButton();
+            this.reloadToolButton = new SWF.UIComponent.Core.ToolIconButton();
+            this.nextPageHistoryButton = new SWF.UIComponent.Core.ToolIconButton();
+            this.previewPageHistoryButton = new SWF.UIComponent.Core.ToolIconButton();
+            this.showInfoToolButton = new SWF.UIComponent.Core.ToolIconButton();
             this.addressBar = new PicSum.UIComponent.AddressBar.AddressBar();
-            this.searchBookmarkToolButton = new SWF.UIComponent.Core.ToolButton();
+            this.searchBookmarkToolButton = new SWF.UIComponent.Core.ToolIconButton();
             this.tagDropToolButton = new SWF.UIComponent.WideDropDown.WideDropToolButton();
-            this.homeToolButton = new SWF.UIComponent.Core.ToolButton();
-            this.searchRatingToolButton = new SWF.UIComponent.Core.ToolButton();
+            this.homeToolButton = new SWF.UIComponent.Core.ToolIconButton();
+            this.searchRatingToolButton = new SWF.UIComponent.Core.ToolIconButton();
             this.toolPanel2 = new SWF.UIComponent.Core.ToolPanel();
             this.toolPanel.SuspendLayout();
             this.toolPanel2.SuspendLayout();
@@ -205,15 +205,15 @@ namespace PicSum.Main.UIComponent
         private SWF.UIComponent.TabOperation.TabSwitch tabSwitch;
         private System.Windows.Forms.Panel toolPanel;
         private SWF.UIComponent.Core.ToolPanel toolPanel2;
-        private SWF.UIComponent.Core.ToolButton showInfoToolButton;
+        private SWF.UIComponent.Core.ToolIconButton showInfoToolButton;
         private PicSum.UIComponent.AddressBar.AddressBar addressBar;
-        private SWF.UIComponent.Core.ToolButton nextPageHistoryButton;
-        private SWF.UIComponent.Core.ToolButton previewPageHistoryButton;
-        private SWF.UIComponent.Core.ToolButton homeToolButton;
-        private SWF.UIComponent.Core.ToolButton searchRatingToolButton;
+        private SWF.UIComponent.Core.ToolIconButton nextPageHistoryButton;
+        private SWF.UIComponent.Core.ToolIconButton previewPageHistoryButton;
+        private SWF.UIComponent.Core.ToolIconButton homeToolButton;
+        private SWF.UIComponent.Core.ToolIconButton searchRatingToolButton;
         private SWF.UIComponent.WideDropDown.WideDropToolButton tagDropToolButton;
-        private SWF.UIComponent.Core.ToolButton reloadToolButton;
-        private SWF.UIComponent.Core.ToolButton searchBookmarkToolButton;
+        private SWF.UIComponent.Core.ToolIconButton reloadToolButton;
+        private SWF.UIComponent.Core.ToolIconButton searchBookmarkToolButton;
 
         #endregion
     }

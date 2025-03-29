@@ -31,11 +31,11 @@ namespace PicSum.UIComponent.Contents.FileList
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.viewButton = new SWF.UIComponent.Core.ToolButton();
-            this.nameSortButton = new SWF.UIComponent.Core.ToolButton();
-            this.pathSortButton = new SWF.UIComponent.Core.ToolButton();
-            this.timestampSortButton = new SWF.UIComponent.Core.ToolButton();
-            this.registrationSortButton = new SWF.UIComponent.Core.ToolButton();
+            this.viewButton = new SWF.UIComponent.Core.ToolTextButton();
+            this.nameSortButton = new SWF.UIComponent.Core.ToolTextButton();
+            this.pathSortButton = new SWF.UIComponent.Core.ToolTextButton();
+            this.timestampSortButton = new SWF.UIComponent.Core.ToolTextButton();
+            this.registrationSortButton = new SWF.UIComponent.Core.ToolTextButton();
             this.thumbnailSizeSlider = new SWF.UIComponent.Core.Slider();
             this.viewMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.folderMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -43,8 +43,8 @@ namespace PicSum.UIComponent.Contents.FileList
             this.otherFileMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.fileNameMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.movePreviewButton = new SWF.UIComponent.Core.ToolButton();
-            this.moveNextButton = new SWF.UIComponent.Core.ToolButton();
+            this.movePreviewButton = new SWF.UIComponent.Core.ToolTextButton();
+            this.moveNextButton = new SWF.UIComponent.Core.ToolTextButton();
             this.viewMenu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -154,7 +154,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
         #endregion
 
-        private SWF.UIComponent.Core.ToolButton viewButton;
+        private SWF.UIComponent.Core.ToolTextButton viewButton;
         private SWF.UIComponent.Core.Slider thumbnailSizeSlider;
         private System.Windows.Forms.ContextMenuStrip viewMenu;
         private System.Windows.Forms.ToolStripMenuItem folderMenuItem;
@@ -162,11 +162,11 @@ namespace PicSum.UIComponent.Contents.FileList
         private System.Windows.Forms.ToolStripMenuItem otherFileMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem fileNameMenuItem;
-        private SWF.UIComponent.Core.ToolButton movePreviewButton;
-        private SWF.UIComponent.Core.ToolButton moveNextButton;
-        private SWF.UIComponent.Core.ToolButton nameSortButton;
-        private SWF.UIComponent.Core.ToolButton pathSortButton;
-        private SWF.UIComponent.Core.ToolButton timestampSortButton;
-        private SWF.UIComponent.Core.ToolButton registrationSortButton;
+        private SWF.UIComponent.Core.ToolTextButton movePreviewButton;
+        private SWF.UIComponent.Core.ToolTextButton moveNextButton;
+        private SWF.UIComponent.Core.ToolTextButton nameSortButton;
+        private SWF.UIComponent.Core.ToolTextButton pathSortButton;
+        private SWF.UIComponent.Core.ToolTextButton timestampSortButton;
+        private SWF.UIComponent.Core.ToolTextButton registrationSortButton;
     }
 }

@@ -145,7 +145,8 @@ namespace SWF.UIComponent.Core
                 ControlStyles.AllPaintingInWmPaint |
                 ControlStyles.OptimizedDoubleBuffer |
                 ControlStyles.StandardClick |
-                ControlStyles.UserPaint,
+                ControlStyles.UserPaint |
+                ControlStyles.SupportsTransparentBackColor,
                 true);
 
             this.SetStyle(

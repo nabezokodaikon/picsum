@@ -289,7 +289,7 @@ namespace PicSum.UIComponent.Contents.FileList
             this.PerformLayout();
         }
 
-        public ToolButton GetSortToolStripButton(SortTypeID sortType)
+        public ToolTextButton GetSortToolStripButton(SortTypeID sortType)
         {
             return sortType switch
             {

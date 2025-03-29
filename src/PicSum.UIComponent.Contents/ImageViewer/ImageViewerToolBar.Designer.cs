@@ -33,13 +33,13 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.singleViewMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.spreadLeftFeedMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.spreadRightFeedMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.doublePreviewButton = new SWF.UIComponent.Core.ToolButton();
-            this.singlePreviewButton = new SWF.UIComponent.Core.ToolButton();
-            this.doubleNextButton = new SWF.UIComponent.Core.ToolButton();
-            this.singleNextButton = new SWF.UIComponent.Core.ToolButton();
+            this.doublePreviewButton = new SWF.UIComponent.Core.ToolTextButton();
+            this.singlePreviewButton = new SWF.UIComponent.Core.ToolTextButton();
+            this.doubleNextButton = new SWF.UIComponent.Core.ToolTextButton();
+            this.singleNextButton = new SWF.UIComponent.Core.ToolTextButton();
             this.indexSlider = new SWF.UIComponent.Core.Slider();
-            this.viewButton = new SWF.UIComponent.Core.ToolButton();
-            this.sizeButton = new SWF.UIComponent.Core.ToolButton();
+            this.viewButton = new SWF.UIComponent.Core.ToolTextButton();
+            this.sizeButton = new SWF.UIComponent.Core.ToolTextButton();
             this.sizeMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.originalSizeMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fitWindowMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -172,16 +172,16 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         #endregion
 
         private System.Windows.Forms.ContextMenuStrip viewMenu;
-        private SWF.UIComponent.Core.ToolButton doublePreviewButton;
-        private SWF.UIComponent.Core.ToolButton singlePreviewButton;
-        private SWF.UIComponent.Core.ToolButton doubleNextButton;
-        private SWF.UIComponent.Core.ToolButton singleNextButton;
+        private SWF.UIComponent.Core.ToolTextButton doublePreviewButton;
+        private SWF.UIComponent.Core.ToolTextButton singlePreviewButton;
+        private SWF.UIComponent.Core.ToolTextButton doubleNextButton;
+        private SWF.UIComponent.Core.ToolTextButton singleNextButton;
         private SWF.UIComponent.Core.Slider indexSlider;
-        private SWF.UIComponent.Core.ToolButton viewButton;
+        private SWF.UIComponent.Core.ToolTextButton viewButton;
         private System.Windows.Forms.ToolStripMenuItem singleViewMenuItem;
         private System.Windows.Forms.ToolStripMenuItem spreadLeftFeedMenuItem;
         private System.Windows.Forms.ToolStripMenuItem spreadRightFeedMenuItem;
-        private SWF.UIComponent.Core.ToolButton sizeButton;
+        private SWF.UIComponent.Core.ToolTextButton sizeButton;
         private System.Windows.Forms.ContextMenuStrip sizeMenu;
         private System.Windows.Forms.ToolStripMenuItem originalSizeMenuItem;
         private System.Windows.Forms.ToolStripMenuItem fitWindowMenuItem;
