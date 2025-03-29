@@ -1146,7 +1146,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             }
 
             var filePath = this.filePathList[index];
-            var p = this.PointToClient(Cursor.Position);
             this.toolBar.ShowToolTip(filePath);
             this.ReadImage();
         }
@@ -1160,6 +1159,11 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
             this.toolBar.HideToolTip();
             this.ReadImage();
+        }
+
+        private void IndexSlider_MouseLeave(object sender, EventArgs e)
+        {
+            this.toolBar.HideToolTip();
         }
 
         private void LeftImagePanel_MouseDown(object sender, MouseEventArgs e)

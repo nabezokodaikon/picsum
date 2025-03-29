@@ -106,6 +106,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.indexSlider.BeginValueChange += this.IndexSlider_BeginValueChange;
             this.indexSlider.ValueChanging += this.IndexSlider_ValueChanging;
             this.indexSlider.ValueChanged += this.IndexSlider_ValueChanged;
+            this.indexSlider.MouseLeave += this.IndexSlider_MouseLeave;
             // 
             // viewButton
             // 

@@ -32,6 +32,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         public event EventHandler IndexSliderBeginValueChange;
         public event EventHandler IndexSliderValueChanged;
         public event EventHandler IndexSliderValueChanging;
+        public event EventHandler IndexSliderMouseLeave;
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public int IndexSliderValue
@@ -342,6 +343,11 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         private void IndexSlider_ValueChanged(object sender, EventArgs e)
         {
             this.IndexSliderValueChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void IndexSlider_MouseLeave(object sender, System.EventArgs e)
+        {
+            this.IndexSliderMouseLeave?.Invoke(this, EventArgs.Empty);
         }
 
         private void IndexSlider_ValueChanging(object sender, EventArgs e)

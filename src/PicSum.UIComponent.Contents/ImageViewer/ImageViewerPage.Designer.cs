@@ -109,6 +109,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.toolBar.FitWindowLargeOnlyMenuItemClick += new System.EventHandler(this.OnlyBigImageFitSizeToolStripMenuItem_Click);
             this.toolBar.IndexSliderValueChanging += new System.EventHandler(this.IndexSlider_ValueChanging);
             this.toolBar.IndexSliderValueChanged += new System.EventHandler(this.IndexSlider_ValueChanged);
+            this.toolBar.IndexSliderMouseLeave += new System.EventHandler(this.IndexSlider_MouseLeave);
             // 
             // ImageViewerPage
             //
