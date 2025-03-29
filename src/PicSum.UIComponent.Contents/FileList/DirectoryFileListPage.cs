@@ -35,15 +35,15 @@ namespace PicSum.UIComponent.Contents.FileList
 
             if (FileUtil.IsSystemRoot(this.parameter.DirectoryPath))
             {
-                this.Icon = Instance<IFileIconCacher>.Value.SmallPCIcon;
+                this.Icon = Instance<IFileIconCacher>.Value.LargePCIcon;
             }
             else if (FileUtil.IsDrive(this.parameter.DirectoryPath))
             {
-                this.Icon = Instance<IFileIconCacher>.Value.GetSmallDriveIcon(this.parameter.DirectoryPath);
+                this.Icon = Instance<IFileIconCacher>.Value.GetJumboDriveIcon(this.parameter.DirectoryPath);
             }
             else
             {
-                this.Icon = Instance<IFileIconCacher>.Value.SmallDirectoryIcon;
+                this.Icon = Instance<IFileIconCacher>.Value.JumboDirectoryIcon;
             }
 
             this.IsMoveControlVisible = !string.IsNullOrEmpty(this.parameter.DirectoryPath);
