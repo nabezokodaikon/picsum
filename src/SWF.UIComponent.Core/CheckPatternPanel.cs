@@ -1,3 +1,4 @@
+using SWF.Core.Base;
 using System.Drawing.Drawing2D;
 using System.Runtime.Versioning;
 
@@ -6,7 +7,7 @@ namespace SWF.UIComponent.Core
     [SupportedOSPlatform("windows10.0.17763.0")]
     public partial class CheckPatternPanel : Panel
     {
-        private const int RECTANGLE_SIZE = 24;
+        private const int RECTANGLE_DEFAULT_SIZE = 24;
         private static readonly SolidBrush BRUSH_A = new(Color.FromArgb(48, 48, 48));
         private static readonly SolidBrush BRUSH_B = new(Color.FromArgb(24, 24, 24));
 
@@ -44,31 +45,33 @@ namespace SWF.UIComponent.Core
             var h = this.ClientRectangle.Height;
 
             // チェック描画サイズ取得
-            if ((int)(w / RECTANGLE_SIZE) % 2 == 1)
+            var scale = AppConstants.GetCurrentWindowScale(this.Handle);
+            var size = (int)(RECTANGLE_DEFAULT_SIZE * scale);
+            if ((w / size) % 2 == 1)
             {
-                w += RECTANGLE_SIZE;
+                w += size;
             }
 
-            if ((int)(h / RECTANGLE_SIZE) % 2 == 1)
+            if ((h / size) % 2 == 1)
             {
-                h += RECTANGLE_SIZE;
+                h += size;
             }
 
             // チェック描画領域取得
             var rectsA = new List<Rectangle>();
             var rectsB = new List<Rectangle>();
             var addA = true;
-            for (var x = 0; x <= w; x += RECTANGLE_SIZE)
+            for (var x = 0; x <= w; x += size)
             {
-                for (var y = 0; y <= h; y += RECTANGLE_SIZE)
+                for (var y = 0; y <= h; y += size)
                 {
                     if (addA)
                     {
-                        rectsA.Add(new Rectangle(x, y, RECTANGLE_SIZE, RECTANGLE_SIZE));
+                        rectsA.Add(new Rectangle(x, y, size, size));
                     }
                     else
                     {
-                        rectsB.Add(new Rectangle(x, y, RECTANGLE_SIZE, RECTANGLE_SIZE));
+                        rectsB.Add(new Rectangle(x, y, size, size));
                     }
                     addA = !addA;
                 }
