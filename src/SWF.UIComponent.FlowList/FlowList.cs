@@ -1,3 +1,4 @@
+using SWF.Core.Base;
 using System;
 using System.ComponentModel;
 using System.Drawing;
@@ -592,13 +593,29 @@ namespace SWF.UIComponent.FlowList
             base.OnMouseWheel(e);
         }
 
+        /// <summary>
+        /// スクロールバーの幅を取得します。
+        /// </summary>
+        public int GetScrollBarWidth()
+        {
+            var scale = AppConstants.GetCurrentWindowScale(this.Handle);
+            var width = (int)(SCROLL_BAR_DEFAULT_WIDTH * scale);
+            if (width != this.scrollBar.Width)
+            {
+                this.scrollBar.Width = width;
+            }
+
+            return width;
+        }
+
         public void SetDrawParameter(bool isForced)
         {
             var beforeDrawParameter = this.drawParameter;
+            var scrollBarWidth = this.GetScrollBarWidth();
 
             if (this.itemCount > 0)
             {
-                var width = (this.scrollBar.Visible) ? this.Width - this.scrollBar.Width : this.Width;
+                var width = (this.scrollBar.Visible) ? this.Width - scrollBarWidth : this.Width;
                 if (this.isLileList)
                 {
                     this.itemWidth = width;
@@ -616,7 +633,7 @@ namespace SWF.UIComponent.FlowList
                 else
                 {
                     scrollBarMaximum = virtualHeight - this.Height;
-                    width = this.Width - this.scrollBar.Width;
+                    width = this.Width - scrollBarWidth;
                     if (this.isLileList)
                     {
                         this.itemWidth = width;

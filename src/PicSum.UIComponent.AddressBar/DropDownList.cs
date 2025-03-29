@@ -270,7 +270,7 @@ namespace PicSum.UIComponent.AddressBar
         {
             get
             {
-                return this.FlowList.ScrollBarWidth;
+                return this.FlowList.GetScrollBarWidth();
             }
         }
 

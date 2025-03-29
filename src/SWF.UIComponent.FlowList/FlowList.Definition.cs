@@ -10,6 +10,7 @@ namespace SWF.UIComponent.FlowList
     /// </summary>
     public sealed partial class FlowList
     {
+        public const int SCROLL_BAR_DEFAULT_WIDTH = 17;
 
         public event EventHandler<DrawItemEventArgs> DrawItem;
         public event EventHandler<DrawItemChangedEventArgs> DrawItemChanged;
@@ -25,17 +26,6 @@ namespace SWF.UIComponent.FlowList
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool CanKeyDown { get; set; } = true;
-
-        /// <summary>
-        /// スクロールバーの幅
-        /// </summary>
-        public int ScrollBarWidth
-        {
-            get
-            {
-                return this.scrollBar.Width;
-            }
-        }
 
         /// <summary>
         /// スクロールバー表示フラグ

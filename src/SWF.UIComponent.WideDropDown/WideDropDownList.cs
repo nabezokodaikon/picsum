@@ -161,7 +161,7 @@ namespace SWF.UIComponent.WideDropDown
         {
             get
             {
-                return this.FlowList.ScrollBarWidth;
+                return this.FlowList.GetScrollBarWidth();
             }
         }
 

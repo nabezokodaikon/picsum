@@ -29,6 +29,10 @@
   </PropertyGroup>
   
   <ItemGroup>
+    <ProjectReference Include="..\SWF.Core.Base\SWF.Core.Base.csproj" />
+  </ItemGroup>
+  
+  <ItemGroup>
     <Reference Update="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
