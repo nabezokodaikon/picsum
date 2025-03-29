@@ -392,7 +392,8 @@ namespace PicSum.UIComponent.Contents.FileList
             if (sortButton != null)
             {
                 var isAscending = this.SortInfo.IsAscending(this.SortInfo.ActiveSortType);
-                sortButton.Image = this.SortInfo.GetSortDirectionImage(isAscending);
+                var arrow = this.SortInfo.GetSortDirectionArrow(isAscending);
+                sortButton.Text = $"{arrow}  {sortButton.Text}";
             }
         }
 

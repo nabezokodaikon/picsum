@@ -49,15 +49,15 @@ namespace SWF.Core.Base
             }
         }
 
-        public Image GetSortDirectionImage(bool isAscending)
+        public string GetSortDirectionArrow(bool isAscending)
         {
             if (isAscending)
             {
-                return this.sortAscendingImage;
+                return "▲";
             }
             else
             {
-                return this.sortDescendingImage;
+                return "▼";
             }
         }
 

@@ -303,10 +303,10 @@ namespace PicSum.UIComponent.Contents.FileList
 
         public void ClearSortImage()
         {
-            this.nameSortButton.Image = null;
-            this.pathSortButton.Image = null;
-            this.timestampSortButton.Image = null;
-            this.registrationSortButton.Image = null;
+            this.nameSortButton.Text = "Name";
+            this.pathSortButton.Text = "Path";
+            this.timestampSortButton.Text = "Time stamp";
+            this.registrationSortButton.Text = "Registration";
         }
 
         protected override void OnLoad(EventArgs e)
