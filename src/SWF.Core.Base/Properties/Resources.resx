@@ -118,12 +118,6 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="ActiveRatingIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\ActiveRatingIcon.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="BookmarkIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\BookmarkIcon.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="DragTabIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\DragTabIcon.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -139,44 +133,11 @@
   <data name="DropRightIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\DropRightIcon.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="GoBackIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\GoBackIcon.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="GoNextIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\GoNextIcon.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="HomeIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\HomeIcon.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="InactiveRatingIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\InactiveRatingIcon.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="InfoIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\InfoIcon.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="RatingIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\RatingIcon.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="ReloadIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\ReloadIcon.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="SliderButtonIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SliderButtonIcon.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="SmallArrowDownIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\SmallArrowDownIcon.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="SmallArrowLeftIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\SmallArrowLeftIcon.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="SmallArrowRightIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\SmallArrowRightIcon.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="SmallArrowUpIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\SmallArrowUpIcon.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="TagIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\TagIcon.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="ThumbnailPanelIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ThumbnailPanelIcon.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -198,5 +159,44 @@
   </data>
   <data name="DragAndDropIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\DragAndDropIcon.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="ActiveRatingIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ActiveRatingIcon.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="HomeIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\HomeIcon.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="TagIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\TagIcon.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="RatingIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\RatingIcon.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="BookmarkIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\BookmarkIcon.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="InfoIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\InfoIcon.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="GoBackIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\GoBackIcon.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="GoNextIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\GoNextIcon.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="ReloadIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ReloadIcon.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="SmallArrowDownIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SmallArrowDownIcon.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="SmallArrowUpIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SmallArrowUpIcon.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="SmallArrowLeftIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SmallArrowLeftIcon.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="SmallArrowRightIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SmallArrowRightIcon.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>
