@@ -113,7 +113,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             // 
             // ImageViewerPage
             //
-            this.BackColor = System.Drawing.Color.Transparent;
+            this.BackColor = System.Drawing.Color.FromArgb(250, 250, 250);
             this.Controls.Add(this.checkPatternPanel);
             this.Controls.Add(this.toolBar);
             this.Margin = new System.Windows.Forms.Padding(4);

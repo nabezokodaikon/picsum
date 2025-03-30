@@ -92,7 +92,7 @@ namespace PicSum.UIComponent.Contents.FileList
             // 
             // FileListPageBase
             //
-            this.BackColor = System.Drawing.Color.Transparent;
+            this.BackColor = System.Drawing.Color.FromArgb(250, 250, 250);
             this.Controls.Add(this.flowList);
             this.Controls.Add(this.toolBar);
             this.Name = "FileListPageBase";

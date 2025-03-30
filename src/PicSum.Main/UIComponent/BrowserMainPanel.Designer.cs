@@ -42,7 +42,7 @@ namespace PicSum.Main.UIComponent
             // pageContainer
             // 
             this.pageContainer.AllowDrop = true;
-            this.pageContainer.BackColor = Color.Transparent;
+            this.pageContainer.BackColor = Color.FromArgb(250, 250, 250);
             this.pageContainer.Location = new Point(500, 0);
             this.pageContainer.Name = "pageContainer";
             this.pageContainer.Size = new Size(746, 402);
@@ -52,7 +52,7 @@ namespace PicSum.Main.UIComponent
             // 
             // infoPanel
             // 
-            this.infoPanel.BackColor = Color.Transparent;
+            this.infoPanel.BackColor = Color.FromArgb(250, 250, 250);
             this.infoPanel.Font = new Font("Yu Gothic UI", 9F);
             this.infoPanel.Location = new Point(0, 0);
             this.infoPanel.Name = "infoPanel";
@@ -80,7 +80,7 @@ namespace PicSum.Main.UIComponent
             // toolPanel
             // 
             this.toolPanel.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            this.toolPanel.BackColor = Color.Transparent;
+            this.toolPanel.BackColor = Color.FromArgb(250, 250, 250);
             this.toolPanel.BackgroundImageLayout = ImageLayout.Stretch;
             this.toolPanel.Controls.Add(this.reloadToolButton);
             this.toolPanel.Controls.Add(this.nextPageHistoryButton);
@@ -174,7 +174,7 @@ namespace PicSum.Main.UIComponent
             // toolPanel2
             // 
             this.toolPanel2.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
-            this.toolPanel2.BackColor = Color.Transparent;
+            this.toolPanel2.BackColor = Color.FromArgb(250, 250, 250);
             this.toolPanel2.Controls.Add(this.searchBookmarkToolButton);
             this.toolPanel2.Controls.Add(this.homeToolButton);
             this.toolPanel2.Controls.Add(this.tagDropToolButton);

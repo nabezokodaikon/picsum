@@ -161,10 +161,10 @@ namespace SWF.UIComponent.Core
             this.UseVisualStyleBackColor = false;
             this.TabIndex = 0;
             this.TabStop = false;
-            this.BackColor = Color.Transparent;
+            this.BackColor = Color.FromArgb(250, 250, 250);
             this.FlatStyle = FlatStyle.Flat;
             this.FlatAppearance.BorderSize = 0;
-            this.FlatAppearance.MouseDownBackColor = Color.Transparent;
+            this.FlatAppearance.MouseDownBackColor = Color.FromArgb(250, 250, 250);
         }
 
         public Rectangle GetRegionBounds()

@@ -67,7 +67,7 @@ namespace SWF.UIComponent.Core
             : base(new Slider())
         {
             this.Slider.Size = new(96, 24);
-            this.Slider.BackColor = Color.Transparent;
+            this.Slider.BackColor = Color.FromArgb(250, 250, 250);
         }
 
         protected override void OnSubscribeControlEvents(Control? control)
