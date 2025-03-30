@@ -157,6 +157,8 @@ namespace PicSum.UIComponent.AddressBar
         private void GetSubDirectoryJob_Callback(ListResult<FileShallowInfoEntity> e)
         {
             base.DropDownList.BeginUpdate();
+            base.Items.Clear();
+            base.DropDownList.ItemCount = 0;
             base.DropDownList.ItemHeight = this.GetDropDownItemHeight();
 
             var width = this.GetMinimumDropDownWidth();
