@@ -536,19 +536,21 @@ namespace SWF.UIComponent.TabOperation
 
                     if (ScreenUtil.GetLeftBorderRect().Contains(screenPoint))
                     {
+                        var scale = AppConstants.GetCurrentWindowScale(this);
                         var screenRect = Screen.GetWorkingArea(screenPoint);
-                        var w = (int)(screenRect.Width / 2f);
-                        var h = screenRect.Height;
-                        var x = screenRect.Left;
+                        var w = (int)(screenRect.Width / 2f + 14 * scale);
+                        var h = (int)(screenRect.Height + 8 * scale);
+                        var x = (int)(screenRect.Left - 7 * scale);
                         var y = screenRect.Top;
                         this.OnTabDropouted(new TabDropoutedEventArgs(tab, new Point(x, y), new Size(w, h), FormWindowState.Normal));
                     }
                     else if (ScreenUtil.GetRightBorderRect().Contains(screenPoint))
                     {
+                        var scale = AppConstants.GetCurrentWindowScale(this);
                         var screenRect = Screen.GetWorkingArea(screenPoint);
-                        var w = (int)(screenRect.Width / 2f);
-                        var h = screenRect.Height;
-                        var x = screenRect.Right - w;
+                        var w = (int)(screenRect.Width / 2f + 14 * scale);
+                        var h = (int)(screenRect.Height + 8 * scale);
+                        var x = screenRect.X + (int)(screenRect.Width / 2f) - (int)(7 * scale);
                         var y = screenRect.Top;
                         this.OnTabDropouted(new TabDropoutedEventArgs(tab, new Point(x, y), new Size(w, h), FormWindowState.Normal));
                     }
