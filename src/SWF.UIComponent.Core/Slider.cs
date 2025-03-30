@@ -319,6 +319,7 @@ namespace SWF.UIComponent.Core
                 {
                     this.buttonPointX = pointX;
                     this.Invalidate();
+                    this.Update();
 
                     var value = this.GetValue(pointX);
                     if (value != this.sliderValue)
