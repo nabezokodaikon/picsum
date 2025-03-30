@@ -245,6 +245,7 @@ namespace SWF.UIComponent.Form
             {
                 base.Size = this.initSize;
                 base.WindowState = this.initWindowState;
+                this.currentDpi = WinApiMembers.GetDpiForWindow(this.Handle);
                 this.isInit = false;
             }
 
