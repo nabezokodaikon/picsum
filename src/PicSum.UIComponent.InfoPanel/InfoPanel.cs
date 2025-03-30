@@ -29,7 +29,7 @@ namespace PicSum.UIComponent.InfoPanel
         private static readonly Rectangle THUMBNAIL_PICTURE_BOX_DEFAULT_BOUNDS
             = new(4, 0, 508, 256);
         private static readonly Rectangle FILE_INFO_LABEL_DEFAULT_BOUNDS
-            = new(4, 256, 508, 96);
+            = new(4, 256, 508, 120);
         private static readonly Rectangle RATING_BAR_DEFAULT_BOUNDS
             = new(4, 390, 508, 64);
         private static readonly Rectangle WIDE_COMBO_BOX_DEFAULT_BOUNDS
