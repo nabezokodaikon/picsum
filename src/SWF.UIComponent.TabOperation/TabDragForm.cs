@@ -201,7 +201,7 @@ namespace SWF.UIComponent.TabOperation
             this.DrawTabEventArgs.TitleColor = TabPalette.TITLE_COLOR;
             this.DrawTabEventArgs.TitleFormatFlags = TabPalette.TITLE_FORMAT_FLAGS;
             this.DrawTabEventArgs.TextRectangle = this.TabDrawArea.GetPageRectangle();
-            this.DrawTabEventArgs.IconRectangle = this.TabDrawArea.GetIconRectangle(tab.Icon);
+            this.DrawTabEventArgs.IconRectangle = this.TabDrawArea.GetIconRectangle(scale);
             this.DrawTabEventArgs.CloseButtonRectangle = this.TabDrawArea.GetCloseButtonRectangle();
 
             this.drawTabPageMethod = tab.DrawingTabPage;

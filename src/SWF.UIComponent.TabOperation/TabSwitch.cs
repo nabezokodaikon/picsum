@@ -1329,26 +1329,18 @@ namespace SWF.UIComponent.TabOperation
             }
 
             var scale = AppConstants.GetCurrentWindowScale(this);
-            using (var icon = new Bitmap((int)(tab.Icon.Width * scale), (int)(tab.Icon.Height * scale)))
+            var font = this.GetFont(scale);
+            var args = new DrawTabEventArgs
             {
-                using (var gr = Graphics.FromImage(icon))
-                {
-                    gr.DrawImage(tab.Icon, 0, 0, icon.Width, icon.Height);
-                }
-
-                var font = this.GetFont(scale);
-                var args = new DrawTabEventArgs
-                {
-                    Graphics = g,
-                    Font = font,
-                    TitleColor = TabPalette.TITLE_COLOR,
-                    TitleFormatFlags = TabPalette.TITLE_FORMAT_FLAGS,
-                    TextRectangle = tab.DrawArea.GetPageRectangle(),
-                    IconRectangle = tab.DrawArea.GetIconRectangle(icon),
-                    CloseButtonRectangle = tab.DrawArea.GetCloseButtonRectangle(),
-                };
-                tab.DrawingTabPage(args);
-            }
+                Graphics = g,
+                Font = font,
+                TitleColor = TabPalette.TITLE_COLOR,
+                TitleFormatFlags = TabPalette.TITLE_FORMAT_FLAGS,
+                TextRectangle = tab.DrawArea.GetPageRectangle(),
+                IconRectangle = tab.DrawArea.GetIconRectangle(scale),
+                CloseButtonRectangle = tab.DrawArea.GetCloseButtonRectangle(),
+            };
+            tab.DrawingTabPage(args);
 
         }
 

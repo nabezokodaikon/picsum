@@ -232,16 +232,12 @@ namespace SWF.UIComponent.TabOperation
             return new RectangleF(x, y, w, h);
         }
 
-        public RectangleF GetIconRectangle(Image icon)
+        public RectangleF GetIconRectangle(float scale)
         {
-            ArgumentNullException.ThrowIfNull(icon, nameof(icon));
-
-            var scale = AppConstants.GetCursorWindowScale();
             var margin = 8 * scale;
-
             var rect = this.GetIconRectangle();
-            var w = Math.Min(icon.Width, rect.Width) - margin;
-            var h = Math.Min(icon.Height, rect.Height) - margin;
+            var w = rect.Width - margin;
+            var h = rect.Height - margin;
             var x = rect.X + (rect.Width - w) / 2f;
             var y = rect.Y + (rect.Height - h) / 2f;
             return new RectangleF(x, y, w, h);
