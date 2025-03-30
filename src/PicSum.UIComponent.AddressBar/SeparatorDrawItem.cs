@@ -15,7 +15,6 @@ namespace PicSum.UIComponent.AddressBar
         : DropDownDrawItemBase, IDisposable
     {
         private bool disposed = false;
-        private bool isDropDownShow = false;
         private readonly Image mousePointImage = ResourceFiles.SmallArrowRightIcon.Value;
         private readonly Image mouseDownImage = ResourceFiles.SmallArrowDownIcon.Value;
 
@@ -69,27 +68,27 @@ namespace PicSum.UIComponent.AddressBar
 
             if (e.Button == MouseButtons.Left)
             {
-                if (this.isDropDownShow)
+                if (!string.IsNullOrEmpty(this.AddressBar.DropDownDirectory)
+                    && this.AddressBar.DropDownDirectory == this.Directory.DirectoryPath)
                 {
                     base.DropDownList.Close();
-                    this.isDropDownShow = false;
+                    this.AddressBar.DropDownDirectory = string.Empty;
+                    return;
                 }
-                else
-                {
-                    base.DropDownList.Show(base.AddressBar, this.Left, this.Bottom);
-                    var param = new ValueParameter<string>(this.Directory.DirectoryPath);
-                    Instance<JobCaller>.Value.SubDirectoriesGetJob.Value
-                        .StartJob(this.AddressBar, param, _ =>
-                        {
-                            if (this.disposed)
-                            {
-                                return;
-                            }
 
-                            this.GetSubDirectoryJob_Callback(_);
-                        });
-                    this.isDropDownShow = true;
-                }
+                base.DropDownList.Show(base.AddressBar, this.Left, this.Bottom);
+                var param = new ValueParameter<string>(this.Directory.DirectoryPath);
+                Instance<JobCaller>.Value.SubDirectoriesGetJob.Value
+                    .StartJob(this.AddressBar, param, _ =>
+                    {
+                        if (this.disposed)
+                        {
+                            return;
+                        }
+
+                        this.GetSubDirectoryJob_Callback(_);
+                    });
+                this.AddressBar.DropDownDirectory = this.Directory.DirectoryPath;
             }
         }
 

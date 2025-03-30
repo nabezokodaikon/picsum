@@ -5,6 +5,7 @@ using SWF.Core.FileAccessor;
 using SWF.Core.Job;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
@@ -26,6 +27,9 @@ namespace PicSum.UIComponent.AddressBar
         private readonly List<DrawItemBase> addressItems = [];
         private DrawItemBase mousePointItem = null;
         private DrawItemBase mouseDownItem = null;
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public string DropDownDirectory { get; set; } = string.Empty;
 
         public AddressBar()
         {
