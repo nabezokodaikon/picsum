@@ -71,7 +71,6 @@ namespace PicSum.Main.UIComponent
             }
 
             this.ResumeLayout(false);
-            this.PerformLayout();
         }
 
         public void AddPageEventHandler(BrowserPage page)

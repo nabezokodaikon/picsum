@@ -98,9 +98,7 @@ namespace PicSum.UIComponent.Contents.FileList
             this.Name = "FileListPageBase";
             this.Size = new System.Drawing.Size(630, 393);
             this.toolBar.ResumeLayout(false);
-            this.toolBar.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
         }
 
         private SWF.UIComponent.FlowList.FlowList flowList;

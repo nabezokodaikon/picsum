@@ -69,7 +69,6 @@ namespace SWF.UIComponent.WideDropDown
             this.Name = "WideComboBox";
             ((System.ComponentModel.ISupportInitialize)this.arrowPictureBox).EndInit();
             this.ResumeLayout(false);
-            this.PerformLayout();
         }
 
 

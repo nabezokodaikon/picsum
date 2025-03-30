@@ -121,9 +121,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.Size = new System.Drawing.Size(925, 528);
             this.checkPatternPanel.ResumeLayout(false);
             this.toolBar.ResumeLayout(false);
-            this.toolBar.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
         }
 
         private SWF.UIComponent.ImagePanel.ImagePanel leftImagePanel;
