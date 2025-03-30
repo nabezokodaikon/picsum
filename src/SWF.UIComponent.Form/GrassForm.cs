@@ -168,8 +168,6 @@ namespace SWF.UIComponent.Form
                     WinApiMembers.DwmExtendFrameIntoClientArea(this.Handle, this.glassMargins);
                     this.ScaleChanged?.Invoke(this, new ScaleChangedEventArgs(scale));
                 }
-
-                Console.WriteLine(this.currentDpi);
             }
             else
             {
