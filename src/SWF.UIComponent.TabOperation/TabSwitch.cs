@@ -633,10 +633,9 @@ namespace SWF.UIComponent.TabOperation
         protected override void OnPaint(PaintEventArgs e)
         {
             e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
-            e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
-            e.Graphics.CompositingQuality = CompositingQuality.HighSpeed;
-            e.Graphics.PixelOffsetMode = PixelOffsetMode.HighSpeed;
-            e.Graphics.CompositingMode = CompositingMode.SourceOver;
+            e.Graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
+            e.Graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
+            e.Graphics.CompositingQuality = CompositingQuality.HighQuality;
 
             foreach (var tab in this.tabList.FindAll((t) => t != this.activeTab))
             {

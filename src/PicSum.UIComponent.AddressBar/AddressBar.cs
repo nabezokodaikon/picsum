@@ -6,6 +6,7 @@ using SWF.Core.Job;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Runtime.Versioning;
 using System.Windows.Forms;
@@ -123,6 +124,11 @@ namespace PicSum.UIComponent.AddressBar
 
         protected override void OnPaint(PaintEventArgs e)
         {
+            e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+            e.Graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
+            e.Graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
+            e.Graphics.CompositingQuality = CompositingQuality.HighQuality;
+
             e.Graphics.FillRectangle(Palette.OUT_LINE_BRUSH, this.ClientRectangle);
             e.Graphics.FillRectangle(Palette.INNER_BRUSH, this.GetInnerRectangle());
 

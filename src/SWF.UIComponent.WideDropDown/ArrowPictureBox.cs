@@ -2,6 +2,7 @@ using SWF.Core.Base;
 using System;
 using System.ComponentModel;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Runtime.Versioning;
 using System.Windows.Forms;
 
@@ -79,6 +80,11 @@ namespace SWF.UIComponent.WideDropDown
                 base.OnPaint(pe);
                 return;
             }
+
+            pe.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+            pe.Graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
+            pe.Graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
+            pe.Graphics.CompositingQuality = CompositingQuality.HighQuality;
 
             var brush = this.GetBrush();
             pe.Graphics.FillRectangle(brush, 0, 1, this.Width, this.Height - 2);
