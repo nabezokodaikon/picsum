@@ -971,7 +971,7 @@ namespace SWF.UIComponent.FlowList
                 var itemRect = this.GetItemDrawRectangle(newIndex);
                 if (itemRect.Top < 0)
                 {
-                    this.scrollBar.Value -= this.itemHeight;
+                    this.scrollBar.Value = Math.Max(this.scrollBar.Minimum, this.scrollBar.Value - this.itemHeight);
                 }
 
                 this.EnsureVisible(newIndex);
@@ -1015,7 +1015,7 @@ namespace SWF.UIComponent.FlowList
                 var itemRect = this.GetItemDrawRectangle(newIndex);
                 if (itemRect.Bottom > this.Height)
                 {
-                    this.scrollBar.Value += this.itemHeight;
+                    this.scrollBar.Value = Math.Min(this.scrollBar.Maximum, this.scrollBar.Value + this.itemHeight);
                 }
 
                 this.EnsureVisible(newIndex);
