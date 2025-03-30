@@ -108,7 +108,7 @@ namespace SWF.UIComponent.Core
 
         private float GetBarHeight()
         {
-            var scale = AppConstants.GetCurrentWindowScale(this.Handle);
+            var scale = AppConstants.GetCurrentWindowScale(this);
             return BarHeight * scale;
         }
 
@@ -192,14 +192,14 @@ namespace SWF.UIComponent.Core
 
         private float GetMaximumButtonPointX()
         {
-            var scale = AppConstants.GetCurrentWindowScale(this.Handle);
+            var scale = AppConstants.GetCurrentWindowScale(this);
             var scaleButtonWidth = (this.button.Width) * scale;
             return this.Width - scaleButtonWidth / 2f;
         }
 
         private float GetMinimumButtonPointX()
         {
-            var scale = AppConstants.GetCurrentWindowScale(this.Handle);
+            var scale = AppConstants.GetCurrentWindowScale(this);
             var scaleButtonWidth = (this.button.Width) * scale;
             return scaleButtonWidth / 2f;
         }
@@ -231,7 +231,7 @@ namespace SWF.UIComponent.Core
 
         private void DrawButton(Graphics g)
         {
-            var scale = AppConstants.GetCurrentWindowScale(this.Handle);
+            var scale = AppConstants.GetCurrentWindowScale(this);
             var scaleButtonSize = new SizeF(this.button.Width * scale, this.button.Height * scale);
             var centerPoint = this.GetCenterPoint();
 

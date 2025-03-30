@@ -44,9 +44,7 @@ namespace SWF.UIComponent.TabOperation
         private float GetOutlineOffset()
         {
             const float OUTLINE_OFFSET = 0.5f;
-            var hwnd = WinApiMembers.WindowFromPoint(
-                new WinApiMembers.POINT(Cursor.Position.X, Cursor.Position.Y));
-            var scale = AppConstants.GetCurrentWindowScale(hwnd);
+            var scale = AppConstants.GetCursorWindowScale();
             return OUTLINE_OFFSET * scale;
         }
 
@@ -55,16 +53,14 @@ namespace SWF.UIComponent.TabOperation
             const float DRAW_TAB_WIDHT_OFFSET = 8;
             var hwnd = WinApiMembers.WindowFromPoint(
                 new WinApiMembers.POINT(Cursor.Position.X, Cursor.Position.Y));
-            var scale = AppConstants.GetCurrentWindowScale(hwnd);
+            var scale = AppConstants.GetCursorWindowScale();
             return DRAW_TAB_WIDHT_OFFSET * scale;
         }
 
         private float GetCaptureWidth()
         {
             const float CAPTURE_WIDTH = 320;
-            var hwnd = WinApiMembers.WindowFromPoint(
-                new WinApiMembers.POINT(Cursor.Position.X, Cursor.Position.Y));
-            var scale = AppConstants.GetCurrentWindowScale(hwnd);
+            var scale = AppConstants.GetCursorWindowScale();
             return CAPTURE_WIDTH * scale;
         }
 
@@ -175,9 +171,7 @@ namespace SWF.UIComponent.TabOperation
                 throw new Exception("領域のイメージが初期化されていません。");
             }
 
-            var hwnd = WinApiMembers.WindowFromPoint(
-                new WinApiMembers.POINT(Cursor.Position.X, Cursor.Position.Y));
-            var scale = AppConstants.GetCurrentWindowScale(hwnd);
+            var scale = AppConstants.GetCursorWindowScale();
 
             using (var pageCap = tab.GetPageCapture())
             {

@@ -227,7 +227,7 @@ namespace PicSum.UIComponent.InfoPanel
                     return;
                 }
 
-                var scale = AppConstants.GetCurrentWindowScale(this.Handle);
+                var scale = AppConstants.GetCurrentWindowScale(this);
                 var param = new FileDeepInfoGetParameter
                 {
                     FilePathList = filePathList,
@@ -571,7 +571,7 @@ namespace PicSum.UIComponent.InfoPanel
 
             var item = this.TagList[e.ItemIndex];
 
-            var scale = AppConstants.GetCurrentWindowScale(this.Handle);
+            var scale = AppConstants.GetCurrentWindowScale(this);
             var iconSizeMargin = 8 * scale;
             var iconSize = Math.Min(this.tagIcon.Width, e.ItemRectangle.Height) - iconSizeMargin * 2;
 

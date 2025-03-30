@@ -89,7 +89,7 @@ namespace SWF.UIComponent.WideDropDown
             var brush = this.GetBrush();
             pe.Graphics.FillRectangle(brush, 0, 1, this.Width, this.Height - 2);
 
-            var scale = AppConstants.GetCurrentWindowScale(this.Handle);
+            var scale = AppConstants.GetCurrentWindowScale(this);
             var margin = 12 * scale;
             var size = Math.Min(this.Width, this.Height);
             var w = Math.Min(this.Image.Width * scale, size) - margin;

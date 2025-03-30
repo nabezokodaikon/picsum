@@ -280,14 +280,14 @@ namespace PicSum.UIComponent.AddressBar
         private int GetInnerOffset()
         {
             const int INNER_OFFSET = 1;
-            var scale = AppConstants.GetCurrentWindowScale(this.Handle);
+            var scale = AppConstants.GetCurrentWindowScale(this);
             return (int)(INNER_OFFSET * scale);
         }
 
         private int GetDropDownItemWidth()
         {
             var dropDownItemWidth = ResourceFiles.SmallArrowDownIcon.Value.Width;
-            var scale = AppConstants.GetCurrentWindowScale(this.Handle);
+            var scale = AppConstants.GetCurrentWindowScale(this);
             return Math.Min((int)(dropDownItemWidth * scale), this.Height);
         }
 
@@ -308,7 +308,7 @@ namespace PicSum.UIComponent.AddressBar
             if (this.addressItems != null)
             {
                 var right = addressRect.Right;
-                var scale = AppConstants.GetCurrentWindowScale(this.Handle);
+                var scale = AppConstants.GetCurrentWindowScale(this);
                 using (var g = this.CreateGraphics())
                 {
                     var font = this.GetRegularFont(scale);

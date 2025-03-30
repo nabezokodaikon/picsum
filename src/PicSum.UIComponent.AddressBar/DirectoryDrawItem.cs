@@ -56,7 +56,7 @@ namespace PicSum.UIComponent.AddressBar
                 g.DrawRectangle(Palette.MOUSE_POINT_PEN, rect);
             }
 
-            var scale = AppConstants.GetCurrentWindowScale(this.AddressBar.Handle);
+            var scale = AppConstants.GetCurrentWindowScale(this.AddressBar);
             var font = this.AddressBar.GetRegularFont(scale);
             var text = this.directory.DirectoryName;
             var textSize = TextRenderer.MeasureText(text, font);

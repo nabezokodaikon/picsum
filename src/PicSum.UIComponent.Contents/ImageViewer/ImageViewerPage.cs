@@ -262,7 +262,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.parameter.GetImageFiles += this.Parameter_GetImageFiles;
             this.parameter.ImageFilesGetAction(this.parameter)(this);
 
-            var scale = AppConstants.GetCurrentWindowScale(this.Handle);
+            var scale = AppConstants.GetCurrentWindowScale(this);
             this.RedrawPage(scale);
 
             base.OnLoad(e);

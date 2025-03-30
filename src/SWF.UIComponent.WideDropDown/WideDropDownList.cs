@@ -278,7 +278,7 @@ namespace SWF.UIComponent.WideDropDown
 
         protected override void OnOpening(CancelEventArgs e)
         {
-            var scale = AppConstants.GetCurrentWindowScale(this.Handle);
+            var scale = AppConstants.GetCurrentWindowScale(this);
             this.ToolStripItem.Size = new(
                 (int)(BACKGROUND_DEFAULT_SIZE.Width * scale),
                 (int)(BACKGROUND_DEFAULT_SIZE.Height * scale));
@@ -299,7 +299,7 @@ namespace SWF.UIComponent.WideDropDown
         {
             if (this.Icon != null)
             {
-                var scale = AppConstants.GetCurrentWindowScale(this.Handle);
+                var scale = AppConstants.GetCurrentWindowScale(this);
                 var margin = 8 * scale;
                 var size = Math.Min(this.Icon.Width, e.ItemRectangle.Height) - margin * 2;
                 return new RectangleF(e.ItemRectangle.X + margin,

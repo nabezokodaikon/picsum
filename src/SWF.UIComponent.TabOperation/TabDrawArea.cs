@@ -3,7 +3,6 @@ using System;
 using System.Drawing;
 using System.Runtime.Versioning;
 using System.Windows.Forms;
-using WinApi;
 
 namespace SWF.UIComponent.TabOperation
 {
@@ -237,9 +236,7 @@ namespace SWF.UIComponent.TabOperation
         {
             ArgumentNullException.ThrowIfNull(icon, nameof(icon));
 
-            var hwnd = WinApiMembers.WindowFromPoint(
-                new WinApiMembers.POINT(Cursor.Position.X, Cursor.Position.Y));
-            var scale = AppConstants.GetCurrentWindowScale(hwnd);
+            var scale = AppConstants.GetCursorWindowScale();
             var margin = 8 * scale;
 
             var rect = this.GetIconRectangle();

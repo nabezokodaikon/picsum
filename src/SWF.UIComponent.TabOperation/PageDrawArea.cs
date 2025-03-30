@@ -23,7 +23,7 @@ namespace SWF.UIComponent.TabOperation
 
         public void Draw(Graphics g)
         {
-            var scale = AppConstants.GetCurrentWindowScale(this.tabSwitch.Handle);
+            var scale = AppConstants.GetCurrentWindowScale(this.tabSwitch);
             this.DrawOutline(g, scale);
             this.DrawInnerRectangle(g, scale);
         }

@@ -23,7 +23,7 @@ namespace SWF.UIComponent.TabOperation
         {
             const int TAB_DEFAULT_HEIGHT = 29;
             var form = this.GetForm();
-            var scale = AppConstants.GetCurrentWindowScale(form.Handle);
+            var scale = AppConstants.GetCurrentWindowScale(form);
             return (int)(TAB_DEFAULT_HEIGHT * scale);
         }
 
@@ -32,7 +32,7 @@ namespace SWF.UIComponent.TabOperation
         {
             const float TAB_MARGIN = 2;
             var form = this.GetForm();
-            var scale = AppConstants.GetCurrentWindowScale(form.Handle);
+            var scale = AppConstants.GetCurrentWindowScale(form);
             return (int)(TAB_MARGIN * scale);
         }
 
@@ -41,7 +41,7 @@ namespace SWF.UIComponent.TabOperation
         {
             const float TAB_MAXIMUM_WIDTH = 256;
             var form = this.GetForm();
-            var scale = AppConstants.GetCurrentWindowScale(form.Handle);
+            var scale = AppConstants.GetCurrentWindowScale(form);
             return (int)(TAB_MAXIMUM_WIDTH * scale);
         }
 
@@ -50,7 +50,7 @@ namespace SWF.UIComponent.TabOperation
         {
             const float TAB_MINIMUM_WIDTH = 1;
             var form = this.GetForm();
-            var scale = AppConstants.GetCurrentWindowScale(form.Handle);
+            var scale = AppConstants.GetCurrentWindowScale(form);
             return (int)(TAB_MINIMUM_WIDTH * scale);
         }
 
@@ -59,7 +59,7 @@ namespace SWF.UIComponent.TabOperation
         {
             const float TABS_MARGIN = 8;
             var form = this.GetForm();
-            var scale = AppConstants.GetCurrentWindowScale(form.Handle);
+            var scale = AppConstants.GetCurrentWindowScale(form);
             return (int)(TABS_MARGIN * scale);
         }
 
@@ -68,7 +68,7 @@ namespace SWF.UIComponent.TabOperation
             ArgumentNullException.ThrowIfNull(owner, nameof(owner));
 
             const float TAB_CLOSE_BUTTON_CAN_DRAW_WIDTH = 64;
-            var scale = AppConstants.GetCurrentWindowScale(owner.Handle);
+            var scale = AppConstants.GetCurrentWindowScale(owner);
             return (int)(TAB_CLOSE_BUTTON_CAN_DRAW_WIDTH * scale);
         }
 
@@ -1328,7 +1328,7 @@ namespace SWF.UIComponent.TabOperation
                 return;
             }
 
-            var scale = AppConstants.GetCurrentWindowScale(this.Handle);
+            var scale = AppConstants.GetCurrentWindowScale(this);
             using (var icon = new Bitmap((int)(tab.Icon.Width * scale), (int)(tab.Icon.Height * scale)))
             {
                 using (var gr = Graphics.FromImage(icon))

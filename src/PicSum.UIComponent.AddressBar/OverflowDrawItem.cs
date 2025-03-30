@@ -63,7 +63,7 @@ namespace PicSum.UIComponent.AddressBar
 
                 var width = this.GetMinimumDropDownWidth();
 
-                var scale = AppConstants.GetCurrentWindowScale(base.DropDownList.Handle);
+                var scale = AppConstants.GetCurrentWindowScale(base.DropDownList);
                 using (var g = this.DropDownList.CreateGraphics())
                 {
                     var font = this.AddressBar.GetRegularFont(scale);
@@ -101,7 +101,7 @@ namespace PicSum.UIComponent.AddressBar
 
         protected override void DrawDropDownItem(SWF.UIComponent.FlowList.DrawItemEventArgs e)
         {
-            var scale = AppConstants.GetCurrentWindowScale(this.AddressBar.Handle);
+            var scale = AppConstants.GetCurrentWindowScale(this.AddressBar);
             var font = this.AddressBar.GetRegularFont(scale);
 
             if (e.IsFocus || e.IsMousePoint || e.IsSelected)
@@ -143,7 +143,7 @@ namespace PicSum.UIComponent.AddressBar
 
         private RectangleF GetImageDrawRectangle(Image img)
         {
-            var scale = AppConstants.GetCurrentWindowScale(this.AddressBar.Handle);
+            var scale = AppConstants.GetCurrentWindowScale(this.AddressBar);
             var margin = 16 * scale;
             var w = Math.Min(img.Width * scale, this.Height) - margin;
             var h = Math.Min(img.Height * scale, this.Height) - margin;

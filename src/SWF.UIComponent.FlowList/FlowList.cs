@@ -598,7 +598,7 @@ namespace SWF.UIComponent.FlowList
         /// </summary>
         public int GetScrollBarWidth()
         {
-            var scale = AppConstants.GetCurrentWindowScale(this.Handle);
+            var scale = AppConstants.GetCurrentWindowScale(this);
             var width = (int)(SCROLL_BAR_DEFAULT_WIDTH * scale);
             if (width != this.scrollBar.Width)
             {

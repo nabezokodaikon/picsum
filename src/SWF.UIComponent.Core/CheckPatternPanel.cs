@@ -45,7 +45,7 @@ namespace SWF.UIComponent.Core
             var h = this.ClientRectangle.Height;
 
             // チェック描画サイズ取得
-            var scale = AppConstants.GetCurrentWindowScale(this.Handle);
+            var scale = AppConstants.GetCurrentWindowScale(this);
             var size = (int)(RECTANGLE_DEFAULT_SIZE * scale);
             if ((w / size) % 2 == 1)
             {

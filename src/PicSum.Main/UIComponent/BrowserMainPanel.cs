@@ -372,7 +372,7 @@ namespace PicSum.Main.UIComponent
 
         protected override void OnLoad(EventArgs e)
         {
-            var scale = AppConstants.GetCurrentWindowScale(this.Handle);
+            var scale = AppConstants.GetCurrentWindowScale(this);
             this.SetControlsBounds(scale);
 
             this.addressBar.SetAddress(FileUtil.ROOT_DIRECTORY_PATH);
@@ -620,7 +620,7 @@ namespace PicSum.Main.UIComponent
                 {
                     this.addressBar.SetAddress(selectedFilePath);
                     this.infoPanel.SetFileInfo(page.GetSelectedFiles());
-                    var scale = AppConstants.GetCurrentWindowScale(this.Handle);
+                    var scale = AppConstants.GetCurrentWindowScale(this);
                     page.RedrawPage(scale);
                 }
             }
@@ -721,7 +721,7 @@ namespace PicSum.Main.UIComponent
                 this.infoPanel.Visible = true;
             }
 
-            var scale = AppConstants.GetCurrentWindowScale(this.Handle);
+            var scale = AppConstants.GetCurrentWindowScale(this);
             this.SetControlsBounds(scale);
         }
 

@@ -242,7 +242,7 @@ namespace PicSum.Main.UIComponent
 
             if (this.browserMainPanel != null)
             {
-                var scale = AppConstants.GetCurrentWindowScale(this.Handle);
+                var scale = AppConstants.GetCurrentWindowScale(this);
                 this.browserMainPanel.RedrawPage(scale);
             }
         }
@@ -259,7 +259,7 @@ namespace PicSum.Main.UIComponent
             this.browserMainPanel = new BrowserMainPanel();
             this.Controls.Add(this.browserMainPanel);
 
-            var scale = AppConstants.GetCurrentWindowScale(this.Handle);
+            var scale = AppConstants.GetCurrentWindowScale(this);
             var rect = this.CreateBrowserMainPanelBounds(scale);
             this.browserMainPanel.SetBounds(rect.X, rect.Y, rect.Width, rect.Height);
             this.browserMainPanel.SetControlsBounds(scale);
