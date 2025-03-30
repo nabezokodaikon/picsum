@@ -31,7 +31,6 @@ namespace PicSum.UIComponent.InfoPanel
             // 
             // thumbnailPictureBox
             // 
-            this.thumbnailPictureBox.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             this.thumbnailPictureBox.BackColor = Color.FromArgb(250, 250, 250);
             this.thumbnailPictureBox.Location = new Point(4, 0);
             this.thumbnailPictureBox.Margin = new System.Windows.Forms.Padding(4, 0, 0, 0);
@@ -69,7 +68,6 @@ namespace PicSum.UIComponent.InfoPanel
             // 
             // ratingBar
             // 
-            this.ratingBar.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             this.ratingBar.BackColor = Color.FromArgb(250, 250, 250);
             this.ratingBar.Location = new Point(4, 390);
             this.ratingBar.Margin = new System.Windows.Forms.Padding(4, 0, 0, 0);
@@ -81,10 +79,8 @@ namespace PicSum.UIComponent.InfoPanel
             // 
             // tagFlowList
             // 
-            this.tagFlowList.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             this.tagFlowList.BackColor = Color.FromArgb(250, 250, 250);
             this.tagFlowList.ContextMenuStrip = this.tagContextMenuStrip;
-            this.tagFlowList.Font = new Font("Yu Gothic UI", 10F);
             this.tagFlowList.IsLileList = true;
             this.tagFlowList.ItemHeight = 32;
             this.tagFlowList.Location = new Point(4, 484);
@@ -99,7 +95,6 @@ namespace PicSum.UIComponent.InfoPanel
             // 
             // wideComboBox
             // 
-            this.wideComboBox.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             this.wideComboBox.Font = new Font("Yu Gothic UI", 10F);
             this.wideComboBox.Location = new Point(4, 452);
             this.wideComboBox.Margin = new System.Windows.Forms.Padding(4, 0, 0, 0);
@@ -113,7 +108,6 @@ namespace PicSum.UIComponent.InfoPanel
             // 
             // fileInfoLabel
             // 
-            this.fileInfoLabel.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             this.fileInfoLabel.BackColor = Color.FromArgb(250, 250, 250);
             this.fileInfoLabel.Font = new Font("Yu Gothic UI", 10F);
             this.fileInfoLabel.Location = new Point(4, 256);

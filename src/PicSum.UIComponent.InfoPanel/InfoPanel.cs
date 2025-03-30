@@ -9,6 +9,7 @@ using SWF.Core.Job;
 using SWF.UIComponent.Core;
 using SWF.UIComponent.WideDropDown;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -42,12 +43,17 @@ namespace PicSum.UIComponent.InfoPanel
         private bool disposed = false;
 
         private FileDeepInfoGetResult fileInfoSource = FileDeepInfoGetResult.EMPTY;
-        private Font allTagFont = null;
         private Image tagIcon = null;
         private string contextMenuOperationTag = string.Empty;
         private bool isLoading = false;
         private readonly SolidBrush foreColorBrush;
         private readonly StringFormat stringFormat;
+        private readonly Font tagDefaultFont
+            = new("Yu Gothic UI", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+        private readonly Font allTagDefaultFont
+            = new("Yu Gothic UI", 14F, FontStyle.Bold, GraphicsUnit.Pixel);
+        private readonly Dictionary<float, Font> tagFontCache = [];
+        private readonly Dictionary<float, Font> allTagFontCache = [];
 
         private string[] FilePathList
         {
@@ -149,13 +155,13 @@ namespace PicSum.UIComponent.InfoPanel
 
             this.fileInfoLabel.SetBounds(
                 this.thumbnailPictureBox.Left,
-                this.thumbnailPictureBox.Top * 2 + this.thumbnailPictureBox.Bottom,
+                this.thumbnailPictureBox.Top + this.thumbnailPictureBox.Bottom,
                 this.thumbnailPictureBox.Width,
                 (int)(FILE_INFO_LABEL_DEFAULT_BOUNDS.Height * scale));
 
             this.ratingBar.SetBounds(
                 this.thumbnailPictureBox.Left,
-                this.thumbnailPictureBox.Top * 3 + this.fileInfoLabel.Bottom,
+                this.thumbnailPictureBox.Top + this.fileInfoLabel.Bottom,
                 this.thumbnailPictureBox.Width,
                 (int)(RATING_BAR_DEFAULT_BOUNDS.Height * scale));
 
@@ -163,7 +169,7 @@ namespace PicSum.UIComponent.InfoPanel
 
             this.wideComboBox.SetBounds(
                 this.thumbnailPictureBox.Left,
-                this.thumbnailPictureBox.Top * 4 + this.ratingBar.Bottom,
+                this.thumbnailPictureBox.Top + this.ratingBar.Bottom,
                 this.thumbnailPictureBox.Width,
                 (int)(WIDE_COMBO_BOX_DEFAULT_BOUNDS.Height * scale));
 
@@ -171,22 +177,39 @@ namespace PicSum.UIComponent.InfoPanel
 
             this.tagFlowList.SetBounds(
                 this.thumbnailPictureBox.Left,
-                this.thumbnailPictureBox.Top * 5 + this.wideComboBox.Bottom,
+                this.thumbnailPictureBox.Top + this.wideComboBox.Bottom,
                 this.thumbnailPictureBox.Width,
-                (int)(this.Height - (this.thumbnailPictureBox.Top * 5 + this.wideComboBox.Bottom) - 9 * scale));
+                (int)(this.Height - (this.thumbnailPictureBox.Top + this.wideComboBox.Bottom) - 9 * scale));
+
+            this.thumbnailPictureBox.Anchor
+                = AnchorStyles.Top
+                | AnchorStyles.Left
+                | AnchorStyles.Right;
+
+            this.fileInfoLabel.Anchor
+                = AnchorStyles.Top
+                | AnchorStyles.Left
+                | AnchorStyles.Right;
+
+            this.ratingBar.Anchor
+                = AnchorStyles.Top
+                | AnchorStyles.Left
+                | AnchorStyles.Right;
+
+            this.wideComboBox.Anchor
+                = AnchorStyles.Top
+                | AnchorStyles.Left
+                | AnchorStyles.Right;
+
+            this.tagFlowList.Anchor
+                = AnchorStyles.Top
+                | AnchorStyles.Left
+                | AnchorStyles.Right
+                | AnchorStyles.Bottom;
 
             this.VerticalTopMargin = (int)(VERTICAL_DEFAULT_TOP_MARGIN * scale);
 
             this.tagFlowList.ItemHeight = (int)(TAG_FLOW_LIST_DEFAULT_ITEM_HEIGHT * scale);
-            var oldFont = this.tagFlowList.Font;
-            this.tagFlowList.Font = new Font(oldFont.FontFamily, TAG_FLOW_LIST_DEFAULT_FONT_SIZE * scale);
-            oldFont.Dispose();
-
-            if (this.allTagFont != null)
-            {
-                this.allTagFont.Dispose();
-                this.allTagFont = null;
-            }
 
             if (this.tagIcon != null)
             {
@@ -282,12 +305,58 @@ namespace PicSum.UIComponent.InfoPanel
 
             if (disposing)
             {
+                foreach (var font in this.tagFontCache.Values)
+                {
+                    font.Dispose();
+                }
+                this.tagFontCache.Clear();
+                this.tagDefaultFont.Dispose();
+
+                foreach (var font in this.allTagFontCache.Values)
+                {
+                    font.Dispose();
+                }
+                this.allTagFontCache.Clear();
+                this.allTagDefaultFont.Dispose();
+
                 this.components?.Dispose();
             }
 
             this.disposed = true;
 
             base.Dispose(disposing);
+        }
+
+        private Font GetTagFont(float scale)
+        {
+            if (this.tagFontCache.TryGetValue(scale, out var font))
+            {
+                return font;
+            }
+
+            var newFont = new Font(
+                this.tagDefaultFont.FontFamily,
+                this.tagDefaultFont.Size * scale,
+                this.tagDefaultFont.Style,
+                this.tagDefaultFont.Unit);
+            this.tagFontCache.Add(scale, newFont);
+            return newFont;
+        }
+
+        private Font GetAllTagFont(float scale)
+        {
+            if (this.allTagFontCache.TryGetValue(scale, out var font))
+            {
+                return font;
+            }
+
+            var newFont = new Font(
+                this.allTagDefaultFont.FontFamily,
+                this.allTagDefaultFont.Size * scale,
+                this.allTagDefaultFont.Style,
+                this.allTagDefaultFont.Unit);
+            this.allTagFontCache.Add(scale, newFont);
+            return newFont;
         }
 
         private void OnSelectedTag(SelectedTagEventArgs e)
@@ -316,27 +385,15 @@ namespace PicSum.UIComponent.InfoPanel
             this.tagContextMenuStrip.Close();
         }
 
-        private Font GetAllTagFont()
-        {
-            this.allTagFont ??=
-                new Font(
-                    this.tagFlowList.Font.FontFamily,
-                    this.tagFlowList.Font.Size,
-                    FontStyle.Bold,
-                    this.tagFlowList.Font.Unit,
-                    this.tagFlowList.Font.GdiCharSet);
-            return this.allTagFont;
-        }
-
-        private Font GetTagFont(FileTagInfoEntity tagInfo)
+        private Font GetTagFont(FileTagInfoEntity tagInfo, float scale)
         {
             if (tagInfo.IsAll)
             {
-                return this.GetAllTagFont();
+                return this.GetAllTagFont(scale);
             }
             else
             {
-                return this.tagFlowList.Font;
+                return this.GetTagFont(scale);
             }
         }
 
@@ -581,7 +638,7 @@ namespace PicSum.UIComponent.InfoPanel
             e.Graphics.DrawImage(this.tagIcon, iconRect);
 
             var iconWidth = (int)(iconSize * 1.75);
-            var itemFont = this.GetTagFont(item);
+            var itemFont = this.GetTagFont(item, scale);
             var itemText = item.Tag;
             var itemTextSize = TextRenderer.MeasureText(itemText, itemFont);
             var itemWidth = e.ItemRectangle.Width - iconWidth;
