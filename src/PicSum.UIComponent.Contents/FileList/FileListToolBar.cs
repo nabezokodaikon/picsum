@@ -1,6 +1,7 @@
 using SWF.Core.Base;
 using SWF.UIComponent.Core;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Runtime.Versioning;
@@ -34,8 +35,10 @@ namespace PicSum.UIComponent.Contents.FileList
         public event EventHandler MovePreviewButtonClick;
         public event EventHandler MoveNextButtonClick;
 
+        private bool disposed = false;
         private readonly Font defaultFont
             = new("Yu Gothic UI", 12F, GraphicsUnit.Pixel);
+        private readonly Dictionary<float, Font> fontCache = [];
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool FolderMenuItemChecked
@@ -263,11 +266,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 (int)(MOVE_PREVIEW_BUTTON_DEFAULT_BOUNDS.Width * scale),
                 (int)(MOVE_PREVIEW_BUTTON_DEFAULT_BOUNDS.Height * scale));
 
-            this.viewButton.Font = new Font(
-                this.defaultFont.FontFamily,
-                this.defaultFont.Size * scale,
-                this.defaultFont.Unit);
-
+            this.viewButton.Font = this.GetFont(scale);
             this.nameSortButton.Font = this.viewButton.Font;
             this.pathSortButton.Font = this.viewButton.Font;
             this.timestampSortButton.Font = this.viewButton.Font;
@@ -307,10 +306,43 @@ namespace PicSum.UIComponent.Contents.FileList
             this.registrationSortButton.Text = "Registration";
         }
 
-        protected override void OnLoad(EventArgs e)
+        protected override void Dispose(bool disposing)
         {
-            base.OnLoad(e);
-            this.Font = new Font(this.Font.FontFamily, 9F);
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+                foreach (var font in this.fontCache.Values)
+                {
+                    font.Dispose();
+                }
+                this.fontCache.Clear();
+                this.defaultFont.Dispose();
+
+                this.components?.Dispose();
+            }
+
+            this.disposed = true;
+
+            base.Dispose(disposing);
+        }
+
+        private Font GetFont(float scale)
+        {
+            if (this.fontCache.TryGetValue(scale, out var font))
+            {
+                return font;
+            }
+
+            var newFont = new Font(
+                this.defaultFont.FontFamily,
+                this.defaultFont.Size * scale,
+                this.defaultFont.Unit);
+            this.fontCache.Add(scale, newFont);
+            return newFont;
         }
 
         private void ViewButton_MouseClick(object sender, MouseEventArgs e)

@@ -1,5 +1,6 @@
 using SWF.UIComponent.Core;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Runtime.Versioning;
@@ -32,8 +33,10 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         public event EventHandler IndexSliderValueChanging;
         public event EventHandler IndexSliderMouseLeave;
 
+        private bool disposed = false;
         private readonly Font defaultFont
             = new("Yu Gothic UI", 12F, GraphicsUnit.Pixel);
+        private readonly Dictionary<float, Font> fontCache = [];
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public int IndexSliderValue
@@ -260,11 +263,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 | AnchorStyles.Left
                 | AnchorStyles.Right;
 
-            this.viewButton.Font = new Font(
-                this.defaultFont.FontFamily,
-                this.defaultFont.Size * scale,
-                this.defaultFont.Unit);
-
+            this.viewButton.Font = this.GetFont(scale);
             this.sizeButton.Font = this.viewButton.Font;
             this.doublePreviewButton.Font = this.viewButton.Font;
             this.singlePreviewButton.Font = this.viewButton.Font;
@@ -282,10 +281,28 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.PerformLayout();
         }
 
-        protected override void OnLoad(EventArgs e)
+        protected override void Dispose(bool disposing)
         {
-            base.OnLoad(e);
-            this.Font = new Font(this.Font.FontFamily, 9F);
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+                foreach (var font in this.fontCache.Values)
+                {
+                    font.Dispose();
+                }
+                this.fontCache.Clear();
+                this.defaultFont.Dispose();
+
+                this.components?.Dispose();
+            }
+
+            this.disposed = true;
+
+            base.Dispose(disposing);
         }
 
         public void ShowToolTip(string filePath)
@@ -299,6 +316,21 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         public void HideToolTip()
         {
             this.filePathToolTip.Hide(this);
+        }
+
+        private Font GetFont(float scale)
+        {
+            if (this.fontCache.TryGetValue(scale, out var font))
+            {
+                return font;
+            }
+
+            var newFont = new Font(
+                this.defaultFont.FontFamily,
+                this.defaultFont.Size * scale,
+                this.defaultFont.Unit);
+            this.fontCache.Add(scale, newFont);
+            return newFont;
         }
 
         private void ViewButton_MouseClick(object sender, MouseEventArgs e)
