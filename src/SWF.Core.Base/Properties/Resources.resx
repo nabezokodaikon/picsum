@@ -121,12 +121,6 @@
   <data name="DragTabIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\DragTabIcon.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="DropArrowIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\DropArrowIcon.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="DropLeftIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\DropLeftIcon.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="DropMaximumIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\DropMaximumIcon.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -198,5 +192,11 @@
   </data>
   <data name="SmallArrowRightIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SmallArrowRightIcon.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="DropLeftIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\DropLeftIcon.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="DropArrowIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\DropArrowIcon.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

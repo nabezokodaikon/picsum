@@ -1359,6 +1359,9 @@ namespace SWF.UIComponent.TabOperation
                 return;
             }
 
+            const int ICON_SIZE = 32;
+            const int ICON_MARGIN = 8;
+
             var dropX = this.dropPoint.Value.X;
             var dropY = this.dropPoint.Value.Y;
 
@@ -1370,17 +1373,21 @@ namespace SWF.UIComponent.TabOperation
                     if (this.IsTabLeftDrop(dropX, tab))
                     {
                         var img = ResourceFiles.DropArrowIcon.Value;
-                        var x = (tab.DrawArea.Left - tabMargin / 2f) - img.Width / 2f;
+                        var scale = AppConstants.GetCurrentWindowScale(this);
+                        var size = Math.Min(ICON_SIZE * scale, img.Width * scale) - ICON_MARGIN * scale;
+                        var x = (tab.DrawArea.Left - tabMargin / 2f) - size / 2f;
                         var y = 0;
-                        g.DrawImage(img, x, y, img.Width, img.Height);
+                        g.DrawImage(img, x, y, size, size);
                         return;
                     }
                     else if (this.IsTabRightDrop(dropX, tab))
                     {
                         var img = ResourceFiles.DropArrowIcon.Value;
-                        var x = (tab.DrawArea.Right - tabMargin / 2f) - img.Width / 2f;
+                        var scale = AppConstants.GetCurrentWindowScale(this);
+                        var size = Math.Min(ICON_SIZE * scale, img.Width * scale) - ICON_MARGIN * scale;
+                        var x = (tab.DrawArea.Right - tabMargin / 2f) - size / 2f;
                         var y = 0;
-                        g.DrawImage(img, x, y, img.Width, img.Height);
+                        g.DrawImage(img, x, y, size, size);
                         return;
                     }
                 }
