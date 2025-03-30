@@ -29,7 +29,13 @@ namespace PicSum.UIComponent.AddressBar
         private DrawItemBase mouseDownItem = null;
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public string DropDownDirectory { get; set; } = string.Empty;
+        internal string DropDownDirectory { get; set; } = string.Empty;
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        internal bool IsOverflowDropDown { get; set; } = false;
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        internal bool IsHistoryDropDown { get; set; } = false;
 
         public AddressBar()
         {
@@ -56,6 +62,10 @@ namespace PicSum.UIComponent.AddressBar
         public void SetAddress(string filePath)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
+
+            this.DropDownDirectory = string.Empty;
+            this.IsOverflowDropDown = false;
+            this.IsHistoryDropDown = false;
 
             if (FileUtil.IsFile(filePath))
             {
@@ -156,6 +166,10 @@ namespace PicSum.UIComponent.AddressBar
 
         protected override void OnMouseLeave(EventArgs e)
         {
+            this.DropDownDirectory = string.Empty;
+            this.IsOverflowDropDown = false;
+            this.IsHistoryDropDown = false;
+
             this.SetMouseDownItem(null);
             this.Invalidate();
             this.Update();

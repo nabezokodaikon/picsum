@@ -89,6 +89,8 @@ namespace PicSum.UIComponent.AddressBar
                         this.GetSubDirectoryJob_Callback(_);
                     });
                 this.AddressBar.DropDownDirectory = this.Directory.DirectoryPath;
+                this.AddressBar.IsOverflowDropDown = false;
+                this.AddressBar.IsHistoryDropDown = false;
             }
         }
 
