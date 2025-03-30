@@ -1,3 +1,4 @@
+using SWF.Core.Base;
 using System.ComponentModel;
 using System.Runtime.Versioning;
 
@@ -31,7 +32,7 @@ namespace SWF.UIComponent.Core
                 this.maximumValue = value;
 
                 this.CreateRatingButtons();
-                this.SetRatingButtonsLocation();
+                this.SetControlsBounds(AppConstants.GetCurrentWindowScale(this));
                 this.SetValue(this.ratingValue);
             }
         }
@@ -58,10 +59,17 @@ namespace SWF.UIComponent.Core
 
         public void SetControlsBounds(float scale)
         {
-            foreach (var button in this.ratingButtonList)
+            var firstBtn = this.ratingButtonList.FirstOrDefault();
+            if (firstBtn == null)
             {
-                button.SetControlsBounds(scale);
+                return;
             }
+
+            firstBtn.SetControlsBounds(scale);
+            var allWidth = firstBtn.Width * this.ratingButtonList.Count;
+            var x = (int)((this.Width - allWidth) / 2f);
+            var y = (int)((this.Height - firstBtn.Height) / 2f);
+            firstBtn.Location = new Point(x, y);
         }
 
         public void SetValue(int value)
@@ -78,12 +86,6 @@ namespace SWF.UIComponent.Core
             }
 
             this.ratingValue = value;
-        }
-
-        protected override void OnInvalidated(InvalidateEventArgs e)
-        {
-            this.SetRatingButtonsLocation();
-            base.OnInvalidated(e);
         }
 
         protected virtual void OnRatingButtonMouseClick(MouseEventArgs e)
@@ -114,26 +116,6 @@ namespace SWF.UIComponent.Core
             this.ratingButtonList.AddRange(ary);
 
             this.Controls.AddRange(ary);
-        }
-
-        private void SetRatingButtonsLocation()
-        {
-            var firstBtn = this.ratingButtonList.FirstOrDefault();
-            if (firstBtn == null)
-            {
-                return;
-            }
-
-            var allWidth = firstBtn.Width * this.ratingButtonList.Count;
-
-            var x = (int)((this.Width - allWidth) / 2f);
-            var y = (int)((this.Height - firstBtn.Height) / 2f);
-
-            foreach (var btn in this.ratingButtonList)
-            {
-                btn.Location = new Point(x, y);
-                x += btn.Width;
-            }
         }
 
         private void RatingButton_MouseClick(object? sender, MouseEventArgs e)
