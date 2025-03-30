@@ -10,7 +10,7 @@ namespace PicSum.UIComponent.AddressBar
     internal sealed partial class OverflowDrawItem
         : DropDownDrawItemBase, IDisposable
     {
-
+        private bool isDropDownShow = false;
         private readonly Image mousePointImage = ResourceFiles.SmallArrowLeftIcon.Value;
         private readonly Image mouseDownImage = ResourceFiles.SmallArrowDownIcon.Value;
 
@@ -52,6 +52,13 @@ namespace PicSum.UIComponent.AddressBar
 
             if (e.Button == MouseButtons.Left)
             {
+                if (this.isDropDownShow)
+                {
+                    base.DropDownList.Close();
+                    this.isDropDownShow = false;
+                    return;
+                }
+
                 base.DropDownList.BeginUpdate();
                 base.DropDownList.ItemHeight = this.GetDropDownItemHeight();
 
@@ -81,6 +88,8 @@ namespace PicSum.UIComponent.AddressBar
                 base.DropDownList.ItemCount = base.Items.Count;
                 base.DropDownList.Show(base.AddressBar, base.Left, base.Bottom);
                 base.DropDownList.EndUpdate();
+
+                this.isDropDownShow = true;
             }
         }
 

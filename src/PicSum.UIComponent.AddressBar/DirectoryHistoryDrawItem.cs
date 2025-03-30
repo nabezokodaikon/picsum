@@ -15,6 +15,7 @@ namespace PicSum.UIComponent.AddressBar
         : DropDownDrawItemBase, IDisposable
     {
         private bool disposed = false;
+        private bool isDropDownShow = false;
         private readonly Image drawImage = ResourceFiles.SmallArrowDownIcon.Value;
 
         public DirectoryHistoryDrawItem()
@@ -62,6 +63,13 @@ namespace PicSum.UIComponent.AddressBar
 
             if (e.Button == MouseButtons.Left)
             {
+                if (this.isDropDownShow)
+                {
+                    base.DropDownList.Close();
+                    this.isDropDownShow = false;
+                    return;
+                }
+
                 Instance<JobCaller>.Value.DirectoryViewHistoryGetJob.Value
                     .StartJob(this.AddressBar, _ =>
                     {
@@ -71,6 +79,7 @@ namespace PicSum.UIComponent.AddressBar
                         }
 
                         this.DirectoryViewHistoryGetJob_Callback(_);
+                        this.isDropDownShow = true;
                     });
             }
         }

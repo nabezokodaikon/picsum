@@ -15,6 +15,7 @@ namespace PicSum.UIComponent.AddressBar
         : DropDownDrawItemBase, IDisposable
     {
         private bool disposed = false;
+        private bool isDropDownShow = false;
         private readonly Image mousePointImage = ResourceFiles.SmallArrowRightIcon.Value;
         private readonly Image mouseDownImage = ResourceFiles.SmallArrowDownIcon.Value;
 
@@ -68,19 +69,27 @@ namespace PicSum.UIComponent.AddressBar
 
             if (e.Button == MouseButtons.Left)
             {
-                base.DropDownList.Show(base.AddressBar, this.Left, this.Bottom);
-
-                var param = new ValueParameter<string>(this.Directory.DirectoryPath);
-                Instance<JobCaller>.Value.SubDirectoriesGetJob.Value
-                    .StartJob(this.AddressBar, param, _ =>
-                    {
-                        if (this.disposed)
+                if (this.isDropDownShow)
+                {
+                    base.DropDownList.Close();
+                    this.isDropDownShow = false;
+                }
+                else
+                {
+                    base.DropDownList.Show(base.AddressBar, this.Left, this.Bottom);
+                    var param = new ValueParameter<string>(this.Directory.DirectoryPath);
+                    Instance<JobCaller>.Value.SubDirectoriesGetJob.Value
+                        .StartJob(this.AddressBar, param, _ =>
                         {
-                            return;
-                        }
+                            if (this.disposed)
+                            {
+                                return;
+                            }
 
-                        this.GetSubDirectoryJob_Callback(_);
-                    });
+                            this.GetSubDirectoryJob_Callback(_);
+                        });
+                    this.isDropDownShow = true;
+                }
             }
         }
 
