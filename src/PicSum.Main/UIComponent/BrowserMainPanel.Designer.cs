@@ -189,7 +189,7 @@ namespace PicSum.Main.UIComponent
             // 
             // BrowserMainPanel
             // 
-            this.BackColor = Color.FromArgb(250, 250, 250);
+            this.BackColor = Color.Black;
             this.Controls.Add(this.toolPanel2);
             this.Controls.Add(this.toolPanel);
             this.Controls.Add(this.tabSwitch);
