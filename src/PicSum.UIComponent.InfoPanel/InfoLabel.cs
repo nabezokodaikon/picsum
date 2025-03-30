@@ -38,7 +38,6 @@ namespace PicSum.UIComponent.InfoPanel
             {
                 this.fileName = value;
                 this.Invalidate();
-                this.Update();
             }
         }
 
@@ -53,7 +52,6 @@ namespace PicSum.UIComponent.InfoPanel
             {
                 this.timestamp = value;
                 this.Invalidate();
-                this.Update();
             }
         }
 
@@ -68,7 +66,6 @@ namespace PicSum.UIComponent.InfoPanel
             {
                 this.fileType = value;
                 this.Invalidate();
-                this.Update();
             }
         }
 
@@ -83,7 +80,6 @@ namespace PicSum.UIComponent.InfoPanel
             {
                 this.fileSize = value;
                 this.Invalidate();
-                this.Update();
             }
         }
 

@@ -24,7 +24,6 @@ namespace SWF.UIComponent.Core
             {
                 this._isActive = value;
                 this.Invalidate();
-                this.Update();
             }
         }
 
@@ -64,7 +63,6 @@ namespace SWF.UIComponent.Core
                 (int)(DEFAULT_SIZE.Width * scale),
                 (int)(DEFAULT_SIZE.Height * scale));
             this.Invalidate();
-            this.Update();
         }
 
         protected override void OnPaint(PaintEventArgs e)

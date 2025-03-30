@@ -283,7 +283,6 @@ namespace PicSum.UIComponent.Contents.FileList
             this.moveNextButton.Text = "->";
 
             this.ResumeLayout(false);
-            this.PerformLayout();
         }
 
         public ToolTextButton GetSortToolStripButton(SortTypeID sortType)

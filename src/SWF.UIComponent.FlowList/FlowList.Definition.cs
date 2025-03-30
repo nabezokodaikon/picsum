@@ -416,7 +416,6 @@ namespace SWF.UIComponent.FlowList
         {
             this.isDraw = true;
             this.Invalidate();
-            this.Update();
         }
 
         /// <summary>
@@ -525,7 +524,6 @@ namespace SWF.UIComponent.FlowList
 
             var rect = this.GetItemDrawRectangle(itemIndex);
             this.Invalidate(rect);
-            this.Update();
         }
 
         private void OnDrawItem(DrawItemEventArgs e)

@@ -40,7 +40,6 @@ namespace SWF.UIComponent.WideDropDown
             {
                 this.isSelected = value;
                 this.Invalidate();
-                this.Update();
             }
         }
 
@@ -53,7 +52,6 @@ namespace SWF.UIComponent.WideDropDown
         {
             this.isMouseEnter = true;
             this.Invalidate();
-            this.Update();
             base.OnMouseEnter(e);
         }
 
@@ -61,7 +59,6 @@ namespace SWF.UIComponent.WideDropDown
         {
             this.isMouseEnter = false;
             this.Invalidate();
-            this.Update();
             base.OnMouseLeave(e);
         }
 
@@ -69,7 +66,6 @@ namespace SWF.UIComponent.WideDropDown
         {
             this.isSelected = true;
             this.Invalidate();
-            this.Update();
             base.OnMouseClick(e);
         }
 

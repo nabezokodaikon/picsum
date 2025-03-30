@@ -205,11 +205,7 @@ namespace PicSum.UIComponent.Contents.FileList
             this.SetFlowListItemSize();
 
             this.toolBar.ResumeLayout(false);
-            this.toolBar.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
-            this.Invalidate();
-            this.Update();
         }
 
         public override void StopPageDraw()
@@ -801,7 +797,6 @@ namespace PicSum.UIComponent.Contents.FileList
             FileListPageConfig.Instance.ThumbnailSize = this.ThumbnailSize;
             this.SetFlowListItemSize();
             this.flowList.Invalidate();
-            this.flowList.Update();
         }
 
         private void MovePreviewToolStripButton_Click(object sender, EventArgs e)

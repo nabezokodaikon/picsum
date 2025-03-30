@@ -278,7 +278,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.doubleNextButton.Text = "->>";
 
             this.ResumeLayout(false);
-            this.PerformLayout();
         }
 
         protected override void Dispose(bool disposing)

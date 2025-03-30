@@ -95,7 +95,6 @@ namespace SWF.UIComponent.WideDropDown
                 | AnchorStyles.Right;
 
             this.ResumeLayout(false);
-            this.PerformLayout();
         }
 
         public void SetItems(string[] items)

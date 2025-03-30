@@ -309,9 +309,6 @@ namespace PicSum.Main.UIComponent
 
             this.SetControlRegion();
             this.ResumeLayout(false);
-            this.PerformLayout();
-            this.Invalidate();
-            this.Update();
         }
 
         private void OnTabDropouted(TabDropoutedEventArgs e)
@@ -347,9 +344,6 @@ namespace PicSum.Main.UIComponent
             this.browserMainPanel.SetControlsBounds(e.Scale);
 
             this.ResumeLayout(false);
-            this.PerformLayout();
-            this.Invalidate();
-            this.Update();
         }
 
         private void BrowserMainPanel_Close(object sender, EventArgs e)

@@ -254,7 +254,6 @@ namespace SWF.UIComponent.TabOperation
             }
 
             this.Invalidate();
-            this.Update();
         }
 
         /// <summary>
@@ -288,7 +287,6 @@ namespace SWF.UIComponent.TabOperation
                 }
 
                 this.Invalidate();
-                this.Update();
             }
         }
 
@@ -344,7 +342,6 @@ namespace SWF.UIComponent.TabOperation
                 container.SetPage(this.activeTab.Page);
 
                 this.Invalidate();
-                this.Update();
 
                 return (T)this.activeTab.Page;
             }
@@ -379,7 +376,6 @@ namespace SWF.UIComponent.TabOperation
             container.SetPage(this.activeTab.Page);
 
             this.Invalidate();
-            this.Update();
 
             return (T)this.activeTab.Page;
         }
@@ -409,7 +405,6 @@ namespace SWF.UIComponent.TabOperation
             container.SetPage(this.activeTab.Page);
 
             this.Invalidate();
-            this.Update();
 
             return (T)this.activeTab.Page;
         }
@@ -440,7 +435,6 @@ namespace SWF.UIComponent.TabOperation
             container.SetPage(this.activeTab.Page);
 
             this.Invalidate();
-            this.Update();
 
             return (T)this.activeTab.Page;
         }
@@ -475,7 +469,6 @@ namespace SWF.UIComponent.TabOperation
             this.tabList.Remove(tab);
 
             this.Invalidate();
-            this.Update();
         }
 
         /// <summary>
@@ -505,7 +498,6 @@ namespace SWF.UIComponent.TabOperation
             if (this.SetActiveTab(this.tabList[index]))
             {
                 this.Invalidate();
-                this.Update();
                 this.OnActiveTabChanged(EventArgs.Empty);
             }
         }
@@ -516,7 +508,6 @@ namespace SWF.UIComponent.TabOperation
         public void InvalidateHeader()
         {
             this.Invalidate(this.GetHeaderRectangle());
-            this.Update();
         }
 
         public void CallEndTabDragOperation()
@@ -745,7 +736,6 @@ namespace SWF.UIComponent.TabOperation
                             if (this.SetActiveTab(tab))
                             {
                                 this.Invalidate();
-                                this.Update();
                                 this.OnActiveTabChanged(EventArgs.Empty);
                             }
                             TabDragOperation.BeginTabDragOperation(tab);
@@ -895,7 +885,6 @@ namespace SWF.UIComponent.TabOperation
         {
             this.dropPoint = null;
             this.Invalidate();
-            this.Update();
             base.OnDragLeave(e);
         }
 
@@ -1027,9 +1016,7 @@ namespace SWF.UIComponent.TabOperation
                     container.ClearPage();
                     container.SetPage(tab.Page);
                     container.ResumeLayout(false);
-                    container.PerformLayout();
-                    container.Invalidate();
-                    container.Update();
+
                     this.activeTab = tab;
                     return true;
                 }
@@ -1044,9 +1031,7 @@ namespace SWF.UIComponent.TabOperation
                 container.SuspendLayout();
                 container.ClearPage();
                 container.ResumeLayout(false);
-                container.PerformLayout();
-                container.Invalidate();
-                container.Update();
+
                 if (this.activeTab != null)
                 {
                     this.activeTab = null;

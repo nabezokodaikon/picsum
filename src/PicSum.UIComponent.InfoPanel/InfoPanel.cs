@@ -204,9 +204,6 @@ namespace PicSum.UIComponent.InfoPanel
             this.tagIcon = tagIcon;
 
             this.ResumeLayout(false);
-            this.PerformLayout();
-            this.Invalidate();
-            this.Update();
         }
 
         public void SetFileInfo(string filePath)
@@ -273,7 +270,6 @@ namespace PicSum.UIComponent.InfoPanel
             {
                 this.ClearInfo();
                 this.thumbnailPictureBox.Invalidate();
-                this.thumbnailPictureBox.Update();
             }
         }
 
@@ -375,7 +371,6 @@ namespace PicSum.UIComponent.InfoPanel
             {
                 tagInfo.IsAll = true;
                 this.tagFlowList.Invalidate();
-                this.tagFlowList.Update();
             }
             else
             {
@@ -492,7 +487,6 @@ namespace PicSum.UIComponent.InfoPanel
             }
 
             this.thumbnailPictureBox.Invalidate();
-            this.thumbnailPictureBox.Update();
         }
 
         private void GetTagListJob_Callback(ListResult<string> result)

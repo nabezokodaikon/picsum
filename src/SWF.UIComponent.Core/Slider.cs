@@ -86,7 +86,6 @@ namespace SWF.UIComponent.Core
                 this.sliderValue = value;
                 this.SetButtonPointX(this.sliderValue);
                 this.Invalidate();
-                this.Update();
 
                 this.OnValueChanged(EventArgs.Empty);
             }
@@ -267,7 +266,6 @@ namespace SWF.UIComponent.Core
                 {
                     this.buttonPointX = pointX;
                     this.Invalidate();
-                    this.Update();
 
                     var value = this.GetValue(pointX);
                     if (value != this.sliderValue)
@@ -293,7 +291,7 @@ namespace SWF.UIComponent.Core
             {
                 this.SetButtonPointX(this.sliderValue);
                 this.Invalidate();
-                this.Update();
+
                 if (this.isValueChanging)
                 {
                     this.isValueChanging = false;
@@ -321,7 +319,6 @@ namespace SWF.UIComponent.Core
                 {
                     this.buttonPointX = pointX;
                     this.Invalidate();
-                    this.Update();
 
                     var value = this.GetValue(pointX);
                     if (value != this.sliderValue)
@@ -340,7 +337,6 @@ namespace SWF.UIComponent.Core
         {
             this.SetButtonPointX(this.sliderValue);
             this.Invalidate();
-            this.Update();
             base.OnResize(e);
         }
 

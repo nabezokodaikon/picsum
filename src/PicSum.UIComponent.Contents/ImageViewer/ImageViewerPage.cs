@@ -148,11 +148,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                     this.toolBar.SetControlsBounds(scale);
 
                     this.toolBar.ResumeLayout(false);
-                    this.toolBar.PerformLayout();
                     this.ResumeLayout(false);
-                    this.PerformLayout();
-                    this.Invalidate();
-                    this.Update();
                 }
 
                 SizeF backgroudSize;
@@ -371,12 +367,10 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 action();
 
                 this.leftImagePanel.ResumeLayout(false);
-                this.leftImagePanel.PerformLayout();
-                this.rightImagePanel.ResumeLayout(false);
-                this.rightImagePanel.PerformLayout();
-
                 this.leftImagePanel.Invalidate();
                 this.leftImagePanel.Update();
+
+                this.rightImagePanel.ResumeLayout(false);
                 this.rightImagePanel.Invalidate();
                 this.rightImagePanel.Update();
             }
@@ -387,8 +381,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 action();
 
                 this.leftImagePanel.ResumeLayout(false);
-                this.leftImagePanel.PerformLayout();
-
                 this.leftImagePanel.Invalidate();
                 this.leftImagePanel.Update();
             }
@@ -399,8 +391,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 action();
 
                 this.rightImagePanel.ResumeLayout(false);
-                this.rightImagePanel.PerformLayout();
-
                 this.rightImagePanel.Invalidate();
                 this.rightImagePanel.Update();
             }
@@ -417,7 +407,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.leftImagePanel.ImageAlign = ImageAlign.Center;
             this.leftImagePanel.Visible = true;
             this.leftImagePanel.Invalidate();
-            this.leftImagePanel.Update();
 
             this.rightImagePanel.Visible = false;
         }
@@ -434,13 +423,11 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.leftImagePanel.ImageAlign = ImageAlign.Right;
             this.leftImagePanel.Visible = true;
             this.leftImagePanel.Invalidate();
-            this.leftImagePanel.Update();
 
             this.rightImagePanel.SetBounds(rx, y, w, h, BoundsSpecified.All);
             this.rightImagePanel.ImageAlign = ImageAlign.Left;
             this.rightImagePanel.Visible = true;
             this.rightImagePanel.Invalidate();
-            this.rightImagePanel.Update();
         }
 
         private void SettingImagePanelLayout(ImageFileReadResult e)
