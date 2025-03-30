@@ -45,17 +45,17 @@ namespace PicSum.UIComponent.AddressBar
             }
         }
 
-        public override void Draw(System.Drawing.Graphics g)
+        public override void Draw(Graphics g)
         {
             throw new NotImplementedException();
         }
 
-        public override void OnMouseDown(System.Windows.Forms.MouseEventArgs e)
+        public override void OnMouseDown(MouseEventArgs e)
         {
             throw new NotImplementedException();
         }
 
-        public override void OnMouseClick(System.Windows.Forms.MouseEventArgs e)
+        public override void OnMouseClick(MouseEventArgs e)
         {
             throw new NotImplementedException();
         }
