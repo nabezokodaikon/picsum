@@ -50,7 +50,7 @@ namespace PicSum.Main.UIComponent
             this.Icon = ResourceFiles.ApplicationIcon.Value;
             this.Text = "PicSum";
             this.StartPosition = FormStartPosition.Manual;
-            this.MinimumSize = new Size(320, 240);
+            this.MinimumSize = new Size(480, 360);
             this.KeyPreview = true;
             this.Padding = new Padding(0, 8, 0, 0);
 
