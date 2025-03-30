@@ -11,8 +11,6 @@ namespace PicSum.UIComponent.Contents.FileList
     [SupportedOSPlatform("windows10.0.17763.0")]
     public partial class FileListToolBar : ToolPanel
     {
-        private static readonly Font DEFAULT_FONT = new Font("Yu Gothic UI", 12F);
-
         private static readonly Rectangle VIEW_BUTTON_DEFAULT_BOUNDS
             = new(3, 1, 64, 23);
         private static readonly Rectangle NAME_SORT_BUTTON_DEFAULT_BOUNDS
@@ -35,6 +33,9 @@ namespace PicSum.UIComponent.Contents.FileList
         public event EventHandler ThumbnailSizeSliderValueChanging;
         public event EventHandler MovePreviewButtonClick;
         public event EventHandler MoveNextButtonClick;
+
+        private readonly Font defaultFont
+            = new("Yu Gothic UI", 12F, GraphicsUnit.Pixel);
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool FolderMenuItemChecked
@@ -262,14 +263,11 @@ namespace PicSum.UIComponent.Contents.FileList
                 (int)(MOVE_PREVIEW_BUTTON_DEFAULT_BOUNDS.Width * scale),
                 (int)(MOVE_PREVIEW_BUTTON_DEFAULT_BOUNDS.Height * scale));
 
-            if (this.viewButton.Font != null)
-            {
-                this.viewButton.Font.Dispose();
-                this.viewButton.Font = null;
-            }
-
             this.viewButton.Font = new Font(
-                DEFAULT_FONT.FontFamily, DEFAULT_FONT.Size * scale, GraphicsUnit.Pixel);
+                this.defaultFont.FontFamily,
+                this.defaultFont.Size * scale,
+                this.defaultFont.Unit);
+
             this.nameSortButton.Font = this.viewButton.Font;
             this.pathSortButton.Font = this.viewButton.Font;
             this.timestampSortButton.Font = this.viewButton.Font;

@@ -10,8 +10,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
     [SupportedOSPlatform("windows10.0.17763.0")]
     public partial class ImageViewerToolBar : ToolPanel
     {
-        private static readonly Font DEFAULT_FONT = new Font("Yu Gothic UI", 12F);
-
         private static readonly Rectangle VIEW_BUTTON_DEFAULT_BOUNDS
             = new(3, 1, 64, 23);
         private static readonly Rectangle INDEX_SLIDER_DEFAULT_BOUNDS
@@ -33,6 +31,9 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         public event EventHandler IndexSliderValueChanged;
         public event EventHandler IndexSliderValueChanging;
         public event EventHandler IndexSliderMouseLeave;
+
+        private readonly Font defaultFont
+            = new("Yu Gothic UI", 12F, GraphicsUnit.Pixel);
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public int IndexSliderValue
@@ -259,14 +260,11 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 | AnchorStyles.Left
                 | AnchorStyles.Right;
 
-            if (this.viewButton.Font != null)
-            {
-                this.viewButton.Font.Dispose();
-                this.viewButton.Font = null;
-            }
-
             this.viewButton.Font = new Font(
-                DEFAULT_FONT.FontFamily, DEFAULT_FONT.Size * scale, GraphicsUnit.Pixel);
+                this.defaultFont.FontFamily,
+                this.defaultFont.Size * scale,
+                this.defaultFont.Unit);
+
             this.sizeButton.Font = this.viewButton.Font;
             this.doublePreviewButton.Font = this.viewButton.Font;
             this.singlePreviewButton.Font = this.viewButton.Font;
