@@ -374,9 +374,6 @@ namespace PicSum.Main.UIComponent
 
         protected override void OnLoad(EventArgs e)
         {
-            var scale = AppConstants.GetCurrentWindowScale(this);
-            this.SetControlsBounds(scale);
-
             this.addressBar.SetAddress(FileUtil.ROOT_DIRECTORY_PATH);
 
             base.OnLoad(e);
