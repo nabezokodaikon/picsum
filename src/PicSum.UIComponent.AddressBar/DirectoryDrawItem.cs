@@ -57,7 +57,7 @@ namespace PicSum.UIComponent.AddressBar
             }
 
             var scale = AppConstants.GetCurrentWindowScale(this.AddressBar.Handle);
-            var font = Palette.GetRegularFont(scale);
+            var font = this.AddressBar.GetRegularFont(scale);
             var text = this.directory.DirectoryName;
             var textSize = TextRenderer.MeasureText(text, font);
             TextRenderer.DrawText(

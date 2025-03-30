@@ -33,26 +33,13 @@ namespace PicSum.UIComponent.Contents.FileList
         private static readonly Rectangle TOOL_BAR_DEFAULT_BOUNDS = new(0, 0, 767, 29);
         private static readonly Rectangle FLOW_LIST_DEFAULT_BOUNDS = new(0, 29, 767, 0);
 
-        private static readonly Font DEFAULT_FONT = new("Yu Gothic UI", 9);
-        private static readonly Dictionary<float, Font> FONT_CACHE = [];
-
-        private static Font GetFont(float scale)
-        {
-            if (FONT_CACHE.TryGetValue(scale, out var font))
-            {
-                return font;
-            }
-
-            var newFont = new Font(DEFAULT_FONT.FontFamily, DEFAULT_FONT.Size * scale);
-            FONT_CACHE.Add(scale, newFont);
-            return newFont;
-        }
-
         private bool disposed = false;
         private bool isLoaded = false;
         private float scale = 0f;
         private Dictionary<string, FileEntity> masterFileDictionary = null;
         private string[] filterFilePathList = null;
+        private readonly Font defaultFont = new("Yu Gothic UI", 9);
+        private readonly Dictionary<float, Font> fontCache = [];
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public override string SelectedFilePath { get; protected set; } = FileUtil.ROOT_DIRECTORY_PATH;
@@ -241,6 +228,13 @@ namespace PicSum.UIComponent.Contents.FileList
                 Instance<JobCaller>.Value.ThumbnailsGetJob.Value.BeginCancel();
 
                 this.components?.Dispose();
+
+                foreach (var font in this.fontCache.Values)
+                {
+                    font.Dispose();
+                }
+                this.fontCache.Clear();
+                this.defaultFont.Dispose();
             }
 
             this.disposed = true;
@@ -547,6 +541,18 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
+        private Font GetFont(float scale)
+        {
+            if (this.fontCache.TryGetValue(scale, out var font))
+            {
+                return font;
+            }
+
+            var newFont = new Font(this.defaultFont.FontFamily, this.defaultFont.Size * scale);
+            this.fontCache.Add(scale, newFont);
+            return newFont;
+        }
+
         private void ChangeFileNameVisible()
         {
             FileListPageConfig.Instance.IsShowFileName = this.IsShowFileName;
@@ -572,7 +578,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private int GetItemTextHeight(Graphics g)
         {
-            return (int)(g.MeasureString("A", GetFont(this.scale)).Height * 2);
+            return (int)(g.MeasureString("A", this.GetFont(this.scale)).Height * 2);
         }
 
         private void SetFlowListItemSize()
@@ -614,7 +620,7 @@ namespace PicSum.UIComponent.Contents.FileList
             var item = this.masterFileDictionary[filePath];
 
             var scale = AppConstants.GetCurrentWindowScale(this.Handle);
-            var font = GetFont(scale);
+            var font = this.GetFont(scale);
             var itemTextHeight = this.GetItemTextHeight(e.Graphics);
 
             if (item.ThumbnailImage == null)

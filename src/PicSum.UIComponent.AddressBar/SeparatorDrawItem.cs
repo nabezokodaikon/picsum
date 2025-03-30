@@ -156,11 +156,11 @@ namespace PicSum.UIComponent.AddressBar
         {
             if (directoryPath.Equals(this.SelectedSubDirectoryPath, StringComparison.Ordinal))
             {
-                return Palette.GetBoldFont(scale);
+                return this.AddressBar.GetBoldFont(scale);
             }
             else
             {
-                return Palette.GetRegularFont(scale);
+                return this.AddressBar.GetRegularFont(scale);
             }
         }
 
@@ -175,7 +175,7 @@ namespace PicSum.UIComponent.AddressBar
             var scale = AppConstants.GetCurrentWindowScale(base.DropDownList.Handle);
             using (var g = base.DropDownList.CreateGraphics())
             {
-                var font = Palette.GetBoldFont(scale);
+                var font = this.AddressBar.GetBoldFont(scale);
                 var srcItems = e.ToList();
                 srcItems.Sort((x, y) => x.FilePath.CompareTo(y.FilePath));
                 foreach (var info in srcItems)

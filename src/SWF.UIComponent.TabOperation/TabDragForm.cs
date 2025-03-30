@@ -1,6 +1,8 @@
 using SWF.Core.Base;
 using SWF.Core.ImageAccessor;
 using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Runtime.Versioning;
@@ -24,6 +26,20 @@ namespace SWF.UIComponent.TabOperation
         private TabSwitch tabSwitch = null;
         private Bitmap regionImage = null;
         private Action<DrawTabEventArgs> drawTabPageMethod = null;
+        private readonly Font defaultFont = new("Yu Gothic UI", 10F);
+        private readonly Dictionary<float, Font> fontCache = [];
+
+        private Font GetFont(float scale)
+        {
+            if (this.fontCache.TryGetValue(scale, out var font))
+            {
+                return font;
+            }
+
+            var newFont = new Font(this.defaultFont.FontFamily, this.defaultFont.Size * scale);
+            this.fontCache.Add(scale, newFont);
+            return newFont;
+        }
 
         private float GetOutlineOffset()
         {
@@ -187,7 +203,7 @@ namespace SWF.UIComponent.TabOperation
                 this.regionImage = regionImage;
             }
 
-            this.DrawTabEventArgs.Font = TabPalette.GetFont(scale);
+            this.DrawTabEventArgs.Font = this.GetFont(scale);
             this.DrawTabEventArgs.TitleColor = TabPalette.TITLE_COLOR;
             this.DrawTabEventArgs.TitleFormatFlags = TabPalette.TITLE_FORMAT_FLAGS;
             this.DrawTabEventArgs.TextRectangle = this.TabDrawArea.GetPageRectangle();
@@ -211,6 +227,18 @@ namespace SWF.UIComponent.TabOperation
                 this.regionImage.Dispose();
                 this.regionImage = null;
             }
+        }
+
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            foreach (var font in this.fontCache.Values)
+            {
+                font.Dispose();
+            }
+            this.fontCache.Clear();
+            this.defaultFont.Dispose();
+
+            base.OnClosing(e);
         }
 
         protected override void OnLocationChanged(EventArgs e)

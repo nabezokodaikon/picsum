@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Drawing;
 using System.Runtime.Versioning;
 
@@ -35,33 +34,5 @@ namespace PicSum.UIComponent.AddressBar
         public static readonly SolidBrush MOUSE_DOWN_BRUSH = new(SELECTED_COLOR);
         public static readonly SolidBrush OUT_LINE_BRUSH = new(OUTLINE_COLOR);
         public static readonly SolidBrush INNER_BRUSH = new(INNER_COLOR);
-
-        private static readonly Font TEXT_FONT = new("Yu Gothic UI", 10F);
-        private static readonly Dictionary<float, Font> REGULAR_FONT_CACHE = new();
-        private static readonly Dictionary<float, Font> BOLD_FONT_CACHE = new();
-
-        public static Font GetRegularFont(float scale)
-        {
-            if (REGULAR_FONT_CACHE.TryGetValue(scale, out var font))
-            {
-                return font;
-            }
-
-            var newFont = new Font(TEXT_FONT.FontFamily, TEXT_FONT.Size * scale);
-            REGULAR_FONT_CACHE.Add(scale, newFont);
-            return newFont;
-        }
-
-        public static Font GetBoldFont(float scale)
-        {
-            if (BOLD_FONT_CACHE.TryGetValue(scale, out var font))
-            {
-                return font;
-            }
-
-            var newFont = new Font(TEXT_FONT.FontFamily, TEXT_FONT.Size * scale, FontStyle.Bold);
-            BOLD_FONT_CACHE.Add(scale, newFont);
-            return newFont;
-        }
     }
 }

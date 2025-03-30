@@ -27,6 +27,9 @@ namespace PicSum.UIComponent.AddressBar
         private readonly List<DrawItemBase> addressItems = [];
         private DrawItemBase mousePointItem = null;
         private DrawItemBase mouseDownItem = null;
+        private readonly Font defaultFont = new("Yu Gothic UI", 10F);
+        private readonly Dictionary<float, Font> regularFontCache = [];
+        private readonly Dictionary<float, Font> boldFontCache = [];
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         internal string DropDownDirectory { get; set; } = string.Empty;
@@ -105,6 +108,30 @@ namespace PicSum.UIComponent.AddressBar
                 });
         }
 
+        internal Font GetRegularFont(float scale)
+        {
+            if (this.regularFontCache.TryGetValue(scale, out var font))
+            {
+                return font;
+            }
+
+            var newFont = new Font(this.defaultFont.FontFamily, this.defaultFont.Size * scale);
+            this.regularFontCache.Add(scale, newFont);
+            return newFont;
+        }
+
+        internal Font GetBoldFont(float scale)
+        {
+            if (this.boldFontCache.TryGetValue(scale, out var font))
+            {
+                return font;
+            }
+
+            var newFont = new Font(this.defaultFont.FontFamily, this.defaultFont.Size * scale, FontStyle.Bold);
+            this.boldFontCache.Add(scale, newFont);
+            return newFont;
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (this.disposed)
@@ -118,6 +145,20 @@ namespace PicSum.UIComponent.AddressBar
                 this.directoryHistoryItem.Dispose();
 
                 this.ClearAddressItems();
+
+                foreach (var font in this.regularFontCache.Values)
+                {
+                    font.Dispose();
+                }
+                this.regularFontCache.Clear();
+
+                foreach (var font in this.boldFontCache.Values)
+                {
+                    font.Dispose();
+                }
+                this.boldFontCache.Clear();
+
+                this.defaultFont.Dispose();
             }
 
             this.disposed = true;
@@ -270,7 +311,7 @@ namespace PicSum.UIComponent.AddressBar
                 var scale = AppConstants.GetCurrentWindowScale(this.Handle);
                 using (var g = this.CreateGraphics())
                 {
-                    var font = Palette.GetRegularFont(scale);
+                    var font = this.GetRegularFont(scale);
                     for (var i = this.addressItems.Count - 1; i > -1; i--)
                     {
                         var drawItem = this.addressItems[i];

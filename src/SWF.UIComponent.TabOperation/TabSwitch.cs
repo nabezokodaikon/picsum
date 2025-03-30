@@ -131,6 +131,9 @@ namespace SWF.UIComponent.TabOperation
         // コンテンツ描画クラス
         private readonly PageDrawArea pageDrawArea;
 
+        private readonly Font defaultFont = new("Yu Gothic UI", 10F);
+        private readonly Dictionary<float, Font> fontCache = [];
+
         private int GetTabsRightOffset()
         {
             var value = AppConstants.GetControlBoxWidth(this.Handle);
@@ -612,6 +615,13 @@ namespace SWF.UIComponent.TabOperation
                 {
                     tab.Close();
                 }
+
+                foreach (var font in this.fontCache.Values)
+                {
+                    font.Dispose();
+                }
+                this.fontCache.Clear();
+                this.defaultFont.Dispose();
             }
 
             base.Dispose(disposing);
@@ -932,6 +942,18 @@ namespace SWF.UIComponent.TabOperation
 
             this.dropPoint = null;
             base.OnDragDrop(drgevent);
+        }
+
+        private Font GetFont(float scale)
+        {
+            if (this.fontCache.TryGetValue(scale, out var font))
+            {
+                return font;
+            }
+
+            var newFont = new Font(this.defaultFont.FontFamily, this.defaultFont.Size * scale);
+            this.fontCache.Add(scale, newFont);
+            return newFont;
         }
 
         private void OnActiveTabChanged(EventArgs e)
@@ -1314,7 +1336,7 @@ namespace SWF.UIComponent.TabOperation
                     gr.DrawImage(tab.Icon, 0, 0, icon.Width, icon.Height);
                 }
 
-                var font = TabPalette.GetFont(scale);
+                var font = this.GetFont(scale);
                 var args = new DrawTabEventArgs
                 {
                     Graphics = g,
