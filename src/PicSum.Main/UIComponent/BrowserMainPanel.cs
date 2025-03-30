@@ -246,6 +246,8 @@ namespace PicSum.Main.UIComponent
             this.toolPanel2.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
+            this.Invalidate();
+            this.Update();
         }
 
         private void TabSwitch_BeginSetPage(object sender, EventArgs e)

@@ -151,6 +151,8 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                     this.toolBar.PerformLayout();
                     this.ResumeLayout(false);
                     this.PerformLayout();
+                    this.Invalidate();
+                    this.Update();
                 }
 
                 SizeF backgroudSize;

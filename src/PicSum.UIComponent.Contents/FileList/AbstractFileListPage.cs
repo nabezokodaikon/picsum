@@ -208,6 +208,8 @@ namespace PicSum.UIComponent.Contents.FileList
             this.toolBar.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
+            this.Invalidate();
+            this.Update();
         }
 
         public override void StopPageDraw()
