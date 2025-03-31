@@ -4,7 +4,7 @@ using PicSum.Job.Parameters;
 using PicSum.UIComponent.Contents.Common;
 using PicSum.UIComponent.Contents.Parameter;
 using SWF.Core.Base;
-using SWF.Core.FileAccessor;
+using SWF.Core.ImageAccessor;
 using SWF.Core.Job;
 using System;
 using System.Collections.Generic;

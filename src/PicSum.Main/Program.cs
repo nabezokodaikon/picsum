@@ -4,7 +4,6 @@ using NLog.Targets;
 using PicSum.Main.Mng;
 using PicSum.Main.UIComponent;
 using SWF.Core.Base;
-using SWF.Core.FileAccessor;
 using System;
 using System.IO;
 using System.IO.Pipes;
@@ -52,7 +51,6 @@ namespace PicSum.Main
                         typeof(PicSum.UIComponent.Contents.Common.BrowserPage),
                         typeof(PicSum.UIComponent.InfoPanel.InfoPanel),
                         typeof(SWF.Core.DatabaseAccessor.AbstractConnection),
-                        typeof(SWF.Core.FileAccessor.FileAppender),
                         typeof(SWF.Core.ImageAccessor.CvImage),
 
                         typeof(SWF.UIComponent.Form.GrassForm),

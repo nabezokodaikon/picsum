@@ -1,5 +1,4 @@
 using SWF.Core.Base;
-using SWF.Core.FileAccessor;
 using SWF.Core.Job;
 using System.IO.Pipes;
 using System.Runtime.Versioning;

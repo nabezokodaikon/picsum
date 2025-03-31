@@ -1,7 +1,6 @@
 using PicSum.Job.Common;
 using PicSum.Job.Results;
 using SWF.Core.Base;
-using SWF.Core.FileAccessor;
 using SWF.Core.Job;
 using System;
 using System.Collections.Generic;
@@ -70,7 +69,7 @@ namespace PicSum.UIComponent.AddressBar
             this.IsOverflowDropDown = false;
             this.IsHistoryDropDown = false;
 
-            if (FileUtil.IsFile(filePath))
+            if (FileUtil.IsExistsFile(filePath))
             {
                 var dir = FileUtil.GetParentDirectoryPath(filePath);
                 if (dir == this.currentDirectoryPath)

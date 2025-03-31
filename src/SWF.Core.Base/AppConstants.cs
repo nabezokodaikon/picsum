@@ -123,22 +123,22 @@ namespace SWF.Core.Base
         {
             ConsoleUtil.Write($"AppConstants.CreateApplicationDirectories Start");
 
-            if (!Directory.Exists(APPLICATION_DIRECTORY))
+            if (!FileUtil.IsExistsFileOrDirectory(APPLICATION_DIRECTORY))
             {
                 Directory.CreateDirectory(APPLICATION_DIRECTORY);
             }
 
-            if (!Directory.Exists(LOG_DIRECTORY))
+            if (!FileUtil.IsExistsFileOrDirectory(LOG_DIRECTORY))
             {
                 Directory.CreateDirectory(LOG_DIRECTORY);
             }
 
-            if (!Directory.Exists(CONFIG_DIRECTORY))
+            if (!FileUtil.IsExistsFileOrDirectory(CONFIG_DIRECTORY))
             {
                 Directory.CreateDirectory(CONFIG_DIRECTORY);
             }
 
-            if (!Directory.Exists(DATABASE_DIRECTORY))
+            if (!FileUtil.IsExistsFileOrDirectory(DATABASE_DIRECTORY))
             {
                 Directory.CreateDirectory(DATABASE_DIRECTORY);
             }

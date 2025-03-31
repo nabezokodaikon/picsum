@@ -3,7 +3,6 @@ using PicSum.Job.Entities;
 using PicSum.Job.Logics;
 using PicSum.Job.Parameters;
 using SWF.Core.Base;
-using SWF.Core.FileAccessor;
 using SWF.Core.Job;
 using System.Runtime.Versioning;
 
@@ -68,7 +67,7 @@ namespace PicSum.Job.Jobs
                     Environment.GetFolderPath(Environment.SpecialFolder.MyPictures));
 
                 foreach (var dirPath in FileUtil.GetSubDirectories(parentDir)
-                    .Where(_ => FileUtil.CanAccess(_) && FileUtil.IsDirectory(_)))
+                    .Where(_ => FileUtil.CanAccess(_) && FileUtil.IsExistsDirectory(_)))
                 {
                     this.CheckCancel();
 

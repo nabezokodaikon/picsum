@@ -4,7 +4,7 @@ using PicSum.UIComponent.Contents.Common;
 using PicSum.UIComponent.Contents.Parameter;
 using PicSum.UIComponent.InfoPanel;
 using SWF.Core.Base;
-using SWF.Core.FileAccessor;
+using SWF.Core.ImageAccessor;
 using SWF.Core.Job;
 using SWF.UIComponent.TabOperation;
 using SWF.UIComponent.WideDropDown;
@@ -35,7 +35,7 @@ namespace PicSum.Main.UIComponent
             {
                 return sender =>
                 {
-                    var dir = FileUtil.IsDirectory(subParamter.FilePath) switch
+                    var dir = FileUtil.IsExistsDirectory(subParamter.FilePath) switch
                     {
                         true => subParamter.FilePath,
                         false => FileUtil.GetParentDirectoryPath(subParamter.FilePath),
@@ -46,7 +46,7 @@ namespace PicSum.Main.UIComponent
                     Instance<JobCaller>.Value.ImageFilesGetByDirectoryJob.Value
                         .StartJob(sender, subParamter, e =>
                         {
-                            var title = FileUtil.IsDirectory(subParamter.FilePath) ?
+                            var title = FileUtil.IsExistsDirectory(subParamter.FilePath) ?
                             FileUtil.GetFileName(subParamter.FilePath) :
                             FileUtil.GetFileName(FileUtil.GetParentDirectoryPath(subParamter.FilePath));
 
@@ -128,6 +128,8 @@ namespace PicSum.Main.UIComponent
 
         public void SetControlsBounds(float scale)
         {
+            ConsoleUtil.Write($"BrowserMainPanel.SetControlsBounds Start");
+
             this.toolPanel.SuspendLayout();
             this.toolPanel2.SuspendLayout();
             this.SuspendLayout();
@@ -245,6 +247,8 @@ namespace PicSum.Main.UIComponent
             this.toolPanel.ResumeLayout(false);
             this.toolPanel2.ResumeLayout(false);
             this.ResumeLayout(false);
+
+            ConsoleUtil.Write($"BrowserMainPanel.SetControlsBounds End");
         }
 
         private void TabSwitch_BeginSetPage(object sender, EventArgs e)
@@ -399,6 +403,8 @@ namespace PicSum.Main.UIComponent
 
         private void OpenPage(IPageParameter param, PageOpenType openType)
         {
+            ConsoleUtil.Write($"BrowserMainPanel.OpenPage Start");
+
             if (openType == PageOpenType.OverlapTab)
             {
                 this.AddPageEventHandler(this.tabSwitch.OverwriteTab<BrowserPage>(param));
@@ -427,6 +433,8 @@ namespace PicSum.Main.UIComponent
             {
                 throw new Exception("ファイル実行種別が不正です。");
             }
+
+            ConsoleUtil.Write($"BrowserMainPanel.OpenPage End");
         }
 
         private void InsertPage(IPageParameter param, int tabIndex)
@@ -436,12 +444,12 @@ namespace PicSum.Main.UIComponent
 
         private void OverlapPage(DragEntity dragData)
         {
-            if (FileUtil.IsDirectory(dragData.CurrentFilePath))
+            if (FileUtil.IsExistsDirectory(dragData.CurrentFilePath))
             {
                 // フォルダコンテンツを上書きします。
                 this.OpenPage(new DirectoryFileListPageParameter(dragData.CurrentFilePath), PageOpenType.OverlapTab);
             }
-            else if (FileUtil.IsFile(dragData.CurrentFilePath) &&
+            else if (FileUtil.IsExistsFile(dragData.CurrentFilePath) &&
                 FileUtil.IsImageFile(dragData.CurrentFilePath))
             {
                 // ビューアコンテンツを上書きします。
@@ -460,12 +468,12 @@ namespace PicSum.Main.UIComponent
 
         private void InsertPage(DragEntity dragData, int tabIndex)
         {
-            if (FileUtil.IsDirectory(dragData.CurrentFilePath))
+            if (FileUtil.IsExistsDirectory(dragData.CurrentFilePath))
             {
                 // フォルダコンテンツを挿入します。
                 this.InsertPage(new DirectoryFileListPageParameter(dragData.CurrentFilePath), tabIndex);
             }
-            else if (FileUtil.IsFile(dragData.CurrentFilePath) &&
+            else if (FileUtil.IsExistsFile(dragData.CurrentFilePath) &&
                 FileUtil.IsImageFile(dragData.CurrentFilePath))
             {
                 // ビューアコンテンツを挿入します。
@@ -505,7 +513,7 @@ namespace PicSum.Main.UIComponent
 
                 var filePath = filePaths.First();
 
-                var dirPath = FileUtil.IsDirectory(filePath) ?
+                var dirPath = FileUtil.IsExistsDirectory(filePath) ?
                     filePath : FileUtil.GetParentDirectoryPath(filePath);
 
                 var sortInfo = new SortInfo();

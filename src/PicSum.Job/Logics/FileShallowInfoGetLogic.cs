@@ -1,7 +1,6 @@
 using PicSum.Job.Common;
 using PicSum.Job.Entities;
 using SWF.Core.Base;
-using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
 using SWF.Core.Job;
 using System.Runtime.Versioning;
@@ -48,7 +47,7 @@ namespace PicSum.Job.Logics
                 info.ExtraLargeIcon = Instance<IFileIconCacher>.Value.GetExtraLargeDriveIcon(info.FilePath);
                 info.JumboIcon = Instance<IFileIconCacher>.Value.GetJumboDriveIcon(info.FilePath);
             }
-            else if (FileUtil.IsFile(filePath))
+            else if (FileUtil.IsExistsFile(filePath))
             {
                 info.FilePath = filePath;
                 info.FileName = FileUtil.GetFileName(filePath);
@@ -77,7 +76,7 @@ namespace PicSum.Job.Logics
                     }
                 }
             }
-            else if (FileUtil.IsDirectory(filePath))
+            else if (FileUtil.IsExistsDirectory(filePath))
             {
                 info.FilePath = filePath;
                 info.FileName = FileUtil.GetFileName(filePath);

@@ -3,7 +3,6 @@ using PicSum.DatabaseAccessor.Dto;
 using PicSum.DatabaseAccessor.Sql;
 using PicSum.Job.Entities;
 using SWF.Core.Base;
-using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
 using System.Runtime.Versioning;
 
@@ -68,11 +67,11 @@ namespace PicSum.Job.Common
             {
                 return ThumbnailCacheEntity.EMPTY;
             }
-            else if (FileUtil.IsFile(filePath) && FileUtil.IsImageFile(filePath))
+            else if (FileUtil.IsExistsFile(filePath) && FileUtil.IsImageFile(filePath))
             {
                 return this.GetOnlyFileCache(filePath, thumbWidth, thumbHeight);
             }
-            else if (FileUtil.IsDirectory(filePath))
+            else if (FileUtil.IsExistsDirectory(filePath))
             {
                 return this.GetOnlyDirectoryCache(filePath, thumbWidth, thumbHeight);
             }
@@ -94,7 +93,7 @@ namespace PicSum.Job.Common
             {
                 return ThumbnailCacheEntity.EMPTY;
             }
-            else if (FileUtil.IsFile(filePath))
+            else if (FileUtil.IsExistsFile(filePath))
             {
                 if (!FileUtil.IsImageFile(filePath))
                 {
@@ -443,7 +442,7 @@ namespace PicSum.Job.Common
         {
             var id = (int)Instance<IThumbnailDB>.Value.ReadValue<long>(new ThumbnailIDReadSql());
             var thumbFile = this.GetThumbnailBufferFilePath(id);
-            if (!File.Exists(thumbFile))
+            if (!FileUtil.IsExists(thumbFile))
             {
                 return id;
             }

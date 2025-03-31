@@ -4,7 +4,7 @@ using PicSum.Main.Conf;
 using PicSum.UIComponent.Contents.Common;
 using PicSum.UIComponent.Contents.Parameter;
 using SWF.Core.Base;
-using SWF.Core.FileAccessor;
+using SWF.Core.ImageAccessor;
 using SWF.Core.Job;
 using SWF.UIComponent.Form;
 using SWF.UIComponent.TabOperation;
@@ -285,13 +285,7 @@ namespace PicSum.Main.UIComponent
                 if (CommandLineArgs.IsNone() || CommandLineArgs.IsCleanup())
                 {
                     this.browserMainPanel.AddFavoriteDirectoryListTab();
-
-                    ConsoleUtil.Write($"BrowserForm.CreateBrowserMainPanel Page Added");
                     LogManager.GetCurrentClassLogger().Debug("初回表示されました。");
-                }
-                else if (CommandLineArgs.IsEmpty())
-                {
-
                 }
                 else
                 {

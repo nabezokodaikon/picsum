@@ -1,4 +1,4 @@
-namespace SWF.Core.FileAccessor
+namespace SWF.Core.ImageAccessor
 {
     public interface IFileIconCacher
         : IDisposable

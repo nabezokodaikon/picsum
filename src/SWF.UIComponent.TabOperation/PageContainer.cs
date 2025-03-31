@@ -1,3 +1,4 @@
+using SWF.Core.Base;
 using System;
 using System.Runtime.Versioning;
 using System.Windows.Forms;
@@ -26,6 +27,8 @@ namespace SWF.UIComponent.TabOperation
         /// <param name="page"></param>
         internal void SetPage(PagePanel page)
         {
+            ConsoleUtil.Write($"PageContainer.SetPage Start");
+
             ArgumentNullException.ThrowIfNull(page, nameof(page));
 
             if (this.Controls.Count > 0)
@@ -38,6 +41,8 @@ namespace SWF.UIComponent.TabOperation
             this.Controls.Add(page);
 
             page.Active();
+
+            ConsoleUtil.Write($"PageContainer.SetPage End");
         }
 
         /// <summary>

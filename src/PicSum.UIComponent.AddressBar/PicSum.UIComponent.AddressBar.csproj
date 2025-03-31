@@ -43,7 +43,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PicSum.Job\PicSum.Job.csproj" />
-    <ProjectReference Include="..\SWF.Core.FileAccessor\SWF.Core.FileAccessor.csproj" />
     <ProjectReference Include="..\SWF.UIComponent.FlowList\SWF.UIComponent.FlowList.csproj" />
   </ItemGroup>
 </Project>

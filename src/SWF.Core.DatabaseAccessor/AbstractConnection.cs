@@ -1,3 +1,4 @@
+using SWF.Core.Base;
 using System.Data;
 using System.Data.SQLite;
 using System.Runtime.Versioning;
@@ -24,7 +25,7 @@ namespace SWF.Core.DatabaseAccessor
             ArgumentException.ThrowIfNullOrEmpty(dbFilePath, nameof(dbFilePath));
             ArgumentException.ThrowIfNullOrEmpty(tableCreateSql, nameof(tableCreateSql));
 
-            if (!File.Exists(dbFilePath))
+            if (!FileUtil.IsExists(dbFilePath))
             {
                 SQLiteConnection.CreateFile(dbFilePath);
                 using (var con = new SQLiteConnection($"Data Source={dbFilePath}"))

@@ -1,4 +1,4 @@
-using SWF.Core.FileAccessor;
+using SWF.Core.Base;
 using System;
 using System.ComponentModel;
 using System.Drawing;
@@ -293,11 +293,11 @@ namespace PicSum.UIComponent.Contents.ContextMenu
                 this.pathCopyMenuItem.Visible = true;
                 this.nameCopyMenuItem.Visible = true;
 
-                var isFile = FileUtil.IsFile(filePath);
+                var isFile = FileUtil.IsExistsFile(filePath);
                 this.selectApplicationMenuItem.Visible = isFile;
                 this.saveDirectoryOpenMenuItem.Visible = isFile;
 
-                var isDirectory = FileUtil.IsDirectory(filePath);
+                var isDirectory = FileUtil.IsExistsDirectory(filePath);
                 this.directoryActiveTabOpenMenuItem.Visible = isDirectory;
                 this.directoryNewTabOpenMenuItem.Visible = isDirectory;
                 this.directoryNewWindowOpenMenuItem.Visible = isDirectory;

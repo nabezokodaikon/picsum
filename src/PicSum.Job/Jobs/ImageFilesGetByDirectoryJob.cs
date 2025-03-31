@@ -1,7 +1,7 @@
 using PicSum.Job.Logics;
 using PicSum.Job.Parameters;
 using PicSum.Job.Results;
-using SWF.Core.FileAccessor;
+using SWF.Core.Base;
 using SWF.Core.Job;
 using System.Runtime.Versioning;
 
@@ -21,11 +21,11 @@ namespace PicSum.Job.Jobs
 
             try
             {
-                if (FileUtil.IsDirectory(param.FilePath))
+                if (FileUtil.IsExistsDirectory(param.FilePath))
                 {
                     result.DirectoryPath = param.FilePath;
                 }
-                else if (FileUtil.IsFile(param.FilePath))
+                else if (FileUtil.IsExistsFile(param.FilePath))
                 {
                     result.DirectoryPath = FileUtil.GetParentDirectoryPath(param.FilePath);
                 }

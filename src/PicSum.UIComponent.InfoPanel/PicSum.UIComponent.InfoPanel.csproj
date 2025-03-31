@@ -41,11 +41,9 @@
   <ItemGroup>
     <ProjectReference Include="..\SWF.Core.Job\SWF.Core.Job.csproj" />
     <ProjectReference Include="..\PicSum.Job\PicSum.Job.csproj" />
-    <ProjectReference Include="..\SWF.Core.FileAccessor\SWF.Core.FileAccessor.csproj" />
     <ProjectReference Include="..\SWF.Core.ImageAccessor\SWF.Core.ImageAccessor.csproj" />
     <ProjectReference Include="..\SWF.UIComponent.Core\SWF.UIComponent.Core.csproj" />
     <ProjectReference Include="..\SWF.UIComponent.FlowList\SWF.UIComponent.FlowList.csproj" />
-    <ProjectReference Include="..\SWF.UIComponent.ImagePanel\SWF.UIComponent.ImagePanel.csproj" />
     <ProjectReference Include="..\SWF.UIComponent.WideDropDown\SWF.UIComponent.WideDropDown.csproj" />
   </ItemGroup>
 </Project>

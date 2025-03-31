@@ -7,7 +7,7 @@
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
     <Configurations>Debug;Release;Develop</Configurations>
-    <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <NeutralLanguage>ja-JP</NeutralLanguage>
 	<Platforms>AnyCPU;x64;x86;ARM64;ARM32</Platforms>
 	<RuntimeIdentifiers>win-x86;win-x64</RuntimeIdentifiers>

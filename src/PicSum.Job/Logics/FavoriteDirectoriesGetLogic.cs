@@ -2,7 +2,6 @@ using PicSum.DatabaseAccessor.Connection;
 using PicSum.DatabaseAccessor.Sql;
 using SWF.Core.Base;
 using SWF.Core.DatabaseAccessor;
-using SWF.Core.FileAccessor;
 using SWF.Core.Job;
 using System.Runtime.Versioning;
 
@@ -21,7 +20,7 @@ namespace PicSum.Job.Logics
                 .Select(dto => dto.GetValueOrDefault(string.Empty))
                 .Where(_ => !FileUtil.IsSystemRoot(_)
                             && !FileUtil.IsDrive(_)
-                            && FileUtil.IsDirectory(_))];
+                            && FileUtil.IsExistsDirectory(_))];
         }
     }
 }

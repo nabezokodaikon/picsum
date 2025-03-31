@@ -302,6 +302,9 @@ namespace WinApi
         public const uint MDT_EFFECTIVE_DPI = 0;
         public const uint MONITOR_DEFAULTTONEAREST = 2;
 
+        public const uint FILE_ATTRIBUTE_DIRECTORY = 0x10;
+        public static readonly IntPtr INVALID_HANDLE_VALUE = new IntPtr(-1);
+
         public enum FileAttributesFlags : uint
         {
             FILE_ATTRIBUTE_ARCHIVE = 0x00000020,
@@ -554,6 +557,16 @@ namespace WinApi
             public string szCSDVersion;
         }
 
+        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+        public struct WIN32_FIND_DATA
+        {
+            public uint dwFileAttributes;
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 260)]
+            public string cFileName;
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 14)]
+            public string cAlternateFileName;
+        }
+
         [DllImport("ntdll.dll", SetLastError = true)]
         public static extern int RtlGetVersion(ref OSVERSIONINFOEX versionInfo);
 
@@ -661,6 +674,12 @@ namespace WinApi
 
         [DllImport("shcore.dll")]
         public static extern int GetDpiForMonitor(IntPtr hmonitor, uint dpiType, out uint dpiX, out uint dpiY);
+
+        [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
+        public static extern IntPtr FindFirstFile(string lpFileName, out WIN32_FIND_DATA lpFindFileData);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        public static extern bool FindClose(IntPtr hFindFile);
 
         public static int OpenFileWith(IntPtr hwndParent, string filePath)
         {

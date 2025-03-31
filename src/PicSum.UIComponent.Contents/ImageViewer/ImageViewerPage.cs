@@ -7,7 +7,6 @@ using PicSum.UIComponent.Contents.Conf;
 using PicSum.UIComponent.Contents.ContextMenu;
 using PicSum.UIComponent.Contents.Parameter;
 using SWF.Core.Base;
-using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
 using SWF.Core.Job;
 using SWF.UIComponent.TabOperation;

@@ -1,4 +1,4 @@
-using SWF.Core.FileAccessor;
+using SWF.Core.Base;
 using System.Runtime.Versioning;
 
 namespace SWF.Core.ImageAccessor

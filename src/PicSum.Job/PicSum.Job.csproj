@@ -85,7 +85,6 @@
     <ProjectReference Include="..\SWF.Core.Job\SWF.Core.Job.csproj" />
     <ProjectReference Include="..\PicSum.DatabaseAccessor\PicSum.DatabaseAccessor.csproj" />
     <ProjectReference Include="..\SWF.Core.Base\SWF.Core.Base.csproj" />
-    <ProjectReference Include="..\SWF.Core.FileAccessor\SWF.Core.FileAccessor.csproj" />
     <ProjectReference Include="..\SWF.Core.ImageAccessor\SWF.Core.ImageAccessor.csproj" />
   </ItemGroup>
 

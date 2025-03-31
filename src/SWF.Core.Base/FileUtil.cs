@@ -1,13 +1,11 @@
-using SWF.Core.Base;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 using System.Security;
-using System.Text;
 using WinApi;
 
-namespace SWF.Core.FileAccessor
+namespace SWF.Core.Base
 {
     [SupportedOSPlatform("windows10.0.17763.0")]
     public static class FileUtil
@@ -58,15 +56,34 @@ namespace SWF.Core.FileAccessor
                 return false;
             }
 
-            if (IsSystemRoot(filePath))
+            if (IsExistsFileOrDirectory(filePath))
             {
                 return true;
             }
-            else
+            else if (IsSystemRoot(filePath))
             {
-                var utf8Bytes = Encoding.UTF8.GetBytes(filePath);
-                var utf8FilePath = Encoding.UTF8.GetString(utf8Bytes);
-                return File.Exists(utf8FilePath) || Directory.Exists(utf8FilePath);
+                return true;
+            }
+            else if (IsDrive(filePath))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public static bool IsExistsFileOrDirectory(string path)
+        {
+            using (TimeMeasuring.Run(false, "FileUtil.IsExistsFileOrDirectory"))
+            {
+                var handle = WinApiMembers.FindFirstFile(path, out var findData);
+                if (handle == WinApiMembers.INVALID_HANDLE_VALUE)
+                {
+                    return false;
+                }
+
+                WinApiMembers.FindClose(handle);
+                return true;
             }
         }
 
@@ -82,7 +99,7 @@ namespace SWF.Core.FileAccessor
                 return false;
             }
 
-            return filePath.Trim() == ROOT_DIRECTORY_PATH;
+            return filePath == ROOT_DIRECTORY_PATH;
         }
 
         /// <summary>
@@ -97,18 +114,19 @@ namespace SWF.Core.FileAccessor
                 return false;
             }
 
-            if (IsSystemRoot(filePath))
-            {
-                return false;
-            }
-            else
+            using (TimeMeasuring.Run(false, "FileUtil.IsDrive"))
             {
                 try
                 {
-                    return Directory.Exists(filePath)
-                        && Path.GetDirectoryName(filePath) == null;
+                    return DriveInfo
+                        .GetDrives()
+                        .Any(d => string.Equals(d.Name, filePath, StringComparison.OrdinalIgnoreCase));
                 }
-                catch (PathTooLongException ex)
+                catch (IOException ex)
+                {
+                    throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
+                }
+                catch (UnauthorizedAccessException ex)
                 {
                     throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
                 }
@@ -118,38 +136,53 @@ namespace SWF.Core.FileAccessor
         /// <summary>
         /// ファイルパスがフォルダであるか確認します。
         /// </summary>
-        /// <param name="filePath">ファイルパス</param>
+        /// <param name="path">ファイルパス</param>
         /// <returns>ファイルパスがフォルダならTrue。フォルダでなければFalse。</returns>
-        public static bool IsDirectory(string filePath)
+        public static bool IsExistsDirectory(string path)
         {
-            if (string.IsNullOrEmpty(filePath))
+            if (string.IsNullOrEmpty(path))
             {
                 return false;
             }
 
-            if (IsSystemRoot(filePath))
+            using (TimeMeasuring.Run(false, "FileUtil.IsExistsDirectory"))
             {
-                return true;
-            }
-            else
-            {
-                return Directory.Exists(filePath);
+                var handle = WinApiMembers.FindFirstFile(path, out var findData);
+                if (handle == WinApiMembers.INVALID_HANDLE_VALUE)
+                {
+                    return false;
+                }
+
+                var isDirectory = (findData.dwFileAttributes & WinApiMembers.FILE_ATTRIBUTE_DIRECTORY) != 0;
+                WinApiMembers.FindClose(handle);
+                return isDirectory;
             }
         }
 
         /// <summary>
         /// ファイルパスがファイルであるか確認します。
         /// </summary>
-        /// <param name="filePath">ファイルパス</param>
+        /// <param name="path">ファイルパス</param>
         /// <returns>ファイルパスがファイルならTrue。ファイルでなければFalse。</returns>
-        public static bool IsFile(string filePath)
+        public static bool IsExistsFile(string path)
         {
-            if (string.IsNullOrEmpty(filePath))
+            if (string.IsNullOrEmpty(path))
             {
                 return false;
             }
 
-            return File.Exists(filePath);
+            using (TimeMeasuring.Run(false, "FileUtil.IsExistsFile"))
+            {
+                var handle = WinApiMembers.FindFirstFile(path, out var findData);
+                if (handle == WinApiMembers.INVALID_HANDLE_VALUE)
+                {
+                    return false;
+                }
+
+                var isFile = (findData.dwFileAttributes & WinApiMembers.FILE_ATTRIBUTE_DIRECTORY) == 0;
+                WinApiMembers.FindClose(handle);
+                return isFile;
+            }
         }
 
         /// <summary>
@@ -290,15 +323,8 @@ namespace SWF.Core.FileAccessor
             {
                 return false;
             }
-            else if (IsSystemRoot(filePath))
-            {
-                return true;
-            }
-            else if (IsDrive(filePath))
-            {
-                return true;
-            }
-            else if (IsExists(filePath))
+
+            if (IsExistsFileOrDirectory(filePath))
             {
                 try
                 {
@@ -338,10 +364,16 @@ namespace SWF.Core.FileAccessor
                     throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
                 }
             }
-            else
+            else if (IsSystemRoot(filePath))
             {
-                return false;
+                return true;
             }
+            else if (IsDrive(filePath))
+            {
+                return true;
+            }
+
+            return false;
         }
 
         /// <summary>
@@ -357,48 +389,11 @@ namespace SWF.Core.FileAccessor
                 return string.Empty;
             }
 
-            if (IsSystemRoot(filePath))
-            {
-                return ROOT_DIRECTORY_NAME;
-            }
-            else if (IsDrive(filePath))
-            {
-                try
-                {
-                    var driveInfo = DriveInfo.GetDrives()
-                        .FirstOrDefault(di => di.Name == filePath || di.Name == $"{filePath}");
-                    if (driveInfo != null)
-                    {
-                        return $"{driveInfo.VolumeLabel}({ToRemoveLastPathSeparate(filePath)})";
-                    }
-                    else
-                    {
-                        return ROOT_DIRECTORY_NAME;
-                    }
-                }
-                catch (IOException ex)
-                {
-                    throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
-                }
-                catch (UnauthorizedAccessException ex)
-                {
-                    throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
-                }
-            }
-            else
+            if (IsExistsFileOrDirectory(filePath))
             {
                 return Path.GetFileName(filePath);
             }
-        }
-
-        public static string GetFileNameWithoutExtension(string filePath)
-        {
-            if (string.IsNullOrEmpty(filePath))
-            {
-                return string.Empty;
-            }
-
-            if (IsSystemRoot(filePath))
+            else if (IsSystemRoot(filePath))
             {
                 return ROOT_DIRECTORY_NAME;
             }
@@ -426,10 +421,8 @@ namespace SWF.Core.FileAccessor
                     throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
                 }
             }
-            else
-            {
-                return Path.GetFileNameWithoutExtension(filePath);
-            }
+
+            return string.Empty;
         }
 
         /// <summary>
@@ -444,16 +437,7 @@ namespace SWF.Core.FileAccessor
                 return string.Empty;
             }
 
-            if (IsSystemRoot(filePath))
-            {
-                throw new ArgumentException("システムルートが指定されました。", nameof(filePath));
-            }
-
-            if (IsDrive(filePath))
-            {
-                return ROOT_DIRECTORY_PATH;
-            }
-            else
+            if (IsExistsFileOrDirectory(filePath))
             {
                 try
                 {
@@ -468,8 +452,17 @@ namespace SWF.Core.FileAccessor
                 {
                     throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
                 }
-
             }
+            else if (IsSystemRoot(filePath))
+            {
+                throw new ArgumentException("システムルートが指定されました。", nameof(filePath));
+            }
+            else if (IsDrive(filePath))
+            {
+                return ROOT_DIRECTORY_PATH;
+            }
+
+            return string.Empty;
         }
 
         /// <summary>
@@ -658,8 +651,7 @@ namespace SWF.Core.FileAccessor
             {
                 return GetDriveList();
             }
-
-            if (CanAccess(directoryPath))
+            else if (CanAccess(directoryPath))
             {
                 try
                 {
@@ -706,8 +698,7 @@ namespace SWF.Core.FileAccessor
             {
                 return GetDriveList();
             }
-
-            if (CanAccess(directoryPath))
+            else if (CanAccess(directoryPath))
             {
                 try
                 {
@@ -732,10 +723,8 @@ namespace SWF.Core.FileAccessor
                     throw new FileUtilException(CreateFileAccessErrorMessage(directoryPath), ex);
                 }
             }
-            else
-            {
-                return [];
-            }
+
+            return [];
         }
 
         /// <summary>

@@ -1,5 +1,4 @@
 using SWF.Core.Base;
-using SWF.Core.FileAccessor;
 using System;
 using System.Drawing;
 using System.IO;

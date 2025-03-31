@@ -7,7 +7,6 @@ using PicSum.UIComponent.Contents.Conf;
 using PicSum.UIComponent.Contents.ContextMenu;
 using PicSum.UIComponent.Contents.Parameter;
 using SWF.Core.Base;
-using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
 using SWF.Core.Job;
 using SWF.UIComponent.FlowList;
@@ -138,6 +137,8 @@ namespace PicSum.UIComponent.Contents.FileList
         public AbstractFileListPage(IPageParameter param)
             : base(param)
         {
+            ConsoleUtil.Write($"AbstractFileListPage.New Start");
+
             this.InitializeComponent();
 
             this.IsShowFileName = FileListPageConfig.Instance.IsShowFileName;
@@ -145,6 +146,8 @@ namespace PicSum.UIComponent.Contents.FileList
             this.IsShowImageFile = FileListPageConfig.Instance.IsShowImageFile;
             this.IsShowOtherFile = FileListPageConfig.Instance.IsShowOtherFile;
             this.ThumbnailSize = FileListPageConfig.Instance.ThumbnailSize;
+
+            ConsoleUtil.Write($"AbstractFileListPage.New End");
         }
 
         public override string[] GetSelectedFiles()

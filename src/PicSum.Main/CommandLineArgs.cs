@@ -1,4 +1,4 @@
-using SWF.Core.FileAccessor;
+using SWF.Core.Base;
 using System;
 using System.Linq;
 
@@ -17,11 +17,6 @@ namespace PicSum.Main
         public static bool IsCleanup()
         {
             return ARGS.Contains("--cleanup");
-        }
-
-        public static bool IsEmpty()
-        {
-            return ARGS.Contains("--empty");
         }
 
         public static string GetImageFilePathCommandLineArgs()

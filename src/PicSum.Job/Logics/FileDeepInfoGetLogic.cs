@@ -1,6 +1,5 @@
 using PicSum.Job.Entities;
 using SWF.Core.Base;
-using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
 using SWF.Core.Job;
 using System.Drawing;
@@ -48,7 +47,7 @@ namespace PicSum.Job.Logics
             else
             {
                 info.UpdateDate = FileUtil.GetUpdateDate(filePath);
-                info.IsFile = FileUtil.IsFile(filePath);
+                info.IsFile = FileUtil.IsExistsFile(filePath);
                 if (info.IsFile)
                 {
                     info.IsImageFile = FileUtil.IsImageFile(filePath);
@@ -63,7 +62,7 @@ namespace PicSum.Job.Logics
                     {
                         info.FileIcon = Instance<IFileIconCacher>.Value.GetJumboDriveIcon(filePath);
                     }
-                    else if (FileUtil.IsDirectory(filePath))
+                    else if (FileUtil.IsExistsDirectory(filePath))
                     {
                         info.FileIcon = Instance<IFileIconCacher>.Value.JumboDirectoryIcon;
                     }

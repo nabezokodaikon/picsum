@@ -3,7 +3,7 @@ using PicSum.Job.Parameters;
 using PicSum.Main.Mng;
 using PicSum.UIComponent.Contents.Parameter;
 using SWF.Core.Base;
-using SWF.Core.FileAccessor;
+using SWF.Core.ImageAccessor;
 using SWF.Core.Job;
 using SWF.UIComponent.Core;
 using System;
@@ -36,8 +36,9 @@ namespace PicSum.Main.UIComponent
 
         protected override void OnHandleCreated(EventArgs e)
         {
+            ConsoleUtil.Write($"InitialForm.OnHandleCreated Start");
+
             base.OnHandleCreated(e);
-            ConsoleUtil.Write($"InitialForm.OnHandleCreated");
 
             Instance<JobCaller>.Initialize(new JobCaller(SynchronizationContext.Current));
 
@@ -91,6 +92,8 @@ namespace PicSum.Main.UIComponent
 
             var form = this.browserManager.GetActiveBrowser();
             form.Show();
+
+            ConsoleUtil.Write($"InitialForm.OnHandleCreated End");
         }
     }
 }

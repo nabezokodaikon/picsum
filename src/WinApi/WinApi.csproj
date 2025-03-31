@@ -31,10 +31,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-	<PackageReference Include="System.Drawing.Common" Version="9.0.3" />
-  </ItemGroup>
-
-  <ItemGroup>
 	<Reference Update="System.Core">
 	  <RequiredTargetFramework>3.5</RequiredTargetFramework>
 	</Reference>
