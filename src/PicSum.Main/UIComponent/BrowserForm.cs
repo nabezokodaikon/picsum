@@ -67,7 +67,6 @@ namespace PicSum.Main.UIComponent
                 this.Location = new Point(
                     BrowserConfig.Instance.WindowLocaion.X + 16,
                     BrowserConfig.Instance.WindowLocaion.Y + 16);
-                this.SetGrass();
             }
 
             this.ResumeLayout(false);
@@ -126,21 +125,31 @@ namespace PicSum.Main.UIComponent
             return !this.BrowserMainPanel.IsBeginTabDragOperation;
         }
 
+        protected override void OnHandleCreated(EventArgs e)
+        {
+            ConsoleUtil.Write($"BrowserForm.OnHandleCreated");
+            base.OnHandleCreated(e);
+        }
+
         protected override void OnShown(EventArgs e)
         {
+            ConsoleUtil.Write($"BrowserForm.OnShown Start");
+
             base.OnShown(e);
 
             if (!BrowserForm.isStartUp)
             {
+                ConsoleUtil.Write($"BrowserForm.OnShown End");
                 return;
             }
 
             using (TimeMeasuring.Run(false, "BrowserForm.OnShown"))
             {
-                this.SetGrass();
                 this.CreateBrowserMainPanel();
                 BrowserForm.isStartUp = false;
             }
+
+            ConsoleUtil.Write($"BrowserForm.OnShown End");
         }
 
         protected override void OnClosing(CancelEventArgs e)

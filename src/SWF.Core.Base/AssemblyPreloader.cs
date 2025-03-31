@@ -85,6 +85,8 @@ namespace SWF.Core.Base
         // アプリケーション起動時の最適化メソッド
         public static void OptimizeStartup(params Type[] criticalTypes)
         {
+            ConsoleUtil.Write($"AssemblyPreloader.OptimizeStartup Start");
+
             using (TimeMeasuring.Run(false, "MicrosoftStorePreloader.OptimizeStartup"))
             {
                 var tasks = criticalTypes
@@ -93,6 +95,8 @@ namespace SWF.Core.Base
 
                 Task.WaitAll(tasks);
             }
+
+            ConsoleUtil.Write($"AssemblyPreloader.OptimizeStartup End");
         }
     }
 }

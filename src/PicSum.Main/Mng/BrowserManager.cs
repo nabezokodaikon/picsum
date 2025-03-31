@@ -1,4 +1,5 @@
 using PicSum.Main.UIComponent;
+using SWF.Core.Base;
 using SWF.UIComponent.TabOperation;
 using System;
 using System.Collections.Generic;
@@ -53,8 +54,13 @@ namespace PicSum.Main.Mng
 
         private BrowserForm CreateBrowser()
         {
+            ConsoleUtil.Write($"BrowserManager.CreateBrowser Start");
+
             var browser = new BrowserForm();
             this.InitializeBrowserDelegate(browser);
+
+            ConsoleUtil.Write($"BrowserManager.CreateBrowser End");
+
             return browser;
         }
 

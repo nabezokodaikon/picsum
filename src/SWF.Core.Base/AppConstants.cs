@@ -121,6 +121,8 @@ namespace SWF.Core.Base
 
         public static void CreateApplicationDirectories()
         {
+            ConsoleUtil.Write($"AppConstants.CreateApplicationDirectories Start");
+
             if (!Directory.Exists(APPLICATION_DIRECTORY))
             {
                 Directory.CreateDirectory(APPLICATION_DIRECTORY);
@@ -140,6 +142,8 @@ namespace SWF.Core.Base
             {
                 Directory.CreateDirectory(DATABASE_DIRECTORY);
             }
+
+            ConsoleUtil.Write($"AppConstants.CreateApplicationDirectories End");
         }
 
         public static int GetControlBoxWidth(IntPtr window)

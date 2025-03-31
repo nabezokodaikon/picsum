@@ -1,6 +1,7 @@
 using NLog;
 using NLog.Config;
 using NLog.Targets;
+using PicSum.Main.Conf;
 using PicSum.Main.Mng;
 using PicSum.Main.UIComponent;
 using SWF.Core.Base;
@@ -27,6 +28,7 @@ namespace PicSum.Main
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         static void Main()
         {
+            ConsoleUtil.Write($"Program.Main");
             if (mutex.WaitOne(TimeSpan.Zero, true))
             {
                 try
@@ -36,7 +38,7 @@ namespace PicSum.Main
 
                     AppConstants.CreateApplicationDirectories();
 
-                    ConfigureLog();
+                    LogManager.Configuration = CreateLoggerConfig();
                     LogManager.GetCurrentClassLogger().Debug("アプリケーションを開始します。");
 
                     AppDomain.CurrentDomain.AssemblyLoad += CurrentDomain_OnAssemblyLoad;
@@ -101,8 +103,10 @@ namespace PicSum.Main
             }
         }
 
-        private static void ConfigureLog()
+        private static LoggingConfiguration CreateLoggerConfig()
         {
+            ConsoleUtil.Write($"Program.CreateLoggerConfig Start");
+
             var config = new LoggingConfiguration();
 
             var logfile = new FileTarget("logfile")
@@ -120,7 +124,10 @@ namespace PicSum.Main
 #else
             config.AddRule(LogLevel.Info, LogLevel.Fatal, logfile);
 #endif
-            LogManager.Configuration = config;
+
+            ConsoleUtil.Write($"Program.CreateLoggerConfig End");
+
+            return config;
         }
 
         private static void Application_ThreadException(object sender, ThreadExceptionEventArgs e)

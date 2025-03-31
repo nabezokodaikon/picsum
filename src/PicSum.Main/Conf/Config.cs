@@ -44,6 +44,8 @@ namespace PicSum.Main.Conf
 
         public void Load()
         {
+            ConsoleUtil.Write($"Config.Load Start");
+
             if (FileUtil.IsExists(AppConstants.CONFIG_FILE))
             {
                 var serializer = new XmlSerializer(typeof(Config));
@@ -90,6 +92,8 @@ namespace PicSum.Main.Conf
                 this.ExportDirectoryPath
                     = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
             }
+
+            ConsoleUtil.Write($"Config.Load End");
         }
     }
 }

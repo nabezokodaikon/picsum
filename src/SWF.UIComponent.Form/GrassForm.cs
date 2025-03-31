@@ -40,15 +40,18 @@ namespace SWF.UIComponent.Form
             }
         }
 
-        public event EventHandler<ScaleChangedEventArgs> ScaleChanged;
-
-        private readonly WinApiMembers.MARGINS glassMargins = new()
+        private static WinApiMembers.MARGINS GetGrassMargins(float scale)
         {
-            cyTopHeight = TOP_OFFSET,
-            cxLeftWidth = 0,
-            cxRightWidth = 0,
-            cyBottomHeight = 0,
-        };
+            return new()
+            {
+                cyTopHeight = (int)(TOP_OFFSET * scale),
+                cxLeftWidth = 0,
+                cxRightWidth = 0,
+                cyBottomHeight = 0,
+            };
+        }
+
+        public event EventHandler<ScaleChangedEventArgs> ScaleChanged;
 
         private float currentScale = 0;
         private bool isInit = true;
@@ -163,8 +166,8 @@ namespace SWF.UIComponent.Form
                 if (this.currentScale == 0 || this.currentScale != scale)
                 {
                     this.currentScale = scale;
-                    this.glassMargins.cyTopHeight = (int)(TOP_OFFSET * this.currentScale);
-                    WinApiMembers.DwmExtendFrameIntoClientArea(this.Handle, this.glassMargins);
+                    var glassMargins = GetGrassMargins(this.currentScale);
+                    WinApiMembers.DwmExtendFrameIntoClientArea(this.Handle, glassMargins);
                     this.ScaleChanged?.Invoke(this, new ScaleChangedEventArgs(this.currentScale));
                 }
             }
@@ -246,20 +249,13 @@ namespace SWF.UIComponent.Form
                 base.WindowState = this.initWindowState;
 
                 this.currentScale = AppConstants.GetCurrentWindowScale(this);
-                this.glassMargins.cyTopHeight = (int)(TOP_OFFSET * this.currentScale);
-                WinApiMembers.DwmExtendFrameIntoClientArea(this.Handle, this.glassMargins);
+                var glassMargins = GetGrassMargins(this.currentScale);
+                WinApiMembers.DwmExtendFrameIntoClientArea(this.Handle, glassMargins);
 
                 this.isInit = false;
             }
 
             base.OnLoad(e);
-        }
-
-        protected void SetGrass()
-        {
-            this.currentScale = AppConstants.GetCurrentWindowScale(this);
-            this.glassMargins.cyTopHeight = (int)(TOP_OFFSET * this.currentScale);
-            WinApiMembers.DwmExtendFrameIntoClientArea(this.Handle, this.glassMargins);
         }
 
         protected void SetControlRegion()

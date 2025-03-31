@@ -7,7 +7,6 @@ using SWF.Core.FileAccessor;
 using SWF.Core.Job;
 using SWF.UIComponent.Core;
 using System;
-using System.Diagnostics;
 using System.Runtime.Versioning;
 using System.Threading;
 using System.Windows.Forms;
@@ -21,8 +20,6 @@ namespace PicSum.Main.UIComponent
     internal sealed partial class InitialForm
         : HideForm, ISender
     {
-        private readonly Stopwatch stopwatch = Stopwatch.StartNew();
-
         private bool disposed = false;
         private readonly BrowserManager browserManager = new();
 
@@ -40,10 +37,7 @@ namespace PicSum.Main.UIComponent
         protected override void OnHandleCreated(EventArgs e)
         {
             base.OnHandleCreated(e);
-            this.stopwatch.Stop();
-            ConsoleUtil.Write($"InitialForm.OnHandleCreated: {this.stopwatch.ElapsedMilliseconds}");
-
-            this.stopwatch.Restart();
+            ConsoleUtil.Write($"InitialForm.OnHandleCreated");
 
             Instance<JobCaller>.Initialize(new JobCaller(SynchronizationContext.Current));
 
@@ -93,14 +87,10 @@ namespace PicSum.Main.UIComponent
                     form.Focus();
                 });
 
-            this.stopwatch.Stop();
-            ConsoleUtil.Write($"InitialForm Start Jobs: {this.stopwatch.ElapsedMilliseconds}");
+            ConsoleUtil.Write($"InitialForm.OnHandleCreated Started Jobs");
 
-            this.stopwatch.Restart();
             var form = this.browserManager.GetActiveBrowser();
             form.Show();
-            this.stopwatch.Stop();
-            ConsoleUtil.Write($"InitialForm BrowserForm.Show: {this.stopwatch.ElapsedMilliseconds}");
         }
     }
 }
