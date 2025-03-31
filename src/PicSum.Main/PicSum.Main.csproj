@@ -134,11 +134,6 @@
 	<Content Include="application.ico" />
   </ItemGroup>
   <ItemGroup>
-	<PackageReference Include="NLog" Version="5.4.0">
-	  <TreatAsUsed>true</TreatAsUsed>
-	</PackageReference>
-  </ItemGroup>
-  <ItemGroup>
 	<Compile Remove="Settings.cs" />
   </ItemGroup>
   <ItemGroup>
