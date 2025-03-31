@@ -1,7 +1,6 @@
 using NLog;
 using NLog.Config;
 using NLog.Targets;
-using PicSum.Main.Conf;
 using PicSum.Main.Mng;
 using PicSum.Main.UIComponent;
 using SWF.Core.Base;
