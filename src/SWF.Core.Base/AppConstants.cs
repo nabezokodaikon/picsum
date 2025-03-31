@@ -52,17 +52,15 @@ namespace SWF.Core.Base
         {
             var hwnd = WinApiMembers.WindowFromPoint(
                 new WinApiMembers.POINT(Cursor.Position.X, Cursor.Position.Y));
-            var monitor = WinApiMembers.MonitorFromWindow(hwnd, WinApiMembers.MONITOR_DEFAULTTONEAREST);
-            WinApiMembers.GetDpiForMonitor(monitor, WinApiMembers.MDT_EFFECTIVE_DPI, out uint dpiX, out _);
-            var scale = dpiX / AppConstants.BASE_DPI;
+            var dpi = WinApiMembers.GetDpiForWindow(hwnd);
+            var scale = dpi / AppConstants.BASE_DPI;
             return scale;
         }
 
         public static float GetCurrentWindowScale(Control control)
         {
-            var monitor = WinApiMembers.MonitorFromWindow(control.Handle, WinApiMembers.MONITOR_DEFAULTTONEAREST);
-            WinApiMembers.GetDpiForMonitor(monitor, WinApiMembers.MDT_EFFECTIVE_DPI, out uint dpiX, out _);
-            var scale = dpiX / AppConstants.BASE_DPI;
+            var dpi = WinApiMembers.GetDpiForWindow(control.Handle);
+            var scale = dpi / AppConstants.BASE_DPI;
             return scale;
         }
 

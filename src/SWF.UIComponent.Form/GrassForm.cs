@@ -50,7 +50,7 @@ namespace SWF.UIComponent.Form
             cyBottomHeight = 0,
         };
 
-        private uint currentDpi = 0;
+        private float currentScale = 0;
         private bool isInit = true;
         private Size initSize = Size.Empty;
         private FormWindowState initWindowState = FormWindowState.Normal;
@@ -159,14 +159,13 @@ namespace SWF.UIComponent.Form
             }
             else if (m.Msg == WinApiMembers.WM_DPICHANGED)
             {
-                var newDpi = WinApiMembers.GetDpiForWindow(this.Handle);
-                if (this.currentDpi == 0 || this.currentDpi != newDpi)
+                var scale = AppConstants.GetCurrentWindowScale(this);
+                if (this.currentScale == 0 || this.currentScale != scale)
                 {
-                    this.currentDpi = newDpi;
-                    var scale = this.currentDpi / AppConstants.BASE_DPI;
-                    this.glassMargins.cyTopHeight = (int)(TOP_OFFSET * scale);
+                    this.currentScale = scale;
+                    this.glassMargins.cyTopHeight = (int)(TOP_OFFSET * this.currentScale);
                     WinApiMembers.DwmExtendFrameIntoClientArea(this.Handle, this.glassMargins);
-                    this.ScaleChanged?.Invoke(this, new ScaleChangedEventArgs(scale));
+                    this.ScaleChanged?.Invoke(this, new ScaleChangedEventArgs(this.currentScale));
                 }
             }
             else
@@ -245,7 +244,11 @@ namespace SWF.UIComponent.Form
             {
                 base.Size = this.initSize;
                 base.WindowState = this.initWindowState;
-                this.currentDpi = WinApiMembers.GetDpiForWindow(this.Handle);
+
+                this.currentScale = AppConstants.GetCurrentWindowScale(this);
+                this.glassMargins.cyTopHeight = (int)(TOP_OFFSET * this.currentScale);
+                WinApiMembers.DwmExtendFrameIntoClientArea(this.Handle, this.glassMargins);
+
                 this.isInit = false;
             }
 
@@ -254,8 +257,8 @@ namespace SWF.UIComponent.Form
 
         protected void SetGrass()
         {
-            var scale = AppConstants.GetCurrentWindowScale(this);
-            this.glassMargins.cyTopHeight = (int)(TOP_OFFSET * scale);
+            this.currentScale = AppConstants.GetCurrentWindowScale(this);
+            this.glassMargins.cyTopHeight = (int)(TOP_OFFSET * this.currentScale);
             WinApiMembers.DwmExtendFrameIntoClientArea(this.Handle, this.glassMargins);
         }
 
