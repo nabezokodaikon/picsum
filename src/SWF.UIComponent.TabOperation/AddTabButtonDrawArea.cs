@@ -29,7 +29,7 @@ namespace SWF.UIComponent.TabOperation
         }
 
         private static readonly SolidBrush MOUSE_POINT_BRUSH = new(Color.FromArgb(128, 255, 255, 255));
-        private static readonly SolidBrush NORMAL_BRUSH = new(Color.FromArgb(64, 0, 0, 0));
+        private static readonly SolidBrush NORMAL_BRUSH = new(Color.FromArgb(0, 0, 0, 0));
         private static readonly Pen MOUSE_POINT_PEN = new(Color.Black, 2f);
         private static readonly Pen NORMAL_PEN = new(Color.LightGray, 2f);
 

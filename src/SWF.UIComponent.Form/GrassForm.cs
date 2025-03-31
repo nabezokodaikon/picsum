@@ -18,8 +18,8 @@ namespace SWF.UIComponent.Form
         private const int RESIZE_MARGIN = 8;
 
         private static readonly Version OS_VERSION = GetWindowsVersion();
-        private static readonly Color ACTIVE_WINDOW_COLOR = Color.FromArgb(34, 38, 41);
-        private static readonly Color DEACTIVATE_WINDOWCOLOR = Color.FromArgb(97, 99, 101);
+        private static readonly Color ACTIVE_WINDOW_COLOR = Color.FromArgb(64, 68, 71);
+        private static readonly Color DEACTIVATE_WINDOWCOLOR = Color.FromArgb(107, 109, 111);
 
         private static Version GetWindowsVersion()
         {
