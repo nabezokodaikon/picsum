@@ -27,17 +27,17 @@ namespace SWF.Core.FileAccessor
         private const string ROOT_DIRECTORY_NAME = "PC";
         private const string ROOT_DIRECTORY_TYPE_NAME = "System root";
 
-        internal const string AVIF_FILE_EXTENSION = ".AVIF";
-        internal const string BMP_FILE_EXTENSION = ".BMP";
-        internal const string GIF_FILE_EXTENSION = ".GIF";
-        internal const string ICON_FILE_EXTENSION = ".ICO";
-        internal const string JPEG_FILE_EXTENSION = ".JPEG";
-        internal const string JPG_FILE_EXTENSION = ".JPG";
-        internal const string HEIC_FILE_EXTENSION = ".HEIC";
-        internal const string HEIF_FILE_EXTENSION = ".HEIF";
-        internal const string PNG_FILE_EXTENSION = ".PNG";
-        internal const string SVG_FILE_EXTENSION = ".SVG";
-        internal const string WEBP_FILE_EXTENSION = ".WEBP";
+        internal const string AVIF_FILE_EXTENSION = ".avif";
+        internal const string BMP_FILE_EXTENSION = ".bmp";
+        internal const string GIF_FILE_EXTENSION = ".gif";
+        internal const string HEIC_FILE_EXTENSION = ".heic";
+        internal const string HEIF_FILE_EXTENSION = ".heif";
+        internal const string ICON_FILE_EXTENSION = ".ico";
+        internal const string JPEG_FILE_EXTENSION = ".jpeg";
+        internal const string JPG_FILE_EXTENSION = ".jpg";
+        internal const string PNG_FILE_EXTENSION = ".png";
+        internal const string SVG_FILE_EXTENSION = ".svg";
+        internal const string WEBP_FILE_EXTENSION = ".webp";
 
         internal static readonly string[] IMAGE_FILE_EXTENSION_LIST = GetImageFileExtensionList();
 
@@ -164,8 +164,8 @@ namespace SWF.Core.FileAccessor
                 return false;
             }
 
-            var ex = GetExtension(filePath);
-            return IMAGE_FILE_EXTENSION_LIST.Contains(ex);
+            var ex = GetExtensionFastStack(filePath);
+            return IMAGE_FILE_EXTENSION_LIST.Any(_ => StringUtil.Compare(_, ex));
         }
 
         public static bool IsSvgFile(string filePath)
@@ -175,8 +175,8 @@ namespace SWF.Core.FileAccessor
                 return false;
             }
 
-            var ex = GetExtension(filePath);
-            return (ex == SVG_FILE_EXTENSION);
+            var ex = GetExtensionFastStack(filePath);
+            return StringUtil.Compare(ex, SVG_FILE_EXTENSION);
         }
 
         public static bool IsIconFile(string filePath)
@@ -186,8 +186,8 @@ namespace SWF.Core.FileAccessor
                 return false;
             }
 
-            var ex = GetExtension(filePath);
-            return (ex == ICON_FILE_EXTENSION);
+            var ex = GetExtensionFastStack(filePath);
+            return StringUtil.Compare(ex, ICON_FILE_EXTENSION);
         }
 
         public static bool IsBmpFile(string filePath)
@@ -197,8 +197,8 @@ namespace SWF.Core.FileAccessor
                 return false;
             }
 
-            var ex = GetExtension(filePath);
-            return (ex == BMP_FILE_EXTENSION);
+            var ex = GetExtensionFastStack(filePath);
+            return StringUtil.Compare(ex, BMP_FILE_EXTENSION);
         }
 
         public static bool IsJpegFile(string filePath)
@@ -208,8 +208,9 @@ namespace SWF.Core.FileAccessor
                 return false;
             }
 
-            var ex = GetExtension(filePath);
-            return (ex == JPG_FILE_EXTENSION || ex == JPEG_FILE_EXTENSION);
+            var ex = GetExtensionFastStack(filePath);
+            return StringUtil.Compare(ex, JPG_FILE_EXTENSION)
+                || StringUtil.Compare(ex, JPEG_FILE_EXTENSION);
         }
 
         public static bool IsPngFile(string filePath)
@@ -219,8 +220,8 @@ namespace SWF.Core.FileAccessor
                 return false;
             }
 
-            var ex = GetExtension(filePath);
-            return (ex == PNG_FILE_EXTENSION || ex == PNG_FILE_EXTENSION);
+            var ex = GetExtensionFastStack(filePath);
+            return StringUtil.Compare(ex, PNG_FILE_EXTENSION);
         }
 
         public static bool IsGifFile(string filePath)
@@ -230,8 +231,8 @@ namespace SWF.Core.FileAccessor
                 return false;
             }
 
-            var ex = GetExtension(filePath);
-            return (ex == GIF_FILE_EXTENSION);
+            var ex = GetExtensionFastStack(filePath);
+            return StringUtil.Compare(ex, GIF_FILE_EXTENSION);
         }
 
         /// <summary>
@@ -246,8 +247,8 @@ namespace SWF.Core.FileAccessor
                 return false;
             }
 
-            var ex = GetExtension(filePath);
-            return (ex == WEBP_FILE_EXTENSION);
+            var ex = GetExtensionFastStack(filePath);
+            return StringUtil.Compare(ex, WEBP_FILE_EXTENSION);
         }
 
         /// <summary>
@@ -262,8 +263,8 @@ namespace SWF.Core.FileAccessor
                 return false;
             }
 
-            var ex = GetExtension(filePath);
-            return (ex == AVIF_FILE_EXTENSION);
+            var ex = GetExtensionFastStack(filePath);
+            return StringUtil.Compare(ex, AVIF_FILE_EXTENSION);
         }
 
         public static bool IsHeifFile(string filePath)
@@ -273,8 +274,9 @@ namespace SWF.Core.FileAccessor
                 return false;
             }
 
-            var ex = GetExtension(filePath);
-            return (ex == HEIC_FILE_EXTENSION || ex == HEIF_FILE_EXTENSION);
+            var ex = GetExtensionFastStack(filePath);
+            return StringUtil.Compare(ex, HEIC_FILE_EXTENSION)
+                || StringUtil.Compare(ex, HEIF_FILE_EXTENSION);
         }
 
         /// <summary>
@@ -468,21 +470,6 @@ namespace SWF.Core.FileAccessor
                 }
 
             }
-        }
-
-        /// <summary>
-        /// ファイルの拡張子を取得します。
-        /// </summary>
-        /// <param name="filePath"></param>
-        /// <returns>ファイルの拡張子をピリオド + 大文字(.XXX)で返します。</returns>
-        public static string GetExtension(string filePath)
-        {
-            if (string.IsNullOrEmpty(filePath))
-            {
-                return string.Empty;
-            }
-
-            return Path.GetExtension(filePath).ToUpper();
         }
 
         /// <summary>
@@ -958,6 +945,46 @@ namespace SWF.Core.FileAccessor
         private static string CreateFileAccessErrorMessage(string path)
         {
             return $"'{path}'を開けませんでした。";
+        }
+
+        private static string GetExtensionFast(string path)
+        {
+            if (string.IsNullOrEmpty(path))
+            {
+                return string.Empty;
+            }
+
+            var index = path.LastIndexOf('.');
+            if (index <= path.LastIndexOf('\\') || index <= path.LastIndexOf('/'))
+            {
+                return string.Empty;
+            }
+
+            return path[index..];
+        }
+
+        public static unsafe string GetExtensionFastStack(string path)
+        {
+            if (string.IsNullOrEmpty(path))
+            {
+                return string.Empty;
+            }
+
+            if (path.Length > 256)
+            {
+                return GetExtensionFast(path);
+            }
+
+            Span<char> buffer = stackalloc char[path.Length];
+            path.AsSpan().CopyTo(buffer);
+
+            var index = buffer.LastIndexOf('.');
+            if (index <= buffer.LastIndexOf('\\') || index <= buffer.LastIndexOf('/'))
+            {
+                return string.Empty;
+            }
+
+            return new string(buffer.Slice(index));
         }
 
         /// <summary>

@@ -152,7 +152,7 @@ namespace SWF.Core.FileAccessor
                 return this.SMALL_EMPTY_FILE_ICON;
             }
 
-            var ex = FileUtil.GetExtension(filePath);
+            var ex = FileUtil.GetExtensionFastStack(filePath);
 
             lock (this.SMALL_ICON_CASH_LOCK)
             {
@@ -178,7 +178,7 @@ namespace SWF.Core.FileAccessor
                 return this.EXTRALARGE_EMPTY_FILE_ICON;
             }
 
-            var ex = FileUtil.GetExtension(filePath);
+            var ex = FileUtil.GetExtensionFastStack(filePath);
 
             lock (this.EXTRALARGE_ICON_CASH_LOCK)
             {
@@ -204,7 +204,7 @@ namespace SWF.Core.FileAccessor
                 return this.JUMBO_EMPTY_FILE_ICON;
             }
 
-            var ex = FileUtil.GetExtension(filePath);
+            var ex = FileUtil.GetExtensionFastStack(filePath);
 
             lock (this.JUMBO_ICON_CASH_LOCK)
             {
