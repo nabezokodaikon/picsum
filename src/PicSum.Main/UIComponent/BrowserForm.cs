@@ -133,13 +133,10 @@ namespace PicSum.Main.UIComponent
 
         protected override void OnShown(EventArgs e)
         {
-            ConsoleUtil.Write($"BrowserForm.OnShown Start");
-
             base.OnShown(e);
 
             if (!BrowserForm.isStartUp)
             {
-                ConsoleUtil.Write($"BrowserForm.OnShown End");
                 return;
             }
 
@@ -148,8 +145,6 @@ namespace PicSum.Main.UIComponent
                 this.CreateBrowserMainPanel();
                 BrowserForm.isStartUp = false;
             }
-
-            ConsoleUtil.Write($"BrowserForm.OnShown End");
         }
 
         protected override void OnClosing(CancelEventArgs e)
@@ -260,6 +255,8 @@ namespace PicSum.Main.UIComponent
                 throw new SWFException("メインコントロールは既に存在しています。");
             }
 
+            ConsoleUtil.Write($"BrowserForm.CreateBrowserMainPanel Start");
+
             this.SuspendLayout();
 
             this.browserMainPanel = new BrowserMainPanel();
@@ -282,42 +279,49 @@ namespace PicSum.Main.UIComponent
             this.Controls.Add(this.browserMainPanel);
 
             this.AttachResizeEvents(this);
-            if (BrowserForm.isStartUp && CommandLineArgs.IsFilePath())
+
+            if (BrowserForm.isStartUp)
             {
-                var imageFilePath = CommandLineArgs.GetImageFilePatCommandLineArgs();
-                if (!string.IsNullOrEmpty(imageFilePath))
+                if (CommandLineArgs.IsNone() || CommandLineArgs.IsCleanup())
                 {
-                    var directoryPath = FileUtil.GetParentDirectoryPath(imageFilePath);
+                    this.browserMainPanel.AddFavoriteDirectoryListTab();
 
-                    var sortInfo = new SortInfo();
-                    sortInfo.SetSortType(SortTypeID.FilePath, true);
-
-                    var parameter = new ImageViewerPageParameter(
-                        DirectoryFileListPageParameter.PAGE_SOURCES,
-                        directoryPath,
-                        BrowserMainPanel.GetImageFilesAction(new ImageFileGetByDirectoryParameter(imageFilePath)),
-                        imageFilePath,
-                        sortInfo,
-                        FileUtil.GetFileName(directoryPath),
-                        Instance<IFileIconCacher>.Value.SmallDirectoryIcon,
-                        true);
-
-                    this.browserMainPanel.AddImageViewerPageTab(parameter);
+                    ConsoleUtil.Write($"BrowserForm.CreateBrowserMainPanel Page Added");
+                    LogManager.GetCurrentClassLogger().Debug("初回表示されました。");
                 }
-            }
-            else if (BrowserForm.isStartUp && CommandLineArgs.IsEmpty())
-            {
+                else if (CommandLineArgs.IsEmpty())
+                {
 
-            }
-            else if (BrowserForm.isStartUp)
-            {
-                this.browserMainPanel.AddFavoriteDirectoryListTab();
+                }
+                else
+                {
+                    var imageFilePath = CommandLineArgs.GetImageFilePathCommandLineArgs();
+                    if (!string.IsNullOrEmpty(imageFilePath))
+                    {
+                        var directoryPath = FileUtil.GetParentDirectoryPath(imageFilePath);
 
-                LogManager.GetCurrentClassLogger().Debug("初期回表示されました。");
+                        var sortInfo = new SortInfo();
+                        sortInfo.SetSortType(SortTypeID.FilePath, true);
+
+                        var parameter = new ImageViewerPageParameter(
+                            DirectoryFileListPageParameter.PAGE_SOURCES,
+                            directoryPath,
+                            BrowserMainPanel.GetImageFilesAction(new ImageFileGetByDirectoryParameter(imageFilePath)),
+                            imageFilePath,
+                            sortInfo,
+                            FileUtil.GetFileName(directoryPath),
+                            Instance<IFileIconCacher>.Value.SmallDirectoryIcon,
+                            true);
+
+                        this.browserMainPanel.AddImageViewerPageTab(parameter);
+                    }
+                }
             }
 
             this.SetControlRegion();
             this.ResumeLayout(false);
+
+            ConsoleUtil.Write($"BrowserForm.CreateBrowserMainPanel End");
         }
 
         private void OnTabDropouted(TabDropoutedEventArgs e)

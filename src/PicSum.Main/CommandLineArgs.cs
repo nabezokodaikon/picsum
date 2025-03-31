@@ -6,25 +6,27 @@ namespace PicSum.Main
 {
     internal static class CommandLineArgs
     {
+        private static readonly string[] ARGS
+            = [.. Environment.GetCommandLineArgs().Skip(1)];
+
+        public static bool IsNone()
+        {
+            return ARGS.Length == 0;
+        }
+
         public static bool IsCleanup()
         {
-            return Environment.GetCommandLineArgs().Contains("--cleanup");
+            return ARGS.Contains("--cleanup");
         }
 
         public static bool IsEmpty()
         {
-            return Environment.GetCommandLineArgs().Contains("--empty");
+            return ARGS.Contains("--empty");
         }
 
-        public static bool IsFilePath()
+        public static string GetImageFilePathCommandLineArgs()
         {
-            return Environment.GetCommandLineArgs()
-                .Any(_ => FileUtil.CanAccess(_) && FileUtil.IsImageFile(_));
-        }
-
-        public static string GetImageFilePatCommandLineArgs()
-        {
-            return Environment.GetCommandLineArgs()
+            return ARGS
                 .FirstOrDefault(_ => FileUtil.CanAccess(_) && FileUtil.IsImageFile(_));
         }
     }
