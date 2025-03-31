@@ -1,7 +1,6 @@
 using System;
 using System.IO;
 using System.Runtime.InteropServices;
-using System.Text;
 
 namespace WinApi
 {
@@ -302,9 +301,6 @@ namespace WinApi
 
         public const uint MDT_EFFECTIVE_DPI = 0;
         public const uint MONITOR_DEFAULTTONEAREST = 2;
-
-        public static readonly Guid FOLDERID_Desktop =
-            new Guid("{B4BFCC3A-DB2C-424C-B029-7FE99A87C641}");
 
         public enum FileAttributesFlags : uint
         {
@@ -612,9 +608,6 @@ namespace WinApi
         [DllImport("shell32.dll", EntryPoint = "#727")]
         public static extern int SHGetImageList(SHIL iImageList, Guid riid, out IntPtr ppv);
 
-        [DllImport("user32.dll")]
-        public static extern int GetSystemMetrics(SM nIndex);
-
         [DllImport("Comctl32.dll")]
         public static extern bool ImageList_Destroy(IntPtr himl);
 
@@ -657,19 +650,6 @@ namespace WinApi
         [DllImport("user32.dll")]
         public static extern IntPtr WindowFromPoint(POINT point);
 
-        [DllImport("user32.dll", SetLastError = true)]
-        public static extern IntPtr GetAncestor(IntPtr hwnd, uint flags);
-
-        [DllImport("user32.dll", CharSet = CharSet.Auto)]
-        public static extern int GetClassName(IntPtr hWnd, StringBuilder lpClassName, int nMaxCount);
-
-        [DllImport("shell32.dll")]
-        public static extern int SHGetKnownFolderPath(
-            [MarshalAs(UnmanagedType.LPStruct)] Guid rfid,
-            uint dwFlags,
-            IntPtr hToken,
-            out IntPtr pszPath);
-
         [DllImport("User32.dll")]
         public static extern uint GetDpiForWindow(IntPtr hWnd);
 
@@ -681,17 +661,6 @@ namespace WinApi
 
         [DllImport("shcore.dll")]
         public static extern int GetDpiForMonitor(IntPtr hmonitor, uint dpiType, out uint dpiX, out uint dpiY);
-
-
-        public static int LoWord(int dwValue)
-        {
-            return dwValue & 0xFFFF;
-        }
-
-        public static int HiWord(int dwValue)
-        {
-            return (dwValue >> 16) & 0xFFFF;
-        }
 
         public static int OpenFileWith(IntPtr hwndParent, string filePath)
         {
