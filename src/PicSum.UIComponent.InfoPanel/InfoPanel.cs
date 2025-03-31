@@ -44,6 +44,7 @@ namespace PicSum.UIComponent.InfoPanel
 
         private FileDeepInfoGetResult fileInfoSource = FileDeepInfoGetResult.EMPTY;
         private Image tagIcon = null;
+        private readonly Dictionary<float, Bitmap> tagIconCache = [];
         private string contextMenuOperationTag = string.Empty;
         private bool isLoading = false;
         private readonly SolidBrush foreColorBrush;
@@ -209,22 +210,8 @@ namespace PicSum.UIComponent.InfoPanel
 
             this.VerticalTopMargin = (int)(VERTICAL_DEFAULT_TOP_MARGIN * scale);
 
+            this.tagIcon = this.GetTagIcon(scale);
             this.tagFlowList.ItemHeight = (int)(TAG_FLOW_LIST_DEFAULT_ITEM_HEIGHT * scale);
-
-            if (this.tagIcon != null)
-            {
-                this.tagIcon.Dispose();
-                this.tagIcon = null;
-            }
-
-            var tagIcon = new Bitmap(
-                (int)(ResourceFiles.TagIcon.Value.Width * scale),
-                (int)(ResourceFiles.TagIcon.Value.Height * scale));
-            using (var g = Graphics.FromImage(tagIcon))
-            {
-                g.DrawImage(ResourceFiles.TagIcon.Value, 0, 0, tagIcon.Width, tagIcon.Height);
-            }
-            this.tagIcon = tagIcon;
 
             this.ResumeLayout(false);
         }
@@ -319,12 +306,38 @@ namespace PicSum.UIComponent.InfoPanel
                 this.allTagFontCache.Clear();
                 this.allTagDefaultFont.Dispose();
 
+                foreach (var icon in this.tagIconCache.Values)
+                {
+                    icon.Dispose();
+                }
+                this.tagIconCache.Clear();
+
                 this.components?.Dispose();
             }
 
             this.disposed = true;
 
             base.Dispose(disposing);
+        }
+
+        private Bitmap GetTagIcon(float scale)
+        {
+            if (this.tagIconCache.TryGetValue(scale, out var font))
+            {
+                return font;
+            }
+
+            var newTagIcon = new Bitmap(
+                (int)(ResourceFiles.TagIcon.Value.Width * scale),
+                (int)(ResourceFiles.TagIcon.Value.Height * scale));
+            using (var g = Graphics.FromImage(newTagIcon))
+            {
+                g.DrawImage(ResourceFiles.TagIcon.Value, 0, 0, newTagIcon.Width, newTagIcon.Height);
+            }
+
+            this.tagIconCache.Add(scale, newTagIcon);
+
+            return newTagIcon;
         }
 
         private Font GetTagFont(float scale)
