@@ -6,7 +6,7 @@ namespace SWF.Core.Base
         {
 #if DEBUG
             ArgumentNullException.ThrowIfNull(message, nameof(message));
-            Console.WriteLine($"[{DateTime.Now.ToString("HH:mm:ss.ffff")}] [{Thread.CurrentThread.Name}] {message}");
+            Console.WriteLine($"[{DateTime.Now:HH:mm:ss.ffff}] [{Thread.CurrentThread.Name}] {message}");
 #endif
         }
 

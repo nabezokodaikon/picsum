@@ -23,17 +23,23 @@ namespace SWF.Core.Base
         private TimeMeasuring(bool enable, string message)
         {
 #if DEBUG
-            this.stopwatch = Stopwatch.StartNew();
-            this.message = message;
-            this.enable = enable;
+            if (enable)
+            {
+                this.stopwatch = Stopwatch.StartNew();
+                this.message = message;
+                this.enable = enable;
+            }
 #endif
         }
 
         public void Dispose()
         {
 #if DEBUG
-            this.stopwatch?.Stop();
-            ConsoleUtil.Write(this.enable, $"{this.message}: {this.stopwatch?.ElapsedMilliseconds} ms");
+            if (this.enable)
+            {
+                this.stopwatch?.Stop();
+                Console.WriteLine($"{this.message}: {this.stopwatch?.ElapsedMilliseconds} ms");
+            }
 #endif
         }
     }
