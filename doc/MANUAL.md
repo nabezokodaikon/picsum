@@ -45,7 +45,6 @@ https://dotnet.microsoft.com/ja-jp/download/dotnet/9.0
 * Webp
 
 ## 起動オプション
-* picsumを`--empty`オプションをつけて実行すると、起動時にホームページが表示されません。
 * picsumを`--cleanup`オプションをつけて実行すると、picsumのデータベースを最適化、サムネイルキャッシュの削除を行ってから起動します。
 
 ## インストール方法
