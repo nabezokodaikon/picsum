@@ -36,6 +36,7 @@ namespace SWF.Core.Base
 
         public static bool IsRunningAsUwp()
         {
+            ConsoleUtil.Write($"AppConstants.IsRunningAsUwp Start");
             try
             {
                 // UWP の場合は Package.Current.Id が利用可能
@@ -45,6 +46,10 @@ namespace SWF.Core.Base
             {
                 // 例外が発生した場合は UWP ではない
                 return false;
+            }
+            finally
+            {
+                ConsoleUtil.Write($"AppConstants.IsRunningAsUwp End");
             }
         }
 
@@ -81,13 +86,21 @@ namespace SWF.Core.Base
 
         private static string GetExecutableDirectory()
         {
-            var executableDirectory = Directory.GetParent(Application.ExecutablePath);
-            if (executableDirectory == null)
+            ConsoleUtil.Write($"AppConstants.GetExecutableDirectory Start");
+            try
             {
-                throw new NullReferenceException("実行ディレクトリが取得できません。");
-            }
+                var executableDirectory = Directory.GetParent(Application.ExecutablePath);
+                if (executableDirectory == null)
+                {
+                    throw new NullReferenceException("実行ディレクトリが取得できません。");
+                }
 
-            return executableDirectory.FullName;
+                return executableDirectory.FullName;
+            }
+            finally
+            {
+                ConsoleUtil.Write($"AppConstants.GetExecutableDirectory End");
+            }
         }
 
         private static string GetApplicationDirectory()
