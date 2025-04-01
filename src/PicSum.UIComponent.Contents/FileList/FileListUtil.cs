@@ -95,7 +95,7 @@ namespace PicSum.UIComponent.Contents.FileList
                             .Select(fileInfo => fileInfo.FilePath)
                             .ToArray();
 
-                        if (!FileUtil.IsImageFile(param.SelectedFilePath))
+                        if (!ImageUtil.IsImageFile(param.SelectedFilePath))
                         {
                             throw new SWFException($"画像ファイルが選択されていません。'{param.SelectedFilePath}'");
                         }
@@ -122,7 +122,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 Instance<JobCaller>.Value.FilesGetByDirectoryJob.Value
                     .StartJob(sender, jobParameter, e =>
                     {
-                        if (!FileUtil.IsImageFile(param.SelectedFilePath))
+                        if (!ImageUtil.IsImageFile(param.SelectedFilePath))
                         {
                             throw new SWFException($"画像ファイルが選択されていません。'{param.SelectedFilePath}'");
                         }
@@ -163,7 +163,7 @@ namespace PicSum.UIComponent.Contents.FileList
                             .Select(fileInfo => fileInfo.FilePath)
                             .ToArray();
 
-                        if (!FileUtil.IsImageFile(param.SelectedFilePath))
+                        if (!ImageUtil.IsImageFile(param.SelectedFilePath))
                         {
                             throw new SWFException($"画像ファイルが選択されていません。'{param.SelectedFilePath}'");
                         }
@@ -196,7 +196,7 @@ namespace PicSum.UIComponent.Contents.FileList
                             .Select(fileInfo => fileInfo.FilePath)
                             .ToArray();
 
-                        if (!FileUtil.IsImageFile(param.SelectedFilePath))
+                        if (!ImageUtil.IsImageFile(param.SelectedFilePath))
                         {
                             throw new SWFException($"画像ファイルが選択されていません。'{param.SelectedFilePath}'");
                         }

@@ -1,4 +1,5 @@
 using SWF.Core.Base;
+using SWF.Core.ImageAccessor;
 using System;
 using System.Linq;
 
@@ -22,7 +23,7 @@ namespace PicSum.Main
         public static string GetImageFilePathCommandLineArgs()
         {
             return ARGS
-                .FirstOrDefault(_ => FileUtil.CanAccess(_) && FileUtil.IsImageFile(_));
+                .FirstOrDefault(_ => FileUtil.CanAccess(_) && ImageUtil.IsImageFile(_));
         }
     }
 }

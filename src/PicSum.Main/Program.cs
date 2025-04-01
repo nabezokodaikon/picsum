@@ -4,6 +4,7 @@ using NLog.Targets;
 using PicSum.Main.Mng;
 using PicSum.Main.UIComponent;
 using SWF.Core.Base;
+using SWF.Core.ImageAccessor;
 using System;
 using System.IO;
 using System.IO.Pipes;
@@ -83,7 +84,7 @@ namespace PicSum.Main
             else
             {
                 var filePath = Environment.GetCommandLineArgs()
-                    .FirstOrDefault(_ => FileUtil.CanAccess(_) && FileUtil.IsImageFile(_));
+                    .FirstOrDefault(_ => FileUtil.CanAccess(_) && ImageUtil.IsImageFile(_));
                 if (string.IsNullOrEmpty(filePath))
                 {
                     return;

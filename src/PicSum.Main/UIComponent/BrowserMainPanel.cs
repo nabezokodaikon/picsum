@@ -450,7 +450,7 @@ namespace PicSum.Main.UIComponent
                 this.OpenPage(new DirectoryFileListPageParameter(dragData.CurrentFilePath), PageOpenType.OverlapTab);
             }
             else if (FileUtil.IsExistsFile(dragData.CurrentFilePath) &&
-                FileUtil.IsImageFile(dragData.CurrentFilePath))
+                ImageUtil.IsImageFile(dragData.CurrentFilePath))
             {
                 // ビューアコンテンツを上書きします。
                 var parameter = new ImageViewerPageParameter(
@@ -474,7 +474,7 @@ namespace PicSum.Main.UIComponent
                 this.InsertPage(new DirectoryFileListPageParameter(dragData.CurrentFilePath), tabIndex);
             }
             else if (FileUtil.IsExistsFile(dragData.CurrentFilePath) &&
-                FileUtil.IsImageFile(dragData.CurrentFilePath))
+                ImageUtil.IsImageFile(dragData.CurrentFilePath))
             {
                 // ビューアコンテンツを挿入します。
                 var parameter = new ImageViewerPageParameter(

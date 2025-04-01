@@ -53,7 +53,7 @@ namespace PicSum.Main.UIComponent
                         return;
                     }
 
-                    if (!FileUtil.CanAccess(_.Value) || !FileUtil.IsImageFile(_.Value))
+                    if (!FileUtil.CanAccess(_.Value) || !ImageUtil.IsImageFile(_.Value))
                     {
                         return;
                     }

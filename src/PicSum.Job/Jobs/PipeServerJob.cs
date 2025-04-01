@@ -1,4 +1,5 @@
 using SWF.Core.Base;
+using SWF.Core.ImageAccessor;
 using SWF.Core.Job;
 using System.IO.Pipes;
 using System.Runtime.Versioning;
@@ -61,7 +62,7 @@ namespace PicSum.Job.Jobs
                                     var bytesRead = reader.Read(buffer, 0, buffer.Length);
                                     var receivedArgs = (new string(buffer, 0, bytesRead)).Trim();
                                     if (FileUtil.CanAccess(receivedArgs)
-                                        && FileUtil.IsImageFile(receivedArgs))
+                                        && ImageUtil.IsImageFile(receivedArgs))
                                     {
                                         this.Callback(new ValueResult<string>
                                         {

@@ -67,7 +67,7 @@ namespace PicSum.Job.Common
             {
                 return ThumbnailCacheEntity.EMPTY;
             }
-            else if (FileUtil.IsExistsFile(filePath) && FileUtil.IsImageFile(filePath))
+            else if (FileUtil.IsExistsFile(filePath) && ImageUtil.IsImageFile(filePath))
             {
                 return this.GetOnlyFileCache(filePath, thumbWidth, thumbHeight);
             }
@@ -95,7 +95,7 @@ namespace PicSum.Job.Common
             }
             else if (FileUtil.IsExistsFile(filePath))
             {
-                if (!FileUtil.IsImageFile(filePath))
+                if (!ImageUtil.IsImageFile(filePath))
                 {
                     return ThumbnailCacheEntity.EMPTY;
                 }
@@ -350,7 +350,7 @@ namespace PicSum.Job.Common
                         }
                         else
                         {
-                            var thumbFile = FileUtil.GetFirstImageFilePath(filePath);
+                            var thumbFile = ImageUtil.GetFirstImageFilePath(filePath);
                             if (!string.IsNullOrEmpty(thumbFile))
                             {
                                 // サムネイルを更新します。
@@ -366,7 +366,7 @@ namespace PicSum.Job.Common
                     }
                     else
                     {
-                        var thumbFile = FileUtil.GetFirstImageFilePath(filePath);
+                        var thumbFile = ImageUtil.GetFirstImageFilePath(filePath);
                         if (!string.IsNullOrEmpty(thumbFile))
                         {
                             // サムネイルを作成します。
@@ -398,7 +398,7 @@ namespace PicSum.Job.Common
                     }
                     else
                     {
-                        var thumbFile = FileUtil.GetFirstImageFilePath(filePath);
+                        var thumbFile = ImageUtil.GetFirstImageFilePath(filePath);
                         if (!string.IsNullOrEmpty(thumbFile))
                         {
                             // サムネイルを更新します。                                
@@ -415,7 +415,7 @@ namespace PicSum.Job.Common
                 else
                 {
                     // サムネイルを作成します。
-                    var thumbFile = FileUtil.GetFirstImageFilePath(filePath);
+                    var thumbFile = ImageUtil.GetFirstImageFilePath(filePath);
                     if (!string.IsNullOrEmpty(thumbFile))
                     {
                         var updateDate = FileUtil.GetUpdateDate(filePath);

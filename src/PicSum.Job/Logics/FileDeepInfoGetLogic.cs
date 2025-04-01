@@ -50,7 +50,7 @@ namespace PicSum.Job.Logics
                 info.IsFile = FileUtil.IsExistsFile(filePath);
                 if (info.IsFile)
                 {
-                    info.IsImageFile = FileUtil.IsImageFile(filePath);
+                    info.IsImageFile = ImageUtil.IsImageFile(filePath);
                     info.FileSize = FileUtil.GetFileSize(filePath);
                     info.FileIcon = Instance<IFileIconCacher>.Value.GetJumboFileIcon(filePath);
                 }
@@ -115,7 +115,7 @@ namespace PicSum.Job.Logics
                 }
                 else if (!info.IsFile && isReadThumbnail)
                 {
-                    var firstImageFile = FileUtil.GetFirstImageFilePath(filePath);
+                    var firstImageFile = ImageUtil.GetFirstImageFilePath(filePath);
                     if (!string.IsNullOrEmpty(firstImageFile))
                     {
                         var srcSize = this.GetImageSize(firstImageFile);

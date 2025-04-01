@@ -1032,7 +1032,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 // 選択項目が画像ファイルの場合。
                 var selectedFiles = this.GetSelectedFiles();
                 var selectedImageFiles = selectedFiles
-                    .Where(FileUtil.IsImageFile)
+                    .Where(ImageUtil.IsImageFile)
                     .ToArray();
 
                 var dragData = new DragEntity(

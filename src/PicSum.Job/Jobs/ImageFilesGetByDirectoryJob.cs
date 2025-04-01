@@ -2,6 +2,7 @@ using PicSum.Job.Logics;
 using PicSum.Job.Parameters;
 using PicSum.Job.Results;
 using SWF.Core.Base;
+using SWF.Core.ImageAccessor;
 using SWF.Core.Job;
 using System.Runtime.Versioning;
 
@@ -40,7 +41,7 @@ namespace PicSum.Job.Jobs
                 result.FilePathList = [];
                 foreach (var filePath in filePathList)
                 {
-                    if (FileUtil.IsImageFile(filePath))
+                    if (ImageUtil.IsImageFile(filePath))
                     {
                         result.FilePathList.Add(filePath);
                     }

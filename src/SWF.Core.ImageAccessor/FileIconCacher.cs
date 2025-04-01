@@ -147,7 +147,7 @@ namespace SWF.Core.ImageAccessor
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
-            if (!FileUtil.IsImageFile(filePath))
+            if (!ImageUtil.IsImageFile(filePath))
             {
                 return this.SMALL_EMPTY_FILE_ICON;
             }
@@ -173,7 +173,7 @@ namespace SWF.Core.ImageAccessor
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
-            if (!FileUtil.IsImageFile(filePath))
+            if (!ImageUtil.IsImageFile(filePath))
             {
                 return this.EXTRALARGE_EMPTY_FILE_ICON;
             }
@@ -199,7 +199,7 @@ namespace SWF.Core.ImageAccessor
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
-            if (!FileUtil.IsImageFile(filePath))
+            if (!ImageUtil.IsImageFile(filePath))
             {
                 return this.JUMBO_EMPTY_FILE_ICON;
             }

@@ -52,7 +52,7 @@ namespace PicSum.Job.Logics
                 info.FilePath = filePath;
                 info.FileName = FileUtil.GetFileName(filePath);
                 info.IsFile = true;
-                info.IsImageFile = FileUtil.IsImageFile(filePath);
+                info.IsImageFile = ImageUtil.IsImageFile(filePath);
                 info.UpdateDate = FileUtil.GetUpdateDate(filePath);
                 info.SmallIcon = Instance<IFileIconCacher>.Value.GetSmallFileIcon(info.FilePath);
                 info.ExtraLargeIcon = Instance<IFileIconCacher>.Value.GetExtraLargeFileIcon(info.FilePath);

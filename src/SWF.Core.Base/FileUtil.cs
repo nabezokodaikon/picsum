@@ -10,36 +10,11 @@ namespace SWF.Core.Base
     [SupportedOSPlatform("windows10.0.17763.0")]
     public static class FileUtil
     {
-        public enum ImageFileFormat
-        {
-            Avif,
-            Bitmap,
-            Heif,
-            Icon,
-            Jpeg,
-            Png,
-            Svg,
-            Webp,
-        }
-
         private const string ROOT_DIRECTORY_NAME = "PC";
         private const string ROOT_DIRECTORY_TYPE_NAME = "System root";
 
-        internal const string AVIF_FILE_EXTENSION = ".avif";
-        internal const string BMP_FILE_EXTENSION = ".bmp";
-        internal const string GIF_FILE_EXTENSION = ".gif";
-        internal const string HEIC_FILE_EXTENSION = ".heic";
-        internal const string HEIF_FILE_EXTENSION = ".heif";
-        internal const string ICON_FILE_EXTENSION = ".ico";
-        internal const string JPEG_FILE_EXTENSION = ".jpeg";
-        internal const string JPG_FILE_EXTENSION = ".jpg";
-        internal const string PNG_FILE_EXTENSION = ".png";
-        internal const string SVG_FILE_EXTENSION = ".svg";
-        internal const string WEBP_FILE_EXTENSION = ".webp";
-
-        internal static readonly string[] IMAGE_FILE_EXTENSION_LIST = GetImageFileExtensionList();
-
         public const string ROOT_DIRECTORY_PATH = "36f780fdbda5b2b2ce85c9ebb57086d1880ae757";
+
         public static readonly DateTime ROOT_DIRECTORY_DATETIME = DateTime.MinValue;
         public static readonly DateTime EMPTY_DATETIME = DateTime.MinValue;
 
@@ -182,133 +157,6 @@ namespace SWF.Core.Base
                 WinApiMembers.FindClose(handle);
                 return isFile;
             }
-        }
-
-        /// <summary>
-        /// 指定したファイルが画像ファイルであるか確認します。
-        /// </summary>
-        /// <param name="filePath"></param>
-        /// <returns></returns>
-        public static bool IsImageFile(string filePath)
-        {
-            if (string.IsNullOrEmpty(filePath))
-            {
-                return false;
-            }
-
-            var ex = GetExtensionFastStack(filePath);
-            return IMAGE_FILE_EXTENSION_LIST.Any(_ => StringUtil.Compare(_, ex));
-        }
-
-        public static bool IsSvgFile(string filePath)
-        {
-            if (string.IsNullOrEmpty(filePath))
-            {
-                return false;
-            }
-
-            var ex = GetExtensionFastStack(filePath);
-            return StringUtil.Compare(ex, SVG_FILE_EXTENSION);
-        }
-
-        public static bool IsIconFile(string filePath)
-        {
-            if (string.IsNullOrEmpty(filePath))
-            {
-                return false;
-            }
-
-            var ex = GetExtensionFastStack(filePath);
-            return StringUtil.Compare(ex, ICON_FILE_EXTENSION);
-        }
-
-        public static bool IsBmpFile(string filePath)
-        {
-            if (string.IsNullOrEmpty(filePath))
-            {
-                return false;
-            }
-
-            var ex = GetExtensionFastStack(filePath);
-            return StringUtil.Compare(ex, BMP_FILE_EXTENSION);
-        }
-
-        public static bool IsJpegFile(string filePath)
-        {
-            if (string.IsNullOrEmpty(filePath))
-            {
-                return false;
-            }
-
-            var ex = GetExtensionFastStack(filePath);
-            return StringUtil.Compare(ex, JPG_FILE_EXTENSION)
-                || StringUtil.Compare(ex, JPEG_FILE_EXTENSION);
-        }
-
-        public static bool IsPngFile(string filePath)
-        {
-            if (string.IsNullOrEmpty(filePath))
-            {
-                return false;
-            }
-
-            var ex = GetExtensionFastStack(filePath);
-            return StringUtil.Compare(ex, PNG_FILE_EXTENSION);
-        }
-
-        public static bool IsGifFile(string filePath)
-        {
-            if (string.IsNullOrEmpty(filePath))
-            {
-                return false;
-            }
-
-            var ex = GetExtensionFastStack(filePath);
-            return StringUtil.Compare(ex, GIF_FILE_EXTENSION);
-        }
-
-        /// <summary>
-        /// 指定したファイルがWEBPファイルであるか確認します。
-        /// </summary>
-        /// <param name="filePath"></param>
-        /// <returns></returns>
-        public static bool IsWebpFile(string filePath)
-        {
-            if (string.IsNullOrEmpty(filePath))
-            {
-                return false;
-            }
-
-            var ex = GetExtensionFastStack(filePath);
-            return StringUtil.Compare(ex, WEBP_FILE_EXTENSION);
-        }
-
-        /// <summary>
-        /// 指定したファイルがAVIFファイルであるか確認します。
-        /// </summary>
-        /// <param name="filePath"></param>
-        /// <returns></returns>
-        public static bool IsAvifFile(string filePath)
-        {
-            if (string.IsNullOrEmpty(filePath))
-            {
-                return false;
-            }
-
-            var ex = GetExtensionFastStack(filePath);
-            return StringUtil.Compare(ex, AVIF_FILE_EXTENSION);
-        }
-
-        public static bool IsHeifFile(string filePath)
-        {
-            if (string.IsNullOrEmpty(filePath))
-            {
-                return false;
-            }
-
-            var ex = GetExtensionFastStack(filePath);
-            return StringUtil.Compare(ex, HEIC_FILE_EXTENSION)
-                || StringUtil.Compare(ex, HEIF_FILE_EXTENSION);
         }
 
         /// <summary>
@@ -554,30 +402,6 @@ namespace SWF.Core.Base
             {
                 throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
             }
-        }
-
-        /// <summary>
-        /// 指定したディレクトリ内の最初の画像ファイルを取得します。
-        /// </summary>
-        /// <param name="directoryPath"></param>
-        /// <returns></returns>
-        public static string? GetFirstImageFilePath(string directoryPath)
-        {
-            if (string.IsNullOrEmpty(directoryPath))
-            {
-                return string.Empty;
-            }
-
-            var imageFilePath = GetFiles(directoryPath)
-                .OrderBy(_ => _, NaturalStringComparer.Windows)
-                .FirstOrDefault(IsImageFile);
-
-            if (string.IsNullOrEmpty(imageFilePath))
-            {
-                return string.Empty;
-            }
-
-            return imageFilePath;
         }
 
         /// <summary>
@@ -856,30 +680,6 @@ namespace SWF.Core.Base
             }
         }
 
-        public static string GetImageFileExtension(ImageFileFormat imageFileFormat)
-        {
-            return imageFileFormat switch
-            {
-                ImageFileFormat.Avif => AVIF_FILE_EXTENSION,
-                ImageFileFormat.Bitmap => BMP_FILE_EXTENSION,
-                ImageFileFormat.Heif => HEIF_FILE_EXTENSION,
-                ImageFileFormat.Icon => ICON_FILE_EXTENSION,
-                ImageFileFormat.Jpeg => JPG_FILE_EXTENSION,
-                ImageFileFormat.Png => PNG_FILE_EXTENSION,
-                ImageFileFormat.Svg => SVG_FILE_EXTENSION,
-                ImageFileFormat.Webp => WEBP_FILE_EXTENSION,
-                _ => throw new NotImplementedException("未定義の画像ファイルフォーマットです。")
-            };
-        }
-
-        public static string GetConvertFilterText(string filePath, ImageFileFormat imageFileFormat)
-        {
-            ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
-
-            var extensionText = GetImageFileExtension(imageFileFormat)[1..];
-            return $"{extensionText.ToUpper()} Files (*.{extensionText.ToLower()})|*.{extensionText.ToLower()}";
-        }
-
         // ファイルパスの末尾が"\"の場合取り除きます。
         private static string ToRemoveLastPathSeparate(string filePath)
         {
@@ -962,29 +762,6 @@ namespace SWF.Core.Base
             }
 
             return new string(buffer.Slice(index));
-        }
-
-        /// <summary>
-        /// 画像ファイルの拡張子リストを取得します。
-        /// </summary>
-        /// <remarks>リスト内の各項目には、ピリオド + 英大文字 * n の文字列(.XXX)が格納されます。</remarks>
-        /// <returns></returns>
-        private static string[] GetImageFileExtensionList()
-        {
-            return
-            [
-                AVIF_FILE_EXTENSION,
-                BMP_FILE_EXTENSION,
-                GIF_FILE_EXTENSION,
-                ICON_FILE_EXTENSION,
-                JPEG_FILE_EXTENSION,
-                JPG_FILE_EXTENSION,
-                HEIC_FILE_EXTENSION,
-                HEIF_FILE_EXTENSION,
-                PNG_FILE_EXTENSION,
-                SVG_FILE_EXTENSION,
-                WEBP_FILE_EXTENSION
-            ];
         }
     }
 }
