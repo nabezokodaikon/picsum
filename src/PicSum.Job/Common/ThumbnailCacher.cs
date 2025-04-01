@@ -442,7 +442,7 @@ namespace PicSum.Job.Common
         {
             var id = (int)Instance<IThumbnailDB>.Value.ReadValue<long>(new ThumbnailIDReadSql());
             var thumbFile = this.GetThumbnailBufferFilePath(id);
-            if (!FileUtil.IsExists(thumbFile))
+            if (!FileUtil.IsExistsFile(thumbFile))
             {
                 return id;
             }

@@ -21,7 +21,7 @@ namespace PicSum.Job.Logics
 
             return [.. dtoList
                 .GroupBy(file => file.Tag)
-                .Where(file => file.Any(f => FileUtil.IsExists(f.FilePath)))
+                .Where(file => file.Any(f => FileUtil.CanAccess(f.FilePath)))
                 .Select(file => file.First().Tag)
                 .OrderBy(tag => tag)];
         }

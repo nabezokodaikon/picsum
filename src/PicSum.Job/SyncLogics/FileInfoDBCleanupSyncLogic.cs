@@ -28,7 +28,7 @@ namespace PicSum.Job.SyncLogics
                 .ReadList(readSql);
             foreach (var file in fileList)
             {
-                if (!FileUtil.IsExists(file.FilePath))
+                if (!FileUtil.CanAccess(file.FilePath))
                 {
                     var cleanupSql = new FileInfoDBCleanupSql(file.FileID);
                     Instance<IFileInfoDB>.Value.Update(cleanupSql);

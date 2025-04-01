@@ -19,10 +19,7 @@ namespace PicSum.Job.Logics
             foreach (var file in FileUtil.GetFileSystemEntries(directoryPath))
             {
                 this.CheckCancel();
-                if (FileUtil.CanAccess(file))
-                {
-                    list.Add(file);
-                }
+                list.Add(file);
             }
 
             return [.. list];

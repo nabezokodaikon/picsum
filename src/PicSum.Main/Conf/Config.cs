@@ -45,7 +45,7 @@ namespace PicSum.Main.Conf
         {
             ConsoleUtil.Write($"Config.Load Start");
 
-            if (FileUtil.IsExists(AppConstants.CONFIG_FILE))
+            if (FileUtil.IsExistsFile(AppConstants.CONFIG_FILE))
             {
                 var serializer = new XmlSerializer(typeof(Config));
                 Config saveData = null;

@@ -19,10 +19,7 @@ namespace PicSum.Job.Logics
             foreach (var subDirectory in FileUtil.GetSubDirectories(directoryPath))
             {
                 this.CheckCancel();
-                if (FileUtil.CanAccess(subDirectory))
-                {
-                    list.Add(subDirectory);
-                }
+                list.Add(subDirectory);
             }
 
             return [.. list];

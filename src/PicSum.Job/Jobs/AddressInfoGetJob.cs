@@ -54,7 +54,8 @@ namespace PicSum.Job.Jobs
                     addressInfo.DirectoryPath = directory;
 
                     this.CheckCancel();
-                    var subDirectory = FileUtil.GetSubDirectories(directory).FirstOrDefault(FileUtil.CanAccess);
+                    var subDirectory = FileUtil.GetSubDirectories(directory)
+                        .FirstOrDefault();
                     addressInfo.HasSubDirectory = !string.IsNullOrEmpty(subDirectory);
 
                     while (!FileUtil.IsSystemRoot(directory))

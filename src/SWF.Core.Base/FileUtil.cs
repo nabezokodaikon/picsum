@@ -18,34 +18,6 @@ namespace SWF.Core.Base
         public static readonly DateTime ROOT_DIRECTORY_DATETIME = DateTime.MinValue;
         public static readonly DateTime EMPTY_DATETIME = DateTime.MinValue;
 
-        /// <summary>
-        /// ファイル、フォルダの存在を確認します。
-        /// </summary>
-        /// <param name="filePath">ファイルパス</param>
-        /// <returns>ファイルまたはフォルダが存在するならTrue。存在しなければFalse。</returns>
-        public static bool IsExists(string filePath)
-        {
-            if (string.IsNullOrEmpty(filePath))
-            {
-                return false;
-            }
-
-            if (IsExistsFileOrDirectory(filePath))
-            {
-                return true;
-            }
-            else if (IsSystemRoot(filePath))
-            {
-                return true;
-            }
-            else if (IsExistsDrive(filePath))
-            {
-                return true;
-            }
-
-            return false;
-        }
-
         public static bool IsExistsFileOrDirectory(string path)
         {
             using (TimeMeasuring.Run(false, "FileUtil.IsExistsFileOrDirectory"))
@@ -351,14 +323,7 @@ namespace SWF.Core.Base
 
             try
             {
-                if (CanAccess(filePath))
-                {
-                    return File.GetLastWriteTime(filePath);
-                }
-                else
-                {
-                    return EMPTY_DATETIME;
-                }
+                return File.GetLastWriteTime(filePath);
             }
             catch (UnauthorizedAccessException ex)
             {
@@ -416,7 +381,11 @@ namespace SWF.Core.Base
                 return [];
             }
 
-            if (CanAccess(directoryPath))
+            if (IsSystemRoot(directoryPath))
+            {
+                return [];
+            }
+            else if (IsExistsDirectory(directoryPath) || IsExistsDrive(directoryPath))
             {
                 try
                 {
@@ -437,6 +406,10 @@ namespace SWF.Core.Base
                     throw new FileUtilException(CreateFileAccessErrorMessage(directoryPath), ex);
                 }
                 catch (IOException ex)
+                {
+                    throw new FileUtilException(CreateFileAccessErrorMessage(directoryPath), ex);
+                }
+                catch (SystemException ex)
                 {
                     throw new FileUtilException(CreateFileAccessErrorMessage(directoryPath), ex);
                 }
@@ -463,7 +436,7 @@ namespace SWF.Core.Base
             {
                 return GetDriveList();
             }
-            else if (CanAccess(directoryPath))
+            else if (IsExistsDirectory(directoryPath) || IsExistsDrive(directoryPath))
             {
                 try
                 {
@@ -510,7 +483,7 @@ namespace SWF.Core.Base
             {
                 return GetDriveList();
             }
-            else if (CanAccess(directoryPath))
+            else if (IsExistsDirectory(directoryPath) || IsExistsDrive(directoryPath))
             {
                 try
                 {
