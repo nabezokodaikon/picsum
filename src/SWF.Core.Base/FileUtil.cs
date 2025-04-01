@@ -63,7 +63,7 @@ namespace SWF.Core.Base
             {
                 return true;
             }
-            else if (IsDrive(filePath))
+            else if (IsExistsDrive(filePath))
             {
                 return true;
             }
@@ -106,7 +106,7 @@ namespace SWF.Core.Base
         /// </summary>
         /// <param name="filePath">ファイルパス</param>
         /// <returns>ファイルパスがドライブならTrue。ドライブでなければFalse。</returns>
-        public static bool IsDrive(string filePath)
+        public static bool IsExistsDrive(string filePath)
         {
             if (string.IsNullOrEmpty(filePath))
             {
@@ -367,7 +367,7 @@ namespace SWF.Core.Base
             {
                 return true;
             }
-            else if (IsDrive(filePath))
+            else if (IsExistsDrive(filePath))
             {
                 return true;
             }
@@ -396,7 +396,7 @@ namespace SWF.Core.Base
             {
                 return ROOT_DIRECTORY_NAME;
             }
-            else if (IsDrive(filePath))
+            else if (IsExistsDrive(filePath))
             {
                 try
                 {
@@ -456,7 +456,7 @@ namespace SWF.Core.Base
             {
                 throw new ArgumentException("システムルートが指定されました。", nameof(filePath));
             }
-            else if (IsDrive(filePath))
+            else if (IsExistsDrive(filePath))
             {
                 return ROOT_DIRECTORY_PATH;
             }

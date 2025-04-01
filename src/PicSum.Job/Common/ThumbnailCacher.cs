@@ -63,7 +63,7 @@ namespace PicSum.Job.Common
             {
                 return ThumbnailCacheEntity.EMPTY;
             }
-            else if (FileUtil.IsDrive(filePath))
+            else if (FileUtil.IsExistsDrive(filePath))
             {
                 return ThumbnailCacheEntity.EMPTY;
             }
@@ -89,7 +89,7 @@ namespace PicSum.Job.Common
             {
                 return ThumbnailCacheEntity.EMPTY;
             }
-            else if (FileUtil.IsDrive(filePath))
+            else if (FileUtil.IsExistsDrive(filePath))
             {
                 return ThumbnailCacheEntity.EMPTY;
             }

@@ -58,7 +58,7 @@ namespace PicSum.Job.Logics
                 {
                     info.IsImageFile = false;
                     info.FileSize = 0;
-                    if (FileUtil.IsDrive(filePath))
+                    if (FileUtil.IsExistsDrive(filePath))
                     {
                         info.FileIcon = Instance<IFileIconCacher>.Value.GetJumboDriveIcon(filePath);
                     }

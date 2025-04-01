@@ -36,7 +36,7 @@ namespace PicSum.UIComponent.Contents.FileList
             {
                 this.Icon = Instance<IFileIconCacher>.Value.LargePCIcon;
             }
-            else if (FileUtil.IsDrive(this.parameter.DirectoryPath))
+            else if (FileUtil.IsExistsDrive(this.parameter.DirectoryPath))
             {
                 this.Icon = Instance<IFileIconCacher>.Value.GetJumboDriveIcon(this.parameter.DirectoryPath);
             }

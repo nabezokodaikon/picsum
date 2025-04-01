@@ -36,7 +36,7 @@ namespace PicSum.Job.Logics
                 info.ExtraLargeIcon = Instance<IFileIconCacher>.Value.LargePCIcon;
                 info.JumboIcon = Instance<IFileIconCacher>.Value.LargePCIcon;
             }
-            else if (FileUtil.IsDrive(filePath))
+            else if (FileUtil.IsExistsDrive(filePath))
             {
                 info.FilePath = filePath;
                 info.FileName = FileUtil.GetFileName(filePath);
