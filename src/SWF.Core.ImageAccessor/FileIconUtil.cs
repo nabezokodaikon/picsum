@@ -1,4 +1,4 @@
-using SWF.Core.Base;
+using SWF.Core.Resource;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 using WinApi;
@@ -60,7 +60,7 @@ namespace SWF.Core.ImageAccessor
                 }
                 else
                 {
-                    return ResourceFiles.ExtraLargeEmptyIcon.Value;
+                    return ResourceFiles.EmptyIcon.Value;
                 }
             }
             finally
@@ -87,7 +87,7 @@ namespace SWF.Core.ImageAccessor
                 (int)WinApiMembers.ShellFileInfoFlags.SHGFI_SYSICONINDEX);
             if (hSuccess == IntPtr.Zero)
             {
-                return ResourceFiles.ExtraLargeEmptyIcon.Value;
+                return ResourceFiles.EmptyIcon.Value;
             }
 
             var result = WinApiMembers.SHGetImageList(
@@ -99,13 +99,13 @@ namespace SWF.Core.ImageAccessor
             {
                 if (result != WinApiMembers.S_OK)
                 {
-                    return ResourceFiles.ExtraLargeEmptyIcon.Value;
+                    return ResourceFiles.EmptyIcon.Value;
                 }
 
                 var hicon = WinApiMembers.ImageList_GetIcon(pimgList, shinfo.iIcon, 0);
                 if (hicon == IntPtr.Zero)
                 {
-                    return ResourceFiles.ExtraLargeEmptyIcon.Value;
+                    return ResourceFiles.EmptyIcon.Value;
                 }
 
                 try

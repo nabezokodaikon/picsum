@@ -2,6 +2,7 @@ using PicSum.Job.Common;
 using PicSum.Job.Results;
 using SWF.Core.Base;
 using SWF.Core.Job;
+using SWF.Core.Resource;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

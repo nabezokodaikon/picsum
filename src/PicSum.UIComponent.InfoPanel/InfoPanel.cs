@@ -5,6 +5,7 @@ using PicSum.Job.Results;
 using SWF.Core.Base;
 using SWF.Core.ImageAccessor;
 using SWF.Core.Job;
+using SWF.Core.Resource;
 using SWF.UIComponent.Core;
 using SWF.UIComponent.WideDropDown;
 using System;

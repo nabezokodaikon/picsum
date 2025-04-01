@@ -750,6 +750,18 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
+        public static Icon ConvertBitmapToIcon(Bitmap bitmap)
+        {
+            using (var ms = new MemoryStream())
+            {
+                bitmap.Save(ms, ImageFormat.Png);
+                using (var icon = Icon.FromHandle(new Bitmap(ms).GetHicon()))
+                {
+                    return (Icon)icon.Clone();
+                }
+            }
+        }
+
         private static Bitmap LoadBitmapCorrectOrientation(Bitmap bitmap)
         {
             ArgumentNullException.ThrowIfNull(bitmap, nameof(bitmap));

@@ -59,7 +59,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-	<ApplicationIcon>application.ico</ApplicationIcon>
+	<ApplicationIcon>ApplicationIcon.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
 	<SatelliteResourceLanguages>_</SatelliteResourceLanguages>
@@ -75,11 +75,6 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
-	<Compile Update="Properties\Resources.Designer.cs">
-	  <DesignTime>True</DesignTime>
-	  <AutoGen>True</AutoGen>
-	  <DependentUpon>Resources.resx</DependentUpon>
-	</Compile>
 	<Compile Update="UIComponent\BrowserMainPanel.cs">
 	  <SubType>UserControl</SubType>
 	</Compile>
@@ -89,6 +84,7 @@
 	<ProjectReference Include="..\SWF.Core.Base\SWF.Core.Base.csproj" />
 	<ProjectReference Include="..\SWF.Core.ImageAccessor\SWF.Core.ImageAccessor.csproj" />
 	<ProjectReference Include="..\SWF.Core.Job\SWF.Core.Job.csproj" />
+	<ProjectReference Include="..\SWF.Core.Resource\SWF.Core.Resource.csproj" />
 	<ProjectReference Include="..\SWF.UIComponent.Core\SWF.UIComponent.Core.csproj" />
 	<ProjectReference Include="..\SWF.UIComponent.FlowList\SWF.UIComponent.FlowList.csproj" />
 	<ProjectReference Include="..\SWF.UIComponent.Form\SWF.UIComponent.Form.csproj" />
@@ -131,16 +127,10 @@
 	</BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-	<Content Include="application.ico" />
+	<Content Include="ApplicationIcon.ico" />
   </ItemGroup>
   <ItemGroup>
 	<Compile Remove="Settings.cs" />
-  </ItemGroup>
-  <ItemGroup>
-	<EmbeddedResource Update="Properties\Resources.resx">
-	  <Generator>ResXFileCodeGenerator</Generator>
-	  <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-	</EmbeddedResource>
   </ItemGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

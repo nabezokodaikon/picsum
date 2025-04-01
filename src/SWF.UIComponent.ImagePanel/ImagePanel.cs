@@ -1,6 +1,7 @@
 using NLog;
 using SWF.Core.Base;
 using SWF.Core.ImageAccessor;
+using SWF.Core.Resource;
 using System;
 using System.ComponentModel;
 using System.Drawing;

@@ -1,14 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>Library</OutputType>
+	<OutputType>Library</OutputType>
 	<TargetFramework>net9.0-windows10.0.22621.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <UseWindowsForms>true</UseWindowsForms>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Configurations>Debug;Release;Develop</Configurations>
-    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
-    <NeutralLanguage>ja-JP</NeutralLanguage>
+	<Nullable>enable</Nullable>
+	<UseWindowsForms>true</UseWindowsForms>
+	<ImplicitUsings>enable</ImplicitUsings>
+	<Configurations>Debug;Release;Develop</Configurations>
+	<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+	<NeutralLanguage>ja-JP</NeutralLanguage>
 	<Platforms>AnyCPU;x64;x86;ARM64;ARM32</Platforms>
 	<RuntimeIdentifiers>win-x86;win-x64</RuntimeIdentifiers>
 	<SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
@@ -22,67 +22,78 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Develop|x64'">
-    <DebugType>full</DebugType>
-    <OutputPath>bin\x64\Debug\</OutputPath>
-    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+	<DebugType>full</DebugType>
+	<OutputPath>bin\x64\Debug\</OutputPath>
+	<GenerateAssemblyInfo>False</GenerateAssemblyInfo>
   </PropertyGroup>
-  
+
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
 	<DebugType>none</DebugType>
 	<NoWarn>1701;1702; CA1016; CA1822; CA1824</NoWarn>
 	<GenerateAssemblyInfo>False</GenerateAssemblyInfo>
   </PropertyGroup>
-  
+
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+	<GenerateAssemblyInfo>False</GenerateAssemblyInfo>
   </PropertyGroup>
-  
+
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Develop|AnyCPU'">
-    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+	<GenerateAssemblyInfo>False</GenerateAssemblyInfo>
   </PropertyGroup>
-  
+
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
-    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+	<GenerateAssemblyInfo>False</GenerateAssemblyInfo>
   </PropertyGroup>
-  
+
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Develop|x86'">
-    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+	<GenerateAssemblyInfo>False</GenerateAssemblyInfo>
   </PropertyGroup>
-  
+
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
-    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+	<GenerateAssemblyInfo>False</GenerateAssemblyInfo>
   </PropertyGroup>
-  
+
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Develop|ARM64'">
-    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+	<GenerateAssemblyInfo>False</GenerateAssemblyInfo>
   </PropertyGroup>
-  
+
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM32'">
-    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+	<GenerateAssemblyInfo>False</GenerateAssemblyInfo>
   </PropertyGroup>
-  
+
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Develop|ARM32'">
-    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+	<GenerateAssemblyInfo>False</GenerateAssemblyInfo>
   </PropertyGroup>
-  
+
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+	<GenerateAssemblyInfo>False</GenerateAssemblyInfo>
   </PropertyGroup>
-  
+
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
-    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+	<GenerateAssemblyInfo>False</GenerateAssemblyInfo>
   </PropertyGroup>
-  
+
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
-    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+	<GenerateAssemblyInfo>False</GenerateAssemblyInfo>
   </PropertyGroup>
-  
+
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM32'">
-    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+	<GenerateAssemblyInfo>False</GenerateAssemblyInfo>
   </PropertyGroup>
-  
+
   <ItemGroup>
-    <ProjectReference Include="..\WinApi\WinApi.csproj" />
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
 
 </Project>

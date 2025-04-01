@@ -6,6 +6,7 @@ using PicSum.UIComponent.InfoPanel;
 using SWF.Core.Base;
 using SWF.Core.ImageAccessor;
 using SWF.Core.Job;
+using SWF.Core.Resource;
 using SWF.UIComponent.TabOperation;
 using SWF.UIComponent.WideDropDown;
 using System;
@@ -99,7 +100,7 @@ namespace PicSum.Main.UIComponent
                 this.homeToolButton.Image = ResourceFiles.HomeIcon.Value;
                 this.tagDropToolButton.Image = ResourceFiles.TagIcon.Value;
                 this.tagDropToolButton.Icon = ResourceFiles.TagIcon.Value;
-                this.searchRatingToolButton.Image = ResourceFiles.RatingIcon.Value;
+                this.searchRatingToolButton.Image = ResourceFiles.ActiveRatingIcon.Value;
                 this.searchBookmarkToolButton.Image = ResourceFiles.BookmarkIcon.Value;
 
                 this.infoPanel.Visible = false;

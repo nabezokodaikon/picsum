@@ -1,4 +1,5 @@
 using SWF.Core.Base;
+using SWF.Core.Resource;
 using System.Runtime.Versioning;
 using WinApi;
 
@@ -18,9 +19,7 @@ namespace SWF.Core.ImageAccessor
         private readonly Dictionary<string, Bitmap> SMALL_ICON_CASH = [];
         private readonly Dictionary<string, Bitmap> EXTRALARGE_ICON_CASH = [];
         private readonly Dictionary<string, Bitmap> JUMBO_ICON_CASH = [];
-        private readonly Bitmap SMALL_EMPTY_FILE_ICON = (Bitmap)ResourceFiles.SmallEmptyIcon.Value;
-        private readonly Bitmap EXTRALARGE_EMPTY_FILE_ICON = (Bitmap)ResourceFiles.ExtraLargeEmptyIcon.Value;
-        private readonly Bitmap JUMBO_EMPTY_FILE_ICON = (Bitmap)ResourceFiles.JumboEmptyIcon.Value;
+        private readonly Bitmap EMPTY_FILE_ICON = (Bitmap)ResourceFiles.EmptyIcon.Value;
         private readonly Bitmap SMALL_PC_ICON =
             FileIconUtil.GetSystemIcon(WinApiMembers.ShellSpecialFolder.CSIDL_DRIVES, WinApiMembers.ShellFileInfoFlags.SHGFI_SMALLICON);
         private readonly Bitmap LARGE_PC_ICON =
@@ -149,7 +148,7 @@ namespace SWF.Core.ImageAccessor
 
             if (!ImageUtil.IsImageFile(filePath))
             {
-                return this.SMALL_EMPTY_FILE_ICON;
+                return this.EMPTY_FILE_ICON;
             }
 
             var ex = FileUtil.GetExtensionFastStack(filePath);
@@ -175,7 +174,7 @@ namespace SWF.Core.ImageAccessor
 
             if (!ImageUtil.IsImageFile(filePath))
             {
-                return this.EXTRALARGE_EMPTY_FILE_ICON;
+                return this.EMPTY_FILE_ICON;
             }
 
             var ex = FileUtil.GetExtensionFastStack(filePath);
@@ -201,7 +200,7 @@ namespace SWF.Core.ImageAccessor
 
             if (!ImageUtil.IsImageFile(filePath))
             {
-                return this.JUMBO_EMPTY_FILE_ICON;
+                return this.EMPTY_FILE_ICON;
             }
 
             var ex = FileUtil.GetExtensionFastStack(filePath);

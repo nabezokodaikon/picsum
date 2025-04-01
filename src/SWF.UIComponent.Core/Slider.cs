@@ -1,4 +1,5 @@
 using SWF.Core.Base;
+using SWF.Core.Resource;
 using System.ComponentModel;
 using System.Runtime.Versioning;
 

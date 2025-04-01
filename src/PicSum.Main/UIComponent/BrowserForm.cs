@@ -6,6 +6,7 @@ using PicSum.UIComponent.Contents.Parameter;
 using SWF.Core.Base;
 using SWF.Core.ImageAccessor;
 using SWF.Core.Job;
+using SWF.Core.Resource;
 using SWF.UIComponent.Form;
 using SWF.UIComponent.TabOperation;
 using System;
@@ -47,7 +48,7 @@ namespace PicSum.Main.UIComponent
         {
             this.SuspendLayout();
 
-            this.Icon = ResourceFiles.ApplicationIcon.Value;
+            this.Icon = ImageUtil.ConvertBitmapToIcon(ResourceFiles.ApplicationIcon.Value);
             this.Text = "PicSum";
             this.StartPosition = FormStartPosition.Manual;
             this.MinimumSize = new Size(480, 360);

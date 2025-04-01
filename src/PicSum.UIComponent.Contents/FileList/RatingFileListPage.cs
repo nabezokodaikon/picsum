@@ -5,6 +5,7 @@ using PicSum.UIComponent.Contents.Parameter;
 using SWF.Core.Base;
 using SWF.Core.ImageAccessor;
 using SWF.Core.Job;
+using SWF.Core.Resource;
 using SWF.UIComponent.TabOperation;
 using System;
 using System.ComponentModel;
@@ -30,7 +31,7 @@ namespace PicSum.UIComponent.Contents.FileList
             this.parameter = param;
 
             this.Title = "Star";
-            this.Icon = ResourceFiles.RatingIcon.Value;
+            this.Icon = ResourceFiles.ActiveRatingIcon.Value;
             this.IsMoveControlVisible = false;
             this.fileContextMenu.VisibleRemoveFromListMenuItem = true;
             base.toolBar.RegistrationSortButtonEnabled = true;

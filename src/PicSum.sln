@@ -36,6 +36,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PicSum.DatabaseAccessor", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SWF.Core.Job", "SWF.Core.Job\SWF.Core.Job.csproj", "{92448D92-E332-400A-ACCF-934F1ABA91EF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SWF.Core.Resource", "SWF.Core.Resource\SWF.Core.Resource.csproj", "{D64292A7-612A-4F68-92A5-A9C7AE86371A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -250,6 +252,18 @@ Global
 		{92448D92-E332-400A-ACCF-934F1ABA91EF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{92448D92-E332-400A-ACCF-934F1ABA91EF}.Release|x64.ActiveCfg = Release|x64
 		{92448D92-E332-400A-ACCF-934F1ABA91EF}.Release|x64.Build.0 = Release|x64
+		{D64292A7-612A-4F68-92A5-A9C7AE86371A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D64292A7-612A-4F68-92A5-A9C7AE86371A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D64292A7-612A-4F68-92A5-A9C7AE86371A}.Debug|x64.ActiveCfg = Debug|x64
+		{D64292A7-612A-4F68-92A5-A9C7AE86371A}.Debug|x64.Build.0 = Debug|x64
+		{D64292A7-612A-4F68-92A5-A9C7AE86371A}.Develop|Any CPU.ActiveCfg = Release|Any CPU
+		{D64292A7-612A-4F68-92A5-A9C7AE86371A}.Develop|Any CPU.Build.0 = Release|Any CPU
+		{D64292A7-612A-4F68-92A5-A9C7AE86371A}.Develop|x64.ActiveCfg = Release|Any CPU
+		{D64292A7-612A-4F68-92A5-A9C7AE86371A}.Develop|x64.Build.0 = Release|Any CPU
+		{D64292A7-612A-4F68-92A5-A9C7AE86371A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D64292A7-612A-4F68-92A5-A9C7AE86371A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D64292A7-612A-4F68-92A5-A9C7AE86371A}.Release|x64.ActiveCfg = Release|Any CPU
+		{D64292A7-612A-4F68-92A5-A9C7AE86371A}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

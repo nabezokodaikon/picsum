@@ -1,5 +1,5 @@
-using SWF.Core.Base;
 using SWF.Core.ImageAccessor;
+using SWF.Core.Resource;
 using System;
 using System.Drawing;
 using System.Runtime.Versioning;
@@ -13,7 +13,6 @@ namespace SWF.UIComponent.TabOperation
     {
         private static readonly Color TRANSPARENT_COLOR = Color.FromArgb(0, 0, 0, 0);
 
-        private readonly Bitmap dropMaximumImage = ResourceFiles.DropMaximumIcon.Value;
         private readonly Bitmap dropLeftImage = ResourceFiles.DropLeftIcon.Value;
         private readonly Bitmap dropRightImage = ResourceFiles.DropRightIcon.Value;
         private Bitmap dropImage = null;
@@ -21,16 +20,11 @@ namespace SWF.UIComponent.TabOperation
         public TabDropForm()
         {
             this.FormBorderStyle = FormBorderStyle.None;
-            this.MaximumSize = this.dropMaximumImage.Size;
-            this.MinimumSize = this.dropMaximumImage.Size;
-            this.Size = this.dropMaximumImage.Size;
+            this.MaximumSize = this.dropLeftImage.Size;
+            this.MinimumSize = this.MaximumSize;
+            this.Size = this.MaximumSize;
             this.ShowInTaskbar = false;
             this.Opacity = 0.75;
-        }
-
-        public void SetMaximumImage()
-        {
-            this.dropImage = this.dropMaximumImage;
         }
 
         public void SetLeftImage()
@@ -58,7 +52,7 @@ namespace SWF.UIComponent.TabOperation
 
         protected override void OnLoad(EventArgs e)
         {
-            this.Region = ImageUtil.GetRegion(this.dropMaximumImage, TRANSPARENT_COLOR);
+            this.Region = ImageUtil.GetRegion(this.dropLeftImage, TRANSPARENT_COLOR);
             base.OnLoad(e);
         }
     }

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SWF.Core.Base.Properties {
+namespace SWF.Core.Resource.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace SWF.Core.Base.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SWF.Core.Base.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SWF.Core.Resource.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -71,12 +71,12 @@ namespace SWF.Core.Base.Properties {
         }
         
         /// <summary>
-        ///   (アイコン) に類似した型 System.Drawing.Icon のローカライズされたリソースを検索します。
+        ///   型 System.Byte[] のローカライズされたリソースを検索します。
         /// </summary>
-        internal static System.Drawing.Icon ApplicationIcon {
+        internal static byte[] ApplicationIcon {
             get {
                 object obj = ResourceManager.GetObject("ApplicationIcon", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
+                return ((byte[])(obj));
             }
         }
         
@@ -86,36 +86,6 @@ namespace SWF.Core.Base.Properties {
         internal static byte[] BookmarkIcon {
             get {
                 object obj = ResourceManager.GetObject("BookmarkIcon", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   型 System.Byte[] のローカライズされたリソースを検索します。
-        /// </summary>
-        internal static byte[] ClipIcon {
-            get {
-                object obj = ResourceManager.GetObject("ClipIcon", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   型 System.Byte[] のローカライズされたリソースを検索します。
-        /// </summary>
-        internal static byte[] DragAndDropIcon {
-            get {
-                object obj = ResourceManager.GetObject("DragAndDropIcon", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   型 System.Byte[] のローカライズされたリソースを検索します。
-        /// </summary>
-        internal static byte[] DragTabIcon {
-            get {
-                object obj = ResourceManager.GetObject("DragTabIcon", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -143,16 +113,6 @@ namespace SWF.Core.Base.Properties {
         /// <summary>
         ///   型 System.Byte[] のローカライズされたリソースを検索します。
         /// </summary>
-        internal static byte[] DropMaximumIcon {
-            get {
-                object obj = ResourceManager.GetObject("DropMaximumIcon", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   型 System.Byte[] のローカライズされたリソースを検索します。
-        /// </summary>
         internal static byte[] DropRightIcon {
             get {
                 object obj = ResourceManager.GetObject("DropRightIcon", resourceCulture);
@@ -163,9 +123,9 @@ namespace SWF.Core.Base.Properties {
         /// <summary>
         ///   型 System.Byte[] のローカライズされたリソースを検索します。
         /// </summary>
-        internal static byte[] ExtraLargeEmptyIcon {
+        internal static byte[] EmptyIcon {
             get {
-                object obj = ResourceManager.GetObject("ExtraLargeEmptyIcon", resourceCulture);
+                object obj = ResourceManager.GetObject("EmptyIcon", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -223,26 +183,6 @@ namespace SWF.Core.Base.Properties {
         /// <summary>
         ///   型 System.Byte[] のローカライズされたリソースを検索します。
         /// </summary>
-        internal static byte[] JumboEmptyIcon {
-            get {
-                object obj = ResourceManager.GetObject("JumboEmptyIcon", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   型 System.Byte[] のローカライズされたリソースを検索します。
-        /// </summary>
-        internal static byte[] RatingIcon {
-            get {
-                object obj = ResourceManager.GetObject("RatingIcon", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   型 System.Byte[] のローカライズされたリソースを検索します。
-        /// </summary>
         internal static byte[] ReloadIcon {
             get {
                 object obj = ResourceManager.GetObject("ReloadIcon", resourceCulture);
@@ -286,26 +226,6 @@ namespace SWF.Core.Base.Properties {
         internal static byte[] SmallArrowRightIcon {
             get {
                 object obj = ResourceManager.GetObject("SmallArrowRightIcon", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   型 System.Byte[] のローカライズされたリソースを検索します。
-        /// </summary>
-        internal static byte[] SmallArrowUpIcon {
-            get {
-                object obj = ResourceManager.GetObject("SmallArrowUpIcon", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   型 System.Byte[] のローカライズされたリソースを検索します。
-        /// </summary>
-        internal static byte[] SmallEmptyIcon {
-            get {
-                object obj = ResourceManager.GetObject("SmallEmptyIcon", resourceCulture);
                 return ((byte[])(obj));
             }
         }

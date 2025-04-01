@@ -2,6 +2,7 @@ using PicSum.Job.Common;
 using PicSum.Job.Entities;
 using SWF.Core.Base;
 using SWF.Core.Job;
+using SWF.Core.Resource;
 using System;
 using System.Drawing;
 using System.Runtime.Versioning;

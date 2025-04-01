@@ -1,4 +1,4 @@
-using SWF.Core.Base;
+using SWF.Core.Resource;
 using System.ComponentModel;
 using System.Drawing.Drawing2D;
 using System.Runtime.Versioning;

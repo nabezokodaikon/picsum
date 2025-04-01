@@ -1,5 +1,6 @@
 using SWF.Core.Base;
 using SWF.Core.ImageAccessor;
+using SWF.Core.Resource;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
