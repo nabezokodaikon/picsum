@@ -94,7 +94,7 @@ namespace SWF.Core.Base
                 {
                     return DriveInfo
                         .GetDrives()
-                        .Any(d => string.Equals(d.Name, filePath, StringComparison.OrdinalIgnoreCase));
+                        .Any(d => StringUtil.Compare(d.Name, filePath));
                 }
                 catch (IOException ex)
                 {
