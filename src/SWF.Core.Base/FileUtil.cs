@@ -318,61 +318,50 @@ namespace SWF.Core.Base
         /// <returns>隠しファイル、システムファイルならFalse。それ以外ならTrue。</returns>
         public static bool CanAccess(string filePath)
         {
-            if (string.IsNullOrEmpty(filePath))
+            using (TimeMeasuring.Run(false, "FileUtil.CanAccess"))
             {
-                return false;
-            }
+                if (string.IsNullOrEmpty(filePath))
+                {
+                    return false;
+                }
 
-            if (IsExistsFileOrDirectory(filePath))
-            {
+                if (IsSystemRoot(filePath))
+                {
+                    return true;
+                }
+
                 try
                 {
-                    var fa = File.GetAttributes(filePath);
-                    if ((fa & FileAttributes.Hidden) == FileAttributes.Hidden ||
-                        (fa & (FileAttributes.Hidden | FileAttributes.System)) == (FileAttributes.Hidden | FileAttributes.System))
+                    if (IsExistsFile(filePath))
                     {
-                        return false;
+                        var info = new FileInfo(filePath);
+                        var _ = info.GetAccessControl();
+                        var attr = File.GetAttributes(filePath);
+                        return (attr & FileAttributes.Hidden) == 0;
+                    }
+                    else if (IsExistsDirectory(filePath))
+                    {
+                        var info = new DirectoryInfo(filePath);
+                        var _ = info.GetAccessControl();
+                        var attr = File.GetAttributes(filePath);
+                        return (attr & FileAttributes.Hidden) == 0;
+                    }
+                    else if (IsExistsDrive(filePath))
+                    {
+                        var info = new DirectoryInfo(filePath);
+                        var _ = info.GetAccessControl();
+                        return true;
                     }
                     else
                     {
-                        return true;
+                        return false;
                     }
                 }
-                catch (PathTooLongException ex)
+                catch (Exception)
                 {
-                    throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
-                }
-                catch (NotSupportedException ex)
-                {
-                    throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
-                }
-                catch (FileNotFoundException ex)
-                {
-                    throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
-                }
-                catch (DirectoryNotFoundException ex)
-                {
-                    throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
-                }
-                catch (IOException ex)
-                {
-                    throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
-                }
-                catch (UnauthorizedAccessException ex)
-                {
-                    throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
+                    return false;
                 }
             }
-            else if (IsSystemRoot(filePath))
-            {
-                return true;
-            }
-            else if (IsExistsDrive(filePath))
-            {
-                return true;
-            }
-
-            return false;
         }
 
         /// <summary>
