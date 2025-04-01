@@ -19,6 +19,7 @@ namespace SWF.UIComponent.WideDropDown
 
         public event EventHandler<ItemMouseClickEventArgs> ItemMouseClick;
 
+        private readonly Control owner;
         private readonly List<string> itemList = [];
 
         /// <summary>
@@ -196,8 +197,12 @@ namespace SWF.UIComponent.WideDropDown
             }
         }
 
-        public WideDropDownList()
+        public WideDropDownList(Control owner)
         {
+            ArgumentNullException.ThrowIfNull(owner, nameof(owner));
+
+            this.owner = owner;
+
             this.SetStyle(
                 ControlStyles.AllPaintingInWmPaint |
                 ControlStyles.OptimizedDoubleBuffer |
@@ -278,7 +283,7 @@ namespace SWF.UIComponent.WideDropDown
 
         protected override void OnOpening(CancelEventArgs e)
         {
-            var scale = AppConstants.GetCurrentWindowScale(this);
+            var scale = AppConstants.GetCurrentWindowScale(this.owner);
             this.ToolStripItem.Size = new(
                 (int)(BACKGROUND_DEFAULT_SIZE.Width * scale),
                 (int)(BACKGROUND_DEFAULT_SIZE.Height * scale));

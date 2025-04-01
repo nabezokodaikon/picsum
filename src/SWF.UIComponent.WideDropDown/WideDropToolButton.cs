@@ -14,7 +14,7 @@ namespace SWF.UIComponent.WideDropDown
         public event EventHandler<ItemMouseClickEventArgs> ItemMouseClick;
         public event EventHandler<DropDownOpeningEventArgs> DropDownOpening;
 
-        private readonly WideDropDownList dropDownList = new();
+        private readonly WideDropDownList dropDownList;
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Image Icon
@@ -34,6 +34,7 @@ namespace SWF.UIComponent.WideDropDown
 
         public WideDropToolButton()
         {
+            this.dropDownList = new(this);
             this.dropDownList.IsClickAndClose = true;
             this.dropDownList.ItemMouseClick += this.DropDownList_ItemMouseClick;
         }
