@@ -79,7 +79,6 @@ namespace PicSum.Main.UIComponent
             // 
             // toolPanel
             // 
-            this.toolPanel.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             this.toolPanel.BackColor = Color.FromArgb(250, 250, 250);
             this.toolPanel.BackgroundImageLayout = ImageLayout.Stretch;
             this.toolPanel.Controls.Add(this.reloadToolButton);
@@ -121,7 +120,6 @@ namespace PicSum.Main.UIComponent
             // 
             // showInfoToolButton
             // 
-            this.showInfoToolButton.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             this.showInfoToolButton.Location = new Point(712, 3);
             this.showInfoToolButton.Margin = new Padding(0);
             this.showInfoToolButton.Name = "showInfoToolButton";
@@ -129,8 +127,7 @@ namespace PicSum.Main.UIComponent
             this.showInfoToolButton.MouseClick += this.ShowInfoToolButton_MouseClick;
             // 
             // addressBar
-            // 
-            this.addressBar.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            //
             this.addressBar.BackColor = Color.FromArgb(124, 138, 153);
             this.addressBar.Location = new Point(108, 4);
             this.addressBar.Margin = new Padding(0);
@@ -173,7 +170,6 @@ namespace PicSum.Main.UIComponent
             // 
             // toolPanel2
             // 
-            this.toolPanel2.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
             this.toolPanel2.BackColor = Color.FromArgb(250, 250, 250);
             this.toolPanel2.Controls.Add(this.searchBookmarkToolButton);
             this.toolPanel2.Controls.Add(this.homeToolButton);
@@ -190,9 +186,6 @@ namespace PicSum.Main.UIComponent
             // BrowserMainPanel
             // 
             this.BackColor = Color.FromArgb(64, 68, 71);
-            this.Controls.Add(this.toolPanel2);
-            this.Controls.Add(this.toolPanel);
-            this.Controls.Add(this.tabSwitch);
             this.Name = "BrowserMainPanel";
             this.Size = new Size(746, 466);
             this.toolPanel.ResumeLayout(false);

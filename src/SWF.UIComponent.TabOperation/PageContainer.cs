@@ -36,10 +36,15 @@ namespace SWF.UIComponent.TabOperation
                 throw new InvalidOperationException("既にページが存在しているため、新たなページを設定できません。");
             }
 
-            page.SetBounds(0, 0, this.Width, this.Height, BoundsSpecified.All);
-            page.Dock = DockStyle.Fill;
             this.Controls.Add(page);
-
+            var scale = AppConstants.GetCurrentWindowScale(this);
+            page.RedrawPage(scale);
+            page.SetBounds(0, 0, this.Width, this.Height);
+            page.Anchor
+                = AnchorStyles.Top
+                | AnchorStyles.Bottom
+                | AnchorStyles.Left
+                | AnchorStyles.Right;
             page.Active();
 
             ConsoleUtil.Write($"PageContainer.SetPage End");

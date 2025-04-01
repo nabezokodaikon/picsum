@@ -260,6 +260,7 @@ namespace PicSum.Main.UIComponent
             this.SuspendLayout();
 
             this.browserMainPanel = new BrowserMainPanel();
+            this.Controls.Add(this.browserMainPanel);
 
             var scale = AppConstants.GetCurrentWindowScale(this);
             var rect = this.CreateBrowserMainPanelBounds(scale);
@@ -275,8 +276,6 @@ namespace PicSum.Main.UIComponent
             this.browserMainPanel.BackgroundMouseDoubleLeftClick += new(this.BrowserMainPanel_BackgroundMouseDoubleLeftClick);
             this.browserMainPanel.NewWindowPageOpen += new(this.BrowserMainPanel_NewWindowPageOpen);
             this.browserMainPanel.TabDropouted += new(this.BrowserMainPanel_TabDropouted);
-
-            this.Controls.Add(this.browserMainPanel);
 
             this.AttachResizeEvents(this);
 

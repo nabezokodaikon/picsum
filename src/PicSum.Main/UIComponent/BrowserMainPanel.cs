@@ -102,23 +102,15 @@ namespace PicSum.Main.UIComponent
                 this.searchRatingToolButton.Image = ResourceFiles.RatingIcon.Value;
                 this.searchBookmarkToolButton.Image = ResourceFiles.BookmarkIcon.Value;
 
-                this.pageContainer.Anchor
-                    = AnchorStyles.Top
-                    | AnchorStyles.Bottom
-                    | AnchorStyles.Left
-                    | AnchorStyles.Right;
-
-                this.infoPanel.Anchor
-                    = AnchorStyles.Top
-                    | AnchorStyles.Bottom
-                    | AnchorStyles.Right;
-
                 this.infoPanel.Visible = false;
 
                 this.Controls.AddRange(
                     [
-                        this.pageContainer,
+                        this.tabSwitch,
+                        this.toolPanel,
+                        this.toolPanel2,
                         this.infoPanel,
+                        this.pageContainer,
                     ]);
 
                 this.infoPanel.BringToFront();
@@ -132,6 +124,7 @@ namespace PicSum.Main.UIComponent
 
             this.toolPanel.SuspendLayout();
             this.toolPanel2.SuspendLayout();
+            this.infoPanel.SuspendLayout();
             this.SuspendLayout();
 
             var baseWidth = this.Width - 16;
@@ -151,6 +144,10 @@ namespace PicSum.Main.UIComponent
                 (int)(TOOL_PANEL_DEFAULT_BOUNDS.Y * scale),
                 baseWidth,
                 (int)(TOOL_PANEL_DEFAULT_BOUNDS.Height * scale));
+            this.toolPanel.Anchor
+                = AnchorStyles.Top
+                | AnchorStyles.Left
+                | AnchorStyles.Right;
 
             this.toolPanel2.SetBounds(
                 0,
@@ -158,12 +155,20 @@ namespace PicSum.Main.UIComponent
                 (int)(TOOL_PANEL2_DEFAULT_BOUNDS.Width * scale),
                 this.Height - this.toolPanel.Bottom);
             this.toolPanel2.VerticalTopMargin = (int)(TOOLPANEL2_VERTICAL_DEFAULT_TOP_MARGIN * scale);
+            this.toolPanel2.Anchor
+                = AnchorStyles.Top
+                | AnchorStyles.Left
+                | AnchorStyles.Bottom;
 
             this.infoPanel.SetBounds(
                 (int)(baseWidth - INFO_PANEL_DEFAULT_BOUNDS.Width * scale),
                 this.toolPanel.Bottom,
                 (int)(INFO_PANEL_DEFAULT_BOUNDS.Width * scale),
                 this.Height - this.toolPanel.Bottom);
+            this.infoPanel.Anchor
+                = AnchorStyles.Top
+                | AnchorStyles.Right
+                | AnchorStyles.Bottom;
 
             if (this.infoPanel.Visible)
             {
@@ -181,60 +186,93 @@ namespace PicSum.Main.UIComponent
                     baseWidth - this.toolPanel2.Right,
                     this.Height - this.toolPanel.Bottom);
             }
+            this.pageContainer.Anchor
+                = AnchorStyles.Top
+                | AnchorStyles.Left
+                | AnchorStyles.Right
+                | AnchorStyles.Bottom;
 
             this.previewPageHistoryButton.SetBounds(
                 (int)(PREVIEW_BUTTON_DEFAULT_BOUNDS.X * scale),
                 (int)(PREVIEW_BUTTON_DEFAULT_BOUNDS.Y * scale),
                 (int)(PREVIEW_BUTTON_DEFAULT_BOUNDS.Width * scale),
                 (int)(PREVIEW_BUTTON_DEFAULT_BOUNDS.Height * scale));
+            this.previewPageHistoryButton.Anchor
+                = AnchorStyles.Top
+                | AnchorStyles.Left;
 
             this.nextPageHistoryButton.SetBounds(
                 this.previewPageHistoryButton.Left * 2 + this.previewPageHistoryButton.Width,
                 this.previewPageHistoryButton.Top,
                 this.previewPageHistoryButton.Width,
                 this.previewPageHistoryButton.Height);
+            this.nextPageHistoryButton.Anchor
+                = AnchorStyles.Top
+                | AnchorStyles.Left;
 
             this.reloadToolButton.SetBounds(
                 this.previewPageHistoryButton.Left * 3 + this.previewPageHistoryButton.Width * 2,
                 this.previewPageHistoryButton.Top,
                 this.previewPageHistoryButton.Width,
                 this.previewPageHistoryButton.Height);
+            this.reloadToolButton.Anchor
+                = AnchorStyles.Top
+                | AnchorStyles.Left;
 
             this.addressBar.SetBounds(
                 this.previewPageHistoryButton.Left * 4 + this.previewPageHistoryButton.Width * 3,
                 this.previewPageHistoryButton.Top,
                 this.toolPanel.Width - this.previewPageHistoryButton.Left * 6 - this.previewPageHistoryButton.Width * 4,
                 this.previewPageHistoryButton.Height);
+            this.addressBar.Anchor
+                = AnchorStyles.Top
+                | AnchorStyles.Left
+                | AnchorStyles.Right;
 
             this.showInfoToolButton.SetBounds(
                 this.addressBar.Right + this.previewPageHistoryButton.Left,
                 this.previewPageHistoryButton.Top,
                 this.previewPageHistoryButton.Width,
                 this.previewPageHistoryButton.Height);
+            this.showInfoToolButton.Anchor
+                = AnchorStyles.Top
+                | AnchorStyles.Right;
 
             this.homeToolButton.SetBounds(
                 (int)(HOME_BUTTON_DEFAULT_BOUNDS.X * scale),
                 (int)(HOME_BUTTON_DEFAULT_BOUNDS.Y * scale),
                 (int)(HOME_BUTTON_DEFAULT_BOUNDS.Width * scale),
                 (int)(HOME_BUTTON_DEFAULT_BOUNDS.Height * scale));
+            this.homeToolButton.Anchor
+                = AnchorStyles.Top
+                | AnchorStyles.Left;
 
             this.tagDropToolButton.SetBounds(
                 this.homeToolButton.Left,
                 this.homeToolButton.Top * 2 + this.homeToolButton.Height,
                 this.homeToolButton.Width,
                 this.homeToolButton.Height);
+            this.tagDropToolButton.Anchor
+                = AnchorStyles.Top
+                | AnchorStyles.Left;
 
             this.searchRatingToolButton.SetBounds(
                 this.homeToolButton.Left,
                 this.homeToolButton.Top * 3 + this.homeToolButton.Height * 2,
                 this.homeToolButton.Width,
                 this.homeToolButton.Height);
+            this.searchRatingToolButton.Anchor
+                = AnchorStyles.Top
+                | AnchorStyles.Left;
 
             this.searchBookmarkToolButton.SetBounds(
                 this.homeToolButton.Left,
                 this.homeToolButton.Top * 4 + this.homeToolButton.Height * 3,
                 this.homeToolButton.Width,
                 this.homeToolButton.Height);
+            this.searchBookmarkToolButton.Anchor
+                = AnchorStyles.Top
+                | AnchorStyles.Left;
 
             this.infoPanel.SetControlsBounds(scale);
 
@@ -244,6 +282,7 @@ namespace PicSum.Main.UIComponent
                 page.RedrawPage(scale);
             }
 
+            this.infoPanel.ResumeLayout(false);
             this.toolPanel.ResumeLayout(false);
             this.toolPanel2.ResumeLayout(false);
             this.ResumeLayout(false);
