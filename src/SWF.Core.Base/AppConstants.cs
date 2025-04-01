@@ -25,7 +25,6 @@ namespace SWF.Core.Base
 
         public const string THUMBNAIL_BUFFER_FILE_EXTENSION = ".thumbnail";
 
-        private static readonly string EXECUTABLE_DIRECTORY = GetExecutableDirectory();
         public static readonly string APPLICATION_DIRECTORY = GetApplicationDirectory();
         public static readonly string LOG_DIRECTORY = Path.Combine(APPLICATION_DIRECTORY, "log");
         private static readonly string CONFIG_DIRECTORY = Path.Combine(APPLICATION_DIRECTORY, "config");
@@ -98,7 +97,13 @@ namespace SWF.Core.Base
             }
             else
             {
-                return EXECUTABLE_DIRECTORY;
+                var executableDirectory = Directory.GetParent(Application.ExecutablePath);
+                if (executableDirectory == null)
+                {
+                    throw new NullReferenceException("実行ディレクトリが取得できません。");
+                }
+
+                return executableDirectory.FullName;
             }
         }
 
