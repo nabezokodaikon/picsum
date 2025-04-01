@@ -39,8 +39,7 @@ namespace SWF.Core.Base
 
         internal static readonly string[] IMAGE_FILE_EXTENSION_LIST = GetImageFileExtensionList();
 
-        public const string ROOT_DIRECTORY_PATH =
-            "1435810adf6f3080e21df9c3b666c7887883da42ad582d911a81931c38e720da1235036c60c69389e8c4fcc26be0c796626ef8ed3296bd9c65445ff12168fb22";
+        public const string ROOT_DIRECTORY_PATH = "36f780fdbda5b2b2ce85c9ebb57086d1880ae757";
         public static readonly DateTime ROOT_DIRECTORY_DATETIME = DateTime.MinValue;
         public static readonly DateTime EMPTY_DATETIME = DateTime.MinValue;
 

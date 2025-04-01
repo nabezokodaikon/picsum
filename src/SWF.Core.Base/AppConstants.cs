@@ -20,19 +20,19 @@ namespace SWF.Core.Base
         /// </summary>
         public const int INFOPANEL_WIDTH = 240;
 
-        public const string MUTEX_NAME = "11d9bca92011a234e6e876e28f39bd6a550b2ab6b6167e124f6af1c4930344f1c335681485de59028fdadfc3318108ea0e7d0bfe28cf276c34a89b9a8ac8e955";
-        public const string PIPE_NAME = "be752c4335f762ea8b304f90c84b6488fca7a2d0e69442716a62daf16f6e25595a6506307ac24871e346b841d828418dc1ef817a697dd9adec28748059898e48";
+        public const string MUTEX_NAME = "11d9bca9";
+        public const string PIPE_NAME = "be752c43";
 
         public const string THUMBNAIL_BUFFER_FILE_EXTENSION = ".thumbnail";
 
         private static readonly string EXECUTABLE_DIRECTORY = GetExecutableDirectory();
         public static readonly string APPLICATION_DIRECTORY = GetApplicationDirectory();
-        public static readonly string LOG_DIRECTORY = GetLogDirectory();
-        private static readonly string CONFIG_DIRECTORY = GetConfigDirectory();
-        public static readonly string CONFIG_FILE = GetConfigFile();
-        public static readonly string DATABASE_DIRECTORY = GetDatabaseDirectory();
-        public static readonly string FILE_INFO_DATABASE_FILE = GetFileInfoDatabaseFile();
-        public static readonly string THUMBNAIL_DATABASE_FILE = GetThumbnailDatabaseFile();
+        public static readonly string LOG_DIRECTORY = Path.Combine(APPLICATION_DIRECTORY, "log");
+        private static readonly string CONFIG_DIRECTORY = Path.Combine(APPLICATION_DIRECTORY, "config");
+        public static readonly string CONFIG_FILE = Path.Combine(CONFIG_DIRECTORY, "config.xml");
+        public static readonly string DATABASE_DIRECTORY = Path.Combine(APPLICATION_DIRECTORY, "db");
+        public static readonly string FILE_INFO_DATABASE_FILE = Path.Combine(DATABASE_DIRECTORY, "fileinfo.sqlite");
+        public static readonly string THUMBNAIL_DATABASE_FILE = Path.Combine(DATABASE_DIRECTORY, "thumbnail.sqlite");
 
         public static bool IsRunningAsUwp()
         {
@@ -69,21 +69,6 @@ namespace SWF.Core.Base
             return scale;
         }
 
-        private static string GetConfigFile()
-        {
-            return Path.Combine(CONFIG_DIRECTORY, "config.xml");
-        }
-
-        private static string GetFileInfoDatabaseFile()
-        {
-            return Path.Combine(DATABASE_DIRECTORY, "fileinfo.sqlite");
-        }
-
-        private static string GetThumbnailDatabaseFile()
-        {
-            return Path.Combine(DATABASE_DIRECTORY, "thumbnail.sqlite");
-        }
-
         private static string GetExecutableDirectory()
         {
             ConsoleUtil.Write($"AppConstants.GetExecutableDirectory Start");
@@ -115,21 +100,6 @@ namespace SWF.Core.Base
             {
                 return EXECUTABLE_DIRECTORY;
             }
-        }
-
-        private static string GetLogDirectory()
-        {
-            return Path.Combine(APPLICATION_DIRECTORY, "log");
-        }
-
-        private static string GetConfigDirectory()
-        {
-            return Path.Combine(APPLICATION_DIRECTORY, "config");
-        }
-
-        private static string GetDatabaseDirectory()
-        {
-            return Path.Combine(APPLICATION_DIRECTORY, "db");
         }
 
         public static void CreateApplicationDirectories()
