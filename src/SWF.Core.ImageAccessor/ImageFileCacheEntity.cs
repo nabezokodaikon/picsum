@@ -15,6 +15,7 @@ namespace SWF.Core.ImageAccessor
         };
 
         private bool disposed = false;
+        private readonly int hashCode;
 
         public string FilePath { get; private set; } = string.Empty;
         public Bitmap? Bitmap { get; private set; }
@@ -28,6 +29,7 @@ namespace SWF.Core.ImageAccessor
             this.FilePath = filePath;
             this.Bitmap = bitmap;
             this.Timestamp = timestamp;
+            this.hashCode = HashCode.Combine(this.FilePath, this.Timestamp);
         }
 
         private ImageFileCacheEntity()
@@ -78,7 +80,7 @@ namespace SWF.Core.ImageAccessor
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(this.FilePath, this.Timestamp);
+            return this.hashCode;
         }
 
         public override bool Equals(object? obj)

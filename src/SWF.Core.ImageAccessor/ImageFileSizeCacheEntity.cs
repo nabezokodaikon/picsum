@@ -3,6 +3,7 @@ namespace SWF.Core.ImageAccessor
     public sealed class ImageFileSizeCacheEntity
         : IEquatable<ImageFileSizeCacheEntity>
     {
+        private readonly int hashCode;
         public readonly string FilePath;
         public readonly Size Size;
         public readonly DateTime Timestamp;
@@ -11,6 +12,7 @@ namespace SWF.Core.ImageAccessor
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
+            this.hashCode = HashCode.Combine(this.FilePath, this.Timestamp);
             this.FilePath = filePath;
             this.Size = size;
             this.Timestamp = timestamp;
@@ -38,7 +40,7 @@ namespace SWF.Core.ImageAccessor
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(this.FilePath, this.Timestamp);
+            return this.hashCode;
         }
 
         public override bool Equals(object? obj)
