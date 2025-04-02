@@ -1,4 +1,5 @@
 using System;
+using System.Drawing;
 using System.IO;
 using System.Runtime.InteropServices;
 
@@ -302,6 +303,8 @@ namespace WinApi
         public const uint MDT_EFFECTIVE_DPI = 0;
         public const uint MONITOR_DEFAULTTONEAREST = 2;
 
+        public const int DWMWA_CAPTION_BUTTON_BOUNDS = 5;
+
         public const uint FILE_ATTRIBUTE_DIRECTORY = 0x10;
         public static readonly IntPtr INVALID_HANDLE_VALUE = new IntPtr(-1);
 
@@ -446,6 +449,7 @@ namespace WinApi
         public struct RECT(int left, int top, int right, int bottom)
         {
             public int left = left, top = top, right = right, bottom = bottom;
+            public Rectangle ToRectangle() => new Rectangle(this.left, this.top, this.right - this.left, this.bottom - this.top);
         }
 
         [StructLayout(LayoutKind.Sequential)]
@@ -680,6 +684,9 @@ namespace WinApi
 
         [DllImport("kernel32.dll", SetLastError = true)]
         public static extern bool FindClose(IntPtr hFindFile);
+
+        [DllImport("dwmapi.dll")]
+        public static extern int DwmGetWindowAttribute(IntPtr hwnd, int dwAttribute, out RECT pvAttribute, int cbAttribute);
 
         public static int OpenFileWith(IntPtr hwndParent, string filePath)
         {

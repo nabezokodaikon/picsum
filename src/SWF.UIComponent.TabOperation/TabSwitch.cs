@@ -64,6 +64,14 @@ namespace SWF.UIComponent.TabOperation
             return (int)(TABS_MARGIN * scale);
         }
 
+        private int GetTabRightMargin()
+        {
+            const int TAB_RIGHT_DEFAULT_MARGIN = 32;
+            var form = this.GetForm();
+            var scale = AppConstants.GetCurrentWindowScale(form);
+            return (int)(TAB_RIGHT_DEFAULT_MARGIN * scale);
+        }
+
         public static int GetTabCloseButtonCanDrawWidth(Control owner)
         {
             ArgumentNullException.ThrowIfNull(owner, nameof(owner));
@@ -137,8 +145,9 @@ namespace SWF.UIComponent.TabOperation
 
         private int GetTabsRightOffset()
         {
-            var value = AppConstants.GetControlBoxWidth(this.Handle);
-            return value;
+            var size = AppConstants.GetControlBoxSize(this.GetForm().Handle);
+            var margin = this.GetTabRightMargin();
+            return size.Width + margin;
         }
 
         /// <summary>

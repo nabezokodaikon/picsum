@@ -260,10 +260,9 @@ namespace SWF.UIComponent.Form
 
         protected void SetControlRegion()
         {
-            var w = AppConstants.GetControlBoxWidth(this.Handle);
-            var h = AppConstants.GetControlBoxHeight(this.Handle);
-            var p = new Point(this.Right - w, this.Top);
-            var captionButtonRect = new Rectangle(p.X, p.Y, w, h);
+            var size = AppConstants.GetControlBoxSize(this.Handle);
+            var p = new Point(this.Right - size.Width, this.Top);
+            var captionButtonRect = new Rectangle(p.X, p.Y, size.Width, size.Height);
             foreach (Control ctl in this.Controls)
             {
                 ctl.Region = this.GetControlRegion(ctl, captionButtonRect);

@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 using WinApi;
 
@@ -134,24 +135,17 @@ namespace SWF.Core.Base
             ConsoleUtil.Write($"AppConstants.CreateApplicationDirectories End");
         }
 
-        public static int GetControlBoxWidth(IntPtr window)
+        public static Size GetControlBoxSize(IntPtr window)
         {
-            var monitor = WinApiMembers.MonitorFromWindow(window, WinApiMembers.MONITOR_DEFAULTTONEAREST);
-            WinApiMembers.GetDpiForMonitor(monitor, WinApiMembers.MDT_EFFECTIVE_DPI, out uint dpiX, out _);
-            var buttonWidth = WinApiMembers.GetSystemMetricsForDpi(WinApiMembers.SM.CXSIZE, dpiX);
-            var frameWidth = WinApiMembers.GetSystemMetricsForDpi(WinApiMembers.SM.CXSIZEFRAME, dpiX);
-            var paddingWidth = WinApiMembers.GetSystemMetricsForDpi(WinApiMembers.SM.CXPADDEDBORDER, dpiX);
-            return (buttonWidth * 4) + paddingWidth + frameWidth;
-        }
-
-        public static int GetControlBoxHeight(IntPtr window)
-        {
-            var monitor = WinApiMembers.MonitorFromWindow(window, WinApiMembers.MONITOR_DEFAULTTONEAREST);
-            WinApiMembers.GetDpiForMonitor(monitor, WinApiMembers.MDT_EFFECTIVE_DPI, out uint dpiX, out _);
-            var titleBarHeight = WinApiMembers.GetSystemMetricsForDpi(WinApiMembers.SM.CYCAPTION, dpiX);
-            var frameHeight = WinApiMembers.GetSystemMetricsForDpi(WinApiMembers.SM.CYSIZEFRAME, dpiX);
-            var paddingWidth = WinApiMembers.GetSystemMetricsForDpi(WinApiMembers.SM.CXPADDEDBORDER, dpiX);
-            return titleBarHeight + frameHeight + paddingWidth; ;
+            if (WinApiMembers.DwmGetWindowAttribute(
+                window,
+                WinApiMembers.DWMWA_CAPTION_BUTTON_BOUNDS,
+                out WinApiMembers.RECT rect,
+                Marshal.SizeOf<WinApiMembers.RECT>()) == 0)
+            {
+                return rect.ToRectangle().Size;
+            }
+            return Size.Empty;
         }
     }
 
