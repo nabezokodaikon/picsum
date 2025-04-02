@@ -26,7 +26,7 @@ namespace PicSum.Job.Logics
                 return this.GetFileInfo(
                     filePath, isGetThumbnail, registrationDate);
             }
-            if (FileUtil.IsExistsDirectory(filePath))
+            else if (FileUtil.IsExistsDirectory(filePath))
             {
                 return this.GetDirectoryInfo(
                     filePath, isGetThumbnail, registrationDate);
