@@ -670,15 +670,6 @@ namespace WinApi
         [DllImport("User32.dll")]
         public static extern uint GetDpiForWindow(IntPtr hWnd);
 
-        [DllImport("user32.dll")]
-        public static extern int GetSystemMetricsForDpi(SM nIndex, uint dpi);
-
-        [DllImport("user32.dll")]
-        public static extern IntPtr MonitorFromWindow(IntPtr hwnd, uint dwFlags);
-
-        [DllImport("shcore.dll")]
-        public static extern int GetDpiForMonitor(IntPtr hmonitor, uint dpiType, out uint dpiX, out uint dpiY);
-
         [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
         public static extern IntPtr FindFirstFile(string lpFileName, out WIN32_FIND_DATA lpFindFileData);
 
