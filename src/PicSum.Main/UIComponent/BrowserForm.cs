@@ -295,7 +295,6 @@ namespace PicSum.Main.UIComponent
                 if (CommandLineArgs.IsNone() || CommandLineArgs.IsCleanup())
                 {
                     this.browserMainPanel.AddFavoriteDirectoryListTab();
-                    LogManager.GetCurrentClassLogger().Debug("初回表示されました。");
                 }
                 else
                 {
@@ -319,7 +318,13 @@ namespace PicSum.Main.UIComponent
 
                         this.browserMainPanel.AddImageViewerPageTab(parameter);
                     }
+                    else
+                    {
+                        this.browserMainPanel.AddFavoriteDirectoryListTab();
+                    }
                 }
+
+                LogManager.GetCurrentClassLogger().Debug("初回表示されました。");
             }
 
             this.SetControlRegion();
