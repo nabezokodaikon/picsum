@@ -3,6 +3,7 @@ namespace SWF.Core.Job
     public interface IThreadWrapper
         : IDisposable
     {
+        public bool IsRunning();
         public void Start(Action dowork);
         public void Wait();
     }
@@ -44,16 +45,23 @@ namespace SWF.Core.Job
             this.disposed = true;
         }
 
+        public bool IsRunning()
+        {
+            return this.thread != null;
+        }
+
         public void Start(Action dowork)
         {
             ArgumentNullException.ThrowIfNull(dowork, nameof(dowork));
 
-            if (this.thread == null)
+            if (this.thread != null)
             {
-                this.thread = new(dowork.Invoke);
-                this.thread.Priority = ThreadPriority.Highest;
-                this.thread.Start();
+                throw new InvalidOperationException("スレッドは既に開始しています。");
             }
+
+            this.thread = new(dowork.Invoke);
+            this.thread.Priority = ThreadPriority.Highest;
+            this.thread.Start();
         }
 
         public void Wait()
@@ -100,9 +108,19 @@ namespace SWF.Core.Job
             this.disposed = true;
         }
 
+        public bool IsRunning()
+        {
+            return this.task != null;
+        }
+
         public void Start(Action dowork)
         {
             ArgumentNullException.ThrowIfNull(dowork, nameof(dowork));
+
+            if (this.task != null)
+            {
+                throw new InvalidOperationException("タスクは既に開始しています。");
+            }
 
             this.task ??= Task.Run(dowork);
         }

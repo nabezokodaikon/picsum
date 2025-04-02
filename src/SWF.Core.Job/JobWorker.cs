@@ -127,7 +127,11 @@ namespace SWF.Core.Job
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
 
             this.BeginCancel();
-            this.thread.Start(() => this.DoWork(this.source.Token));
+
+            if (!this.thread.IsRunning())
+            {
+                this.thread.Start(() => this.DoWork(this.source.Token));
+            }
 
             var job = new TJob
             {
