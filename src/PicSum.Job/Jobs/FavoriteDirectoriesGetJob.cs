@@ -36,7 +36,7 @@ namespace PicSum.Job.Jobs
 
                 try
                 {
-                    var info = getInfoLogic.Execute(file, true);
+                    var info = getInfoLogic.Get(file, true);
                     if (info != FileShallowInfoEntity.EMPTY)
                     {
                         infoList.Add(info);

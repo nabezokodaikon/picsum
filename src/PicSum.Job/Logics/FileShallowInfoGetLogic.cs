@@ -16,112 +16,164 @@ namespace PicSum.Job.Logics
     {
         private const int THUMBNAIL_SIZE = 248;
 
-        public FileShallowInfoEntity Execute(string filePath, bool isGetThumbnail)
+        public FileShallowInfoEntity Get(
+            string filePath, bool isGetThumbnail, DateTime registrationDate)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
-            var info = new FileShallowInfoEntity
+            if (FileUtil.IsExistsFile(filePath))
             {
-                RgistrationDate = FileUtil.EMPTY_DATETIME,
-            };
-
-            if (FileUtil.IsSystemRoot(filePath))
+                return this.GetFileInfo(
+                    filePath, isGetThumbnail, registrationDate);
+            }
+            if (FileUtil.IsExistsDirectory(filePath))
             {
-                info.FilePath = filePath;
-                info.FileName = FileUtil.GetFileName(filePath);
-                info.IsFile = false;
-                info.IsImageFile = false;
-                info.UpdateDate = FileUtil.EMPTY_DATETIME;
-                info.SmallIcon = Instance<IFileIconCacher>.Value.SmallPCIcon;
-                info.ExtraLargeIcon = Instance<IFileIconCacher>.Value.LargePCIcon;
-                info.JumboIcon = Instance<IFileIconCacher>.Value.LargePCIcon;
+                return this.GetDirectoryInfo(
+                    filePath, isGetThumbnail, registrationDate);
             }
             else if (FileUtil.IsExistsDrive(filePath))
             {
-                info.FilePath = filePath;
-                info.FileName = FileUtil.GetFileName(filePath);
-                info.IsFile = false;
-                info.IsImageFile = false;
-                info.UpdateDate = FileUtil.GetUpdateDate(filePath);
-                info.SmallIcon = Instance<IFileIconCacher>.Value.GetSmallDriveIcon(info.FilePath);
-                info.ExtraLargeIcon = Instance<IFileIconCacher>.Value.GetExtraLargeDriveIcon(info.FilePath);
-                info.JumboIcon = Instance<IFileIconCacher>.Value.GetJumboDriveIcon(info.FilePath);
+                return this.GetDriveInfo(
+                    filePath, registrationDate);
             }
-            else if (FileUtil.IsExistsFile(filePath))
+            else if (FileUtil.IsSystemRoot(filePath))
             {
-                info.FilePath = filePath;
-                info.FileName = FileUtil.GetFileName(filePath);
-                info.IsFile = true;
-                info.IsImageFile = ImageUtil.IsImageFile(filePath);
-                info.UpdateDate = FileUtil.GetUpdateDate(filePath);
-                info.SmallIcon = Instance<IFileIconCacher>.Value.GetSmallFileIcon(info.FilePath);
-                info.ExtraLargeIcon = Instance<IFileIconCacher>.Value.GetExtraLargeFileIcon(info.FilePath);
-                info.JumboIcon = Instance<IFileIconCacher>.Value.GetJumboFileIcon(info.FilePath);
-
-                if (isGetThumbnail)
-                {
-                    var thumbnailBuffer = Instance<IThumbnailCacher>.Value.GetOnlyCache(filePath, THUMBNAIL_SIZE, THUMBNAIL_SIZE);
-                    if (thumbnailBuffer != ThumbnailCacheEntity.EMPTY)
-                    {
-                        if (thumbnailBuffer.ThumbnailBuffer == null)
-                        {
-                            throw new NullReferenceException("サムネイルのバッファがNullです。");
-                        }
-
-                        info.ThumbnailImage = ThumbnailUtil.ToImage(thumbnailBuffer.ThumbnailBuffer);
-                        info.ThumbnailWidth = THUMBNAIL_SIZE;
-                        info.ThumbnailHeight = THUMBNAIL_SIZE;
-                        info.SourceWidth = thumbnailBuffer.SourceWidth;
-                        info.SourceHeight = thumbnailBuffer.SourceHeight;
-                    }
-                }
-            }
-            else if (FileUtil.IsExistsDirectory(filePath))
-            {
-                info.FilePath = filePath;
-                info.FileName = FileUtil.GetFileName(filePath);
-                info.IsFile = false;
-                info.IsImageFile = false;
-                info.UpdateDate = FileUtil.GetUpdateDate(filePath);
-                info.SmallIcon = Instance<IFileIconCacher>.Value.SmallDirectoryIcon;
-                info.ExtraLargeIcon = Instance<IFileIconCacher>.Value.ExtraLargeDirectoryIcon;
-                info.JumboIcon = Instance<IFileIconCacher>.Value.JumboDirectoryIcon;
-
-                if (isGetThumbnail)
-                {
-                    var thumbnailBuffer = Instance<IThumbnailCacher>.Value.GetOnlyCache(filePath, THUMBNAIL_SIZE, THUMBNAIL_SIZE);
-                    if (thumbnailBuffer != ThumbnailCacheEntity.EMPTY)
-                    {
-                        if (thumbnailBuffer.ThumbnailBuffer == null)
-                        {
-                            throw new NullReferenceException("サムネイルのバッファがNullです。");
-                        }
-
-                        info.ThumbnailImage = ThumbnailUtil.ToImage(thumbnailBuffer.ThumbnailBuffer);
-                        info.ThumbnailWidth = THUMBNAIL_SIZE;
-                        info.ThumbnailHeight = THUMBNAIL_SIZE;
-                        info.SourceWidth = thumbnailBuffer.SourceWidth;
-                        info.SourceHeight = thumbnailBuffer.SourceHeight;
-                    }
-                }
-            }
-            else
-            {
-                throw new ArgumentException($"不正なファイルパスです。'{filePath}'", nameof(filePath));
+                return this.GetSystemRootInfo(
+                    filePath, registrationDate);
             }
 
-            return info;
+            throw new ArgumentException(
+                $"不正なファイルパスです。'{filePath}'", nameof(filePath));
         }
 
-        public FileShallowInfoEntity Execute(
-            string filePath, DateTime registrationDate, bool isGetThumbnail)
+        public FileShallowInfoEntity Get(
+            string filePath, bool isGetThumbnail)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
-            var info = this.Execute(filePath, isGetThumbnail);
-            info.RgistrationDate = registrationDate;
+            return this.Get(filePath, isGetThumbnail, FileUtil.EMPTY_DATETIME);
+        }
 
-            return info;
+        private FileShallowInfoEntity GetFileInfo(
+            string filePath, bool isGetThumbnail, DateTime registrationDate)
+        {
+            var info = new FileShallowInfoEntity
+            {
+                RgistrationDate = registrationDate,
+                FilePath = filePath,
+                FileName = FileUtil.GetFileName(filePath),
+                IsFile = true,
+                IsImageFile = ImageUtil.IsImageFile(filePath),
+                UpdateDate = FileUtil.GetUpdateDate(filePath),
+                SmallIcon = Instance<IFileIconCacher>.Value.GetSmallFileIcon(filePath),
+                ExtraLargeIcon = Instance<IFileIconCacher>.Value.GetExtraLargeFileIcon(filePath),
+                JumboIcon = Instance<IFileIconCacher>.Value.GetJumboFileIcon(filePath)
+            };
+
+            if (!isGetThumbnail)
+            {
+                return info;
+            }
+
+            var thumbnailBuffer = Instance<IThumbnailCacher>.Value.GetOnlyCache(
+                filePath, THUMBNAIL_SIZE, THUMBNAIL_SIZE);
+            if (thumbnailBuffer != ThumbnailCacheEntity.EMPTY)
+            {
+                if (thumbnailBuffer.ThumbnailBuffer == null)
+                {
+                    throw new NullReferenceException("サムネイルのバッファがNullです。");
+                }
+
+                info.ThumbnailImage = ThumbnailUtil.ToImage(thumbnailBuffer.ThumbnailBuffer);
+                info.ThumbnailWidth = THUMBNAIL_SIZE;
+                info.ThumbnailHeight = THUMBNAIL_SIZE;
+                info.SourceWidth = thumbnailBuffer.SourceWidth;
+                info.SourceHeight = thumbnailBuffer.SourceHeight;
+
+                return info;
+            }
+            else
+            {
+                return info;
+            }
+        }
+
+        private FileShallowInfoEntity GetDirectoryInfo(
+            string filePath, bool isGetThumbnail, DateTime registrationDate)
+        {
+            var info = new FileShallowInfoEntity
+            {
+                RgistrationDate = registrationDate,
+                FilePath = filePath,
+                FileName = FileUtil.GetFileName(filePath),
+                IsFile = false,
+                IsImageFile = false,
+                UpdateDate = FileUtil.GetUpdateDate(filePath),
+                SmallIcon = Instance<IFileIconCacher>.Value.SmallDirectoryIcon,
+                ExtraLargeIcon = Instance<IFileIconCacher>.Value.ExtraLargeDirectoryIcon,
+                JumboIcon = Instance<IFileIconCacher>.Value.JumboDirectoryIcon
+            };
+
+            if (!isGetThumbnail)
+            {
+                return info;
+            }
+
+            var thumbnailBuffer = Instance<IThumbnailCacher>.Value.GetOnlyCache(
+                filePath, THUMBNAIL_SIZE, THUMBNAIL_SIZE);
+            if (thumbnailBuffer != ThumbnailCacheEntity.EMPTY)
+            {
+                if (thumbnailBuffer.ThumbnailBuffer == null)
+                {
+                    throw new NullReferenceException("サムネイルのバッファがNullです。");
+                }
+
+                info.ThumbnailImage = ThumbnailUtil.ToImage(thumbnailBuffer.ThumbnailBuffer);
+                info.ThumbnailWidth = THUMBNAIL_SIZE;
+                info.ThumbnailHeight = THUMBNAIL_SIZE;
+                info.SourceWidth = thumbnailBuffer.SourceWidth;
+                info.SourceHeight = thumbnailBuffer.SourceHeight;
+
+                return info;
+            }
+            else
+            {
+                return info;
+            }
+        }
+
+        private FileShallowInfoEntity GetDriveInfo(
+            string filePath, DateTime registrationDate)
+        {
+            return new FileShallowInfoEntity
+            {
+                RgistrationDate = registrationDate,
+                FilePath = filePath,
+                FileName = FileUtil.GetFileName(filePath),
+                IsFile = false,
+                IsImageFile = false,
+                UpdateDate = FileUtil.GetUpdateDate(filePath),
+                SmallIcon = Instance<IFileIconCacher>.Value.GetSmallDriveIcon(filePath),
+                ExtraLargeIcon = Instance<IFileIconCacher>.Value.GetExtraLargeDriveIcon(filePath),
+                JumboIcon = Instance<IFileIconCacher>.Value.GetJumboDriveIcon(filePath)
+            };
+        }
+
+        private FileShallowInfoEntity GetSystemRootInfo(
+            string filePath, DateTime registrationDate)
+        {
+            return new FileShallowInfoEntity
+            {
+                RgistrationDate = registrationDate,
+                FilePath = filePath,
+                FileName = FileUtil.GetFileName(filePath),
+                IsFile = false,
+                IsImageFile = false,
+                UpdateDate = FileUtil.ROOT_DIRECTORY_DATETIME,
+                SmallIcon = Instance<IFileIconCacher>.Value.SmallPCIcon,
+                ExtraLargeIcon = Instance<IFileIconCacher>.Value.LargePCIcon,
+                JumboIcon = Instance<IFileIconCacher>.Value.LargePCIcon
+            };
         }
     }
 }
