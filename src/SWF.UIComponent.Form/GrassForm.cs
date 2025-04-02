@@ -159,6 +159,7 @@ namespace SWF.UIComponent.Form
                 nccsp.rgrc0.right -= 8;
                 nccsp.rgrc0.bottom -= 8;
                 Marshal.StructureToPtr(nccsp, m.LParam, false);
+                return;
             }
             else if (m.Msg == WinApiMembers.WM_DPICHANGED)
             {
@@ -169,19 +170,18 @@ namespace SWF.UIComponent.Form
                     var glassMargins = GetGrassMargins(this.currentScale);
                     WinApiMembers.DwmExtendFrameIntoClientArea(this.Handle, glassMargins);
                     this.ScaleChanged?.Invoke(this, new ScaleChangedEventArgs(this.currentScale));
-                }
-            }
-            else
-            {
-                var dwmHandled = WinApiMembers.DwmDefWindowProc(m.HWnd, m.Msg, m.WParam, m.LParam, out var result);
-                if (dwmHandled == 1)
-                {
-                    m.Result = result;
                     return;
                 }
-
-                base.WndProc(ref m);
             }
+
+            var dwmHandled = WinApiMembers.DwmDefWindowProc(m.HWnd, m.Msg, m.WParam, m.LParam, out var result);
+            if (dwmHandled == 1)
+            {
+                m.Result = result;
+                return;
+            }
+
+            base.WndProc(ref m);
         }
 
         protected override void OnActivated(EventArgs e)
