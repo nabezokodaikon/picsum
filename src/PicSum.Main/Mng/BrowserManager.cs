@@ -56,7 +56,7 @@ namespace PicSum.Main.Mng
         {
             ConsoleUtil.Write($"BrowserManager.CreateBrowser Start");
 
-            var browser = new BrowserForm();
+            var browser = new BrowserForm(false);
             this.InitializeBrowserDelegate(browser);
 
             ConsoleUtil.Write($"BrowserManager.CreateBrowser End");
@@ -66,7 +66,7 @@ namespace PicSum.Main.Mng
 
         private BrowserForm CreateBrowser(Point windowLocation, Size windowSize, FormWindowState windowState)
         {
-            var browser = new BrowserForm
+            var browser = new BrowserForm(true)
             {
                 Location = windowLocation,
                 Size = windowSize,
