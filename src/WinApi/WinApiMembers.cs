@@ -449,7 +449,6 @@ namespace WinApi
         public struct RECT(int left, int top, int right, int bottom)
         {
             public int left = left, top = top, right = right, bottom = bottom;
-            public Rectangle ToRectangle() => new Rectangle(this.left, this.top, this.right - this.left, this.bottom - this.top);
         }
 
         [StructLayout(LayoutKind.Sequential)]

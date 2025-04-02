@@ -143,7 +143,9 @@ namespace SWF.Core.Base
                 out WinApiMembers.RECT rect,
                 Marshal.SizeOf<WinApiMembers.RECT>()) == 0)
             {
-                return rect.ToRectangle().Size;
+                return new Size(
+                    rect.right - rect.left,
+                    rect.bottom - rect.top);
             }
             return Size.Empty;
         }
