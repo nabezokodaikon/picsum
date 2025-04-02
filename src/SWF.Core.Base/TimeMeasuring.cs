@@ -41,6 +41,7 @@ namespace SWF.Core.Base
                 Console.WriteLine($"{this.message}: {this.stopwatch?.ElapsedMilliseconds} ms");
             }
 #endif
+            GC.SuppressFinalize(this);
         }
     }
 #pragma warning restore CS0414, IDE0051

@@ -78,6 +78,8 @@ namespace PicSum.Main.Mng
             Config.Instance.ImageSizeMode = ImageViewerPageConfig.Instance.ImageSizeMode;
 
             Config.Instance.Save();
+
+            GC.SuppressFinalize(this);
         }
     }
 }

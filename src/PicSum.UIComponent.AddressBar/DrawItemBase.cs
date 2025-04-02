@@ -7,7 +7,8 @@ using System.Windows.Forms;
 namespace PicSum.UIComponent.AddressBar
 {
     [SupportedOSPlatform("windows10.0.17763.0")]
-    abstract class DrawItemBase
+    internal abstract class DrawItemBase
+        : IDisposable
     {
         protected const int MAXIMUM_SHOW_ITEM_COUNT = 16;
 
@@ -180,6 +181,8 @@ namespace PicSum.UIComponent.AddressBar
             this.DropDownClosed = null;
             this.SelectedDirectory = null;
             this.addressBar = null;
+
+            GC.SuppressFinalize(this);
         }
 
         protected int GetDropDownItemHeight()

@@ -22,6 +22,7 @@ namespace PicSum.UIComponent.AddressBar
         public new void Dispose()
         {
             base.Dispose();
+            GC.SuppressFinalize(this);
         }
 
         public override void Draw(Graphics g)

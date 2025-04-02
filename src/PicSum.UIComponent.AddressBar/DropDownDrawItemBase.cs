@@ -72,6 +72,7 @@ namespace PicSum.UIComponent.AddressBar
             }
 
             base.Dispose();
+            GC.SuppressFinalize(this);
         }
 
         private void CreateDropDownList()
