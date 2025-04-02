@@ -324,7 +324,7 @@ namespace PicSum.Main.UIComponent
                     }
                 }
 
-                LogManager.GetCurrentClassLogger().Debug("初回表示されました。");
+                logger.Debug("初回表示されました。");
             }
 
             this.SetControlRegion();
