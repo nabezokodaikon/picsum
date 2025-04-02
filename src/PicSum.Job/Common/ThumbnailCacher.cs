@@ -181,17 +181,25 @@ namespace PicSum.Job.Common
             var memCache = this.GetMemoryCache(filePath);
             if (memCache != ThumbnailCacheEntity.EMPTY)
             {
-                // メモリキャッシュを返します。
-                return memCache;
+                var updateDate = FileUtil.GetUpdateDate(filePath);
+                if (memCache.FileUpdatedate >= updateDate)
+                {
+                    // メモリキャッシュを返します。
+                    return memCache;
+                }
             }
             else
             {
                 var dbCache = this.GetDBCache(filePath);
                 if (dbCache != ThumbnailCacheEntity.EMPTY)
                 {
-                    // DBキャッシュを返します。
-                    this.UpdateMemoryCache(dbCache);
-                    return dbCache;
+                    var updateDate = FileUtil.GetUpdateDate(filePath);
+                    if (dbCache.FileUpdatedate >= updateDate)
+                    {
+                        // DBキャッシュを返します。
+                        this.UpdateMemoryCache(dbCache);
+                        return dbCache;
+                    }
                 }
             }
 
@@ -204,16 +212,25 @@ namespace PicSum.Job.Common
             if (memCache != ThumbnailCacheEntity.EMPTY)
             {
                 // メモリキャッシュを返します。
-                return memCache;
+                var updateDate = FileUtil.GetUpdateDate(filePath);
+                if (memCache.FileUpdatedate >= updateDate)
+                {
+                    // メモリキャッシュを返します。
+                    return memCache;
+                }
             }
             else
             {
                 var dbCache = this.GetDBCache(filePath);
                 if (dbCache != ThumbnailCacheEntity.EMPTY)
                 {
-                    // DBキャッシュを返します。
-                    this.UpdateMemoryCache(dbCache);
-                    return dbCache;
+                    var updateDate = FileUtil.GetUpdateDate(filePath);
+                    if (dbCache.FileUpdatedate >= updateDate)
+                    {
+                        // DBキャッシュを返します。
+                        this.UpdateMemoryCache(dbCache);
+                        return dbCache;
+                    }
                 }
             }
 
