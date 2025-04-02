@@ -85,8 +85,8 @@ namespace PicSum.Job.Logics
                 }
 
                 info.ThumbnailImage = ThumbnailUtil.ToImage(thumbnailBuffer.ThumbnailBuffer);
-                info.ThumbnailWidth = THUMBNAIL_SIZE;
-                info.ThumbnailHeight = THUMBNAIL_SIZE;
+                info.ThumbnailWidth = thumbnailBuffer.ThumbnailWidth;
+                info.ThumbnailHeight = thumbnailBuffer.ThumbnailHeight;
                 info.SourceWidth = thumbnailBuffer.SourceWidth;
                 info.SourceHeight = thumbnailBuffer.SourceHeight;
 
@@ -129,8 +129,8 @@ namespace PicSum.Job.Logics
                 }
 
                 info.ThumbnailImage = ThumbnailUtil.ToImage(thumbnailBuffer.ThumbnailBuffer);
-                info.ThumbnailWidth = THUMBNAIL_SIZE;
-                info.ThumbnailHeight = THUMBNAIL_SIZE;
+                info.ThumbnailWidth = thumbnailBuffer.ThumbnailWidth;
+                info.ThumbnailHeight = thumbnailBuffer.ThumbnailHeight;
                 info.SourceWidth = thumbnailBuffer.SourceWidth;
                 info.SourceHeight = thumbnailBuffer.SourceHeight;
 

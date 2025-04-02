@@ -181,29 +181,17 @@ namespace PicSum.Job.Common
             var memCache = this.GetMemoryCache(filePath);
             if (memCache != ThumbnailCacheEntity.EMPTY)
             {
-                var updateDate = FileUtil.GetUpdateDate(filePath);
-                if (memCache.ThumbnailWidth >= thumbWidth &&
-                    memCache.ThumbnailHeight >= thumbHeight &&
-                    memCache.FileUpdatedate >= updateDate)
-                {
-                    // メモリキャッシュを返します。
-                    return memCache;
-                }
+                // メモリキャッシュを返します。
+                return memCache;
             }
             else
             {
                 var dbCache = this.GetDBCache(filePath);
                 if (dbCache != ThumbnailCacheEntity.EMPTY)
                 {
-                    var updateDate = FileUtil.GetUpdateDate(filePath);
-                    if (dbCache.ThumbnailWidth >= thumbWidth &&
-                        dbCache.ThumbnailHeight >= thumbHeight &&
-                        dbCache.FileUpdatedate >= updateDate)
-                    {
-                        // DBキャッシュを返します。
-                        this.UpdateMemoryCache(dbCache);
-                        return dbCache;
-                    }
+                    // DBキャッシュを返します。
+                    this.UpdateMemoryCache(dbCache);
+                    return dbCache;
                 }
             }
 
@@ -215,29 +203,17 @@ namespace PicSum.Job.Common
             var memCache = this.GetMemoryCache(filePath);
             if (memCache != ThumbnailCacheEntity.EMPTY)
             {
-                var updateDate = FileUtil.GetUpdateDate(filePath);
-                if (memCache.ThumbnailWidth >= thumbWidth &&
-                    memCache.ThumbnailHeight >= thumbHeight &&
-                    memCache.FileUpdatedate >= updateDate)
-                {
-                    // メモリキャッシュを返します。
-                    return memCache;
-                }
+                // メモリキャッシュを返します。
+                return memCache;
             }
             else
             {
                 var dbCache = this.GetDBCache(filePath);
                 if (dbCache != ThumbnailCacheEntity.EMPTY)
                 {
-                    var updateDate = FileUtil.GetUpdateDate(filePath);
-                    if (dbCache.ThumbnailWidth >= thumbWidth &&
-                        dbCache.ThumbnailHeight >= thumbHeight &&
-                        dbCache.FileUpdatedate >= updateDate)
-                    {
-                        // DBキャッシュを返します。
-                        this.UpdateMemoryCache(dbCache);
-                        return dbCache;
-                    }
+                    // DBキャッシュを返します。
+                    this.UpdateMemoryCache(dbCache);
+                    return dbCache;
                 }
             }
 
