@@ -134,6 +134,17 @@ namespace SWF.Core.ImageAccessor
             return StringUtil.Compare(ex, GIF_FILE_EXTENSION);
         }
 
+        public static bool IsHeicFile(string filePath)
+        {
+            if (string.IsNullOrEmpty(filePath))
+            {
+                return false;
+            }
+
+            var ex = FileUtil.GetExtensionFastStack(filePath);
+            return StringUtil.Compare(ex, HEIC_FILE_EXTENSION);
+        }
+
         public static bool IsHeifFile(string filePath)
         {
             if (string.IsNullOrEmpty(filePath))
@@ -142,8 +153,7 @@ namespace SWF.Core.ImageAccessor
             }
 
             var ex = FileUtil.GetExtensionFastStack(filePath);
-            return StringUtil.Compare(ex, HEIC_FILE_EXTENSION)
-                || StringUtil.Compare(ex, HEIF_FILE_EXTENSION);
+            return StringUtil.Compare(ex, HEIF_FILE_EXTENSION);
         }
 
         public static bool IsIconFile(string filePath)
@@ -274,6 +284,7 @@ namespace SWF.Core.ImageAccessor
                 catch (ImageUtilException ex)
                 {
                     Logger.Error(ex);
+                    Console.WriteLine(ex.Message);
                     using (var bmp = ReadImageFile(filePath))
                     {
                         return bmp.Size;
@@ -305,13 +316,17 @@ namespace SWF.Core.ImageAccessor
                                 return size;
                             }
                         }
-                        else if (ImageUtil.IsHeifFile(formatName))
-                        {
-                            return LibHeifSharpUtil.GetImageSize(fs);
-                        }
                         else if (ImageUtil.IsGifFile(formatName))
                         {
                             return SixLaborsUtil.GetImageSize(fs);
+                        }
+                        else if (ImageUtil.IsHeicFile(formatName))
+                        {
+                            return LibHeifSharpUtil.GetImageSize(fs);
+                        }
+                        else if (ImageUtil.IsHeifFile(formatName))
+                        {
+                            return LibHeifSharpUtil.GetImageSize(fs);
                         }
                         else if (ImageUtil.IsJpegFile(formatName))
                         {
@@ -463,17 +478,18 @@ namespace SWF.Core.ImageAccessor
             {
                 try
                 {
-                    return ReadImageFileFromFileStream(filePath);
+                    return ReadImageFileWithVarious(filePath);
                 }
                 catch (ImageUtilException ex)
                 {
                     Logger.Error(ex);
-                    return ReadImageFileFromFilePath(filePath);
+                    ConsoleUtil.Write(ex.Message);
+                    return ReadImageFileFromImageMagick(filePath);
                 }
             }
         }
 
-        private static Bitmap ReadImageFileFromFileStream(string filePath)
+        private static Bitmap ReadImageFileWithVarious(string filePath)
         {
             try
             {
@@ -492,7 +508,7 @@ namespace SWF.Core.ImageAccessor
                     {
                         using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFileFromFileStream: Svg"))
                         {
-                            return MagickUtil.ReadImageFile(fs);
+                            return MagickUtil.ReadImageFile(fs, ImageMagick.MagickFormat.Svg);
                         }
                     }
 
@@ -518,11 +534,18 @@ namespace SWF.Core.ImageAccessor
                             return ConvertIfGrayscale((Bitmap)Bitmap.FromStream(fs, false, true), fs);
                         }
                     }
+                    else if (ImageUtil.IsHeicFile(formatName))
+                    {
+                        using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFileFromFileStream: Heic"))
+                        {
+                            return ConvertIfGrayscale(MagickUtil.ReadImageFile(fs, ImageMagick.MagickFormat.Heic), fs);
+                        }
+                    }
                     else if (ImageUtil.IsHeifFile(formatName))
                     {
                         using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFileFromFileStream: Heif"))
                         {
-                            return ConvertIfGrayscale(MagickUtil.ReadImageFile(fs), fs);
+                            return ConvertIfGrayscale(MagickUtil.ReadImageFile(fs, ImageMagick.MagickFormat.Heif), fs);
                         }
                     }
                     else if (ImageUtil.IsJpegFile(formatName))
@@ -616,7 +639,7 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
-        private static Bitmap ReadImageFileFromFilePath(string filePath)
+        private static Bitmap ReadImageFileFromImageMagick(string filePath)
         {
             try
             {

@@ -7,9 +7,9 @@ namespace SWF.Core.ImageAccessor
     [SupportedOSPlatform("windows10.0.17763.0")]
     internal static class MagickUtil
     {
-        public static Bitmap ReadImageFile(Stream stream)
+        public static Bitmap ReadImageFile(Stream stream, MagickFormat format)
         {
-            using (var image = new MagickImage(stream))
+            using (var image = new MagickImage(stream, format))
             {
                 return image.ToBitmap();
             }
