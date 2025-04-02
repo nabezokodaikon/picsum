@@ -20,7 +20,8 @@ namespace PicSum.Job.Logics
 
         }
 
-        public FileDeepInfoEntity Execute(string filePath, Size thumbSize, bool isReadThumbnail)
+        public FileDeepInfoEntity Get(
+            string filePath, Size thumbSize, bool isReadThumbnail)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
@@ -29,134 +30,201 @@ namespace PicSum.Job.Logics
                 return FileDeepInfoEntity.ERROR;
             }
 
+            if (FileUtil.IsExistsFile(filePath))
+            {
+                return this.GetFileInfo(
+                    filePath, thumbSize, isReadThumbnail);
+            }
+            else if (FileUtil.IsExistsDirectory(filePath))
+            {
+                return this.GetDirectoryInfo(
+                    filePath, thumbSize, isReadThumbnail);
+            }
+            else if (FileUtil.IsExistsDrive(filePath))
+            {
+                return this.GetDriveInfo(filePath);
+            }
+            else if (FileUtil.IsSystemRoot(filePath))
+            {
+                return this.GetSystemRootInfo();
+            }
+
+            throw new ArgumentException(
+                $"不正なファイルパスです。'{filePath}'", nameof(filePath));
+        }
+
+        private FileDeepInfoEntity GetSystemRootInfo()
+        {
+            return new FileDeepInfoEntity
+            {
+                FilePath = FileUtil.ROOT_DIRECTORY_PATH,
+                FileName = FileUtil.ROOT_DIRECTORY_NAME,
+                FileType = FileUtil.ROOT_DIRECTORY_TYPE_NAME,
+                UpdateDate = FileUtil.ROOT_DIRECTORY_DATETIME,
+                IsFile = false,
+                IsImageFile = false,
+                FileSize = 0,
+                FileIcon = Instance<IFileIconCacher>.Value.LargePCIcon,
+                ImageSize = ImageUtil.EMPTY_SIZE,
+            };
+        }
+
+        private FileDeepInfoEntity GetDriveInfo(string filePath)
+        {
+            return new FileDeepInfoEntity
+            {
+                FilePath = filePath,
+                FileName = FileUtil.GetFileName(filePath),
+                FileType = FileUtil.GetTypeName(filePath),
+                UpdateDate = FileUtil.GetUpdateDate(filePath),
+                IsFile = false,
+                IsImageFile = false,
+                FileSize = 0,
+                FileIcon = Instance<IFileIconCacher>.Value.GetJumboDriveIcon(filePath),
+                ImageSize = ImageUtil.EMPTY_SIZE,
+            };
+        }
+
+        private FileDeepInfoEntity GetDirectoryInfo(
+            string filePath, Size thumbSize, bool isReadThumbnail)
+        {
             var info = new FileDeepInfoEntity
             {
                 FilePath = filePath,
                 FileName = FileUtil.GetFileName(filePath),
-                FileType = FileUtil.GetTypeName(filePath)
+                FileType = FileUtil.GetTypeName(filePath),
+                UpdateDate = FileUtil.GetUpdateDate(filePath),
+                IsFile = false,
+                IsImageFile = false,
+                FileSize = 0,
+                FileIcon = Instance<IFileIconCacher>.Value.JumboDirectoryIcon,
             };
 
-            if (FileUtil.IsSystemRoot(filePath))
+            if (!isReadThumbnail)
             {
-                info.UpdateDate = FileUtil.EMPTY_DATETIME;
-                info.IsFile = false;
-                info.IsImageFile = false;
-                info.FileSize = 0;
-                info.FileIcon = Instance<IFileIconCacher>.Value.LargePCIcon;
+                return info;
             }
-            else
+
+            var firstImageFile = ImageUtil.GetFirstImageFilePath(filePath);
+            if (string.IsNullOrEmpty(firstImageFile))
             {
-                info.UpdateDate = FileUtil.GetUpdateDate(filePath);
-                info.IsFile = FileUtil.IsExistsFile(filePath);
-                if (info.IsFile)
+                return info;
+            }
+
+            var srcSize = this.GetImageSize(firstImageFile);
+            if (srcSize == ImageUtil.EMPTY_SIZE)
+            {
+                return info;
+            }
+
+            this.CheckCancel();
+
+            info.ImageSize = new(srcSize.Width, srcSize.Height);
+
+            using (var cvImage = this.ReadImageFile(firstImageFile))
+            {
+                this.CheckCancel();
+
+                Bitmap? thumbnail = null;
+                try
                 {
-                    info.IsImageFile = ImageUtil.IsImageFile(filePath);
-                    info.FileSize = FileUtil.GetFileSize(filePath);
-                    info.FileIcon = Instance<IFileIconCacher>.Value.GetJumboFileIcon(filePath);
+                    thumbnail = ThumbnailUtil.CreateThumbnail(
+                        cvImage,
+                        Math.Max(cvImage.Width, cvImage.Height),
+                        ImageSizeMode.Original);
+
+                    this.CheckCancel();
+
+                    info.Thumbnail = new()
+                    {
+                        FilePath = info.FilePath,
+                        FileUpdatedate = info.UpdateDate,
+                        ThumbnailImage = thumbnail,
+                        ThumbnailWidth = thumbSize.Width,
+                        ThumbnailHeight = thumbSize.Height,
+                        SourceWidth = srcSize.Width,
+                        SourceHeight = srcSize.Height,
+                    };
                 }
-                else
+                catch (JobCancelException)
                 {
-                    info.IsImageFile = false;
-                    info.FileSize = 0;
-                    if (FileUtil.IsExistsDrive(filePath))
-                    {
-                        info.FileIcon = Instance<IFileIconCacher>.Value.GetJumboDriveIcon(filePath);
-                    }
-                    else if (FileUtil.IsExistsDirectory(filePath))
-                    {
-                        info.FileIcon = Instance<IFileIconCacher>.Value.JumboDirectoryIcon;
-                    }
-                    else
-                    {
-                        info.FileIcon = null;
-                    }
+                    thumbnail?.Dispose();
+                    throw;
                 }
+            }
 
-                if (info.IsImageFile && isReadThumbnail)
+            return info;
+        }
+
+        private FileDeepInfoEntity GetFileInfo(
+            string filePath, Size thumbSize, bool isReadThumbnail)
+        {
+            var info = new FileDeepInfoEntity
+            {
+                FilePath = filePath,
+                FileName = FileUtil.GetFileName(filePath),
+                FileType = FileUtil.GetTypeName(filePath),
+                UpdateDate = FileUtil.GetUpdateDate(filePath),
+                IsFile = true,
+                FileSize = FileUtil.GetFileSize(filePath),
+                FileIcon = Instance<IFileIconCacher>.Value.GetJumboFileIcon(filePath),
+            };
+
+            var isImageFile = ImageUtil.IsImageFile(filePath);
+            if (!isImageFile)
+            {
+                info.IsImageFile = false;
+                return info;
+            }
+
+            if (!isReadThumbnail)
+            {
+                info.IsImageFile = true;
+                return info;
+            }
+
+            var srcSize = this.GetImageSize(filePath);
+            if (srcSize == ImageUtil.EMPTY_SIZE)
+            {
+                info.IsImageFile = true;
+                info.ImageSize = srcSize;
+                return info;
+            }
+
+            this.CheckCancel();
+
+            info.IsImageFile = true;
+            info.ImageSize = new(srcSize.Width, srcSize.Height);
+
+            using (var cvImage = this.ReadImageFile(filePath))
+            {
+                this.CheckCancel();
+
+                Bitmap? thumbnail = null;
+                try
                 {
-                    var srcSize = this.GetImageSize(filePath);
-                    if (srcSize != ImageUtil.EMPTY_SIZE)
+                    thumbnail = ThumbnailUtil.CreateThumbnail(
+                        cvImage,
+                        Math.Max(thumbSize.Width, thumbSize.Height),
+                        ImageSizeMode.Original);
+
+                    this.CheckCancel();
+
+                    info.Thumbnail = new()
                     {
-                        this.CheckCancel();
-
-                        using (var cvImage = this.ReadImageFile(filePath))
-                        {
-                            this.CheckCancel();
-
-                            Bitmap? thumbnail = null;
-                            try
-                            {
-                                thumbnail = ThumbnailUtil.CreateThumbnail(
-                                    cvImage,
-                                    Math.Max(thumbSize.Width, thumbSize.Height),
-                                    ImageSizeMode.Original);
-
-                                this.CheckCancel();
-
-                                info.Thumbnail = new()
-                                {
-                                    FilePath = info.FilePath,
-                                    FileUpdatedate = info.UpdateDate,
-                                    ThumbnailImage = thumbnail,
-                                    ThumbnailWidth = thumbSize.Width,
-                                    ThumbnailHeight = thumbSize.Height,
-                                    SourceWidth = srcSize.Width,
-                                    SourceHeight = srcSize.Height
-                                };
-                                info.ImageSize = new(srcSize.Width, srcSize.Height);
-                            }
-                            catch (JobCancelException)
-                            {
-                                thumbnail?.Dispose();
-                                throw;
-                            }
-                        }
-                    }
+                        FilePath = info.FilePath,
+                        FileUpdatedate = info.UpdateDate,
+                        ThumbnailImage = thumbnail,
+                        ThumbnailWidth = thumbSize.Width,
+                        ThumbnailHeight = thumbSize.Height,
+                        SourceWidth = srcSize.Width,
+                        SourceHeight = srcSize.Height
+                    };
                 }
-                else if (!info.IsFile && isReadThumbnail)
+                catch (JobCancelException)
                 {
-                    var firstImageFile = ImageUtil.GetFirstImageFilePath(filePath);
-                    if (!string.IsNullOrEmpty(firstImageFile))
-                    {
-                        var srcSize = this.GetImageSize(firstImageFile);
-                        if (srcSize != ImageUtil.EMPTY_SIZE)
-                        {
-                            this.CheckCancel();
-
-                            using (var cvImage = this.ReadImageFile(firstImageFile))
-                            {
-                                this.CheckCancel();
-
-                                Bitmap? thumbnail = null;
-                                try
-                                {
-                                    thumbnail = ThumbnailUtil.CreateThumbnail(
-                                        cvImage,
-                                        Math.Max(cvImage.Width, cvImage.Height),
-                                        ImageSizeMode.Original);
-
-                                    this.CheckCancel();
-
-                                    info.Thumbnail = new()
-                                    {
-                                        FilePath = info.FilePath,
-                                        FileUpdatedate = info.UpdateDate,
-                                        ThumbnailImage = thumbnail,
-                                        ThumbnailWidth = thumbSize.Width,
-                                        ThumbnailHeight = thumbSize.Height,
-                                        SourceWidth = srcSize.Width,
-                                        SourceHeight = srcSize.Height,
-                                    };
-                                    info.ImageSize = new(srcSize.Width, srcSize.Height);
-                                }
-                                catch (JobCancelException)
-                                {
-                                    thumbnail?.Dispose();
-                                    throw;
-                                }
-                            }
-                        }
-                    }
+                    thumbnail?.Dispose();
+                    throw;
                 }
             }
 

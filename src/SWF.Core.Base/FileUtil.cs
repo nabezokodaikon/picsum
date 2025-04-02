@@ -10,9 +10,8 @@ namespace SWF.Core.Base
     [SupportedOSPlatform("windows10.0.17763.0")]
     public static class FileUtil
     {
-        private const string ROOT_DIRECTORY_NAME = "PC";
-        private const string ROOT_DIRECTORY_TYPE_NAME = "System root";
-
+        public const string ROOT_DIRECTORY_NAME = "PC";
+        public const string ROOT_DIRECTORY_TYPE_NAME = "System root";
         public const string ROOT_DIRECTORY_PATH = "36f780fdbda5b2b2ce85c9ebb57086d1880ae757";
 
         public static readonly DateTime ROOT_DIRECTORY_DATETIME = DateTime.MinValue;

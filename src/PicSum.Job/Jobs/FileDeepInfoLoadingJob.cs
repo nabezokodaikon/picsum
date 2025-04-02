@@ -33,7 +33,7 @@ namespace PicSum.Job.Jobs
                 {
                     var deepInfoGetLogic = new FileDeepInfoGetLogic(this);
                     var filePath = param.FilePathList[0];
-                    result.FileInfo = deepInfoGetLogic.Execute(filePath, param.ThumbnailSize, false);
+                    result.FileInfo = deepInfoGetLogic.Get(filePath, param.ThumbnailSize, false);
 
                     this.CheckCancel();
                 }
