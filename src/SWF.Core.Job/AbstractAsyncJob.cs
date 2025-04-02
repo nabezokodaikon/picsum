@@ -79,7 +79,7 @@ namespace SWF.Core.Job
 
         internal override void ExecuteWrapper()
         {
-            if (this.Parameter != null && !this.Parameter.Equals(default(TParameter)))
+            if (this.Parameter != null)
             {
                 this.Execute(this.Parameter);
             }
