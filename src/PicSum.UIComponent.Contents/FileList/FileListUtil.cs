@@ -94,12 +94,6 @@ namespace PicSum.UIComponent.Contents.FileList
                         var sortImageFiles = GetSortFiles(imageFiles, param.SortInfo)
                             .Select(fileInfo => fileInfo.FilePath)
                             .ToArray();
-
-                        if (!ImageUtil.IsImageFile(param.SelectedFilePath))
-                        {
-                            throw new SWFException($"画像ファイルが選択されていません。'{param.SelectedFilePath}'");
-                        }
-
                         var eventArgs = new GetImageFilesEventArgs(
                             sortImageFiles, param.SelectedFilePath, param.PageTitle, param.PageIcon);
                         param.OnGetImageFiles(eventArgs);
@@ -122,11 +116,6 @@ namespace PicSum.UIComponent.Contents.FileList
                 Instance<JobCaller>.Value.FilesGetByDirectoryJob.Value
                     .StartJob(sender, jobParameter, e =>
                     {
-                        if (!ImageUtil.IsImageFile(param.SelectedFilePath))
-                        {
-                            throw new SWFException($"画像ファイルが選択されていません。'{param.SelectedFilePath}'");
-                        }
-
                         var title = FileUtil.GetFileName(FileUtil.GetParentDirectoryPath(param.SelectedFilePath));
 
                         var imageFiles = e.FileInfoList
@@ -162,12 +151,6 @@ namespace PicSum.UIComponent.Contents.FileList
                         var sortImageFiles = GetSortFiles(imageFiles, param.SortInfo)
                             .Select(fileInfo => fileInfo.FilePath)
                             .ToArray();
-
-                        if (!ImageUtil.IsImageFile(param.SelectedFilePath))
-                        {
-                            throw new SWFException($"画像ファイルが選択されていません。'{param.SelectedFilePath}'");
-                        }
-
                         var eventArgs = new GetImageFilesEventArgs(
                             sortImageFiles, param.SelectedFilePath, param.PageTitle, param.PageIcon);
                         param.OnGetImageFiles(eventArgs);
@@ -195,12 +178,6 @@ namespace PicSum.UIComponent.Contents.FileList
                         var sortImageFiles = GetSortFiles(imageFiles, param.SortInfo)
                             .Select(fileInfo => fileInfo.FilePath)
                             .ToArray();
-
-                        if (!ImageUtil.IsImageFile(param.SelectedFilePath))
-                        {
-                            throw new SWFException($"画像ファイルが選択されていません。'{param.SelectedFilePath}'");
-                        }
-
                         var eventArgs = new GetImageFilesEventArgs(
                             sortImageFiles, param.SelectedFilePath, param.PageTitle, param.PageIcon);
                         param.OnGetImageFiles(eventArgs);
