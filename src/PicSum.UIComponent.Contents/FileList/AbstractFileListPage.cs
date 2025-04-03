@@ -167,48 +167,46 @@ namespace PicSum.UIComponent.Contents.FileList
 
         public override void RedrawPage(float scale)
         {
-            if (this.scale == scale)
+            if (this.scale != scale)
             {
-                return;
+                this.scale = scale;
+                var baseHeigth = this.Height - 8;
+
+                this.toolBar.SuspendLayout();
+                this.SuspendLayout();
+
+                this.toolBar.Anchor
+                    = AnchorStyles.Top
+                    | AnchorStyles.Left
+                    | AnchorStyles.Right;
+
+                this.flowList.Anchor
+                    = AnchorStyles.Top
+                    | AnchorStyles.Left
+                    | AnchorStyles.Right
+                    | AnchorStyles.Bottom;
+
+                this.toolBar.SetBounds(
+                    0,
+                    0,
+                    this.Width,
+                    (int)(TOOL_BAR_DEFAULT_BOUNDS.Height * this.scale));
+
+                this.flowList.SetBounds(
+                    0,
+                    this.toolBar.Bottom,
+                    this.Width,
+                    baseHeigth - this.toolBar.Bottom);
+
+                this.toolBar.SetControlsBounds(scale);
+
+                this.SetFlowListItemSize();
+
+                this.toolBar.ResumeLayout(false);
+                this.ResumeLayout(false);
             }
 
-            this.scale = scale;
-            var baseHeigth = this.Height - 8;
-
-            this.toolBar.SuspendLayout();
-            this.SuspendLayout();
-
-            this.toolBar.Anchor
-                = AnchorStyles.Top
-                | AnchorStyles.Left
-                | AnchorStyles.Right;
-
-            this.flowList.Anchor
-                = AnchorStyles.Top
-                | AnchorStyles.Left
-                | AnchorStyles.Right
-                | AnchorStyles.Bottom;
-
-            this.toolBar.SetBounds(
-                0,
-                0,
-                this.Width,
-                (int)(TOOL_BAR_DEFAULT_BOUNDS.Height * this.scale));
-
-            this.flowList.SetBounds(
-                0,
-                this.toolBar.Bottom,
-                this.Width,
-                baseHeigth - this.toolBar.Bottom);
-
             this.flowList.SetDrawParameter(true);
-
-            this.toolBar.SetControlsBounds(scale);
-
-            this.SetFlowListItemSize();
-
-            this.toolBar.ResumeLayout(false);
-            this.ResumeLayout(false);
         }
 
         public override void StopPageDraw()
