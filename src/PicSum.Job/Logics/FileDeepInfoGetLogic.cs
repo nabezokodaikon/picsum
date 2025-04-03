@@ -1,3 +1,4 @@
+using PicSum.Job.Common;
 using PicSum.Job.Entities;
 using SWF.Core.Base;
 using SWF.Core.ImageAccessor;
@@ -121,37 +122,20 @@ namespace PicSum.Job.Logics
 
             info.ImageSize = new(srcSize.Width, srcSize.Height);
 
-            using (var cvImage = this.ReadImageFile(firstImageFile))
+            var thumbnail = this.GetThumbnail(firstImageFile, thumbSize);
+
+            this.CheckCancel();
+
+            info.Thumbnail = new()
             {
-                this.CheckCancel();
-
-                Bitmap? thumbnail = null;
-                try
-                {
-                    thumbnail = ThumbnailUtil.CreateThumbnail(
-                        cvImage,
-                        Math.Max(cvImage.Width, cvImage.Height),
-                        ImageSizeMode.Original);
-
-                    this.CheckCancel();
-
-                    info.Thumbnail = new()
-                    {
-                        FilePath = info.FilePath,
-                        FileUpdatedate = info.UpdateDate,
-                        ThumbnailImage = thumbnail,
-                        ThumbnailWidth = thumbSize.Width,
-                        ThumbnailHeight = thumbSize.Height,
-                        SourceWidth = srcSize.Width,
-                        SourceHeight = srcSize.Height,
-                    };
-                }
-                catch (JobCancelException)
-                {
-                    thumbnail?.Dispose();
-                    throw;
-                }
-            }
+                FilePath = info.FilePath,
+                FileUpdatedate = info.UpdateDate,
+                ThumbnailImage = thumbnail,
+                ThumbnailWidth = thumbSize.Width,
+                ThumbnailHeight = thumbSize.Height,
+                SourceWidth = srcSize.Width,
+                SourceHeight = srcSize.Height,
+            };
 
             return info;
         }
@@ -196,37 +180,20 @@ namespace PicSum.Job.Logics
             info.IsImageFile = true;
             info.ImageSize = new(srcSize.Width, srcSize.Height);
 
-            using (var cvImage = this.ReadImageFile(filePath))
+            var thumbnail = this.GetThumbnail(filePath, thumbSize);
+
+            this.CheckCancel();
+
+            info.Thumbnail = new()
             {
-                this.CheckCancel();
-
-                Bitmap? thumbnail = null;
-                try
-                {
-                    thumbnail = ThumbnailUtil.CreateThumbnail(
-                        cvImage,
-                        Math.Max(thumbSize.Width, thumbSize.Height),
-                        ImageSizeMode.Original);
-
-                    this.CheckCancel();
-
-                    info.Thumbnail = new()
-                    {
-                        FilePath = info.FilePath,
-                        FileUpdatedate = info.UpdateDate,
-                        ThumbnailImage = thumbnail,
-                        ThumbnailWidth = thumbSize.Width,
-                        ThumbnailHeight = thumbSize.Height,
-                        SourceWidth = srcSize.Width,
-                        SourceHeight = srcSize.Height
-                    };
-                }
-                catch (JobCancelException)
-                {
-                    thumbnail?.Dispose();
-                    throw;
-                }
-            }
+                FilePath = info.FilePath,
+                FileUpdatedate = info.UpdateDate,
+                ThumbnailImage = thumbnail,
+                ThumbnailWidth = thumbSize.Width,
+                ThumbnailHeight = thumbSize.Height,
+                SourceWidth = srcSize.Width,
+                SourceHeight = srcSize.Height
+            };
 
             return info;
         }
@@ -249,7 +216,38 @@ namespace PicSum.Job.Logics
             }
         }
 
-        internal CvImage ReadImageFile(string filePath)
+        private Bitmap GetThumbnail(string filePath, Size thumbSize)
+        {
+            var cache = Instance<IThumbnailCacher>.Value.GetOnlyCache(filePath);
+            if (cache != ThumbnailCacheEntity.EMPTY
+                && cache.ThumbnailBuffer != null
+                && cache.ThumbnailWidth >= thumbSize.Width
+                && cache.ThumbnailHeight >= thumbSize.Height)
+            {
+                return ThumbnailUtil.ToImage(cache.ThumbnailBuffer);
+            }
+
+            using (var cvImage = this.ReadImageFile(filePath))
+            {
+                this.CheckCancel();
+
+                Bitmap? thumbnail = null;
+                try
+                {
+                    return ThumbnailUtil.CreateThumbnail(
+                        cvImage,
+                        Math.Max(thumbSize.Width, thumbSize.Height),
+                        ImageSizeMode.Original);
+                }
+                catch (JobCancelException)
+                {
+                    thumbnail?.Dispose();
+                    throw;
+                }
+            }
+        }
+
+        private CvImage ReadImageFile(string filePath)
         {
             try
             {

@@ -234,8 +234,8 @@ namespace PicSum.UIComponent.InfoPanel
                 {
                     FilePathList = filePathList,
                     ThumbnailSize = new Size(
-                        (int)(AppConstants.INFOPANEL_WIDTH * scale),
-                        (int)(AppConstants.INFOPANEL_WIDTH * scale))
+                        AppConstants.THUMBNAIL_MAXIMUM_SIZE,
+                        AppConstants.THUMBNAIL_MAXIMUM_SIZE)
                 };
 
                 this.isLoading = true;

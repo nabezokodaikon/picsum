@@ -839,12 +839,9 @@ namespace PicSum.UIComponent.Contents.FileList
                 e.DrawLastItemIndex > -1 &&
                 e.DrawLastItemIndex < this.filterFilePathList.Length)
             {
-                var thumbnailWidth = this.flowList.ItemWidth - this.flowList.ItemSpace * 2;
-                var thumbnailHeight = this.IsShowFileName switch
-                {
-                    true => this.flowList.ItemHeight - this.flowList.ItemSpace * 2 - this.GetItemTextHeight(),
-                    _ => this.flowList.ItemHeight - this.flowList.ItemSpace * 2,
-                };
+                var thumbSize = Math.Min(
+                    this.flowList.ItemWidth,
+                    this.flowList.ItemHeight);
 
                 var fileList = this.filterFilePathList.Where((file, index) =>
                 {
@@ -858,8 +855,8 @@ namespace PicSum.UIComponent.Contents.FileList
                     {
                         return true;
                     }
-                    else if (info.ThumbnailWidth < thumbnailWidth
-                            || info.ThumbnailHeight < thumbnailHeight)
+                    else if (info.ThumbnailWidth < thumbSize
+                            || info.ThumbnailHeight < thumbSize)
                     {
                         return true;
                     }
@@ -877,8 +874,8 @@ namespace PicSum.UIComponent.Contents.FileList
                     FilePathList = fileList,
                     FirstIndex = 0,
                     LastIndex = fileList.Length - 1,
-                    ThumbnailWidth = thumbnailWidth,
-                    ThumbnailHeight = thumbnailHeight,
+                    ThumbnailWidth = thumbSize,
+                    ThumbnailHeight = thumbSize,
                 };
 
                 Instance<JobCaller>.Value.ThumbnailsGetJob.Value

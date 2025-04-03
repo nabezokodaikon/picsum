@@ -74,13 +74,9 @@ namespace PicSum.Job.Logics
             }
 
             var thumbnailBuffer = Instance<IThumbnailCacher>.Value.GetOnlyCache(filePath);
-            if (thumbnailBuffer != ThumbnailCacheEntity.EMPTY)
+            if (thumbnailBuffer != ThumbnailCacheEntity.EMPTY
+                && thumbnailBuffer.ThumbnailBuffer != null)
             {
-                if (thumbnailBuffer.ThumbnailBuffer == null)
-                {
-                    throw new NullReferenceException("サムネイルのバッファがNullです。");
-                }
-
                 info.ThumbnailImage = ThumbnailUtil.ToImage(thumbnailBuffer.ThumbnailBuffer);
                 info.ThumbnailWidth = thumbnailBuffer.ThumbnailWidth;
                 info.ThumbnailHeight = thumbnailBuffer.ThumbnailHeight;
@@ -117,19 +113,14 @@ namespace PicSum.Job.Logics
             }
 
             var thumbnailBuffer = Instance<IThumbnailCacher>.Value.GetOnlyCache(filePath);
-            if (thumbnailBuffer != ThumbnailCacheEntity.EMPTY)
+            if (thumbnailBuffer != ThumbnailCacheEntity.EMPTY
+                && thumbnailBuffer.ThumbnailBuffer != null)
             {
-                if (thumbnailBuffer.ThumbnailBuffer == null)
-                {
-                    throw new NullReferenceException("サムネイルのバッファがNullです。");
-                }
-
                 info.ThumbnailImage = ThumbnailUtil.ToImage(thumbnailBuffer.ThumbnailBuffer);
                 info.ThumbnailWidth = thumbnailBuffer.ThumbnailWidth;
                 info.ThumbnailHeight = thumbnailBuffer.ThumbnailHeight;
                 info.SourceWidth = thumbnailBuffer.SourceWidth;
                 info.SourceHeight = thumbnailBuffer.SourceHeight;
-
                 return info;
             }
             else
