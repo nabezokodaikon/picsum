@@ -73,7 +73,7 @@ namespace PicSum.Job.Logics
                 return info;
             }
 
-            var thumbnailBuffer = Instance<IThumbnailCacher>.Value.GetOnlyCache(filePath);
+            var thumbnailBuffer = Instance<IThumbnailCacher>.Value.GetCache(filePath);
             if (thumbnailBuffer != ThumbnailCacheEntity.EMPTY
                 && thumbnailBuffer.ThumbnailBuffer != null)
             {
@@ -112,7 +112,7 @@ namespace PicSum.Job.Logics
                 return info;
             }
 
-            var thumbnailBuffer = Instance<IThumbnailCacher>.Value.GetOnlyCache(filePath);
+            var thumbnailBuffer = Instance<IThumbnailCacher>.Value.GetCache(filePath);
             if (thumbnailBuffer != ThumbnailCacheEntity.EMPTY
                 && thumbnailBuffer.ThumbnailBuffer != null)
             {

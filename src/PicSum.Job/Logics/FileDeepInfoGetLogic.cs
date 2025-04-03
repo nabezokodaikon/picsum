@@ -218,7 +218,7 @@ namespace PicSum.Job.Logics
 
         private Bitmap GetThumbnail(string filePath, Size thumbSize)
         {
-            var cache = Instance<IThumbnailCacher>.Value.GetOnlyCache(filePath);
+            var cache = Instance<IThumbnailCacher>.Value.GetCache(filePath);
             if (cache != ThumbnailCacheEntity.EMPTY
                 && cache.ThumbnailBuffer != null
                 && cache.ThumbnailWidth >= thumbSize.Width

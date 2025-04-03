@@ -55,17 +55,17 @@ namespace PicSum.Job.Common
             this.disposed = true;
         }
 
-        public ThumbnailCacheEntity GetOnlyCache(string filePath)
+        public ThumbnailCacheEntity GetCache(string filePath)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
             if (FileUtil.IsExistsFile(filePath) && ImageUtil.IsImageFile(filePath))
             {
-                return this.GetOnlyFileCache(filePath);
+                return this.GetFileCache(filePath);
             }
             else if (FileUtil.IsExistsDirectory(filePath))
             {
-                return this.GetOnlyDirectoryCache(filePath);
+                return this.GetDirectoryCache(filePath);
             }
             else if (FileUtil.IsSystemRoot(filePath))
             {
@@ -128,7 +128,7 @@ namespace PicSum.Job.Common
             }
         }
 
-        private ThumbnailCacheEntity GetOnlyFileCache(string filePath)
+        private ThumbnailCacheEntity GetFileCache(string filePath)
         {
             var memCache = this.GetMemoryCache(filePath);
             if (memCache != ThumbnailCacheEntity.EMPTY)
@@ -158,9 +158,9 @@ namespace PicSum.Job.Common
             return ThumbnailCacheEntity.EMPTY;
         }
 
-        private ThumbnailCacheEntity GetOnlyDirectoryCache(string directoryPath)
+        private ThumbnailCacheEntity GetDirectoryCache(string directoryPath)
         {
-            return this.GetOnlyFileCache(directoryPath);
+            return this.GetFileCache(directoryPath);
         }
 
         private ThumbnailCacheEntity GetOrCreateFileCache(string filePath, int thumbWidth, int thumbHeight)
