@@ -559,9 +559,9 @@ namespace PicSum.Job.Common
 
             lock (this.CACHE_LOCK)
             {
-                if (this.CACHE_DICTIONARY.TryGetValue(thumb.FilePath, out var dicCache))
+                if (this.CACHE_DICTIONARY.TryGetValue(thumb.FilePath, out var oldCache))
                 {
-                    this.CACHE_LIST.Remove(dicCache);
+                    this.CACHE_LIST.RemoveAll(_ => _.FilePath == oldCache.FilePath);
                     this.CACHE_LIST.Add(thumb);
                     this.CACHE_DICTIONARY[thumb.FilePath] = thumb;
                 }
@@ -569,9 +569,9 @@ namespace PicSum.Job.Common
                 {
                     if (this.CACHE_LIST.Count == this.CACHE_LIST.Capacity)
                     {
-                        var Cache = this.CACHE_LIST[0];
-                        this.CACHE_LIST.Remove(Cache);
-                        this.CACHE_DICTIONARY.Remove(thumb.FilePath);
+                        var firstCache = this.CACHE_LIST[0];
+                        this.CACHE_LIST.RemoveAt(0);
+                        this.CACHE_DICTIONARY.Remove(firstCache.FilePath);
                     }
 
                     this.CACHE_LIST.Add(thumb);
