@@ -71,25 +71,6 @@ namespace SWF.Core.Base
             return scale;
         }
 
-        private static string GetExecutableDirectory()
-        {
-            ConsoleUtil.Write($"AppConstants.GetExecutableDirectory Start");
-            try
-            {
-                var executableDirectory = Directory.GetParent(Application.ExecutablePath);
-                if (executableDirectory == null)
-                {
-                    throw new NullReferenceException("実行ディレクトリが取得できません。");
-                }
-
-                return executableDirectory.FullName;
-            }
-            finally
-            {
-                ConsoleUtil.Write($"AppConstants.GetExecutableDirectory End");
-            }
-        }
-
         private static string GetApplicationDirectory()
         {
             if (AppConstants.IsRunningAsUwp())
