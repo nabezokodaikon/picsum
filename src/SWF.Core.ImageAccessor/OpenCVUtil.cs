@@ -43,7 +43,7 @@ namespace SWF.Core.ImageAccessor
         {
             ArgumentNullException.ThrowIfNull(stream, nameof(stream));
 
-            using (TimeMeasuring.Run(false, "OpenCVUtil.Convert"))
+            using (TimeMeasuring.Run(false, "OpenCVUtil.ReadImageFile"))
             {
                 stream.Seek(0, SeekOrigin.Begin);
                 using (var mat = Mat.FromStream(stream, ImreadModes.Color))

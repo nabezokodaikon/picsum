@@ -924,6 +924,7 @@ namespace SWF.Core.ImageAccessor
             if (bmp.PixelFormat == PixelFormat.Format4bppIndexed
                 || bmp.PixelFormat == PixelFormat.Format8bppIndexed)
             {
+                using (TimeMeasuring.Run(true, "ImageUtil.ConvertIfGrayscale"))
                 using (bmp)
                 {
                     var convBmp = OpenCVUtil.ReadImageFile(fs);

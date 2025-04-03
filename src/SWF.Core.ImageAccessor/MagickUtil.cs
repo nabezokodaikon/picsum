@@ -23,31 +23,11 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
-        public static void SaveFile(
-            string srcFilePath, string destFilePath, MagickFormat format, uint quality)
-        {
-            using (var srcImage = new MagickImage(srcFilePath))
-            {
-                srcImage.Format = format;
-                srcImage.Quality = quality;
-                srcImage.Write(destFilePath);
-            }
-        }
-
         public static MagickFormat DetectFormat(string filePath)
         {
             using (TimeMeasuring.Run(false, "MagickUtil.DetectFormatFromFilePath"))
             {
                 var info = new MagickImageInfo(filePath);
-                return info.Format;
-            }
-        }
-
-        public static MagickFormat DetectFormat(Stream fs)
-        {
-            using (TimeMeasuring.Run(false, "MagickUtil.DetectFormatFromStream"))
-            {
-                var info = new MagickImageInfo(fs);
                 return info.Format;
             }
         }
