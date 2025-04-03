@@ -14,8 +14,6 @@ namespace PicSum.Job.Logics
     internal sealed class FileShallowInfoGetLogic(IAsyncJob job)
         : AbstractAsyncLogic(job)
     {
-        private const int THUMBNAIL_SIZE = 248;
-
         public FileShallowInfoEntity Get(
             string filePath, bool isGetThumbnail, DateTime registrationDate)
         {
@@ -75,8 +73,7 @@ namespace PicSum.Job.Logics
                 return info;
             }
 
-            var thumbnailBuffer = Instance<IThumbnailCacher>.Value.GetOnlyCache(
-                filePath, THUMBNAIL_SIZE, THUMBNAIL_SIZE);
+            var thumbnailBuffer = Instance<IThumbnailCacher>.Value.GetOnlyCache(filePath);
             if (thumbnailBuffer != ThumbnailCacheEntity.EMPTY)
             {
                 if (thumbnailBuffer.ThumbnailBuffer == null)
@@ -119,8 +116,7 @@ namespace PicSum.Job.Logics
                 return info;
             }
 
-            var thumbnailBuffer = Instance<IThumbnailCacher>.Value.GetOnlyCache(
-                filePath, THUMBNAIL_SIZE, THUMBNAIL_SIZE);
+            var thumbnailBuffer = Instance<IThumbnailCacher>.Value.GetOnlyCache(filePath);
             if (thumbnailBuffer != ThumbnailCacheEntity.EMPTY)
             {
                 if (thumbnailBuffer.ThumbnailBuffer == null)

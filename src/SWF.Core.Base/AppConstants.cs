@@ -25,6 +25,8 @@ namespace SWF.Core.Base
         public const string PIPE_NAME = "be752c43";
 
         public const string THUMBNAIL_BUFFER_FILE_EXTENSION = ".thumbnail";
+        public const int THUMBNAIL_MAXIMUM_SIZE = 256;
+        public const int THUMBNAIL_MINIMUM_SIZE = 96;
 
         public static readonly string APPLICATION_DIRECTORY = GetApplicationDirectory();
         public static readonly string LOG_DIRECTORY = Path.Combine(APPLICATION_DIRECTORY, "log");

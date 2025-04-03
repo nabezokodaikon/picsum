@@ -1,4 +1,5 @@
 using PicSum.UIComponent.Contents.ContextMenu;
+using SWF.Core.Base;
 using System;
 using System.Windows.Forms;
 
@@ -73,8 +74,8 @@ namespace PicSum.UIComponent.Contents.FileList
             // toolBar
             // 
             this.toolBar.TabStop = false;
-            this.toolBar.ThumbnailSizeSliderMaximumValue = 256;
-            this.toolBar.ThumbnailSizeSliderMinimumValue = 96;
+            this.toolBar.ThumbnailSizeSliderMaximumValue = AppConstants.THUMBNAIL_MAXIMUM_SIZE;
+            this.toolBar.ThumbnailSizeSliderMinimumValue = AppConstants.THUMBNAIL_MINIMUM_SIZE;
             this.toolBar.ThumbnailSizeSliderValue = 96;
             this.toolBar.NameSortButtonClick += new System.EventHandler(this.SortFileNameToolStripButton_Click);
             this.toolBar.PathSortButtonClick += new System.EventHandler(this.SortFilePathToolStripButton_Click);
