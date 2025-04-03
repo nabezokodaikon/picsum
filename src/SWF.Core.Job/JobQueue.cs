@@ -11,13 +11,14 @@ namespace SWF.Core.Job
 
         private bool disposed = false;
         private readonly string threadName = "JobQueue";
-        private Task? task = null;
-        private CancellationTokenSource? source = null;
+        private readonly Task task = null;
+        private readonly CancellationTokenSource source = null;
         private readonly ConcurrentQueue<AbstractAsyncJob> jobQueue = new();
 
         public JobQueue()
         {
-
+            this.source = new();
+            this.task = Task.Run(() => this.DoWork(this.source.Token));
         }
 
         ~JobQueue()
@@ -70,8 +71,6 @@ namespace SWF.Core.Job
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
             ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
 
-            this.StartTask();
-
             var job = new TJob()
             {
                 Sender = sender,
@@ -86,20 +85,12 @@ namespace SWF.Core.Job
         {
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
 
-            this.StartTask();
-
             var job = new TJob()
             {
                 Sender = sender,
             };
 
             this.jobQueue.Enqueue(job);
-        }
-
-        private void StartTask()
-        {
-            this.source ??= new();
-            this.task ??= Task.Run(() => this.DoWork(this.source.Token));
         }
 
         private void DoWork(CancellationToken token)
