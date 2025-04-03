@@ -567,7 +567,7 @@ namespace PicSum.Job.Common
                 }
                 else
                 {
-                    if (this.CACHE_LIST.Count == this.CACHE_LIST.Capacity)
+                    if (this.CACHE_LIST.Count == CACHE_CAPACITY)
                     {
                         var firstCache = this.CACHE_LIST[0];
                         this.CACHE_LIST.RemoveAt(0);
