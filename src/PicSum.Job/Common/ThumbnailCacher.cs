@@ -306,7 +306,11 @@ namespace PicSum.Job.Common
                         // サムネイルを更新します。
                         var thumb = this.UpdateDBDirectoryCache(
                             directoryPath, thumbWidth, thumbHeight, updateDate);
-                        this.UpdateMemoryCache(thumb);
+                        if (thumb != ThumbnailCacheEntity.EMPTY)
+                        {
+                            this.UpdateMemoryCache(thumb);
+                        }
+
                         return thumb;
                     }
                 }
@@ -316,7 +320,11 @@ namespace PicSum.Job.Common
                     var updateDate = FileUtil.GetUpdateDate(directoryPath);
                     var thumb = this.CreateDBDirectoryCache(
                         directoryPath, thumbWidth, thumbHeight, updateDate);
-                    this.UpdateMemoryCache(thumb);
+                    if (thumb != ThumbnailCacheEntity.EMPTY)
+                    {
+                        this.UpdateMemoryCache(thumb);
+                    }
+
                     return thumb;
                 }
             }
@@ -544,9 +552,9 @@ namespace PicSum.Job.Common
 
         private void UpdateMemoryCache(ThumbnailCacheEntity thumb)
         {
-            if (thumb.FilePath == null)
+            if (thumb == ThumbnailCacheEntity.EMPTY)
             {
-                throw new ArgumentException("サムネイルのファイルパスがNULLです。", nameof(thumb));
+                throw new ArgumentException("サムネイルインスタンスが空です。", nameof(thumb));
             }
 
             lock (this.CACHE_LOCK)
