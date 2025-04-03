@@ -22,20 +22,21 @@ namespace PicSum.Job.Jobs
 
             this.Wait();
 
-            var result = new FileDeepInfoGetResult
-            {
-                FilePathList = param.FilePathList,
-            };
-
             if (param.FilePathList.Length == 1)
             {
+                var result = new FileDeepInfoGetResult
+                {
+                    FilePathList = param.FilePathList,
+                };
+
                 try
                 {
-                    var deepInfoGetLogic = new FileDeepInfoGetLogic(this);
                     var filePath = param.FilePathList[0];
+                    var deepInfoGetLogic = new FileDeepInfoGetLogic(this);
                     result.FileInfo = deepInfoGetLogic.Get(filePath, param.ThumbnailSize, false);
 
                     this.CheckCancel();
+                    this.Callback(result);
                 }
                 catch (JobCancelException)
                 {
@@ -51,10 +52,15 @@ namespace PicSum.Job.Jobs
                     throw new JobException(this.ID, ex);
                 }
             }
-
-            result.TagInfoList = [];
-
-            this.Callback(result);
+            else
+            {
+                var result = new FileDeepInfoGetResult
+                {
+                    FilePathList = param.FilePathList,
+                    TagInfoList = []
+                };
+                this.Callback(result);
+            }
         }
 
         private void Wait()
