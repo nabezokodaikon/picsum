@@ -38,7 +38,7 @@ namespace SWF.Core.Base
 
         public static bool IsRunningAsUwp()
         {
-            ConsoleUtil.Write($"AppConstants.IsRunningAsUwp Start");
+            ConsoleUtil.Write(true, $"AppConstants.IsRunningAsUwp Start");
             try
             {
                 // UWP の場合は Package.Current.Id が利用可能
@@ -51,7 +51,7 @@ namespace SWF.Core.Base
             }
             finally
             {
-                ConsoleUtil.Write($"AppConstants.IsRunningAsUwp End");
+                ConsoleUtil.Write(true, $"AppConstants.IsRunningAsUwp End");
             }
         }
 
@@ -93,7 +93,7 @@ namespace SWF.Core.Base
 
         public static void CreateApplicationDirectories()
         {
-            ConsoleUtil.Write($"AppConstants.CreateApplicationDirectories Start");
+            ConsoleUtil.Write(true, $"AppConstants.CreateApplicationDirectories Start");
 
             if (!FileUtil.IsExistsFileOrDirectory(APPLICATION_DIRECTORY))
             {
@@ -115,7 +115,7 @@ namespace SWF.Core.Base
                 Directory.CreateDirectory(DATABASE_DIRECTORY);
             }
 
-            ConsoleUtil.Write($"AppConstants.CreateApplicationDirectories End");
+            ConsoleUtil.Write(true, $"AppConstants.CreateApplicationDirectories End");
         }
 
         public static Size GetControlBoxSize(IntPtr window)

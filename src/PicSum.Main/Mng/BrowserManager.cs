@@ -54,12 +54,12 @@ namespace PicSum.Main.Mng
 
         private BrowserForm CreateBrowser()
         {
-            ConsoleUtil.Write($"BrowserManager.CreateBrowser Start");
+            ConsoleUtil.Write(true, $"BrowserManager.CreateBrowser Start");
 
             var browser = new BrowserForm(false);
             this.InitializeBrowserDelegate(browser);
 
-            ConsoleUtil.Write($"BrowserManager.CreateBrowser End");
+            ConsoleUtil.Write(true, $"BrowserManager.CreateBrowser End");
 
             return browser;
         }

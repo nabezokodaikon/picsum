@@ -36,7 +36,7 @@ namespace PicSum.Main.UIComponent
 
         protected override void OnHandleCreated(EventArgs e)
         {
-            ConsoleUtil.Write($"InitialForm.OnHandleCreated Start");
+            ConsoleUtil.Write(true, $"InitialForm.OnHandleCreated Start");
 
             base.OnHandleCreated(e);
 
@@ -88,12 +88,12 @@ namespace PicSum.Main.UIComponent
                     form.Focus();
                 });
 
-            ConsoleUtil.Write($"InitialForm.OnHandleCreated Started Jobs");
+            ConsoleUtil.Write(true, $"InitialForm.OnHandleCreated Started Jobs");
 
             var form = this.browserManager.GetActiveBrowser();
             form.Show();
 
-            ConsoleUtil.Write($"InitialForm.OnHandleCreated End");
+            ConsoleUtil.Write(true, $"InitialForm.OnHandleCreated End");
         }
     }
 }

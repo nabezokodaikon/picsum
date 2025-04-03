@@ -43,7 +43,7 @@ namespace PicSum.Main.Conf
 
         public void Load()
         {
-            ConsoleUtil.Write($"Config.Load Start");
+            ConsoleUtil.Write(true, $"Config.Load Start");
 
             if (FileUtil.IsExistsFile(AppConstants.CONFIG_FILE))
             {
@@ -92,7 +92,7 @@ namespace PicSum.Main.Conf
                     = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
             }
 
-            ConsoleUtil.Write($"Config.Load End");
+            ConsoleUtil.Write(true, $"Config.Load End");
         }
     }
 }

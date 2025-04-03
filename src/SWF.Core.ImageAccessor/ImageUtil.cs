@@ -484,7 +484,7 @@ namespace SWF.Core.ImageAccessor
                 catch (ImageUtilException ex)
                 {
                     Logger.Error(ex);
-                    ConsoleUtil.Write(ex.Message);
+                    ConsoleUtil.Write(true, ex.Message);
                     return ReadImageFileFromImageMagick(filePath);
                 }
             }

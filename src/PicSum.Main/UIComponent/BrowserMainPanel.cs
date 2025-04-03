@@ -121,7 +121,7 @@ namespace PicSum.Main.UIComponent
 
         public void SetControlsBounds(float scale)
         {
-            ConsoleUtil.Write($"BrowserMainPanel.SetControlsBounds Start");
+            ConsoleUtil.Write(true, $"BrowserMainPanel.SetControlsBounds Start");
 
             this.toolPanel.SuspendLayout();
             this.toolPanel2.SuspendLayout();
@@ -288,7 +288,7 @@ namespace PicSum.Main.UIComponent
             this.toolPanel2.ResumeLayout(false);
             this.ResumeLayout(false);
 
-            ConsoleUtil.Write($"BrowserMainPanel.SetControlsBounds End");
+            ConsoleUtil.Write(true, $"BrowserMainPanel.SetControlsBounds End");
         }
 
         private void TabSwitch_BeginSetPage(object sender, EventArgs e)
@@ -443,7 +443,7 @@ namespace PicSum.Main.UIComponent
 
         private void OpenPage(IPageParameter param, PageOpenType openType)
         {
-            ConsoleUtil.Write($"BrowserMainPanel.OpenPage Start");
+            ConsoleUtil.Write(true, $"BrowserMainPanel.OpenPage Start");
 
             if (openType == PageOpenType.OverlapTab)
             {
@@ -474,7 +474,7 @@ namespace PicSum.Main.UIComponent
                 throw new Exception("ファイル実行種別が不正です。");
             }
 
-            ConsoleUtil.Write($"BrowserMainPanel.OpenPage End");
+            ConsoleUtil.Write(true, $"BrowserMainPanel.OpenPage End");
         }
 
         private void InsertPage(IPageParameter param, int tabIndex)

@@ -74,7 +74,7 @@ namespace PicSum.UIComponent.Contents.FileList
                     this.SearchJob_Callback(_);
                 });
 
-            ConsoleUtil.Write($"FavoriteDirectoryListPage.OnLoad End");
+            ConsoleUtil.Write(true, $"FavoriteDirectoryListPage.OnLoad End");
 
             base.OnLoad(e);
         }

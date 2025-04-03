@@ -135,7 +135,7 @@ namespace PicSum.Main.UIComponent
 
         protected override void OnHandleCreated(EventArgs e)
         {
-            ConsoleUtil.Write($"BrowserForm.OnHandleCreated");
+            ConsoleUtil.Write(true, $"BrowserForm.OnHandleCreated");
             base.OnHandleCreated(e);
         }
 
@@ -266,7 +266,7 @@ namespace PicSum.Main.UIComponent
                 throw new SWFException("メインコントロールは既に存在しています。");
             }
 
-            ConsoleUtil.Write($"BrowserForm.CreateBrowserMainPanel Start");
+            ConsoleUtil.Write(true, $"BrowserForm.CreateBrowserMainPanel Start");
 
             this.SuspendLayout();
 
@@ -330,7 +330,7 @@ namespace PicSum.Main.UIComponent
             this.SetControlRegion();
             this.ResumeLayout(false);
 
-            ConsoleUtil.Write($"BrowserForm.CreateBrowserMainPanel End");
+            ConsoleUtil.Write(true, $"BrowserForm.CreateBrowserMainPanel End");
         }
 
         private void OnTabDropouted(TabDropoutedEventArgs e)

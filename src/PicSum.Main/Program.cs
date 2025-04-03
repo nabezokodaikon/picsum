@@ -25,7 +25,7 @@ namespace PicSum.Main
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         static void Main()
         {
-            ConsoleUtil.Write($"Program.Main");
+            ConsoleUtil.Write(true, $"Program.Main");
             if (mutex.WaitOne(TimeSpan.Zero, true))
             {
                 try
@@ -100,7 +100,7 @@ namespace PicSum.Main
 
         private static LoggingConfiguration CreateLoggerConfig()
         {
-            ConsoleUtil.Write($"Program.CreateLoggerConfig Start");
+            ConsoleUtil.Write(true, $"Program.CreateLoggerConfig Start");
 
             var config = new LoggingConfiguration();
 
@@ -120,7 +120,7 @@ namespace PicSum.Main
             config.AddRule(LogLevel.Info, LogLevel.Fatal, logfile);
 #endif
 
-            ConsoleUtil.Write($"Program.CreateLoggerConfig End");
+            ConsoleUtil.Write(true, $"Program.CreateLoggerConfig End");
 
             return config;
         }

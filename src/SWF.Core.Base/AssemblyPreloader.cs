@@ -28,7 +28,7 @@ namespace SWF.Core.Base
                 }
                 catch (Exception ex)
                 {
-                    ConsoleUtil.Write(
+                    ConsoleUtil.Write(true,
                         $"アセンブリ読み込みエラー: {criticalType.Assembly.GetName().Name}. Error: {ex.Message}"
                     );
                 }
@@ -56,7 +56,7 @@ namespace SWF.Core.Base
                 }
                 catch (Exception ex)
                 {
-                    ConsoleUtil.Write(
+                    ConsoleUtil.Write(true,
                         $"依存アセンブリ読み込みエラー: {refAssembly.Name}. Error: {ex.Message}"
                     );
                 }
@@ -85,7 +85,7 @@ namespace SWF.Core.Base
         // アプリケーション起動時の最適化メソッド
         public static void OptimizeStartup(params Type[] criticalTypes)
         {
-            ConsoleUtil.Write($"AssemblyPreloader.OptimizeStartup Start");
+            ConsoleUtil.Write(true, $"AssemblyPreloader.OptimizeStartup Start");
 
             using (TimeMeasuring.Run(false, "MicrosoftStorePreloader.OptimizeStartup"))
             {
@@ -96,7 +96,7 @@ namespace SWF.Core.Base
                 Task.WaitAll(tasks);
             }
 
-            ConsoleUtil.Write($"AssemblyPreloader.OptimizeStartup End");
+            ConsoleUtil.Write(true, $"AssemblyPreloader.OptimizeStartup End");
         }
     }
 }

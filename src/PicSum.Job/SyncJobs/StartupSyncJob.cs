@@ -11,12 +11,12 @@ namespace PicSum.Job.SyncJobs
     {
         public void Execute()
         {
-            ConsoleUtil.Write($"StartupSyncJob.Execute Start");
+            ConsoleUtil.Write(true, $"StartupSyncJob.Execute Start");
 
             var logic = new StartupSyncLogic();
             logic.Execute();
 
-            ConsoleUtil.Write($"StartupSyncJob.Execute End");
+            ConsoleUtil.Write(true, $"StartupSyncJob.Execute End");
         }
     }
 }

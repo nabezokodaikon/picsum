@@ -27,7 +27,7 @@ namespace SWF.UIComponent.TabOperation
         /// <param name="page"></param>
         internal void SetPage(PagePanel page)
         {
-            ConsoleUtil.Write($"PageContainer.SetPage Start");
+            ConsoleUtil.Write(true, $"PageContainer.SetPage Start");
 
             ArgumentNullException.ThrowIfNull(page, nameof(page));
 
@@ -47,7 +47,7 @@ namespace SWF.UIComponent.TabOperation
                 | AnchorStyles.Right;
             page.Active();
 
-            ConsoleUtil.Write($"PageContainer.SetPage End");
+            ConsoleUtil.Write(true, $"PageContainer.SetPage End");
         }
 
         /// <summary>

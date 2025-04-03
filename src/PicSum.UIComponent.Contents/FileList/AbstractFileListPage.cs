@@ -137,7 +137,7 @@ namespace PicSum.UIComponent.Contents.FileList
         public AbstractFileListPage(IPageParameter param)
             : base(param)
         {
-            ConsoleUtil.Write($"AbstractFileListPage.New Start");
+            ConsoleUtil.Write(true, $"AbstractFileListPage.New Start");
 
             this.InitializeComponent();
 
@@ -147,7 +147,7 @@ namespace PicSum.UIComponent.Contents.FileList
             this.IsShowOtherFile = FileListPageConfig.Instance.IsShowOtherFile;
             this.ThumbnailSize = FileListPageConfig.Instance.ThumbnailSize;
 
-            ConsoleUtil.Write($"AbstractFileListPage.New End");
+            ConsoleUtil.Write(true, $"AbstractFileListPage.New End");
         }
 
         public override string[] GetSelectedFiles()
