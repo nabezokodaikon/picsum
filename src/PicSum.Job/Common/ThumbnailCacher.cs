@@ -103,33 +103,7 @@ namespace PicSum.Job.Common
                 var cache = this.GetOrCreateFileCache(filePath, thumbWidth, thumbHeight);
                 if (cache != ThumbnailCacheEntity.EMPTY)
                 {
-                    if (cache.ThumbnailWidth > thumbWidth || cache.ThumbnailHeight > thumbHeight)
-                    {
-                        if (cache.ThumbnailBuffer == null)
-                        {
-                            throw new NullReferenceException("サムネイルのバッファがNullです。");
-                        }
-
-                        using (var CacheThumb = ThumbnailUtil.ToImage(cache.ThumbnailBuffer))
-                        using (var newThumb = ThumbnailUtil.CreateThumbnail(CacheThumb, thumbWidth, thumbHeight))
-                        {
-                            var thumb = new ThumbnailCacheEntity
-                            {
-                                FilePath = cache.FilePath,
-                                ThumbnailBuffer = ThumbnailUtil.ToCompressionBinary(newThumb),
-                                ThumbnailWidth = thumbWidth,
-                                ThumbnailHeight = thumbHeight,
-                                SourceWidth = cache.SourceWidth,
-                                SourceHeight = cache.SourceHeight,
-                                FileUpdatedate = cache.FileUpdatedate
-                            };
-                            return thumb;
-                        }
-                    }
-                    else
-                    {
-                        return cache;
-                    }
+                    return cache;
                 }
                 else
                 {
@@ -141,33 +115,7 @@ namespace PicSum.Job.Common
                 var cache = this.GetOrCreateDirectoryCache(filePath, thumbWidth, thumbHeight);
                 if (cache != ThumbnailCacheEntity.EMPTY)
                 {
-                    if (cache.ThumbnailWidth > thumbWidth || cache.ThumbnailHeight > thumbHeight)
-                    {
-                        if (cache.ThumbnailBuffer == null)
-                        {
-                            throw new NullReferenceException("サムネイルのバッファがNullです。");
-                        }
-
-                        using (var CacheThumb = ThumbnailUtil.ToImage(cache.ThumbnailBuffer))
-                        using (var newThumb = ThumbnailUtil.CreateThumbnail(CacheThumb, thumbWidth, thumbHeight))
-                        {
-                            var thumb = new ThumbnailCacheEntity
-                            {
-                                FilePath = cache.FilePath,
-                                ThumbnailBuffer = ThumbnailUtil.ToCompressionBinary(newThumb),
-                                ThumbnailWidth = thumbWidth,
-                                ThumbnailHeight = thumbHeight,
-                                SourceWidth = cache.SourceWidth,
-                                SourceHeight = cache.SourceHeight,
-                                FileUpdatedate = cache.FileUpdatedate
-                            };
-                            return thumb;
-                        }
-                    }
-                    else
-                    {
-                        return cache;
-                    }
+                    return cache;
                 }
                 else
                 {
