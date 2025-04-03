@@ -11,8 +11,8 @@ namespace SWF.Core.Job
 
         private bool disposed = false;
         private readonly string threadName = "JobQueue";
-        private readonly Task task = null;
-        private readonly CancellationTokenSource source = null;
+        private readonly Task task;
+        private readonly CancellationTokenSource source;
         private readonly ConcurrentQueue<AbstractAsyncJob> jobQueue = new();
 
         public JobQueue()
@@ -66,7 +66,7 @@ namespace SWF.Core.Job
 
         public void Enqueue<TJob, TJobParameter>(ISender sender, TJobParameter parameter)
             where TJob : AbstractTwoWayJob<TJobParameter, EmptyResult>, new()
-            where TJobParameter : IJobParameter
+            where TJobParameter : class, IJobParameter
         {
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
             ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));

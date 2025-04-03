@@ -21,7 +21,7 @@ namespace PicSum.Job.Logics
 
             var sql = new DirectoryStateReadSql(directoryPath);
             var dto = Instance<IFileInfoDB>.Value.ReadLine<DirectoryStateDto>(sql);
-            if (dto != default(DirectoryStateDto))
+            if (dto != null)
             {
                 var directoryState = new DirectoryStateParameter
                 {

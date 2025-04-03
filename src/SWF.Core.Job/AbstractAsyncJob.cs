@@ -66,10 +66,10 @@ namespace SWF.Core.Job
 
     public abstract class AbstractTwoWayJob<TParameter, TResult>
         : AbstractAsyncJob
-        where TParameter : IJobParameter
+        where TParameter : class, IJobParameter
         where TResult : IJobResult
     {
-        internal TParameter? Parameter { get; set; } = default;
+        internal TParameter? Parameter { get; set; } = null;
         internal Action<TResult>? CallbackAction { get; set; } = null;
 
         public AbstractTwoWayJob()
@@ -116,7 +116,7 @@ namespace SWF.Core.Job
 
     public abstract class AbstractOneWayJob<TParameter>
         : AbstractTwoWayJob<TParameter, EmptyResult>
-        where TParameter : IJobParameter
+        where TParameter : class, IJobParameter
     {
 
     }

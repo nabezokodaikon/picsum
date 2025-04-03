@@ -10,7 +10,7 @@ namespace SWF.Core.DatabaseAccessor
         public TDto[] ReadList<TDto>(SqlBase<TDto> sql)
             where TDto : IDto, new();
         public TDto? ReadLine<TDto>(SqlBase<TDto> sql)
-            where TDto : IDto, new();
+            where TDto : class, IDto, new();
         public T? ReadValue<T>(SqlBase sql);
     }
 }

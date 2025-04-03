@@ -8,7 +8,7 @@ namespace SWF.Core.Job
     public interface ITwoWayJob<TJob, TJobParameter, TJobResult>
         : IDisposable
         where TJob : AbstractTwoWayJob<TJobParameter, TJobResult>, new()
-        where TJobParameter : IJobParameter
+        where TJobParameter : class, IJobParameter
         where TJobResult : IJobResult
     {
         public void StartJob(ISender sender, TJobParameter? parameter, Action<TJobResult>? callback);
@@ -36,7 +36,7 @@ namespace SWF.Core.Job
     public interface IOneWayJob<TJob, TJobParameter>
         : ITwoWayJob<TJob, TJobParameter, EmptyResult>
         where TJob : AbstractOneWayJob<TJobParameter>, new()
-        where TJobParameter : IJobParameter
+        where TJobParameter : class, IJobParameter
     {
 
     }
@@ -45,7 +45,7 @@ namespace SWF.Core.Job
     public partial class TwoWayThread<TJob, TJobParameter, TJobResult>
         : IDisposable, ITwoWayJob<TJob, TJobParameter, TJobResult>
         where TJob : AbstractTwoWayJob<TJobParameter, TJobResult>, new()
-        where TJobParameter : IJobParameter
+        where TJobParameter : class, IJobParameter
         where TJobResult : IJobResult
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
@@ -172,7 +172,7 @@ namespace SWF.Core.Job
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
             ArgumentNullException.ThrowIfNull(callback, nameof(callback));
 
-            this.StartJob(sender, default, callback);
+            this.StartJob(sender, null, callback);
         }
 
         public void StartJob(ISender sender, TJobParameter parameter)
@@ -187,7 +187,7 @@ namespace SWF.Core.Job
         {
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
 
-            this.StartJob(sender, default, null);
+            this.StartJob(sender, null, null);
         }
 
         private void DoWork(CancellationToken token)
@@ -276,7 +276,7 @@ namespace SWF.Core.Job
     public sealed partial class OneWayThread<TJob, TJobParameter>
         : TwoWayThread<TJob, TJobParameter, EmptyResult>, IOneWayJob<TJob, TJobParameter>
         where TJob : AbstractOneWayJob<TJobParameter>, new()
-        where TJobParameter : IJobParameter
+        where TJobParameter : class, IJobParameter
     {
         public OneWayThread(SynchronizationContext? context, IThreadWrapper thread)
             : base(context, thread)

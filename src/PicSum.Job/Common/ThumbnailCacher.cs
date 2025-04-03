@@ -1,5 +1,4 @@
 using PicSum.DatabaseAccessor.Connection;
-using PicSum.DatabaseAccessor.Dto;
 using PicSum.DatabaseAccessor.Sql;
 using PicSum.Job.Entities;
 using SWF.Core.Base;
@@ -374,7 +373,7 @@ namespace PicSum.Job.Common
         {
             var sql = new ThumbnailReadByFileSql(filePath);
             var dto = Instance<IThumbnailDB>.Value.ReadLine(sql);
-            if (dto != default(ThumbnailDto))
+            if (dto != null)
             {
                 var thumb = new ThumbnailCacheEntity
                 {
