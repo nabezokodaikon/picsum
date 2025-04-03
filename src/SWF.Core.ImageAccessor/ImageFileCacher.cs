@@ -157,7 +157,7 @@ namespace SWF.Core.ImageAccessor
                             return;
                         }
 
-                        this.CACHE_LIST.Remove(cache);
+                        this.CACHE_LIST.RemoveAll(_ => _.FilePath == cache.FilePath);
                         this.CACHE_DICTIONARY.Remove(cache.FilePath);
                         cache.Dispose();
                     }
@@ -165,7 +165,7 @@ namespace SWF.Core.ImageAccessor
                     if (this.CACHE_LIST.Count > CACHE_CAPACITY)
                     {
                         var removeCache = this.CACHE_LIST[0];
-                        this.CACHE_LIST.Remove(removeCache);
+                        this.CACHE_LIST.RemoveAt(0);
                         this.CACHE_DICTIONARY.Remove(removeCache.FilePath);
                         removeCache.Dispose();
                         Logger.Debug($"画像ファイルキャッシュ削除しました。: {removeCache.FilePath}");
