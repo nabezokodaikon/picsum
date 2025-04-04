@@ -139,20 +139,6 @@ namespace PicSum.Job.Common
                     return memCache;
                 }
             }
-            else
-            {
-                var dbCache = this.GetDBCache(filePath);
-                if (dbCache != ThumbnailCacheEntity.EMPTY)
-                {
-                    var updateDate = FileUtil.GetUpdateDate(filePath);
-                    if (dbCache.FileUpdatedate >= updateDate)
-                    {
-                        // DBキャッシュを返します。
-                        this.UpdateMemoryCache(dbCache);
-                        return dbCache;
-                    }
-                }
-            }
 
             return ThumbnailCacheEntity.EMPTY;
         }
