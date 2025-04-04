@@ -51,6 +51,7 @@ namespace SWF.UIComponent.WideDropDown
 
             this.inputTextBox.MouseEnter += this.InputTextBox_MouseEnter;
 
+            this.arrowPictureBox.DefaultBrush = new(Color.White);
             this.arrowPictureBox.Image = ResourceFiles.SmallArrowDownIcon.Value;
             this.arrowPictureBox.MouseClick += this.ArrowPictureBox_MouseClick;
 

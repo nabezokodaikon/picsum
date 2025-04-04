@@ -1,3 +1,4 @@
+using SWF.UIComponent.Core;
 using System.Drawing;
 
 namespace SWF.UIComponent.WideDropDown
@@ -33,8 +34,7 @@ namespace SWF.UIComponent.WideDropDown
             var resources = new System.ComponentModel.ComponentResourceManager(typeof(WideComboBox));
             this.addButton = new SWF.UIComponent.Core.ToolIconButton();
             this.inputTextBox = new InputTextBox();
-            this.arrowPictureBox = new ArrowPictureBox();
-            ((System.ComponentModel.ISupportInitialize)this.arrowPictureBox).BeginInit();
+            this.arrowPictureBox = new ToolIconButton();
             this.SuspendLayout();
             // 
             // addButton
@@ -56,7 +56,6 @@ namespace SWF.UIComponent.WideDropDown
             // arrowPictureBox
             // 
             this.arrowPictureBox.Name = "arrowPictureBox";
-            this.arrowPictureBox.TabStop = false;
             // 
             // WideComboBox
             // 
@@ -66,13 +65,12 @@ namespace SWF.UIComponent.WideDropDown
             this.Font = new Font("Yu Gothic UI", 9F);
             this.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.Name = "WideComboBox";
-            ((System.ComponentModel.ISupportInitialize)this.arrowPictureBox).EndInit();
             this.ResumeLayout(false);
         }
 
 
         private SWF.UIComponent.Core.ToolIconButton addButton;
-        private ArrowPictureBox arrowPictureBox;
+        private ToolIconButton arrowPictureBox;
         private InputTextBox inputTextBox;
 
         #endregion
