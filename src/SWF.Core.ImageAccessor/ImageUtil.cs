@@ -285,7 +285,7 @@ namespace SWF.Core.ImageAccessor
                 catch (ImageUtilException ex)
                 {
                     Logger.Error(ex);
-                    Console.WriteLine(ex.Message);
+                    ConsoleUtil.Write(true, ex.Message);
                     using (var bmp = ReadImageFile(filePath))
                     {
                         return bmp.Size;
