@@ -14,6 +14,7 @@ namespace SWF.UIComponent.WideDropDown
         public event EventHandler<ItemMouseClickEventArgs> ItemMouseClick;
         public event EventHandler<DropDownOpeningEventArgs> DropDownOpening;
 
+        private bool isShowingDropDown = false;
         private readonly WideDropDownList dropDownList;
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -37,6 +38,8 @@ namespace SWF.UIComponent.WideDropDown
             this.dropDownList = new(this);
             this.dropDownList.IsClickAndClose = true;
             this.dropDownList.ItemMouseClick += this.DropDownList_ItemMouseClick;
+
+            this.MouseClick += this.WideDropToolButton_MouseClick;
         }
 
         public void SetItems(string[] items)
@@ -53,33 +56,48 @@ namespace SWF.UIComponent.WideDropDown
             this.dropDownList.SelectItem(item);
         }
 
-        protected override void OnMouseClick(MouseEventArgs e)
+        protected override void OnMouseEnter(EventArgs e)
+        {
+            base.OnMouseEnter(e);
+            this.isShowingDropDown = false;
+        }
+
+        protected override void OnMouseLeave(EventArgs e)
+        {
+            base.OnMouseLeave(e);
+            this.isShowingDropDown = true;
+        }
+
+        private void WideDropToolButton_MouseClick(object sender, MouseEventArgs e)
         {
             if (e.Button != MouseButtons.Left)
             {
                 return;
             }
 
-            if (this.DropDownOpening != null)
+            if (this.isShowingDropDown)
             {
-                var args = new DropDownOpeningEventArgs();
-                this.DropDownOpening(this, args);
+                this.isShowingDropDown = false;
+                this.dropDownList.Close();
             }
-
-            this.dropDownList.Show(
-                this, new Point(this.Width, 0));
-
-            if (!string.IsNullOrEmpty(this.SelectedItem))
+            else
             {
-                this.dropDownList.SelectItem(this.SelectedItem);
+                this.isShowingDropDown = true;
+
+                if (this.DropDownOpening != null)
+                {
+                    var args = new DropDownOpeningEventArgs();
+                    this.DropDownOpening(this, args);
+                }
+
+                this.dropDownList.Show(
+                    this, new Point(this.Width, 0));
+
+                if (!string.IsNullOrEmpty(this.SelectedItem))
+                {
+                    this.dropDownList.SelectItem(this.SelectedItem);
+                }
             }
-
-            base.OnMouseClick(e);
-        }
-
-        private void DropDownList_Opening(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-
         }
 
         private void DropDownList_ItemMouseClick(object sender, ItemMouseClickEventArgs e)
