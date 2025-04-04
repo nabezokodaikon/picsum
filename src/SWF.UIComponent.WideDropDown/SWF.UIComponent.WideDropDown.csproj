@@ -29,9 +29,6 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <Compile Update="ArrowPictureBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Update="InputTextBox.cs">
       <SubType>Component</SubType>
     </Compile>
