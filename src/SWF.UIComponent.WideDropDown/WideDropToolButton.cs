@@ -56,16 +56,10 @@ namespace SWF.UIComponent.WideDropDown
             this.dropDownList.SelectItem(item);
         }
 
-        protected override void OnMouseEnter(EventArgs e)
+        protected override void OnLostFocus(EventArgs e)
         {
-            base.OnMouseEnter(e);
+            base.OnLostFocus(e);
             this.isShowingDropDown = false;
-        }
-
-        protected override void OnMouseLeave(EventArgs e)
-        {
-            base.OnMouseLeave(e);
-            this.isShowingDropDown = true;
         }
 
         private void WideDropToolButton_MouseClick(object sender, MouseEventArgs e)

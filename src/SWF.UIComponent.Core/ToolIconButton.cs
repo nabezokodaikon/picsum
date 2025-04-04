@@ -1,4 +1,5 @@
 using SWF.Core.Base;
+using System.ComponentModel;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Runtime.Versioning;
@@ -32,6 +33,9 @@ namespace SWF.UIComponent.Core
 
         private bool isMousePoint = false;
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public SolidBrush DefaultBrush { get; set; } = DEFAULT_BRUSH;
+
         protected override void OnMouseEnter(EventArgs e)
         {
             this.isMousePoint = true;
@@ -54,7 +58,7 @@ namespace SWF.UIComponent.Core
             else
             {
                 pevent.Graphics.FillRectangle(
-                    DEFAULT_BRUSH, 0, 0, this.Width, this.Height);
+                    this.DefaultBrush, 0, 0, this.Width, this.Height);
             }
 
             if (this.Image != null)

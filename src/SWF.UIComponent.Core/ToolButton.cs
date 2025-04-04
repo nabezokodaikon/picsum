@@ -146,12 +146,9 @@ namespace SWF.UIComponent.Core
                 ControlStyles.OptimizedDoubleBuffer |
                 ControlStyles.StandardClick |
                 ControlStyles.UserPaint |
+                ControlStyles.Selectable |
                 ControlStyles.SupportsTransparentBackColor,
                 true);
-
-            this.SetStyle(
-                ControlStyles.Selectable,
-                false);
 
             this.UpdateStyles();
 
