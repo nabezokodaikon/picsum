@@ -57,7 +57,6 @@ namespace SWF.UIComponent.WideDropDown
             // 
             this.arrowPictureBox.Name = "arrowPictureBox";
             this.arrowPictureBox.TabStop = false;
-            this.arrowPictureBox.MouseClick += this.ArrowPictureBox_MouseClick;
             // 
             // WideComboBox
             // 

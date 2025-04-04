@@ -21,6 +21,7 @@ namespace SWF.UIComponent.WideDropDown
         public event EventHandler<DropDownOpeningEventArgs> DropDownOpening;
         public event EventHandler<AddItemEventArgs> AddItem;
 
+        private bool isShowingDropDown = false;
         private readonly WideDropDownList dropDownList;
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -48,12 +49,16 @@ namespace SWF.UIComponent.WideDropDown
                 true);
             this.UpdateStyles();
 
-            this.addButton.Image = ResourceFiles.TagIcon.Value;
+            this.inputTextBox.MouseEnter += this.InputTextBox_MouseEnter;
+
             this.arrowPictureBox.Image = ResourceFiles.SmallArrowDownIcon.Value;
+            this.arrowPictureBox.MouseClick += this.ArrowPictureBox_MouseClick;
+
+            this.addButton.Image = ResourceFiles.TagIcon.Value;
+            this.addButton.MouseEnter += this.AddButton_MouseEnter;
 
             this.dropDownList = new(this);
             this.dropDownList.IsClickAndClose = true;
-            this.dropDownList.Closed += this.DropDownList_Closed;
             this.dropDownList.ItemMouseClick += this.DropDownList_ItemMouseClick;
         }
 
@@ -126,6 +131,13 @@ namespace SWF.UIComponent.WideDropDown
             base.OnPaint(e);
         }
 
+        protected override void OnMouseLeave(EventArgs e)
+        {
+            base.OnMouseLeave(e);
+            this.dropDownList.Close();
+            this.isShowingDropDown = false;
+        }
+
         private void InputTextBox_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Control && e.KeyCode == Keys.W)
@@ -186,19 +198,38 @@ namespace SWF.UIComponent.WideDropDown
                 return;
             }
 
-            if (this.DropDownOpening != null)
+            if (this.isShowingDropDown)
             {
-                var args = new DropDownOpeningEventArgs();
-                this.DropDownOpening(this, args);
+                this.dropDownList.Close();
+                this.isShowingDropDown = false;
             }
+            else
+            {
+                if (this.DropDownOpening != null)
+                {
+                    var args = new DropDownOpeningEventArgs();
+                    this.DropDownOpening(this, args);
+                }
 
-            this.dropDownList.Show(
-                this, new Point(this.arrowPictureBox.Right - this.dropDownList.Size.Width, this.arrowPictureBox.Bottom));
+                this.dropDownList.Show(
+                    this, new Point(
+                        this.arrowPictureBox.Right - this.dropDownList.Size.Width,
+                        this.arrowPictureBox.Bottom));
+
+                this.isShowingDropDown = true;
+            }
         }
 
-        private void DropDownList_Closed(object sender, ToolStripDropDownClosedEventArgs e)
+        private void InputTextBox_MouseEnter(object sender, EventArgs e)
         {
-            this.arrowPictureBox.IsSelected = false;
+            this.dropDownList.Close();
+            this.isShowingDropDown = false;
+        }
+
+        private void AddButton_MouseEnter(object sender, EventArgs e)
+        {
+            this.dropDownList.Close();
+            this.isShowingDropDown = false;
         }
 
         private void DropDownList_ItemMouseClick(object sender, ItemMouseClickEventArgs e)
