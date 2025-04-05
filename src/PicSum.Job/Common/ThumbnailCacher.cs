@@ -391,13 +391,14 @@ namespace PicSum.Job.Common
                 using (var thumbImg = ThumbnailUtil.CreateThumbnail(srcImg, thumbWidth, thumbHeight))
                 {
                     var thumbBin = ThumbnailUtil.ToCompressionBinary(thumbImg);
-                    var thumbID = this.GetCurrentThumbnailBufferID();
-                    var thumbStartPoint = this.AddThumbnailBuffer(thumbID, thumbBin);
-
-                    var sql = new ThumbnailCreationSql(
-                        filePath, thumbID, thumbStartPoint, thumbBin.Length, thumbWidth, thumbHeight, srcImg.Width, srcImg.Height, fileUpdateDate);
                     using (var tran = Instance<IThumbnailDB>.Value.BeginTransaction())
                     {
+                        var thumbID = this.GetCurrentThumbnailBufferID();
+                        var thumbStartPoint = this.AddThumbnailBuffer(thumbID, thumbBin);
+
+                        var sql = new ThumbnailCreationSql(
+                            filePath, thumbID, thumbStartPoint, thumbBin.Length, thumbWidth, thumbHeight, srcImg.Width, srcImg.Height, fileUpdateDate);
+
                         Instance<IThumbnailDB>.Value.Update(sql);
                         tran.Commit();
                     }
@@ -426,13 +427,13 @@ namespace PicSum.Job.Common
                 using (var thumbImg = ThumbnailUtil.CreateThumbnail(srcImg, thumbWidth, thumbHeight))
                 {
                     var thumbBin = ThumbnailUtil.ToCompressionBinary(thumbImg);
-                    var thumbID = this.GetCurrentThumbnailBufferID();
-                    var thumbStartPoint = this.AddThumbnailBuffer(thumbID, thumbBin);
-
-                    var sql = new ThumbnailUpdateSql(
-                        filePath, thumbID, thumbStartPoint, thumbBin.Length, thumbWidth, thumbHeight, srcImg.Width, srcImg.Height, fileUpdateDate);
                     using (var tran = Instance<IThumbnailDB>.Value.BeginTransaction())
                     {
+                        var thumbID = this.GetCurrentThumbnailBufferID();
+                        var thumbStartPoint = this.AddThumbnailBuffer(thumbID, thumbBin);
+
+                        var sql = new ThumbnailUpdateSql(
+                            filePath, thumbID, thumbStartPoint, thumbBin.Length, thumbWidth, thumbHeight, srcImg.Width, srcImg.Height, fileUpdateDate);
                         Instance<IThumbnailDB>.Value.Update(sql);
                         tran.Commit();
                     }
@@ -468,13 +469,13 @@ namespace PicSum.Job.Common
                 using (var thumbImg = ThumbnailUtil.CreateThumbnail(srcImg, thumbWidth, thumbHeight))
                 {
                     var thumbBin = ThumbnailUtil.ToCompressionBinary(thumbImg);
-                    var thumbID = this.GetCurrentThumbnailBufferID();
-                    var thumbStartPoint = this.AddThumbnailBuffer(thumbID, thumbBin);
-
-                    var sql = new ThumbnailCreationSql(
-                        directoryPath, thumbID, thumbStartPoint, thumbBin.Length, thumbWidth, thumbHeight, srcImg.Width, srcImg.Height, directoryUpdateDate);
                     using (var tran = Instance<IThumbnailDB>.Value.BeginTransaction())
                     {
+                        var thumbID = this.GetCurrentThumbnailBufferID();
+                        var thumbStartPoint = this.AddThumbnailBuffer(thumbID, thumbBin);
+
+                        var sql = new ThumbnailCreationSql(
+                            directoryPath, thumbID, thumbStartPoint, thumbBin.Length, thumbWidth, thumbHeight, srcImg.Width, srcImg.Height, directoryUpdateDate);
                         Instance<IThumbnailDB>.Value.Update(sql);
                         tran.Commit();
                     }
@@ -509,13 +510,13 @@ namespace PicSum.Job.Common
                 using (var thumbImg = ThumbnailUtil.CreateThumbnail(srcImg, thumbWidth, thumbHeight))
                 {
                     var thumbBin = ThumbnailUtil.ToCompressionBinary(thumbImg);
-                    var thumbID = this.GetCurrentThumbnailBufferID();
-                    var thumbStartPoint = this.AddThumbnailBuffer(thumbID, thumbBin);
-
-                    var sql = new ThumbnailUpdateSql(
-                        directoryPath, thumbID, thumbStartPoint, thumbBin.Length, thumbWidth, thumbHeight, srcImg.Width, srcImg.Height, directoryUpdateDate);
                     using (var tran = Instance<IThumbnailDB>.Value.BeginTransaction())
                     {
+                        var thumbID = this.GetCurrentThumbnailBufferID();
+                        var thumbStartPoint = this.AddThumbnailBuffer(thumbID, thumbBin);
+
+                        var sql = new ThumbnailUpdateSql(
+                            directoryPath, thumbID, thumbStartPoint, thumbBin.Length, thumbWidth, thumbHeight, srcImg.Width, srcImg.Height, directoryUpdateDate);
                         Instance<IThumbnailDB>.Value.Update(sql);
                         tran.Commit();
                     }
