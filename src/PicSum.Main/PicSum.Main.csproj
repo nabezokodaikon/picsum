@@ -40,8 +40,15 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+
+	<NoWarn>1701;1702; CA1016; CA1824; WFAC010; CA1416</NoWarn>
+
+	<DebugType>none</DebugType>
+
 	<OutputType>WinExe</OutputType>
 	<RuntimeIdentifier>win-x64</RuntimeIdentifier>
+	<UseWindowsForms>true</UseWindowsForms>
+
 	<SelfContained>false</SelfContained>
 	<PublishSingleFile>false</PublishSingleFile>
 	<IncludeNativeLibrariesForSelfExtract>false</IncludeNativeLibrariesForSelfExtract>
@@ -50,12 +57,15 @@
 	<PublishReadyToRunUseCrossgen2>true</PublishReadyToRunUseCrossgen2>
 	<EnableCompressionInSingleFile>false</EnableCompressionInSingleFile>
 	<TieredCompilation>false</TieredCompilation>
-	<TrimMode>link</TrimMode>
+	<TrimMode>aggressive</TrimMode>
 	<Optimize>true</Optimize>
 	<OptimizationPreference>Speed</OptimizationPreference>
-	<DebugType>none</DebugType>
 	<EnableTrimAnalyzer>true</EnableTrimAnalyzer>
-	<NoWarn>1701;1702; CA1016; CA1824; WFAC010; CA1416</NoWarn>
+
+	<PublishProfileOptimization>true</PublishProfileOptimization>
+	<TrimmerRemoveSymbols>true</TrimmerRemoveSymbols>
+	<SuppressTrimAnalysisWarnings>true</SuppressTrimAnalysisWarnings>
+
   </PropertyGroup>
 
   <PropertyGroup>
