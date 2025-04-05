@@ -40,32 +40,66 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-
+	<!-- 警告を無視する設定 -->
 	<NoWarn>1701;1702; CA1016; CA1824; WFAC010; CA1416</NoWarn>
 
+	<!-- デバッグ情報を含めない -->
 	<DebugType>none</DebugType>
 
+	<!-- アプリケーションの種類をGUIアプリケーションに設定 -->
 	<OutputType>WinExe</OutputType>
 	<RuntimeIdentifier>win-x64</RuntimeIdentifier>
 	<UseWindowsForms>true</UseWindowsForms>
 
+	<!-- 依存関係の展開設定 -->
 	<SelfContained>false</SelfContained>
 	<PublishSingleFile>false</PublishSingleFile>
 	<IncludeNativeLibrariesForSelfExtract>false</IncludeNativeLibrariesForSelfExtract>
+
+	<!-- ReadyToRun設定 - IL（中間言語）コードをネイティブコードに事前コンパイルする -->
 	<PublishReadyToRun>true</PublishReadyToRun>
 	<PublishReadyToRunShowWarnings>false</PublishReadyToRunShowWarnings>
 	<PublishReadyToRunUseCrossgen2>true</PublishReadyToRunUseCrossgen2>
+
+	<!-- 圧縮設定 -->
 	<EnableCompressionInSingleFile>false</EnableCompressionInSingleFile>
+
+	<!-- 階層型コンパイル - 無効にすることで一定の状況下で起動を高速化 -->
 	<TieredCompilation>false</TieredCompilation>
+
+	<!-- トリミング設定 - 未使用のコードを積極的に削除 -->
 	<TrimMode>aggressive</TrimMode>
 	<Optimize>true</Optimize>
 	<OptimizationPreference>Speed</OptimizationPreference>
 	<EnableTrimAnalyzer>true</EnableTrimAnalyzer>
-
 	<PublishProfileOptimization>true</PublishProfileOptimization>
 	<TrimmerRemoveSymbols>true</TrimmerRemoveSymbols>
 	<SuppressTrimAnalysisWarnings>true</SuppressTrimAnalysisWarnings>
 
+	<!-- 追加の最適化: AOTコンパイルを有効にする - 起動時間を大幅に短縮 -->
+	<!--<PublishAot>true</PublishAot>-->
+
+	<!-- 動的アセンブリのロードを最小化 -->
+	<IlcDisableReflection>true</IlcDisableReflection>
+	<IlcFoldIdenticalMethodBodies>true</IlcFoldIdenticalMethodBodies>
+
+	<!-- AOT最適化のための追加設定 -->
+	<!--<IlcGenerateCompleteTypeMetadata>false</IlcGenerateCompleteTypeMetadata>
+	<IlcOptimizationPreference>Speed</IlcOptimizationPreference>-->
+
+	<!-- ネイティブイメージを使用 -->
+	<UseNativeImages>true</UseNativeImages>
+
+	<!-- スタートアップオブジェクトを明示的に指定 -->
+	<StartupObject>PicSum.Main.Program</StartupObject>
+
+	<!-- セキュリティとパフォーマンスのために不要な機能を無効化 -->
+	<EnableUnsafeBinaryFormatterSerialization>false</EnableUnsafeBinaryFormatterSerialization>
+	<EnableUnsafeUTF7Encoding>false</EnableUnsafeUTF7Encoding>
+	<EventSourceSupport>false</EventSourceSupport>
+
+	<!-- リソース最適化 -->
+	<IncludeAllContentForSelfExtract>false</IncludeAllContentForSelfExtract>
   </PropertyGroup>
 
   <PropertyGroup>
