@@ -396,7 +396,11 @@ namespace PicSum.Job.Common
 
                     var sql = new ThumbnailCreationSql(
                         filePath, thumbID, thumbStartPoint, thumbBin.Length, thumbWidth, thumbHeight, srcImg.Width, srcImg.Height, fileUpdateDate);
-                    Instance<IThumbnailDB>.Value.Update(sql);
+                    using (var tran = Instance<IThumbnailDB>.Value.BeginTransaction())
+                    {
+                        Instance<IThumbnailDB>.Value.Update(sql);
+                        tran.Commit();
+                    }
 
                     var thumb = new ThumbnailCacheEntity
                     {
@@ -427,7 +431,11 @@ namespace PicSum.Job.Common
 
                     var sql = new ThumbnailUpdateSql(
                         filePath, thumbID, thumbStartPoint, thumbBin.Length, thumbWidth, thumbHeight, srcImg.Width, srcImg.Height, fileUpdateDate);
-                    Instance<IThumbnailDB>.Value.Update(sql);
+                    using (var tran = Instance<IThumbnailDB>.Value.BeginTransaction())
+                    {
+                        Instance<IThumbnailDB>.Value.Update(sql);
+                        tran.Commit();
+                    }
 
                     var thumb = new ThumbnailCacheEntity
                     {
@@ -465,7 +473,11 @@ namespace PicSum.Job.Common
 
                     var sql = new ThumbnailCreationSql(
                         directoryPath, thumbID, thumbStartPoint, thumbBin.Length, thumbWidth, thumbHeight, srcImg.Width, srcImg.Height, directoryUpdateDate);
-                    Instance<IThumbnailDB>.Value.Update(sql);
+                    using (var tran = Instance<IThumbnailDB>.Value.BeginTransaction())
+                    {
+                        Instance<IThumbnailDB>.Value.Update(sql);
+                        tran.Commit();
+                    }
 
                     var thumb = new ThumbnailCacheEntity
                     {
@@ -502,7 +514,11 @@ namespace PicSum.Job.Common
 
                     var sql = new ThumbnailUpdateSql(
                         directoryPath, thumbID, thumbStartPoint, thumbBin.Length, thumbWidth, thumbHeight, srcImg.Width, srcImg.Height, directoryUpdateDate);
-                    Instance<IThumbnailDB>.Value.Update(sql);
+                    using (var tran = Instance<IThumbnailDB>.Value.BeginTransaction())
+                    {
+                        Instance<IThumbnailDB>.Value.Update(sql);
+                        tran.Commit();
+                    }
 
                     var thumb = new ThumbnailCacheEntity
                     {
