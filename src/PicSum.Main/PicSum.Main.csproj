@@ -64,6 +64,9 @@
 	<EnableUnsafeUTF7Encoding>false</EnableUnsafeUTF7Encoding>
 	<EventSourceSupport>false</EventSourceSupport>
 
+	<IlcFoldIdenticalMethodBodies>true</IlcFoldIdenticalMethodBodies>
+	<UseNativeImages>true</UseNativeImages>
+
   </PropertyGroup>
 
   <PropertyGroup>
