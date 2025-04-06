@@ -28,7 +28,8 @@ namespace SWF.Core.Base
         public const int THUMBNAIL_MAXIMUM_SIZE = 256;
         public const int THUMBNAIL_MINIMUM_SIZE = 96;
 
-        public static readonly Lazy<string> APPLICATION_DIRECTORY = new(GetApplicationDirectory());
+        private static readonly Lazy<bool> IS_RUNNING_AS_UWP = new(IsRunningAsUwp);
+        public static readonly Lazy<string> APPLICATION_DIRECTORY = new(GetApplicationDirectory);
         public static readonly Lazy<string> LOG_DIRECTORY = new(Path.Combine(APPLICATION_DIRECTORY.Value, "log"));
         private static readonly Lazy<string> CONFIG_DIRECTORY = new(Path.Combine(APPLICATION_DIRECTORY.Value, "config"));
         public static readonly Lazy<string> CONFIG_FILE = new(Path.Combine(CONFIG_DIRECTORY.Value, "config.xml"));
@@ -73,7 +74,7 @@ namespace SWF.Core.Base
 
         private static string GetApplicationDirectory()
         {
-            if (AppConstants.IsRunningAsUwp())
+            if (IS_RUNNING_AS_UWP.Value)
             {
                 return Path.Combine(
                     Windows.Storage.ApplicationData.Current.LocalFolder.Path,
@@ -81,13 +82,19 @@ namespace SWF.Core.Base
             }
             else
             {
-                var executableDirectory = Directory.GetParent(Application.ExecutablePath);
-                if (executableDirectory == null)
+                var appFile = Environment.ProcessPath;
+                if (string.IsNullOrEmpty(appFile))
+                {
+                    throw new NullReferenceException("実行ファイルパスが取得できません。");
+                }
+
+                var appDir = Path.GetDirectoryName(appFile);
+                if (string.IsNullOrEmpty(appDir))
                 {
                     throw new NullReferenceException("実行ディレクトリが取得できません。");
                 }
 
-                return executableDirectory.FullName;
+                return appDir;
             }
         }
 
