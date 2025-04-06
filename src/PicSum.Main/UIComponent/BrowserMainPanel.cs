@@ -1,5 +1,6 @@
 using PicSum.Job.Common;
 using PicSum.Job.Parameters;
+using PicSum.UIComponent.AddressBar;
 using PicSum.UIComponent.Contents.Common;
 using PicSum.UIComponent.Contents.Parameter;
 using PicSum.UIComponent.InfoPanel;
@@ -7,6 +8,7 @@ using SWF.Core.Base;
 using SWF.Core.ImageAccessor;
 using SWF.Core.Job;
 using SWF.Core.Resource;
+using SWF.UIComponent.Core;
 using SWF.UIComponent.TabOperation;
 using SWF.UIComponent.WideDropDown;
 using System;
@@ -88,9 +90,34 @@ namespace PicSum.Main.UIComponent
 
         public BrowserMainPanel()
         {
-            this.InitializeComponent();
+            this.pageContainer = new PageContainer();
+            using (TimeMeasuring.Run(true, "BrowserMainPanel.InitializeComponent 1"))
+            {
+                this.infoPanel = new InfoPanel();
+                this.tabSwitch = new TabSwitch();
+                this.toolPanel = new Panel();
+                this.reloadToolButton = new ToolIconButton();
+                this.nextPageHistoryButton = new ToolIconButton();
+                this.previewPageHistoryButton = new ToolIconButton();
+                this.showInfoToolButton = new ToolIconButton();
+                this.addressBar = new AddressBar();
+                this.searchBookmarkToolButton = new ToolIconButton();
+                this.tagDropToolButton = new WideDropToolButton();
+                this.homeToolButton = new ToolIconButton();
+                this.searchRatingToolButton = new ToolIconButton();
+                this.toolPanel2 = new ToolPanel();
 
-            if (!this.DesignMode)
+                this.toolPanel.SuspendLayout();
+                this.toolPanel2.SuspendLayout();
+                this.SuspendLayout();
+            }
+
+            using (TimeMeasuring.Run(true, "BrowserMainPanel.InitializeComponent 2"))
+            {
+                this.InitializeComponent();
+            }
+
+            using (TimeMeasuring.Run(true, "BrowserMainPanel.InitializeComponent 3"))
             {
                 this.previewPageHistoryButton.Image = ResourceFiles.GoBackIcon.Value;
                 this.nextPageHistoryButton.Image = ResourceFiles.GoNextIcon.Value;
@@ -116,6 +143,10 @@ namespace PicSum.Main.UIComponent
 
                 this.infoPanel.BringToFront();
                 this.pageContainer.BringToFront();
+
+                this.toolPanel.ResumeLayout(false);
+                this.toolPanel2.ResumeLayout(false);
+                this.ResumeLayout(false);
             }
         }
 
@@ -409,7 +440,7 @@ namespace PicSum.Main.UIComponent
 
             if (disposing)
             {
-                this.components?.Dispose();
+
             }
 
             this.disposed = true;

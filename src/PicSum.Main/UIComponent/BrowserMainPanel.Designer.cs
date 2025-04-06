@@ -7,11 +7,6 @@ namespace PicSum.Main.UIComponent
 {
     partial class BrowserMainPanel
     {
-        /// <summary> 
-        /// 必要なデザイナ変数です。
-        /// </summary>
-        private System.ComponentModel.IContainer components = null;
-
         #region コンポーネント デザイナで生成されたコード
 
         /// <summary> 
@@ -20,24 +15,6 @@ namespace PicSum.Main.UIComponent
         /// </summary>
         private void InitializeComponent()
         {
-            var resources = new System.ComponentModel.ComponentResourceManager(typeof(BrowserMainPanel));
-            this.pageContainer = new SWF.UIComponent.TabOperation.PageContainer();
-            this.infoPanel = new PicSum.UIComponent.InfoPanel.InfoPanel();
-            this.tabSwitch = new SWF.UIComponent.TabOperation.TabSwitch();
-            this.toolPanel = new Panel();
-            this.reloadToolButton = new SWF.UIComponent.Core.ToolIconButton();
-            this.nextPageHistoryButton = new SWF.UIComponent.Core.ToolIconButton();
-            this.previewPageHistoryButton = new SWF.UIComponent.Core.ToolIconButton();
-            this.showInfoToolButton = new SWF.UIComponent.Core.ToolIconButton();
-            this.addressBar = new PicSum.UIComponent.AddressBar.AddressBar();
-            this.searchBookmarkToolButton = new SWF.UIComponent.Core.ToolIconButton();
-            this.tagDropToolButton = new SWF.UIComponent.WideDropDown.WideDropToolButton();
-            this.homeToolButton = new SWF.UIComponent.Core.ToolIconButton();
-            this.searchRatingToolButton = new SWF.UIComponent.Core.ToolIconButton();
-            this.toolPanel2 = new SWF.UIComponent.Core.ToolPanel();
-            this.toolPanel.SuspendLayout();
-            this.toolPanel2.SuspendLayout();
-            this.SuspendLayout();
             // 
             // pageContainer
             // 
@@ -188,9 +165,6 @@ namespace PicSum.Main.UIComponent
             this.BackColor = Color.FromArgb(64, 68, 71);
             this.Name = "BrowserMainPanel";
             this.Size = new Size(746, 466);
-            this.toolPanel.ResumeLayout(false);
-            this.toolPanel2.ResumeLayout(false);
-            this.ResumeLayout(false);
         }
 
         private SWF.UIComponent.TabOperation.PageContainer pageContainer;

@@ -66,6 +66,8 @@ namespace PicSum.Main.Mng
 
         private BrowserForm CreateBrowser(Point windowLocation, Size windowSize, FormWindowState windowState)
         {
+            ConsoleUtil.Write(true, $"BrowserManager.CreateBrowser Start");
+
             var browser = new BrowserForm(true)
             {
                 Location = windowLocation,
@@ -74,6 +76,8 @@ namespace PicSum.Main.Mng
             };
 
             this.InitializeBrowserDelegate(browser);
+
+            ConsoleUtil.Write(true, $"BrowserManager.CreateBrowser End");
 
             return browser;
         }
