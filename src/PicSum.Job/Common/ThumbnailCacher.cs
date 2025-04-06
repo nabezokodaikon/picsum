@@ -318,7 +318,7 @@ namespace PicSum.Job.Common
         private string GetThumbnailBufferFilePath(int id)
         {
             return Path.Combine(
-                AppConstants.DATABASE_DIRECTORY,
+                AppConstants.DATABASE_DIRECTORY.Value,
                 $"{id}{AppConstants.THUMBNAIL_BUFFER_FILE_EXTENSION}");
         }
 

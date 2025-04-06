@@ -28,13 +28,13 @@ namespace SWF.Core.Base
         public const int THUMBNAIL_MAXIMUM_SIZE = 256;
         public const int THUMBNAIL_MINIMUM_SIZE = 96;
 
-        public static readonly string APPLICATION_DIRECTORY = GetApplicationDirectory();
-        public static readonly string LOG_DIRECTORY = Path.Combine(APPLICATION_DIRECTORY, "log");
-        private static readonly string CONFIG_DIRECTORY = Path.Combine(APPLICATION_DIRECTORY, "config");
-        public static readonly string CONFIG_FILE = Path.Combine(CONFIG_DIRECTORY, "config.xml");
-        public static readonly string DATABASE_DIRECTORY = Path.Combine(APPLICATION_DIRECTORY, "db");
-        public static readonly string FILE_INFO_DATABASE_FILE = Path.Combine(DATABASE_DIRECTORY, "fileinfo.sqlite");
-        public static readonly string THUMBNAIL_DATABASE_FILE = Path.Combine(DATABASE_DIRECTORY, "thumbnail.sqlite");
+        public static readonly Lazy<string> APPLICATION_DIRECTORY = new(GetApplicationDirectory());
+        public static readonly Lazy<string> LOG_DIRECTORY = new(Path.Combine(APPLICATION_DIRECTORY.Value, "log"));
+        private static readonly Lazy<string> CONFIG_DIRECTORY = new(Path.Combine(APPLICATION_DIRECTORY.Value, "config"));
+        public static readonly Lazy<string> CONFIG_FILE = new(Path.Combine(CONFIG_DIRECTORY.Value, "config.xml"));
+        public static readonly Lazy<string> DATABASE_DIRECTORY = new(Path.Combine(APPLICATION_DIRECTORY.Value, "db"));
+        public static readonly Lazy<string> FILE_INFO_DATABASE_FILE = new(Path.Combine(DATABASE_DIRECTORY.Value, "fileinfo.sqlite"));
+        public static readonly Lazy<string> THUMBNAIL_DATABASE_FILE = new(Path.Combine(DATABASE_DIRECTORY.Value, "thumbnail.sqlite"));
 
         public static bool IsRunningAsUwp()
         {
@@ -95,24 +95,24 @@ namespace SWF.Core.Base
         {
             ConsoleUtil.Write(true, $"AppConstants.CreateApplicationDirectories Start");
 
-            if (!FileUtil.IsExistsFileOrDirectory(APPLICATION_DIRECTORY))
+            if (!FileUtil.IsExistsFileOrDirectory(APPLICATION_DIRECTORY.Value))
             {
-                Directory.CreateDirectory(APPLICATION_DIRECTORY);
+                Directory.CreateDirectory(APPLICATION_DIRECTORY.Value);
             }
 
-            if (!FileUtil.IsExistsFileOrDirectory(LOG_DIRECTORY))
+            if (!FileUtil.IsExistsFileOrDirectory(LOG_DIRECTORY.Value))
             {
-                Directory.CreateDirectory(LOG_DIRECTORY);
+                Directory.CreateDirectory(LOG_DIRECTORY.Value);
             }
 
-            if (!FileUtil.IsExistsFileOrDirectory(CONFIG_DIRECTORY))
+            if (!FileUtil.IsExistsFileOrDirectory(CONFIG_DIRECTORY.Value))
             {
-                Directory.CreateDirectory(CONFIG_DIRECTORY);
+                Directory.CreateDirectory(CONFIG_DIRECTORY.Value);
             }
 
-            if (!FileUtil.IsExistsFileOrDirectory(DATABASE_DIRECTORY))
+            if (!FileUtil.IsExistsFileOrDirectory(DATABASE_DIRECTORY.Value))
             {
-                Directory.CreateDirectory(DATABASE_DIRECTORY);
+                Directory.CreateDirectory(DATABASE_DIRECTORY.Value);
             }
 
             ConsoleUtil.Write(true, $"AppConstants.CreateApplicationDirectories End");

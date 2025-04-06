@@ -10,12 +10,12 @@ namespace PicSum.Job.SyncLogics
     {
         public void Execute()
         {
-            if (FileUtil.CanAccess(AppConstants.THUMBNAIL_DATABASE_FILE))
+            if (FileUtil.CanAccess(AppConstants.THUMBNAIL_DATABASE_FILE.Value))
             {
-                File.Delete(AppConstants.THUMBNAIL_DATABASE_FILE);
+                File.Delete(AppConstants.THUMBNAIL_DATABASE_FILE.Value);
             }
 
-            foreach (var thumbnailFile in FileUtil.GetFiles(AppConstants.DATABASE_DIRECTORY)
+            foreach (var thumbnailFile in FileUtil.GetFiles(AppConstants.DATABASE_DIRECTORY.Value)
                 .Where(file =>
                 StringUtil.Compare(
                     FileUtil.GetExtensionFastStack(file),

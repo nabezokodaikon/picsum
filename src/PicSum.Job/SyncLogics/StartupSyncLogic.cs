@@ -16,10 +16,10 @@ namespace PicSum.Job.SyncLogics
             using (TimeMeasuring.Run(false, "StartupSyncLogic.Execute"))
             {
                 Instance<IFileInfoDB>.Initialize(
-                    new FileInfoDB(AppConstants.FILE_INFO_DATABASE_FILE));
+                    new FileInfoDB(AppConstants.FILE_INFO_DATABASE_FILE.Value));
 
                 Instance<IThumbnailDB>.Initialize(
-                    new ThumbnailDB(AppConstants.THUMBNAIL_DATABASE_FILE));
+                    new ThumbnailDB(AppConstants.THUMBNAIL_DATABASE_FILE.Value));
 
                 Instance<IFileIconCacher>.Initialize(new FileIconCacher());
                 Instance<IThumbnailCacher>.Initialize(new ThumbnailCacher());
