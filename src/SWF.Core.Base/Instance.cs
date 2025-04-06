@@ -6,10 +6,10 @@ namespace SWF.Core.Base
         public static TValue Value { get; private set; }
 #pragma warning restore CS8618
 
-        public static void Initialize(TValue connection)
+        public static void Initialize(TValue value)
         {
-            ArgumentNullException.ThrowIfNull(connection, nameof(connection));
-            Value = connection;
+            ArgumentNullException.ThrowIfNull(value, nameof(value));
+            Value = value;
         }
     }
 }
