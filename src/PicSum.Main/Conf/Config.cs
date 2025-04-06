@@ -1,44 +1,59 @@
+using MessagePack;
 using SWF.Core.Base;
-using System;
-using System.Drawing;
 using System.IO;
 using System.Runtime.Versioning;
 using System.Windows.Forms;
-using System.Xml.Serialization;
 
 namespace PicSum.Main.Conf
 {
     [SupportedOSPlatform("windows10.0.17763.0")]
-    public sealed class Config
+    [MessagePackObject(AllowPrivate = true)]
+    public sealed partial class Config
     {
         public static readonly Config Instance = new();
 
+        [Key(0)]
         public FormWindowState WindowState { get; set; }
-        public Point WindowLocaion { get; set; }
-        public Size WindowSize { get; set; }
-        public string ExportDirectoryPath { get; set; }
+
+        [Key(1)]
+        public int WindowLocaionX { get; set; }
+
+        [Key(2)]
+        public int WindowLocaionY { get; set; }
+
+        [Key(3)]
+        public int WindowSizeWidth { get; set; }
+
+        [Key(4)]
+        public int WindowSizeHeight { get; set; }
+
+        [Key(5)]
         public int ThumbnailSize { get; set; }
+
+        [Key(6)]
         public bool IsShowFileName { get; set; }
+
+        [Key(7)]
         public bool IsShowDirectory { get; set; }
+
+        [Key(8)]
         public bool IsShowImageFile { get; set; }
+
+        [Key(9)]
         public bool IsShowOtherFile { get; set; }
+
+        [Key(10)]
         public int FavoriteDirectoryCount { get; set; }
+
+        [Key(11)]
         public ImageDisplayMode ImageDisplayMode { get; set; }
+
+        [Key(12)]
         public ImageSizeMode ImageSizeMode { get; set; }
 
         private Config()
         {
 
-        }
-
-        public void Save()
-        {
-            var serializer = new XmlSerializer(typeof(Config));
-            using (var fs = new FileStream(AppConstants.CONFIG_FILE.Value, FileMode.Create, FileAccess.Write, FileShare.Read))
-            using (var writer = new StreamWriter(fs))
-            {
-                serializer.Serialize(writer, this);
-            }
         }
 
         public void Load()
@@ -47,37 +62,33 @@ namespace PicSum.Main.Conf
 
             if (FileUtil.IsExistsFile(AppConstants.CONFIG_FILE.Value))
             {
-                var serializer = new XmlSerializer(typeof(Config));
-                Config saveData = null;
-                using (var fs = new FileStream(AppConstants.CONFIG_FILE.Value, FileMode.Open, FileAccess.Read, FileShare.Read))
-                using (var reader = new StreamReader(fs))
-                {
-                    saveData = (Config)serializer.Deserialize(reader);
-                }
+                var config = MessagePackSerializer.Deserialize<Config>(
+                    File.ReadAllBytes(AppConstants.CONFIG_FILE.Value));
 
-                this.WindowState = saveData.WindowState; ;
-                this.WindowLocaion = saveData.WindowLocaion;
-                this.WindowSize = saveData.WindowSize;
-                this.ThumbnailSize = saveData.ThumbnailSize;
-                this.IsShowFileName = saveData.IsShowFileName;
-                this.IsShowImageFile = saveData.IsShowImageFile;
-                this.IsShowDirectory = saveData.IsShowDirectory;
-                this.IsShowOtherFile = saveData.IsShowOtherFile;
-                this.FavoriteDirectoryCount = saveData.FavoriteDirectoryCount;
-                this.ImageDisplayMode = saveData.ImageDisplayMode;
-                this.ImageSizeMode = saveData.ImageSizeMode;
-                this.ExportDirectoryPath = saveData.ExportDirectoryPath;
+                this.WindowState = config.WindowState;
+                this.WindowLocaionX = config.WindowLocaionX;
+                this.WindowLocaionY = config.WindowLocaionY;
+                this.WindowSizeWidth = config.WindowSizeWidth;
+                this.WindowSizeHeight = config.WindowSizeHeight;
+                this.ThumbnailSize = config.ThumbnailSize;
+                this.IsShowFileName = config.IsShowFileName;
+                this.IsShowImageFile = config.IsShowImageFile;
+                this.IsShowDirectory = config.IsShowDirectory;
+                this.IsShowOtherFile = config.IsShowOtherFile;
+                this.FavoriteDirectoryCount = config.FavoriteDirectoryCount;
+                this.ImageDisplayMode = config.ImageDisplayMode;
+                this.ImageSizeMode = config.ImageSizeMode;
             }
             else
             {
                 this.WindowState = FormWindowState.Normal;
 
                 var primaryScreenBounds = Screen.PrimaryScreen.Bounds;
-                this.WindowLocaion = new Point(
-                    (int)(primaryScreenBounds.Width * 0.3),
-                    (int)(primaryScreenBounds.Height * 0.1));
+                this.WindowLocaionX = (int)(primaryScreenBounds.Width * 0.3);
+                this.WindowLocaionY = (int)(primaryScreenBounds.Height * 0.1);
 
-                this.WindowSize = new Size(1200, 800);
+                this.WindowSizeWidth = 1200;
+                this.WindowSizeHeight = 800;
 
                 this.ThumbnailSize = 144;
                 this.IsShowFileName = true;
@@ -87,12 +98,15 @@ namespace PicSum.Main.Conf
                 this.FavoriteDirectoryCount = 21;
                 this.ImageDisplayMode = ImageDisplayMode.LeftFacing;
                 this.ImageSizeMode = ImageSizeMode.FitOnlyBigImage;
-
-                this.ExportDirectoryPath
-                    = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
             }
 
             ConsoleUtil.Write(true, $"Config.Load End");
+        }
+
+        public void Save()
+        {
+            var bytes = MessagePackSerializer.Serialize(this);
+            File.WriteAllBytes(AppConstants.CONFIG_FILE.Value, bytes);
         }
     }
 }

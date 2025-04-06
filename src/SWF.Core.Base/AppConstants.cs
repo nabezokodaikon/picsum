@@ -37,7 +37,7 @@ namespace SWF.Core.Base
         private static readonly Lazy<string> CONFIG_DIRECTORY
             = new(() => Path.Combine(APPLICATION_DIRECTORY.Value, "config"), LazyThreadSafetyMode.ExecutionAndPublication);
         public static readonly Lazy<string> CONFIG_FILE
-            = new(() => Path.Combine(CONFIG_DIRECTORY.Value, "config.xml"), LazyThreadSafetyMode.ExecutionAndPublication);
+            = new(() => Path.Combine(CONFIG_DIRECTORY.Value, "config.dat"), LazyThreadSafetyMode.ExecutionAndPublication);
         public static readonly Lazy<string> DATABASE_DIRECTORY
             = new(() => Path.Combine(APPLICATION_DIRECTORY.Value, "db"), LazyThreadSafetyMode.ExecutionAndPublication);
         public static readonly Lazy<string> FILE_INFO_DATABASE_FILE

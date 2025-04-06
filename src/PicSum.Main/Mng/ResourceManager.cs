@@ -21,10 +21,12 @@ namespace PicSum.Main.Mng
             Config.Instance.Load();
 
             BrowserConfig.Instance.WindowState = Config.Instance.WindowState;
-            BrowserConfig.Instance.WindowLocaion = Config.Instance.WindowLocaion;
-            BrowserConfig.Instance.WindowSize = Config.Instance.WindowSize;
 
-            CommonConfig.Instance.ExportDirectoryPath = Config.Instance.ExportDirectoryPath;
+            BrowserConfig.Instance.WindowLocaion
+                = new(Config.Instance.WindowLocaionX, Config.Instance.WindowLocaionY);
+
+            BrowserConfig.Instance.WindowSize
+                = new(Config.Instance.WindowSizeWidth, Config.Instance.WindowSizeHeight);
 
             FileListPageConfig.Instance.ThumbnailSize = Config.Instance.ThumbnailSize;
             FileListPageConfig.Instance.IsShowFileName = Config.Instance.IsShowFileName;
@@ -63,17 +65,15 @@ namespace PicSum.Main.Mng
             closingJob.Execute();
 
             Config.Instance.WindowState = BrowserConfig.Instance.WindowState;
-            Config.Instance.WindowLocaion = BrowserConfig.Instance.WindowLocaion;
-            Config.Instance.WindowSize = BrowserConfig.Instance.WindowSize;
-
-            Config.Instance.ExportDirectoryPath = CommonConfig.Instance.ExportDirectoryPath;
-
+            Config.Instance.WindowLocaionX = BrowserConfig.Instance.WindowLocaion.X;
+            Config.Instance.WindowLocaionY = BrowserConfig.Instance.WindowLocaion.Y;
+            Config.Instance.WindowSizeWidth = BrowserConfig.Instance.WindowSize.Width;
+            Config.Instance.WindowSizeHeight = BrowserConfig.Instance.WindowSize.Height;
             Config.Instance.ThumbnailSize = FileListPageConfig.Instance.ThumbnailSize;
             Config.Instance.IsShowFileName = FileListPageConfig.Instance.IsShowFileName;
             Config.Instance.IsShowDirectory = FileListPageConfig.Instance.IsShowDirectory;
             Config.Instance.IsShowImageFile = FileListPageConfig.Instance.IsShowImageFile;
             Config.Instance.IsShowOtherFile = FileListPageConfig.Instance.IsShowOtherFile;
-
             Config.Instance.ImageDisplayMode = ImageViewerPageConfig.Instance.ImageDisplayMode;
             Config.Instance.ImageSizeMode = ImageViewerPageConfig.Instance.ImageSizeMode;
 
