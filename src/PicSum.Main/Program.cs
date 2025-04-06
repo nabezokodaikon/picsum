@@ -117,7 +117,7 @@ namespace PicSum.Main
             var logfile = new FileTarget("logfile")
             {
                 FileName = Path.Combine(AppConstants.LOG_DIRECTORY.Value, "app.log"),
-                Layout = "${longdate} | ${level:padding=-5} | ${threadname} | ${message:withexception=true}",
+                Layout = "${date:format=yyyy-MM-dd HH\\:mm\\:ss.fff} | ${level:padding=-5} | ${threadname} | ${message:withexception=true}",
                 ArchiveFileName = string.Format("{0}/{1}", AppConstants.LOG_DIRECTORY, "${date:format=yyyyMMdd}/{########}.log"),
                 ArchiveAboveSize = 10 * 1024 * 1024,
                 ArchiveNumbering = ArchiveNumberingMode.Sequence,
