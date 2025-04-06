@@ -128,7 +128,10 @@ namespace PicSum.UIComponent.InfoPanel
 
         public InfoPanel()
         {
-            this.InitializeComponent();
+            using (TimeMeasuring.Run(true, "InfoPanel.InitializeComponent"))
+            {
+                this.InitializeComponent();
+            }
 
             if (!this.DesignMode)
             {
