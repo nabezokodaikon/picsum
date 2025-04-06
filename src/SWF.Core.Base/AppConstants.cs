@@ -28,14 +28,22 @@ namespace SWF.Core.Base
         public const int THUMBNAIL_MAXIMUM_SIZE = 256;
         public const int THUMBNAIL_MINIMUM_SIZE = 96;
 
-        //private static readonly Lazy<bool> IS_RUNNING_AS_UWP = new(IsRunningAsUwp);
-        public static readonly Lazy<string> APPLICATION_DIRECTORY = new(GetApplicationDirectory);
-        public static readonly Lazy<string> LOG_DIRECTORY = new(Path.Combine(APPLICATION_DIRECTORY.Value, "log"));
-        private static readonly Lazy<string> CONFIG_DIRECTORY = new(Path.Combine(APPLICATION_DIRECTORY.Value, "config"));
-        public static readonly Lazy<string> CONFIG_FILE = new(Path.Combine(CONFIG_DIRECTORY.Value, "config.xml"));
-        public static readonly Lazy<string> DATABASE_DIRECTORY = new(Path.Combine(APPLICATION_DIRECTORY.Value, "db"));
-        public static readonly Lazy<string> FILE_INFO_DATABASE_FILE = new(Path.Combine(DATABASE_DIRECTORY.Value, "fileinfo.sqlite"));
-        public static readonly Lazy<string> THUMBNAIL_DATABASE_FILE = new(Path.Combine(DATABASE_DIRECTORY.Value, "thumbnail.sqlite"));
+        //private static readonly Lazy<bool> IS_RUNNING_AS_UWP
+        //    = new(IsRunningAsUwp, LazyThreadSafetyMode.ExecutionAndPublication);
+        public static readonly Lazy<string> APPLICATION_DIRECTORY
+            = new(GetApplicationDirectory, LazyThreadSafetyMode.ExecutionAndPublication);
+        public static readonly Lazy<string> LOG_DIRECTORY
+            = new(() => Path.Combine(APPLICATION_DIRECTORY.Value, "log"), LazyThreadSafetyMode.ExecutionAndPublication);
+        private static readonly Lazy<string> CONFIG_DIRECTORY
+            = new(() => Path.Combine(APPLICATION_DIRECTORY.Value, "config"), LazyThreadSafetyMode.ExecutionAndPublication);
+        public static readonly Lazy<string> CONFIG_FILE
+            = new(() => Path.Combine(CONFIG_DIRECTORY.Value, "config.xml"), LazyThreadSafetyMode.ExecutionAndPublication);
+        public static readonly Lazy<string> DATABASE_DIRECTORY
+            = new(() => Path.Combine(APPLICATION_DIRECTORY.Value, "db"), LazyThreadSafetyMode.ExecutionAndPublication);
+        public static readonly Lazy<string> FILE_INFO_DATABASE_FILE
+            = new(() => Path.Combine(DATABASE_DIRECTORY.Value, "fileinfo.sqlite"), LazyThreadSafetyMode.ExecutionAndPublication);
+        public static readonly Lazy<string> THUMBNAIL_DATABASE_FILE
+            = new(() => Path.Combine(DATABASE_DIRECTORY.Value, "thumbnail.sqlite"), LazyThreadSafetyMode.ExecutionAndPublication);
 
         //private static bool IsRunningAsUwp()
         //{
