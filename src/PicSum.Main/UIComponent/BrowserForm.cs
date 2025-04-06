@@ -141,6 +141,8 @@ namespace PicSum.Main.UIComponent
 
         protected override void OnShown(EventArgs e)
         {
+            ConsoleUtil.Write(true, $"BrowserForm.OnShown Start");
+
             base.OnShown(e);
 
             if (BrowserForm.isStartUp)
@@ -156,6 +158,8 @@ namespace PicSum.Main.UIComponent
             {
                 this.Opacity = 1f;
             }
+
+            ConsoleUtil.Write(true, $"BrowserForm.OnShown End");
         }
 
         protected override void OnClosing(CancelEventArgs e)

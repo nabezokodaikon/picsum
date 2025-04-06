@@ -327,7 +327,9 @@ namespace PicSum.Main.UIComponent
 
         public void AddFavoriteDirectoryListTab()
         {
+            ConsoleUtil.Write(true, $"BrowserMainPanel.AddFavoriteDirectoryListTab Start");
             this.OpenPage(new FavoriteDirectoryListPageParameter(), PageOpenType.AddTab);
+            ConsoleUtil.Write(true, $"BrowserMainPanel.AddFavoriteDirectoryListTab End");
         }
 
         public void AddImageViewerPageTab(ImageViewerPageParameter parameter)
@@ -392,7 +394,9 @@ namespace PicSum.Main.UIComponent
             if (this.tabSwitch.ActiveTab != null)
             {
                 var page = this.tabSwitch.ActiveTab.GetPage<BrowserPage>();
+                ConsoleUtil.Write(true, $"BrowserMainPanel.RedrawPage Start");
                 page.RedrawPage(scale);
+                ConsoleUtil.Write(true, $"BrowserMainPanel.RedrawPage End");
             }
         }
 
