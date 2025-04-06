@@ -42,18 +42,21 @@ namespace PicSum.Main
                     AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
                     AssemblyPreloader.OptimizeStartup(
-                        typeof(System.ComponentModel.TypeConverter),
-                        typeof(System.Data.SQLite.AssemblySourceIdAttribute),
-
                         typeof(PicSum.DatabaseAccessor.Connection.FileInfoDB),
+                        typeof(PicSum.Job.Common.IThumbnailCacher),
                         typeof(PicSum.UIComponent.AddressBar.AddressBar),
                         typeof(PicSum.UIComponent.Contents.Common.BrowserPage),
                         typeof(PicSum.UIComponent.InfoPanel.InfoPanel),
+
                         typeof(SWF.Core.DatabaseAccessor.AbstractConnection),
                         typeof(SWF.Core.ImageAccessor.CvImage),
+                        typeof(SWF.Core.Job.AbstractAsyncJob),
+                        typeof(SWF.Core.Resource.ResourceFiles),
 
-                        typeof(SWF.UIComponent.Form.GrassForm),
+                        typeof(SWF.UIComponent.Core.CheckPatternPanel),
                         typeof(SWF.UIComponent.FlowList.DrawItemChangedEventArgs),
+                        typeof(SWF.UIComponent.Form.GrassForm),
+                        typeof(SWF.UIComponent.ImagePanel.ImagePanel),
                         typeof(SWF.UIComponent.TabOperation.DrawTabEventArgs),
                         typeof(SWF.UIComponent.WideDropDown.AddItemEventArgs),
 
