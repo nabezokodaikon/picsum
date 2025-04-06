@@ -91,26 +91,23 @@ namespace PicSum.Main.UIComponent
         public BrowserMainPanel()
         {
             this.pageContainer = new PageContainer();
-            using (TimeMeasuring.Run(true, "BrowserMainPanel.InitializeComponent"))
-            {
-                this.infoPanel = new InfoPanel();
-                this.tabSwitch = new TabSwitch();
-                this.toolPanel = new Panel();
-                this.reloadToolButton = new ToolIconButton();
-                this.nextPageHistoryButton = new ToolIconButton();
-                this.previewPageHistoryButton = new ToolIconButton();
-                this.showInfoToolButton = new ToolIconButton();
-                this.addressBar = new AddressBar();
-                this.searchBookmarkToolButton = new ToolIconButton();
-                this.tagDropToolButton = new WideDropToolButton();
-                this.homeToolButton = new ToolIconButton();
-                this.searchRatingToolButton = new ToolIconButton();
-                this.toolPanel2 = new ToolPanel();
+            this.infoPanel = new InfoPanel();
+            this.tabSwitch = new TabSwitch();
+            this.toolPanel = new Panel();
+            this.reloadToolButton = new ToolIconButton();
+            this.nextPageHistoryButton = new ToolIconButton();
+            this.previewPageHistoryButton = new ToolIconButton();
+            this.showInfoToolButton = new ToolIconButton();
+            this.addressBar = new AddressBar();
+            this.searchBookmarkToolButton = new ToolIconButton();
+            this.tagDropToolButton = new WideDropToolButton();
+            this.homeToolButton = new ToolIconButton();
+            this.searchRatingToolButton = new ToolIconButton();
+            this.toolPanel2 = new ToolPanel();
 
-                this.toolPanel.SuspendLayout();
-                this.toolPanel2.SuspendLayout();
-                this.SuspendLayout();
-            }
+            this.toolPanel.SuspendLayout();
+            this.toolPanel2.SuspendLayout();
+            this.SuspendLayout();
 
             this.InitializeComponent();
 
