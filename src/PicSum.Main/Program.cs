@@ -30,18 +30,14 @@ namespace PicSum.Main
             {
                 try
                 {
-                    Thread.CurrentThread.Name = AppConstants.UI_THREAD_NAME;
-                    ThreadPool.SetMinThreads(50, 50);
-
-                    AppConstants.CreateApplicationDirectories();
-
-                    LogManager.Configuration = CreateLoggerConfig();
-                    LogManager.GetCurrentClassLogger().Debug("アプリケーションを開始します。");
-
-                    AppDomain.CurrentDomain.AssemblyLoad += CurrentDomain_OnAssemblyLoad;
-                    AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
-
                     AssemblyPreloader.OptimizeStartup(
+                        typeof(System.AppDomain),
+                        typeof(System.Threading.AbandonedMutexException),
+                        typeof(System.Windows.Forms.Application),
+
+                        typeof(MessagePack.CompositeResolverAttribute),
+                        typeof(NLog.Attributes.LogLevelTypeConverter),
+
                         typeof(PicSum.DatabaseAccessor.Connection.FileInfoDB),
                         typeof(PicSum.Job.Common.IThumbnailCacher),
                         typeof(PicSum.UIComponent.AddressBar.AddressBar),
@@ -62,6 +58,17 @@ namespace PicSum.Main
 
                         typeof(WinApi.WinApiMembers)
                     );
+
+                    Thread.CurrentThread.Name = AppConstants.UI_THREAD_NAME;
+                    ThreadPool.SetMinThreads(50, 50);
+
+                    AppConstants.CreateApplicationDirectories();
+
+                    LogManager.Configuration = CreateLoggerConfig();
+                    LogManager.GetCurrentClassLogger().Debug("アプリケーションを開始します。");
+
+                    AppDomain.CurrentDomain.AssemblyLoad += CurrentDomain_OnAssemblyLoad;
+                    AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
                     Application.ThreadException += Application_ThreadException;
                     Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
