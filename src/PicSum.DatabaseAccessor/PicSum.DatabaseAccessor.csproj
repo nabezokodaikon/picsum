@@ -10,15 +10,6 @@
 	<PlatformTarget>x64</PlatformTarget>
     <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
     <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
-
-	<Optimize>true</Optimize>
-	<TieredCompilation>false</TieredCompilation>
-	<OptimizationPreference>Speed</OptimizationPreference>
-	<PublishReadyToRun>true</PublishReadyToRun>
-	<PublishReadyToRunUseCrossgen2>true</PublishReadyToRunUseCrossgen2>
-	<IsTrimmable>true</IsTrimmable>
-	<SuppressTrimAnalysisWarnings>true</SuppressTrimAnalysisWarnings>	
-	
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
