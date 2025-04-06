@@ -168,9 +168,6 @@
 	</BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-	<Content Include="ApplicationIcon.ico" />
-  </ItemGroup>
-  <ItemGroup>
 	<Compile Remove="Settings.cs" />
   </ItemGroup>
   <ItemGroup>
