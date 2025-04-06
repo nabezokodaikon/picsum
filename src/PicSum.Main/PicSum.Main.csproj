@@ -23,7 +23,7 @@
 	<GenerateAssemblyInfo>False</GenerateAssemblyInfo>
 	<UseWindowsForms>true</UseWindowsForms>
 	<ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
-	<Configurations>Debug;Release;Develop</Configurations>
+	<Configurations>Debug;Release;Develop;UWP</Configurations>
 	<Platforms>AnyCPU;x64;x86;ARM64;ARM32</Platforms>
   </PropertyGroup>
 
@@ -67,6 +67,36 @@
 	<IlcFoldIdenticalMethodBodies>true</IlcFoldIdenticalMethodBodies>
 	<UseNativeImages>true</UseNativeImages>
 
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='UWP|x64'">
+
+	<NoWarn>1701;1702; CA1016; CA1824; WFAC010; CA1416</NoWarn>
+	<DebugType>none</DebugType>
+	<OutputType>WinExe</OutputType>
+	<RuntimeIdentifier>win-x64</RuntimeIdentifier>
+	<UseWindowsForms>true</UseWindowsForms>
+
+	<SelfContained>false</SelfContained>
+	<PublishSingleFile>false</PublishSingleFile>
+
+	<PublishReadyToRun>true</PublishReadyToRun>
+	<PublishReadyToRunShowWarnings>true</PublishReadyToRunShowWarnings>
+	<PublishReadyToRunUseCrossgen2>true</PublishReadyToRunUseCrossgen2>
+
+	<TieredCompilation>false</TieredCompilation>
+	<Optimize>true</Optimize>
+	<OptimizationPreference>Speed</OptimizationPreference>
+
+	<StartupObject>PicSum.Main.Program</StartupObject>
+
+	<EnableUnsafeBinaryFormatterSerialization>false</EnableUnsafeBinaryFormatterSerialization>
+	<EnableUnsafeUTF7Encoding>false</EnableUnsafeUTF7Encoding>
+	<EventSourceSupport>false</EventSourceSupport>
+
+	<IlcFoldIdenticalMethodBodies>true</IlcFoldIdenticalMethodBodies>
+	<UseNativeImages>true</UseNativeImages>
+	
   </PropertyGroup>
 
   <PropertyGroup>
@@ -177,6 +207,9 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
 	<NoWarn>1701;1702; CA1016; CA1824; WFAC010; CA1416</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='UWP|x64'">
+    <NoWarn>1701;1702; CA1016; CA1824; WFAC010; CA1416</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
 	<NoWarn>1701;1702; CA1016; CA1824; WFAC010; CA1416</NoWarn>

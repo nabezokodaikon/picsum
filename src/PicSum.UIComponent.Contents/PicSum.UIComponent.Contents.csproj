@@ -5,7 +5,7 @@
     <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
     <UseWindowsForms>true</UseWindowsForms>
     <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
-    <Configurations>Debug;Release;Develop</Configurations>
+    <Configurations>Debug;Release;Develop;UWP</Configurations>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <NeutralLanguage>ja-JP</NeutralLanguage>
 	<Platforms>AnyCPU;x64;x86;ARM64;ARM32</Platforms>
@@ -25,6 +25,11 @@
   </PropertyGroup>
   
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
+    <DebugType>none</DebugType>
+    <NoWarn>1701;1702; CA1016; IDE0290; CA1822; CA1824</NoWarn>
+  </PropertyGroup>
+  
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='UWP|x64'">
     <DebugType>none</DebugType>
     <NoWarn>1701;1702; CA1016; IDE0290; CA1822; CA1824</NoWarn>
   </PropertyGroup>

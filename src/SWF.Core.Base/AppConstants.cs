@@ -28,7 +28,7 @@ namespace SWF.Core.Base
         public const int THUMBNAIL_MAXIMUM_SIZE = 256;
         public const int THUMBNAIL_MINIMUM_SIZE = 96;
 
-        private static readonly Lazy<bool> IS_RUNNING_AS_UWP = new(IsRunningAsUwp);
+        //private static readonly Lazy<bool> IS_RUNNING_AS_UWP = new(IsRunningAsUwp);
         public static readonly Lazy<string> APPLICATION_DIRECTORY = new(GetApplicationDirectory);
         public static readonly Lazy<string> LOG_DIRECTORY = new(Path.Combine(APPLICATION_DIRECTORY.Value, "log"));
         private static readonly Lazy<string> CONFIG_DIRECTORY = new(Path.Combine(APPLICATION_DIRECTORY.Value, "config"));
@@ -37,65 +37,46 @@ namespace SWF.Core.Base
         public static readonly Lazy<string> FILE_INFO_DATABASE_FILE = new(Path.Combine(DATABASE_DIRECTORY.Value, "fileinfo.sqlite"));
         public static readonly Lazy<string> THUMBNAIL_DATABASE_FILE = new(Path.Combine(DATABASE_DIRECTORY.Value, "thumbnail.sqlite"));
 
-        public static bool IsRunningAsUwp()
-        {
-            ConsoleUtil.Write(true, $"AppConstants.IsRunningAsUwp Start");
-            try
-            {
-                // UWP の場合は Package.Current.Id が利用可能
-                return Windows.ApplicationModel.Package.Current.Id != null;
-            }
-            catch
-            {
-                // 例外が発生した場合は UWP ではない
-                return false;
-            }
-            finally
-            {
-                ConsoleUtil.Write(true, $"AppConstants.IsRunningAsUwp End");
-            }
-        }
-
-        public static float GetCursorWindowScale()
-        {
-            var hwnd = WinApiMembers.WindowFromPoint(
-                new WinApiMembers.POINT(Cursor.Position.X, Cursor.Position.Y));
-            var dpi = WinApiMembers.GetDpiForWindow(hwnd);
-            var scale = dpi / AppConstants.BASE_DPI;
-            return scale;
-        }
-
-        public static float GetCurrentWindowScale(Control control)
-        {
-            var dpi = WinApiMembers.GetDpiForWindow(control.Handle);
-            var scale = dpi / AppConstants.BASE_DPI;
-            return scale;
-        }
+        //private static bool IsRunningAsUwp()
+        //{
+        //    ConsoleUtil.Write(true, $"AppConstants.IsRunningAsUwp Start");
+        //    try
+        //    {
+        //        // UWP の場合は Package.Current.Id が利用可能
+        //        return Windows.ApplicationModel.Package.Current.Id != null;
+        //    }
+        //    catch
+        //    {
+        //        // 例外が発生した場合は UWP ではない
+        //        return false;
+        //    }
+        //    finally
+        //    {
+        //        ConsoleUtil.Write(true, $"AppConstants.IsRunningAsUwp End");
+        //    }
+        //}
 
         private static string GetApplicationDirectory()
         {
-            if (IS_RUNNING_AS_UWP.Value)
-            {
-                return Path.Combine(
-                    Windows.Storage.ApplicationData.Current.LocalFolder.Path,
-                    "picsum.files");
-            }
-            else
-            {
-                var appFile = Environment.ProcessPath;
-                if (string.IsNullOrEmpty(appFile))
-                {
-                    throw new NullReferenceException("実行ファイルパスが取得できません。");
-                }
+#if UWP
+            return Path.Combine(
+                Windows.Storage.ApplicationData.Current.LocalFolder.Path,
+                "picsum.files");
+#endif
 
-                var appDir = Path.GetDirectoryName(appFile);
-                if (string.IsNullOrEmpty(appDir))
-                {
-                    throw new NullReferenceException("実行ディレクトリが取得できません。");
-                }
-
-                return appDir;
+            var appFile = Environment.ProcessPath;
+            if (string.IsNullOrEmpty(appFile))
+            {
+                throw new NullReferenceException("実行ファイルパスが取得できません。");
             }
+
+            var appDir = Path.GetDirectoryName(appFile);
+            if (string.IsNullOrEmpty(appDir))
+            {
+                throw new NullReferenceException("実行ディレクトリが取得できません。");
+            }
+
+            return appDir;
         }
 
         public static void CreateApplicationDirectories()
@@ -123,6 +104,22 @@ namespace SWF.Core.Base
             }
 
             ConsoleUtil.Write(true, $"AppConstants.CreateApplicationDirectories End");
+        }
+
+        public static float GetCursorWindowScale()
+        {
+            var hwnd = WinApiMembers.WindowFromPoint(
+                new WinApiMembers.POINT(Cursor.Position.X, Cursor.Position.Y));
+            var dpi = WinApiMembers.GetDpiForWindow(hwnd);
+            var scale = dpi / AppConstants.BASE_DPI;
+            return scale;
+        }
+
+        public static float GetCurrentWindowScale(Control control)
+        {
+            var dpi = WinApiMembers.GetDpiForWindow(control.Handle);
+            var scale = dpi / AppConstants.BASE_DPI;
+            return scale;
         }
 
         public static Size GetControlBoxSize(IntPtr window)

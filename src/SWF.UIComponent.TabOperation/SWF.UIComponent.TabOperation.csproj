@@ -5,7 +5,7 @@
     <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
     <UseWindowsForms>true</UseWindowsForms>
     <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
-    <Configurations>Debug;Release;Develop</Configurations>
+    <Configurations>Debug;Release;Develop;UWP</Configurations>
     <NeutralLanguage>ja-JP</NeutralLanguage>
 	<Platforms>AnyCPU;x64;x86;ARM64;ARM32</Platforms>
 	<SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
@@ -29,6 +29,12 @@
 	<DebugType>none</DebugType>
 	<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 	<NoWarn>1701;1702; CS8785</NoWarn>
+  </PropertyGroup>
+  
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='UWP|x64'">
+    <DebugType>none</DebugType>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <NoWarn>1701;1702; CS8785</NoWarn>
   </PropertyGroup>
   
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -67,7 +73,15 @@
     <NoWarn>1701;1702; CS8785</NoWarn>
   </PropertyGroup>
   
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='UWP|AnyCPU'">
+    <NoWarn>1701;1702; CS8785</NoWarn>
+  </PropertyGroup>
+  
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
+    <NoWarn>1701;1702; CS8785</NoWarn>
+  </PropertyGroup>
+  
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='UWP|x86'">
     <NoWarn>1701;1702; CS8785</NoWarn>
   </PropertyGroup>
   
@@ -75,7 +89,15 @@
     <NoWarn>1701;1702; CS8785</NoWarn>
   </PropertyGroup>
   
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='UWP|ARM64'">
+    <NoWarn>1701;1702; CS8785</NoWarn>
+  </PropertyGroup>
+  
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM32'">
+    <NoWarn>1701;1702; CS8785</NoWarn>
+  </PropertyGroup>
+  
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='UWP|ARM32'">
     <NoWarn>1701;1702; CS8785</NoWarn>
   </PropertyGroup>
   
