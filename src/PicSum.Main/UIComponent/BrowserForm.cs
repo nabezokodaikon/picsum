@@ -6,19 +6,16 @@ using PicSum.UIComponent.Contents.Parameter;
 using SWF.Core.Base;
 using SWF.Core.ImageAccessor;
 using SWF.Core.Job;
-using SWF.Core.Resource;
 using SWF.UIComponent.Form;
 using SWF.UIComponent.TabOperation;
 using System;
 using System.ComponentModel;
 using System.Drawing;
-using System.Runtime.Versioning;
 using System.Windows.Forms;
 
 namespace PicSum.Main.UIComponent
 {
-    [SupportedOSPlatform("windows10.0.17763.0")]
-    public sealed partial class BrowserForm
+    public partial class BrowserForm
         : GrassForm, ISender
     {
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
@@ -55,13 +52,14 @@ namespace PicSum.Main.UIComponent
                 this.Opacity = 0f;
             }
 
-            this.Icon = ImageUtil.ConvertBitmapToIcon(ResourceFiles.ApplicationIcon.Value);
+            var resources = new ComponentResourceManager(typeof(BrowserForm));
+            this.Icon = (Icon)resources.GetObject("$this.Icon");
+
             this.Text = "PicSum";
             this.StartPosition = FormStartPosition.Manual;
             this.MinimumSize = new Size(480, 360);
             this.KeyPreview = true;
             this.Padding = new Padding(0, 8, 0, 0);
-
             this.Size = BrowserConfig.Instance.WindowSize;
             this.WindowState = BrowserConfig.Instance.WindowState;
             this.ScaleChanged += this.Form_ScaleChanged;
@@ -133,11 +131,11 @@ namespace PicSum.Main.UIComponent
             return !this.BrowserMainPanel.IsBeginTabDragOperation;
         }
 
-        protected override void OnHandleCreated(EventArgs e)
-        {
-            ConsoleUtil.Write(true, $"BrowserForm.OnHandleCreated");
-            base.OnHandleCreated(e);
-        }
+        //protected override void OnHandleCreated(EventArgs e)
+        //{
+        //    ConsoleUtil.Write(true, $"BrowserForm.OnHandleCreated");
+        //    base.OnHandleCreated(e);
+        //}
 
         protected override void OnShown(EventArgs e)
         {
