@@ -32,6 +32,9 @@ namespace PicSum.Main
                 {
                     AssemblyPreloader.OptimizeStartup(
                         typeof(System.AppDomain),
+                        typeof(System.Data.AcceptRejectRule),
+                        typeof(System.Drawing.Bitmap),
+                        typeof(System.IO.BinaryReader),
                         typeof(System.Threading.AbandonedMutexException),
                         typeof(System.Windows.Forms.Application),
 
