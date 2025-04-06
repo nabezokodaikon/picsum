@@ -7,6 +7,15 @@
 	<Configurations>Debug;Release;Develop</Configurations>
 	<Platforms>AnyCPU;x64;x86;ARM64;ARM32</Platforms>
 	<RuntimeIdentifiers>win-x86;win-x64</RuntimeIdentifiers>
+
+	<Optimize>true</Optimize>
+	<TieredCompilation>false</TieredCompilation>
+	<OptimizationPreference>Speed</OptimizationPreference>
+	<PublishReadyToRun>true</PublishReadyToRun>
+	<PublishReadyToRunUseCrossgen2>true</PublishReadyToRunUseCrossgen2>
+	<IsTrimmable>true</IsTrimmable>
+	<SuppressTrimAnalysisWarnings>true</SuppressTrimAnalysisWarnings>
+
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
