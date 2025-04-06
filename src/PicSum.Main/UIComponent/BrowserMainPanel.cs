@@ -91,7 +91,7 @@ namespace PicSum.Main.UIComponent
         public BrowserMainPanel()
         {
             this.pageContainer = new PageContainer();
-            using (TimeMeasuring.Run(true, "BrowserMainPanel.InitializeComponent 1"))
+            using (TimeMeasuring.Run(true, "BrowserMainPanel.InitializeComponent"))
             {
                 this.infoPanel = new InfoPanel();
                 this.tabSwitch = new TabSwitch();
@@ -112,42 +112,36 @@ namespace PicSum.Main.UIComponent
                 this.SuspendLayout();
             }
 
-            using (TimeMeasuring.Run(true, "BrowserMainPanel.InitializeComponent 2"))
-            {
-                this.InitializeComponent();
-            }
+            this.InitializeComponent();
 
-            using (TimeMeasuring.Run(true, "BrowserMainPanel.InitializeComponent 3"))
-            {
-                this.previewPageHistoryButton.Image = ResourceFiles.GoBackIcon.Value;
-                this.nextPageHistoryButton.Image = ResourceFiles.GoNextIcon.Value;
-                this.reloadToolButton.Image = ResourceFiles.ReloadIcon.Value;
-                this.showInfoToolButton.Image = ResourceFiles.InfoIcon.Value;
+            this.previewPageHistoryButton.Image = ResourceFiles.GoBackIcon.Value;
+            this.nextPageHistoryButton.Image = ResourceFiles.GoNextIcon.Value;
+            this.reloadToolButton.Image = ResourceFiles.ReloadIcon.Value;
+            this.showInfoToolButton.Image = ResourceFiles.InfoIcon.Value;
 
-                this.homeToolButton.Image = ResourceFiles.HomeIcon.Value;
-                this.tagDropToolButton.Image = ResourceFiles.TagIcon.Value;
-                this.tagDropToolButton.Icon = ResourceFiles.TagIcon.Value;
-                this.searchRatingToolButton.Image = ResourceFiles.ActiveRatingIcon.Value;
-                this.searchBookmarkToolButton.Image = ResourceFiles.BookmarkIcon.Value;
+            this.homeToolButton.Image = ResourceFiles.HomeIcon.Value;
+            this.tagDropToolButton.Image = ResourceFiles.TagIcon.Value;
+            this.tagDropToolButton.Icon = ResourceFiles.TagIcon.Value;
+            this.searchRatingToolButton.Image = ResourceFiles.ActiveRatingIcon.Value;
+            this.searchBookmarkToolButton.Image = ResourceFiles.BookmarkIcon.Value;
 
-                this.infoPanel.Visible = false;
+            this.infoPanel.Visible = false;
 
-                this.Controls.AddRange(
-                    [
-                        this.tabSwitch,
+            this.Controls.AddRange(
+                [
+                    this.tabSwitch,
                         this.toolPanel,
                         this.toolPanel2,
                         this.infoPanel,
                         this.pageContainer,
                     ]);
 
-                this.infoPanel.BringToFront();
-                this.pageContainer.BringToFront();
+            this.infoPanel.BringToFront();
+            this.pageContainer.BringToFront();
 
-                this.toolPanel.ResumeLayout(false);
-                this.toolPanel2.ResumeLayout(false);
-                this.ResumeLayout(false);
-            }
+            this.toolPanel.ResumeLayout(false);
+            this.toolPanel2.ResumeLayout(false);
+            this.ResumeLayout(false);
         }
 
         public void SetControlsBounds(float scale)
