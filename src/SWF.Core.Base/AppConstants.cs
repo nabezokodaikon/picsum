@@ -62,8 +62,7 @@ namespace SWF.Core.Base
             return Path.Combine(
                 Windows.Storage.ApplicationData.Current.LocalFolder.Path,
                 "picsum.files");
-#endif
-
+#else
             var appFile = Environment.ProcessPath;
             if (string.IsNullOrEmpty(appFile))
             {
@@ -77,6 +76,7 @@ namespace SWF.Core.Base
             }
 
             return appDir;
+#endif
         }
 
         public static void CreateApplicationDirectories()
