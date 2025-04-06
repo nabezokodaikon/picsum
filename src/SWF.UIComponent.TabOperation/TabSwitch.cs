@@ -603,11 +603,8 @@ namespace SWF.UIComponent.TabOperation
 
         protected override void OnHandleCreated(EventArgs e)
         {
-            if (!this.DesignMode)
-            {
-                var form = this.GetForm();
-                TabDragOperation.AddForm(form);
-            }
+            var form = this.GetForm();
+            TabDragOperation.AddForm(form);
 
             base.OnHandleCreated(e);
         }

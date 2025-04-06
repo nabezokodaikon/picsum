@@ -133,11 +133,6 @@ namespace PicSum.UIComponent.InfoPanel
                 this.InitializeComponent();
             }
 
-            if (!this.DesignMode)
-            {
-                this.CreateHandle();
-            }
-
             this.foreColorBrush = new SolidBrush(this.ForeColor);
             this.stringFormat = new StringFormat()
             {
