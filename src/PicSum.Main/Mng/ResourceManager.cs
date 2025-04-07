@@ -18,8 +18,6 @@ namespace PicSum.Main.Mng
         /// </summary>
         public ResourceManager()
         {
-            Config.Instance.Load();
-
             BrowserConfig.Instance.WindowState = Config.Instance.WindowState;
 
             BrowserConfig.Instance.WindowLocaion

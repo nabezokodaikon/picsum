@@ -1,6 +1,7 @@
 using NLog;
 using NLog.Config;
 using NLog.Targets;
+using PicSum.Main.Conf;
 using PicSum.Main.Mng;
 using PicSum.Main.UIComponent;
 using SWF.Core.Base;
@@ -9,6 +10,7 @@ using System.IO;
 using System.IO.Pipes;
 using System.Runtime.CompilerServices;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace PicSum.Main
@@ -30,12 +32,19 @@ namespace PicSum.Main
             {
                 try
                 {
+                    Thread.CurrentThread.Name = AppConstants.UI_THREAD_NAME;
+                    ThreadPool.SetMinThreads(50, 50);
+
                     AssemblyPreloader.OptimizeStartup(
+                        typeof(Accessibility.AnnoScope),
                         typeof(System.AppDomain),
+                        typeof(System.Collections.Generic.CollectionExtensions),
                         typeof(System.ComponentModel.AddingNewEventArgs),
                         typeof(System.Data.AcceptRejectRule),
                         typeof(System.Drawing.Bitmap),
                         typeof(System.IO.BinaryReader),
+                        typeof(System.Resources.Extensions.DeserializingResourceReader),
+                        typeof(System.Runtime.Versioning.ComponentGuaranteesAttribute),
                         typeof(System.Threading.AbandonedMutexException),
                         typeof(System.Windows.Forms.Application),
 
@@ -63,12 +72,15 @@ namespace PicSum.Main
                         typeof(WinApi.WinApiMembers)
                     );
 
-                    Thread.CurrentThread.Name = AppConstants.UI_THREAD_NAME;
-                    ThreadPool.SetMinThreads(50, 50);
-
                     AppConstants.CreateApplicationDirectories();
 
-                    LogManager.Configuration = CreateLoggerConfig();
+                    Task[] tasks =
+                    [
+                        Task.Run(CreateLoggerConfig),
+                        Task.Run(Config.Instance.Load),
+                    ];
+                    Task.WaitAll(tasks);
+
                     LogManager.GetCurrentClassLogger().Debug("アプリケーションを開始します。");
 
                     AppDomain.CurrentDomain.AssemblyLoad += CurrentDomain_OnAssemblyLoad;
@@ -112,7 +124,7 @@ namespace PicSum.Main
             }
         }
 
-        private static LoggingConfiguration CreateLoggerConfig()
+        private static void CreateLoggerConfig()
         {
             ConsoleUtil.Write(true, $"Program.CreateLoggerConfig Start");
 
@@ -133,10 +145,9 @@ namespace PicSum.Main
 #else
             config.AddRule(LogLevel.Info, LogLevel.Fatal, logfile);
 #endif
+            LogManager.Configuration = config;
 
             ConsoleUtil.Write(true, $"Program.CreateLoggerConfig End");
-
-            return config;
         }
 
         private static void Application_ThreadException(object sender, ThreadExceptionEventArgs e)

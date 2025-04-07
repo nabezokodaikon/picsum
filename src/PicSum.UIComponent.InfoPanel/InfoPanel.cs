@@ -128,10 +128,7 @@ namespace PicSum.UIComponent.InfoPanel
 
         public InfoPanel()
         {
-            using (TimeMeasuring.Run(true, "InfoPanel.InitializeComponent"))
-            {
-                this.InitializeComponent();
-            }
+            this.InitializeComponent();
 
             this.foreColorBrush = new SolidBrush(this.ForeColor);
             this.stringFormat = new StringFormat()
