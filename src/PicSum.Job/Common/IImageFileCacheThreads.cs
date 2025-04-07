@@ -1,4 +1,4 @@
-namespace PicSum.Job
+namespace PicSum.Job.Common
 {
     public interface IImageFileCacheThreads
         : IDisposable

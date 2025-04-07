@@ -1,3 +1,4 @@
+using PicSum.Job.Common;
 using SWF.Core.Base;
 using SWF.Core.Job;
 
