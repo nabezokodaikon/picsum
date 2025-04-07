@@ -76,12 +76,19 @@ namespace PicSum.Main
 
                     AppConstants.CreateApplicationDirectories();
 
-                    Task[] tasks =
-                    [
-                        Task.Run(CreateLoggerConfig),
-                        Task.Run(Config.Instance.Load),
-                    ];
-                    Task.WaitAll(tasks);
+                    using (TimeMeasuring.Run(true, "Program.Main Load Configs"))
+                    {
+                        Action[] actions = [
+                            CreateLoggerConfig,
+                            Config.Instance.Load
+                        ];
+
+                        Parallel.ForEach(
+                            actions,
+                            new ParallelOptions { MaxDegreeOfParallelism = actions.Length },
+                            _ => _()
+                        );
+                    }
 
                     LogManager.GetCurrentClassLogger().Debug("アプリケーションを開始します。");
 
