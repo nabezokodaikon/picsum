@@ -23,48 +23,51 @@ namespace PicSum.Job.Jobs
                 throw new ArgumentException("ファイルパスリストがNULLです。", nameof(param));
             }
 
-            for (var index = param.FirstIndex; index <= param.LastIndex; index++)
-            {
-                this.CheckCancel();
+            var array = param.FilePathList
+                .Skip(param.FirstIndex)
+                .Take(param.LastIndex - param.FirstIndex + 1)
+                .ToArray();
 
-                try
+            Parallel.ForEach(
+                array,
+                new ParallelOptions { MaxDegreeOfParallelism = Math.Min(array.Length, 4) },
+                filePath =>
                 {
-                    var bf = Instance<IThumbnailCacher>.Value.GetOrCreateCache(param.FilePathList[index], param.ThumbnailWidth, param.ThumbnailHeight);
-                    if (bf == ThumbnailCacheEntity.EMPTY)
+                    this.CheckCancel();
+
+                    try
                     {
-                        continue;
+                        var bf = Instance<IThumbnailCacher>.Value.GetOrCreateCache(
+                            filePath, param.ThumbnailWidth, param.ThumbnailHeight);
+                        if (bf != ThumbnailCacheEntity.EMPTY
+                            && bf.ThumbnailBuffer != null)
+                        {
+                            var img = new ThumbnailImageResult
+                            {
+                                FilePath = bf.FilePath,
+                                ThumbnailImage = ThumbnailUtil.ToImage(bf.ThumbnailBuffer),
+                                ThumbnailWidth = bf.ThumbnailWidth,
+                                ThumbnailHeight = bf.ThumbnailHeight,
+                                SourceWidth = bf.SourceWidth,
+                                SourceHeight = bf.SourceHeight,
+                                FileUpdatedate = bf.FileUpdatedate
+                            };
+
+                            this.Callback(img);
+                        }
+                    }
+                    catch (FileUtilException ex)
+                    {
+                        this.WriteErrorLog(new JobException(this.ID, ex));
+                    }
+                    catch (ImageUtilException ex)
+                    {
+                        this.WriteErrorLog(new JobException(this.ID, ex));
                     }
 
-                    if (bf.ThumbnailBuffer == null)
-                    {
-                        throw new NullReferenceException("サムネイルのバッファがNullです。");
-                    }
-
-                    var img = new ThumbnailImageResult
-                    {
-                        FilePath = bf.FilePath,
-                        ThumbnailImage = ThumbnailUtil.ToImage(bf.ThumbnailBuffer),
-                        ThumbnailWidth = bf.ThumbnailWidth,
-                        ThumbnailHeight = bf.ThumbnailHeight,
-                        SourceWidth = bf.SourceWidth,
-                        SourceHeight = bf.SourceHeight,
-                        FileUpdatedate = bf.FileUpdatedate
-                    };
-                    this.Callback(img);
+                    Thread.Sleep(10);
                 }
-                catch (FileUtilException ex)
-                {
-                    this.WriteErrorLog(new JobException(this.ID, ex));
-                    continue;
-                }
-                catch (ImageUtilException ex)
-                {
-                    this.WriteErrorLog(new JobException(this.ID, ex));
-                    continue;
-                }
-
-                Thread.Sleep(1);
-            }
+            );
         }
     }
 }

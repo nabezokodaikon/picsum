@@ -22,6 +22,7 @@ namespace PicSum.Job.Common
         private readonly Dictionary<string, ThumbnailCacheEntity> CACHE_DICTIONARY = new(CACHE_CAPACITY);
         private readonly FileAppender fileAppender = new();
         private readonly Lock CACHE_LOCK = new();
+        private readonly Lock FILE_APPENDER_LOCK = new();
 
         public ThumbnailCacher()
         {
@@ -341,13 +342,19 @@ namespace PicSum.Job.Common
 
         private byte[] ReadThumbnailBuffer(string filePath, int startPoint, int size)
         {
-            return this.fileAppender.Read(filePath, startPoint, size);
+            lock (this.FILE_APPENDER_LOCK)
+            {
+                return this.fileAppender.Read(filePath, startPoint, size);
+            }
         }
 
         private int AddThumbnailBuffer(int id, byte[] buffer)
         {
             var thumbFile = this.GetThumbnailBufferFilePath(id);
-            return this.fileAppender.Append(thumbFile, buffer);
+            lock (this.FILE_APPENDER_LOCK)
+            {
+                return this.fileAppender.Append(thumbFile, buffer);
+            }
         }
 
         private ThumbnailCacheEntity GetDBCache(string filePath)
