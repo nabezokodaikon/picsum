@@ -47,7 +47,6 @@ namespace PicSum.Main
                         typeof(System.Drawing.Bitmap),
                         typeof(System.IO.BinaryReader),
                         typeof(System.Resources.Extensions.DeserializingResourceReader),
-                        typeof(System.Runtime.Versioning.ComponentGuaranteesAttribute),
                         typeof(System.Threading.AbandonedMutexException),
                         typeof(System.Windows.Forms.Application),
 
