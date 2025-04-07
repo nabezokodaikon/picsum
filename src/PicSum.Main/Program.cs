@@ -43,6 +43,7 @@ namespace PicSum.Main
                         typeof(System.Collections.Generic.CollectionExtensions),
                         typeof(System.ComponentModel.AddingNewEventArgs),
                         typeof(System.Data.AcceptRejectRule),
+                        typeof(System.Data.SQLite.AssemblySourceIdAttribute),
                         typeof(System.Drawing.Bitmap),
                         typeof(System.IO.BinaryReader),
                         typeof(System.Resources.Extensions.DeserializingResourceReader),
