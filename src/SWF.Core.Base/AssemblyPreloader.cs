@@ -112,7 +112,7 @@ namespace SWF.Core.Base
         {
             ArgumentNullException.ThrowIfNull(criticalTypes, nameof(criticalTypes));
 
-            //using (TimeMeasuring.Run(true, "MicrosoftStorePreloader.OptimizeStartup Async"))
+            //using (TimeMeasuring.Run(true, "AssemblyPreloader.OptimizeStartup Async"))
             //{
             //    var tasks = criticalTypes
             //        .Select(AsyncPreloadAssemblyForType)
@@ -123,7 +123,7 @@ namespace SWF.Core.Base
 
             //return;
 
-            using (TimeMeasuring.Run(true, "MicrosoftStorePreloader.OptimizeStartup Sync"))
+            using (TimeMeasuring.Run(true, "AssemblyPreloader.OptimizeStartup Sync"))
             {
                 Parallel.ForEach(
                     criticalTypes,
