@@ -19,11 +19,6 @@ namespace SWF.Core.ImageAccessor
 
         }
 
-        ~ImageFileSizeCacher()
-        {
-            this.Dispose(false);
-        }
-
         public void Dispose()
         {
             this.Dispose(true);

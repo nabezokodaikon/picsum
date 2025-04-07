@@ -50,10 +50,5 @@ namespace SWF.Core.DatabaseAccessor
             this.Dispose(true);
             GC.SuppressFinalize(this);
         }
-
-        ~Transaction()
-        {
-            this.Dispose(false);
-        }
     }
 }

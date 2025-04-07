@@ -21,11 +21,6 @@ namespace SWF.Core.Job
             this.task = Task.Run(() => this.DoWork(this.source.Token));
         }
 
-        ~JobQueue()
-        {
-            this.Dispose(false);
-        }
-
         public void Dispose()
         {
             this.Dispose(true);

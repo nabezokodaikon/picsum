@@ -55,11 +55,6 @@ namespace PicSum.Job.Common
         public readonly Lazy<ITwoWayJob<BookmarksGetJob, ListResult<FileShallowInfoEntity>>> BookmarksGetJob
             = new(() => new TwoWayThread<BookmarksGetJob, ListResult<FileShallowInfoEntity>>(context, new JobTask()), LazyThreadSafetyMode.ExecutionAndPublication);
 
-        ~JobCaller()
-        {
-            this.Dispose(false);
-        }
-
         public void Dispose()
         {
             this.Dispose(true);

@@ -81,11 +81,6 @@ namespace SWF.Core.DatabaseAccessor
             GC.SuppressFinalize(this);
         }
 
-        ~AbstractConnection()
-        {
-            this.Dispose(false);
-        }
-
         private SQLiteConnection GetConnection()
         {
             if (this.connection == null)

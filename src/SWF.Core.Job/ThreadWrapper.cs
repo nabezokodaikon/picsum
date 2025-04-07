@@ -19,11 +19,6 @@ namespace SWF.Core.Job
 
         }
 
-        ~JobThread()
-        {
-            this.Dispose(false);
-        }
-
         public void Dispose()
         {
             this.Dispose(true);
@@ -79,11 +74,6 @@ namespace SWF.Core.Job
         public JobTask()
         {
 
-        }
-
-        ~JobTask()
-        {
-            this.Dispose(false);
         }
 
         public void Dispose()

@@ -80,11 +80,6 @@ namespace SWF.Core.Job
             this.threadName = $"{typeof(TJob).Name} {ThreadID.GetNew()}";
         }
 
-        ~TwoWayThread()
-        {
-            this.Dispose(false);
-        }
-
         public void Dispose()
         {
             this.Dispose(true);

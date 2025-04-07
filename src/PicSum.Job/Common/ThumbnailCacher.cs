@@ -28,11 +28,6 @@ namespace PicSum.Job.Common
 
         }
 
-        ~ThumbnailCacher()
-        {
-            this.Dispose(false);
-        }
-
         public void Dispose()
         {
             this.Dispose(true);
