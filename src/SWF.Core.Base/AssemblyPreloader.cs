@@ -7,7 +7,7 @@ namespace SWF.Core.Base
     {
         private static readonly ConcurrentDictionary<string, bool> PreloadedAssemblies = new();
 
-        private static Task PreloadAssemblyForType(Type criticalType)
+        private static Task AsyncPreloadAssemblyForType(Type criticalType)
         {
             return Task.Run(() =>
             {
@@ -33,6 +33,31 @@ namespace SWF.Core.Base
                     );
                 }
             });
+        }
+
+        private static void SyncPreloadAssemblyForType(Type criticalType)
+        {
+            try
+            {
+                var assemblyName = criticalType.Assembly.GetName().Name;
+                if (assemblyName == null)
+                {
+                    return;
+                }
+
+                if (PreloadedAssemblies.TryAdd(assemblyName, true))
+                {
+                    var assembly = criticalType.Assembly;
+                    Assembly.Load(assemblyName);
+                    LoadCriticalReferences(assembly);
+                }
+            }
+            catch (Exception ex)
+            {
+                ConsoleUtil.Write(true,
+                    $"アセンブリ読み込みエラー: {criticalType.Assembly.GetName().Name}. Error: {ex.Message}"
+                );
+            }
         }
 
         private static void LoadCriticalReferences(Assembly assembly)
@@ -85,18 +110,27 @@ namespace SWF.Core.Base
         // アプリケーション起動時の最適化メソッド
         public static void OptimizeStartup(params Type[] criticalTypes)
         {
-            ConsoleUtil.Write(true, $"AssemblyPreloader.OptimizeStartup Start");
+            ArgumentNullException.ThrowIfNull(criticalTypes, nameof(criticalTypes));
 
-            using (TimeMeasuring.Run(false, "MicrosoftStorePreloader.OptimizeStartup"))
+            //using (TimeMeasuring.Run(true, "MicrosoftStorePreloader.OptimizeStartup Async"))
+            //{
+            //    var tasks = criticalTypes
+            //        .Select(AsyncPreloadAssemblyForType)
+            //        .ToArray();
+
+            //    Task.WaitAll(tasks);
+            //}
+
+            //return;
+
+            using (TimeMeasuring.Run(true, "MicrosoftStorePreloader.OptimizeStartup Sync"))
             {
-                var tasks = criticalTypes
-                    .Select(PreloadAssemblyForType)
-                    .ToArray();
-
-                Task.WaitAll(tasks);
+                Parallel.ForEach(
+                    criticalTypes,
+                    new ParallelOptions { MaxDegreeOfParallelism = criticalTypes.Length },
+                    SyncPreloadAssemblyForType
+                );
             }
-
-            ConsoleUtil.Write(true, $"AssemblyPreloader.OptimizeStartup End");
         }
     }
 }

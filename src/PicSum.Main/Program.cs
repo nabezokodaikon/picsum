@@ -32,6 +32,8 @@ namespace PicSum.Main
             {
                 try
                 {
+                    AppConstants.StartBootTimeMeasurement();
+
                     Thread.CurrentThread.Name = AppConstants.UI_THREAD_NAME;
                     ThreadPool.SetMinThreads(50, 50);
 

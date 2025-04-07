@@ -145,11 +145,10 @@ namespace PicSum.Main.UIComponent
 
             if (BrowserForm.isStartUp)
             {
-                using (TimeMeasuring.Run(false, "BrowserForm.OnShown"))
-                {
-                    this.CreateBrowserMainPanel();
-                    BrowserForm.isStartUp = false;
-                }
+                this.CreateBrowserMainPanel();
+                BrowserForm.isStartUp = false;
+
+                AppConstants.StopBootTimeMeasurement();
             }
 
             if (this.isFastShow)

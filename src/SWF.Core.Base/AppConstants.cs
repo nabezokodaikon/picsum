@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 using WinApi;
@@ -28,6 +29,8 @@ namespace SWF.Core.Base
         public const int THUMBNAIL_MAXIMUM_SIZE = 256;
         public const int THUMBNAIL_MINIMUM_SIZE = 96;
 
+        private static Stopwatch? bootTimeStopwatch = null;
+
         //private static readonly Lazy<bool> IS_RUNNING_AS_UWP
         //    = new(IsRunningAsUwp, LazyThreadSafetyMode.ExecutionAndPublication);
         public static readonly Lazy<string> APPLICATION_DIRECTORY
@@ -44,6 +47,17 @@ namespace SWF.Core.Base
             = new(() => Path.Combine(DATABASE_DIRECTORY.Value, "fileinfo.sqlite"), LazyThreadSafetyMode.ExecutionAndPublication);
         public static readonly Lazy<string> THUMBNAIL_DATABASE_FILE
             = new(() => Path.Combine(DATABASE_DIRECTORY.Value, "thumbnail.sqlite"), LazyThreadSafetyMode.ExecutionAndPublication);
+
+        public static void StartBootTimeMeasurement()
+        {
+            bootTimeStopwatch = Stopwatch.StartNew();
+        }
+
+        public static void StopBootTimeMeasurement()
+        {
+            bootTimeStopwatch?.Stop();
+            Console.WriteLine($"[{Thread.CurrentThread.Name}] Boot time: {bootTimeStopwatch?.ElapsedMilliseconds} ms");
+        }
 
         //private static bool IsRunningAsUwp()
         //{
