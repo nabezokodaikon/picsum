@@ -49,7 +49,7 @@ namespace SWF.Core.Base
                 {
                     var assembly = criticalType.Assembly;
                     Assembly.Load(assemblyName);
-                    LoadCriticalReferences(assembly);
+                    //LoadCriticalReferences(assembly);
                 }
             }
             catch (Exception ex)
