@@ -103,29 +103,28 @@ namespace SWF.Core.Base
 
         public static void CreateApplicationDirectories()
         {
-            ConsoleUtil.Write(true, $"AppConstants.CreateApplicationDirectories Start");
-
-            if (!FileUtil.IsExistsFileOrDirectory(APPLICATION_DIRECTORY.Value))
+            using (TimeMeasuring.Run(true, "AppConstants.CreateApplicationDirectories"))
             {
-                Directory.CreateDirectory(APPLICATION_DIRECTORY.Value);
-            }
+                if (!FileUtil.IsExistsFileOrDirectory(APPLICATION_DIRECTORY.Value))
+                {
+                    Directory.CreateDirectory(APPLICATION_DIRECTORY.Value);
+                }
 
-            if (!FileUtil.IsExistsFileOrDirectory(LOG_DIRECTORY.Value))
-            {
-                Directory.CreateDirectory(LOG_DIRECTORY.Value);
-            }
+                if (!FileUtil.IsExistsFileOrDirectory(LOG_DIRECTORY.Value))
+                {
+                    Directory.CreateDirectory(LOG_DIRECTORY.Value);
+                }
 
-            if (!FileUtil.IsExistsFileOrDirectory(CONFIG_DIRECTORY.Value))
-            {
-                Directory.CreateDirectory(CONFIG_DIRECTORY.Value);
-            }
+                if (!FileUtil.IsExistsFileOrDirectory(CONFIG_DIRECTORY.Value))
+                {
+                    Directory.CreateDirectory(CONFIG_DIRECTORY.Value);
+                }
 
-            if (!FileUtil.IsExistsFileOrDirectory(DATABASE_DIRECTORY.Value))
-            {
-                Directory.CreateDirectory(DATABASE_DIRECTORY.Value);
+                if (!FileUtil.IsExistsFileOrDirectory(DATABASE_DIRECTORY.Value))
+                {
+                    Directory.CreateDirectory(DATABASE_DIRECTORY.Value);
+                }
             }
-
-            ConsoleUtil.Write(true, $"AppConstants.CreateApplicationDirectories End");
         }
 
         public static float GetCursorWindowScale()
