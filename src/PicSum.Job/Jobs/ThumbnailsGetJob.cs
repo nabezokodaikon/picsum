@@ -33,10 +33,10 @@ namespace PicSum.Job.Jobs
                 new ParallelOptions { MaxDegreeOfParallelism = Math.Min(array.Length, 4) },
                 filePath =>
                 {
-                    this.CheckCancel();
-
                     try
                     {
+                        this.CheckCancel();
+
                         var bf = Instance<IThumbnailCacher>.Value.GetOrCreateCache(
                             filePath, param.ThumbnailWidth, param.ThumbnailHeight);
                         if (bf != ThumbnailCacheEntity.EMPTY
@@ -63,6 +63,10 @@ namespace PicSum.Job.Jobs
                     catch (ImageUtilException ex)
                     {
                         this.WriteErrorLog(new JobException(this.ID, ex));
+                    }
+                    catch (JobCancelException)
+                    {
+                        return;
                     }
 
                     Thread.Sleep(10);
