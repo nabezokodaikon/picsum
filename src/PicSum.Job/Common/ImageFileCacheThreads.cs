@@ -74,19 +74,10 @@ namespace PicSum.Job.Common
                 while (queue.TryDequeue(out var _)) { }
             }
 
-            for (var i = 0; i < files.Length; i += THREAD_COUNT)
+            for (var i = 0; i < files.Length; i++)
             {
-                for (var j = 0; j < THREAD_COUNT; j++)
-                {
-                    var k = i + j;
-                    if (k >= files.Length)
-                    {
-                        break;
-                    }
-
-                    var queue = this.queueArray[j];
-                    queue.Enqueue(files[k]);
-                }
+                var queueIndex = i % THREAD_COUNT;
+                this.queueArray[queueIndex].Enqueue(files[i]);
             }
         }
 
