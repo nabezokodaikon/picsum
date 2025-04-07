@@ -10,7 +10,7 @@ namespace PicSum.DatabaseAccessor.Connection
     public sealed partial class FileInfoDB
         : AbstractConnection, IFileInfoDB
     {
-        private static readonly string tableCreateSql =
+        private const string TABLE_CREATE_SQL =
         @"
 /* ファイルIDM */
 CREATE TABLE 'm_file_id' (
@@ -268,6 +268,6 @@ INSERT INTO m_file_id (
         ";
 
         public FileInfoDB(string dbFilePath)
-            : base(dbFilePath, tableCreateSql) { }
+            : base(dbFilePath, TABLE_CREATE_SQL) { }
     }
 }

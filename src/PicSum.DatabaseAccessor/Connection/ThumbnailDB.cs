@@ -10,7 +10,7 @@ namespace PicSum.DatabaseAccessor.Connection
     public sealed partial class ThumbnailDB
         : AbstractConnection, IThumbnailDB
     {
-        private static readonly string tableCreateSql =
+        private const string TABLE_CREATE_SQL =
         @"
 /* サムネイルIDM */
 CREATE TABLE 'm_thumbnail_id' (
@@ -75,6 +75,6 @@ INSERT INTO m_thumbnail_id (
         ";
 
         public ThumbnailDB(string dbFilePath)
-            : base(dbFilePath, tableCreateSql) { }
+            : base(dbFilePath, TABLE_CREATE_SQL) { }
     }
 }
