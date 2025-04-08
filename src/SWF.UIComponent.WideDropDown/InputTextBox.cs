@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
@@ -11,11 +12,37 @@ namespace SWF.UIComponent.WideDropDown
     public sealed partial class InputTextBox
         : TextBox
     {
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public new BorderStyle BorderStyle
+        {
+            get
+            {
+                return base.BorderStyle;
+            }
+            private set
+            {
+                base.BorderStyle = value;
+            }
+        }
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public new bool Multiline
+        {
+            get
+            {
+                return base.Multiline;
+            }
+            private set
+            {
+                base.Multiline = value;
+            }
+        }
+
         public InputTextBox()
         {
-            this.Multiline = false;
+            this.BorderStyle = BorderStyle.None;
+            this.Multiline = true;
             this.AcceptsReturn = false;
-            this.VerticalAlignment();
         }
 
         protected override bool ProcessDialogKey(Keys keyData)
