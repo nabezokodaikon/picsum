@@ -1,6 +1,6 @@
 using PicSum.Job.Results;
 
-namespace PicSum.Job.Common
+namespace PicSum.Job.Entities
 {
     internal sealed class ThumbnailReadThreadsEntity
     {
@@ -15,7 +15,7 @@ namespace PicSum.Job.Common
             int thumbnailHeight,
             Action<ThumbnailImageResult> callbackAction)
         {
-            ArgumentNullException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
+            ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
             ArgumentNullException.ThrowIfNull(callbackAction, nameof(callbackAction));
 
             this.FilePath = filePath;
