@@ -37,10 +37,8 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.leftImagePanel.ImageAlign = SWF.Core.Base.ImageAlign.Center;
             this.leftImagePanel.IsShowThumbnailPanel = true;
             this.leftImagePanel.Location = new System.Drawing.Point(0, 0);
-            this.leftImagePanel.Margin = new System.Windows.Forms.Padding(4);
             this.leftImagePanel.Name = "leftImagePanel";
             this.leftImagePanel.Size = new System.Drawing.Size(0, 0);
-            this.leftImagePanel.TabIndex = 1;
             this.leftImagePanel.Text = "imagePanel1";
             this.leftImagePanel.Visible = false;
             this.leftImagePanel.Font = new System.Drawing.Font("Yu Gothic UI", 18F);
@@ -72,10 +70,8 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.rightImagePanel.ImageAlign = SWF.Core.Base.ImageAlign.Center;
             this.rightImagePanel.IsShowThumbnailPanel = true;
             this.rightImagePanel.Location = new System.Drawing.Point(0, 0);
-            this.rightImagePanel.Margin = new System.Windows.Forms.Padding(4);
             this.rightImagePanel.Name = "rightImagePanel";
             this.rightImagePanel.Size = new System.Drawing.Size(0, 0);
-            this.rightImagePanel.TabIndex = 2;
             this.rightImagePanel.Text = "imagePanel2";
             this.rightImagePanel.Visible = false;
             this.rightImagePanel.Font = new System.Drawing.Font("Yu Gothic UI", 18F);
@@ -88,14 +84,11 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             // 
             this.checkPatternPanel.Controls.Add(this.leftImagePanel);
             this.checkPatternPanel.Controls.Add(this.rightImagePanel);
-            this.checkPatternPanel.Margin = new System.Windows.Forms.Padding(0);
             this.checkPatternPanel.Name = "checkPatternPanel";
-            this.checkPatternPanel.TabIndex = 3;
             this.checkPatternPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             // 
             // toolBar
             // 
-            this.toolBar.TabStop = false;
             this.toolBar.IsDrawBottomBorderLine = true;
             this.toolBar.DoublePreviewButtonClick += new System.EventHandler(this.DoublePreviewIndexToolStripButton_Click);
             this.toolBar.DoubleNextButtonClick += new System.EventHandler(this.DoubleNextIndexToolStripButton_Click);
@@ -116,7 +109,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.BackColor = System.Drawing.Color.FromArgb(250, 250, 250);
             this.Controls.Add(this.checkPatternPanel);
             this.Controls.Add(this.toolBar);
-            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "ImageViewerPage";
             this.Size = new System.Drawing.Size(925, 528);
             this.checkPatternPanel.ResumeLayout(false);

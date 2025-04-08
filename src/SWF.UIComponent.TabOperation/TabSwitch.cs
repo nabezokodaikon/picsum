@@ -3,6 +3,7 @@ using SWF.Core.ImageAccessor;
 using SWF.Core.Resource;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
@@ -19,6 +20,32 @@ namespace SWF.UIComponent.TabOperation
     public sealed partial class TabSwitch
         : Control
     {
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public new int TabIndex
+        {
+            get
+            {
+                return base.TabIndex;
+            }
+            private set
+            {
+                base.TabIndex = value;
+            }
+        }
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public new string Text
+        {
+            get
+            {
+                return base.Text;
+            }
+            private set
+            {
+                base.Text = value;
+            }
+        }
+
         // タブの高さ
         private int GetTabHeight()
         {

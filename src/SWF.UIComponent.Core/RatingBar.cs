@@ -14,6 +14,19 @@ namespace SWF.UIComponent.Core
         private readonly List<RatingButton> ratingButtonList = [];
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public new int TabIndex
+        {
+            get
+            {
+                return base.TabIndex;
+            }
+            private set
+            {
+                base.TabIndex = value;
+            }
+        }
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public int MaximumValue
         {
             get

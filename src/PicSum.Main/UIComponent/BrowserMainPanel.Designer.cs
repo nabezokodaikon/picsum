@@ -23,7 +23,6 @@ namespace PicSum.Main.UIComponent
             this.pageContainer.Location = new Point(500, 0);
             this.pageContainer.Name = "pageContainer";
             this.pageContainer.Size = new Size(746, 402);
-            this.pageContainer.TabIndex = 1;
             this.pageContainer.DragDrop += this.PageContainer_DragDrop;
             this.pageContainer.DragEnter += this.PageContainer_DragEnter;
             // 
@@ -34,7 +33,6 @@ namespace PicSum.Main.UIComponent
             this.infoPanel.Location = new Point(0, 0);
             this.infoPanel.Name = "infoPanel";
             this.infoPanel.Size = new Size(96, 100);
-            this.infoPanel.TabIndex = 0;
             this.infoPanel.SelectedTag += this.InfoPanel_SelectedTag;
             // 
             // tabSwitch
@@ -44,8 +42,6 @@ namespace PicSum.Main.UIComponent
             this.tabSwitch.Location = new Point(0, 0);
             this.tabSwitch.Name = "tabSwitch";
             this.tabSwitch.Size = new Size(746, 29);
-            this.tabSwitch.TabIndex = 4;
-            this.tabSwitch.Text = "tabSwitch1";
             this.tabSwitch.ActiveTabChanged += this.TabSwitch_ActiveTabChanged;
             this.tabSwitch.TabCloseButtonClick += this.TabSwitch_TabCloseButtonClick;
             this.tabSwitch.TabDropouted += this.TabSwitch_TabDropouted;
@@ -57,22 +53,18 @@ namespace PicSum.Main.UIComponent
             // toolPanel
             // 
             this.toolPanel.BackColor = Color.FromArgb(250, 250, 250);
-            this.toolPanel.BackgroundImageLayout = ImageLayout.Stretch;
             this.toolPanel.Controls.Add(this.reloadToolButton);
             this.toolPanel.Controls.Add(this.nextPageHistoryButton);
             this.toolPanel.Controls.Add(this.previewPageHistoryButton);
             this.toolPanel.Controls.Add(this.showInfoToolButton);
             this.toolPanel.Controls.Add(this.addressBar);
             this.toolPanel.Location = new Point(0, 29);
-            this.toolPanel.Margin = new Padding(0);
             this.toolPanel.Name = "toolPanel";
             this.toolPanel.Size = new Size(746, 34);
-            this.toolPanel.TabIndex = 5;
             // 
             // reloadToolButton
             // 
             this.reloadToolButton.Location = new Point(73, 3);
-            this.reloadToolButton.Margin = new Padding(0);
             this.reloadToolButton.Name = "reloadToolButton";
             this.reloadToolButton.Size = new Size(32, 28);
             this.reloadToolButton.MouseClick += this.ReloadToolButton_MouseClick;
@@ -81,7 +73,6 @@ namespace PicSum.Main.UIComponent
             // 
             this.nextPageHistoryButton.Enabled = false;
             this.nextPageHistoryButton.Location = new Point(38, 3);
-            this.nextPageHistoryButton.Margin = new Padding(0);
             this.nextPageHistoryButton.Name = "nextPageHistoryButton";
             this.nextPageHistoryButton.Size = new Size(32, 28);
             this.nextPageHistoryButton.MouseClick += this.NextPageHistoryButton_MouseClick;
@@ -90,7 +81,6 @@ namespace PicSum.Main.UIComponent
             // 
             this.previewPageHistoryButton.Enabled = false;
             this.previewPageHistoryButton.Location = new Point(3, 3);
-            this.previewPageHistoryButton.Margin = new Padding(0);
             this.previewPageHistoryButton.Name = "previewPageHistoryButton";
             this.previewPageHistoryButton.Size = new Size(32, 28);
             this.previewPageHistoryButton.MouseClick += this.PreviewPageHistoryButton_MouseClick;
@@ -98,7 +88,6 @@ namespace PicSum.Main.UIComponent
             // showInfoToolButton
             // 
             this.showInfoToolButton.Location = new Point(712, 3);
-            this.showInfoToolButton.Margin = new Padding(0);
             this.showInfoToolButton.Name = "showInfoToolButton";
             this.showInfoToolButton.Size = new Size(32, 28);
             this.showInfoToolButton.MouseClick += this.ShowInfoToolButton_MouseClick;
@@ -107,16 +96,13 @@ namespace PicSum.Main.UIComponent
             //
             this.addressBar.BackColor = Color.FromArgb(124, 138, 153);
             this.addressBar.Location = new Point(108, 4);
-            this.addressBar.Margin = new Padding(0);
             this.addressBar.Name = "addressBar";
             this.addressBar.Size = new Size(601, 26);
-            this.addressBar.TabIndex = 0;
             this.addressBar.SelectedDirectory += this.AddressBar_SelectedDirectory;
             // 
             // searchBookmarkToolButton
             // 
             this.searchBookmarkToolButton.Location = new Point(3, 98);
-            this.searchBookmarkToolButton.Margin = new Padding(3, 0, 3, 3);
             this.searchBookmarkToolButton.Name = "searchBookmarkToolButton";
             this.searchBookmarkToolButton.Size = new Size(32, 28);
             this.searchBookmarkToolButton.MouseClick += this.SearchBookmarkToolButton_MouseClick;
@@ -124,7 +110,6 @@ namespace PicSum.Main.UIComponent
             // tagDropToolButton
             // 
             this.tagDropToolButton.Location = new Point(3, 36);
-            this.tagDropToolButton.Margin = new Padding(3, 0, 3, 3);
             this.tagDropToolButton.Name = "tagDropToolButton";
             this.tagDropToolButton.Size = new Size(32, 28);
             this.tagDropToolButton.ItemMouseClick += this.TagDropToolButton_ItemMouseClick;
@@ -140,7 +125,6 @@ namespace PicSum.Main.UIComponent
             // searchRatingToolButton
             // 
             this.searchRatingToolButton.Location = new Point(3, 67);
-            this.searchRatingToolButton.Margin = new Padding(3, 0, 3, 3);
             this.searchRatingToolButton.Name = "searchRatingToolButton";
             this.searchRatingToolButton.Size = new Size(32, 28);
             this.searchRatingToolButton.MouseClick += this.SearchRatingToolButton_MouseClick;
@@ -153,10 +137,8 @@ namespace PicSum.Main.UIComponent
             this.toolPanel2.Controls.Add(this.tagDropToolButton);
             this.toolPanel2.Controls.Add(this.searchRatingToolButton);
             this.toolPanel2.Location = new Point(0, 63);
-            this.toolPanel2.Margin = new Padding(0);
             this.toolPanel2.Name = "toolPanel2";
             this.toolPanel2.Size = new Size(38, 403);
-            this.toolPanel2.TabIndex = 6;
             this.toolPanel2.IsDrawRightBorderLine = true;
             this.toolPanel2.VerticalTopMargin = 28;
             // 

@@ -27,6 +27,32 @@ namespace SWF.UIComponent.FlowList
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool CanKeyDown { get; set; } = true;
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public new int TabIndex
+        {
+            get
+            {
+                return base.TabIndex;
+            }
+            private set
+            {
+                base.TabIndex = value;
+            }
+        }
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public new bool TabStop
+        {
+            get
+            {
+                return base.TabStop;
+            }
+            private set
+            {
+                base.TabStop = value;
+            }
+        }
+
         /// <summary>
         /// スクロールバー表示フラグ
         /// </summary>

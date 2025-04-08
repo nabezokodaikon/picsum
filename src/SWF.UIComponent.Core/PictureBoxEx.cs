@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.Runtime.Versioning;
 
 namespace SWF.UIComponent.Core
@@ -6,6 +7,32 @@ namespace SWF.UIComponent.Core
     public class PictureBoxEx
         : Control
     {
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public new int TabIndex
+        {
+            get
+            {
+                return base.TabIndex;
+            }
+            private set
+            {
+                base.TabIndex = value;
+            }
+        }
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public new bool TabStop
+        {
+            get
+            {
+                return base.TabStop;
+            }
+            private set
+            {
+                base.TabStop = value;
+            }
+        }
+
         public PictureBoxEx()
         {
             this.SetStyle(

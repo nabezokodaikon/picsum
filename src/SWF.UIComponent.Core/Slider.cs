@@ -27,6 +27,32 @@ namespace SWF.UIComponent.Core
         private bool isValueChanging = false;
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public new int TabIndex
+        {
+            get
+            {
+                return base.TabIndex;
+            }
+            private set
+            {
+                base.TabIndex = value;
+            }
+        }
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public new bool TabStop
+        {
+            get
+            {
+                return base.TabStop;
+            }
+            private set
+            {
+                base.TabStop = value;
+            }
+        }
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public int MaximumValue
         {
             get

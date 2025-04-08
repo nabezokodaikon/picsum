@@ -33,14 +33,10 @@ namespace PicSum.UIComponent.InfoPanel
             // 
             this.thumbnailPictureBox.BackColor = Color.FromArgb(250, 250, 250);
             this.thumbnailPictureBox.Location = new Point(4, 0);
-            this.thumbnailPictureBox.Margin = new System.Windows.Forms.Padding(4, 0, 0, 0);
             this.thumbnailPictureBox.MinimumSize = new Size(128, 128);
             this.thumbnailPictureBox.Name = "thumbnailPictureBox";
             this.thumbnailPictureBox.Size = new Size(508, 256);
-            this.thumbnailPictureBox.TabIndex = 0;
-            this.thumbnailPictureBox.TabStop = false;
             this.thumbnailPictureBox.Font = new Font("Yu Gothic UI", 14F);
-            this.thumbnailPictureBox.Text = "thumbnailPictureBox1";
             this.thumbnailPictureBox.Paint += this.ThumbnailPictureBox_Paint;
             // 
             // tagContextMenuStrip
@@ -70,10 +66,8 @@ namespace PicSum.UIComponent.InfoPanel
             // 
             this.ratingBar.BackColor = Color.FromArgb(250, 250, 250);
             this.ratingBar.Location = new Point(4, 390);
-            this.ratingBar.Margin = new System.Windows.Forms.Padding(4, 0, 0, 0);
             this.ratingBar.Name = "ratingBar";
             this.ratingBar.Size = new Size(508, 56);
-            this.ratingBar.TabIndex = 15;
             this.ratingBar.MaximumValue = 1;
             this.ratingBar.RatingButtonMouseClick += this.RatingBar_RatingButtonMouseClick;
             // 
@@ -84,11 +78,8 @@ namespace PicSum.UIComponent.InfoPanel
             this.tagFlowList.IsLileList = true;
             this.tagFlowList.ItemHeight = 32;
             this.tagFlowList.Location = new Point(4, 484);
-            this.tagFlowList.Margin = new System.Windows.Forms.Padding(4, 0, 0, 0);
             this.tagFlowList.Name = "tagFlowList";
             this.tagFlowList.Size = new Size(508, 231);
-            this.tagFlowList.TabIndex = 16;
-            this.tagFlowList.TabStop = false;
             this.tagFlowList.DrawItem += this.TagFlowList_DrawItem;
             this.tagFlowList.MouseClick += this.TagFlowList_MouseClick;
             this.tagFlowList.MouseDoubleClick += this.TagFlowList_MouseDoubleClick;
@@ -97,10 +88,8 @@ namespace PicSum.UIComponent.InfoPanel
             // 
             this.wideComboBox.Font = new Font("Yu Gothic UI", 10F);
             this.wideComboBox.Location = new Point(4, 452);
-            this.wideComboBox.Margin = new System.Windows.Forms.Padding(4, 0, 0, 0);
             this.wideComboBox.Name = "wideComboBox";
             this.wideComboBox.Size = new Size(508, 32);
-            this.wideComboBox.TabIndex = 27;
             this.wideComboBox.BackColor = Color.FromArgb(250, 250, 250);
             this.wideComboBox.Icon = SWF.Core.Resource.ResourceFiles.TagIcon.Value;
             this.wideComboBox.DropDownOpening += this.WideComboBox_DropDownOpening;
@@ -111,10 +100,8 @@ namespace PicSum.UIComponent.InfoPanel
             this.fileInfoLabel.BackColor = Color.FromArgb(250, 250, 250);
             this.fileInfoLabel.Font = new Font("Yu Gothic UI", 10F);
             this.fileInfoLabel.Location = new Point(4, 256);
-            this.fileInfoLabel.Margin = new System.Windows.Forms.Padding(4, 0, 0, 0);
             this.fileInfoLabel.Name = "fileInfoLabel";
             this.fileInfoLabel.Size = new Size(508, 134);
-            this.fileInfoLabel.TabIndex = 0;
             this.fileInfoLabel.Text = "fileInfoLabel1";
             // 
             // InfoPanel

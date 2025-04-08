@@ -1,4 +1,5 @@
 using SWF.Core.Base;
+using System.ComponentModel;
 using System.Drawing.Drawing2D;
 using System.Runtime.Versioning;
 
@@ -10,6 +11,19 @@ namespace SWF.UIComponent.Core
         private const int RECTANGLE_DEFAULT_SIZE = 24;
         private static readonly SolidBrush BRUSH_A = new(Color.FromArgb(48, 48, 48));
         private static readonly SolidBrush BRUSH_B = new(Color.FromArgb(24, 24, 24));
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public new int TabIndex
+        {
+            get
+            {
+                return base.TabIndex;
+            }
+            private set
+            {
+                base.TabIndex = value;
+            }
+        }
 
         public CheckPatternPanel()
         {

@@ -38,6 +38,19 @@ namespace SWF.UIComponent.WideDropDown
             }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public new bool TabStop
+        {
+            get
+            {
+                return base.TabStop;
+            }
+            private set
+            {
+                base.TabStop = value;
+            }
+        }
+
         public InputTextBox()
         {
             this.BorderStyle = BorderStyle.None;

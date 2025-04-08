@@ -56,6 +56,19 @@ namespace SWF.UIComponent.ImagePanel
         };
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public new int TabIndex
+        {
+            get
+            {
+                return base.TabIndex;
+            }
+            private set
+            {
+                base.TabIndex = value;
+            }
+        }
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public string FilePath { get; private set; } = string.Empty;
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]

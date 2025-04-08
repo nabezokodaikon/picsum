@@ -25,6 +25,19 @@ namespace SWF.UIComponent.WideDropDown
         private readonly WideDropDownList dropDownList;
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public new int TabIndex
+        {
+            get
+            {
+                return base.TabIndex;
+            }
+            private set
+            {
+                base.TabIndex = value;
+            }
+        }
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Image Icon
         {
             get

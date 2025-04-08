@@ -56,6 +56,19 @@ namespace PicSum.UIComponent.InfoPanel
         private readonly Dictionary<float, Font> tagFontCache = [];
         private readonly Dictionary<float, Font> allTagFontCache = [];
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public new int TabIndex
+        {
+            get
+            {
+                return base.TabIndex;
+            }
+            private set
+            {
+                base.TabIndex = value;
+            }
+        }
+
         private string[] FilePathList
         {
             get

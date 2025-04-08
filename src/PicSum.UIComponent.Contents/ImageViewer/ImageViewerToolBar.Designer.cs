@@ -86,10 +86,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             // 
             // indexSlider
             // 
-            this.indexSlider.Margin = new System.Windows.Forms.Padding(3, 3, 16, 3);
             this.indexSlider.Name = "indexSlider";
-            this.indexSlider.TabIndex = 5;
-            this.indexSlider.TabStop = false;
             this.indexSlider.BeginValueChange += this.IndexSlider_BeginValueChange;
             this.indexSlider.ValueChanging += this.IndexSlider_ValueChanging;
             this.indexSlider.ValueChanged += this.IndexSlider_ValueChanged;

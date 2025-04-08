@@ -1,5 +1,6 @@
 using SWF.Core.Base;
 using System;
+using System.ComponentModel;
 using System.Runtime.Versioning;
 using System.Windows.Forms;
 
@@ -12,6 +13,19 @@ namespace SWF.UIComponent.TabOperation
     public sealed partial class PageContainer
         : Panel
     {
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public new int TabIndex
+        {
+            get
+            {
+                return base.TabIndex;
+            }
+            private set
+            {
+                base.TabIndex = value;
+            }
+        }
+
         public PageContainer()
         {
             this.SetStyle(

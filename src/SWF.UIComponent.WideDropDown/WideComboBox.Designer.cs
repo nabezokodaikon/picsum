@@ -46,7 +46,6 @@ namespace SWF.UIComponent.WideDropDown
             // 
             this.inputTextBox.Font = new Font("Yu Gothic UI", 10F);
             this.inputTextBox.Name = "inputTextBox";
-            this.inputTextBox.TabStop = false;
             this.inputTextBox.KeyDown += this.InputTextBox_KeyDown;
             // 
             // arrowPictureBox
