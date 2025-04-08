@@ -43,15 +43,8 @@ namespace PicSum.Main.UIComponent
         }
 
         public BrowserForm(bool isFastShow)
+            : base()
         {
-            this.SetStyle(
-                ControlStyles.AllPaintingInWmPaint |
-                ControlStyles.OptimizedDoubleBuffer |
-                ControlStyles.ResizeRedraw |
-                ControlStyles.UserPaint,
-                true);
-            this.UpdateStyles();
-
             this.SuspendLayout();
 
             this.isFastShow = isFastShow;

@@ -214,7 +214,7 @@ namespace PicSum.UIComponent.Contents.FileList
             this.SetStyle(
                 ControlStyles.AllPaintingInWmPaint |
                 ControlStyles.OptimizedDoubleBuffer |
-                ControlStyles.UserPaint,
+                ControlStyles.ResizeRedraw,
                 true);
             this.UpdateStyles();
 

@@ -144,6 +144,7 @@ namespace SWF.UIComponent.Core
             this.SetStyle(
                 ControlStyles.AllPaintingInWmPaint |
                 ControlStyles.OptimizedDoubleBuffer |
+                ControlStyles.ResizeRedraw |
                 ControlStyles.StandardClick |
                 ControlStyles.UserPaint |
                 ControlStyles.Selectable |

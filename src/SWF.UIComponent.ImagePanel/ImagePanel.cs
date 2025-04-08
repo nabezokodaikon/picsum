@@ -139,6 +139,7 @@ namespace SWF.UIComponent.ImagePanel
                 ControlStyles.AllPaintingInWmPaint |
                 ControlStyles.OptimizedDoubleBuffer |
                 ControlStyles.SupportsTransparentBackColor |
+                ControlStyles.ResizeRedraw |
                 ControlStyles.UserPaint,
                 true);
             this.UpdateStyles();

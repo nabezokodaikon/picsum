@@ -29,7 +29,7 @@ namespace PicSum.UIComponent.Contents.Common
             this.SetStyle(
                 ControlStyles.AllPaintingInWmPaint |
                 ControlStyles.OptimizedDoubleBuffer |
-                ControlStyles.UserPaint,
+                ControlStyles.ResizeRedraw,
                 true);
             this.UpdateStyles();
 

@@ -93,8 +93,7 @@ namespace PicSum.Main.UIComponent
             this.SetStyle(
                 ControlStyles.AllPaintingInWmPaint |
                 ControlStyles.OptimizedDoubleBuffer |
-                ControlStyles.ResizeRedraw |
-                ControlStyles.UserPaint,
+                ControlStyles.ResizeRedraw,
                 true);
             this.UpdateStyles();
 
