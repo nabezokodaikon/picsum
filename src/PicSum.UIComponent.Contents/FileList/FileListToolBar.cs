@@ -211,6 +211,13 @@ namespace PicSum.UIComponent.Contents.FileList
 
         public FileListToolBar()
         {
+            this.SetStyle(
+                ControlStyles.AllPaintingInWmPaint |
+                ControlStyles.OptimizedDoubleBuffer |
+                ControlStyles.UserPaint,
+                true);
+            this.UpdateStyles();
+
             this.InitializeComponent();
         }
 

@@ -209,6 +209,13 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
         public ImageViewerToolBar()
         {
+            this.SetStyle(
+                ControlStyles.AllPaintingInWmPaint |
+                ControlStyles.OptimizedDoubleBuffer |
+                ControlStyles.UserPaint,
+                true);
+            this.UpdateStyles();
+
             this.InitializeComponent();
         }
 
