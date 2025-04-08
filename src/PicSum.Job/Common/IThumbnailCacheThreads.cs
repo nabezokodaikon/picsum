@@ -3,7 +3,7 @@ using PicSum.Job.Results;
 
 namespace PicSum.Job.Common
 {
-    public interface IThumbnailReadThreads
+    public interface IThumbnailCacheThreads
         : IDisposable
     {
         public void DoCache(

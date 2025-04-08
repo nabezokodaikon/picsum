@@ -10,8 +10,8 @@ using System.Runtime.Versioning;
 namespace PicSum.Job.Common
 {
     [SupportedOSPlatform("windows10.0.17763.0")]
-    public sealed class ThumbnailReadThreads
-        : IThumbnailReadThreads
+    public sealed class ThumbnailCacheThreads
+        : IThumbnailCacheThreads
     {
         private static readonly Logger logger
             = LogManager.GetCurrentClassLogger();
@@ -36,7 +36,7 @@ namespace PicSum.Job.Common
             }
         }
 
-        public ThumbnailReadThreads()
+        public ThumbnailCacheThreads()
         {
             for (var i = 0; i < this.threads.Length; i++)
             {

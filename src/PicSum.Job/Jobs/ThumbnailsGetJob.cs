@@ -21,7 +21,7 @@ namespace PicSum.Job.Jobs
                 throw new ArgumentException("ファイルパスリストがNULLです。", nameof(param));
             }
 
-            Instance<IThumbnailReadThreads>.Value.DoCache(param, this.Callback);
+            Instance<IThumbnailCacheThreads>.Value.DoCache(param, this.Callback);
         }
     }
 }
