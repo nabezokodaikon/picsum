@@ -63,7 +63,8 @@ namespace PicSum.Main.Conf
             if (FileUtil.IsExistsFile(AppConstants.CONFIG_FILE.Value))
             {
                 var config = MessagePackSerializer.Deserialize<Config>(
-                    File.ReadAllBytes(AppConstants.CONFIG_FILE.Value));
+                    File.ReadAllBytes(AppConstants.CONFIG_FILE.Value),
+                    MessagePackSerializerOptions.Standard.WithCompression(MessagePackCompression.None));
 
                 this.WindowState = config.WindowState;
                 this.WindowLocaionX = config.WindowLocaionX;
@@ -105,7 +106,9 @@ namespace PicSum.Main.Conf
 
         public void Save()
         {
-            var bytes = MessagePackSerializer.Serialize(this);
+            var bytes = MessagePackSerializer.Serialize(
+                this,
+                MessagePackSerializerOptions.Standard.WithCompression(MessagePackCompression.None));
             File.WriteAllBytes(AppConstants.CONFIG_FILE.Value, bytes);
         }
     }
