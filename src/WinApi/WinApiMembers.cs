@@ -240,6 +240,7 @@ namespace WinApi
         public const int WM_REFLECT = 0x2000;
         public const int WM_APP = 0x8000;
         public const int WM_DPICHANGED = 0x02E0;
+        public const int WS_EX_COMPOSITED = 0x02000000;
 
         public static readonly IntPtr HWND_TOP = IntPtr.Zero;
         public const UInt32 SWP_NOSIZE = 0x0001;

@@ -114,6 +114,16 @@ namespace SWF.UIComponent.Form
             }
         }
 
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                var cp = base.CreateParams;
+                cp.ExStyle |= WinApiMembers.WS_EX_COMPOSITED;  // WS_EX_COMPOSITED フラグの追加
+                return cp;
+            }
+        }
+
         public GrassForm()
         {
             this.AutoScaleMode = AutoScaleMode.Dpi;
