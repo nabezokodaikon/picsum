@@ -14,7 +14,8 @@ namespace WinApi
         public const int WS_DLGFRAME = 0x00400000;
         public const int WS_THICKFRAME = 0x00040000;
         public const int WS_CAPTION = 0x00C00000;
-        public const int WS_EX_TOOLWINDOW = 0x80;
+        public const int WS_EX_TOOLWINDOW = 0x00000080;
+        public const int WS_EX_NOACTIVATE = 0x08000000;
         public const long WS_POPUP = 0x80000000L;
 
         public const int WM_NULL = 0x0000;

@@ -11,13 +11,23 @@ namespace SWF.UIComponent.Core
             get
             {
                 var cp = base.CreateParams;
-                cp.ExStyle = WinApiMembers.WS_EX_TOOLWINDOW;
-                cp.Style = unchecked((int)WinApiMembers.WS_POPUP) | WinApiMembers.WS_VISIBLE | WinApiMembers.WS_SYSMENU | WinApiMembers.WS_MAXIMIZEBOX;
+                cp.ExStyle = WinApiMembers.WS_EX_TOOLWINDOW | WinApiMembers.WS_EX_NOACTIVATE;
+                cp.Style = unchecked((int)WinApiMembers.WS_POPUP);
                 cp.Width = 0;
                 cp.Height = 0;
                 return cp;
             }
         }
 
+        public HideForm()
+        {
+            SetStyle(ControlStyles.SupportsTransparentBackColor, false);
+            SetStyle(ControlStyles.UserPaint, false);
+            SetStyle(ControlStyles.AllPaintingInWmPaint, false);
+            SetStyle(ControlStyles.OptimizedDoubleBuffer, false);
+
+            FormBorderStyle = FormBorderStyle.None;
+            ShowInTaskbar = false;
+        }
     }
 }
