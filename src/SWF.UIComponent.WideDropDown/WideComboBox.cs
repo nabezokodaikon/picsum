@@ -39,8 +39,6 @@ namespace SWF.UIComponent.WideDropDown
 
         public WideComboBox()
         {
-            this.InitializeComponent();
-
             this.SetStyle(
                 ControlStyles.AllPaintingInWmPaint |
                 ControlStyles.OptimizedDoubleBuffer |
@@ -48,6 +46,8 @@ namespace SWF.UIComponent.WideDropDown
                 ControlStyles.UserPaint,
                 true);
             this.UpdateStyles();
+
+            this.InitializeComponent();
 
             this.inputTextBox.MouseEnter += this.InputTextBox_MouseEnter;
 
