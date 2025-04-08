@@ -44,6 +44,14 @@ namespace PicSum.Main.UIComponent
 
         public BrowserForm(bool isFastShow)
         {
+            this.SetStyle(
+                ControlStyles.AllPaintingInWmPaint |
+                ControlStyles.OptimizedDoubleBuffer |
+                ControlStyles.ResizeRedraw |
+                ControlStyles.UserPaint,
+                true);
+            this.UpdateStyles();
+
             this.SuspendLayout();
 
             this.isFastShow = isFastShow;
@@ -269,9 +277,11 @@ namespace PicSum.Main.UIComponent
 
             ConsoleUtil.Write(true, $"BrowserForm.CreateBrowserMainPanel Start");
 
+            this.browserMainPanel = new BrowserMainPanel();
+
+            this.browserMainPanel.SuspendLayout();
             this.SuspendLayout();
 
-            this.browserMainPanel = new BrowserMainPanel();
             this.Controls.Add(this.browserMainPanel);
 
             var scale = AppConstants.GetCurrentWindowScale(this);
@@ -329,6 +339,8 @@ namespace PicSum.Main.UIComponent
             }
 
             this.SetControlRegion();
+
+            this.browserMainPanel.ResumeLayout(false);
             this.ResumeLayout(false);
 
             ConsoleUtil.Write(true, $"BrowserForm.CreateBrowserMainPanel End");

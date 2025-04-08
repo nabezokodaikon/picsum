@@ -90,6 +90,14 @@ namespace PicSum.Main.UIComponent
 
         public BrowserMainPanel()
         {
+            this.SetStyle(
+                ControlStyles.AllPaintingInWmPaint |
+                ControlStyles.OptimizedDoubleBuffer |
+                ControlStyles.ResizeRedraw |
+                ControlStyles.UserPaint,
+                true);
+            this.UpdateStyles();
+
             this.pageContainer = new PageContainer();
             this.infoPanel = new InfoPanel();
             this.tabSwitch = new TabSwitch();
