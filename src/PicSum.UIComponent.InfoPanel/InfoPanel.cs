@@ -141,6 +141,13 @@ namespace PicSum.UIComponent.InfoPanel
 
         public InfoPanel()
         {
+            this.SetStyle(
+                ControlStyles.AllPaintingInWmPaint |
+                ControlStyles.OptimizedDoubleBuffer |
+                ControlStyles.ResizeRedraw,
+                true);
+            this.UpdateStyles();
+
             this.InitializeComponent();
 
             this.foreColorBrush = new SolidBrush(this.ForeColor);
