@@ -135,6 +135,8 @@ namespace SWF.UIComponent.Form
                 ControlStyles.ResizeRedraw,
                 true);
             this.UpdateStyles();
+
+            this.SetWindowColor(ACTIVE_WINDOW_COLOR);
         }
 
         public void MouseLeftDoubleClickProcess()
