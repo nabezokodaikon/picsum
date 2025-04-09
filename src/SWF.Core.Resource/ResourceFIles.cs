@@ -6,8 +6,8 @@ namespace SWF.Core.Resource
     [SupportedOSPlatform("windows10.0.17763.0")]
     public static class ResourceFiles
     {
-        public static readonly Lazy<Bitmap> ApplicationIcon = new(() =>
-            CreateBitmapFromByteArray(Resources.ApplicationIcon), LazyThreadSafetyMode.ExecutionAndPublication);
+        public static readonly Lazy<Icon> AppIcon = new(() =>
+            Resources.AppIcon, LazyThreadSafetyMode.ExecutionAndPublication);
 
         public static readonly Lazy<Bitmap> ActiveRatingIcon = new(() =>
             CreateBitmapFromByteArray(Resources.ActiveRatingIcon), LazyThreadSafetyMode.ExecutionAndPublication);

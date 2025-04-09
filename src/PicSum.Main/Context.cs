@@ -1,46 +1,27 @@
 using PicSum.Job.Common;
 using PicSum.Job.Parameters;
 using PicSum.Main.Mng;
+using PicSum.Main.UIComponent;
 using PicSum.UIComponent.Contents.Parameter;
 using SWF.Core.Base;
 using SWF.Core.ImageAccessor;
 using SWF.Core.Job;
-using SWF.UIComponent.Core;
 using System;
-using System.Runtime.Versioning;
-using System.Threading;
 using System.Windows.Forms;
 
-namespace PicSum.Main.UIComponent
+namespace PicSum.Main
 {
-    /// <summary>
-    /// ダミーフォーム
-    /// </summary>
-    [SupportedOSPlatform("windows10.0.17763.0")]
-    internal sealed partial class InitialForm
-        : HideForm, ISender
+    internal sealed class Context
+        : ApplicationContext, ISender
     {
-        private bool disposed = false;
         private readonly BrowserManager browserManager = new();
 
-        public InitialForm()
+        public bool IsHandleCreated { get; private set; } = true;
+        public bool IsDisposed { get; private set; }
+
+        public Context()
         {
             this.browserManager.BrowserNothing += new(this.BrowserManager_BrowserNothing);
-        }
-
-        private void BrowserManager_BrowserNothing(object sender, EventArgs e)
-        {
-            this.disposed = true;
-            this.Close();
-        }
-
-        protected override void OnHandleCreated(EventArgs e)
-        {
-            ConsoleUtil.Write(true, $"InitialForm.OnHandleCreated Start");
-
-            base.OnHandleCreated(e);
-
-            Instance<JobCaller>.Initialize(new JobCaller(SynchronizationContext.Current));
 
             Instance<JobCaller>.Value.GCCollectRunJob.Value
                 .StartJob(this);
@@ -48,7 +29,7 @@ namespace PicSum.Main.UIComponent
             Instance<JobCaller>.Value.PipeServerJob.Value
                 .StartJob(this, _ =>
                 {
-                    if (this.disposed)
+                    if (this.IsDisposed)
                     {
                         return;
                     }
@@ -88,12 +69,14 @@ namespace PicSum.Main.UIComponent
                     form.Focus();
                 });
 
-            ConsoleUtil.Write(true, $"InitialForm.OnHandleCreated Started Jobs");
-
             var form = this.browserManager.GetActiveBrowser();
             form.Show();
+        }
 
-            ConsoleUtil.Write(true, $"InitialForm.OnHandleCreated End");
+        private void BrowserManager_BrowserNothing(object sender, EventArgs e)
+        {
+            this.IsDisposed = true;
+            this.ExitThread();
         }
     }
 }
