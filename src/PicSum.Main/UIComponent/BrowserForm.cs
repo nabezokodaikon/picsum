@@ -19,6 +19,8 @@ namespace PicSum.Main.UIComponent
     public partial class BrowserForm
         : GrassForm, ISender
     {
+        private const float PADDING_TOP = 8f;
+
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         private static bool isStartUp = true;
@@ -58,7 +60,6 @@ namespace PicSum.Main.UIComponent
             this.Text = "PicSum";
             this.StartPosition = FormStartPosition.Manual;
             this.KeyPreview = true;
-            this.Padding = new Padding(0, 8, 0, 0);
             this.Size = BrowserConfig.Instance.WindowSize;
             this.WindowState = BrowserConfig.Instance.WindowState;
             this.ScaleChanged += this.Form_ScaleChanged;
@@ -350,7 +351,7 @@ namespace PicSum.Main.UIComponent
         private Rectangle CreateBrowserMainPanelBounds(float scale)
         {
             var x = 0;
-            var y = (int)(this.Padding.Top * scale);
+            var y = (int)(PADDING_TOP * scale);
             var w = this.Width;
             var h = this.Height - y;
             return new Rectangle(x, y, w, h);
