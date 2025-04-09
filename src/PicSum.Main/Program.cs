@@ -49,6 +49,10 @@ namespace PicSum.Main
                         typeof(System.Threading.AbandonedMutexException),
                         typeof(System.Windows.Forms.Application),
 
+#if UWP
+                        typeof(Windows.Storage.AppDataPaths),
+#endif
+
                         typeof(MessagePack.CompositeResolverAttribute),
                         typeof(NLog.Attributes.LogLevelTypeConverter),
 
