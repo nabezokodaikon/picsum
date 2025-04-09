@@ -4,6 +4,7 @@ using SWF.Core.Base;
 using SWF.Core.ImageAccessor;
 using SWF.Core.Job;
 using System.Runtime.Versioning;
+using System.Windows.Forms;
 
 namespace PicSum.Job.SyncLogics
 {
@@ -13,7 +14,7 @@ namespace PicSum.Job.SyncLogics
     {
         public void Execute()
         {
-            using (TimeMeasuring.Run(false, "StartupSyncLogic.Execute"))
+            using (TimeMeasuring.Run(true, "StartupSyncLogic.Execute"))
             {
                 Instance<IFileInfoDB>.Initialize(
                     new FileInfoDB(AppConstants.FILE_INFO_DATABASE_FILE.Value));
@@ -27,6 +28,16 @@ namespace PicSum.Job.SyncLogics
                 Instance<IThumbnailCacheThreads>.Initialize(new ThumbnailCacheThreads());
                 Instance<IImageFileCacher>.Initialize(new ImageFileCacher());
                 Instance<IImageFileSizeCacher>.Initialize(new ImageFileSizeCacher());
+
+                SynchronizationContext.SetSynchronizationContext(
+                    new WindowsFormsSynchronizationContext());
+
+                if (SynchronizationContext.Current == null)
+                {
+                    throw new NullReferenceException("同期コンテキストが生成されていません。");
+                }
+
+                Instance<JobCaller>.Initialize(new JobCaller(SynchronizationContext.Current));
             }
         }
     }

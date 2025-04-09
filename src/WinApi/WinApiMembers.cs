@@ -571,6 +571,16 @@ namespace WinApi
             public string cAlternateFileName;
         }
 
+        [StructLayout(LayoutKind.Sequential)]
+        public struct MINMAXINFO
+        {
+            public POINT ptReserved;
+            public POINT ptMaxSize;
+            public POINT ptMaxPosition;
+            public POINT ptMinTrackSize;
+            public POINT ptMaxTrackSize;
+        }
+
         [DllImport("ntdll.dll", SetLastError = true)]
         public static extern int RtlGetVersion(ref OSVERSIONINFOEX versionInfo);
 

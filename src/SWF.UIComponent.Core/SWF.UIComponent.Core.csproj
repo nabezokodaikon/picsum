@@ -111,7 +111,6 @@
 
   <ItemGroup>
     <Compile Update="CheckPatternPanel.cs" />
-    <Compile Update="HideForm.cs" />
     <Compile Update="RatingBar.cs" />
     <Compile Update="RatingButton.cs" />
     <Compile Update="Slider.cs" />

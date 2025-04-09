@@ -119,7 +119,7 @@ namespace SWF.UIComponent.Form
             get
             {
                 var cp = base.CreateParams;
-                cp.ExStyle |= WinApiMembers.WS_EX_COMPOSITED;  // WS_EX_COMPOSITED フラグの追加
+                cp.ExStyle |= WinApiMembers.WS_EX_COMPOSITED;
                 return cp;
             }
         }
@@ -181,6 +181,13 @@ namespace SWF.UIComponent.Form
                     this.ScaleChanged?.Invoke(this, new ScaleChangedEventArgs(this.currentScale));
                     return;
                 }
+            }
+            else if (m.Msg == WinApiMembers.WM_GETMINMAXINFO)
+            {
+                var minMaxInfo = (WinApiMembers.MINMAXINFO)Marshal.PtrToStructure(m.LParam, typeof(WinApiMembers.MINMAXINFO));
+                minMaxInfo.ptMinTrackSize.x = 480;
+                minMaxInfo.ptMinTrackSize.y = 360;
+                Marshal.StructureToPtr(minMaxInfo, m.LParam, true);
             }
 
             var dwmHandled = WinApiMembers.DwmDefWindowProc(m.HWnd, m.Msg, m.WParam, m.LParam, out var result);

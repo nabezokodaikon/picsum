@@ -3,7 +3,6 @@ using NLog.Config;
 using NLog.Targets;
 using PicSum.Main.Conf;
 using PicSum.Main.Mng;
-using PicSum.Main.UIComponent;
 using SWF.Core.Base;
 using System;
 using System.IO;
@@ -102,9 +101,9 @@ namespace PicSum.Main
                     Application.SetCompatibleTextRenderingDefault(false);
 
                     using (var resource = new ResourceManager())
-                    using (var initialForm = new InitialForm())
+                    using (var context = new Context())
                     {
-                        Application.Run(initialForm);
+                        Application.Run(context);
                     }
 
                     LogManager.GetCurrentClassLogger().Debug("アプリケーションを終了します。");

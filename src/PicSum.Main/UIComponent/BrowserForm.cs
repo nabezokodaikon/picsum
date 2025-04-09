@@ -6,6 +6,7 @@ using PicSum.UIComponent.Contents.Parameter;
 using SWF.Core.Base;
 using SWF.Core.ImageAccessor;
 using SWF.Core.Job;
+using SWF.Core.Resource;
 using SWF.UIComponent.Form;
 using SWF.UIComponent.TabOperation;
 using System;
@@ -53,12 +54,9 @@ namespace PicSum.Main.UIComponent
                 this.Opacity = 0f;
             }
 
-            var resources = new ComponentResourceManager(typeof(BrowserForm));
-            this.Icon = (Icon)resources.GetObject("$this.Icon");
-
+            this.Icon = ResourceFiles.AppIcon.Value;
             this.Text = "PicSum";
             this.StartPosition = FormStartPosition.Manual;
-            this.MinimumSize = new Size(480, 360);
             this.KeyPreview = true;
             this.Padding = new Padding(0, 8, 0, 0);
             this.Size = BrowserConfig.Instance.WindowSize;
