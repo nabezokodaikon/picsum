@@ -17,9 +17,9 @@ namespace SWF.UIComponent.Form
         private const int TOP_OFFSET = 37;
         private const int RESIZE_MARGIN = 8;
 
-        private static readonly Version OS_VERSION = GetWindowsVersion();
-        private static readonly Color ACTIVE_WINDOW_COLOR = Color.FromArgb(64, 68, 71);
-        private static readonly Color DEACTIVATE_WINDOWCOLOR = Color.FromArgb(107, 109, 111);
+        //private static readonly Version OS_VERSION = GetWindowsVersion();
+        //private static readonly Color ACTIVE_WINDOW_COLOR = Color.FromArgb(64, 68, 71);
+        //private static readonly Color DEACTIVATE_WINDOWCOLOR = Color.FromArgb(107, 109, 111);
 
         private static Version GetWindowsVersion()
         {
@@ -136,7 +136,7 @@ namespace SWF.UIComponent.Form
                 true);
             this.UpdateStyles();
 
-            this.SetWindowColor(ACTIVE_WINDOW_COLOR);
+            //this.SetWindowColor(ACTIVE_WINDOW_COLOR);
         }
 
         public void MouseLeftDoubleClickProcess()
@@ -202,13 +202,13 @@ namespace SWF.UIComponent.Form
 
         protected override void OnActivated(EventArgs e)
         {
-            this.SetWindowColor(ACTIVE_WINDOW_COLOR);
+            //this.SetWindowColor(ACTIVE_WINDOW_COLOR);
             base.OnActivated(e);
         }
 
         protected override void OnDeactivate(EventArgs e)
         {
-            this.SetWindowColor(DEACTIVATE_WINDOWCOLOR);
+            //this.SetWindowColor(DEACTIVATE_WINDOWCOLOR);
             base.OnDeactivate(e);
         }
 
@@ -312,17 +312,17 @@ namespace SWF.UIComponent.Form
             throw new NotImplementedException();
         }
 
-        private void SetWindowColor(Color color)
-        {
-            if (OS_VERSION.Major >= 10 && OS_VERSION.Build >= 22000)
-            {
-                var colorValue = color.R | (color.G << 8) | (color.B << 16);
-                var _ = WinApiMembers.DwmSetWindowAttribute(
-                    this.Handle, WinApiMembers.DWMWA_CAPTION_COLOR, ref colorValue, sizeof(int));
-                _ = WinApiMembers.DwmSetWindowAttribute(
-                    this.Handle, WinApiMembers.DWMWA_BORDER_COLOR, ref colorValue, Marshal.SizeOf<int>());
-            }
-        }
+        //private void SetWindowColor(Color color)
+        //{
+        //    if (OS_VERSION.Major >= 10 && OS_VERSION.Build >= 22000)
+        //    {
+        //        var colorValue = color.R | (color.G << 8) | (color.B << 16);
+        //        var _ = WinApiMembers.DwmSetWindowAttribute(
+        //            this.Handle, WinApiMembers.DWMWA_CAPTION_COLOR, ref colorValue, sizeof(int));
+        //        _ = WinApiMembers.DwmSetWindowAttribute(
+        //            this.Handle, WinApiMembers.DWMWA_BORDER_COLOR, ref colorValue, Marshal.SizeOf<int>());
+        //    }
+        //}
 
         private Region GetControlRegion(Control ctl, Rectangle captionButtonRect)
         {
