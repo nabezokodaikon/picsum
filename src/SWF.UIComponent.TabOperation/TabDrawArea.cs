@@ -30,7 +30,7 @@ namespace SWF.UIComponent.TabOperation
             = new(Color.FromArgb(220, 220, 220));
 
         private static readonly Pen TAB_OUTLINE_PEN
-            = new(Color.FromArgb(128, 128, 128), 0.5f);
+            = new(Color.FromArgb(32, 32, 32), 0.1f);
 
         private PointF drawPoint = new(0, 0);
         private float width = 256;
