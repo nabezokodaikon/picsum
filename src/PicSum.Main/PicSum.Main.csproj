@@ -85,6 +85,7 @@
 	<OutputType>WinExe</OutputType>
 	<RuntimeIdentifier>win-x64</RuntimeIdentifier>
 	<UseWindowsForms>true</UseWindowsForms>
+	<StartupObject>PicSum.Main.Program</StartupObject>
 
 	<SelfContained>false</SelfContained>
 	<PublishSingleFile>false</PublishSingleFile>
@@ -97,8 +98,6 @@
 	<Optimize>true</Optimize>
 	<OptimizationPreference>Speed</OptimizationPreference>
 
-	<StartupObject>PicSum.Main.Program</StartupObject>
-
 	<EnableUnsafeBinaryFormatterSerialization>false</EnableUnsafeBinaryFormatterSerialization>
 	<EnableUnsafeUTF7Encoding>false</EnableUnsafeUTF7Encoding>
 	<EventSourceSupport>false</EventSourceSupport>
@@ -110,6 +109,11 @@
 	<IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
 	<StripSymbols>true</StripSymbols>
 	<EnableDynamicLoading>false</EnableDynamicLoading>
+
+	<TrimUnusedDependencies>true</TrimUnusedDependencies>
+	<AppContextSwitchOverrides>System.Globalization.UseNls=false</AppContextSwitchOverrides>
+	<InvariantGlobalization>true</InvariantGlobalization>
+	<UseAppHost>true</UseAppHost>
 
   </PropertyGroup>
 
