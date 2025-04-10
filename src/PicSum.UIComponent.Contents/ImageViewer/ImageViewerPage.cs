@@ -281,7 +281,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 this.FilePathListIndex = this.GetNextIndex(this.FilePathListIndex, false);
             }
 
-            this.Focus();
+            this.leftImagePanel.Focus();
 
             base.OnMouseWheel(e);
         }
@@ -960,7 +960,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             }
 
             this.SettingImagePanelLayout(e);
-            this.Focus();
+            this.leftImagePanel.Focus();
         }
 
         private void SingleViewToolStripMenuItem_Click(object sender, EventArgs e)
