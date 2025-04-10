@@ -20,14 +20,22 @@ namespace SWF.Core.ImageAccessor
             {
                 if (hSuccess != IntPtr.Zero)
                 {
-                    using (var icon = Icon.FromHandle(sh.hIcon))
+                    try
                     {
-                        return icon.ToBitmap();
+                        using (var icon = Icon.FromHandle(sh.hIcon))
+                        {
+                            return icon.ToBitmap();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new InvalidOperationException(
+                            $"システムアイコンを取得できませんでした。{ex.Message}");
                     }
                 }
                 else
                 {
-                    throw new NullReferenceException("システムアイコンを取得できませんでした。");
+                    throw new InvalidOperationException("システムアイコンを取得できませんでした。");
                 }
             }
             finally
@@ -53,9 +61,17 @@ namespace SWF.Core.ImageAccessor
             {
                 if (hSuccess != IntPtr.Zero)
                 {
-                    using (var icon = Icon.FromHandle(sh.hIcon))
+                    try
                     {
-                        return icon.ToBitmap();
+                        using (var icon = Icon.FromHandle(sh.hIcon))
+                        {
+                            return icon.ToBitmap();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new InvalidOperationException(
+                            $"'{filePath}'の小さいアイコンを取得できませんでした。{ex.Message}");
                     }
                 }
                 else
@@ -110,9 +126,17 @@ namespace SWF.Core.ImageAccessor
 
                 try
                 {
-                    using (var icon = Icon.FromHandle(hicon))
+                    try
                     {
-                        return icon.ToBitmap();
+                        using (var icon = Icon.FromHandle(hicon))
+                        {
+                            return icon.ToBitmap();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new InvalidOperationException(
+                            $"'{filePath}'の大きいアイコンを取得できませんでした。{ex.Message}");
                     }
                 }
                 finally
