@@ -49,7 +49,7 @@
 	<StartupObject>PicSum.Main.Program</StartupObject>
 
 	<SelfContained>false</SelfContained>
-	<PublishSingleFile>false</PublishSingleFile>
+	<PublishSingleFile>true</PublishSingleFile>
 
 	<PublishReadyToRun>true</PublishReadyToRun>
 	<PublishReadyToRunShowWarnings>true</PublishReadyToRunShowWarnings>
@@ -63,7 +63,6 @@
 	<EnableUnsafeUTF7Encoding>false</EnableUnsafeUTF7Encoding>
 	<EventSourceSupport>false</EventSourceSupport>
 
-	<IlcFoldIdenticalMethodBodies>true</IlcFoldIdenticalMethodBodies>
 	<UseNativeImages>true</UseNativeImages>
 
 	<UseSystemResourceKeys>true</UseSystemResourceKeys>
@@ -88,7 +87,7 @@
 	<StartupObject>PicSum.Main.Program</StartupObject>
 
 	<SelfContained>false</SelfContained>
-	<PublishSingleFile>false</PublishSingleFile>
+	<PublishSingleFile>true</PublishSingleFile>
 
 	<PublishReadyToRun>true</PublishReadyToRun>
 	<PublishReadyToRunShowWarnings>true</PublishReadyToRunShowWarnings>
@@ -102,7 +101,6 @@
 	<EnableUnsafeUTF7Encoding>false</EnableUnsafeUTF7Encoding>
 	<EventSourceSupport>false</EventSourceSupport>
 
-	<IlcFoldIdenticalMethodBodies>true</IlcFoldIdenticalMethodBodies>
 	<UseNativeImages>true</UseNativeImages>
 
 	<UseSystemResourceKeys>true</UseSystemResourceKeys>
@@ -113,8 +111,8 @@
 	<TrimUnusedDependencies>true</TrimUnusedDependencies>
 	<AppContextSwitchOverrides>System.Globalization.UseNls=false</AppContextSwitchOverrides>
 	<InvariantGlobalization>true</InvariantGlobalization>
-	<UseAppHost>true</UseAppHost>
-
+	<UseAppHost>true</UseAppHost>	
+	
   </PropertyGroup>
 
   <PropertyGroup>
