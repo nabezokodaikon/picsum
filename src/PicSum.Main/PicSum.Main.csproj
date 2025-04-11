@@ -47,30 +47,22 @@
 	<RuntimeIdentifier>win-x64</RuntimeIdentifier>
 	<UseWindowsForms>true</UseWindowsForms>
 	<StartupObject>PicSum.Main.Program</StartupObject>
-
+	
 	<SelfContained>false</SelfContained>
 	<PublishSingleFile>true</PublishSingleFile>
-
 	<PublishReadyToRun>true</PublishReadyToRun>
 	<PublishReadyToRunShowWarnings>true</PublishReadyToRunShowWarnings>
 	<PublishReadyToRunUseCrossgen2>true</PublishReadyToRunUseCrossgen2>
-
+	<PublishReadyToRunComposite>true</PublishReadyToRunComposite>
 	<TieredCompilation>true</TieredCompilation>
 	<Optimize>true</Optimize>
 	<OptimizationPreference>Speed</OptimizationPreference>
-
 	<EnableUnsafeBinaryFormatterSerialization>false</EnableUnsafeBinaryFormatterSerialization>
 	<EnableUnsafeUTF7Encoding>false</EnableUnsafeUTF7Encoding>
 	<EventSourceSupport>false</EventSourceSupport>
-
-	<UseNativeImages>true</UseNativeImages>
-
 	<UseSystemResourceKeys>true</UseSystemResourceKeys>
-	<IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
 	<StripSymbols>true</StripSymbols>
 	<EnableDynamicLoading>false</EnableDynamicLoading>
-
-	<TrimUnusedDependencies>true</TrimUnusedDependencies>
 	<AppContextSwitchOverrides>System.Globalization.UseNls=false</AppContextSwitchOverrides>
 	<InvariantGlobalization>true</InvariantGlobalization>
 	<UseAppHost>true</UseAppHost>
@@ -86,32 +78,21 @@
 	<UseWindowsForms>true</UseWindowsForms>
 	<StartupObject>PicSum.Main.Program</StartupObject>
 
-	<SelfContained>false</SelfContained>
-	<PublishSingleFile>true</PublishSingleFile>
-
-	<PublishReadyToRun>true</PublishReadyToRun>
-	<PublishReadyToRunShowWarnings>true</PublishReadyToRunShowWarnings>
-	<PublishReadyToRunUseCrossgen2>true</PublishReadyToRunUseCrossgen2>
-
-	<TieredCompilation>true</TieredCompilation>
 	<Optimize>true</Optimize>
-	<OptimizationPreference>Speed</OptimizationPreference>
+	<UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
+	<EnableGlobalOptimization>true</EnableGlobalOptimization>
+	<EnablePreviewMsixTooling>true</EnablePreviewMsixTooling>
+	<WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
 
-	<EnableUnsafeBinaryFormatterSerialization>false</EnableUnsafeBinaryFormatterSerialization>
-	<EnableUnsafeUTF7Encoding>false</EnableUnsafeUTF7Encoding>
-	<EventSourceSupport>false</EventSourceSupport>
+	<DefineConstants>TRACE;RELEASE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+	<UseVSHostingProcess>false</UseVSHostingProcess>
+	<ErrorReport>prompt</ErrorReport>
+	<WarningLevel>4</WarningLevel>
 
-	<UseNativeImages>true</UseNativeImages>
+	<UseDotNetNativeSharedAssemblyFrameworkPackage>false</UseDotNetNativeSharedAssemblyFrameworkPackage>
+	<EnableLongPathAwareness>true</EnableLongPathAwareness>
 
-	<UseSystemResourceKeys>true</UseSystemResourceKeys>
-	<IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
-	<StripSymbols>true</StripSymbols>
-	<EnableDynamicLoading>false</EnableDynamicLoading>
-
-	<TrimUnusedDependencies>true</TrimUnusedDependencies>
-	<AppContextSwitchOverrides>System.Globalization.UseNls=false</AppContextSwitchOverrides>
-	<InvariantGlobalization>true</InvariantGlobalization>
-	<UseAppHost>true</UseAppHost>	
+	<GenerateLibraryLayout>true</GenerateLibraryLayout>
 	
   </PropertyGroup>
 
