@@ -2,7 +2,9 @@
 
 DEL /Q "%OUTPUT_PATH%\*.*"
 
-dotnet restore src\PicSum.Main\PicSum.Main.csproj
+dotnet clean src\PicSum.Main\PicSum.Main.csproj ^
+  -c Release ^
+  -p:Platform="x64"
 
 dotnet publish src\PicSum.Main\PicSum.Main.csproj ^
   -c Release ^

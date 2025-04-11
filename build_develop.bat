@@ -3,8 +3,6 @@
 DEL /Q "%OUTPUT_PATH%\*.*"
 RD /S /Q "%OUTPUT_PATH%\runtimes"
 
-dotnet restore src\PicSum.Main\PicSum.Main.csproj 
-
 dotnet clean src\PicSum.Main\PicSum.Main.csproj ^
   -c Develop ^
   -p:Platform="x64"
