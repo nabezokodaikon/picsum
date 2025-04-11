@@ -32,7 +32,7 @@
       EntryPoint="$targetentrypoint$">
       <uap:VisualElements
         DisplayName="PicSum"
-        Description="PicSumはタブ付きの画像ビューアです。画像を見開きで表示できます。"
+        Description="直感的で快適な画像ビューア"
         BackgroundColor="transparent"
         Square150x150Logo="Images\Square150x150Logo.png"
         Square44x44Logo="Images\Square44x44Logo.png">
