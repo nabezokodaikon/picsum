@@ -50,7 +50,7 @@ namespace SWF.Core.ImageAccessor
             using (TimeMeasuring.Run(false, "SixLaborsUtil.DetectFormat"))
             {
                 var format = SixLabors.ImageSharp.Image.DetectFormat(DECODER_OPTIONS, fs);
-                return $".{format.Name.ToUpperInvariant()}";
+                return $".{format.Name}";
             }
         }
 
