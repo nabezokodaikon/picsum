@@ -152,8 +152,6 @@ namespace PicSum.Main
             };
 #if DEBUG
             config.AddRule(LogLevel.Trace, LogLevel.Fatal, logfile);
-#elif DEVELOP
-            config.AddRule(LogLevel.Trace, LogLevel.Fatal, logfile);
 #else
             config.AddRule(LogLevel.Info, LogLevel.Fatal, logfile);
 #endif
@@ -180,9 +178,6 @@ namespace PicSum.Main
         private static void CurrentDomain_OnAssemblyLoad(object sender, AssemblyLoadEventArgs args)
         {
 #if DEBUG
-            var logger = LogManager.GetCurrentClassLogger();
-            logger.Trace($"アセンブリが読み込まれました: {args.LoadedAssembly.FullName}");
-#elif DEVELOP
             var logger = LogManager.GetCurrentClassLogger();
             logger.Trace($"アセンブリが読み込まれました: {args.LoadedAssembly.FullName}");
 #endif
