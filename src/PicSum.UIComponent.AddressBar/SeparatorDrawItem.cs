@@ -178,8 +178,7 @@ namespace PicSum.UIComponent.AddressBar
             using (var g = base.DropDownList.CreateGraphics())
             {
                 var font = this.AddressBar.GetBoldFont(scale);
-                var srcItems = e.ToList();
-                foreach (var info in srcItems)
+                foreach (var info in e)
                 {
                     var item = new DirectoryEntity
                     {
