@@ -159,7 +159,9 @@ namespace SWF.UIComponent.TabOperation
             var w = this.page.Width;
             var h = this.page.Height;
             var bmp = new Bitmap(w, h);
-            this.page.DrawToBitmap(bmp, this.page.ClientRectangle);
+            this.page.DrawToBitmap(
+                bmp,
+                new Rectangle(this.page.Location.X, this.page.Location.Y, w, h));
             return bmp;
         }
 

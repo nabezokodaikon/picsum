@@ -187,9 +187,10 @@ namespace SWF.UIComponent.TabOperation
                     g.PixelOffsetMode = PixelOffsetMode.HighSpeed;
                     g.CompositingMode = CompositingMode.SourceOver;
 
-                    var outlineRect = this.GetOutlineRectangle(pageSize);
-                    var pageRect = this.GetPageRectangle(outlineRect);
+                    var pageRect = this.GetPageRectangle(pageSize);
+                    var outlineRect = this.GetOutlineRectangle(pageRect);
                     g.DrawImage(pageCap, pageRect);
+                    g.DrawRectangle(Pens.Black, outlineRect);
 
                     this.TabDrawArea.DrawActiveTab(g, scale);
                 }
@@ -281,23 +282,22 @@ namespace SWF.UIComponent.TabOperation
             return new SizeF(w, h);
         }
 
-        private RectangleF GetOutlineRectangle(SizeF pageSize)
+        private RectangleF GetOutlineRectangle(RectangleF pageRectangle)
         {
             var outlineOffset = this.GetOutlineOffset();
-            var w = pageSize.Width + outlineOffset * 2;
-            var h = pageSize.Height + outlineOffset * 2;
             var x = 0;
             var y = this.TabDrawArea.Height - outlineOffset;
+            var w = pageRectangle.Width - outlineOffset * 2;
+            var h = pageRectangle.Height - outlineOffset * 2;
             return new RectangleF(x, y, w, h);
         }
 
-        private RectangleF GetPageRectangle(RectangleF outlineRectangle)
+        private RectangleF GetPageRectangle(SizeF pageSize)
         {
-            var outlineOffset = this.GetOutlineOffset();
-            var x = outlineRectangle.X + outlineOffset;
-            var y = outlineRectangle.Y + outlineOffset;
-            var w = outlineRectangle.Width - outlineOffset * 2f;
-            var h = outlineRectangle.Height - outlineOffset * 2f;
+            var x = 0;
+            var y = this.TabDrawArea.Height;
+            var w = pageSize.Width;
+            var h = pageSize.Height;
             return new RectangleF(x, y, w, h);
         }
 
