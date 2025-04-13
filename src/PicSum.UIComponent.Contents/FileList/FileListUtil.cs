@@ -7,17 +7,17 @@ using SWF.Core.Base;
 using SWF.Core.ImageAccessor;
 using SWF.Core.Job;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Versioning;
-using ZLinq;
 
 namespace PicSum.UIComponent.Contents.FileList
 {
     [SupportedOSPlatform("windows10.0.17763.0")]
     internal static class FileListUtil
     {
-        private static string[] GetSortFiles(
-            ListResult<FileShallowInfoEntity> files, SortInfo sortInfo)
+        private static IEnumerable<FileShallowInfoEntity> GetSortFiles(
+            IEnumerable<FileShallowInfoEntity> files, SortInfo sortInfo)
         {
             ArgumentNullException.ThrowIfNull(files, nameof(files));
             ArgumentNullException.ThrowIfNull(sortInfo, nameof(sortInfo));
@@ -28,89 +28,49 @@ namespace PicSum.UIComponent.Contents.FileList
                 case SortTypeID.FileName:
                     if (isAscending)
                     {
-                        return files
-                            .AsValueEnumerable()
-                            .Where(file => file.IsImageFile)
-                            .OrderBy(file => file.FileName, NaturalStringComparer.Windows)
-                            .Select(file => file.FilePath)
-                            .ToArray();
+                        return files.OrderBy(file => file.FileName, NaturalStringComparer.Windows);
                     }
                     else
                     {
-                        return files
-                            .AsValueEnumerable()
-                            .Where(file => file.IsImageFile)
-                            .OrderByDescending(file => file.FileName, NaturalStringComparer.Windows)
-                            .Select(file => file.FilePath)
-                            .ToArray();
+                        return files.OrderByDescending(file => file.FileName, NaturalStringComparer.Windows);
                     }
                 case SortTypeID.FilePath:
                     if (isAscending)
                     {
-                        return files
-                            .AsValueEnumerable()
-                            .Where(file => file.IsImageFile)
-                            .OrderBy(file => file.FilePath, NaturalStringComparer.Windows)
-                            .Select(file => file.FilePath)
-                            .ToArray();
+                        return files.OrderBy(file => file.FilePath, NaturalStringComparer.Windows);
                     }
                     else
                     {
-                        return files
-                            .AsValueEnumerable()
-                            .Where(file => file.IsImageFile)
-                            .OrderByDescending(file => file.FilePath, NaturalStringComparer.Windows)
-                            .Select(file => file.FilePath)
-                            .ToArray();
+                        return files.OrderByDescending(file => file.FilePath, NaturalStringComparer.Windows);
                     }
                 case SortTypeID.UpdateDate:
                     if (isAscending)
                     {
                         return files
-                            .AsValueEnumerable()
-                            .Where(file => file.IsImageFile)
                             .OrderBy(file => file.FilePath, NaturalStringComparer.Windows)
-                            .OrderBy(file => file.UpdateDate)
-                            .Select(file => file.FilePath)
-                            .ToArray();
+                            .OrderBy(file => file.UpdateDate);
                     }
                     else
                     {
                         return files
-                            .AsValueEnumerable()
-                            .Where(file => file.IsImageFile)
                             .OrderByDescending(file => file.FilePath, NaturalStringComparer.Windows)
-                            .OrderByDescending(file => file.UpdateDate)
-                            .Select(file => file.FilePath)
-                            .ToArray();
+                            .OrderByDescending(file => file.UpdateDate);
                     }
                 case SortTypeID.RegistrationDate:
                     if (isAscending)
                     {
                         return files
-                            .AsValueEnumerable()
-                            .Where(file => file.IsImageFile)
                             .OrderBy(file => file.FilePath, NaturalStringComparer.Windows)
-                            .OrderBy(file => file.RgistrationDate)
-                            .Select(file => file.FilePath)
-                            .ToArray();
+                            .OrderBy(file => file.RgistrationDate);
                     }
                     else
                     {
                         return files
-                            .AsValueEnumerable()
-                            .Where(file => file.IsImageFile)
                             .OrderByDescending(file => file.FilePath, NaturalStringComparer.Windows)
-                            .OrderByDescending(file => file.RgistrationDate)
-                            .Select(file => file.FilePath)
-                            .ToArray();
+                            .OrderByDescending(file => file.RgistrationDate);
                     }
                 default:
-                    return files
-                            .AsValueEnumerable()
-                            .Where(file => file.IsImageFile)
-                            .Select(file => file.FilePath)
-                            .ToArray(); ;
+                    return files;
             }
         }
 
@@ -129,7 +89,11 @@ namespace PicSum.UIComponent.Contents.FileList
                 Instance<JobCaller>.Value.FilesGetByDirectoryJob.Value
                     .StartJob(sender, jobParameter, e =>
                     {
-                        var sortImageFiles = GetSortFiles(e.FileInfoList, param.SortInfo);
+                        var imageFiles = e.FileInfoList
+                            .Where(fileInfo => fileInfo.IsImageFile);
+                        var sortImageFiles = GetSortFiles(imageFiles, param.SortInfo)
+                            .Select(fileInfo => fileInfo.FilePath)
+                            .ToArray();
                         var eventArgs = new GetImageFilesEventArgs(
                             sortImageFiles, param.SelectedFilePath, param.PageTitle, param.PageIcon);
                         param.OnGetImageFiles(eventArgs);
@@ -155,7 +119,6 @@ namespace PicSum.UIComponent.Contents.FileList
                         var title = FileUtil.GetFileName(FileUtil.GetParentDirectoryPath(param.SelectedFilePath));
 
                         var imageFiles = e.FileInfoList
-                            .AsValueEnumerable()
                             .Where(fileInfo => fileInfo.IsImageFile)
                             .OrderBy(fileInfo => fileInfo.FilePath, NaturalStringComparer.Windows)
                             .Select(fileInfo => fileInfo.FilePath)
@@ -183,7 +146,11 @@ namespace PicSum.UIComponent.Contents.FileList
                 Instance<JobCaller>.Value.FilesGetByRatingJob.Value
                     .StartJob(sender, jobParameter, e =>
                     {
-                        var sortImageFiles = GetSortFiles(e, param.SortInfo);
+                        var imageFiles = e
+                            .Where(fileInfo => fileInfo.IsImageFile);
+                        var sortImageFiles = GetSortFiles(imageFiles, param.SortInfo)
+                            .Select(fileInfo => fileInfo.FilePath)
+                            .ToArray();
                         var eventArgs = new GetImageFilesEventArgs(
                             sortImageFiles, param.SelectedFilePath, param.PageTitle, param.PageIcon);
                         param.OnGetImageFiles(eventArgs);
@@ -206,7 +173,11 @@ namespace PicSum.UIComponent.Contents.FileList
                 Instance<JobCaller>.Value.FilesGetByTagJob.Value
                     .StartJob(sender, jobParameter, e =>
                     {
-                        var sortImageFiles = GetSortFiles(e, param.SortInfo);
+                        var imageFiles = e
+                            .Where(fileInfo => fileInfo.IsImageFile);
+                        var sortImageFiles = GetSortFiles(imageFiles, param.SortInfo)
+                            .Select(fileInfo => fileInfo.FilePath)
+                            .ToArray();
                         var eventArgs = new GetImageFilesEventArgs(
                             sortImageFiles, param.SelectedFilePath, param.PageTitle, param.PageIcon);
                         param.OnGetImageFiles(eventArgs);
