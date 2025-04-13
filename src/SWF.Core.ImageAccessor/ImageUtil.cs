@@ -229,7 +229,6 @@ namespace SWF.Core.ImageAccessor
             }
 
             var imageFilePath = FileUtil.GetFiles(directoryPath)
-                .Where(FileUtil.CanAccess)
                 .OrderBy(_ => _, NaturalStringComparer.Windows)
                 .FirstOrDefault(IsImageFile);
 
