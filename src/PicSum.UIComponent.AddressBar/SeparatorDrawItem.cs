@@ -179,7 +179,6 @@ namespace PicSum.UIComponent.AddressBar
             {
                 var font = this.AddressBar.GetBoldFont(scale);
                 var srcItems = e.ToList();
-                srcItems.Sort((x, y) => x.FilePath.CompareTo(y.FilePath));
                 foreach (var info in srcItems)
                 {
                     var item = new DirectoryEntity

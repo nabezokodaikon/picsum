@@ -37,8 +37,7 @@ namespace PicSum.Job.Jobs
                 throw new JobException(this.ID, ex);
             }
 
-            var sortedList = list.OrderBy(f => f, NaturalStringComparer.Windows).ToList();
-            var index = sortedList.IndexOf(param.CurrentParameter);
+            var index = Array.IndexOf(list, param.CurrentParameter);
             if (index < 0)
             {
                 return;
@@ -47,24 +46,24 @@ namespace PicSum.Job.Jobs
             var result = new ValueResult<string>();
             if (param.IsNext)
             {
-                if (index + 1 > sortedList.Count - 1)
+                if (index + 1 > list.Length - 1)
                 {
-                    result.Value = sortedList[0];
+                    result.Value = list[0];
                 }
                 else
                 {
-                    result.Value = sortedList[index + 1];
+                    result.Value = list[index + 1];
                 }
             }
             else
             {
                 if (index - 1 < 0)
                 {
-                    result.Value = sortedList[^1];
+                    result.Value = list[^1];
                 }
                 else
                 {
-                    result.Value = sortedList[index - 1];
+                    result.Value = list[index - 1];
                 }
             }
 

@@ -22,7 +22,7 @@ namespace PicSum.Job.Logics
                 list.Add(subDirectory);
             }
 
-            return [.. list];
+            return [.. list.OrderBy(f => f, NaturalStringComparer.Windows)];
         }
     }
 }
