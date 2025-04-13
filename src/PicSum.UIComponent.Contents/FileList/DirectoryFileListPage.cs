@@ -228,16 +228,16 @@ namespace PicSum.UIComponent.Contents.FileList
             {
                 if (e.DirectoryState == DirectoryStateParameter.EMPTY)
                 {
-                    base.SetFiles(e.FileInfoList, string.Empty, SortTypeID.FilePath, true);
-
+                    base.SetFiles(e.FileInfoList, this.parameter.DirectoryPath, SortTypeID.FilePath, true);
                 }
                 else
                 {
                     base.SetFiles(e.FileInfoList, e.DirectoryState.SelectedFilePath, e.DirectoryState.SortTypeID, e.DirectoryState.IsAscending);
-                    if (e.FileInfoList.Length < 1)
-                    {
-                        base.OnSelectedFileChanged(new SelectedFileChangeEventArgs(e.DirectoryState.DirectoryPath));
-                    }
+                }
+
+                if (e.FileInfoList.Length < 1)
+                {
+                    base.OnSelectedFileChanged(new SelectedFileChangeEventArgs(this.parameter.DirectoryPath));
                 }
             }
 
