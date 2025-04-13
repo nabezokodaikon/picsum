@@ -12,6 +12,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Runtime.Versioning;
 using System.Windows.Forms;
+using ZLinq;
 
 namespace PicSum.UIComponent.Contents.FileList
 {
@@ -217,24 +218,40 @@ namespace PicSum.UIComponent.Contents.FileList
             {
                 if (e.DirectoryState == DirectoryStateParameter.EMPTY)
                 {
-                    base.SetFiles(e.FileInfoList, this.parameter.SelectedFilePath, SortTypeID.FilePath, true);
+                    base.SetFiles(
+                        e.FileInfoList.AsValueEnumerable().ToArray(),
+                        this.parameter.SelectedFilePath,
+                        SortTypeID.FilePath,
+                        true);
                 }
                 else
                 {
-                    base.SetFiles(e.FileInfoList, this.parameter.SelectedFilePath, e.DirectoryState.SortTypeID, e.DirectoryState.IsAscending);
+                    base.SetFiles(
+                        e.FileInfoList.AsValueEnumerable().ToArray(),
+                        this.parameter.SelectedFilePath,
+                        e.DirectoryState.SortTypeID,
+                        e.DirectoryState.IsAscending);
                 }
             }
             else
             {
                 if (e.DirectoryState == DirectoryStateParameter.EMPTY)
                 {
-                    base.SetFiles(e.FileInfoList, string.Empty, SortTypeID.FilePath, true);
+                    base.SetFiles(
+                        e.FileInfoList.AsValueEnumerable().ToArray(),
+                        string.Empty,
+                        SortTypeID.FilePath,
+                        true);
 
                 }
                 else
                 {
-                    base.SetFiles(e.FileInfoList, e.DirectoryState.SelectedFilePath, e.DirectoryState.SortTypeID, e.DirectoryState.IsAscending);
-                    if (e.FileInfoList.Length < 1)
+                    base.SetFiles(
+                        e.FileInfoList.AsValueEnumerable().ToArray(),
+                        e.DirectoryState.SelectedFilePath,
+                        e.DirectoryState.SortTypeID,
+                        e.DirectoryState.IsAscending);
+                    if (e.FileInfoList.Count < 1)
                     {
                         base.OnSelectedFileChanged(new SelectedFileChangeEventArgs(e.DirectoryState.DirectoryPath));
                     }
