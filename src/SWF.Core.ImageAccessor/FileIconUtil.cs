@@ -10,37 +10,34 @@ namespace SWF.Core.ImageAccessor
     {
         public static Bitmap GetSystemIcon(WinApiMembers.ShellSpecialFolder specialFolder, WinApiMembers.ShellFileInfoFlags shil)
         {
-            _ = WinApiMembers.SHGetSpecialFolderLocation(IntPtr.Zero, specialFolder, out var idHandle);
-            var sh = new WinApiMembers.SHFILEINFOW();
-            var hSuccess = WinApiMembers.SHGetFileInfoW(idHandle, 0, ref sh, (uint)Marshal.SizeOf(sh),
-                                                           WinApiMembers.ShellFileInfoFlags.SHGFI_ICON |
-                                                           WinApiMembers.ShellFileInfoFlags.SHGFI_PIDL |
-                                                           shil);
-            try
+            while (true)
             {
-                if (hSuccess != IntPtr.Zero)
+                _ = WinApiMembers.SHGetSpecialFolderLocation(IntPtr.Zero, specialFolder, out var idHandle);
+                var sh = new WinApiMembers.SHFILEINFOW();
+                var hSuccess = WinApiMembers.SHGetFileInfoW(idHandle, 0, ref sh, (uint)Marshal.SizeOf(sh),
+                                                               WinApiMembers.ShellFileInfoFlags.SHGFI_ICON |
+                                                               WinApiMembers.ShellFileInfoFlags.SHGFI_PIDL |
+                                                               shil);
+                try
                 {
-                    try
+                    if (hSuccess != IntPtr.Zero)
                     {
-                        using (var icon = Icon.FromHandle(sh.hIcon))
+                        try
                         {
-                            return icon.ToBitmap();
+                            using (var icon = Icon.FromHandle(sh.hIcon))
+                            {
+                                return icon.ToBitmap();
+                            }
                         }
-                    }
-                    catch (Exception ex)
-                    {
-                        throw new InvalidOperationException(
-                            $"システムアイコンを取得できませんでした。{ex.Message}");
+                        catch (Exception) { }
                     }
                 }
-                else
+                finally
                 {
-                    throw new InvalidOperationException("システムアイコンを取得できませんでした。");
+                    WinApiMembers.DestroyIcon(sh.hIcon);
                 }
-            }
-            finally
-            {
-                WinApiMembers.DestroyIcon(sh.hIcon);
+
+                Thread.Sleep(500);
             }
         }
 
@@ -53,35 +50,32 @@ namespace SWF.Core.ImageAccessor
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
-            var sh = new WinApiMembers.SHFILEINFOW();
-            var hSuccess = WinApiMembers.SHGetFileInfoW(filePath, 0, ref sh, (uint)Marshal.SizeOf(sh),
-                                                           WinApiMembers.ShellFileInfoFlags.SHGFI_ICON |
-                                                           WinApiMembers.ShellFileInfoFlags.SHGFI_SMALLICON);
-            try
+            while (true)
             {
-                if (hSuccess != IntPtr.Zero)
+                var sh = new WinApiMembers.SHFILEINFOW();
+                var hSuccess = WinApiMembers.SHGetFileInfoW(filePath, 0, ref sh, (uint)Marshal.SizeOf(sh),
+                                                               WinApiMembers.ShellFileInfoFlags.SHGFI_ICON |
+                                                               WinApiMembers.ShellFileInfoFlags.SHGFI_SMALLICON);
+                try
                 {
-                    try
+                    if (hSuccess != IntPtr.Zero)
                     {
-                        using (var icon = Icon.FromHandle(sh.hIcon))
+                        try
                         {
-                            return icon.ToBitmap();
+                            using (var icon = Icon.FromHandle(sh.hIcon))
+                            {
+                                return icon.ToBitmap();
+                            }
                         }
-                    }
-                    catch (Exception ex)
-                    {
-                        throw new InvalidOperationException(
-                            $"'{filePath}'の小さいアイコンを取得できませんでした。{ex.Message}");
+                        catch (Exception) { }
                     }
                 }
-                else
+                finally
                 {
-                    return ResourceFiles.EmptyIcon.Value;
+                    WinApiMembers.DestroyIcon(sh.hIcon);
                 }
-            }
-            finally
-            {
-                WinApiMembers.DestroyIcon(sh.hIcon);
+
+                Thread.Sleep(500);
             }
         }
 
@@ -94,59 +88,60 @@ namespace SWF.Core.ImageAccessor
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
-            var shinfo = new WinApiMembers.SHFILEINFO();
-            var hSuccess = WinApiMembers.SHGetFileInfo(
-                filePath,
-                0,
-                ref shinfo,
-                (int)Marshal.SizeOf(typeof(WinApiMembers.SHFILEINFO)),
-                (int)WinApiMembers.ShellFileInfoFlags.SHGFI_SYSICONINDEX);
-            if (hSuccess == IntPtr.Zero)
+            while (true)
             {
-                return ResourceFiles.EmptyIcon.Value;
-            }
-
-            var result = WinApiMembers.SHGetImageList(
-                shil,
-                WinApiMembers.IID_IImageList,
-                out IntPtr pimgList);
-
-            try
-            {
-                if (result != WinApiMembers.S_OK)
+                var shinfo = new WinApiMembers.SHFILEINFO();
+                var hSuccess = WinApiMembers.SHGetFileInfo(
+                    filePath,
+                    0,
+                    ref shinfo,
+                    (int)Marshal.SizeOf(typeof(WinApiMembers.SHFILEINFO)),
+                    (int)WinApiMembers.ShellFileInfoFlags.SHGFI_SYSICONINDEX);
+                if (hSuccess == IntPtr.Zero)
                 {
                     return ResourceFiles.EmptyIcon.Value;
                 }
 
-                var hicon = WinApiMembers.ImageList_GetIcon(pimgList, shinfo.iIcon, 0);
-                if (hicon == IntPtr.Zero)
-                {
-                    return ResourceFiles.EmptyIcon.Value;
-                }
+                var result = WinApiMembers.SHGetImageList(
+                    shil,
+                    WinApiMembers.IID_IImageList,
+                    out IntPtr pimgList);
 
                 try
                 {
+                    if (result != WinApiMembers.S_OK)
+                    {
+                        return ResourceFiles.EmptyIcon.Value;
+                    }
+
+                    var hicon = WinApiMembers.ImageList_GetIcon(pimgList, shinfo.iIcon, 0);
+                    if (hicon == IntPtr.Zero)
+                    {
+                        return ResourceFiles.EmptyIcon.Value;
+                    }
+
                     try
                     {
-                        using (var icon = Icon.FromHandle(hicon))
+                        try
                         {
-                            return icon.ToBitmap();
+                            using (var icon = Icon.FromHandle(hicon))
+                            {
+                                return icon.ToBitmap();
+                            }
                         }
+                        catch (Exception) { }
                     }
-                    catch (Exception ex)
+                    finally
                     {
-                        throw new InvalidOperationException(
-                            $"'{filePath}'の大きいアイコンを取得できませんでした。{ex.Message}");
+                        WinApiMembers.DestroyIcon(hicon);
                     }
                 }
                 finally
                 {
-                    WinApiMembers.DestroyIcon(hicon);
+                    WinApiMembers.ImageList_Destroy(pimgList);
                 }
-            }
-            finally
-            {
-                WinApiMembers.ImageList_Destroy(pimgList);
+
+                Thread.Sleep(500);
             }
         }
     }
