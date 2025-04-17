@@ -291,11 +291,11 @@ namespace SWF.UIComponent.TabOperation
             var destRect = this.GetDestCenterRectangle(scale);
 
             g.FillRectangle(brush, destRect);
-            g.DrawLines(TAB_OUTLINE_PEN, [
-                new PointF(destRect.Left, destRect.Bottom - 1f),
-                new PointF(destRect.Left, destRect.Top + 0.5f),
-                new PointF(destRect.Right, destRect.Top + 0.5f),
-                new PointF(destRect.Right, destRect.Bottom - 1f)]);
+            //g.DrawLines(TAB_OUTLINE_PEN, [
+            //    new PointF(destRect.Left, destRect.Bottom - 1f),
+            //    new PointF(destRect.Left, destRect.Top + 0.5f),
+            //    new PointF(destRect.Right, destRect.Top + 0.5f),
+            //    new PointF(destRect.Right, destRect.Bottom - 1f)]);
         }
 
         private void DrawTabCloseButton(Graphics g, bool isMousePoint, bool isActiveTab)
