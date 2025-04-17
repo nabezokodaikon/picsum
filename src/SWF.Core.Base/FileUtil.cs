@@ -433,7 +433,7 @@ namespace SWF.Core.Base
 
             if (IsSystemRoot(directoryPath))
             {
-                return GetDriveList();
+                return GetDrives();
             }
             else if (IsExistsDirectory(directoryPath) || IsExistsDrive(directoryPath))
             {
@@ -480,7 +480,7 @@ namespace SWF.Core.Base
 
             if (IsSystemRoot(directoryPath))
             {
-                return GetDriveList();
+                return GetDrives();
             }
             else if (IsExistsDirectory(directoryPath) || IsExistsDrive(directoryPath))
             {
@@ -673,7 +673,7 @@ namespace SWF.Core.Base
         }
 
         // ドライブリストを取得します。
-        private static IEnumerable<string> GetDriveList()
+        private static IEnumerable<string> GetDrives()
         {
             try
             {
