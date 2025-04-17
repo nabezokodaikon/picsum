@@ -30,6 +30,10 @@
   </PropertyGroup>
   
   <ItemGroup>
+    <PackageReference Include="ZLinq" Version="1.2.0" />
+  </ItemGroup>
+  
+  <ItemGroup>
     <Reference Update="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
