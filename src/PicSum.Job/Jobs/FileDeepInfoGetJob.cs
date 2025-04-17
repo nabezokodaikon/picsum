@@ -84,7 +84,7 @@ namespace PicSum.Job.Jobs
             }
             else
             {
-                result.TagInfoList = [];
+                result.TagInfoList = new ListEntity<FileTagInfoEntity>(0);
             }
 
             this.Callback(result);

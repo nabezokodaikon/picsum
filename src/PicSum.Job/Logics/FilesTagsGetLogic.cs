@@ -22,7 +22,7 @@ namespace PicSum.Job.Logics
             var sql = new FileTagReadSql(filePathList);
             var dtoList = Instance<IFileInfoDB>.Value.ReadList<FileTagDto>(sql);
 
-            var infoList = new ListEntity<FileTagInfoEntity>();
+            var infoList = new ListEntity<FileTagInfoEntity>(dtoList.Length);
             foreach (var dto in dtoList
                 .OrderBy(dto => dto.Tag, NaturalStringComparer.Windows))
             {

@@ -7,9 +7,9 @@ namespace PicSum.Job.Entities
     public sealed class ListEntity<T>
         : List<T>
     {
-        public ListEntity()
+        public ListEntity(int capacity)
         {
-
+            base.Capacity = capacity;
         }
 
         public ListEntity(IEnumerable<T> collection)

@@ -46,7 +46,7 @@ namespace PicSum.Job.Jobs
             }
 
             var getInfoLogic = new FileShallowInfoGetLogic(this);
-            var infoList = new ListEntity<FileShallowInfoEntity>();
+            var infoList = new ListEntity<FileShallowInfoEntity>(fileList.Length);
             foreach (var file in fileList)
             {
                 this.CheckCancel();

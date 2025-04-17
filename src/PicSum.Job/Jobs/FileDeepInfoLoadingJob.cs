@@ -1,3 +1,4 @@
+using PicSum.Job.Entities;
 using PicSum.Job.Logics;
 using PicSum.Job.Parameters;
 using PicSum.Job.Results;
@@ -57,7 +58,7 @@ namespace PicSum.Job.Jobs
                 var result = new FileDeepInfoGetResult
                 {
                     FilePathList = param.FilePathList,
-                    TagInfoList = []
+                    TagInfoList = new ListEntity<FileTagInfoEntity>(0)
                 };
                 this.Callback(result);
             }
