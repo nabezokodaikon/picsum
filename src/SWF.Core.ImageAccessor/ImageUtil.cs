@@ -219,7 +219,7 @@ namespace SWF.Core.ImageAccessor
 
         public static string[] GetImageFilesArray(string directoryPath)
         {
-            using (TimeMeasuring.Run(true, "ImageUtil.GetImageFilesArray"))
+            using (TimeMeasuring.Run(false, "ImageUtil.GetImageFilesArray"))
             {
                 if (FileUtil.IsSystemRoot(directoryPath))
                 {
