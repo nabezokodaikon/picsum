@@ -30,7 +30,6 @@ namespace PicSum.Main.UIComponent
 
         private BrowserMainPanel browserMainPanel = null;
         private bool isKeyDown = false;
-        private readonly bool isFastShow = false;
 
         private BrowserMainPanel BrowserMainPanel
         {
@@ -45,16 +44,10 @@ namespace PicSum.Main.UIComponent
             }
         }
 
-        public BrowserForm(bool isFastShow)
+        public BrowserForm()
             : base()
         {
             this.SuspendLayout();
-
-            this.isFastShow = isFastShow;
-            if (this.isFastShow)
-            {
-                this.Opacity = 0f;
-            }
 
             this.Icon = ResourceFiles.AppIcon.Value;
             this.Text = "PicSum";
@@ -149,11 +142,6 @@ namespace PicSum.Main.UIComponent
                 BrowserForm.isStartUp = false;
 
                 AppConstants.StopBootTimeMeasurement();
-            }
-
-            if (this.isFastShow)
-            {
-                this.Opacity = 1f;
             }
 
             ConsoleUtil.Write(true, $"BrowserForm.OnShown End");
