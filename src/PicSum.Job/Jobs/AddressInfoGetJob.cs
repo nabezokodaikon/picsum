@@ -42,7 +42,8 @@ namespace PicSum.Job.Jobs
                     {
                         directory = FileUtil.GetParentDirectoryPath(param.Value);
                     }
-                    else if (FileUtil.IsExistsDirectory(param.Value))
+                    else if (FileUtil.IsExistsDirectory(param.Value)
+                        || FileUtil.IsExistsDrive(param.Value))
                     {
                         directory = param.Value;
                     }
