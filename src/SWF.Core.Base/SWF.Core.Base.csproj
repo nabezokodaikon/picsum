@@ -82,6 +82,11 @@
   </PropertyGroup>
   
   <ItemGroup>
+    <PackageReference Include="ZLinq" Version="1.2.0" />
+    <PackageReference Include="ZLinq.FileSystem" Version="1.2.0" />
+  </ItemGroup>
+  
+  <ItemGroup>
     <ProjectReference Include="..\WinApi\WinApi.csproj" />
   </ItemGroup>
 

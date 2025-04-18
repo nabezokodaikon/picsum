@@ -4,6 +4,7 @@ using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 using System.Security;
 using WinApi;
+using ZLinq;
 
 namespace SWF.Core.Base
 {
@@ -416,6 +417,52 @@ namespace SWF.Core.Base
             else
             {
                 return [];
+            }
+        }
+
+        public static bool HasSubDirectory(string directoryPath)
+        {
+            if (string.IsNullOrEmpty(directoryPath))
+            {
+                return false;
+            }
+
+            if (IsSystemRoot(directoryPath))
+            {
+                return true;
+            }
+            else if (IsExistsDirectory(directoryPath) || IsExistsDrive(directoryPath))
+            {
+                try
+                {
+                    var root = new DirectoryInfo(directoryPath);
+
+                    return root
+                        .Children()
+                        .OfType<DirectoryInfo>()
+                        .Where(dir => CanAccess(dir.FullName))
+                        .Any();
+                }
+                catch (ArgumentNullException)
+                {
+                    return false;
+                }
+                catch (SecurityException)
+                {
+                    return false;
+                }
+                catch (ArgumentException)
+                {
+                    return false;
+                }
+                catch (PathTooLongException)
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
             }
         }
 
