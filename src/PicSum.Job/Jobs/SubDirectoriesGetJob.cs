@@ -21,7 +21,7 @@ namespace PicSum.Job.Jobs
                 throw new ArgumentNullException(param.Value, nameof(param.Value));
             }
 
-            var subDirectorys = (new SubDirectoriesGetLogic(this)).Execute(param.Value);
+            var subDirectorys = FileUtil.GetSubDirectories(param.Value, true);
 
             var logic = new FileShallowInfoGetLogic(this);
             var result = new ListResult<FileShallowInfoEntity>();

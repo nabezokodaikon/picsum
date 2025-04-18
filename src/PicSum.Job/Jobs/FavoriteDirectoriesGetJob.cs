@@ -66,7 +66,7 @@ namespace PicSum.Job.Jobs
                 var parentDir = FileUtil.GetParentDirectoryPath(
                     Environment.GetFolderPath(Environment.SpecialFolder.MyPictures));
 
-                foreach (var dirPath in FileUtil.GetSubDirectories(parentDir))
+                foreach (var dirPath in FileUtil.GetSubDirectories(parentDir, true))
                 {
                     this.CheckCancel();
 

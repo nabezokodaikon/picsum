@@ -1,4 +1,3 @@
-using PicSum.Job.Logics;
 using PicSum.Job.Parameters;
 using SWF.Core.Base;
 using SWF.Core.Job;
@@ -26,18 +25,10 @@ namespace PicSum.Job.Jobs
                 throw new ArgumentException("カレントパラメータが空文字です。", nameof(param));
             }
 
-            string[] list;
-            try
-            {
-                var parentDirectory = FileUtil.GetParentDirectoryPath(param.CurrentParameter);
-                list = (new SubDirectoriesGetLogic(this)).Execute(parentDirectory);
-            }
-            catch (FileUtilException ex)
-            {
-                throw new JobException(this.ID, ex);
-            }
+            var parentDirectory = FileUtil.GetParentDirectoryPath(param.CurrentParameter);
+            var dirs = FileUtil.GetSubDirectories(parentDirectory, true);
 
-            var index = Array.IndexOf(list, param.CurrentParameter);
+            var index = Array.IndexOf(dirs, param.CurrentParameter);
             if (index < 0)
             {
                 return;
@@ -46,24 +37,24 @@ namespace PicSum.Job.Jobs
             var result = new ValueResult<string>();
             if (param.IsNext)
             {
-                if (index + 1 > list.Length - 1)
+                if (index + 1 > dirs.Length - 1)
                 {
-                    result.Value = list[0];
+                    result.Value = dirs[0];
                 }
                 else
                 {
-                    result.Value = list[index + 1];
+                    result.Value = dirs[index + 1];
                 }
             }
             else
             {
                 if (index - 1 < 0)
                 {
-                    result.Value = list[^1];
+                    result.Value = dirs[^1];
                 }
                 else
                 {
-                    result.Value = list[index - 1];
+                    result.Value = dirs[index - 1];
                 }
             }
 

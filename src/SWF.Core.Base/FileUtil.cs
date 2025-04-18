@@ -471,7 +471,7 @@ namespace SWF.Core.Base
         /// </summary>
         /// <param name="directoryPath">フォルダパス</param>
         /// <returns></returns>
-        public static IEnumerable<string> GetSubDirectories(string directoryPath)
+        public static string[] GetSubDirectories(string directoryPath, bool isSort)
         {
             if (string.IsNullOrEmpty(directoryPath))
             {
@@ -480,31 +480,61 @@ namespace SWF.Core.Base
 
             if (IsSystemRoot(directoryPath))
             {
-                return GetDrives();
+                if (isSort)
+                {
+                    return [.. GetDrives().OrderBy(drive => drive, NaturalStringComparer.Windows)];
+                }
+                else
+                {
+                    return [.. GetDrives()];
+                }
             }
             else if (IsExistsDirectory(directoryPath) || IsExistsDrive(directoryPath))
             {
                 try
                 {
-                    return Directory
-                        .EnumerateDirectories(directoryPath)
-                        .Where(CanAccess);
+                    if (!CanAccess(directoryPath))
+                    {
+                        return [];
+                    }
+
+                    var root = new DirectoryInfo(directoryPath);
+
+                    if (isSort)
+                    {
+                        return root
+                            .Children()
+                            .OfType<DirectoryInfo>()
+                            .Select(dir => dir.FullName)
+                            .Where(CanAccess)
+                            .OrderBy(dir => dir, NaturalStringComparer.Windows)
+                            .ToArray();
+                    }
+                    else
+                    {
+                        return root
+                            .Children()
+                            .OfType<DirectoryInfo>()
+                            .Select(dir => dir.FullName)
+                            .Where(CanAccess)
+                            .ToArray();
+                    }
                 }
-                catch (UnauthorizedAccessException ex)
+                catch (ArgumentNullException)
                 {
-                    throw new FileUtilException(CreateFileAccessErrorMessage(directoryPath), ex);
+                    return [];
                 }
-                catch (PathTooLongException ex)
+                catch (SecurityException)
                 {
-                    throw new FileUtilException(CreateFileAccessErrorMessage(directoryPath), ex);
+                    return [];
                 }
-                catch (DirectoryNotFoundException ex)
+                catch (ArgumentException)
                 {
-                    throw new FileUtilException(CreateFileAccessErrorMessage(directoryPath), ex);
+                    return [];
                 }
-                catch (IOException ex)
+                catch (PathTooLongException)
                 {
-                    throw new FileUtilException(CreateFileAccessErrorMessage(directoryPath), ex);
+                    return [];
                 }
             }
             else
