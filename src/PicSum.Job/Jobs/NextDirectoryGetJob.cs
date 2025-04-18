@@ -26,7 +26,7 @@ namespace PicSum.Job.Jobs
             }
 
             var parentDirectory = FileUtil.GetParentDirectoryPath(param.CurrentParameter);
-            var dirs = FileUtil.GetSubDirectories(parentDirectory, true);
+            var dirs = FileUtil.GetSubDirectoriesArray(parentDirectory, true);
 
             var index = Array.IndexOf(dirs, param.CurrentParameter);
             if (index < 0)

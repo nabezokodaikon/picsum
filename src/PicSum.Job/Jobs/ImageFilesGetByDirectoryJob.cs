@@ -1,4 +1,3 @@
-using PicSum.Job.Logics;
 using PicSum.Job.Parameters;
 using PicSum.Job.Results;
 using SWF.Core.Base;
@@ -17,7 +16,6 @@ namespace PicSum.Job.Jobs
     {
         protected override void Execute(ImageFileGetByDirectoryParameter param)
         {
-
             var result = new ImageFilesGetByDirectoryResult();
 
             try
@@ -35,25 +33,14 @@ namespace PicSum.Job.Jobs
                     throw new ArgumentException("ファイルまたはフォルダのパスではありません。", nameof(param));
                 }
 
-                var getFilesLogic = new FilesAndSubDirectoriesGetLogic(this);
-                var filePathList = getFilesLogic.Execute(result.DirectoryPath);
-
-                result.FilePathList = [];
-                foreach (var filePath in filePathList)
+                result.FilePathList = ImageUtil.GetImageFilesArray(result.DirectoryPath);
+                if (Array.IndexOf(result.FilePathList, param.FilePath) < 0)
                 {
-                    if (ImageUtil.IsImageFile(filePath))
-                    {
-                        result.FilePathList.Add(filePath);
-                    }
-                }
-
-                if (result.FilePathList.Contains(param.FilePath))
-                {
-                    result.SelectedFilePath = param.FilePath;
+                    result.SelectedFilePath = string.Empty;
                 }
                 else
                 {
-                    result.SelectedFilePath = string.Empty;
+                    result.SelectedFilePath = param.FilePath;
                 }
             }
             catch (FileUtilException ex)

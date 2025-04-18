@@ -376,11 +376,6 @@ namespace SWF.Core.Base
         /// <returns></returns>
         public static IEnumerable<string> GetFiles(string directoryPath)
         {
-            if (string.IsNullOrEmpty(directoryPath))
-            {
-                return [];
-            }
-
             if (IsSystemRoot(directoryPath))
             {
                 return [];
@@ -393,25 +388,33 @@ namespace SWF.Core.Base
                         .EnumerateFiles(directoryPath)
                         .Where(CanAccess);
                 }
-                catch (UnauthorizedAccessException ex)
+                catch (ArgumentNullException)
                 {
-                    throw new FileUtilException(CreateFileAccessErrorMessage(directoryPath), ex);
+                    return [];
                 }
-                catch (PathTooLongException ex)
+                catch (ArgumentException)
                 {
-                    throw new FileUtilException(CreateFileAccessErrorMessage(directoryPath), ex);
+                    return [];
                 }
-                catch (DirectoryNotFoundException ex)
+                catch (DirectoryNotFoundException)
                 {
-                    throw new FileUtilException(CreateFileAccessErrorMessage(directoryPath), ex);
+                    return [];
                 }
-                catch (IOException ex)
+                catch (PathTooLongException)
                 {
-                    throw new FileUtilException(CreateFileAccessErrorMessage(directoryPath), ex);
+                    return [];
                 }
-                catch (SystemException ex)
+                catch (IOException)
                 {
-                    throw new FileUtilException(CreateFileAccessErrorMessage(directoryPath), ex);
+                    return [];
+                }
+                catch (SecurityException)
+                {
+                    return [];
+                }
+                catch (UnauthorizedAccessException)
+                {
+                    return [];
                 }
             }
             else
@@ -471,7 +474,7 @@ namespace SWF.Core.Base
         /// </summary>
         /// <param name="directoryPath">フォルダパス</param>
         /// <returns></returns>
-        public static string[] GetSubDirectories(string directoryPath, bool isSort)
+        public static string[] GetSubDirectoriesArray(string directoryPath, bool isSort)
         {
             if (string.IsNullOrEmpty(directoryPath))
             {
@@ -548,44 +551,45 @@ namespace SWF.Core.Base
         /// </summary>
         /// <param name="directoryPath">フォルダパス</param>
         /// <returns></returns>
-        public static IEnumerable<string> GetFileSystemEntries(string directoryPath)
+        public static string[] GetFileSystemEntriesArray(string directoryPath)
         {
-            if (string.IsNullOrEmpty(directoryPath))
-            {
-                return [];
-            }
-
             if (IsSystemRoot(directoryPath))
             {
-                return GetDrives();
+                return [.. GetDrives()];
             }
             else if (IsExistsDirectory(directoryPath) || IsExistsDrive(directoryPath))
             {
                 try
                 {
-                    return Directory
-                        .EnumerateFileSystemEntries(directoryPath)
-                        .Where(CanAccess);
+                    var root = new DirectoryInfo(directoryPath);
+
+                    return root
+                        .Children()
+                        .Select(dir => dir.FullName)
+                        .Where(CanAccess)
+                        .ToArray();
                 }
-                catch (UnauthorizedAccessException ex)
+                catch (ArgumentNullException)
                 {
-                    throw new FileUtilException(CreateFileAccessErrorMessage(directoryPath), ex);
+                    return [];
                 }
-                catch (PathTooLongException ex)
+                catch (SecurityException)
                 {
-                    throw new FileUtilException(CreateFileAccessErrorMessage(directoryPath), ex);
+                    return [];
                 }
-                catch (DirectoryNotFoundException ex)
+                catch (ArgumentException)
                 {
-                    throw new FileUtilException(CreateFileAccessErrorMessage(directoryPath), ex);
+                    return [];
                 }
-                catch (IOException ex)
+                catch (PathTooLongException)
                 {
-                    throw new FileUtilException(CreateFileAccessErrorMessage(directoryPath), ex);
+                    return [];
                 }
             }
-
-            return [];
+            else
+            {
+                return [];
+            }
         }
 
         /// <summary>

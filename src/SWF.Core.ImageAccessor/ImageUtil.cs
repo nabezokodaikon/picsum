@@ -217,6 +217,57 @@ namespace SWF.Core.ImageAccessor
             return StringUtil.Compare(ex, WEBP_FILE_EXTENSION);
         }
 
+        public static string[] GetImageFilesArray(string directoryPath)
+        {
+            using (TimeMeasuring.Run(true, "ImageUtil.GetImageFilesArray"))
+            {
+                if (FileUtil.IsSystemRoot(directoryPath))
+                {
+                    return [];
+                }
+                else if (FileUtil.IsExistsDirectory(directoryPath) || FileUtil.IsExistsDrive(directoryPath))
+                {
+                    try
+                    {
+                        if (!FileUtil.CanAccess(directoryPath))
+                        {
+                            return [];
+                        }
+
+                        var root = new DirectoryInfo(directoryPath);
+
+                        return root
+                            .Children()
+                            .OfType<FileInfo>()
+                            .Select(fi => fi.FullName)
+                            .Where(file => FileUtil.CanAccess(file) && IsImageFile(file))
+                            .OrderBy(file => file, NaturalStringComparer.Windows)
+                            .ToArray();
+                    }
+                    catch (ArgumentNullException)
+                    {
+                        return [];
+                    }
+                    catch (SecurityException)
+                    {
+                        return [];
+                    }
+                    catch (ArgumentException)
+                    {
+                        return [];
+                    }
+                    catch (PathTooLongException)
+                    {
+                        return [];
+                    }
+                }
+                else
+                {
+                    return [];
+                }
+            }
+        }
+
         /// <summary>
         /// 指定したディレクトリ内の最初の画像ファイルを取得します。
         /// </summary>
@@ -234,7 +285,6 @@ namespace SWF.Core.ImageAccessor
                 {
                     try
                     {
-                        // TODO: FileUtilと重複しているのでなんとかする。
                         if (!FileUtil.CanAccess(directoryPath))
                         {
                             return string.Empty;

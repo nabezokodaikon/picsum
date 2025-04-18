@@ -34,20 +34,10 @@ namespace PicSum.Job.Jobs
                 DirectoryPath = param.DirectoryPath
             };
 
-            string[] fileList;
-            var getFilesLogic = new FilesAndSubDirectoriesGetLogic(this);
-            try
-            {
-                fileList = getFilesLogic.Execute(param.DirectoryPath);
-            }
-            catch (FileUtilException ex)
-            {
-                throw new JobException(this.ID, ex);
-            }
-
+            var files = FileUtil.GetFileSystemEntriesArray(param.DirectoryPath);
             var getInfoLogic = new FileShallowInfoGetLogic(this);
-            var infoList = new ListEntity<FileShallowInfoEntity>(fileList.Length);
-            foreach (var file in fileList)
+            var infoList = new ListEntity<FileShallowInfoEntity>(files.Length);
+            foreach (var file in files)
             {
                 this.CheckCancel();
 
