@@ -28,9 +28,14 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-	<DebugType>full</DebugType>
+	
 	<NoWarn>1701;1702; CA1016; CA1824; WFAC010; CA1416</NoWarn>
+	<DebugType>full</DebugType>
 	<OutputType>Exe</OutputType>
+	<RuntimeIdentifier>win-x64</RuntimeIdentifier>
+	<UseWindowsForms>true</UseWindowsForms>
+	<StartupObject>PicSum.Main.Program</StartupObject>
+	
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
