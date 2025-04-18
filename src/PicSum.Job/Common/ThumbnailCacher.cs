@@ -15,9 +15,9 @@ namespace PicSum.Job.Common
         : IThumbnailCacher
     {
         private const int CACHE_CAPACITY = 1000;
+        private const int BUFFER_FILE_MAX_SIZE = 1024 * 1024 * 10;
 
         private bool disposed = false;
-        private readonly int BUFFER_FILE_MAX_SIZE = 1024 * 1024 * 10;
         private readonly List<ThumbnailCacheEntity> CACHE_LIST = new(CACHE_CAPACITY);
         private readonly Dictionary<string, ThumbnailCacheEntity> CACHE_DICTIONARY = new(CACHE_CAPACITY);
         private readonly FileAppender fileAppender = new();
@@ -328,7 +328,7 @@ namespace PicSum.Job.Common
             }
 
             var size = FileUtil.GetFileSize(thumbFile);
-            if (size < this.BUFFER_FILE_MAX_SIZE)
+            if (size < BUFFER_FILE_MAX_SIZE)
             {
                 return id;
             }
