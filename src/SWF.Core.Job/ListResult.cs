@@ -8,6 +8,12 @@ namespace SWF.Core.Job
 
         }
 
+        public ListResult(int capacity)
+            : base(capacity)
+        {
+
+        }
+
         public ListResult(IEnumerable<T> collection)
             : base(collection)
         {
