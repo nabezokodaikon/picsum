@@ -5,6 +5,7 @@ using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 using System.Security;
+using ZLinq;
 
 namespace SWF.Core.ImageAccessor
 {
@@ -221,23 +222,66 @@ namespace SWF.Core.ImageAccessor
         /// </summary>
         /// <param name="directoryPath"></param>
         /// <returns></returns>
-        public static string? GetFirstImageFilePath(string directoryPath)
+        public static string GetFirstImageFilePath(string directoryPath)
         {
-            if (string.IsNullOrEmpty(directoryPath))
+            using (TimeMeasuring.Run(false, "ImageUtil.GetFirstImageFilePath"))
             {
-                return string.Empty;
+                if (FileUtil.IsSystemRoot(directoryPath))
+                {
+                    return string.Empty;
+                }
+                else if (FileUtil.IsExistsDirectory(directoryPath) || FileUtil.IsExistsDrive(directoryPath))
+                {
+                    try
+                    {
+                        // TODO: FileUtilと重複しているのでなんとかする。
+                        if (!FileUtil.CanAccess(directoryPath))
+                        {
+                            return string.Empty;
+                        }
+
+                        var root = new DirectoryInfo(directoryPath);
+
+                        var imageFile = root
+                            .Children()
+                            .OfType<FileInfo>()
+                            .OrderBy(file => file.FullName, NaturalStringComparer.Windows)
+                            .FirstOrDefault(file =>
+                            {
+                                var path = file.FullName;
+                                return FileUtil.CanAccess(path) && IsImageFile(path);
+                            });
+
+
+                        if (imageFile == null)
+                        {
+                            return string.Empty;
+                        }
+
+                        return imageFile.FullName;
+                    }
+                    catch (ArgumentNullException)
+                    {
+                        return string.Empty;
+                    }
+                    catch (SecurityException)
+                    {
+                        return string.Empty;
+                    }
+                    catch (ArgumentException)
+                    {
+                        return string.Empty;
+                    }
+                    catch (PathTooLongException)
+                    {
+                        return string.Empty;
+                    }
+                }
+                else
+                {
+                    return string.Empty;
+                }
             }
-
-            var imageFilePath = FileUtil.GetFiles(directoryPath)
-                .OrderBy(_ => _, NaturalStringComparer.Windows)
-                .FirstOrDefault(IsImageFile);
-
-            if (string.IsNullOrEmpty(imageFilePath))
-            {
-                return string.Empty;
-            }
-
-            return imageFilePath;
         }
 
         internal static Bitmap Resize(Bitmap srcBmp, int width, int height)

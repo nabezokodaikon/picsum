@@ -91,6 +91,8 @@
     <PackageReference Include="OpenCvSharp4.Extensions" Version="4.10.0.20241108" />
     <PackageReference Include="OpenCvSharp4.Windows" Version="4.10.0.20241108" />
     <PackageReference Include="SixLabors.ImageSharp" Version="3.1.7" />
+    <PackageReference Include="ZLinq" Version="1.2.0" />
+    <PackageReference Include="ZLinq.FileSystem" Version="1.2.0" />
   </ItemGroup>
 
   <ItemGroup>
