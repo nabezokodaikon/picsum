@@ -80,7 +80,7 @@ namespace PicSum.UIComponent.Contents.FileList
                         return files
                             .AsValueEnumerable()
                             .Where(file => file.IsImageFile)
-                            .OrderByDescending(file => file.FilePath, NaturalStringComparer.Windows)
+                            .OrderBy(file => file.FilePath, NaturalStringComparer.Windows)
                             .OrderByDescending(file => file.UpdateDate)
                             .Select(file => file.FilePath)
                             .ToArray();
@@ -101,7 +101,7 @@ namespace PicSum.UIComponent.Contents.FileList
                         return files
                             .AsValueEnumerable()
                             .Where(file => file.IsImageFile)
-                            .OrderByDescending(file => file.FilePath, NaturalStringComparer.Windows)
+                            .OrderBy(file => file.FilePath, NaturalStringComparer.Windows)
                             .OrderByDescending(file => file.RgistrationDate)
                             .Select(file => file.FilePath)
                             .ToArray();

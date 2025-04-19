@@ -476,7 +476,7 @@ namespace PicSum.UIComponent.Contents.FileList
                         {
                             if (xDate == yDate)
                             {
-                                return NaturalStringComparer.Windows.Compare(y.FilePath, x.FilePath);
+                                return NaturalStringComparer.Windows.Compare(x.FilePath, y.FilePath);
                             }
                             else
                             {
@@ -505,7 +505,7 @@ namespace PicSum.UIComponent.Contents.FileList
                         {
                             if (xDate == yDate)
                             {
-                                return NaturalStringComparer.Windows.Compare(y.FilePath, x.FilePath);
+                                return NaturalStringComparer.Windows.Compare(x.FilePath, y.FilePath);
                             }
                             else
                             {
