@@ -26,7 +26,7 @@ namespace SWF.Core.ImageAccessor
 
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         internal static readonly string[] IMAGE_FILE_EXTENSION_LIST = GetImageFileExtensionList();
-        public static readonly Size EMPTY_SIZE = System.Drawing.Size.Empty;
+        public static readonly Size EMPTY_SIZE = Size.Empty;
         public static readonly Bitmap EMPTY_IMAGE = new(1, 1);
 
         private static readonly int FILE_READ_BUFFER_SIZE = 16384;
@@ -42,190 +42,27 @@ namespace SWF.Core.ImageAccessor
             return (IShellApplication)obj;
         }
 
-        public static bool HasTransparentPixels(Bitmap bitmap)
-        {
-            ArgumentNullException.ThrowIfNull(bitmap, nameof(bitmap));
-            if (bitmap.PixelFormat == PixelFormat.Format32bppArgb)
-            {
-                BitmapData? bitmapData = null;
-                try
-                {
-                    bitmapData = bitmap.LockBits(
-                        new Rectangle(0, 0, bitmap.Width, bitmap.Height),
-                        ImageLockMode.ReadOnly,
-                        PixelFormat.Format32bppArgb);
-                    var ptr = bitmapData.Scan0;
-                    var byteCount = bitmapData.Stride * bitmap.Height;
-                    unsafe
-                    {
-                        var pixelPtr = (byte*)ptr.ToPointer();
-                        for (var i = 0; i < byteCount; i += 4)
-                        {
-                            var alpha = pixelPtr[i + 3];
-                            if (alpha == 0)
-                            {
-                                return true;
-                            }
-                        }
-                    }
-                }
-                finally
-                {
-                    if (bitmapData != null)
-                    {
-                        bitmap.UnlockBits(bitmapData);
-                    }
-                }
-            }
-            return false;
-        }
-
-        /// <summary>
-        /// 指定したファイルが画像ファイルであるか確認します。
-        /// </summary>
-        /// <param name="filePath"></param>
-        /// <returns></returns>
         public static bool IsImageFile(string filePath)
         {
-            if (string.IsNullOrEmpty(filePath))
-            {
-                return false;
-            }
+            ArgumentNullException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
             var ex = FileUtil.GetExtensionFastStack(filePath);
             return IMAGE_FILE_EXTENSION_LIST.Any(_ => StringUtil.Compare(_, ex));
         }
 
-        /// <summary>
-        /// 指定したファイルがAVIFファイルであるか確認します。
-        /// </summary>
-        /// <param name="filePath"></param>
-        /// <returns></returns>
-        public static bool IsAvifFile(string filePath)
-        {
-            if (string.IsNullOrEmpty(filePath))
-            {
-                return false;
-            }
-
-            var ex = FileUtil.GetExtensionFastStack(filePath);
-            return StringUtil.Compare(ex, AVIF_FILE_EXTENSION);
-        }
-
-        public static bool IsBmpFile(string filePath)
-        {
-            if (string.IsNullOrEmpty(filePath))
-            {
-                return false;
-            }
-
-            var ex = FileUtil.GetExtensionFastStack(filePath);
-            return StringUtil.Compare(ex, BMP_FILE_EXTENSION);
-        }
-
-        public static bool IsGifFile(string filePath)
-        {
-            if (string.IsNullOrEmpty(filePath))
-            {
-                return false;
-            }
-
-            var ex = FileUtil.GetExtensionFastStack(filePath);
-            return StringUtil.Compare(ex, GIF_FILE_EXTENSION);
-        }
-
-        public static bool IsHeicFile(string filePath)
-        {
-            if (string.IsNullOrEmpty(filePath))
-            {
-                return false;
-            }
-
-            var ex = FileUtil.GetExtensionFastStack(filePath);
-            return StringUtil.Compare(ex, HEIC_FILE_EXTENSION);
-        }
-
-        public static bool IsHeifFile(string filePath)
-        {
-            if (string.IsNullOrEmpty(filePath))
-            {
-                return false;
-            }
-
-            var ex = FileUtil.GetExtensionFastStack(filePath);
-            return StringUtil.Compare(ex, HEIF_FILE_EXTENSION);
-        }
-
-        public static bool IsIconFile(string filePath)
-        {
-            if (string.IsNullOrEmpty(filePath))
-            {
-                return false;
-            }
-
-            var ex = FileUtil.GetExtensionFastStack(filePath);
-            return StringUtil.Compare(ex, ICON_FILE_EXTENSION);
-        }
-
-        public static bool IsJpegFile(string filePath)
-        {
-            if (string.IsNullOrEmpty(filePath))
-            {
-                return false;
-            }
-
-            var ex = FileUtil.GetExtensionFastStack(filePath);
-            return StringUtil.Compare(ex, JPG_FILE_EXTENSION)
-                || StringUtil.Compare(ex, JPEG_FILE_EXTENSION);
-        }
-
-        public static bool IsPngFile(string filePath)
-        {
-            if (string.IsNullOrEmpty(filePath))
-            {
-                return false;
-            }
-
-            var ex = FileUtil.GetExtensionFastStack(filePath);
-            return StringUtil.Compare(ex, PNG_FILE_EXTENSION);
-        }
-
-        public static bool IsSvgFile(string filePath)
-        {
-            if (string.IsNullOrEmpty(filePath))
-            {
-                return false;
-            }
-
-            var ex = FileUtil.GetExtensionFastStack(filePath);
-            return StringUtil.Compare(ex, SVG_FILE_EXTENSION);
-        }
-
-        /// <summary>
-        /// 指定したファイルがWEBPファイルであるか確認します。
-        /// </summary>
-        /// <param name="filePath"></param>
-        /// <returns></returns>
-        public static bool IsWebpFile(string filePath)
-        {
-            if (string.IsNullOrEmpty(filePath))
-            {
-                return false;
-            }
-
-            var ex = FileUtil.GetExtensionFastStack(filePath);
-            return StringUtil.Compare(ex, WEBP_FILE_EXTENSION);
-        }
-
         public static string[] GetImageFilesArray(string directoryPath)
         {
-            using (TimeMeasuring.Run(false, "ImageUtil.GetImageFilesArray"))
+            using (TimeMeasuring.Run(false, "GetImageFilesArray"))
             {
+                ArgumentNullException.ThrowIfNullOrEmpty(directoryPath, nameof(directoryPath));
+
                 if (FileUtil.IsSystemRoot(directoryPath))
                 {
-                    return [];
+                    throw new ArgumentException("システムルートが指定されました。", nameof(directoryPath));
                 }
-                else if (FileUtil.IsExistsDirectory(directoryPath) || FileUtil.IsExistsDrive(directoryPath))
+
+                if (FileUtil.IsExistsDirectory(directoryPath)
+                    || FileUtil.IsExistsDrive(directoryPath))
                 {
                     try
                     {
@@ -241,47 +78,45 @@ namespace SWF.Core.ImageAccessor
                             .OfType<FileInfo>()
                             .Select(fi => fi.FullName)
                             .Where(file => FileUtil.CanAccess(file) && IsImageFile(file))
-                            .OrderBy(file => file, NaturalStringComparer.Windows)
                             .ToArray();
                     }
-                    catch (ArgumentNullException)
+                    catch (ArgumentNullException ex)
                     {
-                        return [];
+                        throw new ImageUtilException(CreateFileAccessErrorMessage(directoryPath), ex);
                     }
-                    catch (SecurityException)
+                    catch (SecurityException ex)
                     {
-                        return [];
+                        throw new ImageUtilException(CreateFileAccessErrorMessage(directoryPath), ex);
                     }
-                    catch (ArgumentException)
+                    catch (ArgumentException ex)
                     {
-                        return [];
+                        throw new ImageUtilException(CreateFileAccessErrorMessage(directoryPath), ex);
                     }
-                    catch (PathTooLongException)
+                    catch (PathTooLongException ex)
                     {
-                        return [];
+                        throw new ImageUtilException(CreateFileAccessErrorMessage(directoryPath), ex);
                     }
                 }
                 else
                 {
-                    return [];
+                    throw new ArgumentException("ディレクトリまたはドライブ以外が指定されました。", nameof(directoryPath));
                 }
             }
         }
 
-        /// <summary>
-        /// 指定したディレクトリ内の最初の画像ファイルを取得します。
-        /// </summary>
-        /// <param name="directoryPath"></param>
-        /// <returns></returns>
         public static string GetFirstImageFilePath(string directoryPath)
         {
-            using (TimeMeasuring.Run(false, "ImageUtil.GetFirstImageFilePath"))
+            using (TimeMeasuring.Run(false, "GetFirstImageFilePath"))
             {
+                ArgumentNullException.ThrowIfNullOrEmpty(directoryPath, nameof(directoryPath));
+
                 if (FileUtil.IsSystemRoot(directoryPath))
                 {
-                    return string.Empty;
+                    throw new ArgumentException("システムルートが指定されました。", nameof(directoryPath));
                 }
-                else if (FileUtil.IsExistsDirectory(directoryPath) || FileUtil.IsExistsDrive(directoryPath))
+
+                if (FileUtil.IsExistsDirectory(directoryPath)
+                    || FileUtil.IsExistsDrive(directoryPath))
                 {
                     try
                     {
@@ -295,41 +130,41 @@ namespace SWF.Core.ImageAccessor
                         var imageFile = root
                             .Children()
                             .OfType<FileInfo>()
-                            .OrderBy(file => file.FullName, NaturalStringComparer.Windows)
+                            .Select(fi => fi.FullName)
+                            .OrderBy(file => file, NaturalStringComparer.Windows)
                             .FirstOrDefault(file =>
                             {
-                                var path = file.FullName;
-                                return FileUtil.CanAccess(path) && IsImageFile(path);
+                                return FileUtil.CanAccess(file) && IsImageFile(file);
                             });
 
 
-                        if (imageFile == null)
+                        if (string.IsNullOrEmpty(imageFile))
                         {
                             return string.Empty;
                         }
 
-                        return imageFile.FullName;
+                        return imageFile;
                     }
-                    catch (ArgumentNullException)
+                    catch (ArgumentNullException ex)
                     {
-                        return string.Empty;
+                        throw new ImageUtilException(CreateFileAccessErrorMessage(directoryPath), ex);
                     }
-                    catch (SecurityException)
+                    catch (SecurityException ex)
                     {
-                        return string.Empty;
+                        throw new ImageUtilException(CreateFileAccessErrorMessage(directoryPath), ex);
                     }
-                    catch (ArgumentException)
+                    catch (ArgumentException ex)
                     {
-                        return string.Empty;
+                        throw new ImageUtilException(CreateFileAccessErrorMessage(directoryPath), ex);
                     }
-                    catch (PathTooLongException)
+                    catch (PathTooLongException ex)
                     {
-                        return string.Empty;
+                        throw new ImageUtilException(CreateFileAccessErrorMessage(directoryPath), ex);
                     }
                 }
                 else
                 {
-                    return string.Empty;
+                    throw new ArgumentException("ディレクトリまたはドライブ以外が指定されました。", nameof(directoryPath));
                 }
             }
         }
@@ -341,31 +176,25 @@ namespace SWF.Core.ImageAccessor
             return OpenCVUtil.Resize(srcBmp, width, height);
         }
 
-        /// <summary>
-        /// 画像ファイルのサイズを取得します。
-        /// </summary>
-        /// <param name="filePath">取得するファイルのパス。</param>
-        /// <returns>取得した画像サイズ。</returns>
-        /// <exception cref="ArgumentNullException"></exception>
         internal static Size GetImageSize(string filePath)
         {
-            ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
-
-            if (!ImageUtil.IsImageFile(filePath))
+            using (TimeMeasuring.Run(false, "GetImageSize"))
             {
-                throw new ArgumentException(
-                    $"未対応の画像ファイルが指定されました。'{filePath}'", nameof(filePath));
-            }
+                ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
-            using (TimeMeasuring.Run(false, "ImageUtil.GetImageSize"))
-            {
+                if (!FileUtil.IsExistsFile(filePath) || !IsImageFile(filePath))
+                {
+                    throw new ArgumentException(
+                        $"画像ファイル以外が指定されました。'{filePath}'", nameof(filePath));
+                }
+
                 try
                 {
-                    if (ImageUtil.IsIconFile(filePath))
+                    if (IsIconFile(filePath))
                     {
                         return GetImageSizeFromShell(filePath);
                     }
-                    else if (ImageUtil.IsSvgFile(filePath))
+                    else if (IsSvgFile(filePath))
                     {
                         return GetImageSizeFromShell(filePath);
                     }
@@ -377,7 +206,7 @@ namespace SWF.Core.ImageAccessor
                 catch (ImageUtilException ex)
                 {
                     Logger.Error(ex);
-                    ConsoleUtil.Write(true, ex.Message);
+
                     using (var bmp = ReadImageFile(filePath))
                     {
                         return bmp.Size;
@@ -388,8 +217,16 @@ namespace SWF.Core.ImageAccessor
 
         private static Size GetImageSizeFromStream(string filePath)
         {
-            using (TimeMeasuring.Run(false, "ImageUtil.GetImageSizeFromStream"))
+            using (TimeMeasuring.Run(false, "GetImageSizeFromStream"))
             {
+                ArgumentNullException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
+
+                if (!FileUtil.IsExistsFile(filePath) || !IsImageFile(filePath))
+                {
+                    throw new ArgumentException(
+                        $"画像ファイル以外が指定されました。'{filePath}'", nameof(filePath));
+                }
+
                 try
                 {
                     using (var fs = new FileStream(filePath,
@@ -397,11 +234,11 @@ namespace SWF.Core.ImageAccessor
                     {
                         var formatName = SixLaborsUtil.DetectFormat(fs);
 
-                        if (ImageUtil.IsAvifFile(formatName))
+                        if (IsAvifFile(formatName))
                         {
                             return LibHeifSharpUtil.GetImageSize(fs);
                         }
-                        else if (ImageUtil.IsBmpFile(formatName))
+                        else if (IsBmpFile(formatName))
                         {
                             var size = GetBmpSize(fs);
                             if (size != EMPTY_SIZE)
@@ -409,23 +246,23 @@ namespace SWF.Core.ImageAccessor
                                 return size;
                             }
                         }
-                        else if (ImageUtil.IsGifFile(formatName))
+                        else if (IsGifFile(formatName))
                         {
                             return SixLaborsUtil.GetImageSize(fs);
                         }
-                        else if (ImageUtil.IsHeicFile(formatName))
+                        else if (IsHeicFile(formatName))
                         {
                             return LibHeifSharpUtil.GetImageSize(fs);
                         }
-                        else if (ImageUtil.IsHeifFile(formatName))
+                        else if (IsHeifFile(formatName))
                         {
                             return LibHeifSharpUtil.GetImageSize(fs);
                         }
-                        else if (ImageUtil.IsJpegFile(formatName))
+                        else if (IsJpegFile(formatName))
                         {
                             return SixLaborsUtil.GetImageSize(fs);
                         }
-                        else if (ImageUtil.IsPngFile(formatName))
+                        else if (IsPngFile(formatName))
                         {
                             var size = GetPngSize(fs);
                             if (size != EMPTY_SIZE)
@@ -433,12 +270,10 @@ namespace SWF.Core.ImageAccessor
                                 return size;
                             }
                         }
-                        else if (ImageUtil.IsWebpFile(formatName))
+                        else if (IsWebpFile(formatName))
                         {
                             return SixLaborsUtil.GetImageSize(fs);
                         }
-
-                        return EMPTY_SIZE;
                     }
                 }
                 catch (ArgumentNullException ex)
@@ -497,13 +332,24 @@ namespace SWF.Core.ImageAccessor
                 {
                     throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
                 }
+
+                throw new ArgumentException(
+                    $"未対応の画像ファイルが指定されました。'{filePath}'", nameof(filePath));
             }
         }
 
         private static Size GetImageSizeFromShell(string filePath)
         {
-            using (TimeMeasuring.Run(false, "ImageUtil.GetImageSizeFromShell"))
+            using (TimeMeasuring.Run(false, "GetImageSizeFromShell"))
             {
+                ArgumentNullException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
+
+                if (!FileUtil.IsExistsFile(filePath) || !IsImageFile(filePath))
+                {
+                    throw new ArgumentException(
+                        $"画像ファイル以外が指定されました。'{filePath}'", nameof(filePath));
+                }
+
                 IShellApplication? shell = null;
                 try
                 {
@@ -559,16 +405,16 @@ namespace SWF.Core.ImageAccessor
 
         public static Bitmap ReadImageFile(string filePath)
         {
-            ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
-
-            if (!ImageUtil.IsImageFile(filePath))
+            using (TimeMeasuring.Run(false, "ReadImageFile"))
             {
-                throw new ArgumentException(
-                    $"未対応の画像ファイルが指定されました。'{filePath}'", nameof(filePath));
-            }
+                ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
-            using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFile"))
-            {
+                if (!FileUtil.IsExistsFile(filePath) || !IsImageFile(filePath))
+                {
+                    throw new ArgumentException(
+                        $"画像ファイル以外が指定されました。'{filePath}'", nameof(filePath));
+                }
+
                 try
                 {
                     return ReadImageFileWithVarious(filePath);
@@ -576,7 +422,7 @@ namespace SWF.Core.ImageAccessor
                 catch (ImageUtilException ex)
                 {
                     Logger.Error(ex);
-                    ConsoleUtil.Write(true, ex.Message);
+
                     return ReadImageFileFromImageMagick(filePath);
                 }
             }
@@ -584,81 +430,89 @@ namespace SWF.Core.ImageAccessor
 
         private static Bitmap ReadImageFileWithVarious(string filePath)
         {
+            ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
+
+            if (!FileUtil.IsExistsFile(filePath) || !IsImageFile(filePath))
+            {
+                throw new ArgumentException(
+                    $"画像ファイル以外が指定されました。'{filePath}'", nameof(filePath));
+            }
+
             try
             {
                 using (var fs = new FileStream(filePath,
                     FileMode.Open, FileAccess.Read, FileShare.Read, FILE_READ_BUFFER_SIZE, FileOptions.SequentialScan))
                 {
-                    if (ImageUtil.IsIconFile(filePath))
+                    if (IsIconFile(filePath))
                     {
-                        using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFileFromFileStream: Icon"))
+                        using (TimeMeasuring.Run(false, "ReadImageFileFromFileStream: Icon"))
                         using (var icon = new Icon(fs))
                         {
                             return ConvertIfGrayscale(icon.ToBitmap(), fs);
                         }
                     }
-                    else if (ImageUtil.IsSvgFile(filePath))
+                    else if (IsSvgFile(filePath))
                     {
-                        using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFileFromFileStream: Svg"))
+                        using (TimeMeasuring.Run(false, "ReadImageFileFromFileStream: Svg"))
                         {
                             return MagickUtil.ReadImageFile(fs, ImageMagick.MagickFormat.Svg);
                         }
                     }
 
                     var formatName = SixLaborsUtil.DetectFormat(fs);
-                    if (ImageUtil.IsAvifFile(formatName))
+                    if (IsAvifFile(formatName))
                     {
-                        using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFileFromFileStream: Avif"))
+                        using (TimeMeasuring.Run(false, "ReadImageFileFromFileStream: Avif"))
                         {
                             return ConvertIfGrayscale(SixLaborsUtil.ReadImageFile(fs), fs);
                         }
                     }
-                    else if (ImageUtil.IsBmpFile(formatName))
+                    else if (IsBmpFile(formatName))
                     {
-                        using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFileFromFileStream: Bmp"))
+                        using (TimeMeasuring.Run(false, "ReadImageFileFromFileStream: Bmp"))
                         {
                             return ConvertIfGrayscale((Bitmap)Bitmap.FromStream(fs, false, true), fs);
                         }
                     }
-                    else if (ImageUtil.IsGifFile(formatName))
+                    else if (IsGifFile(formatName))
                     {
-                        using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFileFromFileStream: Gif"))
+                        using (TimeMeasuring.Run(false, "ReadImageFileFromFileStream: Gif"))
                         {
                             return ConvertIfGrayscale((Bitmap)Bitmap.FromStream(fs, false, true), fs);
                         }
                     }
-                    else if (ImageUtil.IsHeicFile(formatName))
+                    else if (IsHeicFile(formatName))
                     {
-                        using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFileFromFileStream: Heic"))
+                        using (TimeMeasuring.Run(false, "ReadImageFileFromFileStream: Heic"))
                         {
                             return ConvertIfGrayscale(MagickUtil.ReadImageFile(fs, ImageMagick.MagickFormat.Heic), fs);
                         }
                     }
-                    else if (ImageUtil.IsHeifFile(formatName))
+                    else if (IsHeifFile(formatName))
                     {
-                        using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFileFromFileStream: Heif"))
+                        using (TimeMeasuring.Run(false, "ReadImageFileFromFileStream: Heif"))
                         {
                             return ConvertIfGrayscale(MagickUtil.ReadImageFile(fs, ImageMagick.MagickFormat.Heif), fs);
                         }
                     }
-                    else if (ImageUtil.IsJpegFile(formatName))
+                    else if (IsJpegFile(formatName))
                     {
-                        using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFileFromFileStream: Jpeg"))
+                        using (TimeMeasuring.Run(false, "ReadImageFileFromFileStream: Jpeg"))
                         {
                             var bmp = ConvertIfGrayscale(OpenCVUtil.ReadImageFile(fs), fs);
                             return LoadBitmapCorrectOrientation(bmp);
                         }
                     }
-                    else if (ImageUtil.IsPngFile(formatName))
+                    else if (IsPngFile(formatName))
                     {
-                        using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFileFromFileStream: Png"))
+                        using (TimeMeasuring.Run(false, "ReadImageFileFromFileStream: Png"))
                         {
                             return ConvertIfGrayscale((Bitmap)Bitmap.FromStream(fs, false, true), fs);
                         }
                     }
-                    else if (ImageUtil.IsWebpFile(formatName))
+                    else if (IsWebpFile(formatName))
                     {
-                        using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFileFromFileStream: Webp"))
+                        using (TimeMeasuring.Run(false, "ReadImageFileFromFileStream: Webp"))
                         {
                             return ConvertIfGrayscale(OpenCVUtil.ReadImageFile(fs), fs);
                         }
@@ -730,58 +584,66 @@ namespace SWF.Core.ImageAccessor
 
         private static Bitmap ReadImageFileFromImageMagick(string filePath)
         {
+            ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
+
+            if (!FileUtil.IsExistsFile(filePath) || !IsImageFile(filePath))
+            {
+                throw new ArgumentException(
+                    $"画像ファイル以外が指定されました。'{filePath}'", nameof(filePath));
+            }
+
             try
             {
                 var format = MagickUtil.DetectFormat(filePath);
                 switch (format)
                 {
                     case ImageMagick.MagickFormat.Avif:
-                        using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFileFromFilePath: Avif"))
+                        using (TimeMeasuring.Run(false, "ReadImageFileFromFilePath: Avif"))
                         {
                             return MagickUtil.ReadImageFile(filePath);
                         }
                     case ImageMagick.MagickFormat.Bmp:
-                        using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFileFromFilePath: Bmp"))
+                        using (TimeMeasuring.Run(false, "ReadImageFileFromFilePath: Bmp"))
                         {
                             return MagickUtil.ReadImageFile(filePath);
                         }
                     case ImageMagick.MagickFormat.Gif:
-                        using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFileFromFilePath: Gif"))
+                        using (TimeMeasuring.Run(false, "ReadImageFileFromFilePath: Gif"))
                         {
                             return MagickUtil.ReadImageFile(filePath);
                         }
                     case ImageMagick.MagickFormat.Heic:
-                        using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFileFromFilePath: Heic"))
+                        using (TimeMeasuring.Run(false, "ReadImageFileFromFilePath: Heic"))
                         {
                             return MagickUtil.ReadImageFile(filePath);
                         }
                     case ImageMagick.MagickFormat.Heif:
-                        using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFileFromFilePath: Heif"))
+                        using (TimeMeasuring.Run(false, "ReadImageFileFromFilePath: Heif"))
                         {
                             return MagickUtil.ReadImageFile(filePath);
                         }
                     case ImageMagick.MagickFormat.Icon:
-                        using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFileFromFilePath: Icon"))
+                        using (TimeMeasuring.Run(false, "ReadImageFileFromFilePath: Icon"))
                         {
                             return MagickUtil.ReadImageFile(filePath);
                         }
                     case ImageMagick.MagickFormat.Jpeg:
-                        using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFileFromFilePath: Jpeg"))
+                        using (TimeMeasuring.Run(false, "ReadImageFileFromFilePath: Jpeg"))
                         {
                             return MagickUtil.ReadImageFile(filePath);
                         }
                     case ImageMagick.MagickFormat.Png:
-                        using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFileFromFilePath: Png"))
+                        using (TimeMeasuring.Run(false, "ReadImageFileFromFilePath: Png"))
                         {
                             return MagickUtil.ReadImageFile(filePath);
                         }
                     case ImageMagick.MagickFormat.Svg:
-                        using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFileFromFilePath: Svg"))
+                        using (TimeMeasuring.Run(false, "ReadImageFileFromFilePath: Svg"))
                         {
                             return MagickUtil.ReadImageFile(filePath);
                         }
                     case ImageMagick.MagickFormat.WebP:
-                        using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFileFromFilePath: WebP"))
+                        using (TimeMeasuring.Run(false, "ReadImageFileFromFilePath: WebP"))
                         {
                             return MagickUtil.ReadImageFile(filePath);
                         }
@@ -862,18 +724,6 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
-        public static Icon ConvertBitmapToIcon(Bitmap bitmap)
-        {
-            using (var ms = new MemoryStream())
-            {
-                bitmap.Save(ms, ImageFormat.Png);
-                using (var icon = Icon.FromHandle(new Bitmap(ms).GetHicon()))
-                {
-                    return (Icon)icon.Clone();
-                }
-            }
-        }
-
         private static Bitmap LoadBitmapCorrectOrientation(Bitmap bitmap)
         {
             ArgumentNullException.ThrowIfNull(bitmap, nameof(bitmap));
@@ -914,6 +764,8 @@ namespace SWF.Core.ImageAccessor
 
         private static Size GetJpegSize(FileStream fs)
         {
+            ArgumentNullException.ThrowIfNull(fs, nameof(fs));
+
             using (var reader = new BinaryReader(fs))
             {
                 if (reader.ReadByte() == 0xFF && reader.ReadByte() == 0xD8)
@@ -945,6 +797,8 @@ namespace SWF.Core.ImageAccessor
 
         private static Size GetPngSize(Stream fs)
         {
+            ArgumentNullException.ThrowIfNull(fs, nameof(fs));
+
             using (var reader = new BinaryReader(fs))
             {
                 var pngSignature = reader.ReadBytes(8);
@@ -970,6 +824,9 @@ namespace SWF.Core.ImageAccessor
 
         private static bool CompareByteArrays(byte[] a, byte[] b)
         {
+            ArgumentNullException.ThrowIfNull(a, nameof(a));
+            ArgumentNullException.ThrowIfNull(b, nameof(b));
+
             if (a.Length != b.Length)
             {
                 return false;
@@ -977,13 +834,19 @@ namespace SWF.Core.ImageAccessor
 
             for (var i = 0; i < a.Length; i++)
             {
-                if (a[i] != b[i]) return false;
+                if (a[i] != b[i])
+                {
+                    return false;
+                }
             }
+
             return true;
         }
 
         private static int ReadBigEndianInt32(BinaryReader reader)
         {
+            ArgumentNullException.ThrowIfNull(reader, nameof(reader));
+
             var bytes = reader.ReadBytes(4);
             Array.Reverse(bytes);
             return BitConverter.ToInt32(bytes, 0);
@@ -991,6 +854,8 @@ namespace SWF.Core.ImageAccessor
 
         private static Size GetBmpSize(Stream fs)
         {
+            ArgumentNullException.ThrowIfNull(fs, nameof(fs));
+
             using (var reader = new BinaryReader(fs))
             {
                 var bmpSignature = reader.ReadBytes(2);
@@ -1009,10 +874,13 @@ namespace SWF.Core.ImageAccessor
 
         private static Bitmap ConvertIfGrayscale(Bitmap bmp, Stream fs)
         {
+            ArgumentNullException.ThrowIfNull(bmp, nameof(bmp));
+            ArgumentNullException.ThrowIfNull(fs, nameof(fs));
+
             if (bmp.PixelFormat == PixelFormat.Format4bppIndexed
                 || bmp.PixelFormat == PixelFormat.Format8bppIndexed)
             {
-                using (TimeMeasuring.Run(true, "ImageUtil.ConvertIfGrayscale"))
+                using (TimeMeasuring.Run(true, "ConvertIfGrayscale"))
                 using (bmp)
                 {
                     var convBmp = OpenCVUtil.ReadImageFile(fs);
@@ -1025,11 +893,87 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
-        /// <summary>
-        /// 画像ファイルの拡張子リストを取得します。
-        /// </summary>
-        /// <remarks>リスト内の各項目には、ピリオド + 英大文字 * n の文字列(.XXX)が格納されます。</remarks>
-        /// <returns></returns>
+        private static bool IsAvifFile(string filePath)
+        {
+            ArgumentNullException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
+
+            var ex = FileUtil.GetExtensionFastStack(filePath);
+            return StringUtil.Compare(ex, AVIF_FILE_EXTENSION);
+        }
+
+        private static bool IsBmpFile(string filePath)
+        {
+            ArgumentNullException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
+
+            var ex = FileUtil.GetExtensionFastStack(filePath);
+            return StringUtil.Compare(ex, BMP_FILE_EXTENSION);
+        }
+
+        private static bool IsGifFile(string filePath)
+        {
+            ArgumentNullException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
+
+            var ex = FileUtil.GetExtensionFastStack(filePath);
+            return StringUtil.Compare(ex, GIF_FILE_EXTENSION);
+        }
+
+        private static bool IsHeicFile(string filePath)
+        {
+            ArgumentNullException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
+
+            var ex = FileUtil.GetExtensionFastStack(filePath);
+            return StringUtil.Compare(ex, HEIC_FILE_EXTENSION);
+        }
+
+        private static bool IsHeifFile(string filePath)
+        {
+            ArgumentNullException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
+
+            var ex = FileUtil.GetExtensionFastStack(filePath);
+            return StringUtil.Compare(ex, HEIF_FILE_EXTENSION);
+        }
+
+        private static bool IsIconFile(string filePath)
+        {
+            ArgumentNullException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
+
+            var ex = FileUtil.GetExtensionFastStack(filePath);
+            return StringUtil.Compare(ex, ICON_FILE_EXTENSION);
+        }
+
+        private static bool IsJpegFile(string filePath)
+        {
+            ArgumentNullException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
+
+            var ex = FileUtil.GetExtensionFastStack(filePath);
+            return StringUtil.Compare(ex, JPG_FILE_EXTENSION)
+                || StringUtil.Compare(ex, JPEG_FILE_EXTENSION);
+        }
+
+        private static bool IsPngFile(string filePath)
+        {
+            ArgumentNullException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
+
+            var ex = FileUtil.GetExtensionFastStack(filePath);
+            return StringUtil.Compare(ex, PNG_FILE_EXTENSION);
+        }
+
+        private static bool IsSvgFile(string filePath)
+        {
+            ArgumentNullException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
+
+            var ex = FileUtil.GetExtensionFastStack(filePath);
+            return StringUtil.Compare(ex, SVG_FILE_EXTENSION);
+        }
+
+        private static bool IsWebpFile(string filePath)
+        {
+            ArgumentNullException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
+
+            var ex = FileUtil.GetExtensionFastStack(filePath);
+            return StringUtil.Compare(ex, WEBP_FILE_EXTENSION);
+        }
+
         private static string[] GetImageFileExtensionList()
         {
             return
