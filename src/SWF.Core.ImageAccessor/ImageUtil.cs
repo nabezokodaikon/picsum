@@ -5,6 +5,7 @@ using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 using System.Security;
+using System.Xml.Linq;
 using ZLinq;
 
 namespace SWF.Core.ImageAccessor
@@ -790,6 +791,44 @@ namespace SWF.Core.ImageAccessor
                         }
                     }
                 }
+            }
+
+            return EMPTY_SIZE;
+        }
+
+        private static Size GetSvgSize(string filePath)
+        {
+            ArgumentNullException.ThrowIfNull(filePath, nameof(filePath));
+
+            var svgDoc = XDocument.Load(filePath);
+            var svgElement = svgDoc.Root;
+            if (svgElement != null && svgElement.Name.LocalName == "svg")
+            {
+                var widthStr = svgElement.Attribute("width")?.Value;
+                if (string.IsNullOrEmpty(widthStr))
+                {
+                    return EMPTY_SIZE;
+                }
+
+                var width = StringUtil.ToInt(StringUtil.ExtractNumbers(widthStr));
+                if (!width.HasValue)
+                {
+                    return EMPTY_SIZE;
+                }
+
+                var heightStr = svgElement.Attribute("height")?.Value;
+                if (string.IsNullOrEmpty(heightStr))
+                {
+                    return EMPTY_SIZE;
+                }
+
+                var height = StringUtil.ToInt(StringUtil.ExtractNumbers(heightStr));
+                if (!height.HasValue)
+                {
+                    return EMPTY_SIZE;
+                }
+
+                return new Size(width.Value, height.Value);
             }
 
             return EMPTY_SIZE;
