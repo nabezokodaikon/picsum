@@ -191,18 +191,7 @@ namespace SWF.Core.ImageAccessor
 
                 try
                 {
-                    if (IsIconFile(filePath))
-                    {
-                        return GetImageSizeFromShell(filePath);
-                    }
-                    else if (IsSvgFile(filePath))
-                    {
-                        return GetImageSizeFromShell(filePath);
-                    }
-                    else
-                    {
-                        return GetImageSizeFromStream(filePath);
-                    }
+                    return GetImageSizeWithVarious(filePath);
                 }
                 catch (ImageUtilException ex)
                 {
@@ -216,9 +205,9 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
-        private static Size GetImageSizeFromStream(string filePath)
+        private static Size GetImageSizeWithVarious(string filePath)
         {
-            using (TimeMeasuring.Run(false, "GetImageSizeFromStream"))
+            using (TimeMeasuring.Run(false, "GetImageSizeWithVarious"))
             {
                 ArgumentNullException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
@@ -230,6 +219,21 @@ namespace SWF.Core.ImageAccessor
 
                 try
                 {
+                    if (IsIconFile(filePath))
+                    {
+                        return GetImageSizeWithShell(filePath);
+                    }
+                    else if (IsSvgFile(filePath))
+                    {
+                        var size = GetSvgSize(filePath);
+                        if (size == EMPTY_SIZE)
+                        {
+                            throw new ImageUtilException(CreateFileAccessErrorMessage(filePath));
+                        }
+
+                        return size;
+                    }
+
                     using (var fs = new FileStream(filePath,
                          FileMode.Open, FileAccess.Read, FileShare.Read, 64, FileOptions.SequentialScan))
                     {
@@ -242,10 +246,12 @@ namespace SWF.Core.ImageAccessor
                         else if (IsBmpFile(formatName))
                         {
                             var size = GetBmpSize(fs);
-                            if (size != EMPTY_SIZE)
+                            if (size == EMPTY_SIZE)
                             {
-                                return size;
+                                throw new ImageUtilException(CreateFileAccessErrorMessage(filePath));
                             }
+
+                            return size;
                         }
                         else if (IsGifFile(formatName))
                         {
@@ -266,10 +272,12 @@ namespace SWF.Core.ImageAccessor
                         else if (IsPngFile(formatName))
                         {
                             var size = GetPngSize(fs);
-                            if (size != EMPTY_SIZE)
+                            if (size == EMPTY_SIZE)
                             {
-                                return size;
+                                throw new ImageUtilException(CreateFileAccessErrorMessage(filePath));
                             }
+
+                            return size;
                         }
                         else if (IsWebpFile(formatName))
                         {
@@ -321,6 +329,10 @@ namespace SWF.Core.ImageAccessor
                 {
                     throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
                 }
+                catch (COMException ex)
+                {
+                    throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
+                }
                 catch (SixLabors.ImageSharp.InvalidImageContentException ex)
                 {
                     throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
@@ -339,9 +351,9 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
-        private static Size GetImageSizeFromShell(string filePath)
+        private static Size GetImageSizeWithShell(string filePath)
         {
-            using (TimeMeasuring.Run(false, "GetImageSizeFromShell"))
+            using (TimeMeasuring.Run(false, "GetImageSizeWithShell"))
             {
                 ArgumentNullException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
@@ -388,10 +400,6 @@ namespace SWF.Core.ImageAccessor
                     }
 
                     return new Size(w, h);
-                }
-                catch (COMException ex)
-                {
-                    throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
                 }
                 finally
                 {
