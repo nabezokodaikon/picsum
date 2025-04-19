@@ -81,21 +81,21 @@ namespace SWF.Core.ImageAccessor
                             .Where(file => FileUtil.CanAccess(file) && IsImageFile(file))
                             .ToArray();
                     }
-                    catch (ArgumentNullException ex)
+                    catch (ArgumentNullException)
                     {
-                        throw new ImageUtilException(CreateFileAccessErrorMessage(directoryPath), ex);
+                        return [];
                     }
-                    catch (SecurityException ex)
+                    catch (SecurityException)
                     {
-                        throw new ImageUtilException(CreateFileAccessErrorMessage(directoryPath), ex);
+                        return [];
                     }
-                    catch (ArgumentException ex)
+                    catch (ArgumentException)
                     {
-                        throw new ImageUtilException(CreateFileAccessErrorMessage(directoryPath), ex);
+                        return [];
                     }
-                    catch (PathTooLongException ex)
+                    catch (PathTooLongException)
                     {
-                        throw new ImageUtilException(CreateFileAccessErrorMessage(directoryPath), ex);
+                        return [];
                     }
                 }
                 else
@@ -146,21 +146,21 @@ namespace SWF.Core.ImageAccessor
 
                         return imageFile;
                     }
-                    catch (ArgumentNullException ex)
+                    catch (ArgumentNullException)
                     {
-                        throw new ImageUtilException(CreateFileAccessErrorMessage(directoryPath), ex);
+                        return string.Empty;
                     }
-                    catch (SecurityException ex)
+                    catch (SecurityException)
                     {
-                        throw new ImageUtilException(CreateFileAccessErrorMessage(directoryPath), ex);
+                        return string.Empty;
                     }
-                    catch (ArgumentException ex)
+                    catch (ArgumentException)
                     {
-                        throw new ImageUtilException(CreateFileAccessErrorMessage(directoryPath), ex);
+                        return string.Empty;
                     }
-                    catch (PathTooLongException ex)
+                    catch (PathTooLongException)
                     {
-                        throw new ImageUtilException(CreateFileAccessErrorMessage(directoryPath), ex);
+                        return string.Empty;
                     }
                 }
                 else
