@@ -20,6 +20,8 @@ namespace SWF.Core.Base
 
         public static bool IsExistsFileOrDirectory(string path)
         {
+            ArgumentNullException.ThrowIfNullOrEmpty(path, nameof(path));
+
             using (TimeMeasuring.Run(false, "FileUtil.IsExistsFileOrDirectory"))
             {
                 var handle = WinApiMembers.FindFirstFile(path, out var findData);
@@ -40,10 +42,7 @@ namespace SWF.Core.Base
         /// <returns></returns>
         public static bool IsSystemRoot(string filePath)
         {
-            if (string.IsNullOrEmpty(filePath))
-            {
-                return false;
-            }
+            ArgumentNullException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
             return filePath == ROOT_DIRECTORY_PATH;
         }
@@ -55,10 +54,7 @@ namespace SWF.Core.Base
         /// <returns>ファイルパスがドライブならTrue。ドライブでなければFalse。</returns>
         public static bool IsExistsDrive(string filePath)
         {
-            if (string.IsNullOrEmpty(filePath))
-            {
-                return false;
-            }
+            ArgumentNullException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
             using (TimeMeasuring.Run(false, "FileUtil.IsDrive"))
             {
@@ -86,10 +82,7 @@ namespace SWF.Core.Base
         /// <returns>ファイルパスがフォルダならTrue。フォルダでなければFalse。</returns>
         public static bool IsExistsDirectory(string path)
         {
-            if (string.IsNullOrEmpty(path))
-            {
-                return false;
-            }
+            ArgumentNullException.ThrowIfNullOrEmpty(path, nameof(path));
 
             using (TimeMeasuring.Run(false, "FileUtil.IsExistsDirectory"))
             {
@@ -112,10 +105,7 @@ namespace SWF.Core.Base
         /// <returns>ファイルパスがファイルならTrue。ファイルでなければFalse。</returns>
         public static bool IsExistsFile(string path)
         {
-            if (string.IsNullOrEmpty(path))
-            {
-                return false;
-            }
+            ArgumentNullException.ThrowIfNullOrEmpty(path, nameof(path));
 
             using (TimeMeasuring.Run(false, "FileUtil.IsExistsFile"))
             {
@@ -138,13 +128,10 @@ namespace SWF.Core.Base
         /// <returns>隠しファイル、システムファイルならFalse。それ以外ならTrue。</returns>
         public static bool CanAccess(string filePath)
         {
+            ArgumentNullException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
+
             using (TimeMeasuring.Run(false, "FileUtil.CanAccess"))
             {
-                if (string.IsNullOrEmpty(filePath))
-                {
-                    return false;
-                }
-
                 if (IsSystemRoot(filePath))
                 {
                     return true;
@@ -177,7 +164,27 @@ namespace SWF.Core.Base
                         return false;
                     }
                 }
-                catch (Exception)
+                catch (ArgumentNullException)
+                {
+                    return false;
+                }
+                catch (SecurityException)
+                {
+                    return false;
+                }
+                catch (ArgumentException)
+                {
+                    return false;
+                }
+                catch (UnauthorizedAccessException)
+                {
+                    return false;
+                }
+                catch (PathTooLongException)
+                {
+                    return false;
+                }
+                catch (NotSupportedException)
                 {
                     return false;
                 }
@@ -192,14 +199,18 @@ namespace SWF.Core.Base
         /// <returns>ファイルパス</returns>
         public static string GetFileName(string filePath)
         {
-            if (string.IsNullOrEmpty(filePath))
-            {
-                return string.Empty;
-            }
+            ArgumentNullException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
             if (IsExistsFileOrDirectory(filePath))
             {
-                return Path.GetFileName(filePath);
+                try
+                {
+                    return Path.GetFileName(filePath);
+                }
+                catch (ArgumentException ex)
+                {
+                    throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
+                }
             }
             else if (IsSystemRoot(filePath))
             {
@@ -240,9 +251,11 @@ namespace SWF.Core.Base
         /// <returns>親フォルダパス</returns>
         public static string GetParentDirectoryPath(string filePath)
         {
-            if (string.IsNullOrEmpty(filePath))
+            ArgumentNullException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
+
+            if (IsSystemRoot(filePath))
             {
-                return string.Empty;
+                throw new ArgumentException("システムルートが指定されました。", nameof(filePath));
             }
 
             if (IsExistsFileOrDirectory(filePath))
@@ -252,25 +265,21 @@ namespace SWF.Core.Base
                     var parent = Path.GetDirectoryName(filePath);
                     return parent ?? string.Empty;
                 }
+                catch (ArgumentException ex)
+                {
+                    throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
+                }
                 catch (PathTooLongException ex)
                 {
                     throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
                 }
-                catch (IOException ex)
-                {
-                    throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
-                }
-            }
-            else if (IsSystemRoot(filePath))
-            {
-                throw new ArgumentException("システムルートが指定されました。", nameof(filePath));
             }
             else if (IsExistsDrive(filePath))
             {
                 return ROOT_DIRECTORY_PATH;
             }
 
-            return string.Empty;
+            throw new ArgumentException("不明なパスが指定されました。", nameof(filePath));
         }
 
         /// <summary>
@@ -280,10 +289,7 @@ namespace SWF.Core.Base
         /// <returns>ファイル種類名称</returns>
         public static string GetTypeName(string filePath)
         {
-            if (string.IsNullOrEmpty(filePath))
-            {
-                return string.Empty;
-            }
+            ArgumentNullException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
             if (IsSystemRoot(filePath))
             {
@@ -292,7 +298,8 @@ namespace SWF.Core.Base
             else
             {
                 var sh = new WinApiMembers.SHFILEINFOW();
-                var hSuccess = WinApiMembers.SHGetFileInfoW(filePath, 0, ref sh, (uint)Marshal.SizeOf(sh), WinApiMembers.ShellFileInfoFlags.SHGFI_TYPENAME);
+                var hSuccess = WinApiMembers.SHGetFileInfoW(
+                    filePath, 0, ref sh, (uint)Marshal.SizeOf(sh), WinApiMembers.ShellFileInfoFlags.SHGFI_TYPENAME);
                 if (hSuccess != IntPtr.Zero)
                 {
                     return sh.szTypeName;
@@ -311,10 +318,7 @@ namespace SWF.Core.Base
         /// <returns>ファイル更新日時</returns>
         public static DateTime GetUpdateDate(string filePath)
         {
-            if (string.IsNullOrEmpty(filePath))
-            {
-                return EMPTY_DATETIME;
-            }
+            ArgumentNullException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
             if (IsSystemRoot(filePath))
             {
@@ -337,6 +341,14 @@ namespace SWF.Core.Base
             {
                 throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
             }
+            catch (ArgumentNullException ex)
+            {
+                throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
+            }
+            catch (ArgumentException ex)
+            {
+                throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
+            }
         }
 
         /// <summary>
@@ -346,6 +358,13 @@ namespace SWF.Core.Base
         /// <returns></returns>
         public static long GetFileSize(string filePath)
         {
+            ArgumentNullException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
+
+            if (!IsExistsFile(filePath))
+            {
+                throw new ArgumentException("ファイル以外が指定されました。", nameof(filePath));
+            }
+
             try
             {
                 var fi = new FileInfo(filePath);
@@ -367,6 +386,14 @@ namespace SWF.Core.Base
             {
                 throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
             }
+            catch (ArgumentNullException ex)
+            {
+                throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
+            }
+            catch (ArgumentException ex)
+            {
+                throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
+            }
         }
 
         /// <summary>
@@ -376,11 +403,9 @@ namespace SWF.Core.Base
         /// <returns></returns>
         public static IEnumerable<string> GetFiles(string directoryPath)
         {
-            if (IsSystemRoot(directoryPath))
-            {
-                return [];
-            }
-            else if (IsExistsDirectory(directoryPath) || IsExistsDrive(directoryPath))
+            ArgumentNullException.ThrowIfNullOrEmpty(directoryPath, nameof(directoryPath));
+
+            if (IsExistsDirectory(directoryPath) || IsExistsDrive(directoryPath))
             {
                 try
                 {
@@ -388,47 +413,44 @@ namespace SWF.Core.Base
                         .EnumerateFiles(directoryPath)
                         .Where(CanAccess);
                 }
-                catch (ArgumentNullException)
+                catch (ArgumentNullException ex)
                 {
-                    return [];
+                    throw new FileUtilException(CreateFileAccessErrorMessage(directoryPath), ex);
                 }
-                catch (ArgumentException)
+                catch (ArgumentException ex)
                 {
-                    return [];
+                    throw new FileUtilException(CreateFileAccessErrorMessage(directoryPath), ex);
                 }
-                catch (DirectoryNotFoundException)
+                catch (DirectoryNotFoundException ex)
                 {
-                    return [];
+                    throw new FileUtilException(CreateFileAccessErrorMessage(directoryPath), ex);
                 }
-                catch (PathTooLongException)
+                catch (PathTooLongException ex)
                 {
-                    return [];
+                    throw new FileUtilException(CreateFileAccessErrorMessage(directoryPath), ex);
                 }
-                catch (IOException)
+                catch (IOException ex)
                 {
-                    return [];
+                    throw new FileUtilException(CreateFileAccessErrorMessage(directoryPath), ex);
                 }
-                catch (SecurityException)
+                catch (SecurityException ex)
                 {
-                    return [];
+                    throw new FileUtilException(CreateFileAccessErrorMessage(directoryPath), ex);
                 }
-                catch (UnauthorizedAccessException)
+                catch (UnauthorizedAccessException ex)
                 {
-                    return [];
+                    throw new FileUtilException(CreateFileAccessErrorMessage(directoryPath), ex);
                 }
             }
             else
             {
-                return [];
+                throw new ArgumentException("ディレクトリまたはドライブ以外が指定されました。", nameof(directoryPath));
             }
         }
 
         public static bool HasSubDirectory(string directoryPath)
         {
-            if (string.IsNullOrEmpty(directoryPath))
-            {
-                return false;
-            }
+            ArgumentNullException.ThrowIfNullOrEmpty(directoryPath, nameof(directoryPath));
 
             if (IsSystemRoot(directoryPath))
             {
@@ -446,26 +468,26 @@ namespace SWF.Core.Base
                         .Where(dir => CanAccess(dir.FullName))
                         .Any();
                 }
-                catch (ArgumentNullException)
+                catch (ArgumentNullException ex)
                 {
-                    return false;
+                    throw new FileUtilException(CreateFileAccessErrorMessage(directoryPath), ex);
                 }
-                catch (SecurityException)
+                catch (SecurityException ex)
                 {
-                    return false;
+                    throw new FileUtilException(CreateFileAccessErrorMessage(directoryPath), ex);
                 }
-                catch (ArgumentException)
+                catch (ArgumentException ex)
                 {
-                    return false;
+                    throw new FileUtilException(CreateFileAccessErrorMessage(directoryPath), ex);
                 }
-                catch (PathTooLongException)
+                catch (PathTooLongException ex)
                 {
-                    return false;
+                    throw new FileUtilException(CreateFileAccessErrorMessage(directoryPath), ex);
                 }
             }
             else
             {
-                return false;
+                throw new ArgumentException("ファイルが指定されました。", nameof(directoryPath));
             }
         }
 
@@ -476,10 +498,7 @@ namespace SWF.Core.Base
         /// <returns></returns>
         public static string[] GetSubDirectoriesArray(string directoryPath, bool isSort)
         {
-            if (string.IsNullOrEmpty(directoryPath))
-            {
-                return [];
-            }
+            ArgumentNullException.ThrowIfNullOrEmpty(directoryPath, nameof(directoryPath));
 
             if (IsSystemRoot(directoryPath))
             {
@@ -523,26 +542,26 @@ namespace SWF.Core.Base
                             .ToArray();
                     }
                 }
-                catch (ArgumentNullException)
+                catch (ArgumentNullException ex)
                 {
-                    return [];
+                    throw new FileUtilException(CreateFileAccessErrorMessage(directoryPath), ex);
                 }
-                catch (SecurityException)
+                catch (SecurityException ex)
                 {
-                    return [];
+                    throw new FileUtilException(CreateFileAccessErrorMessage(directoryPath), ex);
                 }
-                catch (ArgumentException)
+                catch (ArgumentException ex)
                 {
-                    return [];
+                    throw new FileUtilException(CreateFileAccessErrorMessage(directoryPath), ex);
                 }
-                catch (PathTooLongException)
+                catch (PathTooLongException ex)
                 {
-                    return [];
+                    throw new FileUtilException(CreateFileAccessErrorMessage(directoryPath), ex);
                 }
             }
             else
             {
-                return [];
+                throw new ArgumentException("ファイルが指定されました。", nameof(directoryPath));
             }
         }
 
@@ -553,6 +572,8 @@ namespace SWF.Core.Base
         /// <returns></returns>
         public static string[] GetFileSystemEntriesArray(string directoryPath)
         {
+            ArgumentNullException.ThrowIfNullOrEmpty(directoryPath, nameof(directoryPath));
+
             if (IsSystemRoot(directoryPath))
             {
                 return [.. GetDrives()];
@@ -569,26 +590,26 @@ namespace SWF.Core.Base
                         .Where(CanAccess)
                         .ToArray();
                 }
-                catch (ArgumentNullException)
+                catch (ArgumentNullException ex)
                 {
-                    return [];
+                    throw new FileUtilException(CreateFileAccessErrorMessage(directoryPath), ex);
                 }
-                catch (SecurityException)
+                catch (SecurityException ex)
                 {
-                    return [];
+                    throw new FileUtilException(CreateFileAccessErrorMessage(directoryPath), ex);
                 }
-                catch (ArgumentException)
+                catch (ArgumentException ex)
                 {
-                    return [];
+                    throw new FileUtilException(CreateFileAccessErrorMessage(directoryPath), ex);
                 }
-                catch (PathTooLongException)
+                catch (PathTooLongException ex)
                 {
-                    return [];
+                    throw new FileUtilException(CreateFileAccessErrorMessage(directoryPath), ex);
                 }
             }
             else
             {
-                return [];
+                throw new ArgumentException("ファイルが指定されました。", nameof(directoryPath));
             }
         }
 
@@ -606,27 +627,23 @@ namespace SWF.Core.Base
 
             if (fileSize < 1024)
             {
-                return fileSize.ToString() + " B";
+                return $"{fileSize.ToString()} B";
             }
             else if (fileSize < Math.Pow(1024f, 2))
             {
-                return Math.Round(fileSize / 1024f, 0).ToString() + " KB";
+                return $"{Math.Round(fileSize / 1024f, 0).ToString()} KB";
             }
             else if (fileSize < Math.Pow(1024f, 3))
             {
-                return Math.Round(fileSize / Math.Pow(1024f, 2), 2).ToString() + " MB";
+                return $"{Math.Round(fileSize / Math.Pow(1024f, 2), 2).ToString()} MB";
             }
             else if (fileSize < Math.Pow(1024f, 4))
             {
-                return Math.Round(fileSize / Math.Pow(1024f, 3), 2).ToString() + " GB";
-            }
-            else if (fileSize < Math.Pow(1024f, 5))
-            {
-                return Math.Round(fileSize / Math.Pow(1024f, 4), 2).ToString() + " TB";
+                return $"{Math.Round(fileSize / Math.Pow(1024f, 3), 2).ToString()} GB";
             }
             else
             {
-                throw new ArgumentOutOfRangeException(nameof(fileSize));
+                return $"{Math.Round(fileSize / Math.Pow(1024f, 4), 2).ToString()} TB";
             }
         }
 
@@ -667,7 +684,11 @@ namespace SWF.Core.Base
             {
                 throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
             }
-            catch (FileNotFoundException ex)
+            catch (InvalidOperationException ex)
+            {
+                throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
+            }
+            catch (PlatformNotSupportedException ex)
             {
                 throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
             }
@@ -679,11 +700,13 @@ namespace SWF.Core.Base
 
             if (IsSystemRoot(filePath))
             {
-                var _ = WinApiMembers.ShellExecute(IntPtr.Zero, "open", "::{20D04FE0-3AEA-1069-A2D8-08002B30309D}", null, null, 1);
+                var _ = WinApiMembers.ShellExecute(
+                    IntPtr.Zero, "open", "::{20D04FE0-3AEA-1069-A2D8-08002B30309D}", null, null, 1);
             }
             else
             {
-                var _ = WinApiMembers.ShellExecute(IntPtr.Zero, "open", $"\"{filePath}\"", null, null, 1);
+                var _ = WinApiMembers.ShellExecute(
+                    IntPtr.Zero, "open", $"\"{filePath}\"", null, null, 1);
             }
         }
 
@@ -736,14 +759,11 @@ namespace SWF.Core.Base
         // ファイルパスの末尾が"\"の場合取り除きます。
         private static string ToRemoveLastPathSeparate(string filePath)
         {
-            if (string.IsNullOrEmpty(filePath))
-            {
-                return string.Empty;
-            }
+            ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
             var length = filePath.Length;
             var lastChar = filePath.Substring(length - 1, 1);
-            if (lastChar.Equals(@"\", StringComparison.Ordinal))
+            if (StringUtil.Compare(lastChar, @"\"))
             {
                 return filePath[..(length - 1)];
             }
@@ -772,17 +792,9 @@ namespace SWF.Core.Base
             }
         }
 
-        private static string CreateFileAccessErrorMessage(string path)
-        {
-            return $"'{path}'を開けませんでした。";
-        }
-
         private static string GetExtensionFast(string path)
         {
-            if (string.IsNullOrEmpty(path))
-            {
-                return string.Empty;
-            }
+            ArgumentException.ThrowIfNullOrEmpty(path, nameof(path));
 
             var index = path.LastIndexOf('.');
             if (index <= path.LastIndexOf('\\') || index <= path.LastIndexOf('/'))
@@ -795,10 +807,7 @@ namespace SWF.Core.Base
 
         public static unsafe string GetExtensionFastStack(string path)
         {
-            if (string.IsNullOrEmpty(path))
-            {
-                return string.Empty;
-            }
+            ArgumentException.ThrowIfNullOrEmpty(path, nameof(path));
 
             if (path.Length > 256)
             {
@@ -815,6 +824,13 @@ namespace SWF.Core.Base
             }
 
             return new string(buffer.Slice(index));
+        }
+
+        private static string CreateFileAccessErrorMessage(string path)
+        {
+            ArgumentException.ThrowIfNullOrEmpty(path, nameof(path));
+
+            return $"'{path}'のアクセスに失敗しました。";
         }
     }
 }
