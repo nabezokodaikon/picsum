@@ -64,13 +64,13 @@ namespace SWF.Core.Base
                         .GetDrives()
                         .Any(d => StringUtil.Compare(d.Name, filePath));
                 }
-                catch (IOException ex)
+                catch (IOException)
                 {
-                    throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
+                    return false;
                 }
-                catch (UnauthorizedAccessException ex)
+                catch (UnauthorizedAccessException)
                 {
-                    throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
+                    return false;
                 }
             }
         }
@@ -222,14 +222,12 @@ namespace SWF.Core.Base
                 {
                     var driveInfo = DriveInfo.GetDrives()
                         .FirstOrDefault(di => di.Name == filePath || di.Name == $"{filePath}");
-                    if (driveInfo != null)
+                    if (driveInfo == null)
                     {
-                        return $"{driveInfo.VolumeLabel}({ToRemoveLastPathSeparate(filePath)})";
+                        throw new FileUtilException(CreateFileAccessErrorMessage(filePath));
                     }
-                    else
-                    {
-                        return ROOT_DIRECTORY_NAME;
-                    }
+
+                    return $"{driveInfo.VolumeLabel}({ToRemoveLastPathSeparate(filePath)})";
                 }
                 catch (IOException ex)
                 {
@@ -241,7 +239,7 @@ namespace SWF.Core.Base
                 }
             }
 
-            return string.Empty;
+            throw new ArgumentException("不明なパスが指定されました。", nameof(filePath));
         }
 
         /// <summary>
@@ -327,7 +325,14 @@ namespace SWF.Core.Base
 
             try
             {
-                return File.GetLastWriteTime(filePath);
+                if (IsExistsFile(filePath))
+                {
+                    return File.GetLastWriteTime(filePath);
+                }
+                else if (IsExistsDirectory(filePath) || IsExistsDrive(filePath))
+                {
+                    return Directory.GetLastWriteTime(filePath);
+                }
             }
             catch (UnauthorizedAccessException ex)
             {
@@ -349,6 +354,8 @@ namespace SWF.Core.Base
             {
                 throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
             }
+
+            throw new ArgumentException("不明なパスが指定されました。", nameof(filePath));
         }
 
         /// <summary>
@@ -413,33 +420,33 @@ namespace SWF.Core.Base
                         .EnumerateFiles(directoryPath)
                         .Where(CanAccess);
                 }
-                catch (ArgumentNullException ex)
+                catch (ArgumentNullException)
                 {
-                    throw new FileUtilException(CreateFileAccessErrorMessage(directoryPath), ex);
+                    return [];
                 }
-                catch (ArgumentException ex)
+                catch (ArgumentException)
                 {
-                    throw new FileUtilException(CreateFileAccessErrorMessage(directoryPath), ex);
+                    return [];
                 }
-                catch (DirectoryNotFoundException ex)
+                catch (DirectoryNotFoundException)
                 {
-                    throw new FileUtilException(CreateFileAccessErrorMessage(directoryPath), ex);
+                    return [];
                 }
-                catch (PathTooLongException ex)
+                catch (PathTooLongException)
                 {
-                    throw new FileUtilException(CreateFileAccessErrorMessage(directoryPath), ex);
+                    return [];
                 }
-                catch (IOException ex)
+                catch (IOException)
                 {
-                    throw new FileUtilException(CreateFileAccessErrorMessage(directoryPath), ex);
+                    return [];
                 }
-                catch (SecurityException ex)
+                catch (SecurityException)
                 {
-                    throw new FileUtilException(CreateFileAccessErrorMessage(directoryPath), ex);
+                    return [];
                 }
-                catch (UnauthorizedAccessException ex)
+                catch (UnauthorizedAccessException)
                 {
-                    throw new FileUtilException(CreateFileAccessErrorMessage(directoryPath), ex);
+                    return [];
                 }
             }
             else
@@ -468,21 +475,21 @@ namespace SWF.Core.Base
                         .Where(dir => CanAccess(dir.FullName))
                         .Any();
                 }
-                catch (ArgumentNullException ex)
+                catch (ArgumentNullException)
                 {
-                    throw new FileUtilException(CreateFileAccessErrorMessage(directoryPath), ex);
+                    return false;
                 }
-                catch (SecurityException ex)
+                catch (SecurityException)
                 {
-                    throw new FileUtilException(CreateFileAccessErrorMessage(directoryPath), ex);
+                    return false;
                 }
-                catch (ArgumentException ex)
+                catch (ArgumentException)
                 {
-                    throw new FileUtilException(CreateFileAccessErrorMessage(directoryPath), ex);
+                    return false;
                 }
-                catch (PathTooLongException ex)
+                catch (PathTooLongException)
                 {
-                    throw new FileUtilException(CreateFileAccessErrorMessage(directoryPath), ex);
+                    return false;
                 }
             }
             else
@@ -542,21 +549,21 @@ namespace SWF.Core.Base
                             .ToArray();
                     }
                 }
-                catch (ArgumentNullException ex)
+                catch (ArgumentNullException)
                 {
-                    throw new FileUtilException(CreateFileAccessErrorMessage(directoryPath), ex);
+                    return [];
                 }
-                catch (SecurityException ex)
+                catch (SecurityException)
                 {
-                    throw new FileUtilException(CreateFileAccessErrorMessage(directoryPath), ex);
+                    return [];
                 }
-                catch (ArgumentException ex)
+                catch (ArgumentException)
                 {
-                    throw new FileUtilException(CreateFileAccessErrorMessage(directoryPath), ex);
+                    return [];
                 }
-                catch (PathTooLongException ex)
+                catch (PathTooLongException)
                 {
-                    throw new FileUtilException(CreateFileAccessErrorMessage(directoryPath), ex);
+                    return [];
                 }
             }
             else
@@ -590,21 +597,21 @@ namespace SWF.Core.Base
                         .Where(CanAccess)
                         .ToArray();
                 }
-                catch (ArgumentNullException ex)
+                catch (ArgumentNullException)
                 {
-                    throw new FileUtilException(CreateFileAccessErrorMessage(directoryPath), ex);
+                    return [];
                 }
-                catch (SecurityException ex)
+                catch (SecurityException)
                 {
-                    throw new FileUtilException(CreateFileAccessErrorMessage(directoryPath), ex);
+                    return [];
                 }
-                catch (ArgumentException ex)
+                catch (ArgumentException)
                 {
-                    throw new FileUtilException(CreateFileAccessErrorMessage(directoryPath), ex);
+                    return [];
                 }
-                catch (PathTooLongException ex)
+                catch (PathTooLongException)
                 {
-                    throw new FileUtilException(CreateFileAccessErrorMessage(directoryPath), ex);
+                    return [];
                 }
             }
             else
