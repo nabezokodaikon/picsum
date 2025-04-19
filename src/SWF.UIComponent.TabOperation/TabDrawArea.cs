@@ -140,7 +140,7 @@ namespace SWF.UIComponent.TabOperation
             ArgumentNullException.ThrowIfNull(g, nameof(g));
 
             this.parameter.Update(scale);
-            this.DrawTab(ACTIVE_TAB_BRUSH, g, scale);
+            this.DrawTab(ACTIVE_TAB_BRUSH, g, scale, true);
         }
 
         public void DrawActiveTab(TabSwitch tabSwitch, Graphics g)
@@ -149,7 +149,7 @@ namespace SWF.UIComponent.TabOperation
             ArgumentNullException.ThrowIfNull(g, nameof(g));
 
             this.parameter.Update(tabSwitch);
-            this.DrawTab(ACTIVE_TAB_BRUSH, g);
+            this.DrawTab(ACTIVE_TAB_BRUSH, g, false);
         }
 
         public void DrawInactiveTab(TabSwitch tabSwitch, Graphics g)
@@ -158,7 +158,7 @@ namespace SWF.UIComponent.TabOperation
             ArgumentNullException.ThrowIfNull(tabSwitch, nameof(tabSwitch));
 
             this.parameter.Update(tabSwitch);
-            this.DrawTab(INACTIVE_TAB_BRUSH, g);
+            this.DrawTab(INACTIVE_TAB_BRUSH, g, false);
         }
 
         public void DrawMousePointTab(TabSwitch tabSwitch, Graphics g)
@@ -167,7 +167,7 @@ namespace SWF.UIComponent.TabOperation
             ArgumentNullException.ThrowIfNull(g, nameof(g));
 
             this.parameter.Update(tabSwitch);
-            this.DrawTab(MOUSE_POINT_TAB_BRUSH, g);
+            this.DrawTab(MOUSE_POINT_TAB_BRUSH, g, false);
         }
 
         public void DrawNothingTabCloseButton(Graphics g)
@@ -281,21 +281,25 @@ namespace SWF.UIComponent.TabOperation
             return new RectangleF(x, y, w, h);
         }
 
-        private void DrawTab(SolidBrush brush, Graphics g)
+        private void DrawTab(SolidBrush brush, Graphics g, bool isDrawOutline)
         {
-            this.DrawTab(brush, g, 1f);
+            this.DrawTab(brush, g, 1f, isDrawOutline);
         }
 
-        private void DrawTab(SolidBrush brush, Graphics g, float scale)
+        private void DrawTab(SolidBrush brush, Graphics g, float scale, bool isDrawOutline)
         {
             var destRect = this.GetDestCenterRectangle(scale);
 
             g.FillRectangle(brush, destRect);
-            //g.DrawLines(TAB_OUTLINE_PEN, [
-            //    new PointF(destRect.Left, destRect.Bottom - 1f),
-            //    new PointF(destRect.Left, destRect.Top + 0.5f),
-            //    new PointF(destRect.Right, destRect.Top + 0.5f),
-            //    new PointF(destRect.Right, destRect.Bottom - 1f)]);
+
+            if (isDrawOutline)
+            {
+                g.DrawLines(TAB_OUTLINE_PEN, [
+                    new PointF(destRect.Left, destRect.Bottom - 1f),
+                new PointF(destRect.Left, destRect.Top + 0.5f),
+                new PointF(destRect.Right, destRect.Top + 0.5f),
+                new PointF(destRect.Right, destRect.Bottom - 1f)]);
+            }
         }
 
         private void DrawTabCloseButton(Graphics g, bool isMousePoint, bool isActiveTab)
