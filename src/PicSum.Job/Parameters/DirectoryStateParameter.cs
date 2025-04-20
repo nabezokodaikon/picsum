@@ -9,17 +9,27 @@ namespace PicSum.Job.Parameters
     public sealed class DirectoryStateParameter
         : IJobParameter
     {
-        public static readonly DirectoryStateParameter EMPTY = new()
-        {
-            DirectoryPath = string.Empty,
-            SortTypeID = SortTypeID.FilePath,
-            IsAscending = false,
-            SelectedFilePath = string.Empty,
-        };
+        public static readonly DirectoryStateParameter EMPTY
+            = new(string.Empty, SortTypeID.FilePath, false, string.Empty);
 
-        public string DirectoryPath { get; set; } = string.Empty;
-        public SortTypeID SortTypeID { get; set; } = SortTypeID.FilePath;
-        public bool IsAscending { get; set; } = false;
-        public string SelectedFilePath { get; set; } = string.Empty;
+        public string DirectoryPath { get; private set; }
+        public SortTypeID SortTypeID { get; private set; }
+        public bool IsAscending { get; private set; }
+        public string SelectedFilePath { get; private set; }
+
+        public DirectoryStateParameter(
+            string directoryPath,
+            SortTypeID sortTypeID,
+            bool isAscending,
+            string selectedFilePath)
+        {
+            ArgumentNullException.ThrowIfNull(directoryPath, nameof(directoryPath));
+            ArgumentNullException.ThrowIfNull(selectedFilePath, nameof(selectedFilePath));
+
+            this.DirectoryPath = directoryPath;
+            this.SortTypeID = sortTypeID;
+            this.IsAscending = isAscending;
+            this.SelectedFilePath = selectedFilePath;
+        }
     }
 }

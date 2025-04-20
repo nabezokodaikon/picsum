@@ -190,25 +190,24 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private void SaveCurrentDirectoryState()
         {
-            var param = new DirectoryStateParameter
-            {
-                DirectoryPath = this.parameter.DirectoryPath
-            };
-
             if (base.SortTypeID == SortTypeID.Default)
             {
-                param.SortTypeID = SortTypeID.FileName;
-                param.IsAscending = true;
+                var param = new DirectoryStateParameter(
+                    this.parameter.DirectoryPath,
+                    SortTypeID.FileName,
+                    true,
+                    base.SelectedFilePath);
+                Instance<JobCaller>.Value.StartDirectoryStateUpdateJob(this, param);
             }
             else
             {
-                param.SortTypeID = base.SortTypeID;
-                param.IsAscending = base.IsAscending;
+                var param = new DirectoryStateParameter(
+                    this.parameter.DirectoryPath,
+                    base.SortTypeID,
+                    base.IsAscending,
+                    base.SelectedFilePath);
+                Instance<JobCaller>.Value.StartDirectoryStateUpdateJob(this, param);
             }
-
-            param.SelectedFilePath = base.SelectedFilePath;
-
-            Instance<JobCaller>.Value.StartDirectoryStateUpdateJob(this, param);
         }
 
         private void SearchJob_Callback(DirectoryGetResult e)

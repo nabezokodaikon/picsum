@@ -23,13 +23,11 @@ namespace PicSum.Job.Logics
             var dto = Instance<IFileInfoDB>.Value.ReadLine<DirectoryStateDto>(sql);
             if (dto != null)
             {
-                var directoryState = new DirectoryStateParameter
-                {
-                    DirectoryPath = dto.DirectoryPath,
-                    SortTypeID = (SortTypeID)dto.SortTypeId,
-                    IsAscending = dto.IsAscending,
-                    SelectedFilePath = dto.SelectedFilePath
-                };
+                var directoryState = new DirectoryStateParameter(
+                    dto.DirectoryPath,
+                    (SortTypeID)dto.SortTypeId,
+                    dto.IsAscending,
+                    dto.SelectedFilePath);
                 return directoryState;
             }
             else
