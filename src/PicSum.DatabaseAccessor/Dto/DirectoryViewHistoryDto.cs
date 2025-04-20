@@ -10,14 +10,12 @@ namespace PicSum.DatabaseAccessor.Dto
         : IDto
     {
         public string DirectoryPath { get; private set; } = string.Empty;
-        public DateTime ViewDate { get; private set; }
 
         public void Read(IDataReader reader)
         {
             ArgumentNullException.ThrowIfNull(reader, nameof(reader));
 
             this.DirectoryPath = (string)reader["file_path"];
-            this.ViewDate = (DateTime)reader["view_date"];
         }
     }
 }

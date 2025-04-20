@@ -14,12 +14,15 @@ namespace PicSum.DatabaseAccessor.Sql
         const string SQL_TEXT =
 @"
 SELECT mf.file_path
-      ,tfvh.view_date
   FROM m_file mf
-       INNER JOIN t_directory_view_history tfvh
-          ON tfvh.file_id = mf.file_id       
- ORDER BY tfvh.view_date DESC
- LIMIT :limit
+       INNER JOIN (SELECT tfvh.file_id AS file_id
+                         ,MAX(tfvh.view_date) AS view_date
+                     FROM t_directory_view_history tfvh
+                 GROUP BY tfvh.file_id
+                 ORDER BY tfvh.view_date DESC
+                    LIMIT :limit
+                  ) tfvh
+               ON tfvh.file_id = mf.file_id
 ";
 
         public DirectoryViewHistoryReadSql(int param)
