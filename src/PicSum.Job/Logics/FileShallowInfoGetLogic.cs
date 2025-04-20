@@ -39,9 +39,10 @@ namespace PicSum.Job.Logics
                 return this.GetSystemRootInfo(
                     filePath, registrationDate);
             }
-
-            throw new ArgumentException(
-                $"不正なファイルパスです。'{filePath}'", nameof(filePath));
+            else
+            {
+                return FileShallowInfoEntity.EMPTY;
+            }
         }
 
         public FileShallowInfoEntity Get(
