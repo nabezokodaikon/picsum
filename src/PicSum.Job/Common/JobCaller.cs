@@ -22,7 +22,7 @@ namespace PicSum.Job.Common
         public readonly Lazy<IOneWayJob<ImageFileCacheJob, ListParameter<string>>> ImageFileCacheJob
             = new(() => new OneWayThread<ImageFileCacheJob, ListParameter<string>>(context, new JobTask()), LazyThreadSafetyMode.ExecutionAndPublication);
         public readonly Lazy<ITwoWayJob<ThumbnailsGetJob, ThumbnailsGetParameter, ThumbnailImageResult>> ThumbnailsGetJob
-            = new(() => new TwoWayThread<ThumbnailsGetJob, ThumbnailsGetParameter, ThumbnailImageResult>(context, new JobThread()), LazyThreadSafetyMode.ExecutionAndPublication);
+            = new(() => new TwoWayThread<ThumbnailsGetJob, ThumbnailsGetParameter, ThumbnailImageResult>(context, new JobTask()), LazyThreadSafetyMode.ExecutionAndPublication);
         public readonly Lazy<ITwoWayJob<SubDirectoriesGetJob, ValueParameter<string>, ListResult<FileShallowInfoEntity>>> SubDirectoriesGetJob
             = new(() => new TwoWayThread<SubDirectoriesGetJob, ValueParameter<string>, ListResult<FileShallowInfoEntity>>(context, new JobTask()), LazyThreadSafetyMode.ExecutionAndPublication);
         public readonly Lazy<ITwoWayJob<DirectoryViewHistoryGetJob, ListResult<FileShallowInfoEntity>>> DirectoryViewHistoryGetJob
