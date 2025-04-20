@@ -4,6 +4,7 @@ using PicSum.DatabaseAccessor.Sql;
 using SWF.Core.Base;
 using SWF.Core.Job;
 using System.Runtime.Versioning;
+using ZLinq;
 
 namespace PicSum.Job.Logics
 {
@@ -15,17 +16,10 @@ namespace PicSum.Job.Logics
         {
             var sql = new BookmarksReadSql();
             var dtoList = Instance<IFileInfoDB>.Value.ReadList<BookmarkDto>(sql);
-
-            var list = new List<BookmarkDto>();
-            foreach (var dto in dtoList)
-            {
-                if (FileUtil.CanAccess(dto.FilePath))
-                {
-                    list.Add(dto);
-                }
-            }
-
-            return [.. list];
+            return dtoList
+                .AsValueEnumerable()
+                .Where(dto => FileUtil.CanAccess(dto.FilePath))
+                .ToArray();
         }
     }
 }
