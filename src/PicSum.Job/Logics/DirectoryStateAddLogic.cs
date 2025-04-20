@@ -16,6 +16,7 @@ namespace PicSum.Job.Logics
     {
         public bool Execute(DirectoryStateParameter directoryState)
         {
+            ArgumentNullException.ThrowIfNull(directoryState, nameof(directoryState));
 
             if (string.IsNullOrEmpty(directoryState.DirectoryPath))
             {
@@ -24,20 +25,21 @@ namespace PicSum.Job.Logics
 
             if (string.IsNullOrEmpty(directoryState.SelectedFilePath))
             {
-                throw new ArgumentException("選択ファイルパスがNULLです。", nameof(directoryState));
-            }
-
-            DirectoryStateCreationSql sql;
-            if (string.IsNullOrEmpty(directoryState.SelectedFilePath))
-            {
-                sql = new DirectoryStateCreationSql(directoryState.DirectoryPath, (int)directoryState.SortTypeID, directoryState.IsAscending);
+                var sql = new DirectoryStateCreationSql(
+                    directoryState.DirectoryPath,
+                    (int)directoryState.SortTypeID,
+                    directoryState.IsAscending);
+                return Instance<IFileInfoDB>.Value.Update(sql);
             }
             else
             {
-                sql = new DirectoryStateCreationSql(directoryState.DirectoryPath, (int)directoryState.SortTypeID, directoryState.IsAscending, directoryState.SelectedFilePath);
+                var sql = new DirectoryStateCreationSql(
+                    directoryState.DirectoryPath,
+                    (int)directoryState.SortTypeID,
+                    directoryState.IsAscending,
+                    directoryState.SelectedFilePath);
+                return Instance<IFileInfoDB>.Value.Update(sql);
             }
-
-            return Instance<IFileInfoDB>.Value.Update(sql);
         }
     }
 }
