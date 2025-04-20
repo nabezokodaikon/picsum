@@ -6,6 +6,7 @@ using SWF.Core.Base;
 using SWF.Core.ImageAccessor;
 using System.Collections.Concurrent;
 using System.Runtime.Versioning;
+using ZLinq;
 
 namespace PicSum.Job.Common
 {
@@ -19,8 +20,7 @@ namespace PicSum.Job.Common
         private const int THREAD_COUNT = 4;
 
         private bool disposed = false;
-        private readonly ConcurrentQueue<ThumbnailReadThreadsEntity>[] queueArray
-            = new ConcurrentQueue<ThumbnailReadThreadsEntity>[THREAD_COUNT];
+        private readonly ConcurrentQueue<ThumbnailReadThreadsEntity> queue = new();
         private readonly Task[] threads = new Task[THREAD_COUNT];
         private long isAbort = 0;
 
@@ -41,9 +41,8 @@ namespace PicSum.Job.Common
             for (var i = 0; i < this.threads.Length; i++)
             {
                 var index = i;
-                this.queueArray[index]
-                    = new ConcurrentQueue<ThumbnailReadThreadsEntity>();
-                this.threads[index] = Task.Run(() => this.DoWork(index));
+                this.threads[index]
+                    = Task.Run(() => this.DoWork(index));
             }
         }
 
@@ -72,10 +71,7 @@ namespace PicSum.Job.Common
 
         private void Clear()
         {
-            foreach (var queue in this.queueArray)
-            {
-                while (queue.TryDequeue(out var _)) { }
-            }
+            while (this.queue.TryDequeue(out var _)) { }
         }
 
         public void DoCache(
@@ -92,33 +88,30 @@ namespace PicSum.Job.Common
 
             this.Clear();
 
-            var array = parameter.FilePathList
+            var entities = parameter.FilePathList
+                .AsValueEnumerable()
                 .Skip(parameter.FirstIndex)
                 .Take(parameter.LastIndex - parameter.FirstIndex + 1)
-                .Select(_ => new ThumbnailReadThreadsEntity(
-                    _,
+                .Select(filePath => new ThumbnailReadThreadsEntity(
+                    filePath,
                     parameter.ThumbnailWidth,
                     parameter.ThumbnailHeight,
-                    callbackAction))
-                .ToArray();
+                    callbackAction));
 
-            for (var i = 0; i < array.Length; i++)
+            foreach (var entity in entities)
             {
-                var queueIndex = i % THREAD_COUNT;
-                this.queueArray[queueIndex].Enqueue(array[i]);
+                this.queue.Enqueue(entity);
             }
         }
 
         private void DoWork(int index)
         {
-            Thread.CurrentThread.Name = $"ThumbnailReadThreads: [{index}]";
+            Thread.CurrentThread.Name = $"ThumbnailCacheThreads: [{index}]";
 
             logger.Debug("サムネイル読み込みスレッドが開始されました。");
 
             try
             {
-                var queue = this.queueArray[index];
-
                 while (true)
                 {
                     if (this.IsAbort)
@@ -127,7 +120,7 @@ namespace PicSum.Job.Common
                         return;
                     }
 
-                    if (queue.TryDequeue(out var entity))
+                    if (this.queue.TryDequeue(out var entity))
                     {
                         try
                         {
@@ -165,7 +158,7 @@ namespace PicSum.Job.Common
                     }
                     else
                     {
-                        Thread.Sleep(10);
+                        Thread.Sleep(1);
                     }
                 }
             }
