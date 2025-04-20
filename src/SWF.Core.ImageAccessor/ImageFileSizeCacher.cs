@@ -91,7 +91,7 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
-        public ImageFileSizeCacheEntity Get(string filePath)
+        public ImageFileSizeCacheEntity GetOrCreate(string filePath)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
@@ -111,8 +111,10 @@ namespace SWF.Core.ImageAccessor
                 }
             }
 
+            var size = ImageUtil.GetImageSize(filePath);
+            this.Set(filePath, size);
             return new ImageFileSizeCacheEntity(
-                filePath, ImageUtil.GetImageSize(filePath), timestamp);
+                filePath, size, timestamp);
         }
 
         public void Set(string filePath, Size size)

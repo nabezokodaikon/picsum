@@ -5,6 +5,7 @@ using PicSum.Job.Results;
 using SWF.Core.Base;
 using SWF.Core.ImageAccessor;
 using System.Collections.Concurrent;
+using System.Drawing;
 using System.Runtime.Versioning;
 using ZLinq;
 
@@ -129,6 +130,9 @@ namespace PicSum.Job.Common
                             if (bf != ThumbnailCacheEntity.EMPTY
                                 && bf.ThumbnailBuffer != null)
                             {
+                                Instance<IImageFileSizeCacher>.Value.Set(
+                                    bf.FilePath, new Size(bf.SourceWidth, bf.SourceHeight));
+
                                 var img = new ThumbnailImageResult
                                 {
                                     FilePath = bf.FilePath,

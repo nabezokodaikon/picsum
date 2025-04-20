@@ -81,7 +81,7 @@ namespace PicSum.Job.Logics
         {
             try
             {
-                return Instance<IImageFileSizeCacher>.Value.Get(filePath).Size;
+                return Instance<IImageFileSizeCacher>.Value.GetOrCreate(filePath).Size;
             }
             catch (FileUtilException ex)
             {

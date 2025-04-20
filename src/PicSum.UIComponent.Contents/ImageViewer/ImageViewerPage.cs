@@ -336,7 +336,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             {
                 using (TimeMeasuring.Run(false, "ImageViewerPage.GetImageSize"))
                 {
-                    return Instance<IImageFileSizeCacher>.Value.Get(filePath).Size;
+                    return Instance<IImageFileSizeCacher>.Value.GetOrCreate(filePath).Size;
                 }
             }
             catch (FileUtilException ex)

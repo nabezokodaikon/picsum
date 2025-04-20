@@ -4,7 +4,7 @@ namespace SWF.Core.ImageAccessor
         : IDisposable
     {
         public void Create(string filePath);
-        public ImageFileSizeCacheEntity Get(string filePath);
+        public ImageFileSizeCacheEntity GetOrCreate(string filePath);
         public void Set(string filePath, Size size);
     }
 }
