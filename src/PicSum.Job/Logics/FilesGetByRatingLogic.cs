@@ -4,6 +4,7 @@ using PicSum.DatabaseAccessor.Sql;
 using SWF.Core.Base;
 using SWF.Core.Job;
 using System.Runtime.Versioning;
+using ZLinq;
 
 namespace PicSum.Job.Logics
 {
@@ -18,18 +19,10 @@ namespace PicSum.Job.Logics
         {
             var sql = new FileReadByRatingSql(rating);
             var dtoList = Instance<IFileInfoDB>.Value.ReadList<FileByRatingDto>(sql);
-
-            var list = new List<FileByRatingDto>();
-            foreach (var dto in dtoList)
-            {
-                this.CheckCancel();
-                if (FileUtil.CanAccess(dto.FilePath))
-                {
-                    list.Add(dto);
-                }
-            }
-
-            return [.. list];
+            return dtoList
+                .AsValueEnumerable()
+                .Where(dto => FileUtil.CanAccess(dto.FilePath))
+                .ToArray();
         }
     }
 }
