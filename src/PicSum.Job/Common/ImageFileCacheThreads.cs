@@ -13,8 +13,7 @@ namespace PicSum.Job.Common
         private const int THREAD_COUNT = 4;
 
         private bool disposed = false;
-        private readonly ConcurrentQueue<string>[] queueArray
-            = new ConcurrentQueue<string>[THREAD_COUNT];
+        private readonly ConcurrentQueue<string> queue = new();
         private readonly Task[] threads = new Task[THREAD_COUNT];
         private long isAbort = 0;
 
@@ -35,7 +34,6 @@ namespace PicSum.Job.Common
             for (var i = 0; i < this.threads.Length; i++)
             {
                 var index = i;
-                this.queueArray[index] = new ConcurrentQueue<string>();
                 this.threads[index] = Task.Run(() => this.DoWork(index));
             }
         }
@@ -55,11 +53,7 @@ namespace PicSum.Job.Common
 
             if (disposing)
             {
-                foreach (var queue in this.queueArray)
-                {
-                    while (queue.TryDequeue(out var _)) { }
-                }
-
+                while (this.queue.TryDequeue(out var _)) { }
                 this.IsAbort = true;
                 Task.WaitAll(this.threads);
             }
@@ -69,15 +63,11 @@ namespace PicSum.Job.Common
 
         public void DoCache(string[] files)
         {
-            foreach (var queue in this.queueArray)
-            {
-                while (queue.TryDequeue(out var _)) { }
-            }
+            while (this.queue.TryDequeue(out var _)) { }
 
-            for (var i = 0; i < files.Length; i++)
+            foreach (var file in files)
             {
-                var queueIndex = i % THREAD_COUNT;
-                this.queueArray[queueIndex].Enqueue(files[i]);
+                this.queue.Enqueue(file);
             }
         }
 
@@ -89,8 +79,6 @@ namespace PicSum.Job.Common
 
             try
             {
-                var queue = this.queueArray[index];
-
                 while (true)
                 {
                     if (this.IsAbort)
@@ -99,7 +87,7 @@ namespace PicSum.Job.Common
                         return;
                     }
 
-                    if (queue.TryDequeue(out var file))
+                    if (this.queue.TryDequeue(out var file))
                     {
                         try
                         {
