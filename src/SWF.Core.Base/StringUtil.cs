@@ -2,7 +2,7 @@ namespace SWF.Core.Base
 {
     public static class StringUtil
     {
-        public static bool Compare(string a, string b)
+        public static bool CompareFilePath(string a, string b)
         {
             if (string.IsNullOrEmpty(a) && string.IsNullOrEmpty(b))
             {

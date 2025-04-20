@@ -48,7 +48,7 @@ namespace SWF.Core.ImageAccessor
             ArgumentNullException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
             var ex = FileUtil.GetExtensionFastStack(filePath);
-            return IMAGE_FILE_EXTENSION_LIST.Any(_ => StringUtil.Compare(_, ex));
+            return IMAGE_FILE_EXTENSION_LIST.Any(_ => StringUtil.CompareFilePath(_, ex));
         }
 
         public static string[] GetImageFilesArray(string directoryPath)
@@ -945,7 +945,7 @@ namespace SWF.Core.ImageAccessor
             ArgumentNullException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
             var ex = FileUtil.GetExtensionFastStack(filePath);
-            return StringUtil.Compare(ex, AVIF_FILE_EXTENSION);
+            return StringUtil.CompareFilePath(ex, AVIF_FILE_EXTENSION);
         }
 
         private static bool IsBmpFile(string filePath)
@@ -953,7 +953,7 @@ namespace SWF.Core.ImageAccessor
             ArgumentNullException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
             var ex = FileUtil.GetExtensionFastStack(filePath);
-            return StringUtil.Compare(ex, BMP_FILE_EXTENSION);
+            return StringUtil.CompareFilePath(ex, BMP_FILE_EXTENSION);
         }
 
         private static bool IsGifFile(string filePath)
@@ -961,7 +961,7 @@ namespace SWF.Core.ImageAccessor
             ArgumentNullException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
             var ex = FileUtil.GetExtensionFastStack(filePath);
-            return StringUtil.Compare(ex, GIF_FILE_EXTENSION);
+            return StringUtil.CompareFilePath(ex, GIF_FILE_EXTENSION);
         }
 
         private static bool IsHeicFile(string filePath)
@@ -969,7 +969,7 @@ namespace SWF.Core.ImageAccessor
             ArgumentNullException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
             var ex = FileUtil.GetExtensionFastStack(filePath);
-            return StringUtil.Compare(ex, HEIC_FILE_EXTENSION);
+            return StringUtil.CompareFilePath(ex, HEIC_FILE_EXTENSION);
         }
 
         private static bool IsHeifFile(string filePath)
@@ -977,7 +977,7 @@ namespace SWF.Core.ImageAccessor
             ArgumentNullException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
             var ex = FileUtil.GetExtensionFastStack(filePath);
-            return StringUtil.Compare(ex, HEIF_FILE_EXTENSION);
+            return StringUtil.CompareFilePath(ex, HEIF_FILE_EXTENSION);
         }
 
         private static bool IsIconFile(string filePath)
@@ -985,7 +985,7 @@ namespace SWF.Core.ImageAccessor
             ArgumentNullException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
             var ex = FileUtil.GetExtensionFastStack(filePath);
-            return StringUtil.Compare(ex, ICON_FILE_EXTENSION);
+            return StringUtil.CompareFilePath(ex, ICON_FILE_EXTENSION);
         }
 
         private static bool IsJpegFile(string filePath)
@@ -993,8 +993,8 @@ namespace SWF.Core.ImageAccessor
             ArgumentNullException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
             var ex = FileUtil.GetExtensionFastStack(filePath);
-            return StringUtil.Compare(ex, JPG_FILE_EXTENSION)
-                || StringUtil.Compare(ex, JPEG_FILE_EXTENSION);
+            return StringUtil.CompareFilePath(ex, JPG_FILE_EXTENSION)
+                || StringUtil.CompareFilePath(ex, JPEG_FILE_EXTENSION);
         }
 
         private static bool IsPngFile(string filePath)
@@ -1002,7 +1002,7 @@ namespace SWF.Core.ImageAccessor
             ArgumentNullException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
             var ex = FileUtil.GetExtensionFastStack(filePath);
-            return StringUtil.Compare(ex, PNG_FILE_EXTENSION);
+            return StringUtil.CompareFilePath(ex, PNG_FILE_EXTENSION);
         }
 
         private static bool IsSvgFile(string filePath)
@@ -1010,7 +1010,7 @@ namespace SWF.Core.ImageAccessor
             ArgumentNullException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
             var ex = FileUtil.GetExtensionFastStack(filePath);
-            return StringUtil.Compare(ex, SVG_FILE_EXTENSION);
+            return StringUtil.CompareFilePath(ex, SVG_FILE_EXTENSION);
         }
 
         private static bool IsWebpFile(string filePath)
@@ -1018,7 +1018,7 @@ namespace SWF.Core.ImageAccessor
             ArgumentNullException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
             var ex = FileUtil.GetExtensionFastStack(filePath);
-            return StringUtil.Compare(ex, WEBP_FILE_EXTENSION);
+            return StringUtil.CompareFilePath(ex, WEBP_FILE_EXTENSION);
         }
 
         private static string[] GetImageFileExtensionList()

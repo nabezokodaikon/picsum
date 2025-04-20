@@ -156,7 +156,7 @@ namespace PicSum.UIComponent.AddressBar
 
         private Font GetFont(string directoryPath, float scale)
         {
-            if (StringUtil.Compare(directoryPath, this.SelectedSubDirectoryPath))
+            if (StringUtil.CompareFilePath(directoryPath, this.SelectedSubDirectoryPath))
             {
                 return this.AddressBar.GetBoldFont(scale);
             }
@@ -204,7 +204,7 @@ namespace PicSum.UIComponent.AddressBar
             base.DropDownList.ItemCount = base.Items.Count;
 
             var selectedItem = base.Items
-                .FirstOrDefault(item => StringUtil.Compare(item.DirectoryPath, this.SelectedSubDirectoryPath));
+                .FirstOrDefault(item => StringUtil.CompareFilePath(item.DirectoryPath, this.SelectedSubDirectoryPath));
             if (selectedItem != null)
             {
                 base.DropDownList.SelectItem(base.Items.IndexOf(selectedItem));

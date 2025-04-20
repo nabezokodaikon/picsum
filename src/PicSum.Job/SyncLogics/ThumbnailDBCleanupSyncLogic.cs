@@ -17,7 +17,7 @@ namespace PicSum.Job.SyncLogics
 
             foreach (var thumbnailFile in FileUtil.GetFiles(AppConstants.DATABASE_DIRECTORY.Value)
                 .Where(file =>
-                StringUtil.Compare(
+                StringUtil.CompareFilePath(
                     FileUtil.GetExtensionFastStack(file),
                     AppConstants.THUMBNAIL_BUFFER_FILE_EXTENSION)))
             {

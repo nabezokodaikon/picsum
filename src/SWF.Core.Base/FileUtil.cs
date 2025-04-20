@@ -62,7 +62,7 @@ namespace SWF.Core.Base
                 {
                     return DriveInfo
                         .GetDrives()
-                        .Any(d => StringUtil.Compare(d.Name, filePath));
+                        .Any(d => StringUtil.CompareFilePath(d.Name, filePath));
                 }
                 catch (IOException)
                 {
@@ -770,7 +770,7 @@ namespace SWF.Core.Base
 
             var length = filePath.Length;
             var lastChar = filePath.Substring(length - 1, 1);
-            if (StringUtil.Compare(lastChar, @"\"))
+            if (StringUtil.CompareFilePath(lastChar, @"\"))
             {
                 return filePath[..(length - 1)];
             }
