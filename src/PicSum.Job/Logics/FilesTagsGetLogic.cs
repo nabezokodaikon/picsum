@@ -5,6 +5,7 @@ using PicSum.Job.Entities;
 using SWF.Core.Base;
 using SWF.Core.Job;
 using System.Runtime.Versioning;
+using ZLinq;
 
 namespace PicSum.Job.Logics
 {
@@ -21,22 +22,11 @@ namespace PicSum.Job.Logics
 
             var sql = new FileTagReadSql(filePathList);
             var dtoList = Instance<IFileInfoDB>.Value.ReadList<FileTagDto>(sql);
-
-            var infoList = new ListEntity<FileTagInfoEntity>(dtoList.Length);
-            foreach (var dto in dtoList
-                .OrderBy(dto => dto.Tag, NaturalStringComparer.Windows))
-            {
-                this.CheckCancel();
-
-                var info = new FileTagInfoEntity
-                {
-                    Tag = dto.Tag,
-                    IsAll = dto.IsAll
-                };
-                infoList.Add(info);
-            }
-
-            return infoList;
+            return new ListEntity<FileTagInfoEntity>(dtoList
+                .AsValueEnumerable()
+                .OrderBy(dto => dto.Tag, NaturalStringComparer.Windows)
+                .Select(dto => new FileTagInfoEntity() { Tag = dto.Tag, IsAll = dto.IsAll })
+                .ToArray());
         }
     }
 }
