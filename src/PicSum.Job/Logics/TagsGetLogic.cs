@@ -4,6 +4,7 @@ using PicSum.DatabaseAccessor.Sql;
 using SWF.Core.Base;
 using SWF.Core.Job;
 using System.Runtime.Versioning;
+using ZLinq;
 
 namespace PicSum.Job.Logics
 {
@@ -20,6 +21,7 @@ namespace PicSum.Job.Logics
             var dtoList = Instance<IFileInfoDB>.Value.ReadList<TagInfoDto>(sql);
 
             return [.. dtoList
+                .AsValueEnumerable()
                 .GroupBy(file => file.Tag)
                 .Where(file => file.Any(f => FileUtil.CanAccess(f.FilePath)))
                 .Select(file => file.First().Tag)
