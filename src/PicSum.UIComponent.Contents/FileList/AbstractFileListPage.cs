@@ -524,7 +524,8 @@ namespace PicSum.UIComponent.Contents.FileList
             {
                 this.filterFilePathList = [.. filterList.ConvertAll(f => f.FilePath)];
                 this.flowList.ItemCount = filterList.Count;
-                var selectedFile = filterList.FirstOrDefault(f => f.FilePath.Equals(this.SelectedFilePath, StringComparison.Ordinal));
+                var selectedFile = filterList
+                    .FirstOrDefault(f => StringUtil.Compare(f.FilePath, this.SelectedFilePath));
                 if (selectedFile != null)
                 {
                     this.flowList.SelectItem(filterList.IndexOf(selectedFile));

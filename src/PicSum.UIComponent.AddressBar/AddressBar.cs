@@ -355,7 +355,7 @@ namespace PicSum.UIComponent.AddressBar
                         {
                             var sepDrawItem = (SeparatorDrawItem)drawItem;
                             var count = this.overflowItem.Items
-                                .Count(dir => dir.DirectoryPath.Equals(sepDrawItem.Directory.DirectoryPath, StringComparison.Ordinal));
+                                .Count(dir => StringUtil.Compare(dir.DirectoryPath, sepDrawItem.Directory.DirectoryPath));
                             if (count > 0)
                             {
                                 drawItem.Left = -1;

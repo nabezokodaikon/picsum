@@ -4,8 +4,20 @@ namespace SWF.Core.Base
     {
         public static bool Compare(string a, string b)
         {
-            ArgumentNullException.ThrowIfNull(a, nameof(a));
-            ArgumentNullException.ThrowIfNull(b, nameof(b));
+            if (string.IsNullOrEmpty(a) && string.IsNullOrEmpty(b))
+            {
+                return true;
+            }
+
+            if (string.IsNullOrEmpty(a))
+            {
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(b))
+            {
+                return false;
+            }
 
             return string.Equals(a, b, StringComparison.OrdinalIgnoreCase);
         }
