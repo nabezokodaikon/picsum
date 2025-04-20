@@ -23,7 +23,15 @@ namespace PicSum.Job.Jobs
 
             var logic = new ImageFileReadLogic(this);
 
-            var mainFilePath = parameter.FilePathList[parameter.CurrentIndex];
+            var mainIndex =
+                parameter.IsNext == null ?
+                parameter.CurrentIndex
+                : parameter.IsNext == true ?
+                    logic.GetNextIndex(parameter) :
+                    logic.GetPreviewIndex(parameter);
+            this.CheckCancel();
+
+            var mainFilePath = parameter.FilePathList[mainIndex];
             var mainSize = logic.GetImageSize(mainFilePath);
             this.CheckCancel();
 
@@ -31,7 +39,7 @@ namespace PicSum.Job.Jobs
                 && mainSize != ImageUtil.EMPTY_SIZE
                 && mainSize.Width <= mainSize.Height)
             {
-                var subtIndex = parameter.CurrentIndex + 1;
+                var subtIndex = mainIndex + 1;
                 if (subtIndex > parameter.FilePathList.Length - 1)
                 {
                     subtIndex = 0;
@@ -46,23 +54,23 @@ namespace PicSum.Job.Jobs
                     && subSize.Width <= subSize.Height)
                 {
                     this.Callback(logic.CreateResult(
-                        mainFilePath, true, true));
+                        mainIndex, mainFilePath, true, true));
 
                     this.CheckCancel();
 
                     this.Callback(logic.CreateResult(
-                        subFilePath, false, true));
+                        subtIndex, subFilePath, false, true));
                 }
                 else
                 {
                     this.Callback(logic.CreateResult(
-                        mainFilePath, true, false));
+                        mainIndex, mainFilePath, true, false));
                 }
             }
             else
             {
                 this.Callback(logic.CreateResult(
-                    mainFilePath, true, false));
+                    mainIndex, mainFilePath, true, false));
             }
         }
     }

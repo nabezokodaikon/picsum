@@ -24,13 +24,20 @@ namespace PicSum.Job.Jobs
 
             var logic = new ImageFileReadLogic(this);
 
-            var mainFilePath = parameter.FilePathList[parameter.CurrentIndex];
+            var mainIndex =
+                parameter.IsNext == null ?
+                parameter.CurrentIndex
+                : parameter.IsNext == true ?
+                    logic.GetNextIndex(parameter) :
+                    logic.GetPreviewIndex(parameter);
+
+            var mainFilePath = parameter.FilePathList[mainIndex];
             var mainSize = logic.GetImageSize(mainFilePath);
             if (parameter.ImageDisplayMode != ImageDisplayMode.Single
                 && mainSize != ImageUtil.EMPTY_SIZE
                 && mainSize.Width <= mainSize.Height)
             {
-                var subtIndex = parameter.CurrentIndex + 1;
+                var subtIndex = mainIndex + 1;
                 if (subtIndex > parameter.FilePathList.Length - 1)
                 {
                     subtIndex = 0;
@@ -45,13 +52,13 @@ namespace PicSum.Job.Jobs
                     if (!Instance<IImageFileCacher>.Value.Has(mainFilePath))
                     {
                         this.Callback(logic.CreateEmptyResult(
-                            mainFilePath, true, true, mainSize));
+                            mainIndex, mainFilePath, true, true, mainSize));
                     }
 
                     if (!Instance<IImageFileCacher>.Value.Has(subFilePath))
                     {
                         this.Callback(logic.CreateEmptyResult(
-                            subFilePath, false, true, subSize));
+                            subtIndex, subFilePath, false, true, subSize));
                     }
                 }
                 else
@@ -59,7 +66,7 @@ namespace PicSum.Job.Jobs
                     if (!Instance<IImageFileCacher>.Value.Has(mainFilePath))
                     {
                         this.Callback(logic.CreateEmptyResult(
-                            mainFilePath, true, false, mainSize));
+                            mainIndex, mainFilePath, true, false, mainSize));
                     }
                 }
             }
@@ -68,7 +75,7 @@ namespace PicSum.Job.Jobs
                 if (!Instance<IImageFileCacher>.Value.Has(mainFilePath))
                 {
                     this.Callback(logic.CreateEmptyResult(
-                        mainFilePath, true, false, mainSize));
+                        mainIndex, mainFilePath, true, false, mainSize));
                 }
             }
         }
