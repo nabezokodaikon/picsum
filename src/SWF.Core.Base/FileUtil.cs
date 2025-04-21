@@ -361,7 +361,7 @@ namespace SWF.Core.Base
                 throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
             }
 
-            throw new ArgumentException("不明なパスが指定されました。", nameof(filePath));
+            throw new FileUtilException(CreateFileAccessErrorMessage(filePath));
         }
 
         /// <summary>
@@ -457,7 +457,7 @@ namespace SWF.Core.Base
             }
             else
             {
-                throw new ArgumentException("ディレクトリまたはドライブ以外が指定されました。", nameof(directoryPath));
+                throw new FileUtilException(CreateFileAccessErrorMessage(directoryPath));
             }
         }
 
@@ -500,7 +500,7 @@ namespace SWF.Core.Base
             }
             else
             {
-                throw new ArgumentException("ファイルが指定されました。", nameof(directoryPath));
+                throw new FileUtilException(CreateFileAccessErrorMessage(directoryPath));
             }
         }
 
@@ -569,7 +569,7 @@ namespace SWF.Core.Base
             }
             else
             {
-                throw new ArgumentException("ファイルが指定されました。", nameof(directoryPath));
+                throw new FileUtilException(CreateFileAccessErrorMessage(directoryPath));
             }
         }
 
@@ -617,7 +617,7 @@ namespace SWF.Core.Base
             }
             else
             {
-                throw new ArgumentException("ファイルが指定されました。", nameof(directoryPath));
+                throw new FileUtilException(CreateFileAccessErrorMessage(directoryPath));
             }
         }
 
