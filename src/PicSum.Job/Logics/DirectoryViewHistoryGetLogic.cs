@@ -21,7 +21,8 @@ namespace PicSum.Job.Logics
             var dtoList = Instance<IFileInfoDB>.Value.ReadList<DirectoryViewHistoryDto>(sql);
             return [.. dtoList
                 .AsValueEnumerable()
-                .Select(dto => dto.DirectoryPath)];
+                .Select(dto => dto.DirectoryPath)
+                .Where(FileUtil.CanAccess)];
         }
     }
 }

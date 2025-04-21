@@ -1,3 +1,4 @@
+using PicSum.Job.Entities;
 using PicSum.Job.Logics;
 using PicSum.Job.Results;
 using SWF.Core.Base;
@@ -62,8 +63,14 @@ namespace PicSum.Job.Jobs
                     while (!FileUtil.IsSystemRoot(directory))
                     {
                         this.CheckCancel();
-                        addressInfo.DirectoryList.Insert(
-                            0, logic.Get(directory, false));
+
+                        var info = logic.Get(directory, false);
+                        if (info == FileShallowInfoEntity.EMPTY)
+                        {
+                            return;
+                        }
+
+                        addressInfo.DirectoryList.Insert(0, info);
                         directory = FileUtil.GetParentDirectoryPath(directory);
                     }
 
