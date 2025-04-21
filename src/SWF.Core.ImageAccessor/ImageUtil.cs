@@ -59,11 +59,6 @@ namespace SWF.Core.ImageAccessor
 
                 try
                 {
-                    if (!FileUtil.CanAccess(directoryPath))
-                    {
-                        return [];
-                    }
-
                     var root = new DirectoryInfo(directoryPath);
 
                     return root
@@ -239,6 +234,11 @@ namespace SWF.Core.ImageAccessor
                         {
                             return SixLaborsUtil.GetImageSize(fs);
                         }
+                        else
+                        {
+                            throw new ImageUtilException(
+                                $"未対応の画像ファイルが指定されました。'{filePath}'");
+                        }
                     }
                 }
                 catch (ArgumentNullException ex)
@@ -301,9 +301,6 @@ namespace SWF.Core.ImageAccessor
                 {
                     throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
                 }
-
-                throw new ImageUtilException(
-                    $"未対応の画像ファイルが指定されました。'{filePath}'");
             }
         }
 

@@ -488,7 +488,9 @@ namespace SWF.Core.Base
             {
                 if (isSort)
                 {
-                    return [.. GetDrives().OrderBy(drive => drive, NaturalStringComparer.Windows)];
+                    return [.. GetDrives()
+                        .AsEnumerable()
+                        .OrderBy(drive => drive, NaturalStringComparer.Windows)];
                 }
                 else
                 {
