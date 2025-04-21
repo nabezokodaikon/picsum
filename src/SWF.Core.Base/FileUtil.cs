@@ -201,18 +201,7 @@ namespace SWF.Core.Base
         {
             ArgumentNullException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
-            if (IsExistsFileOrDirectory(filePath))
-            {
-                try
-                {
-                    return Path.GetFileName(filePath);
-                }
-                catch (ArgumentException ex)
-                {
-                    throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
-                }
-            }
-            else if (IsSystemRoot(filePath))
+            if (IsSystemRoot(filePath))
             {
                 return ROOT_DIRECTORY_NAME;
             }
@@ -224,7 +213,7 @@ namespace SWF.Core.Base
                         .FirstOrDefault(di => di.Name == filePath || di.Name == $"{filePath}");
                     if (driveInfo == null)
                     {
-                        throw new FileUtilException(CreateFileAccessErrorMessage(filePath));
+                        throw new FileUtilException($"ドライブ名を取得できませんでした。'{filePath}'");
                     }
 
                     return $"{driveInfo.VolumeLabel}({ToRemoveLastPathSeparate(filePath)})";
@@ -238,8 +227,23 @@ namespace SWF.Core.Base
                     throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
                 }
             }
+            else
+            {
+                try
+                {
+                    var name = Path.GetFileName(filePath);
+                    if (string.IsNullOrEmpty(name))
+                    {
+                        throw new FileUtilException($"ファイル名を取得できませんでした。'{filePath}'");
+                    }
 
-            throw new ArgumentException("不明なパスが指定されました。", nameof(filePath));
+                    return name;
+                }
+                catch (ArgumentException ex)
+                {
+                    throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
+                }
+            }
         }
 
         /// <summary>
@@ -255,13 +259,21 @@ namespace SWF.Core.Base
             {
                 throw new ArgumentException("システムルートが指定されました。", nameof(filePath));
             }
-
-            if (IsExistsFileOrDirectory(filePath))
+            else if (IsExistsDrive(filePath))
+            {
+                return ROOT_DIRECTORY_PATH;
+            }
+            else
             {
                 try
                 {
                     var parent = Path.GetDirectoryName(filePath);
-                    return parent ?? string.Empty;
+                    if (string.IsNullOrEmpty(parent))
+                    {
+                        throw new FileUtilException($"親ディレクトリパスを取得できませんでした。'{filePath}'");
+                    }
+
+                    return parent;
                 }
                 catch (ArgumentException ex)
                 {
@@ -272,12 +284,6 @@ namespace SWF.Core.Base
                     throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
                 }
             }
-            else if (IsExistsDrive(filePath))
-            {
-                return ROOT_DIRECTORY_PATH;
-            }
-
-            throw new ArgumentException("不明なパスが指定されました。", nameof(filePath));
         }
 
         /// <summary>
@@ -522,11 +528,6 @@ namespace SWF.Core.Base
             {
                 try
                 {
-                    if (!CanAccess(directoryPath))
-                    {
-                        return [];
-                    }
-
                     var root = new DirectoryInfo(directoryPath);
 
                     if (isSort)
