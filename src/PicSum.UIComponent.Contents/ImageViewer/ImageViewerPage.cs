@@ -826,7 +826,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             }
 
             this.SettingImagePanelLayout(e);
-            this.leftImagePanel.Focus();
+            this.checkPatternPanel.Focus();
         }
 
         private void SingleViewToolStripMenuItem_Click(object sender, EventArgs e)
