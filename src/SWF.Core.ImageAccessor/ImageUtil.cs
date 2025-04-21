@@ -57,50 +57,37 @@ namespace SWF.Core.ImageAccessor
             {
                 ArgumentNullException.ThrowIfNullOrEmpty(directoryPath, nameof(directoryPath));
 
-                if (FileUtil.IsSystemRoot(directoryPath))
+                try
                 {
-                    throw new ArgumentException("システムルートが指定されました。", nameof(directoryPath));
+                    if (!FileUtil.CanAccess(directoryPath))
+                    {
+                        return [];
+                    }
+
+                    var root = new DirectoryInfo(directoryPath);
+
+                    return root
+                        .Children()
+                        .OfType<FileInfo>()
+                        .Select(fi => fi.FullName)
+                        .Where(file => FileUtil.CanAccess(file) && IsImageFile(file))
+                        .ToArray();
                 }
-
-                if (FileUtil.IsExistsDirectory(directoryPath)
-                    || FileUtil.IsExistsDrive(directoryPath))
+                catch (ArgumentNullException)
                 {
-                    try
-                    {
-                        if (!FileUtil.CanAccess(directoryPath))
-                        {
-                            return [];
-                        }
-
-                        var root = new DirectoryInfo(directoryPath);
-
-                        return root
-                            .Children()
-                            .OfType<FileInfo>()
-                            .Select(fi => fi.FullName)
-                            .Where(file => FileUtil.CanAccess(file) && IsImageFile(file))
-                            .ToArray();
-                    }
-                    catch (ArgumentNullException)
-                    {
-                        return [];
-                    }
-                    catch (SecurityException)
-                    {
-                        return [];
-                    }
-                    catch (ArgumentException)
-                    {
-                        return [];
-                    }
-                    catch (PathTooLongException)
-                    {
-                        return [];
-                    }
+                    return [];
                 }
-                else
+                catch (SecurityException)
                 {
-                    throw new ArgumentException("ディレクトリまたはドライブ以外が指定されました。", nameof(directoryPath));
+                    return [];
+                }
+                catch (ArgumentException)
+                {
+                    return [];
+                }
+                catch (PathTooLongException)
+                {
+                    return [];
                 }
             }
         }
@@ -111,61 +98,42 @@ namespace SWF.Core.ImageAccessor
             {
                 ArgumentNullException.ThrowIfNullOrEmpty(directoryPath, nameof(directoryPath));
 
-                if (FileUtil.IsSystemRoot(directoryPath))
+                try
                 {
-                    throw new ArgumentException("システムルートが指定されました。", nameof(directoryPath));
-                }
+                    var root = new DirectoryInfo(directoryPath);
 
-                if (FileUtil.IsExistsDirectory(directoryPath)
-                    || FileUtil.IsExistsDrive(directoryPath))
-                {
-                    try
-                    {
-                        if (!FileUtil.CanAccess(directoryPath))
+                    var imageFile = root
+                        .Children()
+                        .OfType<FileInfo>()
+                        .Select(fi => fi.FullName)
+                        .OrderBy(file => file, NaturalStringComparer.Windows)
+                        .FirstOrDefault(file =>
                         {
-                            return string.Empty;
-                        }
+                            return FileUtil.CanAccess(file) && IsImageFile(file);
+                        });
 
-                        var root = new DirectoryInfo(directoryPath);
-
-                        var imageFile = root
-                            .Children()
-                            .OfType<FileInfo>()
-                            .Select(fi => fi.FullName)
-                            .OrderBy(file => file, NaturalStringComparer.Windows)
-                            .FirstOrDefault(file =>
-                            {
-                                return FileUtil.CanAccess(file) && IsImageFile(file);
-                            });
-
-
-                        if (string.IsNullOrEmpty(imageFile))
-                        {
-                            return string.Empty;
-                        }
-
-                        return imageFile;
-                    }
-                    catch (ArgumentNullException)
+                    if (string.IsNullOrEmpty(imageFile))
                     {
                         return string.Empty;
                     }
-                    catch (SecurityException)
-                    {
-                        return string.Empty;
-                    }
-                    catch (ArgumentException)
-                    {
-                        return string.Empty;
-                    }
-                    catch (PathTooLongException)
-                    {
-                        return string.Empty;
-                    }
+
+                    return imageFile;
                 }
-                else
+                catch (ArgumentNullException)
                 {
-                    throw new ArgumentException("ディレクトリまたはドライブ以外が指定されました。", nameof(directoryPath));
+                    return string.Empty;
+                }
+                catch (SecurityException)
+                {
+                    return string.Empty;
+                }
+                catch (ArgumentException)
+                {
+                    return string.Empty;
+                }
+                catch (PathTooLongException)
+                {
+                    return string.Empty;
                 }
             }
         }
@@ -182,12 +150,6 @@ namespace SWF.Core.ImageAccessor
             using (TimeMeasuring.Run(false, "GetImageSize"))
             {
                 ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
-
-                if (!FileUtil.IsExistsFile(filePath) || !IsImageFile(filePath))
-                {
-                    throw new ArgumentException(
-                        $"画像ファイル以外が指定されました。'{filePath}'", nameof(filePath));
-                }
 
                 try
                 {
@@ -210,12 +172,6 @@ namespace SWF.Core.ImageAccessor
             using (TimeMeasuring.Run(false, "GetImageSizeWithVarious"))
             {
                 ArgumentNullException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
-
-                if (!FileUtil.IsExistsFile(filePath) || !IsImageFile(filePath))
-                {
-                    throw new ArgumentException(
-                        $"画像ファイル以外が指定されました。'{filePath}'", nameof(filePath));
-                }
 
                 try
                 {
@@ -346,8 +302,8 @@ namespace SWF.Core.ImageAccessor
                     throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
                 }
 
-                throw new ArgumentException(
-                    $"未対応の画像ファイルが指定されました。'{filePath}'", nameof(filePath));
+                throw new ImageUtilException(
+                    $"未対応の画像ファイルが指定されました。'{filePath}'");
             }
         }
 
@@ -356,12 +312,6 @@ namespace SWF.Core.ImageAccessor
             using (TimeMeasuring.Run(false, "GetImageSizeWithShell"))
             {
                 ArgumentNullException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
-
-                if (!FileUtil.IsExistsFile(filePath) || !IsImageFile(filePath))
-                {
-                    throw new ArgumentException(
-                        $"画像ファイル以外が指定されました。'{filePath}'", nameof(filePath));
-                }
 
                 IShellApplication? shell = null;
                 try
@@ -418,12 +368,6 @@ namespace SWF.Core.ImageAccessor
             {
                 ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
-                if (!FileUtil.IsExistsFile(filePath) || !IsImageFile(filePath))
-                {
-                    throw new ArgumentException(
-                        $"画像ファイル以外が指定されました。'{filePath}'", nameof(filePath));
-                }
-
                 try
                 {
                     return ReadImageFileWithVarious(filePath);
@@ -440,12 +384,6 @@ namespace SWF.Core.ImageAccessor
         private static Bitmap ReadImageFileWithVarious(string filePath)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
-
-            if (!FileUtil.IsExistsFile(filePath) || !IsImageFile(filePath))
-            {
-                throw new ArgumentException(
-                    $"画像ファイル以外が指定されました。'{filePath}'", nameof(filePath));
-            }
 
             try
             {
@@ -528,8 +466,8 @@ namespace SWF.Core.ImageAccessor
                     }
                     else
                     {
-                        throw new ArgumentException(
-                            $"未対応の画像ファイルが指定されました。'{filePath}'", nameof(filePath));
+                        throw new ImageUtilException(
+                            $"未対応の画像ファイルが指定されました。'{filePath}'");
                     }
                 }
             }
@@ -595,12 +533,6 @@ namespace SWF.Core.ImageAccessor
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
-            if (!FileUtil.IsExistsFile(filePath) || !IsImageFile(filePath))
-            {
-                throw new ArgumentException(
-                    $"画像ファイル以外が指定されました。'{filePath}'", nameof(filePath));
-            }
-
             try
             {
                 var format = MagickUtil.DetectFormat(filePath);
@@ -657,8 +589,8 @@ namespace SWF.Core.ImageAccessor
                             return MagickUtil.ReadImageFile(filePath);
                         }
                     default:
-                        throw new ArgumentException(
-                            $"未対応の画像ファイルが指定されました。'{filePath}'", nameof(filePath));
+                        throw new ImageUtilException(
+                            $"未対応の画像ファイルが指定されました。'{filePath}'");
                 }
             }
             catch (ImageMagick.MagickException ex)

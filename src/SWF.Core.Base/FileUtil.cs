@@ -255,11 +255,7 @@ namespace SWF.Core.Base
         {
             ArgumentNullException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
-            if (IsSystemRoot(filePath))
-            {
-                throw new ArgumentException("システムルートが指定されました。", nameof(filePath));
-            }
-            else if (IsExistsDrive(filePath))
+            if (IsExistsDrive(filePath))
             {
                 return ROOT_DIRECTORY_PATH;
             }
@@ -353,8 +349,6 @@ namespace SWF.Core.Base
             {
                 throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
             }
-
-            throw new FileUtilException(CreateFileAccessErrorMessage(filePath));
         }
 
         /// <summary>
@@ -365,11 +359,6 @@ namespace SWF.Core.Base
         public static long GetFileSize(string filePath)
         {
             ArgumentNullException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
-
-            if (!IsExistsFile(filePath))
-            {
-                throw new ArgumentException("ファイル以外が指定されました。", nameof(filePath));
-            }
 
             try
             {
@@ -411,46 +400,39 @@ namespace SWF.Core.Base
         {
             ArgumentNullException.ThrowIfNullOrEmpty(directoryPath, nameof(directoryPath));
 
-            if (IsExistsDirectory(directoryPath) || IsExistsDrive(directoryPath))
+            try
             {
-                try
-                {
-                    return Directory
-                        .EnumerateFiles(directoryPath)
-                        .Where(CanAccess);
-                }
-                catch (ArgumentNullException)
-                {
-                    return [];
-                }
-                catch (ArgumentException)
-                {
-                    return [];
-                }
-                catch (DirectoryNotFoundException)
-                {
-                    return [];
-                }
-                catch (PathTooLongException)
-                {
-                    return [];
-                }
-                catch (IOException)
-                {
-                    return [];
-                }
-                catch (SecurityException)
-                {
-                    return [];
-                }
-                catch (UnauthorizedAccessException)
-                {
-                    return [];
-                }
+                return Directory
+                    .EnumerateFiles(directoryPath)
+                    .Where(CanAccess);
             }
-            else
+            catch (ArgumentNullException)
             {
-                throw new FileUtilException(CreateFileAccessErrorMessage(directoryPath));
+                return [];
+            }
+            catch (ArgumentException)
+            {
+                return [];
+            }
+            catch (DirectoryNotFoundException)
+            {
+                return [];
+            }
+            catch (PathTooLongException)
+            {
+                return [];
+            }
+            catch (IOException)
+            {
+                return [];
+            }
+            catch (SecurityException)
+            {
+                return [];
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return [];
             }
         }
 
@@ -462,7 +444,7 @@ namespace SWF.Core.Base
             {
                 return true;
             }
-            else if (IsExistsDirectory(directoryPath) || IsExistsDrive(directoryPath))
+            else
             {
                 try
                 {
@@ -491,10 +473,6 @@ namespace SWF.Core.Base
                     return false;
                 }
             }
-            else
-            {
-                throw new FileUtilException(CreateFileAccessErrorMessage(directoryPath));
-            }
         }
 
         /// <summary>
@@ -517,7 +495,7 @@ namespace SWF.Core.Base
                     return [.. GetDrives()];
                 }
             }
-            else if (IsExistsDirectory(directoryPath) || IsExistsDrive(directoryPath))
+            else
             {
                 try
                 {
@@ -560,10 +538,6 @@ namespace SWF.Core.Base
                     return [];
                 }
             }
-            else
-            {
-                throw new FileUtilException(CreateFileAccessErrorMessage(directoryPath));
-            }
         }
 
         /// <summary>
@@ -579,7 +553,7 @@ namespace SWF.Core.Base
             {
                 return [.. GetDrives()];
             }
-            else if (IsExistsDirectory(directoryPath) || IsExistsDrive(directoryPath))
+            else
             {
                 try
                 {
@@ -607,10 +581,6 @@ namespace SWF.Core.Base
                 {
                     return [];
                 }
-            }
-            else
-            {
-                throw new FileUtilException(CreateFileAccessErrorMessage(directoryPath));
             }
         }
 
