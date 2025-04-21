@@ -99,29 +99,24 @@ namespace SWF.Core.ImageAccessor
 
             lock (this.CACHE_LOCK)
             {
-                using (TimeMeasuring.Run(false, $"ImageFileSizeCacher.Get"))
+                if (this.CACHE_DICTIONARY.TryGetValue(filePath, out var cache))
                 {
-                    if (this.CACHE_DICTIONARY.TryGetValue(filePath, out var cache))
+                    if (timestamp == cache.Timestamp)
                     {
-                        if (timestamp == cache.Timestamp)
-                        {
-                            return cache;
-                        }
+                        return cache;
                     }
                 }
             }
 
             var size = ImageUtil.GetImageSize(filePath);
-            this.Set(filePath, size);
+            this.Set(filePath, size, timestamp);
             return new ImageFileSizeCacheEntity(
                 filePath, size, timestamp);
         }
 
-        public void Set(string filePath, Size size)
+        public void Set(string filePath, Size size, DateTime timestamp)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
-
-            var timestamp = FileUtil.GetUpdateDate(filePath);
 
             lock (this.CACHE_LOCK)
             {
@@ -166,6 +161,12 @@ namespace SWF.Core.ImageAccessor
                     this.CACHE_LIST.Add(newCache);
                 }
             }
+        }
+
+        public void Set(string filePath, Size size)
+        {
+            var timestamp = FileUtil.GetUpdateDate(filePath);
+            this.Set(filePath, size, timestamp);
         }
     }
 }

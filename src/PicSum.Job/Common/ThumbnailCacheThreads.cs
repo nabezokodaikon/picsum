@@ -131,7 +131,9 @@ namespace PicSum.Job.Common
                                 && bf.ThumbnailBuffer != null)
                             {
                                 Instance<IImageFileSizeCacher>.Value.Set(
-                                    bf.FilePath, new Size(bf.SourceWidth, bf.SourceHeight));
+                                    bf.FilePath,
+                                    new Size(bf.SourceWidth, bf.SourceHeight),
+                                    bf.FileUpdatedate);
 
                                 var img = new ThumbnailImageResult
                                 {
