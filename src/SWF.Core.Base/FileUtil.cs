@@ -331,14 +331,7 @@ namespace SWF.Core.Base
 
             try
             {
-                if (IsExistsFile(filePath))
-                {
-                    return File.GetLastWriteTime(filePath);
-                }
-                else if (IsExistsDirectory(filePath) || IsExistsDrive(filePath))
-                {
-                    return Directory.GetLastWriteTime(filePath);
-                }
+                return File.GetLastWriteTime(filePath);
             }
             catch (UnauthorizedAccessException ex)
             {
