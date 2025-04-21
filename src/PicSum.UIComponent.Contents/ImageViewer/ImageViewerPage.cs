@@ -230,13 +230,31 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
             if (disposing)
             {
+                if (this.displayMode == ImageDisplayMode.Single)
+                {
+                    this.parameter.SelectedFilePath = this.leftImagePanel.FilePath;
+                }
+                else if (this.displayMode == ImageDisplayMode.LeftFacing
+                    && this.leftImagePanel.Visible)
+                {
+                    this.parameter.SelectedFilePath = this.leftImagePanel.FilePath;
+                }
+                else if (this.displayMode == ImageDisplayMode.RightFacing
+                    && this.rightImagePanel.Visible)
+                {
+                    this.parameter.SelectedFilePath = this.rightImagePanel.FilePath;
+                }
+                else
+                {
+                    this.parameter.SelectedFilePath = this.SelectedFilePath;
+                }
+
+                this.parameter.GetImageFiles -= this.Parameter_GetImageFiles;
+
                 this.fileContextMenu.Close();
 
                 this.leftImagePanel.Dispose();
                 this.rightImagePanel.Dispose();
-
-                this.parameter.SelectedFilePath = this.SelectedFilePath;
-                this.parameter.GetImageFiles -= this.Parameter_GetImageFiles;
 
                 this.components?.Dispose();
             }
