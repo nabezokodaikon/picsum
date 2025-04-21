@@ -661,14 +661,12 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             var index = Array.IndexOf(this.filePathList, selectedFilePath);
             if (index < 0)
             {
-                this.FilePathListIndex = 0;
+                this.ReadImage(0, null, false);
             }
             else
             {
-                this.FilePathListIndex = index;
+                this.ReadImage(index, null, false);
             }
-
-            this.ReadImage(this.FilePathListIndex, null, false);
         }
 
         private void ImageFileReadJob_Callback(ImageFileReadResult e)
