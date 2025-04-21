@@ -316,7 +316,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
             var p = this.PointToClient(Cursor.Position);
-            this.filePathToolTip.Show(filePath, this, p.X, -16, 5000);
+            this.filePathToolTip.Show(filePath, this, p.X, this.Height, 5000);
         }
 
         public void HideToolTip()
