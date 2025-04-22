@@ -376,7 +376,11 @@ namespace SWF.UIComponent.FlowList
         {
             this.Select();
 
-            if (e.Button == MouseButtons.Left)
+            if (this.rectangleSelection.IsBegun)
+            {
+
+            }
+            else if (e.Button == MouseButtons.Left)
             {
                 // 左ボタン
                 this.selectedItemIndexs.BeginUpdate();
@@ -556,7 +560,11 @@ namespace SWF.UIComponent.FlowList
 
         protected override void OnMouseDoubleClick(MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left)
+            if (this.rectangleSelection.IsBegun)
+            {
+
+            }
+            else if (e.Button == MouseButtons.Left)
             {
                 var ht = this.GetHitTestFromDrawPoint(e.X, e.Y);
                 if (ht.IsItem)
