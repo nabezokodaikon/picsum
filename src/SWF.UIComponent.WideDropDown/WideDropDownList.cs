@@ -14,8 +14,8 @@ namespace SWF.UIComponent.WideDropDown
     public sealed partial class WideDropDownList
         : ToolStripDropDown
     {
-        private static readonly Size BACKGROUND_DEFAULT_SIZE = new(800, 250);
-        private static readonly Size ITEM_DEFAULT_SIZE = new(192, 32);
+        private static readonly Size BACKGROUND_DEFAULT_SIZE = new(866, 250);
+        private static readonly Size ITEM_DEFAULT_SIZE = new(212, 32);
 
         public event EventHandler<ItemMouseClickEventArgs> ItemMouseClick;
 
