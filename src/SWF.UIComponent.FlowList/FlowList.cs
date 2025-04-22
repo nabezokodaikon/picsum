@@ -148,6 +148,29 @@ namespace SWF.UIComponent.FlowList
             }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public new ContextMenuStrip? ContextMenuStrip
+        {
+            get
+            {
+                return base.ContextMenuStrip;
+            }
+            set
+            {
+                if (base.ContextMenuStrip != null)
+                {
+                    base.ContextMenuStrip.Opening -= this.ContextMenuStrip_Opening;
+                }
+
+                base.ContextMenuStrip = value;
+
+                if (base.ContextMenuStrip != null)
+                {
+                    base.ContextMenuStrip.Opening += this.ContextMenuStrip_Opening;
+                }
+            }
+        }
+
         public FlowList()
         {
             this.SetStyle(
@@ -1388,6 +1411,18 @@ namespace SWF.UIComponent.FlowList
             else
             {
                 this.selectedItemIndexs.Clear();
+            }
+        }
+
+        private void ContextMenuStrip_Opening(object sender, CancelEventArgs e)
+        {
+            if (this.itemCount < 1)
+            {
+                e.Cancel = true;
+            }
+            else if (this.rectangleSelection.IsBegun)
+            {
+                e.Cancel = true;
             }
         }
 
