@@ -519,7 +519,7 @@ namespace SWF.UIComponent.FlowList
         {
             if (this.rectangleSelection.IsBegun)
             {
-                throw new InvalidOperationException("短形選択中は取得できません。");
+                return [];
             }
 
             return this.selectedItemIndexs.GetList();

@@ -376,9 +376,15 @@ namespace SWF.UIComponent.FlowList
         {
             this.Select();
 
-            if (this.rectangleSelection.IsBegun)
+            if (this.itemCount < 1)
             {
-
+                base.OnMouseDown(e);
+                return;
+            }
+            else if (this.rectangleSelection.IsBegun)
+            {
+                base.OnMouseDown(e);
+                return;
             }
             else if (e.Button == MouseButtons.Left)
             {
@@ -431,6 +437,11 @@ namespace SWF.UIComponent.FlowList
 
         protected override void OnMouseUp(MouseEventArgs e)
         {
+            if (this.itemCount < 1)
+            {
+                base.OnMouseUp(e);
+                return;
+            }
             if (this.rectangleSelection.IsBegun)
             {
                 var itemIndexs = this.GetItemIndexsFromVirtualRectangle(this.rectangleSelection.VirtualRectangle);
@@ -482,7 +493,12 @@ namespace SWF.UIComponent.FlowList
 
         protected override void OnMouseMove(MouseEventArgs e)
         {
-            if (this.rectangleSelection.IsBegun)
+            if (this.itemCount < 1)
+            {
+                base.OnMouseMove(e);
+                return;
+            }
+            else if (this.rectangleSelection.IsBegun)
             {
                 // 短形選択中
                 this.rectangleSelection.ChangeSelection(e.X, e.Y, this.scrollBar.Value);
@@ -560,9 +576,15 @@ namespace SWF.UIComponent.FlowList
 
         protected override void OnMouseDoubleClick(MouseEventArgs e)
         {
-            if (this.rectangleSelection.IsBegun)
+            if (this.itemCount < 1)
             {
-
+                base.OnMouseDoubleClick(e);
+                return;
+            }
+            else if (this.rectangleSelection.IsBegun)
+            {
+                base.OnMouseDoubleClick(e);
+                return;
             }
             else if (e.Button == MouseButtons.Left)
             {
@@ -581,7 +603,12 @@ namespace SWF.UIComponent.FlowList
 
         protected override void OnMouseWheel(MouseEventArgs e)
         {
-            if (e.Delta != 0)
+            if (this.itemCount < 1)
+            {
+                base.OnMouseWheel(e);
+                return;
+            }
+            else if (e.Delta != 0)
             {
                 var value = this.scrollBar.Value - (int)(this.itemHeight * 0.8 * (e.Delta / Math.Abs(e.Delta)));
                 if (value < this.scrollBar.Minimum)
