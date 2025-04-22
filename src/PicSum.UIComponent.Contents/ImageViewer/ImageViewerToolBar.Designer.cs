@@ -1,3 +1,6 @@
+using System;
+using System.Windows.Forms;
+
 namespace PicSum.UIComponent.Contents.ImageViewer
 {
     partial class ImageViewerToolBar
@@ -90,7 +93,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.indexSlider.BeginValueChange += this.IndexSlider_BeginValueChange;
             this.indexSlider.ValueChanging += this.IndexSlider_ValueChanging;
             this.indexSlider.ValueChanged += this.IndexSlider_ValueChanged;
-            this.indexSlider.MouseLeave += this.IndexSlider_MouseLeave;
+            this.indexSlider.MouseUp += this.IndexSlider_MouseUp;
             // 
             // viewButton
             // 

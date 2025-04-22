@@ -31,7 +31,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         public event EventHandler IndexSliderBeginValueChange;
         public event EventHandler IndexSliderValueChanged;
         public event EventHandler IndexSliderValueChanging;
-        public event EventHandler IndexSliderMouseLeave;
 
         private bool disposed = false;
         private readonly Font defaultFont
@@ -319,11 +318,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.filePathToolTip.Show(filePath, this, p.X, this.Height, 5000);
         }
 
-        public void HideToolTip()
-        {
-            this.filePathToolTip.Hide(this);
-        }
-
         private Font GetFont(float scale)
         {
             if (this.fontCache.TryGetValue(scale, out var font))
@@ -381,9 +375,9 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.IndexSliderValueChanged?.Invoke(this, EventArgs.Empty);
         }
 
-        private void IndexSlider_MouseLeave(object sender, System.EventArgs e)
+        private void IndexSlider_MouseUp(object sender, MouseEventArgs e)
         {
-            this.IndexSliderMouseLeave?.Invoke(this, EventArgs.Empty);
+            this.filePathToolTip.Hide(this);
         }
 
         private void IndexSlider_ValueChanging(object sender, EventArgs e)

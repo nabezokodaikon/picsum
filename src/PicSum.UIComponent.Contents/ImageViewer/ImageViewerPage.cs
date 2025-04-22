@@ -1010,13 +1010,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             {
                 return;
             }
-
-            this.toolBar.HideToolTip();
-        }
-
-        private void IndexSlider_MouseLeave(object sender, EventArgs e)
-        {
-            this.toolBar.HideToolTip();
         }
 
         private void LeftImagePanel_MouseDown(object sender, MouseEventArgs e)
