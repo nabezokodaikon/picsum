@@ -5,7 +5,7 @@ using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 using System.Security;
-using System.Xml.Linq;
+using System.Xml;
 using ZLinq;
 
 namespace SWF.Core.ImageAccessor
@@ -175,20 +175,15 @@ namespace SWF.Core.ImageAccessor
                     {
                         return GetImageSizeWithShell(filePath);
                     }
-                    else if (IsSvgFile(filePath))
-                    {
-                        var size = GetSvgSize(filePath);
-                        if (size == EMPTY_SIZE)
-                        {
-                            throw new ImageUtilException(CreateFileAccessErrorMessage(filePath));
-                        }
-
-                        return size;
-                    }
 
                     using (var fs = new FileStream(filePath,
                          FileMode.Open, FileAccess.Read, FileShare.Read, 64, FileOptions.SequentialScan))
                     {
+                        if (IsSvgFile(filePath))
+                        {
+                            return SVGUtil.GetImageSize(fs);
+                        }
+
                         var formatName = SixLaborsUtil.DetectFormat(fs);
 
                         if (IsAvifFile(formatName))
@@ -290,6 +285,10 @@ namespace SWF.Core.ImageAccessor
                 {
                     throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
                 }
+                catch (XmlException ex)
+                {
+                    throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
+                }
                 catch (SixLabors.ImageSharp.InvalidImageContentException ex)
                 {
                     throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
@@ -374,7 +373,7 @@ namespace SWF.Core.ImageAccessor
                 {
                     Logger.Error(ex);
 
-                    return ReadImageFileFromImageMagick(filePath);
+                    return ReadImageFileWithImageMagick(filePath);
                 }
             }
         }
@@ -400,7 +399,7 @@ namespace SWF.Core.ImageAccessor
                     {
                         using (TimeMeasuring.Run(false, "ReadImageFileFromFileStream: Svg"))
                         {
-                            return MagickUtil.ReadImageFile(fs, ImageMagick.MagickFormat.Svg);
+                            return SVGUtil.ReadImageFile(fs);
                         }
                     }
 
@@ -501,6 +500,10 @@ namespace SWF.Core.ImageAccessor
             {
                 throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
             }
+            catch (XmlException ex)
+            {
+                throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
+            }
             catch (SixLabors.ImageSharp.InvalidImageContentException ex)
             {
                 throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
@@ -527,7 +530,7 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
-        private static Bitmap ReadImageFileFromImageMagick(string filePath)
+        private static Bitmap ReadImageFileWithImageMagick(string filePath)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
@@ -729,44 +732,6 @@ namespace SWF.Core.ImageAccessor
                         }
                     }
                 }
-            }
-
-            return EMPTY_SIZE;
-        }
-
-        private static Size GetSvgSize(string filePath)
-        {
-            ArgumentNullException.ThrowIfNull(filePath, nameof(filePath));
-
-            var svgDoc = XDocument.Load(filePath);
-            var svgElement = svgDoc.Root;
-            if (svgElement != null && svgElement.Name.LocalName == "svg")
-            {
-                var widthStr = svgElement.Attribute("width")?.Value;
-                if (string.IsNullOrEmpty(widthStr))
-                {
-                    return EMPTY_SIZE;
-                }
-
-                var width = StringUtil.ToInt(StringUtil.ExtractNumbers(widthStr));
-                if (!width.HasValue)
-                {
-                    return EMPTY_SIZE;
-                }
-
-                var heightStr = svgElement.Attribute("height")?.Value;
-                if (string.IsNullOrEmpty(heightStr))
-                {
-                    return EMPTY_SIZE;
-                }
-
-                var height = StringUtil.ToInt(StringUtil.ExtractNumbers(heightStr));
-                if (!height.HasValue)
-                {
-                    return EMPTY_SIZE;
-                }
-
-                return new Size(width.Value, height.Value);
             }
 
             return EMPTY_SIZE;
