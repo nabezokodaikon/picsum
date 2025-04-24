@@ -31,12 +31,7 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
-        /// <summary>
-        /// バイト配列からイメージオブジェクトを取得します。
-        /// </summary>
-        /// <param name="bf">バイト配列</param>
-        /// <returns>イメージオブジェクト</returns>
-        public static Bitmap ToImage(byte[] bf)
+        public static OpenCvSharp.Mat ToImage(byte[] bf)
         {
             ArgumentNullException.ThrowIfNull(bf, nameof(bf));
 
@@ -45,7 +40,7 @@ namespace SWF.Core.ImageAccessor
             {
                 try
                 {
-                    return (Bitmap)Bitmap.FromStream(mes, false, true);
+                    return OpenCVUtil.ReadImageFileToMat(mes);
                 }
                 catch (OutOfMemoryException ex)
                 {
@@ -205,7 +200,7 @@ namespace SWF.Core.ImageAccessor
         /// <param name="g"></param>
         /// <param name="thumb"></param>
         /// <param name="destRect"></param>
-        public static void AdjustDrawFileThumbnail(Graphics g, Image thumb, RectangleF destRect, SizeF srcSize)
+        public static void AdjustDrawFileThumbnail(Graphics g, CvImage thumb, RectangleF destRect, SizeF srcSize)
         {
             ArgumentNullException.ThrowIfNull(g, nameof(g));
             ArgumentNullException.ThrowIfNull(thumb, nameof(thumb));
@@ -238,11 +233,7 @@ namespace SWF.Core.ImageAccessor
             var x = destRect.X + (destRect.Width - w) / 2f;
             var y = destRect.Y + (destRect.Height - h) / 2f;
 
-            g.DrawImage(
-                thumb,
-                new RectangleF(x, y, w, h),
-                new RectangleF(0, 0, thumb.Width, thumb.Height),
-                GraphicsUnit.Pixel);
+            thumb.DrawResizeImage(g, new RectangleF(x, y, w, h));
         }
 
         /// <summary>
@@ -279,7 +270,7 @@ namespace SWF.Core.ImageAccessor
         /// <param name="thumb"></param>
         /// <param name="destRect"></param>
         /// <param name="icon"></param>
-        public static void AdjustDrawDirectoryThumbnail(Graphics g, Image thumb, RectangleF destRect, SizeF srcSize, Image icon)
+        public static void AdjustDrawDirectoryThumbnail(Graphics g, CvImage thumb, RectangleF destRect, SizeF srcSize, Image icon)
         {
             ArgumentNullException.ThrowIfNull(g, nameof(g));
             ArgumentNullException.ThrowIfNull(thumb, nameof(thumb));

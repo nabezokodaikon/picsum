@@ -1,4 +1,5 @@
 using SWF.Core.Base;
+using SWF.Core.ImageAccessor;
 using System.Drawing;
 using System.Runtime.Versioning;
 
@@ -35,7 +36,7 @@ namespace PicSum.Job.Entities
         public Image? ExtraLargeIcon { get; internal set; } = null;
         public Image? SmallIcon { get; internal set; } = null;
         public Image? JumboIcon { get; internal set; } = null;
-        public Bitmap? ThumbnailImage { get; internal set; } = null;
+        public CvImage? ThumbnailImage { get; internal set; } = null;
         public int ThumbnailWidth { get; internal set; } = 0;
         public int ThumbnailHeight { get; internal set; } = 0;
         public int SourceWidth { get; internal set; } = 0;

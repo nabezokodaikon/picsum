@@ -52,5 +52,16 @@ namespace SWF.Core.ImageAccessor
                 }
             }
         }
+
+        public static Mat ReadImageFileToMat(Stream stream)
+        {
+            ArgumentNullException.ThrowIfNull(stream, nameof(stream));
+
+            using (TimeMeasuring.Run(false, "OpenCVUtil.ReadImageFile"))
+            {
+                stream.Seek(0, SeekOrigin.Begin);
+                return Mat.FromStream(stream, ImreadModes.Color);
+            }
+        }
     }
 }

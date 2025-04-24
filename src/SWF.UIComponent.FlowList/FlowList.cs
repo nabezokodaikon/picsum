@@ -208,28 +208,32 @@ namespace SWF.UIComponent.FlowList
 
         protected override void OnPaint(PaintEventArgs e)
         {
-            if (!this.isDraw)
+            using (TimeMeasuring.Run(true, "FlowList.OnPaint"))
             {
-                return;
+                if (!this.isDraw)
+                {
+                    return;
+                }
+
+                e.Graphics.SmoothingMode = SmoothingMode.None;
+                e.Graphics.InterpolationMode = InterpolationMode.Low;
+                e.Graphics.CompositingQuality = CompositingQuality.HighSpeed;
+                e.Graphics.PixelOffsetMode = PixelOffsetMode.HighSpeed;
+                e.Graphics.CompositingMode = CompositingMode.SourceOver;
+
+                if (this.rectangleSelection.IsBegun)
+                {
+                    this.DrawRectangleSelection(e.Graphics);
+                }
+
+                if (this.itemCount > 0)
+                {
+
+                    this.DrawItems(e.Graphics);
+                }
+
+                base.OnPaint(e);
             }
-
-            e.Graphics.SmoothingMode = SmoothingMode.None;
-            e.Graphics.InterpolationMode = InterpolationMode.Low;
-            e.Graphics.CompositingQuality = CompositingQuality.HighSpeed;
-            e.Graphics.PixelOffsetMode = PixelOffsetMode.HighSpeed;
-            e.Graphics.CompositingMode = CompositingMode.SourceOver;
-
-            if (this.rectangleSelection.IsBegun)
-            {
-                this.DrawRectangleSelection(e.Graphics);
-            }
-
-            if (this.itemCount > 0)
-            {
-                this.DrawItems(e.Graphics);
-            }
-
-            base.OnPaint(e);
         }
 
         protected override bool IsInputKey(Keys keyData)

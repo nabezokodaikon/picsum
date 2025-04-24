@@ -1,3 +1,4 @@
+using SWF.Core.ImageAccessor;
 using System;
 using System.Drawing;
 
@@ -14,7 +15,7 @@ namespace PicSum.UIComponent.Contents.FileList
         public Image SmallIcon { get; set; }
         public Image ExtraLargeIcon { get; set; }
         public Image JumboIcon { get; set; }
-        public Image ThumbnailImage { get; set; }
+        public CvImage ThumbnailImage { get; set; }
         public int ThumbnailWidth { get; set; }
         public int ThumbnailHeight { get; set; }
         public int SourceImageWidth { get; set; }

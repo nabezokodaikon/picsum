@@ -4,6 +4,7 @@ using SWF.Core.Base;
 using SWF.Core.ImageAccessor;
 using SWF.Core.Job;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Runtime.Versioning;
 
 namespace PicSum.Job.Logics
@@ -216,7 +217,7 @@ namespace PicSum.Job.Logics
             }
         }
 
-        private Bitmap GetThumbnail(string filePath, Size thumbSize)
+        private CvImage GetThumbnail(string filePath, Size thumbSize)
         {
             var cache = Instance<IThumbnailCacher>.Value.GetCache(filePath);
             if (cache != ThumbnailCacheEntity.EMPTY
@@ -224,26 +225,14 @@ namespace PicSum.Job.Logics
                 && cache.ThumbnailWidth >= thumbSize.Width
                 && cache.ThumbnailHeight >= thumbSize.Height)
             {
-                return ThumbnailUtil.ToImage(cache.ThumbnailBuffer);
+                return new CvImage(
+                    filePath,
+                    ThumbnailUtil.ToImage(cache.ThumbnailBuffer),
+                    PixelFormat.DontCare);
             }
-
-            using (var cvImage = this.ReadImageFile(filePath))
+            else
             {
-                this.CheckCancel();
-
-                Bitmap? thumbnail = null;
-                try
-                {
-                    return ThumbnailUtil.CreateThumbnail(
-                        cvImage,
-                        Math.Max(thumbSize.Width, thumbSize.Height),
-                        ImageSizeMode.Original);
-                }
-                catch (JobCancelException)
-                {
-                    thumbnail?.Dispose();
-                    throw;
-                }
+                return this.ReadImageFile(filePath);
             }
         }
 

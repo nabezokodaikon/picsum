@@ -1,6 +1,6 @@
 using SWF.Core.Base;
+using SWF.Core.ImageAccessor;
 using SWF.Core.Job;
-using System.Drawing;
 using System.Runtime.Versioning;
 
 namespace PicSum.Job.Results
@@ -24,7 +24,7 @@ namespace PicSum.Job.Results
         };
 
         public string FilePath { get; internal set; } = string.Empty;
-        public Image? ThumbnailImage { get; internal set; }
+        public CvImage? ThumbnailImage { get; internal set; }
         public int ThumbnailWidth { get; internal set; }
         public int ThumbnailHeight { get; internal set; }
         public int SourceWidth { get; internal set; }

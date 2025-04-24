@@ -3,6 +3,7 @@ using PicSum.Job.Entities;
 using SWF.Core.Base;
 using SWF.Core.ImageAccessor;
 using SWF.Core.Job;
+using System.Drawing.Imaging;
 using System.Runtime.Versioning;
 
 namespace PicSum.Job.Logics
@@ -78,7 +79,10 @@ namespace PicSum.Job.Logics
             if (thumbnailBuffer != ThumbnailCacheEntity.EMPTY
                 && thumbnailBuffer.ThumbnailBuffer != null)
             {
-                info.ThumbnailImage = ThumbnailUtil.ToImage(thumbnailBuffer.ThumbnailBuffer);
+                info.ThumbnailImage = new CvImage(
+                    filePath,
+                    ThumbnailUtil.ToImage(thumbnailBuffer.ThumbnailBuffer),
+                    PixelFormat.DontCare);
                 info.ThumbnailWidth = thumbnailBuffer.ThumbnailWidth;
                 info.ThumbnailHeight = thumbnailBuffer.ThumbnailHeight;
                 info.SourceWidth = thumbnailBuffer.SourceWidth;
@@ -117,7 +121,10 @@ namespace PicSum.Job.Logics
             if (thumbnailBuffer != ThumbnailCacheEntity.EMPTY
                 && thumbnailBuffer.ThumbnailBuffer != null)
             {
-                info.ThumbnailImage = ThumbnailUtil.ToImage(thumbnailBuffer.ThumbnailBuffer);
+                info.ThumbnailImage = new CvImage(
+                    filePath,
+                    ThumbnailUtil.ToImage(thumbnailBuffer.ThumbnailBuffer),
+                    PixelFormat.DontCare);
                 info.ThumbnailWidth = thumbnailBuffer.ThumbnailWidth;
                 info.ThumbnailHeight = thumbnailBuffer.ThumbnailHeight;
                 info.SourceWidth = thumbnailBuffer.SourceWidth;
