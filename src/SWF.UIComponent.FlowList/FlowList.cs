@@ -208,7 +208,7 @@ namespace SWF.UIComponent.FlowList
 
         protected override void OnPaint(PaintEventArgs e)
         {
-            using (TimeMeasuring.Run(true, "FlowList.OnPaint"))
+            using (TimeMeasuring.Run(false, "FlowList.OnPaint"))
             {
                 if (!this.isDraw)
                 {
