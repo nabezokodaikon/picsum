@@ -104,11 +104,6 @@ namespace PicSum.UIComponent.InfoPanel
                 {
                     return FileDeepInfoEntity.ERROR;
                 }
-                else if (this.fileInfoSource.FileInfo.Thumbnail.ThumbnailImage == null
-                    || this.fileInfoSource.FileInfo.Thumbnail.ThumbnailImage == CvImage.EMPTY)
-                {
-                    return FileDeepInfoEntity.ERROR;
-                }
 
                 return this.fileInfoSource.FileInfo;
             }

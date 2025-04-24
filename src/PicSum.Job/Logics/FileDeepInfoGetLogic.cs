@@ -124,6 +124,10 @@ namespace PicSum.Job.Logics
             info.ImageSize = new(srcSize.Width, srcSize.Height);
 
             var thumbnail = this.GetThumbnail(firstImageFile, thumbSize);
+            if (thumbnail == CvImage.EMPTY)
+            {
+                return FileDeepInfoEntity.ERROR;
+            }
 
             this.CheckCancel();
 
@@ -182,6 +186,10 @@ namespace PicSum.Job.Logics
             info.ImageSize = new(srcSize.Width, srcSize.Height);
 
             var thumbnail = this.GetThumbnail(filePath, thumbSize);
+            if (thumbnail == CvImage.EMPTY)
+            {
+                return FileDeepInfoEntity.ERROR;
+            }
 
             this.CheckCancel();
 
