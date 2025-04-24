@@ -104,6 +104,11 @@ namespace PicSum.UIComponent.InfoPanel
                 {
                     return FileDeepInfoEntity.ERROR;
                 }
+                else if (this.fileInfoSource.FileInfo.Thumbnail.ThumbnailImage == null
+                    || this.fileInfoSource.FileInfo.Thumbnail.ThumbnailImage == CvImage.EMPTY)
+                {
+                    return FileDeepInfoEntity.ERROR;
+                }
 
                 return this.fileInfoSource.FileInfo;
             }
@@ -575,7 +580,12 @@ namespace PicSum.UIComponent.InfoPanel
 
         private void ThumbnailPictureBox_Paint(object sender, PaintEventArgs e)
         {
-            if (this.Thumbnail != ThumbnailImageResult.EMPTY)
+            if (this.FileInfo == FileDeepInfoEntity.ERROR)
+            {
+                var rect = new Rectangle(0, 0, this.thumbnailPictureBox.Width, this.thumbnailPictureBox.Height);
+                this.DrawErrorMessage(e.Graphics, rect);
+            }
+            else if (this.Thumbnail != ThumbnailImageResult.EMPTY)
             {
                 var size = Math.Min(this.thumbnailPictureBox.Width, this.thumbnailPictureBox.Height);
                 var x = 0 + (this.thumbnailPictureBox.Width - size) / 2f;
@@ -609,11 +619,6 @@ namespace PicSum.UIComponent.InfoPanel
             {
                 var rect = new Rectangle(0, 0, this.thumbnailPictureBox.Width, this.thumbnailPictureBox.Height);
                 this.DrawSelectedFileCount(e.Graphics, rect);
-            }
-            else if (this.FileInfo == FileDeepInfoEntity.ERROR)
-            {
-                var rect = new Rectangle(0, 0, this.thumbnailPictureBox.Width, this.thumbnailPictureBox.Height);
-                this.DrawErrorMessage(e.Graphics, rect);
             }
         }
 
