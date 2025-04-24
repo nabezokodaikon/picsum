@@ -51,8 +51,7 @@ namespace PicSum.Job.Logics
                 return this.GetSystemRootInfo();
             }
 
-            throw new ArgumentException(
-                $"不正なファイルパスです。'{filePath}'", nameof(filePath));
+            return FileDeepInfoEntity.ERROR;
         }
 
         private FileDeepInfoEntity GetSystemRootInfo()
@@ -113,21 +112,12 @@ namespace PicSum.Job.Logics
                 return info;
             }
 
-            var srcSize = this.GetImageSize(firstImageFile);
-            if (srcSize == ImageUtil.EMPTY_SIZE)
-            {
-                return info;
-            }
+            var srcSize = Instance<IImageFileSizeCacher>.Value.GetOrCreate(firstImageFile).Size;
+            info.ImageSize = new(srcSize.Width, srcSize.Height);
 
             this.CheckCancel();
 
-            info.ImageSize = new(srcSize.Width, srcSize.Height);
-
             var thumbnail = this.GetThumbnail(firstImageFile, thumbSize);
-            if (thumbnail == CvImage.EMPTY)
-            {
-                return FileDeepInfoEntity.ERROR;
-            }
 
             this.CheckCancel();
 
@@ -172,24 +162,13 @@ namespace PicSum.Job.Logics
                 return info;
             }
 
-            var srcSize = this.GetImageSize(filePath);
-            if (srcSize == ImageUtil.EMPTY_SIZE)
-            {
-                info.IsImageFile = true;
-                info.ImageSize = srcSize;
-                return info;
-            }
+            var srcSize = Instance<IImageFileSizeCacher>.Value.GetOrCreate(filePath).Size;
+            info.ImageSize = new(srcSize.Width, srcSize.Height);
 
             this.CheckCancel();
 
-            info.IsImageFile = true;
-            info.ImageSize = new(srcSize.Width, srcSize.Height);
-
             var thumbnail = this.GetThumbnail(filePath, thumbSize);
-            if (thumbnail == CvImage.EMPTY)
-            {
-                return FileDeepInfoEntity.ERROR;
-            }
+            info.IsImageFile = true;
 
             this.CheckCancel();
 
@@ -207,24 +186,6 @@ namespace PicSum.Job.Logics
             return info;
         }
 
-        private Size GetImageSize(string filePath)
-        {
-            try
-            {
-                return Instance<IImageFileSizeCacher>.Value.GetOrCreate(filePath).Size;
-            }
-            catch (FileUtilException ex)
-            {
-                this.WriteErrorLog(new JobException(this.Job.ID, ex));
-                return ImageUtil.EMPTY_SIZE;
-            }
-            catch (ImageUtilException ex)
-            {
-                this.WriteErrorLog(new JobException(this.Job.ID, ex));
-                return ImageUtil.EMPTY_SIZE;
-            }
-        }
-
         private CvImage GetThumbnail(string filePath, Size thumbSize)
         {
             var cache = Instance<IThumbnailCacher>.Value.GetCache(filePath);
@@ -240,25 +201,7 @@ namespace PicSum.Job.Logics
             }
             else
             {
-                return this.ReadImageFile(filePath);
-            }
-        }
-
-        private CvImage ReadImageFile(string filePath)
-        {
-            try
-            {
                 return Instance<IImageFileCacher>.Value.GetCvImage(filePath);
-            }
-            catch (FileUtilException ex)
-            {
-                this.WriteErrorLog(new JobException(this.Job.ID, ex));
-                return CvImage.EMPTY;
-            }
-            catch (ImageUtilException ex)
-            {
-                this.WriteErrorLog(new JobException(this.Job.ID, ex));
-                return CvImage.EMPTY;
             }
         }
     }

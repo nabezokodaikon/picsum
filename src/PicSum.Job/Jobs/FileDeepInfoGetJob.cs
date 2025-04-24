@@ -37,11 +37,6 @@ namespace PicSum.Job.Jobs
                     var deepInfoGetLogic = new FileDeepInfoGetLogic(this);
                     var filePath = param.FilePathList[0];
                     var fileInfo = deepInfoGetLogic.Get(filePath, param.ThumbnailSize, true);
-                    if (fileInfo == FileDeepInfoEntity.ERROR)
-                    {
-                        this.Callback(FileDeepInfoGetResult.ERROR);
-                        return;
-                    }
 
                     this.CheckCancel();
 
@@ -59,11 +54,17 @@ namespace PicSum.Job.Jobs
                 }
                 catch (FileUtilException ex)
                 {
-                    throw new JobException(this.ID, ex);
+                    result.FileInfo.Thumbnail.ThumbnailImage?.Dispose();
+                    this.WriteErrorLog(new JobException(this.ID, ex));
+                    this.Callback(FileDeepInfoGetResult.ERROR);
+                    return;
                 }
                 catch (ImageUtilException ex)
                 {
-                    throw new JobException(this.ID, ex);
+                    result.FileInfo.Thumbnail.ThumbnailImage?.Dispose();
+                    this.WriteErrorLog(new JobException(this.ID, ex));
+                    this.Callback(FileDeepInfoGetResult.ERROR);
+                    return;
                 }
             }
 
