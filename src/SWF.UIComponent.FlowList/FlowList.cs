@@ -149,7 +149,7 @@ namespace SWF.UIComponent.FlowList
         }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public new ContextMenuStrip? ContextMenuStrip
+        public new ContextMenuStrip ContextMenuStrip
         {
             get
             {
