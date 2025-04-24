@@ -31,6 +31,7 @@ namespace SWF.Core.ImageAccessor
         public static readonly Bitmap EMPTY_IMAGE = new(1, 1);
 
         private static readonly int FILE_READ_BUFFER_SIZE = 16384;
+        private static readonly byte[] EXPECTED_PNG_SIGNATURE = { 137, 80, 78, 71, 13, 10, 26, 10 };
 
         private static IShellApplication GetSell()
         {
@@ -778,8 +779,7 @@ namespace SWF.Core.ImageAccessor
             using (var reader = new BinaryReader(fs))
             {
                 var pngSignature = reader.ReadBytes(8);
-                var expectedPngSignature = new byte[] { 137, 80, 78, 71, 13, 10, 26, 10 };
-                if (!CompareByteArrays(pngSignature, expectedPngSignature))
+                if (!CompareByteArrays(pngSignature, EXPECTED_PNG_SIGNATURE))
                 {
                     return EMPTY_SIZE;
                 }
