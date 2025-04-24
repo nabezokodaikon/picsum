@@ -181,7 +181,7 @@ namespace SWF.Core.ImageAccessor
                     {
                         if (IsSvgFile(filePath))
                         {
-                            return SVGUtil.GetImageSize(fs);
+                            return SvgUtil.GetImageSize(fs);
                         }
 
                         var formatName = SixLaborsUtil.DetectFormat(fs);
@@ -399,7 +399,7 @@ namespace SWF.Core.ImageAccessor
                     {
                         using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFileWithVarious: Svg"))
                         {
-                            return SVGUtil.ReadImageFile(fs);
+                            return SvgUtil.ReadImageFile(fs);
                         }
                     }
 

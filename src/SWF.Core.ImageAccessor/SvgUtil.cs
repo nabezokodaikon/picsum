@@ -2,7 +2,7 @@ using Svg;
 
 namespace SWF.Core.ImageAccessor
 {
-    internal static class SVGUtil
+    internal static class SvgUtil
     {
         public static Size GetImageSize(Stream stream)
         {
