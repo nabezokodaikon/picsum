@@ -643,7 +643,7 @@ namespace SWF.UIComponent.ImagePanel
                         else
                         {
                             var destRect = this.GetImageDestRectangle();
-                            this.image.DrawResizeImage(g, destRect);
+                            this.image.DrawHighQualityResizeImage(g, destRect);
                         }
                     }
                 }
@@ -668,7 +668,7 @@ namespace SWF.UIComponent.ImagePanel
             g.DrawImage(this.thumbnailPanelImage, panelRect);
 
             var thumbRect = this.GetThumbnailRectangle(panelRect);
-            using (var thumbnail = this.image.GetResizeImage(
+            using (var thumbnail = this.image.GetHighQualityResizeImage(
                 new Size((int)thumbRect.Size.Width, (int)thumbRect.Height)))
             {
                 g.DrawImage(thumbnail, thumbRect);

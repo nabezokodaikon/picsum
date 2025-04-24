@@ -1,4 +1,3 @@
-using OpenCvSharp;
 using OpenCvSharp.Extensions;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
@@ -27,14 +26,14 @@ namespace SWF.Core.ImageAccessor
         private bool disposed = false;
         private readonly string filePath;
         private readonly PixelFormat pixelFormat;
-        private Mat? mat;
+        private OpenCvSharp.Mat? mat;
 
         public readonly System.Drawing.Size Size;
         public readonly int Width;
         public readonly int Height;
         public readonly bool IsEmpty;
 
-        public CvImage(string filePath, Mat mat, PixelFormat pixelFormat)
+        public CvImage(string filePath, OpenCvSharp.Mat mat, PixelFormat pixelFormat)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
             ArgumentNullException.ThrowIfNull(mat, nameof(mat));
@@ -103,7 +102,17 @@ namespace SWF.Core.ImageAccessor
             g.FillRectangle(brush, destRect);
         }
 
-        public Bitmap GetResizeImage(System.Drawing.Size size)
+        public Bitmap GetHighQualityResizeImage(System.Drawing.Size size)
+        {
+            return this.GetResizeImage(size, OpenCvSharp.InterpolationFlags.Area);
+        }
+
+        public Bitmap GetLowQualityResizeImage(System.Drawing.Size size)
+        {
+            return this.GetResizeImage(size, OpenCvSharp.InterpolationFlags.Linear);
+        }
+
+        private Bitmap GetResizeImage(System.Drawing.Size size, OpenCvSharp.InterpolationFlags flag)
         {
             if (this.mat == null)
             {
@@ -112,7 +121,7 @@ namespace SWF.Core.ImageAccessor
 
             try
             {
-                return OpenCVUtil.Resize(this.mat, size.Width, size.Height);
+                return OpenCVUtil.Resize(this.mat, size.Width, size.Height, flag);
             }
             catch (NotSupportedException ex)
             {
@@ -176,48 +185,17 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
-        public void DrawResizeImage(Graphics g, RectangleF destRect)
+        public void DrawHighQualityResizeImage(Graphics g, RectangleF destRect)
         {
-            ArgumentNullException.ThrowIfNull(g, nameof(g));
-
-            if (this.mat == null)
-            {
-                throw new NullReferenceException("MatがNullです。");
-            }
-
-            g.CompositingMode = CompositingMode.SourceOver;
-
-            try
-            {
-                using (var bmp = OpenCVUtil.Resize(this.mat, (int)destRect.Width, (int)destRect.Height))
-                {
-                    g.DrawImage(bmp, destRect,
-                        new RectangleF(0, 0, destRect.Width, destRect.Height), GraphicsUnit.Pixel);
-                }
-            }
-            catch (NotSupportedException ex)
-            {
-                throw new ImageUtilException(CreateErrorMessage(this.filePath), ex);
-            }
-            catch (ArgumentNullException ex)
-            {
-                throw new ImageUtilException(CreateErrorMessage(this.filePath), ex);
-            }
-            catch (ArgumentException ex)
-            {
-                throw new ImageUtilException(CreateErrorMessage(this.filePath), ex);
-            }
-            catch (ObjectDisposedException ex)
-            {
-                throw new ImageUtilException(CreateErrorMessage(this.filePath), ex);
-            }
-            catch (NotImplementedException ex)
-            {
-                throw new ImageUtilException(CreateErrorMessage(this.filePath), ex);
-            }
+            this.DrawResizeImage(g, destRect, OpenCvSharp.InterpolationFlags.Area);
         }
 
-        public void DrawResizeImageByCompletion(Graphics g, RectangleF destRect)
+        public void DrawLowQualityResizeImage(Graphics g, RectangleF destRect)
+        {
+            this.DrawResizeImage(g, destRect, OpenCvSharp.InterpolationFlags.Linear);
+        }
+
+        public void DrawResizeImage(Graphics g, RectangleF destRect, OpenCvSharp.InterpolationFlags flag)
         {
             ArgumentNullException.ThrowIfNull(g, nameof(g));
 
@@ -230,7 +208,7 @@ namespace SWF.Core.ImageAccessor
 
             try
             {
-                using (var bmp = OpenCVUtil.ResizeByCompletion(this.mat, (int)destRect.Width, (int)destRect.Height))
+                using (var bmp = OpenCVUtil.Resize(this.mat, (int)destRect.Width, (int)destRect.Height, flag))
                 {
                     g.DrawImage(bmp, destRect,
                         new RectangleF(0, 0, destRect.Width, destRect.Height), GraphicsUnit.Pixel);

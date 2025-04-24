@@ -83,17 +83,21 @@ namespace SWF.Core.ImageAccessor
                     h = 1;
                 }
 
-                return ImageUtil.Resize((Bitmap)srcImg, w, h);
+                return ImageUtil.Resize((Bitmap)srcImg, w, h, OpenCvSharp.InterpolationFlags.Area);
             }
         }
 
-        /// <summary>
-        /// ファイルのサムネイルを調整して描画します。
-        /// </summary>
-        /// <param name="g"></param>
-        /// <param name="thumb"></param>
-        /// <param name="destRect"></param>
-        public static void DrawFileThumbnail(Graphics g, CvImage thumb, RectangleF destRect, SizeF srcSize)
+        public static void DrawHighQualityFileThumbnail(Graphics g, CvImage thumb, RectangleF destRect, SizeF srcSize)
+        {
+            DrawFileThumbnail(g, thumb, destRect, srcSize, OpenCvSharp.InterpolationFlags.Area);
+        }
+
+        public static void DrawLowQualityFileThumbnail(Graphics g, CvImage thumb, RectangleF destRect, SizeF srcSize)
+        {
+            DrawFileThumbnail(g, thumb, destRect, srcSize, OpenCvSharp.InterpolationFlags.Linear);
+        }
+
+        private static void DrawFileThumbnail(Graphics g, CvImage thumb, RectangleF destRect, SizeF srcSize, OpenCvSharp.InterpolationFlags flag)
         {
             ArgumentNullException.ThrowIfNull(g, nameof(g));
             ArgumentNullException.ThrowIfNull(thumb, nameof(thumb));
@@ -126,23 +130,26 @@ namespace SWF.Core.ImageAccessor
             var x = destRect.X + (destRect.Width - w) / 2f;
             var y = destRect.Y + (destRect.Height - h) / 2f;
 
-            thumb.DrawResizeImageByCompletion(g, new RectangleF(x, y, w, h));
+            thumb.DrawResizeImage(g, new RectangleF(x, y, w, h), flag);
         }
 
-        /// <summary>
-        /// フォルダのサムネイルを調整して描画します。
-        /// </summary>
-        /// <param name="g"></param>
-        /// <param name="thumb"></param>
-        /// <param name="destRect"></param>
-        /// <param name="icon"></param>
-        public static void DrawDirectoryThumbnail(Graphics g, CvImage thumb, RectangleF destRect, SizeF srcSize, Image icon)
+        public static void DrawHighQualityDirectoryThumbnail(Graphics g, CvImage thumb, RectangleF destRect, SizeF srcSize, Image icon)
+        {
+            DrawDirectoryThumbnail(g, thumb, destRect, srcSize, icon, OpenCvSharp.InterpolationFlags.Area);
+        }
+
+        public static void DrawLowQualityDirectoryThumbnail(Graphics g, CvImage thumb, RectangleF destRect, SizeF srcSize, Image icon)
+        {
+            DrawDirectoryThumbnail(g, thumb, destRect, srcSize, icon, OpenCvSharp.InterpolationFlags.Linear);
+        }
+
+        private static void DrawDirectoryThumbnail(Graphics g, CvImage thumb, RectangleF destRect, SizeF srcSize, Image icon, OpenCvSharp.InterpolationFlags flag)
         {
             ArgumentNullException.ThrowIfNull(g, nameof(g));
             ArgumentNullException.ThrowIfNull(thumb, nameof(thumb));
             ArgumentNullException.ThrowIfNull(icon, nameof(icon));
 
-            DrawFileThumbnail(g, thumb, destRect, srcSize);
+            DrawFileThumbnail(g, thumb, destRect, srcSize, flag);
 
             var destIconSize = new SizeF(destRect.Width * 0.5f, destRect.Height * 0.5f);
             var destIconRect = new RectangleF(

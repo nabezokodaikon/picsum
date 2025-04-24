@@ -8,7 +8,7 @@ namespace SWF.Core.ImageAccessor
     [SupportedOSPlatform("windows10.0.17763.0")]
     internal static class OpenCVUtil
     {
-        public static Bitmap ResizeByCompletion(Mat srcMat, int newWidth, int newHeight)
+        public static Bitmap Resize(Mat srcMat, int newWidth, int newHeight, InterpolationFlags flag)
         {
             ArgumentNullException.ThrowIfNull(srcMat, nameof(srcMat));
 
@@ -17,28 +17,13 @@ namespace SWF.Core.ImageAccessor
                 var size = new OpenCvSharp.Size(newWidth, newHeight);
                 using (var destMat = new Mat(size, srcMat.Type()))
                 {
-                    Cv2.Resize(srcMat, destMat, new OpenCvSharp.Size(newWidth, newHeight), 0, 0, InterpolationFlags.Linear);
+                    Cv2.Resize(srcMat, destMat, new OpenCvSharp.Size(newWidth, newHeight), 0, 0, flag);
                     return destMat.ToBitmap();
                 }
             }
         }
 
-        public static Bitmap Resize(Mat srcMat, int newWidth, int newHeight)
-        {
-            ArgumentNullException.ThrowIfNull(srcMat, nameof(srcMat));
-
-            using (TimeMeasuring.Run(false, "OpenCVUtil.Resize By Mat"))
-            {
-                var size = new OpenCvSharp.Size(newWidth, newHeight);
-                using (var destMat = new Mat(size, srcMat.Type()))
-                {
-                    Cv2.Resize(srcMat, destMat, new OpenCvSharp.Size(newWidth, newHeight), 0, 0, InterpolationFlags.Area);
-                    return destMat.ToBitmap();
-                }
-            }
-        }
-
-        public static Bitmap Resize(Bitmap srcBmp, int width, int height)
+        public static Bitmap Resize(Bitmap srcBmp, int width, int height, InterpolationFlags flag)
         {
             ArgumentNullException.ThrowIfNull(srcBmp, nameof(srcBmp));
 
@@ -48,7 +33,7 @@ namespace SWF.Core.ImageAccessor
                 using (var srcMat = srcBmp.ToMat())
                 using (var destMat = new Mat(size, srcMat.Type()))
                 {
-                    Cv2.Resize(srcMat, destMat, size, 0, 0, InterpolationFlags.Area);
+                    Cv2.Resize(srcMat, destMat, size, 0, 0, flag);
                     return destMat.ToBitmap();
                 }
             }

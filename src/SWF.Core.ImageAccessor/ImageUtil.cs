@@ -134,11 +134,11 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
-        internal static Bitmap Resize(Bitmap srcBmp, int width, int height)
+        internal static Bitmap Resize(Bitmap srcBmp, int width, int height, OpenCvSharp.InterpolationFlags flag)
         {
             ArgumentNullException.ThrowIfNull(srcBmp, nameof(srcBmp));
 
-            return OpenCVUtil.Resize(srcBmp, width, height);
+            return OpenCVUtil.Resize(srcBmp, width, height, flag);
         }
 
         internal static Size GetImageSize(string filePath)
