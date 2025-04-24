@@ -1,6 +1,4 @@
-using Microsoft.WindowsAPICodePack.Shell;
 using SWF.Core.Base;
-using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Runtime.Versioning;
 
@@ -49,41 +47,6 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
-        public static Bitmap GetThumbnail(string filePath, Size srcSize, int thumbWidth, int thumbHeight)
-        {
-            using (TimeMeasuring.Run(false, "ThumbnailUtil.GetThumbnail"))
-            {
-                int w, h;
-                if (Math.Max(srcSize.Width, srcSize.Height) <= Math.Min(thumbWidth, thumbHeight))
-                {
-                    w = srcSize.Width;
-                    h = srcSize.Height;
-                }
-                else
-                {
-                    var scale = Math.Min(thumbWidth / (float)srcSize.Width, thumbHeight / (float)srcSize.Height);
-                    w = (int)(srcSize.Width * scale);
-                    h = (int)(srcSize.Height * scale);
-                }
-
-                if (w < 1)
-                {
-                    w = 1;
-                }
-
-                if (h < 1)
-                {
-                    h = 1;
-                }
-
-                using (var shellFile = ShellFile.FromFilePath(filePath))
-                using (var thumbnail = shellFile.Thumbnail.LargeBitmap)
-                {
-                    return new Bitmap(thumbnail, new Size(w, h));
-                }
-            }
-        }
-
         /// <summary>
         /// サムネイルを作成します。
         /// </summary>
@@ -122,76 +85,6 @@ namespace SWF.Core.ImageAccessor
 
                 return ImageUtil.Resize((Bitmap)srcImg, w, h);
             }
-        }
-
-        public static Bitmap CreateThumbnail(CvImage srcImg, int thumbSize, ImageSizeMode sizeMode)
-        {
-            if (thumbSize < 0)
-            {
-                ArgumentOutOfRangeException.ThrowIfNegative(thumbSize, nameof(thumbSize));
-            }
-
-            using (TimeMeasuring.Run(false, "ThumbnailUtil.CreateThumbnail"))
-            {
-                var scale = Math.Min(thumbSize / (float)srcImg.Width, thumbSize / (float)srcImg.Height);
-                var w = srcImg.Width * scale;
-                var h = srcImg.Height * scale;
-
-                var destImg = new Bitmap((int)w, (int)h);
-                using (var g = Graphics.FromImage(destImg))
-                {
-                    if (sizeMode == ImageSizeMode.Original)
-                    {
-                        g.SmoothingMode = SmoothingMode.None;
-                        g.InterpolationMode = InterpolationMode.NearestNeighbor;
-                        g.CompositingQuality = CompositingQuality.HighSpeed;
-                        g.PixelOffsetMode = PixelOffsetMode.HighSpeed;
-                        g.CompositingMode = CompositingMode.SourceOver;
-
-                        srcImg.DrawResizeImageByCompletion(g, new RectangleF(0, 0, w, h));
-                    }
-                }
-
-                return destImg;
-            }
-        }
-
-        /// <summary>
-        /// ファイルのサムネイルを描画します。
-        /// </summary>
-        /// <param name="g"></param>
-        /// <param name="thumb"></param>
-        /// <param name="destRect"></param>
-        public static void DrawFileThumbnail(Graphics g, Image thumb, RectangleF destRect)
-        {
-            ArgumentNullException.ThrowIfNull(g, nameof(g));
-            ArgumentNullException.ThrowIfNull(thumb, nameof(thumb));
-
-            const int offset = 16;
-
-            float w;
-            float h;
-            if (thumb.Width > thumb.Height)
-            {
-                var scale = thumb.Height / (float)thumb.Width;
-                w = thumb.Width - offset;
-                h = thumb.Height - (offset * scale);
-            }
-            else
-            {
-                var scale = thumb.Width / (float)thumb.Height;
-                w = thumb.Width - (offset * scale);
-                h = thumb.Height - offset;
-            }
-
-            var x = destRect.X + (destRect.Width - w) / 2f;
-            var y = destRect.Y + (destRect.Height - h) / 2f;
-
-            g.DrawImage(
-                thumb,
-                new RectangleF(x, y, w, h),
-                new RectangleF(0, 0, thumb.Width, thumb.Height),
-                GraphicsUnit.Pixel);
         }
 
         /// <summary>
@@ -234,33 +127,6 @@ namespace SWF.Core.ImageAccessor
             var y = destRect.Y + (destRect.Height - h) / 2f;
 
             thumb.DrawResizeImageByCompletion(g, new RectangleF(x, y, w, h));
-        }
-
-        /// <summary>
-        /// フォルダのサムネイルを描画します。
-        /// </summary>
-        /// <param name="g"></param>
-        /// <param name="thumb"></param>
-        /// <param name="rect"></param>
-        /// <param name="icon"></param>
-        public static void DrawDirectoryThumbnail(Graphics g, Image thumb, RectangleF destRect, Image icon)
-        {
-            ArgumentNullException.ThrowIfNull(g, nameof(g));
-            ArgumentNullException.ThrowIfNull(thumb, nameof(thumb));
-            ArgumentNullException.ThrowIfNull(icon, nameof(icon));
-
-            DrawFileThumbnail(g, thumb, destRect);
-
-            var destIconSize = new SizeF(destRect.Width * 0.5f, destRect.Height * 0.5f);
-            var destIconRect = new RectangleF(
-                destRect.X + 2, destRect.Bottom - destIconSize.Height,
-                destIconSize.Width, destIconSize.Height);
-
-            g.DrawImage(
-                icon,
-                destIconRect,
-                new RectangleF(0, 0, icon.Width, icon.Height),
-                GraphicsUnit.Pixel);
         }
 
         /// <summary>
