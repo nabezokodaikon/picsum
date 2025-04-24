@@ -216,6 +216,47 @@ namespace SWF.Core.ImageAccessor
                 throw new ImageUtilException(CreateErrorMessage(this.filePath), ex);
             }
         }
+
+        public void DrawResizeImageByCompletion(Graphics g, RectangleF destRect)
+        {
+            ArgumentNullException.ThrowIfNull(g, nameof(g));
+
+            if (this.mat == null)
+            {
+                throw new NullReferenceException("MatがNullです。");
+            }
+
+            g.CompositingMode = CompositingMode.SourceOver;
+
+            try
+            {
+                using (var bmp = OpenCVUtil.ResizeByCompletion(this.mat, (int)destRect.Width, (int)destRect.Height))
+                {
+                    g.DrawImage(bmp, destRect,
+                        new RectangleF(0, 0, destRect.Width, destRect.Height), GraphicsUnit.Pixel);
+                }
+            }
+            catch (NotSupportedException ex)
+            {
+                throw new ImageUtilException(CreateErrorMessage(this.filePath), ex);
+            }
+            catch (ArgumentNullException ex)
+            {
+                throw new ImageUtilException(CreateErrorMessage(this.filePath), ex);
+            }
+            catch (ArgumentException ex)
+            {
+                throw new ImageUtilException(CreateErrorMessage(this.filePath), ex);
+            }
+            catch (ObjectDisposedException ex)
+            {
+                throw new ImageUtilException(CreateErrorMessage(this.filePath), ex);
+            }
+            catch (NotImplementedException ex)
+            {
+                throw new ImageUtilException(CreateErrorMessage(this.filePath), ex);
+            }
+        }
     }
 }
 

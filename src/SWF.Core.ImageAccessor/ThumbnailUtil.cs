@@ -148,7 +148,7 @@ namespace SWF.Core.ImageAccessor
                         g.PixelOffsetMode = PixelOffsetMode.HighSpeed;
                         g.CompositingMode = CompositingMode.SourceOver;
 
-                        srcImg.DrawResizeImage(g, new RectangleF(0, 0, w, h));
+                        srcImg.DrawResizeImageByCompletion(g, new RectangleF(0, 0, w, h));
                     }
                 }
 
@@ -233,7 +233,7 @@ namespace SWF.Core.ImageAccessor
             var x = destRect.X + (destRect.Width - w) / 2f;
             var y = destRect.Y + (destRect.Height - h) / 2f;
 
-            thumb.DrawResizeImage(g, new RectangleF(x, y, w, h));
+            thumb.DrawResizeImageByCompletion(g, new RectangleF(x, y, w, h));
         }
 
         /// <summary>
