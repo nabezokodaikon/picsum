@@ -51,16 +51,16 @@ namespace SWF.UIComponent.FlowList
             SystemColors.Highlight.G,
             SystemColors.Highlight.B);
 
-        private static readonly SolidBrush ITEM_TEXT_BRUSH = new SolidBrush(ITEM_TEXT_COLOR);
-        private static readonly SolidBrush SELECTED_ITEM_BRUSH = new SolidBrush(SELECTED_ITEM_COLOR);
+        private static readonly SolidBrush ITEM_TEXT_BRUSH = new(ITEM_TEXT_COLOR);
+        private static readonly SolidBrush SELECTED_ITEM_BRUSH = new(SELECTED_ITEM_COLOR);
         private static readonly Pen SELECTED_ITEM_PEN = new(Color.FromArgb(
             255,
             SELECTED_ITEM_COLOR.R,
             SELECTED_ITEM_COLOR.G,
             SELECTED_ITEM_COLOR.B),
             2);
-        private static readonly SolidBrush FOUCUS_ITEM_BRUSH = new SolidBrush(FOCUS_ITEM_COLOR);
-        private static readonly SolidBrush MOUSE_POINT_ITEM_BRUSH = new SolidBrush(MOUSE_POINT_ITEM_COLOR);
+        private static readonly SolidBrush FOUCUS_ITEM_BRUSH = new(FOCUS_ITEM_COLOR);
+        private static readonly SolidBrush MOUSE_POINT_ITEM_BRUSH = new(MOUSE_POINT_ITEM_COLOR);
         private static readonly SolidBrush RECTANGLE_SELECTION_BRUSH = new(RECTANGLE_SELECTION_COLOR);
         private static readonly Pen RECTANGLE_SELECTION_PEN = new(Color.FromArgb(
             RECTANGLE_SELECTION_COLOR.A * 2,
