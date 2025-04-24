@@ -93,7 +93,7 @@ namespace SWF.Core.ImageAccessor
         /// <param name="g"></param>
         /// <param name="thumb"></param>
         /// <param name="destRect"></param>
-        public static void AdjustDrawFileThumbnail(Graphics g, CvImage thumb, RectangleF destRect, SizeF srcSize)
+        public static void DrawFileThumbnail(Graphics g, CvImage thumb, RectangleF destRect, SizeF srcSize)
         {
             ArgumentNullException.ThrowIfNull(g, nameof(g));
             ArgumentNullException.ThrowIfNull(thumb, nameof(thumb));
@@ -136,13 +136,13 @@ namespace SWF.Core.ImageAccessor
         /// <param name="thumb"></param>
         /// <param name="destRect"></param>
         /// <param name="icon"></param>
-        public static void AdjustDrawDirectoryThumbnail(Graphics g, CvImage thumb, RectangleF destRect, SizeF srcSize, Image icon)
+        public static void DrawDirectoryThumbnail(Graphics g, CvImage thumb, RectangleF destRect, SizeF srcSize, Image icon)
         {
             ArgumentNullException.ThrowIfNull(g, nameof(g));
             ArgumentNullException.ThrowIfNull(thumb, nameof(thumb));
             ArgumentNullException.ThrowIfNull(icon, nameof(icon));
 
-            AdjustDrawFileThumbnail(g, thumb, destRect, srcSize);
+            DrawFileThumbnail(g, thumb, destRect, srcSize);
 
             var destIconSize = new SizeF(destRect.Width * 0.5f, destRect.Height * 0.5f);
             var destIconRect = new RectangleF(
