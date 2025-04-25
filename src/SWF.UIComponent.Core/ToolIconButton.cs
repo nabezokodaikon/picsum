@@ -1,4 +1,3 @@
-using SWF.Core.Base;
 using System.ComponentModel;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
@@ -68,7 +67,7 @@ namespace SWF.UIComponent.Core
                 pevent.Graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
                 pevent.Graphics.CompositingQuality = CompositingQuality.HighQuality;
 
-                var scale = AppConstants.GetCurrentWindowScale(this);
+                var scale = WindowUtil.GetCurrentWindowScale(this);
                 var length = Math.Min(this.Width - 12 * scale, this.Height - 12 * scale);
                 var w = length;
                 var h = length;

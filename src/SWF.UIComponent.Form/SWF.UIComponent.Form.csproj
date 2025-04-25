@@ -30,6 +30,7 @@
   
   <ItemGroup>
     <ProjectReference Include="..\SWF.Core.Base\SWF.Core.Base.csproj" />
+    <ProjectReference Include="..\SWF.UIComponent.Core\SWF.UIComponent.Core.csproj" />
     <ProjectReference Include="..\WinApi\WinApi.csproj" />
   </ItemGroup>
 </Project>

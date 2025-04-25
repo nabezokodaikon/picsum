@@ -1,4 +1,5 @@
 using SWF.Core.Base;
+using SWF.UIComponent.Core;
 using System;
 using System.ComponentModel;
 using System.Drawing;
@@ -172,7 +173,7 @@ namespace SWF.UIComponent.Form
             }
             else if (m.Msg == WinApiMembers.WM_DPICHANGED)
             {
-                var scale = AppConstants.GetCurrentWindowScale(this);
+                var scale = WindowUtil.GetCurrentWindowScale(this);
                 if (this.currentScale == 0 || this.currentScale != scale)
                 {
                     this.currentScale = scale;
@@ -264,7 +265,7 @@ namespace SWF.UIComponent.Form
                 base.Size = this.initSize;
                 base.WindowState = this.initWindowState;
 
-                this.currentScale = AppConstants.GetCurrentWindowScale(this);
+                this.currentScale = WindowUtil.GetCurrentWindowScale(this);
                 var glassMargins = GetGrassMargins(this.currentScale);
                 WinApiMembers.DwmExtendFrameIntoClientArea(this.Handle, glassMargins);
 
@@ -276,7 +277,7 @@ namespace SWF.UIComponent.Form
 
         protected void SetControlRegion()
         {
-            var size = AppConstants.GetControlBoxSize(this.Handle);
+            var size = WindowUtil.GetControlBoxSize(this.Handle);
             var p = new Point(this.Right - size.Width, this.Top);
             var captionButtonRect = new Rectangle(p.X, p.Y, size.Width, size.Height);
             foreach (Control ctl in this.Controls)

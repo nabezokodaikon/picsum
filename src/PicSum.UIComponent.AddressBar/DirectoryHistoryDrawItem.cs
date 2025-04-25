@@ -3,6 +3,7 @@ using PicSum.Job.Entities;
 using SWF.Core.Base;
 using SWF.Core.Job;
 using SWF.Core.Resource;
+using SWF.UIComponent.Core;
 using System;
 using System.Drawing;
 using System.Runtime.Versioning;
@@ -93,7 +94,7 @@ namespace PicSum.UIComponent.AddressBar
 
         protected override void DrawDropDownItem(SWF.UIComponent.FlowList.DrawItemEventArgs e)
         {
-            var scale = AppConstants.GetCurrentWindowScale(this.AddressBar);
+            var scale = WindowUtil.GetCurrentWindowScale(this.AddressBar);
 
             if (e.IsFocus || e.IsMousePoint || e.IsSelected)
             {
@@ -152,7 +153,7 @@ namespace PicSum.UIComponent.AddressBar
 
         private RectangleF GetImageDrawRectangle(Image img)
         {
-            var scale = AppConstants.GetCurrentWindowScale(this.AddressBar);
+            var scale = WindowUtil.GetCurrentWindowScale(this.AddressBar);
             var margin = 16 * scale;
             var w = Math.Min(img.Width * scale, this.Height) - margin;
             var h = Math.Min(img.Height * scale, this.Height) - margin;
@@ -183,7 +184,7 @@ namespace PicSum.UIComponent.AddressBar
                     };
                     base.Items.Add(item);
 
-                    var scale = AppConstants.GetCurrentWindowScale(base.DropDownList);
+                    var scale = WindowUtil.GetCurrentWindowScale(base.DropDownList);
                     var font = this.AddressBar.GetRegularFont(scale);
                     width = Math.Max(width, (int)g.MeasureString(item.DirectoryPath + "________", font).Width);
                 }

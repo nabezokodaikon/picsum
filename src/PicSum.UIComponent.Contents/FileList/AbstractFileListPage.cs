@@ -9,6 +9,7 @@ using PicSum.UIComponent.Contents.Parameter;
 using SWF.Core.Base;
 using SWF.Core.ImageAccessor;
 using SWF.Core.Job;
+using SWF.UIComponent.Core;
 using SWF.UIComponent.FlowList;
 using SWF.UIComponent.TabOperation;
 using System;
@@ -245,7 +246,7 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             this.isLoaded = true;
 
-            var scale = AppConstants.GetCurrentWindowScale(this);
+            var scale = WindowUtil.GetCurrentWindowScale(this);
             this.RedrawPage(scale);
 
             base.OnLoad(e);
@@ -290,7 +291,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 this.masterFileDictionary.Add(destFile.FilePath, destFile);
             }
 
-            var scale = AppConstants.GetCurrentWindowScale(this);
+            var scale = WindowUtil.GetCurrentWindowScale(this);
             this.RedrawPage(scale);
 
             this.SelectedFilePath = selectedFilePath;
@@ -619,7 +620,7 @@ namespace PicSum.UIComponent.Contents.FileList
             var filePath = this.filterFilePathList[e.ItemIndex];
             var item = this.masterFileDictionary[filePath];
 
-            var scale = AppConstants.GetCurrentWindowScale(this);
+            var scale = WindowUtil.GetCurrentWindowScale(this);
             var font = this.GetFont(scale);
             var itemTextHeight = this.GetItemTextHeight(e.Graphics);
 

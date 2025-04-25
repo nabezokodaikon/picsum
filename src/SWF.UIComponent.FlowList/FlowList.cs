@@ -1,4 +1,5 @@
 using SWF.Core.Base;
+using SWF.UIComponent.Core;
 using System;
 using System.ComponentModel;
 using System.Drawing;
@@ -660,7 +661,7 @@ namespace SWF.UIComponent.FlowList
         /// </summary>
         public int GetScrollBarWidth()
         {
-            var scale = AppConstants.GetCurrentWindowScale(this);
+            var scale = WindowUtil.GetCurrentWindowScale(this);
             var width = (int)(SCROLL_BAR_DEFAULT_WIDTH * scale);
             if (width != this.scrollBar.Width)
             {

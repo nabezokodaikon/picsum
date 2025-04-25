@@ -1,7 +1,5 @@
 using System.Diagnostics;
-using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
-using WinApi;
 
 namespace SWF.Core.Base
 {
@@ -9,8 +7,6 @@ namespace SWF.Core.Base
     public static class AppConstants
     {
         public const string UI_THREAD_NAME = "Main";
-
-        public const float BASE_DPI = 96f;
 
         public const string MUTEX_NAME = "11d9bca9";
         public const string PIPE_NAME = "be752c43";
@@ -111,37 +107,6 @@ namespace SWF.Core.Base
                     Directory.CreateDirectory(DATABASE_DIRECTORY.Value);
                 }
             }
-        }
-
-        public static float GetCursorWindowScale()
-        {
-            var hwnd = WinApiMembers.WindowFromPoint(
-                new WinApiMembers.POINT(Cursor.Position.X, Cursor.Position.Y));
-            var dpi = WinApiMembers.GetDpiForWindow(hwnd);
-            var scale = dpi / AppConstants.BASE_DPI;
-            return scale;
-        }
-
-        public static float GetCurrentWindowScale(Control control)
-        {
-            var dpi = WinApiMembers.GetDpiForWindow(control.Handle);
-            var scale = dpi / AppConstants.BASE_DPI;
-            return scale;
-        }
-
-        public static Size GetControlBoxSize(IntPtr window)
-        {
-            if (WinApiMembers.DwmGetWindowAttribute(
-                window,
-                WinApiMembers.DWMWA_CAPTION_BUTTON_BOUNDS,
-                out WinApiMembers.RECT rect,
-                Marshal.SizeOf<WinApiMembers.RECT>()) == 0)
-            {
-                return new Size(
-                    rect.right - rect.left,
-                    rect.bottom - rect.top);
-            }
-            return Size.Empty;
         }
     }
 

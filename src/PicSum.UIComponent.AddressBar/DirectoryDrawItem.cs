@@ -1,4 +1,5 @@
 using SWF.Core.Base;
+using SWF.UIComponent.Core;
 using System;
 using System.Drawing;
 using System.Runtime.Versioning;
@@ -57,7 +58,7 @@ namespace PicSum.UIComponent.AddressBar
                 g.DrawRectangle(Palette.MOUSE_POINT_PEN, rect);
             }
 
-            var scale = AppConstants.GetCurrentWindowScale(this.AddressBar);
+            var scale = WindowUtil.GetCurrentWindowScale(this.AddressBar);
             var font = this.AddressBar.GetRegularFont(scale);
             var text = this.directory.DirectoryName;
             var textSize = TextRenderer.MeasureText(text, font);

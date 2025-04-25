@@ -9,6 +9,7 @@ using PicSum.UIComponent.Contents.Parameter;
 using SWF.Core.Base;
 using SWF.Core.ImageAccessor;
 using SWF.Core.Job;
+using SWF.UIComponent.Core;
 using SWF.UIComponent.TabOperation;
 using System;
 using System.ComponentModel;
@@ -276,7 +277,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.parameter.GetImageFiles += this.Parameter_GetImageFiles;
             this.parameter.ImageFilesGetAction(this.parameter)(this);
 
-            var scale = AppConstants.GetCurrentWindowScale(this);
+            var scale = WindowUtil.GetCurrentWindowScale(this);
             this.RedrawPage(scale);
 
             base.OnLoad(e);

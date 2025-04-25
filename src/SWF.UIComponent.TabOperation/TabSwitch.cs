@@ -1,6 +1,6 @@
-using SWF.Core.Base;
 using SWF.Core.ImageAccessor;
 using SWF.Core.Resource;
+using SWF.UIComponent.Core;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -51,7 +51,7 @@ namespace SWF.UIComponent.TabOperation
         {
             const int TAB_DEFAULT_HEIGHT = 29;
             var form = this.GetForm();
-            var scale = AppConstants.GetCurrentWindowScale(form);
+            var scale = WindowUtil.GetCurrentWindowScale(form);
             return (int)(TAB_DEFAULT_HEIGHT * scale);
         }
 
@@ -60,7 +60,7 @@ namespace SWF.UIComponent.TabOperation
         {
             const float TAB_MARGIN = 2;
             var form = this.GetForm();
-            var scale = AppConstants.GetCurrentWindowScale(form);
+            var scale = WindowUtil.GetCurrentWindowScale(form);
             return (int)(TAB_MARGIN * scale);
         }
 
@@ -69,7 +69,7 @@ namespace SWF.UIComponent.TabOperation
         {
             const float TAB_MAXIMUM_WIDTH = 256;
             var form = this.GetForm();
-            var scale = AppConstants.GetCurrentWindowScale(form);
+            var scale = WindowUtil.GetCurrentWindowScale(form);
             return (int)(TAB_MAXIMUM_WIDTH * scale);
         }
 
@@ -78,7 +78,7 @@ namespace SWF.UIComponent.TabOperation
         {
             const float TAB_MINIMUM_WIDTH = 1;
             var form = this.GetForm();
-            var scale = AppConstants.GetCurrentWindowScale(form);
+            var scale = WindowUtil.GetCurrentWindowScale(form);
             return (int)(TAB_MINIMUM_WIDTH * scale);
         }
 
@@ -87,7 +87,7 @@ namespace SWF.UIComponent.TabOperation
         {
             const float TABS_MARGIN = 8;
             var form = this.GetForm();
-            var scale = AppConstants.GetCurrentWindowScale(form);
+            var scale = WindowUtil.GetCurrentWindowScale(form);
             return (int)(TABS_MARGIN * scale);
         }
 
@@ -95,7 +95,7 @@ namespace SWF.UIComponent.TabOperation
         {
             const int TAB_RIGHT_DEFAULT_MARGIN = 32;
             var form = this.GetForm();
-            var scale = AppConstants.GetCurrentWindowScale(form);
+            var scale = WindowUtil.GetCurrentWindowScale(form);
             return (int)(TAB_RIGHT_DEFAULT_MARGIN * scale);
         }
 
@@ -104,7 +104,7 @@ namespace SWF.UIComponent.TabOperation
             ArgumentNullException.ThrowIfNull(owner, nameof(owner));
 
             const float TAB_CLOSE_BUTTON_CAN_DRAW_WIDTH = 64;
-            var scale = AppConstants.GetCurrentWindowScale(owner);
+            var scale = WindowUtil.GetCurrentWindowScale(owner);
             return (int)(TAB_CLOSE_BUTTON_CAN_DRAW_WIDTH * scale);
         }
 
@@ -172,7 +172,7 @@ namespace SWF.UIComponent.TabOperation
 
         private int GetTabsRightOffset()
         {
-            var size = AppConstants.GetControlBoxSize(this.GetForm().Handle);
+            var size = WindowUtil.GetControlBoxSize(this.GetForm().Handle);
             var margin = this.GetTabRightMargin();
             return size.Width + margin;
         }
@@ -566,7 +566,7 @@ namespace SWF.UIComponent.TabOperation
 
                     if (ScreenUtil.GetLeftBorderRect().Contains(screenPoint))
                     {
-                        var scale = AppConstants.GetCurrentWindowScale(this);
+                        var scale = WindowUtil.GetCurrentWindowScale(this);
                         var screenRect = Screen.GetWorkingArea(screenPoint);
                         var w = (int)(screenRect.Width / 2f + 14 * scale);
                         var h = (int)(screenRect.Height + 8 * scale);
@@ -576,7 +576,7 @@ namespace SWF.UIComponent.TabOperation
                     }
                     else if (ScreenUtil.GetRightBorderRect().Contains(screenPoint))
                     {
-                        var scale = AppConstants.GetCurrentWindowScale(this);
+                        var scale = WindowUtil.GetCurrentWindowScale(this);
                         var screenRect = Screen.GetWorkingArea(screenPoint);
                         var w = (int)(screenRect.Width / 2f + 14 * scale);
                         var h = (int)(screenRect.Height + 8 * scale);
@@ -1351,7 +1351,7 @@ namespace SWF.UIComponent.TabOperation
                 return;
             }
 
-            var scale = AppConstants.GetCurrentWindowScale(this);
+            var scale = WindowUtil.GetCurrentWindowScale(this);
             var font = this.GetFont(scale);
             var args = new DrawTabEventArgs
             {
@@ -1388,7 +1388,7 @@ namespace SWF.UIComponent.TabOperation
                     if (this.IsTabLeftDrop(dropX, tab))
                     {
                         var img = ResourceFiles.DropArrowIcon.Value;
-                        var scale = AppConstants.GetCurrentWindowScale(this);
+                        var scale = WindowUtil.GetCurrentWindowScale(this);
                         var size = Math.Min(ICON_SIZE * scale, img.Width * scale) - ICON_MARGIN * scale;
                         var x = (tab.DrawArea.Left - tabMargin / 2f) - size / 2f;
                         var y = 0;
@@ -1398,7 +1398,7 @@ namespace SWF.UIComponent.TabOperation
                     else if (this.IsTabRightDrop(dropX, tab))
                     {
                         var img = ResourceFiles.DropArrowIcon.Value;
-                        var scale = AppConstants.GetCurrentWindowScale(this);
+                        var scale = WindowUtil.GetCurrentWindowScale(this);
                         var size = Math.Min(ICON_SIZE * scale, img.Width * scale) - ICON_MARGIN * scale;
                         var x = (tab.DrawArea.Right - tabMargin / 2f) - size / 2f;
                         var y = 0;

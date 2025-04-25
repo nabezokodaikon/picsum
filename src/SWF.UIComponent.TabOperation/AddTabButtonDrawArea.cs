@@ -1,4 +1,4 @@
-using SWF.Core.Base;
+using SWF.UIComponent.Core;
 using System;
 using System.Drawing;
 using System.Runtime.Versioning;
@@ -10,7 +10,7 @@ namespace SWF.UIComponent.TabOperation
     {
         private static float GetScale(TabSwitch tabSwitch)
         {
-            var scale = AppConstants.GetCurrentWindowScale(tabSwitch);
+            var scale = WindowUtil.GetCurrentWindowScale(tabSwitch);
             return scale;
         }
 
@@ -19,7 +19,7 @@ namespace SWF.UIComponent.TabOperation
             const int PAGE_SIZE = 29;
             const int TAB_HEIGHT = 29;
 
-            var scale = AppConstants.GetCurrentWindowScale(tabSwitch);
+            var scale = WindowUtil.GetCurrentWindowScale(tabSwitch);
 
             var x = 0;
             var y = (TAB_HEIGHT * scale - PAGE_SIZE * scale) / 2f;

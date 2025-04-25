@@ -1,4 +1,4 @@
-using SWF.Core.Base;
+using SWF.UIComponent.Core;
 using System;
 using System.Drawing;
 using System.Runtime.Versioning;
@@ -31,7 +31,7 @@ namespace SWF.UIComponent.TabOperation
             ArgumentNullException.ThrowIfNull(owner, nameof(owner));
 
             this.owner = owner;
-            var scale = AppConstants.GetCurrentWindowScale(owner);
+            var scale = WindowUtil.GetCurrentWindowScale(owner);
             this.SetPrameters(scale);
         }
 
@@ -45,7 +45,7 @@ namespace SWF.UIComponent.TabOperation
             ArgumentNullException.ThrowIfNull(owner, nameof(owner));
 
             this.owner = owner;
-            var scale = AppConstants.GetCurrentWindowScale(owner);
+            var scale = WindowUtil.GetCurrentWindowScale(owner);
             this.SetPrameters(scale);
         }
 

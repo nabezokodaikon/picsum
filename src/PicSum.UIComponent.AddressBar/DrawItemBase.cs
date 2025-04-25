@@ -1,4 +1,4 @@
-using SWF.Core.Base;
+using SWF.UIComponent.Core;
 using System;
 using System.Drawing;
 using System.Runtime.Versioning;
@@ -188,14 +188,14 @@ namespace PicSum.UIComponent.AddressBar
         protected int GetDropDownItemHeight()
         {
             const int DROPDOWN_ITEM_HEIGHT = 32;
-            var scale = AppConstants.GetCurrentWindowScale(this.addressBar);
+            var scale = WindowUtil.GetCurrentWindowScale(this.addressBar);
             return (int)(DROPDOWN_ITEM_HEIGHT * scale);
         }
 
         protected int GetMinimumDropDownWidth()
         {
             const int MINIMUM_DROPDOWN_WIDHT = 128;
-            var scale = AppConstants.GetCurrentWindowScale(this.addressBar);
+            var scale = WindowUtil.GetCurrentWindowScale(this.addressBar);
             return (int)(MINIMUM_DROPDOWN_WIDHT * scale);
         }
 

@@ -1,4 +1,5 @@
 using SWF.Core.Base;
+using SWF.UIComponent.Core;
 using System;
 using System.ComponentModel;
 using System.Runtime.Versioning;
@@ -52,7 +53,7 @@ namespace SWF.UIComponent.TabOperation
             }
 
             this.Controls.Add(page);
-            var scale = AppConstants.GetCurrentWindowScale(this);
+            var scale = WindowUtil.GetCurrentWindowScale(this);
             page.RedrawPage(scale);
             page.SetBounds(0, 0, this.Width, this.Height);
             page.Anchor

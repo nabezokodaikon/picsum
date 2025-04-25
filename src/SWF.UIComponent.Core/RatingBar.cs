@@ -1,4 +1,3 @@
-using SWF.Core.Base;
 using System.ComponentModel;
 using System.Runtime.Versioning;
 
@@ -45,7 +44,7 @@ namespace SWF.UIComponent.Core
                 this.maximumValue = value;
 
                 this.CreateRatingButtons();
-                this.SetControlsBounds(AppConstants.GetCurrentWindowScale(this));
+                this.SetControlsBounds(WindowUtil.GetCurrentWindowScale(this));
                 this.SetValue(this.ratingValue);
             }
         }

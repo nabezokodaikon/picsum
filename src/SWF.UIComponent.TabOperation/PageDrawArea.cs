@@ -1,4 +1,4 @@
-using SWF.Core.Base;
+using SWF.UIComponent.Core;
 using System;
 using System.Drawing;
 using System.Runtime.Versioning;
@@ -23,7 +23,7 @@ namespace SWF.UIComponent.TabOperation
 
         public void Draw(Graphics g)
         {
-            var scale = AppConstants.GetCurrentWindowScale(this.tabSwitch);
+            var scale = WindowUtil.GetCurrentWindowScale(this.tabSwitch);
             this.DrawOutline(g, scale);
             this.DrawInnerRectangle(g, scale);
         }
