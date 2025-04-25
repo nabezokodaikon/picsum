@@ -12,11 +12,6 @@ namespace SWF.Core.Base
 
         public const float BASE_DPI = 96f;
 
-        /// <summary>
-        /// 情報パネルの幅
-        /// </summary>
-        public const int INFOPANEL_WIDTH = 240;
-
         public const string MUTEX_NAME = "11d9bca9";
         public const string PIPE_NAME = "be752c43";
 
