@@ -7,6 +7,7 @@ using SWF.Core.Base;
 using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
 using SWF.Core.Job;
+using SWF.Core.StringAccessor;
 using System;
 using System.Collections.Generic;
 using System.Linq;

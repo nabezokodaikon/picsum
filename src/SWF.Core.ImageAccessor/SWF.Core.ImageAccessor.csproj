@@ -19,65 +19,17 @@
 	<NoWarn>1701;1702; CA1822</NoWarn>
 	<GenerateAssemblyInfo>False</GenerateAssemblyInfo>
   </PropertyGroup>
-  
+
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
 	<DebugType>none</DebugType>
 	<NoWarn>1701;1702; CA1822</NoWarn>
 	<GenerateAssemblyInfo>False</GenerateAssemblyInfo>
   </PropertyGroup>
-  
+
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='UWP|x64'">
-    <DebugType>none</DebugType>
-    <NoWarn>1701;1702; CA1822</NoWarn>
-    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
-  </PropertyGroup>
-  
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
-  </PropertyGroup>
-  
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
-    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
-  </PropertyGroup>
-  
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
-    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
-  </PropertyGroup>
-  
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM32'">
-    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
-  </PropertyGroup>
-  
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
-  </PropertyGroup>
-  
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='UWP|AnyCPU'">
-    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
-  </PropertyGroup>
-  
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
-    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
-  </PropertyGroup>
-  
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='UWP|x86'">
-    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
-  </PropertyGroup>
-  
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
-    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
-  </PropertyGroup>
-  
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='UWP|ARM64'">
-    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
-  </PropertyGroup>
-  
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM32'">
-    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
-  </PropertyGroup>
-  
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='UWP|ARM32'">
-    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+	<DebugType>none</DebugType>
+	<NoWarn>1701;1702; CA1822</NoWarn>
+	<GenerateAssemblyInfo>False</GenerateAssemblyInfo>
   </PropertyGroup>
 
   <ItemGroup>
@@ -86,14 +38,11 @@
     <PackageReference Include="LibHeif.Native.win-x64" Version="1.15.1" />
     <PackageReference Include="Magick.NET-Q16-x64" Version="14.6.0" />
     <PackageReference Include="Magick.NET.SystemDrawing" Version="8.0.6" />
-    <PackageReference Include="Microsoft-WindowsAPICodePack-Shell" Version="1.1.5" />
     <PackageReference Include="NLog" Version="5.4.0" />
     <PackageReference Include="OpenCvSharp4.Extensions" Version="4.10.0.20241108" />
     <PackageReference Include="OpenCvSharp4.Windows" Version="4.10.0.20241108" />
     <PackageReference Include="SixLabors.ImageSharp" Version="3.1.7" />
     <PackageReference Include="Svg" Version="3.4.7" />
-    <PackageReference Include="ZLinq" Version="1.4.0" />
-    <PackageReference Include="ZLinq.FileSystem" Version="1.4.0" />
   </ItemGroup>
 
   <ItemGroup>

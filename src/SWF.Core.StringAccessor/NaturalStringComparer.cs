@@ -1,6 +1,6 @@
 using WinApi;
 
-namespace SWF.Core.Base
+namespace SWF.Core.StringAccessor
 {
     public sealed class NaturalStringComparer
         : IComparer<string?>

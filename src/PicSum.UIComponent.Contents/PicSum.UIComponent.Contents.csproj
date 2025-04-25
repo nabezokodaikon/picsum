@@ -14,24 +14,23 @@
 	<RuntimeIdentifiers>win-x86;win-x64</RuntimeIdentifiers>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
 	<DebugType>full</DebugType>
-	<OutputPath>bin\x64\Debug\</OutputPath>
+	<NoWarn>1701;1702; CA1822</NoWarn>
+	<GenerateAssemblyInfo>False</GenerateAssemblyInfo>
   </PropertyGroup>
-  
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
-    <DebugType>none</DebugType>
-    <NoWarn>1701;1702; CA1016; IDE0290; CA1822; CA1824</NoWarn>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+	<DebugType>none</DebugType>
+	<NoWarn>1701;1702; CA1822</NoWarn>
+	<GenerateAssemblyInfo>False</GenerateAssemblyInfo>
   </PropertyGroup>
-  
+
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='UWP|x64'">
-    <DebugType>none</DebugType>
-    <NoWarn>1701;1702; CA1016; IDE0290; CA1822; CA1824</NoWarn>
+	<DebugType>none</DebugType>
+	<NoWarn>1701;1702; CA1822</NoWarn>
+	<GenerateAssemblyInfo>False</GenerateAssemblyInfo>
   </PropertyGroup>
-  
-  <ItemGroup>
-    <PackageReference Include="ZLinq" Version="1.4.0" />
-  </ItemGroup>
   
   <ItemGroup>
     <Reference Update="System.Core">

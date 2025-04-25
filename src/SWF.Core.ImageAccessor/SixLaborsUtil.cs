@@ -12,7 +12,7 @@ using SixLabors.ImageSharp.Formats.Tga;
 using SixLabors.ImageSharp.Formats.Tiff;
 using SixLabors.ImageSharp.Formats.Webp;
 using SixLabors.ImageSharp.PixelFormats;
-using SWF.Core.Base;
+using SWF.Core.ConsoleAccessor;
 using System.Runtime.Versioning;
 
 namespace SWF.Core.ImageAccessor

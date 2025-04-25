@@ -1,4 +1,5 @@
-using SWF.Core.Base;
+using SWF.Core.ConsoleAccessor;
+using SWF.Core.StringAccessor;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
@@ -19,46 +20,6 @@ namespace SWF.Core.FileAccessor
         public static readonly DateTime ROOT_DIRECTORY_DATETIME = DateTime.MinValue;
         public static readonly DateTime EMPTY_DATETIME = DateTime.MinValue;
 
-        //private static readonly Lazy<bool> IS_RUNNING_AS_UWP
-        //    = new(IsRunningAsUwp, LazyThreadSafetyMode.ExecutionAndPublication);
-        public static readonly Lazy<string> APPLICATION_DIRECTORY
-            = new(GetApplicationDirectory, LazyThreadSafetyMode.ExecutionAndPublication);
-        public static readonly Lazy<string> LOG_DIRECTORY
-            = new(() => Path.Combine(APPLICATION_DIRECTORY.Value, "log"), LazyThreadSafetyMode.ExecutionAndPublication);
-        public static readonly Lazy<string> CONFIG_DIRECTORY
-            = new(() => Path.Combine(APPLICATION_DIRECTORY.Value, "config"), LazyThreadSafetyMode.ExecutionAndPublication);
-        public static readonly Lazy<string> CONFIG_FILE
-            = new(() => Path.Combine(CONFIG_DIRECTORY.Value, "config.dat"), LazyThreadSafetyMode.ExecutionAndPublication);
-        public static readonly Lazy<string> DATABASE_DIRECTORY
-            = new(() => Path.Combine(APPLICATION_DIRECTORY.Value, "db"), LazyThreadSafetyMode.ExecutionAndPublication);
-        public static readonly Lazy<string> FILE_INFO_DATABASE_FILE
-            = new(() => Path.Combine(DATABASE_DIRECTORY.Value, "fileinfo.sqlite"), LazyThreadSafetyMode.ExecutionAndPublication);
-        public static readonly Lazy<string> THUMBNAIL_DATABASE_FILE
-            = new(() => Path.Combine(DATABASE_DIRECTORY.Value, "thumbnail.sqlite"), LazyThreadSafetyMode.ExecutionAndPublication);
-
-        private static string GetApplicationDirectory()
-        {
-#if UWP
-            return Path.Combine(
-                Windows.Storage.ApplicationData.Current.LocalFolder.Path,
-                "picsum.files");
-#else
-            var appFile = Environment.ProcessPath;
-            if (string.IsNullOrEmpty(appFile))
-            {
-                throw new NullReferenceException("実行ファイルパスが取得できません。");
-            }
-
-            var appDir = Path.GetDirectoryName(appFile);
-            if (string.IsNullOrEmpty(appDir))
-            {
-                throw new NullReferenceException("実行ディレクトリが取得できません。");
-            }
-
-            return appDir;
-#endif
-        }
-
         /// <summary>
         /// ファイルパスがシステムルートであるか確認します。
         /// </summary>
@@ -69,32 +30,6 @@ namespace SWF.Core.FileAccessor
             ArgumentNullException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
             return filePath == ROOT_DIRECTORY_PATH;
-        }
-
-        public static void CreateApplicationDirectories()
-        {
-            using (TimeMeasuring.Run(true, "AppConstants.CreateApplicationDirectories"))
-            {
-                if (!IsExistsFileOrDirectory(APPLICATION_DIRECTORY.Value))
-                {
-                    Directory.CreateDirectory(APPLICATION_DIRECTORY.Value);
-                }
-
-                if (!IsExistsFileOrDirectory(LOG_DIRECTORY.Value))
-                {
-                    Directory.CreateDirectory(LOG_DIRECTORY.Value);
-                }
-
-                if (!IsExistsFileOrDirectory(CONFIG_DIRECTORY.Value))
-                {
-                    Directory.CreateDirectory(CONFIG_DIRECTORY.Value);
-                }
-
-                if (!IsExistsFileOrDirectory(DATABASE_DIRECTORY.Value))
-                {
-                    Directory.CreateDirectory(DATABASE_DIRECTORY.Value);
-                }
-            }
         }
 
         public static bool IsExistsFileOrDirectory(string path)

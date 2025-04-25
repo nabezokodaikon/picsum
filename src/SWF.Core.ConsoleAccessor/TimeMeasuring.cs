@@ -1,6 +1,6 @@
 using System.Diagnostics;
 
-namespace SWF.Core.Base
+namespace SWF.Core.ConsoleAccessor
 {
 #pragma warning disable CS0414, IDE0051
     public readonly struct TimeMeasuring

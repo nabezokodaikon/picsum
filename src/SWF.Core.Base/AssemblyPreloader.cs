@@ -1,8 +1,11 @@
+using SWF.Core.ConsoleAccessor;
 using System.Collections.Concurrent;
 using System.Reflection;
+using System.Runtime.Versioning;
 
 namespace SWF.Core.Base
 {
+    [SupportedOSPlatform("windows10.0.17763.0")]
     public static class AssemblyPreloader
     {
         private static readonly ConcurrentDictionary<string, bool> PreloadedAssemblies = new();

@@ -15,70 +15,22 @@
 	<PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
 	<DebugType>full</DebugType>
-	<OutputPath>bin\x64\Debug\</OutputPath>
+	<NoWarn>1701;1702; CA1822</NoWarn>
 	<GenerateAssemblyInfo>False</GenerateAssemblyInfo>
   </PropertyGroup>
 
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
 	<DebugType>none</DebugType>
-	<NoWarn>1701;1702; CA1016; CA1822; CA1824</NoWarn>
+	<NoWarn>1701;1702; CA1822</NoWarn>
 	<GenerateAssemblyInfo>False</GenerateAssemblyInfo>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='UWP|x64'">
-    <DebugType>none</DebugType>
-    <NoWarn>1701;1702; CA1016; CA1822; CA1824</NoWarn>
-    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+	<DebugType>none</DebugType>
+	<NoWarn>1701;1702; CA1822</NoWarn>
 	<GenerateAssemblyInfo>False</GenerateAssemblyInfo>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
-	<GenerateAssemblyInfo>False</GenerateAssemblyInfo>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
-	<GenerateAssemblyInfo>False</GenerateAssemblyInfo>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM32'">
-	<GenerateAssemblyInfo>False</GenerateAssemblyInfo>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-	<GenerateAssemblyInfo>False</GenerateAssemblyInfo>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='UWP|AnyCPU'">
-    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
-	<GenerateAssemblyInfo>False</GenerateAssemblyInfo>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='UWP|x86'">
-    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
-	<GenerateAssemblyInfo>False</GenerateAssemblyInfo>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='UWP|ARM64'">
-    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM32'">
-	<GenerateAssemblyInfo>False</GenerateAssemblyInfo>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='UWP|ARM32'">
-    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
   </PropertyGroup>
 
   <ItemGroup>

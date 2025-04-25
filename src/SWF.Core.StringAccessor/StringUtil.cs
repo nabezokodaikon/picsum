@@ -1,4 +1,4 @@
-namespace SWF.Core.Base
+namespace SWF.Core.StringAccessor
 {
     public static class StringUtil
     {

@@ -1,5 +1,5 @@
 using PicSum.Job.SyncLogics;
-using SWF.Core.Base;
+using SWF.Core.ConsoleAccessor;
 using SWF.Core.Job;
 using System.Runtime.Versioning;
 

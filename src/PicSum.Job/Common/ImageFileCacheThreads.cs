@@ -3,9 +3,11 @@ using SWF.Core.Base;
 using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
 using System.Collections.Concurrent;
+using System.Runtime.Versioning;
 
 namespace PicSum.Job.Common
 {
+    [SupportedOSPlatform("windows10.0.17763.0")]
     internal sealed class ImageFileCacheThreads
         : IImageFileCacheThreads
     {

@@ -1,5 +1,5 @@
 using PicSum.Main.UIComponent;
-using SWF.Core.Base;
+using SWF.Core.ConsoleAccessor;
 using SWF.UIComponent.TabOperation;
 using System;
 using System.Collections.Generic;

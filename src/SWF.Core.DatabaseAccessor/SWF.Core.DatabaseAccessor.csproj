@@ -9,22 +9,22 @@
 	<RuntimeIdentifiers>win-x86;win-x64</RuntimeIdentifiers>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
 	<DebugType>full</DebugType>
-	<NoWarn>1701;1702; CA1016; CA1822; CA1824</NoWarn>
+	<NoWarn>1701;1702; CA1822</NoWarn>
 	<GenerateAssemblyInfo>False</GenerateAssemblyInfo>
   </PropertyGroup>
-  
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
 	<DebugType>none</DebugType>
-	<NoWarn>1701;1702; CA1016; CA1822; CA1824</NoWarn>
+	<NoWarn>1701;1702; CA1822</NoWarn>
 	<GenerateAssemblyInfo>False</GenerateAssemblyInfo>
   </PropertyGroup>
-  
+
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='UWP|x64'">
-    <DebugType>none</DebugType>
-    <NoWarn>1701;1702; CA1016; CA1822; CA1824</NoWarn>
-    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+	<DebugType>none</DebugType>
+	<NoWarn>1701;1702; CA1822</NoWarn>
+	<GenerateAssemblyInfo>False</GenerateAssemblyInfo>
   </PropertyGroup>
   
   <ItemGroup>
@@ -32,7 +32,6 @@
   </ItemGroup>
 
   <ItemGroup>
-	<ProjectReference Include="..\SWF.Core.Base\SWF.Core.Base.csproj" />
 	<ProjectReference Include="..\SWF.Core.FileAccessor\SWF.Core.FileAccessor.csproj" />
   </ItemGroup>
 

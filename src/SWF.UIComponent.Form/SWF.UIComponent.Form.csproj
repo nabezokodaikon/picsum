@@ -15,21 +15,24 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
 	<DebugType>full</DebugType>
-	<NoWarn>1701;1702; CA1016</NoWarn>
+	<NoWarn>1701;1702; CA1822</NoWarn>
+	<GenerateAssemblyInfo>False</GenerateAssemblyInfo>
   </PropertyGroup>
-  
+
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
 	<DebugType>none</DebugType>
-	<NoWarn>1701;1702; CA1016</NoWarn>
+	<NoWarn>1701;1702; CA1822</NoWarn>
+	<GenerateAssemblyInfo>False</GenerateAssemblyInfo>
   </PropertyGroup>
-  
+
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='UWP|x64'">
-    <DebugType>none</DebugType>
-    <NoWarn>1701;1702; CA1016</NoWarn>
+	<DebugType>none</DebugType>
+	<NoWarn>1701;1702; CA1822</NoWarn>
+	<GenerateAssemblyInfo>False</GenerateAssemblyInfo>
   </PropertyGroup>
   
   <ItemGroup>
-    <ProjectReference Include="..\SWF.Core.Base\SWF.Core.Base.csproj" />
+    <ProjectReference Include="..\SWF.Core.ConsoleAccessor\SWF.Core.ConsoleAccessor.csproj" />
     <ProjectReference Include="..\SWF.UIComponent.Core\SWF.UIComponent.Core.csproj" />
     <ProjectReference Include="..\WinApi\WinApi.csproj" />
   </ItemGroup>

@@ -1,6 +1,6 @@
 using NLog;
 using OpenCvSharp.Extensions;
-using SWF.Core.Base;
+using SWF.Core.ConsoleAccessor;
 using SWF.Core.FileAccessor;
 using System.Runtime.Versioning;
 

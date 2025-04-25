@@ -1,6 +1,7 @@
 using NLog;
-using SWF.Core.Base;
+using SWF.Core.ConsoleAccessor;
 using SWF.Core.FileAccessor;
+using SWF.Core.StringAccessor;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;

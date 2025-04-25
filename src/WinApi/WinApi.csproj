@@ -15,19 +15,22 @@
 	<RuntimeIdentifiers>win-x86;win-x64</RuntimeIdentifiers>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
 	<DebugType>full</DebugType>
-	<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+	<NoWarn>1701;1702; CA1822</NoWarn>
+	<GenerateAssemblyInfo>False</GenerateAssemblyInfo>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
 	<DebugType>none</DebugType>
-	<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+	<NoWarn>1701;1702; CA1822</NoWarn>
+	<GenerateAssemblyInfo>False</GenerateAssemblyInfo>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='UWP|x64'">
-    <DebugType>none</DebugType>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+	<DebugType>none</DebugType>
+	<NoWarn>1701;1702; CA1822</NoWarn>
+	<GenerateAssemblyInfo>False</GenerateAssemblyInfo>
   </PropertyGroup>
 
   <ItemGroup>

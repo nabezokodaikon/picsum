@@ -1,5 +1,5 @@
 using ImageMagick;
-using SWF.Core.Base;
+using SWF.Core.ConsoleAccessor;
 using System.Runtime.Versioning;
 
 namespace SWF.Core.ImageAccessor
