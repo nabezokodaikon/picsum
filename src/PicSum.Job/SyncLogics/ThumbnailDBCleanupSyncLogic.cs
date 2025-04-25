@@ -1,4 +1,5 @@
 using SWF.Core.Base;
+using SWF.Core.ImageAccessor;
 using SWF.Core.Job;
 using System.Runtime.Versioning;
 
@@ -19,7 +20,7 @@ namespace PicSum.Job.SyncLogics
                 .Where(file =>
                 StringUtil.CompareFilePath(
                     FileUtil.GetExtensionFastStack(file),
-                    AppConstants.THUMBNAIL_BUFFER_FILE_EXTENSION)))
+                    ThumbnailUtil.THUMBNAIL_BUFFER_FILE_EXTENSION)))
             {
                 File.Delete($"{thumbnailFile}");
             }

@@ -10,6 +10,10 @@ namespace SWF.Core.ImageAccessor
         private static readonly EncoderParameter ENCORDER_PARAMETER = new(Encoder.Quality, 80L);
         private static readonly ImageCodecInfo COMPRESS_CODEC_INFO = ImageCodecInfo.GetImageEncoders().Single(info => info.FormatID == ImageFormat.Jpeg.Guid);
 
+        public const string THUMBNAIL_BUFFER_FILE_EXTENSION = ".thumbnail";
+        public const int THUMBNAIL_MAXIMUM_SIZE = 256;
+        public const int THUMBNAIL_MINIMUM_SIZE = 96;
+
         /// <summary>
         /// イメージオブジェクトを圧縮したバイナリに変換します。
         /// </summary>

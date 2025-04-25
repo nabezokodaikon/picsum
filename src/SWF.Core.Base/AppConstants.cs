@@ -15,10 +15,6 @@ namespace SWF.Core.Base
         public const string MUTEX_NAME = "11d9bca9";
         public const string PIPE_NAME = "be752c43";
 
-        public const string THUMBNAIL_BUFFER_FILE_EXTENSION = ".thumbnail";
-        public const int THUMBNAIL_MAXIMUM_SIZE = 256;
-        public const int THUMBNAIL_MINIMUM_SIZE = 96;
-
         private static Stopwatch? bootTimeStopwatch = null;
 
         //private static readonly Lazy<bool> IS_RUNNING_AS_UWP
