@@ -1,4 +1,5 @@
 using SWF.Core.Base;
+using SWF.Core.FileAccessor;
 using System.Runtime.Versioning;
 
 namespace SWF.Core.ImageAccessor

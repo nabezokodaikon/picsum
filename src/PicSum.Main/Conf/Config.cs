@@ -1,5 +1,6 @@
 using MessagePack;
 using SWF.Core.Base;
+using SWF.Core.FileAccessor;
 using System.IO;
 using System.Runtime.Versioning;
 using System.Windows.Forms;
@@ -60,10 +61,10 @@ namespace PicSum.Main.Conf
         {
             ConsoleUtil.Write(true, $"Config.Load Start");
 
-            if (FileUtil.IsExistsFile(AppConstants.CONFIG_FILE.Value))
+            if (FileUtil.IsExistsFile(FileUtil.CONFIG_FILE.Value))
             {
                 var config = MessagePackSerializer.Deserialize<Config>(
-                    File.ReadAllBytes(AppConstants.CONFIG_FILE.Value),
+                    File.ReadAllBytes(FileUtil.CONFIG_FILE.Value),
                     MessagePackSerializerOptions.Standard.WithCompression(MessagePackCompression.None));
 
                 this.WindowState = config.WindowState;
@@ -109,7 +110,7 @@ namespace PicSum.Main.Conf
             var bytes = MessagePackSerializer.Serialize(
                 this,
                 MessagePackSerializerOptions.Standard.WithCompression(MessagePackCompression.None));
-            File.WriteAllBytes(AppConstants.CONFIG_FILE.Value, bytes);
+            File.WriteAllBytes(FileUtil.CONFIG_FILE.Value, bytes);
         }
     }
 }

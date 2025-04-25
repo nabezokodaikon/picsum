@@ -1,5 +1,6 @@
 using NLog;
 using SWF.Core.Base;
+using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
 using System.Collections.Concurrent;
 

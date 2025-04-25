@@ -1,4 +1,4 @@
-using SWF.Core.Base;
+using SWF.Core.FileAccessor;
 using System.Runtime.Versioning;
 
 namespace PicSum.Job.Entities

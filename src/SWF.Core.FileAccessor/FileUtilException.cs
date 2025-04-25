@@ -1,4 +1,4 @@
-namespace SWF.Core.Base
+namespace SWF.Core.FileAccessor
 {
     /// <summary>
     /// ファイルユーティリティ例外クラス。

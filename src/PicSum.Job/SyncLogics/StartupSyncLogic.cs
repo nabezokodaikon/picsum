@@ -1,6 +1,7 @@
 using PicSum.DatabaseAccessor.Connection;
 using PicSum.Job.Common;
 using SWF.Core.Base;
+using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
 using SWF.Core.Job;
 using System.Runtime.Versioning;
@@ -17,10 +18,10 @@ namespace PicSum.Job.SyncLogics
             using (TimeMeasuring.Run(true, "StartupSyncLogic.Execute"))
             {
                 Instance<IFileInfoDB>.Initialize(
-                    new FileInfoDB(AppConstants.FILE_INFO_DATABASE_FILE.Value));
+                    new FileInfoDB(FileUtil.FILE_INFO_DATABASE_FILE.Value));
 
                 Instance<IThumbnailDB>.Initialize(
-                    new ThumbnailDB(AppConstants.THUMBNAIL_DATABASE_FILE.Value));
+                    new ThumbnailDB(FileUtil.THUMBNAIL_DATABASE_FILE.Value));
 
                 Instance<IFileIconCacher>.Initialize(new FileIconCacher());
                 Instance<IThumbnailCacher>.Initialize(new ThumbnailCacher());

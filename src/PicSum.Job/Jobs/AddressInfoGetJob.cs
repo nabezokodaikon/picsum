@@ -1,7 +1,7 @@
 using PicSum.Job.Entities;
 using PicSum.Job.Logics;
 using PicSum.Job.Results;
-using SWF.Core.Base;
+using SWF.Core.FileAccessor;
 using SWF.Core.Job;
 using System.Runtime.Versioning;
 

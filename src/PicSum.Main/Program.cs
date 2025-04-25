@@ -4,6 +4,7 @@ using NLog.Targets;
 using PicSum.Main.Conf;
 using PicSum.Main.Mng;
 using SWF.Core.Base;
+using SWF.Core.FileAccessor;
 using System;
 using System.IO;
 using System.IO.Pipes;
@@ -62,6 +63,7 @@ namespace PicSum.Main
                         typeof(PicSum.UIComponent.InfoPanel.InfoPanel),
 
                         typeof(SWF.Core.DatabaseAccessor.AbstractConnection),
+                        typeof(SWF.Core.FileAccessor.FileAppender),
                         typeof(SWF.Core.ImageAccessor.CvImage),
                         typeof(SWF.Core.Job.AbstractAsyncJob),
                         typeof(SWF.Core.Resource.ResourceFiles),
@@ -76,7 +78,7 @@ namespace PicSum.Main
                         typeof(WinApi.WinApiMembers)
                     );
 
-                    AppConstants.CreateApplicationDirectories();
+                    FileUtil.CreateApplicationDirectories();
 
                     using (TimeMeasuring.Run(true, "Program.Main Load Configs"))
                     {
@@ -143,9 +145,9 @@ namespace PicSum.Main
 
             var logfile = new FileTarget("logfile")
             {
-                FileName = Path.Combine(AppConstants.LOG_DIRECTORY.Value, "app.log"),
+                FileName = Path.Combine(FileUtil.LOG_DIRECTORY.Value, "app.log"),
                 Layout = "${date:format=yyyy-MM-dd HH\\:mm\\:ss.fff} | ${level:padding=-5} | ${threadname} | ${message:withexception=true}",
-                ArchiveFileName = string.Format("{0}/{1}", AppConstants.LOG_DIRECTORY, "${date:format=yyyyMMdd}/{########}.log"),
+                ArchiveFileName = string.Format("{0}/{1}", FileUtil.LOG_DIRECTORY, "${date:format=yyyyMMdd}/{########}.log"),
                 ArchiveAboveSize = 10 * 1024 * 1024,
                 ArchiveNumbering = ArchiveNumberingMode.Sequence,
             };

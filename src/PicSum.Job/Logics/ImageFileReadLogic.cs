@@ -1,6 +1,7 @@
 using PicSum.Job.Parameters;
 using PicSum.Job.Results;
 using SWF.Core.Base;
+using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
 using SWF.Core.Job;
 using System.Drawing;

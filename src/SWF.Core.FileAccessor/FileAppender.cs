@@ -1,4 +1,4 @@
-namespace SWF.Core.Base
+namespace SWF.Core.FileAccessor
 {
     public sealed class FileAppender
     {

@@ -4,6 +4,7 @@ using PicSum.Main.Mng;
 using PicSum.Main.UIComponent;
 using PicSum.UIComponent.Contents.Parameter;
 using SWF.Core.Base;
+using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
 using SWF.Core.Job;
 using System;
