@@ -35,7 +35,7 @@ DELETE FROM t_tag
             : base(SQL_TEXT)
         {
             base.ParameterList.AddRange([
-                SqlParameterUtil.CreateParameter("file_id", fileID),
+                SqlUtil.CreateParameter("file_id", fileID),
             ]);
         }
     }

@@ -25,7 +25,7 @@ SELECT mf.file_path
         public FileReadByRatingSql(int param)
             : base(SQL_TEXT)
         {
-            base.ParameterList.Add(SqlParameterUtil.CreateParameter("rating", param));
+            base.ParameterList.Add(SqlUtil.CreateParameter("rating", param));
         }
     }
 }

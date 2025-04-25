@@ -32,7 +32,7 @@ SELECT mf.file_id
         {
             ArgumentException.ThrowIfNullOrEmpty(directoryPath, nameof(directoryPath));
 
-            base.ParameterList.Add(SqlParameterUtil.CreateParameter("directory_path", directoryPath));
+            base.ParameterList.Add(SqlUtil.CreateParameter("directory_path", directoryPath));
         }
     }
 }

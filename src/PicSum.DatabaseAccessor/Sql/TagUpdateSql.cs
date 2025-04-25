@@ -30,9 +30,9 @@ UPDATE t_tag
             ArgumentException.ThrowIfNullOrEmpty(tag, nameof(tag));
             base.ParameterList.AddRange(
             [
-                SqlParameterUtil.CreateParameter("file_path", filePath),
-                SqlParameterUtil.CreateParameter("tag", tag),
-                SqlParameterUtil.CreateParameter("registration_date", registrationDate)
+                SqlUtil.CreateParameter("file_path", filePath),
+                SqlUtil.CreateParameter("tag", tag),
+                SqlUtil.CreateParameter("registration_date", registrationDate)
             ]);
         }
     }

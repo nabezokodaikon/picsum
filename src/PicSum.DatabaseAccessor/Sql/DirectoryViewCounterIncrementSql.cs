@@ -28,7 +28,7 @@ UPDATE t_directory_view_counter
         {
             ArgumentException.ThrowIfNullOrEmpty(directoryPath, nameof(directoryPath));
 
-            base.ParameterList.Add(SqlParameterUtil.CreateParameter("file_path", directoryPath));
+            base.ParameterList.Add(SqlUtil.CreateParameter("file_path", directoryPath));
         }
     }
 }

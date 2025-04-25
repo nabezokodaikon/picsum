@@ -33,10 +33,10 @@ SELECT mf.file_id
             ArgumentException.ThrowIfNullOrEmpty(selectedFilePath, nameof(selectedFilePath));
 
             base.ParameterList.AddRange(
-                [SqlParameterUtil.CreateParameter("directory_path", directoryPath),
-                    SqlParameterUtil.CreateParameter("sort_type_id", sortTypeId),
-                    SqlParameterUtil.CreateParameter("is_ascending", isAscending),
-                    SqlParameterUtil.CreateParameter("selected_file_path", selectedFilePath)]);
+                [SqlUtil.CreateParameter("directory_path", directoryPath),
+                    SqlUtil.CreateParameter("sort_type_id", sortTypeId),
+                    SqlUtil.CreateParameter("is_ascending", isAscending),
+                    SqlUtil.CreateParameter("selected_file_path", selectedFilePath)]);
         }
 
         public DirectoryStateCreationSql(string directoryPath, int sortTypeId, bool isAscending)
@@ -45,10 +45,10 @@ SELECT mf.file_id
             ArgumentException.ThrowIfNullOrEmpty(directoryPath, nameof(directoryPath));
 
             base.ParameterList.AddRange(
-                [SqlParameterUtil.CreateParameter("directory_path", directoryPath),
-                    SqlParameterUtil.CreateParameter("sort_type_id", sortTypeId),
-                    SqlParameterUtil.CreateParameter("is_ascending", isAscending),
-                    SqlParameterUtil.CreateParameter("selected_file_path", DBNull.Value)]);
+                [SqlUtil.CreateParameter("directory_path", directoryPath),
+                    SqlUtil.CreateParameter("sort_type_id", sortTypeId),
+                    SqlUtil.CreateParameter("is_ascending", isAscending),
+                    SqlUtil.CreateParameter("selected_file_path", DBNull.Value)]);
         }
     }
 }

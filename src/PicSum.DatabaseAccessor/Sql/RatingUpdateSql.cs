@@ -28,9 +28,9 @@ UPDATE t_rating
 
             base.ParameterList.AddRange(
                 [
-                    SqlParameterUtil.CreateParameter("file_path", filePath),
-                    SqlParameterUtil.CreateParameter("rating", rating),
-                    SqlParameterUtil.CreateParameter("registration_date", registrationDate)
+                    SqlUtil.CreateParameter("file_path", filePath),
+                    SqlUtil.CreateParameter("rating", rating),
+                    SqlUtil.CreateParameter("registration_date", registrationDate)
                 ]);
         }
     }
