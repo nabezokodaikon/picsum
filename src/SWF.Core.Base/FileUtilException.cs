@@ -4,7 +4,7 @@ namespace SWF.Core.Base
     /// ファイルユーティリティ例外クラス。
     /// </summary>
     public sealed class FileUtilException
-        : SWFException
+        : Exception
     {
         public FileUtilException(string message, Exception exception)
             : base(message, exception)

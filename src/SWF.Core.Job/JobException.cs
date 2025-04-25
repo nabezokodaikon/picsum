@@ -1,9 +1,7 @@
-using SWF.Core.Base;
-
 namespace SWF.Core.Job
 {
     public class JobException
-        : SWFException
+        : Exception
     {
         public JobException(JobID id, Exception ex)
             : base($"{id} で例外が発生しました。", ex)
