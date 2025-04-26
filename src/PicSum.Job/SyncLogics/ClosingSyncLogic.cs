@@ -4,6 +4,7 @@ using SWF.Core.Base;
 using SWF.Core.ConsoleAccessor;
 using SWF.Core.ImageAccessor;
 using SWF.Core.Job;
+using SWF.Core.Resource;
 using System.Runtime.Versioning;
 
 namespace PicSum.Job.SyncLogics

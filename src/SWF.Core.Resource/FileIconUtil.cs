@@ -1,9 +1,8 @@
-using SWF.Core.Resource;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 using WinApi;
 
-namespace SWF.Core.ImageAccessor
+namespace SWF.Core.Resource
 {
     [SupportedOSPlatform("windows10.0.17763.0")]
     internal static class FileIconUtil

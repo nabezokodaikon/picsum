@@ -33,6 +33,7 @@
     <ProjectReference Include="..\PicSum.DatabaseAccessor\PicSum.DatabaseAccessor.csproj" />
     <ProjectReference Include="..\SWF.Core.Base\SWF.Core.Base.csproj" />
     <ProjectReference Include="..\SWF.Core.ImageAccessor\SWF.Core.ImageAccessor.csproj" />
+    <ProjectReference Include="..\SWF.Core.Resource\SWF.Core.Resource.csproj" />
   </ItemGroup>
 
 </Project>

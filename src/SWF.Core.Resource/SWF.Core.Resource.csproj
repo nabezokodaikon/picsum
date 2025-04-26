@@ -34,6 +34,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\SWF.Core.Base\SWF.Core.Base.csproj" />
+    <ProjectReference Include="..\SWF.Core.FileAccessor\SWF.Core.FileAccessor.csproj" />
+    <ProjectReference Include="..\SWF.Core.ImageAccessor\SWF.Core.ImageAccessor.csproj" />
+    <ProjectReference Include="..\WinApi\WinApi.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Update="Properties\Resources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
