@@ -7,7 +7,7 @@ using SWF.Core.Base;
 using SWF.Core.ConsoleAccessor;
 using SWF.Core.FileAccessor;
 using SWF.Core.Job;
-using SWF.Core.Resource;
+using SWF.Core.ResourceAccessor;
 using SWF.UIComponent.Core;
 using SWF.UIComponent.Form;
 using SWF.UIComponent.TabOperation;

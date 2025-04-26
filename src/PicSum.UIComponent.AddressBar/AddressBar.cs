@@ -3,7 +3,7 @@ using PicSum.Job.Results;
 using SWF.Core.Base;
 using SWF.Core.FileAccessor;
 using SWF.Core.Job;
-using SWF.Core.Resource;
+using SWF.Core.ResourceAccessor;
 using SWF.Core.StringAccessor;
 using SWF.UIComponent.Core;
 using System;

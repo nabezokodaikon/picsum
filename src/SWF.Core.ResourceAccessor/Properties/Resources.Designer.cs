@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SWF.Core.Resource.Properties {
+namespace SWF.Core.ResourceAccessor.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace SWF.Core.Resource.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SWF.Core.Resource.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SWF.Core.ResourceAccessor.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -69,19 +69,17 @@ namespace SWF.Core.Resource.Properties {
                 return ((byte[])(obj));
             }
         }
-
+        
         /// <summary>
         ///   (アイコン) に類似した型 System.Drawing.Icon のローカライズされたリソースを検索します。
         /// </summary>
-        internal static System.Drawing.Icon AppIcon
-        {
-            get
-            {
+        internal static System.Drawing.Icon AppIcon {
+            get {
                 object obj = ResourceManager.GetObject("AppIcon", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
             }
         }
-
+        
         /// <summary>
         ///   型 System.Byte[] のローカライズされたリソースを検索します。
         /// </summary>

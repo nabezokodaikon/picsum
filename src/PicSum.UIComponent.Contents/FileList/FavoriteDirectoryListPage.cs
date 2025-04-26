@@ -8,7 +8,7 @@ using SWF.Core.Base;
 using SWF.Core.ConsoleAccessor;
 using SWF.Core.ImageAccessor;
 using SWF.Core.Job;
-using SWF.Core.Resource;
+using SWF.Core.ResourceAccessor;
 using SWF.UIComponent.TabOperation;
 using System;
 using System.ComponentModel;

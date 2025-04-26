@@ -7,7 +7,7 @@ using SWF.Core.Base;
 using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
 using SWF.Core.Job;
-using SWF.Core.Resource;
+using SWF.Core.ResourceAccessor;
 using System;
 using System.Windows.Forms;
 

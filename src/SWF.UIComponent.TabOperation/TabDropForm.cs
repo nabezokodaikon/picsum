@@ -1,5 +1,5 @@
 using SWF.Core.ImageAccessor;
-using SWF.Core.Resource;
+using SWF.Core.ResourceAccessor;
 using System;
 using System.Drawing;
 using System.Runtime.Versioning;

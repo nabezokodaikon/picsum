@@ -1,7 +1,7 @@
-using SWF.Core.Resource.Properties;
+using SWF.Core.ResourceAccessor.Properties;
 using System.Runtime.Versioning;
 
-namespace SWF.Core.Resource
+namespace SWF.Core.ResourceAccessor
 {
     [SupportedOSPlatform("windows10.0.17763.0")]
     public static class ResourceFiles

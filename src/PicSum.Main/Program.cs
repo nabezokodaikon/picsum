@@ -66,7 +66,7 @@ namespace PicSum.Main
                         typeof(SWF.Core.FileAccessor.FileAppender),
                         typeof(SWF.Core.ImageAccessor.CvImage),
                         typeof(SWF.Core.Job.AbstractAsyncJob),
-                        typeof(SWF.Core.Resource.ResourceFiles),
+                        typeof(SWF.Core.ResourceAccessor.ResourceFiles),
                         typeof(SWF.Core.StringAccessor.NaturalStringComparer),
 
                         typeof(SWF.UIComponent.Core.CheckPatternPanel),

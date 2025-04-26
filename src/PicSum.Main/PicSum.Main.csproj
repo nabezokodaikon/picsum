@@ -122,7 +122,7 @@
 	<ProjectReference Include="..\SWF.Core.ConsoleAccessor\SWF.Core.ConsoleAccessor.csproj" />
 	<ProjectReference Include="..\SWF.Core.ImageAccessor\SWF.Core.ImageAccessor.csproj" />
 	<ProjectReference Include="..\SWF.Core.Job\SWF.Core.Job.csproj" />
-	<ProjectReference Include="..\SWF.Core.Resource\SWF.Core.Resource.csproj" />
+	<ProjectReference Include="..\SWF.Core.ResourceAccessor\SWF.Core.ResourceAccessor.csproj" />
 	<ProjectReference Include="..\SWF.UIComponent.Core\SWF.UIComponent.Core.csproj" />
 	<ProjectReference Include="..\SWF.UIComponent.FlowList\SWF.UIComponent.FlowList.csproj" />
 	<ProjectReference Include="..\SWF.UIComponent.Form\SWF.UIComponent.Form.csproj" />

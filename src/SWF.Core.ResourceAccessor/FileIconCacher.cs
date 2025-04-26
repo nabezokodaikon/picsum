@@ -4,7 +4,7 @@ using SWF.Core.ImageAccessor;
 using System.Runtime.Versioning;
 using WinApi;
 
-namespace SWF.Core.Resource
+namespace SWF.Core.ResourceAccessor
 {
     /// <summary>
     /// ファイルアイコンキャッシュクラス

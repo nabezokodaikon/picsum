@@ -91,7 +91,7 @@ namespace PicSum.UIComponent.InfoPanel
             this.wideComboBox.Name = "wideComboBox";
             this.wideComboBox.Size = new Size(508, 32);
             this.wideComboBox.BackColor = Color.FromArgb(250, 250, 250);
-            this.wideComboBox.Icon = SWF.Core.Resource.ResourceFiles.TagIcon.Value;
+            this.wideComboBox.Icon = SWF.Core.ResourceAccessor.ResourceFiles.TagIcon.Value;
             this.wideComboBox.DropDownOpening += this.WideComboBox_DropDownOpening;
             this.wideComboBox.AddItem += this.WideComboBox_AddItem;
             // 
