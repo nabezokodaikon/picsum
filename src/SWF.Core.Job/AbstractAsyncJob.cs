@@ -1,4 +1,5 @@
 using NLog;
+using SWF.Core.ConsoleAccessor;
 
 namespace SWF.Core.Job
 {
@@ -79,13 +80,16 @@ namespace SWF.Core.Job
 
         internal override void ExecuteWrapper()
         {
-            if (this.Parameter != null)
+            using (TimeMeasuring.Run(false, this.GetType().Name))
             {
-                this.Execute(this.Parameter);
-            }
-            else
-            {
-                this.Execute();
+                if (this.Parameter != null)
+                {
+                    this.Execute(this.Parameter);
+                }
+                else
+                {
+                    this.Execute();
+                }
             }
         }
 
