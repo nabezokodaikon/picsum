@@ -17,9 +17,9 @@ namespace PicSum.UIComponent.AddressBar
     internal sealed partial class SeparatorDrawItem
         : DropDownDrawItemBase, IDisposable
     {
-        private bool disposed = false;
-        private readonly Image mousePointImage = ResourceFiles.SmallArrowRightIcon.Value;
-        private readonly Image mouseDownImage = ResourceFiles.SmallArrowDownIcon.Value;
+        private bool _disposed = false;
+        private readonly Image _mousePointImage = ResourceFiles.SmallArrowRightIcon.Value;
+        private readonly Image _mouseDownImage = ResourceFiles.SmallArrowDownIcon.Value;
 
         public DirectoryEntity Directory { get; set; }
         public string SelectedSubDirectoryPath { get; set; }
@@ -31,12 +31,12 @@ namespace PicSum.UIComponent.AddressBar
 
         public new void Dispose()
         {
-            if (this.disposed)
+            if (this._disposed)
             {
                 return;
             }
 
-            this.disposed = true;
+            this._disposed = true;
 
             base.Dispose();
             GC.SuppressFinalize(this);
@@ -52,17 +52,17 @@ namespace PicSum.UIComponent.AddressBar
             {
                 g.FillRectangle(Palette.MOUSE_DOWN_BRUSH, rect);
                 g.DrawRectangle(Palette.MOUSE_POINT_PEN, rect);
-                g.DrawImage(this.mouseDownImage, this.GetImageDrawRectangle(this.mouseDownImage));
+                g.DrawImage(this._mouseDownImage, this.GetImageDrawRectangle(this._mouseDownImage));
             }
             else if (base.IsMousePoint)
             {
                 g.FillRectangle(Palette.MOUSE_POINT_BRUSH, rect);
                 g.DrawRectangle(Palette.MOUSE_POINT_PEN, rect);
-                g.DrawImage(this.mousePointImage, this.GetImageDrawRectangle(this.mousePointImage));
+                g.DrawImage(this._mousePointImage, this.GetImageDrawRectangle(this._mousePointImage));
             }
             else
             {
-                g.DrawImage(this.mousePointImage, this.GetImageDrawRectangle(this.mousePointImage));
+                g.DrawImage(this._mousePointImage, this.GetImageDrawRectangle(this._mousePointImage));
             }
         }
 
@@ -85,7 +85,7 @@ namespace PicSum.UIComponent.AddressBar
                 Instance<JobCaller>.Value.SubDirectoriesGetJob.Value
                     .StartJob(this.AddressBar, param, _ =>
                     {
-                        if (this.disposed)
+                        if (this._disposed)
                         {
                             return;
                         }

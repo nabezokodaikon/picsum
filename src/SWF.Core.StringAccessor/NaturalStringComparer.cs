@@ -5,7 +5,7 @@ namespace SWF.Core.StringAccessor
     public sealed class NaturalStringComparer
         : IComparer<string?>
     {
-        public static IComparer<string?> Windows { get; } = new NaturalStringComparer();
+        public static readonly IComparer<string?> WINDOWS = new NaturalStringComparer();
 
         private NaturalStringComparer()
         {

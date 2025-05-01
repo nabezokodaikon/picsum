@@ -16,21 +16,21 @@ namespace SWF.UIComponent.TabOperation
         public event EventHandler Inactivated;
         public event EventHandler<DrawTabEventArgs> DrawTabPage;
 
-        private string title = string.Empty;
-        private Image icon = null;
+        private string _title = string.Empty;
+        private Image _icon = null;
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public string Title
         {
             get
             {
-                return this.title;
+                return this._title;
             }
             set
             {
                 ArgumentException.ThrowIfNullOrEmpty(value, nameof(value));
 
-                this.title = value;
+                this._title = value;
             }
         }
 
@@ -39,11 +39,11 @@ namespace SWF.UIComponent.TabOperation
         {
             get
             {
-                return this.icon;
+                return this._icon;
             }
             set
             {
-                this.icon = value;
+                this._icon = value;
             }
         }
 

@@ -54,21 +54,21 @@ namespace SWF.UIComponent.Form
 
         public event EventHandler<ScaleChangedEventArgs> ScaleChanged;
 
-        private float currentScale = 0;
-        private bool isInit = true;
-        private Size initSize = Size.Empty;
-        private FormWindowState initWindowState = FormWindowState.Normal;
-        private FormWindowState currentWindowState = FormWindowState.Normal;
-        private Rectangle currentWindowBounds = Rectangle.Empty;
+        private float _currentScale = 0;
+        private bool _isInit = true;
+        private Size _initSize = Size.Empty;
+        private FormWindowState _initWindowState = FormWindowState.Normal;
+        private FormWindowState _currentWindowState = FormWindowState.Normal;
+        private Rectangle _currentWindowBounds = Rectangle.Empty;
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public new Size Size
         {
             get
             {
-                if (this.isInit)
+                if (this._isInit)
                 {
-                    return this.initSize;
+                    return this._initSize;
                 }
                 else
                 {
@@ -77,9 +77,9 @@ namespace SWF.UIComponent.Form
             }
             set
             {
-                if (this.isInit)
+                if (this._isInit)
                 {
-                    this.initSize = value;
+                    this._initSize = value;
                 }
                 else
                 {
@@ -93,9 +93,9 @@ namespace SWF.UIComponent.Form
         {
             get
             {
-                if (this.isInit)
+                if (this._isInit)
                 {
-                    return this.initWindowState;
+                    return this._initWindowState;
                 }
                 else
                 {
@@ -104,9 +104,9 @@ namespace SWF.UIComponent.Form
             }
             set
             {
-                if (this.isInit)
+                if (this._isInit)
                 {
-                    this.initWindowState = value;
+                    this._initWindowState = value;
                 }
                 else
                 {
@@ -154,8 +154,8 @@ namespace SWF.UIComponent.Form
 
         public void RestoreWindowState()
         {
-            this.Bounds = this.currentWindowBounds;
-            this.WindowState = this.currentWindowState;
+            this.Bounds = this._currentWindowBounds;
+            this.WindowState = this._currentWindowState;
         }
 
         protected override void WndProc(ref Message m)
@@ -174,12 +174,12 @@ namespace SWF.UIComponent.Form
             else if (m.Msg == WinApiMembers.WM_DPICHANGED)
             {
                 var scale = WindowUtil.GetCurrentWindowScale(this);
-                if (this.currentScale == 0 || this.currentScale != scale)
+                if (this._currentScale == 0 || this._currentScale != scale)
                 {
-                    this.currentScale = scale;
-                    var glassMargins = GetGrassMargins(this.currentScale);
+                    this._currentScale = scale;
+                    var glassMargins = GetGrassMargins(this._currentScale);
                     WinApiMembers.DwmExtendFrameIntoClientArea(this.Handle, glassMargins);
-                    this.ScaleChanged?.Invoke(this, new ScaleChangedEventArgs(this.currentScale));
+                    this.ScaleChanged?.Invoke(this, new ScaleChangedEventArgs(this._currentScale));
                     return;
                 }
             }
@@ -221,12 +221,12 @@ namespace SWF.UIComponent.Form
             }
             else if (this.WindowState == FormWindowState.Maximized)
             {
-                this.currentWindowState = FormWindowState.Maximized;
+                this._currentWindowState = FormWindowState.Maximized;
             }
             else if (this.WindowState == FormWindowState.Normal)
             {
-                this.currentWindowState = FormWindowState.Normal;
-                this.currentWindowBounds = this.Bounds;
+                this._currentWindowState = FormWindowState.Normal;
+                this._currentWindowBounds = this.Bounds;
             }
 
             base.OnResize(e);
@@ -242,12 +242,12 @@ namespace SWF.UIComponent.Form
             }
             else if (this.WindowState == FormWindowState.Maximized)
             {
-                this.currentWindowState = FormWindowState.Maximized;
+                this._currentWindowState = FormWindowState.Maximized;
             }
             else if (this.WindowState == FormWindowState.Normal)
             {
-                this.currentWindowState = FormWindowState.Normal;
-                this.currentWindowBounds = this.Bounds;
+                this._currentWindowState = FormWindowState.Normal;
+                this._currentWindowBounds = this.Bounds;
             }
 
             base.OnLocationChanged(e);
@@ -260,16 +260,16 @@ namespace SWF.UIComponent.Form
 
         protected override void OnLoad(EventArgs e)
         {
-            if (this.isInit)
+            if (this._isInit)
             {
-                base.Size = this.initSize;
-                base.WindowState = this.initWindowState;
+                base.Size = this._initSize;
+                base.WindowState = this._initWindowState;
 
-                this.currentScale = WindowUtil.GetCurrentWindowScale(this);
-                var glassMargins = GetGrassMargins(this.currentScale);
+                this._currentScale = WindowUtil.GetCurrentWindowScale(this);
+                var glassMargins = GetGrassMargins(this._currentScale);
                 WinApiMembers.DwmExtendFrameIntoClientArea(this.Handle, glassMargins);
 
-                this.isInit = false;
+                this._isInit = false;
             }
 
             base.OnLoad(e);

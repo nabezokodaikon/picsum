@@ -24,30 +24,30 @@ namespace PicSum.UIComponent.Contents.FileList
     public sealed partial class DirectoryFileListPage
         : AbstractFileListPage
     {
-        private bool disposed = false;
-        private readonly DirectoryFileListPageParameter parameter = null;
+        private bool _disposed = false;
+        private readonly DirectoryFileListPageParameter _parameter = null;
 
         public DirectoryFileListPage(DirectoryFileListPageParameter param)
             : base(param)
         {
-            this.parameter = param;
+            this._parameter = param;
 
-            this.Title = FileUtil.GetFileName(this.parameter.DirectoryPath);
+            this.Title = FileUtil.GetFileName(this._parameter.DirectoryPath);
 
-            if (FileUtil.IsSystemRoot(this.parameter.DirectoryPath))
+            if (FileUtil.IsSystemRoot(this._parameter.DirectoryPath))
             {
                 this.Icon = Instance<IFileIconCacher>.Value.LargePCIcon;
             }
-            else if (FileUtil.IsExistsDrive(this.parameter.DirectoryPath))
+            else if (FileUtil.IsExistsDrive(this._parameter.DirectoryPath))
             {
-                this.Icon = Instance<IFileIconCacher>.Value.GetJumboDriveIcon(this.parameter.DirectoryPath);
+                this.Icon = Instance<IFileIconCacher>.Value.GetJumboDriveIcon(this._parameter.DirectoryPath);
             }
             else
             {
                 this.Icon = Instance<IFileIconCacher>.Value.JumboDirectoryIcon;
             }
 
-            this.IsMoveControlVisible = !string.IsNullOrEmpty(this.parameter.DirectoryPath);
+            this.IsMoveControlVisible = !string.IsNullOrEmpty(this._parameter.DirectoryPath);
             this.fileContextMenu.VisibleRemoveFromListMenuItem = false;
             base.toolBar.RegistrationSortButtonEnabled = false;
         }
@@ -56,14 +56,14 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             var param = new FilesGetByDirectoryParameter()
             {
-                DirectoryPath = this.parameter.DirectoryPath,
+                DirectoryPath = this._parameter.DirectoryPath,
                 IsGetThumbnail = true,
             };
 
             Instance<JobCaller>.Value.FilesGetByDirectoryJob.Value
                 .StartJob(this, param, _ =>
                 {
-                    if (this.disposed)
+                    if (this._disposed)
                     {
                         return;
                     }
@@ -76,7 +76,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
         protected override void Dispose(bool disposing)
         {
-            if (this.disposed)
+            if (this._disposed)
             {
                 return;
             }
@@ -86,7 +86,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 this.SaveCurrentDirectoryState();
             }
 
-            this.disposed = true;
+            this._disposed = true;
 
             base.Dispose(disposing);
         }
@@ -106,9 +106,9 @@ namespace PicSum.UIComponent.Contents.FileList
 
         protected override void OnBackgroundMouseClick(MouseEventArgs e)
         {
-            if (!FileUtil.IsSystemRoot(this.parameter.DirectoryPath))
+            if (!FileUtil.IsSystemRoot(this._parameter.DirectoryPath))
             {
-                base.OnSelectedFileChanged(new SelectedFileChangeEventArgs(this.parameter.DirectoryPath));
+                base.OnSelectedFileChanged(new SelectedFileChangeEventArgs(this._parameter.DirectoryPath));
             }
         }
 
@@ -119,21 +119,21 @@ namespace PicSum.UIComponent.Contents.FileList
 
         protected override void OnMovePreviewButtonClick(EventArgs e)
         {
-            if (FileUtil.IsSystemRoot(this.parameter.DirectoryPath))
+            if (FileUtil.IsSystemRoot(this._parameter.DirectoryPath))
             {
                 return;
             }
 
             var param = new NextDirectoryGetParameter
             {
-                CurrentParameter = this.parameter.DirectoryPath,
+                CurrentParameter = this._parameter.DirectoryPath,
                 IsNext = false,
             };
 
             Instance<JobCaller>.Value.NextDirectoryGetJob.Value
                 .StartJob(this, param, _ =>
                 {
-                    if (this.disposed)
+                    if (this._disposed)
                     {
                         return;
                     }
@@ -144,7 +144,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
         protected override void OnMoveNextButtonClick(EventArgs e)
         {
-            if (FileUtil.IsSystemRoot(this.parameter.DirectoryPath))
+            if (FileUtil.IsSystemRoot(this._parameter.DirectoryPath))
             {
                 return;
             }
@@ -152,13 +152,13 @@ namespace PicSum.UIComponent.Contents.FileList
             var param = new NextDirectoryGetParameter
             {
                 IsNext = true,
-                CurrentParameter = this.parameter.DirectoryPath,
+                CurrentParameter = this._parameter.DirectoryPath,
             };
 
             Instance<JobCaller>.Value.NextDirectoryGetJob.Value
                 .StartJob(this, param, _ =>
                 {
-                    if (this.disposed)
+                    if (this._disposed)
                     {
                         return;
                     }
@@ -179,9 +179,9 @@ namespace PicSum.UIComponent.Contents.FileList
             {
                 this.SetContextMenuFiles(filePathList);
             }
-            else if (!FileUtil.IsSystemRoot(this.parameter.DirectoryPath))
+            else if (!FileUtil.IsSystemRoot(this._parameter.DirectoryPath))
             {
-                this.SetContextMenuFiles(this.parameter.DirectoryPath);
+                this.SetContextMenuFiles(this._parameter.DirectoryPath);
                 this.fileContextMenu.VisibleDirectoryActiveTabOpenMenuItem = false;
             }
             else
@@ -195,7 +195,7 @@ namespace PicSum.UIComponent.Contents.FileList
             if (base.SortTypeID == SortTypeID.Default)
             {
                 var param = new DirectoryStateParameter(
-                    this.parameter.DirectoryPath,
+                    this._parameter.DirectoryPath,
                     SortTypeID.FileName,
                     true,
                     base.SelectedFilePath);
@@ -204,7 +204,7 @@ namespace PicSum.UIComponent.Contents.FileList
             else
             {
                 var param = new DirectoryStateParameter(
-                    this.parameter.DirectoryPath,
+                    this._parameter.DirectoryPath,
                     base.SortTypeID,
                     base.IsAscending,
                     base.SelectedFilePath);
@@ -214,22 +214,22 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private void SearchJob_Callback(DirectoryGetResult e)
         {
-            if (!string.IsNullOrEmpty(this.parameter.SelectedFilePath))
+            if (!string.IsNullOrEmpty(this._parameter.SelectedFilePath))
             {
                 if (e.DirectoryState == DirectoryStateParameter.EMPTY)
                 {
-                    base.SetFiles(e.FileInfoList, this.parameter.SelectedFilePath, SortTypeID.FilePath, true);
+                    base.SetFiles(e.FileInfoList, this._parameter.SelectedFilePath, SortTypeID.FilePath, true);
                 }
                 else
                 {
-                    base.SetFiles(e.FileInfoList, this.parameter.SelectedFilePath, e.DirectoryState.SortTypeID, e.DirectoryState.IsAscending);
+                    base.SetFiles(e.FileInfoList, this._parameter.SelectedFilePath, e.DirectoryState.SortTypeID, e.DirectoryState.IsAscending);
                 }
             }
             else
             {
                 if (e.DirectoryState == DirectoryStateParameter.EMPTY)
                 {
-                    base.SetFiles(e.FileInfoList, this.parameter.DirectoryPath, SortTypeID.FilePath, true);
+                    base.SetFiles(e.FileInfoList, this._parameter.DirectoryPath, SortTypeID.FilePath, true);
                 }
                 else
                 {
@@ -238,7 +238,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
                 if (e.FileInfoList.Length < 1)
                 {
-                    base.OnSelectedFileChanged(new SelectedFileChangeEventArgs(this.parameter.DirectoryPath));
+                    base.OnSelectedFileChanged(new SelectedFileChangeEventArgs(this._parameter.DirectoryPath));
                 }
             }
 

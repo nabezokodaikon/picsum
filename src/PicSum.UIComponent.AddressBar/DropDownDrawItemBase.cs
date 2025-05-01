@@ -12,15 +12,15 @@ namespace PicSum.UIComponent.AddressBar
     abstract class DropDownDrawItemBase
         : DrawItemBase
     {
-        private DropDownList dropDownList = null;
-        private DirectoryEntity mousePointItem = null;
-        private readonly List<DirectoryEntity> items = [];
+        private DropDownList _dropDownList = null;
+        private DirectoryEntity _mousePointItem = null;
+        private readonly List<DirectoryEntity> _items = [];
 
         public List<DirectoryEntity> Items
         {
             get
             {
-                return this.items;
+                return this._items;
             }
         }
 
@@ -28,7 +28,7 @@ namespace PicSum.UIComponent.AddressBar
         {
             get
             {
-                return this.dropDownList != null && this.dropDownList.Visible;
+                return this._dropDownList != null && this._dropDownList.Visible;
             }
         }
 
@@ -36,12 +36,12 @@ namespace PicSum.UIComponent.AddressBar
         {
             get
             {
-                if (this.dropDownList == null)
+                if (this._dropDownList == null)
                 {
                     this.CreateDropDownList();
                 }
 
-                return this.dropDownList;
+                return this._dropDownList;
             }
         }
 
@@ -64,11 +64,11 @@ namespace PicSum.UIComponent.AddressBar
 
         public new void Dispose()
         {
-            if (this.dropDownList != null)
+            if (this._dropDownList != null)
             {
-                this.dropDownList.Close();
-                this.dropDownList.Dispose();
-                this.dropDownList = null;
+                this._dropDownList.Close();
+                this._dropDownList.Dispose();
+                this._dropDownList = null;
             }
 
             base.Dispose();
@@ -77,7 +77,7 @@ namespace PicSum.UIComponent.AddressBar
 
         private void CreateDropDownList()
         {
-            this.dropDownList = new()
+            this._dropDownList = new()
             {
                 BackColor = Palette.INNER_COLOR,
                 ItemTextTrimming = StringTrimming.EllipsisCharacter,
@@ -86,19 +86,19 @@ namespace PicSum.UIComponent.AddressBar
                 ItemTextFormatFlags = StringFormatFlags.NoWrap
             };
 
-            this.dropDownList.Opened += new(this.DropDownList_Opened);
-            this.dropDownList.Closed += new(this.DropDownList_Closed);
-            this.dropDownList.Drawitem += new(this.DropDownList_Drawitem);
-            this.dropDownList.ItemMouseClick += (this.DropDownList_ItemMouseClick);
-            this.dropDownList.ItemExecute += new(this.DropDownList_ItemExecute);
+            this._dropDownList.Opened += new(this.DropDownList_Opened);
+            this._dropDownList.Closed += new(this.DropDownList_Closed);
+            this._dropDownList.Drawitem += new(this.DropDownList_Drawitem);
+            this._dropDownList.ItemMouseClick += (this.DropDownList_ItemMouseClick);
+            this._dropDownList.ItemExecute += new(this.DropDownList_ItemExecute);
         }
 
         private DirectoryEntity GetDropDownItemFromScreenPoint()
         {
             var index = this.DropDownList.IndexFromScreenPoint();
-            if (index > -1 && this.items.Count > index)
+            if (index > -1 && this._items.Count > index)
             {
-                return this.items[index];
+                return this._items[index];
             }
 
             return null;
@@ -116,7 +116,7 @@ namespace PicSum.UIComponent.AddressBar
 
         private void DropDownList_Drawitem(object sender, SWF.UIComponent.FlowList.DrawItemEventArgs e)
         {
-            if (this.items.Count > 0)
+            if (this._items.Count > 0)
             {
                 this.DrawDropDownItem(e);
             }
@@ -127,12 +127,12 @@ namespace PicSum.UIComponent.AddressBar
             this.DropDownList.Close();
 
             var index = this.DropDownList.GetSelectedIndexs()[0];
-            if (index < 0 || this.items.Count - 1 < index)
+            if (index < 0 || this._items.Count - 1 < index)
             {
                 return;
             }
 
-            var item = this.items[index];
+            var item = this._items[index];
             if (e.Button == MouseButtons.Left)
             {
                 this.OnSelectedDirectory(new SelectedDirectoryEventArgs(PageOpenType.OverlapTab, item.DirectoryPath));
@@ -148,44 +148,44 @@ namespace PicSum.UIComponent.AddressBar
             this.DropDownList.Close();
 
             var index = this.DropDownList.GetSelectedIndexs()[0];
-            if (index < 0 || this.items.Count - 1 < index)
+            if (index < 0 || this._items.Count - 1 < index)
             {
                 return;
             }
 
-            var item = this.items[index];
+            var item = this._items[index];
             this.OnSelectedDirectory(new SelectedDirectoryEventArgs(PageOpenType.OverlapTab, item.DirectoryPath));
         }
 
         private void ContextMenu_Opening(object sender, CancelEventArgs e)
         {
-            if (this.items == null)
+            if (this._items == null)
             {
-                this.mousePointItem = null;
+                this._mousePointItem = null;
                 e.Cancel = true;
             }
             else
             {
-                this.mousePointItem = this.GetDropDownItemFromScreenPoint();
+                this._mousePointItem = this.GetDropDownItemFromScreenPoint();
             }
         }
 
         private void ContextMenu_ActiveTabOpen(object sender, EventArgs e)
         {
             this.DropDownList.Close();
-            this.OnSelectedDirectory(new SelectedDirectoryEventArgs(PageOpenType.OverlapTab, this.mousePointItem.DirectoryPath));
+            this.OnSelectedDirectory(new SelectedDirectoryEventArgs(PageOpenType.OverlapTab, this._mousePointItem.DirectoryPath));
         }
 
         private void ContextMenu_NewTabOpen(object sender, EventArgs e)
         {
             this.DropDownList.Close();
-            this.OnSelectedDirectory(new SelectedDirectoryEventArgs(PageOpenType.AddTab, this.mousePointItem.DirectoryPath));
+            this.OnSelectedDirectory(new SelectedDirectoryEventArgs(PageOpenType.AddTab, this._mousePointItem.DirectoryPath));
         }
 
         private void ContextMenu_NewWindowOpen(object sender, EventArgs e)
         {
             this.DropDownList.Close();
-            this.OnSelectedDirectory(new SelectedDirectoryEventArgs(PageOpenType.NewWindow, this.mousePointItem.DirectoryPath));
+            this.OnSelectedDirectory(new SelectedDirectoryEventArgs(PageOpenType.NewWindow, this._mousePointItem.DirectoryPath));
         }
     }
 }

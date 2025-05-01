@@ -19,9 +19,9 @@ namespace SWF.UIComponent.Core
             VerticalCenter = 6
         }
 
-        private bool isLeftClick = false;
-        private ToolButtonRegionType regionType = ToolButtonRegionType.Default;
-        private Func<Rectangle>? getRectangleMethod;
+        private bool _isLeftClick = false;
+        private ToolButtonRegionType _regionType = ToolButtonRegionType.Default;
+        private Func<Rectangle>? _getRectangleMethod;
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public new FlatStyle FlatStyle
@@ -101,36 +101,36 @@ namespace SWF.UIComponent.Core
         {
             get
             {
-                return this.regionType;
+                return this._regionType;
             }
             set
             {
-                this.regionType = value;
+                this._regionType = value;
 
                 switch (value)
                 {
                     case ToolButtonRegionType.Left:
-                        this.getRectangleMethod = new Func<Rectangle>(this.GetLeftRectangle);
+                        this._getRectangleMethod = new Func<Rectangle>(this.GetLeftRectangle);
                         break;
                     case ToolButtonRegionType.Top:
-                        this.getRectangleMethod = new Func<Rectangle>(this.GetTopRectangle);
+                        this._getRectangleMethod = new Func<Rectangle>(this.GetTopRectangle);
                         break;
                     case ToolButtonRegionType.Right:
-                        this.getRectangleMethod = new Func<Rectangle>(this.GetRightRectangle);
+                        this._getRectangleMethod = new Func<Rectangle>(this.GetRightRectangle);
                         break;
                     case ToolButtonRegionType.Bottom:
-                        this.getRectangleMethod = new Func<Rectangle>(this.GetBottomRectangle);
+                        this._getRectangleMethod = new Func<Rectangle>(this.GetBottomRectangle);
                         break;
                     case ToolButtonRegionType.HorizonCenter:
-                        this.getRectangleMethod = new Func<Rectangle>(this.GetHorizonCenterRectangle);
+                        this._getRectangleMethod = new Func<Rectangle>(this.GetHorizonCenterRectangle);
                         break;
                     case ToolButtonRegionType.VerticalCenter:
-                        this.getRectangleMethod = new Func<Rectangle>(this.GetVerticalCenterRectangle);
+                        this._getRectangleMethod = new Func<Rectangle>(this.GetVerticalCenterRectangle);
                         break;
                     case ToolButtonRegionType.Default:
                         break;
                     default:
-                        this.getRectangleMethod = new Func<Rectangle>(this.GetDefaultRectangle);
+                        this._getRectangleMethod = new Func<Rectangle>(this.GetDefaultRectangle);
                         break;
                 }
 
@@ -153,7 +153,7 @@ namespace SWF.UIComponent.Core
 
             this.UpdateStyles();
 
-            this.getRectangleMethod = new Func<Rectangle>(this.GetDefaultRectangle);
+            this._getRectangleMethod = new Func<Rectangle>(this.GetDefaultRectangle);
             this.Region = this.GetRegion();
 
             this.UseVisualStyleBackColor = false;
@@ -167,12 +167,12 @@ namespace SWF.UIComponent.Core
 
         public Rectangle GetRegionBounds()
         {
-            if (this.getRectangleMethod == null)
+            if (this._getRectangleMethod == null)
             {
                 throw new NullReferenceException("描画領域取得メソッドがNullです。");
             }
 
-            var rect = this.getRectangleMethod();
+            var rect = this._getRectangleMethod();
             var x = this.Bounds.Left + rect.Left;
             var y = this.Bounds.Top + rect.Top;
             var w = rect.Width;
@@ -191,8 +191,8 @@ namespace SWF.UIComponent.Core
         {
             if (e.Button == MouseButtons.Left)
             {
-                this.isLeftClick = !this.isLeftClick;
-                if (this.isLeftClick)
+                this._isLeftClick = !this._isLeftClick;
+                if (this._isLeftClick)
                 {
                     base.OnMouseClick(e);
                 }
@@ -268,12 +268,12 @@ namespace SWF.UIComponent.Core
 
         private Region GetRegion()
         {
-            if (this.getRectangleMethod == null)
+            if (this._getRectangleMethod == null)
             {
                 throw new NullReferenceException("描画領域取得メソッドがNullです。");
             }
 
-            return new Region(this.getRectangleMethod());
+            return new Region(this._getRectangleMethod());
         }
     }
 }

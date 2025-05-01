@@ -5,10 +5,10 @@ namespace SWF.Core.Base
     [SupportedOSPlatform("windows10.0.17763.0")]
     public sealed class SortInfo
     {
-        private bool isFileNameSortAscending = true;
-        private bool isFilePathSortAscending = true;
-        private bool isUpdateDateSortAscending = true;
-        private bool isRegistrationDateSortAscending = true;
+        private bool _isFileNameSortAscending = true;
+        private bool _isFilePathSortAscending = true;
+        private bool _isUpdateDateSortAscending = true;
+        private bool _isRegistrationDateSortAscending = true;
 
         public SortTypeID ActiveSortType { get; set; }
 
@@ -16,10 +16,10 @@ namespace SWF.Core.Base
         {
             return sortType switch
             {
-                SortTypeID.FileName => this.isFileNameSortAscending,
-                SortTypeID.FilePath => this.isFilePathSortAscending,
-                SortTypeID.UpdateDate => this.isUpdateDateSortAscending,
-                SortTypeID.RegistrationDate => this.isRegistrationDateSortAscending,
+                SortTypeID.FileName => this._isFileNameSortAscending,
+                SortTypeID.FilePath => this._isFilePathSortAscending,
+                SortTypeID.UpdateDate => this._isUpdateDateSortAscending,
+                SortTypeID.RegistrationDate => this._isRegistrationDateSortAscending,
                 _ => false,
             };
         }
@@ -31,16 +31,16 @@ namespace SWF.Core.Base
             switch (sortType)
             {
                 case SortTypeID.FileName:
-                    this.isFileNameSortAscending = isAscending;
+                    this._isFileNameSortAscending = isAscending;
                     break;
                 case SortTypeID.FilePath:
-                    this.isFilePathSortAscending = isAscending;
+                    this._isFilePathSortAscending = isAscending;
                     break;
                 case SortTypeID.UpdateDate:
-                    this.isUpdateDateSortAscending = isAscending;
+                    this._isUpdateDateSortAscending = isAscending;
                     break;
                 case SortTypeID.RegistrationDate:
-                    this.isRegistrationDateSortAscending = isAscending;
+                    this._isRegistrationDateSortAscending = isAscending;
                     break;
                 default:
                     break;

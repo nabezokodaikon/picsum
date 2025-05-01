@@ -43,19 +43,19 @@ namespace PicSum.UIComponent.InfoPanel
 
         private bool disposed = false;
 
-        private FileDeepInfoGetResult fileInfoSource = FileDeepInfoGetResult.EMPTY;
-        private Image tagIcon = null;
-        private readonly Dictionary<float, Bitmap> tagIconCache = [];
-        private string contextMenuOperationTag = string.Empty;
-        private bool isLoading = false;
-        private readonly SolidBrush foreColorBrush;
-        private readonly StringFormat stringFormat;
-        private readonly Font tagDefaultFont
+        private FileDeepInfoGetResult _fileInfoSource = FileDeepInfoGetResult.EMPTY;
+        private Image _tagIcon = null;
+        private readonly Dictionary<float, Bitmap> _tagIconCache = [];
+        private string _contextMenuOperationTag = string.Empty;
+        private bool _isLoading = false;
+        private readonly SolidBrush _foreColorBrush;
+        private readonly StringFormat _stringFormat;
+        private readonly Font _tagDefaultFont
             = new("Yu Gothic UI", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-        private readonly Font allTagDefaultFont
+        private readonly Font _allTagDefaultFont
             = new("Yu Gothic UI", 14F, FontStyle.Bold, GraphicsUnit.Pixel);
-        private readonly Dictionary<float, Font> tagFontCache = [];
-        private readonly Dictionary<float, Font> allTagFontCache = [];
+        private readonly Dictionary<float, Font> _tagFontCache = [];
+        private readonly Dictionary<float, Font> _allTagFontCache = [];
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public new int TabIndex
@@ -74,9 +74,9 @@ namespace PicSum.UIComponent.InfoPanel
         {
             get
             {
-                if (this.fileInfoSource != FileDeepInfoGetResult.EMPTY && this.fileInfoSource.FilePathList != null)
+                if (this._fileInfoSource != FileDeepInfoGetResult.EMPTY && this._fileInfoSource.FilePathList != null)
                 {
-                    return this.fileInfoSource.FilePathList;
+                    return this._fileInfoSource.FilePathList;
                 }
                 else
                 {
@@ -89,24 +89,24 @@ namespace PicSum.UIComponent.InfoPanel
         {
             get
             {
-                if (this.fileInfoSource == FileDeepInfoGetResult.EMPTY)
+                if (this._fileInfoSource == FileDeepInfoGetResult.EMPTY)
                 {
                     return FileDeepInfoEntity.EMPTY;
                 }
-                else if (this.fileInfoSource == FileDeepInfoGetResult.ERROR)
+                else if (this._fileInfoSource == FileDeepInfoGetResult.ERROR)
                 {
                     return FileDeepInfoEntity.ERROR;
                 }
-                else if (this.fileInfoSource.FileInfo == FileDeepInfoEntity.EMPTY)
+                else if (this._fileInfoSource.FileInfo == FileDeepInfoEntity.EMPTY)
                 {
                     return FileDeepInfoEntity.EMPTY;
                 }
-                else if (this.fileInfoSource.FileInfo == FileDeepInfoEntity.ERROR)
+                else if (this._fileInfoSource.FileInfo == FileDeepInfoEntity.ERROR)
                 {
                     return FileDeepInfoEntity.ERROR;
                 }
 
-                return this.fileInfoSource.FileInfo;
+                return this._fileInfoSource.FileInfo;
             }
         }
 
@@ -129,9 +129,9 @@ namespace PicSum.UIComponent.InfoPanel
         {
             get
             {
-                if (this.fileInfoSource != FileDeepInfoGetResult.EMPTY && this.fileInfoSource.TagInfoList != null)
+                if (this._fileInfoSource != FileDeepInfoGetResult.EMPTY && this._fileInfoSource.TagInfoList != null)
                 {
-                    return this.fileInfoSource.TagInfoList;
+                    return this._fileInfoSource.TagInfoList;
                 }
                 else
                 {
@@ -151,8 +151,8 @@ namespace PicSum.UIComponent.InfoPanel
 
             this.InitializeComponent();
 
-            this.foreColorBrush = new SolidBrush(this.ForeColor);
-            this.stringFormat = new StringFormat()
+            this._foreColorBrush = new SolidBrush(this.ForeColor);
+            this._stringFormat = new StringFormat()
             {
                 Alignment = StringAlignment.Center,
                 LineAlignment = StringAlignment.Center,
@@ -226,7 +226,7 @@ namespace PicSum.UIComponent.InfoPanel
 
             this.VerticalTopMargin = (int)(VERTICAL_DEFAULT_TOP_MARGIN * scale);
 
-            this.tagIcon = this.GetTagIcon(scale);
+            this._tagIcon = this.GetTagIcon(scale);
             this.tagFlowList.ItemHeight = (int)(TAG_FLOW_LIST_DEFAULT_ITEM_HEIGHT * scale);
 
             this.ResumeLayout(false);
@@ -254,7 +254,7 @@ namespace PicSum.UIComponent.InfoPanel
                         ThumbnailUtil.THUMBNAIL_MAXIMUM_SIZE)
                 };
 
-                this.isLoading = true;
+                this._isLoading = true;
 
                 Instance<JobCaller>.Value.FileDeepInfoLoadingJob.Value
                     .StartJob(this, param, _ =>
@@ -264,7 +264,7 @@ namespace PicSum.UIComponent.InfoPanel
                             return;
                         }
 
-                        if (!this.isLoading)
+                        if (!this._isLoading)
                         {
                             return;
                         }
@@ -280,7 +280,7 @@ namespace PicSum.UIComponent.InfoPanel
                             return;
                         }
 
-                        this.isLoading = false;
+                        this._isLoading = false;
 
                         this.GetFileInfoJob_Callback(_);
                     });
@@ -301,25 +301,25 @@ namespace PicSum.UIComponent.InfoPanel
 
             if (disposing)
             {
-                foreach (var font in this.tagFontCache.Values)
+                foreach (var font in this._tagFontCache.Values)
                 {
                     font.Dispose();
                 }
-                this.tagFontCache.Clear();
-                this.tagDefaultFont.Dispose();
+                this._tagFontCache.Clear();
+                this._tagDefaultFont.Dispose();
 
-                foreach (var font in this.allTagFontCache.Values)
+                foreach (var font in this._allTagFontCache.Values)
                 {
                     font.Dispose();
                 }
-                this.allTagFontCache.Clear();
-                this.allTagDefaultFont.Dispose();
+                this._allTagFontCache.Clear();
+                this._allTagDefaultFont.Dispose();
 
-                foreach (var icon in this.tagIconCache.Values)
+                foreach (var icon in this._tagIconCache.Values)
                 {
                     icon.Dispose();
                 }
-                this.tagIconCache.Clear();
+                this._tagIconCache.Clear();
 
                 this.components?.Dispose();
             }
@@ -331,7 +331,7 @@ namespace PicSum.UIComponent.InfoPanel
 
         private Bitmap GetTagIcon(float scale)
         {
-            if (this.tagIconCache.TryGetValue(scale, out var font))
+            if (this._tagIconCache.TryGetValue(scale, out var font))
             {
                 return font;
             }
@@ -344,40 +344,40 @@ namespace PicSum.UIComponent.InfoPanel
                 g.DrawImage(ResourceFiles.TagIcon.Value, 0, 0, newTagIcon.Width, newTagIcon.Height);
             }
 
-            this.tagIconCache.Add(scale, newTagIcon);
+            this._tagIconCache.Add(scale, newTagIcon);
 
             return newTagIcon;
         }
 
         private Font GetTagFont(float scale)
         {
-            if (this.tagFontCache.TryGetValue(scale, out var font))
+            if (this._tagFontCache.TryGetValue(scale, out var font))
             {
                 return font;
             }
 
             var newFont = new Font(
-                this.tagDefaultFont.FontFamily,
-                this.tagDefaultFont.Size * scale,
-                this.tagDefaultFont.Style,
-                this.tagDefaultFont.Unit);
-            this.tagFontCache.Add(scale, newFont);
+                this._tagDefaultFont.FontFamily,
+                this._tagDefaultFont.Size * scale,
+                this._tagDefaultFont.Style,
+                this._tagDefaultFont.Unit);
+            this._tagFontCache.Add(scale, newFont);
             return newFont;
         }
 
         private Font GetAllTagFont(float scale)
         {
-            if (this.allTagFontCache.TryGetValue(scale, out var font))
+            if (this._allTagFontCache.TryGetValue(scale, out var font))
             {
                 return font;
             }
 
             var newFont = new Font(
-                this.allTagDefaultFont.FontFamily,
-                this.allTagDefaultFont.Size * scale,
-                this.allTagDefaultFont.Style,
-                this.allTagDefaultFont.Unit);
-            this.allTagFontCache.Add(scale, newFont);
+                this._allTagDefaultFont.FontFamily,
+                this._allTagDefaultFont.Size * scale,
+                this._allTagDefaultFont.Style,
+                this._allTagDefaultFont.Unit);
+            this._allTagFontCache.Add(scale, newFont);
             return newFont;
         }
 
@@ -394,7 +394,7 @@ namespace PicSum.UIComponent.InfoPanel
                 this.Thumbnail.ThumbnailImage.Dispose();
             }
 
-            this.fileInfoSource = FileDeepInfoGetResult.EMPTY;
+            this._fileInfoSource = FileDeepInfoGetResult.EMPTY;
 
             this.fileInfoLabel.FileName = string.Empty;
             this.fileInfoLabel.FileType = string.Empty;
@@ -403,7 +403,7 @@ namespace PicSum.UIComponent.InfoPanel
             this.ratingBar.SetValue(0);
             this.tagFlowList.ItemCount = 0;
 
-            this.contextMenuOperationTag = string.Empty;
+            this._contextMenuOperationTag = string.Empty;
             this.tagContextMenuStrip.Close();
         }
 
@@ -520,20 +520,20 @@ namespace PicSum.UIComponent.InfoPanel
         private void DrawSelectedFileCount(Graphics g, Rectangle rect)
         {
             var text = $"{this.FilePathList.Length} files selected";
-            g.DrawString(text, this.thumbnailPictureBox.Font, this.foreColorBrush, rect, this.stringFormat);
+            g.DrawString(text, this.thumbnailPictureBox.Font, this._foreColorBrush, rect, this._stringFormat);
         }
 
         private void DrawErrorMessage(Graphics g, Rectangle rect)
         {
             var text = $"Failed to load file";
-            g.DrawString(text, this.thumbnailPictureBox.Font, this.foreColorBrush, rect, this.stringFormat);
+            g.DrawString(text, this.thumbnailPictureBox.Font, this._foreColorBrush, rect, this._stringFormat);
         }
 
         private void GetFileInfoJob_Callback(FileDeepInfoGetResult result)
         {
             this.ClearInfo();
 
-            this.fileInfoSource = result;
+            this._fileInfoSource = result;
 
             if (this.FileInfo != FileDeepInfoEntity.EMPTY
                 && this.FileInfo != FileDeepInfoEntity.ERROR)
@@ -625,7 +625,7 @@ namespace PicSum.UIComponent.InfoPanel
                 return;
             }
 
-            if (this.tagIcon == null)
+            if (this._tagIcon == null)
             {
                 return;
             }
@@ -648,7 +648,7 @@ namespace PicSum.UIComponent.InfoPanel
 
             var scale = WindowUtil.GetCurrentWindowScale(this);
             var iconSizeMargin = 8 * scale;
-            var iconSize = Math.Min(this.tagIcon.Width, e.ItemRectangle.Height) - iconSizeMargin * 2;
+            var iconSize = Math.Min(this._tagIcon.Width, e.ItemRectangle.Height) - iconSizeMargin * 2;
 
             var iconPoint = (this.tagFlowList.ItemHeight - iconSize) / 2f;
 
@@ -657,7 +657,7 @@ namespace PicSum.UIComponent.InfoPanel
                                           iconSize,
                                           iconSize);
 
-            e.Graphics.DrawImage(this.tagIcon, iconRect);
+            e.Graphics.DrawImage(this._tagIcon, iconRect);
 
             var iconWidth = (int)(iconSize * 1.75);
             var itemFont = this.GetTagFont(item, scale);
@@ -689,14 +689,14 @@ namespace PicSum.UIComponent.InfoPanel
 
         private void RatingBar_RatingButtonMouseClick(object sender, MouseEventArgs e)
         {
-            if (this.fileInfoSource == FileDeepInfoGetResult.EMPTY)
+            if (this._fileInfoSource == FileDeepInfoGetResult.EMPTY)
             {
                 return;
             }
 
             var param = new FileRatingUpdateParameter
             {
-                FilePathList = this.fileInfoSource.FilePathList,
+                FilePathList = this._fileInfoSource.FilePathList,
                 RatingValue = this.ratingBar.Value
             };
             Instance<JobCaller>.Value.StartFileRatingUpdateJob(this, param);
@@ -714,27 +714,27 @@ namespace PicSum.UIComponent.InfoPanel
 
             var tagInfo = this.TagList[index];
             this.tagToAllEntryMenuItem.Visible = !tagInfo.IsAll;
-            this.contextMenuOperationTag = tagInfo.Tag;
+            this._contextMenuOperationTag = tagInfo.Tag;
         }
 
         private void TagDeleteMenuItem_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(this.contextMenuOperationTag))
+            if (string.IsNullOrEmpty(this._contextMenuOperationTag))
             {
                 return;
             }
 
-            this.DeleteTag(this.contextMenuOperationTag);
+            this.DeleteTag(this._contextMenuOperationTag);
         }
 
         private void TagToAllEntryMenuItem_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(this.contextMenuOperationTag))
+            if (string.IsNullOrEmpty(this._contextMenuOperationTag))
             {
                 return;
             }
 
-            this.AddTag(this.contextMenuOperationTag);
+            this.AddTag(this._contextMenuOperationTag);
         }
 
         private void TagFlowList_MouseDoubleClick(object sender, MouseEventArgs e)

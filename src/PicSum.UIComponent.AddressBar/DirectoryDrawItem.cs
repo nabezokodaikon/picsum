@@ -12,17 +12,17 @@ namespace PicSum.UIComponent.AddressBar
         : DrawItemBase, IDisposable
     {
 
-        private DirectoryEntity directory = null;
+        private DirectoryEntity _directory = null;
 
         public DirectoryEntity Directory
         {
             get
             {
-                return this.directory;
+                return this._directory;
             }
             set
             {
-                this.directory = value;
+                this._directory = value;
             }
         }
 
@@ -41,7 +41,7 @@ namespace PicSum.UIComponent.AddressBar
         {
             ArgumentNullException.ThrowIfNull(g, nameof(g));
 
-            if (this.directory == null)
+            if (this._directory == null)
             {
                 return;
             }
@@ -60,7 +60,7 @@ namespace PicSum.UIComponent.AddressBar
 
             var scale = WindowUtil.GetCurrentWindowScale(this.AddressBar);
             var font = this.AddressBar.GetRegularFont(scale);
-            var text = this.directory.DirectoryName;
+            var text = this._directory.DirectoryName;
             var textSize = TextRenderer.MeasureText(text, font);
             TextRenderer.DrawText(
                 g,
@@ -84,11 +84,11 @@ namespace PicSum.UIComponent.AddressBar
 
             if (e.Button == MouseButtons.Left)
             {
-                this.OnSelectedDirectory(new SelectedDirectoryEventArgs(PageOpenType.OverlapTab, this.directory.DirectoryPath));
+                this.OnSelectedDirectory(new SelectedDirectoryEventArgs(PageOpenType.OverlapTab, this._directory.DirectoryPath));
             }
             else if (e.Button == MouseButtons.Middle)
             {
-                this.OnSelectedDirectory(new SelectedDirectoryEventArgs(PageOpenType.AddTab, this.directory.DirectoryPath));
+                this.OnSelectedDirectory(new SelectedDirectoryEventArgs(PageOpenType.AddTab, this._directory.DirectoryPath));
             }
         }
 

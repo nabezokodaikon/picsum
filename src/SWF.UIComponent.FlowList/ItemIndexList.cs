@@ -11,52 +11,52 @@ namespace SWF.UIComponent.FlowList
     {
         public event EventHandler Change;
 
-        private readonly List<int> list = [];
-        private int[] beforeList = null;
+        private readonly List<int> _list = [];
+        private int[] _beforeList = null;
 
         public int Count
         {
             get
             {
-                return this.list.Count;
+                return this._list.Count;
             }
         }
 
         public int[] GetList()
         {
-            var list = new List<int>([.. this.list]);
+            var list = new List<int>([.. this._list]);
             list.Sort();
             return [.. list];
         }
 
         public bool Contains(int itemIndex)
         {
-            return this.list.Contains(itemIndex);
+            return this._list.Contains(itemIndex);
         }
 
         public void Add(int itemIndex)
         {
-            if (this.list.Contains(itemIndex))
+            if (this._list.Contains(itemIndex))
             {
                 throw new ArgumentException("既に存在する項目を追加しようとしました。");
             }
 
-            this.list.Add(itemIndex);
+            this._list.Add(itemIndex);
         }
 
         public void AddRange(int itemIndex)
         {
-            if (this.list.Count > 0)
+            if (this._list.Count > 0)
             {
-                var min = this.list.Min();
-                var max = this.list.Max();
+                var min = this._list.Min();
+                var max = this._list.Max();
                 if (itemIndex < min)
                 {
                     for (var index = itemIndex; index <= max; index++)
                     {
-                        if (!this.list.Contains(index))
+                        if (!this._list.Contains(index))
                         {
-                            this.list.Add(index);
+                            this._list.Add(index);
                         }
                     }
                 }
@@ -64,27 +64,27 @@ namespace SWF.UIComponent.FlowList
                 {
                     for (var index = min; index <= itemIndex; index++)
                     {
-                        if (!this.list.Contains(index))
+                        if (!this._list.Contains(index))
                         {
-                            this.list.Add(index);
+                            this._list.Add(index);
                         }
                     }
                 }
             }
             else
             {
-                this.list.Add(itemIndex);
+                this._list.Add(itemIndex);
             }
         }
 
         public void Remove(int itemIndex)
         {
-            if (!this.list.Contains(itemIndex))
+            if (!this._list.Contains(itemIndex))
             {
                 throw new ArgumentException("存在しない項目を削除しようとしました。");
             }
 
-            this.list.Remove(itemIndex);
+            this._list.Remove(itemIndex);
         }
 
         public void Union(ItemIndexList other)
@@ -93,9 +93,9 @@ namespace SWF.UIComponent.FlowList
 
             foreach (var itemIndex in other.GetList())
             {
-                if (!this.list.Contains(itemIndex))
+                if (!this._list.Contains(itemIndex))
                 {
-                    this.list.Add(itemIndex);
+                    this._list.Add(itemIndex);
                     isChange = true;
                 }
             }
@@ -108,35 +108,35 @@ namespace SWF.UIComponent.FlowList
 
         public void Clear()
         {
-            this.list.Clear();
+            this._list.Clear();
         }
 
         public void BeginUpdate()
         {
-            if (this.beforeList != null)
+            if (this._beforeList != null)
             {
                 throw new InvalidOperationException("既に更新中です。");
             }
 
-            this.beforeList = [.. this.list];
+            this._beforeList = [.. this._list];
         }
 
         public void EndUpdate()
         {
-            if (this.beforeList == null)
+            if (this._beforeList == null)
             {
                 throw new InvalidOperationException("更新中ではありません。");
             }
 
-            if (this.beforeList.Length != this.list.Count)
+            if (this._beforeList.Length != this._list.Count)
             {
                 this.OnChange(EventArgs.Empty);
             }
             else
             {
-                for (var i = 0; i < this.list.Count; i++)
+                for (var i = 0; i < this._list.Count; i++)
                 {
-                    if (this.beforeList[i] != this.list[i])
+                    if (this._beforeList[i] != this._list[i])
                     {
                         this.OnChange(EventArgs.Empty);
                         break;
@@ -144,7 +144,7 @@ namespace SWF.UIComponent.FlowList
                 }
             }
 
-            this.beforeList = null;
+            this._beforeList = null;
         }
 
         private void OnChange(EventArgs e)

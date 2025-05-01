@@ -19,13 +19,13 @@ namespace PicSum.UIComponent.Contents.FileList
     public sealed partial class BookmarkFileListPage
         : AbstractFileListPage
     {
-        private bool disposed = false;
-        private readonly BookmarkFileListPageParameter parameter = null;
+        private bool _disposed = false;
+        private readonly BookmarkFileListPageParameter _parameter = null;
 
         public BookmarkFileListPage(BookmarkFileListPageParameter parameter)
             : base(parameter)
         {
-            this.parameter = parameter;
+            this._parameter = parameter;
 
             this.Title = "Bookmark";
             this.Icon = ResourceFiles.BookmarkIcon.Value;
@@ -39,7 +39,7 @@ namespace PicSum.UIComponent.Contents.FileList
             Instance<JobCaller>.Value.BookmarksGetJob.Value
                 .StartJob(this, _ =>
                 {
-                    if (this.disposed)
+                    if (this._disposed)
                     {
                         return;
                     }
@@ -52,18 +52,18 @@ namespace PicSum.UIComponent.Contents.FileList
 
         protected override void Dispose(bool disposing)
         {
-            if (this.disposed)
+            if (this._disposed)
             {
                 return;
             }
 
             if (disposing)
             {
-                this.parameter.SelectedFilePath = base.SelectedFilePath;
-                this.parameter.SortInfo = base.SortInfo;
+                this._parameter.SelectedFilePath = base.SelectedFilePath;
+                this._parameter.SortInfo = base.SortInfo;
             }
 
-            this.disposed = true;
+            this._disposed = true;
 
             base.Dispose(disposing);
         }
@@ -128,17 +128,17 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private void SearchJob_Callback(ListResult<FileShallowInfoEntity> result)
         {
-            if (this.parameter.SortInfo == null)
+            if (this._parameter.SortInfo == null)
             {
-                base.SetFiles([.. result], this.parameter.SelectedFilePath, SortTypeID.RegistrationDate, false);
+                base.SetFiles([.. result], this._parameter.SelectedFilePath, SortTypeID.RegistrationDate, false);
             }
             else
             {
                 base.SetFiles(
                     [.. result],
-                    this.parameter.SelectedFilePath,
-                    this.parameter.SortInfo.ActiveSortType,
-                    this.parameter.SortInfo.IsAscending(this.parameter.SortInfo.ActiveSortType));
+                    this._parameter.SelectedFilePath,
+                    this._parameter.SortInfo.ActiveSortType,
+                    this._parameter.SortInfo.IsAscending(this._parameter.SortInfo.ActiveSortType));
             }
         }
     }

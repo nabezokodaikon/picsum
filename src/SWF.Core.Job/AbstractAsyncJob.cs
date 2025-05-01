@@ -8,7 +8,7 @@ namespace SWF.Core.Job
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        private long isCancel = 0;
+        private long _isCancel = 0;
 
         internal ISender? Sender { get; set; } = null;
 
@@ -18,11 +18,11 @@ namespace SWF.Core.Job
         {
             get
             {
-                return Interlocked.Read(ref this.isCancel) == 1;
+                return Interlocked.Read(ref this._isCancel) == 1;
             }
             set
             {
-                Interlocked.Exchange(ref this.isCancel, Convert.ToInt64(value));
+                Interlocked.Exchange(ref this._isCancel, Convert.ToInt64(value));
             }
         }
 

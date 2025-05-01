@@ -36,13 +36,13 @@ namespace PicSum.UIComponent.Contents.FileList
         private static readonly Rectangle TOOL_BAR_DEFAULT_BOUNDS = new(0, 0, 767, 29);
         private static readonly Rectangle FLOW_LIST_DEFAULT_BOUNDS = new(0, 29, 767, 0);
 
-        private bool disposed = false;
-        private bool isLoaded = false;
-        private float scale = 0f;
-        private Dictionary<string, FileEntity> masterFileDictionary = null;
-        private string[] filterFilePathList = null;
-        private readonly Font defaultFont = new("Yu Gothic UI", 9);
-        private readonly Dictionary<float, Font> fontCache = [];
+        private bool _disposed = false;
+        private bool _isLoaded = false;
+        private float _scale = 0f;
+        private Dictionary<string, FileEntity> _masterFileDictionary = null;
+        private string[] _filterFilePathList = null;
+        private readonly Font _defaultFont = new("Yu Gothic UI", 9);
+        private readonly Dictionary<float, Font> _fontCache = [];
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public override string SelectedFilePath { get; protected set; } = FileUtil.ROOT_DIRECTORY_PATH;
@@ -162,7 +162,7 @@ namespace PicSum.UIComponent.Contents.FileList
             {
                 foreach (var index in selectedIndexs)
                 {
-                    filePathList.Add(this.filterFilePathList[index]);
+                    filePathList.Add(this._filterFilePathList[index]);
                 }
             }
 
@@ -171,9 +171,9 @@ namespace PicSum.UIComponent.Contents.FileList
 
         public override void RedrawPage(float scale)
         {
-            if (this.scale != scale)
+            if (this._scale != scale)
             {
-                this.scale = scale;
+                this._scale = scale;
                 var baseHeigth = this.Height - 8;
 
                 this.toolBar.SuspendLayout();
@@ -194,7 +194,7 @@ namespace PicSum.UIComponent.Contents.FileList
                     0,
                     0,
                     this.Width,
-                    (int)(TOOL_BAR_DEFAULT_BOUNDS.Height * this.scale));
+                    (int)(TOOL_BAR_DEFAULT_BOUNDS.Height * this._scale));
 
                 this.flowList.SetBounds(
                     0,
@@ -220,7 +220,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
         protected override void Dispose(bool disposing)
         {
-            if (this.disposed)
+            if (this._disposed)
             {
                 return;
             }
@@ -232,22 +232,22 @@ namespace PicSum.UIComponent.Contents.FileList
 
                 this.components?.Dispose();
 
-                foreach (var font in this.fontCache.Values)
+                foreach (var font in this._fontCache.Values)
                 {
                     font.Dispose();
                 }
-                this.fontCache.Clear();
-                this.defaultFont.Dispose();
+                this._fontCache.Clear();
+                this._defaultFont.Dispose();
             }
 
-            this.disposed = true;
+            this._disposed = true;
 
             base.Dispose(disposing);
         }
 
         protected override void OnLoad(EventArgs e)
         {
-            this.isLoaded = true;
+            this._isLoaded = true;
 
             var scale = WindowUtil.GetCurrentWindowScale(this);
             this.RedrawPage(scale);
@@ -266,7 +266,7 @@ namespace PicSum.UIComponent.Contents.FileList
             ArgumentNullException.ThrowIfNull(srcFiles, nameof(srcFiles));
             ArgumentNullException.ThrowIfNull(selectedFilePath, nameof(selectedFilePath));
 
-            this.masterFileDictionary = [];
+            this._masterFileDictionary = [];
             foreach (var srcFile in srcFiles)
             {
                 var destFile = new FileEntity
@@ -291,7 +291,7 @@ namespace PicSum.UIComponent.Contents.FileList
                     destFile.SourceImageHeight = srcFile.SourceHeight;
                 }
 
-                this.masterFileDictionary.Add(destFile.FilePath, destFile);
+                this._masterFileDictionary.Add(destFile.FilePath, destFile);
             }
 
             var scale = WindowUtil.GetCurrentWindowScale(this);
@@ -345,23 +345,23 @@ namespace PicSum.UIComponent.Contents.FileList
             var indexList = new List<int>();
             foreach (var filePath in filePathList)
             {
-                this.masterFileDictionary.Remove(filePath);
-                indexList.Add(Array.IndexOf(this.filterFilePathList, filePath));
+                this._masterFileDictionary.Remove(filePath);
+                indexList.Add(Array.IndexOf(this._filterFilePathList, filePath));
             }
 
             if (indexList.Count > 0)
             {
                 var maximumIndex = indexList.Max();
-                if (maximumIndex + 1 < this.filterFilePathList.Length)
+                if (maximumIndex + 1 < this._filterFilePathList.Length)
                 {
-                    this.SelectedFilePath = this.filterFilePathList[maximumIndex + 1];
+                    this.SelectedFilePath = this._filterFilePathList[maximumIndex + 1];
                 }
                 else
                 {
                     var minimumIndex = indexList.Min();
                     if (minimumIndex - 1 > -1)
                     {
-                        this.SelectedFilePath = this.filterFilePathList[minimumIndex - 1];
+                        this.SelectedFilePath = this._filterFilePathList[minimumIndex - 1];
                     }
                     else
                     {
@@ -397,13 +397,13 @@ namespace PicSum.UIComponent.Contents.FileList
             FileListPageConfig.Instance.IsShowImageFile = this.IsShowImageFile;
             FileListPageConfig.Instance.IsShowOtherFile = this.IsShowOtherFile;
 
-            if (this.masterFileDictionary == null)
+            if (this._masterFileDictionary == null)
             {
                 return;
             }
 
             var filterList = new List<FileEntity>();
-            foreach (var file in this.masterFileDictionary.Values)
+            foreach (var file in this._masterFileDictionary.Values)
             {
                 if (file.IsFile)
                 {
@@ -439,11 +439,11 @@ namespace PicSum.UIComponent.Contents.FileList
                     {
                         if (isAscending)
                         {
-                            return NaturalStringComparer.Windows.Compare(x.FileName, y.FileName);
+                            return NaturalStringComparer.WINDOWS.Compare(x.FileName, y.FileName);
                         }
                         else
                         {
-                            return NaturalStringComparer.Windows.Compare(y.FileName, x.FileName);
+                            return NaturalStringComparer.WINDOWS.Compare(y.FileName, x.FileName);
                         }
                     });
                     break;
@@ -452,11 +452,11 @@ namespace PicSum.UIComponent.Contents.FileList
                     {
                         if (isAscending)
                         {
-                            return NaturalStringComparer.Windows.Compare(x.FilePath, y.FilePath);
+                            return NaturalStringComparer.WINDOWS.Compare(x.FilePath, y.FilePath);
                         }
                         else
                         {
-                            return NaturalStringComparer.Windows.Compare(y.FilePath, x.FilePath);
+                            return NaturalStringComparer.WINDOWS.Compare(y.FilePath, x.FilePath);
                         }
                     });
                     break;
@@ -469,7 +469,7 @@ namespace PicSum.UIComponent.Contents.FileList
                         {
                             if (xDate == yDate)
                             {
-                                return NaturalStringComparer.Windows.Compare(x.FilePath, y.FilePath);
+                                return NaturalStringComparer.WINDOWS.Compare(x.FilePath, y.FilePath);
                             }
                             else
                             {
@@ -480,7 +480,7 @@ namespace PicSum.UIComponent.Contents.FileList
                         {
                             if (xDate == yDate)
                             {
-                                return NaturalStringComparer.Windows.Compare(x.FilePath, y.FilePath);
+                                return NaturalStringComparer.WINDOWS.Compare(x.FilePath, y.FilePath);
                             }
                             else
                             {
@@ -498,7 +498,7 @@ namespace PicSum.UIComponent.Contents.FileList
                         {
                             if (xDate == yDate)
                             {
-                                return NaturalStringComparer.Windows.Compare(x.FilePath, y.FilePath);
+                                return NaturalStringComparer.WINDOWS.Compare(x.FilePath, y.FilePath);
                             }
                             else
                             {
@@ -509,7 +509,7 @@ namespace PicSum.UIComponent.Contents.FileList
                         {
                             if (xDate == yDate)
                             {
-                                return NaturalStringComparer.Windows.Compare(x.FilePath, y.FilePath);
+                                return NaturalStringComparer.WINDOWS.Compare(x.FilePath, y.FilePath);
                             }
                             else
                             {
@@ -526,7 +526,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
             try
             {
-                this.filterFilePathList = [.. filterList.ConvertAll(f => f.FilePath)];
+                this._filterFilePathList = [.. filterList.ConvertAll(f => f.FilePath)];
                 this.flowList.ItemCount = filterList.Count;
                 var selectedFile = filterList
                     .FirstOrDefault(f => StringUtil.CompareFilePath(f.FilePath, this.SelectedFilePath));
@@ -547,13 +547,13 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private Font GetFont(float scale)
         {
-            if (this.fontCache.TryGetValue(scale, out var font))
+            if (this._fontCache.TryGetValue(scale, out var font))
             {
                 return font;
             }
 
-            var newFont = new Font(this.defaultFont.FontFamily, this.defaultFont.Size * scale);
-            this.fontCache.Add(scale, newFont);
+            var newFont = new Font(this._defaultFont.FontFamily, this._defaultFont.Size * scale);
+            this._fontCache.Add(scale, newFont);
             return newFont;
         }
 
@@ -582,12 +582,12 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private int GetItemTextHeight(Graphics g)
         {
-            return (int)(g.MeasureString("A", this.GetFont(this.scale)).Height * 2);
+            return (int)(g.MeasureString("A", this.GetFont(this._scale)).Height * 2);
         }
 
         private void SetFlowListItemSize()
         {
-            if (!this.isLoaded)
+            if (!this._isLoaded)
             {
                 return;
             }
@@ -620,8 +620,8 @@ namespace PicSum.UIComponent.Contents.FileList
                 e.Graphics.FillRectangle(this.flowList.MousePointItemBrush, e.ItemRectangle);
             }
 
-            var filePath = this.filterFilePathList[e.ItemIndex];
-            var item = this.masterFileDictionary[filePath];
+            var filePath = this._filterFilePathList[e.ItemIndex];
+            var item = this._masterFileDictionary[filePath];
 
             var scale = WindowUtil.GetCurrentWindowScale(this);
             var font = this.GetFont(scale);
@@ -686,8 +686,8 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private void GetThumbnailsJob_Callback(ThumbnailImageResult e)
         {
-            if (this.masterFileDictionary == null
-                || !this.masterFileDictionary.TryGetValue(e.FilePath, out var file))
+            if (this._masterFileDictionary == null
+                || !this._masterFileDictionary.TryGetValue(e.FilePath, out var file))
             {
                 return;
             }
@@ -722,9 +722,9 @@ namespace PicSum.UIComponent.Contents.FileList
                 file.UpdateDate = e.FileUpdatedate;
             }
 
-            if (this.filterFilePathList != null)
+            if (this._filterFilePathList != null)
             {
-                var index = Array.IndexOf(this.filterFilePathList, file.FilePath);
+                var index = Array.IndexOf(this._filterFilePathList, file.FilePath);
                 if (index > -1)
                 {
                     this.flowList.InvalidateFromItemIndex(index);
@@ -822,7 +822,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private void FlowList_Drawitem(object sender, SWF.UIComponent.FlowList.DrawItemEventArgs e)
         {
-            if (this.filterFilePathList == null)
+            if (this._filterFilePathList == null)
             {
                 return;
             }
@@ -832,28 +832,28 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private void FlowList_DrawItemChanged(object sender, DrawItemChangedEventArgs e)
         {
-            if (this.filterFilePathList == null)
+            if (this._filterFilePathList == null)
             {
                 return;
             }
 
-            if (this.filterFilePathList.Length > 0 &&
+            if (this._filterFilePathList.Length > 0 &&
                 e.DrawFirstItemIndex > -1 &&
                 e.DrawLastItemIndex > -1 &&
-                e.DrawLastItemIndex < this.filterFilePathList.Length)
+                e.DrawLastItemIndex < this._filterFilePathList.Length)
             {
                 var thumbSize = Math.Min(
                     this.flowList.ItemWidth,
                     this.flowList.ItemHeight);
 
-                var fileList = this.filterFilePathList.Where((file, index) =>
+                var fileList = this._filterFilePathList.Where((file, index) =>
                 {
                     if (index < e.DrawFirstItemIndex || index > e.DrawLastItemIndex)
                     {
                         return false;
                     }
 
-                    var info = this.masterFileDictionary[file];
+                    var info = this._masterFileDictionary[file];
                     if (info.ThumbnailImage == null)
                     {
                         return true;
@@ -884,7 +884,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 Instance<JobCaller>.Value.ThumbnailsGetJob.Value
                     .StartJob(this, param, _ =>
                     {
-                        if (this.disposed)
+                        if (this._disposed)
                         {
                             return;
                         }
@@ -912,8 +912,8 @@ namespace PicSum.UIComponent.Contents.FileList
                 return;
             }
 
-            var filePath = this.filterFilePathList[this.flowList.GetSelectedIndexs()[0]];
-            var file = this.masterFileDictionary[filePath];
+            var filePath = this._filterFilePathList[this.flowList.GetSelectedIndexs()[0]];
+            var file = this._masterFileDictionary[filePath];
             if (file.IsImageFile)
             {
                 var param = new ImageViewerPageParameter(
@@ -941,8 +941,8 @@ namespace PicSum.UIComponent.Contents.FileList
                 return;
             }
 
-            var filePath = this.filterFilePathList[this.flowList.GetSelectedIndexs()[0]];
-            var file = this.masterFileDictionary[filePath];
+            var filePath = this._filterFilePathList[this.flowList.GetSelectedIndexs()[0]];
+            var file = this._masterFileDictionary[filePath];
             if (file.IsImageFile)
             {
                 var param = new ImageViewerPageParameter(
@@ -980,8 +980,8 @@ namespace PicSum.UIComponent.Contents.FileList
                 return;
             }
 
-            var filePath = this.filterFilePathList[selectedIndexs[0]];
-            var file = this.masterFileDictionary[filePath];
+            var filePath = this._filterFilePathList[selectedIndexs[0]];
+            var file = this._masterFileDictionary[filePath];
             if (file.IsImageFile)
             {
                 var param = new ImageViewerPageParameter(
@@ -1011,7 +1011,7 @@ namespace PicSum.UIComponent.Contents.FileList
             var filePathList = new List<string>();
             foreach (var index in this.flowList.GetSelectedIndexs())
             {
-                filePathList.Add(this.filterFilePathList[index]);
+                filePathList.Add(this._filterFilePathList[index]);
             }
 
             this.OnRemoveFile([.. filePathList]);
@@ -1025,8 +1025,8 @@ namespace PicSum.UIComponent.Contents.FileList
                 return;
             }
 
-            var currentFilePath = this.filterFilePathList[selectedIndexList.First()];
-            var currentFileInfo = this.masterFileDictionary[currentFilePath];
+            var currentFilePath = this._filterFilePathList[selectedIndexList.First()];
+            var currentFileInfo = this._masterFileDictionary[currentFilePath];
             if (currentFileInfo.IsFile && currentFileInfo.IsImageFile)
             {
                 // 選択項目が画像ファイルの場合。

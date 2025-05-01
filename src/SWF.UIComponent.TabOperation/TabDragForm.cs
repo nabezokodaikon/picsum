@@ -20,24 +20,24 @@ namespace SWF.UIComponent.TabOperation
     {
         private static readonly Color TRANSPARENT_COLOR = Color.FromArgb(0, 0, 0, 0);
 
-        private TabDropForm tabDropForm = null;
-        private TabDrawArea tabDrawArea = null;
-        private DrawTabEventArgs drawTabEventArgs = null;
-        private TabSwitch tabSwitch = null;
-        private Bitmap regionImage = null;
-        private Action<DrawTabEventArgs> drawTabPageMethod = null;
-        private readonly Font defaultFont = new("Yu Gothic UI", 10F);
-        private readonly Dictionary<float, Font> fontCache = [];
+        private TabDropForm _tabDropForm = null;
+        private TabDrawArea _tabDrawArea = null;
+        private DrawTabEventArgs _drawTabEventArgs = null;
+        private TabSwitch _tabSwitch = null;
+        private Bitmap _regionImage = null;
+        private Action<DrawTabEventArgs> _drawTabPageMethod = null;
+        private readonly Font _defaultFont = new("Yu Gothic UI", 10F);
+        private readonly Dictionary<float, Font> _fontCache = [];
 
         private Font GetFont(float scale)
         {
-            if (this.fontCache.TryGetValue(scale, out var font))
+            if (this._fontCache.TryGetValue(scale, out var font))
             {
                 return font;
             }
 
-            var newFont = new Font(this.defaultFont.FontFamily, this.defaultFont.Size * scale);
-            this.fontCache.Add(scale, newFont);
+            var newFont = new Font(this._defaultFont.FontFamily, this._defaultFont.Size * scale);
+            this._fontCache.Add(scale, newFont);
             return newFont;
         }
 
@@ -68,7 +68,7 @@ namespace SWF.UIComponent.TabOperation
         {
             get
             {
-                return this.tabSwitch;
+                return this._tabSwitch;
             }
         }
 
@@ -76,8 +76,8 @@ namespace SWF.UIComponent.TabOperation
         {
             get
             {
-                this.tabDropForm ??= new TabDropForm();
-                return this.tabDropForm;
+                this._tabDropForm ??= new TabDropForm();
+                return this._tabDropForm;
             }
         }
 
@@ -85,12 +85,12 @@ namespace SWF.UIComponent.TabOperation
         {
             get
             {
-                this.tabDrawArea ??= new(this)
+                this._tabDrawArea ??= new(this)
                 {
                     X = this.GetDrawTabWidthOffset(),
                     Y = 0
                 };
-                return this.tabDrawArea;
+                return this._tabDrawArea;
             }
         }
 
@@ -98,8 +98,8 @@ namespace SWF.UIComponent.TabOperation
         {
             get
             {
-                this.drawTabEventArgs ??= new DrawTabEventArgs();
-                return this.drawTabEventArgs;
+                this._drawTabEventArgs ??= new DrawTabEventArgs();
+                return this._drawTabEventArgs;
             }
         }
 
@@ -166,7 +166,7 @@ namespace SWF.UIComponent.TabOperation
                 throw new ArgumentException("タブはどこにも所有されていません。", nameof(tab));
             }
 
-            if (this.regionImage != null)
+            if (this._regionImage != null)
             {
                 throw new Exception("領域のイメージが初期化されていません。");
             }
@@ -195,7 +195,7 @@ namespace SWF.UIComponent.TabOperation
                     this.TabDrawArea.DrawActiveTab(g, scale);
                 }
 
-                this.regionImage = regionImage;
+                this._regionImage = regionImage;
             }
 
             this.DrawTabEventArgs.Font = this.GetFont(scale);
@@ -205,48 +205,48 @@ namespace SWF.UIComponent.TabOperation
             this.DrawTabEventArgs.IconRectangle = this.TabDrawArea.GetIconRectangle(scale);
             this.DrawTabEventArgs.CloseButtonRectangle = this.TabDrawArea.GetCloseButtonRectangle();
 
-            this.drawTabPageMethod = tab.DrawingTabPage;
-            this.Size = this.regionImage.Size;
-            this.Region = ImageUtil.GetRegion(this.regionImage, TRANSPARENT_COLOR);
-            this.tabSwitch = tab.Owner;
+            this._drawTabPageMethod = tab.DrawingTabPage;
+            this.Size = this._regionImage.Size;
+            this.Region = ImageUtil.GetRegion(this._regionImage, TRANSPARENT_COLOR);
+            this._tabSwitch = tab.Owner;
         }
 
         public void Clear()
         {
             this.TabDropForm.Visible = false;
 
-            this.drawTabPageMethod = null;
+            this._drawTabPageMethod = null;
 
-            if (this.regionImage != null)
+            if (this._regionImage != null)
             {
-                this.regionImage.Dispose();
-                this.regionImage = null;
+                this._regionImage.Dispose();
+                this._regionImage = null;
             }
         }
 
         protected override void OnClosing(CancelEventArgs e)
         {
-            foreach (var font in this.fontCache.Values)
+            foreach (var font in this._fontCache.Values)
             {
                 font.Dispose();
             }
-            this.fontCache.Clear();
-            this.defaultFont.Dispose();
+            this._fontCache.Clear();
+            this._defaultFont.Dispose();
 
             base.OnClosing(e);
         }
 
         protected override void OnLocationChanged(EventArgs e)
         {
-            this.Size = this.regionImage.Size;
+            this.Size = this._regionImage.Size;
             base.OnLocationChanged(e);
         }
 
         protected override void OnLostFocus(EventArgs e)
         {
-            if (this.tabSwitch != null && this.Visible)
+            if (this._tabSwitch != null && this.Visible)
             {
-                this.tabSwitch.CallEndTabDragOperation();
+                this._tabSwitch.CallEndTabDragOperation();
             }
 
             base.OnLostFocus(e);
@@ -254,16 +254,16 @@ namespace SWF.UIComponent.TabOperation
 
         protected override void OnPaint(PaintEventArgs e)
         {
-            if (this.drawTabPageMethod == null ||
-                this.regionImage == null)
+            if (this._drawTabPageMethod == null ||
+                this._regionImage == null)
             {
                 return;
             }
 
-            e.Graphics.DrawImage(this.regionImage, 0, 0, this.regionImage.Width, this.regionImage.Height);
+            e.Graphics.DrawImage(this._regionImage, 0, 0, this._regionImage.Width, this._regionImage.Height);
 
             this.DrawTabEventArgs.Graphics = e.Graphics;
-            this.drawTabPageMethod(this.DrawTabEventArgs);
+            this._drawTabPageMethod(this.DrawTabEventArgs);
         }
 
         private SizeF GetPageSize(Bitmap pageCap)

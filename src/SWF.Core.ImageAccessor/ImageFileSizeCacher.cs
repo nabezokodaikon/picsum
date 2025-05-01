@@ -10,10 +10,10 @@ namespace SWF.Core.ImageAccessor
     {
         private const int CACHE_CAPACITY = 1000;
 
-        private bool disposed = false;
-        private readonly List<ImageFileSizeCacheEntity> CACHE_LIST = new(CACHE_CAPACITY);
-        private readonly Dictionary<string, ImageFileSizeCacheEntity> CACHE_DICTIONARY = new(CACHE_CAPACITY);
-        private readonly Lock CACHE_LOCK = new();
+        private bool _disposed = false;
+        private readonly List<ImageFileSizeCacheEntity> _cacheList = new(CACHE_CAPACITY);
+        private readonly Dictionary<string, ImageFileSizeCacheEntity> _cacheDictionary = new(CACHE_CAPACITY);
+        private readonly Lock _cacheLock = new();
 
         public ImageFileSizeCacher()
         {
@@ -28,7 +28,7 @@ namespace SWF.Core.ImageAccessor
 
         private void Dispose(bool disposing)
         {
-            if (this.disposed)
+            if (this._disposed)
             {
                 return;
             }
@@ -38,7 +38,7 @@ namespace SWF.Core.ImageAccessor
 
             }
 
-            this.disposed = true;
+            this._disposed = true;
         }
 
         public void Create(string filePath)
@@ -47,11 +47,11 @@ namespace SWF.Core.ImageAccessor
 
             var timestamp = FileUtil.GetUpdateDate(filePath);
 
-            lock (this.CACHE_LOCK)
+            lock (this._cacheLock)
             {
                 using (TimeMeasuring.Run(false, $"ImageFileSizeCacher.Create 1"))
                 {
-                    if (this.CACHE_DICTIONARY.TryGetValue(filePath, out var cache))
+                    if (this._cacheDictionary.TryGetValue(filePath, out var cache))
                     {
                         if (timestamp == cache.Timestamp)
                         {
@@ -64,30 +64,30 @@ namespace SWF.Core.ImageAccessor
             var newCache = new ImageFileSizeCacheEntity(
                 filePath, ImageUtil.GetImageSize(filePath), timestamp);
 
-            lock (this.CACHE_LOCK)
+            lock (this._cacheLock)
             {
                 using (TimeMeasuring.Run(false, $"ImageFileSizeCacher.Create 2"))
                 {
-                    if (this.CACHE_DICTIONARY.TryGetValue(filePath, out var cache))
+                    if (this._cacheDictionary.TryGetValue(filePath, out var cache))
                     {
                         if (newCache.Timestamp == cache.Timestamp)
                         {
                             return;
                         }
 
-                        this.CACHE_LIST.RemoveAll(_ => _.FilePath == cache.FilePath);
-                        this.CACHE_DICTIONARY.Remove(cache.FilePath);
+                        this._cacheList.RemoveAll(_ => _.FilePath == cache.FilePath);
+                        this._cacheDictionary.Remove(cache.FilePath);
                     }
 
-                    if (this.CACHE_LIST.Count > CACHE_CAPACITY)
+                    if (this._cacheList.Count > CACHE_CAPACITY)
                     {
-                        var removeCache = this.CACHE_LIST[0];
-                        this.CACHE_LIST.RemoveAt(0);
-                        this.CACHE_DICTIONARY.Remove(removeCache.FilePath);
+                        var removeCache = this._cacheList[0];
+                        this._cacheList.RemoveAt(0);
+                        this._cacheDictionary.Remove(removeCache.FilePath);
                     }
 
-                    this.CACHE_DICTIONARY.Add(newCache.FilePath, newCache);
-                    this.CACHE_LIST.Add(newCache);
+                    this._cacheDictionary.Add(newCache.FilePath, newCache);
+                    this._cacheList.Add(newCache);
                 }
             }
         }
@@ -98,9 +98,9 @@ namespace SWF.Core.ImageAccessor
 
             var timestamp = FileUtil.GetUpdateDate(filePath);
 
-            lock (this.CACHE_LOCK)
+            lock (this._cacheLock)
             {
-                if (this.CACHE_DICTIONARY.TryGetValue(filePath, out var cache))
+                if (this._cacheDictionary.TryGetValue(filePath, out var cache))
                 {
                     if (timestamp == cache.Timestamp)
                     {
@@ -119,11 +119,11 @@ namespace SWF.Core.ImageAccessor
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
-            lock (this.CACHE_LOCK)
+            lock (this._cacheLock)
             {
                 using (TimeMeasuring.Run(false, $"ImageFileSizeCacher.Set 1"))
                 {
-                    if (this.CACHE_DICTIONARY.TryGetValue(filePath, out var cache))
+                    if (this._cacheDictionary.TryGetValue(filePath, out var cache))
                     {
                         if (timestamp == cache.Timestamp)
                         {
@@ -136,30 +136,30 @@ namespace SWF.Core.ImageAccessor
             var newCache = new ImageFileSizeCacheEntity(
                 filePath, size, timestamp);
 
-            lock (this.CACHE_LOCK)
+            lock (this._cacheLock)
             {
                 using (TimeMeasuring.Run(false, $"ImageFileSizeCacher.Set 2"))
                 {
-                    if (this.CACHE_DICTIONARY.TryGetValue(newCache.FilePath, out var cache))
+                    if (this._cacheDictionary.TryGetValue(newCache.FilePath, out var cache))
                     {
                         if (newCache.Timestamp == cache.Timestamp)
                         {
                             return;
                         }
 
-                        this.CACHE_LIST.RemoveAll(_ => _.FilePath == cache.FilePath);
-                        this.CACHE_DICTIONARY.Remove(cache.FilePath);
+                        this._cacheList.RemoveAll(_ => _.FilePath == cache.FilePath);
+                        this._cacheDictionary.Remove(cache.FilePath);
                     }
 
-                    if (this.CACHE_LIST.Count > CACHE_CAPACITY)
+                    if (this._cacheList.Count > CACHE_CAPACITY)
                     {
-                        var removeCache = this.CACHE_LIST[0];
-                        this.CACHE_LIST.RemoveAt(0);
-                        this.CACHE_DICTIONARY.Remove(removeCache.FilePath);
+                        var removeCache = this._cacheList[0];
+                        this._cacheList.RemoveAt(0);
+                        this._cacheDictionary.Remove(removeCache.FilePath);
                     }
 
-                    this.CACHE_DICTIONARY.Add(newCache.FilePath, newCache);
-                    this.CACHE_LIST.Add(newCache);
+                    this._cacheDictionary.Add(newCache.FilePath, newCache);
+                    this._cacheList.Add(newCache);
                 }
             }
         }

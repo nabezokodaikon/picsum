@@ -16,23 +16,23 @@ namespace PicSum.UIComponent.AddressBar
         public event EventHandler DropDownClosed;
         public event EventHandler<SelectedDirectoryEventArgs> SelectedDirectory;
 
-        private AddressBar addressBar = null;
-        private bool isMousePoint = false;
-        private bool isMouseDown = false;
-        private int x = 0;
-        private int y = 0;
-        private int width = 0;
-        private int height = 0;
+        private AddressBar _addressBar = null;
+        private bool _isMousePoint = false;
+        private bool _isMouseDown = false;
+        private int _x = 0;
+        private int _y = 0;
+        private int _width = 0;
+        private int _height = 0;
 
         public AddressBar AddressBar
         {
             get
             {
-                return this.addressBar;
+                return this._addressBar;
             }
             set
             {
-                this.addressBar = value;
+                this._addressBar = value;
             }
         }
 
@@ -40,11 +40,11 @@ namespace PicSum.UIComponent.AddressBar
         {
             get
             {
-                return this.isMousePoint;
+                return this._isMousePoint;
             }
             set
             {
-                this.isMousePoint = value;
+                this._isMousePoint = value;
             }
         }
 
@@ -52,11 +52,11 @@ namespace PicSum.UIComponent.AddressBar
         {
             get
             {
-                return this.isMouseDown;
+                return this._isMouseDown;
             }
             set
             {
-                this.isMouseDown = value;
+                this._isMouseDown = value;
             }
         }
 
@@ -64,11 +64,11 @@ namespace PicSum.UIComponent.AddressBar
         {
             get
             {
-                return this.x;
+                return this._x;
             }
             set
             {
-                this.x = value;
+                this._x = value;
             }
         }
 
@@ -76,11 +76,11 @@ namespace PicSum.UIComponent.AddressBar
         {
             get
             {
-                return this.y;
+                return this._y;
             }
             set
             {
-                this.y = value;
+                this._y = value;
             }
         }
 
@@ -88,11 +88,11 @@ namespace PicSum.UIComponent.AddressBar
         {
             get
             {
-                return this.x;
+                return this._x;
             }
             set
             {
-                this.x = value;
+                this._x = value;
             }
         }
 
@@ -100,11 +100,11 @@ namespace PicSum.UIComponent.AddressBar
         {
             get
             {
-                return this.y;
+                return this._y;
             }
             set
             {
-                this.y = value;
+                this._y = value;
             }
         }
 
@@ -112,11 +112,11 @@ namespace PicSum.UIComponent.AddressBar
         {
             get
             {
-                return this.x + this.width;
+                return this._x + this._width;
             }
             set
             {
-                this.x = value - this.width;
+                this._x = value - this._width;
             }
         }
 
@@ -124,11 +124,11 @@ namespace PicSum.UIComponent.AddressBar
         {
             get
             {
-                return this.y + this.height;
+                return this._y + this._height;
             }
             set
             {
-                this.y = value - this.height;
+                this._y = value - this._height;
             }
         }
 
@@ -136,11 +136,11 @@ namespace PicSum.UIComponent.AddressBar
         {
             get
             {
-                return this.width;
+                return this._width;
             }
             set
             {
-                this.width = value;
+                this._width = value;
             }
         }
 
@@ -148,11 +148,11 @@ namespace PicSum.UIComponent.AddressBar
         {
             get
             {
-                return this.height;
+                return this._height;
             }
             set
             {
-                this.height = value;
+                this._height = value;
             }
         }
 
@@ -164,15 +164,15 @@ namespace PicSum.UIComponent.AddressBar
 
         public RectangleF GetRectangle()
         {
-            return new RectangleF(this.x, this.y, this.width, this.height);
+            return new RectangleF(this._x, this._y, this._width, this._height);
         }
 
         public void ClearRectangle()
         {
-            this.x = 0;
-            this.y = 0;
-            this.width = 0;
-            this.height = 0;
+            this._x = 0;
+            this._y = 0;
+            this._width = 0;
+            this._height = 0;
         }
 
         public void Dispose()
@@ -180,7 +180,7 @@ namespace PicSum.UIComponent.AddressBar
             this.DropDownOpened = null;
             this.DropDownClosed = null;
             this.SelectedDirectory = null;
-            this.addressBar = null;
+            this._addressBar = null;
 
             GC.SuppressFinalize(this);
         }
@@ -188,14 +188,14 @@ namespace PicSum.UIComponent.AddressBar
         protected int GetDropDownItemHeight()
         {
             const int DROPDOWN_ITEM_HEIGHT = 32;
-            var scale = WindowUtil.GetCurrentWindowScale(this.addressBar);
+            var scale = WindowUtil.GetCurrentWindowScale(this._addressBar);
             return (int)(DROPDOWN_ITEM_HEIGHT * scale);
         }
 
         protected int GetMinimumDropDownWidth()
         {
             const int MINIMUM_DROPDOWN_WIDHT = 128;
-            var scale = WindowUtil.GetCurrentWindowScale(this.addressBar);
+            var scale = WindowUtil.GetCurrentWindowScale(this._addressBar);
             return (int)(MINIMUM_DROPDOWN_WIDHT * scale);
         }
 

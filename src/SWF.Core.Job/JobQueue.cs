@@ -8,17 +8,17 @@ namespace SWF.Core.Job
         : IDisposable
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private const string THREAD_NAME = "JobQueue";
 
-        private bool disposed = false;
-        private readonly string threadName = "JobQueue";
-        private readonly Task task;
+        private bool _disposed = false;
+        private readonly Task _task;
         private readonly CancellationTokenSource source;
-        private readonly ConcurrentQueue<AbstractAsyncJob> jobQueue = new();
+        private readonly ConcurrentQueue<AbstractAsyncJob> _jobQueue = new();
 
         public JobQueue()
         {
             this.source = new();
-            this.task = Task.Run(() => this.DoWork(this.source.Token));
+            this._task = Task.Run(() => this.DoWork(this.source.Token));
         }
 
         public void Dispose()
@@ -29,7 +29,7 @@ namespace SWF.Core.Job
 
         private void Dispose(bool disposing)
         {
-            if (this.disposed)
+            if (this._disposed)
             {
                 return;
             }
@@ -37,9 +37,9 @@ namespace SWF.Core.Job
             if (disposing)
             {
 
-                if (this.task != null)
+                if (this._task != null)
                 {
-                    foreach (var job in this.jobQueue.ToArray())
+                    foreach (var job in this._jobQueue.ToArray())
                     {
                         job.BeginCancel();
                     }
@@ -48,15 +48,15 @@ namespace SWF.Core.Job
                     this.source?.Cancel();
 
                     Logger.Debug("ジョブキュー実行スレッドの終了を待機します。");
-                    this.task?.Wait();
+                    this._task?.Wait();
 
                     Logger.Debug("ジョブキュー実行スレッドが終了しました。");
-                    this.task?.Dispose();
+                    this._task?.Dispose();
                     this.source?.Dispose();
                 }
             }
 
-            this.disposed = true;
+            this._disposed = true;
         }
 
         public void Enqueue<TJob, TJobParameter>(ISender sender, TJobParameter parameter)
@@ -72,7 +72,7 @@ namespace SWF.Core.Job
                 Parameter = parameter,
             };
 
-            this.jobQueue.Enqueue(job);
+            this._jobQueue.Enqueue(job);
         }
 
         public void Enqueue<TJob>(ISender sender)
@@ -85,12 +85,12 @@ namespace SWF.Core.Job
                 Sender = sender,
             };
 
-            this.jobQueue.Enqueue(job);
+            this._jobQueue.Enqueue(job);
         }
 
         private void DoWork(CancellationToken token)
         {
-            Thread.CurrentThread.Name = this.threadName;
+            Thread.CurrentThread.Name = THREAD_NAME;
 
             Logger.Debug("ジョブキュー実行スレッドが開始されました。");
 
@@ -104,7 +104,7 @@ namespace SWF.Core.Job
                         token.ThrowIfCancellationRequested();
                     }
 
-                    if (this.jobQueue.TryPeek(out var currentJob))
+                    if (this._jobQueue.TryPeek(out var currentJob))
                     {
                         var jobName = currentJob.GetType().Name;
 
@@ -128,7 +128,7 @@ namespace SWF.Core.Job
                         }
                         finally
                         {
-                            if (this.jobQueue.TryDequeue(out var dequeueJob))
+                            if (this._jobQueue.TryDequeue(out var dequeueJob))
                             {
                                 if (currentJob != dequeueJob)
                                 {

@@ -8,7 +8,7 @@ namespace SWF.Core.Base
     [SupportedOSPlatform("windows10.0.17763.0")]
     public static class AssemblyPreloader
     {
-        private static readonly ConcurrentDictionary<string, bool> PreloadedAssemblies = new();
+        private static readonly ConcurrentDictionary<string, bool> PRELOADED_ASSEMBLIES = new();
 
         private static Task AsyncPreloadAssemblyForType(Type criticalType)
         {
@@ -22,7 +22,7 @@ namespace SWF.Core.Base
                         return;
                     }
 
-                    if (PreloadedAssemblies.TryAdd(assemblyName, true))
+                    if (PRELOADED_ASSEMBLIES.TryAdd(assemblyName, true))
                     {
                         var assembly = criticalType.Assembly;
                         Assembly.Load(assemblyName);
@@ -48,7 +48,7 @@ namespace SWF.Core.Base
                     return;
                 }
 
-                if (PreloadedAssemblies.TryAdd(assemblyName, true))
+                if (PRELOADED_ASSEMBLIES.TryAdd(assemblyName, true))
                 {
                     var assembly = criticalType.Assembly;
                     Assembly.Load(assemblyName);
@@ -77,7 +77,7 @@ namespace SWF.Core.Base
                         return;
                     }
 
-                    if (PreloadedAssemblies.TryAdd(assemblyName, true))
+                    if (PRELOADED_ASSEMBLIES.TryAdd(assemblyName, true))
                     {
                         Assembly.Load(refAssembly);
                     }

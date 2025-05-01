@@ -22,10 +22,10 @@ namespace PicSum.UIComponent.InfoPanel
             Trimming = StringTrimming.EllipsisCharacter,
         };
 
-        private string fileName = string.Empty;
-        private string timestamp = string.Empty;
-        private string fileType = string.Empty;
-        private string fileSize = string.Empty;
+        private string _fileName = string.Empty;
+        private string _timestamp = string.Empty;
+        private string _fileType = string.Empty;
+        private string _fileSize = string.Empty;
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public new int TabIndex
@@ -45,11 +45,11 @@ namespace PicSum.UIComponent.InfoPanel
         {
             get
             {
-                return this.fileName;
+                return this._fileName;
             }
             set
             {
-                this.fileName = value;
+                this._fileName = value;
                 this.Invalidate();
             }
         }
@@ -59,11 +59,11 @@ namespace PicSum.UIComponent.InfoPanel
         {
             get
             {
-                return this.timestamp;
+                return this._timestamp;
             }
             set
             {
-                this.timestamp = value;
+                this._timestamp = value;
                 this.Invalidate();
             }
         }
@@ -73,11 +73,11 @@ namespace PicSum.UIComponent.InfoPanel
         {
             get
             {
-                return this.fileType;
+                return this._fileType;
             }
             set
             {
-                this.fileType = value;
+                this._fileType = value;
                 this.Invalidate();
             }
         }
@@ -87,11 +87,11 @@ namespace PicSum.UIComponent.InfoPanel
         {
             get
             {
-                return this.fileSize;
+                return this._fileSize;
             }
             set
             {
-                this.fileSize = value;
+                this._fileSize = value;
                 this.Invalidate();
             }
         }
@@ -157,10 +157,10 @@ namespace PicSum.UIComponent.InfoPanel
                     fileNameRect.Bottom + MARGIN + textSize.Height + MARGIN);
             }
 
-            if (!string.IsNullOrEmpty(this.fileSize))
+            if (!string.IsNullOrEmpty(this._fileSize))
             {
                 e.Graphics.DrawString(
-                    this.fileSize, this.Font, this.TextBrush, 0,
+                    this._fileSize, this.Font, this.TextBrush, 0,
                     fileNameRect.Bottom + MARGIN + (textSize.Height + MARGIN) * 2);
             }
 

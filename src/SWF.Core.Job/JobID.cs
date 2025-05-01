@@ -2,11 +2,11 @@ namespace SWF.Core.Job
 {
     public sealed class JobID
     {
-        private static long currentID = 0;
+        private static long _currentID = 0;
 
         public static JobID GetNew()
         {
-            return new JobID(Interlocked.Increment(ref currentID));
+            return new JobID(Interlocked.Increment(ref _currentID));
         }
 
         private readonly long value;

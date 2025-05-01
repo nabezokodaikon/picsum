@@ -22,15 +22,15 @@ namespace PicSum.UIComponent.Contents.FileList
     public sealed partial class TagFileListPage
         : AbstractFileListPage
     {
-        private bool disposed = false;
-        private readonly TagFileListPageParameter parameter = null;
+        private bool _disposed = false;
+        private readonly TagFileListPageParameter _parameter = null;
 
         public TagFileListPage(TagFileListPageParameter param)
             : base(param)
         {
-            this.parameter = param;
+            this._parameter = param;
 
-            this.Title = this.parameter.Tag;
+            this.Title = this._parameter.Tag;
             this.Icon = ResourceFiles.TagIcon.Value;
             this.IsMoveControlVisible = false;
             this.fileContextMenu.VisibleRemoveFromListMenuItem = true;
@@ -41,14 +41,14 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             var param = new FilesGetByTagParameter()
             {
-                Tag = this.parameter.Tag,
+                Tag = this._parameter.Tag,
                 IsGetThumbnail = true,
             };
 
             Instance<JobCaller>.Value.FilesGetByTagJob.Value
                 .StartJob(this, param, _ =>
                 {
-                    if (this.disposed)
+                    if (this._disposed)
                     {
                         return;
                     }
@@ -61,18 +61,18 @@ namespace PicSum.UIComponent.Contents.FileList
 
         protected override void Dispose(bool disposing)
         {
-            if (this.disposed)
+            if (this._disposed)
             {
                 return;
             }
 
             if (disposing)
             {
-                this.parameter.SelectedFilePath = base.SelectedFilePath;
-                this.parameter.SortInfo = base.SortInfo;
+                this._parameter.SelectedFilePath = base.SelectedFilePath;
+                this._parameter.SortInfo = base.SortInfo;
             }
 
-            this.disposed = true;
+            this._disposed = true;
 
             base.Dispose(disposing);
         }
@@ -100,7 +100,7 @@ namespace PicSum.UIComponent.Contents.FileList
             var param = new FileTagUpdateParameter
             {
                 FilePathList = filePathList,
-                Tag = this.parameter.Tag
+                Tag = this._parameter.Tag
             };
             Instance<JobCaller>.Value.StartFileTagDeleteJob(this, param);
 
@@ -124,17 +124,17 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private void SearchJob_Callback(ListResult<FileShallowInfoEntity> e)
         {
-            if (this.parameter.SortInfo == null)
+            if (this._parameter.SortInfo == null)
             {
-                base.SetFiles([.. e], this.parameter.SelectedFilePath, SortTypeID.RegistrationDate, false);
+                base.SetFiles([.. e], this._parameter.SelectedFilePath, SortTypeID.RegistrationDate, false);
             }
             else
             {
                 base.SetFiles(
                     [.. e],
-                    this.parameter.SelectedFilePath,
-                    this.parameter.SortInfo.ActiveSortType,
-                    this.parameter.SortInfo.IsAscending(this.parameter.SortInfo.ActiveSortType));
+                    this._parameter.SelectedFilePath,
+                    this._parameter.SortInfo.ActiveSortType,
+                    this._parameter.SortInfo.IsAscending(this._parameter.SortInfo.ActiveSortType));
             }
         }
 

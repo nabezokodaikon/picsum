@@ -22,13 +22,13 @@ namespace PicSum.UIComponent.Contents.FileList
     public sealed partial class RatingFileListPage
         : AbstractFileListPage
     {
-        private bool disposed = false;
-        private readonly RatingFileListPageParameter parameter = null;
+        private bool _disposed = false;
+        private readonly RatingFileListPageParameter _parameter = null;
 
         public RatingFileListPage(RatingFileListPageParameter param)
             : base(param)
         {
-            this.parameter = param;
+            this._parameter = param;
 
             this.Title = "Star";
             this.Icon = ResourceFiles.ActiveRatingIcon.Value;
@@ -41,14 +41,14 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             var param = new FilesGetByRatingParameter()
             {
-                RatingValue = this.parameter.RatingValue,
+                RatingValue = this._parameter.RatingValue,
                 IsGetThumbnail = true,
             };
 
             Instance<JobCaller>.Value.FilesGetByRatingJob.Value
                 .StartJob(this, param, _ =>
                 {
-                    if (this.disposed)
+                    if (this._disposed)
                     {
                         return;
                     }
@@ -61,18 +61,18 @@ namespace PicSum.UIComponent.Contents.FileList
 
         protected override void Dispose(bool disposing)
         {
-            if (this.disposed)
+            if (this._disposed)
             {
                 return;
             }
 
             if (disposing)
             {
-                this.parameter.SelectedFilePath = base.SelectedFilePath;
-                this.parameter.SortInfo = base.SortInfo;
+                this._parameter.SelectedFilePath = base.SelectedFilePath;
+                this._parameter.SortInfo = base.SortInfo;
             }
 
-            this.disposed = true;
+            this._disposed = true;
 
             base.Dispose(disposing);
         }
@@ -124,17 +124,17 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private void SearchJob_Callback(ListResult<FileShallowInfoEntity> e)
         {
-            if (this.parameter.SortInfo == null)
+            if (this._parameter.SortInfo == null)
             {
-                base.SetFiles([.. e], this.parameter.SelectedFilePath, SortTypeID.RegistrationDate, false);
+                base.SetFiles([.. e], this._parameter.SelectedFilePath, SortTypeID.RegistrationDate, false);
             }
             else
             {
                 base.SetFiles(
                     [.. e],
-                    this.parameter.SelectedFilePath,
-                    this.parameter.SortInfo.ActiveSortType,
-                    this.parameter.SortInfo.IsAscending(this.parameter.SortInfo.ActiveSortType));
+                    this._parameter.SelectedFilePath,
+                    this._parameter.SortInfo.ActiveSortType,
+                    this._parameter.SortInfo.IsAscending(this._parameter.SortInfo.ActiveSortType));
             }
         }
 

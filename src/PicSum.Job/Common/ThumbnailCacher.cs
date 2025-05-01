@@ -18,12 +18,12 @@ namespace PicSum.Job.Common
         private const int CACHE_CAPACITY = 1000;
         private const int BUFFER_FILE_MAX_SIZE = 1024 * 1024 * 10;
 
-        private bool disposed = false;
-        private readonly List<ThumbnailCacheEntity> CACHE_LIST = new(CACHE_CAPACITY);
-        private readonly Dictionary<string, ThumbnailCacheEntity> CACHE_DICTIONARY = new(CACHE_CAPACITY);
-        private readonly FileAppender fileAppender = new();
-        private readonly Lock CACHE_LOCK = new();
-        private readonly Lock FILE_APPENDER_LOCK = new();
+        private bool _disposed = false;
+        private readonly List<ThumbnailCacheEntity> _cacheList = new(CACHE_CAPACITY);
+        private readonly Dictionary<string, ThumbnailCacheEntity> _cacheDictionary = new(CACHE_CAPACITY);
+        private readonly FileAppender _fileAppender = new();
+        private readonly Lock _cacheLock = new();
+        private readonly Lock _fileAppenderLock = new();
 
         public ThumbnailCacher()
         {
@@ -38,7 +38,7 @@ namespace PicSum.Job.Common
 
         private void Dispose(bool disposing)
         {
-            if (this.disposed)
+            if (this._disposed)
             {
                 return;
             }
@@ -48,7 +48,7 @@ namespace PicSum.Job.Common
 
             }
 
-            this.disposed = true;
+            this._disposed = true;
         }
 
         public ThumbnailCacheEntity GetCache(string filePath)
@@ -343,18 +343,18 @@ namespace PicSum.Job.Common
 
         private byte[] ReadThumbnailBuffer(string filePath, int startPoint, int size)
         {
-            lock (this.FILE_APPENDER_LOCK)
+            lock (this._fileAppenderLock)
             {
-                return this.fileAppender.Read(filePath, startPoint, size);
+                return this._fileAppender.Read(filePath, startPoint, size);
             }
         }
 
         private int AddThumbnailBuffer(int id, byte[] buffer)
         {
             var thumbFile = this.GetThumbnailBufferFilePath(id);
-            lock (this.FILE_APPENDER_LOCK)
+            lock (this._fileAppenderLock)
             {
-                return this.fileAppender.Append(thumbFile, buffer);
+                return this._fileAppender.Append(thumbFile, buffer);
             }
         }
 
@@ -568,9 +568,9 @@ namespace PicSum.Job.Common
 
         private ThumbnailCacheEntity GetMemoryCache(string filePath)
         {
-            lock (this.CACHE_LOCK)
+            lock (this._cacheLock)
             {
-                if (this.CACHE_DICTIONARY.TryGetValue(filePath, out var cach))
+                if (this._cacheDictionary.TryGetValue(filePath, out var cach))
                 {
                     return cach;
                 }
@@ -588,25 +588,25 @@ namespace PicSum.Job.Common
                 throw new ArgumentException("サムネイルインスタンスが空です。", nameof(thumb));
             }
 
-            lock (this.CACHE_LOCK)
+            lock (this._cacheLock)
             {
-                if (this.CACHE_DICTIONARY.TryGetValue(thumb.FilePath, out var oldCache))
+                if (this._cacheDictionary.TryGetValue(thumb.FilePath, out var oldCache))
                 {
-                    this.CACHE_LIST.RemoveAll(_ => _.FilePath == oldCache.FilePath);
-                    this.CACHE_LIST.Add(thumb);
-                    this.CACHE_DICTIONARY[thumb.FilePath] = thumb;
+                    this._cacheList.RemoveAll(_ => _.FilePath == oldCache.FilePath);
+                    this._cacheList.Add(thumb);
+                    this._cacheDictionary[thumb.FilePath] = thumb;
                 }
                 else
                 {
-                    if (this.CACHE_LIST.Count == CACHE_CAPACITY)
+                    if (this._cacheList.Count == CACHE_CAPACITY)
                     {
-                        var firstCache = this.CACHE_LIST[0];
-                        this.CACHE_LIST.RemoveAt(0);
-                        this.CACHE_DICTIONARY.Remove(firstCache.FilePath);
+                        var firstCache = this._cacheList[0];
+                        this._cacheList.RemoveAt(0);
+                        this._cacheDictionary.Remove(firstCache.FilePath);
                     }
 
-                    this.CACHE_LIST.Add(thumb);
-                    this.CACHE_DICTIONARY.Add(thumb.FilePath, thumb);
+                    this._cacheList.Add(thumb);
+                    this._cacheDictionary.Add(thumb.FilePath, thumb);
                 }
             }
         }

@@ -50,23 +50,23 @@ namespace SWF.Core.Job
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        private bool disposed = false;
+        private bool _disposed = false;
 
-        private readonly string threadName;
-        private readonly IThreadWrapper thread;
-        private readonly SynchronizationContext context;
-        private readonly CancellationTokenSource source = new();
-        private TJob? currentJob = null;
+        private readonly string _threadName;
+        private readonly IThreadWrapper _thread;
+        private readonly SynchronizationContext _context;
+        private readonly CancellationTokenSource _source = new();
+        private TJob? _currentJob = null;
 
         private TJob? CurrentJob
         {
             get
             {
-                return Interlocked.CompareExchange(ref this.currentJob, null, null);
+                return Interlocked.CompareExchange(ref this._currentJob, null, null);
             }
             set
             {
-                Interlocked.Exchange(ref this.currentJob, value);
+                Interlocked.Exchange(ref this._currentJob, value);
             }
         }
 
@@ -75,9 +75,9 @@ namespace SWF.Core.Job
             ArgumentNullException.ThrowIfNull(context, nameof(context));
             ArgumentNullException.ThrowIfNull(thread, nameof(thread));
 
-            this.context = context;
-            this.thread = thread;
-            this.threadName = $"{typeof(TJob).Name} {ThreadID.GetNew()}";
+            this._context = context;
+            this._thread = thread;
+            this._threadName = $"{typeof(TJob).Name} {ThreadID.GetNew()}";
         }
 
         public void Dispose()
@@ -88,7 +88,7 @@ namespace SWF.Core.Job
 
         private void Dispose(bool disposing)
         {
-            if (this.disposed)
+            if (this._disposed)
             {
                 return;
             }
@@ -98,17 +98,17 @@ namespace SWF.Core.Job
                 this.BeginCancel();
 
                 Logger.Debug("ジョブ実行スレッドにキャンセルリクエストを送ります。");
-                this.source.Cancel();
+                this._source.Cancel();
 
                 Logger.Debug("ジョブ実行スレッドの終了を待機します。");
-                this.thread.Wait();
+                this._thread.Wait();
 
-                Logger.Debug($"{this.threadName}: ジョブ実行スレッドが終了しました。");
-                this.thread.Dispose();
-                this.source.Dispose();
+                Logger.Debug($"{this._threadName}: ジョブ実行スレッドが終了しました。");
+                this._thread.Dispose();
+                this._source.Dispose();
             }
 
-            this.disposed = true;
+            this._disposed = true;
         }
 
         public void BeginCancel()
@@ -123,9 +123,9 @@ namespace SWF.Core.Job
 
             this.BeginCancel();
 
-            if (!this.thread.IsRunning())
+            if (!this._thread.IsRunning())
             {
-                this.thread.Start(() => this.DoWork(this.source.Token));
+                this._thread.Start(() => this.DoWork(this._source.Token));
             }
 
             var job = new TJob
@@ -140,7 +140,7 @@ namespace SWF.Core.Job
                 {
                     if (job.CanUIThreadAccess())
                     {
-                        this.context.Post(_ =>
+                        this._context.Post(_ =>
                         {
                             if (job.CanUIThreadAccess())
                             {
@@ -187,7 +187,7 @@ namespace SWF.Core.Job
 
         private void DoWork(CancellationToken token)
         {
-            Thread.CurrentThread.Name = this.threadName;
+            Thread.CurrentThread.Name = this._threadName;
 
             Logger.Debug("ジョブ実行スレッドが開始されました。");
 

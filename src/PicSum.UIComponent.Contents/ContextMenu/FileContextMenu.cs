@@ -34,35 +34,35 @@ namespace PicSum.UIComponent.Contents.ContextMenu
         private string[] filePathList = null;
 
         // 画像ファイルメニュー項目
-        private readonly ToolStripMenuItem fileActiveTabOpenMenuItem = new("Open");
-        private readonly ToolStripMenuItem fileNewTabOpenMenuItem = new("Open in new tab");
-        private readonly ToolStripMenuItem fileNewWindowOpenMenuItem = new("Open in new window");
-        private readonly ToolStripMenuItem fileBookmarkMenuItem = new("Bookmark");
+        private readonly ToolStripMenuItem _fileActiveTabOpenMenuItem = new("Open");
+        private readonly ToolStripMenuItem _fileNewTabOpenMenuItem = new("Open in new tab");
+        private readonly ToolStripMenuItem _fileNewWindowOpenMenuItem = new("Open in new window");
+        private readonly ToolStripMenuItem _fileBookmarkMenuItem = new("Bookmark");
 
         // ファイルメニュー項目
-        private readonly ToolStripMenuItem selectApplicationMenuItem = new("Open in other application");
-        private readonly ToolStripMenuItem saveDirectoryOpenMenuItem = new("Open save folder");
+        private readonly ToolStripMenuItem _selectApplicationMenuItem = new("Open in other application");
+        private readonly ToolStripMenuItem _saveDirectoryOpenMenuItem = new("Open save folder");
 
         // フォルダメニュー項目
-        private readonly ToolStripMenuItem directoryActiveTabOpenMenuItem = new("Open");
-        private readonly ToolStripMenuItem directoryNewTabOpenMenuItem = new("Open in new tab");
-        private readonly ToolStripMenuItem directoryNewWindowOpenMenuItem = new("Open in new window");
-        private readonly ToolStripMenuItem explorerOpenMenuItem = new("Open in explorer");
+        private readonly ToolStripMenuItem _directoryActiveTabOpenMenuItem = new("Open");
+        private readonly ToolStripMenuItem _directoryNewTabOpenMenuItem = new("Open in new tab");
+        private readonly ToolStripMenuItem _directoryNewWindowOpenMenuItem = new("Open in new window");
+        private readonly ToolStripMenuItem _explorerOpenMenuItem = new("Open in explorer");
 
-        private readonly ToolStripMenuItem pathCopyMenuItem = new("Copy path");
-        private readonly ToolStripMenuItem nameCopyMenuItem = new("Copy name");
-        private readonly ToolStripMenuItem removeFromListMenuItem = new("Remove from list");
+        private readonly ToolStripMenuItem _pathCopyMenuItem = new("Copy path");
+        private readonly ToolStripMenuItem _nameCopyMenuItem = new("Copy name");
+        private readonly ToolStripMenuItem _removeFromListMenuItem = new("Remove from list");
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool VisibleFileActiveTabOpenMenuItem
         {
             get
             {
-                return this.fileActiveTabOpenMenuItem.Visible;
+                return this._fileActiveTabOpenMenuItem.Visible;
             }
             set
             {
-                this.fileActiveTabOpenMenuItem.Visible = value;
+                this._fileActiveTabOpenMenuItem.Visible = value;
             }
         }
 
@@ -71,11 +71,11 @@ namespace PicSum.UIComponent.Contents.ContextMenu
         {
             get
             {
-                return this.fileNewTabOpenMenuItem.Visible;
+                return this._fileNewTabOpenMenuItem.Visible;
             }
             set
             {
-                this.fileNewTabOpenMenuItem.Visible = value;
+                this._fileNewTabOpenMenuItem.Visible = value;
             }
         }
 
@@ -84,11 +84,11 @@ namespace PicSum.UIComponent.Contents.ContextMenu
         {
             get
             {
-                return this.fileNewWindowOpenMenuItem.Visible;
+                return this._fileNewWindowOpenMenuItem.Visible;
             }
             set
             {
-                this.fileNewWindowOpenMenuItem.Visible = value;
+                this._fileNewWindowOpenMenuItem.Visible = value;
             }
         }
 
@@ -97,11 +97,11 @@ namespace PicSum.UIComponent.Contents.ContextMenu
         {
             get
             {
-                return this.fileBookmarkMenuItem.Visible;
+                return this._fileBookmarkMenuItem.Visible;
             }
             set
             {
-                this.fileBookmarkMenuItem.Visible = value;
+                this._fileBookmarkMenuItem.Visible = value;
             }
         }
 
@@ -110,11 +110,11 @@ namespace PicSum.UIComponent.Contents.ContextMenu
         {
             get
             {
-                return this.selectApplicationMenuItem.Visible;
+                return this._selectApplicationMenuItem.Visible;
             }
             set
             {
-                this.selectApplicationMenuItem.Visible = value;
+                this._selectApplicationMenuItem.Visible = value;
             }
         }
 
@@ -123,11 +123,11 @@ namespace PicSum.UIComponent.Contents.ContextMenu
         {
             get
             {
-                return this.saveDirectoryOpenMenuItem.Visible;
+                return this._saveDirectoryOpenMenuItem.Visible;
             }
             set
             {
-                this.saveDirectoryOpenMenuItem.Visible = value;
+                this._saveDirectoryOpenMenuItem.Visible = value;
             }
         }
 
@@ -136,11 +136,11 @@ namespace PicSum.UIComponent.Contents.ContextMenu
         {
             get
             {
-                return this.directoryActiveTabOpenMenuItem.Visible;
+                return this._directoryActiveTabOpenMenuItem.Visible;
             }
             set
             {
-                this.directoryActiveTabOpenMenuItem.Visible = value;
+                this._directoryActiveTabOpenMenuItem.Visible = value;
             }
         }
 
@@ -149,11 +149,11 @@ namespace PicSum.UIComponent.Contents.ContextMenu
         {
             get
             {
-                return this.directoryNewTabOpenMenuItem.Visible;
+                return this._directoryNewTabOpenMenuItem.Visible;
             }
             set
             {
-                this.directoryNewTabOpenMenuItem.Visible = value;
+                this._directoryNewTabOpenMenuItem.Visible = value;
             }
         }
 
@@ -162,11 +162,11 @@ namespace PicSum.UIComponent.Contents.ContextMenu
         {
             get
             {
-                return this.directoryNewWindowOpenMenuItem.Visible;
+                return this._directoryNewWindowOpenMenuItem.Visible;
             }
             set
             {
-                this.directoryNewWindowOpenMenuItem.Visible = value;
+                this._directoryNewWindowOpenMenuItem.Visible = value;
             }
         }
 
@@ -175,11 +175,11 @@ namespace PicSum.UIComponent.Contents.ContextMenu
         {
             get
             {
-                return this.explorerOpenMenuItem.Visible;
+                return this._explorerOpenMenuItem.Visible;
             }
             set
             {
-                this.explorerOpenMenuItem.Visible = value;
+                this._explorerOpenMenuItem.Visible = value;
             }
         }
 
@@ -188,11 +188,11 @@ namespace PicSum.UIComponent.Contents.ContextMenu
         {
             get
             {
-                return this.pathCopyMenuItem.Visible;
+                return this._pathCopyMenuItem.Visible;
             }
             set
             {
-                this.pathCopyMenuItem.Visible = value;
+                this._pathCopyMenuItem.Visible = value;
             }
         }
 
@@ -201,11 +201,11 @@ namespace PicSum.UIComponent.Contents.ContextMenu
         {
             get
             {
-                return this.nameCopyMenuItem.Visible;
+                return this._nameCopyMenuItem.Visible;
             }
             set
             {
-                this.nameCopyMenuItem.Visible = value;
+                this._nameCopyMenuItem.Visible = value;
             }
         }
 
@@ -214,11 +214,11 @@ namespace PicSum.UIComponent.Contents.ContextMenu
         {
             get
             {
-                return this.removeFromListMenuItem.Visible;
+                return this._removeFromListMenuItem.Visible;
             }
             set
             {
-                this.removeFromListMenuItem.Visible = value;
+                this._removeFromListMenuItem.Visible = value;
             }
         }
 
@@ -229,34 +229,34 @@ namespace PicSum.UIComponent.Contents.ContextMenu
             this.ShowImageMargin = false;
 
             this.Items.AddRange([
-                this.fileActiveTabOpenMenuItem,
-                this.fileNewTabOpenMenuItem,
-                this.fileNewWindowOpenMenuItem,
-                this.selectApplicationMenuItem,
-                this.saveDirectoryOpenMenuItem,
-                this.directoryActiveTabOpenMenuItem,
-                this.directoryNewTabOpenMenuItem,
-                this.directoryNewWindowOpenMenuItem,
-                this.explorerOpenMenuItem,
-                this.pathCopyMenuItem,
-                this.nameCopyMenuItem,
-                this.fileBookmarkMenuItem,
-                this.removeFromListMenuItem
+                this._fileActiveTabOpenMenuItem,
+                this._fileNewTabOpenMenuItem,
+                this._fileNewWindowOpenMenuItem,
+                this._selectApplicationMenuItem,
+                this._saveDirectoryOpenMenuItem,
+                this._directoryActiveTabOpenMenuItem,
+                this._directoryNewTabOpenMenuItem,
+                this._directoryNewWindowOpenMenuItem,
+                this._explorerOpenMenuItem,
+                this._pathCopyMenuItem,
+                this._nameCopyMenuItem,
+                this._fileBookmarkMenuItem,
+                this._removeFromListMenuItem
             ]);
 
-            this.fileActiveTabOpenMenuItem.Click += new(this.FileActiveTabOpenMenuItem_Click);
-            this.fileNewTabOpenMenuItem.Click += new(this.FileNewTabOpenMenuItem_Click);
-            this.fileNewWindowOpenMenuItem.Click += new(this.FileNewWindowOpenMenuItem_Click);
-            this.selectApplicationMenuItem.Click += new(this.SelectApplication_Click);
-            this.saveDirectoryOpenMenuItem.Click += new(this.SaveDirectoryOpen_Click);
-            this.directoryActiveTabOpenMenuItem.Click += new(this.DirectoryActiveTabOpenMenuItem_Click);
-            this.directoryNewTabOpenMenuItem.Click += new(this.DirectoryNewTabOpenMenuItem_Click);
-            this.directoryNewWindowOpenMenuItem.Click += new(this.DirectoryNewWindowOpenMenuItem_Click);
-            this.explorerOpenMenuItem.Click += new(this.ExplorerOpenMenuItem_Click);
-            this.pathCopyMenuItem.Click += new(this.PathCopyMenuItem_Click);
-            this.nameCopyMenuItem.Click += new(this.NameCopyMenuItem_Click);
-            this.fileBookmarkMenuItem.Click += new(this.FileBookmarkMenuItem_Click);
-            this.removeFromListMenuItem.Click += new(this.RemoveFromListMenuItem_Click);
+            this._fileActiveTabOpenMenuItem.Click += new(this.FileActiveTabOpenMenuItem_Click);
+            this._fileNewTabOpenMenuItem.Click += new(this.FileNewTabOpenMenuItem_Click);
+            this._fileNewWindowOpenMenuItem.Click += new(this.FileNewWindowOpenMenuItem_Click);
+            this._selectApplicationMenuItem.Click += new(this.SelectApplication_Click);
+            this._saveDirectoryOpenMenuItem.Click += new(this.SaveDirectoryOpen_Click);
+            this._directoryActiveTabOpenMenuItem.Click += new(this.DirectoryActiveTabOpenMenuItem_Click);
+            this._directoryNewTabOpenMenuItem.Click += new(this.DirectoryNewTabOpenMenuItem_Click);
+            this._directoryNewWindowOpenMenuItem.Click += new(this.DirectoryNewWindowOpenMenuItem_Click);
+            this._explorerOpenMenuItem.Click += new(this.ExplorerOpenMenuItem_Click);
+            this._pathCopyMenuItem.Click += new(this.PathCopyMenuItem_Click);
+            this._nameCopyMenuItem.Click += new(this.NameCopyMenuItem_Click);
+            this._fileBookmarkMenuItem.Click += new(this.FileBookmarkMenuItem_Click);
+            this._removeFromListMenuItem.Click += new(this.RemoveFromListMenuItem_Click);
         }
 
         public void SetFile(string[] filePathList)
@@ -270,44 +270,44 @@ namespace PicSum.UIComponent.Contents.ContextMenu
 
             if (filePathList.Length > 1)
             {
-                this.pathCopyMenuItem.Visible = true;
-                this.nameCopyMenuItem.Visible = true;
+                this._pathCopyMenuItem.Visible = true;
+                this._nameCopyMenuItem.Visible = true;
 
-                this.fileActiveTabOpenMenuItem.Visible = false;
-                this.fileNewTabOpenMenuItem.Visible = false;
-                this.fileNewWindowOpenMenuItem.Visible = false;
-                this.selectApplicationMenuItem.Visible = false;
-                this.saveDirectoryOpenMenuItem.Visible = false;
+                this._fileActiveTabOpenMenuItem.Visible = false;
+                this._fileNewTabOpenMenuItem.Visible = false;
+                this._fileNewWindowOpenMenuItem.Visible = false;
+                this._selectApplicationMenuItem.Visible = false;
+                this._saveDirectoryOpenMenuItem.Visible = false;
 
-                this.directoryActiveTabOpenMenuItem.Visible = false;
-                this.directoryNewTabOpenMenuItem.Visible = false;
-                this.directoryNewWindowOpenMenuItem.Visible = false;
-                this.explorerOpenMenuItem.Visible = false;
+                this._directoryActiveTabOpenMenuItem.Visible = false;
+                this._directoryNewTabOpenMenuItem.Visible = false;
+                this._directoryNewWindowOpenMenuItem.Visible = false;
+                this._explorerOpenMenuItem.Visible = false;
 
-                this.fileBookmarkMenuItem.Visible = false;
+                this._fileBookmarkMenuItem.Visible = false;
             }
             else
             {
                 var filePath = filePathList.First();
 
-                this.pathCopyMenuItem.Visible = true;
-                this.nameCopyMenuItem.Visible = true;
+                this._pathCopyMenuItem.Visible = true;
+                this._nameCopyMenuItem.Visible = true;
 
                 var isFile = FileUtil.IsExistsFile(filePath);
-                this.selectApplicationMenuItem.Visible = isFile;
-                this.saveDirectoryOpenMenuItem.Visible = isFile;
+                this._selectApplicationMenuItem.Visible = isFile;
+                this._saveDirectoryOpenMenuItem.Visible = isFile;
 
                 var isDirectory = FileUtil.IsExistsDirectory(filePath);
-                this.directoryActiveTabOpenMenuItem.Visible = isDirectory;
-                this.directoryNewTabOpenMenuItem.Visible = isDirectory;
-                this.directoryNewWindowOpenMenuItem.Visible = isDirectory;
-                this.explorerOpenMenuItem.Visible = isDirectory;
+                this._directoryActiveTabOpenMenuItem.Visible = isDirectory;
+                this._directoryNewTabOpenMenuItem.Visible = isDirectory;
+                this._directoryNewWindowOpenMenuItem.Visible = isDirectory;
+                this._explorerOpenMenuItem.Visible = isDirectory;
 
                 var isImageFile = ImageUtil.IsImageFile(filePath);
-                this.fileActiveTabOpenMenuItem.Visible = isImageFile;
-                this.fileNewTabOpenMenuItem.Visible = isImageFile;
-                this.fileNewWindowOpenMenuItem.Visible = isImageFile;
-                this.fileBookmarkMenuItem.Visible = isImageFile;
+                this._fileActiveTabOpenMenuItem.Visible = isImageFile;
+                this._fileNewTabOpenMenuItem.Visible = isImageFile;
+                this._fileNewWindowOpenMenuItem.Visible = isImageFile;
+                this._fileBookmarkMenuItem.Visible = isImageFile;
             }
 
             this.filePathList = filePathList;

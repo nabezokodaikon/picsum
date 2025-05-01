@@ -60,7 +60,7 @@ namespace SWF.UIComponent.FlowList
         {
             get
             {
-                return this.scrollBar.Visible;
+                return this._scrollBar.Visible;
             }
         }
 
@@ -72,27 +72,27 @@ namespace SWF.UIComponent.FlowList
         {
             get
             {
-                return this.itemCount;
+                return this._itemCount;
             }
             set
             {
                 ArgumentOutOfRangeException.ThrowIfLessThan(value, 0, nameof(value));
 
-                if (this.rectangleSelection.IsBegun)
+                if (this._rectangleSelection.IsBegun)
                 {
-                    this.rectangleSelection.EndSelection();
+                    this._rectangleSelection.EndSelection();
                 }
 
-                this.selectedItemIndexs.Clear();
+                this._selectedItemIndexs.Clear();
 
-                this.mousePointItemIndex = -1;
+                this._mousePointItemIndex = -1;
 
-                if (this.foucusItemIndex > value - 1)
+                if (this._foucusItemIndex > value - 1)
                 {
-                    this.foucusItemIndex = -1;
+                    this._foucusItemIndex = -1;
                 }
 
-                this.itemCount = value;
+                this._itemCount = value;
 
                 this.Invalidate();
             }
@@ -106,11 +106,11 @@ namespace SWF.UIComponent.FlowList
         {
             get
             {
-                return this.itemWidth;
+                return this._itemWidth;
             }
             set
             {
-                if (this.rectangleSelection.IsBegun)
+                if (this._rectangleSelection.IsBegun)
                 {
                     throw new InvalidOperationException("短形選択中は設定できません。");
                 }
@@ -120,7 +120,7 @@ namespace SWF.UIComponent.FlowList
                     throw new ArgumentOutOfRangeException(nameof(value));
                 }
 
-                this.itemWidth = value;
+                this._itemWidth = value;
 
                 this.Invalidate();
             }
@@ -134,11 +134,11 @@ namespace SWF.UIComponent.FlowList
         {
             get
             {
-                return this.itemHeight;
+                return this._itemHeight;
             }
             set
             {
-                if (this.rectangleSelection.IsBegun)
+                if (this._rectangleSelection.IsBegun)
                 {
                     throw new InvalidOperationException("短形選択中は設定できません。");
                 }
@@ -148,7 +148,7 @@ namespace SWF.UIComponent.FlowList
                     throw new ArgumentOutOfRangeException(nameof(value));
                 }
 
-                this.itemHeight = value;
+                this._itemHeight = value;
 
                 this.Invalidate();
             }
@@ -162,18 +162,18 @@ namespace SWF.UIComponent.FlowList
         {
             get
             {
-                return this.itemSpace;
+                return this._itemSpace;
             }
             set
             {
-                if (this.rectangleSelection.IsBegun)
+                if (this._rectangleSelection.IsBegun)
                 {
                     throw new InvalidOperationException("短形選択中は設定できません。");
                 }
 
                 ArgumentOutOfRangeException.ThrowIfLessThan(value, 0, nameof(value));
 
-                this.itemSpace = value;
+                this._itemSpace = value;
                 this.Invalidate();
             }
         }
@@ -186,16 +186,16 @@ namespace SWF.UIComponent.FlowList
         {
             get
             {
-                return this.isLileList;
+                return this._isLileList;
             }
             set
             {
-                if (this.rectangleSelection.IsBegun)
+                if (this._rectangleSelection.IsBegun)
                 {
                     throw new InvalidOperationException("短形選択中は設定できません。");
                 }
 
-                this.isLileList = value;
+                this._isLileList = value;
                 this.Invalidate();
             }
         }
@@ -208,18 +208,18 @@ namespace SWF.UIComponent.FlowList
         {
             get
             {
-                return this.isMultiSelect;
+                return this._isMultiSelect;
             }
             set
             {
-                if (this.rectangleSelection.IsBegun)
+                if (this._rectangleSelection.IsBegun)
                 {
                     throw new InvalidOperationException("短形選択中は設定できません。");
                 }
 
-                this.selectedItemIndexs.Clear();
-                this.isMultiSelect = value;
-                this.rectangleSelection.IsUse = value;
+                this._selectedItemIndexs.Clear();
+                this._isMultiSelect = value;
+                this._rectangleSelection.IsUse = value;
                 this.Invalidate();
             }
         }
@@ -293,11 +293,11 @@ namespace SWF.UIComponent.FlowList
         {
             get
             {
-                return this.itemTextTrimming;
+                return this._itemTextTrimming;
             }
             set
             {
-                this.itemTextTrimming = value;
+                this._itemTextTrimming = value;
             }
         }
 
@@ -310,11 +310,11 @@ namespace SWF.UIComponent.FlowList
         {
             get
             {
-                return this.itemTextAlignment;
+                return this._itemTextAlignment;
             }
             set
             {
-                this.itemTextAlignment = value;
+                this._itemTextAlignment = value;
             }
         }
 
@@ -327,11 +327,11 @@ namespace SWF.UIComponent.FlowList
         {
             get
             {
-                return this.itemTextLineAlignment;
+                return this._itemTextLineAlignment;
             }
             set
             {
-                this.itemTextLineAlignment = value;
+                this._itemTextLineAlignment = value;
             }
         }
 
@@ -344,11 +344,11 @@ namespace SWF.UIComponent.FlowList
         {
             get
             {
-                return this.itemTextFormatFlags;
+                return this._itemTextFormatFlags;
             }
             set
             {
-                this.itemTextFormatFlags = value;
+                this._itemTextFormatFlags = value;
             }
         }
 
@@ -403,18 +403,18 @@ namespace SWF.UIComponent.FlowList
         {
             get
             {
-                this.itemTextFormat ??= new()
+                this._itemTextFormat ??= new()
                 {
-                    Trimming = this.itemTextTrimming,
-                    Alignment = this.itemTextAlignment,
-                    LineAlignment = this.itemTextLineAlignment,
-                    FormatFlags = this.itemTextFormatFlags
+                    Trimming = this._itemTextTrimming,
+                    Alignment = this._itemTextAlignment,
+                    LineAlignment = this._itemTextLineAlignment,
+                    FormatFlags = this._itemTextFormatFlags
                 };
-                return this.itemTextFormat;
+                return this._itemTextFormat;
             }
             set
             {
-                this.itemTextFormat = value;
+                this._itemTextFormat = value;
             }
         }
 
@@ -423,7 +423,7 @@ namespace SWF.UIComponent.FlowList
         /// </summary>
         public new void Refresh()
         {
-            this.drawParameter = new DrawParameter();
+            this._drawParameter = new DrawParameter();
             this.Invalidate();
         }
 
@@ -432,7 +432,7 @@ namespace SWF.UIComponent.FlowList
         /// </summary>
         public void BeginUpdate()
         {
-            this.isDraw = false;
+            this._isDraw = false;
         }
 
         /// <summary>
@@ -440,7 +440,7 @@ namespace SWF.UIComponent.FlowList
         /// </summary>
         public void EndUpdate()
         {
-            this.isDraw = true;
+            this._isDraw = true;
             this.Invalidate();
         }
 
@@ -451,7 +451,7 @@ namespace SWF.UIComponent.FlowList
         /// <param name="height"></param>
         public void SetItemSize(int width, int height)
         {
-            if (this.rectangleSelection.IsBegun)
+            if (this._rectangleSelection.IsBegun)
             {
                 throw new InvalidOperationException("短形選択中は設定できません。");
             }
@@ -466,8 +466,8 @@ namespace SWF.UIComponent.FlowList
                 throw new ArgumentOutOfRangeException(nameof(height));
             }
 
-            this.itemWidth = width;
-            this.itemHeight = height;
+            this._itemWidth = width;
+            this._itemHeight = height;
 
             this.Invalidate();
         }
@@ -477,9 +477,9 @@ namespace SWF.UIComponent.FlowList
         /// </summary>
         public void ClearSelectedItems()
         {
-            this.selectedItemIndexs.Clear();
-            this.foucusItemIndex = -1;
-            this.mousePointItemIndex = -1;
+            this._selectedItemIndexs.Clear();
+            this._foucusItemIndex = -1;
+            this._mousePointItemIndex = -1;
             this.Invalidate();
         }
 
@@ -489,20 +489,20 @@ namespace SWF.UIComponent.FlowList
         /// <param name="itemIndex"></param>
         public void SelectItem(int itemIndex)
         {
-            if (this.rectangleSelection.IsBegun)
+            if (this._rectangleSelection.IsBegun)
             {
                 throw new InvalidOperationException("短形選択中は設定できません。");
             }
 
-            if (itemIndex < 0 || this.itemCount - 1 < itemIndex)
+            if (itemIndex < 0 || this._itemCount - 1 < itemIndex)
             {
                 throw new ArgumentOutOfRangeException(nameof(itemIndex));
             }
 
-            this.foucusItemIndex = itemIndex;
+            this._foucusItemIndex = itemIndex;
 
-            this.selectedItemIndexs.Clear();
-            this.selectedItemIndexs.Add(itemIndex);
+            this._selectedItemIndexs.Clear();
+            this._selectedItemIndexs.Add(itemIndex);
 
             this.EnsureVisible(itemIndex);
 
@@ -517,12 +517,12 @@ namespace SWF.UIComponent.FlowList
         /// <returns></returns>
         public int[] GetSelectedIndexs()
         {
-            if (this.rectangleSelection.IsBegun)
+            if (this._rectangleSelection.IsBegun)
             {
                 return [];
             }
 
-            return this.selectedItemIndexs.GetList();
+            return this._selectedItemIndexs.GetList();
         }
 
         /// <summary>
@@ -543,7 +543,7 @@ namespace SWF.UIComponent.FlowList
         /// <param name="itemIndex">項目インデックス</param>
         public void InvalidateFromItemIndex(int itemIndex)
         {
-            if (itemIndex < 0 || this.itemCount - 1 < itemIndex)
+            if (itemIndex < 0 || this._itemCount - 1 < itemIndex)
             {
                 throw new ArgumentOutOfRangeException(nameof(itemIndex));
             }

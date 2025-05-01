@@ -13,7 +13,7 @@ namespace PicSum.UIComponent.Contents.Common
     public abstract class BrowserPage
         : PagePanel
     {
-        private bool disposed = false;
+        private bool _disposed = false;
 
         public event EventHandler<SelectedFileChangeEventArgs> SelectedFileChanged;
         public event EventHandler<BrowserPageEventArgs> OpenPage;
@@ -42,7 +42,7 @@ namespace PicSum.UIComponent.Contents.Common
 
         protected override void Dispose(bool disposing)
         {
-            if (this.disposed)
+            if (this._disposed)
             {
                 return;
             }
@@ -52,7 +52,7 @@ namespace PicSum.UIComponent.Contents.Common
 
             }
 
-            this.disposed = true;
+            this._disposed = true;
 
             base.Dispose(disposing);
         }

@@ -492,7 +492,7 @@ namespace SWF.Core.FileAccessor
                 {
                     return [.. GetDrives()
                         .AsEnumerable()
-                        .OrderBy(drive => drive, NaturalStringComparer.Windows)];
+                        .OrderBy(drive => drive, NaturalStringComparer.WINDOWS)];
                 }
                 else
                 {
@@ -512,7 +512,7 @@ namespace SWF.Core.FileAccessor
                             .OfType<DirectoryInfo>()
                             .Select(dir => dir.FullName)
                             .Where(CanAccess)
-                            .OrderBy(dir => dir, NaturalStringComparer.Windows)
+                            .OrderBy(dir => dir, NaturalStringComparer.WINDOWS)
                             .ToArray();
                     }
                     else

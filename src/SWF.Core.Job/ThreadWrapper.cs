@@ -11,8 +11,8 @@ namespace SWF.Core.Job
     public sealed partial class JobThread
         : IThreadWrapper
     {
-        private bool disposed = false;
-        private Thread? thread = null;
+        private bool _disposed = false;
+        private Thread? _thread = null;
 
         public JobThread()
         {
@@ -27,49 +27,49 @@ namespace SWF.Core.Job
 
         private void Dispose(bool disposing)
         {
-            if (this.disposed)
+            if (this._disposed)
             {
                 return;
             }
 
             if (disposing)
             {
-                this.thread = null;
+                this._thread = null;
             }
 
-            this.disposed = true;
+            this._disposed = true;
         }
 
         public bool IsRunning()
         {
-            return this.thread != null;
+            return this._thread != null;
         }
 
         public void Start(Action dowork)
         {
             ArgumentNullException.ThrowIfNull(dowork, nameof(dowork));
 
-            if (this.thread != null)
+            if (this._thread != null)
             {
                 throw new InvalidOperationException("スレッドは既に開始しています。");
             }
 
-            this.thread = new(dowork.Invoke);
-            this.thread.Priority = ThreadPriority.Highest;
-            this.thread.Start();
+            this._thread = new(dowork.Invoke);
+            this._thread.Priority = ThreadPriority.Highest;
+            this._thread.Start();
         }
 
         public void Wait()
         {
-            this.thread?.Join();
+            this._thread?.Join();
         }
     }
 
     public sealed partial class JobTask
         : IThreadWrapper
     {
-        private bool disposed = false;
-        private Task? task = null;
+        private bool _disposed = false;
+        private Task? _task = null;
 
         public JobTask()
         {
@@ -84,40 +84,40 @@ namespace SWF.Core.Job
 
         private void Dispose(bool disposing)
         {
-            if (this.disposed)
+            if (this._disposed)
             {
                 return;
             }
 
             if (disposing)
             {
-                this.task?.Dispose();
-                this.task = null;
+                this._task?.Dispose();
+                this._task = null;
             }
 
-            this.disposed = true;
+            this._disposed = true;
         }
 
         public bool IsRunning()
         {
-            return this.task != null;
+            return this._task != null;
         }
 
         public void Start(Action dowork)
         {
             ArgumentNullException.ThrowIfNull(dowork, nameof(dowork));
 
-            if (this.task != null)
+            if (this._task != null)
             {
                 throw new InvalidOperationException("タスクは既に開始しています。");
             }
 
-            this.task ??= Task.Run(dowork);
+            this._task ??= Task.Run(dowork);
         }
 
         public void Wait()
         {
-            this.task?.Wait();
+            this._task?.Wait();
         }
     }
 }

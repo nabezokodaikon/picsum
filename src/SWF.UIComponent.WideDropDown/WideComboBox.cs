@@ -21,8 +21,8 @@ namespace SWF.UIComponent.WideDropDown
         public event EventHandler<DropDownOpeningEventArgs> DropDownOpening;
         public event EventHandler<AddItemEventArgs> AddItem;
 
-        private bool isShowingDropDown = false;
-        private readonly WideDropDownList dropDownList;
+        private bool _isShowingDropDown = false;
+        private readonly WideDropDownList _dropDownList;
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public new int TabIndex
@@ -42,11 +42,11 @@ namespace SWF.UIComponent.WideDropDown
         {
             get
             {
-                return this.dropDownList.Icon;
+                return this._dropDownList.Icon;
             }
             set
             {
-                this.dropDownList.Icon = value;
+                this._dropDownList.Icon = value;
             }
         }
 
@@ -70,9 +70,9 @@ namespace SWF.UIComponent.WideDropDown
             this.addButton.Image = ResourceFiles.TagIcon.Value;
             this.addButton.MouseEnter += this.AddButton_MouseEnter;
 
-            this.dropDownList = new(this);
-            this.dropDownList.IsClickAndClose = true;
-            this.dropDownList.ItemMouseClick += this.DropDownList_ItemMouseClick;
+            this._dropDownList = new(this);
+            this._dropDownList.IsClickAndClose = true;
+            this._dropDownList.ItemMouseClick += this.DropDownList_ItemMouseClick;
         }
 
         public void SetControlsBounds(float scale)
@@ -120,7 +120,7 @@ namespace SWF.UIComponent.WideDropDown
         {
             ArgumentNullException.ThrowIfNull(items, nameof(items));
 
-            this.dropDownList.SetItems(items);
+            this._dropDownList.SetItems(items);
         }
 
         public void SelectItem()
@@ -131,7 +131,7 @@ namespace SWF.UIComponent.WideDropDown
                 return;
             }
 
-            this.dropDownList.SelectItem(item);
+            this._dropDownList.SelectItem(item);
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -147,8 +147,8 @@ namespace SWF.UIComponent.WideDropDown
         protected override void OnMouseLeave(EventArgs e)
         {
             base.OnMouseLeave(e);
-            this.dropDownList.Close();
-            this.isShowingDropDown = false;
+            this._dropDownList.Close();
+            this._isShowingDropDown = false;
         }
 
         private void InputTextBox_KeyDown(object sender, KeyEventArgs e)
@@ -211,10 +211,10 @@ namespace SWF.UIComponent.WideDropDown
                 return;
             }
 
-            if (this.isShowingDropDown)
+            if (this._isShowingDropDown)
             {
-                this.dropDownList.Close();
-                this.isShowingDropDown = false;
+                this._dropDownList.Close();
+                this._isShowingDropDown = false;
             }
             else
             {
@@ -224,25 +224,25 @@ namespace SWF.UIComponent.WideDropDown
                     this.DropDownOpening(this, args);
                 }
 
-                this.dropDownList.Show(
+                this._dropDownList.Show(
                     this, new Point(
-                        this.arrowPictureBox.Right - this.dropDownList.Size.Width,
+                        this.arrowPictureBox.Right - this._dropDownList.Size.Width,
                         this.arrowPictureBox.Bottom));
 
-                this.isShowingDropDown = true;
+                this._isShowingDropDown = true;
             }
         }
 
         private void InputTextBox_MouseEnter(object sender, EventArgs e)
         {
-            this.dropDownList.Close();
-            this.isShowingDropDown = false;
+            this._dropDownList.Close();
+            this._isShowingDropDown = false;
         }
 
         private void AddButton_MouseEnter(object sender, EventArgs e)
         {
-            this.dropDownList.Close();
-            this.isShowingDropDown = false;
+            this._dropDownList.Close();
+            this._isShowingDropDown = false;
         }
 
         private void DropDownList_ItemMouseClick(object sender, ItemMouseClickEventArgs e)

@@ -11,8 +11,8 @@ namespace PicSum.UIComponent.AddressBar
     internal sealed partial class OverflowDrawItem
         : DropDownDrawItemBase, IDisposable
     {
-        private readonly Image mousePointImage = ResourceFiles.SmallArrowLeftIcon.Value;
-        private readonly Image mouseDownImage = ResourceFiles.SmallArrowDownIcon.Value;
+        private readonly Image _mousePointImage = ResourceFiles.SmallArrowLeftIcon.Value;
+        private readonly Image _mouseDownImage = ResourceFiles.SmallArrowDownIcon.Value;
 
         public OverflowDrawItem()
         {
@@ -34,16 +34,16 @@ namespace PicSum.UIComponent.AddressBar
             if (base.IsMouseDown || this.IsDropDown)
             {
                 g.FillRectangle(Palette.MOUSE_DOWN_BRUSH, rect);
-                g.DrawImage(this.mouseDownImage, this.GetImageDrawRectangle(this.mouseDownImage));
+                g.DrawImage(this._mouseDownImage, this.GetImageDrawRectangle(this._mouseDownImage));
             }
             else if (base.IsMousePoint)
             {
                 g.FillRectangle(Palette.MOUSE_POINT_BRUSH, rect);
-                g.DrawImage(this.mousePointImage, this.GetImageDrawRectangle(this.mousePointImage));
+                g.DrawImage(this._mousePointImage, this.GetImageDrawRectangle(this._mousePointImage));
             }
             else
             {
-                g.DrawImage(this.mousePointImage, this.GetImageDrawRectangle(this.mousePointImage));
+                g.DrawImage(this._mousePointImage, this.GetImageDrawRectangle(this._mousePointImage));
             }
         }
 

@@ -14,19 +14,19 @@ namespace SWF.UIComponent.WideDropDown
         public event EventHandler<ItemMouseClickEventArgs> ItemMouseClick;
         public event EventHandler<DropDownOpeningEventArgs> DropDownOpening;
 
-        private bool isShowingDropDown = false;
-        private readonly WideDropDownList dropDownList;
+        private bool _isShowingDropDown = false;
+        private readonly WideDropDownList _dropDownList;
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Image Icon
         {
             get
             {
-                return this.dropDownList.Icon;
+                return this._dropDownList.Icon;
             }
             set
             {
-                this.dropDownList.Icon = value;
+                this._dropDownList.Icon = value;
             }
         }
 
@@ -35,9 +35,9 @@ namespace SWF.UIComponent.WideDropDown
 
         public WideDropToolButton()
         {
-            this.dropDownList = new(this);
-            this.dropDownList.IsClickAndClose = true;
-            this.dropDownList.ItemMouseClick += this.DropDownList_ItemMouseClick;
+            this._dropDownList = new(this);
+            this._dropDownList.IsClickAndClose = true;
+            this._dropDownList.ItemMouseClick += this.DropDownList_ItemMouseClick;
 
             this.MouseClick += this.WideDropToolButton_MouseClick;
         }
@@ -46,20 +46,20 @@ namespace SWF.UIComponent.WideDropDown
         {
             ArgumentNullException.ThrowIfNull(items, nameof(items));
 
-            this.dropDownList.SetItems(items);
+            this._dropDownList.SetItems(items);
         }
 
         public void SelectItem(string item)
         {
             ArgumentException.ThrowIfNullOrEmpty(item, nameof(item));
 
-            this.dropDownList.SelectItem(item);
+            this._dropDownList.SelectItem(item);
         }
 
         protected override void OnLostFocus(EventArgs e)
         {
             base.OnLostFocus(e);
-            this.isShowingDropDown = false;
+            this._isShowingDropDown = false;
         }
 
         private void WideDropToolButton_MouseClick(object sender, MouseEventArgs e)
@@ -69,14 +69,14 @@ namespace SWF.UIComponent.WideDropDown
                 return;
             }
 
-            if (this.isShowingDropDown)
+            if (this._isShowingDropDown)
             {
-                this.isShowingDropDown = false;
-                this.dropDownList.Close();
+                this._isShowingDropDown = false;
+                this._dropDownList.Close();
             }
             else
             {
-                this.isShowingDropDown = true;
+                this._isShowingDropDown = true;
 
                 if (this.DropDownOpening != null)
                 {
@@ -84,12 +84,12 @@ namespace SWF.UIComponent.WideDropDown
                     this.DropDownOpening(this, args);
                 }
 
-                this.dropDownList.Show(
+                this._dropDownList.Show(
                     this, new Point(this.Width, 0));
 
                 if (!string.IsNullOrEmpty(this.SelectedItem))
                 {
-                    this.dropDownList.SelectItem(this.SelectedItem);
+                    this._dropDownList.SelectItem(this.SelectedItem);
                 }
             }
         }

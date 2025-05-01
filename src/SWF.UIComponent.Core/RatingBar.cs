@@ -8,9 +8,9 @@ namespace SWF.UIComponent.Core
     {
         public event EventHandler<MouseEventArgs>? RatingButtonMouseClick;
 
-        private int maximumValue = 5;
-        private int ratingValue = 0;
-        private readonly List<RatingButton> ratingButtonList = [];
+        private int _maximumValue = 5;
+        private int _ratingValue = 0;
+        private readonly List<RatingButton> _ratingButtonList = [];
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public new int TabIndex
@@ -30,22 +30,22 @@ namespace SWF.UIComponent.Core
         {
             get
             {
-                return this.maximumValue;
+                return this._maximumValue;
             }
             set
             {
                 ArgumentOutOfRangeException.ThrowIfLessThan(value, 1, nameof(value));
 
-                if (value < this.ratingValue)
+                if (value < this._ratingValue)
                 {
-                    this.ratingValue = value;
+                    this._ratingValue = value;
                 }
 
-                this.maximumValue = value;
+                this._maximumValue = value;
 
                 this.CreateRatingButtons();
                 this.SetControlsBounds(WindowUtil.GetCurrentWindowScale(this));
-                this.SetValue(this.ratingValue);
+                this.SetValue(this._ratingValue);
             }
         }
 
@@ -53,7 +53,7 @@ namespace SWF.UIComponent.Core
         {
             get
             {
-                return this.ratingValue;
+                return this._ratingValue;
             }
         }
 
@@ -71,14 +71,14 @@ namespace SWF.UIComponent.Core
 
         public void SetControlsBounds(float scale)
         {
-            var firstBtn = this.ratingButtonList.FirstOrDefault();
+            var firstBtn = this._ratingButtonList.FirstOrDefault();
             if (firstBtn == null)
             {
                 return;
             }
 
             firstBtn.SetControlsBounds(scale);
-            var allWidth = firstBtn.Width * this.ratingButtonList.Count;
+            var allWidth = firstBtn.Width * this._ratingButtonList.Count;
             var x = (int)((this.Width - allWidth) / 2f);
             var y = (int)((this.Height - firstBtn.Height) / 2f);
             firstBtn.Location = new Point(x, y);
@@ -86,18 +86,18 @@ namespace SWF.UIComponent.Core
 
         public void SetValue(int value)
         {
-            if (this.ratingValue < 0 || this.maximumValue < this.ratingValue)
+            if (this._ratingValue < 0 || this._maximumValue < this._ratingValue)
             {
                 throw new ArgumentOutOfRangeException(nameof(value));
             }
 
-            for (var index = 0; index < this.maximumValue; index++)
+            for (var index = 0; index < this._maximumValue; index++)
             {
-                var btn = this.ratingButtonList[index];
+                var btn = this._ratingButtonList[index];
                 btn.IsActive = index < value;
             }
 
-            this.ratingValue = value;
+            this._ratingValue = value;
         }
 
         protected virtual void OnRatingButtonMouseClick(MouseEventArgs e)
@@ -107,15 +107,15 @@ namespace SWF.UIComponent.Core
 
         private void CreateRatingButtons()
         {
-            foreach (var btn in this.ratingButtonList)
+            foreach (var btn in this._ratingButtonList)
             {
                 this.Controls.Remove(btn);
             }
 
-            this.ratingButtonList.Clear();
+            this._ratingButtonList.Clear();
 
             var list = new List<RatingButton>();
-            for (var i = 0; i < this.maximumValue; i++)
+            for (var i = 0; i < this._maximumValue; i++)
             {
                 var btn = new RatingButton();
                 btn.MouseClick += new(this.RatingButton_MouseClick);
@@ -125,7 +125,7 @@ namespace SWF.UIComponent.Core
 
             var ary = list.ToArray();
 
-            this.ratingButtonList.AddRange(ary);
+            this._ratingButtonList.AddRange(ary);
 
             this.Controls.AddRange(ary);
         }
@@ -137,14 +137,14 @@ namespace SWF.UIComponent.Core
                 throw new ArgumentException("評価値ボタンコントロールと互換性がありません。", nameof(sender));
             }
 
-            var index = this.ratingButtonList.IndexOf((RatingButton)sender);
+            var index = this._ratingButtonList.IndexOf((RatingButton)sender);
             if (index < 0)
             {
                 throw new ArgumentException("createRatingButtonsメソッドで作成されたRatingButtonではありません。", nameof(sender));
             }
 
-            var btn = this.ratingButtonList[index];
-            if (btn.IsActive && index == this.ratingValue - 1)
+            var btn = this._ratingButtonList[index];
+            if (btn.IsActive && index == this._ratingValue - 1)
             {
                 this.SetValue(index);
             }

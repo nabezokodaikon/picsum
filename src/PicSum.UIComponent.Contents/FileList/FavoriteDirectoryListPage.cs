@@ -23,13 +23,13 @@ namespace PicSum.UIComponent.Contents.FileList
         : AbstractFileListPage
     {
 
-        private bool disposed = false;
-        private readonly FavoriteDirectoryListPageParameter parameter = null;
+        private bool _disposed = false;
+        private readonly FavoriteDirectoryListPageParameter _parameter = null;
 
         public FavoriteDirectoryListPage(FavoriteDirectoryListPageParameter param)
             : base(param)
         {
-            this.parameter = param;
+            this._parameter = param;
 
             this.Title = "Home";
             this.Icon = ResourceFiles.HomeIcon.Value;
@@ -40,18 +40,18 @@ namespace PicSum.UIComponent.Contents.FileList
 
         protected override void Dispose(bool disposing)
         {
-            if (this.disposed)
+            if (this._disposed)
             {
                 return;
             }
 
             if (disposing)
             {
-                this.parameter.SelectedFilePath = base.SelectedFilePath;
-                this.parameter.SortInfo = base.SortInfo;
+                this._parameter.SelectedFilePath = base.SelectedFilePath;
+                this._parameter.SortInfo = base.SortInfo;
             }
 
-            this.disposed = true;
+            this._disposed = true;
 
             base.Dispose(disposing);
         }
@@ -67,7 +67,7 @@ namespace PicSum.UIComponent.Contents.FileList
             Instance<JobCaller>.Value.FavoriteDirectoriesGetJob.Value
                 .StartJob(this, param, _ =>
                 {
-                    if (this.disposed)
+                    if (this._disposed)
                     {
                         return;
                     }
@@ -124,17 +124,17 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private void SearchJob_Callback(ListResult<FileShallowInfoEntity> e)
         {
-            if (this.parameter.SortInfo == null)
+            if (this._parameter.SortInfo == null)
             {
-                base.SetFile([.. e], this.parameter.SelectedFilePath);
+                base.SetFile([.. e], this._parameter.SelectedFilePath);
             }
             else
             {
                 base.SetFiles(
                     [.. e],
-                    this.parameter.SelectedFilePath,
-                    this.parameter.SortInfo.ActiveSortType,
-                    this.parameter.SortInfo.IsAscending(this.parameter.SortInfo.ActiveSortType));
+                    this._parameter.SelectedFilePath,
+                    this._parameter.SortInfo.ActiveSortType,
+                    this._parameter.SortInfo.IsAscending(this._parameter.SortInfo.ActiveSortType));
             }
         }
 

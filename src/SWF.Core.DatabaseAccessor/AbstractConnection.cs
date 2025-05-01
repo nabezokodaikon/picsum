@@ -9,11 +9,11 @@ namespace SWF.Core.DatabaseAccessor
     public abstract class AbstractConnection
         : IConnection
     {
-        private bool disposed = false;
-        private readonly Lock lockObject = new();
-        private readonly string dbFilePath;
-        private SQLiteConnection? connection = null;
-        private SQLiteTransaction? transaction = null;
+        private bool _disposed = false;
+        private readonly Lock _lockObject = new();
+        private readonly string _dbFilePath;
+        private SQLiteConnection? _connection = null;
+        private SQLiteTransaction? _transaction = null;
 
         /// <summary>
         /// コンストラクタ
@@ -40,36 +40,36 @@ namespace SWF.Core.DatabaseAccessor
                 }
             }
 
-            this.dbFilePath = dbFilePath;
+            this._dbFilePath = dbFilePath;
         }
 
         private void Dispose(bool disposing)
         {
-            if (this.disposed)
+            if (this._disposed)
             {
                 return;
             }
 
             if (disposing)
             {
-                if (this.connection != null)
+                if (this._connection != null)
                 {
-                    var connectionString = $"Data Source={this.dbFilePath}";
+                    var connectionString = $"Data Source={this._dbFilePath}";
                     using (var fileConnection = new SQLiteConnection(connectionString))
                     {
                         fileConnection.Open();
-                        this.connection.BackupDatabase(fileConnection, "main", "main", -1, null, 0);
+                        this._connection.BackupDatabase(fileConnection, "main", "main", -1, null, 0);
                     }
 
-                    this.connection.Close();
-                    this.transaction?.Dispose();
+                    this._connection.Close();
+                    this._transaction?.Dispose();
                 }
             }
 
-            this.transaction = null;
-            this.connection = null;
+            this._transaction = null;
+            this._connection = null;
 
-            this.disposed = true;
+            this._disposed = true;
         }
 
         /// <summary>
@@ -83,19 +83,19 @@ namespace SWF.Core.DatabaseAccessor
 
         private SQLiteConnection GetConnection()
         {
-            if (this.connection == null)
+            if (this._connection == null)
             {
-                var connectionString = $"Data Source={this.dbFilePath}";
-                this.connection = new SQLiteConnection("Data Source=:memory:");
-                this.connection.Open();
+                var connectionString = $"Data Source={this._dbFilePath}";
+                this._connection = new SQLiteConnection("Data Source=:memory:");
+                this._connection.Open();
                 using (var fileConnection = new SQLiteConnection(connectionString))
                 {
                     fileConnection.Open();
-                    fileConnection.BackupDatabase(this.connection, "main", "main", -1, null, 0);
+                    fileConnection.BackupDatabase(this._connection, "main", "main", -1, null, 0);
                 }
             }
 
-            return this.connection;
+            return this._connection;
         }
 
         /// <summary>
@@ -104,46 +104,46 @@ namespace SWF.Core.DatabaseAccessor
         /// <returns>トランザクションオブジェクト</returns>
         public ITransaction BeginTransaction()
         {
-            this.lockObject.Enter();
-            this.transaction = this.GetConnection().BeginTransaction();
+            this._lockObject.Enter();
+            this._transaction = this.GetConnection().BeginTransaction();
             return new Transaction(this);
         }
 
         public void Commit()
         {
-            if (this.transaction == null)
+            if (this._transaction == null)
             {
                 throw new InvalidOperationException("トランザクションが開始されていません。");
             }
 
             try
             {
-                this.transaction.Commit();
+                this._transaction.Commit();
             }
             finally
             {
-                this.transaction.Dispose();
-                this.transaction = null;
-                this.lockObject.Exit();
+                this._transaction.Dispose();
+                this._transaction = null;
+                this._lockObject.Exit();
             }
         }
 
         public void Roolback()
         {
-            if (this.transaction == null)
+            if (this._transaction == null)
             {
                 throw new InvalidOperationException("トランザクションが開始されていません。");
             }
 
             try
             {
-                this.transaction.Rollback();
+                this._transaction.Rollback();
             }
             finally
             {
-                this.transaction.Dispose();
-                this.transaction = null;
-                this.lockObject.Exit();
+                this._transaction.Dispose();
+                this._transaction = null;
+                this._lockObject.Exit();
             }
         }
 
@@ -156,12 +156,12 @@ namespace SWF.Core.DatabaseAccessor
         {
             ArgumentNullException.ThrowIfNull(sql, nameof(sql));
 
-            if (this.transaction == null)
+            if (this._transaction == null)
             {
                 throw new InvalidOperationException("トランザクションが開始されていません。");
             }
 
-            this.lockObject.Enter();
+            this._lockObject.Enter();
             try
             {
                 using (var cmd = this.GetConnection().CreateCommand())
@@ -188,7 +188,7 @@ namespace SWF.Core.DatabaseAccessor
             }
             finally
             {
-                this.lockObject.Exit();
+                this._lockObject.Exit();
             }
         }
 
@@ -203,7 +203,7 @@ namespace SWF.Core.DatabaseAccessor
         {
             ArgumentNullException.ThrowIfNull(sql, nameof(sql));
 
-            this.lockObject.Enter();
+            this._lockObject.Enter();
             try
             {
                 using (var cmd = this.GetConnection().CreateCommand())
@@ -239,7 +239,7 @@ namespace SWF.Core.DatabaseAccessor
             }
             finally
             {
-                this.lockObject.Exit();
+                this._lockObject.Exit();
             }
         }
 
@@ -254,7 +254,7 @@ namespace SWF.Core.DatabaseAccessor
         {
             ArgumentNullException.ThrowIfNull(sql, nameof(sql));
 
-            this.lockObject.Enter();
+            this._lockObject.Enter();
             try
             {
                 using (var cmd = this.GetConnection().CreateCommand())
@@ -284,7 +284,7 @@ namespace SWF.Core.DatabaseAccessor
             }
             finally
             {
-                this.lockObject.Exit();
+                this._lockObject.Exit();
             }
         }
 
@@ -298,7 +298,7 @@ namespace SWF.Core.DatabaseAccessor
         {
             ArgumentNullException.ThrowIfNull(sql, nameof(sql));
 
-            this.lockObject.Enter();
+            this._lockObject.Enter();
             try
             {
                 using (var cmd = this.GetConnection().CreateCommand())
@@ -323,7 +323,7 @@ namespace SWF.Core.DatabaseAccessor
             }
             finally
             {
-                this.lockObject.Exit();
+                this._lockObject.Exit();
             }
         }
     }

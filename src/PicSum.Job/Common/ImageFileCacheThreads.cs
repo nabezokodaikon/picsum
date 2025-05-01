@@ -15,20 +15,20 @@ namespace PicSum.Job.Common
 
         private const int THREAD_COUNT = 4;
 
-        private bool disposed = false;
+        private bool _disposed = false;
         private readonly ConcurrentQueue<string> queue = new();
         private readonly Task[] threads = new Task[THREAD_COUNT];
-        private long isAbort = 0;
+        private long _isAbort = 0;
 
         private bool IsAbort
         {
             get
             {
-                return Interlocked.Read(ref this.isAbort) == 1;
+                return Interlocked.Read(ref this._isAbort) == 1;
             }
             set
             {
-                Interlocked.Exchange(ref this.isAbort, Convert.ToInt64(value));
+                Interlocked.Exchange(ref this._isAbort, Convert.ToInt64(value));
             }
         }
 
@@ -49,7 +49,7 @@ namespace PicSum.Job.Common
 
         private void Dispose(bool disposing)
         {
-            if (this.disposed)
+            if (this._disposed)
             {
                 return;
             }
@@ -61,7 +61,7 @@ namespace PicSum.Job.Common
                 Task.WaitAll(this.threads);
             }
 
-            this.disposed = true;
+            this._disposed = true;
         }
 
         public void DoCache(string[] files)

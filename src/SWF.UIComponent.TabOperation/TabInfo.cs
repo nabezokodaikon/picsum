@@ -11,21 +11,21 @@ namespace SWF.UIComponent.TabOperation
     public sealed class TabInfo
     {
 
-        private readonly TabDrawArea drawArea;
-        private readonly PageHistoryManager historyManager = new();
-        private PagePanel page = null;
-        private TabSwitch owner = null;
+        private readonly TabDrawArea _drawArea;
+        private readonly PageHistoryManager _historyManager = new();
+        private PagePanel _page = null;
+        private TabSwitch _owner = null;
 
         public string Title
         {
             get
             {
-                if (this.page == null)
+                if (this._page == null)
                 {
                     throw new NullReferenceException("ページが設定されていません。");
                 }
 
-                return this.page.Title;
+                return this._page.Title;
             }
         }
 
@@ -33,12 +33,12 @@ namespace SWF.UIComponent.TabOperation
         {
             get
             {
-                if (this.page == null)
+                if (this._page == null)
                 {
                     throw new NullReferenceException("ページが設定されていません。");
                 }
 
-                return this.page.Icon;
+                return this._page.Icon;
             }
         }
 
@@ -46,11 +46,11 @@ namespace SWF.UIComponent.TabOperation
         {
             get
             {
-                return this.owner;
+                return this._owner;
             }
             set
             {
-                this.owner = value;
+                this._owner = value;
             }
         }
 
@@ -58,7 +58,7 @@ namespace SWF.UIComponent.TabOperation
         {
             get
             {
-                return this.historyManager.CanNext;
+                return this._historyManager.CanNext;
             }
         }
 
@@ -66,7 +66,7 @@ namespace SWF.UIComponent.TabOperation
         {
             get
             {
-                return this.historyManager.CanPreview;
+                return this._historyManager.CanPreview;
             }
         }
 
@@ -74,7 +74,7 @@ namespace SWF.UIComponent.TabOperation
         {
             get
             {
-                return this.page != null;
+                return this._page != null;
             }
         }
 
@@ -82,12 +82,12 @@ namespace SWF.UIComponent.TabOperation
         {
             get
             {
-                if (this.page == null)
+                if (this._page == null)
                 {
                     throw new NullReferenceException("ページが設定されていません。");
                 }
 
-                return this.page;
+                return this._page;
             }
         }
 
@@ -95,7 +95,7 @@ namespace SWF.UIComponent.TabOperation
         {
             get
             {
-                return this.drawArea;
+                return this._drawArea;
             }
         }
 
@@ -104,32 +104,32 @@ namespace SWF.UIComponent.TabOperation
             ArgumentNullException.ThrowIfNull(tabSwitch, nameof(tabSwitch));
             ArgumentNullException.ThrowIfNull(param, nameof(param));
 
-            this.drawArea = new(tabSwitch);
-            this.historyManager.Add(param);
-            this.page = param.CreatePage();
+            this._drawArea = new(tabSwitch);
+            this._historyManager.Add(param);
+            this._page = param.CreatePage();
         }
 
         public T GetPage<T>() where T : PagePanel
         {
-            if (this.page == null)
+            if (this._page == null)
             {
                 throw new NullReferenceException("ページが設定されていません。");
             }
 
-            return (T)this.page;
+            return (T)this._page;
         }
 
         public void OverwritePage(IPageParameter param)
         {
             ArgumentNullException.ThrowIfNull(param, nameof(param));
 
-            if (this.page != null)
+            if (this._page != null)
             {
                 throw new InvalidOperationException("既にページが存在しています。ClearPageメソッドでページをクリアして下さい。");
             }
 
-            this.historyManager.Add(param);
-            this.page = param.CreatePage();
+            this._historyManager.Add(param);
+            this._page = param.CreatePage();
         }
 
         public void Close()
@@ -141,67 +141,67 @@ namespace SWF.UIComponent.TabOperation
         {
             ArgumentNullException.ThrowIfNull(e, nameof(e));
 
-            if (this.page == null)
+            if (this._page == null)
             {
                 throw new NullReferenceException("ページが設定されていません。");
             }
 
-            this.page.DrawingTabPage(e);
+            this._page.DrawingTabPage(e);
         }
 
         internal Bitmap GetPageCapture()
         {
-            if (this.page == null)
+            if (this._page == null)
             {
                 throw new NullReferenceException("ページが設定されていません。");
             }
 
-            var w = this.page.Width;
-            var h = this.page.Height;
+            var w = this._page.Width;
+            var h = this._page.Height;
             var bmp = new Bitmap(w, h);
-            this.page.DrawToBitmap(
+            this._page.DrawToBitmap(
                 bmp,
-                new Rectangle(this.page.Location.X, this.page.Location.Y, w, h));
+                new Rectangle(this._page.Location.X, this._page.Location.Y, w, h));
             return bmp;
         }
 
         internal void ClearPage()
         {
-            if (this.page != null)
+            if (this._page != null)
             {
-                this.page.Dispose();
-                this.page = null;
+                this._page.Dispose();
+                this._page = null;
             }
         }
 
         internal void CreatePreviewPage()
         {
-            if (this.page != null)
+            if (this._page != null)
             {
                 throw new InvalidOperationException("既にページが存在しています。ClearPageメソッドでページをクリアして下さい。");
             }
 
-            this.page = this.historyManager.CreatePreview();
+            this._page = this._historyManager.CreatePreview();
         }
 
         internal void CreateNextPage()
         {
-            if (this.page != null)
+            if (this._page != null)
             {
                 throw new InvalidOperationException("既にページが存在しています。ClearPageメソッドでページをクリアして下さい。");
             }
 
-            this.page = this.historyManager.CreateNext();
+            this._page = this._historyManager.CreateNext();
         }
 
         internal void CloneCurrentPage()
         {
-            if (this.page != null)
+            if (this._page != null)
             {
                 throw new InvalidOperationException("既にページが存在しています。ClearPageメソッドでページをクリアして下さい。");
             }
 
-            this.page = this.historyManager.CreateClone();
+            this._page = this._historyManager.CreateClone();
         }
 
     }

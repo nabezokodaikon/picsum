@@ -10,7 +10,7 @@ namespace SWF.UIComponent.Core
     {
         private static readonly Size DEFAULT_SIZE = new(48, 48);
 
-        private float scale = 1;
+        private float _scale = 1;
         private bool _isActive = false;
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -58,7 +58,7 @@ namespace SWF.UIComponent.Core
 
         public void SetControlsBounds(float scale)
         {
-            this.scale = scale;
+            this._scale = scale;
             this.Size = new(
                 (int)(DEFAULT_SIZE.Width * scale),
                 (int)(DEFAULT_SIZE.Height * scale));
@@ -73,8 +73,8 @@ namespace SWF.UIComponent.Core
             e.Graphics.CompositingQuality = CompositingQuality.HighQuality;
 
             var icon = this.Icon;
-            var w = Math.Min(icon.Width * this.scale, this.Width);
-            var h = Math.Min(icon.Height * this.scale, this.Height);
+            var w = Math.Min(icon.Width * this._scale, this.Width);
+            var h = Math.Min(icon.Height * this._scale, this.Height);
             var x = (this.Width - w) / 2f;
             var y = (this.Height - h) / 2f;
             e.Graphics.DrawImage(icon, x, y, w, h);

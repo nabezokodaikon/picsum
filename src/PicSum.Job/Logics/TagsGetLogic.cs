@@ -27,7 +27,7 @@ namespace PicSum.Job.Logics
                 .GroupBy(file => file.Tag)
                 .Where(file => file.Any(f => FileUtil.CanAccess(f.FilePath)))
                 .Select(file => file.First().Tag)
-                .OrderBy(tag => tag, NaturalStringComparer.Windows)];
+                .OrderBy(tag => tag, NaturalStringComparer.WINDOWS)];
         }
     }
 }

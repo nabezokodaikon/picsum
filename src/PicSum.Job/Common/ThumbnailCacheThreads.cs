@@ -22,29 +22,29 @@ namespace PicSum.Job.Common
 
         private const int THREAD_COUNT = 4;
 
-        private bool disposed = false;
-        private readonly ConcurrentQueue<ThumbnailReadThreadsEntity> queue = new();
-        private readonly Task[] threads = new Task[THREAD_COUNT];
-        private long isAbort = 0;
+        private bool _disposed = false;
+        private readonly ConcurrentQueue<ThumbnailReadThreadsEntity> _queue = new();
+        private readonly Task[] _threads = new Task[THREAD_COUNT];
+        private long _isAbort = 0;
 
         private bool IsAbort
         {
             get
             {
-                return Interlocked.Read(ref this.isAbort) == 1;
+                return Interlocked.Read(ref this._isAbort) == 1;
             }
             set
             {
-                Interlocked.Exchange(ref this.isAbort, Convert.ToInt64(value));
+                Interlocked.Exchange(ref this._isAbort, Convert.ToInt64(value));
             }
         }
 
         public ThumbnailCacheThreads()
         {
-            for (var i = 0; i < this.threads.Length; i++)
+            for (var i = 0; i < this._threads.Length; i++)
             {
                 var index = i;
-                this.threads[index]
+                this._threads[index]
                     = Task.Run(() => this.DoWork(index));
             }
         }
@@ -57,7 +57,7 @@ namespace PicSum.Job.Common
 
         private void Dispose(bool disposing)
         {
-            if (this.disposed)
+            if (this._disposed)
             {
                 return;
             }
@@ -66,15 +66,15 @@ namespace PicSum.Job.Common
             {
                 this.Clear();
                 this.IsAbort = true;
-                Task.WaitAll(this.threads);
+                Task.WaitAll(this._threads);
             }
 
-            this.disposed = true;
+            this._disposed = true;
         }
 
         private void Clear()
         {
-            while (this.queue.TryDequeue(out var _)) { }
+            while (this._queue.TryDequeue(out var _)) { }
         }
 
         public void DoCache(
@@ -103,7 +103,7 @@ namespace PicSum.Job.Common
 
             foreach (var entity in entities)
             {
-                this.queue.Enqueue(entity);
+                this._queue.Enqueue(entity);
             }
         }
 
@@ -123,7 +123,7 @@ namespace PicSum.Job.Common
                         return;
                     }
 
-                    if (this.queue.TryDequeue(out var entity))
+                    if (this._queue.TryDequeue(out var entity))
                     {
                         try
                         {

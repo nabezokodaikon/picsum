@@ -6,40 +6,40 @@ namespace SWF.Core.DatabaseAccessor
     public sealed partial class Transaction(AbstractConnection connection)
         : ITransaction
     {
-        private bool disposed = false;
+        private bool _disposed = false;
 
         // コネクション
-        private readonly AbstractConnection conntenction
+        private readonly AbstractConnection _conntenction
             = connection ?? throw new ArgumentNullException(nameof(connection));
 
         // コミットフラグ
-        private bool isCommitted = false;
+        private bool _isCommitted = false;
 
         /// <summary>
         /// コミットします。
         /// </summary>
         public void Commit()
         {
-            this.conntenction.Commit();
-            this.isCommitted = true;
+            this._conntenction.Commit();
+            this._isCommitted = true;
         }
 
         private void Dispose(bool disposing)
         {
-            if (this.disposed)
+            if (this._disposed)
             {
                 return;
             }
 
             if (disposing)
             {
-                if (!this.isCommitted)
+                if (!this._isCommitted)
                 {
-                    this.conntenction.Roolback();
+                    this._conntenction.Roolback();
                 }
             }
 
-            this.disposed = true;
+            this._disposed = true;
         }
 
         /// <summary>

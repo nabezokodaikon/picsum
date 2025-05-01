@@ -19,8 +19,8 @@ namespace SWF.UIComponent.WideDropDown
 
         public event EventHandler<ItemMouseClickEventArgs> ItemMouseClick;
 
-        private readonly Control owner;
-        private readonly List<string> itemList = [];
+        private readonly Control _owner;
+        private readonly List<string> _itemList = [];
 
         /// <summary>
         /// 項目テキスト色
@@ -201,7 +201,7 @@ namespace SWF.UIComponent.WideDropDown
         {
             ArgumentNullException.ThrowIfNull(owner, nameof(owner));
 
-            this.owner = owner;
+            this._owner = owner;
 
             this.SetStyle(
                 ControlStyles.AllPaintingInWmPaint |
@@ -247,11 +247,11 @@ namespace SWF.UIComponent.WideDropDown
 
             try
             {
-                this.itemList.Clear();
-                this.itemList.AddRange(itemList);
+                this._itemList.Clear();
+                this._itemList.AddRange(itemList);
 
                 this.FlowList.ClearSelectedItems();
-                this.FlowList.ItemCount = this.itemList.Count;
+                this.FlowList.ItemCount = this._itemList.Count;
             }
             finally
             {
@@ -263,7 +263,7 @@ namespace SWF.UIComponent.WideDropDown
         {
             ArgumentException.ThrowIfNullOrEmpty(item, nameof(item));
 
-            var index = this.itemList.IndexOf(item);
+            var index = this._itemList.IndexOf(item);
             if (index < 0)
             {
                 return;
@@ -283,7 +283,7 @@ namespace SWF.UIComponent.WideDropDown
 
         protected override void OnOpening(CancelEventArgs e)
         {
-            var scale = WindowUtil.GetCurrentWindowScale(this.owner);
+            var scale = WindowUtil.GetCurrentWindowScale(this._owner);
             this.ToolStripItem.Size = new(
                 (int)(BACKGROUND_DEFAULT_SIZE.Width * scale),
                 (int)(BACKGROUND_DEFAULT_SIZE.Height * scale));
@@ -320,7 +320,7 @@ namespace SWF.UIComponent.WideDropDown
 
         private void FlowList_DrawItem(object sender, UIComponent.FlowList.DrawItemEventArgs e)
         {
-            if (this.itemList.Count < 1)
+            if (this._itemList.Count < 1)
             {
                 return;
             }
@@ -352,7 +352,7 @@ namespace SWF.UIComponent.WideDropDown
             }
 
             var iconWidth = Math.Min(this.Icon.Width, e.ItemRectangle.Height);
-            var itemText = this.itemList[e.ItemIndex];
+            var itemText = this._itemList[e.ItemIndex];
             var itemTextSize = TextRenderer.MeasureText(itemText, this.FlowList.Font);
             var destText = itemText;
             var destTextSize = itemTextSize;
@@ -385,7 +385,7 @@ namespace SWF.UIComponent.WideDropDown
                 this.Close();
             }
 
-            if (this.itemList.Count < 1)
+            if (this._itemList.Count < 1)
             {
                 return;
             }
@@ -397,14 +397,14 @@ namespace SWF.UIComponent.WideDropDown
             }
 
             var index = indexs.First();
-            if (this.itemList.Count - 1 < index)
+            if (this._itemList.Count - 1 < index)
             {
                 return;
             }
 
             if (this.ItemMouseClick != null)
             {
-                var item = this.itemList[indexs.First()];
+                var item = this._itemList[indexs.First()];
                 var args = new ItemMouseClickEventArgs(e.Button, e.Clicks, e.X, e.Y, e.Delta, item);
                 this.ItemMouseClick(this, args);
             }

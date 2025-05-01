@@ -11,19 +11,19 @@ namespace SWF.UIComponent.Core
     public partial class Slider : Control
     {
 
-        private const int BarHeight = 4;
-        private const int BarShadowOffset = 1;
+        private const int BAR_HEIGHT = 4;
+        private const int BAR_SHADOW_OFFSET = 1;
 
         public event EventHandler? BeginValueChange;
         public event EventHandler? ValueChanging;
         public event EventHandler? ValueChanged;
 
-        private readonly Image button = ResourceFiles.SliderButtonIcon.Value;
-        private float buttonPointX = ResourceFiles.SliderButtonIcon.Value.Width / 2f;
-        private int maximumValue = 100;
-        private int minimumValue = 0;
-        private int sliderValue = 0;
-        private bool isValueChanging = false;
+        private readonly Image _button = ResourceFiles.SliderButtonIcon.Value;
+        private float _buttonPointX = ResourceFiles.SliderButtonIcon.Value.Width / 2f;
+        private int _maximumValue = 100;
+        private int _minimumValue = 0;
+        private int _sliderValue = 0;
+        private bool _isValueChanging = false;
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public new int TabIndex
@@ -56,17 +56,17 @@ namespace SWF.UIComponent.Core
         {
             get
             {
-                return this.maximumValue;
+                return this._maximumValue;
             }
             set
             {
-                ArgumentOutOfRangeException.ThrowIfLessThan(value, this.minimumValue, nameof(value));
+                ArgumentOutOfRangeException.ThrowIfLessThan(value, this._minimumValue, nameof(value));
 
-                this.maximumValue = value;
+                this._maximumValue = value;
 
-                if (this.sliderValue > this.maximumValue)
+                if (this._sliderValue > this._maximumValue)
                 {
-                    this.sliderValue = this.maximumValue;
+                    this._sliderValue = this._maximumValue;
                 }
             }
         }
@@ -76,16 +76,16 @@ namespace SWF.UIComponent.Core
         {
             get
             {
-                return this.minimumValue;
+                return this._minimumValue;
             }
             set
             {
-                ArgumentOutOfRangeException.ThrowIfGreaterThan(value, this.maximumValue, nameof(value));
+                ArgumentOutOfRangeException.ThrowIfGreaterThan(value, this._maximumValue, nameof(value));
 
-                this.minimumValue = value;
-                if (this.sliderValue < value)
+                this._minimumValue = value;
+                if (this._sliderValue < value)
                 {
-                    this.sliderValue = value;
+                    this._sliderValue = value;
                 }
             }
         }
@@ -95,22 +95,22 @@ namespace SWF.UIComponent.Core
         {
             get
             {
-                return this.sliderValue;
+                return this._sliderValue;
             }
             set
             {
-                if (value > this.maximumValue || this.minimumValue > value)
+                if (value > this._maximumValue || this._minimumValue > value)
                 {
                     throw new ArgumentOutOfRangeException(nameof(value));
                 }
 
-                if (this.sliderValue == value)
+                if (this._sliderValue == value)
                 {
                     return;
                 }
 
-                this.sliderValue = value;
-                this.SetButtonPointX(this.sliderValue);
+                this._sliderValue = value;
+                this.SetButtonPointX(this._sliderValue);
                 this.Invalidate();
 
                 this.OnValueChanged(EventArgs.Empty);
@@ -128,13 +128,13 @@ namespace SWF.UIComponent.Core
                 true);
             this.UpdateStyles();
 
-            this.sliderValue = this.minimumValue;
+            this._sliderValue = this._minimumValue;
         }
 
         private float GetBarHeight()
         {
             var scale = WindowUtil.GetCurrentWindowScale(this);
-            return BarHeight * scale;
+            return BAR_HEIGHT * scale;
         }
 
         private PointF GetCenterPoint()
@@ -160,36 +160,36 @@ namespace SWF.UIComponent.Core
 
         private bool SetButtonPointX(int value)
         {
-            if (value > this.maximumValue || this.minimumValue > value)
+            if (value > this._maximumValue || this._minimumValue > value)
             {
                 throw new ArgumentOutOfRangeException(nameof(value));
             }
 
-            if (value == this.minimumValue)
+            if (value == this._minimumValue)
             {
                 var pointX = this.GetButtonPointX(this.GetMinimumButtonPointX());
-                if (pointX != this.buttonPointX)
+                if (pointX != this._buttonPointX)
                 {
-                    this.buttonPointX = pointX;
+                    this._buttonPointX = pointX;
                     return true;
                 }
             }
-            else if (value == this.maximumValue)
+            else if (value == this._maximumValue)
             {
                 var pointX = this.GetButtonPointX(this.GetMaximumButtonPointX());
-                if (pointX != this.buttonPointX)
+                if (pointX != this._buttonPointX)
                 {
-                    this.buttonPointX = pointX;
+                    this._buttonPointX = pointX;
                     return true;
                 }
             }
             else
             {
-                var rate = (value - this.minimumValue) / (float)(this.maximumValue - this.minimumValue);
+                var rate = (value - this._minimumValue) / (float)(this._maximumValue - this._minimumValue);
                 var pointX = this.GetButtonPointX(this.Width * rate);
-                if (pointX != this.buttonPointX)
+                if (pointX != this._buttonPointX)
                 {
-                    this.buttonPointX = pointX;
+                    this._buttonPointX = pointX;
                     return true;
                 }
             }
@@ -201,16 +201,16 @@ namespace SWF.UIComponent.Core
         {
             if (x == this.GetMinimumButtonPointX())
             {
-                return this.minimumValue;
+                return this._minimumValue;
             }
             else if (x == this.GetMaximumButtonPointX())
             {
-                return this.maximumValue;
+                return this._maximumValue;
             }
             else
             {
                 var rate = x / this.GetMaximumButtonPointX();
-                var value = this.minimumValue + ((this.maximumValue - this.minimumValue) * rate);
+                var value = this._minimumValue + ((this._maximumValue - this._minimumValue) * rate);
                 return (int)value;
             }
         }
@@ -218,14 +218,14 @@ namespace SWF.UIComponent.Core
         private float GetMaximumButtonPointX()
         {
             var scale = WindowUtil.GetCurrentWindowScale(this);
-            var scaleButtonWidth = (this.button.Width) * scale;
+            var scaleButtonWidth = (this._button.Width) * scale;
             return this.Width - scaleButtonWidth / 2f;
         }
 
         private float GetMinimumButtonPointX()
         {
             var scale = WindowUtil.GetCurrentWindowScale(this);
-            var scaleButtonWidth = (this.button.Width) * scale;
+            var scaleButtonWidth = (this._button.Width) * scale;
             return scaleButtonWidth / 2f;
         }
 
@@ -237,19 +237,19 @@ namespace SWF.UIComponent.Core
 
             var shadowRect = new RectangleF(0,
                                             centerPoint.Y - barHeight / 2f,
-                                            this.Width - BarShadowOffset,
+                                            this.Width - BAR_SHADOW_OFFSET,
                                             barHeight);
 
             g.FillRectangle(Brushes.DimGray, shadowRect);
 
-            shadowRect.Offset(BarShadowOffset, BarShadowOffset);
+            shadowRect.Offset(BAR_SHADOW_OFFSET, BAR_SHADOW_OFFSET);
 
             g.FillRectangle(Brushes.White, shadowRect);
 
-            var mainRect = new RectangleF(BarShadowOffset,
-                                          centerPoint.Y - barHeight / 2f + BarShadowOffset,
-                                          this.Width - BarShadowOffset * 2,
-                                          barHeight - BarShadowOffset);
+            var mainRect = new RectangleF(BAR_SHADOW_OFFSET,
+                                          centerPoint.Y - barHeight / 2f + BAR_SHADOW_OFFSET,
+                                          this.Width - BAR_SHADOW_OFFSET * 2,
+                                          barHeight - BAR_SHADOW_OFFSET);
 
             g.FillRectangle(Brushes.LightGray, mainRect);
         }
@@ -257,15 +257,15 @@ namespace SWF.UIComponent.Core
         private void DrawButton(Graphics g)
         {
             var scale = WindowUtil.GetCurrentWindowScale(this);
-            var scaleButtonSize = new SizeF(this.button.Width * scale, this.button.Height * scale);
+            var scaleButtonSize = new SizeF(this._button.Width * scale, this._button.Height * scale);
             var centerPoint = this.GetCenterPoint();
 
-            var rect = new RectangleF(this.buttonPointX - scaleButtonSize.Width / 2f,
+            var rect = new RectangleF(this._buttonPointX - scaleButtonSize.Width / 2f,
                                       centerPoint.Y - scaleButtonSize.Height / 2f,
                                       scaleButtonSize.Width,
                                       scaleButtonSize.Height);
 
-            g.DrawImage(this.button, rect);
+            g.DrawImage(this._button, rect);
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -288,16 +288,16 @@ namespace SWF.UIComponent.Core
                 this.OnBeginValueChange(EventArgs.Empty);
 
                 var pointX = this.GetButtonPointX(e.X);
-                if (pointX != this.buttonPointX)
+                if (pointX != this._buttonPointX)
                 {
-                    this.buttonPointX = pointX;
+                    this._buttonPointX = pointX;
                     this.Invalidate();
 
                     var value = this.GetValue(pointX);
-                    if (value != this.sliderValue)
+                    if (value != this._sliderValue)
                     {
-                        this.sliderValue = value;
-                        this.isValueChanging = true;
+                        this._sliderValue = value;
+                        this._isValueChanging = true;
                         this.OnValueChanging(EventArgs.Empty);
                     }
                 }
@@ -315,12 +315,12 @@ namespace SWF.UIComponent.Core
 
             if (e.Button == MouseButtons.Left)
             {
-                this.SetButtonPointX(this.sliderValue);
+                this.SetButtonPointX(this._sliderValue);
                 this.Invalidate();
 
-                if (this.isValueChanging)
+                if (this._isValueChanging)
                 {
-                    this.isValueChanging = false;
+                    this._isValueChanging = false;
                 }
                 else
                 {
@@ -341,17 +341,17 @@ namespace SWF.UIComponent.Core
             if (e.Button == MouseButtons.Left)
             {
                 var pointX = this.GetButtonPointX(e.X);
-                if (pointX != this.buttonPointX)
+                if (pointX != this._buttonPointX)
                 {
-                    this.buttonPointX = pointX;
+                    this._buttonPointX = pointX;
                     this.Invalidate();
                     this.Update();
 
                     var value = this.GetValue(pointX);
-                    if (value != this.sliderValue)
+                    if (value != this._sliderValue)
                     {
-                        this.sliderValue = value;
-                        this.isValueChanging = true;
+                        this._sliderValue = value;
+                        this._isValueChanging = true;
                         this.OnValueChanging(EventArgs.Empty);
                     }
                 }
@@ -362,7 +362,7 @@ namespace SWF.UIComponent.Core
 
         protected override void OnResize(EventArgs e)
         {
-            this.SetButtonPointX(this.sliderValue);
+            this.SetButtonPointX(this._sliderValue);
             this.Invalidate();
             base.OnResize(e);
         }

@@ -30,19 +30,19 @@ namespace PicSum.Main.UIComponent
         public event EventHandler<TabDropoutedEventArgs> TabDropouted;
         public event EventHandler<BrowserPageOpenEventArgs> NewWindowPageOpen;
 
-        private BrowserMainPanel browserMainPanel = null;
-        private bool isKeyDown = false;
+        private BrowserMainPanel _browserMainPanel = null;
+        private bool _isKeyDown = false;
 
         private BrowserMainPanel BrowserMainPanel
         {
             get
             {
-                if (this.browserMainPanel == null)
+                if (this._browserMainPanel == null)
                 {
                     this.CreateBrowserMainPanel();
                 }
 
-                return this.browserMainPanel;
+                return this._browserMainPanel;
             }
         }
 
@@ -177,7 +177,7 @@ namespace PicSum.Main.UIComponent
 
         protected override void OnKeyDown(KeyEventArgs e)
         {
-            if (this.isKeyDown)
+            if (this._isKeyDown)
             {
                 return;
             }
@@ -188,14 +188,14 @@ namespace PicSum.Main.UIComponent
                 {
                     case Keys.Left:
                         {
-                            this.browserMainPanel.MovePreviewPage();
-                            this.isKeyDown = true;
+                            this._browserMainPanel.MovePreviewPage();
+                            this._isKeyDown = true;
                             break;
                         }
                     case Keys.Right:
                         {
-                            this.browserMainPanel.MoveNextPage();
-                            this.isKeyDown = true;
+                            this._browserMainPanel.MoveNextPage();
+                            this._isKeyDown = true;
                             break;
                         }
                 }
@@ -207,19 +207,19 @@ namespace PicSum.Main.UIComponent
                     case Keys.W:
                         {
                             this.RemoveTabOrWindow();
-                            this.isKeyDown = true;
+                            this._isKeyDown = true;
                             break;
                         }
                     case Keys.T:
                         {
                             this.AddFavoriteDirectoryListTab();
-                            this.isKeyDown = true;
+                            this._isKeyDown = true;
                             break;
                         }
                     case Keys.R:
                         {
                             this.Reload();
-                            this.isKeyDown = true;
+                            this._isKeyDown = true;
                             break;
                         }
                 }
@@ -227,7 +227,7 @@ namespace PicSum.Main.UIComponent
             else if (e.KeyCode == Keys.F5)
             {
                 this.Reload();
-                this.isKeyDown = true;
+                this._isKeyDown = true;
             }
 
             base.OnKeyDown(e);
@@ -235,7 +235,7 @@ namespace PicSum.Main.UIComponent
 
         protected override void OnKeyUp(KeyEventArgs e)
         {
-            this.isKeyDown = false;
+            this._isKeyDown = false;
             base.OnKeyUp(e);
         }
 
@@ -243,43 +243,43 @@ namespace PicSum.Main.UIComponent
         {
             base.OnActivated(e);
 
-            if (this.browserMainPanel != null)
+            if (this._browserMainPanel != null)
             {
                 var scale = WindowUtil.GetCurrentWindowScale(this);
-                this.browserMainPanel.RedrawPage(scale);
+                this._browserMainPanel.RedrawPage(scale);
             }
         }
 
         private void CreateBrowserMainPanel()
         {
-            if (this.browserMainPanel != null)
+            if (this._browserMainPanel != null)
             {
                 throw new SWFException("メインコントロールは既に存在しています。");
             }
 
             ConsoleUtil.Write(true, $"BrowserForm.CreateBrowserMainPanel Start");
 
-            this.browserMainPanel = new BrowserMainPanel();
+            this._browserMainPanel = new BrowserMainPanel();
 
-            this.browserMainPanel.SuspendLayout();
+            this._browserMainPanel.SuspendLayout();
             this.SuspendLayout();
 
-            this.Controls.Add(this.browserMainPanel);
+            this.Controls.Add(this._browserMainPanel);
 
             var scale = WindowUtil.GetCurrentWindowScale(this);
             var rect = this.CreateBrowserMainPanelBounds(scale);
-            this.browserMainPanel.SetBounds(rect.X, rect.Y, rect.Width, rect.Height);
-            this.browserMainPanel.SetControlsBounds(scale);
-            this.browserMainPanel.Anchor
+            this._browserMainPanel.SetBounds(rect.X, rect.Y, rect.Width, rect.Height);
+            this._browserMainPanel.SetControlsBounds(scale);
+            this._browserMainPanel.Anchor
                 = AnchorStyles.Top
                 | AnchorStyles.Bottom
                 | AnchorStyles.Left
                 | AnchorStyles.Right;
 
-            this.browserMainPanel.Close += new(this.BrowserMainPanel_Close);
-            this.browserMainPanel.BackgroundMouseDoubleLeftClick += new(this.BrowserMainPanel_BackgroundMouseDoubleLeftClick);
-            this.browserMainPanel.NewWindowPageOpen += new(this.BrowserMainPanel_NewWindowPageOpen);
-            this.browserMainPanel.TabDropouted += new(this.BrowserMainPanel_TabDropouted);
+            this._browserMainPanel.Close += new(this.BrowserMainPanel_Close);
+            this._browserMainPanel.BackgroundMouseDoubleLeftClick += new(this.BrowserMainPanel_BackgroundMouseDoubleLeftClick);
+            this._browserMainPanel.NewWindowPageOpen += new(this.BrowserMainPanel_NewWindowPageOpen);
+            this._browserMainPanel.TabDropouted += new(this.BrowserMainPanel_TabDropouted);
 
             this.AttachResizeEvents(this);
 
@@ -287,7 +287,7 @@ namespace PicSum.Main.UIComponent
             {
                 if (CommandLineArgs.IsNone() || CommandLineArgs.IsCleanup())
                 {
-                    this.browserMainPanel.AddFavoriteDirectoryListTab();
+                    this._browserMainPanel.AddFavoriteDirectoryListTab();
                 }
                 else
                 {
@@ -309,11 +309,11 @@ namespace PicSum.Main.UIComponent
                             Instance<IFileIconCacher>.Value.SmallDirectoryIcon,
                             true);
 
-                        this.browserMainPanel.AddImageViewerPageTab(parameter);
+                        this._browserMainPanel.AddImageViewerPageTab(parameter);
                     }
                     else
                     {
-                        this.browserMainPanel.AddFavoriteDirectoryListTab();
+                        this._browserMainPanel.AddFavoriteDirectoryListTab();
                     }
                 }
 
@@ -322,7 +322,7 @@ namespace PicSum.Main.UIComponent
 
             this.SetControlRegion();
 
-            this.browserMainPanel.ResumeLayout(false);
+            this._browserMainPanel.ResumeLayout(false);
             this.ResumeLayout(false);
 
             ConsoleUtil.Write(true, $"BrowserForm.CreateBrowserMainPanel End");
@@ -349,7 +349,7 @@ namespace PicSum.Main.UIComponent
 
         private void Form_ScaleChanged(object sender, ScaleChangedEventArgs e)
         {
-            if (this.browserMainPanel == null)
+            if (this._browserMainPanel == null)
             {
                 return;
             }
@@ -357,8 +357,8 @@ namespace PicSum.Main.UIComponent
             this.SuspendLayout();
 
             var rect = this.CreateBrowserMainPanelBounds(e.Scale);
-            this.browserMainPanel.SetBounds(rect.X, rect.Y, rect.Width, rect.Height);
-            this.browserMainPanel.SetControlsBounds(e.Scale);
+            this._browserMainPanel.SetBounds(rect.X, rect.Y, rect.Width, rect.Height);
+            this._browserMainPanel.SetControlsBounds(e.Scale);
 
             this.ResumeLayout(false);
         }

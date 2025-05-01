@@ -16,18 +16,18 @@ namespace SWF.Core.ConsoleAccessor
 #endif
         }
 
-        private readonly Stopwatch? stopwatch = null;
-        private readonly string? message = null;
-        private readonly bool enable = false;
+        private readonly Stopwatch? _stopwatch = null;
+        private readonly string? _message = null;
+        private readonly bool _enable = false;
 
         private TimeMeasuring(bool enable, string message)
         {
 #if DEBUG
             if (enable)
             {
-                this.stopwatch = Stopwatch.StartNew();
-                this.message = message;
-                this.enable = enable;
+                this._stopwatch = Stopwatch.StartNew();
+                this._message = message;
+                this._enable = enable;
             }
 #endif
         }
@@ -35,10 +35,10 @@ namespace SWF.Core.ConsoleAccessor
         public void Dispose()
         {
 #if DEBUG
-            if (this.enable)
+            if (this._enable)
             {
-                this.stopwatch?.Stop();
-                Console.WriteLine($"[{Thread.CurrentThread.Name}] {this.message}: {this.stopwatch?.ElapsedMilliseconds} ms");
+                this._stopwatch?.Stop();
+                Console.WriteLine($"[{Thread.CurrentThread.Name}] {this._message}: {this._stopwatch?.ElapsedMilliseconds} ms");
             }
 #endif
             GC.SuppressFinalize(this);

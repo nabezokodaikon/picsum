@@ -59,7 +59,7 @@ namespace PicSum.Main.UIComponent
                             FileUtil.GetFileName(FileUtil.GetParentDirectoryPath(subParamter.FilePath));
 
                             var eventArgs = new GetImageFilesEventArgs(
-                                [.. e.FilePathList.OrderBy(_ => _, NaturalStringComparer.Windows)],
+                                [.. e.FilePathList.OrderBy(_ => _, NaturalStringComparer.WINDOWS)],
                                 e.SelectedFilePath, title,
                                 Instance<IFileIconCacher>.Value.SmallDirectoryIcon);
                             parameter.OnGetImageFiles(eventArgs);
@@ -68,7 +68,7 @@ namespace PicSum.Main.UIComponent
             };
         }
 
-        private bool disposed = false;
+        private bool _disposed = false;
 
         public event EventHandler<TabDropoutedEventArgs> TabDropouted;
         public event EventHandler<BrowserPageOpenEventArgs> NewWindowPageOpen;
@@ -436,7 +436,7 @@ namespace PicSum.Main.UIComponent
 
         protected override void Dispose(bool disposing)
         {
-            if (this.disposed)
+            if (this._disposed)
             {
                 return;
             }
@@ -446,7 +446,7 @@ namespace PicSum.Main.UIComponent
 
             }
 
-            this.disposed = true;
+            this._disposed = true;
 
             base.Dispose(disposing);
         }
@@ -873,7 +873,7 @@ namespace PicSum.Main.UIComponent
             Instance<JobCaller>.Value.TagsGetJob.Value
                 .StartJob(this, _ =>
                 {
-                    if (this.disposed)
+                    if (this._disposed)
                     {
                         return;
                     }

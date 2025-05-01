@@ -14,10 +14,10 @@ namespace SWF.Core.ImageAccessor
 
         private const int CACHE_CAPACITY = 24;
 
-        private bool disposed = false;
-        private readonly List<ImageFileCacheEntity> CACHE_LIST = new(CACHE_CAPACITY);
-        private readonly Dictionary<string, ImageFileCacheEntity> CACHE_DICTIONARY = new(CACHE_CAPACITY);
-        private readonly Lock CACHE_LOCK = new();
+        private bool _disposed = false;
+        private readonly List<ImageFileCacheEntity> _cacheList = new(CACHE_CAPACITY);
+        private readonly Dictionary<string, ImageFileCacheEntity> _cacheDictionary = new(CACHE_CAPACITY);
+        private readonly Lock _cacheLock = new();
 
         public ImageFileCacher()
         {
@@ -32,20 +32,20 @@ namespace SWF.Core.ImageAccessor
 
         private void Dispose(bool disposing)
         {
-            if (this.disposed)
+            if (this._disposed)
             {
                 return;
             }
 
             if (disposing)
             {
-                foreach (var cache in this.CACHE_LIST)
+                foreach (var cache in this._cacheList)
                 {
                     cache.Dispose();
                 }
             }
 
-            this.disposed = true;
+            this._disposed = true;
         }
 
         public bool Has(string filePath)
@@ -124,11 +124,11 @@ namespace SWF.Core.ImageAccessor
 
             var timestamp = FileUtil.GetUpdateDate(filePath);
 
-            lock (this.CACHE_LOCK)
+            lock (this._cacheLock)
             {
                 using (TimeMeasuring.Run(false, $"ImageFileCacher.Create 1"))
                 {
-                    if (this.CACHE_DICTIONARY.TryGetValue(filePath, out var cache))
+                    if (this._cacheDictionary.TryGetValue(filePath, out var cache))
                     {
                         if (timestamp == cache.Timestamp)
                         {
@@ -141,11 +141,11 @@ namespace SWF.Core.ImageAccessor
             var bitmap = ImageUtil.ReadImageFile(filePath);
             var newCache = new ImageFileCacheEntity(filePath, bitmap, timestamp);
 
-            lock (this.CACHE_LOCK)
+            lock (this._cacheLock)
             {
                 using (TimeMeasuring.Run(false, $"ImageFileCacher.Create 2"))
                 {
-                    if (this.CACHE_DICTIONARY.TryGetValue(newCache.FilePath, out var cache))
+                    if (this._cacheDictionary.TryGetValue(newCache.FilePath, out var cache))
                     {
                         if (newCache.Timestamp == cache.Timestamp)
                         {
@@ -153,22 +153,22 @@ namespace SWF.Core.ImageAccessor
                             return;
                         }
 
-                        this.CACHE_LIST.RemoveAll(_ => _.FilePath == cache.FilePath);
-                        this.CACHE_DICTIONARY.Remove(cache.FilePath);
+                        this._cacheList.RemoveAll(_ => _.FilePath == cache.FilePath);
+                        this._cacheDictionary.Remove(cache.FilePath);
                         cache.Dispose();
                     }
 
-                    if (this.CACHE_LIST.Count > CACHE_CAPACITY)
+                    if (this._cacheList.Count > CACHE_CAPACITY)
                     {
-                        var removeCache = this.CACHE_LIST[0];
-                        this.CACHE_LIST.RemoveAt(0);
-                        this.CACHE_DICTIONARY.Remove(removeCache.FilePath);
+                        var removeCache = this._cacheList[0];
+                        this._cacheList.RemoveAt(0);
+                        this._cacheDictionary.Remove(removeCache.FilePath);
                         removeCache.Dispose();
                         Logger.Debug($"画像ファイルキャッシュ削除しました。: {removeCache.FilePath}");
                     }
 
-                    this.CACHE_DICTIONARY.Add(newCache.FilePath, newCache);
-                    this.CACHE_LIST.Add(newCache);
+                    this._cacheDictionary.Add(newCache.FilePath, newCache);
+                    this._cacheList.Add(newCache);
                     Logger.Debug($"画像ファイルをキャッシュしました。: {newCache.FilePath}");
                 }
             }
@@ -180,11 +180,11 @@ namespace SWF.Core.ImageAccessor
 
             var timestamp = FileUtil.GetUpdateDate(filePath);
 
-            lock (this.CACHE_LOCK)
+            lock (this._cacheLock)
             {
                 using (TimeMeasuring.Run(false, $"ImageFileCacher.Get {typeof(T)}"))
                 {
-                    if (this.CACHE_DICTIONARY.TryGetValue(filePath, out var cache))
+                    if (this._cacheDictionary.TryGetValue(filePath, out var cache))
                     {
                         if (timestamp == cache.Timestamp)
                         {

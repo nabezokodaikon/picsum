@@ -13,14 +13,14 @@ namespace SWF.UIComponent.TabOperation
     {
         private static readonly Color TRANSPARENT_COLOR = Color.FromArgb(0, 0, 0, 0);
 
-        private readonly Bitmap dropLeftImage = ResourceFiles.DropLeftIcon.Value;
-        private readonly Bitmap dropRightImage = ResourceFiles.DropRightIcon.Value;
-        private Bitmap dropImage = null;
+        private readonly Bitmap _dropLeftImage = ResourceFiles.DropLeftIcon.Value;
+        private readonly Bitmap _dropRightImage = ResourceFiles.DropRightIcon.Value;
+        private Bitmap _dropImage = null;
 
         public TabDropForm()
         {
             this.FormBorderStyle = FormBorderStyle.None;
-            this.MaximumSize = this.dropLeftImage.Size;
+            this.MaximumSize = this._dropLeftImage.Size;
             this.MinimumSize = this.MaximumSize;
             this.Size = this.MaximumSize;
             this.ShowInTaskbar = false;
@@ -29,12 +29,12 @@ namespace SWF.UIComponent.TabOperation
 
         public void SetLeftImage()
         {
-            this.dropImage = this.dropLeftImage;
+            this._dropImage = this._dropLeftImage;
         }
 
         public void SetRightImage()
         {
-            this.dropImage = this.dropRightImage;
+            this._dropImage = this._dropRightImage;
         }
 
         protected override void OnPaintBackground(PaintEventArgs e)
@@ -44,15 +44,15 @@ namespace SWF.UIComponent.TabOperation
 
         protected override void OnPaint(PaintEventArgs e)
         {
-            if (this.dropImage != null)
+            if (this._dropImage != null)
             {
-                e.Graphics.DrawImage(this.dropImage, 0, 0, this.dropImage.Width, this.dropImage.Height);
+                e.Graphics.DrawImage(this._dropImage, 0, 0, this._dropImage.Width, this._dropImage.Height);
             }
         }
 
         protected override void OnLoad(EventArgs e)
         {
-            this.Region = ImageUtil.GetRegion(this.dropLeftImage, TRANSPARENT_COLOR);
+            this.Region = ImageUtil.GetRegion(this._dropLeftImage, TRANSPARENT_COLOR);
             base.OnLoad(e);
         }
     }

@@ -25,7 +25,7 @@ namespace PicSum.Job.Logics
             var dtoList = Instance<IFileInfoDB>.Value.ReadList<FileTagDto>(sql);
             return new ListEntity<FileTagInfoEntity>(dtoList
                 .AsValueEnumerable()
-                .OrderBy(dto => dto.Tag, NaturalStringComparer.Windows)
+                .OrderBy(dto => dto.Tag, NaturalStringComparer.WINDOWS)
                 .Select(dto => new FileTagInfoEntity() { Tag = dto.Tag, IsAll = dto.IsAll })
                 .ToArray());
         }

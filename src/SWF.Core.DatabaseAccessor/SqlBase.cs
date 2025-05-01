@@ -6,7 +6,7 @@ namespace SWF.Core.DatabaseAccessor
     [SupportedOSPlatform("windows10.0.17763.0")]
     public abstract class SqlBase(string sqlText)
     {
-        private readonly string sqlText = sqlText ?? throw new ArgumentNullException(nameof(sqlText));
+        private readonly string _sqlText = sqlText ?? throw new ArgumentNullException(nameof(sqlText));
 
         public List<IDbDataParameter> ParameterList { get; protected set; } = [];
 
@@ -16,7 +16,7 @@ namespace SWF.Core.DatabaseAccessor
         /// <returns>SQL文</returns>
         public string GetExecuteSql()
         {
-            return SqlUtil.GetExecuteSql(this.sqlText, [.. this.ParameterList]);
+            return SqlUtil.GetExecuteSql(this._sqlText, [.. this.ParameterList]);
         }
     }
 

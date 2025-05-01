@@ -51,14 +51,14 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             }
         }
 
-        private bool disposed = false;
-        private float scale = 0f;
-        private readonly ImageViewerPageParameter parameter = null;
-        private ImageDisplayMode displayMode = ImageDisplayMode.LeftFacing;
-        private ImageSizeMode sizeMode = ImageSizeMode.FitOnlyBigImage;
-        private string[] filePathList = null;
-        private bool isInitializing = true;
-        private bool isLoading = false;
+        private bool _disposed = false;
+        private float _scale = 0f;
+        private readonly ImageViewerPageParameter _parameter = null;
+        private ImageDisplayMode _displayMode = ImageDisplayMode.LeftFacing;
+        private ImageSizeMode _sizeMode = ImageSizeMode.FitOnlyBigImage;
+        private string[] _filePathList = null;
+        private bool _isInitializing = true;
+        private bool _isLoading = false;
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public override string SelectedFilePath { get; protected set; } = string.Empty;
@@ -67,8 +67,8 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         {
             get
             {
-                return this.filePathList != null &&
-                    this.filePathList.Length > 0;
+                return this._filePathList != null &&
+                    this._filePathList.Length > 0;
             }
         }
 
@@ -107,7 +107,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.SetSizeMode(ImageViewerPageConfig.Instance.ImageSizeMode);
             this.SetThumbnailPanelVisible();
 
-            this.parameter = parameter;
+            this._parameter = parameter;
             this.SelectedFilePath = parameter.SelectedFilePath;
         }
 
@@ -115,9 +115,9 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         {
             using (TimeMeasuring.Run(false, "ImageViewerPage.RedrawPage"))
             {
-                if (this.scale != scale)
+                if (this._scale != scale)
                 {
-                    this.scale = scale;
+                    this._scale = scale;
                     var baseHeigth = this.Height - 8;
 
                     this.toolBar.SuspendLayout();
@@ -138,7 +138,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                         0,
                         0,
                         this.Width,
-                        (int)(TOOL_BAR_DEFAULT_BOUNDS.Height * this.scale));
+                        (int)(TOOL_BAR_DEFAULT_BOUNDS.Height * this._scale));
 
                     this.checkPatternPanel.SetBounds(
                         0,
@@ -167,23 +167,23 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 if (this.leftImagePanel.HasImage)
                 {
                     var leftImageScale = GetImageScale(
-                        this.leftImagePanel.ImageSize, backgroudSize, this.sizeMode);
+                        this.leftImagePanel.ImageSize, backgroudSize, this._sizeMode);
                     this.leftImagePanel.SetScale(leftImageScale);
                 }
 
                 if (this.rightImagePanel.HasImage)
                 {
                     var rightImageScale = GetImageScale(
-                        this.rightImagePanel.ImageSize, backgroudSize, this.sizeMode);
+                        this.rightImagePanel.ImageSize, backgroudSize, this._sizeMode);
                     this.rightImagePanel.SetScale(rightImageScale);
                 }
 
-                if (this.isInitializing)
+                if (this._isInitializing)
                 {
                     return;
                 }
 
-                if (this.displayMode == ImageDisplayMode.LeftFacing)
+                if (this._displayMode == ImageDisplayMode.LeftFacing)
                 {
                     if (this.leftImagePanel.HasImage
                         && this.rightImagePanel.HasImage)
@@ -195,7 +195,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                         this.SettingLeftImagePanelLayout();
                     }
                 }
-                else if (this.displayMode == ImageDisplayMode.RightFacing)
+                else if (this._displayMode == ImageDisplayMode.RightFacing)
                 {
                     if (this.leftImagePanel.HasImage
                         && this.rightImagePanel.HasImage)
@@ -207,7 +207,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                         this.SettingLeftImagePanelLayout();
                     }
                 }
-                else if (this.displayMode == ImageDisplayMode.Single)
+                else if (this._displayMode == ImageDisplayMode.Single)
                 {
                     this.SettingLeftImagePanelLayout();
                 }
@@ -226,33 +226,33 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
         protected override void Dispose(bool disposing)
         {
-            if (this.disposed)
+            if (this._disposed)
             {
                 return;
             }
 
             if (disposing)
             {
-                if (this.displayMode == ImageDisplayMode.Single)
+                if (this._displayMode == ImageDisplayMode.Single)
                 {
-                    this.parameter.SelectedFilePath = this.leftImagePanel.FilePath;
+                    this._parameter.SelectedFilePath = this.leftImagePanel.FilePath;
                 }
-                else if (this.displayMode == ImageDisplayMode.LeftFacing
+                else if (this._displayMode == ImageDisplayMode.LeftFacing
                     && this.leftImagePanel.Visible)
                 {
-                    this.parameter.SelectedFilePath = this.leftImagePanel.FilePath;
+                    this._parameter.SelectedFilePath = this.leftImagePanel.FilePath;
                 }
-                else if (this.displayMode == ImageDisplayMode.RightFacing
+                else if (this._displayMode == ImageDisplayMode.RightFacing
                     && this.rightImagePanel.Visible)
                 {
-                    this.parameter.SelectedFilePath = this.rightImagePanel.FilePath;
+                    this._parameter.SelectedFilePath = this.rightImagePanel.FilePath;
                 }
                 else
                 {
-                    this.parameter.SelectedFilePath = this.SelectedFilePath;
+                    this._parameter.SelectedFilePath = this.SelectedFilePath;
                 }
 
-                this.parameter.GetImageFiles -= this.Parameter_GetImageFiles;
+                this._parameter.GetImageFiles -= this.Parameter_GetImageFiles;
 
                 this.fileContextMenu.Close();
 
@@ -262,22 +262,22 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 this.components?.Dispose();
             }
 
-            this.disposed = true;
+            this._disposed = true;
 
             base.Dispose(disposing);
         }
 
         protected override void OnLoad(EventArgs e)
         {
-            if (this.disposed)
+            if (this._disposed)
             {
                 return;
             }
 
-            this.isInitializing = true;
+            this._isInitializing = true;
 
-            this.parameter.GetImageFiles += this.Parameter_GetImageFiles;
-            this.parameter.ImageFilesGetAction(this.parameter)(this);
+            this._parameter.GetImageFiles += this.Parameter_GetImageFiles;
+            this._parameter.ImageFilesGetAction(this._parameter)(this);
 
             var scale = WindowUtil.GetCurrentWindowScale(this);
             this.RedrawPage(scale);
@@ -352,7 +352,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
         private void CheckPatternPanel_Resize(object sender, EventArgs e)
         {
-            this.RedrawPage(this.scale);
+            this.RedrawPage(this._scale);
         }
 
         private void BeginResumeLayout(bool isLeft, bool isRight, Action action)
@@ -436,7 +436,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 var h = this.checkPatternPanel.Height;
                 var y = 0;
 
-                if (this.displayMode == ImageDisplayMode.LeftFacing)
+                if (this._displayMode == ImageDisplayMode.LeftFacing)
                 {
                     this.BeginResumeLayout(true, false, () =>
                     {
@@ -463,7 +463,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 var h = this.checkPatternPanel.Height;
                 var y = 0;
 
-                if (this.displayMode == ImageDisplayMode.LeftFacing)
+                if (this._displayMode == ImageDisplayMode.LeftFacing)
                 {
                     this.BeginResumeLayout(false, true, () =>
                     {
@@ -510,40 +510,40 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         {
             this.fileContextMenu.Close();
 
-            if (this.filePathList.Length < 1)
+            if (this._filePathList.Length < 1)
             {
                 return;
             }
 
             using (TimeMeasuring.Run(false, "ImageViewerPage.ReadImage"))
             {
-                var mainFilePath = this.filePathList[currentIndex];
+                var mainFilePath = this._filePathList[currentIndex];
                 this.SelectedFilePath = mainFilePath;
 
                 var param = new ImageFileReadParameter
                 {
                     CurrentIndex = currentIndex,
-                    FilePathList = this.filePathList,
-                    ImageDisplayMode = this.displayMode,
+                    FilePathList = this._filePathList,
+                    ImageDisplayMode = this._displayMode,
                     IsNext = isNext,
                     IsForceSingle = isForceSingle
                 };
 
-                this.isLoading = true;
+                this._isLoading = true;
 
                 Instance<JobCaller>.Value.ImageFileCacheJob.Value
                     .StartJob(this, new ImageFileCacheParameter(
-                        currentIndex, 8, 8, this.filePathList));
+                        currentIndex, 8, 8, this._filePathList));
 
                 Instance<JobCaller>.Value.ImageFileLoadingJob.Value
                     .StartJob(this, param, _ =>
                     {
-                        if (this.disposed)
+                        if (this._disposed)
                         {
                             return;
                         }
 
-                        if (!this.isLoading)
+                        if (!this._isLoading)
                         {
                             return;
                         }
@@ -554,21 +554,21 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 Instance<JobCaller>.Value.ImageFileReadJob.Value
                     .StartJob(this, param, r =>
                     {
-                        if (this.disposed)
+                        if (this._disposed)
                         {
                             return;
                         }
 
                         if (r.IsMain && !r.HasSub)
                         {
-                            this.isInitializing = false;
+                            this._isInitializing = false;
                         }
                         else if (!r.IsMain)
                         {
-                            this.isInitializing = false;
+                            this._isInitializing = false;
                         }
 
-                        this.isLoading = false;
+                        this._isLoading = false;
 
                         using (TimeMeasuring.Run(false, "ImageViewerPage.ImageFileReadJob_Callback"))
                         {
@@ -585,11 +585,11 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 this.Parameter.PageSources,
                 this.Parameter.SourcesKey,
                 currentFilePath,
-                this.parameter.SortInfo,
-                this.parameter.ImageFilesGetAction,
-                this.parameter.PageTitle,
-                this.parameter.PageIcon,
-                this.parameter.VisibleBookmarkMenuItem);
+                this._parameter.SortInfo,
+                this._parameter.ImageFilesGetAction,
+                this._parameter.PageTitle,
+                this._parameter.PageIcon,
+                this._parameter.VisibleBookmarkMenuItem);
 
             var dataObject = new DataObject();
             dataObject.SetData(DataFormats.FileDrop, new string[] { currentFilePath });
@@ -622,9 +622,9 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                     break;
             }
 
-            if (this.displayMode != mode)
+            if (this._displayMode != mode)
             {
-                this.displayMode = mode;
+                this._displayMode = mode;
                 return true;
             }
             else
@@ -639,9 +639,9 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.toolBar.FitWindowMenuItemChecked = mode == ImageSizeMode.FitAllImage;
             this.toolBar.FitWindowLargeOnlyMenuItemChecked = mode == ImageSizeMode.FitOnlyBigImage;
 
-            if (this.sizeMode != mode)
+            if (this._sizeMode != mode)
             {
-                this.sizeMode = mode;
+                this._sizeMode = mode;
                 return true;
             }
             else
@@ -652,34 +652,34 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
         private void SetThumbnailPanelVisible()
         {
-            this.leftImagePanel.IsShowThumbnailPanel = this.sizeMode == ImageSizeMode.Original;
+            this.leftImagePanel.IsShowThumbnailPanel = this._sizeMode == ImageSizeMode.Original;
             this.rightImagePanel.IsShowThumbnailPanel = this.leftImagePanel.IsShowThumbnailPanel;
         }
 
         private void Parameter_GetImageFiles(object sender, GetImageFilesEventArgs e)
         {
-            if (this.disposed)
+            if (this._disposed)
             {
                 return;
             }
 
-            this.filePathList = e.FilePathList;
+            this._filePathList = e.FilePathList;
 
             this.Title = e.PageTitle;
             this.Icon = e.PageIcon;
 
-            if (this.filePathList.Length > 0)
+            if (this._filePathList.Length > 0)
             {
-                this.MaximumIndex = this.filePathList.Length - 1;
+                this.MaximumIndex = this._filePathList.Length - 1;
             }
             else
             {
                 this.MaximumIndex = 0;
             }
 
-            var selectedFilePath = this.parameter.SelectedFilePath != string.Empty ?
-                this.parameter.SelectedFilePath : e.SelectedFilePath;
-            var index = Array.IndexOf(this.filePathList, selectedFilePath);
+            var selectedFilePath = this._parameter.SelectedFilePath != string.Empty ?
+                this._parameter.SelectedFilePath : e.SelectedFilePath;
+            var index = Array.IndexOf(this._filePathList, selectedFilePath);
             if (index < 0)
             {
                 this.ReadImage(0, null, false);
@@ -707,7 +707,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 this.OnSelectedFileChanged(new SelectedFileChangeEventArgs(e.Image.FilePath));
             }
 
-            if (this.displayMode == ImageDisplayMode.Single)
+            if (this._displayMode == ImageDisplayMode.Single)
             {
                 this.leftImagePanel.ClearImage();
                 this.rightImagePanel.ClearImage();
@@ -718,12 +718,12 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 else
                 {
                     this.leftImagePanel.SetImage(
-                        this.sizeMode, e.Image.Image, e.Image.FilePath);
-                    var scale = GetImageScale(e.Image.Image.Size, bgSize, this.sizeMode);
+                        this._sizeMode, e.Image.Image, e.Image.FilePath);
+                    var scale = GetImageScale(e.Image.Image.Size, bgSize, this._sizeMode);
                     this.leftImagePanel.SetScale(scale);
                 }
             }
-            else if (this.displayMode == ImageDisplayMode.LeftFacing)
+            else if (this._displayMode == ImageDisplayMode.LeftFacing)
             {
                 if (e.IsMain && e.HasSub)
                 {
@@ -736,8 +736,8 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                     else
                     {
                         this.leftImagePanel.SetImage(
-                            this.sizeMode, e.Image.Image, e.Image.FilePath);
-                        var scale = GetImageScale(e.Image.Image.Size, bgSize, this.sizeMode);
+                            this._sizeMode, e.Image.Image, e.Image.FilePath);
+                        var scale = GetImageScale(e.Image.Image.Size, bgSize, this._sizeMode);
                         this.leftImagePanel.SetScale(scale);
                     }
                 }
@@ -751,8 +751,8 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                     else
                     {
                         this.rightImagePanel.SetImage(
-                            this.sizeMode, e.Image.Image, e.Image.FilePath);
-                        var scale = GetImageScale(e.Image.Image.Size, bgSize, this.sizeMode);
+                            this._sizeMode, e.Image.Image, e.Image.FilePath);
+                        var scale = GetImageScale(e.Image.Image.Size, bgSize, this._sizeMode);
                         this.rightImagePanel.SetScale(scale);
                     }
                 }
@@ -767,13 +767,13 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                     else
                     {
                         this.leftImagePanel.SetImage(
-                            this.sizeMode, e.Image.Image, e.Image.FilePath);
-                        var scale = GetImageScale(e.Image.Image.Size, bgSize, this.sizeMode);
+                            this._sizeMode, e.Image.Image, e.Image.FilePath);
+                        var scale = GetImageScale(e.Image.Image.Size, bgSize, this._sizeMode);
                         this.leftImagePanel.SetScale(scale);
                     }
                 }
             }
-            else if (this.displayMode == ImageDisplayMode.RightFacing)
+            else if (this._displayMode == ImageDisplayMode.RightFacing)
             {
                 if (e.IsMain && e.HasSub)
                 {
@@ -786,8 +786,8 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                     else
                     {
                         this.rightImagePanel.SetImage(
-                            this.sizeMode, e.Image.Image, e.Image.FilePath);
-                        var scale = GetImageScale(e.Image.Image.Size, bgSize, this.sizeMode);
+                            this._sizeMode, e.Image.Image, e.Image.FilePath);
+                        var scale = GetImageScale(e.Image.Image.Size, bgSize, this._sizeMode);
                         this.rightImagePanel.SetScale(scale);
                     }
                 }
@@ -801,8 +801,8 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                     else
                     {
                         this.leftImagePanel.SetImage(
-                            this.sizeMode, e.Image.Image, e.Image.FilePath);
-                        var scale = GetImageScale(e.Image.Image.Size, bgSize, this.sizeMode);
+                            this._sizeMode, e.Image.Image, e.Image.FilePath);
+                        var scale = GetImageScale(e.Image.Image.Size, bgSize, this._sizeMode);
                         this.leftImagePanel.SetScale(scale);
                     }
                 }
@@ -817,15 +817,15 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                     else
                     {
                         this.leftImagePanel.SetImage(
-                            this.sizeMode, e.Image.Image, e.Image.FilePath);
-                        var scale = GetImageScale(e.Image.Image.Size, bgSize, this.sizeMode);
+                            this._sizeMode, e.Image.Image, e.Image.FilePath);
+                        var scale = GetImageScale(e.Image.Image.Size, bgSize, this._sizeMode);
                         this.leftImagePanel.SetScale(scale);
                     }
                 }
             }
             else
             {
-                throw new InvalidOperationException($"不正な画像表示モードです。DisplayMode: '{this.displayMode}'");
+                throw new InvalidOperationException($"不正な画像表示モードです。DisplayMode: '{this._displayMode}'");
             }
 
             this.SettingImagePanelLayout(e);
@@ -846,7 +846,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
             if (this.SetDisplayMode(ImageDisplayMode.Single))
             {
-                ImageViewerPageConfig.Instance.ImageDisplayMode = this.displayMode;
+                ImageViewerPageConfig.Instance.ImageDisplayMode = this._displayMode;
                 this.ReadImage(this.FilePathListIndex, null, false);
             }
         }
@@ -865,7 +865,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
             if (this.SetDisplayMode(ImageDisplayMode.LeftFacing))
             {
-                ImageViewerPageConfig.Instance.ImageDisplayMode = this.displayMode;
+                ImageViewerPageConfig.Instance.ImageDisplayMode = this._displayMode;
                 this.ReadImage(this.FilePathListIndex, null, false);
             }
         }
@@ -884,7 +884,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
             if (this.SetDisplayMode(ImageDisplayMode.RightFacing))
             {
-                ImageViewerPageConfig.Instance.ImageDisplayMode = this.displayMode;
+                ImageViewerPageConfig.Instance.ImageDisplayMode = this._displayMode;
                 this.ReadImage(this.FilePathListIndex, null, false);
             }
         }
@@ -903,7 +903,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
             if (this.SetSizeMode(ImageSizeMode.Original))
             {
-                ImageViewerPageConfig.Instance.ImageSizeMode = this.sizeMode;
+                ImageViewerPageConfig.Instance.ImageSizeMode = this._sizeMode;
                 this.SetThumbnailPanelVisible();
                 this.ReadImage(this.FilePathListIndex, null, false);
             }
@@ -923,7 +923,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
             if (this.SetSizeMode(ImageSizeMode.FitAllImage))
             {
-                ImageViewerPageConfig.Instance.ImageSizeMode = this.sizeMode;
+                ImageViewerPageConfig.Instance.ImageSizeMode = this._sizeMode;
                 this.SetThumbnailPanelVisible();
                 this.ReadImage(this.FilePathListIndex, null, false);
             }
@@ -943,7 +943,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
             if (this.SetSizeMode(ImageSizeMode.FitOnlyBigImage))
             {
-                ImageViewerPageConfig.Instance.ImageSizeMode = this.sizeMode;
+                ImageViewerPageConfig.Instance.ImageSizeMode = this._sizeMode;
                 this.SetThumbnailPanelVisible();
                 this.ReadImage(this.FilePathListIndex, null, false);
             }
@@ -997,12 +997,12 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             }
 
             var index = this.FilePathListIndex;
-            if (index < 0 || this.filePathList.Length - 1 < index)
+            if (index < 0 || this._filePathList.Length - 1 < index)
             {
                 return;
             }
 
-            var filePath = this.filePathList[index];
+            var filePath = this._filePathList[index];
             this.toolBar.ShowToolTip(filePath);
             this.ReadImage(index, null, false);
         }
@@ -1099,7 +1099,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
                     this.fileContextMenu.SetFile(this.leftImagePanel.FilePath);
                     this.fileContextMenu.VisibleFileActiveTabOpenMenuItem = false;
-                    this.fileContextMenu.VisibleBookmarkMenuItem = this.parameter.VisibleBookmarkMenuItem;
+                    this.fileContextMenu.VisibleBookmarkMenuItem = this._parameter.VisibleBookmarkMenuItem;
                     return;
                 }
             }
@@ -1115,7 +1115,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
                     this.fileContextMenu.SetFile(this.rightImagePanel.FilePath);
                     this.fileContextMenu.VisibleFileActiveTabOpenMenuItem = false;
-                    this.fileContextMenu.VisibleBookmarkMenuItem = this.parameter.VisibleBookmarkMenuItem;
+                    this.fileContextMenu.VisibleBookmarkMenuItem = this._parameter.VisibleBookmarkMenuItem;
                     return;
                 }
             }
@@ -1128,9 +1128,9 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             var param = new ImageViewerPageParameter(
                 this.Parameter.PageSources,
                 this.Parameter.SourcesKey,
-                this.parameter.ImageFilesGetAction,
+                this._parameter.ImageFilesGetAction,
                 e.FilePath,
-                this.parameter.SortInfo,
+                this._parameter.SortInfo,
                 this.Title,
                 this.Icon,
                 this.Parameter.VisibleBookmarkMenuItem);
@@ -1142,9 +1142,9 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             var param = new ImageViewerPageParameter(
                 this.Parameter.PageSources,
                 this.Parameter.SourcesKey,
-                this.parameter.ImageFilesGetAction,
+                this._parameter.ImageFilesGetAction,
                 e.FilePath,
-                this.parameter.SortInfo,
+                this._parameter.SortInfo,
                 this.Title,
                 this.Icon,
                 this.Parameter.VisibleBookmarkMenuItem);

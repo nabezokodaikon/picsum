@@ -104,7 +104,7 @@ namespace SWF.Core.ImageAccessor
                         .Children()
                         .OfType<FileInfo>()
                         .Select(fi => fi.FullName)
-                        .OrderBy(file => file, NaturalStringComparer.Windows)
+                        .OrderBy(file => file, NaturalStringComparer.WINDOWS)
                         .FirstOrDefault(file =>
                         {
                             return FileUtil.CanAccess(file) && IsImageFile(file);

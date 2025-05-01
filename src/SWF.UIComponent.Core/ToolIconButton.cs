@@ -30,26 +30,26 @@ namespace SWF.UIComponent.Core
             return imgAttr;
         }
 
-        private bool isMousePoint = false;
+        private bool _isMousePoint = false;
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public SolidBrush DefaultBrush { get; set; } = DEFAULT_BRUSH;
 
         protected override void OnMouseEnter(EventArgs e)
         {
-            this.isMousePoint = true;
+            this._isMousePoint = true;
             base.OnMouseEnter(e);
         }
 
         protected override void OnMouseLeave(EventArgs e)
         {
-            this.isMousePoint = false;
+            this._isMousePoint = false;
             base.OnMouseLeave(e);
         }
 
         protected override void OnPaint(PaintEventArgs pevent)
         {
-            if (this.isMousePoint)
+            if (this._isMousePoint)
             {
                 pevent.Graphics.FillRectangle(
                     MOUSE_POINT_BRUSH, 0, 0, this.Width, this.Height);

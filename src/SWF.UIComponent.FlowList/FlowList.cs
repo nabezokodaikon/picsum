@@ -69,56 +69,56 @@ namespace SWF.UIComponent.FlowList
             RECTANGLE_SELECTION_COLOR.G,
             RECTANGLE_SELECTION_COLOR.B));
 
-        private StringTrimming itemTextTrimming = StringTrimming.EllipsisCharacter;
-        private StringAlignment itemTextAlignment = StringAlignment.Center;
-        private StringAlignment itemTextLineAlignment = StringAlignment.Center;
-        private StringFormatFlags itemTextFormatFlags = 0;
-        private StringFormat itemTextFormat = null;
+        private StringTrimming _itemTextTrimming = StringTrimming.EllipsisCharacter;
+        private StringAlignment _itemTextAlignment = StringAlignment.Center;
+        private StringAlignment _itemTextLineAlignment = StringAlignment.Center;
+        private StringFormatFlags _itemTextFormatFlags = 0;
+        private StringFormat _itemTextFormat = null;
 
         // 描画フラグ
-        private bool isDraw = true;
+        private bool _isDraw = true;
 
         // 複数選択可能フラグ
-        private bool isMultiSelect = false;
+        private bool _isMultiSelect = false;
 
         // 行リストフラグ
-        private bool isLileList = false;
+        private bool _isLileList = false;
 
         // 項目数
-        private int itemCount = 0;
+        private int _itemCount = 0;
 
         // 項目幅
-        private int itemWidth = MINIMUM_ITEM_SIZE;
+        private int _itemWidth = MINIMUM_ITEM_SIZE;
 
         // 項目高さ
-        private int itemHeight = MINIMUM_ITEM_SIZE;
+        private int _itemHeight = MINIMUM_ITEM_SIZE;
 
         // 項目間余白
-        private int itemSpace = 0;
+        private int _itemSpace = 0;
 
         // 描画パラメータ
-        private DrawParameter drawParameter = new();
+        private DrawParameter _drawParameter = new();
 
         // 垂直スクロールバー
-        private readonly VScrollBarEx scrollBar = new();
+        private readonly VScrollBarEx _scrollBar = new();
 
         // フォーカスされている項目のインデックス
-        private int foucusItemIndex = -1;
+        private int _foucusItemIndex = -1;
 
         // マウスポイントされている項目のインデックス
-        private int mousePointItemIndex = -1;
+        private int _mousePointItemIndex = -1;
 
         // 選択されている項目インデックスのリスト
-        private readonly ItemIndexList selectedItemIndexs = new();
+        private readonly ItemIndexList _selectedItemIndexs = new();
 
         // 短形選択クラス
-        private readonly RectangleSelection rectangleSelection = new();
+        private readonly RectangleSelection _rectangleSelection = new();
 
         // マウスダウンした座標情報
-        private HitTestInfo mouseDownHitTestInfo = new();
+        private HitTestInfo _mouseDownHitTestInfo = new();
 
         // ドラッグフラグ
-        private bool isDrag = false;
+        private bool _isDrag = false;
 
         private SolidBrush RectangleSelectionBrush
         {
@@ -182,12 +182,12 @@ namespace SWF.UIComponent.FlowList
                 true);
             this.UpdateStyles();
 
-            this.scrollBar.Dock = DockStyle.Right;
-            this.scrollBar.ValueChanged += new(this.ScrollBar_ValueChanged);
-            this.selectedItemIndexs.Change += new(this.SelectedItemIndexs_Change);
+            this._scrollBar.Dock = DockStyle.Right;
+            this._scrollBar.ValueChanged += new(this.ScrollBar_ValueChanged);
+            this._selectedItemIndexs.Change += new(this.SelectedItemIndexs_Change);
 
             base.BorderStyle = BorderStyle.None;
-            this.Controls.Add(this.scrollBar);
+            this.Controls.Add(this._scrollBar);
         }
 
         protected override void OnInvalidated(InvalidateEventArgs e)
@@ -199,7 +199,7 @@ namespace SWF.UIComponent.FlowList
 
         protected override void OnPaintBackground(PaintEventArgs pevent)
         {
-            if (!this.isDraw)
+            if (!this._isDraw)
             {
                 return;
             }
@@ -211,7 +211,7 @@ namespace SWF.UIComponent.FlowList
         {
             using (TimeMeasuring.Run(false, "FlowList.OnPaint"))
             {
-                if (!this.isDraw)
+                if (!this._isDraw)
                 {
                     return;
                 }
@@ -222,12 +222,12 @@ namespace SWF.UIComponent.FlowList
                 e.Graphics.PixelOffsetMode = PixelOffsetMode.HighSpeed;
                 e.Graphics.CompositingMode = CompositingMode.SourceOver;
 
-                if (this.rectangleSelection.IsBegun)
+                if (this._rectangleSelection.IsBegun)
                 {
                     this.DrawRectangleSelection(e.Graphics);
                 }
 
-                if (this.itemCount > 0)
+                if (this._itemCount > 0)
                 {
 
                     this.DrawItems(e.Graphics);
@@ -270,9 +270,9 @@ namespace SWF.UIComponent.FlowList
                 return;
             }
 
-            if (this.itemCount > 0 && !this.rectangleSelection.IsBegun)
+            if (this._itemCount > 0 && !this._rectangleSelection.IsBegun)
             {
-                this.selectedItemIndexs.BeginUpdate();
+                this._selectedItemIndexs.BeginUpdate();
 
                 try
                 {
@@ -327,22 +327,22 @@ namespace SWF.UIComponent.FlowList
                             this.Invalidate();
                             break;
                         case Keys.A:
-                            if (this.isMultiSelect && (Control.ModifierKeys & Keys.Control) == Keys.Control)
+                            if (this._isMultiSelect && (Control.ModifierKeys & Keys.Control) == Keys.Control)
                             {
                                 this.SelectAll();
                                 this.Invalidate();
                             }
                             break;
                         case Keys.Enter:
-                            if (this.selectedItemIndexs.Count > 0)
+                            if (this._selectedItemIndexs.Count > 0)
                             {
                                 this.OnItemExecute(EventArgs.Empty);
                             }
                             break;
                         case Keys.Delete:
-                            if (this.selectedItemIndexs.Count > 0)
+                            if (this._selectedItemIndexs.Count > 0)
                             {
-                                if (this.selectedItemIndexs.Contains(this.foucusItemIndex))
+                                if (this._selectedItemIndexs.Contains(this._foucusItemIndex))
                                 {
                                     this.OnItemDelete(EventArgs.Empty);
                                 }
@@ -353,9 +353,9 @@ namespace SWF.UIComponent.FlowList
                             }
                             break;
                         case Keys.C:
-                            if (this.selectedItemIndexs.Count > 0)
+                            if (this._selectedItemIndexs.Count > 0)
                             {
-                                if (this.selectedItemIndexs.Contains(this.foucusItemIndex))
+                                if (this._selectedItemIndexs.Contains(this._foucusItemIndex))
                                 {
                                     this.OnItemCopy(EventArgs.Empty);
                                 }
@@ -366,9 +366,9 @@ namespace SWF.UIComponent.FlowList
                             }
                             break;
                         case Keys.X:
-                            if (this.selectedItemIndexs.Count > 0)
+                            if (this._selectedItemIndexs.Count > 0)
                             {
-                                if (this.selectedItemIndexs.Contains(this.foucusItemIndex))
+                                if (this._selectedItemIndexs.Contains(this._foucusItemIndex))
                                 {
                                     this.OnItemCut(EventArgs.Empty);
                                 }
@@ -382,7 +382,7 @@ namespace SWF.UIComponent.FlowList
                 }
                 finally
                 {
-                    this.selectedItemIndexs.EndUpdate();
+                    this._selectedItemIndexs.EndUpdate();
                 }
             }
 
@@ -391,9 +391,9 @@ namespace SWF.UIComponent.FlowList
 
         protected override void OnMouseLeave(EventArgs e)
         {
-            this.mousePointItemIndex = -1;
-            this.isDrag = false;
-            this.mouseDownHitTestInfo = new HitTestInfo();
+            this._mousePointItemIndex = -1;
+            this._isDrag = false;
+            this._mouseDownHitTestInfo = new HitTestInfo();
 
             this.Invalidate();
 
@@ -404,12 +404,12 @@ namespace SWF.UIComponent.FlowList
         {
             this.Select();
 
-            if (this.itemCount < 1)
+            if (this._itemCount < 1)
             {
                 base.OnMouseDown(e);
                 return;
             }
-            else if (this.rectangleSelection.IsBegun)
+            else if (this._rectangleSelection.IsBegun)
             {
                 base.OnMouseDown(e);
                 return;
@@ -417,7 +417,7 @@ namespace SWF.UIComponent.FlowList
             else if (e.Button == MouseButtons.Left)
             {
                 // 左ボタン
-                this.selectedItemIndexs.BeginUpdate();
+                this._selectedItemIndexs.BeginUpdate();
                 try
                 {
                     this.LeftMouseDown(e.X, e.Y);
@@ -425,16 +425,16 @@ namespace SWF.UIComponent.FlowList
                 finally
                 {
                     this.Invalidate();
-                    this.selectedItemIndexs.EndUpdate();
+                    this._selectedItemIndexs.EndUpdate();
                 }
 
                 // マウスダウンした座標情報を保持します。
-                this.mouseDownHitTestInfo = this.GetHitTestFromDrawPoint(e.X, e.Y);
+                this._mouseDownHitTestInfo = this.GetHitTestFromDrawPoint(e.X, e.Y);
             }
             else if (e.Button == MouseButtons.Right)
             {
                 // 右ボタン
-                this.selectedItemIndexs.BeginUpdate();
+                this._selectedItemIndexs.BeginUpdate();
                 try
                 {
                     this.RightMouseDown(e.X, e.Y);
@@ -442,13 +442,13 @@ namespace SWF.UIComponent.FlowList
                 finally
                 {
                     this.Invalidate();
-                    this.selectedItemIndexs.EndUpdate();
+                    this._selectedItemIndexs.EndUpdate();
                 }
             }
             else if (e.Button == MouseButtons.Middle)
             {
                 // ミドルボタン
-                this.selectedItemIndexs.BeginUpdate();
+                this._selectedItemIndexs.BeginUpdate();
                 try
                 {
                     this.MiddleMouseDown(e.X, e.Y);
@@ -456,7 +456,7 @@ namespace SWF.UIComponent.FlowList
                 finally
                 {
                     this.Invalidate();
-                    this.selectedItemIndexs.EndUpdate();
+                    this._selectedItemIndexs.EndUpdate();
                 }
             }
 
@@ -465,16 +465,16 @@ namespace SWF.UIComponent.FlowList
 
         protected override void OnMouseUp(MouseEventArgs e)
         {
-            if (this.itemCount < 1)
+            if (this._itemCount < 1)
             {
                 base.OnMouseUp(e);
                 return;
             }
-            if (this.rectangleSelection.IsBegun)
+            if (this._rectangleSelection.IsBegun)
             {
-                var itemIndexs = this.GetItemIndexsFromVirtualRectangle(this.rectangleSelection.VirtualRectangle);
-                this.rectangleSelection.EndSelection();
-                this.selectedItemIndexs.Union(itemIndexs);
+                var itemIndexs = this.GetItemIndexsFromVirtualRectangle(this._rectangleSelection.VirtualRectangle);
+                this._rectangleSelection.EndSelection();
+                this._selectedItemIndexs.Union(itemIndexs);
                 this.Invalidate();
             }
             else
@@ -484,25 +484,25 @@ namespace SWF.UIComponent.FlowList
                 {
                     if (e.Button == MouseButtons.Left)
                     {
-                        if (!this.isDrag &&
+                        if (!this._isDrag &&
                             (Control.ModifierKeys & Keys.Shift) != Keys.Shift &&
                             (Control.ModifierKeys & Keys.Control) != Keys.Control)
                         {
-                            this.selectedItemIndexs.BeginUpdate();
+                            this._selectedItemIndexs.BeginUpdate();
                             try
                             {
-                                this.selectedItemIndexs.Clear();
-                                this.selectedItemIndexs.Add(ht.ItemIndex);
+                                this._selectedItemIndexs.Clear();
+                                this._selectedItemIndexs.Add(ht.ItemIndex);
                             }
                             finally
                             {
                                 this.Invalidate();
-                                this.selectedItemIndexs.EndUpdate();
+                                this._selectedItemIndexs.EndUpdate();
                             }
                         }
                     }
 
-                    if (this.selectedItemIndexs.Count > 0)
+                    if (this._selectedItemIndexs.Count > 0)
                     {
                         this.OnItemMouseClick(e);
                     }
@@ -513,33 +513,33 @@ namespace SWF.UIComponent.FlowList
                 }
             }
 
-            this.isDrag = false;
-            this.mouseDownHitTestInfo = new HitTestInfo();
+            this._isDrag = false;
+            this._mouseDownHitTestInfo = new HitTestInfo();
 
             base.OnMouseUp(e);
         }
 
         protected override void OnMouseMove(MouseEventArgs e)
         {
-            if (this.itemCount < 1)
+            if (this._itemCount < 1)
             {
                 base.OnMouseMove(e);
                 return;
             }
-            else if (this.rectangleSelection.IsBegun)
+            else if (this._rectangleSelection.IsBegun)
             {
                 // 短形選択中
-                this.rectangleSelection.ChangeSelection(e.X, e.Y, this.scrollBar.Value);
+                this._rectangleSelection.ChangeSelection(e.X, e.Y, this._scrollBar.Value);
 
-                if (this.scrollBar.Value > 0 && 0 > e.Y)
+                if (this._scrollBar.Value > 0 && 0 > e.Y)
                 {
                     // 上へスクロールします。
-                    this.scrollBar.Value = Math.Max(this.scrollBar.Minimum, this.scrollBar.Value + e.Y);
+                    this._scrollBar.Value = Math.Max(this._scrollBar.Minimum, this._scrollBar.Value + e.Y);
                 }
-                else if (this.scrollBar.Value < this.scrollBar.Maximum && this.Height < e.Y)
+                else if (this._scrollBar.Value < this._scrollBar.Maximum && this.Height < e.Y)
                 {
                     // 下へスクロールします。
-                    this.scrollBar.Value = Math.Min(this.scrollBar.Maximum, this.scrollBar.Value + (e.Y - this.Height));
+                    this._scrollBar.Value = Math.Min(this._scrollBar.Maximum, this._scrollBar.Value + (e.Y - this.Height));
                 }
                 else
                 {
@@ -551,10 +551,10 @@ namespace SWF.UIComponent.FlowList
                 var ht = this.GetHitTestFromDrawPoint(e.X, e.Y);
                 if (ht.IsItem)
                 {
-                    var oldIndex = this.mousePointItemIndex;
+                    var oldIndex = this._mousePointItemIndex;
                     if (ht.ItemIndex != oldIndex)
                     {
-                        this.mousePointItemIndex = ht.ItemIndex;
+                        this._mousePointItemIndex = ht.ItemIndex;
                         var newRect = this.GetItemDrawRectangle(ht.ItemIndex);
                         this.Invalidate(newRect);
                         if (oldIndex > -1)
@@ -566,8 +566,8 @@ namespace SWF.UIComponent.FlowList
                 }
                 else
                 {
-                    var oldIndex = this.mousePointItemIndex;
-                    this.mousePointItemIndex = -1;
+                    var oldIndex = this._mousePointItemIndex;
+                    this._mousePointItemIndex = -1;
                     if (oldIndex > -1)
                     {
                         var oldRect = this.GetItemDrawRectangle(oldIndex);
@@ -578,22 +578,22 @@ namespace SWF.UIComponent.FlowList
                 if (e.Button == MouseButtons.Left)
                 {
                     // ドラッグとしないマウスの移動範囲を取得します。
-                    var moveRect = new Rectangle(this.mouseDownHitTestInfo.DrawRectangle.X - SystemInformation.DragSize.Width / 2,
-                                                 this.mouseDownHitTestInfo.DrawRectangle.Y - SystemInformation.DragSize.Height / 2,
+                    var moveRect = new Rectangle(this._mouseDownHitTestInfo.DrawRectangle.X - SystemInformation.DragSize.Width / 2,
+                                                 this._mouseDownHitTestInfo.DrawRectangle.Y - SystemInformation.DragSize.Height / 2,
                                                  SystemInformation.DragSize.Width,
                                                  SystemInformation.DragSize.Height);
                     if (!moveRect.Contains(e.X, e.Y))
                     {
-                        if (this.mouseDownHitTestInfo.IsItem && !this.isDrag)
+                        if (this._mouseDownHitTestInfo.IsItem && !this._isDrag)
                         {
                             // 項目のドラッグを開始します。
-                            this.isDrag = true;
+                            this._isDrag = true;
                             this.OnDragStart(EventArgs.Empty);
                         }
-                        else if (!this.mouseDownHitTestInfo.IsItem)
+                        else if (!this._mouseDownHitTestInfo.IsItem)
                         {
                             // 短形選択を開始します。
-                            this.rectangleSelection.BeginSelection(e.X, e.Y, this.scrollBar.Value);
+                            this._rectangleSelection.BeginSelection(e.X, e.Y, this._scrollBar.Value);
                         }
                     }
                 }
@@ -604,12 +604,12 @@ namespace SWF.UIComponent.FlowList
 
         protected override void OnMouseDoubleClick(MouseEventArgs e)
         {
-            if (this.itemCount < 1)
+            if (this._itemCount < 1)
             {
                 base.OnMouseDoubleClick(e);
                 return;
             }
-            else if (this.rectangleSelection.IsBegun)
+            else if (this._rectangleSelection.IsBegun)
             {
                 base.OnMouseDoubleClick(e);
                 return;
@@ -619,7 +619,7 @@ namespace SWF.UIComponent.FlowList
                 var ht = this.GetHitTestFromDrawPoint(e.X, e.Y);
                 if (ht.IsItem)
                 {
-                    if (this.selectedItemIndexs.Count > 0)
+                    if (this._selectedItemIndexs.Count > 0)
                     {
                         this.OnItemMouseDoubleClick(e);
                     }
@@ -631,25 +631,25 @@ namespace SWF.UIComponent.FlowList
 
         protected override void OnMouseWheel(MouseEventArgs e)
         {
-            if (this.itemCount < 1)
+            if (this._itemCount < 1)
             {
                 base.OnMouseWheel(e);
                 return;
             }
             else if (e.Delta != 0)
             {
-                var value = this.scrollBar.Value - (int)(this.itemHeight * 0.8 * (e.Delta / Math.Abs(e.Delta)));
-                if (value < this.scrollBar.Minimum)
+                var value = this._scrollBar.Value - (int)(this._itemHeight * 0.8 * (e.Delta / Math.Abs(e.Delta)));
+                if (value < this._scrollBar.Minimum)
                 {
-                    this.scrollBar.Value = this.scrollBar.Minimum;
+                    this._scrollBar.Value = this._scrollBar.Minimum;
                 }
-                else if (value > this.scrollBar.Maximum)
+                else if (value > this._scrollBar.Maximum)
                 {
-                    this.scrollBar.Value = this.scrollBar.Maximum;
+                    this._scrollBar.Value = this._scrollBar.Maximum;
                 }
                 else
                 {
-                    this.scrollBar.Value = value;
+                    this._scrollBar.Value = value;
                 }
             }
 
@@ -663,9 +663,9 @@ namespace SWF.UIComponent.FlowList
         {
             var scale = WindowUtil.GetCurrentWindowScale(this);
             var width = (int)(SCROLL_BAR_DEFAULT_WIDTH * scale);
-            if (width != this.scrollBar.Width)
+            if (width != this._scrollBar.Width)
             {
-                this.scrollBar.Width = width;
+                this._scrollBar.Width = width;
             }
 
             return width;
@@ -673,51 +673,51 @@ namespace SWF.UIComponent.FlowList
 
         public void SetDrawParameter(bool isForced)
         {
-            var beforeDrawParameter = this.drawParameter;
+            var beforeDrawParameter = this._drawParameter;
             var scrollBarWidth = this.GetScrollBarWidth();
 
-            if (this.itemCount > 0)
+            if (this._itemCount > 0)
             {
-                var width = (this.scrollBar.Visible) ? this.Width - scrollBarWidth : this.Width;
-                if (this.isLileList)
+                var width = (this._scrollBar.Visible) ? this.Width - scrollBarWidth : this.Width;
+                if (this._isLileList)
                 {
-                    this.itemWidth = width;
+                    this._itemWidth = width;
                 }
 
-                var colCount = Math.Max(Utility.ToRoundDown(width / (float)this.itemWidth), 1);
-                var rowCount = Utility.ToRoundUp(this.itemCount / (float)colCount);
-                var virtualHeight = this.itemHeight * rowCount;
+                var colCount = Math.Max(Utility.ToRoundDown(width / (float)this._itemWidth), 1);
+                var rowCount = Utility.ToRoundUp(this._itemCount / (float)colCount);
+                var virtualHeight = this._itemHeight * rowCount;
                 var itemSideSpace = Math.Max((int)((width - this.ItemWidth * colCount) / (float)(colCount + 1)), 0);
                 int scrollBarMaximum;
                 if (virtualHeight <= this.Height)
                 {
-                    scrollBarMaximum = this.scrollBar.Minimum;
+                    scrollBarMaximum = this._scrollBar.Minimum;
                 }
                 else
                 {
                     scrollBarMaximum = virtualHeight - this.Height;
                     width = this.Width - scrollBarWidth;
-                    if (this.isLileList)
+                    if (this._isLileList)
                     {
-                        this.itemWidth = width;
+                        this._itemWidth = width;
                     }
                 }
 
-                var drawFirstRow = Utility.ToRoundDown(this.scrollBar.Value / (float)this.itemHeight);
-                var drawRowCount = Utility.ToRoundUp((this.Height - ((drawFirstRow + 1) * this.itemHeight - this.scrollBar.Value)) / (float)this.itemHeight);
+                var drawFirstRow = Utility.ToRoundDown(this._scrollBar.Value / (float)this._itemHeight);
+                var drawRowCount = Utility.ToRoundUp((this.Height - ((drawFirstRow + 1) * this._itemHeight - this._scrollBar.Value)) / (float)this._itemHeight);
                 var drawLastRow = drawFirstRow + drawRowCount + 1;
                 var drawFirstItemIndex = drawFirstRow * colCount;
                 var drawLastItemIndex = drawLastRow * colCount - 1;
                 for (var row = drawLastRow; row >= drawFirstRow; row--)
                 {
-                    if (drawLastItemIndex < this.itemCount)
+                    if (drawLastItemIndex < this._itemCount)
                     {
                         break;
                     }
 
                     for (var colIndex = colCount - 1; colIndex >= 0; colIndex--)
                     {
-                        if (drawLastItemIndex < this.itemCount)
+                        if (drawLastItemIndex < this._itemCount)
                         {
                             break;
                         }
@@ -731,49 +731,49 @@ namespace SWF.UIComponent.FlowList
                     drawLastItemIndex = 0;
                 }
 
-                this.drawParameter = new DrawParameter(rowCount, colCount,
+                this._drawParameter = new DrawParameter(rowCount, colCount,
                                                         drawFirstRow, drawLastRow,
                                                         drawFirstItemIndex, drawLastItemIndex,
                                                         itemSideSpace,
                                                         scrollBarMaximum);
 
-                if (this.drawParameter.ScrollBarMaximum > 0)
+                if (this._drawParameter.ScrollBarMaximum > 0)
                 {
-                    this.scrollBar.LargeChange = (int)(this.Height / 2f);
-                    this.scrollBar.SmallChange = (int)(this.scrollBar.LargeChange / 8f);
-                    this.scrollBar.Maximum = this.drawParameter.ScrollBarMaximum;
-                    this.scrollBar.Visible = true;
+                    this._scrollBar.LargeChange = (int)(this.Height / 2f);
+                    this._scrollBar.SmallChange = (int)(this._scrollBar.LargeChange / 8f);
+                    this._scrollBar.Maximum = this._drawParameter.ScrollBarMaximum;
+                    this._scrollBar.Visible = true;
                 }
                 else
                 {
-                    this.scrollBar.Visible = false;
-                    this.scrollBar.LargeChange = this.itemHeight;
-                    this.scrollBar.SmallChange = this.scrollBar.LargeChange / 8;
-                    this.scrollBar.Value = this.scrollBar.Minimum;
-                    this.scrollBar.Maximum = this.drawParameter.ScrollBarMaximum;
+                    this._scrollBar.Visible = false;
+                    this._scrollBar.LargeChange = this._itemHeight;
+                    this._scrollBar.SmallChange = this._scrollBar.LargeChange / 8;
+                    this._scrollBar.Value = this._scrollBar.Minimum;
+                    this._scrollBar.Maximum = this._drawParameter.ScrollBarMaximum;
                 }
             }
             else
             {
-                this.drawParameter = new DrawParameter();
-                this.scrollBar.Visible = false;
-                this.scrollBar.LargeChange = this.itemHeight;
-                this.scrollBar.SmallChange = this.scrollBar.LargeChange / 8;
-                this.scrollBar.Value = this.scrollBar.Minimum;
-                this.scrollBar.Maximum = this.drawParameter.ScrollBarMaximum;
+                this._drawParameter = new DrawParameter();
+                this._scrollBar.Visible = false;
+                this._scrollBar.LargeChange = this._itemHeight;
+                this._scrollBar.SmallChange = this._scrollBar.LargeChange / 8;
+                this._scrollBar.Value = this._scrollBar.Minimum;
+                this._scrollBar.Maximum = this._drawParameter.ScrollBarMaximum;
             }
 
             if (isForced)
             {
-                this.OnDrawItemChanged(new DrawItemChangedEventArgs(this.drawParameter.DrawFirstItemIndex, this.drawParameter.DrawLastItemIndex));
+                this.OnDrawItemChanged(new DrawItemChangedEventArgs(this._drawParameter.DrawFirstItemIndex, this._drawParameter.DrawLastItemIndex));
             }
             else
             {
-                if (this.drawParameter.DrawFirstItemIndex == 0 && this.drawParameter.DrawLastItemIndex == 0 ||
-                    beforeDrawParameter.DrawFirstItemIndex != this.drawParameter.DrawFirstItemIndex ||
-                    beforeDrawParameter.DrawLastItemIndex != this.drawParameter.DrawLastItemIndex)
+                if (this._drawParameter.DrawFirstItemIndex == 0 && this._drawParameter.DrawLastItemIndex == 0 ||
+                    beforeDrawParameter.DrawFirstItemIndex != this._drawParameter.DrawFirstItemIndex ||
+                    beforeDrawParameter.DrawLastItemIndex != this._drawParameter.DrawLastItemIndex)
                 {
-                    this.OnDrawItemChanged(new DrawItemChangedEventArgs(this.drawParameter.DrawFirstItemIndex, this.drawParameter.DrawLastItemIndex));
+                    this.OnDrawItemChanged(new DrawItemChangedEventArgs(this._drawParameter.DrawFirstItemIndex, this._drawParameter.DrawLastItemIndex));
                 }
             }
         }
@@ -781,19 +781,19 @@ namespace SWF.UIComponent.FlowList
         private HitTestInfo GetHitTestFromDrawPoint(int x, int y)
         {
             var col = this.GetColFromX(x);
-            if (col > this.drawParameter.ColCount - 1 || col < 0)
+            if (col > this._drawParameter.ColCount - 1 || col < 0)
             {
                 return new HitTestInfo();
             }
 
             var row = this.GetRowFromDrawY(y);
-            if (row > this.drawParameter.RowCount - 1 || row < 0)
+            if (row > this._drawParameter.RowCount - 1 || row < 0)
             {
                 return new HitTestInfo();
             }
 
-            var itemIndex = this.drawParameter.ColCount * row + col;
-            if (itemIndex >= this.itemCount)
+            var itemIndex = this._drawParameter.ColCount * row + col;
+            if (itemIndex >= this._itemCount)
             {
                 return new HitTestInfo();
             }
@@ -801,9 +801,9 @@ namespace SWF.UIComponent.FlowList
             var drawRect = this.GetItemDrawRectangle(row, col);
             var virtualRect = this.GetItemVirtualRectangle(itemIndex);
             var isItem = drawRect.Contains(x, y);
-            var isSelected = this.selectedItemIndexs.Contains(itemIndex);
-            var isMousePoint = this.mousePointItemIndex == itemIndex;
-            var isFocus = this.foucusItemIndex == itemIndex;
+            var isSelected = this._selectedItemIndexs.Contains(itemIndex);
+            var isMousePoint = this._mousePointItemIndex == itemIndex;
+            var isFocus = this._foucusItemIndex == itemIndex;
 
             return new HitTestInfo(itemIndex, row, col, virtualRect, drawRect, isItem, isSelected, isMousePoint, isFocus);
         }
@@ -812,8 +812,8 @@ namespace SWF.UIComponent.FlowList
         {
             var firstRow = Math.Max(0, this.GetRowFromVirtualY(rect.Y));
             var firstCol = Math.Max(0, this.GetColFromX(rect.X));
-            var lastRow = Math.Min(this.GetRowFromVirtualY(rect.Bottom), this.drawParameter.RowCount - 1);
-            var lastCol = Math.Min(this.GetColFromX(rect.Right), this.drawParameter.ColCount - 1);
+            var lastRow = Math.Min(this.GetRowFromVirtualY(rect.Bottom), this._drawParameter.RowCount - 1);
+            var lastCol = Math.Min(this.GetColFromX(rect.Right), this._drawParameter.ColCount - 1);
 
             Cell getFirstCell()
             {
@@ -821,8 +821,8 @@ namespace SWF.UIComponent.FlowList
                 {
                     for (var col = firstCol; col <= lastCol; col++)
                     {
-                        var itemIndex = this.drawParameter.ColCount * row + col;
-                        if (itemIndex < this.itemCount)
+                        var itemIndex = this._drawParameter.ColCount * row + col;
+                        if (itemIndex < this._itemCount)
                         {
                             var itemRect = this.GetItemVirtualRectangle(itemIndex);
                             if (rect.IntersectsWith(itemRect))
@@ -842,7 +842,7 @@ namespace SWF.UIComponent.FlowList
                 {
                     for (var col = lastCol; col >= firstCol; col--)
                     {
-                        var itemIndex = this.drawParameter.ColCount * row + col;
+                        var itemIndex = this._drawParameter.ColCount * row + col;
                         var itemRect = this.GetItemVirtualRectangle(itemIndex);
                         if (rect.IntersectsWith(itemRect))
                         {
@@ -869,8 +869,8 @@ namespace SWF.UIComponent.FlowList
             {
                 for (var col = firstCell.Col; col <= lastCell.Col; col++)
                 {
-                    var itemIndex = this.drawParameter.ColCount * row + col;
-                    if (itemIndex < this.itemCount)
+                    var itemIndex = this._drawParameter.ColCount * row + col;
+                    if (itemIndex < this._itemCount)
                     {
                         list.Add(itemIndex);
                     }
@@ -891,14 +891,14 @@ namespace SWF.UIComponent.FlowList
             {
                 // 上へスクロール
                 var virtualRect = this.GetItemVirtualRectangle(itemIndex);
-                this.scrollBar.Value = virtualRect.Top - this.itemSpace;
+                this._scrollBar.Value = virtualRect.Top - this._itemSpace;
                 return true;
             }
             else if (drawRect.Bottom > this.Height)
             {
                 // 下へスクロール              
                 var virtualRect = this.GetItemVirtualRectangle(itemIndex);
-                this.scrollBar.Value = virtualRect.Bottom - this.Height + this.itemSpace;
+                this._scrollBar.Value = virtualRect.Bottom - this.Height + this._itemSpace;
                 return true;
             }
             else
@@ -910,75 +910,75 @@ namespace SWF.UIComponent.FlowList
 
         private void SelectAll()
         {
-            if (this.rectangleSelection.IsBegun)
+            if (this._rectangleSelection.IsBegun)
             {
                 throw new InvalidOperationException("短形選択中は全選択を行いません。");
             }
             else
             {
-                this.selectedItemIndexs.Clear();
-                for (var i = 0; i < this.itemCount; i++)
+                this._selectedItemIndexs.Clear();
+                for (var i = 0; i < this._itemCount; i++)
                 {
-                    this.selectedItemIndexs.Add(i);
+                    this._selectedItemIndexs.Add(i);
                 }
             }
         }
 
         private Rectangle GetItemVirtualRectangle(int row, int col)
         {
-            var x = col * (this.itemWidth + this.drawParameter.ItemSideSpace) + this.drawParameter.ItemSideSpace + this.itemSpace;
-            var y = row * this.itemHeight + this.itemSpace;
-            var margin = this.itemSpace * 2;
-            return new Rectangle(x, y, this.itemWidth - margin, this.itemHeight - margin);
+            var x = col * (this._itemWidth + this._drawParameter.ItemSideSpace) + this._drawParameter.ItemSideSpace + this._itemSpace;
+            var y = row * this._itemHeight + this._itemSpace;
+            var margin = this._itemSpace * 2;
+            return new Rectangle(x, y, this._itemWidth - margin, this._itemHeight - margin);
         }
 
         private Rectangle GetItemVirtualRectangle(int itemIndex)
         {
-            var col = itemIndex % this.drawParameter.ColCount;
-            var row = Utility.ToRoundDown(itemIndex / (float)this.drawParameter.ColCount);
+            var col = itemIndex % this._drawParameter.ColCount;
+            var row = Utility.ToRoundDown(itemIndex / (float)this._drawParameter.ColCount);
             return this.GetItemVirtualRectangle(row, col);
         }
 
         private Rectangle GetItemDrawRectangle(int row, int col)
         {
-            var x = col * (this.itemWidth + this.drawParameter.ItemSideSpace) + this.drawParameter.ItemSideSpace + this.itemSpace;
-            var y = row * this.itemHeight + this.itemSpace - this.scrollBar.Value;
-            var margin = this.itemSpace * 2;
-            return new Rectangle(x, y, this.itemWidth - margin, this.itemHeight - margin);
+            var x = col * (this._itemWidth + this._drawParameter.ItemSideSpace) + this._drawParameter.ItemSideSpace + this._itemSpace;
+            var y = row * this._itemHeight + this._itemSpace - this._scrollBar.Value;
+            var margin = this._itemSpace * 2;
+            return new Rectangle(x, y, this._itemWidth - margin, this._itemHeight - margin);
         }
 
         private Rectangle GetItemDrawRectangle(int itemIndex)
         {
-            var col = this.drawParameter.ColCount switch
+            var col = this._drawParameter.ColCount switch
             {
                 0 => 0,
-                _ => itemIndex % this.drawParameter.ColCount,
+                _ => itemIndex % this._drawParameter.ColCount,
             };
-            var row = Utility.ToRoundDown(itemIndex / (float)this.drawParameter.ColCount);
+            var row = Utility.ToRoundDown(itemIndex / (float)this._drawParameter.ColCount);
             return this.GetItemDrawRectangle(row, col);
         }
 
         private void DrawItems(Graphics g)
         {
-            for (var itemIndex = this.drawParameter.DrawFirstItemIndex;
-                 itemIndex <= this.drawParameter.DrawLastItemIndex;
+            for (var itemIndex = this._drawParameter.DrawFirstItemIndex;
+                 itemIndex <= this._drawParameter.DrawLastItemIndex;
                  itemIndex++)
             {
                 var drawRect = this.GetItemDrawRectangle(itemIndex);
 
                 bool isSelected;
-                if (this.rectangleSelection.IsBegun)
+                if (this._rectangleSelection.IsBegun)
                 {
-                    isSelected = this.selectedItemIndexs.Contains(itemIndex) ||
-                        this.rectangleSelection.VirtualRectangle.IntersectsWith(this.GetItemVirtualRectangle(itemIndex));
+                    isSelected = this._selectedItemIndexs.Contains(itemIndex) ||
+                        this._rectangleSelection.VirtualRectangle.IntersectsWith(this.GetItemVirtualRectangle(itemIndex));
                 }
                 else
                 {
-                    isSelected = this.selectedItemIndexs.Contains(itemIndex);
+                    isSelected = this._selectedItemIndexs.Contains(itemIndex);
                 }
 
-                var isMousePoint = this.mousePointItemIndex == itemIndex;
-                var isFocus = this.foucusItemIndex == itemIndex;
+                var isMousePoint = this._mousePointItemIndex == itemIndex;
+                var isFocus = this._foucusItemIndex == itemIndex;
 
                 this.OnDrawItem(new DrawItemEventArgs(g, itemIndex, drawRect, isSelected, isMousePoint, isFocus));
             }
@@ -986,60 +986,60 @@ namespace SWF.UIComponent.FlowList
 
         private void DrawRectangleSelection(Graphics g)
         {
-            g.FillRectangle(this.RectangleSelectionBrush, this.rectangleSelection.GetDrawRectangle(this.scrollBar.Value));
-            g.DrawRectangle(this.RectangleSelectionPen, this.rectangleSelection.GetDrawRectangle(this.scrollBar.Value));
+            g.FillRectangle(this.RectangleSelectionBrush, this._rectangleSelection.GetDrawRectangle(this._scrollBar.Value));
+            g.DrawRectangle(this.RectangleSelectionPen, this._rectangleSelection.GetDrawRectangle(this._scrollBar.Value));
         }
 
         private int GetRowFromVirtualY(int y)
         {
-            return Utility.ToRoundDown(y / (float)this.itemHeight);
+            return Utility.ToRoundDown(y / (float)this._itemHeight);
         }
 
         private int GetRowFromDrawY(int y)
         {
-            return Utility.ToRoundDown((y + this.scrollBar.Value) / (float)this.itemHeight);
+            return Utility.ToRoundDown((y + this._scrollBar.Value) / (float)this._itemHeight);
         }
 
         private int GetColFromX(int x)
         {
-            return Utility.ToRoundDown((x - this.drawParameter.ItemSideSpace - this.itemSpace) / (float)(this.itemWidth + this.drawParameter.ItemSideSpace));
+            return Utility.ToRoundDown((x - this._drawParameter.ItemSideSpace - this._itemSpace) / (float)(this._itemWidth + this._drawParameter.ItemSideSpace));
         }
 
         private bool LeftKeyDown()
         {
-            if (this.itemCount == 0)
+            if (this._itemCount == 0)
             {
                 throw new InvalidOperationException("項目が存在しません。");
             }
 
-            var newIndex = this.foucusItemIndex - 1;
+            var newIndex = this._foucusItemIndex - 1;
             if (newIndex > -1)
             {
-                if (this.isMultiSelect && (Control.ModifierKeys & Keys.Shift) == Keys.Shift)
+                if (this._isMultiSelect && (Control.ModifierKeys & Keys.Shift) == Keys.Shift)
                 {
                     // Shiftキー押下
-                    this.selectedItemIndexs.AddRange(newIndex);
+                    this._selectedItemIndexs.AddRange(newIndex);
                 }
-                else if (this.isMultiSelect && (Control.ModifierKeys & Keys.Control) == Keys.Control)
+                else if (this._isMultiSelect && (Control.ModifierKeys & Keys.Control) == Keys.Control)
                 {
                     // Ctrlキー押下
                 }
                 else
                 {
                     // 修飾キー無し
-                    this.selectedItemIndexs.Clear();
-                    this.selectedItemIndexs.Add(newIndex);
+                    this._selectedItemIndexs.Clear();
+                    this._selectedItemIndexs.Add(newIndex);
                 }
 
                 var itemRect = this.GetItemDrawRectangle(newIndex);
                 if (itemRect.Top < 0)
                 {
-                    this.scrollBar.Value = Math.Max(this.scrollBar.Minimum, this.scrollBar.Value - this.itemHeight);
+                    this._scrollBar.Value = Math.Max(this._scrollBar.Minimum, this._scrollBar.Value - this._itemHeight);
                 }
 
                 this.EnsureVisible(newIndex);
 
-                this.foucusItemIndex = newIndex;
+                this._foucusItemIndex = newIndex;
 
                 return true;
             }
@@ -1051,39 +1051,39 @@ namespace SWF.UIComponent.FlowList
 
         private bool RightKeyDown()
         {
-            if (this.itemCount == 0)
+            if (this._itemCount == 0)
             {
                 throw new InvalidOperationException("項目が存在しません。");
             }
 
-            var newIndex = this.foucusItemIndex + 1;
-            if (newIndex < this.itemCount)
+            var newIndex = this._foucusItemIndex + 1;
+            if (newIndex < this._itemCount)
             {
-                if (this.isMultiSelect && (Control.ModifierKeys & Keys.Shift) == Keys.Shift)
+                if (this._isMultiSelect && (Control.ModifierKeys & Keys.Shift) == Keys.Shift)
                 {
                     // Shiftキー押下
-                    this.selectedItemIndexs.AddRange(newIndex);
+                    this._selectedItemIndexs.AddRange(newIndex);
                 }
-                else if (this.isMultiSelect && (Control.ModifierKeys & Keys.Control) == Keys.Control)
+                else if (this._isMultiSelect && (Control.ModifierKeys & Keys.Control) == Keys.Control)
                 {
                     // Ctrlキー押下
                 }
                 else
                 {
                     // 修飾キー無し
-                    this.selectedItemIndexs.Clear();
-                    this.selectedItemIndexs.Add(newIndex);
+                    this._selectedItemIndexs.Clear();
+                    this._selectedItemIndexs.Add(newIndex);
                 }
 
                 var itemRect = this.GetItemDrawRectangle(newIndex);
                 if (itemRect.Bottom > this.Height)
                 {
-                    this.scrollBar.Value = Math.Min(this.scrollBar.Maximum, this.scrollBar.Value + this.itemHeight);
+                    this._scrollBar.Value = Math.Min(this._scrollBar.Maximum, this._scrollBar.Value + this._itemHeight);
                 }
 
                 this.EnsureVisible(newIndex);
 
-                this.foucusItemIndex = newIndex;
+                this._foucusItemIndex = newIndex;
 
                 return true;
             }
@@ -1095,39 +1095,39 @@ namespace SWF.UIComponent.FlowList
 
         private bool UpKeyDown()
         {
-            if (this.itemCount == 0)
+            if (this._itemCount == 0)
             {
                 throw new InvalidOperationException("項目が存在しません。");
             }
 
-            var newIndex = this.foucusItemIndex - this.drawParameter.ColCount;
+            var newIndex = this._foucusItemIndex - this._drawParameter.ColCount;
             if (newIndex > -1)
             {
-                if (this.isMultiSelect && (Control.ModifierKeys & Keys.Shift) == Keys.Shift)
+                if (this._isMultiSelect && (Control.ModifierKeys & Keys.Shift) == Keys.Shift)
                 {
                     // Shiftキー押下
-                    this.selectedItemIndexs.AddRange(newIndex);
+                    this._selectedItemIndexs.AddRange(newIndex);
                 }
-                else if (this.isMultiSelect && (Control.ModifierKeys & Keys.Control) == Keys.Control)
+                else if (this._isMultiSelect && (Control.ModifierKeys & Keys.Control) == Keys.Control)
                 {
                     // Ctrlキー押下
                 }
                 else
                 {
                     // 修飾キー無し
-                    this.selectedItemIndexs.Clear();
-                    this.selectedItemIndexs.Add(newIndex);
+                    this._selectedItemIndexs.Clear();
+                    this._selectedItemIndexs.Add(newIndex);
                 }
 
                 var itemRect = this.GetItemDrawRectangle(newIndex);
                 if (itemRect.Top < 0)
                 {
-                    this.scrollBar.Value = Math.Max(this.scrollBar.Minimum, this.scrollBar.Value - this.itemHeight);
+                    this._scrollBar.Value = Math.Max(this._scrollBar.Minimum, this._scrollBar.Value - this._itemHeight);
                 }
 
                 this.EnsureVisible(newIndex);
 
-                this.foucusItemIndex = newIndex;
+                this._foucusItemIndex = newIndex;
 
                 return true;
             }
@@ -1139,40 +1139,40 @@ namespace SWF.UIComponent.FlowList
 
         private bool DownKeyDown()
         {
-            if (this.itemCount == 0)
+            if (this._itemCount == 0)
             {
                 throw new InvalidOperationException("項目が存在しません。");
             }
 
-            var newIndex = this.foucusItemIndex + this.drawParameter.ColCount;
+            var newIndex = this._foucusItemIndex + this._drawParameter.ColCount;
 
-            if (newIndex < this.itemCount)
+            if (newIndex < this._itemCount)
             {
-                if (this.isMultiSelect && (Control.ModifierKeys & Keys.Shift) == Keys.Shift)
+                if (this._isMultiSelect && (Control.ModifierKeys & Keys.Shift) == Keys.Shift)
                 {
                     // Shiftキー押下
-                    this.selectedItemIndexs.AddRange(newIndex);
+                    this._selectedItemIndexs.AddRange(newIndex);
                 }
-                else if (this.isMultiSelect && (Control.ModifierKeys & Keys.Control) == Keys.Control)
+                else if (this._isMultiSelect && (Control.ModifierKeys & Keys.Control) == Keys.Control)
                 {
                     // Ctrlキー押下
                 }
                 else
                 {
                     // 修飾キー無し
-                    this.selectedItemIndexs.Clear();
-                    this.selectedItemIndexs.Add(newIndex);
+                    this._selectedItemIndexs.Clear();
+                    this._selectedItemIndexs.Add(newIndex);
                 }
 
                 var itemRect = this.GetItemDrawRectangle(newIndex);
                 if (itemRect.Bottom > this.Height)
                 {
-                    this.scrollBar.Value = Math.Min(this.scrollBar.Maximum, this.scrollBar.Value + this.itemHeight);
+                    this._scrollBar.Value = Math.Min(this._scrollBar.Maximum, this._scrollBar.Value + this._itemHeight);
                 }
 
                 this.EnsureVisible(newIndex);
 
-                this.foucusItemIndex = newIndex;
+                this._foucusItemIndex = newIndex;
 
                 return true;
             }
@@ -1184,170 +1184,170 @@ namespace SWF.UIComponent.FlowList
 
         private void SpaceKeyDown()
         {
-            if (!this.selectedItemIndexs.Contains(this.foucusItemIndex))
+            if (!this._selectedItemIndexs.Contains(this._foucusItemIndex))
             {
-                this.selectedItemIndexs.Add(this.foucusItemIndex);
+                this._selectedItemIndexs.Add(this._foucusItemIndex);
             }
             else
             {
-                this.selectedItemIndexs.Remove(this.foucusItemIndex);
+                this._selectedItemIndexs.Remove(this._foucusItemIndex);
             }
         }
 
         private void PageUpKeyDown()
         {
-            if (this.itemCount == 0)
+            if (this._itemCount == 0)
             {
                 throw new InvalidOperationException("項目が存在しません。");
             }
 
-            var newIndex = this.foucusItemIndex - this.drawParameter.ColCount * (this.drawParameter.DrawLastRow - this.drawParameter.DrawFirstRow - 1);
+            var newIndex = this._foucusItemIndex - this._drawParameter.ColCount * (this._drawParameter.DrawLastRow - this._drawParameter.DrawFirstRow - 1);
             if (newIndex < 0)
             {
                 newIndex = 0;
             }
 
-            if (this.isMultiSelect && (Control.ModifierKeys & Keys.Shift) == Keys.Shift)
+            if (this._isMultiSelect && (Control.ModifierKeys & Keys.Shift) == Keys.Shift)
             {
                 // Shiftキー押下
-                this.selectedItemIndexs.AddRange(newIndex);
+                this._selectedItemIndexs.AddRange(newIndex);
             }
-            else if (this.isMultiSelect && (Control.ModifierKeys & Keys.Control) == Keys.Control)
+            else if (this._isMultiSelect && (Control.ModifierKeys & Keys.Control) == Keys.Control)
             {
                 // Ctrlキー押下
             }
             else
             {
                 // 修飾キー無し
-                this.selectedItemIndexs.Clear();
-                this.selectedItemIndexs.Add(newIndex);
+                this._selectedItemIndexs.Clear();
+                this._selectedItemIndexs.Add(newIndex);
             }
 
             this.EnsureVisible(newIndex);
 
-            this.foucusItemIndex = newIndex;
+            this._foucusItemIndex = newIndex;
         }
 
         private void PageDownKeyDown()
         {
-            if (this.itemCount == 0)
+            if (this._itemCount == 0)
             {
                 throw new InvalidOperationException("項目が存在しません。");
             }
 
-            var newIndex = this.foucusItemIndex + this.drawParameter.ColCount * (this.drawParameter.DrawLastRow - this.drawParameter.DrawFirstRow - 1);
-            if (newIndex >= this.itemCount)
+            var newIndex = this._foucusItemIndex + this._drawParameter.ColCount * (this._drawParameter.DrawLastRow - this._drawParameter.DrawFirstRow - 1);
+            if (newIndex >= this._itemCount)
             {
-                newIndex = this.itemCount - 1;
+                newIndex = this._itemCount - 1;
             }
 
-            if (this.isMultiSelect && (Control.ModifierKeys & Keys.Shift) == Keys.Shift)
+            if (this._isMultiSelect && (Control.ModifierKeys & Keys.Shift) == Keys.Shift)
             {
                 // Shiftキー押下
-                this.selectedItemIndexs.AddRange(newIndex);
+                this._selectedItemIndexs.AddRange(newIndex);
             }
-            else if (this.isMultiSelect && (Control.ModifierKeys & Keys.Control) == Keys.Control)
+            else if (this._isMultiSelect && (Control.ModifierKeys & Keys.Control) == Keys.Control)
             {
                 // Ctrlキー押下
             }
             else
             {
                 // 修飾キー無し
-                this.selectedItemIndexs.Clear();
-                this.selectedItemIndexs.Add(newIndex);
+                this._selectedItemIndexs.Clear();
+                this._selectedItemIndexs.Add(newIndex);
             }
 
             this.EnsureVisible(newIndex);
 
-            this.foucusItemIndex = newIndex;
+            this._foucusItemIndex = newIndex;
         }
 
         private void HomeKeyDown()
         {
-            if (this.itemCount == 0)
+            if (this._itemCount == 0)
             {
                 throw new InvalidOperationException("項目が存在しません。");
             }
 
             var newIndex = 0;
-            if (this.isMultiSelect && (Control.ModifierKeys & Keys.Shift) == Keys.Shift)
+            if (this._isMultiSelect && (Control.ModifierKeys & Keys.Shift) == Keys.Shift)
             {
                 // Shiftキー押下
-                this.selectedItemIndexs.AddRange(newIndex);
+                this._selectedItemIndexs.AddRange(newIndex);
             }
-            else if (this.isMultiSelect && (Control.ModifierKeys & Keys.Control) == Keys.Control)
+            else if (this._isMultiSelect && (Control.ModifierKeys & Keys.Control) == Keys.Control)
             {
                 // Ctrlキー押下
             }
             else
             {
                 // 修飾キー無し
-                this.selectedItemIndexs.Clear();
-                this.selectedItemIndexs.Add(newIndex);
+                this._selectedItemIndexs.Clear();
+                this._selectedItemIndexs.Add(newIndex);
             }
 
             this.EnsureVisible(newIndex);
 
-            this.foucusItemIndex = newIndex;
+            this._foucusItemIndex = newIndex;
         }
 
         private void EndKeyDown()
         {
-            if (this.itemCount == 0)
+            if (this._itemCount == 0)
             {
                 throw new InvalidOperationException("項目が存在しません。");
             }
 
-            var newIndex = this.itemCount - 1;
-            if (this.isMultiSelect && (Control.ModifierKeys & Keys.Shift) == Keys.Shift)
+            var newIndex = this._itemCount - 1;
+            if (this._isMultiSelect && (Control.ModifierKeys & Keys.Shift) == Keys.Shift)
             {
                 // Shiftキー押下
-                this.selectedItemIndexs.AddRange(newIndex);
+                this._selectedItemIndexs.AddRange(newIndex);
             }
-            else if (this.isMultiSelect && (Control.ModifierKeys & Keys.Control) == Keys.Control)
+            else if (this._isMultiSelect && (Control.ModifierKeys & Keys.Control) == Keys.Control)
             {
                 // Ctrlキー押下
             }
             else
             {
                 // 修飾キー無し
-                this.selectedItemIndexs.Clear();
-                this.selectedItemIndexs.Add(newIndex);
+                this._selectedItemIndexs.Clear();
+                this._selectedItemIndexs.Add(newIndex);
             }
 
             this.EnsureVisible(newIndex);
 
-            this.foucusItemIndex = newIndex;
+            this._foucusItemIndex = newIndex;
         }
 
         private void LeftMouseDown(int x, int y)
         {
             var ht = this.GetHitTestFromDrawPoint(x, y);
 
-            if (this.isMultiSelect && (Control.ModifierKeys & Keys.Shift) == Keys.Shift)
+            if (this._isMultiSelect && (Control.ModifierKeys & Keys.Shift) == Keys.Shift)
             {
                 // Shiftキー押下
                 if (ht.IsItem)
                 {
-                    this.selectedItemIndexs.AddRange(ht.ItemIndex);
-                    this.foucusItemIndex = ht.ItemIndex;
+                    this._selectedItemIndexs.AddRange(ht.ItemIndex);
+                    this._foucusItemIndex = ht.ItemIndex;
                 }
             }
-            else if (this.isMultiSelect && (Control.ModifierKeys & Keys.Control) == Keys.Control)
+            else if (this._isMultiSelect && (Control.ModifierKeys & Keys.Control) == Keys.Control)
             {
                 // Ctrlキー押下
                 if (ht.IsItem)
                 {
-                    if (!this.selectedItemIndexs.Contains(ht.ItemIndex))
+                    if (!this._selectedItemIndexs.Contains(ht.ItemIndex))
                     {
-                        this.selectedItemIndexs.Add(ht.ItemIndex);
+                        this._selectedItemIndexs.Add(ht.ItemIndex);
                     }
                     else
                     {
-                        this.selectedItemIndexs.Remove(ht.ItemIndex);
+                        this._selectedItemIndexs.Remove(ht.ItemIndex);
                     }
 
-                    this.foucusItemIndex = ht.ItemIndex;
+                    this._foucusItemIndex = ht.ItemIndex;
                 }
             }
             else
@@ -1355,20 +1355,20 @@ namespace SWF.UIComponent.FlowList
                 // 修飾キー無し
                 if (ht.IsItem)
                 {
-                    if (this.selectedItemIndexs.Contains(ht.ItemIndex))
+                    if (this._selectedItemIndexs.Contains(ht.ItemIndex))
                     {
-                        this.foucusItemIndex = ht.ItemIndex;
+                        this._foucusItemIndex = ht.ItemIndex;
                     }
                     else
                     {
-                        this.selectedItemIndexs.Clear();
-                        this.selectedItemIndexs.Add(ht.ItemIndex);
-                        this.foucusItemIndex = ht.ItemIndex;
+                        this._selectedItemIndexs.Clear();
+                        this._selectedItemIndexs.Add(ht.ItemIndex);
+                        this._foucusItemIndex = ht.ItemIndex;
                     }
                 }
                 else
                 {
-                    this.selectedItemIndexs.Clear();
+                    this._selectedItemIndexs.Clear();
                 }
             }
         }
@@ -1381,18 +1381,18 @@ namespace SWF.UIComponent.FlowList
             {
                 if (ht.IsSelected)
                 {
-                    this.foucusItemIndex = ht.ItemIndex;
+                    this._foucusItemIndex = ht.ItemIndex;
                 }
                 else
                 {
-                    this.selectedItemIndexs.Clear();
-                    this.selectedItemIndexs.Add(ht.ItemIndex);
-                    this.foucusItemIndex = ht.ItemIndex;
+                    this._selectedItemIndexs.Clear();
+                    this._selectedItemIndexs.Add(ht.ItemIndex);
+                    this._foucusItemIndex = ht.ItemIndex;
                 }
             }
             else
             {
-                this.selectedItemIndexs.Clear();
+                this._selectedItemIndexs.Clear();
             }
         }
 
@@ -1404,28 +1404,28 @@ namespace SWF.UIComponent.FlowList
             {
                 if (ht.IsSelected)
                 {
-                    this.foucusItemIndex = ht.ItemIndex;
+                    this._foucusItemIndex = ht.ItemIndex;
                 }
                 else
                 {
-                    this.selectedItemIndexs.Clear();
-                    this.selectedItemIndexs.Add(ht.ItemIndex);
-                    this.foucusItemIndex = ht.ItemIndex;
+                    this._selectedItemIndexs.Clear();
+                    this._selectedItemIndexs.Add(ht.ItemIndex);
+                    this._foucusItemIndex = ht.ItemIndex;
                 }
             }
             else
             {
-                this.selectedItemIndexs.Clear();
+                this._selectedItemIndexs.Clear();
             }
         }
 
         private void ContextMenuStrip_Opening(object sender, CancelEventArgs e)
         {
-            if (this.itemCount < 1)
+            if (this._itemCount < 1)
             {
                 e.Cancel = true;
             }
-            else if (this.rectangleSelection.IsBegun)
+            else if (this._rectangleSelection.IsBegun)
             {
                 e.Cancel = true;
             }

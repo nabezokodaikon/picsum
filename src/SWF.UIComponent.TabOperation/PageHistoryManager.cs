@@ -9,8 +9,8 @@ namespace SWF.UIComponent.TabOperation
     /// </summary>
     internal sealed class PageHistoryManager
     {
-        private readonly List<IPageParameter> list = [];
-        private int index = -1;
+        private readonly List<IPageParameter> _list = [];
+        private int _index = -1;
 
         /// <summary>
         /// 前のコンテンツへ移動できるか確認します。
@@ -19,7 +19,7 @@ namespace SWF.UIComponent.TabOperation
         {
             get
             {
-                return this.list.Count > 1 && this.index > 0;
+                return this._list.Count > 1 && this._index > 0;
             }
         }
 
@@ -30,7 +30,7 @@ namespace SWF.UIComponent.TabOperation
         {
             get
             {
-                return this.index < this.list.Count - 1;
+                return this._index < this._list.Count - 1;
             }
         }
 
@@ -43,49 +43,49 @@ namespace SWF.UIComponent.TabOperation
         {
             ArgumentNullException.ThrowIfNull(param, nameof(param));
 
-            if (this.list.Count == 0)
+            if (this._list.Count == 0)
             {
                 // 履歴が存在しない場合。
-                this.list.Add(param);
-                this.index = 0;
+                this._list.Add(param);
+                this._index = 0;
             }
-            else if (this.list.Count == 1)
+            else if (this._list.Count == 1)
             {
                 // 履歴が1件の場合。
-                if (this.list.First().Key != param.Key)
+                if (this._list.First().Key != param.Key)
                 {
-                    this.list.Add(param);
-                    this.index = 1;
+                    this._list.Add(param);
+                    this._index = 1;
                 }
             }
             else
             {
                 // 履歴が2件以上の場合。
-                if (this.index == 0)
+                if (this._index == 0)
                 {
                     // 最初の履歴の場合。
-                    var first = this.list.First();
-                    this.list.Clear();
-                    this.list.AddRange([first, param]);
-                    this.index = 1;
+                    var first = this._list.First();
+                    this._list.Clear();
+                    this._list.AddRange([first, param]);
+                    this._index = 1;
                 }
-                else if (this.list.Count - 1 == this.index)
+                else if (this._list.Count - 1 == this._index)
                 {
                     // 現在の履歴が最後の場合。
-                    if (this.list.Last().Key != param.Key)
+                    if (this._list.Last().Key != param.Key)
                     {
-                        this.list.Add(param);
-                        this.index++;
+                        this._list.Add(param);
+                        this._index++;
                     }
                 }
                 else
                 {
                     // 履歴が途中の場合。
-                    if (this.list[this.index].Key != param.Key)
+                    if (this._list[this._index].Key != param.Key)
                     {
-                        this.list.RemoveRange(this.index + 1, this.list.Count - this.index - 1);
-                        this.list.Add(param);
-                        this.index = this.list.Count - 1;
+                        this._list.RemoveRange(this._index + 1, this._list.Count - this._index - 1);
+                        this._list.Add(param);
+                        this._index = this._list.Count - 1;
                     }
                 }
             }
@@ -93,17 +93,17 @@ namespace SWF.UIComponent.TabOperation
 
         public PagePanel CreatePreview()
         {
-            if (this.list.Count < 1 ||
-                this.index - 1 < 0)
+            if (this._list.Count < 1 ||
+                this._index - 1 < 0)
             {
                 throw new IndexOutOfRangeException("コンテンツパラメータの前の履歴が存在しません。");
             }
 
-            var currentIndex = this.index;
-            var previewIndex = this.index - 1;
+            var currentIndex = this._index;
+            var previewIndex = this._index - 1;
 
-            var currentParameter = this.list[currentIndex];
-            var previewParameter = this.list[previewIndex];
+            var currentParameter = this._list[currentIndex];
+            var previewParameter = this._list[previewIndex];
 
             if (currentParameter.SourcesKey == previewParameter.SourcesKey
                 && currentParameter.SelectedFilePath != previewParameter.SelectedFilePath)
@@ -111,31 +111,31 @@ namespace SWF.UIComponent.TabOperation
                 previewParameter.SelectedFilePath = currentParameter.SelectedFilePath;
             }
 
-            this.index = previewIndex;
-            return this.list[this.index].CreatePage();
+            this._index = previewIndex;
+            return this._list[this._index].CreatePage();
         }
 
         public PagePanel CreateNext()
         {
-            if (this.list.Count < 1 ||
-                this.index + 1 > this.list.Count - 1)
+            if (this._list.Count < 1 ||
+                this._index + 1 > this._list.Count - 1)
             {
                 throw new IndexOutOfRangeException("コンテンツパラメータの次の履歴が存在しません。");
             }
 
-            this.index++;
-            return this.list[this.index].CreatePage();
+            this._index++;
+            return this._list[this._index].CreatePage();
         }
 
         public PagePanel CreateClone()
         {
-            if (this.list.Count < 1 ||
-                this.index > this.list.Count - 1)
+            if (this._list.Count < 1 ||
+                this._index > this._list.Count - 1)
             {
                 throw new IndexOutOfRangeException("コンテンツパラメータの現在の履歴が存在しません。");
             }
 
-            return this.list[this.index].CreatePage();
+            return this._list[this._index].CreatePage();
         }
     }
 }

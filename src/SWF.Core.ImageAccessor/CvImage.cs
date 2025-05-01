@@ -23,10 +23,10 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
-        private bool disposed = false;
-        private readonly string filePath;
-        private readonly PixelFormat pixelFormat;
-        private OpenCvSharp.Mat? mat;
+        private bool _disposed = false;
+        private readonly string _filePath;
+        private readonly PixelFormat _pixelFormat;
+        private OpenCvSharp.Mat? _mat;
 
         public readonly System.Drawing.Size Size;
         public readonly int Width;
@@ -38,9 +38,9 @@ namespace SWF.Core.ImageAccessor
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
             ArgumentNullException.ThrowIfNull(mat, nameof(mat));
 
-            this.filePath = filePath;
-            this.pixelFormat = pixelFormat;
-            this.mat = mat;
+            this._filePath = filePath;
+            this._pixelFormat = pixelFormat;
+            this._mat = mat;
             this.Width = mat.Width;
             this.Height = mat.Height;
             this.Size = new System.Drawing.Size(this.Width, this.Height);
@@ -51,9 +51,9 @@ namespace SWF.Core.ImageAccessor
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
-            this.filePath = filePath;
-            this.pixelFormat = PixelFormat.DontCare;
-            this.mat = null;
+            this._filePath = filePath;
+            this._pixelFormat = PixelFormat.DontCare;
+            this._mat = null;
             this.Width = size.Width;
             this.Height = size.Height;
             this.Size = size;
@@ -62,9 +62,9 @@ namespace SWF.Core.ImageAccessor
 
         private CvImage(System.Drawing.Size size)
         {
-            this.filePath = string.Empty;
-            this.pixelFormat = PixelFormat.DontCare;
-            this.mat = null;
+            this._filePath = string.Empty;
+            this._pixelFormat = PixelFormat.DontCare;
+            this._mat = null;
             this.Width = size.Width;
             this.Height = size.Height;
             this.Size = size;
@@ -73,18 +73,18 @@ namespace SWF.Core.ImageAccessor
 
         private void Dispose(bool disposing)
         {
-            if (this.disposed)
+            if (this._disposed)
             {
                 return;
             }
 
             if (disposing)
             {
-                this.mat?.Dispose();
-                this.mat = null;
+                this._mat?.Dispose();
+                this._mat = null;
             }
 
-            this.disposed = true;
+            this._disposed = true;
         }
 
         public void Dispose()
@@ -114,34 +114,34 @@ namespace SWF.Core.ImageAccessor
 
         private Bitmap GetResizeImage(System.Drawing.Size size, OpenCvSharp.InterpolationFlags flag)
         {
-            if (this.mat == null)
+            if (this._mat == null)
             {
                 throw new NullReferenceException("MatがNullです。");
             }
 
             try
             {
-                return OpenCVUtil.Resize(this.mat, size.Width, size.Height, flag);
+                return OpenCVUtil.Resize(this._mat, size.Width, size.Height, flag);
             }
             catch (NotSupportedException ex)
             {
-                throw new ImageUtilException(CreateErrorMessage(this.filePath), ex);
+                throw new ImageUtilException(CreateErrorMessage(this._filePath), ex);
             }
             catch (ArgumentNullException ex)
             {
-                throw new ImageUtilException(CreateErrorMessage(this.filePath), ex);
+                throw new ImageUtilException(CreateErrorMessage(this._filePath), ex);
             }
             catch (ArgumentException ex)
             {
-                throw new ImageUtilException(CreateErrorMessage(this.filePath), ex);
+                throw new ImageUtilException(CreateErrorMessage(this._filePath), ex);
             }
             catch (ObjectDisposedException ex)
             {
-                throw new ImageUtilException(CreateErrorMessage(this.filePath), ex);
+                throw new ImageUtilException(CreateErrorMessage(this._filePath), ex);
             }
             catch (NotImplementedException ex)
             {
-                throw new ImageUtilException(CreateErrorMessage(this.filePath), ex);
+                throw new ImageUtilException(CreateErrorMessage(this._filePath), ex);
             }
         }
 
@@ -149,7 +149,7 @@ namespace SWF.Core.ImageAccessor
         {
             ArgumentNullException.ThrowIfNull(g, nameof(g));
 
-            if (this.mat == null)
+            if (this._mat == null)
             {
                 throw new NullReferenceException("MatがNullです。");
             }
@@ -158,30 +158,30 @@ namespace SWF.Core.ImageAccessor
 
             try
             {
-                using (var bmp = this.mat.ToBitmap(this.pixelFormat))
+                using (var bmp = this._mat.ToBitmap(this._pixelFormat))
                 {
                     g.DrawImage(bmp, destRect, srcRect, GraphicsUnit.Pixel);
                 }
             }
             catch (NotSupportedException ex)
             {
-                throw new ImageUtilException(CreateErrorMessage(this.filePath), ex);
+                throw new ImageUtilException(CreateErrorMessage(this._filePath), ex);
             }
             catch (ArgumentNullException ex)
             {
-                throw new ImageUtilException(CreateErrorMessage(this.filePath), ex);
+                throw new ImageUtilException(CreateErrorMessage(this._filePath), ex);
             }
             catch (ArgumentException ex)
             {
-                throw new ImageUtilException(CreateErrorMessage(this.filePath), ex);
+                throw new ImageUtilException(CreateErrorMessage(this._filePath), ex);
             }
             catch (ObjectDisposedException ex)
             {
-                throw new ImageUtilException(CreateErrorMessage(this.filePath), ex);
+                throw new ImageUtilException(CreateErrorMessage(this._filePath), ex);
             }
             catch (NotImplementedException ex)
             {
-                throw new ImageUtilException(CreateErrorMessage(this.filePath), ex);
+                throw new ImageUtilException(CreateErrorMessage(this._filePath), ex);
             }
         }
 
@@ -199,7 +199,7 @@ namespace SWF.Core.ImageAccessor
         {
             ArgumentNullException.ThrowIfNull(g, nameof(g));
 
-            if (this.mat == null)
+            if (this._mat == null)
             {
                 throw new NullReferenceException("MatがNullです。");
             }
@@ -208,7 +208,7 @@ namespace SWF.Core.ImageAccessor
 
             try
             {
-                using (var bmp = OpenCVUtil.Resize(this.mat, (int)destRect.Width, (int)destRect.Height, flag))
+                using (var bmp = OpenCVUtil.Resize(this._mat, (int)destRect.Width, (int)destRect.Height, flag))
                 {
                     g.DrawImage(bmp, destRect,
                         new RectangleF(0, 0, destRect.Width, destRect.Height), GraphicsUnit.Pixel);
@@ -216,23 +216,23 @@ namespace SWF.Core.ImageAccessor
             }
             catch (NotSupportedException ex)
             {
-                throw new ImageUtilException(CreateErrorMessage(this.filePath), ex);
+                throw new ImageUtilException(CreateErrorMessage(this._filePath), ex);
             }
             catch (ArgumentNullException ex)
             {
-                throw new ImageUtilException(CreateErrorMessage(this.filePath), ex);
+                throw new ImageUtilException(CreateErrorMessage(this._filePath), ex);
             }
             catch (ArgumentException ex)
             {
-                throw new ImageUtilException(CreateErrorMessage(this.filePath), ex);
+                throw new ImageUtilException(CreateErrorMessage(this._filePath), ex);
             }
             catch (ObjectDisposedException ex)
             {
-                throw new ImageUtilException(CreateErrorMessage(this.filePath), ex);
+                throw new ImageUtilException(CreateErrorMessage(this._filePath), ex);
             }
             catch (NotImplementedException ex)
             {
-                throw new ImageUtilException(CreateErrorMessage(this.filePath), ex);
+                throw new ImageUtilException(CreateErrorMessage(this._filePath), ex);
             }
         }
     }

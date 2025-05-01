@@ -32,10 +32,10 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         public event EventHandler IndexSliderValueChanged;
         public event EventHandler IndexSliderValueChanging;
 
-        private bool disposed = false;
-        private readonly Font defaultFont
+        private bool _disposed = false;
+        private readonly Font _defaultFont
             = new("Yu Gothic UI", 12F, GraphicsUnit.Pixel);
-        private readonly Dictionary<float, Font> fontCache = [];
+        private readonly Dictionary<float, Font> _fontCache = [];
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public int IndexSliderValue
@@ -288,24 +288,24 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
         protected override void Dispose(bool disposing)
         {
-            if (this.disposed)
+            if (this._disposed)
             {
                 return;
             }
 
             if (disposing)
             {
-                foreach (var font in this.fontCache.Values)
+                foreach (var font in this._fontCache.Values)
                 {
                     font.Dispose();
                 }
-                this.fontCache.Clear();
-                this.defaultFont.Dispose();
+                this._fontCache.Clear();
+                this._defaultFont.Dispose();
 
                 this.components?.Dispose();
             }
 
-            this.disposed = true;
+            this._disposed = true;
 
             base.Dispose(disposing);
         }
@@ -320,16 +320,16 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
         private Font GetFont(float scale)
         {
-            if (this.fontCache.TryGetValue(scale, out var font))
+            if (this._fontCache.TryGetValue(scale, out var font))
             {
                 return font;
             }
 
             var newFont = new Font(
-                this.defaultFont.FontFamily,
-                this.defaultFont.Size * scale,
-                this.defaultFont.Unit);
-            this.fontCache.Add(scale, newFont);
+                this._defaultFont.FontFamily,
+                this._defaultFont.Size * scale,
+                this._defaultFont.Unit);
+            this._fontCache.Add(scale, newFont);
             return newFont;
         }
 

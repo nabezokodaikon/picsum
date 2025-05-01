@@ -33,20 +33,20 @@ namespace SWF.UIComponent.TabOperation
         private static readonly Pen MOUSE_POINT_PEN = new(Color.Black, 2f);
         private static readonly Pen NORMAL_PEN = new(Color.LightGray, 2f);
 
-        private float width;
-        private float height;
-        private PointF drawPoint;
-        private readonly TabSwitch tabSwitch;
+        private float _width;
+        private float _height;
+        private PointF _drawPoint;
+        private readonly TabSwitch _tabSwitch;
 
         public float X
         {
             get
             {
-                return this.drawPoint.X;
+                return this._drawPoint.X;
             }
             set
             {
-                this.drawPoint.X = value;
+                this._drawPoint.X = value;
             }
         }
 
@@ -54,11 +54,11 @@ namespace SWF.UIComponent.TabOperation
         {
             get
             {
-                return this.drawPoint.Y;
+                return this._drawPoint.Y;
             }
             set
             {
-                this.drawPoint.Y = value;
+                this._drawPoint.Y = value;
             }
         }
 
@@ -66,11 +66,11 @@ namespace SWF.UIComponent.TabOperation
         {
             get
             {
-                return this.drawPoint.X;
+                return this._drawPoint.X;
             }
             set
             {
-                this.drawPoint.X = value;
+                this._drawPoint.X = value;
             }
         }
 
@@ -78,11 +78,11 @@ namespace SWF.UIComponent.TabOperation
         {
             get
             {
-                return this.drawPoint.Y;
+                return this._drawPoint.Y;
             }
             set
             {
-                this.drawPoint.Y = value;
+                this._drawPoint.Y = value;
             }
         }
 
@@ -90,11 +90,11 @@ namespace SWF.UIComponent.TabOperation
         {
             get
             {
-                return this.drawPoint.X + this.width;
+                return this._drawPoint.X + this._width;
             }
             set
             {
-                this.drawPoint.X = value - this.width;
+                this._drawPoint.X = value - this._width;
             }
         }
 
@@ -102,11 +102,11 @@ namespace SWF.UIComponent.TabOperation
         {
             get
             {
-                return this.drawPoint.Y + this.height;
+                return this._drawPoint.Y + this._height;
             }
             set
             {
-                this.drawPoint.Y = value - this.height;
+                this._drawPoint.Y = value - this._height;
             }
         }
 
@@ -114,7 +114,7 @@ namespace SWF.UIComponent.TabOperation
         {
             get
             {
-                return this.width;
+                return this._width;
             }
         }
 
@@ -122,7 +122,7 @@ namespace SWF.UIComponent.TabOperation
         {
             get
             {
-                return this.height;
+                return this._height;
             }
         }
 
@@ -130,7 +130,7 @@ namespace SWF.UIComponent.TabOperation
         {
             ArgumentNullException.ThrowIfNull(tabSwitch, nameof(tabSwitch));
 
-            this.tabSwitch = tabSwitch;
+            this._tabSwitch = tabSwitch;
         }
 
         public bool Page(PointF p)
@@ -140,10 +140,10 @@ namespace SWF.UIComponent.TabOperation
 
         public bool Page(float x, float y)
         {
-            var defaultRect = GetDefaultRectangle(this.tabSwitch);
-            this.width = defaultRect.Width;
-            this.height = defaultRect.Height;
-            var rect = new RectangleF(this.drawPoint.X, this.drawPoint.Y, this.width, this.height);
+            var defaultRect = GetDefaultRectangle(this._tabSwitch);
+            this._width = defaultRect.Width;
+            this._height = defaultRect.Height;
+            var rect = new RectangleF(this._drawPoint.X, this._drawPoint.Y, this._width, this._height);
             return rect.Contains(x, y);
         }
 
@@ -163,10 +163,10 @@ namespace SWF.UIComponent.TabOperation
 
         private void Draw(Graphics g, bool isMousePoint)
         {
-            var scale = GetScale(this.tabSwitch);
+            var scale = GetScale(this._tabSwitch);
             var OFFSET = 6.75f * scale;
 
-            var rect = new RectangleF(this.drawPoint.X, this.drawPoint.Y, this.width, this.height);
+            var rect = new RectangleF(this._drawPoint.X, this._drawPoint.Y, this._width, this._height);
             var bgRect = new RectangleF(rect.Left + OFFSET / 2f, rect.Top + OFFSET / 2f, rect.Width - OFFSET, rect.Height - OFFSET);
             var vp1 = new PointF(bgRect.Left + OFFSET + bgRect.Width / 6f + 0.75f, bgRect.Top + OFFSET);
             var vp2 = new PointF(bgRect.Left + OFFSET + bgRect.Width / 6f + 0.75f, bgRect.Bottom - OFFSET);
