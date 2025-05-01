@@ -740,7 +740,7 @@ namespace SWF.UIComponent.TabOperation
                 this.SetMousePointTab(tab);
                 this.InvalidateHeader();
 
-                if (tab == null && e.Button == MouseButtons.Left)
+                if (tab == null && !this.addTabButtonDrawArea.Page(e.X, e.Y) && e.Button == MouseButtons.Left)
                 {
                     WinApiMembers.ReleaseCapture();
                     _ = WinApiMembers.SendMessage(form.Handle, WinApiMembers.WM_NCLBUTTONDOWN, WinApiMembers.HTCAPTION, 0);
