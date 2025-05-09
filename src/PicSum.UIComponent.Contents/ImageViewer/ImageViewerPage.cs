@@ -102,6 +102,8 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.InitializeComponent();
 
             this.checkPatternPanel.Resize += this.CheckPatternPanel_Resize;
+            this.leftImagePanel.MouseMove += this.ImagePanel_MouseMove;
+            this.rightImagePanel.MouseMove += this.ImagePanel_MouseMove;
 
             this.SetDisplayMode(ImageViewerPageConfig.Instance.ImageDisplayMode);
             this.SetSizeMode(ImageViewerPageConfig.Instance.ImageSizeMode);
@@ -142,9 +144,9 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
                     this.checkPatternPanel.SetBounds(
                         0,
-                        this.toolBar.Bottom,
+                        0,
                         this.Width,
-                        baseHeigth - this.toolBar.Bottom);
+                        baseHeigth);
 
                     this.toolBar.SetControlsBounds(scale);
 
@@ -1012,6 +1014,19 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             if (!this.CanOperation)
             {
                 return;
+            }
+        }
+
+        private void ImagePanel_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (e.Y <= this.toolBar.Bottom)
+            {
+                this.toolBar.Visible = true;
+                this.toolBar.BringToFront();
+            }
+            else
+            {
+                this.toolBar.Visible = false;
             }
         }
 

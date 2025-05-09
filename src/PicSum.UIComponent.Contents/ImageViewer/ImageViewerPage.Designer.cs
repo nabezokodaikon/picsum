@@ -90,6 +90,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             // toolBar
             // 
             this.toolBar.IsDrawBottomBorderLine = true;
+            this.toolBar.Visible = false;
             this.toolBar.DoublePreviewButtonClick += new System.EventHandler(this.DoublePreviewIndexToolStripButton_Click);
             this.toolBar.DoubleNextButtonClick += new System.EventHandler(this.DoubleNextIndexToolStripButton_Click);
             this.toolBar.SinglePreviewButtonClick += new System.EventHandler(this.SinglePreviewIndexToolStripButton_Click);
