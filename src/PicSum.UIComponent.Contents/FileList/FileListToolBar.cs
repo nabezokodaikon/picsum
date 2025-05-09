@@ -39,6 +39,7 @@ namespace PicSum.UIComponent.Contents.FileList
         private readonly Font _defaultFont
             = new("Yu Gothic UI", 12F, GraphicsUnit.Pixel);
         private readonly Dictionary<float, Font> _fontCache = [];
+        private bool _isShowingViewButtonDropDown = false;
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool FolderMenuItemChecked
@@ -219,6 +220,8 @@ namespace PicSum.UIComponent.Contents.FileList
             this.UpdateStyles();
 
             this.InitializeComponent();
+
+            this.viewButton.LostFocus += this.ViewButton_LostFocus;
         }
 
         public void SetControlsBounds(float scale)
@@ -351,10 +354,24 @@ namespace PicSum.UIComponent.Contents.FileList
             return newFont;
         }
 
+        private void ViewButton_LostFocus(object sender, EventArgs e)
+        {
+            this._isShowingViewButtonDropDown = false;
+        }
+
         private void ViewButton_MouseClick(object sender, MouseEventArgs e)
         {
-            this.viewMenu.Show(
-                this, new Point(this.viewButton.Left, this.viewButton.Bottom));
+            if (this._isShowingViewButtonDropDown)
+            {
+                this._isShowingViewButtonDropDown = false;
+                this.viewMenu.Close();
+            }
+            else
+            {
+                this._isShowingViewButtonDropDown = true;
+                this.viewMenu.Show(
+                    this, new Point(this.viewButton.Left, this.viewButton.Bottom));
+            }
         }
 
         private void NameSortButton_MouseClick(object sender, MouseEventArgs e)
@@ -379,21 +396,25 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private void FolderMenuItem_Click(object sender, EventArgs e)
         {
+            this._isShowingViewButtonDropDown = false;
             this.FolderMenuItemClick?.Invoke(this, EventArgs.Empty);
         }
 
         private void ImageFileMenuItem_Click(object sender, EventArgs e)
         {
+            this._isShowingViewButtonDropDown = false;
             this.ImageFileMenuItemClick?.Invoke(this, EventArgs.Empty);
         }
 
         private void OtherFileMenuItem_Click(object sender, EventArgs e)
         {
+            this._isShowingViewButtonDropDown = false;
             this.OtherFileMenuItemClick?.Invoke(this, EventArgs.Empty);
         }
 
         private void FileNameMenuItem_Click(object sender, EventArgs e)
         {
+            this._isShowingViewButtonDropDown = false;
             this.FileNameMenuItemClick?.Invoke(this, EventArgs.Empty);
         }
 

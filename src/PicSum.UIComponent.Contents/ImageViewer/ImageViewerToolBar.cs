@@ -36,6 +36,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         private readonly Font _defaultFont
             = new("Yu Gothic UI", 12F, GraphicsUnit.Pixel);
         private readonly Dictionary<float, Font> _fontCache = [];
+        private bool _isShowingMenuButtonDropDown = false;
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public int IndexSliderValue
@@ -216,6 +217,9 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.UpdateStyles();
 
             this.InitializeComponent();
+
+            this.viewButton.LostFocus += this.MenuButton_LostFocus;
+            this.sizeButton.LostFocus += this.MenuButton_LostFocus;
         }
 
         public void SetControlsBounds(float scale)
@@ -333,16 +337,39 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             return newFont;
         }
 
+        private void MenuButton_LostFocus(object sender, EventArgs e)
+        {
+            this._isShowingMenuButtonDropDown = false;
+        }
+
         private void ViewButton_MouseClick(object sender, MouseEventArgs e)
         {
-            this.viewMenu.Show(
-                this, new Point(this.viewButton.Left, this.viewButton.Bottom));
+            if (this._isShowingMenuButtonDropDown)
+            {
+                this._isShowingMenuButtonDropDown = false;
+                this.viewMenu.Close();
+            }
+            else
+            {
+                this._isShowingMenuButtonDropDown = true;
+                this.viewMenu.Show(
+                    this, new Point(this.viewButton.Left, this.viewButton.Bottom));
+            }
         }
 
         private void SizeButton_MouseClick(object sender, MouseEventArgs e)
         {
-            this.sizeMenu.Show(
-                this, new Point(this.sizeButton.Left, this.sizeButton.Bottom));
+            if (this._isShowingMenuButtonDropDown)
+            {
+                this._isShowingMenuButtonDropDown = false;
+                this.sizeMenu.Close();
+            }
+            else
+            {
+                this._isShowingMenuButtonDropDown = true;
+                this.sizeMenu.Show(
+                    this, new Point(this.sizeButton.Left, this.sizeButton.Bottom));
+            }
         }
 
         private void DoubleNextButton_MouseClick(object sender, MouseEventArgs e)
