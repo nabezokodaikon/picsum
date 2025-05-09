@@ -118,17 +118,17 @@ namespace SWF.Core.ImageAccessor
                 scale = Math.Min(destRect.Width / srcSize.Width, destRect.Height / srcSize.Height);
             }
 
-            float w;
-            float h;
-            if (srcSize.Width > srcSize.Height)
+            var w = srcSize.Width * scale;
+            var h = srcSize.Height * scale;
+            if (w > h && w > offset)
             {
-                w = srcSize.Width * scale - offset;
-                h = srcSize.Height * scale - (offset * (srcSize.Height / (float)srcSize.Width));
+                w -= offset;
+                h -= offset * (srcSize.Height / (float)srcSize.Width);
             }
-            else
+            else if (w <= h && h > offset)
             {
-                w = srcSize.Width * scale - (offset * (srcSize.Width / (float)srcSize.Height));
-                h = srcSize.Height * scale - offset;
+                w -= offset * (srcSize.Width / (float)srcSize.Height);
+                h -= offset;
             }
 
             var x = destRect.X + (destRect.Width - w) / 2f;
