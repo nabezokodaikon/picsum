@@ -56,6 +56,14 @@ namespace PicSum.Main
                         typeof(MessagePack.CompositeResolverAttribute),
                         typeof(NLog.Attributes.LogLevelTypeConverter),
 
+                        typeof(HeyRed.ImageSharp.Heif.DecodingMode),
+                        typeof(ImageMagick.AlphaOption),
+                        typeof(LibHeifSharp.AuxiliaryImageType),
+                        typeof(OpenCvSharp.AccessFlag),
+                        typeof(OpenCvSharp.Extensions.BitmapConverter),
+                        typeof(SixLabors.ImageSharp.Advanced.AdvancedImageExtensions),
+                        typeof(Svg.AttributeEventArgs),
+
                         typeof(PicSum.DatabaseAccessor.Connection.FileInfoDB),
                         typeof(PicSum.Job.Common.IThumbnailCacher),
                         typeof(PicSum.UIComponent.AddressBar.AddressBar),
