@@ -1023,6 +1023,15 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             {
                 this.toolBar.Visible = true;
                 this.toolBar.BringToFront();
+
+                this.toolBar.SuspendLayout();
+                this.toolBar.SetBounds(
+                    0,
+                    0,
+                    this.Width,
+                    (int)(TOOL_BAR_DEFAULT_BOUNDS.Height * this._scale));
+                this.toolBar.SetControlsBounds(this._scale);
+                this.toolBar.ResumeLayout(false);
             }
             else
             {
