@@ -32,7 +32,7 @@ namespace PicSum.Job.Jobs
             this.CheckCancel();
 
             var mainFilePath = parameter.FilePathList[mainIndex];
-            var mainSize = logic.GetImageSize(mainFilePath);
+            var mainSize = logic.GetImageSize(mainFilePath, parameter.ZoomValue);
             this.CheckCancel();
 
             if (parameter.ImageDisplayMode != ImageDisplayMode.Single
@@ -46,7 +46,7 @@ namespace PicSum.Job.Jobs
                 }
 
                 var subFilePath = parameter.FilePathList[subtIndex];
-                var subSize = logic.GetImageSize(subFilePath);
+                var subSize = logic.GetImageSize(subFilePath, parameter.ZoomValue);
                 this.CheckCancel();
 
                 if (subFilePath != mainFilePath

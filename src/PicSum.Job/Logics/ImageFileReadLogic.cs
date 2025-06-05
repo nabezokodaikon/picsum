@@ -81,11 +81,12 @@ namespace PicSum.Job.Logics
             }
         }
 
-        internal Size GetImageSize(string filePath)
+        internal Size GetImageSize(string filePath, float zoomValue)
         {
             try
             {
-                return Instance<IImageFileSizeCacher>.Value.GetOrCreate(filePath).Size;
+                var size = Instance<IImageFileSizeCacher>.Value.GetOrCreate(filePath).Size;
+                return new Size((int)(size.Width * zoomValue), (int)(size.Height * zoomValue));
             }
             catch (FileUtilException ex)
             {
@@ -127,7 +128,7 @@ namespace PicSum.Job.Logics
             else
             {
                 var currentFilePath = files[currentIndex];
-                var currentImageSize = this.GetImageSize(currentFilePath);
+                var currentImageSize = this.GetImageSize(currentFilePath, parameter.ZoomValue);
                 if (currentImageSize != ImageUtil.EMPTY_SIZE
                     && currentImageSize.Width <= currentImageSize.Height)
                 {
@@ -138,7 +139,7 @@ namespace PicSum.Job.Logics
                     }
 
                     var nextFilePath = files[nextIndex];
-                    var nextImageSize = this.GetImageSize(nextFilePath);
+                    var nextImageSize = this.GetImageSize(nextFilePath, parameter.ZoomValue);
                     if (nextImageSize != ImageUtil.EMPTY_SIZE
                         && nextImageSize.Width <= nextImageSize.Height)
                     {
@@ -204,7 +205,7 @@ namespace PicSum.Job.Logics
                 }
 
                 var prevFilePath1 = files[prevIndex1];
-                var prevImageSize1 = this.GetImageSize(prevFilePath1);
+                var prevImageSize1 = this.GetImageSize(prevFilePath1, parameter.ZoomValue);
                 if (prevImageSize1 != ImageUtil.EMPTY_SIZE
                     && prevImageSize1.Width <= prevImageSize1.Height)
                 {
@@ -215,7 +216,7 @@ namespace PicSum.Job.Logics
                     }
 
                     var prevFilePath2 = files[prevIndex2];
-                    var prevImageSize2 = this.GetImageSize(prevFilePath2);
+                    var prevImageSize2 = this.GetImageSize(prevFilePath2, parameter.ZoomValue);
                     if (prevImageSize2 != ImageUtil.EMPTY_SIZE
                         && prevImageSize2.Width <= prevImageSize2.Height)
                     {
