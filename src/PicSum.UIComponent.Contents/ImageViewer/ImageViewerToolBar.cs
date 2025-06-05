@@ -1,3 +1,4 @@
+using SWF.Core.Base;
 using SWF.UIComponent.Core;
 using System;
 using System.Collections.Generic;
@@ -27,6 +28,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         public event EventHandler OriginalSizeMenuItemClick;
         public event EventHandler FitWindowMenuItemClick;
         public event EventHandler FitWindowLargeOnlyMenuItemClick;
+        public event EventHandler<ZoomMenuItemClickEventArgs> ZoomMenuItemClick;
 
         public event EventHandler IndexSliderBeginValueChange;
         public event EventHandler IndexSliderValueChanged;
@@ -322,6 +324,37 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.filePathToolTip.Show(filePath, this, p.X, this.Height, 5000);
         }
 
+        public ZoomMenuItem[] GetZoomMenuItems()
+        {
+            return [
+                this.zoomMenuItem01,
+                this.zoomMenuItem02,
+                this.zoomMenuItem03,
+                this.zoomMenuItem04,
+                this.zoomMenuItem05,
+                this.zoomMenuItem06,
+                this.zoomMenuItem07,
+                this.zoomMenuItem08,
+                this.zoomMenuItem09,
+                this.zoomMenuItem10,
+                this.zoomMenuItem11,
+                this.zoomMenuItem12,
+            ];
+        }
+
+        public float GetZoomValue()
+        {
+            foreach (var item in this.GetZoomMenuItems())
+            {
+                if (item.Checked)
+                {
+                    return item.ZoomValue;
+                }
+            }
+
+            return AppConstants.DEFAULT_ZOOM_VALUE;
+        }
+
         private Font GetFont(float scale)
         {
             if (this._fontCache.TryGetValue(scale, out var font))
@@ -440,6 +473,11 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         private void FitWindowLargeOnlyMenuItem_Click(object sender, EventArgs e)
         {
             this.FitWindowLargeOnlyMenuItemClick?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void ZoomMenuItem_Click(object sender, ZoomMenuItemClickEventArgs e)
+        {
+            this.ZoomMenuItemClick?.Invoke(this, e);
         }
     }
 }

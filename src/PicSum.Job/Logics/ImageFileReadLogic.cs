@@ -14,13 +14,13 @@ namespace PicSum.Job.Logics
         : AbstractAsyncLogic(job)
     {
         internal ImageFileReadResult CreateResult(
-            int index, string filePath, bool isMain, bool hasSub)
+            int index, string filePath, bool isMain, bool hasSub, float zoomValue)
         {
             var image = CvImage.EMPTY;
 
             try
             {
-                image = this.ReadImageFile(filePath);
+                image = this.ReadImageFile(filePath, zoomValue);
 
                 this.CheckCancel();
 
@@ -63,11 +63,11 @@ namespace PicSum.Job.Logics
             };
         }
 
-        internal CvImage ReadImageFile(string filePath)
+        internal CvImage ReadImageFile(string filePath, float zoomValue)
         {
             try
             {
-                return Instance<IImageFileCacher>.Value.GetCvImage(filePath);
+                return Instance<IImageFileCacher>.Value.GetCvImage(filePath, zoomValue);
             }
             catch (FileUtilException ex)
             {

@@ -14,5 +14,6 @@ namespace PicSum.Job.Parameters
         public ImageDisplayMode ImageDisplayMode { get; set; }
         public bool? IsNext { get; set; }
         public bool IsForceSingle { get; set; }
+        public float ZoomValue { get; set; }
     }
 }

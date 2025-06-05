@@ -1,3 +1,4 @@
+using SWF.Core.Base;
 using System;
 using System.Windows.Forms;
 
@@ -34,6 +35,21 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.originalSizeMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fitWindowMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fitWindowLargeOnlyMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+
+            this.sizeMenuSeparator = new ToolStripSeparator();
+            this.zoomMenuItem01 = new ZoomMenuItem(0.1f, "10%");
+            this.zoomMenuItem02 = new ZoomMenuItem(0.25f, "25%");
+            this.zoomMenuItem03 = new ZoomMenuItem(0.33f, "33%");
+            this.zoomMenuItem04 = new ZoomMenuItem(0.5f, "50%");
+            this.zoomMenuItem05 = new ZoomMenuItem(0.66f, "66%");
+            this.zoomMenuItem06 = new ZoomMenuItem(0.75f, "75%");
+            this.zoomMenuItem07 = new ZoomMenuItem(AppConstants.DEFAULT_ZOOM_VALUE, "100%");
+            this.zoomMenuItem08 = new ZoomMenuItem(1.25f, "125%");
+            this.zoomMenuItem09 = new ZoomMenuItem(1.5f, "150%");
+            this.zoomMenuItem10 = new ZoomMenuItem(2f, "200%");
+            this.zoomMenuItem11 = new ZoomMenuItem(3f, "300%");
+            this.zoomMenuItem12 = new ZoomMenuItem(5f, "500%");
+
             this.filePathToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.viewMenu.SuspendLayout();
             this.sizeMenu.SuspendLayout();
@@ -108,7 +124,25 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             // sizeMenu
             // 
             this.sizeMenu.Font = new System.Drawing.Font("Yu Gothic UI", 10F);
-            this.sizeMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { this.originalSizeMenuItem, this.fitWindowMenuItem, this.fitWindowLargeOnlyMenuItem });
+            this.sizeMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[]
+            {
+                this.originalSizeMenuItem,
+                this.fitWindowMenuItem,
+                this.fitWindowLargeOnlyMenuItem,
+                this.sizeMenuSeparator,
+                this.zoomMenuItem01,
+                this.zoomMenuItem02,
+                this.zoomMenuItem03,
+                this.zoomMenuItem04,
+                this.zoomMenuItem05,
+                this.zoomMenuItem06,
+                this.zoomMenuItem07,
+                this.zoomMenuItem08,
+                this.zoomMenuItem09,
+                this.zoomMenuItem10,
+                this.zoomMenuItem11,
+                this.zoomMenuItem12,
+            });
             this.sizeMenu.Name = "viewMenu";
             this.sizeMenu.Size = new System.Drawing.Size(287, 76);
             // 
@@ -132,6 +166,21 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.fitWindowLargeOnlyMenuItem.Size = new System.Drawing.Size(286, 24);
             this.fitWindowLargeOnlyMenuItem.Text = "Fit To Window (Large Image Only)";
             this.fitWindowLargeOnlyMenuItem.Click += this.FitWindowLargeOnlyMenuItem_Click;
+            // 
+            // zoomMenuItem
+            // 
+            this.zoomMenuItem01.Click += this.ZoomMenuItem_Click;
+            this.zoomMenuItem02.Click += this.ZoomMenuItem_Click;
+            this.zoomMenuItem03.Click += this.ZoomMenuItem_Click;
+            this.zoomMenuItem04.Click += this.ZoomMenuItem_Click;
+            this.zoomMenuItem05.Click += this.ZoomMenuItem_Click;
+            this.zoomMenuItem06.Click += this.ZoomMenuItem_Click;
+            this.zoomMenuItem07.Click += this.ZoomMenuItem_Click;
+            this.zoomMenuItem08.Click += this.ZoomMenuItem_Click;
+            this.zoomMenuItem09.Click += this.ZoomMenuItem_Click;
+            this.zoomMenuItem10.Click += this.ZoomMenuItem_Click;
+            this.zoomMenuItem11.Click += this.ZoomMenuItem_Click;
+            this.zoomMenuItem12.Click += this.ZoomMenuItem_Click;
             // 
             // filePathToolTip
             // 
@@ -174,6 +223,21 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         private System.Windows.Forms.ToolStripMenuItem originalSizeMenuItem;
         private System.Windows.Forms.ToolStripMenuItem fitWindowMenuItem;
         private System.Windows.Forms.ToolStripMenuItem fitWindowLargeOnlyMenuItem;
+
+        private System.Windows.Forms.ToolStripSeparator sizeMenuSeparator;
+        private ZoomMenuItem zoomMenuItem01;
+        private ZoomMenuItem zoomMenuItem02;
+        private ZoomMenuItem zoomMenuItem03;
+        private ZoomMenuItem zoomMenuItem04;
+        private ZoomMenuItem zoomMenuItem05;
+        private ZoomMenuItem zoomMenuItem06;
+        private ZoomMenuItem zoomMenuItem07;
+        private ZoomMenuItem zoomMenuItem08;
+        private ZoomMenuItem zoomMenuItem09;
+        private ZoomMenuItem zoomMenuItem10;
+        private ZoomMenuItem zoomMenuItem11;
+        private ZoomMenuItem zoomMenuItem12;
+
         private System.Windows.Forms.ToolTip filePathToolTip;
     }
 }

@@ -13,6 +13,8 @@ namespace SWF.Core.Base
         public const string MUTEX_NAME = "11d9bca9";
         public const string PIPE_NAME = "be752c43";
 
+        public const float DEFAULT_ZOOM_VALUE = 1f;
+
         //private static readonly Lazy<bool> IS_RUNNING_AS_UWP
         //    = new(IsRunningAsUwp, LazyThreadSafetyMode.ExecutionAndPublication);
         public static readonly Lazy<string> APPLICATION_DIRECTORY
@@ -142,7 +144,7 @@ namespace SWF.Core.Base
     {
         Original = 0,
         FitAllImage = 1,
-        FitOnlyBigImage = 2
+        FitOnlyBigImage = 2,
     }
 
     /// <summary>

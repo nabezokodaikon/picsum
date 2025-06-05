@@ -8,6 +8,24 @@ namespace SWF.Core.ImageAccessor
     [SupportedOSPlatform("windows10.0.17763.0")]
     internal static class OpenCVUtil
     {
+        public static Mat Zoom(Bitmap srcBmp, float zoomValue, InterpolationFlags flag)
+        {
+            ArgumentNullException.ThrowIfNull(srcBmp, nameof(srcBmp));
+
+            using (TimeMeasuring.Run(false, "OpenCVUtil.Resize By Mat"))
+            {
+                using (var srcMat = srcBmp.ToMat())
+                {
+                    var size = new OpenCvSharp.Size(
+                        (int)(srcBmp.Width * zoomValue),
+                        (int)(srcBmp.Height * zoomValue));
+                    var destMat = new Mat(size, srcMat.Type());
+                    Cv2.Resize(srcMat, destMat, size, 0, 0, flag);
+                    return destMat;
+                }
+            }
+        }
+
         public static Bitmap Resize(Mat srcMat, int newWidth, int newHeight, InterpolationFlags flag)
         {
             ArgumentNullException.ThrowIfNull(srcMat, nameof(srcMat));
@@ -17,7 +35,7 @@ namespace SWF.Core.ImageAccessor
                 var size = new OpenCvSharp.Size(newWidth, newHeight);
                 using (var destMat = new Mat(size, srcMat.Type()))
                 {
-                    Cv2.Resize(srcMat, destMat, new OpenCvSharp.Size(newWidth, newHeight), 0, 0, flag);
+                    Cv2.Resize(srcMat, destMat, size, 0, 0, flag);
                     return destMat.ToBitmap();
                 }
             }

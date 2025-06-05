@@ -40,7 +40,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 && imageSize.Width <= backgroudSize.Width
                 && imageSize.Height <= backgroudSize.Height)
             {
-                return 1.0f;
+                return AppConstants.DEFAULT_ZOOM_VALUE;
             }
             else
             {
@@ -510,6 +510,11 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
         private void ReadImage(int currentIndex, bool? isNext, bool isForceSingle)
         {
+            this.ReadImage(currentIndex, isNext, isForceSingle, this.toolBar.GetZoomValue());
+        }
+
+        private void ReadImage(int currentIndex, bool? isNext, bool isForceSingle, float zoomValue)
+        {
             this.fileContextMenu.Close();
 
             if (this._filePathList.Length < 1)
@@ -528,7 +533,8 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                     FilePathList = this._filePathList,
                     ImageDisplayMode = this._displayMode,
                     IsNext = isNext,
-                    IsForceSingle = isForceSingle
+                    IsForceSingle = isForceSingle,
+                    ZoomValue = zoomValue,
                 };
 
                 this._isLoading = true;
@@ -641,9 +647,41 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.toolBar.FitWindowMenuItemChecked = mode == ImageSizeMode.FitAllImage;
             this.toolBar.FitWindowLargeOnlyMenuItemChecked = mode == ImageSizeMode.FitOnlyBigImage;
 
-            if (this._sizeMode != mode)
+            var zoomValue = this.toolBar.GetZoomValue();
+
+            foreach (var item in this.toolBar.GetZoomMenuItems())
+            {
+                item.Checked = false;
+            }
+
+            if (this._sizeMode != mode || zoomValue != AppConstants.DEFAULT_ZOOM_VALUE)
             {
                 this._sizeMode = mode;
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        private bool SetSizeMode(float zoomValue)
+        {
+            this.toolBar.OriginalSizeMenuItemChecked = false;
+            this.toolBar.FitWindowMenuItemChecked = false;
+            this.toolBar.FitWindowLargeOnlyMenuItemChecked = false;
+
+            var prevZoomValue = this.toolBar.GetZoomValue();
+
+            foreach (var item in this.toolBar.GetZoomMenuItems())
+            {
+                item.Checked = item.ZoomValue == zoomValue;
+            }
+
+            this._sizeMode = ImageSizeMode.Original;
+
+            if (prevZoomValue != zoomValue)
+            {
                 return true;
             }
             else
@@ -948,6 +986,25 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 ImageViewerPageConfig.Instance.ImageSizeMode = this._sizeMode;
                 this.SetThumbnailPanelVisible();
                 this.ReadImage(this.FilePathListIndex, null, false);
+            }
+        }
+
+        private void ZoomMenuItem_Click(object sender, ZoomMenuItemClickEventArgs e)
+        {
+            if (!this.IsHandleCreated)
+            {
+                return;
+            }
+
+            if (!this.CanOperation)
+            {
+                return;
+            }
+
+            if (this.SetSizeMode(e.ZoomValue))
+            {
+                this.SetThumbnailPanelVisible();
+                this.ReadImage(this.FilePathListIndex, null, false, e.ZoomValue);
             }
         }
 
