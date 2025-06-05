@@ -102,8 +102,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.InitializeComponent();
 
             this.checkPatternPanel.Resize += this.CheckPatternPanel_Resize;
-            this.leftImagePanel.MouseMove += this.ImagePanel_MouseMove;
-            this.rightImagePanel.MouseMove += this.ImagePanel_MouseMove;
 
             this.SetDisplayMode(ImageViewerPageConfig.Instance.ImageDisplayMode);
             this.SetSizeMode(ImageViewerPageConfig.Instance.ImageSizeMode);
@@ -141,14 +139,13 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                         0,
                         this.Width,
                         (int)(TOOL_BAR_DEFAULT_BOUNDS.Height * this._scale));
+                    this.toolBar.SetControlsBounds(this._scale);
 
                     this.checkPatternPanel.SetBounds(
                         0,
-                        0,
+                        this.toolBar.Bottom,
                         this.Width,
-                        baseHeigth);
-
-                    this.toolBar.SetControlsBounds(scale);
+                        baseHeigth - this.toolBar.Bottom);
 
                     this.toolBar.ResumeLayout(false);
                     this.ResumeLayout(false);
@@ -1071,28 +1068,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             if (!this.CanOperation)
             {
                 return;
-            }
-        }
-
-        private void ImagePanel_MouseMove(object sender, MouseEventArgs e)
-        {
-            if (e.Y <= this.toolBar.Bottom)
-            {
-                this.toolBar.Visible = true;
-                this.toolBar.BringToFront();
-
-                this.toolBar.SuspendLayout();
-                this.toolBar.SetBounds(
-                    0,
-                    0,
-                    this.Width,
-                    (int)(TOOL_BAR_DEFAULT_BOUNDS.Height * this._scale));
-                this.toolBar.SetControlsBounds(this._scale);
-                this.toolBar.ResumeLayout(false);
-            }
-            else
-            {
-                this.toolBar.Visible = false;
             }
         }
 
