@@ -104,6 +104,12 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.checkPatternPanel.Resize += this.CheckPatternPanel_Resize;
 
             this.SetDisplayMode(ImageViewerPageConfig.Instance.ImageDisplayMode);
+
+            if (ImageViewerPageConfig.Instance.ImageSizeMode == ImageSizeMode.Original)
+            {
+                ImageViewerPageConfig.Instance.ImageSizeMode = ImageSizeMode.FitOnlyBigImage;
+            }
+
             this.SetSizeMode(ImageViewerPageConfig.Instance.ImageSizeMode);
             this.SetThumbnailPanelVisible();
 
