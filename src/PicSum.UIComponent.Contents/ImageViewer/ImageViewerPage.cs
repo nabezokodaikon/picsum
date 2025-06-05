@@ -921,10 +921,10 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 {
                     this.leftImagePanel.SetThumbnail(e.Image.Image);
                 }
-            }
-            else if (e.IsMain)
-            {
-                this.leftImagePanel.SetThumbnail(e.Image.Image);
+                else if (e.IsMain)
+                {
+                    this.leftImagePanel.SetThumbnail(e.Image.Image);
+                }
             }
             else
             {
