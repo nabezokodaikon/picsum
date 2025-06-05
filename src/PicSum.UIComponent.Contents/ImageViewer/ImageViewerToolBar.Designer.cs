@@ -125,8 +125,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             // 
             this.sizeMenu.Font = new System.Drawing.Font("Yu Gothic UI", 10F);
             this.sizeMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[]
-            {
-                this.originalSizeMenuItem,
+            {                
                 this.fitWindowMenuItem,
                 this.fitWindowLargeOnlyMenuItem,
                 this.sizeMenuSeparator,
@@ -136,7 +135,8 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 this.zoomMenuItem04,
                 this.zoomMenuItem05,
                 this.zoomMenuItem06,
-                this.zoomMenuItem07,
+                //this.zoomMenuItem07,
+                this.originalSizeMenuItem,
                 this.zoomMenuItem08,
                 this.zoomMenuItem09,
                 this.zoomMenuItem10,
@@ -150,7 +150,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             // 
             this.originalSizeMenuItem.Name = "originalSizeMenuItem";
             this.originalSizeMenuItem.Size = new System.Drawing.Size(286, 24);
-            this.originalSizeMenuItem.Text = "Original Size";
+            this.originalSizeMenuItem.Text = "100%";
             this.originalSizeMenuItem.Click += this.OriginalSizeMenuItem_Click;
             // 
             // fitWindowMenuItem
