@@ -1,12 +1,7 @@
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.Versioning;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using Windows.Devices.Enumeration.Pnp;
 
 namespace PicSum.UIComponent.Contents.ImageViewer
 {

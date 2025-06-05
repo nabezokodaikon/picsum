@@ -6,13 +6,13 @@ using System.Runtime.Versioning;
 namespace SWF.Core.ImageAccessor
 {
     [SupportedOSPlatform("windows10.0.17763.0")]
-    internal static class OpenCVUtil
+    public static class OpenCVUtil
     {
         public static Mat Zoom(Bitmap srcBmp, float zoomValue, InterpolationFlags flag)
         {
             ArgumentNullException.ThrowIfNull(srcBmp, nameof(srcBmp));
 
-            using (TimeMeasuring.Run(false, "OpenCVUtil.Resize By Mat"))
+            using (TimeMeasuring.Run(true, "OpenCVUtil.Zoom"))
             {
                 using (var srcMat = srcBmp.ToMat())
                 {

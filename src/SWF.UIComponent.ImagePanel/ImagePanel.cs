@@ -39,6 +39,7 @@ namespace SWF.UIComponent.ImagePanel
 
         private SizeF _imageScaleSize = SizeF.Empty;
         private CvImage _image = CvImage.EMPTY;
+        private Bitmap _thumbnail = null;
 
         private int _hMaximumScrollValue = 0;
         private int _vMaximumScrollValue = 0;
@@ -140,7 +141,7 @@ namespace SWF.UIComponent.ImagePanel
             }
         }
 
-        private int ThumbnailSize
+        public int ThumbnailSize
         {
             get
             {
@@ -175,6 +176,25 @@ namespace SWF.UIComponent.ImagePanel
             this._isError = false;
 
             this.HasImage = true;
+        }
+
+        public void SetThumbnail(CvImage thumbnail)
+        {
+            ArgumentNullException.ThrowIfNull(thumbnail, nameof(thumbnail));
+
+            this._thumbnail?.Dispose();
+            this._thumbnail = thumbnail.ToBitmap();
+
+            if (!this._image.IsEmpty && this._isShowThumbnailPanel &&
+                (this._hMaximumScrollValue > 0 || this._vMaximumScrollValue > 0))
+            {
+                var panelRect = this.GetThumbnailPanelRectangle();
+                this.Invalidate(new Rectangle(
+                    (int)panelRect.X,
+                    (int)panelRect.Y,
+                    (int)panelRect.Width,
+                    (int)panelRect.Height));
+            }
         }
 
         public void SetScale(float scale)
@@ -214,11 +234,18 @@ namespace SWF.UIComponent.ImagePanel
             this.FilePath = string.Empty;
         }
 
+        public void ClearThumbnail()
+        {
+            this._thumbnail?.Dispose();
+            this._thumbnail = null;
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
                 this.ClearImage();
+                this.ClearThumbnail();
             }
 
             base.Dispose(disposing);
@@ -242,12 +269,14 @@ namespace SWF.UIComponent.ImagePanel
                 {
                     this.DrawErrorImage(e.Graphics);
                 }
-                else if (this.HasImage)
+                else
                 {
-                    this.DrawImage(e.Graphics);
+                    if (this.HasImage)
+                    {
+                        this.DrawImage(e.Graphics);
+                    }
 
-                    if (!this._image.IsEmpty && this._isShowThumbnailPanel &&
-                        (this._hMaximumScrollValue > 0 || this._vMaximumScrollValue > 0))
+                    if (this._thumbnail != null)
                     {
                         this.DrawThumbnailPanel(e.Graphics);
                     }
@@ -619,7 +648,7 @@ namespace SWF.UIComponent.ImagePanel
 
         private void DrawImage(Graphics g)
         {
-            using (TimeMeasuring.Run(false, "ImagePanel.DrawImage"))
+            using (TimeMeasuring.Run(true, "ImagePanel.DrawImage"))
             {
                 try
                 {
@@ -664,22 +693,25 @@ namespace SWF.UIComponent.ImagePanel
 
         private void DrawThumbnailPanel(Graphics g)
         {
-            g.CompositingMode = CompositingMode.SourceOver;
-
-            var panelRect = this.GetThumbnailPanelRectangle();
-            g.DrawImage(this._thumbnailPanelImage, panelRect);
-
-            var thumbRect = this.GetThumbnailRectangle(panelRect);
-            using (var thumbnail = this._image.GetHighQualityResizeImage(
-                new Size((int)thumbRect.Size.Width, (int)thumbRect.Height)))
+            if (!this._image.IsEmpty && this._isShowThumbnailPanel &&
+                (this._hMaximumScrollValue > 0 || this._vMaximumScrollValue > 0))
             {
-                g.DrawImage(thumbnail, thumbRect);
-                g.FillRectangle(THUMBNAIL_FILTER_BRUSH, thumbRect);
+                using (TimeMeasuring.Run(true, "ImagePanel.DrawThumbnailPanel"))
+                {
+                    g.CompositingMode = CompositingMode.SourceOver;
 
-                var srcRect = this.GetImageSrcRectangle();
-                var viewRect = this.GetThumbnailViewRectangle(thumbRect, srcRect);
-                var viewDestRect = this.GetThumbnailViewDestRectangle(srcRect);
-                g.DrawImage(thumbnail, viewRect, viewDestRect, GraphicsUnit.Pixel);
+                    var panelRect = this.GetThumbnailPanelRectangle();
+                    g.DrawImage(this._thumbnailPanelImage, panelRect);
+
+                    var thumbRect = this.GetThumbnailRectangle(panelRect);
+                    g.DrawImage(this._thumbnail, thumbRect);
+                    g.FillRectangle(THUMBNAIL_FILTER_BRUSH, thumbRect);
+
+                    var srcRect = this.GetImageSrcRectangle();
+                    var viewRect = this.GetThumbnailViewRectangle(thumbRect, srcRect);
+                    var viewDestRect = this.GetThumbnailViewDestRectangle(srcRect);
+                    g.DrawImage(this._thumbnail, viewRect, viewDestRect, GraphicsUnit.Pixel);
+                }
             }
         }
 

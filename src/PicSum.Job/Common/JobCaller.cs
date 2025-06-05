@@ -17,6 +17,8 @@ namespace PicSum.Job.Common
 
         public readonly Lazy<ITwoWayJob<ImageFileReadJob, ImageFileReadParameter, ImageFileReadResult>> ImageFileReadJob
             = new(() => new TwoWayThread<ImageFileReadJob, ImageFileReadParameter, ImageFileReadResult>(context, new JobThread()), LazyThreadSafetyMode.ExecutionAndPublication);
+        public readonly Lazy<ITwoWayJob<ImageFileCreateThumbnailJob, ImageFileReadParameter, ImageFileReadResult>> ImageFileCreateThumbnailJob
+            = new(() => new TwoWayThread<ImageFileCreateThumbnailJob, ImageFileReadParameter, ImageFileReadResult>(context, new JobThread()), LazyThreadSafetyMode.ExecutionAndPublication);
         public readonly Lazy<ITwoWayJob<ImageFileLoadingJob, ImageFileReadParameter, ImageFileReadResult>> ImageFileLoadingJob
             = new(() => new TwoWayThread<ImageFileLoadingJob, ImageFileReadParameter, ImageFileReadResult>(context, new JobThread()), LazyThreadSafetyMode.ExecutionAndPublication);
         public readonly Lazy<IOneWayJob<ImageFileCacheJob, ImageFileCacheParameter>> ImageFileCacheJob
@@ -73,6 +75,7 @@ namespace PicSum.Job.Common
                 this._jobQueue.Value.Dispose();
 
                 this.ImageFileReadJob.Value.Dispose();
+                this.ImageFileCreateThumbnailJob.Value.Dispose();
                 this.ImageFileLoadingJob.Value.Dispose();
                 this.ImageFileCacheJob.Value.Dispose();
                 this.ThumbnailsGetJob.Value.Dispose();

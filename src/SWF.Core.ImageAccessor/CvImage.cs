@@ -1,4 +1,5 @@
 using OpenCvSharp.Extensions;
+using SWF.Core.ConsoleAccessor;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Runtime.Versioning;
@@ -102,6 +103,16 @@ namespace SWF.Core.ImageAccessor
             g.FillRectangle(brush, destRect);
         }
 
+        public Bitmap ToBitmap()
+        {
+            if (this._mat == null)
+            {
+                throw new NullReferenceException("MatがNullです。");
+            }
+
+            return this._mat.ToBitmap();
+        }
+
         public Bitmap GetHighQualityResizeImage(System.Drawing.Size size)
         {
             return this.GetResizeImage(size, OpenCvSharp.InterpolationFlags.Area);
@@ -158,9 +169,21 @@ namespace SWF.Core.ImageAccessor
 
             try
             {
-                using (var bmp = this._mat.ToBitmap(this._pixelFormat))
+                using (TimeMeasuring.Run(true, "CvImage.DrawSourceImage ToBitmap"))
                 {
-                    g.DrawImage(bmp, destRect, srcRect, GraphicsUnit.Pixel);
+                    var roi = new OpenCvSharp.Rect(
+                        (int)srcRect.X,
+                        (int)srcRect.Y,
+                        (int)srcRect.Width,
+                        (int)srcRect.Height);
+                    using (var cropped = new OpenCvSharp.Mat(this._mat, roi))
+                    using (var bmp = cropped.ToBitmap(this._pixelFormat))
+                    {
+                        using (TimeMeasuring.Run(true, "CvImage.DrawSourceImage DrawImage"))
+                        {
+                            g.DrawImage(bmp, destRect, new Rectangle(0, 0, cropped.Width, cropped.Height), GraphicsUnit.Pixel);
+                        }
+                    }
                 }
             }
             catch (NotSupportedException ex)

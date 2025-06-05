@@ -521,6 +521,9 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
             using (TimeMeasuring.Run(false, "ImageViewerPage.ReadImage"))
             {
+                this.leftImagePanel.ClearThumbnail();
+                this.rightImagePanel.ClearThumbnail();
+
                 var mainFilePath = this._filePathList[currentIndex];
                 this.SelectedFilePath = mainFilePath;
 
@@ -532,6 +535,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                     IsNext = isNext,
                     IsForceSingle = isForceSingle,
                     ZoomValue = zoomValue,
+                    ThumbnailSize = this.leftImagePanel.ThumbnailSize,
                 };
 
                 this._isLoading = true;
@@ -579,6 +583,17 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                         {
                             this.ImageFileReadJob_Callback(r);
                         }
+                    });
+
+                Instance<JobCaller>.Value.ImageFileCreateThumbnailJob.Value
+                    .StartJob(this, param, r =>
+                    {
+                        if (this._disposed)
+                        {
+                            return;
+                        }
+
+                        this.ImageFileCreateThumbnailJob_Callback(r);
                     });
             }
         }
@@ -867,6 +882,48 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
             this.SettingImagePanelLayout(e);
             this.checkPatternPanel.Focus();
+        }
+
+        private void ImageFileCreateThumbnailJob_Callback(ImageFileReadResult e)
+        {
+            if (this._displayMode == ImageDisplayMode.Single)
+            {
+                this.leftImagePanel.SetThumbnail(e.Image.Image);
+            }
+            else if (this._displayMode == ImageDisplayMode.LeftFacing)
+            {
+                if (e.IsMain && e.HasSub)
+                {
+                    this.leftImagePanel.SetThumbnail(e.Image.Image);
+                }
+                else if (!e.IsMain)
+                {
+                    this.rightImagePanel.SetThumbnail(e.Image.Image);
+                }
+                else if (e.IsMain)
+                {
+                    this.leftImagePanel.SetThumbnail(e.Image.Image);
+                }
+            }
+            else if (this._displayMode == ImageDisplayMode.RightFacing)
+            {
+                if (e.IsMain && e.HasSub)
+                {
+                    this.rightImagePanel.SetThumbnail(e.Image.Image);
+                }
+                else if (!e.IsMain)
+                {
+                    this.leftImagePanel.SetThumbnail(e.Image.Image);
+                }
+            }
+            else if (e.IsMain)
+            {
+                this.leftImagePanel.SetThumbnail(e.Image.Image);
+            }
+            else
+            {
+                throw new InvalidOperationException($"不正な画像表示モードです。DisplayMode: '{this._displayMode}'");
+            }
         }
 
         private void SingleViewToolStripMenuItem_Click(object sender, EventArgs e)

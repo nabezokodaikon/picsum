@@ -4,13 +4,12 @@ using PicSum.Job.Results;
 using SWF.Core.Base;
 using SWF.Core.ImageAccessor;
 using SWF.Core.Job;
-using System.Diagnostics;
 using System.Runtime.Versioning;
 
 namespace PicSum.Job.Jobs
 {
     [SupportedOSPlatform("windows10.0.17763.0")]
-    public sealed class ImageFileLoadingJob
+    public sealed class ImageFileCreateThumbnailJob
         : AbstractTwoWayJob<ImageFileReadParameter, ImageFileReadResult>
     {
         protected override void Execute(ImageFileReadParameter parameter)
@@ -20,7 +19,7 @@ namespace PicSum.Job.Jobs
                 throw new ArgumentException("ファイルパスリストがNULLです。", nameof(parameter));
             }
 
-            this.Wait();
+            this.CheckCancel();
 
             var logic = new ImageFileReadLogic(this);
 
@@ -30,9 +29,13 @@ namespace PicSum.Job.Jobs
                 : parameter.IsNext == true ?
                     logic.GetNextIndex(parameter) :
                     logic.GetPreviewIndex(parameter);
+            this.CheckCancel();
 
             var mainFilePath = parameter.FilePathList[mainIndex];
-            var mainSize = logic.GetImageSize(mainFilePath, parameter.ZoomValue);
+            var mainSize = logic.GetImageSize(mainFilePath, AppConstants.DEFAULT_ZOOM_VALUE);
+            var mainThumbnailScale = logic.GetThumbnailScale(parameter.ThumbnailSize, mainSize);
+            this.CheckCancel();
+
             if (parameter.ImageDisplayMode != ImageDisplayMode.Single
                 && mainSize != ImageUtil.EMPTY_SIZE
                 && mainSize.Width <= mainSize.Height)
@@ -44,50 +47,32 @@ namespace PicSum.Job.Jobs
                 }
 
                 var subFilePath = parameter.FilePathList[subtIndex];
-                var subSize = logic.GetImageSize(subFilePath, parameter.ZoomValue);
+                var subSize = logic.GetImageSize(subFilePath, AppConstants.DEFAULT_ZOOM_VALUE);
+                this.CheckCancel();
+
                 if (subFilePath != mainFilePath
                     && subSize != ImageUtil.EMPTY_SIZE
                     && subSize.Width <= subSize.Height)
                 {
-                    this.Callback(logic.CreateEmptyResult(
-                        mainIndex, mainFilePath, true, true, mainSize));
+                    this.Callback(logic.CreateThumbnailResult(
+                        mainIndex, mainFilePath, true, true, mainThumbnailScale));
 
-                    this.Callback(logic.CreateEmptyResult(
-                        subtIndex, subFilePath, false, true, subSize));
+                    this.CheckCancel();
+
+                    var subThumbnailScale = logic.GetThumbnailScale(parameter.ThumbnailSize, subSize);
+                    this.Callback(logic.CreateThumbnailResult(
+                        subtIndex, subFilePath, false, true, subThumbnailScale));
                 }
                 else
                 {
-                    this.Callback(logic.CreateEmptyResult(
-                        mainIndex, mainFilePath, true, false, mainSize));
+                    this.Callback(logic.CreateThumbnailResult(
+                        mainIndex, mainFilePath, true, false, mainThumbnailScale));
                 }
             }
             else
             {
-                this.Callback(logic.CreateEmptyResult(
-                    mainIndex, mainFilePath, true, false, mainSize));
-            }
-        }
-
-        private void Wait()
-        {
-            try
-            {
-                var sw = Stopwatch.StartNew();
-                while (true)
-                {
-                    if (sw.ElapsedMilliseconds > 10)
-                    {
-                        return;
-                    }
-
-                    this.CheckCancel();
-
-                    Thread.Sleep(1);
-                }
-            }
-            catch (JobCancelException)
-            {
-                return;
+                this.Callback(logic.CreateThumbnailResult(
+                    mainIndex, mainFilePath, true, false, mainThumbnailScale));
             }
         }
     }
