@@ -42,7 +42,7 @@ namespace SWF.Core.Base
         public static void StopBootTimeMeasurement()
         {
             bootTimeStopwatch?.Stop();
-            Console.WriteLine($"[{Thread.CurrentThread.Name}] Boot time: {bootTimeStopwatch?.ElapsedMilliseconds} ms");
+            ConsoleUtil.Write(true, $"Boot time: {bootTimeStopwatch?.ElapsedMilliseconds} ms");
         }
 
         private static string GetApplicationDirectory()

@@ -39,7 +39,7 @@ namespace SWF.Core.Base
         {
             ArgumentNullException.ThrowIfNull(criticalTypes, nameof(criticalTypes));
 
-            using (TimeMeasuring.Run(true, "AssemblyPreloader.OptimizeStartup Sync"))
+            using (TimeMeasuring.Run(true, "AssemblyPreloader.OptimizeStartup"))
             {
                 Parallel.ForEach(
                     criticalTypes,

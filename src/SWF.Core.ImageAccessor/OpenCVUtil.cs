@@ -12,7 +12,7 @@ namespace SWF.Core.ImageAccessor
         {
             ArgumentNullException.ThrowIfNull(srcBmp, nameof(srcBmp));
 
-            using (TimeMeasuring.Run(true, "OpenCVUtil.Zoom"))
+            using (TimeMeasuring.Run(false, "OpenCVUtil.Zoom"))
             {
                 using (var srcMat = srcBmp.ToMat())
                 {
@@ -75,7 +75,7 @@ namespace SWF.Core.ImageAccessor
         {
             ArgumentNullException.ThrowIfNull(stream, nameof(stream));
 
-            using (TimeMeasuring.Run(false, "OpenCVUtil.ReadImageFile"))
+            using (TimeMeasuring.Run(false, "OpenCVUtil.ReadImageFileToMat"))
             {
                 stream.Seek(0, SeekOrigin.Begin);
                 return Mat.FromStream(stream, ImreadModes.Color);

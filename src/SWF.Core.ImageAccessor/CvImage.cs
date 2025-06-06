@@ -169,7 +169,7 @@ namespace SWF.Core.ImageAccessor
 
             try
             {
-                using (TimeMeasuring.Run(true, "CvImage.DrawSourceImage ToBitmap"))
+                using (TimeMeasuring.Run(false, "CvImage.DrawSourceImage ToBitmap"))
                 {
                     var roi = new OpenCvSharp.Rect(
                         (int)srcRect.X,
@@ -179,10 +179,7 @@ namespace SWF.Core.ImageAccessor
                     using (var cropped = new OpenCvSharp.Mat(this._mat, roi))
                     using (var bmp = cropped.ToBitmap(this._pixelFormat))
                     {
-                        using (TimeMeasuring.Run(true, "CvImage.DrawSourceImage DrawImage"))
-                        {
-                            g.DrawImage(bmp, destRect, new Rectangle(0, 0, cropped.Width, cropped.Height), GraphicsUnit.Pixel);
-                        }
+                        g.DrawImage(bmp, destRect, new Rectangle(0, 0, cropped.Width, cropped.Height), GraphicsUnit.Pixel);
                     }
                 }
             }
