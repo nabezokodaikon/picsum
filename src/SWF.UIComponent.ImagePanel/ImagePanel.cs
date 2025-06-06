@@ -43,10 +43,10 @@ namespace SWF.UIComponent.ImagePanel
         private CvImage _image = CvImage.EMPTY;
         private Bitmap _thumbnail = null;
 
-        private int _hMaximumScrollValue = 0;
-        private int _vMaximumScrollValue = 0;
-        private int _hScrollValue = 0;
-        private int _vScrollValue = 0;
+        private float _hMaximumScrollValue = 0f;
+        private float _vMaximumScrollValue = 0f;
+        private float _hScrollValue = 0f;
+        private float _vScrollValue = 0;
 
         private bool _isDrag = false;
         private bool _isThumbnailMove = false;
@@ -311,8 +311,8 @@ namespace SWF.UIComponent.ImagePanel
                         var scale = this.GetThumbnailToScaleImageScale();
                         var thumbRect = this.GetThumbnailRectangle();
 
-                        if (this.SetHScrollValue((int)((e.X - thumbRect.X) * scale)) |
-                            this.SetVScrollValue((int)((e.Y - thumbRect.Y) * scale)))
+                        if (this.SetHScrollValue((e.X - thumbRect.X) * scale) |
+                            this.SetVScrollValue((e.Y - thumbRect.Y) * scale))
                         {
                             this.Invalidate();
                         }
@@ -356,8 +356,8 @@ namespace SWF.UIComponent.ImagePanel
             if (this._isThumbnailMove)
             {
                 var scale = this.GetThumbnailToScaleImageScale();
-                if (this.SetHScrollValue(this._hScrollValue + (int)((e.X - this._moveFromPoint.X) * scale)) |
-                    this.SetVScrollValue(this._vScrollValue + (int)((e.Y - this._moveFromPoint.Y) * scale)))
+                if (this.SetHScrollValue(this._hScrollValue + (e.X - this._moveFromPoint.X) * scale) |
+                    this.SetVScrollValue(this._vScrollValue + (e.Y - this._moveFromPoint.Y) * scale))
                 {
                     this.Invalidate();
                 }
@@ -379,10 +379,10 @@ namespace SWF.UIComponent.ImagePanel
             else if (this._isDrag)
             {
                 // ドラッグとしないマウスの移動範囲を取得します。
-                var moveRect = new Rectangle(this._moveFromPoint.X - SystemInformation.DragSize.Width / 2,
-                                             this._moveFromPoint.Y - SystemInformation.DragSize.Height / 2,
-                                             SystemInformation.DragSize.Width,
-                                             SystemInformation.DragSize.Height);
+                var moveRect = new RectangleF(this._moveFromPoint.X - SystemInformation.DragSize.Width / 2f,
+                                              this._moveFromPoint.Y - SystemInformation.DragSize.Height / 2f,
+                                              SystemInformation.DragSize.Width,
+                                              SystemInformation.DragSize.Height);
 
                 if (!moveRect.Contains(e.X, e.Y))
                 {
@@ -503,8 +503,8 @@ namespace SWF.UIComponent.ImagePanel
         {
             if (this.HasImage)
             {
-                this._hMaximumScrollValue = Math.Max(0, (int)this._imageScaleSize.Width - this.Width);
-                this._vMaximumScrollValue = Math.Max(0, (int)this._imageScaleSize.Height - this.Height);
+                this._hMaximumScrollValue = Math.Max(0, this._imageScaleSize.Width - this.Width);
+                this._vMaximumScrollValue = Math.Max(0, this._imageScaleSize.Height - this.Height);
                 this._hScrollValue = Math.Min(this._hScrollValue, this._hMaximumScrollValue);
                 this._vScrollValue = Math.Min(this._vScrollValue, this._vMaximumScrollValue);
             }
@@ -517,7 +517,7 @@ namespace SWF.UIComponent.ImagePanel
             }
         }
 
-        private bool IsMousePointImage(int x, int y)
+        private bool IsMousePointImage(float x, float y)
         {
             if (this.HasImage)
             {
@@ -657,7 +657,7 @@ namespace SWF.UIComponent.ImagePanel
                 $"Failed to load file",
                 this.Font,
                 Brushes.LightGray,
-                new Rectangle(0, 0, this.Width, this.Height),
+                new RectangleF(0, 0, this.Width, this.Height),
                 this._stringFormat);
         }
 
@@ -727,9 +727,9 @@ namespace SWF.UIComponent.ImagePanel
             }
         }
 
-        private bool SetHScrollValue(int value)
+        private bool SetHScrollValue(float value)
         {
-            int newValue;
+            float newValue;
             if (value > this._hMaximumScrollValue)
             {
                 newValue = this._hMaximumScrollValue;
@@ -754,9 +754,9 @@ namespace SWF.UIComponent.ImagePanel
             }
         }
 
-        private bool SetVScrollValue(int value)
+        private bool SetVScrollValue(float value)
         {
-            int newValue;
+            float newValue;
             if (value > this._vMaximumScrollValue)
             {
                 newValue = this._vMaximumScrollValue;
