@@ -296,7 +296,7 @@ namespace SWF.UIComponent.ImagePanel
                 if (this._isShowThumbnailPanel &&
                     (this._hMaximumScrollValue > 0 || this._vMaximumScrollValue > 0))
                 {
-                    if (this.GetThumbnailViewRectangle().Contains(e.X, e.Y))
+                    if (this.GetThumbnailViewDestRectangle().Contains(e.X, e.Y))
                     {
                         // サムネイル内の画像表示領域
                         this._isThumbnailMove = true;
@@ -622,7 +622,7 @@ namespace SWF.UIComponent.ImagePanel
             return this.GetThumbnailRectangle(this.GetThumbnailPanelRectangle());
         }
 
-        private RectangleF GetThumbnailViewRectangle(RectangleF thumbRect, RectangleF srcRect)
+        private RectangleF GetThumbnailViewDestRectangle(RectangleF thumbRect, RectangleF srcRect)
         {
             var scale = this.GetImageToThumbnailScale();
             var x = thumbRect.X + srcRect.X * scale;
@@ -633,7 +633,7 @@ namespace SWF.UIComponent.ImagePanel
             return new RectangleF(x, y, w, h);
         }
 
-        private RectangleF GetThumbnailViewDestRectangle(RectangleF srcRect)
+        private RectangleF GetThumbnailViewSrcRectangle(RectangleF srcRect)
         {
             var scale = this.GetImageToThumbnailScale();
             var x = srcRect.X * scale;
@@ -644,9 +644,9 @@ namespace SWF.UIComponent.ImagePanel
             return new RectangleF(x, y, w, h);
         }
 
-        private RectangleF GetThumbnailViewRectangle()
+        private RectangleF GetThumbnailViewDestRectangle()
         {
-            return this.GetThumbnailViewRectangle(this.GetThumbnailRectangle(), this.GetImageSrcRectangle());
+            return this.GetThumbnailViewDestRectangle(this.GetThumbnailRectangle(), this.GetImageSrcRectangle());
         }
 
         private void DrawErrorImage(Graphics g)
@@ -719,9 +719,9 @@ namespace SWF.UIComponent.ImagePanel
                 g.FillRectangle(THUMBNAIL_FILTER_BRUSH, thumbRect);
 
                 var srcRect = this.GetImageSrcRectangle();
-                var viewRect = this.GetThumbnailViewRectangle(thumbRect, srcRect);
-                var viewDestRect = this.GetThumbnailViewDestRectangle(srcRect);
-                g.DrawImage(this._thumbnail, viewRect, viewDestRect, GraphicsUnit.Pixel);
+                var viewDestRect = this.GetThumbnailViewDestRectangle(thumbRect, srcRect);
+                var viewSrcRect = this.GetThumbnailViewSrcRectangle(srcRect);
+                g.DrawImage(this._thumbnail, viewDestRect, viewSrcRect, GraphicsUnit.Pixel);
             }
         }
 
