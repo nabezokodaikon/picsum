@@ -27,6 +27,8 @@ namespace SWF.UIComponent.ImagePanel
 
         private static readonly SolidBrush THUMBNAIL_FILTER_BRUSH
             = new(Color.FromArgb(128, 0, 0, 0));
+        private static readonly Pen THUMBNAIL_VIEW_BORDER_PEN
+            = new(Color.FromArgb(250, 0, 0));
 
         public event EventHandler<MouseEventArgs> ImageMouseClick;
         public event EventHandler<MouseEventArgs> ImageMouseDoubleClick;
@@ -722,6 +724,7 @@ namespace SWF.UIComponent.ImagePanel
                 var viewDestRect = this.GetThumbnailViewDestRectangle(thumbRect, srcRect);
                 var viewSrcRect = this.GetThumbnailViewSrcRectangle(srcRect);
                 g.DrawImage(this._thumbnail, viewDestRect, viewSrcRect, GraphicsUnit.Pixel);
+                g.DrawRectangle(THUMBNAIL_VIEW_BORDER_PEN, viewDestRect);
             }
         }
 
