@@ -310,9 +310,10 @@ namespace SWF.UIComponent.ImagePanel
                         // サムネイル
                         var scale = this.GetThumbnailToScaleImageScale();
                         var thumbRect = this.GetThumbnailRectangle();
-
-                        if (this.SetHScrollValue((e.X - thumbRect.X) * scale) |
-                            this.SetVScrollValue((e.Y - thumbRect.Y) * scale))
+                        var srcRect = this.GetImageSrcRectangle();
+                        var centerPoint = new PointF(srcRect.X + srcRect.Width / 2f, srcRect.Y + srcRect.Height / 2f);
+                        if (this.SetHScrollValue(this._hScrollValue + (int)((e.X - thumbRect.X) * scale - centerPoint.X)) |
+                            this.SetVScrollValue(this._vScrollValue + (int)((e.Y - thumbRect.Y) * scale - centerPoint.Y)))
                         {
                             this.Invalidate();
                         }
@@ -472,7 +473,7 @@ namespace SWF.UIComponent.ImagePanel
 
         private float GetThumbnailToScaleImageScale()
         {
-            return Math.Min(
+            return Math.Max(
                 this._imageScaleSize.Width / (float)this.ThumbnailSize,
                 this._imageScaleSize.Height / (float)this.ThumbnailSize);
         }
