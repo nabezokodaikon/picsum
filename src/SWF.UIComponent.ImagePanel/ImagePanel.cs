@@ -310,10 +310,9 @@ namespace SWF.UIComponent.ImagePanel
                         // サムネイル
                         var scale = this.GetThumbnailToScaleImageScale();
                         var thumbRect = this.GetThumbnailRectangle();
-                        var srcRect = this.GetImageSrcRectangle();
-                        var centerPoint = new PointF(srcRect.X + srcRect.Width / 2f, srcRect.Y + srcRect.Height / 2f);
-                        if (this.SetHScrollValue(this._hScrollValue + (int)((e.X - thumbRect.X) * scale - centerPoint.X)) |
-                            this.SetVScrollValue(this._vScrollValue + (int)((e.Y - thumbRect.Y) * scale - centerPoint.Y)))
+
+                        if (this.SetHScrollValue((int)((e.X - thumbRect.X) * scale)) |
+                            this.SetVScrollValue((int)((e.Y - thumbRect.Y) * scale)))
                         {
                             this.Invalidate();
                         }
