@@ -9,7 +9,7 @@
   <Identity
     Name="NabezokoDaikon.49446294FC8C5"
     Publisher="CN=345FF47F-AEB2-46BE-B230-0AD89FC3D58C"
-    Version="9.3.1.0" />
+    Version="10.0.0.0" />
 
   <Properties>
     <DisplayName>PicSum</DisplayName>
