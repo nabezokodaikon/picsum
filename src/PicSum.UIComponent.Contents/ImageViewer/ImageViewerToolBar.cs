@@ -339,6 +339,9 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 this.zoomMenuItem10,
                 this.zoomMenuItem11,
                 this.zoomMenuItem12,
+                this.zoomMenuItem13,
+                this.zoomMenuItem14,
+                this.zoomMenuItem15,
             ];
         }
 

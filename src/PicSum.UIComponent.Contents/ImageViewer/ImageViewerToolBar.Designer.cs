@@ -49,6 +49,9 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.zoomMenuItem10 = new ZoomMenuItem(2f, "200%");
             this.zoomMenuItem11 = new ZoomMenuItem(3f, "300%");
             this.zoomMenuItem12 = new ZoomMenuItem(5f, "500%");
+            this.zoomMenuItem13 = new ZoomMenuItem(10f, "1000%");
+            this.zoomMenuItem14 = new ZoomMenuItem(20f, "2000%");
+            this.zoomMenuItem15 = new ZoomMenuItem(30f, "3000%");
 
             this.filePathToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.viewMenu.SuspendLayout();
@@ -181,6 +184,9 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.zoomMenuItem10.Click += this.ZoomMenuItem_Click;
             this.zoomMenuItem11.Click += this.ZoomMenuItem_Click;
             this.zoomMenuItem12.Click += this.ZoomMenuItem_Click;
+            this.zoomMenuItem13.Click += this.ZoomMenuItem_Click;
+            this.zoomMenuItem14.Click += this.ZoomMenuItem_Click;
+            this.zoomMenuItem15.Click += this.ZoomMenuItem_Click;
             // 
             // filePathToolTip
             // 
@@ -237,6 +243,9 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         private ZoomMenuItem zoomMenuItem10;
         private ZoomMenuItem zoomMenuItem11;
         private ZoomMenuItem zoomMenuItem12;
+        private ZoomMenuItem zoomMenuItem13;
+        private ZoomMenuItem zoomMenuItem14;
+        private ZoomMenuItem zoomMenuItem15;
 
         private System.Windows.Forms.ToolTip filePathToolTip;
     }
