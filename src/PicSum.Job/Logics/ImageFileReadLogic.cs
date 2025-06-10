@@ -105,12 +105,12 @@ namespace PicSum.Job.Logics
                     if (zoomValue == AppConstants.DEFAULT_ZOOM_VALUE)
                     {
                         return new CvImage(
-                            filePath, bmp.ToMat(), bmp.PixelFormat, zoomValue);
+                            filePath, bmp.ToMat(), zoomValue);
                     }
                     else
                     {
                         return new CvImage(
-                            filePath, OpenCVUtil.Zoom(bmp, zoomValue, OpenCvSharp.InterpolationFlags.Area), bmp.PixelFormat);
+                            filePath, OpenCVUtil.Zoom(bmp, zoomValue, OpenCvSharp.InterpolationFlags.Area));
                     }
                 }
             }

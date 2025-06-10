@@ -685,7 +685,7 @@ namespace SWF.UIComponent.ImagePanel
                     {
                         if (this._sizeMode == ImageSizeMode.Original)
                         {
-                            this._image.DrawSourceImage(g, this.GetImageDestRectangle(), this.GetImageSrcRectangle());
+                            this._image.DrawZoomImage(g, this.GetImageDestRectangle(), this.GetImageSrcRectangle());
                         }
                         else
                         {

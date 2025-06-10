@@ -6,7 +6,6 @@ using SWF.Core.ImageAccessor;
 using SWF.Core.Job;
 using SWF.Core.ResourceAccessor;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.Runtime.Versioning;
 
 namespace PicSum.Job.Logics
@@ -198,8 +197,7 @@ namespace PicSum.Job.Logics
             {
                 return new CvImage(
                     filePath,
-                    ThumbnailUtil.ToImage(cache.ThumbnailBuffer),
-                    PixelFormat.DontCare);
+                    ThumbnailUtil.ToImage(cache.ThumbnailBuffer));
             }
             else
             {

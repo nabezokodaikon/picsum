@@ -7,7 +7,6 @@ using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
 using System.Collections.Concurrent;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.Runtime.Versioning;
 using ZLinq;
 
@@ -142,8 +141,7 @@ namespace PicSum.Job.Common
                                     FilePath = bf.FilePath,
                                     ThumbnailImage = new CvImage(
                                         bf.FilePath,
-                                        ThumbnailUtil.ToImage(bf.ThumbnailBuffer),
-                                        PixelFormat.DontCare),
+                                        ThumbnailUtil.ToImage(bf.ThumbnailBuffer)),
                                     ThumbnailWidth = bf.ThumbnailWidth,
                                     ThumbnailHeight = bf.ThumbnailHeight,
                                     SourceWidth = bf.SourceWidth,

@@ -2,7 +2,6 @@ using OpenCvSharp.Extensions;
 using SWF.Core.Base;
 using SWF.Core.ConsoleAccessor;
 using System.Drawing.Drawing2D;
-using System.Drawing.Imaging;
 using System.Runtime.Versioning;
 
 namespace SWF.Core.ImageAccessor
@@ -11,7 +10,7 @@ namespace SWF.Core.ImageAccessor
     public sealed class CvImage
         : IDisposable
     {
-        public static readonly CvImage EMPTY = new(System.Drawing.SizeF.Empty);
+        public static readonly CvImage EMPTY = new(SizeF.Empty);
 
         private static string CreateErrorMessage(string filePath)
         {
@@ -27,7 +26,6 @@ namespace SWF.Core.ImageAccessor
 
         private bool _disposed = false;
         private readonly string _filePath;
-        private readonly PixelFormat _pixelFormat;
         private OpenCvSharp.Mat? _mat;
         private readonly float _zoomValue;
 
@@ -36,19 +34,18 @@ namespace SWF.Core.ImageAccessor
         public readonly float Height;
         public readonly bool IsEmpty;
 
-        public CvImage(string filePath, OpenCvSharp.Mat mat, PixelFormat pixelFormat)
-            : this(filePath, mat, pixelFormat, AppConstants.DEFAULT_ZOOM_VALUE)
+        public CvImage(string filePath, OpenCvSharp.Mat mat)
+            : this(filePath, mat, AppConstants.DEFAULT_ZOOM_VALUE)
         {
 
         }
 
-        public CvImage(string filePath, OpenCvSharp.Mat mat, PixelFormat pixelFormat, float zoomValue)
+        public CvImage(string filePath, OpenCvSharp.Mat mat, float zoomValue)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
             ArgumentNullException.ThrowIfNull(mat, nameof(mat));
 
             this._filePath = filePath;
-            this._pixelFormat = pixelFormat;
             this._mat = mat;
             this._zoomValue = zoomValue;
             this.Width = mat.Width * zoomValue;
@@ -57,12 +54,11 @@ namespace SWF.Core.ImageAccessor
             this.IsEmpty = false;
         }
 
-        public CvImage(string filePath, System.Drawing.SizeF size, float zoomValue)
+        public CvImage(string filePath, SizeF size, float zoomValue)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
             this._filePath = filePath;
-            this._pixelFormat = PixelFormat.DontCare;
             this._mat = null;
             this._zoomValue = zoomValue;
             this.Width = size.Width * zoomValue;
@@ -71,10 +67,9 @@ namespace SWF.Core.ImageAccessor
             this.IsEmpty = true;
         }
 
-        private CvImage(System.Drawing.SizeF size)
+        private CvImage(SizeF size)
         {
             this._filePath = string.Empty;
-            this._pixelFormat = PixelFormat.DontCare;
             this._mat = null;
             this._zoomValue = AppConstants.DEFAULT_ZOOM_VALUE;
             this.Width = size.Width * AppConstants.DEFAULT_ZOOM_VALUE;
@@ -167,7 +162,7 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
-        public void DrawSourceImage(Graphics g, RectangleF destRect, RectangleF srcRect)
+        public void DrawZoomImage(Graphics g, RectangleF destRect, RectangleF srcRect)
         {
             ArgumentNullException.ThrowIfNull(g, nameof(g));
 
@@ -180,7 +175,7 @@ namespace SWF.Core.ImageAccessor
 
             try
             {
-                using (TimeMeasuring.Run(true, "CvImage.DrawSourceImage"))
+                using (TimeMeasuring.Run(true, "CvImage.DrawZoomImage"))
                 {
                     var roi = new OpenCvSharp.Rect(
                         (int)(srcRect.X / this._zoomValue),

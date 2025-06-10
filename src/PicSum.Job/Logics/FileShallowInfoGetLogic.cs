@@ -5,7 +5,6 @@ using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
 using SWF.Core.Job;
 using SWF.Core.ResourceAccessor;
-using System.Drawing.Imaging;
 using System.Runtime.Versioning;
 
 namespace PicSum.Job.Logics
@@ -83,8 +82,7 @@ namespace PicSum.Job.Logics
             {
                 info.ThumbnailImage = new CvImage(
                     filePath,
-                    ThumbnailUtil.ToImage(thumbnailBuffer.ThumbnailBuffer),
-                    PixelFormat.DontCare);
+                    ThumbnailUtil.ToImage(thumbnailBuffer.ThumbnailBuffer));
                 info.ThumbnailWidth = thumbnailBuffer.ThumbnailWidth;
                 info.ThumbnailHeight = thumbnailBuffer.ThumbnailHeight;
                 info.SourceWidth = thumbnailBuffer.SourceWidth;
@@ -125,8 +123,7 @@ namespace PicSum.Job.Logics
             {
                 info.ThumbnailImage = new CvImage(
                     filePath,
-                    ThumbnailUtil.ToImage(thumbnailBuffer.ThumbnailBuffer),
-                    PixelFormat.DontCare);
+                    ThumbnailUtil.ToImage(thumbnailBuffer.ThumbnailBuffer));
                 info.ThumbnailWidth = thumbnailBuffer.ThumbnailWidth;
                 info.ThumbnailHeight = thumbnailBuffer.ThumbnailHeight;
                 info.SourceWidth = thumbnailBuffer.SourceWidth;
