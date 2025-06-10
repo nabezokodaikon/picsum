@@ -49,10 +49,10 @@ jobs:
         shell: pwsh
         run: |
           $tag_name = "${{ github.ref }}" -split '/' | Select-Object -Last 1
-          compress-archive "$pwd\dist\picsum\*" picsum-$tag_name.zip
+          compress-archive "$pwd\dist\picsum\*" picsum.zip
 
       - name: action-gh-release 
         uses: softprops/action-gh-release@v2 
         with:
           files: |
-            picsum-*.zip
+            picsum.zip
