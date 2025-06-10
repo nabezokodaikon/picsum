@@ -1,4 +1,3 @@
-using OpenCvSharp.Extensions;
 using PicSum.Job.Parameters;
 using PicSum.Job.Results;
 using SWF.Core.Base;
@@ -53,7 +52,7 @@ namespace PicSum.Job.Logics
 
             try
             {
-                image = this.ReadImageFile(filePath, zoomValue);
+                image = this.ReadImageFileByZoom(filePath, zoomValue);
 
                 this.CheckCancel();
 
@@ -96,22 +95,14 @@ namespace PicSum.Job.Logics
             };
         }
 
-        internal CvImage ReadImageFile(string filePath, float zoomValue)
+        internal CvImage ReadImageFileByZoom(string filePath, float zoomValue)
         {
             try
             {
                 using (var bmp = ImageUtil.ReadImageFile(filePath))
                 {
-                    if (zoomValue == AppConstants.DEFAULT_ZOOM_VALUE)
-                    {
-                        return new CvImage(
-                            filePath, bmp.ToMat(), zoomValue);
-                    }
-                    else
-                    {
-                        return new CvImage(
-                            filePath, OpenCVUtil.Zoom(bmp, zoomValue, OpenCvSharp.InterpolationFlags.Area));
-                    }
+                    return new CvImage(
+                        filePath, OpenCVUtil.Zoom(bmp, zoomValue, OpenCvSharp.InterpolationFlags.Area));
                 }
             }
             catch (FileUtilException ex)
