@@ -195,6 +195,7 @@ namespace SWF.UIComponent.ImagePanel
                     (int)panelRect.Y,
                     (int)panelRect.Width,
                     (int)panelRect.Height));
+                this.Update();
             }
         }
 
