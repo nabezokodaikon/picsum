@@ -1,6 +1,5 @@
 using NLog;
 using OpenCvSharp.Extensions;
-using SWF.Core.Base;
 using SWF.Core.ConsoleAccessor;
 using SWF.Core.FileAccessor;
 using System.Runtime.Versioning;
@@ -98,16 +97,8 @@ namespace SWF.Core.ImageAccessor
             {
                 if (cache != ImageFileCacheEntity.EMPTY && cache.Bitmap != null)
                 {
-                    if (zoomValue == AppConstants.DEFAULT_ZOOM_VALUE)
-                    {
-                        return new CvImage(
-                            filePath, cache.Bitmap.ToMat(), cache.Bitmap.PixelFormat);
-                    }
-                    else
-                    {
-                        return new CvImage(
-                            filePath, OpenCVUtil.Zoom(cache.Bitmap, zoomValue, OpenCvSharp.InterpolationFlags.Area), cache.Bitmap.PixelFormat);
-                    }
+                    return new CvImage(
+                        filePath, cache.Bitmap.ToMat(), cache.Bitmap.PixelFormat, zoomValue);
                 }
                 else
                 {
@@ -122,16 +113,8 @@ namespace SWF.Core.ImageAccessor
 
             using (var bmp = ImageUtil.ReadImageFile(filePath))
             {
-                if (zoomValue == AppConstants.DEFAULT_ZOOM_VALUE)
-                {
-                    return new CvImage(
-                        filePath, bmp.ToMat(), bmp.PixelFormat);
-                }
-                else
-                {
-                    return new CvImage(
-                        filePath, OpenCVUtil.Zoom(bmp, zoomValue, OpenCvSharp.InterpolationFlags.Area), bmp.PixelFormat);
-                }
+                return new CvImage(
+                    filePath, bmp.ToMat(), bmp.PixelFormat, zoomValue);
             }
         }
 

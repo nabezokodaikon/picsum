@@ -79,7 +79,7 @@ namespace PicSum.Job.Logics
         }
 
         internal ImageFileReadResult CreateEmptyResult(
-            int index, string filePath, bool isMain, bool hasSub, Size imageSize)
+            int index, string filePath, bool isMain, bool hasSub, Size imageSize, float zoomValue)
         {
             return new()
             {
@@ -89,7 +89,7 @@ namespace PicSum.Job.Logics
                 Image = new()
                 {
                     FilePath = filePath,
-                    Image = new CvImage(filePath, imageSize),
+                    Image = new CvImage(filePath, imageSize, zoomValue),
                     IsEmpty = true,
                     IsError = false,
                 }
@@ -105,7 +105,7 @@ namespace PicSum.Job.Logics
                     if (zoomValue == AppConstants.DEFAULT_ZOOM_VALUE)
                     {
                         return new CvImage(
-                            filePath, bmp.ToMat(), bmp.PixelFormat);
+                            filePath, bmp.ToMat(), bmp.PixelFormat, zoomValue);
                     }
                     else
                     {

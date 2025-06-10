@@ -79,7 +79,7 @@ namespace SWF.UIComponent.ImagePanel
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool IsImageMove { get; private set; } = false;
 
-        public Size ImageSize
+        public SizeF ImageSize
         {
             get
             {
