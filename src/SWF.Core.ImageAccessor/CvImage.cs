@@ -120,7 +120,7 @@ namespace SWF.Core.ImageAccessor
 
             try
             {
-                using (TimeMeasuring.Run(true, "CvImage.CreateScaleImage"))
+                using (TimeMeasuring.Run(false, "CvImage.CreateScaleImage"))
                 {
                     return OpenCVUtil.Resize(
                         this._mat, width, height, OpenCvSharp.InterpolationFlags.Area);
@@ -161,7 +161,7 @@ namespace SWF.Core.ImageAccessor
 
             try
             {
-                using (TimeMeasuring.Run(true, "CvImage.DrawZoomImage"))
+                using (TimeMeasuring.Run(false, "CvImage.DrawZoomImage"))
                 {
                     var roi = new OpenCvSharp.Rect(
                         (int)(srcRect.X / this._zoomValue),

@@ -81,49 +81,6 @@ namespace PicSum.Job.Logics
             };
         }
 
-        internal CvImage ReadImageFileByZoom(string filePath, float zoomValue)
-        {
-            try
-            {
-                using (var bmp = ImageUtil.ReadImageFile(filePath))
-                {
-                    return new CvImage(
-                        filePath, OpenCVUtil.Zoom(bmp, zoomValue, OpenCvSharp.InterpolationFlags.Area));
-                }
-            }
-            catch (FileUtilException ex)
-            {
-                this.WriteErrorLog(new JobException(this.Job.ID, ex));
-                return CvImage.EMPTY;
-            }
-            catch (ImageUtilException ex)
-            {
-                this.WriteErrorLog(new JobException(this.Job.ID, ex));
-                return CvImage.EMPTY;
-            }
-        }
-
-        internal CvImage ReadImageFileFromCache(string filePath, float zoomValue)
-        {
-            try
-            {
-                using (TimeMeasuring.Run(true, "ImageFileReadLogic.ReadImageFileFromCache"))
-                {
-                    return Instance<IImageFileCacher>.Value.GetCvImage(filePath, zoomValue);
-                }
-            }
-            catch (FileUtilException ex)
-            {
-                this.WriteErrorLog(new JobException(this.Job.ID, ex));
-                return CvImage.EMPTY;
-            }
-            catch (ImageUtilException ex)
-            {
-                this.WriteErrorLog(new JobException(this.Job.ID, ex));
-                return CvImage.EMPTY;
-            }
-        }
-
         internal Size GetImageSize(string filePath)
         {
             try
@@ -140,13 +97,6 @@ namespace PicSum.Job.Logics
                 this.WriteErrorLog(new JobException(this.Job.ID, ex));
                 return ImageUtil.EMPTY_SIZE;
             }
-        }
-
-        internal float GetThumbnailScale(float thumbnailSize, SizeF imageSize)
-        {
-            return Math.Min(
-                thumbnailSize / imageSize.Width,
-                thumbnailSize / imageSize.Height);
         }
 
         internal int GetNextIndex(ImageFileReadParameter parameter)
@@ -281,6 +231,34 @@ namespace PicSum.Job.Logics
                     return prevIndex1;
                 }
             }
+        }
+
+        private CvImage ReadImageFileFromCache(string filePath, float zoomValue)
+        {
+            try
+            {
+                using (TimeMeasuring.Run(false, "ImageFileReadLogic.ReadImageFileFromCache"))
+                {
+                    return Instance<IImageFileCacher>.Value.GetCvImage(filePath, zoomValue);
+                }
+            }
+            catch (FileUtilException ex)
+            {
+                this.WriteErrorLog(new JobException(this.Job.ID, ex));
+                return CvImage.EMPTY;
+            }
+            catch (ImageUtilException ex)
+            {
+                this.WriteErrorLog(new JobException(this.Job.ID, ex));
+                return CvImage.EMPTY;
+            }
+        }
+
+        private float GetThumbnailScale(float thumbnailSize, SizeF imageSize)
+        {
+            return Math.Min(
+                thumbnailSize / imageSize.Width,
+                thumbnailSize / imageSize.Height);
         }
     }
 }
