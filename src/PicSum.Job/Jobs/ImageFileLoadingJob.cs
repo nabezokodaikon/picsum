@@ -75,7 +75,7 @@ namespace PicSum.Job.Jobs
                 var sw = Stopwatch.StartNew();
                 while (true)
                 {
-                    if (sw.ElapsedMilliseconds > 10)
+                    if (sw.ElapsedMilliseconds > 1)
                     {
                         return;
                     }

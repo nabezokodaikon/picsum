@@ -1,6 +1,7 @@
 using PicSum.Job.Parameters;
 using PicSum.Job.Results;
 using SWF.Core.Base;
+using SWF.Core.ConsoleAccessor;
 using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
 using SWF.Core.Job;
@@ -14,9 +15,16 @@ namespace PicSum.Job.Logics
         : AbstractAsyncLogic(job)
     {
         internal ImageFileReadResult CreateResult(
-            int index, string filePath, bool isMain, bool hasSub, float zoomValue)
+            int index,
+            string filePath,
+            bool isMain,
+            bool hasSub,
+            float zoomValue,
+            float thumbnailSize,
+            ImageSizeMode imageSizeMode)
         {
-            var image = CvImage.EMPTY;
+            CvImage? image = null;
+            Bitmap? thumbnail = null;
 
             try
             {
@@ -24,35 +32,11 @@ namespace PicSum.Job.Logics
 
                 this.CheckCancel();
 
-                return new ImageFileReadResult()
+                if (imageSizeMode == ImageSizeMode.Original)
                 {
-                    Index = index,
-                    IsMain = isMain,
-                    HasSub = hasSub,
-                    Image = new()
-                    {
-                        FilePath = filePath,
-                        Image = image,
-                        IsEmpty = false,
-                        IsError = image == CvImage.EMPTY,
-                    },
-                };
-            }
-            catch (JobCancelException)
-            {
-                image.Dispose();
-                throw;
-            }
-        }
-
-        internal ImageFileReadResult CreateThumbnailResult(
-            int index, string filePath, bool isMain, bool hasSub, float zoomValue)
-        {
-            var image = CvImage.EMPTY;
-
-            try
-            {
-                image = this.ReadImageFileByZoom(filePath, zoomValue);
+                    var thumbnailScale = this.GetThumbnailScale(thumbnailSize, image.Size);
+                    thumbnail = image.CreateScaleImage(thumbnailScale);
+                }
 
                 this.CheckCancel();
 
@@ -65,6 +49,7 @@ namespace PicSum.Job.Logics
                     {
                         FilePath = filePath,
                         Image = image,
+                        Thumbnail = thumbnail,
                         IsEmpty = false,
                         IsError = image == CvImage.EMPTY,
                     },
@@ -72,7 +57,8 @@ namespace PicSum.Job.Logics
             }
             catch (JobCancelException)
             {
-                image.Dispose();
+                image?.Dispose();
+                thumbnail?.Dispose();
                 throw;
             }
         }
@@ -121,7 +107,10 @@ namespace PicSum.Job.Logics
         {
             try
             {
-                return Instance<IImageFileCacher>.Value.GetCvImage(filePath, zoomValue);
+                using (TimeMeasuring.Run(true, "ImageFileReadLogic.ReadImageFileFromCache"))
+                {
+                    return Instance<IImageFileCacher>.Value.GetCvImage(filePath, zoomValue);
+                }
             }
             catch (FileUtilException ex)
             {
@@ -153,11 +142,11 @@ namespace PicSum.Job.Logics
             }
         }
 
-        internal float GetThumbnailScale(float thumbnailSize, Size imageSize)
+        internal float GetThumbnailScale(float thumbnailSize, SizeF imageSize)
         {
             return Math.Min(
-                thumbnailSize / (float)imageSize.Width,
-                thumbnailSize / (float)imageSize.Height);
+                thumbnailSize / imageSize.Width,
+                thumbnailSize / imageSize.Height);
         }
 
         internal int GetNextIndex(ImageFileReadParameter parameter)

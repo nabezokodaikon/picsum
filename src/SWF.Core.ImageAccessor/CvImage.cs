@@ -1,4 +1,3 @@
-using OpenCvSharp.Extensions;
 using SWF.Core.Base;
 using SWF.Core.ConsoleAccessor;
 using System.Drawing.Drawing2D;
@@ -109,14 +108,44 @@ namespace SWF.Core.ImageAccessor
             g.FillRectangle(brush, destRect);
         }
 
-        public Bitmap ToBitmap()
+        public Bitmap CreateScaleImage(float scale)
         {
             if (this._mat == null)
             {
                 throw new NullReferenceException("MatがNullです。");
             }
 
-            return this._mat.ToBitmap();
+            var width = (int)(this.Width * scale);
+            var height = (int)(this.Height * scale);
+
+            try
+            {
+                using (TimeMeasuring.Run(true, "CvImage.CreateScaleImage"))
+                {
+                    return OpenCVUtil.Resize(
+                        this._mat, width, height, OpenCvSharp.InterpolationFlags.Area);
+                }
+            }
+            catch (NotSupportedException ex)
+            {
+                throw new ImageUtilException(CreateErrorMessage(this._filePath), ex);
+            }
+            catch (ArgumentNullException ex)
+            {
+                throw new ImageUtilException(CreateErrorMessage(this._filePath), ex);
+            }
+            catch (ArgumentException ex)
+            {
+                throw new ImageUtilException(CreateErrorMessage(this._filePath), ex);
+            }
+            catch (ObjectDisposedException ex)
+            {
+                throw new ImageUtilException(CreateErrorMessage(this._filePath), ex);
+            }
+            catch (NotImplementedException ex)
+            {
+                throw new ImageUtilException(CreateErrorMessage(this._filePath), ex);
+            }
         }
 
         public void DrawZoomImage(Graphics g, RectangleF destRect, RectangleF srcRect)

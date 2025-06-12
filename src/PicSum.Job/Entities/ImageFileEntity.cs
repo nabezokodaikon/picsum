@@ -1,4 +1,5 @@
 using SWF.Core.ImageAccessor;
+using System.Drawing;
 using System.Runtime.Versioning;
 
 namespace PicSum.Job.Entities
@@ -13,12 +14,14 @@ namespace PicSum.Job.Entities
         {
             FilePath = string.Empty,
             Image = CvImage.EMPTY,
+            Thumbnail = null,
             IsEmpty = false,
             IsError = false,
         };
 
         public string FilePath { get; internal set; } = string.Empty;
         public CvImage Image { get; internal set; } = CvImage.EMPTY;
+        public Bitmap? Thumbnail { get; internal set; } = null;
         public bool IsEmpty { get; internal set; }
         public bool IsError { get; internal set; }
     }

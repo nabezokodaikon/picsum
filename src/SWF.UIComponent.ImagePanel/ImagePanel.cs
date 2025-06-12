@@ -163,7 +163,11 @@ namespace SWF.UIComponent.ImagePanel
             this.UpdateStyles();
         }
 
-        public void SetImage(ImageSizeMode sizeMode, CvImage img, string filePath)
+        public void SetImage(
+            string filePath,
+            ImageSizeMode sizeMode,
+            CvImage img,
+            Bitmap thumbnail)
         {
             ArgumentNullException.ThrowIfNull(filePath, nameof(filePath));
 
@@ -175,28 +179,10 @@ namespace SWF.UIComponent.ImagePanel
             this.FilePath = filePath;
             this._sizeMode = sizeMode;
             this._image = img;
+            this._thumbnail = thumbnail;
             this._isError = false;
 
             this.HasImage = true;
-        }
-
-        public void SetThumbnail(CvImage thumbnail)
-        {
-            ArgumentNullException.ThrowIfNull(thumbnail, nameof(thumbnail));
-
-            this._thumbnail?.Dispose();
-            this._thumbnail = thumbnail.ToBitmap();
-
-            if (this.CanDrawThumbnailPanel())
-            {
-                var panelRect = this.GetThumbnailPanelRectangle();
-                this.Invalidate(new Rectangle(
-                    (int)panelRect.X,
-                    (int)panelRect.Y,
-                    (int)panelRect.Width,
-                    (int)panelRect.Height));
-                this.Update();
-            }
         }
 
         public void SetScale(float scale)
@@ -230,16 +216,16 @@ namespace SWF.UIComponent.ImagePanel
         {
             this.HasImage = false;
 
-            this._image.Dispose();
+            if (this._image != CvImage.EMPTY)
+            {
+                this._image.Dispose();
+                this._image = CvImage.EMPTY;
+            }
 
-            this._imageScaleSize = SizeF.Empty;
-            this.FilePath = string.Empty;
-        }
-
-        public void ClearThumbnail()
-        {
             this._thumbnail?.Dispose();
             this._thumbnail = null;
+            this._imageScaleSize = SizeF.Empty;
+            this.FilePath = string.Empty;
         }
 
         protected override void Dispose(bool disposing)
@@ -247,7 +233,6 @@ namespace SWF.UIComponent.ImagePanel
             if (disposing)
             {
                 this.ClearImage();
-                this.ClearThumbnail();
             }
 
             base.Dispose(disposing);
