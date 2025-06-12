@@ -119,49 +119,6 @@ namespace SWF.Core.ImageAccessor
             return this._mat.ToBitmap();
         }
 
-        public Bitmap GetHighQualityResizeImage(System.Drawing.Size size)
-        {
-            return this.GetResizeImage(size, OpenCvSharp.InterpolationFlags.Area);
-        }
-
-        public Bitmap GetLowQualityResizeImage(System.Drawing.Size size)
-        {
-            return this.GetResizeImage(size, OpenCvSharp.InterpolationFlags.Linear);
-        }
-
-        private Bitmap GetResizeImage(System.Drawing.Size size, OpenCvSharp.InterpolationFlags flag)
-        {
-            if (this._mat == null)
-            {
-                throw new NullReferenceException("MatがNullです。");
-            }
-
-            try
-            {
-                return OpenCVUtil.Resize(this._mat, size.Width, size.Height, flag);
-            }
-            catch (NotSupportedException ex)
-            {
-                throw new ImageUtilException(CreateErrorMessage(this._filePath), ex);
-            }
-            catch (ArgumentNullException ex)
-            {
-                throw new ImageUtilException(CreateErrorMessage(this._filePath), ex);
-            }
-            catch (ArgumentException ex)
-            {
-                throw new ImageUtilException(CreateErrorMessage(this._filePath), ex);
-            }
-            catch (ObjectDisposedException ex)
-            {
-                throw new ImageUtilException(CreateErrorMessage(this._filePath), ex);
-            }
-            catch (NotImplementedException ex)
-            {
-                throw new ImageUtilException(CreateErrorMessage(this._filePath), ex);
-            }
-        }
-
         public void DrawZoomImage(Graphics g, RectangleF destRect, RectangleF srcRect)
         {
             ArgumentNullException.ThrowIfNull(g, nameof(g));
@@ -221,11 +178,6 @@ namespace SWF.Core.ImageAccessor
         public void DrawHighQualityResizeImage(Graphics g, RectangleF destRect)
         {
             this.DrawResizeImage(g, destRect, OpenCvSharp.InterpolationFlags.Area);
-        }
-
-        public void DrawLowQualityResizeImage(Graphics g, RectangleF destRect)
-        {
-            this.DrawResizeImage(g, destRect, OpenCvSharp.InterpolationFlags.Linear);
         }
 
         public void DrawResizeImage(Graphics g, RectangleF destRect, OpenCvSharp.InterpolationFlags flag)
