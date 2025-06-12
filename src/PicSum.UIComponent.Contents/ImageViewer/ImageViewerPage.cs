@@ -416,7 +416,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
         private void SettingImagePanelsLayout()
         {
-            var w = (int)(this.checkPatternPanel.Width / 2f);
+            var w = (int)Math.Ceiling(this.checkPatternPanel.Width / 2f);
             var h = this.checkPatternPanel.Height;
             var lx = 0;
             var rx = this.checkPatternPanel.Width - w;
@@ -437,7 +437,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         {
             if (e.IsMain && e.HasSub)
             {
-                var w = (int)(this.checkPatternPanel.Width / 2f);
+                var w = (int)Math.Ceiling(this.checkPatternPanel.Width / 2f);
                 var h = this.checkPatternPanel.Height;
                 var y = 0;
 
@@ -464,7 +464,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             }
             else if (!e.IsMain)
             {
-                var w = (int)(this.checkPatternPanel.Width / 2f);
+                var w = (int)Math.Ceiling(this.checkPatternPanel.Width / 2f);
                 var h = this.checkPatternPanel.Height;
                 var y = 0;
 

@@ -546,7 +546,7 @@ namespace SWF.UIComponent.ImagePanel
                     ImageAlign.Right => this.Width - this._imageScaleSize.Width,
                     ImageAlign.RightTop => this.Width - this._imageScaleSize.Width,
                     ImageAlign.RightBottom => this.Width - this._imageScaleSize.Width,
-                    _ => (this.Width - this._imageScaleSize.Width) / 2f,
+                    _ => (float)Math.Ceiling((this.Width - this._imageScaleSize.Width) / 2f),
                 };
             }
 
@@ -565,14 +565,14 @@ namespace SWF.UIComponent.ImagePanel
                     ImageAlign.Bottom => this.Height - this._imageScaleSize.Height,
                     ImageAlign.LeftBottom => this.Height - this._imageScaleSize.Height,
                     ImageAlign.RightBottom => this.Height - this._imageScaleSize.Height,
-                    _ => (this.Height - this._imageScaleSize.Height) / 2f,
+                    _ => (float)Math.Ceiling((this.Height - this._imageScaleSize.Height) / 2f),
                 };
             }
 
             var w = this._imageScaleSize.Width - this._hMaximumScrollValue;
             var h = this._imageScaleSize.Height - this._vMaximumScrollValue;
 
-            return new RectangleF(x, y, w, h);
+            return new RectangleF(x, y, (float)Math.Ceiling(w), (float)Math.Ceiling(h));
         }
 
         private RectangleF GetImageSrcRectangle()
