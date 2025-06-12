@@ -115,8 +115,8 @@ namespace SWF.Core.ImageAccessor
                 throw new NullReferenceException("MatがNullです。");
             }
 
-            var width = (int)(this.Width * scale);
-            var height = (int)(this.Height * scale);
+            var width = this.Width * scale;
+            var height = this.Height * scale;
 
             try
             {
@@ -164,15 +164,13 @@ namespace SWF.Core.ImageAccessor
                 using (TimeMeasuring.Run(false, "CvImage.DrawZoomImage"))
                 {
                     var roi = new OpenCvSharp.Rect(
-                        (int)(srcRect.X / this._zoomValue),
-                        (int)(srcRect.Y / this._zoomValue),
-                        (int)(srcRect.Width / this._zoomValue),
-                        (int)(srcRect.Height / this._zoomValue));
+                        new OpenCvSharp.Point(srcRect.X / this._zoomValue, srcRect.Y / this._zoomValue),
+                        new OpenCvSharp.Size(srcRect.Width / this._zoomValue, srcRect.Height / this._zoomValue));
                     using (var cropped = new OpenCvSharp.Mat(this._mat, roi))
                     using (var bmp = OpenCVUtil.Resize(
                         cropped,
-                        (int)destRect.Width,
-                        (int)destRect.Height,
+                        destRect.Width,
+                        destRect.Height,
                         OpenCvSharp.InterpolationFlags.Area))
                     {
                         g.DrawImage(bmp,
@@ -222,7 +220,7 @@ namespace SWF.Core.ImageAccessor
 
             try
             {
-                using (var bmp = OpenCVUtil.Resize(this._mat, (int)destRect.Width, (int)destRect.Height, flag))
+                using (var bmp = OpenCVUtil.Resize(this._mat, destRect.Width, destRect.Height, flag))
                 {
                     g.DrawImage(bmp, destRect,
                         new RectangleF(0, 0, destRect.Width, destRect.Height), GraphicsUnit.Pixel);

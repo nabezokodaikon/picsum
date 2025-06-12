@@ -64,7 +64,7 @@ namespace SWF.Core.ImageAccessor
 
             using (TimeMeasuring.Run(false, "ThumbnailUtil.CreateThumbnail"))
             {
-                int w, h;
+                float w, h;
                 if (Math.Max(srcImg.Width, srcImg.Height) <= Math.Min(thumbWidth, thumbHeight))
                 {
                     w = srcImg.Width;
@@ -73,8 +73,8 @@ namespace SWF.Core.ImageAccessor
                 else
                 {
                     var scale = Math.Min(thumbWidth / (float)srcImg.Width, thumbHeight / (float)srcImg.Height);
-                    w = (int)(srcImg.Width * scale);
-                    h = (int)(srcImg.Height * scale);
+                    w = srcImg.Width * scale;
+                    h = srcImg.Height * scale;
                 }
 
                 if (w < 1)
