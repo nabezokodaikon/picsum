@@ -52,7 +52,7 @@ jobs:
           compress-archive "$pwd\dist\picsum\*" picsum-$tag_name.zip
 
       - name: action-gh-release 
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           files: |
             picsum-*.zip
