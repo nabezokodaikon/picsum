@@ -569,7 +569,7 @@ namespace SWF.UIComponent.ImagePanel
                 };
             }
 
-            var w = this._imageScaleSize.Width - this._hMaximumScrollValue;
+            var w = (float)Math.Ceiling(this._imageScaleSize.Width - this._hMaximumScrollValue);
             var h = this._imageScaleSize.Height - this._vMaximumScrollValue;
 
             return new RectangleF(x, y, w, h);
