@@ -298,8 +298,8 @@ namespace SWF.UIComponent.ImagePanel
                         var thumbRect = this.GetThumbnailRectangle();
                         var srcRect = this.GetImageSrcRectangle();
                         var centerPoint = new PointF(srcRect.X + srcRect.Width / 2f, srcRect.Y + srcRect.Height / 2f);
-                        if (this.SetHScrollValue(this._hScrollValue + (int)((e.X - thumbRect.X) * scale - centerPoint.X)) |
-                            this.SetVScrollValue(this._vScrollValue + (int)((e.Y - thumbRect.Y) * scale - centerPoint.Y)))
+                        if (this.SetHScrollValue(this._hScrollValue + (e.X - thumbRect.X) * scale - centerPoint.X) |
+                            this.SetVScrollValue(this._vScrollValue + (e.Y - thumbRect.Y) * scale - centerPoint.Y))
                         {
                             this.Invalidate();
                         }
