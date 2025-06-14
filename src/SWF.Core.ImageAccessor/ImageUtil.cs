@@ -4,6 +4,7 @@ using SWF.Core.FileAccessor;
 using SWF.Core.StringAccessor;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
+using System.Numerics;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 using System.Security;
@@ -26,6 +27,7 @@ namespace SWF.Core.ImageAccessor
         internal const string PNG_FILE_EXTENSION = ".png";
         internal const string SVG_FILE_EXTENSION = ".svg";
         internal const string WEBP_FILE_EXTENSION = ".webp";
+        private const int LARGE_IMAGE_SIZE = 2000 * 2000;
 
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         internal static readonly string[] IMAGE_FILE_EXTENSION_LIST = GetImageFileExtensionList();
@@ -369,13 +371,19 @@ namespace SWF.Core.ImageAccessor
 
                 try
                 {
-                    return ReadImageFileWithVarious(filePath);
+                    using (var bmp = ReadImageFileWithVarious(filePath))
+                    {
+                        return NormalizeBitmap(filePath, bmp);
+                    }
                 }
                 catch (ImageUtilException ex)
                 {
                     Logger.Error(ex);
 
-                    return ReadImageFileWithImageMagick(filePath);
+                    using (var bmp = ReadImageFileWithImageMagick(filePath))
+                    {
+                        return NormalizeBitmap(filePath, bmp);
+                    }
                 }
             }
         }
@@ -603,6 +611,163 @@ namespace SWF.Core.ImageAccessor
             catch (ArgumentException ex)
             {
                 throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
+            }
+        }
+
+        private static Bitmap NormalizeBitmap(string filePath, Bitmap source)
+        {
+            try
+            {
+                if (source.Width * source.Height < LARGE_IMAGE_SIZE)
+                {
+                    return NormalizeBitmapBySingleSIMD(source);
+                }
+                else
+                {
+                    return NormalizeBitmapByParallelSIMD(source);
+                }
+            }
+            catch (ArgumentOutOfRangeException ex)
+            {
+                throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
+            }
+            catch (OutOfMemoryException ex)
+            {
+                throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
+            }
+            catch (InvalidOperationException ex)
+            {
+                throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
+            }
+            catch (ArgumentException ex)
+            {
+                throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
+            }
+            catch (NotSupportedException ex)
+            {
+                throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
+            }
+            catch (AccessViolationException ex)
+            {
+                throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
+            }
+        }
+
+        private static unsafe Bitmap NormalizeBitmapBySingleSIMD(Bitmap source)
+        {
+            var width = source.Width;
+            var height = source.Height;
+            var format = source.PixelFormat;
+
+            Bitmap? normalized = null;
+            BitmapData? sourceData = null;
+            BitmapData? targetData = null;
+
+            try
+            {
+                using (TimeMeasuring.Run(false, "ImageUtil.NormalizeBitmapBySingleSIMD"))
+                {
+                    normalized = new Bitmap(width, height, format);
+                    sourceData = source.LockBits(
+                        new Rectangle(0, 0, width, height),
+                        ImageLockMode.ReadOnly, format);
+                    targetData = normalized.LockBits(
+                        new Rectangle(0, 0, width, height),
+                        ImageLockMode.WriteOnly, format);
+
+                    var bytesPerPixel = Image.GetPixelFormatSize(format) / 8;
+                    var copyWidth = width * bytesPerPixel;
+
+                    for (var y = 0; y < height; y++)
+                    {
+                        var sourceLine = (byte*)sourceData.Scan0 + (y * sourceData.Stride);
+                        var targetLine = (byte*)targetData.Scan0 + (y * targetData.Stride);
+
+                        var targetSpan = new Span<byte>(targetLine, copyWidth);
+                        new ReadOnlySpan<byte>(sourceLine, copyWidth)
+                            .CopyTo(new Span<byte>(targetLine, copyWidth));
+                    }
+
+                    return normalized;
+                }
+            }
+            finally
+            {
+                if (sourceData != null)
+                {
+                    source?.UnlockBits(sourceData);
+                }
+
+                if (targetData != null)
+                {
+                    normalized?.UnlockBits(targetData);
+                }
+            }
+        }
+
+        private static unsafe Bitmap NormalizeBitmapByParallelSIMD(Bitmap source)
+        {
+            var width = source.Width;
+            var height = source.Height;
+            var format = source.PixelFormat;
+
+            Bitmap? normalized = null;
+            BitmapData? sourceData = null;
+            BitmapData? targetData = null;
+
+            try
+            {
+                using (TimeMeasuring.Run(false, "ImageUtil.NormalizeBitmapByParallelSIMD"))
+                {
+                    normalized = new Bitmap(width, height, format);
+                    sourceData = source.LockBits(
+                        new Rectangle(0, 0, width, height),
+                        ImageLockMode.ReadOnly, format);
+                    targetData = normalized.LockBits(
+                        new Rectangle(0, 0, width, height),
+                        ImageLockMode.WriteOnly, format);
+
+                    var sourcePtr = (byte*)sourceData.Scan0;
+                    var targetPtr = (byte*)targetData.Scan0;
+
+                    var bytesPerPixel = Image.GetPixelFormatSize(format) / 8;
+                    var copyWidth = width * bytesPerPixel;
+                    var vectorSize = Vector<byte>.Count;
+
+                    Parallel.For(0, height, y =>
+                    {
+                        var sourceLine = sourcePtr + (y * sourceData.Stride);
+                        var targetLine = targetPtr + (y * targetData.Stride);
+
+                        int x = 0;
+
+                        for (; x <= copyWidth - vectorSize; x += vectorSize)
+                        {
+                            var targetSpan = new ReadOnlySpan<byte>(targetLine, vectorSize);
+                            new ReadOnlySpan<byte>(sourceLine + x, vectorSize)
+                                .CopyTo(new Span<byte>(targetLine + x, vectorSize));
+                        }
+
+                        for (; x < copyWidth; x++)
+                        {
+                            targetLine[x] = sourceLine[x];
+                        }
+                    });
+
+                    return normalized;
+                }
+            }
+            finally
+            {
+                if (sourceData != null)
+                {
+                    source?.UnlockBits(sourceData);
+                }
+
+                if (targetData != null)
+                {
+                    normalized?.UnlockBits(targetData);
+                }
             }
         }
 
