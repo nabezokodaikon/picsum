@@ -93,7 +93,7 @@ namespace PicSum.Main.Conf
                 this.WindowSizeWidth = 1200;
                 this.WindowSizeHeight = 800;
 
-                this.ThumbnailSize = 144;
+                this.ThumbnailSize = 80;
                 this.IsShowFileName = true;
                 this.IsShowImageFile = true;
                 this.IsShowDirectory = true;
