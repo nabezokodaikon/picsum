@@ -1,4 +1,5 @@
 using SWF.Core.DatabaseAccessor;
+using System.Data.SQLite;
 using System.Runtime.Versioning;
 
 namespace PicSum.DatabaseAccessor.Connection
@@ -7,8 +8,8 @@ namespace PicSum.DatabaseAccessor.Connection
     /// thumb.sqlite コネクション
     /// </summary>
     [SupportedOSPlatform("windows10.0.17763.0")]
-    public sealed partial class ThumbnailDB
-        : AbstractConnection, IThumbnailDB
+    public sealed partial class ThumbnailDB(string dbFilePath)
+        : AbstractConnection(dbFilePath, TABLE_CREATE_SQL), IThumbnailDB
     {
         private const string TABLE_CREATE_SQL =
         @"
@@ -74,7 +75,34 @@ INSERT INTO m_thumbnail_id (
 );
         ";
 
-        public ThumbnailDB(string dbFilePath)
-            : base(dbFilePath, TABLE_CREATE_SQL) { }
+        protected override SQLiteConnection GetConnection()
+        {
+            if (this._connection == null)
+            {
+                this._connection = new SQLiteConnection("Data Source=:memory:");
+                this._connection.Open();
+                using (var fileConnection = new SQLiteConnection($"Data Source={this._dbFilePath}"))
+                {
+                    fileConnection.Open();
+                    fileConnection.BackupDatabase(this._connection, "main", "main", -1, null, 0);
+                }
+            }
+
+            return this._connection;
+        }
+
+        protected override void Close()
+        {
+            if (this._connection != null)
+            {
+                using (var fileConnection = new SQLiteConnection($"Data Source={this._dbFilePath}"))
+                {
+                    fileConnection.Open();
+                    this._connection.BackupDatabase(fileConnection, "main", "main", -1, null, 0);
+                }
+
+                this._connection.Close();
+            }
+        }
     }
 }

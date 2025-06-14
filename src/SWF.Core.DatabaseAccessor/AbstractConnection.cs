@@ -11,9 +11,10 @@ namespace SWF.Core.DatabaseAccessor
     {
         private bool _disposed = false;
         private readonly Lock _lockObject = new();
-        private readonly string _dbFilePath;
-        private SQLiteConnection? _connection = null;
         private SQLiteTransaction? _transaction = null;
+
+        protected readonly string _dbFilePath;
+        protected SQLiteConnection? _connection = null;
 
         /// <summary>
         /// コンストラクタ
@@ -43,35 +44,6 @@ namespace SWF.Core.DatabaseAccessor
             this._dbFilePath = dbFilePath;
         }
 
-        private void Dispose(bool disposing)
-        {
-            if (this._disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-                if (this._connection != null)
-                {
-                    var connectionString = $"Data Source={this._dbFilePath}";
-                    using (var fileConnection = new SQLiteConnection(connectionString))
-                    {
-                        fileConnection.Open();
-                        this._connection.BackupDatabase(fileConnection, "main", "main", -1, null, 0);
-                    }
-
-                    this._connection.Close();
-                    this._transaction?.Dispose();
-                }
-            }
-
-            this._transaction = null;
-            this._connection = null;
-
-            this._disposed = true;
-        }
-
         /// <summary>
         /// リソースを解放します。
         /// </summary>
@@ -81,22 +53,28 @@ namespace SWF.Core.DatabaseAccessor
             GC.SuppressFinalize(this);
         }
 
-        private SQLiteConnection GetConnection()
+        private void Dispose(bool disposing)
         {
-            if (this._connection == null)
+            if (this._disposed)
             {
-                var connectionString = $"Data Source={this._dbFilePath}";
-                this._connection = new SQLiteConnection("Data Source=:memory:");
-                this._connection.Open();
-                using (var fileConnection = new SQLiteConnection(connectionString))
-                {
-                    fileConnection.Open();
-                    fileConnection.BackupDatabase(this._connection, "main", "main", -1, null, 0);
-                }
+                return;
             }
 
-            return this._connection;
+            if (disposing)
+            {
+                this.Close();
+                this._transaction?.Dispose();
+            }
+
+            this._transaction = null;
+            this._connection = null;
+
+            this._disposed = true;
         }
+
+        protected abstract SQLiteConnection GetConnection();
+
+        protected abstract void Close();
 
         /// <summary>
         /// トランザクションを開始します。
