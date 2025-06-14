@@ -9,7 +9,7 @@ namespace PicSum.Job.Jobs
     public sealed class GCCollectRunJob
         : AbstractOneWayJob
     {
-        private static readonly long INTERVAL = 1000 * 10;
+        private static readonly long INTERVAL = 1000 * 5;
 
         protected override void Execute()
         {
@@ -24,6 +24,7 @@ namespace PicSum.Job.Jobs
                     {
                         GC.Collect();
                         GC.WaitForPendingFinalizers();
+                        GC.Collect();
                     }
 
                     sw = Stopwatch.StartNew();
