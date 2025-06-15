@@ -531,6 +531,9 @@ namespace SWF.UIComponent.ImagePanel
 
         private RectangleF GetImageDestRectangle()
         {
+            var scaleWidth = this._imageScaleSize.Width;
+            var scaleHeight = this._imageScaleSize.Height;
+
             float x;
             if (this._hMaximumScrollValue > 0)
             {
@@ -538,15 +541,12 @@ namespace SWF.UIComponent.ImagePanel
             }
             else
             {
+                var width = this.Width;
                 x = this._imageAlign switch
                 {
                     ImageAlign.Left => 0f,
-                    ImageAlign.LeftTop => 0f,
-                    ImageAlign.LeftBottom => 0f,
-                    ImageAlign.Right => this.Width - this._imageScaleSize.Width,
-                    ImageAlign.RightTop => this.Width - this._imageScaleSize.Width,
-                    ImageAlign.RightBottom => this.Width - this._imageScaleSize.Width,
-                    _ => (this.Width - this._imageScaleSize.Width) / 2f,
+                    ImageAlign.Right => width - scaleWidth,
+                    _ => (width - scaleWidth) / 2f,
                 };
             }
 
@@ -557,30 +557,23 @@ namespace SWF.UIComponent.ImagePanel
             }
             else
             {
-                y = this._imageAlign switch
-                {
-                    ImageAlign.Top => 0f,
-                    ImageAlign.LeftTop => 0f,
-                    ImageAlign.RightTop => 0f,
-                    ImageAlign.Bottom => this.Height - this._imageScaleSize.Height,
-                    ImageAlign.LeftBottom => this.Height - this._imageScaleSize.Height,
-                    ImageAlign.RightBottom => this.Height - this._imageScaleSize.Height,
-                    _ => (this.Height - this._imageScaleSize.Height) / 2f,
-                };
+                y = (this.Height - scaleHeight) / 2f;
             }
 
-            var w = (float)Math.Ceiling(this._imageScaleSize.Width - this._hMaximumScrollValue);
-            var h = this._imageScaleSize.Height - this._vMaximumScrollValue;
+            var w = (float)Math.Ceiling(scaleWidth - this._hMaximumScrollValue);
+            var h = scaleHeight - this._vMaximumScrollValue;
 
             return new RectangleF(x, y, w, h);
         }
 
         private RectangleF GetImageSrcRectangle()
         {
+            var image = this._image;
+
             var x = this._hScrollValue;
             var y = this._vScrollValue;
-            var w = this._image.Width - this._hMaximumScrollValue;
-            var h = this._image.Height - this._vMaximumScrollValue;
+            var w = image.Width - this._hMaximumScrollValue;
+            var h = image.Height - this._vMaximumScrollValue;
 
             return new RectangleF(x, y, w, h);
         }
@@ -671,7 +664,9 @@ namespace SWF.UIComponent.ImagePanel
                     {
                         if (this._sizeMode == ImageSizeMode.Original)
                         {
-                            this._image.DrawZoomImage(g, this.GetImageDestRectangle(), this.GetImageSrcRectangle());
+                            var destRect = this.GetImageDestRectangle();
+                            var srcRect = this.GetImageSrcRectangle();
+                            this._image.DrawZoomImage(g, destRect, srcRect);
                         }
                         else
                         {

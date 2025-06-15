@@ -186,24 +186,29 @@ namespace SWF.Core.ImageAccessor
             {
                 using (TimeMeasuring.Run(false, "CvImage.DrawZoomImage"))
                 {
+                    var zoomValue = this._zoomValue;
+                    var scaleValue = this._scaleValue;
+                    var width = destRect.Width;
+                    var height = destRect.Height;
+
                     var point = new OpenCvSharp.Point(
-                        srcRect.X * this._scaleValue / this._zoomValue,
-                        srcRect.Y * this._scaleValue / this._zoomValue);
+                        srcRect.X * scaleValue / zoomValue,
+                        srcRect.Y * scaleValue / zoomValue);
                     var size = new OpenCvSharp.Size(
-                        srcRect.Width * this._scaleValue / this._zoomValue,
-                        srcRect.Height * this._scaleValue / this._zoomValue);
+                        srcRect.Width * scaleValue / zoomValue,
+                        srcRect.Height * scaleValue / zoomValue);
 
                     var roi = new OpenCvSharp.Rect(point, size);
                     using (var cropped = new OpenCvSharp.Mat(this._mat, roi))
                     using (var bmp = OpenCVUtil.Resize(
                         cropped,
-                        destRect.Width,
-                        destRect.Height,
+                        width,
+                        height,
                         OpenCvSharp.InterpolationFlags.Area))
                     {
                         g.DrawImage(bmp,
                             destRect,
-                            new RectangleF(0, 0, destRect.Width, destRect.Height),
+                            new RectangleF(0, 0, width, height),
                             GraphicsUnit.Pixel);
                     }
                 }
@@ -252,10 +257,13 @@ namespace SWF.Core.ImageAccessor
 
             try
             {
-                using (var bmp = OpenCVUtil.Resize(this._mat, destRect.Width, destRect.Height, flag))
+                var width = destRect.Width;
+                var height = destRect.Height;
+
+                using (var bmp = OpenCVUtil.Resize(this._mat, width, height, flag))
                 {
                     g.DrawImage(bmp, destRect,
-                        new RectangleF(0, 0, destRect.Width, destRect.Height), GraphicsUnit.Pixel);
+                        new RectangleF(0, 0, width, height), GraphicsUnit.Pixel);
                 }
             }
             catch (NotSupportedException ex)

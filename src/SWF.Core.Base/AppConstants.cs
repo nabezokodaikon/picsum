@@ -154,13 +154,7 @@ namespace SWF.Core.Base
     {
         Center = 0,
         Left = 1,
-        LeftTop = 2,
-        Top = 3,
-        RightTop = 4,
-        Right = 5,
-        RightBottom = 6,
-        Bottom = 7,
-        LeftBottom = 8
+        Right = 2,
     }
 
     /// <summary>

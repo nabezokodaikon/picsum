@@ -625,7 +625,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 this._isLoading = true;
 
                 Instance<JobCaller>.Value.ThumbnailsGetJob.Value
-                    .StartJob(this, thumbnailsGetParameter, null);
+                    .StartJob(this, thumbnailsGetParameter);
 
                 Instance<JobCaller>.Value.ImageFileCacheJob.Value
                     .StartJob(this, new ImageFileCacheParameter(
