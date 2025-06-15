@@ -10,5 +10,6 @@ namespace PicSum.Job.Parameters
         public int LastIndex { get; set; }
         public int ThumbnailWidth { get; set; }
         public int ThumbnailHeight { get; set; }
+        public bool IsExecuteCallback { get; set; }
     }
 }

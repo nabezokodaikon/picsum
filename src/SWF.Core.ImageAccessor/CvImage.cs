@@ -27,11 +27,27 @@ namespace SWF.Core.ImageAccessor
         private readonly string _filePath;
         private OpenCvSharp.Mat? _mat;
         private readonly float _zoomValue;
+        private readonly float _scaleValue;
 
         public readonly SizeF Size;
         public readonly float Width;
         public readonly float Height;
         public readonly bool IsEmpty;
+
+        public CvImage(string filePath, OpenCvSharp.Mat mat, SizeF size, float zoomValue)
+        {
+            ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
+            ArgumentNullException.ThrowIfNull(mat, nameof(mat));
+
+            this._filePath = filePath;
+            this._mat = mat;
+            this._zoomValue = zoomValue;
+            this.Width = size.Width * zoomValue;
+            this.Height = size.Height * zoomValue;
+            this.Size = new SizeF(this.Width, this.Height);
+            this.IsEmpty = false;
+            this._scaleValue = this._mat.Width / (this.Width / this._zoomValue);
+        }
 
         public CvImage(string filePath, OpenCvSharp.Mat mat)
             : this(filePath, mat, AppConstants.DEFAULT_ZOOM_VALUE)
@@ -51,6 +67,7 @@ namespace SWF.Core.ImageAccessor
             this.Height = mat.Height * zoomValue;
             this.Size = new SizeF(this.Width, this.Height);
             this.IsEmpty = false;
+            this._scaleValue = this._mat.Width / (this.Width / this._zoomValue);
         }
 
         public CvImage(string filePath, SizeF size, float zoomValue)
@@ -64,6 +81,7 @@ namespace SWF.Core.ImageAccessor
             this.Height = size.Height * zoomValue;
             this.Size = new SizeF(this.Width, this.Height);
             this.IsEmpty = true;
+            this._scaleValue = 1f;
         }
 
         private CvImage(SizeF size)
@@ -75,6 +93,7 @@ namespace SWF.Core.ImageAccessor
             this.Height = size.Height * AppConstants.DEFAULT_ZOOM_VALUE;
             this.Size = size;
             this.IsEmpty = true;
+            this._scaleValue = 1f;
         }
 
         private void Dispose(bool disposing)
@@ -146,6 +165,10 @@ namespace SWF.Core.ImageAccessor
             {
                 throw new ImageUtilException(CreateErrorMessage(this._filePath), ex);
             }
+            catch (OpenCvSharp.OpenCVException ex)
+            {
+                throw new ImageUtilException(CreateErrorMessage(this._filePath), ex);
+            }
         }
 
         public void DrawZoomImage(Graphics g, RectangleF destRect, RectangleF srcRect)
@@ -163,9 +186,14 @@ namespace SWF.Core.ImageAccessor
             {
                 using (TimeMeasuring.Run(false, "CvImage.DrawZoomImage"))
                 {
-                    var roi = new OpenCvSharp.Rect(
-                        new OpenCvSharp.Point(srcRect.X / this._zoomValue, srcRect.Y / this._zoomValue),
-                        new OpenCvSharp.Size(srcRect.Width / this._zoomValue, srcRect.Height / this._zoomValue));
+                    var point = new OpenCvSharp.Point(
+                        srcRect.X * this._scaleValue / this._zoomValue,
+                        srcRect.Y * this._scaleValue / this._zoomValue);
+                    var size = new OpenCvSharp.Size(
+                        srcRect.Width * this._scaleValue / this._zoomValue,
+                        srcRect.Height * this._scaleValue / this._zoomValue);
+
+                    var roi = new OpenCvSharp.Rect(point, size);
                     using (var cropped = new OpenCvSharp.Mat(this._mat, roi))
                     using (var bmp = OpenCVUtil.Resize(
                         cropped,
@@ -197,6 +225,10 @@ namespace SWF.Core.ImageAccessor
                 throw new ImageUtilException(CreateErrorMessage(this._filePath), ex);
             }
             catch (NotImplementedException ex)
+            {
+                throw new ImageUtilException(CreateErrorMessage(this._filePath), ex);
+            }
+            catch (OpenCvSharp.OpenCVException ex)
             {
                 throw new ImageUtilException(CreateErrorMessage(this._filePath), ex);
             }
@@ -243,6 +275,10 @@ namespace SWF.Core.ImageAccessor
                 throw new ImageUtilException(CreateErrorMessage(this._filePath), ex);
             }
             catch (NotImplementedException ex)
+            {
+                throw new ImageUtilException(CreateErrorMessage(this._filePath), ex);
+            }
+            catch (OpenCvSharp.OpenCVException ex)
             {
                 throw new ImageUtilException(CreateErrorMessage(this._filePath), ex);
             }

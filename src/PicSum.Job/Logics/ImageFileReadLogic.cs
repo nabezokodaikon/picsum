@@ -1,3 +1,5 @@
+using PicSum.Job.Common;
+using PicSum.Job.Entities;
 using PicSum.Job.Parameters;
 using PicSum.Job.Results;
 using SWF.Core.Base;
@@ -63,9 +65,13 @@ namespace PicSum.Job.Logics
             }
         }
 
-        internal ImageFileReadResult CreateEmptyResult(
+        internal ImageFileReadResult CreateLoadingResult(
             int index, string filePath, bool isMain, bool hasSub, Size imageSize, float zoomValue)
         {
+            var thumbnail = this.GetThumbnail(filePath, imageSize, zoomValue);
+            var isEmpty = thumbnail == CvImage.EMPTY;
+            var image = isEmpty ? new CvImage(filePath, imageSize, zoomValue) : thumbnail;
+
             return new()
             {
                 Index = index,
@@ -74,8 +80,8 @@ namespace PicSum.Job.Logics
                 Image = new()
                 {
                     FilePath = filePath,
-                    Image = new CvImage(filePath, imageSize, zoomValue),
-                    IsEmpty = true,
+                    Image = image,
+                    IsEmpty = isEmpty,
                     IsError = false,
                 }
             };
@@ -251,6 +257,27 @@ namespace PicSum.Job.Logics
             {
                 this.WriteErrorLog(new JobException(this.Job.ID, ex));
                 return CvImage.EMPTY;
+            }
+        }
+
+        private CvImage GetThumbnail(string filePath, Size imageSize, float zoomValue)
+        {
+            using (TimeMeasuring.Run(false, "ImageFileReadLogic.GetThumbnail"))
+            {
+                var cache = Instance<IThumbnailCacher>.Value.GetCache(filePath);
+                if (cache != ThumbnailCacheEntity.EMPTY
+                    && cache.ThumbnailBuffer != null)
+                {
+                    return new CvImage(
+                        filePath,
+                        ThumbnailUtil.ToImage(cache.ThumbnailBuffer),
+                        imageSize,
+                        zoomValue);
+                }
+                else
+                {
+                    return CvImage.EMPTY;
+                }
             }
         }
 

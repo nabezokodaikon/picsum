@@ -98,6 +98,7 @@ namespace PicSum.Job.Common
                     filePath,
                     parameter.ThumbnailWidth,
                     parameter.ThumbnailHeight,
+                    parameter.IsExecuteCallback,
                     callbackAction));
 
             foreach (var entity in entities)
@@ -128,7 +129,8 @@ namespace PicSum.Job.Common
                         {
                             var bf = Instance<IThumbnailCacher>.Value.GetOrCreateCache(
                                 entity.FilePath, entity.ThumbnailWidth, entity.ThumbnailHeight);
-                            if (bf != ThumbnailCacheEntity.EMPTY
+                            if (entity.IsExecuteCallback
+                                && bf != ThumbnailCacheEntity.EMPTY
                                 && bf.ThumbnailBuffer != null)
                             {
                                 Instance<IImageFileSizeCacher>.Value.Set(

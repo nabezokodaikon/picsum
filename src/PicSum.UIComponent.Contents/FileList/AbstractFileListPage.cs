@@ -879,6 +879,7 @@ namespace PicSum.UIComponent.Contents.FileList
                     LastIndex = fileList.Length - 1,
                     ThumbnailWidth = ThumbnailUtil.THUMBNAIL_MAXIMUM_SIZE,
                     ThumbnailHeight = ThumbnailUtil.THUMBNAIL_MAXIMUM_SIZE,
+                    IsExecuteCallback = true,
                 };
 
                 Instance<JobCaller>.Value.ThumbnailsGetJob.Value

@@ -7,12 +7,14 @@ namespace PicSum.Job.Entities
         public string FilePath { get; private set; }
         public int ThumbnailWidth { get; private set; }
         public int ThumbnailHeight { get; private set; }
+        public bool IsExecuteCallback { get; private set; }
         public Action<ThumbnailImageResult> CallbackAction { get; private set; }
 
         public ThumbnailReadThreadsEntity(
             string filePath,
             int thumbnailWidth,
             int thumbnailHeight,
+            bool IsExecuteCallback,
             Action<ThumbnailImageResult> callbackAction)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
@@ -21,6 +23,7 @@ namespace PicSum.Job.Entities
             this.FilePath = filePath;
             this.ThumbnailWidth = thumbnailWidth;
             this.ThumbnailHeight = thumbnailHeight;
+            this.IsExecuteCallback = IsExecuteCallback;
             this.CallbackAction = callbackAction;
         }
     }

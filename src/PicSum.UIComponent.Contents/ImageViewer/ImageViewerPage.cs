@@ -14,6 +14,7 @@ using SWF.Core.Job;
 using SWF.UIComponent.Core;
 using SWF.UIComponent.TabOperation;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Runtime.Versioning;
@@ -547,7 +548,69 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 var mainFilePath = this._filePathList[currentIndex];
                 this.SelectedFilePath = mainFilePath;
 
-                var param = new ImageFileReadParameter
+                int GetNextIndex(int currentIndex, string[] files)
+                {
+                    var nextIndex = currentIndex + 1;
+                    if (nextIndex >= files.Length)
+                    {
+                        return 0;
+                    }
+                    else
+                    {
+                        return nextIndex;
+                    }
+                }
+
+                int GetPreviewIndex(int currentIndex, string[] files)
+                {
+                    var previewIndex = currentIndex - 1;
+                    if (previewIndex < 0)
+                    {
+                        return files.Length - 1;
+                    }
+                    else
+                    {
+                        return previewIndex;
+                    }
+                }
+
+                const int NEXT_COUNT = 8;
+                var nextFiles = new List<string>(NEXT_COUNT);
+                var nextIndex = GetNextIndex(currentIndex, this._filePathList);
+                if (NEXT_COUNT > 0)
+                {
+                    nextFiles.Add(this._filePathList[nextIndex]);
+                }
+                while (nextFiles.Count < NEXT_COUNT)
+                {
+                    nextIndex = GetNextIndex(nextIndex, this._filePathList);
+                    nextFiles.Add(this._filePathList[nextIndex]);
+                }
+
+                const int PREVIEW_COUNT = 8;
+                var previewFiles = new List<string>(PREVIEW_COUNT);
+                var previewIndex = GetPreviewIndex(currentIndex, this._filePathList);
+                if (PREVIEW_COUNT > 0)
+                {
+                    previewFiles.Add(this._filePathList[previewIndex]);
+                }
+                while (previewFiles.Count < PREVIEW_COUNT)
+                {
+                    previewIndex = GetPreviewIndex(previewIndex, this._filePathList);
+                    previewFiles.Add(this._filePathList[previewIndex]);
+                }
+
+                var thumbnailsGetParameter = new ThumbnailsGetParameter
+                {
+                    FilePathList = [.. nextFiles, .. previewFiles],
+                    FirstIndex = 0,
+                    LastIndex = NEXT_COUNT + PREVIEW_COUNT - 1,
+                    ThumbnailWidth = ThumbnailUtil.THUMBNAIL_MAXIMUM_SIZE,
+                    ThumbnailHeight = ThumbnailUtil.THUMBNAIL_MAXIMUM_SIZE,
+                    IsExecuteCallback = false,
+                };
+
+                var imageFileReadParameter = new ImageFileReadParameter
                 {
                     CurrentIndex = currentIndex,
                     FilePathList = this._filePathList,
@@ -561,12 +624,15 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
                 this._isLoading = true;
 
+                Instance<JobCaller>.Value.ThumbnailsGetJob.Value
+                    .StartJob(this, thumbnailsGetParameter, null);
+
                 Instance<JobCaller>.Value.ImageFileCacheJob.Value
                     .StartJob(this, new ImageFileCacheParameter(
-                        currentIndex, 7, 7, this._filePathList));
+                        currentIndex, 4, 4, this._filePathList));
 
                 Instance<JobCaller>.Value.ImageFileLoadingJob.Value
-                    .StartJob(this, param, _ =>
+                    .StartJob(this, imageFileReadParameter, _ =>
                     {
                         if (this._disposed)
                         {
@@ -582,7 +648,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                     });
 
                 Instance<JobCaller>.Value.ImageFileReadJob.Value
-                    .StartJob(this, param, r =>
+                    .StartJob(this, imageFileReadParameter, r =>
                     {
                         if (this._disposed)
                         {
