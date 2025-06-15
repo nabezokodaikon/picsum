@@ -12,7 +12,7 @@ namespace SWF.Core.ImageAccessor
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        private const int CACHE_CAPACITY = 16;
+        private const int CACHE_CAPACITY = 14;
 
         private bool _disposed = false;
         private readonly List<ImageFileCacheEntity> _cacheList = new(CACHE_CAPACITY);

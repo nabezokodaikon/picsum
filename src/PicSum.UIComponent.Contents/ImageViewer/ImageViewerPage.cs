@@ -561,6 +561,10 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
                 this._isLoading = true;
 
+                Instance<JobCaller>.Value.ImageFileCacheJob.Value
+                    .StartJob(this, new ImageFileCacheParameter(
+                        currentIndex, 7, 7, this._filePathList));
+
                 Instance<JobCaller>.Value.ImageFileLoadingJob.Value
                     .StartJob(this, param, _ =>
                     {
@@ -601,10 +605,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                             this.ImageFileReadJob_Callback(r);
                         }
                     });
-
-                Instance<JobCaller>.Value.ImageFileCacheJob.Value
-                    .StartJob(this, new ImageFileCacheParameter(
-                        currentIndex, 6, 6, this._filePathList));
             }
         }
 
