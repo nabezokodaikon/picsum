@@ -159,7 +159,7 @@ namespace SWF.Core.ImageAccessor
                 {
                     Logger.Error(ex);
 
-                    using (var bmp = ReadImageFile(filePath))
+                    using (var bmp = ReadImageFile(filePath, false))
                     {
                         return bmp.Size;
                     }
@@ -363,7 +363,7 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
-        public static Bitmap ReadImageFile(string filePath)
+        public static Bitmap ReadImageFile(string filePath, bool isNormalize)
         {
             using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFile"))
             {
@@ -371,18 +371,32 @@ namespace SWF.Core.ImageAccessor
 
                 try
                 {
-                    using (var src = ReadImageFileWithVarious(filePath))
+                    if (isNormalize)
                     {
-                        return NormalizeBitmap(filePath, src);
+                        using (var src = ReadImageFileWithVarious(filePath))
+                        {
+                            return NormalizeBitmap(filePath, src);
+                        }
+                    }
+                    else
+                    {
+                        return ReadImageFileWithVarious(filePath);
                     }
                 }
                 catch (ImageUtilException ex)
                 {
                     Logger.Error(ex);
 
-                    using (var src = ReadImageFileWithImageMagick(filePath))
+                    if (isNormalize)
                     {
-                        return NormalizeBitmap(filePath, src);
+                        using (var src = ReadImageFileWithImageMagick(filePath))
+                        {
+                            return NormalizeBitmap(filePath, src);
+                        }
+                    }
+                    else
+                    {
+                        return ReadImageFileWithImageMagick(filePath);
                     }
                 }
             }

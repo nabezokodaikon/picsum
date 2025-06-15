@@ -388,7 +388,7 @@ namespace PicSum.Job.Common
         private ThumbnailCacheEntity CreateDBFileCache(
             string filePath, int thumbWidth, int thumbHeight, DateTime fileUpdateDate)
         {
-            using (var srcImg = ImageUtil.ReadImageFile(filePath))
+            using (var srcImg = ImageUtil.ReadImageFile(filePath, false))
             {
                 using (var thumbImg = ThumbnailUtil.CreateThumbnail(srcImg, thumbWidth, thumbHeight))
                 {
@@ -437,7 +437,7 @@ namespace PicSum.Job.Common
 
         private ThumbnailCacheEntity UpdateDBFileCache(string filePath, int thumbWidth, int thumbHeight, DateTime fileUpdateDate)
         {
-            using (var srcImg = ImageUtil.ReadImageFile(filePath))
+            using (var srcImg = ImageUtil.ReadImageFile(filePath, false))
             {
                 using (var thumbImg = ThumbnailUtil.CreateThumbnail(srcImg, thumbWidth, thumbHeight))
                 {
@@ -478,7 +478,7 @@ namespace PicSum.Job.Common
                 return ThumbnailCacheEntity.EMPTY;
             }
 
-            using (var srcImg = ImageUtil.ReadImageFile(thumbFilePath))
+            using (var srcImg = ImageUtil.ReadImageFile(thumbFilePath, false))
             {
                 using (var thumbImg = ThumbnailUtil.CreateThumbnail(srcImg, thumbWidth, thumbHeight))
                 {
@@ -534,7 +534,7 @@ namespace PicSum.Job.Common
                 return ThumbnailCacheEntity.EMPTY;
             }
 
-            using (var srcImg = ImageUtil.ReadImageFile(thumbFilePath))
+            using (var srcImg = ImageUtil.ReadImageFile(thumbFilePath, false))
             {
                 using (var thumbImg = ThumbnailUtil.CreateThumbnail(srcImg, thumbWidth, thumbHeight))
                 {
