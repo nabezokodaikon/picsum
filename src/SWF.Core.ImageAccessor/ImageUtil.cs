@@ -35,7 +35,7 @@ namespace SWF.Core.ImageAccessor
         public static readonly Bitmap EMPTY_IMAGE = new(1, 1);
 
         private static readonly int FILE_READ_BUFFER_SIZE = 16384;
-        private static readonly byte[] EXPECTED_PNG_SIGNATURE = { 137, 80, 78, 71, 13, 10, 26, 10 };
+        private static readonly byte[] EXPECTED_PNG_SIGNATURE = [137, 80, 78, 71, 13, 10, 26, 10];
 
         private static IShellApplication GetSell()
         {
@@ -335,12 +335,12 @@ namespace SWF.Core.ImageAccessor
                     var wText = v[0];
                     var hText = v[1];
 
-                    if (!int.TryParse(wText.Substring(1).Trim(), out int w))
+                    if (!int.TryParse(wText[1..].Trim(), out int w))
                     {
                         throw new ImageUtilException(CreateFileAccessErrorMessage(filePath));
                     }
 
-                    if (!int.TryParse(hText.Substring(0, hText.Length - 1).Trim(), out int h))
+                    if (!int.TryParse(hText[..^1].Trim(), out int h))
                     {
                         throw new ImageUtilException(CreateFileAccessErrorMessage(filePath));
                     }
