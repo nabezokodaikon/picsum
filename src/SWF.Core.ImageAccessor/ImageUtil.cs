@@ -27,6 +27,7 @@ namespace SWF.Core.ImageAccessor
         internal const string PNG_FILE_EXTENSION = ".png";
         internal const string SVG_FILE_EXTENSION = ".svg";
         internal const string WEBP_FILE_EXTENSION = ".webp";
+        private const int SMALL_IMAGE_SIZE = 500 * 500;
         private const int LARGE_IMAGE_SIZE = 2000 * 2000;
 
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
@@ -363,6 +364,18 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
+        private static bool IsSmallImage(Bitmap bmp)
+        {
+            var size = bmp.Width * bmp.Height;
+            return size < SMALL_IMAGE_SIZE;
+        }
+
+        private static bool IsLargeImage(Bitmap bmp)
+        {
+            var size = bmp.Width * bmp.Height;
+            return size > LARGE_IMAGE_SIZE;
+        }
+
         public static Bitmap ReadImageFile(string filePath)
         {
             using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFile"))
@@ -371,19 +384,17 @@ namespace SWF.Core.ImageAccessor
 
                 try
                 {
-                    using (var bmp = ReadImageFileWithVarious(filePath))
-                    {
-                        return NormalizeBitmap(filePath, bmp);
-                    }
+                    var src = ReadImageFileWithVarious(filePath);
+                    var dest = NormalizeBitmap(filePath, src);
+                    return dest;
                 }
                 catch (ImageUtilException ex)
                 {
                     Logger.Error(ex);
 
-                    using (var bmp = ReadImageFileWithImageMagick(filePath))
-                    {
-                        return NormalizeBitmap(filePath, bmp);
-                    }
+                    var src = ReadImageFileWithImageMagick(filePath);
+                    var dest = NormalizeBitmap(filePath, src);
+                    return dest;
                 }
             }
         }
@@ -618,13 +629,25 @@ namespace SWF.Core.ImageAccessor
         {
             try
             {
-                if (source.Width * source.Height < LARGE_IMAGE_SIZE)
+                if (IsSmallImage(source))
                 {
-                    return NormalizeBitmapBySingleSIMD(source);
+                    return source;
                 }
-                else
+
+                try
                 {
-                    return NormalizeBitmapByParallelSIMD(source);
+                    if (IsLargeImage(source))
+                    {
+                        return NormalizeBitmapByParallelSIMD(source);
+                    }
+                    else
+                    {
+                        return NormalizeBitmapBySingleSIMD(source);
+                    }
+                }
+                finally
+                {
+                    source.Dispose();
                 }
             }
             catch (ArgumentOutOfRangeException ex)
@@ -691,6 +714,11 @@ namespace SWF.Core.ImageAccessor
                     return normalized;
                 }
             }
+            catch
+            {
+                normalized?.Dispose();
+                throw;
+            }
             finally
             {
                 if (sourceData != null)
@@ -756,6 +784,11 @@ namespace SWF.Core.ImageAccessor
 
                     return normalized;
                 }
+            }
+            catch
+            {
+                normalized?.Dispose();
+                throw;
             }
             finally
             {
