@@ -1,3 +1,4 @@
+using SWF.Core.ConsoleAccessor;
 using System.ComponentModel;
 using System.Drawing.Drawing2D;
 using System.Runtime.Versioning;
@@ -33,23 +34,31 @@ namespace SWF.UIComponent.Core
                 ControlStyles.UserPaint,
                 true);
             this.UpdateStyles();
+
+            //this.BackColor = BRUSH_A.Color;
         }
 
         protected override void OnPaintBackground(PaintEventArgs pevent)
         {
-
+            //using (TimeMeasuring.Run(false, "CheckPatternPanel.OnPaintBackground"))
+            //{
+            //    base.OnPaintBackground(pevent);
+            //}
         }
 
         protected override void OnPaint(PaintEventArgs e)
         {
-            e.Graphics.SmoothingMode = SmoothingMode.None;
-            e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
-            e.Graphics.CompositingQuality = CompositingQuality.HighSpeed;
-            e.Graphics.PixelOffsetMode = PixelOffsetMode.HighSpeed;
-            e.Graphics.CompositingMode = CompositingMode.SourceCopy;
+            using (TimeMeasuring.Run(false, "CheckPatternPanel.OnPaint"))
+            {
+                e.Graphics.SmoothingMode = SmoothingMode.None;
+                e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
+                e.Graphics.CompositingQuality = CompositingQuality.HighSpeed;
+                e.Graphics.PixelOffsetMode = PixelOffsetMode.HighSpeed;
+                e.Graphics.CompositingMode = CompositingMode.SourceCopy;
 
-            //e.Graphics.FillRectangle(BRUSH_A, this.ClientRectangle);
-            this.DrawCheckRectangle(e.Graphics);
+                e.Graphics.FillRectangle(BRUSH_A, this.ClientRectangle);
+                //this.DrawCheckRectangle(e.Graphics);
+            }
         }
 
         private void DrawCheckRectangle(Graphics g)
