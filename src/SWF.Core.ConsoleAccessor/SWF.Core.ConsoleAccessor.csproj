@@ -25,5 +25,9 @@
 	<NoWarn>1701;1702; CA1822</NoWarn>
 	<GenerateAssemblyInfo>False</GenerateAssemblyInfo>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NLog" Version="5.5.0" />
+  </ItemGroup>
   
 </Project>

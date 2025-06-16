@@ -1,3 +1,4 @@
+using NLog;
 using System.Diagnostics;
 
 namespace SWF.Core.ConsoleAccessor
@@ -38,7 +39,15 @@ namespace SWF.Core.ConsoleAccessor
             if (this._enable)
             {
                 this._stopwatch?.Stop();
-                Console.WriteLine($"[{DateTime.Now:HH:mm:ss.fff}] {this._message}: {this._stopwatch?.ElapsedMilliseconds} ms");
+
+                if (ScopeContext.TryGetProperty("task", out var value))
+                {
+                    Console.WriteLine($"{DateTime.Now:HH:mm:ss.fff} | {value} | {this._message}: {this._stopwatch?.ElapsedMilliseconds} ms");
+                }
+                else
+                {
+                    Console.WriteLine($"{DateTime.Now:HH:mm:ss.fff} | {this._message}: {this._stopwatch?.ElapsedMilliseconds} ms");
+                }
             }
 #endif
             GC.SuppressFinalize(this);

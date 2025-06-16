@@ -1,3 +1,5 @@
+using NLog;
+
 namespace SWF.Core.ConsoleAccessor
 {
     public static class ConsoleUtil
@@ -8,7 +10,15 @@ namespace SWF.Core.ConsoleAccessor
             if (enable)
             {
                 ArgumentNullException.ThrowIfNull(message, nameof(message));
-                Console.WriteLine($"[{DateTime.Now:HH:mm:ss.fff}] {message}");
+
+                if (ScopeContext.TryGetProperty("task", out var value))
+                {
+                    Console.WriteLine($"{DateTime.Now:HH:mm:ss.fff} | {value} | {message}");
+                }
+                else
+                {
+                    Console.WriteLine($"{DateTime.Now:HH:mm:ss.fff} | {message}");
+                }
             }
 #endif
         }
