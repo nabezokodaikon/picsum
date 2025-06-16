@@ -60,6 +60,7 @@ namespace PicSum.Job.Common
                 while (this.queue.TryDequeue(out var _)) { }
                 this.IsAbort = true;
                 Task.WaitAll(this.threads);
+                Logger.Debug("全ての画像ファイルキャッシュスレッドが終了しました。");
             }
 
             this._disposed = true;

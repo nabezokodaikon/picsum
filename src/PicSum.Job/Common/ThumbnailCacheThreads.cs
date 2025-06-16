@@ -66,6 +66,7 @@ namespace PicSum.Job.Common
                 this.Clear();
                 this.IsAbort = true;
                 Task.WaitAll(this._threads);
+                logger.Debug("全てのサムネイル読み込みスレッドが終了しました。");
             }
 
             this._disposed = true;
