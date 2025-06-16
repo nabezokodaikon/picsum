@@ -80,7 +80,6 @@ namespace PicSum.Main
                         typeof(SWF.UIComponent.Core.CheckPatternPanel),
                         typeof(SWF.UIComponent.FlowList.DrawItemChangedEventArgs),
                         typeof(SWF.UIComponent.Form.GrassForm),
-                        typeof(SWF.UIComponent.ImagePanel.ImagePanel),
                         typeof(SWF.UIComponent.TabOperation.DrawTabEventArgs),
                         typeof(SWF.UIComponent.WideDropDown.AddItemEventArgs),
 

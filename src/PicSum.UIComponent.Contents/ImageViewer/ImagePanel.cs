@@ -11,7 +11,7 @@ using System.Drawing.Drawing2D;
 using System.Runtime.Versioning;
 using System.Windows.Forms;
 
-namespace SWF.UIComponent.ImagePanel
+namespace PicSum.UIComponent.Contents.ImageViewer
 {
     /// <summary>
     /// 画像パネルコントロール

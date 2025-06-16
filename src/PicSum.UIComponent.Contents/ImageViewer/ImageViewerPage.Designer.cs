@@ -20,9 +20,9 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ImageViewerPage));
-            this.leftImagePanel = new SWF.UIComponent.ImagePanel.ImagePanel();
+            this.leftImagePanel = new PicSum.UIComponent.Contents.ImageViewer.ImagePanel();
             this.fileContextMenu = new PicSum.UIComponent.Contents.ContextMenu.FileContextMenu();
-            this.rightImagePanel = new SWF.UIComponent.ImagePanel.ImagePanel();
+            this.rightImagePanel = new PicSum.UIComponent.Contents.ImageViewer.ImagePanel();
             this.checkPatternPanel = new SWF.UIComponent.Core.CheckPatternPanel();
             this.toolBar = new PicSum.UIComponent.Contents.ImageViewer.ImageViewerToolBar();
             this.checkPatternPanel.SuspendLayout();
@@ -117,8 +117,8 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.ResumeLayout(false);
         }
 
-        private SWF.UIComponent.ImagePanel.ImagePanel leftImagePanel;
-        private SWF.UIComponent.ImagePanel.ImagePanel rightImagePanel;
+        private PicSum.UIComponent.Contents.ImageViewer.ImagePanel leftImagePanel;
+        private PicSum.UIComponent.Contents.ImageViewer.ImagePanel rightImagePanel;
         private PicSum.UIComponent.Contents.ContextMenu.FileContextMenu fileContextMenu;
         private SWF.UIComponent.Core.CheckPatternPanel checkPatternPanel;
         private PicSum.UIComponent.Contents.ImageViewer.ImageViewerToolBar toolBar;
