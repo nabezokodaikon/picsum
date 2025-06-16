@@ -20,18 +20,18 @@ namespace SWF.Core.ResourceAccessor
         private readonly Dictionary<string, Bitmap> _smallIconCash = [];
         private readonly Dictionary<string, Bitmap> _extralargeIconCash = [];
         private readonly Dictionary<string, Bitmap> _jumboIconCash = [];
-        private readonly Lazy<Bitmap> _emptyFileIcon =
-            new(() => (Bitmap)ResourceFiles.EmptyIcon.Value, LazyThreadSafetyMode.ExecutionAndPublication);
-        private readonly Lazy<Bitmap> _smallPcIcon =
-            new(() => FileIconUtil.GetSystemIcon(WinApiMembers.ShellSpecialFolder.CSIDL_DRIVES, WinApiMembers.ShellFileInfoFlags.SHGFI_SMALLICON), LazyThreadSafetyMode.ExecutionAndPublication);
-        private readonly Lazy<Bitmap> _largePcIcon =
-            new(() => FileIconUtil.GetSystemIcon(WinApiMembers.ShellSpecialFolder.CSIDL_DRIVES, WinApiMembers.ShellFileInfoFlags.SHGFI_LARGEICON), LazyThreadSafetyMode.ExecutionAndPublication);
-        private readonly Lazy<Bitmap> _smallDirectoryIcon =
-            new(() => FileIconUtil.GetSmallIconByFilePath(AppConstants.APPLICATION_DIRECTORY.Value), LazyThreadSafetyMode.ExecutionAndPublication);
-        private readonly Lazy<Bitmap> _extralargeDirectoryIcon =
-            new(() => FileIconUtil.GetLargeIconByFilePath(AppConstants.APPLICATION_DIRECTORY.Value, WinApiMembers.SHIL.SHIL_EXTRALARGE), LazyThreadSafetyMode.ExecutionAndPublication);
-        private readonly Lazy<Bitmap> _jumboDirectoryIcon =
-            new(() => FileIconUtil.GetLargeIconByFilePath(AppConstants.APPLICATION_DIRECTORY.Value, WinApiMembers.SHIL.SHIL_JUMBO), LazyThreadSafetyMode.ExecutionAndPublication);
+        private readonly FastLazy<Bitmap> _emptyFileIcon =
+            new(() => (Bitmap)ResourceFiles.EmptyIcon.Value);
+        private readonly FastLazy<Bitmap> _smallPcIcon =
+            new(() => FileIconUtil.GetSystemIcon(WinApiMembers.ShellSpecialFolder.CSIDL_DRIVES, WinApiMembers.ShellFileInfoFlags.SHGFI_SMALLICON));
+        private readonly FastLazy<Bitmap> _largePcIcon =
+            new(() => FileIconUtil.GetSystemIcon(WinApiMembers.ShellSpecialFolder.CSIDL_DRIVES, WinApiMembers.ShellFileInfoFlags.SHGFI_LARGEICON));
+        private readonly FastLazy<Bitmap> _smallDirectoryIcon =
+            new(() => FileIconUtil.GetSmallIconByFilePath(AppConstants.APPLICATION_DIRECTORY.Value));
+        private readonly FastLazy<Bitmap> _extralargeDirectoryIcon =
+            new(() => FileIconUtil.GetLargeIconByFilePath(AppConstants.APPLICATION_DIRECTORY.Value, WinApiMembers.SHIL.SHIL_EXTRALARGE));
+        private readonly FastLazy<Bitmap> _jumboDirectoryIcon =
+            new(() => FileIconUtil.GetLargeIconByFilePath(AppConstants.APPLICATION_DIRECTORY.Value, WinApiMembers.SHIL.SHIL_JUMBO));
 
         public Image SmallPCIcon
         {

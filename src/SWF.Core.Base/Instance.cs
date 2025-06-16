@@ -1,15 +1,37 @@
 namespace SWF.Core.Base
 {
     public static class Instance<TValue>
+        where TValue : class
     {
-#pragma warning disable CS8618
-        public static TValue Value { get; private set; }
+        private static readonly Lock _lock = new();
+        private static Func<TValue>? _valueFactory = null;
+        private static volatile TValue? _value = null;
+
+#pragma warning disable CS8602
+
+        public static TValue Value
+        {
+            get
+            {
+                if (_value == null)
+                {
+                    lock (_lock)
+                    {
+                        _value ??= _valueFactory();
+                    }
+                }
+
+                return _value;
+            }
+        }
+
 #pragma warning restore CS8618
 
-        public static void Initialize(TValue value)
+        public static void Initialize(Func<TValue> valueFactory)
         {
-            ArgumentNullException.ThrowIfNull(value, nameof(value));
-            Value = value;
+            ArgumentNullException.ThrowIfNull(valueFactory, nameof(valueFactory));
+
+            _valueFactory = valueFactory;
         }
     }
 }

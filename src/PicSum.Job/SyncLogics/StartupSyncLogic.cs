@@ -18,18 +18,18 @@ namespace PicSum.Job.SyncLogics
         {
             using (TimeMeasuring.Run(true, "StartupSyncLogic.Execute"))
             {
-                Instance<IFileInfoDB>.Initialize(
+                Instance<IFileInfoDB>.Initialize(() =>
                     new FileInfoDB(AppConstants.FILE_INFO_DATABASE_FILE.Value));
 
-                Instance<IThumbnailDB>.Initialize(
+                Instance<IThumbnailDB>.Initialize(() =>
                     new ThumbnailDB(AppConstants.THUMBNAIL_DATABASE_FILE.Value));
 
-                Instance<IFileIconCacher>.Initialize(new FileIconCacher());
-                Instance<IThumbnailCacher>.Initialize(new ThumbnailCacher());
-                Instance<IImageFileCacheThreads>.Initialize(new ImageFileCacheThreads());
-                Instance<IThumbnailCacheThreads>.Initialize(new ThumbnailCacheThreads());
-                Instance<IImageFileCacher>.Initialize(new ImageFileCacher());
-                Instance<IImageFileSizeCacher>.Initialize(new ImageFileSizeCacher());
+                Instance<IFileIconCacher>.Initialize(() => new FileIconCacher());
+                Instance<IThumbnailCacher>.Initialize(() => new ThumbnailCacher());
+                Instance<IImageFileCacheThreads>.Initialize(() => new ImageFileCacheThreads());
+                Instance<IThumbnailCacheThreads>.Initialize(() => new ThumbnailCacheThreads());
+                Instance<IImageFileCacher>.Initialize(() => new ImageFileCacher());
+                Instance<IImageFileSizeCacher>.Initialize(() => new ImageFileSizeCacher());
 
                 SynchronizationContext.SetSynchronizationContext(
                     new WindowsFormsSynchronizationContext());
@@ -39,7 +39,8 @@ namespace PicSum.Job.SyncLogics
                     throw new NullReferenceException("同期コンテキストが生成されていません。");
                 }
 
-                Instance<JobCaller>.Initialize(new JobCaller(SynchronizationContext.Current));
+                Instance<JobCaller>.Initialize(() =>
+                    new JobCaller(SynchronizationContext.Current));
             }
         }
     }
