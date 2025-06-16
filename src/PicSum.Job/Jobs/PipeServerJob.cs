@@ -27,7 +27,7 @@ namespace PicSum.Job.Jobs
                     throw;
                 }
 
-                Thread.Sleep(100);
+                Task.Delay(100).Wait();
             }
         }
 

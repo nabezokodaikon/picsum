@@ -49,7 +49,7 @@ namespace PicSum.Job.Jobs
                     return;
                 }
 
-                Thread.Sleep(10);
+                Task.Delay(10).Wait();
             }
         }
 

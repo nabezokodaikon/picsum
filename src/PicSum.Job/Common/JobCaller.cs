@@ -17,9 +17,9 @@ namespace PicSum.Job.Common
         private readonly FastLazy<JobQueue> _jobQueue = new(() => new JobQueue());
 
         public readonly FastLazy<ITwoWayJob<ImageFileReadJob, ImageFileReadParameter, ImageFileReadResult>> ImageFileReadJob
-            = new(() => new TwoWayThread<ImageFileReadJob, ImageFileReadParameter, ImageFileReadResult>(context, new JobThread()));
+            = new(() => new TwoWayThread<ImageFileReadJob, ImageFileReadParameter, ImageFileReadResult>(context, new JobTask()));
         public readonly FastLazy<ITwoWayJob<ImageFileLoadingJob, ImageFileReadParameter, ImageFileReadResult>> ImageFileLoadingJob
-            = new(() => new TwoWayThread<ImageFileLoadingJob, ImageFileReadParameter, ImageFileReadResult>(context, new JobThread()));
+            = new(() => new TwoWayThread<ImageFileLoadingJob, ImageFileReadParameter, ImageFileReadResult>(context, new JobTask()));
         public readonly FastLazy<IOneWayJob<ImageFileCacheJob, ImageFileCacheParameter>> ImageFileCacheJob
             = new(() => new OneWayThread<ImageFileCacheJob, ImageFileCacheParameter>(context, new JobTask()));
         public readonly FastLazy<ITwoWayJob<ThumbnailsGetJob, ThumbnailsGetParameter, ThumbnailImageResult>> ThumbnailsGetJob

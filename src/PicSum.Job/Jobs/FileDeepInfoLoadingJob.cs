@@ -78,7 +78,7 @@ namespace PicSum.Job.Jobs
 
                     this.CheckCancel();
 
-                    Thread.Sleep(1);
+                    Task.Delay(1).Wait();
                 }
             }
             catch (JobCancelException)

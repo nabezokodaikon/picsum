@@ -169,7 +169,7 @@ namespace PicSum.Job.Common
                     }
                     else
                     {
-                        Thread.Sleep(1);
+                        Task.Delay(1).Wait();
                     }
                 }
             }

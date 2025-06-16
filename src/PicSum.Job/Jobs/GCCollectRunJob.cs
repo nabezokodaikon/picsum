@@ -17,7 +17,7 @@ namespace PicSum.Job.Jobs
             while (true)
             {
                 this.CheckCancel();
-                Thread.Sleep(100);
+                Task.Delay(100).Wait();
                 if (sw.ElapsedMilliseconds > INTERVAL)
                 {
                     using (TimeMeasuring.Run(false, "GCCollectRunJob.Execute GC.Collect"))
