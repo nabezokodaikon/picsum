@@ -529,6 +529,89 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             }
         }
 
+        private ThumbnailsGetParameter CreateThumbnailsGetParameter(int currentIndex)
+        {
+            int GetNextIndex(int currentIndex, string[] files)
+            {
+                var nextIndex = currentIndex + 1;
+                if (nextIndex >= files.Length)
+                {
+                    return 0;
+                }
+                else
+                {
+                    return nextIndex;
+                }
+            }
+
+            int GetPreviewIndex(int currentIndex, string[] files)
+            {
+                var previewIndex = currentIndex - 1;
+                if (previewIndex < 0)
+                {
+                    return files.Length - 1;
+                }
+                else
+                {
+                    return previewIndex;
+                }
+            }
+
+            var files = this._filePathList;
+
+            const int NEXT_COUNT = 8;
+            var nextFiles = new List<string>(NEXT_COUNT);
+            var nextIndex = GetNextIndex(currentIndex, files);
+            if (NEXT_COUNT > 0)
+            {
+                nextFiles.Add(files[nextIndex]);
+            }
+            while (nextFiles.Count < NEXT_COUNT)
+            {
+                nextIndex = GetNextIndex(nextIndex, files);
+                nextFiles.Add(files[nextIndex]);
+            }
+
+            const int PREVIEW_COUNT = 8;
+            var previewFiles = new List<string>(PREVIEW_COUNT);
+            var previewIndex = GetPreviewIndex(currentIndex, files);
+            if (PREVIEW_COUNT > 0)
+            {
+                previewFiles.Add(files[previewIndex]);
+            }
+            while (previewFiles.Count < PREVIEW_COUNT)
+            {
+                previewIndex = GetPreviewIndex(previewIndex, files);
+                previewFiles.Add(files[previewIndex]);
+            }
+
+            return new ThumbnailsGetParameter
+            {
+                FilePathList = [.. nextFiles, .. previewFiles],
+                FirstIndex = 0,
+                LastIndex = NEXT_COUNT + PREVIEW_COUNT - 1,
+                ThumbnailWidth = ThumbnailUtil.THUMBNAIL_MAXIMUM_SIZE,
+                ThumbnailHeight = ThumbnailUtil.THUMBNAIL_MAXIMUM_SIZE,
+                IsExecuteCallback = false,
+            };
+        }
+
+        private ImageFileReadParameter CreateImageFileReadParameter(
+            int currentIndex, bool? isNext, bool isForceSingle, float zoomValue)
+        {
+            return new ImageFileReadParameter
+            {
+                CurrentIndex = currentIndex,
+                FilePathList = this._filePathList,
+                ImageDisplayMode = this._displayMode,
+                ImageSizeMode = this._sizeMode,
+                IsNext = isNext,
+                IsForceSingle = isForceSingle,
+                ZoomValue = zoomValue,
+                ThumbnailSize = this.leftImagePanel.ThumbnailSize,
+            };
+        }
+
         private void ReadImage(int currentIndex, bool? isNext, bool isForceSingle)
         {
             this.ReadImage(currentIndex, isNext, isForceSingle, this.toolBar.GetZoomValue());
@@ -548,79 +631,11 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 var mainFilePath = this._filePathList[currentIndex];
                 this.SelectedFilePath = mainFilePath;
 
-                int GetNextIndex(int currentIndex, string[] files)
-                {
-                    var nextIndex = currentIndex + 1;
-                    if (nextIndex >= files.Length)
-                    {
-                        return 0;
-                    }
-                    else
-                    {
-                        return nextIndex;
-                    }
-                }
+                var thumbnailsGetParameter
+                    = this.CreateThumbnailsGetParameter(currentIndex);
 
-                int GetPreviewIndex(int currentIndex, string[] files)
-                {
-                    var previewIndex = currentIndex - 1;
-                    if (previewIndex < 0)
-                    {
-                        return files.Length - 1;
-                    }
-                    else
-                    {
-                        return previewIndex;
-                    }
-                }
-
-                const int NEXT_COUNT = 8;
-                var nextFiles = new List<string>(NEXT_COUNT);
-                var nextIndex = GetNextIndex(currentIndex, this._filePathList);
-                if (NEXT_COUNT > 0)
-                {
-                    nextFiles.Add(this._filePathList[nextIndex]);
-                }
-                while (nextFiles.Count < NEXT_COUNT)
-                {
-                    nextIndex = GetNextIndex(nextIndex, this._filePathList);
-                    nextFiles.Add(this._filePathList[nextIndex]);
-                }
-
-                const int PREVIEW_COUNT = 8;
-                var previewFiles = new List<string>(PREVIEW_COUNT);
-                var previewIndex = GetPreviewIndex(currentIndex, this._filePathList);
-                if (PREVIEW_COUNT > 0)
-                {
-                    previewFiles.Add(this._filePathList[previewIndex]);
-                }
-                while (previewFiles.Count < PREVIEW_COUNT)
-                {
-                    previewIndex = GetPreviewIndex(previewIndex, this._filePathList);
-                    previewFiles.Add(this._filePathList[previewIndex]);
-                }
-
-                var thumbnailsGetParameter = new ThumbnailsGetParameter
-                {
-                    FilePathList = [.. nextFiles, .. previewFiles],
-                    FirstIndex = 0,
-                    LastIndex = NEXT_COUNT + PREVIEW_COUNT - 1,
-                    ThumbnailWidth = ThumbnailUtil.THUMBNAIL_MAXIMUM_SIZE,
-                    ThumbnailHeight = ThumbnailUtil.THUMBNAIL_MAXIMUM_SIZE,
-                    IsExecuteCallback = false,
-                };
-
-                var imageFileReadParameter = new ImageFileReadParameter
-                {
-                    CurrentIndex = currentIndex,
-                    FilePathList = this._filePathList,
-                    ImageDisplayMode = this._displayMode,
-                    ImageSizeMode = this._sizeMode,
-                    IsNext = isNext,
-                    IsForceSingle = isForceSingle,
-                    ZoomValue = zoomValue,
-                    ThumbnailSize = this.leftImagePanel.ThumbnailSize,
-                };
+                var imageFileReadParameter
+                    = this.CreateImageFileReadParameter(currentIndex, isNext, isForceSingle, zoomValue);
 
                 this._isLoading = true;
 
