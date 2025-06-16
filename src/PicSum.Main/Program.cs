@@ -35,7 +35,9 @@ namespace PicSum.Main
                     AppConstants.StartBootTimeMeasurement();
 
                     Thread.CurrentThread.Name = AppConstants.UI_THREAD_NAME;
-                    ThreadPool.SetMinThreads(50, 50);
+
+                    var coreCount = Environment.ProcessorCount;
+                    ThreadPool.SetMinThreads(coreCount * 4, coreCount * 4);
 
                     AssemblyPreloader.OptimizeStartup(
                         typeof(Accessibility.AnnoScope),
