@@ -37,7 +37,8 @@ namespace PicSum.Job.Common
             for (var i = 0; i < this.threads.Length; i++)
             {
                 var index = i;
-                this.threads[index] = Task.Run(() => this.DoWork(index));
+                this.threads[index]
+                    = Task.Run(() => this.DoWork(index).GetAwaiter().GetResult());
             }
         }
 
@@ -74,7 +75,7 @@ namespace PicSum.Job.Common
             }
         }
 
-        private void DoWork(int index)
+        private async Task DoWork(int index)
         {
             Thread.CurrentThread.Name = $"ImageFileCacheThreads: [{index}]";
 
@@ -113,7 +114,7 @@ namespace PicSum.Job.Common
                     }
                     else
                     {
-                        Task.Delay(1).Wait();
+                        await Task.Delay(1);
                     }
                 }
             }

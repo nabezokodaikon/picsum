@@ -13,7 +13,7 @@ namespace PicSum.Job.Jobs
     public sealed class FavoriteDirectoriesGetJob
         : AbstractTwoWayJob<FavoriteDirectoriesGetParameter, ListResult<FileShallowInfoEntity>>
     {
-        protected override void Execute(FavoriteDirectoriesGetParameter param)
+        protected override Task Execute(FavoriteDirectoriesGetParameter param)
         {
 
             var fileList = this.GetOrCreateFileList();
@@ -51,6 +51,8 @@ namespace PicSum.Job.Jobs
             }
 
             this.Callback(infoList);
+
+            return Task.CompletedTask;
         }
 
         private string[] GetOrCreateFileList()

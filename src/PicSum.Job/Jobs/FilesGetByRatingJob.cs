@@ -14,7 +14,7 @@ namespace PicSum.Job.Jobs
     public sealed class FilesGetByRatingJob
         : AbstractTwoWayJob<FilesGetByRatingParameter, ListResult<FileShallowInfoEntity>>
     {
-        protected override void Execute(FilesGetByRatingParameter param)
+        protected override Task Execute(FilesGetByRatingParameter param)
         {
 
             var logic = new FilesGetByRatingLogic(this);
@@ -43,6 +43,8 @@ namespace PicSum.Job.Jobs
             }
 
             this.Callback(infoList);
+
+            return Task.CompletedTask;
         }
     }
 }

@@ -14,14 +14,14 @@ namespace PicSum.Job.Jobs
     public sealed class FileDeepInfoLoadingJob
         : AbstractTwoWayJob<FileDeepInfoGetParameter, FileDeepInfoGetResult>
     {
-        protected override void Execute(FileDeepInfoGetParameter param)
+        protected override async Task Execute(FileDeepInfoGetParameter param)
         {
             if (param.FilePathList == null)
             {
                 throw new ArgumentException("ファイルパスリストがNULLです。", nameof(param));
             }
 
-            this.Wait();
+            await this.Wait();
 
             if (param.FilePathList.Length == 1)
             {
@@ -64,7 +64,7 @@ namespace PicSum.Job.Jobs
             }
         }
 
-        private void Wait()
+        private async Task Wait()
         {
             try
             {
@@ -78,7 +78,7 @@ namespace PicSum.Job.Jobs
 
                     this.CheckCancel();
 
-                    Task.Delay(1).Wait();
+                    await Task.Delay(1);
                 }
             }
             catch (JobCancelException)

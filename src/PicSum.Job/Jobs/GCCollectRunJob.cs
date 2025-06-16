@@ -11,13 +11,15 @@ namespace PicSum.Job.Jobs
     {
         private static readonly long INTERVAL = 1000 * 5;
 
-        protected override void Execute()
+        protected override async Task Execute()
         {
             var sw = Stopwatch.StartNew();
             while (true)
             {
                 this.CheckCancel();
-                Task.Delay(100).Wait();
+
+                await Task.Delay(100);
+
                 if (sw.ElapsedMilliseconds > INTERVAL)
                 {
                     using (TimeMeasuring.Run(false, "GCCollectRunJob.Execute GC.Collect"))

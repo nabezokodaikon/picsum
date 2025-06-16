@@ -16,7 +16,7 @@ namespace PicSum.Job.Jobs
     public sealed class FileDeepInfoGetJob
         : AbstractTwoWayJob<FileDeepInfoGetParameter, FileDeepInfoGetResult>
     {
-        protected override void Execute(FileDeepInfoGetParameter param)
+        protected override Task Execute(FileDeepInfoGetParameter param)
         {
             if (param.FilePathList == null)
             {
@@ -57,14 +57,14 @@ namespace PicSum.Job.Jobs
                     result.FileInfo.Thumbnail.ThumbnailImage?.Dispose();
                     this.WriteErrorLog(new JobException(this.ID, ex));
                     this.Callback(FileDeepInfoGetResult.ERROR);
-                    return;
+                    return Task.CompletedTask;
                 }
                 catch (ImageUtilException ex)
                 {
                     result.FileInfo.Thumbnail.ThumbnailImage?.Dispose();
                     this.WriteErrorLog(new JobException(this.ID, ex));
                     this.Callback(FileDeepInfoGetResult.ERROR);
-                    return;
+                    return Task.CompletedTask;
                 }
             }
 
@@ -89,6 +89,8 @@ namespace PicSum.Job.Jobs
             }
 
             this.Callback(result);
+
+            return Task.CompletedTask;
         }
     }
 }

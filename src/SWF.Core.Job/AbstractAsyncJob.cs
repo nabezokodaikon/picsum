@@ -39,7 +39,7 @@ namespace SWF.Core.Job
             Logger.Error($"{this.ID} {ex}");
         }
 
-        internal abstract void ExecuteWrapper();
+        internal abstract Task ExecuteWrapper();
 
         internal void BeginCancel()
         {
@@ -78,27 +78,27 @@ namespace SWF.Core.Job
 
         }
 
-        internal override void ExecuteWrapper()
+        internal override async Task ExecuteWrapper()
         {
             using (TimeMeasuring.Run(false, this.GetType().Name))
             {
                 if (this.Parameter != null)
                 {
-                    this.Execute(this.Parameter);
+                    await this.Execute(this.Parameter);
                 }
                 else
                 {
-                    this.Execute();
+                    await this.Execute();
                 }
             }
         }
 
-        protected virtual void Execute(TParameter parameter)
+        protected virtual Task Execute(TParameter parameter)
         {
             throw new NotImplementedException();
         }
 
-        protected virtual void Execute()
+        protected virtual Task Execute()
         {
             throw new NotImplementedException();
         }

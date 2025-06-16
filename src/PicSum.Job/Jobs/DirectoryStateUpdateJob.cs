@@ -14,7 +14,7 @@ namespace PicSum.Job.Jobs
     internal sealed class DirectoryStateUpdateJob
         : AbstractOneWayJob<DirectoryStateParameter>
     {
-        protected override void Execute(DirectoryStateParameter param)
+        protected override Task Execute(DirectoryStateParameter param)
         {
             if (string.IsNullOrEmpty(param.DirectoryPath))
             {
@@ -37,6 +37,8 @@ namespace PicSum.Job.Jobs
 
                 tran.Commit();
             }
+
+            return Task.CompletedTask;
         }
     }
 }

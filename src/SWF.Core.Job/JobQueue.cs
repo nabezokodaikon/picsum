@@ -48,7 +48,7 @@ namespace SWF.Core.Job
                     this.source?.Cancel();
 
                     Logger.Debug("ジョブキュー実行スレッドの終了を待機します。");
-                    this._task?.Wait();
+                    this._task?.GetAwaiter().GetResult();
 
                     Logger.Debug("ジョブキュー実行スレッドが終了しました。");
                     this._task?.Dispose();
@@ -112,7 +112,7 @@ namespace SWF.Core.Job
                         var sw = Stopwatch.StartNew();
                         try
                         {
-                            currentJob.ExecuteWrapper();
+                            currentJob.ExecuteWrapper().GetAwaiter().GetResult();
                         }
                         catch (JobCancelException)
                         {

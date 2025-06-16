@@ -11,11 +11,13 @@ namespace PicSum.Job.Jobs
     public sealed class TagsGetJob
         : AbstractTwoWayJob<ListResult<string>>
     {
-        protected override void Execute()
+        protected override Task Execute()
         {
             var logic = new TagsGetLogic(this);
             var result = new ListResult<string>(logic.Execute());
             this.Callback(result);
+
+            return Task.CompletedTask;
         }
     }
 }

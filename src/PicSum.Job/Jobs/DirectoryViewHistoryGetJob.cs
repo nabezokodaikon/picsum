@@ -13,7 +13,7 @@ namespace PicSum.Job.Jobs
     public sealed class DirectoryViewHistoryGetJob
         : AbstractTwoWayJob<ListResult<FileShallowInfoEntity>>
     {
-        protected override void Execute()
+        protected override Task Execute()
         {
             var logic = new FileShallowInfoGetLogic(this);
             var result = new ListResult<FileShallowInfoEntity>();
@@ -38,6 +38,8 @@ namespace PicSum.Job.Jobs
             }
 
             this.Callback(result);
+
+            return Task.CompletedTask;
         }
     }
 }

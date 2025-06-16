@@ -14,7 +14,7 @@ namespace PicSum.Job.Jobs
     internal sealed class FileRatingUpdateJob
         : AbstractOneWayJob<FileRatingUpdateParameter>
     {
-        protected override void Execute(FileRatingUpdateParameter param)
+        protected override Task Execute(FileRatingUpdateParameter param)
         {
             if (param.FilePathList == null)
             {
@@ -42,6 +42,8 @@ namespace PicSum.Job.Jobs
 
                 tran.Commit();
             }
+
+            return Task.CompletedTask;
         }
     }
 }

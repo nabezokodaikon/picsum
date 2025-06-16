@@ -14,7 +14,7 @@ namespace PicSum.Job.Jobs
     public sealed class ThumbnailsGetJob
         : AbstractTwoWayJob<ThumbnailsGetParameter, ThumbnailImageResult>
     {
-        protected override void Execute(ThumbnailsGetParameter param)
+        protected override Task Execute(ThumbnailsGetParameter param)
         {
             if (param.FilePathList == null)
             {
@@ -22,6 +22,8 @@ namespace PicSum.Job.Jobs
             }
 
             Instance<IThumbnailCacheThreads>.Value.DoCache(param, this.Callback);
+
+            return Task.CompletedTask;
         }
     }
 }

@@ -117,7 +117,7 @@ namespace SWF.Core.Job
 
         public void Wait()
         {
-            this._task?.Wait();
+            this._task?.GetAwaiter().GetResult();
         }
     }
 }

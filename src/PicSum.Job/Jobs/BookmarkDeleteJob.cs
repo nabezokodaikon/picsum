@@ -10,7 +10,7 @@ namespace PicSum.Job.Jobs
     internal sealed class BookmarkDeleteJob
         : AbstractOneWayJob<ListParameter<string>>
     {
-        protected override void Execute(ListParameter<string> param)
+        protected override Task Execute(ListParameter<string> param)
         {
             ArgumentNullException.ThrowIfNull(param, nameof(param));
 
@@ -25,6 +25,8 @@ namespace PicSum.Job.Jobs
 
                 tran.Commit();
             }
+
+            return Task.CompletedTask;
         }
     }
 }

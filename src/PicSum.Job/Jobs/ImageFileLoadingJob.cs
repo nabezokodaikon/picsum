@@ -13,14 +13,14 @@ namespace PicSum.Job.Jobs
     public sealed class ImageFileLoadingJob
         : AbstractTwoWayJob<ImageFileReadParameter, ImageFileReadResult>
     {
-        protected override void Execute(ImageFileReadParameter parameter)
+        protected override async Task Execute(ImageFileReadParameter parameter)
         {
             if (parameter.FilePathList == null)
             {
                 throw new ArgumentException("ファイルパスリストがNULLです。", nameof(parameter));
             }
 
-            this.Wait();
+            await this.Wait();
 
             var logic = new ImageFileReadLogic(this);
 
@@ -68,7 +68,7 @@ namespace PicSum.Job.Jobs
             }
         }
 
-        private void Wait()
+        private async Task Wait()
         {
             try
             {
@@ -82,7 +82,7 @@ namespace PicSum.Job.Jobs
 
                     this.CheckCancel();
 
-                    Task.Delay(1).Wait();
+                    await Task.Delay(1);
                 }
             }
             catch (JobCancelException)

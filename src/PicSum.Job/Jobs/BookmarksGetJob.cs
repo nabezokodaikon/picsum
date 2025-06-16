@@ -10,7 +10,7 @@ namespace PicSum.Job.Jobs
     public sealed class BookmarksGetJob
         : AbstractTwoWayJob<ListResult<FileShallowInfoEntity>>
     {
-        protected override void Execute()
+        protected override Task Execute()
         {
             var getBookmarkLogic = new BookmarksGetLogic(this);
             var dtoList = getBookmarkLogic.Execute();
@@ -38,6 +38,8 @@ namespace PicSum.Job.Jobs
             }
 
             this.Callback(infoList);
+
+            return Task.CompletedTask;
         }
     }
 }

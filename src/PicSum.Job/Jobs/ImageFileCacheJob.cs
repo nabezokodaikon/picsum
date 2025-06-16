@@ -8,7 +8,7 @@ namespace PicSum.Job.Jobs
     public sealed class ImageFileCacheJob
         : AbstractOneWayJob<ImageFileCacheParameter>
     {
-        protected override void Execute(ImageFileCacheParameter parameter)
+        protected override async Task Execute(ImageFileCacheParameter parameter)
         {
             ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
 
@@ -49,7 +49,7 @@ namespace PicSum.Job.Jobs
                     return;
                 }
 
-                Task.Delay(10).Wait();
+                await Task.Delay(10);
             }
         }
 

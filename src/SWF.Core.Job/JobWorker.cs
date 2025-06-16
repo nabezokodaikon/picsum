@@ -216,7 +216,7 @@ namespace SWF.Core.Job
                     var sw = Stopwatch.StartNew();
                     try
                     {
-                        job.ExecuteWrapper();
+                        job.ExecuteWrapper().GetAwaiter().GetResult();
                     }
                     catch (JobCancelException)
                     {

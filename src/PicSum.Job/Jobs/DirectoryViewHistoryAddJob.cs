@@ -10,7 +10,7 @@ namespace PicSum.Job.Jobs
     internal sealed class DirectoryViewHistoryAddJob
         : AbstractOneWayJob<ValueParameter<string>>
     {
-        protected override void Execute(ValueParameter<string> param)
+        protected override Task Execute(ValueParameter<string> param)
         {
             if (string.IsNullOrEmpty(param.Value))
             {
@@ -45,6 +45,8 @@ namespace PicSum.Job.Jobs
 
                 tran.Commit();
             }
+
+            return Task.CompletedTask;
         }
     }
 }

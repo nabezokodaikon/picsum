@@ -11,7 +11,7 @@ namespace PicSum.Job.Jobs
     public sealed class PipeServerJob
         : AbstractTwoWayJob<ValueResult<string>>
     {
-        protected override void Execute()
+        protected override async Task Execute()
         {
             var thread = this.DoWork();
 
@@ -23,11 +23,11 @@ namespace PicSum.Job.Jobs
                 }
                 catch (JobCancelException)
                 {
-                    thread.Wait();
-                    throw;
+                    thread.GetAwaiter().GetResult();
+                    return;
                 }
 
-                Task.Delay(100).Wait();
+                await Task.Delay(100);
             }
         }
 
