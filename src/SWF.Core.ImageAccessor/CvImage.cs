@@ -32,7 +32,8 @@ namespace SWF.Core.ImageAccessor
         public readonly SizeF Size;
         public readonly float Width;
         public readonly float Height;
-        public readonly bool IsEmpty;
+        public readonly bool IsLoadingImage;
+        public readonly bool IsThumbnailImage;
 
         public CvImage(string filePath, OpenCvSharp.Mat mat, SizeF size, float zoomValue)
         {
@@ -45,7 +46,8 @@ namespace SWF.Core.ImageAccessor
             this.Width = size.Width * zoomValue;
             this.Height = size.Height * zoomValue;
             this.Size = new SizeF(this.Width, this.Height);
-            this.IsEmpty = false;
+            this.IsLoadingImage = false;
+            this.IsThumbnailImage = true;
             this._scaleValue = this._mat.Width / (this.Width / this._zoomValue);
         }
 
@@ -66,7 +68,8 @@ namespace SWF.Core.ImageAccessor
             this.Width = mat.Width * zoomValue;
             this.Height = mat.Height * zoomValue;
             this.Size = new SizeF(this.Width, this.Height);
-            this.IsEmpty = false;
+            this.IsLoadingImage = false;
+            this.IsThumbnailImage = false;
             this._scaleValue = this._mat.Width / (this.Width / this._zoomValue);
         }
 
@@ -80,7 +83,8 @@ namespace SWF.Core.ImageAccessor
             this.Width = size.Width * zoomValue;
             this.Height = size.Height * zoomValue;
             this.Size = new SizeF(this.Width, this.Height);
-            this.IsEmpty = true;
+            this.IsLoadingImage = true;
+            this.IsThumbnailImage = false;
             this._scaleValue = 1f;
         }
 
@@ -92,7 +96,8 @@ namespace SWF.Core.ImageAccessor
             this.Width = size.Width * AppConstants.DEFAULT_ZOOM_VALUE;
             this.Height = size.Height * AppConstants.DEFAULT_ZOOM_VALUE;
             this.Size = size;
-            this.IsEmpty = true;
+            this.IsLoadingImage = true;
+            this.IsThumbnailImage = false;
             this._scaleValue = 1f;
         }
 
@@ -171,10 +176,32 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
-        public void DrawZoomImage(Graphics g, RectangleF destRect, RectangleF srcRect)
+        public void DrawHighQualityZoomImage(Graphics g, RectangleF destRect, RectangleF srcRect)
         {
             ArgumentNullException.ThrowIfNull(g, nameof(g));
 
+            using (TimeMeasuring.Run(false, "CvImage.DrawHighQualityZoomImage"))
+            {
+                this.DrawZoomImage(g, destRect, srcRect, OpenCvSharp.InterpolationFlags.Area);
+            }
+        }
+
+        public void DrawLowQualityZoomImage(Graphics g, RectangleF destRect, RectangleF srcRect)
+        {
+            ArgumentNullException.ThrowIfNull(g, nameof(g));
+
+            using (TimeMeasuring.Run(false, "CvImage.DrawLowQualityZoomImage"))
+            {
+                this.DrawZoomImage(g, destRect, srcRect, OpenCvSharp.InterpolationFlags.Linear);
+            }
+        }
+
+        private void DrawZoomImage(
+            Graphics g,
+            RectangleF destRect,
+            RectangleF srcRect,
+            OpenCvSharp.InterpolationFlags flag)
+        {
             if (this._mat == null)
             {
                 throw new NullReferenceException("MatがNullです。");
@@ -200,11 +227,7 @@ namespace SWF.Core.ImageAccessor
 
                     var roi = new OpenCvSharp.Rect(point, size);
                     using (var cropped = new OpenCvSharp.Mat(this._mat, roi))
-                    using (var bmp = OpenCVUtil.Resize(
-                        cropped,
-                        width,
-                        height,
-                        OpenCvSharp.InterpolationFlags.Area))
+                    using (var bmp = OpenCVUtil.Resize(cropped, width, height, flag))
                     {
                         g.DrawImage(bmp,
                             destRect,
@@ -241,13 +264,26 @@ namespace SWF.Core.ImageAccessor
 
         public void DrawHighQualityResizeImage(Graphics g, RectangleF destRect)
         {
-            this.DrawResizeImage(g, destRect, OpenCvSharp.InterpolationFlags.Area);
+            ArgumentNullException.ThrowIfNull(g, nameof(g));
+
+            using (TimeMeasuring.Run(false, "CvImage.DrawHighQualityResizeImage"))
+            {
+                this.DrawResizeImage(g, destRect, OpenCvSharp.InterpolationFlags.Area);
+            }
+        }
+
+        public void DrawLowQualityResizeImage(Graphics g, RectangleF destRect)
+        {
+            ArgumentNullException.ThrowIfNull(g, nameof(g));
+
+            using (TimeMeasuring.Run(false, "CvImage.DrawLowQualityResizeImage"))
+            {
+                this.DrawResizeImage(g, destRect, OpenCvSharp.InterpolationFlags.Nearest);
+            }
         }
 
         public void DrawResizeImage(Graphics g, RectangleF destRect, OpenCvSharp.InterpolationFlags flag)
         {
-            ArgumentNullException.ThrowIfNull(g, nameof(g));
-
             if (this._mat == null)
             {
                 throw new NullReferenceException("MatがNullです。");

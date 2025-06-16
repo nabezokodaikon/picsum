@@ -414,7 +414,7 @@ namespace SWF.UIComponent.ImagePanel
 
         protected override void OnMouseClick(MouseEventArgs e)
         {
-            if (this._image.IsEmpty)
+            if (this._image.IsLoadingImage)
             {
                 return;
             }
@@ -429,7 +429,7 @@ namespace SWF.UIComponent.ImagePanel
 
         protected override void OnMouseDoubleClick(MouseEventArgs e)
         {
-            if (this._image.IsEmpty)
+            if (this._image.IsLoadingImage)
             {
                 return;
             }
@@ -445,7 +445,7 @@ namespace SWF.UIComponent.ImagePanel
         private bool CanDrawThumbnailPanel()
         {
             if (this._thumbnail != null
-                && !this._image.IsEmpty
+                && !this._image.IsLoadingImage
                 && this._isShowThumbnailPanel
                 && (this._hMaximumScrollValue > 0 || this._vMaximumScrollValue > 0))
             {
@@ -466,9 +466,12 @@ namespace SWF.UIComponent.ImagePanel
 
         private float GetImageToThumbnailScale()
         {
+            var thumbnailSize = this.ThumbnailSize;
+            var image = this._image;
+
             return Math.Min(
-                this.ThumbnailSize / (float)this._image.Width,
-                this.ThumbnailSize / (float)this._image.Height);
+                thumbnailSize / (float)image.Width,
+                thumbnailSize / (float)image.Height);
         }
 
         private void OnImageMouseClick(MouseEventArgs e)
@@ -580,17 +583,20 @@ namespace SWF.UIComponent.ImagePanel
 
         private RectangleF GetThumbnailPanelRectangle()
         {
-            var x = this.Width - THUMBNAIL_PANEL_OFFSET - this.ThumbnailPanelSize;
-            var y = this.Height - THUMBNAIL_PANEL_OFFSET - this.ThumbnailPanelSize;
-            var w = this.ThumbnailPanelSize;
-            var h = this.ThumbnailPanelSize;
+            var thumbnailPanelSize = this.ThumbnailPanelSize;
+
+            var x = this.Width - THUMBNAIL_PANEL_OFFSET - thumbnailPanelSize;
+            var y = this.Height - THUMBNAIL_PANEL_OFFSET - thumbnailPanelSize;
+            var w = thumbnailPanelSize;
+            var h = thumbnailPanelSize;
             return new RectangleF(x, y, w, h);
         }
 
         private RectangleF GetThumbnailRectangle(RectangleF panelRect)
         {
+            var image = this._image;
             var scale = this.GetImageToThumbnailScale();
-            var thumbSize = new SizeF(this._image.Width * scale, this._image.Height * scale);
+            var thumbSize = new SizeF(image.Width * scale, image.Height * scale);
             var x = panelRect.X + (panelRect.Width - thumbSize.Width) / 2f;
             var y = panelRect.Y + (panelRect.Height - thumbSize.Height) / 2f;
             var w = thumbSize.Width;
@@ -647,10 +653,12 @@ namespace SWF.UIComponent.ImagePanel
             {
                 try
                 {
-                    if (this._image.IsEmpty)
+                    var image = this._image;
+
+                    if (image.IsLoadingImage)
                     {
                         var destRect = this.GetImageDestRectangle();
-                        this._image.DrawEmptyImage(g, Brushes.LightGray, destRect);
+                        image.DrawEmptyImage(g, Brushes.LightGray, destRect);
 
                         g.CompositingMode = CompositingMode.SourceOver;
                         g.DrawString(
@@ -666,12 +674,26 @@ namespace SWF.UIComponent.ImagePanel
                         {
                             var destRect = this.GetImageDestRectangle();
                             var srcRect = this.GetImageSrcRectangle();
-                            this._image.DrawZoomImage(g, destRect, srcRect);
+                            if (image.IsThumbnailImage)
+                            {
+                                image.DrawLowQualityZoomImage(g, destRect, srcRect);
+                            }
+                            else
+                            {
+                                image.DrawHighQualityZoomImage(g, destRect, srcRect);
+                            }
                         }
                         else
                         {
                             var destRect = this.GetImageDestRectangle();
-                            this._image.DrawHighQualityResizeImage(g, destRect);
+                            if (image.IsThumbnailImage)
+                            {
+                                image.DrawLowQualityResizeImage(g, destRect);
+                            }
+                            else
+                            {
+                                image.DrawHighQualityResizeImage(g, destRect);
+                            }
                         }
                     }
                 }

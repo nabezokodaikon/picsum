@@ -96,23 +96,26 @@ namespace SWF.Core.ImageAccessor
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
-            var timestamp = FileUtil.GetUpdateDate(filePath);
-
-            lock (this._cacheLock)
+            using (TimeMeasuring.Run(false, "ImageFileSizeCacher.GetOrCreate"))
             {
-                if (this._cacheDictionary.TryGetValue(filePath, out var cache))
+                var timestamp = FileUtil.GetUpdateDate(filePath);
+
+                lock (this._cacheLock)
                 {
-                    if (timestamp == cache.Timestamp)
+                    if (this._cacheDictionary.TryGetValue(filePath, out var cache))
                     {
-                        return cache;
+                        if (timestamp == cache.Timestamp)
+                        {
+                            return cache;
+                        }
                     }
                 }
-            }
 
-            var size = ImageUtil.GetImageSize(filePath);
-            this.Set(filePath, size, timestamp);
-            return new ImageFileSizeCacheEntity(
-                filePath, size, timestamp);
+                var size = ImageUtil.GetImageSize(filePath);
+                this.Set(filePath, size, timestamp);
+                return new ImageFileSizeCacheEntity(
+                    filePath, size, timestamp);
+            }
         }
 
         public void Set(string filePath, Size size, DateTime timestamp)

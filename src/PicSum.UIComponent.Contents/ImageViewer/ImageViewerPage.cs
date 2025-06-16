@@ -318,28 +318,31 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
         protected override bool ProcessDialogKey(Keys keyData)
         {
-            if (!this.CanOperation)
+            using (TimeMeasuring.Run(false, "ImageViewerPage.ProcessDialogKey"))
             {
-                return false;
-            }
+                if (!this.CanOperation)
+                {
+                    return false;
+                }
 
-            if ((keyData & Keys.Alt) == Keys.Alt)
-            {
-                return false;
-            }
+                if ((keyData & Keys.Alt) == Keys.Alt)
+                {
+                    return false;
+                }
 
-            if ((keyData & Keys.KeyCode) == Keys.Right)
-            {
-                this.ReadImage(this.FilePathListIndex, true, false);
-                return true;
-            }
-            else if ((keyData & Keys.KeyCode) == Keys.Left)
-            {
-                this.ReadImage(this.FilePathListIndex, false, false);
-                return true;
-            }
+                if ((keyData & Keys.KeyCode) == Keys.Right)
+                {
+                    this.ReadImage(this.FilePathListIndex, true, false);
+                    return true;
+                }
+                else if ((keyData & Keys.KeyCode) == Keys.Left)
+                {
+                    this.ReadImage(this.FilePathListIndex, false, false);
+                    return true;
+                }
 
-            return base.ProcessDialogKey(keyData);
+                return base.ProcessDialogKey(keyData);
+            }
         }
 
         protected override void OnDrawTabPage(DrawTabEventArgs e)
@@ -621,14 +624,17 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         {
             this.fileContextMenu.Close();
 
-            if (this._filePathList.Length < 1)
+            var filePathList = this._filePathList;
+            if (filePathList.Length < 1)
             {
                 return;
             }
 
+            this._isLoading = true;
+
             using (TimeMeasuring.Run(false, "ImageViewerPage.ReadImage"))
             {
-                var mainFilePath = this._filePathList[currentIndex];
+                var mainFilePath = filePathList[currentIndex];
                 this.SelectedFilePath = mainFilePath;
 
                 var thumbnailsGetParameter
@@ -637,14 +643,12 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 var imageFileReadParameter
                     = this.CreateImageFileReadParameter(currentIndex, isNext, isForceSingle, zoomValue);
 
-                this._isLoading = true;
-
                 Instance<JobCaller>.Value.ThumbnailsGetJob.Value
                     .StartJob(this, thumbnailsGetParameter);
 
                 Instance<JobCaller>.Value.ImageFileCacheJob.Value
                     .StartJob(this, new ImageFileCacheParameter(
-                        currentIndex, 4, 4, this._filePathList));
+                        currentIndex, 4, 4, filePathList));
 
                 Instance<JobCaller>.Value.ImageFileLoadingJob.Value
                     .StartJob(this, imageFileReadParameter, _ =>
