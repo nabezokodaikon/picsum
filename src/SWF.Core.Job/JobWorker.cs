@@ -53,7 +53,7 @@ namespace SWF.Core.Job
         private bool _disposed = false;
 
         private readonly string _threadName;
-        private readonly IThreadWrapper _thread;
+        private readonly JobTask _thread;
         private readonly SynchronizationContext _context;
         private readonly CancellationTokenSource _source = new();
         private TJob? _currentJob = null;
@@ -70,7 +70,7 @@ namespace SWF.Core.Job
             }
         }
 
-        public TwoWayThread(SynchronizationContext? context, IThreadWrapper thread)
+        public TwoWayThread(SynchronizationContext? context, JobTask thread)
         {
             ArgumentNullException.ThrowIfNull(context, nameof(context));
             ArgumentNullException.ThrowIfNull(thread, nameof(thread));
@@ -125,7 +125,8 @@ namespace SWF.Core.Job
 
             if (!this._thread.IsRunning())
             {
-                this._thread.Start(() => this.DoWork(this._source.Token));
+                this._thread.Start(
+                    () => this.DoWork(this._source.Token).GetAwaiter().GetResult());
             }
 
             var job = new TJob
@@ -185,71 +186,72 @@ namespace SWF.Core.Job
             this.StartJob(sender, null, null);
         }
 
-        private void DoWork(CancellationToken token)
+        private async Task DoWork(CancellationToken token)
         {
-            Thread.CurrentThread.Name = this._threadName;
-
-            Logger.Debug("ジョブ実行スレッドが開始されました。");
-
-            TJob? previewJob = null;
-
-            try
+            using (ScopeContext.PushProperty(AppConstants.NLOG_PROPERTY, this._threadName))
             {
-                while (true)
+                Logger.Debug("ジョブ実行スレッドが開始されました。");
+
+                TJob? previewJob = null;
+
+                try
                 {
-                    if (token.IsCancellationRequested)
+                    while (true)
                     {
-                        Logger.Debug("ジョブ実行スレッドにキャンセルリクエストがありました。");
-                        token.ThrowIfCancellationRequested();
-                    }
+                        if (token.IsCancellationRequested)
+                        {
+                            Logger.Debug("ジョブ実行スレッドにキャンセルリクエストがありました。");
+                            token.ThrowIfCancellationRequested();
+                        }
 
-                    var job = this.CurrentJob;
-                    if (job == null || job == previewJob)
-                    {
-                        token.WaitHandle.WaitOne(1);
-                        continue;
-                    }
+                        var job = this.CurrentJob;
+                        if (job == null || job == previewJob)
+                        {
+                            await Task.Delay(1, token);
+                            continue;
+                        }
 
-                    previewJob = job;
+                        previewJob = job;
 
-                    Logger.Debug($"{job.ID} を実行します。");
-                    var sw = Stopwatch.StartNew();
-                    try
-                    {
-                        job.ExecuteWrapper().GetAwaiter().GetResult();
-                    }
-                    catch (JobCancelException)
-                    {
-                        Logger.Debug($"{job.ID} がキャンセルされました。");
-                    }
-                    catch (JobException ex)
-                    {
-                        Logger.Error($"{job.ID} {ex}");
-                    }
-                    catch (Exception ex)
-                    {
-                        Logger.Error(ex, $"{job.ID} で補足されない例外が発生しました。");
-                    }
-                    finally
-                    {
-                        sw.Stop();
-                        Logger.Debug($"{job.ID} が終了しました。{sw.ElapsedMilliseconds} ms");
-                    }
+                        Logger.Debug($"{job.ID} を実行します。");
+                        var sw = Stopwatch.StartNew();
+                        try
+                        {
+                            job.ExecuteWrapper().GetAwaiter().GetResult();
+                        }
+                        catch (JobCancelException)
+                        {
+                            Logger.Debug($"{job.ID} がキャンセルされました。");
+                        }
+                        catch (JobException ex)
+                        {
+                            Logger.Error($"{job.ID} {ex}");
+                        }
+                        catch (Exception ex)
+                        {
+                            Logger.Error(ex, $"{job.ID} で補足されない例外が発生しました。");
+                        }
+                        finally
+                        {
+                            sw.Stop();
+                            Logger.Debug($"{job.ID} が終了しました。{sw.ElapsedMilliseconds} ms");
+                        }
 
-                    token.WaitHandle.WaitOne(1);
+                        await Task.Delay(1, token);
+                    }
                 }
-            }
-            catch (OperationCanceledException)
-            {
-                Logger.Debug("ジョブ実行スレッドをキャンセルします。");
-            }
-            catch (Exception ex)
-            {
-                Logger.Error(ex, $"ジョブ実行スレッドで補足されない例外が発生しました。");
-            }
-            finally
-            {
-                Logger.Debug("ジョブ実行スレッドが終了します。");
+                catch (OperationCanceledException)
+                {
+                    Logger.Debug("ジョブ実行スレッドをキャンセルします。");
+                }
+                catch (Exception ex)
+                {
+                    Logger.Error(ex, $"ジョブ実行スレッドで補足されない例外が発生しました。");
+                }
+                finally
+                {
+                    Logger.Debug("ジョブ実行スレッドが終了します。");
+                }
             }
         }
     }
@@ -260,7 +262,7 @@ namespace SWF.Core.Job
         where TJob : AbstractTwoWayJob<TJobResult>, new()
         where TJobResult : IJobResult
     {
-        public TwoWayThread(SynchronizationContext? context, IThreadWrapper thread)
+        public TwoWayThread(SynchronizationContext? context, JobTask thread)
             : base(context, thread)
         {
 
@@ -273,7 +275,7 @@ namespace SWF.Core.Job
         where TJob : AbstractOneWayJob<TJobParameter>, new()
         where TJobParameter : class, IJobParameter
     {
-        public OneWayThread(SynchronizationContext? context, IThreadWrapper thread)
+        public OneWayThread(SynchronizationContext? context, JobTask thread)
             : base(context, thread)
         {
 
@@ -285,7 +287,7 @@ namespace SWF.Core.Job
         : TwoWayThread<TJob, EmptyParameter, EmptyResult>, IOneWayJob<TJob>
         where TJob : AbstractOneWayJob, new()
     {
-        public OneWayThread(SynchronizationContext? context, IThreadWrapper thread)
+        public OneWayThread(SynchronizationContext? context, JobTask thread)
             : base(context, thread)
         {
 

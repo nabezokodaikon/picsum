@@ -38,7 +38,7 @@ namespace SWF.Core.ConsoleAccessor
             if (this._enable)
             {
                 this._stopwatch?.Stop();
-                Console.WriteLine($"[{DateTime.Now:HH:mm:ss.fff}] [{Thread.CurrentThread.Name}] {this._message}: {this._stopwatch?.ElapsedMilliseconds} ms");
+                Console.WriteLine($"[{DateTime.Now:HH:mm:ss.fff}] {this._message}: {this._stopwatch?.ElapsedMilliseconds} ms");
             }
 #endif
             GC.SuppressFinalize(this);

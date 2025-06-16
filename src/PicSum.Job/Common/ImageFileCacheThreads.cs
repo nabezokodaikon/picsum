@@ -78,50 +78,51 @@ namespace PicSum.Job.Common
 
         private async Task DoWork(int index)
         {
-            Thread.CurrentThread.Name = $"ImageFileCacheThreads: [{index}]";
-
-            Logger.Debug("画像ファイルキャッシュスレッドが開始されました。");
-
-            try
+            using (ScopeContext.PushProperty(AppConstants.NLOG_PROPERTY, $"ImageFileCacheThreads[{index}]"))
             {
-                while (true)
-                {
-                    if (this.IsAbort)
-                    {
-                        Logger.Debug("画像ファイルキャッシュスレッドに中断リクエストがありました。");
-                        return;
-                    }
+                Logger.Debug("画像ファイルキャッシュスレッドが開始されました。");
 
-                    if (this.queue.TryDequeue(out var file))
+                try
+                {
+                    while (true)
                     {
-                        try
+                        if (this.IsAbort)
                         {
-                            Instance<IImageFileCacher>.Value.Create(file);
-                            var size = Instance<IImageFileCacher>.Value.GetSize(file);
-                            Instance<IImageFileSizeCacher>.Value.Set(file, size);
+                            Logger.Debug("画像ファイルキャッシュスレッドに中断リクエストがありました。");
+                            return;
                         }
-                        catch (FileUtilException ex)
+
+                        if (this.queue.TryDequeue(out var file))
                         {
-                            Logger.Error(ex);
+                            try
+                            {
+                                Instance<IImageFileCacher>.Value.Create(file);
+                                var size = Instance<IImageFileCacher>.Value.GetSize(file);
+                                Instance<IImageFileSizeCacher>.Value.Set(file, size);
+                            }
+                            catch (FileUtilException ex)
+                            {
+                                Logger.Error(ex);
+                            }
+                            catch (ImageUtilException ex)
+                            {
+                                Logger.Error(ex);
+                            }
+                            catch (Exception ex)
+                            {
+                                Logger.Error(ex, $"画像ファイルキャッシュスレッドで補足されない例外が発生しました。");
+                            }
                         }
-                        catch (ImageUtilException ex)
+                        else
                         {
-                            Logger.Error(ex);
+                            await Task.Delay(1);
                         }
-                        catch (Exception ex)
-                        {
-                            Logger.Error(ex, $"画像ファイルキャッシュスレッドで補足されない例外が発生しました。");
-                        }
-                    }
-                    else
-                    {
-                        await Task.Delay(1);
                     }
                 }
-            }
-            finally
-            {
-                Logger.Debug("画像ファイルキャッシュスレッドが終了します。");
+                finally
+                {
+                    Logger.Debug("画像ファイルキャッシュスレッドが終了します。");
+                }
             }
         }
     }

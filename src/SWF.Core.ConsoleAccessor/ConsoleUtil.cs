@@ -8,7 +8,7 @@ namespace SWF.Core.ConsoleAccessor
             if (enable)
             {
                 ArgumentNullException.ThrowIfNull(message, nameof(message));
-                Console.WriteLine($"[{DateTime.Now:HH:mm:ss.fff}] [{Thread.CurrentThread.Name}] {message}");
+                Console.WriteLine($"[{DateTime.Now:HH:mm:ss.fff}] {message}");
             }
 #endif
         }

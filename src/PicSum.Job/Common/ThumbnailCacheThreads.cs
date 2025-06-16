@@ -110,73 +110,74 @@ namespace PicSum.Job.Common
 
         private async Task DoWork(int index)
         {
-            Thread.CurrentThread.Name = $"ThumbnailCacheThreads: [{index}]";
-
-            logger.Debug("サムネイル読み込みスレッドが開始されました。");
-
-            try
+            using (ScopeContext.PushProperty(AppConstants.NLOG_PROPERTY, $"ThumbnailCacheThreads[{index}]"))
             {
-                while (true)
+                logger.Debug("サムネイル読み込みスレッドが開始されました。");
+
+                try
                 {
-                    if (this.IsAbort)
+                    while (true)
                     {
-                        logger.Debug("サムネイル読み込みスレッドに中断リクエストがありました。");
-                        return;
-                    }
-
-                    if (this._queue.TryDequeue(out var entity))
-                    {
-                        try
+                        if (this.IsAbort)
                         {
-                            var bf = Instance<IThumbnailCacher>.Value.GetOrCreateCache(
-                                entity.FilePath, entity.ThumbnailWidth, entity.ThumbnailHeight);
-                            if (entity.IsExecuteCallback
-                                && bf != ThumbnailCacheEntity.EMPTY
-                                && bf.ThumbnailBuffer != null)
+                            logger.Debug("サムネイル読み込みスレッドに中断リクエストがありました。");
+                            return;
+                        }
+
+                        if (this._queue.TryDequeue(out var entity))
+                        {
+                            try
                             {
-                                Instance<IImageFileSizeCacher>.Value.Set(
-                                    bf.FilePath,
-                                    new Size(bf.SourceWidth, bf.SourceHeight),
-                                    bf.FileUpdatedate);
-
-                                var img = new ThumbnailImageResult
+                                var bf = Instance<IThumbnailCacher>.Value.GetOrCreateCache(
+                                    entity.FilePath, entity.ThumbnailWidth, entity.ThumbnailHeight);
+                                if (entity.IsExecuteCallback
+                                    && bf != ThumbnailCacheEntity.EMPTY
+                                    && bf.ThumbnailBuffer != null)
                                 {
-                                    FilePath = bf.FilePath,
-                                    ThumbnailImage = new CvImage(
+                                    Instance<IImageFileSizeCacher>.Value.Set(
                                         bf.FilePath,
-                                        ThumbnailUtil.ToImage(bf.ThumbnailBuffer)),
-                                    ThumbnailWidth = bf.ThumbnailWidth,
-                                    ThumbnailHeight = bf.ThumbnailHeight,
-                                    SourceWidth = bf.SourceWidth,
-                                    SourceHeight = bf.SourceHeight,
-                                    FileUpdatedate = bf.FileUpdatedate
-                                };
+                                        new Size(bf.SourceWidth, bf.SourceHeight),
+                                        bf.FileUpdatedate);
 
-                                entity.CallbackAction(img);
+                                    var img = new ThumbnailImageResult
+                                    {
+                                        FilePath = bf.FilePath,
+                                        ThumbnailImage = new CvImage(
+                                            bf.FilePath,
+                                            ThumbnailUtil.ToImage(bf.ThumbnailBuffer)),
+                                        ThumbnailWidth = bf.ThumbnailWidth,
+                                        ThumbnailHeight = bf.ThumbnailHeight,
+                                        SourceWidth = bf.SourceWidth,
+                                        SourceHeight = bf.SourceHeight,
+                                        FileUpdatedate = bf.FileUpdatedate
+                                    };
+
+                                    entity.CallbackAction(img);
+                                }
+                            }
+                            catch (FileUtilException ex)
+                            {
+                                logger.Error(ex);
+                            }
+                            catch (ImageUtilException ex)
+                            {
+                                logger.Error(ex);
+                            }
+                            catch (Exception ex)
+                            {
+                                logger.Error(ex, $"サムネイル読み込みスレッドで補足されない例外が発生しました。");
                             }
                         }
-                        catch (FileUtilException ex)
+                        else
                         {
-                            logger.Error(ex);
+                            await Task.Delay(1);
                         }
-                        catch (ImageUtilException ex)
-                        {
-                            logger.Error(ex);
-                        }
-                        catch (Exception ex)
-                        {
-                            logger.Error(ex, $"サムネイル読み込みスレッドで補足されない例外が発生しました。");
-                        }
-                    }
-                    else
-                    {
-                        await Task.Delay(1);
                     }
                 }
-            }
-            finally
-            {
-                logger.Debug("サムネイル読み込みスレッドが終了します。");
+                finally
+                {
+                    logger.Debug("サムネイル読み込みスレッドが終了します。");
+                }
             }
         }
     }

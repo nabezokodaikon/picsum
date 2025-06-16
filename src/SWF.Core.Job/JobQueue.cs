@@ -1,9 +1,12 @@
 using NLog;
+using SWF.Core.Base;
 using System.Collections.Concurrent;
 using System.Diagnostics;
+using System.Runtime.Versioning;
 
 namespace SWF.Core.Job
 {
+    [SupportedOSPlatform("windows10.0.17763.0")]
     public sealed partial class JobQueue
         : IDisposable
     {
@@ -18,7 +21,8 @@ namespace SWF.Core.Job
         public JobQueue()
         {
             this.source = new();
-            this._task = Task.Run(() => this.DoWork(this.source.Token));
+            this._task = Task.Run(
+                () => this.DoWork(this.source.Token).GetAwaiter().GetResult());
         }
 
         public void Dispose()
@@ -88,83 +92,84 @@ namespace SWF.Core.Job
             this._jobQueue.Enqueue(job);
         }
 
-        private void DoWork(CancellationToken token)
+        private async Task DoWork(CancellationToken token)
         {
-            Thread.CurrentThread.Name = THREAD_NAME;
-
-            Logger.Debug("ジョブキュー実行スレッドが開始されました。");
-
-            try
+            using (ScopeContext.PushProperty(AppConstants.NLOG_PROPERTY, THREAD_NAME))
             {
-                while (true)
+                Logger.Debug("ジョブキュー実行スレッドが開始されました。");
+
+                try
                 {
-                    if (token.IsCancellationRequested)
+                    while (true)
                     {
-                        Logger.Debug("ジョブキュー実行スレッドにキャンセルリクエストがありました。");
-                        token.ThrowIfCancellationRequested();
-                    }
+                        if (token.IsCancellationRequested)
+                        {
+                            Logger.Debug("ジョブキュー実行スレッドにキャンセルリクエストがありました。");
+                            token.ThrowIfCancellationRequested();
+                        }
 
-                    if (this._jobQueue.TryPeek(out var currentJob))
-                    {
-                        var jobName = currentJob.GetType().Name;
+                        if (this._jobQueue.TryPeek(out var currentJob))
+                        {
+                            var jobName = currentJob.GetType().Name;
 
-                        Logger.Debug($"{jobName} {currentJob.ID} を実行します。");
-                        var sw = Stopwatch.StartNew();
-                        try
-                        {
-                            currentJob.ExecuteWrapper().GetAwaiter().GetResult();
-                        }
-                        catch (JobCancelException)
-                        {
-                            Logger.Debug($"{jobName} {currentJob.ID} がキャンセルされました。");
-                        }
-                        catch (JobException ex)
-                        {
-                            Logger.Error($"{jobName} {currentJob.ID} {ex}");
-                        }
-                        catch (Exception ex)
-                        {
-                            Logger.Error(ex, $"{jobName} {currentJob.ID} で補足されない例外が発生しました。");
-                        }
-                        finally
-                        {
-                            if (this._jobQueue.TryDequeue(out var dequeueJob))
+                            Logger.Debug($"{jobName} {currentJob.ID} を実行します。");
+                            var sw = Stopwatch.StartNew();
+                            try
                             {
-                                if (currentJob != dequeueJob)
+                                currentJob.ExecuteWrapper().GetAwaiter().GetResult();
+                            }
+                            catch (JobCancelException)
+                            {
+                                Logger.Debug($"{jobName} {currentJob.ID} がキャンセルされました。");
+                            }
+                            catch (JobException ex)
+                            {
+                                Logger.Error($"{jobName} {currentJob.ID} {ex}");
+                            }
+                            catch (Exception ex)
+                            {
+                                Logger.Error(ex, $"{jobName} {currentJob.ID} で補足されない例外が発生しました。");
+                            }
+                            finally
+                            {
+                                if (this._jobQueue.TryDequeue(out var dequeueJob))
+                                {
+                                    if (currentJob != dequeueJob)
+                                    {
+#pragma warning disable CA2219
+                                        throw new InvalidOperationException("ジョブキューからPeekしたジョブとDequeueしたジョブが一致しません。");
+#pragma warning restore CA2219
+                                    }
+                                }
+                                else
                                 {
 #pragma warning disable CA2219
-                                    throw new InvalidOperationException("ジョブキューからPeekしたジョブとDequeueしたジョブが一致しません。");
+                                    throw new InvalidOperationException("他のスレッドでジョブキューの操作が行われました。");
 #pragma warning restore CA2219
                                 }
-                            }
-                            else
-                            {
-#pragma warning disable CA2219
-                                throw new InvalidOperationException("他のスレッドでジョブキューの操作が行われました。");
-#pragma warning restore CA2219
-                            }
 
-                            sw.Stop();
-                            Logger.Debug($"{jobName} {currentJob.ID} が終了しました。{sw.ElapsedMilliseconds} ms");
+                                sw.Stop();
+                                Logger.Debug($"{jobName} {currentJob.ID} が終了しました。{sw.ElapsedMilliseconds} ms");
+                            }
+                        }
+                        else
+                        {
+                            await Task.Delay(1, token);
                         }
                     }
-                    else
-                    {
-                        token.WaitHandle.WaitOne(1);
-                    }
                 }
-            }
-            catch (OperationCanceledException)
-            {
-                Logger.Debug("ジョブキュー実行スレッドをキャンセルします。");
-            }
-            catch (Exception ex)
-            {
-                Logger.Error(ex, $"ジョブキュー実行スレッドで補足されない例外が発生しました。");
-            }
-            finally
-            {
-                Logger.Debug("ジョブキュー実行スレッドが終了します。");
+                catch (OperationCanceledException)
+                {
+                    Logger.Debug("ジョブキュー実行スレッドをキャンセルします。");
+                }
+                catch (Exception ex)
+                {
+                    Logger.Error(ex, $"ジョブキュー実行スレッドで補足されない例外が発生しました。");
+                }
+                finally
+                {
+                    Logger.Debug("ジョブキュー実行スレッドが終了します。");
+                }
             }
         }
     }
