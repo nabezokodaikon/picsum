@@ -1,6 +1,4 @@
 using NLog;
-using NLog.Config;
-using NLog.Targets;
 using PicSum.Main.Conf;
 using PicSum.Main.Mng;
 using SWF.Core.Base;
@@ -91,7 +89,7 @@ namespace PicSum.Main
                     using (TimeMeasuring.Run(true, "Program.Main Load Configs"))
                     {
                         Action[] actions = [
-                            CreateLoggerConfig,
+                            () => LogUtil.Initialize(AppConstants.LOG_DIRECTORY.Value),
                             Config.Instance.Load
                         ];
 
@@ -102,9 +100,9 @@ namespace PicSum.Main
                         );
                     }
 
-                    using (ScopeContext.PushProperty(AppConstants.NLOG_PROPERTY, AppConstants.UI_THREAD_NAME))
+                    using (ScopeContext.PushProperty(LogUtil.NLOG_PROPERTY, AppConstants.UI_THREAD_NAME))
                     {
-                        LogManager.GetCurrentClassLogger().Debug("アプリケーションを開始します。");
+                        LogUtil.Logger.Debug("アプリケーションを開始します。");
 
                         AppDomain.CurrentDomain.AssemblyLoad += CurrentDomain_OnAssemblyLoad;
                         AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
@@ -121,7 +119,7 @@ namespace PicSum.Main
                             Application.Run(context);
                         }
 
-                        LogManager.GetCurrentClassLogger().Debug("アプリケーションを終了します。");
+                        LogUtil.Logger.Debug("アプリケーションを終了します。");
                     }
                 }
                 finally
@@ -148,50 +146,23 @@ namespace PicSum.Main
             }
         }
 
-        private static void CreateLoggerConfig()
-        {
-            ConsoleUtil.Write(true, $"Program.CreateLoggerConfig Start");
-
-            var config = new LoggingConfiguration();
-
-            var logfile = new FileTarget("logfile")
-            {
-                FileName = Path.Combine(AppConstants.LOG_DIRECTORY.Value, "app.log"),
-                Layout = "${date:format=yyyy-MM-dd HH\\:mm\\:ss.fff} | ${level:padding=-5} | ${scopeproperty:item=task} | ${message:withexception=true}",
-                ArchiveFileName = string.Format("{0}/{1}", AppConstants.LOG_DIRECTORY, "${date:format=yyyyMMdd}/{########}.log"),
-                ArchiveAboveSize = 10 * 1024 * 1024,
-                ArchiveNumbering = ArchiveNumberingMode.Sequence,
-            };
-#if DEBUG
-            config.AddRule(LogLevel.Trace, LogLevel.Fatal, logfile);
-#else
-            config.AddRule(LogLevel.Info, LogLevel.Fatal, logfile);
-#endif
-            LogManager.Configuration = config;
-
-            ConsoleUtil.Write(true, $"Program.CreateLoggerConfig End");
-        }
-
         private static void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
         {
-            var logger = LogManager.GetCurrentClassLogger();
-            logger.Fatal(e.Exception);
+            LogUtil.Logger.Fatal(e.Exception);
             ExceptionUtil.ShowFatalDialog("Unhandled UI Exception.", e.Exception);
         }
 
         private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             var ex = (Exception)e.ExceptionObject;
-            var logger = LogManager.GetCurrentClassLogger();
-            logger.Fatal(ex);
+            LogUtil.Logger.Fatal(ex);
             ExceptionUtil.ShowFatalDialog("Unhandled Non-UI Exception.", ex);
         }
 
         private static void CurrentDomain_OnAssemblyLoad(object sender, AssemblyLoadEventArgs args)
         {
 #if DEBUG
-            var logger = LogManager.GetCurrentClassLogger();
-            logger.Trace($"アセンブリが読み込まれました: {args.LoadedAssembly.FullName}");
+            LogUtil.Logger.Trace($"アセンブリが読み込まれました: {args.LoadedAssembly.FullName}");
 #endif
         }
     }

@@ -1,4 +1,3 @@
-using NLog;
 using SWF.Core.ConsoleAccessor;
 using SWF.Core.FileAccessor;
 using SWF.Core.StringAccessor;
@@ -29,7 +28,6 @@ namespace SWF.Core.ImageAccessor
         internal const string WEBP_FILE_EXTENSION = ".webp";
         private const int LARGE_IMAGE_SIZE = 2000 * 2000;
 
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         internal static readonly string[] IMAGE_FILE_EXTENSION_LIST = GetImageFileExtensionList();
         public static readonly Size EMPTY_SIZE = Size.Empty;
         public static readonly Bitmap EMPTY_IMAGE = new(1, 1);
@@ -157,7 +155,7 @@ namespace SWF.Core.ImageAccessor
                 }
                 catch (ImageUtilException ex)
                 {
-                    Logger.Error(ex);
+                    LogUtil.Logger.Error(ex);
 
                     using (var bmp = ReadImageFile(filePath, false))
                     {
@@ -385,7 +383,7 @@ namespace SWF.Core.ImageAccessor
                 }
                 catch (ImageUtilException ex)
                 {
-                    Logger.Error(ex);
+                    LogUtil.Logger.Error(ex);
 
                     if (isNormalize)
                     {

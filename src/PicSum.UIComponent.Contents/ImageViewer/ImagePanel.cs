@@ -1,4 +1,3 @@
-using NLog;
 using SWF.Core.Base;
 using SWF.Core.ConsoleAccessor;
 using SWF.Core.FileAccessor;
@@ -22,8 +21,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
     {
         private const int THUMBNAIL_PANEL_OFFSET = 16;
         private const int THUMBNAIL_OFFSET = 8;
-
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         private static readonly SolidBrush THUMBNAIL_FILTER_BRUSH
             = new(Color.FromArgb(128, 0, 0, 0));
@@ -699,12 +696,12 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 }
                 catch (ImageUtilException ex)
                 {
-                    Logger.Error($"{ex}");
+                    LogUtil.Logger.Error($"{ex}");
                     this.DrawErrorImage(g);
                 }
                 catch (OverflowException ex)
                 {
-                    Logger.Error($"{ex}");
+                    LogUtil.Logger.Error($"{ex}");
                     this.DrawErrorImage(g);
                 }
             }

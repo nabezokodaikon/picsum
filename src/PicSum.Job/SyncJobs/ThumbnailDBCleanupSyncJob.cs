@@ -1,4 +1,5 @@
 using PicSum.Job.SyncLogics;
+using SWF.Core.ConsoleAccessor;
 using SWF.Core.Job;
 using System.Runtime.Versioning;
 
@@ -19,23 +20,23 @@ namespace PicSum.Job.SyncJobs
             }
             catch (DirectoryNotFoundException ex)
             {
-                Logger.Error(ex, ERROR_MESSAGE);
+                LogUtil.Logger.Error(ex, ERROR_MESSAGE);
             }
             catch (PathTooLongException ex)
             {
-                Logger.Error(ex, ERROR_MESSAGE);
+                LogUtil.Logger.Error(ex, ERROR_MESSAGE);
             }
             catch (IOException ex)
             {
-                Logger.Error(ex, ERROR_MESSAGE);
+                LogUtil.Logger.Error(ex, ERROR_MESSAGE);
             }
             catch (NotSupportedException ex)
             {
-                Logger.Error(ex, ERROR_MESSAGE);
+                LogUtil.Logger.Error(ex, ERROR_MESSAGE);
             }
             catch (UnauthorizedAccessException ex)
             {
-                Logger.Error(ex, ERROR_MESSAGE);
+                LogUtil.Logger.Error(ex, ERROR_MESSAGE);
             }
         }
     }

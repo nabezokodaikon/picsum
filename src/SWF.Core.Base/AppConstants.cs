@@ -8,8 +8,6 @@ namespace SWF.Core.Base
     [SupportedOSPlatform("windows10.0.17763.0")]
     public static class AppConstants
     {
-        public const string NLOG_PROPERTY = "task";
-
         public const string UI_THREAD_NAME = "Main";
 
         public const string MUTEX_NAME = "11d9bca9";

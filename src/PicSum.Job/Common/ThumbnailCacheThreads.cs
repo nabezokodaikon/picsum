@@ -3,6 +3,7 @@ using PicSum.Job.Entities;
 using PicSum.Job.Parameters;
 using PicSum.Job.Results;
 using SWF.Core.Base;
+using SWF.Core.ConsoleAccessor;
 using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
 using System.Collections.Concurrent;
@@ -16,9 +17,6 @@ namespace PicSum.Job.Common
     public sealed class ThumbnailCacheThreads
         : IThumbnailCacheThreads
     {
-        private static readonly Logger logger
-            = LogManager.GetCurrentClassLogger();
-
         private const int THREAD_COUNT = 4;
 
         private bool _disposed = false;
@@ -66,7 +64,7 @@ namespace PicSum.Job.Common
                 this.Clear();
                 this.IsAbort = true;
                 Task.WaitAll(this._threads);
-                logger.Debug("全てのサムネイル読み込みスレッドが終了しました。");
+                LogUtil.Logger.Debug("全てのサムネイル読み込みスレッドが終了しました。");
             }
 
             this._disposed = true;
@@ -110,9 +108,9 @@ namespace PicSum.Job.Common
 
         private async Task DoWork(int index)
         {
-            using (ScopeContext.PushProperty(AppConstants.NLOG_PROPERTY, $"ThumbnailCacheThreads[{index}]"))
+            using (ScopeContext.PushProperty(LogUtil.NLOG_PROPERTY, $"ThumbnailCacheThreads[{index}]"))
             {
-                logger.Debug("サムネイル読み込みスレッドが開始されました。");
+                LogUtil.Logger.Debug("サムネイル読み込みスレッドが開始されました。");
 
                 try
                 {
@@ -120,7 +118,7 @@ namespace PicSum.Job.Common
                     {
                         if (this.IsAbort)
                         {
-                            logger.Debug("サムネイル読み込みスレッドに中断リクエストがありました。");
+                            LogUtil.Logger.Debug("サムネイル読み込みスレッドに中断リクエストがありました。");
                             return;
                         }
 
@@ -157,15 +155,15 @@ namespace PicSum.Job.Common
                             }
                             catch (FileUtilException ex)
                             {
-                                logger.Error(ex);
+                                LogUtil.Logger.Error(ex);
                             }
                             catch (ImageUtilException ex)
                             {
-                                logger.Error(ex);
+                                LogUtil.Logger.Error(ex);
                             }
                             catch (Exception ex)
                             {
-                                logger.Error(ex, $"サムネイル読み込みスレッドで補足されない例外が発生しました。");
+                                LogUtil.Logger.Error(ex, $"サムネイル読み込みスレッドで補足されない例外が発生しました。");
                             }
                         }
                         else
@@ -176,7 +174,7 @@ namespace PicSum.Job.Common
                 }
                 finally
                 {
-                    logger.Debug("サムネイル読み込みスレッドが終了します。");
+                    LogUtil.Logger.Debug("サムネイル読み込みスレッドが終了します。");
                 }
             }
         }

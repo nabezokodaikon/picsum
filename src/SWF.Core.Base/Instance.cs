@@ -25,7 +25,7 @@ namespace SWF.Core.Base
             }
         }
 
-#pragma warning restore CS8618
+#pragma warning restore CS8602
 
         public static void Initialize(Func<TValue> valueFactory)
         {

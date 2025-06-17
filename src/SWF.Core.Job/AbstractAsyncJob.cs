@@ -1,4 +1,3 @@
-using NLog;
 using SWF.Core.ConsoleAccessor;
 
 namespace SWF.Core.Job
@@ -6,8 +5,6 @@ namespace SWF.Core.Job
     public abstract class AbstractAsyncJob
         : IAsyncJob
     {
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
         private long _isCancel = 0;
 
         internal ISender? Sender { get; set; } = null;
@@ -36,7 +33,7 @@ namespace SWF.Core.Job
 
         public void WriteErrorLog(JobException ex)
         {
-            Logger.Error($"{this.ID} {ex}");
+            LogUtil.Logger.Error($"{this.ID} {ex}");
         }
 
         internal abstract Task ExecuteWrapper();

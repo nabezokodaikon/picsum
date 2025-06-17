@@ -1,4 +1,3 @@
-using NLog;
 using PicSum.Job.Common;
 using PicSum.Job.Parameters;
 using PicSum.Job.Results;
@@ -29,8 +28,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
     public sealed partial class ImageViewerPage
         : BrowserPage, ISender
     {
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
         private static readonly Rectangle TOOL_BAR_DEFAULT_BOUNDS = new(0, 0, 767, 29);
         private static readonly Rectangle CHECK_PATTERN_PANEL_DEFAULT_BOUNDS = new(0, 29, 767, 0);
 
