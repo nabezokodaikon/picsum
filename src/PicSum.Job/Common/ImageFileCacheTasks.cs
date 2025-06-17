@@ -36,8 +36,7 @@ namespace PicSum.Job.Common
             for (var i = 0; i < this._tasks.Length; i++)
             {
                 var index = i;
-                this._tasks[index]
-                    = Task.Run(() => this.DoWork(index).GetAwaiter().GetResult());
+                this._tasks[index] = Task.Run(() => this.DoWork(index));
             }
         }
 

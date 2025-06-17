@@ -135,13 +135,20 @@ namespace PicSum.Main
                     return;
                 }
 
-                using (var pipeClient = new NamedPipeClientStream(".", AppConstants.PIPE_NAME, PipeDirection.Out))
+                try
                 {
-                    pipeClient.Connect();
-                    using (var writer = new StreamWriter(pipeClient))
+                    using (var pipeClient = new NamedPipeClientStream(".", AppConstants.PIPE_NAME, PipeDirection.Out))
                     {
-                        writer.WriteLine(filePath);
+                        pipeClient.Connect(1000);
+                        using (var writer = new StreamWriter(pipeClient) { AutoFlush = true })
+                        {
+                            writer.WriteLine(filePath);
+                        }
                     }
+                }
+                catch (IOException)
+                {
+                    return;
                 }
             }
         }

@@ -55,9 +55,21 @@ namespace SWF.Core.Job
 
         private readonly string _taskName;
         private readonly JobTask _task;
+        private long _isAbort = 0;
         private readonly SynchronizationContext _context;
-        private readonly CancellationTokenSource _source = new();
         private TJob? _currentJob = null;
+
+        private bool IsAbort
+        {
+            get
+            {
+                return Interlocked.Read(ref this._isAbort) == 1;
+            }
+            set
+            {
+                Interlocked.Exchange(ref this._isAbort, Convert.ToInt64(value));
+            }
+        }
 
         private TJob? CurrentJob
         {
@@ -98,15 +110,14 @@ namespace SWF.Core.Job
             {
                 this.BeginCancel();
 
-                Log.Writer.Debug("ジョブ実行タスクにキャンセルリクエストを送ります。");
-                this._source.Cancel();
+                Log.Writer.Debug($"{this._taskName} ジョブ実行タスクに終了リクエストを送ります。");
+                this.IsAbort = true;
 
-                Log.Writer.Debug("ジョブ実行タスクの終了を待機します。");
+                Log.Writer.Debug($"{this._taskName} ジョブ実行タスクの終了を待機します。");
                 this._task.Wait();
 
-                Log.Writer.Debug($"{this._taskName}: ジョブ実行タスクが終了しました。");
+                Log.Writer.Debug($"{this._taskName} ジョブ実行タスクが終了しました。");
                 this._task.Dispose();
-                this._source.Dispose();
             }
 
             this._disposed = true;
@@ -126,8 +137,7 @@ namespace SWF.Core.Job
 
             if (!this._task.IsRunning())
             {
-                this._task.Start(
-                    () => this.DoWork(this._source.Token).GetAwaiter().GetResult());
+                this._task.Start(this.DoWork);
             }
 
             var job = new TJob
@@ -152,7 +162,7 @@ namespace SWF.Core.Job
                                 }
                                 catch (Exception ex)
                                 {
-                                    Log.Writer.Error(ex, $"{job.ID} がUIタスク上で補足されない例外が発生しました。");
+                                    Log.Writer.Error(ex, $"{this._taskName} {job.ID} がUIタスク上で補足されない例外が発生しました。");
                                     ExceptionUtil.ShowFatalDialog("Unhandled UI Exception.", ex);
                                 }
                             }
@@ -187,7 +197,7 @@ namespace SWF.Core.Job
             this.StartJob(sender, null, null);
         }
 
-        private async Task DoWork(CancellationToken token)
+        private async Task DoWork()
         {
             using (ScopeContext.PushProperty(Log.NLOG_PROPERTY, this._taskName))
             {
@@ -199,16 +209,16 @@ namespace SWF.Core.Job
                 {
                     while (true)
                     {
-                        if (token.IsCancellationRequested)
+                        if (this.IsAbort)
                         {
-                            Log.Writer.Debug("ジョブ実行タスクにキャンセルリクエストがありました。");
-                            token.ThrowIfCancellationRequested();
+                            Log.Writer.Debug("ジョブ実行タスクに終了リクエストがありました。");
+                            return;
                         }
 
                         var job = this.CurrentJob;
                         if (job == null || job == previewJob)
                         {
-                            await Task.Delay(1, token);
+                            await Task.Delay(1);
                             continue;
                         }
 
@@ -218,7 +228,7 @@ namespace SWF.Core.Job
                         var sw = Stopwatch.StartNew();
                         try
                         {
-                            job.ExecuteWrapper().GetAwaiter().GetResult();
+                            await job.ExecuteWrapper();
                         }
                         catch (JobCancelException)
                         {
@@ -238,12 +248,8 @@ namespace SWF.Core.Job
                             Log.Writer.Debug($"{job.ID} が終了しました。{sw.ElapsedMilliseconds} ms");
                         }
 
-                        await Task.Delay(1, token);
+                        await Task.Delay(1);
                     }
-                }
-                catch (OperationCanceledException)
-                {
-                    Log.Writer.Debug("ジョブ実行タスクをキャンセルします。");
                 }
                 catch (Exception ex)
                 {

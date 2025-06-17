@@ -14,14 +14,24 @@ namespace SWF.Core.Job
 
         private bool _disposed = false;
         private readonly Task _task;
-        private readonly CancellationTokenSource source;
-        private readonly ConcurrentQueue<AbstractAsyncJob> _jobQueue = new();
+        private long _isAbort = 0;
+        private readonly ConcurrentQueue<AbstractAsyncJob> _queue = new();
+
+        private bool IsAbort
+        {
+            get
+            {
+                return Interlocked.Read(ref this._isAbort) == 1;
+            }
+            set
+            {
+                Interlocked.Exchange(ref this._isAbort, Convert.ToInt64(value));
+            }
+        }
 
         public JobQueue()
         {
-            this.source = new();
-            this._task = Task.Run(
-                () => this.DoWork(this.source.Token).GetAwaiter().GetResult());
+            this._task = Task.Run(this.DoWork);
         }
 
         public void Dispose()
@@ -42,20 +52,22 @@ namespace SWF.Core.Job
 
                 if (this._task != null)
                 {
-                    foreach (var job in this._jobQueue.ToArray())
+                    foreach (var job in this._queue.ToArray())
                     {
                         job.BeginCancel();
                     }
 
-                    Log.Writer.Debug("ジョブキュー実行タスクにキャンセルリクエストを送ります。");
-                    this.source?.Cancel();
+                    Log.Writer.Debug("ジョブキュー実行タスクに終了リクエストを送ります。");
+                    this.IsAbort = true;
 
                     Log.Writer.Debug("ジョブキュー実行タスクの終了を待機します。");
-                    this._task?.GetAwaiter().GetResult();
+                    if (this._task != null)
+                    {
+                        Task.WaitAll(this._task);
+                    }
 
                     Log.Writer.Debug("ジョブキュー実行タスクが終了しました。");
                     this._task?.Dispose();
-                    this.source?.Dispose();
                 }
             }
 
@@ -75,7 +87,7 @@ namespace SWF.Core.Job
                 Parameter = parameter,
             };
 
-            this._jobQueue.Enqueue(job);
+            this._queue.Enqueue(job);
         }
 
         public void Enqueue<TJob>(ISender sender)
@@ -88,10 +100,10 @@ namespace SWF.Core.Job
                 Sender = sender,
             };
 
-            this._jobQueue.Enqueue(job);
+            this._queue.Enqueue(job);
         }
 
-        private async Task DoWork(CancellationToken token)
+        private async Task DoWork()
         {
             using (ScopeContext.PushProperty(Log.NLOG_PROPERTY, TASK_NAME))
             {
@@ -101,13 +113,13 @@ namespace SWF.Core.Job
                 {
                     while (true)
                     {
-                        if (token.IsCancellationRequested)
+                        if (this.IsAbort)
                         {
-                            Log.Writer.Debug("ジョブキュー実行タスクにキャンセルリクエストがありました。");
-                            token.ThrowIfCancellationRequested();
+                            Log.Writer.Debug("ジョブキュー実行タスクに終了リクエストがありました。");
+                            return;
                         }
 
-                        if (this._jobQueue.TryPeek(out var currentJob))
+                        if (this._queue.TryPeek(out var currentJob))
                         {
                             var jobName = currentJob.GetType().Name;
 
@@ -115,7 +127,7 @@ namespace SWF.Core.Job
                             var sw = Stopwatch.StartNew();
                             try
                             {
-                                currentJob.ExecuteWrapper().GetAwaiter().GetResult();
+                                await currentJob.ExecuteWrapper();
                             }
                             catch (JobCancelException)
                             {
@@ -131,7 +143,7 @@ namespace SWF.Core.Job
                             }
                             finally
                             {
-                                if (this._jobQueue.TryDequeue(out var dequeueJob))
+                                if (this._queue.TryDequeue(out var dequeueJob))
                                 {
                                     if (currentJob != dequeueJob)
                                     {
@@ -153,13 +165,9 @@ namespace SWF.Core.Job
                         }
                         else
                         {
-                            await Task.Delay(1, token);
+                            await Task.Delay(1);
                         }
                     }
-                }
-                catch (OperationCanceledException)
-                {
-                    Log.Writer.Debug("ジョブキュー実行タスクをキャンセルします。");
                 }
                 catch (Exception ex)
                 {

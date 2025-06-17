@@ -71,28 +71,28 @@ namespace PicSum.Job.Common
 
             if (disposing)
             {
-                this._jobQueue.Value.Dispose();
+                this._jobQueue.Dispose();
 
-                this.ImageFileReadJob.Value.Dispose();
-                this.ImageFileLoadingJob.Value.Dispose();
-                this.ImageFileCacheJob.Value.Dispose();
-                this.ThumbnailsGetJob.Value.Dispose();
-                this.SubDirectoriesGetJob.Value.Dispose();
-                this.DirectoryViewHistoryGetJob.Value.Dispose();
-                this.AddressInfoGetJob.Value.Dispose();
-                this.TagsGetJob.Value.Dispose();
-                this.FileDeepInfoGetJob.Value.Dispose();
-                this.FileDeepInfoLoadingJob.Value?.Dispose();
-                this.PipeServerJob.Value.Dispose();
-                this.GCCollectRunJob.Value.Dispose();
+                this.ImageFileReadJob.Dispose();
+                this.ImageFileLoadingJob.Dispose();
+                this.ImageFileCacheJob.Dispose();
+                this.ThumbnailsGetJob.Dispose();
+                this.SubDirectoriesGetJob.Dispose();
+                this.DirectoryViewHistoryGetJob.Dispose();
+                this.AddressInfoGetJob.Dispose();
+                this.TagsGetJob.Dispose();
+                this.FileDeepInfoGetJob.Dispose();
+                this.FileDeepInfoLoadingJob.Dispose();
+                this.PipeServerJob.Dispose();
+                this.GCCollectRunJob.Dispose();
 
-                this.FilesGetByDirectoryJob.Value.Dispose();
-                this.FavoriteDirectoriesGetJob.Value.Dispose();
-                this.FilesGetByRatingJob.Value.Dispose();
-                this.FilesGetByTagJob.Value.Dispose();
-                this.ImageFilesGetByDirectoryJob.Value.Dispose();
-                this.NextDirectoryGetJob.Value.Dispose();
-                this.BookmarksGetJob.Value.Dispose();
+                this.FilesGetByDirectoryJob.Dispose();
+                this.FavoriteDirectoriesGetJob.Dispose();
+                this.FilesGetByRatingJob.Dispose();
+                this.FilesGetByTagJob.Dispose();
+                this.ImageFilesGetByDirectoryJob.Dispose();
+                this.NextDirectoryGetJob.Dispose();
+                this.BookmarksGetJob.Dispose();
             }
 
             this._disposed = true;

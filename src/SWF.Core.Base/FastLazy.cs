@@ -29,5 +29,15 @@ namespace SWF.Core.Base
 
             this._valueFactory = valueFactory;
         }
+
+        public void Dispose()
+        {
+            lock (this._lock)
+            {
+                var instance = this._value as IDisposable;
+                instance?.Dispose();
+
+            }
+        }
     }
 }

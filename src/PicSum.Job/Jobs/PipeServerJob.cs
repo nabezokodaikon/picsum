@@ -13,90 +13,44 @@ namespace PicSum.Job.Jobs
     {
         protected override async Task Execute()
         {
-            var task = this.DoWork();
-
             while (true)
             {
+                this.CheckCancel();
+
                 try
                 {
-                    this.CheckCancel();
-                }
-                catch (JobCancelException)
-                {
-                    task.GetAwaiter().GetResult();
-                    return;
-                }
-
-                await Task.Delay(100);
-            }
-        }
-
-        private async Task DoWork()
-        {
-            NamedPipeServerStream? pipeServer = null;
-
-            try
-            {
-                while (true)
-                {
-                    this.CheckCancel();
-
-                    using (var cts = new CancellationTokenSource())
+                    using (var pipeServer = new NamedPipeServerStream(
+                        AppConstants.PIPE_NAME, PipeDirection.In,
+                        1,
+                        PipeTransmissionMode.Byte,
+                        PipeOptions.Asynchronous))
+                    using (var cts = new CancellationTokenSource(1000))
                     {
-                        if (pipeServer == null)
+                        await pipeServer.WaitForConnectionAsync(cts.Token);
+
+                        this.CheckCancel();
+
+                        using (var reader = new StreamReader(pipeServer))
                         {
-                            pipeServer = new NamedPipeServerStream(
-                                AppConstants.PIPE_NAME, PipeDirection.In);
-                        }
-
-                        cts.CancelAfter(100);
-
-                        try
-                        {
-                            await pipeServer.WaitForConnectionAsync(cts.Token);
-
-                            using (var reader = new StreamReader(pipeServer))
+                            var receivedArgs = await reader.ReadLineAsync();
+                            if (receivedArgs != null
+                                && FileUtil.CanAccess(receivedArgs)
+                                && ImageUtil.IsImageFile(receivedArgs))
                             {
-                                var buffer = new char[1024];
-                                try
+                                this.Callback(new ValueResult<string>
                                 {
-                                    var bytesRead = reader.Read(buffer, 0, buffer.Length);
-                                    var receivedArgs = (new string(buffer, 0, bytesRead)).Trim();
-                                    if (FileUtil.CanAccess(receivedArgs)
-                                        && ImageUtil.IsImageFile(receivedArgs))
-                                    {
-                                        this.Callback(new ValueResult<string>
-                                        {
-                                            Value = receivedArgs,
-                                        });
-                                    }
-                                }
-                                catch (IOException ex)
-                                {
-                                    this.WriteErrorLog(new JobException(this.ID, ex));
-                                }
-                                finally
-                                {
-                                    pipeServer.Dispose();
-                                    pipeServer = null;
-                                }
+                                    Value = receivedArgs,
+                                });
                             }
                         }
-                        catch (OperationCanceledException) { }
                     }
                 }
-            }
-            catch (JobCancelException)
-            {
-                return;
-            }
-            finally
-            {
-                if (pipeServer != null)
+                catch (OperationCanceledException)
                 {
-                    pipeServer.Dispose();
-                    pipeServer = null;
+                    continue;
                 }
+
+                await Task.Delay(250);
             }
         }
     }

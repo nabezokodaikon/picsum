@@ -38,7 +38,7 @@ namespace SWF.Core.Job
             return this._task != null;
         }
 
-        public void Start(Action dowork)
+        public void Start(Func<Task> dowork)
         {
             ArgumentNullException.ThrowIfNull(dowork, nameof(dowork));
 
@@ -47,12 +47,15 @@ namespace SWF.Core.Job
                 throw new InvalidOperationException("タスクは既に開始しています。");
             }
 
-            this._task ??= Task.Run(dowork);
+            this._task = Task.Run(dowork);
         }
 
         public void Wait()
         {
-            this._task?.GetAwaiter().GetResult();
+            if (this._task != null)
+            {
+                Task.WaitAll(this._task);
+            }
         }
     }
 }
