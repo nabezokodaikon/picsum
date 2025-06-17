@@ -1,6 +1,8 @@
-using PicSum.Job.Common;
 using PicSum.Job.Parameters;
 using SWF.Core.Base;
+using SWF.Core.ConsoleAccessor;
+using SWF.Core.FileAccessor;
+using SWF.Core.ImageAccessor;
 using SWF.Core.Job;
 
 namespace PicSum.Job.Jobs
@@ -8,9 +10,16 @@ namespace PicSum.Job.Jobs
     public sealed class ImageFileCacheJob
         : AbstractOneWayJob<ImageFileCacheParameter>
     {
+        private static readonly ParallelOptions _parallelOptions = new ParallelOptions
+        {
+            MaxDegreeOfParallelism = 1
+        };
+
         protected override Task Execute(ImageFileCacheParameter parameter)
         {
             ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
+
+            var logger = Log.GetLogger();
 
             var nextFiles = new List<string>(parameter.NextCount);
             var nextIndex = this.GetNextIndex(parameter.CurrentIndex, parameter.Files);
@@ -36,7 +45,39 @@ namespace PicSum.Job.Jobs
                 previewFiles.Add(parameter.Files[previewIndex]);
             }
 
-            Instance<IImageFileCacheTasks>.Value.DoCache([.. nextFiles, .. previewFiles]);
+            //Instance<IImageFileCacheTasks>.Value.DoCache([.. nextFiles, .. previewFiles]);
+
+            Parallel.ForEach(
+                [.. nextFiles, .. previewFiles],
+                //_parallelOptions,
+                filePath =>
+                {
+                    try
+                    {
+                        this.CheckCancel();
+
+                        Instance<IImageFileCacher>.Value.Create(filePath);
+                        var size = Instance<IImageFileCacher>.Value.GetSize(filePath);
+                        Instance<IImageFileSizeCacher>.Value.Set(filePath, size);
+                    }
+                    catch (JobCancelException)
+                    {
+                        return;
+                    }
+                    catch (FileUtilException ex)
+                    {
+                        logger.Error(ex);
+                    }
+                    catch (ImageUtilException ex)
+                    {
+                        logger.Error(ex);
+                    }
+                    catch (Exception ex)
+                    {
+                        logger.Error(ex, $"画像ファイルキャッシュタスクで補足されない例外が発生しました。");
+                    }
+                }
+            );
 
             return Task.CompletedTask;
         }
