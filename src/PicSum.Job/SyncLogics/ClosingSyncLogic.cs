@@ -18,8 +18,8 @@ namespace PicSum.Job.SyncLogics
             using (TimeMeasuring.Run(false, "ClosingSyncLogic.Execute"))
             {
                 Instance<JobCaller>.Value.Dispose();
-                Instance<IImageFileCacheThreads>.Value.Dispose();
-                Instance<IThumbnailCacheThreads>.Value.Dispose();
+                Instance<IImageFileCacheTasks>.Value.Dispose();
+                Instance<IThumbnailCacheTasks>.Value.Dispose();
                 Instance<IFileIconCacher>.Value.Dispose();
                 Instance<IThumbnailCacher>.Value.Dispose();
                 Instance<IImageFileCacher>.Value.Dispose();

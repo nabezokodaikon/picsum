@@ -13,7 +13,7 @@ namespace PicSum.Job.Jobs
     {
         protected override async Task Execute()
         {
-            var thread = this.DoWork();
+            var task = this.DoWork();
 
             while (true)
             {
@@ -23,7 +23,7 @@ namespace PicSum.Job.Jobs
                 }
                 catch (JobCancelException)
                 {
-                    thread.GetAwaiter().GetResult();
+                    task.GetAwaiter().GetResult();
                     return;
                 }
 

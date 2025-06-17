@@ -1,6 +1,6 @@
 namespace PicSum.Job.Common
 {
-    public interface IImageFileCacheThreads
+    public interface IImageFileCacheTasks
         : IDisposable
     {
         public void DoCache(string[] files);

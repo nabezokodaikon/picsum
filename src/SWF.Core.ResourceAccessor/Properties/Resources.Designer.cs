@@ -47,8 +47,8 @@ namespace SWF.Core.ResourceAccessor.Properties {
         }
         
         /// <summary>
-        ///   すべてについて、現在のスレッドの CurrentUICulture プロパティをオーバーライドします
-        ///   現在のスレッドの CurrentUICulture プロパティをオーバーライドします。
+        ///   すべてについて、現在のタスクの CurrentUICulture プロパティをオーバーライドします
+        ///   現在のタスクの CurrentUICulture プロパティをオーバーライドします。
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
         internal static global::System.Globalization.CultureInfo Culture {

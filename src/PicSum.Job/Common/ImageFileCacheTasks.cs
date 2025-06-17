@@ -9,14 +9,14 @@ using System.Runtime.Versioning;
 namespace PicSum.Job.Common
 {
     [SupportedOSPlatform("windows10.0.17763.0")]
-    internal sealed class ImageFileCacheThreads
-        : IImageFileCacheThreads
+    internal sealed class ImageFileCacheTasks
+        : IImageFileCacheTasks
     {
-        private const int THREAD_COUNT = 4;
+        private const int TASKS_COUNT = 4;
 
         private bool _disposed = false;
-        private readonly ConcurrentQueue<string> queue = new();
-        private readonly Task[] threads = new Task[THREAD_COUNT];
+        private readonly ConcurrentQueue<string> _queue = new();
+        private readonly Task[] _tasks = new Task[TASKS_COUNT];
         private long _isAbort = 0;
 
         private bool IsAbort
@@ -31,12 +31,12 @@ namespace PicSum.Job.Common
             }
         }
 
-        public ImageFileCacheThreads()
+        public ImageFileCacheTasks()
         {
-            for (var i = 0; i < this.threads.Length; i++)
+            for (var i = 0; i < this._tasks.Length; i++)
             {
                 var index = i;
-                this.threads[index]
+                this._tasks[index]
                     = Task.Run(() => this.DoWork(index).GetAwaiter().GetResult());
             }
         }
@@ -56,10 +56,10 @@ namespace PicSum.Job.Common
 
             if (disposing)
             {
-                while (this.queue.TryDequeue(out var _)) { }
+                while (this._queue.TryDequeue(out var _)) { }
                 this.IsAbort = true;
-                Task.WaitAll(this.threads);
-                Log.Writer.Debug("全ての画像ファイルキャッシュスレッドが終了しました。");
+                Task.WaitAll(this._tasks);
+                Log.Writer.Debug("全ての画像ファイルキャッシュタスクが終了しました。");
             }
 
             this._disposed = true;
@@ -67,19 +67,19 @@ namespace PicSum.Job.Common
 
         public void DoCache(string[] files)
         {
-            while (this.queue.TryDequeue(out var _)) { }
+            while (this._queue.TryDequeue(out var _)) { }
 
             foreach (var file in files)
             {
-                this.queue.Enqueue(file);
+                this._queue.Enqueue(file);
             }
         }
 
         private async Task DoWork(int index)
         {
-            using (ScopeContext.PushProperty(Log.NLOG_PROPERTY, $"ImageFileCacheThreads[{index}]"))
+            using (ScopeContext.PushProperty(Log.NLOG_PROPERTY, $"ImageFileCacheTasks[{index}]"))
             {
-                Log.Writer.Debug("画像ファイルキャッシュスレッドが開始されました。");
+                Log.Writer.Debug("画像ファイルキャッシュタスクが開始されました。");
 
                 try
                 {
@@ -87,11 +87,11 @@ namespace PicSum.Job.Common
                     {
                         if (this.IsAbort)
                         {
-                            Log.Writer.Debug("画像ファイルキャッシュスレッドに中断リクエストがありました。");
+                            Log.Writer.Debug("画像ファイルキャッシュタスクに中断リクエストがありました。");
                             return;
                         }
 
-                        if (this.queue.TryDequeue(out var file))
+                        if (this._queue.TryDequeue(out var file))
                         {
                             try
                             {
@@ -109,7 +109,7 @@ namespace PicSum.Job.Common
                             }
                             catch (Exception ex)
                             {
-                                Log.Writer.Error(ex, $"画像ファイルキャッシュスレッドで補足されない例外が発生しました。");
+                                Log.Writer.Error(ex, $"画像ファイルキャッシュタスクで補足されない例外が発生しました。");
                             }
                         }
                         else
@@ -120,7 +120,7 @@ namespace PicSum.Job.Common
                 }
                 finally
                 {
-                    Log.Writer.Debug("画像ファイルキャッシュスレッドが終了します。");
+                    Log.Writer.Debug("画像ファイルキャッシュタスクが終了します。");
                 }
             }
         }

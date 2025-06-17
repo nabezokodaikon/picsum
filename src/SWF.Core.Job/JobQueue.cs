@@ -10,8 +10,7 @@ namespace SWF.Core.Job
     public sealed partial class JobQueue
         : IDisposable
     {
-        private static readonly Logger Logger = Log.Writer;
-        private const string THREAD_NAME = "JobQueue";
+        private const string TASK_NAME = "JobQueue";
 
         private bool _disposed = false;
         private readonly Task _task;
@@ -48,13 +47,13 @@ namespace SWF.Core.Job
                         job.BeginCancel();
                     }
 
-                    Log.Writer.Debug("ジョブキュー実行スレッドにキャンセルリクエストを送ります。");
+                    Log.Writer.Debug("ジョブキュー実行タスクにキャンセルリクエストを送ります。");
                     this.source?.Cancel();
 
-                    Log.Writer.Debug("ジョブキュー実行スレッドの終了を待機します。");
+                    Log.Writer.Debug("ジョブキュー実行タスクの終了を待機します。");
                     this._task?.GetAwaiter().GetResult();
 
-                    Log.Writer.Debug("ジョブキュー実行スレッドが終了しました。");
+                    Log.Writer.Debug("ジョブキュー実行タスクが終了しました。");
                     this._task?.Dispose();
                     this.source?.Dispose();
                 }
@@ -94,9 +93,9 @@ namespace SWF.Core.Job
 
         private async Task DoWork(CancellationToken token)
         {
-            using (ScopeContext.PushProperty(Log.NLOG_PROPERTY, THREAD_NAME))
+            using (ScopeContext.PushProperty(Log.NLOG_PROPERTY, TASK_NAME))
             {
-                Log.Writer.Debug("ジョブキュー実行スレッドが開始されました。");
+                Log.Writer.Debug("ジョブキュー実行タスクが開始されました。");
 
                 try
                 {
@@ -104,7 +103,7 @@ namespace SWF.Core.Job
                     {
                         if (token.IsCancellationRequested)
                         {
-                            Log.Writer.Debug("ジョブキュー実行スレッドにキャンセルリクエストがありました。");
+                            Log.Writer.Debug("ジョブキュー実行タスクにキャンセルリクエストがありました。");
                             token.ThrowIfCancellationRequested();
                         }
 
@@ -144,7 +143,7 @@ namespace SWF.Core.Job
                                 else
                                 {
 #pragma warning disable CA2219
-                                    throw new InvalidOperationException("他のスレッドでジョブキューの操作が行われました。");
+                                    throw new InvalidOperationException("他のタスクでジョブキューの操作が行われました。");
 #pragma warning restore CA2219
                                 }
 
@@ -160,15 +159,15 @@ namespace SWF.Core.Job
                 }
                 catch (OperationCanceledException)
                 {
-                    Log.Writer.Debug("ジョブキュー実行スレッドをキャンセルします。");
+                    Log.Writer.Debug("ジョブキュー実行タスクをキャンセルします。");
                 }
                 catch (Exception ex)
                 {
-                    Log.Writer.Error(ex, $"ジョブキュー実行スレッドで補足されない例外が発生しました。");
+                    Log.Writer.Error(ex, $"ジョブキュー実行タスクで補足されない例外が発生しました。");
                 }
                 finally
                 {
-                    Log.Writer.Debug("ジョブキュー実行スレッドが終了します。");
+                    Log.Writer.Debug("ジョブキュー実行タスクが終了します。");
                 }
             }
         }

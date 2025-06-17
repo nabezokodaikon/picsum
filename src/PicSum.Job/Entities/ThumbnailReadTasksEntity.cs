@@ -2,7 +2,7 @@ using PicSum.Job.Results;
 
 namespace PicSum.Job.Entities
 {
-    internal sealed class ThumbnailReadThreadsEntity
+    internal sealed class ThumbnailReadTasksEntity
     {
         public string FilePath { get; private set; }
         public int ThumbnailWidth { get; private set; }
@@ -10,7 +10,7 @@ namespace PicSum.Job.Entities
         public bool IsExecuteCallback { get; private set; }
         public Action<ThumbnailImageResult> CallbackAction { get; private set; }
 
-        public ThumbnailReadThreadsEntity(
+        public ThumbnailReadTasksEntity(
             string filePath,
             int thumbnailWidth,
             int thumbnailHeight,

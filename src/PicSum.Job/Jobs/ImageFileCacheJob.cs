@@ -36,7 +36,7 @@ namespace PicSum.Job.Jobs
                 previewFiles.Add(parameter.Files[previewIndex]);
             }
 
-            Instance<IImageFileCacheThreads>.Value.DoCache([.. nextFiles, .. previewFiles]);
+            Instance<IImageFileCacheTasks>.Value.DoCache([.. nextFiles, .. previewFiles]);
 
             while (true)
             {

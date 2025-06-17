@@ -43,7 +43,7 @@ namespace SWF.Core.Job
     }
 
     [SupportedOSPlatform("windows10.0.17763.0")]
-    public partial class TwoWayThread<TJob, TJobParameter, TJobResult>
+    public partial class TwoWayJob<TJob, TJobParameter, TJobResult>
         : IDisposable, ITwoWayJob<TJob, TJobParameter, TJobResult>
         where TJob : AbstractTwoWayJob<TJobParameter, TJobResult>, new()
         where TJobParameter : class, IJobParameter
@@ -53,8 +53,8 @@ namespace SWF.Core.Job
 
         private bool _disposed = false;
 
-        private readonly string _threadName;
-        private readonly JobTask _thread;
+        private readonly string _taskName;
+        private readonly JobTask _task;
         private readonly SynchronizationContext _context;
         private readonly CancellationTokenSource _source = new();
         private TJob? _currentJob = null;
@@ -71,14 +71,14 @@ namespace SWF.Core.Job
             }
         }
 
-        public TwoWayThread(SynchronizationContext? context, JobTask thread)
+        public TwoWayJob(SynchronizationContext? context, JobTask task)
         {
             ArgumentNullException.ThrowIfNull(context, nameof(context));
-            ArgumentNullException.ThrowIfNull(thread, nameof(thread));
+            ArgumentNullException.ThrowIfNull(task, nameof(task));
 
             this._context = context;
-            this._thread = thread;
-            this._threadName = $"{typeof(TJob).Name} {ThreadID.GetNew()}";
+            this._task = task;
+            this._taskName = $"{typeof(TJob).Name} {TaskID.GetNew()}";
         }
 
         public void Dispose()
@@ -98,14 +98,14 @@ namespace SWF.Core.Job
             {
                 this.BeginCancel();
 
-                Log.Writer.Debug("ジョブ実行スレッドにキャンセルリクエストを送ります。");
+                Log.Writer.Debug("ジョブ実行タスクにキャンセルリクエストを送ります。");
                 this._source.Cancel();
 
-                Log.Writer.Debug("ジョブ実行スレッドの終了を待機します。");
-                this._thread.Wait();
+                Log.Writer.Debug("ジョブ実行タスクの終了を待機します。");
+                this._task.Wait();
 
-                Log.Writer.Debug($"{this._threadName}: ジョブ実行スレッドが終了しました。");
-                this._thread.Dispose();
+                Log.Writer.Debug($"{this._taskName}: ジョブ実行タスクが終了しました。");
+                this._task.Dispose();
                 this._source.Dispose();
             }
 
@@ -124,9 +124,9 @@ namespace SWF.Core.Job
 
             this.BeginCancel();
 
-            if (!this._thread.IsRunning())
+            if (!this._task.IsRunning())
             {
-                this._thread.Start(
+                this._task.Start(
                     () => this.DoWork(this._source.Token).GetAwaiter().GetResult());
             }
 
@@ -152,7 +152,7 @@ namespace SWF.Core.Job
                                 }
                                 catch (Exception ex)
                                 {
-                                    Log.Writer.Error(ex, $"{job.ID} がUIスレッド上で補足されない例外が発生しました。");
+                                    Log.Writer.Error(ex, $"{job.ID} がUIタスク上で補足されない例外が発生しました。");
                                     ExceptionUtil.ShowFatalDialog("Unhandled UI Exception.", ex);
                                 }
                             }
@@ -189,9 +189,9 @@ namespace SWF.Core.Job
 
         private async Task DoWork(CancellationToken token)
         {
-            using (ScopeContext.PushProperty(Log.NLOG_PROPERTY, this._threadName))
+            using (ScopeContext.PushProperty(Log.NLOG_PROPERTY, this._taskName))
             {
-                Log.Writer.Debug("ジョブ実行スレッドが開始されました。");
+                Log.Writer.Debug("ジョブ実行タスクが開始されました。");
 
                 TJob? previewJob = null;
 
@@ -201,7 +201,7 @@ namespace SWF.Core.Job
                     {
                         if (token.IsCancellationRequested)
                         {
-                            Log.Writer.Debug("ジョブ実行スレッドにキャンセルリクエストがありました。");
+                            Log.Writer.Debug("ジョブ実行タスクにキャンセルリクエストがありました。");
                             token.ThrowIfCancellationRequested();
                         }
 
@@ -243,53 +243,53 @@ namespace SWF.Core.Job
                 }
                 catch (OperationCanceledException)
                 {
-                    Log.Writer.Debug("ジョブ実行スレッドをキャンセルします。");
+                    Log.Writer.Debug("ジョブ実行タスクをキャンセルします。");
                 }
                 catch (Exception ex)
                 {
-                    Log.Writer.Error(ex, $"ジョブ実行スレッドで補足されない例外が発生しました。");
+                    Log.Writer.Error(ex, $"ジョブ実行タスクで補足されない例外が発生しました。");
                 }
                 finally
                 {
-                    Log.Writer.Debug("ジョブ実行スレッドが終了します。");
+                    Log.Writer.Debug("ジョブ実行タスクが終了します。");
                 }
             }
         }
     }
 
     [SupportedOSPlatform("windows10.0.17763.0")]
-    public sealed partial class TwoWayThread<TJob, TJobResult>
-        : TwoWayThread<TJob, EmptyParameter, TJobResult>, ITwoWayJob<TJob, TJobResult>
+    public sealed partial class TwoWayJob<TJob, TJobResult>
+        : TwoWayJob<TJob, EmptyParameter, TJobResult>, ITwoWayJob<TJob, TJobResult>
         where TJob : AbstractTwoWayJob<TJobResult>, new()
         where TJobResult : IJobResult
     {
-        public TwoWayThread(SynchronizationContext? context, JobTask thread)
-            : base(context, thread)
+        public TwoWayJob(SynchronizationContext? context, JobTask task)
+            : base(context, task)
         {
 
         }
     }
 
     [SupportedOSPlatform("windows10.0.17763.0")]
-    public sealed partial class OneWayThread<TJob, TJobParameter>
-        : TwoWayThread<TJob, TJobParameter, EmptyResult>, IOneWayJob<TJob, TJobParameter>
+    public sealed partial class OneWayJob<TJob, TJobParameter>
+        : TwoWayJob<TJob, TJobParameter, EmptyResult>, IOneWayJob<TJob, TJobParameter>
         where TJob : AbstractOneWayJob<TJobParameter>, new()
         where TJobParameter : class, IJobParameter
     {
-        public OneWayThread(SynchronizationContext? context, JobTask thread)
-            : base(context, thread)
+        public OneWayJob(SynchronizationContext? context, JobTask task)
+            : base(context, task)
         {
 
         }
     }
 
     [SupportedOSPlatform("windows10.0.17763.0")]
-    public sealed partial class OneWayThread<TJob>
-        : TwoWayThread<TJob, EmptyParameter, EmptyResult>, IOneWayJob<TJob>
+    public sealed partial class OneWayJob<TJob>
+        : TwoWayJob<TJob, EmptyParameter, EmptyResult>, IOneWayJob<TJob>
         where TJob : AbstractOneWayJob, new()
     {
-        public OneWayThread(SynchronizationContext? context, JobTask thread)
-            : base(context, thread)
+        public OneWayJob(SynchronizationContext? context, JobTask task)
+            : base(context, task)
         {
 
         }

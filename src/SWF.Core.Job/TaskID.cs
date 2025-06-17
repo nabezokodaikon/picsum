@@ -1,24 +1,24 @@
 namespace SWF.Core.Job
 {
-    public sealed class ThreadID
+    public sealed class TaskID
     {
         private static long _currentID = 0;
 
-        public static ThreadID GetNew()
+        public static TaskID GetNew()
         {
-            return new ThreadID(Interlocked.Increment(ref _currentID));
+            return new TaskID(Interlocked.Increment(ref _currentID));
         }
 
         private readonly long value;
 
-        private ThreadID(long value)
+        private TaskID(long value)
         {
             this.value = value;
         }
 
         public override string ToString()
         {
-            return $"ThreadID: [{this.value}]";
+            return $"TaskID: [{this.value}]";
         }
     }
 }

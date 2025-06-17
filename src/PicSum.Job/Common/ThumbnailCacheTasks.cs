@@ -14,14 +14,14 @@ using ZLinq;
 namespace PicSum.Job.Common
 {
     [SupportedOSPlatform("windows10.0.17763.0")]
-    public sealed class ThumbnailCacheThreads
-        : IThumbnailCacheThreads
+    public sealed class ThumbnailCacheTasks
+        : IThumbnailCacheTasks
     {
-        private const int THREAD_COUNT = 4;
+        private const int TASKS_COUNT = 4;
 
         private bool _disposed = false;
-        private readonly ConcurrentQueue<ThumbnailReadThreadsEntity> _queue = new();
-        private readonly Task[] _threads = new Task[THREAD_COUNT];
+        private readonly ConcurrentQueue<ThumbnailReadTasksEntity> _queue = new();
+        private readonly Task[] _tasks = new Task[TASKS_COUNT];
         private long _isAbort = 0;
 
         private bool IsAbort
@@ -36,12 +36,12 @@ namespace PicSum.Job.Common
             }
         }
 
-        public ThumbnailCacheThreads()
+        public ThumbnailCacheTasks()
         {
-            for (var i = 0; i < this._threads.Length; i++)
+            for (var i = 0; i < this._tasks.Length; i++)
             {
                 var index = i;
-                this._threads[index]
+                this._tasks[index]
                     = Task.Run(() => this.DoWork(index).GetAwaiter().GetResult());
             }
         }
@@ -63,8 +63,8 @@ namespace PicSum.Job.Common
             {
                 this.Clear();
                 this.IsAbort = true;
-                Task.WaitAll(this._threads);
-                Log.Writer.Debug("全てのサムネイル読み込みスレッドが終了しました。");
+                Task.WaitAll(this._tasks);
+                Log.Writer.Debug("全てのサムネイル読み込みタスクが終了しました。");
             }
 
             this._disposed = true;
@@ -93,7 +93,7 @@ namespace PicSum.Job.Common
                 .AsValueEnumerable()
                 .Skip(parameter.FirstIndex)
                 .Take(parameter.LastIndex - parameter.FirstIndex + 1)
-                .Select(filePath => new ThumbnailReadThreadsEntity(
+                .Select(filePath => new ThumbnailReadTasksEntity(
                     filePath,
                     parameter.ThumbnailWidth,
                     parameter.ThumbnailHeight,
@@ -108,9 +108,9 @@ namespace PicSum.Job.Common
 
         private async Task DoWork(int index)
         {
-            using (ScopeContext.PushProperty(Log.NLOG_PROPERTY, $"ThumbnailCacheThreads[{index}]"))
+            using (ScopeContext.PushProperty(Log.NLOG_PROPERTY, $"ThumbnailCacheTasks[{index}]"))
             {
-                Log.Writer.Debug("サムネイル読み込みスレッドが開始されました。");
+                Log.Writer.Debug("サムネイル読み込みタスクが開始されました。");
 
                 try
                 {
@@ -118,7 +118,7 @@ namespace PicSum.Job.Common
                     {
                         if (this.IsAbort)
                         {
-                            Log.Writer.Debug("サムネイル読み込みスレッドに中断リクエストがありました。");
+                            Log.Writer.Debug("サムネイル読み込みタスクに中断リクエストがありました。");
                             return;
                         }
 
@@ -163,7 +163,7 @@ namespace PicSum.Job.Common
                             }
                             catch (Exception ex)
                             {
-                                Log.Writer.Error(ex, $"サムネイル読み込みスレッドで補足されない例外が発生しました。");
+                                Log.Writer.Error(ex, $"サムネイル読み込みタスクで補足されない例外が発生しました。");
                             }
                         }
                         else
@@ -174,7 +174,7 @@ namespace PicSum.Job.Common
                 }
                 finally
                 {
-                    Log.Writer.Debug("サムネイル読み込みスレッドが終了します。");
+                    Log.Writer.Debug("サムネイル読み込みタスクが終了します。");
                 }
             }
         }
