@@ -50,7 +50,7 @@ namespace PicSum.Job.Jobs
                     continue;
                 }
 
-                await Task.Delay(250);
+                await Task.Delay(1);
             }
         }
     }

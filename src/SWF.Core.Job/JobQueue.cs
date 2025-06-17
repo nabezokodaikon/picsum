@@ -169,7 +169,7 @@ namespace SWF.Core.Job
                         }
                         else
                         {
-                            await Task.Delay(1);
+                            await Task.Delay(100);
                         }
                     }
                 }

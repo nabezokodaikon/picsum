@@ -9,10 +9,10 @@ namespace PicSum.Job.Jobs
     public sealed class GCCollectRunJob
         : AbstractOneWayJob
     {
-        private static readonly long INTERVAL = 1000 * 5;
-
         protected override async Task Execute()
         {
+            const long INTERVAL = 1000 * 5;
+
             var sw = Stopwatch.StartNew();
             while (true)
             {

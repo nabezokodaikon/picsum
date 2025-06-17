@@ -8,7 +8,7 @@ namespace PicSum.Job.Jobs
     public sealed class ImageFileCacheJob
         : AbstractOneWayJob<ImageFileCacheParameter>
     {
-        protected override async Task Execute(ImageFileCacheParameter parameter)
+        protected override Task Execute(ImageFileCacheParameter parameter)
         {
             ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
 
@@ -38,19 +38,7 @@ namespace PicSum.Job.Jobs
 
             Instance<IImageFileCacheTasks>.Value.DoCache([.. nextFiles, .. previewFiles]);
 
-            while (true)
-            {
-                try
-                {
-                    this.CheckCancel();
-                }
-                catch (JobCancelException)
-                {
-                    return;
-                }
-
-                await Task.Delay(10);
-            }
+            return Task.CompletedTask;
         }
 
         private int GetNextIndex(int currentIndex, string[] files)
