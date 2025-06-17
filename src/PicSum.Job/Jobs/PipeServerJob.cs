@@ -33,7 +33,7 @@ namespace PicSum.Job.Jobs
                         using (var reader = new StreamReader(pipeServer))
                         {
                             var receivedArgs = await reader.ReadLineAsync();
-                            if (receivedArgs != null
+                            if (!string.IsNullOrEmpty(receivedArgs)
                                 && FileUtil.CanAccess(receivedArgs)
                                 && ImageUtil.IsImageFile(receivedArgs))
                             {
