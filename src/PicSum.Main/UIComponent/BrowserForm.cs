@@ -314,7 +314,7 @@ namespace PicSum.Main.UIComponent
                     }
                 }
 
-                Log.Logger.Debug("初回表示されました。");
+                Log.Writer.Debug("初回表示されました。");
             }
 
             this.SetControlRegion();
