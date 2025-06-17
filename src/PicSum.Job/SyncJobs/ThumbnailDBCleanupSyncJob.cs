@@ -13,6 +13,8 @@ namespace PicSum.Job.SyncJobs
 
         public void Execute()
         {
+            var logger = Log.GetLogger();
+
             try
             {
                 var thumbnailLogic = new ThumbnailDBCleanupSyncLogic();
@@ -20,23 +22,23 @@ namespace PicSum.Job.SyncJobs
             }
             catch (DirectoryNotFoundException ex)
             {
-                Log.Writer.Error(ex, ERROR_MESSAGE);
+                logger.Error(ex, ERROR_MESSAGE);
             }
             catch (PathTooLongException ex)
             {
-                Log.Writer.Error(ex, ERROR_MESSAGE);
+                logger.Error(ex, ERROR_MESSAGE);
             }
             catch (IOException ex)
             {
-                Log.Writer.Error(ex, ERROR_MESSAGE);
+                logger.Error(ex, ERROR_MESSAGE);
             }
             catch (NotSupportedException ex)
             {
-                Log.Writer.Error(ex, ERROR_MESSAGE);
+                logger.Error(ex, ERROR_MESSAGE);
             }
             catch (UnauthorizedAccessException ex)
             {
-                Log.Writer.Error(ex, ERROR_MESSAGE);
+                logger.Error(ex, ERROR_MESSAGE);
             }
         }
     }

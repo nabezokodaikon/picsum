@@ -33,7 +33,7 @@ namespace SWF.Core.Job
 
         public void WriteErrorLog(JobException ex)
         {
-            Log.Writer.Error($"{this.ID} {ex}");
+            Log.GetLogger().Error($"{this.ID} {ex}");
         }
 
         internal abstract Task ExecuteWrapper();

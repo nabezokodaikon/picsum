@@ -49,8 +49,6 @@ namespace SWF.Core.Job
         where TJobParameter : class, IJobParameter
         where TJobResult : IJobResult
     {
-        private static readonly Logger Logger = Log.Writer;
-
         private bool _disposed = false;
 
         private readonly string _taskName;
@@ -108,15 +106,17 @@ namespace SWF.Core.Job
 
             if (disposing)
             {
+                var logger = Log.GetLogger();
+
                 this.BeginCancel();
 
-                Log.Writer.Debug($"{this._taskName} ジョブ実行タスクに終了リクエストを送ります。");
+                logger.Debug($"{this._taskName} ジョブ実行タスクに終了リクエストを送ります。");
                 this.IsAbort = true;
 
-                Log.Writer.Debug($"{this._taskName} ジョブ実行タスクの終了を待機します。");
+                logger.Debug($"{this._taskName} ジョブ実行タスクの終了を待機します。");
                 this._task.Wait();
 
-                Log.Writer.Debug($"{this._taskName} ジョブ実行タスクが終了しました。");
+                logger.Debug($"{this._taskName} ジョブ実行タスクが終了しました。");
                 this._task.Dispose();
             }
 
@@ -162,7 +162,7 @@ namespace SWF.Core.Job
                                 }
                                 catch (Exception ex)
                                 {
-                                    Log.Writer.Error(ex, $"{this._taskName} {job.ID} がUIタスク上で補足されない例外が発生しました。");
+                                    Log.GetLogger().Error(ex, $"{this._taskName} {job.ID} がUIタスク上で補足されない例外が発生しました。");
                                     ExceptionUtil.ShowFatalDialog("Unhandled UI Exception.", ex);
                                 }
                             }
@@ -201,7 +201,9 @@ namespace SWF.Core.Job
         {
             using (ScopeContext.PushProperty(Log.NLOG_PROPERTY, this._taskName))
             {
-                Log.Writer.Debug("ジョブ実行タスクが開始されました。");
+                var logger = Log.GetLogger();
+
+                logger.Debug("ジョブ実行タスクが開始されました。");
 
                 TJob? previewJob = null;
 
@@ -211,7 +213,7 @@ namespace SWF.Core.Job
                     {
                         if (this.IsAbort)
                         {
-                            Log.Writer.Debug("ジョブ実行タスクに終了リクエストがありました。");
+                            logger.Debug("ジョブ実行タスクに終了リクエストがありました。");
                             return;
                         }
 
@@ -224,7 +226,7 @@ namespace SWF.Core.Job
 
                         previewJob = job;
 
-                        Log.Writer.Debug($"{job.ID} を実行します。");
+                        logger.Debug($"{job.ID} を実行します。");
                         var sw = Stopwatch.StartNew();
                         try
                         {
@@ -232,20 +234,20 @@ namespace SWF.Core.Job
                         }
                         catch (JobCancelException)
                         {
-                            Log.Writer.Debug($"{job.ID} がキャンセルされました。");
+                            logger.Debug($"{job.ID} がキャンセルされました。");
                         }
                         catch (JobException ex)
                         {
-                            Log.Writer.Error($"{job.ID} {ex}");
+                            logger.Error($"{job.ID} {ex}");
                         }
                         catch (Exception ex)
                         {
-                            Log.Writer.Error(ex, $"{job.ID} で補足されない例外が発生しました。");
+                            logger.Error(ex, $"{job.ID} で補足されない例外が発生しました。");
                         }
                         finally
                         {
                             sw.Stop();
-                            Log.Writer.Debug($"{job.ID} が終了しました。{sw.ElapsedMilliseconds} ms");
+                            logger.Debug($"{job.ID} が終了しました。{sw.ElapsedMilliseconds} ms");
                         }
 
                         await Task.Delay(1);
@@ -253,11 +255,11 @@ namespace SWF.Core.Job
                 }
                 catch (Exception ex)
                 {
-                    Log.Writer.Error(ex, $"ジョブ実行タスクで補足されない例外が発生しました。");
+                    logger.Error(ex, $"ジョブ実行タスクで補足されない例外が発生しました。");
                 }
                 finally
                 {
-                    Log.Writer.Debug("ジョブ実行タスクが終了します。");
+                    logger.Debug("ジョブ実行タスクが終了します。");
                 }
             }
         }

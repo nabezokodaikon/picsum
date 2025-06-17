@@ -102,7 +102,9 @@ namespace PicSum.Main
 
                     using (ScopeContext.PushProperty(Log.NLOG_PROPERTY, AppConstants.UI_THREAD_NAME))
                     {
-                        Log.Writer.Debug("アプリケーションを開始します。");
+                        var logger = Log.GetLogger();
+
+                        logger.Debug("アプリケーションを開始します。");
 
                         AppDomain.CurrentDomain.AssemblyLoad += CurrentDomain_OnAssemblyLoad;
                         AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
@@ -119,7 +121,7 @@ namespace PicSum.Main
                             Application.Run(context);
                         }
 
-                        Log.Writer.Debug("アプリケーションを終了します。");
+                        logger.Debug("アプリケーションを終了します。");
                     }
                 }
                 finally
@@ -155,21 +157,21 @@ namespace PicSum.Main
 
         private static void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
         {
-            Log.Writer.Fatal(e.Exception);
+            Log.GetLogger().Fatal(e.Exception);
             ExceptionUtil.ShowFatalDialog("Unhandled UI Exception.", e.Exception);
         }
 
         private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             var ex = (Exception)e.ExceptionObject;
-            Log.Writer.Fatal(ex);
+            Log.GetLogger().Fatal(ex);
             ExceptionUtil.ShowFatalDialog("Unhandled Non-UI Exception.", ex);
         }
 
         private static void CurrentDomain_OnAssemblyLoad(object sender, AssemblyLoadEventArgs args)
         {
 #if DEBUG
-            Log.Writer.Trace($"アセンブリが読み込まれました: {args.LoadedAssembly.FullName}");
+            Log.GetLogger().Trace($"アセンブリが読み込まれました: {args.LoadedAssembly.FullName}");
 #endif
         }
     }

@@ -58,7 +58,7 @@ namespace PicSum.Job.Common
                 while (this._queue.TryDequeue(out var _)) { }
                 this.IsAbort = true;
                 Task.WaitAll(this._tasks);
-                Log.Writer.Debug("全ての画像ファイルキャッシュタスクが終了しました。");
+                Log.GetLogger().Debug("全ての画像ファイルキャッシュタスクが終了しました。");
             }
 
             this._disposed = true;
@@ -78,7 +78,9 @@ namespace PicSum.Job.Common
         {
             using (ScopeContext.PushProperty(Log.NLOG_PROPERTY, $"ImageFileCacheTasks[{index}]"))
             {
-                Log.Writer.Debug("画像ファイルキャッシュタスクが開始されました。");
+                var logger = Log.GetLogger();
+
+                logger.Debug("画像ファイルキャッシュタスクが開始されました。");
 
                 try
                 {
@@ -86,7 +88,7 @@ namespace PicSum.Job.Common
                     {
                         if (this.IsAbort)
                         {
-                            Log.Writer.Debug("画像ファイルキャッシュタスクに中断リクエストがありました。");
+                            logger.Debug("画像ファイルキャッシュタスクに中断リクエストがありました。");
                             return;
                         }
 
@@ -100,15 +102,15 @@ namespace PicSum.Job.Common
                             }
                             catch (FileUtilException ex)
                             {
-                                Log.Writer.Error(ex);
+                                logger.Error(ex);
                             }
                             catch (ImageUtilException ex)
                             {
-                                Log.Writer.Error(ex);
+                                logger.Error(ex);
                             }
                             catch (Exception ex)
                             {
-                                Log.Writer.Error(ex, $"画像ファイルキャッシュタスクで補足されない例外が発生しました。");
+                                logger.Error(ex, $"画像ファイルキャッシュタスクで補足されない例外が発生しました。");
                             }
                         }
                         else
@@ -119,7 +121,7 @@ namespace PicSum.Job.Common
                 }
                 finally
                 {
-                    Log.Writer.Debug("画像ファイルキャッシュタスクが終了します。");
+                    logger.Debug("画像ファイルキャッシュタスクが終了します。");
                 }
             }
         }

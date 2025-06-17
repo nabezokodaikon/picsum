@@ -63,7 +63,7 @@ namespace PicSum.Job.Common
                 this.Clear();
                 this.IsAbort = true;
                 Task.WaitAll(this._tasks);
-                Log.Writer.Debug("全てのサムネイル読み込みタスクが終了しました。");
+                Log.GetLogger().Debug("全てのサムネイル読み込みタスクが終了しました。");
             }
 
             this._disposed = true;
@@ -109,7 +109,9 @@ namespace PicSum.Job.Common
         {
             using (ScopeContext.PushProperty(Log.NLOG_PROPERTY, $"ThumbnailCacheTasks[{index}]"))
             {
-                Log.Writer.Debug("サムネイル読み込みタスクが開始されました。");
+                var logger = Log.GetLogger();
+
+                logger.Debug("サムネイル読み込みタスクが開始されました。");
 
                 try
                 {
@@ -117,7 +119,7 @@ namespace PicSum.Job.Common
                     {
                         if (this.IsAbort)
                         {
-                            Log.Writer.Debug("サムネイル読み込みタスクに中断リクエストがありました。");
+                            logger.Debug("サムネイル読み込みタスクに中断リクエストがありました。");
                             return;
                         }
 
@@ -154,15 +156,15 @@ namespace PicSum.Job.Common
                             }
                             catch (FileUtilException ex)
                             {
-                                Log.Writer.Error(ex);
+                                logger.Error(ex);
                             }
                             catch (ImageUtilException ex)
                             {
-                                Log.Writer.Error(ex);
+                                logger.Error(ex);
                             }
                             catch (Exception ex)
                             {
-                                Log.Writer.Error(ex, $"サムネイル読み込みタスクで補足されない例外が発生しました。");
+                                logger.Error(ex, $"サムネイル読み込みタスクで補足されない例外が発生しました。");
                             }
                         }
                         else
@@ -173,7 +175,7 @@ namespace PicSum.Job.Common
                 }
                 finally
                 {
-                    Log.Writer.Debug("サムネイル読み込みタスクが終了します。");
+                    logger.Debug("サムネイル読み込みタスクが終了します。");
                 }
             }
         }

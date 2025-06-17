@@ -52,21 +52,23 @@ namespace SWF.Core.Job
 
                 if (this._task != null)
                 {
+                    var logger = Log.GetLogger();
+
                     foreach (var job in this._queue.ToArray())
                     {
                         job.BeginCancel();
                     }
 
-                    Log.Writer.Debug("ジョブキュー実行タスクに終了リクエストを送ります。");
+                    logger.Debug("ジョブキュー実行タスクに終了リクエストを送ります。");
                     this.IsAbort = true;
 
-                    Log.Writer.Debug("ジョブキュー実行タスクの終了を待機します。");
+                    logger.Debug("ジョブキュー実行タスクの終了を待機します。");
                     if (this._task != null)
                     {
                         Task.WaitAll(this._task);
                     }
 
-                    Log.Writer.Debug("ジョブキュー実行タスクが終了しました。");
+                    logger.Debug("ジョブキュー実行タスクが終了しました。");
                     this._task?.Dispose();
                 }
             }
@@ -107,7 +109,9 @@ namespace SWF.Core.Job
         {
             using (ScopeContext.PushProperty(Log.NLOG_PROPERTY, TASK_NAME))
             {
-                Log.Writer.Debug("ジョブキュー実行タスクが開始されました。");
+                var logger = Log.GetLogger();
+
+                logger.Debug("ジョブキュー実行タスクが開始されました。");
 
                 try
                 {
@@ -115,7 +119,7 @@ namespace SWF.Core.Job
                     {
                         if (this.IsAbort)
                         {
-                            Log.Writer.Debug("ジョブキュー実行タスクに終了リクエストがありました。");
+                            logger.Debug("ジョブキュー実行タスクに終了リクエストがありました。");
                             return;
                         }
 
@@ -123,7 +127,7 @@ namespace SWF.Core.Job
                         {
                             var jobName = currentJob.GetType().Name;
 
-                            Log.Writer.Debug($"{jobName} {currentJob.ID} を実行します。");
+                            logger.Debug($"{jobName} {currentJob.ID} を実行します。");
                             var sw = Stopwatch.StartNew();
                             try
                             {
@@ -131,15 +135,15 @@ namespace SWF.Core.Job
                             }
                             catch (JobCancelException)
                             {
-                                Log.Writer.Debug($"{jobName} {currentJob.ID} がキャンセルされました。");
+                                logger.Debug($"{jobName} {currentJob.ID} がキャンセルされました。");
                             }
                             catch (JobException ex)
                             {
-                                Log.Writer.Error($"{jobName} {currentJob.ID} {ex}");
+                                logger.Error($"{jobName} {currentJob.ID} {ex}");
                             }
                             catch (Exception ex)
                             {
-                                Log.Writer.Error(ex, $"{jobName} {currentJob.ID} で補足されない例外が発生しました。");
+                                logger.Error(ex, $"{jobName} {currentJob.ID} で補足されない例外が発生しました。");
                             }
                             finally
                             {
@@ -160,7 +164,7 @@ namespace SWF.Core.Job
                                 }
 
                                 sw.Stop();
-                                Log.Writer.Debug($"{jobName} {currentJob.ID} が終了しました。{sw.ElapsedMilliseconds} ms");
+                                logger.Debug($"{jobName} {currentJob.ID} が終了しました。{sw.ElapsedMilliseconds} ms");
                             }
                         }
                         else
@@ -171,11 +175,11 @@ namespace SWF.Core.Job
                 }
                 catch (Exception ex)
                 {
-                    Log.Writer.Error(ex, $"ジョブキュー実行タスクで補足されない例外が発生しました。");
+                    logger.Error(ex, $"ジョブキュー実行タスクで補足されない例外が発生しました。");
                 }
                 finally
                 {
-                    Log.Writer.Debug("ジョブキュー実行タスクが終了します。");
+                    logger.Debug("ジョブキュー実行タスクが終了します。");
                 }
             }
         }

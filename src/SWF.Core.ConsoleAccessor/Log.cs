@@ -8,10 +8,6 @@ namespace SWF.Core.ConsoleAccessor
     {
         public const string NLOG_PROPERTY = "task";
 
-#pragma warning disable CS8618
-        public static Logger Writer { get; private set; }
-#pragma warning restore CS8618
-
         public static void Initialize(string logDirectory)
         {
             ArgumentNullException.ThrowIfNullOrEmpty(logDirectory, nameof(logDirectory));
@@ -35,9 +31,12 @@ namespace SWF.Core.ConsoleAccessor
 #endif
             LogManager.Configuration = config;
 
-            Writer = LogManager.GetCurrentClassLogger();
-
             ConsoleUtil.Write(true, $"Log.Initialize End");
+        }
+
+        public static Logger GetLogger()
+        {
+            return LogManager.GetCurrentClassLogger();
         }
     }
 }

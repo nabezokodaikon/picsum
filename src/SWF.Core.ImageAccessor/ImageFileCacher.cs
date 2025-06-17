@@ -119,6 +119,8 @@ namespace SWF.Core.ImageAccessor
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
+            var logger = Log.GetLogger();
+
             var timestamp = FileUtil.GetUpdateDate(filePath);
 
             lock (this._cacheLock)
@@ -161,12 +163,12 @@ namespace SWF.Core.ImageAccessor
                         this._cacheList.RemoveAt(0);
                         this._cacheDictionary.Remove(removeCache.FilePath);
                         removeCache.Dispose();
-                        Log.Writer.Debug($"画像ファイルキャッシュ削除しました。: {removeCache.FilePath}");
+                        logger.Debug($"画像ファイルキャッシュ削除しました。: {removeCache.FilePath}");
                     }
 
                     this._cacheDictionary.Add(newCache.FilePath, newCache);
                     this._cacheList.Add(newCache);
-                    Log.Writer.Debug($"画像ファイルをキャッシュしました。: {newCache.FilePath}");
+                    logger.Debug($"画像ファイルをキャッシュしました。: {newCache.FilePath}");
                 }
             }
         }

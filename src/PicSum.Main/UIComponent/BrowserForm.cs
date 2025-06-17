@@ -1,3 +1,4 @@
+using NLog;
 using PicSum.Job.Parameters;
 using PicSum.Main.Conf;
 using PicSum.UIComponent.Contents.Common;
@@ -20,6 +21,8 @@ namespace PicSum.Main.UIComponent
     public partial class BrowserForm
         : GrassForm, ISender
     {
+        private static readonly Logger _logger = Log.GetLogger();
+
         private const float PADDING_TOP = 8f;
 
         private static bool isStartUp = true;
@@ -314,7 +317,7 @@ namespace PicSum.Main.UIComponent
                     }
                 }
 
-                Log.Writer.Debug("初回表示されました。");
+                _logger.Debug("初回表示されました。");
             }
 
             this.SetControlRegion();
