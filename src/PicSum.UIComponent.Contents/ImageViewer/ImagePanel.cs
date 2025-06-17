@@ -696,12 +696,12 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 }
                 catch (ImageUtilException ex)
                 {
-                    LogUtil.Logger.Error($"{ex}");
+                    Log.Logger.Error($"{ex}");
                     this.DrawErrorImage(g);
                 }
                 catch (OverflowException ex)
                 {
-                    LogUtil.Logger.Error($"{ex}");
+                    Log.Logger.Error($"{ex}");
                     this.DrawErrorImage(g);
                 }
             }

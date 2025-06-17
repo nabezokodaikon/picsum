@@ -4,7 +4,7 @@ using NLog.Targets;
 
 namespace SWF.Core.ConsoleAccessor
 {
-    public static class LogUtil
+    public static class Log
     {
         public const string NLOG_PROPERTY = "task";
 

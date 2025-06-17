@@ -49,7 +49,7 @@ namespace SWF.Core.Job
         where TJobParameter : class, IJobParameter
         where TJobResult : IJobResult
     {
-        private static readonly Logger Logger = LogUtil.Logger;
+        private static readonly Logger Logger = Log.Logger;
 
         private bool _disposed = false;
 
@@ -98,13 +98,13 @@ namespace SWF.Core.Job
             {
                 this.BeginCancel();
 
-                LogUtil.Logger.Debug("ジョブ実行スレッドにキャンセルリクエストを送ります。");
+                Log.Logger.Debug("ジョブ実行スレッドにキャンセルリクエストを送ります。");
                 this._source.Cancel();
 
-                LogUtil.Logger.Debug("ジョブ実行スレッドの終了を待機します。");
+                Log.Logger.Debug("ジョブ実行スレッドの終了を待機します。");
                 this._thread.Wait();
 
-                LogUtil.Logger.Debug($"{this._threadName}: ジョブ実行スレッドが終了しました。");
+                Log.Logger.Debug($"{this._threadName}: ジョブ実行スレッドが終了しました。");
                 this._thread.Dispose();
                 this._source.Dispose();
             }
@@ -152,7 +152,7 @@ namespace SWF.Core.Job
                                 }
                                 catch (Exception ex)
                                 {
-                                    LogUtil.Logger.Error(ex, $"{job.ID} がUIスレッド上で補足されない例外が発生しました。");
+                                    Log.Logger.Error(ex, $"{job.ID} がUIスレッド上で補足されない例外が発生しました。");
                                     ExceptionUtil.ShowFatalDialog("Unhandled UI Exception.", ex);
                                 }
                             }
@@ -189,9 +189,9 @@ namespace SWF.Core.Job
 
         private async Task DoWork(CancellationToken token)
         {
-            using (ScopeContext.PushProperty(LogUtil.NLOG_PROPERTY, this._threadName))
+            using (ScopeContext.PushProperty(Log.NLOG_PROPERTY, this._threadName))
             {
-                LogUtil.Logger.Debug("ジョブ実行スレッドが開始されました。");
+                Log.Logger.Debug("ジョブ実行スレッドが開始されました。");
 
                 TJob? previewJob = null;
 
@@ -201,7 +201,7 @@ namespace SWF.Core.Job
                     {
                         if (token.IsCancellationRequested)
                         {
-                            LogUtil.Logger.Debug("ジョブ実行スレッドにキャンセルリクエストがありました。");
+                            Log.Logger.Debug("ジョブ実行スレッドにキャンセルリクエストがありました。");
                             token.ThrowIfCancellationRequested();
                         }
 
@@ -214,7 +214,7 @@ namespace SWF.Core.Job
 
                         previewJob = job;
 
-                        LogUtil.Logger.Debug($"{job.ID} を実行します。");
+                        Log.Logger.Debug($"{job.ID} を実行します。");
                         var sw = Stopwatch.StartNew();
                         try
                         {
@@ -222,20 +222,20 @@ namespace SWF.Core.Job
                         }
                         catch (JobCancelException)
                         {
-                            LogUtil.Logger.Debug($"{job.ID} がキャンセルされました。");
+                            Log.Logger.Debug($"{job.ID} がキャンセルされました。");
                         }
                         catch (JobException ex)
                         {
-                            LogUtil.Logger.Error($"{job.ID} {ex}");
+                            Log.Logger.Error($"{job.ID} {ex}");
                         }
                         catch (Exception ex)
                         {
-                            LogUtil.Logger.Error(ex, $"{job.ID} で補足されない例外が発生しました。");
+                            Log.Logger.Error(ex, $"{job.ID} で補足されない例外が発生しました。");
                         }
                         finally
                         {
                             sw.Stop();
-                            LogUtil.Logger.Debug($"{job.ID} が終了しました。{sw.ElapsedMilliseconds} ms");
+                            Log.Logger.Debug($"{job.ID} が終了しました。{sw.ElapsedMilliseconds} ms");
                         }
 
                         await Task.Delay(1, token);
@@ -243,15 +243,15 @@ namespace SWF.Core.Job
                 }
                 catch (OperationCanceledException)
                 {
-                    LogUtil.Logger.Debug("ジョブ実行スレッドをキャンセルします。");
+                    Log.Logger.Debug("ジョブ実行スレッドをキャンセルします。");
                 }
                 catch (Exception ex)
                 {
-                    LogUtil.Logger.Error(ex, $"ジョブ実行スレッドで補足されない例外が発生しました。");
+                    Log.Logger.Error(ex, $"ジョブ実行スレッドで補足されない例外が発生しました。");
                 }
                 finally
                 {
-                    LogUtil.Logger.Debug("ジョブ実行スレッドが終了します。");
+                    Log.Logger.Debug("ジョブ実行スレッドが終了します。");
                 }
             }
         }

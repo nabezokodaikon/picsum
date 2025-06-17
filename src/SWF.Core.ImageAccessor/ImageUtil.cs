@@ -155,7 +155,7 @@ namespace SWF.Core.ImageAccessor
                 }
                 catch (ImageUtilException ex)
                 {
-                    LogUtil.Logger.Error(ex);
+                    Log.Logger.Error(ex);
 
                     using (var bmp = ReadImageFile(filePath, false))
                     {
@@ -383,7 +383,7 @@ namespace SWF.Core.ImageAccessor
                 }
                 catch (ImageUtilException ex)
                 {
-                    LogUtil.Logger.Error(ex);
+                    Log.Logger.Error(ex);
 
                     if (isNormalize)
                     {

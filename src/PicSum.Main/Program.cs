@@ -89,7 +89,7 @@ namespace PicSum.Main
                     using (TimeMeasuring.Run(true, "Program.Main Load Configs"))
                     {
                         Action[] actions = [
-                            () => LogUtil.Initialize(AppConstants.LOG_DIRECTORY.Value),
+                            () => Log.Initialize(AppConstants.LOG_DIRECTORY.Value),
                             Config.Instance.Load
                         ];
 
@@ -100,9 +100,9 @@ namespace PicSum.Main
                         );
                     }
 
-                    using (ScopeContext.PushProperty(LogUtil.NLOG_PROPERTY, AppConstants.UI_THREAD_NAME))
+                    using (ScopeContext.PushProperty(Log.NLOG_PROPERTY, AppConstants.UI_THREAD_NAME))
                     {
-                        LogUtil.Logger.Debug("アプリケーションを開始します。");
+                        Log.Logger.Debug("アプリケーションを開始します。");
 
                         AppDomain.CurrentDomain.AssemblyLoad += CurrentDomain_OnAssemblyLoad;
                         AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
@@ -119,7 +119,7 @@ namespace PicSum.Main
                             Application.Run(context);
                         }
 
-                        LogUtil.Logger.Debug("アプリケーションを終了します。");
+                        Log.Logger.Debug("アプリケーションを終了します。");
                     }
                 }
                 finally
@@ -148,21 +148,21 @@ namespace PicSum.Main
 
         private static void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
         {
-            LogUtil.Logger.Fatal(e.Exception);
+            Log.Logger.Fatal(e.Exception);
             ExceptionUtil.ShowFatalDialog("Unhandled UI Exception.", e.Exception);
         }
 
         private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             var ex = (Exception)e.ExceptionObject;
-            LogUtil.Logger.Fatal(ex);
+            Log.Logger.Fatal(ex);
             ExceptionUtil.ShowFatalDialog("Unhandled Non-UI Exception.", ex);
         }
 
         private static void CurrentDomain_OnAssemblyLoad(object sender, AssemblyLoadEventArgs args)
         {
 #if DEBUG
-            LogUtil.Logger.Trace($"アセンブリが読み込まれました: {args.LoadedAssembly.FullName}");
+            Log.Logger.Trace($"アセンブリが読み込まれました: {args.LoadedAssembly.FullName}");
 #endif
         }
     }

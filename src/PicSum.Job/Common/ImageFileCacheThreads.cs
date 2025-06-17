@@ -59,7 +59,7 @@ namespace PicSum.Job.Common
                 while (this.queue.TryDequeue(out var _)) { }
                 this.IsAbort = true;
                 Task.WaitAll(this.threads);
-                LogUtil.Logger.Debug("全ての画像ファイルキャッシュスレッドが終了しました。");
+                Log.Logger.Debug("全ての画像ファイルキャッシュスレッドが終了しました。");
             }
 
             this._disposed = true;
@@ -77,9 +77,9 @@ namespace PicSum.Job.Common
 
         private async Task DoWork(int index)
         {
-            using (ScopeContext.PushProperty(LogUtil.NLOG_PROPERTY, $"ImageFileCacheThreads[{index}]"))
+            using (ScopeContext.PushProperty(Log.NLOG_PROPERTY, $"ImageFileCacheThreads[{index}]"))
             {
-                LogUtil.Logger.Debug("画像ファイルキャッシュスレッドが開始されました。");
+                Log.Logger.Debug("画像ファイルキャッシュスレッドが開始されました。");
 
                 try
                 {
@@ -87,7 +87,7 @@ namespace PicSum.Job.Common
                     {
                         if (this.IsAbort)
                         {
-                            LogUtil.Logger.Debug("画像ファイルキャッシュスレッドに中断リクエストがありました。");
+                            Log.Logger.Debug("画像ファイルキャッシュスレッドに中断リクエストがありました。");
                             return;
                         }
 
@@ -101,15 +101,15 @@ namespace PicSum.Job.Common
                             }
                             catch (FileUtilException ex)
                             {
-                                LogUtil.Logger.Error(ex);
+                                Log.Logger.Error(ex);
                             }
                             catch (ImageUtilException ex)
                             {
-                                LogUtil.Logger.Error(ex);
+                                Log.Logger.Error(ex);
                             }
                             catch (Exception ex)
                             {
-                                LogUtil.Logger.Error(ex, $"画像ファイルキャッシュスレッドで補足されない例外が発生しました。");
+                                Log.Logger.Error(ex, $"画像ファイルキャッシュスレッドで補足されない例外が発生しました。");
                             }
                         }
                         else
@@ -120,7 +120,7 @@ namespace PicSum.Job.Common
                 }
                 finally
                 {
-                    LogUtil.Logger.Debug("画像ファイルキャッシュスレッドが終了します。");
+                    Log.Logger.Debug("画像ファイルキャッシュスレッドが終了します。");
                 }
             }
         }

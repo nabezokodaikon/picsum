@@ -20,23 +20,23 @@ namespace PicSum.Job.SyncJobs
             }
             catch (DirectoryNotFoundException ex)
             {
-                LogUtil.Logger.Error(ex, ERROR_MESSAGE);
+                Log.Logger.Error(ex, ERROR_MESSAGE);
             }
             catch (PathTooLongException ex)
             {
-                LogUtil.Logger.Error(ex, ERROR_MESSAGE);
+                Log.Logger.Error(ex, ERROR_MESSAGE);
             }
             catch (IOException ex)
             {
-                LogUtil.Logger.Error(ex, ERROR_MESSAGE);
+                Log.Logger.Error(ex, ERROR_MESSAGE);
             }
             catch (NotSupportedException ex)
             {
-                LogUtil.Logger.Error(ex, ERROR_MESSAGE);
+                Log.Logger.Error(ex, ERROR_MESSAGE);
             }
             catch (UnauthorizedAccessException ex)
             {
-                LogUtil.Logger.Error(ex, ERROR_MESSAGE);
+                Log.Logger.Error(ex, ERROR_MESSAGE);
             }
         }
     }
