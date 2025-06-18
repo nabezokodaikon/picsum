@@ -86,7 +86,7 @@ namespace SWF.Core.ImageAccessor
             return ImageUtil.GetImageSize(filePath);
         }
 
-        public CvImage GetCvImage(string filePath, float zoomValue, bool isNormalize)
+        public CvImage GetCvImage(string filePath, float zoomValue)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
@@ -108,7 +108,7 @@ namespace SWF.Core.ImageAccessor
                 return cvImage;
             }
 
-            using (var bmp = ImageUtil.ReadImageFile(filePath, isNormalize))
+            using (var bmp = ImageUtil.ReadImageFile(filePath))
             {
                 return new CvImage(
                     filePath, bmp.ToMat(), zoomValue);
@@ -137,7 +137,7 @@ namespace SWF.Core.ImageAccessor
                 }
             }
 
-            var bitmap = ImageUtil.ReadImageFile(filePath, true);
+            var bitmap = ImageUtil.ReadImageFile(filePath);
             var newCache = new ImageFileCacheEntity(filePath, bitmap, timestamp);
 
             lock (this._cacheLock)

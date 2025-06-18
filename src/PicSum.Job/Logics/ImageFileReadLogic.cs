@@ -245,7 +245,7 @@ namespace PicSum.Job.Logics
             {
                 using (TimeMeasuring.Run(false, "ImageFileReadLogic.ReadImageFileFromCache"))
                 {
-                    return Instance<IImageFileCacher>.Value.GetCvImage(filePath, zoomValue, true);
+                    return Instance<IImageFileCacher>.Value.GetCvImage(filePath, zoomValue);
                 }
             }
             catch (FileUtilException ex)
