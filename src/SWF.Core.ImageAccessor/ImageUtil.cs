@@ -32,7 +32,6 @@ namespace SWF.Core.ImageAccessor
         public static readonly Bitmap EMPTY_IMAGE = new(1, 1);
 
         private static readonly int FILE_READ_BUFFER_SIZE = 16384;
-        private static readonly byte[] EXPECTED_PNG_SIGNATURE = [137, 80, 78, 71, 13, 10, 26, 10];
 
         private static IShellApplication GetSell()
         {
@@ -193,7 +192,7 @@ namespace SWF.Core.ImageAccessor
                         }
                         else if (IsBmpFile(formatName))
                         {
-                            var size = GetBmpSize(fs);
+                            var size = BitmapUtil.GetImageSize(fs);
                             if (size == EMPTY_SIZE)
                             {
                                 throw new ImageUtilException(CreateFileAccessErrorMessage(filePath));
@@ -219,7 +218,7 @@ namespace SWF.Core.ImageAccessor
                         }
                         else if (IsPngFile(formatName))
                         {
-                            var size = GetPngSize(fs);
+                            var size = PngUtil.GetImageSize(fs);
                             if (size == EMPTY_SIZE)
                             {
                                 throw new ImageUtilException(CreateFileAccessErrorMessage(filePath));
@@ -667,120 +666,6 @@ namespace SWF.Core.ImageAccessor
                 }
 
                 return new Region(path);
-            }
-        }
-
-        private static Bitmap LoadBitmapCorrectOrientation(Bitmap bitmap)
-        {
-            ArgumentNullException.ThrowIfNull(bitmap, nameof(bitmap));
-
-            const int ExifOrientationID = 0x112;
-            if (bitmap.PropertyIdList.Contains(ExifOrientationID))
-            {
-                var prop = bitmap.GetPropertyItem(ExifOrientationID);
-                if (prop == null || prop.Value == null)
-                {
-                    return bitmap;
-                }
-
-                var orientationValue = BitConverter.ToUInt16(prop.Value, 0);
-
-                var rotateFlipType = RotateFlipType.RotateNoneFlipNone;
-                switch (orientationValue)
-                {
-                    case 3:
-                        rotateFlipType = RotateFlipType.Rotate180FlipNone;
-                        break;
-                    case 6:
-                        rotateFlipType = RotateFlipType.Rotate90FlipNone;
-                        break;
-                    case 8:
-                        rotateFlipType = RotateFlipType.Rotate270FlipNone;
-                        break;
-                }
-
-                if (rotateFlipType != RotateFlipType.RotateNoneFlipNone)
-                {
-                    bitmap.RotateFlip(rotateFlipType);
-                }
-            }
-
-            return bitmap;
-        }
-
-        private static Size GetPngSize(Stream fs)
-        {
-            ArgumentNullException.ThrowIfNull(fs, nameof(fs));
-
-            using (var reader = new BinaryReader(fs))
-            {
-                var pngSignature = reader.ReadBytes(8);
-                if (!CompareByteArrays(pngSignature, EXPECTED_PNG_SIGNATURE))
-                {
-                    return EMPTY_SIZE;
-                }
-
-                reader.ReadInt32();
-                var ihdrChunkType = reader.ReadBytes(4);
-                var ihdrChunkTypeStr = System.Text.Encoding.ASCII.GetString(ihdrChunkType);
-                if (ihdrChunkTypeStr != "IHDR")
-                {
-                    return EMPTY_SIZE;
-                }
-
-                var width = ReadBigEndianInt32(reader);
-                var height = ReadBigEndianInt32(reader);
-                return new Size(width, height);
-            }
-        }
-
-        private static bool CompareByteArrays(byte[] a, byte[] b)
-        {
-            ArgumentNullException.ThrowIfNull(a, nameof(a));
-            ArgumentNullException.ThrowIfNull(b, nameof(b));
-
-            if (a.Length != b.Length)
-            {
-                return false;
-            }
-
-            for (var i = 0; i < a.Length; i++)
-            {
-                if (a[i] != b[i])
-                {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
-        private static int ReadBigEndianInt32(BinaryReader reader)
-        {
-            ArgumentNullException.ThrowIfNull(reader, nameof(reader));
-
-            var bytes = reader.ReadBytes(4);
-            Array.Reverse(bytes);
-            return BitConverter.ToInt32(bytes, 0);
-        }
-
-        private static Size GetBmpSize(Stream fs)
-        {
-            ArgumentNullException.ThrowIfNull(fs, nameof(fs));
-
-            using (var reader = new BinaryReader(fs))
-            {
-                var bmpSignature = reader.ReadBytes(2);
-                if (bmpSignature[0] != 'B' || bmpSignature[1] != 'M')
-                {
-                    return EMPTY_SIZE;
-                }
-
-                reader.BaseStream.Seek(18, SeekOrigin.Begin);
-
-                var width = reader.ReadInt32();
-                var height = reader.ReadInt32();
-                return new Size(width, Math.Abs(height));
             }
         }
 
