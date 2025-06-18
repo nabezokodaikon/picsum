@@ -22,7 +22,7 @@ namespace PicSum.Job.Jobs
     {
         private static readonly ParallelOptions _parallelOptions = new ParallelOptions
         {
-            MaxDegreeOfParallelism = 1
+            MaxDegreeOfParallelism = 4,
         };
 
         protected override Task Execute(ThumbnailsGetParameter param)
@@ -42,7 +42,7 @@ namespace PicSum.Job.Jobs
 
             Parallel.ForEach(
                 filePathList,
-                //_parallelOptions,
+                _parallelOptions,
                 filePath =>
                 {
                     try
