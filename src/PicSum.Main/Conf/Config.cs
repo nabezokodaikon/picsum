@@ -2,6 +2,8 @@ using MessagePack;
 using SWF.Core.Base;
 using SWF.Core.ConsoleAccessor;
 using SWF.Core.FileAccessor;
+using SWF.Core.ImageAccessor;
+using System;
 using System.IO;
 using System.Runtime.Versioning;
 using System.Windows.Forms;
@@ -73,7 +75,7 @@ namespace PicSum.Main.Conf
                 this.WindowLocaionY = config.WindowLocaionY;
                 this.WindowSizeWidth = config.WindowSizeWidth;
                 this.WindowSizeHeight = config.WindowSizeHeight;
-                this.ThumbnailSize = config.ThumbnailSize;
+                this.ThumbnailSize = Math.Min(config.ThumbnailSize, ThumbnailUtil.THUMBNAIL_MAXIMUM_SIZE);
                 this.IsShowFileName = config.IsShowFileName;
                 this.IsShowImageFile = config.IsShowImageFile;
                 this.IsShowDirectory = config.IsShowDirectory;
