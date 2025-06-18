@@ -8,6 +8,9 @@ namespace SWF.Core.ImageAccessor
     [SupportedOSPlatform("windows10.0.17763.0")]
     public static class OpenCVUtil
     {
+        private static readonly ImageEncodingParam _webPQuality
+            = new(ImwriteFlags.WebPQuality, 70);
+
         public static Bitmap Resize(Mat srcMat, float newWidth, float newHeight, InterpolationFlags flag)
         {
             ArgumentNullException.ThrowIfNull(srcMat, nameof(srcMat));
@@ -61,6 +64,15 @@ namespace SWF.Core.ImageAccessor
             {
                 stream.Seek(0, SeekOrigin.Begin);
                 return Mat.FromStream(stream, ImreadModes.Color);
+            }
+        }
+
+        public static byte[] ToCompressionBinary(Bitmap img)
+        {
+            using (var mat = img.ToMat())
+            {
+                Cv2.ImEncode(".webp", mat, out var bf, _webPQuality);
+                return bf;
             }
         }
     }

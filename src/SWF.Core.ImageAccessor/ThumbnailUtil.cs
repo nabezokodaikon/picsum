@@ -19,17 +19,13 @@ namespace SWF.Core.ImageAccessor
         /// </summary>
         /// <param name="img">イメージオブジェクト</param>
         /// <returns></returns>
-        public static byte[] ToCompressionBinary(Image img)
+        public static byte[] ToCompressionBinary(Bitmap img)
         {
             ArgumentNullException.ThrowIfNull(img, nameof(img));
 
             using (TimeMeasuring.Run(false, "ThumbnailUtil.ToCompressionBinary"))
-            using (var mes = new MemoryStream())
             {
-                var eps = new EncoderParameters(1);
-                eps.Param[0] = ENCORDER_PARAMETER;
-                img.Save(mes, COMPRESS_CODEC_INFO, eps);
-                return mes.ToArray();
+                return OpenCVUtil.ToCompressionBinary(img);
             }
         }
 
@@ -58,7 +54,7 @@ namespace SWF.Core.ImageAccessor
         /// <param name="thumbWidth">作成するサムネイルの幅</param>
         /// <param name="thumbHeight">作成するサムネイルの高さ</param>
         /// <returns>サムネイル</returns>
-        public static Image CreateThumbnail(Image srcImg, int thumbWidth, int thumbHeight)
+        public static Bitmap CreateThumbnail(Bitmap srcImg, int thumbWidth, int thumbHeight)
         {
             ArgumentNullException.ThrowIfNull(srcImg, nameof(srcImg));
 
@@ -87,7 +83,7 @@ namespace SWF.Core.ImageAccessor
                     h = 1;
                 }
 
-                return ImageUtil.Resize((Bitmap)srcImg, w, h, OpenCvSharp.InterpolationFlags.Area);
+                return ImageUtil.Resize(srcImg, w, h, OpenCvSharp.InterpolationFlags.Area);
             }
         }
 
