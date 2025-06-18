@@ -45,8 +45,6 @@ namespace PicSum.Job.Jobs
                 previewFiles.Add(parameter.Files[previewIndex]);
             }
 
-            //Instance<IImageFileCacheTasks>.Value.DoCache([.. nextFiles, .. previewFiles]);
-
             Parallel.ForEach(
                 [.. nextFiles, .. previewFiles],
                 //_parallelOptions,
