@@ -15,7 +15,7 @@ namespace SWF.Core.ImageAccessor
         /// </summary>
         /// <param name="img">イメージオブジェクト</param>
         /// <returns></returns>
-        public static byte[] ToCompressionBinary(Bitmap img)
+        public static byte[] ToCompressionBinary(OpenCvSharp.Mat img)
         {
             ArgumentNullException.ThrowIfNull(img, nameof(img));
 
@@ -49,7 +49,7 @@ namespace SWF.Core.ImageAccessor
         /// <param name="thumbWidth">作成するサムネイルの幅</param>
         /// <param name="thumbHeight">作成するサムネイルの高さ</param>
         /// <returns>サムネイル</returns>
-        public static Bitmap CreateThumbnail(Bitmap srcImg, int thumbWidth, int thumbHeight)
+        public static OpenCvSharp.Mat CreateThumbnail(Bitmap srcImg, int thumbWidth, int thumbHeight)
         {
             ArgumentNullException.ThrowIfNull(srcImg, nameof(srcImg));
 

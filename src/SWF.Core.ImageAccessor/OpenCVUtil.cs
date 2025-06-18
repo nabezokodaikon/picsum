@@ -26,7 +26,7 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
-        public static Bitmap Resize(Bitmap srcBmp, float width, float height, InterpolationFlags flag)
+        public static Mat Resize(Bitmap srcBmp, float width, float height, InterpolationFlags flag)
         {
             ArgumentNullException.ThrowIfNull(srcBmp, nameof(srcBmp));
 
@@ -34,10 +34,10 @@ namespace SWF.Core.ImageAccessor
             {
                 var size = new OpenCvSharp.Size(width, height);
                 using (var srcMat = srcBmp.ToMat())
-                using (var destMat = new Mat(size, srcMat.Type()))
                 {
+                    var destMat = new Mat(size, srcMat.Type());
                     Cv2.Resize(srcMat, destMat, size, 0, 0, flag);
-                    return destMat.ToBitmap();
+                    return destMat;
                 }
             }
         }
@@ -56,17 +56,6 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
-        public static Mat ReadImageFileToMat(Stream stream)
-        {
-            ArgumentNullException.ThrowIfNull(stream, nameof(stream));
-
-            using (TimeMeasuring.Run(false, "OpenCVUtil.ReadImageFileToMat"))
-            {
-                stream.Seek(0, SeekOrigin.Begin);
-                return Mat.FromStream(stream, ImreadModes.Unchanged);
-            }
-        }
-
         public static Mat ReadImageFileToMat(byte[] bf)
         {
             ArgumentNullException.ThrowIfNull(bf, nameof(bf));
@@ -77,13 +66,10 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
-        public static byte[] ToCompressionBinary(Bitmap img)
+        public static byte[] ToCompressionBinary(Mat mat)
         {
-            using (var mat = img.ToMat())
-            {
-                Cv2.ImEncode(".webp", mat, out var bf, _webPQuality);
-                return bf;
-            }
+            Cv2.ImEncode(".webp", mat, out var bf, _webPQuality);
+            return bf;
         }
     }
 }

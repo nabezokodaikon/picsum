@@ -135,7 +135,7 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
-        internal static Bitmap Resize(Bitmap srcBmp, float width, float height, OpenCvSharp.InterpolationFlags flag)
+        internal static OpenCvSharp.Mat Resize(Bitmap srcBmp, float width, float height, OpenCvSharp.InterpolationFlags flag)
         {
             ArgumentNullException.ThrowIfNull(srcBmp, nameof(srcBmp));
 
