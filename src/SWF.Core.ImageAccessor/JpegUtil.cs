@@ -10,7 +10,7 @@ namespace SWF.Core.ImageAccessor
         {
             ArgumentNullException.ThrowIfNull(fs, nameof(fs));
 
-            using (TimeMeasuring.Run(true, "JpegUtil.ReadImageFile"))
+            using (TimeMeasuring.Run(false, "JpegUtil.ReadImageFile"))
             {
                 using (var reader = new BinaryReader(fs))
                 {
@@ -35,7 +35,7 @@ namespace SWF.Core.ImageAccessor
         {
             ArgumentNullException.ThrowIfNull(fs, nameof(fs));
 
-            using (TimeMeasuring.Run(true, "JpegUtil.GetImageSize"))
+            using (TimeMeasuring.Run(false, "JpegUtil.GetImageSize"))
             {
                 using (var reader = new BinaryReader(fs))
                 {

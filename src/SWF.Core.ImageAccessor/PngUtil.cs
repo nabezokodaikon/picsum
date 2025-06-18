@@ -13,7 +13,7 @@ namespace SWF.Core.ImageAccessor
         {
             ArgumentNullException.ThrowIfNull(fs, nameof(fs));
 
-            using (TimeMeasuring.Run(true, "PngUtil.GetImageSize"))
+            using (TimeMeasuring.Run(false, "PngUtil.GetImageSize"))
             {
                 using (var reader = new BinaryReader(fs))
                 {
