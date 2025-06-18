@@ -369,32 +369,34 @@ namespace SWF.Core.ImageAccessor
 
                 try
                 {
-                    if (isNormalize)
+                    var src = ReadImageFileWithVarious(filePath);
+                    if (isNormalize && CanNormalizeBitmap(src))
                     {
-                        using (var src = ReadImageFileWithVarious(filePath))
+                        using (src)
                         {
                             return NormalizeBitmap(filePath, src);
                         }
                     }
                     else
                     {
-                        return ReadImageFileWithVarious(filePath);
+                        return src;
                     }
                 }
                 catch (ImageUtilException ex)
                 {
                     Log.GetLogger().Error(ex);
 
-                    if (isNormalize)
+                    var src = ReadImageFileWithImageMagick(filePath);
+                    if (isNormalize && CanNormalizeBitmap(src))
                     {
-                        using (var src = ReadImageFileWithImageMagick(filePath))
+                        using (src)
                         {
                             return NormalizeBitmap(filePath, src);
                         }
                     }
                     else
                     {
-                        return ReadImageFileWithImageMagick(filePath);
+                        return src;
                     }
                 }
             }
@@ -626,6 +628,25 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
+        private static bool CanNormalizeBitmap(Bitmap bmp)
+        {
+            return false;
+
+            var format = bmp.PixelFormat;
+            var bytesPerPixel = Image.GetPixelFormatSize(format) / 8;
+
+            if (!Vector.IsHardwareAccelerated
+                || bytesPerPixel < 1 || bytesPerPixel > 4)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+
         private static Bitmap NormalizeBitmap(string filePath, Bitmap bmp)
         {
             try
@@ -677,7 +698,7 @@ namespace SWF.Core.ImageAccessor
 
             try
             {
-                using (TimeMeasuring.Run(false, "ImageUtil.NormalizeBitmapBySingleSIMD"))
+                using (TimeMeasuring.Run(true, "ImageUtil.NormalizeBitmapBySingleSIMD"))
                 {
                     normalized = new Bitmap(width, height, format);
                     sourceData = source.LockBits(
@@ -695,7 +716,6 @@ namespace SWF.Core.ImageAccessor
                         var sourceLine = (byte*)sourceData.Scan0 + (y * sourceData.Stride);
                         var targetLine = (byte*)targetData.Scan0 + (y * targetData.Stride);
 
-                        var targetSpan = new Span<byte>(targetLine, copyWidth);
                         new ReadOnlySpan<byte>(sourceLine, copyWidth)
                             .CopyTo(new Span<byte>(targetLine, copyWidth));
                     }
@@ -734,7 +754,7 @@ namespace SWF.Core.ImageAccessor
 
             try
             {
-                using (TimeMeasuring.Run(false, "ImageUtil.NormalizeBitmapByParallelSIMD"))
+                using (TimeMeasuring.Run(true, "ImageUtil.NormalizeBitmapByParallelSIMD"))
                 {
                     normalized = new Bitmap(width, height, format);
                     sourceData = source.LockBits(
@@ -760,7 +780,6 @@ namespace SWF.Core.ImageAccessor
 
                         for (; x <= copyWidth - vectorSize; x += vectorSize)
                         {
-                            var targetSpan = new ReadOnlySpan<byte>(targetLine, vectorSize);
                             new ReadOnlySpan<byte>(sourceLine + x, vectorSize)
                                 .CopyTo(new Span<byte>(targetLine + x, vectorSize));
                         }
