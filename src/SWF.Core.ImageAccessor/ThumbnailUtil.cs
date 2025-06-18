@@ -30,11 +30,10 @@ namespace SWF.Core.ImageAccessor
             ArgumentNullException.ThrowIfNull(bf, nameof(bf));
 
             using (TimeMeasuring.Run(false, "ThumbnailUtil.ToImage"))
-            using (var mes = new MemoryStream(bf, 0, bf.Length, false, true))
             {
                 try
                 {
-                    return OpenCVUtil.ReadImageFileToMat(mes);
+                    return OpenCVUtil.ReadImageFileToMat(bf);
                 }
                 catch (OutOfMemoryException ex)
                 {

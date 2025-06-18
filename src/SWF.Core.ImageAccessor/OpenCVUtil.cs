@@ -49,7 +49,7 @@ namespace SWF.Core.ImageAccessor
             using (TimeMeasuring.Run(false, "OpenCVUtil.ReadImageFile"))
             {
                 stream.Seek(0, SeekOrigin.Begin);
-                using (var mat = Mat.FromStream(stream, ImreadModes.Color))
+                using (var mat = Mat.FromStream(stream, ImreadModes.Unchanged))
                 {
                     return mat.ToBitmap();
                 }
@@ -63,7 +63,17 @@ namespace SWF.Core.ImageAccessor
             using (TimeMeasuring.Run(false, "OpenCVUtil.ReadImageFileToMat"))
             {
                 stream.Seek(0, SeekOrigin.Begin);
-                return Mat.FromStream(stream, ImreadModes.Color);
+                return Mat.FromStream(stream, ImreadModes.Unchanged);
+            }
+        }
+
+        public static Mat ReadImageFileToMat(byte[] bf)
+        {
+            ArgumentNullException.ThrowIfNull(bf, nameof(bf));
+
+            using (TimeMeasuring.Run(false, "OpenCVUtil.ReadImageFileToMat"))
+            {
+                return Cv2.ImDecode(bf, ImreadModes.Unchanged);
             }
         }
 
