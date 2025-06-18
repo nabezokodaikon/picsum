@@ -215,7 +215,7 @@ namespace SWF.Core.ImageAccessor
                         }
                         else if (IsJpegFile(formatName))
                         {
-                            return SixLaborsUtil.GetImageSize(fs);
+                            return JpegUtil.GetImageSize(fs);
                         }
                         else if (IsPngFile(formatName))
                         {
@@ -287,6 +287,10 @@ namespace SWF.Core.ImageAccessor
                     throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
                 }
                 catch (XmlException ex)
+                {
+                    throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
+                }
+                catch (InvalidDataException ex)
                 {
                     throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
                 }
@@ -444,8 +448,7 @@ namespace SWF.Core.ImageAccessor
                     {
                         using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFileWithVarious: Jpeg"))
                         {
-                            var bmp = ConvertIfGrayscale((Bitmap)Bitmap.FromStream(fs, false, true), fs);
-                            return LoadBitmapCorrectOrientation(bmp);
+                            return ConvertIfGrayscale(JpegUtil.ReadImageFile(fs), fs);
                         }
                     }
                     else if (IsPngFile(formatName))
@@ -703,39 +706,6 @@ namespace SWF.Core.ImageAccessor
             }
 
             return bitmap;
-        }
-
-        private static Size GetJpegSize(FileStream fs)
-        {
-            ArgumentNullException.ThrowIfNull(fs, nameof(fs));
-
-            using (var reader = new BinaryReader(fs))
-            {
-                if (reader.ReadByte() == 0xFF && reader.ReadByte() == 0xD8)
-                {
-                    while (fs.Position < fs.Length)
-                    {
-                        if (reader.ReadByte() == 0xFF)
-                        {
-                            var marker = reader.ReadByte();
-                            if (marker >= 0xC0 && marker <= 0xC3)
-                            {
-                                fs.Seek(3, SeekOrigin.Current);
-                                var height = reader.ReadUInt16();
-                                var width = reader.ReadUInt16();
-                                return new Size(width, height);
-                            }
-                            else
-                            {
-                                var length = reader.ReadUInt16();
-                                fs.Seek(length - 2, SeekOrigin.Current);
-                            }
-                        }
-                    }
-                }
-            }
-
-            return EMPTY_SIZE;
         }
 
         private static Size GetPngSize(Stream fs)
