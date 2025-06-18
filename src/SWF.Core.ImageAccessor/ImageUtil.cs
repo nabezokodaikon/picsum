@@ -444,7 +444,7 @@ namespace SWF.Core.ImageAccessor
                     {
                         using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFileWithVarious: Jpeg"))
                         {
-                            var bmp = ConvertIfGrayscale(OpenCVUtil.ReadImageFile(fs), fs);
+                            var bmp = ConvertIfGrayscale((Bitmap)Bitmap.FromStream(fs, false, true), fs);
                             return LoadBitmapCorrectOrientation(bmp);
                         }
                     }
