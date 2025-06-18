@@ -1,5 +1,4 @@
 using SWF.Core.ConsoleAccessor;
-using System.Drawing.Imaging;
 using System.Runtime.Versioning;
 
 namespace SWF.Core.ImageAccessor
@@ -7,9 +6,6 @@ namespace SWF.Core.ImageAccessor
     [SupportedOSPlatform("windows10.0.17763.0")]
     public static class ThumbnailUtil
     {
-        private static readonly EncoderParameter ENCORDER_PARAMETER = new(Encoder.Quality, 80L);
-        private static readonly ImageCodecInfo COMPRESS_CODEC_INFO = ImageCodecInfo.GetImageEncoders().Single(info => info.FormatID == ImageFormat.Jpeg.Guid);
-
         public const string THUMBNAIL_BUFFER_FILE_EXTENSION = ".thumbnail";
         public const int THUMBNAIL_MAXIMUM_SIZE = 400;
         public const int THUMBNAIL_MINIMUM_SIZE = 96;
