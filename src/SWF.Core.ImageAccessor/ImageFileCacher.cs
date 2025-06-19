@@ -66,7 +66,7 @@ namespace SWF.Core.ImageAccessor
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
-            var size = this.Get(filePath, cache =>
+            return this.Get(filePath, cache =>
             {
                 if (cache != ImageFileCacheEntity.EMPTY && cache.Bitmap != null)
                 {
@@ -77,13 +77,6 @@ namespace SWF.Core.ImageAccessor
                     return ImageUtil.EMPTY_SIZE;
                 }
             });
-
-            if (size != ImageUtil.EMPTY_SIZE)
-            {
-                return size;
-            }
-
-            return ImageUtil.GetImageSize(filePath);
         }
 
         public CvImage GetCvImage(string filePath, float zoomValue)
