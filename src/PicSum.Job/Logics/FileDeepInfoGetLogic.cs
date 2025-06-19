@@ -201,7 +201,7 @@ namespace PicSum.Job.Logics
             }
             else
             {
-                return Instance<IImageFileCacher>.Value.GetCvImage(
+                return Instance<IImageFileCacher>.Value.GetImage(
                     filePath,
                     AppConstants.DEFAULT_ZOOM_VALUE);
             }

@@ -45,23 +45,6 @@ namespace SWF.Core.ImageAccessor
             this._disposed = true;
         }
 
-        public bool Has(string filePath)
-        {
-            ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
-
-            return this.Get(filePath, cache =>
-            {
-                if (cache != ImageFileCacheEntity.EMPTY)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            });
-        }
-
         public Size GetSize(string filePath)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
@@ -79,7 +62,7 @@ namespace SWF.Core.ImageAccessor
             });
         }
 
-        public CvImage GetCvImage(string filePath, float zoomValue)
+        public CvImage GetImage(string filePath, float zoomValue)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
