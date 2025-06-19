@@ -204,8 +204,8 @@ namespace PicSum.Job.Common
                         else
                         {
                             // サムネイルを更新します。
-                            var thumb = this.UpdateDBFileCache(
-                                filePath, thumbWidth, thumbHeight, updateDate);
+                            var thumb = this.UpdateDBCache(
+                                filePath, filePath, thumbWidth, thumbHeight, updateDate);
                             this.UpdateMemoryCache(thumb);
                             return thumb;
                         }
@@ -213,8 +213,8 @@ namespace PicSum.Job.Common
                     else
                     {
                         // サムネイルを作成します。
-                        var thumb = this.CreateDBFileCache(
-                            filePath, thumbWidth, thumbHeight, updateDate);
+                        var thumb = this.CreateDBCache(
+                            filePath, filePath, thumbWidth, thumbHeight, updateDate);
                         this.UpdateMemoryCache(thumb);
                         return thumb;
                     }
@@ -238,8 +238,8 @@ namespace PicSum.Job.Common
                     else
                     {
                         // サムネイルを更新します。
-                        var thumb = this.UpdateDBFileCache(
-                            filePath, thumbWidth, thumbHeight, updateDate);
+                        var thumb = this.UpdateDBCache(
+                            filePath, filePath, thumbWidth, thumbHeight, updateDate);
                         this.UpdateMemoryCache(thumb);
                         return thumb;
                     }
@@ -248,8 +248,8 @@ namespace PicSum.Job.Common
                 {
                     // サムネイルを作成します。
                     var updateDate = FileUtil.GetUpdateDate(filePath);
-                    var thumb = this.CreateDBFileCache(
-                        filePath, thumbWidth, thumbHeight, updateDate);
+                    var thumb = this.CreateDBCache(
+                        filePath, filePath, thumbWidth, thumbHeight, updateDate);
                     this.UpdateMemoryCache(thumb);
                     return thumb;
                 }
@@ -286,8 +286,14 @@ namespace PicSum.Job.Common
                         else
                         {
                             // サムネイルを更新します。
-                            var thumb = this.UpdateDBDirectoryCache(
-                                directoryPath, thumbWidth, thumbHeight, updateDate);
+                            var thumbFilePath = ImageUtil.GetFirstImageFilePath(directoryPath);
+                            if (string.IsNullOrEmpty(thumbFilePath))
+                            {
+                                return ThumbnailCacheEntity.EMPTY;
+                            }
+
+                            var thumb = this.UpdateDBCache(
+                                directoryPath, thumbFilePath, thumbWidth, thumbHeight, updateDate);
                             this.UpdateMemoryCache(thumb);
                             return thumb;
                         }
@@ -295,8 +301,14 @@ namespace PicSum.Job.Common
                     else
                     {
                         // サムネイルを作成します。
-                        var thumb = this.CreateDBDirectoryCache(
-                            directoryPath, thumbWidth, thumbHeight, updateDate);
+                        var thumbFilePath = ImageUtil.GetFirstImageFilePath(directoryPath);
+                        if (string.IsNullOrEmpty(thumbFilePath))
+                        {
+                            return ThumbnailCacheEntity.EMPTY;
+                        }
+
+                        var thumb = this.CreateDBCache(
+                            directoryPath, thumbFilePath, thumbWidth, thumbHeight, updateDate);
                         this.UpdateMemoryCache(thumb);
                         return thumb;
                     }
@@ -320,8 +332,14 @@ namespace PicSum.Job.Common
                     else
                     {
                         // サムネイルを更新します。
-                        var thumb = this.UpdateDBDirectoryCache(
-                            directoryPath, thumbWidth, thumbHeight, updateDate);
+                        var thumbFilePath = ImageUtil.GetFirstImageFilePath(directoryPath);
+                        if (string.IsNullOrEmpty(thumbFilePath))
+                        {
+                            return ThumbnailCacheEntity.EMPTY;
+                        }
+
+                        var thumb = this.UpdateDBCache(
+                            directoryPath, thumbFilePath, thumbWidth, thumbHeight, updateDate);
                         if (thumb != ThumbnailCacheEntity.EMPTY)
                         {
                             this.UpdateMemoryCache(thumb);
@@ -333,9 +351,15 @@ namespace PicSum.Job.Common
                 else
                 {
                     // サムネイルを作成します。
+                    var thumbFilePath = ImageUtil.GetFirstImageFilePath(directoryPath);
+                    if (string.IsNullOrEmpty(thumbFilePath))
+                    {
+                        return ThumbnailCacheEntity.EMPTY;
+                    }
+
                     var updateDate = FileUtil.GetUpdateDate(directoryPath);
-                    var thumb = this.CreateDBDirectoryCache(
-                        directoryPath, thumbWidth, thumbHeight, updateDate);
+                    var thumb = this.CreateDBCache(
+                        directoryPath, thumbFilePath, thumbWidth, thumbHeight, updateDate);
                     if (thumb != ThumbnailCacheEntity.EMPTY)
                     {
                         this.UpdateMemoryCache(thumb);
@@ -378,127 +402,26 @@ namespace PicSum.Job.Common
             }
         }
 
-        private ThumbnailCacheEntity CreateDBFileCache(
-            string filePath, int thumbWidth, int thumbHeight, DateTime fileUpdateDate)
+        private ThumbnailCacheEntity CreateDBCache(
+            string targetFilePath,
+            string thumbFilePath,
+            int thumbWidth,
+            int thumbHeight,
+            DateTime directoryUpdateDate)
         {
-            using (var srcImg = ImageUtil.ReadImageFile(filePath))
-            {
-                Instance<IImageFileSizeCacher>.Value.Set(
-                    filePath, new Size(srcImg.Width, srcImg.Height));
-
-                using (var thumbImg = ThumbnailUtil.CreateThumbnail(srcImg, thumbWidth, thumbHeight))
-                {
-                    var thumbBin = ThumbnailUtil.ToCompressionBinary(thumbImg);
-                    using (var con = Instance<IThumbnailDB>.Value.ConnectWithTransaction())
-                    {
-                        var count = con.ReadValue<long>(
-                            new ThumbnailCountByFileSql(filePath));
-                        if (count < 1)
-                        {
-                            var thumbID = GetCurrentThumbnailBufferID(con);
-                            var thumbFile = GetThumbnailBufferFilePath(thumbID);
-                            var thumbStartPoint = this._fileAppender.Append(thumbFile, thumbBin);
-
-                            var sql = new ThumbnailCreationSql(
-                                filePath,
-                                thumbID,
-                                thumbStartPoint,
-                                thumbBin.Length,
-                                thumbWidth,
-                                thumbHeight,
-                                srcImg.Width,
-                                srcImg.Height,
-                                fileUpdateDate);
-                            con.Update(sql);
-
-                            con.Commit();
-                        }
-                    }
-
-                    var thumb = new ThumbnailCacheEntity
-                    {
-                        FilePath = filePath,
-                        ThumbnailBuffer = thumbBin,
-                        ThumbnailWidth = thumbWidth,
-                        ThumbnailHeight = thumbHeight,
-                        SourceWidth = srcImg.Width,
-                        SourceHeight = srcImg.Height,
-                        FileUpdatedate = fileUpdateDate
-                    };
-
-                    return thumb;
-                }
-            }
-        }
-
-        private ThumbnailCacheEntity UpdateDBFileCache(
-            string filePath, int thumbWidth, int thumbHeight, DateTime fileUpdateDate)
-        {
-            using (var srcImg = ImageUtil.ReadImageFile(filePath))
-            {
-                Instance<IImageFileSizeCacher>.Value.Set(
-                    filePath, new Size(srcImg.Width, srcImg.Height));
-                using (var thumbImg = ThumbnailUtil.CreateThumbnail(srcImg, thumbWidth, thumbHeight))
-                {
-                    var thumbBin = ThumbnailUtil.ToCompressionBinary(thumbImg);
-                    using (var con = Instance<IThumbnailDB>.Value.ConnectWithTransaction())
-                    {
-                        var thumbID = GetCurrentThumbnailBufferID(con);
-                        var thumbFile = GetThumbnailBufferFilePath(thumbID);
-                        var thumbStartPoint = this._fileAppender.Append(thumbFile, thumbBin);
-
-                        var sql = new ThumbnailUpdateSql(
-                            filePath,
-                            thumbID,
-                            thumbStartPoint,
-                            thumbBin.Length,
-                            thumbWidth,
-                            thumbHeight,
-                            srcImg.Width,
-                            srcImg.Height,
-                            fileUpdateDate);
-                        con.Update(sql);
-
-                        con.Commit();
-                    }
-
-                    var thumb = new ThumbnailCacheEntity
-                    {
-                        FilePath = filePath,
-                        ThumbnailBuffer = thumbBin,
-                        ThumbnailWidth = thumbWidth,
-                        ThumbnailHeight = thumbHeight,
-                        SourceWidth = srcImg.Width,
-                        SourceHeight = srcImg.Height,
-                        FileUpdatedate = fileUpdateDate
-                    };
-
-                    return thumb;
-                }
-            }
-        }
-
-        private ThumbnailCacheEntity CreateDBDirectoryCache(
-            string directoryPath, int thumbWidth, int thumbHeight, DateTime directoryUpdateDate)
-        {
-            var thumbFilePath = ImageUtil.GetFirstImageFilePath(directoryPath);
-            if (string.IsNullOrEmpty(thumbFilePath))
-            {
-                return ThumbnailCacheEntity.EMPTY;
-            }
-
             using (var srcImg = ImageUtil.ReadImageFile(thumbFilePath))
             {
                 Instance<IImageFileSizeCacher>.Value.Set(
                     thumbFilePath, new Size(srcImg.Width, srcImg.Height));
 
-                using (var thumbImg = ThumbnailUtil.CreateThumbnail(srcImg, thumbWidth, thumbHeight))
+                using (var thumbImg = ThumbnailUtil.CreateThumbnail(
+                    srcImg, thumbWidth, thumbHeight))
                 {
                     var thumbBin = ThumbnailUtil.ToCompressionBinary(thumbImg);
                     using (var con = Instance<IThumbnailDB>.Value.ConnectWithTransaction())
                     {
                         var count = con.ReadValue<long>(
-                            new ThumbnailCountByFileSql(directoryPath));
+                            new ThumbnailCountByFileSql(targetFilePath));
                         if (count < 1)
                         {
                             var thumbID = GetCurrentThumbnailBufferID(con);
@@ -506,7 +429,7 @@ namespace PicSum.Job.Common
                             var thumbStartPoint = this._fileAppender.Append(thumbFile, thumbBin);
 
                             var sql = new ThumbnailCreationSql(
-                                directoryPath,
+                                targetFilePath,
                                 thumbID,
                                 thumbStartPoint,
                                 thumbBin.Length,
@@ -523,7 +446,7 @@ namespace PicSum.Job.Common
 
                     var thumb = new ThumbnailCacheEntity
                     {
-                        FilePath = directoryPath,
+                        FilePath = targetFilePath,
                         ThumbnailBuffer = thumbBin,
                         ThumbnailWidth = thumbWidth,
                         ThumbnailHeight = thumbHeight,
@@ -537,21 +460,20 @@ namespace PicSum.Job.Common
             }
         }
 
-        private ThumbnailCacheEntity UpdateDBDirectoryCache(
-            string directoryPath, int thumbWidth, int thumbHeight, DateTime directoryUpdateDate)
+        private ThumbnailCacheEntity UpdateDBCache(
+            string targetFilePath,
+            string thumbFilePath,
+            int thumbWidth,
+            int thumbHeight,
+            DateTime directoryUpdateDate)
         {
-            var thumbFilePath = ImageUtil.GetFirstImageFilePath(directoryPath);
-            if (string.IsNullOrEmpty(thumbFilePath))
-            {
-                return ThumbnailCacheEntity.EMPTY;
-            }
-
             using (var srcImg = ImageUtil.ReadImageFile(thumbFilePath))
             {
                 Instance<IImageFileSizeCacher>.Value.Set(
                     thumbFilePath, new Size(srcImg.Width, srcImg.Height));
 
-                using (var thumbImg = ThumbnailUtil.CreateThumbnail(srcImg, thumbWidth, thumbHeight))
+                using (var thumbImg = ThumbnailUtil.CreateThumbnail(
+                    srcImg, thumbWidth, thumbHeight))
                 {
                     var thumbBin = ThumbnailUtil.ToCompressionBinary(thumbImg);
                     using (var con = Instance<IThumbnailDB>.Value.ConnectWithTransaction())
@@ -561,7 +483,7 @@ namespace PicSum.Job.Common
                         var thumbStartPoint = this._fileAppender.Append(thumbFile, thumbBin);
 
                         var sql = new ThumbnailUpdateSql(
-                            directoryPath,
+                            targetFilePath,
                             thumbID,
                             thumbStartPoint,
                             thumbBin.Length,
@@ -577,7 +499,7 @@ namespace PicSum.Job.Common
 
                     var thumb = new ThumbnailCacheEntity
                     {
-                        FilePath = directoryPath,
+                        FilePath = targetFilePath,
                         ThumbnailBuffer = thumbBin,
                         ThumbnailWidth = thumbWidth,
                         ThumbnailHeight = thumbHeight,
