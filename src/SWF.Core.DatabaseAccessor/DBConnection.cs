@@ -15,12 +15,12 @@ namespace SWF.Core.DatabaseAccessor
         private readonly bool _isDispose;
         private bool _isCommitted = false;
 
-        public DBConnection(Lock lockObject, string dbFilePath, bool isTransaction)
+        public DBConnection(Lock lockObject, string filePath, bool isTransaction)
         {
-            ArgumentNullException.ThrowIfNullOrEmpty(dbFilePath, nameof(dbFilePath));
+            ArgumentNullException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
             this._lockObject = lockObject;
-            this._connection = new SQLiteConnection($"Data Source={dbFilePath}");
+            this._connection = new SQLiteConnection($"Data Source={filePath}");
             this._connection.Open();
 
             if (isTransaction)

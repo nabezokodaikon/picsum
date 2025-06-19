@@ -23,25 +23,18 @@ namespace SWF.Core.DatabaseAccessor
             }
         }
 
-        private static SQLiteConnection CreateFileConnection(string filePath)
+        private static SQLiteConnection CreateInMemoryConnection(string filePath)
         {
-            var connection = new SQLiteConnection($"Data Source={filePath}");
-            connection.Open();
-            return connection;
-        }
-
-        private static SQLiteConnection CreateMemoryConnection(string filePath)
-        {
-            var connection = new SQLiteConnection("Data Source=:memory:");
-            connection.Open();
+            var memoryConnection = new SQLiteConnection("Data Source=:memory:");
+            memoryConnection.Open();
             using (var fileConnection = new SQLiteConnection($"Data Source={filePath}"))
             {
                 fileConnection.Open();
-                fileConnection.BackupDatabase(connection, "main", "main", -1, null, 0);
+                fileConnection.BackupDatabase(memoryConnection, "main", "main", -1, null, 0);
                 fileConnection.Close();
             }
 
-            return connection;
+            return memoryConnection;
         }
 
         private bool _disposed = false;
@@ -70,14 +63,14 @@ namespace SWF.Core.DatabaseAccessor
 
             if (this._isPersistent)
             {
-                this._persistentConnection ??= CreateMemoryConnection(this._filePath);
+                this._persistentConnection ??= CreateInMemoryConnection(this._filePath);
                 return new DBConnection(
                     this._lockObject, this._persistentConnection, false);
             }
             else
             {
                 return new DBConnection(
-                    this._lockObject, CreateFileConnection(this._filePath), false);
+                    this._lockObject, this._filePath, false);
             }
         }
 
@@ -87,14 +80,14 @@ namespace SWF.Core.DatabaseAccessor
 
             if (this._isPersistent)
             {
-                this._persistentConnection ??= CreateMemoryConnection(this._filePath);
+                this._persistentConnection ??= CreateInMemoryConnection(this._filePath);
                 return new DBConnection(
                     this._lockObject, this._persistentConnection, true);
             }
             else
             {
                 return new DBConnection(
-                    this._lockObject, CreateFileConnection(this._filePath), true);
+                    this._lockObject, this._filePath, true);
             }
         }
 
