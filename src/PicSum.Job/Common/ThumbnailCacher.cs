@@ -2,6 +2,7 @@ using PicSum.DatabaseAccessor.Connection;
 using PicSum.DatabaseAccessor.Sql;
 using PicSum.Job.Entities;
 using SWF.Core.Base;
+using SWF.Core.DatabaseAccessor;
 using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
 using System.Runtime.Versioning;
@@ -18,12 +19,38 @@ namespace PicSum.Job.Common
         private const int CACHE_CAPACITY = 1000;
         private const int BUFFER_FILE_MAX_SIZE = 1024 * 1024 * 10;
 
+        private static string GetThumbnailBufferFilePath(int id)
+        {
+            return Path.Combine(
+                AppConstants.DATABASE_DIRECTORY.Value,
+                $"{id}{ThumbnailUtil.THUMBNAIL_BUFFER_FILE_EXTENSION}");
+        }
+
+        private static int GetCurrentThumbnailBufferID(IDBConnection con)
+        {
+            var id = (int)con.ReadValue<long>(new ThumbnailIDReadSql());
+            var thumbFile = GetThumbnailBufferFilePath(id);
+            if (!FileUtil.IsExistsFile(thumbFile))
+            {
+                return id;
+            }
+
+            var size = FileUtil.GetFileSize(thumbFile);
+            if (size < BUFFER_FILE_MAX_SIZE)
+            {
+                return id;
+            }
+
+            con.Update(new ThumbnailIDUpdateSql());
+            var newID = (int)con.ReadValue<long>(new ThumbnailIDReadSql());
+            return newID;
+        }
+
         private bool _disposed = false;
         private readonly List<ThumbnailCacheEntity> _cacheList = new(CACHE_CAPACITY);
         private readonly Dictionary<string, ThumbnailCacheEntity> _cacheDictionary = new(CACHE_CAPACITY);
         private readonly FileAppender _fileAppender = new();
         private readonly Lock _cacheLock = new();
-        private readonly Lock _fileAppenderLock = new();
 
         public ThumbnailCacher()
         {
@@ -77,7 +104,8 @@ namespace PicSum.Job.Common
             }
         }
 
-        public ThumbnailCacheEntity GetOrCreateCache(string filePath, int thumbWidth, int thumbHeight)
+        public ThumbnailCacheEntity GetOrCreateCache(
+            string filePath, int thumbWidth, int thumbHeight)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
@@ -145,7 +173,8 @@ namespace PicSum.Job.Common
             return this.GetFileCache(directoryPath);
         }
 
-        private ThumbnailCacheEntity GetOrCreateFileCache(string filePath, int thumbWidth, int thumbHeight)
+        private ThumbnailCacheEntity GetOrCreateFileCache(
+            string filePath, int thumbWidth, int thumbHeight)
         {
             var memCache = this.GetMemoryCache(filePath);
             if (memCache != ThumbnailCacheEntity.EMPTY)
@@ -174,7 +203,8 @@ namespace PicSum.Job.Common
                         else
                         {
                             // サムネイルを更新します。
-                            var thumb = this.UpdateDBFileCache(filePath, thumbWidth, thumbHeight, updateDate);
+                            var thumb = this.UpdateDBFileCache(
+                                filePath, thumbWidth, thumbHeight, updateDate);
                             this.UpdateMemoryCache(thumb);
                             return thumb;
                         }
@@ -182,7 +212,8 @@ namespace PicSum.Job.Common
                     else
                     {
                         // サムネイルを作成します。
-                        var thumb = this.CreateDBFileCache(filePath, thumbWidth, thumbHeight, updateDate);
+                        var thumb = this.CreateDBFileCache(
+                            filePath, thumbWidth, thumbHeight, updateDate);
                         this.UpdateMemoryCache(thumb);
                         return thumb;
                     }
@@ -206,7 +237,8 @@ namespace PicSum.Job.Common
                     else
                     {
                         // サムネイルを更新します。
-                        var thumb = this.UpdateDBFileCache(filePath, thumbWidth, thumbHeight, updateDate);
+                        var thumb = this.UpdateDBFileCache(
+                            filePath, thumbWidth, thumbHeight, updateDate);
                         this.UpdateMemoryCache(thumb);
                         return thumb;
                     }
@@ -215,7 +247,8 @@ namespace PicSum.Job.Common
                 {
                     // サムネイルを作成します。
                     var updateDate = FileUtil.GetUpdateDate(filePath);
-                    var thumb = this.CreateDBFileCache(filePath, thumbWidth, thumbHeight, updateDate);
+                    var thumb = this.CreateDBFileCache(
+                        filePath, thumbWidth, thumbHeight, updateDate);
                     this.UpdateMemoryCache(thumb);
                     return thumb;
                 }
@@ -312,63 +345,13 @@ namespace PicSum.Job.Common
             }
         }
 
-        private string GetThumbnailBufferFilePath(int id)
-        {
-            return Path.Combine(
-                AppConstants.DATABASE_DIRECTORY.Value,
-                $"{id}{ThumbnailUtil.THUMBNAIL_BUFFER_FILE_EXTENSION}");
-        }
-
-        private int GetCurrentThumbnailBufferID()
-        {
-            using (var con = Instance<IThumbnailDB>.Value.Connect())
-            {
-                var id = (int)con.ReadValue<long>(new ThumbnailIDReadSql());
-                var thumbFile = this.GetThumbnailBufferFilePath(id);
-                if (!FileUtil.IsExistsFile(thumbFile))
-                {
-                    return id;
-                }
-
-                var size = FileUtil.GetFileSize(thumbFile);
-                if (size < BUFFER_FILE_MAX_SIZE)
-                {
-                    return id;
-                }
-            }
-
-            using (var con = Instance<IThumbnailDB>.Value.ConnectWithTransaction())
-            {
-                con.Update(new ThumbnailIDUpdateSql());
-                var newID = (int)con.ReadValue<long>(new ThumbnailIDReadSql());
-                con.Commit();
-                return newID;
-            }
-        }
-
-        private byte[] ReadThumbnailBuffer(string filePath, int startPoint, int size)
-        {
-            lock (this._fileAppenderLock)
-            {
-                return this._fileAppender.Read(filePath, startPoint, size);
-            }
-        }
-
-        private int AddThumbnailBuffer(int id, byte[] buffer)
-        {
-            var thumbFile = this.GetThumbnailBufferFilePath(id);
-            lock (this._fileAppenderLock)
-            {
-                return this._fileAppender.Append(thumbFile, buffer);
-            }
-        }
-
         private ThumbnailCacheEntity GetDBCache(string filePath)
         {
             using (var con = Instance<IThumbnailDB>.Value.Connect())
             {
                 var sql = new ThumbnailReadByFileSql(filePath);
                 var dto = con.ReadLine(sql);
+
                 if (dto != null)
                 {
                     var thumb = new ThumbnailCacheEntity
@@ -381,8 +364,9 @@ namespace PicSum.Job.Common
                         FileUpdatedate = dto.FileUpdatedate
                     };
 
-                    var thumbBufferFile = this.GetThumbnailBufferFilePath(dto.ThumbnailID);
-                    thumb.ThumbnailBuffer = this.ReadThumbnailBuffer(thumbBufferFile, dto.ThumbnailStartPoint, dto.ThumbnailSize);
+                    var thumbBufferFile = GetThumbnailBufferFilePath(dto.ThumbnailID);
+                    thumb.ThumbnailBuffer = this._fileAppender.Read(
+                        thumbBufferFile, dto.ThumbnailStartPoint, dto.ThumbnailSize);
 
                     return thumb;
                 }
@@ -397,83 +381,90 @@ namespace PicSum.Job.Common
             string filePath, int thumbWidth, int thumbHeight, DateTime fileUpdateDate)
         {
             using (var srcImg = ImageUtil.ReadImageFile(filePath))
+            using (var thumbImg = ThumbnailUtil.CreateThumbnail(srcImg, thumbWidth, thumbHeight))
             {
-                using (var thumbImg = ThumbnailUtil.CreateThumbnail(srcImg, thumbWidth, thumbHeight))
+                var thumbBin = ThumbnailUtil.ToCompressionBinary(thumbImg);
+                using (var con = Instance<IThumbnailDB>.Value.ConnectWithTransaction())
                 {
-                    var thumbBin = ThumbnailUtil.ToCompressionBinary(thumbImg);
-                    using (var con = Instance<IThumbnailDB>.Value.ConnectWithTransaction())
+                    var count = con.ReadValue<long>(
+                        new ThumbnailCountByFileSql(filePath));
+                    if (count < 1)
                     {
-                        var count = con.ReadValue<long>(
-                            new ThumbnailCountByFileSql(filePath));
-                        if (count < 1)
-                        {
-                            var thumbID = this.GetCurrentThumbnailBufferID();
-                            var thumbStartPoint = this.AddThumbnailBuffer(thumbID, thumbBin);
+                        var thumbID = GetCurrentThumbnailBufferID(con);
+                        var thumbFile = GetThumbnailBufferFilePath(thumbID);
+                        var thumbStartPoint = this._fileAppender.Append(thumbFile, thumbBin);
 
-                            var sql = new ThumbnailCreationSql(
-                                filePath,
-                                thumbID,
-                                thumbStartPoint,
-                                thumbBin.Length,
-                                thumbWidth,
-                                thumbHeight,
-                                srcImg.Width,
-                                srcImg.Height,
-                                fileUpdateDate);
+                        var sql = new ThumbnailCreationSql(
+                            filePath,
+                            thumbID,
+                            thumbStartPoint,
+                            thumbBin.Length,
+                            thumbWidth,
+                            thumbHeight,
+                            srcImg.Width,
+                            srcImg.Height,
+                            fileUpdateDate);
+                        con.Update(sql);
 
-                            con.Update(sql);
-
-                            con.Commit();
-                        }
+                        con.Commit();
                     }
-
-                    var thumb = new ThumbnailCacheEntity
-                    {
-                        FilePath = filePath,
-                        ThumbnailBuffer = thumbBin,
-                        ThumbnailWidth = thumbWidth,
-                        ThumbnailHeight = thumbHeight,
-                        SourceWidth = srcImg.Width,
-                        SourceHeight = srcImg.Height,
-                        FileUpdatedate = fileUpdateDate
-                    };
-
-                    return thumb;
                 }
+
+                var thumb = new ThumbnailCacheEntity
+                {
+                    FilePath = filePath,
+                    ThumbnailBuffer = thumbBin,
+                    ThumbnailWidth = thumbWidth,
+                    ThumbnailHeight = thumbHeight,
+                    SourceWidth = srcImg.Width,
+                    SourceHeight = srcImg.Height,
+                    FileUpdatedate = fileUpdateDate
+                };
+
+                return thumb;
             }
         }
 
-        private ThumbnailCacheEntity UpdateDBFileCache(string filePath, int thumbWidth, int thumbHeight, DateTime fileUpdateDate)
+        private ThumbnailCacheEntity UpdateDBFileCache(
+            string filePath, int thumbWidth, int thumbHeight, DateTime fileUpdateDate)
         {
             using (var srcImg = ImageUtil.ReadImageFile(filePath))
+            using (var thumbImg = ThumbnailUtil.CreateThumbnail(srcImg, thumbWidth, thumbHeight))
             {
-                using (var thumbImg = ThumbnailUtil.CreateThumbnail(srcImg, thumbWidth, thumbHeight))
+                var thumbBin = ThumbnailUtil.ToCompressionBinary(thumbImg);
+                using (var con = Instance<IThumbnailDB>.Value.ConnectWithTransaction())
                 {
-                    var thumbBin = ThumbnailUtil.ToCompressionBinary(thumbImg);
-                    using (var con = Instance<IThumbnailDB>.Value.ConnectWithTransaction())
-                    {
-                        var thumbID = this.GetCurrentThumbnailBufferID();
-                        var thumbStartPoint = this.AddThumbnailBuffer(thumbID, thumbBin);
+                    var thumbID = GetCurrentThumbnailBufferID(con);
+                    var thumbFile = GetThumbnailBufferFilePath(thumbID);
+                    var thumbStartPoint = this._fileAppender.Append(thumbFile, thumbBin);
 
-                        var sql = new ThumbnailUpdateSql(
-                            filePath, thumbID, thumbStartPoint, thumbBin.Length, thumbWidth, thumbHeight, srcImg.Width, srcImg.Height, fileUpdateDate);
-                        con.Update(sql);
-                        con.Commit();
-                    }
+                    var sql = new ThumbnailUpdateSql(
+                        filePath,
+                        thumbID,
+                        thumbStartPoint,
+                        thumbBin.Length,
+                        thumbWidth,
+                        thumbHeight,
+                        srcImg.Width,
+                        srcImg.Height,
+                        fileUpdateDate);
+                    con.Update(sql);
 
-                    var thumb = new ThumbnailCacheEntity
-                    {
-                        FilePath = filePath,
-                        ThumbnailBuffer = thumbBin,
-                        ThumbnailWidth = thumbWidth,
-                        ThumbnailHeight = thumbHeight,
-                        SourceWidth = srcImg.Width,
-                        SourceHeight = srcImg.Height,
-                        FileUpdatedate = fileUpdateDate
-                    };
-
-                    return thumb;
+                    con.Commit();
                 }
+
+                var thumb = new ThumbnailCacheEntity
+                {
+                    FilePath = filePath,
+                    ThumbnailBuffer = thumbBin,
+                    ThumbnailWidth = thumbWidth,
+                    ThumbnailHeight = thumbHeight,
+                    SourceWidth = srcImg.Width,
+                    SourceHeight = srcImg.Height,
+                    FileUpdatedate = fileUpdateDate
+                };
+
+                return thumb;
             }
         }
 
@@ -487,49 +478,47 @@ namespace PicSum.Job.Common
             }
 
             using (var srcImg = ImageUtil.ReadImageFile(thumbFilePath))
+            using (var thumbImg = ThumbnailUtil.CreateThumbnail(srcImg, thumbWidth, thumbHeight))
             {
-                using (var thumbImg = ThumbnailUtil.CreateThumbnail(srcImg, thumbWidth, thumbHeight))
+                var thumbBin = ThumbnailUtil.ToCompressionBinary(thumbImg);
+                using (var con = Instance<IThumbnailDB>.Value.ConnectWithTransaction())
                 {
-                    var thumbBin = ThumbnailUtil.ToCompressionBinary(thumbImg);
-                    using (var con = Instance<IThumbnailDB>.Value.ConnectWithTransaction())
+                    var count = con.ReadValue<long>(
+                        new ThumbnailCountByFileSql(directoryPath));
+                    if (count < 1)
                     {
-                        var count = con.ReadValue<long>(
-                            new ThumbnailCountByFileSql(directoryPath));
-                        if (count < 1)
-                        {
-                            var thumbID = this.GetCurrentThumbnailBufferID();
-                            var thumbStartPoint = this.AddThumbnailBuffer(thumbID, thumbBin);
+                        var thumbID = GetCurrentThumbnailBufferID(con);
+                        var thumbFile = GetThumbnailBufferFilePath(thumbID);
+                        var thumbStartPoint = this._fileAppender.Append(thumbFile, thumbBin);
 
-                            var sql = new ThumbnailCreationSql(
-                                directoryPath,
-                                thumbID,
-                                thumbStartPoint,
-                                thumbBin.Length,
-                                thumbWidth,
-                                thumbHeight,
-                                srcImg.Width,
-                                srcImg.Height,
-                                directoryUpdateDate);
+                        var sql = new ThumbnailCreationSql(
+                            directoryPath,
+                            thumbID,
+                            thumbStartPoint,
+                            thumbBin.Length,
+                            thumbWidth,
+                            thumbHeight,
+                            srcImg.Width,
+                            srcImg.Height,
+                            directoryUpdateDate);
+                        con.Update(sql);
 
-                            con.Update(sql);
-
-                            con.Commit();
-                        }
+                        con.Commit();
                     }
-
-                    var thumb = new ThumbnailCacheEntity
-                    {
-                        FilePath = directoryPath,
-                        ThumbnailBuffer = thumbBin,
-                        ThumbnailWidth = thumbWidth,
-                        ThumbnailHeight = thumbHeight,
-                        SourceWidth = srcImg.Width,
-                        SourceHeight = srcImg.Height,
-                        FileUpdatedate = directoryUpdateDate
-                    };
-
-                    return thumb;
                 }
+
+                var thumb = new ThumbnailCacheEntity
+                {
+                    FilePath = directoryPath,
+                    ThumbnailBuffer = thumbBin,
+                    ThumbnailWidth = thumbWidth,
+                    ThumbnailHeight = thumbHeight,
+                    SourceWidth = srcImg.Width,
+                    SourceHeight = srcImg.Height,
+                    FileUpdatedate = directoryUpdateDate
+                };
+
+                return thumb;
             }
         }
 
@@ -549,12 +538,22 @@ namespace PicSum.Job.Common
                     var thumbBin = ThumbnailUtil.ToCompressionBinary(thumbImg);
                     using (var con = Instance<IThumbnailDB>.Value.ConnectWithTransaction())
                     {
-                        var thumbID = this.GetCurrentThumbnailBufferID();
-                        var thumbStartPoint = this.AddThumbnailBuffer(thumbID, thumbBin);
+                        var thumbID = GetCurrentThumbnailBufferID(con);
+                        var thumbFile = GetThumbnailBufferFilePath(thumbID);
+                        var thumbStartPoint = this._fileAppender.Append(thumbFile, thumbBin);
 
                         var sql = new ThumbnailUpdateSql(
-                            directoryPath, thumbID, thumbStartPoint, thumbBin.Length, thumbWidth, thumbHeight, srcImg.Width, srcImg.Height, directoryUpdateDate);
+                            directoryPath,
+                            thumbID,
+                            thumbStartPoint,
+                            thumbBin.Length,
+                            thumbWidth,
+                            thumbHeight,
+                            srcImg.Width,
+                            srcImg.Height,
+                            directoryUpdateDate);
                         con.Update(sql);
+
                         con.Commit();
                     }
 
