@@ -6,45 +6,9 @@ using System.Runtime.Versioning;
 
 namespace SWF.Core.Job
 {
-    public interface ITwoWayJob<TJob, TJobParameter, TJobResult>
-        : IDisposable
-        where TJob : AbstractTwoWayJob<TJobParameter, TJobResult>, new()
-        where TJobParameter : class, IJobParameter
-        where TJobResult : IJobResult
-    {
-        public void StartJob(ISender sender, TJobParameter? parameter, Action<TJobResult>? callback);
-        public void StartJob(ISender sender, Action<TJobResult> callback);
-        public void StartJob(ISender sender, TJobParameter parameter);
-        public void StartJob(ISender sender);
-        public void BeginCancel();
-    }
-
-    public interface ITwoWayJob<TJob, TJobResult>
-        : ITwoWayJob<TJob, EmptyParameter, TJobResult>
-        where TJob : AbstractTwoWayJob<TJobResult>, new()
-        where TJobResult : IJobResult
-    {
-
-    }
-
-    public interface IOneWayJob<TJob>
-        : ITwoWayJob<TJob, EmptyParameter, EmptyResult>
-        where TJob : AbstractOneWayJob, new()
-    {
-
-    }
-
-    public interface IOneWayJob<TJob, TJobParameter>
-        : ITwoWayJob<TJob, TJobParameter, EmptyResult>
-        where TJob : AbstractOneWayJob<TJobParameter>, new()
-        where TJobParameter : class, IJobParameter
-    {
-
-    }
-
     [SupportedOSPlatform("windows10.0.17763.0")]
     public partial class TwoWayJob<TJob, TJobParameter, TJobResult>
-        : IDisposable, ITwoWayJob<TJob, TJobParameter, TJobResult>
+        : IDisposable
         where TJob : AbstractTwoWayJob<TJobParameter, TJobResult>, new()
         where TJobParameter : class, IJobParameter
         where TJobResult : IJobResult
@@ -262,7 +226,7 @@ namespace SWF.Core.Job
 
     [SupportedOSPlatform("windows10.0.17763.0")]
     public sealed partial class TwoWayJob<TJob, TJobResult>(SynchronizationContext? context)
-        : TwoWayJob<TJob, EmptyParameter, TJobResult>(context), ITwoWayJob<TJob, TJobResult>
+        : TwoWayJob<TJob, EmptyParameter, TJobResult>(context)
         where TJob : AbstractTwoWayJob<TJobResult>, new()
         where TJobResult : IJobResult
     {
@@ -270,7 +234,7 @@ namespace SWF.Core.Job
 
     [SupportedOSPlatform("windows10.0.17763.0")]
     public sealed partial class OneWayJob<TJob, TJobParameter>(SynchronizationContext? context)
-        : TwoWayJob<TJob, TJobParameter, EmptyResult>(context), IOneWayJob<TJob, TJobParameter>
+        : TwoWayJob<TJob, TJobParameter, EmptyResult>(context)
         where TJob : AbstractOneWayJob<TJobParameter>, new()
         where TJobParameter : class, IJobParameter
     {
@@ -278,7 +242,7 @@ namespace SWF.Core.Job
 
     [SupportedOSPlatform("windows10.0.17763.0")]
     public sealed partial class OneWayJob<TJob>(SynchronizationContext? context)
-        : TwoWayJob<TJob, EmptyParameter, EmptyResult>(context), IOneWayJob<TJob>
+        : TwoWayJob<TJob, EmptyParameter, EmptyResult>(context)
         where TJob : AbstractOneWayJob, new()
     {
     }
