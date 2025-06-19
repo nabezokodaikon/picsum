@@ -113,8 +113,17 @@ namespace SWF.Core.DatabaseAccessor
 
             if (disposing)
             {
-                this._connection?.Close();
-                this._connection?.Dispose();
+                if (this._connection != null)
+                {
+                    using (var fileConnection = new SQLiteConnection($"Data Source={this._filePath}"))
+                    {
+                        fileConnection.Open();
+                        this._connection.BackupDatabase(fileConnection, "main", "main", -1, null, 0);
+                    }
+
+                    this._connection?.Close();
+                    this._connection?.Dispose();
+                }
             }
 
             this._connection = null;
