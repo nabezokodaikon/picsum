@@ -14,16 +14,16 @@ namespace PicSum.Job.Jobs
         {
             ArgumentNullException.ThrowIfNull(param, nameof(param));
 
-            using (var tran = Instance<IFileInfoDB>.Value.BeginTransaction())
+            using (var con = Instance<IFileInfoDB>.Value.ConnectWithTransaction())
             {
                 var logic = new DirectoryViewCounterDeleteLogic(this);
 
                 foreach (var dir in param)
                 {
-                    logic.Execute(dir);
+                    logic.Execute(con, dir);
                 }
 
-                tran.Commit();
+                con.Commit();
             }
 
             return Task.CompletedTask;

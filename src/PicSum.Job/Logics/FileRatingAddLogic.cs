@@ -1,6 +1,5 @@
-using PicSum.DatabaseAccessor.Connection;
 using PicSum.DatabaseAccessor.Sql;
-using SWF.Core.Base;
+using SWF.Core.DatabaseAccessor;
 using SWF.Core.Job;
 using System.Runtime.Versioning;
 
@@ -13,7 +12,7 @@ namespace PicSum.Job.Logics
     internal sealed class FileRatingAddLogic(IAsyncJob job)
         : AbstractAsyncLogic(job)
     {
-        public bool Execute(string filePath, int ratingValue, DateTime registrationDate)
+        public bool Execute(IDBConnection con, string filePath, int ratingValue, DateTime registrationDate)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
@@ -23,7 +22,7 @@ namespace PicSum.Job.Logics
             }
 
             var sql = new RatingCreationSql(filePath, ratingValue, registrationDate);
-            return Instance<IFileInfoDB>.Value.Update(sql);
+            return con.Update(sql);
         }
     }
 }

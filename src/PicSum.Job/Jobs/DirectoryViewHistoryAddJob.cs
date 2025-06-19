@@ -17,33 +17,33 @@ namespace PicSum.Job.Jobs
                 throw new ArgumentNullException(param.Value, nameof(param.Value));
             }
 
-            using (var tran = Instance<IFileInfoDB>.Value.BeginTransaction())
+            using (var con = Instance<IFileInfoDB>.Value.ConnectWithTransaction())
             {
                 var addDirectoryViewHistory = new DirectoryViewHistoryAddLogic(this);
-                if (!addDirectoryViewHistory.Execute(param.Value))
+                if (!addDirectoryViewHistory.Execute(con, param.Value))
                 {
                     var updateFileMaster = new FileMastercUpdateLogic(this);
-                    if (!updateFileMaster.Execute(param.Value))
+                    if (!updateFileMaster.Execute(con, param.Value))
                     {
                         var addFileMaster = new FileMasterAddLogic(this);
-                        addFileMaster.Execute(param.Value);
+                        addFileMaster.Execute(con, param.Value);
                     }
 
                     var addDirectoryViewCounter = new DirectoryViewCounterAddLogic(this);
-                    addDirectoryViewHistory.Execute(param.Value);
-                    addDirectoryViewCounter.Execute(param.Value);
+                    addDirectoryViewHistory.Execute(con, param.Value);
+                    addDirectoryViewCounter.Execute(con, param.Value);
                 }
                 else
                 {
                     var incrementDirectoryViewCounter = new DirectoryViewCounterIncrementLogic(this);
-                    if (!incrementDirectoryViewCounter.Execute(param.Value))
+                    if (!incrementDirectoryViewCounter.Execute(con, param.Value))
                     {
                         var addDirectoryViewCounter = new DirectoryViewCounterAddLogic(this);
-                        addDirectoryViewCounter.Execute(param.Value);
+                        addDirectoryViewCounter.Execute(con, param.Value);
                     }
                 }
 
-                tran.Commit();
+                con.Commit();
             }
 
             return Task.CompletedTask;

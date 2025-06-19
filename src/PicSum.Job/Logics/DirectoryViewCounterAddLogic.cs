@@ -1,6 +1,5 @@
-using PicSum.DatabaseAccessor.Connection;
 using PicSum.DatabaseAccessor.Sql;
-using SWF.Core.Base;
+using SWF.Core.DatabaseAccessor;
 using SWF.Core.Job;
 using System.Runtime.Versioning;
 
@@ -16,12 +15,12 @@ namespace PicSum.Job.Logics
 
         }
 
-        public bool Execute(string directoryPath)
+        public bool Execute(IDBConnection con, string directoryPath)
         {
             ArgumentException.ThrowIfNullOrEmpty(nameof(directoryPath));
 
             var sql = new DirectoryViewCounterCreationSql(directoryPath);
-            return Instance<IFileInfoDB>.Value.Update(sql);
+            return con.Update(sql);
         }
     }
 }

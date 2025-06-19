@@ -1,8 +1,7 @@
-using PicSum.DatabaseAccessor.Connection;
 using PicSum.DatabaseAccessor.Dto;
 using PicSum.DatabaseAccessor.Sql;
 using PicSum.Job.Entities;
-using SWF.Core.Base;
+using SWF.Core.DatabaseAccessor;
 using SWF.Core.Job;
 using SWF.Core.StringAccessor;
 using System.Runtime.Versioning;
@@ -17,12 +16,13 @@ namespace PicSum.Job.Logics
     internal sealed class FilesTagsGetLogic(IAsyncJob job)
         : AbstractAsyncLogic(job)
     {
-        public ListEntity<FileTagInfoEntity> Execute(string[] filePathList)
+        public ListEntity<FileTagInfoEntity> Execute(IDBConnection con, string[] filePathList)
         {
+            ArgumentNullException.ThrowIfNull(con, nameof(con));
             ArgumentNullException.ThrowIfNull(filePathList, nameof(filePathList));
 
             var sql = new FileTagReadSql(filePathList);
-            var dtoList = Instance<IFileInfoDB>.Value.ReadList<FileTagDto>(sql);
+            var dtoList = con.ReadList<FileTagDto>(sql);
             return new ListEntity<FileTagInfoEntity>(dtoList
                 .AsValueEnumerable()
                 .OrderBy(dto => dto.Tag, NaturalStringComparer.WINDOWS)

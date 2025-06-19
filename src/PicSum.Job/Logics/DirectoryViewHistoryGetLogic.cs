@@ -1,9 +1,9 @@
-using PicSum.DatabaseAccessor.Connection;
 using PicSum.DatabaseAccessor.Dto;
 using PicSum.DatabaseAccessor.Sql;
-using SWF.Core.Base;
+using SWF.Core.DatabaseAccessor;
 using SWF.Core.FileAccessor;
 using SWF.Core.Job;
+using System.Data;
 using System.Runtime.Versioning;
 using ZLinq;
 
@@ -16,10 +16,10 @@ namespace PicSum.Job.Logics
     internal sealed class DirectoryViewHistoryGetLogic(IAsyncJob job)
         : AbstractAsyncLogic(job)
     {
-        public string[] Execute()
+        public string[] Execute(IDBConnection con)
         {
             var sql = new DirectoryViewHistoryReadSql(100);
-            var dtoList = Instance<IFileInfoDB>.Value.ReadList<DirectoryViewHistoryDto>(sql);
+            var dtoList = con.ReadList<DirectoryViewHistoryDto>(sql);
             return [.. dtoList
                 .AsValueEnumerable()
                 .Select(dto => dto.DirectoryPath)

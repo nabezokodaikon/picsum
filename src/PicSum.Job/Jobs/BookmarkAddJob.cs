@@ -19,31 +19,31 @@ namespace PicSum.Job.Jobs
 
             var registrationDate = DateTime.Now;
 
-            using (var tran = Instance<IFileInfoDB>.Value.BeginTransaction())
+            using (var con = Instance<IFileInfoDB>.Value.ConnectWithTransaction())
             {
                 var deleteLogic = new BookmarkDeleteLogic(this);
                 var addLogic = new BookmarkAddLogic(this);
 
-                if (!deleteLogic.Execute(param.Value))
+                if (!deleteLogic.Execute(con, param.Value))
                 {
-                    if (!addLogic.Execute(param.Value, registrationDate))
+                    if (!addLogic.Execute(con, param.Value, registrationDate))
                     {
                         var updateFileMaster = new FileMastercUpdateLogic(this);
-                        if (!updateFileMaster.Execute(param.Value))
+                        if (!updateFileMaster.Execute(con, param.Value))
                         {
                             var addFileMasterLogic = new FileMasterAddLogic(this);
-                            addFileMasterLogic.Execute(param.Value);
+                            addFileMasterLogic.Execute(con, param.Value);
                         }
 
-                        addLogic.Execute(param.Value, registrationDate);
+                        addLogic.Execute(con, param.Value, registrationDate);
                     }
                 }
                 else
                 {
-                    addLogic.Execute(param.Value, registrationDate);
+                    addLogic.Execute(con, param.Value, registrationDate);
                 }
 
-                tran.Commit();
+                con.Commit();
             }
 
             return Task.CompletedTask;

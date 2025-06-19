@@ -1,6 +1,5 @@
-using PicSum.DatabaseAccessor.Connection;
 using PicSum.DatabaseAccessor.Sql;
-using SWF.Core.Base;
+using SWF.Core.DatabaseAccessor;
 using SWF.Core.Job;
 using System.Runtime.Versioning;
 
@@ -10,12 +9,13 @@ namespace PicSum.Job.Logics
     internal sealed class BookmarkAddLogic(IAsyncJob job)
         : AbstractAsyncLogic(job)
     {
-        public bool Execute(string filePath, DateTime registrationDate)
+        public bool Execute(IDBConnection con, string filePath, DateTime registrationDate)
         {
+            ArgumentNullException.ThrowIfNull(con, nameof(con));
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
             var sql = new BookmarkCreationSql(filePath, registrationDate);
-            return Instance<IFileInfoDB>.Value.Update(sql);
+            return con.Update(sql);
         }
     }
 }

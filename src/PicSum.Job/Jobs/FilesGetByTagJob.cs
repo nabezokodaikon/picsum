@@ -1,6 +1,9 @@
+using PicSum.DatabaseAccessor.Connection;
+using PicSum.DatabaseAccessor.Dto;
 using PicSum.Job.Entities;
 using PicSum.Job.Logics;
 using PicSum.Job.Parameters;
+using SWF.Core.Base;
 using SWF.Core.FileAccessor;
 using SWF.Core.Job;
 using System.Runtime.Versioning;
@@ -21,12 +24,9 @@ namespace PicSum.Job.Jobs
                 throw new InvalidOperationException("タグが設定されていません。");
             }
 
-            var logic = new FilesGetByTagLogic(this);
-            var dtoList = logic.Execute(param.Tag);
-
             var getInfoLogic = new FileShallowInfoGetLogic(this);
             var infoList = new ListResult<FileShallowInfoEntity>();
-            foreach (var dto in dtoList)
+            foreach (var dto in this.GetFiles(param.Tag))
             {
                 this.CheckCancel();
 
@@ -49,6 +49,15 @@ namespace PicSum.Job.Jobs
             this.Callback(infoList);
 
             return Task.CompletedTask;
+        }
+
+        private FileByTagDto[] GetFiles(string tag)
+        {
+            using (var con = Instance<IFileInfoDB>.Value.Connect())
+            {
+                var logic = new FilesGetByTagLogic(this);
+                return logic.Execute(con, tag);
+            }
         }
     }
 }

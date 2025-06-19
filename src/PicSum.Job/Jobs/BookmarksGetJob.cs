@@ -1,5 +1,8 @@
+using PicSum.DatabaseAccessor.Connection;
+using PicSum.DatabaseAccessor.Dto;
 using PicSum.Job.Entities;
 using PicSum.Job.Logics;
+using SWF.Core.Base;
 using SWF.Core.FileAccessor;
 using SWF.Core.Job;
 using System.Runtime.Versioning;
@@ -12,12 +15,9 @@ namespace PicSum.Job.Jobs
     {
         protected override Task Execute()
         {
-            var getBookmarkLogic = new BookmarksGetLogic(this);
-            var dtoList = getBookmarkLogic.Execute();
-
             var getInfoLogic = new FileShallowInfoGetLogic(this);
             var infoList = new ListResult<FileShallowInfoEntity>();
-            foreach (var dto in dtoList)
+            foreach (var dto in this.GetBookmarks())
             {
                 this.CheckCancel();
 
@@ -40,6 +40,15 @@ namespace PicSum.Job.Jobs
             this.Callback(infoList);
 
             return Task.CompletedTask;
+        }
+
+        private BookmarkDto[] GetBookmarks()
+        {
+            using (var con = Instance<IFileInfoDB>.Value.Connect())
+            {
+                var getBookmarkLogic = new BookmarksGetLogic(this);
+                return getBookmarkLogic.Execute(con);
+            }
         }
     }
 }

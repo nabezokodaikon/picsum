@@ -21,21 +21,21 @@ namespace PicSum.Job.Jobs
                 throw new ArgumentException("ディレクトリパスがNULLです。", nameof(param));
             }
 
-            using (var tran = Instance<IFileInfoDB>.Value.BeginTransaction())
+            using (var con = Instance<IFileInfoDB>.Value.ConnectWithTransaction())
             {
                 var updateDirectoryState = new DirectoryStateUpdateLogic(this);
-                if (!updateDirectoryState.Execute(param))
+                if (!updateDirectoryState.Execute(con, param))
                 {
                     var addDirectoryStateLogic = new DirectoryStateAddLogic(this);
-                    if (!addDirectoryStateLogic.Execute(param))
+                    if (!addDirectoryStateLogic.Execute(con, param))
                     {
                         var addFileMasterLogic = new FileMasterAddLogic(this);
-                        addFileMasterLogic.Execute(param.DirectoryPath);
-                        addDirectoryStateLogic.Execute(param);
+                        addFileMasterLogic.Execute(con, param.DirectoryPath);
+                        addDirectoryStateLogic.Execute(con, param);
                     }
                 }
 
-                tran.Commit();
+                con.Commit();
             }
 
             return Task.CompletedTask;

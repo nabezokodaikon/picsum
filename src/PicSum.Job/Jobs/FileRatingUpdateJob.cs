@@ -21,7 +21,7 @@ namespace PicSum.Job.Jobs
                 throw new ArgumentException("ファイルパスリストがNULLです。", nameof(param));
             }
 
-            using (var tran = Instance<IFileInfoDB>.Value.BeginTransaction())
+            using (var con = Instance<IFileInfoDB>.Value.ConnectWithTransaction())
             {
                 var updateFileRating = new FileRatingUpdateLogic(this);
                 var addFileRating = new FileRatingAddLogic(this);
@@ -30,17 +30,17 @@ namespace PicSum.Job.Jobs
 
                 foreach (var filePath in param.FilePathList)
                 {
-                    if (!updateFileRating.Execute(filePath, param.RatingValue, registrationDate))
+                    if (!updateFileRating.Execute(con, filePath, param.RatingValue, registrationDate))
                     {
-                        if (!addFileRating.Execute(filePath, param.RatingValue, registrationDate))
+                        if (!addFileRating.Execute(con, filePath, param.RatingValue, registrationDate))
                         {
-                            addFileMaster.Execute(filePath);
-                            addFileRating.Execute(filePath, param.RatingValue, registrationDate);
+                            addFileMaster.Execute(con, filePath);
+                            addFileRating.Execute(con, filePath, param.RatingValue, registrationDate);
                         }
                     }
                 }
 
-                tran.Commit();
+                con.Commit();
             }
 
             return Task.CompletedTask;

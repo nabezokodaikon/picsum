@@ -26,16 +26,16 @@ namespace PicSum.Job.Jobs
                 throw new ArgumentException("タグがNULLです。", nameof(param));
             }
 
-            using (var tran = Instance<IFileInfoDB>.Value.BeginTransaction())
+            using (var con = Instance<IFileInfoDB>.Value.ConnectWithTransaction())
             {
                 var logic = new FileTagDeleteLogic(this);
 
                 foreach (var filePath in param.FilePathList)
                 {
-                    logic.Execute(filePath, param.Tag);
+                    logic.Execute(con, filePath, param.Tag);
                 }
 
-                tran.Commit();
+                con.Commit();
             }
 
             return Task.CompletedTask;

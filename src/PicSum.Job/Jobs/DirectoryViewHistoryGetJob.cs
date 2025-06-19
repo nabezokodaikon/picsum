@@ -1,5 +1,7 @@
+using PicSum.DatabaseAccessor.Connection;
 using PicSum.Job.Entities;
 using PicSum.Job.Logics;
+using SWF.Core.Base;
 using SWF.Core.FileAccessor;
 using SWF.Core.Job;
 using System.Runtime.Versioning;
@@ -18,7 +20,7 @@ namespace PicSum.Job.Jobs
             var logic = new FileShallowInfoGetLogic(this);
             var result = new ListResult<FileShallowInfoEntity>();
 
-            foreach (var directoryPath in (new DirectoryViewHistoryGetLogic(this)).Execute())
+            foreach (var directoryPath in this.GetHistories())
             {
                 this.CheckCancel();
 
@@ -40,6 +42,15 @@ namespace PicSum.Job.Jobs
             this.Callback(result);
 
             return Task.CompletedTask;
+        }
+
+        private string[] GetHistories()
+        {
+            using (var con = Instance<IFileInfoDB>.Value.Connect())
+            {
+                var logic = new DirectoryViewHistoryGetLogic(this);
+                return logic.Execute(con);
+            }
         }
     }
 }

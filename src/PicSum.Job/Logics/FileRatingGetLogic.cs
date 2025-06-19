@@ -1,7 +1,6 @@
-using PicSum.DatabaseAccessor.Connection;
 using PicSum.DatabaseAccessor.Dto;
 using PicSum.DatabaseAccessor.Sql;
-using SWF.Core.Base;
+using SWF.Core.DatabaseAccessor;
 using SWF.Core.Job;
 using System.Runtime.Versioning;
 
@@ -11,12 +10,12 @@ namespace PicSum.Job.Logics
         : AbstractAsyncLogic(job)
     {
         [SupportedOSPlatform("windows10.0.17763.0")]
-        public int Execute(string filePath)
+        public int Execute(IDBConnection con, string filePath)
         {
             ArgumentNullException.ThrowIfNull(filePath, nameof(filePath));
 
             var sql = new FileInfoReadSql(filePath);
-            var dto = Instance<IFileInfoDB>.Value.ReadLine<FileInfoDto>(sql);
+            var dto = con.ReadLine<FileInfoDto>(sql);
             if (dto != null)
             {
                 return dto.Rating;

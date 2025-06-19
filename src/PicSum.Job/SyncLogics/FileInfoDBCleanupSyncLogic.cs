@@ -1,6 +1,7 @@
 using PicSum.DatabaseAccessor.Connection;
 using PicSum.DatabaseAccessor.Sql;
 using SWF.Core.Base;
+using SWF.Core.DatabaseAccessor;
 using SWF.Core.FileAccessor;
 using SWF.Core.Job;
 using System.Runtime.Versioning;
@@ -13,34 +14,36 @@ namespace PicSum.Job.SyncLogics
     {
         public void Execute()
         {
-            using (var tran = Instance<IFileInfoDB>.Value.BeginTransaction())
+            using (var con = Instance<IFileInfoDB>.Value.ConnectWithTransaction())
             {
-                this.Cleanup();
-                tran.Commit();
+                this.Cleanup(con);
+                con.Commit();
             }
 
-            this.Vacuum();
+            using (var con = Instance<IFileInfoDB>.Value.Connect())
+            {
+                this.Vacuum(con);
+            }
         }
 
-        private void Cleanup()
+        private void Cleanup(IDBConnection con)
         {
             var readSql = new AllFilesReadSql();
-            var fileList = Instance<IFileInfoDB>.Value
-                .ReadList(readSql);
+            var fileList = con.ReadList(readSql);
             foreach (var file in fileList)
             {
                 if (!FileUtil.CanAccess(file.FilePath))
                 {
                     var cleanupSql = new FileInfoDBCleanupSql(file.FileID);
-                    Instance<IFileInfoDB>.Value.Update(cleanupSql);
+                    con.Update(cleanupSql);
                 }
             }
         }
 
-        private void Vacuum()
+        private void Vacuum(IDBConnection con)
         {
             var cleanupSql = new FileInfoDBVacuumSql();
-            Instance<IFileInfoDB>.Value.ReadLine(cleanupSql);
+            con.ReadLine(cleanupSql);
         }
     }
 }

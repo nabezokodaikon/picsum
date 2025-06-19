@@ -1,7 +1,9 @@
+using PicSum.DatabaseAccessor.Connection;
 using PicSum.Job.Entities;
 using PicSum.Job.Logics;
 using PicSum.Job.Parameters;
 using PicSum.Job.Results;
+using SWF.Core.Base;
 using SWF.Core.FileAccessor;
 using SWF.Core.Job;
 using System.Runtime.Versioning;
@@ -56,11 +58,13 @@ namespace PicSum.Job.Jobs
                 }
             }
 
-            var getDirectoryStateLogic = new DirectoryStateGetLogic(this);
-            var directoryState = getDirectoryStateLogic.Execute(param.DirectoryPath);
-
-            result.FileInfoList = [.. infoList];
-            result.DirectoryState = directoryState;
+            using (var con = Instance<IFileInfoDB>.Value.Connect())
+            {
+                var getDirectoryStateLogic = new DirectoryStateGetLogic(this);
+                var directoryState = getDirectoryStateLogic.Execute(con, param.DirectoryPath);
+                result.FileInfoList = [.. infoList];
+                result.DirectoryState = directoryState;
+            }
 
             this.Callback(result);
 

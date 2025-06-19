@@ -1,8 +1,8 @@
-using PicSum.DatabaseAccessor.Connection;
 using PicSum.DatabaseAccessor.Dto;
 using PicSum.DatabaseAccessor.Sql;
 using PicSum.Job.Parameters;
 using SWF.Core.Base;
+using SWF.Core.DatabaseAccessor;
 using SWF.Core.Job;
 using System.Runtime.Versioning;
 
@@ -15,12 +15,12 @@ namespace PicSum.Job.Logics
     internal sealed class DirectoryStateGetLogic(IAsyncJob job)
         : AbstractAsyncLogic(job)
     {
-        public DirectoryStateParameter Execute(string directoryPath)
+        public DirectoryStateParameter Execute(IDBConnection con, string directoryPath)
         {
             ArgumentException.ThrowIfNullOrEmpty(directoryPath, nameof(directoryPath));
 
             var sql = new DirectoryStateReadSql(directoryPath);
-            var dto = Instance<IFileInfoDB>.Value.ReadLine<DirectoryStateDto>(sql);
+            var dto = con.ReadLine<DirectoryStateDto>(sql);
             if (dto != null)
             {
                 var directoryState = new DirectoryStateParameter(

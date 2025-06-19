@@ -1,4 +1,6 @@
+using PicSum.DatabaseAccessor.Connection;
 using PicSum.Job.Logics;
+using SWF.Core.Base;
 using SWF.Core.Job;
 using System.Runtime.Versioning;
 
@@ -13,11 +15,19 @@ namespace PicSum.Job.Jobs
     {
         protected override Task Execute()
         {
-            var logic = new TagsGetLogic(this);
-            var result = new ListResult<string>(logic.Execute());
+            var result = new ListResult<string>(this.GetTags());
             this.Callback(result);
 
             return Task.CompletedTask;
+        }
+
+        private string[] GetTags()
+        {
+            using (var con = Instance<IFileInfoDB>.Value.Connect())
+            {
+                var logic = new TagsGetLogic(this);
+                return logic.Execute(con);
+            }
         }
     }
 }

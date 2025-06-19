@@ -14,16 +14,16 @@ namespace PicSum.Job.Jobs
         {
             ArgumentNullException.ThrowIfNull(param, nameof(param));
 
-            using (var tran = Instance<IFileInfoDB>.Value.BeginTransaction())
+            using (var con = Instance<IFileInfoDB>.Value.ConnectWithTransaction())
             {
                 var deleteLogic = new BookmarkDeleteLogic(this);
 
                 foreach (var filePath in param)
                 {
-                    deleteLogic.Execute(filePath);
+                    deleteLogic.Execute(con, filePath);
                 }
 
-                tran.Commit();
+                con.Commit();
             }
 
             return Task.CompletedTask;

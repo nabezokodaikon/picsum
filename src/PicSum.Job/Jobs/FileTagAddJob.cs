@@ -26,7 +26,7 @@ namespace PicSum.Job.Jobs
                 throw new ArgumentException("タグがNULLです。", nameof(param));
             }
 
-            using (var tran = Instance<IFileInfoDB>.Value.BeginTransaction())
+            using (var con = Instance<IFileInfoDB>.Value.ConnectWithTransaction())
             {
                 var updateTag = new FileTagUpdateLogic(this);
                 var addTag = new FileTagAddLogic(this);
@@ -36,21 +36,21 @@ namespace PicSum.Job.Jobs
 
                 foreach (var filePath in param.FilePathList)
                 {
-                    if (!updateTag.Execute(filePath, param.Tag, registrationDate))
+                    if (!updateTag.Execute(con, filePath, param.Tag, registrationDate))
                     {
-                        if (!addTag.Execute(filePath, param.Tag, registrationDate))
+                        if (!addTag.Execute(con, filePath, param.Tag, registrationDate))
                         {
-                            if (!updateFileMaster.Execute(filePath))
+                            if (!updateFileMaster.Execute(con, filePath))
                             {
-                                addFileMaster.Execute(filePath);
+                                addFileMaster.Execute(con, filePath);
                             }
 
-                            addTag.Execute(filePath, param.Tag, registrationDate);
+                            addTag.Execute(con, filePath, param.Tag, registrationDate);
                         }
                     }
                 }
 
-                tran.Commit();
+                con.Commit();
             }
 
             return Task.CompletedTask;

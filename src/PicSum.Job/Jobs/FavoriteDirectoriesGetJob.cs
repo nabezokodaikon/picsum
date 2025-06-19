@@ -57,14 +57,17 @@ namespace PicSum.Job.Jobs
 
         private string[] GetOrCreateFileList()
         {
-            var logic = new FavoriteDirectoriesGetLogic(this);
-            var fileList = logic.Execute();
-            if (fileList.Length > 0)
+            using (var con = Instance<IFileInfoDB>.Value.Connect())
             {
-                return fileList;
+                var logic = new FavoriteDirectoriesGetLogic(this);
+                var fileList = logic.Execute(con);
+                if (fileList.Length > 0)
+                {
+                    return fileList;
+                }
             }
 
-            using (var tran = Instance<IFileInfoDB>.Value.BeginTransaction())
+            using (var con = Instance<IFileInfoDB>.Value.ConnectWithTransaction())
             {
                 var parentDir = FileUtil.GetParentDirectoryPath(
                     Environment.GetFolderPath(Environment.SpecialFolder.MyPictures));
@@ -74,21 +77,21 @@ namespace PicSum.Job.Jobs
                     this.CheckCancel();
 
                     var incrementDirectoryViewCounter = new DirectoryViewCounterIncrementLogic(this);
-                    if (!incrementDirectoryViewCounter.Execute(dirPath))
+                    if (!incrementDirectoryViewCounter.Execute(con, dirPath))
                     {
                         var updateFileMaster = new FileMastercUpdateLogic(this);
-                        if (!updateFileMaster.Execute(dirPath))
+                        if (!updateFileMaster.Execute(con, dirPath))
                         {
                             var addFileMaster = new FileMasterAddLogic(this);
-                            addFileMaster.Execute(dirPath);
+                            addFileMaster.Execute(con, dirPath);
                         }
 
                         var addDirectoryViewCounter = new DirectoryViewCounterAddLogic(this);
-                        addDirectoryViewCounter.Execute(dirPath);
+                        addDirectoryViewCounter.Execute(con, dirPath);
                     }
                 }
 
-                tran.Commit();
+                con.Commit();
             }
 
             return this.GetOrCreateFileList();

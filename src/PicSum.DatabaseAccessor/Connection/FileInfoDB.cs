@@ -1,5 +1,4 @@
 using SWF.Core.DatabaseAccessor;
-using System.Data.SQLite;
 using System.Runtime.Versioning;
 
 namespace PicSum.DatabaseAccessor.Connection
@@ -9,7 +8,7 @@ namespace PicSum.DatabaseAccessor.Connection
     /// </summary>
     [SupportedOSPlatform("windows10.0.17763.0")]
     public sealed partial class FileInfoDB(string dbFilePath)
-        : AbstractConnection(dbFilePath, TABLE_CREATE_SQL), IFileInfoDB
+        : AbstractDB(dbFilePath, TABLE_CREATE_SQL, false), IFileInfoDB
     {
         private const string TABLE_CREATE_SQL =
         @"
@@ -267,21 +266,5 @@ INSERT INTO m_file_id (
     ,DATETIME('NOW', 'LOCALTIME')
 );
         ";
-
-        protected override SQLiteConnection GetConnection()
-        {
-            if (this._connection == null)
-            {
-                this._connection = new SQLiteConnection($"Data Source={this._dbFilePath}");
-                this._connection.Open();
-            }
-
-            return this._connection;
-        }
-
-        protected override void Close()
-        {
-            this._connection?.Close();
-        }
     }
 }

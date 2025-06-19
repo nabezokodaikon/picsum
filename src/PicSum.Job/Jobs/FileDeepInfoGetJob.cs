@@ -1,7 +1,9 @@
+using PicSum.DatabaseAccessor.Connection;
 using PicSum.Job.Entities;
 using PicSum.Job.Logics;
 using PicSum.Job.Parameters;
 using PicSum.Job.Results;
+using SWF.Core.Base;
 using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
 using SWF.Core.Job;
@@ -40,8 +42,11 @@ namespace PicSum.Job.Jobs
 
                     this.CheckCancel();
 
-                    var ratingGetLogic = new FileRatingGetLogic(this);
-                    fileInfo.Rating = ratingGetLogic.Execute(filePath);
+                    using (var con = Instance<IFileInfoDB>.Value.Connect())
+                    {
+                        var ratingGetLogic = new FileRatingGetLogic(this);
+                        fileInfo.Rating = ratingGetLogic.Execute(con, filePath);
+                    }
 
                     result.FileInfo = fileInfo;
 
@@ -72,8 +77,11 @@ namespace PicSum.Job.Jobs
             {
                 try
                 {
-                    var tagsGetLogic = new FilesTagsGetLogic(this);
-                    result.TagInfoList = tagsGetLogic.Execute(result.FilePathList);
+                    using (var con = Instance<IFileInfoDB>.Value.Connect())
+                    {
+                        var tagsGetLogic = new FilesTagsGetLogic(this);
+                        result.TagInfoList = tagsGetLogic.Execute(con, result.FilePathList);
+                    }
 
                     this.CheckCancel();
                 }
