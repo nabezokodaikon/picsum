@@ -63,10 +63,7 @@ namespace SWF.Core.Job
                     this.IsAbort = true;
 
                     logger.Debug("ジョブキュー実行タスクの終了を待機します。");
-                    if (this._task != null)
-                    {
-                        Task.WaitAll(this._task);
-                    }
+                    Task.WaitAll(this._task);
 
                     logger.Debug("ジョブキュー実行タスクが終了しました。");
                     this._task?.Dispose();
