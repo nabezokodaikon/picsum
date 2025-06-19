@@ -49,25 +49,26 @@ namespace SWF.Core.Job
         where TJobParameter : class, IJobParameter
         where TJobResult : IJobResult
     {
-        private bool _disposed = false;
+        private static long _isAbort = 0;
 
-        private readonly string _taskName;
-        private readonly JobTask _task;
-        private long _isAbort = 0;
-        private readonly SynchronizationContext _context;
-        private TJob? _currentJob = null;
-
-        private bool IsAbort
+        private static bool IsAbort
         {
             get
             {
-                return Interlocked.Read(ref this._isAbort) == 1;
+                return Interlocked.Read(ref _isAbort) == 1;
             }
             set
             {
-                Interlocked.Exchange(ref this._isAbort, Convert.ToInt64(value));
+                Interlocked.Exchange(ref _isAbort, Convert.ToInt64(value));
             }
         }
+
+        private bool _disposed = false;
+
+        private readonly string _taskName;
+        private readonly Task _task;
+        private readonly SynchronizationContext _context;
+        private TJob? _currentJob = null;
 
         private TJob? CurrentJob
         {
@@ -81,13 +82,12 @@ namespace SWF.Core.Job
             }
         }
 
-        public TwoWayJob(SynchronizationContext? context, JobTask task)
+        public TwoWayJob(SynchronizationContext? context)
         {
             ArgumentNullException.ThrowIfNull(context, nameof(context));
-            ArgumentNullException.ThrowIfNull(task, nameof(task));
 
             this._context = context;
-            this._task = task;
+            this._task = Task.Run(this.DoWork);
             this._taskName = $"{typeof(TJob).Name} {TaskID.GetNew()}";
         }
 
@@ -108,13 +108,13 @@ namespace SWF.Core.Job
             {
                 var logger = Log.GetLogger();
 
+                logger.Debug($"{this._taskName} ジョブ実行タスクに終了リクエストを送ります。");
+                IsAbort = true;
                 this.BeginCancel();
 
-                logger.Debug($"{this._taskName} ジョブ実行タスクに終了リクエストを送ります。");
-                this.IsAbort = true;
-
                 logger.Debug($"{this._taskName} ジョブ実行タスクの終了を待機します。");
-                this._task.Wait();
+                Task.WaitAll(this._task);
+                this._task.Dispose();
 
                 logger.Debug($"{this._taskName} ジョブ実行タスクが終了しました。");
                 this._task.Dispose();
@@ -134,11 +134,6 @@ namespace SWF.Core.Job
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
 
             this.BeginCancel();
-
-            if (!this._task.IsRunning())
-            {
-                this._task.Start(this.DoWork);
-            }
 
             var job = new TJob
             {
@@ -211,7 +206,7 @@ namespace SWF.Core.Job
                 {
                     while (true)
                     {
-                        if (this.IsAbort)
+                        if (IsAbort)
                         {
                             logger.Debug("ジョブ実行タスクに終了リクエストがありました。");
                             return;
@@ -266,40 +261,25 @@ namespace SWF.Core.Job
     }
 
     [SupportedOSPlatform("windows10.0.17763.0")]
-    public sealed partial class TwoWayJob<TJob, TJobResult>
-        : TwoWayJob<TJob, EmptyParameter, TJobResult>, ITwoWayJob<TJob, TJobResult>
+    public sealed partial class TwoWayJob<TJob, TJobResult>(SynchronizationContext? context)
+        : TwoWayJob<TJob, EmptyParameter, TJobResult>(context), ITwoWayJob<TJob, TJobResult>
         where TJob : AbstractTwoWayJob<TJobResult>, new()
         where TJobResult : IJobResult
     {
-        public TwoWayJob(SynchronizationContext? context, JobTask task)
-            : base(context, task)
-        {
-
-        }
     }
 
     [SupportedOSPlatform("windows10.0.17763.0")]
-    public sealed partial class OneWayJob<TJob, TJobParameter>
-        : TwoWayJob<TJob, TJobParameter, EmptyResult>, IOneWayJob<TJob, TJobParameter>
+    public sealed partial class OneWayJob<TJob, TJobParameter>(SynchronizationContext? context)
+        : TwoWayJob<TJob, TJobParameter, EmptyResult>(context), IOneWayJob<TJob, TJobParameter>
         where TJob : AbstractOneWayJob<TJobParameter>, new()
         where TJobParameter : class, IJobParameter
     {
-        public OneWayJob(SynchronizationContext? context, JobTask task)
-            : base(context, task)
-        {
-
-        }
     }
 
     [SupportedOSPlatform("windows10.0.17763.0")]
-    public sealed partial class OneWayJob<TJob>
-        : TwoWayJob<TJob, EmptyParameter, EmptyResult>, IOneWayJob<TJob>
+    public sealed partial class OneWayJob<TJob>(SynchronizationContext? context)
+        : TwoWayJob<TJob, EmptyParameter, EmptyResult>(context), IOneWayJob<TJob>
         where TJob : AbstractOneWayJob, new()
     {
-        public OneWayJob(SynchronizationContext? context, JobTask task)
-            : base(context, task)
-        {
-
-        }
     }
 }

@@ -14,47 +14,47 @@ namespace PicSum.Job.Common
     {
         private bool _disposed = false;
 
-        private readonly FastLazy<JobQueue> _jobQueue = new(() => new JobQueue());
+        private readonly FastLazy<JobQueue> _jobQueue = new(() => new());
 
         public readonly FastLazy<ITwoWayJob<ImageFileReadJob, ImageFileReadParameter, ImageFileReadResult>> ImageFileReadJob
-            = new(() => new TwoWayJob<ImageFileReadJob, ImageFileReadParameter, ImageFileReadResult>(context, new JobTask()));
+            = new(() => new TwoWayJob<ImageFileReadJob, ImageFileReadParameter, ImageFileReadResult>(context));
         public readonly FastLazy<ITwoWayJob<ImageFileLoadingJob, ImageFileReadParameter, ImageFileReadResult>> ImageFileLoadingJob
-            = new(() => new TwoWayJob<ImageFileLoadingJob, ImageFileReadParameter, ImageFileReadResult>(context, new JobTask()));
+            = new(() => new TwoWayJob<ImageFileLoadingJob, ImageFileReadParameter, ImageFileReadResult>(context));
         public readonly FastLazy<IOneWayJob<ImageFileCacheJob, ImageFileCacheParameter>> ImageFileCacheJob
-            = new(() => new OneWayJob<ImageFileCacheJob, ImageFileCacheParameter>(context, new JobTask()));
+            = new(() => new OneWayJob<ImageFileCacheJob, ImageFileCacheParameter>(context));
         public readonly FastLazy<ITwoWayJob<ThumbnailsGetJob, ThumbnailsGetParameter, ThumbnailImageResult>> ThumbnailsGetJob
-            = new(() => new TwoWayJob<ThumbnailsGetJob, ThumbnailsGetParameter, ThumbnailImageResult>(context, new JobTask()));
+            = new(() => new TwoWayJob<ThumbnailsGetJob, ThumbnailsGetParameter, ThumbnailImageResult>(context));
         public readonly FastLazy<ITwoWayJob<SubDirectoriesGetJob, ValueParameter<string>, ListResult<FileShallowInfoEntity>>> SubDirectoriesGetJob
-            = new(() => new TwoWayJob<SubDirectoriesGetJob, ValueParameter<string>, ListResult<FileShallowInfoEntity>>(context, new JobTask()));
+            = new(() => new TwoWayJob<SubDirectoriesGetJob, ValueParameter<string>, ListResult<FileShallowInfoEntity>>(context));
         public readonly FastLazy<ITwoWayJob<DirectoryViewHistoryGetJob, ListResult<FileShallowInfoEntity>>> DirectoryViewHistoryGetJob
-            = new(() => new TwoWayJob<DirectoryViewHistoryGetJob, ListResult<FileShallowInfoEntity>>(context, new JobTask()));
+            = new(() => new TwoWayJob<DirectoryViewHistoryGetJob, ListResult<FileShallowInfoEntity>>(context));
         public readonly FastLazy<ITwoWayJob<AddressInfoGetJob, ValueParameter<string>, AddressInfoGetResult>> AddressInfoGetJob
-            = new(() => new TwoWayJob<AddressInfoGetJob, ValueParameter<string>, AddressInfoGetResult>(context, new JobTask()));
+            = new(() => new TwoWayJob<AddressInfoGetJob, ValueParameter<string>, AddressInfoGetResult>(context));
         public readonly FastLazy<ITwoWayJob<TagsGetJob, ListResult<string>>> TagsGetJob
-            = new(() => new TwoWayJob<TagsGetJob, ListResult<string>>(context, new JobTask()));
+            = new(() => new TwoWayJob<TagsGetJob, ListResult<string>>(context));
         public readonly FastLazy<ITwoWayJob<FileDeepInfoGetJob, FileDeepInfoGetParameter, FileDeepInfoGetResult>> FileDeepInfoGetJob
-            = new(() => new TwoWayJob<FileDeepInfoGetJob, FileDeepInfoGetParameter, FileDeepInfoGetResult>(context, new JobTask()));
+            = new(() => new TwoWayJob<FileDeepInfoGetJob, FileDeepInfoGetParameter, FileDeepInfoGetResult>(context));
         public readonly FastLazy<ITwoWayJob<FileDeepInfoLoadingJob, FileDeepInfoGetParameter, FileDeepInfoGetResult>> FileDeepInfoLoadingJob
-            = new(() => new TwoWayJob<FileDeepInfoLoadingJob, FileDeepInfoGetParameter, FileDeepInfoGetResult>(context, new JobTask()));
+            = new(() => new TwoWayJob<FileDeepInfoLoadingJob, FileDeepInfoGetParameter, FileDeepInfoGetResult>(context));
         public readonly FastLazy<ITwoWayJob<PipeServerJob, ValueResult<string>>> PipeServerJob
-            = new(() => new TwoWayJob<PipeServerJob, ValueResult<string>>(context, new JobTask()));
+            = new(() => new TwoWayJob<PipeServerJob, ValueResult<string>>(context));
         public readonly FastLazy<IOneWayJob<GCCollectRunJob>> GCCollectRunJob
-            = new(() => new OneWayJob<GCCollectRunJob>(context, new JobTask()));
+            = new(() => new OneWayJob<GCCollectRunJob>(context));
 
         public readonly FastLazy<ITwoWayJob<FilesGetByDirectoryJob, FilesGetByDirectoryParameter, DirectoryGetResult>> FilesGetByDirectoryJob
-            = new(() => new TwoWayJob<FilesGetByDirectoryJob, FilesGetByDirectoryParameter, DirectoryGetResult>(context, new JobTask()));
+            = new(() => new TwoWayJob<FilesGetByDirectoryJob, FilesGetByDirectoryParameter, DirectoryGetResult>(context));
         public readonly FastLazy<ITwoWayJob<FavoriteDirectoriesGetJob, FavoriteDirectoriesGetParameter, ListResult<FileShallowInfoEntity>>> FavoriteDirectoriesGetJob
-            = new(() => new TwoWayJob<FavoriteDirectoriesGetJob, FavoriteDirectoriesGetParameter, ListResult<FileShallowInfoEntity>>(context, new JobTask()));
+            = new(() => new TwoWayJob<FavoriteDirectoriesGetJob, FavoriteDirectoriesGetParameter, ListResult<FileShallowInfoEntity>>(context));
         public readonly FastLazy<ITwoWayJob<FilesGetByRatingJob, FilesGetByRatingParameter, ListResult<FileShallowInfoEntity>>> FilesGetByRatingJob
-            = new(() => new TwoWayJob<FilesGetByRatingJob, FilesGetByRatingParameter, ListResult<FileShallowInfoEntity>>(context, new JobTask()));
+            = new(() => new TwoWayJob<FilesGetByRatingJob, FilesGetByRatingParameter, ListResult<FileShallowInfoEntity>>(context));
         public readonly FastLazy<ITwoWayJob<FilesGetByTagJob, FilesGetByTagParameter, ListResult<FileShallowInfoEntity>>> FilesGetByTagJob
-            = new(() => new TwoWayJob<FilesGetByTagJob, FilesGetByTagParameter, ListResult<FileShallowInfoEntity>>(context, new JobTask()));
+            = new(() => new TwoWayJob<FilesGetByTagJob, FilesGetByTagParameter, ListResult<FileShallowInfoEntity>>(context));
         public readonly FastLazy<ITwoWayJob<ImageFilesGetByDirectoryJob, ImageFileGetByDirectoryParameter, ImageFilesGetByDirectoryResult>> ImageFilesGetByDirectoryJob
-            = new(() => new TwoWayJob<ImageFilesGetByDirectoryJob, ImageFileGetByDirectoryParameter, ImageFilesGetByDirectoryResult>(context, new JobTask()));
+            = new(() => new TwoWayJob<ImageFilesGetByDirectoryJob, ImageFileGetByDirectoryParameter, ImageFilesGetByDirectoryResult>(context));
         public readonly FastLazy<ITwoWayJob<NextDirectoryGetJob, NextDirectoryGetParameter, ValueResult<string>>> NextDirectoryGetJob
-            = new(() => new TwoWayJob<NextDirectoryGetJob, NextDirectoryGetParameter, ValueResult<string>>(context, new JobTask()));
+            = new(() => new TwoWayJob<NextDirectoryGetJob, NextDirectoryGetParameter, ValueResult<string>>(context));
         public readonly FastLazy<ITwoWayJob<BookmarksGetJob, ListResult<FileShallowInfoEntity>>> BookmarksGetJob
-            = new(() => new TwoWayJob<BookmarksGetJob, ListResult<FileShallowInfoEntity>>(context, new JobTask()));
+            = new(() => new TwoWayJob<BookmarksGetJob, ListResult<FileShallowInfoEntity>>(context));
 
         public void Dispose()
         {
