@@ -1,3 +1,4 @@
+using SWF.Core.ConsoleAccessor;
 using SWF.Core.FileAccessor;
 using System.Data.SQLite;
 using System.Runtime.Versioning;
@@ -68,6 +69,8 @@ namespace SWF.Core.DatabaseAccessor
         {
             this._lockObject.Enter();
 
+            Log.GetLogger().Trace("DBへの接続ロックを開始します。");
+
             if (this._isPersistence)
             {
                 this._connection ??= CreateMemoryConnection(this._filePath);
@@ -84,6 +87,8 @@ namespace SWF.Core.DatabaseAccessor
         public IDBConnection ConnectWithTransaction()
         {
             this._lockObject.Enter();
+
+            Log.GetLogger().Trace("DBへのトランザクション接続ロックを開始します。");
 
             if (this._isPersistence)
             {
