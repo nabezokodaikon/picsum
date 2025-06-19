@@ -47,11 +47,11 @@ namespace SWF.Core.DatabaseAccessor
 
         private bool _disposed = false;
         private readonly string _filePath;
-        private readonly bool _isPersistence;
-        private SQLiteConnection? _connection;
+        private readonly bool _isPersistent;
+        private SQLiteConnection? _persistentConnection;
         private readonly Lock _lockObject = new();
 
-        protected AbstractDB(string filePath, string tablesCreateSql, bool isPersistence)
+        protected AbstractDB(string filePath, string tablesCreateSql, bool isPersistent)
         {
             ArgumentNullException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
             ArgumentNullException.ThrowIfNullOrEmpty(tablesCreateSql, nameof(tablesCreateSql));
@@ -62,7 +62,7 @@ namespace SWF.Core.DatabaseAccessor
             }
 
             this._filePath = filePath;
-            this._isPersistence = isPersistence;
+            this._isPersistent = isPersistent;
         }
 
         public IDBConnection Connect()
@@ -71,11 +71,11 @@ namespace SWF.Core.DatabaseAccessor
 
             Log.GetLogger().Trace("DBへの接続ロックを開始します。");
 
-            if (this._isPersistence)
+            if (this._isPersistent)
             {
-                this._connection ??= CreateMemoryConnection(this._filePath);
+                this._persistentConnection ??= CreateMemoryConnection(this._filePath);
                 return new DBConnection(
-                    this._lockObject, this._connection, false);
+                    this._lockObject, this._persistentConnection, false);
             }
             else
             {
@@ -90,11 +90,11 @@ namespace SWF.Core.DatabaseAccessor
 
             Log.GetLogger().Trace("DBへのトランザクション接続ロックを開始します。");
 
-            if (this._isPersistence)
+            if (this._isPersistent)
             {
-                this._connection ??= CreateMemoryConnection(this._filePath);
+                this._persistentConnection ??= CreateMemoryConnection(this._filePath);
                 return new DBConnection(
-                    this._lockObject, this._connection, true);
+                    this._lockObject, this._persistentConnection, true);
             }
             else
             {
@@ -118,20 +118,21 @@ namespace SWF.Core.DatabaseAccessor
 
             if (disposing)
             {
-                if (this._connection != null)
+                if (this._persistentConnection != null)
                 {
                     using (var fileConnection = new SQLiteConnection($"Data Source={this._filePath}"))
                     {
                         fileConnection.Open();
-                        this._connection.BackupDatabase(fileConnection, "main", "main", -1, null, 0);
+                        this._persistentConnection.BackupDatabase(fileConnection, "main", "main", -1, null, 0);
+                        fileConnection.Close();
                     }
 
-                    this._connection?.Close();
-                    this._connection?.Dispose();
+                    this._persistentConnection?.Close();
+                    this._persistentConnection?.Dispose();
                 }
             }
 
-            this._connection = null;
+            this._persistentConnection = null;
 
             this._disposed = true;
         }
