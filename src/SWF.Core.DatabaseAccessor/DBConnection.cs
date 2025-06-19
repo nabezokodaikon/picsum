@@ -1,4 +1,3 @@
-using SWF.Core.ConsoleAccessor;
 using System.Data;
 using System.Data.SQLite;
 using System.Runtime.Versioning;
@@ -77,8 +76,6 @@ namespace SWF.Core.DatabaseAccessor
                     this._connection.Close();
                     this._connection.Dispose();
                 }
-
-                Log.GetLogger().Trace("DBへの接続ロックを終了します。");
 
                 this._lockObject.Exit();
             }
