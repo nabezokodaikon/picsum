@@ -1,5 +1,4 @@
 using PicSum.DatabaseAccessor.Connection;
-using PicSum.Job.Entities;
 using PicSum.Job.Logics;
 using PicSum.Job.Parameters;
 using PicSum.Job.Results;
@@ -73,27 +72,20 @@ namespace PicSum.Job.Jobs
                 }
             }
 
-            if (param.FilePathList.Length <= 997)
+            try
             {
-                try
+                using (var con = Instance<IFileInfoDB>.Value.Connect())
                 {
-                    using (var con = Instance<IFileInfoDB>.Value.Connect())
-                    {
-                        var tagsGetLogic = new FilesTagsGetLogic(this);
-                        result.TagInfoList = tagsGetLogic.Execute(con, result.FilePathList);
-                    }
+                    var tagsGetLogic = new FilesTagsGetLogic(this);
+                    result.TagInfoList = tagsGetLogic.Execute(con, result.FilePathList);
+                }
 
-                    this.CheckCancel();
-                }
-                catch (JobCancelException)
-                {
-                    result.FileInfo.Thumbnail.ThumbnailImage?.Dispose();
-                    throw;
-                }
+                this.CheckCancel();
             }
-            else
+            catch (JobCancelException)
             {
-                result.TagInfoList = new ListEntity<FileTagInfoEntity>(0);
+                result.FileInfo.Thumbnail.ThumbnailImage?.Dispose();
+                throw;
             }
 
             this.Callback(result);
