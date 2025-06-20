@@ -26,7 +26,7 @@ namespace SWF.Core.DatabaseAccessor
     {
         private readonly string sqlText = sqlText ?? throw new ArgumentNullException(nameof(sqlText));
 
-        public List<IDbDataParameter> ParameterList { get; protected set; } = [];
+        public List<IDbDataParameter> ParameterList { get; private set; } = [];
 
         /// <summary>
         /// 実行するSQLを取得します。
