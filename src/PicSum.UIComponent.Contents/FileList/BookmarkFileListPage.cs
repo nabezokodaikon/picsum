@@ -90,7 +90,7 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             var parameter = new ListParameter<string>();
             parameter.AddRange(filePathList);
-            Instance<JobCaller>.Value.StartBookmarkDeleteJob(this, parameter);
+            Instance<JobCaller>.Value.EnqueueBookmarkDeleteJob(this, parameter);
 
             base.RemoveFile(filePathList);
 

@@ -441,7 +441,7 @@ namespace PicSum.UIComponent.InfoPanel
                 Tag = tag,
                 FilePathList = this.FilePathList
             };
-            Instance<JobCaller>.Value.StartFileTagAddJob(this, param);
+            Instance<JobCaller>.Value.EnqueueFileTagAddJob(this, param);
 
             var tagInfo = this.TagList.FirstOrDefault(
                 t => t.Tag.Equals(tag, StringComparison.Ordinal),
@@ -486,7 +486,7 @@ namespace PicSum.UIComponent.InfoPanel
                 Tag = tag,
                 FilePathList = this.FilePathList
             };
-            Instance<JobCaller>.Value.StartFileTagDeleteJob(this, param);
+            Instance<JobCaller>.Value.EnqueueFileTagDeleteJob(this, param);
 
             var tagInfo = this.TagList.Find(t => t.Tag.Equals(tag, StringComparison.Ordinal));
             this.TagList.Remove(tagInfo);
@@ -699,7 +699,7 @@ namespace PicSum.UIComponent.InfoPanel
                 FilePathList = this._fileInfoSource.FilePathList,
                 RatingValue = this.ratingBar.Value
             };
-            Instance<JobCaller>.Value.StartFileRatingUpdateJob(this, param);
+            Instance<JobCaller>.Value.EnqueueFileRatingUpdateJob(this, param);
         }
 
         private void TagContextMenuStrip_Opening(object sender, CancelEventArgs e)

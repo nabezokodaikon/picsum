@@ -199,7 +199,7 @@ namespace PicSum.UIComponent.Contents.FileList
                     SortTypeID.FileName,
                     true,
                     base.SelectedFilePath);
-                Instance<JobCaller>.Value.StartDirectoryStateUpdateJob(this, param);
+                Instance<JobCaller>.Value.EnqueueDirectoryStateUpdateJob(this, param);
             }
             else
             {
@@ -208,7 +208,7 @@ namespace PicSum.UIComponent.Contents.FileList
                     base.SortTypeID,
                     base.IsAscending,
                     base.SelectedFilePath);
-                Instance<JobCaller>.Value.StartDirectoryStateUpdateJob(this, param);
+                Instance<JobCaller>.Value.EnqueueDirectoryStateUpdateJob(this, param);
             }
         }
 
@@ -243,7 +243,7 @@ namespace PicSum.UIComponent.Contents.FileList
             }
 
             var param = new ValueParameter<string>(e.DirectoryPath);
-            Instance<JobCaller>.Value.StartDirectoryViewHistoryAddJob(this, param);
+            Instance<JobCaller>.Value.EnqueueDirectoryViewHistoryAddJob(this, param);
         }
 
         private void GetNextDirectoryProcess_Callback(ValueResult<string> e)

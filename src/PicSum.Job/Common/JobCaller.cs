@@ -77,28 +77,28 @@ namespace PicSum.Job.Common
             this._disposed = true;
         }
 
-        public void StartBookmarkAddJob(ISender sender, ValueParameter<string> parameter)
+        public void EnqueueBookmarkAddJob(ISender sender, ValueParameter<string> parameter)
         {
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
 
             this._jobQueue.Value.Enqueue<BookmarkAddJob, ValueParameter<string>>(sender, parameter);
         }
 
-        public void StartDirectoryStateUpdateJob(ISender sender, DirectoryStateParameter parameter)
+        public void EnqueueDirectoryStateUpdateJob(ISender sender, DirectoryStateParameter parameter)
         {
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
 
             this._jobQueue.Value.Enqueue<DirectoryStateUpdateJob, DirectoryStateParameter>(sender, parameter);
         }
 
-        public void StartDirectoryViewHistoryAddJob(ISender sender, ValueParameter<string> parameter)
+        public void EnqueueDirectoryViewHistoryAddJob(ISender sender, ValueParameter<string> parameter)
         {
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
 
             this._jobQueue.Value.Enqueue<DirectoryViewHistoryAddJob, ValueParameter<string>>(sender, parameter);
         }
 
-        public void StartBookmarkDeleteJob(ISender sender, ListParameter<string> parameter)
+        public void EnqueueBookmarkDeleteJob(ISender sender, ListParameter<string> parameter)
         {
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
             ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
@@ -106,7 +106,7 @@ namespace PicSum.Job.Common
             this._jobQueue.Value.Enqueue<BookmarkDeleteJob, ListParameter<string>>(sender, parameter);
         }
 
-        public void StartDirectoryViewCounterDeleteJob(ISender sender, ListParameter<string> parameter)
+        public void EnqueueDirectoryViewCounterDeleteJob(ISender sender, ListParameter<string> parameter)
         {
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
             ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
@@ -114,21 +114,21 @@ namespace PicSum.Job.Common
             this._jobQueue.Value.Enqueue<DirectoryViewCounterDeleteJob, ListParameter<string>>(sender, parameter);
         }
 
-        public void StartFileRatingUpdateJob(ISender sender, FileRatingUpdateParameter parameter)
+        public void EnqueueFileRatingUpdateJob(ISender sender, FileRatingUpdateParameter parameter)
         {
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
 
             this._jobQueue.Value.Enqueue<FileRatingUpdateJob, FileRatingUpdateParameter>(sender, parameter);
         }
 
-        public void StartFileTagDeleteJob(ISender sender, FileTagUpdateParameter parameter)
+        public void EnqueueFileTagDeleteJob(ISender sender, FileTagUpdateParameter parameter)
         {
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
 
             this._jobQueue.Value.Enqueue<FileTagDeleteJob, FileTagUpdateParameter>(sender, parameter);
         }
 
-        public void StartFileTagAddJob(ISender sender, FileTagUpdateParameter parameter)
+        public void EnqueueFileTagAddJob(ISender sender, FileTagUpdateParameter parameter)
         {
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
 

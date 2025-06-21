@@ -102,7 +102,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 FilePathList = filePathList,
                 RatingValue = 0
             };
-            Instance<JobCaller>.Value.StartFileRatingUpdateJob(this, param);
+            Instance<JobCaller>.Value.EnqueueFileRatingUpdateJob(this, param);
 
             this.RemoveFile(filePathList);
         }

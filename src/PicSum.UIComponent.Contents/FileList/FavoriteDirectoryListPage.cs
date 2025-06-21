@@ -101,7 +101,7 @@ namespace PicSum.UIComponent.Contents.FileList
         protected override void OnRemoveFile(string[] directoryList)
         {
             var param = new ListParameter<string>(directoryList);
-            Instance<JobCaller>.Value.StartDirectoryViewCounterDeleteJob(this, param);
+            Instance<JobCaller>.Value.EnqueueDirectoryViewCounterDeleteJob(this, param);
             this.RemoveFile(directoryList);
 
             this.OnSelectedFileChanged(new SelectedFileChangeEventArgs());

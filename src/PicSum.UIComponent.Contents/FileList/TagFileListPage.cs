@@ -102,7 +102,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 FilePathList = filePathList,
                 Tag = this._parameter.Tag
             };
-            Instance<JobCaller>.Value.StartFileTagDeleteJob(this, param);
+            Instance<JobCaller>.Value.EnqueueFileTagDeleteJob(this, param);
 
             this.RemoveFile(filePathList);
         }
