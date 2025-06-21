@@ -5,7 +5,6 @@ using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
 using System;
 using System.IO;
-using System.Reflection;
 using System.Runtime.Versioning;
 using System.Windows.Forms;
 
@@ -15,9 +14,6 @@ namespace PicSum.Main.Conf
     [MessagePackObject(AllowPrivate = true)]
     public sealed partial class Config
     {
-        public static readonly Version APP_VERSION
-            = Assembly.GetExecutingAssembly().GetName().Version;
-
         public static readonly Config Instance = new();
 
         [Key(0)]
@@ -125,10 +121,10 @@ namespace PicSum.Main.Conf
                 this.ImageDisplayMode = ImageDisplayMode.LeftFacing;
                 this.ImageSizeMode = ImageSizeMode.FitOnlyBigImage;
 
-                this.MajorVersion = APP_VERSION.Major;
-                this.MinorVersion = APP_VERSION.Minor;
-                this.BuildVersion = APP_VERSION.Build;
-                this.RevisionVersion = APP_VERSION.Revision;
+                this.MajorVersion = AppInfo.CURRENT_VERSION.Major;
+                this.MinorVersion = AppInfo.CURRENT_VERSION.Minor;
+                this.BuildVersion = AppInfo.CURRENT_VERSION.Build;
+                this.RevisionVersion = AppInfo.CURRENT_VERSION.Revision;
             }
 
             ConsoleUtil.Write(true, $"Config.Load End");
@@ -136,10 +132,10 @@ namespace PicSum.Main.Conf
 
         public void Save()
         {
-            this.MajorVersion = APP_VERSION.Major;
-            this.MinorVersion = APP_VERSION.Minor;
-            this.BuildVersion = APP_VERSION.Build;
-            this.RevisionVersion = APP_VERSION.Revision;
+            this.MajorVersion = AppInfo.CURRENT_VERSION.Major;
+            this.MinorVersion = AppInfo.CURRENT_VERSION.Minor;
+            this.BuildVersion = AppInfo.CURRENT_VERSION.Build;
+            this.RevisionVersion = AppInfo.CURRENT_VERSION.Revision;
 
             var bytes = MessagePackSerializer.Serialize(
                 this,
