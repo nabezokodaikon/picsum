@@ -13,17 +13,17 @@ namespace SWF.Core.Job
         where TJobParameter : class, IJobParameter
         where TJobResult : IJobResult
     {
-        private static long _isAbort = 0;
+        private long _isAbort = 0;
 
-        private static bool IsAbort
+        private bool IsAbort
         {
             get
             {
-                return Interlocked.Read(ref _isAbort) == 1;
+                return Interlocked.Read(ref this._isAbort) == 1;
             }
             set
             {
-                Interlocked.Exchange(ref _isAbort, Convert.ToInt64(value));
+                Interlocked.Exchange(ref this._isAbort, Convert.ToInt64(value));
             }
         }
 
@@ -73,7 +73,7 @@ namespace SWF.Core.Job
                 var logger = Log.GetLogger();
 
                 logger.Debug($"{this._taskName} ジョブ実行タスクに終了リクエストを送ります。");
-                IsAbort = true;
+                this.IsAbort = true;
                 this.BeginCancel();
 
                 logger.Debug($"{this._taskName} ジョブ実行タスクの終了を待機します。");
@@ -170,7 +170,7 @@ namespace SWF.Core.Job
                 {
                     while (true)
                     {
-                        if (IsAbort)
+                        if (this.IsAbort)
                         {
                             logger.Debug("ジョブ実行タスクに終了リクエストがありました。");
                             return;
