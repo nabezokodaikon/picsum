@@ -27,7 +27,7 @@ namespace PicSum.Job.Common
                 $"{id}{ThumbnailUtil.THUMBNAIL_BUFFER_FILE_EXTENSION}");
         }
 
-        private static int GetCurrentThumbnailBufferID(IDBConnection con)
+        private static int GetCurrentThumbnailBufferID(IConnection con)
         {
             var id = (int)con.ReadValue<long>(new ThumbnailIDReadSql());
             var thumbFile = GetThumbnailBufferFilePath(id);

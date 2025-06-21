@@ -17,7 +17,7 @@ namespace PicSum.Job.Logics
         /// </summary>
         /// <param name="directoryPath">フォルダパス</param>
         /// <returns>表示履歴が追加されたらTrue、追加されなければFalseを返します。</returns>
-        public bool Execute(IDBConnection con, string directoryPath)
+        public bool Execute(IConnection con, string directoryPath)
         {
             ArgumentException.ThrowIfNullOrEmpty(directoryPath, nameof(directoryPath));
 

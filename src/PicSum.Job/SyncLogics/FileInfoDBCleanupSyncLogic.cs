@@ -26,7 +26,7 @@ namespace PicSum.Job.SyncLogics
             }
         }
 
-        private void Cleanup(IDBConnection con)
+        private void Cleanup(IConnection con)
         {
             var readSql = new AllFilesReadSql();
             var fileList = con.ReadList(readSql);
@@ -40,7 +40,7 @@ namespace PicSum.Job.SyncLogics
             }
         }
 
-        private void Vacuum(IDBConnection con)
+        private void Vacuum(IConnection con)
         {
             var cleanupSql = new FileInfoDBVacuumSql();
             con.ReadLine(cleanupSql);

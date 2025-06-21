@@ -9,7 +9,7 @@ namespace PicSum.Job.Logics
     internal sealed class BookmarkDeleteLogic(IAsyncJob job)
         : AbstractAsyncLogic(job)
     {
-        public bool Execute(IDBConnection con, string filePath)
+        public bool Execute(IConnection con, string filePath)
         {
             ArgumentNullException.ThrowIfNull(con, nameof(con));
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));

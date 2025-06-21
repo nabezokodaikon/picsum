@@ -16,7 +16,7 @@ namespace PicSum.Job.Logics
     internal sealed class TagsGetLogic(IAsyncJob job)
         : AbstractAsyncLogic(job)
     {
-        public string[] Execute(IDBConnection con)
+        public string[] Execute(IConnection con)
         {
             var sql = new AllTagsReadSql();
             var dtoList = con.ReadList<TagInfoDto>(sql);

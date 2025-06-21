@@ -5,8 +5,8 @@ using System.Runtime.Versioning;
 namespace SWF.Core.DatabaseAccessor
 {
     [SupportedOSPlatform("windows10.0.17763.0")]
-    internal sealed class DBConnection
-        : IDBConnection
+    internal sealed class Connection
+        : IConnection
     {
         private bool _disposed = false;
         private readonly Lock _lockObject;
@@ -15,7 +15,7 @@ namespace SWF.Core.DatabaseAccessor
         private readonly bool _isDispose;
         private bool _isCommitted = false;
 
-        public DBConnection(Lock lockObject, string filePath, bool isTransaction)
+        public Connection(Lock lockObject, string filePath, bool isTransaction)
         {
             ArgumentNullException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
@@ -31,7 +31,7 @@ namespace SWF.Core.DatabaseAccessor
             this._isDispose = true;
         }
 
-        public DBConnection(Lock lockObject, SQLiteConnection connection, bool isTransaction)
+        public Connection(Lock lockObject, SQLiteConnection connection, bool isTransaction)
         {
             ArgumentNullException.ThrowIfNull(connection, nameof(connection));
 

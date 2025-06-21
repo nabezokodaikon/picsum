@@ -12,7 +12,7 @@ namespace PicSum.Job.Logics
     internal sealed class FileTagAddLogic(IAsyncJob job)
         : AbstractAsyncLogic(job)
     {
-        public bool Execute(IDBConnection con, string filePath, string tag, DateTime registrationDate)
+        public bool Execute(IConnection con, string filePath, string tag, DateTime registrationDate)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
             ArgumentException.ThrowIfNullOrEmpty(tag, nameof(tag));

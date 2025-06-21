@@ -15,7 +15,7 @@ namespace PicSum.Job.Logics
     internal sealed class DirectoryStateGetLogic(IAsyncJob job)
         : AbstractAsyncLogic(job)
     {
-        public DirectoryStateParameter Execute(IDBConnection con, string directoryPath)
+        public DirectoryStateParameter Execute(IConnection con, string directoryPath)
         {
             ArgumentException.ThrowIfNullOrEmpty(directoryPath, nameof(directoryPath));
 

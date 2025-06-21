@@ -57,36 +57,36 @@ namespace SWF.Core.DatabaseAccessor
             this._isPersistent = isPersistent;
         }
 
-        public IDBConnection Connect()
+        public IConnection Connect()
         {
             this._lockObject.Enter();
 
             if (this._isPersistent)
             {
                 this._persistentConnection ??= CreateInMemoryConnection(this._filePath);
-                return new DBConnection(
+                return new Connection(
                     this._lockObject, this._persistentConnection, false);
             }
             else
             {
-                return new DBConnection(
+                return new Connection(
                     this._lockObject, this._filePath, false);
             }
         }
 
-        public IDBConnection ConnectWithTransaction()
+        public IConnection ConnectWithTransaction()
         {
             this._lockObject.Enter();
 
             if (this._isPersistent)
             {
                 this._persistentConnection ??= CreateInMemoryConnection(this._filePath);
-                return new DBConnection(
+                return new Connection(
                     this._lockObject, this._persistentConnection, true);
             }
             else
             {
-                return new DBConnection(
+                return new Connection(
                     this._lockObject, this._filePath, true);
             }
         }

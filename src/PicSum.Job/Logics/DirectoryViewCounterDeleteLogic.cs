@@ -16,7 +16,7 @@ namespace PicSum.Job.Logics
         /// 処理を実行します。
         /// </summary>
         /// <param name="directoryPath">フォルダパス</param>
-        public void Execute(IDBConnection con, string directoryPath)
+        public void Execute(IConnection con, string directoryPath)
         {
             ArgumentException.ThrowIfNullOrEmpty(directoryPath, nameof(directoryPath));
 

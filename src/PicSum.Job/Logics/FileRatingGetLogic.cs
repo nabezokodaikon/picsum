@@ -10,7 +10,7 @@ namespace PicSum.Job.Logics
         : AbstractAsyncLogic(job)
     {
         [SupportedOSPlatform("windows10.0.17763.0")]
-        public int Execute(IDBConnection con, string filePath)
+        public int Execute(IConnection con, string filePath)
         {
             ArgumentNullException.ThrowIfNull(filePath, nameof(filePath));
 

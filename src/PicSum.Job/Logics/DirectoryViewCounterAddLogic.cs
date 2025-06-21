@@ -15,7 +15,7 @@ namespace PicSum.Job.Logics
 
         }
 
-        public bool Execute(IDBConnection con, string directoryPath)
+        public bool Execute(IConnection con, string directoryPath)
         {
             ArgumentException.ThrowIfNullOrEmpty(nameof(directoryPath));
 

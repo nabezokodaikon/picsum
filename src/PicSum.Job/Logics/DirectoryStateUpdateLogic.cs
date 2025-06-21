@@ -14,7 +14,7 @@ namespace PicSum.Job.Logics
     internal sealed class DirectoryStateUpdateLogic(IAsyncJob job)
         : AbstractAsyncLogic(job)
     {
-        public bool Execute(IDBConnection con, DirectoryStateParameter directoryState)
+        public bool Execute(IConnection con, DirectoryStateParameter directoryState)
         {
             ArgumentNullException.ThrowIfNull(directoryState, nameof(directoryState));
 

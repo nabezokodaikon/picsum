@@ -12,7 +12,7 @@ namespace PicSum.Job.Logics
     internal sealed class BookmarksGetLogic(IAsyncJob job)
         : AbstractAsyncLogic(job)
     {
-        public BookmarkDto[] Execute(IDBConnection con)
+        public BookmarkDto[] Execute(IConnection con)
         {
             var sql = new BookmarksReadSql();
             var dtoList = con.ReadList<BookmarkDto>(sql);
