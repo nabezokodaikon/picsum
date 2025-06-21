@@ -73,7 +73,6 @@ namespace SWF.Core.DatabaseAccessor
 
                 if (this._isDispose)
                 {
-                    this._connection.Close();
                     this._connection.Dispose();
                 }
 

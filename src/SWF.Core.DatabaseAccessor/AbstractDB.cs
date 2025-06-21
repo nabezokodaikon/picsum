@@ -19,7 +19,6 @@ namespace SWF.Core.DatabaseAccessor
                     cmd.CommandText = tablesCreateSql;
                     cmd.ExecuteNonQuery();
                 }
-                con.Close();
             }
         }
 
@@ -31,7 +30,6 @@ namespace SWF.Core.DatabaseAccessor
             {
                 fileConnection.Open();
                 fileConnection.BackupDatabase(memoryConnection, "main", "main", -1, null, 0);
-                fileConnection.Close();
             }
 
             return memoryConnection;
@@ -112,10 +110,8 @@ namespace SWF.Core.DatabaseAccessor
                     {
                         fileConnection.Open();
                         this._persistentConnection.BackupDatabase(fileConnection, "main", "main", -1, null, 0);
-                        fileConnection.Close();
                     }
 
-                    this._persistentConnection?.Close();
                     this._persistentConnection?.Dispose();
                 }
             }
