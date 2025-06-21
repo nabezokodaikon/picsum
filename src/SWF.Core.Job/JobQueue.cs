@@ -66,7 +66,6 @@ namespace SWF.Core.Job
                     Task.WaitAll(this._task);
 
                     logger.Debug("ジョブキュー実行タスクが終了しました。");
-                    this._task?.Dispose();
                 }
             }
 

@@ -78,10 +78,8 @@ namespace SWF.Core.Job
 
                 logger.Debug($"{this._taskName} ジョブ実行タスクの終了を待機します。");
                 Task.WaitAll(this._task);
-                this._task.Dispose();
 
                 logger.Debug($"{this._taskName} ジョブ実行タスクが終了しました。");
-                this._task.Dispose();
             }
 
             this._disposed = true;
