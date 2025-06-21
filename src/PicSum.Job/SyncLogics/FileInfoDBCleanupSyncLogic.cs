@@ -14,14 +14,9 @@ namespace PicSum.Job.SyncLogics
     {
         public void Execute()
         {
-            using (var con = Instance<IFileInfoDB>.Value.ConnectWithTransaction())
-            {
-                this.Cleanup(con);
-                con.Commit();
-            }
-
             using (var con = Instance<IFileInfoDB>.Value.Connect())
             {
+                this.Cleanup(con);
                 this.Vacuum(con);
             }
         }
