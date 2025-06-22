@@ -143,5 +143,15 @@ namespace PicSum.Main.Conf
 
             File.WriteAllBytes(AppConstants.CONFIG_FILE.Value, bytes);
         }
+
+        public string GetOldVersion()
+        {
+            return $"{this.MajorVersion}.{this.MinorVersion}.{this.BuildVersion}.{this.RevisionVersion}";
+        }
+
+        public string GetCurrentVersion()
+        {
+            return $"{AppInfo.CURRENT_VERSION.Major}.{AppInfo.CURRENT_VERSION.Minor}.{AppInfo.CURRENT_VERSION.Build}.{AppInfo.CURRENT_VERSION.Revision}";
+        }
     }
 }

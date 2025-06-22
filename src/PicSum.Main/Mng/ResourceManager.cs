@@ -40,9 +40,11 @@ namespace PicSum.Main.Mng
             ImageViewerPageConfig.Instance.ImageDisplayMode = Config.Instance.ImageDisplayMode;
             ImageViewerPageConfig.Instance.ImageSizeMode = Config.Instance.ImageSizeMode;
 
+            _logger.Debug($"現在のバージョン '{Config.Instance.GetCurrentVersion()}'");
+
             if (CommandLineArgs.IsCleanup())
             {
-                _logger.Debug("コマンドライン引数に --cleanup が指定されました。");
+                _logger.Debug("コマンドライン引数に '--cleanup' が指定されました。");
 
                 var thumbnailDBCleanupJob = new ThumbnailDBCleanupSyncJob();
                 thumbnailDBCleanupJob.Execute();
@@ -59,7 +61,7 @@ namespace PicSum.Main.Mng
                 Config.Instance.BuildVersion,
                 Config.Instance.RevisionVersion))
             {
-                _logger.Debug("旧バージョンから起動されました。");
+                _logger.Debug($"バージョン '{Config.Instance.GetOldVersion()}' から起動されました。");
 
                 var thumbnailDBCleanupJob = new ThumbnailDBCleanupSyncJob();
                 thumbnailDBCleanupJob.Execute();
