@@ -14,7 +14,8 @@ namespace PicSum.Job.Common
     {
         private bool _disposed = false;
 
-        private readonly FastLazy<JobQueue> _jobQueue = new(() => new(context));
+        private readonly FastLazy<OneWayJobQueue> _oneWayQueue = new(() => new());
+        private readonly FastLazy<TwoWayJobQueue> _twoWayJobQueue = new(() => new(context));
 
         public readonly FastLazy<TwoWayJob<ImageFileReadJob, ImageFileReadParameter, ImageFileReadResult>> ImageFileReadJob = new(() => new(context));
         public readonly FastLazy<TwoWayJob<ImageFileLoadingJob, ImageFileReadParameter, ImageFileReadResult>> ImageFileLoadingJob = new(() => new(context));
@@ -40,7 +41,8 @@ namespace PicSum.Job.Common
 
             if (disposing)
             {
-                this._jobQueue.Dispose();
+                this._oneWayQueue.Dispose();
+                this._twoWayJobQueue.Dispose();
 
                 this.ImageFileReadJob.Dispose();
                 this.ImageFileLoadingJob.Dispose();
@@ -59,21 +61,21 @@ namespace PicSum.Job.Common
         {
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
 
-            this._jobQueue.Value.Enqueue<BookmarkAddJob, ValueParameter<string>>(sender, parameter);
+            this._oneWayQueue.Value.Enqueue<BookmarkAddJob, ValueParameter<string>>(sender, parameter);
         }
 
         public void EnqueueDirectoryStateUpdateJob(ISender sender, DirectoryStateParameter parameter)
         {
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
 
-            this._jobQueue.Value.Enqueue<DirectoryStateUpdateJob, DirectoryStateParameter>(sender, parameter);
+            this._oneWayQueue.Value.Enqueue<DirectoryStateUpdateJob, DirectoryStateParameter>(sender, parameter);
         }
 
         public void EnqueueDirectoryViewHistoryAddJob(ISender sender, ValueParameter<string> parameter)
         {
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
 
-            this._jobQueue.Value.Enqueue<DirectoryViewHistoryAddJob, ValueParameter<string>>(sender, parameter);
+            this._oneWayQueue.Value.Enqueue<DirectoryViewHistoryAddJob, ValueParameter<string>>(sender, parameter);
         }
 
         public void EnqueueBookmarkDeleteJob(ISender sender, ListParameter<string> parameter)
@@ -81,7 +83,7 @@ namespace PicSum.Job.Common
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
             ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
 
-            this._jobQueue.Value.Enqueue<BookmarkDeleteJob, ListParameter<string>>(sender, parameter);
+            this._oneWayQueue.Value.Enqueue<BookmarkDeleteJob, ListParameter<string>>(sender, parameter);
         }
 
         public void EnqueueDirectoryViewCounterDeleteJob(ISender sender, ListParameter<string> parameter)
@@ -89,28 +91,28 @@ namespace PicSum.Job.Common
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
             ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
 
-            this._jobQueue.Value.Enqueue<DirectoryViewCounterDeleteJob, ListParameter<string>>(sender, parameter);
+            this._oneWayQueue.Value.Enqueue<DirectoryViewCounterDeleteJob, ListParameter<string>>(sender, parameter);
         }
 
         public void EnqueueFileRatingUpdateJob(ISender sender, FileRatingUpdateParameter parameter)
         {
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
 
-            this._jobQueue.Value.Enqueue<FileRatingUpdateJob, FileRatingUpdateParameter>(sender, parameter);
+            this._oneWayQueue.Value.Enqueue<FileRatingUpdateJob, FileRatingUpdateParameter>(sender, parameter);
         }
 
         public void EnqueueFileTagDeleteJob(ISender sender, FileTagUpdateParameter parameter)
         {
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
 
-            this._jobQueue.Value.Enqueue<FileTagDeleteJob, FileTagUpdateParameter>(sender, parameter);
+            this._oneWayQueue.Value.Enqueue<FileTagDeleteJob, FileTagUpdateParameter>(sender, parameter);
         }
 
         public void EnqueueFileTagAddJob(ISender sender, FileTagUpdateParameter parameter)
         {
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
 
-            this._jobQueue.Value.Enqueue<FileTagAddJob, FileTagUpdateParameter>(sender, parameter);
+            this._oneWayQueue.Value.Enqueue<FileTagAddJob, FileTagUpdateParameter>(sender, parameter);
         }
 
         public void EnqueueTagsGetJob(
@@ -119,7 +121,7 @@ namespace PicSum.Job.Common
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
             ArgumentNullException.ThrowIfNull(sender, nameof(callback));
 
-            this._jobQueue.Value
+            this._twoWayJobQueue.Value
                 .Enqueue<
                     TagsGetJob,
                     ListResult<string>>(
@@ -134,7 +136,7 @@ namespace PicSum.Job.Common
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
             ArgumentNullException.ThrowIfNull(sender, nameof(callback));
 
-            this._jobQueue.Value
+            this._twoWayJobQueue.Value
                 .Enqueue<
                     SubDirectoriesGetJob,
                     ValueParameter<string>,
@@ -148,7 +150,7 @@ namespace PicSum.Job.Common
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
             ArgumentNullException.ThrowIfNull(sender, nameof(callback));
 
-            this._jobQueue.Value
+            this._twoWayJobQueue.Value
                 .Enqueue<
                     DirectoryViewHistoryGetJob,
                     ListResult<FileShallowInfoEntity>>(
@@ -163,7 +165,7 @@ namespace PicSum.Job.Common
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
             ArgumentNullException.ThrowIfNull(sender, nameof(callback));
 
-            this._jobQueue.Value
+            this._twoWayJobQueue.Value
                 .Enqueue<
                     AddressInfoGetJob,
                     ValueParameter<string>,
@@ -179,7 +181,7 @@ namespace PicSum.Job.Common
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
             ArgumentNullException.ThrowIfNull(sender, nameof(callback));
 
-            this._jobQueue.Value
+            this._twoWayJobQueue.Value
                 .Enqueue<
                     NextDirectoryGetJob,
                     NextDirectoryGetParameter,
@@ -195,7 +197,7 @@ namespace PicSum.Job.Common
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
             ArgumentNullException.ThrowIfNull(sender, nameof(callback));
 
-            this._jobQueue.Value
+            this._twoWayJobQueue.Value
                 .Enqueue<
                     FilesGetByDirectoryJob,
                     FilesGetByDirectoryParameter,
@@ -209,7 +211,7 @@ namespace PicSum.Job.Common
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
             ArgumentNullException.ThrowIfNull(sender, nameof(callback));
 
-            this._jobQueue.Value
+            this._twoWayJobQueue.Value
                 .Enqueue<
                     BookmarksGetJob,
                     ListResult<FileShallowInfoEntity>>(
@@ -224,7 +226,7 @@ namespace PicSum.Job.Common
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
             ArgumentNullException.ThrowIfNull(sender, nameof(callback));
 
-            this._jobQueue.Value
+            this._twoWayJobQueue.Value
                 .Enqueue<
                     FilesGetByTagJob,
                     FilesGetByTagParameter,
@@ -240,7 +242,7 @@ namespace PicSum.Job.Common
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
             ArgumentNullException.ThrowIfNull(sender, nameof(callback));
 
-            this._jobQueue.Value
+            this._twoWayJobQueue.Value
                 .Enqueue<
                     ImageFilesGetByDirectoryJob,
                     ImageFileGetByDirectoryParameter,
@@ -256,7 +258,7 @@ namespace PicSum.Job.Common
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
             ArgumentNullException.ThrowIfNull(sender, nameof(callback));
 
-            this._jobQueue.Value
+            this._twoWayJobQueue.Value
                 .Enqueue<
                     FilesGetByRatingJob,
                     FilesGetByRatingParameter,
@@ -272,7 +274,7 @@ namespace PicSum.Job.Common
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
             ArgumentNullException.ThrowIfNull(sender, nameof(callback));
 
-            this._jobQueue.Value
+            this._twoWayJobQueue.Value
                 .Enqueue<
                     FavoriteDirectoriesGetJob,
                     FavoriteDirectoriesGetParameter,

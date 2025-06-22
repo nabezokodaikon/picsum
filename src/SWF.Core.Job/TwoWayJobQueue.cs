@@ -8,10 +8,10 @@ using System.Runtime.Versioning;
 namespace SWF.Core.Job
 {
     [SupportedOSPlatform("windows10.0.17763.0")]
-    public sealed class JobQueue
+    public sealed class TwoWayJobQueue
         : IDisposable
     {
-        private static readonly string TASK_NAME = typeof(JobQueue).Name;
+        private static readonly string TASK_NAME = typeof(TwoWayJobQueue).Name;
 
         private bool _disposed = false;
         private readonly SynchronizationContext _context;
@@ -32,7 +32,7 @@ namespace SWF.Core.Job
             }
         }
 
-        public JobQueue(SynchronizationContext? context)
+        public TwoWayJobQueue(SynchronizationContext? context)
         {
             ArgumentNullException.ThrowIfNull(context, nameof(context));
 
@@ -184,47 +184,6 @@ namespace SWF.Core.Job
                     }, null);
                 }
             };
-
-            this._queue.Enqueue(job);
-        }
-
-        public void Enqueue<TJob, TJobParameter>(ISender sender, TJobParameter parameter)
-            where TJob : AbstractTwoWayJob<TJobParameter, EmptyResult>, new()
-            where TJobParameter : class, IJobParameter
-        {
-            ArgumentNullException.ThrowIfNull(sender, nameof(sender));
-            ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
-
-            var type = typeof(TJob);
-
-            this._currentJobsDictionary.Remove(type);
-
-            var job = new TJob()
-            {
-                Sender = sender,
-                Parameter = parameter,
-            };
-
-            this._currentJobsDictionary.Add(type, job);
-
-            this._queue.Enqueue(job);
-        }
-
-        public void Enqueue<TJob>(ISender sender)
-            where TJob : AbstractTwoWayJob<EmptyParameter, EmptyResult>, new()
-        {
-            ArgumentNullException.ThrowIfNull(sender, nameof(sender));
-
-            var type = typeof(TJob);
-
-            this._currentJobsDictionary.Remove(type);
-
-            var job = new TJob()
-            {
-                Sender = sender,
-            };
-
-            this._currentJobsDictionary.Add(type, job);
 
             this._queue.Enqueue(job);
         }
