@@ -51,8 +51,8 @@ namespace SWF.Core.Job
             ArgumentNullException.ThrowIfNull(context, nameof(context));
 
             this._context = context;
-            this._task = Task.Run(this.DoWork);
             this._taskName = $"{typeof(TJob).Name} {TaskID.GetNew()}";
+            this._task = Task.Run(this.DoWork);
         }
 
         public void Dispose()
@@ -113,13 +113,15 @@ namespace SWF.Core.Job
                         {
                             if (job.CanUIThreadAccess())
                             {
+                                var jobName = $"{job.GetType().Name} {job.ID}";
+
                                 try
                                 {
                                     callback.Invoke(result);
                                 }
                                 catch (Exception ex)
                                 {
-                                    Log.GetLogger().Error(ex, $"{this._taskName} {job.ID} がUIタスク上で補足されない例外が発生しました。");
+                                    Log.GetLogger().Error(ex, $"{jobName} がUIスレッドで補足されない例外が発生しました。");
                                     ExceptionUtil.ShowFatalDialog("Unhandled UI Exception.", ex);
                                 }
                             }
