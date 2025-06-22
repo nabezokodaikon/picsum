@@ -1,7 +1,6 @@
 using NLog;
 using SWF.Core.ConsoleAccessor;
 using System.Collections.Concurrent;
-using System.Diagnostics;
 using System.Runtime.Versioning;
 
 namespace SWF.Core.Job
@@ -51,18 +50,13 @@ namespace SWF.Core.Job
             {
                 var logger = Log.GetLogger();
 
-                logger.Debug($"{TASK_NAME} 実行タスクに終了リクエストを送ります。");
+                logger.Trace($"{TASK_NAME} に終了リクエストを送ります。");
                 this.IsAbort = true;
 
-                foreach (var job in this._queue.ToArray())
-                {
-                    job.BeginCancel();
-                }
-
-                logger.Debug($"{TASK_NAME} 実行タスクの終了を待機します。");
+                logger.Trace($"{TASK_NAME} の終了を待機します。");
                 Task.WaitAll(this._task);
 
-                logger.Debug($"{TASK_NAME} 実行タスクが終了しました。");
+                logger.Trace($"{TASK_NAME} が終了しました。");
             }
 
             this._disposed = true;
@@ -103,7 +97,7 @@ namespace SWF.Core.Job
             {
                 var logger = Log.GetLogger();
 
-                logger.Debug($"{TASK_NAME} 実行タスクが開始されました。");
+                logger.Trace("開始されました。");
 
                 try
                 {
@@ -111,31 +105,15 @@ namespace SWF.Core.Job
                     {
                         if (this.IsAbort)
                         {
-                            logger.Debug($"{TASK_NAME} 実行タスクに終了リクエストがありました。");
+                            logger.Trace("終了リクエストがありました。");
                             return;
                         }
 
                         if (this._queue.TryPeek(out var job))
                         {
-                            var jobName = $"{job.GetType().Name} {job.ID}";
-
-                            logger.Debug($"{jobName} を実行します。");
-                            var sw = Stopwatch.StartNew();
                             try
                             {
                                 await job.ExecuteWrapper();
-                            }
-                            catch (JobCancelException)
-                            {
-                                logger.Debug($"{jobName} がキャンセルされました。");
-                            }
-                            catch (JobException ex)
-                            {
-                                logger.Error($"{jobName} {ex}");
-                            }
-                            catch (Exception ex)
-                            {
-                                logger.Error(ex, $"{jobName} で補足されない例外が発生しました。");
                             }
                             finally
                             {
@@ -154,9 +132,6 @@ namespace SWF.Core.Job
                                     throw new InvalidOperationException("他のタスクでジョブキューの操作が行われました。");
 #pragma warning restore CA2219
                                 }
-
-                                sw.Stop();
-                                logger.Debug($"{jobName} が終了しました。{sw.ElapsedMilliseconds} ms");
                             }
                         }
                         else
@@ -167,11 +142,11 @@ namespace SWF.Core.Job
                 }
                 catch (Exception ex)
                 {
-                    logger.Error(ex, $"{TASK_NAME} 実行タスクで補足されない例外が発生しました。");
+                    logger.Error(ex, "補足されない例外が発生しました。");
                 }
                 finally
                 {
-                    logger.Debug($"{TASK_NAME} 実行タスクが終了します。");
+                    logger.Trace("終了します。");
                 }
             }
         }

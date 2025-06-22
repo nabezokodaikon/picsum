@@ -1,7 +1,6 @@
 using NLog;
 using SWF.Core.Base;
 using SWF.Core.ConsoleAccessor;
-using System.Diagnostics;
 using System.Runtime.Versioning;
 
 namespace SWF.Core.Job
@@ -72,14 +71,14 @@ namespace SWF.Core.Job
             {
                 var logger = Log.GetLogger();
 
-                logger.Debug($"{this._taskName} ジョブ実行タスクに終了リクエストを送ります。");
+                logger.Trace($"{this._taskName} に終了リクエストを送ります。");
                 this.IsAbort = true;
                 this.BeginCancel();
 
-                logger.Debug($"{this._taskName} ジョブ実行タスクの終了を待機します。");
+                logger.Trace($"{this._taskName} の終了を待機します。");
                 Task.WaitAll(this._task);
 
-                logger.Debug($"{this._taskName} ジョブ実行タスクが終了しました。");
+                logger.Trace($"{this._taskName} が終了しました。");
             }
 
             this._disposed = true;
@@ -162,7 +161,7 @@ namespace SWF.Core.Job
             {
                 var logger = Log.GetLogger();
 
-                logger.Debug("ジョブ実行タスクが開始されました。");
+                logger.Trace("開始されました。");
 
                 TJob? previewJob = null;
 
@@ -172,7 +171,7 @@ namespace SWF.Core.Job
                     {
                         if (this.IsAbort)
                         {
-                            logger.Debug("ジョブ実行タスクに終了リクエストがありました。");
+                            logger.Trace("終了リクエストがありました。");
                             return;
                         }
 
@@ -185,40 +184,18 @@ namespace SWF.Core.Job
 
                         previewJob = job;
 
-                        logger.Debug($"{job.ID} を実行します。");
-                        var sw = Stopwatch.StartNew();
-                        try
-                        {
-                            await job.ExecuteWrapper();
-                        }
-                        catch (JobCancelException)
-                        {
-                            logger.Debug($"{job.ID} がキャンセルされました。");
-                        }
-                        catch (JobException ex)
-                        {
-                            logger.Error($"{job.ID} {ex}");
-                        }
-                        catch (Exception ex)
-                        {
-                            logger.Error(ex, $"{job.ID} で補足されない例外が発生しました。");
-                        }
-                        finally
-                        {
-                            sw.Stop();
-                            logger.Debug($"{job.ID} が終了しました。{sw.ElapsedMilliseconds} ms");
-                        }
+                        await job.ExecuteWrapper();
 
                         await Task.Delay(1);
                     }
                 }
                 catch (Exception ex)
                 {
-                    logger.Error(ex, $"ジョブ実行タスクで補足されない例外が発生しました。");
+                    logger.Error(ex, "補足されない例外が発生しました。");
                 }
                 finally
                 {
-                    logger.Debug("ジョブ実行タスクが終了します。");
+                    logger.Trace("終了します。");
                 }
             }
         }

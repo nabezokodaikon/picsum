@@ -1,4 +1,5 @@
 using SWF.Core.ConsoleAccessor;
+using System.Diagnostics;
 
 namespace SWF.Core.Job
 {
@@ -77,15 +78,40 @@ namespace SWF.Core.Job
 
         internal override async Task ExecuteWrapper()
         {
-            using (TimeMeasuring.Run(false, this.GetType().Name))
+            var jobName = $"{this.GetType().Name} {this.ID}";
+            var logger = Log.GetLogger();
+
+            using (TimeMeasuring.Run(false, jobName))
             {
-                if (this.Parameter != null)
+                logger.Trace($"{jobName} を実行します。");
+                var sw = Stopwatch.StartNew();
+                try
                 {
-                    await this.Execute(this.Parameter);
+                    if (this.Parameter != null)
+                    {
+                        await this.Execute(this.Parameter);
+                    }
+                    else
+                    {
+                        await this.Execute();
+                    }
                 }
-                else
+                catch (JobCancelException)
                 {
-                    await this.Execute();
+                    logger.Trace($"{jobName} がキャンセルされました。");
+                }
+                catch (JobException ex)
+                {
+                    logger.Error($"{jobName} {ex}");
+                }
+                catch (Exception ex)
+                {
+                    logger.Error(ex, $"{jobName} で補足されない例外が発生しました。");
+                }
+                finally
+                {
+                    sw.Stop();
+                    logger.Trace($"{jobName} が終了しました。{sw.ElapsedMilliseconds} ms");
                 }
             }
         }

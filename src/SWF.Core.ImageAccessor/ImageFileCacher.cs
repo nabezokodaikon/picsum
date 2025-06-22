@@ -139,12 +139,10 @@ namespace SWF.Core.ImageAccessor
                         this._cacheList.RemoveAt(0);
                         this._cacheDictionary.Remove(removeCache.FilePath);
                         removeCache.Dispose();
-                        logger.Debug($"画像ファイルキャッシュ削除しました。: {removeCache.FilePath}");
                     }
 
                     this._cacheDictionary.Add(newCache.FilePath, newCache);
                     this._cacheList.Add(newCache);
-                    logger.Debug($"画像ファイルをキャッシュしました。: {newCache.FilePath}");
                 }
             }
         }

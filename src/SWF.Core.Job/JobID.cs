@@ -18,7 +18,7 @@ namespace SWF.Core.Job
 
         public override string ToString()
         {
-            return $"JobID: [{this.value}]";
+            return $"JobID[{this.value}]";
         }
     }
 }
