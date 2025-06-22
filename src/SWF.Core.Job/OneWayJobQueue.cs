@@ -7,10 +7,10 @@ using System.Runtime.Versioning;
 namespace SWF.Core.Job
 {
     [SupportedOSPlatform("windows10.0.17763.0")]
-    public sealed partial class JobQueue
+    public sealed partial class OneWayJobQueue
         : IDisposable
     {
-        private const string TASK_NAME = "JobQueue";
+        private static readonly string TASK_NAME = typeof(OneWayJobQueue).Name;
 
         private bool _disposed = false;
         private readonly Task _task;
@@ -29,7 +29,7 @@ namespace SWF.Core.Job
             }
         }
 
-        public JobQueue()
+        public OneWayJobQueue()
         {
             this._task = Task.Run(this.DoWork);
         }
@@ -49,24 +49,20 @@ namespace SWF.Core.Job
 
             if (disposing)
             {
+                var logger = Log.GetLogger();
 
-                if (this._task != null)
+                logger.Debug($"{TASK_NAME} 実行タスクに終了リクエストを送ります。");
+                this.IsAbort = true;
+
+                foreach (var job in this._queue.ToArray())
                 {
-                    var logger = Log.GetLogger();
-
-                    foreach (var job in this._queue.ToArray())
-                    {
-                        job.BeginCancel();
-                    }
-
-                    logger.Debug("ジョブキュー実行タスクに終了リクエストを送ります。");
-                    this.IsAbort = true;
-
-                    logger.Debug("ジョブキュー実行タスクの終了を待機します。");
-                    Task.WaitAll(this._task);
-
-                    logger.Debug("ジョブキュー実行タスクが終了しました。");
+                    job.BeginCancel();
                 }
+
+                logger.Debug($"{TASK_NAME} 実行タスクの終了を待機します。");
+                Task.WaitAll(this._task);
+
+                logger.Debug($"{TASK_NAME} 実行タスクが終了しました。");
             }
 
             this._disposed = true;
@@ -107,7 +103,7 @@ namespace SWF.Core.Job
             {
                 var logger = Log.GetLogger();
 
-                logger.Debug("ジョブキュー実行タスクが開始されました。");
+                logger.Debug($"{TASK_NAME} 実行タスクが開始されました。");
 
                 try
                 {
@@ -115,37 +111,37 @@ namespace SWF.Core.Job
                     {
                         if (this.IsAbort)
                         {
-                            logger.Debug("ジョブキュー実行タスクに終了リクエストがありました。");
+                            logger.Debug($"{TASK_NAME} 実行タスクに終了リクエストがありました。");
                             return;
                         }
 
-                        if (this._queue.TryPeek(out var currentJob))
+                        if (this._queue.TryPeek(out var job))
                         {
-                            var jobName = currentJob.GetType().Name;
+                            var jobName = $"{job.GetType().Name} {job.ID}";
 
-                            logger.Debug($"{jobName} {currentJob.ID} を実行します。");
+                            logger.Debug($"{jobName} を実行します。");
                             var sw = Stopwatch.StartNew();
                             try
                             {
-                                await currentJob.ExecuteWrapper();
+                                await job.ExecuteWrapper();
                             }
                             catch (JobCancelException)
                             {
-                                logger.Debug($"{jobName} {currentJob.ID} がキャンセルされました。");
+                                logger.Debug($"{jobName} がキャンセルされました。");
                             }
                             catch (JobException ex)
                             {
-                                logger.Error($"{jobName} {currentJob.ID} {ex}");
+                                logger.Error($"{jobName} {ex}");
                             }
                             catch (Exception ex)
                             {
-                                logger.Error(ex, $"{jobName} {currentJob.ID} で補足されない例外が発生しました。");
+                                logger.Error(ex, $"{jobName} で補足されない例外が発生しました。");
                             }
                             finally
                             {
                                 if (this._queue.TryDequeue(out var dequeueJob))
                                 {
-                                    if (currentJob != dequeueJob)
+                                    if (job != dequeueJob)
                                     {
 #pragma warning disable CA2219
                                         throw new InvalidOperationException("ジョブキューからPeekしたジョブとDequeueしたジョブが一致しません。");
@@ -160,7 +156,7 @@ namespace SWF.Core.Job
                                 }
 
                                 sw.Stop();
-                                logger.Debug($"{jobName} {currentJob.ID} が終了しました。{sw.ElapsedMilliseconds} ms");
+                                logger.Debug($"{jobName} が終了しました。{sw.ElapsedMilliseconds} ms");
                             }
                         }
                         else
@@ -171,11 +167,11 @@ namespace SWF.Core.Job
                 }
                 catch (Exception ex)
                 {
-                    logger.Error(ex, $"ジョブキュー実行タスクで補足されない例外が発生しました。");
+                    logger.Error(ex, $"{TASK_NAME} 実行タスクで補足されない例外が発生しました。");
                 }
                 finally
                 {
-                    logger.Debug("ジョブキュー実行タスクが終了します。");
+                    logger.Debug($"{TASK_NAME} 実行タスクが終了します。");
                 }
             }
         }
