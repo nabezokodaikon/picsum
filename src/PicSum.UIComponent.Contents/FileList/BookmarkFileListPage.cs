@@ -36,8 +36,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
         protected override void OnLoad(EventArgs e)
         {
-            Instance<JobCaller>.Value.BookmarksGetJob.Value
-                .StartJob(this, _ =>
+            Instance<JobCaller>.Value.EnqueueBookmarksGetJob(this, _ =>
                 {
                     if (this._disposed)
                     {

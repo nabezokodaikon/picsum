@@ -72,8 +72,7 @@ namespace PicSum.UIComponent.AddressBar
                     return;
                 }
 
-                Instance<JobCaller>.Value.DirectoryViewHistoryGetJob.Value
-                    .StartJob(this.AddressBar, _ =>
+                Instance<JobCaller>.Value.EnqueueDirectoryViewHistoryGetJob(this.AddressBar, _ =>
                     {
                         if (this._disposed)
                         {

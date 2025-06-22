@@ -82,8 +82,7 @@ namespace PicSum.UIComponent.AddressBar
 
                 base.DropDownList.Show(base.AddressBar, this.Left, this.Bottom);
                 var param = new ValueParameter<string>(this.Directory.DirectoryPath);
-                Instance<JobCaller>.Value.SubDirectoriesGetJob.Value
-                    .StartJob(this.AddressBar, param, _ =>
+                Instance<JobCaller>.Value.EnqueueSubDirectoriesGetJob(this.AddressBar, param, _ =>
                     {
                         if (this._disposed)
                         {

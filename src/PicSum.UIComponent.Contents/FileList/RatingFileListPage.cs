@@ -45,8 +45,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 IsGetThumbnail = true,
             };
 
-            Instance<JobCaller>.Value.FilesGetByRatingJob.Value
-                .StartJob(this, param, _ =>
+            Instance<JobCaller>.Value.EnqueueFilesGetByRatingJob(this, param, _ =>
                 {
                     if (this._disposed)
                     {

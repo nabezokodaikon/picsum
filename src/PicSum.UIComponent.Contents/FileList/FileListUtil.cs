@@ -129,8 +129,7 @@ namespace PicSum.UIComponent.Contents.FileList
                     IsGetThumbnail = false,
                 };
 
-                Instance<JobCaller>.Value.FilesGetByDirectoryJob.Value
-                    .StartJob(sender, jobParameter, e =>
+                Instance<JobCaller>.Value.EnqueueFilesGetByDirectoryJob(sender, jobParameter, e =>
                     {
                         var sortImageFiles = GetSortFiles(e.FileInfoList, param.SortInfo);
                         var eventArgs = new GetImageFilesEventArgs(
@@ -152,8 +151,7 @@ namespace PicSum.UIComponent.Contents.FileList
                     IsGetThumbnail = false,
                 };
 
-                Instance<JobCaller>.Value.FilesGetByDirectoryJob.Value
-                    .StartJob(sender, jobParameter, e =>
+                Instance<JobCaller>.Value.EnqueueFilesGetByDirectoryJob(sender, jobParameter, e =>
                     {
                         var title = FileUtil.GetFileName(FileUtil.GetParentDirectoryPath(param.SelectedFilePath));
 
@@ -182,8 +180,7 @@ namespace PicSum.UIComponent.Contents.FileList
                     IsGetThumbnail = false,
                 };
 
-                Instance<JobCaller>.Value.FilesGetByRatingJob.Value
-                    .StartJob(sender, jobParameter, e =>
+                Instance<JobCaller>.Value.EnqueueFilesGetByRatingJob(sender, jobParameter, e =>
                     {
                         var sortImageFiles = GetSortFiles(e, param.SortInfo);
                         var eventArgs = new GetImageFilesEventArgs(
@@ -205,12 +202,14 @@ namespace PicSum.UIComponent.Contents.FileList
                     IsGetThumbnail = false,
                 };
 
-                Instance<JobCaller>.Value.FilesGetByTagJob.Value
-                    .StartJob(sender, jobParameter, e =>
+                Instance<JobCaller>.Value.EnqueueFilesGetByTagJob(sender, jobParameter, e =>
                     {
                         var sortImageFiles = GetSortFiles(e, param.SortInfo);
                         var eventArgs = new GetImageFilesEventArgs(
-                            sortImageFiles, param.SelectedFilePath, param.PageTitle, param.PageIcon);
+                            sortImageFiles,
+                            param.SelectedFilePath,
+                            param.PageTitle,
+                            param.PageIcon);
                         param.OnGetImageFiles(eventArgs);
                     });
             };

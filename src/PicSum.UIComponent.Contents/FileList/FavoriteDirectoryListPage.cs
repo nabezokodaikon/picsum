@@ -64,8 +64,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 Count = FileListPageConfig.Instance.FavoriteDirectoryCount
             };
 
-            Instance<JobCaller>.Value.FavoriteDirectoriesGetJob.Value
-                .StartJob(this, param, _ =>
+            Instance<JobCaller>.Value.EnqueueFavoriteDirectoriesGetJob(this, param, _ =>
                 {
                     if (this._disposed)
                     {

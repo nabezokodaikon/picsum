@@ -51,8 +51,7 @@ namespace PicSum.Main.UIComponent
 
                     Instance<JobCaller>.Value.EnqueueDirectoryViewHistoryAddJob(sender, new ValueParameter<string>(dir));
 
-                    Instance<JobCaller>.Value.ImageFilesGetByDirectoryJob.Value
-                        .StartJob(sender, subParamter, e =>
+                    Instance<JobCaller>.Value.EnqueueImageFilesGetByDirectoryJob(sender, subParamter, e =>
                         {
                             var title = FileUtil.IsExistsDirectory(subParamter.FilePath) ?
                             FileUtil.GetFileName(subParamter.FilePath) :
@@ -870,8 +869,7 @@ namespace PicSum.Main.UIComponent
 
         private void TagDropToolButton_DropDownOpening(object sender, DropDownOpeningEventArgs e)
         {
-            Instance<JobCaller>.Value.TagsGetJob.Value
-                .StartJob(this, _ =>
+            Instance<JobCaller>.Value.EnqueueTagsGetJob(this, _ =>
                 {
                     if (this._disposed)
                     {

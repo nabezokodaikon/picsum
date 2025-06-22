@@ -60,8 +60,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 IsGetThumbnail = true,
             };
 
-            Instance<JobCaller>.Value.FilesGetByDirectoryJob.Value
-                .StartJob(this, param, _ =>
+            Instance<JobCaller>.Value.EnqueueFilesGetByDirectoryJob(this, param, _ =>
                 {
                     if (this._disposed)
                     {
@@ -130,8 +129,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 IsNext = false,
             };
 
-            Instance<JobCaller>.Value.NextDirectoryGetJob.Value
-                .StartJob(this, param, _ =>
+            Instance<JobCaller>.Value.EnqueueNextDirectoryGetJob(this, param, _ =>
                 {
                     if (this._disposed)
                     {
@@ -155,8 +153,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 CurrentParameter = this._parameter.DirectoryPath,
             };
 
-            Instance<JobCaller>.Value.NextDirectoryGetJob.Value
-                .StartJob(this, param, _ =>
+            Instance<JobCaller>.Value.EnqueueNextDirectoryGetJob(this, param, _ =>
                 {
                     if (this._disposed)
                     {

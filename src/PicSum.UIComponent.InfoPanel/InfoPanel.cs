@@ -770,8 +770,7 @@ namespace PicSum.UIComponent.InfoPanel
 
         private void WideComboBox_DropDownOpening(object sender, DropDownOpeningEventArgs e)
         {
-            Instance<JobCaller>.Value.TagsGetJob.Value
-                .StartJob(this, _ =>
+            Instance<JobCaller>.Value.EnqueueTagsGetJob(this, _ =>
                 {
                     if (this.disposed)
                     {
