@@ -104,7 +104,7 @@ namespace PicSum.Main
                     {
                         var logger = Log.GetLogger();
 
-                        logger.Debug("アプリケーションを開始します。");
+                        logger.Info("アプリケーションを開始します。");
 
                         AppDomain.CurrentDomain.AssemblyLoad += CurrentDomain_OnAssemblyLoad;
                         AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
@@ -121,7 +121,7 @@ namespace PicSum.Main
                             Application.Run(context);
                         }
 
-                        logger.Debug("アプリケーションを終了します。");
+                        logger.Info("アプリケーションを終了します。");
                     }
                 }
                 finally
