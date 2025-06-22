@@ -1,6 +1,8 @@
+using NLog;
 using PicSum.Job.SyncJobs;
 using PicSum.Main.Conf;
 using PicSum.UIComponent.Contents.Conf;
+using SWF.Core.ConsoleAccessor;
 using System;
 using System.Runtime.Versioning;
 
@@ -13,6 +15,8 @@ namespace PicSum.Main.Mng
     internal sealed partial class ResourceManager
         : IDisposable
     {
+        private static readonly Logger _logger = Log.GetLogger();
+
         /// <summary>
         /// コンストラクタ
         /// </summary>
@@ -38,6 +42,8 @@ namespace PicSum.Main.Mng
 
             if (CommandLineArgs.IsCleanup())
             {
+                _logger.Debug("コマンドライン引数に --cleanup が指定されました。");
+
                 var thumbnailDBCleanupJob = new ThumbnailDBCleanupSyncJob();
                 thumbnailDBCleanupJob.Execute();
 
@@ -46,6 +52,20 @@ namespace PicSum.Main.Mng
 
                 var fileInfoDBCleanupJob = new FileInfoDBCleanupSyncJob();
                 fileInfoDBCleanupJob.Execute();
+            }
+            else if (AppInfo.IsUpdated(
+                Config.Instance.MajorVersion,
+                Config.Instance.MinorVersion,
+                Config.Instance.BuildVersion,
+                Config.Instance.RevisionVersion))
+            {
+                _logger.Debug("旧バージョンから起動されました。");
+
+                var thumbnailDBCleanupJob = new ThumbnailDBCleanupSyncJob();
+                thumbnailDBCleanupJob.Execute();
+
+                var startupJob = new StartupSyncJob();
+                startupJob.Execute();
             }
             else
             {

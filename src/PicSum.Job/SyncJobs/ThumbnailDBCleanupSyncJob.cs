@@ -14,6 +14,7 @@ namespace PicSum.Job.SyncJobs
         public void Execute()
         {
             var logger = Log.GetLogger();
+            logger.Debug("サムネイルデータベースクリーンアップジョブを開始します。");
 
             try
             {
@@ -39,6 +40,10 @@ namespace PicSum.Job.SyncJobs
             catch (UnauthorizedAccessException ex)
             {
                 logger.Error(ex, ERROR_MESSAGE);
+            }
+            finally
+            {
+                logger.Debug("サムネイルデータベースクリーンアップジョブが終了しました。");
             }
         }
     }
