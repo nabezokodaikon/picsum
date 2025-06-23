@@ -47,7 +47,6 @@ namespace PicSum.UIComponent.InfoPanel
         private Image _tagIcon = null;
         private readonly Dictionary<float, Bitmap> _tagIconCache = [];
         private string _contextMenuOperationTag = string.Empty;
-        private bool _isLoading = false;
         private readonly SolidBrush _foreColorBrush;
         private readonly StringFormat _stringFormat;
         private readonly Font _tagDefaultFont
@@ -254,24 +253,6 @@ namespace PicSum.UIComponent.InfoPanel
                         ThumbnailUtil.THUMBNAIL_MAXIMUM_SIZE)
                 };
 
-                this._isLoading = true;
-
-                Instance<JobCaller>.Value.FileDeepInfoLoadingJob.Value
-                    .StartJob(this, param, _ =>
-                    {
-                        if (this.disposed)
-                        {
-                            return;
-                        }
-
-                        if (!this._isLoading)
-                        {
-                            return;
-                        }
-
-                        this.GetFileInfoJob_Callback(_);
-                    });
-
                 Instance<JobCaller>.Value.FileDeepInfoGetJob.Value
                     .StartJob(this, param, _ =>
                     {
@@ -279,8 +260,6 @@ namespace PicSum.UIComponent.InfoPanel
                         {
                             return;
                         }
-
-                        this._isLoading = false;
 
                         this.GetFileInfoJob_Callback(_);
                     });

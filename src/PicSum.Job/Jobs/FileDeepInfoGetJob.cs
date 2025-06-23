@@ -1,4 +1,6 @@
 using PicSum.DatabaseAccessor.Connection;
+using PicSum.Job.Common;
+using PicSum.Job.Entities;
 using PicSum.Job.Logics;
 using PicSum.Job.Parameters;
 using PicSum.Job.Results;
@@ -17,14 +19,62 @@ namespace PicSum.Job.Jobs
     public sealed class FileDeepInfoGetJob
         : AbstractTwoWayJob<FileDeepInfoGetParameter, FileDeepInfoGetResult>
     {
-        protected override Task Execute(FileDeepInfoGetParameter param)
+        private void CallbackLodingInfo(FileDeepInfoGetParameter param)
         {
             if (param.FilePathList == null)
             {
-                throw new ArgumentException("ファイルパスリストがNULLです。", nameof(param));
+                throw new NullReferenceException("ファイルパスリストがNULLです。");
             }
 
-            this.CheckCancel();
+            if (param.FilePathList.Length == 1)
+            {
+                var result = new FileDeepInfoGetResult
+                {
+                    FilePathList = param.FilePathList,
+                };
+
+                try
+                {
+                    var filePath = param.FilePathList[0];
+                    var deepInfoGetLogic = new FileDeepInfoGetLogic(this);
+                    result.FileInfo = deepInfoGetLogic.Get(filePath, param.ThumbnailSize, false);
+
+                    this.CheckCancel();
+
+                    this.Callback(result);
+                }
+                catch (JobCancelException)
+                {
+                    result.FileInfo.Thumbnail.ThumbnailImage?.Dispose();
+                    throw;
+                }
+                catch (FileUtilException ex)
+                {
+                    throw new JobException(this.ID, ex);
+                }
+                catch (ImageUtilException ex)
+                {
+                    throw new JobException(this.ID, ex);
+                }
+            }
+            else
+            {
+                var result = new FileDeepInfoGetResult
+                {
+                    FilePathList = param.FilePathList,
+                    TagInfoList = new ListEntity<FileTagInfoEntity>(0)
+                };
+
+                this.Callback(result);
+            }
+        }
+
+        private void CallbackInfo(FileDeepInfoGetParameter param)
+        {
+            if (param.FilePathList == null)
+            {
+                throw new NullReferenceException("ファイルパスリストがNULLです。");
+            }
 
             var result = new FileDeepInfoGetResult
             {
@@ -61,14 +111,14 @@ namespace PicSum.Job.Jobs
                     result.FileInfo.Thumbnail.ThumbnailImage?.Dispose();
                     this.WriteErrorLog(new JobException(this.ID, ex));
                     this.Callback(FileDeepInfoGetResult.ERROR);
-                    return Task.CompletedTask;
+                    return;
                 }
                 catch (ImageUtilException ex)
                 {
                     result.FileInfo.Thumbnail.ThumbnailImage?.Dispose();
                     this.WriteErrorLog(new JobException(this.ID, ex));
                     this.Callback(FileDeepInfoGetResult.ERROR);
-                    return Task.CompletedTask;
+                    return;
                 }
             }
 
@@ -89,6 +139,26 @@ namespace PicSum.Job.Jobs
             }
 
             this.Callback(result);
+        }
+
+        protected override Task Execute(FileDeepInfoGetParameter param)
+        {
+            if (param.FilePathList == null)
+            {
+                throw new ArgumentException("ファイルパスリストがNULLです。", nameof(param));
+            }
+
+            this.CheckCancel();
+
+            var filePath = param.FilePathList[0];
+            if (Instance<IThumbnailCacher>.Value.GetCache(filePath) != null)
+            {
+                this.CallbackLodingInfo(param);
+                this.CheckCancel();
+            }
+
+            this.CallbackInfo(param);
+            this.CheckCancel();
 
             return Task.CompletedTask;
         }
