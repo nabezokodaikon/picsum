@@ -48,7 +48,7 @@ namespace PicSum.Job.Jobs
             }
 
             Parallel.ForEach(
-                [.. nextFiles, .. previewFiles],
+                [parameter.Files[parameter.CurrentIndex], .. nextFiles, .. previewFiles],
                 _parallelOptions,
                 filePath =>
                 {
