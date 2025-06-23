@@ -20,7 +20,7 @@ namespace PicSum.Job.Jobs
     public sealed class ThumbnailsGetJob
         : AbstractTwoWayJob<ThumbnailsGetParameter, ThumbnailImageResult>
     {
-        private static readonly ParallelOptions _parallelOptions = new ParallelOptions
+        private static readonly ParallelOptions _parallelOptions = new()
         {
             MaxDegreeOfParallelism = 4,
         };
