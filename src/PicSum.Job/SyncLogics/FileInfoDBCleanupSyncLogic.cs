@@ -1,7 +1,6 @@
 using PicSum.DatabaseAccessor.Connection;
 using PicSum.DatabaseAccessor.Sql;
 using SWF.Core.Base;
-using SWF.Core.DatabaseAccessor;
 using SWF.Core.FileAccessor;
 using SWF.Core.Job;
 using System.Runtime.Versioning;
@@ -14,31 +13,36 @@ namespace PicSum.Job.SyncLogics
     {
         public void Execute()
         {
-            using (var con = Instance<IFileInfoDB>.Value.Connect())
-            {
-                this.Cleanup(con);
-                this.Vacuum(con);
-            }
+            this.Cleanup();
+            this.Vacuum();
         }
 
-        private void Cleanup(IConnection con)
+        private void Cleanup()
         {
             var readSql = new AllFilesReadSql();
-            var fileList = con.ReadList(readSql);
-            foreach (var file in fileList)
+            using (var con = Instance<IFileInfoDB>.Value.ConnectWithTransaction())
             {
-                if (!FileUtil.CanAccess(file.FilePath))
+                var fileList = con.ReadList(readSql);
+                foreach (var file in fileList)
                 {
-                    var cleanupSql = new FileInfoDBCleanupSql(file.FileID);
-                    con.Update(cleanupSql);
+                    if (!FileUtil.CanAccess(file.FilePath))
+                    {
+                        var cleanupSql = new FileInfoDBCleanupSql(file.FileID);
+                        con.Update(cleanupSql);
+                    }
                 }
+
+                con.Commit();
             }
         }
 
-        private void Vacuum(IConnection con)
+        private void Vacuum()
         {
-            var cleanupSql = new FileInfoDBVacuumSql();
-            con.ReadLine(cleanupSql);
+            using (var con = Instance<IFileInfoDB>.Value.Connect())
+            {
+                var cleanupSql = new FileInfoDBVacuumSql();
+                con.ReadLine(cleanupSql);
+            }
         }
     }
 }
