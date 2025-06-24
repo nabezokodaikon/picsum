@@ -20,9 +20,9 @@ namespace SWF.Core.ConsoleAccessor
             {
                 FileName = Path.Combine(logDirectory, "app.log"),
                 Layout = "${date:format=yyyy-MM-dd HH\\:mm\\:ss.fff} | ${level:padding=-5} | ${scopeproperty:item=" + NLOG_PROPERTY + "} | ${message:withexception=true}",
-                ArchiveFileName = string.Format("{0}/{1}", logDirectory, "${date:format=yyyyMMdd}/{########}.log"),
+                ArchiveFileName = Path.Combine(logDirectory, "archive", "app_{#}.log"),
                 ArchiveAboveSize = 10 * 1024 * 1024,
-                ArchiveNumbering = ArchiveNumberingMode.Sequence,
+                MaxArchiveFiles = 30,
             };
 #if DEBUG
             config.AddRule(LogLevel.Trace, LogLevel.Fatal, logfile);
