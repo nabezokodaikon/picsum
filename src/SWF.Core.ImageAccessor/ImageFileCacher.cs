@@ -1,4 +1,3 @@
-using OpenCvSharp.Extensions;
 using SWF.Core.ConsoleAccessor;
 using SWF.Core.FileAccessor;
 using System.Runtime.Versioning;
@@ -71,7 +70,7 @@ namespace SWF.Core.ImageAccessor
                 if (cache != ImageFileCacheEntity.EMPTY && cache.Bitmap != null)
                 {
                     return new CvImage(
-                        filePath, cache.Bitmap.ToMat(), zoomValue);
+                        filePath, OpenCVUtil.ToMat(cache.Bitmap), zoomValue);
                 }
                 else
                 {
@@ -87,7 +86,7 @@ namespace SWF.Core.ImageAccessor
             using (var bmp = ImageUtil.ReadImageFile(filePath))
             {
                 return new CvImage(
-                    filePath, bmp.ToMat(), zoomValue);
+                    filePath, OpenCVUtil.ToMat(bmp), zoomValue);
             }
         }
 

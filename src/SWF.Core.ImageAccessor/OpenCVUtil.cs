@@ -11,6 +11,22 @@ namespace SWF.Core.ImageAccessor
         private static readonly ImageEncodingParam _webPQuality
             = new(ImwriteFlags.WebPQuality, 70);
 
+        public static Mat ToMat(Bitmap bmp)
+        {
+            using (TimeMeasuring.Run(false, "OpenCVUtil.ToMat"))
+            {
+                return bmp.ToMat();
+            }
+        }
+
+        public static Bitmap ToBitmap(Mat mat)
+        {
+            using (TimeMeasuring.Run(false, "OpenCVUtil.ToBitmap"))
+            {
+                return mat.ToBitmap();
+            }
+        }
+
         public static Bitmap Resize(Mat srcMat, float newWidth, float newHeight, InterpolationFlags flag)
         {
             ArgumentNullException.ThrowIfNull(srcMat, nameof(srcMat));
@@ -21,7 +37,7 @@ namespace SWF.Core.ImageAccessor
                 using (var destMat = new Mat(size, srcMat.Type()))
                 {
                     Cv2.Resize(srcMat, destMat, size, 0, 0, flag);
-                    return destMat.ToBitmap();
+                    return ToBitmap(destMat);
                 }
             }
         }
@@ -33,7 +49,7 @@ namespace SWF.Core.ImageAccessor
             using (TimeMeasuring.Run(false, "OpenCVUtil.Resize By Bitmap"))
             {
                 var size = new OpenCvSharp.Size(width, height);
-                using (var srcMat = srcBmp.ToMat())
+                using (var srcMat = ToMat(srcBmp))
                 {
                     var destMat = new Mat(size, srcMat.Type());
                     Cv2.Resize(srcMat, destMat, size, 0, 0, flag);
@@ -51,7 +67,7 @@ namespace SWF.Core.ImageAccessor
                 stream.Seek(0, SeekOrigin.Begin);
                 using (var mat = Mat.FromStream(stream, ImreadModes.Unchanged))
                 {
-                    return mat.ToBitmap();
+                    return ToBitmap(mat);
                 }
             }
         }
