@@ -151,7 +151,7 @@ namespace PicSum.Job.Jobs
             this.CheckCancel();
 
             var filePath = param.FilePathList[0];
-            if (Instance<IThumbnailCacher>.Value.GetCache(filePath) != null)
+            if (Instance<IThumbnailCacher>.Value.GetCache(filePath) == ThumbnailCacheEntity.EMPTY)
             {
                 this.CallbackLodingInfo(param);
                 this.CheckCancel();
