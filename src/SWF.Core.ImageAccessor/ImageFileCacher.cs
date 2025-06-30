@@ -50,9 +50,9 @@ namespace SWF.Core.ImageAccessor
 
             return this.Get(filePath, cache =>
             {
-                if (cache != ImageFileCacheEntity.EMPTY && cache.Bitmap != null)
+                if (cache != ImageFileCacheEntity.EMPTY)
                 {
-                    return cache.Bitmap.Size;
+                    return cache.Size;
                 }
                 else
                 {
@@ -67,10 +67,10 @@ namespace SWF.Core.ImageAccessor
 
             var cvImage = this.Get(filePath, cache =>
             {
-                if (cache != ImageFileCacheEntity.EMPTY && cache.Bitmap != null)
+                if (cache != ImageFileCacheEntity.EMPTY && cache.Bytes != null)
                 {
                     return new CvImage(
-                        filePath, OpenCVUtil.ToMat(cache.Bitmap), zoomValue);
+                        filePath, OpenCVUtil.BytesToMat(cache.Bytes), zoomValue);
                 }
                 else
                 {
@@ -85,8 +85,15 @@ namespace SWF.Core.ImageAccessor
 
             using (var bmp = ImageUtil.ReadImageFile(filePath))
             {
-                return new CvImage(
-                    filePath, OpenCVUtil.ToMat(bmp), zoomValue);
+                using (var cache = new ImageFileCacheEntity(
+                    filePath,
+                    bmp,
+                    FileUtil.GetUpdateDate(filePath),
+                    bmp.Size))
+                {
+                    return new CvImage(
+                        filePath, OpenCVUtil.BytesToMat(cache.Bytes), zoomValue);
+                }
             }
         }
 
@@ -112,8 +119,15 @@ namespace SWF.Core.ImageAccessor
                 }
             }
 
-            var bitmap = ImageUtil.ReadImageFile(filePath);
-            var newCache = new ImageFileCacheEntity(filePath, bitmap, timestamp);
+            ImageFileCacheEntity newCache;
+            using (var bitmap = ImageUtil.ReadImageFile(filePath))
+            {
+                newCache = new ImageFileCacheEntity(
+                    filePath,
+                    bitmap,
+                    timestamp,
+                    bitmap.Size);
+            }
 
             lock (this._cacheLock)
             {

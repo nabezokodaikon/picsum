@@ -1,6 +1,7 @@
 using OpenCvSharp;
 using OpenCvSharp.Extensions;
 using SWF.Core.ConsoleAccessor;
+using System.Buffers;
 using System.Runtime.Versioning;
 
 namespace SWF.Core.ImageAccessor
@@ -84,8 +85,47 @@ namespace SWF.Core.ImageAccessor
 
         public static byte[] ToCompressionBinary(Mat mat)
         {
-            Cv2.ImEncode(".webp", mat, out var bf, _webPQuality);
+            Cv2.ImEncode(".jpeg", mat, out var bf, _webPQuality);
             return bf;
+        }
+
+        public static byte[] BitmapToBytes(Bitmap bmp)
+        {
+            ArgumentNullException.ThrowIfNull(bmp, nameof(bmp));
+
+            using (TimeMeasuring.Run(true, "OpenCVUtil.BitmapToBytes"))
+            {
+                using (var mat = ToMat(bmp))
+                {
+                    var bf = MatToBytes(mat);
+                    var length = bf.Length;
+                    var ret = ArrayPool<byte>.Shared.Rent(length);
+                    ret.AsMemory(0, length).Span.Clear();
+                    bf.CopyTo(ret, 0);
+                    return ret;
+                }
+            }
+        }
+
+        public static byte[] MatToBytes(Mat mat)
+        {
+            ArgumentNullException.ThrowIfNull(mat, nameof(mat));
+
+            using (TimeMeasuring.Run(true, "OpenCVUtil.MatToBytes"))
+            {
+                Cv2.ImEncode(".jpeg", mat, out var bf);
+                return bf;
+            }
+        }
+
+        public static Mat BytesToMat(byte[] bf)
+        {
+            ArgumentNullException.ThrowIfNull(bf, nameof(bf));
+
+            using (TimeMeasuring.Run(true, "OpenCVUtil.BytesToMat"))
+            {
+                return Cv2.ImDecode(bf, ImreadModes.Unchanged);
+            }
         }
     }
 }

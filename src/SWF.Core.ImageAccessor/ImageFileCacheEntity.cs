@@ -1,4 +1,5 @@
 using SWF.Core.FileAccessor;
+using System.Buffers;
 using System.Runtime.Versioning;
 
 namespace SWF.Core.ImageAccessor
@@ -7,34 +8,38 @@ namespace SWF.Core.ImageAccessor
     internal sealed class ImageFileCacheEntity
         : IDisposable, IEquatable<ImageFileCacheEntity>
     {
-        public static readonly ImageFileCacheEntity EMPTY = new()
-        {
-            FilePath = string.Empty,
-            Bitmap = null,
-            Timestamp = FileUtil.EMPTY_DATETIME,
-        };
+        public static readonly ImageFileCacheEntity EMPTY = new();
+
+        private const int MINIMUM_LENGTH = 1 * 1024 * 1024;
 
         private bool _disposed = false;
         private readonly int _hashCode;
 
         public string FilePath { get; private set; } = string.Empty;
-        public Bitmap? Bitmap { get; private set; }
         public DateTime Timestamp { get; private set; }
+        public Size Size { get; private set; }
+        public byte[] Bytes { get; private set; }
 
-        public ImageFileCacheEntity(string filePath, Bitmap bitmap, DateTime timestamp)
+        public ImageFileCacheEntity(
+            string filePath, Bitmap bmp, DateTime timestamp, Size size)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
-            ArgumentNullException.ThrowIfNull(bitmap, nameof(bitmap));
+            ArgumentNullException.ThrowIfNull(bmp, nameof(bmp));
 
             this.FilePath = filePath;
-            this.Bitmap = bitmap;
             this.Timestamp = timestamp;
+            this.Size = size;
             this._hashCode = HashCode.Combine(this.FilePath, this.Timestamp);
+
+            this.Bytes = OpenCVUtil.BitmapToBytes(bmp);
         }
 
         private ImageFileCacheEntity()
         {
-
+            this.FilePath = string.Empty;
+            this.Timestamp = FileUtil.EMPTY_DATETIME;
+            this.Size = ImageUtil.EMPTY_SIZE;
+            this.Bytes = [];
         }
 
         public void Dispose()
@@ -52,8 +57,13 @@ namespace SWF.Core.ImageAccessor
 
             if (disposing)
             {
-                this.Bitmap?.Dispose();
+                if (this.Bytes.Length > 0)
+                {
+                    ArrayPool<byte>.Shared.Return(this.Bytes);
+                }
             }
+
+            this.FilePath = string.Empty;
 
             this._disposed = true;
         }
