@@ -30,7 +30,9 @@ namespace SWF.Core.Job
 
         public OneWayJobQueue()
         {
-            this._task = Task.Run(this.DoWork);
+            this._task = Task.Factory.StartNew(
+                this.DoWork,
+                TaskCreationOptions.LongRunning);
         }
 
         public void Dispose()

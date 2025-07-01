@@ -51,7 +51,9 @@ namespace SWF.Core.Job
 
             this._context = context;
             this._taskName = $"{typeof(TJob).Name} {TaskID.GetNew()}";
-            this._task = Task.Run(this.DoWork);
+            this._task = Task.Factory.StartNew(
+                this.DoWork,
+                TaskCreationOptions.LongRunning);
         }
 
         public void Dispose()

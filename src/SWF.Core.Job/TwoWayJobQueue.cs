@@ -36,7 +36,9 @@ namespace SWF.Core.Job
             ArgumentNullException.ThrowIfNull(context, nameof(context));
 
             this._context = context;
-            this._task = Task.Run(this.DoWork);
+            this._task = Task.Factory.StartNew(
+                this.DoWork,
+                TaskCreationOptions.LongRunning);
         }
 
         public void Dispose()
