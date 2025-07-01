@@ -33,7 +33,7 @@ namespace PicSum.Main
                     AppConstants.StartBootTimeMeasurement();
 
                     var coreCount = Environment.ProcessorCount;
-                    ThreadPool.SetMinThreads(coreCount * 4, coreCount * 4);
+                    ThreadPool.SetMinThreads(coreCount, coreCount);
 
                     AssemblyPreloader.OptimizeStartup(
                         typeof(Accessibility.AnnoScope),
