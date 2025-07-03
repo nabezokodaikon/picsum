@@ -21,7 +21,7 @@ namespace PicSum.Main.UIComponent
     public partial class BrowserForm
         : GrassForm, ISender
     {
-        private static readonly Logger _logger = Log.GetLogger();
+        private static readonly Logger LOGGER = Log.GetLogger();
 
         private const float PADDING_TOP = 8f;
 
@@ -317,7 +317,7 @@ namespace PicSum.Main.UIComponent
                     }
                 }
 
-                _logger.Debug("初回表示されました。");
+                LOGGER.Debug("初回表示されました。");
             }
 
             this.SetControlRegion();

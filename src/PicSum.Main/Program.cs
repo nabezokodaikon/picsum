@@ -1,4 +1,3 @@
-using NLog;
 using PicSum.Main.Conf;
 using PicSum.Main.Mng;
 using SWF.Core.Base;
@@ -31,6 +30,8 @@ namespace PicSum.Main
                 try
                 {
                     AppConstants.StartBootTimeMeasurement();
+
+                    Thread.CurrentThread.Name = AppConstants.UI_THREAD_NAME;
 
                     var coreCount = Environment.ProcessorCount;
                     ThreadPool.SetMinThreads(coreCount, coreCount);
@@ -100,29 +101,26 @@ namespace PicSum.Main
                         );
                     }
 
-                    using (ScopeContext.PushProperty(Log.NLOG_PROPERTY, AppConstants.UI_THREAD_NAME))
+                    var logger = Log.GetLogger();
+
+                    logger.Info("アプリケーションを開始します。");
+
+                    AppDomain.CurrentDomain.AssemblyLoad += CurrentDomain_OnAssemblyLoad;
+                    AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+
+                    Application.ThreadException += Application_ThreadException;
+                    Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
+                    Application.SetHighDpiMode(HighDpiMode.PerMonitorV2);
+                    Application.EnableVisualStyles();
+                    Application.SetCompatibleTextRenderingDefault(false);
+
+                    using (var resource = new ResourceManager())
+                    using (var context = new Context())
                     {
-                        var logger = Log.GetLogger();
-
-                        logger.Info("アプリケーションを開始します。");
-
-                        AppDomain.CurrentDomain.AssemblyLoad += CurrentDomain_OnAssemblyLoad;
-                        AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
-
-                        Application.ThreadException += Application_ThreadException;
-                        Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
-                        Application.SetHighDpiMode(HighDpiMode.PerMonitorV2);
-                        Application.EnableVisualStyles();
-                        Application.SetCompatibleTextRenderingDefault(false);
-
-                        using (var resource = new ResourceManager())
-                        using (var context = new Context())
-                        {
-                            Application.Run(context);
-                        }
-
-                        logger.Info("アプリケーションを終了します。");
+                        Application.Run(context);
                     }
+
+                    logger.Info("アプリケーションを終了します。");
                 }
                 finally
                 {

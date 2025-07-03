@@ -15,7 +15,7 @@ namespace PicSum.Main.Mng
     internal sealed partial class ResourceManager
         : IDisposable
     {
-        private static readonly Logger _logger = Log.GetLogger();
+        private static readonly Logger LOGGER = Log.GetLogger();
 
         /// <summary>
         /// コンストラクタ
@@ -40,11 +40,11 @@ namespace PicSum.Main.Mng
             ImageViewerPageConfig.Instance.ImageDisplayMode = Config.Instance.ImageDisplayMode;
             ImageViewerPageConfig.Instance.ImageSizeMode = Config.Instance.ImageSizeMode;
 
-            _logger.Info($"現在のバージョン '{Config.Instance.GetCurrentVersion()}'");
+            LOGGER.Info($"現在のバージョン '{Config.Instance.GetCurrentVersion()}'");
 
             if (CommandLineArgs.IsCleanup())
             {
-                _logger.Info("コマンドライン引数に '--cleanup' が指定されました。");
+                LOGGER.Info("コマンドライン引数に '--cleanup' が指定されました。");
 
                 var thumbnailDBCleanupJob = new ThumbnailDBCleanupSyncJob();
                 thumbnailDBCleanupJob.Execute();
@@ -61,7 +61,7 @@ namespace PicSum.Main.Mng
                 Config.Instance.BuildVersion,
                 Config.Instance.RevisionVersion))
             {
-                _logger.Info($"バージョン '{Config.Instance.GetOldVersion()}' から起動されました。");
+                LOGGER.Info($"バージョン '{Config.Instance.GetOldVersion()}' から起動されました。");
 
                 var thumbnailDBCleanupJob = new ThumbnailDBCleanupSyncJob();
                 thumbnailDBCleanupJob.Execute();

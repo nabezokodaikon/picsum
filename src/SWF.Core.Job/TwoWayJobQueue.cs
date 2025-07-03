@@ -10,6 +10,7 @@ namespace SWF.Core.Job
     public sealed class TwoWayJobQueue
         : IDisposable
     {
+        private static readonly Logger LOGGER = Log.GetLogger();
         private static readonly string TASK_NAME = typeof(TwoWayJobQueue).Name;
 
         private bool _disposed = false;
@@ -24,11 +25,9 @@ namespace SWF.Core.Job
             ArgumentNullException.ThrowIfNull(context, nameof(context));
 
             this._context = context;
-            this._task = Task.Factory.StartNew(
+            this._task = Task.Run(
                 this.DoWork,
-                this._cancellationTokenSource.Token,
-                TaskCreationOptions.LongRunning,
-                TaskScheduler.Default);
+                this._cancellationTokenSource.Token);
         }
 
         public void Dispose()
@@ -46,9 +45,7 @@ namespace SWF.Core.Job
 
             if (disposing)
             {
-                var logger = Log.GetLogger();
-
-                logger.Trace($"{TASK_NAME} に終了リクエストを送ります。");
+                LOGGER.Trace($"{TASK_NAME} に終了リクエストを送ります。");
                 this._cancellationTokenSource.Cancel();
 
                 foreach (var job in this._queue.ToArray())
@@ -61,13 +58,13 @@ namespace SWF.Core.Job
                     job.BeginCancel();
                 }
 
-                logger.Trace($"{TASK_NAME} の終了を待機します。");
+                LOGGER.Trace($"{TASK_NAME} の終了を待機します。");
                 Task.WaitAll(this._task);
 
                 this._cancellationTokenSource.Dispose();
                 this._task.Dispose();
 
-                logger.Trace($"{TASK_NAME} が終了しました。");
+                LOGGER.Trace($"{TASK_NAME} が終了しました。");
             }
 
             this._disposed = true;
@@ -117,11 +114,11 @@ namespace SWF.Core.Job
                             }
                             catch (JobCancelException)
                             {
-                                Log.GetLogger().Debug($"{jobName} がキャンセルされました。");
+                                LOGGER.Debug($"{jobName} がキャンセルされました。");
                             }
                             catch (Exception ex)
                             {
-                                Log.GetLogger().Error(ex, $"{jobName} がUIスレッドで補足されない例外が発生しました。");
+                                LOGGER.Error(ex, $"{jobName} がUIスレッドで補足されない例外が発生しました。");
                                 ExceptionUtil.ShowFatalDialog("Unhandled UI Exception.", ex);
                             }
                         }
@@ -171,7 +168,7 @@ namespace SWF.Core.Job
                             catch (Exception ex)
                             {
                                 var jobName = $"{job.GetType().Name} {job.ID}";
-                                Log.GetLogger().Error(ex, $"{jobName} がUIスレッドで補足されない例外が発生しました。");
+                                LOGGER.Error(ex, $"{jobName} がUIスレッドで補足されない例外が発生しました。");
                                 ExceptionUtil.ShowFatalDialog("Unhandled UI Exception.", ex);
                             }
                         }
@@ -184,63 +181,58 @@ namespace SWF.Core.Job
 
         private async Task DoWork()
         {
-            using (ScopeContext.PushProperty(Log.NLOG_PROPERTY, TASK_NAME))
+            LOGGER.Trace($"{TASK_NAME} が開始されました。");
+
+            var token = this._cancellationTokenSource.Token;
+
+            try
             {
-                var logger = Log.GetLogger();
-
-                logger.Trace("開始されました。");
-
-                var token = this._cancellationTokenSource.Token;
-
-                try
+                while (true)
                 {
-                    while (true)
-                    {
-                        token.ThrowIfCancellationRequested();
+                    token.ThrowIfCancellationRequested();
 
-                        if (this._queue.TryPeek(out var job))
+                    if (this._queue.TryPeek(out var job))
+                    {
+                        try
                         {
-                            try
-                            {
-                                await job.ExecuteWrapper(token);
-                            }
-                            finally
-                            {
-                                if (this._queue.TryDequeue(out var dequeueJob))
-                                {
-                                    if (job != dequeueJob)
-                                    {
-#pragma warning disable CA2219
-                                        throw new InvalidOperationException("ジョブキューからPeekしたジョブとDequeueしたジョブが一致しません。");
-#pragma warning restore CA2219
-                                    }
-                                }
-                                else
-                                {
-#pragma warning disable CA2219
-                                    throw new InvalidOperationException("他のタスクでジョブキューの操作が行われました。");
-#pragma warning restore CA2219
-                                }
-                            }
+                            await job.ExecuteWrapper(token);
                         }
-                        else
+                        finally
                         {
-                            await Task.Delay(100, token);
+                            if (this._queue.TryDequeue(out var dequeueJob))
+                            {
+                                if (job != dequeueJob)
+                                {
+#pragma warning disable CA2219
+                                    throw new InvalidOperationException($"{TASK_NAME} のジョブキューからPeekしたジョブとDequeueしたジョブが一致しません。");
+#pragma warning restore CA2219
+                                }
+                            }
+                            else
+                            {
+#pragma warning disable CA2219
+                                throw new InvalidOperationException($"{TASK_NAME} で他のタスクがジョブキューの操作を行いました。");
+#pragma warning restore CA2219
+                            }
                         }
                     }
+                    else
+                    {
+                        await Task.Delay(100, token);
+                    }
                 }
-                catch (OperationCanceledException)
-                {
-                    logger.Trace("キャンセルされました。");
-                }
-                catch (Exception ex)
-                {
-                    logger.Error(ex, "補足されない例外が発生しました。");
-                }
-                finally
-                {
-                    logger.Trace("終了します。");
-                }
+            }
+            catch (OperationCanceledException)
+            {
+                LOGGER.Trace($"{TASK_NAME} がキャンセルされました。");
+            }
+            catch (Exception ex)
+            {
+                LOGGER.Error(ex, $"{TASK_NAME} で補足されない例外が発生しました。");
+            }
+            finally
+            {
+                LOGGER.Trace($"{TASK_NAME} が終了します。");
             }
         }
     }
