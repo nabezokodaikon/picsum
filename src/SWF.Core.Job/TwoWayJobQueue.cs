@@ -16,20 +16,8 @@ namespace SWF.Core.Job
         private readonly SynchronizationContext _context;
         private readonly Task _task;
         private readonly ConcurrentQueue<AbstractAsyncJob> _queue = new();
+        private readonly CancellationTokenSource _cancellationTokenSource = new();
         private readonly Dictionary<Type, AbstractAsyncJob> _currentJobsDictionary = [];
-        private long _isAbort = 0;
-
-        private bool IsAbort
-        {
-            get
-            {
-                return Interlocked.Read(ref this._isAbort) == 1;
-            }
-            set
-            {
-                Interlocked.Exchange(ref this._isAbort, Convert.ToInt64(value));
-            }
-        }
 
         public TwoWayJobQueue(SynchronizationContext? context)
         {
@@ -38,7 +26,9 @@ namespace SWF.Core.Job
             this._context = context;
             this._task = Task.Factory.StartNew(
                 this.DoWork,
-                TaskCreationOptions.LongRunning);
+                this._cancellationTokenSource.Token,
+                TaskCreationOptions.LongRunning,
+                TaskScheduler.Default);
         }
 
         public void Dispose()
@@ -59,7 +49,7 @@ namespace SWF.Core.Job
                 var logger = Log.GetLogger();
 
                 logger.Trace($"{TASK_NAME} に終了リクエストを送ります。");
-                this.IsAbort = true;
+                this._cancellationTokenSource.Cancel();
 
                 foreach (var job in this._queue.ToArray())
                 {
@@ -73,6 +63,9 @@ namespace SWF.Core.Job
 
                 logger.Trace($"{TASK_NAME} の終了を待機します。");
                 Task.WaitAll(this._task);
+
+                this._cancellationTokenSource.Dispose();
+                this._task.Dispose();
 
                 logger.Trace($"{TASK_NAME} が終了しました。");
             }
@@ -197,15 +190,13 @@ namespace SWF.Core.Job
 
                 logger.Trace("開始されました。");
 
+                var token = this._cancellationTokenSource.Token;
+
                 try
                 {
                     while (true)
                     {
-                        if (this.IsAbort)
-                        {
-                            logger.Trace("終了リクエストがありました。");
-                            return;
-                        }
+                        token.ThrowIfCancellationRequested();
 
                         if (this._queue.TryPeek(out var job))
                         {
@@ -234,9 +225,13 @@ namespace SWF.Core.Job
                         }
                         else
                         {
-                            await Task.Delay(100);
+                            await Task.Delay(100, token);
                         }
                     }
+                }
+                catch (OperationCanceledException)
+                {
+                    logger.Trace("キャンセルされました。");
                 }
                 catch (Exception ex)
                 {
