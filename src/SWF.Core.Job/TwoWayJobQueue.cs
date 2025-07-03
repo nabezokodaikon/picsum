@@ -153,13 +153,19 @@ namespace SWF.Core.Job
                     {
                         if (job.CanUIThreadAccess())
                         {
+                            var jobName = $"{job.GetType().Name} {job.ID}";
+
                             try
                             {
+                                job.CheckCancel();
                                 callback.Invoke(result);
+                            }
+                            catch (JobCancelException)
+                            {
+                                LOGGER.Debug($"{jobName} がキャンセルされました。");
                             }
                             catch (Exception ex)
                             {
-                                var jobName = $"{job.GetType().Name} {job.ID}";
                                 LOGGER.Error(ex, $"{jobName} がUIスレッドで補足されない例外が発生しました。");
                                 ExceptionUtil.ShowFatalDialog("Unhandled UI Exception.", ex);
                             }

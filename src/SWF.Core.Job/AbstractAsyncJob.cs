@@ -105,7 +105,7 @@ namespace SWF.Core.Job
                 }
                 catch (JobException ex)
                 {
-                    logger.Error($"{jobName} {ex}");
+                    logger.Error(ex, $"{jobName} で例外が発生しました。");
                 }
                 catch (OperationCanceledException)
                 {
