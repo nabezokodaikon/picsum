@@ -102,12 +102,10 @@ namespace SWF.Core.Job
 
                             try
                             {
-                                job.CheckCancel();
-                                callback.Invoke(result);
-                            }
-                            catch (JobCancelException)
-                            {
-                                LOGGER.Debug($"{jobName} がキャンセルされました。");
+                                if (!job.IsCancel)
+                                {
+                                    callback(result);
+                                }
                             }
                             catch (Exception ex)
                             {
@@ -157,12 +155,10 @@ namespace SWF.Core.Job
 
                             try
                             {
-                                job.CheckCancel();
-                                callback.Invoke(result);
-                            }
-                            catch (JobCancelException)
-                            {
-                                LOGGER.Debug($"{jobName} がキャンセルされました。");
+                                if (!job.IsCancel)
+                                {
+                                    callback(result);
+                                }
                             }
                             catch (Exception ex)
                             {

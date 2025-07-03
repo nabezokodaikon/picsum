@@ -97,7 +97,10 @@ namespace SWF.Core.Job
 
                                 try
                                 {
-                                    callback.Invoke(result);
+                                    if (!job.IsCancel)
+                                    {
+                                        callback(result);
+                                    }
                                 }
                                 catch (Exception ex)
                                 {
