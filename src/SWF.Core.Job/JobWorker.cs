@@ -170,13 +170,13 @@ namespace SWF.Core.Job
                         var job = this.CurrentJob;
                         if (job == null || job == previewJob)
                         {
-                            await Task.Delay(1);
+                            await Task.Delay(1, token);
                             continue;
                         }
 
                         previewJob = job;
 
-                        await job.ExecuteWrapper();
+                        await job.ExecuteWrapper(token);
 
                         await Task.Delay(1, token);
                     }

@@ -82,7 +82,7 @@ namespace PicSum.Job.Jobs
 
                     this.CheckCancel();
 
-                    await Task.Delay(1);
+                    await Task.Delay(1, this.CancellationToken);
                 }
             }
             catch (JobCancelException)

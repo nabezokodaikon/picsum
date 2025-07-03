@@ -17,40 +17,31 @@ namespace PicSum.Job.Jobs
             {
                 this.CheckCancel();
 
-                try
+                using (var pipeServer = new NamedPipeServerStream(
+                    AppConstants.PIPE_NAME,
+                    PipeDirection.In,
+                    1,
+                    PipeTransmissionMode.Byte,
+                    PipeOptions.Asynchronous))
                 {
-                    using (var pipeServer = new NamedPipeServerStream(
-                        AppConstants.PIPE_NAME, PipeDirection.In,
-                        1,
-                        PipeTransmissionMode.Byte,
-                        PipeOptions.Asynchronous))
-                    using (var cts = new CancellationTokenSource(1000))
+                    await pipeServer.WaitForConnectionAsync(this.CancellationToken);
+
+                    this.CheckCancel();
+
+                    using (var reader = new StreamReader(pipeServer))
                     {
-                        await pipeServer.WaitForConnectionAsync(cts.Token);
-
-                        this.CheckCancel();
-
-                        using (var reader = new StreamReader(pipeServer))
+                        var receivedArgs = await reader.ReadLineAsync();
+                        if (!string.IsNullOrEmpty(receivedArgs)
+                            && FileUtil.CanAccess(receivedArgs)
+                            && ImageUtil.IsImageFile(receivedArgs))
                         {
-                            var receivedArgs = await reader.ReadLineAsync();
-                            if (!string.IsNullOrEmpty(receivedArgs)
-                                && FileUtil.CanAccess(receivedArgs)
-                                && ImageUtil.IsImageFile(receivedArgs))
+                            this.Callback(new ValueResult<string>
                             {
-                                this.Callback(new ValueResult<string>
-                                {
-                                    Value = receivedArgs,
-                                });
-                            }
+                                Value = receivedArgs,
+                            });
                         }
                     }
                 }
-                catch (OperationCanceledException)
-                {
-                    continue;
-                }
-
-                await Task.Delay(1);
             }
         }
     }

@@ -1,6 +1,5 @@
 using SWF.Core.ConsoleAccessor;
 using SWF.Core.Job;
-using System.Diagnostics;
 using System.Runtime.Versioning;
 
 namespace PicSum.Job.Jobs
@@ -11,25 +10,19 @@ namespace PicSum.Job.Jobs
     {
         protected override async Task Execute()
         {
-            const long INTERVAL = 1000 * 5;
+            const int INTERVAL = 1000 * 5;
 
-            var sw = Stopwatch.StartNew();
             while (true)
             {
                 this.CheckCancel();
 
-                await Task.Delay(100);
+                await Task.Delay(INTERVAL, this.CancellationToken);
 
-                if (sw.ElapsedMilliseconds > INTERVAL)
+                using (TimeMeasuring.Run(false, "GCCollectRunJob.Execute GC.Collect"))
                 {
-                    using (TimeMeasuring.Run(false, "GCCollectRunJob.Execute GC.Collect"))
-                    {
-                        GC.Collect();
-                        GC.WaitForPendingFinalizers();
-                        GC.Collect();
-                    }
-
-                    sw = Stopwatch.StartNew();
+                    GC.Collect();
+                    GC.WaitForPendingFinalizers();
+                    GC.Collect();
                 }
             }
         }

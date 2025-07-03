@@ -202,7 +202,7 @@ namespace SWF.Core.Job
                         {
                             try
                             {
-                                await job.ExecuteWrapper();
+                                await job.ExecuteWrapper(token);
                             }
                             finally
                             {

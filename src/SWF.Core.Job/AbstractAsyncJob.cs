@@ -37,7 +37,7 @@ namespace SWF.Core.Job
             Log.GetLogger().Error($"{this.ID} {ex}");
         }
 
-        internal abstract Task ExecuteWrapper();
+        internal abstract Task ExecuteWrapper(CancellationToken token);
 
         internal void BeginCancel()
         {
@@ -68,6 +68,8 @@ namespace SWF.Core.Job
         where TParameter : class, IJobParameter
         where TResult : IJobResult
     {
+        public CancellationToken CancellationToken { get; private set; } = CancellationToken.None;
+
         internal TParameter? Parameter { get; set; } = null;
         internal Action<TResult>? CallbackAction { get; set; } = null;
 
@@ -76,8 +78,9 @@ namespace SWF.Core.Job
 
         }
 
-        internal override async Task ExecuteWrapper()
+        internal override async Task ExecuteWrapper(CancellationToken token)
         {
+            this.CancellationToken = token;
             var jobName = $"{this.GetType().Name} {this.ID}";
             var logger = Log.GetLogger();
 
@@ -103,6 +106,10 @@ namespace SWF.Core.Job
                 catch (JobException ex)
                 {
                     logger.Error($"{jobName} {ex}");
+                }
+                catch (OperationCanceledException)
+                {
+                    throw;
                 }
                 catch (Exception ex)
                 {
