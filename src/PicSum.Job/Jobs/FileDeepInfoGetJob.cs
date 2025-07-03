@@ -19,6 +19,28 @@ namespace PicSum.Job.Jobs
     public sealed class FileDeepInfoGetJob
         : AbstractTwoWayJob<FileDeepInfoGetParameter, FileDeepInfoGetResult>
     {
+        protected override Task Execute(FileDeepInfoGetParameter param)
+        {
+            if (param.FilePathList == null)
+            {
+                throw new ArgumentException("ファイルパスリストがNULLです。", nameof(param));
+            }
+
+            this.CheckCancel();
+
+            var filePath = param.FilePathList[0];
+            if (Instance<IThumbnailCacher>.Value.GetCache(filePath) == ThumbnailCacheEntity.EMPTY)
+            {
+                this.CallbackLodingInfo(param);
+                this.CheckCancel();
+            }
+
+            this.CallbackInfo(param);
+            this.CheckCancel();
+
+            return Task.CompletedTask;
+        }
+
         private void CallbackLodingInfo(FileDeepInfoGetParameter param)
         {
             if (param.FilePathList == null)
@@ -139,28 +161,6 @@ namespace PicSum.Job.Jobs
             }
 
             this.Callback(result);
-        }
-
-        protected override Task Execute(FileDeepInfoGetParameter param)
-        {
-            if (param.FilePathList == null)
-            {
-                throw new ArgumentException("ファイルパスリストがNULLです。", nameof(param));
-            }
-
-            this.CheckCancel();
-
-            var filePath = param.FilePathList[0];
-            if (Instance<IThumbnailCacher>.Value.GetCache(filePath) == ThumbnailCacheEntity.EMPTY)
-            {
-                this.CallbackLodingInfo(param);
-                this.CheckCancel();
-            }
-
-            this.CallbackInfo(param);
-            this.CheckCancel();
-
-            return Task.CompletedTask;
         }
     }
 }
