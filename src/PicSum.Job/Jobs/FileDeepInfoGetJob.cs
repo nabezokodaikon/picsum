@@ -86,21 +86,13 @@ namespace PicSum.Job.Jobs
             }
             else
             {
-                try
+                using (var con = Instance<IFileInfoDB>.Value.Connect())
                 {
-                    using (var con = Instance<IFileInfoDB>.Value.Connect())
-                    {
-                        var tagsGetLogic = new FilesTagsGetLogic(this);
-                        result.TagInfoList = tagsGetLogic.Execute(con, result.FilePathList);
-                    }
+                    var tagsGetLogic = new FilesTagsGetLogic(this);
+                    result.TagInfoList = tagsGetLogic.Execute(con, result.FilePathList);
+                }
 
-                    return result;
-                }
-                catch (JobCancelException)
-                {
-                    result.FileInfo?.Thumbnail?.ThumbnailImage?.Dispose();
-                    throw;
-                }
+                return result;
             }
         }
     }

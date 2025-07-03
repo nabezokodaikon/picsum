@@ -19,8 +19,6 @@ namespace PicSum.Job.Jobs
                 throw new ArgumentException("ファイルパスリストがNULLです。", nameof(parameter));
             }
 
-            this.CheckCancel();
-
             var logic = new ImageFileReadLogic(this);
 
             var mainIndex =
