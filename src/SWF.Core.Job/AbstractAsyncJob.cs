@@ -12,7 +12,7 @@ namespace SWF.Core.Job
 
         public JobID ID { get; private set; } = JobID.GetNew();
 
-        private bool IsCancel
+        internal bool IsCancel
         {
             get
             {

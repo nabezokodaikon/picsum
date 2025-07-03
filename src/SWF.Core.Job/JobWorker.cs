@@ -1,6 +1,7 @@
 using NLog;
 using SWF.Core.Base;
 using SWF.Core.ConsoleAccessor;
+using System.Collections.Concurrent;
 using System.Runtime.Versioning;
 
 namespace SWF.Core.Job
@@ -19,20 +20,9 @@ namespace SWF.Core.Job
 
         private readonly Task _task;
         private readonly CancellationTokenSource _cancellationTokenSource = new();
+        private readonly BlockingCollection<AbstractAsyncJob> _blockingJobCollection = [];
+        private readonly List<AbstractAsyncJob> _currentJobList = [];
         private readonly SynchronizationContext _context;
-        private TJob? _currentJob = null;
-
-        private TJob? CurrentJob
-        {
-            get
-            {
-                return Interlocked.CompareExchange(ref this._currentJob, null, null);
-            }
-            set
-            {
-                Interlocked.Exchange(ref this._currentJob, value);
-            }
-        }
 
         public TwoWayJob(SynchronizationContext? context)
         {
@@ -60,16 +50,16 @@ namespace SWF.Core.Job
             if (disposing)
             {
                 LOGGER.Trace($"{TASK_NAME} に終了リクエストを送ります。");
-                this._cancellationTokenSource.Cancel();
                 this.BeginCancel();
+                this._cancellationTokenSource.Cancel();
 
                 LOGGER.Trace($"{TASK_NAME} の終了を待機します。");
                 Task.WaitAll(this._task);
 
+                LOGGER.Trace($"{TASK_NAME} が終了しました。");
+
                 this._cancellationTokenSource.Dispose();
                 this._task.Dispose();
-
-                LOGGER.Trace($"{TASK_NAME} が終了しました。");
             }
 
             this._disposed = true;
@@ -77,8 +67,8 @@ namespace SWF.Core.Job
 
         public void BeginCancel()
         {
-            var job = this.CurrentJob;
-            job?.BeginCancel();
+            this._currentJobList.ForEach(_ => _.BeginCancel());
+            this._currentJobList.Clear();
         }
 
         public void StartJob(ISender sender, TJobParameter? parameter, Action<TJobResult>? callback)
@@ -120,7 +110,8 @@ namespace SWF.Core.Job
                 };
             }
 
-            this.CurrentJob = job;
+            this._currentJobList.Add(job);
+            this._blockingJobCollection.Add(job);
         }
 
         public void StartJob(ISender sender, Action<TJobResult> callback)
@@ -152,26 +143,16 @@ namespace SWF.Core.Job
 
             var token = this._cancellationTokenSource.Token;
 
-            TJob? previewJob = null;
-
             try
             {
-                while (true)
+                foreach (var job in this._blockingJobCollection.GetConsumingEnumerable(token))
                 {
                     token.ThrowIfCancellationRequested();
 
-                    var job = this.CurrentJob;
-                    if (job == null || job == previewJob)
+                    if (!job.IsCancel)
                     {
-                        await Task.Delay(1, token);
-                        continue;
+                        await job.ExecuteWrapper(token);
                     }
-
-                    previewJob = job;
-
-                    await job.ExecuteWrapper(token);
-
-                    await Task.Delay(1, token);
                 }
             }
             catch (OperationCanceledException)

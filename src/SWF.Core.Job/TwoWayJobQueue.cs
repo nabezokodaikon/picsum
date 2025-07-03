@@ -16,9 +16,9 @@ namespace SWF.Core.Job
         private bool _disposed = false;
         private readonly SynchronizationContext _context;
         private readonly Task _task;
-        private readonly ConcurrentQueue<AbstractAsyncJob> _queue = new();
         private readonly CancellationTokenSource _cancellationTokenSource = new();
-        private readonly Dictionary<Type, AbstractAsyncJob> _currentJobsDictionary = [];
+        private readonly BlockingCollection<AbstractAsyncJob> _blockingJobCollection = [];
+        private readonly Dictionary<Type, AbstractAsyncJob> _currentJobDictionary = [];
 
         public TwoWayJobQueue(SynchronizationContext? context)
         {
@@ -46,25 +46,20 @@ namespace SWF.Core.Job
             if (disposing)
             {
                 LOGGER.Trace($"{TASK_NAME} に終了リクエストを送ります。");
+                foreach (var job in this._currentJobDictionary.Values)
+                {
+                    job.BeginCancel();
+                }
+                this._currentJobDictionary.Clear();
                 this._cancellationTokenSource.Cancel();
-
-                foreach (var job in this._queue.ToArray())
-                {
-                    job.BeginCancel();
-                }
-
-                foreach (var job in this._currentJobsDictionary.Values)
-                {
-                    job.BeginCancel();
-                }
 
                 LOGGER.Trace($"{TASK_NAME} の終了を待機します。");
                 Task.WaitAll(this._task);
 
+                LOGGER.Trace($"{TASK_NAME} が終了しました。");
+
                 this._cancellationTokenSource.Dispose();
                 this._task.Dispose();
-
-                LOGGER.Trace($"{TASK_NAME} が終了しました。");
             }
 
             this._disposed = true;
@@ -82,11 +77,11 @@ namespace SWF.Core.Job
 
             var type = typeof(TJob);
 
-            if (this._currentJobsDictionary.TryGetValue(
+            if (this._currentJobDictionary.TryGetValue(
                 type, out var currentJob))
             {
                 currentJob.BeginCancel();
-                this._currentJobsDictionary.Remove(type);
+                this._currentJobDictionary.Remove(type);
             }
 
             var job = new TJob()
@@ -94,8 +89,6 @@ namespace SWF.Core.Job
                 Sender = sender,
                 Parameter = parameter,
             };
-
-            this._currentJobsDictionary.Add(type, job);
 
             job.CallbackAction = result =>
             {
@@ -126,7 +119,8 @@ namespace SWF.Core.Job
                 }
             };
 
-            this._queue.Enqueue(job);
+            this._currentJobDictionary.Add(type, job);
+            this._blockingJobCollection.Add(job);
         }
 
         public void Enqueue<TJob, TJobResult>(
@@ -139,19 +133,17 @@ namespace SWF.Core.Job
 
             var type = typeof(TJob);
 
-            if (this._currentJobsDictionary.TryGetValue(
+            if (this._currentJobDictionary.TryGetValue(
                 type, out var currentJob))
             {
                 currentJob.BeginCancel();
-                this._currentJobsDictionary.Remove(type);
+                this._currentJobDictionary.Remove(type);
             }
 
             var job = new TJob()
             {
                 Sender = sender,
             };
-
-            this._currentJobsDictionary.Add(type, job);
 
             job.CallbackAction = result =>
             {
@@ -176,7 +168,8 @@ namespace SWF.Core.Job
                 }
             };
 
-            this._queue.Enqueue(job);
+            this._currentJobDictionary.Add(type, job);
+            this._blockingJobCollection.Add(job);
         }
 
         private async Task DoWork()
@@ -187,38 +180,13 @@ namespace SWF.Core.Job
 
             try
             {
-                while (true)
+                foreach (var job in this._blockingJobCollection.GetConsumingEnumerable(token))
                 {
                     token.ThrowIfCancellationRequested();
 
-                    if (this._queue.TryPeek(out var job))
+                    if (!job.IsCancel)
                     {
-                        try
-                        {
-                            await job.ExecuteWrapper(token);
-                        }
-                        finally
-                        {
-                            if (this._queue.TryDequeue(out var dequeueJob))
-                            {
-                                if (job != dequeueJob)
-                                {
-#pragma warning disable CA2219
-                                    throw new InvalidOperationException($"{TASK_NAME} のジョブキューからPeekしたジョブとDequeueしたジョブが一致しません。");
-#pragma warning restore CA2219
-                                }
-                            }
-                            else
-                            {
-#pragma warning disable CA2219
-                                throw new InvalidOperationException($"{TASK_NAME} で他のタスクがジョブキューの操作を行いました。");
-#pragma warning restore CA2219
-                            }
-                        }
-                    }
-                    else
-                    {
-                        await Task.Delay(100, token);
+                        await job.ExecuteWrapper(token);
                     }
                 }
             }
