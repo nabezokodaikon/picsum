@@ -4,7 +4,6 @@ using PicSum.Job.Results;
 using SWF.Core.Base;
 using SWF.Core.ImageAccessor;
 using SWF.Core.Job;
-using System.Diagnostics;
 using System.Runtime.Versioning;
 
 namespace PicSum.Job.Jobs
@@ -20,7 +19,7 @@ namespace PicSum.Job.Jobs
                 throw new ArgumentException("ファイルパスリストがNULLです。", nameof(parameter));
             }
 
-            await this.Wait();
+            await Task.Delay(1, this.CancellationToken);
 
             var logic = new ImageFileReadLogic(this);
 
@@ -65,29 +64,6 @@ namespace PicSum.Job.Jobs
             {
                 this.Callback(logic.CreateLoadingResult(
                     mainIndex, mainFilePath, true, false, mainSize, parameter.ZoomValue));
-            }
-        }
-
-        private async Task Wait()
-        {
-            try
-            {
-                var sw = Stopwatch.StartNew();
-                while (true)
-                {
-                    if (sw.ElapsedMilliseconds > 1)
-                    {
-                        return;
-                    }
-
-                    this.CheckCancel();
-
-                    await Task.Delay(1, this.CancellationToken);
-                }
-            }
-            catch (JobCancelException)
-            {
-                return;
             }
         }
     }
