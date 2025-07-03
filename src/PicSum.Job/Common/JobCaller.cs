@@ -22,6 +22,7 @@ namespace PicSum.Job.Common
         public readonly FastLazy<OneWayJob<ImageFileCacheJob, ImageFileCacheParameter>> ImageFileCacheJob = new(() => new(context));
         public readonly FastLazy<TwoWayJob<ThumbnailsGetJob, ThumbnailsGetParameter, ThumbnailImageResult>> ThumbnailsGetJob = new(() => new(context));
         public readonly FastLazy<TwoWayJob<FileDeepInfoGetJob, FileDeepInfoGetParameter, FileDeepInfoGetResult>> FileDeepInfoGetJob = new(() => new(context));
+        public readonly FastLazy<TwoWayJob<FileDeepInfoLoadingJob, FileDeepInfoGetParameter, FileDeepInfoGetResult>> FileDeepInfoLoadingJob = new(() => new(context));
         public readonly FastLazy<TwoWayJob<PipeServerJob, ValueResult<string>>> PipeServerJob = new(() => new(context));
         public readonly FastLazy<OneWayJob<GCCollectRunJob>> GCCollectRunJob = new(() => new(context));
 
@@ -48,6 +49,7 @@ namespace PicSum.Job.Common
                 this.ImageFileCacheJob.Dispose();
                 this.ThumbnailsGetJob.Dispose();
                 this.FileDeepInfoGetJob.Dispose();
+                this.FileDeepInfoLoadingJob.Dispose();
                 this.PipeServerJob.Dispose();
                 this.GCCollectRunJob.Dispose();
             }

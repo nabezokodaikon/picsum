@@ -1,8 +1,7 @@
-using PicSum.DatabaseAccessor.Connection;
+using PicSum.Job.Entities;
 using PicSum.Job.Logics;
 using PicSum.Job.Parameters;
 using PicSum.Job.Results;
-using SWF.Core.Base;
 using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
 using SWF.Core.Job;
@@ -10,11 +9,8 @@ using System.Runtime.Versioning;
 
 namespace PicSum.Job.Jobs
 {
-    /// <summary>
-    /// ファイルの深い情報取得非同期ジョブ
-    /// </summary>
     [SupportedOSPlatform("windows10.0.17763.0")]
-    public sealed class FileDeepInfoGetJob
+    public sealed class FileDeepInfoLoadingJob
         : AbstractTwoWayJob<FileDeepInfoGetParameter, FileDeepInfoGetResult>
     {
         protected override Task Execute(FileDeepInfoGetParameter param)
@@ -25,9 +21,6 @@ namespace PicSum.Job.Jobs
             }
 
             var result = this.CreateCallbackResult(param);
-
-            this.CheckCancel();
-
             this.Callback(result);
 
             return Task.CompletedTask;
@@ -40,30 +33,18 @@ namespace PicSum.Job.Jobs
                 throw new NullReferenceException("ファイルパスリストがNULLです。");
             }
 
-            var result = new FileDeepInfoGetResult
-            {
-                FilePathList = param.FilePathList,
-            };
-
             if (param.FilePathList.Length == 1)
             {
+                var result = new FileDeepInfoGetResult
+                {
+                    FilePathList = param.FilePathList,
+                };
+
                 try
                 {
-                    var deepInfoGetLogic = new FileDeepInfoGetLogic(this);
                     var filePath = param.FilePathList[0];
-                    var fileInfo = deepInfoGetLogic.Get(filePath, param.ThumbnailSize, true);
-
-                    this.CheckCancel();
-
-                    using (var con = Instance<IFileInfoDB>.Value.Connect())
-                    {
-                        var ratingGetLogic = new FileRatingGetLogic(this);
-                        fileInfo.Rating = ratingGetLogic.Execute(con, filePath);
-                    }
-
-                    this.CheckCancel();
-
-                    result.FileInfo = fileInfo;
+                    var deepInfoGetLogic = new FileDeepInfoGetLogic(this);
+                    result.FileInfo = deepInfoGetLogic.Get(filePath, param.ThumbnailSize, false);
                     return result;
                 }
                 catch (JobCancelException)
@@ -74,33 +55,21 @@ namespace PicSum.Job.Jobs
                 catch (FileUtilException ex)
                 {
                     result.FileInfo?.Thumbnail?.ThumbnailImage?.Dispose();
-                    this.WriteErrorLog(new JobException(this.ID, ex));
-                    return FileDeepInfoGetResult.ERROR;
+                    throw new JobException(this.ID, ex);
                 }
                 catch (ImageUtilException ex)
                 {
                     result.FileInfo?.Thumbnail?.ThumbnailImage?.Dispose();
-                    this.WriteErrorLog(new JobException(this.ID, ex));
-                    return FileDeepInfoGetResult.ERROR;
+                    throw new JobException(this.ID, ex);
                 }
             }
             else
             {
-                try
+                return new FileDeepInfoGetResult
                 {
-                    using (var con = Instance<IFileInfoDB>.Value.Connect())
-                    {
-                        var tagsGetLogic = new FilesTagsGetLogic(this);
-                        result.TagInfoList = tagsGetLogic.Execute(con, result.FilePathList);
-                    }
-
-                    return result;
-                }
-                catch (JobCancelException)
-                {
-                    result.FileInfo?.Thumbnail?.ThumbnailImage?.Dispose();
-                    throw;
-                }
+                    FilePathList = param.FilePathList,
+                    TagInfoList = new ListEntity<FileTagInfoEntity>(0)
+                };
             }
         }
     }

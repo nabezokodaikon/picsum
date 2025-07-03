@@ -55,6 +55,7 @@ namespace PicSum.UIComponent.InfoPanel
             = new("Yu Gothic UI", 14F, FontStyle.Bold, GraphicsUnit.Pixel);
         private readonly Dictionary<float, Font> _tagFontCache = [];
         private readonly Dictionary<float, Font> _allTagFontCache = [];
+        private bool _isLoading = false;
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public new int TabIndex
@@ -244,6 +245,8 @@ namespace PicSum.UIComponent.InfoPanel
                     return;
                 }
 
+                this._isLoading = true;
+
                 var scale = WindowUtil.GetCurrentWindowScale(this);
                 var param = new FileDeepInfoGetParameter
                 {
@@ -253,6 +256,22 @@ namespace PicSum.UIComponent.InfoPanel
                         ThumbnailUtil.THUMBNAIL_MAXIMUM_SIZE)
                 };
 
+                Instance<JobCaller>.Value.FileDeepInfoLoadingJob.Value
+                    .StartJob(this, param, _ =>
+                    {
+                        if (this.disposed)
+                        {
+                            return;
+                        }
+
+                        if (!this._isLoading)
+                        {
+                            return;
+                        }
+
+                        this.GetFileInfoJob_Callback(_);
+                    });
+
                 Instance<JobCaller>.Value.FileDeepInfoGetJob.Value
                     .StartJob(this, param, _ =>
                     {
@@ -260,6 +279,8 @@ namespace PicSum.UIComponent.InfoPanel
                         {
                             return;
                         }
+
+                        this._isLoading = false;
 
                         this.GetFileInfoJob_Callback(_);
                     });
