@@ -65,12 +65,6 @@ namespace SWF.Core.Job
             GC.SuppressFinalize(this);
         }
 
-
-        private void Dispose(bool disposing)
-        {
-
-        }
-
         public void Enqueue<TJob, TJobParameter, TJobResult>(
             ISender sender, TJobParameter parameter, Action<TJobResult> callback)
             where TJob : AbstractTwoWayJob<TJobParameter, TJobResult>, new()
