@@ -26,7 +26,7 @@ namespace PicSum.Main
         {
             this._resourceManager = new();
 
-            this._browserManager.BrowserNothing += new(this.BrowserManager_BrowserNothing);
+            this._browserManager.BrowserNothing += this.BrowserManager_BrowserNothing;
 
             Instance<JobCaller>.Value.GCCollectRunJob.Value
                 .StartJob(this);
