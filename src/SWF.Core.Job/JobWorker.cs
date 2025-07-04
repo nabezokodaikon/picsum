@@ -56,9 +56,16 @@ namespace SWF.Core.Job
             this._jobsChannel.Writer.Complete();
             this._cancellationTokenSource.Cancel();
 
-            LOGGER.Trace($"{TASK_NAME} の終了を待機します。");
-            await this._task;
-            LOGGER.Trace($"{TASK_NAME} が終了しました。");
+            try
+            {
+                LOGGER.Trace($"{TASK_NAME} の終了を待機します。");
+                await this._task;
+                LOGGER.Trace($"{TASK_NAME} が終了しました。");
+            }
+            catch (OperationCanceledException)
+            {
+                LOGGER.Trace($"{TASK_NAME} はキャンセルにより終了しました。");
+            }
 
             this._cancellationTokenSource.Dispose();
             this._disposed = true;
