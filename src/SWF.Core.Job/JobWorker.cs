@@ -67,7 +67,6 @@ namespace SWF.Core.Job
                 LOGGER.Trace($"{TASK_NAME} が終了しました。");
 
                 this._cancellationTokenSource.Dispose();
-                this._task.Dispose();
             }
 
             this._disposed = true;
