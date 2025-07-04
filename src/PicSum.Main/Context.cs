@@ -17,7 +17,7 @@ namespace PicSum.Main
         : ApplicationContext, ISender
     {
         private readonly ResourceManager _resourceManager;
-        private readonly BrowserManager browserManager = new();
+        private readonly BrowserManager _browserManager = new();
 
         public bool IsHandleCreated { get; private set; } = true;
         public bool IsDisposed { get; private set; }
@@ -26,7 +26,7 @@ namespace PicSum.Main
         {
             this._resourceManager = new();
 
-            this.browserManager.BrowserNothing += new(this.BrowserManager_BrowserNothing);
+            this._browserManager.BrowserNothing += new(this.BrowserManager_BrowserNothing);
 
             Instance<JobCaller>.Value.GCCollectRunJob.Value
                 .StartJob(this);
@@ -44,7 +44,7 @@ namespace PicSum.Main
                         return;
                     }
 
-                    var form = this.browserManager.GetActiveBrowser();
+                    var form = this._browserManager.GetActiveBrowser();
                     var directoryPath = FileUtil.GetParentDirectoryPath(_.Value);
 
                     var sortInfo = new SortInfo();
@@ -74,7 +74,7 @@ namespace PicSum.Main
                     form.Focus();
                 });
 
-            var form = this.browserManager.GetActiveBrowser();
+            var form = this._browserManager.GetActiveBrowser();
             form.Show();
         }
 
