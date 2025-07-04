@@ -1,8 +1,8 @@
 using NLog;
 using SWF.Core.Base;
 using SWF.Core.ConsoleAccessor;
-using System.Collections.Concurrent;
 using System.Runtime.Versioning;
+using System.Threading.Channels;
 
 namespace SWF.Core.Job
 {
@@ -17,7 +17,14 @@ namespace SWF.Core.Job
         private readonly SynchronizationContext _context;
         private readonly Task _task;
         private readonly CancellationTokenSource _cancellationTokenSource = new();
-        private readonly BlockingCollection<AbstractAsyncJob> _blockingJobCollection = [];
+        private readonly Channel<AbstractAsyncJob> _jobsChannel
+            = Channel.CreateBounded<AbstractAsyncJob>(new BoundedChannelOptions(1)
+            {
+                AllowSynchronousContinuations = false,
+                FullMode = BoundedChannelFullMode.DropOldest,
+                SingleReader = true,
+                SingleWriter = true
+            });
         private readonly Dictionary<Type, AbstractAsyncJob> _currentJobDictionary = [];
 
         public TwoWayJobQueue(SynchronizationContext? context)
@@ -51,6 +58,7 @@ namespace SWF.Core.Job
                     job.BeginCancel();
                 }
                 this._currentJobDictionary.Clear();
+                this._jobsChannel.Writer.Complete();
                 this._cancellationTokenSource.Cancel();
 
                 LOGGER.Trace($"{TASK_NAME} の終了を待機します。");
@@ -118,7 +126,7 @@ namespace SWF.Core.Job
             };
 
             this._currentJobDictionary.Add(type, job);
-            this._blockingJobCollection.Add(job);
+            this._jobsChannel.Writer.WriteAsync(job).GetAwaiter().GetResult();
         }
 
         public void Enqueue<TJob, TJobResult>(
@@ -171,7 +179,7 @@ namespace SWF.Core.Job
             };
 
             this._currentJobDictionary.Add(type, job);
-            this._blockingJobCollection.Add(job);
+            this._jobsChannel.Writer.WriteAsync(job).GetAwaiter().GetResult();
         }
 
         private async Task DoWork()
@@ -182,7 +190,7 @@ namespace SWF.Core.Job
 
             try
             {
-                foreach (var job in this._blockingJobCollection.GetConsumingEnumerable(token))
+                await foreach (var job in this._jobsChannel.Reader.ReadAllAsync(token))
                 {
                     token.ThrowIfCancellationRequested();
 

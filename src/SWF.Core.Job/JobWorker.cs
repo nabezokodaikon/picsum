@@ -1,8 +1,8 @@
 using NLog;
 using SWF.Core.Base;
 using SWF.Core.ConsoleAccessor;
-using System.Collections.Concurrent;
 using System.Runtime.Versioning;
+using System.Threading.Channels;
 
 namespace SWF.Core.Job
 {
@@ -20,7 +20,14 @@ namespace SWF.Core.Job
 
         private readonly Task _task;
         private readonly CancellationTokenSource _cancellationTokenSource = new();
-        private readonly BlockingCollection<AbstractAsyncJob> _blockingJobCollection = [];
+        private readonly Channel<AbstractAsyncJob> _jobsChannel
+            = Channel.CreateBounded<AbstractAsyncJob>(new BoundedChannelOptions(1)
+            {
+                AllowSynchronousContinuations = false,
+                FullMode = BoundedChannelFullMode.DropOldest,
+                SingleReader = true,
+                SingleWriter = true
+            });
         private readonly List<AbstractAsyncJob> _currentJobList = [];
         private readonly SynchronizationContext _context;
 
@@ -51,6 +58,7 @@ namespace SWF.Core.Job
             {
                 LOGGER.Trace($"{TASK_NAME} に終了リクエストを送ります。");
                 this.BeginCancel();
+                this._jobsChannel.Writer.Complete();
                 this._cancellationTokenSource.Cancel();
 
                 LOGGER.Trace($"{TASK_NAME} の終了を待機します。");
@@ -114,7 +122,7 @@ namespace SWF.Core.Job
             }
 
             this._currentJobList.Add(job);
-            this._blockingJobCollection.Add(job);
+            this._jobsChannel.Writer.WriteAsync(job).GetAwaiter().GetResult();
         }
 
         public void StartJob(ISender sender, Action<TJobResult> callback)
@@ -148,7 +156,7 @@ namespace SWF.Core.Job
 
             try
             {
-                foreach (var job in this._blockingJobCollection.GetConsumingEnumerable(token))
+                await foreach (var job in this._jobsChannel.Reader.ReadAllAsync(token))
                 {
                     token.ThrowIfCancellationRequested();
 
