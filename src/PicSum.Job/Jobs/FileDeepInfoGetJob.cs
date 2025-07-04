@@ -64,7 +64,6 @@ namespace PicSum.Job.Jobs
                     this.CheckCancel();
 
                     result.FileInfo = fileInfo;
-                    return result;
                 }
                 catch (JobCancelException)
                 {
@@ -84,16 +83,14 @@ namespace PicSum.Job.Jobs
                     return FileDeepInfoGetResult.ERROR;
                 }
             }
-            else
-            {
-                using (var con = Instance<IFileInfoDB>.Value.Connect())
-                {
-                    var tagsGetLogic = new FilesTagsGetLogic(this);
-                    result.TagInfoList = tagsGetLogic.Execute(con, result.FilePathList);
-                }
 
-                return result;
+            using (var con = Instance<IFileInfoDB>.Value.Connect())
+            {
+                var tagsGetLogic = new FilesTagsGetLogic(this);
+                result.TagInfoList = tagsGetLogic.Execute(con, result.FilePathList);
             }
+
+            return result;
         }
     }
 }
