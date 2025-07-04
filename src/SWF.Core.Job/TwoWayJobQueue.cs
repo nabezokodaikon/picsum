@@ -14,6 +14,7 @@ namespace SWF.Core.Job
         private static readonly string TASK_NAME = $"{typeof(TwoWayJobQueue).Name} Task";
 
         private bool _disposed = false;
+        private bool _isShuttingDown = false;
         private readonly SynchronizationContext _context;
         private readonly Task _task;
         private readonly CancellationTokenSource _cancellationTokenSource = new();
@@ -43,6 +44,8 @@ namespace SWF.Core.Job
             {
                 return;
             }
+
+            this._isShuttingDown = true;
 
             LOGGER.Trace($"{TASK_NAME} に終了リクエストを送ります。");
             foreach (var job in this._currentJobDictionary.Values)
@@ -77,6 +80,11 @@ namespace SWF.Core.Job
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
             ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
             ArgumentNullException.ThrowIfNull(callback, nameof(callback));
+
+            if (this._isShuttingDown || this._disposed)
+            {
+                return;
+            }
 
             var type = typeof(TJob);
 
@@ -131,6 +139,11 @@ namespace SWF.Core.Job
         {
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
             ArgumentNullException.ThrowIfNull(callback, nameof(callback));
+
+            if (this._isShuttingDown || this._disposed)
+            {
+                return;
+            }
 
             var type = typeof(TJob);
 

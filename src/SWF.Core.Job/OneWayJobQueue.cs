@@ -13,6 +13,7 @@ namespace SWF.Core.Job
         private static readonly string TASK_NAME = $"{typeof(OneWayJobQueue).Name} Task";
 
         private bool _disposed = false;
+        private bool _isShuttingDown = false;
         private readonly Task _task;
         private readonly CancellationTokenSource _cancellationTokenSource = new();
         private readonly Channel<AbstractAsyncJob> _jobsChannel
@@ -37,6 +38,8 @@ namespace SWF.Core.Job
                 return;
             }
 
+            this._isShuttingDown = true;
+
             LOGGER.Trace($"{TASK_NAME} に終了リクエストを送ります。");
             this._jobsChannel.Writer.Complete();
             this._cancellationTokenSource.Cancel();
@@ -57,6 +60,11 @@ namespace SWF.Core.Job
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
             ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
 
+            if (this._isShuttingDown || this._disposed)
+            {
+                return;
+            }
+
             var job = new TJob()
             {
                 Sender = sender,
@@ -70,6 +78,11 @@ namespace SWF.Core.Job
             where TJob : AbstractTwoWayJob<EmptyParameter, EmptyResult>, new()
         {
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
+
+            if (this._isShuttingDown || this._disposed)
+            {
+                return;
+            }
 
             var job = new TJob()
             {

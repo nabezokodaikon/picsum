@@ -17,6 +17,7 @@ namespace SWF.Core.Job
         private static readonly string TASK_NAME = $"{typeof(TJob).Name} Task";
 
         private bool _disposed = false;
+        private bool _isShuttingDown = false;
 
         private readonly Task _task;
         private readonly CancellationTokenSource _cancellationTokenSource = new();
@@ -48,6 +49,8 @@ namespace SWF.Core.Job
                 return;
             }
 
+            this._isShuttingDown = true;
+
             LOGGER.Trace($"{TASK_NAME} に終了リクエストを送ります。");
             this.BeginCancel();
             this._jobsChannel.Writer.Complete();
@@ -71,6 +74,11 @@ namespace SWF.Core.Job
         public void StartJob(ISender sender, TJobParameter? parameter, Action<TJobResult>? callback)
         {
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
+
+            if (this._isShuttingDown || this._disposed)
+            {
+                return;
+            }
 
             this.BeginCancel();
 
