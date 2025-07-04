@@ -15,22 +15,29 @@ namespace SWF.Core.Base
 
         public const float DEFAULT_ZOOM_VALUE = 1f;
 
-        //private static readonly FastLazy<bool> IS_RUNNING_AS_UWP
+        //private static readonly Lazy<bool> IS_RUNNING_AS_UWP
         //    = new(IsRunningAsUwp);
-        public static readonly FastLazy<string> APPLICATION_DIRECTORY
-            = new(GetApplicationDirectory);
-        public static readonly FastLazy<string> LOG_DIRECTORY
-            = new(() => Path.Combine(APPLICATION_DIRECTORY.Value, "log"));
-        public static readonly FastLazy<string> CONFIG_DIRECTORY
-            = new(() => Path.Combine(APPLICATION_DIRECTORY.Value, "config"));
-        public static readonly FastLazy<string> CONFIG_FILE
-            = new(() => Path.Combine(CONFIG_DIRECTORY.Value, "config.dat"));
-        public static readonly FastLazy<string> DATABASE_DIRECTORY
-            = new(() => Path.Combine(APPLICATION_DIRECTORY.Value, "db"));
-        public static readonly FastLazy<string> FILE_INFO_DATABASE_FILE
-            = new(() => Path.Combine(DATABASE_DIRECTORY.Value, "fileinfo.sqlite"));
-        public static readonly FastLazy<string> THUMBNAIL_DATABASE_FILE
-            = new(() => Path.Combine(DATABASE_DIRECTORY.Value, "thumbnail.sqlite"));
+        public static readonly Lazy<string> APPLICATION_DIRECTORY = new(
+            GetApplicationDirectory,
+            LazyThreadSafetyMode.ExecutionAndPublication);
+        public static readonly Lazy<string> LOG_DIRECTORY = new(
+            () => Path.Combine(APPLICATION_DIRECTORY.Value, "log"),
+            LazyThreadSafetyMode.ExecutionAndPublication);
+        public static readonly Lazy<string> CONFIG_DIRECTORY = new(
+            () => Path.Combine(APPLICATION_DIRECTORY.Value, "config"),
+            LazyThreadSafetyMode.ExecutionAndPublication);
+        public static readonly Lazy<string> CONFIG_FILE = new(
+            () => Path.Combine(CONFIG_DIRECTORY.Value, "config.dat"),
+            LazyThreadSafetyMode.ExecutionAndPublication);
+        public static readonly Lazy<string> DATABASE_DIRECTORY = new(
+            () => Path.Combine(APPLICATION_DIRECTORY.Value, "db"),
+            LazyThreadSafetyMode.ExecutionAndPublication);
+        public static readonly Lazy<string> FILE_INFO_DATABASE_FILE = new(
+            () => Path.Combine(DATABASE_DIRECTORY.Value, "fileinfo.sqlite"),
+            LazyThreadSafetyMode.ExecutionAndPublication);
+        public static readonly Lazy<string> THUMBNAIL_DATABASE_FILE = new(
+            () => Path.Combine(DATABASE_DIRECTORY.Value, "thumbnail.sqlite"),
+            LazyThreadSafetyMode.ExecutionAndPublication);
 
         private static Stopwatch? bootTimeStopwatch = null;
 

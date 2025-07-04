@@ -2,7 +2,6 @@ using PicSum.Job.Entities;
 using PicSum.Job.Jobs;
 using PicSum.Job.Parameters;
 using PicSum.Job.Results;
-using SWF.Core.Base;
 using SWF.Core.Job;
 using System.Runtime.Versioning;
 
@@ -14,17 +13,27 @@ namespace PicSum.Job.Common
     {
         private bool _disposed = false;
 
-        private readonly FastLazy<OneWayJobQueue> _oneWayQueue = new(() => new());
-        private readonly FastLazy<TwoWayJobQueue> _twoWayJobQueue = new(() => new(context));
+        private readonly Lazy<OneWayJobQueue> _oneWayQueue = new(
+            () => new(), LazyThreadSafetyMode.ExecutionAndPublication);
+        private readonly Lazy<TwoWayJobQueue> _twoWayJobQueue = new(
+            () => new(context), LazyThreadSafetyMode.ExecutionAndPublication);
 
-        public readonly FastLazy<TwoWayJob<ImageFileReadJob, ImageFileReadParameter, ImageFileReadResult>> ImageFileReadJob = new(() => new(context));
-        public readonly FastLazy<TwoWayJob<ImageFileLoadingJob, ImageFileReadParameter, ImageFileReadResult>> ImageFileLoadingJob = new(() => new(context));
-        public readonly FastLazy<OneWayJob<ImageFileCacheJob, ImageFileCacheParameter>> ImageFileCacheJob = new(() => new(context));
-        public readonly FastLazy<TwoWayJob<ThumbnailsGetJob, ThumbnailsGetParameter, ThumbnailImageResult>> ThumbnailsGetJob = new(() => new(context));
-        public readonly FastLazy<TwoWayJob<FileDeepInfoGetJob, FileDeepInfoGetParameter, FileDeepInfoGetResult>> FileDeepInfoGetJob = new(() => new(context));
-        public readonly FastLazy<TwoWayJob<FileDeepInfoLoadingJob, FileDeepInfoGetParameter, FileDeepInfoGetResult>> FileDeepInfoLoadingJob = new(() => new(context));
-        public readonly FastLazy<TwoWayJob<PipeServerJob, ValueResult<string>>> PipeServerJob = new(() => new(context));
-        public readonly FastLazy<OneWayJob<GCCollectRunJob>> GCCollectRunJob = new(() => new(context));
+        public readonly Lazy<TwoWayJob<ImageFileReadJob, ImageFileReadParameter, ImageFileReadResult>> ImageFileReadJob = new(
+            () => new(context), LazyThreadSafetyMode.ExecutionAndPublication);
+        public readonly Lazy<TwoWayJob<ImageFileLoadingJob, ImageFileReadParameter, ImageFileReadResult>> ImageFileLoadingJob = new(
+            () => new(context), LazyThreadSafetyMode.ExecutionAndPublication);
+        public readonly Lazy<OneWayJob<ImageFileCacheJob, ImageFileCacheParameter>> ImageFileCacheJob = new(
+            () => new(context), LazyThreadSafetyMode.ExecutionAndPublication);
+        public readonly Lazy<TwoWayJob<ThumbnailsGetJob, ThumbnailsGetParameter, ThumbnailImageResult>> ThumbnailsGetJob = new(
+            () => new(context), LazyThreadSafetyMode.ExecutionAndPublication);
+        public readonly Lazy<TwoWayJob<FileDeepInfoGetJob, FileDeepInfoGetParameter, FileDeepInfoGetResult>> FileDeepInfoGetJob = new(
+            () => new(context), LazyThreadSafetyMode.ExecutionAndPublication);
+        public readonly Lazy<TwoWayJob<FileDeepInfoLoadingJob, FileDeepInfoGetParameter, FileDeepInfoGetResult>> FileDeepInfoLoadingJob = new(
+            () => new(context), LazyThreadSafetyMode.ExecutionAndPublication);
+        public readonly Lazy<TwoWayJob<PipeServerJob, ValueResult<string>>> PipeServerJob = new(
+            () => new(context), LazyThreadSafetyMode.ExecutionAndPublication);
+        public readonly Lazy<OneWayJob<GCCollectRunJob>> GCCollectRunJob = new(
+            () => new(context), LazyThreadSafetyMode.ExecutionAndPublication);
 
         public async ValueTask DisposeAsync()
         {
@@ -33,17 +42,17 @@ namespace PicSum.Job.Common
                 return;
             }
 
-            await this._oneWayQueue.DisposeAsync();
-            await this._twoWayJobQueue.DisposeAsync();
+            await this._oneWayQueue.Value.DisposeAsync();
+            await this._twoWayJobQueue.Value.DisposeAsync();
 
-            await this.ImageFileReadJob.DisposeAsync();
-            await this.ImageFileLoadingJob.DisposeAsync();
-            await this.ImageFileCacheJob.DisposeAsync();
-            await this.ThumbnailsGetJob.DisposeAsync();
-            await this.FileDeepInfoGetJob.DisposeAsync();
-            await this.FileDeepInfoLoadingJob.DisposeAsync();
-            await this.PipeServerJob.DisposeAsync();
-            await this.GCCollectRunJob.DisposeAsync();
+            await this.ImageFileReadJob.Value.DisposeAsync();
+            await this.ImageFileLoadingJob.Value.DisposeAsync();
+            await this.ImageFileCacheJob.Value.DisposeAsync();
+            await this.ThumbnailsGetJob.Value.DisposeAsync();
+            await this.FileDeepInfoGetJob.Value.DisposeAsync();
+            await this.FileDeepInfoLoadingJob.Value.DisposeAsync();
+            await this.PipeServerJob.Value.DisposeAsync();
+            await this.GCCollectRunJob.Value.DisposeAsync();
 
             this._disposed = true;
 

@@ -1,4 +1,3 @@
-using SWF.Core.Base;
 using SWF.Core.ResourceAccessor.Properties;
 using System.Runtime.Versioning;
 
@@ -7,62 +6,81 @@ namespace SWF.Core.ResourceAccessor
     [SupportedOSPlatform("windows10.0.17763.0")]
     public static class ResourceFiles
     {
-        public static readonly FastLazy<Icon> AppIcon = new(() =>
-            Resources.AppIcon);
+        public static readonly Lazy<Icon> AppIcon = new(() =>
+            Resources.AppIcon,
+            LazyThreadSafetyMode.ExecutionAndPublication);
 
-        public static readonly FastLazy<Bitmap> ActiveRatingIcon = new(() =>
-            CreateBitmapFromByteArray(Resources.ActiveRatingIcon));
+        public static readonly Lazy<Bitmap> ActiveRatingIcon = new(
+            () => CreateBitmapFromByteArray(Resources.ActiveRatingIcon),
+            LazyThreadSafetyMode.ExecutionAndPublication);
 
-        public static readonly FastLazy<Bitmap> BookmarkIcon = new(() =>
-            CreateBitmapFromByteArray(Resources.BookmarkIcon));
+        public static readonly Lazy<Bitmap> BookmarkIcon = new(
+            () => CreateBitmapFromByteArray(Resources.BookmarkIcon),
+            LazyThreadSafetyMode.ExecutionAndPublication);
 
-        public static readonly FastLazy<Bitmap> DropArrowIcon = new(() =>
-            CreateBitmapFromByteArray(Resources.DropArrowIcon));
+        public static readonly Lazy<Bitmap> DropArrowIcon = new(
+            () => CreateBitmapFromByteArray(Resources.DropArrowIcon),
+            LazyThreadSafetyMode.ExecutionAndPublication);
 
-        public static readonly FastLazy<Bitmap> DropLeftIcon = new(() =>
-            CreateBitmapFromByteArray(Resources.DropLeftIcon));
+        public static readonly Lazy<Bitmap> DropLeftIcon = new(
+            () => CreateBitmapFromByteArray(Resources.DropLeftIcon),
+            LazyThreadSafetyMode.ExecutionAndPublication);
 
-        public static readonly FastLazy<Bitmap> DropRightIcon = new(() =>
-            CreateBitmapFromByteArray(Resources.DropRightIcon));
+        public static readonly Lazy<Bitmap> DropRightIcon = new(
+            () => CreateBitmapFromByteArray(Resources.DropRightIcon),
+            LazyThreadSafetyMode.ExecutionAndPublication);
 
-        public static readonly FastLazy<Bitmap> EmptyIcon = new(() =>
-            CreateBitmapFromByteArray(Resources.EmptyIcon));
+        public static readonly Lazy<Bitmap> EmptyIcon = new(
+            () => CreateBitmapFromByteArray(Resources.EmptyIcon),
+            LazyThreadSafetyMode.ExecutionAndPublication);
 
-        public static readonly FastLazy<Bitmap> GoBackIcon = new(() =>
-            CreateBitmapFromByteArray(Resources.GoBackIcon));
+        public static readonly Lazy<Bitmap> GoBackIcon = new(
+            () => CreateBitmapFromByteArray(Resources.GoBackIcon),
+            LazyThreadSafetyMode.ExecutionAndPublication);
 
-        public static readonly FastLazy<Bitmap> GoNextIcon = new(() =>
-            CreateBitmapFromByteArray(Resources.GoNextIcon));
+        public static readonly Lazy<Bitmap> GoNextIcon = new(
+            () => CreateBitmapFromByteArray(Resources.GoNextIcon),
+            LazyThreadSafetyMode.ExecutionAndPublication);
 
-        public static readonly FastLazy<Bitmap> HomeIcon = new(() =>
-            CreateBitmapFromByteArray(Resources.HomeIcon));
+        public static readonly Lazy<Bitmap> HomeIcon = new(
+            () => CreateBitmapFromByteArray(Resources.HomeIcon),
+            LazyThreadSafetyMode.ExecutionAndPublication);
 
-        public static readonly FastLazy<Bitmap> InactiveRatingIcon = new(() =>
-            CreateBitmapFromByteArray(Resources.InactiveRatingIcon));
+        public static readonly Lazy<Bitmap> InactiveRatingIcon = new(
+            () => CreateBitmapFromByteArray(Resources.InactiveRatingIcon),
+            LazyThreadSafetyMode.ExecutionAndPublication);
 
-        public static readonly FastLazy<Bitmap> InfoIcon = new(() =>
-            CreateBitmapFromByteArray(Resources.InfoIcon));
+        public static readonly Lazy<Bitmap> InfoIcon = new(
+            () => CreateBitmapFromByteArray(Resources.InfoIcon),
+            LazyThreadSafetyMode.ExecutionAndPublication);
 
-        public static readonly FastLazy<Bitmap> ReloadIcon = new(() =>
-            CreateBitmapFromByteArray(Resources.ReloadIcon));
+        public static readonly Lazy<Bitmap> ReloadIcon = new(
+            () => CreateBitmapFromByteArray(Resources.ReloadIcon),
+            LazyThreadSafetyMode.ExecutionAndPublication);
 
-        public static readonly FastLazy<Bitmap> SliderButtonIcon = new(() =>
-            CreateBitmapFromByteArray(Resources.SliderButtonIcon));
+        public static readonly Lazy<Bitmap> SliderButtonIcon = new(
+            () => CreateBitmapFromByteArray(Resources.SliderButtonIcon),
+            LazyThreadSafetyMode.ExecutionAndPublication);
 
-        public static readonly FastLazy<Bitmap> SmallArrowDownIcon = new(() =>
-            CreateBitmapFromByteArray(Resources.SmallArrowDownIcon));
+        public static readonly Lazy<Bitmap> SmallArrowDownIcon = new(
+            () => CreateBitmapFromByteArray(Resources.SmallArrowDownIcon),
+            LazyThreadSafetyMode.ExecutionAndPublication);
 
-        public static readonly FastLazy<Bitmap> SmallArrowLeftIcon = new(() =>
-            CreateBitmapFromByteArray(Resources.SmallArrowLeftIcon));
+        public static readonly Lazy<Bitmap> SmallArrowLeftIcon = new(
+            () => CreateBitmapFromByteArray(Resources.SmallArrowLeftIcon),
+            LazyThreadSafetyMode.ExecutionAndPublication);
 
-        public static readonly FastLazy<Bitmap> SmallArrowRightIcon = new(() =>
-            CreateBitmapFromByteArray(Resources.SmallArrowRightIcon));
+        public static readonly Lazy<Bitmap> SmallArrowRightIcon = new(
+            () => CreateBitmapFromByteArray(Resources.SmallArrowRightIcon),
+            LazyThreadSafetyMode.ExecutionAndPublication);
 
-        public static readonly FastLazy<Bitmap> TagIcon = new(() =>
-            CreateBitmapFromByteArray(Resources.TagIcon));
+        public static readonly Lazy<Bitmap> TagIcon = new(
+            () => CreateBitmapFromByteArray(Resources.TagIcon),
+            LazyThreadSafetyMode.ExecutionAndPublication);
 
-        public static readonly FastLazy<Bitmap> ThumbnailPanelIcon = new(() =>
-            CreateBitmapFromByteArray(Resources.ThumbnailPanelIcon));
+        public static readonly Lazy<Bitmap> ThumbnailPanelIcon = new(
+            () => CreateBitmapFromByteArray(Resources.ThumbnailPanelIcon),
+            LazyThreadSafetyMode.ExecutionAndPublication);
 
         private static Bitmap CreateBitmapFromByteArray(byte[] byteArray)
         {
