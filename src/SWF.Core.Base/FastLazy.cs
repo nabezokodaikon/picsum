@@ -30,13 +30,12 @@ namespace SWF.Core.Base
             this._valueFactory = valueFactory;
         }
 
-        public void Dispose()
+        public async ValueTask DisposeAsync()
         {
-            lock (this._lock)
+            var instance = this._value as IAsyncDisposable;
+            if (instance != null)
             {
-                var instance = this._value as IDisposable;
-                instance?.Dispose();
-
+                await instance.DisposeAsync();
             }
         }
     }

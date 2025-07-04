@@ -16,6 +16,7 @@ namespace PicSum.Main
     internal sealed class Context
         : ApplicationContext, ISender
     {
+        private readonly ResourceManager _resourceManager;
         private readonly BrowserManager browserManager = new();
 
         public bool IsHandleCreated { get; private set; } = true;
@@ -23,6 +24,8 @@ namespace PicSum.Main
 
         public Context()
         {
+            this._resourceManager = new();
+
             this.browserManager.BrowserNothing += new(this.BrowserManager_BrowserNothing);
 
             Instance<JobCaller>.Value.GCCollectRunJob.Value
@@ -75,9 +78,10 @@ namespace PicSum.Main
             form.Show();
         }
 
-        private void BrowserManager_BrowserNothing(object sender, EventArgs e)
+        private async void BrowserManager_BrowserNothing(object sender, EventArgs e)
         {
             this.IsDisposed = true;
+            await this._resourceManager.DisposeAsync();
             this.ExitThread();
         }
     }

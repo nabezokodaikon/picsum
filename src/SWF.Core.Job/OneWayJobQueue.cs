@@ -7,10 +7,10 @@ namespace SWF.Core.Job
 {
     [SupportedOSPlatform("windows10.0.17763.0")]
     public sealed partial class OneWayJobQueue
-        : IDisposable
+        : IAsyncDisposable
     {
         private static readonly Logger LOGGER = Log.GetLogger();
-        private static readonly string TASK_NAME = typeof(OneWayJobQueue).Name;
+        private static readonly string TASK_NAME = $"{typeof(OneWayJobQueue).Name} Task";
 
         private bool _disposed = false;
         private readonly Task _task;
@@ -30,34 +30,24 @@ namespace SWF.Core.Job
                 this._cancellationTokenSource.Token);
         }
 
-        public void Dispose()
-        {
-            this.Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        private void Dispose(bool disposing)
+        public async ValueTask DisposeAsync()
         {
             if (this._disposed)
             {
                 return;
             }
 
-            if (disposing)
-            {
-                LOGGER.Trace($"{TASK_NAME} に終了リクエストを送ります。");
-                this._jobsChannel.Writer.Complete();
-                this._cancellationTokenSource.Cancel();
+            LOGGER.Trace($"{TASK_NAME} に終了リクエストを送ります。");
+            this._jobsChannel.Writer.Complete();
+            this._cancellationTokenSource.Cancel();
 
-                LOGGER.Trace($"{TASK_NAME} の終了を待機します。");
-                Task.WaitAll(this._task);
+            LOGGER.Trace($"{TASK_NAME} の終了を待機します。");
+            await this._task;
+            LOGGER.Trace($"{TASK_NAME} が終了しました。");
 
-                LOGGER.Trace($"{TASK_NAME} が終了しました。");
-
-                this._cancellationTokenSource.Dispose();
-            }
-
+            this._cancellationTokenSource.Dispose();
             this._disposed = true;
+            GC.SuppressFinalize(this);
         }
 
         public void Enqueue<TJob, TJobParameter>(ISender sender, TJobParameter parameter)

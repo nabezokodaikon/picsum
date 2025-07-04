@@ -5,6 +5,7 @@ using PicSum.UIComponent.Contents.Conf;
 using SWF.Core.ConsoleAccessor;
 using System;
 using System.Runtime.Versioning;
+using System.Threading.Tasks;
 
 namespace PicSum.Main.Mng
 {
@@ -13,7 +14,7 @@ namespace PicSum.Main.Mng
     /// </summary>
     [SupportedOSPlatform("windows10.0.17763.0")]
     internal sealed partial class ResourceManager
-        : IDisposable
+        : IAsyncDisposable
     {
         private static readonly Logger LOGGER = Log.GetLogger();
 
@@ -76,13 +77,10 @@ namespace PicSum.Main.Mng
             }
         }
 
-        /// <summary>
-        /// リソースを解放します。
-        /// </summary>
-        public void Dispose()
+        public async ValueTask DisposeAsync()
         {
             var closingJob = new ClosingSyncJob();
-            closingJob.Execute();
+            await closingJob.Execute();
 
             Config.Instance.WindowState = BrowserConfig.Instance.WindowState;
             Config.Instance.WindowLocaionX = BrowserConfig.Instance.WindowLocaion.X;

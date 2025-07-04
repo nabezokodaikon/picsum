@@ -1,5 +1,4 @@
 using PicSum.Main.Conf;
-using PicSum.Main.Mng;
 using SWF.Core.Base;
 using SWF.Core.ConsoleAccessor;
 using System;
@@ -114,7 +113,6 @@ namespace PicSum.Main
                     Application.EnableVisualStyles();
                     Application.SetCompatibleTextRenderingDefault(false);
 
-                    using (var resource = new ResourceManager())
                     using (var context = new Context())
                     {
                         Application.Run(context);

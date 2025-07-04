@@ -8,10 +8,10 @@ namespace SWF.Core.Job
 {
     [SupportedOSPlatform("windows10.0.17763.0")]
     public sealed class TwoWayJobQueue
-        : IDisposable
+        : IAsyncDisposable
     {
         private static readonly Logger LOGGER = Log.GetLogger();
-        private static readonly string TASK_NAME = typeof(TwoWayJobQueue).Name;
+        private static readonly string TASK_NAME = $"{typeof(TwoWayJobQueue).Name} Task";
 
         private bool _disposed = false;
         private readonly SynchronizationContext _context;
@@ -37,39 +37,35 @@ namespace SWF.Core.Job
                 this._cancellationTokenSource.Token);
         }
 
-        public void Dispose()
-        {
-            this.Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        private void Dispose(bool disposing)
+        public async ValueTask DisposeAsync()
         {
             if (this._disposed)
             {
                 return;
             }
 
-            if (disposing)
+            LOGGER.Trace($"{TASK_NAME} に終了リクエストを送ります。");
+            foreach (var job in this._currentJobDictionary.Values)
             {
-                LOGGER.Trace($"{TASK_NAME} に終了リクエストを送ります。");
-                foreach (var job in this._currentJobDictionary.Values)
-                {
-                    job.BeginCancel();
-                }
-                this._currentJobDictionary.Clear();
-                this._jobsChannel.Writer.Complete();
-                this._cancellationTokenSource.Cancel();
-
-                LOGGER.Trace($"{TASK_NAME} の終了を待機します。");
-                Task.WaitAll(this._task);
-
-                LOGGER.Trace($"{TASK_NAME} が終了しました。");
-
-                this._cancellationTokenSource.Dispose();
+                job.BeginCancel();
             }
+            this._currentJobDictionary.Clear();
+            this._jobsChannel.Writer.Complete();
+            this._cancellationTokenSource.Cancel();
 
+            LOGGER.Trace($"{TASK_NAME} の終了を待機します。");
+            await this._task;
+            LOGGER.Trace($"{TASK_NAME} が終了しました。");
+
+            this._cancellationTokenSource.Dispose();
             this._disposed = true;
+            GC.SuppressFinalize(this);
+        }
+
+
+        private void Dispose(bool disposing)
+        {
+
         }
 
         public void Enqueue<TJob, TJobParameter, TJobResult>(

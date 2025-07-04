@@ -13,11 +13,11 @@ namespace PicSum.Job.SyncLogics
     internal sealed class ClosingSyncLogic
         : AbstractSyncLogic
     {
-        public void Execute()
+        public async ValueTask Execute()
         {
             using (TimeMeasuring.Run(true, "ClosingSyncLogic.Execute"))
             {
-                Instance<JobCaller>.Value.Dispose();
+                await Instance<JobCaller>.Value.DisposeAsync();
                 Instance<IFileIconCacher>.Value.Dispose();
                 Instance<IThumbnailCacher>.Value.Dispose();
                 Instance<IImageFileCacher>.Value.Dispose();

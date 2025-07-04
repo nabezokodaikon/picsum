@@ -10,7 +10,7 @@ namespace PicSum.Job.Common
 {
     [SupportedOSPlatform("windows10.0.17763.0")]
     public sealed partial class JobCaller(SynchronizationContext context)
-        : IDisposable
+        : IAsyncDisposable
     {
         private bool _disposed = false;
 
@@ -26,35 +26,28 @@ namespace PicSum.Job.Common
         public readonly FastLazy<TwoWayJob<PipeServerJob, ValueResult<string>>> PipeServerJob = new(() => new(context));
         public readonly FastLazy<OneWayJob<GCCollectRunJob>> GCCollectRunJob = new(() => new(context));
 
-        public void Dispose()
-        {
-            this.Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        private void Dispose(bool disposing)
+        public async ValueTask DisposeAsync()
         {
             if (this._disposed)
             {
                 return;
             }
 
-            if (disposing)
-            {
-                this._oneWayQueue.Dispose();
-                this._twoWayJobQueue.Dispose();
+            await this._oneWayQueue.DisposeAsync();
+            await this._twoWayJobQueue.DisposeAsync();
 
-                this.ImageFileReadJob.Dispose();
-                this.ImageFileLoadingJob.Dispose();
-                this.ImageFileCacheJob.Dispose();
-                this.ThumbnailsGetJob.Dispose();
-                this.FileDeepInfoGetJob.Dispose();
-                this.FileDeepInfoLoadingJob.Dispose();
-                this.PipeServerJob.Dispose();
-                this.GCCollectRunJob.Dispose();
-            }
+            await this.ImageFileReadJob.DisposeAsync();
+            await this.ImageFileLoadingJob.DisposeAsync();
+            await this.ImageFileCacheJob.DisposeAsync();
+            await this.ThumbnailsGetJob.DisposeAsync();
+            await this.FileDeepInfoGetJob.DisposeAsync();
+            await this.FileDeepInfoLoadingJob.DisposeAsync();
+            await this.PipeServerJob.DisposeAsync();
+            await this.GCCollectRunJob.DisposeAsync();
 
             this._disposed = true;
+
+            GC.SuppressFinalize(this);
         }
 
         public void EnqueueBookmarkAddJob(ISender sender, ValueParameter<string> parameter)
