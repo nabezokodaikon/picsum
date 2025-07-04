@@ -12,7 +12,7 @@ namespace SWF.Core.ImageAccessor
 
             using (TimeMeasuring.Run(false, "BitmapUtil.GetImageSize"))
             {
-                using (var reader = new BinaryReader(fs))
+                using (var reader = new BinaryReader(fs, System.Text.Encoding.UTF8, true))
                 {
                     var bmpSignature = reader.ReadBytes(2);
                     if (bmpSignature[0] != 'B' || bmpSignature[1] != 'M')

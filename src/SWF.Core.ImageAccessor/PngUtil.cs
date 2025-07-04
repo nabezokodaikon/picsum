@@ -15,7 +15,7 @@ namespace SWF.Core.ImageAccessor
 
             using (TimeMeasuring.Run(false, "PngUtil.GetImageSize"))
             {
-                using (var reader = new BinaryReader(fs))
+                using (var reader = new BinaryReader(fs, System.Text.Encoding.UTF8, true))
                 {
                     var pngSignature = reader.ReadBytes(8);
                     if (!CompareByteArrays(pngSignature, EXPECTED_PNG_SIGNATURE))

@@ -12,7 +12,7 @@ namespace SWF.Core.ImageAccessor
 
             using (TimeMeasuring.Run(false, "JpegUtil.ReadImageFile"))
             {
-                using (var reader = new BinaryReader(fs))
+                using (var reader = new BinaryReader(fs, System.Text.Encoding.UTF8, true))
                 {
                     var bytes = reader.ReadBytes((int)fs.Length - 1);
                     var orientation = GetOrientation(bytes);
@@ -37,7 +37,7 @@ namespace SWF.Core.ImageAccessor
 
             using (TimeMeasuring.Run(false, "JpegUtil.GetImageSize"))
             {
-                using (var reader = new BinaryReader(fs))
+                using (var reader = new BinaryReader(fs, System.Text.Encoding.UTF8, true))
                 {
                     var bytes = reader.ReadBytes((int)fs.Length - 1);
 
