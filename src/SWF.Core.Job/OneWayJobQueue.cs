@@ -120,6 +120,7 @@ namespace SWF.Core.Job
             catch (OperationCanceledException)
             {
                 LOGGER.Trace($"{TASK_NAME} がキャンセルされました。");
+                throw;
             }
             catch (Exception ex)
             {
