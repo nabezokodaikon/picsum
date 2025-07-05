@@ -1,5 +1,4 @@
 using NLog;
-using SWF.Core.Base;
 using SWF.Core.ConsoleAccessor;
 using System.Runtime.Versioning;
 using System.Threading.Channels;
@@ -11,7 +10,7 @@ namespace SWF.Core.Job
         : IAsyncDisposable
         where TJob : AbstractTwoWayJob<TJobParameter, TJobResult>, new()
         where TJobParameter : class, IJobParameter
-        where TJobResult : IJobResult
+        where TJobResult : class, IJobResult
     {
         private static readonly Logger LOGGER = Log.GetLogger();
         private static readonly string TASK_NAME = $"{typeof(TJob).Name} Task";
@@ -97,36 +96,30 @@ namespace SWF.Core.Job
 
             if (callback != null)
             {
-                job.CallbackAction = result =>
+                job.CallbackAction = _ =>
                 {
-                    if (job.CanUIThreadAccess())
+                    this._context.Post(state =>
                     {
-                        this._context.Post(_ =>
+                        if (!job.IsCancel && job.CanUIThreadAccess() && state is TJobResult result)
                         {
-                            if (job.CanUIThreadAccess())
+                            try
+                            {
+                                callback(result);
+                            }
+                            catch (Exception ex)
                             {
                                 var jobName = $"{job.GetType().Name} {job.ID}";
-
-                                try
-                                {
-                                    if (!job.IsCancel)
-                                    {
-                                        callback(result);
-                                    }
-                                }
-                                catch (Exception ex)
-                                {
-                                    LOGGER.Error(ex, $"{jobName} がUIスレッドで補足されない例外が発生しました。");
-                                    ExceptionUtil.ShowFatalDialog("Unhandled UI Exception.", ex);
-                                }
+                                LOGGER.Error(ex, $"{jobName} がUIスレッドで補足されない例外が発生しました。");
                             }
-                        }, null);
-                    }
+                        }
+                    }, _);
                 };
             }
 
             this._currentJobList.Add(job);
+#pragma warning disable CA2012 // ValueTask を正しく使用する必要があります
             this._jobsChannel.Writer.WriteAsync(job).GetAwaiter().GetResult();
+#pragma warning restore CA2012 // ValueTask を正しく使用する必要があります
         }
 
         public void StartJob(ISender sender, Action<TJobResult> callback)
@@ -190,7 +183,7 @@ namespace SWF.Core.Job
     public sealed partial class TwoWayJob<TJob, TJobResult>(SynchronizationContext? context)
         : TwoWayJob<TJob, EmptyParameter, TJobResult>(context)
         where TJob : AbstractTwoWayJob<TJobResult>, new()
-        where TJobResult : IJobResult
+        where TJobResult : class, IJobResult
     {
     }
 

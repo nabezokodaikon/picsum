@@ -1,5 +1,4 @@
 using NLog;
-using SWF.Core.Base;
 using SWF.Core.ConsoleAccessor;
 using System.Runtime.Versioning;
 using System.Threading.Channels;
@@ -102,35 +101,29 @@ namespace SWF.Core.Job
                 Parameter = parameter,
             };
 
-            job.CallbackAction = result =>
+            job.CallbackAction = _ =>
             {
-                if (job.CanUIThreadAccess())
+                this._context.Post(state =>
                 {
-                    this._context.Post(_ =>
+                    if (!job.IsCancel && job.CanUIThreadAccess() && state is TJobResult result)
                     {
-                        if (job.CanUIThreadAccess())
+                        try
+                        {
+                            callback(result);
+                        }
+                        catch (Exception ex)
                         {
                             var jobName = $"{job.GetType().Name} {job.ID}";
-
-                            try
-                            {
-                                if (!job.IsCancel)
-                                {
-                                    callback(result);
-                                }
-                            }
-                            catch (Exception ex)
-                            {
-                                LOGGER.Error(ex, $"{jobName} がUIスレッドで補足されない例外が発生しました。");
-                                ExceptionUtil.ShowFatalDialog("Unhandled UI Exception.", ex);
-                            }
+                            LOGGER.Error(ex, $"{jobName} がUIスレッドで補足されない例外が発生しました。");
                         }
-                    }, null);
-                }
+                    }
+                }, _);
             };
 
             this._currentJobDictionary.Add(type, job);
+#pragma warning disable CA2012 // ValueTask を正しく使用する必要があります
             this._jobsChannel.Writer.WriteAsync(job).GetAwaiter().GetResult();
+#pragma warning restore CA2012 // ValueTask を正しく使用する必要があります
         }
 
         public void Enqueue<TJob, TJobResult>(
@@ -160,35 +153,29 @@ namespace SWF.Core.Job
                 Sender = sender,
             };
 
-            job.CallbackAction = result =>
+            job.CallbackAction = _ =>
             {
-                if (job.CanUIThreadAccess())
+                this._context.Post(state =>
                 {
-                    this._context.Post(_ =>
+                    if (!job.IsCancel && job.CanUIThreadAccess() && state is TJobResult result)
                     {
-                        if (job.CanUIThreadAccess())
+                        try
+                        {
+                            callback(result);
+                        }
+                        catch (Exception ex)
                         {
                             var jobName = $"{job.GetType().Name} {job.ID}";
-
-                            try
-                            {
-                                if (!job.IsCancel)
-                                {
-                                    callback(result);
-                                }
-                            }
-                            catch (Exception ex)
-                            {
-                                LOGGER.Error(ex, $"{jobName} がUIスレッドで補足されない例外が発生しました。");
-                                ExceptionUtil.ShowFatalDialog("Unhandled UI Exception.", ex);
-                            }
+                            LOGGER.Error(ex, $"{jobName} がUIスレッドで補足されない例外が発生しました。");
                         }
-                    }, null);
-                }
+                    }
+                }, _);
             };
 
             this._currentJobDictionary.Add(type, job);
+#pragma warning disable CA2012 // ValueTask を正しく使用する必要があります
             this._jobsChannel.Writer.WriteAsync(job).GetAwaiter().GetResult();
+#pragma warning restore CA2012 // ValueTask を正しく使用する必要があります
         }
 
         private async Task DoWork()

@@ -1,3 +1,4 @@
+using SWF.Core.Base;
 using SWF.Core.ConsoleAccessor;
 using System.Diagnostics;
 
@@ -46,6 +47,11 @@ namespace SWF.Core.Job
 
         internal bool CanUIThreadAccess()
         {
+            if (Thread.CurrentThread.Name != AppConstants.UI_THREAD_NAME)
+            {
+                throw new InvalidOperationException("現在のスレッドがUIスレッドではありません。");
+            }
+
             if (this.Sender == null)
             {
                 throw new InvalidOperationException("呼び出し元のコントロールが設定されていません。");
