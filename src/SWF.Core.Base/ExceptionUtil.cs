@@ -14,12 +14,7 @@ namespace SWF.Core.Base
             ArgumentException.ThrowIfNullOrEmpty(message, nameof(message));
             ArgumentNullException.ThrowIfNull(ex, nameof(ex));
 
-            MessageBox.Show(message, "PicSum", MessageBoxButtons.OK, MessageBoxIcon.Error);
-#elif DEVELOP
-            ArgumentException.ThrowIfNullOrEmpty(message, nameof(message));
-            ArgumentNullException.ThrowIfNull(ex, nameof(ex));
-
-            MessageBox.Show(message, "PicSum", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show($"{message}\n{ex.Message}", "PicSum", MessageBoxButtons.OK, MessageBoxIcon.Error);
 #endif
         }
 
@@ -28,7 +23,7 @@ namespace SWF.Core.Base
             ArgumentException.ThrowIfNullOrEmpty(message, nameof(message));
             ArgumentNullException.ThrowIfNull(ex, nameof(ex));
 
-            MessageBox.Show(message, "PicSum", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show($"{message}\n{ex.Message}", "PicSum", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 }
