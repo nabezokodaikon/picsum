@@ -1,10 +1,12 @@
+using SWF.Core.ConsoleAccessor;
+
 namespace SWF.Core.ImageAccessor
 {
     /// <summary>
     /// 画像ユーティリティ例外クラス。
     /// </summary>
     public sealed class ImageUtilException
-        : Exception
+        : AppException
     {
         public ImageUtilException(string message, Exception exception)
             : base(message, exception)

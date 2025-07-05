@@ -111,7 +111,7 @@ namespace SWF.Core.Job
                 {
                     token.ThrowIfCancellationRequested();
 
-                    if (!job.IsCancel)
+                    if (!job.IsJobCancel)
                     {
                         await job.ExecuteWrapper(token);
                     }

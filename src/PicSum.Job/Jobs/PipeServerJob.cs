@@ -15,7 +15,7 @@ namespace PicSum.Job.Jobs
         {
             while (true)
             {
-                this.CheckCancel();
+                this.ThrowIfJobCancellationRequested();
 
                 using (var pipeServer = new NamedPipeServerStream(
                     AppConstants.PIPE_NAME,
@@ -26,7 +26,7 @@ namespace PicSum.Job.Jobs
                 {
                     await pipeServer.WaitForConnectionAsync(this.CancellationToken);
 
-                    this.CheckCancel();
+                    this.ThrowIfJobCancellationRequested();
 
                     using (var reader = new StreamReader(pipeServer))
                     {

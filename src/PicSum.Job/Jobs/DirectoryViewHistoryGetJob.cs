@@ -22,7 +22,7 @@ namespace PicSum.Job.Jobs
 
             foreach (var directoryPath in this.GetHistories())
             {
-                this.CheckCancel();
+                this.ThrowIfJobCancellationRequested();
 
                 try
                 {
@@ -34,7 +34,7 @@ namespace PicSum.Job.Jobs
                 }
                 catch (FileUtilException ex)
                 {
-                    this.WriteErrorLog(new JobException(this.ID, ex));
+                    this.WriteErrorLog(ex);
                     continue;
                 }
             }

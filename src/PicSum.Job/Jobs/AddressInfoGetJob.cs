@@ -23,69 +23,61 @@ namespace PicSum.Job.Jobs
 
             var addressInfo = new AddressInfoGetResult();
 
-            try
+            var logic = new FileShallowInfoGetLogic(this);
+
+            addressInfo.DirectoryList = [];
+
+            if (FileUtil.IsSystemRoot(param.Value))
             {
-                var logic = new FileShallowInfoGetLogic(this);
-
-                addressInfo.DirectoryList = [];
-
-                if (FileUtil.IsSystemRoot(param.Value))
+                addressInfo.DirectoryPath = FileUtil.ROOT_DIRECTORY_PATH;
+                addressInfo.DirectoryList.Add(
+                    logic.Get(param.Value, false));
+                addressInfo.HasSubDirectory = true;
+            }
+            else
+            {
+                var directory = string.Empty;
+                if (FileUtil.IsExistsFile(param.Value))
                 {
-                    addressInfo.DirectoryPath = FileUtil.ROOT_DIRECTORY_PATH;
-                    addressInfo.DirectoryList.Add(
-                        logic.Get(param.Value, false));
-                    addressInfo.HasSubDirectory = true;
+                    directory = FileUtil.GetParentDirectoryPath(param.Value);
+                }
+                else if (FileUtil.IsExistsDirectory(param.Value)
+                    || FileUtil.IsExistsDrive(param.Value))
+                {
+                    directory = param.Value;
                 }
                 else
                 {
-                    var directory = string.Empty;
-                    if (FileUtil.IsExistsFile(param.Value))
-                    {
-                        directory = FileUtil.GetParentDirectoryPath(param.Value);
-                    }
-                    else if (FileUtil.IsExistsDirectory(param.Value)
-                        || FileUtil.IsExistsDrive(param.Value))
-                    {
-                        directory = param.Value;
-                    }
-                    else
-                    {
-                        throw new FileUtilException(
-                            $"'{param.Value}'を開けませんでした。");
-                    }
-
-                    addressInfo.DirectoryPath = directory;
-
-                    this.CheckCancel();
-
-                    addressInfo.HasSubDirectory = FileUtil.HasSubDirectory(directory);
-
-                    while (!FileUtil.IsSystemRoot(directory))
-                    {
-                        this.CheckCancel();
-
-                        var info = logic.Get(directory, false);
-                        if (info == FileShallowInfoEntity.EMPTY)
-                        {
-                            return Task.CompletedTask;
-                        }
-
-                        addressInfo.DirectoryList.Insert(0, info);
-                        directory = FileUtil.GetParentDirectoryPath(directory);
-                    }
-
-                    addressInfo.DirectoryList.Insert(
-                        0, logic.Get(FileUtil.ROOT_DIRECTORY_PATH, false));
+                    throw new InvalidOperationException($"不正なパスが指定されました。'{param.Value}'");
                 }
 
-                this.Callback(addressInfo);
+                addressInfo.DirectoryPath = directory;
 
-                return Task.CompletedTask;
+                this.ThrowIfJobCancellationRequested();
+
+                addressInfo.HasSubDirectory = FileUtil.HasSubDirectory(directory);
+
+                while (!FileUtil.IsSystemRoot(directory))
+                {
+                    this.ThrowIfJobCancellationRequested();
+
+                    var info = logic.Get(directory, false);
+                    if (info == FileShallowInfoEntity.EMPTY)
+                    {
+                        return Task.CompletedTask;
+                    }
+
+                    addressInfo.DirectoryList.Insert(0, info);
+                    directory = FileUtil.GetParentDirectoryPath(directory);
+                }
+
+                addressInfo.DirectoryList.Insert(
+                    0, logic.Get(FileUtil.ROOT_DIRECTORY_PATH, false));
             }
-            catch (FileUtilException ex)
-            {
-                throw new JobException(this.ID, ex);
-            }
+
+            this.Callback(addressInfo);
+
+            return Task.CompletedTask;
         }
     }
 }

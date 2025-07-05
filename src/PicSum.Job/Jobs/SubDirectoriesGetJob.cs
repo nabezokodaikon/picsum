@@ -26,7 +26,7 @@ namespace PicSum.Job.Jobs
             var result = new ListResult<FileShallowInfoEntity>(subDirectorys.Length);
             foreach (var subDirectory in subDirectorys)
             {
-                this.CheckCancel();
+                this.ThrowIfJobCancellationRequested();
 
                 try
                 {
@@ -38,7 +38,7 @@ namespace PicSum.Job.Jobs
                 }
                 catch (FileUtilException ex)
                 {
-                    this.WriteErrorLog(new JobException(this.ID, ex));
+                    this.WriteErrorLog(ex);
                     continue;
                 }
             }

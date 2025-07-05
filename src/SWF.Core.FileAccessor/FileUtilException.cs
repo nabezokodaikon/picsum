@@ -1,10 +1,12 @@
+using SWF.Core.ConsoleAccessor;
+
 namespace SWF.Core.FileAccessor
 {
     /// <summary>
     /// ファイルユーティリティ例外クラス。
     /// </summary>
     public sealed class FileUtilException
-        : Exception
+        : AppException
     {
         public FileUtilException(string message, Exception exception)
             : base(message, exception)

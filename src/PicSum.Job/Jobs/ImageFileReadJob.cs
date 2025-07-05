@@ -27,11 +27,11 @@ namespace PicSum.Job.Jobs
                 : parameter.IsNext == true ?
                     logic.GetNextIndex(parameter) :
                     logic.GetPreviewIndex(parameter);
-            this.CheckCancel();
+            this.ThrowIfJobCancellationRequested();
 
             var mainFilePath = parameter.FilePathList[mainIndex];
             var mainSize = logic.GetImageSize(mainFilePath);
-            this.CheckCancel();
+            this.ThrowIfJobCancellationRequested();
 
             if (parameter.ImageDisplayMode != ImageDisplayMode.Single
                 && mainSize != ImageUtil.EMPTY_SIZE
@@ -45,7 +45,7 @@ namespace PicSum.Job.Jobs
 
                 var subFilePath = parameter.FilePathList[subtIndex];
                 var subSize = logic.GetImageSize(subFilePath);
-                this.CheckCancel();
+                this.ThrowIfJobCancellationRequested();
 
                 if (subFilePath != mainFilePath
                     && subSize != ImageUtil.EMPTY_SIZE
@@ -54,7 +54,7 @@ namespace PicSum.Job.Jobs
                     this.Callback(logic.CreateResult(
                         mainIndex, mainFilePath, true, true, parameter.ZoomValue, parameter.ThumbnailSize, parameter.ImageSizeMode));
 
-                    this.CheckCancel();
+                    this.ThrowIfJobCancellationRequested();
 
                     this.Callback(logic.CreateResult(
                         subtIndex, subFilePath, false, true, parameter.ZoomValue, parameter.ThumbnailSize, parameter.ImageSizeMode));

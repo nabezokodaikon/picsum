@@ -1,10 +1,10 @@
 namespace SWF.Core.Job
 {
     public sealed class JobCancelException
-        : JobException
+        : Exception
     {
-        internal JobCancelException(JobID id)
-            : base($"{id} がキャンセルされました。")
+        internal JobCancelException(string jobName)
+            : base($"{jobName} がキャンセルされました。")
         {
 
         }

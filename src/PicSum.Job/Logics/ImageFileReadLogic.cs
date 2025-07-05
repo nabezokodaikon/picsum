@@ -32,7 +32,7 @@ namespace PicSum.Job.Logics
             {
                 image = this.ReadImageFileFromCache(filePath, zoomValue);
 
-                this.CheckCancel();
+                this.ThrowIfJobCancellationRequested();
 
                 if (imageSizeMode == ImageSizeMode.Original)
                 {
@@ -40,7 +40,7 @@ namespace PicSum.Job.Logics
                     thumbnail = image.CreateScaleImage(thumbnailScale);
                 }
 
-                this.CheckCancel();
+                this.ThrowIfJobCancellationRequested();
 
                 return new ImageFileReadResult()
                 {
@@ -95,12 +95,12 @@ namespace PicSum.Job.Logics
             }
             catch (FileUtilException ex)
             {
-                this.WriteErrorLog(new JobException(this.Job.ID, ex));
+                this.WriteErrorLog(ex);
                 return ImageUtil.EMPTY_SIZE;
             }
             catch (ImageUtilException ex)
             {
-                this.WriteErrorLog(new JobException(this.Job.ID, ex));
+                this.WriteErrorLog(ex);
                 return ImageUtil.EMPTY_SIZE;
             }
         }
@@ -250,12 +250,12 @@ namespace PicSum.Job.Logics
             }
             catch (FileUtilException ex)
             {
-                this.WriteErrorLog(new JobException(this.Job.ID, ex));
+                this.WriteErrorLog(ex);
                 return CvImage.EMPTY;
             }
             catch (ImageUtilException ex)
             {
-                this.WriteErrorLog(new JobException(this.Job.ID, ex));
+                this.WriteErrorLog(ex);
                 return CvImage.EMPTY;
             }
         }

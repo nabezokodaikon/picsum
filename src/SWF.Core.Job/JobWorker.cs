@@ -100,7 +100,7 @@ namespace SWF.Core.Job
                 {
                     this._context.Post(state =>
                     {
-                        if (!job.IsCancel && job.CanUIThreadAccess() && state is TJobResult result)
+                        if (!job.IsJobCancel && job.CanUIThreadAccess() && state is TJobResult result)
                         {
                             try
                             {
@@ -108,8 +108,7 @@ namespace SWF.Core.Job
                             }
                             catch (Exception ex)
                             {
-                                var jobName = $"{job.GetType().Name} {job.ID}";
-                                LOGGER.Error(ex, $"{jobName} がUIスレッドで補足されない例外が発生しました。");
+                                LOGGER.Error(ex, $"{job} がUIスレッドで補足されない例外が発生しました。");
                             }
                         }
                     }, _);
@@ -157,7 +156,7 @@ namespace SWF.Core.Job
                 {
                     token.ThrowIfCancellationRequested();
 
-                    if (!job.IsCancel)
+                    if (!job.IsJobCancel)
                     {
                         await job.ExecuteWrapper(token);
                     }

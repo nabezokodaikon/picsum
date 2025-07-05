@@ -22,7 +22,7 @@ namespace PicSum.Job.Jobs
             var infoList = new ListResult<FileShallowInfoEntity>();
             foreach (var file in fileList)
             {
-                this.CheckCancel();
+                this.ThrowIfJobCancellationRequested();
 
                 if (infoList.Count >= param.Count)
                 {
@@ -45,7 +45,7 @@ namespace PicSum.Job.Jobs
                 }
                 catch (FileUtilException ex)
                 {
-                    this.WriteErrorLog(new JobException(this.ID, ex));
+                    this.WriteErrorLog(ex);
                     continue;
                 }
             }
@@ -74,7 +74,7 @@ namespace PicSum.Job.Jobs
 
                 foreach (var dirPath in FileUtil.GetSubDirectoriesArray(parentDir, true))
                 {
-                    this.CheckCancel();
+                    this.ThrowIfJobCancellationRequested();
 
                     var incrementDirectoryViewCounter = new DirectoryViewCounterIncrementLogic(this);
                     if (!incrementDirectoryViewCounter.Execute(con, dirPath))

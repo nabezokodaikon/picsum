@@ -1,6 +1,5 @@
 using PicSum.Job.Parameters;
 using SWF.Core.Base;
-using SWF.Core.ConsoleAccessor;
 using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
 using SWF.Core.Job;
@@ -20,8 +19,6 @@ namespace PicSum.Job.Jobs
         protected override Task Execute(ImageFileCacheParameter parameter)
         {
             ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
-
-            var logger = Log.GetLogger();
 
             var nextFiles = new List<string>(parameter.NextCount);
             var nextIndex = this.GetNextIndex(parameter.CurrentIndex, parameter.Files);
@@ -54,7 +51,7 @@ namespace PicSum.Job.Jobs
                 {
                     try
                     {
-                        this.CheckCancel();
+                        this.ThrowIfJobCancellationRequested();
 
                         Instance<IImageFileCacher>.Value.Create(filePath);
                         var size = Instance<IImageFileCacher>.Value.GetSize(filePath);
@@ -73,15 +70,11 @@ namespace PicSum.Job.Jobs
                     }
                     catch (FileUtilException ex)
                     {
-                        logger.Error(ex);
+                        this.WriteErrorLog(ex);
                     }
                     catch (ImageUtilException ex)
                     {
-                        logger.Error(ex);
-                    }
-                    catch (Exception ex)
-                    {
-                        logger.Error(ex, $"画像ファイルキャッシュタスクで補足されない例外が発生しました。");
+                        this.WriteErrorLog(ex);
                     }
                 }
             );

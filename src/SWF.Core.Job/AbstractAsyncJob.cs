@@ -1,3 +1,4 @@
+using NLog;
 using SWF.Core.Base;
 using SWF.Core.ConsoleAccessor;
 using System.Diagnostics;
@@ -7,42 +8,64 @@ namespace SWF.Core.Job
     public abstract class AbstractAsyncJob
         : IAsyncJob
     {
+        protected static readonly Logger LOGGER = Log.GetLogger();
+
+        private readonly JobID _id;
+        private readonly string _name;
         private long _isCancel = 0;
 
-        internal ISender? Sender { get; set; } = null;
-
-        public JobID ID { get; private set; } = JobID.GetNew();
-
-        internal bool IsCancel
+        public bool IsJobCancel
         {
             get
             {
                 return Interlocked.Read(ref this._isCancel) == 1;
             }
-            set
+            private set
             {
                 Interlocked.Exchange(ref this._isCancel, Convert.ToInt64(value));
             }
         }
 
-        public void CheckCancel()
+        internal ISender? Sender { get; set; } = null;
+
+        public AbstractAsyncJob()
         {
-            if (this.IsCancel)
+            this._id = JobID.GetNew();
+            this._name = $"{this.GetType().Name} {this._id}";
+        }
+
+        public void ThrowIfJobCancellationRequested()
+        {
+            if (this.IsJobCancel)
             {
-                throw new JobCancelException(this.ID);
+                throw new JobCancelException(this._name);
             }
         }
 
-        public void WriteErrorLog(JobException ex)
+        public void WriteErrorLog(Exception ex)
         {
-            Log.GetLogger().Error($"{this.ID} {ex}");
+            ArgumentNullException.ThrowIfNull(ex, nameof(ex));
+
+            LOGGER.Error(ex, $"{this} で例外が発生しました。");
+        }
+
+        public void WriteErrorLog(string message)
+        {
+            ArgumentNullException.ThrowIfNull(message, nameof(message));
+
+            LOGGER.Error($"{this} で例外が発生しました。{message}");
+        }
+
+        public override string ToString()
+        {
+            return this._name;
         }
 
         internal abstract Task ExecuteWrapper(CancellationToken token);
 
         internal void BeginCancel()
         {
-            this.IsCancel = true;
+            this.IsJobCancel = true;
         }
 
         internal bool CanUIThreadAccess()
@@ -87,12 +110,10 @@ namespace SWF.Core.Job
         internal override async Task ExecuteWrapper(CancellationToken token)
         {
             this.CancellationToken = token;
-            var jobName = $"{this.GetType().Name} {this.ID}";
-            var logger = Log.GetLogger();
 
-            using (TimeMeasuring.Run(false, jobName))
+            using (TimeMeasuring.Run(false, this.ToString()))
             {
-                logger.Trace($"{jobName} を実行します。");
+                LOGGER.Trace($"{this} を実行します。");
                 var sw = Stopwatch.StartNew();
                 try
                 {
@@ -107,24 +128,24 @@ namespace SWF.Core.Job
                 }
                 catch (JobCancelException)
                 {
-                    logger.Trace($"{jobName} がキャンセルされました。");
-                }
-                catch (JobException ex)
-                {
-                    logger.Error(ex, $"{jobName} で例外が発生しました。");
+                    LOGGER.Trace($"{this} がキャンセルされました。");
                 }
                 catch (OperationCanceledException)
                 {
                     throw;
                 }
+                catch (AppException ex)
+                {
+                    LOGGER.Error(ex, $"{this} で例外が発生しました。");
+                }
                 catch (Exception ex)
                 {
-                    logger.Error(ex, $"{jobName} で補足されない例外が発生しました。");
+                    LOGGER.Error(ex, $"{this} で補足されない例外が発生しました。");
                 }
                 finally
                 {
                     sw.Stop();
-                    logger.Trace($"{jobName} が終了しました。{sw.ElapsedMilliseconds} ms");
+                    LOGGER.Trace($"{this} が終了しました。{sw.ElapsedMilliseconds} ms");
                 }
             }
         }

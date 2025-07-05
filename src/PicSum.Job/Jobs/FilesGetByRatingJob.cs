@@ -23,7 +23,7 @@ namespace PicSum.Job.Jobs
             var infoList = new ListResult<FileShallowInfoEntity>();
             foreach (var dto in this.GetFiles(param.RatingValue))
             {
-                this.CheckCancel();
+                this.ThrowIfJobCancellationRequested();
 
                 try
                 {
@@ -36,7 +36,7 @@ namespace PicSum.Job.Jobs
                 }
                 catch (FileUtilException ex)
                 {
-                    this.WriteErrorLog(new JobException(this.ID, ex));
+                    this.WriteErrorLog(ex);
                     continue;
                 }
             }

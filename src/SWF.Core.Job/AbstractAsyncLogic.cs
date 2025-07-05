@@ -5,7 +5,7 @@ namespace SWF.Core.Job
     /// </summary>
     public abstract class AbstractAsyncLogic
     {
-        protected readonly IAsyncJob Job;
+        private readonly IAsyncJob Job;
 
         public AbstractAsyncLogic(IAsyncJob job)
         {
@@ -14,14 +14,19 @@ namespace SWF.Core.Job
             this.Job = job;
         }
 
-        protected void WriteErrorLog(JobException ex)
+        protected void WriteErrorLog(Exception ex)
         {
             this.Job.WriteErrorLog(ex);
         }
 
-        protected void CheckCancel()
+        protected void WriteErrorLog(string message)
         {
-            this.Job.CheckCancel();
+            this.Job.WriteErrorLog(message);
+        }
+
+        protected void ThrowIfJobCancellationRequested()
+        {
+            this.Job.ThrowIfJobCancellationRequested();
         }
     }
 }

@@ -116,11 +116,11 @@ namespace PicSum.Job.Logics
             var srcSize = Instance<IImageFileSizeCacher>.Value.GetOrCreate(firstImageFile).Size;
             info.ImageSize = new(srcSize.Width, srcSize.Height);
 
-            this.CheckCancel();
+            this.ThrowIfJobCancellationRequested();
 
             var thumbnail = this.GetThumbnail(firstImageFile, thumbSize);
 
-            this.CheckCancel();
+            this.ThrowIfJobCancellationRequested();
 
             info.Thumbnail = new()
             {
@@ -166,12 +166,12 @@ namespace PicSum.Job.Logics
             var srcSize = Instance<IImageFileSizeCacher>.Value.GetOrCreate(filePath).Size;
             info.ImageSize = new(srcSize.Width, srcSize.Height);
 
-            this.CheckCancel();
+            this.ThrowIfJobCancellationRequested();
 
             var thumbnail = this.GetThumbnail(filePath, thumbSize);
             info.IsImageFile = true;
 
-            this.CheckCancel();
+            this.ThrowIfJobCancellationRequested();
 
             info.Thumbnail = new()
             {

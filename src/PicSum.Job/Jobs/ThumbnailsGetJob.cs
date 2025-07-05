@@ -3,7 +3,6 @@ using PicSum.Job.Entities;
 using PicSum.Job.Parameters;
 using PicSum.Job.Results;
 using SWF.Core.Base;
-using SWF.Core.ConsoleAccessor;
 using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
 using SWF.Core.Job;
@@ -32,8 +31,6 @@ namespace PicSum.Job.Jobs
                 throw new ArgumentException("ファイルパスリストがNULLです。", nameof(param));
             }
 
-            var logger = Log.GetLogger();
-
             var filePathList = param.FilePathList
                 .AsValueEnumerable()
                 .Skip(param.FirstIndex)
@@ -47,7 +44,7 @@ namespace PicSum.Job.Jobs
                 {
                     try
                     {
-                        this.CheckCancel();
+                        this.ThrowIfJobCancellationRequested();
 
                         var bf = Instance<IThumbnailCacher>.Value.GetOrCreateCache(
                             filePath, param.ThumbnailWidth, param.ThumbnailHeight);
@@ -82,15 +79,11 @@ namespace PicSum.Job.Jobs
                     }
                     catch (FileUtilException ex)
                     {
-                        logger.Error(ex);
+                        this.WriteErrorLog(ex);
                     }
                     catch (ImageUtilException ex)
                     {
-                        logger.Error(ex);
-                    }
-                    catch (Exception ex)
-                    {
-                        logger.Error(ex, $"サムネイル取得ジョブで補足されない例外が発生しました。");
+                        this.WriteErrorLog(ex);
                     }
                 }
             );

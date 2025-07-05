@@ -52,15 +52,15 @@ namespace PicSum.Job.Jobs
                     result.FileInfo?.Thumbnail?.ThumbnailImage?.Dispose();
                     throw;
                 }
-                catch (FileUtilException ex)
+                catch (FileUtilException)
                 {
                     result.FileInfo?.Thumbnail?.ThumbnailImage?.Dispose();
-                    throw new JobException(this.ID, ex);
+                    throw;
                 }
-                catch (ImageUtilException ex)
+                catch (ImageUtilException)
                 {
                     result.FileInfo?.Thumbnail?.ThumbnailImage?.Dispose();
-                    throw new JobException(this.ID, ex);
+                    throw;
                 }
             }
             else

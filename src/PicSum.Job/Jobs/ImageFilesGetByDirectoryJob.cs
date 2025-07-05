@@ -18,34 +18,27 @@ namespace PicSum.Job.Jobs
         {
             var result = new ImageFilesGetByDirectoryResult();
 
-            try
+            if (FileUtil.IsExistsDirectory(param.FilePath))
             {
-                if (FileUtil.IsExistsDirectory(param.FilePath))
-                {
-                    result.DirectoryPath = param.FilePath;
-                }
-                else if (FileUtil.IsExistsFile(param.FilePath))
-                {
-                    result.DirectoryPath = FileUtil.GetParentDirectoryPath(param.FilePath);
-                }
-                else
-                {
-                    throw new ArgumentException("ファイルまたはフォルダのパスではありません。", nameof(param));
-                }
-
-                result.FilePathList = ImageUtil.GetImageFilesArray(result.DirectoryPath);
-                if (Array.IndexOf(result.FilePathList, param.FilePath) < 0)
-                {
-                    result.SelectedFilePath = string.Empty;
-                }
-                else
-                {
-                    result.SelectedFilePath = param.FilePath;
-                }
+                result.DirectoryPath = param.FilePath;
             }
-            catch (FileUtilException ex)
+            else if (FileUtil.IsExistsFile(param.FilePath))
             {
-                throw new JobException(this.ID, ex);
+                result.DirectoryPath = FileUtil.GetParentDirectoryPath(param.FilePath);
+            }
+            else
+            {
+                throw new ArgumentException("ファイルまたはフォルダのパスではありません。", nameof(param));
+            }
+
+            result.FilePathList = ImageUtil.GetImageFilesArray(result.DirectoryPath);
+            if (Array.IndexOf(result.FilePathList, param.FilePath) < 0)
+            {
+                result.SelectedFilePath = string.Empty;
+            }
+            else
+            {
+                result.SelectedFilePath = param.FilePath;
             }
 
             this.Callback(result);

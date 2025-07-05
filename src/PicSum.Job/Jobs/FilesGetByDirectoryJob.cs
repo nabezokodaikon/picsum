@@ -41,7 +41,7 @@ namespace PicSum.Job.Jobs
             var infoList = new ListEntity<FileShallowInfoEntity>(files.Length);
             foreach (var file in files)
             {
-                this.CheckCancel();
+                this.ThrowIfJobCancellationRequested();
 
                 try
                 {
@@ -53,7 +53,7 @@ namespace PicSum.Job.Jobs
                 }
                 catch (FileUtilException ex)
                 {
-                    this.WriteErrorLog(new JobException(this.ID, ex));
+                    this.WriteErrorLog(ex);
                     continue;
                 }
             }

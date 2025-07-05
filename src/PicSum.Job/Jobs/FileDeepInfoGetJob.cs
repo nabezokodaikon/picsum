@@ -26,7 +26,7 @@ namespace PicSum.Job.Jobs
 
             var result = this.CreateCallbackResult(param);
 
-            this.CheckCancel();
+            this.ThrowIfJobCancellationRequested();
 
             this.Callback(result);
 
@@ -53,7 +53,7 @@ namespace PicSum.Job.Jobs
                     var filePath = param.FilePathList[0];
                     var fileInfo = deepInfoGetLogic.Get(filePath, param.ThumbnailSize, true);
 
-                    this.CheckCancel();
+                    this.ThrowIfJobCancellationRequested();
 
                     using (var con = Instance<IFileInfoDB>.Value.Connect())
                     {
@@ -61,7 +61,7 @@ namespace PicSum.Job.Jobs
                         fileInfo.Rating = ratingGetLogic.Execute(con, filePath);
                     }
 
-                    this.CheckCancel();
+                    this.ThrowIfJobCancellationRequested();
 
                     result.FileInfo = fileInfo;
                 }
@@ -73,13 +73,13 @@ namespace PicSum.Job.Jobs
                 catch (FileUtilException ex)
                 {
                     result.FileInfo?.Thumbnail?.ThumbnailImage?.Dispose();
-                    this.WriteErrorLog(new JobException(this.ID, ex));
+                    this.WriteErrorLog(ex);
                     return FileDeepInfoGetResult.ERROR;
                 }
                 catch (ImageUtilException ex)
                 {
                     result.FileInfo?.Thumbnail?.ThumbnailImage?.Dispose();
-                    this.WriteErrorLog(new JobException(this.ID, ex));
+                    this.WriteErrorLog(ex);
                     return FileDeepInfoGetResult.ERROR;
                 }
             }

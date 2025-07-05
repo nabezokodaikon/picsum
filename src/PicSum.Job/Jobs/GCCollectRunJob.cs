@@ -14,7 +14,7 @@ namespace PicSum.Job.Jobs
 
             while (true)
             {
-                this.CheckCancel();
+                this.ThrowIfJobCancellationRequested();
 
                 await Task.Delay(INTERVAL, this.CancellationToken);
 
