@@ -105,7 +105,7 @@ namespace SWF.Core.Job
             {
                 this._context.Post(state =>
                 {
-                    if (!job.IsJobCancel && job.CanUIThreadAccess() && state is TJobResult result)
+                    if (job.CanUIThreadAccess() && state is TJobResult result)
                     {
                         try
                         {
@@ -156,7 +156,7 @@ namespace SWF.Core.Job
             {
                 this._context.Post(state =>
                 {
-                    if (!job.IsJobCancel && job.CanUIThreadAccess() && state is TJobResult result)
+                    if (job.CanUIThreadAccess() && state is TJobResult result)
                     {
                         try
                         {
