@@ -1,18 +1,15 @@
 using SWF.Core.ConsoleAccessor;
 using SWF.Core.FileAccessor;
-using System.Diagnostics;
 using System.Runtime.Versioning;
 
-namespace SWF.Core.Base
+namespace SWF.Core.App
 {
     [SupportedOSPlatform("windows10.0.17763.0")]
     public static class AppConstants
     {
         public const string UI_THREAD_NAME = "Main";
-
         public const string MUTEX_NAME = "11d9bca9";
         public const string PIPE_NAME = "be752c43";
-
         public const float DEFAULT_ZOOM_VALUE = 1f;
 
         //private static readonly Lazy<bool> IS_RUNNING_AS_UWP
@@ -38,19 +35,6 @@ namespace SWF.Core.Base
         public static readonly Lazy<string> THUMBNAIL_DATABASE_FILE = new(
             () => Path.Combine(DATABASE_DIRECTORY.Value, "thumbnail.sqlite"),
             LazyThreadSafetyMode.ExecutionAndPublication);
-
-        private static Stopwatch? bootTimeStopwatch = null;
-
-        public static void StartBootTimeMeasurement()
-        {
-            bootTimeStopwatch = Stopwatch.StartNew();
-        }
-
-        public static void StopBootTimeMeasurement()
-        {
-            bootTimeStopwatch?.Stop();
-            ConsoleUtil.Write(true, $"Boot time: {bootTimeStopwatch?.ElapsedMilliseconds} ms");
-        }
 
         private static string GetApplicationDirectory()
         {
@@ -119,60 +103,5 @@ namespace SWF.Core.Base
         //        ConsoleUtil.Write(true, $"AppConstants.IsRunningAsUwp End");
         //    }
         //}
-    }
-
-    /// <summary>
-    /// コンテンツ表示種別
-    /// </summary>
-    public enum PageOpenType
-    {
-        Default = 0,
-        OverlapTab = 1,
-        AddHome = 2,
-        AddTab = 3,
-        InsertTab = 4,
-        NewWindow = 5
-    }
-
-    /// <summary>
-    /// 画像表示モード
-    /// </summary>
-    public enum ImageDisplayMode
-    {
-        Single = 0,
-        LeftFacing = 1,
-        RightFacing = 2
-    }
-
-    /// <summary>
-    /// 画像サイズモード
-    /// </summary>
-    public enum ImageSizeMode
-    {
-        Original = 0,
-        FitAllImage = 1,
-        FitOnlyBigImage = 2,
-    }
-
-    /// <summary>
-    /// 画像表示位置
-    /// </summary>
-    public enum ImageAlign
-    {
-        Center = 0,
-        Left = 1,
-        Right = 2,
-    }
-
-    /// <summary>
-    /// ソート種別ID
-    /// </summary>
-    public enum SortTypeID
-    {
-        Default = 0,
-        FileName = 1,
-        FilePath = 2,
-        UpdateDate = 3,
-        RegistrationDate = 5,
     }
 }

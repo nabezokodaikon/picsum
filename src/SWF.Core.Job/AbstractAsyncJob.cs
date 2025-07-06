@@ -1,10 +1,13 @@
 using NLog;
+using SWF.Core.App;
 using SWF.Core.Base;
 using SWF.Core.ConsoleAccessor;
 using System.Diagnostics;
+using System.Runtime.Versioning;
 
 namespace SWF.Core.Job
 {
+    [SupportedOSPlatform("windows10.0.17763.0")]
     public abstract class AbstractAsyncJob
         : IAsyncJob
     {
@@ -92,6 +95,7 @@ namespace SWF.Core.Job
         }
     }
 
+    [SupportedOSPlatform("windows10.0.17763.0")]
     public abstract class AbstractTwoWayJob<TParameter, TResult>
         : AbstractAsyncJob
         where TParameter : class, IJobParameter

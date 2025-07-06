@@ -1,12 +1,14 @@
 using PicSum.Job.Entities;
 using PicSum.Job.Parameters;
 using SWF.Core.Job;
+using System.Runtime.Versioning;
 
 namespace PicSum.Job.Results
 {
     /// <summary>
     /// フォルダ内検索結果
     /// </summary>
+    [SupportedOSPlatform("windows10.0.17763.0")]
     public sealed class DirectoryGetResult
         : IJobResult
     {

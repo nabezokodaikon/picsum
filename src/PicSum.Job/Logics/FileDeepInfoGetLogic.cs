@@ -1,5 +1,6 @@
 using PicSum.Job.Common;
 using PicSum.Job.Entities;
+using SWF.Core.App;
 using SWF.Core.Base;
 using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;

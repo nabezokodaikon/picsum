@@ -1,5 +1,6 @@
 using PicSum.DatabaseAccessor.Connection;
 using PicSum.Job.Common;
+using SWF.Core.App;
 using SWF.Core.Base;
 using SWF.Core.ConsoleAccessor;
 using SWF.Core.ImageAccessor;

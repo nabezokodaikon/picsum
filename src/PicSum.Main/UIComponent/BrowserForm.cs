@@ -143,7 +143,7 @@ namespace PicSum.Main.UIComponent
                 this.CreateBrowserMainPanel();
                 BrowserForm.isStartUp = false;
 
-                AppConstants.StopBootTimeMeasurement();
+                BootTimeMeasurement.StopBootTimeMeasurement();
             }
 
             ConsoleUtil.Write(true, $"BrowserForm.OnShown End");
@@ -254,7 +254,7 @@ namespace PicSum.Main.UIComponent
         {
             if (this._browserMainPanel != null)
             {
-                throw new SWFException("メインコントロールは既に存在しています。");
+                throw new InvalidOperationException("メインコントロールは既に存在しています。");
             }
 
             ConsoleUtil.Write(true, $"BrowserForm.CreateBrowserMainPanel Start");

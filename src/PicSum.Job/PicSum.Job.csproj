@@ -28,6 +28,7 @@
   </PropertyGroup>
   
   <ItemGroup>
+    <ProjectReference Include="..\SWF.Core.App\SWF.Core.App.csproj" />
     <ProjectReference Include="..\SWF.Core.FileAccessor\SWF.Core.FileAccessor.csproj" />
     <ProjectReference Include="..\SWF.Core.Job\SWF.Core.Job.csproj" />
     <ProjectReference Include="..\PicSum.DatabaseAccessor\PicSum.DatabaseAccessor.csproj" />

@@ -1,8 +1,9 @@
 using NLog;
 using NLog.Config;
 using NLog.Targets;
+using SWF.Core.ConsoleAccessor;
 
-namespace SWF.Core.ConsoleAccessor
+namespace SWF.Core.Base
 {
     public static class Log
     {

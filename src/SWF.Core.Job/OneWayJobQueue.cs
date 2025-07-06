@@ -1,5 +1,5 @@
 using NLog;
-using SWF.Core.ConsoleAccessor;
+using SWF.Core.Base;
 using System.Runtime.Versioning;
 using System.Threading.Channels;
 

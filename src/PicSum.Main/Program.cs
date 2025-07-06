@@ -1,4 +1,5 @@
 using PicSum.Main.Conf;
+using SWF.Core.App;
 using SWF.Core.Base;
 using SWF.Core.ConsoleAccessor;
 using System;
@@ -28,7 +29,7 @@ namespace PicSum.Main
             {
                 try
                 {
-                    AppConstants.StartBootTimeMeasurement();
+                    BootTimeMeasurement.StartBootTimeMeasurement();
 
                     Thread.CurrentThread.Name = AppConstants.UI_THREAD_NAME;
 
