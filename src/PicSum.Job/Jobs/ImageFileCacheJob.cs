@@ -13,7 +13,7 @@ namespace PicSum.Job.Jobs
     {
         private static readonly ParallelOptions _parallelOptions = new ParallelOptions
         {
-            MaxDegreeOfParallelism = 4,
+            MaxDegreeOfParallelism = 1,
         };
 
         protected override Task Execute(ImageFileCacheParameter parameter)
