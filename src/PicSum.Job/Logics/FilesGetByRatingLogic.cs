@@ -15,7 +15,7 @@ namespace PicSum.Job.Logics
     internal sealed class FilesGetByRatingLogic(IAsyncJob job)
         : AbstractAsyncLogic(job)
     {
-        public FileByRatingDto[] Execute(IConnection con, int rating)
+        public FileByRatingDto[] Execute(IDatabaseConnection con, int rating)
         {
             var sql = new FileReadByRatingSql(rating);
             var dtoList = con.ReadList<FileByRatingDto>(sql);

@@ -15,7 +15,7 @@ namespace PicSum.Job.Logics
     internal sealed class FilesGetByTagLogic(IAsyncJob job)
         : AbstractAsyncLogic(job)
     {
-        public FileByTagDto[] Execute(IConnection con, string tag)
+        public FileByTagDto[] Execute(IDatabaseConnection con, string tag)
         {
             ArgumentNullException.ThrowIfNull(con, nameof(con));
             ArgumentException.ThrowIfNullOrEmpty(tag, nameof(tag));

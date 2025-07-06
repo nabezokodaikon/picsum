@@ -12,7 +12,7 @@ namespace PicSum.Job.Logics
     internal sealed class FileTagDeleteLogic(IAsyncJob job)
         : AbstractAsyncLogic(job)
     {
-        public void Execute(IConnection con, string filePath, string tag)
+        public void Execute(IDatabaseConnection con, string filePath, string tag)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
             ArgumentException.ThrowIfNullOrEmpty(tag, nameof(tag));

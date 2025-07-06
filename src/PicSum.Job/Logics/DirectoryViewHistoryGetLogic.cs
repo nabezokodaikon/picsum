@@ -16,7 +16,7 @@ namespace PicSum.Job.Logics
     internal sealed class DirectoryViewHistoryGetLogic(IAsyncJob job)
         : AbstractAsyncLogic(job)
     {
-        public string[] Execute(IConnection con)
+        public string[] Execute(IDatabaseConnection con)
         {
             var sql = new DirectoryViewHistoryReadSql(100);
             var dtoList = con.ReadList<DirectoryViewHistoryDto>(sql);

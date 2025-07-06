@@ -1,6 +1,6 @@
 namespace SWF.Core.DatabaseAccessor
 {
-    public interface IConnection
+    public interface IDatabaseConnection
         : IDisposable
     {
         void Commit();

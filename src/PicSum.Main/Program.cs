@@ -69,7 +69,7 @@ namespace PicSum.Main
                         typeof(PicSum.UIComponent.Contents.Common.BrowserPage),
                         typeof(PicSum.UIComponent.InfoPanel.InfoPanel),
 
-                        typeof(SWF.Core.DatabaseAccessor.AbstractDB),
+                        typeof(SWF.Core.DatabaseAccessor.AbstractDatabase),
                         typeof(SWF.Core.FileAccessor.FileAppender),
                         typeof(SWF.Core.ImageAccessor.CvImage),
                         typeof(SWF.Core.Job.AbstractAsyncJob),

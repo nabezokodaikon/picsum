@@ -16,7 +16,7 @@ namespace PicSum.Job.Logics
     internal sealed class FilesTagsGetLogic(IAsyncJob job)
         : AbstractAsyncLogic(job)
     {
-        public ListEntity<FileTagInfoEntity> Execute(IConnection con, string[] filePathList)
+        public ListEntity<FileTagInfoEntity> Execute(IDatabaseConnection con, string[] filePathList)
         {
             ArgumentNullException.ThrowIfNull(con, nameof(con));
             ArgumentNullException.ThrowIfNull(filePathList, nameof(filePathList));

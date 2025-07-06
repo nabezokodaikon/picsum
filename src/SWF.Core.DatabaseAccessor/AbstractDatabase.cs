@@ -5,8 +5,8 @@ using System.Runtime.Versioning;
 namespace SWF.Core.DatabaseAccessor
 {
     [SupportedOSPlatform("windows10.0.17763.0")]
-    public abstract class AbstractDB
-        : IDB
+    public abstract class AbstractDatabase
+        : IDatabase
     {
         private static void CreateDB(string filePath, string tablesCreateSql)
         {
@@ -41,7 +41,7 @@ namespace SWF.Core.DatabaseAccessor
         private SQLiteConnection? _persistentConnection;
         private readonly Lock _lockObject = new();
 
-        protected AbstractDB(string filePath, string tablesCreateSql, bool isPersistent)
+        protected AbstractDatabase(string filePath, string tablesCreateSql, bool isPersistent)
         {
             ArgumentNullException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
             ArgumentNullException.ThrowIfNullOrEmpty(tablesCreateSql, nameof(tablesCreateSql));
@@ -55,36 +55,36 @@ namespace SWF.Core.DatabaseAccessor
             this._isPersistent = isPersistent;
         }
 
-        public IConnection Connect()
+        public IDatabaseConnection Connect()
         {
             this._lockObject.Enter();
 
             if (this._isPersistent)
             {
                 this._persistentConnection ??= CreateInMemoryConnection(this._filePath);
-                return new Connection(
+                return new DatabaseConnection(
                     this._lockObject, this._persistentConnection, false);
             }
             else
             {
-                return new Connection(
+                return new DatabaseConnection(
                     this._lockObject, this._filePath, false);
             }
         }
 
-        public IConnection ConnectWithTransaction()
+        public IDatabaseConnection ConnectWithTransaction()
         {
             this._lockObject.Enter();
 
             if (this._isPersistent)
             {
                 this._persistentConnection ??= CreateInMemoryConnection(this._filePath);
-                return new Connection(
+                return new DatabaseConnection(
                     this._lockObject, this._persistentConnection, true);
             }
             else
             {
-                return new Connection(
+                return new DatabaseConnection(
                     this._lockObject, this._filePath, true);
             }
         }

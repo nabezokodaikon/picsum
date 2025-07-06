@@ -13,7 +13,7 @@ namespace PicSum.Job.Logics
         /// 処理を実行します。
         /// </summary>
         /// <param name="filePath">ファイルパス</param>
-        public bool Execute(IConnection con, string filePath)
+        public bool Execute(IDatabaseConnection con, string filePath)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 

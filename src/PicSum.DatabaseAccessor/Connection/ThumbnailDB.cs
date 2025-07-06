@@ -8,7 +8,7 @@ namespace PicSum.DatabaseAccessor.Connection
     /// </summary>
     [SupportedOSPlatform("windows10.0.17763.0")]
     public sealed partial class ThumbnailDB(string dbFilePath)
-        : AbstractDB(dbFilePath, TABLE_CREATE_SQL, true), IThumbnailDB
+        : AbstractDatabase(dbFilePath, TABLE_CREATE_SQL, true), IThumbnailDB
     {
         private const string TABLE_CREATE_SQL =
         @"

@@ -8,7 +8,7 @@ namespace PicSum.DatabaseAccessor.Connection
     /// </summary>
     [SupportedOSPlatform("windows10.0.17763.0")]
     public sealed partial class FileInfoDB(string dbFilePath)
-        : AbstractDB(dbFilePath, TABLE_CREATE_SQL, false), IFileInfoDB
+        : AbstractDatabase(dbFilePath, TABLE_CREATE_SQL, false), IFileInfoDB
     {
         private const string TABLE_CREATE_SQL =
         @"
