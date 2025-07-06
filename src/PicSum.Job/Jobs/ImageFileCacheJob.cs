@@ -51,7 +51,10 @@ namespace PicSum.Job.Jobs
                 {
                     try
                     {
-                        this.ThrowIfJobCancellationRequested();
+                        if (this.IsJobCancel)
+                        {
+                            return;
+                        }
 
                         Instance<IImageFileCacher>.Value.Create(filePath);
                         var size = Instance<IImageFileCacher>.Value.GetSize(filePath);
@@ -63,10 +66,6 @@ namespace PicSum.Job.Jobs
                         {
                             Instance<IImageFileSizeCacher>.Value.Create(filePath);
                         }
-                    }
-                    catch (JobCancelException)
-                    {
-                        return;
                     }
                     catch (FileUtilException ex)
                     {

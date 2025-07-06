@@ -44,7 +44,10 @@ namespace PicSum.Job.Jobs
                 {
                     try
                     {
-                        this.ThrowIfJobCancellationRequested();
+                        if (this.IsJobCancel)
+                        {
+                            return;
+                        }
 
                         var bf = Instance<IThumbnailCacher>.Value.GetOrCreateCache(
                             filePath, param.ThumbnailWidth, param.ThumbnailHeight);
@@ -72,10 +75,6 @@ namespace PicSum.Job.Jobs
 
                             this.Callback(img);
                         }
-                    }
-                    catch (JobCancelException)
-                    {
-                        return;
                     }
                     catch (FileUtilException ex)
                     {
