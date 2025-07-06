@@ -1,11 +1,11 @@
 using PicSum.DatabaseAccessor.Connection;
 using PicSum.DatabaseAccessor.Sql;
 using PicSum.Job.Entities;
-using SWF.Core.App;
 using SWF.Core.Base;
 using SWF.Core.DatabaseAccessor;
 using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
+using SWF.Core.ResourceAccessor;
 using System.Drawing;
 using System.Runtime.Versioning;
 
@@ -24,7 +24,7 @@ namespace PicSum.Job.Common
         private static string GetThumbnailBufferFilePath(int id)
         {
             return Path.Combine(
-                AppConstants.DATABASE_DIRECTORY.Value,
+                AppFiles.DATABASE_DIRECTORY.Value,
                 $"{id}{ThumbnailUtil.THUMBNAIL_BUFFER_FILE_EXTENSION}");
         }
 

@@ -1,9 +1,9 @@
 using MessagePack;
-using SWF.Core.App;
 using SWF.Core.Base;
 using SWF.Core.ConsoleAccessor;
 using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
+using SWF.Core.ResourceAccessor;
 using System;
 using System.IO;
 using System.Runtime.Versioning;
@@ -77,10 +77,10 @@ namespace PicSum.Main.Conf
         {
             ConsoleUtil.Write(true, $"Config.Load Start");
 
-            if (FileUtil.IsExistsFile(AppConstants.CONFIG_FILE.Value))
+            if (FileUtil.IsExistsFile(AppFiles.CONFIG_FILE.Value))
             {
                 var config = MessagePackSerializer.Deserialize<Config>(
-                    File.ReadAllBytes(AppConstants.CONFIG_FILE.Value),
+                    File.ReadAllBytes(AppFiles.CONFIG_FILE.Value),
                     MessagePackSerializerOptions.Standard.WithCompression(MessagePackCompression.None));
 
                 this.WindowState = config.WindowState;
@@ -142,7 +142,7 @@ namespace PicSum.Main.Conf
                 this,
                 MessagePackSerializerOptions.Standard.WithCompression(MessagePackCompression.None));
 
-            File.WriteAllBytes(AppConstants.CONFIG_FILE.Value, bytes);
+            File.WriteAllBytes(AppFiles.CONFIG_FILE.Value, bytes);
         }
 
         public string GetOldVersion()

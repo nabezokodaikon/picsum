@@ -2,16 +2,11 @@ using SWF.Core.ConsoleAccessor;
 using SWF.Core.FileAccessor;
 using System.Runtime.Versioning;
 
-namespace SWF.Core.App
+namespace SWF.Core.ResourceAccessor
 {
     [SupportedOSPlatform("windows10.0.17763.0")]
-    public static class AppConstants
+    public static class AppFiles
     {
-        public const string UI_THREAD_NAME = "Main";
-        public const string MUTEX_NAME = "11d9bca9";
-        public const string PIPE_NAME = "be752c43";
-        public const float DEFAULT_ZOOM_VALUE = 1f;
-
         //private static readonly Lazy<bool> IS_RUNNING_AS_UWP
         //    = new(IsRunningAsUwp);
         public static readonly Lazy<string> APPLICATION_DIRECTORY = new(
@@ -61,7 +56,7 @@ namespace SWF.Core.App
 
         public static void CreateApplicationDirectories()
         {
-            using (TimeMeasuring.Run(true, "AppConstants.CreateApplicationDirectories"))
+            using (TimeMeasuring.Run(true, "AppFiles.CreateApplicationDirectories"))
             {
                 if (!FileUtil.IsExistsFileOrDirectory(APPLICATION_DIRECTORY.Value))
                 {
@@ -87,7 +82,7 @@ namespace SWF.Core.App
 
         //private static bool IsRunningAsUwp()
         //{
-        //    ConsoleUtil.Write(true, $"AppConstants.IsRunningAsUwp Start");
+        //    ConsoleUtil.Write(true, $"AppFiles.IsRunningAsUwp Start");
         //    try
         //    {
         //        // UWP の場合は Package.Current.Id が利用可能
@@ -100,7 +95,7 @@ namespace SWF.Core.App
         //    }
         //    finally
         //    {
-        //        ConsoleUtil.Write(true, $"AppConstants.IsRunningAsUwp End");
+        //        ConsoleUtil.Write(true, $"AppFiles.IsRunningAsUwp End");
         //    }
         //}
     }

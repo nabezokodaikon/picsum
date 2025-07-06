@@ -31,7 +31,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SWF.Core.App\SWF.Core.App.csproj" />
     <ProjectReference Include="..\SWF.Core.Base\SWF.Core.Base.csproj" />
   </ItemGroup>
 

@@ -1,4 +1,3 @@
-using SWF.Core.App;
 using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
 using System.Runtime.Versioning;
@@ -30,13 +29,13 @@ namespace SWF.Core.ResourceAccessor
             () => FileIconUtil.GetSystemIcon(WinApiMembers.ShellSpecialFolder.CSIDL_DRIVES, WinApiMembers.ShellFileInfoFlags.SHGFI_LARGEICON),
             LazyThreadSafetyMode.ExecutionAndPublication);
         private readonly Lazy<Bitmap> _smallDirectoryIcon = new(
-            () => FileIconUtil.GetSmallIconByFilePath(AppConstants.APPLICATION_DIRECTORY.Value),
+            () => FileIconUtil.GetSmallIconByFilePath(AppFiles.APPLICATION_DIRECTORY.Value),
             LazyThreadSafetyMode.ExecutionAndPublication);
         private readonly Lazy<Bitmap> _extralargeDirectoryIcon = new(
-            () => FileIconUtil.GetLargeIconByFilePath(AppConstants.APPLICATION_DIRECTORY.Value, WinApiMembers.SHIL.SHIL_EXTRALARGE),
+            () => FileIconUtil.GetLargeIconByFilePath(AppFiles.APPLICATION_DIRECTORY.Value, WinApiMembers.SHIL.SHIL_EXTRALARGE),
             LazyThreadSafetyMode.ExecutionAndPublication);
         private readonly Lazy<Bitmap> _jumboDirectoryIcon = new(
-            () => FileIconUtil.GetLargeIconByFilePath(AppConstants.APPLICATION_DIRECTORY.Value, WinApiMembers.SHIL.SHIL_JUMBO),
+            () => FileIconUtil.GetLargeIconByFilePath(AppFiles.APPLICATION_DIRECTORY.Value, WinApiMembers.SHIL.SHIL_JUMBO),
             LazyThreadSafetyMode.ExecutionAndPublication);
 
         public Image SmallPCIcon

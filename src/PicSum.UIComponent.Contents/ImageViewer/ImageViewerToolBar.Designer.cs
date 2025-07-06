@@ -1,4 +1,3 @@
-using SWF.Core.App;
 using SWF.Core.Base;
 using System;
 using System.Windows.Forms;

@@ -1,7 +1,7 @@
 using PicSum.Main.Conf;
-using SWF.Core.App;
 using SWF.Core.Base;
 using SWF.Core.ConsoleAccessor;
+using SWF.Core.ResourceAccessor;
 using System;
 using System.IO;
 using System.IO.Pipes;
@@ -85,12 +85,12 @@ namespace PicSum.Main
                         typeof(WinApi.WinApiMembers)
                     );
 
-                    AppConstants.CreateApplicationDirectories();
+                    AppFiles.CreateApplicationDirectories();
 
                     using (TimeMeasuring.Run(true, "Program.Main Load Configs"))
                     {
                         Action[] actions = [
-                            () => Log.Initialize(AppConstants.LOG_DIRECTORY.Value),
+                            () => Log.Initialize(AppFiles.LOG_DIRECTORY.Value),
                             Config.Instance.Load
                         ];
 
