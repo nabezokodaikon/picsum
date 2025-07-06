@@ -1,4 +1,5 @@
 using PicSum.DatabaseAccessor.Connection;
+using PicSum.Job.Entities;
 using PicSum.Job.Logics;
 using PicSum.Job.Parameters;
 using PicSum.Job.Results;
@@ -45,13 +46,15 @@ namespace PicSum.Job.Jobs
                 FilePathList = param.FilePathList,
             };
 
+            FileDeepInfoEntity? fileInfo = null;
+
             if (param.FilePathList.Length == 1)
             {
                 try
                 {
                     var deepInfoGetLogic = new FileDeepInfoGetLogic(this);
                     var filePath = param.FilePathList[0];
-                    var fileInfo = deepInfoGetLogic.Get(filePath, param.ThumbnailSize, true);
+                    fileInfo = deepInfoGetLogic.Get(filePath, param.ThumbnailSize, true);
 
                     this.ThrowIfJobCancellationRequested();
 
@@ -67,18 +70,18 @@ namespace PicSum.Job.Jobs
                 }
                 catch (JobCancelException)
                 {
-                    result.FileInfo?.Thumbnail?.ThumbnailImage?.Dispose();
+                    fileInfo?.Thumbnail?.ThumbnailImage?.Dispose();
                     throw;
                 }
                 catch (FileUtilException ex)
                 {
-                    result.FileInfo?.Thumbnail?.ThumbnailImage?.Dispose();
+                    fileInfo?.Thumbnail?.ThumbnailImage?.Dispose();
                     this.WriteErrorLog(ex);
                     return FileDeepInfoGetResult.ERROR;
                 }
                 catch (ImageUtilException ex)
                 {
-                    result.FileInfo?.Thumbnail?.ThumbnailImage?.Dispose();
+                    fileInfo?.Thumbnail?.ThumbnailImage?.Dispose();
                     this.WriteErrorLog(ex);
                     return FileDeepInfoGetResult.ERROR;
                 }
