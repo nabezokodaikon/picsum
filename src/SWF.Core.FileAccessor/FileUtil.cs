@@ -32,23 +32,6 @@ namespace SWF.Core.FileAccessor
             return filePath == ROOT_DIRECTORY_PATH;
         }
 
-        public static bool IsExistsFileOrDirectory(string path)
-        {
-            ArgumentNullException.ThrowIfNullOrEmpty(path, nameof(path));
-
-            using (TimeMeasuring.Run(false, "FileUtil.IsExistsFileOrDirectory"))
-            {
-                var handle = WinApiMembers.FindFirstFile(path, out var findData);
-                if (handle == WinApiMembers.INVALID_HANDLE_VALUE)
-                {
-                    return false;
-                }
-
-                WinApiMembers.FindClose(handle);
-                return true;
-            }
-        }
-
         /// <summary>
         /// ファイルパスがドライブであるか確認します。
         /// </summary>
@@ -88,15 +71,7 @@ namespace SWF.Core.FileAccessor
 
             using (TimeMeasuring.Run(false, "FileUtil.IsExistsDirectory"))
             {
-                var handle = WinApiMembers.FindFirstFile(path, out var findData);
-                if (handle == WinApiMembers.INVALID_HANDLE_VALUE)
-                {
-                    return false;
-                }
-
-                var isDirectory = (findData.dwFileAttributes & WinApiMembers.FILE_ATTRIBUTE_DIRECTORY) != 0;
-                WinApiMembers.FindClose(handle);
-                return isDirectory;
+                return Directory.Exists(path);
             }
         }
 
@@ -111,15 +86,7 @@ namespace SWF.Core.FileAccessor
 
             using (TimeMeasuring.Run(false, "FileUtil.IsExistsFile"))
             {
-                var handle = WinApiMembers.FindFirstFile(path, out var findData);
-                if (handle == WinApiMembers.INVALID_HANDLE_VALUE)
-                {
-                    return false;
-                }
-
-                var isFile = (findData.dwFileAttributes & WinApiMembers.FILE_ATTRIBUTE_DIRECTORY) == 0;
-                WinApiMembers.FindClose(handle);
-                return isFile;
+                return File.Exists(path);
             }
         }
 

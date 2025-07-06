@@ -306,9 +306,6 @@ namespace WinApi
 
         public const int DWMWA_CAPTION_BUTTON_BOUNDS = 5;
 
-        public const uint FILE_ATTRIBUTE_DIRECTORY = 0x10;
-        public static readonly IntPtr INVALID_HANDLE_VALUE = new IntPtr(-1);
-
         public enum FileAttributesFlags : uint
         {
             FILE_ATTRIBUTE_ARCHIVE = 0x00000020,
@@ -561,16 +558,6 @@ namespace WinApi
             public string szCSDVersion;
         }
 
-        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-        public struct WIN32_FIND_DATA
-        {
-            public uint dwFileAttributes;
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 260)]
-            public string cFileName;
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 14)]
-            public string cAlternateFileName;
-        }
-
         [StructLayout(LayoutKind.Sequential)]
         public struct MINMAXINFO
         {
@@ -679,12 +666,6 @@ namespace WinApi
 
         [DllImport("User32.dll")]
         public static extern uint GetDpiForWindow(IntPtr hWnd);
-
-        [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
-        public static extern IntPtr FindFirstFile(string lpFileName, out WIN32_FIND_DATA lpFindFileData);
-
-        [DllImport("kernel32.dll", SetLastError = true)]
-        public static extern bool FindClose(IntPtr hFindFile);
 
         [DllImport("dwmapi.dll")]
         public static extern int DwmGetWindowAttribute(IntPtr hwnd, int dwAttribute, out RECT pvAttribute, int cbAttribute);
