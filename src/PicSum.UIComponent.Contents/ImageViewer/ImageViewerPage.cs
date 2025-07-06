@@ -308,8 +308,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 this.ReadImage(this.FilePathListIndex, true, false);
             }
 
-            this.leftImagePanel.Focus();
-
             base.OnMouseWheel(e);
         }
 
@@ -977,7 +975,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             }
 
             this.SettingImagePanelLayout(e);
-            this.checkPatternPanel.Focus();
+            this.Focus();
         }
 
         private void SingleViewToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1184,12 +1182,12 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
         private void LeftImagePanel_MouseDown(object sender, MouseEventArgs e)
         {
-            this.leftImagePanel.Focus();
+            this.Focus();
         }
 
         private void RightImagePanel_MouseDown(object sender, MouseEventArgs e)
         {
-            this.rightImagePanel.Focus();
+            this.Focus();
         }
 
         private void RightImagePanel_MouseUp(object sender, MouseEventArgs e)
