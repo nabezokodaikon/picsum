@@ -20,7 +20,7 @@ namespace SWF.Core.Base
             var logfile = new FileTarget("logfile")
             {
                 FileName = Path.Combine(logDirectory, "app.log"),
-                Layout = "${date:format=yyyy-MM-dd HH\\:mm\\:ss.fff} | ${level:padding=-5} | ${threadid} | ${threadname} | ${message:withexception=true}",
+                Layout = "${date:format=yyyy-MM-dd HH\\:mm\\:ss.fff} | ${level:padding=-5} | ${threadid:padding=4} | ${threadname:padding=-14} | ${message:withexception=true}",
                 ArchiveFileName = Path.Combine(logDirectory, "archive", "app_{#}.log"),
                 ArchiveAboveSize = 10 * 1024 * 1024,
                 MaxArchiveFiles = 30,
