@@ -20,7 +20,7 @@ namespace PicSum.Job.Jobs
                 throw new ArgumentException("ファイルパスリストがNULLです。", nameof(param));
             }
 
-            await Task.Delay(1, this.CancellationToken);
+            await Task.Delay(10, this.CancellationToken);
 
             var result = this.CreateCallbackResult(param);
             this.Callback(result);

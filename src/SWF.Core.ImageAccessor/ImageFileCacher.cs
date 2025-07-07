@@ -1,4 +1,3 @@
-using SWF.Core.Base;
 using SWF.Core.ConsoleAccessor;
 using SWF.Core.FileAccessor;
 using System.Runtime.Versioning;
@@ -9,7 +8,7 @@ namespace SWF.Core.ImageAccessor
     public sealed partial class ImageFileCacher
         : IImageFileCacher
     {
-        private const int CACHE_CAPACITY = 9;
+        private const int CACHE_CAPACITY = 11;
 
         private bool _disposed = false;
         private readonly List<ImageFileCacheEntity> _cacheList = new(CACHE_CAPACITY);
@@ -95,20 +94,15 @@ namespace SWF.Core.ImageAccessor
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
-            var logger = Log.GetLogger();
-
             var timestamp = FileUtil.GetUpdateDate(filePath);
 
             lock (this._cacheLock)
             {
-                using (TimeMeasuring.Run(false, $"ImageFileCacher.Create 1"))
+                if (this._cacheDictionary.TryGetValue(filePath, out var cache))
                 {
-                    if (this._cacheDictionary.TryGetValue(filePath, out var cache))
+                    if (timestamp == cache.Timestamp)
                     {
-                        if (timestamp == cache.Timestamp)
-                        {
-                            return;
-                        }
+                        return;
                     }
                 }
             }
@@ -118,32 +112,25 @@ namespace SWF.Core.ImageAccessor
 
             lock (this._cacheLock)
             {
-                using (TimeMeasuring.Run(false, $"ImageFileCacher.Create 2"))
+                if (this._cacheDictionary.TryGetValue(filePath, out var cache))
                 {
-                    if (this._cacheDictionary.TryGetValue(newCache.FilePath, out var cache))
+                    if (timestamp == cache.Timestamp)
                     {
-                        if (newCache.Timestamp == cache.Timestamp)
-                        {
-                            newCache.Dispose();
-                            return;
-                        }
-
-                        this._cacheList.RemoveAll(_ => _.FilePath == cache.FilePath);
-                        this._cacheDictionary.Remove(cache.FilePath);
-                        cache.Dispose();
+                        newCache.Dispose();
+                        return;
                     }
-
-                    if (this._cacheList.Count > CACHE_CAPACITY)
-                    {
-                        var removeCache = this._cacheList[0];
-                        this._cacheList.RemoveAt(0);
-                        this._cacheDictionary.Remove(removeCache.FilePath);
-                        removeCache.Dispose();
-                    }
-
-                    this._cacheDictionary.Add(newCache.FilePath, newCache);
-                    this._cacheList.Add(newCache);
                 }
+
+                if (this._cacheList.Count > CACHE_CAPACITY)
+                {
+                    var removeCache = this._cacheList[0];
+                    this._cacheList.RemoveAt(0);
+                    this._cacheDictionary.Remove(removeCache.FilePath);
+                    removeCache.Dispose();
+                }
+
+                this._cacheDictionary.Add(newCache.FilePath, newCache);
+                this._cacheList.Add(newCache);
             }
         }
 
@@ -151,11 +138,11 @@ namespace SWF.Core.ImageAccessor
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
-            var timestamp = FileUtil.GetUpdateDate(filePath);
-
-            lock (this._cacheLock)
+            using (TimeMeasuring.Run(false, $"ImageFileCacher.Get {typeof(T)}"))
             {
-                using (TimeMeasuring.Run(false, $"ImageFileCacher.Get {typeof(T)}"))
+                var timestamp = FileUtil.GetUpdateDate(filePath);
+
+                lock (this._cacheLock)
                 {
                     if (this._cacheDictionary.TryGetValue(filePath, out var cache))
                     {

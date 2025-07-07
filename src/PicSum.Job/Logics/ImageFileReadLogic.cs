@@ -30,32 +30,35 @@ namespace PicSum.Job.Logics
 
             try
             {
-                image = this.ReadImageFileFromCache(filePath, zoomValue);
-
-                this.ThrowIfJobCancellationRequested();
-
-                if (imageSizeMode == ImageSizeMode.Original)
+                using (TimeMeasuring.Run(false, $"ImageFileReadLogic.CreateResult"))
                 {
-                    var thumbnailScale = this.GetThumbnailScale(thumbnailSize, image.Size);
-                    thumbnail = image.CreateScaleImage(thumbnailScale);
-                }
+                    image = this.ReadImageFileFromCache(filePath, zoomValue);
 
-                this.ThrowIfJobCancellationRequested();
+                    this.ThrowIfJobCancellationRequested();
 
-                return new ImageFileReadResult()
-                {
-                    Index = index,
-                    IsMain = isMain,
-                    HasSub = hasSub,
-                    Image = new()
+                    if (imageSizeMode == ImageSizeMode.Original)
                     {
-                        FilePath = filePath,
-                        Image = image,
-                        Thumbnail = thumbnail,
-                        IsEmpty = false,
-                        IsError = image == CvImage.EMPTY,
-                    },
-                };
+                        var thumbnailScale = this.GetThumbnailScale(thumbnailSize, image.Size);
+                        thumbnail = image.CreateScaleImage(thumbnailScale);
+                    }
+
+                    this.ThrowIfJobCancellationRequested();
+
+                    return new ImageFileReadResult()
+                    {
+                        Index = index,
+                        IsMain = isMain,
+                        HasSub = hasSub,
+                        Image = new()
+                        {
+                            FilePath = filePath,
+                            Image = image,
+                            Thumbnail = thumbnail,
+                            IsEmpty = false,
+                            IsError = image == CvImage.EMPTY,
+                        },
+                    };
+                }
             }
             catch (JobCancelException)
             {

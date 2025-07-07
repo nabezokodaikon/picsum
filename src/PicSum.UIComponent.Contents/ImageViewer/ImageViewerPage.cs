@@ -643,7 +643,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
                 Instance<JobCaller>.Value.ImageFileCacheJob.Value
                     .StartJob(this, new ImageFileCacheParameter(
-                        currentIndex, 4, 4, filePathList));
+                        currentIndex, 5, 5, filePathList));
 
                 Instance<JobCaller>.Value.ImageFileLoadingJob.Value
                     .StartJob(this, imageFileReadParameter, _ =>
