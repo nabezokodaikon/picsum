@@ -46,6 +46,7 @@ namespace PicSum.Main
                         typeof(System.Drawing.Bitmap),
                         typeof(System.IO.BinaryReader),
                         typeof(System.Resources.Extensions.DeserializingResourceReader),
+                        typeof(System.Threading.Channels.BoundedChannelFullMode),
                         typeof(System.Windows.Forms.Application),
 
 #if UWP
@@ -62,6 +63,8 @@ namespace PicSum.Main
                         typeof(OpenCvSharp.Extensions.BitmapConverter),
                         typeof(SixLabors.ImageSharp.Advanced.AdvancedImageExtensions),
                         typeof(Svg.AttributeEventArgs),
+                        typeof(ZLinq.DropInGenerateTypes),
+                        typeof(ZLinq.FileSystemInfoExtensions),
 
                         typeof(PicSum.DatabaseAccessor.Connection.FileInfoDB),
                         typeof(PicSum.Job.Common.IThumbnailCacher),
