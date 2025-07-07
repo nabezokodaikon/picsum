@@ -638,14 +638,14 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 var imageFileReadParameter
                     = this.CreateImageFileReadParameter(currentIndex, isNext, isForceSingle, zoomValue);
 
-                Instance<JobCaller>.Value.ThumbnailsGetJob.Value
+                Instance<JobCaller>.Value.ThumbnailsGetJob
                     .StartJob(this, thumbnailsGetParameter);
 
-                Instance<JobCaller>.Value.ImageFileCacheJob.Value
+                Instance<JobCaller>.Value.ImageFileCacheJob
                     .StartJob(this, new ImageFileCacheParameter(
                         currentIndex, 5, 5, filePathList));
 
-                Instance<JobCaller>.Value.ImageFileLoadingJob.Value
+                Instance<JobCaller>.Value.ImageFileLoadingJob
                     .StartJob(this, imageFileReadParameter, _ =>
                     {
                         if (this._disposed)
@@ -661,7 +661,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                         this.ImageFileReadJob_Callback(_);
                     });
 
-                Instance<JobCaller>.Value.ImageFileReadJob.Value
+                Instance<JobCaller>.Value.ImageFileReadJob
                     .StartJob(this, imageFileReadParameter, r =>
                     {
                         if (this._disposed)

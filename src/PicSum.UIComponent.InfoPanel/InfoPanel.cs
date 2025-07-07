@@ -256,7 +256,7 @@ namespace PicSum.UIComponent.InfoPanel
                         ThumbnailUtil.THUMBNAIL_MAXIMUM_SIZE)
                 };
 
-                Instance<JobCaller>.Value.FileDeepInfoLoadingJob.Value
+                Instance<JobCaller>.Value.FileDeepInfoLoadingJob
                     .StartJob(this, param, _ =>
                     {
                         if (this.disposed)
@@ -272,7 +272,7 @@ namespace PicSum.UIComponent.InfoPanel
                         this.GetFileInfoJob_Callback(_);
                     });
 
-                Instance<JobCaller>.Value.FileDeepInfoGetJob.Value
+                Instance<JobCaller>.Value.FileDeepInfoGetJob
                     .StartJob(this, param, _ =>
                     {
                         if (this.disposed)

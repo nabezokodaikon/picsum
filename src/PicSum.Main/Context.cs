@@ -28,10 +28,10 @@ namespace PicSum.Main
 
             this._browserManager.BrowserNothing += this.BrowserManager_BrowserNothing;
 
-            Instance<JobCaller>.Value.GCCollectRunJob.Value
+            Instance<JobCaller>.Value.GCCollectRunJob
                 .StartJob(this);
 
-            Instance<JobCaller>.Value.PipeServerJob.Value
+            Instance<JobCaller>.Value.PipeServerJob
                 .StartJob(this, _ =>
                 {
                     if (this.IsDisposed)
