@@ -137,6 +137,10 @@ namespace SWF.Core.FileAccessor
                 {
                     return false;
                 }
+                catch (InvalidOperationException)
+                {
+                    return false;
+                }
                 catch (SecurityException)
                 {
                     return false;
