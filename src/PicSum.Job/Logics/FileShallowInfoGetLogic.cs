@@ -21,7 +21,17 @@ namespace PicSum.Job.Logics
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
-            if (FileUtil.IsExistsFile(filePath))
+            if (FileUtil.IsSystemRoot(filePath))
+            {
+                return this.GetSystemRootInfo(
+                    filePath, registrationDate);
+            }
+            else if (FileUtil.IsExistsDrive(filePath))
+            {
+                return this.GetDriveInfo(
+                    filePath, registrationDate);
+            }
+            else if (FileUtil.IsExistsFile(filePath))
             {
                 return this.GetFileInfo(
                     filePath, isGetThumbnail, registrationDate);
@@ -30,16 +40,6 @@ namespace PicSum.Job.Logics
             {
                 return this.GetDirectoryInfo(
                     filePath, isGetThumbnail, registrationDate);
-            }
-            else if (FileUtil.IsExistsDrive(filePath))
-            {
-                return this.GetDriveInfo(
-                    filePath, registrationDate);
-            }
-            else if (FileUtil.IsSystemRoot(filePath))
-            {
-                return this.GetSystemRootInfo(
-                    filePath, registrationDate);
             }
             else
             {
