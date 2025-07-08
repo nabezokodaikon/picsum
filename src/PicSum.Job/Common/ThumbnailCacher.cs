@@ -88,10 +88,6 @@ namespace PicSum.Job.Common
             {
                 return this.GetFileCache(filePath);
             }
-            else if (FileUtil.IsExistsDirectory(filePath))
-            {
-                return this.GetDirectoryCache(filePath);
-            }
             else if (FileUtil.IsSystemRoot(filePath))
             {
                 return ThumbnailCacheEntity.EMPTY;
@@ -99,6 +95,10 @@ namespace PicSum.Job.Common
             else if (FileUtil.IsExistsDrive(filePath))
             {
                 return ThumbnailCacheEntity.EMPTY;
+            }
+            else if (FileUtil.IsExistsDirectory(filePath))
+            {
+                return this.GetDirectoryCache(filePath);
             }
             else
             {
@@ -128,6 +128,14 @@ namespace PicSum.Job.Common
                     return ThumbnailCacheEntity.EMPTY;
                 }
             }
+            else if (FileUtil.IsSystemRoot(filePath))
+            {
+                return ThumbnailCacheEntity.EMPTY;
+            }
+            else if (FileUtil.IsExistsDrive(filePath))
+            {
+                return ThumbnailCacheEntity.EMPTY;
+            }
             else if (FileUtil.IsExistsDirectory(filePath))
             {
                 var cache = this.GetOrCreateDirectoryCache(filePath, thumbWidth, thumbHeight);
@@ -139,14 +147,6 @@ namespace PicSum.Job.Common
                 {
                     return ThumbnailCacheEntity.EMPTY;
                 }
-            }
-            else if (FileUtil.IsSystemRoot(filePath))
-            {
-                return ThumbnailCacheEntity.EMPTY;
-            }
-            else if (FileUtil.IsExistsDrive(filePath))
-            {
-                return ThumbnailCacheEntity.EMPTY;
             }
             else
             {

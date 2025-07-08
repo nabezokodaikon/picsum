@@ -38,18 +38,18 @@ namespace PicSum.Job.Logics
                 return this.GetFileInfo(
                     filePath, thumbSize, isReadThumbnail);
             }
-            else if (FileUtil.IsExistsDirectory(filePath))
+            else if (FileUtil.IsSystemRoot(filePath))
             {
-                return this.GetDirectoryInfo(
-                    filePath, thumbSize, isReadThumbnail);
+                return this.GetSystemRootInfo();
             }
             else if (FileUtil.IsExistsDrive(filePath))
             {
                 return this.GetDriveInfo(filePath);
             }
-            else if (FileUtil.IsSystemRoot(filePath))
+            else if (FileUtil.IsExistsDirectory(filePath))
             {
-                return this.GetSystemRootInfo();
+                return this.GetDirectoryInfo(
+                    filePath, thumbSize, isReadThumbnail);
             }
 
             return FileDeepInfoEntity.ERROR;

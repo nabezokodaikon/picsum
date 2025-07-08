@@ -115,18 +115,18 @@ namespace SWF.Core.FileAccessor
                         var attr = File.GetAttributes(filePath);
                         return (attr & FileAttributes.Hidden) == 0;
                     }
+                    else if (IsExistsDrive(filePath))
+                    {
+                        var info = new DirectoryInfo(filePath);
+                        var _ = info.GetAccessControl();
+                        return true;
+                    }
                     else if (IsExistsDirectory(filePath))
                     {
                         var info = new DirectoryInfo(filePath);
                         var _ = info.GetAccessControl();
                         var attr = File.GetAttributes(filePath);
                         return (attr & FileAttributes.Hidden) == 0;
-                    }
-                    else if (IsExistsDrive(filePath))
-                    {
-                        var info = new DirectoryInfo(filePath);
-                        var _ = info.GetAccessControl();
-                        return true;
                     }
                     else
                     {
