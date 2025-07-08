@@ -108,7 +108,7 @@ namespace PicSum.Main
 
                     logger.Info("アプリケーションを開始します。");
 
-                    AppDomain.CurrentDomain.AssemblyLoad += CurrentDomain_OnAssemblyLoad;
+                    AppDomain.CurrentDomain.AssemblyLoad += CurrentDomain_AssemblyLoad;
                     AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
                     Application.ThreadException += Application_ThreadException;
@@ -168,7 +168,7 @@ namespace PicSum.Main
             ExceptionUtil.ShowFatalDialog("Unhandled Non-UI Exception.", ex);
         }
 
-        private static void CurrentDomain_OnAssemblyLoad(object sender, AssemblyLoadEventArgs args)
+        private static void CurrentDomain_AssemblyLoad(object sender, AssemblyLoadEventArgs args)
         {
 #if DEBUG
             Log.GetLogger().Trace($"アセンブリが読み込まれました: {args.LoadedAssembly.FullName}");
