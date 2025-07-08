@@ -75,19 +75,19 @@ namespace PicSum.UIComponent.Contents.FileList
             this.toolBar.ThumbnailSizeSliderMaximumValue = ThumbnailUtil.THUMBNAIL_MAXIMUM_SIZE;
             this.toolBar.ThumbnailSizeSliderMinimumValue = ThumbnailUtil.THUMBNAIL_MINIMUM_SIZE;
             this.toolBar.ThumbnailSizeSliderValue = 96;
-            this.toolBar.NameSortButtonClick += new System.EventHandler(this.SortFileNameToolStripButton_Click);
-            this.toolBar.PathSortButtonClick += new System.EventHandler(this.SortFilePathToolStripButton_Click);
-            this.toolBar.TimestampSortButtonClick += new System.EventHandler(this.SortFileUpdateDateToolStripButton_Click);
-            this.toolBar.RegistrationSortButtonClick += new System.EventHandler(this.SortFilerRgistrationDateToolStripButton_Click);
-            this.toolBar.ThumbnailSizeSliderBeginValueChange += new System.EventHandler(this.ThumbnailSizeToolStripSlider_BeginValueChange);
-            this.toolBar.ThumbnailSizeSliderValueChanging += new System.EventHandler(this.ThumbnailSizeToolStripSlider_ValueChanging);
-            this.toolBar.ThumbnailSizeSliderValueChanged += new System.EventHandler(this.ThumbnailSizeToolStripSlider_ValueChanged);
-            this.toolBar.MovePreviewButtonClick += new System.EventHandler(this.MovePreviewToolStripButton_Click);
-            this.toolBar.MoveNextButtonClick += new System.EventHandler(this.MoveNextToolStripButton_Click);
-            this.toolBar.FolderMenuItemClick += new System.EventHandler(this.ShowDirectoryToolStripMenuItem_Click);
-            this.toolBar.ImageFileMenuItemClick += new System.EventHandler(this.ShowImageFileToolStripMenuItem_Click);
-            this.toolBar.OtherFileMenuItemClick += new System.EventHandler(this.ShowOtherFileToolStripMenuItem_Click);
-            this.toolBar.FileNameMenuItemClick += new System.EventHandler(this.ShowFileNameToolStripMenuItem_Click);
+            this.toolBar.NameSortButtonClick += new System.EventHandler(this.ToolBar_NameSortButtonClick);
+            this.toolBar.PathSortButtonClick += new System.EventHandler(this.ToolBar_PathSortButtonClick);
+            this.toolBar.TimestampSortButtonClick += new System.EventHandler(this.ToolBar_TimestampSortButtonClick);
+            this.toolBar.RegistrationSortButtonClick += new System.EventHandler(this.ToolBar_RegistrationSortButtonClick);
+            this.toolBar.ThumbnailSizeSliderBeginValueChange += new System.EventHandler(this.ToolBar_ThumbnailSizeSliderBeginValueChange);
+            this.toolBar.ThumbnailSizeSliderValueChanging += new System.EventHandler(this.ToolBar_ThumbnailSizeSliderValueChanging);
+            this.toolBar.ThumbnailSizeSliderValueChanged += new System.EventHandler(this.ToolBar_ThumbnailSizeSliderValueChanged);
+            this.toolBar.MovePreviewButtonClick += new System.EventHandler(this.ToolBar_MovePreviewButtonClick);
+            this.toolBar.MoveNextButtonClick += new System.EventHandler(this.ToolBar_MoveNextButtonClick);
+            this.toolBar.DirectoryMenuItemClick += new System.EventHandler(this.ToolBar_DirectoryMenuItemClick);
+            this.toolBar.ImageFileMenuItemClick += new System.EventHandler(this.ToolBar_ImageFileMenuItemClick);
+            this.toolBar.OtherFileMenuItemClick += new System.EventHandler(this.ToolBar_OtherFileMenuItemClick);
+            this.toolBar.FileNameMenuItemClick += new System.EventHandler(this.ToolBar_FileNameMenuItemClick);
             // 
             // FileListPageBase
             //

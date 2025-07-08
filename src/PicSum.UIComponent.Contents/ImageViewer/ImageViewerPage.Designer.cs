@@ -91,19 +91,19 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             // 
             this.toolBar.IsDrawBottomBorderLine = true;
             this.toolBar.Visible = true;
-            this.toolBar.DoublePreviewButtonClick += new System.EventHandler(this.DoublePreviewIndexToolStripButton_Click);
-            this.toolBar.DoubleNextButtonClick += new System.EventHandler(this.DoubleNextIndexToolStripButton_Click);
-            this.toolBar.SinglePreviewButtonClick += new System.EventHandler(this.SinglePreviewIndexToolStripButton_Click);
-            this.toolBar.SingleNextButtonClick += new System.EventHandler(this.SingleNextIndexToolStripButton_Click);
-            this.toolBar.SingleViewMenuItemClick += new System.EventHandler(this.SingleViewToolStripMenuItem_Click);
-            this.toolBar.SpreadLeftFeedMenuItemClick += new System.EventHandler(this.LeftFacingViewToolStripMenuItem_Click);
-            this.toolBar.SpreadRightFeedMenuItemClick += new System.EventHandler(this.RightFacingViewToolStripMenuItem_Click);
-            this.toolBar.OriginalSizeMenuItemClick += new System.EventHandler(this.OriginalSizeToolStripMenuItem_Click);
-            this.toolBar.FitWindowMenuItemClick += new System.EventHandler(this.AllFitSizeToolStripMenuItem_Click);
-            this.toolBar.FitWindowLargeOnlyMenuItemClick += new System.EventHandler(this.OnlyBigImageFitSizeToolStripMenuItem_Click);
-            this.toolBar.ZoomMenuItemClick += new EventHandler<ZoomMenuItemClickEventArgs>(this.ZoomMenuItem_Click);
-            this.toolBar.IndexSliderValueChanging += new System.EventHandler(this.IndexSlider_ValueChanging);
-            this.toolBar.IndexSliderValueChanged += new System.EventHandler(this.IndexSlider_ValueChanged);
+            this.toolBar.DoublePreviewButtonClick += new System.EventHandler(this.ToolBar_DoublePreviewButtonClick);
+            this.toolBar.DoubleNextButtonClick += new System.EventHandler(this.ToolBar_DoubleNextButtonClick);
+            this.toolBar.SinglePreviewButtonClick += new System.EventHandler(this.ToolBar_SinglePreviewButtonClick);
+            this.toolBar.SingleNextButtonClick += new System.EventHandler(this.ToolBar_SingleNextButtonClick);
+            this.toolBar.SingleViewMenuItemClick += new System.EventHandler(this.ToolBar_SingleViewMenuItemClick);
+            this.toolBar.SpreadLeftFeedMenuItemClick += new System.EventHandler(this.ToolBar_SpreadLeftFeedMenuItemClick);
+            this.toolBar.SpreadRightFeedMenuItemClick += new System.EventHandler(this.ToolBar_SpreadRightFeedMenuItemClick);
+            this.toolBar.OriginalSizeMenuItemClick += new System.EventHandler(this.ToolBar_OriginalSizeMenuItemClick);
+            this.toolBar.FitWindowMenuItemClick += new System.EventHandler(this.ToolBar_FitWindowMenuItemClick);
+            this.toolBar.FitWindowLargeOnlyMenuItemClick += new System.EventHandler(this.ToolBar_FitWindowLargeOnlyMenuItemClick);
+            this.toolBar.ZoomMenuItemClick += new EventHandler<ZoomMenuItemClickEventArgs>(this.ToolBar_ZoomMenuItemClick);
+            this.toolBar.IndexSliderValueChanging += new System.EventHandler(this.ToolBar_IndexSliderValueChanging);
+            this.toolBar.IndexSliderValueChanged += new System.EventHandler(this.ToolBar_IndexSliderValueChanged);
             // 
             // ImageViewerPage
             //

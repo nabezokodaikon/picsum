@@ -25,7 +25,7 @@ namespace PicSum.UIComponent.Contents.FileList
         public event EventHandler PathSortButtonClick;
         public event EventHandler TimestampSortButtonClick;
         public event EventHandler RegistrationSortButtonClick;
-        public event EventHandler FolderMenuItemClick;
+        public event EventHandler DirectoryMenuItemClick;
         public event EventHandler ImageFileMenuItemClick;
         public event EventHandler OtherFileMenuItemClick;
         public event EventHandler FileNameMenuItemClick;
@@ -42,15 +42,15 @@ namespace PicSum.UIComponent.Contents.FileList
         private bool _isShowingViewButtonDropDown = false;
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public bool FolderMenuItemChecked
+        public bool DirectoryMenuItemChecked
         {
             get
             {
-                return this.folderMenuItem.Checked;
+                return this.directoryMenuItem.Checked;
             }
             set
             {
-                this.folderMenuItem.Checked = value;
+                this.directoryMenuItem.Checked = value;
             }
         }
 
@@ -394,10 +394,10 @@ namespace PicSum.UIComponent.Contents.FileList
             this.RegistrationSortButtonClick?.Invoke(this, EventArgs.Empty);
         }
 
-        private void FolderMenuItem_Click(object sender, EventArgs e)
+        private void DirectoryMenuItem_Click(object sender, EventArgs e)
         {
             this._isShowingViewButtonDropDown = false;
-            this.FolderMenuItemClick?.Invoke(this, EventArgs.Empty);
+            this.DirectoryMenuItemClick?.Invoke(this, EventArgs.Empty);
         }
 
         private void ImageFileMenuItem_Click(object sender, EventArgs e)

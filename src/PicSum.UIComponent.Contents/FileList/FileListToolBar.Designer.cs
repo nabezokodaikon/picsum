@@ -25,7 +25,7 @@ namespace PicSum.UIComponent.Contents.FileList
             this.registrationSortButton = new SWF.UIComponent.Core.ToolTextButton();
             this.thumbnailSizeSlider = new SWF.UIComponent.Core.Slider();
             this.viewMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.folderMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.directoryMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.imageFileMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.otherFileMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
@@ -74,16 +74,16 @@ namespace PicSum.UIComponent.Contents.FileList
             // 
             // viewMenu
             // 
-            this.viewMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { this.folderMenuItem, this.imageFileMenuItem, this.otherFileMenuItem, this.toolStripSeparator1, this.fileNameMenuItem });
+            this.viewMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { this.directoryMenuItem, this.imageFileMenuItem, this.otherFileMenuItem, this.toolStripSeparator1, this.fileNameMenuItem });
             this.viewMenu.Name = "viewMenu";
             this.viewMenu.Size = new Size(181, 128);
             // 
-            // folderMenuItem
+            // directoryMenuItem
             // 
-            this.folderMenuItem.Name = "folderMenuItem";
-            this.folderMenuItem.Size = new Size(180, 24);
-            this.folderMenuItem.Text = "Folder";
-            this.folderMenuItem.Click += this.FolderMenuItem_Click;
+            this.directoryMenuItem.Name = "directoryMenuItem";
+            this.directoryMenuItem.Size = new Size(180, 24);
+            this.directoryMenuItem.Text = "Folder";
+            this.directoryMenuItem.Click += this.DirectoryMenuItem_Click;
             // 
             // imageFileMenuItem
             // 
@@ -144,7 +144,7 @@ namespace PicSum.UIComponent.Contents.FileList
         private SWF.UIComponent.Core.ToolTextButton viewButton;
         private SWF.UIComponent.Core.Slider thumbnailSizeSlider;
         private System.Windows.Forms.ContextMenuStrip viewMenu;
-        private System.Windows.Forms.ToolStripMenuItem folderMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem directoryMenuItem;
         private System.Windows.Forms.ToolStripMenuItem imageFileMenuItem;
         private System.Windows.Forms.ToolStripMenuItem otherFileMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;

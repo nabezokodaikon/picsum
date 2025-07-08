@@ -82,11 +82,11 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             get
             {
-                return this.toolBar.FolderMenuItemChecked;
+                return this.toolBar.DirectoryMenuItemChecked;
             }
             set
             {
-                this.toolBar.FolderMenuItemChecked = value;
+                this.toolBar.DirectoryMenuItemChecked = value;
             }
         }
 
@@ -732,31 +732,31 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
-        private void ShowDirectoryToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ToolBar_DirectoryMenuItemClick(object sender, EventArgs e)
         {
             this.IsShowDirectory = !this.IsShowDirectory;
             this.SetFilter();
         }
 
-        private void ShowImageFileToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ToolBar_ImageFileMenuItemClick(object sender, EventArgs e)
         {
             this.IsShowImageFile = !this.IsShowImageFile;
             this.SetFilter();
         }
 
-        private void ShowOtherFileToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ToolBar_OtherFileMenuItemClick(object sender, EventArgs e)
         {
             this.IsShowOtherFile = !this.IsShowOtherFile;
             this.SetFilter();
         }
 
-        private void ShowFileNameToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ToolBar_FileNameMenuItemClick(object sender, EventArgs e)
         {
             this.IsShowFileName = !this.IsShowFileName;
             this.ChangeFileNameVisible();
         }
 
-        private void SortFileNameToolStripButton_Click(object sender, EventArgs e)
+        private void ToolBar_NameSortButtonClick(object sender, EventArgs e)
         {
             this.SortInfo.ChangeSortDirection(SortTypeID.FileName);
             this.SortInfo.ActiveSortType = SortTypeID.FileName;
@@ -764,7 +764,7 @@ namespace PicSum.UIComponent.Contents.FileList
             this.SetFilter();
         }
 
-        private void SortFilePathToolStripButton_Click(object sender, EventArgs e)
+        private void ToolBar_PathSortButtonClick(object sender, EventArgs e)
         {
             this.SortInfo.ChangeSortDirection(SortTypeID.FilePath);
             this.SortInfo.ActiveSortType = SortTypeID.FilePath;
@@ -772,7 +772,7 @@ namespace PicSum.UIComponent.Contents.FileList
             this.SetFilter();
         }
 
-        private void SortFileUpdateDateToolStripButton_Click(object sender, EventArgs e)
+        private void ToolBar_TimestampSortButtonClick(object sender, EventArgs e)
         {
             this.SortInfo.ChangeSortDirection(SortTypeID.UpdateDate);
             this.SortInfo.ActiveSortType = SortTypeID.UpdateDate;
@@ -780,7 +780,7 @@ namespace PicSum.UIComponent.Contents.FileList
             this.SetFilter();
         }
 
-        private void SortFilerRgistrationDateToolStripButton_Click(object sender, EventArgs e)
+        private void ToolBar_RegistrationSortButtonClick(object sender, EventArgs e)
         {
             this.SortInfo.ChangeSortDirection(SortTypeID.RegistrationDate);
             this.SortInfo.ActiveSortType = SortTypeID.RegistrationDate;
@@ -788,29 +788,29 @@ namespace PicSum.UIComponent.Contents.FileList
             this.SetFilter();
         }
 
-        private void ThumbnailSizeToolStripSlider_BeginValueChange(object sender, EventArgs e)
+        private void ToolBar_ThumbnailSizeSliderBeginValueChange(object sender, EventArgs e)
         {
             this.SetFlowListItemSize();
         }
 
-        private void ThumbnailSizeToolStripSlider_ValueChanged(object sender, EventArgs e)
+        private void ToolBar_ThumbnailSizeSliderValueChanged(object sender, EventArgs e)
         {
             this.SetFlowListItemSize();
         }
 
-        private void ThumbnailSizeToolStripSlider_ValueChanging(object sender, EventArgs e)
+        private void ToolBar_ThumbnailSizeSliderValueChanging(object sender, EventArgs e)
         {
             FileListPageConfig.Instance.ThumbnailSize = this.ThumbnailSize;
             this.SetFlowListItemSize();
             this.flowList.Invalidate();
         }
 
-        private void MovePreviewToolStripButton_Click(object sender, EventArgs e)
+        private void ToolBar_MovePreviewButtonClick(object sender, EventArgs e)
         {
             this.OnMovePreviewButtonClick(e);
         }
 
-        private void MoveNextToolStripButton_Click(object sender, EventArgs e)
+        private void ToolBar_MoveNextButtonClick(object sender, EventArgs e)
         {
             this.OnMoveNextButtonClick(e);
         }

@@ -980,7 +980,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.checkPatternPanel.Focus();
         }
 
-        private void SingleViewToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ToolBar_SingleViewMenuItemClick(object sender, EventArgs e)
         {
             if (!this.IsHandleCreated)
             {
@@ -999,7 +999,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             }
         }
 
-        private void LeftFacingViewToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ToolBar_SpreadLeftFeedMenuItemClick(object sender, EventArgs e)
         {
             if (!this.IsHandleCreated)
             {
@@ -1018,7 +1018,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             }
         }
 
-        private void RightFacingViewToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ToolBar_SpreadRightFeedMenuItemClick(object sender, EventArgs e)
         {
             if (!this.IsHandleCreated)
             {
@@ -1037,7 +1037,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             }
         }
 
-        private void OriginalSizeToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ToolBar_OriginalSizeMenuItemClick(object sender, EventArgs e)
         {
             if (!this.IsHandleCreated)
             {
@@ -1057,7 +1057,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             }
         }
 
-        private void AllFitSizeToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ToolBar_FitWindowMenuItemClick(object sender, EventArgs e)
         {
             if (!this.IsHandleCreated)
             {
@@ -1077,7 +1077,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             }
         }
 
-        private void OnlyBigImageFitSizeToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ToolBar_FitWindowLargeOnlyMenuItemClick(object sender, EventArgs e)
         {
             if (!this.IsHandleCreated)
             {
@@ -1097,7 +1097,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             }
         }
 
-        private void ZoomMenuItem_Click(object sender, ZoomMenuItemClickEventArgs e)
+        private void ToolBar_ZoomMenuItemClick(object sender, ZoomMenuItemClickEventArgs e)
         {
             if (!this.IsHandleCreated)
             {
@@ -1116,7 +1116,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             }
         }
 
-        private void DoublePreviewIndexToolStripButton_Click(object sender, EventArgs e)
+        private void ToolBar_DoublePreviewButtonClick(object sender, EventArgs e)
         {
             if (!this.CanOperation)
             {
@@ -1126,7 +1126,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.ReadImage(this.FilePathListIndex, false, false);
         }
 
-        private void DoubleNextIndexToolStripButton_Click(object sender, EventArgs e)
+        private void ToolBar_DoubleNextButtonClick(object sender, EventArgs e)
         {
             if (!this.CanOperation)
             {
@@ -1136,7 +1136,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.ReadImage(this.FilePathListIndex, true, false);
         }
 
-        private void SinglePreviewIndexToolStripButton_Click(object sender, EventArgs e)
+        private void ToolBar_SinglePreviewButtonClick(object sender, EventArgs e)
         {
             if (!this.CanOperation)
             {
@@ -1146,7 +1146,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.ReadImage(this.FilePathListIndex, false, true);
         }
 
-        private void SingleNextIndexToolStripButton_Click(object sender, EventArgs e)
+        private void ToolBar_SingleNextButtonClick(object sender, EventArgs e)
         {
             if (!this.CanOperation)
             {
@@ -1156,7 +1156,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.ReadImage(this.FilePathListIndex, true, true);
         }
 
-        private void IndexSlider_ValueChanging(object sender, EventArgs e)
+        private void ToolBar_IndexSliderValueChanging(object sender, EventArgs e)
         {
             if (!this.CanOperation)
             {
@@ -1174,7 +1174,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.ReadImage(index, null, false);
         }
 
-        private void IndexSlider_ValueChanged(object sender, EventArgs e)
+        private void ToolBar_IndexSliderValueChanged(object sender, EventArgs e)
         {
             if (!this.CanOperation)
             {
