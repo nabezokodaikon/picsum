@@ -234,7 +234,7 @@ namespace PicSum.Job.Common
 
         private ThumbnailCacheEntity GetDBCache(string filePath)
         {
-            using (TimeMeasuring.Run(true, "ThumbnailCacher.GetDBCache"))
+            using (TimeMeasuring.Run(false, "ThumbnailCacher.GetDBCache"))
             {
                 lock (this._lock)
                 {
@@ -276,7 +276,7 @@ namespace PicSum.Job.Common
             int thumbHeight,
             DateTime directoryUpdateDate)
         {
-            using (TimeMeasuring.Run(true, "ThumbnailCacher.CreateDBCache"))
+            using (TimeMeasuring.Run(false, "ThumbnailCacher.CreateDBCache"))
             {
                 using (var srcImg = ImageUtil.ReadImageFile(thumbFilePath))
                 {
@@ -355,7 +355,7 @@ namespace PicSum.Job.Common
             int thumbHeight,
             DateTime directoryUpdateDate)
         {
-            using (TimeMeasuring.Run(true, "ThumbnailCacher.UpdateDBCache"))
+            using (TimeMeasuring.Run(false, "ThumbnailCacher.UpdateDBCache"))
             {
                 using (var srcImg = ImageUtil.ReadImageFile(thumbFilePath))
                 {
