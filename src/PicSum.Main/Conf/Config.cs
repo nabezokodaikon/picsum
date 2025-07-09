@@ -122,10 +122,10 @@ namespace PicSum.Main.Conf
                 this.ImageDisplayMode = ImageDisplayMode.LeftFacing;
                 this.ImageSizeMode = ImageSizeMode.FitOnlyBigImage;
 
-                this.MajorVersion = AppInfo.CURRENT_VERSION.Major;
-                this.MinorVersion = AppInfo.CURRENT_VERSION.Minor;
-                this.BuildVersion = AppInfo.CURRENT_VERSION.Build;
-                this.RevisionVersion = AppInfo.CURRENT_VERSION.Revision;
+                this.MajorVersion = 0;
+                this.MinorVersion = 0;
+                this.BuildVersion = 0;
+                this.RevisionVersion = 0;
             }
 
             ConsoleUtil.Write(true, $"Config.Load End");
