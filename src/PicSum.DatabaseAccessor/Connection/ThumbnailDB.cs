@@ -69,7 +69,7 @@ INSERT INTO m_thumbnail_id (
      thumbnail_id
     ,create_date
 ) VALUES (
-     1
+     0
     ,DATETIME('NOW', 'LOCALTIME')
 );
         ";

@@ -30,6 +30,9 @@ namespace SWF.Core.ResourceAccessor
         public static readonly Lazy<string> THUMBNAIL_DATABASE_FILE = new(
             () => Path.Combine(DATABASE_DIRECTORY.Value, "thumbnail.sqlite"),
             LazyThreadSafetyMode.ExecutionAndPublication);
+        public static readonly Lazy<string> THUMBNAIL_CACHE_FILE = new(
+            () => Path.Combine(DATABASE_DIRECTORY.Value, "thumbnail.cache"),
+            LazyThreadSafetyMode.ExecutionAndPublication);
 
         private static string GetApplicationDirectory()
         {

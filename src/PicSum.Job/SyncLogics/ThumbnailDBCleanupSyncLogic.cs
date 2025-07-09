@@ -13,9 +13,16 @@ namespace PicSum.Job.SyncLogics
     {
         public void Execute()
         {
-            if (FileUtil.CanAccess(AppFiles.THUMBNAIL_DATABASE_FILE.Value))
+            var dbFile = AppFiles.THUMBNAIL_DATABASE_FILE.Value;
+            if (FileUtil.CanAccess(dbFile))
             {
-                File.Delete(AppFiles.THUMBNAIL_DATABASE_FILE.Value);
+                File.Delete(dbFile);
+            }
+
+            var cacheFile = AppFiles.THUMBNAIL_CACHE_FILE.Value;
+            if (FileUtil.CanAccess(cacheFile))
+            {
+                File.Delete(cacheFile);
             }
 
             foreach (var thumbnailFile in FileUtil.GetFiles(AppFiles.DATABASE_DIRECTORY.Value)

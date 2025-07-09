@@ -9,16 +9,16 @@ namespace PicSum.DatabaseAccessor.Sql
     {
         const string SQL_TEXT =
 @"
-DELETE FROM t_thumbnail
- WHERE file_path = :file_path;
+UPDATE m_thumbnail_id
+   SET thumbnail_id = 0;
+
+DELETE FROM t_thumbnail;
 ";
 
-        public ThumbnailDBCleanupSql(string filePath)
+        public ThumbnailDBCleanupSql()
             : base(SQL_TEXT)
         {
-            base.ParameterList.AddRange([
-                SqlUtil.CreateParameter("file_path", filePath),
-            ]);
+
         }
     }
 }
