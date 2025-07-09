@@ -142,8 +142,6 @@ namespace PicSum.Main.UIComponent
             {
                 this.CreateBrowserMainPanel();
                 BrowserForm.isStartUp = false;
-
-                BootTimeMeasurement.StopBootTimeMeasurement();
             }
 
             ConsoleUtil.Write(true, $"BrowserForm.OnShown End");

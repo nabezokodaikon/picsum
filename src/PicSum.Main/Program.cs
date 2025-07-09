@@ -29,7 +29,7 @@ namespace PicSum.Main
             {
                 try
                 {
-                    BootTimeMeasurement.StartBootTimeMeasurement();
+                    BootTimeMeasurement.Start();
 
                     Thread.CurrentThread.Name = AppConstants.UI_THREAD_NAME;
 
