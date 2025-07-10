@@ -1,3 +1,4 @@
+using SWF.Core.Base;
 using SWF.Core.ResourceAccessor.Properties;
 using System.Runtime.Versioning;
 
@@ -84,9 +85,12 @@ namespace SWF.Core.ResourceAccessor
 
         private static Bitmap CreateBitmapFromByteArray(byte[] byteArray)
         {
-            using (var memoryStream = new MemoryStream(byteArray))
+            using (TimeMeasuring.Run(false, "ResourceFiles.CreateBitmapFromByteArray"))
             {
-                return new Bitmap(memoryStream);
+                using (var memoryStream = new MemoryStream(byteArray))
+                {
+                    return new Bitmap(memoryStream);
+                }
             }
         }
     }
