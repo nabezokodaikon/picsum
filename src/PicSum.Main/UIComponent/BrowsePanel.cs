@@ -22,7 +22,7 @@ using System.Windows.Forms;
 namespace PicSum.Main.UIComponent
 {
     [SupportedOSPlatform("windows10.0.17763.0")]
-    public sealed partial class BrowseMainPanel
+    public sealed partial class BrowsePanel
         : UserControl, ISender
     {
         private const int INFOPANEL_WIDTH = 240;
@@ -91,7 +91,7 @@ namespace PicSum.Main.UIComponent
             }
         }
 
-        public BrowseMainPanel()
+        public BrowsePanel()
         {
             this.SetStyle(
                 ControlStyles.AllPaintingInWmPaint |
@@ -153,7 +153,7 @@ namespace PicSum.Main.UIComponent
 
         public void SetControlsBounds(float scale)
         {
-            ConsoleUtil.Write(true, $"BrowseMainPanel.SetControlsBounds Start");
+            ConsoleUtil.Write(true, $"BrowsePanel.SetControlsBounds Start");
 
             this.toolPanel.SuspendLayout();
             this.toolPanel2.SuspendLayout();
@@ -320,7 +320,7 @@ namespace PicSum.Main.UIComponent
             this.toolPanel2.ResumeLayout(false);
             this.ResumeLayout(false);
 
-            ConsoleUtil.Write(true, $"BrowseMainPanel.SetControlsBounds End");
+            ConsoleUtil.Write(true, $"BrowsePanel.SetControlsBounds End");
         }
 
         private void TabSwitch_BeginSetPage(object sender, EventArgs e)
@@ -359,9 +359,9 @@ namespace PicSum.Main.UIComponent
 
         public void AddFavoriteDirectoryListTab()
         {
-            ConsoleUtil.Write(true, $"BrowseMainPanel.AddFavoriteDirectoryListTab Start");
+            ConsoleUtil.Write(true, $"BrowsePanel.AddFavoriteDirectoryListTab Start");
             this.OpenPage(new FavoriteDirectoryListPageParameter(), PageOpenType.AddTab);
-            ConsoleUtil.Write(true, $"BrowseMainPanel.AddFavoriteDirectoryListTab End");
+            ConsoleUtil.Write(true, $"BrowsePanel.AddFavoriteDirectoryListTab End");
         }
 
         public void AddImageViewPageTab(ImageViewPageParameter parameter)
@@ -426,9 +426,9 @@ namespace PicSum.Main.UIComponent
             if (this.tabSwitch.ActiveTab != null)
             {
                 var page = this.tabSwitch.ActiveTab.GetPage<BrowsePage>();
-                ConsoleUtil.Write(true, $"BrowseMainPanel.RedrawPage Start");
+                ConsoleUtil.Write(true, $"BrowsePanel.RedrawPage Start");
                 page.RedrawPage(scale);
-                ConsoleUtil.Write(true, $"BrowseMainPanel.RedrawPage End");
+                ConsoleUtil.Write(true, $"BrowsePanel.RedrawPage End");
             }
         }
 
@@ -449,7 +449,7 @@ namespace PicSum.Main.UIComponent
             base.Dispose(disposing);
         }
 
-        private void BrowseMainPanel_Load(object sender, EventArgs e)
+        private void BrowsePanel_Load(object sender, EventArgs e)
         {
             this.addressBar.SetAddress(FileUtil.ROOT_DIRECTORY_PATH);
         }
@@ -477,7 +477,7 @@ namespace PicSum.Main.UIComponent
 
         private void OpenPage(IPageParameter param, PageOpenType openType)
         {
-            ConsoleUtil.Write(true, $"BrowseMainPanel.OpenPage Start");
+            ConsoleUtil.Write(true, $"BrowsePanel.OpenPage Start");
 
             if (openType == PageOpenType.OverlapTab)
             {
@@ -508,7 +508,7 @@ namespace PicSum.Main.UIComponent
                 throw new Exception("ファイル実行種別が不正です。");
             }
 
-            ConsoleUtil.Write(true, $"BrowseMainPanel.OpenPage End");
+            ConsoleUtil.Write(true, $"BrowsePanel.OpenPage End");
         }
 
         private void InsertPage(IPageParameter param, int tabIndex)

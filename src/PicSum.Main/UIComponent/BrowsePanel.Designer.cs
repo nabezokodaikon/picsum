@@ -5,7 +5,7 @@ using Windows.Storage;
 
 namespace PicSum.Main.UIComponent
 {
-    partial class BrowseMainPanel
+    partial class BrowsePanel
     {
         #region コンポーネント デザイナで生成されたコード
 
@@ -142,12 +142,12 @@ namespace PicSum.Main.UIComponent
             this.toolPanel2.IsDrawRightBorderLine = true;
             this.toolPanel2.VerticalTopMargin = 28;
             // 
-            // BrowseMainPanel
+            // BrowsePanel
             // 
             this.BackColor = Color.FromArgb(64, 68, 71);
             this.Name = "BrowseMainPanel";
             this.Size = new Size(746, 466);
-            this.Load += this.BrowseMainPanel_Load;
+            this.Load += this.BrowsePanel_Load;
         }
 
         private SWF.UIComponent.TabOperation.PageContainer pageContainer;

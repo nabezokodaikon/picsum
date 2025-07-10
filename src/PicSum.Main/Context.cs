@@ -53,7 +53,7 @@ namespace PicSum.Main
                     var parameter = new ImageViewPageParameter(
                         DirectoryFileListPageParameter.PAGE_SOURCES,
                         directoryPath,
-                        BrowseMainPanel.GetImageFilesAction(new ImageFileGetByDirectoryParameter(_.Value)),
+                        BrowsePanel.GetImageFilesAction(new ImageFileGetByDirectoryParameter(_.Value)),
                         _.Value,
                         sortInfo,
                         FileUtil.GetFileName(directoryPath),

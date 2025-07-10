@@ -28,19 +28,19 @@ namespace PicSum.Main.UIComponent
         public event EventHandler<TabDropoutedEventArgs> TabDropouted;
         public event EventHandler<BrowsePageOpenEventArgs> NewWindowPageOpen;
 
-        private BrowseMainPanel _browseMainPanel = null;
+        private BrowsePanel _browsePanel = null;
         private bool _isKeyDown = false;
 
-        private BrowseMainPanel BrowseMainPanel
+        private BrowsePanel BrowsePanel
         {
             get
             {
-                if (this._browseMainPanel == null)
+                if (this._browsePanel == null)
                 {
-                    this.CreateBrowseMainPanel();
+                    this.CreateBrowsePanel();
                 }
 
-                return this._browseMainPanel;
+                return this._browsePanel;
             }
         }
 
@@ -81,43 +81,43 @@ namespace PicSum.Main.UIComponent
         {
             ArgumentNullException.ThrowIfNull(page, nameof(page));
 
-            this.BrowseMainPanel.AddPageEventHandler(page);
+            this.BrowsePanel.AddPageEventHandler(page);
         }
 
         public void AddTab(TabInfo tab)
         {
             ArgumentNullException.ThrowIfNull(tab, nameof(tab));
 
-            this.BrowseMainPanel.AddTab(tab);
+            this.BrowsePanel.AddTab(tab);
         }
 
         public void AddTab(IPageParameter param)
         {
             ArgumentNullException.ThrowIfNull(param, nameof(param));
 
-            this.BrowseMainPanel.AddTab(param);
+            this.BrowsePanel.AddTab(param);
         }
 
         public void AddFavoriteDirectoryListTab()
         {
-            this.BrowseMainPanel.AddFavoriteDirectoryListTab();
+            this.BrowsePanel.AddFavoriteDirectoryListTab();
         }
 
         public void AddImageViewPageTab(ImageViewPageParameter parameter)
         {
-            this.BrowseMainPanel.AddImageViewPageTab(parameter);
+            this.BrowsePanel.AddImageViewPageTab(parameter);
         }
 
         public void Reload()
         {
-            this.BrowseMainPanel.Reload();
+            this.BrowsePanel.Reload();
         }
 
         public void RemoveTabOrWindow()
         {
-            if (this.BrowseMainPanel.TabCount > 1)
+            if (this.BrowsePanel.TabCount > 1)
             {
-                this.BrowseMainPanel.RemoveActiveTab();
+                this.BrowsePanel.RemoveActiveTab();
             }
             else
             {
@@ -127,7 +127,7 @@ namespace PicSum.Main.UIComponent
 
         protected override bool CanDragOperation()
         {
-            return !this.BrowseMainPanel.IsBeginTabDragOperation;
+            return !this.BrowsePanel.IsBeginTabDragOperation;
         }
 
         //protected override void OnHandleCreated(EventArgs e)
@@ -142,7 +142,7 @@ namespace PicSum.Main.UIComponent
 
             if (BrowseForm.isStartUp)
             {
-                this.CreateBrowseMainPanel();
+                this.CreateBrowsePanel();
                 BrowseForm.isStartUp = false;
             }
 
@@ -187,13 +187,13 @@ namespace PicSum.Main.UIComponent
                 {
                     case Keys.Left:
                         {
-                            this._browseMainPanel.MovePreviewPage();
+                            this._browsePanel.MovePreviewPage();
                             this._isKeyDown = true;
                             break;
                         }
                     case Keys.Right:
                         {
-                            this._browseMainPanel.MoveNextPage();
+                            this._browsePanel.MoveNextPage();
                             this._isKeyDown = true;
                             break;
                         }
@@ -237,43 +237,43 @@ namespace PicSum.Main.UIComponent
 
         private void BrowseForm_Activated(object sender, EventArgs e)
         {
-            if (this._browseMainPanel != null)
+            if (this._browsePanel != null)
             {
                 var scale = WindowUtil.GetCurrentWindowScale(this);
-                this._browseMainPanel.RedrawPage(scale);
+                this._browsePanel.RedrawPage(scale);
             }
         }
 
-        private void CreateBrowseMainPanel()
+        private void CreateBrowsePanel()
         {
-            if (this._browseMainPanel != null)
+            if (this._browsePanel != null)
             {
                 throw new InvalidOperationException("メインコントロールは既に存在しています。");
             }
 
-            ConsoleUtil.Write(true, $"BrowseForm.CreateBrowseMainPanel Start");
+            ConsoleUtil.Write(true, $"BrowseForm.CreateBrowsePanel Start");
 
-            this._browseMainPanel = new BrowseMainPanel();
+            this._browsePanel = new BrowsePanel();
 
-            this._browseMainPanel.SuspendLayout();
+            this._browsePanel.SuspendLayout();
             this.SuspendLayout();
 
-            this.Controls.Add(this._browseMainPanel);
+            this.Controls.Add(this._browsePanel);
 
             var scale = WindowUtil.GetCurrentWindowScale(this);
-            var rect = this.CreateBrowseMainPanelBounds(scale);
-            this._browseMainPanel.SetBounds(rect.X, rect.Y, rect.Width, rect.Height);
-            this._browseMainPanel.SetControlsBounds(scale);
-            this._browseMainPanel.Anchor
+            var rect = this.CreateBrowsePanelBounds(scale);
+            this._browsePanel.SetBounds(rect.X, rect.Y, rect.Width, rect.Height);
+            this._browsePanel.SetControlsBounds(scale);
+            this._browsePanel.Anchor
                 = AnchorStyles.Top
                 | AnchorStyles.Bottom
                 | AnchorStyles.Left
                 | AnchorStyles.Right;
 
-            this._browseMainPanel.Close += new(this.BrowseMainPanel_Close);
-            this._browseMainPanel.BackgroundMouseDoubleLeftClick += new(this.BrowseMainPanel_BackgroundMouseDoubleLeftClick);
-            this._browseMainPanel.NewWindowPageOpen += new(this.BrowseMainPanel_NewWindowPageOpen);
-            this._browseMainPanel.TabDropouted += new(this.BrowseMainPanel_TabDropouted);
+            this._browsePanel.Close += new(this.BrowsePanel_Close);
+            this._browsePanel.BackgroundMouseDoubleLeftClick += new(this.BrowsePanel_BackgroundMouseDoubleLeftClick);
+            this._browsePanel.NewWindowPageOpen += new(this.BrowsePanel_NewWindowPageOpen);
+            this._browsePanel.TabDropouted += new(this.BrowsePanel_TabDropouted);
 
             this.AttachResizeEvents(this);
 
@@ -281,7 +281,7 @@ namespace PicSum.Main.UIComponent
             {
                 if (CommandLineArgs.IsNone() || CommandLineArgs.IsCleanup())
                 {
-                    this._browseMainPanel.AddFavoriteDirectoryListTab();
+                    this._browsePanel.AddFavoriteDirectoryListTab();
                 }
                 else
                 {
@@ -296,18 +296,18 @@ namespace PicSum.Main.UIComponent
                         var parameter = new ImageViewPageParameter(
                             DirectoryFileListPageParameter.PAGE_SOURCES,
                             directoryPath,
-                            BrowseMainPanel.GetImageFilesAction(new ImageFileGetByDirectoryParameter(imageFilePath)),
+                            BrowsePanel.GetImageFilesAction(new ImageFileGetByDirectoryParameter(imageFilePath)),
                             imageFilePath,
                             sortInfo,
                             FileUtil.GetFileName(directoryPath),
                             Instance<IFileIconCacher>.Value.SmallDirectoryIcon,
                             true);
 
-                        this._browseMainPanel.AddImageViewPageTab(parameter);
+                        this._browsePanel.AddImageViewPageTab(parameter);
                     }
                     else
                     {
-                        this._browseMainPanel.AddFavoriteDirectoryListTab();
+                        this._browsePanel.AddFavoriteDirectoryListTab();
                     }
                 }
 
@@ -316,10 +316,10 @@ namespace PicSum.Main.UIComponent
 
             this.SetControlRegion();
 
-            this._browseMainPanel.ResumeLayout(false);
+            this._browsePanel.ResumeLayout(false);
             this.ResumeLayout(false);
 
-            ConsoleUtil.Write(true, $"BrowseForm.CreateBrowseMainPanel End");
+            ConsoleUtil.Write(true, $"BrowseForm.CreateBrowsePanel End");
         }
 
         private void OnTabDropouted(TabDropoutedEventArgs e)
@@ -332,7 +332,7 @@ namespace PicSum.Main.UIComponent
             this.NewWindowPageOpen?.Invoke(this, e);
         }
 
-        private Rectangle CreateBrowseMainPanelBounds(float scale)
+        private Rectangle CreateBrowsePanelBounds(float scale)
         {
             var x = 0;
             var y = (int)(PADDING_TOP * scale);
@@ -343,36 +343,36 @@ namespace PicSum.Main.UIComponent
 
         private void Form_ScaleChanged(object sender, ScaleChangedEventArgs e)
         {
-            if (this._browseMainPanel == null)
+            if (this._browsePanel == null)
             {
                 return;
             }
 
             this.SuspendLayout();
 
-            var rect = this.CreateBrowseMainPanelBounds(e.Scale);
-            this._browseMainPanel.SetBounds(rect.X, rect.Y, rect.Width, rect.Height);
-            this._browseMainPanel.SetControlsBounds(e.Scale);
+            var rect = this.CreateBrowsePanelBounds(e.Scale);
+            this._browsePanel.SetBounds(rect.X, rect.Y, rect.Width, rect.Height);
+            this._browsePanel.SetControlsBounds(e.Scale);
 
             this.ResumeLayout(false);
         }
 
-        private void BrowseMainPanel_Close(object sender, EventArgs e)
+        private void BrowsePanel_Close(object sender, EventArgs e)
         {
             this.Close();
         }
 
-        private void BrowseMainPanel_BackgroundMouseDoubleLeftClick(object sender, EventArgs e)
+        private void BrowsePanel_BackgroundMouseDoubleLeftClick(object sender, EventArgs e)
         {
             base.MouseLeftDoubleClickProcess();
         }
 
-        private void BrowseMainPanel_NewWindowPageOpen(object sender, BrowsePageOpenEventArgs e)
+        private void BrowsePanel_NewWindowPageOpen(object sender, BrowsePageOpenEventArgs e)
         {
             this.OnNewWindowPageOpen(e);
         }
 
-        private void BrowseMainPanel_TabDropouted(object sender, TabDropoutedEventArgs e)
+        private void BrowsePanel_TabDropouted(object sender, TabDropoutedEventArgs e)
         {
             this.OnTabDropouted(e);
         }

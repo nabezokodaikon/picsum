@@ -116,7 +116,7 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
-	<Compile Update="UIComponent\BrowseMainPanel.cs">
+	<Compile Update="UIComponent\BrowsePanel.cs">
 	  <SubType>UserControl</SubType>
 	</Compile>
   </ItemGroup>
