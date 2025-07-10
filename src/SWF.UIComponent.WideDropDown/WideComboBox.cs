@@ -143,15 +143,6 @@ namespace SWF.UIComponent.WideDropDown
             var h = this.Height - 1f;
 
             e.Graphics.DrawRectangle(Pens.LightGray, 0, 0, w, h);
-
-            base.OnPaint(e);
-        }
-
-        protected override void OnMouseLeave(EventArgs e)
-        {
-            base.OnMouseLeave(e);
-            this._dropDownList.Close();
-            this._isShowingDropDown = false;
         }
 
         private void InputTextBox_KeyDown(object sender, KeyEventArgs e)
