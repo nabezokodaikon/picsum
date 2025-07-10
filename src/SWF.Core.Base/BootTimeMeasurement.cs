@@ -36,9 +36,6 @@ namespace SWF.Core.Base
         private BootTimeMeasurement()
         {
             this.IsRunning = true;
-            var message = "Boot Start";
-            ConsoleUtil.Write(true, message);
-            LOGGER.Info(message);
             this._sw = Stopwatch.StartNew();
         }
 
