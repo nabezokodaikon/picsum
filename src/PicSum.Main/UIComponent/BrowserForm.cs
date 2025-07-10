@@ -144,6 +144,7 @@ namespace PicSum.Main.UIComponent
             }
 
             ConsoleUtil.Write(true, $"BrowserForm.OnShown End");
+            BootTimeMeasurement.Stop();
         }
 
         protected override void OnClosing(CancelEventArgs e)

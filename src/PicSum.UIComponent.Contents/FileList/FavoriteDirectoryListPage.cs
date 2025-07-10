@@ -73,8 +73,6 @@ namespace PicSum.UIComponent.Contents.FileList
                     this.SearchJob_Callback(_);
                 });
 
-            ConsoleUtil.Write(true, $"FavoriteDirectoryListPage.OnLoad End");
-
             base.OnLoad(e);
         }
 
@@ -134,8 +132,6 @@ namespace PicSum.UIComponent.Contents.FileList
                     this._parameter.SortInfo.ActiveSortType,
                     this._parameter.SortInfo.IsAscending(this._parameter.SortInfo.ActiveSortType));
             }
-
-            BootTimeMeasurement.Stop();
         }
 
         protected override void FileContextMenu_Opening(object sender, CancelEventArgs e)

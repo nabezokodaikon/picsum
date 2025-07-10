@@ -977,8 +977,6 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
             this.SettingImagePanelLayout(e);
             this.checkPatternPanel.Focus();
-
-            BootTimeMeasurement.Stop();
         }
 
         private void ToolBar_SingleViewMenuItemClick(object sender, EventArgs e)
