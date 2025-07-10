@@ -147,10 +147,11 @@ namespace SWF.UIComponent.Core
                 ControlStyles.ResizeRedraw |
                 ControlStyles.StandardClick |
                 ControlStyles.UserPaint |
-                ControlStyles.Selectable |
                 ControlStyles.SupportsTransparentBackColor,
                 true);
-
+            this.SetStyle(
+                ControlStyles.Selectable,
+                false);
             this.UpdateStyles();
 
             this._getRectangleMethod = new Func<Rectangle>(this.GetDefaultRectangle);

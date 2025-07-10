@@ -54,6 +54,9 @@ namespace PicSum.UIComponent.AddressBar
                 ControlStyles.ResizeRedraw |
                 ControlStyles.UserPaint,
                 true);
+            this.SetStyle(
+                ControlStyles.Selectable,
+                false);
             this.UpdateStyles();
 
             this._overflowItem.DropDownOpened += new(this.DrawItem_DropDownOpened);

@@ -211,13 +211,6 @@ namespace PicSum.UIComponent.Contents.ImageView
 
         public ImageViewToolBar()
         {
-            this.SetStyle(
-                ControlStyles.AllPaintingInWmPaint |
-                ControlStyles.OptimizedDoubleBuffer |
-                ControlStyles.ResizeRedraw,
-                true);
-            this.UpdateStyles();
-
             this.InitializeComponent();
 
             this.viewButton.LostFocus += this.MenuButton_LostFocus;

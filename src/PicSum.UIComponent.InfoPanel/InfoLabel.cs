@@ -113,6 +113,9 @@ namespace PicSum.UIComponent.InfoPanel
                 ControlStyles.SupportsTransparentBackColor |
                 ControlStyles.UserPaint,
                 true);
+            this.SetStyle(
+                ControlStyles.Selectable,
+                false);
             this.UpdateStyles();
         }
 

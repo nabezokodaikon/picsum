@@ -36,6 +36,9 @@ namespace SWF.UIComponent.Core
                 ControlStyles.UserPaint |
                 ControlStyles.ContainerControl,
                 true);
+            this.SetStyle(
+                ControlStyles.Selectable,
+                false);
             this.UpdateStyles();
         }
 

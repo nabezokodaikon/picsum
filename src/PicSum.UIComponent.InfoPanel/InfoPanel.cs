@@ -147,6 +147,9 @@ namespace PicSum.UIComponent.InfoPanel
                 ControlStyles.OptimizedDoubleBuffer |
                 ControlStyles.ResizeRedraw,
                 true);
+            this.SetStyle(
+                ControlStyles.Selectable,
+                false);
             this.UpdateStyles();
 
             this.InitializeComponent();

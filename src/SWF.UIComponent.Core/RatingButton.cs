@@ -51,6 +51,9 @@ namespace SWF.UIComponent.Core
                 ControlStyles.SupportsTransparentBackColor |
                 ControlStyles.UserPaint,
                 true);
+            this.SetStyle(
+                ControlStyles.Selectable,
+                false);
             this.UpdateStyles();
 
             this.Size = DEFAULT_SIZE;

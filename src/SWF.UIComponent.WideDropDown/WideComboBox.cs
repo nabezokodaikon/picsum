@@ -57,6 +57,9 @@ namespace SWF.UIComponent.WideDropDown
                 ControlStyles.OptimizedDoubleBuffer |
                 ControlStyles.ResizeRedraw,
                 true);
+            this.SetStyle(
+                ControlStyles.Selectable,
+                false);
             this.UpdateStyles();
 
             this.InitializeComponent();
