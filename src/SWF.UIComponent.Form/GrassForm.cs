@@ -138,6 +138,12 @@ namespace SWF.UIComponent.Form
             this.UpdateStyles();
 
             //this.SetWindowColor(ACTIVE_WINDOW_COLOR);
+
+            this.Activated += this.GrassForm_Activated;
+            this.Deactivate += this.GrassForm_Deactivate;
+            this.Resize += this.GrassForm_Resize;
+            this.LocationChanged += this.GrassForm_LocationChanged;
+            this.Load += this.GrassForm_Load;
         }
 
         public void MouseLeftDoubleClickProcess()
@@ -201,19 +207,17 @@ namespace SWF.UIComponent.Form
             base.WndProc(ref m);
         }
 
-        protected override void OnActivated(EventArgs e)
+        private void GrassForm_Activated(object sender, EventArgs e)
         {
             this.SetWindowColor(ACTIVE_WINDOW_COLOR);
-            base.OnActivated(e);
         }
 
-        protected override void OnDeactivate(EventArgs e)
+        private void GrassForm_Deactivate(object sender, EventArgs e)
         {
             this.SetWindowColor(DEACTIVATE_WINDOWCOLOR);
-            base.OnDeactivate(e);
         }
 
-        protected override void OnResize(EventArgs e)
+        private void GrassForm_Resize(object sender, EventArgs e)
         {
             if (this.WindowState == FormWindowState.Minimized)
             {
@@ -228,13 +232,11 @@ namespace SWF.UIComponent.Form
                 this._currentWindowState = FormWindowState.Normal;
                 this._currentWindowBounds = this.Bounds;
             }
-
-            base.OnResize(e);
 
             this.SetControlRegion();
         }
 
-        protected override void OnLocationChanged(EventArgs e)
+        private void GrassForm_LocationChanged(object sender, EventArgs e)
         {
             if (this.WindowState == FormWindowState.Minimized)
             {
@@ -249,8 +251,6 @@ namespace SWF.UIComponent.Form
                 this._currentWindowState = FormWindowState.Normal;
                 this._currentWindowBounds = this.Bounds;
             }
-
-            base.OnLocationChanged(e);
         }
 
         protected override void OnPaintBackground(PaintEventArgs e)
@@ -258,7 +258,7 @@ namespace SWF.UIComponent.Form
             //base.OnPaintBackground(e);
         }
 
-        protected override void OnLoad(EventArgs e)
+        private void GrassForm_Load(object sender, EventArgs e)
         {
             if (this._isInit)
             {
@@ -271,8 +271,6 @@ namespace SWF.UIComponent.Form
 
                 this._isInit = false;
             }
-
-            base.OnLoad(e);
         }
 
         protected void SetControlRegion()
