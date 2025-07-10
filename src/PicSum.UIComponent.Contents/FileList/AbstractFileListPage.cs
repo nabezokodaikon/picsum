@@ -244,14 +244,12 @@ namespace PicSum.UIComponent.Contents.FileList
             base.Dispose(disposing);
         }
 
-        protected override void OnLoad(EventArgs e)
+        private void AbstractFileListPage_Load(object sender, EventArgs e)
         {
             this._isLoaded = true;
 
             var scale = WindowUtil.GetCurrentWindowScale(this);
             this.RedrawPage(scale);
-
-            base.OnLoad(e);
         }
 
         protected abstract void OnRemoveFile(string[] filePathList);

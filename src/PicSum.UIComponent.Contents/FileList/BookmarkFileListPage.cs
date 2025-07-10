@@ -32,9 +32,12 @@ namespace PicSum.UIComponent.Contents.FileList
             this.IsMoveControlVisible = false;
             this.fileContextMenu.VisibleRemoveFromListMenuItem = true;
             base.toolBar.RegistrationSortButtonEnabled = true;
+
+            this.Load += this.BookmarkFileListPage_Load;
+            this.DrawTabPage += this.BookmarkFileListPage_DrawTabPage;
         }
 
-        protected override void OnLoad(EventArgs e)
+        private void BookmarkFileListPage_Load(object sender, EventArgs e)
         {
             Instance<JobCaller>.Value.EnqueueBookmarksGetJob(this, _ =>
                 {
@@ -45,8 +48,6 @@ namespace PicSum.UIComponent.Contents.FileList
 
                     this.SearchJob_Callback(_);
                 });
-
-            base.OnLoad(e);
         }
 
         protected override void Dispose(bool disposing)
@@ -67,7 +68,7 @@ namespace PicSum.UIComponent.Contents.FileList
             base.Dispose(disposing);
         }
 
-        protected override void OnDrawTabPage(DrawTabEventArgs e)
+        private void BookmarkFileListPage_DrawTabPage(object sender, DrawTabEventArgs e)
         {
             e.Graphics.DrawImage(this.Icon, e.IconRectangle);
             DrawTextUtil.DrawText(

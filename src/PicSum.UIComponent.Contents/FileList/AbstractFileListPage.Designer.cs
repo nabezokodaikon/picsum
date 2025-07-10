@@ -96,6 +96,7 @@ namespace PicSum.UIComponent.Contents.FileList
             this.Controls.Add(this.toolBar);
             this.Name = "FileListPageBase";
             this.Size = new System.Drawing.Size(630, 393);
+            this.Load += this.AbstractFileListPage_Load;
             this.toolBar.ResumeLayout(false);
             this.ResumeLayout(false);
         }
