@@ -273,7 +273,7 @@ namespace PicSum.UIComponent.Contents.ImageView
             base.Dispose(disposing);
         }
 
-        protected override void OnLoad(EventArgs e)
+        private void ImageViewPage_Load(object sender, EventArgs e)
         {
             if (this._disposed)
             {
@@ -287,11 +287,9 @@ namespace PicSum.UIComponent.Contents.ImageView
 
             var scale = WindowUtil.GetCurrentWindowScale(this);
             this.RedrawPage(scale);
-
-            base.OnLoad(e);
         }
 
-        protected override void OnMouseWheel(MouseEventArgs e)
+        private void ImageViewPage_MouseWheel(object sender, MouseEventArgs e)
         {
             if (!this.CanOperation)
             {
@@ -306,8 +304,6 @@ namespace PicSum.UIComponent.Contents.ImageView
             {
                 this.ReadImage(this.FilePathListIndex, true, false);
             }
-
-            base.OnMouseWheel(e);
         }
 
         protected override bool ProcessDialogKey(Keys keyData)
@@ -339,7 +335,7 @@ namespace PicSum.UIComponent.Contents.ImageView
             }
         }
 
-        protected override void OnDrawTabPage(DrawTabEventArgs e)
+        private void ImageViewPage_DrawTabPage(object sender, DrawTabEventArgs e)
         {
             e.Graphics.DrawImage(this.Icon, e.IconRectangle);
             DrawTextUtil.DrawText(

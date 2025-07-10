@@ -1,5 +1,7 @@
 using PicSum.UIComponent.Contents.ContextMenu;
+using SWF.UIComponent.TabOperation;
 using System;
+using System.Windows.Forms;
 
 namespace PicSum.UIComponent.Contents.ImageView
 {
@@ -110,6 +112,9 @@ namespace PicSum.UIComponent.Contents.ImageView
             this.Controls.Add(this.toolBar);
             this.Name = "ImageViewPage";
             this.Size = new System.Drawing.Size(925, 528);
+            this.Load += this.ImageViewPage_Load;
+            this.MouseWheel += this.ImageViewPage_MouseWheel;
+            this.DrawTabPage += this.ImageViewPage_DrawTabPage;
             this.checkPatternPanel.ResumeLayout(false);
             this.toolBar.ResumeLayout(false);
             this.ResumeLayout(false);
