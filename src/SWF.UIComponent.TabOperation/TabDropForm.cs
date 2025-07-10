@@ -1,6 +1,5 @@
 using SWF.Core.ImageAccessor;
 using SWF.Core.ResourceAccessor;
-using System;
 using System.Drawing;
 using System.Runtime.Versioning;
 using System.Windows.Forms;
@@ -25,6 +24,7 @@ namespace SWF.UIComponent.TabOperation
             this.Size = this.MaximumSize;
             this.ShowInTaskbar = false;
             this.Opacity = 0.75;
+            this.Region = ImageUtil.GetRegion(this._dropLeftImage, TRANSPARENT_COLOR);
         }
 
         public void SetLeftImage()
@@ -48,12 +48,6 @@ namespace SWF.UIComponent.TabOperation
             {
                 e.Graphics.DrawImage(this._dropImage, 0, 0, this._dropImage.Width, this._dropImage.Height);
             }
-        }
-
-        protected override void OnLoad(EventArgs e)
-        {
-            this.Region = ImageUtil.GetRegion(this._dropLeftImage, TRANSPARENT_COLOR);
-            base.OnLoad(e);
         }
     }
 }
