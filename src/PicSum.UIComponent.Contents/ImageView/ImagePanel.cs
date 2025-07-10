@@ -160,6 +160,15 @@ namespace PicSum.UIComponent.Contents.ImageView
                 ControlStyles.UserPaint,
                 true);
             this.UpdateStyles();
+
+            this.MouseLeave += this.ImagePanel_MouseLeave;
+            this.MouseDown += this.ImagePanel_MouseDown;
+            this.MouseUp += this.ImagePanel_MouseUp;
+            this.MouseClick += this.ImagePanel_MouseClick;
+            this.MouseDoubleClick += this.ImagePanel_MouseDoubleClick;
+            this.MouseMove += this.ImagePanel_MouseMove;
+            this.Invalidated += this.ImagePanel_Invalidated;
+            this.LostFocus += this.ImagePanel_LostFocus;
         }
 
         public void SetImage(
@@ -237,11 +246,6 @@ namespace PicSum.UIComponent.Contents.ImageView
             base.Dispose(disposing);
         }
 
-        protected override void OnPaintBackground(PaintEventArgs pevent)
-        {
-            base.OnPaintBackground(pevent);
-        }
-
         protected override void OnPaint(PaintEventArgs e)
         {
             using (TimeMeasuring.Run(false, "ImagePanel.OnPaint"))
@@ -270,13 +274,12 @@ namespace PicSum.UIComponent.Contents.ImageView
             }
         }
 
-        protected override void OnMouseLeave(EventArgs e)
+        private void ImagePanel_MouseLeave(object sender, EventArgs e)
         {
             this._isDrag = false;
-            base.OnMouseLeave(e);
         }
 
-        protected override void OnMouseDown(MouseEventArgs e)
+        private void ImagePanel_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
             {
@@ -317,7 +320,6 @@ namespace PicSum.UIComponent.Contents.ImageView
                         this.IsImageMove = true;
                         this._moveFromPoint.X = e.X;
                         this._moveFromPoint.Y = e.Y;
-                        this.Cursor = Cursors.NoMove2D;
                     }
                 }
                 else if (this.IsMousePointImage(e.X, e.Y))
@@ -327,17 +329,14 @@ namespace PicSum.UIComponent.Contents.ImageView
                     this._moveFromPoint.Y = e.Y;
                 }
             }
-
-            base.OnMouseDown(e);
         }
 
-        protected override void OnInvalidated(InvalidateEventArgs e)
+        private void ImagePanel_Invalidated(object sender, InvalidateEventArgs e)
         {
             this.SetDrawParameter();
-            base.OnInvalidated(e);
         }
 
-        protected override void OnMouseMove(MouseEventArgs e)
+        private void ImagePanel_MouseMove(object sender, MouseEventArgs e)
         {
             if (this._isThumbnailMove)
             {
@@ -376,17 +375,10 @@ namespace PicSum.UIComponent.Contents.ImageView
                     this.OnDragStart(EventArgs.Empty);
                 }
             }
-
-            base.OnMouseMove(e);
         }
 
-        protected override void OnMouseUp(MouseEventArgs e)
+        private void ImagePanel_MouseUp(object sender, MouseEventArgs e)
         {
-            if (this.Cursor != Cursors.Default)
-            {
-                this.Cursor = Cursors.Default;
-            }
-
             if (this.IsImageMove || this._isThumbnailMove)
             {
                 this.IsImageMove = false;
@@ -395,23 +387,15 @@ namespace PicSum.UIComponent.Contents.ImageView
             }
 
             this._isDrag = false;
-            base.OnMouseUp(e);
         }
 
-        protected override void OnLostFocus(EventArgs e)
+        private void ImagePanel_LostFocus(object sender, EventArgs e)
         {
-            if (this.Cursor != Cursors.Default)
-            {
-                this.Cursor = Cursors.Default;
-            }
-
             this.IsImageMove = false;
             this._isThumbnailMove = false;
-
-            base.OnLostFocus(e);
         }
 
-        protected override void OnMouseClick(MouseEventArgs e)
+        private void ImagePanel_MouseClick(object sender, MouseEventArgs e)
         {
             if (this._image.IsLoadingImage)
             {
@@ -422,11 +406,9 @@ namespace PicSum.UIComponent.Contents.ImageView
             {
                 this.OnImageMouseClick(e);
             }
-
-            base.OnMouseClick(e);
         }
 
-        protected override void OnMouseDoubleClick(MouseEventArgs e)
+        private void ImagePanel_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             if (this._image.IsLoadingImage)
             {
@@ -437,8 +419,6 @@ namespace PicSum.UIComponent.Contents.ImageView
             {
                 this.OnImageMouseDoubleClick(e);
             }
-
-            base.OnMouseDoubleClick(e);
         }
 
         private bool CanDrawThumbnailPanel()
