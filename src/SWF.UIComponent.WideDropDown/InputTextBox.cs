@@ -56,6 +56,10 @@ namespace SWF.UIComponent.WideDropDown
             this.BorderStyle = BorderStyle.None;
             this.Multiline = true;
             this.AcceptsReturn = false;
+
+            this.Resize += this.InputTextBox_Resize;
+            this.LostFocus += this.InputTextBox_LostFocus;
+            this.GotFocus += this.InputTextBox_GotFocus;
         }
 
         protected override bool ProcessDialogKey(Keys keyData)
@@ -70,22 +74,19 @@ namespace SWF.UIComponent.WideDropDown
             return base.ProcessDialogKey(keyData);
         }
 
-        protected override void OnResize(EventArgs e)
+        private void InputTextBox_Resize(object sender, EventArgs e)
         {
             this.VerticalAlignment();
-            base.OnResize(e);
         }
 
-        protected override void OnLostFocus(EventArgs e)
+        private void InputTextBox_LostFocus(object sender, EventArgs e)
         {
             this.VerticalAlignment();
-            base.OnLostFocus(e);
         }
 
-        protected override void OnGotFocus(EventArgs e)
+        private void InputTextBox_GotFocus(object sender, EventArgs e)
         {
             this.VerticalAlignment();
-            base.OnGotFocus(e);
         }
 
         private void VerticalAlignment()
