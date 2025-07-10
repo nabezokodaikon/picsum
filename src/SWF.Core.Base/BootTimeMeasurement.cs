@@ -1,9 +1,11 @@
+using NLog;
 using System.Diagnostics;
 
 namespace SWF.Core.Base
 {
     public sealed class BootTimeMeasurement
     {
+        private static readonly Logger LOGGER = Log.GetLogger();
         private static BootTimeMeasurement? _instance;
 
         public static void Start()
@@ -34,6 +36,9 @@ namespace SWF.Core.Base
         private BootTimeMeasurement()
         {
             this.IsRunning = true;
+            var message = "Boot Start";
+            ConsoleUtil.Write(true, message);
+            LOGGER.Info(message);
             this._sw = Stopwatch.StartNew();
         }
 
@@ -42,7 +47,9 @@ namespace SWF.Core.Base
             if (this.IsRunning)
             {
                 this._sw?.Stop();
-                ConsoleUtil.Write(true, $"Boot time: {this._sw?.ElapsedMilliseconds} ms");
+                var message = $"Boot End: {this._sw?.ElapsedMilliseconds} ms";
+                ConsoleUtil.Write(true, message);
+                LOGGER.Info(message);
                 this.IsRunning = false;
             }
         }
