@@ -161,6 +161,8 @@ namespace SWF.UIComponent.Core
             this.FlatStyle = FlatStyle.Flat;
             this.FlatAppearance.BorderSize = 0;
             this.FlatAppearance.MouseDownBackColor = Color.FromArgb(250, 250, 250);
+
+            this.Resize += this.ToolButton_Resize;
         }
 
         public Rectangle GetRegionBounds()
@@ -178,11 +180,10 @@ namespace SWF.UIComponent.Core
             return new Rectangle(x, y, w, h);
         }
 
-        protected override void OnResize(EventArgs e)
+        private void ToolButton_Resize(object? sender, EventArgs e)
         {
             this.Region = this.GetRegion();
             this.Invalidate();
-            base.OnResize(e);
         }
 
         protected override void OnMouseClick(MouseEventArgs e)

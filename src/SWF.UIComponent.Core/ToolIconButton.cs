@@ -35,16 +35,20 @@ namespace SWF.UIComponent.Core
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public SolidBrush DefaultBrush { get; set; } = DEFAULT_BRUSH;
 
-        protected override void OnMouseEnter(EventArgs e)
+        public ToolIconButton()
         {
-            this._isMousePoint = true;
-            base.OnMouseEnter(e);
+            this.MouseEnter += this.ToolIconButton_MouseEnter;
+            this.MouseLeave += this.ToolIconButton_MouseLeave;
         }
 
-        protected override void OnMouseLeave(EventArgs e)
+        private void ToolIconButton_MouseEnter(object? sender, EventArgs e)
+        {
+            this._isMousePoint = true;
+        }
+
+        private void ToolIconButton_MouseLeave(object? sender, EventArgs e)
         {
             this._isMousePoint = false;
-            base.OnMouseLeave(e);
         }
 
         protected override void OnPaint(PaintEventArgs pevent)
@@ -91,8 +95,6 @@ namespace SWF.UIComponent.Core
                     }
                 }
             }
-
-            //base.OnPaint(pevent);
         }
     }
 }
