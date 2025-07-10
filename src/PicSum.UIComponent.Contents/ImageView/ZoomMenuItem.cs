@@ -20,12 +20,12 @@ namespace PicSum.UIComponent.Contents.ImageView
 
             this.ZoomValue = zoomValue;
             this.Text = text;
+
+            base.Click += this.ZoomMenuItem_Click;
         }
 
-        protected override void OnClick(EventArgs e)
+        private void ZoomMenuItem_Click(object sender, EventArgs e)
         {
-            base.OnClick(e);
-
             this.Click?.Invoke(this, new ZoomMenuItemClickEventArgs(this.ZoomValue));
         }
     }
