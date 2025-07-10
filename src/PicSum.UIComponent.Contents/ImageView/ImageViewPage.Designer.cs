@@ -44,7 +44,6 @@ namespace PicSum.UIComponent.Contents.ImageView
             this.leftImagePanel.Font = new System.Drawing.Font("Yu Gothic UI", 18F);
             this.leftImagePanel.ImageMouseClick += new System.EventHandler<System.Windows.Forms.MouseEventArgs>(this.LeftImagePanel_ImageMouseClick);
             this.leftImagePanel.DragStart += new System.EventHandler(this.LeftImagePanel_DragStart);
-            this.leftImagePanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.LeftImagePanel_MouseDown);
             this.leftImagePanel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.LeftImagePanel_MouseUp);
             // 
             // fileContextMenu
@@ -77,7 +76,6 @@ namespace PicSum.UIComponent.Contents.ImageView
             this.rightImagePanel.Font = new System.Drawing.Font("Yu Gothic UI", 18F);
             this.rightImagePanel.ImageMouseClick += new System.EventHandler<System.Windows.Forms.MouseEventArgs>(this.RightImagePanel_ImageMouseClick);
             this.rightImagePanel.DragStart += new System.EventHandler(this.RightImagePanel_DragStart);
-            this.rightImagePanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.RightImagePanel_MouseDown);
             this.rightImagePanel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.RightImagePanel_MouseUp);
             // 
             // checkPatternPanel

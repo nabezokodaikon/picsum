@@ -33,6 +33,9 @@ namespace SWF.UIComponent.Core
                 ControlStyles.ResizeRedraw |
                 ControlStyles.UserPaint,
                 true);
+            this.SetStyle(
+                ControlStyles.Selectable,
+                false);
             this.UpdateStyles();
 
             //this.BackColor = BRUSH_A.Color;
