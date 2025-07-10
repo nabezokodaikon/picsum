@@ -449,11 +449,9 @@ namespace PicSum.Main.UIComponent
             base.Dispose(disposing);
         }
 
-        protected override void OnLoad(EventArgs e)
+        private void BrowseMainPanel_Load(object sender, EventArgs e)
         {
             this.addressBar.SetAddress(FileUtil.ROOT_DIRECTORY_PATH);
-
-            base.OnLoad(e);
         }
 
         private void RemovePageEventHandler(BrowsePage page)
