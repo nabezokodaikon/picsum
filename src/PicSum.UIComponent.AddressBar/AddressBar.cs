@@ -66,6 +66,13 @@ namespace PicSum.UIComponent.AddressBar
             this._directoryHistoryItem.DropDownOpened += new(this.DrawItem_DropDownOpened);
             this._directoryHistoryItem.DropDownClosed += new(this.DrawItem_DropDownClosed);
             this._directoryHistoryItem.SelectedDirectory += new(this.DrawItem_SelectedDirectory);
+
+            this.Invalidated += this.AddressBar_Invalidated;
+            this.MouseLeave += this.AddressBar_MouseLeave;
+            this.MouseDown += this.AddressBar_MouseDown;
+            this.MouseUp += this.AddressBar_MouseUp;
+            this.MouseMove += this.AddressBar_MouseMove;
+            this.MouseClick += this.AddressBar_MouseClick;
         }
 
         public void SetAddress(string filePath)
@@ -171,10 +178,9 @@ namespace PicSum.UIComponent.AddressBar
             base.Dispose(disposing);
         }
 
-        protected override void OnInvalidated(InvalidateEventArgs e)
+        private void AddressBar_Invalidated(object sender, InvalidateEventArgs e)
         {
             this.SetItemsRectangle();
-            base.OnInvalidated(e);
         }
 
         protected override void OnPaintBackground(PaintEventArgs pevent)
@@ -206,11 +212,9 @@ namespace PicSum.UIComponent.AddressBar
                     drawItem.Draw(e.Graphics);
                 }
             }
-
-            base.OnPaint(e);
         }
 
-        protected override void OnMouseLeave(EventArgs e)
+        private void AddressBar_MouseLeave(object sender, EventArgs e)
         {
             this.DropDownDirectory = string.Empty;
             this.IsOverflowDropDown = false;
@@ -218,11 +222,9 @@ namespace PicSum.UIComponent.AddressBar
 
             this.SetMouseDownItem(null);
             this.Invalidate();
-
-            base.OnMouseLeave(e);
         }
 
-        protected override void OnMouseDown(MouseEventArgs e)
+        private void AddressBar_MouseDown(object sender, MouseEventArgs e)
         {
             var drawItem = this.GetItemFromPoint(e.X, e.Y);
             if (drawItem is DirectoryDrawItem &&
@@ -243,29 +245,24 @@ namespace PicSum.UIComponent.AddressBar
             this.Invalidate();
 
             this._mouseDownItem?.OnMouseDown(e);
-
-            base.OnMouseDown(e);
         }
 
-        protected override void OnMouseUp(MouseEventArgs e)
+        private void AddressBar_MouseUp(object sender, MouseEventArgs e)
         {
             this.SetMouseDownItem(null);
             this.Invalidate();
-            base.OnMouseUp(e);
         }
 
-        protected override void OnMouseMove(MouseEventArgs e)
+        private void AddressBar_MouseMove(object sender, MouseEventArgs e)
         {
             var drawItem = this.GetItemFromPoint(e.X, e.Y);
             if (this.SetMousePointItem(drawItem))
             {
                 this.Invalidate();
             }
-
-            base.OnMouseMove(e);
         }
 
-        protected override void OnMouseClick(MouseEventArgs e)
+        private void AddressBar_MouseClick(object sender, MouseEventArgs e)
         {
             if (this._mouseDownItem != null)
             {
@@ -275,8 +272,6 @@ namespace PicSum.UIComponent.AddressBar
                     this._mouseDownItem.OnMouseClick(e);
                 }
             }
-
-            base.OnMouseClick(e);
         }
 
         private int GetInnerOffset()
