@@ -2,7 +2,6 @@ using SWF.Core.ImageAccessor;
 using SWF.UIComponent.Core;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Runtime.Versioning;
@@ -119,6 +118,10 @@ namespace SWF.UIComponent.TabOperation
             this.ShowInTaskbar = false;
             this.StartPosition = FormStartPosition.Manual;
             this.Opacity = 0.75d;
+
+            this.FormClosing += this.TabDragForm_Closing;
+            this.LocationChanged += this.TabDragForm_LocationChanged;
+            this.LostFocus += this.TabDragForm_LostFocus;
         }
 
         public void SetLocation(float xOffset, float yOffset)
@@ -224,7 +227,7 @@ namespace SWF.UIComponent.TabOperation
             }
         }
 
-        protected override void OnClosing(CancelEventArgs e)
+        private void TabDragForm_Closing(object sender, FormClosingEventArgs e)
         {
             foreach (var font in this._fontCache.Values)
             {
@@ -232,24 +235,19 @@ namespace SWF.UIComponent.TabOperation
             }
             this._fontCache.Clear();
             this._defaultFont.Dispose();
-
-            base.OnClosing(e);
         }
 
-        protected override void OnLocationChanged(EventArgs e)
+        private void TabDragForm_LocationChanged(object sender, EventArgs e)
         {
             this.Size = this._regionImage.Size;
-            base.OnLocationChanged(e);
         }
 
-        protected override void OnLostFocus(EventArgs e)
+        private void TabDragForm_LostFocus(object sender, EventArgs e)
         {
             if (this._tabSwitch != null && this.Visible)
             {
                 this._tabSwitch.CallEndTabDragOperation();
             }
-
-            base.OnLostFocus(e);
         }
 
         protected override void OnPaint(PaintEventArgs e)
