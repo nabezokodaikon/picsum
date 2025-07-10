@@ -11,7 +11,6 @@ using SWF.UIComponent.Core;
 using SWF.UIComponent.Form;
 using SWF.UIComponent.TabOperation;
 using System;
-using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -68,6 +67,12 @@ namespace PicSum.Main.UIComponent
                     BrowseConfig.INSTANCE.WindowLocaion.X + 16,
                     BrowseConfig.INSTANCE.WindowLocaion.Y + 16);
             }
+
+            this.Shown += this.BrowseForm_Shown;
+            this.FormClosing += this.BrowseForm_FormClosing;
+            this.KeyDown += this.BrowseForm_KeyDown;
+            this.KeyUp += this.BrowseForm_KeyUp;
+            this.Activated += this.BrowseForm_Activated;
 
             this.ResumeLayout(false);
         }
@@ -131,11 +136,9 @@ namespace PicSum.Main.UIComponent
         //    base.OnHandleCreated(e);
         //}
 
-        protected override void OnShown(EventArgs e)
+        private void BrowseForm_Shown(object sender, EventArgs e)
         {
-            ConsoleUtil.Write(true, $"BrowseForm.OnShown Start");
-
-            base.OnShown(e);
+            ConsoleUtil.Write(true, $"BrowseForm.BrowseForm_Shown Start");
 
             if (BrowseForm.isStartUp)
             {
@@ -143,11 +146,11 @@ namespace PicSum.Main.UIComponent
                 BrowseForm.isStartUp = false;
             }
 
-            ConsoleUtil.Write(true, $"BrowseForm.OnShown End");
+            ConsoleUtil.Write(true, $"BrowseForm.BrowseForm_Shown End");
             BootTimeMeasurement.Stop();
         }
 
-        protected override void OnClosing(CancelEventArgs e)
+        private void BrowseForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (this.WindowState == FormWindowState.Normal)
             {
@@ -159,8 +162,6 @@ namespace PicSum.Main.UIComponent
             {
                 BrowseConfig.INSTANCE.WindowState = this.WindowState;
             }
-
-            base.OnClosing(e);
         }
 
         protected override void Dispose(bool disposing)
@@ -173,7 +174,7 @@ namespace PicSum.Main.UIComponent
             base.Dispose(disposing);
         }
 
-        protected override void OnKeyDown(KeyEventArgs e)
+        private void BrowseForm_KeyDown(object sender, KeyEventArgs e)
         {
             if (this._isKeyDown)
             {
@@ -227,20 +228,15 @@ namespace PicSum.Main.UIComponent
                 this.Reload();
                 this._isKeyDown = true;
             }
-
-            base.OnKeyDown(e);
         }
 
-        protected override void OnKeyUp(KeyEventArgs e)
+        private void BrowseForm_KeyUp(object sender, KeyEventArgs e)
         {
             this._isKeyDown = false;
-            base.OnKeyUp(e);
         }
 
-        protected override void OnActivated(EventArgs e)
+        private void BrowseForm_Activated(object sender, EventArgs e)
         {
-            base.OnActivated(e);
-
             if (this._browseMainPanel != null)
             {
                 var scale = WindowUtil.GetCurrentWindowScale(this);
