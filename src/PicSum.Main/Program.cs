@@ -68,7 +68,7 @@ namespace PicSum.Main
                         typeof(PicSum.DatabaseAccessor.Connection.FileInfoDB),
                         typeof(PicSum.Job.Common.IThumbnailCacher),
                         typeof(PicSum.UIComponent.AddressBar.AddressBar),
-                        typeof(PicSum.UIComponent.Contents.Common.BrowserPage),
+                        typeof(PicSum.UIComponent.Contents.Common.BrowsePage),
                         typeof(PicSum.UIComponent.InfoPanel.InfoPanel),
 
                         typeof(SWF.Core.DatabaseAccessor.AbstractDatabase),

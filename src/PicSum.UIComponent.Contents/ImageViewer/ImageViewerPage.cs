@@ -25,7 +25,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
     /// </summary>
     [SupportedOSPlatform("windows10.0.17763.0")]
     public sealed partial class ImageViewerPage
-        : BrowserPage, ISender
+        : BrowsePage, ISender
     {
         private static readonly Rectangle TOOL_BAR_DEFAULT_BOUNDS = new(0, 0, 767, 29);
         private static readonly Rectangle CHECK_PATTERN_PANEL_DEFAULT_BOUNDS = new(0, 29, 767, 0);
@@ -1300,7 +1300,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 this.Title,
                 this.Icon,
                 this.Parameter.VisibleBookmarkMenuItem);
-            this.OnOpenPage(new BrowserPageEventArgs(PageOpenType.AddTab, param));
+            this.OnOpenPage(new BrowsePageEventArgs(PageOpenType.AddTab, param));
         }
 
         private void FileContextMenu_FileNewWindowOpen(object sender, ExecuteFileEventArgs e)
@@ -1314,7 +1314,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
                 this.Title,
                 this.Icon,
                 this.Parameter.VisibleBookmarkMenuItem);
-            this.OnOpenPage(new BrowserPageEventArgs(PageOpenType.NewWindow, param));
+            this.OnOpenPage(new BrowsePageEventArgs(PageOpenType.NewWindow, param));
         }
 
         private void FileContextMenu_FileOpen(object sender, ExecuteFileEventArgs e)

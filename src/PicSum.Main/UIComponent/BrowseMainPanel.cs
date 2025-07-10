@@ -22,7 +22,7 @@ using System.Windows.Forms;
 namespace PicSum.Main.UIComponent
 {
     [SupportedOSPlatform("windows10.0.17763.0")]
-    public sealed partial class BrowserMainPanel
+    public sealed partial class BrowseMainPanel
         : UserControl, ISender
     {
         private const int INFOPANEL_WIDTH = 240;
@@ -69,7 +69,7 @@ namespace PicSum.Main.UIComponent
         private bool _disposed = false;
 
         public event EventHandler<TabDropoutedEventArgs> TabDropouted;
-        public event EventHandler<BrowserPageOpenEventArgs> NewWindowPageOpen;
+        public event EventHandler<BrowsePageOpenEventArgs> NewWindowPageOpen;
         public event EventHandler Close;
         public event EventHandler BackgroundMouseDoubleLeftClick;
         public event EventHandler BeginSetPage;
@@ -91,7 +91,7 @@ namespace PicSum.Main.UIComponent
             }
         }
 
-        public BrowserMainPanel()
+        public BrowseMainPanel()
         {
             this.SetStyle(
                 ControlStyles.AllPaintingInWmPaint |
@@ -153,7 +153,7 @@ namespace PicSum.Main.UIComponent
 
         public void SetControlsBounds(float scale)
         {
-            ConsoleUtil.Write(true, $"BrowserMainPanel.SetControlsBounds Start");
+            ConsoleUtil.Write(true, $"BrowseMainPanel.SetControlsBounds Start");
 
             this.toolPanel.SuspendLayout();
             this.toolPanel2.SuspendLayout();
@@ -311,7 +311,7 @@ namespace PicSum.Main.UIComponent
 
             if (this.tabSwitch.ActiveTab != null)
             {
-                var page = this.tabSwitch.ActiveTab.GetPage<BrowserPage>();
+                var page = this.tabSwitch.ActiveTab.GetPage<BrowsePage>();
                 page.RedrawPage(scale);
             }
 
@@ -320,7 +320,7 @@ namespace PicSum.Main.UIComponent
             this.toolPanel2.ResumeLayout(false);
             this.ResumeLayout(false);
 
-            ConsoleUtil.Write(true, $"BrowserMainPanel.SetControlsBounds End");
+            ConsoleUtil.Write(true, $"BrowseMainPanel.SetControlsBounds End");
         }
 
         private void TabSwitch_BeginSetPage(object sender, EventArgs e)
@@ -333,7 +333,7 @@ namespace PicSum.Main.UIComponent
             this.EndSetPage.Invoke(this, e);
         }
 
-        public void AddPageEventHandler(BrowserPage page)
+        public void AddPageEventHandler(BrowsePage page)
         {
             ArgumentNullException.ThrowIfNull(page, nameof(page));
 
@@ -346,7 +346,7 @@ namespace PicSum.Main.UIComponent
         {
             ArgumentNullException.ThrowIfNull(tab, nameof(tab));
 
-            this.AddPageEventHandler(tab.GetPage<BrowserPage>());
+            this.AddPageEventHandler(tab.GetPage<BrowsePage>());
             this.tabSwitch.AddTab(tab);
         }
 
@@ -354,14 +354,14 @@ namespace PicSum.Main.UIComponent
         {
             ArgumentNullException.ThrowIfNull(param, nameof(param));
 
-            this.AddPageEventHandler(this.tabSwitch.AddTab<BrowserPage>(param));
+            this.AddPageEventHandler(this.tabSwitch.AddTab<BrowsePage>(param));
         }
 
         public void AddFavoriteDirectoryListTab()
         {
-            ConsoleUtil.Write(true, $"BrowserMainPanel.AddFavoriteDirectoryListTab Start");
+            ConsoleUtil.Write(true, $"BrowseMainPanel.AddFavoriteDirectoryListTab Start");
             this.OpenPage(new FavoriteDirectoryListPageParameter(), PageOpenType.AddTab);
-            ConsoleUtil.Write(true, $"BrowserMainPanel.AddFavoriteDirectoryListTab End");
+            ConsoleUtil.Write(true, $"BrowseMainPanel.AddFavoriteDirectoryListTab End");
         }
 
         public void AddImageViewerPageTab(ImageViewerPageParameter parameter)
@@ -381,7 +381,7 @@ namespace PicSum.Main.UIComponent
                 return;
             }
 
-            this.AddPageEventHandler(this.tabSwitch.CloneCurrentPage<BrowserPage>());
+            this.AddPageEventHandler(this.tabSwitch.CloneCurrentPage<BrowsePage>());
         }
 
         public void RemoveActiveTab()
@@ -401,7 +401,7 @@ namespace PicSum.Main.UIComponent
                 throw new NullReferenceException("アクティブなタブが存在しません。");
             }
 
-            this.AddPageEventHandler(this.tabSwitch.SetPreviewHistory<BrowserPage>());
+            this.AddPageEventHandler(this.tabSwitch.SetPreviewHistory<BrowsePage>());
             this.SetPageHistoryButtonEnabled();
         }
 
@@ -417,7 +417,7 @@ namespace PicSum.Main.UIComponent
                 throw new NullReferenceException("アクティブなタブが存在しません。");
             }
 
-            this.AddPageEventHandler(this.tabSwitch.SetNextPageHistory<BrowserPage>());
+            this.AddPageEventHandler(this.tabSwitch.SetNextPageHistory<BrowsePage>());
             this.SetPageHistoryButtonEnabled();
         }
 
@@ -425,10 +425,10 @@ namespace PicSum.Main.UIComponent
         {
             if (this.tabSwitch.ActiveTab != null)
             {
-                var page = this.tabSwitch.ActiveTab.GetPage<BrowserPage>();
-                ConsoleUtil.Write(true, $"BrowserMainPanel.RedrawPage Start");
+                var page = this.tabSwitch.ActiveTab.GetPage<BrowsePage>();
+                ConsoleUtil.Write(true, $"BrowseMainPanel.RedrawPage Start");
                 page.RedrawPage(scale);
-                ConsoleUtil.Write(true, $"BrowserMainPanel.RedrawPage End");
+                ConsoleUtil.Write(true, $"BrowseMainPanel.RedrawPage End");
             }
         }
 
@@ -456,7 +456,7 @@ namespace PicSum.Main.UIComponent
             base.OnLoad(e);
         }
 
-        private void RemovePageEventHandler(BrowserPage page)
+        private void RemovePageEventHandler(BrowsePage page)
         {
             page.SelectedFileChanged -= new(this.Page_SelectedFileChanged);
             page.OpenPage -= new(this.Page_OpenPage);
@@ -479,43 +479,43 @@ namespace PicSum.Main.UIComponent
 
         private void OpenPage(IPageParameter param, PageOpenType openType)
         {
-            ConsoleUtil.Write(true, $"BrowserMainPanel.OpenPage Start");
+            ConsoleUtil.Write(true, $"BrowseMainPanel.OpenPage Start");
 
             if (openType == PageOpenType.OverlapTab)
             {
-                this.AddPageEventHandler(this.tabSwitch.OverwriteTab<BrowserPage>(param));
+                this.AddPageEventHandler(this.tabSwitch.OverwriteTab<BrowsePage>(param));
                 this.SetPageHistoryButtonEnabled();
             }
             else if (openType == PageOpenType.AddHome)
             {
-                this.AddPageEventHandler(this.tabSwitch.AddTab<BrowserPage>(param));
+                this.AddPageEventHandler(this.tabSwitch.AddTab<BrowsePage>(param));
             }
             else if (openType == PageOpenType.AddTab)
             {
                 if (this.tabSwitch.ActiveTabIndex < 0)
                 {
-                    this.AddPageEventHandler(this.tabSwitch.InsertTab<BrowserPage>(0, param));
+                    this.AddPageEventHandler(this.tabSwitch.InsertTab<BrowsePage>(0, param));
                 }
                 else
                 {
-                    this.AddPageEventHandler(this.tabSwitch.InsertTab<BrowserPage>(this.tabSwitch.ActiveTabIndex + 1, param));
+                    this.AddPageEventHandler(this.tabSwitch.InsertTab<BrowsePage>(this.tabSwitch.ActiveTabIndex + 1, param));
                 }
             }
             else if (openType == PageOpenType.NewWindow)
             {
-                this.OnNewWindowPageOpen(new BrowserPageOpenEventArgs(param));
+                this.OnNewWindowPageOpen(new BrowsePageOpenEventArgs(param));
             }
             else
             {
                 throw new Exception("ファイル実行種別が不正です。");
             }
 
-            ConsoleUtil.Write(true, $"BrowserMainPanel.OpenPage End");
+            ConsoleUtil.Write(true, $"BrowseMainPanel.OpenPage End");
         }
 
         private void InsertPage(IPageParameter param, int tabIndex)
         {
-            this.AddPageEventHandler(this.tabSwitch.InsertTab<BrowserPage>(tabIndex, param));
+            this.AddPageEventHandler(this.tabSwitch.InsertTab<BrowsePage>(tabIndex, param));
         }
 
         private void OverlapPage(DragEntity dragData)
@@ -621,7 +621,7 @@ namespace PicSum.Main.UIComponent
             this.TabDropouted?.Invoke(this, e);
         }
 
-        private void OnNewWindowPageOpen(BrowserPageOpenEventArgs e)
+        private void OnNewWindowPageOpen(BrowsePageOpenEventArgs e)
         {
             this.NewWindowPageOpen?.Invoke(this, e);
         }
@@ -658,7 +658,7 @@ namespace PicSum.Main.UIComponent
             this.tabSwitch.InvalidateHeader();
         }
 
-        private void Page_OpenPage(object sender, BrowserPageEventArgs e)
+        private void Page_OpenPage(object sender, BrowsePageEventArgs e)
         {
             this.OpenPage(e.Parameter, e.OpenType);
         }
@@ -690,11 +690,11 @@ namespace PicSum.Main.UIComponent
             {
                 foreach (var tab in this.tabSwitch.GetInactiveTabs())
                 {
-                    var p = tab.GetPage<BrowserPage>();
+                    var p = tab.GetPage<BrowsePage>();
                     p.StopPageDraw();
                 }
 
-                var page = this.tabSwitch.ActiveTab.GetPage<BrowserPage>();
+                var page = this.tabSwitch.ActiveTab.GetPage<BrowsePage>();
                 var selectedFilePath = page.SelectedFilePath;
                 if (!string.IsNullOrEmpty(selectedFilePath))
                 {
@@ -720,12 +720,12 @@ namespace PicSum.Main.UIComponent
 
         private void TabSwitch_TabDropouted(object sender, TabDropoutedEventArgs e)
         {
-            this.RemovePageEventHandler(e.Tab.GetPage<BrowserPage>());
+            this.RemovePageEventHandler(e.Tab.GetPage<BrowsePage>());
 
             if (e.ToOtherOwner)
             {
-                var browser = e.Tab.Owner.GetForm<BrowserForm>();
-                browser.AddPageEventHandler(e.Tab.GetPage<BrowserPage>());
+                var browse = e.Tab.Owner.GetForm<BrowseForm>();
+                browse.AddPageEventHandler(e.Tab.GetPage<BrowsePage>());
             }
             else
             {

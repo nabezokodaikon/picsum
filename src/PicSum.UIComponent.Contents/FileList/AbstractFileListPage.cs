@@ -30,7 +30,7 @@ namespace PicSum.UIComponent.Contents.FileList
     /// </summary>
     [SupportedOSPlatform("windows10.0.17763.0")]
     public abstract partial class AbstractFileListPage
-        : BrowserPage, ISender
+        : BrowsePage, ISender
     {
         private static readonly Rectangle TOOL_BAR_DEFAULT_BOUNDS = new(0, 0, 767, 29);
         private static readonly Rectangle FLOW_LIST_DEFAULT_BOUNDS = new(0, 29, 767, 0);
@@ -925,12 +925,12 @@ namespace PicSum.UIComponent.Contents.FileList
                     this.Title,
                     this.Icon,
                     this.Parameter.VisibleBookmarkMenuItem);
-                this.OnOpenPage(new BrowserPageEventArgs(PageOpenType.AddTab, param));
+                this.OnOpenPage(new BrowsePageEventArgs(PageOpenType.AddTab, param));
             }
             else if (!file.IsFile)
             {
                 var param = new DirectoryFileListPageParameter(file.FilePath);
-                this.OnOpenPage(new BrowserPageEventArgs(PageOpenType.AddTab, param));
+                this.OnOpenPage(new BrowsePageEventArgs(PageOpenType.AddTab, param));
             }
         }
 
@@ -954,7 +954,7 @@ namespace PicSum.UIComponent.Contents.FileList
                     this.Title,
                     this.Icon,
                     this.Parameter.VisibleBookmarkMenuItem);
-                this.OnOpenPage(new BrowserPageEventArgs(PageOpenType.OverlapTab, param));
+                this.OnOpenPage(new BrowsePageEventArgs(PageOpenType.OverlapTab, param));
             }
             else if (file.IsFile)
             {
@@ -963,7 +963,7 @@ namespace PicSum.UIComponent.Contents.FileList
             else if (!file.IsFile)
             {
                 var param = new DirectoryFileListPageParameter(file.FilePath);
-                this.OnOpenPage(new BrowserPageEventArgs(PageOpenType.OverlapTab, param));
+                this.OnOpenPage(new BrowsePageEventArgs(PageOpenType.OverlapTab, param));
             }
         }
 
@@ -993,7 +993,7 @@ namespace PicSum.UIComponent.Contents.FileList
                     this.Title,
                     this.Icon,
                     this.Parameter.VisibleBookmarkMenuItem);
-                this.OnOpenPage(new BrowserPageEventArgs(PageOpenType.OverlapTab, param));
+                this.OnOpenPage(new BrowsePageEventArgs(PageOpenType.OverlapTab, param));
             }
             else if (file.IsFile)
             {
@@ -1002,7 +1002,7 @@ namespace PicSum.UIComponent.Contents.FileList
             else if (!file.IsFile)
             {
                 var param = new DirectoryFileListPageParameter(file.FilePath);
-                this.OnOpenPage(new BrowserPageEventArgs(PageOpenType.OverlapTab, param));
+                this.OnOpenPage(new BrowsePageEventArgs(PageOpenType.OverlapTab, param));
             }
         }
 
@@ -1092,7 +1092,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 this.Title,
                 this.Icon,
                 this.Parameter.VisibleBookmarkMenuItem);
-            this.OnOpenPage(new BrowserPageEventArgs(PageOpenType.OverlapTab, param));
+            this.OnOpenPage(new BrowsePageEventArgs(PageOpenType.OverlapTab, param));
         }
 
         private void FileContextMenu_FileNewTabOpen(object sender, ExecuteFileEventArgs e)
@@ -1106,7 +1106,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 this.Title,
                 this.Icon,
                 this.Parameter.VisibleBookmarkMenuItem);
-            this.OnOpenPage(new BrowserPageEventArgs(PageOpenType.AddTab, param));
+            this.OnOpenPage(new BrowsePageEventArgs(PageOpenType.AddTab, param));
         }
 
         private void FileContextMenu_FileNewWindowOpen(object sender, ExecuteFileEventArgs e)
@@ -1120,7 +1120,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 this.Title,
                 this.Icon,
                 this.Parameter.VisibleBookmarkMenuItem);
-            this.OnOpenPage(new BrowserPageEventArgs(PageOpenType.NewWindow, param));
+            this.OnOpenPage(new BrowsePageEventArgs(PageOpenType.NewWindow, param));
         }
 
         private void FileContextMenu_FileOpen(object sender, ExecuteFileEventArgs e)
@@ -1141,19 +1141,19 @@ namespace PicSum.UIComponent.Contents.FileList
         private void FileContextMenu_DirectoryActiveTabOpen(object sender, ExecuteFileEventArgs e)
         {
             var param = new DirectoryFileListPageParameter(e.FilePath);
-            this.OnOpenPage(new BrowserPageEventArgs(PageOpenType.OverlapTab, param));
+            this.OnOpenPage(new BrowsePageEventArgs(PageOpenType.OverlapTab, param));
         }
 
         private void FileContextMenu_DirectoryNewTabOpen(object sender, ExecuteFileEventArgs e)
         {
             var param = new DirectoryFileListPageParameter(e.FilePath);
-            this.OnOpenPage(new BrowserPageEventArgs(PageOpenType.AddTab, param));
+            this.OnOpenPage(new BrowsePageEventArgs(PageOpenType.AddTab, param));
         }
 
         private void FileContextMenu_DirectoryNewWindowOpen(object sender, ExecuteFileEventArgs e)
         {
             var param = new DirectoryFileListPageParameter(e.FilePath);
-            this.OnOpenPage(new BrowserPageEventArgs(PageOpenType.NewWindow, param));
+            this.OnOpenPage(new BrowsePageEventArgs(PageOpenType.NewWindow, param));
         }
 
         private void FileContextMenu_ExplorerOpen(object sender, ExecuteFileEventArgs e)

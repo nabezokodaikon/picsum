@@ -38,7 +38,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Update="Common\BrowserPage.cs" />
+    <Compile Update="Common\BrowsePage.cs" />
     <Compile Update="ContextMenu\FileContextMenu.cs" />
     <Compile Update="FileList\BookmarkFileListPage.cs" />
     <Compile Update="FileList\FavoriteDirectoryListPage.cs" />

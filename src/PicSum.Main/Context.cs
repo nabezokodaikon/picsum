@@ -17,7 +17,7 @@ namespace PicSum.Main
         : ApplicationContext, ISender
     {
         private readonly ResourceManager _resourceManager;
-        private readonly BrowserManager _browserManager = new();
+        private readonly BrowseManager _browseManager = new();
 
         public bool IsHandleCreated { get; private set; } = true;
         public bool IsDisposed { get; private set; }
@@ -26,7 +26,7 @@ namespace PicSum.Main
         {
             this._resourceManager = new();
 
-            this._browserManager.BrowserNothing += this.BrowserManager_BrowserNothing;
+            this._browseManager.BrowseNothing += this.BrowseManager_BrowseNothing;
 
             Instance<JobCaller>.Value.GCCollectRunJob.Value
                 .StartJob(this);
@@ -44,7 +44,7 @@ namespace PicSum.Main
                         return;
                     }
 
-                    var form = this._browserManager.GetActiveBrowser();
+                    var form = this._browseManager.GetActiveBrowse();
                     var directoryPath = FileUtil.GetParentDirectoryPath(_.Value);
 
                     var sortInfo = new SortInfo();
@@ -53,7 +53,7 @@ namespace PicSum.Main
                     var parameter = new ImageViewerPageParameter(
                         DirectoryFileListPageParameter.PAGE_SOURCES,
                         directoryPath,
-                        BrowserMainPanel.GetImageFilesAction(new ImageFileGetByDirectoryParameter(_.Value)),
+                        BrowseMainPanel.GetImageFilesAction(new ImageFileGetByDirectoryParameter(_.Value)),
                         _.Value,
                         sortInfo,
                         FileUtil.GetFileName(directoryPath),
@@ -74,11 +74,11 @@ namespace PicSum.Main
                     form.Focus();
                 });
 
-            var form = this._browserManager.GetActiveBrowser();
+            var form = this._browseManager.GetActiveBrowse();
             form.Show();
         }
 
-        private async void BrowserManager_BrowserNothing(object sender, EventArgs e)
+        private async void BrowseManager_BrowseNothing(object sender, EventArgs e)
         {
             this.IsDisposed = true;
             await this._resourceManager.DisposeAsync();

@@ -246,7 +246,7 @@ namespace PicSum.UIComponent.Contents.FileList
         private void GetNextDirectoryProcess_Callback(ValueResult<string> e)
         {
             var param = new DirectoryFileListPageParameter(e.Value);
-            this.OnOpenPage(new BrowserPageEventArgs(PageOpenType.OverlapTab, param));
+            this.OnOpenPage(new BrowsePageEventArgs(PageOpenType.OverlapTab, param));
         }
 
     }

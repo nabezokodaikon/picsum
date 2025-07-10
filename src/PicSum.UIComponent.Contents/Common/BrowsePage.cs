@@ -10,13 +10,13 @@ namespace PicSum.UIComponent.Contents.Common
     /// コンテンツ基底クラス
     /// </summary>
     [SupportedOSPlatform("windows10.0.17763.0")]
-    public abstract class BrowserPage
+    public abstract class BrowsePage
         : PagePanel
     {
         private bool _disposed = false;
 
         public event EventHandler<SelectedFileChangeEventArgs> SelectedFileChanged;
-        public event EventHandler<BrowserPageEventArgs> OpenPage;
+        public event EventHandler<BrowsePageEventArgs> OpenPage;
         public new event EventHandler<MouseEventArgs> MouseClick;
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -24,7 +24,7 @@ namespace PicSum.UIComponent.Contents.Common
 
         protected IPageParameter Parameter { get; private set; }
 
-        public BrowserPage(IPageParameter parameter)
+        public BrowsePage(IPageParameter parameter)
         {
             this.SetStyle(
                 ControlStyles.AllPaintingInWmPaint |
@@ -62,7 +62,7 @@ namespace PicSum.UIComponent.Contents.Common
             this.SelectedFileChanged?.Invoke(this, e);
         }
 
-        protected virtual void OnOpenPage(BrowserPageEventArgs e)
+        protected virtual void OnOpenPage(BrowsePageEventArgs e)
         {
             this.OpenPage?.Invoke(this, e);
         }

@@ -23,12 +23,12 @@ namespace PicSum.Main.Mng
         /// </summary>
         public ResourceManager()
         {
-            BrowserConfig.Instance.WindowState = Config.Instance.WindowState;
+            BrowseConfig.Instance.WindowState = Config.Instance.WindowState;
 
-            BrowserConfig.Instance.WindowLocaion
+            BrowseConfig.Instance.WindowLocaion
                 = new(Config.Instance.WindowLocaionX, Config.Instance.WindowLocaionY);
 
-            BrowserConfig.Instance.WindowSize
+            BrowseConfig.Instance.WindowSize
                 = new(Config.Instance.WindowSizeWidth, Config.Instance.WindowSizeHeight);
 
             FileListPageConfig.Instance.ThumbnailSize = Config.Instance.ThumbnailSize;
@@ -82,11 +82,11 @@ namespace PicSum.Main.Mng
             var closingJob = new ClosingSyncJob();
             await closingJob.Execute();
 
-            Config.Instance.WindowState = BrowserConfig.Instance.WindowState;
-            Config.Instance.WindowLocaionX = BrowserConfig.Instance.WindowLocaion.X;
-            Config.Instance.WindowLocaionY = BrowserConfig.Instance.WindowLocaion.Y;
-            Config.Instance.WindowSizeWidth = BrowserConfig.Instance.WindowSize.Width;
-            Config.Instance.WindowSizeHeight = BrowserConfig.Instance.WindowSize.Height;
+            Config.Instance.WindowState = BrowseConfig.Instance.WindowState;
+            Config.Instance.WindowLocaionX = BrowseConfig.Instance.WindowLocaion.X;
+            Config.Instance.WindowLocaionY = BrowseConfig.Instance.WindowLocaion.Y;
+            Config.Instance.WindowSizeWidth = BrowseConfig.Instance.WindowSize.Width;
+            Config.Instance.WindowSizeHeight = BrowseConfig.Instance.WindowSize.Height;
             Config.Instance.ThumbnailSize = FileListPageConfig.Instance.ThumbnailSize;
             Config.Instance.IsShowFileName = FileListPageConfig.Instance.IsShowFileName;
             Config.Instance.IsShowDirectory = FileListPageConfig.Instance.IsShowDirectory;

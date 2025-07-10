@@ -6,12 +6,12 @@ namespace PicSum.Main.UIComponent
     /// <summary>
     /// ブラウザコンテンツ表示イベントクラス
     /// </summary>
-    public sealed class BrowserPageOpenEventArgs
+    public sealed class BrowsePageOpenEventArgs
         : EventArgs
     {
         public IPageParameter PageParameter { get; private set; }
 
-        public BrowserPageOpenEventArgs(IPageParameter pageParameter)
+        public BrowsePageOpenEventArgs(IPageParameter pageParameter)
         {
             ArgumentNullException.ThrowIfNull(pageParameter, nameof(pageParameter));
 

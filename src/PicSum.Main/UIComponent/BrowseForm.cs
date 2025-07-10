@@ -17,7 +17,7 @@ using System.Windows.Forms;
 
 namespace PicSum.Main.UIComponent
 {
-    public partial class BrowserForm
+    public partial class BrowseForm
         : GrassForm, ISender
     {
         private static readonly Logger LOGGER = Log.GetLogger();
@@ -27,25 +27,25 @@ namespace PicSum.Main.UIComponent
         private static bool isStartUp = true;
 
         public event EventHandler<TabDropoutedEventArgs> TabDropouted;
-        public event EventHandler<BrowserPageOpenEventArgs> NewWindowPageOpen;
+        public event EventHandler<BrowsePageOpenEventArgs> NewWindowPageOpen;
 
-        private BrowserMainPanel _browserMainPanel = null;
+        private BrowseMainPanel _browseMainPanel = null;
         private bool _isKeyDown = false;
 
-        private BrowserMainPanel BrowserMainPanel
+        private BrowseMainPanel BrowseMainPanel
         {
             get
             {
-                if (this._browserMainPanel == null)
+                if (this._browseMainPanel == null)
                 {
-                    this.CreateBrowserMainPanel();
+                    this.CreateBrowseMainPanel();
                 }
 
-                return this._browserMainPanel;
+                return this._browseMainPanel;
             }
         }
 
-        public BrowserForm()
+        public BrowseForm()
             : base()
         {
             this.SuspendLayout();
@@ -54,65 +54,65 @@ namespace PicSum.Main.UIComponent
             this.Text = "PicSum";
             this.StartPosition = FormStartPosition.Manual;
             this.KeyPreview = true;
-            this.Size = BrowserConfig.Instance.WindowSize;
-            this.WindowState = BrowserConfig.Instance.WindowState;
+            this.Size = BrowseConfig.Instance.WindowSize;
+            this.WindowState = BrowseConfig.Instance.WindowState;
             this.ScaleChanged += this.Form_ScaleChanged;
 
-            if (BrowserForm.isStartUp)
+            if (BrowseForm.isStartUp)
             {
-                this.Location = BrowserConfig.Instance.WindowLocaion;
+                this.Location = BrowseConfig.Instance.WindowLocaion;
             }
             else
             {
                 this.Location = new Point(
-                    BrowserConfig.Instance.WindowLocaion.X + 16,
-                    BrowserConfig.Instance.WindowLocaion.Y + 16);
+                    BrowseConfig.Instance.WindowLocaion.X + 16,
+                    BrowseConfig.Instance.WindowLocaion.Y + 16);
             }
 
             this.ResumeLayout(false);
         }
 
-        public void AddPageEventHandler(BrowserPage page)
+        public void AddPageEventHandler(BrowsePage page)
         {
             ArgumentNullException.ThrowIfNull(page, nameof(page));
 
-            this.BrowserMainPanel.AddPageEventHandler(page);
+            this.BrowseMainPanel.AddPageEventHandler(page);
         }
 
         public void AddTab(TabInfo tab)
         {
             ArgumentNullException.ThrowIfNull(tab, nameof(tab));
 
-            this.BrowserMainPanel.AddTab(tab);
+            this.BrowseMainPanel.AddTab(tab);
         }
 
         public void AddTab(IPageParameter param)
         {
             ArgumentNullException.ThrowIfNull(param, nameof(param));
 
-            this.BrowserMainPanel.AddTab(param);
+            this.BrowseMainPanel.AddTab(param);
         }
 
         public void AddFavoriteDirectoryListTab()
         {
-            this.BrowserMainPanel.AddFavoriteDirectoryListTab();
+            this.BrowseMainPanel.AddFavoriteDirectoryListTab();
         }
 
         public void AddImageViewerPageTab(ImageViewerPageParameter parameter)
         {
-            this.BrowserMainPanel.AddImageViewerPageTab(parameter);
+            this.BrowseMainPanel.AddImageViewerPageTab(parameter);
         }
 
         public void Reload()
         {
-            this.BrowserMainPanel.Reload();
+            this.BrowseMainPanel.Reload();
         }
 
         public void RemoveTabOrWindow()
         {
-            if (this.BrowserMainPanel.TabCount > 1)
+            if (this.BrowseMainPanel.TabCount > 1)
             {
-                this.BrowserMainPanel.RemoveActiveTab();
+                this.BrowseMainPanel.RemoveActiveTab();
             }
             else
             {
@@ -122,28 +122,28 @@ namespace PicSum.Main.UIComponent
 
         protected override bool CanDragOperation()
         {
-            return !this.BrowserMainPanel.IsBeginTabDragOperation;
+            return !this.BrowseMainPanel.IsBeginTabDragOperation;
         }
 
         //protected override void OnHandleCreated(EventArgs e)
         //{
-        //    ConsoleUtil.Write(true, $"BrowserForm.OnHandleCreated");
+        //    ConsoleUtil.Write(true, $"BrowseForm.OnHandleCreated");
         //    base.OnHandleCreated(e);
         //}
 
         protected override void OnShown(EventArgs e)
         {
-            ConsoleUtil.Write(true, $"BrowserForm.OnShown Start");
+            ConsoleUtil.Write(true, $"BrowseForm.OnShown Start");
 
             base.OnShown(e);
 
-            if (BrowserForm.isStartUp)
+            if (BrowseForm.isStartUp)
             {
-                this.CreateBrowserMainPanel();
-                BrowserForm.isStartUp = false;
+                this.CreateBrowseMainPanel();
+                BrowseForm.isStartUp = false;
             }
 
-            ConsoleUtil.Write(true, $"BrowserForm.OnShown End");
+            ConsoleUtil.Write(true, $"BrowseForm.OnShown End");
             BootTimeMeasurement.Stop();
         }
 
@@ -151,13 +151,13 @@ namespace PicSum.Main.UIComponent
         {
             if (this.WindowState == FormWindowState.Normal)
             {
-                BrowserConfig.Instance.WindowState = this.WindowState;
-                BrowserConfig.Instance.WindowLocaion = this.Location;
-                BrowserConfig.Instance.WindowSize = this.Size;
+                BrowseConfig.Instance.WindowState = this.WindowState;
+                BrowseConfig.Instance.WindowLocaion = this.Location;
+                BrowseConfig.Instance.WindowSize = this.Size;
             }
             else if (this.WindowState == FormWindowState.Maximized)
             {
-                BrowserConfig.Instance.WindowState = this.WindowState;
+                BrowseConfig.Instance.WindowState = this.WindowState;
             }
 
             base.OnClosing(e);
@@ -186,13 +186,13 @@ namespace PicSum.Main.UIComponent
                 {
                     case Keys.Left:
                         {
-                            this._browserMainPanel.MovePreviewPage();
+                            this._browseMainPanel.MovePreviewPage();
                             this._isKeyDown = true;
                             break;
                         }
                     case Keys.Right:
                         {
-                            this._browserMainPanel.MoveNextPage();
+                            this._browseMainPanel.MoveNextPage();
                             this._isKeyDown = true;
                             break;
                         }
@@ -241,51 +241,51 @@ namespace PicSum.Main.UIComponent
         {
             base.OnActivated(e);
 
-            if (this._browserMainPanel != null)
+            if (this._browseMainPanel != null)
             {
                 var scale = WindowUtil.GetCurrentWindowScale(this);
-                this._browserMainPanel.RedrawPage(scale);
+                this._browseMainPanel.RedrawPage(scale);
             }
         }
 
-        private void CreateBrowserMainPanel()
+        private void CreateBrowseMainPanel()
         {
-            if (this._browserMainPanel != null)
+            if (this._browseMainPanel != null)
             {
                 throw new InvalidOperationException("メインコントロールは既に存在しています。");
             }
 
-            ConsoleUtil.Write(true, $"BrowserForm.CreateBrowserMainPanel Start");
+            ConsoleUtil.Write(true, $"BrowseForm.CreateBrowseMainPanel Start");
 
-            this._browserMainPanel = new BrowserMainPanel();
+            this._browseMainPanel = new BrowseMainPanel();
 
-            this._browserMainPanel.SuspendLayout();
+            this._browseMainPanel.SuspendLayout();
             this.SuspendLayout();
 
-            this.Controls.Add(this._browserMainPanel);
+            this.Controls.Add(this._browseMainPanel);
 
             var scale = WindowUtil.GetCurrentWindowScale(this);
-            var rect = this.CreateBrowserMainPanelBounds(scale);
-            this._browserMainPanel.SetBounds(rect.X, rect.Y, rect.Width, rect.Height);
-            this._browserMainPanel.SetControlsBounds(scale);
-            this._browserMainPanel.Anchor
+            var rect = this.CreateBrowseMainPanelBounds(scale);
+            this._browseMainPanel.SetBounds(rect.X, rect.Y, rect.Width, rect.Height);
+            this._browseMainPanel.SetControlsBounds(scale);
+            this._browseMainPanel.Anchor
                 = AnchorStyles.Top
                 | AnchorStyles.Bottom
                 | AnchorStyles.Left
                 | AnchorStyles.Right;
 
-            this._browserMainPanel.Close += new(this.BrowserMainPanel_Close);
-            this._browserMainPanel.BackgroundMouseDoubleLeftClick += new(this.BrowserMainPanel_BackgroundMouseDoubleLeftClick);
-            this._browserMainPanel.NewWindowPageOpen += new(this.BrowserMainPanel_NewWindowPageOpen);
-            this._browserMainPanel.TabDropouted += new(this.BrowserMainPanel_TabDropouted);
+            this._browseMainPanel.Close += new(this.BrowseMainPanel_Close);
+            this._browseMainPanel.BackgroundMouseDoubleLeftClick += new(this.BrowseMainPanel_BackgroundMouseDoubleLeftClick);
+            this._browseMainPanel.NewWindowPageOpen += new(this.BrowseMainPanel_NewWindowPageOpen);
+            this._browseMainPanel.TabDropouted += new(this.BrowseMainPanel_TabDropouted);
 
             this.AttachResizeEvents(this);
 
-            if (BrowserForm.isStartUp)
+            if (BrowseForm.isStartUp)
             {
                 if (CommandLineArgs.IsNone() || CommandLineArgs.IsCleanup())
                 {
-                    this._browserMainPanel.AddFavoriteDirectoryListTab();
+                    this._browseMainPanel.AddFavoriteDirectoryListTab();
                 }
                 else
                 {
@@ -300,18 +300,18 @@ namespace PicSum.Main.UIComponent
                         var parameter = new ImageViewerPageParameter(
                             DirectoryFileListPageParameter.PAGE_SOURCES,
                             directoryPath,
-                            BrowserMainPanel.GetImageFilesAction(new ImageFileGetByDirectoryParameter(imageFilePath)),
+                            BrowseMainPanel.GetImageFilesAction(new ImageFileGetByDirectoryParameter(imageFilePath)),
                             imageFilePath,
                             sortInfo,
                             FileUtil.GetFileName(directoryPath),
                             Instance<IFileIconCacher>.Value.SmallDirectoryIcon,
                             true);
 
-                        this._browserMainPanel.AddImageViewerPageTab(parameter);
+                        this._browseMainPanel.AddImageViewerPageTab(parameter);
                     }
                     else
                     {
-                        this._browserMainPanel.AddFavoriteDirectoryListTab();
+                        this._browseMainPanel.AddFavoriteDirectoryListTab();
                     }
                 }
 
@@ -320,10 +320,10 @@ namespace PicSum.Main.UIComponent
 
             this.SetControlRegion();
 
-            this._browserMainPanel.ResumeLayout(false);
+            this._browseMainPanel.ResumeLayout(false);
             this.ResumeLayout(false);
 
-            ConsoleUtil.Write(true, $"BrowserForm.CreateBrowserMainPanel End");
+            ConsoleUtil.Write(true, $"BrowseForm.CreateBrowseMainPanel End");
         }
 
         private void OnTabDropouted(TabDropoutedEventArgs e)
@@ -331,12 +331,12 @@ namespace PicSum.Main.UIComponent
             this.TabDropouted?.Invoke(this, e);
         }
 
-        private void OnNewWindowPageOpen(BrowserPageOpenEventArgs e)
+        private void OnNewWindowPageOpen(BrowsePageOpenEventArgs e)
         {
             this.NewWindowPageOpen?.Invoke(this, e);
         }
 
-        private Rectangle CreateBrowserMainPanelBounds(float scale)
+        private Rectangle CreateBrowseMainPanelBounds(float scale)
         {
             var x = 0;
             var y = (int)(PADDING_TOP * scale);
@@ -347,36 +347,36 @@ namespace PicSum.Main.UIComponent
 
         private void Form_ScaleChanged(object sender, ScaleChangedEventArgs e)
         {
-            if (this._browserMainPanel == null)
+            if (this._browseMainPanel == null)
             {
                 return;
             }
 
             this.SuspendLayout();
 
-            var rect = this.CreateBrowserMainPanelBounds(e.Scale);
-            this._browserMainPanel.SetBounds(rect.X, rect.Y, rect.Width, rect.Height);
-            this._browserMainPanel.SetControlsBounds(e.Scale);
+            var rect = this.CreateBrowseMainPanelBounds(e.Scale);
+            this._browseMainPanel.SetBounds(rect.X, rect.Y, rect.Width, rect.Height);
+            this._browseMainPanel.SetControlsBounds(e.Scale);
 
             this.ResumeLayout(false);
         }
 
-        private void BrowserMainPanel_Close(object sender, EventArgs e)
+        private void BrowseMainPanel_Close(object sender, EventArgs e)
         {
             this.Close();
         }
 
-        private void BrowserMainPanel_BackgroundMouseDoubleLeftClick(object sender, EventArgs e)
+        private void BrowseMainPanel_BackgroundMouseDoubleLeftClick(object sender, EventArgs e)
         {
             base.MouseLeftDoubleClickProcess();
         }
 
-        private void BrowserMainPanel_NewWindowPageOpen(object sender, BrowserPageOpenEventArgs e)
+        private void BrowseMainPanel_NewWindowPageOpen(object sender, BrowsePageOpenEventArgs e)
         {
             this.OnNewWindowPageOpen(e);
         }
 
-        private void BrowserMainPanel_TabDropouted(object sender, TabDropoutedEventArgs e)
+        private void BrowseMainPanel_TabDropouted(object sender, TabDropoutedEventArgs e)
         {
             this.OnTabDropouted(e);
         }
