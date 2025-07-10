@@ -1,4 +1,3 @@
-using SWF.Core.ConsoleAccessor;
 using System.Collections.Concurrent;
 using System.Reflection;
 using System.Runtime.Versioning;

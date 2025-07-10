@@ -1,6 +1,5 @@
 using NLog;
 using SWF.Core.Base;
-using SWF.Core.ConsoleAccessor;
 using System.Diagnostics;
 using System.Runtime.Versioning;
 

@@ -5,7 +5,6 @@ using PicSum.UIComponent.Contents.Common;
 using PicSum.UIComponent.Contents.Conf;
 using PicSum.UIComponent.Contents.Parameter;
 using SWF.Core.Base;
-using SWF.Core.ConsoleAccessor;
 using SWF.Core.ImageAccessor;
 using SWF.Core.Job;
 using SWF.Core.ResourceAccessor;

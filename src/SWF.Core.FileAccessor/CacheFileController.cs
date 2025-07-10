@@ -1,4 +1,4 @@
-using SWF.Core.ConsoleAccessor;
+using SWF.Core.Base;
 using System.IO.MemoryMappedFiles;
 using System.Runtime.Versioning;
 

@@ -84,9 +84,5 @@
   <ItemGroup>
     <PackageReference Include="NLog" Version="6.0.1" />
   </ItemGroup>
-  
-  <ItemGroup>
-    <ProjectReference Include="..\SWF.Core.ConsoleAccessor\SWF.Core.ConsoleAccessor.csproj" />
-  </ItemGroup>
 
 </Project>

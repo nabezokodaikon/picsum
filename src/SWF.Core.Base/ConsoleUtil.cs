@@ -1,4 +1,4 @@
-namespace SWF.Core.ConsoleAccessor
+namespace SWF.Core.Base
 {
     public static class ConsoleUtil
     {

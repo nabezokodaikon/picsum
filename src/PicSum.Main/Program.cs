@@ -1,6 +1,5 @@
 using PicSum.Main.Conf;
 using SWF.Core.Base;
-using SWF.Core.ConsoleAccessor;
 using SWF.Core.ResourceAccessor;
 using System;
 using System.IO;

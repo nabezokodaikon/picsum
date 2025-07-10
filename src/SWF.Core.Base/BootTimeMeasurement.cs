@@ -1,6 +1,6 @@
 using System.Diagnostics;
 
-namespace SWF.Core.ConsoleAccessor
+namespace SWF.Core.Base
 {
     public sealed class BootTimeMeasurement
     {

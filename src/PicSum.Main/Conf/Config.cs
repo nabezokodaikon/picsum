@@ -1,6 +1,5 @@
 using MessagePack;
 using SWF.Core.Base;
-using SWF.Core.ConsoleAccessor;
 using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
 using SWF.Core.ResourceAccessor;

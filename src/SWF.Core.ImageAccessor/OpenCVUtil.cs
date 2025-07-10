@@ -1,6 +1,6 @@
 using OpenCvSharp;
 using OpenCvSharp.Extensions;
-using SWF.Core.ConsoleAccessor;
+using SWF.Core.Base;
 using System.Runtime.Versioning;
 
 namespace SWF.Core.ImageAccessor

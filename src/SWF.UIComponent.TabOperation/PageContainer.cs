@@ -1,4 +1,4 @@
-using SWF.Core.ConsoleAccessor;
+using SWF.Core.Base;
 using SWF.UIComponent.Core;
 using System;
 using System.ComponentModel;

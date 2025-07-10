@@ -1,6 +1,6 @@
 using PicSum.DatabaseAccessor.Sql;
 using PicSum.Job.Entities;
-using SWF.Core.ConsoleAccessor;
+using SWF.Core.Base;
 using SWF.Core.DatabaseAccessor;
 using SWF.Core.Job;
 using SWF.Core.StringAccessor;

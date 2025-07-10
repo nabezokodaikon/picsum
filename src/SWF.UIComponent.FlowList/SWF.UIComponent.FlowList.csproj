@@ -32,7 +32,6 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <ProjectReference Include="..\SWF.Core.ConsoleAccessor\SWF.Core.ConsoleAccessor.csproj" />
     <ProjectReference Include="..\SWF.UIComponent.Core\SWF.UIComponent.Core.csproj" />
   </ItemGroup>
   

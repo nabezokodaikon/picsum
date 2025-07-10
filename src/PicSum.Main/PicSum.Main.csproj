@@ -123,7 +123,6 @@
   <ItemGroup>
 	<ProjectReference Include="..\PicSum.UIComponent.Contents\PicSum.UIComponent.Contents.csproj" />
 	<ProjectReference Include="..\SWF.Core.Base\SWF.Core.Base.csproj" />
-	<ProjectReference Include="..\SWF.Core.ConsoleAccessor\SWF.Core.ConsoleAccessor.csproj" />
 	<ProjectReference Include="..\SWF.Core.ImageAccessor\SWF.Core.ImageAccessor.csproj" />
 	<ProjectReference Include="..\SWF.Core.Job\SWF.Core.Job.csproj" />
 	<ProjectReference Include="..\SWF.Core.ResourceAccessor\SWF.Core.ResourceAccessor.csproj" />
