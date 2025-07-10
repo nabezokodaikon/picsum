@@ -106,7 +106,7 @@ namespace PicSum.UIComponent.Contents.FileList
             this.RemoveFile(filePathList);
         }
 
-        protected override Action<ISender> GetImageFilesGetAction(ImageViewerPageParameter param)
+        protected override Action<ISender> GetImageFilesGetAction(ImageViewPageParameter param)
         {
             return FileListUtil.ImageFilesGetActionForTag(param);
         }

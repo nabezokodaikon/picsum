@@ -1,9 +1,9 @@
 using PicSum.UIComponent.Contents.ContextMenu;
 using System;
 
-namespace PicSum.UIComponent.Contents.ImageViewer
+namespace PicSum.UIComponent.Contents.ImageView
 {
-    partial class ImageViewerPage
+    partial class ImageViewPage
     {
         /// <summary> 
         /// 必要なデザイナ変数です。
@@ -19,12 +19,12 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ImageViewerPage));
-            this.leftImagePanel = new PicSum.UIComponent.Contents.ImageViewer.ImagePanel();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ImageViewPage));
+            this.leftImagePanel = new PicSum.UIComponent.Contents.ImageView.ImagePanel();
             this.fileContextMenu = new PicSum.UIComponent.Contents.ContextMenu.FileContextMenu();
-            this.rightImagePanel = new PicSum.UIComponent.Contents.ImageViewer.ImagePanel();
+            this.rightImagePanel = new PicSum.UIComponent.Contents.ImageView.ImagePanel();
             this.checkPatternPanel = new SWF.UIComponent.Core.CheckPatternPanel();
-            this.toolBar = new PicSum.UIComponent.Contents.ImageViewer.ImageViewerToolBar();
+            this.toolBar = new PicSum.UIComponent.Contents.ImageView.ImageViewToolBar();
             this.checkPatternPanel.SuspendLayout();
             this.toolBar.SuspendLayout();
             this.SuspendLayout();
@@ -105,23 +105,23 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.toolBar.IndexSliderValueChanging += new System.EventHandler(this.ToolBar_IndexSliderValueChanging);
             this.toolBar.IndexSliderValueChanged += new System.EventHandler(this.ToolBar_IndexSliderValueChanged);
             // 
-            // ImageViewerPage
+            // ImageViewPage
             //
             this.BackColor = System.Drawing.Color.FromArgb(250, 250, 250);
             this.Controls.Add(this.checkPatternPanel);
             this.Controls.Add(this.toolBar);
-            this.Name = "ImageViewerPage";
+            this.Name = "ImageViewPage";
             this.Size = new System.Drawing.Size(925, 528);
             this.checkPatternPanel.ResumeLayout(false);
             this.toolBar.ResumeLayout(false);
             this.ResumeLayout(false);
         }
 
-        private PicSum.UIComponent.Contents.ImageViewer.ImagePanel leftImagePanel;
-        private PicSum.UIComponent.Contents.ImageViewer.ImagePanel rightImagePanel;
+        private PicSum.UIComponent.Contents.ImageView.ImagePanel leftImagePanel;
+        private PicSum.UIComponent.Contents.ImageView.ImagePanel rightImagePanel;
         private PicSum.UIComponent.Contents.ContextMenu.FileContextMenu fileContextMenu;
         private SWF.UIComponent.Core.CheckPatternPanel checkPatternPanel;
-        private PicSum.UIComponent.Contents.ImageViewer.ImageViewerToolBar toolBar;
+        private PicSum.UIComponent.Contents.ImageView.ImageViewToolBar toolBar;
 
         #endregion
     }

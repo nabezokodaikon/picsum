@@ -35,7 +35,7 @@ namespace PicSum.Main.UIComponent
         private static readonly Rectangle PREVIEW_BUTTON_DEFAULT_BOUNDS = new(3, 3, 32, 28);
         private static readonly Rectangle HOME_BUTTON_DEFAULT_BOUNDS = new(3, 5, 32, 28);
 
-        public static Func<ImageViewerPageParameter, Action<ISender>> GetImageFilesAction(
+        public static Func<ImageViewPageParameter, Action<ISender>> GetImageFilesAction(
             ImageFileGetByDirectoryParameter subParamter)
         {
             return (parameter) =>
@@ -364,7 +364,7 @@ namespace PicSum.Main.UIComponent
             ConsoleUtil.Write(true, $"BrowseMainPanel.AddFavoriteDirectoryListTab End");
         }
 
-        public void AddImageViewerPageTab(ImageViewerPageParameter parameter)
+        public void AddImageViewPageTab(ImageViewPageParameter parameter)
         {
             this.OpenPage(parameter, PageOpenType.AddTab);
         }
@@ -529,7 +529,7 @@ namespace PicSum.Main.UIComponent
                 ImageUtil.IsImageFile(dragData.CurrentFilePath))
             {
                 // ビューアコンテンツを上書きします。
-                var parameter = new ImageViewerPageParameter(
+                var parameter = new ImageViewPageParameter(
                     dragData.PageSources,
                     dragData.SourcesKey,
                     dragData.GetImageFilesAction,
@@ -553,7 +553,7 @@ namespace PicSum.Main.UIComponent
                 ImageUtil.IsImageFile(dragData.CurrentFilePath))
             {
                 // ビューアコンテンツを挿入します。
-                var parameter = new ImageViewerPageParameter(
+                var parameter = new ImageViewPageParameter(
                     dragData.PageSources,
                     dragData.SourcesKey,
                     dragData.GetImageFilesAction,

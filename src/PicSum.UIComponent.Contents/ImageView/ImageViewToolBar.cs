@@ -7,10 +7,10 @@ using System.Drawing;
 using System.Runtime.Versioning;
 using System.Windows.Forms;
 
-namespace PicSum.UIComponent.Contents.ImageViewer
+namespace PicSum.UIComponent.Contents.ImageView
 {
     [SupportedOSPlatform("windows10.0.17763.0")]
-    public partial class ImageViewerToolBar : ToolPanel
+    public partial class ImageViewToolBar : ToolPanel
     {
         private static readonly Rectangle VIEW_BUTTON_DEFAULT_BOUNDS
             = new(3, 1, 64, 23);
@@ -209,7 +209,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             }
         }
 
-        public ImageViewerToolBar()
+        public ImageViewToolBar()
         {
             this.SetStyle(
                 ControlStyles.AllPaintingInWmPaint |

@@ -98,9 +98,9 @@ namespace PicSum.Main.UIComponent
             this.BrowseMainPanel.AddFavoriteDirectoryListTab();
         }
 
-        public void AddImageViewerPageTab(ImageViewerPageParameter parameter)
+        public void AddImageViewPageTab(ImageViewPageParameter parameter)
         {
-            this.BrowseMainPanel.AddImageViewerPageTab(parameter);
+            this.BrowseMainPanel.AddImageViewPageTab(parameter);
         }
 
         public void Reload()
@@ -297,7 +297,7 @@ namespace PicSum.Main.UIComponent
                         var sortInfo = new SortInfo();
                         sortInfo.SetSortType(SortTypeID.FilePath, true);
 
-                        var parameter = new ImageViewerPageParameter(
+                        var parameter = new ImageViewPageParameter(
                             DirectoryFileListPageParameter.PAGE_SOURCES,
                             directoryPath,
                             BrowseMainPanel.GetImageFilesAction(new ImageFileGetByDirectoryParameter(imageFilePath)),
@@ -307,7 +307,7 @@ namespace PicSum.Main.UIComponent
                             Instance<IFileIconCacher>.Value.SmallDirectoryIcon,
                             true);
 
-                        this._browseMainPanel.AddImageViewerPageTab(parameter);
+                        this._browseMainPanel.AddImageViewPageTab(parameter);
                     }
                     else
                     {

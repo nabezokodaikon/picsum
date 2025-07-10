@@ -38,8 +38,8 @@ namespace PicSum.Main.Mng
             FileListPageConfig.Instance.IsShowOtherFile = Config.Instance.IsShowOtherFile;
             FileListPageConfig.Instance.FavoriteDirectoryCount = Config.Instance.FavoriteDirectoryCount;
 
-            ImageViewerPageConfig.Instance.ImageDisplayMode = Config.Instance.ImageDisplayMode;
-            ImageViewerPageConfig.Instance.ImageSizeMode = Config.Instance.ImageSizeMode;
+            ImageViewPageConfig.Instance.ImageDisplayMode = Config.Instance.ImageDisplayMode;
+            ImageViewPageConfig.Instance.ImageSizeMode = Config.Instance.ImageSizeMode;
 
             LOGGER.Info($"現在のバージョン '{Config.Instance.GetCurrentVersion()}'");
 
@@ -92,8 +92,8 @@ namespace PicSum.Main.Mng
             Config.Instance.IsShowDirectory = FileListPageConfig.Instance.IsShowDirectory;
             Config.Instance.IsShowImageFile = FileListPageConfig.Instance.IsShowImageFile;
             Config.Instance.IsShowOtherFile = FileListPageConfig.Instance.IsShowOtherFile;
-            Config.Instance.ImageDisplayMode = ImageViewerPageConfig.Instance.ImageDisplayMode;
-            Config.Instance.ImageSizeMode = ImageViewerPageConfig.Instance.ImageSizeMode;
+            Config.Instance.ImageDisplayMode = ImageViewPageConfig.Instance.ImageDisplayMode;
+            Config.Instance.ImageSizeMode = ImageViewPageConfig.Instance.ImageSizeMode;
 
             Config.Instance.Save();
 

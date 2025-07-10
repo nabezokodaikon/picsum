@@ -2,9 +2,9 @@ using SWF.Core.Base;
 using System;
 using System.Windows.Forms;
 
-namespace PicSum.UIComponent.Contents.ImageViewer
+namespace PicSum.UIComponent.Contents.ImageView
 {
-    partial class ImageViewerToolBar
+    partial class ImageViewToolBar
     {
         /// <summary> 
         /// 必要なデザイナー変数です。
@@ -198,7 +198,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.filePathToolTip.InitialDelay = 50;
             this.filePathToolTip.ReshowDelay = 100;
             // 
-            // ImageViewerToolBar
+            // ImageViewToolBar
             // 
             this.Controls.Add(this.sizeButton);
             this.Controls.Add(this.viewButton);
@@ -208,7 +208,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             this.Controls.Add(this.singlePreviewButton);
             this.Controls.Add(this.doublePreviewButton);
             this.DoubleBuffered = true;
-            this.Name = "ImageViewerToolBar";
+            this.Name = "ImageViewToolBar";
             this.Size = new System.Drawing.Size(691, 29);
             this.viewMenu.ResumeLayout(false);
             this.sizeMenu.ResumeLayout(false);

@@ -10,7 +10,7 @@ namespace PicSum.UIComponent.Contents.Parameter
         string sourcesKey,
         string currentFilePath,
         SortInfo sortInfo,
-        Func<ImageViewerPageParameter, Action<ISender>> getImageFilesAction,
+        Func<ImageViewPageParameter, Action<ISender>> getImageFilesAction,
         string pageTitle,
         System.Drawing.Image pageIcon,
         bool visibleBookmarkMenuItem)
@@ -30,7 +30,7 @@ namespace PicSum.UIComponent.Contents.Parameter
         public SortInfo SortInfo { get; private set; }
             = sortInfo ?? throw new ArgumentNullException(nameof(sortInfo));
 
-        public Func<ImageViewerPageParameter, Action<ISender>> GetImageFilesAction { get; private set; }
+        public Func<ImageViewPageParameter, Action<ISender>> GetImageFilesAction { get; private set; }
             = getImageFilesAction ?? throw new ArgumentNullException(nameof(getImageFilesAction));
 
         public string PageTitle { get; private set; }

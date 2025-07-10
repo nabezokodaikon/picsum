@@ -1,4 +1,4 @@
-namespace PicSum.UIComponent.Contents.ImageViewer
+namespace PicSum.UIComponent.Contents.ImageView
 {
     public sealed class ZoomMenuItemClickEventArgs
     {

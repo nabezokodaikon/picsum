@@ -117,7 +117,7 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
-        public static Action<ISender> ImageFilesGetActionForDirectory(ImageViewerPageParameter param)
+        public static Action<ISender> ImageFilesGetActionForDirectory(ImageViewPageParameter param)
         {
             ArgumentNullException.ThrowIfNull(param, nameof(param));
 
@@ -139,7 +139,7 @@ namespace PicSum.UIComponent.Contents.FileList
             };
         }
 
-        public static Action<ISender> ImageFilesGetActionForBookmark(ImageViewerPageParameter param)
+        public static Action<ISender> ImageFilesGetActionForBookmark(ImageViewPageParameter param)
         {
             ArgumentNullException.ThrowIfNull(param, nameof(param));
 
@@ -168,7 +168,7 @@ namespace PicSum.UIComponent.Contents.FileList
             };
         }
 
-        public static Action<ISender> ImageFilesGetActionForRating(ImageViewerPageParameter param)
+        public static Action<ISender> ImageFilesGetActionForRating(ImageViewPageParameter param)
         {
             ArgumentNullException.ThrowIfNull(param, nameof(param));
 
@@ -190,7 +190,7 @@ namespace PicSum.UIComponent.Contents.FileList
             };
         }
 
-        public static Action<ISender> ImageFilesGetActionForTag(ImageViewerPageParameter param)
+        public static Action<ISender> ImageFilesGetActionForTag(ImageViewPageParameter param)
         {
             ArgumentNullException.ThrowIfNull(param, nameof(param));
 

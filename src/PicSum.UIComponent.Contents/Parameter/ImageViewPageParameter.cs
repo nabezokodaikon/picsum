@@ -1,5 +1,5 @@
 using PicSum.UIComponent.Contents.Common;
-using PicSum.UIComponent.Contents.ImageViewer;
+using PicSum.UIComponent.Contents.ImageView;
 using SWF.Core.Base;
 using SWF.Core.Job;
 using SWF.UIComponent.TabOperation;
@@ -12,7 +12,7 @@ namespace PicSum.UIComponent.Contents.Parameter
     /// 画像表示コンテンツパラメータ
     /// </summary>
     [SupportedOSPlatform("windows10.0.17763.0")]
-    public sealed class ImageViewerPageParameter
+    public sealed class ImageViewPageParameter
         : IPageParameter
     {
         public event EventHandler<GetImageFilesEventArgs> GetImageFiles;
@@ -20,17 +20,17 @@ namespace PicSum.UIComponent.Contents.Parameter
         public string PageSources { get; private set; }
         public string SourcesKey { get; private set; }
         public string Key { get; private set; }
-        public Func<ImageViewerPageParameter, Action<ISender>> ImageFilesGetAction { get; private set; }
+        public Func<ImageViewPageParameter, Action<ISender>> ImageFilesGetAction { get; private set; }
         public string PageTitle { get; private set; }
         public System.Drawing.Image PageIcon { get; private set; }
         public string SelectedFilePath { get; set; }
         public SortInfo SortInfo { get; set; }
         public bool VisibleBookmarkMenuItem { get; private set; }
 
-        public ImageViewerPageParameter(
+        public ImageViewPageParameter(
             string pageSources,
             string sourcesKey,
-            Func<ImageViewerPageParameter, Action<ISender>> imageFilesGetAction,
+            Func<ImageViewPageParameter, Action<ISender>> imageFilesGetAction,
             string selectedFilePath,
             SortInfo sortInfo,
             string pageTitle,
@@ -39,7 +39,7 @@ namespace PicSum.UIComponent.Contents.Parameter
         {
             this.PageSources = pageSources ?? throw new ArgumentNullException(nameof(pageSources));
             this.SourcesKey = sourcesKey ?? throw new ArgumentNullException(nameof(sourcesKey));
-            this.Key = $"{this.PageSources}ImageViewerPage: {this.SourcesKey}";
+            this.Key = $"{this.PageSources}ImageViewPage: {this.SourcesKey}";
             this.ImageFilesGetAction = imageFilesGetAction ?? throw new ArgumentNullException(nameof(imageFilesGetAction));
             this.PageTitle = pageTitle ?? throw new ArgumentNullException(nameof(pageTitle));
             this.PageIcon = pageIcon ?? throw new ArgumentNullException(nameof(pageIcon));
@@ -50,7 +50,7 @@ namespace PicSum.UIComponent.Contents.Parameter
 
         public PagePanel CreatePage()
         {
-            return new ImageViewerPage(this);
+            return new ImageViewPage(this);
         }
 
         public void OnGetImageFiles(GetImageFilesEventArgs e)

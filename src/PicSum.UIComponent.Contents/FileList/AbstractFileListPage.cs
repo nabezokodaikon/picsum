@@ -375,7 +375,7 @@ namespace PicSum.UIComponent.Contents.FileList
             this.SetFilter();
         }
 
-        protected abstract Action<ISender> GetImageFilesGetAction(ImageViewerPageParameter paramter);
+        protected abstract Action<ISender> GetImageFilesGetAction(ImageViewPageParameter paramter);
 
         private void SetSort()
         {
@@ -916,7 +916,7 @@ namespace PicSum.UIComponent.Contents.FileList
             var file = this._masterFileDictionary[filePath];
             if (file.IsImageFile)
             {
-                var param = new ImageViewerPageParameter(
+                var param = new ImageViewPageParameter(
                     this.Parameter.PageSources,
                     this.Parameter.SourcesKey,
                     this.GetImageFilesGetAction,
@@ -945,7 +945,7 @@ namespace PicSum.UIComponent.Contents.FileList
             var file = this._masterFileDictionary[filePath];
             if (file.IsImageFile)
             {
-                var param = new ImageViewerPageParameter(
+                var param = new ImageViewPageParameter(
                     this.Parameter.PageSources,
                     this.Parameter.SourcesKey,
                     this.GetImageFilesGetAction,
@@ -984,7 +984,7 @@ namespace PicSum.UIComponent.Contents.FileList
             var file = this._masterFileDictionary[filePath];
             if (file.IsImageFile)
             {
-                var param = new ImageViewerPageParameter(
+                var param = new ImageViewPageParameter(
                     this.Parameter.PageSources,
                     this.Parameter.SourcesKey,
                     this.GetImageFilesGetAction,
@@ -1083,7 +1083,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private void FileContextMenu_FileActiveTabOpen(object sender, ExecuteFileEventArgs e)
         {
-            var param = new ImageViewerPageParameter(
+            var param = new ImageViewPageParameter(
                 this.Parameter.PageSources,
                 this.Parameter.SourcesKey,
                 this.GetImageFilesGetAction,
@@ -1097,7 +1097,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private void FileContextMenu_FileNewTabOpen(object sender, ExecuteFileEventArgs e)
         {
-            var param = new ImageViewerPageParameter(
+            var param = new ImageViewPageParameter(
                 this.Parameter.PageSources,
                 this.Parameter.SourcesKey,
                 this.GetImageFilesGetAction,
@@ -1111,7 +1111,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private void FileContextMenu_FileNewWindowOpen(object sender, ExecuteFileEventArgs e)
         {
-            var param = new ImageViewerPageParameter(
+            var param = new ImageViewPageParameter(
                 this.Parameter.PageSources,
                 this.Parameter.SourcesKey,
                 this.GetImageFilesGetAction,

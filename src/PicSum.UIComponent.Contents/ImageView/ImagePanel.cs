@@ -10,7 +10,7 @@ using System.Drawing.Drawing2D;
 using System.Runtime.Versioning;
 using System.Windows.Forms;
 
-namespace PicSum.UIComponent.Contents.ImageViewer
+namespace PicSum.UIComponent.Contents.ImageView
 {
     /// <summary>
     /// 画像パネルコントロール
@@ -459,8 +459,8 @@ namespace PicSum.UIComponent.Contents.ImageViewer
         private float GetThumbnailToScaleImageScale()
         {
             return Math.Max(
-                this._imageScaleSize.Width / (float)this.ThumbnailSize,
-                this._imageScaleSize.Height / (float)this.ThumbnailSize);
+                this._imageScaleSize.Width / this.ThumbnailSize,
+                this._imageScaleSize.Height / this.ThumbnailSize);
         }
 
         private float GetImageToThumbnailScale()
@@ -469,8 +469,8 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             var image = this._image;
 
             return Math.Min(
-                thumbnailSize / (float)image.Width,
-                thumbnailSize / (float)image.Height);
+                thumbnailSize / image.Width,
+                thumbnailSize / image.Height);
         }
 
         private void OnImageMouseClick(MouseEventArgs e)

@@ -18,13 +18,13 @@ using System.Drawing;
 using System.Runtime.Versioning;
 using System.Windows.Forms;
 
-namespace PicSum.UIComponent.Contents.ImageViewer
+namespace PicSum.UIComponent.Contents.ImageView
 {
     /// <summary>
     /// 画像ビューアコンテンツ
     /// </summary>
     [SupportedOSPlatform("windows10.0.17763.0")]
-    public sealed partial class ImageViewerPage
+    public sealed partial class ImageViewPage
         : BrowsePage, ISender
     {
         private static readonly Rectangle TOOL_BAR_DEFAULT_BOUNDS = new(0, 0, 767, 29);
@@ -50,7 +50,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
         private bool _disposed = false;
         private float _scale = 0f;
-        private readonly ImageViewerPageParameter _parameter = null;
+        private readonly ImageViewPageParameter _parameter = null;
         private ImageDisplayMode _displayMode = ImageDisplayMode.LeftFacing;
         private ImageSizeMode _sizeMode = ImageSizeMode.FitOnlyBigImage;
         private string[] _filePathList = null;
@@ -93,21 +93,21 @@ namespace PicSum.UIComponent.Contents.ImageViewer
             }
         }
 
-        public ImageViewerPage(ImageViewerPageParameter parameter)
+        public ImageViewPage(ImageViewPageParameter parameter)
             : base(parameter)
         {
             this.InitializeComponent();
 
             this.checkPatternPanel.Resize += this.CheckPatternPanel_Resize;
 
-            this.SetDisplayMode(ImageViewerPageConfig.Instance.ImageDisplayMode);
+            this.SetDisplayMode(ImageViewPageConfig.Instance.ImageDisplayMode);
 
-            if (ImageViewerPageConfig.Instance.ImageSizeMode == ImageSizeMode.Original)
+            if (ImageViewPageConfig.Instance.ImageSizeMode == ImageSizeMode.Original)
             {
-                ImageViewerPageConfig.Instance.ImageSizeMode = ImageSizeMode.FitOnlyBigImage;
+                ImageViewPageConfig.Instance.ImageSizeMode = ImageSizeMode.FitOnlyBigImage;
             }
 
-            this.SetSizeMode(ImageViewerPageConfig.Instance.ImageSizeMode);
+            this.SetSizeMode(ImageViewPageConfig.Instance.ImageSizeMode);
             this.SetThumbnailPanelVisible();
 
             this._parameter = parameter;
@@ -116,7 +116,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
         public override void RedrawPage(float scale)
         {
-            using (TimeMeasuring.Run(false, "ImageViewerPage.RedrawPage"))
+            using (TimeMeasuring.Run(false, "ImageViewPage.RedrawPage"))
             {
                 if (this._scale != scale)
                 {
@@ -312,7 +312,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
         protected override bool ProcessDialogKey(Keys keyData)
         {
-            using (TimeMeasuring.Run(false, "ImageViewerPage.ProcessDialogKey"))
+            using (TimeMeasuring.Run(false, "ImageViewPage.ProcessDialogKey"))
             {
                 if (!this.CanOperation)
                 {
@@ -626,7 +626,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
             this._isLoading = true;
 
-            using (TimeMeasuring.Run(false, "ImageViewerPage.ReadImage"))
+            using (TimeMeasuring.Run(false, "ImageViewPage.ReadImage"))
             {
                 var mainFilePath = filePathList[currentIndex];
                 this.SelectedFilePath = mainFilePath;
@@ -679,7 +679,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
                         this._isLoading = false;
 
-                        using (TimeMeasuring.Run(false, "ImageViewerPage.ImageFileReadJob_Callback"))
+                        using (TimeMeasuring.Run(false, "ImageViewPage.ImageFileReadJob_Callback"))
                         {
                             this.ImageFileReadJob_Callback(r);
                         }
@@ -993,7 +993,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
             if (this.SetDisplayMode(ImageDisplayMode.Single))
             {
-                ImageViewerPageConfig.Instance.ImageDisplayMode = this._displayMode;
+                ImageViewPageConfig.Instance.ImageDisplayMode = this._displayMode;
                 this.ReadImage(this.FilePathListIndex, null, false);
             }
         }
@@ -1012,7 +1012,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
             if (this.SetDisplayMode(ImageDisplayMode.LeftFacing))
             {
-                ImageViewerPageConfig.Instance.ImageDisplayMode = this._displayMode;
+                ImageViewPageConfig.Instance.ImageDisplayMode = this._displayMode;
                 this.ReadImage(this.FilePathListIndex, null, false);
             }
         }
@@ -1031,7 +1031,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
             if (this.SetDisplayMode(ImageDisplayMode.RightFacing))
             {
-                ImageViewerPageConfig.Instance.ImageDisplayMode = this._displayMode;
+                ImageViewPageConfig.Instance.ImageDisplayMode = this._displayMode;
                 this.ReadImage(this.FilePathListIndex, null, false);
             }
         }
@@ -1050,7 +1050,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
             if (this.SetSizeMode(ImageSizeMode.Original))
             {
-                ImageViewerPageConfig.Instance.ImageSizeMode = this._sizeMode;
+                ImageViewPageConfig.Instance.ImageSizeMode = this._sizeMode;
                 this.SetThumbnailPanelVisible();
                 this.ReadImage(this.FilePathListIndex, null, false);
             }
@@ -1070,7 +1070,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
             if (this.SetSizeMode(ImageSizeMode.FitAllImage))
             {
-                ImageViewerPageConfig.Instance.ImageSizeMode = this._sizeMode;
+                ImageViewPageConfig.Instance.ImageSizeMode = this._sizeMode;
                 this.SetThumbnailPanelVisible();
                 this.ReadImage(this.FilePathListIndex, null, false);
             }
@@ -1090,7 +1090,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
             if (this.SetSizeMode(ImageSizeMode.FitOnlyBigImage))
             {
-                ImageViewerPageConfig.Instance.ImageSizeMode = this._sizeMode;
+                ImageViewPageConfig.Instance.ImageSizeMode = this._sizeMode;
                 this.SetThumbnailPanelVisible();
                 this.ReadImage(this.FilePathListIndex, null, false);
             }
@@ -1291,7 +1291,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
         private void FileContextMenu_FileNewTabOpen(object sender, ExecuteFileEventArgs e)
         {
-            var param = new ImageViewerPageParameter(
+            var param = new ImageViewPageParameter(
                 this.Parameter.PageSources,
                 this.Parameter.SourcesKey,
                 this._parameter.ImageFilesGetAction,
@@ -1305,7 +1305,7 @@ namespace PicSum.UIComponent.Contents.ImageViewer
 
         private void FileContextMenu_FileNewWindowOpen(object sender, ExecuteFileEventArgs e)
         {
-            var param = new ImageViewerPageParameter(
+            var param = new ImageViewPageParameter(
                 this.Parameter.PageSources,
                 this.Parameter.SourcesKey,
                 this._parameter.ImageFilesGetAction,

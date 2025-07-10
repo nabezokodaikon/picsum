@@ -50,7 +50,7 @@ namespace PicSum.Main
                     var sortInfo = new SortInfo();
                     sortInfo.SetSortType(SortTypeID.FilePath, true);
 
-                    var parameter = new ImageViewerPageParameter(
+                    var parameter = new ImageViewPageParameter(
                         DirectoryFileListPageParameter.PAGE_SOURCES,
                         directoryPath,
                         BrowseMainPanel.GetImageFilesAction(new ImageFileGetByDirectoryParameter(_.Value)),
@@ -60,7 +60,7 @@ namespace PicSum.Main
                         Instance<IFileIconCacher>.Value.SmallDirectoryIcon,
                         true);
 
-                    form.AddImageViewerPageTab(parameter);
+                    form.AddImageViewPageTab(parameter);
                     if (form.WindowState == FormWindowState.Minimized)
                     {
                         form.RestoreWindowState();
