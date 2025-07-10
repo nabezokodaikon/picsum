@@ -686,7 +686,7 @@ namespace PicSum.UIComponent.Contents.ImageView
                     });
             }
 
-            this.checkPatternPanel.Focus();
+            this.leftImagePanel.Focus();
         }
 
         private void DoDragDrop(string currentFilePath)
@@ -976,7 +976,7 @@ namespace PicSum.UIComponent.Contents.ImageView
             }
 
             this.SettingImagePanelLayout(e);
-            this.checkPatternPanel.Focus();
+            this.leftImagePanel.Focus();
         }
 
         private void ToolBar_SingleViewMenuItemClick(object sender, EventArgs e)
