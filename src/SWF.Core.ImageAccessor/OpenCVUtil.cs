@@ -8,7 +8,7 @@ namespace SWF.Core.ImageAccessor
     [SupportedOSPlatform("windows10.0.17763.0")]
     public static class OpenCVUtil
     {
-        private static readonly ImageEncodingParam _webPQuality
+        private static readonly ImageEncodingParam WEBP_QUALITY
             = new(ImwriteFlags.WebPQuality, 70);
 
         public static Mat ToMat(Bitmap bmp)
@@ -84,7 +84,7 @@ namespace SWF.Core.ImageAccessor
 
         public static byte[] ToCompressionBinary(Mat mat)
         {
-            Cv2.ImEncode(".webp", mat, out var bf, _webPQuality);
+            Cv2.ImEncode(".webp", mat, out var bf, WEBP_QUALITY);
             return bf;
         }
     }

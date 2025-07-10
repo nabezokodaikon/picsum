@@ -8,7 +8,7 @@ namespace PicSum.Main.Conf
     /// </summary>
     internal sealed class BrowseConfig
     {
-        public static readonly BrowseConfig Instance = new();
+        public static readonly BrowseConfig INSTANCE = new();
 
         public FormWindowState WindowState { get; set; }
         public Point WindowLocaion { get; set; }

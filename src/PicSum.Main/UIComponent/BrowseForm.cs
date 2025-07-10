@@ -54,19 +54,19 @@ namespace PicSum.Main.UIComponent
             this.Text = "PicSum";
             this.StartPosition = FormStartPosition.Manual;
             this.KeyPreview = true;
-            this.Size = BrowseConfig.Instance.WindowSize;
-            this.WindowState = BrowseConfig.Instance.WindowState;
+            this.Size = BrowseConfig.INSTANCE.WindowSize;
+            this.WindowState = BrowseConfig.INSTANCE.WindowState;
             this.ScaleChanged += this.Form_ScaleChanged;
 
             if (BrowseForm.isStartUp)
             {
-                this.Location = BrowseConfig.Instance.WindowLocaion;
+                this.Location = BrowseConfig.INSTANCE.WindowLocaion;
             }
             else
             {
                 this.Location = new Point(
-                    BrowseConfig.Instance.WindowLocaion.X + 16,
-                    BrowseConfig.Instance.WindowLocaion.Y + 16);
+                    BrowseConfig.INSTANCE.WindowLocaion.X + 16,
+                    BrowseConfig.INSTANCE.WindowLocaion.Y + 16);
             }
 
             this.ResumeLayout(false);
@@ -151,13 +151,13 @@ namespace PicSum.Main.UIComponent
         {
             if (this.WindowState == FormWindowState.Normal)
             {
-                BrowseConfig.Instance.WindowState = this.WindowState;
-                BrowseConfig.Instance.WindowLocaion = this.Location;
-                BrowseConfig.Instance.WindowSize = this.Size;
+                BrowseConfig.INSTANCE.WindowState = this.WindowState;
+                BrowseConfig.INSTANCE.WindowLocaion = this.Location;
+                BrowseConfig.INSTANCE.WindowSize = this.Size;
             }
             else if (this.WindowState == FormWindowState.Maximized)
             {
-                BrowseConfig.Instance.WindowState = this.WindowState;
+                BrowseConfig.INSTANCE.WindowState = this.WindowState;
             }
 
             base.OnClosing(e);

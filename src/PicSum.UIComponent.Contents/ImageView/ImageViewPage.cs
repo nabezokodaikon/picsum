@@ -100,14 +100,14 @@ namespace PicSum.UIComponent.Contents.ImageView
 
             this.checkPatternPanel.Resize += this.CheckPatternPanel_Resize;
 
-            this.SetDisplayMode(ImageViewPageConfig.Instance.ImageDisplayMode);
+            this.SetDisplayMode(ImageViewPageConfig.INSTANCE.ImageDisplayMode);
 
-            if (ImageViewPageConfig.Instance.ImageSizeMode == ImageSizeMode.Original)
+            if (ImageViewPageConfig.INSTANCE.ImageSizeMode == ImageSizeMode.Original)
             {
-                ImageViewPageConfig.Instance.ImageSizeMode = ImageSizeMode.FitOnlyBigImage;
+                ImageViewPageConfig.INSTANCE.ImageSizeMode = ImageSizeMode.FitOnlyBigImage;
             }
 
-            this.SetSizeMode(ImageViewPageConfig.Instance.ImageSizeMode);
+            this.SetSizeMode(ImageViewPageConfig.INSTANCE.ImageSizeMode);
             this.SetThumbnailPanelVisible();
 
             this._parameter = parameter;
@@ -993,7 +993,7 @@ namespace PicSum.UIComponent.Contents.ImageView
 
             if (this.SetDisplayMode(ImageDisplayMode.Single))
             {
-                ImageViewPageConfig.Instance.ImageDisplayMode = this._displayMode;
+                ImageViewPageConfig.INSTANCE.ImageDisplayMode = this._displayMode;
                 this.ReadImage(this.FilePathListIndex, null, false);
             }
         }
@@ -1012,7 +1012,7 @@ namespace PicSum.UIComponent.Contents.ImageView
 
             if (this.SetDisplayMode(ImageDisplayMode.LeftFacing))
             {
-                ImageViewPageConfig.Instance.ImageDisplayMode = this._displayMode;
+                ImageViewPageConfig.INSTANCE.ImageDisplayMode = this._displayMode;
                 this.ReadImage(this.FilePathListIndex, null, false);
             }
         }
@@ -1031,7 +1031,7 @@ namespace PicSum.UIComponent.Contents.ImageView
 
             if (this.SetDisplayMode(ImageDisplayMode.RightFacing))
             {
-                ImageViewPageConfig.Instance.ImageDisplayMode = this._displayMode;
+                ImageViewPageConfig.INSTANCE.ImageDisplayMode = this._displayMode;
                 this.ReadImage(this.FilePathListIndex, null, false);
             }
         }
@@ -1050,7 +1050,7 @@ namespace PicSum.UIComponent.Contents.ImageView
 
             if (this.SetSizeMode(ImageSizeMode.Original))
             {
-                ImageViewPageConfig.Instance.ImageSizeMode = this._sizeMode;
+                ImageViewPageConfig.INSTANCE.ImageSizeMode = this._sizeMode;
                 this.SetThumbnailPanelVisible();
                 this.ReadImage(this.FilePathListIndex, null, false);
             }
@@ -1070,7 +1070,7 @@ namespace PicSum.UIComponent.Contents.ImageView
 
             if (this.SetSizeMode(ImageSizeMode.FitAllImage))
             {
-                ImageViewPageConfig.Instance.ImageSizeMode = this._sizeMode;
+                ImageViewPageConfig.INSTANCE.ImageSizeMode = this._sizeMode;
                 this.SetThumbnailPanelVisible();
                 this.ReadImage(this.FilePathListIndex, null, false);
             }
@@ -1090,7 +1090,7 @@ namespace PicSum.UIComponent.Contents.ImageView
 
             if (this.SetSizeMode(ImageSizeMode.FitOnlyBigImage))
             {
-                ImageViewPageConfig.Instance.ImageSizeMode = this._sizeMode;
+                ImageViewPageConfig.INSTANCE.ImageSizeMode = this._sizeMode;
                 this.SetThumbnailPanelVisible();
                 this.ReadImage(this.FilePathListIndex, null, false);
             }

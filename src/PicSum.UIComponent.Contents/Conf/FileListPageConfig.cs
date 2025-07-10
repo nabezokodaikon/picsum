@@ -5,7 +5,7 @@ namespace PicSum.UIComponent.Contents.Conf
     /// </summary>
     public sealed class FileListPageConfig
     {
-        public static readonly FileListPageConfig Instance = new();
+        public static readonly FileListPageConfig INSTANCE = new();
 
         public int ThumbnailSize { get; set; }
         public bool IsShowFileName { get; set; }

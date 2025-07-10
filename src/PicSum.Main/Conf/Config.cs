@@ -14,7 +14,7 @@ namespace PicSum.Main.Conf
     [MessagePackObject(AllowPrivate = true)]
     public sealed partial class Config
     {
-        public static readonly Config Instance = new();
+        public static readonly Config INSTANCE = new();
 
         [Key(0)]
         public FormWindowState WindowState { get; set; }

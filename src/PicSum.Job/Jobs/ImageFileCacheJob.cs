@@ -11,7 +11,7 @@ namespace PicSum.Job.Jobs
     public sealed class ImageFileCacheJob
         : AbstractOneWayJob<ImageFileCacheParameter>
     {
-        private static readonly ParallelOptions _parallelOptions = new ParallelOptions
+        private static readonly ParallelOptions PARALLEL_OPTIONS = new ParallelOptions
         {
             MaxDegreeOfParallelism = 4,
         };
@@ -46,7 +46,7 @@ namespace PicSum.Job.Jobs
 
             Parallel.ForEach(
                 [parameter.Files[parameter.CurrentIndex], .. nextFiles, .. previewFiles],
-                _parallelOptions,
+                PARALLEL_OPTIONS,
                 filePath =>
                 {
                     try

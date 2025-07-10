@@ -14,7 +14,7 @@ namespace PicSum.Main
     internal sealed class Program
         : MarshalByRefObject
     {
-        private static readonly Mutex mutex = new(true, AppConstants.MUTEX_NAME);
+        private static readonly Mutex MUTEX = new(true, AppConstants.MUTEX_NAME);
 
         /// <summary>
         /// アプリケーションのメイン エントリ ポイントです。
@@ -24,7 +24,7 @@ namespace PicSum.Main
         static void Main()
         {
             ConsoleUtil.Write(true, $"Program.Main");
-            if (mutex.WaitOne(TimeSpan.Zero, true))
+            if (MUTEX.WaitOne(TimeSpan.Zero, true))
             {
                 try
                 {
@@ -93,7 +93,7 @@ namespace PicSum.Main
                     {
                         Action[] actions = [
                             () => Log.Initialize(AppFiles.LOG_DIRECTORY.Value),
-                            Config.Instance.Load
+                            Config.INSTANCE.Load
                         ];
 
                         Parallel.ForEach(
@@ -125,7 +125,7 @@ namespace PicSum.Main
                 }
                 finally
                 {
-                    mutex.ReleaseMutex();
+                    MUTEX.ReleaseMutex();
                 }
             }
             else

@@ -23,25 +23,25 @@ namespace PicSum.Main.Mng
         /// </summary>
         public ResourceManager()
         {
-            BrowseConfig.Instance.WindowState = Config.Instance.WindowState;
+            BrowseConfig.INSTANCE.WindowState = Config.INSTANCE.WindowState;
 
-            BrowseConfig.Instance.WindowLocaion
-                = new(Config.Instance.WindowLocaionX, Config.Instance.WindowLocaionY);
+            BrowseConfig.INSTANCE.WindowLocaion
+                = new(Config.INSTANCE.WindowLocaionX, Config.INSTANCE.WindowLocaionY);
 
-            BrowseConfig.Instance.WindowSize
-                = new(Config.Instance.WindowSizeWidth, Config.Instance.WindowSizeHeight);
+            BrowseConfig.INSTANCE.WindowSize
+                = new(Config.INSTANCE.WindowSizeWidth, Config.INSTANCE.WindowSizeHeight);
 
-            FileListPageConfig.Instance.ThumbnailSize = Config.Instance.ThumbnailSize;
-            FileListPageConfig.Instance.IsShowFileName = Config.Instance.IsShowFileName;
-            FileListPageConfig.Instance.IsShowDirectory = Config.Instance.IsShowDirectory;
-            FileListPageConfig.Instance.IsShowImageFile = Config.Instance.IsShowImageFile;
-            FileListPageConfig.Instance.IsShowOtherFile = Config.Instance.IsShowOtherFile;
-            FileListPageConfig.Instance.FavoriteDirectoryCount = Config.Instance.FavoriteDirectoryCount;
+            FileListPageConfig.INSTANCE.ThumbnailSize = Config.INSTANCE.ThumbnailSize;
+            FileListPageConfig.INSTANCE.IsShowFileName = Config.INSTANCE.IsShowFileName;
+            FileListPageConfig.INSTANCE.IsShowDirectory = Config.INSTANCE.IsShowDirectory;
+            FileListPageConfig.INSTANCE.IsShowImageFile = Config.INSTANCE.IsShowImageFile;
+            FileListPageConfig.INSTANCE.IsShowOtherFile = Config.INSTANCE.IsShowOtherFile;
+            FileListPageConfig.INSTANCE.FavoriteDirectoryCount = Config.INSTANCE.FavoriteDirectoryCount;
 
-            ImageViewPageConfig.Instance.ImageDisplayMode = Config.Instance.ImageDisplayMode;
-            ImageViewPageConfig.Instance.ImageSizeMode = Config.Instance.ImageSizeMode;
+            ImageViewPageConfig.INSTANCE.ImageDisplayMode = Config.INSTANCE.ImageDisplayMode;
+            ImageViewPageConfig.INSTANCE.ImageSizeMode = Config.INSTANCE.ImageSizeMode;
 
-            LOGGER.Info($"現在のバージョン '{Config.Instance.GetCurrentVersion()}'");
+            LOGGER.Info($"現在のバージョン '{Config.INSTANCE.GetCurrentVersion()}'");
 
             if (CommandLineArgs.IsCleanup())
             {
@@ -57,12 +57,12 @@ namespace PicSum.Main.Mng
                 fileInfoDBCleanupJob.Execute();
             }
             else if (AppInfo.IsUpdated(
-                Config.Instance.MajorVersion,
-                Config.Instance.MinorVersion,
-                Config.Instance.BuildVersion,
-                Config.Instance.RevisionVersion))
+                Config.INSTANCE.MajorVersion,
+                Config.INSTANCE.MinorVersion,
+                Config.INSTANCE.BuildVersion,
+                Config.INSTANCE.RevisionVersion))
             {
-                LOGGER.Info($"バージョン '{Config.Instance.GetOldVersion()}' から起動されました。");
+                LOGGER.Info($"バージョン '{Config.INSTANCE.GetOldVersion()}' から起動されました。");
 
                 var thumbnailDBCleanupJob = new ThumbnailDBCleanupSyncJob();
                 thumbnailDBCleanupJob.Execute();
@@ -82,20 +82,20 @@ namespace PicSum.Main.Mng
             var closingJob = new ClosingSyncJob();
             await closingJob.Execute();
 
-            Config.Instance.WindowState = BrowseConfig.Instance.WindowState;
-            Config.Instance.WindowLocaionX = BrowseConfig.Instance.WindowLocaion.X;
-            Config.Instance.WindowLocaionY = BrowseConfig.Instance.WindowLocaion.Y;
-            Config.Instance.WindowSizeWidth = BrowseConfig.Instance.WindowSize.Width;
-            Config.Instance.WindowSizeHeight = BrowseConfig.Instance.WindowSize.Height;
-            Config.Instance.ThumbnailSize = FileListPageConfig.Instance.ThumbnailSize;
-            Config.Instance.IsShowFileName = FileListPageConfig.Instance.IsShowFileName;
-            Config.Instance.IsShowDirectory = FileListPageConfig.Instance.IsShowDirectory;
-            Config.Instance.IsShowImageFile = FileListPageConfig.Instance.IsShowImageFile;
-            Config.Instance.IsShowOtherFile = FileListPageConfig.Instance.IsShowOtherFile;
-            Config.Instance.ImageDisplayMode = ImageViewPageConfig.Instance.ImageDisplayMode;
-            Config.Instance.ImageSizeMode = ImageViewPageConfig.Instance.ImageSizeMode;
+            Config.INSTANCE.WindowState = BrowseConfig.INSTANCE.WindowState;
+            Config.INSTANCE.WindowLocaionX = BrowseConfig.INSTANCE.WindowLocaion.X;
+            Config.INSTANCE.WindowLocaionY = BrowseConfig.INSTANCE.WindowLocaion.Y;
+            Config.INSTANCE.WindowSizeWidth = BrowseConfig.INSTANCE.WindowSize.Width;
+            Config.INSTANCE.WindowSizeHeight = BrowseConfig.INSTANCE.WindowSize.Height;
+            Config.INSTANCE.ThumbnailSize = FileListPageConfig.INSTANCE.ThumbnailSize;
+            Config.INSTANCE.IsShowFileName = FileListPageConfig.INSTANCE.IsShowFileName;
+            Config.INSTANCE.IsShowDirectory = FileListPageConfig.INSTANCE.IsShowDirectory;
+            Config.INSTANCE.IsShowImageFile = FileListPageConfig.INSTANCE.IsShowImageFile;
+            Config.INSTANCE.IsShowOtherFile = FileListPageConfig.INSTANCE.IsShowOtherFile;
+            Config.INSTANCE.ImageDisplayMode = ImageViewPageConfig.INSTANCE.ImageDisplayMode;
+            Config.INSTANCE.ImageSizeMode = ImageViewPageConfig.INSTANCE.ImageSizeMode;
 
-            Config.Instance.Save();
+            Config.INSTANCE.Save();
 
             GC.SuppressFinalize(this);
         }

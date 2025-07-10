@@ -144,11 +144,11 @@ namespace PicSum.UIComponent.Contents.FileList
 
             this.InitializeComponent();
 
-            this.IsShowFileName = FileListPageConfig.Instance.IsShowFileName;
-            this.IsShowDirectory = FileListPageConfig.Instance.IsShowDirectory;
-            this.IsShowImageFile = FileListPageConfig.Instance.IsShowImageFile;
-            this.IsShowOtherFile = FileListPageConfig.Instance.IsShowOtherFile;
-            this.ThumbnailSize = FileListPageConfig.Instance.ThumbnailSize;
+            this.IsShowFileName = FileListPageConfig.INSTANCE.IsShowFileName;
+            this.IsShowDirectory = FileListPageConfig.INSTANCE.IsShowDirectory;
+            this.IsShowImageFile = FileListPageConfig.INSTANCE.IsShowImageFile;
+            this.IsShowOtherFile = FileListPageConfig.INSTANCE.IsShowOtherFile;
+            this.ThumbnailSize = FileListPageConfig.INSTANCE.ThumbnailSize;
 
             ConsoleUtil.Write(true, $"AbstractFileListPage.New End");
         }
@@ -392,9 +392,9 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private void SetFilter()
         {
-            FileListPageConfig.Instance.IsShowDirectory = this.IsShowDirectory;
-            FileListPageConfig.Instance.IsShowImageFile = this.IsShowImageFile;
-            FileListPageConfig.Instance.IsShowOtherFile = this.IsShowOtherFile;
+            FileListPageConfig.INSTANCE.IsShowDirectory = this.IsShowDirectory;
+            FileListPageConfig.INSTANCE.IsShowImageFile = this.IsShowImageFile;
+            FileListPageConfig.INSTANCE.IsShowOtherFile = this.IsShowOtherFile;
 
             if (this._masterFileDictionary == null)
             {
@@ -558,7 +558,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private void ChangeFileNameVisible()
         {
-            FileListPageConfig.Instance.IsShowFileName = this.IsShowFileName;
+            FileListPageConfig.INSTANCE.IsShowFileName = this.IsShowFileName;
             this.flowList.BeginUpdate();
             try
             {
@@ -799,7 +799,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private void ToolBar_ThumbnailSizeSliderValueChanging(object sender, EventArgs e)
         {
-            FileListPageConfig.Instance.ThumbnailSize = this.ThumbnailSize;
+            FileListPageConfig.INSTANCE.ThumbnailSize = this.ThumbnailSize;
             this.SetFlowListItemSize();
             this.flowList.Invalidate();
         }

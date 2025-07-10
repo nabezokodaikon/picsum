@@ -3,7 +3,7 @@ namespace SWF.Core.Base
     public static class Instance<TValue>
         where TValue : class
     {
-        private static readonly Lock _lock = new();
+        private static readonly Lock LOCK = new();
         private static Func<TValue>? _valueFactory = null;
         private static volatile TValue? _value = null;
 
@@ -15,7 +15,7 @@ namespace SWF.Core.Base
             {
                 if (_value == null)
                 {
-                    lock (_lock)
+                    lock (LOCK)
                     {
                         _value ??= _valueFactory();
                     }
