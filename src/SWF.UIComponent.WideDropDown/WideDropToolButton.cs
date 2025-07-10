@@ -40,7 +40,6 @@ namespace SWF.UIComponent.WideDropDown
             this._dropDownList.ItemMouseClick += this.DropDownList_ItemMouseClick;
 
             this.MouseClick += this.WideDropToolButton_MouseClick;
-            this.LostFocus += this.WideDropToolButton_LostFocus;
         }
 
         public void SetItems(string[] items)
@@ -55,11 +54,6 @@ namespace SWF.UIComponent.WideDropDown
             ArgumentException.ThrowIfNullOrEmpty(item, nameof(item));
 
             this._dropDownList.SelectItem(item);
-        }
-
-        private void WideDropToolButton_LostFocus(object sender, EventArgs e)
-        {
-            this._isShowingDropDown = false;
         }
 
         private void WideDropToolButton_MouseClick(object sender, MouseEventArgs e)
