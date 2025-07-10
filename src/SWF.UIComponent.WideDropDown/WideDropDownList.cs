@@ -237,6 +237,9 @@ namespace SWF.UIComponent.WideDropDown
 
             this.FlowList.ItemMouseClick += new(this.FlowList_ItemMouseClick);
             this.FlowList.DrawItem += new(this.FlowList_DrawItem);
+
+            this.Opening += this.WideDropDownList_Opening;
+            this.Invalidated += this.WideDropDownList_Invalidated;
         }
 
         public void SetItems(string[] itemList)
@@ -281,7 +284,7 @@ namespace SWF.UIComponent.WideDropDown
             }
         }
 
-        protected override void OnOpening(CancelEventArgs e)
+        private void WideDropDownList_Opening(object sender, CancelEventArgs e)
         {
             var scale = WindowUtil.GetCurrentWindowScale(this._owner);
             this.ToolStripItem.Size = new(
@@ -290,14 +293,11 @@ namespace SWF.UIComponent.WideDropDown
             this.FlowList.SetItemSize(
                 (int)(ITEM_DEFAULT_SIZE.Width * scale),
                 (int)(ITEM_DEFAULT_SIZE.Height * scale));
-
-            base.OnOpening(e);
         }
 
-        protected override void OnInvalidated(InvalidateEventArgs e)
+        private void WideDropDownList_Invalidated(object sender, InvalidateEventArgs e)
         {
             this.FlowList.Invalidate();
-            base.OnInvalidated(e);
         }
 
         private RectangleF GetIconRectangle(SWF.UIComponent.FlowList.DrawItemEventArgs e)

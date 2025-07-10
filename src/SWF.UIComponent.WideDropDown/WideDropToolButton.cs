@@ -40,6 +40,7 @@ namespace SWF.UIComponent.WideDropDown
             this._dropDownList.ItemMouseClick += this.DropDownList_ItemMouseClick;
 
             this.MouseClick += this.WideDropToolButton_MouseClick;
+            this.LostFocus += this.WideDropToolButton_LostFocus;
         }
 
         public void SetItems(string[] items)
@@ -56,9 +57,8 @@ namespace SWF.UIComponent.WideDropDown
             this._dropDownList.SelectItem(item);
         }
 
-        protected override void OnLostFocus(EventArgs e)
+        private void WideDropToolButton_LostFocus(object sender, EventArgs e)
         {
-            base.OnLostFocus(e);
             this._isShowingDropDown = false;
         }
 
