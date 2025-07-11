@@ -398,6 +398,8 @@ namespace PicSum.UIComponent.Contents.ImageView
 
         private void ImagePanel_MouseClick(object sender, MouseEventArgs e)
         {
+            this.Focus();
+
             if (this._image.IsLoadingImage)
             {
                 return;
