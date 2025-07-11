@@ -214,7 +214,7 @@ namespace SWF.UIComponent.Form
 
         private void GrassForm_Deactivate(object sender, EventArgs e)
         {
-            this.SetWindowColor(DEACTIVATE_WINDOWCOLOR);
+            //this.SetWindowColor(DEACTIVATE_WINDOWCOLOR);
         }
 
         private void GrassForm_Resize(object sender, EventArgs e)
