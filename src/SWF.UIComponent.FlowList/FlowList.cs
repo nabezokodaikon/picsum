@@ -198,6 +198,7 @@ namespace SWF.UIComponent.FlowList
             this.MouseDoubleClick += this.FlowList_MouseDoubleClick;
             this.MouseWheel += this.FlowList_MouseWheel;
             this.Paint += this.FlowList_Paint;
+            this.Resize += this.FlowList_Resize;
         }
 
         protected override bool IsInputKey(Keys keyData)
@@ -218,6 +219,11 @@ namespace SWF.UIComponent.FlowList
         private void FlowList_Invalidated(object sender, InvalidateEventArgs e)
         {
             this.SetDrawParameter(false);
+        }
+
+        private void FlowList_Resize(object sender, EventArgs e)
+        {
+            this.Invalidate();
         }
 
         private void FlowList_Paint(object sender, PaintEventArgs e)
