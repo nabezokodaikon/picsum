@@ -42,6 +42,9 @@ namespace SWF.UIComponent.Core
                 ControlStyles.UserPaint |
                 ControlStyles.SupportsTransparentBackColor,
                 true);
+            this.SetStyle(
+                ControlStyles.Selectable,
+                false);
             this.UpdateStyles();
         }
     }

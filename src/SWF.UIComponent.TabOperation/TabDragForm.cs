@@ -112,6 +112,9 @@ namespace SWF.UIComponent.TabOperation
                 ControlStyles.ResizeRedraw |
                 ControlStyles.UserPaint,
                 true);
+            this.SetStyle(
+                ControlStyles.Selectable,
+                false);
             this.UpdateStyles();
 
             this.FormBorderStyle = FormBorderStyle.None;

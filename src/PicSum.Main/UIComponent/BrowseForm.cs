@@ -130,12 +130,6 @@ namespace PicSum.Main.UIComponent
             return !this.BrowsePanel.IsBeginTabDragOperation;
         }
 
-        //protected override void OnHandleCreated(EventArgs e)
-        //{
-        //    ConsoleUtil.Write(true, $"BrowseForm.OnHandleCreated");
-        //    base.OnHandleCreated(e);
-        //}
-
         private void BrowseForm_Shown(object sender, EventArgs e)
         {
             ConsoleUtil.Write(true, $"BrowseForm.BrowseForm_Shown Start");

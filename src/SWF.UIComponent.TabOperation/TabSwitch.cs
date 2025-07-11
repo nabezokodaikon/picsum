@@ -244,6 +244,9 @@ namespace SWF.UIComponent.TabOperation
                 ControlStyles.ResizeRedraw |
                 ControlStyles.UserPaint,
                 true);
+            this.SetStyle(
+                ControlStyles.Selectable,
+                false);
             this.UpdateStyles();
 
             this._addTabButtonDrawArea = new(this);
@@ -734,7 +737,7 @@ namespace SWF.UIComponent.TabOperation
                 {
                     if (this.GetHeaderRectangle().Contains(e.X, e.Y))
                     {
-                        this.Focus();
+                        //this.Focus();
                     }
                 }
 
