@@ -391,6 +391,8 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private void SetFilter()
         {
+            this.flowList.Focus();
+
             FileListPageConfig.INSTANCE.IsShowDirectory = this.IsShowDirectory;
             FileListPageConfig.INSTANCE.IsShowImageFile = this.IsShowImageFile;
             FileListPageConfig.INSTANCE.IsShowOtherFile = this.IsShowOtherFile;

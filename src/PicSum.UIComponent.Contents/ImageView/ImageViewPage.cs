@@ -975,6 +975,8 @@ namespace PicSum.UIComponent.Contents.ImageView
 
         private void ToolBar_SingleViewMenuItemClick(object sender, EventArgs e)
         {
+            this.leftImagePanel.Focus();
+
             if (!this.IsHandleCreated)
             {
                 return;
@@ -994,6 +996,8 @@ namespace PicSum.UIComponent.Contents.ImageView
 
         private void ToolBar_SpreadLeftFeedMenuItemClick(object sender, EventArgs e)
         {
+            this.leftImagePanel.Focus();
+
             if (!this.IsHandleCreated)
             {
                 return;
@@ -1013,6 +1017,8 @@ namespace PicSum.UIComponent.Contents.ImageView
 
         private void ToolBar_SpreadRightFeedMenuItemClick(object sender, EventArgs e)
         {
+            this.leftImagePanel.Focus();
+
             if (!this.IsHandleCreated)
             {
                 return;
@@ -1032,6 +1038,8 @@ namespace PicSum.UIComponent.Contents.ImageView
 
         private void ToolBar_OriginalSizeMenuItemClick(object sender, EventArgs e)
         {
+            this.leftImagePanel.Focus();
+
             if (!this.IsHandleCreated)
             {
                 return;
@@ -1052,6 +1060,8 @@ namespace PicSum.UIComponent.Contents.ImageView
 
         private void ToolBar_FitWindowMenuItemClick(object sender, EventArgs e)
         {
+            this.leftImagePanel.Focus();
+
             if (!this.IsHandleCreated)
             {
                 return;
@@ -1072,6 +1082,8 @@ namespace PicSum.UIComponent.Contents.ImageView
 
         private void ToolBar_FitWindowLargeOnlyMenuItemClick(object sender, EventArgs e)
         {
+            this.leftImagePanel.Focus();
+
             if (!this.IsHandleCreated)
             {
                 return;
@@ -1092,6 +1104,8 @@ namespace PicSum.UIComponent.Contents.ImageView
 
         private void ToolBar_ZoomMenuItemClick(object sender, ZoomMenuItemClickEventArgs e)
         {
+            this.leftImagePanel.Focus();
+
             if (!this.IsHandleCreated)
             {
                 return;
