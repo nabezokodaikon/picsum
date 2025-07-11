@@ -39,6 +39,7 @@ namespace SWF.UIComponent.Core
         {
             this.MouseEnter += this.ToolIconButton_MouseEnter;
             this.MouseLeave += this.ToolIconButton_MouseLeave;
+            this.Paint += this.ToolIconButton_Paint;
         }
 
         private void ToolIconButton_MouseEnter(object? sender, EventArgs e)
@@ -51,25 +52,25 @@ namespace SWF.UIComponent.Core
             this._isMousePoint = false;
         }
 
-        protected override void OnPaint(PaintEventArgs pevent)
+        private void ToolIconButton_Paint(object? sender, PaintEventArgs e)
         {
             if (this._isMousePoint)
             {
-                pevent.Graphics.FillRectangle(
+                e.Graphics.FillRectangle(
                     MOUSE_POINT_BRUSH, 0, 0, this.Width, this.Height);
             }
             else
             {
-                pevent.Graphics.FillRectangle(
+                e.Graphics.FillRectangle(
                     this.DefaultBrush, 0, 0, this.Width, this.Height);
             }
 
             if (this.Image != null)
             {
-                pevent.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
-                pevent.Graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
-                pevent.Graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
-                pevent.Graphics.CompositingQuality = CompositingQuality.HighQuality;
+                e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+                e.Graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                e.Graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
+                e.Graphics.CompositingQuality = CompositingQuality.HighQuality;
 
                 var scale = WindowUtil.GetCurrentWindowScale(this);
                 var length = Math.Min(this.Width - 12 * scale, this.Height - 12 * scale);
@@ -78,7 +79,7 @@ namespace SWF.UIComponent.Core
                 var x = (this.Width - w) / 2f;
                 var y = (this.Height - h) / 2f;
 
-                pevent.Graphics.DrawImage(this.Image, x, y, w, h);
+                e.Graphics.DrawImage(this.Image, x, y, w, h);
 
                 if (!this.Enabled)
                 {
@@ -88,7 +89,7 @@ namespace SWF.UIComponent.Core
                         overlayGraphics.FillRectangle(
                             DISABLED_BRUSH,
                             new Rectangle(0, 0, overlay.Width, overlay.Height));
-                        pevent.Graphics.DrawImage(
+                        e.Graphics.DrawImage(
                             overlay,
                             new Rectangle(0, 0, overlay.Width, overlay.Height),
                             0, 0, overlay.Width, overlay.Height, GraphicsUnit.Pixel, IMG_ATTR);

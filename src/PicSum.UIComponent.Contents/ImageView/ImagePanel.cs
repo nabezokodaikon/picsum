@@ -169,6 +169,7 @@ namespace PicSum.UIComponent.Contents.ImageView
             this.MouseMove += this.ImagePanel_MouseMove;
             this.Invalidated += this.ImagePanel_Invalidated;
             this.LostFocus += this.ImagePanel_LostFocus;
+            this.Paint += this.ImagePanel_Paint;
         }
 
         public void SetImage(
@@ -246,9 +247,9 @@ namespace PicSum.UIComponent.Contents.ImageView
             base.Dispose(disposing);
         }
 
-        protected override void OnPaint(PaintEventArgs e)
+        private void ImagePanel_Paint(object sender, PaintEventArgs e)
         {
-            using (TimeMeasuring.Run(false, "ImagePanel.OnPaint"))
+            using (TimeMeasuring.Run(false, "ImagePanel.ImagePanel_Paint"))
             {
                 e.Graphics.SmoothingMode = SmoothingMode.None;
                 e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;

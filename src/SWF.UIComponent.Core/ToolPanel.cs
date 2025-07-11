@@ -40,12 +40,12 @@ namespace SWF.UIComponent.Core
                 ControlStyles.Selectable,
                 false);
             this.UpdateStyles();
+
+            this.Paint += this.ToolPanel_Paint;
         }
 
-        protected override void OnPaint(PaintEventArgs e)
+        private void ToolPanel_Paint(object? sender, PaintEventArgs e)
         {
-            base.OnPaint(e);
-
             if (this.IsDrawLeftBorderLine)
             {
                 e.Graphics.FillRectangle(BORDER_LINE_BRUSH,

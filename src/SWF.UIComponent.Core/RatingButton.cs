@@ -57,6 +57,8 @@ namespace SWF.UIComponent.Core
             this.UpdateStyles();
 
             this.Size = DEFAULT_SIZE;
+
+            this.Paint += this.RatingButton_Paint;
         }
 
         public void SetControlsBounds(float scale)
@@ -68,7 +70,7 @@ namespace SWF.UIComponent.Core
             this.Invalidate();
         }
 
-        protected override void OnPaint(PaintEventArgs e)
+        private void RatingButton_Paint(object? sender, PaintEventArgs e)
         {
             e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
             e.Graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;

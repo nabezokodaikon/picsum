@@ -122,6 +122,7 @@ namespace SWF.UIComponent.TabOperation
             this.FormClosing += this.TabDragForm_Closing;
             this.LocationChanged += this.TabDragForm_LocationChanged;
             this.LostFocus += this.TabDragForm_LostFocus;
+            this.Paint += this.TabDragForm_Paint;
         }
 
         public void SetLocation(float xOffset, float yOffset)
@@ -250,7 +251,7 @@ namespace SWF.UIComponent.TabOperation
             }
         }
 
-        protected override void OnPaint(PaintEventArgs e)
+        private void TabDragForm_Paint(object sender, PaintEventArgs e)
         {
             if (this._drawTabPageMethod == null ||
                 this._regionImage == null)

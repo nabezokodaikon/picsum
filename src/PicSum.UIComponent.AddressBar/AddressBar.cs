@@ -73,6 +73,7 @@ namespace PicSum.UIComponent.AddressBar
             this.MouseUp += this.AddressBar_MouseUp;
             this.MouseMove += this.AddressBar_MouseMove;
             this.MouseClick += this.AddressBar_MouseClick;
+            this.Paint += this.AddressBar_Paint;
         }
 
         public void SetAddress(string filePath)
@@ -188,7 +189,7 @@ namespace PicSum.UIComponent.AddressBar
             //base.OnPaintBackground(pevent);
         }
 
-        protected override void OnPaint(PaintEventArgs e)
+        private void AddressBar_Paint(object sender, PaintEventArgs e)
         {
             e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
             e.Graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;

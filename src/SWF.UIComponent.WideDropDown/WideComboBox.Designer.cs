@@ -1,5 +1,7 @@
 using SWF.UIComponent.Core;
+using System;
 using System.Drawing;
+using System.Windows.Forms;
 
 namespace SWF.UIComponent.WideDropDown
 {
@@ -58,6 +60,7 @@ namespace SWF.UIComponent.WideDropDown
             this.Controls.Add(this.arrowPictureBox);
             this.Controls.Add(this.addButton);
             this.Name = "WideComboBox";
+            this.Paint += this.WideComboBox_Paint;
             this.ResumeLayout(false);
         }
 

@@ -25,6 +25,8 @@ namespace SWF.UIComponent.TabOperation
             this.ShowInTaskbar = false;
             this.Opacity = 0.75;
             this.Region = ImageUtil.GetRegion(this._dropLeftImage, TRANSPARENT_COLOR);
+
+            this.Paint += this.TabDropForm_Paint;
         }
 
         public void SetLeftImage()
@@ -42,7 +44,7 @@ namespace SWF.UIComponent.TabOperation
 
         }
 
-        protected override void OnPaint(PaintEventArgs e)
+        private void TabDropForm_Paint(object sender, PaintEventArgs e)
         {
             if (this._dropImage != null)
             {

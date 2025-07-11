@@ -137,7 +137,7 @@ namespace SWF.UIComponent.WideDropDown
             this._dropDownList.SelectItem(item);
         }
 
-        protected override void OnPaint(PaintEventArgs e)
+        private void WideComboBox_Paint(object sender, PaintEventArgs e)
         {
             var w = this.arrowPictureBox.Right;
             var h = this.Height - 1f;

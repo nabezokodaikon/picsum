@@ -39,19 +39,18 @@ namespace SWF.UIComponent.Core
             this.UpdateStyles();
 
             //this.BackColor = BRUSH_A.Color;
+
+            this.Paint += this.CheckPatternPanel_Paint;
         }
 
         protected override void OnPaintBackground(PaintEventArgs pevent)
         {
-            //using (TimeMeasuring.Run(false, "CheckPatternPanel.OnPaintBackground"))
-            //{
-            //    base.OnPaintBackground(pevent);
-            //}
+
         }
 
-        protected override void OnPaint(PaintEventArgs e)
+        private void CheckPatternPanel_Paint(object? sender, PaintEventArgs e)
         {
-            using (TimeMeasuring.Run(false, "CheckPatternPanel.OnPaint"))
+            using (TimeMeasuring.Run(false, "CheckPatternPanel.CheckPatternPanel_Paint"))
             {
                 e.Graphics.SmoothingMode = SmoothingMode.None;
                 e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;

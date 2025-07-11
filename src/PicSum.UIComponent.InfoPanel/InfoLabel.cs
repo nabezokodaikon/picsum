@@ -117,6 +117,8 @@ namespace PicSum.UIComponent.InfoPanel
                 ControlStyles.Selectable,
                 false);
             this.UpdateStyles();
+
+            this.Paint += this.FileInfoLabel_Paint;
         }
 
         protected override void Dispose(bool disposing)
@@ -129,7 +131,7 @@ namespace PicSum.UIComponent.InfoPanel
             base.Dispose(disposing);
         }
 
-        protected override void OnPaint(PaintEventArgs e)
+        private void FileInfoLabel_Paint(object sender, PaintEventArgs e)
         {
             const float MARGIN = 8;
             var textSize = e.Graphics.MeasureString("あ", this.Font);
@@ -166,8 +168,6 @@ namespace PicSum.UIComponent.InfoPanel
                     this._fileSize, this.Font, this.TextBrush, 0,
                     fileNameRect.Bottom + MARGIN + (textSize.Height + MARGIN) * 2);
             }
-
-            base.OnPaint(e);
         }
     }
 }
