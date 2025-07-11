@@ -132,6 +132,12 @@ namespace SWF.UIComponent.Core
             this.UpdateStyles();
 
             this._sliderValue = this._minimumValue;
+
+            this.Paint += this.Slider_Paint;
+            this.MouseDown += this.Slider_MouseDown;
+            this.MouseUp += this.Slider_MouseUp;
+            this.MouseMove += this.Slider_MouseMove;
+            this.Resize += this.Slider_Resize;
         }
 
         private float GetBarHeight()
@@ -271,15 +277,13 @@ namespace SWF.UIComponent.Core
             g.DrawImage(this._button, rect);
         }
 
-        protected override void OnPaint(PaintEventArgs e)
+        private void Slider_Paint(object? sender, PaintEventArgs e)
         {
             this.DrawBar(e.Graphics);
             this.DrawButton(e.Graphics);
-
-            base.OnPaint(e);
         }
 
-        protected override void OnMouseDown(MouseEventArgs e)
+        private void Slider_MouseDown(object? sender, MouseEventArgs e)
         {
             if (this.MaximumValue < 2)
             {
@@ -305,11 +309,9 @@ namespace SWF.UIComponent.Core
                     }
                 }
             }
-
-            base.OnMouseDown(e);
         }
 
-        protected override void OnMouseUp(MouseEventArgs e)
+        private void Slider_MouseUp(object? sender, MouseEventArgs e)
         {
             if (this.MaximumValue < 2)
             {
@@ -330,11 +332,9 @@ namespace SWF.UIComponent.Core
                     this.OnValueChanged(EventArgs.Empty);
                 }
             }
-
-            base.OnMouseUp(e);
         }
 
-        protected override void OnMouseMove(MouseEventArgs e)
+        private void Slider_MouseMove(object? sender, MouseEventArgs e)
         {
             if (this.MaximumValue < 2)
             {
@@ -359,15 +359,12 @@ namespace SWF.UIComponent.Core
                     }
                 }
             }
-
-            base.OnMouseMove(e);
         }
 
-        protected override void OnResize(EventArgs e)
+        private void Slider_Resize(object? sender, EventArgs e)
         {
             this.SetButtonPointX(this._sliderValue);
             this.Invalidate();
-            base.OnResize(e);
         }
 
         protected virtual void OnBeginValueChange(EventArgs e)
