@@ -31,9 +31,6 @@ namespace PicSum.UIComponent.Contents.Common
                 ControlStyles.OptimizedDoubleBuffer |
                 ControlStyles.ResizeRedraw,
                 true);
-            this.SetStyle(
-                ControlStyles.Selectable,
-                false);
             this.UpdateStyles();
 
             this.Parameter = parameter ?? throw new ArgumentNullException(nameof(parameter));

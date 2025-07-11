@@ -98,9 +98,6 @@ namespace PicSum.Main.UIComponent
                 ControlStyles.OptimizedDoubleBuffer |
                 ControlStyles.ResizeRedraw,
                 true);
-            this.SetStyle(
-                ControlStyles.Selectable,
-                false);
             this.UpdateStyles();
 
             this.pageContainer = new PageContainer();

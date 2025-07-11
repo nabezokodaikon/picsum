@@ -244,9 +244,6 @@ namespace SWF.UIComponent.TabOperation
                 ControlStyles.ResizeRedraw |
                 ControlStyles.UserPaint,
                 true);
-            this.SetStyle(
-                ControlStyles.Selectable,
-                false);
             this.UpdateStyles();
 
             this._addTabButtonDrawArea = new(this);

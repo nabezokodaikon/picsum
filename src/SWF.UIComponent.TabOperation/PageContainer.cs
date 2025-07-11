@@ -34,9 +34,6 @@ namespace SWF.UIComponent.TabOperation
                 ControlStyles.OptimizedDoubleBuffer |
                 ControlStyles.ResizeRedraw,
                 true);
-            this.SetStyle(
-                ControlStyles.Selectable,
-                false);
             this.UpdateStyles();
         }
 

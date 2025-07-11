@@ -297,11 +297,9 @@ namespace PicSum.UIComponent.AddressBar
                 ControlStyles.OptimizedDoubleBuffer |
                 ControlStyles.UserPaint,
                 true);
-
             this.SetStyle(
                 ControlStyles.Selectable,
                 false);
-
             this.UpdateStyles();
 
             this.Items.Add(new ToolStripControlHost(new FlowList()));
