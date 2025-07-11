@@ -159,9 +159,6 @@ namespace PicSum.UIComponent.Contents.ImageView
                 ControlStyles.ResizeRedraw |
                 ControlStyles.UserPaint,
                 true);
-            this.SetStyle(
-                ControlStyles.Selectable,
-                false);
             this.UpdateStyles();
 
             this.MouseLeave += this.ImagePanel_MouseLeave;
