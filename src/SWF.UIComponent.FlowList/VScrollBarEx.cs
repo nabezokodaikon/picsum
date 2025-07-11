@@ -30,6 +30,13 @@ namespace SWF.UIComponent.FlowList
             }
         }
 
+        public VScrollBarEx()
+        {
+            this.SetStyle(
+                ControlStyles.Selectable,
+                false);
+        }
+
         private int GetMargin()
         {
             return this.LargeChange - 1;

@@ -188,28 +188,41 @@ namespace SWF.UIComponent.FlowList
 
             base.BorderStyle = BorderStyle.None;
             this.Controls.Add(this._scrollBar);
+
+            this.KeyDown += this.FlowList_KeyDown;
+            this.MouseLeave += this.FlowList_MouseLeave;
+            this.MouseDown += this.FlowList_MouseDown;
+            this.Invalidated += this.FlowList_Invalidated;
+            this.MouseUp += this.FlowList_MouseUp;
+            this.MouseMove += this.FlowList_MouseMove;
+            this.MouseDoubleClick += this.FlowList_MouseDoubleClick;
+            this.MouseWheel += this.FlowList_MouseWheel;
+            this.Paint += this.FlowList_Paint;
         }
 
-        protected override void OnInvalidated(InvalidateEventArgs e)
+        protected override bool IsInputKey(Keys keyData)
         {
-            this.SetDrawParameter(false);
+            var kcode = keyData & Keys.KeyCode;
 
-            base.OnInvalidated(e);
-        }
-
-        protected override void OnPaintBackground(PaintEventArgs pevent)
-        {
-            if (!this._isDraw)
+            if (kcode == Keys.Up ||
+                kcode == Keys.Down ||
+                kcode == Keys.Left ||
+                kcode == Keys.Right)
             {
-                return;
+                return true;
             }
 
-            base.OnPaintBackground(pevent);
+            return base.IsInputKey(keyData);
         }
 
-        protected override void OnPaint(PaintEventArgs e)
+        private void FlowList_Invalidated(object sender, InvalidateEventArgs e)
         {
-            using (TimeMeasuring.Run(false, "FlowList.OnPaint"))
+            this.SetDrawParameter(false);
+        }
+
+        private void FlowList_Paint(object sender, PaintEventArgs e)
+        {
+            using (TimeMeasuring.Run(false, "FlowList.FlowList_Paint"))
             {
                 if (!this._isDraw)
                 {
@@ -232,41 +245,13 @@ namespace SWF.UIComponent.FlowList
 
                     this.DrawItems(e.Graphics);
                 }
-
-                base.OnPaint(e);
             }
         }
 
-        protected override bool IsInputKey(Keys keyData)
-        {
-            if ((keyData & Keys.Alt) != Keys.Alt)
-            {
-                var kcode = keyData & Keys.KeyCode;
-
-                if (kcode == Keys.Up ||
-                    kcode == Keys.Down ||
-                    kcode == Keys.Left ||
-                    kcode == Keys.Right)
-                {
-                    return true;
-                }
-            }
-
-            return base.IsInputKey(keyData);
-        }
-
-        protected override void OnResize(EventArgs e)
-        {
-            this.Invalidate();
-
-            base.OnResize(e);
-        }
-
-        protected override void OnKeyDown(KeyEventArgs e)
+        private void FlowList_KeyDown(object sender, KeyEventArgs e)
         {
             if (!this.CanKeyDown)
             {
-                base.OnKeyDown(e);
                 return;
             }
 
@@ -385,33 +370,27 @@ namespace SWF.UIComponent.FlowList
                     this._selectedItemIndexs.EndUpdate();
                 }
             }
-
-            base.OnKeyDown(e);
         }
 
-        protected override void OnMouseLeave(EventArgs e)
+        private void FlowList_MouseLeave(object sender, EventArgs e)
         {
             this._mousePointItemIndex = -1;
             this._isDrag = false;
             this._mouseDownHitTestInfo = new HitTestInfo();
 
             this.Invalidate();
-
-            base.OnMouseLeave(e);
         }
 
-        protected override void OnMouseDown(MouseEventArgs e)
+        private void FlowList_MouseDown(object sender, MouseEventArgs e)
         {
             this.Select();
 
             if (this._itemCount < 1)
             {
-                base.OnMouseDown(e);
                 return;
             }
             else if (this._rectangleSelection.IsBegun)
             {
-                base.OnMouseDown(e);
                 return;
             }
             else if (e.Button == MouseButtons.Left)
@@ -459,15 +438,12 @@ namespace SWF.UIComponent.FlowList
                     this._selectedItemIndexs.EndUpdate();
                 }
             }
-
-            base.OnMouseDown(e);
         }
 
-        protected override void OnMouseUp(MouseEventArgs e)
+        private void FlowList_MouseUp(object sender, MouseEventArgs e)
         {
             if (this._itemCount < 1)
             {
-                base.OnMouseUp(e);
                 return;
             }
             if (this._rectangleSelection.IsBegun)
@@ -515,15 +491,12 @@ namespace SWF.UIComponent.FlowList
 
             this._isDrag = false;
             this._mouseDownHitTestInfo = new HitTestInfo();
-
-            base.OnMouseUp(e);
         }
 
-        protected override void OnMouseMove(MouseEventArgs e)
+        private void FlowList_MouseMove(object sender, MouseEventArgs e)
         {
             if (this._itemCount < 1)
             {
-                base.OnMouseMove(e);
                 return;
             }
             else if (this._rectangleSelection.IsBegun)
@@ -598,20 +571,16 @@ namespace SWF.UIComponent.FlowList
                     }
                 }
             }
-
-            base.OnMouseMove(e);
         }
 
-        protected override void OnMouseDoubleClick(MouseEventArgs e)
+        private void FlowList_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             if (this._itemCount < 1)
             {
-                base.OnMouseDoubleClick(e);
                 return;
             }
             else if (this._rectangleSelection.IsBegun)
             {
-                base.OnMouseDoubleClick(e);
                 return;
             }
             else if (e.Button == MouseButtons.Left)
@@ -625,15 +594,12 @@ namespace SWF.UIComponent.FlowList
                     }
                 }
             }
-
-            base.OnMouseDoubleClick(e);
         }
 
-        protected override void OnMouseWheel(MouseEventArgs e)
+        private void FlowList_MouseWheel(object sender, MouseEventArgs e)
         {
             if (this._itemCount < 1)
             {
-                base.OnMouseWheel(e);
                 return;
             }
             else if (e.Delta != 0)
@@ -652,8 +618,6 @@ namespace SWF.UIComponent.FlowList
                     this._scrollBar.Value = value;
                 }
             }
-
-            base.OnMouseWheel(e);
         }
 
         /// <summary>
