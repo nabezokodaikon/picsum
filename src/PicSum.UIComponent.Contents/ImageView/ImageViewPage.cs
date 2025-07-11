@@ -217,6 +217,8 @@ namespace PicSum.UIComponent.Contents.ImageView
                 {
                     this.SettingLeftImagePanelLayout();
                 }
+
+                this.Focus();
             }
         }
 
@@ -682,7 +684,7 @@ namespace PicSum.UIComponent.Contents.ImageView
                     });
             }
 
-            this.leftImagePanel.Focus();
+            this.Focus();
         }
 
         private void DoDragDrop(string currentFilePath)
@@ -972,7 +974,7 @@ namespace PicSum.UIComponent.Contents.ImageView
             }
 
             this.SettingImagePanelLayout(e);
-            this.leftImagePanel.Focus();
+            this.Focus();
         }
 
         private void ToolBar_SingleViewMenuItemClick(object sender, EventArgs e)
