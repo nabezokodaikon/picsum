@@ -248,6 +248,21 @@ namespace SWF.UIComponent.TabOperation
 
             this._addTabButtonDrawArea = new(this);
             this._pageDrawArea = new(this);
+
+            this.HandleCreated += this.TabSwitch_HandleCreated;
+            this.Invalidated += this.TabSwitch_Invalidated;
+            this.Paint += this.TabSwitch_Paint;
+            this.LostFocus += this.TabSwitch_LostFocus;
+            this.MouseLeave += this.TabSwitch_MouseLeave;
+            this.MouseMove += this.TabSwitch_MouseMove;
+            this.MouseDown += this.TabSwitch_MouseDown;
+            this.MouseUp += this.TabSwitch_MouseUp;
+            this.MouseClick += this.TabSwitch_MouseClick;
+            this.MouseDoubleClick += this.TabSwitch_MouseDoubleClick;
+            this.MouseWheel += this.TabSwitch_MouseWheel;
+            this.DragOver += this.TabSwitch_DragOver;
+            this.DragLeave += this.TabSwitch_DragLeave;
+            this.DragDrop += this.TabSwitch_DragDrop;
         }
 
         public TabInfo[] GetInactiveTabs()
@@ -628,12 +643,10 @@ namespace SWF.UIComponent.TabOperation
             return this.GetTabsRectangle();
         }
 
-        protected override void OnHandleCreated(EventArgs e)
+        private void TabSwitch_HandleCreated(object sender, EventArgs e)
         {
             var form = this.GetForm();
             TabDragOperation.AddForm(form);
-
-            base.OnHandleCreated(e);
         }
 
         protected override void Dispose(bool disposing)
@@ -656,20 +669,13 @@ namespace SWF.UIComponent.TabOperation
             base.Dispose(disposing);
         }
 
-        protected override void OnInvalidated(InvalidateEventArgs e)
+        private void TabSwitch_Invalidated(object sender, InvalidateEventArgs e)
         {
             this.SetTabsDrawArea();
             this.SetAddTabButtonDrawArea();
-            base.OnInvalidated(e);
         }
 
-        protected override void OnPaintBackground(PaintEventArgs pevent)
-        {
-
-            base.OnPaintBackground(pevent);
-        }
-
-        protected override void OnPaint(PaintEventArgs e)
+        private void TabSwitch_Paint(object sender, PaintEventArgs e)
         {
             e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
             e.Graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
@@ -693,7 +699,7 @@ namespace SWF.UIComponent.TabOperation
             this.DrawDropPoint(e.Graphics);
         }
 
-        protected override void OnLostFocus(EventArgs e)
+        private void TabSwitch_LostFocus(object sender, EventArgs e)
         {
             if (TabDragOperation.IsBegin
                 && !TabDragOperation.TabDragForm.Visible
@@ -702,11 +708,9 @@ namespace SWF.UIComponent.TabOperation
             {
                 TabDragOperation.TabDragForm.TabSwitch.CallEndTabDragOperation();
             }
-
-            base.OnLostFocus(e);
         }
 
-        protected override void OnMouseLeave(EventArgs e)
+        private void TabSwitch_MouseLeave(object sender, EventArgs e)
         {
             if (this._mousePointTab != null)
             {
@@ -715,11 +719,9 @@ namespace SWF.UIComponent.TabOperation
 
             this._mouseDownTab = null;
             this.InvalidateHeader();
-
-            base.OnMouseLeave(e);
         }
 
-        protected override void OnMouseMove(MouseEventArgs e)
+        private void TabSwitch_MouseMove(object sender, MouseEventArgs e)
         {
             if (TabDragOperation.IsBegin)
             {
@@ -746,11 +748,9 @@ namespace SWF.UIComponent.TabOperation
                     _ = WinApiMembers.SendMessage(form.Handle, WinApiMembers.WM_NCLBUTTONDOWN, WinApiMembers.HTCAPTION, 0);
                 }
             }
-
-            base.OnMouseMove(e);
         }
 
-        protected override void OnMouseDown(MouseEventArgs e)
+        private void TabSwitch_MouseDown(object sender, MouseEventArgs e)
         {
             var tab = this.GetTabFromPoint(e.X, e.Y);
             if (tab != null)
@@ -787,18 +787,14 @@ namespace SWF.UIComponent.TabOperation
             {
                 this.InvalidateHeader();
             }
-
-            base.OnMouseDown(e);
         }
 
-        protected override void OnMouseUp(MouseEventArgs e)
+        private void TabSwitch_MouseUp(object sender, MouseEventArgs e)
         {
             this.CallEndTabDragOperation();
-
-            base.OnMouseUp(e);
         }
 
-        protected override void OnMouseClick(MouseEventArgs e)
+        private void TabSwitch_MouseClick(object sender, MouseEventArgs e)
         {
             var tab = this.GetTabFromPoint(e.X, e.Y);
             if (tab != null && tab == this._mouseDownTab)
@@ -820,11 +816,9 @@ namespace SWF.UIComponent.TabOperation
             {
                 this.OnAddTabButtonMouseClick(e);
             }
-
-            base.OnMouseClick(e);
         }
 
-        protected override void OnMouseDoubleClick(MouseEventArgs e)
+        private void TabSwitch_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
             {
@@ -838,11 +832,9 @@ namespace SWF.UIComponent.TabOperation
                     this.OnBackgroundMouseLeftDoubleClick(EventArgs.Empty);
                 }
             }
-
-            base.OnMouseDoubleClick(e);
         }
 
-        protected override void OnMouseWheel(MouseEventArgs e)
+        private void TabSwitch_MouseWheel(object sender, MouseEventArgs e)
         {
             if (this._tabList.Count > 1)
             {
@@ -882,13 +874,11 @@ namespace SWF.UIComponent.TabOperation
 
                 this.OnActiveTabChanged(EventArgs.Empty);
             }
-
-            base.OnMouseWheel(e);
         }
 
-        protected override void OnDragOver(DragEventArgs drgevent)
+        private void TabSwitch_DragOver(object sender, DragEventArgs e)
         {
-            this._dropPoint = this.PointToClient(new Point(drgevent.X, drgevent.Y));
+            this._dropPoint = this.PointToClient(new Point(e.X, e.Y));
             if (this.GetHeaderRectangle().Contains(this._dropPoint.Value))
             {
                 var dropX = this._dropPoint.Value.X;
@@ -905,26 +895,24 @@ namespace SWF.UIComponent.TabOperation
                     }
                 }
 
-                drgevent.Effect = DragDropEffects.Copy;
-                this.OnTabAreaDragOver(drgevent);
+                e.Effect = DragDropEffects.Copy;
+                this.OnTabAreaDragOver(e);
             }
             else
             {
-                drgevent.Effect = DragDropEffects.None;
+                e.Effect = DragDropEffects.None;
             }
 
             this.InvalidateHeader();
-            base.OnDragOver(drgevent);
         }
 
-        protected override void OnDragLeave(EventArgs e)
+        private void TabSwitch_DragLeave(object sender, EventArgs e)
         {
             this._dropPoint = null;
             this.Invalidate();
-            base.OnDragLeave(e);
         }
 
-        protected override void OnDragDrop(DragEventArgs drgevent)
+        private void TabSwitch_DragDrop(object sender, DragEventArgs e)
         {
             if (!this._dropPoint.HasValue)
             {
@@ -942,19 +930,19 @@ namespace SWF.UIComponent.TabOperation
                     {
                         if (this.IsTabLeftDrop(dropX, tab))
                         {
-                            this.OnTabAreaDragDrop(new TabAreaDragEventArgs(false, this._tabList.IndexOf(tab), drgevent));
+                            this.OnTabAreaDragDrop(new TabAreaDragEventArgs(false, this._tabList.IndexOf(tab), e));
                             isExecuteEvent = true;
                             break;
                         }
                         else if (this.IsTabRightDrop(dropX, tab))
                         {
-                            this.OnTabAreaDragDrop(new TabAreaDragEventArgs(false, this._tabList.IndexOf(tab) + 1, drgevent));
+                            this.OnTabAreaDragDrop(new TabAreaDragEventArgs(false, this._tabList.IndexOf(tab) + 1, e));
                             isExecuteEvent = true;
                             break;
                         }
                         else
                         {
-                            this.OnTabAreaDragDrop(new TabAreaDragEventArgs(true, this._tabList.IndexOf(tab), drgevent));
+                            this.OnTabAreaDragDrop(new TabAreaDragEventArgs(true, this._tabList.IndexOf(tab), e));
                             isExecuteEvent = true;
                             break;
                         }
@@ -963,12 +951,11 @@ namespace SWF.UIComponent.TabOperation
 
                 if (!isExecuteEvent)
                 {
-                    this.OnTabAreaDragDrop(new TabAreaDragEventArgs(false, this._tabList.Count, drgevent));
+                    this.OnTabAreaDragDrop(new TabAreaDragEventArgs(false, this._tabList.Count, e));
                 }
             }
 
             this._dropPoint = null;
-            base.OnDragDrop(drgevent);
         }
 
         private Font GetFont(float scale)
