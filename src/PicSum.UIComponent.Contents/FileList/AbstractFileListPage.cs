@@ -210,6 +210,7 @@ namespace PicSum.UIComponent.Contents.FileList
             }
 
             this.flowList.SetDrawParameter(true);
+            this.flowList.Focus();
         }
 
         public override void StopPageDraw()
