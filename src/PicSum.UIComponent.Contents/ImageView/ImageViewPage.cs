@@ -371,11 +371,9 @@ namespace PicSum.UIComponent.Contents.ImageView
 
                 this.leftImagePanel.ResumeLayout(false);
                 this.leftImagePanel.Invalidate();
-                this.leftImagePanel.Update();
 
                 this.rightImagePanel.ResumeLayout(false);
                 this.rightImagePanel.Invalidate();
-                this.rightImagePanel.Update();
             }
             else if (isLeft)
             {
@@ -385,7 +383,6 @@ namespace PicSum.UIComponent.Contents.ImageView
 
                 this.leftImagePanel.ResumeLayout(false);
                 this.leftImagePanel.Invalidate();
-                this.leftImagePanel.Update();
             }
             else if (isRight)
             {
@@ -395,7 +392,6 @@ namespace PicSum.UIComponent.Contents.ImageView
 
                 this.rightImagePanel.ResumeLayout(false);
                 this.rightImagePanel.Invalidate();
-                this.rightImagePanel.Update();
             }
         }
 
