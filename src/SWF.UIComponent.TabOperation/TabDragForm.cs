@@ -1,5 +1,5 @@
-using SWF.Core.Base;
 using SWF.Core.ImageAccessor;
+using SWF.Core.ResourceAccessor;
 using SWF.UIComponent.Core;
 using System;
 using System.Collections.Generic;
@@ -26,7 +26,7 @@ namespace SWF.UIComponent.TabOperation
         private TabSwitch _tabSwitch = null;
         private Bitmap _regionImage = null;
         private Action<DrawTabEventArgs> _drawTabPageMethod = null;
-        private readonly Font _defaultFont = AppConstants.UI_FONT_10;
+        private readonly Font _defaultFont = Fonts.UI_FONT_10;
         private readonly Dictionary<float, Font> _fontCache = [];
 
         private Font GetFont(float scale)

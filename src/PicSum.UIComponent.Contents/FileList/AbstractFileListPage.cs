@@ -10,6 +10,7 @@ using SWF.Core.Base;
 using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
 using SWF.Core.Job;
+using SWF.Core.ResourceAccessor;
 using SWF.Core.StringAccessor;
 using SWF.UIComponent.Core;
 using SWF.UIComponent.FlowList;
@@ -40,7 +41,7 @@ namespace PicSum.UIComponent.Contents.FileList
         private float _scale = 0f;
         private Dictionary<string, FileEntity> _masterFileDictionary = null;
         private string[] _filterFilePathList = null;
-        private readonly Font _defaultFont = AppConstants.UI_FONT_09;
+        private readonly Font _defaultFont = Fonts.UI_FONT_09;
         private readonly Dictionary<float, Font> _fontCache = [];
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]

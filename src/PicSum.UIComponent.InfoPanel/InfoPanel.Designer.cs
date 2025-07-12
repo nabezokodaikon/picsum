@@ -1,4 +1,5 @@
 using SWF.Core.Base;
+using SWF.Core.ResourceAccessor;
 using System.Drawing;
 
 namespace PicSum.UIComponent.InfoPanel
@@ -33,12 +34,12 @@ namespace PicSum.UIComponent.InfoPanel
             // thumbnailPictureBox
             // 
             this.thumbnailPictureBox.BackColor = Color.FromArgb(250, 250, 250);
-            this.thumbnailPictureBox.Font = AppConstants.UI_FONT_18;
+            this.thumbnailPictureBox.Font = Fonts.UI_FONT_18;
             this.thumbnailPictureBox.Paint += this.ThumbnailPictureBox_Paint;
             // 
             // tagContextMenuStrip
             // 
-            this.tagContextMenuStrip.Font = AppConstants.UI_FONT_14_REGULAR;
+            this.tagContextMenuStrip.Font = Fonts.UI_FONT_14_REGULAR;
             this.tagContextMenuStrip.ImageScalingSize = new Size(20, 20);
             this.tagContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { this.tagDeleteMenuItem, this.tagToAllEntryMenuItem });
             this.tagContextMenuStrip.Opening += this.TagContextMenuStrip_Opening;
@@ -79,7 +80,7 @@ namespace PicSum.UIComponent.InfoPanel
             // fileInfoLabel
             // 
             this.fileInfoLabel.BackColor = Color.FromArgb(250, 250, 250);
-            this.fileInfoLabel.Font = AppConstants.UI_FONT_14_REGULAR;
+            this.fileInfoLabel.Font = Fonts.UI_FONT_14_REGULAR;
             // 
             // InfoPanel
             // 

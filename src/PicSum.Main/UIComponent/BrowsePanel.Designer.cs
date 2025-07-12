@@ -1,4 +1,5 @@
 using SWF.Core.Base;
+using SWF.Core.ResourceAccessor;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
@@ -27,7 +28,7 @@ namespace PicSum.Main.UIComponent
             // infoPanel
             // 
             this.infoPanel.BackColor = Color.FromArgb(250, 250, 250);
-            this.infoPanel.Font = AppConstants.UI_FONT_09;
+            this.infoPanel.Font = Fonts.UI_FONT_09;
             this.infoPanel.SelectedTag += this.InfoPanel_SelectedTag;
             // 
             // tabSwitch

@@ -49,8 +49,8 @@ namespace PicSum.UIComponent.InfoPanel
         private string _contextMenuOperationTag = string.Empty;
         private readonly SolidBrush _foreColorBrush;
         private readonly StringFormat _stringFormat;
-        private readonly Font _tagDefaultFont = AppConstants.UI_FONT_14_REGULAR;
-        private readonly Font _allTagDefaultFont = AppConstants.UI_FONT_14_BOLD;
+        private readonly Font _tagDefaultFont = Fonts.UI_FONT_14_REGULAR;
+        private readonly Font _allTagDefaultFont = Fonts.UI_FONT_14_BOLD;
         private readonly Dictionary<float, Font> _tagFontCache = [];
         private readonly Dictionary<float, Font> _allTagFontCache = [];
         private bool _isLoading = false;

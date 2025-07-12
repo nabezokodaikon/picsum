@@ -1,4 +1,5 @@
 using SWF.Core.Base;
+using SWF.Core.ResourceAccessor;
 using SWF.UIComponent.Core;
 using System;
 using System.Collections.Generic;
@@ -36,7 +37,7 @@ namespace PicSum.UIComponent.Contents.FileList
         public event EventHandler MoveNextButtonClick;
 
         private bool _disposed = false;
-        private readonly Font _defaultFont = AppConstants.UI_FONT_12;
+        private readonly Font _defaultFont = Fonts.UI_FONT_12;
         private readonly Dictionary<float, Font> _fontCache = [];
         private bool _isShowingViewButtonDropDown = false;
 

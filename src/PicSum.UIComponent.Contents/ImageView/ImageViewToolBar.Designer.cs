@@ -1,4 +1,5 @@
 using SWF.Core.Base;
+using SWF.Core.ResourceAccessor;
 using System;
 using System.Windows.Forms;
 
@@ -60,7 +61,7 @@ namespace PicSum.UIComponent.Contents.ImageView
             // 
             // viewMenu
             // 
-            this.viewMenu.Font = AppConstants.UI_FONT_14_REGULAR;
+            this.viewMenu.Font = Fonts.UI_FONT_14_REGULAR;
             this.viewMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { this.singleViewMenuItem, this.spreadLeftFeedMenuItem, this.spreadRightFeedMenuItem });
             // 
             // singleViewMenuItem
@@ -111,7 +112,7 @@ namespace PicSum.UIComponent.Contents.ImageView
             // 
             // sizeMenu
             // 
-            this.sizeMenu.Font = AppConstants.UI_FONT_14_REGULAR;
+            this.sizeMenu.Font = Fonts.UI_FONT_14_REGULAR;
             this.sizeMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[]
             {
                 this.fitWindowMenuItem,

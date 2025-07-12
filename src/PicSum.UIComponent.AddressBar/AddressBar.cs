@@ -30,7 +30,7 @@ namespace PicSum.UIComponent.AddressBar
         private readonly List<DrawItemBase> _addressItems = [];
         private DrawItemBase _mousePointItem = null;
         private DrawItemBase _mouseDownItem = null;
-        private readonly Font _defaultFont = AppConstants.UI_FONT_10;
+        private readonly Font _defaultFont = Fonts.UI_FONT_10;
         private readonly Dictionary<float, Font> _regularFontCache = [];
         private readonly Dictionary<float, Font> _boldFontCache = [];
 

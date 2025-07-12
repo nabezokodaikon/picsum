@@ -1,4 +1,3 @@
-using SWF.Core.Base;
 using SWF.Core.ImageAccessor;
 using SWF.Core.ResourceAccessor;
 using SWF.UIComponent.Core;
@@ -168,7 +167,7 @@ namespace SWF.UIComponent.TabOperation
         // コンテンツ描画クラス
         private readonly PageDrawArea _pageDrawArea;
 
-        private readonly Font _defaultFont = AppConstants.UI_FONT_10;
+        private readonly Font _defaultFont = Fonts.UI_FONT_10;
         private readonly Dictionary<float, Font> _fontCache = [];
 
         private int GetTabsRightOffset()

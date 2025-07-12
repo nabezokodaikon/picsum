@@ -1,4 +1,5 @@
 using SWF.Core.Base;
+using SWF.Core.ResourceAccessor;
 using SWF.UIComponent.Core;
 using System;
 using System.Drawing;
@@ -46,7 +47,7 @@ namespace SWF.UIComponent.WideDropDown
             // 
             // inputTextBox
             // 
-            this.inputTextBox.Font = AppConstants.UI_FONT_14_REGULAR;
+            this.inputTextBox.Font = Fonts.UI_FONT_14_REGULAR;
             this.inputTextBox.KeyDown += this.InputTextBox_KeyDown;
             // 
             // WideComboBox
