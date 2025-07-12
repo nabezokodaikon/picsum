@@ -51,7 +51,6 @@ namespace PicSum.UIComponent.Contents.FileList
             // 
             // fileContextMenu
             // 
-            this.fileContextMenu.Size = new System.Drawing.Size(209, 312);
             this.fileContextMenu.DirectoryActiveTabOpen += new System.EventHandler<PicSum.UIComponent.Contents.ContextMenu.ExecuteFileEventArgs>(this.FileContextMenu_DirectoryActiveTabOpen);
             this.fileContextMenu.DirectoryNewTabOpen += new System.EventHandler<PicSum.UIComponent.Contents.ContextMenu.ExecuteFileEventArgs>(this.FileContextMenu_DirectoryNewTabOpen);
             this.fileContextMenu.SelectApplication += new System.EventHandler<PicSum.UIComponent.Contents.ContextMenu.ExecuteFileEventArgs>(this.FileContextMenu_SelectApplication);
@@ -92,7 +91,6 @@ namespace PicSum.UIComponent.Contents.FileList
             this.Controls.AddRange(
                 this.flowList,
                 this.toolBar);
-            this.Size = new System.Drawing.Size(630, 393);
             this.Load += this.AbstractFileListPage_Load;
             this.toolBar.ResumeLayout(false);
             this.ResumeLayout(false);

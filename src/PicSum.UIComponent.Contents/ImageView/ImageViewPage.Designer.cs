@@ -38,8 +38,6 @@ namespace PicSum.UIComponent.Contents.ImageView
             this.leftImagePanel.ContextMenuStrip = this.fileContextMenu;
             this.leftImagePanel.ImageAlign = SWF.Core.Base.ImageAlign.Center;
             this.leftImagePanel.IsShowThumbnailPanel = true;
-            this.leftImagePanel.Location = new System.Drawing.Point(0, 0);
-            this.leftImagePanel.Size = new System.Drawing.Size(0, 0);
             this.leftImagePanel.Visible = false;
             this.leftImagePanel.Font = new System.Drawing.Font("Yu Gothic UI", 18F);
             this.leftImagePanel.ImageMouseClick += new System.EventHandler<System.Windows.Forms.MouseEventArgs>(this.LeftImagePanel_ImageMouseClick);
@@ -50,7 +48,6 @@ namespace PicSum.UIComponent.Contents.ImageView
             // 
             this.fileContextMenu.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.fileContextMenu.VisibleRemoveFromListMenuItem = false;
-            this.fileContextMenu.Size = new System.Drawing.Size(205, 292);
             this.fileContextMenu.FileNewTabOpen += new System.EventHandler<PicSum.UIComponent.Contents.ContextMenu.ExecuteFileEventArgs>(this.FileContextMenu_FileNewTabOpen);
             this.fileContextMenu.FileNewWindowOpen += new System.EventHandler<PicSum.UIComponent.Contents.ContextMenu.ExecuteFileEventArgs>(this.FileContextMenu_FileNewWindowOpen);
             this.fileContextMenu.SelectApplication += new System.EventHandler<PicSum.UIComponent.Contents.ContextMenu.ExecuteFileEventArgs>(this.FileContextMenu_SelectApplication);
@@ -67,8 +64,6 @@ namespace PicSum.UIComponent.Contents.ImageView
             this.rightImagePanel.ContextMenuStrip = this.fileContextMenu;
             this.rightImagePanel.ImageAlign = SWF.Core.Base.ImageAlign.Center;
             this.rightImagePanel.IsShowThumbnailPanel = true;
-            this.rightImagePanel.Location = new System.Drawing.Point(0, 0);
-            this.rightImagePanel.Size = new System.Drawing.Size(0, 0);
             this.rightImagePanel.Visible = false;
             this.rightImagePanel.Font = new System.Drawing.Font("Yu Gothic UI", 18F);
             this.rightImagePanel.ImageMouseClick += new System.EventHandler<System.Windows.Forms.MouseEventArgs>(this.RightImagePanel_ImageMouseClick);
@@ -106,7 +101,6 @@ namespace PicSum.UIComponent.Contents.ImageView
             this.Controls.AddRange(
                 this.checkPatternPanel,
                 this.toolBar);
-            this.Size = new System.Drawing.Size(925, 528);
             this.Load += this.ImageViewPage_Load;
             this.MouseWheel += this.ImageViewPage_MouseWheel;
             this.DrawTabPage += this.ImageViewPage_DrawTabPage;

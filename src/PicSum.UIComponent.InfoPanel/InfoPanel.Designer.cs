@@ -32,9 +32,6 @@ namespace PicSum.UIComponent.InfoPanel
             // thumbnailPictureBox
             // 
             this.thumbnailPictureBox.BackColor = Color.FromArgb(250, 250, 250);
-            this.thumbnailPictureBox.Location = new Point(4, 0);
-            this.thumbnailPictureBox.MinimumSize = new Size(128, 128);
-            this.thumbnailPictureBox.Size = new Size(508, 256);
             this.thumbnailPictureBox.Font = new Font("Yu Gothic UI", 14F);
             this.thumbnailPictureBox.Paint += this.ThumbnailPictureBox_Paint;
             // 
@@ -43,28 +40,21 @@ namespace PicSum.UIComponent.InfoPanel
             this.tagContextMenuStrip.Font = new Font("Yu Gothic UI", 10F);
             this.tagContextMenuStrip.ImageScalingSize = new Size(20, 20);
             this.tagContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { this.tagDeleteMenuItem, this.tagToAllEntryMenuItem });
-            this.tagContextMenuStrip.Size = new Size(175, 52);
             this.tagContextMenuStrip.Opening += this.TagContextMenuStrip_Opening;
             // 
             // tagDeleteMenuItem
             // 
-            this.tagDeleteMenuItem.Name = "tagDeleteMenuItem";
-            this.tagDeleteMenuItem.Size = new Size(174, 24);
             this.tagDeleteMenuItem.Text = "Remove Tag";
             this.tagDeleteMenuItem.Click += this.TagDeleteMenuItem_Click;
             // 
             // tagToAllEntryMenuItem
             // 
-            this.tagToAllEntryMenuItem.Name = "tagToAllEntryMenuItem";
-            this.tagToAllEntryMenuItem.Size = new Size(174, 24);
             this.tagToAllEntryMenuItem.Text = "Apply Tag to All";
             this.tagToAllEntryMenuItem.Click += this.TagToAllEntryMenuItem_Click;
             // 
             // ratingBar
             // 
             this.ratingBar.BackColor = Color.FromArgb(250, 250, 250);
-            this.ratingBar.Location = new Point(4, 390);
-            this.ratingBar.Size = new Size(508, 56);
             this.ratingBar.MaximumValue = 1;
             this.ratingBar.RatingButtonMouseClick += this.RatingBar_RatingButtonMouseClick;
             // 
@@ -74,8 +64,6 @@ namespace PicSum.UIComponent.InfoPanel
             this.tagFlowList.ContextMenuStrip = this.tagContextMenuStrip;
             this.tagFlowList.IsLileList = true;
             this.tagFlowList.ItemHeight = 32;
-            this.tagFlowList.Location = new Point(4, 484);
-            this.tagFlowList.Size = new Size(508, 231);
             this.tagFlowList.DrawItem += this.TagFlowList_DrawItem;
             this.tagFlowList.MouseClick += this.TagFlowList_MouseClick;
             this.tagFlowList.MouseDoubleClick += this.TagFlowList_MouseDoubleClick;
@@ -83,8 +71,6 @@ namespace PicSum.UIComponent.InfoPanel
             // wideComboBox
             // 
             this.wideComboBox.Font = new Font("Yu Gothic UI", 10F);
-            this.wideComboBox.Location = new Point(4, 452);
-            this.wideComboBox.Size = new Size(508, 32);
             this.wideComboBox.BackColor = Color.FromArgb(250, 250, 250);
             this.wideComboBox.Icon = SWF.Core.ResourceAccessor.ResourceFiles.TagIcon.Value;
             this.wideComboBox.DropDownOpening += this.WideComboBox_DropDownOpening;
@@ -94,8 +80,6 @@ namespace PicSum.UIComponent.InfoPanel
             // 
             this.fileInfoLabel.BackColor = Color.FromArgb(250, 250, 250);
             this.fileInfoLabel.Font = new Font("Yu Gothic UI", 10F);
-            this.fileInfoLabel.Location = new Point(4, 256);
-            this.fileInfoLabel.Size = new Size(508, 134);
             // 
             // InfoPanel
             // 
@@ -107,7 +91,6 @@ namespace PicSum.UIComponent.InfoPanel
                 this.tagFlowList,
                 this.fileInfoLabel);
             this.Font = new Font("Yu Gothic UI", 9F);
-            this.Size = new Size(512, 715);
             this.IsDrawLeftBorderLine = true;
             this.VerticalTopMargin = 28;
             this.tagContextMenuStrip.ResumeLayout(false);

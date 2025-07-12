@@ -68,36 +68,24 @@ namespace PicSum.UIComponent.Contents.FileList
             // viewMenu
             // 
             this.viewMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { this.directoryMenuItem, this.imageFileMenuItem, this.otherFileMenuItem, this.toolStripSeparator1, this.fileNameMenuItem });
-            this.viewMenu.Size = new Size(181, 128);
             // 
             // directoryMenuItem
             // 
-            this.directoryMenuItem.Name = "directoryMenuItem";
-            this.directoryMenuItem.Size = new Size(180, 24);
             this.directoryMenuItem.Text = "Folder";
             this.directoryMenuItem.Click += this.DirectoryMenuItem_Click;
             // 
             // imageFileMenuItem
             // 
-            this.imageFileMenuItem.Name = "imageFileMenuItem";
-            this.imageFileMenuItem.Size = new Size(180, 24);
             this.imageFileMenuItem.Text = "Image File";
             this.imageFileMenuItem.Click += this.ImageFileMenuItem_Click;
             // 
             // otherFileMenuItem
             // 
-            this.otherFileMenuItem.Name = "otherFileMenuItem";
-            this.otherFileMenuItem.Size = new Size(180, 24);
             this.otherFileMenuItem.Text = "Other File";
             this.otherFileMenuItem.Click += this.OtherFileMenuItem_Click;
             // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Size = new Size(177, 6);
-            // 
             // fileNameMenuItem
             // 
-            this.fileNameMenuItem.Size = new Size(180, 24);
             this.fileNameMenuItem.Text = "FileName";
             this.fileNameMenuItem.Click += this.FileNameMenuItem_Click;
             // 
@@ -121,7 +109,6 @@ namespace PicSum.UIComponent.Contents.FileList
                 this.nameSortButton,
                 this.viewButton);
             this.DoubleBuffered = true;
-            this.Size = new Size(767, 29);
             this.IsDrawBottomBorderLine = true;
             this.viewMenu.ResumeLayout(false);
             this.ResumeLayout(false);

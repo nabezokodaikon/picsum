@@ -62,26 +62,19 @@ namespace PicSum.UIComponent.Contents.ImageView
             // 
             this.viewMenu.Font = new System.Drawing.Font("Yu Gothic UI", 10F);
             this.viewMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { this.singleViewMenuItem, this.spreadLeftFeedMenuItem, this.spreadRightFeedMenuItem });
-            this.viewMenu.Size = new System.Drawing.Size(197, 76);
             // 
             // singleViewMenuItem
             // 
-            this.singleViewMenuItem.Name = "singleViewMenuItem";
-            this.singleViewMenuItem.Size = new System.Drawing.Size(196, 24);
             this.singleViewMenuItem.Text = "Single View";
             this.singleViewMenuItem.Click += this.SingleViewMenuItem_Click;
             // 
             // spreadLeftFeedMenuItem
             // 
-            this.spreadLeftFeedMenuItem.Name = "spreadLeftFeedMenuItem";
-            this.spreadLeftFeedMenuItem.Size = new System.Drawing.Size(196, 24);
             this.spreadLeftFeedMenuItem.Text = "Spread (Left Feed)";
             this.spreadLeftFeedMenuItem.Click += this.SpreadLeftFeedMenuItem_Click;
             // 
             // spreadRightFeedMenuItem
             // 
-            this.spreadRightFeedMenuItem.Name = "spreadRightFeedMenuItem";
-            this.spreadRightFeedMenuItem.Size = new System.Drawing.Size(196, 24);
             this.spreadRightFeedMenuItem.Text = "Spread (Right Feed)";
             this.spreadRightFeedMenuItem.Click += this.SpreadRightFeedMenuItem_Click;
             // 
@@ -141,26 +134,19 @@ namespace PicSum.UIComponent.Contents.ImageView
                 this.zoomMenuItem14,
                 this.zoomMenuItem15,
             });
-            this.sizeMenu.Size = new System.Drawing.Size(287, 76);
             // 
             // originalSizeMenuItem
             // 
-            this.originalSizeMenuItem.Name = "originalSizeMenuItem";
-            this.originalSizeMenuItem.Size = new System.Drawing.Size(286, 24);
             this.originalSizeMenuItem.Text = "100%";
             this.originalSizeMenuItem.Click += this.OriginalSizeMenuItem_Click;
             // 
             // fitWindowMenuItem
             // 
-            this.fitWindowMenuItem.Name = "fitWindowMenuItem";
-            this.fitWindowMenuItem.Size = new System.Drawing.Size(286, 24);
             this.fitWindowMenuItem.Text = "Fit To Window";
             this.fitWindowMenuItem.Click += this.FitWindowMenuItem_Click;
             // 
             // fitWindowLargeOnlyMenuItem
             // 
-            this.fitWindowLargeOnlyMenuItem.Name = "fitWindowLargeOnlyMenuItem";
-            this.fitWindowLargeOnlyMenuItem.Size = new System.Drawing.Size(286, 24);
             this.fitWindowLargeOnlyMenuItem.Text = "Fit To Window (Large Image Only)";
             this.fitWindowLargeOnlyMenuItem.Click += this.FitWindowLargeOnlyMenuItem_Click;
             // 
@@ -200,7 +186,6 @@ namespace PicSum.UIComponent.Contents.ImageView
                 this.singlePreviewButton,
                 this.doublePreviewButton);
             this.DoubleBuffered = true;
-            this.Size = new System.Drawing.Size(691, 29);
             this.viewMenu.ResumeLayout(false);
             this.sizeMenu.ResumeLayout(false);
             this.ResumeLayout(false);
