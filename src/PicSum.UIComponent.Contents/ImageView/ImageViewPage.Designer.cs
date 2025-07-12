@@ -40,7 +40,6 @@ namespace PicSum.UIComponent.Contents.ImageView
             this.leftImagePanel.IsShowThumbnailPanel = true;
             this.leftImagePanel.Location = new System.Drawing.Point(0, 0);
             this.leftImagePanel.Size = new System.Drawing.Size(0, 0);
-            this.leftImagePanel.Text = "imagePanel1";
             this.leftImagePanel.Visible = false;
             this.leftImagePanel.Font = new System.Drawing.Font("Yu Gothic UI", 18F);
             this.leftImagePanel.ImageMouseClick += new System.EventHandler<System.Windows.Forms.MouseEventArgs>(this.LeftImagePanel_ImageMouseClick);
@@ -70,7 +69,6 @@ namespace PicSum.UIComponent.Contents.ImageView
             this.rightImagePanel.IsShowThumbnailPanel = true;
             this.rightImagePanel.Location = new System.Drawing.Point(0, 0);
             this.rightImagePanel.Size = new System.Drawing.Size(0, 0);
-            this.rightImagePanel.Text = "imagePanel2";
             this.rightImagePanel.Visible = false;
             this.rightImagePanel.Font = new System.Drawing.Font("Yu Gothic UI", 18F);
             this.rightImagePanel.ImageMouseClick += new System.EventHandler<System.Windows.Forms.MouseEventArgs>(this.RightImagePanel_ImageMouseClick);

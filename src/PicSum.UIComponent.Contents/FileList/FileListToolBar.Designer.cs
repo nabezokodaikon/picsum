@@ -61,7 +61,6 @@ namespace PicSum.UIComponent.Contents.FileList
             // 
             // thumbnailSizeSlider
             // 
-            this.thumbnailSizeSlider.Text = "slider1";
             this.thumbnailSizeSlider.BeginValueChange += this.ThumbnailSizeSlider_BeginValueChange;
             this.thumbnailSizeSlider.ValueChanging += this.ThumbnailSizeSlider_ValueChanging;
             this.thumbnailSizeSlider.ValueChanged += this.ThumbnailSizeSlider_ValueChanged;

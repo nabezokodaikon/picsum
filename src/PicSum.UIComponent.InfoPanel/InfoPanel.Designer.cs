@@ -96,7 +96,6 @@ namespace PicSum.UIComponent.InfoPanel
             this.fileInfoLabel.Font = new Font("Yu Gothic UI", 10F);
             this.fileInfoLabel.Location = new Point(4, 256);
             this.fileInfoLabel.Size = new Size(508, 134);
-            this.fileInfoLabel.Text = "fileInfoLabel1";
             // 
             // InfoPanel
             // 
