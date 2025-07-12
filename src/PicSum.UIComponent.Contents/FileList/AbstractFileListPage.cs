@@ -40,7 +40,7 @@ namespace PicSum.UIComponent.Contents.FileList
         private float _scale = 0f;
         private Dictionary<string, FileEntity> _masterFileDictionary = null;
         private string[] _filterFilePathList = null;
-        private readonly Font _defaultFont = new("Yu Gothic UI", 9);
+        private readonly Font _defaultFont = AppConstants.UI_FONT_09;
         private readonly Dictionary<float, Font> _fontCache = [];
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -236,7 +236,6 @@ namespace PicSum.UIComponent.Contents.FileList
                     font.Dispose();
                 }
                 this._fontCache.Clear();
-                this._defaultFont.Dispose();
             }
 
             this._disposed = true;

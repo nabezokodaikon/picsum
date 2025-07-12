@@ -49,10 +49,8 @@ namespace PicSum.UIComponent.InfoPanel
         private string _contextMenuOperationTag = string.Empty;
         private readonly SolidBrush _foreColorBrush;
         private readonly StringFormat _stringFormat;
-        private readonly Font _tagDefaultFont
-            = new("Yu Gothic UI", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-        private readonly Font _allTagDefaultFont
-            = new("Yu Gothic UI", 14F, FontStyle.Bold, GraphicsUnit.Pixel);
+        private readonly Font _tagDefaultFont = AppConstants.UI_FONT_14_REGULAR;
+        private readonly Font _allTagDefaultFont = AppConstants.UI_FONT_14_BOLD;
         private readonly Dictionary<float, Font> _tagFontCache = [];
         private readonly Dictionary<float, Font> _allTagFontCache = [];
         private bool _isLoading = false;
@@ -309,14 +307,12 @@ namespace PicSum.UIComponent.InfoPanel
                     font.Dispose();
                 }
                 this._tagFontCache.Clear();
-                this._tagDefaultFont.Dispose();
 
                 foreach (var font in this._allTagFontCache.Values)
                 {
                     font.Dispose();
                 }
                 this._allTagFontCache.Clear();
-                this._allTagDefaultFont.Dispose();
 
                 foreach (var icon in this._tagIconCache.Values)
                 {

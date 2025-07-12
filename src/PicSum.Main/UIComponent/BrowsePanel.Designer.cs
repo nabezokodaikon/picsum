@@ -1,3 +1,4 @@
+using SWF.Core.Base;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
@@ -26,7 +27,7 @@ namespace PicSum.Main.UIComponent
             // infoPanel
             // 
             this.infoPanel.BackColor = Color.FromArgb(250, 250, 250);
-            this.infoPanel.Font = new Font("Yu Gothic UI", 9F);
+            this.infoPanel.Font = AppConstants.UI_FONT_09;
             this.infoPanel.SelectedTag += this.InfoPanel_SelectedTag;
             // 
             // tabSwitch
@@ -79,7 +80,7 @@ namespace PicSum.Main.UIComponent
             this.searchBookmarkToolButton.MouseClick += this.SearchBookmarkToolButton_MouseClick;
             // 
             // tagDropToolButton
-            // 
+            //
             this.tagDropToolButton.ItemMouseClick += this.TagDropToolButton_ItemMouseClick;
             this.tagDropToolButton.DropDownOpening += this.TagDropToolButton_DropDownOpening;
             // 

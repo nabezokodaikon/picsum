@@ -35,8 +35,7 @@ namespace PicSum.UIComponent.Contents.ImageView
         public event EventHandler IndexSliderValueChanging;
 
         private bool _disposed = false;
-        private readonly Font _defaultFont
-            = new("Yu Gothic UI", 12F, GraphicsUnit.Pixel);
+        private readonly Font _defaultFont = AppConstants.UI_FONT_12;
         private readonly Dictionary<float, Font> _fontCache = [];
         private bool _isShowingMenuButtonDropDown = false;
 
@@ -299,7 +298,6 @@ namespace PicSum.UIComponent.Contents.ImageView
                     font.Dispose();
                 }
                 this._fontCache.Clear();
-                this._defaultFont.Dispose();
 
                 this.components?.Dispose();
             }

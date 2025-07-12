@@ -1,8 +1,8 @@
+using SWF.Core.Base;
 using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
 using System;
 using System.ComponentModel;
-using System.Drawing;
 using System.Linq;
 using System.Runtime.Versioning;
 using System.Windows.Forms;
@@ -224,7 +224,7 @@ namespace PicSum.UIComponent.Contents.ContextMenu
 
         public FileContextMenu()
         {
-            this.Font = new Font(this.Font.FontFamily, 10f);
+            this.Font = AppConstants.UI_FONT_14_REGULAR;
 
             this.ShowImageMargin = false;
 

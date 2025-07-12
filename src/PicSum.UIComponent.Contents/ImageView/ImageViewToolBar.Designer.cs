@@ -60,7 +60,7 @@ namespace PicSum.UIComponent.Contents.ImageView
             // 
             // viewMenu
             // 
-            this.viewMenu.Font = new System.Drawing.Font("Yu Gothic UI", 10F);
+            this.viewMenu.Font = AppConstants.UI_FONT_14_REGULAR;
             this.viewMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { this.singleViewMenuItem, this.spreadLeftFeedMenuItem, this.spreadRightFeedMenuItem });
             // 
             // singleViewMenuItem
@@ -111,7 +111,7 @@ namespace PicSum.UIComponent.Contents.ImageView
             // 
             // sizeMenu
             // 
-            this.sizeMenu.Font = new System.Drawing.Font("Yu Gothic UI", 10F);
+            this.sizeMenu.Font = AppConstants.UI_FONT_14_REGULAR;
             this.sizeMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[]
             {
                 this.fitWindowMenuItem,

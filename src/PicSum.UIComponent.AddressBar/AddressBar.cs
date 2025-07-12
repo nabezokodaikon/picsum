@@ -30,7 +30,7 @@ namespace PicSum.UIComponent.AddressBar
         private readonly List<DrawItemBase> _addressItems = [];
         private DrawItemBase _mousePointItem = null;
         private DrawItemBase _mouseDownItem = null;
-        private readonly Font _defaultFont = new("Yu Gothic UI", 10F);
+        private readonly Font _defaultFont = AppConstants.UI_FONT_10;
         private readonly Dictionary<float, Font> _regularFontCache = [];
         private readonly Dictionary<float, Font> _boldFontCache = [];
 
@@ -170,8 +170,6 @@ namespace PicSum.UIComponent.AddressBar
                     font.Dispose();
                 }
                 this._boldFontCache.Clear();
-
-                this._defaultFont.Dispose();
             }
 
             this._disposed = true;

@@ -1,3 +1,4 @@
+using SWF.Core.Base;
 using System.Drawing;
 
 namespace PicSum.UIComponent.InfoPanel
@@ -32,12 +33,12 @@ namespace PicSum.UIComponent.InfoPanel
             // thumbnailPictureBox
             // 
             this.thumbnailPictureBox.BackColor = Color.FromArgb(250, 250, 250);
-            this.thumbnailPictureBox.Font = new Font("Yu Gothic UI", 14F);
+            this.thumbnailPictureBox.Font = AppConstants.UI_FONT_18;
             this.thumbnailPictureBox.Paint += this.ThumbnailPictureBox_Paint;
             // 
             // tagContextMenuStrip
             // 
-            this.tagContextMenuStrip.Font = new Font("Yu Gothic UI", 10F);
+            this.tagContextMenuStrip.Font = AppConstants.UI_FONT_14_REGULAR;
             this.tagContextMenuStrip.ImageScalingSize = new Size(20, 20);
             this.tagContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { this.tagDeleteMenuItem, this.tagToAllEntryMenuItem });
             this.tagContextMenuStrip.Opening += this.TagContextMenuStrip_Opening;
@@ -70,7 +71,6 @@ namespace PicSum.UIComponent.InfoPanel
             // 
             // wideComboBox
             // 
-            this.wideComboBox.Font = new Font("Yu Gothic UI", 10F);
             this.wideComboBox.BackColor = Color.FromArgb(250, 250, 250);
             this.wideComboBox.Icon = SWF.Core.ResourceAccessor.ResourceFiles.TagIcon.Value;
             this.wideComboBox.DropDownOpening += this.WideComboBox_DropDownOpening;
@@ -79,7 +79,7 @@ namespace PicSum.UIComponent.InfoPanel
             // fileInfoLabel
             // 
             this.fileInfoLabel.BackColor = Color.FromArgb(250, 250, 250);
-            this.fileInfoLabel.Font = new Font("Yu Gothic UI", 10F);
+            this.fileInfoLabel.Font = AppConstants.UI_FONT_14_REGULAR;
             // 
             // InfoPanel
             // 
@@ -90,7 +90,6 @@ namespace PicSum.UIComponent.InfoPanel
                 this.ratingBar,
                 this.tagFlowList,
                 this.fileInfoLabel);
-            this.Font = new Font("Yu Gothic UI", 9F);
             this.IsDrawLeftBorderLine = true;
             this.VerticalTopMargin = 28;
             this.tagContextMenuStrip.ResumeLayout(false);

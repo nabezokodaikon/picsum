@@ -1,3 +1,4 @@
+using SWF.Core.Base;
 using System.Drawing;
 
 namespace PicSum.UIComponent.Contents.FileList
@@ -66,7 +67,8 @@ namespace PicSum.UIComponent.Contents.FileList
             this.thumbnailSizeSlider.ValueChanged += this.ThumbnailSizeSlider_ValueChanged;
             // 
             // viewMenu
-            // 
+            //
+            this.viewMenu.Font = AppConstants.UI_FONT_14_REGULAR;
             this.viewMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { this.directoryMenuItem, this.imageFileMenuItem, this.otherFileMenuItem, this.toolStripSeparator1, this.fileNameMenuItem });
             // 
             // directoryMenuItem
