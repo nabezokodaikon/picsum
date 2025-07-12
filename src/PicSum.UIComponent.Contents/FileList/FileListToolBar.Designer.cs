@@ -122,15 +122,16 @@ namespace PicSum.UIComponent.Contents.FileList
             this.moveNextButton.MouseClick += this.MoveNextButton_MouseClick;
             // 
             // FileListToolBar
-            // 
-            this.Controls.Add(this.moveNextButton);
-            this.Controls.Add(this.movePreviewButton);
-            this.Controls.Add(this.thumbnailSizeSlider);
-            this.Controls.Add(this.registrationSortButton);
-            this.Controls.Add(this.timestampSortButton);
-            this.Controls.Add(this.pathSortButton);
-            this.Controls.Add(this.nameSortButton);
-            this.Controls.Add(this.viewButton);
+            //
+            this.Controls.AddRange(
+                this.moveNextButton,
+                this.movePreviewButton,
+                this.thumbnailSizeSlider,
+                this.registrationSortButton,
+                this.timestampSortButton,
+                this.pathSortButton,
+                this.nameSortButton,
+                this.viewButton);
             this.DoubleBuffered = true;
             this.Name = "FileListToolBar";
             this.Size = new Size(767, 29);

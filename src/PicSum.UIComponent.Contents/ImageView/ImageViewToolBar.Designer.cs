@@ -128,7 +128,7 @@ namespace PicSum.UIComponent.Contents.ImageView
             // 
             this.sizeMenu.Font = new System.Drawing.Font("Yu Gothic UI", 10F);
             this.sizeMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[]
-            {                
+            {
                 this.fitWindowMenuItem,
                 this.fitWindowLargeOnlyMenuItem,
                 this.sizeMenuSeparator,
@@ -199,14 +199,15 @@ namespace PicSum.UIComponent.Contents.ImageView
             this.filePathToolTip.ReshowDelay = 100;
             // 
             // ImageViewToolBar
-            // 
-            this.Controls.Add(this.sizeButton);
-            this.Controls.Add(this.viewButton);
-            this.Controls.Add(this.indexSlider);
-            this.Controls.Add(this.singleNextButton);
-            this.Controls.Add(this.doubleNextButton);
-            this.Controls.Add(this.singlePreviewButton);
-            this.Controls.Add(this.doublePreviewButton);
+            //
+            this.Controls.AddRange(
+                this.sizeButton,
+                this.viewButton,
+                this.indexSlider,
+                this.singleNextButton,
+                this.doubleNextButton,
+                this.singlePreviewButton,
+                this.doublePreviewButton);
             this.DoubleBuffered = true;
             this.Name = "ImageViewToolBar";
             this.Size = new System.Drawing.Size(691, 29);

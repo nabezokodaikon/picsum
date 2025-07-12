@@ -55,10 +55,11 @@ namespace SWF.UIComponent.WideDropDown
             this.arrowPictureBox.Name = "arrowPictureBox";
             // 
             // WideComboBox
-            // 
-            this.Controls.Add(this.inputTextBox);
-            this.Controls.Add(this.arrowPictureBox);
-            this.Controls.Add(this.addButton);
+            //
+            this.Controls.AddRange(
+                this.inputTextBox,
+                this.arrowPictureBox,
+                this.addButton);
             this.Name = "WideComboBox";
             this.Paint += this.WideComboBox_Paint;
             this.ResumeLayout(false);

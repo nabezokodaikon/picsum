@@ -82,8 +82,9 @@ namespace PicSum.UIComponent.Contents.ImageView
             // 
             // checkPatternPanel
             // 
-            this.checkPatternPanel.Controls.Add(this.leftImagePanel);
-            this.checkPatternPanel.Controls.Add(this.rightImagePanel);
+            this.checkPatternPanel.Controls.AddRange(
+                this.leftImagePanel,
+                this.rightImagePanel);
             this.checkPatternPanel.Name = "checkPatternPanel";
             this.checkPatternPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             // 
@@ -108,8 +109,9 @@ namespace PicSum.UIComponent.Contents.ImageView
             // ImageViewPage
             //
             this.BackColor = System.Drawing.Color.FromArgb(250, 250, 250);
-            this.Controls.Add(this.checkPatternPanel);
-            this.Controls.Add(this.toolBar);
+            this.Controls.AddRange(
+                this.checkPatternPanel,
+                this.toolBar);
             this.Name = "ImageViewPage";
             this.Size = new System.Drawing.Size(925, 528);
             this.Load += this.ImageViewPage_Load;

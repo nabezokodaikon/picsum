@@ -53,11 +53,12 @@ namespace PicSum.Main.UIComponent
             // toolPanel
             // 
             this.toolPanel.BackColor = Color.FromArgb(250, 250, 250);
-            this.toolPanel.Controls.Add(this.reloadToolButton);
-            this.toolPanel.Controls.Add(this.nextPageHistoryButton);
-            this.toolPanel.Controls.Add(this.previewPageHistoryButton);
-            this.toolPanel.Controls.Add(this.showInfoToolButton);
-            this.toolPanel.Controls.Add(this.addressBar);
+            this.toolPanel.Controls.AddRange(
+                this.reloadToolButton,
+                this.nextPageHistoryButton,
+                this.previewPageHistoryButton,
+                this.showInfoToolButton,
+                this.addressBar);
             this.toolPanel.Location = new Point(0, 29);
             this.toolPanel.Name = "toolPanel";
             this.toolPanel.Size = new Size(746, 34);
@@ -132,10 +133,11 @@ namespace PicSum.Main.UIComponent
             // toolPanel2
             // 
             this.toolPanel2.BackColor = Color.FromArgb(250, 250, 250);
-            this.toolPanel2.Controls.Add(this.searchBookmarkToolButton);
-            this.toolPanel2.Controls.Add(this.homeToolButton);
-            this.toolPanel2.Controls.Add(this.tagDropToolButton);
-            this.toolPanel2.Controls.Add(this.searchRatingToolButton);
+            this.toolPanel2.Controls.AddRange(
+                this.searchBookmarkToolButton,
+                this.homeToolButton,
+                this.tagDropToolButton,
+                this.searchRatingToolButton);
             this.toolPanel2.Location = new Point(0, 63);
             this.toolPanel2.Name = "toolPanel2";
             this.toolPanel2.Size = new Size(38, 403);

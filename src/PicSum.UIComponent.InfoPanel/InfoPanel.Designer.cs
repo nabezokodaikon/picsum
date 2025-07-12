@@ -107,11 +107,12 @@ namespace PicSum.UIComponent.InfoPanel
             // InfoPanel
             // 
             this.BackColor = Color.FromArgb(250, 250, 250);
-            this.Controls.Add(this.wideComboBox);
-            this.Controls.Add(this.thumbnailPictureBox);
-            this.Controls.Add(this.ratingBar);
-            this.Controls.Add(this.tagFlowList);
-            this.Controls.Add(this.fileInfoLabel);
+            this.Controls.AddRange(
+                this.wideComboBox,
+                this.thumbnailPictureBox,
+                this.ratingBar,
+                this.tagFlowList,
+                this.fileInfoLabel);
             this.Font = new Font("Yu Gothic UI", 9F);
             this.Name = "InfoPanel";
             this.Size = new Size(512, 715);
