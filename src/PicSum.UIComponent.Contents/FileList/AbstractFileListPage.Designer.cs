@@ -38,7 +38,6 @@ namespace PicSum.UIComponent.Contents.FileList
             this.flowList.ItemTextAlignment = System.Drawing.StringAlignment.Center;
             this.flowList.ItemTextLineAlignment = System.Drawing.StringAlignment.Center;
             this.flowList.ItemTextTrimming = System.Drawing.StringTrimming.EllipsisCharacter;
-            this.flowList.Name = "flowList";
             this.flowList.Text = "flowList1";
             this.flowList.ItemDelete += new System.EventHandler(this.FlowList_ItemDelete);
             this.flowList.DrawItem += new System.EventHandler<SWF.UIComponent.FlowList.DrawItemEventArgs>(this.FlowList_Drawitem);
@@ -53,7 +52,6 @@ namespace PicSum.UIComponent.Contents.FileList
             // 
             // fileContextMenu
             // 
-            this.fileContextMenu.Name = "fileContextMenu";
             this.fileContextMenu.Size = new System.Drawing.Size(209, 312);
             this.fileContextMenu.DirectoryActiveTabOpen += new System.EventHandler<PicSum.UIComponent.Contents.ContextMenu.ExecuteFileEventArgs>(this.FileContextMenu_DirectoryActiveTabOpen);
             this.fileContextMenu.DirectoryNewTabOpen += new System.EventHandler<PicSum.UIComponent.Contents.ContextMenu.ExecuteFileEventArgs>(this.FileContextMenu_DirectoryNewTabOpen);
@@ -95,7 +93,6 @@ namespace PicSum.UIComponent.Contents.FileList
             this.Controls.AddRange(
                 this.flowList,
                 this.toolBar);
-            this.Name = "FileListPageBase";
             this.Size = new System.Drawing.Size(630, 393);
             this.Load += this.AbstractFileListPage_Load;
             this.toolBar.ResumeLayout(false);

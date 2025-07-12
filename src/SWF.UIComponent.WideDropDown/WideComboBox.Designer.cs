@@ -40,19 +40,13 @@ namespace SWF.UIComponent.WideDropDown
             // 
             // addButton
             // 
-            this.addButton.Name = "addButton";
             this.addButton.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
             this.addButton.MouseClick += this.AddButton_MouseClick;
             // 
             // inputTextBox
             // 
             this.inputTextBox.Font = new Font("Yu Gothic UI", 10F);
-            this.inputTextBox.Name = "inputTextBox";
             this.inputTextBox.KeyDown += this.InputTextBox_KeyDown;
-            // 
-            // arrowPictureBox
-            // 
-            this.arrowPictureBox.Name = "arrowPictureBox";
             // 
             // WideComboBox
             //
@@ -60,7 +54,6 @@ namespace SWF.UIComponent.WideDropDown
                 this.inputTextBox,
                 this.arrowPictureBox,
                 this.addButton);
-            this.Name = "WideComboBox";
             this.Paint += this.WideComboBox_Paint;
             this.ResumeLayout(false);
         }

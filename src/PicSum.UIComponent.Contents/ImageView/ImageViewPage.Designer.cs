@@ -39,7 +39,6 @@ namespace PicSum.UIComponent.Contents.ImageView
             this.leftImagePanel.ImageAlign = SWF.Core.Base.ImageAlign.Center;
             this.leftImagePanel.IsShowThumbnailPanel = true;
             this.leftImagePanel.Location = new System.Drawing.Point(0, 0);
-            this.leftImagePanel.Name = "leftImagePanel";
             this.leftImagePanel.Size = new System.Drawing.Size(0, 0);
             this.leftImagePanel.Text = "imagePanel1";
             this.leftImagePanel.Visible = false;
@@ -52,7 +51,6 @@ namespace PicSum.UIComponent.Contents.ImageView
             // 
             this.fileContextMenu.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.fileContextMenu.VisibleRemoveFromListMenuItem = false;
-            this.fileContextMenu.Name = "fileContextMenu";
             this.fileContextMenu.Size = new System.Drawing.Size(205, 292);
             this.fileContextMenu.FileNewTabOpen += new System.EventHandler<PicSum.UIComponent.Contents.ContextMenu.ExecuteFileEventArgs>(this.FileContextMenu_FileNewTabOpen);
             this.fileContextMenu.FileNewWindowOpen += new System.EventHandler<PicSum.UIComponent.Contents.ContextMenu.ExecuteFileEventArgs>(this.FileContextMenu_FileNewWindowOpen);
@@ -71,7 +69,6 @@ namespace PicSum.UIComponent.Contents.ImageView
             this.rightImagePanel.ImageAlign = SWF.Core.Base.ImageAlign.Center;
             this.rightImagePanel.IsShowThumbnailPanel = true;
             this.rightImagePanel.Location = new System.Drawing.Point(0, 0);
-            this.rightImagePanel.Name = "rightImagePanel";
             this.rightImagePanel.Size = new System.Drawing.Size(0, 0);
             this.rightImagePanel.Text = "imagePanel2";
             this.rightImagePanel.Visible = false;
@@ -85,7 +82,6 @@ namespace PicSum.UIComponent.Contents.ImageView
             this.checkPatternPanel.Controls.AddRange(
                 this.leftImagePanel,
                 this.rightImagePanel);
-            this.checkPatternPanel.Name = "checkPatternPanel";
             this.checkPatternPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             // 
             // toolBar
@@ -112,7 +108,6 @@ namespace PicSum.UIComponent.Contents.ImageView
             this.Controls.AddRange(
                 this.checkPatternPanel,
                 this.toolBar);
-            this.Name = "ImageViewPage";
             this.Size = new System.Drawing.Size(925, 528);
             this.Load += this.ImageViewPage_Load;
             this.MouseWheel += this.ImageViewPage_MouseWheel;

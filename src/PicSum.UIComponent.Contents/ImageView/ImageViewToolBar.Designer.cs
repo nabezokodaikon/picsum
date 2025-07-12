@@ -62,7 +62,6 @@ namespace PicSum.UIComponent.Contents.ImageView
             // 
             this.viewMenu.Font = new System.Drawing.Font("Yu Gothic UI", 10F);
             this.viewMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { this.singleViewMenuItem, this.spreadLeftFeedMenuItem, this.spreadRightFeedMenuItem });
-            this.viewMenu.Name = "viewMenu";
             this.viewMenu.Size = new System.Drawing.Size(197, 76);
             // 
             // singleViewMenuItem
@@ -88,27 +87,22 @@ namespace PicSum.UIComponent.Contents.ImageView
             // 
             // doublePreviewButton
             // 
-            this.doublePreviewButton.Name = "doublePreviewButton";
             this.doublePreviewButton.MouseClick += this.DoublePreviewButton_MouseClick;
             // 
             // singlePreviewButton
             // 
-            this.singlePreviewButton.Name = "singlePreviewButton";
             this.singlePreviewButton.MouseClick += this.SinglePreviewButton_MouseClick;
             // 
             // doubleNextButton
             // 
-            this.doubleNextButton.Name = "doubleNextButton";
             this.doubleNextButton.MouseClick += this.DoubleNextButton_MouseClick;
             // 
             // singleNextButton
             // 
-            this.singleNextButton.Name = "singleNextButton";
             this.singleNextButton.MouseClick += this.SingleNextButton_MouseClick;
             // 
             // indexSlider
             // 
-            this.indexSlider.Name = "indexSlider";
             this.indexSlider.BeginValueChange += this.IndexSlider_BeginValueChange;
             this.indexSlider.ValueChanging += this.IndexSlider_ValueChanging;
             this.indexSlider.ValueChanged += this.IndexSlider_ValueChanged;
@@ -116,12 +110,10 @@ namespace PicSum.UIComponent.Contents.ImageView
             // 
             // viewButton
             // 
-            this.viewButton.Name = "viewButton";
             this.viewButton.MouseClick += this.ViewButton_MouseClick;
             // 
             // sizeButton
             // 
-            this.sizeButton.Name = "sizeButton";
             this.sizeButton.MouseClick += this.SizeButton_MouseClick;
             // 
             // sizeMenu
@@ -149,7 +141,6 @@ namespace PicSum.UIComponent.Contents.ImageView
                 this.zoomMenuItem14,
                 this.zoomMenuItem15,
             });
-            this.sizeMenu.Name = "viewMenu";
             this.sizeMenu.Size = new System.Drawing.Size(287, 76);
             // 
             // originalSizeMenuItem
@@ -209,7 +200,6 @@ namespace PicSum.UIComponent.Contents.ImageView
                 this.singlePreviewButton,
                 this.doublePreviewButton);
             this.DoubleBuffered = true;
-            this.Name = "ImageViewToolBar";
             this.Size = new System.Drawing.Size(691, 29);
             this.viewMenu.ResumeLayout(false);
             this.sizeMenu.ResumeLayout(false);

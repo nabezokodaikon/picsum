@@ -37,36 +37,30 @@ namespace PicSum.UIComponent.Contents.FileList
             // 
             // viewButton
             // 
-            this.viewButton.Name = "viewButton";
             this.viewButton.MouseClick += this.ViewButton_MouseClick;
             // 
             // nameSortButton
             // 
-            this.nameSortButton.Name = "nameSortButton";
             this.nameSortButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.nameSortButton.MouseClick += this.NameSortButton_MouseClick;
             // 
             // pathSortButton
             // 
-            this.pathSortButton.Name = "pathSortButton";
             this.pathSortButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.pathSortButton.MouseClick += this.PathSortButton_MouseClick;
             // 
             // timestampSortButton
             // 
-            this.timestampSortButton.Name = "timestampSortButton";
             this.timestampSortButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.timestampSortButton.MouseClick += this.TimestampSortButton_MouseClick;
             // 
             // registrationSortButton
             // 
-            this.registrationSortButton.Name = "registrationSortButton";
             this.registrationSortButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.registrationSortButton.MouseClick += this.RegistrationSortButton_MouseClick;
             // 
             // thumbnailSizeSlider
             // 
-            this.thumbnailSizeSlider.Name = "thumbnailSizeSlider";
             this.thumbnailSizeSlider.Text = "slider1";
             this.thumbnailSizeSlider.BeginValueChange += this.ThumbnailSizeSlider_BeginValueChange;
             this.thumbnailSizeSlider.ValueChanging += this.ThumbnailSizeSlider_ValueChanging;
@@ -75,7 +69,6 @@ namespace PicSum.UIComponent.Contents.FileList
             // viewMenu
             // 
             this.viewMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { this.directoryMenuItem, this.imageFileMenuItem, this.otherFileMenuItem, this.toolStripSeparator1, this.fileNameMenuItem });
-            this.viewMenu.Name = "viewMenu";
             this.viewMenu.Size = new Size(181, 128);
             // 
             // directoryMenuItem
@@ -101,24 +94,20 @@ namespace PicSum.UIComponent.Contents.FileList
             // 
             // toolStripSeparator1
             // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
             this.toolStripSeparator1.Size = new Size(177, 6);
             // 
             // fileNameMenuItem
             // 
-            this.fileNameMenuItem.Name = "fileNameMenuItem";
             this.fileNameMenuItem.Size = new Size(180, 24);
             this.fileNameMenuItem.Text = "FileName";
             this.fileNameMenuItem.Click += this.FileNameMenuItem_Click;
             // 
             // movePreviewButton
             // 
-            this.movePreviewButton.Name = "movePreviewButton";
             this.movePreviewButton.MouseClick += this.MovePreviewButton_MouseClick;
             // 
             // moveNextButton
             // 
-            this.moveNextButton.Name = "moveNextButton";
             this.moveNextButton.MouseClick += this.MoveNextButton_MouseClick;
             // 
             // FileListToolBar
@@ -133,7 +122,6 @@ namespace PicSum.UIComponent.Contents.FileList
                 this.nameSortButton,
                 this.viewButton);
             this.DoubleBuffered = true;
-            this.Name = "FileListToolBar";
             this.Size = new Size(767, 29);
             this.IsDrawBottomBorderLine = true;
             this.viewMenu.ResumeLayout(false);

@@ -21,7 +21,6 @@ namespace PicSum.Main.UIComponent
             this.pageContainer.AllowDrop = true;
             this.pageContainer.BackColor = Color.FromArgb(250, 250, 250);
             this.pageContainer.Location = new Point(500, 0);
-            this.pageContainer.Name = "pageContainer";
             this.pageContainer.Size = new Size(746, 402);
             this.pageContainer.DragDrop += this.PageContainer_DragDrop;
             this.pageContainer.DragEnter += this.PageContainer_DragEnter;
@@ -31,7 +30,6 @@ namespace PicSum.Main.UIComponent
             this.infoPanel.BackColor = Color.FromArgb(250, 250, 250);
             this.infoPanel.Font = new Font("Yu Gothic UI", 9F);
             this.infoPanel.Location = new Point(0, 0);
-            this.infoPanel.Name = "infoPanel";
             this.infoPanel.Size = new Size(96, 100);
             this.infoPanel.SelectedTag += this.InfoPanel_SelectedTag;
             // 
@@ -40,7 +38,6 @@ namespace PicSum.Main.UIComponent
             this.tabSwitch.AllowDrop = true;
             this.tabSwitch.BackColor = Color.Black;
             this.tabSwitch.Location = new Point(0, 0);
-            this.tabSwitch.Name = "tabSwitch";
             this.tabSwitch.Size = new Size(746, 29);
             this.tabSwitch.ActiveTabChanged += this.TabSwitch_ActiveTabChanged;
             this.tabSwitch.TabCloseButtonClick += this.TabSwitch_TabCloseButtonClick;
@@ -60,13 +57,11 @@ namespace PicSum.Main.UIComponent
                 this.showInfoToolButton,
                 this.addressBar);
             this.toolPanel.Location = new Point(0, 29);
-            this.toolPanel.Name = "toolPanel";
             this.toolPanel.Size = new Size(746, 34);
             // 
             // reloadToolButton
             // 
             this.reloadToolButton.Location = new Point(73, 3);
-            this.reloadToolButton.Name = "reloadToolButton";
             this.reloadToolButton.Size = new Size(32, 28);
             this.reloadToolButton.MouseClick += this.ReloadToolButton_MouseClick;
             // 
@@ -74,7 +69,6 @@ namespace PicSum.Main.UIComponent
             // 
             this.nextPageHistoryButton.Enabled = false;
             this.nextPageHistoryButton.Location = new Point(38, 3);
-            this.nextPageHistoryButton.Name = "nextPageHistoryButton";
             this.nextPageHistoryButton.Size = new Size(32, 28);
             this.nextPageHistoryButton.MouseClick += this.NextPageHistoryButton_MouseClick;
             // 
@@ -82,14 +76,12 @@ namespace PicSum.Main.UIComponent
             // 
             this.previewPageHistoryButton.Enabled = false;
             this.previewPageHistoryButton.Location = new Point(3, 3);
-            this.previewPageHistoryButton.Name = "previewPageHistoryButton";
             this.previewPageHistoryButton.Size = new Size(32, 28);
             this.previewPageHistoryButton.MouseClick += this.PreviewPageHistoryButton_MouseClick;
             // 
             // showInfoToolButton
             // 
             this.showInfoToolButton.Location = new Point(712, 3);
-            this.showInfoToolButton.Name = "showInfoToolButton";
             this.showInfoToolButton.Size = new Size(32, 28);
             this.showInfoToolButton.MouseClick += this.ShowInfoToolButton_MouseClick;
             // 
@@ -97,21 +89,18 @@ namespace PicSum.Main.UIComponent
             //
             this.addressBar.BackColor = Color.FromArgb(124, 138, 153);
             this.addressBar.Location = new Point(108, 4);
-            this.addressBar.Name = "addressBar";
             this.addressBar.Size = new Size(601, 26);
             this.addressBar.SelectedDirectory += this.AddressBar_SelectedDirectory;
             // 
             // searchBookmarkToolButton
             // 
             this.searchBookmarkToolButton.Location = new Point(3, 98);
-            this.searchBookmarkToolButton.Name = "searchBookmarkToolButton";
             this.searchBookmarkToolButton.Size = new Size(32, 28);
             this.searchBookmarkToolButton.MouseClick += this.SearchBookmarkToolButton_MouseClick;
             // 
             // tagDropToolButton
             // 
             this.tagDropToolButton.Location = new Point(3, 36);
-            this.tagDropToolButton.Name = "tagDropToolButton";
             this.tagDropToolButton.Size = new Size(32, 28);
             this.tagDropToolButton.ItemMouseClick += this.TagDropToolButton_ItemMouseClick;
             this.tagDropToolButton.DropDownOpening += this.TagDropToolButton_DropDownOpening;
@@ -119,14 +108,12 @@ namespace PicSum.Main.UIComponent
             // homeToolButton
             // 
             this.homeToolButton.Location = new Point(3, 5);
-            this.homeToolButton.Name = "homeToolButton";
             this.homeToolButton.Size = new Size(32, 28);
             this.homeToolButton.MouseClick += this.HomeToolButton_MouseClick;
             // 
             // searchRatingToolButton
             // 
             this.searchRatingToolButton.Location = new Point(3, 67);
-            this.searchRatingToolButton.Name = "searchRatingToolButton";
             this.searchRatingToolButton.Size = new Size(32, 28);
             this.searchRatingToolButton.MouseClick += this.SearchRatingToolButton_MouseClick;
             // 
@@ -139,7 +126,6 @@ namespace PicSum.Main.UIComponent
                 this.tagDropToolButton,
                 this.searchRatingToolButton);
             this.toolPanel2.Location = new Point(0, 63);
-            this.toolPanel2.Name = "toolPanel2";
             this.toolPanel2.Size = new Size(38, 403);
             this.toolPanel2.IsDrawRightBorderLine = true;
             this.toolPanel2.VerticalTopMargin = 28;
@@ -147,7 +133,6 @@ namespace PicSum.Main.UIComponent
             // BrowsePanel
             // 
             this.BackColor = Color.FromArgb(64, 68, 71);
-            this.Name = "BrowseMainPanel";
             this.Size = new Size(746, 466);
             this.Load += this.BrowsePanel_Load;
         }
