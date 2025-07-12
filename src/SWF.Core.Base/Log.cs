@@ -12,26 +12,25 @@ namespace SWF.Core.Base
         {
             ArgumentNullException.ThrowIfNullOrEmpty(logDirectory, nameof(logDirectory));
 
-            ConsoleUtil.Write(true, $"Log.Initialize Start");
-
-            var config = new LoggingConfiguration();
-
-            var logfile = new FileTarget("logfile")
+            using (TimeMeasuring.Run(true, "Log.Initialize"))
             {
-                FileName = Path.Combine(logDirectory, "app.log"),
-                Layout = "${date:format=yyyy-MM-dd HH\\:mm\\:ss.fff} | ${level:padding=-5} | ${threadid:padding=4} | ${threadname:padding=-14} | ${message:withexception=true}",
-                ArchiveFileName = Path.Combine(logDirectory, "archive", "app_{#}.log"),
-                ArchiveAboveSize = 10 * 1024 * 1024,
-                MaxArchiveFiles = 30,
-            };
-#if DEBUG
-            config.AddRule(LogLevel.Trace, LogLevel.Fatal, logfile);
-#else
-            config.AddRule(LogLevel.Info, LogLevel.Fatal, logfile);
-#endif
-            LogManager.Configuration = config;
+                var config = new LoggingConfiguration();
 
-            ConsoleUtil.Write(true, $"Log.Initialize End");
+                var logfile = new FileTarget("logfile")
+                {
+                    FileName = Path.Combine(logDirectory, "app.log"),
+                    Layout = "${date:format=yyyy-MM-dd HH\\:mm\\:ss.fff} | ${level:padding=-5} | ${threadid:padding=4} | ${threadname:padding=-14} | ${message:withexception=true}",
+                    ArchiveFileName = Path.Combine(logDirectory, "archive", "app_{#}.log"),
+                    ArchiveAboveSize = 10 * 1024 * 1024,
+                    MaxArchiveFiles = 30,
+                };
+#if DEBUG
+                config.AddRule(LogLevel.Trace, LogLevel.Fatal, logfile);
+#else
+                config.AddRule(LogLevel.Info, LogLevel.Fatal, logfile);
+#endif
+                LogManager.Configuration = config;
+            }
         }
 
         public static Logger GetLogger()

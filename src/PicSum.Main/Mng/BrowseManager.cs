@@ -54,32 +54,30 @@ namespace PicSum.Main.Mng
 
         private BrowseForm CreateBrowse()
         {
-            ConsoleUtil.Write(true, $"BrowseManager.CreateBrowse Start");
+            using (TimeMeasuring.Run(true, "BrowseManager.CreateBrowse"))
+            {
+                var browse = new BrowseForm();
+                this.InitializeBrowseDelegate(browse);
 
-            var browse = new BrowseForm();
-            this.InitializeBrowseDelegate(browse);
-
-            ConsoleUtil.Write(true, $"BrowseManager.CreateBrowse End");
-
-            return browse;
+                return browse;
+            }
         }
 
         private BrowseForm CreateBrowse(Point windowLocation, Size windowSize, FormWindowState windowState)
         {
-            ConsoleUtil.Write(true, $"BrowseManager.CreateBrowse Start");
-
-            var browse = new BrowseForm()
+            using (TimeMeasuring.Run(true, "BrowseManager.CreateBrowse"))
             {
-                Location = windowLocation,
-                Size = windowSize,
-                WindowState = windowState
-            };
+                var browse = new BrowseForm()
+                {
+                    Location = windowLocation,
+                    Size = windowSize,
+                    WindowState = windowState
+                };
 
-            this.InitializeBrowseDelegate(browse);
+                this.InitializeBrowseDelegate(browse);
 
-            ConsoleUtil.Write(true, $"BrowseManager.CreateBrowse End");
-
-            return browse;
+                return browse;
+            }
         }
 
         private void InitializeBrowseDelegate(BrowseForm browse)

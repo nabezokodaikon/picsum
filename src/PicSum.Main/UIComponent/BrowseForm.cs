@@ -132,16 +132,16 @@ namespace PicSum.Main.UIComponent
 
         private void BrowseForm_Shown(object sender, EventArgs e)
         {
-            ConsoleUtil.Write(true, $"BrowseForm.BrowseForm_Shown Start");
-
-            if (BrowseForm.isStartUp)
+            using (TimeMeasuring.Run(true, "BrowseForm.BrowseForm_Shown"))
             {
-                this.CreateBrowsePanel();
-                BrowseForm.isStartUp = false;
-            }
+                if (BrowseForm.isStartUp)
+                {
+                    this.CreateBrowsePanel();
+                    BrowseForm.isStartUp = false;
+                }
 
-            ConsoleUtil.Write(true, $"BrowseForm.BrowseForm_Shown End");
-            BootTimeMeasurement.Stop();
+                BootTimeMeasurement.Stop();
+            }
         }
 
         private void BrowseForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -240,80 +240,79 @@ namespace PicSum.Main.UIComponent
 
         private void CreateBrowsePanel()
         {
-            if (this._browsePanel != null)
+            using (TimeMeasuring.Run(true, "BrowseForm.CreateBrowsePanel"))
             {
-                throw new InvalidOperationException("メインコントロールは既に存在しています。");
-            }
-
-            ConsoleUtil.Write(true, $"BrowseForm.CreateBrowsePanel Start");
-
-            this._browsePanel = new BrowsePanel();
-
-            this._browsePanel.SuspendLayout();
-            this.SuspendLayout();
-
-            this.Controls.Add(this._browsePanel);
-
-            var scale = WindowUtil.GetCurrentWindowScale(this);
-            var rect = this.CreateBrowsePanelBounds(scale);
-            this._browsePanel.SetBounds(rect.X, rect.Y, rect.Width, rect.Height);
-            this._browsePanel.SetControlsBounds(scale);
-            this._browsePanel.Anchor
-                = AnchorStyles.Top
-                | AnchorStyles.Bottom
-                | AnchorStyles.Left
-                | AnchorStyles.Right;
-
-            this._browsePanel.Close += new(this.BrowsePanel_Close);
-            this._browsePanel.BackgroundMouseDoubleLeftClick += new(this.BrowsePanel_BackgroundMouseDoubleLeftClick);
-            this._browsePanel.NewWindowPageOpen += new(this.BrowsePanel_NewWindowPageOpen);
-            this._browsePanel.TabDropouted += new(this.BrowsePanel_TabDropouted);
-
-            this.AttachResizeEvents(this);
-
-            if (BrowseForm.isStartUp)
-            {
-                if (CommandLineArgs.IsNone() || CommandLineArgs.IsCleanup())
+                if (this._browsePanel != null)
                 {
-                    this._browsePanel.AddFavoriteDirectoryListTab();
+                    throw new InvalidOperationException("メインコントロールは既に存在しています。");
                 }
-                else
+
+                this._browsePanel = new BrowsePanel();
+
+                this._browsePanel.SuspendLayout();
+                this.SuspendLayout();
+
+                this.Controls.Add(this._browsePanel);
+
+                var scale = WindowUtil.GetCurrentWindowScale(this);
+                var rect = this.CreateBrowsePanelBounds(scale);
+                this._browsePanel.SetBounds(rect.X, rect.Y, rect.Width, rect.Height);
+                this._browsePanel.SetControlsBounds(scale);
+                this._browsePanel.Anchor
+                    = AnchorStyles.Top
+                    | AnchorStyles.Bottom
+                    | AnchorStyles.Left
+                    | AnchorStyles.Right;
+
+                this._browsePanel.Close += new(this.BrowsePanel_Close);
+                this._browsePanel.BackgroundMouseDoubleLeftClick += new(this.BrowsePanel_BackgroundMouseDoubleLeftClick);
+                this._browsePanel.NewWindowPageOpen += new(this.BrowsePanel_NewWindowPageOpen);
+                this._browsePanel.TabDropouted += new(this.BrowsePanel_TabDropouted);
+
+                this.AttachResizeEvents(this);
+
+                if (BrowseForm.isStartUp)
                 {
-                    var imageFilePath = CommandLineArgs.GetImageFilePathCommandLineArgs();
-                    if (!string.IsNullOrEmpty(imageFilePath))
-                    {
-                        var directoryPath = FileUtil.GetParentDirectoryPath(imageFilePath);
-
-                        var sortInfo = new SortInfo();
-                        sortInfo.SetSortType(SortTypeID.FilePath, true);
-
-                        var parameter = new ImageViewPageParameter(
-                            DirectoryFileListPageParameter.PAGE_SOURCES,
-                            directoryPath,
-                            BrowsePanel.GetImageFilesAction(new ImageFileGetByDirectoryParameter(imageFilePath)),
-                            imageFilePath,
-                            sortInfo,
-                            FileUtil.GetFileName(directoryPath),
-                            Instance<IFileIconCacher>.Value.SmallDirectoryIcon,
-                            true);
-
-                        this._browsePanel.AddImageViewPageTab(parameter);
-                    }
-                    else
+                    if (CommandLineArgs.IsNone() || CommandLineArgs.IsCleanup())
                     {
                         this._browsePanel.AddFavoriteDirectoryListTab();
                     }
+                    else
+                    {
+                        var imageFilePath = CommandLineArgs.GetImageFilePathCommandLineArgs();
+                        if (!string.IsNullOrEmpty(imageFilePath))
+                        {
+                            var directoryPath = FileUtil.GetParentDirectoryPath(imageFilePath);
+
+                            var sortInfo = new SortInfo();
+                            sortInfo.SetSortType(SortTypeID.FilePath, true);
+
+                            var parameter = new ImageViewPageParameter(
+                                DirectoryFileListPageParameter.PAGE_SOURCES,
+                                directoryPath,
+                                BrowsePanel.GetImageFilesAction(new ImageFileGetByDirectoryParameter(imageFilePath)),
+                                imageFilePath,
+                                sortInfo,
+                                FileUtil.GetFileName(directoryPath),
+                                Instance<IFileIconCacher>.Value.SmallDirectoryIcon,
+                                true);
+
+                            this._browsePanel.AddImageViewPageTab(parameter);
+                        }
+                        else
+                        {
+                            this._browsePanel.AddFavoriteDirectoryListTab();
+                        }
+                    }
+
+                    LOGGER.Debug("初回表示されました。");
                 }
 
-                LOGGER.Debug("初回表示されました。");
+                this.SetControlRegion();
+
+                this._browsePanel.ResumeLayout(false);
+                this.ResumeLayout(false);
             }
-
-            this.SetControlRegion();
-
-            this._browsePanel.ResumeLayout(false);
-            this.ResumeLayout(false);
-
-            ConsoleUtil.Write(true, $"BrowseForm.CreateBrowsePanel End");
         }
 
         private void OnTabDropouted(TabDropoutedEventArgs e)

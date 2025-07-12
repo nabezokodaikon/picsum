@@ -74,60 +74,59 @@ namespace PicSum.Main.Conf
 
         public void Load()
         {
-            ConsoleUtil.Write(true, $"Config.Load Start");
-
-            if (FileUtil.IsExistsFile(AppFiles.CONFIG_FILE.Value))
+            using (TimeMeasuring.Run(true, "Config.Load"))
             {
-                var config = MessagePackSerializer.Deserialize<Config>(
-                    File.ReadAllBytes(AppFiles.CONFIG_FILE.Value),
-                    MessagePackSerializerOptions.Standard.WithCompression(MessagePackCompression.None));
+                if (FileUtil.IsExistsFile(AppFiles.CONFIG_FILE.Value))
+                {
+                    var config = MessagePackSerializer.Deserialize<Config>(
+                        File.ReadAllBytes(AppFiles.CONFIG_FILE.Value),
+                        MessagePackSerializerOptions.Standard.WithCompression(MessagePackCompression.None));
 
-                this.WindowState = config.WindowState;
-                this.WindowLocaionX = config.WindowLocaionX;
-                this.WindowLocaionY = config.WindowLocaionY;
-                this.WindowSizeWidth = config.WindowSizeWidth;
-                this.WindowSizeHeight = config.WindowSizeHeight;
-                this.ThumbnailSize = Math.Min(config.ThumbnailSize, ThumbnailUtil.THUMBNAIL_MAXIMUM_SIZE);
-                this.IsShowFileName = config.IsShowFileName;
-                this.IsShowImageFile = config.IsShowImageFile;
-                this.IsShowDirectory = config.IsShowDirectory;
-                this.IsShowOtherFile = config.IsShowOtherFile;
-                this.FavoriteDirectoryCount = config.FavoriteDirectoryCount;
-                this.ImageDisplayMode = config.ImageDisplayMode;
-                this.ImageSizeMode = config.ImageSizeMode;
+                    this.WindowState = config.WindowState;
+                    this.WindowLocaionX = config.WindowLocaionX;
+                    this.WindowLocaionY = config.WindowLocaionY;
+                    this.WindowSizeWidth = config.WindowSizeWidth;
+                    this.WindowSizeHeight = config.WindowSizeHeight;
+                    this.ThumbnailSize = Math.Min(config.ThumbnailSize, ThumbnailUtil.THUMBNAIL_MAXIMUM_SIZE);
+                    this.IsShowFileName = config.IsShowFileName;
+                    this.IsShowImageFile = config.IsShowImageFile;
+                    this.IsShowDirectory = config.IsShowDirectory;
+                    this.IsShowOtherFile = config.IsShowOtherFile;
+                    this.FavoriteDirectoryCount = config.FavoriteDirectoryCount;
+                    this.ImageDisplayMode = config.ImageDisplayMode;
+                    this.ImageSizeMode = config.ImageSizeMode;
 
-                this.MajorVersion = config.MajorVersion;
-                this.MinorVersion = config.MinorVersion;
-                this.BuildVersion = config.BuildVersion;
-                this.RevisionVersion = config.RevisionVersion;
+                    this.MajorVersion = config.MajorVersion;
+                    this.MinorVersion = config.MinorVersion;
+                    this.BuildVersion = config.BuildVersion;
+                    this.RevisionVersion = config.RevisionVersion;
+                }
+                else
+                {
+                    this.WindowState = FormWindowState.Normal;
+
+                    var primaryScreenBounds = Screen.PrimaryScreen.Bounds;
+                    this.WindowLocaionX = (int)(primaryScreenBounds.Width * 0.3);
+                    this.WindowLocaionY = (int)(primaryScreenBounds.Height * 0.1);
+
+                    this.WindowSizeWidth = 1200;
+                    this.WindowSizeHeight = 800;
+
+                    this.ThumbnailSize = 144;
+                    this.IsShowFileName = true;
+                    this.IsShowImageFile = true;
+                    this.IsShowDirectory = true;
+                    this.IsShowOtherFile = true;
+                    this.FavoriteDirectoryCount = 21;
+                    this.ImageDisplayMode = ImageDisplayMode.LeftFacing;
+                    this.ImageSizeMode = ImageSizeMode.FitOnlyBigImage;
+
+                    this.MajorVersion = 0;
+                    this.MinorVersion = 0;
+                    this.BuildVersion = 0;
+                    this.RevisionVersion = 0;
+                }
             }
-            else
-            {
-                this.WindowState = FormWindowState.Normal;
-
-                var primaryScreenBounds = Screen.PrimaryScreen.Bounds;
-                this.WindowLocaionX = (int)(primaryScreenBounds.Width * 0.3);
-                this.WindowLocaionY = (int)(primaryScreenBounds.Height * 0.1);
-
-                this.WindowSizeWidth = 1200;
-                this.WindowSizeHeight = 800;
-
-                this.ThumbnailSize = 144;
-                this.IsShowFileName = true;
-                this.IsShowImageFile = true;
-                this.IsShowDirectory = true;
-                this.IsShowOtherFile = true;
-                this.FavoriteDirectoryCount = 21;
-                this.ImageDisplayMode = ImageDisplayMode.LeftFacing;
-                this.ImageSizeMode = ImageSizeMode.FitOnlyBigImage;
-
-                this.MajorVersion = 0;
-                this.MinorVersion = 0;
-                this.BuildVersion = 0;
-                this.RevisionVersion = 0;
-            }
-
-            ConsoleUtil.Write(true, $"Config.Load End");
         }
 
         public void Save()

@@ -46,27 +46,26 @@ namespace SWF.UIComponent.TabOperation
         /// <param name="page"></param>
         internal void SetPage(PagePanel page)
         {
-            ConsoleUtil.Write(true, $"PageContainer.SetPage Start");
-
-            ArgumentNullException.ThrowIfNull(page, nameof(page));
-
-            if (this.Controls.Count > 0)
+            using (TimeMeasuring.Run(true, "PageContainer.SetPage"))
             {
-                throw new InvalidOperationException("既にページが存在しているため、新たなページを設定できません。");
+                ArgumentNullException.ThrowIfNull(page, nameof(page));
+
+                if (this.Controls.Count > 0)
+                {
+                    throw new InvalidOperationException("既にページが存在しているため、新たなページを設定できません。");
+                }
+
+                this.Controls.Add(page);
+                var scale = WindowUtil.GetCurrentWindowScale(this);
+                page.RedrawPage(scale);
+                page.SetBounds(0, 0, this.Width, this.Height);
+                page.Anchor
+                    = AnchorStyles.Top
+                    | AnchorStyles.Bottom
+                    | AnchorStyles.Left
+                    | AnchorStyles.Right;
+                page.Active();
             }
-
-            this.Controls.Add(page);
-            var scale = WindowUtil.GetCurrentWindowScale(this);
-            page.RedrawPage(scale);
-            page.SetBounds(0, 0, this.Width, this.Height);
-            page.Anchor
-                = AnchorStyles.Top
-                | AnchorStyles.Bottom
-                | AnchorStyles.Left
-                | AnchorStyles.Right;
-            page.Active();
-
-            ConsoleUtil.Write(true, $"PageContainer.SetPage End");
         }
 
         /// <summary>
