@@ -268,7 +268,7 @@ namespace PicSum.UIComponent.AddressBar
                 var scale = WindowUtil.GetCurrentWindowScale(this);
                 using (var g = this.CreateGraphics())
                 {
-                    var font = Fonts.GetRegularFont(Fonts.UI_FONT_14, scale);
+                    var font = Fonts.GetRegularFont(Fonts.Size.Medium, scale);
                     for (var i = this._addressItems.Count - 1; i > -1; i--)
                     {
                         var drawItem = this._addressItems[i];

@@ -124,7 +124,7 @@ namespace PicSum.UIComponent.AddressBar
             var srcText = FileUtil.IsSystemRoot(item.DirectoryPath) ?
                 item.DirectoryName : item.DirectoryPath;
 
-            var font = Fonts.GetRegularFont(Fonts.UI_FONT_14, scale);
+            var font = Fonts.GetRegularFont(Fonts.Size.Medium, scale);
             var srcTextSize = TextRenderer.MeasureText(srcText, font);
 
             var destText = srcText;
@@ -185,7 +185,7 @@ namespace PicSum.UIComponent.AddressBar
                     base.Items.Add(item);
 
                     var scale = WindowUtil.GetCurrentWindowScale(base.DropDownList);
-                    var font = Fonts.GetRegularFont(Fonts.UI_FONT_14, scale);
+                    var font = Fonts.GetRegularFont(Fonts.Size.Medium, scale);
                     width = Math.Max(width, (int)g.MeasureString(item.DirectoryPath + "________", font).Width);
                 }
             }

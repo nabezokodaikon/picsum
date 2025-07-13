@@ -3,6 +3,7 @@ using SWF.Core.Base;
 using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
 using SWF.Core.ResourceAccessor;
+using SWF.UIComponent.Core;
 using System;
 using System.ComponentModel;
 using System.Drawing;
@@ -623,7 +624,7 @@ namespace PicSum.UIComponent.Contents.ImageView
             g.CompositingMode = CompositingMode.SourceOver;
             g.DrawString(
                 $"Failed to load file",
-                this.Font,
+                Fonts.GetRegularFont(Fonts.Size.ExtraLarge, WindowUtil.GetCurrentWindowScale(this)),
                 Brushes.LightGray,
                 new RectangleF(0, 0, this.Width, this.Height),
                 this._stringFormat);
@@ -645,7 +646,7 @@ namespace PicSum.UIComponent.Contents.ImageView
                         g.CompositingMode = CompositingMode.SourceOver;
                         g.DrawString(
                             FileUtil.GetFileName(this.FilePath),
-                            this.Font,
+                            Fonts.GetRegularFont(Fonts.Size.ExtraLarge, WindowUtil.GetCurrentWindowScale(this)),
                             Brushes.DarkGray,
                             destRect,
                             this._stringFormat);

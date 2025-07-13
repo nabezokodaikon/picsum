@@ -5,24 +5,23 @@ namespace SWF.Core.ResourceAccessor
     [SupportedOSPlatform("windows10.0.17763.0")]
     public static class Fonts
     {
-        private const string FONT_FAMILY = "Yu Gothic UI";
+        public enum Size
+        {
+            Small,
+            Medium,
+            Large,
+            ExtraLarge,
+        }
 
-        public static readonly Font UI_FONT_09 = new(FONT_FAMILY, 9F, FontStyle.Regular, GraphicsUnit.Pixel);
-        public static readonly Font UI_FONT_10 = new(FONT_FAMILY, 10F, FontStyle.Regular, GraphicsUnit.Pixel);
-        public static readonly Font UI_FONT_11 = new(FONT_FAMILY, 11F, FontStyle.Regular, GraphicsUnit.Pixel);
-        public static readonly Font UI_FONT_12 = new(FONT_FAMILY, 12F, FontStyle.Regular, GraphicsUnit.Pixel);
-        public static readonly Font UI_FONT_13 = new(FONT_FAMILY, 13F, FontStyle.Regular, GraphicsUnit.Pixel);
-        public static readonly Font UI_FONT_14 = new(FONT_FAMILY, 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-        public static readonly Font UI_FONT_14_BOLD = new(FONT_FAMILY, 14F, FontStyle.Bold, GraphicsUnit.Pixel);
-        public static readonly Font UI_FONT_18 = new(FONT_FAMILY, 18F, FontStyle.Regular, GraphicsUnit.Pixel);
-        public static readonly Font UI_FONT_22 = new(FONT_FAMILY, 22F, FontStyle.Regular, GraphicsUnit.Pixel);
+        private const string FONT_FAMILY = "Yu Gothic UI";
+        private const GraphicsUnit UNIT = GraphicsUnit.Pixel;
 
         public static readonly Dictionary<float, Font> REGULAR_FONT_CACHE = [];
         public static readonly Dictionary<float, Font> BOLD_FONT_CACHE = [];
 
-        public static Font GetRegularFont(Font srcFont, float scale)
+        public static Font GetRegularFont(Size srcSize, float scale)
         {
-            var size = srcFont.Size * scale;
+            var size = ToSize(srcSize) * scale;
 
             if (REGULAR_FONT_CACHE.TryGetValue(size, out var font))
             {
@@ -30,17 +29,22 @@ namespace SWF.Core.ResourceAccessor
             }
 
             var newFont = new Font(
-                srcFont.FontFamily,
+                FONT_FAMILY,
                 size,
                 FontStyle.Regular,
-                srcFont.Unit);
+                UNIT);
             REGULAR_FONT_CACHE.Add(size, newFont);
             return newFont;
         }
 
-        public static Font GetBoldFont(Font srcFont, float scale)
+        public static Font GetRegularFont(Size srcSize)
         {
-            var size = srcFont.Size * scale;
+            return GetRegularFont(srcSize, 1f);
+        }
+
+        public static Font GetBoldFont(Size srcSize, float scale)
+        {
+            var size = ToSize(srcSize) * scale;
 
             if (BOLD_FONT_CACHE.TryGetValue(size, out var font))
             {
@@ -48,12 +52,29 @@ namespace SWF.Core.ResourceAccessor
             }
 
             var newFont = new Font(
-                srcFont.FontFamily,
+                FONT_FAMILY,
                 size,
                 FontStyle.Bold,
-                srcFont.Unit);
+                UNIT);
             BOLD_FONT_CACHE.Add(size, newFont);
             return newFont;
+        }
+
+        public static Font GetBoldFont(Size srcSize)
+        {
+            return GetBoldFont(srcSize, 1f);
+        }
+
+        private static int ToSize(Size size)
+        {
+            return size switch
+            {
+                Size.Small => 12,
+                Size.Medium => 14,
+                Size.Large => 18,
+                Size.ExtraLarge => 22,
+                _ => throw new InvalidOperationException("未定義のフォントサイズです。"),
+            };
         }
     }
 }

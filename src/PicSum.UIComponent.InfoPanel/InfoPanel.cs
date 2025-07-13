@@ -362,11 +362,11 @@ namespace PicSum.UIComponent.InfoPanel
         {
             if (tagInfo.IsAll)
             {
-                return Fonts.GetBoldFont(Fonts.UI_FONT_14, scale);
+                return Fonts.GetBoldFont(Fonts.Size.Medium, scale);
             }
             else
             {
-                return Fonts.GetRegularFont(Fonts.UI_FONT_14, scale);
+                return Fonts.GetRegularFont(Fonts.Size.Medium, scale);
             }
         }
 
@@ -470,14 +470,26 @@ namespace PicSum.UIComponent.InfoPanel
 
         private void DrawSelectedFileCount(Graphics g, Rectangle rect)
         {
+            var scale = WindowUtil.GetCurrentWindowScale(this);
             var text = $"{this.FilePathList.Length} files selected";
-            g.DrawString(text, this.thumbnailPictureBox.Font, this._foreColorBrush, rect, this._stringFormat);
+            g.DrawString(
+                text,
+                Fonts.GetRegularFont(Fonts.Size.Large, scale),
+                this._foreColorBrush,
+                rect,
+                this._stringFormat);
         }
 
         private void DrawErrorMessage(Graphics g, Rectangle rect)
         {
+            var scale = WindowUtil.GetCurrentWindowScale(this);
             var text = $"Failed to load file";
-            g.DrawString(text, this.thumbnailPictureBox.Font, this._foreColorBrush, rect, this._stringFormat);
+            g.DrawString(
+                text,
+                Fonts.GetRegularFont(Fonts.Size.Large, scale),
+                this._foreColorBrush,
+                rect,
+                this._stringFormat);
         }
 
         private void GetFileInfoJob_Callback(FileDeepInfoGetResult result)

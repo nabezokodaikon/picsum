@@ -190,7 +190,7 @@ namespace SWF.UIComponent.TabOperation
                 this._regionImage = regionImage;
             }
 
-            this.DrawTabEventArgs.Font = Fonts.GetRegularFont(Fonts.UI_FONT_14, scale);
+            this.DrawTabEventArgs.Font = Fonts.GetRegularFont(Fonts.Size.Medium, scale);
             this.DrawTabEventArgs.TitleColor = TabPalette.TITLE_COLOR;
             this.DrawTabEventArgs.TitleFormatFlags = TabPalette.TITLE_FORMAT_FLAGS;
             this.DrawTabEventArgs.TextRectangle = this.TabDrawArea.GetPageRectangle();

@@ -1,3 +1,4 @@
+using SWF.Core.Base;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 using WinApi;
@@ -11,18 +12,24 @@ namespace SWF.UIComponent.Core
 
         public static float GetCursorWindowScale()
         {
-            var hwnd = WinApiMembers.WindowFromPoint(
-                new WinApiMembers.POINT(Cursor.Position.X, Cursor.Position.Y));
-            var dpi = WinApiMembers.GetDpiForWindow(hwnd);
-            var scale = dpi / BASE_DPI;
-            return scale;
+            using (TimeMeasuring.Run(false, "WindowUtil.GetCursorWindowScale"))
+            {
+                var hwnd = WinApiMembers.WindowFromPoint(
+                    new WinApiMembers.POINT(Cursor.Position.X, Cursor.Position.Y));
+                var dpi = WinApiMembers.GetDpiForWindow(hwnd);
+                var scale = dpi / BASE_DPI;
+                return scale;
+            }
         }
 
         public static float GetCurrentWindowScale(Control control)
         {
-            var dpi = WinApiMembers.GetDpiForWindow(control.Handle);
-            var scale = dpi / BASE_DPI;
-            return scale;
+            using (TimeMeasuring.Run(false, "WindowUtil.GetCurrentWindowScale"))
+            {
+                var dpi = WinApiMembers.GetDpiForWindow(control.Handle);
+                var scale = dpi / BASE_DPI;
+                return scale;
+            }
         }
 
         public static Size GetControlBoxSize(IntPtr window)

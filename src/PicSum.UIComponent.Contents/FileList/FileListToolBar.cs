@@ -266,13 +266,14 @@ namespace PicSum.UIComponent.Contents.FileList
                 (int)(MOVE_PREVIEW_BUTTON_DEFAULT_BOUNDS.Width * scale),
                 (int)(MOVE_PREVIEW_BUTTON_DEFAULT_BOUNDS.Height * scale));
 
-            this.viewButton.Font = Fonts.GetRegularFont(Fonts.UI_FONT_12, scale);
-            this.nameSortButton.Font = this.viewButton.Font;
-            this.pathSortButton.Font = this.viewButton.Font;
-            this.timestampSortButton.Font = this.viewButton.Font;
-            this.registrationSortButton.Font = this.viewButton.Font;
-            this.movePreviewButton.Font = this.viewButton.Font;
-            this.moveNextButton.Font = this.viewButton.Font;
+            var buttonFont = Fonts.GetRegularFont(Fonts.Size.Small, scale);
+            this.viewButton.Font = buttonFont;
+            this.nameSortButton.Font = buttonFont;
+            this.pathSortButton.Font = buttonFont;
+            this.timestampSortButton.Font = buttonFont;
+            this.registrationSortButton.Font = buttonFont;
+            this.movePreviewButton.Font = buttonFont;
+            this.moveNextButton.Font = buttonFont;
 
             this.viewButton.Text = "View";
             this.nameSortButton.Text = "Name";

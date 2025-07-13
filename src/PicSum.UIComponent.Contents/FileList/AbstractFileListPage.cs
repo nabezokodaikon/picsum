@@ -561,7 +561,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private int GetItemTextHeight(Graphics g)
         {
-            return (int)(g.MeasureString("A", Fonts.GetRegularFont(Fonts.UI_FONT_12, this._scale)).Height * 2);
+            return (int)(g.MeasureString("A", Fonts.GetRegularFont(Fonts.Size.Small, this._scale)).Height * 2);
         }
 
         private void SetFlowListItemSize()
@@ -602,8 +602,7 @@ namespace PicSum.UIComponent.Contents.FileList
             var filePath = this._filterFilePathList[e.ItemIndex];
             var item = this._masterFileDictionary[filePath];
 
-            var scale = WindowUtil.GetCurrentWindowScale(this);
-            var font = Fonts.GetRegularFont(Fonts.UI_FONT_12, this._scale);
+            var font = Fonts.GetRegularFont(Fonts.Size.Small, this._scale);
             var itemTextHeight = this.GetItemTextHeight(e.Graphics);
 
             if (item.ThumbnailImage == null)

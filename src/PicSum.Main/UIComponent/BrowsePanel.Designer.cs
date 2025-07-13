@@ -28,7 +28,6 @@ namespace PicSum.Main.UIComponent
             // infoPanel
             // 
             this.infoPanel.BackColor = Color.FromArgb(250, 250, 250);
-            this.infoPanel.Font = Fonts.UI_FONT_09;
             this.infoPanel.SelectedTag += this.InfoPanel_SelectedTag;
             // 
             // tabSwitch
