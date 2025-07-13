@@ -580,8 +580,14 @@ namespace PicSum.UIComponent.InfoPanel
                 var rect = new Rectangle(0, 0, this.thumbnailPictureBox.Width, this.thumbnailPictureBox.Height);
                 this.DrawErrorMessage(e.Graphics, rect);
             }
-            else if (this.Thumbnail != ThumbnailImageResult.EMPTY)
+            else if (this.Thumbnail != ThumbnailImageResult.EMPTY
+                && this.Thumbnail.ThumbnailImage != CvImage.EMPTY)
             {
+                e.Graphics.SmoothingMode = SmoothingMode.None;
+                e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
+                e.Graphics.CompositingQuality = CompositingQuality.HighSpeed;
+                e.Graphics.PixelOffsetMode = PixelOffsetMode.HighSpeed;
+
                 var size = Math.Min(this.thumbnailPictureBox.Width, this.thumbnailPictureBox.Height);
                 var x = 0 + (this.thumbnailPictureBox.Width - size) / 2f;
                 var y = 0 + (this.thumbnailPictureBox.Height - size) / 2f;

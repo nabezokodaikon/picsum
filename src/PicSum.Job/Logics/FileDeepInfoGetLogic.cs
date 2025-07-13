@@ -1,4 +1,3 @@
-using PicSum.Job.Common;
 using PicSum.Job.Entities;
 using SWF.Core.Base;
 using SWF.Core.FileAccessor;
@@ -118,7 +117,7 @@ namespace PicSum.Job.Logics
 
             this.ThrowIfJobCancellationRequested();
 
-            var thumbnail = this.GetThumbnail(firstImageFile, thumbSize);
+            var thumbnail = this.ReadImageFileFromCache(firstImageFile, AppConstants.DEFAULT_ZOOM_VALUE);
 
             this.ThrowIfJobCancellationRequested();
 
@@ -168,7 +167,7 @@ namespace PicSum.Job.Logics
 
             this.ThrowIfJobCancellationRequested();
 
-            var thumbnail = this.GetThumbnail(filePath, thumbSize);
+            var thumbnail = this.ReadImageFileFromCache(filePath, AppConstants.DEFAULT_ZOOM_VALUE);
             info.IsImageFile = true;
 
             this.ThrowIfJobCancellationRequested();
@@ -187,23 +186,24 @@ namespace PicSum.Job.Logics
             return info;
         }
 
-        private CvImage GetThumbnail(string filePath, Size thumbSize)
+        private CvImage ReadImageFileFromCache(string filePath, float zoomValue)
         {
-            var cache = Instance<IThumbnailCacher>.Value.GetCache(filePath);
-            if (cache != ThumbnailCacheEntity.EMPTY
-                && cache.ThumbnailBuffer != null
-                && cache.ThumbnailWidth >= thumbSize.Width
-                && cache.ThumbnailHeight >= thumbSize.Height)
+            try
             {
-                return new CvImage(
-                    filePath,
-                    ThumbnailUtil.ToImage(cache.ThumbnailBuffer));
+                using (TimeMeasuring.Run(false, "FileDeepInfoGetLogic.ReadImageFileFromCache"))
+                {
+                    return Instance<IImageFileCacher>.Value.GetImage(filePath, zoomValue);
+                }
             }
-            else
+            catch (FileUtilException ex)
             {
-                return Instance<IImageFileCacher>.Value.GetImage(
-                    filePath,
-                    AppConstants.DEFAULT_ZOOM_VALUE);
+                this.WriteErrorLog(ex);
+                return CvImage.EMPTY;
+            }
+            catch (ImageUtilException ex)
+            {
+                this.WriteErrorLog(ex);
+                return CvImage.EMPTY;
             }
         }
     }
