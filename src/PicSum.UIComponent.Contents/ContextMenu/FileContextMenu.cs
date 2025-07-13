@@ -224,7 +224,7 @@ namespace PicSum.UIComponent.Contents.ContextMenu
 
         public FileContextMenu()
         {
-            this.Font = Fonts.UI_FONT_14_REGULAR;
+            this.Font = Fonts.UI_FONT_14;
 
             this.ShowImageMargin = false;
 

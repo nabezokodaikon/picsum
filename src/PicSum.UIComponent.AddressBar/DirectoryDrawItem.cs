@@ -1,4 +1,5 @@
 using SWF.Core.Base;
+using SWF.Core.ResourceAccessor;
 using SWF.UIComponent.Core;
 using System;
 using System.Drawing;
@@ -59,7 +60,7 @@ namespace PicSum.UIComponent.AddressBar
             }
 
             var scale = WindowUtil.GetCurrentWindowScale(this.AddressBar);
-            var font = this.AddressBar.GetRegularFont(scale);
+            var font = Fonts.GetRegularFont(Fonts.UI_FONT_14, scale);
             var text = this._directory.DirectoryName;
             var textSize = TextRenderer.MeasureText(text, font);
             TextRenderer.DrawText(

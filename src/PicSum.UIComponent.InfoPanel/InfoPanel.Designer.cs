@@ -39,7 +39,7 @@ namespace PicSum.UIComponent.InfoPanel
             // 
             // tagContextMenuStrip
             // 
-            this.tagContextMenuStrip.Font = Fonts.UI_FONT_14_REGULAR;
+            this.tagContextMenuStrip.Font = Fonts.UI_FONT_14;
             this.tagContextMenuStrip.ImageScalingSize = new Size(20, 20);
             this.tagContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { this.tagDeleteMenuItem, this.tagToAllEntryMenuItem });
             this.tagContextMenuStrip.Opening += this.TagContextMenuStrip_Opening;
@@ -80,7 +80,7 @@ namespace PicSum.UIComponent.InfoPanel
             // fileInfoLabel
             // 
             this.fileInfoLabel.BackColor = Color.FromArgb(250, 250, 250);
-            this.fileInfoLabel.Font = Fonts.UI_FONT_14_REGULAR;
+            this.fileInfoLabel.Font = Fonts.UI_FONT_14;
             // 
             // InfoPanel
             // 

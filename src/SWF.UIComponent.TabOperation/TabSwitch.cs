@@ -167,9 +167,6 @@ namespace SWF.UIComponent.TabOperation
         // コンテンツ描画クラス
         private readonly PageDrawArea _pageDrawArea;
 
-        private readonly Font _defaultFont = Fonts.UI_FONT_10;
-        private readonly Dictionary<float, Font> _fontCache = [];
-
         private int GetTabsRightOffset()
         {
             var size = WindowUtil.GetControlBoxSize(this.GetForm().Handle);
@@ -660,12 +657,6 @@ namespace SWF.UIComponent.TabOperation
                 {
                     tab.Close();
                 }
-
-                foreach (var font in this._fontCache.Values)
-                {
-                    font.Dispose();
-                }
-                this._fontCache.Clear();
             }
 
             base.Dispose(disposing);
@@ -958,18 +949,6 @@ namespace SWF.UIComponent.TabOperation
             }
 
             this._dropPoint = null;
-        }
-
-        private Font GetFont(float scale)
-        {
-            if (this._fontCache.TryGetValue(scale, out var font))
-            {
-                return font;
-            }
-
-            var newFont = new Font(this._defaultFont.FontFamily, this._defaultFont.Size * scale);
-            this._fontCache.Add(scale, newFont);
-            return newFont;
         }
 
         private void OnActiveTabChanged(EventArgs e)
@@ -1341,7 +1320,7 @@ namespace SWF.UIComponent.TabOperation
             }
 
             var scale = WindowUtil.GetCurrentWindowScale(this);
-            var font = this.GetFont(scale);
+            var font = Fonts.GetRegularFont(Fonts.UI_FONT_14, scale);
             var args = new DrawTabEventArgs
             {
                 Graphics = g,

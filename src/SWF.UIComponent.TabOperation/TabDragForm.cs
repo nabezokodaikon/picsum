@@ -2,7 +2,6 @@ using SWF.Core.ImageAccessor;
 using SWF.Core.ResourceAccessor;
 using SWF.UIComponent.Core;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Runtime.Versioning;
@@ -26,20 +25,6 @@ namespace SWF.UIComponent.TabOperation
         private TabSwitch _tabSwitch = null;
         private Bitmap _regionImage = null;
         private Action<DrawTabEventArgs> _drawTabPageMethod = null;
-        private readonly Font _defaultFont = Fonts.UI_FONT_10;
-        private readonly Dictionary<float, Font> _fontCache = [];
-
-        private Font GetFont(float scale)
-        {
-            if (this._fontCache.TryGetValue(scale, out var font))
-            {
-                return font;
-            }
-
-            var newFont = new Font(this._defaultFont.FontFamily, this._defaultFont.Size * scale);
-            this._fontCache.Add(scale, newFont);
-            return newFont;
-        }
 
         private float GetOutlineOffset()
         {
@@ -123,7 +108,6 @@ namespace SWF.UIComponent.TabOperation
             this.StartPosition = FormStartPosition.Manual;
             this.Opacity = 0.75d;
 
-            this.FormClosing += this.TabDragForm_Closing;
             this.LocationChanged += this.TabDragForm_LocationChanged;
             this.LostFocus += this.TabDragForm_LostFocus;
             this.Paint += this.TabDragForm_Paint;
@@ -206,7 +190,7 @@ namespace SWF.UIComponent.TabOperation
                 this._regionImage = regionImage;
             }
 
-            this.DrawTabEventArgs.Font = this.GetFont(scale);
+            this.DrawTabEventArgs.Font = Fonts.GetRegularFont(Fonts.UI_FONT_14, scale);
             this.DrawTabEventArgs.TitleColor = TabPalette.TITLE_COLOR;
             this.DrawTabEventArgs.TitleFormatFlags = TabPalette.TITLE_FORMAT_FLAGS;
             this.DrawTabEventArgs.TextRectangle = this.TabDrawArea.GetPageRectangle();
@@ -230,15 +214,6 @@ namespace SWF.UIComponent.TabOperation
                 this._regionImage.Dispose();
                 this._regionImage = null;
             }
-        }
-
-        private void TabDragForm_Closing(object sender, FormClosingEventArgs e)
-        {
-            foreach (var font in this._fontCache.Values)
-            {
-                font.Dispose();
-            }
-            this._fontCache.Clear();
         }
 
         private void TabDragForm_LocationChanged(object sender, EventArgs e)

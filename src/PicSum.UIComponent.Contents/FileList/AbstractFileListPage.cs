@@ -41,8 +41,6 @@ namespace PicSum.UIComponent.Contents.FileList
         private float _scale = 0f;
         private Dictionary<string, FileEntity> _masterFileDictionary = null;
         private string[] _filterFilePathList = null;
-        private readonly Font _defaultFont = Fonts.UI_FONT_09;
-        private readonly Dictionary<float, Font> _fontCache = [];
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public override string SelectedFilePath { get; protected set; } = FileUtil.ROOT_DIRECTORY_PATH;
@@ -231,12 +229,6 @@ namespace PicSum.UIComponent.Contents.FileList
                 Instance<JobCaller>.Value.ThumbnailsGetJob.Value.BeginCancel();
 
                 this.components?.Dispose();
-
-                foreach (var font in this._fontCache.Values)
-                {
-                    font.Dispose();
-                }
-                this._fontCache.Clear();
             }
 
             this._disposed = true;
@@ -544,18 +536,6 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
-        private Font GetFont(float scale)
-        {
-            if (this._fontCache.TryGetValue(scale, out var font))
-            {
-                return font;
-            }
-
-            var newFont = new Font(this._defaultFont.FontFamily, this._defaultFont.Size * scale);
-            this._fontCache.Add(scale, newFont);
-            return newFont;
-        }
-
         private void ChangeFileNameVisible()
         {
             FileListPageConfig.INSTANCE.IsShowFileName = this.IsShowFileName;
@@ -581,7 +561,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private int GetItemTextHeight(Graphics g)
         {
-            return (int)(g.MeasureString("A", this.GetFont(this._scale)).Height * 2);
+            return (int)(g.MeasureString("A", Fonts.GetRegularFont(Fonts.UI_FONT_12, this._scale)).Height * 2);
         }
 
         private void SetFlowListItemSize()
@@ -623,7 +603,7 @@ namespace PicSum.UIComponent.Contents.FileList
             var item = this._masterFileDictionary[filePath];
 
             var scale = WindowUtil.GetCurrentWindowScale(this);
-            var font = this.GetFont(scale);
+            var font = Fonts.GetRegularFont(Fonts.UI_FONT_12, this._scale);
             var itemTextHeight = this.GetItemTextHeight(e.Graphics);
 
             if (item.ThumbnailImage == null)

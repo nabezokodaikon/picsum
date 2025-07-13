@@ -2,7 +2,6 @@ using SWF.Core.Base;
 using SWF.Core.ResourceAccessor;
 using SWF.UIComponent.Core;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Runtime.Versioning;
@@ -36,8 +35,6 @@ namespace PicSum.UIComponent.Contents.ImageView
         public event EventHandler IndexSliderValueChanging;
 
         private bool _disposed = false;
-        private readonly Font _defaultFont = Fonts.UI_FONT_12;
-        private readonly Dictionary<float, Font> _fontCache = [];
         private bool _isShowingMenuButtonDropDown = false;
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -268,7 +265,7 @@ namespace PicSum.UIComponent.Contents.ImageView
                 | AnchorStyles.Left
                 | AnchorStyles.Right;
 
-            this.viewButton.Font = this.GetFont(scale);
+            this.viewButton.Font = Fonts.GetRegularFont(Fonts.UI_FONT_12, scale);
             this.sizeButton.Font = this.viewButton.Font;
             this.doublePreviewButton.Font = this.viewButton.Font;
             this.singlePreviewButton.Font = this.viewButton.Font;
@@ -294,12 +291,6 @@ namespace PicSum.UIComponent.Contents.ImageView
 
             if (disposing)
             {
-                foreach (var font in this._fontCache.Values)
-                {
-                    font.Dispose();
-                }
-                this._fontCache.Clear();
-
                 this.components?.Dispose();
             }
 
@@ -348,21 +339,6 @@ namespace PicSum.UIComponent.Contents.ImageView
             }
 
             return AppConstants.DEFAULT_ZOOM_VALUE;
-        }
-
-        private Font GetFont(float scale)
-        {
-            if (this._fontCache.TryGetValue(scale, out var font))
-            {
-                return font;
-            }
-
-            var newFont = new Font(
-                this._defaultFont.FontFamily,
-                this._defaultFont.Size * scale,
-                this._defaultFont.Unit);
-            this._fontCache.Add(scale, newFont);
-            return newFont;
         }
 
         private void MenuButton_LostFocus(object sender, EventArgs e)

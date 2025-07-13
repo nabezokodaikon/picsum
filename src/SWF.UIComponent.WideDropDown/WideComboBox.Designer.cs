@@ -47,7 +47,7 @@ namespace SWF.UIComponent.WideDropDown
             // 
             // inputTextBox
             // 
-            this.inputTextBox.Font = Fonts.UI_FONT_14_REGULAR;
+            this.inputTextBox.Font = Fonts.UI_FONT_14;
             this.inputTextBox.KeyDown += this.InputTextBox_KeyDown;
             // 
             // WideComboBox

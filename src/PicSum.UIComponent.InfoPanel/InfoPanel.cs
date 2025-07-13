@@ -49,10 +49,6 @@ namespace PicSum.UIComponent.InfoPanel
         private string _contextMenuOperationTag = string.Empty;
         private readonly SolidBrush _foreColorBrush;
         private readonly StringFormat _stringFormat;
-        private readonly Font _tagDefaultFont = Fonts.UI_FONT_14_REGULAR;
-        private readonly Font _allTagDefaultFont = Fonts.UI_FONT_14_BOLD;
-        private readonly Dictionary<float, Font> _tagFontCache = [];
-        private readonly Dictionary<float, Font> _allTagFontCache = [];
         private bool _isLoading = false;
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -302,18 +298,6 @@ namespace PicSum.UIComponent.InfoPanel
 
             if (disposing)
             {
-                foreach (var font in this._tagFontCache.Values)
-                {
-                    font.Dispose();
-                }
-                this._tagFontCache.Clear();
-
-                foreach (var font in this._allTagFontCache.Values)
-                {
-                    font.Dispose();
-                }
-                this._allTagFontCache.Clear();
-
                 foreach (var icon in this._tagIconCache.Values)
                 {
                     icon.Dispose();
@@ -348,38 +332,6 @@ namespace PicSum.UIComponent.InfoPanel
             return newTagIcon;
         }
 
-        private Font GetTagFont(float scale)
-        {
-            if (this._tagFontCache.TryGetValue(scale, out var font))
-            {
-                return font;
-            }
-
-            var newFont = new Font(
-                this._tagDefaultFont.FontFamily,
-                this._tagDefaultFont.Size * scale,
-                this._tagDefaultFont.Style,
-                this._tagDefaultFont.Unit);
-            this._tagFontCache.Add(scale, newFont);
-            return newFont;
-        }
-
-        private Font GetAllTagFont(float scale)
-        {
-            if (this._allTagFontCache.TryGetValue(scale, out var font))
-            {
-                return font;
-            }
-
-            var newFont = new Font(
-                this._allTagDefaultFont.FontFamily,
-                this._allTagDefaultFont.Size * scale,
-                this._allTagDefaultFont.Style,
-                this._allTagDefaultFont.Unit);
-            this._allTagFontCache.Add(scale, newFont);
-            return newFont;
-        }
-
         private void OnSelectedTag(SelectedTagEventArgs e)
         {
             this.SelectedTag?.Invoke(this, e);
@@ -410,11 +362,11 @@ namespace PicSum.UIComponent.InfoPanel
         {
             if (tagInfo.IsAll)
             {
-                return this.GetAllTagFont(scale);
+                return Fonts.GetBoldFont(Fonts.UI_FONT_14, scale);
             }
             else
             {
-                return this.GetTagFont(scale);
+                return Fonts.GetRegularFont(Fonts.UI_FONT_14, scale);
             }
         }
 

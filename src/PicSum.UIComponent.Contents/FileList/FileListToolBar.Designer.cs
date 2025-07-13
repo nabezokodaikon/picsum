@@ -69,7 +69,7 @@ namespace PicSum.UIComponent.Contents.FileList
             // 
             // viewMenu
             //
-            this.viewMenu.Font = Fonts.UI_FONT_14_REGULAR;
+            this.viewMenu.Font = Fonts.UI_FONT_14;
             this.viewMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { this.directoryMenuItem, this.imageFileMenuItem, this.otherFileMenuItem, this.toolStripSeparator1, this.fileNameMenuItem });
             // 
             // directoryMenuItem

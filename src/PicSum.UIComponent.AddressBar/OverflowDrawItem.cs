@@ -68,7 +68,7 @@ namespace PicSum.UIComponent.AddressBar
                 var scale = WindowUtil.GetCurrentWindowScale(base.DropDownList);
                 using (var g = this.DropDownList.CreateGraphics())
                 {
-                    var font = this.AddressBar.GetRegularFont(scale);
+                    var font = Fonts.GetRegularFont(Fonts.UI_FONT_14, scale);
                     foreach (var directory in base.Items)
                     {
                         width = Math.Max(width, (int)g.MeasureString(directory.DirectoryName + "________", font).Width);
@@ -104,7 +104,7 @@ namespace PicSum.UIComponent.AddressBar
         protected override void DrawDropDownItem(SWF.UIComponent.FlowList.DrawItemEventArgs e)
         {
             var scale = WindowUtil.GetCurrentWindowScale(this.AddressBar);
-            var font = this.AddressBar.GetRegularFont(scale);
+            var font = Fonts.GetRegularFont(Fonts.UI_FONT_14, scale);
 
             if (e.IsFocus || e.IsMousePoint || e.IsSelected)
             {
