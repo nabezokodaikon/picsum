@@ -69,6 +69,7 @@ namespace SWF.UIComponent.WideDropDown
             this.arrowPictureBox.DefaultBrush = new(Color.White);
             this.arrowPictureBox.Image = ResourceFiles.SmallArrowDownIcon.Value;
             this.arrowPictureBox.MouseClick += this.ArrowPictureBox_MouseClick;
+            this.arrowPictureBox.LostFocus += this.ArrowPictureBox_LostFocus;
 
             this.addButton.Image = ResourceFiles.TagIcon.Value;
             this.addButton.MouseEnter += this.AddButton_MouseEnter;
@@ -196,6 +197,11 @@ namespace SWF.UIComponent.WideDropDown
             var item = this.inputTextBox.Text.Trim();
             var args = new AddItemEventArgs(item);
             this.AddItem(this, args);
+        }
+
+        private void ArrowPictureBox_LostFocus(object sender, EventArgs e)
+        {
+            this._isShowingDropDown = false;
         }
 
         private void ArrowPictureBox_MouseClick(object sender, MouseEventArgs e)
