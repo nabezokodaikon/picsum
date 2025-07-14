@@ -37,16 +37,19 @@ namespace PicSum.Main
 
                     AssemblyPreloader.OptimizeStartup(
                         typeof(Accessibility.AnnoScope),
-                        typeof(System.AppDomain),
-                        typeof(System.Collections.Generic.CollectionExtensions),
-                        typeof(System.ComponentModel.AddingNewEventArgs),
-                        typeof(System.Data.AcceptRejectRule),
+                        typeof(Microsoft.Win32.SystemEvents),
+                        typeof(System.Data.Common.CatalogLocation),
                         typeof(System.Data.SQLite.AssemblySourceIdAttribute),
-                        typeof(System.Drawing.Bitmap),
-                        typeof(System.IO.BinaryReader),
+                        typeof(System.Diagnostics.Process),
+                        typeof(System.Diagnostics.TraceSource),
+                        typeof(System.IO.DriveInfo),
+                        typeof(System.IO.MemoryMappedFiles.MemoryMappedFile),
                         typeof(System.Resources.Extensions.DeserializingResourceReader),
                         typeof(System.Threading.Channels.BoundedChannelFullMode),
-                        typeof(System.Windows.Forms.Application),
+                        typeof(System.Threading.ThreadPool),
+                        typeof(System.Transactions.CommittableTransaction),
+                        typeof(System.Text.RegularExpressions.Capture),
+                        typeof(System.Xml.ConformanceLevel),
 
 #if UWP
                         typeof(Windows.Storage.AppDataPaths),
@@ -107,7 +110,10 @@ namespace PicSum.Main
 
                     logger.Info("アプリケーションを開始します。");
 
+#if DEBUG
                     AppDomain.CurrentDomain.AssemblyLoad += CurrentDomain_AssemblyLoad;
+#endif
+
                     AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
                     Application.ThreadException += Application_ThreadException;
@@ -169,9 +175,7 @@ namespace PicSum.Main
 
         private static void CurrentDomain_AssemblyLoad(object sender, AssemblyLoadEventArgs args)
         {
-#if DEBUG
             Log.GetLogger().Trace($"アセンブリが読み込まれました: {args.LoadedAssembly.FullName}");
-#endif
         }
     }
 }
