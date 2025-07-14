@@ -26,6 +26,8 @@ namespace SWF.Core.Job
 
         public OneWayJobQueue()
         {
+            LOGGER.Trace($"{TASK_NAME} を開始します。");
+
             this._task = Task.Run(
                 this.DoWork,
                 this._cancellationTokenSource.Token);

@@ -35,6 +35,8 @@ namespace SWF.Core.Job
         {
             ArgumentNullException.ThrowIfNull(context, nameof(context));
 
+            LOGGER.Trace($"{TASK_NAME} を開始します。");
+
             this._context = context;
             this._task = Task.Run(
                 this.DoWork,
